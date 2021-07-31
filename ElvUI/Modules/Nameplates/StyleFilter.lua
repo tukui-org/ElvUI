@@ -779,6 +779,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.classification[frame.classification] then passed = true else return end
 	end
 
+	-- Faction
+	if trigger.faction.Alliance or trigger.faction.Horde or trigger.faction.Neutral then
+		if trigger.faction[frame.battleFaction] then passed = true else return end
+	end
+
 	-- My Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if trigger.role[mod.TriggerConditions.roles[E.myrole]] then passed = true else return end

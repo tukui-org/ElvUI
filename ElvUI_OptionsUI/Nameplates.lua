@@ -1293,8 +1293,50 @@ function UpdateFilterGroup()
 						}
 					}
 				},
-				class = {
+				faction = {
 					order = 10,
+					type = 'group',
+					name = L["Unit Faction"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.faction[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.faction[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					disabled = function()
+						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					end,
+					args = {
+						types = {
+							name = '',
+							type = 'group',
+							inline = true,
+							order = 2,
+							args = {
+								Alliance = {
+									type = 'toggle',
+									order = 1,
+									name = L["Alliance"]
+								},
+								Horde = {
+									type = 'toggle',
+									order = 2,
+									name = L["Horde"]
+								},
+								Neutral = {
+									type = 'toggle',
+									order = 3,
+									name = L["Neutral"]
+								}
+							}
+						}
+					}
+				},
+				class = {
+					order = 11,
 					type = 'group',
 					name = L["CLASS"],
 					disabled = function()
@@ -1305,7 +1347,7 @@ function UpdateFilterGroup()
 					args = {}
 				},
 				talent = {
-					order = 11,
+					order = 12,
 					type = 'group',
 					name = L["TALENT"],
 					disabled = function()
@@ -1316,7 +1358,7 @@ function UpdateFilterGroup()
 					args = {}
 				},
 				role = {
-					order = 12,
+					order = 13,
 					type = 'group',
 					name = L["ROLE"],
 					disabled = function()
@@ -1388,7 +1430,7 @@ function UpdateFilterGroup()
 					}
 				},
 				classification = {
-					order = 13,
+					order = 14,
 					type = 'group',
 					name = L["Classification"],
 					get = function(info)
@@ -1450,7 +1492,7 @@ function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 14,
+					order = 15,
 					type = 'group',
 					name = L["Health Threshold"],
 					get = function(info)
@@ -1515,7 +1557,7 @@ function UpdateFilterGroup()
 					}
 				},
 				power = {
-					order = 15,
+					order = 16,
 					type = 'group',
 					name = L["Power Threshold"],
 					get = function(info)
@@ -1581,7 +1623,7 @@ function UpdateFilterGroup()
 				},
 				keyMod = {
 					name = L["Key Modifiers"],
-					order = 16,
+					order = 17,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1676,7 +1718,7 @@ function UpdateFilterGroup()
 					}
 				},
 				levels = {
-					order = 17,
+					order = 18,
 					type = 'group',
 					name = L["Level"],
 					get = function(info)
@@ -1759,7 +1801,7 @@ function UpdateFilterGroup()
 				},
 				cooldowns = {
 					name = L["Cooldowns"],
-					order = 18,
+					order = 19,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1821,7 +1863,7 @@ function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 19,
+					order = 20,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and
@@ -1947,7 +1989,7 @@ function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 20,
+					order = 21,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and
@@ -2065,7 +2107,7 @@ function UpdateFilterGroup()
 				},
 				bossModAuras = {
 					name = L["Boss Mod Auras"],
-					order = 21,
+					order = 22,
 					type = 'group',
 					get = function(info)
 						UpdateBossModAuras() -- this is so we can get the seen textures without full update
@@ -2191,7 +2233,7 @@ function UpdateFilterGroup()
 				},
 				threat = {
 					name = L["Threat"],
-					order = 22,
+					order = 23,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2275,7 +2317,7 @@ function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 23,
+					order = 24,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2346,7 +2388,7 @@ function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 24,
+					order = 25,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and
@@ -2472,7 +2514,7 @@ function UpdateFilterGroup()
 				},
 				creatureType = {
 					name = L["Creature Type"],
-					order = 25,
+					order = 26,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]]
@@ -2509,7 +2551,7 @@ function UpdateFilterGroup()
 					}
 				},
 				instanceType = {
-					order = 26,
+					order = 27,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info)
@@ -2582,7 +2624,7 @@ function UpdateFilterGroup()
 					}
 				},
 				location = {
-					order = 27,
+					order = 28,
 					type = 'group',
 					name = L["Location"],
 					get = function(info)
@@ -2856,7 +2898,7 @@ function UpdateFilterGroup()
 					}
 				},
 				raidTarget = {
-					order = 28,
+					order = 29,
 					type = 'group',
 					name = L["BINDING_HEADER_RAID_TARGET"],
 					get = function(info)

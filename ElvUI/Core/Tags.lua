@@ -86,6 +86,13 @@ local PVP = PVP
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
+local FactionColors = {
+	['']	 = '|cFFc2c2c2',
+	Alliance = '|cFF0099ff',
+	Horde	 = '|cFFff3333',
+	Neutral	 = '|cFF33ff33'
+}
+
 --Expose local functions for plugins onto this table
 E.TagFunctions = {}
 
@@ -641,6 +648,12 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['factioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+ElvUF.Tags.Methods['factioncolor'] = function(unit)
+	local englishFaction = E:GetUnitBattlefieldFaction(unit)
+	return FactionColors[englishFaction or '']
+end
+
 ElvUF.Tags.Events['reactioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
 ElvUF.Tags.Methods['reactioncolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
@@ -648,7 +661,7 @@ ElvUF.Tags.Methods['reactioncolor'] = function(unit)
 		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
-		return '|cFFC2C2C2'
+		return '|cFFc2c2c2'
 	end
 end
 

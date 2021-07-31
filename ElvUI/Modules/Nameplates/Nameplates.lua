@@ -6,8 +6,8 @@ local ElvUF = E.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
+local select, strsplit, tostring = select, strsplit, tostring
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
-local format, select, strsplit, tostring = format, select, strsplit, tostring
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -678,11 +678,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'UNIT_FACTION' then
 		if nameplate.widgetsOnly then return end
 
-		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
+		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		NP:UpdatePlateType(nameplate)
@@ -708,10 +709,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.isBattlePet = UnitIsBattlePet(unit)
-		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-		nameplate.unitGUID = UnitGUID(unit)
+		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
