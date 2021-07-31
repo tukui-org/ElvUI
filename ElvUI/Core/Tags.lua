@@ -1294,6 +1294,7 @@ E.TagInfo = {
 	['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
 	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [namecolor][name])" },
 	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
+	['factioncolor'] = { category = 'Colors', description = "Colors names by Faction (Alliance, Horde, Neutral)" },
 	['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 	['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
 	--Guild
