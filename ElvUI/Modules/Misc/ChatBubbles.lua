@@ -21,7 +21,7 @@ function M:UpdateBubbleBorder()
 	local str = holder and holder.String
 	if not str then return end
 
-	self:SetScale(E.mult)
+	self:SetScale(E.uiScale)
 
 	local option = E.private.general.chatBubbles
 	if option == 'backdrop' then
@@ -118,8 +118,8 @@ function M:SkinBubble(frame, holder)
 		frame.holder = holder
 		holder.Tail:Hide()
 
-		frame:HookScript('OnShow', M.UpdateBubbleBorder)
 		frame:ClearAllPoints()
+		frame:HookScript('OnShow', M.UpdateBubbleBorder)
 
 		M.UpdateBubbleBorder(frame)
 	end

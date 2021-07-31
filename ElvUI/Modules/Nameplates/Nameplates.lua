@@ -219,7 +219,7 @@ function NP:Construct_RaisedELement(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale(E.mult)
+	nameplate:SetScale(E.uiScale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
@@ -248,12 +248,12 @@ end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
 	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(E.mult)
+		NP.targetPlate:SetScale(E.uiScale)
 		NP.targetPlate = nil
 	end
 
 	if not nameplate then return end
-	nameplate:SetScale(scale * E.mult)
+	nameplate:SetScale(scale * E.uiScale)
 
 	if targetPlate then
 		NP.targetPlate = nameplate
@@ -274,7 +274,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetScale(E.mult)
+	nameplate:SetScale(E.uiScale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
@@ -809,10 +809,9 @@ end
 function NP:SetNamePlateSizes()
 	if InCombatLockdown() then return end
 
-	local scale = E:GetScale()
-	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * scale, NP.db.plateSize.personalHeight * scale)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * scale, NP.db.plateSize.enemyHeight * scale)
-	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
+	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiScale, NP.db.plateSize.personalHeight * E.uiScale)
+	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiScale, NP.db.plateSize.enemyHeight * E.uiScale)
+	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiScale, NP.db.plateSize.friendlyHeight * E.uiScale)
 end
 
 function NP:Initialize()
