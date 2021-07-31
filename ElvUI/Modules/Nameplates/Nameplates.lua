@@ -247,12 +247,12 @@ end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
 	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(1)
+		NP.targetPlate:SetScale(E.mult)
 		NP.targetPlate = nil
 	end
 
 	if not nameplate then return end
-	nameplate:SetScale(1 * scale)
+	nameplate:SetScale(E.mult * scale)
 
 	if targetPlate then
 		NP.targetPlate = nameplate

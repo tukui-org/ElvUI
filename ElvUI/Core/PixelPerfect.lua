@@ -43,8 +43,9 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
-		UIParent:SetScale(E.global.general.UIScale)
-		WorldFrame:SetScale(E.perfect)
+		local scale = E.global.general.UIScale
+		UIParent:SetScale(scale)
+		WorldFrame:SetScale(scale)
 
 		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 

@@ -21,6 +21,8 @@ function M:UpdateBubbleBorder()
 	local str = holder and holder.String
 	if not str then return end
 
+	self:SetScale(E.mult)
+
 	local option = E.private.general.chatBubbles
 	if option == 'backdrop' then
 		holder:SetBackdropBorderColor(str:GetTextColor())
