@@ -219,6 +219,7 @@ function NP:Construct_RaisedELement(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
+	nameplate:SetScale(E.mult)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
