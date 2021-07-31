@@ -43,9 +43,8 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
-		local scale = E.global.general.UIScale
-		UIParent:SetScale(scale)
-		WorldFrame:SetScale(scale)
+		UIParent:SetScale(E.global.general.UIScale)
+		WorldFrame:SetScale(E.global.general.UIScale)
 
 		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 
@@ -95,4 +94,8 @@ local round = function(s) return s >= 0 and s-s%-1 or s-s%01 end
 function E:Scale(n)
 	local m = E.mult
 	return (m == 1 or n == 0) and n or ((m < 1 and trunc(n/m) or round(n/m)) * m)
+end
+
+function E:GetScale()
+	return UIParent:GetScale()
 end

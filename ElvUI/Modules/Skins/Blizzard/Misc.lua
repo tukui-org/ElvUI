@@ -115,7 +115,8 @@ function S:BlizzardMiscFrames()
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:SetTemplate('Transparent')
-			s:SetScale(_G.UIParent:GetScale())
+			s:SetScale(E:GetScale())
+
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
 			local resumeButton = s.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
@@ -129,7 +130,7 @@ function S:BlizzardMiscFrames()
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
 	hooksecurefunc('MovieFrame_PlayMovie', function(s)
 		if s and s.CloseDialog and not s.CloseDialog.template then
-			s:SetScale(_G.UIParent:GetScale())
+			s:SetScale(E:GetScale())
 			s.CloseDialog:StripTextures()
 			s.CloseDialog:SetTemplate('Transparent')
 			S:HandleButton(s.CloseDialog.ConfirmButton)

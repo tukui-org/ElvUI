@@ -253,7 +253,7 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 	end
 
 	if not nameplate then return end
-	nameplate:SetScale(E.mult * scale)
+	nameplate:SetScale(scale * E.mult)
 
 	if targetPlate then
 		NP.targetPlate = nameplate
@@ -809,7 +809,7 @@ end
 function NP:SetNamePlateSizes()
 	if InCombatLockdown() then return end
 
-	local scale = E.global.general.UIScale
+	local scale = E:GetScale()
 	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * scale, NP.db.plateSize.personalHeight * scale)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * scale, NP.db.plateSize.enemyHeight * scale)
 	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)

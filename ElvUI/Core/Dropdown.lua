@@ -75,12 +75,11 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	frame:Height((#list * BUTTON_HEIGHT) + PADDING * 2)
 	frame:Width(BUTTON_WIDTH + PADDING * 2)
 
-	local UIScale = _G.UIParent:GetScale()
 	local x, y = GetCursorPosition()
-	x = x/UIScale
-	y = y/UIScale
+	local UIScale = E:GetScale()
+
 	frame:ClearAllPoints()
-	frame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', x + xOffset, y + yOffset)
+	frame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', (x/UIScale) + xOffset, (y/UIScale) + yOffset)
 
 	ToggleFrame(frame)
 end

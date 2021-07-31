@@ -119,8 +119,7 @@ function M:SkinBubble(frame, holder)
 		holder.Tail:Hide()
 
 		frame:HookScript('OnShow', M.UpdateBubbleBorder)
-		frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end
-		frame:SetClampedToScreen(false)
+		frame:ClearAllPoints()
 
 		M.UpdateBubbleBorder(frame)
 	end
