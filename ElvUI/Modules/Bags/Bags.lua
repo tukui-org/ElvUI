@@ -499,9 +499,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if B.db.itemLevel and itemLink then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
-			local iLvl = C_Item_GetCurrentItemLevel(slot.itemLocation)
+			local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
 
-			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
+			if iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
 			end
 		end
@@ -533,7 +533,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if C_Item_IsAnimaItemByID(itemLink) and B.db.itemInfo then
+		if B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink)then
 			local _, spellID = GetItemSpell(itemLink)
 			if animaSpellID[spellID] then
 				slot.centerText:SetText(animaSpellID[spellID] * count)
