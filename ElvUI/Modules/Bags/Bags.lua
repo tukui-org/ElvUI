@@ -465,7 +465,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
 
 		if not slot.rarity then slot.rarity = itemRarity end
-		r, g, b = GetItemQualityColor(slot.rarity)
 
 		_, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
@@ -475,11 +474,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
-				if B.db.itemLevelCustomColorEnable then
-					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-				else
-					slot.itemLevel:SetTextColor(r, g, b)
-				end
 			end
 		end
 
@@ -507,7 +501,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 			if BoE or BoU then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
-				slot.bindType:SetVertexColor(r, g, b)
 			end
 		end
 
@@ -548,9 +541,16 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if not B.db.qualityColors or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
-		r, g, b, a = unpack(E.media.bordercolor)
-		forceColor = nil
+	if B.db.qualityColors and itemLink and slot.rarity > ITEMQUALITY_COMMON then
+		r, g, b = GetItemQualityColor(slot.rarity)
+
+		if B.db.itemLevelCustomColorEnable then
+			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+		else
+			slot.itemLevel:SetTextColor(r, g, b)
+		end
+
+		slot.bindType:SetTextColor(r, g, b)
 	end
 
 	if forceColor and B.db.colorBackdrop then
