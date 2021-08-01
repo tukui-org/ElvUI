@@ -427,9 +427,9 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 end
 
 function B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
-	local bag, r, g, b, a = slot.bagFrame[slot.bagID]
+	local bag, r, g, b, a = slot.bagFrame.Bags[slot.bagID]
 
-	local professionColors = B.ProfessionColors[bag.type]
+	local professionColors = B.ProfessionColors[bag and bag.type]
 	local questColors = (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
 	if questColors then
 		r, g, b, a = unpack(questColors)
