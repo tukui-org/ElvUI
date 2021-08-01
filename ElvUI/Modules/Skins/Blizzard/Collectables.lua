@@ -464,19 +464,6 @@ local function SkinHeirloomFrame()
 	end)
 end
 
-local function SkinCollectionsFrames()
-	S:HandlePortraitFrame(_G.CollectionsJournal)
-
-	for i=1, 5 do
-		S:HandleTab(_G['CollectionsJournalTab'..i])
-	end
-
-	SkinMountFrame()
-	SkinPetFrame()
-	SkinToyFrame()
-	SkinHeirloomFrame()
-end
-
 local function SkinTransmogFrames()
 	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
 	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
@@ -661,6 +648,19 @@ local function SkinTransmogFrames()
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
 	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
+end
+
+local function SkinCollectionsFrames()
+	S:HandlePortraitFrame(_G.CollectionsJournal)
+
+	for i=1, 5 do
+		S:HandleTab(_G['CollectionsJournalTab'..i])
+	end
+
+	SkinMountFrame()
+	SkinPetFrame()
+	SkinToyFrame()
+	SkinHeirloomFrame()
 end
 
 function S:Blizzard_Collections()
