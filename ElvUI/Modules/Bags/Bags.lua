@@ -548,7 +548,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
+	if not B.db.qualityColors or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
