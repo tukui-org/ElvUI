@@ -487,7 +487,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
 
-	local isQuestItem, questId, isActiveQuest = false, false, false
+	local isQuestItem, questId, isActiveQuest
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
@@ -584,7 +584,7 @@ function B:UpdateReagentSlot(slotID)
 	SetItemButtonDesaturated(slot, slot.locked)
 	SetItemButtonQuality(slot, rarity, itemLink)
 
-	local isQuestItem, questId, isActiveQuest = false, false, false
+	local isQuestItem, questId, isActiveQuest
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
