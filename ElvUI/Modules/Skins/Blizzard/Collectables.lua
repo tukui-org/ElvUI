@@ -14,6 +14,10 @@ local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
+end
+
 local function toyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		text:SetTextColor(0.4, 0.4, 0.4)
@@ -181,10 +185,6 @@ local function JournalScrollButtons(frame)
 			end
 		end
 	end
-end
-
-local function clearBackdrop(self)
-	self:SetBackdropColor(0, 0, 0, 0)
 end
 
 local function SkinMountFrame()
