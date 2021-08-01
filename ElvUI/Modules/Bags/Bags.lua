@@ -426,15 +426,51 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
+function B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
+	local bag, r, g, b, a = slot.bagFrame[slot.bagID]
+
+	local professionColors = B.ProfessionColors[bag.type]
+	local questColors = (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+	if questColors then
+		r, g, b, a = unpack(questColors)
+	elseif itemLink and B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+		r, g, b = GetItemQualityColor(slot.rarity)
+
+		if B.db.itemLevelCustomColorEnable then
+			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+		else
+			slot.itemLevel:SetTextColor(r, g, b)
+		end
+
+		slot.bindType:SetTextColor(r, g, b)
+	elseif B.db.specialtyColors and professionColors then
+		r, g, b, a = unpack(professionColors)
+	else
+		local assignedColor = B.db.showAssignedColor and B.AssignmentColors[bag and bag.assigned]
+		if assignedColor then
+			r, g, b, a = unpack(assignedColor)
+		end
+	end
+
+	if not a then a = 1 end
+	slot.forcedBorderColors = r and {r, g, b, a}
+	if not r then r, g, b = unpack(E.media.bordercolor) end
+
+	slot.newItemGlow:SetVertexColor(r, g, b, a)
+	slot:SetBackdropBorderColor(r, g, b, a)
+
+	if B.db.colorBackdrop then
+		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
+		slot:SetBackdropColor(r, g, b, fadeAlpha or a)
+	else
+		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+	end
+end
+
 function B:UpdateSlot(frame, bagID, slotID)
 	local bag = frame.Bags[bagID]
 	local slot = bag and bag[slotID]
 	if not slot then return end
-
-	local bagType = bag.type
-	local assignedID = bagID
-	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
-	local assignedColor = B.db.showAssignedColor and B.AssignmentColors[assignedBag]
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
@@ -446,17 +482,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
 	SetItemButtonQuality(slot, rarity, itemLink)
 
-	local color = B.db.countFontColor
-	slot.Count:SetTextColor(color.r, color.g, color.b)
+	slot.Count:SetTextColor(B.db.countFontColor.r, B.db.countFontColor.g, B.db.countFontColor.b)
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
 
-	local professionColors = B.ProfessionColors[bagType]
-	local showItemLevel = B.db.itemLevel and itemLink and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON)
-	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
-	local questId, isActiveQuest = false, false
+	local isQuestItem, questId, isActiveQuest = false, false, false
 
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
@@ -465,10 +497,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
 
 		if not slot.rarity then slot.rarity = itemRarity end
+		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
-		_, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		if showItemLevel then
+		if B.db.itemLevel and itemLink then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
 			local iLvl = C_Item_GetCurrentItemLevel(slot.itemLocation)
 
@@ -527,42 +558,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
+	B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
+
 	if not frame.isBank then
 		B.QuestSlots[slot] = questId or nil
 	end
-
-	if questId then
-		r, g, b, a = unpack(B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'])
-	elseif not itemLink then
-		if B.db.specialtyColors and professionColors then
-			r, g, b, a = unpack(professionColors)
-		elseif assignedColor then
-			r, g, b, a = unpack(B.AssignmentColors[assignedBag])
-		end
-	end
-
-	if B.db.qualityColors and itemLink and slot.rarity > ITEMQUALITY_COMMON then
-		r, g, b = GetItemQualityColor(slot.rarity)
-
-		if B.db.itemLevelCustomColorEnable then
-			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-		else
-			slot.itemLevel:SetTextColor(r, g, b)
-		end
-
-		slot.bindType:SetTextColor(r, g, b)
-	end
-
-	if forceColor and B.db.colorBackdrop then
-		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
-		slot:SetBackdropColor(r, g, b, fadeAlpha or a or 1)
-	else
-		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-	end
-
-	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
-	slot:SetBackdropBorderColor(r, g, b, a or 1)
-	slot.forcedBorderColors = forceColor and {r, g, b, a or 1}
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
@@ -578,27 +578,24 @@ function B:UpdateReagentSlot(slotID)
 	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
 	if not slot then return end
 
-	local texture, count, locked, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.rarity, slot.itemID, slot.locked = nil, nil, itemID, locked
+	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
+	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked)
+	SetItemButtonQuality(slot, rarity, itemLink)
 
 	local isQuestItem, questId, isActiveQuest = false, false, false
-	local forceColor, r, g, b, a = true
 
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
-		local name, _, rarity = GetItemInfo(itemLink)
-		slot.name, slot.rarity = name, rarity
+		local name, _, itemRarity = GetItemInfo(itemLink)
+		slot.name = name
 
+		if not slot.rarity then slot.rarity = itemRarity end
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		if slot.rarity then
-			r, g, b = GetItemQualityColor(slot.rarity)
-		end
 
 		B.UpdateCooldown(slot)
 
@@ -613,25 +610,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.questIcon:SetShown(questId and not isActiveQuest)
 	end
 
-	if questId and not isActiveQuest then
-		r, g, b, a = unpack(B.QuestColors.questStarter)
-	elseif questId or isQuestItem then
-		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
-		r, g, b, a = unpack(E.media.bordercolor)
-		forceColor = nil
-	end
-
-	if forceColor and B.db.colorBackdrop then
-		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
-		slot:SetBackdropColor(r, g, b, fadeAlpha or a or 1)
-	else
-		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-	end
-
-	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
-	slot:SetBackdropBorderColor(r, g, b, a or 1)
-	slot.forcedBorderColors = forceColor and {r, g, b, a or 1}
+	B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
