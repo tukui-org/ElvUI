@@ -497,7 +497,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if not slot.rarity then slot.rarity = itemRarity end
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
-		if B.db.itemLevel and itemLink then
+		if B.db.itemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
 			local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
 
