@@ -575,10 +575,10 @@ end
 
 function B:UpdateReagentSlot(slotID)
 	local bagID = REAGENTBANK_CONTAINER
-	local texture, count, locked, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
 	if not slot then return end
 
+	local texture, count, locked, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.rarity, slot.itemID, slot.locked = nil, nil, itemID, locked
 
 	SetItemButtonTexture(slot, texture)
@@ -609,6 +609,10 @@ function B:UpdateReagentSlot(slotID)
 		B:HideCooldown(slot)
 	end
 
+	if slot.questIcon then
+		slot.questIcon:SetShown(questId and not isActiveQuest)
+	end
+
 	if questId and not isActiveQuest then
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
@@ -616,10 +620,6 @@ function B:UpdateReagentSlot(slotID)
 	elseif B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
-	end
-
-	if slot.questIcon then
-		slot.questIcon:SetShown(questId and not isActiveQuest)
 	end
 
 	if forceColor and B.db.colorBackdrop then
