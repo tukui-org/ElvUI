@@ -427,10 +427,7 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 end
 
 function B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
-	local bag, r, g, b, a = slot.bagFrame.Bags[slot.bagID]
-
-	local professionColors = B.ProfessionColors[bag and bag.type]
-	local questColors = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+	local questColors, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
 	if questColors then
 		r, g, b, a = unpack(questColors)
 	elseif itemLink and B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
@@ -447,12 +444,11 @@ function B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
 		if slot.bindType then
 			slot.bindType:SetTextColor(r, g, b)
 		end
-	elseif B.db.specialtyColors and professionColors then
-		r, g, b, a = unpack(professionColors)
 	else
-		local assignedColor = B.db.showAssignedColor and B.AssignmentColors[bag and bag.assigned]
-		if assignedColor then
-			r, g, b, a = unpack(assignedColor)
+		local bag = slot.bagFrame.Bags[slot.bagID]
+		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
+		if colors then
+			r, g, b, a = unpack(colors)
 		end
 	end
 
