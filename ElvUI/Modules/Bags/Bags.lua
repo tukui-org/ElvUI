@@ -436,13 +436,17 @@ function B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
 	elseif itemLink and B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
 		r, g, b = GetItemQualityColor(slot.rarity)
 
-		if B.db.itemLevelCustomColorEnable then
-			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-		else
-			slot.itemLevel:SetTextColor(r, g, b)
+		if slot.itemLevel then
+			if B.db.itemLevelCustomColorEnable then
+				slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+			else
+				slot.itemLevel:SetTextColor(r, g, b)
+			end
 		end
 
-		slot.bindType:SetTextColor(r, g, b)
+		if slot.bindType then
+			slot.bindType:SetTextColor(r, g, b)
+		end
 	elseif B.db.specialtyColors and professionColors then
 		r, g, b, a = unpack(professionColors)
 	else
