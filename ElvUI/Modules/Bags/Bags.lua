@@ -533,7 +533,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink)then
+		if B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) then
 			local _, spellID = GetItemSpell(itemLink)
 			if animaSpellID[spellID] then
 				slot.centerText:SetText(animaSpellID[spellID] * count)
