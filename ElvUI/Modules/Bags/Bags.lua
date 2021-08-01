@@ -487,9 +487,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
 
-	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON)
 	local isQuestItem, questId, isActiveQuest = false, false, false
-
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
@@ -508,7 +506,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if showBindType and (bindType == 2 or bindType == 3) then
+		if B.db.showBindType and (bindType == 2 or bindType == 3) and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -560,12 +558,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
 
-	if not frame.isBank then
-		B.QuestSlots[slot] = questId or nil
-	end
-
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
+	end
+
+	if not frame.isBank then
+		B.QuestSlots[slot] = questId or nil
 	end
 
 	if not texture and _G.GameTooltip:GetOwner() == slot then
@@ -587,7 +585,6 @@ function B:UpdateReagentSlot(slotID)
 	SetItemButtonQuality(slot, rarity, itemLink)
 
 	local isQuestItem, questId, isActiveQuest = false, false, false
-
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
