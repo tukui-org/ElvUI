@@ -312,6 +312,10 @@ function B:UpdateItemDisplay()
 
 					if B.db.itemLevelCustomColorEnable then
 						slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+					else
+						local qR, qG, qB = 1, 1, 1
+						if slot.rarity then qR, qG, qB = GetItemQualityColor(slot.rarity) end
+						slot.itemLevel:SetTextColor(qR, qG, qB)
 					end
 
 					slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
@@ -426,24 +430,26 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
-function B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
-	local questColors, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
+	local questColors, qR, qG, qB, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'], 1, 1, 1
+	if slot.rarity then qR, qG, qB = GetItemQualityColor(slot.rarity) end
+
+	if slot.itemLevel then
+		if B.db.itemLevelCustomColorEnable then
+			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+		else
+			slot.itemLevel:SetTextColor(qR, qG, qB)
+		end
+	end
+
+	if slot.bindType then
+		slot.bindType:SetTextColor(qR, qG, qB)
+	end
+
 	if questColors then
 		r, g, b, a = unpack(questColors)
-	elseif itemLink and B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
-		r, g, b = GetItemQualityColor(slot.rarity)
-
-		if slot.itemLevel then
-			if B.db.itemLevelCustomColorEnable then
-				slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-			else
-				slot.itemLevel:SetTextColor(r, g, b)
-			end
-		end
-
-		if slot.bindType then
-			slot.bindType:SetTextColor(r, g, b)
-		end
+	elseif B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+		r, g, b = qR, qG, qB
 	else
 		local bag = slot.bagFrame.Bags[slot.bagID]
 		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
@@ -556,7 +562,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
-	B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
+	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
@@ -607,7 +613,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.questIcon:SetShown(questId and not isActiveQuest)
 	end
 
-	B:UpdateSlotColors(slot, itemLink, isQuestItem, questId, isActiveQuest)
+	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
