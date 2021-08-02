@@ -666,7 +666,7 @@ end
 function S:Blizzard_Collections()
 	if not E.private.skins.blizzard.enable then return end
 	if E.private.skins.blizzard.collections then SkinCollectionsFrames() end
-	if E.private.skins.transmogrify then SkinTransmogFrames() end
+	if E.private.skins.blizzard.transmogrify then SkinTransmogFrames() end
 end
 
 S:AddCallbackForAddon('Blizzard_Collections')
