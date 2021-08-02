@@ -99,10 +99,8 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
-	if E.private.tooltip.enable ~= true then return end
-	if tt:IsForbidden() then return end
-	if not TT.db.visibility then return end
-	if tt:GetAnchorType() ~= 'ANCHOR_NONE' then return end
+	if not E.private.tooltip.enable or not TT.db.visibility then return end
+	if tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then return end
 
 	if InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
 		tt:Hide()
@@ -871,7 +869,7 @@ function TT:Initialize()
 		TT.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
 	end
 
-	if E.private.tooltip.enable ~= true then return end
+	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
 	GameTooltip.StatusBar = GameTooltipStatusBar

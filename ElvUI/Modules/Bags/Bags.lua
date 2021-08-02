@@ -299,7 +299,7 @@ function B:SetSearch(query)
 end
 
 function B:UpdateItemDisplay()
-	if E.private.bags.enable ~= true then return end
+	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
 		for _, bagID in next, bagFrame.BagIDs do
@@ -337,7 +337,7 @@ function B:UpdateAllSlots(frame)
 end
 
 function B:UpdateAllBagSlots(skip)
-	if E.private.bags.enable ~= true then return end
+	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
 		B:UpdateAllSlots(bagFrame)
@@ -855,7 +855,7 @@ function B:CreateFilterIcon(parent)
 end
 
 function B:Layout(isBank)
-	if E.private.bags.enable ~= true then return end
+	if not E.private.bags.enable then return end
 
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
