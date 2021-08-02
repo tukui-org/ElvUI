@@ -194,7 +194,7 @@ local function HandleSellList(frame, hasHeader)
 end
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
 	--[[ Main Frame | TAB 1]]--
 	local Frame = _G.AuctionHouseFrame
