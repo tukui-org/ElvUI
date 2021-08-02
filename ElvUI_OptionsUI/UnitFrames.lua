@@ -2819,13 +2819,13 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 				order = 6,
 				type = 'range',
 				name = L["X-Offset"],
-				min = -100, max = 150, step = 1,
+				min = -150, max = 150, step = 1,
 			},
 			yOffset = {
 				order = 7,
 				type = 'range',
 				name = L["Y-Offset"],
-				min = -100, max = 150, step = 1,
+				min = -150, max = 150, step = 1,
 			},
 			anchorPoint = {
 				order = 9,
