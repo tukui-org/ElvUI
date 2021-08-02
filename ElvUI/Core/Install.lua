@@ -164,10 +164,12 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('showQuestTrackingTooltips', 1)
 	SetCVar('fstack_preferParentKeys', 0) --Add back the frame names via fstack!
 
-	NP:CVarReset()
-
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
+
+	if E.private.nameplates.enable then
+		NP:CVarReset()
+	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["CVars Set"]

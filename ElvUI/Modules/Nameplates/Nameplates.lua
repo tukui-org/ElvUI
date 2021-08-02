@@ -588,7 +588,7 @@ function NP:ConfigurePlates(init)
 end
 
 function NP:ConfigureAll(init)
-	if E.private.nameplates.enable ~= true then return end
+	if not E.private.nameplates.enable then return end
 
 	NP:StyleFilterConfigure() -- keep this at the top
 	NP:SetNamePlateClickThrough()
@@ -820,7 +820,7 @@ end
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
-	if E.private.nameplates.enable ~= true then return end
+	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
 
 	NP.thinBorders = NP.db.thinBorders
