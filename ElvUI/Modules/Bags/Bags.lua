@@ -313,9 +313,7 @@ function B:UpdateItemDisplay()
 					if B.db.itemLevelCustomColorEnable then
 						slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
 					else
-						local qR, qG, qB = 1, 1, 1
-						if slot.rarity then qR, qG, qB = GetItemQualityColor(slot.rarity) end
-						slot.itemLevel:SetTextColor(qR, qG, qB)
+						slot.itemLevel:SetTextColor(B:GetItemQualityColor(slot.rarity))
 					end
 
 					slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
@@ -430,9 +428,17 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
+function B:GetItemQualityColor(rarity)
+	if rarity then
+		return GetItemQualityColor(rarity)
+	else
+		return 1, 1, 1
+	end
+end
+
 function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
-	local questColors, qR, qG, qB, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'], 1, 1, 1
-	if slot.rarity then qR, qG, qB = GetItemQualityColor(slot.rarity) end
+	local questColors, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+	local qR, qG, qB = B:GetItemQualityColor(slot.rarity)
 
 	if slot.itemLevel then
 		if B.db.itemLevelCustomColorEnable then
