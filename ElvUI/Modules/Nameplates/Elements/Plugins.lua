@@ -33,7 +33,7 @@ function NP:Update_QuestIcons(nameplate)
 	local frameType = nameplate.frameType
 	local db = frameType and NP.db.units[frameType].questIcon
 
-	if db and db.enable and (frameType == 'FRIENDLY_NPC' or frameType == 'ENEMY_NPC') then
+	if db and db.enable and not nameplate.isBattlePet and (frameType == 'FRIENDLY_NPC' or frameType == 'ENEMY_NPC') then
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
 		end
@@ -146,7 +146,7 @@ function NP:Update_TargetIndicator(nameplate)
 
 		-- border glow is 1, 5, 7
 		if indicator.Shadow and (style == 'style1' or style == 'style5' or style == 'style7') then
-			indicator.Shadow:SetOutside(nameplate.Health, E.PixelMode and 6 or 8, E.PixelMode and 6 or 8)
+			indicator.Shadow:SetOutside(nameplate.Health, E.PixelMode and 6 or 8, E.PixelMode and 6 or 8, nil, true)
 			indicator.Shadow:SetBackdropBorderColor(r, g, b)
 			indicator.Shadow:SetAlpha(a)
 		end

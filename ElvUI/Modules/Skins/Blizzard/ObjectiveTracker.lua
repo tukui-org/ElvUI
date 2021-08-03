@@ -127,7 +127,7 @@ local function SkinProgressBars(_, _, line)
 
 		if label then
 			label:ClearAllPoints()
-			label:Point('CENTER', bar, 0, 1)
+			label:Point('CENTER', bar)
 			label:FontTemplate(nil, 14, 'OUTLINE')
 		end
 

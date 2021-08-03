@@ -395,10 +395,25 @@ function S:BlizzardOptions()
 		end
 	end
 
-	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab1:StripTextures()
-	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
-	_G.InterfaceOptionsFrameTab2:StripTextures()
+	-- System options buttons
+	_G.VideoOptionsFrameDefaults:ClearAllPoints()
+	_G.VideoOptionsFrameDefaults:Point('TOPLEFT', _G.VideoOptionsFrameCategoryFrame, 'BOTTOMLEFT', 0, -5)
+	_G.VideoOptionsFrameCancel:ClearAllPoints()
+	_G.VideoOptionsFrameCancel:Point('RIGHT', _G.VideoOptionsFrameApply, 'LEFT', -4, 0)
+	_G.VideoOptionsFrameOkay:ClearAllPoints()
+	_G.VideoOptionsFrameOkay:Point('RIGHT', _G.VideoOptionsFrameCancel, 'LEFT', -4, 0)
+
+	-- Interface options buttons
+	_G.InterfaceOptionsFrameTab1:ClearAllPoints()
+	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 0, 1)
+	_G.InterfaceOptionsFrameTab2:ClearAllPoints()
+	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 3, 0)
+	_G.InterfaceOptionsFrameDefaults:ClearAllPoints()
+	_G.InterfaceOptionsFrameDefaults:Point('TOPLEFT', _G.InterfaceOptionsFrameCategories, 'BOTTOMLEFT', 0, -5)
+	_G.InterfaceOptionsFrameOkay:ClearAllPoints()
+	_G.InterfaceOptionsFrameOkay:Point('RIGHT', _G.InterfaceOptionsFrameCancel, 'LEFT', -4, 0)
+	_G.InterfaceOptionsFrameCancel:ClearAllPoints()
+	_G.InterfaceOptionsFrameCancel:Point('TOPRIGHT', _G.InterfaceOptionsFramePanelContainer, 'BOTTOMRIGHT', 0, -6)
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
 	do -- plus minus buttons in addons category

@@ -19,7 +19,7 @@ end
 
 -- credit: Aftermathh, edited by Simpy
 function S:Blizzard_CombatLog()
-	if E.private.chat.enable ~= true then return end
+	if not E.private.chat.enable then return end
 	-- this is always on with the chat module, it's only handle the top bar in combat log chat frame
 
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', StyleButtons)

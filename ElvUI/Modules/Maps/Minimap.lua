@@ -281,7 +281,7 @@ function M:UpdateSettings()
 
 	M.HandleGarrisonButton()
 
-	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mai3)
+	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
 	local GameTimeFrame = _G.GameTimeFrame
 	if GameTimeFrame then

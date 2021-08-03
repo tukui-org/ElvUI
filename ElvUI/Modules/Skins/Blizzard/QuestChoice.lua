@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:Blizzard_QuestChoice()
-	if E.private.skins.blizzard.questChoice ~= true then return end
+	if not E.private.skins.blizzard.questChoice then return end
 
 	local QuestChoiceFrame = _G.QuestChoiceFrame
 	for i = 1, 4 do

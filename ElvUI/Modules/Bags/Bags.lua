@@ -299,7 +299,7 @@ function B:SetSearch(query)
 end
 
 function B:UpdateItemDisplay()
-	if E.private.bags.enable ~= true then return end
+	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
 		for _, bagID in next, bagFrame.BagIDs do
@@ -312,6 +312,8 @@ function B:UpdateItemDisplay()
 
 					if B.db.itemLevelCustomColorEnable then
 						slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+					else
+						slot.itemLevel:SetTextColor(B:GetItemQualityColor(slot.rarity))
 					end
 
 					slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
@@ -337,7 +339,7 @@ function B:UpdateAllSlots(frame)
 end
 
 function B:UpdateAllBagSlots(skip)
-	if E.private.bags.enable ~= true then return end
+	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
 		B:UpdateAllSlots(bagFrame)
@@ -426,15 +428,61 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
+function B:GetItemQualityColor(rarity)
+	if rarity then
+		return GetItemQualityColor(rarity)
+	else
+		return 1, 1, 1
+	end
+end
+
+function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
+	local questColors, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+	local qR, qG, qB = B:GetItemQualityColor(slot.rarity)
+
+	if slot.itemLevel then
+		if B.db.itemLevelCustomColorEnable then
+			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+		else
+			slot.itemLevel:SetTextColor(qR, qG, qB)
+		end
+	end
+
+	if slot.bindType then
+		slot.bindType:SetTextColor(qR, qG, qB)
+	end
+
+	if questColors then
+		r, g, b, a = unpack(questColors)
+	elseif B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+		r, g, b = qR, qG, qB
+	else
+		local bag = slot.bagFrame.Bags[slot.bagID]
+		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
+		if colors then
+			r, g, b, a = unpack(colors)
+		end
+	end
+
+	if not a then a = 1 end
+	slot.forcedBorderColors = r and {r, g, b, a}
+	if not r then r, g, b = unpack(E.media.bordercolor) end
+
+	slot.newItemGlow:SetVertexColor(r, g, b, a)
+	slot:SetBackdropBorderColor(r, g, b, a)
+
+	if B.db.colorBackdrop then
+		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
+		slot:SetBackdropColor(r, g, b, fadeAlpha or a)
+	else
+		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+	end
+end
+
 function B:UpdateSlot(frame, bagID, slotID)
 	local bag = frame.Bags[bagID]
 	local slot = bag and bag[slotID]
 	if not slot then return end
-
-	local bagType = bag.type
-	local assignedID = bagID
-	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
-	local assignedColor = B.db.showAssignedColor and B.AssignmentColors[assignedBag]
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
@@ -446,18 +494,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
 	SetItemButtonQuality(slot, rarity, itemLink)
 
-	local color = B.db.countFontColor
-	slot.Count:SetTextColor(color.r, color.g, color.b)
+	slot.Count:SetTextColor(B.db.countFontColor.r, B.db.countFontColor.g, B.db.countFontColor.b)
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
 
-	local professionColors = B.ProfessionColors[bagType]
-	local showItemLevel = B.db.itemLevel and itemLink and not professionColors
-	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON)
-	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
-	local questId, isActiveQuest = false, false
-
+	local isQuestItem, questId, isActiveQuest
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
@@ -465,25 +507,18 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
 
 		if not slot.rarity then slot.rarity = itemRarity end
-		r, g, b = GetItemQualityColor(slot.rarity)
+		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
-		_, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		if showItemLevel then
+		if B.db.itemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
-			local iLvl = C_Item_GetCurrentItemLevel(slot.itemLocation)
+			local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
 
-			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
+			if iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
-				if B.db.itemLevelCustomColorEnable then
-					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-				else
-					slot.itemLevel:SetTextColor(r, g, b)
-				end
 			end
 		end
 
-		if showBindType and (bindType == 2 or bindType == 3) then
+		if B.db.showBindType and (bindType == 2 or bindType == 3) and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -507,11 +542,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 			if BoE or BoU then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
-				slot.bindType:SetVertexColor(r, g, b)
 			end
 		end
 
-		if C_Item_IsAnimaItemByID(itemLink) and B.db.itemInfo then
+		if B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) then
 			local _, spellID = GetItemSpell(itemLink)
 			if animaSpellID[spellID] then
 				slot.centerText:SetText(animaSpellID[spellID] * count)
@@ -534,42 +568,61 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
-	if not frame.isBank then
-		B.QuestSlots[slot] = questId or nil
-	end
-
-	if questId then
-		r, g, b, a = unpack(B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'])
-	elseif not itemLink then
-		if B.db.specialtyColors and professionColors then
-			r, g, b, a = unpack(professionColors)
-		elseif assignedColor then
-			r, g, b, a = unpack(B.AssignmentColors[assignedBag])
-		end
-	end
-
-	if B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
-		r, g, b, a = unpack(E.media.bordercolor)
-		forceColor = nil
-	end
-
-	if forceColor and B.db.colorBackdrop then
-		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
-		slot:SetBackdropColor(r, g, b, fadeAlpha or a or 1)
-	else
-		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-	end
-
-	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
-	slot:SetBackdropBorderColor(r, g, b, a or 1)
-	slot.forcedBorderColors = forceColor and {r, g, b, a or 1}
+	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
+	if not frame.isBank then
+		B.QuestSlots[slot] = questId or nil
+	end
+
 	if not texture and _G.GameTooltip:GetOwner() == slot then
 		GameTooltip_Hide()
+	end
+end
+
+function B:UpdateReagentSlot(slotID)
+	local bagID = REAGENTBANK_CONTAINER
+	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
+	if not slot then return end
+
+	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
+	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
+
+	SetItemButtonTexture(slot, texture)
+	SetItemButtonCount(slot, count)
+	SetItemButtonDesaturated(slot, slot.locked)
+	SetItemButtonQuality(slot, rarity, itemLink)
+
+	local isQuestItem, questId, isActiveQuest
+	B:SearchSlotUpdate(slot, itemLink, locked)
+
+	if itemLink then
+		local name, _, itemRarity = GetItemInfo(itemLink)
+		slot.name = name
+
+		if not slot.rarity then slot.rarity = itemRarity end
+		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+
+		B.UpdateCooldown(slot)
+
+		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
+			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		end
+	else
+		B:HideCooldown(slot)
+	end
+
+	if slot.questIcon then
+		slot.questIcon:SetShown(questId and not isActiveQuest)
+	end
+
+	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
+
+	if B.db.newItemGlow then
+		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 end
 
@@ -814,7 +867,7 @@ function B:CreateFilterIcon(parent)
 end
 
 function B:Layout(isBank)
-	if E.private.bags.enable ~= true then return end
+	if not E.private.bags.enable then return end
 
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
@@ -844,6 +897,7 @@ function B:Layout(isBank)
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
 		f.purchaseBagButton:SetShown(not f.fullBank)
+
 		if _G.BankFrame.selectedTab == 1 then
 			f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		end
@@ -951,71 +1005,6 @@ function B:Layout(isBank)
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
 	f:SetSize(containerWidth, buttonsHeight + f.topOffset + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
 	f:SetFrameStrata(B.db.strata or 'HIGH')
-end
-
-function B:UpdateReagentSlot(slotID)
-	local bagID = REAGENTBANK_CONTAINER
-	local texture, count, locked, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
-	if not slot then return end
-
-	slot.name, slot.rarity, slot.itemID, slot.locked = nil, nil, itemID, locked
-
-	SetItemButtonTexture(slot, texture)
-	SetItemButtonCount(slot, count)
-	SetItemButtonDesaturated(slot, slot.locked)
-
-	local isQuestItem, questId, isActiveQuest = false, false, false
-	local forceColor, r, g, b, a = true
-
-	B:SearchSlotUpdate(slot, itemLink, locked)
-
-	if itemLink then
-		local name, _, rarity = GetItemInfo(itemLink)
-		slot.name, slot.rarity = name, rarity
-
-		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		if slot.rarity then
-			r, g, b = GetItemQualityColor(slot.rarity)
-		end
-
-		B.UpdateCooldown(slot)
-
-		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-		end
-	else
-		B:HideCooldown(slot)
-	end
-
-	if questId and not isActiveQuest then
-		r, g, b, a = unpack(B.QuestColors.questStarter)
-	elseif questId or isQuestItem then
-		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
-		r, g, b, a = unpack(E.media.bordercolor)
-		forceColor = nil
-	end
-
-	if slot.questIcon then
-		slot.questIcon:SetShown(questId and not isActiveQuest)
-	end
-
-	if forceColor and B.db.colorBackdrop then
-		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
-		slot:SetBackdropColor(r, g, b, fadeAlpha or a or 1)
-	else
-		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-	end
-
-	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
-	slot:SetBackdropBorderColor(r, g, b, a or 1)
-	slot.forcedBorderColors = forceColor and {r, g, b, a or 1}
-
-	if B.db.newItemGlow then
-		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
-	end
 end
 
 function B:TotalSlotsChanged(bagFrame)
@@ -1529,8 +1518,6 @@ function B:ConstructContainerFrame(name, isBank)
 		f.reagentToggle:SetScript('OnClick', function()
 			PlaySound(841) --IG_CHARACTER_INFO_TAB
 			B:ShowBankTab(f, f.holderFrame:IsShown())
-			B:Layout(true)
-			f:Show()
 		end)
 
 		--Sort Button
@@ -1913,6 +1900,8 @@ function B:CloseBags()
 end
 
 function B:ShowBankTab(f, showReagent)
+	local previousTab = _G.BankFrame.selectedTab
+
 	if showReagent then
 		_G.BankFrame.selectedTab = 2
 
@@ -1927,6 +1916,12 @@ function B:ShowBankTab(f, showReagent)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Bank"])
+	end
+
+	if previousTab ~= _G.BankFrame.selectedTab then
+		B:Layout(true)
+	else
+		B:UpdateLayout(f)
 	end
 
 	f.editBox.skipUpdate = true -- skip search update when switching tabs
@@ -1989,8 +1984,6 @@ function B:OpenBank()
 
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
-
-	B:UpdateLayout(B.BankFrame)
 
 	B:OpenBags()
 end

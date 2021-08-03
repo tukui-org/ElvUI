@@ -3,10 +3,10 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local min, max, format = min, max, format
 
 local UIParent = UIParent
-local GetPhysicalScreenSize = GetPhysicalScreenSize
-local GetScreenHeight = GetScreenHeight
 local GetScreenWidth = GetScreenWidth
+local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -38,11 +38,13 @@ end
 
 function E:UIScale(init) -- `init` will be the `event` if its triggered after combat
 	if init == true then -- E.OnInitialize
-		E.mult = (768 / E.physicalHeight) / E.global.general.UIScale
+		E.mult = E.perfect / E.global.general.UIScale
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
 		UIParent:SetScale(E.global.general.UIScale)
+
+		E.uiscale = UIParent:GetScale()
 		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 
 		local width, height = E.physicalWidth, E.physicalHeight
@@ -70,13 +72,14 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 end
 
 function E:PixelBestSize()
-	return max(0.4, min(1.15, 768 / E.physicalHeight))
+	return max(0.4, min(1.15, E.perfect))
 end
 
 function E:PixelScaleChanged(event)
 	if event == 'UI_SCALE_CHANGED' then
 		E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 		E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
+		E.perfect = 768 / E.physicalHeight
 	end
 
 	E:UIScale(true) -- Repopulate variables

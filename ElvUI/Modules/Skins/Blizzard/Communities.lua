@@ -48,6 +48,12 @@ local function HandleRoleChecks(button, ...)
 	S:HandleCheckBox(button.CheckBox)
 end
 
+local function SideClubButton_CreateBackdrop(frame)
+	frame:CreateBackdrop('Transparent')
+	frame.backdrop:Point('TOPLEFT', 4, -13)
+	frame.backdrop:Point('BOTTOMRIGHT', -8, 8)
+end
+
 local function HandleCommunitiesButtons(self, color)
 	self.Background:Hide()
 	self.CircleMask:Hide()
@@ -59,10 +65,7 @@ local function HandleCommunitiesButtons(self, color)
 	self.IconRing:Hide()
 
 	if not self.backdrop then
-		self:CreateBackdrop('Transparent')
-		self.backdrop:ClearAllPoints()
-		self.backdrop:Point('TOPLEFT', 7, -16)
-		self.backdrop:Point('BOTTOMRIGHT', -10, 12)
+		SideClubButton_CreateBackdrop(self)
 	end
 
 	local highlight = self:GetHighlightTexture()
@@ -159,10 +162,7 @@ function S:Blizzard_Communities()
 			end
 
 			if not s.backdrop then
-				s:CreateBackdrop('Transparent')
-				s.backdrop:ClearAllPoints()
-				s.backdrop:Point('TOPLEFT', 7, -16)
-				s.backdrop:Point('BOTTOMRIGHT', -10, 12)
+				SideClubButton_CreateBackdrop(s)
 			end
 
 			local highlight = s:GetHighlightTexture()
@@ -337,18 +337,20 @@ function S:Blizzard_Communities()
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
 	CommunitiesFrame.GuildMemberDetailFrame:SetTemplate('Transparent')
+	CommunitiesFrame.GuildMemberDetailFrame:ClearAllPoints()
+	CommunitiesFrame.GuildMemberDetailFrame:Point('TOPLEFT', CommunitiesFrame, 'TOPRIGHT', -1, -30)
 
 	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground:SetTemplate('Transparent')
 	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground:SetTemplate('Transparent')
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
+	CommunitiesFrame.GuildMemberDetailFrame.RemoveButton:ClearAllPoints()
+	CommunitiesFrame.GuildMemberDetailFrame.RemoveButton:Point('BOTTOMLEFT', 10, 4)
 
 	local DropDown = CommunitiesFrame.GuildMemberDetailFrame.RankDropdown
-	S:HandleDropDownBox(DropDown, 160)
-	DropDown.backdrop:Point('TOPLEFT', 0, -6)
-	DropDown.backdrop:Point('BOTTOMRIGHT', -12, 6)
-	DropDown:Point('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', 2, 0)
+	DropDown:Point('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', -12, -3)
+	S:HandleDropDownBox(DropDown, 175)
 
 	-- [[ ROSTER TAB ]]
 	local MemberList = CommunitiesFrame.MemberList
@@ -755,8 +757,8 @@ function S:Blizzard_Communities()
 	ApplicantList.backdrop:Point('TOPLEFT', 0, 0)
 	ApplicantList.backdrop:Point('BOTTOMRIGHT', -15, 0)
 
-	hooksecurefunc(ApplicantList, 'BuildList', function(self)
-		local columnDisplay = self.ColumnDisplay
+	hooksecurefunc(ApplicantList, 'BuildList', function(list)
+		local columnDisplay = list.ColumnDisplay
 		for i = 1, columnDisplay:GetNumChildren() do
 			local child = select(i, columnDisplay:GetChildren())
 			if not child.IsSkinned then
@@ -775,7 +777,7 @@ function S:Blizzard_Communities()
 			end
 		end
 
-		local buttons = self.ListScrollFrame.buttons
+		local buttons = list.ListScrollFrame.buttons
 		for i = 1, #buttons do
 			local button = buttons[i]
 			if not button.IsSkinned then

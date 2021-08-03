@@ -83,7 +83,7 @@ function D:ScriptErrorsFrame_UpdateButtons()
 end
 
 function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
-	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return end
+	if keepHidden or D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
 	D.MessagePrinted = true
@@ -99,7 +99,7 @@ function D:PLAYER_REGEN_DISABLED()
 end
 
 function D:TaintError(event, addonName, addonFunc)
-	if GetCVarBool('scriptErrors') ~= true or E.db.general.taintLog ~= true then return end
+	if not E.db.general.taintLog or not GetCVarBool('scriptErrors') then return end
 	_G.ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or '<name>', addonFunc or '<func>'), false, false)
 end
 

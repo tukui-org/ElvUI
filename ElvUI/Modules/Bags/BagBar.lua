@@ -147,7 +147,7 @@ function B:LoadBagBar()
 
 	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
-	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, true)
+	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, true)
 	B.BagBar:SetScript('OnEnter', OnEnter)
 	B.BagBar:SetScript('OnLeave', OnLeave)
 	B.BagBar:EnableMouse(true)
