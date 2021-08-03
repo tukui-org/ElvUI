@@ -86,6 +86,13 @@ local PVP = PVP
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
+local FactionColors = {
+	['']	 = '|cFFc2c2c2',
+	Alliance = '|cFF0099ff',
+	Horde	 = '|cFFff3333',
+	Neutral	 = '|cFF33ff33'
+}
+
 --Expose local functions for plugins onto this table
 E.TagFunctions = {}
 
@@ -305,7 +312,7 @@ end
 do
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
-			return tags.namecolor(unit) or default
+			return tags.classcolor(unit) or default
 		elseif hex and strmatch(hex, '^%x%x%x%x%x%x$') then
 			return '|cFF'..hex
 		end
@@ -545,6 +552,27 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 	end
 end
 
+ElvUF.Tags.Events['classcolor:target'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['classcolor:target'] = function(unit)
+	return _TAGS.classcolor(unit..'target')
+end
+
+ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target'] = function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName then
+		return targetName
+	end
+end
+
+ElvUF.Tags.Events['target:translit'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['target:translit'] = function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName then
+		return Translit:Transliterate(targetName, translitMark)
+	end
+end
+
 ElvUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:max'] = function(unit)
 	local max = UnitHealthMax(unit)
@@ -629,8 +657,8 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	return Hex(c.r, c.g, c.b)
 end
 
-ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT'
-ElvUF.Tags.Methods['namecolor'] = function(unit)
+ElvUF.Tags.Events['classcolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT'
+ElvUF.Tags.Methods['classcolor'] = function(unit)
 	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
 		local cs = ElvUF.colors.class[unitClass]
@@ -641,6 +669,17 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['namecolor'] = 'UNIT_TARGET'
+ElvUF.Tags.Methods['namecolor'] = function(unit)
+	return _TAGS.classcolor(unit)
+end
+
+ElvUF.Tags.Events['factioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+ElvUF.Tags.Methods['factioncolor'] = function(unit)
+	local englishFaction = E:GetUnitBattlefieldFaction(unit)
+	return FactionColors[englishFaction or '']
+end
+
 ElvUF.Tags.Events['reactioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
 ElvUF.Tags.Methods['reactioncolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
@@ -648,7 +687,7 @@ ElvUF.Tags.Methods['reactioncolor'] = function(unit)
 		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
-		return '|cFFC2C2C2'
+		return '|cFFc2c2c2'
 	end
 end
 
@@ -1011,22 +1050,6 @@ ElvUF.Tags.Methods['guild:brackets:translit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target'] = function(unit)
-	local targetName = UnitName(unit..'target')
-	if targetName then
-		return targetName
-	end
-end
-
-ElvUF.Tags.Events['target:translit'] = 'UNIT_TARGET'
-ElvUF.Tags.Methods['target:translit'] = function(unit)
-	local targetName = UnitName(unit..'target')
-	if targetName then
-		return Translit:Transliterate(targetName, translitMark)
-	end
-end
-
 ElvUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['guild:rank'] = function(unit)
 	if UnitIsPlayer(unit) then
@@ -1279,8 +1302,9 @@ E.TagInfo = {
 	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
 	['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
-	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [namecolor][name])" },
+	['classcolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" },
 	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
+	['factioncolor'] = { category = 'Colors', description = "Colors names by Faction (Alliance, Horde, Neutral)" },
 	['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 	['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
 	--Guild
@@ -1442,6 +1466,7 @@ E.TagInfo = {
 	['status'] = { category = 'Status', description = "Displays zzz, dead, ghost, offline" },
 	['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
 	--Target
+	['classcolor:target'] = { category = 'Target', description = "[classcolor] but for the current target of the unit" },
 	['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 	['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
 	['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },

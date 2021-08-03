@@ -402,7 +402,7 @@ function S:CharacterFrame()
 	}
 
 	_G.CharacterModelFrameControlFrame:StripTextures()
-	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
+	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 
 	for _, button in pairs(controlButtons) do
 		S:HandleButton(_G[button])

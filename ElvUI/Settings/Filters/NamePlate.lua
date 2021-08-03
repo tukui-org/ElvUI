@@ -85,6 +85,11 @@ E.StyleFilterDefaults = {
 			healer = false,
 			damager = false
 		},
+		faction = {
+			Alliance = false,
+			Horde = false,
+			Neutral = false,
+		},
 		unitRole = {
 			tank = false,
 			healer = false,

@@ -219,9 +219,10 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 			for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 				spellHeader:SetVertexColor(1, 1, 1)
 			end
-			for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
-				HandleReward(spellIcon)
-			end
+		end
+
+		for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
+			HandleReward(spellIcon)
 		end
 
 		for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do

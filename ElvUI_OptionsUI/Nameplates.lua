@@ -30,11 +30,23 @@ local SetCVar = SetCVar
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
 local selectedNameplateFilter
 
-local positionValues = {
+local positionAuraValues = {
+	TOP = 'TOP',
+	LEFT = 'LEFT',
+	RIGHT = 'RIGHT',
+	BOTTOM = 'BOTTOM',
 	TOPLEFT = 'TOPLEFT',
 	TOPRIGHT = 'TOPRIGHT',
 	BOTTOMLEFT = 'BOTTOMLEFT',
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
+}
+
+local smartAuraPositionValues = {
+	DISABLED = L["DISABLE"],
+	BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
+	DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
+	FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
+	FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
 }
 
 local function GetAddOnStatus(index, locale, name)
@@ -1281,8 +1293,50 @@ function UpdateFilterGroup()
 						}
 					}
 				},
-				class = {
+				faction = {
 					order = 10,
+					type = 'group',
+					name = L["Unit Faction"],
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.faction[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.faction[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					disabled = function()
+						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					end,
+					args = {
+						types = {
+							name = '',
+							type = 'group',
+							inline = true,
+							order = 2,
+							args = {
+								Alliance = {
+									type = 'toggle',
+									order = 1,
+									name = L["Alliance"]
+								},
+								Horde = {
+									type = 'toggle',
+									order = 2,
+									name = L["Horde"]
+								},
+								Neutral = {
+									type = 'toggle',
+									order = 3,
+									name = L["Neutral"]
+								}
+							}
+						}
+					}
+				},
+				class = {
+					order = 11,
 					type = 'group',
 					name = L["CLASS"],
 					disabled = function()
@@ -1293,7 +1347,7 @@ function UpdateFilterGroup()
 					args = {}
 				},
 				talent = {
-					order = 11,
+					order = 12,
 					type = 'group',
 					name = L["TALENT"],
 					disabled = function()
@@ -1304,7 +1358,7 @@ function UpdateFilterGroup()
 					args = {}
 				},
 				role = {
-					order = 12,
+					order = 13,
 					type = 'group',
 					name = L["ROLE"],
 					disabled = function()
@@ -1376,7 +1430,7 @@ function UpdateFilterGroup()
 					}
 				},
 				classification = {
-					order = 13,
+					order = 14,
 					type = 'group',
 					name = L["Classification"],
 					get = function(info)
@@ -1438,7 +1492,7 @@ function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 14,
+					order = 15,
 					type = 'group',
 					name = L["Health Threshold"],
 					get = function(info)
@@ -1503,7 +1557,7 @@ function UpdateFilterGroup()
 					}
 				},
 				power = {
-					order = 15,
+					order = 16,
 					type = 'group',
 					name = L["Power Threshold"],
 					get = function(info)
@@ -1569,7 +1623,7 @@ function UpdateFilterGroup()
 				},
 				keyMod = {
 					name = L["Key Modifiers"],
-					order = 16,
+					order = 17,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1664,7 +1718,7 @@ function UpdateFilterGroup()
 					}
 				},
 				levels = {
-					order = 17,
+					order = 18,
 					type = 'group',
 					name = L["Level"],
 					get = function(info)
@@ -1747,7 +1801,7 @@ function UpdateFilterGroup()
 				},
 				cooldowns = {
 					name = L["Cooldowns"],
-					order = 18,
+					order = 19,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1809,7 +1863,7 @@ function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 19,
+					order = 20,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and
@@ -1935,7 +1989,7 @@ function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 20,
+					order = 21,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and
@@ -2053,7 +2107,7 @@ function UpdateFilterGroup()
 				},
 				bossModAuras = {
 					name = L["Boss Mod Auras"],
-					order = 21,
+					order = 22,
 					type = 'group',
 					get = function(info)
 						UpdateBossModAuras() -- this is so we can get the seen textures without full update
@@ -2179,7 +2233,7 @@ function UpdateFilterGroup()
 				},
 				threat = {
 					name = L["Threat"],
-					order = 22,
+					order = 23,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2263,7 +2317,7 @@ function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 23,
+					order = 24,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2334,7 +2388,7 @@ function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 24,
+					order = 25,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and
@@ -2460,7 +2514,7 @@ function UpdateFilterGroup()
 				},
 				creatureType = {
 					name = L["Creature Type"],
-					order = 25,
+					order = 26,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]]
@@ -2497,7 +2551,7 @@ function UpdateFilterGroup()
 					}
 				},
 				instanceType = {
-					order = 26,
+					order = 27,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info)
@@ -2570,7 +2624,7 @@ function UpdateFilterGroup()
 					}
 				},
 				location = {
-					order = 27,
+					order = 28,
 					type = 'group',
 					name = L["Location"],
 					get = function(info)
@@ -2844,7 +2898,7 @@ function UpdateFilterGroup()
 					}
 				},
 				raidTarget = {
-					order = 28,
+					order = 29,
 					type = 'group',
 					name = L["BINDING_HEADER_RAID_TARGET"],
 					get = function(info)
@@ -3869,7 +3923,39 @@ local function GetUnitSettings(unit, name)
 									REMAINING = L["Remaining"],
 									REMAININGMAX = L["Remaining / Max"]
 								}
-							}
+							},
+							timeXOffset = {
+								order = 6,
+								name = L["Time X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							timeYOffset = {
+								order = 7,
+								type = 'range',
+								name = L["Time Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							textXOffset = {
+								order = 8,
+								name = L["Text X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							textYOffset = {
+								order = 9,
+								type = 'range',
+								name = L["Text Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
 						}
 					},
 					iconGroup = {
@@ -3981,31 +4067,50 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = 'toggle'
 					},
-					desaturate = {
+					stackAuras = {
 						type = 'toggle',
 						order = 2,
+						name = L["Stack Auras"],
+						desc = L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."],
+					},
+					desaturate = {
+						type = 'toggle',
+						order = 3,
 						name = L["Desaturate Icon"],
 						desc = L["Set auras that are not from you to desaturad."],
 					},
-					numAuras = {
-						order = 3,
-						name = L["# Displayed Auras"],
-						--desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
-						type = 'range',
-						min = 1,
-						max = 8,
-						step = 1
+					keepSizeRatio = {
+						type = 'toggle',
+						order = 4,
+						name = L["Keep Size Ratio"]
 					},
 					size = {
-						order = 4,
-						name = L["Icon Size"],
+						order = 5,
+						name = function() return E.db.nameplates.units[unit].buffs.keepSizeRatio and L["Icon Size"] or L["Icon Width"] end,
 						type = 'range',
-						min = 6,
-						max = 60,
-						step = 1
+						min = 6, max = 60, step = 1
+					},
+					height = {
+						order = 6,
+						hidden = function() return E.db.nameplates.units[unit].buffs.keepSizeRatio end,
+						name = L["Icon Height"],
+						type = 'range',
+						min = 6, max = 60, step = 1
+					},
+					numAuras = {
+						order = 7,
+						name = L["Per Row"],
+						type = 'range',
+						min = 1, max = 20, step = 1
+					},
+					numRows = {
+						order = 8,
+						name = L["Num Rows"],
+						type = 'range',
+						min = 1, max = 5, step = 1
 					},
 					spacing = {
-						order = 5,
+						order = 9,
 						name = L["Spacing"],
 						type = 'range',
 						min = 0,
@@ -4013,7 +4118,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					xOffset = {
-						order = 6,
+						order = 10,
 						name = L["X-Offset"],
 						type = 'range',
 						min = -100,
@@ -4021,7 +4126,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					yOffset = {
-						order = 7,
+						order = 11,
 						type = 'range',
 						name = L["Y-Offset"],
 						min = -100,
@@ -4030,14 +4135,22 @@ local function GetUnitSettings(unit, name)
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 8,
+						order = 12,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
-						values = positionValues
+						values = positionAuraValues
 					},
+					attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 13, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function()
+						local position = E.db.nameplates.units[unit].smartAuraPosition
+						return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS'
+					end),
 					growthX = {
 						type = 'select',
-						order = 9,
+						order = 14,
+						disabled = function()
+							local point = E.db.nameplates.units[unit].buffs.anchorPoint
+							return point == 'LEFT' or point == 'RIGHT'
+						end,
 						name = L["Growth X-Direction"],
 						values = {
 							LEFT = L["Left"],
@@ -4046,7 +4159,11 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 10,
+						order = 15,
+						disabled = function()
+							local point = E.db.nameplates.units[unit].buffs.anchorPoint
+							return point == 'TOP' or point == 'BOTTOM'
+						end,
 						name = L["Growth Y-Direction"],
 						values = {
 							UP = L["Up"],
@@ -4055,7 +4172,7 @@ local function GetUnitSettings(unit, name)
 					},
 					stacks = {
 						type = 'group',
-						order = 11,
+						order = 20,
 						name = L["Stack Counter"],
 						inline = true,
 						get = function(info, value)
@@ -4069,12 +4186,12 @@ local function GetUnitSettings(unit, name)
 							countFont = {
 								type = 'select',
 								dialogControl = 'LSM30_Font',
-								order = 12,
+								order = 1,
 								name = L["Font"],
 								values = _G.AceGUIWidgetLSMlists.font
 							},
 							countFontSize = {
-								order = 13,
+								order = 2,
 								name = L["FONT_SIZE"],
 								type = 'range',
 								min = 4,
@@ -4082,14 +4199,30 @@ local function GetUnitSettings(unit, name)
 								step = 1 -- max 20 cause otherwise it looks weird
 							},
 							countFontOutline = {
-								order = 14,
+								order = 3,
 								name = L["Font Outline"],
 								desc = L["Set the font outline."],
 								type = 'select',
 								values = C.Values.FontFlags
 							},
+							countXOffset = {
+								order = 4,
+								name = L["X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							countYOffset = {
+								order = 5,
+								type = 'range',
+								name = L["Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
 							countPosition = {
-								order = 2,
+								order = 6,
 								name = L["Position"],
 								type = 'select',
 								values = {
@@ -4108,7 +4241,7 @@ local function GetUnitSettings(unit, name)
 					},
 					duration = {
 						type = 'group',
-						order = 12,
+						order = 25,
 						name = L["Duration"],
 						inline = true,
 						get = function(info)
@@ -4147,7 +4280,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = L["FILTERS"],
-						order = 13,
+						order = 30,
 						type = 'group',
 						inline = true,
 						get = function(info)
@@ -4296,31 +4429,50 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = 'toggle'
 					},
-					desaturate = {
+					stackAuras = {
 						type = 'toggle',
 						order = 2,
+						name = L["Stack Auras"],
+						desc = L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."],
+					},
+					desaturate = {
+						type = 'toggle',
+						order = 3,
 						name = L["Desaturate Icon"],
 						desc = L["Set auras that are not from you to desaturad."],
 					},
-					numAuras = {
-						order = 3,
-						name = L["# Displayed Auras"],
-						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
-						type = 'range',
-						min = 1,
-						max = 8,
-						step = 1
+					keepSizeRatio = {
+						type = 'toggle',
+						order = 4,
+						name = L["Keep Size Ratio"]
 					},
 					size = {
-						order = 4,
-						name = L["Icon Size"],
+						order = 5,
+						name = function() return E.db.nameplates.units[unit].debuffs.keepSizeRatio and L["Icon Size"] or L["Icon Width"] end,
 						type = 'range',
-						min = 6,
-						max = 60,
-						step = 1
+						min = 6, max = 60, step = 1
+					},
+					height = {
+						order = 6,
+						hidden = function() return E.db.nameplates.units[unit].debuffs.keepSizeRatio end,
+						name = L["Icon Height"],
+						type = 'range',
+						min = 6, max = 60, step = 1
+					},
+					numAuras = {
+						order = 7,
+						name = L["Per Row"],
+						type = 'range',
+						min = 1, max = 20, step = 1
+					},
+					numRows = {
+						order = 8,
+						name = L["Num Rows"],
+						type = 'range',
+						min = 1, max = 5, step = 1
 					},
 					spacing = {
-						order = 5,
+						order = 9,
 						name = L["Spacing"],
 						type = 'range',
 						min = 0,
@@ -4328,7 +4480,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					xOffset = {
-						order = 6,
+						order = 10,
 						name = L["X-Offset"],
 						type = 'range',
 						min = -100,
@@ -4336,7 +4488,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					yOffset = {
-						order = 7,
+						order = 11,
 						type = 'range',
 						name = L["Y-Offset"],
 						min = -100,
@@ -4345,14 +4497,22 @@ local function GetUnitSettings(unit, name)
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 8,
+						order = 12,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
-						values = positionValues
+						values = positionAuraValues
 					},
+					attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 13, { FRAME = L["Frame"], BUFFS = L["Buffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function()
+						local position = E.db.nameplates.units[unit].smartAuraPosition
+						return position == 'DEBUFFS_ON_BUFFS' or position == 'FLUID_DEBUFFS_ON_BUFFS'
+					end),
 					growthX = {
 						type = 'select',
-						order = 9,
+						order = 14,
+						disabled = function()
+							local point = E.db.nameplates.units[unit].debuffs.anchorPoint
+							return point == 'LEFT' or point == 'RIGHT'
+						end,
 						name = L["Growth X-Direction"],
 						values = {
 							LEFT = L["Left"],
@@ -4361,7 +4521,11 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 10,
+						order = 15,
+						disabled = function()
+							local point = E.db.nameplates.units[unit].debuffs.anchorPoint
+							return point == 'TOP' or point == 'BOTTOM'
+						end,
 						name = L["Growth Y-Direction"],
 						values = {
 							UP = L["Up"],
@@ -4370,7 +4534,7 @@ local function GetUnitSettings(unit, name)
 					},
 					stacks = {
 						type = 'group',
-						order = 11,
+						order = 20,
 						name = L["Stack Counter"],
 						inline = true,
 						get = function(info, value)
@@ -4384,12 +4548,12 @@ local function GetUnitSettings(unit, name)
 							countFont = {
 								type = 'select',
 								dialogControl = 'LSM30_Font',
-								order = 12,
+								order = 1,
 								name = L["Font"],
 								values = _G.AceGUIWidgetLSMlists.font
 							},
 							countFontSize = {
-								order = 13,
+								order = 2,
 								name = L["FONT_SIZE"],
 								type = 'range',
 								min = 4,
@@ -4397,14 +4561,30 @@ local function GetUnitSettings(unit, name)
 								step = 1 -- max 20 cause otherwise it looks weird
 							},
 							countFontOutline = {
-								order = 14,
+								order = 3,
 								name = L["Font Outline"],
 								desc = L["Set the font outline."],
 								type = 'select',
 								values = C.Values.FontFlags
 							},
+							countXOffset = {
+								order = 4,
+								name = L["X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							countYOffset = {
+								order = 5,
+								type = 'range',
+								name = L["Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
 							countPosition = {
-								order = 2,
+								order = 6,
 								name = L["Position"],
 								type = 'select',
 								values = {
@@ -4423,7 +4603,7 @@ local function GetUnitSettings(unit, name)
 					},
 					duration = {
 						type = 'group',
-						order = 12,
+						order = 25,
 						name = L["Duration"],
 						inline = true,
 						get = function(info)
@@ -4462,7 +4642,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = L["FILTERS"],
-						order = 13,
+						order = 30,
 						type = 'group',
 						get = function(info)
 							return E.db.nameplates.units[unit].debuffs[info[#info]]
@@ -5079,15 +5259,6 @@ local function GetUnitSettings(unit, name)
 				ACD:SelectGroup('ElvUI', 'nameplate', 'generalGroup', 'general', 'plateVisibility')
 			end
 		}
-		group.args.general.args.useStaticPosition = {
-			order = 101,
-			type = 'toggle',
-			name = L["Use Static Position"],
-			desc = L["When enabled the nameplate will stay visible in a locked position."],
-			disabled = function()
-				return not E.db.nameplates.units[unit].enable
-			end
-		}
 		group.args.general.args.nameOnly = {
 			type = 'toggle',
 			order = 102,
@@ -5098,6 +5269,16 @@ local function GetUnitSettings(unit, name)
 			order = 103,
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
+		}
+		group.args.general.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 104, smartAuraPositionValues)
+		group.args.general.args.useStaticPosition = {
+			order = 105,
+			type = 'toggle',
+			name = L["Use Static Position"],
+			desc = L["When enabled the nameplate will stay visible in a locked position."],
+			disabled = function()
+				return not E.db.nameplates.units[unit].enable
+			end
 		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 10,
@@ -5124,15 +5305,16 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
+		group.args.general.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 104, smartAuraPositionValues)
 		group.args.general.args.markHealers = {
 			type = 'toggle',
-			order = 103,
+			order = 105,
 			name = L["Healer Icon"],
 			desc = L["Display a healer icon over known healers inside battlegrounds or arenas."]
 		}
 		group.args.general.args.markTanks = {
 			type = 'toggle',
-			order = 103,
+			order = 106,
 			name = L["Tank Icon"],
 			desc = L["Display a tank icon over known tanks inside battlegrounds or arenas."]
 		}
@@ -5319,6 +5501,7 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
+		group.args.general.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 104, smartAuraPositionValues)
 	end
 
 	-- start groups at 30
@@ -5904,13 +6087,23 @@ E.Options.args.nameplate = {
 								return not E.db.nameplates.bossMods.enable or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core'))
 							end,
 							args = {
+								keepSizeRatio = {
+									type = 'toggle',
+									order = 1,
+									name = L["Keep Size Ratio"]
+								},
 								size = {
-									order = 4,
-									name = L["Icon Size"],
+									order = 2,
+									name = function() return E.db.nameplates.bossMods.keepSizeRatio and L["Icon Size"] or L["Icon Width"] end,
 									type = 'range',
-									min = 6,
-									max = 60,
-									step = 1
+									min = 6, max = 60, step = 1
+								},
+								height = {
+									order = 3,
+									hidden = function() return E.db.nameplates.bossMods.keepSizeRatio end,
+									name = L["Icon Height"],
+									type = 'range',
+									min = 6, max = 60, step = 1
 								},
 								spacing = {
 									order = 5,
@@ -5941,19 +6134,16 @@ E.Options.args.nameplate = {
 									order = 8,
 									name = L["Anchor Point"],
 									desc = L["What point to anchor to the frame you set to attach to."],
-									values = {
-										TOP = 'TOP',
-										BOTTOM = 'BOTTOM',
-										TOPLEFT = 'TOPLEFT',
-										BOTTOMLEFT = 'BOTTOMLEFT',
-										TOPRIGHT = 'TOPRIGHT',
-										BOTTOMRIGHT = 'BOTTOMRIGHT'
-									}
+									values = positionAuraValues
 								},
 								growthX = {
 									type = 'select',
-									order = 9,
+									order = 10,
 									name = L["Growth X-Direction"],
+									disabled = function()
+										local point = E.db.nameplates.bossMods.anchorPoint
+										return point == 'LEFT' or point == 'RIGHT'
+									end,
 									values = {
 										LEFT = L["Left"],
 										RIGHT = L["Right"]
@@ -5961,7 +6151,11 @@ E.Options.args.nameplate = {
 								},
 								growthY = {
 									type = 'select',
-									order = 10,
+									order = 11,
+									disabled = function()
+										local point = E.db.nameplates.bossMods.anchorPoint
+										return point == 'TOP' or point == 'BOTTOM'
+									end,
 									name = L["Growth Y-Direction"],
 									values = {
 										UP = L["Up"],

@@ -1480,7 +1480,7 @@ function UF:Initialize()
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
-	if E.private.unitframe.enable ~= true then return end
+	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
 	E.ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')

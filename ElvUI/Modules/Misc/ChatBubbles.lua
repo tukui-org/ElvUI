@@ -96,6 +96,7 @@ function M:SkinBubble(frame, holder)
 	else
 		local noBorder = option == 'backdrop_noborder'
 		holder:SetTemplate('Transparent', nil, true, noBorder)
+		holder.Center:SetDrawLayer('BACKGROUND')
 
 		if noBorder then
 			holder.Center:SetInside(holder, 4, 4)
@@ -116,9 +117,6 @@ function M:SkinBubble(frame, holder)
 		holder.Tail:Hide()
 
 		frame:HookScript('OnShow', M.UpdateBubbleBorder)
-		frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end
-		frame:SetClampedToScreen(false)
-
 		M.UpdateBubbleBorder(frame)
 	end
 

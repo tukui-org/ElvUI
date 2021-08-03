@@ -6,8 +6,8 @@ local ElvUF = E.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
+local select, strsplit, tostring = select, strsplit, tostring
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
-local format, select, strsplit, tostring = format, select, strsplit, tostring
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -29,6 +29,7 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
+local UnitIsBattlePet = UnitIsBattlePet
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitReaction = UnitReaction
@@ -218,10 +219,10 @@ function NP:Construct_RaisedELement(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
+	nameplate:SetScale(E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
@@ -246,18 +247,14 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test) and 1 or E.global.general.UIScale
+	local mult = (nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
 	end
 
-	if not nameplate then
-		return
-	end
-
-	local targetScale = format('%.2f', mult * scale)
-	nameplate:SetScale(targetScale)
+	if not nameplate then return end
+	nameplate:SetScale(scale * mult)
 
 	if targetPlate then
 		NP.targetPlate = nameplate
@@ -278,9 +275,9 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
+	nameplate:SetScale(E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
-	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
@@ -591,7 +588,7 @@ function NP:ConfigurePlates(init)
 end
 
 function NP:ConfigureAll(init)
-	if E.private.nameplates.enable ~= true then return end
+	if not E.private.nameplates.enable then return end
 
 	NP:StyleFilterConfigure() -- keep this at the top
 	NP:SetNamePlateClickThrough()
@@ -681,11 +678,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'UNIT_FACTION' then
 		if nameplate.widgetsOnly then return end
 
-		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
+		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		NP:UpdatePlateType(nameplate)
@@ -700,7 +698,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not unit then unit = nameplate.unit end
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
-		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
 		nameplate.widgetSet = UnitWidgetSet(unit)
 		nameplate.classification = UnitClassification(unit)
@@ -711,11 +708,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
-		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.isBattlePet = UnitIsBattlePet(unit)
+		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-		nameplate.unitGUID = UnitGUID(unit)
-		nameplate.unitName = UnitName(unit)
+		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
+		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
+		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
@@ -812,16 +812,15 @@ end
 function NP:SetNamePlateSizes()
 	if InCombatLockdown() then return end
 
-	local scale = E.global.general.UIScale
-	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * scale, NP.db.plateSize.personalHeight * scale)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * scale, NP.db.plateSize.enemyHeight * scale)
-	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
+	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
+	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiscale, NP.db.plateSize.enemyHeight * E.uiscale)
+	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
 end
 
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
-	if E.private.nameplates.enable ~= true then return end
+	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
 
 	NP.thinBorders = NP.db.thinBorders
@@ -862,7 +861,6 @@ function NP:Initialize()
 	_G.ElvNP_Player:ClearAllPoints()
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
@@ -886,7 +884,6 @@ function NP:Initialize()
 	_G.ElvNP_Test:ClearAllPoints()
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag('LeftButton', 'RightButton')
 	_G.ElvNP_Test:SetScript('OnDragStart', function() _G.ElvNP_Test:StartMoving() end)
@@ -897,7 +894,6 @@ function NP:Initialize()
 
 	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
 
-	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)

@@ -218,9 +218,9 @@ end
 
 function A:UpdateAura(button, index)
 	local unit = button:GetParent():GetAttribute('unit')
-	local name, texture, count, dtype, duration, expiration = UnitAura(unit, index, button.filter)
+	local name, texture, count, debuffType, duration, expiration = UnitAura(unit, index, button.filter)
+	if not debuffType then debuffType = 'none' end
 
-	local DebuffType = dtype or 'none'
 	if name then
 		local db = A.db[button.auraType]
 		if duration > 0 and expiration then
@@ -240,14 +240,14 @@ function A:UpdateAura(button, index)
 		button.statusBar:SetStatusBarColor(r, g, b)
 		button.texture:SetTexture(texture)
 
-		if button.debuffType ~= DebuffType then
-			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[DebuffType] or E.db.general.bordercolor
+		if button.debuffType ~= debuffType then
+			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType] or E.db.general.bordercolor
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end
 
-	button.debuffType = DebuffType
+	button.debuffType = debuffType
 end
 
 function A:UpdateTempEnchant(button, index)

@@ -25,21 +25,31 @@ end
 
 local chatFontHeights = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 function E:UpdateBlizzardFonts()
+	local db			= E.private.general
 	local NORMAL		= E.media.normFont
 	local NUMBER		= E.media.normFont
-	local COMBAT		= LSM:Fetch('font', E.private.general.dmgfont)
-	local NAMEFONT		= LSM:Fetch('font', E.private.general.namefont)
-	local BUBBLE		= LSM:Fetch('font', E.private.general.chatBubbleFont)
+	local COMBAT		= LSM:Fetch('font', db.dmgfont)
+	local NAMEFONT		= LSM:Fetch('font', db.namefont)
 
 	_G.CHAT_FONT_HEIGHTS = chatFontHeights
 
 	if (E.eyefinity or E.ultrawide) then COMBAT = E.Media.Fonts.Invisible end -- set an invisible font for xp, honor kill, etc
-	if E.private.general.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
-	if E.private.general.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
-	if E.private.general.replaceBlizzFonts then
-		_G.STANDARD_TEXT_FONT	= NORMAL
-		--_G.NAMEPLATE_FONT		= NAMEFONT
+	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
+	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
+	if db.replaceNameplateFont then
+		local PLATE = LSM:Fetch('font', db.nameplateFont)
+		local LARGE = LSM:Fetch('font', db.nameplateLargeFont)
 
+		SetFont(_G.SystemFont_NamePlate,			PLATE, db.nameplateFontSize, db.nameplateFontOutline)	-- 9
+		SetFont(_G.SystemFont_NamePlateFixed,		PLATE, db.nameplateFontSize, db.nameplateFontOutline)	-- 9
+		SetFont(_G.SystemFont_LargeNamePlate,		LARGE, db.nameplateLargeFontSize, db.nameplateLargeFontOutline)	-- 12
+		SetFont(_G.SystemFont_LargeNamePlateFixed,	LARGE, db.nameplateLargeFontSize, db.nameplateLargeFontOutline)	-- 12
+	end
+
+	if db.replaceBlizzFonts then
+		_G.STANDARD_TEXT_FONT	= NORMAL
+
+		local BUBBLE	= LSM:Fetch('font', db.chatBubbleFont)
 		local size		= E.db.general.fontSize
 		local enormous	= size * 1.9
 		local mega		= size * 1.7
@@ -49,11 +59,11 @@ function E:UpdateBlizzardFonts()
 		local small		= size * 0.9
 		local tiny		= size * 0.8
 
-		local s = not E.private.general.unifiedBlizzFonts
+		local s = not db.unifiedBlizzFonts
 		local mono = strmatch(E.db.general.fontStyle, 'MONOCHROME') and 'MONOCHROME' or ''
 		local thick, outline = mono..'THICKOUTLINE', mono..'OUTLINE'
 
-		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)	-- 13
+		SetFont(_G.ChatBubbleFont,						BUBBLE, db.chatBubbleFontSize, db.chatBubbleFontOutline)	-- 13
 		SetFont(_G.AchievementFont_Small,				NORMAL, s and small or size)	-- 10  Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)						-- Talent Title
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)						-- 32  Core abilities(title)
