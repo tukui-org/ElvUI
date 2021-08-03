@@ -1466,6 +1466,7 @@ E.TagInfo = {
 	['status'] = { category = 'Status', description = "Displays zzz, dead, ghost, offline" },
 	['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
 	--Target
+	['classcolor:target'] = { category = 'Target', description = "[classcolor] but for the current target of the unit" },
 	['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 	['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
 	['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
