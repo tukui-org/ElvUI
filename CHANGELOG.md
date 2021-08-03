@@ -13,11 +13,13 @@ Unitframe: Added GrowthX and GrowthY settings and also improved Smart Aura Posit
 *note: The GrowthX and GrowthY may need to be adjusted in your settings, if you are not using default*  
 
 **Updated:**  
+Added [classcolor:target] for class color of units [target]  
 Added Style Filter trigger for Faction and a [factioncolor] tag  
 Setup CVars will no longer reset Nameplate CVars if the Nameplate module is disabled  
 Bank and Bags Quality color setting wasnt working correctly  
 Reagent and Bank anchor was sometimes off  
 Unitframe Combat Icon offsets increased  
+*note: [classcolor] is the new [namecolor], however [namecolor] will continue to work*  
 
 **Skins:**  
 Trade, Communities, and Auction House skins updated  
