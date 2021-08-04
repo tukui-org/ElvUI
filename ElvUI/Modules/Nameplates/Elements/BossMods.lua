@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
+local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local wipe = wipe
@@ -34,6 +35,7 @@ function NP:BossMods_CreateIcon(element)
 
 	button.icon = icon
 	button.cd = cooldown
+	button.db = element.db
 
 	return button
 end
@@ -66,6 +68,8 @@ function NP:BossMods_PositionIcons(element)
 
 		button:Size(width, height)
 		button:Show()
+
+		AB:TrimIcon(button)
 
 		index = index + 1
 	end
@@ -273,8 +277,9 @@ function NP:Update_BossMods(plate)
 	element:SetPoint(inverse or 'TOPRIGHT', plate, anchor or 'TOPRIGHT', db.xOffset, db.yOffset)
 	element:SetSize(plate.width or 150, db.size)
 
-	element.initialAnchor = inverse
+	element.db = db
 	element.spacing = db.spacing
+	element.initialAnchor = inverse
 	element.growthY = UF.matchGrowthY[anchor] or db.growthY
 	element.growthX = UF.matchGrowthX[anchor] or db.growthX
 	element.size = db.size + (db.spacing or 0)
