@@ -7,8 +7,8 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
+local huge, strfind, gsub, format, strjoin = math.huge, strfind, gsub, format, strjoin
 local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
-local strfind, gsub, format, strjoin = strfind, gsub, format, strjoin
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
@@ -88,6 +88,27 @@ UF.instanceMapIDs = {
 	[2118]	= 40, -- Battle for Wintergrasp
 	[2245]	= 15, -- Deepwind Gorge
 	[3358]	= 15, -- Arathi Basin (NEW - Only Brawl?)
+}
+
+UF.SortAuraFuncs = {
+	TIME_REMAINING = function(a, b, dir)
+		local aTime = a.noTime and huge or a.expiration or -1
+		local bTime = b.noTime and huge or b.expiration or -1
+		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+	end,
+	DURATION = function(a, b, dir)
+		local aTime = a.noTime and huge or a.duration or -1
+		local bTime = b.noTime and huge or b.duration or -1
+		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+	end,
+	NAME = function(a, b, dir)
+		local aName, bName = a.name or '', b.name or ''
+		if dir == 'DESCENDING' then return aName < bName else return aName > bName end
+	end,
+	PLAYER = function(a, b, dir)
+		local aPlayer, bPlayer = a.isPlayer or false, b.isPlayer or false
+		if dir == 'DESCENDING' then return (aPlayer and not bPlayer) else return (not aPlayer and bPlayer) end
+	end,
 }
 
 UF.headerGroupBy = {
