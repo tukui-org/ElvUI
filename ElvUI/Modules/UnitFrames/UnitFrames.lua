@@ -8,7 +8,7 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin = math.huge, strfind, gsub, format, strjoin
-local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
+local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
