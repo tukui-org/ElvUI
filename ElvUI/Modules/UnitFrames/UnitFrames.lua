@@ -266,47 +266,48 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
-function UF:CreateRaisedText(raisedParent)
-	local text = raisedParent:CreateFontString(nil, 'OVERLAY')
+function UF:CreateRaisedText(raised)
+	local text = raised:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(text)
 
 	return text
 end
 
-local function raisedOnEnter(frame)
-	local tags = frame.__owner and frame.__owner.__mousetags
-	if tags then for fs in next, tags do fs:SetAlpha(1) end end
-end
+function UF:CreateRaisedElement(frame, bar)
+	local raised = CreateFrame('Frame', nil, frame)
+	raised:SetFrameLevel(frame:GetFrameLevel() + 100)
+	raised.__owner = frame
 
-local function raisedOnLeave(frame)
-	local tags = frame.__owner and frame.__owner.__mousetags
-	if tags then for fs in next, tags do fs:SetAlpha(0) end end
-end
-
-function UF:CreateRaisedElement(frame, bar, main)
-	local raisedParent = CreateFrame('Frame', nil, frame)
-	raisedParent:SetFrameLevel(frame:GetFrameLevel() + 100)
-	raisedParent.__owner = frame
-
-	if main then -- for mouseover tags
-		raisedParent.TextureParent = CreateFrame('Frame', nil, raisedParent)
-		raisedParent:SetScript('OnEnter', raisedOnEnter)
-		raisedParent:SetScript('OnLeave', raisedOnLeave)
-		raisedParent:SetMouseClickEnabled(false)
-		raisedParent:SetAllPoints()
-	elseif bar then
-		raisedParent:SetAllPoints()
+	if bar then
+		raised:SetAllPoints()
 	else
-		raisedParent.TextureParent = CreateFrame('Frame', nil, raisedParent)
+		raised.TextureParent = CreateFrame('Frame', nil, raised)
 	end
 
-	return raisedParent
+	return raised
+end
+
+function UF:SetAlpha_MouseTags(mousetags, alpha)
+	if not mousetags then return end
+	for fs in next, mousetags do
+		fs:SetAlpha(alpha)
+	end
+end
+
+function UF:UnitFrame_OnEnter(...)
+	UnitFrame_OnEnter(self, ...)
+	UF:SetAlpha_MouseTags(self.__mousetags, 1)
+end
+
+function UF:UnitFrame_OnLeave(...)
+	UnitFrame_OnLeave(self, ...)
+	UF:SetAlpha_MouseTags(self.__mousetags, 0)
 end
 
 function UF:Construct_UF(frame, unit)
-	frame:SetScript('OnEnter', UnitFrame_OnEnter)
-	frame:SetScript('OnLeave', UnitFrame_OnLeave)
-	frame.RaisedElementParent = UF:CreateRaisedElement(frame, nil, true)
+	frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+	frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+	frame.RaisedElementParent = UF:CreateRaisedElement(frame)
 
 	frame.SHADOW_SPACING = 3
 	frame.CLASSBAR_YOFFSET = 0 --placeholder
