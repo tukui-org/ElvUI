@@ -666,17 +666,8 @@ local function getTagFunc(tagstr)
 
 				local tag = tags[tagName]
 				if tag then
-					tagStart = tagStart - 2
-					tagEnd = tagEnd + 2
-
-					if tagStart ~= 0 and tagEnd ~= 0 then
-						tagFunc = makeTagFunc(tag, bracket:sub(2, tagStart), bracket:sub(tagEnd, -2))
-					elseif tagStart ~= 0 then
-						tagFunc = makeTagFunc(tag, bracket:sub(2, tagStart))
-					elseif tagEnd ~= 0 then
-						tagFunc = makeTagFunc(tag, nil, bracket:sub(tagEnd, -2))
-					end
-
+					tagStart, tagEnd = tagStart - 2, tagEnd + 2
+					tagFunc = makeTagFunc(tag, tagStart ~= 0 and bracket:sub(2, tagStart), tagEnd ~= 0 and bracket:sub(tagEnd, -2))
 					funcPool[bracket] = tagFunc
 				end
 			end
