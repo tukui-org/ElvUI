@@ -1,11 +1,16 @@
-### Version 12.39 [ ETA: 🍨 ]
+### Version 12.40 [ ETA: 🍨 ]
 
 **Development:**  
-Fixed AuraBars not sorting correctly.  
-Reduced default Chat Bubble Font size down to 10.  
-Fixed incompatibility issue with Clique and [mouseover] tags on unitframes.  
-Nameplate Boss Mod Auras will now be trimmed when not using Keep Size Ratio.  
 
+
+___
+### Version 12.39 [ August 5th 2021 ]
+
+**Changes:**  
+AuraBars not sorting correctly.  
+Reduced default Chat Bubble Font size down to 10.  
+Incompatibility issue with Clique and [mouseover] tags on Unitframes.  
+Nameplate Boss Mod Auras will now be trimmed when not using Keep Size Ratio.  
 
 ___
 ### Version 12.38 [ August 2nd 2021 ]
