@@ -2,10 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local UF = E:GetModule('UnitFrames')
 
 function UF:Construct_PvPText(frame)
-	local pvp = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(pvp)
-
-	return pvp
+	return UF:CreateRaisedText(frame.RaisedElementParent)
 end
 
 function UF:Configure_PVPText(frame)

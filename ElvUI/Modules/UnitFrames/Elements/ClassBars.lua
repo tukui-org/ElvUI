@@ -433,12 +433,8 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[additionalPower] = true
 
-	additionalPower.RaisedElementParent = CreateFrame('Frame', nil, additionalPower)
-	additionalPower.RaisedElementParent:SetFrameLevel(additionalPower:GetFrameLevel() + 100)
-	additionalPower.RaisedElementParent:SetAllPoints()
-
-	additionalPower.text = additionalPower.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(additionalPower.text)
+	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower, true)
+	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
 	additionalPower.bg:SetAllPoints(additionalPower)

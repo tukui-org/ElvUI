@@ -623,8 +623,6 @@ local function Update(self)
 end
 
 -- ElvUI block
-local onEnter = function(self) for fs in next, self.__mousetags do fs:SetAlpha(1) end end
-local onLeave = function(self) for fs in next, self.__mousetags do fs:SetAlpha(0) end end
 local onUpdateDelay = {}
 local escapeSequences = {
 	["||c"] = "|c",
@@ -848,11 +846,7 @@ local function Tag(self, fs, tagstr, ...)
 	if tagstr:find('%[mouseover%]') then
 		self.__mousetags[fs] = true
 		fs:SetAlpha(0)
-		if not self.__HookFunc then
-			self:HookScript('OnEnter', onEnter)
-			self:HookScript('OnLeave', onLeave)
-			self.__HookFunc = true;
-		end
+
 		tagstr = tagstr:gsub('%[mouseover%]', '')
 	else
 		for fontString in next, self.__mousetags do

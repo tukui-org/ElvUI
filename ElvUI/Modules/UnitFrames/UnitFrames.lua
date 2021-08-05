@@ -245,17 +245,50 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+function UF:CreateRaisedText(raisedParent)
+	local text = raisedParent:CreateFontString(nil, 'OVERLAY')
+	UF:Configure_FontString(text)
+
+	return text
+end
+
+local function raisedOnEnter(frame)
+	local tags = frame.__owner and frame.__owner.__mousetags
+	if tags then for fs in next, tags do fs:SetAlpha(1) end end
+end
+
+local function raisedOnLeave(frame)
+	local tags = frame.__owner and frame.__owner.__mousetags
+	if tags then for fs in next, tags do fs:SetAlpha(0) end end
+end
+
+function UF:CreateRaisedElement(frame, bar, main)
+	local raisedParent = CreateFrame('Frame', nil, frame)
+	raisedParent:SetFrameLevel(frame:GetFrameLevel() + 100)
+	raisedParent.__owner = frame
+
+	if main then -- for mouseover tags
+		raisedParent:SetScript('OnEnter', raisedOnEnter)
+		raisedParent:SetScript('OnLeave', raisedOnLeave)
+		raisedParent:SetMouseClickEnabled(false)
+		raisedParent:SetAllPoints()
+	elseif bar then
+		raisedParent:SetAllPoints()
+	else
+		raisedParent.TextureParent = CreateFrame('Frame', nil, raisedParent)
+	end
+
+	return raisedParent
+end
+
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
+	frame.RaisedElementParent = UF:CreateRaisedElement(frame, nil, true)
 
 	frame.SHADOW_SPACING = 3
 	frame.CLASSBAR_YOFFSET = 0 --placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
-
-	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
-	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	if not UF.groupunits[unit] then
 		UF['Construct_'..gsub(E:StringTitle(unit), 't(arget)', 'T%1')..'Frame'](UF, frame, unit)
