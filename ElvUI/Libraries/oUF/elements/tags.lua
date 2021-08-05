@@ -634,7 +634,9 @@ end
 local function makeTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
-		return str and format('%s%s%s', prefix or '', str, suffix or '') or ''
+		if str then
+			return format('%s%s%s', prefix or '', str, suffix or '')
+		end
 	end
 end
 -- end block
@@ -683,7 +685,7 @@ local function getTagFunc(tagstr)
 			_ENV._COLORS = parent.colors
 
 			for i, fnc in next, args do
-				tmp[i] = fnc(unit, realUnit, customArgs)
+				tmp[i] = fnc(unit, realUnit, customArgs) or ''
 			end
 
 			-- We do 1, numTags because tmp can hold several unneeded variables.
