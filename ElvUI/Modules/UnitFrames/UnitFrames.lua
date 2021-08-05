@@ -268,6 +268,7 @@ function UF:CreateRaisedElement(frame, bar, main)
 	raisedParent.__owner = frame
 
 	if main then -- for mouseover tags
+		raisedParent.TextureParent = CreateFrame('Frame', nil, raisedParent)
 		raisedParent:SetScript('OnEnter', raisedOnEnter)
 		raisedParent:SetScript('OnLeave', raisedOnLeave)
 		raisedParent:SetMouseClickEnabled(false)
