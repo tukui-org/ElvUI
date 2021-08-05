@@ -15,14 +15,11 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.BG:SetAllPoints()
 	altpower.BG:SetTexture(E.media.blankTex)
 
-	altpower.RaisedElementParent = CreateFrame('Frame', nil, altpower)
-	altpower.RaisedElementParent:SetFrameLevel(altpower:GetFrameLevel() + 100)
-	altpower.RaisedElementParent:SetAllPoints()
+	altpower.RaisedElementParent = UF:CreateRaisedElement(altpower, true)
 
-	altpower.value = altpower.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	altpower.value:Point('CENTER')
+	altpower.value = UF:CreateRaisedText(altpower.RaisedElementParent)
 	altpower.value:SetJustifyH('CENTER')
-	UF:Configure_FontString(altpower.value)
+	altpower.value:Point('CENTER')
 
 	altpower:SetScript('OnShow', UF.ToggleResourceBar)
 	altpower:SetScript('OnHide', UF.ToggleResourceBar)

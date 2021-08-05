@@ -5,17 +5,11 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
-local _G = _G
-local CreateFrame = CreateFrame
-
 function UF:Construct_RaidpetFrames()
-	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 
-	self.RaisedElementParent = CreateFrame('Frame', nil, self)
-	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
-	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
-
+	self.RaisedElementParent = UF:CreateRaisedElement(self)
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')

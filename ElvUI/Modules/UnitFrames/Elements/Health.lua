@@ -39,15 +39,8 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	end
 
 	if text then
-		health.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-		UF:Configure_FontString(health.value)
-
-		local x = -2
-		if textPos == 'LEFT' then
-			x = 2
-		end
-
-		health.value:Point(textPos, health, textPos, x, 0)
+		health.value = UF:CreateRaisedText(frame.RaisedElementParent)
+		health.value:Point(textPos, health, textPos, textPos == 'LEFT' and 2 or -2, 0)
 	end
 
 	health.colorTapping = true

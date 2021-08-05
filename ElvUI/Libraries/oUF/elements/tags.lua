@@ -623,15 +623,22 @@ local function Update(self)
 end
 
 -- ElvUI block
-local onEnter = function(self) for fs in next, self.__mousetags do fs:SetAlpha(1) end end
-local onLeave = function(self) for fs in next, self.__mousetags do fs:SetAlpha(0) end end
 local onUpdateDelay = {}
-local escapeSequences = {
-	["||c"] = "|c",
-	["||r"] = "|r",
-	["||T"] = "|T",
-	["||t"] = "|t",
-}
+local function escapeSequence(a) return format('|%s', a) end
+local function makeDeadTagFunc(bracket)
+	return function()
+		return format('|cFFffffff%s|r', bracket)
+	end
+end
+
+local function makeTagFunc(tag, prefix, suffix)
+	return function(unit, realUnit, customArgs)
+		local str = tag(unit, realUnit, customArgs)
+		if str then
+			return format('%s%s%s', prefix or '', str, suffix or '')
+		end
+	end
+end
 -- end block
 
 local tagPool = {}
@@ -647,87 +654,45 @@ end
 
 local function getTagFunc(tagstr)
 	local func = tagPool[tagstr]
-	if(not func) then
+	if not func then
 		local frmt, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
 		local args = {}
 
+		-- ElvUI changed
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = funcPool[bracket] or tags[bracket:sub(2, -2)]
-			if(not tagFunc) then
+			if not tagFunc then
 				local tagName, tagStart, tagEnd = getTagName(bracket)
 
 				local tag = tags[tagName]
-				if(tag) then
-					tagStart = tagStart - 2
-					tagEnd = tagEnd + 2
-
-					if(tagStart ~= 0 and tagEnd ~= 0) then
-						local prefix = bracket:sub(2, tagStart)
-						local suffix = bracket:sub(tagEnd, -2)
-
-						tagFunc = function(unit, realUnit)
-							local str = tag(unit, realUnit)
-							if(str) then
-								return prefix .. str .. suffix
-							end
-						end
-					elseif(tagStart ~= 0) then
-						local prefix = bracket:sub(2, tagStart)
-
-						tagFunc = function(unit, realUnit)
-							local str = tag(unit, realUnit)
-							if(str) then
-								return prefix .. str
-							end
-						end
-					elseif(tagEnd ~= 0) then
-						local suffix = bracket:sub(tagEnd, -2)
-
-						tagFunc = function(unit, realUnit)
-							local str = tag(unit, realUnit)
-							if(str) then
-								return str .. suffix
-							end
-						end
-					end
-
+				if tag then
+					tagStart, tagEnd = tagStart - 2, tagEnd + 2
+					tagFunc = makeTagFunc(tag, tagStart ~= 0 and bracket:sub(2, tagStart), tagEnd ~= 0 and bracket:sub(tagEnd, -2))
 					funcPool[bracket] = tagFunc
 				end
 			end
 
-			-- ElvUI changed
-			if(tagFunc) then
-				tinsert(args, tagFunc)
-			else
-				numTags = -1
-				func = function(self)
-					self:SetText(bracket)
-				end
-			end
-			-- end block
+			tinsert(args, tagFunc or makeDeadTagFunc(bracket))
 		end
 
-		-- ElvUI changed
-		if numTags ~= -1 then
-			func = function(self)
-				local parent = self.parent
-				local unit = parent.unit
+		func = function(self)
+			local parent = self.parent
+			local unit = parent.unit
+			local realUnit = self.overrideUnit and parent.realUnit
+			local customArgs = parent.__customargs[self]
 
-				local customArgs = parent.__customargs
-				local realUnit = self.overrideUnit and parent.realUnit
+			_ENV._FRAME = parent
+			_ENV._COLORS = parent.colors
 
-				_ENV._COLORS = parent.colors
-				_ENV._FRAME = parent
-				for i, fnc in next, args do
-					tmp[i] = fnc(unit, realUnit, customArgs[self]) or ''
-				end
-
-				-- We do 1, numTags because tmp can hold several unneeded variables.
-				self:SetFormattedText(frmt, unpack(tmp, 1, numTags))
+			for i, fnc in next, args do
+				tmp[i] = fnc(unit, realUnit, customArgs) or ''
 			end
 
-			tagPool[tagstr] = func
+			-- We do 1, numTags because tmp can hold several unneeded variables.
+			self:SetFormattedText(frmt, unpack(tmp, 1, numTags))
 		end
+
+		tagPool[tagstr] = func
 		-- end block
 	end
 
@@ -831,11 +796,7 @@ local function Tag(self, fs, tagstr, ...)
 		fs.__HookedAlphaFix = true
 	end
 
-	for escapeSequence, replacement in next, escapeSequences do
-		while tagstr:find(escapeSequence) do
-			tagstr = tagstr:gsub(escapeSequence, replacement)
-		end
-	end
+	tagstr = tagstr:gsub('||([TCRAtcra])', escapeSequence)
 
 	local customArgs = tagstr:match('{(.-)}%]')
 	if customArgs then
@@ -845,20 +806,18 @@ local function Tag(self, fs, tagstr, ...)
 		self.__customargs[fs] = nil
 	end
 
-	if tagstr:find('%[mouseover%]') then
-		self.__mousetags[fs] = true
-		fs:SetAlpha(0)
-		if not self.__HookFunc then
-			self:HookScript('OnEnter', onEnter)
-			self:HookScript('OnLeave', onLeave)
-			self.__HookFunc = true;
-		end
-		tagstr = tagstr:gsub('%[mouseover%]', '')
-	else
-		for fontString in next, self.__mousetags do
-			if fontString == fs then
-				self.__mousetags[fontString] = nil
-				fs:SetAlpha(1)
+	if not self.isNamePlate then
+		if tagstr:find('%[mouseover%]') then
+			self.__mousetags[fs] = true
+			fs:SetAlpha(0)
+
+			tagstr = tagstr:gsub('%[mouseover%]', '')
+		else
+			for fontString in next, self.__mousetags do
+				if fontString == fs then
+					self.__mousetags[fontString] = nil
+					fs:SetAlpha(1)
+				end
 			end
 		end
 	end

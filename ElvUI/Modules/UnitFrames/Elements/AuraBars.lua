@@ -86,6 +86,7 @@ function UF:Configure_AuraBars(frame)
 		auraBars.enemyAuraType = db.aurabar.enemyAuraType
 		auraBars.disableMouse = db.aurabar.clickThrough
 		auraBars.filterList = UF:ConvertFilters(auraBars, db.aurabar.priority)
+		auraBars.auraSort = UF.SortAuraFuncs[auraBars.db.sortMethod]
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db

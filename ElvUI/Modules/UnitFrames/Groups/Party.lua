@@ -10,12 +10,11 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 
 function UF:Construct_PartyFrames()
-	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 
-	self.RaisedElementParent = CreateFrame('Frame', nil, self)
-	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
-	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
+	self.RaisedElementParent = UF:CreateRaisedElement(self)
+
 	self.BORDER = UF.BORDER
 	self.SPACING = UF.SPACING
 	self.SHADOW_SPACING = 3

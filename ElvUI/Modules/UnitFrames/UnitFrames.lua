@@ -7,8 +7,8 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
-local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
-local strfind, gsub, format, strjoin = strfind, gsub, format, strjoin
+local huge, strfind, gsub, format, strjoin = math.huge, strfind, gsub, format, strjoin
+local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
@@ -88,6 +88,27 @@ UF.instanceMapIDs = {
 	[2118]	= 40, -- Battle for Wintergrasp
 	[2245]	= 15, -- Deepwind Gorge
 	[3358]	= 15, -- Arathi Basin (NEW - Only Brawl?)
+}
+
+UF.SortAuraFuncs = {
+	TIME_REMAINING = function(a, b, dir)
+		local aTime = a.noTime and huge or a.expiration or -1
+		local bTime = b.noTime and huge or b.expiration or -1
+		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+	end,
+	DURATION = function(a, b, dir)
+		local aTime = a.noTime and huge or a.duration or -1
+		local bTime = b.noTime and huge or b.duration or -1
+		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+	end,
+	NAME = function(a, b, dir)
+		local aName, bName = a.name or '', b.name or ''
+		if dir == 'DESCENDING' then return aName < bName else return aName > bName end
+	end,
+	PLAYER = function(a, b, dir)
+		local aPlayer, bPlayer = a.isPlayer or false, b.isPlayer or false
+		if dir == 'DESCENDING' then return (aPlayer and not bPlayer) else return (not aPlayer and bPlayer) end
+	end,
 }
 
 UF.headerGroupBy = {
@@ -245,17 +266,52 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+function UF:CreateRaisedText(raised)
+	local text = raised:CreateFontString(nil, 'OVERLAY')
+	UF:Configure_FontString(text)
+
+	return text
+end
+
+function UF:CreateRaisedElement(frame, bar)
+	local raised = CreateFrame('Frame', nil, frame)
+	raised:SetFrameLevel(frame:GetFrameLevel() + 100)
+	raised.__owner = frame
+
+	if bar then
+		raised:SetAllPoints()
+	else
+		raised.TextureParent = CreateFrame('Frame', nil, raised)
+	end
+
+	return raised
+end
+
+function UF:SetAlpha_MouseTags(mousetags, alpha)
+	if not mousetags then return end
+	for fs in next, mousetags do
+		fs:SetAlpha(alpha)
+	end
+end
+
+function UF:UnitFrame_OnEnter(...)
+	UnitFrame_OnEnter(self, ...)
+	UF:SetAlpha_MouseTags(self.__mousetags, 1)
+end
+
+function UF:UnitFrame_OnLeave(...)
+	UnitFrame_OnLeave(self, ...)
+	UF:SetAlpha_MouseTags(self.__mousetags, 0)
+end
+
 function UF:Construct_UF(frame, unit)
-	frame:SetScript('OnEnter', UnitFrame_OnEnter)
-	frame:SetScript('OnLeave', UnitFrame_OnLeave)
+	frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+	frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+	frame.RaisedElementParent = UF:CreateRaisedElement(frame)
 
 	frame.SHADOW_SPACING = 3
 	frame.CLASSBAR_YOFFSET = 0 --placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
-
-	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
-	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	if not UF.groupunits[unit] then
 		UF['Construct_'..gsub(E:StringTitle(unit), 't(arget)', 'T%1')..'Frame'](UF, frame, unit)

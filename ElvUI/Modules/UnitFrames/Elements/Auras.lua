@@ -5,7 +5,7 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local format, huge, strlower = format, math.huge, strlower
+local format, strlower = format, strlower
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, unpack, next, floor = sort, wipe, unpack, next, floor
 
@@ -47,27 +47,6 @@ UF.SmartPosition = {
 
 UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
-
-local SortAuraFuncs = {
-	TIME_REMAINING = function(a, b, dir)
-		local aTime = a.noTime and huge or a.expiration or -1
-		local bTime = b.noTime and huge or b.expiration or -1
-		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
-	end,
-	DURATION = function(a, b, dir)
-		local aTime = a.noTime and huge or a.duration or -1
-		local bTime = b.noTime and huge or b.duration or -1
-		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
-	end,
-	NAME = function(a, b, dir)
-		local aName, bName = a.name or '', b.name or ''
-		if dir == 'DESCENDING' then return aName < bName else return aName > bName end
-	end,
-	PLAYER = function(a, b, dir)
-		local aPlayer, bPlayer = a.isPlayer or false, b.isPlayer or false
-		if dir == 'DESCENDING' then return (aPlayer and not bPlayer) else return (not aPlayer and bPlayer) end
-	end,
-}
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
@@ -319,7 +298,7 @@ function UF:Configure_Auras(frame, which)
 	auras.db = settings
 
 	-- not onUpdateFrequency ignores targettarget
-	auras.auraSort = SortAuraFuncs[not frame.onUpdateFrequency and settings.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[not frame.onUpdateFrequency and settings.sortMethod]
 
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
