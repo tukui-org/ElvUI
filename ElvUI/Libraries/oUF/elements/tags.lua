@@ -632,8 +632,8 @@ local function makeDeadTagFunc(bracket)
 end
 
 local function makeTagFunc(tag, prefix, suffix)
-	return function(unit, realUnit)
-		local str = tag(unit, realUnit)
+	return function(unit, realUnit, customArgs)
+		local str = tag(unit, realUnit, customArgs)
 		if str then
 			return format('%s%s%s', prefix or '', str, suffix or '')
 		end
@@ -677,12 +677,15 @@ local function getTagFunc(tagstr)
 
 		func = function(self)
 			local parent = self.parent
+			local unit = parent.unit
+			local realUnit = self.overrideUnit and parent.realUnit
+			local customArgs = parent.__customargs[self]
 
 			_ENV._FRAME = parent
 			_ENV._COLORS = parent.colors
 
 			for i, fnc in next, args do
-				tmp[i] = fnc(parent.unit, self.overrideUnit and parent.realUnit, parent.__customargs[self]) or ''
+				tmp[i] = fnc(unit, realUnit, customArgs) or ''
 			end
 
 			-- We do 1, numTags because tmp can hold several unneeded variables.
