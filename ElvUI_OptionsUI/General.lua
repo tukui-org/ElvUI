@@ -141,14 +141,14 @@ General.args.cosmetic.args.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["H
 
 General.args.cosmetic.args.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 30, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.cosmetic.args.chatBubblesGroup.inline = true
-General.args.cosmetic.args.chatBubblesGroup.args.warning = ACH:Description('|cffFF0000This does not work in Instances or Garrisons!|r', 0, 'medium')
-General.args.cosmetic.args.chatBubblesGroup.args.spacer1 = ACH:Spacer(1, 'full')
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 2, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["DISABLE"] })
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleName = ACH:Toggle(L["Chat Bubble Names"], L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."], 3)
-General.args.cosmetic.args.chatBubblesGroup.args.spacer2 = ACH:Spacer(4, 'full')
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFont = ACH:SharedMediaFont(L["Font"], nil, 5, nil, nil, nil, function() return not E.private.general.replaceBlizzFonts end)
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontSize = ACH:Range(L["FONT_SIZE"], nil, 6, C.Values.FontSize, nil, nil, nil, function() return not E.private.general.replaceBlizzFonts end)
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontOutline = ACH:FontFlags(L["Font Outline"], nil, 7, nil, nil, nil, function() return not E.private.general.replaceBlizzFonts end)
+General.args.cosmetic.args.chatBubblesGroup.args.replaceBubbleFont = ACH:Toggle(L["Replace Font"], nil, 1)
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFont = ACH:SharedMediaFont(L["Font"], nil, 2, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontSize = ACH:Range(L["FONT_SIZE"], nil, 3, C.Values.FontSize, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
+General.args.cosmetic.args.chatBubblesGroup.args.spacer1 = ACH:Spacer(10, 'full')
+General.args.cosmetic.args.chatBubblesGroup.args.warning = ACH:Description('|cffFF0000This does not work in Instances or Garrisons!|r', 11, 'medium')
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 12, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["DISABLE"] })
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleName = ACH:Toggle(L["Chat Bubble Names"], L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."], 13)
 
 General.args.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 15, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarSettings() end)
 General.args.alternativePowerGroup.args.enable = ACH:Toggle(L["Enable"], L["Replace Blizzard's Alternative Power Bar"], 1, nil, nil, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)

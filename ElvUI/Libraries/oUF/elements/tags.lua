@@ -74,6 +74,7 @@ local unitExists = Private.unitExists
 
 -- ElvUI block
 local _G = _G
+local IsLoggedIn = IsLoggedIn
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local setfenv, getfenv = setfenv, getfenv
@@ -911,11 +912,11 @@ oUF.Tags = {
 	Vars = vars,
 	RefreshMethods = function(self, tag)
 		if(not tag) then return end
+		local loggedIn = IsLoggedIn()
 
 		funcPool['[' .. tag .. ']'] = nil
 
-		-- If a tag's name contains magic chars, there's a chance that
-		-- string.match will fail to find the match.
+		-- If a tag's name contains magic chars, there's a chance that string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr, func in next, tagPool do
 			if(strip(tagstr):match(tag)) then
@@ -925,7 +926,7 @@ oUF.Tags = {
 					if(fs.UpdateTag == func) then
 						fs.UpdateTag = getTagFunc(tagstr)
 
-						if(fs:IsVisible()) then
+						if(loggedIn and fs:IsVisible()) then
 							fs:UpdateTag()
 						end
 					end
