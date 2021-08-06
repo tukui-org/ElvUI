@@ -667,7 +667,12 @@ local function getTagFunc(tagstr)
 				local tag = tags[tagName]
 				if tag then
 					tagStart, tagEnd = tagStart - 2, tagEnd + 2
-					tagFunc = makeTagFunc(tag, tagStart ~= 0 and bracket:sub(2, tagStart), tagEnd ~= 0 and bracket:sub(tagEnd, -2))
+
+					local prefix, suffix = tagStart ~= 0 and bracket:sub(2, tagStart), tagEnd ~= 0 and bracket:sub(tagEnd, -2)
+					if prefix or suffix then
+						tagFunc = makeTagFunc(tag, prefix, suffix)
+					end
+
 					funcPool[bracket] = tagFunc
 				end
 			end
