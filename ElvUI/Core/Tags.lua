@@ -355,8 +355,7 @@ E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', functi
 end)
 
 for _, vars in ipairs({'',':min',':max'}) do
-	local textFormat = format('range%s', vars)
-	E:AddTag(textFormat, 0.1, function(unit)
+	E:AddTag(format('range%s', vars), 0.1, function(unit)
 		if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
 			local minRange, maxRange = RangeCheck:GetRange(unit, true)
 
@@ -376,8 +375,8 @@ for _, vars in ipairs({'',':min',':max'}) do
 end
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
-	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
-	E:AddTag(format('health:%s', tagTextFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+	local tagFormat = strlower(gsub(textFormat, '_', '-'))
+	E:AddTag(format('health:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		if status then
 			return status
@@ -386,11 +385,11 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('health:%s-nostatus', tagTextFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	E:AddTag(format('health:%s-nostatus', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
 	end)
 
-	E:AddTag(format('power:%s', tagTextFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+	E:AddTag(format('power:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerType = UnitPowerType(unit)
 		local min = UnitPower(unit, powerType)
 		if min ~= 0 then
@@ -398,7 +397,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('additionalmana:%s', tagTextFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		if barIndex and barIndex[UnitPowerType(unit)] then
 			local min = UnitPower(unit, POWERTYPE_MANA)
@@ -408,21 +407,21 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('mana:%s', tagTextFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+	E:AddTag(format('mana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local min = UnitPower(unit, POWERTYPE_MANA)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end)
 
-	E:AddTag(format('classpower:%s', tagTextFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
+	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 		local min, max = GetClassPower(E.myclass)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
 	end)
 
-	E:AddTag(format('altpower:%s', tagTextFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(u)
+	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(u)
 		local cur = UnitPower(u, POWERTYPE_ALTERNATE)
 		if cur > 0 then
 			local max = UnitPowerMax(u, POWERTYPE_ALTERNATE)
@@ -430,8 +429,8 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	if tagTextFormat ~= 'percent' then
-		E:AddTag(format('health:%s:shortvalue', tagTextFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+	if tagFormat ~= 'percent' then
+		E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 			if (status) then
 				return status
@@ -441,34 +440,34 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end)
 
-		E:AddTag(format('health:%s-nostatus:shortvalue', tagTextFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		E:AddTag(format('health:%s-nostatus:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 			local min, max = UnitHealth(unit), UnitHealthMax(unit)
 			return E:GetFormattedText(textFormat, min, max, nil, true)
 		end)
 
-		E:AddTag(format('power:%s:shortvalue', tagTextFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+		E:AddTag(format('power:%s:shortvalue', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 			local powerType = UnitPowerType(unit)
 			local min = UnitPower(unit, powerType)
-			if min ~= 0 and tagTextFormat ~= 'deficit' then
+			if min ~= 0 and tagFormat ~= 'deficit' then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType), nil, true)
 			end
 		end)
 
-		E:AddTag(format('mana:%s:shortvalue', tagTextFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+		E:AddTag(format('mana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 			return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 		end)
 
-		E:AddTag(format('additionalmana:%s:shortvalue', tagTextFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 			local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 			if barIndex and barIndex[UnitPowerType(unit)] then
 				local min = UnitPower(unit, POWERTYPE_MANA)
-				if min ~= 0 and tagTextFormat ~= 'deficit' then
+				if min ~= 0 and tagFormat ~= 'deficit' then
 					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 				end
 			end
 		end)
 
-		E:AddTag(format('classpower:%s:shortvalue', tagTextFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
+		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 			local min, max = GetClassPower(E.myclass)
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
@@ -850,8 +849,7 @@ f:SetScript('OnEvent', function()
 end)
 
 for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
-	local textFormat = format('nearbyplayers:%s', var)
-	E:AddTag(textFormat, 0.25, function(realUnit)
+	E:AddTag(format('nearbyplayers:%s', var), 0.25, function(realUnit)
 		local inRange = 0
 
 		if UnitIsConnected(realUnit) then
