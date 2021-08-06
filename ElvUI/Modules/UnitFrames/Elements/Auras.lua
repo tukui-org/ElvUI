@@ -304,7 +304,7 @@ function UF:Configure_Auras(frame, which)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 
 	if settings.sizeOverride and settings.sizeOverride > 0 then
-		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * auras.spacing))
+		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
 	else
 		local xOffset = 0
 		if frame.USE_POWERBAR_OFFSET then
@@ -320,10 +320,9 @@ function UF:Configure_Auras(frame, which)
 		auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
 	end
 
-	local rows = settings.numrows
 	auras.spacing = settings.spacing
-	auras.num = settings.perrow * rows
-	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or ((((frame.UNIT_WIDTH - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+	auras.num = settings.perrow * settings.numrows
+	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
 	auras.height = not settings.keepSizeRatio and settings.height
 	auras.forceShow = frame.forceShowAuras
 	auras.disableMouse = settings.clickThrough
