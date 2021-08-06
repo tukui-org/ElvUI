@@ -1163,30 +1163,32 @@ E:AddTag('ElvUI-Users', 20, function(unit)
 	end
 end)
 
-local classIcons = {
-	WARRIOR 	= '0:64:0:64',
-	MAGE 		= '64:128:0:64',
-	ROGUE 		= '128:196:0:64',
-	DRUID 		= '196:256:0:64',
-	HUNTER 		= '0:64:64:128',
-	SHAMAN 		= '64:128:64:128',
-	PRIEST 		= '128:196:64:128',
-	WARLOCK 	= '196:256:64:128',
-	PALADIN 	= '0:64:128:196',
-	DEATHKNIGHT = '64:128:128:196',
-	MONK 		= '128:192:128:196',
-	DEMONHUNTER = '192:256:128:196',
- }
+do
+	local classIcons = {
+		WARRIOR 	= '0:64:0:64',
+		MAGE 		= '64:128:0:64',
+		ROGUE 		= '128:196:0:64',
+		DRUID 		= '196:256:0:64',
+		HUNTER 		= '0:64:64:128',
+		SHAMAN 		= '64:128:64:128',
+		PRIEST 		= '128:196:64:128',
+		WARLOCK 	= '196:256:64:128',
+		PALADIN 	= '0:64:128:196',
+		DEATHKNIGHT = '64:128:128:196',
+		MONK 		= '128:192:128:196',
+		DEMONHUNTER = '192:256:128:196',
+	 }
 
-E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
-	if UnitIsPlayer(unit) then
-		local _, class = UnitClass(unit)
-		local icon = classIcons[class]
-		if icon then
-			return format('|TInterface\\WorldStateFrame\\ICONS-CLASSES:32:32:0:0:256:256:%s|t', icon)
+	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
+		if UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			local icon = classIcons[class]
+			if icon then
+				return format('|TInterface\\WorldStateFrame\\ICONS-CLASSES:32:32:0:0:256:256:%s|t', icon)
+			end
 		end
-	end
-end)
+	end)
+end
 
 E.TagInfo = {
 	--Altpower
