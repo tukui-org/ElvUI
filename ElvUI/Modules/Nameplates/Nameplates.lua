@@ -858,6 +858,7 @@ function NP:Initialize()
 
 	ElvUF:Spawn('player', 'ElvNP_Player', '')
 
+	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player:ClearAllPoints()
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
@@ -881,6 +882,7 @@ function NP:Initialize()
 
 	ElvUF:Spawn('player', 'ElvNP_Test')
 
+	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:ClearAllPoints()
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
