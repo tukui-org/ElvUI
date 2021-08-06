@@ -4,6 +4,13 @@
 
 
 ___
+### Version 12.41 [ August 6th 2021 ]
+
+**Changes:**  
+Chat Bubbles have their own Replace Font setting (General -> Cosmetic) and have their default font slightly increased to 12  
+Fixed another Plugin Tag issue from 12.39  
+
+___
 ### Version 12.40 [ August 5th 2021 ]
 
 **Oops:**  
