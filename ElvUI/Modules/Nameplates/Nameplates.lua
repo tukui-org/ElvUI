@@ -196,16 +196,16 @@ function NP:PLAYER_REGEN_ENABLED()
 	end
 end
 
-function NP:Style(frame, unit)
-	frame.isNamePlate = true
+function NP:Style(unit)
+	self.isNamePlate = true
 
-	if frame:GetName() == 'ElvNP_TargetClassPower' then
-		NP:StyleTargetPlate(frame, unit)
+	if self:GetName() == 'ElvNP_TargetClassPower' then
+		NP:StyleTargetPlate(self, unit)
 	else
-		NP:StylePlate(frame, unit)
+		NP:StylePlate(self, unit)
 	end
 
-	return frame
+	return self
 end
 
 function NP:Construct_RaisedELement(nameplate)
@@ -827,7 +827,7 @@ function NP:Initialize()
 	NP.SPACING = (NP.thinBorders or E.twoPixelsPlease) and 0 or 1
 	NP.BORDER = (NP.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
-	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
+	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
