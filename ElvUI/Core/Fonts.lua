@@ -36,6 +36,10 @@ function E:UpdateBlizzardFonts()
 	if (E.eyefinity or E.ultrawide) then COMBAT = E.Media.Fonts.Invisible end -- set an invisible font for xp, honor kill, etc
 	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
+	if db.replaceBubbleFont then
+		local BUBBLE = LSM:Fetch('font', db.chatBubbleFont)
+		SetFont(_G.ChatBubbleFont, BUBBLE, db.chatBubbleFontSize, db.chatBubbleFontOutline)	-- 13
+	end
 	if db.replaceNameplateFont then
 		local PLATE = LSM:Fetch('font', db.nameplateFont)
 		local LARGE = LSM:Fetch('font', db.nameplateLargeFont)
@@ -49,7 +53,6 @@ function E:UpdateBlizzardFonts()
 	if db.replaceBlizzFonts then
 		_G.STANDARD_TEXT_FONT	= NORMAL
 
-		local BUBBLE	= LSM:Fetch('font', db.chatBubbleFont)
 		local size		= E.db.general.fontSize
 		local enormous	= size * 1.9
 		local mega		= size * 1.7
@@ -63,7 +66,6 @@ function E:UpdateBlizzardFonts()
 		local mono = strmatch(E.db.general.fontStyle, 'MONOCHROME') and 'MONOCHROME' or ''
 		local thick, outline = mono..'THICKOUTLINE', mono..'OUTLINE'
 
-		SetFont(_G.ChatBubbleFont,						BUBBLE, db.chatBubbleFontSize, db.chatBubbleFontOutline)	-- 13
 		SetFont(_G.AchievementFont_Small,				NORMAL, s and small or size)	-- 10  Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)						-- Talent Title
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)						-- 32  Core abilities(title)
