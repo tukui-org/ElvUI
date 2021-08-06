@@ -110,7 +110,7 @@ end
 function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
 	local optionTable = { type = 'range', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if next(values) then
+	if values and type(values) == 'table' then
 		for key, value in pairs(values) do
 			optionTable[key] = value
 		end
