@@ -1,7 +1,13 @@
-### Version 12.40 [ ETA: 🍨 ]
+### Version 12.41 [ ETA: 🍨 ]
 
 **Development:**  
 
+
+___
+### Version 12.40 [ August 5th 2021 ]
+
+**Oops:**  
+Added API for Plugins (which all need to be updated) for recent Tags issue in 12.39  
 
 ___
 ### Version 12.39 [ August 5th 2021 ]
