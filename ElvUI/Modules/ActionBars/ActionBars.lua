@@ -1291,10 +1291,10 @@ function AB:SetButtonDesaturation(button, duration)
 	end
 
 	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
-		button.icon:SetDesaturated(true)
+		button:DesaturateHierarchy(1)
 		button.saturationLocked = true
 	else
-		button.icon:SetDesaturated(false)
+		button:DesaturateHierarchy(0)
 		button.saturationLocked = nil
 	end
 end
