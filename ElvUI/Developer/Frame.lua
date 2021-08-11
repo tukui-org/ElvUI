@@ -92,8 +92,8 @@ SlashCmdList.FRAMELIST = function(arg)
 	end
 end
 
-_G.SLASH_DEV1 = '/edev'
-SlashCmdList.DEV = function()
+_G.SLASH_EDEV1 = '/edev'
+SlashCmdList.EDEV = function()
 	if not IsAddOnLoaded('ElvUIDev') then
 		local _, _, _, loadable, reason = GetAddOnInfo('ElvUIDev')
 		if not loadable then
