@@ -1,60 +1,71 @@
-local _G = _G
-local print, tostring, select = print, tostring, select
-local strlower = strlower
+local print, tostring, select, strlower = print, tostring, select, strlower
+local _G, UNKNOWN = _G, UNKNOWN
 
-local GetAddOnEnableState = GetAddOnEnableState
-local UIParentLoadAddOn = UIParentLoadAddOn
+local LoadAddOn = LoadAddOn
+local GetAddOnInfo = GetAddOnInfo
+local SlashCmdList = SlashCmdList
 local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded
-local GetAddOnInfo = GetAddOnInfo
-local LoadAddOn = LoadAddOn
-local SlashCmdList = SlashCmdList
--- GLOBALS: ElvUIDev, ElvUI, FRAME, SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, SLASH_GETPOINT1, SLASH_DEV1
+local UIParentLoadAddOn = UIParentLoadAddOn
+-- GLOBALS: ElvUIDev, ElvUI
 
-local me = UnitName('player')
-local IsDebugDisabled = function()
-	if GetAddOnEnableState(me, 'Blizzard_DebugTools') == 0 then
-		print('Blizzard_DebugTools is disabled.')
-
-		return true
+local function GetName(frame, text)
+	if frame.GetDebugName then
+		return frame:GetDebugName()
+	elseif frame.GetName then
+		return frame:GetName()
+	else
+		return text or 'nil'
 	end
+end
+
+_G.SLASH_GETPOINT1 = '/getpoint'
+SlashCmdList.GETPOINT = function(arg)
+	local frame = (arg ~= '' and _G[arg]) or GetMouseFocus()
+	if not frame then return end
+
+	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
+	print(GetName(frame), point, GetName(relativeTo), relativePoint, xOffset, yOffset)
 end
 
 _G.SLASH_FRAME1 = '/frame'
 SlashCmdList.FRAME = function(arg)
-	if IsDebugDisabled() then return end
+	local frame = (arg ~= '' and _G[arg]) or GetMouseFocus()
+	if not frame then return end
 
-	if arg ~= '' then
-		arg = _G[arg]
-	else
-		arg = GetMouseFocus()
-	end
-
-	if arg ~= nil then
-		_G.FRAME = arg -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
-	end
+	_G.FRAME = frame -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
+	ElvUI[1]:Print('_G.FRAME set to: ', GetName(frame, UNKNOWN))
 
 	if not _G.TableAttributeDisplay then
 		UIParentLoadAddOn('Blizzard_DebugTools')
 	end
 
-	if _G.TableAttributeDisplay then
-		_G.TableAttributeDisplay:InspectTable(arg)
-		_G.TableAttributeDisplay:Show()
+	_G.TableAttributeDisplay:InspectTable(frame)
+	_G.TableAttributeDisplay:Show()
+end
+
+_G.SLASH_TEXLIST1 = '/texlist'
+SlashCmdList.TEXLIST = function(arg)
+	local frame = _G[arg] or _G.FRAME
+	if not frame then return end
+
+	for i = 1, frame:GetNumRegions() do
+		local region = select(i, frame:GetRegions())
+		if region.IsObjectType and region:IsObjectType('Texture') then
+			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
+		end
 	end
 end
 
 _G.SLASH_FRAMELIST1 = '/framelist'
-SlashCmdList.FRAMELIST = function(msg)
-	if IsDebugDisabled() then return end
-
+SlashCmdList.FRAMELIST = function(arg)
 	if not _G.FrameStackTooltip then
 		UIParentLoadAddOn('Blizzard_DebugTools')
 	end
 
-	local isPreviouslyShown = _G.FrameStackTooltip:IsShown()
-	if not isPreviouslyShown then
-		if msg == tostring(true) then
+	local wasShown = _G.FrameStackTooltip:IsShown()
+	if not wasShown then
+		if arg == tostring(true) then
 			_G.FrameStackTooltip_Toggle(true)
 		else
 			_G.FrameStackTooltip_Toggle()
@@ -75,43 +86,13 @@ SlashCmdList.FRAMELIST = function(msg)
 	end
 
 	ElvUI[1]:GetModule('Chat'):CopyChat(_G.ChatFrame1)
-	if not isPreviouslyShown then
+
+	if not wasShown then
 		_G.FrameStackTooltip_Toggle()
 	end
 end
 
-local function TextureList(frame)
-	frame = _G[frame] or FRAME
-
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
-		if region.IsObjectType and region:IsObjectType('Texture') then
-			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
-		end
-	end
-end
-
-_G.SLASH_TEXLIST1 = '/texlist'
-SlashCmdList.TEXLIST = TextureList
-
-local function GetPoint(frame)
-	if frame ~= '' then
-		frame = _G[frame]
-	else
-		frame = GetMouseFocus()
-	end
-
-	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
-	local frameName = frame.GetName and frame:GetName() or 'nil'
-	local relativeToName = relativeTo.GetName and relativeTo:GetName() or 'nil'
-
-	print(frameName, point, relativeToName, relativePoint, xOffset, yOffset)
-end
-
-_G.SLASH_GETPOINT1 = '/getpoint'
-SlashCmdList.GETPOINT = GetPoint
-
-_G.SLASH_DEV1 = '/dev'
+_G.SLASH_DEV1 = '/edev'
 SlashCmdList.DEV = function()
 	if not IsAddOnLoaded('ElvUIDev') then
 		local _, _, _, loadable, reason = GetAddOnInfo('ElvUIDev')

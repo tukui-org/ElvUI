@@ -505,8 +505,8 @@ end
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	self:CheckRole()
 
-	if initLogin or not ElvDB.LuaErrorDisabledAddOns then
-		ElvDB.LuaErrorDisabledAddOns = {}
+	if initLogin or not ElvDB.DisabledAddOns then
+		ElvDB.DisabledAddOns = {}
 	end
 
 	if initLogin or isReload then

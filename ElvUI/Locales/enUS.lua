@@ -389,14 +389,14 @@ Options:
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
+ */moveui|r  -  Toggle anchors to reposition various elements.
  */resetui|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
-  using */luaerror|r ^on|r within that session.
+ */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
+  using */edebug|r ^on|r within that session.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

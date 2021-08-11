@@ -394,14 +394,14 @@ Options:
 
 L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
  */ec|r or */elvui|r  -  Öffnet die *ElvUI Optionen|r.
- */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
  */kb|r  -  Aktiviert den Tastenbelegungsmodus.
+ */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
  */resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
  */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
  */hdt|r  -  Informationsleisten bearbeiten ohne die *Optionen|r öffnen zu müssen.
  */estatus|r  -  Wichtige Informationen für Supportfragen.
  */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
- */luaerror|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
-  PS: */luaerror|r ^off|r aktiviert wieder alle AddOns,
-  die durch */luaerror|r ^on|r während der Sitzung deaktiviert wurden.
+ */edebug|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
+  PS: */edebug|r ^off|r aktiviert wieder alle AddOns,
+  die durch */edebug|r ^on|r während der Sitzung deaktiviert wurden.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

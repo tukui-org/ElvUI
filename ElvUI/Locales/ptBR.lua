@@ -379,6 +379,7 @@ L["Zone Ability"] = "Habilidade da Zona"
 
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.
+
 Opções:
   CliqueEsquerdo - Alternar Quadro de Ajuste Fino.
   CliqueDireito - Abrir seção de configurações.
@@ -388,14 +389,14 @@ Opções:
 
 L["EHELP_COMMANDS"] = ([=[Aqui está a lista de todos os comandos importantes do *ElvUI|r:
  */ec|r or */elvui|r  - Alternar as *OptionsUI|r.
- */moveui|r  -  Alternar fixação para reposicionar vários elementos.
  */kb|r  -  Alternar o modo de atalhos de teclas.
+ */moveui|r  -  Alternar fixação para reposicionar vários elementos.
  */resetui|r  -  Reseta todas as frames para seus lugares originais.
  */bgstats|r  -  Alternar status de Campo de Batalha nos seus Textos Informativos.
  */hdt|r  -  Editar seus Textos Alternativos sem abrir o *OptionsUI|r.
  */estatus|r  -  Informações importantes para questões com o suporte.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Alternar o grid de pixels.
- */luaerror|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.
-  NOTA: */luaerror|r ^off|r irá reabilitar os addons desabilitados por ter
-  usar */luaerror|r ^on|r nesta sessão.
+ */edebug|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.
+  NOTA: */edebug|r ^off|r irá reabilitar os addons desabilitados por ter
+  usar */edebug|r ^on|r nesta sessão.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
-local lower, split, format, wipe, next, print = strlower, strsplit, format, wipe, next, print
+local lower, format, wipe, next, print = strlower, format, wipe, next, print
 
 local debugprofilestop = debugprofilestop
 local EnableAddOn = EnableAddOn
@@ -13,17 +13,10 @@ local GetAddOnInfo = GetAddOnInfo
 local GetNumAddOns = GetNumAddOns
 local GetCVarBool = GetCVarBool
 local DisableAddOn = DisableAddOn
-local GetGuildRosterInfo = GetGuildRosterInfo
-local GetGuildRosterLastOnline = GetGuildRosterLastOnline
-local GetNumGuildMembers = GetNumGuildMembers
-local GuildControlGetNumRanks = GuildControlGetNumRanks
-local GuildControlGetRankName = GuildControlGetRankName
-local GuildUninvite = GuildUninvite
 local ResetCPUUsage = ResetCPUUsage
-local SendChatMessage = SendChatMessage
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local ReloadUI = ReloadUI
 local SetCVar = SetCVar
-local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 -- GLOBALS: ElvUIGrid, ElvDB
 
 function E:Grid(msg)
@@ -45,7 +38,7 @@ function E:LuaError(msg)
 			local name = GetAddOnInfo(i)
 			if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and E:IsAddOnEnabled(name) then
 				DisableAddOn(name, E.myname)
-				ElvDB.LuaErrorDisabledAddOns[name] = i
+				ElvDB.DisabledAddOns[name] = i
 			end
 		end
 
@@ -57,16 +50,16 @@ function E:LuaError(msg)
 			E:Print('Lua errors off.')
 		end
 
-		if next(ElvDB.LuaErrorDisabledAddOns) then
-			for name in pairs(ElvDB.LuaErrorDisabledAddOns) do
+		if next(ElvDB.DisabledAddOns) then
+			for name in pairs(ElvDB.DisabledAddOns) do
 				EnableAddOn(name, E.myname)
 			end
 
-			wipe(ElvDB.LuaErrorDisabledAddOns)
+			wipe(ElvDB.DisabledAddOns)
 			ReloadUI()
 		end
 	else
-		E:Print('/luaerror on - /luaerror off')
+		E:Print('/edebug on - /edebug off')
 	end
 end
 
@@ -85,76 +78,33 @@ function E:DelayScriptCall(msg)
 	end
 end
 
--- make this a locale later?
-local MassKickMessage = 'Guild Cleanup Results: Removed all guild members below rank %s, that have a minimal level of %s, and have not been online for at least: %s days.'
-function E:MassGuildKick(msg)
-	local minLevel, minDays, minRankIndex = split(',', msg)
-	minRankIndex = tonumber(minRankIndex)
-	minLevel = tonumber(minLevel)
-	minDays = tonumber(minDays)
+do
+	local num = 0
+	local frame = CreateFrame('Frame')
+	frame:SetScript('OnUpdate', function() num = num + 1 end)
+	frame:Hide()
 
-	if not minLevel or not minDays then
-		E:Print('Usage: /cleanguild <minLevel>, <minDays>, [<minRankIndex>]')
-		return
-	end
-
-	if minDays > 31 then
-		E:Print('Maximum days value must be below 32.')
-		return
-	end
-
-	if not minRankIndex then
-		minRankIndex = GuildControlGetNumRanks() - 1
-	end
-
-	for i = 1, GetNumGuildMembers() do
-		local name, _, rankIndex, level, _, _, note, officerNote, connected, _, classFileName = GetGuildRosterInfo(i)
-		local minLevelx = minLevel
-
-		if classFileName == 'DEATHKNIGHT' then
-			minLevelx = minLevelx + 55
+	local toggle, timer, message = false, 0, 'Consumed %sms per frame. Each frame took %sms to render.'
+	function E:GetCPUImpact()
+		if not GetCVarBool('scriptProfile') then
+			E:Print('For `/cpuimpact` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.')
+			return
 		end
 
-		if not connected then
-			local years, months, days = GetGuildRosterLastOnline(i)
-			if days ~= nil and ((years > 0 or months > 0 or days >= minDays) and rankIndex >= minRankIndex)
-			and note ~= nil and officerNote ~= nil and (level <= minLevelx) then
-				GuildUninvite(name)
-			end
+		if not toggle then
+			ResetCPUUsage()
+			toggle, num, timer = true, 0, debugprofilestop()
+			self:Print('CPU Impact being calculated, type /cpuimpact to get results when you are ready.')
+			frame:Show()
+		else
+			frame:Hide()
+			local ms_passed = debugprofilestop() - timer
+			UpdateAddOnCPUUsage()
+
+			local per, passed = ((num == 0 and 0) or (GetAddOnCPUUsage('ElvUI') / num)), ((num == 0 and 0) or (ms_passed / num))
+			self:Print(format(message, per and per > 0 and format('%.3f', per) or 0, passed and passed > 0 and format('%.3f', passed) or 0))
+			toggle = false
 		end
-	end
-
-	SendChatMessage(format(MassKickMessage, GuildControlGetRankName(minRankIndex), minLevel, minDays), 'GUILD')
-end
-
-local num_frames = 0
-local function OnUpdate()
-	num_frames = num_frames + 1
-end
-local f = CreateFrame('Frame')
-f:Hide()
-f:SetScript('OnUpdate', OnUpdate)
-
-local toggleMode, debugTimer, cpuImpactMessage = false, 0, 'Consumed %sms per frame. Each frame took %sms to render.'
-function E:GetCPUImpact()
-	if not GetCVarBool('scriptProfile') then
-		E:Print('For `/cpuimpact` to work, you need to enable script profiling via: `/console scriptProfile 1` then reload. Disable after testing by setting it back to 0.')
-		return
-	end
-
-	if not toggleMode then
-		ResetCPUUsage()
-		toggleMode, num_frames, debugTimer = true, 0, debugprofilestop()
-		self:Print('CPU Impact being calculated, type /cpuimpact to get results when you are ready.')
-		f:Show()
-	else
-		f:Hide()
-		local ms_passed = debugprofilestop() - debugTimer
-		UpdateAddOnCPUUsage()
-
-		local per, passed = ((num_frames == 0 and 0) or (GetAddOnCPUUsage('ElvUI') / num_frames)), ((num_frames == 0 and 0) or (ms_passed / num_frames))
-		self:Print(format(cpuImpactMessage, per and per > 0 and format('%.3f', per) or 0, passed and passed > 0 and format('%.3f', passed) or 0))
-		toggleMode = false
 	end
 end
 
@@ -245,7 +195,7 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_PVPUI',
 	'Blizzard_PartyPoseUI',
 	'Blizzard_PetBattleUI',
-	'Blizzard_PlayerChoiceUI',
+	'Blizzard_PlayerChoice',
 	'Blizzard_QuestNavigation',
 	'Blizzard_RaidUI',
 	'Blizzard_RuneforgeUI',
@@ -265,6 +215,7 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_TrainerUI',
 	'Blizzard_Tutorial',
 	'Blizzard_TutorialTemplates',
+	'Blizzard_UIFrameManager',
 	'Blizzard_UIWidgets',
 	'Blizzard_VoidStorageUI',
 	'Blizzard_WarfrontsPartyPoseUI',
@@ -312,36 +263,45 @@ function E:DBConvertProfile()
 end
 
 function E:LoadCommands()
+	if E.private.actionbar.enable then
+		self:RegisterChatCommand('kb', AB.ActivateBindMode)
+	end
+
 	self:RegisterChatCommand('in', 'DelayScriptCall')
 	self:RegisterChatCommand('ec', 'ToggleOptionsUI')
 	self:RegisterChatCommand('elvui', 'ToggleOptionsUI')
-	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
-	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
-	-- cpuusage args: module, showall, delay, minCalls
-	--- Example1: /cpuusage all
-	--- Example2: /cpuusage Bags true
-	--- Example3: /cpuusage UnitFrames nil 50 25
-	---- Note: showall, delay, and minCalls will default if not set
-	---- arg1 can be 'all' this will scan all registered modules!
 
 	self:RegisterChatCommand('hdt', DT.HyperDT)
 	self:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
 	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
 	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')
 	self:RegisterChatCommand('harlemshake', 'HarlemShakeToggle')
-	self:RegisterChatCommand('luaerror', 'LuaError')
-	self:RegisterChatCommand('egrid', 'Grid')
+	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
+
 	self:RegisterChatCommand('moveui', 'ToggleMoveMode')
 	self:RegisterChatCommand('resetui', 'ResetUI')
-	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
-	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
-	self:RegisterChatCommand('estatus', 'ShowStatusReport')
+	self:RegisterChatCommand('luaerror', 'LuaError')
+
+	self:RegisterChatCommand('emove', 'ToggleMoveMode')
+	self:RegisterChatCommand('ereset', 'ResetUI')
+	self:RegisterChatCommand('edebug', 'LuaError')
+
 	self:RegisterChatCommand('ehelp', 'EHelp')
 	self:RegisterChatCommand('ecommands', 'EHelp')
+	self:RegisterChatCommand('estatus', 'ShowStatusReport')
 	self:RegisterChatCommand('efixdb', 'DBConvertProfile')
+	self:RegisterChatCommand('egrid', 'Grid')
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
-	if E.private.actionbar.enable then
-		self:RegisterChatCommand('kb', AB.ActivateBindMode)
-	end
+	self:RegisterChatCommand('eimpact', 'GetCPUImpact')
+	self:RegisterChatCommand('eusage', 'GetTopCPUFunc')
+
+	--[[
+		eusage args: module, showall [optional], delay [optional], minCalls [optional]
+		- Note: arg1 can be 'all' this will scan all registered modules!
+
+		example 1: /eusage all
+		example 2: /eusage Bags true
+		example 3: /eusage UnitFrames nil 50 25
+	]]
 end

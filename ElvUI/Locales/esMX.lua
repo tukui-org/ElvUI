@@ -379,6 +379,7 @@ L["Zone Ability"] = "Habilidad de Zona"
 
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz clic en Bloquear cuando termines.
+
 Opciones:
    Clic Izquierdo - Mostrar/Ocultar empujar marco.
    Clic Derecho - Abrir la sección de configuración.
@@ -388,14 +389,14 @@ Opciones:
 
 L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
  */ec|r or */elvui|r  -  Mostrar/Ocultar el *OptionsUI|r.
- */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
  */kb|r  -  Mostrar/Ocultar el modo de teclas.
+ */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
  */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
  */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
  */hdt|r  -  Edita tus Textos de Datos sin abrir la *OptionsUI|r.
  */estatus|r  -  Información importante para preguntas de soporte.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Mostrar/Ocultar una cuadrícula de líneas.
- */luaerror|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
-  NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
-  mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
+ */edebug|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
+  NOTA: */edebug|r ^off|r volverá a habilitar los complementos deshabilitado
+  mediante el uso de */edebug|r ^on|r dentro de esa sesión.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
