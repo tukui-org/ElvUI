@@ -1,5 +1,5 @@
-local print, tostring, select, strlower = print, tostring, select, strlower
-local _G, UNKNOWN, type, next = _G, UNKNOWN, type, next
+local print, select, strmatch, strlower = print, select, strmatch, strlower
+local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
 
 local LoadAddOn = LoadAddOn
 local GetAddOnInfo = GetAddOnInfo
@@ -19,6 +19,10 @@ local function GetName(frame, text)
 	end
 end
 
+local function IsTrue(value)
+	return value == 'true' or value == '1'
+end
+
 local function AddCommand(name, keys, func)
 	if not SlashCmdList[name] then
 		SlashCmdList[name] = func
@@ -33,14 +37,14 @@ local function AddCommand(name, keys, func)
 	end
 end
 
--- DeveloperConsole (without starting with `-console`)
+-- spawn console without starting with `-console`
 AddCommand('DEVCON', '/devcon', function()
 	if _G.DeveloperConsole then
 		_G.DeveloperConsole:Toggle()
 	end
 end)
 
--- ReloadUI: /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
+-- /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
 AddCommand('RELOADUI', {'/rl','/reloadui'}, _G.ReloadUI)
 
 AddCommand('GETPOINT', '/getpoint', function(arg)
@@ -52,18 +56,21 @@ AddCommand('GETPOINT', '/getpoint', function(arg)
 end)
 
 AddCommand('FRAME', '/frame', function(arg)
-	local frame = (arg ~= '' and _G[arg]) or GetMouseFocus()
+	local frameName, tinspect = strmatch(arg, '^(%S+)%s*(%S*)$')
+	local frame = (frameName ~= '' and _G[frameName]) or GetMouseFocus()
 	if not frame then return end
 
 	_G.FRAME = frame -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
 	ElvUI[1]:Print('_G.FRAME set to: ', GetName(frame, UNKNOWN))
 
-	if not _G.TableAttributeDisplay then
-		UIParentLoadAddOn('Blizzard_DebugTools')
-	end
+	if IsTrue(tinspect) then
+		if not _G.TableAttributeDisplay then
+			UIParentLoadAddOn('Blizzard_DebugTools')
+		end
 
-	_G.TableAttributeDisplay:InspectTable(frame)
-	_G.TableAttributeDisplay:Show()
+		_G.TableAttributeDisplay:InspectTable(frame)
+		_G.TableAttributeDisplay:Show()
+	end
 end)
 
 AddCommand('TEXLIST', '/texlist', function(arg)
@@ -83,13 +90,11 @@ AddCommand('FRAMELIST', '/framelist', function(arg)
 		UIParentLoadAddOn('Blizzard_DebugTools')
 	end
 
+	local copyChat, showHidden, showRegions, showAnchors = strmatch(arg, '^(%S+)%s*(%S*)%s*(%S*)%s*(%S*)$')
+
 	local wasShown = _G.FrameStackTooltip:IsShown()
 	if not wasShown then
-		if arg == tostring(true) then
-			_G.FrameStackTooltip_Toggle(true)
-		else
-			_G.FrameStackTooltip_Toggle()
-		end
+		_G.FrameStackTooltip_Toggle(IsTrue(showHidden), IsTrue(showRegions), IsTrue(showAnchors))
 	end
 
 	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -101,11 +106,13 @@ AddCommand('FRAMELIST', '/framelist', function(arg)
 	end
 	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
-	if _G.CopyChatFrame:IsShown() then
-		_G.CopyChatFrame:Hide()
-	end
+	if _G.CopyChatFrame and IsTrue(copyChat) then
+		if _G.CopyChatFrame:IsShown() then
+			_G.CopyChatFrame:Hide()
+		end
 
-	ElvUI[1]:GetModule('Chat'):CopyChat(_G.ChatFrame1)
+		ElvUI[1]:GetModule('Chat'):CopyChat(_G.ChatFrame1)
+	end
 
 	if not wasShown then
 		_G.FrameStackTooltip_Toggle()
@@ -125,15 +132,13 @@ AddCommand('EDEV', '/edev', function()
 				if loaded then
 					ElvUIDev:ToggleFrame()
 				else
-					print('ElvUIDev addon cannot be loaded: %s.', strlower(rsn))
+					print(format('ElvUIDev addon cannot be loaded: %s.', strlower(rsn)))
 				end
 			end
 		end
+	elseif not ElvUIDev.frame:IsShown() then
+		ElvUIDev.frame:Show()
 	else
-		if not ElvUIDev.frame:IsShown() then
-			ElvUIDev.frame:Show()
-		else
-			ElvUIDev.frame:Hide()
-		end
+		ElvUIDev.frame:Hide()
 	end
 end)
