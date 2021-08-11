@@ -583,6 +583,13 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 		end
 	end
 
+	function CH:ChatEdit_UntaintRestore()
+		for cmd, name in next, safe do
+			list[cmd] = name
+			safe[cmd] = nil
+		end
+	end
+
 	function CH:ChatEdit_UntaintPlease(event)
 		if event == 'PLAYER_REGEN_DISABLED' then
 			if _G.ChatEdit_GetActiveWindow() then
@@ -590,13 +597,6 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 			end
 		elseif InCombatLockdown() then
 			CH:ChatEdit_UntaintTabList()
-		end
-	end
-
-	function CH:ChatEdit_UntaintRestore()
-		for cmd, name in next, safe do
-			list[cmd] = name
-			safe[cmd] = nil
 		end
 	end
 end
