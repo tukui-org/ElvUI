@@ -326,7 +326,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Essa configuração causou um conflito com o ponto de fixação, onde '%s' iria ser anexado com ele mesmo. Por favor cheque seus pontos de fixações. Configuração '%s' a ser anexada a '%s'."
 L["This will change the layout of your unitframes and actionbars."] = "Isso irá mudar o leiaute dos seus Quadro de Unidades e Barras de Ações"
 L["To list all available ElvUI commands, type in chat /ehelp"] = true
-L["To quickly move around certain elements of the UI, type /moveui"] = true
+L["To quickly move around certain elements of the UI, type /emove"] = true
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = true
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Bat-papo"
@@ -390,8 +390,8 @@ Opções:
 L["EHELP_COMMANDS"] = ([=[Aqui está a lista de todos os comandos importantes do *ElvUI|r:
  */ec|r or */elvui|r  - Alternar as *OptionsUI|r.
  */kb|r  -  Alternar o modo de atalhos de teclas.
- */moveui|r  -  Alternar fixação para reposicionar vários elementos.
- */resetui|r  -  Reseta todas as frames para seus lugares originais.
+ */emove|r  -  Alternar fixação para reposicionar vários elementos.
+ */ereset|r  -  Reseta todas as frames para seus lugares originais.
  */bgstats|r  -  Alternar status de Campo de Batalha nos seus Textos Informativos.
  */hdt|r  -  Editar seus Textos Alternativos sem abrir o *OptionsUI|r.
  */estatus|r  -  Informações importantes para questões com o suporte.

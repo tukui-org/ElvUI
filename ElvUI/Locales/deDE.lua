@@ -331,7 +331,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Diese Einstellungen haben einen Konflikt mit einem Ankerpunkt, wo '%s' an sich selbst angehaftet sein soll. Bitte kontrolliere deine Ankerpunkte. Einstellung '%s' angehaftet an '%s'."
 L["This will change the layout of your unitframes and actionbars."] = "Dies wird das Layout der Einheitenfenster und Aktionsleisten ändern."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Für eine liste aller verfügbaren ElvUI befehle, tippe /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Um schnell verschiedene Interface Elemente zu verschieben, tippe /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Um schnell verschiedene Interface Elemente zu verschieben, tippe /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "Um Chat Farben, Chat Channels und die Chat Schriftgröße zu ändern, rechts-klicke den Chat Tab Namen."
 L["Toggle Bags"] = "Taschen umschalten"
 L["Toggle Chat Frame"] = "Chatfenster an-/ausschalten"
@@ -395,8 +395,8 @@ Options:
 L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
  */ec|r or */elvui|r  -  Öffnet die *ElvUI Optionen|r.
  */kb|r  -  Aktiviert den Tastenbelegungsmodus.
- */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
- */resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
+ */emove|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
+ */ereset|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
  */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
  */hdt|r  -  Informationsleisten bearbeiten ohne die *Optionen|r öffnen zu müssen.
  */estatus|r  -  Wichtige Informationen für Supportfragen.

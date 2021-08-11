@@ -326,7 +326,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Cette configuration a causé un conflit avec le point d'ancrage, où '%s' devrait y être rattaché. Veuillez vérifier les points d'ancrages. La configuration de '%s' sera attachée à '%s'."
 L["This will change the layout of your unitframes and actionbars."] = "Ceci changera la disposition des cadres d'unités et des barres d'actions."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Pour lister toutes les commandes ElvUI disponibles, tapez la commande /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Pour vous déplacer rapidement dans certains éléments de l'interface utilisateur, tapez la commande /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Pour vous déplacer rapidement dans certains éléments de l'interface utilisateur, tapez la commande /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "Pour configurer les couleurs du tchat, les canaux de chat et la taille de la police du tchat, cliquez avec le bouton droit sur le nom de l'onglet de tchat."
 L["Toggle Bags"] = "Afficher les sacs"
 L["Toggle Chat Frame"] = "Activer la fenêtre de discussion"
@@ -390,8 +390,8 @@ Options:
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
  */kb|r  -  Toggle the keybind mode.
- */moveui|r  -  Toggle anchors to reposition various elements.
- */resetui|r  -  Reset all frames to their original positions.
+ */emove|r  -  Toggle anchors to reposition various elements.
+ */ereset|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.

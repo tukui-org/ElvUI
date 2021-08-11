@@ -326,7 +326,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Esta opción causó un punto de fijación en conflicto, donde '%s' estaría adjunto a sí mismo. Por favor comprueba tus puntos de fijación. Opción '%s' a ser fijado a '%s'"
 L["This will change the layout of your unitframes and actionbars."] = "Ésto cambiará el diseño de los marcos de unidades y barras de acción."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Para listar todos los comandos disponibles de ElvUI, escribe en el chat /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Para desplazarse rápidamente por determinados elementos de la interfaz de usuario, escriba /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Para desplazarse rápidamente por determinados elementos de la interfaz de usuario, escriba /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "Para configurar los colores del chat, los canales del chat y el tamaño de la fuente del chat, haz clic con el botón derecho del ratón en el nombre de la pestaña del chat."
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Marco de Chat"
@@ -390,8 +390,8 @@ Opciones:
 L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
  */ec|r or */elvui|r  -  Mostrar/Ocultar el *OptionsUI|r.
  */kb|r  -  Mostrar/Ocultar el modo de teclas.
- */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
- */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
+ */emove|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
+ */ereset|r  -  Restablecer todos los marcos a sus posiciones originales.
  */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
  */hdt|r  -  Edita tus Textos de Datos sin abrir la *OptionsUI|r.
  */estatus|r  -  Información importante para preguntas de soporte.

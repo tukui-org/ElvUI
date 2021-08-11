@@ -326,7 +326,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Эта опция вызвала конфликт точек фиксации, в результате которого \"%s\" крепится к самому себе. Пожалуйста, проверьте настройки точек фиксации. \"%s\" будет прикреплено к \"%s\"."
 L["This will change the layout of your unitframes and actionbars."] = "Это изменит расположение ваших рамок юнитов, рейда и панелей команд."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Для получения списка команд ElvUI введите /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Чтобы быстро передвинуть элементы интерфейса введите /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Чтобы быстро передвинуть элементы интерфейса введите /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "ПКМ на вкладке чата позволит настроить цвета, каналы и размер шрифта."
 L["Toggle Bags"] = "Показать сумки"
 L["Toggle Chat Frame"] = "Показать/скрыть чат"
@@ -390,8 +390,8 @@ Options:
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
  */kb|r  -  Toggle the keybind mode.
- */moveui|r  -  Toggle anchors to reposition various elements.
- */resetui|r  -  Reset all frames to their original positions.
+ */emove|r  -  Toggle anchors to reposition various elements.
+ */ereset|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
