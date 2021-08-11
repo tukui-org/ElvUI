@@ -27,9 +27,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 		end
 	end)
 
-	power.RaisedElementParent = CreateFrame('Frame', nil, power)
-	power.RaisedElementParent:SetFrameLevel(power:GetFrameLevel() + 100)
-	power.RaisedElementParent:SetAllPoints()
+	power.RaisedElementParent = UF:CreateRaisedElement(power, true)
 
 	power.PostUpdate = self.PostUpdatePower
 	power.PostUpdateColor = self.PostUpdatePowerColor
@@ -42,15 +40,8 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	end
 
 	if text then
-		power.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-		UF:Configure_FontString(power.value)
-
-		local x = -2
-		if textPos == 'LEFT' then
-			x = 2
-		end
-
-		power.value:Point(textPos, frame.Health, textPos, x, 0)
+		power.value = UF:CreateRaisedText(frame.RaisedElementParent)
+		power.value:Point(textPos, frame.Health, textPos, textPos == 'LEFT' and 2 or -2, 0)
 	end
 
 	power.useAtlas = false
