@@ -5,6 +5,7 @@ local Skins = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local issecurevariable = issecurevariable
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
 local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select, pcall, next, tonumber, type
@@ -566,6 +567,28 @@ do
 
 		if repeatedText then
 			repeatedText = nil
+		end
+	end
+end
+
+do -- this fixes a taint when you push tab on editbox which blocks secure commands to the chat
+	local safe, list = {}, _G.hash_ChatTypeInfoList
+
+	function CH:ChatEdit_OnShow()
+		if not InCombatLockdown() then return end
+
+		for cmd, name in next, list do
+			if not issecurevariable(list, cmd) then
+				safe[cmd] = name
+				list[cmd] = nil
+			end
+		end
+	end
+
+	function CH:ChatEdit_OnHide()
+		for cmd, name in next, safe do
+			list[cmd] = name
+			safe[cmd] = nil
 		end
 	end
 end
@@ -3308,6 +3331,8 @@ function CH:Initialize()
 	CH:UpdateEditboxAnchors()
 	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
 
+	CH:SecureHook('ChatEdit_OnShow')
+	CH:SecureHook('ChatEdit_OnHide')
 	CH:SecureHook('ChatEdit_ActivateChat')
 	CH:SecureHook('ChatEdit_DeactivateChat')
 	CH:SecureHook('ChatEdit_OnEnterPressed')
