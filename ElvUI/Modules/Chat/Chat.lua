@@ -583,14 +583,14 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 		end
 	end
 
-	function CH:ChatEdit_UntaintRestore()
+	function CH:ChatEdit_PleaseRetaint()
 		for cmd, name in next, safe do
 			list[cmd] = name
 			safe[cmd] = nil
 		end
 	end
 
-	function CH:ChatEdit_UntaintPlease(event)
+	function CH:ChatEdit_PleaseUntaint(event)
 		if event == 'PLAYER_REGEN_DISABLED' then
 			if _G.ChatEdit_GetActiveWindow() then
 				CH:ChatEdit_UntaintTabList()
@@ -3354,8 +3354,8 @@ function CH:Initialize()
 	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
-	CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_UntaintPlease')
-	CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_UntaintRestore')
+	CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
+	CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
 
@@ -3363,7 +3363,7 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_UntaintPlease')
+	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.private.general.voiceOverlay then
