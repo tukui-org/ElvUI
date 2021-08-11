@@ -315,28 +315,6 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
-do -- Blizzard Commands
-	local SlashCmdList = _G.SlashCmdList
-
-	-- DeveloperConsole (without starting with `-console`)
-	if not SlashCmdList.DEVCON then
-		local DevConsole = _G.DeveloperConsole
-		if DevConsole then
-			_G.SLASH_DEVCON1 = '/devcon'
-			SlashCmdList.DEVCON = function()
-				DevConsole:Toggle()
-			end
-		end
-	end
-
-	-- ReloadUI: /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
-	if not SlashCmdList.RELOADUI then
-		_G.SLASH_RELOADUI1 = '/rl'
-		_G.SLASH_RELOADUI2 = '/reloadui'
-		SlashCmdList.RELOADUI = _G.ReloadUI
-	end
-end
-
 function E:DBConvertProfile()
 	E.db.dbConverted = nil
 	E:DBConversions()

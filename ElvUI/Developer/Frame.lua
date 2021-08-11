@@ -1,5 +1,5 @@
 local print, tostring, select, strlower = print, tostring, select, strlower
-local _G, UNKNOWN = _G, UNKNOWN
+local _G, UNKNOWN, type, next = _G, UNKNOWN, type, next
 
 local LoadAddOn = LoadAddOn
 local GetAddOnInfo = GetAddOnInfo
@@ -19,17 +19,39 @@ local function GetName(frame, text)
 	end
 end
 
-_G.SLASH_GETPOINT1 = '/getpoint'
-SlashCmdList.GETPOINT = function(arg)
+local function AddCommand(name, keys, func)
+	if not SlashCmdList[name] then
+		SlashCmdList[name] = func
+
+		if type(keys) == 'table' then
+			for i, key in next, keys do
+				_G['SLASH_'..name..i] = key
+			end
+		else
+			_G['SLASH_'..name..'1'] = keys
+		end
+	end
+end
+
+-- DeveloperConsole (without starting with `-console`)
+AddCommand('DEVCON', '/devcon', function()
+	if _G.DeveloperConsole then
+		_G.DeveloperConsole:Toggle()
+	end
+end)
+
+-- ReloadUI: /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
+AddCommand('RELOADUI', {'/rl','/reloadui'}, _G.ReloadUI)
+
+AddCommand('GETPOINT', '/getpoint', function(arg)
 	local frame = (arg ~= '' and _G[arg]) or GetMouseFocus()
 	if not frame then return end
 
 	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
 	print(GetName(frame), point, GetName(relativeTo), relativePoint, xOffset, yOffset)
-end
+end)
 
-_G.SLASH_FRAME1 = '/frame'
-SlashCmdList.FRAME = function(arg)
+AddCommand('FRAME', '/frame', function(arg)
 	local frame = (arg ~= '' and _G[arg]) or GetMouseFocus()
 	if not frame then return end
 
@@ -42,10 +64,9 @@ SlashCmdList.FRAME = function(arg)
 
 	_G.TableAttributeDisplay:InspectTable(frame)
 	_G.TableAttributeDisplay:Show()
-end
+end)
 
-_G.SLASH_TEXLIST1 = '/texlist'
-SlashCmdList.TEXLIST = function(arg)
+AddCommand('TEXLIST', '/texlist', function(arg)
 	local frame = _G[arg] or _G.FRAME
 	if not frame then return end
 
@@ -55,10 +76,9 @@ SlashCmdList.TEXLIST = function(arg)
 			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
 		end
 	end
-end
+end)
 
-_G.SLASH_FRAMELIST1 = '/framelist'
-SlashCmdList.FRAMELIST = function(arg)
+AddCommand('FRAMELIST', '/framelist', function(arg)
 	if not _G.FrameStackTooltip then
 		UIParentLoadAddOn('Blizzard_DebugTools')
 	end
@@ -90,10 +110,9 @@ SlashCmdList.FRAMELIST = function(arg)
 	if not wasShown then
 		_G.FrameStackTooltip_Toggle()
 	end
-end
+end)
 
-_G.SLASH_EDEV1 = '/edev'
-SlashCmdList.EDEV = function()
+AddCommand('EDEV', '/edev', function()
 	if not IsAddOnLoaded('ElvUIDev') then
 		local _, _, _, loadable, reason = GetAddOnInfo('ElvUIDev')
 		if not loadable then
@@ -117,4 +136,4 @@ SlashCmdList.EDEV = function()
 			ElvUIDev.frame:Hide()
 		end
 	end
-end
+end)
