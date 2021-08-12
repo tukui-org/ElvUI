@@ -57,6 +57,7 @@ function UF:Construct_Buffs(frame)
 	buffs.PreUpdate = self.PreUpdateAura
 	buffs.CustomFilter = self.AuraFilter
 	buffs.stacks = {}
+	buffs.rows = {}
 	buffs.type = 'buffs'
 
 	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
@@ -74,6 +75,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.PreUpdate = self.PreUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.stacks = {}
+	debuffs.rows = {}
 	debuffs.type = 'debuffs'
 
 	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
@@ -82,33 +84,42 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
-function UF:GetAuraRow(element, row, col, growthY, width, height, anchor)
-	if not element.rows then element.rows = {} end
-
+function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, inversed)
 	local holder = element.rows[row]
 	if not holder then
 		holder = CreateFrame('Frame', '$parentRow'..row, element)
 		element.rows[row] = holder
 	end
 
-	if UF.matchGrowthX[anchor] then
-		element:Height(height)
-	else
-		element:Height((row + 1) * height)
+	-- update the holder only when the amount of rows changes
+	if element.currentRow ~= row then
+		element.currentRow = row
+
+		if UF.matchGrowthX[anchor] then
+			element:Height(height)
+		else
+			element:Height((row + 1) * height)
+		end
+
+		holder:ClearAllPoints()
+
+		local last = element.rows[row - 1]
+		if last and holder ~= last then
+			if growthY == 1 then
+				holder:SetPoint(anchor, last, inversed)
+			else
+				holder:SetPoint(inversed, last, anchor)
+			end
+		else
+			holder:SetPoint(anchor, element)
+		end
 	end
 
-	holder:SetSize(col * width, height)
-	holder:ClearAllPoints()
+	-- only update holder size when col changes
+	if element.currentCol ~= col then
+		element.currentCol = col
 
-	local last = element.rows[row - 1]
-	if holder ~= last and last then
-		if growthY == 1 then
-			holder:SetPoint(anchor, last, E.InversePoints[anchor])
-		else
-			holder:SetPoint(E.InversePoints[anchor], last, anchor)
-		end
-	else
-		holder:SetPoint(anchor, element)
+		holder:SetSize(col * width, height)
 	end
 
 	return holder
@@ -116,35 +127,43 @@ end
 
 function UF:GetAuraPosition(element)
 	local spacing = element.spacing or 0
-	local anchor = element.initialAnchor or 'BOTTOMLEFT'
-	local growthX = (element.growthX == 'LEFT' and -1) or 1
-	local growthY = (element.growthY == 'DOWN' and -1) or 1
 	local width = (element.size or 16) + spacing
 	local height = (not element.height and width) or element.height + spacing
 	local cols = floor(element:GetWidth() / width + 0.5)
 
-	local center = anchor == 'TOP' or anchor == 'BOTTOM' or anchor == 'CENTER'
-	local point = center and ((growthY == 1 and 'BOTTOM' or 'TOP')..(growthX == 1 and 'LEFT' or 'RIGHT')) or anchor
+	local growthX = element.growthX == 'LEFT' and -1 or 1
+	local growthY = element.growthY == 'DOWN' and -1 or 1
+	local anchor = element.initialAnchor or 'BOTTOMLEFT'
+	local inversed = E.InversePoints[anchor]
 
-	return anchor, growthX, growthY, width, height, cols, point
+	local y = growthY == 1 and 'BOTTOM' or 'TOP'
+	local x = growthX == 1 and 'LEFT' or 'RIGHT'
+
+	local center = anchor == 'TOP' or anchor == 'BOTTOM'
+	local side = anchor == 'LEFT' or anchor == 'RIGHT'
+	local point = (center or side) and (y..x) or anchor
+
+	return anchor, inversed, growthX, growthY, width, height, cols, point
 end
 
-function UF:SetAuraPosition(element, button, index, anchor, growthX, growthY, width, height, cols, point)
+function UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, growthY, width, height, cols, point)
 	local z, col, row = index - 1, 0, 0
 	if cols > 0 then col, row = z % cols, floor(z / cols) end
 
-	local holder = UF:GetAuraRow(element, row, col + 1, growthY, width, height, anchor)
+	local holder = UF:GetAuraRow(element, row, col + 1, growthY, width, height, anchor, inversed)
 	button:ClearAllPoints()
 	button:SetPoint(point, holder, point, col * width * growthX, growthY)
 end
 
 function UF:SetPosition(from, to)
-	local anchor, growthX, growthY, width, height, cols, point = UF:GetAuraPosition(self)
+	if to < from then return end
+
+	local anchor, inversed, growthX, growthY, width, height, cols, point = UF:GetAuraPosition(self)
 	for index = from, to do
 		local button = self[index]
 		if not button then break end
 
-		UF:SetAuraPosition(self, button, index, anchor, growthX, growthY, width, height, cols, point)
+		UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point)
 	end
 end
 
@@ -318,17 +337,22 @@ function UF:Configure_Auras(frame, which)
 		auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
 	end
 
+	local side = UF.matchGrowthX[settings.anchorPoint]
+	local rows = side and 1 or settings.numrows
+
 	auras.spacing = settings.spacing
-	auras.num = settings.perrow * settings.numrows
-	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
+	auras.num = settings.perrow * rows
+	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / rows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * rows)
 	auras.height = not settings.keepSizeRatio and settings.height
 	auras.forceShow = frame.forceShowAuras
 	auras.disableMouse = settings.clickThrough
 	auras.anchorPoint = settings.anchorPoint
-	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
-	auras.growthY = UF.matchGrowthY[auras.anchorPoint] or settings.growthY
-	auras.growthX = UF.matchGrowthX[auras.anchorPoint] or settings.growthX
+	auras.growthX = side or settings.growthX
+	auras.growthY = UF.matchGrowthY[settings.anchorPoint] or settings.growthY
+	auras.initialAnchor = E.InversePoints[settings.anchorPoint]
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
+	auras.numAuras = settings.perrow
+	auras.numRows = rows
 
 	local x, y
 	if settings.attachTo == 'HEALTH' or settings.attachTo == 'POWER' then
@@ -380,6 +404,9 @@ end
 
 function UF:PreUpdateAura()
 	wipe(self.stacks)
+
+	self.currentRow = nil
+	self.currentCol = nil
 end
 
 function UF:PostUpdateAura(_, button)
