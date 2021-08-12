@@ -63,9 +63,7 @@ function NP:BossMods_PositionIcons(element)
 	local index = 1
 	local anchor, growthX, growthY, width, height, cols, point = UF:GetAuraPosition(element)
 
-	-- clear these for a new update
-	element.currentRow = nil
-	element.currentCol = nil
+	element.currentRow = nil -- clear this for a new update
 
 	for _, button in pairs(element.activeIcons) do
 		UF:SetAuraPosition(element, button, index, anchor, growthX, growthY, width, height, cols, point)

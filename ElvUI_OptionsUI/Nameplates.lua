@@ -4107,10 +4107,7 @@ local function GetUnitSettings(unit, name)
 						order = 8,
 						name = L["Num Rows"],
 						type = 'range',
-						min = 1, max = 5, step = 1,
-						disabled = function()
-							local point = E.db.nameplates.units[unit].buffs.anchorPoint; return point == 'LEFT' or point == 'RIGHT'
-						end
+						min = 1, max = 5, step = 1
 					},
 					spacing = {
 						order = 9,
@@ -4472,10 +4469,7 @@ local function GetUnitSettings(unit, name)
 						order = 8,
 						name = L["Num Rows"],
 						type = 'range',
-						min = 1, max = 5, step = 1,
-						disabled = function()
-							local point = E.db.nameplates.units[unit].debuffs.anchorPoint; return point == 'LEFT' or point == 'RIGHT'
-						end
+						min = 1, max = 5, step = 1
 					},
 					spacing = {
 						order = 9,

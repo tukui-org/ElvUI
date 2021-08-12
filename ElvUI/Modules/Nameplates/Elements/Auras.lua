@@ -91,17 +91,14 @@ function NP:Construct_AuraIcon(button)
 end
 
 function NP:Configure_Auras(nameplate, auras, db)
-	local side = UF.matchGrowthX[db.anchorPoint]
-	local rows = side and 1 or db.numRows
-
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
 	auras.numAuras = db.numAuras
-	auras.numRows = rows
-	auras.spacing = db.spacing
+	auras.numRows = db.numRows
 	auras.onlyShowPlayer = false
+	auras.spacing = db.spacing
 	auras.growthY = UF.matchGrowthY[db.anchorPoint] or db.growthY
-	auras.growthX = side or db.growthX
+	auras.growthX = UF.matchGrowthX[db.anchorPoint] or db.growthX
 	auras.xOffset = db.xOffset
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
@@ -109,7 +106,7 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.attachTo = UF:GetAuraAnchorFrame(nameplate, db.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
-	auras.num = auras.numAuras * rows
+	auras.num = db.numAuras * db.numRows
 
 	local index = 1
 	while auras[index] do
