@@ -85,11 +85,6 @@ end
 
 local yOffset --Value set in M:LoadChatBubbles()
 function M:SkinBubble(frame, holder)
-	local bubbleFont = LSM:Fetch('font', E.private.general.chatBubbleFont)
-	if holder.String then
-		holder.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
-	end
-
 	local option = E.private.general.chatBubbles
 	if option == 'nobackdrop' then
 		holder:DisableDrawLayer('BORDER')
@@ -107,8 +102,12 @@ function M:SkinBubble(frame, holder)
 		local name = frame:CreateFontString(nil, 'BORDER')
 		name:Height(10) --Width set in M:AddChatBubbleName()
 		name:Point('BOTTOM', frame, 'TOP', 0, yOffset)
-		name:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
+		name:SetFontObject('ChatBubbleFont')
 		name:SetJustifyH('LEFT')
+
+		local font, size, outline = name:GetFont()
+		name:FontTemplate(font, size * 0.85, outline)
+
 		frame.Name = name
 	end
 
