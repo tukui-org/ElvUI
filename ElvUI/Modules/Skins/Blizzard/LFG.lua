@@ -684,7 +684,7 @@ function S:LookingForGroupFrames()
 				button.HighlightTexture:SetInside()
 
 				--Fix issue with labels not following changes to GameFontNormal as they should
-				button.Label:SetFontObject(_G.GameFontNormal)
+				button.Label:SetFontObject('GameFontNormal')
 				button.isSkinned = true
 			end
 
