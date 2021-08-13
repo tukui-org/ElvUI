@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local B = E:GetModule('Blizzard')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
@@ -81,6 +82,18 @@ end
 
 function S:Blizzard_PlayerChoice()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
+
+	B:BuildWidgetHolder('PlayerChoiceToggleHolder', 'PlayerChoiceToggle', 'CENTER', L["Player Choice Toggle"], _G.PlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
+
+	-- this fixes the trajectory of the anima orb to stay in correct place
+	hooksecurefunc(_G.PlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
+		local controller = button.effectController
+		if not controller then return end
+
+		if effectID == 98 then -- anima orb
+			controller:SetDynamicOffsets(0, -10, -1.33)
+		end
+	end)
 
 	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', SetupOptions)
 end
