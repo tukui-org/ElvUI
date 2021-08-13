@@ -81,6 +81,8 @@ function S:SpellBookFrame()
 	hooksecurefunc('SpellButton_UpdateButton', function()
 		for i = 1, _G.SPELLS_PER_PAGE do
 			local button = _G['SpellButton'..i]
+			button:SetTemplate(not button.SpellName:IsShown() and 'NoBackdrop', true)
+
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
 				button.SpellHighlightTexture:SetInside(button)
