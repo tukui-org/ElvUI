@@ -7,6 +7,10 @@ local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local hooksecurefunc = hooksecurefunc
 
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 1)
+end
+
 function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
@@ -133,14 +137,19 @@ function S:SpellBookFrame()
 			Frame.missingText:SetTextColor(0, 0, 0)
 		end
 
-		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
-		Frame.statusBar.rankText:Point('CENTER')
-
 		local a, b, c, _, e = Frame.statusBar:GetPoint()
 		Frame.statusBar:Point(a, b, c, 0, e)
+		Frame.statusBar.rankText:Point('CENTER')
+		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
 
 		if a == 'BOTTOMLEFT' then
 			Frame.rank:Point('BOTTOMLEFT', Frame.statusBar, 'TOPLEFT', 0, 4)
+		elseif a == 'TOPLEFT' then
+			Frame.rank:Point('TOPLEFT', Frame.professionName, 'BOTTOMLEFT', 0, -20)
+		end
+
+		if Frame.unlearn then
+			Frame.unlearn:Point('RIGHT', Frame.statusBar, 'LEFT', -18, -5)
 		end
 
 		if Frame.icon then
@@ -148,6 +157,13 @@ function S:SpellBookFrame()
 
 			Frame:StripTextures()
 			Frame.professionName:Point('TOPLEFT', 100, -4)
+
+			Frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+			Frame.backdrop.Center:SetDrawLayer('BORDER', -1)
+			Frame.backdrop:SetOutside(Frame.icon)
+			Frame.backdrop:SetBackdropColor(0, 0, 0, 1)
+			Frame.backdrop.callbackBackdropColor = clearBackdrop
+
 			Frame.icon:SetDesaturated(false)
 			Frame.icon:SetAlpha(1)
 		end
