@@ -142,24 +142,25 @@ function S:SpellBookFrame()
 		end
 
 		if Frame.icon then
-			Frame.professionName:Point('TOPLEFT', 100, -4)
+			S:HandleIcon(Frame.icon)
+
 			Frame:StripTextures()
-			S:HandleIcon(Frame.icon, true)
-			Frame.icon:SetAlpha(1)
+			Frame.professionName:Point('TOPLEFT', 100, -4)
 			Frame.icon:SetDesaturated(false)
+			Frame.icon:SetAlpha(1)
 		end
 
 		for i = 1, 2 do
-			S:HandleButton(Frame['button'..i], true)
-			--Frame['button'..i]:StyleButton()
+			local button = Frame['button'..i]
+			S:HandleButton(button, true)
 
-			if Frame['button'..i].iconTexture then
-				S:HandleIcon(Frame['button'..i].iconTexture)
-				Frame['button'..i].iconTexture:SetInside()
+			if button.iconTexture then
+				S:HandleIcon(button.iconTexture)
+				button.iconTexture:SetInside()
 			end
 
-			Frame['button'..i].highlightTexture:SetInside()
-			hooksecurefunc(Frame['button'..i].highlightTexture, 'SetTexture', function(s, texture)
+			button.highlightTexture:SetInside()
+			hooksecurefunc(button.highlightTexture, 'SetTexture', function(s, texture)
 				if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 					s:SetColorTexture(1, 1, 1, 0.3)
 				end
