@@ -286,6 +286,7 @@ function NP:Update_BossMods(plate)
 	element.growthX = UF.matchGrowthX[anchor] or db.growthX
 	element.size = db.size + (db.spacing or 0)
 	element.height = not db.keepSizeRatio and db.height
+	element.rows = {}
 end
 
 function NP:Construct_BossMods(nameplate)
