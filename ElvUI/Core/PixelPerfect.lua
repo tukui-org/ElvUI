@@ -8,6 +8,12 @@ local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
 local GetPhysicalScreenSize = GetPhysicalScreenSize
 
+function E:RefreshGlobalFX()
+	_G.GlobalFXDialogModelScene:RefreshModelScene()
+	_G.GlobalFXMediumModelScene:RefreshModelScene()
+	_G.GlobalFXBackgroundModelScene:RefreshModelScene()
+end
+
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
 		--HQ resolution
@@ -64,6 +70,8 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
+
+		E:RefreshGlobalFX()
 
 		if E:IsEventRegisteredForObject('PLAYER_REGEN_ENABLED', E.UIScale) then
 			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)

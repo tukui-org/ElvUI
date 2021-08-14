@@ -96,7 +96,7 @@ function S:Blizzard_PlayerChoice()
 		if not controller then return end
 
 		if effectID == 98 then -- anima orb
-			controller:SetDynamicOffsets(-5, -10, -2.25)
+			controller:SetDynamicOffsets(-5, -10, -1.33)
 		end
 	end)
 
