@@ -1,6 +1,6 @@
 --[[
 Name: LibSharedMedia-3.0
-Revision: $Revision: 113 $
+Revision: $Revision: 114 $
 Author: Elkano (elkano@gmx.de)
 Inspired By: SurfaceLib by Haste/Otravi (troeks@gmail.com)
 Website: http://www.wowace.com/projects/libsharedmedia-3-0/
@@ -9,7 +9,7 @@ Dependencies: LibStub, CallbackHandler-1.0
 License: LGPL v2.1
 ]]
 
-local MAJOR, MINOR = "LibSharedMedia-3.0", 8020002 -- 8.2.0 v2 / increase manually on changes
+local MAJOR, MINOR = "LibSharedMedia-3.0", 8020003 -- 8.2.0 v3 / increase manually on changes
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then return end
@@ -22,7 +22,7 @@ local type		= _G.type
 local band			= _G.bit.band
 local table_sort	= _G.table.sort
 
-local RESTRICTED_FILE_ACCESS = not not C_RaidLocks -- starting with 8.2, some rules for file access have changed; classic still uses the old way
+local RESTRICTED_FILE_ACCESS = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE -- starting with 8.2, some rules for file access have changed; classic still uses the old way
 
 local locale = GetLocale()
 local locale_is_western
@@ -233,7 +233,7 @@ function lib:Register(mediatype, key, data, langmask)
 			-- files accessed via path only allowed from interface folder
 			return false
 		end
-		if mediatype == lib.MediaType.SOUND and not (path:find(".ogg", nil, true) or not path:find(".mp3", nil, true)) then
+		if mediatype == lib.MediaType.SOUND and not (path:find(".ogg", nil, true) or path:find(".mp3", nil, true)) then
 			-- Only ogg and mp3 are valid sounds.
 			return false
 		end
