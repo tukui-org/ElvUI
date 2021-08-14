@@ -89,8 +89,6 @@ function S:Blizzard_PlayerChoice()
 	_G.PlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
 
 	-- this fixes the trajectory of the anima orb to stay in correct place
-	-- NOTE: these effects (not exclusive to this button) can be messed up from uiscale cvar
-	-- set useuiscale to 0 or use uiscale cvar on autoscale (768 / screenheight) ~ Simpy
 	hooksecurefunc(_G.PlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
 		local controller = button.effectController
 		if not controller then return end
