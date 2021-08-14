@@ -1293,9 +1293,6 @@ function AB:SetButtonDesaturation(button, duration)
 	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
 		button:DesaturateHierarchy(1)
 		button.saturationLocked = true
-	else
-		button:DesaturateHierarchy(0)
-		button.saturationLocked = nil
 	end
 end
 
@@ -1339,7 +1336,8 @@ function AB:LAB_UpdateRange(button)
 end
 
 function AB:LAB_CooldownDone(button)
-	AB:SetButtonDesaturation(button, 0)
+	button.saturationLocked = nil
+	button:DesaturateHierarchy(0)
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
