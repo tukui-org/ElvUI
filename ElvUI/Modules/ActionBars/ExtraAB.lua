@@ -23,7 +23,7 @@ function AB:ExtraButtons_BossStyle(frame)
 		AB:StyleButton(button, true) -- registers cooldown too
 		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
 
-		button.icon:SetDrawLayer('ARTWORK')
+		button.icon:SetDrawLayer('BORDER')
 		button:SetTemplate()
 
 		button.holder = ExtraActionBarHolder
@@ -58,7 +58,7 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:StyleButton(nil, true)
 				spellButton:SetTemplate()
 
-				spellButton.Icon:SetDrawLayer('ARTWORK')
+				spellButton.Icon:SetDrawLayer('BORDER')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
 
