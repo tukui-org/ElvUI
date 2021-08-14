@@ -630,7 +630,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.useMasque = useMasque
 	button.ignoreNormal = ignoreNormal
 
-	icon:SetDrawLayer('BACKGROUND', 1)
+	icon:SetDrawLayer('BORDER')
 
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
