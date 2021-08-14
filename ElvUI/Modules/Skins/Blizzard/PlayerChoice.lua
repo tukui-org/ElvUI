@@ -85,13 +85,18 @@ function S:Blizzard_PlayerChoice()
 
 	B:BuildWidgetHolder('PlayerChoiceToggleHolder', 'PlayerChoiceToggle', 'CENTER', L["Player Choice Toggle"], _G.PlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
 
+	-- whole area is clickable which is pretty big; keep an eye on this
+	_G.PlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
+
 	-- this fixes the trajectory of the anima orb to stay in correct place
+	-- NOTE: this can be messed up from uiscale cvar, set useuiscale to 0
+	-- or use uiscale cvar on autoscale (768 / screenheight) ~ Simpy
 	hooksecurefunc(_G.PlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
 		local controller = button.effectController
 		if not controller then return end
 
 		if effectID == 98 then -- anima orb
-			controller:SetDynamicOffsets(0, -10, -1.33)
+			controller:SetDynamicOffsets(20, -5, -1.33)
 		end
 	end)
 
