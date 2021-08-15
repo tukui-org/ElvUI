@@ -61,12 +61,12 @@ function NP:BossMods_PositionIcons(element)
 	if not next(element.activeIcons) then return end
 
 	local index = 1
-	local anchor, growthX, growthY, width, height, cols, point = UF:GetAuraPosition(element)
+	local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(element)
 
 	element.currentRow = nil -- clear this for a new update
 
 	for _, button in pairs(element.activeIcons) do
-		UF:SetAuraPosition(element, button, index, anchor, growthX, growthY, width, height, cols, point)
+		UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
 
 		button:Size(width, height)
 		button:Show()
