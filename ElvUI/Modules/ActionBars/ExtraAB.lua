@@ -46,7 +46,6 @@ function AB:ExtraButtons_ZoneStyle()
 
 			if not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
-				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 				spellButton:StyleButton()
 				spellButton:SetTemplate()
 
