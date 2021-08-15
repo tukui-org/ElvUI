@@ -856,7 +856,7 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate')
+local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'SharedTooltipTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end

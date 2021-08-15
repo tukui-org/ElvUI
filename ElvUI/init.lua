@@ -194,7 +194,7 @@ function E:OnInitialize()
 		end
 	end
 
-	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
+	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'SharedTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
