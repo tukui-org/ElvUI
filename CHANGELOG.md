@@ -4,7 +4,7 @@
 
 
 ___
-### Version 12.42 [ ETA: 🍨 ]
+### Version 12.42 [ August 16th 2021 ]
 
 **Changes:**  
 Added a mover for Player Choice Toggle  
