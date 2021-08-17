@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
-local wipe, tinsert, tconcat = wipe, tinsert, table.concat
+local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
