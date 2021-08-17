@@ -279,10 +279,21 @@ function TT:SetUnitText(tt, unit)
 			if TT.db.dungeonScore then
 				local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
 				local seasonScore = data and data.currentSeasonScore
+				local runs = data and data.runs
+				local bestCompletedRuns = {}
 
 				if seasonScore and seasonScore > 0 then
 					local color = TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(seasonScore)
 					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], seasonScore, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
+
+					for i = 1, #runs do
+						if runs[i].finishedSuccess then
+							bestCompletedRuns[runs[i].bestRunLevel] = true
+						end
+					end
+					local bestRun = table.maxn(bestCompletedRuns)
+
+					GameTooltip:AddDoubleLine(L["Mythic+ Best Run:"], bestRun, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
 				end
 			end
 		end
