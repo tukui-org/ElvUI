@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 
 local min, max, format = min, max, format
 
+local _G = _G
 local UIParent = UIParent
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight

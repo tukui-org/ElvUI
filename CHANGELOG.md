@@ -1,6 +1,29 @@
-### Version 12.41 [ ETA: 🍨 ]
+### Version 12.43 [ ETA: 🍨 ]
 
 **Development:**  
+
+
+___
+### Version 12.42 [ ETA: 🍨 ]
+
+**Changes:**  
+Added a mover for Player Choice Toggle  
+Added Mind Soothe (Priest) to CCDebuffs  
+Fixed Right / Left anchor for Auras on Unitframes and Nameplates  
+Fixed an issue which prevented sending secure commands through Chat while in combat  
+Fixed an issue with Blizzard Effects (which caused them to be incorrect size and placed in wrong location)  
+Fixed Replaced Chat Bubble Font not working correctly  
+Fixed Static Player and Test Nameplate Scale  
+Fixed Aura Spacing on non-thin borders  
+Fixed Pushed texture on ActionBars  
+Updated various skins  
+
+**Commands:**  
+Deleted /cleanguild as it was old and protected for some time  
+Renamed /enableblizzard to /eblizzard  
+Renamed /luaerror to /edebug  
+Renamed /resetui to /ereset  
+Renamed /moveui to /emove  
 
 
 ___

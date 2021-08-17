@@ -3,11 +3,10 @@ local B = E:GetModule('Blizzard')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local CreateFrame = CreateFrame
-local GetQuestLogRewardXP = GetQuestLogRewardXP
-local GetRewardXP = GetRewardXP
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
+local GetRewardXP = GetRewardXP
+local GetQuestLogRewardXP = GetQuestLogRewardXP
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 
