@@ -286,7 +286,7 @@ function TT:SetUnitText(tt, unit)
 					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], mythicScore, nil, nil, nil, color.r, color.g, color.b)
 				end
 
-				if TT.db.mythicBestRun then
+				if TT.db.mythicBestRun and mythicInfo.runs then
 					local bestRun = 0
 					for _, run in next, mythicInfo.runs do
 						if run.finishedSuccess and run.bestRunLevel > bestRun then
