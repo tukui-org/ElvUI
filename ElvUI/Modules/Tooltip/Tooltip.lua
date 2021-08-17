@@ -92,6 +92,7 @@ local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
 local blanchyFix = '|n%s+|n' -- thanks blizz -x- lol
+local whiteRGB = { r = 1, g = 1, b = 1 }
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -275,25 +276,27 @@ function TT:SetUnitText(tt, unit)
 			end
 		end
 
-		if TT.db.mythicDataEnable then
-			if TT.db.dungeonScore then
-				local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
-				local seasonScore = data and data.currentSeasonScore
-				local runs = data and data.runs
-				local bestCompletedRuns = {}
+		local mythicInfo = TT.db.mythicDataEnable and C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
+		if mythicInfo then
+			local mythicScore = mythicInfo.currentSeasonScore
+			if mythicScore and mythicScore > 0 then
+				local color = (TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(mythicScore)) or whiteRGB
 
-				if seasonScore and seasonScore > 0 then
-					local color = TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(seasonScore)
-					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], seasonScore, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
+				if TT.db.dungeonScore then
+					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], mythicScore, nil, nil, nil, color.r, color.g, color.b)
+				end
 
-					for i = 1, #runs do
-						if runs[i].finishedSuccess then
-							bestCompletedRuns[runs[i].bestRunLevel] = true
+				if TT.db.mythicBestRun then
+					local bestRun = 0
+					for _, run in next, mythicInfo.runs do
+						if run.finishedSuccess and run.bestRunLevel > bestRun then
+							bestRun = run.bestRunLevel
 						end
 					end
-					local bestRun = table.maxn(bestCompletedRuns)
 
-					GameTooltip:AddDoubleLine(L["Mythic+ Best Run:"], bestRun, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
+					if bestRun > 0 then
+						GameTooltip:AddDoubleLine(L["Mythic+ Best Run:"], bestRun, nil, nil, nil, color.r, color.g, color.b)
+					end
 				end
 			end
 		end

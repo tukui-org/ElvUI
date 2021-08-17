@@ -1035,6 +1035,7 @@ P.tooltip = {
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
 	mythicDataEnable = true,
+	mythicBestRun = true,
 	dungeonScore = true,
 	dungeonScoreColor = true,
 	alwaysShowRealm = false,
