@@ -10,9 +10,14 @@ local InCombatLockdown = InCombatLockdown
 local GetPhysicalScreenSize = GetPhysicalScreenSize
 
 function E:RefreshGlobalFX()
-	_G.GlobalFXDialogModelScene:RefreshModelScene()
-	_G.GlobalFXMediumModelScene:RefreshModelScene()
-	_G.GlobalFXBackgroundModelScene:RefreshModelScene()
+	_G.GlobalFXDialogModelScene:Hide()
+	_G.GlobalFXDialogModelScene:Show()
+
+	_G.GlobalFXMediumModelScene:Hide()
+	_G.GlobalFXMediumModelScene:Show()
+
+	_G.GlobalFXBackgroundModelScene:Hide()
+	_G.GlobalFXBackgroundModelScene:Show()
 end
 
 function E:IsEyefinity(width, height)
