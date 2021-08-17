@@ -134,18 +134,28 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	_G.LFGDungeonReadyDialogBackground:Kill()
+	_G.LFGDungeonReadyDialogEnterDungeonButton:ClearAllPoints()
+	_G.LFGDungeonReadyDialogEnterDungeonButton:Point('BOTTOMRIGHT', _G.LFGDungeonReadyDialog, 'BOTTOM', -10, 15)
+	_G.LFGDungeonReadyDialogLeaveQueueButton:ClearAllPoints()
+	_G.LFGDungeonReadyDialogLeaveQueueButton:Point('BOTTOMLEFT', _G.LFGDungeonReadyDialog, 'BOTTOM', 10, 15)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
-	_G.LFGDungeonReadyDialog.filigree:SetAlpha(0)
-	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
+	_G.LFGDungeonReadyDialogBackground:SetInside()
+	_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
+
+	-- Artwork background (1)
+	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
+	_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
 		if _G.LFGDungeonReadyDialog:IsShown() then
-			_G.LFGDungeonReadyDialog:StripTextures()
-			_G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+			_G.LFGDungeonReadyDialog:SetTemplate('Transparent') -- Frame background (2)
+			_G.LFGDungeonReadyDialog.bottomArt:Hide()
+			_G.LFGDungeonReadyDialog.filigree:Hide()
+			_G.LFGDungeonReadyDialog.Border:Hide()
 		end
 
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
@@ -674,7 +684,7 @@ function S:LookingForGroupFrames()
 				button.HighlightTexture:SetInside()
 
 				--Fix issue with labels not following changes to GameFontNormal as they should
-				button.Label:SetFontObject(_G.GameFontNormal)
+				button.Label:SetFontObject('GameFontNormal')
 				button.isSkinned = true
 			end
 

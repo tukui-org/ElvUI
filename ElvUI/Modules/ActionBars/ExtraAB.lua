@@ -17,23 +17,15 @@ local ExtraButtons = {}
 function AB:ExtraButtons_BossStyle(frame)
 	local button = frame.button
 	if button and not button.IsSkinned then
-		button.pushed = true
-		button.checked = true
-
 		AB:StyleButton(button, true) -- registers cooldown too
 		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
 
-		button.icon:SetDrawLayer('ARTWORK')
+		button.icon:SetDrawLayer('ARTWORK', -1)
 		button:SetTemplate()
 
 		button.holder = ExtraActionBarHolder
 		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 		button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-
-		local tex = button:CreateTexture(nil, 'OVERLAY')
-		tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-		tex:SetInside()
-		button:SetCheckedTexture(tex)
 
 		button.HotKey:SetText(GetBindingKey(button:GetName()))
 		AB:FixKeybindText(button)
@@ -54,11 +46,10 @@ function AB:ExtraButtons_ZoneStyle()
 
 			if not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
-				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-				spellButton:StyleButton(nil, true)
+				spellButton:StyleButton()
 				spellButton:SetTemplate()
 
-				spellButton.Icon:SetDrawLayer('ARTWORK')
+				spellButton.Icon:SetDrawLayer('ARTWORK', -1)
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
 

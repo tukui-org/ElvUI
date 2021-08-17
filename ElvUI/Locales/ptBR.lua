@@ -326,7 +326,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Essa configuração causou um conflito com o ponto de fixação, onde '%s' iria ser anexado com ele mesmo. Por favor cheque seus pontos de fixações. Configuração '%s' a ser anexada a '%s'."
 L["This will change the layout of your unitframes and actionbars."] = "Isso irá mudar o leiaute dos seus Quadro de Unidades e Barras de Ações"
 L["To list all available ElvUI commands, type in chat /ehelp"] = true
-L["To quickly move around certain elements of the UI, type /moveui"] = true
+L["To quickly move around certain elements of the UI, type /emove"] = true
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = true
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Bat-papo"
@@ -379,6 +379,7 @@ L["Zone Ability"] = "Habilidade da Zona"
 
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.
+
 Opções:
   CliqueEsquerdo - Alternar Quadro de Ajuste Fino.
   CliqueDireito - Abrir seção de configurações.
@@ -388,14 +389,14 @@ Opções:
 
 L["EHELP_COMMANDS"] = ([=[Aqui está a lista de todos os comandos importantes do *ElvUI|r:
  */ec|r or */elvui|r  - Alternar as *OptionsUI|r.
- */moveui|r  -  Alternar fixação para reposicionar vários elementos.
  */kb|r  -  Alternar o modo de atalhos de teclas.
- */resetui|r  -  Reseta todas as frames para seus lugares originais.
+ */emove|r  -  Alternar fixação para reposicionar vários elementos.
+ */ereset|r  -  Reseta todas as frames para seus lugares originais.
  */bgstats|r  -  Alternar status de Campo de Batalha nos seus Textos Informativos.
  */hdt|r  -  Editar seus Textos Alternativos sem abrir o *OptionsUI|r.
  */estatus|r  -  Informações importantes para questões com o suporte.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Alternar o grid de pixels.
- */luaerror|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.
-  NOTA: */luaerror|r ^off|r irá reabilitar os addons desabilitados por ter
-  usar */luaerror|r ^on|r nesta sessão.
+ */edebug|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.
+  NOTA: */edebug|r ^off|r irá reabilitar os addons desabilitados por ter
+  usar */edebug|r ^on|r nesta sessão.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

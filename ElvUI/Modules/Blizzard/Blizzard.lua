@@ -3,11 +3,10 @@ local B = E:GetModule('Blizzard')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local CreateFrame = CreateFrame
-local GetQuestLogRewardXP = GetQuestLogRewardXP
-local GetRewardXP = GetRewardXP
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
+local GetRewardXP = GetRewardXP
+local GetQuestLogRewardXP = GetQuestLogRewardXP
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 
@@ -81,13 +80,6 @@ function B:Initialize()
 	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
 	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
 	TT:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionBNET')
-
-	-- Quick Join Bug
-	CreateFrame('Frame'):SetScript('OnUpdate', function()
-		if _G.LFRBrowseFrame.timeToClear then
-			_G.LFRBrowseFrame.timeToClear = nil
-		end
-	end)
 
 	--Add (+X%) to quest rewards experience text
 	B:SecureHook('QuestInfo_Display', 'QuestXPPercent')

@@ -26,6 +26,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == _G.ElvNP_Test
 	Buffs.stacks = {}
+	Buffs.rows = {}
 
 	local Debuffs = CreateFrame('Frame', frameName..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
@@ -43,6 +44,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.type = 'debuffs'
 	Debuffs.forceShow = nameplate == _G.ElvNP_Test
 	Debuffs.stacks = {}
+	Debuffs.rows = {}
 
 	Buffs.PreUpdate = UF.PreUpdateAura
 	Buffs.PreSetPosition = UF.SortAuras
@@ -104,7 +106,7 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.attachTo = UF:GetAuraAnchorFrame(nameplate, db.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
-	auras.num = auras.numAuras * auras.numRows
+	auras.num = db.numAuras * db.numRows
 
 	local index = 1
 	while auras[index] do

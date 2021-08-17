@@ -74,7 +74,6 @@ local unitExists = Private.unitExists
 
 -- ElvUI block
 local _G = _G
-local IsLoggedIn = IsLoggedIn
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local setfenv, getfenv = setfenv, getfenv
@@ -912,7 +911,6 @@ oUF.Tags = {
 	Vars = vars,
 	RefreshMethods = function(self, tag)
 		if(not tag) then return end
-		local loggedIn = IsLoggedIn()
 
 		funcPool['[' .. tag .. ']'] = nil
 
@@ -926,7 +924,7 @@ oUF.Tags = {
 					if(fs.UpdateTag == func) then
 						fs.UpdateTag = getTagFunc(tagstr)
 
-						if(loggedIn and fs:IsVisible()) then
+						if(fs:IsVisible()) then
 							fs:UpdateTag()
 						end
 					end

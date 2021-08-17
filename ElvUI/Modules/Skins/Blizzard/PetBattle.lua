@@ -145,7 +145,7 @@ function S:PetBattleFrame()
 		infoBar.PetType:SetAlpha(0)
 
 		infoBar.LevelUnderlay:SetAlpha(0)
-		infoBar.Level:SetFontObject(_G.NumberFont_Outline_Huge)
+		infoBar.Level:SetFontObject('NumberFont_Outline_Huge')
 		infoBar.Level:ClearAllPoints()
 		infoBar.Level:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMLEFT', 2, 2)
 

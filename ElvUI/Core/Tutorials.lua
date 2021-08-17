@@ -20,7 +20,7 @@ E.TutorialList = {
 	L["You can access the microbar by using middle mouse button on the minimap. You can also enable the MicroBar in the actionbar settings."],
 	L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."],
 	L["You can quickly change your displayed DataTexts by mousing over them while holding ALT."],
-	L["To quickly move around certain elements of the UI, type /moveui"],
+	L["To quickly move around certain elements of the UI, type /emove"],
 	L["From time to time you should compare your ElvUI version against the most recent version on our website or the Tukui client."],
 	L["To list all available ElvUI commands, type in chat /ehelp"]
 }

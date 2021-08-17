@@ -68,6 +68,9 @@ function S:BlizzardOptions()
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 	S:HandleButton(_G.RolePollPopupAcceptButton)
+
+	_G.LFDReadyCheckPopup:StripTextures()
+	_G.LFDReadyCheckPopup:SetTemplate('Transparent')
 	S:HandleButton(_G.LFDReadyCheckPopup.YesButton)
 	S:HandleButton(_G.LFDReadyCheckPopup.NoButton)
 
@@ -81,8 +84,10 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
-
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
+
+	ReadyCheckFrame:StripTextures()
+	ReadyCheckFrame:SetTemplate('Transparent')
 	ReadyCheckFrame:HookScript('OnShow', function(rcf)
 		-- bug fix, don't show it if player is initiator
 		if rcf.initiator and UnitIsUnit('player', rcf.initiator) then

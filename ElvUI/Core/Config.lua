@@ -23,7 +23,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
+local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'SharedTooltipTemplate')
 
 local grid
 E.ConfigModeLayouts = {

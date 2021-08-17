@@ -120,6 +120,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[8122]   = Defaults(3), -- Psychic Scream
 		[15487]  = Defaults(2), -- Silence
 		[64044]  = Defaults(1), -- Psychic Horror
+		[453]    = Defaults(5), -- Mind Soothe
 	-- Rogue
 		[2094]   = Defaults(4), -- Blind
 		[6770]   = Defaults(4), -- Sap

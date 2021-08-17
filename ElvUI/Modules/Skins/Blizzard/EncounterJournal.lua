@@ -470,7 +470,10 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LootJournal.RuneforgePowerFilterDropDownButton, true)
 	LootJournal.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
+	if E.private.skins.parchmentRemoverEnable then
+		_G.EncounterJournal.LootJournal:StripTextures()
+		_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
+	end
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
@@ -488,8 +491,8 @@ function S:Blizzard_EncounterJournal()
 				btn.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 
 				btn:CreateBackdrop('Transparent')
-				btn.backdrop:Point('TOPLEFT', 3, 0)
-				btn.backdrop:Point('BOTTOMRIGHT', -2, 1)
+				btn.backdrop:Point('TOPLEFT', 5, -1)
+				btn.backdrop:Point('BOTTOMRIGHT', 5, 1)
 
 				btn.IsSkinned = true
 			end

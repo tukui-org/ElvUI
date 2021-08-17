@@ -326,7 +326,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = true
 L["This will change the layout of your unitframes and actionbars."] = true
 L["To list all available ElvUI commands, type in chat /ehelp"] = true
-L["To quickly move around certain elements of the UI, type /moveui"] = true
+L["To quickly move around certain elements of the UI, type /emove"] = true
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = true
 L["Toggle Bags"] = true
 L["Toggle Chat Frame"] = true
@@ -389,14 +389,14 @@ Options:
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
- */resetui|r  -  Reset all frames to their original positions.
+ */emove|r  -  Toggle anchors to reposition various elements.
+ */ereset|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
-  using */luaerror|r ^on|r within that session.
+ */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
+  using */edebug|r ^on|r within that session.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
