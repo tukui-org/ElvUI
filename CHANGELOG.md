@@ -4,10 +4,11 @@
 
 
 ___
-### Version 12.43 [ ETA: 🍨 ]
+### Version 12.43 [ August 17th 2021 ]
 
-**Development:**  
-
+**Changes:**  
+Player Choice should be fixed in Torghat when in combat  
+Added a Mythic+ Best Run tooltip option  
 
 ___
 ### Version 12.42 [ August 16th 2021 ]
@@ -30,7 +31,6 @@ Renamed /enableblizzard to /eblizzard
 Renamed /luaerror to /edebug  
 Renamed /resetui to /ereset  
 Renamed /moveui to /emove  
-
 
 ___
 ### Version 12.41 [ August 6th 2021 ]
@@ -125,7 +125,6 @@ Increased range to scale Minimap icons more.
 Updated the shading on Bag items when you search.  
 Updated the normal Bags skin code a bit, also some of the bank too.  
 Nameplate Auras now has a "Color by Type" option which will remove the debuff type border color (stealable and bad dispels will still be shown).  
-
 
 ___
 ### Version 12.34 [ July 8th 2021 ]
