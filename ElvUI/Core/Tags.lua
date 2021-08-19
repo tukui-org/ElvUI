@@ -1254,7 +1254,7 @@ E.TagInfo = {
 		['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 		['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 		['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
-		['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
+		['healthcolor'] = { category = 'Colors', description = "Colors the text, depending on the unit's current health" },
 		['selectioncolor'] = { category = 'Colors', description = "Changes the text color, depending on the type of the unit's selection" },
 		['classcolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" },
 		['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
