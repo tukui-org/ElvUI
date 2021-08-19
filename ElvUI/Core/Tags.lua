@@ -526,6 +526,12 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	return Hex(c.r, c.g, c.b)
 end)
 
+E:AddTag('selectioncolor', 'UNIT_FLAGS UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	local selection = NP:UnitSelectionType(unit, true)
+	local cs = ElvUF.colors.selection[selection]
+	return (cs and Hex(cs[1], cs[2], cs[3])) or '|cFFcccccc'
+end)
+
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
