@@ -1529,6 +1529,17 @@ function UF:AfterStyleCallback()
 	end
 end
 
+function UF:Style(unit)
+	UF:Construct_UF(self, unit)
+end
+
+function UF:Setup()
+	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
+	ElvUF:RegisterStyle('ElvUF', UF.Style)
+	ElvUF:SetActiveStyle('ElvUF')
+	UF:LoadUnits()
+end
+
 function UF:Initialize()
 	UF.db = E.db.unitframe
 	UF.thinBorders = UF.db.thinBorders
@@ -1543,15 +1554,9 @@ function UF:Initialize()
 	E.ElvUF_Parent:SetFrameStrata('LOW')
 	RegisterStateDriver(E.ElvUF_Parent, 'visibility', '[petbattle] hide;show')
 
-	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
-	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
-		UF:Construct_UF(frame, unit)
-	end)
-	ElvUF:SetActiveStyle('ElvUF')
+	ElvUF:Factory(UF.Setup)
 
 	UF:UpdateColors()
-	UF:LoadUnits()
-
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
 	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')

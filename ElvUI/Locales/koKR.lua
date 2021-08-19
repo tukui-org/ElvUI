@@ -220,6 +220,8 @@ L["Mobile"] = true
 L["Modulating Blend"] = true
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "방어전담 프레임"
+L["Mythic+ Score:"] = true
+L["Mythic+ Best Run:"] = true
 L["Naval Mission(s) Report:"] = "해상 임무 보고서"
 L["Nazjatar Follower XP"] = true
 L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "도움이 필요할땐 우리 디스코드에 서버에 참가해보세요: https://discord.gg/xFWcfgE"
@@ -326,7 +328,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = true
 L["This will change the layout of your unitframes and actionbars."] = "역할에 따라서 유닛프레임과 행동단축바의 레이아웃이 알맞게 바뀝니다."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "사용가능한 ELVUI 명령을 모두 보려면 /ehelp 를 입력하세요"
-L["To quickly move around certain elements of the UI, type /moveui"] = true
+L["To quickly move around certain elements of the UI, type /emove"] = true
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = true
 L["Toggle Bags"] = "가방슬롯 보기"
 L["Toggle Chat Frame"] = "패널 표시 전환"
@@ -389,14 +391,14 @@ L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동�
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
- */resetui|r  -  Reset all frames to their original positions.
+ */emove|r  -  Toggle anchors to reposition various elements.
+ */ereset|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
-  using */luaerror|r ^on|r within that session.
+ */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
+  using */edebug|r ^on|r within that session.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

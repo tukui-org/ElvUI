@@ -1,10 +1,17 @@
-
-local MAJOR, MINOR = "LibChatAnims", 2 -- Bump minor on changes
+local MAJOR, MINOR = "LibChatAnims", 4 -- Bump minor on changes
 local LCA = LibStub:NewLibrary(MAJOR, MINOR)
 if not LCA then return end -- No upgrade needed
 
 LCA.animations = LCA.animations or {} -- Animation storage
+LCA.alerting = LCA.alerting or {} -- Chat tab alerting storage
 local anims = LCA.animations
+local alerting = LCA.alerting
+
+function LCA:IsAlerting(tab)
+	if alerting[tab] then
+		return true
+	end
+end
 
 ----------------------------------------------------
 -- Note, most of this code is simply replicated from
@@ -13,117 +20,117 @@ local anims = LCA.animations
 -- of animations vs the use of UIFrameFlash.
 --
 
-FCFDockOverflowButton_UpdatePulseState = function(self)
-	local dock = self:GetParent()
-	local shouldPulse = false
-	for _, chatFrame in pairs(FCFDock_GetChatFrames(dock)) do
-		local chatTab = _G[chatFrame:GetName().."Tab"]
-		if ( not chatFrame.isStaticDocked and chatTab.alerting) then
-			-- Make sure the rects are valid. (Not always the case when resizing the WoW client
-			if ( not chatTab:GetRight() or not dock.scrollFrame:GetRight() ) then
-				return false
-			end
-			-- Check if it's off the screen.
-			local DELTA = 3 -- Chosen through experimentation
-			if ( chatTab:GetRight() < (dock.scrollFrame:GetLeft() + DELTA) or chatTab:GetLeft() > (dock.scrollFrame:GetRight() - DELTA) ) then
-				shouldPulse = true
-				break
-			end
-		end
-	end
+--FCFDockOverflowButton_UpdatePulseState = function(self)
+--	local dock = self:GetParent()
+--	local shouldPulse = false
+--	for _, chatFrame in pairs(FCFDock_GetChatFrames(dock)) do
+--		local chatTab = _G[chatFrame:GetName().."Tab"]
+--		if ( not chatFrame.isStaticDocked and chatTab.alerting) then
+--			-- Make sure the rects are valid. (Not always the case when resizing the WoW client
+--			if ( not chatTab:GetRight() or not dock.scrollFrame:GetRight() ) then
+--				return false
+--			end
+--			-- Check if it's off the screen.
+--			local DELTA = 3 -- Chosen through experimentation
+--			if ( chatTab:GetRight() < (dock.scrollFrame:GetLeft() + DELTA) or chatTab:GetLeft() > (dock.scrollFrame:GetRight() - DELTA) ) then
+--				shouldPulse = true
+--				break
+--			end
+--		end
+--	end
+--
+--	local tex = self:GetHighlightTexture()
+--	if shouldPulse then
+--		if not anims[tex] then
+--			anims[tex] = tex:CreateAnimationGroup()
+--
+--			local fade1 = anims[tex]:CreateAnimation("Alpha")
+--			fade1:SetDuration(1)
+--			fade1:SetFromAlpha(0)
+--			fade1:SetToAlpha(1)
+--			fade1:SetOrder(1)
+--
+--			local fade2 = anims[tex]:CreateAnimation("Alpha")
+--			fade2:SetDuration(1)
+--			fade2:SetFromAlpha(1)
+--			fade2:SetToAlpha(0)
+--			fade2:SetOrder(2)
+--		end
+--		tex:Show()
+--		tex:SetAlpha(0)
+--		anims[tex]:SetLooping("REPEAT")
+--		anims[tex]:Play()
+--
+--		self:LockHighlight()
+--		self.alerting = true
+--	else
+--		if anims[tex] then
+--			anims[tex]:Stop()
+--		end
+--		self:UnlockHighlight()
+--		tex:SetAlpha(1)
+--		tex:Show()
+--		self.alerting = false
+--	end
+--
+--	if self.list:IsShown() then
+--		FCFDockOverflowList_Update(self.list, dock)
+--	end
+--	return true
+--end
 
-	local tex = self:GetHighlightTexture()
-	if shouldPulse then
-		if not anims[tex] then
-			anims[tex] = tex:CreateAnimationGroup()
-
-			local fade1 = anims[tex]:CreateAnimation("Alpha")
-			fade1:SetDuration(1)
-			fade1:SetFromAlpha(0)
-			fade1:SetToAlpha(1)
-			fade1:SetOrder(1)
-
-			local fade2 = anims[tex]:CreateAnimation("Alpha")
-			fade2:SetDuration(1)
-			fade2:SetFromAlpha(1)
-			fade2:SetToAlpha(0)
-			fade2:SetOrder(2)
-		end
-		tex:Show()
-		tex:SetAlpha(0)
-		anims[tex]:SetLooping("REPEAT")
-		anims[tex]:Play()
-
-		self:LockHighlight()
-		self.alerting = true
-	else
-		if anims[tex] then
-			anims[tex]:Stop()
-		end
-		self:UnlockHighlight()
-		tex:SetAlpha(1)
-		tex:Show()
-		self.alerting = false
-	end
-
-	if self.list:IsShown() then
-		FCFDockOverflowList_Update(self.list, dock)
-	end
-	return true
-end
-
-FCFDockOverflowListButton_SetValue = function(button, chatFrame)
-	local chatTab = _G[chatFrame:GetName().."Tab"]
-	button.chatFrame = chatFrame
-	button:SetText(chatFrame.name)
-
-	local colorTable = chatTab.selectedColorTable or DEFAULT_TAB_SELECTED_COLOR_TABLE
-
-	if chatTab.selectedColorTable then
-		button:GetFontString():SetTextColor(colorTable.r, colorTable.g, colorTable.b)
-	else
-		button:GetFontString():SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-	end
-
-	button.glow:SetVertexColor(colorTable.r, colorTable.g, colorTable.b)
-
-	if chatTab.conversationIcon then
-		button.conversationIcon:SetVertexColor(colorTable.r, colorTable.g, colorTable.b)
-		button.conversationIcon:Show()
-	else
-		button.conversationIcon:Hide()
-	end
-
-	if chatTab.alerting then
-		button.alerting = true
-		if not anims[button.glow] then
-			anims[button.glow] = button.glow:CreateAnimationGroup()
-
-			local fade1 = anims[button.glow]:CreateAnimation("Alpha")
-			fade1:SetDuration(1)
-			fade1:SetFromAlpha(0)
-			fade1:SetToAlpha(1)
-			fade1:SetOrder(1)
-
-			local fade2 = anims[button.glow]:CreateAnimation("Alpha")
-			fade2:SetDuration(1)
-			fade2:SetFromAlpha(1)
-			fade2:SetToAlpha(0)
-			fade2:SetOrder(2)
-		end
-		button.glow:Show()
-		button.glow:SetAlpha(0)
-		anims[button.glow]:SetLooping("REPEAT")
-		anims[button.glow]:Play()
-	else
-		button.alerting = false
-		if anims[button.glow] then
-			anims[button.glow]:Stop()
-		end
-		button.glow:Hide()
-	end
-	button:Show()
-end
+--FCFDockOverflowListButton_SetValue = function(button, chatFrame)
+--	local chatTab = _G[chatFrame:GetName().."Tab"]
+--	button.chatFrame = chatFrame
+--	button:SetText(chatFrame.name)
+--
+--	local colorTable = chatTab.selectedColorTable or DEFAULT_TAB_SELECTED_COLOR_TABLE
+--
+--	if chatTab.selectedColorTable then
+--		button:GetFontString():SetTextColor(colorTable.r, colorTable.g, colorTable.b)
+--	else
+--		button:GetFontString():SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+--	end
+--
+--	button.glow:SetVertexColor(colorTable.r, colorTable.g, colorTable.b)
+--
+--	if chatTab.conversationIcon then
+--		button.conversationIcon:SetVertexColor(colorTable.r, colorTable.g, colorTable.b)
+--		button.conversationIcon:Show()
+--	else
+--		button.conversationIcon:Hide()
+--	end
+--
+--	if chatTab.alerting then
+--		button.alerting = true
+--		if not anims[button.glow] then
+--			anims[button.glow] = button.glow:CreateAnimationGroup()
+--
+--			local fade1 = anims[button.glow]:CreateAnimation("Alpha")
+--			fade1:SetDuration(1)
+--			fade1:SetFromAlpha(0)
+--			fade1:SetToAlpha(1)
+--			fade1:SetOrder(1)
+--
+--			local fade2 = anims[button.glow]:CreateAnimation("Alpha")
+--			fade2:SetDuration(1)
+--			fade2:SetFromAlpha(1)
+--			fade2:SetToAlpha(0)
+--			fade2:SetOrder(2)
+--		end
+--		button.glow:Show()
+--		button.glow:SetAlpha(0)
+--		anims[button.glow]:SetLooping("REPEAT")
+--		anims[button.glow]:Play()
+--	else
+--		button.alerting = false
+--		if anims[button.glow] then
+--			anims[button.glow]:Stop()
+--		end
+--		button.glow:Hide()
+--	end
+--	button:Show()
+--end
 
 FCF_StartAlertFlash = function(chatFrame)
 	local chatTab = _G[chatFrame:GetName().."Tab"]
@@ -148,7 +155,8 @@ FCF_StartAlertFlash = function(chatFrame)
 		chatFrame.minFrame.glow:SetAlpha(0)
 		anims[chatFrame.minFrame]:SetLooping("REPEAT")
 		anims[chatFrame.minFrame]:Play()
-		chatFrame.minFrame.alerting = true
+		--chatFrame.minFrame.alerting = true
+		alerting[chatFrame.minFrame] = true
 	end
 
 	if not anims[chatTab.glow] then
@@ -170,10 +178,27 @@ FCF_StartAlertFlash = function(chatFrame)
 	chatTab.glow:SetAlpha(0)
 	anims[chatTab.glow]:SetLooping("REPEAT")
 	anims[chatTab.glow]:Play()
-	chatTab.alerting = true
+	--chatTab.alerting = true
+	alerting[chatTab] = true
 
-	FCFTab_UpdateAlpha(chatFrame)
-	FCFDockOverflowButton_UpdatePulseState(GENERAL_CHAT_DOCK.overflowButton)
+
+	-- START function FCFTab_UpdateAlpha(chatFrame)
+	local mouseOverAlpha, noMouseAlpha = 0, 0
+	if not chatFrame.isDocked or chatFrame == FCFDock_GetSelectedWindow(GENERAL_CHAT_DOCK) then
+		mouseOverAlpha = 1.0 --CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA
+		noMouseAlpha = 0.4 -- CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA
+	else
+		mouseOverAlpha = 1.0 -- CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA
+		noMouseAlpha = 1.0 -- CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA
+	end
+	if chatFrame.hasBeenFaded then
+		chatTab:SetAlpha(mouseOverAlpha)
+	else
+		chatTab:SetAlpha(noMouseAlpha)
+	end
+	--END function FCFTab_UpdateAlpha(chatFrame)
+
+	--FCFDockOverflowButton_UpdatePulseState(GENERAL_CHAT_DOCK.overflowButton)
 end
 
 FCF_StopAlertFlash = function(chatFrame)
@@ -184,16 +209,33 @@ FCF_StopAlertFlash = function(chatFrame)
 			anims[chatFrame.minFrame]:Stop()
 		end
 		chatFrame.minFrame.glow:Hide()
-		chatFrame.minFrame.alerting = false
+		--chatFrame.minFrame.alerting = false
+		alerting[chatFrame.minFrame] = nil
 	end
 
 	if anims[chatTab.glow] then
 		anims[chatTab.glow]:Stop()
 	end
 	chatTab.glow:Hide()
-	chatTab.alerting = false
+	--chatTab.alerting = false
+	alerting[chatTab] = nil
 
-	FCFTab_UpdateAlpha(chatFrame)
-	FCFDockOverflowButton_UpdatePulseState(GENERAL_CHAT_DOCK.overflowButton)
+	-- START function FCFTab_UpdateAlpha(chatFrame)
+	local mouseOverAlpha, noMouseAlpha = 0, 0
+	if not chatFrame.isDocked or chatFrame == FCFDock_GetSelectedWindow(GENERAL_CHAT_DOCK) then
+		mouseOverAlpha = 1.0 --CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA
+		noMouseAlpha = 0.4 -- CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA
+	else
+		mouseOverAlpha = 0.6 --CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA
+		noMouseAlpha = 0.2 --CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA
+	end
+	if chatFrame.hasBeenFaded then
+		chatTab:SetAlpha(mouseOverAlpha)
+	else
+		chatTab:SetAlpha(noMouseAlpha)
+	end
+	--END function FCFTab_UpdateAlpha(chatFrame)
+
+	--FCFDockOverflowButton_UpdatePulseState(GENERAL_CHAT_DOCK.overflowButton)
 end
 

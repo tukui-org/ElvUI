@@ -8,7 +8,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local type, ipairs, unpack, select, pcall = type, ipairs, unpack, select, pcall
-local strmatch, tinsert, tremove, wipe, tmaxn = strmatch, tinsert, tremove, wipe, table.maxn
+local strmatch, tinsert, tremove, wipe = strmatch, tinsert, tremove, wipe
 local next, floor, format, sub = next, floor, format, strsub
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -1225,14 +1225,14 @@ function B:VendorGrays(delete)
 
 	B:GetGrays(true)
 
-	local maxItems = tmaxn(B.SellFrame.Info.itemList)
-	if maxItems < 1 then return end
+	local numItems = #B.SellFrame.Info.itemList
+	if numItems < 1 then return end
 
 	-- Resetting stuff
 	B.SellFrame.Info.delete = delete or false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = 0.2
-	B.SellFrame.Info.ProgressMax = maxItems
+	B.SellFrame.Info.ProgressMax = numItems
 	B.SellFrame.Info.goldGained = 0
 	B.SellFrame.Info.itemsSold = 0
 

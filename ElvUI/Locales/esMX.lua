@@ -220,6 +220,8 @@ L["Mobile"] = "Móvil"
 L["Modulating Blend"] = "Mezcla Moduladora"
 L["Mov. Speed:"] = "Velocidad de Movimiento"
 L["MT Frames"] = "Marcos de TP"
+L["Mythic+ Score:"] = true
+L["Mythic+ Best Run:"] = true
 L["Naval Mission(s) Report:"] = "Informe de Misión(es) Navales"
 L["Nazjatar Follower XP"] = "Nazjatar Seguidor XP"
 L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "¿Necesitas ayuda? Únase a nuestro Discord: https://discord.gg/xFWcfgE"
@@ -326,7 +328,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Esta opción causó un punto de fijación en conflicto, donde '%s' estaría adjunto a sí mismo. Por favor comprueba tus puntos de fijación. Opción '%s' a ser fijado a '%s'"
 L["This will change the layout of your unitframes and actionbars."] = "Ésto cambiará el diseño de los marcos de unidades y barras de acción."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Para listar todos los comandos disponibles de ElvUI, escribe en el chat /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Para desplazarse rápidamente por determinados elementos de la interfaz de usuario, escriba /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Para desplazarse rápidamente por determinados elementos de la interfaz de usuario, escriba /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "Para configurar los colores del chat, los canales del chat y el tamaño de la fuente del chat, haz clic con el botón derecho del ratón en el nombre de la pestaña del chat."
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Marco de Chat"
@@ -379,6 +381,7 @@ L["Zone Ability"] = "Habilidad de Zona"
 
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz clic en Bloquear cuando termines.
+
 Opciones:
    Clic Izquierdo - Mostrar/Ocultar empujar marco.
    Clic Derecho - Abrir la sección de configuración.
@@ -388,14 +391,14 @@ Opciones:
 
 L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
  */ec|r or */elvui|r  -  Mostrar/Ocultar el *OptionsUI|r.
- */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
  */kb|r  -  Mostrar/Ocultar el modo de teclas.
- */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
+ */emove|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
+ */ereset|r  -  Restablecer todos los marcos a sus posiciones originales.
  */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
  */hdt|r  -  Edita tus Textos de Datos sin abrir la *OptionsUI|r.
  */estatus|r  -  Información importante para preguntas de soporte.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Mostrar/Ocultar una cuadrícula de líneas.
- */luaerror|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
-  NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
-  mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
+ */edebug|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
+  NOTA: */edebug|r ^off|r volverá a habilitar los complementos deshabilitado
+  mediante el uso de */edebug|r ^on|r dentro de esa sesión.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

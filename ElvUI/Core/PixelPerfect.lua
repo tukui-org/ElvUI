@@ -2,11 +2,23 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 
 local min, max, format = min, max, format
 
+local _G = _G
 local UIParent = UIParent
 local GetScreenWidth = GetScreenWidth
 local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
 local GetPhysicalScreenSize = GetPhysicalScreenSize
+
+function E:RefreshGlobalFX()
+	_G.GlobalFXDialogModelScene:Hide()
+	_G.GlobalFXDialogModelScene:Show()
+
+	_G.GlobalFXMediumModelScene:Hide()
+	_G.GlobalFXMediumModelScene:Show()
+
+	_G.GlobalFXBackgroundModelScene:Hide()
+	_G.GlobalFXBackgroundModelScene:Show()
+end
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -64,6 +76,8 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
+
+		E:RefreshGlobalFX()
 
 		if E:IsEventRegisteredForObject('PLAYER_REGEN_ENABLED', E.UIScale) then
 			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)

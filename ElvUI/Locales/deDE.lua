@@ -222,6 +222,8 @@ L["Mobile"] = "Handy"
 L["Modulating Blend"] = "Modulierende Überblendung"
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "MT-Fenster"
+L["Mythic+ Score:"] = true
+L["Mythic+ Best Run:"] = true
 L["Naval Mission(s) Report:"] = "Marine Missionsbericht:"
 L["Nazjatar Follower XP"] = "Nazjatar Begleiter EP"
 L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "Brauchst du Hilfe? Tritt unseren Discord bei: https://discord.gg/xFWcfgE"
@@ -331,7 +333,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Diese Einstellungen haben einen Konflikt mit einem Ankerpunkt, wo '%s' an sich selbst angehaftet sein soll. Bitte kontrolliere deine Ankerpunkte. Einstellung '%s' angehaftet an '%s'."
 L["This will change the layout of your unitframes and actionbars."] = "Dies wird das Layout der Einheitenfenster und Aktionsleisten ändern."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Für eine liste aller verfügbaren ElvUI befehle, tippe /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Um schnell verschiedene Interface Elemente zu verschieben, tippe /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Um schnell verschiedene Interface Elemente zu verschieben, tippe /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "Um Chat Farben, Chat Channels und die Chat Schriftgröße zu ändern, rechts-klicke den Chat Tab Namen."
 L["Toggle Bags"] = "Taschen umschalten"
 L["Toggle Chat Frame"] = "Chatfenster an-/ausschalten"
@@ -394,14 +396,14 @@ Options:
 
 L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
  */ec|r or */elvui|r  -  Öffnet die *ElvUI Optionen|r.
- */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
  */kb|r  -  Aktiviert den Tastenbelegungsmodus.
- */resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
+ */emove|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
+ */ereset|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
  */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
  */hdt|r  -  Informationsleisten bearbeiten ohne die *Optionen|r öffnen zu müssen.
  */estatus|r  -  Wichtige Informationen für Supportfragen.
  */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
- */luaerror|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
-  PS: */luaerror|r ^off|r aktiviert wieder alle AddOns,
-  die durch */luaerror|r ^on|r während der Sitzung deaktiviert wurden.
+ */edebug|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
+  PS: */edebug|r ^off|r aktiviert wieder alle AddOns,
+  die durch */edebug|r ^on|r während der Sitzung deaktiviert wurden.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

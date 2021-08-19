@@ -220,6 +220,8 @@ L["Mobile"] = "Мобильный"
 L["Modulating Blend"] = "Модулирующие смешивание" --Check back later
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "Танки"
+L["Mythic+ Score:"] = true
+L["Mythic+ Best Run:"] = true
 L["Naval Mission(s) Report:"] = "Отчет морских миссий:"
 L["Nazjatar Follower XP"] = "Опыт соратника Назжатара"
 L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "Нужна помощь? Заходи в дискорд Discord: https://discord.gg/xFWcfgE"
@@ -326,7 +328,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Эта опция вызвала конфликт точек фиксации, в результате которого \"%s\" крепится к самому себе. Пожалуйста, проверьте настройки точек фиксации. \"%s\" будет прикреплено к \"%s\"."
 L["This will change the layout of your unitframes and actionbars."] = "Это изменит расположение ваших рамок юнитов, рейда и панелей команд."
 L["To list all available ElvUI commands, type in chat /ehelp"] = "Для получения списка команд ElvUI введите /ehelp"
-L["To quickly move around certain elements of the UI, type /moveui"] = "Чтобы быстро передвинуть элементы интерфейса введите /moveui"
+L["To quickly move around certain elements of the UI, type /emove"] = "Чтобы быстро передвинуть элементы интерфейса введите /emove"
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = "ПКМ на вкладке чата позволит настроить цвета, каналы и размер шрифта."
 L["Toggle Bags"] = "Показать сумки"
 L["Toggle Chat Frame"] = "Показать/скрыть чат"
@@ -379,6 +381,7 @@ L["Zone Ability"] = "Способность зоны"
 
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите "Закрепить", когда закончите.
+
 Options:
   LeftClick - Toggle Nudge Frame.
   RightClick - Open Config Section.
@@ -388,14 +391,14 @@ Options:
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
- */resetui|r  -  Reset all frames to their original positions.
+ */emove|r  -  Toggle anchors to reposition various elements.
+ */ereset|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
-  using */luaerror|r ^on|r within that session.
+ */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
+  using */edebug|r ^on|r within that session.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
