@@ -400,6 +400,13 @@ function S:BlizzardOptions()
 		end
 	end
 
+	for i = 1, _G.AudioOptionsSoundPanel:GetNumChildren() do
+		local child = select(i, _G.AudioOptionsSoundPanel:GetChildren())
+		if child:IsObjectType('Slider') and child.backdrop then
+			child.backdrop:SetBackdropColor(1, 1, 1, 1)
+		end
+	end
+
 	-- System options buttons
 	_G.VideoOptionsFrameDefaults:ClearAllPoints()
 	_G.VideoOptionsFrameDefaults:Point('TOPLEFT', _G.VideoOptionsFrameCategoryFrame, 'BOTTOMLEFT', 0, -5)
