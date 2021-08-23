@@ -113,7 +113,7 @@ function oUF:DisableBlizzard(unit)
 			end
 		end
 
-		Arena_LoadUI = noop -- Blizzard_ArenaUI should not be loaded
+		Arena_LoadUI = noop -- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
 
 		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif(unit:match('nameplate%d+$')) then
