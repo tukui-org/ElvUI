@@ -386,24 +386,17 @@ function S:BlizzardOptions()
 			for i = 1, Panel:GetNumChildren() do
 				local Child = select(i, Panel:GetChildren())
 				if Child:IsObjectType('CheckButton') then
-					S:HandleCheckBox(Child)
+					S:HandleCheckBox(Child, nil, nil, true)
 				elseif Child:IsObjectType('Button') then
 					S:HandleButton(Child)
 				elseif Child:IsObjectType('Slider') then
-					S:HandleSliderFrame(Child)
+					S:HandleSliderFrame(Child, nil, true)
 				elseif Child:IsObjectType('Tab') then
 					S:HandleTab(Child)
 				elseif Child:IsObjectType('Frame') and Child.Left and Child.Middle and Child.Right then
 					S:HandleDropDownBox(Child)
 				end
 			end
-		end
-	end
-
-	for i = 1, _G.AudioOptionsSoundPanel:GetNumChildren() do
-		local child = select(i, _G.AudioOptionsSoundPanel:GetChildren())
-		if child:IsObjectType('Slider') and child.backdrop then
-			child.backdrop:SetBackdropColor(1, 1, 1, 1)
 		end
 	end
 
