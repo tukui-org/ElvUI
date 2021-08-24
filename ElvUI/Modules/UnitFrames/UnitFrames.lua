@@ -1572,7 +1572,9 @@ function UF:Initialize()
 	if E.private.unitframe.disabledBlizzardFrames.arena then
 		UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 
-		Arena_LoadUI = E.noop -- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+		Arena_LoadUI = E.noop
+		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
 
 		if IsAddOnLoaded('Blizzard_ArenaUI') then
 			ElvUF:DisableBlizzard('arena')
