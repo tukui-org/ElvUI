@@ -909,7 +909,6 @@ end
 UF.SmartSettings = {
 	raid = {},
 	raid40 = { numGroups = 8 },
-	raidpet = { enable = false }
 }
 
 function UF:HandleSmartVisibility(skip)
