@@ -453,32 +453,35 @@ local function UpdateInstanceDifficulty()
 end
 
 local function UpdateStyleLists()
-	if E.global.nameplate.filters[selectedNameplateFilter]
-	and E.global.nameplate.filters[selectedNameplateFilter].triggers
-	and E.global.nameplate.filters[selectedNameplateFilter].triggers.names then
-		E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names = {
-			order = 50,
-			type = 'group',
-			name = '',
-			inline = true,
-			args = {}
-		}
-		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) then
-			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) do
-				E.Options.args.nameplate.args.filters.args.triggers.args.names.args.names.args[name] = {
-					name = name,
-					type = 'toggle',
-					order = -1,
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers and
-							E.global.nameplate.filters[selectedNameplateFilter].triggers.names and
-							E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name]
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.names[name] = value
-						NP:ConfigureAll()
-					end
-				}
+	for _, which in next, {'names', 'items'} do
+		if E.global.nameplate.filters[selectedNameplateFilter]
+		and E.global.nameplate.filters[selectedNameplateFilter].triggers
+		and E.global.nameplate.filters[selectedNameplateFilter].triggers[which] then
+			E.Options.args.nameplate.args.filters.args.triggers.args[which].args.list = {
+				order = 50,
+				type = 'group',
+				name = '',
+				inline = true,
+				args = {}
+			}
+
+			if next(E.global.nameplate.filters[selectedNameplateFilter].triggers[which]) then
+				for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers[which]) do
+					E.Options.args.nameplate.args.filters.args.triggers.args[which].args.list.args[name] = {
+						name = name,
+						type = 'toggle',
+						order = -1,
+						get = function(info)
+							return E.global.nameplate.filters[selectedNameplateFilter].triggers and
+								E.global.nameplate.filters[selectedNameplateFilter].triggers[which] and
+								E.global.nameplate.filters[selectedNameplateFilter].triggers[which][name]
+						end,
+						set = function(info, value)
+							E.global.nameplate.filters[selectedNameplateFilter].triggers[which][name] = value
+							NP:ConfigureAll()
+						end
+					}
+				end
 			end
 		end
 	end
@@ -1357,8 +1360,101 @@ function UpdateFilterGroup()
 					end,
 					args = {}
 				},
-				role = {
+				items = {
+					name = L["Items"],
 					order = 13,
+					type = 'group',
+					disabled = function()
+						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					end,
+					args = {
+						types = {
+							name = L["Active Slots"],
+							order = 1,
+							inline = true,
+							type = 'multiselect',
+							sortByValue = true,
+							get = function(_, key)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.slots[key]
+							end,
+							set = function(_, key, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.slots[key] = value or nil
+								NP:ConfigureAll()
+							end,
+							values = {
+								[_G.INVSLOT_AMMO] = L["INVTYPE_AMMO"], -- 0
+								[_G.INVSLOT_HEAD] = L["INVTYPE_HEAD"], -- 1
+								[_G.INVSLOT_NECK] = L["INVTYPE_NECK"], -- 2
+								[_G.INVSLOT_SHOULDER] = L["INVTYPE_SHOULDER"], -- 3
+								[_G.INVSLOT_BODY] = L["INVTYPE_BODY"], -- 4 (shirt)
+								[_G.INVSLOT_CHEST] = L["INVTYPE_CHEST"], -- 5
+								[_G.INVSLOT_WAIST] = L["INVTYPE_WAIST"], -- 6
+								[_G.INVSLOT_LEGS] = L["INVTYPE_LEGS"], -- 7
+								[_G.INVSLOT_FEET] = L["INVTYPE_FEET"], -- 8
+								[_G.INVSLOT_WRIST] = L["INVTYPE_WRIST"], -- 9
+								[_G.INVSLOT_HAND] = L["INVTYPE_HAND"], -- 10
+								[_G.INVSLOT_FINGER1] = L["INVTYPE_FINGER1"], -- 11 (no real global)
+								[_G.INVSLOT_FINGER2] = L["INVTYPE_FINGER2"], -- 12 (no real global)
+								[_G.INVSLOT_TRINKET1] = L["INVTYPE_TRINKET1"], -- 13 (no real global)
+								[_G.INVSLOT_TRINKET2] = L["INVTYPE_TRINKET2"], -- 14 (no real global)
+								[_G.INVSLOT_BACK] = L["INVTYPE_CLOAK"], -- 15
+								[_G.INVSLOT_MAINHAND] = L["INVTYPE_WEAPONMAINHAND"], -- 16
+								[_G.INVSLOT_OFFHAND] = L["INVTYPE_WEAPONOFFHAND"], -- 17
+								[_G.INVSLOT_RANGED] = L["INVTYPE_RANGED"], -- 18
+								[_G.INVSLOT_TABARD] = L["INVTYPE_TABARD"], -- 19
+							},
+						},
+						addItem = {
+							order = 2,
+							name = L["Add Item Name or ID"],
+							desc = L["Add a Item Name or ID to the list."],
+							type = 'input',
+							get = function(info)
+								return ''
+							end,
+							set = function(info, value)
+								if strmatch(value, '^[%s%p]-$') then return end
+
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.items[value] = true
+								UpdateFilterGroup()
+								NP:ConfigureAll()
+							end
+						},
+						removeItem = {
+							order = 3,
+							name = L["Remove Item Name or ID"],
+							desc = L["Remove a Item Name or ID from the list."],
+							type = 'input',
+							get = function(info)
+								return ''
+							end,
+							set = function(info, value)
+								if strmatch(value, '^[%s%p]-$') then return end
+
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.items[value] = nil
+								UpdateFilterGroup()
+								NP:ConfigureAll()
+							end
+						},
+						negativeMatch = {
+							order = 4,
+							name = L["Negative Match"],
+							desc = L["Match if Item Name or ID is NOT in the list."],
+							type = 'toggle',
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]]
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers[info[#info]] = value
+								NP:ConfigureAll()
+							end
+						}
+					}
+				},
+				role = {
+					order = 14,
 					type = 'group',
 					name = L["ROLE"],
 					disabled = function()
@@ -1430,7 +1526,7 @@ function UpdateFilterGroup()
 					}
 				},
 				classification = {
-					order = 14,
+					order = 15,
 					type = 'group',
 					name = L["Classification"],
 					get = function(info)
@@ -1492,7 +1588,7 @@ function UpdateFilterGroup()
 					}
 				},
 				health = {
-					order = 15,
+					order = 16,
 					type = 'group',
 					name = L["Health Threshold"],
 					get = function(info)
@@ -1557,7 +1653,7 @@ function UpdateFilterGroup()
 					}
 				},
 				power = {
-					order = 16,
+					order = 17,
 					type = 'group',
 					name = L["Power Threshold"],
 					get = function(info)
@@ -1623,7 +1719,7 @@ function UpdateFilterGroup()
 				},
 				keyMod = {
 					name = L["Key Modifiers"],
-					order = 17,
+					order = 18,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1718,7 +1814,7 @@ function UpdateFilterGroup()
 					}
 				},
 				levels = {
-					order = 18,
+					order = 19,
 					type = 'group',
 					name = L["Level"],
 					get = function(info)
@@ -1801,7 +1897,7 @@ function UpdateFilterGroup()
 				},
 				cooldowns = {
 					name = L["Cooldowns"],
-					order = 19,
+					order = 20,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -1863,7 +1959,7 @@ function UpdateFilterGroup()
 				},
 				buffs = {
 					name = L["Buffs"],
-					order = 20,
+					order = 21,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs and
@@ -1989,7 +2085,7 @@ function UpdateFilterGroup()
 				},
 				debuffs = {
 					name = L["Debuffs"],
-					order = 21,
+					order = 22,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs and
@@ -2107,7 +2203,7 @@ function UpdateFilterGroup()
 				},
 				bossModAuras = {
 					name = L["Boss Mod Auras"],
-					order = 22,
+					order = 23,
 					type = 'group',
 					get = function(info)
 						UpdateBossModAuras() -- this is so we can get the seen textures without full update
@@ -2233,7 +2329,7 @@ function UpdateFilterGroup()
 				},
 				threat = {
 					name = L["Threat"],
-					order = 23,
+					order = 24,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2317,7 +2413,7 @@ function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 24,
+					order = 25,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2388,7 +2484,7 @@ function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 25,
+					order = 26,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and
@@ -2514,7 +2610,7 @@ function UpdateFilterGroup()
 				},
 				creatureType = {
 					name = L["Creature Type"],
-					order = 26,
+					order = 27,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]]
@@ -2551,7 +2647,7 @@ function UpdateFilterGroup()
 					}
 				},
 				instanceType = {
-					order = 27,
+					order = 28,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info)
@@ -2624,7 +2720,7 @@ function UpdateFilterGroup()
 					}
 				},
 				location = {
-					order = 28,
+					order = 29,
 					type = 'group',
 					name = L["Location"],
 					get = function(info)
@@ -2898,7 +2994,7 @@ function UpdateFilterGroup()
 					}
 				},
 				raidTarget = {
-					order = 29,
+					order = 30,
 					type = 'group',
 					name = L["BINDING_HEADER_RAID_TARGET"],
 					get = function(info)
