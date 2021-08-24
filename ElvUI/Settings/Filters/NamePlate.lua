@@ -265,6 +265,8 @@ E.StyleFilterDefaults = {
 			missing = false,
 			minTimeLeft = 0,
 			maxTimeLeft = 0,
+			hasDispellable = false,
+			hasNoDispellable = false,
 			names = {}
 		},
 		bossMods = {

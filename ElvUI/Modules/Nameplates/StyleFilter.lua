@@ -990,6 +990,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Debuffs
 	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+		-- Has Dispellable
+		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
+			if (trigger.debuffs.hasDispellable and frame.Debuffs.hasDispellable) or (trigger.debuffs.hasNoDispellable and not frame.Debuffs.hasDispellable) then passed = true else return end
+		end
+
+		-- Names / Spell IDs
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end

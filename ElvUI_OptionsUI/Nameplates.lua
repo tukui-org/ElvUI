@@ -2138,6 +2138,18 @@ function UpdateFilterGroup()
 									E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 							end
 						},
+						hasDispellable = {
+							order = 5,
+							type = "toggle",
+							name = L["Has Dispellable"],
+							desc = L["If enabled then the filter will only activate when the unit has a dispellable buff(s)."]
+						},
+						hasNoDispellable = {
+							order = 6,
+							type = "toggle",
+							name = L["Has No Dispellable"],
+							desc = L["If enabled then the filter will only activate when the unit has no dispellable buff(s)."],
+						},
 						changeList = {
 							type = 'group',
 							inline = true,
