@@ -58,7 +58,6 @@ local function handleFrame(baseName, doNotReparent)
 end
 
 local hookedPlates = {}
-local noop = function() end
 function oUF:DisableBlizzard(unit)
 	if(not unit) then return end
 
@@ -113,8 +112,8 @@ function oUF:DisableBlizzard(unit)
 			end
 		end
 
-		Arena_LoadUI = noop -- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
-
+		-- Blizzard_ArenaUI should not be loaded
+		Arena_LoadUI = function() end
 		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif(unit:match('nameplate%d+$')) then
 		local frame = C_NamePlate.GetNamePlateForUnit(unit)
