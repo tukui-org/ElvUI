@@ -14,6 +14,10 @@ local hiddenParent = CreateFrame('Frame', nil, UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
+local function insecureOnShow(self)
+	self:Hide()
+end
+
 local function handleFrame(baseName, doNotReparent)
 	local frame
 	if(type(baseName) == 'string') then
@@ -57,7 +61,6 @@ local function handleFrame(baseName, doNotReparent)
 	end
 end
 
-local hookedPlates = {}
 function oUF:DisableBlizzard(unit)
 	if(not unit) then return end
 
@@ -117,13 +120,13 @@ function oUF:DisableBlizzard(unit)
 		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif(unit:match('nameplate%d+$')) then
 		local frame = C_NamePlate.GetNamePlateForUnit(unit)
-		local plate = frame and frame.UnitFrame
-		if plate and not hookedPlates[plate] then
-			hookedPlates[plate] = true
+		if(frame and frame.UnitFrame) then
+			if(not frame.UnitFrame.isHooked) then
+				frame.UnitFrame:HookScript('OnShow', insecureOnShow)
+				frame.UnitFrame.isHooked = true
+			end
 
-			handleFrame(plate, true)
-
-			hooksecurefunc(plate, 'Show', plate.Hide)
+			handleFrame(frame.UnitFrame, true)
 		end
 	end
 end
