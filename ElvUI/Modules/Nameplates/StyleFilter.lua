@@ -1020,21 +1020,21 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
+	-- Slots
+	if trigger.slots and next(trigger.slots) then
+		for slot, value in pairs(trigger.slots) do
+			if value then -- only run if at least one is selected
+				if GetInventoryItemID('player', slot) then passed = true else return end
+			end
+		end
+	end
+
 	-- Items
 	if trigger.items and next(trigger.items) then
 		for item, value in pairs(trigger.items) do
 			if value then -- only run if at least one is selected
 				local hasItem = IsEquippedItem(item)
 				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
-			end
-		end
-	end
-
-	-- Slots
-	if trigger.slots and next(trigger.slots) then
-		for slot, value in pairs(trigger.slots) do
-			if value then -- only run if at least one is selected
-				if GetInventoryItemID('player', slot) then passed = true else return end
 			end
 		end
 	end
