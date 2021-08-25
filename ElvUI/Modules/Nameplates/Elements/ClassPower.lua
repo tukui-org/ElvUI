@@ -56,9 +56,9 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedPoints)
 
 		if chargedPoints then
 			local color = NP.db.colors.classResources.chargedComboPoint
-			for _, index in next, chargedPoints do
-				self[index]:SetStatusBarColor(color.r, color.g, color.b)
-				self[index].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+			for _, chargedIndex in next, chargedPoints do
+				self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
+				self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
 			end
 		end
 	end

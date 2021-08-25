@@ -374,9 +374,9 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 
 		if chargedPoints then
 			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
-			for _, index in next, chargedPoints do
-				self[index]:SetStatusBarColor(r, g, b)
-				self[index].bg:SetVertexColor(r * .35, g * .35, b * .35)
+			for _, chargedIndex in next, chargedPoints do
+				self[chargedIndex]:SetStatusBarColor(r, g, b)
+				self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
 			end
 		end
 	end
