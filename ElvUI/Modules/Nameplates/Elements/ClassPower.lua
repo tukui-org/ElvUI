@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 local oUF = E.oUF
 
 local _G = _G
+local next = next
 local unpack, max = unpack, max
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -39,7 +40,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
+function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedPoints)
 	if Cur and Cur > 0 then
 		self:Show()
 	else
@@ -52,11 +53,13 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 
 	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
 		NP.ClassPower_UpdateColor(self, powerType)
-		if chargedIndex then
-			local color = NP.db.colors.classResources.chargedComboPoint
 
-			self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
-			self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		if chargedPoints then
+			local color = NP.db.colors.classResources.chargedComboPoint
+			for _, index in next, chargedPoints do
+				self[index]:SetStatusBarColor(color.r, color.g, color.b)
+				self[index].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+			end
 		end
 	end
 end
