@@ -6,6 +6,8 @@ Engine[1] = {}
 Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C, L = Engine[1], Engine[2]
 
+E.OptionsUI = Engine
+
 local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
 
 C.Values = {
