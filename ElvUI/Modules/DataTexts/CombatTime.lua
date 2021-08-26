@@ -6,7 +6,7 @@ local GetInstanceInfo = GetInstanceInfo
 local GetTime = GetTime
 
 local displayString, lastPanel = ''
-local timerText, timer, startTime = L["Combat"], 0, 0
+local timerText, timer, startTime, inEncounter = L["Combat"], 0, 0
 
 local function UpdateText()
 	return format(E.global.datatexts.settings.Combat.TimeFull and '%02d:%02d:%02d' or '%02d:%02d', floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
@@ -27,17 +27,19 @@ end
 
 local function OnEvent(self, event, _, timeSeconds)
 	local _, instanceType = GetInstanceInfo()
-	local isInArena = instanceType == 'arena'
+	local inArena, started, ended = instanceType == 'arena', event == 'ENCOUNTER_START', event == 'ENCOUNTER_END'
 
-	if event == 'START_TIMER' and isInArena then
+	if inArena and event == 'START_TIMER' then
 		timerText, timer, startTime = L["Arena"], 0, timeSeconds
 		self.text:SetFormattedText(displayString, timerText, '00:00:00')
 		self:SetScript('OnUpdate', DelayOnUpdate)
-	elseif event == 'PLAYER_REGEN_ENABLED' and not isInArena then
+	elseif not inArena and ((not inEncounter and event == 'PLAYER_REGEN_ENABLED') or ended) then
 		self:SetScript('OnUpdate', nil)
-	elseif event == 'PLAYER_REGEN_DISABLED' and not isInArena then
+		if ended then inEncounter = nil end
+	elseif not inArena and (event == 'PLAYER_REGEN_DISABLED' or started) then
 		timerText, timer, startTime = L["Combat"], 0, GetTime()
 		self:SetScript('OnUpdate', OnUpdate)
+		if started then inEncounter = true end
 	elseif not self.text:GetText() then
 		self.text:SetFormattedText(displayString, timerText, 'N/A')
 	end
@@ -52,4 +54,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Combat', nil, {'START_TIMER', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Combat', nil, {'START_TIMER', 'ENCOUNTER_START', 'ENCOUNTER_END', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ValueColorUpdate)
