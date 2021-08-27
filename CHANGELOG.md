@@ -1,7 +1,21 @@
-### Version 12.44 [ ETA: 🍨 ]
+### Version 12.45 [ ETA: 🍨 ]
 
 **Development:**  
 
+
+___
+### Version 12.44 [ August 27th 2021 ]
+
+**Dont Read This:**  
+Tags: Added [selectioncolor]  
+Fixed: Charged Combo points for Rogue Legendary  
+StyleFilter: Added triggers for Items, Slots, and Dispellable  
+Datatext: Combat Time will now prefer Encounter Time in instances, rather than own Combat Time  
+Unitframe: Fixed a rare oUF_RaidDebuff error (priority was missing)  
+Unitframe: Raid Pets are now optional with Smart Raid  
+Nameplate: Attempted fix for another GetPoint error  
+Skins: Fixed borders for Blizzard Interface Settings  
+Skins: Fixed Multisell frame on Auction House  
 
 ___
 ### Version 12.43 [ August 17th 2021 ]
@@ -1141,7 +1155,7 @@ Attempted to fix the Portrait offsets and made the settings display an important
 **Misc. Changes:**  
 Added the Nzoth eye texture to the Alternative Power Bar, if its Sanity.  
 When you hover the NZoth eye on Character page, it will now show a highlight around the items with corruption stat.  
-Set a texture when a submenu is selected in the Auctionhouse skin.  
+Set a texture when a submenu is selected in the Auction House skin.  
 Fix backdrops on empty essences in the Character Frame.  
 Display an icon on Bag icons for corrupted items.  
 
