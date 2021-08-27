@@ -386,11 +386,11 @@ function S:BlizzardOptions()
 			for i = 1, Panel:GetNumChildren() do
 				local Child = select(i, Panel:GetChildren())
 				if Child:IsObjectType('CheckButton') then
-					S:HandleCheckBox(Child)
+					S:HandleCheckBox(Child, nil, nil, true)
 				elseif Child:IsObjectType('Button') then
 					S:HandleButton(Child)
 				elseif Child:IsObjectType('Slider') then
-					S:HandleSliderFrame(Child)
+					S:HandleSliderFrame(Child, nil, true)
 				elseif Child:IsObjectType('Tab') then
 					S:HandleTab(Child)
 				elseif Child:IsObjectType('Frame') and Child.Left and Child.Middle and Child.Right then

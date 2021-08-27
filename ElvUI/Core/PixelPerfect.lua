@@ -9,7 +9,7 @@ local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
 local GetPhysicalScreenSize = GetPhysicalScreenSize
 
-function E:RefreshGlobalFX()
+function E:RefreshGlobalFX() -- using RefreshModelScene will taint
 	_G.GlobalFXDialogModelScene:Hide()
 	_G.GlobalFXDialogModelScene:Show()
 

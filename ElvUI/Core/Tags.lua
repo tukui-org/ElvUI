@@ -526,6 +526,12 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	return Hex(c.r, c.g, c.b)
 end)
 
+E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	local selection = NP:UnitSelectionType(unit)
+	local cs = ElvUF.colors.selection[selection]
+	return (cs and Hex(cs[1], cs[2], cs[3])) or '|cFFcccccc'
+end)
+
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
@@ -1249,6 +1255,7 @@ E.TagInfo = {
 		['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 		['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
 		['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
+		['selectioncolor'] = { category = 'Colors', description = "Colors the text, depending on the type of the unit's selection" },
 		['classcolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" },
 		['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
 		['factioncolor'] = { category = 'Colors', description = "Colors names by Faction (Alliance, Horde, Neutral)" },

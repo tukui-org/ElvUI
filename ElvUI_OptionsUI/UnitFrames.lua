@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C, L = unpack(select(2, ...))
+local C, L = unpack(E.OptionsUI)
 local UF = E:GetModule('UnitFrames')
 local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
@@ -2775,7 +2775,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		end
 	end
 
-	if groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
+	if groupName == 'raid' or groupName == 'raid40' then
 		config.args.positionsGroup.args.numGroups.disabled = function() return E.db.unitframe.smartRaidFilter end
 		config.args.visibilityGroup.args.visibility.disabled = function() return E.db.unitframe.smartRaidFilter end
 	end
@@ -5311,7 +5311,6 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
-			disabled = function() return E.db.unitframe.smartRaidFilter end,
 		},
 		configureToggle = {
 			order = 2,

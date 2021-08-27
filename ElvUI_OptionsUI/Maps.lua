@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C, L = unpack(select(2, ...))
+local C, L = unpack(E.OptionsUI)
 local WM = E:GetModule('WorldMap')
 local MM = E:GetModule('Minimap')
 local ACH = E.Libs.ACH

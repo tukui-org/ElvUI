@@ -10,12 +10,14 @@ local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort,
 local GetInstanceInfo = GetInstanceInfo
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
+local GetInventoryItemID = GetInventoryItemID
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local IsResting = IsResting
+local IsEquippedItem = IsEquippedItem
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
@@ -988,6 +990,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Debuffs
 	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+		-- Has Dispellable
+		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
+			if (trigger.debuffs.hasDispellable and frame.Debuffs.hasDispellable) or (trigger.debuffs.hasNoDispellable and not frame.Debuffs.hasDispellable) then passed = true else return end
+		end
+
+		-- Names / Spell IDs
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
@@ -1008,6 +1016,25 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 					if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
+			end
+		end
+	end
+
+	-- Slots
+	if trigger.slots and next(trigger.slots) then
+		for slot, value in pairs(trigger.slots) do
+			if value then -- only run if at least one is selected
+				if GetInventoryItemID('player', slot) then passed = true else return end
+			end
+		end
+	end
+
+	-- Items
+	if trigger.items and next(trigger.items) then
+		for item, value in pairs(trigger.items) do
+			if value then -- only run if at least one is selected
+				local hasItem = IsEquippedItem(item)
+				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
 			end
 		end
 	end
@@ -1136,13 +1163,14 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
+	GROUP_ROSTER_UPDATE = true,
 	MODIFIER_STATE_CHANGED = true,
+	PLAYER_EQUIPMENT_CHANGED = true,
 	PLAYER_FOCUS_CHANGED = true,
 	PLAYER_REGEN_DISABLED = true,
 	PLAYER_REGEN_ENABLED = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
-	GROUP_ROSTER_UPDATE = true,
 	QUEST_LOG_UPDATE = true,
 	RAID_TARGET_UPDATE = true,
 	SPELL_UPDATE_COOLDOWN = true,
@@ -1270,6 +1298,10 @@ function mod:StyleFilterConfigure()
 					events.UNIT_NAME_UPDATE = 1
 				end
 
+				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
+					events.UNIT_AURA = 1
+				end
+
 				if not events.UNIT_NAME_UPDATE and t.names and next(t.names) then
 					for _, value in pairs(t.names) do
 						if value then
@@ -1277,16 +1309,26 @@ function mod:StyleFilterConfigure()
 							break
 				end end end
 
-				if t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
+				if not events.PLAYER_EQUIPMENT_CHANGED and t.slots and next(t.slots) then
+					for _, value in pairs(t.slots) do
+						if value then
+							events.PLAYER_EQUIPMENT_CHANGED = 1
+							break
+				end end end
+
+				if not events.PLAYER_EQUIPMENT_CHANGED and t.items and next(t.items) then
+					for _, value in pairs(t.items) do
+						if value then
+							events.PLAYER_EQUIPMENT_CHANGED = 1
+							break
+				end end end
+
+				if not events.SPELL_UPDATE_COOLDOWN and t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
 					for _, value in pairs(t.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
 							events.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
-
-				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
-					events.UNIT_AURA = 1
-				end
 
 				if not events.UNIT_AURA and t.buffs and t.buffs.names and next(t.buffs.names) then
 					for _, value in pairs(t.buffs.names) do

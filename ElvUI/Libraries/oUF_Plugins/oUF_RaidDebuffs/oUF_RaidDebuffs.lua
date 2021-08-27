@@ -32,10 +32,10 @@ local function add(spell, priority, stackThreshold)
 		spell = GetSpellInfo(spell)
 	end
 
-	if(spell) then
+	if spell then
 		debuff_data[spell] = {
 			priority = (addon.priority + priority),
-			stackThreshold = (stackThreshold or 0),
+			stackThreshold = stackThreshold,
 		}
 	end
 end
@@ -47,7 +47,7 @@ function addon:RegisterDebuffs(t)
 			t[spell] = { enable = oldValue, priority = 0, stackThreshold = 0 }
 		else
 			if t[spell].enable then
-				add(spell, t[spell].priority, t[spell].stackThreshold)
+				add(spell, t[spell].priority or 0, t[spell].stackThreshold or 0)
 			end
 		end
 	end

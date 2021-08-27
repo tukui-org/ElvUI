@@ -1,10 +1,11 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('Distributor')
 
-local Engine = select(2, ...)
-Engine[1] = {}
-Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
-local C, L = Engine[1], Engine[2]
+local C, L = {}, E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+
+E.OptionsUI = select(2, ...)
+E.OptionsUI[1] = C
+E.OptionsUI[2] = L
 
 local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
 
