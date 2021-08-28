@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, ipairs, select = pairs, ipairs, select
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
 -- Credits: siweia (AuroraClassic)
 local function SkinEditBoxes(Frame)
@@ -218,7 +219,7 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:SetPoint('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
+	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
@@ -416,19 +417,27 @@ local function LoadSkin()
 	S:HandleButton(Frame.BuyDialog.BuyNowButton)
 	S:HandleButton(Frame.BuyDialog.CancelButton)
 
-	--[[ Multisell thing]]
+	--[[ Multisell ]]--
 	local multisellFrame = _G.AuctionHouseMultisellProgressFrame
 	multisellFrame:StripTextures()
 	multisellFrame:SetTemplate('Transparent')
 
 	local progressBar = multisellFrame.ProgressBar
 	progressBar:StripTextures()
-	S:HandleIcon(progressBar.Icon)
-	progressBar:SetStatusBarTexture(E.Media.normTex)
-	progressBar:SetTemplate()
+	progressBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
+	progressBar:SetStatusBarTexture(E.media.normTex)
 
-	local close = multisellFrame.CancelButton
-	S:HandleCloseButton(close)
+	progressBar.Text:ClearAllPoints()
+	progressBar.Text:Point('BOTTOM', progressBar, 'TOP', 0, 5)
+
+	S:HandleCloseButton(multisellFrame.CancelButton)
+	S:HandleIcon(progressBar.Icon)
+
+	-- progressBar already has a backdrop for itself
+	progressBar.IconBackdrop = CreateFrame('Frame', '$parentIconBackdrop', progressBar)
+	progressBar.IconBackdrop:SetFrameLevel(progressBar:GetFrameLevel())
+	progressBar.IconBackdrop:SetOutside(progressBar.Icon)
+	progressBar.IconBackdrop:SetTemplate()
 end
 
 S:AddCallbackForAddon('Blizzard_AuctionHouseUI', 'AuctionHouse', LoadSkin)

@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C, L = unpack(select(2, ...))
+local C, L = unpack(E.OptionsUI)
 local CH = E:GetModule('Chat')
 local Bags = E:GetModule('Bags')
 local Layout = E:GetModule('Layout')

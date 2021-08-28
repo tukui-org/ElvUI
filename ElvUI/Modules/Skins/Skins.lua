@@ -767,7 +767,7 @@ function S:HandleCloseButton(f, point, x, y)
 	end
 end
 
-function S:HandleSliderFrame(frame, template)
+function S:HandleSliderFrame(frame, template, frameLevel)
 	assert(frame, 'doesnt exist!')
 
 	local orientation = frame:GetOrientation()
@@ -781,7 +781,7 @@ function S:HandleSliderFrame(frame, template)
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	if not frame.backdrop then
-		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true, frameLevel)
 	end
 
 	local thumb = frame:GetThumbTexture()
