@@ -488,6 +488,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
+	slot.hasItem = (texture and 1) or nil -- used for ShowInspectCursor
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
