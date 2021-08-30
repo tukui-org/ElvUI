@@ -166,7 +166,7 @@ local function Update(self, event, unit, powerType)
 	* chargedIndex  - the index of the currently charged power point (number?)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(cur, max, oldMax ~= max, powerType, chargedPoints)
+		return element:PostUpdate(cur, max, oldMax ~= max, powerType, unpack(chargedPoints or {}))
 	end
 end
 
