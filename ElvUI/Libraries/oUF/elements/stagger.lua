@@ -44,19 +44,19 @@ local UnitStagger = UnitStagger
 -- end block
 
 -- sourced from FrameXML/Constants.lua
-local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
+local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
 
 -- sourced from FrameXML/MonkStaggerBar.lua
-local BREWMASTER_POWER_BAR_NAME = BREWMASTER_POWER_BAR_NAME or 'STAGGER'
+local BREWMASTER_POWER_BAR_NAME = _G.BREWMASTER_POWER_BAR_NAME or 'STAGGER'
 
 -- percentages at which bar should change color
-local STAGGER_YELLOW_TRANSITION =  STAGGER_YELLOW_TRANSITION or 0.3
-local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION or 0.6
+local STAGGER_YELLOW_TRANSITION =  _G.STAGGER_YELLOW_TRANSITION or 0.3
+local STAGGER_RED_TRANSITION = _G.STAGGER_RED_TRANSITION or 0.6
 
 -- table indices of bar colors
-local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
-local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
-local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
+local STAGGER_GREEN_INDEX = _G.STAGGER_GREEN_INDEX or 1
+local STAGGER_YELLOW_INDEX = _G.STAGGER_YELLOW_INDEX or 2
+local STAGGER_RED_INDEX = _G.STAGGER_RED_INDEX or 3
 
 local function UpdateColor(self, event, unit)
 	if(unit and unit ~= self.unit) then return end

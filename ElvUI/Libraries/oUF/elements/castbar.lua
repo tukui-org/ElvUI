@@ -90,6 +90,8 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
+local FAILED = _G.FAILED or 'Failed'
+local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 
 -- ElvUI block
 local select = select

@@ -69,8 +69,8 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local xpcall = Private.xpcall
 local unitExists = Private.unitExists
+local xpcall = Private.xpcall
 
 -- ElvUI block
 local _G = _G

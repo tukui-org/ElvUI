@@ -315,7 +315,7 @@ local function SetHealthUpdateMethod(self, state, force)
 end
 -- end block
 
-local function Enable(self, unit)
+local function Enable(self)
 	local element = self.Health
 	if(element) then
 		element.__owner = self

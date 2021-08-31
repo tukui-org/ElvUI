@@ -78,9 +78,9 @@ local UnitPowerType = UnitPowerType
 -- end block
 
 -- sourced from FrameXML/AlternatePowerBar.lua
-local ADDITIONAL_POWER_BAR_NAME = ADDITIONAL_POWER_BAR_NAME or 'MANA'
-local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX or 0
-local ALT_MANA_BAR_PAIR_DISPLAY_INFO = ALT_MANA_BAR_PAIR_DISPLAY_INFO
+local ADDITIONAL_POWER_BAR_NAME = _G.ADDITIONAL_POWER_BAR_NAME or 'MANA'
+local ADDITIONAL_POWER_BAR_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
+local ALT_MANA_BAR_PAIR_DISPLAY_INFO = _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO
 
 local function UpdateColor(self, event, unit, powerType)
 	if(not (unit and UnitIsUnit(unit, 'player') and powerType == ADDITIONAL_POWER_BAR_NAME)) then return end
