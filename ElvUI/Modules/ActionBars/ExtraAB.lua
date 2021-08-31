@@ -102,7 +102,6 @@ function AB:ExtraButtons_OnLeave()
 end
 
 function AB:ExtraButtons_GlobalFade()
-	if not E.private.actionbar.enable then return end
 	ExtraActionBarHolder:SetParent(E.db.actionbar.extraActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
 	ZoneAbilityHolder:SetParent(E.db.actionbar.zoneActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
 end
