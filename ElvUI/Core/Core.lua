@@ -35,7 +35,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
--- GLOBALS: ElvCharacterDB, ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+-- GLOBALS: ElvCharacterDB
 
 --Modules
 local ActionBars = E:GetModule('ActionBars')
@@ -1485,8 +1485,8 @@ function E:UpdateMinimap(skipCallback)
 end
 
 function E:UpdateAuras(skipCallback)
-	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
-	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
+	if Auras.BuffFrame then Auras:UpdateHeader(Auras.BuffFrame) end
+	if Auras.DebuffFrame then Auras:UpdateHeader(Auras.DebuffFrame) end
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
@@ -1550,27 +1550,27 @@ do
 
 		if (not event or event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
 			tinsert(staggerTable, 'UpdateLayout')
-			if E.private.actionbar.enable then
+			if ActionBars.Initialized then
 				tinsert(staggerTable, 'UpdateActionBars')
 			end
-			if E.private.nameplates.enable then
+			if NamePlates.Initialized then
 				tinsert(staggerTable, 'UpdateNamePlates')
 			end
-			if E.private.bags.enable then
+			if Bags.Initialized then
 				tinsert(staggerTable, 'UpdateBags')
 			end
-			if E.private.chat.enable then
+			if Chat.Initialized then
 				tinsert(staggerTable, 'UpdateChat')
 			end
-			if E.private.tooltip.enable then
+			if Tooltip.Initialized then
 				tinsert(staggerTable, 'UpdateTooltip')
 			end
 			tinsert(staggerTable, 'UpdateDataBars')
 			tinsert(staggerTable, 'UpdateDataTexts')
-			if E.private.general.minimap.enable then
+			if Minimap.Initialized then
 				tinsert(staggerTable, 'UpdateMinimap')
 			end
-			if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+			if Auras.BuffFrame or Auras.DebuffFrame then
 				tinsert(staggerTable, 'UpdateAuras')
 			end
 			tinsert(staggerTable, 'UpdateMisc')
@@ -1591,27 +1591,27 @@ function E:UpdateAll(doUpdates)
 		E:UpdateStart(true)
 
 		E:UpdateLayout()
-		if E.private.actionbar.enable then
+		if ActionBars.Initialized then
 			E:UpdateActionBars()
 		end
-		if E.private.nameplates.enable then
+		if NamePlates.Initialized then
 			E:UpdateNamePlates()
 		end
-		if E.private.bags.enable then
+		if Bags.Initialized then
 			E:UpdateBags()
 		end
-		if E.private.chat.enable then
+		if Chat.Initialized then
 			E:UpdateChat()
 		end
-		if E.private.tooltip.enable then
+		if Tooltip.Initialized then
 			E:UpdateTooltip()
 		end
 		E:UpdateDataBars()
 		E:UpdateDataTexts()
-		if E.private.general.minimap.enable then
+		if Minimap.Initialized then
 			E:UpdateMinimap()
 		end
-		if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+		if Auras.BuffFrame or Auras.DebuffFrame then
 			E:UpdateAuras()
 		end
 		E:UpdateMisc()
