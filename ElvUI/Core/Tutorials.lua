@@ -26,25 +26,25 @@ E.TutorialList = {
 }
 
 function E:SetNextTutorial()
-	self.db.currentTutorial = self.db.currentTutorial or 0
-	self.db.currentTutorial = self.db.currentTutorial + 1
+	E.db.currentTutorial = E.db.currentTutorial or 0
+	E.db.currentTutorial = E.db.currentTutorial + 1
 
-	if self.db.currentTutorial > #E.TutorialList then
-		self.db.currentTutorial = 1
+	if E.db.currentTutorial > #E.TutorialList then
+		E.db.currentTutorial = 1
 	end
 
-	ElvUITutorialWindow.desc:SetText(E.TutorialList[self.db.currentTutorial])
+	ElvUITutorialWindow.desc:SetText(E.TutorialList[E.db.currentTutorial])
 end
 
 function E:SetPrevTutorial()
-	self.db.currentTutorial = self.db.currentTutorial or 0
-	self.db.currentTutorial = self.db.currentTutorial - 1
+	E.db.currentTutorial = E.db.currentTutorial or 0
+	E.db.currentTutorial = E.db.currentTutorial - 1
 
-	if self.db.currentTutorial <= 0 then
-		self.db.currentTutorial = #E.TutorialList
+	if E.db.currentTutorial <= 0 then
+		E.db.currentTutorial = #E.TutorialList
 	end
 
-	ElvUITutorialWindow.desc:SetText(E.TutorialList[self.db.currentTutorial])
+	ElvUITutorialWindow.desc:SetText(E.TutorialList[E.db.currentTutorial])
 end
 
 function E:SpawnTutorialFrame()
@@ -108,13 +108,8 @@ function E:SpawnTutorialFrame()
 end
 
 function E:Tutorials(forceShow)
-	if (not forceShow and self.db.hideTutorial) or (not forceShow and not self.private.install_complete) then return end
-	local f = ElvUITutorialWindow
-	if not f then
-		f = E:SpawnTutorialFrame()
-	end
+	if not forceShow and (E.db.hideTutorial or not E.private.install_complete) then return end
 
-	E:StaticPopupSpecial_Show(f)
-
-	self:SetNextTutorial()
+	E:StaticPopupSpecial_Show(ElvUITutorialWindow or E:SpawnTutorialFrame())
+	E:SetNextTutorial()
 end
