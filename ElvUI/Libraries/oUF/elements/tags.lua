@@ -912,10 +912,15 @@ oUF.Tags = {
 	RefreshMethods = function(self, tag)
 		if(not tag) then return end
 
-		funcPool['[' .. tag .. ']'] = nil
-
 		-- If a tag's name contains magic chars, there's a chance that string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+
+		for bracket in next, funcPool do
+			if(strip(bracket):match(tag)) then
+				funcPool[bracket] = nil
+			end
+		end
+
 		for tagstr, func in next, tagPool do
 			if(strip(tagstr):match(tag)) then
 				tagPool[tagstr] = nil
@@ -938,6 +943,7 @@ oUF.Tags = {
 		-- If a tag's name contains magic chars, there's a chance that
 		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+
 		for tagstr in next, tagPool do
 			if(strip(tagstr):match(tag)) then
 				for fs, ts in next, taggedFS do
