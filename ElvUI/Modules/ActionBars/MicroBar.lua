@@ -128,6 +128,7 @@ function AB:UpdateMicroBarVisibility()
 end
 
 function AB:UpdateMicroPositionDimensions()
+	if not E.private.actionbar.enable then return end
 	local db = AB.db.microbar
 	microBar.db = db
 
