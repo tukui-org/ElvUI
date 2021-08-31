@@ -63,16 +63,8 @@ local _, playerClass = UnitClass('player')
 local unpack = unpack
 local CopyTable = CopyTable
 local UnitIsUnit = UnitIsUnit
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitIsTapDenied = UnitIsTapDenied
-local UnitThreatSituation = UnitThreatSituation
-local UnitIsPlayer = UnitIsPlayer
-local UnitClass = UnitClass
-local UnitSelectionType = UnitSelectionType
-local UnitReaction = UnitReaction
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitIsConnected = UnitIsConnected
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitPowerType = UnitPowerType
 -- end block

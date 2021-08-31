@@ -95,8 +95,6 @@ local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 
 -- ElvUI block
 local select = select
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
 local GetNetStats = GetNetStats
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
