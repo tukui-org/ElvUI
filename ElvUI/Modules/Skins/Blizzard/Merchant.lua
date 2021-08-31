@@ -56,16 +56,39 @@ function S:MerchantFrame()
 	end
 
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
+		local totalMerchantItems = GetMerchantNumItems()
+		local visibleMerchantItems = 0
+		local indexes = {}
+
+		for i = 1, totalMerchantItems do
+			tinsert(indexes, i)
+			visibleMerchantItems = visibleMerchantItems + 1
+		end
+
+		if (_G['MerchantFrame'].page > math.max(1, math.ceil(visibleMerchantItems / MERCHANT_ITEMS_PER_PAGE))) then
+			_G['MerchantFrame'].page = math.max(1, math.ceil(visibleMerchantItems / MERCHANT_ITEMS_PER_PAGE))
+		end
+
 		for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
 			local button = _G['MerchantItem'..i..'ItemButton']
+			local index = ((_G["MerchantFrame"].page - 1) * MERCHANT_ITEMS_PER_PAGE) + i
 
-			local money = _G['MerchantItem'..i..'MoneyFrame']
-			money:ClearAllPoints()
-			money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+			if index <= visibleMerchantItems then
+				local _, _, price, _, _, _, _, extendedCost = GetMerchantItemInfo(indexes[index])
 
-			local currency = _G['MerchantItem'..i..'AltCurrencyFrame']
-			currency:ClearAllPoints()
-			currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+				local money = _G['MerchantItem'..i..'MoneyFrame']
+				money:ClearAllPoints()
+				money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+
+				local currency = _G['MerchantItem'..i..'AltCurrencyFrame']
+
+				currency:ClearAllPoints()
+				if extendedCost and (price > 0) then
+					currency:Point('LEFT', money:GetName(), 'RIGHT', -14, 0)
+				else
+					currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+				end
+			end
 		end
 	end)
 
