@@ -460,7 +460,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			end
 	end
 
-	E:StaggeredUpdateAll(nil, true)
+	E:StaggeredUpdateAll()
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Layout Set"]
@@ -520,10 +520,12 @@ function E:SetupAuras(style, noDisplayMsg)
 	end
 end
 
-local function InstallComplete()
+function E:SetupComplete(reload)
 	E.private.install_complete = E.version
 
-	ReloadUI()
+	if reload then
+		ReloadUI()
+	end
 end
 
 local function ResetAll()
@@ -748,7 +750,7 @@ function E:SetPage(PageNum)
 		InstallOption1Button:SetScript('OnClick', function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end)
 		InstallOption1Button:SetText(L["Discord"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', InstallComplete)
+		InstallOption2Button:SetScript('OnClick', function() E:SetupComplete(true) end)
 		InstallOption2Button:SetText(L["Finished"])
 		ElvUIInstallFrame:Size(550, 350)
 	end
@@ -954,9 +956,7 @@ function E:Install()
 		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')
 		close:SetScript('OnClick', function()
-			-- Wasn't sure if we should run the InstallComplete function which will reload the ui for just clicking X to close it...
-			-- Simpy, Azil and I were sure what your thoughts on just saying it's complete
-			E.private.install_complete = E.version
+			E:SetupComplete()
 			f:Hide()
 		end)
 		S:HandleCloseButton(close)

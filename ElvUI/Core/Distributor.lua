@@ -186,7 +186,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						OnAccept = function(popup)
 							ElvDB.profiles[popup.editBox:GetText()] = data
 							E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(popup.editBox:GetText())
-							E:StaggeredUpdateAll(nil, true)
+							E:StaggeredUpdateAll()
 							Downloads[sender] = nil
 						end,
 						OnShow = function(popup) popup.editBox:SetText(profileKey) popup.editBox:SetFocus() end,
@@ -208,7 +208,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				OnAccept = function()
 					if profileKey == 'global' then
 						E:CopyTable(ElvDB.global, data)
-						E:StaggeredUpdateAll(nil, true)
+						E:StaggeredUpdateAll()
 					else
 						E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(profileKey)
 					end
@@ -532,10 +532,10 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
-		E:StaggeredUpdateAll(nil, true)
+		E:StaggeredUpdateAll()
 	elseif profileType == 'styleFilters' then
 		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
-		E:StaggeredUpdateAll(nil, true)
+		E:StaggeredUpdateAll()
 	end
 end
 

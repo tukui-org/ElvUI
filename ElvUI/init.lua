@@ -250,7 +250,7 @@ function E:PositionGameMenuButton()
 end
 
 function E:ResetProfile()
-	E:StaggeredUpdateAll(nil, true)
+	E:StaggeredUpdateAll()
 end
 
 function E:OnProfileReset()
@@ -258,7 +258,7 @@ function E:OnProfileReset()
 end
 
 function E:ResetPrivateProfile()
-	ReloadUI()
+	E:SetupComplete(true) -- set the var and reload
 end
 
 function E:OnPrivateProfileReset()

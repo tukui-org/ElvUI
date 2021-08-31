@@ -370,7 +370,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.unitframe.units.raid.rdebuffs.font = font
 	E.db.unitframe.units.raid40.rdebuffs.font = font
 
-	E:StaggeredUpdateAll(nil, true)
+	E:StaggeredUpdateAll()
 end
 
 do	--Update font/texture paths when they are registered by the addon providing them
@@ -1513,14 +1513,12 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	if not E.installSetup and not E.private.install_complete then
-		E:Install()
-	end
-
 	if E.staggerUpdateRunning then
 		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
 		--So call it, but skip updates inside it
 		E:UpdateAll(false)
+	elseif not E.private.install_complete then
+		E:Install()
 	end
 
 	--Done updating, let code now
@@ -1544,14 +1542,13 @@ do
 	end
 	E:RegisterCallback('StaggeredUpdate', CallStaggeredUpdate)
 
-	function E:StaggeredUpdateAll(event, installSetup)
+	function E:StaggeredUpdateAll(event)
 		if not E.initialized then
-			E:Delay(1, E.StaggeredUpdateAll, E, event, installSetup)
+			E:Delay(1, E.StaggeredUpdateAll, E, event)
 			return
 		end
 
-		E.installSetup = installSetup
-		if (installSetup or event and event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
+		if (not event or event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
 			tinsert(staggerTable, 'UpdateLayout')
 			if E.private.actionbar.enable then
 				tinsert(staggerTable, 'UpdateActionBars')
