@@ -250,7 +250,7 @@ function E:PositionGameMenuButton()
 end
 
 function E:ResetProfile()
-	E:StaggeredUpdateAll()
+	E:StaggeredUpdateAll(nil, true)
 end
 
 function E:OnProfileReset()

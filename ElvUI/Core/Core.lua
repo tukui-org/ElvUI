@@ -1594,15 +1594,29 @@ function E:UpdateAll(doUpdates)
 		E:UpdateStart(true)
 
 		E:UpdateLayout()
-		E:UpdateTooltip()
-		E:UpdateActionBars()
-		E:UpdateBags()
-		E:UpdateChat()
+		if E.private.actionbar.enable then
+			E:UpdateActionBars()
+		end
+		if E.private.nameplates.enable then
+			E:UpdateNamePlates()
+		end
+		if E.private.bags.enable then
+			E:UpdateBags()
+		end
+		if E.private.chat.enable then
+			E:UpdateChat()
+		end
+		if E.private.tooltip.enable then
+			E:UpdateTooltip()
+		end
 		E:UpdateDataBars()
 		E:UpdateDataTexts()
-		E:UpdateMinimap()
-		E:UpdateNamePlates()
-		E:UpdateAuras()
+		if E.private.general.minimap.enable then
+			E:UpdateMinimap()
+		end
+		if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+			E:UpdateAuras()
+		end
 		E:UpdateMisc()
 		E:UpdateEnd()
 	end
