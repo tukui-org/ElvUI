@@ -258,7 +258,7 @@ function E:OnProfileReset()
 end
 
 function E:ResetPrivateProfile()
-	E:SetupComplete(true) -- set the var and reload
+	ReloadUI()
 end
 
 function E:OnPrivateProfileReset()
