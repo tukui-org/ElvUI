@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+local indexes = {}
 
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
@@ -58,7 +59,6 @@ function S:MerchantFrame()
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
 		local totalMerchantItems = GetMerchantNumItems()
 		local visibleMerchantItems = 0
-		local indexes = {}
 
 		for i = 1, totalMerchantItems do
 			tinsert(indexes, i)
