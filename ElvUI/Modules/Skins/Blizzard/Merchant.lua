@@ -59,6 +59,7 @@ function S:MerchantFrame()
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
 		local totalMerchantItems = GetMerchantNumItems()
 		local visibleMerchantItems = 0
+		wipe(indexes)
 
 		for i = 1, totalMerchantItems do
 			tinsert(indexes, i)
