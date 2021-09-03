@@ -78,6 +78,8 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
 	S:HandleScrollBar(frame.LinesScrollFrame.ScrollBar)
+
+	frame.isSkinned = true
 end
 
 function S:ScriptErrorsFrame()
@@ -97,7 +99,7 @@ function S:Blizzard_DebugTools()
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
 	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
-		if frame.ScrollFrameArt and not frame.template then
+		if frame.ScrollFrameArt and not frame.isSkinned then
 			SkinTableAttributeDisplay(frame)
 		end
 	end)
