@@ -276,6 +276,7 @@ function S:PetBattleFrame()
 			if E.lowversion then
 				point, x, y = 'BOTTOMRIGHT', -4, 4
 			end
+
 			t:ClearAllPoints()
 			t:Point(point, E.UIParent, point, x, y)
 		end)

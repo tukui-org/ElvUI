@@ -664,29 +664,29 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
-	if not (tt and questID and tt.pbBar and tt.pbBar.GetValue) or tt:IsForbidden() then return end
-	local cur = tt.pbBar:GetValue()
-	if cur then
-		local max, _
-		if tt.pbBar.GetMinMaxValues then
-			_, max = tt.pbBar:GetMinMaxValues()
-		end
+	if not (tt and questID and tt.progressBar) or tt:IsForbidden() then return end
 
-		Skins:StatusBarColorGradient(tt.pbBar, cur, max)
-	end
+	local _, max = tt.progressBar:GetMinMaxValues()
+	Skins:StatusBarColorGradient(tt.progressBar, tt.progressBar:GetValue(), max)
+end
+
+function TT:GameTooltip_ClearProgressBars(tt)
+	tt.progressBar = nil
 end
 
 function TT:GameTooltip_ShowProgressBar(tt)
 	if not tt or not tt.progressBarPool or tt:IsForbidden() then return end
 
 	local sb = tt.progressBarPool:GetNextActive()
-	if (not sb or not sb.Bar) or sb.Bar.backdrop then return end
+	if not sb or not sb.Bar then return end
 
-	sb.Bar:StripTextures()
-	sb.Bar:CreateBackdrop('Transparent', nil, true)
-	sb.Bar:SetStatusBarTexture(E.media.normTex)
+	tt.progressBar = sb.Bar
 
-	tt.pbBar = sb.Bar
+	if not sb.Bar.backdrop then
+		sb.Bar:StripTextures()
+		sb.Bar:CreateBackdrop('Transparent', nil, true)
+		sb.Bar:SetStatusBarTexture(E.media.normTex)
+	end
 end
 
 function TT:GameTooltip_ShowStatusBar(tt)
