@@ -317,8 +317,10 @@ local function SkinPetFrame()
 	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 
 	if E.private.skins.blizzard.tooltip then
-		_G.PetJournalPrimaryAbilityTooltip.NineSlice:SetAlpha(0)
-		_G.PetJournalPrimaryAbilityTooltip:SetTemplate('Transparent')
+		local tt = _G.PetJournalPrimaryAbilityTooltip
+		if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
+		if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+		tt.NineSlice:SetTemplate('Transparent')
 	end
 
 	for i=1, 6 do

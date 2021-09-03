@@ -52,8 +52,7 @@ end
 local function SkinTableAttributeDisplay(frame)
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
-	frame.ScrollFrameArt:StripTextures()
-	frame.ScrollFrameArt:SetTemplate('Transparent')
+	frame.ScrollFrameArt.NineSlice:SetTemplate('Transparent')
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:Point('TOPLEFT', frame, 'TOPLEFT', 2, -2)
@@ -97,10 +96,9 @@ function S:Blizzard_DebugTools()
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
-	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(s)
-		if s and s.ScrollFrameArt and not s.skinned then
-			SkinTableAttributeDisplay(s)
-			s.skinned = true
+	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
+		if frame.ScrollFrameArt and not frame.template then
+			SkinTableAttributeDisplay(frame)
 		end
 	end)
 end

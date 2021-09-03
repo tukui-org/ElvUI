@@ -37,8 +37,9 @@ local function SkinPetButton(self, bf)
 end
 
 local function SkinPetTooltip(tt)
-	tt.NineSlice:Hide()
-	tt:SetTemplate('Transparent')
+	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
+	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+	tt.NineSlice:SetTemplate('Transparent')
 end
 
 function S:PetBattleFrame()
