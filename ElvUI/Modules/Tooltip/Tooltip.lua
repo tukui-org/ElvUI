@@ -459,7 +459,7 @@ end
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() or not TT.db.visibility then return end
 
-	local unit = select(2, tt:GetUnit())
+	local _, unit = tt:GetUnit()
 	local isPlayerUnit = UnitIsPlayer(unit)
 	if tt:GetOwner() ~= _G.UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
 		tt:Hide()
@@ -571,7 +571,8 @@ end
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	if tt:IsForbidden() then return end
 	if not value or not TT.db.healthBar.text or not tt.text then return end
-	local unit = select(2, tt:GetParent():GetUnit())
+
+	local _, unit = tt:GetParent():GetUnit()
 	if not unit then
 		local GMF = GetMouseFocus()
 		if GMF and GMF.GetAttribute and GMF:GetAttribute('unit') then
@@ -880,7 +881,8 @@ function TT:Initialize()
 	TT.MountIDs = {}
 	local mountIDs = C_MountJournal_GetMountIDs()
 	for _, mountID in ipairs(mountIDs) do
-		TT.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
+		local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+		TT.MountIDs[spellID] = mountID
 	end
 
 	if not E.private.tooltip.enable then return end
