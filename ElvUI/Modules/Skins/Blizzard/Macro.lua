@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local format = format
-local strfind = strfind
 local HideUIPanel = HideUIPanel
 local ShowUIPanel = ShowUIPanel
 
