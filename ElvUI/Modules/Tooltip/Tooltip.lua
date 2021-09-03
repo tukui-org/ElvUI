@@ -459,7 +459,7 @@ end
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() or not TT.db.visibility then return end
 
-	local unit = select(2, tt:GetUnit())
+	local _, unit = tt:GetUnit()
 	local isPlayerUnit = UnitIsPlayer(unit)
 	if tt:GetOwner() ~= _G.UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
 		tt:Hide()
@@ -569,13 +569,13 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
-	if tt:IsForbidden() then return end
-	if not value or not TT.db.healthBar.text or not tt.text then return end
-	local unit = select(2, tt:GetParent():GetUnit())
+	if tt:IsForbidden() or not value or not tt.text or not TT.db.healthBar.text then return end
+
+	local _, unit = tt:GetParent():GetUnit()
 	if not unit then
-		local GMF = GetMouseFocus()
-		if GMF and GMF.GetAttribute and GMF:GetAttribute('unit') then
-			unit = GMF:GetAttribute('unit')
+		local frame = GetMouseFocus()
+		if frame and frame.GetAttribute then
+			unit = frame:GetAttribute('unit')
 		end
 	end
 
@@ -664,39 +664,38 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
-	if not (tt and questID and tt.pbBar and tt.pbBar.GetValue) or tt:IsForbidden() then return end
-	local cur = tt.pbBar:GetValue()
-	if cur then
-		local max, _
-		if tt.pbBar.GetMinMaxValues then
-			_, max = tt.pbBar:GetMinMaxValues()
-		end
+	if not (tt and questID and tt.progressBar) or tt:IsForbidden() then return end
 
-		Skins:StatusBarColorGradient(tt.pbBar, cur, max)
-	end
+	local _, max = tt.progressBar:GetMinMaxValues()
+	Skins:StatusBarColorGradient(tt.progressBar, tt.progressBar:GetValue(), max)
+end
+
+function TT:GameTooltip_ClearProgressBars(tt)
+	tt.progressBar = nil
 end
 
 function TT:GameTooltip_ShowProgressBar(tt)
-	if not tt or tt:IsForbidden() or not tt.progressBarPool then return end
+	if not tt or not tt.progressBarPool or tt:IsForbidden() then return end
 
 	local sb = tt.progressBarPool:GetNextActive()
-	if (not sb or not sb.Bar) or sb.Bar.backdrop then return end
+	if not sb or not sb.Bar then return end
 
-	sb.Bar:StripTextures()
-	sb.Bar:CreateBackdrop('Transparent', nil, true)
-	sb.Bar:SetStatusBarTexture(E.media.normTex)
+	tt.progressBar = sb.Bar
 
-	tt.pbBar = sb.Bar
+	if not sb.Bar.backdrop then
+		sb.Bar:StripTextures()
+		sb.Bar:CreateBackdrop('Transparent', nil, true)
+		sb.Bar:SetStatusBarTexture(E.media.normTex)
+	end
 end
 
 function TT:GameTooltip_ShowStatusBar(tt)
-	if not tt or tt:IsForbidden() or not tt.statusBarPool then return end
+	if not tt or not tt.statusBarPool or tt:IsForbidden() then return end
 
 	local sb = tt.statusBarPool:GetNextActive()
-	if (not sb or not sb.Text) or sb.backdrop then return end
+	if not (sb and sb.Text and sb.NineSlice) or sb.NineSlice.template then return end
 
-	sb:StripTextures()
-	sb:CreateBackdrop(nil, nil, true)
+	sb.NineSlice:SetTemplate(nil, nil, true)
 	sb:SetStatusBarTexture(E.media.normTex)
 end
 
