@@ -89,7 +89,7 @@ local function EquipmentDisplayButton(button)
 		local oldTex = button.icon:GetTexture()
 		button:StripTextures()
 		button:SetTemplate()
-		button:StyleButton(false)
+		button:StyleButton()
 		button:GetNormalTexture():SetTexture()
 
 		button.icon:SetInside()
