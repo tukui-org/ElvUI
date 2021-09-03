@@ -509,7 +509,6 @@ function S:LookingForGroupFrames()
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.HonorLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 
 	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
@@ -517,7 +516,6 @@ function S:LookingForGroupFrames()
 	S:HandleDropDownBox(_G.LFGListEntryCreationCategoryDropDown, 330)
 
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.HonorLevel.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
 
