@@ -37,23 +37,7 @@ local function SkinPetButton(self, bf)
 end
 
 local function SkinPetTooltip(tt)
-	tt.Background:SetTexture()
-	tt.BorderTop:SetTexture()
-	tt.BorderTopLeft:SetTexture()
-	tt.BorderTopRight:SetTexture()
-	tt.BorderLeft:SetTexture()
-	tt.BorderRight:SetTexture()
-	tt.BorderBottom:SetTexture()
-	tt.BorderBottomRight:SetTexture()
-	tt.BorderBottomLeft:SetTexture()
-
-	if tt.Delimiter1 then
-		tt.Delimiter1:SetTexture()
-	end
-	if tt.Delimiter2 then
-		tt.Delimiter2:SetTexture()
-	end
-
+	tt.NineSlice:Hide()
 	tt:SetTemplate('Transparent')
 end
 
@@ -276,6 +260,7 @@ function S:PetBattleFrame()
 			if E.lowversion then
 				point, x, y = 'BOTTOMRIGHT', -4, 4
 			end
+
 			t:ClearAllPoints()
 			t:Point(point, E.UIParent, point, x, y)
 		end)

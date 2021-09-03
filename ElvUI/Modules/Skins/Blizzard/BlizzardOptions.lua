@@ -472,7 +472,6 @@ function S:BlizzardOptions()
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
 
 	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
-	VUMeter:SetBackdrop()
 	VUMeter.Status:CreateBackdrop()
 	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(VUMeter.Status)

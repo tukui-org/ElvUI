@@ -700,10 +700,12 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	sb:SetStatusBarTexture(E.media.normTex)
 end
 
-function TT:SetStyle(tt)
-	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return end
+function TT:SetStyle(tt, _, embedded)
+	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded or embedded or not tt.SetTemplate) or tt:IsForbidden() then return end
+
 	tt.customBackdropAlpha = TT.db.colorAlpha
 	tt:SetTemplate('Transparent')
+	tt.NineSlice:Hide()
 end
 
 function TT:MODIFIER_STATE_CHANGED()
