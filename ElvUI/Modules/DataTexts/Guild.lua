@@ -11,7 +11,6 @@ local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetMouseFocus = GetMouseFocus
-local GetNumGuildApplicants = GetNumGuildApplicants
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
@@ -234,10 +233,9 @@ local function OnEnter(_, _, noUpdate)
 	SortGuildTable(shiftDown)
 
 	local guildName, guildRank = GetGuildInfo('player')
-	local applicants = GetNumGuildApplicants()
 
 	if guildName and guildRank then
-		DT.tooltip:AddDoubleLine(format(guildInfoString, guildName), format(guildInfoString2..(applicants > 0 and ' |cFFFFFFFF(|cff33ff33%d|r|cFFFFFFFF)|r' or ''), online, total, applicants), tthead.r, tthead.g, tthead.b, tthead.r, tthead.g, tthead.b)
+		DT.tooltip:AddDoubleLine(format(guildInfoString, guildName), format(guildInfoString2, online, total), tthead.r, tthead.g, tthead.b, tthead.r, tthead.g, tthead.b)
 		DT.tooltip:AddLine(guildRank, unpack(tthead))
 	end
 
