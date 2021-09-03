@@ -42,7 +42,7 @@ function S:MerchantFrame()
 
 		local button = _G['MerchantItem'..i..'ItemButton']
 		button:StripTextures()
-		button:StyleButton(false)
+		button:StyleButton()
 		button:SetTemplate(nil, true)
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
 
@@ -82,7 +82,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItem.backdrop:Point('BOTTOMRIGHT', 6, -6)
 
 	_G.MerchantBuyBackItemItemButton:StripTextures()
-	_G.MerchantBuyBackItemItemButton:StyleButton(false)
+	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
@@ -91,7 +91,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
 
 	S:HandleButton(_G.MerchantRepairItemButton)
-	_G.MerchantRepairItemButton:StyleButton(false)
+	_G.MerchantRepairItemButton:StyleButton()
 	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.06, 0.5)
 	_G.MerchantRepairItemButton:GetRegions():SetInside()
 
@@ -103,7 +103,7 @@ function S:MerchantFrame()
 	_G.MerchantGuildBankRepairButtonIcon:SetInside()
 
 	S:HandleButton(_G.MerchantRepairAllButton)
-	_G.MerchantRepairAllIcon:StyleButton(false)
+	_G.MerchantRepairAllIcon:StyleButton()
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 
