@@ -1054,36 +1054,66 @@ function S:HandleGarrisonPortrait(portrait)
 	end
 end
 
-function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
-	assert(frame, 'HandleIconSelectionFrame: frame argument missing')
-	assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
-	assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
+do
+	local function selectionOffset(frame)
+		local point, _, relativePoint, xOffset = frame:GetPoint()
+		if xOffset <= 0 then
+			frame:ClearAllPoints()
+			frame:Point(point, frame == _G.MacroPopupFrame and _G.MacroFrame, relativePoint, strfind(point, 'LEFT') and 4 or -4, 0)
+		end
+	end
 
-	local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
-	local scrollFrame = _G[frameName..'ScrollFrame']
-	local editBox = _G[frameName..'EditBox']
+	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
+		assert(frame, 'HandleIconSelectionFrame: frame argument missing')
+		assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
+		assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
 
-	frame:StripTextures()
-	frame.BorderBox:StripTextures()
-	scrollFrame:StripTextures()
-	editBox:DisableDrawLayer('BACKGROUND') -- Removes textures around it
+		if frame.template then return end
 
-	frame:CreateBackdrop('Transparent')
-	frame:Height(frame:GetHeight() + 10)
-	scrollFrame:Height(scrollFrame:GetHeight() + 10)
+		frame:Show() -- spawn the info so we can skin the buttons
+		if frame.Update then frame:Update() end -- guild bank popup has update function
+		frame:Hide() -- can hide it right away
 
-	for i = 1, numIcons do
-		local button = _G[buttonNameTemplate..i]
-		if button then
-			button:StripTextures()
-			button:CreateBackdrop()
-			button:StyleButton(true)
+		frame:HookScript('OnShow', selectionOffset) -- place it off to the side of parent with correct offsets
 
-			local icon = _G[buttonNameTemplate..i..'Icon']
-			if icon then
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:Point('TOPLEFT', 1, -1)
-				icon:Point('BOTTOMRIGHT', -1, 1)
+		local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
+		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
+		local editBox = frame.EditBox or _G[frameName..'EditBox']
+		local cancel = frame.CancelButton or frame.BorderBox.CancelButton or _G[frameName..'Cancel']
+		local okay = frame.OkayButton or frame.BorderBox.OkayButton or _G[frameName..'Okay']
+
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+		frame:Height(frame:GetHeight() + 10)
+		frame.BorderBox:StripTextures()
+
+		cancel:ClearAllPoints()
+		cancel:SetPoint('BOTTOMRIGHT', frame, -4, 4)
+		S:HandleButton(cancel)
+
+		okay:ClearAllPoints()
+		okay:SetPoint('RIGHT', cancel, 'LEFT', -10, 0)
+		S:HandleButton(okay)
+
+		editBox:DisableDrawLayer('BACKGROUND') -- Removes textures around it
+		S:HandleEditBox(editBox)
+
+		scrollFrame:StripTextures()
+		scrollFrame:Height(scrollFrame:GetHeight() + 10)
+		S:HandleScrollBar(scrollFrame.ScrollBar)
+
+		for i = 1, numIcons do
+			local button = _G[buttonNameTemplate..i]
+			if button then
+				button:StripTextures()
+				button:SetTemplate()
+				button:StyleButton(nil, true)
+
+				local icon = button.Icon or _G[buttonNameTemplate..i..'Icon']
+				if icon then
+					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetInside(button.backdrop)
+				end
 			end
 		end
 	end

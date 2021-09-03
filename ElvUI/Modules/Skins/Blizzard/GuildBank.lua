@@ -4,6 +4,12 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
+local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
+local NUM_GUILDBANK_ICONS_PER_ROW = 10
+local NUM_GUILDBANK_ICON_ROWS = 9
+local NUM_GUILDBANK_COLUMNS = 7
+local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS
+
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
@@ -52,11 +58,11 @@ function S:Blizzard_GuildBankUI()
 		icon:SetInside()
 	end
 
-	for i = 1, 7 do
+	for i = 1, NUM_GUILDBANK_COLUMNS do
 		local column = _G.GuildBankFrame['Column'..i]
 		column:StripTextures()
 
-		for x = 1, 14 do
+		for x = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = column['Button'..x]
 			button:StripTextures()
 			button:SetTemplate('Transparent')
@@ -79,10 +85,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.searchIcon:Kill()
 	GuildItemSearchBox:SetTemplate()
 
-	_G.GuildBankPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
-	_G.GuildBankPopupFrame:Hide()
-
-	--S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, _G.NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
 end
 
 S:AddCallbackForAddon('Blizzard_GuildBankUI')
