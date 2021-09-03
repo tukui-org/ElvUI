@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
+local pairs, type = pairs, type
 local unpack, select = unpack, select
-local pairs, ipairs, type = pairs, ipairs, type
 
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -67,24 +67,7 @@ local function StatsPane(which)
 	CharacterStatsPane[which].backdrop:Size(150, 18)
 end
 
-local function EquipmentUpdateItems()
-	local anchor = _G.EquipmentFlyoutFrame.buttonFrame
-	if not anchor.template then
-		anchor:StripTextures()
-		anchor:SetTemplate('Transparent')
-	end
-
-	local width, height = anchor:GetSize()
-	anchor:Size(width+3, height)
-end
-
 local function EquipmentDisplayButton(button)
-	local location, border = button.location, button.IconBorder
-	if not location or not border then return end
-
-	local id = button.id or button:GetID()
-	if not id then return end
-
 	if not button.isHooked then
 		local oldTex = button.icon:GetTexture()
 		button:StripTextures()
@@ -101,17 +84,23 @@ local function EquipmentDisplayButton(button)
 		button.isHooked = true
 	end
 
-	local r, g, b, a = unpack(E.media.bordercolor)
-	if FLYOUT_LOCATIONS[location] then -- special slots
-		button:SetBackdropBorderColor(r, g, b, a)
-	else
-		local quality = select(13, EquipmentManager_GetItemInfoByLocation(location))
-		if not quality or quality == 0 then
-			button:SetBackdropBorderColor(r, g, b, a)
-		else
-			local color = ITEM_QUALITY_COLORS[quality]
-			button:SetBackdropBorderColor(color.r, color.g, color.b)
-		end
+	if FLYOUT_LOCATIONS[button.location] then -- special slots
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function EquipmentUpdateItems()
+	local frame = _G.EquipmentFlyoutFrame.buttonFrame
+	if not frame.template then
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+	end
+
+	local width, height = frame:GetSize()
+	frame:Size(width+3, height)
+
+	for _, button in ipairs(_G.EquipmentFlyoutFrame.buttons) do
+		EquipmentDisplayButton(button)
 	end
 end
 
@@ -389,7 +378,6 @@ function S:CharacterFrame()
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
-	hooksecurefunc('EquipmentFlyout_DisplayButton', EquipmentDisplayButton)
 
 	--Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
