@@ -12,15 +12,6 @@ local function ReskinEventTraceButton(button)
 	button.MouseoverOverlay:SetAlpha(0)
 end
 
-local function ReskinScrollArrow(self, direction) -- simpy needs to finish that :P
-	self.Texture:SetAlpha(0)
-	self.Overlay:SetAlpha(0)
-
-	local tex = self:CreateTexture(nil, 'ARTWORK')
-	tex:SetAllPoints()
-	tex:CreateBackdrop('Transparent')
-end
-
 local function reskinScrollChild(self)
 	for i = 1, self.ScrollTarget:GetNumChildren() do
 		local child = select(i, self.ScrollTarget:GetChildren())
@@ -48,8 +39,37 @@ local function ReskinEventTraceScrollBox(frame)
 	hooksecurefunc(frame, 'Update', reskinScrollChild)
 end
 
+local function ReskinScrollBarArrow(frame, direction)
+	S:HandleNextPrevButton(frame, direction)
+	frame.Overlay:SetAlpha(0)
+	frame.Texture:Hide()
+end
+
+local function ReskinEventTraceScrollBar(frame)
+	frame.Background:Hide()
+	frame:StripTextures()
+
+	local track = frame.Track
+	track:SetTemplate()
+	track:ClearAllPoints()
+	track:SetPoint('TOPLEFT', 4, -21)
+	track:SetPoint('BOTTOMRIGHT', -3, 21)
+
+	local thumb = track.Thumb
+	thumb.Middle:Hide()
+	thumb.Begin:Hide()
+	thumb.End:Hide()
+
+	thumb:SetTemplate(nil, true, true)
+	thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+
+	ReskinScrollBarArrow(frame.Back, 'up')
+	ReskinScrollBarArrow(frame.Forward, 'down')
+end
+
 local function ReskinEventTraceFrame(frame)
 	ReskinEventTraceScrollBox(frame.ScrollBox)
+	ReskinEventTraceScrollBar(frame.ScrollBar)
 end
 
 function S:Blizzard_EventTrace()

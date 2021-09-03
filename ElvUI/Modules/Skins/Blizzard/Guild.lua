@@ -98,7 +98,7 @@ function S:Blizzard_GuildUI()
 		S:HandleTab(_G['GuildFrameTab'..i])
 	end
 
-	S:HandleScrollBar(_G.GuildPerksContainerScrollBar, 4)
+	S:HandleScrollBar(_G.GuildPerksContainerScrollBar)
 
 	local GuildFactionBar = _G.GuildFactionBar
 	GuildFactionBar:StripTextures()
@@ -109,7 +109,7 @@ function S:Blizzard_GuildUI()
 	GuildFactionBar.backdrop:Point('BOTTOMRIGHT', GuildFactionBar, 'BOTTOMRIGHT', E.Spacing, E.PixelMode and 1 or 0)
 
 	--Roster
-	S:HandleScrollBar(_G.GuildRosterContainerScrollBar, 5)
+	S:HandleScrollBar(_G.GuildRosterContainerScrollBar)
 	S:HandleCheckBox(_G.GuildRosterShowOfflineButton)
 
 	for i=1, 4 do
@@ -159,10 +159,10 @@ function S:Blizzard_GuildUI()
 	end
 
 	_G.GuildNewsFiltersFrame:Point('TOPLEFT', GuildFrame, 'TOPRIGHT', 4, -20)
-	S:HandleScrollBar(_G.GuildNewsContainerScrollBar, 4)
+	S:HandleScrollBar(_G.GuildNewsContainerScrollBar)
 
 	--Info Frame
-	S:HandleScrollBar(_G.GuildInfoDetailsFrameScrollBar, 4)
+	S:HandleScrollBar(_G.GuildInfoDetailsFrameScrollBar)
 
 	for i=1, 3 do
 		_G['GuildInfoFrameTab'..i]:StripTextures()
@@ -197,7 +197,7 @@ function S:Blizzard_GuildUI()
 
 	--Text Edit Frame
 	_G.GuildTextEditFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar, 5)
+	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar)
 	_G.GuildTextEditContainer:SetTemplate('Transparent')
 	for i=1, _G.GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, _G.GuildTextEditFrame:GetChildren())
@@ -210,7 +210,7 @@ function S:Blizzard_GuildUI()
 
 	--Guild Log
 	local GuildLogFrame = _G.GuildLogFrame
-	S:HandleScrollBar(_G.GuildLogScrollFrameScrollBar, 4)
+	S:HandleScrollBar(_G.GuildLogScrollFrameScrollBar)
 	GuildLogFrame:SetTemplate('Transparent')
 
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
@@ -234,7 +234,7 @@ function S:Blizzard_GuildUI()
 	end
 
 	--Rewards
-	S:HandleScrollBar(_G.GuildRewardsContainerScrollBar, 5)
+	S:HandleScrollBar(_G.GuildRewardsContainerScrollBar)
 
 	for i=1, 8 do
 		local button = _G['GuildRewardsContainerButton'..i]

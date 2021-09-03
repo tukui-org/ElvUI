@@ -17,7 +17,7 @@ function S:Blizzard_ItemSocketingUI()
 	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 	_G.ItemSocketingScrollFrame:StripTextures()
 	_G.ItemSocketingScrollFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(_G.ItemSocketingScrollFrameScrollBar, 2)
+	S:HandleScrollBar(_G.ItemSocketingScrollFrameScrollBar)
 
 	for i = 1, _G.MAX_NUM_SOCKETS do
 		local button = _G[format('ItemSocketingSocket%d', i)]

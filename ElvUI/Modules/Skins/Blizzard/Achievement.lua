@@ -282,7 +282,7 @@ function S:Blizzard_AchievementUI()
 
 	for _, scrollbar in pairs(scrollBars) do
 		if scrollbar then
-			S:HandleScrollBar(scrollbar, 5)
+			S:HandleScrollBar(scrollbar)
 		end
 	end
 
