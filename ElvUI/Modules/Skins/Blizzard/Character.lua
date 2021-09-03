@@ -351,9 +351,7 @@ function S:CharacterFrame()
 
 	if not E:IsAddOnEnabled('DejaCharacterStats') then
 		hooksecurefunc('PaperDollFrame_UpdateStats', PaperDollUpdateStats)
-	end
 
-	if not E:IsAddOnEnabled('DejaCharacterStats') then
 		StatsPane('EnhancementsCategory')
 		StatsPane('ItemLevelCategory')
 		StatsPane('AttributesCategory')
