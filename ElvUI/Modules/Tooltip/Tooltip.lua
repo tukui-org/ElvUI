@@ -883,7 +883,8 @@ function TT:Initialize()
 	TT.MountIDs = {}
 	local mountIDs = C_MountJournal_GetMountIDs()
 	for _, mountID in ipairs(mountIDs) do
-		TT.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
+		local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+		TT.MountIDs[spellID] = mountID
 	end
 
 	if not E.private.tooltip.enable then return end
