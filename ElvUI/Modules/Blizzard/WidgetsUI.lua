@@ -22,33 +22,6 @@ local function UpdateBarTexture(bar, atlas)
 	end
 end
 
-local function TopCenterPosition(self, _, b)
-	local holder = _G.TopCenterContainerHolder
-	if b and (b ~= holder) then
-		self:ClearAllPoints()
-		self:Point('CENTER', holder)
-		self:SetParent(holder)
-	end
-end
-
-local function BelowMinimapPosition(self, _, b)
-	local holder = _G.BelowMinimapContainerHolder
-	if b and (b ~= holder) then
-		self:ClearAllPoints()
-		self:Point('CENTER', holder)
-		self:SetParent(holder)
-	end
-end
-
-local function PowerWidgetPosition(self, _, b)
-	local holder = _G.PowerWidgetContainerHolder
-	if b and (b ~= holder) then
-		self:ClearAllPoints()
-		self:Point('CENTER', holder)
-		self:SetParent(holder)
-	end
-end
-
 function B:UIWidgetTemplateStatusBar()
 	local bar = self.Bar
 	local atlas = bar:GetStatusBarAtlas()
@@ -98,45 +71,53 @@ local CaptureBarSkins = {
 	[252] = EmberCourtCaptureBar
 }
 
-function B:UIWidgetTemplateCaptureBar(_, widgetContainer)
-	if not widgetContainer then return end
-	local skinFunc = CaptureBarSkins[widgetContainer.widgetSetID]
+function B:UIWidgetTemplateCaptureBar(_, widget)
+	if not widget then return end
+
+	local skinFunc = CaptureBarSkins[widget.widgetSetID]
 	if skinFunc then skinFunc(self) end
 end
 
-function B:Handle_UIWidgets()
-	local topCenterContainer = _G.UIWidgetTopCenterContainerFrame
-	local belowMiniMapcontainer = _G.UIWidgetBelowMinimapContainerFrame
-	local powerBarContainer = _G.UIWidgetPowerBarContainerFrame
+local function UpdatePosition(frame, _, anchor)
+	local holder = frame.containerHolder
+	if holder and anchor ~= holder then
+		frame:ClearAllPoints()
+		frame:Point(frame.containerPoint, holder)
+	end
+end
 
-	local topCenterHolder = CreateFrame('Frame', 'TopCenterContainerHolder', E.UIParent)
-	topCenterHolder:Point('TOP', E.UIParent, 'TOP', 0, -30)
-	topCenterHolder:Size(10, 58)
+function B:BuildWidgetHolder(holderName, moverName, moverPoint, localeName, container, point, relativeTo, relativePoint, x, y, width, height, config)
+	local holder = (holderName and CreateFrame('Frame', holderName, E.UIParent)) or container
+	if width and height then holder:Size(width, height) end
 
-	local belowMiniMapHolder = CreateFrame('Frame', 'BelowMinimapContainerHolder', E.UIParent)
-	belowMiniMapHolder:Point('TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16)
-	belowMiniMapHolder:Size(128, 40)
+	holder:Point(point, relativeTo, relativePoint, x, y)
+	E:CreateMover(holder, moverName, localeName, nil, nil, nil, config)
 
-	local powerWidgetHolder = CreateFrame('Frame', 'PowerWidgetContainerHolder', E.UIParent)
-	powerWidgetHolder:Point('CENTER', E.UIParent, 'TOP', 0, -75)
-	powerWidgetHolder:Size(100, 20)
+	container.containerHolder = (holderName and holder) or _G[moverName]
+	container.containerPoint = moverPoint
 
-	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["TopWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["BelowMinimapWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-	E:CreateMover(powerWidgetHolder, 'PowerBarContainerMover', L["PowerBarWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
+	UpdatePosition(container, E.UIParent)
+	hooksecurefunc(container, 'SetPoint', UpdatePosition)
+end
 
-	topCenterContainer:ClearAllPoints()
-	topCenterContainer:Point('CENTER', topCenterHolder)
+function B:UpdateDurabilityScale()
+	_G.DurabilityFrame:SetScale(E.db.general.durabilityScale or 1)
+end
 
-	belowMiniMapcontainer:ClearAllPoints()
-	belowMiniMapcontainer:Point('CENTER', belowMiniMapHolder)
+function B:HandleWidgets()
+	B:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', 'CENTER', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 125, 20, 'ALL,WIDGETS')
+	B:BuildWidgetHolder('PowerBarContainerHolder', 'PowerBarContainerMover', 'CENTER', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -75, 100, 20, 'ALL,WIDGETS')
+	B:BuildWidgetHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', 'CENTER', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50, 'ALL,WIDGETS')
+	B:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
 
-	powerBarContainer:ClearAllPoints()
-	powerBarContainer:Point('CENTER', powerWidgetHolder)
+	B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', 'TOP', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,WIDGETS')
+	B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', 'TOP', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,WIDGETS')
+	B:BuildWidgetHolder(nil, 'GMMover', 'TOP', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
 
-	hooksecurefunc(topCenterContainer, 'SetPoint', TopCenterPosition)
-	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', BelowMinimapPosition)
-	hooksecurefunc(powerBarContainer, 'SetPoint', PowerWidgetPosition)
+	_G.DurabilityFrame:SetFrameStrata('HIGH')
+	local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
+	B:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', 'CENTER', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
+	B:UpdateDurabilityScale()
 
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)

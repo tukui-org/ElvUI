@@ -4,9 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local min = min
 local CreateFrame = CreateFrame
-local GetScreenHeight = GetScreenHeight
 local GetInstanceInfo = GetInstanceInfo
-local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -14,7 +12,7 @@ local IsInJailersTower = IsInJailersTower
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
-	local screenHeight = GetScreenHeight()
+	local screenHeight = E.screenHeight
 	local gapFromTop = screenHeight - top
 	local maxHeight = screenHeight - gapFromTop
 	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
@@ -24,7 +22,7 @@ end
 
 local function IsFramePositionedLeft(frame)
 	local x = frame:GetCenter()
-	local screenWidth = GetScreenWidth()
+	local screenWidth = E.screenWidth
 	local positionedLeft = false
 
 	if x and x < (screenWidth / 2) then
@@ -54,11 +52,11 @@ function B:SetupTorghastBuffFrame()
 	if buffsPos == 'RIGHT' or (buffsPos == 'AUTO' and IsFramePositionedLeft(_G.ScenarioBlocksFrame)) then
 		container.List:Point('TOPLEFT', container, 'TOPRIGHT', 15, 1)
 
-		container.List:SetScript('OnShow', function(self)
-			self.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
-			self.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
-			self.button:SetButtonState('NORMAL')
-			self.button:SetButtonState('PUSHED', true)
+		container.List:SetScript('OnShow', function(list)
+			list.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
+			list.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
+			list.button:SetButtonState('NORMAL')
+			list.button:SetButtonState('PUSHED', true)
 		end)
 	else
 		container.List:Point('TOPRIGHT', container, 'TOPLEFT', 15, 1)

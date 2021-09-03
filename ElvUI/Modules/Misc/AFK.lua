@@ -15,8 +15,6 @@ local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
 local GetBattlefieldStatus = GetBattlefieldStatus
 local GetGuildInfo = GetGuildInfo
-local GetScreenHeight = GetScreenHeight
-local GetScreenWidth = GetScreenWidth
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local IsInGuild = IsInGuild
@@ -250,7 +248,7 @@ function AFK:Initialize()
 
 	AFK.AFKMode = CreateFrame('Frame', 'ElvUIAFKFrame')
 	AFK.AFKMode:SetFrameLevel(1)
-	AFK.AFKMode:SetScale(_G.UIParent:GetScale())
+	AFK.AFKMode:SetScale(E.uiscale)
 	AFK.AFKMode:SetAllPoints(_G.UIParent)
 	AFK.AFKMode:Hide()
 	AFK.AFKMode:EnableKeyboard(true)
@@ -276,8 +274,8 @@ function AFK:Initialize()
 	AFK.AFKMode.bottom:SetFrameLevel(0)
 	AFK.AFKMode.bottom:SetTemplate('Transparent')
 	AFK.AFKMode.bottom:Point('BOTTOM', AFK.AFKMode, 'BOTTOM', 0, -E.Border)
-	AFK.AFKMode.bottom:Width(GetScreenWidth() + (E.Border*2))
-	AFK.AFKMode.bottom:Height(GetScreenHeight() * (1 / 10))
+	AFK.AFKMode.bottom:Width(E.screenWidth + (E.Border*2))
+	AFK.AFKMode.bottom:Height(E.screenHeight * (1 / 10))
 
 	AFK.AFKMode.bottom.LogoTop = AFK.AFKMode:CreateTexture(nil, 'OVERLAY')
 	AFK.AFKMode.bottom.LogoTop:Size(320, 150)
@@ -325,7 +323,7 @@ function AFK:Initialize()
 
 	AFK.AFKMode.bottom.model = CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', AFK.AFKMode.bottom.modelHolder)
 	AFK.AFKMode.bottom.model:Point('CENTER', AFK.AFKMode.bottom.modelHolder, 'CENTER')
-	AFK.AFKMode.bottom.model:Size(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
+	AFK.AFKMode.bottom.model:Size(E.screenWidth * 2, E.screenHeight * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	AFK.AFKMode.bottom.model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
 	AFK.AFKMode.bottom.model:SetFacing(6)
 	AFK.AFKMode.bottom.model:SetScript('OnUpdate', function(model)

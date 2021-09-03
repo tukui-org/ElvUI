@@ -10,12 +10,14 @@ local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort,
 local GetInstanceInfo = GetInstanceInfo
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
+local GetInventoryItemID = GetInventoryItemID
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local IsResting = IsResting
+local IsEquippedItem = IsEquippedItem
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
@@ -460,39 +462,42 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColor then
-		local hc = actions.color.healthColor
+		local hc = (actions.color.healthClass and frame.classColor) or actions.color.healthColor
 		c.HealthColor = hc -- used by Health_UpdateColor
 
-		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a)
-		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a)
+		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a or 1)
+		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a or 1)
 	end
 	if PowerColor then
-		local pc = actions.color.powerColor
+		local pc = (actions.color.powerClass and frame.classColor) or actions.color.powerColor
 		c.PowerColor = true
 
-		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
-		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
+		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a or 1)
+		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a or 1)
 	end
 	if Borders then
-		local bc = actions.color.borderColor
+		local bc = (actions.color.borderClass and frame.classColor) or actions.color.borderColor
 		c.Borders = true
 
-		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a)
+		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 
 		if frame.Power.backdrop and db.power.enable then
-			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a)
+			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 		end
 	end
 	if HealthFlash then
-		local fc = actions.flash.color
+		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
 
-		if not HealthTexture then frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar)) end
+		if not HealthTexture then
+			frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
+		end
+
 		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
 
 		local anim = frame.HealthFlashTexture.anim or mod:StyleFilterSetupFlash(frame.HealthFlashTexture)
-		anim.fadein:SetToAlpha(fc.a)
-		anim.fadeout:SetFromAlpha(fc.a)
+		anim.fadein:SetToAlpha(fc.a or 1)
+		anim.fadeout:SetFromAlpha(fc.a or 1)
 
 		frame.HealthFlashTexture:Show()
 		E:Flash(frame.HealthFlashTexture, actions.flash.speed * 0.1, true)
@@ -501,9 +506,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local tx = LSM:Fetch('statusbar', actions.texture.texture)
 		c.HealthTexture = true
 
-		frame.Highlight.texture:SetTexture(tx)
 		frame.Health:SetStatusBarTexture(tx)
-		if HealthFlash then frame.HealthFlashTexture:SetTexture(tx) end
+
+		if HealthFlash then
+			frame.HealthFlashTexture:SetTexture(tx)
+		end
 	end
 	if Scale then
 		c.Scale = true
@@ -570,7 +577,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		end
 	end
 	if PowerColor then
-		local pc = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
+		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
 		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b)
 		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, 1)
 	end
@@ -587,7 +594,6 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	end
 	if HealthTexture then
 		local tx = LSM:Fetch('statusbar', mod.db.statusbar)
-		frame.Highlight.texture:SetTexture(tx)
 		frame.Health:SetStatusBarTexture(tx)
 	end
 	if Scale then
@@ -773,6 +779,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Classification
 	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
 		if trigger.classification[frame.classification] then passed = true else return end
+	end
+
+	-- Faction
+	if trigger.faction.Alliance or trigger.faction.Horde or trigger.faction.Neutral then
+		if trigger.faction[frame.battleFaction] then passed = true else return end
 	end
 
 	-- My Role
@@ -979,9 +990,52 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Debuffs
 	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+		-- Has Dispellable
+		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
+			if (trigger.debuffs.hasDispellable and frame.Debuffs.hasDispellable) or (trigger.debuffs.hasNoDispellable and not frame.Debuffs.hasDispellable) then passed = true else return end
+		end
+
+		-- Names / Spell IDs
 		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
+		end
+	end
+
+	-- BossMod Auras
+	if frame.BossMods and trigger.bossMods and trigger.bossMods.enable then
+		local element, m = frame.BossMods, trigger.bossMods
+		local icons = next(element.activeIcons)
+
+		if m.hasAura or m.missingAura then
+			if (m.hasAura and icons) or (m.missingAura and not icons) then passed = true else return end
+		elseif icons and m.auras and next(m.auras) then
+			for texture, value in pairs(m.auras) do
+				if value then -- only if they are turned on
+					local active = element.activeIcons[texture]
+					if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
+					break -- we can execute this once on the first enabled option then kill the loop
+				end
+			end
+		end
+	end
+
+	-- Slots
+	if trigger.slots and next(trigger.slots) then
+		for slot, value in pairs(trigger.slots) do
+			if value then -- only run if at least one is selected
+				if GetInventoryItemID('player', slot) then passed = true else return end
+			end
+		end
+	end
+
+	-- Items
+	if trigger.items and next(trigger.items) then
+		for item, value in pairs(trigger.items) do
+			if value then -- only run if at least one is selected
+				local hasItem = IsEquippedItem(item)
+				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
+			end
 		end
 	end
 
@@ -1109,13 +1163,14 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
+	GROUP_ROSTER_UPDATE = true,
 	MODIFIER_STATE_CHANGED = true,
+	PLAYER_EQUIPMENT_CHANGED = true,
 	PLAYER_FOCUS_CHANGED = true,
 	PLAYER_REGEN_DISABLED = true,
 	PLAYER_REGEN_ENABLED = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
-	GROUP_ROSTER_UPDATE = true,
 	QUEST_LOG_UPDATE = true,
 	RAID_TARGET_UPDATE = true,
 	SPELL_UPDATE_COOLDOWN = true,
@@ -1151,14 +1206,15 @@ function mod:StyleFilterConfigure()
 	wipe(events)
 	wipe(list)
 
-	if E.db.nameplates and E.db.nameplates.filters then
+	if mod.db.filters then
 		for filterName, filter in pairs(E.global.nameplate.filters) do
 			local t = filter.triggers
-			if t and E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
+			if t and mod.db.filters[filterName] and mod.db.filters[filterName].triggers and mod.db.filters[filterName].triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
 				events.PLAYER_TARGET_CHANGED = 1
 				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here
@@ -1242,6 +1298,10 @@ function mod:StyleFilterConfigure()
 					events.UNIT_NAME_UPDATE = 1
 				end
 
+				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
+					events.UNIT_AURA = 1
+				end
+
 				if not events.UNIT_NAME_UPDATE and t.names and next(t.names) then
 					for _, value in pairs(t.names) do
 						if value then
@@ -1249,16 +1309,26 @@ function mod:StyleFilterConfigure()
 							break
 				end end end
 
-				if t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
+				if not events.PLAYER_EQUIPMENT_CHANGED and t.slots and next(t.slots) then
+					for _, value in pairs(t.slots) do
+						if value then
+							events.PLAYER_EQUIPMENT_CHANGED = 1
+							break
+				end end end
+
+				if not events.PLAYER_EQUIPMENT_CHANGED and t.items and next(t.items) then
+					for _, value in pairs(t.items) do
+						if value then
+							events.PLAYER_EQUIPMENT_CHANGED = 1
+							break
+				end end end
+
+				if not events.SPELL_UPDATE_COOLDOWN and t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
 					for _, value in pairs(t.cooldowns.names) do
 						if value == 'ONCD' or value == 'OFFCD' then
 							events.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
-
-				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
-					events.UNIT_AURA = 1
-				end
 
 				if not events.UNIT_AURA and t.buffs and t.buffs.names and next(t.buffs.names) then
 					for _, value in pairs(t.buffs.names) do

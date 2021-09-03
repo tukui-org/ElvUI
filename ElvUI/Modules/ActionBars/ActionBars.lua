@@ -358,7 +358,7 @@ function AB:CreateBar(id)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
 	bar.bindButtons = defaults.bindButtons
@@ -630,7 +630,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.useMasque = useMasque
 	button.ignoreNormal = ignoreNormal
 
-	icon:SetDrawLayer('ARTWORK')
+	icon:SetDrawLayer('ARTWORK', -1)
 
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
@@ -856,7 +856,7 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate')
+local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'SharedTooltipTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end

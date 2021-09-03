@@ -63,24 +63,16 @@ local _, playerClass = UnitClass('player')
 local unpack = unpack
 local CopyTable = CopyTable
 local UnitIsUnit = UnitIsUnit
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitIsTapDenied = UnitIsTapDenied
-local UnitThreatSituation = UnitThreatSituation
-local UnitIsPlayer = UnitIsPlayer
-local UnitClass = UnitClass
-local UnitSelectionType = UnitSelectionType
-local UnitReaction = UnitReaction
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitIsConnected = UnitIsConnected
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitPowerType = UnitPowerType
 -- end block
 
 -- sourced from FrameXML/AlternatePowerBar.lua
-local ADDITIONAL_POWER_BAR_NAME = ADDITIONAL_POWER_BAR_NAME or 'MANA'
-local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX or 0
-local ALT_MANA_BAR_PAIR_DISPLAY_INFO = ALT_MANA_BAR_PAIR_DISPLAY_INFO
+local ADDITIONAL_POWER_BAR_NAME = _G.ADDITIONAL_POWER_BAR_NAME or 'MANA'
+local ADDITIONAL_POWER_BAR_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
+local ALT_MANA_BAR_PAIR_DISPLAY_INFO = _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO
 
 local function UpdateColor(self, event, unit, powerType)
 	if(not (unit and UnitIsUnit(unit, 'player') and powerType == ADDITIONAL_POWER_BAR_NAME)) then return end

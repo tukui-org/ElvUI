@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C, L = unpack(select(2, ...))
+local C, L = unpack(E.OptionsUI)
 local DT = E:GetModule('DataTexts')
 local Layout = E:GetModule('Layout')
 local Chat = E:GetModule('Chat')
@@ -8,7 +8,7 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local type, pairs, ipairs = type, pairs, ipairs
-local next, wipe = next, wipe
+local next, wipe, ceil = next, wipe, ceil
 local tonumber = tonumber
 local tostring = tostring
 local format = format
@@ -18,8 +18,8 @@ local currencyList, DTPanelOptions = {}, {}
 
 DTPanelOptions.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, softMax = 20, step = 1})
 DTPanelOptions.growth = ACH:Select(L["Growth"], nil, 3, { HORIZONTAL = 'HORIZONTAL', VERTICAL = 'VERTICAL' })
-DTPanelOptions.width = ACH:Range(L["Width"], nil, 4, { min = 24, max = E.screenwidth, step = 1})
-DTPanelOptions.height = ACH:Range(L["Height"], nil, 5, { min = 12, max = E.screenheight, step = 1})
+DTPanelOptions.width = ACH:Range(L["Width"], nil, 4, { min = 24, max = ceil(E.screenWidth), step = 1})
+DTPanelOptions.height = ACH:Range(L["Height"], nil, 5, { min = 12, max = ceil(E.screenHeight), step = 1})
 DTPanelOptions.textJustify = ACH:Select(L["Text Justify"], L["Sets the font instance's horizontal text alignment style."], 6, { CENTER = L["Center"], LEFT = L["Left"], RIGHT = L["Right"] })
 
 DTPanelOptions.templateGroup = ACH:MultiSelect(L["Template"], nil, 10, { backdrop = L["Backdrop"], panelTransparency = L["Backdrop Transparency"], mouseover = L["Mouse Over"], border = L["Show Border"] })

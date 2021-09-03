@@ -80,7 +80,7 @@ local function createConfigEnv()
 		__newindex = function(_, key, value) _G[key] = value end,
 	})
 
-	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
+	overrideFuncs['classcolor'] = ElvUF.Tags.Methods['classcolor']
 	overrideFuncs['name:veryshort'] = ElvUF.Tags.Methods['name:veryshort']
 	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
 	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']

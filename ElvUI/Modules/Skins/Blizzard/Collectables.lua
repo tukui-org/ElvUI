@@ -14,6 +14,10 @@ local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
+end
+
 local function toyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		text:SetTextColor(0.4, 0.4, 0.4)
@@ -183,30 +187,13 @@ local function JournalScrollButtons(frame)
 	end
 end
 
-local function clearBackdrop(self)
-	self:SetBackdropColor(0, 0, 0, 0)
-end
-
-function S:Blizzard_Collections()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.collections) then return end
-
-	-- global
-	local CollectionsJournal = _G.CollectionsJournal
-	S:HandlePortraitFrame(CollectionsJournal)
-
-	for i=1, 5 do
-		S:HandleTab(_G['CollectionsJournalTab'..i])
-	end
-
+local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(_G.MountJournalFilterButton)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
 	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
-	-------------------------------
-	--[[ mount journal (tab 1) ]]--
-	-------------------------------
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
 	MountJournal.MountDisplay:StripTextures()
@@ -223,17 +210,15 @@ function S:Blizzard_Collections()
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
-	-- New Mount Equip. 8.2
 	MountJournal.BottomLeftInset:StripTextures()
 	MountJournal.BottomLeftInset:SetTemplate('Transparent')
 	MountJournal.BottomLeftInset.SlotButton:StripTextures()
 	S:HandleIcon(MountJournal.BottomLeftInset.SlotButton.ItemIcon)
 	S:HandleButton(MountJournal.BottomLeftInset.SlotButton)
 	JournalScrollButtons(MountJournal.ListScrollFrame)
+end
 
-	-----------------------------
-	--[[ pet journal (tab 2) ]]--
-	-----------------------------
+local function SkinPetFrame()
 	_G.PetJournalSummonButton:StripTextures()
 	_G.PetJournalFindBattle:StripTextures()
 	S:HandleButton(_G.PetJournalSummonButton)
@@ -311,9 +296,11 @@ function S:Blizzard_Collections()
 	end
 
 	_G.PetJournalSpellSelect:StripTextures()
+
 	for i=1, 2 do
 		local btn = _G['PetJournalSpellSelectSpell'..i]
 		S:HandleItemButton(btn)
+
 		_G['PetJournalSpellSelectSpell'..i..'Icon']:SetInside(btn)
 		_G['PetJournalSpellSelectSpell'..i..'Icon']:SetDrawLayer('BORDER')
 	end
@@ -361,12 +348,14 @@ function S:Blizzard_Collections()
 	_G.PetJournalPetCardHealthFrame.healthBar:CreateBackdrop()
 	_G.PetJournalPetCardHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetJournalPetCardHealthFrame.healthBar)
+
 	_G.PetJournalPetCardXPBar:StripTextures()
 	_G.PetJournalPetCardXPBar:CreateBackdrop()
 	_G.PetJournalPetCardXPBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetJournalPetCardXPBar)
+end
 
-	--Toy Box
+local function SkinToyFrame()
 	local ToyBox = _G.ToyBox
 	S:HandleButton(_G.ToyBoxFilterButton)
 	S:HandleEditBox(ToyBox.searchBox)
@@ -375,12 +364,11 @@ function S:Blizzard_Collections()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 
-	local progressBar = ToyBox.progressBar
-	progressBar.border:Hide()
-	progressBar:DisableDrawLayer('BACKGROUND')
-	progressBar:SetStatusBarTexture(E.media.normTex)
-	progressBar:CreateBackdrop()
-	E:RegisterStatusBar(progressBar)
+	ToyBox.progressBar.border:Hide()
+	ToyBox.progressBar:DisableDrawLayer('BACKGROUND')
+	ToyBox.progressBar:SetStatusBarTexture(E.media.normTex)
+	ToyBox.progressBar:CreateBackdrop()
+	E:RegisterStatusBar(ToyBox.progressBar)
 
 	for i = 1, 18 do
 		local button = ToyBox.iconsFrame['spellButton'..i]
@@ -410,8 +398,9 @@ function S:Blizzard_Collections()
 			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
+end
 
-	--Heirlooms
+local function SkinHeirloomFrame()
 	local HeirloomsJournal = _G.HeirloomsJournal
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	_G.HeirloomsJournalFilterButton:Point('LEFT', HeirloomsJournal.SearchBox, 'RIGHT', 2, 0)
@@ -422,12 +411,11 @@ function S:Blizzard_Collections()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
 
-	progressBar = HeirloomsJournal.progressBar -- swap local variable
-	progressBar.border:Hide()
-	progressBar:DisableDrawLayer('BACKGROUND')
-	progressBar:SetStatusBarTexture(E.media.normTex)
-	progressBar:CreateBackdrop()
-	E:RegisterStatusBar(progressBar)
+	HeirloomsJournal.progressBar.border:Hide()
+	HeirloomsJournal.progressBar:DisableDrawLayer('BACKGROUND')
+	HeirloomsJournal.progressBar:SetStatusBarTexture(E.media.normTex)
+	HeirloomsJournal.progressBar:CreateBackdrop()
+	E:RegisterStatusBar(HeirloomsJournal.progressBar)
 
 	hooksecurefunc(HeirloomsJournal, 'UpdateButton', function(_, button)
 		if not button.styled then
@@ -474,13 +462,13 @@ function S:Blizzard_Collections()
 			header.text:SetTextColor(0.9, 0.9, 0.9)
 		end
 	end)
+end
 
-	-- Appearances Tab
+local function SkinTransmogFrames()
 	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
 	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
 	S:HandleTab(WardrobeCollectionFrame.SetsTab)
 
-	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
@@ -541,7 +529,7 @@ function S:Blizzard_Collections()
 		if pending then
 			local Glowframe = pending.Glowframe
 			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
+			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
 
 			if Glowframe.backdrop then
 				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
@@ -566,7 +554,6 @@ function S:Blizzard_Collections()
 		end
 	end
 
-	--Sets
 	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
 	SetsCollectionFrame:SetTemplate('Transparent')
 	SetsCollectionFrame.RightInset:StripTextures()
@@ -574,7 +561,6 @@ function S:Blizzard_Collections()
 	JournalScrollButtons(SetsCollectionFrame.ScrollFrame)
 	S:HandleScrollBar(SetsCollectionFrame.ScrollFrame.scrollBar)
 
-	-- DetailsFrame
 	local DetailsFrame = SetsCollectionFrame.DetailsFrame
 	DetailsFrame.Name:FontTemplate(nil, 16)
 	DetailsFrame.LongName:FontTemplate(nil, 16)
@@ -600,7 +586,6 @@ function S:Blizzard_Collections()
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetTexture(E.Media.Textures.ArrowUp)
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation.down)
 
-	-- Transmogrify NPC
 	local WardrobeFrame = _G.WardrobeFrame
 	S:HandlePortraitFrame(WardrobeFrame)
 
@@ -620,9 +605,24 @@ function S:Blizzard_Collections()
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
 		slotButton:SetFrameLevel(slotButton:GetFrameLevel() + 2)
 		slotButton:StripTextures()
-		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()
 		slotButton.Icon:SetTexCoord(unpack(E.TexCoords))
+		slotButton.Icon:SetInside(slotButton.backdrop)
+
+		local undo = slotButton.UndoButton
+		if undo then undo:SetHighlightTexture(nil) end
+
+		local pending = slotButton.PendingFrame
+		if pending then
+			if slotButton.transmogType == 1 then
+				pending.Glow:Size(48)
+				pending.Ants:Size(30)
+			else
+				pending.Glow:Size(74)
+				pending.Ants:Size(48)
+			end
+		end
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
@@ -630,14 +630,16 @@ function S:Blizzard_Collections()
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
+	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
 
-	--Transmogrify NPC Sets tab
+	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
+
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate('Transparent')
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
 
-	-- Outfit Edit Frame
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures()
 	WardrobeOutfitEditFrame:SetTemplate('Transparent')
@@ -646,6 +648,25 @@ function S:Blizzard_Collections()
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
 	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
+end
+
+local function SkinCollectionsFrames()
+	S:HandlePortraitFrame(_G.CollectionsJournal)
+
+	for i=1, 5 do
+		S:HandleTab(_G['CollectionsJournalTab'..i])
+	end
+
+	SkinMountFrame()
+	SkinPetFrame()
+	SkinToyFrame()
+	SkinHeirloomFrame()
+end
+
+function S:Blizzard_Collections()
+	if not E.private.skins.blizzard.enable then return end
+	if E.private.skins.blizzard.collections then SkinCollectionsFrames() end
+	if E.private.skins.blizzard.transmogrify then SkinTransmogFrames() end
 end
 
 S:AddCallbackForAddon('Blizzard_Collections')

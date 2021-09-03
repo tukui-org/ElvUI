@@ -35,7 +35,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
--- GLOBALS: ElvCharacterDB, ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+-- GLOBALS: ElvCharacterDB
 
 --Modules
 local ActionBars = E:GetModule('ActionBars')
@@ -70,8 +70,10 @@ E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.isMacClient = IsMacClient()
 E.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-E.screenwidth, E.screenheight = GetPhysicalScreenSize()
-E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
+E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
+E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
+E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
+E.perfect = 768 / E.physicalHeight
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
 E.UserList = {}
@@ -158,7 +160,7 @@ E.GemTypeInfo = {
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
 E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
-E.UIParent:SetSize(_G.UIParent:GetSize())
+E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
@@ -216,13 +218,24 @@ function E:CheckClassColor(r, g, b)
 
 	for class in pairs(_G.RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			local colorTable = E:ClassColor(class, true)
-			local red, green, blue = E:GrabColorPickerValues(colorTable.r, colorTable.g, colorTable.b)
+			local color = E:ClassColor(class, true)
+			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
 			if red == r and green == g and blue == b then
 				return true
 			end
 		end
 	end
+end
+
+function E:UpdateClassColor(db)
+	if E:CheckClassColor(db.r, db.g, db.b) then
+		local color = E:ClassColor(E.myclass, true)
+		if color then
+			db.r, db.g, db.b = color.r, color.g, color.b
+		end
+	end
+
+	return db
 end
 
 function E:SetColorTable(t, data)
@@ -285,53 +298,18 @@ function E:UpdateMedia()
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
 
-	--Border Color
-	local border = E.db.general.bordercolor
-	if E:CheckClassColor(border.r, border.g, border.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		E.db.general.bordercolor.r = classColor.r
-		E.db.general.bordercolor.g = classColor.g
-		E.db.general.bordercolor.b = classColor.b
-	end
+	--Colors
+	E.media.bordercolor = E:SetColorTable(E.media.bordercolor, E:UpdateClassColor(E.db.general.bordercolor))
+	E.media.unitframeBorderColor = E:SetColorTable(E.media.unitframeBorderColor, E:UpdateClassColor(E.db.unitframe.colors.borderColor))
+	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E:UpdateClassColor(E.db.general.backdropcolor))
+	E.media.backdropfadecolor = E:SetColorTable(E.media.backdropfadecolor, E:UpdateClassColor(E.db.general.backdropfadecolor))
 
-	E.media.bordercolor = {border.r, border.g, border.b}
-
-	--UnitFrame Border Color
-	border = E.db.unitframe.colors.borderColor
-	if E:CheckClassColor(border.r, border.g, border.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		E.db.unitframe.colors.borderColor.r = classColor.r
-		E.db.unitframe.colors.borderColor.g = classColor.g
-		E.db.unitframe.colors.borderColor.b = classColor.b
-	end
-	E.media.unitframeBorderColor = {border.r, border.g, border.b}
-
-	--Backdrop Color
-	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E.db.general.backdropcolor)
-
-	--Backdrop Fade Color
-	E.media.backdropfadecolor = E:SetColorTable(E.media.backdropfadecolor, E.db.general.backdropfadecolor)
-
-	--Value Color
-	local value = E.db.general.valuecolor
-	if E:CheckClassColor(value.r, value.g, value.b) then
-		value = E:ClassColor(E.myclass, true)
-		E.db.general.valuecolor.r = value.r
-		E.db.general.valuecolor.g = value.g
-		E.db.general.valuecolor.b = value.b
-	end
+	local value = E:UpdateClassColor(E.db.general.valuecolor)
+	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
+	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
 	--Chat Tab Selector Color
-	local selectorColor = E.db.chat.tabSelectorColor
-	if E:CheckClassColor(selectorColor.r, selectorColor.g, selectorColor.b) then
-		selectorColor = E:ClassColor(E.myclass, true)
-		E.db.chat.tabSelectorColor.r = selectorColor.r
-		E.db.chat.tabSelectorColor.g = selectorColor.g
-		E.db.chat.tabSelectorColor.b = selectorColor.b
-	end
-
-	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
-	E.media.rgbvaluecolor = {value.r, value.g, value.b}
+	E:UpdateClassColor(E.db.chat.tabSelectorColor)
 
 	-- Chat Panel Background Texture
 	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
@@ -392,7 +370,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.unitframe.units.raid.rdebuffs.font = font
 	E.db.unitframe.units.raid40.rdebuffs.font = font
 
-	E:StaggeredUpdateAll(nil, true)
+	E:StaggeredUpdateAll()
 end
 
 do	--Update font/texture paths when they are registered by the addon providing them
@@ -1424,8 +1402,8 @@ end
 
 function E:UpdateLayout(skipCallback)
 	Layout:ToggleChatPanels()
-	Layout:BottomPanelVisibility()
-	Layout:TopPanelVisibility()
+	Layout:UpdateBottomPanel()
+	Layout:UpdateTopPanel()
 	Layout:SetDataPanelStyle()
 
 	if not skipCallback then
@@ -1459,11 +1437,9 @@ function E:UpdateTooltip()
 end
 
 function E:UpdateBags(skipCallback)
-	Bags:Layout()
-	Bags:Layout(true)
 	Bags:SizeAndPositionBagBar()
-	Bags:UpdateCountDisplay()
-	Bags:UpdateItemLevelDisplay()
+	Bags:UpdateItemDisplay()
+	Bags:UpdateLayouts()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
@@ -1509,8 +1485,8 @@ function E:UpdateMinimap(skipCallback)
 end
 
 function E:UpdateAuras(skipCallback)
-	if ElvUIPlayerBuffs then Auras:UpdateHeader(ElvUIPlayerBuffs) end
-	if ElvUIPlayerDebuffs then Auras:UpdateHeader(ElvUIPlayerDebuffs) end
+	if Auras.BuffFrame then Auras:UpdateHeader(Auras.BuffFrame) end
+	if Auras.DebuffFrame then Auras:UpdateHeader(Auras.DebuffFrame) end
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
@@ -1537,14 +1513,12 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	if not E.installSetup and not E.private.install_complete then
-		E:Install()
-	end
-
 	if E.staggerUpdateRunning then
 		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
 		--So call it, but skip updates inside it
 		E:UpdateAll(false)
+	elseif not E.private.install_complete then
+		E:Install()
 	end
 
 	--Done updating, let code now
@@ -1568,36 +1542,35 @@ do
 	end
 	E:RegisterCallback('StaggeredUpdate', CallStaggeredUpdate)
 
-	function E:StaggeredUpdateAll(event, installSetup)
+	function E:StaggeredUpdateAll(event)
 		if not E.initialized then
-			E:Delay(1, E.StaggeredUpdateAll, E, event, installSetup)
+			E:Delay(1, E.StaggeredUpdateAll, E, event)
 			return
 		end
 
-		E.installSetup = installSetup
-		if (installSetup or event and event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
+		if (not event or event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
 			tinsert(staggerTable, 'UpdateLayout')
-			if E.private.actionbar.enable then
+			if ActionBars.Initialized then
 				tinsert(staggerTable, 'UpdateActionBars')
 			end
-			if E.private.nameplates.enable then
+			if NamePlates.Initialized then
 				tinsert(staggerTable, 'UpdateNamePlates')
 			end
-			if E.private.bags.enable then
+			if Bags.Initialized then
 				tinsert(staggerTable, 'UpdateBags')
 			end
-			if E.private.chat.enable then
+			if Chat.Initialized then
 				tinsert(staggerTable, 'UpdateChat')
 			end
-			if E.private.tooltip.enable then
+			if Tooltip.Initialized then
 				tinsert(staggerTable, 'UpdateTooltip')
 			end
 			tinsert(staggerTable, 'UpdateDataBars')
 			tinsert(staggerTable, 'UpdateDataTexts')
-			if E.private.general.minimap.enable then
+			if Minimap.Initialized then
 				tinsert(staggerTable, 'UpdateMinimap')
 			end
-			if ElvUIPlayerBuffs or ElvUIPlayerDebuffs then
+			if Auras.BuffFrame or Auras.DebuffFrame then
 				tinsert(staggerTable, 'UpdateAuras')
 			end
 			tinsert(staggerTable, 'UpdateMisc')
@@ -1618,15 +1591,29 @@ function E:UpdateAll(doUpdates)
 		E:UpdateStart(true)
 
 		E:UpdateLayout()
-		E:UpdateTooltip()
-		E:UpdateActionBars()
-		E:UpdateBags()
-		E:UpdateChat()
+		if ActionBars.Initialized then
+			E:UpdateActionBars()
+		end
+		if NamePlates.Initialized then
+			E:UpdateNamePlates()
+		end
+		if Bags.Initialized then
+			E:UpdateBags()
+		end
+		if Chat.Initialized then
+			E:UpdateChat()
+		end
+		if Tooltip.Initialized then
+			E:UpdateTooltip()
+		end
 		E:UpdateDataBars()
 		E:UpdateDataTexts()
-		E:UpdateMinimap()
-		E:UpdateNamePlates()
-		E:UpdateAuras()
+		if Minimap.Initialized then
+			E:UpdateMinimap()
+		end
+		if Auras.BuffFrame or Auras.DebuffFrame then
+			E:UpdateAuras()
+		end
 		E:UpdateMisc()
 		E:UpdateEnd()
 	end

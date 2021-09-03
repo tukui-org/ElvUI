@@ -4,9 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, ipairs, select = pairs, ipairs, select
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
 -- Credits: siweia (AuroraClassic)
-
 local function SkinEditBoxes(Frame)
 	S:HandleEditBox(Frame.MinLevel)
 	S:HandleEditBox(Frame.MaxLevel)
@@ -176,7 +176,7 @@ local function HandleTokenSellFrame(frame)
 	S:HandleScrollBar(frame.DummyItemList.DummyScrollBar)
 end
 
-local function HandleSellList(frame, hasHeader)
+local function HandleSellList(frame, hasHeader, fitScrollBar)
 	frame:StripTextures()
 
 	if frame.RefreshFrame then
@@ -184,6 +184,12 @@ local function HandleSellList(frame, hasHeader)
 	end
 
 	S:HandleScrollBar(frame.ScrollFrame.scrollBar)
+
+	if fitScrollBar then
+		frame.ScrollFrame.scrollBar:ClearAllPoints()
+		frame.ScrollFrame.scrollBar:Point('TOPLEFT', frame.ScrollFrame, 'TOPRIGHT', 1, -16)
+		frame.ScrollFrame.scrollBar:Point('BOTTOMLEFT', frame.ScrollFrame, 'BOTTOMRIGHT', 1, 16)
+	end
 
 	if hasHeader then
 		frame.ScrollFrame:SetTemplate('Transparent')
@@ -194,7 +200,7 @@ local function HandleSellList(frame, hasHeader)
 end
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
 	--[[ Main Frame | TAB 1]]--
 	local Frame = _G.AuctionHouseFrame
@@ -213,11 +219,10 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:SetPoint('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
+	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
-
 	Frame.MoneyFrameBorder:StripTextures()
 	Frame.MoneyFrameInset:StripTextures()
 
@@ -226,8 +231,12 @@ local function LoadSkin()
 	Categories.ScrollFrame:StripTextures()
 	Categories.Background:Hide()
 	Categories.NineSlice:Hide()
+	Categories:SetTemplate('Transparent')
 
 	S:HandleScrollBar(_G.AuctionHouseFrameScrollBar)
+	_G.AuctionHouseFrameScrollBar:ClearAllPoints()
+	_G.AuctionHouseFrameScrollBar:Point('TOPRIGHT', Categories, -5, -22)
+	_G.AuctionHouseFrameScrollBar:Point('BOTTOMRIGHT', Categories, -5, 22)
 
 	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
 		local button = Categories.FilterButtons[i]
@@ -251,7 +260,12 @@ local function LoadSkin()
 	local BrowseList = Browse.ItemList
 	BrowseList:StripTextures()
 	hooksecurefunc(BrowseList, 'RefreshScrollFrame', HandleHeaders)
+	BrowseList.ResultsText:SetParent(BrowseList.ScrollFrame)
 	S:HandleScrollBar(BrowseList.ScrollFrame.scrollBar)
+	BrowseList.ScrollFrame:SetTemplate('Transparent')
+	BrowseList.ScrollFrame.scrollBar:ClearAllPoints()
+	BrowseList.ScrollFrame.scrollBar:Point('TOPLEFT', BrowseList.ScrollFrame, 'TOPRIGHT', 1, -16)
+	BrowseList.ScrollFrame.scrollBar:Point('BOTTOMLEFT', BrowseList.ScrollFrame, 'BOTTOMRIGHT', 1, 16)
 
 	--[[ BuyOut Frame]]
 	local CommoditiesBuyFrame = Frame.CommoditiesBuyFrame
@@ -302,9 +316,10 @@ local function LoadSkin()
 	--[[ Item Sell Frame | TAB 2 ]]--
 	local SellFrame = Frame.ItemSellFrame
 	HandleSellFrame(SellFrame)
+	Frame.ItemSellFrame:SetTemplate('Transparent')
 
 	local ItemSellList = Frame.ItemSellList
-	HandleSellList(ItemSellList, true)
+	HandleSellList(ItemSellList, true, true)
 
 	local CommoditiesSellFrame = Frame.CommoditiesSellFrame
 	HandleSellFrame(CommoditiesSellFrame)
@@ -318,8 +333,8 @@ local function LoadSkin()
 	--[[ Auctions Frame | TAB 3 ]]--
 	local AuctionsFrame = _G.AuctionHouseFrameAuctionsFrame
 	AuctionsFrame:StripTextures()
-
 	SkinItemDisplay(AuctionsFrame)
+	S:HandleButton(AuctionsFrame.BuyoutFrame.BuyoutButton)
 
 	local CommoditiesList = AuctionsFrame.CommoditiesList
 	HandleSellList(CommoditiesList, true)
@@ -342,14 +357,25 @@ local function LoadSkin()
 
 	local SummaryList = AuctionsFrame.SummaryList
 	HandleSellList(SummaryList)
+	SummaryList:SetTemplate('Transparent')
 	S:HandleButton(AuctionsFrame.CancelAuctionButton)
 
+	SummaryList.ScrollFrame.scrollBar:ClearAllPoints()
+	SummaryList.ScrollFrame.scrollBar:Point('TOPRIGHT', SummaryList, -3, -20)
+	SummaryList.ScrollFrame.scrollBar:Point('BOTTOMRIGHT', SummaryList, -3, 20)
+
 	local AllAuctionsList = AuctionsFrame.AllAuctionsList
-	HandleSellList(AllAuctionsList, true)
+	HandleSellList(AllAuctionsList, true, true)
 	S:HandleButton(AllAuctionsList.RefreshFrame.RefreshButton)
+	AllAuctionsList.ResultsText:SetParent(AllAuctionsList.ScrollFrame)
+
+	SummaryList:Point('BOTTOM', AuctionsFrame, 0, 0) -- normally this is anchored to the cancel button.. ? lol
+	AuctionsFrame.CancelAuctionButton:ClearAllPoints()
+	AuctionsFrame.CancelAuctionButton:Point('TOPRIGHT', AllAuctionsList, 'BOTTOMRIGHT', -6, 1)
 
 	local BidsList = AuctionsFrame.BidsList
-	HandleSellList(BidsList, true)
+	HandleSellList(BidsList, true, true)
+	BidsList.ResultsText:SetParent(BidsList.ScrollFrame)
 	S:HandleButton(BidsList.RefreshFrame.RefreshButton)
 	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameGold)
 	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameSilver)
@@ -391,19 +417,27 @@ local function LoadSkin()
 	S:HandleButton(Frame.BuyDialog.BuyNowButton)
 	S:HandleButton(Frame.BuyDialog.CancelButton)
 
-	--[[ Multisell thing]]
+	--[[ Multisell ]]--
 	local multisellFrame = _G.AuctionHouseMultisellProgressFrame
 	multisellFrame:StripTextures()
 	multisellFrame:SetTemplate('Transparent')
 
 	local progressBar = multisellFrame.ProgressBar
 	progressBar:StripTextures()
-	S:HandleIcon(progressBar.Icon)
-	progressBar:SetStatusBarTexture(E.Media.normTex)
-	progressBar:SetTemplate()
+	progressBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
+	progressBar:SetStatusBarTexture(E.media.normTex)
 
-	local close = multisellFrame.CancelButton
-	S:HandleCloseButton(close)
+	progressBar.Text:ClearAllPoints()
+	progressBar.Text:Point('BOTTOM', progressBar, 'TOP', 0, 5)
+
+	S:HandleCloseButton(multisellFrame.CancelButton)
+	S:HandleIcon(progressBar.Icon)
+
+	-- progressBar already has a backdrop for itself
+	progressBar.IconBackdrop = CreateFrame('Frame', '$parentIconBackdrop', progressBar)
+	progressBar.IconBackdrop:SetFrameLevel(progressBar:GetFrameLevel())
+	progressBar.IconBackdrop:SetOutside(progressBar.Icon)
+	progressBar.IconBackdrop:SetTemplate()
 end
 
 S:AddCallbackForAddon('Blizzard_AuctionHouseUI', 'AuctionHouse', LoadSkin)

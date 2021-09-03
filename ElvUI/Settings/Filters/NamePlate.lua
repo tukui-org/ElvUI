@@ -71,6 +71,10 @@ E.StyleFilterDefaults = {
 		notTarget = false,
 		requireTarget = false,
 		level = false,
+		names = {},
+		items = {},
+		slots = {},
+		class = {}, -- this can stay empty we only will accept values that exist
 		casting = {
 			isCasting = false,
 			isChanneling = false,
@@ -84,6 +88,11 @@ E.StyleFilterDefaults = {
 			tank = false,
 			healer = false,
 			damager = false
+		},
+		faction = {
+			Alliance = false,
+			Horde = false,
+			Neutral = false,
 		},
 		unitRole = {
 			tank = false,
@@ -99,7 +108,6 @@ E.StyleFilterDefaults = {
 			trivial = false,
 			minus = false
 		},
-		class = {}, -- this can stay empty we only will accept values that exist
 		raidTarget = {
 			star = false,
 			circle = false,
@@ -150,7 +158,6 @@ E.StyleFilterDefaults = {
 		powerUsePlayer = false,
 		underPowerThreshold = 0,
 		overPowerThreshold = 0,
-		names = {},
 		creatureType = {
 			enable = false,
 			Aberration = false,
@@ -205,7 +212,7 @@ E.StyleFilterDefaults = {
 			zoneNamesEnabled = false,
 			zoneNames = {},
 			subZoneNamesEnabled = false,
-			subZoneNames = {},
+			subZoneNames = {}
 		},
 		keyMod = {
 			enable = false,
@@ -241,24 +248,32 @@ E.StyleFilterDefaults = {
 			}
 		},
 		cooldowns = {
-			names = {},
-			mustHaveAll = false
+			mustHaveAll = false,
+			names = {}
 		},
 		buffs = {
 			mustHaveAll = false,
 			missing = false,
-			names = {},
 			minTimeLeft = 0,
 			maxTimeLeft = 0,
 			hasStealable = false,
-			hasNoStealable = false
+			hasNoStealable = false,
+			names = {}
 		},
 		debuffs = {
 			mustHaveAll = false,
 			missing = false,
-			names = {},
 			minTimeLeft = 0,
-			maxTimeLeft = 0
+			maxTimeLeft = 0,
+			hasDispellable = false,
+			hasNoDispellable = false,
+			names = {}
+		},
+		bossMods = {
+			hasAura = false,
+			missingAura = false,
+			missingAuras = false,
+			auras = {}
 		},
 		isResting = false,
 		isPet = false,
@@ -294,8 +309,11 @@ E.StyleFilterDefaults = {
 			health = false,
 			power = false,
 			border = false,
+			healthClass = false,
 			healthColor = {r = 1, g = 1, b = 1, a = 1},
+			powerClass = false,
 			powerColor = {r = 1, g = 1, b = 1, a = 1},
+			borderClass = false,
 			borderColor = {r = 1, g = 1, b = 1, a = 1}
 		},
 		texture = {
@@ -304,6 +322,7 @@ E.StyleFilterDefaults = {
 		},
 		flash = {
 			enable = false,
+			class = false,
 			color = {r = 1, g = 1, b = 1, a = 1},
 			speed = 4
 		},

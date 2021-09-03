@@ -120,6 +120,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[8122]   = Defaults(3), -- Psychic Scream
 		[15487]  = Defaults(2), -- Silence
 		[64044]  = Defaults(1), -- Psychic Horror
+		[453]    = Defaults(5), -- Mind Soothe
 	-- Rogue
 		[2094]   = Defaults(4), -- Blind
 		[6770]   = Defaults(4), -- Sap
@@ -233,6 +234,8 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[116849] = Defaults(), -- Life Cocoon
 		[202162] = Defaults(), -- Guard
 		[215479] = Defaults(), -- Ironskin Brew
+		[353319] = Defaults(), -- Peaceweaver (PvP)
+		[353362] = Defaults(), -- Dematerialize (PvP)
 	-- Paladin
 		[642]    = Defaults(), -- Divine Shield
 		[498]    = Defaults(), -- Divine Protection
@@ -671,6 +674,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
 		[348443] = Defaults(), -- Experience Eliminated
 		[206151] = Defaults(), -- Challenger's Burden
+		[322695] = Defaults(), -- Drained
 	},
 }
 
@@ -721,6 +725,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Shadowlands Season 1
 		[342494] = Defaults(), -- Belligerent Boast (Prideful)
 	-- Shadowlands Season 2
+		[356667] = Defaults(6), -- Biting Cold 1
+		[356666] = Defaults(6), -- Biting Cold 2
+		[355732] = Defaults(6), -- Melt Soul
+		[356925] = Defaults(6), -- Carnage
+		[358777] = Defaults(6), -- Bindings of Misery
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
@@ -804,7 +813,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[324381] = Defaults(), -- Chill Scythe
 		[320573] = Defaults(), -- Shadow Well
 		[333492] = Defaults(), -- Necrotic Ichor
-		[334748] = Defaults(), -- Drain FLuids
+		[334748] = Defaults(), -- Drain Fluids
 		[333489] = Defaults(), -- Necrotic Breath
 		[320717] = Defaults(), -- Blood Hunger
 	-- Theater of Pain
@@ -871,33 +880,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Sanctum of Domination -----------------
 	--------------------------------------------------------
 	-- The Tarragrue
-		[347283] = Defaults(), -- Predator's Howl
-		[347286] = Defaults(), -- Unshakeable Dread
-		[346986] = Defaults(), -- Crushed Armor
-		[347991] = Defaults(), -- Ten of Towers
-		[347269] = Defaults(), -- Chains of Eternity
-		[346985] = Defaults(), -- Overpower
-		[347274] = Defaults(), -- Annihilating Smash
+		[347283] = Defaults(5), -- Predator's Howl
+		[347286] = Defaults(5), -- Unshakeable Dread
+		[346986] = Defaults(3), -- Crushed Armor
+		[347269] = Defaults(6), -- Chains of Eternity
+		[346985] = Defaults(3), -- Overpower
 	-- Eye of the Jailer
-		[350606] = Defaults(), -- Hopeless Lethargy
-		[355240] = Defaults(), -- Scorn
-		[355245] = Defaults(), -- Ire
-		[349979] = Defaults(), -- Dragging Chains
-		[348074] = Defaults(), -- Assailing Lance
-		[351827] = Defaults(), -- Spreading Misery
-		[355143] = Defaults(), -- Deathlink
-		[350763] = Defaults(), -- Annihilating Glare
+		[350606] = Defaults(4), -- Hopeless Lethargy
+		[355240] = Defaults(5), -- Scorn
+		[355245] = Defaults(5), -- Ire
+		[349979] = Defaults(2), -- Dragging Chains
+		[348074] = Defaults(3), -- Assailing Lance
+		[351827] = Defaults(6), -- Spreading Misery
+		[355143] = Defaults(6), -- Deathlink
+		[350763] = Defaults(6), -- Annihilating Glare
 	-- The Nine
 		[350287] = Defaults(2), -- Song of Dissolution
-		[350542] = Defaults(3), -- Fragments of Destiny
+		[350542] = Defaults(6), -- Fragments of Destiny
 		[350202] = Defaults(3), -- Unending Strike
 		[350475] = Defaults(5), -- Pierce Soul
-		[350555] = Defaults(6), -- Shard of Destiny
-		[350109] = Defaults(6), -- Brynja's Mournful Dirge
+		[350555] = Defaults(3), -- Shard of Destiny
+		[350109] = Defaults(5), -- Brynja's Mournful Dirge
 		[350483] = Defaults(6), -- Link Essence
-		[350039] = Defaults(6), -- Arthura's Crushing Gaze
-		[350184] = Defaults(6), -- Daschla's Mighty Impact
-		[350374] = Defaults(6), -- Wings of Rage
+		[350039] = Defaults(5), -- Arthura's Crushing Gaze
+		[350184] = Defaults(5), -- Daschla's Mighty Impact
+		[350374] = Defaults(5), -- Wings of Rage
 	-- Remnant of Ner'zhul
 		[350073] = Defaults(2), -- Torment
 		[349890] = Defaults(5), -- Suffering
@@ -1191,6 +1198,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[344739] = Defaults(), -- Spectral
 		[333227] = Defaults(), -- Undying Rage
 		[322773] = Defaults(), -- Blood Barrier
+	---------------------------------------------------------
+	----------------------- Open World ----------------------
+	---------------------------------------------------------
+	-- Korthia
+		[354840] = Defaults(), -- Rift Veiled (Silent Soulstalker, Deadsoul Hatcher, Screaming Shade)
+		[355249] = Defaults(), -- Anima Gorged (Consumption)
 	},
 }
 

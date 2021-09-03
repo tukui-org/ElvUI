@@ -11,24 +11,28 @@ local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
 
-local CreateFrame = CreateFrame
 local SetCVar = SetCVar
-local PlaySound = PlaySound
 local ReloadUI = ReloadUI
+local PlaySound = PlaySound
+local CreateFrame = CreateFrame
 local UIFrameFadeOut = UIFrameFadeOut
-local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
-local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
-local ChatFrame_AddChannel = ChatFrame_AddChannel
-local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
 local ChangeChatColor = ChangeChatColor
-local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
-local FCF_ResetChatWindows = FCF_ResetChatWindows
-local FCF_UnDockFrame = FCF_UnDockFrame
-local FCF_OpenNewWindow = FCF_OpenNewWindow
-local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
+local FCF_UnDockFrame = FCF_UnDockFrame
+local FCF_OpenNewWindow = FCF_OpenNewWindow
+local FCF_ResetChatWindows = FCF_ResetChatWindows
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
+local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
+local ChatFrame_AddChannel = ChatFrame_AddChannel
+local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
+local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
+local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
+local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
+local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEditBox
+local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
+local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
+
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
@@ -54,7 +58,7 @@ local ELV_TOONS = {
 function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(_G.ChatFrame3)
+	FCF_UnDockFrame(_G.ChatFrame4)
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
@@ -68,21 +72,22 @@ function E:SetupChat(noDisplayMsg)
 		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
-		elseif id == 3 then
+		elseif id == 4 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
+		elseif id == 3 then
+			VoiceTranscriptionFrame_UpdateVisibility(frame)
+			VoiceTranscriptionFrame_UpdateVoiceTab(frame)
+			VoiceTranscriptionFrame_UpdateEditBox(frame)
 		end
 
 		FCF_SavePositionAndDimensions(frame)
 		FCF_StopDragging(frame)
 		FCF_SetChatWindowFontSize(nil, frame, 12)
 
-		-- rename windows general because moved to chat #3
-		if id == 1 then
-			FCF_SetWindowName(frame, GENERAL)
-		elseif id == 2 then
+		if id == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif id == 3 then
+		elseif id == 4 then
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
 		end
 	end
@@ -96,14 +101,14 @@ function E:SetupChat(noDisplayMsg)
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame3)
+	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame4)
 	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(_G.ChatFrame3, v)
+		ChatFrame_AddMessageGroup(_G.ChatFrame4, v)
 	end
 
 	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
-	ChatFrame_AddChannel(_G.ChatFrame3, TRADE)
+	ChatFrame_AddChannel(_G.ChatFrame4, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
@@ -159,10 +164,12 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('showQuestTrackingTooltips', 1)
 	SetCVar('fstack_preferParentKeys', 0) --Add back the frame names via fstack!
 
-	NP:CVarReset()
-
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
+
+	if E.private.nameplates.enable then
+		NP:CVarReset()
+	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["CVars Set"]
@@ -358,6 +365,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			--Target
 				E.db.unitframe.units.target.aurabar.height = 26
 				E.db.unitframe.units.target.buffs.anchorPoint = 'TOPLEFT'
+				E.db.unitframe.units.target.buffs.growthX = 'RIGHT'
 				E.db.unitframe.units.target.buffs.perrow = 7
 				E.db.unitframe.units.target.castbar.height = 40
 				E.db.unitframe.units.target.castbar.insideInfoPanel = false
@@ -377,7 +385,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.target.power.attachTextTo = 'InfoPanel'
 				E.db.unitframe.units.target.power.height = 22
 			--TargetTarget
-				E.db.unitframe.units.targettarget.debuffs.anchorPoint = 'TOPRIGHT'
 				E.db.unitframe.units.targettarget.debuffs.enable = false
 				E.db.unitframe.units.targettarget.disableMouseoverGlow = true
 				E.db.unitframe.units.targettarget.power.enable = false
@@ -388,6 +395,8 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.targettarget.threatStyle = 'GLOW'
 				E.db.unitframe.units.targettarget.width = 270
 			--Focus
+				E.db.unitframe.units.focus.debuffs.anchorPoint = 'BOTTOMLEFT'
+				E.db.unitframe.units.focus.debuffs.growthX = 'RIGHT'
 				E.db.unitframe.units.focus.castbar.width = 270
 				E.db.unitframe.units.focus.width = 270
 			--Pet
@@ -451,7 +460,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			end
 	end
 
-	E:StaggeredUpdateAll(nil, true)
+	E:StaggeredUpdateAll()
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Layout Set"]
@@ -511,10 +520,12 @@ function E:SetupAuras(style, noDisplayMsg)
 	end
 end
 
-local function InstallComplete()
+function E:SetupComplete(reload)
 	E.private.install_complete = E.version
 
-	ReloadUI()
+	if reload then
+		ReloadUI()
+	end
 end
 
 local function ResetAll()
@@ -739,7 +750,7 @@ function E:SetPage(PageNum)
 		InstallOption1Button:SetScript('OnClick', function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end)
 		InstallOption1Button:SetText(L["Discord"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', InstallComplete)
+		InstallOption2Button:SetScript('OnClick', function() E:SetupComplete(true) end)
 		InstallOption2Button:SetText(L["Finished"])
 		ElvUIInstallFrame:Size(550, 350)
 	end
@@ -945,9 +956,7 @@ function E:Install()
 		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')
 		close:SetScript('OnClick', function()
-			-- Wasn't sure if we should run the InstallComplete function which will reload the ui for just clicking X to close it...
-			-- Simpy, Azil and I were sure what your thoughts on just saying it's complete
-			E.private.install_complete = E.version
+			E:SetupComplete()
 			f:Hide()
 		end)
 		S:HandleCloseButton(close)

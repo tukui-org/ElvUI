@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C, L = unpack(select(2, ...))
+local C, L = unpack(E.OptionsUI)
 local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
@@ -118,7 +118,18 @@ ActionBar.args.general.args.generalGroup.args.equippedItem = ACH:Toggle(L["Equip
 ActionBar.args.general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind Text"], L["Color Keybind Text when Out of Range, instead of the button."], 14)
 ActionBar.args.general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 15)
 
-ActionBar.args.general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 22)
+ActionBar.args.general.args.colorGroup = ACH:Group(L["COLORS"], nil, 25, nil, function(info) local t = E.db.actionbar[info[#info]] local d = P.actionbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings() end, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
+ActionBar.args.general.args.colorGroup.inline = true
+ActionBar.args.general.args.colorGroup.args.fontColor = ACH:Color(L["Text"], nil, 0)
+ActionBar.args.general.args.colorGroup.args.noRangeColor = ACH:Color(L["Out of Range"], L["Color of the actionbutton when out of range."], 1)
+ActionBar.args.general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."], 2)
+ActionBar.args.general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
+ActionBar.args.general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
+ActionBar.args.general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
+ActionBar.args.general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true)
+ActionBar.args.general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
+
+ActionBar.args.general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 30)
 ActionBar.args.general.args.applyGroup.inline = true
 
 ActionBar.args.general.args.applyGroup.args.fontGroup = ACH:Group(L["Font Group"], nil, 1, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value, true) end)
@@ -144,23 +155,6 @@ ActionBar.args.general.args.applyGroup.args.macroTextGroup.inline = true
 ActionBar.args.general.args.applyGroup.args.macroTextGroup.args.macroTextPosition = ACH:Select(L["Position"], nil, 4, textAnchors)
 ActionBar.args.general.args.applyGroup.args.macroTextGroup.args.macroTextXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -24, max = 24, step = 1 })
 ActionBar.args.general.args.applyGroup.args.macroTextGroup.args.macroTextYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -24, max = 24, step = 1 })
-
-ActionBar.args.general.args.colorGroup = ACH:Group(L["COLORS"], nil, 30, nil, function(info) local t = E.db.actionbar[info[#info]] local d = P.actionbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings() end, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
-ActionBar.args.general.args.colorGroup.inline = true
-ActionBar.args.general.args.colorGroup.args.fontColor = ACH:Color(L["Text"], nil, 0)
-ActionBar.args.general.args.colorGroup.args.noRangeColor = ACH:Color(L["Out of Range"], L["Color of the actionbutton when out of range."], 1)
-ActionBar.args.general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."], 2)
-ActionBar.args.general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
-ActionBar.args.general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
-ActionBar.args.general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
-ActionBar.args.general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true)
-ActionBar.args.general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
-
-ActionBar.args.general.args.masqueGroup = ACH:Group(L["Masque Support"], nil, -1, nil, function(info) return E.private.actionbar.masque[info[#info]] end, function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque end)
-ActionBar.args.general.args.masqueGroup.inline = true
-ActionBar.args.general.args.masqueGroup.args.actionbars = ACH:Toggle(L["ActionBars"], nil, 1)
-ActionBar.args.general.args.masqueGroup.args.petBar = ACH:Toggle(L["Pet Bar"], nil, 2)
-ActionBar.args.general.args.masqueGroup.args.stanceBar = ACH:Toggle(L["Stance Bar"], nil, 3)
 
 ActionBar.args.barPet = ACH:Group(L["Pet Bar"], nil, 14, nil, function(info) return E.db.actionbar.barPet[info[#info]] end, function(info, value) E.db.actionbar.barPet[info[#info]] = value; AB:PositionAndSizeBarPet() end, function() return not E.ActionBars.Initialized end)
 ActionBar.args.barPet.args = CopyTable(SharedBarOptions)
@@ -224,8 +218,10 @@ local SharedButtonOptions = {
 	clean = ACH:Toggle(L["Clean Button"], nil, 4),
 }
 
-ActionBar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end)
+ActionBar.args.masqueGroup = ACH:Group(L["Masque"], nil, -1, nil, nil, nil, function() return not E.Masque end)
+ActionBar.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { actionbars = L["ActionBars"], petBar = L["Pet Bar"], stanceBar = L["Stance Bar"] }, nil, nil, function(_, key) return E.private.actionbar.masque[key] end, function(_, key, value) E.private.actionbar.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 
+ActionBar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end)
 ActionBar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"], nil, 1, nil, function(info) return E.db.actionbar.extraActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.extraActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
 ActionBar.args.extraButtons.args.extraActionButton.inline = true
 ActionBar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButtonOptions)

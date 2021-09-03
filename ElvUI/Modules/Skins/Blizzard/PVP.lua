@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, unpack = ipairs, pairs, unpack
+local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
 
-local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
@@ -51,19 +50,16 @@ function S:Blizzard_PVPUI()
 	local PVPQueueFrame = _G.PVPQueueFrame
 	PVPQueueFrame.HonorInset:StripTextures()
 
-	PVPQueueFrame.CategoryButton1.Icon:SetTexture([[Interface\Icons\achievement_bg_winwsg]])
-	PVPQueueFrame.CategoryButton2.Icon:SetTexture([[Interface\Icons\achievement_bg_killxenemies_generalsroom]])
-	PVPQueueFrame.CategoryButton3.Icon:SetTexture([[Interface\Icons\Achievement_General_StayClassy]])
+	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface/icons/achievement_bg_winwsg.blp
+	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface/icons/achievement_bg_killxenemies_generalsroom.blp
+	PVPQueueFrame.CategoryButton3.Icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
 
 	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
+	SeasonReward:CreateBackdrop()
+	SeasonReward.Icon:SetInside(SeasonReward.backdrop)
+	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
-	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
-	local RewardFrameBorder = CreateFrame('Frame', nil, SeasonReward)
-	RewardFrameBorder:SetTemplate()
-	RewardFrameBorder:SetOutside(SeasonReward.Icon)
-	SeasonReward.Icon:SetParent(RewardFrameBorder)
-	SeasonReward.Icon:SetDrawLayer('OVERLAY')
 
 	-- Honor Frame
 	local HonorFrame = _G.HonorFrame
@@ -196,12 +192,6 @@ function S:Blizzard_PVPUI()
 		Frame.ConquestBar.Reward:ClearAllPoints()
 		Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', 0, 0)
 		S:HandleIcon(Frame.ConquestBar.Reward.Icon, true)
-
-		--[[ Keep blizzard default fo the statusbar here, the new atlas looks good
-			Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
-			Frame.ConquestBar:GetStatusBarTexture():SetGradient("VERTICAL", 1, .8, 0, 6, .4, 0)
-			Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == 'Alliance' and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
-		]]
 	end
 
 	-- New Season Frame
@@ -210,6 +200,13 @@ function S:Blizzard_PVPUI()
 	NewSeasonPopup:StripTextures()
 	NewSeasonPopup:SetTemplate()
 	NewSeasonPopup:SetFrameLevel(5)
+
+	local RewardFrame = NewSeasonPopup.SeasonRewardFrame
+	RewardFrame:CreateBackdrop()
+	RewardFrame.CircleMask:Hide()
+	RewardFrame.Ring:Hide()
+	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	RewardFrame.backdrop:SetOutside(RewardFrame.Icon)
 
 	if NewSeasonPopup.NewSeason then
 		NewSeasonPopup.NewSeason:SetTextColor(1, .8, 0)
@@ -221,20 +218,19 @@ function S:Blizzard_PVPUI()
 		NewSeasonPopup.SeasonRewardText:SetShadowOffset(1, -1)
 	end
 
-	if NewSeasonPopup.SeasonDescription then
-		NewSeasonPopup.SeasonDescription:SetTextColor(1, 1, 1)
-		NewSeasonPopup.SeasonDescription:SetShadowOffset(1, -1)
+	if NewSeasonPopup.SeasonDescriptionHeader then
+		NewSeasonPopup.SeasonDescriptionHeader:SetTextColor(1, 1, 1)
+		NewSeasonPopup.SeasonDescriptionHeader:SetShadowOffset(1, -1)
 	end
 
-	if NewSeasonPopup.SeasonDescription2 then
-		NewSeasonPopup.SeasonDescription2:SetTextColor(1, 1, 1)
-		NewSeasonPopup.SeasonDescription2:SetShadowOffset(1, -1)
-	end
-
-	local RewardFrame = NewSeasonPopup.SeasonRewardFrame
-	RewardFrame.CircleMask:Hide()
-	RewardFrame.Ring:Hide()
-	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	NewSeasonPopup:HookScript('OnShow', function(popup)
+		if popup.SeasonDescriptions then
+			for _, text in next, popup.SeasonDescriptions do
+				text:SetTextColor(1, 1, 1)
+				text:SetShadowOffset(1, -1)
+			end
+		end
+	end)
 end
 
 function S:PVPReadyDialog()

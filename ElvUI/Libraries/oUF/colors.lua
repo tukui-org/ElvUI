@@ -1,4 +1,4 @@
-local parent, ns = ...
+local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
@@ -44,9 +44,9 @@ local colors = {
 -- We do this because people edit the vars directly, and changing the default
 -- globals makes SPICE FLOW!
 local function customClassColors()
-	if(CUSTOM_CLASS_COLORS) then
+	if(_G.CUSTOM_CLASS_COLORS) then
 		local function updateColors()
-			for classToken, color in next, CUSTOM_CLASS_COLORS do
+			for classToken, color in next, _G.CUSTOM_CLASS_COLORS do
 				colors.class[classToken] = {color.r, color.g, color.b}
 			end
 
@@ -56,14 +56,14 @@ local function customClassColors()
 		end
 
 		updateColors()
-		CUSTOM_CLASS_COLORS:RegisterCallback(updateColors)
+		_G.CUSTOM_CLASS_COLORS:RegisterCallback(updateColors)
 
 		return true
 	end
 end
 
 if(not customClassColors()) then
-	for classToken, color in next, RAID_CLASS_COLORS do
+	for classToken, color in next, _G.RAID_CLASS_COLORS do
 		colors.class[classToken] = {color.r, color.g, color.b}
 	end
 
@@ -77,11 +77,11 @@ if(not customClassColors()) then
 	end)
 end
 
-for debuffType, color in next, DebuffTypeColor do
+for debuffType, color in next, _G.DebuffTypeColor do
 	colors.debuff[debuffType] = {color.r, color.g, color.b}
 end
 
-for eclass, color in next, FACTION_BAR_COLORS do
+for eclass, color in next, _G.FACTION_BAR_COLORS do
 	colors.reaction[eclass] = {color.r, color.g, color.b}
 end
 
@@ -90,8 +90,8 @@ for power, color in next, PowerBarColor do
 		if(type(select(2, next(color))) == 'table') then
 			colors.power[power] = {}
 
-			for index, color in next, color do
-				colors.power[power][index] = {color.r, color.g, color.b}
+			for index, color_ in next, color do
+				colors.power[power][index] = {color_.r, color_.g, color_.b}
 			end
 		else
 			colors.power[power] = {color.r, color.g, color.b, atlas = color.atlas}

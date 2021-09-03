@@ -71,12 +71,13 @@ function S:Blizzard_WeeklyRewards()
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame:StripTextures()
-		header:StripTextures()
-	end
+		frame:SetTemplate('Transparent')
 
-	frame:SetTemplate('Transparent')
-	header:SetTemplate('Transparent')
-	header:Point('TOP', 1, -42)
+		header:StripTextures()
+		header:SetTemplate('Transparent')
+		header:ClearAllPoints()
+		header:Point('TOP', 1, -42)
+	end
 
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.SelectRewardButton)

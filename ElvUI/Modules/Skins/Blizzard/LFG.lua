@@ -127,25 +127,35 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
 
-	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
-	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
-	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
+	_G.GroupFinderFrame.groupButton1.icon:SetTexture(133076) -- interface/icons/inv_helmet_08.blp
+	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface/icons/inv_helmet_06.blp
+	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
 
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	_G.LFGDungeonReadyDialogBackground:Kill()
+	_G.LFGDungeonReadyDialogEnterDungeonButton:ClearAllPoints()
+	_G.LFGDungeonReadyDialogEnterDungeonButton:Point('BOTTOMRIGHT', _G.LFGDungeonReadyDialog, 'BOTTOM', -10, 15)
+	_G.LFGDungeonReadyDialogLeaveQueueButton:ClearAllPoints()
+	_G.LFGDungeonReadyDialogLeaveQueueButton:Point('BOTTOMLEFT', _G.LFGDungeonReadyDialog, 'BOTTOM', 10, 15)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
-	_G.LFGDungeonReadyDialog.filigree:SetAlpha(0)
-	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
+	_G.LFGDungeonReadyDialogBackground:SetInside()
+	_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
+
+	-- Artwork background (1)
+	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
+	_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
 		if _G.LFGDungeonReadyDialog:IsShown() then
-			_G.LFGDungeonReadyDialog:StripTextures()
-			_G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+			_G.LFGDungeonReadyDialog:SetTemplate('Transparent') -- Frame background (2)
+			_G.LFGDungeonReadyDialog.bottomArt:Hide()
+			_G.LFGDungeonReadyDialog.filigree:Hide()
+			_G.LFGDungeonReadyDialog.Border:Hide()
 		end
 
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
@@ -574,6 +584,9 @@ function S:LookingForGroupFrames()
 		if not button.InviteButton.template then
 			S:HandleButton(button.InviteButton)
 		end
+		if not button.InviteButtonSmall.template then
+			S:HandleButton(button.InviteButtonSmall)
+		end
 	end)
 
 	hooksecurefunc('LFGListSearchEntry_Update', function(button)
@@ -671,7 +684,7 @@ function S:LookingForGroupFrames()
 				button.HighlightTexture:SetInside()
 
 				--Fix issue with labels not following changes to GameFontNormal as they should
-				button.Label:SetFontObject(_G.GameFontNormal)
+				button.Label:SetFontObject('GameFontNormal')
 				button.isSkinned = true
 			end
 
@@ -705,10 +718,12 @@ function S:Blizzard_ChallengesUI()
 
 	hooksecurefunc('ChallengesFrame_Update', function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
-			if not frame.backdrop then
+			if not frame.template then
 				frame:GetRegions():SetAlpha(0)
 				frame:SetTemplate('Transparent')
 				S:HandleIcon(frame.Icon, true)
+				frame.Icon:SetDrawLayer('ARTWORK')
+				frame.HighestLevel:SetDrawLayer('OVERLAY')
 				frame.Icon:SetInside()
 			end
 		end

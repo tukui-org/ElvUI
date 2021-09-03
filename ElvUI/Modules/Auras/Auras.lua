@@ -218,9 +218,9 @@ end
 
 function A:UpdateAura(button, index)
 	local unit = button:GetParent():GetAttribute('unit')
-	local name, texture, count, dtype, duration, expiration = UnitAura(unit, index, button.filter)
+	local name, texture, count, debuffType, duration, expiration = UnitAura(unit, index, button.filter)
+	if not debuffType then debuffType = 'none' end
 
-	local DebuffType = dtype or 'none'
 	if name then
 		local db = A.db[button.auraType]
 		if duration > 0 and expiration then
@@ -240,14 +240,14 @@ function A:UpdateAura(button, index)
 		button.statusBar:SetStatusBarColor(r, g, b)
 		button.texture:SetTexture(texture)
 
-		if button.debuffType ~= DebuffType then
-			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[DebuffType] or E.db.general.bordercolor
+		if button.debuffType ~= debuffType then
+			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType] or E.db.general.bordercolor
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end
 
-	button.debuffType = DebuffType
+	button.debuffType = debuffType
 end
 
 function A:UpdateTempEnchant(button, index)
@@ -306,11 +306,7 @@ function A:UpdateHeader(header)
 	local db = A.db[header.auraType]
 	local template = format('ElvUIAuraTemplate%d', db.size)
 
-	local colors = db.barColor
-	if E:CheckClassColor(colors.r, colors.g, colors.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
-	end
+	E:UpdateClassColor(db.barColor)
 
 	if header.filter == 'HELPFUL' then
 		header:SetAttribute('consolidateTo', 0)

@@ -45,7 +45,7 @@ local function reskinPickerOptions(self)
 				local check = child.Check
 				check:SetColorTexture(1, .82, 0, 0.8)
 				check:SetSize(10, 10)
-				check:SetPoint("LEFT", 2, 0)
+				check:SetPoint('LEFT', 2, 0)
 				check:CreateBackdrop('Transparent')
 
 				child.IsSkinned = true
@@ -58,7 +58,7 @@ local function HandleVoicePicker(voicePicker)
 	local customFrame = voicePicker:GetChildren()
 	customFrame:StripTextures()
 	customFrame:CreateBackdrop('Transparent')
-	voicePicker:HookScript("OnShow", reskinPickerOptions)
+	voicePicker:HookScript('OnShow', reskinPickerOptions)
 end
 
 function S:BlizzardOptions()
@@ -68,6 +68,9 @@ function S:BlizzardOptions()
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 	S:HandleButton(_G.RolePollPopupAcceptButton)
+
+	_G.LFDReadyCheckPopup:StripTextures()
+	_G.LFDReadyCheckPopup:SetTemplate('Transparent')
 	S:HandleButton(_G.LFDReadyCheckPopup.YesButton)
 	S:HandleButton(_G.LFDReadyCheckPopup.NoButton)
 
@@ -81,8 +84,10 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
-
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
+
+	ReadyCheckFrame:StripTextures()
+	ReadyCheckFrame:SetTemplate('Transparent')
 	ReadyCheckFrame:HookScript('OnShow', function(rcf)
 		-- bug fix, don't show it if player is initiator
 		if rcf.initiator and UnitIsUnit('player', rcf.initiator) then
@@ -381,11 +386,11 @@ function S:BlizzardOptions()
 			for i = 1, Panel:GetNumChildren() do
 				local Child = select(i, Panel:GetChildren())
 				if Child:IsObjectType('CheckButton') then
-					S:HandleCheckBox(Child)
+					S:HandleCheckBox(Child, nil, nil, true)
 				elseif Child:IsObjectType('Button') then
 					S:HandleButton(Child)
 				elseif Child:IsObjectType('Slider') then
-					S:HandleSliderFrame(Child)
+					S:HandleSliderFrame(Child, nil, true)
 				elseif Child:IsObjectType('Tab') then
 					S:HandleTab(Child)
 				elseif Child:IsObjectType('Frame') and Child.Left and Child.Middle and Child.Right then
@@ -395,10 +400,25 @@ function S:BlizzardOptions()
 		end
 	end
 
-	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab1:StripTextures()
-	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
-	_G.InterfaceOptionsFrameTab2:StripTextures()
+	-- System options buttons
+	_G.VideoOptionsFrameDefaults:ClearAllPoints()
+	_G.VideoOptionsFrameDefaults:Point('TOPLEFT', _G.VideoOptionsFrameCategoryFrame, 'BOTTOMLEFT', 0, -5)
+	_G.VideoOptionsFrameCancel:ClearAllPoints()
+	_G.VideoOptionsFrameCancel:Point('RIGHT', _G.VideoOptionsFrameApply, 'LEFT', -4, 0)
+	_G.VideoOptionsFrameOkay:ClearAllPoints()
+	_G.VideoOptionsFrameOkay:Point('RIGHT', _G.VideoOptionsFrameCancel, 'LEFT', -4, 0)
+
+	-- Interface options buttons
+	_G.InterfaceOptionsFrameTab1:ClearAllPoints()
+	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 0, 1)
+	_G.InterfaceOptionsFrameTab2:ClearAllPoints()
+	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 3, 0)
+	_G.InterfaceOptionsFrameDefaults:ClearAllPoints()
+	_G.InterfaceOptionsFrameDefaults:Point('TOPLEFT', _G.InterfaceOptionsFrameCategories, 'BOTTOMLEFT', 0, -5)
+	_G.InterfaceOptionsFrameOkay:ClearAllPoints()
+	_G.InterfaceOptionsFrameOkay:Point('RIGHT', _G.InterfaceOptionsFrameCancel, 'LEFT', -4, 0)
+	_G.InterfaceOptionsFrameCancel:ClearAllPoints()
+	_G.InterfaceOptionsFrameCancel:Point('TOPRIGHT', _G.InterfaceOptionsFramePanelContainer, 'BOTTOMRIGHT', 0, -6)
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
 	do -- plus minus buttons in addons category

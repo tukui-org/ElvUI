@@ -1,4 +1,220 @@
-### Version 12.25 [ ETA: 🍨 ]
+### Version 12.45 [ ETA: 🍨 ]
+
+**Development:**  
+
+
+___
+### Version 12.44 [ August 27th 2021 ]
+
+**Dont Read This:**  
+Tags: Added [selectioncolor]  
+Fixed: Charged Combo points for Rogue Legendary  
+StyleFilter: Added triggers for Items, Slots, and Dispellable  
+Datatext: Combat Time will now prefer Encounter Time in instances, rather than own Combat Time  
+Unitframe: Fixed a rare oUF_RaidDebuff error (priority was missing)  
+Unitframe: Raid Pets are now optional with Smart Raid  
+Nameplate: Attempted fix for another GetPoint error  
+Skins: Fixed borders for Blizzard Interface Settings  
+Skins: Fixed Multisell frame on Auction House  
+
+___
+### Version 12.43 [ August 17th 2021 ]
+
+**Changes:**  
+Player Choice should be fixed in Torghat when in combat  
+Added a Mythic+ Best Run tooltip option  
+
+___
+### Version 12.42 [ August 16th 2021 ]
+
+**Changes:**  
+Added a mover for Player Choice Toggle  
+Added Mind Soothe (Priest) to CCDebuffs  
+Fixed Right / Left anchor for Auras on Unitframes and Nameplates  
+Fixed an issue which prevented sending secure commands through Chat while in combat  
+Fixed an issue with Blizzard Effects (which caused them to be incorrect size and placed in wrong location)  
+Fixed Replaced Chat Bubble Font not working correctly  
+Fixed Static Player and Test Nameplate Scale  
+Fixed Aura Spacing on non-thin borders  
+Fixed Pushed texture on ActionBars  
+Updated various skins  
+
+**Commands:**  
+Deleted /cleanguild as it was old and protected for some time  
+Renamed /enableblizzard to /eblizzard  
+Renamed /luaerror to /edebug  
+Renamed /resetui to /ereset  
+Renamed /moveui to /emove  
+
+___
+### Version 12.41 [ August 6th 2021 ]
+
+**Changes:**  
+Chat Bubbles have their own Replace Font setting (General -> Cosmetic) and have their default font slightly increased to 12  
+Fixed another Plugin Tag issue from 12.39  
+
+___
+### Version 12.40 [ August 5th 2021 ]
+
+**Oops:**  
+Added API for Plugins (which all need to be updated) for recent Tags issue in 12.39  
+
+___
+### Version 12.39 [ August 5th 2021 ]
+
+**Changes:**  
+AuraBars not sorting correctly.  
+Reduced default Chat Bubble Font size down to 10.  
+Incompatibility issue with Clique and [mouseover] tags on Unitframes.  
+Nameplate Boss Mod Auras will now be trimmed when not using Keep Size Ratio.  
+
+___
+### Version 12.38 [ August 2nd 2021 ]
+
+**Big Aura Update:**  
+UF/NP: Added Centered Support, Size Ratio, Stack Count offsets, Stackable Auras (Bolstering, Force of Nature, etc)  
+Nameplate: Added Rows, Attach To, Castbar Text and Time offsets, Smart Aura Position, and Blizzard Plate Font settings  
+Unitframe: Added GrowthX and GrowthY settings and also improved Smart Aura Position  
+*note: The GrowthX and GrowthY may need to be adjusted in your settings, if you are not using default*  
+
+**Updated:**  
+Added [classcolor:target] for class color of units [target]  
+Added Style Filter trigger for Faction and a [factioncolor] tag  
+Setup CVars will no longer reset Nameplate CVars if the Nameplate module is disabled  
+Bank and Bags Quality color setting wasnt working correctly  
+Reagent and Bank anchor was sometimes off  
+Unitframe Combat Icon offsets increased  
+*note: [classcolor] is the new [namecolor], however [namecolor] will continue to work*  
+
+**Skins:**  
+Trade, Communities, and Auction House skins updated  
+Chat Bubble Border and Guild Control skin issues fixed  
+Season PVP Reward Icon had checkmark behind it  
+Orderhall and Garrison mission skin fixes  
+
+___
+### Version 12.37 [ July 25th 2021 ]
+
+**Shiny:**  
+Added option to hide border colors for NP/UF Auras entirely (Borders by Type and Borders by Dispel)  
+Event Toast mover actually works (maybe, i think) :o  
+French Translation update (Thanks @xan2622)  
+
+___
+### Version 12.36 [ July 24th 2021 ]
+
+**Better:**  
+Bags :)  
+Blizzard Bags skin :)  
+
+**Good:**  
+Event Toast has a mover now, which is new Level Up display.  
+Style Filters were messing with Nameplate Highlight texture.  
+Mythic Challenge icon wont be so faded.  
+Group Finder had wrong Premade Groups icon.  
+
+___
+### Version 12.35 [ July 17th 2021 ]
+
+**MegaShine:**  
+Added Nameplate support to show DBM or BigWigs auras on nameplates, stuff like Fixate. Settings under (Nameplates > General > General > Boss Mod Auras).  
+Added support to Style Filters to trigger based on Boss Mod Auras.  
+
+**Shiny:**  
+Improved preformance of Bags module.  
+Added Season 2 Dungeon Affix Debuffs and Blacklisted Drained debuff.  
+Added Slider for Reputation Databar alpha when not using custom colors.  
+Added Unit Class Color action to Style Filters.  
+
+**Fixed:**  
+Fixed Guild Bank search not fading the tabs.  
+Fixed Power Prediction overflowing sometimes.  
+Fixed Chat Bubble borders when using no border on non-thin borders.  
+Fixed Chat window could not be closed in combat.  
+Fixed rare Mover error linked to numpad keys.  
+Fixed Blanchy mount display on Unit and Aura.  
+
+**Updated:**  
+Increased range to scale Minimap icons more.  
+Updated the shading on Bag items when you search.  
+Updated the normal Bags skin code a bit, also some of the bank too.  
+Nameplate Auras now has a "Color by Type" option which will remove the debuff type border color (stealable and bad dispels will still be shown).  
+
+___
+### Version 12.34 [ July 8th 2021 ]
+
+**Nice:**  
+Added mover for the Maw Buffs widget in raid/dungeons.  
+Removed Guide text from mentor chat, icon will still show.  
+Added some options for the top and bottom cosmetic panels (under the new cosmetic tab, under general).  
+Fixed Unitframe Custom Color options for Castbars not properly updating when switching between characters on same profile.  
+Fixed issue with Ultrawide / Eyefinity not letting you move frames to the left screen.  
+Fixed Spellbook error in combat (happened when leveling).  
+Added Mistweaver PVP Buffs (Peaceweaver and Dematerialize) to the Whitelist.  
+Fixed Player Choice skin in Mythic+  
+
+___
+### Version 12.33 [ July 4th 2021 ]
+
+**Stuff:**  
+Chat Module now supports new Text To Speech options (Options > Install > Setup Chat, might be required, do this if you have issues).  
+Added Korthia buff (Anima Gorged) to Whitelist.  
+Fixed a couple issues with Trade Skill skin.  
+
+___
+### Version 12.32 [ July 3rd 2021 ]
+
+**Ok:**  
+Skinned a few unskinned things.  
+Added Korthia buff (Rift Veiled) to Whitelist.  
+Updated Range Check Library.  
+
+___
+### Version 12.31 [ July 1st 2021 ]
+
+**Hotfixes:**  
+Fixed Player Choice skin error in tower (once more).  
+Fixed an issue with the Ace3 skin which caused some buttons to fill the screen.  
+Fixed an issue which caused some borders to overlap when not using pixel mode.  
+Allowed Chat Bubbles to be skinned in tower since they seem to not be allowed there.  
+
+___
+### Version 12.30 [ June 30th 2021 ]
+
+**Hotfixes:**  
+Fixed Barber skin error.  
+Fixed Achievement skin error.  
+Fixed Orderhall Talent skin.  
+Fixed Player Choice skin while in tower (again).  
+
+___
+### Version 12.29 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Readded Item Info options for Bag slots.  
+
+___
+### Version 12.28 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Talent spec spell icons slightly larger.  
+Fixed bag skin (not the all in one bag).  
+Hide mythic score when its at zero.  
+
+___
+### Version 12.27 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Fixed error when Ace3 skin was disabled.  
+
+___
+### Version 12.26 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Toolkit SetBackdrop error.  
+
+___
+### Version 12.25 [ June 29th 2021 ]
 
 **Added:**  
 Mythic+ score options in the tooltip section (Based on Blizzards new score API)  
@@ -49,7 +265,7 @@ ___
 
 ### Version 12.21 [ March 9th 2021 ]
 
-**Added:**
+**Added:**  
 PowerBar widget now has a mover  
 Click-Through option for AuraBars  
 Mouseover and Alpha setting for Voice Chat Panel  
@@ -88,7 +304,7 @@ ___
 
 ### Version 12.19 [ February 2nd 2021 ]
 
-**Added:**
+**Added:**  
 Bag Item Info option to change Anima text style  
 Sort by Index option for Unitframes  
 Classpower Shortvalue Tags  
@@ -242,7 +458,7 @@ ___
 **Hotfix:**  
 Petbar wasn't appearing with the Backdrop option selected.  
 
-**Also:**
+**Also:**  
 Top Aura options were reworked and settings for them were reset.  
 Added Custom Font options for Unitframe Castbars (Thanks @Caedis).  
 
@@ -939,7 +1155,7 @@ Attempted to fix the Portrait offsets and made the settings display an important
 **Misc. Changes:**  
 Added the Nzoth eye texture to the Alternative Power Bar, if its Sanity.  
 When you hover the NZoth eye on Character page, it will now show a highlight around the items with corruption stat.  
-Set a texture when a submenu is selected in the Auctionhouse skin.  
+Set a texture when a submenu is selected in the Auction House skin.  
 Fix backdrops on empty essences in the Character Frame.  
 Display an icon on Bag icons for corrupted items.  
 

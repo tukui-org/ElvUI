@@ -23,7 +23,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
+local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'SharedTooltipTemplate')
 
 local grid
 E.ConfigModeLayouts = {
@@ -213,6 +213,8 @@ end
 
 function E:NudgeMover(nudgeX, nudgeY)
 	local mover = ElvUIMoverNudgeWindow.child
+	if not mover then return end
+
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	mover:ClearAllPoints()
@@ -433,6 +435,7 @@ function E:CreateMoverPopup()
 			xOffset.currentValue = num
 			E:NudgeMover(diff)
 		end
+
 		eb:SetText(E:Round(xOffset.currentValue))
 		EditBox_ClearFocus(eb)
 	end)
@@ -467,6 +470,7 @@ function E:CreateMoverPopup()
 			yOffset.currentValue = num
 			E:NudgeMover(nil, diff)
 		end
+
 		eb:SetText(E:Round(yOffset.currentValue))
 		EditBox_ClearFocus(eb)
 	end)
@@ -491,7 +495,7 @@ function E:CreateMoverPopup()
 	resetButton:Point('TOP', nudgeFrame, 'CENTER', 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript('OnClick', function()
-		if ElvUIMoverNudgeWindow.child.textString then
+		if ElvUIMoverNudgeWindow.child and ElvUIMoverNudgeWindow.child.textString then
 			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
 		end
 	end)
@@ -665,18 +669,25 @@ end
 function E:Config_SetButtonColor(btn, disabled)
 	if disabled then
 		btn:Disable()
-		btn:SetBackdropBorderColor(1, .82, 0, 1)
-		btn:SetBackdropColor(1, .82, 0, 0.4)
 		btn.Text:SetTextColor(1, 1, 1)
 		E:Config_SetButtonText(btn, true)
+
+		if btn.SetBackdropColor then
+			btn:SetBackdropColor(1, .82, 0, 0.4)
+			btn:SetBackdropBorderColor(1, .82, 0, 1)
+		end
 	else
 		btn:Enable()
-		local r, g, b = unpack(E.media.bordercolor)
-		btn:SetBackdropBorderColor(r, g, b, 1)
-		r, g, b = unpack(E.media.backdropcolor)
-		btn:SetBackdropColor(r, g, b, 1)
 		btn.Text:SetTextColor(1, .82, 0)
 		E:Config_SetButtonText(btn)
+
+		if btn.SetBackdropColor then
+			local r1, g1, b1 = unpack(E.media.backdropcolor)
+			btn:SetBackdropColor(r1, g1, b1, 1)
+
+			local r2, g2, b2 = unpack(E.media.bordercolor)
+			btn:SetBackdropBorderColor(r2, g2, b2, 1)
+		end
 	end
 end
 

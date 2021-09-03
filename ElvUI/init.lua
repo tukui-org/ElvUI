@@ -66,7 +66,7 @@ E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
 E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
 E.Layout = E:NewModule('Layout','AceEvent-3.0')
 E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0', 'AceHook-3.0')
+E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0','AceHook-3.0')
 E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
 E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 E.PluginInstaller = E:NewModule('PluginInstaller')
@@ -194,7 +194,7 @@ function E:OnInitialize()
 		end
 	end
 
-	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
+	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'SharedTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1

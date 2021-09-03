@@ -102,7 +102,7 @@ function S:HandlePortraitFrame(frame, createBackdrop)
 	end
 
 	if createBackdrop then
-		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 	else
 		frame:SetTemplate('Transparent')
 	end
@@ -328,7 +328,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 	if not noStyle then
 		if createBackdrop then
-			button:CreateBackdrop(template, not noGlossTex, nil, nil, nil, nil, true, frameLevel)
+			button:CreateBackdrop(template, not noGlossTex, nil, nil, nil, nil, nil, true, frameLevel)
 		else
 			button:SetTemplate(template, not noGlossTex)
 		end
@@ -357,7 +357,7 @@ do
 		local Thumb = GrabScrollBarElement(frame, 'ThumbTexture') or GrabScrollBarElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
-		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
 		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
 
@@ -376,7 +376,7 @@ do
 
 		if Thumb and not Thumb.backdrop then
 			Thumb:SetTexture()
-			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, frame:GetFrameLevel() + 1)
+			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, nil, frame:GetFrameLevel() + 1)
 
 			if Thumb.backdrop then
 				if not thumbY then thumbY = 3 end
@@ -511,7 +511,7 @@ function S:HandleEditBox(frame, template)
 
 	if frame.backdrop then return end
 
-	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true)
+	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
 	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
@@ -582,7 +582,7 @@ do
 		if noBackdrop then
 			frame:Size(16)
 		else
-			frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, frameLevel)
+			frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, frameLevel)
 			frame.backdrop:SetInside(nil, 4, 4)
 		end
 
@@ -722,7 +722,7 @@ function S:HandleItemButton(b, setInside)
 	local texture = icon and icon.GetTexture and icon:GetTexture()
 
 	b:StripTextures()
-	b:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
+	b:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, true)
 	b:StyleButton()
 
 	if icon then
@@ -767,7 +767,7 @@ function S:HandleCloseButton(f, point, x, y)
 	end
 end
 
-function S:HandleSliderFrame(frame, template)
+function S:HandleSliderFrame(frame, template, frameLevel)
 	assert(frame, 'doesnt exist!')
 
 	local orientation = frame:GetOrientation()
@@ -781,7 +781,7 @@ function S:HandleSliderFrame(frame, template)
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	if not frame.backdrop then
-		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true, frameLevel)
 	end
 
 	local thumb = frame:GetThumbTexture()
@@ -1099,11 +1099,6 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 			end
 		end
 	end
-end
-
-function S:SetupArrow(direction)
-	self:SetTexture(E.Media.Textures.ArrowUp)
-	self:SetRotation(rad(S.ArrowRotation[direction]))
 end
 
 function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)

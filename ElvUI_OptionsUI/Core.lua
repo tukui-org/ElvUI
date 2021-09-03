@@ -1,10 +1,11 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('Distributor')
 
-local Engine = select(2, ...)
-Engine[1] = {}
-Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
-local C, L = Engine[1], Engine[2]
+local C, L = {}, E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+
+E.OptionsUI = select(2, ...)
+E.OptionsUI[1] = C
+E.OptionsUI[2] = L
 
 local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
 
@@ -114,14 +115,14 @@ local DEVELOPERS = {
 	'Haste',
 	'Nightcracker',
 	'Omega1970',
-	'Hydrazine',
 	'Blazeflack',
+	'|cffFFC44DHydra|r',
 	'|cff0070DEAzilroka|r',
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020Nihilistzsche|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .98,.95,.68)
+	E:TextGradient('Simpy but my name needs to be longer.', 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23)
 }
 
 local TESTERS = {

@@ -1,5 +1,5 @@
 --[[
-# Element: Party Indicator
+# Element: Party Indicator (by Caedis)
 	Toggles the visibility of an indicator based on if the player was in a group before joining the instance.
 
 ## Widget

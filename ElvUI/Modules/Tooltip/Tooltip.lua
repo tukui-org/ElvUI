@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
-local wipe, tinsert, tconcat = wipe, tinsert, table.concat
+local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
@@ -91,6 +91,8 @@ local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
+local blanchyFix = '|n%s+|n' -- thanks blizz -x- lol
+local whiteRGB = { r = 1, g = 1, b = 1 }
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -98,10 +100,8 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
-	if E.private.tooltip.enable ~= true then return end
-	if tt:IsForbidden() then return end
-	if not TT.db.visibility then return end
-	if tt:GetAnchorType() ~= 'ANCHOR_NONE' then return end
+	if not E.private.tooltip.enable or not TT.db.visibility then return end
+	if tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then return end
 
 	if InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
 		tt:Hide()
@@ -276,14 +276,27 @@ function TT:SetUnitText(tt, unit)
 			end
 		end
 
-		if TT.db.mythicDataEnable then
-			if TT.db.dungeonScore then
-				local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
-				local seasonScore = data and data.currentSeasonScore
+		local mythicInfo = TT.db.mythicDataEnable and C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
+		if mythicInfo then
+			local mythicScore = mythicInfo.currentSeasonScore
+			if mythicScore and mythicScore > 0 then
+				local color = (TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(mythicScore)) or whiteRGB
 
-				if seasonScore then
-					local color = TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(seasonScore)
-					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], seasonScore, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
+				if TT.db.dungeonScore then
+					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], mythicScore, nil, nil, nil, color.r, color.g, color.b)
+				end
+
+				if TT.db.mythicBestRun then
+					local bestRun = 0
+					for _, run in next, mythicInfo.runs do
+						if run.finishedSuccess and run.bestRunLevel > bestRun then
+							bestRun = run.bestRunLevel
+						end
+					end
+
+					if bestRun > 0 then
+						GameTooltip:AddDoubleLine(L["Mythic+ Best Run:"], bestRun, nil, nil, nil, color.r, color.g, color.b)
+					end
 				end
 			end
 		end
@@ -466,7 +479,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
-	local color = TT:SetUnitText(tt, unit)
 	if TT.db.showMount and isPlayerUnit and unit ~= 'player' and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
@@ -476,14 +488,15 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
 				tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
-				if sourceText and isControlKeyDown then
-					local sourceModified = gsub(sourceText, '|n', '\10')
+				local mountText = isControlKeyDown and sourceText and gsub(sourceText, blanchyFix, '|n')
+				if mountText then
+					local sourceModified = gsub(mountText, '|n', '\10')
 					for x in gmatch(sourceModified, '[^\10]+\10?') do
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
 							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
 						else
-							tt:AddDoubleLine(_G.FROM, gsub(sourceText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
 						end
 					end
 				end
@@ -527,6 +540,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
+	local color = TT:SetUnitText(tt, unit)
 	if isShiftKeyDown and isPlayerUnit then
 		TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 	end
@@ -712,17 +726,22 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 
 	if id then
-		local sourceText
+		local mountText
 		if TT.MountIDs[id] then
-			_, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
-			tt:AddLine(' ')
-			tt:AddLine(sourceText, 1, 1, 1)
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
+			mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
+
+			if mountText then
+				tt:AddLine(' ')
+				tt:AddLine(mountText, 1, 1, 1)
+			end
 		end
 
 		if TT:IsModKeyDown() then
-			if sourceText then
+			if mountText then
 				tt:AddLine(' ')
 			end
+
 			if caster then
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
@@ -864,7 +883,7 @@ function TT:Initialize()
 		TT.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
 	end
 
-	if E.private.tooltip.enable ~= true then return end
+	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
 	GameTooltip.StatusBar = GameTooltipStatusBar

@@ -1,12 +1,11 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local C, L = unpack(select(2, ...))
+local C, L = unpack(E.OptionsUI)
 local DB = E:GetModule('DataBars')
 local ACH = E.Libs.ACH
 
 local ceil = ceil
 local tonumber = tonumber
 local CopyTable = CopyTable
-local GetScreenWidth = GetScreenWidth
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
@@ -25,8 +24,8 @@ SharedOptions.strataAndLevel.args.frameStrata = ACH:Select(L["Frame Strata"], ni
 SharedOptions.strataAndLevel.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, {min = 1, max = 128, step = 1})
 
 SharedOptions.sizeGroup.inline = true
-SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
-SharedOptions.sizeGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
+SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(E.screenWidth), step = 1 })
+SharedOptions.sizeGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = ceil(E.screenWidth), step = 1 })
 SharedOptions.sizeGroup.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 3, { AUTOMATIC = L["Automatic"], HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
 SharedOptions.sizeGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill Direction"], nil, 4)
 
@@ -39,24 +38,20 @@ local DataBars = ACH:Group(L["DataBars"], nil, 2, 'tab', function(info) return E
 E.Options.args.databars = DataBars
 
 DataBars.args.intro = ACH:Description(L["Setup on-screen display of information bars."], 1)
-DataBars.args.spacer = ACH:Spacer(2)
+DataBars.args.transparent = ACH:Toggle(L["Transparent"], nil, 3)
+DataBars.args.customTexture = ACH:Toggle(L["Custom StatusBar"], nil, 4)
+DataBars.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 5, nil, nil, nil, function() return not E.db.databars.customTexture end)
 
-DataBars.args.general = ACH:Group(L["General"], nil, 3, nil, function(info) return E.db.databars[info[#info]] end, function(info, value) E.db.databars[info[#info]] = value DB:UpdateAll() end)
-DataBars.args.general.inline = true
-DataBars.args.general.args.transparent = ACH:Toggle(L["Transparent"], nil, 1)
-DataBars.args.general.args.customTexture = ACH:Toggle(L["Custom StatusBar"], nil, 2)
-DataBars.args.general.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 3, nil, nil, nil, function() return not E.db.databars.customTexture end)
-
-DataBars.args.colorGroup = ACH:Group(L["COLORS"], nil, 4, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
-DataBars.args.colorGroup.inline = true
+DataBars.args.colorGroup = ACH:Group(L["COLORS"], nil, -1, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
 DataBars.args.colorGroup.args.experience = ACH:Color(L["Experience"], nil, 1, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.quest = ACH:Color(L["Quest Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_QuestXP() end)
 DataBars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 4, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
 DataBars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 5, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end)
-DataBars.args.colorGroup.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], L["Reputation"], 6, nil, nil, nil, function() return E.db.databars.colors.useCustomFactionColors end, function(_, value) E.db.databars.colors.useCustomFactionColors = value end)
+DataBars.args.colorGroup.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], L["Reputation"], 6, nil, nil, nil, function() return E.db.databars.colors.useCustomFactionColors end, function(_, value) E.db.databars.colors.useCustomFactionColors = value; DB:ReputationBar_Update() end)
+DataBars.args.colorGroup.args.reputationAlpha = ACH:Range(L["Reputation Alpha"], nil, 7, {min = 0, max = 1, step = 0.05, isPercent = true}, nil, function() return E.db.databars.colors.reputationAlpha end, function(_, value) E.db.databars.colors.reputationAlpha = value; DB:ReputationBar_Update() end, nil, function() return E.db.databars.colors.useCustomFactionColors end)
 
-DataBars.args.colorGroup.args.factionColors = ACH:Group(' ', nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.databars.colors.factionColors[v] local d = P.databars.colors.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local v = tonumber(info[#info]); local t = E.db.databars.colors.factionColors[v]; t.r, t.g, t.b, t.a = r, g, b, a end, nil, function() return not E.db.databars.colors.useCustomFactionColors end)
+DataBars.args.colorGroup.args.factionColors = ACH:Group(' ', nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.databars.colors.factionColors[v] local d = P.databars.colors.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local v = tonumber(info[#info]); local t = E.db.databars.colors.factionColors[v]; t.r, t.g, t.b, t.a = r, g, b, a; DB:ReputationBar_Update() end, nil, function() return not E.db.databars.colors.useCustomFactionColors end)
 DataBars.args.colorGroup.args.factionColors.inline = true
 
 for i = 1, 8 do

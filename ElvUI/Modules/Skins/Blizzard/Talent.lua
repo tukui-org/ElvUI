@@ -257,15 +257,13 @@ function S:Blizzard_TalentUI()
 
 					frame.subText:SetTextColor(.6, .6, .6)
 
-					if not frame.reskinned then
+					if not frame.backdrop then
 						frame.ring:Hide()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
-						frame.icon:SetInside(frame)
+						frame.icon:SetInside(frame, 8, 8)
 
-						frame:SetTemplate()
-						frame:Size(42)
-
-						frame.reskinned = true
+						frame:CreateBackdrop()
+						frame.backdrop:SetOutside(frame.icon)
 					end
 				end
 

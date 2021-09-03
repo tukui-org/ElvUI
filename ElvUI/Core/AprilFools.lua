@@ -207,7 +207,7 @@ do
 			self.db.general.kittys = true
 			self:CreateKittys()
 
-			self:StaggeredUpdateAll(nil, true)
+			self:StaggeredUpdateAll()
 		end
 	end
 
@@ -254,7 +254,7 @@ do
 
 		self.db.tempSettings = nil
 
-		self:StaggeredUpdateAll(nil, true)
+		self:StaggeredUpdateAll()
 	end
 
 	function E:CreateKittys()
@@ -342,7 +342,7 @@ do
 		end
 
 		self.db.tempSettings = nil
-		self:StaggeredUpdateAll(nil, true)
+		self:StaggeredUpdateAll()
 	end
 
 	function E:HelloKittyToggle()

@@ -1,14 +1,14 @@
-local parent, ns = ...
+local _, ns = ...
 local oUF = ns.oUF
 
 -- sourced from Blizzard_ArenaUI/Blizzard_ArenaUI.lua
-local MAX_ARENA_ENEMIES = MAX_ARENA_ENEMIES or 5
+local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
 
 -- sourced from FrameXML/TargetFrame.lua
-local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES or 5
+local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES or 5
 
 -- sourced from FrameXML/PartyMemberFrame.lua
-local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS or 4
+local MAX_PARTY_MEMBERS = _G.MAX_PARTY_MEMBERS or 4
 
 local hiddenParent = CreateFrame('Frame', nil, UIParent)
 hiddenParent:SetAllPoints()
@@ -116,7 +116,7 @@ function oUF:DisableBlizzard(unit)
 		end
 
 		-- Blizzard_ArenaUI should not be loaded
-		Arena_LoadUI = function() end
+		_G.Arena_LoadUI = function() end
 		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif(unit:match('nameplate%d+$')) then
 		local frame = C_NamePlate.GetNamePlateForUnit(unit)

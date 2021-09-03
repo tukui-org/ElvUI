@@ -432,7 +432,7 @@ function S:Blizzard_EncounterJournal()
 			local rewardData = sugg.reward.data
 			if rewardData then
 				if not sugg.reward.icon.backdrop then
-					sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, 3)
+					sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 3)
 				end
 
 				sugg.reward.icon:SetMask('')
@@ -470,25 +470,29 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LootJournal.RuneforgePowerFilterDropDownButton, true)
 	LootJournal.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
+	if E.private.skins.parchmentRemoverEnable then
+		_G.EncounterJournal.LootJournal:StripTextures()
+		_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
+	end
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
 	local IconColor = E.QualityColors[ITEMQUALITY_LEGENDARY]
-	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(buttons)
+	hooksecurefunc(LootJournal.PowersFrame, 'RefreshListDisplay', function(buttons)
 		if not buttons.elements then return end
 
 		for i = 1, buttons:GetNumElementFrames() do
 			local btn = buttons.elements[i]
 			if btn and not btn.IsSkinned then
 				btn.Background:SetAlpha(0)
+				btn.BackgroundOverlay:SetAlpha(0)
 				btn.CircleMask:Hide()
 				S:HandleIcon(btn.Icon, true)
 				btn.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 
 				btn:CreateBackdrop('Transparent')
-				btn.backdrop:Point('TOPLEFT', 3, 0)
-				btn.backdrop:Point('BOTTOMRIGHT', -2, 1)
+				btn.backdrop:Point('TOPLEFT', 5, -1)
+				btn.backdrop:Point('BOTTOMRIGHT', 5, 1)
 
 				btn.IsSkinned = true
 			end

@@ -39,28 +39,16 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	end
 
 	if text then
-		health.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-		UF:Configure_FontString(health.value)
-
-		local x = -2
-		if textPos == 'LEFT' then
-			x = 2
-		end
-
-		health.value:Point(textPos, health, textPos, x, 0)
+		health.value = UF:CreateRaisedText(frame.RaisedElementParent)
+		health.value:Point(textPos, health, textPos, textPos == 'LEFT' and 2 or -2, 0)
 	end
 
 	health.colorTapping = true
 	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, nil, true)
 
-	local clipFrame = CreateFrame('Frame', nil, health)
+	local clipFrame = UF:Construct_ClipFrame(frame, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
-	clipFrame:SetClipsChildren(true)
-	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse(false)
-	clipFrame.__frame = frame
-	health.ClipFrame = clipFrame
 
 	return health
 end

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local ipairs = ipairs
@@ -29,8 +30,7 @@ function NP:Health_UpdateColor(_, unit)
 		t = NP.db.colors.selection[Selection]
 	elseif element.colorReaction and UnitReaction(unit, 'player') then
 		local reaction = UnitReaction(unit, 'player')
-		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
-		t = NP.db.colors.reactions[reaction]
+		t = NP.db.colors.reactions[reaction == 4 and 'neutral' or reaction <= 3 and 'bad' or 'good']
 	elseif element.colorSmooth then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	elseif element.colorHealth then
@@ -64,19 +64,8 @@ function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
-	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
+	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
-
-	local clipFrame = CreateFrame('Frame', nil, Health)
-	clipFrame:SetClipsChildren(true)
-	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse(false)
-	Health.ClipFrame = clipFrame
-
-	--[[Health.bg = Health:CreateTexture(nil, 'BACKGROUND')
-	Health.bg:SetAllPoints()
-	Health.bg:SetTexture(E.media.blankTex)
-	Health.bg.multiplier = 0.2]]
 
 	NP.StatusBars[Health] = true
 
@@ -91,6 +80,8 @@ function NP:Construct_Health(nameplate)
 	Health.colorTapping = true
 	Health.colorSelection = true
 	Health.UpdateColor = NP.Health_UpdateColor
+
+	UF:Construct_ClipFrame(nameplate, Health)
 
 	return Health
 end

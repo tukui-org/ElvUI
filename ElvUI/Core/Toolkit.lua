@@ -48,6 +48,23 @@ local function DisablePixelSnap(frame)
 	end
 end
 
+local function BackdropFrameLevel(frame, level)
+	frame:SetFrameLevel(level)
+
+	if frame.oborder then frame.oborder:SetFrameLevel(level) end
+	if frame.iborder then frame.iborder:SetFrameLevel(level) end
+end
+
+local function BackdropFrameLower(backdrop, parent)
+	local level = parent:GetFrameLevel()
+	local minus = level and (level - 1)
+	if minus and (minus >= 0) then
+		BackdropFrameLevel(backdrop, minus)
+	else
+		BackdropFrameLevel(backdrop, 0)
+	end
+end
+
 local function GetTemplate(template, isUnitFrameElement)
 	backdropa, bordera = 1, 1
 
@@ -122,7 +139,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -x, y)
 end
 
-local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
+local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, noScale)
 	GetTemplate(template, isUnitFrameElement)
 
 	frame.template = template or 'Default'
@@ -140,10 +157,12 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
 	else
+		local edgeSize = E.twoPixelsPlease and 2 or 1
+
 		frame:SetBackdrop({
 			edgeFile = E.media.blankTex,
 			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
-			edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1)
+			edgeSize = noScale and edgeSize or E:Scale(edgeSize)
 		})
 
 		if frame.callbackBackdropColor then
@@ -157,22 +176,25 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		if (notPixelMode or notThinBorders) and not forcePixelMode then
 			local backdrop = {
 				edgeFile = E.media.blankTex,
-				edgeSize = E:Scale(1)
+				edgeSize = noScale and 1 or E:Scale(1)
 			}
 
+			local level = frame:GetFrameLevel()
 			if not frame.iborder then
-				local border = CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
-				border:SetInside(frame, 1, 1)
+				border:SetFrameLevel(level)
+				border:SetInside(frame, 1, 1, nil, noScale)
 				frame.iborder = border
 			end
 
 			if not frame.oborder then
-				local border = CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
-				border:SetOutside(frame, 1, 1)
+				border:SetFrameLevel(level)
+				border:SetOutside(frame, 1, 1, nil, noScale)
 				frame.oborder = border
 			end
 		end
@@ -193,12 +215,12 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	end
 end
 
-local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, allPoints, frameLevel)
+local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, noScale, allPoints, frameLevel)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent)
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
+	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, noScale)
 
 	if allPoints then
 		if allPoints == true then
@@ -208,27 +230,21 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 		end
 	else
 		if forcePixelMode then
-			backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
+			backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1, nil, noScale)
 		else
 			local border = (isUnitFrameElement and UF.BORDER) or (isNamePlateElement and NP.BORDER)
-			backdrop:SetOutside(frame, border, border)
+			backdrop:SetOutside(frame, border, border, nil, noScale)
 		end
 	end
 
 	if frameLevel then
 		if frameLevel == true then
-			backdrop:SetFrameLevel(parent:GetFrameLevel())
+			BackdropFrameLevel(backdrop, parent:GetFrameLevel())
 		else
-			backdrop:SetFrameLevel(frameLevel)
+			BackdropFrameLevel(backdrop, frameLevel)
 		end
 	else
-		local level = parent:GetFrameLevel()
-		local minus = level and (level - 1)
-		if minus and (minus >= 0) then
-			backdrop:SetFrameLevel(minus)
-		else
-			backdrop:SetFrameLevel(0)
-		end
+		BackdropFrameLower(backdrop, parent)
 	end
 end
 

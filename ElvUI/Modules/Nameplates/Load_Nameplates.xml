@@ -2,6 +2,7 @@
 	<Script file='Nameplates.lua'/>
 	<Script file='StyleFilter.lua'/>
 	<Script file='Elements\Auras.lua'/>
+	<Script file='Elements\BossMods.lua'/>
 	<Script file='Elements\CastBar.lua'/>
 	<Script file='Elements\ClassPower.lua'/>
 	<Script file='Elements\Health.lua'/>

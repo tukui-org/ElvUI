@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local UF = E:GetModule('UnitFrames')
 
 local max = max
+local next = next
 local ipairs = ipairs
 local unpack = unpack
 local CreateFrame = CreateFrame
@@ -333,7 +334,7 @@ function UF:PostVisibilityClassBar()
 	UF:PostVisibility_ClassBars(self.origParent or self:GetParent())
 end
 
-function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedIndex)
+function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPoints)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return end
@@ -370,10 +371,13 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedIn
 
 	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
 		UF.ClassPower_UpdateColor(self, powerType)
-		if chargedIndex then
+
+		if chargedPoints then
 			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
-			self[chargedIndex]:SetStatusBarColor(r, g, b)
-			self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
+			for _, chargedIndex in next, chargedPoints do
+				self[chargedIndex]:SetStatusBarColor(r, g, b)
+				self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
+			end
 		end
 	end
 end
@@ -433,12 +437,8 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[additionalPower] = true
 
-	additionalPower.RaisedElementParent = CreateFrame('Frame', nil, additionalPower)
-	additionalPower.RaisedElementParent:SetFrameLevel(additionalPower:GetFrameLevel() + 100)
-	additionalPower.RaisedElementParent:SetAllPoints()
-
-	additionalPower.text = additionalPower.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(additionalPower.text)
+	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower, true)
+	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
 	additionalPower.bg:SetAllPoints(additionalPower)
@@ -447,6 +447,8 @@ function UF:Construct_AdditionalPowerBar(frame)
 
 	additionalPower:SetScript('OnShow', ToggleResourceBar)
 	additionalPower:SetScript('OnHide', ToggleResourceBar)
+
+	UF:Construct_ClipFrame(frame, additionalPower)
 
 	return additionalPower
 end

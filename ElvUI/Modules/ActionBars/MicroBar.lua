@@ -195,7 +195,7 @@ function AB:UpdateMicroButtons()
 end
 
 function AB:SetupMicroBar()
-	microBar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
+	microBar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, nil, 0)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 	microBar:EnableMouse(false)
 

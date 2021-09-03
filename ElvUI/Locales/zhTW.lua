@@ -67,7 +67,6 @@ L["Blend Mode"] = "混合模式"
 L["Blend"] = "常規混合"
 L["Blizzard Widgets"] = true
 L["BNet Frame"] = "戰網提示資訊"
-L["Boss Banner"] = true
 L["Boss Button"] = "特殊技能鍵"
 L["Boss Frames"] = "首領框架"
 L["Building(s) Report:"] = "建築報告"
@@ -200,7 +199,6 @@ L["Left Chat"] = "左側對話框"
 L["Left Click:"] = "滑鼠左鍵："
 L["Legs"] = "腿部"
 L["Level"] = "等級"
-L["Level Up Display / Boss Banner"] = "升級提示 / 首領旗幟"
 L["List of installations in queue:"] = "即將安裝的列表"
 L["Lock"] = "鎖定"
 L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
@@ -222,6 +220,8 @@ L["Mobile"] = "掌上設備"
 L["Modulating Blend"] = "無視 Alpha 通道混合"
 L["Mov. Speed:"] = _G.STAT_MOVEMENT_SPEED
 L["MT Frames"] = "主坦克框架"
+L["Mythic+ Score:"] = true
+L["Mythic+ Best Run:"] = true
 L["Naval Mission(s) Report:"] = "海軍任務報告"
 L["Nazjatar Follower XP"] = "納沙塔爾盟友經驗"
 L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "需要幫助? 加入我們的 Discord 伺服器(英文): https://discord.gg/xFWcfgE"
@@ -328,7 +328,7 @@ L["This part of the installation process sets up your World of Warcraft default 
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "此設定造成了錨點衝突, '%s' 框架會依附於自己, 請檢查你的錨點. 將 '%s' 依附於 '%s'."
 L["This will change the layout of your unitframes and actionbars."] = "這將會改變你的單位框架和動作條的佈局"
 L["To list all available ElvUI commands, type in chat /ehelp"] = true
-L["To quickly move around certain elements of the UI, type /moveui"] = true
+L["To quickly move around certain elements of the UI, type /emove"] = true
 L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."] = true
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Toggle Chat Frame"] = "開關對話框架"
@@ -340,8 +340,11 @@ L["Total: "] = "合計: "
 L["Trigger"] = "觸發器"
 L["Type /hellokitty to revert to old settings."] = "輸入 /hellokitty 來回復舊設定"
 L["BelowMinimapWidget"] = true
-L["TopWidget"] = true
+L["TopCenterWidget"] = true
+L["MawBuffsWidget"] = true
 L["PowerBarWidget"] = true
+L["EventToastWidget"] = true
+L["BossBannerWidget"] = "首領旗幟"
 L["Unhittable:"] = "未命中:"
 L["Vehicle Seat Frame"] = "載具座位框"
 L["Vendor / Delete Grays"] = "出售/摧毁灰色物品"
@@ -378,6 +381,7 @@ L["Zone Ability"] = "區域技能"
 
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
+
 選項:
   左鍵 - 開啟微調窗口.
   右鍵 - 開啟對應設定.
@@ -387,14 +391,14 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, �
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
- */resetui|r  -  Reset all frames to their original positions.
+ */emove|r  -  Toggle anchors to reposition various elements.
+ */ereset|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
  */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
-  using */luaerror|r ^on|r within that session.
+ */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
+  using */edebug|r ^on|r within that session.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

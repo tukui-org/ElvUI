@@ -58,21 +58,23 @@ local ItemRequestTimeout = 10.0
 
 -- interact distance based checks. ranges are based on my own measurements (thanks for all the folks who helped me with this)
 local DefaultInteractList = {
-    [3] = 8,
---    [2] = 9,
-    [4] = 28,
+--  [1] = 28, -- Compare Achievements
+--  [2] = 9,  -- Trade
+    [3] = 8,  -- Duel
+    [4] = 28, -- Follow
+--  [5] = 7,  -- unknown
 }
 
 -- interact list overrides for races
 local InteractLists = {
     ["Tauren"] = {
+    --  [2] = 7,
         [3] = 6,
---        [2] = 7,
         [4] = 25,
     },
     ["Scourge"] = {
+    --  [2] = 8,
         [3] = 7,
---        [2] = 8,
         [4] = 27,
     },
 }
@@ -111,9 +113,10 @@ PetSpells["DEMONHUNTER"] = {}
 
 -- Druids
 FriendSpells["DRUID"] = {
-    774,  -- Rejuvenation (40 yards, level 10)
-    2782, -- Remove Corruption (40 yards, level 19)
-    8936, -- Regrowth (40 yards, level 5)
+    8936,  -- Regrowth (40 yards, level 3)
+    774,   -- Rejuvenation (Restoration) (40 yards, level 10)
+    2782,  -- Remove Corruption (Restoration) (40 yards, level 19)
+    88423, -- Natures Cure (Restoration) (40 yards, level 19)
 }
 HarmSpells["DRUID"] = {
     5176,  -- Wrath (40 yards)
@@ -124,7 +127,9 @@ HarmSpells["DRUID"] = {
     8921,  -- Moonfire (40 yards, level 2)
 }
 ResSpells["DRUID"] = {
-    50769, -- Revive (40 yards, level 14)
+    50769,  -- Revive (40 yards, level 14)
+    20484,  -- Rebirth (40 yards, level 29)
+--  212040, -- Revitalize (100 yards, level 47)
 }
 PetSpells["DRUID"] = {}
 
@@ -140,7 +145,9 @@ PetSpells["HUNTER"] = {
 
 -- Mages
 FriendSpells["MAGE"] = {
-    130, -- Slow Fall (40 yards)
+    1459, -- Arcane Intellect (40 yards, level 8)
+    475,  -- Remove Curse (40 yards, level 28)
+--  130,  -- Slow Fall (40 yards, level 9) (Grouped)
 }
 HarmSpells["MAGE"] = {
     44614, -- Flurry (40 yards)
@@ -166,13 +173,17 @@ HarmSpells["MONK"] = {
     117952, -- Crackling Jade Lightning (40 yards)
 }
 ResSpells["MONK"] = {
-    115178, -- Resuscitate (40 yards)
+    115178, -- Resuscitate (40 yards, level 13)
+--  212051, -- Reawaken (100 yards, level 47)
 }
 PetSpells["MONK"] = {}
 
 -- Paladins
 FriendSpells["PALADIN"] = {
-    19750, -- Flash of Light (40 yards)
+    19750,  -- Flash of Light (40 yards, level 4)
+    85673,  -- Word of Glory (40 yards, level 7)
+    4987,   -- Cleanse (Holy) (40 yards, level 12)
+    213644, -- Cleanse Toxins (Protection, Retribution) (40 yards, level 12)
 }
 HarmSpells["PALADIN"] = {
     853,    -- Hammer of Justice (10 yards)
@@ -189,9 +200,10 @@ PetSpells["PALADIN"] = {}
 
 -- Priests
 FriendSpells["PRIEST"] = {
-    527,  -- Purify (40 yards)
-    2061, -- Flash Heal (40 yards)
-    17,   -- Power Word: Shield (40 yards)
+    2061,  -- Flash Heal (40 yards, level 3)
+    17,    -- Power Word: Shield (40 yards, level 4)
+    21562, -- Power Word: Fortitude (40 yards, level 6)
+    527,   -- Purify (40 yards, level 18)
 }
 HarmSpells["PRIEST"] = {
     589,  -- Shadow Word: Pain (40 yards)
@@ -199,13 +211,16 @@ HarmSpells["PRIEST"] = {
     5019, -- Shoot (30 yards)
 }
 ResSpells["PRIEST"] = {
-    2006, -- Resurrection (40 yards)
+    2006,   -- Resurrection (40 yards, level 10)
+--  212036, -- Mass Resurrection (100 yards, level 37)
 }
 PetSpells["PRIEST"] = {}
 
 -- Rogues
 FriendSpells["ROGUE"] = {
-    57934, -- Tricks of the Trade (100 yards)
+    921,   -- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly aswell
+    36554, -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
+--  57934, -- Tricks of the Trade (100 yards, level 48) (Grouped)
 }
 HarmSpells["ROGUE"] = {
     185565, -- Poisoned Knife (Assassination) (30 yards)
@@ -214,15 +229,16 @@ HarmSpells["ROGUE"] = {
     1725,   -- Distract (30 yards)
     2764,   -- Throw (30 yards)
     2094,   -- Blind (15 yards)
+    921,    -- Pick Pocket (10 yards, level 24)
 }
 ResSpells["ROGUE"] = {}
 PetSpells["ROGUE"] = {}
 
 -- Shamans
 FriendSpells["SHAMAN"] = {
-    8004,   -- Healing Surge (Resto/Elemental) (40 yards)
-    188070, -- Healing Surge (Enhancement) (40 yards)
     546,    -- Water Walking (30 yards)
+    8004,   -- Healing Surge (Resto, Elemental) (40 yards)
+    188070, -- Healing Surge (Enhancement) (40 yards)
 }
 HarmSpells["SHAMAN"] = {
     370,    -- Purge (30 yards)
@@ -230,7 +246,8 @@ HarmSpells["SHAMAN"] = {
     73899,  -- Primal Strike (Melee Range)
 }
 ResSpells["SHAMAN"] = {
-    2008, -- Ancestral Spirit (40 yards)
+    2008,   -- Ancestral Spirit (40 yards, level 13)
+--  212048, -- Ancestral Vision (100 yards)
 }
 PetSpells["SHAMAN"] = {}
 
@@ -238,8 +255,8 @@ PetSpells["SHAMAN"] = {}
 FriendSpells["WARRIOR"] = {}
 HarmSpells["WARRIOR"] = {
     355,  -- Taunt (30 yards)
-    5246, -- Intimidating Shout (Arms/Fury) (8 yards)
-    100,  -- Charge (Arms/Fury) (8-25 yards)
+    5246, -- Intimidating Shout (Arms, Fury) (8 yards)
+    100,  -- Charge (Arms, Fury) (8-25 yards)
 }
 ResSpells["WARRIOR"] = {}
 PetSpells["WARRIOR"] = {}
@@ -253,7 +270,7 @@ HarmSpells["WARLOCK"] = {
     5019,   -- Shoot (30 yards)
     234153, -- Drain Life (40 yards, level 9)
     198590, -- Drain Soul (40 yards, level 15)
-    686,    -- Shadow Bolt (Demonology / Affliction) (40 yards)
+    686,    -- Shadow Bolt (Demonology, Affliction) (40 yards)
     232670, -- Shadow Bolt (40 yards)
     5782,   -- Fear (30 yards)
 }
@@ -550,7 +567,7 @@ local checkers_Interact = setmetatable({}, {
     __index = function(t, index)
         local func = function(unit)
             if CheckInteractDistance(unit, index) then
-                 return true
+                return true
             end
         end
         t[index] = func
@@ -559,7 +576,6 @@ local checkers_Interact = setmetatable({}, {
 })
 
 -- helper functions
-
 local function copyTable(src, dst)
     if type(dst) ~= "table" then dst = {} end
     if type(src) == "table" then
@@ -572,7 +588,6 @@ local function copyTable(src, dst)
     end
     return dst
 end
-
 
 local function initItemRequests(cacheAll)
     friendItemRequests = copyTable(FriendItems)
@@ -818,6 +833,7 @@ function lib:init(forced)
     local _, playerRace = UnitRace("player")
 
     minRangeCheck = nil
+
     -- first try to find a nice item we can use for minRangeCheck
     if HarmItems[15] then
         local items = HarmItems[15]
@@ -831,28 +847,7 @@ function lib:init(forced)
             end
         end
     end
-    if not minRangeCheck then
-        -- ok, then try to find some class specific spell
-        if playerClass == "WARRIOR" then
-            -- for warriors, use Intimidating Shout if available
-            local name = GetSpellInfo(5246) -- ["Intimidating Shout"]
-            local spellIdx = findSpellIdx(name)
-            if spellIdx then
-                minRangeCheck = function(unit)
-                    return (IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1)
-                end
-            end
-        elseif playerClass == "ROGUE" then
-            -- for rogues, use Blind if available
-            local name = GetSpellInfo(2094) -- ["Blind"]
-            local spellIdx = findSpellIdx(name)
-            if spellIdx then
-                minRangeCheck = function(unit)
-                    return (IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1)
-                end
-            end
-        end
-    end
+
     if not minRangeCheck then
         -- fall back to interact distance checks
         if playerClass == "HUNTER" or playerRace == "Tauren" then

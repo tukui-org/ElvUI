@@ -5,9 +5,10 @@ local Skins = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local gsub, strfind, gmatch, format, max = gsub, strfind, gmatch, format, max
+local issecurevariable = issecurevariable
+local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
-local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
+local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
 
@@ -47,19 +48,22 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
-local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
+local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local IsActivePlayerGuide = IsActivePlayerGuide
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
-local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
-local C_PlayerMentorship_IsActivePlayerConsideredNewcomer = C_PlayerMentorship.IsActivePlayerConsideredNewcomer
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
 local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local C_ChatInfo_GetChannelRuleset = C_ChatInfo.GetChannelRuleset
+local C_ChatInfo_GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
+local C_ChatInfo_GetChannelShortcutForChannelID = C_ChatInfo.GetChannelShortcutForChannelID
+local C_ChatInfo_IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_SocialGetLastItem = C_Social.GetLastItem
@@ -70,7 +74,10 @@ local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset.Mentor
-local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
+local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus.Newcomer
+
+local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE, '(|A.-|a).+', '%1') -- we only want the icon
+local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') -- some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
@@ -183,7 +190,6 @@ do --this can save some main file locals
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
-	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local Deathly		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
@@ -205,14 +211,14 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys Valentine Vibes: Rose Pink, Soft Pink, Soft Cyan, Soft Violet, Soft Rose, Soft Yellow
-		local SimpyColors = function(t) return specialText(t, 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .98,.95,.68) end
+		--Simpys: Mindaro, Sea Green, Purple Plum, Paradise Pink, Orange Yellow
+		local SimpyColors = function(t) return specialText(t, 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
-		--Light Spring: 50DAD3, 56E580, D8DA33, DFA455, EE8879, F972D1, B855DF, 50DAD3
-		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+		--Mels: Electric Blue, Purpureus, Blush, Bitter Sweet, Emerald
+		local MelColors = function(t) return specialText(t, 0.09,0.94,1.00, 0.60,0.34,0.63, 0.91,0.32,0.49, 0.95,0.42,0.32, 0.19,0.77,0.41) end
 		--Class: Normal to Negative (Orange->Blue, Red->Cyan, etc)
 		local NihiColors = function(class) local c = E:ClassColor(class,true); local n = E:InverseClassColor(class, true, true); local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, n.r,n.g,n.b; return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
@@ -325,6 +331,10 @@ do --this can save some main file locals
 		['Perìwìnkle-Cenarius']		= itsMel, -- Shaman
 		['Pìper-Cenarius']			= itsMel, -- Warlock
 		['Spãrkles-Cenarius']		= itsMel, -- Mage
+		['Mellybear-Cenarius']		= itsMel, -- Hunter
+		['Zuria-Cenarius']			= itsMel, -- DH
+		['Tinybubbles-Cenarius']	= itsMel, -- Monk
+		['Alykat-Cenarius']			= itsMel, -- [Horde] Druid
 		['Alybones-Cenarius']		= itsMel, -- [Horde] DK
 		['Alyfreeze-Cenarius']		= itsMel, -- [Horde] Mage
 		['Alykins-Cenarius']		= itsMel, -- [Horde] DH
@@ -364,8 +374,8 @@ do --this can save some main file locals
 		['Tirain-Spirestone']	= TyroneBiggums,
 		['Sinth-Spirestone']	= TyroneBiggums,
 		['Tee-Spirestone']		= TyroneBiggums,
-		['TeePac-Area52']		= TyroneBiggums,
-		['TeeKettle-Area52']		= TyroneBiggums,
+		['Teepac-Area52']		= TyroneBiggums,
+		['Teekettle-Area52']		= TyroneBiggums,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
 		['Misdîrect-Spirestone']	= itsMis,
 		['Misoracle-Spirestone']	= itsMis,
@@ -557,6 +567,36 @@ do
 
 		if repeatedText then
 			repeatedText = nil
+		end
+	end
+end
+
+do -- this fixes a taint when you push tab on editbox which blocks secure commands to the chat
+	local safe, list = {}, _G.hash_ChatTypeInfoList
+
+	function CH:ChatEdit_UntaintTabList()
+		for cmd, name in next, list do
+			if not issecurevariable(list, cmd) then
+				safe[cmd] = name
+				list[cmd] = nil
+			end
+		end
+	end
+
+	function CH:ChatEdit_PleaseRetaint()
+		for cmd, name in next, safe do
+			list[cmd] = name
+			safe[cmd] = nil
+		end
+	end
+
+	function CH:ChatEdit_PleaseUntaint(event)
+		if event == 'PLAYER_REGEN_DISABLED' then
+			if _G.ChatEdit_GetActiveWindow() then
+				CH:ChatEdit_UntaintTabList()
+			end
+		elseif InCombatLockdown() then
+			CH:ChatEdit_UntaintTabList()
 		end
 	end
 end
@@ -951,7 +991,7 @@ function CH:FCFDock_SelectWindow(_, chatFrame)
 end
 
 function CH:ChatEdit_ActivateChat(editbox)
-	if editbox and editbox.chatFrame then
+	if editbox.chatFrame then
 		CH:UpdateEditboxFont(editbox.chatFrame)
 	end
 end
@@ -1543,7 +1583,7 @@ end
 local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 	-- Renaming for clarity:
 	local specialFlag = arg6
-	--local zoneChannelID = arg7
+	local zoneChannelID = arg7
 	--local localChannelID = arg8
 
 	if specialFlag ~= '' then
@@ -1551,11 +1591,11 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 			-- Add Blizzard Icon if this was sent by a GM/DEV
 			return '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t '
 		elseif specialFlag == 'GUIDE' then
-			if C_PlayerMentorship_IsActivePlayerConsideredNewcomer() then
-				return _G.NPEV2_CHAT_USER_TAG_GUIDE .. ' ' -- possibly unable to save global string with trailing whitespace...
+			if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, C_ChatInfo_GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
+				return NPEV2_CHAT_USER_TAG_GUIDE
 			end
 		elseif specialFlag == 'NEWCOMER' then
-			if IsActivePlayerGuide() then
+			if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, C_ChatInfo_GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
 				return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else
@@ -1566,19 +1606,49 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 	return ""
 end
 
+-- copied from ChatFrame.lua
+local function ChatFrame_CheckAddChannel(chatFrame, eventType, channelID)
+	-- This is called in the event that a user receives chat events for a channel that isn't enabled for any chat frames.
+	-- Minor hack, because chat channel filtering is backed by the client, but driven entirely from Lua.
+	-- This solves the issue of Guides abdicating their status, and then re-applying in the same game session, unless ChatFrame_AddChannel
+	-- is called, the channel filter will be off even though it's still enabled in the client, since abdication removes the chat channel and its config.
+	-- Only add to default (since multiple chat frames receive the event and we don't want to add to others)
+	if chatFrame ~= _G.DEFAULT_CHAT_FRAME then
+		return false
+	end
+
+	-- Only add if the user is joining a channel
+	if eventType ~= "YOU_CHANGED" then
+		return false
+	end
+
+	-- Only add regional channels
+	if not C_ChatInfo_IsChannelRegionalForChannelID(channelID) then
+		return false
+	end
+
+	return _G.ChatFrame_AddChannel(chatFrame, C_ChatInfo_GetChannelShortcutForChannelID(channelID)) ~= nil
+end
+
+
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
+
+	local notChatHistory, historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
+	if isHistory == 'ElvUI_ChatHistory' then
+		if historyBTag then arg2 = historyBTag end -- swap arg2 (which is a |k string) to btag name
+		historySavedName = historyName
+	else
+		notChatHistory = true
+	end
+
+	if _G.TextToSpeechFrame_MessageEventHandler and notChatHistory then
+		_G.TextToSpeechFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+	end
+
 	if strsub(event, 1, 8) == 'CHAT_MSG' then
 		if arg16 then return true end -- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
-
-		local notChatHistory, historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
-		if isHistory == 'ElvUI_ChatHistory' then
-			if historyBTag then arg2 = historyBTag end -- swap arg2 (which is a |k string) to btag name
-			historySavedName = historyName
-		else
-			notChatHistory = true
-		end
 
 		local chatType = strsub(event, 10)
 		local info = _G.ChatTypeInfo[chatType]
@@ -1613,7 +1683,12 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
-		if chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
+
+		if type == 'VOICE_TEXT' then -- the code here looks weird but its how blizzard has it ~Simpy
+			local leader = UnitIsGroupLeader(arg2)
+			infoType, type = _G.VoiceTranscription_DetermineChatTypeVoiceTranscription_DetermineChatType(leader)
+			info = _G.ChatTypeInfo[infoType]
+		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
 				local _, popup = _G.StaticPopup_Visible('CHAT_CHANNEL_PASSWORD')
 				if popup and strupper(popup.data) == strupper(arg9) then
@@ -1625,11 +1700,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			for index, value in pairs(frame.channelList) do
 				if channelLength > strlen(value) then
 					-- arg9 is the channel name without the number in front...
-					if ((arg7 > 0) and (frame.zoneChannelList[index] == arg7)) or (strupper(value) == strupper(arg9)) then
+					if (arg7 > 0 and frame.zoneChannelList[index] == arg7) or (strupper(value) == strupper(arg9)) then
 						found = true
+
 						infoType = 'CHANNEL'..arg8
 						info = _G.ChatTypeInfo[infoType]
-						if chatType == 'CHANNEL_NOTICE' and (arg1 == 'YOU_LEFT') then
+
+						if chatType == 'CHANNEL_NOTICE' and arg1 == 'YOU_LEFT' then
 							frame.channelList[index] = nil
 							frame.zoneChannelList[index] = nil
 						end
@@ -1637,22 +1714,17 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					end
 				end
 			end
+
 			if not found or not info then
-				return true
+				local eventType, channelID = arg1, arg7
+				if not ChatFrame_CheckAddChannel(self, eventType, channelID) then
+					return true
+				end
 			end
 		end
 
 		local chatGroup = _G.Chat_GetChatCategory(chatType)
-		local chatTarget
-		if chatGroup == 'CHANNEL' then
-			chatTarget = tostring(arg8)
-		elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-			if not(strsub(arg2, 1, 2) == '|K') then
-				chatTarget = strupper(arg2)
-			else
-				chatTarget = arg2
-			end
-		end
+		local chatTarget = _G.FCFManager_GetChatTarget(chatGroup, arg2, arg8)
 
 		if _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
 			return true
@@ -2016,10 +2088,11 @@ function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
 	return _G.ChatFrame_SystemEventHandler(frame, event, message, ...)
 end
 
-function CH:ChatFrame_OnEvent(...)
-	if CH:ChatFrame_ConfigEventHandler(...) then return end
-	if CH:ChatFrame_SystemEventHandler(...) then return end
-	if CH:ChatFrame_MessageEventHandler(...) then return end
+function CH:ChatFrame_OnEvent(frame, event, ...)
+	if frame.customEventHandler and frame.customEventHandler(frame, event, ...) then return end
+	if CH:ChatFrame_ConfigEventHandler(frame, event, ...) then return end
+	if CH:ChatFrame_SystemEventHandler(frame, event, ...) then return end
+	if CH:ChatFrame_MessageEventHandler(frame, event, ...) then return end
 end
 
 function CH:FloatingChatFrame_OnEvent(...)
@@ -2037,6 +2110,7 @@ function CH:ChatFrame_SetScript(script, func)
 	end
 end
 
+local ignoreChats = {[2]='Log',[3]='Voice'}
 function CH:SetupChat()
 	if not E.private.chat.enable then return end
 
@@ -2047,7 +2121,8 @@ function CH:SetupChat()
 
 		_G.FCFTab_UpdateAlpha(frame)
 
-		if id ~= 2 and not frame.OldAddMessage then
+		local allowHooks = not ignoreChats[id]
+		if allowHooks and not frame.OldAddMessage then
 			--Don't add timestamps to combat log, they don't work.
 			--This usually taints, but LibChatAnims should make sure it doesn't.
 			frame.OldAddMessage = frame.AddMessage
@@ -2055,7 +2130,7 @@ function CH:SetupChat()
 		end
 
 		if not frame.scriptsSet then
-			if id ~= 2 then
+			if allowHooks then
 				frame:SetScript('OnEvent', FloatingChatFrameOnEvent)
 			end
 
@@ -2307,27 +2382,18 @@ end
 function CH:PET_BATTLE_CLOSE()
 	if not CH.db.autoClosePetBattleLog then return end
 
-	-- closing a chat tab (or window) in combat = chat tab (or window) goofs..
-	-- might have something to do with HideUIPanel inside of FCF_Close
-	if InCombatLockdown() then
-		CH:RegisterEvent('PLAYER_REGEN_ENABLED', 'PET_BATTLE_CLOSE')
-		return
-	else -- we can take this off once it goes through once
-		CH:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	end
-
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local tab = CH:GetTab(chat)
 		local text = tab and tab.Text:GetText()
 		if text and strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
-			_G.FCF_Close(chat)
+			CH.FCF_Close(chat)
 			break -- we found it, dont gotta keep lookin'
 		end
 	end
 end
 
-function CH:FCF_Close(chat)
+function CH:PostChatClose(chat)
 	-- clear these off when it's closed, used by FCFTab_UpdateColors
 	local tab = CH:GetTab(chat)
 	tab.whisperName = nil
@@ -2950,7 +3016,7 @@ function CH:BuildCopyChatFrame()
 	editBox:SetMaxLetters(99999)
 	editBox:EnableMouse(true)
 	editBox:SetAutoFocus(false)
-	editBox:SetFontObject(_G.ChatFontNormal)
+	editBox:SetFontObject('ChatFontNormal')
 	editBox:Width(scrollArea:GetWidth())
 	editBox:Height(200)
 	editBox:SetScript('OnEscapePressed', function() _G.CopyChatFrame:Hide() end)
@@ -3183,6 +3249,65 @@ function CH:ResetHistory()
 	ElvCharacterDB.ChatHistoryLog = {}
 end
 
+--Copied from FrameXML FloatingChatFrame.lua and modified to fix
+--not being able to close chats in combat since 8.2 or something. ~Simpy
+function CH:FCF_Close(fallback)
+	if fallback then self = fallback end
+	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
+	if self == _G.DEFAULT_CHAT_FRAME then return end
+
+	_G.FCF_UnDockFrame(self)
+	self:Hide() -- switch from HideUIPanel(frame) to frame:Hide()
+	CH:GetTab(self):Hide() -- use our get tab function instead
+
+	_G.FCF_FlagMinimizedPositionReset(self)
+
+	if self.minFrame and self.minFrame:IsShown() then
+		self.minFrame:Hide()
+	end
+
+	if self.isTemporary then
+		_G.FCFManager_UnregisterDedicatedFrame(self, self.chatType, self.chatTarget)
+
+		self.isRegistered = false
+		self.inUse = false
+	end
+
+	--Reset what this window receives.
+	_G.ChatFrame_RemoveAllChannels(self)
+	_G.ChatFrame_RemoveAllMessageGroups(self)
+	_G.ChatFrame_ReceiveAllPrivateMessages(self)
+
+	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
+end
+
+--Same reason as CH.FCF_Close
+function CH:FCF_PopInWindow(fallback)
+	if fallback then self = fallback end
+	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
+	if self == _G.DEFAULT_CHAT_FRAME then return end
+
+	--Restore any chats this frame had to the DEFAULT_CHAT_FRAME
+	_G.FCF_RestoreChatsToFrame(_G.DEFAULT_CHAT_FRAME, self)
+	CH.FCF_Close(self) -- use ours to fix close chat bug
+end
+
+function CH:UIDropDownMenu_AddButton(info, level)
+	if info and info.text == _G.CLOSE_CHAT_WINDOW then
+		if not level then level = 1 end
+
+		local list = _G['DropDownList'..level]
+		local index = (list and list.numButtons) or 1
+		local button = _G[list:GetName()..'Button'..index]
+
+		if button.func == _G.FCF_PopInWindow then
+			button.func = CH.FCF_PopInWindow
+		elseif button.func == _G.FCF_Close then
+			button.func = CH.FCF_Close
+		end
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
@@ -3214,26 +3339,31 @@ function CH:Initialize()
 	CH:UpdateEditboxAnchors()
 	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
 
-	CH:SecureHook('GetPlayerInfoByGUID')
-	CH:SecureHook('ChatEdit_SetLastActiveWindow')
-	CH:SecureHook('ChatEdit_DeactivateChat')
 	CH:SecureHook('ChatEdit_ActivateChat')
+	CH:SecureHook('ChatEdit_DeactivateChat')
 	CH:SecureHook('ChatEdit_OnEnterPressed')
-	CH:SecureHook('FCFDock_UpdateTabs')
-	CH:SecureHook('FCF_Close')
-	CH:SecureHook('FCF_SetWindowAlpha')
+	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('FCFTab_UpdateColors')
 	CH:SecureHook('FCFDock_SelectWindow')
-	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
-	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
+	CH:SecureHook('FCFDock_UpdateTabs')
+	CH:SecureHook('FCF_SetWindowAlpha')
+	CH:SecureHook('FCF_Close', 'PostChatClose')
 	CH:SecureHook('FCF_DockFrame', 'SnappingChanged')
 	CH:SecureHook('FCF_ResetChatWindows', 'ClearSnapping')
+	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
+	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
+	CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
+	CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
+	CH:SecureHook('UIDropDownMenu_AddButton')
+	CH:SecureHook('GetPlayerInfoByGUID')
+
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
+	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.private.general.voiceOverlay then

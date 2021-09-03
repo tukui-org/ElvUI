@@ -2,6 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
+local pairs = pairs
+local select = select
+local hooksecurefunc = hooksecurefunc
 
 local function ReskinEventTraceButton(button)
 	S:HandleButton(button)
@@ -9,7 +12,7 @@ local function ReskinEventTraceButton(button)
 	button.MouseoverOverlay:SetAlpha(0)
 end
 
-local function ReskinScrollArrow(self, direction)
+local function ReskinScrollArrow(self, direction) -- simpy needs to finish that :P
 	self.Texture:SetAlpha(0)
 	self.Overlay:SetAlpha(0)
 
@@ -24,6 +27,7 @@ local function reskinScrollChild(self)
 		local hideButton = child and child.HideButton
 		if hideButton and not hideButton.IsSkinned then
 			S:HandleCloseButton(hideButton)
+
 			hideButton:ClearAllPoints()
 			hideButton:SetPoint('LEFT', 3, 0)
 
@@ -106,6 +110,7 @@ function S:Blizzard_EventTrace()
 		FilterBar.UncheckAllButton,
 		FilterBar.CheckAllButton,
 	}
+
 	for _, button in pairs(buttons) do
 		ReskinEventTraceButton(button)
 	end

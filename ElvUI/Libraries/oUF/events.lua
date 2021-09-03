@@ -1,9 +1,8 @@
-local parent, ns = ...
+local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
 local argcheck = Private.argcheck
-local error = Private.error
 local validateEvent = Private.validateEvent
 local validateUnit = Private.validateUnit
 local frame_metatable = Private.frame_metatable

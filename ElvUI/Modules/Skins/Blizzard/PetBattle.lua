@@ -11,6 +11,7 @@ local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
 local function SkinPetButton(self, bf)
 	if not self.backdrop then
@@ -144,9 +145,10 @@ function S:PetBattleFrame()
 		infoBar.PetType:SetAlpha(0)
 
 		infoBar.LevelUnderlay:SetAlpha(0)
-		infoBar.Level:SetFontObject(_G.NumberFont_Outline_Huge)
+		infoBar.Level:SetFontObject('NumberFont_Outline_Huge')
 		infoBar.Level:ClearAllPoints()
 		infoBar.Level:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMLEFT', 2, 2)
+
 		if infoBar.SpeedIcon then
 			infoBar.SpeedIcon:ClearAllPoints()
 			infoBar.SpeedIcon:Point('CENTER') -- to set
@@ -223,7 +225,7 @@ function S:PetBattleFrame()
 
 	-- WEATHER
 	hooksecurefunc('PetBattleWeatherFrame_Update', function(s)
-		local weather = C_PetBattles_GetAuraInfo(Enum.BattlePetOwner.Weather, _G.PET_BATTLE_PAD_INDEX, 1)
+		local weather = C_PetBattles_GetAuraInfo(BattlePetOwner_Weather, _G.PET_BATTLE_PAD_INDEX, 1)
 		if weather then
 			s.Icon:Hide()
 			s.BackgroundArt:ClearAllPoints()
@@ -287,12 +289,14 @@ function S:PetBattleFrame()
 	}
 
 	for _, infoBar in pairs(extraInfoBars) do
-		infoBar.BorderAlive:SetAlpha(0)
-		infoBar.HealthBarBG:SetAlpha(0)
-		infoBar.HealthDivider:SetAlpha(0)
 		infoBar:Size(40)
 		infoBar:SetTemplate()
 		infoBar:ClearAllPoints()
+
+		infoBar.BorderAlive:SetAlpha(0)
+		infoBar.HealthBarBG:SetAlpha(0)
+		infoBar.HealthDivider:SetAlpha(0)
+		infoBar.Icon:SetDrawLayer('ARTWORK')
 
 		infoBar.healthBarWidth = 40
 		infoBar.ActualHealthBar:ClearAllPoints()
