@@ -1068,7 +1068,7 @@ do
 		assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
 		assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
 
-		if frame.template then return end
+		if frame.isSkinned then return end
 
 		frame:Show() -- spawn the info so we can skin the buttons
 		if frame.Update then frame:Update() end -- guild bank popup has update function
@@ -1116,6 +1116,8 @@ do
 				end
 			end
 		end
+
+		frame.isSkinned = true
 	end
 end
 
