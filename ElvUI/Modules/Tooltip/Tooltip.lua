@@ -700,8 +700,8 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	sb:SetStatusBarTexture(E.media.normTex)
 end
 
-function TT:SetStyle(tt, _, embedded)
-	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded or embedded or not tt.SetTemplate) or tt:IsForbidden() then return end
+function TT:SetStyle(tt, _, isEmbedded)
+	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded or not tt.NineSlice) or tt:IsForbidden() then return end
 
 	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
