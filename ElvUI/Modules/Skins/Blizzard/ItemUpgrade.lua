@@ -9,20 +9,14 @@ function S:Blizzard_ItemUpgradeUI()
 	local ItemUpgradeFrame = _G.ItemUpgradeFrame
 	S:HandlePortraitFrame(ItemUpgradeFrame)
 
-	local UpgradeDropDown = ItemUpgradeFrame.ItemInfo.Dropdown
-	S:HandleDropDownBox(UpgradeDropDown, 130)
+	ItemUpgradeFrame.UpgradeCostFrame.BGTex:StripTextures()
+	ItemUpgradeFrame.UpgradeItemButton.ButtonFrame:StripTextures()
 
-	local UpgradeButton = ItemUpgradeFrame.UpgradeButton
-	S:HandleButton(UpgradeButton, true)
+	ItemUpgradeFramePlayerCurrenciesBorder:StripTextures()
 
-	local ButtonFrame = ItemUpgradeFrame.UpgradeItemButton.ButtonFrame
-	ButtonFrame:StripTextures()
+	S:HandleButton(ItemUpgradeFrame.UpgradeButton, true)
 
-	local CurrenciesBorder = ItemUpgradeFramePlayerCurrenciesBorder
-	CurrenciesBorder:StripTextures()
-
-	local BGTex = ItemUpgradeFrame.UpgradeCostFrame.BGTex
-	BGTex:StripTextures()
+	S:HandleDropDownBox(ItemUpgradeFrame.ItemInfo.Dropdown, 130)
 end
 
 S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')
