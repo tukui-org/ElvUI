@@ -383,12 +383,12 @@ function S:CharacterFrame()
 	_G.CharacterFramePortrait:Kill()
 
 	local scrollbars = {
-		'PaperDollTitlesPaneScrollBar',
-		'PaperDollEquipmentManagerPaneScrollBar',
+		_G.PaperDollTitlesPaneScrollBar,
+		_G.PaperDollEquipmentManagerPaneScrollBar,
 	}
 
 	for _, scrollbar in pairs(scrollbars) do
-		S:HandleScrollBar(_G[scrollbar], 5)
+		S:HandleScrollBar(scrollbar)
 	end
 
 	for _, object in pairs(charframe) do

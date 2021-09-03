@@ -54,7 +54,7 @@ function S:Blizzard_TrainerUI()
 		button.selectedTex:SetInside()
 	end
 
-	S:HandleScrollBar(_G.ClassTrainerScrollFrameScrollBar, 5)
+	S:HandleScrollBar(_G.ClassTrainerScrollFrameScrollBar)
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)

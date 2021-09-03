@@ -69,8 +69,8 @@ end
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
-	S:HandleScrollBar(_G.FriendsListFrameScrollFrame.scrollBar, 5)
-	S:HandleScrollBar(_G.WhoListScrollFrame.scrollBar, 5)
+	S:HandleScrollBar(_G.FriendsListFrameScrollFrame.scrollBar)
+	S:HandleScrollBar(_G.WhoListScrollFrame.scrollBar)
 
 	local StripAllTextures = {
 		'FriendsTabHeaderTab1',
@@ -122,7 +122,7 @@ function S:FriendsFrame()
 	_G.WhoFrameEditBoxInset.NineSlice:Hide()
 	_G.IgnoreListFrame:StripTextures()
 
-	S:HandleScrollBar(_G.IgnoreListFrameScrollFrame.scrollBar, 4)
+	S:HandleScrollBar(_G.IgnoreListFrameScrollFrame.scrollBar)
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
@@ -209,7 +209,7 @@ function S:FriendsFrame()
 	--Quick join
 	local QuickJoinFrame = _G.QuickJoinFrame
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
-	S:HandleScrollBar(_G.QuickJoinScrollFrame.scrollBar, 5)
+	S:HandleScrollBar(_G.QuickJoinScrollFrame.scrollBar)
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
 	QuickJoinFrame.JoinQueueButton:Size(131, 21) --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()

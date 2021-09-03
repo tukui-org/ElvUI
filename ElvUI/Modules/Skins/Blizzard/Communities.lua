@@ -586,7 +586,7 @@ function S:Blizzard_Communities()
 	GuildLogFrame:SetTemplate('Transparent')
 	GuildLogFrame.Container:SetTemplate('Transparent')
 
-	S:HandleScrollBar(_G.CommunitiesGuildLogFrameScrollBar, 4)
+	S:HandleScrollBar(_G.CommunitiesGuildLogFrameScrollBar)
 	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
 	closeButton = select(3, _G.CommunitiesGuildLogFrame:GetChildren()) -- swap local variable
 	S:HandleButton(closeButton)

@@ -25,7 +25,7 @@ function S:Blizzard_BlackMarketUI()
 	BlackMarketFrame.Inset:StripTextures()
 
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)
-	S:HandleScrollBar(_G.BlackMarketScrollFrameScrollBar, 4)
+	S:HandleScrollBar(_G.BlackMarketScrollFrameScrollBar)
 	SkinTab(BlackMarketFrame.ColumnName)
 	SkinTab(BlackMarketFrame.ColumnLevel)
 	SkinTab(BlackMarketFrame.ColumnType)

@@ -37,7 +37,7 @@ function S:GossipFrame()
 
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 
-	S:HandleScrollBar(_G.GossipGreetingScrollFrameScrollBar, 5)
+	S:HandleScrollBar(_G.GossipGreetingScrollFrameScrollBar)
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
 
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)

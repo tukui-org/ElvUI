@@ -349,9 +349,14 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 end
 
 do
-	local function GrabScrollBarElement(frame, element)
-		local FrameName = frame:GetName()
-		return frame[element] or FrameName and (_G[FrameName..element] or strfind(FrameName, element)) or nil
+	local function GetElement(frame, element, useParent)
+		if useParent then frame = frame:GetParent() end
+
+		local child = frame[element]
+		if child then return child end
+
+		local name = frame:GetName()
+		if name then return _G[name..element] end
 	end
 
 	function S:HandleScrollBar(frame, thumbY, thumbX, template)
@@ -359,43 +364,41 @@ do
 
 		if frame.backdrop then return end
 
-		local parent = frame:GetParent()
-		local ScrollUpButton = GrabScrollBarElement(frame, 'ScrollUpButton') or GrabScrollBarElement(frame, 'UpButton') or GrabScrollBarElement(frame, 'ScrollUp') or GrabScrollBarElement(parent, 'scrollUp')
-		local ScrollDownButton = GrabScrollBarElement(frame, 'ScrollDownButton') or GrabScrollBarElement(frame, 'DownButton') or GrabScrollBarElement(frame, 'ScrollDown') or GrabScrollBarElement(parent, 'scrollDown')
-		local Thumb = GrabScrollBarElement(frame, 'ThumbTexture') or GrabScrollBarElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
+		local upButton = GetElement(frame, 'ScrollUpButton') or GetElement(frame, 'UpButton') or GetElement(frame, 'ScrollUp') or GetElement(frame, 'scrollUp', true)
+		local downButton = GetElement(frame, 'ScrollDownButton') or GetElement(frame, 'DownButton') or GetElement(frame, 'ScrollDown') or GetElement(frame, 'scrollDown', true)
+		local thumb = GetElement(frame, 'ThumbTexture') or GetElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
 		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
-		frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
-		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
+		frame.backdrop:Point('TOPLEFT', upButton or frame, upButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 1)
+		frame.backdrop:Point('BOTTOMRIGHT', downButton or frame, upButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, -1)
 
-		if frame.ScrollUpBorder then
-			frame.ScrollUpBorder:Hide()
-		end
-		if frame.ScrollDownBorder then
-			frame.ScrollDownBorder:Hide()
-		end
+		if frame.ScrollUpBorder then frame.ScrollUpBorder:Hide() end
+		if frame.ScrollDownBorder then frame.ScrollDownBorder:Hide() end
 
-		for _, Button in pairs({ ScrollUpButton, ScrollDownButton }) do
-			if Button then
-				S:HandleNextPrevButton(Button)
+		local frameLevel = frame:GetFrameLevel()
+		if upButton then
+			S:HandleNextPrevButton(upButton)
+			upButton:SetFrameLevel(frameLevel + 2)
+		end
+		if downButton then
+			S:HandleNextPrevButton(downButton)
+			downButton:SetFrameLevel(frameLevel + 2)
+		end
+		if thumb and not thumb.backdrop then
+			thumb:SetTexture()
+			thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, nil, frameLevel + 1)
+
+			if thumb.backdrop then
+				if not thumbY then thumbY = 0 end
+				if not thumbX then thumbX = 0 end
+
+				thumb.backdrop:Point('TOPLEFT', thumb, thumbX, -thumbY)
+				thumb.backdrop:Point('BOTTOMRIGHT', thumb, -thumbX, thumbY)
+				thumb.backdrop:SetBackdropColor(unpack(E.media.rgbvaluecolor))
 			end
-		end
 
-		if Thumb and not Thumb.backdrop then
-			Thumb:SetTexture()
-			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, nil, frame:GetFrameLevel() + 1)
-
-			if Thumb.backdrop then
-				if not thumbY then thumbY = 3 end
-				if not thumbX then thumbX = 2 end
-
-				Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbY)
-				Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbX, thumbY)
-				Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
-			end
-
-			frame.Thumb = Thumb
+			frame.Thumb = thumb
 		end
 	end
 end
