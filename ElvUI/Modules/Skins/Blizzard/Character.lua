@@ -2,12 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, type = pairs, type
-local unpack, select = unpack, select
-
+local pairs, ipairs = pairs, ipairs
+local unpack, select, type = unpack, select, type
 local hooksecurefunc = hooksecurefunc
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
@@ -382,12 +379,7 @@ function S:CharacterFrame()
 	--Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
 
-	local scrollbars = {
-		_G.PaperDollTitlesPaneScrollBar,
-		_G.PaperDollEquipmentManagerPaneScrollBar,
-	}
-
-	for _, scrollbar in pairs(scrollbars) do
+	for _, scrollbar in pairs({ _G.PaperDollTitlesPaneScrollBar, _G.PaperDollEquipmentManagerPaneScrollBar }) do
 		S:HandleScrollBar(scrollbar)
 	end
 
