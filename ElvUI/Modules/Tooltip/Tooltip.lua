@@ -569,14 +569,13 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
-	if tt:IsForbidden() then return end
-	if not value or not TT.db.healthBar.text or not tt.text then return end
+	if tt:IsForbidden() or not value or not tt.text or not TT.db.healthBar.text then return end
 
 	local _, unit = tt:GetParent():GetUnit()
 	if not unit then
-		local GMF = GetMouseFocus()
-		if GMF and GMF.GetAttribute and GMF:GetAttribute('unit') then
-			unit = GMF:GetAttribute('unit')
+		local frame = GetMouseFocus()
+		if frame and frame.GetAttribute then
+			unit = frame:GetAttribute('unit')
 		end
 	end
 
@@ -678,7 +677,7 @@ function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
 end
 
 function TT:GameTooltip_ShowProgressBar(tt)
-	if not tt or tt:IsForbidden() or not tt.progressBarPool then return end
+	if not tt or not tt.progressBarPool or tt:IsForbidden() then return end
 
 	local sb = tt.progressBarPool:GetNextActive()
 	if (not sb or not sb.Bar) or sb.Bar.backdrop then return end
@@ -691,7 +690,7 @@ function TT:GameTooltip_ShowProgressBar(tt)
 end
 
 function TT:GameTooltip_ShowStatusBar(tt)
-	if not tt or tt:IsForbidden() or not tt.statusBarPool then return end
+	if not tt or not tt.statusBarPool or tt:IsForbidden() then return end
 
 	local sb = tt.statusBarPool:GetNextActive()
 	if (not sb or not sb.Text) or sb.backdrop then return end

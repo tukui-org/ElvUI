@@ -229,7 +229,7 @@ function S:SkinLibDropDownMenu(prefix)
 end
 
 function S:SkinTalentListButtons(frame)
-	local name = frame and frame.GetName and frame:GetName()
+	local name = frame and frame:GetName()
 	if name then
 		local bcl = _G[name..'BtnCornerLeft']
 		local bcr = _G[name..'BtnCornerRight']
