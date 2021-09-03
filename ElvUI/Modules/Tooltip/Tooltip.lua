@@ -703,9 +703,11 @@ end
 function TT:SetStyle(tt, _, embedded)
 	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded or embedded or not tt.SetTemplate) or tt:IsForbidden() then return end
 
-	tt.customBackdropAlpha = TT.db.colorAlpha
-	tt:SetTemplate('Transparent')
-	tt.NineSlice:Hide()
+	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
+	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+
+	tt.NineSlice.customBackdropAlpha = TT.db.colorAlpha
+	tt.NineSlice:SetTemplate('Transparent')
 end
 
 function TT:MODIFIER_STATE_CHANGED()
