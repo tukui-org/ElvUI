@@ -509,14 +509,18 @@ function S:LookingForGroupFrames()
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.MythicPlusRating.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.PVPRating.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 
 	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
 	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
 
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.MythicPlusRating.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
