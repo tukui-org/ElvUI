@@ -507,9 +507,9 @@ function S:LookingForGroupFrames()
 	LFGListFrame.EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
 	S:HandleEditBox(LFGListFrame.EntryCreation.Description)
 
-	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.MythicPlusRating.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.PVPRating.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 
@@ -518,9 +518,9 @@ function S:LookingForGroupFrames()
 
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.MythicPlusRating.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
