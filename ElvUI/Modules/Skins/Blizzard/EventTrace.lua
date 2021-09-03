@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs = pairs
 local select = select
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function ReskinEventTraceButton(button)

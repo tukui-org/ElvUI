@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, unpack = pairs, unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
