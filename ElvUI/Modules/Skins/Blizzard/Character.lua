@@ -253,6 +253,43 @@ local function UpdateCurrencySkins()
 	end
 end
 
+local function PaperDollUpdateStats()
+	for _, data in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
+		if type(data) == 'table' then
+			for statFrame in pairs(data) do
+				ColorizeStatPane(statFrame)
+
+				if statFrame.Background:IsShown() then
+					statFrame.leftGrad:Show()
+					statFrame.rightGrad:Show()
+				else
+					statFrame.leftGrad:Hide()
+					statFrame.rightGrad:Hide()
+				end
+			end
+		end
+	end
+end
+
+local function PaperDollTitlesPaneOnShow()
+	for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
+		object.BgTop:SetTexture()
+		object.BgBottom:SetTexture()
+		object.BgMiddle:SetTexture()
+		object.text:FontTemplate()
+
+		if not object.text.hooked then
+			object.text.hooked = true
+
+			hooksecurefunc(object.text, 'SetFont', function(txt, font)
+				if font ~= E.media.normFont then
+					txt:FontTemplate()
+				end
+			end)
+		end
+	end
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -312,24 +349,9 @@ function S:CharacterFrame()
 	_G.CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
 	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
 
-	hooksecurefunc('PaperDollFrame_UpdateStats', function()
-		if E:IsAddOnEnabled('DejaCharacterStats') then return end
-
-		for _, Table in ipairs({_G.CharacterStatsPane.statsFramePool:EnumerateActive()}) do
-			if type(Table) == 'table' then
-				for statFrame in pairs(Table) do
-					ColorizeStatPane(statFrame)
-					if statFrame.Background:IsShown() then
-						statFrame.leftGrad:Show()
-						statFrame.rightGrad:Show()
-					else
-						statFrame.leftGrad:Hide()
-						statFrame.rightGrad:Hide()
-					end
-				end
-			end
-		end
-	end)
+	if not E:IsAddOnEnabled('DejaCharacterStats') then
+		hooksecurefunc('PaperDollFrame_UpdateStats', PaperDollUpdateStats)
+	end
 
 	if not E:IsAddOnEnabled('DejaCharacterStats') then
 		StatsPane('EnhancementsCategory')
@@ -409,24 +431,7 @@ function S:CharacterFrame()
 	end
 
 	--Titles
-	_G.PaperDollTitlesPane:HookScript('OnShow', function()
-		for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
-			object.BgTop:SetTexture()
-			object.BgBottom:SetTexture()
-			object.BgMiddle:SetTexture()
-			object.text:FontTemplate()
-
-			if not object.text.hooked then
-				object.text.hooked = true
-
-				hooksecurefunc(object.text, 'SetFont', function(txt, font)
-					if font ~= E.media.normFont then
-						txt:FontTemplate()
-					end
-				end)
-			end
-		end
-	end)
+	_G.PaperDollTitlesPane:HookScript('OnShow', PaperDollTitlesPaneOnShow)
 
 	--Equipement Manager
 	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
@@ -444,11 +449,13 @@ function S:CharacterFrame()
 		object.HighlightBar:Kill()
 		object.Stripe:Kill()
 
+		object:StyleButton(nil, true)
+		object:CreateBackdrop('Transparent')
+		object.backdrop:SetInside(object, 2, 1)
+		object.hover:SetInside(object.backdrop)
+		object.SelectedBar:SetInside(object.backdrop)
 		object.SelectedBar:SetTexture(E.media.normTex)
 		object.SelectedBar:SetVertexColor(1, 1, 1, 0.20)
-		object.SelectedBar:SetInside(object, 4, 3)
-
-		S:HandleButton(object, nil, nil, nil, nil, 'Transparent')
 
 		object.icon:Point('LEFT', object, 6, 0)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
