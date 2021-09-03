@@ -92,6 +92,9 @@ function S:Blizzard_GuildControlUI()
 		if checkbox then S:HandleCheckBox(checkbox) end
 	end
 
+	local officer = _G['GuildControlUIRankSettingsFrameOfficerCheckbox']
+	if officer then S:HandleCheckBox(officer) end
+
 	hooksecurefunc('GuildControlUI_BankTabPermissions_Update', SkinBankTabs)
 	hooksecurefunc('GuildControlUI_RankOrder_Update', SkinGuildRanks)
 end
