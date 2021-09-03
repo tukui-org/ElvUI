@@ -474,6 +474,7 @@ function S:BlizzardOptions()
 	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
 	VUMeter.Status:CreateBackdrop()
 	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+	VUMeter.NineSlice:Hide()
 	E:RegisterStatusBar(VUMeter.Status)
 
 	-- PushToTalk KeybindButton - Wow 8.0

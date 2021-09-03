@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local pairs, unpack = pairs, unpack
 
@@ -34,12 +35,6 @@ local function SkinPetButton(self, bf)
 		spbc:SetColorTexture(1, 1, 1, 0.3)
 		spbc:SetInside(self.backdrop)
 	end
-end
-
-local function SkinPetTooltip(tt)
-	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
-	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
-	tt.NineSlice:SetTemplate('Transparent')
 end
 
 function S:PetBattleFrame()
@@ -235,11 +230,11 @@ function S:PetBattleFrame()
 
 	-- TOOLTIPS SKINNING
 	if E.private.skins.blizzard.tooltip then
-		SkinPetTooltip(_G.BattlePetTooltip)
-		SkinPetTooltip(_G.PetBattlePrimaryAbilityTooltip)
-		SkinPetTooltip(_G.PetBattlePrimaryUnitTooltip)
-		SkinPetTooltip(_G.FloatingBattlePetTooltip)
-		SkinPetTooltip(_G.FloatingPetBattleAbilityTooltip)
+		TT:SetStyle(_G.BattlePetTooltip)
+		TT:SetStyle(_G.PetBattlePrimaryAbilityTooltip)
+		TT:SetStyle(_G.PetBattlePrimaryUnitTooltip)
+		TT:SetStyle(_G.FloatingBattlePetTooltip)
+		TT:SetStyle(_G.FloatingPetBattleAbilityTooltip)
 
 		-- BATTLEPET RARITY COLOR
 		hooksecurefunc('BattlePetToolTip_Show', function(_, _, rarity)
