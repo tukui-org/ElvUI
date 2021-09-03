@@ -51,7 +51,7 @@ local function ReskinEventTraceScrollBar(frame)
 	frame:StripTextures()
 
 	local track = frame.Track
-	track:SetTemplate()
+	track:SetTemplate('Transparent')
 	track:ClearAllPoints()
 	track:SetPoint('TOPLEFT', 4, -21)
 	track:SetPoint('BOTTOMRIGHT', -3, 21)

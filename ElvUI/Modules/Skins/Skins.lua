@@ -393,7 +393,7 @@ do
 		local thumb = GetElement(frame, 'ThumbTexture') or GetElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
-		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template or 'Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', upButton or frame, upButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 1)
 		frame.backdrop:Point('BOTTOMRIGHT', downButton or frame, upButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, -1)
 
