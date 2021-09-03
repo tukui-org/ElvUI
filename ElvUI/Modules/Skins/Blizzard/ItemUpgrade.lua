@@ -28,6 +28,7 @@ function S:Blizzard_ItemUpgradeUI()
 	frame.TitleBg:Hide()
 	frame.TopTileStreaks:Hide()
 	frame.BottomBG:CreateBackdrop('Transparent')
+	frame.ItemInfo.UpgradeTo:SetFontObject('GameFontHighlightMedium')
 
 	local button = frame.UpgradeItemButton
 	button:StripTextures()
