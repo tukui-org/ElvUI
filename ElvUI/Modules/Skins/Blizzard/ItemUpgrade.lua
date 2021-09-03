@@ -11,6 +11,7 @@ function S:Blizzard_ItemUpgradeUI()
 
 	ItemUpgradeFrame.UpgradeCostFrame.BGTex:StripTextures()
 	ItemUpgradeFrame.UpgradeItemButton.ButtonFrame:StripTextures()
+	ItemUpgradeFrame.UpgradeItemButton.ButtonFrame:CreateBackdrop('Transparent')
 
 	ItemUpgradeFramePlayerCurrenciesBorder:StripTextures()
 
