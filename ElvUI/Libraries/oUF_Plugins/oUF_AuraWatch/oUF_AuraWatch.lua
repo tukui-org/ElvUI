@@ -184,7 +184,7 @@ local function onlyShowMissingIcon(element, unit, offset)
 		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
 		if(button.overlay) then button.overlay:Hide() end
 
-		if setting.sizeOffset == 0 then
+		if not setting.sizeOffset or setting.sizeOffset == 0 then
 			button:SetSize(element.size, element.size)
 		else
 			button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
