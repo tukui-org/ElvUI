@@ -191,7 +191,6 @@ do --this can save some main file locals
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
-	local Deathly		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
 	local Beer			= E:TextureString(E.Media.ChatLogos.Beer,x)
 	local TyroneBiggums = E:TextureString(E.Media.ChatLogos.TyroneBiggums,x)
@@ -202,7 +201,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsMis, itsMel, itsSimpy, itsTheFlyestNihilist
+	local itsElv, itsMis, itsMel, itsSimpy
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
@@ -219,14 +218,11 @@ do --this can save some main file locals
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
 		--Mels: Electric Blue, Purpureus, Blush, Bitter Sweet, Emerald
 		local MelColors = function(t) return specialText(t, 0.09,0.94,1.00, 0.60,0.34,0.63, 0.91,0.32,0.49, 0.95,0.42,0.32, 0.19,0.77,0.41) end
-		--Class: Normal to Negative (Orange->Blue, Red->Cyan, etc)
-		local NihiColors = function(class) local c = E:ClassColor(class,true); local n = E:InverseClassColor(class, true, true); local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, n.r,n.g,n.b; return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
-		itsTheFlyestNihilist = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos['Fox'..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
 	end
 
 	specialChatIcons = {
@@ -244,30 +240,6 @@ do --this can save some main file locals
 		-- Blazeflack
 		['Blazii-Silvermoon']	= ElvBlue, -- Priest
 		['Chazii-Silvermoon']	= ElvBlue, -- Shaman
-		-- Nihilistzsche
-		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
-		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
-		['Rikanza-WyrmrestAccord']		= itsTheFlyestNihilist('Monk'),
-		['Onaguda-WyrmrestAccord']		= itsTheFlyestNihilist('Druid'),
-		['Cerishia-WyrmrestAccord']		= itsTheFlyestNihilist('Priest'),
-		['Vellilara-WyrmrestAccord']	= itsTheFlyestNihilist('DemonHunter'),
-		['Sayalia-WyrmrestAccord']		= itsTheFlyestNihilist('DeathKnight'),
-		['Alledarisa-WyrmrestAccord']	= itsTheFlyestNihilist('Paladin'),
-		['Orlyrala-WyrmrestAccord']		= itsTheFlyestNihilist('Shaman'),
-		['Scerila-WyrmrestAccord']		= itsTheFlyestNihilist('Rogue'),
-		['Ralaniki-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
-		['Moyanza-WyrmrestAccord']		= itsTheFlyestNihilist('Warrior'),
-		['Erasaya-WyrmrestAccord']		= itsTheFlyestNihilist('DeathKnight'),
-		['Linabla-WyrmrestAccord']		= itsTheFlyestNihilist('Druid'),
-		['Dirikoa-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
-		['Elaedarel-WyrmrestAccord']	= itsTheFlyestNihilist('Warlock'),
-		['Alydrer-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
-		['Issia-WyrmrestAccord']		= itsTheFlyestNihilist('Priest'),
-		['Leitara-WyrmrestAccord']		= itsTheFlyestNihilist('Warrior'),
-		['Cherlyth-WyrmrestAccord']		= itsTheFlyestNihilist('Druid'),
-		['Tokashami-WyrmrestAccord']	= itsTheFlyestNihilist('Shaman'),
-		['Millop-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
-		['Aeondalew-WyrmrestAccord']	= itsTheFlyestNihilist('DeathKnight'),
 		-- Merathilis
 		['Asragoth-Shattrath']		= ElvPurple,	-- [Alliance] Warlock
 		['Brítt-Shattrath'] 		= ElvBlue,		-- [Alliance] Warrior
@@ -341,23 +313,6 @@ do --this can save some main file locals
 		['Alyrage-Cenarius']		= itsMel, -- [Horde] Warrior
 		['Alysneaks-Cenarius']		= itsMel, -- [Horde] Rogue
 		['Alytotes-Cenarius']		= itsMel, -- [Horde] Shaman
-		-- Lulupeep (Nihilist's wife)
-		['Arïä-WyrmrestAccord'] 		= Deathly,
-		['Belladonnä-WyrmrestAccord'] 	= Deathly,
-		['Cadense-WyrmrestAccord']		= Deathly,
-		['Cäydence-WyrmrestAccord'] 	= Deathly,
-		['Esmæ-WyrmrestAccord']			= Deathly,
-		['Falorya-WyrmrestAccord']		= Deathly,
-		['Fufus-WyrmrestAccord']		= Deathly,
-		['Gemmä-WyrmrestAccord']		= Deathly,
-		['Lilliës-WyrmrestAccord']		= Deathly,
-		['Louisianagrl-WyrmrestAccord']	= Deathly,
-		['Lulupeep-WyrmrestAccord']		= Deathly,
-		['Nolalove-WyrmrestAccord']		= Deathly,
-		['Onyxnovä-WyrmrestAccord']		= Deathly,
-		['Rukíá-WyrmrestAccord']		= Deathly,
-		['Songbïrd-WyrmrestAccord']		= Deathly,
-		['Vidiä-WyrmrestAccord']		= Deathly,
 		-- Quickhanz (Nihilist's absolute bestie)
 		['Zandahanz-Area52']	= GoldShield,
 		-- AcidWeb

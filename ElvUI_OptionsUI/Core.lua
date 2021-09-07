@@ -120,7 +120,7 @@ local DEVELOPERS = {
 	'|cff0070DEAzilroka|r',
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020Nihilistzsche|r',
+	'|cffff2020Nihilistzsche|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
 	E:TextGradient('Simpy but my name needs to be longer.', 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23)
 }

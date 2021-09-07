@@ -84,7 +84,6 @@ local UNKNOWN = UNKNOWN
 local LEVEL = LEVEL
 local PVP = PVP
 
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
 local RefreshNewTags -- will turn true at EOF
@@ -513,7 +512,7 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
+		local teamLevel = C_PetJournal.GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
 			c = GetRelativeDifficultyColor(teamLevel, level)
 		else

@@ -31,8 +31,6 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 local UnitStat = UnitStat
 
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
-local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
@@ -321,7 +319,7 @@ function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
 	object = _G[object] or object
 
 	--If already doing pokemon
-	if C_PetBattles_IsInBattle() then
+	if E.Retail and C_PetBattles.IsInBattle() then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -515,7 +513,7 @@ function E:GetUnitBattlefieldFaction(unit)
 	-- this might be a rated BG or wargame and if so the player's faction might be altered
 	-- should also apply if `player` is a mercenary.
 	if unit == 'player' then
-		if C_PvP_IsRatedBattleground() or IsWargame() then
+		if E.Retail and (C_PvP.IsRatedBattleground() or IsWargame()) then
 			englishFaction = PLAYER_FACTION_GROUP[GetBattlefieldArenaFaction()]
 			localizedFaction = (englishFaction == 'Alliance' and FACTION_ALLIANCE) or FACTION_HORDE
 		elseif UnitIsMercenary(unit) then
@@ -543,13 +541,19 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
-	E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
-	E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
-	E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
-	E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
-	E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
-	E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
+
+	if E.Retail then
+		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
+		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
+		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
+		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
+	end
+
+	if E.Retail or E.WotLK then
+		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
+		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
+	end
 
 	do -- setup cropIcon texCoords
 		local opt = E.db.general.cropIcon
