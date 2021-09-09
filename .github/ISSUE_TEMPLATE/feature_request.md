@@ -2,7 +2,7 @@
 name: Feature request
 about: Request a feature in ElvUI
 title: "[Feature Request] <Title here>"
-labels: ''
+labels: ':clock1: Request (Pending)'
 assignees: ''
 
 ---
