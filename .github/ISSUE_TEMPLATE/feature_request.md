@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Request a feature in LuckyoneUI
+about: Request a feature in ElvUI
 title: "[Feature Request] <Title here>"
 labels: ''
 assignees: ''

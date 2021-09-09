@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug in LuckyoneUI
+about: Report a bug in ElvUI
 title: "[Bug Report] <Title here>"
 labels: ''
 assignees: ''
@@ -32,9 +32,9 @@ Step 4:
 < Tell us what happens instead >
 
 
-**Only ElvUI + LuckyoneUI enabled**
+**Only ElvUI enabled**
 < Please provide information about whether or not you can reproduce it >
-< when ElvUI and LuckyoneUI are the only addons enabled >
+< when ElvUI and ElvUI OptionsUI are the only addons enabled >
 
 
 **Blizzard Issue?**
