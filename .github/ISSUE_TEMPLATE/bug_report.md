@@ -2,7 +2,7 @@
 name: Bug report
 about: Report a bug in ElvUI
 title: "[Bug Report] <Title here>"
-labels: ''
+labels: ':bug::question: Bug (Needs Investigation)'
 assignees: ''
 
 ---
