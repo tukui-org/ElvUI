@@ -14,4 +14,4 @@ ElvUI License
 		portions of the Software.
 
 	All rights not explicitly addressed in this license are reserved by
-	the copyright holders. 
+	the copyright holders.
