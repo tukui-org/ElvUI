@@ -1413,6 +1413,7 @@ function AB:Initialize()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
+	AB:ActionBarEffects()
 
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
