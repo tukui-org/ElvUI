@@ -4,13 +4,15 @@ local AB = E:GetModule('ActionBars')
 local twipe = table.wipe
 AB.MapSpellIDToButton = {}
 
+local FadeSpeed = 0.75
 local config = {
-	--[[[980] = { --Agony (spell to look for on actionbar)
+	[980] = { --Agony (spell to look for on actionbar)
 		["aura"] = 980, -- aura the unit must have
 		["auraType"] = "HARMFUL", -- buff or debuff
 		["exists"] = false, -- show effect if aura exists, rather than if it doesn't exist
 		["canAttack"] = true, -- only show if you can attack the unit
-		["effect"] = "glow", -- glow, flash, shake
+		["effect"] = "glow", -- blizzardGlow, fade, shake, glow, flash
+		["effectColor"] = {r = 1.0, g = 0, b = 0, a = 1,}
 	},
 	[172] = { --Corruption
 		["aura"] = 172,
@@ -18,6 +20,7 @@ local config = {
 		["exists"] = false,
 		["canAttack"] = true,
 		["effect"] = "flash",
+		["effectColor"] = {r = 1.0, g = 1.0, b = 0, a = 0.45,}
 	},
 	[316099] = { --Unstable Affliction
 		["aura"] = 316099,
@@ -25,7 +28,8 @@ local config = {
 		["exists"] = false,
 		["canAttack"] = true,
 		["effect"] = "shake",
-	},]]
+		["effectColor"] = {r = 1.0, g = 0, b = 0, a = 1}
+	},
 }
 
 function AB:MapSpellIDs()
@@ -52,6 +56,8 @@ function AB:RegisterUnitEvents(SpellID, button)
 			button:RegisterUnitEvent("UNIT_AURA", "TARGET")
 			button:RegisterEvent("PLAYER_TARGET_CHANGED")
 			button.SpellID = SpellID
+			button.shadow:SetBackdropBorderColor(config[button.SpellID].effectColor.r, config[button.SpellID].effectColor.g, config[button.SpellID].effectColor.b, config[button.SpellID].effectColor.a)
+			button.flash:SetColorTexture(config[button.SpellID].effectColor.r, config[button.SpellID].effectColor.g, config[button.SpellID].effectColor.b, config[button.SpellID].effectColor.a)
 		end
 	else
 		for SpellID, button in pairs(self.MapSpellIDToButton) do
@@ -66,20 +72,32 @@ end
 
 function AB:EffectButton(button, stop)
 	if stop then
-		if config[button.SpellID].effect == "glow" then
+		if config[button.SpellID].effect == "blizzardGlow" then
 			ActionButton_HideOverlayGlow(button)
-		elseif config[button.SpellID].effect == "flash" then
+		elseif config[button.SpellID].effect == "fade" then
 			E:StopFlash(button)
 		elseif config[button.SpellID].effect == "shake" then
 			E:StopShake(button)
+		elseif config[button.SpellID].effect == "glow" then	
+			E:StopFlash(button.shadow)
+			button.shadow:Hide()
+		elseif config[button.SpellID].effect == "flash" then	
+			E:StopFlash(button.flash)
+			button.flash:Hide()			
 		end
 	else
-		if config[button.SpellID].effect == "glow" then
+		if config[button.SpellID].effect == "blizzardGlow" then
 			ActionButton_ShowOverlayGlow(button)
-		elseif config[button.SpellID].effect == "flash" then
-			E:Flash(button, 0.75, true)
+		elseif config[button.SpellID].effect == "fade" then
+			E:Flash(button, FadeSpeed, true)
 		elseif config[button.SpellID].effect == "shake" then
 			E:Shake(button)
+		elseif config[button.SpellID].effect == "glow" then	
+			button.shadow:Show()
+			E:Flash(button.shadow, FadeSpeed, true)
+		elseif config[button.SpellID].effect == "flash" then
+			button.flash:Show()
+			E:Flash(button.flash, FadeSpeed, true)			
 		end
 	end
 end
@@ -106,6 +124,14 @@ function AB:ActionBarEffects()
 	for _, bar in pairs(self.handledBars) do
 		for _, button in ipairs(bar.buttons) do
 			button:HookScript("OnEvent", self.BUTTON_EVENT)
+
+			button:CreateShadow(4)
+			button.shadow:Hide()
+
+			button.flash = button:CreateTexture(nil, "OVERLAY")
+			button.flash:SetInside()
+			button.flash:SetBlendMode("ADD")
+			button.flash:Hide()
 		end
 	end
 
