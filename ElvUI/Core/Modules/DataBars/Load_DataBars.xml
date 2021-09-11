@@ -2,7 +2,5 @@
 	<Script file='DataBars.lua'/>
 	<Script file='Experience.lua'/>
 	<Script file='Reputation.lua'/>
-	<Script file='Honor.lua'/>
 	<Script file='Threat.lua'/>
-	<Script file='Azerite.lua'/>
 </Ui>

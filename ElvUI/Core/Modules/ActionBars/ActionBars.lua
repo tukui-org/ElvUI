@@ -41,7 +41,7 @@ local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -60,7 +60,6 @@ AB.barDefaults = {
 	bar1 = {
 		page = 1,
 		bindButtons = 'ACTIONBUTTON',
-		conditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()),
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
 	},
 	bar2 = {
@@ -590,7 +589,10 @@ function AB:UpdateButtonSettings(specific)
 
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
-		AB:UpdateExtraBindings()
+
+		if E.Retail then
+			AB:UpdateExtraBindings()
+		end
 
 		AB:UpdateFlyoutButtons()
 	end
@@ -849,6 +851,7 @@ end
 -- these calls are tainted when accessed by ValidateActionBarTransition
 local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
 function AB:SetNoopsi(frame)
+	if not frame then return end
 	for _, func in pairs(noops) do
 		if frame[func] ~= E.noop then
 			frame[func] = E.noop
@@ -942,9 +945,11 @@ function AB:DisableBlizzard()
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
 
 		local frame = _G[name]
-		if i < 6 then frame:UnregisterAllEvents() end
-		frame:SetParent(hiddenParent)
-		AB:SetNoopsi(frame)
+		if frame then
+			if i < 6 then frame:UnregisterAllEvents() end
+			frame:SetParent(hiddenParent)
+			AB:SetNoopsi(frame)
+		end
 	end
 
 	-- let spell book buttons work without tainting by replacing this function
@@ -965,21 +970,26 @@ function AB:DisableBlizzard()
 	AB:SetNoopsi(_G.MainMenuBarArtFrame)
 	AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
-	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
-	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
-	-- lets only keep ExtraActionButtons in here
-	hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
-	AB.ButtonEventsRegisterFrame()
+	if E.Retail then
+		_G.StatusTrackingBarManager:UnregisterAllEvents()
+		_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
-	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
-	_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
-	AB:SetNoopsi(_G.VerticalMultiBarsContainer)
+		-- lets only keep ExtraActionButtons in here
+		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
+		AB.ButtonEventsRegisterFrame()
+
+		-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
+		_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
+		AB:SetNoopsi(_G.VerticalMultiBarsContainer)
+
+		AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
+	end
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
@@ -996,7 +1006,6 @@ function AB:DisableBlizzard()
 	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 
-	AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
 	if _G.PlayerTalentFrame then
@@ -1285,7 +1294,7 @@ function AB:ToggleCooldownOptions()
 end
 
 function AB:SetButtonDesaturation(button, duration)
-	if button.LevelLinkLockIcon:IsShown() then
+	if button.LevelLinkLockIcon and button.LevelLinkLockIcon:IsShown() then
 		button.saturationLocked = nil
 		return
 	end
@@ -1375,17 +1384,24 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_TARGET_CHANGED')
-	AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
-	AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
-	AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
-	AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
-	AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_STOP', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_HEALTH', 'player')
-	AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
+
+	if not E.Classic then
+		AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	end
+
+	if E.Retail or E.WotLK then
+		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
+		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
+		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
+		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
+	end
+
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 
 	if E.locale == 'koKR' then
@@ -1399,7 +1415,6 @@ function AB:Initialize()
 	end
 
 	AB:DisableBlizzard()
-	AB:SetupExtraButton()
 	AB:SetupMicroBar()
 
 	for i = 1, 10 do
@@ -1416,9 +1431,14 @@ function AB:Initialize()
 
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
-	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
-	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
+
+	if E.Retail then
+		AB:SetupExtraButton()
+
+		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
+		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
+	end
 
 	if _G.KeyBindingFrame then
 		AB:SwapKeybindButton()
@@ -1426,7 +1446,7 @@ function AB:Initialize()
 		AB:RegisterEvent('ADDON_LOADED', 'SwapKeybindButton')
 	end
 
-	if C_PetBattles_IsInBattle() then
+	if E.Retail and C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()
 	else
 		AB:ReassignBindings()
@@ -1436,9 +1456,11 @@ function AB:Initialize()
 	SetCVar('lockActionBars', (AB.db.lockActionBars == true and 1 or 0))
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars == true and '1' or '0') -- Keep an eye on this, in case it taints
 
-	hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
-	_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
-	_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
+	if E.Retail then
+		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
+		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
+		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
+	end
 end
 
 E:RegisterModule(AB:GetName())

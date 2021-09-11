@@ -51,13 +51,13 @@ do	-- credit: oUF/private.lua
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars
 
 	function NP:UnitExists(unit)
-		return unit and UnitExists(unit) or ShowBossFrameWhenUninteractable(unit)
+		return unit and UnitExists(unit) or E.Retail and ShowBossFrameWhenUninteractable(unit)
 	end
 
 	function NP:UnitSelectionType(unit, considerHostile)
 		if considerHostile and UnitThreatSituation('player', unit) then
 			return 0
-		else
+		elseif E.Retail then
 			return selectionTypes[UnitSelectionType(unit, true)]
 		end
 	end
@@ -842,19 +842,21 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
-	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
-		if not frame or frame:IsForbidden() then
-			return
-		end
-		if frame.classNamePlateMechanicFrame then
-			frame.classNamePlateMechanicFrame:Hide()
-		end
-		if frame.classNamePlatePowerBar then
-			frame.classNamePlatePowerBar:Hide()
-			frame.classNamePlatePowerBar:UnregisterAllEvents()
-		end
-	end)
+	if E.Retail then
+		hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
+		hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
+			if not frame or frame:IsForbidden() then
+				return
+			end
+			if frame.classNamePlateMechanicFrame then
+				frame.classNamePlateMechanicFrame:Hide()
+			end
+			if frame.classNamePlatePowerBar then
+				frame.classNamePlatePowerBar:Hide()
+				frame.classNamePlatePowerBar:UnregisterAllEvents()
+			end
+		end)
+	end
 
 	ElvUF:Spawn('player', 'ElvNP_Player', '')
 

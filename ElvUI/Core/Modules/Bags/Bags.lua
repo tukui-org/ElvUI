@@ -80,7 +80,7 @@ local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
 local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
-local ITEMQUALITY_COMMON = Enum.ItemQuality.Common
+local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
@@ -508,7 +508,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
 
 		if not slot.rarity then slot.rarity = itemRarity end
-		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+		if E.Retail then
+			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+		end
 
 		if B.db.itemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
@@ -546,7 +548,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) then
+		if E.Retail and B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) then
 			local _, spellID = GetItemSpell(itemLink)
 			if animaSpellID[spellID] then
 				slot.centerText:SetText(animaSpellID[spellID] * count)
@@ -564,10 +566,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
-	if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
-	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
+	if E.Retail then
+		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
+		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
+	end
 
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
@@ -971,7 +975,7 @@ function B:Layout(isBank)
 		end
 	end
 
-	if isBank and f.reagentFrame:IsShown() then
+	if E.Retail and isBank and f.reagentFrame:IsShown() then
 		if not IsReagentBankUnlocked() then
 			f.reagentFrame.cover:Show()
 			B:RegisterEvent('REAGENTBANK_PURCHASED')
@@ -1363,9 +1367,10 @@ function B:ConstructContainerFrame(name, isBank)
 
 	for i, bagID in next, f.BagIDs do
 		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or bagID
-		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 and 'ItemAnimTemplate') or 'BagSlotButtonTemplate'
+		local bagName = isBank and format('ElvUI%sBag%d', isBank and 'Bank' or 'Main', bagNum) or bagID == 0 and 'ElvUIMainBagBackpack' or bagID == -2 and 'ElvUIKeyRing'
+		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and 'ItemButtonTemplate, ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
-		local holder = CreateFrame('ItemButton', format('ElvUI%sBag%d', isBank and 'Bank' or 'Main', bagNum), f.ContainerHolder, inherit)
+		local holder = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', bagName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
 
@@ -1422,9 +1427,10 @@ function B:ConstructContainerFrame(name, isBank)
 	f.sortButton = CreateFrame('Button', name..'SortButton', f)
 	f.sortButton:Size(16 + E.Border, 16 + E.Border)
 	f.sortButton:SetTemplate()
-	B:SetButtonTexture(f.sortButton, 'Interface/ICONS/INV_Pet_Broom')
+	B:SetButtonTexture(f.sortButton, E.Retail and 'Interface/ICONS/INV_Pet_Broom' or 'Interface/AddOns/ElvUI/Core/Media/Textures/INV_Pet_Broom')
 	f.sortButton:StyleButton(nil, true)
-	f.sortButton:SetScript('OnEnter', _G.BagItemAutoSortButton:GetScript('OnEnter'))
+	f.sortButton.ttText = L["Sort Bags"]
+	f.sortButton:SetScript('OnEnter', E.Retail and _G.BagItemAutoSortButton:GetScript('OnEnter') or B.Tooltip_Show)
 	f.sortButton:SetScript('OnLeave', GameTooltip_Hide)
 
 	if isBank and B.db.disableBankSort or (not isBank and B.db.disableBagSort) then
@@ -1435,7 +1441,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
 	f.bagsButton:Size(16 + E.Border, 16 + E.Border)
 	f.bagsButton:SetTemplate()
-	B:SetButtonTexture(f.bagsButton, 'Interface/Buttons/Button-Backpack-Up')
+	B:SetButtonTexture(f.bagsButton, 'Interface/AddOns/ElvUI/Core/Media/Textures/Button-Backpack-Up')
 	f.bagsButton:StyleButton(nil, true)
 	f.bagsButton.ttText = L["Toggle Bags"]
 	f.bagsButton.ttText2 = format('|cffFFFFFF%s|r', L["Right Click the bag icon to assign a type of item to this bag."])
@@ -1462,112 +1468,115 @@ function B:ConstructContainerFrame(name, isBank)
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
 
-		f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
-		f.reagentFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-		f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
-		f.reagentFrame:SetID(REAGENTBANK_CONTAINER)
-		f.reagentFrame:Hide()
-		f.reagentFrame.slots = {}
+		if E.Retail then
+			f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
+			f.reagentFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
+			f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
+			f.reagentFrame:SetID(REAGENTBANK_CONTAINER)
+			f.reagentFrame:Hide()
+			f.reagentFrame.slots = {}
 
-		for i = 1, B.REAGENTBANK_SIZE do
-			f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
-			B:UpdateReagentSlot(i)
+			for i = 1, B.REAGENTBANK_SIZE do
+				f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
+				B:UpdateReagentSlot(i)
+			end
+
+			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
+			f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
+			f.reagentFrame.cover:SetTemplate(nil, true)
+			f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
+
+			f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
+			f.reagentFrame.cover.purchaseButton:Height(20)
+			f.reagentFrame.cover.purchaseButton:Width(150)
+			f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
+			Skins:HandleButton(f.reagentFrame.cover.purchaseButton)
+			f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
+			f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
+			f.reagentFrame.cover.purchaseButton.text:FontTemplate()
+			f.reagentFrame.cover.purchaseButton.text:Point('CENTER')
+			f.reagentFrame.cover.purchaseButton.text:SetJustifyH('CENTER')
+			f.reagentFrame.cover.purchaseButton.text:SetText(L["Purchase"])
+			f.reagentFrame.cover.purchaseButton:SetScript('OnClick', function()
+				PlaySound(852) --IG_MAINMENU_OPTION
+				StaticPopup_Show('CONFIRM_BUY_REAGENTBANK_TAB')
+			end)
+
+			f.reagentFrame.cover.purchaseText = f.reagentFrame.cover:CreateFontString(nil, 'OVERLAY')
+			f.reagentFrame.cover.purchaseText:FontTemplate()
+			f.reagentFrame.cover.purchaseText:Point('BOTTOM', f.reagentFrame.cover.purchaseButton, 'TOP', 0, 10)
+			f.reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
+
+			--Bag Text
+			f.bagText = f:CreateFontString(nil, 'OVERLAY')
+			f.bagText:FontTemplate()
+			f.bagText:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
+			f.bagText:SetJustifyH('RIGHT')
+			f.bagText:SetText(L["Bank"])
+
+			f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
+			f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
+			f.reagentToggle:SetTemplate()
+			f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, E.Border * 2)
+			B:SetButtonTexture(f.reagentToggle, 'Interface/ICONS/INV_Enchant_DustArcane')
+			f.reagentToggle:StyleButton(nil, true)
+			f.reagentToggle.ttText = L["Show/Hide Reagents"]
+			f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
+			f.reagentToggle:SetScript('OnLeave', GameTooltip_Hide)
+			f.reagentToggle:SetScript('OnClick', function()
+				PlaySound(841) --IG_CHARACTER_INFO_TAB
+				B:ShowBankTab(f, f.holderFrame:IsShown())
+			end)
+
+			--Sort Button
+			f.sortButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
+			f.sortButton:SetScript('OnClick', function()
+				if f.holderFrame:IsShown() then
+					if B.db.useBlizzardCleanup then
+						SortBankBags()
+					else
+						f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+						if not f.sortingSlots then B:SortingFadeBags(f, true) end
+						B:CommandDecorator(B.SortBags, 'bank')()
+					end
+				else
+					SortReagentBankBags()
+				end
+			end)
+
+			--Deposite Reagents Button
+			f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
+			f.depositButton:Size(16 + E.Border, 16 + E.Border)
+			f.depositButton:SetTemplate()
+			f.depositButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+			B:SetButtonTexture(f.depositButton, 'Interface/ICONS/misc_arrowdown')
+			f.depositButton:StyleButton(nil, true)
+			f.depositButton.ttText = L["Deposit Reagents"]
+			f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
+			f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
+			f.depositButton:SetScript('OnClick', function()
+				PlaySound(852) --IG_MAINMENU_OPTION
+				DepositReagentBank()
+			end)
+
+			f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame)
+			f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
+			f.depositButtonBank:SetTemplate()
+			f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+			B:SetButtonTexture(f.depositButtonBank, 'Interface/ICONS/misc_arrowdown')
+			f.depositButtonBank:StyleButton(nil, true)
+			f.depositButtonBank.ttText = L["Deposit Reagents"]
+			f.depositButtonBank:SetScript('OnEnter', B.Tooltip_Show)
+			f.depositButtonBank:SetScript('OnLeave', GameTooltip_Hide)
+			f.depositButtonBank:SetScript('OnClick', function()
+				PlaySound(852) --IG_MAINMENU_OPTION
+				DepositReagentBank()
+			end)
+
+			--Toggle Bags Button
+			f.bagsButton:Point('RIGHT', f.depositButtonBank, 'LEFT', -5, 0)
 		end
 
-		f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
-		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
-		f.reagentFrame.cover:SetTemplate(nil, true)
-		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
-
-		f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
-		f.reagentFrame.cover.purchaseButton:Height(20)
-		f.reagentFrame.cover.purchaseButton:Width(150)
-		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
-		Skins:HandleButton(f.reagentFrame.cover.purchaseButton)
-		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
-		f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
-		f.reagentFrame.cover.purchaseButton.text:FontTemplate()
-		f.reagentFrame.cover.purchaseButton.text:Point('CENTER')
-		f.reagentFrame.cover.purchaseButton.text:SetJustifyH('CENTER')
-		f.reagentFrame.cover.purchaseButton.text:SetText(L["Purchase"])
-		f.reagentFrame.cover.purchaseButton:SetScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
-			StaticPopup_Show('CONFIRM_BUY_REAGENTBANK_TAB')
-		end)
-
-		f.reagentFrame.cover.purchaseText = f.reagentFrame.cover:CreateFontString(nil, 'OVERLAY')
-		f.reagentFrame.cover.purchaseText:FontTemplate()
-		f.reagentFrame.cover.purchaseText:Point('BOTTOM', f.reagentFrame.cover.purchaseButton, 'TOP', 0, 10)
-		f.reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
-
-		--Bag Text
-		f.bagText = f:CreateFontString(nil, 'OVERLAY')
-		f.bagText:FontTemplate()
-		f.bagText:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
-		f.bagText:SetJustifyH('RIGHT')
-		f.bagText:SetText(L["Bank"])
-
-		f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
-		f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
-		f.reagentToggle:SetTemplate()
-		f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, E.Border * 2)
-		B:SetButtonTexture(f.reagentToggle, 'Interface/ICONS/INV_Enchant_DustArcane')
-		f.reagentToggle:StyleButton(nil, true)
-		f.reagentToggle.ttText = L["Show/Hide Reagents"]
-		f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
-		f.reagentToggle:SetScript('OnLeave', GameTooltip_Hide)
-		f.reagentToggle:SetScript('OnClick', function()
-			PlaySound(841) --IG_CHARACTER_INFO_TAB
-			B:ShowBankTab(f, f.holderFrame:IsShown())
-		end)
-
-		--Sort Button
-		f.sortButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
-		f.sortButton:SetScript('OnClick', function()
-			if f.holderFrame:IsShown() then
-				if B.db.useBlizzardCleanup then
-					SortBankBags()
-				else
-					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-					if not f.sortingSlots then B:SortingFadeBags(f, true) end
-					B:CommandDecorator(B.SortBags, 'bank')()
-				end
-			else
-				SortReagentBankBags()
-			end
-		end)
-
-		--Deposite Reagents Button
-		f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
-		f.depositButton:Size(16 + E.Border, 16 + E.Border)
-		f.depositButton:SetTemplate()
-		f.depositButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
-		B:SetButtonTexture(f.depositButton, 'Interface/ICONS/misc_arrowdown')
-		f.depositButton:StyleButton(nil, true)
-		f.depositButton.ttText = L["Deposit Reagents"]
-		f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
-		f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
-		f.depositButton:SetScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
-			DepositReagentBank()
-		end)
-
-		f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame)
-		f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
-		f.depositButtonBank:SetTemplate()
-		f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
-		B:SetButtonTexture(f.depositButtonBank, 'Interface/ICONS/misc_arrowdown')
-		f.depositButtonBank:StyleButton(nil, true)
-		f.depositButtonBank.ttText = L["Deposit Reagents"]
-		f.depositButtonBank:SetScript('OnEnter', B.Tooltip_Show)
-		f.depositButtonBank:SetScript('OnLeave', GameTooltip_Hide)
-		f.depositButtonBank:SetScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
-			DepositReagentBank()
-		end)
-
-		--Toggle Bags Button
-		f.bagsButton:Point('RIGHT', f.depositButtonBank, 'LEFT', -5, 0)
 		f.bagsButton:SetScript('OnClick', function()
 			ToggleFrame(f.ContainerHolder)
 			PlaySound(852) --IG_MAINMENU_OPTION
@@ -1634,27 +1643,29 @@ function B:ConstructContainerFrame(name, isBank)
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, E.Border * 2 + 2)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
-		--Currency
-		f.currencyButton = CreateFrame('Frame', nil, f)
-		f.currencyButton:Point('BOTTOM', 0, 4)
-		f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18)
-		f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
+		if E.Retail then
+			--Currency
+			f.currencyButton = CreateFrame('Frame', nil, f)
+			f.currencyButton:Point('BOTTOM', 0, 4)
+			f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18)
+			f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
 
-		f.currencyButton:Height(22)
+			f.currencyButton:Height(22)
 
-		for i = 1, MAX_WATCHED_TOKENS do
-			local currency = CreateFrame('Button', format('%sCurrencyButton%d', name, i), f.currencyButton, 'BackpackTokenTemplate')
-			currency:Size(16)
-			currency:SetTemplate()
-			currency:SetID(i)
-			currency.icon:SetInside()
-			currency.icon:SetTexCoord(unpack(E.TexCoords))
-			currency.text = currency:CreateFontString(nil, 'OVERLAY')
-			currency.text:Point('LEFT', currency, 'RIGHT', 2, 0)
-			currency.text:FontTemplate()
-			currency:Hide()
+			for i = 1, MAX_WATCHED_TOKENS do
+				local currency = CreateFrame('Button', format('%sCurrencyButton%d', name, i), f.currencyButton, 'BackpackTokenTemplate')
+				currency:Size(16)
+				currency:SetTemplate()
+				currency:SetID(i)
+				currency.icon:SetInside()
+				currency.icon:SetTexCoord(unpack(E.TexCoords))
+				currency.text = currency:CreateFontString(nil, 'OVERLAY')
+				currency.text:Point('LEFT', currency, 'RIGHT', 2, 0)
+				currency.text:FontTemplate()
+				currency:Hide()
 
-			f.currencyButton[i] = currency
+				f.currencyButton[i] = currency
+			end
 		end
 	end
 
@@ -1665,7 +1676,7 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
+	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
@@ -1717,7 +1728,10 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
-	slot.IconOverlay2:SetInside()
+
+	if slot.IconOverlay2 then
+		slot.IconOverlay2:SetInside()
+	end
 
 	slot.Cooldown = _G[slot:GetName()..'Cooldown']
 	slot.Cooldown.CooldownOverride = 'bags'
@@ -2308,7 +2322,10 @@ function B:Initialize()
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
 	--Hook onto Blizzard Functions
-	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+	if E.Retail then
+		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+	end
+
 	B:SecureHook('OpenAllBags', 'OpenBags')
 	B:SecureHook('CloseAllBags', 'CloseBags')
 	B:SecureHook('ToggleBag', 'ToggleBags')
@@ -2328,8 +2345,11 @@ function B:Initialize()
 	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseAuction')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
-	B:RegisterEvent('SOULBIND_FORGE_INTERACTION_STARTED', 'OpenBags')
-	B:RegisterEvent('SOULBIND_FORGE_INTERACTION_ENDED', 'CloseBags')
+
+	if E.Retail then
+		B:RegisterEvent('SOULBIND_FORGE_INTERACTION_STARTED', 'OpenBags')
+		B:RegisterEvent('SOULBIND_FORGE_INTERACTION_ENDED', 'CloseBags')
+	end
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)

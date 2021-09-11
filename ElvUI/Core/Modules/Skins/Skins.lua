@@ -1371,13 +1371,16 @@ do
 		[W.HorizontalCurrencies] = 'SkinHorizontalCurrenciesWidget',
 		[W.BulletTextList] = 'SkinBulletTextListWidget',
 		[W.ScenarioHeaderCurrenciesAndBackground] = 'SkinScenarioHeaderCurrenciesAndBackgroundWidget',
-		[W.TextureAndText] = 'SkinTextureAndTextWidget',
-		[W.SpellDisplay] = 'SkinSpellDisplay',
-		[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow',
-		[W.TextureAndTextRow] = 'SkinTextureAndTextRowWidget',
-		[W.ZoneControl] = 'SkinZoneControl',
-		[W.CaptureZone] = 'SkinCaptureZone'
 	}
+
+	if E.Retail then
+		S.WidgetSkinningFuncs[W.SpellDisplay] = 'SkinSpellDisplay'
+		S.WidgetSkinningFuncs[W.TextureAndText] = 'SkinTextureAndTextWidget'
+		S.WidgetSkinningFuncs[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow'
+		S.WidgetSkinningFuncs[W.TextureAndTextRow] = 'SkinTextureAndTextRowWidget'
+		S.WidgetSkinningFuncs[W.ZoneControl] = 'SkinZoneControl'
+		S.WidgetSkinningFuncs[W.CaptureZone] = 'SkinCaptureZone'
+	end
 end
 
 function S:SkinWidgetContainer(widget)

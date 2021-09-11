@@ -29,7 +29,7 @@ local QueryGuildBankTab = QueryGuildBankTab
 local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
 
-local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
+local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
 
@@ -188,7 +188,7 @@ local function DefaultSort(a, b)
 
 	if not aID or not bID then return aID end
 
-	if bagPetIDs[a] and bagPetIDs[b] then
+	if E.Retail and bagPetIDs[a] and bagPetIDs[b] then
 		local aName, _, aType = C_PetJournalGetPetInfoBySpeciesID(aID)
 		local bName, _, bType = C_PetJournalGetPetInfoBySpeciesID(bID)
 

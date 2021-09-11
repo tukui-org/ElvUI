@@ -77,7 +77,9 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 
-		E:RefreshGlobalFX()
+		if E.Retail then
+			E:RefreshGlobalFX()
+		end
 
 		if E:IsEventRegisteredForObject('PLAYER_REGEN_ENABLED', E.UIScale) then
 			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)

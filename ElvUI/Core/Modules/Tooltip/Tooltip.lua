@@ -68,14 +68,14 @@ local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
-local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode.GetDungeonScoreRarityColor
+local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode and C_ChallengeMode.GetDungeonScoreRarityColor
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
-local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
-local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
-local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
+local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
+local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
+local C_PetJournalGetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
+local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local UNKNOWN = UNKNOWN
@@ -877,11 +877,13 @@ end
 function TT:Initialize()
 	TT.db = E.db.tooltip
 
-	TT.MountIDs = {}
-	local mountIDs = C_MountJournal_GetMountIDs()
-	for _, mountID in ipairs(mountIDs) do
-		local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
-		TT.MountIDs[spellID] = mountID
+	if E.Retail then
+		TT.MountIDs = {}
+		local mountIDs = C_MountJournal_GetMountIDs()
+		for _, mountID in ipairs(mountIDs) do
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+			TT.MountIDs[spellID] = mountID
+		end
 	end
 
 	if not E.private.tooltip.enable then return end
@@ -912,14 +914,9 @@ function TT:Initialize()
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByID', 'EmbeddedItemTooltip_ID')
-	TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetCurrencyByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 	TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
-	TT:SecureHook(GameTooltip, 'SetToyByItemID')
-	TT:SecureHook(GameTooltip, 'SetCurrencyToken')
-	TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
-	TT:SecureHook(GameTooltip, 'SetBackpackToken')
 	TT:SecureHook(GameTooltip, 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
@@ -931,8 +928,15 @@ function TT:Initialize()
 	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
-	TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'QuestID')
-	TT:SecureHook('TaskPOI_OnEnter', 'QuestID')
+	if E.Retail then
+		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
+		TT:SecureHook(GameTooltip, 'SetToyByItemID')
+		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
+		TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
+		TT:SecureHook(GameTooltip, 'SetBackpackToken')
+		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'QuestID')
+		TT:SecureHook('TaskPOI_OnEnter', 'QuestID')
+	end
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars

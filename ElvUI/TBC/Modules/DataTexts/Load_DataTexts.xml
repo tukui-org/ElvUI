@@ -1,0 +1,37 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='DataTexts.lua'/>
+
+	<Script file='Agility.lua'/>
+	<Script file='Ammo.lua'/>
+	<Script file='Armor.lua'/>
+	<Script file='AttackPower.lua'/>
+	<Script file='Avoidance.lua'/>
+	<Script file='Bags.lua'/>
+	<Script file='BattleStats.lua'/>
+	<Script file='CombatTime.lua'/>
+	<Script file='ConfigElvUI.lua'/>
+	<Script file='Coordinates.lua'/>
+	<Script file='Crit.lua'/>
+	<Script file='DPS.lua'/>
+	<Script file='Durability.lua'/>
+	<Script file='Experience.lua'/>
+	<Script file='Friends.lua'/>
+	<Script file='Gold.lua'/>
+	<Script file='Guild.lua'/>
+	<Script file='Haste.lua'/>
+	<Script file='Hit.lua'/>
+	<Script file='HPS.lua'/>
+	<Script file='Intellect.lua'/>
+	<Script file='Mail.lua'/>
+	<Script file='ManaRegen.lua'/>
+	<Script file='MovementSpeed.lua'/>
+	<Script file='SpellCrit.lua'/>
+	<Script file='SpellHit.lua'/>
+	<Script file='Reputation.lua'/>
+	<Script file='SpellPower.lua'/>
+	<Script file='Spirit.lua'/>
+	<Script file='Stamina.lua'/>
+	<Script file='Strength.lua'/>
+	<Script file='System.lua'/>
+	<Script file='Time.lua'/>
+</Ui>

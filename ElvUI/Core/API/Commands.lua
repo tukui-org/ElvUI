@@ -332,9 +332,6 @@ function E:LoadCommands()
 
 	self:RegisterChatCommand('hdt', DT.HyperDT)
 	self:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
-	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
-	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')
-	self:RegisterChatCommand('harlemshake', 'HarlemShakeToggle')
 
 	self:RegisterChatCommand('moveui', 'ToggleMoveMode')
 	self:RegisterChatCommand('resetui', 'ResetUI')
@@ -350,7 +347,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
 	self:RegisterChatCommand('efixdb', 'DBConvertProfile')
 	self:RegisterChatCommand('egrid', 'Grid')
-	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	self:RegisterChatCommand('eimpact', 'GetCPUImpact')
 	self:RegisterChatCommand('eusage', 'GetTopCPUFunc')
