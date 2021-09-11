@@ -1368,7 +1368,7 @@ function B:ConstructContainerFrame(name, isBank)
 	for i, bagID in next, f.BagIDs do
 		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or bagID
 		local bagName = isBank and format('ElvUI%sBag%d', isBank and 'Bank' or 'Main', bagNum) or bagID == 0 and 'ElvUIMainBagBackpack' or bagID == -2 and 'ElvUIKeyRing'
-		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and 'ItemButtonTemplate, ItemAnimTemplate' or 'BagSlotButtonTemplate'
+		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and (not E.Retail and 'ItemButtonTemplate, ' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		local holder = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', bagName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
