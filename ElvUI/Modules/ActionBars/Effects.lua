@@ -10,22 +10,25 @@ local config = {
 		["auraType"] = "HARMFUL", -- buff or debuff
 		["exists"] = false, -- show effect if aura exists, rather than if it doesn't exist
 		["canAttack"] = true, -- only show if you can attack the unit
+		["effect"] = "glow", -- glow, flash, shake
 	},
 	[172] = { --Corruption
 		["aura"] = 172,
 		["auraType"] = "HARMFUL",
 		["exists"] = false,
 		["canAttack"] = true,
+		["effect"] = "flash",
 	},
 	[316099] = { --Unstable Affliction
 		["aura"] = 316099,
 		["auraType"] = "HARMFUL",
 		["exists"] = false,
 		["canAttack"] = true,
-	},]]	
+		["effect"] = "shake",
+	},]]
 }
 
-function AB:MapSpellIDs(event, action)
+function AB:MapSpellIDs()
 	local SpellID
 	twipe(self.MapSpellIDToButton)
 	for _, bar in pairs(self.handledBars) do
@@ -61,6 +64,26 @@ function AB:RegisterUnitEvents(SpellID, button)
 	end
 end
 
+function AB:EffectButton(button, stop)
+	if stop then
+		if config[button.SpellID].effect == "glow" then
+			ActionButton_HideOverlayGlow(button)
+		elseif config[button.SpellID].effect == "flash" then
+			E:StopFlash(button)
+		elseif config[button.SpellID].effect == "shake" then
+			E:StopShake(button)
+		end
+	else
+		if config[button.SpellID].effect == "glow" then
+			ActionButton_ShowOverlayGlow(button)
+		elseif config[button.SpellID].effect == "flash" then
+			E:Flash(button, 0.75, true)
+		elseif config[button.SpellID].effect == "shake" then
+			E:Shake(button)
+		end
+	end
+end
+
 function AB:BUTTON_EVENT(event)
 	if event == "UNIT_AURA" or event == "PLAYER_TARGET_CHANGED" then
 		local unit = "TARGET"
@@ -69,25 +92,15 @@ function AB:BUTTON_EVENT(event)
 			local name = GetSpellInfo(config[self.SpellID].aura)
 
 			if AuraUtil.FindAuraByName(name, unit, config[self.SpellID].auraType) then
-				if config[self.SpellID].exists then
-					ActionButton_ShowOverlayGlow(self)
-				else
-					ActionButton_HideOverlayGlow(self)
-				end
+				AB:EffectButton(self, not config[self.SpellID].exists)
 			else
-				if config[self.SpellID].exists then
-					ActionButton_HideOverlayGlow(self)
-				else
-					ActionButton_ShowOverlayGlow(self)
-				end
+				AB:EffectButton(self, config[self.SpellID].exists)
 			end
 		else
-			ActionButton_HideOverlayGlow(self)
+			AB:EffectButton(self, true)
 		end
 	end
 end
-
-
 
 function AB:ActionBarEffects()
 	for _, bar in pairs(self.handledBars) do
