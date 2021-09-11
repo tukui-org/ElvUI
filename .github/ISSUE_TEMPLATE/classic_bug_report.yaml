@@ -45,7 +45,7 @@ body:
     id: terms
     attributes:
       label: ElvUI Changelog/Troubleshooting
-      description: By submitting this issue, you agree you followed our [Troubelshooting Steps](https://urlfortroubleshootingstepshere.com)
+      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://urlfortroubleshootingstepshere.com)
       options:
         - label: I have confirmed that I have read the [Changelog](https://changelogurlhere.com) and done the [Troubelshooting Steps](https://urlfortroubleshootingstepshere.com).
           required: true
