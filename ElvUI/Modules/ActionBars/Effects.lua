@@ -6,7 +6,7 @@ AB.MapSpellIDToButton = {}
 
 local FadeSpeed = 0.75
 local config = {
-	[980] = { --Agony (spell to look for on actionbar)
+	--[[[980] = { --Agony (spell to look for on actionbar)
 		["aura"] = 980, -- aura the unit must have
 		["auraType"] = "HARMFUL", -- buff or debuff
 		["exists"] = false, -- show effect if aura exists, rather than if it doesn't exist
@@ -29,7 +29,7 @@ local config = {
 		["canAttack"] = true,
 		["effect"] = "shake",
 		["effectColor"] = {r = 1.0, g = 0, b = 0, a = 1}
-	},
+	},]]
 }
 
 function AB:MapSpellIDs()
