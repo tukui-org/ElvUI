@@ -55,7 +55,9 @@ end
 local Disable = function(self)
 	local specIcon = self.PVPSpecIcon
 	if specIcon then
-		self:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
+		if oUF.Retail then
+			self:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
+		end
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
 

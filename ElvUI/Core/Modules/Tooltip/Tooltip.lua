@@ -313,12 +313,12 @@ function TT:SetUnitText(tt, unit)
 	else
 		local levelLine = TT:GetLevelLine(tt, 2)
 		if levelLine then
-			local isPetWild, isPetCompanion = UnitIsWildBattlePet(unit), UnitIsBattlePetCompanion(unit)
+			local isPetWild, isPetCompanion = E.Retail and UnitIsWildBattlePet(unit), E.Retail and UnitIsBattlePetCompanion(unit)
 			local creatureClassification = UnitClassification(unit)
 			local creatureType = UnitCreatureType(unit) or ''
 			local pvpFlag, classificationString, diffColor = '', ''
 
-			local level = UnitEffectiveLevel(unit)
+			local level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
 			if isPetWild or isPetCompanion then
 				level = UnitBattlePetLevel(unit)
 
@@ -547,7 +547,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	-- NPC ID's
 	if unit and not isPlayerUnit and TT:IsModKeyDown() then
-		if not C_PetBattles_IsInBattle() then
+		if not (E.Retail and C_PetBattles_IsInBattle()) then
 			local guid = UnitGUID(unit) or ''
 			local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 			if id then

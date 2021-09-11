@@ -56,7 +56,6 @@ local UnitIsPVP = UnitIsPVP
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
-local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
@@ -508,21 +507,21 @@ E:AddTag('mana:max:shortvalue', 'UNIT_MAXPOWER', function(unit)
 end)
 
 E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
-	local c
-	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
+	local color
+	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		local level = UnitBattlePetLevel(unit)
 
 		local teamLevel = C_PetJournal.GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
-			c = GetRelativeDifficultyColor(teamLevel, level)
+			color = GetRelativeDifficultyColor(teamLevel, level)
 		else
-			c = QuestDifficultyColors.difficult
+			color = QuestDifficultyColors.difficult
 		end
 	else
-		c = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
+		color = GetCreatureDifficultyColor((E.Retail and UnitEffectiveLevel or UnitLevel)(unit))
 	end
 
-	return Hex(c.r, c.g, c.b)
+	return Hex(color.r, color.g, color.b)
 end)
 
 E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
@@ -557,10 +556,10 @@ E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 end)
 
 E:AddTag('smartlevel', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
-	local level = UnitEffectiveLevel(unit)
-	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
+	local level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
+	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		return UnitBattlePetLevel(unit)
-	elseif level == UnitEffectiveLevel('player') then
+	elseif level == (E.Retail and UnitEffectiveLevel or UnitLevel)('player') then
 		return nil
 	elseif level > 0 then
 		return level

@@ -774,7 +774,13 @@ function DT:Initialize()
 
 	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
 	DT:RegisterLDB() -- LibDataBroker
-	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
+
+	if E.Retail then
+		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
+		hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+		DT:PopulateData()
+		DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
+	end
 
 	for name in pairs(E.global.datatexts.customPanels) do
 		DT:BuildPanelFrame(name, true)
@@ -785,12 +791,8 @@ function DT:Initialize()
 		DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 	end
 
-	hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
-
-	DT:PopulateData()
 	DT:RegisterHyperDT()
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
-	DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
 end
 
 --[[

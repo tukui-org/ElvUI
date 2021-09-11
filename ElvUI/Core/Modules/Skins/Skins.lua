@@ -1497,14 +1497,16 @@ function S:Initialize()
 		end
 	end
 
-	local frame = CreateFrame('Frame')
-	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-	frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
-	frame:SetScript('OnEvent', function()
-		for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
-			S:SkinWidgetContainer(widget)
-		end
-	end)
+	if E.Retail then
+		local frame = CreateFrame('Frame')
+		frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
+		frame:SetScript('OnEvent', function()
+			for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
+				S:SkinWidgetContainer(widget)
+			end
+		end)
+	end
 end
 
 -- Keep this outside, it's used for skinning addons before ElvUI load

@@ -1569,7 +1569,7 @@ function UF:Initialize()
 	end
 
 	if E.private.unitframe.disabledBlizzardFrames.arena then
-		UF:SecureHook('UnitFrameThreatIndicator_Initialize')
+		if E.Retail then UF:SecureHook('UnitFrameThreatIndicator_Initialize') end
 
 		Arena_LoadUI = E.noop
 		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena

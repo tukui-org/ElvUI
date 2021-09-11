@@ -297,13 +297,15 @@ frame:SetScript('OnEvent', function(self, event)
 	wipe(questIcons.indexByID)
 	wipe(questIcons.activeQuests)
 
-	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-		local id = C_QuestLog_GetQuestIDForLogIndex(i)
-		if id and id > 0 then
-			questIcons.indexByID[id] = i
+	if E.Retail then
+		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+			local id = C_QuestLog_GetQuestIDForLogIndex(i)
+			if id and id > 0 then
+				questIcons.indexByID[id] = i
 
-			local title = C_QuestLog_GetTitleForLogIndex(i)
-			if title then questIcons.activeQuests[title] = id end
+				local title = C_QuestLog_GetTitleForLogIndex(i)
+				if title then questIcons.activeQuests[title] = id end
+			end
 		end
 	end
 

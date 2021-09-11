@@ -182,14 +182,16 @@ function AB:UpdateMicroPositionDimensions()
 end
 
 function AB:UpdateMicroButtons()
-	local GuildMicroButton = _G.GuildMicroButton
-	local GuildMicroButtonTabard = _G.GuildMicroButtonTabard
-	GuildMicroButtonTabard:SetInside(GuildMicroButton)
-	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
-	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-	GuildMicroButtonTabard.emblem:ClearAllPoints()
-	GuildMicroButtonTabard.emblem:Point('TOPLEFT', GuildMicroButton, 'TOPLEFT', 4, -4)
-	GuildMicroButtonTabard.emblem:Point('BOTTOMRIGHT', GuildMicroButton, 'BOTTOMRIGHT', -4, 8)
+	if E.Retail then
+		local GuildMicroButton = _G.GuildMicroButton
+		local GuildMicroButtonTabard = _G.GuildMicroButtonTabard
+		GuildMicroButtonTabard:SetInside(GuildMicroButton)
+		GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
+		GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+		GuildMicroButtonTabard.emblem:ClearAllPoints()
+		GuildMicroButtonTabard.emblem:Point('TOPLEFT', GuildMicroButton, 'TOPLEFT', 4, -4)
+		GuildMicroButtonTabard.emblem:Point('BOTTOMRIGHT', GuildMicroButton, 'BOTTOMRIGHT', -4, 8)
+	end
 
 	AB:UpdateMicroPositionDimensions()
 end

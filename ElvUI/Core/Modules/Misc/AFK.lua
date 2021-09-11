@@ -29,7 +29,7 @@ local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 local CinematicFrame = CinematicFrame
 local MovieFrame = MovieFrame
-local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local DNDstr = _G.DND
 local AFKstr = _G.AFK
 
@@ -127,7 +127,7 @@ function AFK:OnEvent(event, ...)
 		return
 	end
 
-	AFK:SetAFK(UnitIsAFK('player') and not C_PetBattles_IsInBattle())
+	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
 end
 
 function AFK:Toggle()

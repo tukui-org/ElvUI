@@ -124,7 +124,7 @@ local function Update(self, event, unit, powerType)
 			cur = cur - cur % 1
 		end
 
-		if(PlayerClass == 'ROGUE') then
+		if oUF.isRetail and (PlayerClass == 'ROGUE') then
 			chargedPoints = GetUnitChargedPowerPoints(unit)
 
 			-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
@@ -185,11 +185,11 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	if(UnitHasVehicleUI('player')) then
+	if oUF.isRetail and (UnitHasVehicleUI('player')) then
 		shouldEnable = PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
-		if(not RequireSpec or RequireSpec == GetSpecialization()) then
+		if(not RequireSpec or oUF.isRetail and (RequireSpec == GetSpecialization())) then
 			-- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 			if(not RequirePower or RequirePower == UnitPowerType('player')) then
 				if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
@@ -259,13 +259,13 @@ do
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
-		if(PlayerClass == 'ROGUE') then
+		if oUF.isRetail and (PlayerClass == 'ROGUE') then
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
 
 		self.ClassPower.__isEnabled = true
 
-		if(UnitHasVehicleUI('player')) then
+		if oUF.isRetail and UnitHasVehicleUI('player') then
 			Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 		else
 			Path(self, 'ClassPowerEnable', 'player', ClassPowerType)
@@ -275,7 +275,10 @@ do
 	function ClassPowerDisable(self)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
-		self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		end
 
 		local element = self.ClassPower
 		for i = 1, #element do
@@ -318,7 +321,7 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		if(RequireSpec or RequireSpell) then
+		if oUF.isRetail and (RequireSpec or RequireSpell) then
 			self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
@@ -348,7 +351,10 @@ local function Disable(self)
 	if(self.ClassPower) then
 		ClassPowerDisable(self)
 
-		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
+		if oUF.isRetail then
+			self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
+		end
+
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('SPELLS_CHANGED', Visibility)
 	end

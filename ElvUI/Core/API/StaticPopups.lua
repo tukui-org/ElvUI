@@ -1148,14 +1148,14 @@ function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
-		E.StaticPopupFrames[index]:SetID(index)
+		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
+		popup:SetID(index)
 
 		--Fix Scripts
-		E.StaticPopupFrames[index]:SetScript('OnShow', E.StaticPopup_OnShow)
-		E.StaticPopupFrames[index]:SetScript('OnHide', E.StaticPopup_OnHide)
-		E.StaticPopupFrames[index]:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
-		E.StaticPopupFrames[index]:SetScript('OnEvent', E.StaticPopup_OnEvent)
+		popup:SetScript('OnShow', E.StaticPopup_OnShow)
+		popup:SetScript('OnHide', E.StaticPopup_OnHide)
+		popup:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
+		popup:SetScript('OnEvent', E.StaticPopup_OnEvent)
 
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
@@ -1165,8 +1165,10 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
 
 		--Skin
-		E.StaticPopupFrames[index].Border:StripTextures()
-		E.StaticPopupFrames[index]:SetTemplate('Transparent')
+		if E.Retail then
+			popup.Border:StripTextures()
+		end
+		popup:SetTemplate('Transparent')
 
 		for i = 1, 4 do
 			local button = _G['ElvUI_StaticPopup'..index..'Button'..i]
@@ -1197,6 +1199,8 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'ItemFrame']:StyleButton()
 		_G['ElvUI_StaticPopup'..index..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['ElvUI_StaticPopup'..index..'ItemFrameIconTexture']:SetInside()
+
+		E.StaticPopupFrames[index] = popup
 	end
 
 	E:SecureHook('StaticPopup_SetUpPosition')

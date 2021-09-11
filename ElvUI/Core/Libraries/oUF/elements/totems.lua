@@ -165,7 +165,10 @@ local function Enable(self)
 		TotemFrame:UnregisterEvent('PLAYER_TOTEM_UPDATE')
 		TotemFrame:UnregisterEvent('PLAYER_ENTERING_WORLD')
 		TotemFrame:UnregisterEvent('UPDATE_SHAPESHIFT_FORM')
-		TotemFrame:UnregisterEvent('PLAYER_TALENT_UPDATE')
+
+		if oUF.isRetail then
+			TotemFrame:UnregisterEvent('PLAYER_TALENT_UPDATE')
+		end
 
 		return true
 	end
@@ -181,7 +184,10 @@ local function Disable(self)
 		TotemFrame:RegisterEvent('PLAYER_TOTEM_UPDATE')
 		TotemFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 		TotemFrame:RegisterEvent('UPDATE_SHAPESHIFT_FORM')
-		TotemFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
+
+		if oUF.isRetail then
+			TotemFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
+		end
 
 		self:UnregisterEvent('PLAYER_TOTEM_UPDATE', Path)
 	end

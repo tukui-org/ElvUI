@@ -401,26 +401,29 @@ function M:Initialize()
 		frame:Kill()
 	end
 
-	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-	hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
+	if E.Retail then
+		-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
+		hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
 
-	--Hide the BlopRing on Minimap
-	Minimap:SetArchBlobRingAlpha(0)
-	Minimap:SetArchBlobRingScalar(0)
-	Minimap:SetQuestBlobRingAlpha(0)
-	Minimap:SetQuestBlobRingScalar(0)
+		--Hide the BlopRing on Minimap
+		Minimap:SetArchBlobRingAlpha(0)
+		Minimap:SetArchBlobRingScalar(0)
+		Minimap:SetQuestBlobRingAlpha(0)
+		Minimap:SetQuestBlobRingScalar(0)
 
-	if E.private.general.minimap.hideClassHallReport then
-		_G.GarrisonLandingPageMinimapButton:Kill()
-		_G.GarrisonLandingPageMinimapButton.IsShown = function() return true end
+		if E.private.general.minimap.hideClassHallReport then
+			_G.GarrisonLandingPageMinimapButton:Kill()
+			_G.GarrisonLandingPageMinimapButton.IsShown = function() return true end
+		end
+
+		_G.QueueStatusMinimapButtonBorder:Hide()
+		_G.QueueStatusFrame:SetClampedToScreen(true)
+		_G.MiniMapInstanceDifficulty:SetParent(Minimap)
+		_G.GuildInstanceDifficulty:SetParent(Minimap)
+		_G.MiniMapChallengeMode:SetParent(Minimap)
 	end
 
-	_G.QueueStatusMinimapButtonBorder:Hide()
-	_G.QueueStatusFrame:SetClampedToScreen(true)
 	_G.MiniMapWorldMapButton:Hide()
-	_G.MiniMapInstanceDifficulty:SetParent(Minimap)
-	_G.GuildInstanceDifficulty:SetParent(Minimap)
-	_G.MiniMapChallengeMode:SetParent(Minimap)
 
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end

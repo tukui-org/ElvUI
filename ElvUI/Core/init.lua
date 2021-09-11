@@ -211,9 +211,9 @@ function E:OnInitialize()
 
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape()
-		_G.Minimap:SetMaskTexture(130937) -- interface/chatframe/chatframebackground.blp
+		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface/chatframe/chatframebackground]])
 	else
-		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
+		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures/minimapmask]])
 	end
 
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then

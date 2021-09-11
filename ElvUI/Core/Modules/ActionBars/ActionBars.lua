@@ -735,7 +735,7 @@ end
 
 function AB:FadeBlingTexture(cooldown, alpha)
 	if not cooldown then return end
-	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or E.media.blankTex) -- interface/cooldown/star4.blp
+	cooldown:SetBlingTexture(alpha > 0.5 and (E.Retail and 131010 or [[interface/cooldown/star4.blp]]) or E.media.blankTex) -- interface/cooldown/star4.blp
 end
 
 function AB:FadeBlings(alpha)
@@ -825,7 +825,7 @@ end
 
 function AB:FadeParent_OnEvent()
 	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus') or UnitExists('vehicle')
-	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or IsPossessBarVisible() or HasOverrideActionBar() then
+	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or E.Retail and IsPossessBarVisible() or E.Retail and HasOverrideActionBar() then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		AB:FadeBlings(1)

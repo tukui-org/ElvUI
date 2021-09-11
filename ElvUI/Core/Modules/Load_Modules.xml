@@ -7,7 +7,7 @@
 	<Include file='DataBars\Load_DataBars.xml'/>
 	<Include file='ActionBars\Load_ActionBars.xml'/>
 	<Include file='UnitFrames\Load_UnitFrames.xml'/>
-	<Include file='Chat\Load_Chat.xml'/>
+	<!--Include file='Chat\Load_Chat.xml'/-->
 	<Include file='Bags\Load_Bags.xml'/>
 	<Include file='Misc\Load_Misc.xml'/>
 	<Include file='Skins\Load_Skins.xml'/>
