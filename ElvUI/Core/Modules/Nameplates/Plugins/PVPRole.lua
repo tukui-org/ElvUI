@@ -12,38 +12,22 @@ local GetSpecializationInfoByID = GetSpecializationInfoByID
 local UnitName = UnitName
 local UNKNOWN = UNKNOWN
 
-local healerSpecIDs = {
-	65,		--Paladin Holy
-	105,	--Druid Restoration
-	256,	--Priest Discipline
-	257,	--Priest Holy
-	264,	--Shaman Restoration
-	270,	--Monk Mistweaver
-}
-
-local tankSpecIDs = {
-	66,		--Paladin Protection
-	581,	--Demon Hunter Vengeance
-	104,	--Druid Guardian
-	268,	--Monk Brewmaster
-	73,		--Warrior Protection
-	250,	--Death Knight Blood
-}
-
 local Healers, HealerSpecs = {}, {}
 local Tanks, TankSpecs = {}, {}
 
-for _, specID in pairs(healerSpecIDs) do
-	local _, name = GetSpecializationInfoByID(specID)
-	if name and not HealerSpecs[name] then
-		HealerSpecs[name] = true
-	end
-end
-
-for _, specID in pairs(tankSpecIDs) do
-	local _, name = GetSpecializationInfoByID(specID)
-	if name and not TankSpecs[name] then
-		TankSpecs[name] = true
+if E.Retail then
+	for i = 1, MAX_CLASSES do
+		local _, _, classID = GetClassInfo(i)
+		if classID then
+			for specIndex = 1, GetNumSpecializationsForClassID(classID) do
+				local _, name, _, _, role = GetSpecializationInfoForClassID(classID, specIndex)
+				if role == 'HEALER' then
+					HealerSpecs[name] = true
+				elseif role == 'TANK' then
+					TankSpecs[name] = true
+				end
+			end
+		end
 	end
 end
 
