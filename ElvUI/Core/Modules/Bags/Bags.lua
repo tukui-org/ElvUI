@@ -1366,11 +1366,11 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
-		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or bagID
-		local bagName = isBank and format('ElvUI%sBag%d', isBank and 'Bank' or 'Main', bagNum) or bagID == 0 and 'ElvUIMainBagBackpack' or bagID == -2 and 'ElvUIKeyRing'
-		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and (not E.Retail and 'ItemButtonTemplate, ' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or bagID-1
+		local bagName = bagID == 0 and 'ElvUIMainBagBackpack' or bagID == -2 and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
+		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
-		local holder = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', bagName, f.ContainerHolder, inherit)
+		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), bagName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
 
@@ -1423,8 +1423,17 @@ function B:ConstructContainerFrame(name, isBank)
 		end
 	end
 
+	f.stackButton = CreateFrame('Button', name..'StackButton', f.holderFrame)
+	f.stackButton:SetSize(16 + E.Border, 16 + E.Border)
+	f.stackButton:SetTemplate()
+	B:SetButtonTexture(f.stackButton, 'Interface/Cursor/Repair')
+	f.stackButton:StyleButton(nil, true)
+	f.stackButton:SetScript('OnEnter', B.Tooltip_Show)
+	f.stackButton:SetScript('OnLeave', GameTooltip_Hide)
+
 	--Sort Button
 	f.sortButton = CreateFrame('Button', name..'SortButton', f)
+	f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, E.Border * 2)
 	f.sortButton:Size(16 + E.Border, 16 + E.Border)
 	f.sortButton:SetTemplate()
 	B:SetButtonTexture(f.sortButton, E.Retail and 'Interface/ICONS/INV_Pet_Broom' or 'Interface/AddOns/ElvUI/Core/Media/Textures/INV_Pet_Broom')
@@ -1440,6 +1449,7 @@ function B:ConstructContainerFrame(name, isBank)
 	--Toggle Bags Button
 	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
 	f.bagsButton:Size(16 + E.Border, 16 + E.Border)
+	f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -5, E.Border * 2)
 	f.bagsButton:SetTemplate()
 	B:SetButtonTexture(f.bagsButton, 'Interface/AddOns/ElvUI/Core/Media/Textures/Button-Backpack-Up')
 	f.bagsButton:StyleButton(nil, true)
@@ -1528,22 +1538,6 @@ function B:ConstructContainerFrame(name, isBank)
 				B:ShowBankTab(f, f.holderFrame:IsShown())
 			end)
 
-			--Sort Button
-			f.sortButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
-			f.sortButton:SetScript('OnClick', function()
-				if f.holderFrame:IsShown() then
-					if B.db.useBlizzardCleanup then
-						SortBankBags()
-					else
-						f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-						if not f.sortingSlots then B:SortingFadeBags(f, true) end
-						B:CommandDecorator(B.SortBags, 'bank')()
-					end
-				else
-					SortReagentBankBags()
-				end
-			end)
-
 			--Deposite Reagents Button
 			f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
 			f.depositButton:Size(16 + E.Border, 16 + E.Border)
@@ -1572,11 +1566,44 @@ function B:ConstructContainerFrame(name, isBank)
 				PlaySound(852) --IG_MAINMENU_OPTION
 				DepositReagentBank()
 			end)
-
-			--Toggle Bags Button
-			f.bagsButton:Point('RIGHT', f.depositButtonBank, 'LEFT', -5, 0)
 		end
 
+		-- Stack
+		if E.Retail then
+			f.stackButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, E.Border * 2)
+		else
+			f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
+		end
+
+		f.stackButton.ttText = L["Stack Items In Bank"]
+		f.stackButton.ttText2 = L["Hold Shift:"]
+		f.stackButton.ttText2desc = L["Stack Items To Bags"]
+		f.stackButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.stackButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.stackButton:SetScript("OnClick", function()
+			if IsShiftKeyDown() then
+				B:CommandDecorator(B.Stack, "bank bags")()
+			else
+				B:CommandDecorator(B.Compress, "bank")()
+			end
+		end)
+
+		--Sort Button
+		f.sortButton:SetScript('OnClick', function()
+			if f.holderFrame:IsShown() then
+				if B.db.useBlizzardCleanup then
+					SortBankBags()
+				else
+					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+					if not f.sortingSlots then B:SortingFadeBags(f, true) end
+					B:CommandDecorator(B.SortBags, 'bank')()
+				end
+			else
+				SortReagentBankBags()
+			end
+		end)
+
+		--Toggle Bags Button
 		f.bagsButton:SetScript('OnClick', function()
 			ToggleFrame(f.ContainerHolder)
 			PlaySound(852) --IG_MAINMENU_OPTION
@@ -1610,8 +1637,22 @@ function B:ConstructContainerFrame(name, isBank)
 		f.goldText:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
 		f.goldText:SetJustifyH('RIGHT')
 
+		-- Stack/Transfer Button
+		f.stackButton:SetPoint('RIGHT', f.goldText, 'LEFT', -5, E.Border * 2)
+		f.stackButton.ttText = L["Stack Items In Bags"]
+		f.stackButton.ttText2 = L["Hold Shift:"]
+		f.stackButton.ttText2desc = L["Stack Items To Bank"]
+		f.stackButton:SetScript('OnClick', function()
+			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+			if not f.sortingSlots then f.sortingSlots = true end
+			if IsShiftKeyDown() then
+				B:CommandDecorator(B.Stack, 'bags bank')()
+			else
+				B:CommandDecorator(B.Compress, 'bags')()
+			end
+		end)
+
 		--Sort Button
-		f.sortButton:Point('RIGHT', f.goldText, 'LEFT', -5, E.Border * 2)
 		f.sortButton:SetScript('OnClick', function()
 			if B.db.useBlizzardCleanup then
 				SortBags()
@@ -1680,6 +1721,10 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
+
+	if not E.Retail then
+		slot:SetCheckedTexture(nil)
+	end
 
 	slot.bagFrame = f
 	slot.bagID = bagID

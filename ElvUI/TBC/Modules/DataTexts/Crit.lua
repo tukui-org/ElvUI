@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local min = min
 local strjoin = strjoin
 
 local GetCritChance = GetCritChance
 local GetRangedCritChance = GetRangedCritChance
-local GetSpellCritChance = GetSpellCritChance
 local CRIT_ABBR = CRIT_ABBR
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
@@ -15,21 +13,15 @@ local spellCrit, rangedCrit, meleeCrit = 0, 0, 0
 local critChance = 0
 
 local function OnEvent(self)
-	local minCrit = GetSpellCritChance(2)
-	for i = 3, 7 do
-		spellCrit = GetSpellCritChance(i);
-		minCrit = min(minCrit, spellCrit);
-	end
-	spellCrit = minCrit
-	rangedCrit = GetRangedCritChance();
-	meleeCrit = GetCritChance();
+	rangedCrit = GetRangedCritChance()
+	meleeCrit = GetCritChance()
 
 	if (spellCrit >= rangedCrit and spellCrit >= meleeCrit) then
-		critChance = spellCrit;
+		critChance = spellCrit
 	elseif (rangedCrit >= meleeCrit) then
-		critChance = rangedCrit;
+		critChance = rangedCrit
 	else
-		critChance = meleeCrit;
+		critChance = meleeCrit
 	end
 
 	if E.global.datatexts.settings.Crit.NoLabel then

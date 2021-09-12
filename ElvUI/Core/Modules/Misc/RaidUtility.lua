@@ -360,26 +360,28 @@ function RU:Initialize()
 		'RaidUtility_CloseButton'
 	}
 
-	if _G.CompactRaidFrameManager then
-		--Reposition/Resize and Reuse the World Marker Button
-		tinsert(buttons, 'CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton')
-		local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-		marker:SetParent('RaidUtilityPanel')
-		marker:ClearAllPoints()
-		marker:Point('TOPRIGHT', _G.RoleCheckButton, 'BOTTOMRIGHT', 0, -5)
-		marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-		marker:HookScript('OnEnter', RU.ButtonEnter)
-		marker:HookScript('OnLeave', RU.ButtonLeave)
-		self.MarkerButton = marker
+	if E.Retail then
+		if _G.CompactRaidFrameManager then
+			--Reposition/Resize and Reuse the World Marker Button
+			tinsert(buttons, 'CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton')
+			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
+			marker:SetParent('RaidUtilityPanel')
+			marker:ClearAllPoints()
+			marker:Point('TOPRIGHT', _G.RoleCheckButton, 'BOTTOMRIGHT', 0, -5)
+			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
+			marker:HookScript('OnEnter', RU.ButtonEnter)
+			marker:HookScript('OnLeave', RU.ButtonLeave)
+			self.MarkerButton = marker
 
-		-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
-		local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
-		readyCheck:ClearAllPoints()
-		readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
-		readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
-		self.ReadyCheck = readyCheck
-	else
-		E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
+			-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
+			local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
+			readyCheck:ClearAllPoints()
+			readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
+			readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
+			self.ReadyCheck = readyCheck
+		else
+			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
+		end
 	end
 
 	--Reskin Stuff

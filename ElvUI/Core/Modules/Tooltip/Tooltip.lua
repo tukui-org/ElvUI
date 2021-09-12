@@ -208,7 +208,7 @@ function TT:SetUnitText(tt, unit)
 		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
-		local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
+		local level, realLevel = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
@@ -261,7 +261,7 @@ function TT:SetUnitText(tt, unit)
 			end
 		end
 
-		if TT.db.role then
+		if TT.db.role and E.Retail then
 			local r, g, b, role = 1, 1, 1, UnitGroupRolesAssigned(unit)
 			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= 'NONE') then
 				if role == 'HEALER' then
@@ -276,7 +276,7 @@ function TT:SetUnitText(tt, unit)
 			end
 		end
 
-		local mythicInfo = TT.db.mythicDataEnable and C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
+		local mythicInfo = E.Retail and TT.db.mythicDataEnable and C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
 		if mythicInfo then
 			local mythicScore = mythicInfo.currentSeasonScore
 			if mythicScore and mythicScore > 0 then
@@ -479,7 +479,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
-	if TT.db.showMount and isPlayerUnit and unit ~= 'player' and not isShiftKeyDown then
+	if E.Retail and TT.db.showMount and isPlayerUnit and unit ~= 'player' and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 			if not name then break end
@@ -727,7 +727,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 
 	if id then
 		local mountText
-		if TT.MountIDs[id] then
+		if E.Retail and TT.MountIDs[id] then
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
 			mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
 

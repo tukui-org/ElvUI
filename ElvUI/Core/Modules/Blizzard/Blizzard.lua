@@ -54,15 +54,18 @@ function B:Initialize()
 	B.Initialized = true
 
 	B:EnhanceColorPicker()
-	B:KillBlizzard()
-	B:DisableHelpTip()
-	B:DisableNPE()
-	B:AlertMovers()
-	B:SkinBlizzTimers()
-	B:PositionCaptureBar()
-	B:PositionVehicleFrame()
-	B:PositionTalkingHead()
-	B:HandleWidgets()
+
+	if E.Retail then
+		B:KillBlizzard()
+		B:DisableHelpTip()
+		B:DisableNPE()
+		B:AlertMovers()
+		B:SkinBlizzTimers()
+		B:PositionCaptureBar()
+		B:PositionVehicleFrame()
+		B:PositionTalkingHead()
+		B:HandleWidgets()
+	end
 
 	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
 		B:MoveObjectiveFrame()

@@ -114,6 +114,7 @@ end
 local playerClass = select(2, UnitClass('player'))
 local function CheckSpec(self, event, levels)
 	-- Not interested in gained points from leveling
+	if not oUF.isRetail then return end
 	if event == "CHARACTER_POINTS_CHANGED" and levels > 0 then return end
 
 	--Check for certain talents to see if we can dispel magic or not

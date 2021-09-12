@@ -25,7 +25,7 @@ local function OnEvent(self)
 		beforeFalling = speed
 	end
 
-	self.text:SetFormattedText(displayString, movementSpeedText, speed/BASE_MOVEMENT_SPEED*100)
+	self.text:SetFormattedText(displayString, movementSpeedText, (speed/BASE_MOVEMENT_SPEED) * 100)
 	lastPanel = self
 end
 

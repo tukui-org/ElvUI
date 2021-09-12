@@ -155,11 +155,13 @@ function B:EnhanceColorPicker()
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)
 	_G.ColorPickerFrame:SetTemplate('Transparent')
-	_G.ColorPickerFrame.Border:Hide()
 
-	_G.ColorPickerFrame.Header:StripTextures()
-	_G.ColorPickerFrame.Header:ClearAllPoints()
-	_G.ColorPickerFrame.Header:Point('TOP', _G.ColorPickerFrame, 0, 0)
+	if E.Retail then
+		_G.ColorPickerFrame.Border:Hide()
+		_G.ColorPickerFrame.Header:StripTextures()
+		_G.ColorPickerFrame.Header:ClearAllPoints()
+		_G.ColorPickerFrame.Header:Point('TOP', _G.ColorPickerFrame, 0, 0)
+	end
 
 	_G.ColorPickerCancelButton:ClearAllPoints()
 	_G.ColorPickerOkayButton:ClearAllPoints()

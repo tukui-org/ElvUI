@@ -6,6 +6,7 @@ local format, strjoin = format, strjoin
 
 local UnitAttackPower = UnitAttackPower
 local UnitRangedAttackPower = UnitRangedAttackPower
+local ComputePetBonus = ComputePetBonus
 local ATTACK_POWER = ATTACK_POWER
 local ATTACK_POWER_MAGIC_NUMBER = ATTACK_POWER_MAGIC_NUMBER
 local MELEE_ATTACK_POWER = MELEE_ATTACK_POWER
@@ -14,37 +15,36 @@ local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
 local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
-local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
+local base, posBuff, negBuff, totalAP
 local displayNumberString = ''
 local lastPanel
 
 local function OnEvent(self)
-	if E.myclass == 'HUNTER' then
-		Rbase, RposBuff, RnegBuff = UnitRangedAttackPower('player')
-		Reffective = Rbase + RposBuff + RnegBuff
-		pwr = Reffective
-	else
-		base, posBuff, negBuff = UnitAttackPower('player')
-		effective = base + posBuff + negBuff
-		pwr = effective
-	end
+	local base, posBuff, negBuff = (E.myclass == 'HUNTER' and UnitRangedAttackPower or UnitAttackPower)('player')
+	totalAP = base + posBuff + negBuff
 
-	self.text:SetFormattedText(displayNumberString, ATTACK_POWER, pwr)
+	self.text:SetFormattedText(displayNumberString, ATTACK_POWER, totalAP)
 
 	lastPanel = self
 end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
+
+	DT.tooltip:AddDoubleLine(E.myclass == 'HUNTER' and RANGED_ATTACK_POWER or MELEE_ATTACK_POWER , totalAP, 1, 1, 1)
+	DT.tooltip:AddLine(format(E.myclass == 'HUNTER' and RANGED_ATTACK_POWER_TOOLTIP or MELEE_ATTACK_POWER_TOOLTIP, totalAP / ATTACK_POWER_MAGIC_NUMBER), nil, nil, nil, true)
+
 	if E.myclass == 'HUNTER' then
-		DT.tooltip:AddDoubleLine(RANGED_ATTACK_POWER, pwr, 1, 1, 1)
+		local petAPBonus = ComputePetBonus("PET_BONUS_RAP_TO_AP", pwr)
+		local petSpellDmgBonus = ComputePetBonus("PET_BONUS_RAP_TO_SPELLDMG", pwr)
 
-		local line = format(RANGED_ATTACK_POWER_TOOLTIP, max((pwr), 0) / ATTACK_POWER_MAGIC_NUMBER)
+		if petAPBonus > 0 then
+			DT.tooltip:AddLine(format(PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER, petAPBonus))
+		end
 
-		DT.tooltip:AddLine(line, nil, nil, nil, true)
-	else
-		DT.tooltip:AddDoubleLine(MELEE_ATTACK_POWER, pwr, 1, 1, 1)
-		DT.tooltip:AddLine(format(MELEE_ATTACK_POWER_TOOLTIP, max((base + posBuff + negBuff), 0) / ATTACK_POWER_MAGIC_NUMBER), nil, nil, nil, true)
+		if petSpellDmgBonus > 0 then
+			DT.tooltip:AddLine(format(PET_BONUS_TOOLTIP_SPELLDAMAGE, petSpellDmgBonus))
+		end
 	end
 
 	DT.tooltip:Show()

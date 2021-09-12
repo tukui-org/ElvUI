@@ -10,9 +10,6 @@ local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
-local GetOverrideBarIndex = GetOverrideBarIndex
-local GetSpellBookItemInfo = GetSpellBookItemInfo
-local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -1008,12 +1005,14 @@ function AB:DisableBlizzard()
 
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
-	if _G.PlayerTalentFrame then
-		_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-	else
-		hooksecurefunc('TalentFrame_LoadUI', function()
+	if E.Retail then
+		if _G.PlayerTalentFrame then
 			_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-		end)
+		else
+			hooksecurefunc('TalentFrame_LoadUI', function()
+				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+			end)
+		end
 	end
 end
 

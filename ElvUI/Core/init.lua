@@ -239,7 +239,9 @@ function E:OnInitialize()
 end
 
 function E:PositionGameMenuButton()
-	GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	if E.Retail then
+		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
 	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
 	local button = GameMenuFrame[E.name]

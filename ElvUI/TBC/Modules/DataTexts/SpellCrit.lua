@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local min = min
 local strjoin = strjoin
 
 local GetSpellCritChance = GetSpellCritChance
@@ -9,29 +10,14 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
 
--- Modified version of PaperDoll.lua
-function GetRealSpellCrit()
-
-	local holySchool = 2
-	local minCrit = GetSpellCritChance(holySchool)
-	local spellCrit
-
-	realSpellCrit = {}
-	realSpellCrit[holySchool] = minCrit
-
-	for i=(holySchool+1), 7 do
-
-		spellCrit = GetSpellCritChance(i)
+local function OnEvent(self)
+	local minCrit = GetSpellCritChance(2)
+	for i = 3, 7 do
+		local spellCrit = GetSpellCritChance(i)
 		minCrit = min(minCrit, spellCrit)
-		realSpellCrit[i] = spellCrit
 	end
 
-	minCrit = format("%.2f", minCrit)
-	return minCrit
-end
-
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, CRIT_ABBR, GetRealSpellCrit())
+	self.text:SetFormattedText(displayString, CRIT_ABBR, minCrit)
 
 	lastPanel = self
 end
