@@ -2,52 +2,62 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
-local GetItemUpgradeItemInfo = GetItemUpgradeItemInfo
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
+
+local function Update(frame)
+	if frame.upgradeInfo then
+		frame.UpgradeItemButton:GetPushedTexture():SetColorTexture(0.9, 0.8, 0.1, 0.3)
+	else
+		frame.UpgradeItemButton:GetNormalTexture():SetInside()
+	end
+end
 
 function S:Blizzard_ItemUpgradeUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
 
-	local ItemUpgradeFrame = _G.ItemUpgradeFrame
-	S:HandlePortraitFrame(ItemUpgradeFrame)
+	local frame = _G.ItemUpgradeFrame
+	_G.ItemUpgradeFrameBg:Hide()
+	_G.ItemUpgradeFramePortrait:Hide()
+	_G.ItemUpgradeFramePlayerCurrenciesBorder:StripTextures()
 
-	local ItemButton = ItemUpgradeFrame.ItemButton
-	ItemButton:SetTemplate()
-	ItemButton.Frame:SetTexture('')
-	ItemButton:SetPushedTexture('')
-	S:HandleItemButton(ItemButton)
+	frame:CreateBackdrop('Transparent')
+	frame.backdrop.Center:SetDrawLayer('BACKGROUND', -2)
+	frame.UpgradeCostFrame.BGTex:StripTextures()
 
-	local Highlight = ItemButton:GetHighlightTexture()
-	Highlight:SetColorTexture(1, 1, 1, .25)
+	frame.NineSlice:Hide()
+	frame.TitleBg:Hide()
+	frame.TopTileStreaks:Hide()
+	frame.BottomBG:CreateBackdrop('Transparent')
+	frame.ItemInfo.UpgradeTo:SetFontObject('GameFontHighlightMedium')
 
-	hooksecurefunc('ItemUpgradeFrame_Update', function()
-		local icon, _, quality = GetItemUpgradeItemInfo()
-		if icon then
-			ItemButton.IconTexture:SetTexCoord(unpack(E.TexCoords))
-			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
-			ItemButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			ItemButton.IconTexture:SetTexture('')
-			ItemButton.backdrop:SetBackdropBorderColor(0, 0, 0)
-		end
-	end)
+	local button = frame.UpgradeItemButton
+	button:StripTextures()
+	button:SetTemplate()
+	button:StyleButton(nil, true)
+	button:GetNormalTexture():SetInside()
 
-	local UpgradeDropDown = ItemUpgradeFrame.UpgradeLevelDropDown.DropDownMenu
-	S:HandleDropDownBox(UpgradeDropDown, 115)
+	button.icon:SetInside(button)
+	S:HandleIcon(button.icon)
 
-	local TextFrame = ItemUpgradeFrame.TextFrame
-	TextFrame:StripTextures()
-	TextFrame:CreateBackdrop('Transparent')
-	TextFrame.backdrop:Point('TOPLEFT', ItemButton.IconTexture, 'TOPRIGHT', 3, 1)
-	TextFrame.backdrop:Point('BOTTOMRIGHT', -6, 2)
+	if E.private.skins.parchmentRemoverEnable then
+		frame.BottomBGShadow:Hide()
+		frame.BottomBG:Hide()
+		frame.TopBG:Hide()
 
-	_G.ItemUpgradeFrameMoneyFrame:StripTextures()
-	S:HandleIcon(_G.ItemUpgradeFrameMoneyFrame.Currency.icon)
-	S:HandleButton(_G.ItemUpgradeFrameUpgradeButton, true)
-	ItemUpgradeFrame.FinishedGlow:Kill()
-	ItemUpgradeFrame.ButtonFrame:DisableDrawLayer('BORDER')
+		local holder = button.ButtonFrame
+		holder:StripTextures()
+		holder:CreateBackdrop('Transparent')
+		holder.backdrop.Center:SetDrawLayer('BACKGROUND', -1)
+	else
+		frame.TopBG:CreateBackdrop('Transparent')
+	end
+
+	hooksecurefunc(frame, 'Update', Update)
+
+	S:HandleIconBorder(button.IconBorder)
+	S:HandleButton(frame.UpgradeButton, true)
+	S:HandleDropDownBox(frame.ItemInfo.Dropdown, 130)
+	S:HandleCloseButton(_G.ItemUpgradeFrameCloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')

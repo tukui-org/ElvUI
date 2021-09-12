@@ -1084,58 +1084,70 @@ function S:HandleGarrisonPortrait(portrait)
 	end
 end
 
--- Interface\SharedXML\SharedUIPanelTemplatex.xml - line 780
-function S:HandleTooltipBorderedFrame(frame)
-	assert(frame, 'doesnt exist!')
+do
+	local function selectionOffset(frame)
+		local point, _, relativePoint, xOffset = frame:GetPoint()
+		if xOffset <= 0 then
+			frame:ClearAllPoints()
+			frame:Point(point, frame == _G.MacroPopupFrame and _G.MacroFrame, relativePoint, strfind(point, 'LEFT') and 4 or -4, 0)
+		end
+	end
 
-	if frame.BorderTopLeft then frame.BorderTopLeft:Hide() end
-	if frame.BorderTopRight then frame.BorderTopRight:Hide() end
+	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
+		assert(frame, 'HandleIconSelectionFrame: frame argument missing')
+		assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
+		assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
 
-	if frame.BorderBottomLeft then frame.BorderBottomLeft:Hide() end
-	if frame.BorderBottomRight then frame.BorderBottomRight:Hide() end
+		if frame.isSkinned then return end
 
-	if frame.BorderTop then frame.BorderTop:Hide() end
-	if frame.BorderBottom then frame.BorderBottom:Hide() end
-	if frame.BorderLeft then frame.BorderLeft:Hide() end
-	if frame.BorderRight then frame.BorderRight:Hide() end
+		frame:Show() -- spawn the info so we can skin the buttons
+		if frame.Update then frame:Update() end -- guild bank popup has update function
+		frame:Hide() -- can hide it right away
 
-	if frame.Background then frame.Background:Hide() end
+		frame:HookScript('OnShow', selectionOffset) -- place it off to the side of parent with correct offsets
 
-	frame:CreateBackdrop('Transparent')
-end
+		local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
+		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
+		local editBox = frame.EditBox or _G[frameName..'EditBox']
+		local cancel = frame.CancelButton or frame.BorderBox.CancelButton or _G[frameName..'Cancel']
+		local okay = frame.OkayButton or frame.BorderBox.OkayButton or _G[frameName..'Okay']
 
-function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
-	assert(frame, 'HandleIconSelectionFrame: frame argument missing')
-	assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
-	assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+		frame:Height(frame:GetHeight() + 10)
+		frame.BorderBox:StripTextures()
 
-	local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
-	local scrollFrame = _G[frameName..'ScrollFrame']
-	local editBox = _G[frameName..'EditBox']
+		cancel:ClearAllPoints()
+		cancel:SetPoint('BOTTOMRIGHT', frame, -4, 4)
+		S:HandleButton(cancel)
 
-	frame:StripTextures()
-	frame.BorderBox:StripTextures()
-	scrollFrame:StripTextures()
-	editBox:DisableDrawLayer('BACKGROUND') -- Removes textures around it
+		okay:ClearAllPoints()
+		okay:SetPoint('RIGHT', cancel, 'LEFT', -10, 0)
+		S:HandleButton(okay)
 
-	frame:CreateBackdrop('Transparent')
-	frame:Height(frame:GetHeight() + 10)
-	scrollFrame:Height(scrollFrame:GetHeight() + 10)
+		editBox:DisableDrawLayer('BACKGROUND') -- Removes textures around it
+		S:HandleEditBox(editBox)
 
-	for i = 1, numIcons do
-		local button = _G[buttonNameTemplate..i]
-		if button then
-			button:StripTextures()
-			button:CreateBackdrop()
-			button:StyleButton(true)
+		scrollFrame:StripTextures()
+		scrollFrame:Height(scrollFrame:GetHeight() + 10)
+		S:HandleScrollBar(scrollFrame.ScrollBar)
 
-			local icon = _G[buttonNameTemplate..i..'Icon']
-			if icon then
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:Point('TOPLEFT', 1, -1)
-				icon:Point('BOTTOMRIGHT', -1, 1)
+		for i = 1, numIcons do
+			local button = _G[buttonNameTemplate..i]
+			if button then
+				button:StripTextures()
+				button:SetTemplate()
+				button:StyleButton(nil, true)
+
+				local icon = button.Icon or _G[buttonNameTemplate..i..'Icon']
+				if icon then
+					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetInside(button.backdrop)
+				end
 			end
 		end
+
+		frame.isSkinned = true
 	end
 end
 

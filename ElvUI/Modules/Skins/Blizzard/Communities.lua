@@ -340,8 +340,8 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.GuildMemberDetailFrame:ClearAllPoints()
 	CommunitiesFrame.GuildMemberDetailFrame:Point('TOPLEFT', CommunitiesFrame, 'TOPRIGHT', -1, -30)
 
-	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground:SetTemplate('Transparent')
-	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground:SetTemplate('Transparent')
+	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground.NineSlice:SetTemplate('Transparent')
+	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground.NineSlice:SetTemplate('Transparent')
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
@@ -591,12 +591,6 @@ function S:Blizzard_Communities()
 	closeButton = select(3, _G.CommunitiesGuildLogFrame:GetChildren()) -- swap local variable
 	S:HandleButton(closeButton)
 
-	-- Recruitment Info
-	local RecruitmentFrame = _G.CommunitiesGuildRecruitmentFrame
-	RecruitmentFrame:StripTextures()
-	RecruitmentFrame:SetTemplate('Transparent')
-	_G.CommunitiesGuildRecruitmentFrameInset:StripTextures(false)
-
 	-- Recruitment Dialog
 	local RecruitmentDialog = _G.CommunitiesFrame.RecruitmentDialog
 	RecruitmentDialog:StripTextures()
@@ -613,43 +607,6 @@ function S:Blizzard_Communities()
 	S:HandleButton(RecruitmentDialog.Accept)
 	S:HandleButton(RecruitmentDialog.Cancel)
 	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
-
-	-- CheckBoxes
-	local CommunitiesGuildRecruitmentFrameRecruitment = _G.CommunitiesGuildRecruitmentFrameRecruitment
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.QuestButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.DungeonButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.RaidButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.PvPButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.InterestFrame.RPButton)
-
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.AvailabilityFrame.WeekdaysButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.AvailabilityFrame.WeekendsButton)
-
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.RolesFrame.TankButton.checkButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.RolesFrame.HealerButton.checkButton)
-	S:HandleCheckBox(CommunitiesGuildRecruitmentFrameRecruitment.RolesFrame.DamagerButton.checkButton)
-
-	S:HandleCloseButton(_G.CommunitiesGuildRecruitmentFrameCloseButton)
-
-	S:HandleButton(CommunitiesGuildRecruitmentFrameRecruitment.ListGuildButton)
-
-	-- Tabs
-	for i = 1, 2 do
-		S:HandleTab(_G['CommunitiesGuildRecruitmentFrameTab'..i])
-	end
-
-	CommunitiesGuildRecruitmentFrameRecruitment.CommentFrame.CommentInputFrame:StripTextures()
-	S:HandleEditBox(CommunitiesGuildRecruitmentFrameRecruitment.CommentFrame.CommentInputFrame)
-
-	-- Recruitment Request
-	local CommunitiesGuildRecruitmentFrameApplicants = _G.CommunitiesGuildRecruitmentFrameApplicants
-	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.InviteButton)
-	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.MessageButton)
-	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.DeclineButton)
-
-	for i = 1, 5 do
-		_G['CommunitiesGuildRecruitmentFrameApplicantsContainerButton'..i]:SetBackdrop()
-	end
 
 	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog

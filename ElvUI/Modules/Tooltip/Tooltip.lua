@@ -693,17 +693,20 @@ function TT:GameTooltip_ShowStatusBar(tt)
 	if not tt or not tt.statusBarPool or tt:IsForbidden() then return end
 
 	local sb = tt.statusBarPool:GetNextActive()
-	if (not sb or not sb.Text) or sb.backdrop then return end
+	if not (sb and sb.Text and sb.NineSlice) or sb.NineSlice.template then return end
 
-	sb:StripTextures()
-	sb:CreateBackdrop(nil, nil, true)
+	sb.NineSlice:SetTemplate(nil, nil, true)
 	sb:SetStatusBarTexture(E.media.normTex)
 end
 
-function TT:SetStyle(tt)
-	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return end
-	tt.customBackdropAlpha = TT.db.colorAlpha
-	tt:SetTemplate('Transparent')
+function TT:SetStyle(tt, _, isEmbedded)
+	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded or not tt.NineSlice) or tt:IsForbidden() then return end
+
+	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
+	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+
+	tt.NineSlice.customBackdropAlpha = TT.db.colorAlpha
+	tt.NineSlice:SetTemplate('Transparent')
 end
 
 function TT:MODIFIER_STATE_CHANGED()

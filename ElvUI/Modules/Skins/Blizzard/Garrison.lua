@@ -622,24 +622,19 @@ end
 local function SkinFollowerTooltip(frame)
 	if not frame then return end
 
-	S:HandleTooltipBorderedFrame(frame)
+	frame.NineSlice:SetTemplate('Transparent')
 end
 
 local function SkinAbilityTooltip(frame)
 	if not frame then return end
 
-	for i = 1, 9 do
-		select(i, frame:GetRegions()):Hide()
-	end
-
-	local icon = frame.Icon
-	icon:SetTexCoord(unpack(E.TexCoords))
 	if not frame.border then
 		frame.border = CreateFrame('Frame', nil, frame)
 		S:HandleIcon(frame.Icon, frame.border)
 	end
 
-	frame:SetTemplate('Transparent')
+	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame.NineSlice:SetTemplate('Transparent')
 end
 
 function S:GarrisonTooltips()
