@@ -6,10 +6,6 @@ local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 function UF:Construct_Raid40Frames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
-
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.PowerPrediction = UF:Construct_PowerPrediction(self)

@@ -10,11 +10,6 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 
 function UF:Construct_PartyFrames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
-
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
-
 	self.BORDER = UF.BORDER
 	self.SPACING = UF.SPACING
 	self.SHADOW_SPACING = 3

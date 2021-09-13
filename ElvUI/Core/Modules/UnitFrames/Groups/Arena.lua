@@ -53,7 +53,6 @@ function UF:PostUpdateArenaPreparation(_, specID)
 end
 
 function UF:Construct_ArenaFrames(frame)
-	frame.RaisedElementParent = UF:CreateRaisedElement(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Name = UF:Construct_NameText(frame)
 

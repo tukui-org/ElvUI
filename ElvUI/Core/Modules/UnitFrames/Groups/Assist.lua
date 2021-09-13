@@ -10,10 +10,6 @@ local InCombatLockdown = InCombatLockdown
 local RegisterAttributeDriver = RegisterAttributeDriver
 
 function UF:Construct_AssistFrames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
-
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
 	self.Health = UF:Construct_HealthBar(self, true)
 	self.Name = UF:Construct_NameText(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
