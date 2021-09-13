@@ -1366,7 +1366,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
-		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or bagID-1
+		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
 		local bagName = bagID == 0 and 'ElvUIMainBagBackpack' or bagID == -2 and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
 		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
@@ -1591,7 +1591,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Sort Button
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
-				if B.db.useBlizzardCleanup then
+				if E.Retail and B.db.useBlizzardCleanup then
 					SortBankBags()
 				else
 					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
@@ -1654,7 +1654,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Sort Button
 		f.sortButton:SetScript('OnClick', function()
-			if B.db.useBlizzardCleanup then
+			if E.Retail and B.db.useBlizzardCleanup then
 				SortBags()
 			else
 				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
