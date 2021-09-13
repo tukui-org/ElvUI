@@ -698,8 +698,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not unit then unit = nameplate.unit end
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
-		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
-		nameplate.widgetSet = UnitWidgetSet(unit)
+		nameplate.widgetsOnly = E.Retail and UnitNameplateShowsWidgetsOnly(unit)
+		nameplate.widgetSet = E.Retail and UnitWidgetSet(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
 		nameplate.isMe = UnitIsUnit(unit, 'player')
@@ -708,7 +708,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
-		nameplate.isBattlePet = UnitIsBattlePet(unit)
+		nameplate.isBattlePet = E.Retail and UnitIsBattlePet(unit)
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player

@@ -424,7 +424,10 @@ E.Options.args.profiles.args.private.name = L["Private"]
 E.Options.args.profiles.args.private.order = 2
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
-E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+
+if E.Retail then
+	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+end
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvPrivates', E.Options.args.profiles.args.private)
 

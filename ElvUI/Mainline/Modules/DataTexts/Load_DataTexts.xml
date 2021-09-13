@@ -25,6 +25,5 @@
 	<Script file='Reputation.lua'/>
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Speed.lua'/>
-	<Script file='System.lua'/>
 	<Script file='Versatility.lua'/>
 </Ui>

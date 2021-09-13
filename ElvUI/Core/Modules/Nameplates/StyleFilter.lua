@@ -1107,7 +1107,7 @@ end
 
 function mod:StyleFilterVehicleFunction(_, unit)
 	unit = unit or self.unit
-	self.inVehicle = UnitInVehicle(unit) or nil
+	self.inVehicle = E.Retail and UnitInVehicle(unit) or nil
 end
 
 mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
