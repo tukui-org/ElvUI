@@ -1307,9 +1307,8 @@ E.Options.args.nameplate.args.targetGroup = {
 					type = 'execute',
 					name = L["Non-Target Alpha"],
 					func = function()
+						C.SelectedNameplateStyleFilter = 'ElvUI_NonTarget'
 						ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions')
-						selectedNameplateFilter = 'ElvUI_NonTarget'
-						UpdateFilterGroup()
 					end
 				},
 				targetScaleShortcut = {
@@ -1317,9 +1316,8 @@ E.Options.args.nameplate.args.targetGroup = {
 					type = 'execute',
 					name = L["Scale"],
 					func = function()
+						C.SelectedNameplateStyleFilter = 'ElvUI_Target'
 						ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions')
-						selectedNameplateFilter = 'ElvUI_Target'
-						UpdateFilterGroup()
 					end
 				},
 				spacer1 = ACH:Spacer(3, 'full'),
