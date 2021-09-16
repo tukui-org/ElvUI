@@ -546,53 +546,9 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
--- ElvUI changed block
-local onUpdateElapsed, onUpdateWait = 0, 0.25
-local function onUpdateAuras(self, elapsed)
-	if onUpdateElapsed > onUpdateWait then
-		Update(self.__owner, 'OnUpdate', self.__owner.unit)
-
-		onUpdateElapsed = 0
-	else
-		onUpdateElapsed = onUpdateElapsed + elapsed
-	end
-end
-
-local function SetAuraUpdateSpeed(self, state)
-	onUpdateWait = state
-end
-
-local function SetAuraUpdateMethod(self, state, force)
-	if self.effectiveAura ~= state or force then
-		self.effectiveAura = state
-
-		if state then
-			self.updateAurasFrame:SetScript('OnUpdate', onUpdateAuras)
-
-			ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
-		else
-			self.updateAurasFrame:SetScript('OnUpdate', nil)
-
-			ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
-		end
-	end
-end
--- end block
-
 local function Enable(self)
-	-- ElvUI changed block
-	if not self.updateAurasFrame then
-		self.updateAurasFrame = CreateFrame('Frame', nil, self)
-		self.updateAurasFrame.__owner = self
-	end
-	-- end block
-
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		-- ElvUI changed block
-		self.SetAuraUpdateSpeed = SetAuraUpdateSpeed
-		self.SetAuraUpdateMethod = SetAuraUpdateMethod
-		SetAuraUpdateMethod(self, self.effectiveAura, true)
-		-- end block
+		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
 
 		local buffs = self.Buffs
 		if(buffs) then
@@ -641,12 +597,6 @@ local function Enable(self)
 end
 
 local function Disable(self)
-	-- ElvUI changed block
-	if self.updateAurasFrame then
-		self.updateAurasFrame:SetScript('OnUpdate', nil)
-	end
-	-- end block
-
 	if(self.Buffs or self.Debuffs or self.Auras) then
 		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
 

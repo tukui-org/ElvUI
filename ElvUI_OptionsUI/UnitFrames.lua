@@ -4088,64 +4088,7 @@ E.Options.args.unitframe = {
 					}
 				},
 			}
-		},
-		effectiveGroup = {
-			order = 30,
-			type = 'group',
-			name = L["Effective Updates"],
-			args = {
-				warning = ACH:Description(L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]..'\n'..L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."], 0, 'medium'),
-				effectiveHealth = {
-					order = 1,
-					type = 'toggle',
-					name = L["Health"],
-					get = function(info) return E.global.unitframe[info[#info]] end,
-					set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-				},
-				effectivePower = {
-					order = 2,
-					type = 'toggle',
-					name = L["Power"],
-					get = function(info) return E.global.unitframe[info[#info]] end,
-					set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-				},
-				effectiveAura = {
-					order = 3,
-					type = 'toggle',
-					name = L["Aura"],
-					get = function(info) return E.global.unitframe[info[#info]] end,
-					set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-				},
-				spacer1 = ACH:Spacer(4, 'full'),
-				effectiveHealthSpeed = {
-					order = 5,
-					name = L["Health Speed"],
-					type = 'range',
-					min = .1, max = .5, step = .05,
-					disabled = function() return not E.global.unitframe.effectiveHealth end,
-					get = function(info) return E.global.unitframe[info[#info]] end,
-					set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-				},
-				effectivePowerSpeed = {
-					order = 6,
-					name = L["Power Speed"],
-					type = 'range',
-					min = .1, max = .5, step = .05,
-					disabled = function() return not E.global.unitframe.effectivePower end,
-					get = function(info) return E.global.unitframe[info[#info]] end,
-					set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-				},
-				effectiveAuraSpeed = {
-					order = 7,
-					name = L["Aura Speed"],
-					type = 'range',
-					min = .1, max = .5, step = .05,
-					disabled = function() return not E.global.unitframe.effectiveAura end,
-					get = function(info) return E.global.unitframe[info[#info]] end,
-					set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
-				},
-			},
-		},
+		}
 	},
 }
 

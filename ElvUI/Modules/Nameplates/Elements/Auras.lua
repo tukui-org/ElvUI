@@ -131,9 +131,6 @@ function NP:Update_Auras(nameplate)
 	local db = NP:PlateDB(nameplate)
 
 	if db.debuffs.enable or db.buffs.enable then
-		nameplate:SetAuraUpdateMethod(E.global.nameplate.effectiveAura)
-		nameplate:SetAuraUpdateSpeed(E.global.nameplate.effectiveAuraSpeed)
-
 		if not nameplate:IsElementEnabled('Auras') then
 			nameplate:EnableElement('Auras')
 		end
