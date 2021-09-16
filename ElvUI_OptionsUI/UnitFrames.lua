@@ -13,17 +13,6 @@ local GetClassInfo = GetClassInfo
 -- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
 
-local positionAuraValues = {
-	TOP = 'TOP',
-	LEFT = 'LEFT',
-	RIGHT = 'RIGHT',
-	BOTTOM = 'BOTTOM',
-	TOPLEFT = 'TOPLEFT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-}
-
 local orientationValues = {
 	LEFT = L["Left"],
 	MIDDLE = L["Middle"],
@@ -44,17 +33,6 @@ local threatValues = {
 	ICONTOP = L["Icon: TOP"],
 	ICONBOTTOM = L["Icon: BOTTOM"],
 	NONE = L["NONE"],
-}
-
-local petAnchors = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-	TOP = 'TOP',
-	BOTTOM = 'BOTTOM',
 }
 
 local attachToValues = {
@@ -375,7 +353,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 		return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS'
 	end)
 
-	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, positionAuraValues)
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, C.Values.Anchors)
 	config.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 13, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint; return point == 'LEFT' or point == 'RIGHT' end)
 	config.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 14, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint; return point == 'TOP' or point == 'BOTTOM' end)
 	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 15)
@@ -4946,7 +4924,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					order = 4,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
-					values = petAnchors,
+					values = C.Values.C.Values.Anchorsrs,
 				},
 				xOffset = {
 					order = 5,
@@ -5032,7 +5010,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					order = 5,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
-					values = petAnchors,
+					values = C.Values.Anchors,
 				},
 				xOffset = {
 					order = 6,
@@ -5324,7 +5302,7 @@ E.Options.args.unitframe.args.groupUnits.args.tank = {
 					order = 5,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
-					values = petAnchors,
+					values = C.Values.Anchors,
 				},
 				xOffset = {
 					order = 6,
@@ -5411,7 +5389,7 @@ E.Options.args.unitframe.args.groupUnits.args.assist = {
 					order = 5,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
-					values = petAnchors,
+					values = C.Values.Anchors,
 				},
 				xOffset = {
 					order = 6,
