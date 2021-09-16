@@ -1,12 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
-local twipe = table.wipe
+local wipe = wipe
+local pairs = pairs
+local ipairs = ipairs
+local select = select
+local UnitExists = UnitExists
+local GetActionInfo = GetActionInfo
+local UnitCanAttack = UnitCanAttack
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local ActionButton_HideOverlayGlow = ActionButton_HideOverlayGlow
+local ActionButton_ShowOverlayGlow = ActionButton_ShowOverlayGlow
+
 AB.MapSpellIDToButton = {}
 
 local FadeSpeed = 0.75
 local config = {
-	--[[[980] = { --Agony (spell to look for on actionbar)
+	[980] = { --Agony (spell to look for on actionbar)
 		["aura"] = 980, -- aura the unit must have
 		["auraType"] = "HARMFUL", -- buff or debuff
 		["exists"] = false, -- show effect if aura exists, rather than if it doesn't exist
@@ -29,15 +39,17 @@ local config = {
 		["canAttack"] = true,
 		["effect"] = "shake",
 		["effectColor"] = {r = 1.0, g = 0, b = 0, a = 1}
-	},]]
+	}
 }
 
 function AB:MapSpellIDs()
 	local SpellID
-	twipe(self.MapSpellIDToButton)
+	wipe(self.MapSpellIDToButton)
+
 	for _, bar in pairs(self.handledBars) do
 		for _, button in ipairs(bar.buttons) do
-			SpellID = select(2, GetActionInfo(button._state_action))
+			SpellID = select(2, GetActionInfo(button._state_action)) -- switch this to the lib call on the button
+
 			if SpellID then
 				self.MapSpellIDToButton[SpellID] = button
 				self:RegisterUnitEvents(SpellID, button)
@@ -78,12 +90,12 @@ function AB:EffectButton(button, stop)
 			E:StopFlash(button)
 		elseif config[button.SpellID].effect == "shake" then
 			E:StopShake(button)
-		elseif config[button.SpellID].effect == "glow" then	
+		elseif config[button.SpellID].effect == "glow" then
 			E:StopFlash(button.shadow)
 			button.shadow:Hide()
-		elseif config[button.SpellID].effect == "flash" then	
+		elseif config[button.SpellID].effect == "flash" then
 			E:StopFlash(button.flash)
-			button.flash:Hide()			
+			button.flash:Hide()
 		end
 	else
 		if config[button.SpellID].effect == "blizzardGlow" then
@@ -92,12 +104,12 @@ function AB:EffectButton(button, stop)
 			E:Flash(button, FadeSpeed, true)
 		elseif config[button.SpellID].effect == "shake" then
 			E:Shake(button)
-		elseif config[button.SpellID].effect == "glow" then	
+		elseif config[button.SpellID].effect == "glow" then
 			button.shadow:Show()
 			E:Flash(button.shadow, FadeSpeed, true)
 		elseif config[button.SpellID].effect == "flash" then
 			button.flash:Show()
-			E:Flash(button.flash, FadeSpeed, true)			
+			E:Flash(button.flash, FadeSpeed, true)
 		end
 	end
 end
@@ -107,9 +119,7 @@ function AB:BUTTON_EVENT(event)
 		local unit = "TARGET"
 
 		if UnitExists(unit) and not UnitIsDeadOrGhost("TARGET") and (config[self.SpellID].canAttack and UnitCanAttack("player", unit) or not config[self.SpellID].canAttack) then
-			local name = GetSpellInfo(config[self.SpellID].aura)
-
-			if AuraUtil.FindAuraByName(name, unit, config[self.SpellID].auraType) then
+			if E:AuraInfo_GetAuraByID(unit, config[self.SpellID].aura, config[self.SpellID].auraType) then
 				AB:EffectButton(self, not config[self.SpellID].exists)
 			else
 				AB:EffectButton(self, config[self.SpellID].exists)

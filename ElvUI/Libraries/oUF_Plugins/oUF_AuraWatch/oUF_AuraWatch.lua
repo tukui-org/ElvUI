@@ -9,7 +9,6 @@ local HIDDEN = 0
 
 local min, wipe, pairs, tinsert = min, wipe, pairs, tinsert
 local CreateFrame = CreateFrame
-local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local GetSpellTexture = GetSpellTexture
 

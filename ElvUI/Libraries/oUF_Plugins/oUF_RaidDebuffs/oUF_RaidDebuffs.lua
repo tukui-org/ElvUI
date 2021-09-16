@@ -16,7 +16,6 @@ local GetActiveSpecGroup = GetActiveSpecGroup
 local GetSpecialization = GetSpecialization
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
-local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
 

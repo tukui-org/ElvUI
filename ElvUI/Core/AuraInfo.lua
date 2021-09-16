@@ -19,6 +19,46 @@ function E:UnitAura(unit, index, filter)
 	return auras[index]
 end
 
+function E:AuraInfo_FindAura(data, value, key)
+	for _, aura in next, data do
+		if value == aura[key] then
+			return aura
+		end
+	end
+end
+
+function E:AuraInfo_GetAuraByID(unit, spellID, filter)
+	local data = info.units[unit]
+	if not data then return end
+
+	if filter then
+		local aura = E:AuraInfo_FindAura(data[filter], spellID, 'spellID')
+		if aura then return aura end
+	else
+		local buff = E:AuraInfo_FindAura(data.HELPFUL, spellID, 'spellID')
+		if buff then return buff end
+
+		local debuff = E:AuraInfo_FindAura(data.HARMFUL, spellID, 'spellID')
+		if debuff then return debuff end
+	end
+end
+
+function E:AuraInfo_GetAuraByName(unit, name, filter)
+	local data = info.units[unit]
+	if not data then return end
+
+	if filter then
+		local aura = E:AuraInfo_FindAura(data[filter], name, 'name')
+		if aura then return aura end
+	else
+		local buff = E:AuraInfo_FindAura(data.HELPFUL, name, 'name')
+		if buff then return buff end
+
+		local debuff = E:AuraInfo_FindAura(data.HARMFUL, name, 'name')
+		if debuff then return debuff end
+	end
+end
+
 function E:AuraInfo_AuraCollect(unit, filter)
 	if not info.units[unit] then info.units[unit] = {} end
 	if not info.units[unit][filter] then info.units[unit][filter] = {} end
