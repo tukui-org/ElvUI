@@ -15,7 +15,7 @@ local CreateFrame = CreateFrame
 function NP:Health_UpdateColor(_, unit)
 	if not unit or self.unit ~= unit then return end
 	local element = self.Health
-	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
+	local Selection = E.Retail and element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t
 	if element.colorDisconnected and not UnitIsConnected(unit) then
@@ -78,7 +78,8 @@ function NP:Construct_Health(nameplate)
 	nameplate.HealthFlashTexture = healthFlashTexture
 
 	Health.colorTapping = true
-	Health.colorSelection = true
+	Health.colorSelection = E.Retail
+	Health.colorReaction = not E.Retail
 	Health.UpdateColor = NP.Health_UpdateColor
 
 	UF:Construct_ClipFrame(nameplate, Health)
@@ -90,7 +91,8 @@ function NP:Update_Health(nameplate, skipUpdate)
 	local db = NP:PlateDB(nameplate)
 
 	nameplate.Health.colorTapping = true
-	nameplate.Health.colorSelection = true
+	nameplate.Health.colorSelection = E.Retail
+	nameplate.Health.colorReaction = not E.Retail
 	nameplate.Health.colorClass = db.health.useClassColor
 	nameplate.Health.considerSelectionInCombatHostile = true
 	if skipUpdate then return end

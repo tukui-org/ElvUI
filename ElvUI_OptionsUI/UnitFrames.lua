@@ -5,25 +5,13 @@ local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
-local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
-local tconcat, tinsert, tremove, type, wipe, ceil, tonumber = table.concat, tinsert, tremove, type, wipe, ceil, tonumber
+local gsub, pairs, select, strmatch, strsplit = gsub, pairs, select, strmatch, strsplit
+local tinsert, type, wipe, ceil, tonumber = tinsert, type, wipe, ceil, tonumber
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 
 -- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
-
-local positionValues = {
-	TOP = 'TOP',
-	LEFT = 'LEFT',
-	RIGHT = 'RIGHT',
-	BOTTOM = 'BOTTOM',
-	CENTER = 'CENTER',
-	TOPLEFT = 'TOPLEFT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-}
 
 local positionAuraValues = {
 	TOP = 'TOP',
@@ -76,25 +64,6 @@ local attachToValues = {
 	Frame = L["Frame"],
 }
 
-local growthDirectionValues = {
-	DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
-	DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
-	UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
-	UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
-	RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
-	RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
-	LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
-	LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-}
-
-local smartAuraPositionValues = {
-	DISABLED = L["DISABLE"],
-	BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
-	DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
-	FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
-	FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
-}
-
 local colorOverrideValues = {
 	USE_DEFAULT = L["Use Default"],
 	FORCE_ON = L["Force On"],
@@ -110,54 +79,6 @@ local blendModeValues = {
 
 local CUSTOMTEXT_CONFIGS = {}
 local carryFilterFrom, carryFilterTo
-local function filterMatch(s,v)
-	local m1, m2, m3, m4 = '^'..v..'$', '^'..v..',', ','..v..'$', ','..v..','
-	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
-end
-
-local function filterPriority(auraType, groupName, value, remove, movehere, friendState)
-	if not auraType or not value then return end
-	local filter = E.db.unitframe.units[groupName] and E.db.unitframe.units[groupName][auraType] and E.db.unitframe.units[groupName][auraType].priority
-	if not filter then return end
-	local found = filterMatch(filter, E:EscapeString(value))
-	if found and movehere then
-		local tbl, sv, sm = {strsplit(',',filter)}
-		for i in ipairs(tbl) do
-			if tbl[i] == value then sv = i elseif tbl[i] == movehere then sm = i end
-			if sv and sm then break end
-		end
-		tremove(tbl, sm);tinsert(tbl, sv, movehere);
-		E.db.unitframe.units[groupName][auraType].priority = tconcat(tbl,',')
-	elseif found and friendState then
-		local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
-		local friend = filterMatch(filter, E:EscapeString('Friendly:'..realValue))
-		local enemy = filterMatch(filter, E:EscapeString('Enemy:'..realValue))
-		local default = filterMatch(filter, E:EscapeString(realValue))
-
-		local state =
-			(friend and (not enemy) and format('%s%s','Enemy:',realValue))					--[x] friend [ ] enemy: > enemy
-		or	((not enemy and not friend) and format('%s%s','Friendly:',realValue))			--[ ] friend [ ] enemy: > friendly
-		or	(enemy and (not friend) and default and format('%s%s','Friendly:',realValue))	--[ ] friend [x] enemy: (default exists) > friendly
-		or	(enemy and (not friend) and strmatch(value, '^Enemy:') and realValue)			--[ ] friend [x] enemy: (no default) > realvalue
-		or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
-
-		if state then
-			local stateFound = filterMatch(filter, E:EscapeString(state))
-			if not stateFound then
-				local tbl, sv = {strsplit(',',filter)}
-				for i in ipairs(tbl) do
-					if tbl[i] == value then sv = i;break end
-				end
-				tinsert(tbl, sv, state);tremove(tbl, sv+1)
-				E.db.unitframe.units[groupName][auraType].priority = tconcat(tbl,',')
-			end
-		end
-	elseif found and remove then
-		E.db.unitframe.units[groupName][auraType].priority = gsub(filter, found, '')
-	elseif not found and not remove then
-		E.db.unitframe.units[groupName][auraType].priority = (filter == '' and value) or (filter..','..value)
-	end
-end
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
@@ -351,7 +272,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 							return filters
 						end,
 						set = function(info, value)
-							filterPriority('aurabar', groupName, value)
+							C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', value)
 							updateFunc(UF, groupName)
 						end
 					},
@@ -370,7 +291,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 							return filters
 						end,
 						set = function(info, value)
-							filterPriority('aurabar', groupName, value)
+							C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', value)
 							updateFunc(UF, groupName)
 						end
 					},
@@ -397,15 +318,15 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 							carryFilterFrom, carryFilterTo = info.obj.value, nil
 						end,
 						dragOnMouseUp = function(info)
-							filterPriority('aurabar', groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+							C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', carryFilterTo, nil, carryFilterFrom) --add it in the new spot
 							carryFilterFrom, carryFilterTo = nil, nil
 						end,
 						dragOnClick = function(info)
-							filterPriority('aurabar', groupName, carryFilterFrom, true)
+							C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', carryFilterFrom, true)
 						end,
 						stateSwitchGetText = C.StateSwitchGetText,
 						stateSwitchOnClick = function(info)
-							filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
+							C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', carryFilterFrom, nil, nil, true)
 						end,
 						values = function()
 							local str = E.db.unitframe.units[groupName].aurabar.priority
@@ -520,7 +441,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 					return filters
 				end,
 				set = function(info, value)
-					filterPriority(auraType, groupName, value)
+					C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, value)
 					updateFunc(UF, groupName, numUnits)
 				end
 			},
@@ -539,7 +460,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 					return filters
 				end,
 				set = function(info, value)
-					filterPriority(auraType, groupName, value)
+					C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, value)
 					updateFunc(UF, groupName, numUnits)
 				end
 			},
@@ -566,15 +487,15 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 					carryFilterFrom, carryFilterTo = info.obj.value, nil
 				end,
 				dragOnMouseUp = function(info)
-					filterPriority(auraType, groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+					C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
 					carryFilterFrom, carryFilterTo = nil, nil
 				end,
 				dragOnClick = function(info)
-					filterPriority(auraType, groupName, carryFilterFrom, true)
+					C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, carryFilterFrom, true)
 				end,
 				stateSwitchGetText = C.StateSwitchGetText,
 				stateSwitchOnClick = function(info)
-					filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
+					C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, carryFilterFrom, nil, nil, true)
 				end,
 				values = function()
 					local str = E.db.unitframe.units[groupName][auraType].priority
@@ -1050,7 +971,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						type = 'select',
 						order = 5,
 						name = L["Position"],
-						values = positionValues,
+						values = C.Values.AllPoints,
 						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
 					},
 					iconXOffset = {
@@ -1196,7 +1117,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					order = 4,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
-					values = positionValues,
+					values = C.Values.AllPoints,
 				},
 				xOffset = {
 					order = 5,
@@ -1692,7 +1613,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 						type = 'select',
 						order = 1,
 						name = L["Position"],
-						values = positionValues,
+						values = C.Values.AllPoints,
 					},
 					xOffset = {
 						order = 2,
@@ -1857,7 +1778,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 				type = 'select',
 				order = 2,
 				name = L["Position"],
-				values = positionValues,
+				values = C.Values.AllPoints,
 			},
 			xOffset = {
 				order = 3,
@@ -1923,7 +1844,7 @@ local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
 				order = 5,
 				type = 'select',
 				name = L["Anchor Point"],
-				values = positionValues,
+				values = C.Values.AllPoints,
 			},
 			xOffset = {
 				order = 6,
@@ -2159,7 +2080,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 						type = 'select',
 						order = 1,
 						name = L["Position"],
-						values = positionValues,
+						values = C.Values.AllPoints,
 					},
 					xOffset = {
 						order = 2,
@@ -2317,7 +2238,7 @@ local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 				order = 5,
 				type = 'select',
 				name = L["Anchor Point"],
-				values = positionValues,
+				values = C.Values.AllPoints,
 			},
 			xOffset = {
 				order = 6,
@@ -2414,7 +2335,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 1,
 						type = 'select',
 						name = L["Position"],
-						values = positionValues,
+						values = C.Values.AllPoints,
 					},
 					xOffset = {
 						order = 2,
@@ -2458,7 +2379,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 						order = 1,
 						type = 'select',
 						name = L["Position"],
-						values = positionValues,
+						values = C.Values.AllPoints,
 					},
 					xOffset = {
 						order = 2,
@@ -2500,7 +2421,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGrou
 	local config = ACH:Group(L["Target Marker Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -2520,7 +2441,7 @@ local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.options = ACH:MultiSelect(' ', nil, 1, { tank = L["Show For Tanks"], healer = L["Show For Healers"], damager = L["Show For DPS"], combatHide = L["Hide In Combat"] }, nil, nil, function(_, key) return E.db.unitframe.units[groupName].roleIcon[key] end, function(_, key, value) E.db.unitframe.units[groupName].roleIcon[key] = value; updateFunc(UF, groupName, numGroup) end)
-	config.args.position = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -2533,7 +2454,7 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Leader Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.position = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
@@ -2544,7 +2465,7 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	local config = ACH:Group(L["Ready Check Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].readycheckIcon[info[#info]] = value; updateFunc(UF, groupName) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -2557,7 +2478,7 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Resurrect Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -2570,7 +2491,7 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Summon Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -2712,7 +2633,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	end
 
 	if groupName ~= 'party' and groupName ~= 'raid' and groupName ~= 'raid40' and groupName ~= 'raidpet' and groupName ~= 'assist' and groupName ~= 'tank' then
-		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, smartAuraPositionValues)
+		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, C.Values.SmartAuraPosition)
 	end
 
 	if groupName ~= 'arena' then
@@ -2725,7 +2646,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	config.args.positionsGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
-		config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], L["Growth direction from the first unitframe."], 4, growthDirectionValues)
+		config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], L["Growth direction from the first unitframe."], 4, C.Values.GrowthDirection)
 		config.args.positionsGroup.args.numGroups = ACH:Range(L["Number of Groups"], nil, 7, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end)
 		config.args.positionsGroup.args.groupsPerRowCol = ACH:Range(L["Groups Per Row/Column"], nil, 8, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end)
 		config.args.positionsGroup.args.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 9, { min = -1, max = 50, step = 1 })
@@ -2831,7 +2752,7 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 				order = 9,
 				type = 'select',
 				name = L["Anchor Point"],
-				values = positionValues,
+				values = C.Values.AllPoints,
 			},
 			texture = {
 				order = 10,
@@ -4255,7 +4176,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 					order = 9,
 					type = 'select',
 					name = L["Anchor Point"],
-					values = positionValues,
+					values = C.Values.AllPoints,
 				},
 				texture = {
 					order = 10,
@@ -4317,7 +4238,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 					order = 9,
 					type = 'select',
 					name = L["Anchor Point"],
-					values = positionValues,
+					values = C.Values.AllPoints,
 				},
 			},
 		},
@@ -4331,7 +4252,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 					type = 'select',
 					order = 2,
 					name = L["Position"],
-					values = positionValues,
+					values = C.Values.AllPoints,
 				},
 				text_format = {
 					order = 100,
@@ -5054,7 +4975,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 							type = 'select',
 							order = 1,
 							name = L["Position"],
-							values = positionValues,
+							values = C.Values.AllPoints,
 						},
 						xOffset = {
 							order = 2,

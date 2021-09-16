@@ -15,6 +15,6 @@
 	<Script file='Elements\Threat.lua'/>
 	<Script file='Plugins\ClassificationIndicator.lua'/>
 	<Script file='Plugins\Highlight.lua'/>
-	<!--Script file='Plugins\QuestIcons.lua'/-->
+	<Script file='Plugins\QuestIcons.lua'/>
 	<Script file='Plugins\TargetIndicator.lua'/>
 </Ui>

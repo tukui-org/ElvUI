@@ -3422,5 +3422,3 @@ function CH:Initialize()
 	end
 	CH:SetChatHeadOrientation('TOP')
 end
-
-E:RegisterModule(CH:GetName())

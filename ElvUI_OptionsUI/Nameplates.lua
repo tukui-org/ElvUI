@@ -56,71 +56,6 @@ local function GetAddOnStatus(index, locale, name)
 end
 
 local carryFilterFrom, carryFilterTo
-local function filterMatch(s, v)
-	local m1, m2, m3, m4 = '^' .. v .. '$', '^' .. v .. ',', ',' .. v .. '$', ',' .. v .. ','
-	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v .. ',')
-end
-
-local function filterPriority(auraType, unit, value, remove, movehere, friendState)
-	if not auraType or not value then
-		return
-	end
-	local filter =
-		E.db.nameplates.units[unit] and E.db.nameplates.units[unit][auraType] and
-		E.db.nameplates.units[unit][auraType].priority
-	if not filter then
-		return
-	end
-	local found = filterMatch(filter, E:EscapeString(value))
-	if found and movehere then
-		local tbl, sv, sm = {strsplit(',', filter)}
-		for i in ipairs(tbl) do
-			if tbl[i] == value then
-				sv = i
-			elseif tbl[i] == movehere then
-				sm = i
-			end
-			if sv and sm then
-				break
-			end
-		end
-		tremove(tbl, sm)
-		tinsert(tbl, sv, movehere)
-		E.db.nameplates.units[unit][auraType].priority = tconcat(tbl, ',')
-	elseif found and friendState then
-		local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
-		local friend = filterMatch(filter, E:EscapeString('Friendly:' .. realValue))
-		local enemy = filterMatch(filter, E:EscapeString('Enemy:' .. realValue))
-		local default = filterMatch(filter, E:EscapeString(realValue))
-
-		local state =
-			(friend and (not enemy) and format('%s%s', 'Enemy:', realValue)) or --[x] friend [ ] enemy: > enemy
-			((not enemy and not friend) and format('%s%s', 'Friendly:', realValue)) or --[ ] friend [ ] enemy: > friendly
-			(enemy and (not friend) and default and format('%s%s', 'Friendly:', realValue)) or --[ ] friend [x] enemy: (default exists) > friendly
-			(enemy and (not friend) and strmatch(value, '^Enemy:') and realValue) or --[ ] friend [x] enemy: (no default) > realvalue
-			(friend and enemy and realValue) --[x] friend [x] enemy: > default
-
-		if state then
-			local stateFound = filterMatch(filter, E:EscapeString(state))
-			if not stateFound then
-				local tbl, sv = {strsplit(',', filter)}
-				for i in ipairs(tbl) do
-					if tbl[i] == value then
-						sv = i
-						break
-					end
-				end
-				tinsert(tbl, sv, state)
-				tremove(tbl, sv + 1)
-				E.db.nameplates.units[unit][auraType].priority = tconcat(tbl, ',')
-			end
-		end
-	elseif found and remove then
-		E.db.nameplates.units[unit][auraType].priority = gsub(filter, found, '')
-	elseif not found and not remove then
-		E.db.nameplates.units[unit][auraType].priority = (filter == '' and value) or (filter .. ',' .. value)
-	end
-end
 
 local specListOrder = 50 -- start at 50
 local classTable, classIndexTable, classOrder
@@ -3587,20 +3522,20 @@ local function GetUnitSettings(unit, name)
 	group.args.buffsGroup.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	group.args.buffsGroup.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	group.args.buffsGroup.args.filtersGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)
-	group.args.buffsGroup.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) filterPriority('buffs', unit, value) NP:ConfigureAll() end)
+	group.args.buffsGroup.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', value) NP:ConfigureAll() end)
 	group.args.buffsGroup.args.filtersGroup.args.specialFilters.sortByValue = true
-	group.args.buffsGroup.args.filtersGroup.args.filter = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) filterPriority('buffs', unit, value) NP:ConfigureAll() end)
+	group.args.buffsGroup.args.filtersGroup.args.filter = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', value) NP:ConfigureAll() end)
 	group.args.buffsGroup.args.filtersGroup.args.resetPriority = ACH:Execute(L["Reset Priority"], L["Reset filter priority to the default state."], 7, function() E.db.nameplates.units[unit].buffs.priority = P.nameplates.units[unit].buffs.priority NP:ConfigureAll() end)
 
 	group.args.buffsGroup.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.nameplates.units[unit].buffs.priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.nameplates.units[unit].buffs.priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() NP:ConfigureAll() end)
-	group.args.buffsGroup.args.filtersGroup.args.dragdrop = true
-	group.args.buffsGroup.args.filtersGroup.args.dragOnLeave = E.noop -- keep it her
-	group.args.buffsGroup.args.filtersGroup.args.dragOnEnter = function(info) carryFilterTo = info.obj.value end
-	group.args.buffsGroup.args.filtersGroup.args.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
-	group.args.buffsGroup.args.filtersGroup.args.dragOnMouseUp = function() filterPriority('buffs', unit, carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
-	group.args.buffsGroup.args.filtersGroup.args.dragOnClick = function() filterPriority('buffs', unit, carryFilterFrom, true) end
-	group.args.buffsGroup.args.filtersGroup.args.stateSwitchGetText = C.StateSwitchGetText
-	group.args.buffsGroup.args.filtersGroup.args.stateSwitchOnClick = function() filterPriority('buffs', unit, carryFilterFrom, nil, nil, true) end
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.dragdrop = true
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.dragOnLeave = E.noop -- keep it her
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.dragOnMouseUp = function() C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.dragOnClick = function() C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', carryFilterFrom, true) end
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.stateSwitchGetText = C.StateSwitchGetText
+	group.args.buffsGroup.args.filtersGroup.args.filterPriority.stateSwitchOnClick = function() C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', carryFilterFrom, nil, nil, true) end
 	group.args.buffsGroup.args.filtersGroup.args.spacer3 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."] ..'\n'..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 9)
 
 	group.args.debuffsGroup = ACH:Group(L["Debuffs"], nil, 5, nil, function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end, function(info, value) E.db.nameplates.units[unit].debuffs[info[#info]] = value NP:ConfigureAll() end)
@@ -3639,20 +3574,20 @@ local function GetUnitSettings(unit, name)
 	group.args.debuffsGroup.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	group.args.debuffsGroup.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	group.args.debuffsGroup.args.filtersGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)
-	group.args.debuffsGroup.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) filterPriority('buffs', unit, value) NP:ConfigureAll() end)
+	group.args.debuffsGroup.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', value) NP:ConfigureAll() end)
 	group.args.debuffsGroup.args.filtersGroup.args.specialFilters.sortByValue = true
-	group.args.debuffsGroup.args.filtersGroup.args.filter = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) filterPriority('buffs', unit, value) NP:ConfigureAll() end)
+	group.args.debuffsGroup.args.filtersGroup.args.filter = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, 'buffs', value) NP:ConfigureAll() end)
 	group.args.debuffsGroup.args.filtersGroup.args.resetPriority = ACH:Execute(L["Reset Priority"], L["Reset filter priority to the default state."], 7, function() E.db.nameplates.units[unit].debuffs.priority = P.nameplates.units[unit].debuffs.priority NP:ConfigureAll() end)
 
 	group.args.debuffsGroup.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.nameplates.units[unit].debuffs.priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.nameplates.units[unit].debuffs.priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() NP:ConfigureAll() end)
-	group.args.debuffsGroup.args.filtersGroup.args.dragdrop = true
-	group.args.debuffsGroup.args.filtersGroup.args.dragOnLeave = E.noop
-	group.args.debuffsGroup.args.filtersGroup.args.dragOnEnter = function(info) carryFilterTo = info.obj.value end
-	group.args.debuffsGroup.args.filtersGroup.args.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
-	group.args.debuffsGroup.args.filtersGroup.args.dragOnMouseUp = function() filterPriority('buffs', unit, carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
-	group.args.debuffsGroup.args.filtersGroup.args.dragOnClick = function() filterPriority('buffs', unit, carryFilterFrom, true) end
-	group.args.debuffsGroup.args.filtersGroup.args.stateSwitchGetText = C.StateSwitchGetText
-	group.args.debuffsGroup.args.filtersGroup.args.stateSwitchOnClick = function() filterPriority('buffs', unit, carryFilterFrom, nil, nil, true) end
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.dragdrop = true
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.dragOnLeave = E.noop
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.dragOnMouseUp = function() C.SetFilterPriority(E.db.nameplates.units, unit, 'debuffs', carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.dragOnClick = function() C.SetFilterPriority(E.db.nameplates.units, unit, 'debuffs', carryFilterFrom, true) end
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.stateSwitchGetText = C.StateSwitchGetText
+	group.args.debuffsGroup.args.filtersGroup.args.filterPriority.stateSwitchOnClick = function() C.SetFilterPriority(E.db.nameplates.units, unit, 'debuffs', carryFilterFrom, nil, nil, true) end
 	group.args.debuffsGroup.args.filtersGroup.args.spacer3 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."] ..'\n'..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 9)
 
 	group.args.portraitGroup = ACH:Group(L["PvP Indicator"], L["Horde / Alliance / Honor Info"], 10, nil, function(info) return E.db.nameplates.units[unit].portrait[info[#info]] end, function(info, value) E.db.nameplates.units[unit].portrait[info[#info]] = value NP:ConfigureAll() end)
@@ -4781,7 +4716,7 @@ E.Options.args.nameplate.args.colorsGroup.args.classResources.args.CHI_POWER = A
 E.Options.args.nameplate.args.colorsGroup.args.classResources.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 
 for i = 1, 6 do
-	E.Options.args.nameplate.args.colorsGroup.args.classResources.args.CHI_POWER[''..i] = ACH:Color(L["CHI_POWER"]..' #'..i)
+	E.Options.args.nameplate.args.colorsGroup.args.classResources.args.CHI_POWER.args[''..i] = ACH:Color(L["CHI_POWER"]..' #'..i)
 	E.Options.args.nameplate.args.colorsGroup.args.classResources.args.COMBO_POINTS.args[''..i] = ACH:Color(L["COMBO_POINTS"]..' #'..i)
 end
 

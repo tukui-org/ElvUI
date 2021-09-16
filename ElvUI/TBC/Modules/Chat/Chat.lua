@@ -2688,4 +2688,3 @@ function CH:Initialize()
 	end)
 end
 
-E:RegisterModule(CH:GetName())
