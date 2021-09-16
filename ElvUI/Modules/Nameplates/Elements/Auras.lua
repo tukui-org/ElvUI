@@ -25,6 +25,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.growthY = 'UP'
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == _G.ElvNP_Test
+	Buffs.tickers = {} -- StyleFilters
 	Buffs.stacks = {}
 	Buffs.rows = {}
 
@@ -43,6 +44,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.growthY = 'UP'
 	Debuffs.type = 'debuffs'
 	Debuffs.forceShow = nameplate == _G.ElvNP_Test
+	Debuffs.tickers = {} -- StyleFilters
 	Debuffs.stacks = {}
 	Debuffs.rows = {}
 

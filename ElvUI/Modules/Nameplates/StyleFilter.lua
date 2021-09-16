@@ -285,61 +285,74 @@ do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value
 	E.CreatureTypes = c
 end
 
-function mod:StyleFilterTickerCallback(frame, button, timer)
+function mod:StyleFilterTickerCallback(frame, ticker, timer)
 	if frame and frame:IsShown() then
 		mod:StyleFilterUpdate(frame, 'FAKE_AuraWaitTimer')
 	end
 
-	if button and button[timer] then
-		button[timer]:Cancel()
-		button[timer] = nil
+	if ticker[timer] then
+		ticker[timer]:Cancel()
+		ticker[timer] = nil
 	end
 end
 
-function mod:StyleFilterTickerCreate(delay, frame, button, timer)
-	return C_Timer_NewTimer(delay, function() mod:StyleFilterTickerCallback(frame, button, timer) end)
+function mod:StyleFilterTickerCreate(delay, frame, ticker, timer)
+	return C_Timer_NewTimer(delay, function() mod:StyleFilterTickerCallback(frame, ticker, timer) end)
 end
 
-function mod:StyleFilterAuraWait(frame, button, timer, timeLeft, mTimeLeft)
-	if button and not button[timer] then
+function mod:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
+	if not ticker[timer] then
 		local updateIn = timeLeft-mTimeLeft
 		if updateIn > 0 then -- also add a tenth of a second to updateIn to prevent the timer from firing on the same second
-			button[timer] = mod:StyleFilterTickerCreate(updateIn+0.1, frame, button, timer)
+			ticker[timer] = mod:StyleFilterTickerCreate(updateIn+0.1, frame, ticker, timer)
 		end
 	end
 end
 
-function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
+function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, count = 0, 0
 	for name, value in pairs(names) do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
 
-			if auras.createdIcons and auras.createdIcons > 0 then
-				for i = 1, auras.createdIcons do
-					local button = auras[i]
-					if button then
-						if button:IsShown() then
-							local spell, stacks, failed = strmatch(name, mod.StyleFilterStackPattern)
-							if stacks ~= '' then failed = not (button.stackCount and button.stackCount >= tonumber(stacks)) end
-							if not failed and ((button.name and button.name == spell) or (button.spellID and button.spellID == tonumber(spell))) then
-								local hasMinTime = minTimeLeft and minTimeLeft ~= 0
-								local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-								local timeLeft = (hasMinTime or hasMaxTime) and button.expiration and (button.expiration - GetTime())
-								local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
-								local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
-								if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-									if hasMinTime then mod:StyleFilterAuraWait(frame, button, 'hasMinTimer', timeLeft, minTimeLeft) end
-									if hasMaxTime then mod:StyleFilterAuraWait(frame, button, 'hasMaxTimer', timeLeft, maxTimeLeft) end
-								end
-								if minTimeAllow and maxTimeAllow then
-									count = count + 1 -- keep track of how many matches we have
-								end
-							end
-						else -- cancel stale timers
-							if button.hasMinTimer then button.hasMinTimer:Cancel() button.hasMinTimer = nil end
-							if button.hasMaxTimer then button.hasMaxTimer:Cancel() button.hasMaxTimer = nil end
-	end end end end end end
+			local index = 1
+			local aura = E:UnitAura(frame.unit, index, filter)
+			while aura do
+				local spell, stacks, failed = strmatch(name, mod.StyleFilterStackPattern)
+				if stacks ~= '' then failed = not (aura.count and aura.count >= tonumber(stacks)) end
+				if not failed and ((aura.name and aura.name == spell) or (aura.spellID and aura.spellID == tonumber(spell))) then
+					local hasMinTime = minTimeLeft and minTimeLeft ~= 0
+					local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+					local timeLeft = (hasMinTime or hasMaxTime) and aura.expirationTime and (aura.expirationTime - GetTime())
+					local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+					local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+
+					if minTimeAllow and maxTimeAllow then
+						count = count + 1 -- keep track of how many matches we have
+					end
+
+					if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+						if not tickers[count] then tickers[count] = {} end
+						if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[count], 'hasMinTimer', timeLeft, minTimeLeft) end
+						if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[count], 'hasMaxTimer', timeLeft, maxTimeLeft) end
+					end
+				end
+
+				index = index + 1
+				aura = E:UnitAura(frame.unit, index, filter)
+			end
+
+			local stale = count + 1
+			local ticker = tickers[stale]
+			while ticker and (ticker.hasMinTimer or ticker.hasMaxTimer) do -- cancel stale timers
+				if ticker.hasMinTimer then ticker.hasMinTimer:Cancel() ticker.hasMinTimer = nil end
+				if ticker.hasMaxTimer then ticker.hasMaxTimer:Cancel() ticker.hasMaxTimer = nil end
+
+				stale = stale + 1
+				ticker = tickers[stale]
+			end
+		end
+	end
 
 	if total == 0 then
 		return nil -- If no auras are checked just pass nil, we dont need to run the filter here.
@@ -981,7 +994,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -996,7 +1009,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Names / Spell IDs
-		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end
