@@ -154,7 +154,7 @@ function E:AuraInfo_SetFunction(frame, func, register)
 	end
 
 	-- check watcher
-	watcher.frames[frame] = frame.onUpdateFrequency
+	watcher.frames[frame] = (info.frames[frame] and frame.onUpdateFrequency) or nil
 
 	if next(watcher.frames) then
 		watcher:Show()
