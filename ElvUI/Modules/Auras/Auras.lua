@@ -217,35 +217,27 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local debuffType = 'none'
-	local unit = button.header:GetAttribute('unit')
-	local aura = E:UnitAura(unit, index, button.filter)
+	local aura = E:UnitAura(button.header:GetAttribute('unit'), index, button.filter)
 	if aura then
-		if aura.debuffType then
-			debuffType = aura.debuffType
-		end
-
-		local duration = aura.duration
-		local expiration = aura.expirationTime
-
-		local db = A.db[button.auraType]
-		if duration > 0 and expiration then
-			A:SetAuraTime(button, expiration, duration)
+		if aura.duration > 0 and aura.expirationTime then
+			A:SetAuraTime(button, aura.expirationTime, aura.duration)
 		else
 			A:ClearAuraTime(button)
 		end
 
+		local db = A.db[button.auraType]
 		local r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
 		if button.timeLeft and db.barColorGradient then
-			r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+			r, g, b = E.oUF:ColorGradient(button.timeLeft, aura.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		end
 
-		button.count:SetText(aura.count > 1 and aura.count)
 		button.text:SetShown(db.showDuration)
-		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
+		button.count:SetText(aura.count > 1 and aura.count)
+		button.statusBar:SetShown((db.barShow and aura.duration > 0) or (db.barShow and db.barNoDuration and aura.duration == 0))
 		button.statusBar:SetStatusBarColor(r, g, b)
 		button.texture:SetTexture(aura.icon)
 
+		local debuffType = aura.debuffType or 'none'
 		if button.debuffType ~= debuffType then
 			local color = (button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType]) or E.db.general.bordercolor
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
