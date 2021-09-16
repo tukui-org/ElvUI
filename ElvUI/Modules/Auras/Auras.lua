@@ -12,7 +12,6 @@ local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local RegisterStateDriver = RegisterStateDriver
 local CreateFrame = CreateFrame
-local UnitAura = UnitAura
 local GetTime = GetTime
 
 local Masque = E.Masque
@@ -248,13 +247,13 @@ function A:UpdateAura(button, index)
 		button.texture:SetTexture(aura.icon)
 
 		if button.debuffType ~= debuffType then
-			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType] or E.db.general.bordercolor
+			local color = (button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType]) or E.db.general.bordercolor
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+
+			button.debuffType = debuffType
 		end
 	end
-
-	button.debuffType = debuffType
 end
 
 function A:UpdateTempEnchant(button, index)
