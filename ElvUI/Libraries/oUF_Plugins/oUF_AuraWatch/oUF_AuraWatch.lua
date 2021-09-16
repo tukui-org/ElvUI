@@ -72,14 +72,32 @@ local function customFilter(element, _, button, name, _, _, debuffType, _, _, ca
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, caster, isStealable,
-		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
-		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local aura = ElvUI[1]:UnitAura(unit, index, filter)
+	if not aura then return end
 
-	if(name) then
+	local name = aura.name
+	if name then
+		local texture = aura.icon
+		local count = aura.count
+		local debuffType = aura.debuffType
+		local duration = aura.duration
+		local expiration = aura.expirationTime
+		local caster = aura.source
+		local isStealable = aura.isStealable
+		local nameplateShowSelf = aura.nameplateShowPersonal
+		local spellID = aura.spellID
+		local canApply = aura.canApplyAura
+		local isBossDebuff = aura.isBossDebuff
+		local casterIsPlayer = aura.castByPlayer
+		local nameplateShowAll = aura.nameplateShowAll
+		local timeMod = aura.timeMod
+		local effect1 = aura.effect1
+		local effect2 = aura.effect2
+		local effect3 = aura.effect3
+
 		local position = visible + offset + 1
 		local button = element[position]
-		if(not button) then
+		if not button then
 			button = (element.CreateIcon or createAuraIcon) (element, position)
 
 			tinsert(element, button)
@@ -97,10 +115,10 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 			canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 
-		if(show) then
+		if show then
 			local setting = element.watched[spellID]
-			if(button.cd) then
-				if(duration and duration > 0) then
+			if button.cd then
+				if duration and duration > 0 then
 					button.cd:SetCooldown(expiration - duration, duration)
 					button.cd:Show()
 				else
@@ -108,8 +126,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 				end
 			end
 
-			if(button.overlay) then
-				if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
+			if button.overlay then
+				if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
 					local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
 
 					button.overlay:SetVertexColor(color[1], color[2], color[3])
@@ -119,7 +137,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 				end
 			end
 
-			if(button.stealable) then
+			if button.stealable then
 				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit(unit, 'player')) then
 					button.stealable:Show()
 				else
@@ -127,8 +145,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 				end
 			end
 
-			if(button.icon) then button.icon:SetTexture(texture) end
-			if(button.count) then button.count:SetText(count > 1 and count) end
+			if button.icon then button.icon:SetTexture(texture) end
+			if button.count then button.count:SetText(count > 1 and count) end
 
 			if not setting.sizeOffset or setting.sizeOffset == 0 then
 				button:SetSize(element.size, element.size)
@@ -141,7 +159,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			button:ClearAllPoints()
 			button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
 
-			if(element.PostUpdateIcon) then
+			if element.PostUpdateIcon then
 				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
 			end
 
@@ -286,7 +304,7 @@ local function Enable(self)
 		element.anchoredIcons = 0
 		element.size = 8
 
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
 		element:Show()
 
 		return true
@@ -295,7 +313,7 @@ end
 
 local function Disable(self)
 	if(self.AuraWatch) then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
 
 		if(self.AuraWatch) then self.AuraWatch:Hide() end
 	end

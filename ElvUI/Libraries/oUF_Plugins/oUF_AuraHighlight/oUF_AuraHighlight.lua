@@ -2,7 +2,6 @@ local _, ns = ...
 local oUF = ns.oUF
 if not oUF then return end
 
-local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 local GetSpecialization = GetSpecialization
 local GetActiveSpecGroup = GetActiveSpecGroup
@@ -44,38 +43,44 @@ if not Classic then
 	BlackList[137637] = true -- Warbringer, Slow
 end
 
-local function GetAuraType(unit, filter, filterTable)
+local function DebuffLoop(aura, check, list)
+	local spell = list and (list[aura.spellID] or list[aura.name])
+	if spell then
+		if spell.enable then
+			return aura.debuffType, aura.icon, true, spell.style, spell.color
+		end
+	elseif aura.debuffType and (not check or CanDispel[aura.debuffType]) and not (BlackList[aura.name] or BlackList[aura.spellID]) then
+		return aura.debuffType, aura.icon
+	end
+end
+
+local function AuraLoop(aura, _, list)
+	local spell = list and list[aura.spellID]
+	if spell and spell.enable and (not spell.ownOnly or aura.source == 'player') then
+		return aura.debuffType, aura.icon, true, spell.style, spell.color
+	end
+end
+
+local function Looper(unit, filter, check, list, func)
+	local index = 1
+	local aura = ElvUI[1]:UnitAura(unit, index, filter)
+	while aura do
+		local debuffType, texture, wasFiltered, style, color = func(aura, check, list)
+		if texture then return debuffType, texture, wasFiltered, style, color end
+
+		index = index + 1
+		aura = ElvUI[1]:UnitAura(unit, index, filter)
+	end
+end
+
+local function GetAuraType(unit, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local i = 1
-	while true do
-		local name, texture, _, debufftype, _, _, _, _, _, spellID = UnitAura(unit, i, 'HARMFUL')
-		if not texture then break end
+	local debuffType, texture, wasFiltered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
+	if texture then return debuffType, texture, wasFiltered, style, color end
 
-		local filterSpell = filterTable[spellID] or filterTable[name]
-		if filterTable and filterSpell then
-			if filterSpell.enable then
-				return debufftype, texture, true, filterSpell.style, filterSpell.color
-			end
-		elseif debufftype and (not filter or (filter and CanDispel[debufftype])) and not (BlackList[name] or BlackList[spellID]) then
-			return debufftype, texture
-		end
-
-		i = i + 1
-	end
-
-	i = 1
-	while true do
-		local _, texture, _, debufftype, _, _, caster, _, _, spellID = UnitAura(unit, i)
-		if not texture then break end
-
-		local filterSpell = filterTable[spellID]
-		if filterTable and filterSpell and filterSpell.enable and (not filterSpell.ownOnly or caster == 'player') then
-			return debufftype, texture, true, filterSpell.style, filterSpell.color
-		end
-
-		i = i + 1
-	end
+	debuffType, texture, wasFiltered, style, color = Looper(unit, 'HELPFUL', check, list, AuraLoop)
+	if texture then return debuffType, texture, wasFiltered, style, color end
 end
 
 --[[
@@ -152,7 +157,8 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		self:RegisterEvent('UNIT_AURA', Update)
+		ElvUI[1]:AuraInfo_SetFunction(self, Update, true)
+
 		return true
 	end
 end
@@ -160,7 +166,7 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		self:UnregisterEvent('UNIT_AURA', Update)
+		ElvUI[1]:AuraInfo_SetFunction(self, Update)
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()

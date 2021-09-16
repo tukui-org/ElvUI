@@ -103,11 +103,12 @@ function A:UpdateStatusBar(button)
 end
 
 function A:CreateIcon(button)
-	local header = button:GetParent()
-	local auraType = header.filter
+	button.header = button:GetParent()
+	button.filter = button.header.filter
+	button.auraType = button.header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 
-	button.auraType = auraType == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
-	button.filter = auraType
+	button.name = button:GetName()
+	button.enchantOffset = strmatch(button.name, '2$') and 6 or 2 -- offHandExpiration or mainHandExpiration
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
@@ -147,11 +148,11 @@ function A:CreateIcon(button)
 	E:SetSmoothing(button.statusBar)
 	E:SetUpAnimGroup(button)
 
-	if auraType == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
+	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
 		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
 		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
 		MasqueGroupBuffs:ReSkin()
-	elseif auraType == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
 		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
 		MasqueGroupDebuffs:ReSkin()
@@ -217,11 +218,17 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local unit = button:GetParent():GetAttribute('unit')
-	local name, texture, count, debuffType, duration, expiration = UnitAura(unit, index, button.filter)
-	if not debuffType then debuffType = 'none' end
+	local debuffType = 'none'
+	local unit = button.header:GetAttribute('unit')
+	local aura = E:UnitAura(unit, index, button.filter)
+	if aura then
+		if aura.debuffType then
+			debuffType = aura.debuffType
+		end
 
-	if name then
+		local duration = aura.duration
+		local expiration = aura.expirationTime
+
 		local db = A.db[button.auraType]
 		if duration > 0 and expiration then
 			A:SetAuraTime(button, expiration, duration)
@@ -234,11 +241,11 @@ function A:UpdateAura(button, index)
 			r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		end
 
-		button.count:SetText(count > 1 and count)
+		button.count:SetText(aura.count > 1 and aura.count)
 		button.text:SetShown(db.showDuration)
 		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 		button.statusBar:SetStatusBarColor(r, g, b)
-		button.texture:SetTexture(texture)
+		button.texture:SetTexture(aura.icon)
 
 		if button.debuffType ~= debuffType then
 			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType] or E.db.general.bordercolor
@@ -251,20 +258,22 @@ function A:UpdateAura(button, index)
 end
 
 function A:UpdateTempEnchant(button, index)
-	local offset = (strmatch(button:GetName(), '2$') and 6) or 2
 	local db = A.db[button.auraType]
-
 	local duration, remaining = 600, 0
-	local expiration = select(offset, GetWeaponEnchantInfo())
+	local expiration = select(button.enchantOffset, GetWeaponEnchantInfo())
 	if expiration then
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
+		local r, g, b
 		local quality = GetInventoryItemQuality('player', index)
 		if quality and quality > 1 then
-			button:SetBackdropBorderColor(GetItemQualityColor(quality))
+			r, g, b = GetItemQualityColor(quality)
 		else
-			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			r, g, b = unpack(E.media.bordercolor)
 		end
+
+		button:SetBackdropBorderColor(r, g, b)
+		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
 
 		remaining = expiration / 1000
 		if remaining <= 3600 and remaining > 1800 then

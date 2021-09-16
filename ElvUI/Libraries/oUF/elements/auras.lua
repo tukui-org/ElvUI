@@ -82,7 +82,6 @@ local pcall = pcall
 local tinsert = tinsert
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
-local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local GameTooltip = GameTooltip
 local floor, min = math.floor, math.min
@@ -167,9 +166,27 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, caster, isStealable,
-		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
-		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local aura = ElvUI[1]:UnitAura(unit, index, filter)
+	if not aura then return end
+
+	local name = aura.name
+	local texture = aura.icon
+	local count = aura.count
+	local debuffType = aura.debuffType
+	local duration = aura.duration
+	local expiration = aura.expirationTime
+	local caster = aura.source
+	local isStealable = aura.isStealable
+	local nameplateShowSelf = aura.nameplateShowPersonal
+	local spellID = aura.spellID
+	local canApply = aura.canApplyAura
+	local isBossDebuff = aura.isBossDebuff
+	local casterIsPlayer = aura.castByPlayer
+	local nameplateShowAll = aura.nameplateShowAll
+	local timeMod = aura.timeMod
+	local effect1 = aura.effect1
+	local effect2 = aura.effect2
+	local effect3 = aura.effect3
 
 	-- ElvUI changed block
 	if element.forceShow or element.forceCreate then
@@ -551,10 +568,12 @@ local function SetAuraUpdateMethod(self, state, force)
 
 		if state then
 			self.updateAurasFrame:SetScript('OnUpdate', onUpdateAuras)
-			self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+
+			ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
 		else
 			self.updateAurasFrame:SetScript('OnUpdate', nil)
-			self:RegisterEvent('UNIT_AURA', UpdateAuras)
+
+			ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
 		end
 	end
 end
@@ -629,7 +648,7 @@ local function Disable(self)
 	-- end block
 
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
 
 		if(self.Buffs) then self.Buffs:Hide() end
 		if(self.Debuffs) then self.Debuffs:Hide() end

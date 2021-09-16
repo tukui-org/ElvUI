@@ -244,9 +244,16 @@ local function Update(self, event, unit)
 	--store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
 	local canAttack = UnitCanAttack("player", unit)
 
-	for i = 1, 40 do
-		local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId, canApplyAura, isBossDebuff = UnitAura(unit, i, 'HARMFUL')
-		if (not name) then break end
+	local index = 1
+	local aura = ElvUI[1]:UnitAura(unit, index, 'HARMFUL')
+	while aura do
+		local name = aura.name
+		local icon = aura.icon
+		local count = aura.count
+		local debuffType = aura.debuffType
+		local duration = aura.duration
+		local expirationTime = aura.expirationTime
+		local spellID = aura.spellID
 
 		--we coudln't dispell if the unit its charmed, or its not friendly
 		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
@@ -262,25 +269,28 @@ local function Update(self, event, unit)
 			end
 
 			if priority > _priority then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
+				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellID
 			end
 		end
 
 		local debuff
 		if self.RaidDebuffs.onlyMatchSpellID then
-			debuff = debuff_data[spellId]
+			debuff = debuff_data[spellID]
 		else
-			if debuff_data[spellId] then
-				debuff = debuff_data[spellId]
+			if debuff_data[spellID] then
+				debuff = debuff_data[spellID]
 			else
 				debuff = debuff_data[name]
 			end
 		end
 
 		priority = debuff and debuff.priority
-		if priority and not blackList[spellId] and (priority > _priority) then
-			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
+		if priority and not blackList[spellID] and (priority > _priority) then
+			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellID
 		end
+
+		index = index + 1
+		aura = ElvUI[1]:UnitAura(unit, index, 'HARMFUL')
 	end
 
 	if self.RaidDebuffs.forceShow then
@@ -307,7 +317,7 @@ local function Enable(self)
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec, true)
 
 	if self.RaidDebuffs then
-		self:RegisterEvent('UNIT_AURA', Update)
+		ElvUI[1]:AuraInfo_SetFunction(self, Update, true)
 
 		return true
 	end
@@ -315,7 +325,7 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
-		self:UnregisterEvent('UNIT_AURA', Update)
+		ElvUI[1]:AuraInfo_SetFunction(self, Update)
 
 		self.RaidDebuffs:Hide()
 	end
