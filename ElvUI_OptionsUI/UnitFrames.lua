@@ -4924,7 +4924,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					order = 4,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
-					values = C.Values.C.Values.Anchorsrs,
+					values = C.Values.Anchors,
 				},
 				xOffset = {
 					order = 5,
