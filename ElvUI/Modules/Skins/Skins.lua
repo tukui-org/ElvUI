@@ -359,6 +359,30 @@ do
 		if name then return _G[name..element] end
 	end
 
+	local function ThumbStatus(frame)
+		if not frame.Thumb then
+			return
+		elseif not frame:IsEnabled() then
+			frame.Thumb.backdrop:SetBackdropColor(0.3, 0.3, 0.3)
+			return
+		end
+
+		local _, max = frame:GetMinMaxValues()
+		if max == 0 then
+			frame.Thumb.backdrop:SetBackdropColor(0.3, 0.3, 0.3)
+		else
+			frame.Thumb.backdrop:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+		end
+	end
+
+	local function ThumbWatcher(frame)
+		hooksecurefunc(frame, 'Enable', ThumbStatus)
+		hooksecurefunc(frame, 'Disable', ThumbStatus)
+		hooksecurefunc(frame, 'SetEnabled', ThumbStatus)
+		hooksecurefunc(frame, 'SetMinMaxValues', ThumbStatus)
+		ThumbStatus(frame)
+	end
+
 	function S:HandleScrollBar(frame, thumbY, thumbX, template)
 		assert(frame, 'doesnt exist!')
 
@@ -369,7 +393,7 @@ do
 		local thumb = GetElement(frame, 'ThumbTexture') or GetElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
-		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template or 'Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', upButton or frame, upButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 1)
 		frame.backdrop:Point('BOTTOMRIGHT', downButton or frame, upButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, -1)
 
@@ -389,16 +413,19 @@ do
 			thumb:SetTexture()
 			thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, nil, frameLevel + 1)
 
+			if not frame.Thumb then
+				frame.Thumb = thumb
+			end
+
 			if thumb.backdrop then
-				if not thumbY then thumbY = 0 end
 				if not thumbX then thumbX = 0 end
+				if not thumbY then thumbY = 0 end
 
 				thumb.backdrop:Point('TOPLEFT', thumb, thumbX, -thumbY)
 				thumb.backdrop:Point('BOTTOMRIGHT', thumb, -thumbX, thumbY)
-				thumb.backdrop:SetBackdropColor(unpack(E.media.rgbvaluecolor))
-			end
 
-			frame.Thumb = thumb
+				ThumbWatcher(frame)
+			end
 		end
 	end
 end

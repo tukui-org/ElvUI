@@ -5,4 +5,5 @@
 	<Script file='StanceBar.lua'/>
 	<Script file='Bind.lua'/>
 	<Script file='MicroBar.lua'/>
+	<Script file='Effects.lua'/>
 </Ui>

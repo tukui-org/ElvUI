@@ -13,7 +13,6 @@ local infinity = math.huge
 
 local _G = _G
 local GetTime = GetTime
-local UnitAura = UnitAura
 local CreateFrame = CreateFrame
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
@@ -99,18 +98,38 @@ local function createAuraBar(element, index)
 end
 
 local function customFilter(element, unit, button, name)
-	if((element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name)) then
+	if (element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name) then
 		return true
 	end
 end
 
 local function updateBar(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local aura = ElvUI[1]:UnitAura(unit, index, filter)
+	if not aura then return end
 
-	if(name) then
+	local name = aura.name
+	if name then
+		local texture = aura.icon
+		local count = aura.count
+		local debuffType = aura.debuffType
+		local duration = aura.duration
+		local expiration = aura.expirationTime
+		local caster = aura.source
+		local isStealable = aura.isStealable
+		local nameplateShowSelf = aura.nameplateShowPersonal
+		local spellID = aura.spellID
+		local canApply = aura.canApplyAura
+		local isBossDebuff = aura.isBossDebuff
+		local casterIsPlayer = aura.castByPlayer
+		local nameplateShowAll = aura.nameplateShowAll
+		local timeMod = aura.timeMod
+		local effect1 = aura.effect1
+		local effect2 = aura.effect2
+		local effect3 = aura.effect3
+
 		local position = visible + offset + 1
 		local statusBar = element[position]
-		if(not statusBar) then
+		if not statusBar then
 			statusBar = (element.CreateBar or createAuraBar) (element, position)
 			tinsert(element, statusBar)
 			element.createdBars = element.createdBars + 1
@@ -127,7 +146,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
 			canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 
-		if(show) then
+		if show then
 			statusBar.icon:SetTexture(texture)
 			if count > 1 then
 				statusBar.nameText:SetFormattedText('[%d] %s', count, name)
@@ -166,7 +185,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar:SetID(index)
 			statusBar:Show()
 
-			if(element.PostUpdateBar) then
+			if element.PostUpdateBar then
 				element:PostUpdateBar(unit, statusBar, index, position, duration, expiration, debuffType, isStealable)
 			end
 
@@ -270,7 +289,7 @@ local function Enable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
 
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
@@ -306,7 +325,7 @@ local function Disable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
 		element:Hide()
 	end
 end

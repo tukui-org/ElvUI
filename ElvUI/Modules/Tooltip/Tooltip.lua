@@ -36,7 +36,6 @@ local IsModifierKeyDown = IsModifierKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local NotifyInspect = NotifyInspect
 local SetTooltipMoney = SetTooltipMoney
-local UnitAura = UnitAura
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitBattlePetType = UnitBattlePetType
 local UnitBuff = UnitBuff
@@ -726,12 +725,12 @@ end
 
 function TT:SetUnitAura(tt, unit, index, filter)
 	if not tt or tt:IsForbidden() then return end
-	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
+	local aura = E:UnitAura(unit, index, filter)
 
-	if id then
-		local mountText
-		if TT.MountIDs[id] then
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
+	if aura then
+		local mountID, mountText = TT.MountIDs[aura.spellID]
+		if mountID then
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
 			mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
 
 			if mountText then
@@ -745,13 +744,13 @@ function TT:SetUnitAura(tt, unit, index, filter)
 				tt:AddLine(' ')
 			end
 
-			if caster then
-				local name = UnitName(caster)
-				local _, class = UnitClass(caster)
+			if aura.source then
+				local name = UnitName(aura.source)
+				local _, class = UnitClass(aura.source)
 				local color = E:ClassColor(class) or PRIEST_COLOR
-				tt:AddDoubleLine(format(IDLine, _G.ID, id), format('|c%s%s|r', color.colorStr, name))
+				tt:AddDoubleLine(format(IDLine, _G.ID, aura.spellID), format('|c%s%s|r', color.colorStr, name))
 			else
-				tt:AddLine(format(IDLine, _G.ID, id))
+				tt:AddLine(format(IDLine, _G.ID, aura.spellID))
 			end
 		end
 

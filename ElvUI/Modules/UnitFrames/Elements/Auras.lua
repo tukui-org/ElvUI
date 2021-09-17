@@ -228,9 +228,6 @@ function UF:EnableDisable_Auras(frame)
 		if not frame:IsElementEnabled('Auras') then
 			frame:EnableElement('Auras')
 		end
-
-		frame:SetAuraUpdateMethod(E.global.unitframe.effectiveAura)
-		frame:SetAuraUpdateSpeed(E.global.unitframe.effectiveAuraSpeed)
 	else
 		if frame:IsElementEnabled('Auras') then
 			frame:DisableElement('Auras')

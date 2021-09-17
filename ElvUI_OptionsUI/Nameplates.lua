@@ -6286,69 +6286,6 @@ E.Options.args.nameplate = {
 						},
 					}
 				},
-				effectiveGroup = {
-					order = 60,
-					type = 'group',
-					name = L["Effective Updates"],
-					args = {
-						warning = ACH:Description(L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]..'\n'..L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."], 0, 'medium'),
-						effectiveHealth = {
-							order = 1,
-							type = 'toggle',
-							name = L["Health"],
-							get = function(info) return E.global.nameplate[info[#info]] end,
-							set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-						},
-						effectivePower = {
-							order = 2,
-							type = 'toggle',
-							name = L["Power"],
-							get = function(info) return E.global.nameplate[info[#info]] end,
-							set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-						},
-						effectiveAura = {
-							order = 3,
-							type = 'toggle',
-							name = L["Aura"],
-							get = function(info) return E.global.nameplate[info[#info]] end,
-							set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-						},
-						spacer1 = ACH:Spacer(4, 'full'),
-						effectiveHealthSpeed = {
-							order = 5,
-							name = L["Health Speed"],
-							type = 'range',
-							min = 0.1,
-							max = 0.5,
-							step = 0.05,
-							disabled = function() return not E.global.nameplate.effectiveHealth end,
-							get = function(info) return E.global.nameplate[info[#info]] end,
-							set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-						},
-						effectivePowerSpeed = {
-							order = 6,
-							name = L["Power Speed"],
-							type = 'range',
-							min = 0.1,
-							max = 0.5,
-							step = 0.05,
-							disabled = function() return not E.global.nameplate.effectivePower end,
-							get = function(info) return E.global.nameplate[info[#info]] end,
-							set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-						},
-						effectiveAuraSpeed = {
-							order = 7,
-							name = L["Aura Speed"],
-							type = 'range',
-							min = 0.1,
-							max = 0.5,
-							step = 0.05,
-							disabled = function() return not E.global.nameplate.effectiveAura end,
-							get = function(info) return E.global.nameplate[info[#info]] end,
-							set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
-						},
-					},
-				},
 				clickThrough = {
 					order = 65,
 					type = 'group',
