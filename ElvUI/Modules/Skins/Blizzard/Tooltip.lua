@@ -21,6 +21,7 @@ function S:StyleTooltips()
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 		_G.QuickKeybindTooltip,
+		_G.GameSmallHeaderTooltip,
 		_G.QuestScrollFrame.StoryTooltip,
 		_G.QuestScrollFrame.CampaignTooltip,
 		-- ours
