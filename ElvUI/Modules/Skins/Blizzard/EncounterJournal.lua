@@ -314,7 +314,7 @@ function S:Blizzard_EncounterJournal()
 	-- Loot buttons
 	local items = _G.EncounterJournal.encounter.info.lootScroll.buttons
 	for i = 1, #items do
-		local item = items[i]
+		local item = items[i].lootFrame
 
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
@@ -350,10 +350,12 @@ function S:Blizzard_EncounterJournal()
 			item.armorType:SetTextColor(1, 1, 1)
 		end
 
-		if i == 1 then
+		-- Fix me or delete me??
+		--[[if i == 1 then
 			item:ClearAllPoints()
 			item:Point('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 'TOPLEFT', 5, 0)
 		end
+		--]]
 	end
 
 	-- Search

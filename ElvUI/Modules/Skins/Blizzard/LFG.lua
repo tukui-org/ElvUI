@@ -515,6 +515,7 @@ function S:LookingForGroupFrames()
 
 	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
 	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
+	S:HandleDropDownBox(_G.LFGListEntryCreationPlayStyleDropdown)
 
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.MythicPlusRating.CheckButton)
@@ -575,6 +576,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
+	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
 
@@ -657,6 +659,7 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.BrowseGroupsButton, true)
 	LFGListFrame.ApplicationViewer.RemoveEntryButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
