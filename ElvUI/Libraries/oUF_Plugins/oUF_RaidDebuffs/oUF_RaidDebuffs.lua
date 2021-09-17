@@ -3,6 +3,7 @@ local oUF = ns.oUF or oUF
 
 local _G = _G
 local addon = {}
+
 ns.oUF_RaidDebuffs = addon
 _G.oUF_RaidDebuffs = ns.oUF_RaidDebuffs
 if not _G.oUF_RaidDebuffs then
@@ -15,9 +16,9 @@ local type, pairs, wipe = type, pairs, wipe
 local GetActiveSpecGroup = GetActiveSpecGroup
 local GetSpecialization = GetSpecialization
 local GetSpellInfo = GetSpellInfo
-local GetTime = GetTime
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
+local GetTime = GetTime
 
 local debuff_data = {}
 addon.DebuffData = debuff_data
@@ -56,90 +57,82 @@ function addon:ResetDebuffData()
 	wipe(debuff_data)
 end
 
-local DispellColor = {
-	['Magic']	= {.2, .6, 1},
-	['Curse']	= {.6, 0, 1},
-	['Disease']	= {.6, .4, 0},
-	['Poison']	= {0, .6, 0},
-	['none'] = { .23, .23, .23},
+local DispelColor = {
+	Magic   = {0.2, 0.6, 1.0},
+	Curse   = {0.6, 0, 1.0},
+	Disease = {0.6, 0.4, 0},
+	Poison  = {0, 0.6, 0},
+	none    = {0.2, 0.2, 0.2}
 }
 
-local DispellPriority = {
-	['Magic']	= 4,
-	['Curse']	= 3,
-	['Disease']	= 2,
-	['Poison']	= 1,
+function addon:GetDispelColor()
+	return DispelColor
+end
+
+local DispelPriority = {
+	Magic   = 4,
+	Curse   = 3,
+	Disease = 2,
+	Poison  = 1,
 }
 
-local DispellFilter
+local DispelFilter
 do
-	local dispellClasses = {
-		['PRIEST'] = {
-			['Magic'] = true,
-			['Disease'] = true,
+	local dispelClasses = {
+		PRIEST = {
+			Magic = true,
+			Disease = true,
 		},
-		['SHAMAN'] = {
-			['Magic'] = false,
-			['Curse'] = true,
+		SHAMAN = {
+			Magic = false,
+			Curse = true,
 		},
-		['PALADIN'] = {
-			['Poison'] = true,
-			['Magic'] = false,
-			['Disease'] = true,
+		PALADIN = {
+			Poison = true,
+			Magic = false,
+			Disease = true,
 		},
-		['DRUID'] = {
-			['Magic'] = false,
-			['Curse'] = true,
-			['Poison'] = true,
-			['Disease'] = false,
+		DRUID = {
+			Magic = false,
+			Curse = true,
+			Poison = true,
+			Disease = false,
 		},
-		['MONK'] = {
-			['Magic'] = false,
-			['Disease'] = true,
-			['Poison'] = true,
+		MONK = {
+			Magic = false,
+			Disease = true,
+			Poison = true,
 		},
+		MAGE = {
+			Curse = true
+		}
 	}
 
-	DispellFilter = dispellClasses[select(2, UnitClass('player'))] or {}
+	DispelFilter = dispelClasses[select(2, UnitClass('player'))] or {}
 end
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
-	if activeGroup and GetSpecialization(false, false, activeGroup) then
-		return tree == GetSpecialization(false, false, activeGroup)
+	local activeSpec = activeGroup and GetSpecialization(false, false, activeGroup)
+	if activeSpec then
+		return tree == activeSpec
 	end
 end
 
 local playerClass = select(2, UnitClass('player'))
 local function CheckSpec(self, event, levels)
 	-- Not interested in gained points from leveling
-	if event == "CHARACTER_POINTS_CHANGED" and levels > 0 then return end
+	if event == 'CHARACTER_POINTS_CHANGED' and levels > 0 then return end
 
 	--Check for certain talents to see if we can dispel magic or not
-	if playerClass == "PALADIN" then
-		if CheckTalentTree(1) then
-			DispellFilter.Magic = true
-		else
-			DispellFilter.Magic = false
-		end
-	elseif playerClass == "SHAMAN" then
-		if CheckTalentTree(3) then
-			DispellFilter.Magic = true
-		else
-			DispellFilter.Magic = false
-		end
-	elseif playerClass == "DRUID" then
-		if CheckTalentTree(4) then
-			DispellFilter.Magic = true
-		else
-			DispellFilter.Magic = false
-		end
-	elseif playerClass == "MONK" then
-		if CheckTalentTree(2) then
-			DispellFilter.Magic = true
-		else
-			DispellFilter.Magic = false
-		end
+	if playerClass == 'PALADIN' then
+		DispelFilter.Magic = CheckTalentTree(1)
+	elseif playerClass == 'SHAMAN' then
+		DispelFilter.Magic = CheckTalentTree(3)
+	elseif playerClass == 'DRUID' then
+		DispelFilter.Magic = CheckTalentTree(4)
+	elseif playerClass == 'MONK' then
+		DispelFilter.Magic = CheckTalentTree(2)
 	end
 end
 
@@ -147,7 +140,7 @@ local function formatTime(s)
 	if s > 60 then
 		return format('%dm', s/60), s%60
 	elseif s < 1 then
-		return format("%.1f", s), s - floor(s)
+		return format('%.1f', s), s - floor(s)
 	else
 		return format('%d', s), s - floor(s)
 	end
@@ -188,7 +181,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 			end
 		end
 
-		if spellId and _G.ElvUI[1].ReverseTimer[spellId] then
+		if spellId and ElvUI[1].ReverseTimer[spellId] then
 			f.reverse = true
 		else
 			f.reverse = nil
@@ -215,7 +208,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 			end
 		end
 
-		local c = DispellColor[debuffType] or DispellColor.none
+		local c = DispelColor[debuffType] or DispelColor.none
 		f:SetBackdropBorderColor(c[1], c[2], c[3])
 
 		f:Show()
@@ -225,23 +218,21 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 end
 
 local blackList = {
-	[105171] = true, -- Deep Corruption
-	[108220] = true, -- Deep Corruption
-	[116095] = true, -- Disable, Slow
-	[137637] = true, -- Warbringer, Slow
+	[105171] = true, -- Deep Corruption (Dragon Soul: Yor'sahj the Unsleeping)
+	[108220] = true, -- Deep Corruption (Dragon Soul: Shadowed Globule)
+	[116095] = true, -- Disable, Slow   (Monk: Windwalker)
 }
 
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
-	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId, _
-	local _priority, priority = 0, 0
-	local _stackThreshold = 0
+	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID
+	local _stackThreshold, _priority, priority = 0, 0, 0
 
 	--store if the unit its charmed, mind controlled units (Imperial Vizier Zor'lok: Convert)
 	local isCharmed = UnitIsCharmed(unit)
 
 	--store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
-	local canAttack = UnitCanAttack("player", unit)
+	local canAttack = UnitCanAttack('player', unit)
 
 	local index = 1
 	local aura = ElvUI[1]:UnitAura(unit, index, 'HARMFUL')
@@ -254,21 +245,21 @@ local function Update(self, event, unit)
 		local expirationTime = aura.expirationTime
 		local spellID = aura.spellID
 
-		--we coudln't dispell if the unit its charmed, or its not friendly
+		--we coudln't dispel if the unit its charmed, or its not friendly
 		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
-
 			if addon.FilterDispellableDebuff then
-				DispellPriority[debuffType] = (DispellPriority[debuffType] or 0) + addon.priority --Make Dispell buffs on top of Boss Debuffs
-				priority = DispellFilter[debuffType] and DispellPriority[debuffType] or 0
+				DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority --Make Dispel buffs on top of Boss Debuffs
+
+				priority = DispelFilter[debuffType] and DispelPriority[debuffType] or 0
 				if priority == 0 then
 					debuffType = nil
 				end
 			else
-				priority = DispellPriority[debuffType] or 0
+				priority = DispelPriority[debuffType] or 0
 			end
 
 			if priority > _priority then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellID
+				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expirationTime, spellID
 			end
 		end
 
@@ -285,7 +276,7 @@ local function Update(self, event, unit)
 
 		priority = debuff and debuff.priority
 		if priority and not blackList[spellID] and (priority > _priority) then
-			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellID
+			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expirationTime, spellID
 		end
 
 		index = index + 1
@@ -293,27 +284,27 @@ local function Update(self, event, unit)
 	end
 
 	if self.RaidDebuffs.forceShow then
-		_spellId = 5782
-		_name, _, _icon = GetSpellInfo(_spellId)
+		_spellID = 5782
+		_name, _, _icon = GetSpellInfo(_spellID)
 		_count, _dtype, _duration, _endTime, _stackThreshold = 5, 'Magic', 0, 60, 0
 	end
 
 	if _name then
-		_stackThreshold = debuff_data[addon.MatchBySpellName and _name or _spellId] and debuff_data[addon.MatchBySpellName and _name or _spellId].stackThreshold or _stackThreshold
+		_stackThreshold = debuff_data[addon.MatchBySpellName and _name or _spellID] and debuff_data[addon.MatchBySpellName and _name or _spellID].stackThreshold or _stackThreshold
 	end
 
-	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId, _stackThreshold)
+	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _stackThreshold)
 
-	--Reset the DispellPriority
-	DispellPriority['Magic'] = 4
-	DispellPriority['Curse'] = 3
-	DispellPriority['Disease'] = 2
-	DispellPriority['Poison'] = 1
+	--Reset the DispelPriority
+	DispelPriority.Magic = 4
+	DispelPriority.Curse = 3
+	DispelPriority.Disease = 2
+	DispelPriority.Poison = 1
 end
 
 local function Enable(self)
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec, true)
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec, true)
+	self:RegisterEvent('PLAYER_TALENT_UPDATE', CheckSpec, true)
+	self:RegisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec, true)
 
 	if self.RaidDebuffs then
 		ElvUI[1]:AuraInfo_SetFunction(self, Update, true)
@@ -329,8 +320,8 @@ local function Disable(self)
 		self.RaidDebuffs:Hide()
 	end
 
-	self:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
-	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
+	self:UnregisterEvent('PLAYER_TALENT_UPDATE', CheckSpec)
+	self:UnregisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec)
 end
 
 oUF:AddElement('RaidDebuffs', Update, Enable, Disable)
