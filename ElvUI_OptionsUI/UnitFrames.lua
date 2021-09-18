@@ -1478,7 +1478,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 4, attachToValues)
-	config.args.text_format = ACH:Input(L["Text Format"], nil, 5, nil, 'full')
+	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 5, nil, 'full')
 
 	if subGroup then
 		config.inline = true
