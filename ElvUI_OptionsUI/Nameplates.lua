@@ -455,7 +455,7 @@ E.Options.args.nameplate.args.generalGroup.args.cutaway.args.health.args.forceBl
 E.Options.args.nameplate.args.generalGroup.args.cutaway.args.health.args.lengthBeforeFade = ACH:Range(L["Fade Out Delay"], L["How much time before the cutaway health starts to fade."], 3, { min = .1, max = 1, step = .1 }, nil, nil, nil, function() return not E.db.nameplates.cutaway.health.enabled end)
 E.Options.args.nameplate.args.generalGroup.args.cutaway.args.health.args.fadeOutTime = ACH:Range(L["Fade Out"], L["How long the cutaway health will take to fade out."], 4, { min = .1, max = 1, step = .1 }, nil, nil, nil, function() return not E.db.nameplates.cutaway.health.enabled end)
 
-E.Options.args.nameplate.args.generalGroup.args.cutaway.args.power = ACH:Group(L["Health"], nil, 2, nil, nil, function(info) return E.db.nameplates.cutaway.power[info[#info]] end, function(info, value) E.db.nameplates.cutaway.power[info[#info]] = value NP:ConfigureAll() end)
+E.Options.args.nameplate.args.generalGroup.args.cutaway.args.power = ACH:Group(L["Power"], nil, 2, nil, nil, function(info) return E.db.nameplates.cutaway.power[info[#info]] end, function(info, value) E.db.nameplates.cutaway.power[info[#info]] = value NP:ConfigureAll() end)
 E.Options.args.nameplate.args.generalGroup.args.cutaway.args.power.inline = true
 E.Options.args.nameplate.args.generalGroup.args.cutaway.args.power.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
 E.Options.args.nameplate.args.generalGroup.args.cutaway.args.power.args.forceBlankTexture = ACH:Toggle(L["Blank Texture"], nil, 2)
