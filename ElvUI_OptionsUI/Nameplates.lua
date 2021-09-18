@@ -14,7 +14,6 @@ local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
 local SetCVar = SetCVar
 
-
 local function GetAddOnStatus(index, locale, name)
 	local status = IsAddOnLoaded(name) and format('|cff33ff33%s|r', L["Enabled"]) or format('|cffff3333%s|r', L["Disabled"])
 	return ACH:Description(format('%s: %s', locale, status), index, 'medium')
@@ -46,7 +45,7 @@ local function GetUnitSettings(unit, name)
 	group.args.general.args.visibilityShortcut = ACH:Execute(L["Visibility"], nil, 100, function() ACD:SelectGroup('ElvUI', 'nameplate', 'generalGroup', 'general', 'plateVisibility') end)
 	group.args.general.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 101)
 	group.args.general.args.showTitle = ACH:Toggle(L["Show Title"], L["Title will only appear if Name Only is enabled or triggered in a Style Filter."], 102)
-	group.args.general.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 104, C.Values.SmartAuraPosition)
+	group.args.general.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 104, C.Values.SmartAuraPositions)
 
 	group.args.healthGroup = ACH:Group(L["Health"], nil, 2, nil, function(info) return E.db.nameplates.units[unit].health[info[#info]] end, function(info, value) E.db.nameplates.units[unit].health[info[#info]] = value NP:ConfigureAll() end)
 	group.args.healthGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, nil, function() return unit == 'PLAYER' end)
@@ -96,7 +95,7 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup = ACH:Group(L["Cast Bar"], nil, 4, nil, function(info) return E.db.nameplates.units[unit].castbar[info[#info]] end, function(info, value) E.db.nameplates.units[unit].castbar[info[#info]] = value NP:ConfigureAll() end)
 	group.args.castGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.castGroup.args.sourceInterrupt = ACH:Toggle(L["Display Interrupt Source"], L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."], 2)
-	group.args.castGroup.args.sourceInterruptClassColor = ACH:Group(L["Class Color Source"], nil, 3, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end)
+	group.args.castGroup.args.sourceInterruptClassColor = ACH:Toggle(L["Class Color Source"], nil, 3, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end)
 	-- order 4 is player Display Target
 	group.args.castGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 5, { min = 0, max = 5, step = .1 })
 	group.args.castGroup.args.width = ACH:Range(L["Width"], nil, 6, { min = 50, max = NamePlateMaxWidth(unit), step = 1 })
@@ -104,7 +103,7 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
 	group.args.castGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
 
-	group.args.castGroup.args.textGroup = ACH:Group(L["Text"], nil, 20, nil, function(info) return E.db.nameplates.units[unit].power.text[info[#info]] end, function(info, value) E.db.nameplates.units[unit].power.text[info[#info]] = value NP:ConfigureAll() end)
+	group.args.castGroup.args.textGroup = ACH:Group(L["Text"], nil, 20)
 	group.args.castGroup.args.textGroup.inline = true
 	group.args.castGroup.args.textGroup.args.hideSpellName = ACH:Toggle(L["Hide Spell Name"], nil, 1)
 	group.args.castGroup.args.textGroup.args.hideTime = ACH:Toggle(L["Hide Time"], nil, 2)
@@ -124,7 +123,7 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.iconGroup.args.iconOffsetX = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
 	group.args.castGroup.args.iconGroup.args.iconOffsetY = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
 
-	group.args.castGroup.args.fontGroup = ACH:Group('', nil, 30)
+	group.args.castGroup.args.fontGroup = ACH:Group(L["Font"], nil, 30)
 	group.args.castGroup.args.fontGroup.inline = true
 	group.args.castGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 	group.args.castGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
@@ -341,7 +340,7 @@ local function GetUnitSettings(unit, name)
 
 		group.args.portraitGroup.args.classicon = ACH:Toggle(L["Class Icon"], nil, 2)
 
-		group.args.pvpclassificationindicator  = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 30, nil, function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] = value NP:ConfigureAll() end)
+		group.args.pvpclassificationindicator = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 30, nil, function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] = value NP:ConfigureAll() end)
 		group.args.pvpclassificationindicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.pvpclassificationindicator.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 		group.args.pvpclassificationindicator.args.position = ACH:Select(L["Position"], nil, 3, { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
@@ -400,12 +399,13 @@ E.Options.args.nameplate.args.generalGroup.args.plateVisibility.args.enemyVisibi
 E.Options.args.nameplate.args.generalGroup.args.plateVisibility.args.friendlyVisibility = ACH:MultiSelect(L["Friendly"], nil, 15, { guardians = L["Guardians"], minions = L["Minions"], npcs = L["NPC"], pets = L["Pets"], totems = L["Totems"] }, nil, nil, function(_, key) return E.db.nameplates.visibility.friendly[key] end, function(_, key, value) E.db.nameplates.visibility.friendly[key] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.db.nameplates.visibility.showAll end)
 
 E.Options.args.nameplate.args.generalGroup.args.bossMods = ACH:Group(L["Boss Mod Auras"], nil, 55, nil, function(info) return E.db.nameplates.bossMods[info[#info]] end, function(info, value) E.db.nameplates.bossMods[info[#info]] = value NP:ConfigureAll() end)
-E.Options.args.nameplate.args.generalGroup.args.bossMods.args.supported = ACH:Group(L["Supported"], nil, -1)
+E.Options.args.nameplate.args.generalGroup.args.bossMods.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+E.Options.args.nameplate.args.generalGroup.args.bossMods.args.supported = ACH:Group(L["Supported"], nil, 1)
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.supported.inline = true
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.supported.args.dbm = GetAddOnStatus(1, 'Deadly Boss Mods', 'DBM-Core')
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.supported.args.bw = GetAddOnStatus(2, 'BigWigs', 'BigWigs')
-E.Options.args.nameplate.args.generalGroup.args.bossMods.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings = ACH:Group('', nil, 2, nil, nil, nil, function() return not E.db.nameplates.bossMods.enable or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core')) end)
+E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings = ACH:Group(' ', nil, 2, nil, nil, nil, function() return not E.db.nameplates.bossMods.enable or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core')) end)
+E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.inline = true
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 1)
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.args.size = ACH:Range(function() return E.db.nameplates.bossMods.keepSizeRatio and L["Icon Size"] or L["Icon Width"] end, nil, 2, { min = 6, max = 64, step = 1 })
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.args.height = ACH:Range(L["Icon Height"], nil, 3, { min = 6, max = 64, step = 1 }, nil, nil, nil, nil, function() return E.db.nameplates.bossMods.keepSizeRatio end)
