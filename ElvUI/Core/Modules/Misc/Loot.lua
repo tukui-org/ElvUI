@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 local LBG = E.Libs.ButtonGlow
 
@@ -23,13 +23,17 @@ local LootSlot = LootSlot
 local LootSlotHasItem = LootSlotHasItem
 local ResetCursor = ResetCursor
 local StaticPopup_Hide = StaticPopup_Hide
+local MasterLooterFrame_Show = MasterLooterFrame_Show
+local MasterLooterFrame_UpdatePlayers = MasterLooterFrame_UpdatePlayers
+
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
-local LOOT = LOOT
+local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local LOOT = LOOT
 
 local coinTextureIDs = {
 	[133784] = true,
@@ -124,8 +128,7 @@ local function createSlot(id)
 	frame:SetScript('OnShow', OnShow)
 
 	local iconFrame = CreateFrame('Frame', nil, frame)
-	iconFrame:Height(iconsize)
-	iconFrame:Width(iconsize)
+	iconFrame:Size(iconsize)
 	iconFrame:Point('RIGHT', frame)
 	iconFrame:SetTemplate()
 	frame.iconFrame = iconFrame
@@ -152,7 +155,7 @@ local function createSlot(id)
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, 'ARTWORK')
-	drop:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
+	drop:SetTexture('Interface/QuestFrame/UI-QuestLogTitleHighlight')
 	drop:Point('LEFT', icon, 'RIGHT', 0, 0)
 	drop:Point('RIGHT', frame)
 	drop:SetAllPoints(frame)
@@ -226,7 +229,7 @@ function M:LOOT_OPENED(_, autoloot)
 		for i=1, items do
 			local slot = lootFrame.slots[i] or createSlot(i)
 			local textureID, item, quantity, _, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
-			local color = ITEM_QUALITY_COLORS[quality]
+			local color = ITEM_QUALITY_COLORS[quality or 0]
 
 			if coinTextureIDs[textureID] then
 				item = item:gsub('\n', ', ')
@@ -248,9 +251,7 @@ function M:LOOT_OPENED(_, autoloot)
 
 			slot.quality = quality
 			slot.name:SetText(item)
-			if color then
-				slot.name:SetTextColor(color.r, color.g, color.b)
-			end
+			slot.name:SetTextColor(color.r, color.g, color.b)
 			slot.icon:SetTexture(textureID)
 
 			if quality then
@@ -259,10 +260,10 @@ function M:LOOT_OPENED(_, autoloot)
 			w = max(w, slot.name:GetStringWidth())
 
 			local questTexture = slot.questTexture
-			if questId and not isActive then
+			if ( questId and not isActive ) then
 				questTexture:Show()
 				LBG.ShowOverlayGlow(slot.iconFrame)
-			elseif questId or isQuestItem then
+			elseif ( questId or isQuestItem ) then
 				questTexture:Hide()
 				LBG.ShowOverlayGlow(slot.iconFrame)
 			else
@@ -280,11 +281,9 @@ function M:LOOT_OPENED(_, autoloot)
 		local slot = lootFrame.slots[1] or createSlot(1)
 		local color = ITEM_QUALITY_COLORS[0]
 
-		slot.name:SetText(L["Empty Slot"])
-		if color then
-			slot.name:SetTextColor(color.r, color.g, color.b)
-		end
-		slot.icon:SetTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
+		slot.name:SetText(L["No Loot"])
+		slot.name:SetTextColor(color.r, color.g, color.b)
+		slot.icon:SetTexture()
 
 		w = max(w, slot.name:GetStringWidth())
 
@@ -293,6 +292,7 @@ function M:LOOT_OPENED(_, autoloot)
 		slot:Disable()
 		slot:Show()
 	end
+
 	anchorSlots(lootFrame)
 
 	w = w + 60
@@ -303,13 +303,23 @@ function M:LOOT_OPENED(_, autoloot)
 	lootFrame:Width(max(w, t))
 end
 
+function M:OPEN_MASTER_LOOT_LIST()
+	MasterLooterFrame_Show(_G.LootFrame.selectedLootButton)
+end
+
+function M:UPDATE_MASTER_LOOT_LIST()
+	if _G.LootFrame.selectedLootButton then MasterLooterFrame_UpdatePlayers() end
+end
+
 function M:LoadLoot()
 	if not E.private.general.loot then return end
+
 	lootFrameHolder = CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
 	lootFrameHolder:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
 	lootFrameHolder:Size(150, 22)
 
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
+	lootFrame:Hide()
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)
@@ -320,19 +330,27 @@ function M:LoadLoot()
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
 	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0, 1)
 	lootFrame.slots = {}
-	lootFrame:SetScript('OnHide', function()
+	lootFrame:SetScript('OnHide', function() -- mimic LootFrame_OnHide, mostly
 		StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')
 		CloseLoot()
+
+		if _G.MasterLooterFrame then
+			_G.MasterLooterFrame:Hide()
+		end
 	end)
 	E.frames[lootFrame] = nil
 
 	self:RegisterEvent('LOOT_OPENED')
 	self:RegisterEvent('LOOT_SLOT_CLEARED')
 	self:RegisterEvent('LOOT_CLOSED')
+	self:RegisterEvent("OPEN_MASTER_LOOT_LIST")
+	self:RegisterEvent("UPDATE_MASTER_LOOT_LIST")
 
 	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 
-	-- Fuzz
 	_G.LootFrame:UnregisterAllEvents()
 	tinsert(_G.UISpecialFrames, 'ElvLootFrame')
+
+	-- fix blizzard setpoint connection bs
+	hooksecurefunc(_G.MasterLooterFrame, 'Hide', _G.MasterLooterFrame.ClearAllPoints)
 end
