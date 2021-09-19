@@ -4,23 +4,12 @@ local UF = E:GetModule('UnitFrames')
 local C_Timer_NewTimer = C_Timer.NewTimer
 local UnitAffectingCombat = UnitAffectingCombat
 
-local CombatTextures = {
-	COMBAT = E.Media.Textures.Combat,
-	DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]],
-	PLATINUM = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
-	ATTACK = [[Interface\CURSOR\Attack]],
-	ALERT = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
-	ALERT2 = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]],
-	ARTHAS = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]],
-	SKULL = [[Interface\LootFrame\LootPanel-Icon]],
-}
-
 function UF:Construct_CombatIndicator(frame)
 	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
 end
 
-local TestingTimer
-local TestingFrame
+local TestingTimer, TestingFrame
+
 local function TestingFunc()
 	local inCombat = UnitAffectingCombat('player')
 	if TestingFrame and not inCombat then
@@ -65,11 +54,11 @@ function UF:Configure_CombatIndicator(frame)
 	if db.texture == 'CUSTOM' and db.customTexture then
 		Icon:SetTexture(db.customTexture)
 		Icon:SetTexCoord(0, 1, 0, 1)
-	elseif db.texture ~= 'DEFAULT' and CombatTextures[db.texture] then
-		Icon:SetTexture(CombatTextures[db.texture])
+	elseif db.texture ~= 'DEFAULT' and E.Media.CombatIcons[db.texture] then
+		Icon:SetTexture(E.Media.CombatIcons[db.texture])
 		Icon:SetTexCoord(0, 1, 0, 1)
 	else
-		Icon:SetTexture(CombatTextures.DEFAULT)
+		Icon:SetTexture(E.Media.CombatIcons.DEFAULT)
 		Icon:SetTexCoord(.5, 1, 0, .49)
 	end
 
