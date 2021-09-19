@@ -567,14 +567,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 	end
 
-	-- NPC ID's
-	if unit and not isPlayerUnit and TT:IsModKeyDown() then
-		if not C_PetBattles_IsInBattle() then
-			local guid = UnitGUID(unit) or ''
-			local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
-			if id then
-				tt:AddLine(format(IDLine, _G.ID, id))
-			end
+	if unit and not isPlayerUnit and TT:IsModKeyDown() and not C_PetBattles_IsInBattle() then
+		local guid = UnitGUID(unit) or ''
+		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
+		if id then -- NPC ID's
+			tt:AddLine(format(IDLine, _G.ID, id))
 		end
 	end
 
