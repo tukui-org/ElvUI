@@ -38,7 +38,6 @@ local NotifyInspect = NotifyInspect
 local SetTooltipMoney = SetTooltipMoney
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitBattlePetType = UnitBattlePetType
-local UnitBuff = UnitBuff
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
@@ -455,6 +454,38 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 	end
 end
 
+function TT:AddMountInfo(tt, unit, isPlayerUnit, isShiftKeyDown, isControlKeyDown)
+	if unit == 'player' or isShiftKeyDown or not isPlayerUnit then return end
+
+	local index = 1
+	local aura = E:UnitAura(unit, index, 'HELPFUL')
+	while aura do
+		local mountID = TT.MountIDs[aura.spellID]
+		if mountID then
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
+
+			local mountText = isControlKeyDown and sourceText and gsub(sourceText, blanchyFix, '|n')
+			if mountText then
+				local sourceModified = gsub(mountText, '|n', '\10')
+				for x in gmatch(sourceModified, '[^\10]+\10?') do
+					local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
+					if left and right then
+						tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+					else
+						tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+					end
+				end
+			end
+
+			break
+		else
+			index = index + 1
+			aura = E:UnitAura(unit, index, 'HELPFUL')
+		end
+	end
+end
+
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() or not TT.db.visibility then return end
 
@@ -478,31 +509,13 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
-	if TT.db.showMount and isPlayerUnit and unit ~= 'player' and not isShiftKeyDown then
-		for i = 1, 40 do
-			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
-			if not name then break end
 
-			if TT.MountIDs[id] then
-				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
-				tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
-
-				local mountText = isControlKeyDown and sourceText and gsub(sourceText, blanchyFix, '|n')
-				if mountText then
-					local sourceModified = gsub(mountText, '|n', '\10')
-					for x in gmatch(sourceModified, '[^\10]+\10?') do
-						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
-						if left and right then
-							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-						else
-							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
-						end
-					end
-				end
-
-				break
-			end
+	if TT.db.showMount then
+		if unit == 'mouseover' then
+			E:AuraInfo_UnitAura('OnTooltipSetUnit', unit)
 		end
+
+		TT:AddMountInfo(tt, unit, isPlayerUnit, isShiftKeyDown, isControlKeyDown)
 	end
 
 	if not isShiftKeyDown and not isControlKeyDown then
@@ -722,37 +735,37 @@ end
 
 function TT:SetUnitAura(tt, unit, index, filter)
 	if not tt or tt:IsForbidden() then return end
+
 	local aura = E:UnitAura(unit, index, filter)
+	if not aura then return end
 
-	if aura then
-		local mountID, mountText = TT.MountIDs[aura.spellID]
-		if mountID then
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
+	local mountID, mountText = TT.MountIDs[aura.spellID]
+	if mountID then
+		local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+		mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
 
-			if mountText then
-				tt:AddLine(' ')
-				tt:AddLine(mountText, 1, 1, 1)
-			end
+		if mountText then
+			tt:AddLine(' ')
+			tt:AddLine(mountText, 1, 1, 1)
 		end
-
-		if TT:IsModKeyDown() then
-			if mountText then
-				tt:AddLine(' ')
-			end
-
-			if aura.source then
-				local name = UnitName(aura.source)
-				local _, class = UnitClass(aura.source)
-				local color = E:ClassColor(class) or PRIEST_COLOR
-				tt:AddDoubleLine(format(IDLine, _G.ID, aura.spellID), format('|c%s%s|r', color.colorStr, name))
-			else
-				tt:AddLine(format(IDLine, _G.ID, aura.spellID))
-			end
-		end
-
-		tt:Show()
 	end
+
+	if TT:IsModKeyDown() then
+		if mountText then
+			tt:AddLine(' ')
+		end
+
+		if aura.source then
+			local name = UnitName(aura.source)
+			local _, class = UnitClass(aura.source)
+			local color = E:ClassColor(class) or PRIEST_COLOR
+			tt:AddDoubleLine(format(IDLine, _G.ID, aura.spellID), format('|c%s%s|r', color.colorStr, name))
+		else
+			tt:AddLine(format(IDLine, _G.ID, aura.spellID))
+		end
+	end
+
+	tt:Show()
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
