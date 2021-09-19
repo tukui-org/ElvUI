@@ -827,19 +827,19 @@ function TT:SetCurrencyTokenByID(tt, id)
 	end
 end
 
-function TT:QuestID(tt)
-	if not tt or tt:IsForbidden() then return end
+function TT:AddQuestID(frame)
+	if GameTooltip:IsForbidden() then return end
 
-	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
-	if id and TT:IsModKeyDown() then
-		tt:AddLine(format(IDLine, _G.ID, id))
+	local questID = TT:IsModKeyDown() and (frame.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(frame.questLogIndex) or frame.questID)
+	if not questID then return end
 
-		if tt.ItemTooltip:IsShown() then
-			tt:AddLine(' ')
-		end
+	GameTooltip:AddLine(format(IDLine, _G.ID, questID))
 
-		tt:Show()
+	if GameTooltip.ItemTooltip:IsShown() then
+		GameTooltip:AddLine(' ')
 	end
+
+	GameTooltip:Show()
 end
 
 function TT:SetBackpackToken(tt, id)
@@ -955,8 +955,8 @@ function TT:Initialize()
 	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
-	TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'QuestID')
-	TT:SecureHook('TaskPOI_OnEnter', 'QuestID')
+	TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
+	TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
