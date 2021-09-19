@@ -6,6 +6,10 @@ local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 function UF:Construct_RaidpetFrames()
+	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+
+	self.RaisedElementParent = UF:CreateRaisedElement(self)
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
