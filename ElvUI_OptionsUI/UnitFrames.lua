@@ -1318,24 +1318,8 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	if hasDetatchOption then
 		config.args.detachFromFrame = ACH:Toggle(L["Detach From Frame"], nil, 90)
 		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 91, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
-		config.args.detachedWidth = {
-			type = 'range',
-			order = 92,
-			name = L["Detached Width"],
-			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-			min = 15, max = 1000, step = 1,
-		}
-		config.args.parent = {
-			type = 'select',
-			order = 93,
-			name = L["Parent"],
-			desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-			values = {
-				FRAME = 'FRAME',
-				UIPARENT = 'UIPARENT',
-			},
-		}
+		config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 7, { min = 50, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
+		config.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 93, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
 	end
 
 	if hasStrataLevel then
@@ -1361,44 +1345,12 @@ local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName,
 end
 
 local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
-	local config = {
-		type = 'group',
-		name = L["PvP & Prestige Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].pvpIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].pvpIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			enable = {
-				order = 2,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			scale = {
-				order = 3,
-				type = 'range',
-				name = L["Scale"],
-				isPercent = true,
-				min = 0.1, max = 2, step = 0.01,
-			},
-			anchorPoint = {
-				order = 5,
-				type = 'select',
-				name = L["Anchor Point"],
-				values = C.Values.AllPoints,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -100, max = 100, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -100, max = 100, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["PvP & Prestige Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].pvpIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].pvpIcon[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.scale = ACH:Range(L["Scale"], nil, 2, { min = .5, max = 2, step = .01, isPercent = true })
+	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
 	return config
 end
@@ -1583,7 +1535,6 @@ end
 
 local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Role Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].roleIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].roleIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.options = ACH:MultiSelect(' ', nil, 1, { tank = L["Show For Tanks"], healer = L["Show For Healers"], damager = L["Show For DPS"], combatHide = L["Hide In Combat"] }, nil, nil, function(_, key) return E.db.unitframe.units[groupName].roleIcon[key] end, function(_, key, value) E.db.unitframe.units[groupName].roleIcon[key] = value; updateFunc(UF, groupName, numGroup) end)
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
@@ -1597,7 +1548,6 @@ end
 
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Leader Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -1608,7 +1558,6 @@ end
 
 local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	local config = ACH:Group(L["Ready Check Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].readycheckIcon[info[#info]] = value; updateFunc(UF, groupName) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
@@ -1621,7 +1570,6 @@ end
 
 local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Resurrect Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
@@ -1634,7 +1582,6 @@ end
 
 local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Summon Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
@@ -1649,117 +1596,31 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Classbar"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.height = {
-				type = 'range',
-				order = 3,
-				name = L["Height"],
-				min = 2, max = 30, step = 1,
-			}
-	config.args.fill = {
-				type = 'select',
-				order = 4,
-				name = L["Fill"],
-				values = {
-					fill = L["Filled"],
-					spaced = L["Spaced"],
-				},
-			}
+	config.args.height = ACH:Range(L["Size"], nil, 1, { min = 2, max = 30, step = 1 })
+	config.args.fill = ACH:Select(L["Style"], nil, 2, { fill = L["Filled"], spaced = L["Spaced"] })
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
-		config.args.altPowerColor = {
-			get = function(info)
-				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
-				local d = P.unitframe.units[groupName].classbar[info[#info]]
-				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-			end,
-			set = function(info, r, g, b)
-				local t = E.db.unitframe.units[groupName].classbar[info[#info]]
-				t.r, t.g, t.b = r, g, b
-				UF:Update_AllFrames()
-			end,
-			order = 5,
-			name = L["COLOR"],
-			type = 'color',
-		}
-		config.args.altPowerTextFormat = {
-			order = 6,
-			name = L["Text Format"],
-			desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
-			type = 'input',
-			width = 'full',
-		}
+		config.args.altPowerColor = ACH:Color(L["COLOR"], nil, 5, nil, nil, function(info) local t, d = E.db.unitframe.units[groupName].classbar[info[#info]], P.unitframe.units[groupName].classbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.units[groupName].classbar[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+		config.args.altPowerTextFormat = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 6, nil, 'full')
 	elseif groupName == 'player' then
-		config.args.height.max = (E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30)
-		config.args.autoHide = {
-			order = 5,
-			type = 'toggle',
-			name = L["Auto-Hide"],
-		}
+		config.args.height.max = function() return E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30 end
+		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 5)
 		config.args.spacer = ACH:Spacer(10)
-		config.args.detachGroup = {
-			order = 20,
-			type = 'group',
-			name = L["Detach From Frame"],
-			get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-			hidden = groupName ~= 'player',
-			inline = true,
-			args = {
-				detachFromFrame = {
-					type = 'toggle',
-					order = 1,
-					name = L["Enable"],
-					width = 'full',
-					set = function(info, value)
-						E.Options.args.unitframe.args.individualUnits.args.player.args.classbar.args.height.max = (value and 300) or 30
-						E.db.unitframe.units.player.classbar[info[#info]] = value
-						UF:CreateAndUpdateUF('player')
-					end,
-				},
-				detachedWidth = {
-					type = 'range',
-					order = 2,
-					name = L["Detached Width"],
-					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
-				},
-				orientation = {
-					type = 'select',
-					order = 3,
-					name = L["Frame Orientation"],
-					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-					values = {
-						HORIZONTAL = L["Horizontal"],
-						VERTICAL = L["Vertical"],
-					},
-				},
-				verticalOrientation = {
+
+		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 20, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup.inline = true
+		config.args.detachGroup.args.detachFromFrame = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 'full', nil, nil, false)
+		config.args.detachGroup.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 2, { min = 50, max = 1000, step = 1 })
+		config.args.detachGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
+		config.args.detachGroup.args.verticalOrientation = {
 					order = 4,
 					type = 'toggle',
 					name = L["Vertical Fill Direction"],
 					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-				},
-				spacing = {
-					order = 5,
-					type = 'range',
-					name = L["Spacing"],
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1,
-					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-				},
-				parent = {
-					type = 'select',
-					order = 6,
-					name = L["Parent"],
-					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-					values = {
-						FRAME = 'FRAME',
-						UIPARENT = 'UIPARENT',
-					},
-				},
-				strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar'),
-			},
-		}
+				}
+		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1 })
+		config.args.detachGroup.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 93, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' })
+		config.args.detachGroup.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar')
 	end
 
 	return config
@@ -2014,7 +1875,7 @@ E.Options.args.unitframe = {
 				targetOnMouseDown = {
 					order = 7,
 					name = L["Target On Mouse-Down"],
-					desc = L["Target units on mouse down rather than mouse up. |n|n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
+					desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
 					type = 'toggle',
 				},
 				targetSound = {
