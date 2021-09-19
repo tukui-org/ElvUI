@@ -9,7 +9,8 @@ E.Media = {
 	RestIcons = {},
 	ChatEmojis = {},
 	ChatLogos = {},
-	Textures = {}
+	Textures = {},
+	CombatIcons = {}
 }
 
 local format, ipairs, type, pcall = format, ipairs, type, pcall
@@ -207,6 +208,16 @@ AddMedia('logo','Unicorn')
 AddMedia('logo','DeathlyHallows')
 AddMedia('logo','GoldShield')
 AddMedia('logo','Gem')
+
+E.Media.CombatIcons.COMBAT = E.Media.Textures.Combat
+E.Media.CombatIcons.DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]]
+E.Media.CombatIcons.PLATINUM = [[Interface\Challenges\ChallengeMode_Medal_Platinum]]
+E.Media.CombatIcons.ATTACK = [[Interface\CURSOR\Attack]]
+E.Media.CombatIcons.ALERT = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]]
+E.Media.CombatIcons.ALERT2 = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]]
+E.Media.CombatIcons.ARTHAS = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]]
+E.Media.CombatIcons.SKULL = [[Interface\LootFrame\LootPanel-Icon]]
+
 
 do -- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
