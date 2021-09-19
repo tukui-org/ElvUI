@@ -156,7 +156,7 @@ L["Honor Bar"] = "Полоса Чести"
 L["Honor Remaining:"] = "Осталось Чести"
 L["Honor XP:"] = "Честь: "
 L["Horde: "] = "Орда: "
-L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
+L["BINDINGS_HELP"] = ("Наведите курсор на любую кнопку *панели команд|r, *микроменю|r, *макроса|r или *книги заклинаний|r для назначения. Также работает для предметов в *сумках|r. Нажмите ^ESC|r для ^удаления|r текущей назначенной клавиши."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "+ Исцел."
 L["HPS"] = "ИВС"
 L["I Swear"] = "Я клянусь!"
@@ -201,7 +201,7 @@ L["Legs"] = "Ноги"
 L["Level"] = "Уровень"
 L["List of installations in queue:"] = "Очередь установки:"
 L["Lock"] = "Закрепить"
-L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
+L["LOGIN_MSG_HELP"] = ("Используйте */ehelp|r для вызова достуцпных команд *ElvUI|r."):gsub('*', E.InfoColor)
 L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
@@ -340,8 +340,8 @@ L["Total: "] = "Всего: "
 L["Trigger"] = "Триггер"
 L["Type /hellokitty to revert to old settings."] = "Напишите /hellokitty для возврата к предыдущим настройкам."
 L["BelowMinimapWidget"] = "Виджет миникарты"
-L["TopCenterWidget"] = true
-L["MawBuffsWidget"] = true
+L["TopCenterWidget"] = "Центральный виджет"
+L["MawBuffsWidget"] = "Баффы Утробы"
 L["PowerBarWidget"] = "Виджет панели ресурса"
 L["EventToastWidget"] =  "Виджет событий"
 L["BossBannerWidget"] = "Баннер босса"
@@ -389,16 +389,15 @@ Options:
   Ctrl + RightClick - Resets mover position to default.
 ]=]
 
-L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */kb|r  -  Toggle the keybind mode.
- */emove|r  -  Toggle anchors to reposition various elements.
- */ereset|r  -  Reset all frames to their original positions.
- */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
- */estatus|r  -  Important informations for support questions.
- */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
-  using */edebug|r ^on|r within that session.
+L["EHELP_COMMANDS"] = ([=[Ниже представлен список всех важных команд *ElvUI|r:
+ */ec|r или */elvui|r  -  Открыть/закрыть *окно конфигурации|r.
+ */kb|r  -  Вкл/выкл режим назначения клавиш.
+ */emove|r  -  Показать/скрыть фиксаторы для смены расположения различных элементов.
+ */ereset|r  -  Сброс всех фреймов на из изначальные места.
+ */bgstats|r  -  Показать/скрыть статистику полей боя на панелях инфо-текстов.
+ */hdt|r  -  Изменять инфо-тексты без открытия *окна конфигурации|r.
+ */estatus|r  -  Важная информаци по вопросам поддержки.
+ */egrid|r ^64|r или ^128|r или ^256|r  -  Вкл/выкл экранную сетку.
+ */edebug|r ^on|r или ^off|r  -  Отключить все аддоны, кроме ElvUI.
+  ВАЖНО: */edebug|r ^off|r включит обратно все отключенные В ДАННОЙ СЕССИИ (без /rl) командой */edebug|r ^on|r аддоны.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
