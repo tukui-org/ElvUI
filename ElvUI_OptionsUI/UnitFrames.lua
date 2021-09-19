@@ -860,7 +860,7 @@ end
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tree')
 	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 2, nil, 'full', function() return '' end)
-	config.args.set = function(_, textName)
+	config.args.createCustomText.set = function(_, textName)
 		for object in pairs(E.db.unitframe.units[groupName]) do
 			if object:lower() == textName:lower() then
 				E:Print(L["The name you have selected is already in use by another element."])
@@ -1275,40 +1275,6 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				},
 				set = function(info, value)
 					E.db.unitframe.units[groupName].power[info[#info]] = value
-
-					local frameName = gsub('ElvUF_'..E:StringTitle(groupName), 't(arget)', 'T%1')
-					if numUnits then
-						for i=1, numUnits do
-							local frame = _G[frameName..i]
-							if frame and frame.Power then
-								local min, max = frame.Power:GetMinMaxValues()
-								frame.Power:SetMinMaxValues(min, max+500)
-								frame.Power:SetValue(1)
-								frame.Power:SetValue(0)
-							end
-						end
-					else
-						local frame = _G[frameName]
-						if frame then
-							if frame.Power then
-								local min, max = frame.Power:GetMinMaxValues()
-								frame.Power:SetMinMaxValues(min, max+500)
-								frame.Power:SetValue(1)
-								frame.Power:SetValue(0)
-							else
-								for i=1, frame:GetNumChildren() do
-									local child = select(i, frame:GetChildren())
-									if child and child.Power then
-										local min, max = child.Power:GetMinMaxValues()
-										child.Power:SetMinMaxValues(min, max+500)
-										child.Power:SetValue(1)
-										child.Power:SetValue(0)
-									end
-								end
-							end
-						end
-					end
-
 					updateFunc(UF, groupName, numUnits)
 				end,
 			},
@@ -1337,62 +1303,21 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 7,
 				name = L["Reverse Fill"],
 			},
-			configureButton = {
-				order = 10,
-				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
-				type = 'execute',
-				func = function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end,
-			},
-			textGroup = {
-				type = 'group',
-				name = L["Text Options"],
-				inline = true,
-				args = {
-					position = {
-						type = 'select',
-						order = 1,
-						name = L["Position"],
-						values = C.Values.AllPoints,
-					},
-					xOffset = {
-						order = 2,
-						type = 'range',
-						name = L["X-Offset"],
-						desc = L["Offset position for text."],
-						min = -300, max = 300, step = 1,
-					},
-					yOffset = {
-						order = 3,
-						type = 'range',
-						name = L["Y-Offset"],
-						desc = L["Offset position for text."],
-						min = -300, max = 300, step = 1,
-					},
-					text_format = {
-						order = 4,
-						name = L["Text Format"],
-						desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
-						type = 'input',
-						width = 'full',
-					},
-				},
-			},
 		},
 	}
 
+	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 10, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+
+	config.args.textGroup = ACH:Group(L["Text Options"], nil, 10)
+	config.args.textGroup.inline = true
+	config.args.textGroup.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+	config.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -400, max = 400, step = 1 })
+	config.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -400, max = 400, step = 1 })
+	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 4, nil, 'full')
+
 	if hasDetatchOption then
-		config.args.detachFromFrame = {
-			type = 'toggle',
-			order = 90,
-			name = L["Detach From Frame"],
-		}
-		config.args.autoHide = {
-			order = 91,
-			type = 'toggle',
-			name = L["Auto-Hide"],
-			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-		}
+		config.args.detachFromFrame = ACH:Toggle(L["Detach From Frame"], nil, 90)
+		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 91, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
 		config.args.detachedWidth = {
 			type = 'range',
 			order = 92,
@@ -1418,72 +1343,19 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	end
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
-		config.args.displayAltPower = {
-			type = 'toggle',
-			order = 9,
-			name = L["Swap to Alt Power"],
-		}
+		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 9)
 	end
 
 	return config
 end
 
 local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName, numGroup)
-	local config = {
-		name = L["PvP Classification Indicator"],
-		desc = L["Cart / Flag / Orb / Assassin Bounty"],
-		type = 'group',
-		get = function(info)
-			return E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]]
-		end,
-		set = function(info, value)
-			E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] = value
-			updateFunc(UF, groupName, numGroup)
-		end,
-		args = {
-			enable = {
-				order = 1,
-				name = L["Enable"],
-				type = 'toggle'
-			},
-			size = {
-				order = 2,
-				name = L["Size"],
-				type = 'range',
-				min = 5,
-				max = 100,
-				step = 1
-			},
-			position = {
-				order = 3,
-				type = 'select',
-				name = L["Icon Position"],
-				values = {
-					CENTER = 'CENTER',
-					TOPLEFT = 'TOPLEFT',
-					BOTTOMLEFT = 'BOTTOMLEFT',
-					TOPRIGHT = 'TOPRIGHT',
-					BOTTOMRIGHT = 'BOTTOMRIGHT'
-				}
-			},
-			xOffset = {
-				order = 4,
-				name = L["X-Offset"],
-				type = 'range',
-				min = -100,
-				max = 100,
-				step = 1
-			},
-			yOffset = {
-				order = 5,
-				name = L["Y-Offset"],
-				type = 'range',
-				min = -100,
-				max = 100,
-				step = 1
-			}
-		}
-	}
+	local config = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 30, nil, function(info) return E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
+	config.args.position = ACH:Select(L["Position"], nil, 3, { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
 	return config
 end
