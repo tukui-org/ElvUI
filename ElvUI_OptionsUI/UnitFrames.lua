@@ -7,6 +7,7 @@ local ACH = E.Libs.ACH
 local _G = _G
 local gsub, pairs, select, strmatch, strsplit = gsub, pairs, select, strmatch, strsplit
 local tinsert, type, wipe, ceil, tonumber = tinsert, type, wipe, ceil, tonumber
+local CopyTable = CopyTable
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 
@@ -79,136 +80,22 @@ local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUni
 end
 
 local function GetOptionsTable_AuraBars(updateFunc, groupName)
-	local config = {
-		type = 'group',
-		name = L["Aura Bars"],
-		get = function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value; updateFunc(UF, groupName) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 1,
-				name = L["Enable"],
-			},
-			configureButton1 = {
-				order = 2,
-				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
-				type = 'execute',
-				func = function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end,
-			},
-			configureButton2 = {
-				order = 3,
-				name = L["Coloring (Specific)"],
-				desc = L["This opens the AuraBar Colors filter. These settings affect specific spells."],
-				type = 'execute',
-				func = function() E:SetToFilterConfig('AuraBar Colors') end,
-			},
-			anchorPoint = {
-				type = 'select',
-				order = 4,
-				name = L["Anchor Point"],
-				desc = L["What point to anchor to the frame you set to attach to."],
-				values = {
-					ABOVE = L["Above"],
-					BELOW = L["Below"],
-				},
-			},
-			attachTo = {
-				type = 'select',
-				order = 5,
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = {
-					FRAME = L["Frame"],
-					DEBUFFS = L["Debuffs"],
-					BUFFS = L["Buffs"],
-					DETACHED = L["Detach From Frame"],
-				},
-			},
-			height = {
-				type = 'range',
-				order = 6,
-				name = L["Height"],
-				min = 5, max = 40, step = 1,
-			},
-			detachedWidth = {
-				type = 'range',
-				order = 7,
-				name = L["Detached Width"],
-				hidden = function() return E.db.unitframe.units[groupName].aurabar.attachTo ~= 'DETACHED' end,
-				min = 50, max = 500, step = 1,
-			},
-			maxBars = {
-				type = 'range',
-				order = 8,
-				name = L["Max Bars"],
-				min = 1, max = 40, step = 1,
-			},
-			sortMethod = {
-				order = 9,
-				name = L["Sort By"],
-				desc = L["Method to sort by."],
-				type = 'select',
-				values = {
-					TIME_REMAINING = L["Time Remaining"],
-					DURATION = L["Duration"],
-					NAME = L["NAME"],
-					INDEX = L["Index"],
-					PLAYER = L["PLAYER"],
-				},
-			},
-			sortDirection = {
-				order = 10,
-				name = L["Sort Direction"],
-				desc = L["Ascending or Descending order."],
-				type = 'select',
-				values = {
-					ASCENDING = L["Ascending"],
-					DESCENDING = L["Descending"],
-				},
-			},
-			clickThrough = {
-				order = 11,
-				name = L["Click Through"],
-				desc = L["Ignore mouse events."],
-				type = 'toggle',
-			},
-			friendlyAuraType = {
-				type = 'select',
-				order = 16,
-				name = L["Friendly Aura Type"],
-				desc = L["Set the type of auras to show when a unit is friendly."],
-				values = {
-					HARMFUL = L["Debuffs"],
-					HELPFUL = L["Buffs"],
-				},
-			},
-			enemyAuraType = {
-				type = 'select',
-				order = 17,
-				name = L["Enemy Aura Type"],
-				desc = L["Set the type of auras to show when a unit is a foe."],
-				values = {
-					HARMFUL = L["Debuffs"],
-					HELPFUL = L["Buffs"],
-				},
-			},
-			yOffset = {
-				order = 19,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = 0, max = 100, step = 1,
-				hidden = function() return E.db.unitframe.units[groupName].aurabar.attachTo == 'DETACHED' end,
-			},
-			spacing = {
-				order = 20,
-				type = 'range',
-				name = L["Spacing"],
-				min = 0, softMax = 20, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Aura Bars"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value; updateFunc(UF, groupName) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.configureButton1 = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 2, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.configureButton1 = ACH:Execute(L["Coloring (Specific)"], L["This opens the AuraBar Colors filter. These settings affect specific spells."], 3, function() E:SetToFilterConfig('AuraBar Colors') end)
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 4, { ABOVE = L["Above"], BELOW = L["Below"] })
+	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 5, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], BUFFS = L["Buffs"], DETACHED = L["Detach From Frame"] })
+	config.args.height = ACH:Range(L["Height"], nil, 6, { min = 5, max = 40, step = 1 })
+	config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 7, { min = 50, max = 500, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo ~= 'DETACHED' end)
+	config.args.maxBars = ACH:Range(L["Max Bars"], nil, 8, { min = 1, max = 40, step = 1 })
+	config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 9, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 10, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 11)
+	config.args.friendlyAuraType = ACH:Select(L["Friendly Aura Type"], L["Set the type of auras to show when a unit is friendly."], 12, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] })
+	config.args.enemyAuraType = ACH:Select(L["Enemy Aura Type"], L["Set the type of auras to show when a unit is a foe."], 13, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = 0, max = 100, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo == 'DETACHED' end)
+	config.args.spacing = ACH:Range(L["Spacing"], nil, 14, { min = 0, softMax = 20, step = 1 })
 
 	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
 	config.args.filtersGroup.inline = true
@@ -329,95 +216,24 @@ local function BuffIndicator_ApplyToAll(info, value, profile, pet)
 end
 
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
-	local config = {
-		type = 'group',
-		name = L["Aura Indicator"],
-		get = function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			enable = {
-				order = 2,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			size = {
-				order = 3,
-				type = 'range',
-				name = L["Size"],
-				min = 6, max = 48, step = 1,
-			},
-			countFontSize = {
-				order = 2,
-				name = L["FONT_SIZE"],
-				type = 'range',
-				min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-			},
-			profileSpecific = {
-				type = 'toggle',
-				name = L["Profile Specific"],
-				desc = L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."],
-				order = 4,
-			},
-			configureButton = {
-				order = 6,
-				type = 'execute',
-				name = L["Configure Auras"],
-				func = function()
-					if groupName == 'pet' then
-						E:SetToFilterConfig('Aura Indicator (Pet)')
-					elseif E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
-						E:SetToFilterConfig('Aura Indicator (Profile)')
-					else
-						E:SetToFilterConfig('Aura Indicator (Class)')
-					end
-				end,
-			}
-		},
-	}
+	local config = ACH:Group(L["Aura Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
+	config.args.countFontSize = ACH:Range(L["FONT_SIZE"], nil, 3, { min = 4, max = 20, step = 1 })
+	config.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 4)
+	config.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 5, function() local configString = format('Aura Indicator (%s)', groupName == 'pet' and 'Pet' or E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile' or 'Class') E:SetToFilterConfig(configString) end)
 
 	if subGroup then
 		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
 	else
-		config.args.applyToAll = {
-			name = ' ',
-			inline = true,
-			type = 'group',
-			order = 50,
-			get = function(info)
-				return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet')
-			end,
-			set = function(info, value)
-				BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet')
-				updateFunc(UF, groupName, numGroup)
-			end,
-			args = {
-				header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
-				style = {
-					name = L["Style"],
-					order = 2,
-					type = 'select',
-					values = {
-						timerOnly = L["Timer Only"],
-						coloredIcon = L["Colored Icon"],
-						texturedIcon = L["Textured Icon"],
-					},
-				},
-				textThreshold = {
-					name = L["Text Threshold"],
-					desc = L["At what point should the text be displayed. Set to -1 to disable."],
-					type = 'range',
-					order = 4,
-					min = -1, max = 60, step = 1,
-				},
-				displayText = {
-					name = L["Display Text"],
-					type = 'toggle',
-					order = 5,
-				},
-			}
-		}
+		config.args.applyToAll = ACH:Group(' ', nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet') end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet') updateFunc(UF, groupName, numGroup) end)
+		config.args.applyToAll.inline = true
+		config.args.applyToAll.args.header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
+		config.args.applyToAll.args.style = ACH:Select(L["Style"], nil, 2, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
+		config.args.applyToAll.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 3, { min = -1, max = 60, step = 1 })
+		config.args.applyToAll.args.displayText = ACH:Toggle(L["Display Text"], nil, 4)
 	end
 
 	return config
@@ -1020,147 +836,59 @@ local function CreateCustomTextGroup(unit, objectName)
 		return
 	end
 
-	E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = {
-		order = -1,
-		type = 'group',
-		name = objectName,
-		get = function(info) return E.db.unitframe.units[unit].customTexts[objectName][info[#info]] end,
-		set = function(info, value)
-			E.db.unitframe.units[unit].customTexts[objectName][info[#info]] = value
-			UpdateCustomTextGroup(unit)
-		end,
-		args = {
-			delete = {
-				type = 'execute',
-				order = 2,
-				name = L["DELETE"],
-				func = function()
-					E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = nil
-					E.db.unitframe.units[unit].customTexts[objectName] = nil
-
-					UpdateCustomTextGroup(unit)
-				end,
-			},
-			enable = {
-				order = 3,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			font = {
-				type = 'select', dialogControl = 'LSM30_Font',
-				order = 4,
-				name = L["Font"],
-				values = _G.AceGUIWidgetLSMlists.font,
-			},
-			size = {
-				order = 5,
-				name = L["FONT_SIZE"],
-				type = 'range',
-				min = 6, max = 64, step = 1,
-			},
-			fontOutline = {
-				order = 6,
-				name = L["Font Outline"],
-				desc = L["Set the font outline."],
-				type = 'select',
-				values = C.Values.FontFlags,
-			},
-			justifyH = {
-				order = 7,
-				type = 'select',
-				name = L["JustifyH"],
-				desc = L["Sets the font instance's horizontal text alignment style."],
-				values = {
-					CENTER = L["Center"],
-					LEFT = L["Left"],
-					RIGHT = L["Right"],
-				},
-			},
-			xOffset = {
-				order = 8,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -400, max = 400, step = 1,
-			},
-			yOffset = {
-				order = 9,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -400, max = 400, step = 1,
-			},
-			attachTextTo = {
-				type = 'select',
-				order = 10,
-				name = L["Attach Text To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			text_format = {
-				order = 100,
-				name = L["Text Format"],
-				desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
-				type = 'input',
-				width = 'full',
-			},
-		},
-	}
+	local config = ACH:Group(objectName, nil, nil, nil, function(info) return E.db.unitframe.units[unit].customTexts[objectName][info[#info]] end, function(info, value) E.db.unitframe.units[unit].customTexts[objectName][info[#info]] = value UpdateCustomTextGroup(unit) end)
+	config.args.delete = ACH:Execute(L["DELETE"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 2)
+	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 3)
+	config.args.size = ACH:Range(L["Font Size"], nil, 4, C.Values.FontSize)
+	config.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 5)
+	config.args.justifyH = ACH:Select(L["JustifyH"], L["Sets the font instance's horizontal text alignment style."], 6, { CENTER = L["Center"], LEFT = L["Left"], RIGHT = L["Right"] })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 7, { min = -400, max = 400, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -400, max = 400, step = 1 })
+	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 9, attachToValues)
+	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
 
 	if unit == 'player' and UF.player.AdditionalPower then
-		E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName].args.attachTextTo.values.AdditionalPower = L["Additional Power"]
+		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
 	end
 
-	tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden on profile change
+	E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = config
+
+	tinsert(CUSTOMTEXT_CONFIGS, config) --Register this custom text config to be hidden on profile change
 end
 
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		childGroups = 'tab',
-		name = L["Custom Texts"],
-		args = {
-			createCustomText = {
-				order = 2,
-				type = 'input',
-				name = L["Create Custom Text"],
-				width = 'full',
-				get = function() return '' end,
-				set = function(info, textName)
-					for object in pairs(E.db.unitframe.units[groupName]) do
-						if object:lower() == textName:lower() then
-							E:Print(L["The name you have selected is already in use by another element."])
-							return
-						end
-					end
+	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tree')
+	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 2, nil, 'full', function() return '' end)
+	config.args.set = function(_, textName)
+		for object in pairs(E.db.unitframe.units[groupName]) do
+			if object:lower() == textName:lower() then
+				E:Print(L["The name you have selected is already in use by another element."])
+				return
+			end
+		end
 
-					if not E.db.unitframe.units[groupName].customTexts then
-						E.db.unitframe.units[groupName].customTexts = {}
-					end
+		if not E.db.unitframe.units[groupName].customTexts then
+			E.db.unitframe.units[groupName].customTexts = {}
+		end
 
-					local frameName = 'ElvUF_'..E:StringTitle(groupName)
-					if E.db.unitframe.units[groupName].customTexts[textName] or (_G[frameName] and _G[frameName].customTexts and _G[frameName].customTexts[textName] or _G[frameName..'Group1UnitButton1'] and _G[frameName..'Group1UnitButton1'].customTexts and _G[frameName..'Group1UnitButton1'][textName]) then
-						E:Print(L["The name you have selected is already in use by another element."])
-						return
-					end
+		local frameName = 'ElvUF_'..E:StringTitle(groupName)
+		if E.db.unitframe.units[groupName].customTexts[textName] or (_G[frameName] and _G[frameName].customTexts and _G[frameName].customTexts[textName] or _G[frameName..'Group1UnitButton1'] and _G[frameName..'Group1UnitButton1'].customTexts and _G[frameName..'Group1UnitButton1'][textName]) then
+			E:Print(L["The name you have selected is already in use by another element."])
+			return
+		end
 
-					E.db.unitframe.units[groupName].customTexts[textName] = {
-						text_format = strmatch(textName, '^%[') and textName or '',
-						size = E.db.unitframe.fontSize,
-						font = E.db.unitframe.font,
-						xOffset = 0,
-						yOffset = 0,
-						justifyH = 'CENTER',
-						fontOutline = E.db.unitframe.fontOutline,
-						attachTextTo = 'Health'
-					}
+		E.db.unitframe.units[groupName].customTexts[textName] = CopyTable(G.unitframe.newCustomText)
+		E.db.unitframe.units[groupName].customTexts[textName].text_format = strmatch(textName, '^%[') and textName or ''
+		E.db.unitframe.units[groupName].customTexts[textName].size = E.db.unitframe.fontSize
+		E.db.unitframe.units[groupName].customTexts[textName].font = E.db.unitframe.font
+		E.db.unitframe.units[groupName].customTexts[textName].fontOutline = E.db.unitframe.fontOutline
 
-					CreateCustomTextGroup(groupName, textName)
-					updateFunc(UF, groupName, numUnits)
+		CreateCustomTextGroup(groupName, textName)
+		updateFunc(UF, groupName, numUnits)
 
-					E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'unitframe', individual[groupName] and 'individualUnits' or 'groupUnits', groupName, 'customText', textName)
-				end,
-			},
-		},
-	}
+		E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'unitframe', individual[groupName] and 'individualUnits' or 'groupUnits', groupName, 'customText', textName)
+	end
 
 	return config
 end
@@ -1275,96 +1003,25 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Health"],
-		get = function(info) return E.db.unitframe.units[groupName].health[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			reverseFill = {
-				type = 'toggle',
-				order = 1,
-				name = L["Reverse Fill"],
-			},
-			attachTextTo = {
-				type = 'select',
-				order = 3,
-				name = L["Attach Text To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			colorOverride = {
-				order = 4,
-				name = L["Class Color Override"],
-				desc = L["Override the default class color setting."],
-				type = 'select',
-				values = colorOverrideValues,
-				get = function(info) return E.db.unitframe.units[groupName][info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			},
-			configureButton = {
-				order = 5,
-				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
-				type = 'execute',
-				func = function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end,
-			},
-			textGroup = {
-				type = 'group',
-				name = L["Text Options"],
-				inline = true,
-				args = {
-					position = {
-						type = 'select',
-						order = 1,
-						name = L["Position"],
-						values = C.Values.AllPoints,
-					},
-					xOffset = {
-						order = 2,
-						type = 'range',
-						name = L["X-Offset"],
-						desc = L["Offset position for text."],
-						min = -300, max = 300, step = 1,
-					},
-					yOffset = {
-						order = 3,
-						type = 'range',
-						name = L["Y-Offset"],
-						desc = L["Offset position for text."],
-						min = -300, max = 300, step = 1,
-					},
-					text_format = {
-						order = 4,
-						name = L["Text Format"],
-						desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
-						type = 'input',
-						width = 'full',
-					},
-				},
-			},
-		},
-	}
+	local config = ACH:Group(L["Health"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
+	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 3, attachToValues)
+	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 4, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 5, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+
+	config.args.textGroup = ACH:Group(L["Text Options"], nil, 10)
+	config.args.textGroup.inline = true
+	config.args.textGroup.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+	config.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -400, max = 400, step = 1 })
+	config.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -400, max = 400, step = 1 })
+	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 4, nil, 'full')
 
 	if isGroupFrame then
-		config.args.orientation = {
-			type = 'select',
-			order = 9,
-			name = L["Statusbar Fill Orientation"],
-			desc = L["Direction the health bar moves when gaining/losing health."],
-			values = {
-				HORIZONTAL = L["Horizontal"],
-				VERTICAL = L["Vertical"],
-			},
-		}
+		config.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the health bar moves when gaining/losing health."], 9, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
 	end
 
 	if groupName == 'pet' or groupName == 'raidpet' then
-		config.args.colorPetByUnitClass = {
-			type = 'toggle',
-			order = 2,
-			name = L["Color by Unit Class"],
-		}
+		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 	end
 
 	return config
@@ -1444,30 +1101,10 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 end
 
 local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Information Panel"],
-		get = function(info) return E.db.unitframe.units[groupName].infoPanel[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].infoPanel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			transparent = {
-				type = 'toggle',
-				order = 3,
-				name = L["Transparent"],
-			},
-			height = {
-				type = 'range',
-				order = 4,
-				name = L["Height"],
-				min = 2, max = 30, step = 1,
-			},
-		}
-	}
+	local config = ACH:Group(L["Information Panel"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].infoPanel[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].infoPanel[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.transparent = ACH:Toggle(L["Transparent"], nil, 2)
+	config.args.height = ACH:Range(L["Height"], nil, 3, { min = 2, max = 30, step = 1 })
 
 	return config
 end
@@ -1490,44 +1127,12 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 end
 
 local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
-	local config = {
-		type = 'group',
-		name = L["Phase Indicator"],
-		get = function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			enable = {
-				order = 2,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			scale = {
-				order = 3,
-				type = 'range',
-				name = L["Scale"],
-				isPercent = true,
-				min = 0.5, max = 1.5, step = 0.01,
-			},
-			anchorPoint = {
-				order = 5,
-				type = 'select',
-				name = L["Anchor Point"],
-				values = C.Values.AllPoints,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -100, max = 100, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -100, max = 100, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Phase Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.scale = ACH:Range(L["Scale"], nil, 2, { min = .5, max = 2, step = .01, isPercent = true })
+	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
 	return config
 end

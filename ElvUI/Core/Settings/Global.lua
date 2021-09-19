@@ -152,6 +152,16 @@ G.unitframe = {
 	raidDebuffIndicator = {
 		instanceFilter = 'RaidDebuffs',
 		otherFilter = 'CCDebuffs'
+	},
+	newCustomText = {
+		text_format = '',
+		size = 10,
+		font = 'Homespun',
+		fontOutline = 'MONOCHROMEOUTLINE',
+		xOffset = 0,
+		yOffset = 0,
+		justifyH = 'CENTER',
+		attachTextTo = 'Health'
 	}
 }
 

@@ -291,7 +291,8 @@ local blacklistedKeys = {
 			effectiveAura = true,
 			effectiveHealthSpeed = true,
 			effectivePowerSpeed = true,
-			effectiveAuraSpeed = true
+			effectiveAuraSpeed = true,
+			newCustomText = true,
 		}
 	},
 }
