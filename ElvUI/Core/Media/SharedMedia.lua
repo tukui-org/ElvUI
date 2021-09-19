@@ -218,7 +218,6 @@ E.Media.CombatIcons.ALERT2 = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeature
 E.Media.CombatIcons.ARTHAS = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]]
 E.Media.CombatIcons.SKULL = [[Interface\LootFrame\LootPanel-Icon]]
 
-
 do -- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
 	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500)

@@ -87,7 +87,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 4, { ABOVE = L["Above"], BELOW = L["Below"] })
 	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 5, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], BUFFS = L["Buffs"], DETACHED = L["Detach From Frame"] })
 	config.args.height = ACH:Range(L["Height"], nil, 6, { min = 5, max = 40, step = 1 })
-	config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 7, { min = 50, max = 500, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo ~= 'DETACHED' end)
+	config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 7, { min = 30, max = 1000, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo ~= 'DETACHED' end)
 	config.args.maxBars = ACH:Range(L["Max Bars"], nil, 8, { min = 1, max = 40, step = 1 })
 	config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 9, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
 	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 10, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
@@ -240,42 +240,12 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 end
 
 local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Castbar"],
-		get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				order = 0,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			reverse = {
-				order = 1,
-				type = 'toggle',
-				name = L["Reverse"],
-			},
-			width = {
-				order = 3,
-				name = L["Width"],
-				type = 'range',
-				softMax = 600,
-				min = 50, max = ceil(E.screenWidth), step = 1,
-			},
-			height = {
-				order = 4,
-				name = L["Height"],
-				type = 'range',
-				min = 5, max = 85, step = 1,
-			},
-			matchsize = {
-				order = 5,
-				type = 'execute',
-				name = L["Match Frame Width"],
-				func = function() E.db.unitframe.units[groupName].castbar.width = E.db.unitframe.units[groupName].width; updateFunc(UF, groupName, numUnits) end,
-			},
-			forceshow = {
+	local config = ACH:Group(L["Castbar"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.reverse = ACH:Toggle(L["Reverse"], nil, 2)
+	config.args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = ceil(E.screenWidth), step = 1 })
+	config.args.height = ACH:Range(L["Height"], nil, 4, { min = 5, max = 85, step = 1 })
+	config.args.forceshow = {
 				order = 6,
 				name = L["SHOW"]..' / '..L["HIDE"],
 				func = function()
@@ -326,65 +296,18 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					end
 				end,
 				type = 'execute',
-			},
-			configureButton = {
-				order = 7,
-				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
-				type = 'execute',
-				func = function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end,
-			},
-			spark = {
-				order = 8,
-				type = 'toggle',
-				name = L["Spark"],
-				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
-			},
-			latency = {
-				order = 10,
-				name = L["Latency"],
-				type = 'toggle',
-				hidden = function() return groupName ~= 'player' end,
-			},
-			format = {
-				order = 11,
-				type = 'select',
-				name = L["Format"],
-				desc = L["Cast Time Format"],
-				values = {
-					CURRENTMAX = L["Current / Max"],
-					CURRENT = L["Current"],
-					REMAINING = L["Remaining"],
-					REMAININGMAX = L["Remaining / Max"],
-				},
-			},
-			timeToHold = {
-				order = 12,
-				name = L["Time To Hold"],
-				desc = L["How many seconds the castbar should stay visible after the cast failed or was interrupted."],
-				type = 'range',
-				min = 0, max = 10, step = .1,
-			},
-			overlayOnFrame = {
-				order = 3,
-				type = 'select',
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = {
-					Health = L["Health"],
-					Power = L["Power"],
-					InfoPanel = L["Information Panel"],
-					None = L["NONE"],
-				},
-			},
-			textGroup = {
-				order = 16,
-				type = 'group',
-				name = L["Text"],
-				inline = true,
-				get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				args = {
+			}
+
+	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 8)
+	config.args.latency = ACH:Toggle(L["Latency"], nil, 10, nil, nil, nil, nil, nil, nil, function() return groupName ~= 'player' end)
+	config.args.format = ACH:Select(L["Format"], L["Cast Time Format"], 11, { CURRENTMAX = L["Current / Max"], CURRENT = L["Current"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
+	config.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 12, { min = 0, max = 10, step = .1 })
+	config.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 3, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["NONE"] })
+
+	config.args.textGroup = ACH:Group(L["Text"], nil, 16, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.textGroup.inline = true
+	config.args.textGroup.args = {
 					hidetext = {
 						order = 1,
 						type = 'toggle',
@@ -396,12 +319,11 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						type = 'color',
 						name = L["COLOR"],
 						hasAlpha = true,
-						get = function(info)
-							local c = E.db.unitframe.units[groupName].castbar.textColor
-							local d = P.unitframe.units[groupName].castbar.textColor
+						get = function()
+							local c, d = E.db.unitframe.units[groupName].castbar.textColor, P.unitframe.units[groupName].castbar.textColor
 							return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
 						end,
-						set = function(info, r, g, b, a)
+						set = function(_, r, g, b, a)
 							local c = E.db.unitframe.units[groupName].castbar.textColor
 							c.r, c.g, c.b, c.a = r, g, b, a
 							updateFunc(UF, groupName, numUnits)
@@ -450,18 +372,8 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTextFont.enable end
 							},
-							xOffsetText = {
-								order = 4,
-								type = 'range',
-								name = L["X-Offset"],
-								min = -500, max = 500, step = 1,
-							},
-							yOffsetText = {
-								order = 5,
-								type = 'range',
-								name = L["Y-Offset"],
-								min = -500, max = 500, step = 1,
-							},
+							xOffsetText = ACH:Range(L["X-Offset"], nil, 4, { min = -500, max = 500, step = 1 }),
+							yOffsetText = ACH:Range(L["Y-Offset"], nil, 5, { min = -500, max = 500, step = 1 }),
 						},
 					},
 					timeSettings = {
@@ -507,267 +419,58 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end
 							},
-							xOffsetTime = {
-								order = 4,
-								type = 'range',
-								name = L["X-Offset"],
-								min = -500, max = 500, step = 1,
-							},
-							yOffsetTime = {
-								order = 5,
-								type = 'range',
-								name = L["Y-Offset"],
-								min = -500, max = 500, step = 1,
-							},
+							xOffsetTime = ACH:Range(L["X-Offset"], nil, 4, { min = -500, max = 500, step = 1 }),
+							yOffsetTime = ACH:Range(L["Y-Offset"], nil, 5, { min = -500, max = 500, step = 1 }),
 						},
 					},
-				},
-			},
-			iconSettings = {
-				order = 17,
-				type = 'group',
-				name = L["Icon"],
-				inline = true,
-				get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				args = {
-					icon = {
-						order = 1,
-						name = L["Enable"],
-						type = 'toggle',
-					},
-					iconAttached = {
-						order = 2,
-						name = L["Icon Inside Castbar"],
-						desc = L["Display the castbar icon inside the castbar."],
-						type = 'toggle',
-					},
-					iconSize = {
-						order = 3,
-						name = L["Icon Size"],
-						desc = L["This dictates the size of the icon when it is not attached to the castbar."],
-						type = 'range',
-						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
-						min = 8, max = 150, step = 1,
-					},
-					iconAttachedTo = {
-						order = 4,
-						type = 'select',
-						name = L["Attach To"],
-						desc = L["The object you want to attach to."],
-						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
-						values = {
-							Frame = L["Frame"],
-							Castbar = L["Castbar"],
-						},
-					},
-					iconPosition = {
-						type = 'select',
-						order = 5,
-						name = L["Position"],
-						values = C.Values.AllPoints,
-						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
-					},
-					iconXOffset = {
-						order = 5,
-						type = 'range',
-						name = L["X-Offset"],
-						min = -500, max = 500, step = 1,
-						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
-					},
-					iconYOffset = {
-						order = 6,
-						type = 'range',
-						name = L["Y-Offset"],
-						min = -500, max = 500, step = 1,
-						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
-					},
-				},
-			},
-			strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'castbar'),
-			customColor = {
-				order = 21,
-				type = 'group',
-				name = L["Custom Color"],
-				inline = true,
-				get = function(info)
-					if info.type == 'color' then
-						local c = E.db.unitframe.units[groupName].castbar.customColor[info[#info]]
-						local d = P.unitframe.units[groupName].castbar.customColor[info[#info]]
-						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, 1.0
-					else
-						return E.db.unitframe.units[groupName].castbar.customColor[info[#info]]
-					end
-				end,
-				set = function(info, ...)
-					if info.type == 'color' then
-						local r, g, b, a = ...
-						local c = E.db.unitframe.units[groupName].castbar.customColor[info[#info]]
-						c.r, c.g, c.b, c.a = r, g, b, a
-					else
-						local value = ...
-						E.db.unitframe.units[groupName].castbar.customColor[info[#info]] = value
-					end
+				}
 
-					updateFunc(UF, groupName, numUnits)
-				end,
-				args = {
-					enable = {
-						order = 1,
-						type = 'toggle',
-						name = L["Enable"],
-					},
-					transparent = {
-						order = 2,
-						type = 'toggle',
-						name = L["Transparent"],
-						desc = L["Make textures transparent."],
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
-					},
-					invertColors = {
-						order = 3,
-						type = 'toggle',
-						name = L["Invert Colors"],
-						desc = L["Invert foreground and background colors."],
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or not E.db.unitframe.units[groupName].castbar.customColor.transparent end,
-					},
-					spacer1 = ACH:Spacer(4, 'full'),
-					useClassColor = {
-						order = 5,
-						type = 'toggle',
-						name = L["Class Color"],
-						desc = L["Color castbar by the class of the unit's class."],
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
-					},
-					useReactionColor = {
-						order = 5,
-						type = 'toggle',
-						name = L["Reaction Color"],
-						desc = L["Color castbar by the reaction of the unit to the player."],
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or (groupName == 'player' or groupName == 'pet') end,
-					},
-					useCustomBackdrop = {
-						order = 6,
-						type = 'toggle',
-						name = L["Custom Backdrop"],
-						desc = L["Use the custom backdrop color instead of a multiple of the main color."],
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
-					},
-					spacer2 = ACH:Spacer(7, 'full'),
-					colorBackdrop = {
-						order = 8,
-						type = 'color',
-						name = L["Custom Backdrop"],
-						desc = L["Use the custom backdrop color instead of a multiple of the main color."],
-						disabled = function()
-							return not E.db.unitframe.units[groupName].castbar.customColor.enable or not E.db.unitframe.units[groupName].castbar.customColor.useCustomBackdrop
-						end,
-						hasAlpha = true,
-					},
-					color = {
-						order = 9,
-						name = L["Interruptible"],
-						type = 'color',
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
-					},
-					colorNoInterrupt = {
-						order = 10,
-						name = L["Non-Interruptible"],
-						type = 'color',
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
-					},
-					spacer3 = ACH:Spacer(11, 'full'),
-					colorInterrupted = {
-						name = L["Interrupted"],
-						order = 12,
-						type = 'color',
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
-					},
-				},
-			},
-		},
-	}
+	config.args.iconSettings = ACH:Group(L["Icon"], nil, 17, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.iconSettings.inline = true
+	config.args.iconSettings.args.icon = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.iconSettings.args.iconAttached = ACH:Toggle(L["Icon Inside Castbar"], L["Display the castbar icon inside the castbar."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon end)
+	config.args.iconSettings.args.iconSize = ACH:Range(L["Icon Size"], L["This dictates the size of the icon when it is not attached to the castbar."], 3, { min = 8, max = 150, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon or E.db.unitframe.units[groupName].castbar.iconAttached end)
+	config.args.iconSettings.args.iconAttachedTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, { Frame = L["Frame"], Castbar = L["Castbar"] }, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon or E.db.unitframe.units[groupName].castbar.iconAttached end)
+	config.args.iconSettings.args.iconPosition = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon or E.db.unitframe.units[groupName].castbar.iconAttached end)
+	config.args.iconSettings.args.iconXOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -500, max = 500, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon or E.db.unitframe.units[groupName].castbar.iconAttached end)
+	config.args.iconSettings.args.iconYOffset = ACH:Range(L["Y-Offset"], nil, 4, { min = -500, max = 500, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon or E.db.unitframe.units[groupName].castbar.iconAttached end)
+
+	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'castbar')
+
+	config.args.customColor = ACH:Group(L["Custom Color"], nil, 21, nil, function(info) if info.type == 'color' then local c, d = E.db.unitframe.units[groupName].castbar.customColor[info[#info]], P.unitframe.units[groupName].castbar.customColor[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, 1 else return E.db.unitframe.units[groupName].castbar.customColor[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local c = E.db.unitframe.units[groupName].castbar.customColor[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a else local value = ... E.db.unitframe.units[groupName].castbar.customColor[info[#info]] = value end updateFunc(UF, groupName, numUnits) end)
+	config.args.customColor.inline = true
+	config.args.customColor.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.customColor.args.transparent = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.invertColors = ACH:Toggle(L["Invert Colors"], L["Invert foreground and background colors."], 3, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.spacer1 = ACH:Spacer(4, 'full')
+	config.args.customColor.args.useClassColor = ACH:Toggle(L["Class Color"], L["Color castbar by the class of the unit's class."], 5, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.useReactionColor = ACH:Toggle(L["Reaction Color"], L["Color castbar by the reaction of the unit to the player."], 6, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or (groupName == 'player' or groupName == 'pet') end)
+	config.args.customColor.args.useCustomBackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 7, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.spacer2 = ACH:Spacer(8, 'full', function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.colorBackdrop = ACH:Color(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 9, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or not E.db.unitframe.units[groupName].castbar.customColor.useCustomBackdrop end)
+	config.args.customColor.args.color = ACH:Color(L["Interruptible"], nil, 10, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.colorNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 11, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.spacer3 = ACH:Spacer(11, 'full', function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.colorInterrupted = ACH:Color(L["Interrupted"], nil, 12, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 
 	if groupName == 'player' then
-		config.args.displayTarget = {
-			order = 13,
-			type = 'toggle',
-			name = L["Display Target"],
-			desc = L["Display the target of current cast."],
-		}
+		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 13)
 	end
 
 	if groupName == 'party' then
-		config.args.positionsGroup = {
-			order = 19,
-			type = 'group',
-			name = L["Position"],
-			get = function(info) return E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			inline = true,
-			args = {
-				anchorPoint = {
-					type = 'select',
-					order = 4,
-					name = L["Anchor Point"],
-					desc = L["What point to anchor to the frame you set to attach to."],
-					values = C.Values.AllPoints,
-				},
-				xOffset = {
-					order = 5,
-					type = 'range',
-					name = L["X-Offset"],
-					desc = L["An X offset (in pixels) to be used when anchoring new frames."],
-					min = -500, max = 500, step = 1,
-				},
-				yOffset = {
-					order = 6,
-					type = 'range',
-					name = L["Y-Offset"],
-					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
-					min = -500, max = 500, step = 1,
-				},
-			}
-		}
+		config.args.positionsGroup = ACH:Group(L["Position"], nil, 19, nil, function(info) return E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+		config.args.positionsGroup.inline = true
+		config.args.positionsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+		config.args.positionsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -500, max = 500, step = 1 })
+		config.args.positionsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -500, max = 500, step = 1 })
 	end
 
 	if hasTicks then
-		config.args.ticks = {
-			order = 20,
-			type = 'group',
-			inline = true,
-			name = L["Ticks"],
-			args = {
-				ticks = {
-					order = 1,
-					type = 'toggle',
-					name = L["Ticks"],
-					desc = L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."],
-				},
-				tickColor = {
-					order = 2,
-					type = 'color',
-					name = L["COLOR"],
-					hasAlpha = true,
-					get = function(info)
-						local c = E.db.unitframe.units[groupName].castbar.tickColor
-						local d = P.unitframe.units[groupName].castbar.tickColor
-						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local c = E.db.unitframe.units[groupName].castbar.tickColor
-						c.r, c.g, c.b, c.a = r, g, b, a
-						updateFunc(UF, groupName, numUnits)
-					end,
-				},
-				tickWidth = {
-					order = 3,
-					type = 'range',
-					name = L["Width"],
-					min = 1, max = 20, step = 1,
-				},
-			},
-		}
+		config.args.ticks = ACH:Group(L["Ticks"], nil, 20)
+		config.args.ticks.inline = true
+		config.args.ticks.args.ticks = ACH:Toggle(L["Ticks"], L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."], 1)
+		config.args.ticks.args.tickColor = ACH:Color(L["COLOR"], nil, 2, true, nil, function() local c, d = E.db.unitframe.units[groupName].castbar.tickColor, P.unitframe.units[groupName].castbar.tickColor return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].castbar.tickColor c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) end)
+		config.args.ticks.args.tickWidth = ACH:Range(L["Width"], nil, 3, { min = 1, max = 20, step = 1 })
 	end
 
 	return config
@@ -837,7 +540,7 @@ local function CreateCustomTextGroup(unit, objectName)
 	end
 
 	local config = ACH:Group(objectName, nil, nil, nil, function(info) return E.db.unitframe.units[unit].customTexts[objectName][info[#info]] end, function(info, value) E.db.unitframe.units[unit].customTexts[objectName][info[#info]] = value UpdateCustomTextGroup(unit) end)
-	config.args.delete = ACH:Execute(L["DELETE"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
+	config.args.delete = ACH:Execute(L["DELETE"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2)
 	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 3)
 	config.args.size = ACH:Range(L["Font Size"], nil, 4, C.Values.FontSize)
@@ -852,14 +555,15 @@ local function CreateCustomTextGroup(unit, objectName)
 		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
 	end
 
-	E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] = config
+	E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = config
 
 	tinsert(CUSTOMTEXT_CONFIGS, config) --Register this custom text config to be hidden on profile change
 end
 
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tree')
-	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 2, nil, 'full', function() return '' end)
+	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab')
+	config.args.tags = ACH:Group(L["Texts"])
+	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', function() return '' end)
 	config.args.createCustomText.set = function(_, textName)
 		for object in pairs(E.db.unitframe.units[groupName]) do
 			if object:lower() == textName:lower() then
@@ -1028,68 +732,19 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 end
 
 local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, subGroup)
-	local config = {
-		type = 'group',
-		name = L["Heal Prediction"],
-		desc = L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."],
-		get = function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			enable = {
-				order = 1,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			height = {
-				type = 'range',
-				order = 2,
-				name = L["Height"],
-				min = -1, max = 500, step = 1,
-			},
-			colorsButton = {
-				order = 3,
-				type = 'execute',
-				name = L["COLORS"],
-				func = function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end,
-				disabled = function() return not E.UnitFrames.Initialized end,
-			},
-			anchorPoint = {
-				order = 5,
-				type = 'select',
-				name = L["Anchor Point"],
-				values = {
-					TOP = 'TOP',
-					BOTTOM = 'BOTTOM',
-					CENTER = 'CENTER'
-				}
-			},
-			absorbStyle = {
-				order = 6,
-				type = 'select',
-				name = L["Absorb Style"],
-				values = {
-					NONE = L["NONE"],
-					NORMAL = L["Normal"],
-					REVERSED = L["Reversed"],
-					WRAPPED = L["Wrapped"],
-					OVERFLOW = L["Overflow"]
-				},
-			},
-			overflowButton = {
-				order = 7,
-				type = 'execute',
-				name = L["Max Overflow"],
-				func = function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end,
-				disabled = function() return not E.UnitFrames.Initialized end,
-			},
-			warning = ACH:Description(function()
+	local config = ACH:Group(L["Heal Prediction"], L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."], nil, nil, function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
+	config.args.colorsButton = ACH:Execute(L["COLORS"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
+	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["NONE"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] })
+	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.warning = ACH:Description(function()
 				if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
 					local text = L["Max Overflow is set to zero. Absorb Overflows will be hidden when using Overflow style.\nIf used together Max Overflow at zero and Overflow mode will act like Normal mode without the ending sliver of overflow."]
 					return text .. (E.db.unitframe.units[groupName].healPrediction.absorbStyle == 'OVERFLOW' and ' |cffFF9933You are using Overflow with Max Overflow at zero.|r ' or '')
 				end
-			end, 50, 'medium', nil, nil, nil, nil, 'full'),
-		},
-	}
+			end, 50, 'medium', nil, nil, nil, nil, 'full')
 
 	if subGroup then
 		config.inline = true
@@ -1245,70 +900,18 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, numUnits, hasStrataLevel)
-	local config = {
-		type = 'group',
-		name = L["Power"],
-		get = function(info) return E.db.unitframe.units[groupName].power[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].power[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 1,
-				name = L["Enable"],
-			},
-			attachTextTo = {
-				type = 'select',
-				order = 2,
-				name = L["Attach Text To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			width = {
-				type = 'select',
-				order = 3,
-				name = L["Style"],
-				values = {
-					fill = L["Filled"],
-					spaced = L["Spaced"],
-					inset = L["Inset"],
-					offset = L["Offset"],
-				},
-				set = function(info, value)
-					E.db.unitframe.units[groupName].power[info[#info]] = value
-					updateFunc(UF, groupName, numUnits)
-				end,
-			},
-			height = {
-				type = 'range',
-				name = L["Height"],
-				order = 4,
-				min = 2, max = 50, step = 1,
-				hidden = function() return E.db.unitframe.units[groupName].power.width == 'offset' end,
-			},
-			powerPrediction = {
-				type = 'toggle',
-				order = 5,
-				name = L["Power Prediction"],
-			},
-			offset = {
-				type = 'range',
-				name = L["Offset"],
-				desc = L["Offset of the powerbar to the healthbar, set to 0 to disable."],
-				order = 6,
-				min = 0, max = 20, step = 1,
-				hidden = function() return E.db.unitframe.units[groupName].power.width ~= 'offset' end,
-			},
-			reverseFill = {
-				type = 'toggle',
-				order = 7,
-				name = L["Reverse Fill"],
-			},
-		},
-	}
+	local config = ACH:Group(L["Power"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].power[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 2, attachToValues)
+	config.args.width = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], spaced = L["Spaced"], inset = L["Inset"], offset = L["Offset"] })
+	config.args.height = ACH:Range(L["Height"], nil, 4, { min = 2, max = 50, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width == 'offset' end)
+	config.args.powerPrediction = ACH:Toggle(L["Power Prediction"], nil, 5)
+	config.args.offset = ACH:Range(L["Offset"], L["Offset of the powerbar to the healthbar, set to 0 to disable."], 6, { min = 0, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width ~= 'offset' end)
+	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 7)
 
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 10, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 
-	config.args.textGroup = ACH:Group(L["Text Options"], nil, 10)
+	config.args.textGroup = ACH:Group(L["Text Options"], nil, 20)
 	config.args.textGroup.inline = true
 	config.args.textGroup.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 	config.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -400, max = 400, step = 1 })
@@ -1316,10 +919,10 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 4, nil, 'full')
 
 	if hasDetatchOption then
-		config.args.detachFromFrame = ACH:Toggle(L["Detach From Frame"], nil, 90)
-		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 91, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
-		config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 7, { min = 50, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
-		config.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 93, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
+		config.args.detachFromFrame = ACH:Toggle(L["Detach From Frame"], nil, 10)
+		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 11, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
+		config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 12, { min = 30, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
+		config.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 13, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].power.detachFromFrame end)
 	end
 
 	if hasStrataLevel then
@@ -1327,7 +930,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	end
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
-		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 9)
+		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 8)
 	end
 
 	return config
@@ -1337,7 +940,7 @@ local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName,
 	local config = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 30, nil, function(info) return E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
-	config.args.position = ACH:Select(L["Position"], nil, 3, { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
+	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
@@ -1516,7 +1119,6 @@ end
 
 local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGroup)
 	local config = ACH:Group(L["Target Marker Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
@@ -1594,32 +1196,25 @@ end
 
 local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Classbar"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
-
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.height = ACH:Range(L["Size"], nil, 1, { min = 2, max = 30, step = 1 })
-	config.args.fill = ACH:Select(L["Style"], nil, 2, { fill = L["Filled"], spaced = L["Spaced"] })
+	config.args.height = ACH:Range(L["Height"], nil, 1, { min = 2, max = 30, step = 1 })
+	config.args.fill = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], spaced = L["Spaced"] })
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
-		config.args.altPowerColor = ACH:Color(L["COLOR"], nil, 5, nil, nil, function(info) local t, d = E.db.unitframe.units[groupName].classbar[info[#info]], P.unitframe.units[groupName].classbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.units[groupName].classbar[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+		config.args.altPowerColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t, d = E.db.unitframe.units[groupName].classbar[info[#info]], P.unitframe.units[groupName].classbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.units[groupName].classbar[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 		config.args.altPowerTextFormat = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 6, nil, 'full')
 	elseif groupName == 'player' then
-		config.args.height.max = function() return E.db.unitframe.units[groupName].classbar.detachFromFrame and 300 or 30 end
+		config.args.height.max = function() return E.db.unitframe.units.player.classbar.detachFromFrame and 300 or 30 end
 		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 5)
-		config.args.spacer = ACH:Spacer(10)
 
-		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 20, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 20, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, groupName ~= 'player')
 		config.args.detachGroup.inline = true
-		config.args.detachGroup.args.detachFromFrame = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 'full', nil, nil, false)
-		config.args.detachGroup.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 2, { min = 50, max = 1000, step = 1 })
-		config.args.detachGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
-		config.args.detachGroup.args.verticalOrientation = {
-					order = 4,
-					type = 'toggle',
-					name = L["Vertical Fill Direction"],
-					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-				}
-		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1 })
-		config.args.detachGroup.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 93, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' })
+		config.args.detachGroup.args.detachFromFrame = ACH:Toggle(L["Enable"], nil, 1)
+		config.args.detachGroup.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 2, { min = 3, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup.args.verticalOrientation = ACH:Toggle(L["Vertical Fill Direction"], nil, 4, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 6, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar')
 	end
 
@@ -1628,7 +1223,6 @@ end
 
 local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["General"], nil, 1)
-
 	config.args.orientation = ACH:Select(L["Frame Orientation"], L["Set the orientation of the UnitFrame."], 1, orientationValues)
 	config.args.disableMouseoverGlow = ACH:Toggle(L["Block Mouseover Glow"], L["Forces Mouseover Glow to be disabled for these frames"], 2)
 	config.args.disableTargetGlow = ACH:Toggle(L["Block Target Glow"], L["Forces Target Glow to be disabled for these frames"], 3)
@@ -1715,52 +1309,23 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Combat Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end,
-		args = {
-			enable = ACH:Toggle(L["Enable"], nil, 0),
-			defaultColor = {
+	local config = ACH:Group(L["Combat Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.defaultColor = {
 				order = 3,
 				type = 'toggle',
 				name = L["Default Color"],
-			},
-			color = {
+			}
+	config.args.color = {
 				order = 4,
 				type = 'color',
 				name = L["COLOR"],
 				hasAlpha = true,
-				disabled = function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end,
-				get = function() local c = E.db.unitframe.units[groupName].CombatIcon.color local d = P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end,
+				hidden = function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end,
+				get = function() local c, d = E.db.unitframe.units[groupName].CombatIcon.color, P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end,
 				set = function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end,
-			},
-			size = {
-				order = 5,
-				type = 'range',
-				name = L["Size"],
-				min = 10, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -150, max = 150, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -150, max = 150, step = 1,
-			},
-			anchorPoint = {
-				order = 9,
-				type = 'select',
-				name = L["Anchor Point"],
-				values = C.Values.AllPoints,
-			},
-			texture = {
+			}
+	config.args.texture = {
 				order = 10,
 				type = 'select',
 				sortByValue = true,
@@ -1776,23 +1341,20 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 					ARTHAS =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
 					SKULL = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
 				},
-			},
-			customTexture = {
+			}
+	config.args.customTexture = {
 				type = 'input',
 				order = 11,
 				customWidth = 250,
 				name = L["Custom Texture"],
-				disabled = function()
-					return E.db.unitframe.units[groupName].CombatIcon.texture ~= 'CUSTOM'
-				end,
-				set = function(_, value)
-					E.db.unitframe.units[groupName].CombatIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil
-					updateFunc(UF, groupName, numUnits)
-					UF:TestingDisplay_CombatIndicator(UF[groupName])
-				end
-			},
-		},
-	}
+				disabled = function() return E.db.unitframe.units[groupName].CombatIcon.texture ~= 'CUSTOM' end,
+				set = function(_, value) E.db.unitframe.units[groupName].CombatIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end
+			}
+
+	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
+	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
 	return config
 end
