@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
+local format, ipairs, type, pcall = format, ipairs, type, pcall
+local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
+
 E.Media = {
 	Fonts = {},
 	Sounds = {},
@@ -10,18 +13,16 @@ E.Media = {
 	ChatEmojis = {},
 	ChatLogos = {},
 	Textures = {},
-	CombatIcons = {}
+	CombatIcons = {
+		DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]],
+		PLATINUM = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
+		ATTACK = [[Interface\CURSOR\Attack]],
+		ALERT = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
+		ALERT2 = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]],
+		ARTHAS = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]],
+		SKULL = [[Interface\LootFrame\LootPanel-Icon]]
+	}
 }
-
-local format, ipairs, type, pcall = format, ipairs, type, pcall
-local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
-
-do
-	local t, d = '|T%s%s|t', ''
-	function E:TextureString(texture, data)
-		return format(t, texture, data or d)
-	end
-end
 
 local MediaKey = {
 	font	= 'Fonts',
@@ -44,6 +45,13 @@ local MediaPath = {
 	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],
 	texture	= [[Interface\AddOns\ElvUI\Media\Textures\]]
 }
+
+do
+	local t, d = '|T%s%s|t', ''
+	function E:TextureString(texture, data)
+		return format(t, texture, data or d)
+	end
+end
 
 local function AddMedia(Type, File, Name, CustomType, Mask)
 	local path = MediaPath[Type]
@@ -226,14 +234,6 @@ AddMedia('logo','GoldShield')
 AddMedia('logo','Gem')
 
 E.Media.CombatIcons.COMBAT = E.Media.Textures.Combat
-E.Media.CombatIcons.DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]]
-E.Media.CombatIcons.PLATINUM = [[Interface\Challenges\ChallengeMode_Medal_Platinum]]
-E.Media.CombatIcons.ATTACK = [[Interface\CURSOR\Attack]]
-E.Media.CombatIcons.ALERT = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]]
-E.Media.CombatIcons.ALERT2 = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]]
-E.Media.CombatIcons.ARTHAS = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]]
-E.Media.CombatIcons.SKULL = [[Interface\LootFrame\LootPanel-Icon]]
-
 
 do -- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
