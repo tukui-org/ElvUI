@@ -959,160 +959,32 @@ local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 end
 
 local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
-	local config = {
-		type = 'group',
-		name = L["RaidDebuff Indicator"],
-		get = function(info) return E.db.unitframe.units[groupName].rdebuffs[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].rdebuffs[info[#info]] = value; updateFunc(UF, groupName) end,
-		args = {
-			enable = {
-				order = 2,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			showDispellableDebuff = {
-				order = 3,
-				type = 'toggle',
-				name = L["Show Dispellable Debuffs"],
-			},
-			onlyMatchSpellID = {
-				order = 4,
-				type = 'toggle',
-				name = L["Only Match SpellID"],
-				desc = L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."],
-			},
-			size = {
-				order = 4,
-				type = 'range',
-				name = L["Size"],
-				min = 8, max = 100, step = 1,
-			},
-			font = {
-				order = 5,
-				type = 'select', dialogControl = 'LSM30_Font',
-				name = L["Font"],
-				values = _G.AceGUIWidgetLSMlists.font,
-			},
-			fontSize = {
-				order = 6,
-				type = 'range',
-				name = L["FONT_SIZE"],
-				min = 6, max = 64, step = 1,
-			},
-			fontOutline = {
-				order = 7,
-				type = 'select',
-				name = L["Font Outline"],
-				values = C.Values.FontFlags,
-			},
-			xOffset = {
-				order = 8,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 9,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			configureButton = {
-				order = 10,
-				type = 'execute',
-				name = L["Configure Auras"],
-				func = function() E:SetToFilterConfig('RaidDebuffs') end,
-			},
-			duration = {
-				order = 11,
-				type = 'group',
-				inline = true,
-				name = L["Duration Text"],
-				get = function(info) return E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] = value; updateFunc(UF, groupName) end,
-				args = {
-					position = {
-						order = 1,
-						type = 'select',
-						name = L["Position"],
-						values = C.Values.AllPoints,
-					},
-					xOffset = {
-						order = 2,
-						type = 'range',
-						name = L["X-Offset"],
-						min = -10, max = 10, step = 1,
-					},
-					yOffset = {
-						order = 3,
-						type = 'range',
-						name = L["Y-Offset"],
-						min = -10, max = 10, step = 1,
-					},
-					color = {
-						order = 4,
-						type = 'color',
-						name = L["COLOR"],
-						hasAlpha = true,
-						get = function(info)
-							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
-							local d = P.unitframe.units.raid.rdebuffs.duration.color
-							return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
-						end,
-						set = function(info, r, g, b, a)
-							local c = E.db.unitframe.units.raid.rdebuffs.duration.color
-							c.r, c.g, c.b, c.a = r, g, b, a
-							UF:CreateAndUpdateHeaderGroup('raid')
-						end,
-					},
-				},
-			},
-			stack = {
-				order = 12,
-				type = 'group',
-				inline = true,
-				name = L["Stack Counter"],
-				get = function(info) return E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] = value; updateFunc(UF, groupName) end,
-				args = {
-					position = {
-						order = 1,
-						type = 'select',
-						name = L["Position"],
-						values = C.Values.AllPoints,
-					},
-					xOffset = {
-						order = 2,
-						type = 'range',
-						name = L["X-Offset"],
-						min = -10, max = 10, step = 1,
-					},
-					yOffset = {
-						order = 3,
-						type = 'range',
-						name = L["Y-Offset"],
-						min = -10, max = 10, step = 1,
-					},
-					color = {
-						order = 4,
-						type = 'color',
-						name = L["COLOR"],
-						hasAlpha = true,
-						get = function(info)
-							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
-							local d = P.unitframe.units[groupName].rdebuffs.stack.color
-							return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
-						end,
-						set = function(info, r, g, b, a)
-							local c = E.db.unitframe.units[groupName].rdebuffs.stack.color
-							c.r, c.g, c.b, c.a = r, g, b, a
-							updateFunc(UF, groupName)
-						end,
-					},
-				},
-			},
-		},
-	}
+	local config = ACH:Group(L["RaidDebuff Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs[info[#info]] = value; updateFunc(UF, groupName) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.showDispellableDebuff = ACH:Toggle(L["Show Dispellable Debuffs"], nil, 2)
+	config.args.onlyMatchSpellID = ACH:Toggle(L["Only Match SpellID"], L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."], 3)
+	config.args.size = ACH:Range(L["Size"], nil, 4, { min = 8, max = 100, step = 1 })
+	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 5)
+	config.args.fontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize)
+	config.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 7)
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -300, max = 300, step = 1 })
+
+	config.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 10, function() E:SetToFilterConfig('RaidDebuffs') end)
+
+	config.args.duration = ACH:Group(L["Duration Text"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.duration.inline = true
+	config.args.duration.args.anchorPoint = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+	config.args.duration.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
+	config.args.duration.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
+	config.args.duration.args.color = ACH:Color(L["COLOR"], nil, 4, true, nil, function() local c, d = E.db.unitframe.units.raid.rdebuffs.duration.color, P.unitframe.units.raid.rdebuffs.duration.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units.raid.rdebuffs.duration.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName) end)
+
+	config.args.stack = ACH:Group(L["Stack Counter"], nil, 13, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.stack.inline = true
+	config.args.stack.args.color = ACH:Color(L["COLOR"], nil, 4, true, nil, function() local c, d = E.db.unitframe.units[groupName].rdebuffs.stack.color, P.unitframe.units[groupName].rdebuffs.stack.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].rdebuffs.stack.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName) end)
+	config.args.stack.args.anchorPoint = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+	config.args.stack.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
+	config.args.stack.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
 
 	return config
 end
@@ -1311,45 +1183,12 @@ end
 local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Combat Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.defaultColor = {
-				order = 3,
-				type = 'toggle',
-				name = L["Default Color"],
-			}
-	config.args.color = {
-				order = 4,
-				type = 'color',
-				name = L["COLOR"],
-				hasAlpha = true,
-				hidden = function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end,
-				get = function() local c, d = E.db.unitframe.units[groupName].CombatIcon.color, P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end,
-				set = function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end,
-			}
-	config.args.texture = {
-				order = 10,
-				type = 'select',
-				sortByValue = true,
-				name = L["Texture"],
-				values = {
-					CUSTOM = L["CUSTOM"],
-					DEFAULT = L["DEFAULT"],
-					COMBAT = E:TextureString(E.Media.Textures.Combat, ':14'),
-					PLATINUM = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
-					ATTACK = [[|TInterface\CURSOR\Attack:14|t]],
-					ALERT = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],
-					ALERT2 = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14|t]],
-					ARTHAS =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
-					SKULL = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
-				},
-			}
-	config.args.customTexture = {
-				type = 'input',
-				order = 11,
-				customWidth = 250,
-				name = L["Custom Texture"],
-				disabled = function() return E.db.unitframe.units[groupName].CombatIcon.texture ~= 'CUSTOM' end,
-				set = function(_, value) E.db.unitframe.units[groupName].CombatIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end
-			}
+	config.args.defaultColor = ACH:Toggle(L["Default Color"], nil, 1)
+	config.args.color = ACH:Color(L["COLOR"], nil, 2, true, nil, function() local c, d = E.db.unitframe.units[groupName].CombatIcon.color, P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end, nil, function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end)
+	config.args.texture = ACH:Select(L["Texture"], nil, 10, function() local table = { CUSTOM = L["CUSTOM"], DEFAULT = L["DEFAULT"] } for key, path in next, E.Media.CombatIcons do if key ~= 'DEFAULT' then table[key] = E:TextureString(path, ':14') end end return table end)
+	config.args.texture.sortByValue = true
+	config.args.customTexture = ACH:Input(L["Custom Texture"], nil, 11, nil, nil, nil, function(_, value) E.db.unitframe.units[groupName].CombatIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
+	config.args.customTexture.customWidth = 250
 
 	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
