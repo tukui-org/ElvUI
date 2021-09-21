@@ -19,12 +19,12 @@ local headers = {
 local function SkinOjectiveTrackerHeaders(header)
 	if not (header and header.added and header:IsShown()) then return end
 
-	header.Background:SetAtlas(nil)
+	if header.Background then
+		header.Background:SetAtlas(nil)
+	end
 
-	local text = header.Text
-	if text:GetParent() ~= header then
-		text:FontTemplate()
-		text:SetParent(header)
+	if header.Text then
+		header.Text:FontTemplate()
 	end
 end
 
