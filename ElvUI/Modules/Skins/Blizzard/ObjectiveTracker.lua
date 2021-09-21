@@ -16,19 +16,15 @@ local headers = {
 	_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader
 }
 
-local function SkinOjectiveTrackerHeaders()
-	local frame = _G.ObjectiveTrackerFrame.MODULES
-	if frame then
-		for i = 1, #frame do
-			local modules = frame[i]
-			if modules then
-				modules.Header.Background:SetAtlas(nil)
+local function SkinOjectiveTrackerHeaders(header)
+	if not (header and header.added and header:IsShown()) then return end
 
-				local text = modules.Header.Text
-				text:FontTemplate()
-				text:SetParent(modules.Header)
-			end
-		end
+	header.Background:SetAtlas(nil)
+
+	local text = header.Text
+	if text:GetParent() ~= header then
+		text:FontTemplate()
+		text:SetParent(header)
 	end
 end
 
@@ -233,7 +229,7 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc('ObjectiveTrackerProgressBar_SetValue',ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc('ScenarioTrackerProgressBar_SetValue',ColorProgressBars)					--[Color]: Scenario Progress Bar
 	hooksecurefunc('QuestObjectiveSetupBlockButton_AddRightButton',PositionFindGroupButton)	--[Move]: The eye & quest item to the left of the eye
-	hooksecurefunc('ObjectiveTracker_Update',SkinOjectiveTrackerHeaders)					--[Skin]: Module Headers
+	hooksecurefunc('ObjectiveTracker_CheckAndHideHeader',SkinOjectiveTrackerHeaders)		--[Skin]: Module Headers
 	hooksecurefunc('QuestObjectiveSetupBlockButton_FindGroup',SkinFindGroupButton)			--[Skin]: The eye
 	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: World Quest Progress Bar
