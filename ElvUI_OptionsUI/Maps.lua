@@ -52,7 +52,7 @@ Maps.args.minimap.args.size = ACH:Range(L["Size"], L["Adjust the size of the min
 Maps.args.minimap.args.locationTextGroup = ACH:Group(L["Location Text"], nil, 5, nil, function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings(); MM:Update_ZoneText() end, function() return not E.private.general.minimap.enable end)
 Maps.args.minimap.args.locationTextGroup.args.locationText = ACH:Select(L["Location Text"], L["Change settings for the display of the location text that is on the minimap."], 1, { MOUSEOVER = L["Minimap Mouseover"], SHOW = L["Always Display"], HIDE = L["Hide"] })
 Maps.args.minimap.args.locationTextGroup.args.locationFont = ACH:SharedMediaFont(L["Font"], nil, 2)
-Maps.args.minimap.args.locationTextGroup.args.locationFontSize = ACH:Range(L["FONT_SIZE"], nil, 3, { min = 6, max = 36, step = 1 })
+Maps.args.minimap.args.locationTextGroup.args.locationFontSize = ACH:Range(L["Font Size"], nil, 3, { min = 6, max = 36, step = 1 })
 Maps.args.minimap.args.locationTextGroup.args.locationFontOutline = ACH:Select(L["Font Outline"], nil, 4, C.Values.FontFlags)
 Maps.args.minimap.args.locationTextGroup.inline = true
 

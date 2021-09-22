@@ -65,7 +65,7 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 7)
 	group.args.healthGroup.args.textGroup.args.fontGroup.inline = true
 	group.args.healthGroup.args.textGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.healthGroup.args.textGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.healthGroup.args.textGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.healthGroup.args.textGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
 	group.args.powerGroup = ACH:Group(L["Power"], nil, 3, nil, function(info) return E.db.nameplates.units[unit].power[info[#info]] end, function(info, value) E.db.nameplates.units[unit].power[info[#info]] = value NP:ConfigureAll() end)
@@ -89,7 +89,7 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 7)
 	group.args.powerGroup.args.textGroup.args.fontGroup.inline = true
 	group.args.powerGroup.args.textGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.powerGroup.args.textGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.powerGroup.args.textGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.powerGroup.args.textGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
 	group.args.castGroup = ACH:Group(L["Cast Bar"], nil, 4, nil, function(info) return E.db.nameplates.units[unit].castbar[info[#info]] end, function(info, value) E.db.nameplates.units[unit].castbar[info[#info]] = value NP:ConfigureAll() end)
@@ -126,7 +126,7 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.fontGroup = ACH:Group(L["Font"], nil, 30)
 	group.args.castGroup.args.fontGroup.inline = true
 	group.args.castGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.castGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.castGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.castGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
 	group.args.buffsGroup = ACH:Group(L["Buffs"], nil, 5, nil, function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end, function(info, value) E.db.nameplates.units[unit].buffs[info[#info]] = value NP:ConfigureAll() end)
@@ -149,7 +149,7 @@ local function GetUnitSettings(unit, name)
 	group.args.buffsGroup.args.stacks = ACH:Group(L["Stack Counter"], nil, 20)
 	group.args.buffsGroup.args.stacks.inline = true
 	group.args.buffsGroup.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.buffsGroup.args.stacks.args.countFontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.buffsGroup.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.buffsGroup.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 	group.args.buffsGroup.args.stacks.args.countXOffset = ACH:Range(L["X-Offset"], nil, 10, { min = -100, max = 100, step = 1 })
 	group.args.buffsGroup.args.stacks.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
@@ -201,7 +201,7 @@ local function GetUnitSettings(unit, name)
 	group.args.debuffsGroup.args.stacks = ACH:Group(L["Stack Counter"], nil, 20)
 	group.args.debuffsGroup.args.stacks.inline = true
 	group.args.debuffsGroup.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.debuffsGroup.args.stacks.args.countFontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.debuffsGroup.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.debuffsGroup.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 	group.args.debuffsGroup.args.stacks.args.countXOffset = ACH:Range(L["X-Offset"], nil, 10, { min = -100, max = 100, step = 1 })
 	group.args.debuffsGroup.args.stacks.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
@@ -252,7 +252,7 @@ local function GetUnitSettings(unit, name)
 	group.args.levelGroup.args.fontGroup = ACH:Group('', nil, 7)
 	group.args.levelGroup.args.fontGroup.inline = true
 	group.args.levelGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.levelGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.levelGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.levelGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
 	group.args.nameGroup = ACH:Group(L["Name"], nil, 8, nil, function(info) return E.db.nameplates.units[unit].name[info[#info]] end, function(info, value) E.db.nameplates.units[unit].name[info[#info]] = value NP:ConfigureAll() end)
@@ -266,7 +266,7 @@ local function GetUnitSettings(unit, name)
 	group.args.nameGroup.args.fontGroup = ACH:Group('', nil, 7)
 	group.args.nameGroup.args.fontGroup.inline = true
 	group.args.nameGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.nameGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.nameGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.nameGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
 	group.args.titleGroup = ACH:Group(L["UNIT_NAME_PLAYER_TITLE"], nil, 8, nil, function(info) return E.db.nameplates.units[unit].title[info[#info]] end, function(info, value) E.db.nameplates.units[unit].title[info[#info]] = value NP:ConfigureAll() end)
@@ -280,7 +280,7 @@ local function GetUnitSettings(unit, name)
 	group.args.titleGroup.args.fontGroup = ACH:Group('', nil, 7)
 	group.args.titleGroup.args.fontGroup.inline = true
 	group.args.titleGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	group.args.titleGroup.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+	group.args.titleGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 	group.args.titleGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
 	group.args.pvpindicator = ACH:Group(L["PvP Indicator"], L["Horde / Alliance / Honor Info"], 10, nil, function(info) return E.db.nameplates.units[unit].pvpindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpindicator[info[#info]] = value NP:ConfigureAll() end)
@@ -330,7 +330,7 @@ local function GetUnitSettings(unit, name)
 		group.args.questIcon.args.fontGroup = ACH:Group('', nil, 7)
 		group.args.questIcon.args.fontGroup.inline = true
 		group.args.questIcon.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-		group.args.questIcon.args.fontGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, { min = 4, max = 60, step = 1 })
+		group.args.questIcon.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 		group.args.questIcon.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 		group.args.questIcon.args.fontGroup.args.position = ACH:Select(L["Text Position"], nil, 4, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT' })
 	end

@@ -43,5 +43,5 @@
 	<Script file='ConfigEnviroment.lua'/>
 	<Include file='Elements\Load_Elements.xml'/>
 	<Include file='Units\Load_Units.xml'/>
-	<!--Include file='Groups\Load_Groups.xml'/-->
+	<Include file='Groups\Load_Groups.xml'/>
 </Ui>
