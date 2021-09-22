@@ -166,37 +166,38 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local aura = ElvUI[1]:UnitAura(unit, index, filter)
-	if not aura then return end
+	local name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3
 
-	local name = aura.name
-	local texture = aura.icon
-	local count = aura.count
-	local debuffType = aura.debuffType
-	local duration = aura.duration
-	local expiration = aura.expirationTime
-	local caster = aura.source
-	local isStealable = aura.isStealable
-	local nameplateShowSelf = aura.nameplateShowPersonal
-	local spellID = aura.spellID
-	local canApply = aura.canApplyAura
-	local isBossDebuff = aura.isBossDebuff
-	local casterIsPlayer = aura.castByPlayer
-	local nameplateShowAll = aura.nameplateShowAll
-	local timeMod = aura.timeMod
-	local effect1 = aura.effect1
-	local effect2 = aura.effect2
-	local effect3 = aura.effect3
-
-	-- ElvUI changed block
 	if element.forceShow or element.forceCreate then
 		spellID = 5782
 		name, _, texture = GetSpellInfo(spellID)
+
 		if element.forceShow then
-			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, "Magic", 0, 60, "player", nil, nil, nil
+			count, debuffType, duration, expiration, caster = 5, "Magic", 0, 60, "player"
+		end
+	else
+		local aura = ElvUI[1]:UnitAura(unit, index, filter)
+		if aura then
+			name = aura.name
+			texture = aura.icon
+			count = aura.count
+			debuffType = aura.debuffType
+			duration = aura.duration
+			expiration = aura.expirationTime
+			caster = aura.source
+			isStealable = aura.isStealable
+			nameplateShowSelf = aura.nameplateShowPersonal
+			spellID = aura.spellID
+			canApply = aura.canApplyAura
+			isBossDebuff = aura.isBossDebuff
+			casterIsPlayer = aura.castByPlayer
+			nameplateShowAll = aura.nameplateShowAll
+			timeMod = aura.timeMod
+			effect1 = aura.effect1
+			effect2 = aura.effect2
+			effect3 = aura.effect3
 		end
 	end
-	-- end Block
 
 	if(name) then
 		local position = visible + offset + 1
