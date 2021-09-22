@@ -11,7 +11,6 @@ local select = select
 local strmatch = strmatch
 local strsplit = strsplit
 local tinsert = tinsert
-local type = type
 local wipe = wipe
 local ceil = ceil
 local tonumber = tonumber
@@ -20,9 +19,6 @@ local format = format
 local CopyTable = CopyTable
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
-
--- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
--- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
 
 local orientationValues = {
 	LEFT = L["Left"],
@@ -922,18 +918,17 @@ end
 
 local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Combat Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
-	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.defaultColor = ACH:Toggle(L["Default Color"], nil, 1)
-	config.args.color = ACH:Color(L["COLOR"], nil, 2, true, nil, function() local c, d = E.db.unitframe.units[groupName].CombatIcon.color, P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end, nil, function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end)
-	config.args.texture = ACH:Select(L["Texture"], nil, 10, function() local table = { CUSTOM = L["CUSTOM"], DEFAULT = L["DEFAULT"] } for key, path in next, E.Media.CombatIcons do if key ~= 'DEFAULT' then table[key] = E:TextureString(path, ':14') end end return table end)
-	config.args.texture.sortByValue = true
-	config.args.customTexture = ACH:Input(L["Custom Texture"], nil, 11, nil, nil, nil, function(_, value) E.db.unitframe.units[groupName].CombatIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
-	config.args.customTexture.customWidth = 250
-
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	config.args.defaultColor = ACH:Toggle(L["Default Color"], nil, 6)
+	config.args.color = ACH:Color(L["COLOR"], nil, 7, true, nil, function() local c, d = E.db.unitframe.units[groupName].CombatIcon.color, P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end, nil, function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end)
+	config.args.texture = ACH:Select(L["Texture"], nil, 8, function() local table = { CUSTOM = L["CUSTOM"], DEFAULT = L["DEFAULT"] } for key, path in next, E.Media.CombatIcons do if key ~= 'DEFAULT' then table[key] = E:TextureString(path, ':14') end end return table end)
+	config.args.texture.sortByValue = true
+	config.args.customTexture = ACH:Input(L["Custom Texture"], nil, 9, nil, nil, nil, function(_, value) E.db.unitframe.units[groupName].CombatIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
+	config.args.customTexture.customWidth = 250
 
 	return config
 end
@@ -1723,21 +1718,6 @@ E.Options.args.unitframe.args.allColorsGroup = {
 			},
 		}
 
-E.Options.args.unitframe.args.individualUnits = {
-			order = 15,
-			type = 'group',
-			childGroups = 'tab',
-			name = L["Individual Units"],
-			args = {},
-		}
-E.Options.args.unitframe.args.groupUnits = {
-			order = 20,
-			type = 'group',
-			childGroups = 'tab',
-			name = L["Group Units"],
-			args = {},
-		}
-
 E.Options.args.unitframe.args.frameGlowGroup = {
 			order = 25,
 			type = 'group',
@@ -1751,18 +1731,23 @@ E.Options.args.unitframe.args.frameGlowGroup = {
 					inline = true,
 					name = L["Mouseover Glow"],
 					get = function(info)
-						local t = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]]
-						if type(t) == 'boolean' then return t end
-						local d = P.unitframe.colors.frameGlow.mainGlow[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local t = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]]
-						if type(t) == 'boolean' then
-							E.db.unitframe.colors.frameGlow.mainGlow[info[#info]] = r
+						if info.type == 'color' then
+							local t, d = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]], P.unitframe.colors.frameGlow.mainGlow[info[#info]]
+							return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 						else
-							t.r, t.g, t.b, t.a = r, g, b, a
+							return E.db.unitframe.colors.frameGlow.mainGlow[info[#info]]
 						end
+					end,
+					set = function(info, ...)
+						if info.type == 'color' then
+							local r, g, b, a = ...
+							local t = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]]
+							t.r, t.g, t.b, t.a = r, g, b, a
+						else
+							local value = ...
+							E.db.unitframe.colors.frameGlow.mainGlow[info[#info]] = value
+						end
+
 						UF:FrameGlow_UpdateFrames()
 					end,
 					disabled = function() return not E.db.unitframe.colors.frameGlow.mainGlow.enable end,
@@ -1794,18 +1779,23 @@ E.Options.args.unitframe.args.frameGlowGroup = {
 					inline = true,
 					name = L["Targeted Glow"],
 					get = function(info)
-						local t = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]]
-						if type(t) == 'boolean' then return t end
-						local d = P.unitframe.colors.frameGlow.targetGlow[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local t = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]]
-						if type(t) == 'boolean' then
-							E.db.unitframe.colors.frameGlow.targetGlow[info[#info]] = r
+						if info.type == 'color' then
+							local t, d = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]], P.unitframe.colors.frameGlow.targetGlow[info[#info]]
+							return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 						else
-							t.r, t.g, t.b, t.a = r, g, b, a
+							return E.db.unitframe.colors.frameGlow.targetGlow[info[#info]]
 						end
+					end,
+					set = function(info, ...)
+						if info.type == 'color' then
+							local r, g, b, a = ...
+							local t = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]]
+							t.r, t.g, t.b, t.a = r, g, b, a
+						else
+							local value = ...
+							E.db.unitframe.colors.frameGlow.targetGlow[info[#info]] = value
+						end
+
 						UF:FrameGlow_UpdateFrames()
 					end,
 					disabled = function() return not E.db.unitframe.colors.frameGlow.targetGlow.enable end,
@@ -1837,18 +1827,23 @@ E.Options.args.unitframe.args.frameGlowGroup = {
 					inline = true,
 					name = L["Focused Glow"],
 					get = function(info)
-						local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
-						if type(t) == 'boolean' then return t end
-						local d = P.unitframe.colors.frameGlow.focusGlow[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
-						if type(t) == 'boolean' then
-							E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] = r
+						if info.type == 'color' then
+							local t, d = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]], P.unitframe.colors.frameGlow.focusGlow[info[#info]]
+							return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 						else
-							t.r, t.g, t.b, t.a = r, g, b, a
+							return E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
 						end
+					end,
+					set = function(info, ...)
+						if info.type == 'color' then
+							local r, g, b, a = ...
+							local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
+							t.r, t.g, t.b, t.a = r, g, b, a
+						else
+							local value = ...
+							E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] = value
+						end
+
 						UF:FrameGlow_UpdateFrames()
 					end,
 					disabled = function() return not E.db.unitframe.colors.frameGlow.focusGlow.enable end,
@@ -1880,18 +1875,23 @@ E.Options.args.unitframe.args.frameGlowGroup = {
 					inline = true,
 					name = L["Mouseover Highlight"],
 					get = function(info)
-						local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
-						if type(t) == 'boolean' then return t end
-						local d = P.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
-						if type(t) == 'boolean' then
-							E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] = r
+						if info.type == 'color' then
+							local t, d = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]], P.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
+							return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 						else
-							t.r, t.g, t.b, t.a = r, g, b, a
+							return E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
 						end
+					end,
+					set = function(info, ...)
+						if info.type == 'color' then
+							local r, g, b, a = ...
+							local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
+							t.r, t.g, t.b, t.a = r, g, b, a
+						else
+							local value = ...
+							E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] = value
+						end
+
 						UF:FrameGlow_UpdateFrames()
 					end,
 					disabled = function() return not E.db.unitframe.colors.frameGlow.mouseoverGlow.enable end,
@@ -1908,13 +1908,6 @@ E.Options.args.unitframe.args.frameGlowGroup = {
 							order = 2,
 							name = L["Texture"],
 							values = _G.AceGUIWidgetLSMlists.statusbar,
-							get = function(info)
-								return E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
-							end,
-							set = function(info, value)
-								E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] = value
-								UF:FrameGlow_UpdateFrames()
-							end,
 						},
 						spacer = ACH:Spacer(3),
 						class = {
@@ -1934,477 +1927,193 @@ E.Options.args.unitframe.args.frameGlowGroup = {
 			}
 		}
 
+E.Options.args.unitframe.args.individualUnits = ACH:Group(L["Individual Units"], nil, 15, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
+
+local Player = ACH:Group(L["Player"], nil, 1, nil, function(info) return E.db.unitframe.units.player[info[#info]] end, function(info, value) E.db.unitframe.units.player[info[#info]] = value UF:CreateAndUpdateUF('player') end)
+E.Options.args.unitframe.args.individualUnits.args.player = Player
+
 --Player
-E.Options.args.unitframe.args.individualUnits.args.player = {
-	name = L["Player"],
-	type = 'group',
-	order = 3,
-	get = function(info) return E.db.unitframe.units.player[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.player[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-	disabled = function() return not E.UnitFrames.Initialized end,
-	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L["Enable"],
-			set = function(info, value)
-				E.db.unitframe.units.player[info[#info]] = value
-				UF:CreateAndUpdateUF('player')
-			end,
-		},
-		showAuras = {
-			order = 2,
-			type = 'execute',
-			name = L["Show Auras"],
-			func = function()
-				if UF.player.forceShowAuras then
-					UF.player.forceShowAuras = nil
-				else
-					UF.player.forceShowAuras = true
-				end
+Player.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Player.args.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.player.forceShowAuras = not UF.player.forceShowAuras UF:CreateAndUpdateUF('player') end)
+Player.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, { unit = 'player', mover = 'Player Frame' }) end)
+Player.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'player') E:RefreshGUI() end)
+Player.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'player')
 
-				UF:CreateAndUpdateUF('player')
-			end,
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 3,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, {unit='player', mover='Player Frame'}) end,
-		},
-		copyFrom = {
-			type = 'select',
-			order = 4,
-			name = L["Copy From"],
-			desc = L["Select a unit to copy settings from."],
-			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'player'); E:RefreshGUI() end,
-			confirm = true,
-		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'player'),
-		RestIcon = {
-			type = 'group',
-			name = L["Rest Icon"],
-			get = function(info) return E.db.unitframe.units.player.RestIcon[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.player.RestIcon[info[#info]] = value; UF:CreateAndUpdateUF('player'); UF:TestingDisplay_RestingIndicator(ElvUF_Player) end,
-			args = {
-				enable = {
-					order = 2,
-					type = 'toggle',
-					name = L["Enable"],
-				},
-				defaultColor = {
-					order = 3,
-					type = 'toggle',
-					name = L["Default Color"],
-				},
-				color = {
-					order = 4,
-					type = 'color',
-					name = COLOR,
-					hasAlpha = true,
-					disabled = function()
-						return E.db.unitframe.units.player.RestIcon.defaultColor
-					end,
-					get = function()
-						local c = E.db.unitframe.units.player.RestIcon.color
-						local d = P.unitframe.units.player.RestIcon.color
-						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(_, r, g, b, a)
-						local c = E.db.unitframe.units.player.RestIcon.color
-						c.r, c.g, c.b, c.a = r, g, b, a
-						UF:CreateAndUpdateUF('player')
-						UF:TestingDisplay_RestingIndicator(UF.player)
-					end,
-				},
-				size = {
-					order = 5,
-					type = 'range',
-					name = L["Size"],
-					min = 10, max = 60, step = 1,
-				},
-				xOffset = {
-					order = 6,
-					type = 'range',
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = 'range',
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				anchorPoint = {
-					order = 9,
-					type = 'select',
-					name = L["Anchor Point"],
-					values = C.Values.AllPoints,
-				},
-				texture = {
-					order = 10,
-					type = 'select',
-					sortByValue = true,
-					name = L["Texture"],
-					values = {
-						CUSTOM = L["CUSTOM"],
-						DEFAULT = L["DEFAULT"]
-					},
-				},
-				customTexture = {
-					type = 'input',
-					order = 11,
-					customWidth = 250,
-					name = L["Custom Texture"],
-					disabled = function()
-						return E.db.unitframe.units.player.RestIcon.texture ~= 'CUSTOM'
-					end,
-					set = function(_, value)
-						E.db.unitframe.units.player.RestIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil
-						UF:CreateAndUpdateUF('player')
-						UF:TestingDisplay_RestingIndicator(UF.player)
-					end
-				},
-			},
-		},
-		PartyIndicator = {
-			type = 'group',
-			name = L["Party Indicator"],
-			get = function(info) return E.db.unitframe.units.player.partyIndicator[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.player.partyIndicator[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					order = 2,
-					type = 'toggle',
-					name = L["Enable"],
-				},
-				scale = {
-					order = 3,
-					type = 'range',
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.5, max = 1.5, step = 0.01,
-				},
-				xOffset = {
-					order = 6,
-					type = 'range',
-					name = L["X-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				yOffset = {
-					order = 7,
-					type = 'range',
-					name = L["Y-Offset"],
-					min = -100, max = 100, step = 1,
-				},
-				anchorPoint = {
-					order = 9,
-					type = 'select',
-					name = L["Anchor Point"],
-					values = C.Values.AllPoints,
-				},
-			},
-		},
-		pvpText = {
-			type = 'group',
-			name = L["PvP Text"],
-			get = function(info) return E.db.unitframe.units.player.pvp[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units.player.pvp[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				position = {
-					type = 'select',
-					order = 2,
-					name = L["Position"],
-					values = C.Values.AllPoints,
-				},
-				text_format = {
-					order = 100,
-					name = L["Text Format"],
-					desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
-					type = 'input',
-					width = 'full',
-				},
-			},
-		},
-		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'player'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player'),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'player'),
-		castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
-		CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'player'),
-		classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateUF, 'player'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player'),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'player'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true),
-		pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'player'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'player'),
-		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'player'),
-		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player'),
-	},
-}
+Player.args.RestIcon = ACH:Group(L["Rest Icon"], nil, nil, nil, function(info) return E.db.unitframe.units.player.RestIcon[info[#info]] end, function(info, value) E.db.unitframe.units.player.RestIcon[info[#info]] = value UF:CreateAndUpdateUF('player') UF:TestingDisplay_RestingIndicator(UF.player) end)
+Player.args.RestIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Player.args.RestIcon.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
+Player.args.RestIcon.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+Player.args.RestIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+Player.args.RestIcon.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+Player.args.RestIcon.args.defaultColor = ACH:Toggle(L["Default Color"], nil, 6)
+Player.args.RestIcon.args.color = ACH:Color(L["COLOR"], nil, 7, true, nil, function() local c, d = E.db.unitframe.units.player.RestIcon.color, P.unitframe.units.player.RestIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units.player.RestIcon.color c.r, c.g, c.b, c.a = r, g, b, a UF:CreateAndUpdateUF('player') UF:TestingDisplay_RestingIndicator(UF.player) end, nil, function() return E.db.unitframe.units.player.RestIcon.defaultColor end)
+Player.args.RestIcon.args.texture = ACH:Select(L["Texture"], nil, 8, { CUSTOM = L["CUSTOM"], DEFAULT = L["DEFAULT"] })
+Player.args.RestIcon.args.texture.sortByValue = true
+Player.args.RestIcon.args.customTexture = ACH:Input(L["Custom Texture"], nil, 9, nil, nil, nil, function(_, value) E.db.unitframe.units.player.RestIcon.customTexture = (value and (not value:match('^%s-$')) and value) or nil UF:CreateAndUpdateUF('player') UF:TestingDisplay_RestingIndicator(UF.player) end)
+Player.args.RestIcon.args.customTexture.customWidth = 250
 
-do -- resting icons
-	local resting = E.Options.args.unitframe.args.individualUnits.args.player.args.RestIcon.args.texture.values
-	for key, icon in pairs(E.Media.RestIcons) do
-		resting[key] = E:TextureString(icon, ':14:14')
-	end
+for key, icon in pairs(E.Media.RestIcons) do
+	Player.args.RestIcon.args.texture.values[key] = E:TextureString(icon, ':14:14')
 end
 
+Player.args.PartyIndicator = ACH:Group(L["Party Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units.player.partyIndicator[info[#info]] end, function(info, value) E.db.unitframe.units.player.partyIndicator[info[#info]] = value UF:CreateAndUpdateUF('player') end)
+Player.args.PartyIndicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Player.args.PartyIndicator.args.scale = ACH:Range(L["Scale"], nil, 2, { min = .5, max = 2, step = .01, isPercent = true })
+Player.args.PartyIndicator.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+Player.args.PartyIndicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+Player.args.PartyIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+
+Player.args.pvpText = ACH:Group(L["PvP Text"], nil, nil, nil, function(info) return E.db.unitframe.units.player.pvp[info[#info]] end, function(info, value) E.db.unitframe.units.player.pvp[info[#info]] = value UF:CreateAndUpdateUF('player') end)
+Player.args.pvpText.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+Player.args.pvpText.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
+
+Player.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'player')
+Player.args.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player')
+Player.args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'player')
+Player.args.castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player')
+Player.args.CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'player')
+Player.args.classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateUF, 'player')
+Player.args.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player')
+Player.args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player')
+Player.args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'player')
+Player.args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player')
+Player.args.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player')
+Player.args.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player')
+Player.args.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player')
+Player.args.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player')
+Player.args.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player')
+Player.args.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true)
+Player.args.pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'player')
+Player.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'player')
+Player.args.raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'player')
+Player.args.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player')
+
+local Pet = ACH:Group(L["PET"], nil, 1, nil, function(info) return E.db.unitframe.units.pet[info[#info]] end, function(info, value) E.db.unitframe.units.pet[info[#info]] = value UF:CreateAndUpdateUF('pet') end)
+E.Options.args.unitframe.args.individualUnits.args.pet = Pet
+--Pet
+
+Pet.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Pet.args.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.pet.forceShowAuras = not UF.pet.forceShowAuras UF:CreateAndUpdateUF('pet') end)
+Pet.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, { unit = 'pet', mover = 'Pet Frame' }) end)
+Pet.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pet') E:RefreshGUI() end)
+Pet.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet')
+Pet.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pet')
+Pet.args.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'pet')
+Pet.args.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet')
+Pet.args.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet')
+Pet.args.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet')
+Pet.args.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet')
+Pet.args.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'pet')
+Pet.args.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet')
+Pet.args.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet')
+Pet.args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pet')
+Pet.args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'pet')
+Pet.args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'pet')
+Pet.args.castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet')
+Pet.args.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet')
+Pet.args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet')
+Pet.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'pet')
+
+local Target = ACH:Group(L["Target"], nil, 2, nil, function(info) return E.db.unitframe.units.target[info[#info]] end, function(info, value) E.db.unitframe.units.target[info[#info]] = value UF:CreateAndUpdateUF('target') end)
+E.Options.args.unitframe.args.individualUnits.args.target = Target
+
 --Target
-E.Options.args.unitframe.args.individualUnits.args.target = {
-	name = L["TARGET"],
-	type = 'group',
-	order = 4,
-	get = function(info) return E.db.unitframe.units.target[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.target[info[#info]] = value; UF:CreateAndUpdateUF('target') end,
-	disabled = function() return not E.UnitFrames.Initialized end,
-	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L["Enable"],
-		},
-		showAuras = {
-			order = 2,
-			type = 'execute',
-			name = L["Show Auras"],
-			func = function()
-				if UF.target.forceShowAuras then
-					UF.target.forceShowAuras = nil
-				else
-					UF.target.forceShowAuras = true
-				end
+Target.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Target.args.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.target.forceShowAuras = not UF.target.forceShowAuras UF:CreateAndUpdateUF('target') end)
+Target.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, { unit = 'target', mover = 'Target Frame' }) end)
+Target.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'target') E:RefreshGUI() end)
+Target.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'target')
+Target.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'target')
+Target.args.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'target')
+Target.args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'target')
+Target.args.castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target')
+Target.args.CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'target')
+Target.args.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target')
+Target.args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'target')
+Target.args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'target')
+Target.args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'target')
+Target.args.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'target')
+Target.args.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target')
+Target.args.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target')
+Target.args.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target')
+Target.args.phaseIndicator = GetOptionsTable_PhaseIndicator(UF.CreateAndUpdateUF, 'target')
+Target.args.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target')
+Target.args.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true)
+Target.args.pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'target')
+Target.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'target')
+Target.args.raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'target')
+Target.args.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'target')
 
-				UF:CreateAndUpdateUF('target')
-			end,
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 3,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, {unit='target', mover='Target Frame'}) end,
-		},
-		copyFrom = {
-			type = 'select',
-			order = 4,
-			name = L["Copy From"],
-			desc = L["Select a unit to copy settings from."],
-			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'target'); E:RefreshGUI() end,
-			confirm = true,
-		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'target'),
-		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'target'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'target'),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'target'),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
-		CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'target'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'target'),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'target'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'target'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'target'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
-		phaseIndicator = GetOptionsTable_PhaseIndicator(UF.CreateAndUpdateUF, 'target'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true),
-		pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'target'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'target'),
-		raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'target'),
-		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'target'),
-	},
-}
-
+local TargetTarget = ACH:Group(L["TargetTarget"], nil, 3, nil, function(info) return E.db.unitframe.units.targettarget[info[#info]] end, function(info, value) E.db.unitframe.units.targettarget[info[#info]] = value UF:CreateAndUpdateUF('targettarget') end)
+E.Options.args.unitframe.args.individualUnits.args.targettarget = TargetTarget
 --TargetTarget
-E.Options.args.unitframe.args.individualUnits.args.targettarget = {
-	name = L["TargetTarget"],
-	type = 'group',
-	order = 5,
-	get = function(info) return E.db.unitframe.units.targettarget[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.targettarget[info[#info]] = value; UF:CreateAndUpdateUF('targettarget') end,
-	disabled = function() return not E.UnitFrames.Initialized end,
-	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L["Enable"],
-		},
-		showAuras = {
-			order = 2,
-			type = 'execute',
-			name = L["Show Auras"],
-			func = function()
-				if UF.targettarget.forceShowAuras then
-					UF.targettarget.forceShowAuras = nil
-				else
-					UF.targettarget.forceShowAuras = true
-				end
 
-				UF:CreateAndUpdateUF('targettarget')
-			end,
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 3,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, {unit='targettarget', mover='TargetTarget Frame'}) end,
-		},
-		copyFrom = {
-			type = 'select',
-			order = 4,
-			name = L["Copy From"],
-			desc = L["Select a unit to copy settings from."],
-			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'targettarget'); E:RefreshGUI() end,
-			confirm = true,
-		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettarget'),
-		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettarget'),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'targettarget'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettarget'),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'targettarget'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettarget'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettarget'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'targettarget'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettarget'),
-	},
-}
+TargetTarget.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+TargetTarget.args.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.targettarget.forceShowAuras = not UF.targettarget.forceShowAuras UF:CreateAndUpdateUF('targettarget') end)
+TargetTarget.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, { unit = 'targettarget', mover = 'TargetTarget Frame' }) end)
+TargetTarget.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettarget') E:RefreshGUI() end)
+TargetTarget.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'targettarget')
+TargetTarget.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettarget')
+
+local TargetTargetTarget = ACH:Group(L["TargetTargetTarget"], nil, 4, nil, function(info) return E.db.unitframe.units.targettargettarget[info[#info]] end, function(info, value) E.db.unitframe.units.targettargettarget[info[#info]] = value UF:CreateAndUpdateUF('targettargettarget') end)
+E.Options.args.unitframe.args.individualUnits.args.targettargettarget = TargetTargetTarget
 
 --TargetTargetTarget
-E.Options.args.unitframe.args.individualUnits.args.targettargettarget = {
-	name = L["TargetTargetTarget"],
-	type = 'group',
-	order = 6,
-	get = function(info) return E.db.unitframe.units.targettargettarget[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.targettargettarget[info[#info]] = value; UF:CreateAndUpdateUF('targettargettarget') end,
-	disabled = function() return not E.UnitFrames.Initialized end,
-	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L["Enable"],
-		},
-		showAuras = {
-			order = 2,
-			type = 'execute',
-			name = L["Show Auras"],
-			func = function()
-				if UF.targettargettarget.forceShowAuras then
-					UF.targettargettarget.forceShowAuras = nil
-				else
-					UF.targettargettarget.forceShowAuras = true
-				end
+TargetTargetTarget.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+TargetTargetTarget.args.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.targettargettarget.forceShowAuras = not UF.targettargettarget.forceShowAuras UF:CreateAndUpdateUF('targettargettarget') end)
+TargetTargetTarget.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, { unit = 'targettargettarget', mover = 'TargetTargetTarget Frame' }) end)
+TargetTargetTarget.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettargettarget') E:RefreshGUI() end)
+TargetTargetTarget.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'targettargettarget')
+TargetTargetTarget.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget')
 
-				UF:CreateAndUpdateUF('targettargettarget')
-			end,
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 3,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, {unit='targettargettarget', mover='TargetTargetTarget Frame'}) end,
-		},
-		copyFrom = {
-			type = 'select',
-			order = 4,
-			name = L["Copy From"],
-			desc = L["Select a unit to copy settings from."],
-			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); E:RefreshGUI() end,
-			confirm = true,
-		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettargettarget'),
-		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettargettarget'),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'targettargettarget'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettargettarget'),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'targettargettarget'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'targettargettarget'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettargettarget'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'targettargettarget'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget'),
-	},
-}
+local Focus = ACH:Group(L["Focus"], nil, 5, nil, function(info) return E.db.unitframe.units.focus[info[#info]] end, function(info, value) E.db.unitframe.units.focus[info[#info]] = value UF:CreateAndUpdateUF('focus') end)
+E.Options.args.unitframe.args.individualUnits.args.focus = Focus
 
 --Focus
-E.Options.args.unitframe.args.individualUnits.args.focus = {
-	name = L["Focus"],
-	type = 'group',
-	order = 7,
-	get = function(info) return E.db.unitframe.units.focus[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.focus[info[#info]] = value; UF:CreateAndUpdateUF('focus') end,
-	disabled = function() return not E.UnitFrames.Initialized end,
-	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L["Enable"],
-		},
-		showAuras = {
-			order = 2,
-			type = 'execute',
-			name = L["Show Auras"],
-			func = function()
-				if UF.focus.forceShowAuras then
-					UF.focus.forceShowAuras = nil
-				else
-					UF.focus.forceShowAuras = true
-				end
-
-				UF:CreateAndUpdateUF('focus')
-			end,
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 3,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, {unit='focus', mover='Focus Frame'}) end,
-		},
-		copyFrom = {
-			type = 'select',
-			order = 4,
-			name = L["Copy From"],
-			desc = L["Select a unit to copy settings from."],
-			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'focus'); E:RefreshGUI() end,
-			confirm = true,
-		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focus'),
-		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focus'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'focus'),
-		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'focus'),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'focus'),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'focus'),
-		CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'focus'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'focus'),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'focus'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'focus'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'focus'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focus'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'focus'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus'),
-	},
-}
+Focus.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Focus.args.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.focus.forceShowAuras = not UF.focus.forceShowAuras UF:CreateAndUpdateUF('focus') end)
+Focus.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, { unit = 'focus', mover = 'Focus Frame' }) end)
+Focus.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focus') E:RefreshGUI() end)
+Focus.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focus')
+Focus.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focus')
+Focus.args.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'focus')
+Focus.args.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'focus')
+Focus.args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'focus')
+Focus.args.castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'focus')
+Focus.args.CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'focus')
+Focus.args.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus')
+Focus.args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'focus')
+Focus.args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'focus')
+Focus.args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'focus')
+Focus.args.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'focus')
+Focus.args.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus')
+Focus.args.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focus')
+Focus.args.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus')
+Focus.args.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus')
+Focus.args.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'focus')
+Focus.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus')
 
 --Focus Target
 E.Options.args.unitframe.args.individualUnits.args.focustarget = {
@@ -2465,69 +2174,6 @@ E.Options.args.unitframe.args.individualUnits.args.focustarget = {
 	},
 }
 
---Pet
-E.Options.args.unitframe.args.individualUnits.args.pet = {
-	name = L["PET"],
-	type = 'group',
-	order = 9,
-	get = function(info) return E.db.unitframe.units.pet[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.pet[info[#info]] = value; UF:CreateAndUpdateUF('pet') end,
-	disabled = function() return not E.UnitFrames.Initialized end,
-	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L["Enable"],
-		},
-		showAuras = {
-			order = 2,
-			type = 'execute',
-			name = L["Show Auras"],
-			func = function()
-				if UF.pet.forceShowAuras then
-					UF.pet.forceShowAuras = nil
-				else
-					UF.pet.forceShowAuras = true
-				end
-
-				UF:CreateAndUpdateUF('pet')
-			end,
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 3,
-			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, {unit='pet', mover='Pet Frame'}) end,
-		},
-		copyFrom = {
-			type = 'select',
-			order = 4,
-			name = L["Copy From"],
-			desc = L["Select a unit to copy settings from."],
-			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); E:RefreshGUI() end,
-			confirm = true,
-		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet'),
-		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pet'),
-		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'pet'),
-		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet'),
-		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'pet'),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'pet'),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'pet'),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'pet'),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
-		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'pet'),
-	},
-}
-
 --Pet Target
 E.Options.args.unitframe.args.individualUnits.args.pettarget = {
 	name = L["PetTarget"],
@@ -2585,6 +2231,8 @@ E.Options.args.unitframe.args.individualUnits.args.pettarget = {
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'pettarget'),
 	},
 }
+
+E.Options.args.unitframe.args.groupUnits = ACH:Group(L["Group Units"], nil, 16, 'tab')
 
 --Boss Frames
 E.Options.args.unitframe.args.groupUnits.args.boss = {
@@ -2756,7 +2404,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 			type = 'execute',
 			name = L["Display Frames"],
 			func = function()
-				UF:HeaderConfig(ElvUF_Party, ElvUF_Party.forceShow ~= true or nil)
+				UF:HeaderConfig(UF.party, UF.party.forceShow ~= true or nil)
 			end,
 		},
 		resetSettings = {
@@ -3102,14 +2750,14 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 			type = 'execute',
 			name = L["Display Frames"],
 			func = function()
-				UF:HeaderConfig(ElvUF_Raidpet, ElvUF_Raidpet.forceShow ~= true or nil)
+				UF:HeaderConfig(UF.raidpet, UF.raidpet.forceShow ~= true or nil)
 			end,
 		},
 		resetSettings = {
 			type = 'execute',
 			order = 3,
 			name = L["Restore Defaults"],
-			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit='raidpet', mover='Raid Pet Frames'}) end,
+			func = function(info) E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, { unit = 'raidpet', mover = 'Raid Pet Frames'} ) end,
 		},
 		copyFrom = {
 			type = 'select',
