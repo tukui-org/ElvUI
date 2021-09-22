@@ -38,6 +38,8 @@ function S:TooltipFrames()
 	S:StyleTooltips()
 	S:HandleCloseButton(_G.ItemRefTooltip.CloseButton)
 
+	_G.QuestScrollFrame.StoryTooltip:SetFrameLevel(4)
+
 	local ItemTT = _G.GameTooltip.ItemTooltip
 	S:HandleIcon(ItemTT.Icon, true)
 	S:HandleIconBorder(ItemTT.IconBorder, ItemTT.Icon.backdrop)
@@ -48,9 +50,6 @@ function S:TooltipFrames()
 	local EmbeddedTT = _G.EmbeddedItemTooltip.ItemTooltip
 	S:HandleIcon(EmbeddedTT.Icon, true)
 	S:HandleIconBorder(EmbeddedTT.IconBorder, EmbeddedTT.Icon.backdrop)
-
-	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
-	StoryTooltip:SetFrameLevel(4)
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
