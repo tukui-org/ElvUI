@@ -38,30 +38,19 @@ function S:TooltipFrames()
 	S:StyleTooltips()
 	S:HandleCloseButton(_G.ItemRefTooltip.CloseButton)
 
-	-- Skin Blizzard Tooltips
-	local ItemTooltip = _G.GameTooltip.ItemTooltip
-	ItemTooltip:CreateBackdrop()
-	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
-	ItemTooltip.Count:ClearAllPoints()
-	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
-	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-	S:HandleIconBorder(ItemTooltip.IconBorder)
-
-	-- StoryTooltip
-	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
-	StoryTooltip:SetFrameLevel(4)
+	local ItemTT = _G.GameTooltip.ItemTooltip
+	S:HandleIcon(ItemTT.Icon, true)
+	S:HandleIconBorder(ItemTT.IconBorder, ItemTT.Icon.backdrop)
+	ItemTT.Count:ClearAllPoints()
+	ItemTT.Count:Point('BOTTOMRIGHT', ItemTT.Icon, 'BOTTOMRIGHT', 1, 0)
 
 	-- EmbeddedItemTooltip (also Paragon Reputation)
-	local embedded = _G.EmbeddedItemTooltip
-	embedded:SetTemplate('Transparent')
+	local EmbeddedTT = _G.EmbeddedItemTooltip.ItemTooltip
+	S:HandleIcon(EmbeddedTT.Icon, true)
+	S:HandleIconBorder(EmbeddedTT.IconBorder, EmbeddedTT.Icon.backdrop)
 
-	if embedded.ItemTooltip.Icon then
-		S:HandleIcon(embedded.ItemTooltip.Icon, true)
-	end
-
-	embedded:HookScript('OnShow', function(tt)
-		tt:SetTemplate('Transparent')
-	end)
+	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
+	StoryTooltip:SetFrameLevel(4)
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
