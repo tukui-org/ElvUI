@@ -3,7 +3,6 @@
 	<Script file='Math.lua'/>
 	<Script file='API.lua'/>
 	<Script file='AprilFools.lua'/>
-	<Script file='AuraInfo.lua'/>
 	<Script file='Fonts.lua'/>
 	<Script file='Install.lua'/>
 	<Script file='PluginInstaller.lua'/>

@@ -23,6 +23,7 @@ local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
+local UnitAura = UnitAura
 local UnitHealthMax = UnitHealthMax
 local UnitInVehicle = UnitInVehicle
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
@@ -310,39 +311,39 @@ function mod:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 end
 
 function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
-	local total, count = 0, 0
-	for name, value in pairs(names) do
+	local total, matches = 0, 0
+	for key, value in pairs(names) do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
 
 			local index = 1
-			local aura = E:UnitAura(frame.unit, index, filter)
-			while aura do
-				local spell, stacks, failed = strmatch(name, mod.StyleFilterStackPattern)
-				if stacks ~= '' then failed = not (aura.count and aura.count >= tonumber(stacks)) end
-				if not failed and ((aura.name and aura.name == spell) or (aura.spellID and aura.spellID == tonumber(spell))) then
+			local name, _, count, _, _, expiration, _, _, _, spellID = UnitAura(frame.unit, index, filter)
+			while name do
+				local spell, stacks, failed = strmatch(key, mod.StyleFilterStackPattern)
+				if stacks ~= '' then failed = not (count and count >= tonumber(stacks)) end
+				if not failed and ((name and name == spell) or (spellID and spellID == tonumber(spell))) then
 					local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 					local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-					local timeLeft = (hasMinTime or hasMaxTime) and aura.expirationTime and (aura.expirationTime - GetTime())
+					local timeLeft = (hasMinTime or hasMaxTime) and expiration and (expiration - GetTime())
 					local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 					local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
 					if minTimeAllow and maxTimeAllow then
-						count = count + 1 -- keep track of how many matches we have
+						matches = matches + 1 -- keep track of how many matches we have
 					end
 
 					if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-						if not tickers[count] then tickers[count] = {} end
-						if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[count], 'hasMinTimer', timeLeft, minTimeLeft) end
-						if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[count], 'hasMaxTimer', timeLeft, maxTimeLeft) end
+						if not tickers[matches] then tickers[matches] = {} end
+						if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMinTimer', timeLeft, minTimeLeft) end
+						if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMaxTimer', timeLeft, maxTimeLeft) end
 					end
 				end
 
 				index = index + 1
-				aura = E:UnitAura(frame.unit, index, filter)
+				name, _, count, _, _, expiration, _, _, _, spellID = UnitAura(frame.unit, index, filter)
 			end
 
-			local stale = count + 1
+			local stale = matches + 1
 			local ticker = tickers[stale]
 			while ticker and (ticker.hasMinTimer or ticker.hasMaxTimer) do -- cancel stale timers
 				if ticker.hasMinTimer then ticker.hasMinTimer:Cancel() ticker.hasMinTimer = nil end
@@ -357,10 +358,10 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 	if total == 0 then
 		return nil -- If no auras are checked just pass nil, we dont need to run the filter here.
 	else
-		return ((mustHaveAll and not missing) and total == count)	-- [x] Check for all [ ] Missing: total needs to match count
-		or ((not mustHaveAll and not missing) and count > 0)		-- [ ] Check for all [ ] Missing: count needs to be greater than zero
-		or ((not mustHaveAll and missing) and count == 0)			-- [ ] Check for all [x] Missing: count needs to be zero
-		or ((mustHaveAll and missing) and total ~= count)			-- [x] Check for all [x] Missing: count must not match total
+		return ((mustHaveAll and not missing) and total == matches)	-- [x] Check for all [ ] Missing: total needs to match count
+		or ((not mustHaveAll and not missing) and matches > 0)		-- [ ] Check for all [ ] Missing: count needs to be greater than zero
+		or ((not mustHaveAll and missing) and matches == 0)			-- [ ] Check for all [x] Missing: count needs to be zero
+		or ((mustHaveAll and missing) and total ~= matches)			-- [x] Check for all [x] Missing: count must not match total
 	end
 end
 

@@ -119,7 +119,7 @@ function AB:BUTTON_EVENT(event)
 		local unit = "TARGET"
 
 		if UnitExists(unit) and not UnitIsDeadOrGhost("TARGET") and (config[self.SpellID].canAttack and UnitCanAttack("player", unit) or not config[self.SpellID].canAttack) then
-			if E:AuraInfo_GetAuraByID(unit, config[self.SpellID].aura, config[self.SpellID].auraType) then
+			if E:GetAuraByID(unit, config[self.SpellID].aura, config[self.SpellID].auraType) then
 				AB:EffectButton(self, not config[self.SpellID].exists)
 			else
 				AB:EffectButton(self, config[self.SpellID].exists)

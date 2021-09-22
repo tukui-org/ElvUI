@@ -12,6 +12,7 @@ local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local RegisterStateDriver = RegisterStateDriver
 local CreateFrame = CreateFrame
+local UnitAura = UnitAura
 local GetTime = GetTime
 
 local Masque = E.Masque
@@ -217,35 +218,35 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local aura = E:UnitAura(button.header:GetAttribute('unit'), index, button.filter)
-	if not aura then return end
+	local name, icon, count, debuffType, duration, expiration = UnitAura(button.header:GetAttribute('unit'), index, button.filter)
+	if not name then return end
 
-	if aura.duration > 0 and aura.expirationTime then
-		A:SetAuraTime(button, aura.expirationTime, aura.duration)
+	if duration > 0 and expiration then
+		A:SetAuraTime(button, expiration, duration)
 	else
 		A:ClearAuraTime(button)
 	end
 
 	local db, r, g, b = A.db[button.auraType]
 	if button.timeLeft and db.barColorGradient then
-		r, g, b = E.oUF:ColorGradient(button.timeLeft, aura.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+		r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 	else
 		r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
 	end
 
 	button.text:SetShown(db.showDuration)
-	button.count:SetText(aura.count > 1 and aura.count)
-	button.statusBar:SetShown((db.barShow and aura.duration > 0) or (db.barShow and db.barNoDuration and aura.duration == 0))
+	button.count:SetText(count > 1 and count)
+	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 	button.statusBar:SetStatusBarColor(r, g, b)
-	button.texture:SetTexture(aura.icon)
+	button.texture:SetTexture(icon)
 
-	local debuffType = aura.debuffType or 'none'
-	if button.debuffType ~= debuffType then
-		local color = (button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType]) or E.db.general.bordercolor
+	local dtype = debuffType or 'none'
+	if button.debuffType ~= dtype then
+		local color = (button.filter == 'HARMFUL' and _G.DebuffTypeColor[dtype]) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-		button.debuffType = debuffType
+		button.debuffType = dtype
 	end
 end
 

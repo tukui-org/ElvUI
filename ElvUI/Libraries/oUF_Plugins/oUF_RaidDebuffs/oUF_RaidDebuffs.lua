@@ -18,6 +18,7 @@ local GetSpecialization = GetSpecialization
 local GetSpellInfo = GetSpellInfo
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
+local UnitAura = UnitAura
 local GetTime = GetTime
 
 local debuff_data = {}
@@ -163,7 +164,7 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellId, stackThreshold)
+local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellID, stackThreshold)
 	local f = self.RaidDebuffs
 
 	if name and (count >= stackThreshold) then
@@ -181,7 +182,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 			end
 		end
 
-		if spellId and ElvUI[1].ReverseTimer[spellId] then
+		if spellID and ElvUI[1].ReverseTimer[spellID] then
 			f.reverse = true
 		else
 			f.reverse = nil
@@ -235,16 +236,8 @@ local function Update(self, event, unit)
 	local canAttack = UnitCanAttack('player', unit)
 
 	local index = 1
-	local aura = ElvUI[1]:UnitAura(unit, index, 'HARMFUL')
-	while aura do
-		local name = aura.name
-		local icon = aura.icon
-		local count = aura.count
-		local debuffType = aura.debuffType
-		local duration = aura.duration
-		local expirationTime = aura.expirationTime
-		local spellID = aura.spellID
-
+	local name, icon, count, debuffType, duration, expirationTime, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
+	while name do
 		--we coudln't dispel if the unit its charmed, or its not friendly
 		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
 			if addon.FilterDispellableDebuff then
@@ -280,7 +273,7 @@ local function Update(self, event, unit)
 		end
 
 		index = index + 1
-		aura = ElvUI[1]:UnitAura(unit, index, 'HARMFUL')
+		name, icon, count, debuffType, duration, expirationTime, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
 	end
 
 	if self.RaidDebuffs.forceShow then
@@ -307,7 +300,7 @@ local function Enable(self)
 	self:RegisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec, true)
 
 	if self.RaidDebuffs then
-		ElvUI[1]:AuraInfo_SetFunction(self, Update, true)
+		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
 	end
@@ -315,7 +308,7 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
-		ElvUI[1]:AuraInfo_SetFunction(self, Update)
+		self:UnregisterEvent('UNIT_AURA', Update)
 
 		self.RaidDebuffs:Hide()
 	end

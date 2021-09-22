@@ -52,6 +52,7 @@ local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsDND = UnitIsDND
+local UnitAura = UnitAura
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsTapDenied = UnitIsTapDenied
@@ -416,12 +417,12 @@ end
 
 function TT:AddMountInfo(tt, unit)
 	local index = 1
-	local aura = E:UnitAura(unit, index, 'HELPFUL')
-	while aura do
-		local mountID = TT.MountIDs[aura.spellID]
+	local name, _, _, _, _, _, _, _, _, spellID = UnitAura(unit, index, 'HELPFUL')
+	while name do
+		local mountID = TT.MountIDs[spellID]
 		if mountID then
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
+			tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
 			local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
 			if mountText then
@@ -439,7 +440,7 @@ function TT:AddMountInfo(tt, unit)
 			break
 		else
 			index = index + 1
-			aura = E:UnitAura(unit, index, 'HELPFUL')
+			name, _, _, _, _, _, _, _, _, spellID = UnitAura(unit, index, 'HELPFUL')
 		end
 	end
 end
@@ -543,10 +544,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local isControlKeyDown = IsControlKeyDown()
 
 	if TT.db.showMount and (isPlayerUnit and unit ~= 'player') and not isShiftKeyDown then
-		if unit == 'mouseover' then
-			E:AuraInfo_UnitAura('OnTooltipSetUnit', unit)
-		end
-
 		TT:AddMountInfo(tt, unit)
 	end
 
@@ -743,10 +740,10 @@ end
 function TT:SetUnitAura(tt, unit, index, filter)
 	if not tt or tt:IsForbidden() then return end
 
-	local aura = E:UnitAura(unit, index, filter)
-	if not aura then return end
+	local name, _, _, _, _, _, source, _, _, spellID = UnitAura(unit, index, filter)
+	if not name then return end
 
-	local mountID, mountText = TT.MountIDs[aura.spellID]
+	local mountID, mountText = TT.MountIDs[spellID]
 	if mountID then
 		local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
 		mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
@@ -762,13 +759,12 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			tt:AddLine(' ')
 		end
 
-		if aura.source then
-			local name = UnitName(aura.source)
-			local _, class = UnitClass(aura.source)
+		if source then
+			local _, class = UnitClass(source)
 			local color = E:ClassColor(class) or PRIEST_COLOR
-			tt:AddDoubleLine(format(IDLine, _G.ID, aura.spellID), format('|c%s%s|r', color.colorStr, name))
+			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, UnitName(source) or UNKNOWN))
 		else
-			tt:AddLine(format(IDLine, _G.ID, aura.spellID))
+			tt:AddLine(format(IDLine, _G.ID, spellID))
 		end
 	end
 

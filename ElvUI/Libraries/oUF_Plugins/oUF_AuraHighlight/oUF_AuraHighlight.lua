@@ -2,6 +2,7 @@ local _, ns = ...
 local oUF = ns.oUF
 if not oUF then return end
 
+local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 local GetSpecialization = GetSpecialization
 local GetActiveSpecGroup = GetActiveSpecGroup
@@ -43,52 +44,47 @@ if not Classic then
 	BlackList[137637] = true -- Warbringer, Slow
 end
 
-local function DebuffLoop(aura, check, list)
-	local spell = list and (list[aura.spellID] or list[aura.name])
+local function DebuffLoop(check, list, name, icon, _, debuffType, _, _, _, _, _, spellID)
+	local spell = list and (list[spellID] or list[name])
 	if spell then
 		if spell.enable then
-			return aura.debuffType, aura.icon, true, spell.style, spell.color
+			return debuffType, icon, true, spell.style, spell.color
 		end
-	elseif aura.debuffType and (not check or CanDispel[aura.debuffType]) and not (BlackList[aura.name] or BlackList[aura.spellID]) then
-		return aura.debuffType, aura.icon
+	elseif debuffType and (not check or CanDispel[debuffType]) and not (BlackList[spellID] or BlackList[name]) then
+		return debuffType, icon
 	end
 end
 
-local function AuraLoop(aura, _, list)
-	local spell = list and list[aura.spellID]
-	if spell and spell.enable and (not spell.ownOnly or aura.source == 'player') then
-		return aura.debuffType, aura.icon, true, spell.style, spell.color
+local function BuffLoop(_, list, name, icon, _, debuffType, _, _, source, _, _, spellID)
+	local spell = list and (list[spellID] or list[name])
+	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
+		return debuffType, icon, true, spell.style, spell.color
 	end
 end
 
 local function Looper(unit, filter, check, list, func)
 	local index = 1
-	local aura = ElvUI[1]:UnitAura(unit, index, filter)
-	while aura do
-		local debuffType, texture, wasFiltered, style, color = func(aura, check, list)
-		if texture then return debuffType, texture, wasFiltered, style, color end
-
-		index = index + 1
-		aura = ElvUI[1]:UnitAura(unit, index, filter)
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+	while name do
+		local DebuffType, Icon, filtered, style, color = func(check, list, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+		if Icon then
+			return DebuffType, Icon, filtered, style, color
+		else
+			index = index + 1
+			name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+		end
 	end
 end
 
 local function GetAuraType(unit, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local debuffType, texture, wasFiltered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
-	if texture then return debuffType, texture, wasFiltered, style, color end
+	local debuffType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
+	if icon then return debuffType, icon, filtered, style, color end
 
-	debuffType, texture, wasFiltered, style, color = Looper(unit, 'HELPFUL', check, list, AuraLoop)
-	if texture then return debuffType, texture, wasFiltered, style, color end
+	debuffType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
+	if icon then return debuffType, icon, filtered, style, color end
 end
-
---[[
-local function FilterTable()
-	local debufftype, texture, filterSpell
-	return debufftype, texture, true, filterSpell.style, filterSpell.color
-end
-]]
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
@@ -157,8 +153,7 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		ElvUI[1]:AuraInfo_SetFunction(self, Update, true)
-
+		self:RegisterEvent('UNIT_AURA', Update)
 		return true
 	end
 end
@@ -166,7 +161,7 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		ElvUI[1]:AuraInfo_SetFunction(self, Update)
+		self:UnregisterEvent('UNIT_AURA', Update)
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()
