@@ -159,7 +159,7 @@ local function OnUpdate(self, elapsed)
 	if self.elapsed >= 0.1 then
 		local timeLeft = self.endTime - GetTime()
 
-		if self.reverse then
+		if self.reverse and self.duration then
 			timeLeft = abs(timeLeft - self.duration)
 		end
 
