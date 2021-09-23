@@ -10,14 +10,15 @@ if not _G.oUF_RaidDebuffs then
 	_G.oUF_RaidDebuffs = addon
 end
 
+local abs = math.abs
 local format, floor = format, floor
 local type, pairs, wipe = type, pairs, wipe
 
 local GetActiveSpecGroup = GetActiveSpecGroup
 local GetSpecialization = GetSpecialization
-local GetSpellInfo = GetSpellInfo
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
+local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local GetTime = GetTime
 
@@ -27,6 +28,27 @@ addon.ShowDispellableDebuff = true
 addon.FilterDispellableDebuff = true
 addon.MatchBySpellName = false
 addon.priority = 10
+
+local DispelPriority = {
+	Magic   = 4,
+	Curse   = 3,
+	Disease = 2,
+	Poison  = 1,
+}
+
+local blackList = {
+	[105171] = true, -- Deep Corruption (Dragon Soul: Yor'sahj the Unsleeping)
+	[108220] = true, -- Deep Corruption (Dragon Soul: Shadowed Globule)
+	[116095] = true, -- Disable, Slow   (Monk: Windwalker)
+}
+
+local DispelColor = {
+	Magic   = {0.2, 0.6, 1.0},
+	Curse   = {0.6, 0, 1.0},
+	Disease = {0.6, 0.4, 0},
+	Poison  = {0, 0.6, 0},
+	none    = {0.2, 0.2, 0.2}
+}
 
 local function add(spell, priority, stackThreshold)
 	if addon.MatchBySpellName and type(spell) == 'number' then
@@ -58,24 +80,9 @@ function addon:ResetDebuffData()
 	wipe(debuff_data)
 end
 
-local DispelColor = {
-	Magic   = {0.2, 0.6, 1.0},
-	Curse   = {0.6, 0, 1.0},
-	Disease = {0.6, 0.4, 0},
-	Poison  = {0, 0.6, 0},
-	none    = {0.2, 0.2, 0.2}
-}
-
 function addon:GetDispelColor()
 	return DispelColor
 end
-
-local DispelPriority = {
-	Magic   = 4,
-	Curse   = 3,
-	Disease = 2,
-	Poison  = 1,
-}
 
 local DispelFilter
 do
@@ -147,12 +154,15 @@ local function formatTime(s)
 	end
 end
 
-local abs = math.abs
 local function OnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed >= 0.1 then
 		local timeLeft = self.endTime - GetTime()
-		if self.reverse then timeLeft = abs((self.endTime - GetTime()) - self.duration) end
+
+		if self.reverse then
+			timeLeft = abs(timeLeft - self.duration)
+		end
+
 		if timeLeft > 0 then
 			local text = formatTime(timeLeft)
 			self.time:SetText(text)
@@ -160,6 +170,7 @@ local function OnUpdate(self, elapsed)
 			self:SetScript('OnUpdate', nil)
 			self.time:Hide()
 		end
+
 		self.elapsed = 0
 	end
 end
@@ -171,6 +182,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 		f.icon:SetTexture(icon)
 		f.icon:Show()
 		f.duration = duration
+		f.reverse = f.ReverseTimer and f.ReverseTimer[spellID]
 
 		if f.count then
 			if count and (count > 1) then
@@ -180,12 +192,6 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 				f.count:SetText("")
 				f.count:Hide()
 			end
-		end
-
-		if spellID and ElvUI[1].ReverseTimer[spellID] then
-			f.reverse = true
-		else
-			f.reverse = nil
 		end
 
 		if f.time then
@@ -217,12 +223,6 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 		f:Hide()
 	end
 end
-
-local blackList = {
-	[105171] = true, -- Deep Corruption (Dragon Soul: Yor'sahj the Unsleeping)
-	[108220] = true, -- Deep Corruption (Dragon Soul: Shadowed Globule)
-	[116095] = true, -- Disable, Slow   (Monk: Windwalker)
-}
 
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end

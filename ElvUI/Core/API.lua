@@ -22,6 +22,7 @@ local IsWargame = IsWargame
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAttackPower = UnitAttackPower
+local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -30,7 +31,6 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 local UnitStat = UnitStat
-local UnitAura = UnitAura
 
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground

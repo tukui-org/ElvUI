@@ -23,6 +23,8 @@ function UF:Construct_RaidDebuffs(frame)
 	debuff.time:Point('CENTER')
 	debuff.time:SetTextColor(1, .9, 0)
 
+	debuff.ReverseTimer = E.ReverseTimer
+
 	return debuff
 end
 

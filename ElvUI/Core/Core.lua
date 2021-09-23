@@ -99,6 +99,7 @@ E.CreditsList = {}
 E.LockedCVars = {}
 E.IgnoredCVars = {}
 E.UpdatedCVars = {}
+E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
 E.InversePoints = {
 	TOP = 'BOTTOM',
 	BOTTOM = 'TOP',

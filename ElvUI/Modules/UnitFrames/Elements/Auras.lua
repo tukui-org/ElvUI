@@ -10,9 +10,9 @@ local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, unpack, next, floor = sort, wipe, unpack, next, floor
 
 local CreateFrame = CreateFrame
-local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
+local IsShiftKeyDown = IsShiftKeyDown
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit

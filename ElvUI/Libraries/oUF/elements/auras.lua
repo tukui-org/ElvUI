@@ -80,11 +80,11 @@ local CREATED = 2
 
 local pcall = pcall
 local tinsert = tinsert
-local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
-local UnitIsUnit = UnitIsUnit
 local UnitAura = UnitAura
+local UnitIsUnit = UnitIsUnit
+local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
+local GetSpellInfo = GetSpellInfo
 local floor, min = math.floor, math.min
 -- end block
 
