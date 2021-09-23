@@ -170,8 +170,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
 	if element.forceShow or element.forceCreate then
-		name, _, icon = GetSpellInfo(spellID)
 		spellID = 5782
+		name, _, icon = GetSpellInfo(spellID)
 
 		if element.forceShow then
 			count, debuffType, duration, expiration, source = 5, "Magic", 0, 60, "player"
