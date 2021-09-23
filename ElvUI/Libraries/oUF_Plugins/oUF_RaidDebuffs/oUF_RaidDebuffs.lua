@@ -236,7 +236,7 @@ local function Update(self, event, unit)
 	local canAttack = UnitCanAttack('player', unit)
 
 	local index = 1
-	local name, icon, count, debuffType, duration, expirationTime, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
+	local name, icon, count, debuffType, duration, expiration, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
 	while name do
 		--we coudln't dispel if the unit its charmed, or its not friendly
 		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
@@ -252,7 +252,7 @@ local function Update(self, event, unit)
 			end
 
 			if priority > _priority then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expirationTime, spellID
+				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expiration, spellID
 			end
 		end
 
@@ -269,11 +269,11 @@ local function Update(self, event, unit)
 
 		priority = debuff and debuff.priority
 		if priority and not blackList[spellID] and (priority > _priority) then
-			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expirationTime, spellID
+			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expiration, spellID
 		end
 
 		index = index + 1
-		name, icon, count, debuffType, duration, expirationTime, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
+		name, icon, count, debuffType, duration, expiration, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
 	end
 
 	if self.RaidDebuffs.forceShow then
