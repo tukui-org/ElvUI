@@ -15,7 +15,6 @@ local wipe = wipe
 local ceil = ceil
 local tonumber = tonumber
 local format = format
-local unpack = unpack
 local CopyTable = CopyTable
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
@@ -153,7 +152,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 17, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 
 	if not strmatch(groupName, '%w+target') then -- these frames are special and run onupdate because of that we dont sort them.
-		config.args.sortMethod = ACH:Select( L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+		config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
 	end
 
 	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
@@ -1807,7 +1806,6 @@ UnitFrame.allColorsGroup.args.classResourceGroup = {
 	}
 }
 
-
 for i in pairs(P.unitframe.colors.classResources.comboPoints) do
 	UnitFrame.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
 		order = 10 + i,
@@ -1932,6 +1930,26 @@ Player.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.player.for
 Player.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, { unit = 'player', mover = 'Player Frame' }) end)
 Player.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'player') E:RefreshGUI() end)
 Player.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'player')
+Player.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'player')
+Player.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player')
+Player.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'player')
+Player.castbar = GetOptionsTable_Castbar(UF.CreateAndUpdateUF, 'player')
+Player.CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'player')
+Player.classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateUF, 'player')
+Player.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player')
+Player.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player')
+Player.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'player')
+Player.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player')
+Player.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player')
+Player.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player')
+Player.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player')
+Player.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player')
+Player.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player')
+Player.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true)
+Player.pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'player')
+Player.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'player')
+Player.raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'player')
+Player.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player')
 
 Player.RestIcon = ACH:Group(L["Rest Icon"], nil, nil, nil, function(info) return E.db.unitframe.units.player.RestIcon[info[#info]] end, function(info, value) E.db.unitframe.units.player.RestIcon[info[#info]] = value UF:CreateAndUpdateUF('player') UF:TestingDisplay_RestingIndicator(UF.player) end)
 Player.RestIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -1960,27 +1978,6 @@ Player.PartyIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -1
 Player.pvpText = ACH:Group(L["PvP Text"], nil, nil, nil, function(info) return E.db.unitframe.units.player.pvp[info[#info]] end, function(info, value) E.db.unitframe.units.player.pvp[info[#info]] = value UF:CreateAndUpdateUF('player') end)
 Player.pvpText.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 Player.pvpText.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
-
-Player.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'player')
-Player.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player')
-Player.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'player')
-Player.castbar = GetOptionsTable_Castbar(UF.CreateAndUpdateUF, 'player')
-Player.CombatIcon = GetOptionsTable_CombatIconGroup(UF.CreateAndUpdateUF, 'player')
-Player.classbar = GetOptionsTable_ClassBar(UF.CreateAndUpdateUF, 'player')
-Player.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player')
-Player.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player')
-Player.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'player')
-Player.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player')
-Player.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player')
-Player.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player')
-Player.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player')
-Player.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player')
-Player.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player')
-Player.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true)
-Player.pvpIcon = GetOptionsTable_PVPIcon(UF.CreateAndUpdateUF, 'player')
-Player.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'player')
-Player.raidRoleIcons = GetOptionsTable_RaidRoleIcons(UF.CreateAndUpdateUF, 'player')
-Player.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player')
 
 IndividualUnits.pet = ACH:Group(L["PET"], nil, 2, nil, function(info) return E.db.unitframe.units.pet[info[#info]] end, function(info, value) E.db.unitframe.units.pet[info[#info]] = value UF:CreateAndUpdateUF('pet') end)
 local Pet = IndividualUnits.pet.args
@@ -2179,13 +2176,6 @@ Arena.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to sh
 Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, { unit = 'arena', mover = 'Arena Frames' }) end)
 Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end)
 
-Arena.pvpTrinket = ACH:Group(L["PVP Trinket"], nil, nil, nil, function(info) return E.db.unitframe.units.arena.pvpTrinket[info[#info]] end, function(info, value) E.db.unitframe.units.arena.pvpTrinket[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end)
-Arena.pvpTrinket.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Arena.pvpTrinket.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
-Arena.pvpTrinket.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
-Arena.pvpTrinket.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
-
 Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'arena', 5)
@@ -2200,6 +2190,13 @@ Arena.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUFGroup, 'are
 Arena.castbar = GetOptionsTable_Castbar(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateUFGroup, 'arena', 5)
+
+Arena.pvpTrinket = ACH:Group(L["PVP Trinket"], nil, nil, nil, function(info) return E.db.unitframe.units.arena.pvpTrinket[info[#info]] end, function(info, value) E.db.unitframe.units.arena.pvpTrinket[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end)
+Arena.pvpTrinket.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Arena.pvpTrinket.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
+Arena.pvpTrinket.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+Arena.pvpTrinket.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
 --Party Frames
 GroupUnits.party = ACH:Group(L["PARTY"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
