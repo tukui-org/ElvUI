@@ -27,9 +27,9 @@ function S:Blizzard_TalentUI()
 
 	_G.PlayerTalentFrameTalents:StripTextures()
 
-	if E.global.general.disableTutorialButtons then
+	local disableTutorialButtons = E.global.general.disableTutorialButtons
+	if disableTutorialButtons then
 		_G.PlayerTalentFrameTalentsTutorialButton:Kill()
-		_G.PlayerTalentFrameSpecializationTutorialButton:Kill()
 	end
 
 	local buttons = {
@@ -50,6 +50,10 @@ function S:Blizzard_TalentUI()
 
 	for _, Frame in pairs({ _G.PlayerTalentFrameSpecialization, _G.PlayerTalentFramePetSpecialization }) do
 		Frame:StripTextures()
+
+		if disableTutorialButtons then
+			Frame.MainHelpButton:Kill()
+		end
 
 		for _, Child in pairs({Frame:GetChildren()}) do
 			if Child:IsObjectType('Frame') and not Child:GetName() then

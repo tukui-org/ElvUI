@@ -89,6 +89,11 @@ CH.Keywords = {}
 CH.PluginMessageFilters = {}
 CH.Smileys = {}
 CH.TalkingList = {}
+CH.RoleIcons = {
+	TANK = E:TextureString(E.Media.Textures.Tank, ':15:15:0:0:64:64:2:56:2:56'),
+	HEALER = E:TextureString(E.Media.Textures.Healer, ':15:15:0:0:64:64:2:56:2:56'),
+	DAMAGER = E:TextureString(E.Media.Textures.DPS, ':15:15')
+}
 
 local lfgRoles = {}
 local throttle = {}
@@ -169,12 +174,6 @@ function CH:AddSmiley(key, texture)
 		CH.Smileys[key] = texture
 	end
 end
-
-local rolePaths = {
-	TANK = E:TextureString(E.Media.Textures.Tank, ':15:15:0:0:64:64:2:56:2:56'),
-	HEALER = E:TextureString(E.Media.Textures.Healer, ':15:15:0:0:64:64:2:56:2:56'),
-	DAMAGER = E:TextureString(E.Media.Textures.DPS, ':15:15')
-}
 
 local specialChatIcons
 do --this can save some main file locals
@@ -2530,7 +2529,7 @@ function CH:CheckLFGRoles()
 
 	local playerRole = UnitGroupRolesAssigned('player')
 	if playerRole then
-		lfgRoles[PLAYER_NAME] = rolePaths[playerRole]
+		lfgRoles[PLAYER_NAME] = CH.RoleIcons[playerRole]
 	end
 
 	local unit = (IsInRaid() and 'raid' or 'party')
@@ -2541,7 +2540,7 @@ function CH:CheckLFGRoles()
 
 			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
-				lfgRoles[name] = rolePaths[role]
+				lfgRoles[name] = CH.RoleIcons[role]
 			end
 		end
 	end

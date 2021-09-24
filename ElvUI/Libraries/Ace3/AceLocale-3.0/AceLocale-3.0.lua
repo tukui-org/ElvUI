@@ -34,12 +34,17 @@ local readmeta = {
 }
 
 -- This metatable is used on all tables returned from GetLocale if the silent flag is true, it does not issue a warning on unknown keys
+--ElvUI modded by Darth
 local readmetasilent = {
 	__index = function(self, key) -- requesting totally unknown entries: return key
+		AceLocale.elvUIMissingLines[key] = key
 		rawset(self, key, key)      -- only need to invoke this function once
 		return key
 	end
 }
+AceLocale.elvUIMissingLines = {}
+-- end block
+
 
 -- Remember the locale table being registered right now (it gets set by :NewLocale())
 -- NOTE: Do never try to register 2 locale tables at once and mix their definition.

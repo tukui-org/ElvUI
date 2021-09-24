@@ -1,4 +1,4 @@
--- LibAnim by Hydra (modified by Simpy for ElvUI)
+-- LibAnim by Hydra
 local Version = 2.901 -- based on 2.03
 
 -- Note, deprecated items will be removed next version.
@@ -7,8 +7,6 @@ local Version = 2.901 -- based on 2.03
 if _G._LibAnim and _G._LibAnim >= Version then
 	return
 end
-
--- GLOBALS: ElvUI
 
 local Updater = CreateFrame("StatusBar", nil, nil, "BackdropTemplate")
 local Texture = Updater:CreateTexture()

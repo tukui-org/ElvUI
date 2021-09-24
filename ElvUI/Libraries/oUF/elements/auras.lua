@@ -80,10 +80,11 @@ local CREATED = 2
 
 local pcall = pcall
 local tinsert = tinsert
-local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
+local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
+local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
+local GetSpellInfo = GetSpellInfo
 local floor, min = math.floor, math.min
 -- end block
 
@@ -166,161 +167,140 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local aura = ElvUI[1]:UnitAura(unit, index, filter)
-	if not aura then return end
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
-	local name = aura.name
-	local texture = aura.icon
-	local count = aura.count
-	local debuffType = aura.debuffType
-	local duration = aura.duration
-	local expiration = aura.expirationTime
-	local caster = aura.source
-	local isStealable = aura.isStealable
-	local nameplateShowSelf = aura.nameplateShowPersonal
-	local spellID = aura.spellID
-	local canApply = aura.canApplyAura
-	local isBossDebuff = aura.isBossDebuff
-	local casterIsPlayer = aura.castByPlayer
-	local nameplateShowAll = aura.nameplateShowAll
-	local timeMod = aura.timeMod
-	local effect1 = aura.effect1
-	local effect2 = aura.effect2
-	local effect3 = aura.effect3
-
-	-- ElvUI changed block
 	if element.forceShow or element.forceCreate then
 		spellID = 5782
-		name, _, texture = GetSpellInfo(spellID)
+		name, _, icon = GetSpellInfo(spellID)
+
 		if element.forceShow then
-			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, "Magic", 0, 60, "player", nil, nil, nil
+			count, debuffType, duration, expiration, source = 5, "Magic", 0, 60, "player"
 		end
 	end
-	-- end Block
 
-	if(name) then
-		local position = visible + offset + 1
-		local button = element[position]
-		if(not button) then
-			--[[ Override: Auras:CreateIcon(position)
-			Used to create the aura button at a given position.
+	if not name then return end
 
-			* self     - the widget holding the aura buttons
-			* position - the position at which the aura button is to be created (number)
+	local position = visible + offset + 1
+	local button = element[position]
+	if(not button) then
+		--[[ Override: Auras:CreateIcon(position)
+		Used to create the aura button at a given position.
 
-			## Returns
-
-			* button - the button used to represent the aura (Button)
-			--]]
-			button = (element.CreateIcon or createAuraIcon) (element, position)
-
-			tinsert(element, button)
-			element.createdIcons = element.createdIcons + 1
-		end
-
-		button.caster = caster
-		button.filter = filter
-		button.isDebuff = isDebuff
-		button.isPlayer = caster == 'player' or caster == 'vehicle'
-
-		--[[ Override: Auras:CustomFilter(unit, button, ...)
-		Defines a custom filter that controls if the aura button should be shown.
-
-		* self   - the widget holding the aura buttons
-		* unit   - the unit on which the aura is cast (string)
-		* button - the button displaying the aura (Button)
-		* ...    - the return values from [UnitAura](http://wowprogramming.com/docs/api/UnitAura.html)
+		* self     - the widget holding the aura buttons
+		* position - the position at which the aura button is to be created (number)
 
 		## Returns
 
-		* show - indicates whether the aura button should be shown (boolean)
+		* button - the button used to represent the aura (Button)
 		--]]
+		button = (element.CreateIcon or createAuraIcon) (element, position)
 
-		-- ElvUI changed block
-		local show = not element.forceCreate
-		if not (element.forceShow or element.forceCreate) then
-			show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
-				count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
-				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+		tinsert(element, button)
+		element.createdIcons = element.createdIcons + 1
+	end
+
+	button.caster = source
+	button.filter = filter
+	button.isDebuff = isDebuff
+	button.isPlayer = source == 'player' or source == 'vehicle'
+
+	--[[ Override: Auras:CustomFilter(unit, button, ...)
+	Defines a custom filter that controls if the aura button should be shown.
+
+	* self   - the widget holding the aura buttons
+	* unit   - the unit on which the aura is cast (string)
+	* button - the button displaying the aura (Button)
+	* ...    - the return values from [UnitAura](http://wowprogramming.com/docs/api/UnitAura.html)
+
+	## Returns
+
+	* show - indicates whether the aura button should be shown (boolean)
+	--]]
+
+	-- ElvUI changed block
+	local show = not element.forceCreate
+	if not (element.forceShow or element.forceCreate) then
+		show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
+			count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
+			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+	end
+	-- end block
+
+	if(show) then
+		-- We might want to consider delaying the creation of an actual cooldown
+		-- object to this point, but I think that will just make things needlessly
+		-- complicated.
+		if(button.cd and not element.disableCooldown) then
+			if(duration and duration > 0) then
+				button.cd:SetCooldown(expiration - duration, duration)
+				button.cd:Show()
+			else
+				button.cd:Hide()
+			end
 		end
-		-- end block
 
-		if(show) then
-			-- We might want to consider delaying the creation of an actual cooldown
-			-- object to this point, but I think that will just make things needlessly
-			-- complicated.
-			if(button.cd and not element.disableCooldown) then
-				if(duration and duration > 0) then
-					button.cd:SetCooldown(expiration - duration, duration)
-					button.cd:Show()
-				else
-					button.cd:Hide()
-				end
+		if(button.overlay) then
+			if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
+				local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
+
+				button.overlay:SetVertexColor(color[1], color[2], color[3])
+				button.overlay:Show()
+			else
+				button.overlay:Hide()
 			end
-
-			if(button.overlay) then
-				if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
-					local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
-
-					button.overlay:SetVertexColor(color[1], color[2], color[3])
-					button.overlay:Show()
-				else
-					button.overlay:Hide()
-				end
-			end
-
-			if(button.stealable) then
-				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit)) then
-					button.stealable:Show()
-				else
-					button.stealable:Hide()
-				end
-			end
-
-			if(button.icon) then button.icon:SetTexture(texture) end
-			if(button.count) then button.count:SetText(count > 1 and count) end
-
-			local width = element.width or element.size or 16
-			local height = element.height or element.size or 16
-			button:SetSize(width, height)
-
-			button:EnableMouse(not element.disableMouse)
-			button:SetID(index)
-			button:Show()
-
-			--[[ Callback: Auras:PostUpdateIcon(unit, button, index, position)
-			Called after the aura button has been updated.
-
-			* self        - the widget holding the aura buttons
-			* unit        - the unit on which the aura is cast (string)
-			* button      - the updated aura button (Button)
-			* index       - the index of the aura (number)
-			* position    - the actual position of the aura button (number)
-			* duration    - the aura duration in seconds (number?)
-			* expiration  - the point in time when the aura will expire. Comparable to GetTime() (number)
-			* debuffType  - the debuff type of the aura (string?)['Curse', 'Disease', 'Magic', 'Poison']
-			* isStealable - whether the aura can be stolen or purged (boolean)
-			--]]
-			if(element.PostUpdateIcon) then
-				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
-			end
-
-			return VISIBLE
-		-- ElvUI changed block
-		elseif element.forceCreate then
-			local size = element.size or 16
-			button:SetSize(size, size)
-			button:Hide()
-
-			if element.PostUpdateIcon then
-				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
-			end
-
-			return CREATED
-		-- end block
-		else
-			return HIDDEN
 		end
+
+		if(button.stealable) then
+			if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit)) then
+				button.stealable:Show()
+			else
+				button.stealable:Hide()
+			end
+		end
+
+		if(button.icon) then button.icon:SetTexture(icon) end
+		if(button.count) then button.count:SetText(count > 1 and count) end
+
+		local width = element.width or element.size or 16
+		local height = element.height or element.size or 16
+		button:SetSize(width, height)
+
+		button:EnableMouse(not element.disableMouse)
+		button:SetID(index)
+		button:Show()
+
+		--[[ Callback: Auras:PostUpdateIcon(unit, button, index, position)
+		Called after the aura button has been updated.
+
+		* self        - the widget holding the aura buttons
+		* unit        - the unit on which the aura is cast (string)
+		* button      - the updated aura button (Button)
+		* index       - the index of the aura (number)
+		* position    - the actual position of the aura button (number)
+		* duration    - the aura duration in seconds (number?)
+		* expiration  - the point in time when the aura will expire. Comparable to GetTime() (number)
+		* debuffType  - the debuff type of the aura (string?)['Curse', 'Disease', 'Magic', 'Poison']
+		* isStealable - whether the aura can be stolen or purged (boolean)
+		--]]
+		if(element.PostUpdateIcon) then
+			element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+		end
+
+		return VISIBLE
+	-- ElvUI changed block
+	elseif element.forceCreate then
+		local size = element.size or 16
+		button:SetSize(size, size)
+		button:Hide()
+
+		if element.PostUpdateIcon then
+			element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+		end
+
+		return CREATED
+	-- end block
+	else
+		return HIDDEN
 	end
 end
 
@@ -548,7 +528,7 @@ end
 
 local function Enable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
+		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 
 		local buffs = self.Buffs
 		if(buffs) then
@@ -598,7 +578,7 @@ end
 
 local function Disable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
+		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
 
 		if(self.Buffs) then self.Buffs:Hide() end
 		if(self.Debuffs) then self.Debuffs:Hide() end

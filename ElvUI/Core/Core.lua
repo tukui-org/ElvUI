@@ -99,6 +99,7 @@ E.CreditsList = {}
 E.LockedCVars = {}
 E.IgnoredCVars = {}
 E.UpdatedCVars = {}
+E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
 E.InversePoints = {
 	TOP = 'BOTTOM',
 	BOTTOM = 'TOP',
@@ -1115,7 +1116,7 @@ do -- BFA Convert, deprecated..
 		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid','raid40','raidpet'}) do
 			if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
 				local enabled = E.db.unitframe.units[unit].healPrediction
-				E.db.unitframe.units[unit].healPrediction = {}
+				E.db.unitframe.units[unit].healPrediction = E:CopyTable({}, P.unitframe.units[unit].healPrediction)
 				E.db.unitframe.units[unit].healPrediction.enable = enabled
 			else
 				local healPrediction = E.db.unitframe.units[unit].healPrediction

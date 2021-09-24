@@ -10,6 +10,7 @@ local HIDDEN = 0
 local min, wipe, pairs, tinsert = min, wipe, pairs, tinsert
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
+local UnitAura = UnitAura
 local GetSpellTexture = GetSpellTexture
 
 local function createAuraIcon(element, index)
@@ -48,7 +49,7 @@ local function createAuraIcon(element, index)
 	return button
 end
 
-local function customFilter(element, _, button, name, _, _, debuffType, _, _, caster, isStealable, _, spellID, canApply, isBossDebuff, casterIsPlayer)
+local function customFilter(element, _, button, _, _, _, _, _, _, source, _, _, spellID, _, _, castByPlayer)
 	local setting = element.watched[spellID]
 	if not setting then return false end
 
@@ -56,13 +57,13 @@ local function customFilter(element, _, button, name, _, _, debuffType, _, _, ca
 	button.anyUnit = setting.anyUnit
 
 	if setting.enabled then
-		if setting.onlyShowMissing and not setting.anyUnit and caster == 'player' then
+		if setting.onlyShowMissing and not setting.anyUnit and source == 'player' then
 			return false
-		elseif setting.onlyShowMissing and setting.anyUnit and casterIsPlayer then
+		elseif setting.onlyShowMissing and setting.anyUnit and castByPlayer then
 			return true
-		elseif not setting.onlyShowMissing and setting.anyUnit and casterIsPlayer then
+		elseif not setting.onlyShowMissing and setting.anyUnit and castByPlayer then
 			return true
-		elseif not setting.onlyShowMissing and not setting.anyUnit and caster == 'player' then
+		elseif not setting.onlyShowMissing and not setting.anyUnit and source == 'player' then
 			return true
 		end
 	end
@@ -71,102 +72,81 @@ local function customFilter(element, _, button, name, _, _, debuffType, _, _, ca
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local aura = ElvUI[1]:UnitAura(unit, index, filter)
-	if not aura then return end
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	if not name then return end
 
-	local name = aura.name
-	if name then
-		local texture = aura.icon
-		local count = aura.count
-		local debuffType = aura.debuffType
-		local duration = aura.duration
-		local expiration = aura.expirationTime
-		local caster = aura.source
-		local isStealable = aura.isStealable
-		local nameplateShowSelf = aura.nameplateShowPersonal
-		local spellID = aura.spellID
-		local canApply = aura.canApplyAura
-		local isBossDebuff = aura.isBossDebuff
-		local casterIsPlayer = aura.castByPlayer
-		local nameplateShowAll = aura.nameplateShowAll
-		local timeMod = aura.timeMod
-		local effect1 = aura.effect1
-		local effect2 = aura.effect2
-		local effect3 = aura.effect3
+	local position = visible + offset + 1
+	local button = element[position]
+	if not button then
+		button = (element.CreateIcon or createAuraIcon) (element, position)
 
-		local position = visible + offset + 1
-		local button = element[position]
-		if not button then
-			button = (element.CreateIcon or createAuraIcon) (element, position)
+		tinsert(element, button)
+		element.createdIcons = element.createdIcons + 1
+	end
 
-			tinsert(element, button)
-			element.createdIcons = element.createdIcons + 1
-		end
+	button.caster = source
+	button.filter = filter
+	button.isDebuff = isDebuff
+	button.debuffType = debuffType
+	button.spellID = spellID
+	button.isPlayer = source == 'player'
 
-		button.caster = caster
-		button.filter = filter
-		button.isDebuff = isDebuff
-		button.debuffType = debuffType
-		button.spellID = spellID
-		button.isPlayer = caster == 'player'
+	local show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
+		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
+		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 
-		local show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
-			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
-			canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
-
-		if show then
-			local setting = element.watched[spellID]
-			if button.cd then
-				if duration and duration > 0 then
-					button.cd:SetCooldown(expiration - duration, duration)
-					button.cd:Show()
-				else
-					button.cd:Hide()
-				end
-			end
-
-			if button.overlay then
-				if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
-					local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
-
-					button.overlay:SetVertexColor(color[1], color[2], color[3])
-					button.overlay:Show()
-				else
-					button.overlay:Hide()
-				end
-			end
-
-			if button.stealable then
-				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit(unit, 'player')) then
-					button.stealable:Show()
-				else
-					button.stealable:Hide()
-				end
-			end
-
-			if button.icon then button.icon:SetTexture(texture) end
-			if button.count then button.count:SetText(count > 1 and count) end
-
-			if not setting.sizeOffset or setting.sizeOffset == 0 then
-				button:SetSize(element.size, element.size)
+	if show then
+		local setting = element.watched[spellID]
+		if button.cd then
+			if duration and duration > 0 then
+				button.cd:SetCooldown(expiration - duration, duration)
+				button.cd:Show()
 			else
-				button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+				button.cd:Hide()
 			end
-
-			button:SetID(index)
-			button:Show()
-			button:ClearAllPoints()
-			button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
-
-			if element.PostUpdateIcon then
-				element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
-			end
-
-			return VISIBLE
-		else
-			button.isFiltered = true
-			return HIDDEN
 		end
+
+		if button.overlay then
+			if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
+				local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
+
+				button.overlay:SetVertexColor(color[1], color[2], color[3])
+				button.overlay:Show()
+			else
+				button.overlay:Hide()
+			end
+		end
+
+		if button.stealable then
+			if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit(unit, 'player')) then
+				button.stealable:Show()
+			else
+				button.stealable:Hide()
+			end
+		end
+
+		if button.icon then button.icon:SetTexture(icon) end
+		if button.count then button.count:SetText(count > 1 and count) end
+
+		if not setting.sizeOffset or setting.sizeOffset == 0 then
+			button:SetSize(element.size, element.size)
+		else
+			button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+		end
+
+		button:SetID(index)
+		button:Show()
+		button:ClearAllPoints()
+		button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
+
+		if element.PostUpdateIcon then
+			element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
+		end
+
+		return VISIBLE
+	else
+		button.isFiltered = true
+		return HIDDEN
 	end
 end
 
@@ -303,7 +283,7 @@ local function Enable(self)
 		element.anchoredIcons = 0
 		element.size = 8
 
-		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras, true)
+		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 		element:Show()
 
 		return true
@@ -312,7 +292,7 @@ end
 
 local function Disable(self)
 	if(self.AuraWatch) then
-		ElvUI[1]:AuraInfo_SetFunction(self, UpdateAuras)
+		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
 
 		if(self.AuraWatch) then self.AuraWatch:Hide() end
 	end

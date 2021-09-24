@@ -674,6 +674,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
 		[348443] = Defaults(), -- Experience Eliminated
 		[206151] = Defaults(), -- Challenger's Burden
+		[313015] = Defaults(), -- Recently Failed (mechagnome racial)
 		[322695] = Defaults(), -- Drained
 	},
 }
@@ -1206,9 +1207,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[355249] = Defaults(), -- Anima Gorged (Consumption)
 	},
 }
-
--- Spells that we want to show the duration backwards
-E.ReverseTimer = {}
 
 -- AuraWatch: List of personal spells to show on unitframes as icon
 function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
