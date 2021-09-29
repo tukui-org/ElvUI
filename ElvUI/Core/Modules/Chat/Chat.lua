@@ -2159,7 +2159,11 @@ function CH:ChatFrame_SetScript(script, func)
 	end
 end
 
-local ignoreChats = {[2]='Log',[3]='Voice'}
+local ignoreChats = {[2]='Log'}
+if E.Retail then
+	tinsert(ignoreChats, 3, 'Voice')
+end
+
 function CH:SetupChat()
 	if not E.private.chat.enable then return end
 
