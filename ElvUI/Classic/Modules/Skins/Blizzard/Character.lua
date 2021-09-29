@@ -280,6 +280,9 @@ function S:CharacterFrame()
 	_G.SkillDetailStatusBarUnlearnButton:Size(24)
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
 	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
+
+	-- Honor Tab
+	_G.HonorFrame:StripTextures()
 end
 
 S:AddCallback('CharacterFrame')
