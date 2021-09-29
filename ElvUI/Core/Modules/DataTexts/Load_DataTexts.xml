@@ -9,6 +9,7 @@
 	<Script file='CombatTime.lua'/>
 	<Script file='ConfigElvUI.lua'/>
 	<Script file='Coordinates.lua'/>
+	<Script file='Friends.lua'/>
 	<Script file='Gold.lua'/>
 	<Script file='Mail.lua'/>
 	<Script file='Bags.lua'/>

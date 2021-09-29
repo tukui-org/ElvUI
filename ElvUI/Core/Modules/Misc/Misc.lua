@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...))
 local M = E:GetModule('Misc')
-local Bags = E:GetModule('Bags')
+local B = E:GetModule('Bags')
+local CH = E:GetModule('Chat')
 
 local _G = _G
 local select = select
@@ -51,7 +52,6 @@ local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local hooksecurefunc = hooksecurefunc
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
-local C_BattleNet_GetGameAccountInfoByGUID = E.Retail and C_BattleNet.GetGameAccountInfoByGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -172,7 +172,7 @@ function M:MERCHANT_CLOSED()
 end
 
 function M:MERCHANT_SHOW()
-	if E.db.bags.vendorGrays.enable then E:Delay(0.5, Bags.VendorGrays, Bags) end
+	if E.db.bags.vendorGrays.enable then E:Delay(0.5, B.VendorGrays, B) end
 
 	if E.db.general.autoRepair == 'NONE' or IsShiftKeyDown() or not CanMerchantRepair() then return end
 
@@ -222,7 +222,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		-- Prevent losing que inside LFD if someone invites you to group
 		if _G.QueueStatusMinimapButton:IsShown() or IsInGroup() or (not inviterGUID or inviterGUID == '') then return end
 
-		if E.Retail and (C_BattleNet_GetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID)) or IsGuildMember(inviterGUID) then
+		if E.Retail and (CH.BNGetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID)) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end
