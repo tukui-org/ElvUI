@@ -69,6 +69,7 @@ G.datatexts = {
 			hideApp = false, --Launcher
 		},
 		Gold = { goldFormat = 'BLIZZARD', goldCoins = true },
+		Hit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Guild = { Label = '', NoLabel = false },
 		Haste = { Label = '', NoLabel = false, decimalLength = 1 },
 		QuickJoin = { Label = '', NoLabel = false },

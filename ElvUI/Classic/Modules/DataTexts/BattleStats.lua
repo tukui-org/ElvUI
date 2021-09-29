@@ -2,22 +2,21 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local sort = sort
 local ipairs = ipairs
-local strlen = strlen
 local strjoin = strjoin
 local GetNumBattlefieldScores = GetNumBattlefieldScores
-local GetBattlefieldStatData = GetBattlefieldStatData
 local GetBattlefieldScore = GetBattlefieldScore
-local BATTLEGROUND = BATTLEGROUND
 
 local displayString = ''
 local holder = {
-	LEFT = { data = {}, '', _G.HONOR,  _G.KILLING_BLOWS },
-	RIGHT = { data = {}, _G.KILLS, _G.DEATHS, '' }
+	LEFT = { data = {}, _G.KILLS, _G.KILLING_BLOWS, _G.DEATHS },
+	RIGHT = { data = {}, _G.DAMAGE, _G.HEALS, _G.HONOR }
 }
 
-DT.BattleStats = holder
+do -- we need to register the panels to access them for the text
+	DT.BattleStats = holder
+end
+
 function DT:UpdateBattlePanel(which)
 	local info = which and holder[which]
 
@@ -39,10 +38,10 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 	myIndex = nil
 
 	for i = 1, GetNumBattlefieldScores() do
-		local name, kb, hks, deaths, honor = GetBattlefieldScore(i)
+		local name, kb, hks, deaths, honor, _, _, _, _, _, dmg, heals = GetBattlefieldScore(i)
 		if name == E.myname then
-			LEFT[2], LEFT[3] = E:ShortValue(honor), E:ShortValue(kb)
-			RIGHT[1], RIGHT[2] = E:ShortValue(hks), E:ShortValue(deaths)
+			LEFT[1], LEFT[2], LEFT[3] = E:ShortValue(hks), E:ShortValue(kb), E:ShortValue(deaths)
+			RIGHT[1], RIGHT[2], RIGHT[3] = E:ShortValue(dmg), E:ShortValue(heals), E:ShortValue(honor)
 			myIndex = i
 			break
 		end
@@ -63,6 +62,9 @@ function DT:ToggleBattleStats()
 		E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats"])
 	end
 
+	holder.LEFT.panel = _G.LeftChatDataPanel.dataPanels
+	holder.RIGHT.panel = _G.RightChatDataPanel.dataPanels
+
 	DT:UpdatePanelInfo('LeftChatDataPanel')
 	DT:UpdatePanelInfo('RightChatDataPanel')
 
@@ -73,7 +75,7 @@ function DT:ToggleBattleStats()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%s|r")
+	displayString = strjoin('', '%s: ', hex, '%s|r')
 
 	if DT.ShowingBattleStats then
 		DT:UpdateBattlePanel('LEFT')

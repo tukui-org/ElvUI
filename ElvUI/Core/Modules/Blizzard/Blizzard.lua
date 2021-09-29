@@ -67,16 +67,18 @@ function B:Initialize()
 		B:HandleWidgets()
 	end
 
-	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
-		B:MoveObjectiveFrame()
-	end
+	if E.Retail then
+		if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
+			B:MoveObjectiveFrame()
+		end
 
-	if not E:IsAddOnEnabled('SimplePowerBar') then
-		B:PositionAltPowerBar()
-		B:SkinAltPowerBar()
-	end
+		if not E:IsAddOnEnabled('SimplePowerBar') then
+			B:PositionAltPowerBar()
+			B:SkinAltPowerBar()
+		end
 
-	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
+		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
+	end
 
 	-- Battle.Net Frame
 	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)

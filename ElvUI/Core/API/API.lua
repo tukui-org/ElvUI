@@ -420,7 +420,9 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	self:CheckRole()
+	if E.Retail then
+		self:CheckRole()
+	end
 
 	if initLogin or not ElvDB.DisabledAddOns then
 		ElvDB.DisabledAddOns = {}

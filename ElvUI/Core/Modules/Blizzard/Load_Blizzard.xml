@@ -2,12 +2,10 @@
 	<Script file='Blizzard.lua'/>
 	<Script file='ColorPicker.lua'/>
 	<Script file='Kill.lua'/>
-	<Script file='ObjectiveFrame.lua'/>
 	<Script file='Vehicle.lua'/>
 	<Script file='TimerTracker.lua'/>
 	<Script file='CaptureBar.lua'/>
 	<Script file='AlertFrame.lua'/>
-	<Script file='AltPower.lua'/>
 	<Script file='TalkingHeadFrame.lua'/>
 	<Script file='WidgetsUI.lua'/>
 </Ui>

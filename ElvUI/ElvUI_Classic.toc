@@ -1,6 +1,6 @@
-## Interface: 90100
+## Interface: 11400
 ## Author: Elv, Simpy
-## Version: 12.44
+## Version: 1.45
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
@@ -11,12 +11,19 @@
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 
 TaintLess.xml
-Developer\Load_Developer.xml
-Libraries\Load_Libraries.xml
-init.lua
-Locales\Load_Locales.xml
-Media\Load_Media.xml
-Settings\Load_Settings.xml
-API\Load_Core.xml
-Layout\Load_Layout.xml
-Modules\Load_Modules.xml
+
+Core\Developer\Load_Developer.xml
+
+Core\Libraries\Load_Libraries.xml
+Core\Libraries\oUF\oUF_Classic.xml
+Core\Libraries\oUF_Plugins\oUF_Plugins.xml
+
+Core\init.lua
+Core\Locales\Load_Locales.xml
+Core\Media\Load_Media.xml
+Core\Settings\Load_Settings.xml
+Core\API\Load_Core.xml
+Core\Layout\Load_Layout.xml
+Core\Modules\Load_Modules.xml
+
+Classic\Load.xml

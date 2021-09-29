@@ -13,7 +13,10 @@ local holder = {
 	RIGHT = { data = {}, _G.DAMAGE, _G.HEALS, _G.HONOR }
 }
 
-DT.BattleStats = holder
+do -- we need to register the panels to access them for the text
+	DT.BattleStats = holder
+end
+
 function DT:UpdateBattlePanel(which)
 	local info = which and holder[which]
 
@@ -58,6 +61,9 @@ function DT:ToggleBattleStats()
 		DT.ForceHideBGStats = true
 		E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats"])
 	end
+
+	holder.LEFT.panel = _G.LeftChatDataPanel.dataPanels
+	holder.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 
 	DT:UpdatePanelInfo('LeftChatDataPanel')
 	DT:UpdatePanelInfo('RightChatDataPanel')
