@@ -20,6 +20,7 @@ function UF:Construct_PhaseIcon(frame)
 	PhaseIndicator:SetTexture(E.Media.Textures.PhaseBorder)
 	PhaseIndicator:Point('CENTER', frame.Health)
 	PhaseIndicator:Size(32)
+	PhaseIndicator:Hide()
 
 	local Center = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY', nil, 7)
 	Center:SetTexture(E.Media.Textures.PhaseCenter)

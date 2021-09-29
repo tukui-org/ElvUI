@@ -148,9 +148,14 @@ B.IsEquipmentSlot = {
 }
 
 local bagIDs = {0, 1, 2, 3, 4}
-local bankIDs = {-1, 5, 6, 7, 8, 9, 10, 11}
-local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'PLAYERREAGENTBANKSLOTS_CHANGED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
+local bankIDs = {-1, 5, 6, 7, 8, 9, 10}
+local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
+
+if E.Retail then
+	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
+	tinsert(bankIDs, 11)
+end
 
 function B:GetContainerFrame(arg)
 	if arg == true then
@@ -1969,21 +1974,21 @@ function B:ShowBankTab(f, showReagent)
 
 		if E.Retail then
 			f.reagentFrame:Show()
+			f.bagText:SetText(L["Reagent Bank"])
 		end
 
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
-		f.bagText:SetText(L["Reagent Bank"])
 	else
 		_G.BankFrame.selectedTab = 1
 
 		if E.Retail then
 			f.reagentFrame:Hide()
+			f.bagText:SetText(L["Bank"])
 		end
 
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
-		f.bagText:SetText(L["Bank"])
 	end
 
 	if previousTab ~= _G.BankFrame.selectedTab then
