@@ -304,139 +304,136 @@ do --this can save some main file locals
 		itsMis = function() return Rainbow, MisColors end
 	end
 
+	local z = {}
+	specialChatIcons = z
+
 	if E.Classic then
-		specialChatIcons = {
-			['Simpy-Myzrael']       = itsSimpy, -- Warlock
-		}
+		z['Simpy-Myzrael'] = itsSimpy -- Warlock
 	elseif E.TBC then
-		specialChatIcons = {
-			['Cutepally-Myzrael']   = itsSimpy, -- Paladin
-		}
+		z['Cutepally-Myzrael'] = itsSimpy -- Paladin
 	elseif E.Retail then
-		specialChatIcons = {
-			-- Elv
-			['Elv-Spirestone']			= itsElv,
-			['Elvz-Spirestone']			= itsElv,
-			['Fleshlite-Spirestone']	= itsElv,
-			['Elvidan-Spirestone']		= itsElv,
-			['Elvilas-Spirestone']		= itsElv,
-			['Fraku-Spirestone']		= itsElv,
-			['Jarvix-Spirestone']		= itsElv,
-			['Watermelon-Spirestone']	= itsElv,
-			['Zinxbe-Spirestone']		= itsElv,
-			['Whorlock-Spirestone']		= itsElv,
-			-- Blazeflack
-			['Blazii-Silvermoon']	= ElvBlue, -- Priest
-			['Chazii-Silvermoon']	= ElvBlue, -- Shaman
-			-- Merathilis
-			['Asragoth-Shattrath']		= ElvPurple,	-- [Alliance] Warlock
-			['Brítt-Shattrath'] 		= ElvBlue,		-- [Alliance] Warrior
-			['Damará-Shattrath']		= ElvRed,		-- [Alliance] Paladin
-			['Jazira-Shattrath']		= ElvBlue,		-- [Alliance] Priest
-			['Jústice-Shattrath']		= ElvYellow,	-- [Alliance] Rogue
-			['Maithilis-Shattrath']		= ElvGreen,		-- [Alliance] Monk
-			['Mattdemôn-Shattrath']		= ElvPurple,	-- [Alliance] DH
-			['Melisendra-Shattrath']	= ElvBlue,		-- [Alliance] Mage
-			['Merathilis-Shattrath']	= ElvOrange,	-- [Alliance] Druid
-			['Merathilîs-Shattrath']	= ElvBlue,		-- [Alliance] Shaman
-			['Róhal-Shattrath']			= ElvGreen,		-- [Alliance] Hunter
-			-- Luckyone
-			['Luckyone-LaughingSkull']		= ElvGreen, -- Druid
-			['Luckypriest-LaughingSkull']	= ElvGreen, -- Priest
-			['Luckymonkas-LaughingSkull']	= ElvGreen, -- Monk
-			['Luckydk-LaughingSkull']		= ElvGreen, -- DK
-			['Luckyhunter-LaughingSkull']	= ElvGreen, -- Hunter
-			['Unluckyone-LaughingSkull']	= ElvGreen, -- Shaman
-			['Notlucky-LaughingSkull']		= ElvGreen, -- Warrior
-			['Luckymage-LaughingSkull']		= ElvGreen, -- Mage
-			['Luckydh-LaughingSkull']		= ElvGreen, -- DH
-			['Luckywl-LaughingSkull']		= ElvGreen, -- Warlock
-			['Luckyrogue-LaughingSkull']	= ElvGreen, -- Rogue
-			['Luckypala-LaughingSkull']		= ElvGreen, -- Paladin
-			-- Simpy
-			['Arieva-Cenarius']				= itsSimpy, -- Hunter
-			['Buddercup-Cenarius']			= itsSimpy, -- Rogue
-			['Cutepally-Cenarius']			= itsSimpy, -- Paladin
-			['Ezek-Cenarius']				= itsSimpy, -- DK
-			['Glice-Cenarius']				= itsSimpy, -- Warrior
-			['Kalline-Cenarius']			= itsSimpy, -- Shaman
-			['Puttietat-Cenarius']			= itsSimpy, -- Druid
-			['Simpy-Cenarius']				= itsSimpy, -- Warlock
-			['Twigly-Cenarius']				= itsSimpy, -- Monk
-			['Imsobeefy-Cenarius']			= itsSimpy, -- [Horde] Shaman
-			['Imsocheesy-Cenarius']			= itsSimpy, -- [Horde] Priest
-			['Imsojelly-Cenarius']			= itsSimpy, -- [Horde] DK
-			['Imsojuicy-Cenarius']			= itsSimpy, -- [Horde] Druid
-			['Imsopeachy-Cenarius']			= itsSimpy, -- [Horde] DH
-			['Imsosalty-Cenarius']			= itsSimpy, -- [Horde] Paladin
-			['Imsospicy-Cenarius']			= itsSimpy, -- [Horde] Mage
-			['Imsonutty-Cenarius']			= itsSimpy, -- [Horde] Hunter
-			['Imsotasty-Cenarius']			= itsSimpy, -- [Horde] Monk
-			['Imsosaucy-Cenarius']			= itsSimpy, -- [Horde] Warlock
-			['Imsodrippy-Cenarius']			= itsSimpy, -- [Horde] Rogue
-			['Bunne-CenarionCircle']		= itsSimpy, -- [RP] Warrior
-			['Loppie-CenarionCircle']		= itsSimpy, -- [RP] Monk
-			['Loppybunny-CenarionCircle']	= itsSimpy, -- [RP] Mage
-			['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
-			['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
-			-- Melbelle (Simpys Bestie)
-			['Melbelle-Bladefist']		= itsMel, -- Hunter
-			['Deathchaser-Bladefist']	= itsMel, -- DH
-			['Alyosha-Cenarius']		= itsMel, -- Warrior
-			['Dãwn-Cenarius']			= itsMel, -- Paladin
-			['Faelen-Cenarius']			= itsMel, -- Rogue
-			['Freckles-Cenarius']		= itsMel, -- DK
-			['Lõvi-Cenarius']			= itsMel, -- Priest
-			['Melbelle-Cenarius']		= itsMel, -- Druid
-			['Perìwìnkle-Cenarius']		= itsMel, -- Shaman
-			['Pìper-Cenarius']			= itsMel, -- Warlock
-			['Spãrkles-Cenarius']		= itsMel, -- Mage
-			['Mellybear-Cenarius']		= itsMel, -- Hunter
-			['Zuria-Cenarius']			= itsMel, -- DH
-			['Tinybubbles-Cenarius']	= itsMel, -- Monk
-			['Alykat-Cenarius']			= itsMel, -- [Horde] Druid
-			['Alybones-Cenarius']		= itsMel, -- [Horde] DK
-			['Alyfreeze-Cenarius']		= itsMel, -- [Horde] Mage
-			['Alykins-Cenarius']		= itsMel, -- [Horde] DH
-			['Alyrage-Cenarius']		= itsMel, -- [Horde] Warrior
-			['Alysneaks-Cenarius']		= itsMel, -- [Horde] Rogue
-			['Alytotes-Cenarius']		= itsMel, -- [Horde] Shaman
-			-- AcidWeb
-			['Livarax-BurningLegion']		= Gem,
-			['Filevandrel-BurningLegion']	= Gem,
-			['Akavaya-BurningLegion']		= Gem,
-			-- Affinity
-			['Affinichi-Illidan']	= Bathrobe,
-			['Affinitii-Illidan']	= Bathrobe,
-			['Affinity-Illidan']	= Bathrobe,
-			['Uplift-Illidan']		= Bathrobe,
-			-- Tirain (NOTE: lol)
-			['Tierone-Spirestone']	= TyroneBiggums,
-			['Tirain-Spirestone']	= TyroneBiggums,
-			['Sinth-Spirestone']	= TyroneBiggums,
-			['Tee-Spirestone']		= TyroneBiggums,
-			['Teepac-Area52']		= TyroneBiggums,
-			['Teekettle-Area52']		= TyroneBiggums,
-			-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
-			['Misdîrect-Spirestone']	= itsMis,
-			['Misoracle-Spirestone']	= itsMis,
-			['MisLight-Spirestone']		= itsMis,
-			['MisDivine-Spirestone']	= itsMis,
-			['MisMayhem-Spirestone']	= itsMis,
-			['Mismonk-Spirestone']		= itsMis,
-			['Misillidan-Spirestone']	= itsMis,
-			['Mispel-Spirestone']		= itsMis,
-			['Misdecay-Spirestone']		= itsMis,
-			['Mislust-Spirestone'] 		= itsMis,
-			['Misdivine-Spirestone']	= itsMis,
-			['Mislight-Spirestone']		= itsMis,
-			--Bladesdruid
-			['Bladedemonz-Spirestone']	= SuperBear,
-			['Bladesdruid-Spirestone']	= SuperBear,
-			['Rollerblade-Spirestone']	= SuperBear,
-			--Bozaum
-			['Bozaum-Spirestone']	= Beer,
-		}
+		-- Elv
+		z['Elv-Spirestone']			= itsElv
+		z['Elvz-Spirestone']		= itsElv
+		z['Fleshlite-Spirestone']	= itsElv
+		z['Elvidan-Spirestone']		= itsElv
+		z['Elvilas-Spirestone']		= itsElv
+		z['Fraku-Spirestone']		= itsElv
+		z['Jarvix-Spirestone']		= itsElv
+		z['Watermelon-Spirestone']	= itsElv
+		z['Zinxbe-Spirestone']		= itsElv
+		z['Whorlock-Spirestone']	= itsElv
+		-- Blazeflack
+		z['Blazii-Silvermoon']	= ElvBlue -- Priest
+		z['Chazii-Silvermoon']	= ElvBlue -- Shaman
+		-- Merathilis
+		z['Asragoth-Shattrath']		= ElvPurple	-- [Alliance] Warlock
+		z['Brítt-Shattrath'] 		= ElvBlue	-- [Alliance] Warrior
+		z['Damará-Shattrath']		= ElvRed	-- [Alliance] Paladin
+		z['Jazira-Shattrath']		= ElvBlue	-- [Alliance] Priest
+		z['Jústice-Shattrath']		= ElvYellow	-- [Alliance] Rogue
+		z['Maithilis-Shattrath']	= ElvGreen	-- [Alliance] Monk
+		z['Mattdemôn-Shattrath']	= ElvPurple	-- [Alliance] DH
+		z['Melisendra-Shattrath']	= ElvBlue	-- [Alliance] Mage
+		z['Merathilis-Shattrath']	= ElvOrange	-- [Alliance] Druid
+		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
+		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
+		-- Luckyone
+		z['Luckyone-LaughingSkull']		= ElvGreen -- Druid
+		z['Luckypriest-LaughingSkull']	= ElvGreen -- Priest
+		z['Luckymonkas-LaughingSkull']	= ElvGreen -- Monk
+		z['Luckydk-LaughingSkull']		= ElvGreen -- DK
+		z['Luckyhunter-LaughingSkull']	= ElvGreen -- Hunter
+		z['Unluckyone-LaughingSkull']	= ElvGreen -- Shaman
+		z['Notlucky-LaughingSkull']		= ElvGreen -- Warrior
+		z['Luckymage-LaughingSkull']	= ElvGreen -- Mage
+		z['Luckydh-LaughingSkull']		= ElvGreen -- DH
+		z['Luckywl-LaughingSkull']		= ElvGreen -- Warlock
+		z['Luckyrogue-LaughingSkull']	= ElvGreen -- Rogue
+		z['Luckypala-LaughingSkull']	= ElvGreen -- Paladin
+		-- Simpy
+		z['Arieva-Cenarius']			= itsSimpy -- Hunter
+		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
+		z['Cutepally-Cenarius']			= itsSimpy -- Paladin
+		z['Ezek-Cenarius']				= itsSimpy -- DK
+		z['Glice-Cenarius']				= itsSimpy -- Warrior
+		z['Kalline-Cenarius']			= itsSimpy -- Shaman
+		z['Puttietat-Cenarius']			= itsSimpy -- Druid
+		z['Simpy-Cenarius']				= itsSimpy -- Warlock
+		z['Twigly-Cenarius']			= itsSimpy -- Monk
+		z['Imsobeefy-Cenarius']			= itsSimpy -- [Horde] Shaman
+		z['Imsocheesy-Cenarius']		= itsSimpy -- [Horde] Priest
+		z['Imsojelly-Cenarius']			= itsSimpy -- [Horde] DK
+		z['Imsojuicy-Cenarius']			= itsSimpy -- [Horde] Druid
+		z['Imsopeachy-Cenarius']		= itsSimpy -- [Horde] DH
+		z['Imsosalty-Cenarius']			= itsSimpy -- [Horde] Paladin
+		z['Imsospicy-Cenarius']			= itsSimpy -- [Horde] Mage
+		z['Imsonutty-Cenarius']			= itsSimpy -- [Horde] Hunter
+		z['Imsotasty-Cenarius']			= itsSimpy -- [Horde] Monk
+		z['Imsosaucy-Cenarius']			= itsSimpy -- [Horde] Warlock
+		z['Imsodrippy-Cenarius']		= itsSimpy -- [Horde] Rogue
+		z['Bunne-CenarionCircle']		= itsSimpy -- [RP] Warrior
+		z['Loppie-CenarionCircle']		= itsSimpy -- [RP] Monk
+		z['Loppybunny-CenarionCircle']	= itsSimpy -- [RP] Mage
+		z['Rubee-CenarionCircle']		= itsSimpy -- [RP] DH
+		z['Wennie-CenarionCircle']		= itsSimpy -- [RP] Priest
+		-- Melbelle (Simpys Bestie)
+		z['Melbelle-Bladefist']		= itsMel -- Hunter
+		z['Deathchaser-Bladefist']	= itsMel -- DH
+		z['Alyosha-Cenarius']		= itsMel -- Warrior
+		z['Dãwn-Cenarius']			= itsMel -- Paladin
+		z['Faelen-Cenarius']		= itsMel -- Rogue
+		z['Freckles-Cenarius']		= itsMel -- DK
+		z['Lõvi-Cenarius']			= itsMel -- Priest
+		z['Melbelle-Cenarius']		= itsMel -- Druid
+		z['Perìwìnkle-Cenarius']	= itsMel -- Shaman
+		z['Pìper-Cenarius']			= itsMel -- Warlock
+		z['Spãrkles-Cenarius']		= itsMel -- Mage
+		z['Mellybear-Cenarius']		= itsMel -- Hunter
+		z['Zuria-Cenarius']			= itsMel -- DH
+		z['Tinybubbles-Cenarius']	= itsMel -- Monk
+		z['Alykat-Cenarius']		= itsMel -- [Horde] Druid
+		z['Alybones-Cenarius']		= itsMel -- [Horde] DK
+		z['Alyfreeze-Cenarius']		= itsMel -- [Horde] Mage
+		z['Alykins-Cenarius']		= itsMel -- [Horde] DH
+		z['Alyrage-Cenarius']		= itsMel -- [Horde] Warrior
+		z['Alysneaks-Cenarius']		= itsMel -- [Horde] Rogue
+		z['Alytotes-Cenarius']		= itsMel -- [Horde] Shaman
+		-- AcidWeb
+		z['Livarax-BurningLegion']		= Gem
+		z['Filevandrel-BurningLegion']	= Gem
+		z['Akavaya-BurningLegion']		= Gem
+		-- Affinity
+		z['Affinichi-Illidan']	= Bathrobe
+		z['Affinitii-Illidan']	= Bathrobe
+		z['Affinity-Illidan']	= Bathrobe
+		z['Uplift-Illidan']		= Bathrobe
+		-- Tirain (NOTE: lol)
+		z['Tierone-Spirestone']	= TyroneBiggums
+		z['Tirain-Spirestone']	= TyroneBiggums
+		z['Sinth-Spirestone']	= TyroneBiggums
+		z['Tee-Spirestone']		= TyroneBiggums
+		z['Teepac-Area52']		= TyroneBiggums
+		z['Teekettle-Area52']	= TyroneBiggums
+		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		z['Misdîrect-Spirestone']	= itsMis
+		z['Misoracle-Spirestone']	= itsMis
+		z['MisLight-Spirestone']	= itsMis
+		z['MisDivine-Spirestone']	= itsMis
+		z['MisMayhem-Spirestone']	= itsMis
+		z['Mismonk-Spirestone']		= itsMis
+		z['Misillidan-Spirestone']	= itsMis
+		z['Mispel-Spirestone']		= itsMis
+		z['Misdecay-Spirestone']	= itsMis
+		z['Mislust-Spirestone'] 	= itsMis
+		z['Misdivine-Spirestone']	= itsMis
+		z['Mislight-Spirestone']	= itsMis
+		--Bladesdruid
+		z['Bladedemonz-Spirestone']	= SuperBear
+		z['Bladesdruid-Spirestone']	= SuperBear
+		z['Rollerblade-Spirestone']	= SuperBear
+		--Bozaum
+		z['Bozaum-Spirestone']	= Beer
 	end
 end
 
