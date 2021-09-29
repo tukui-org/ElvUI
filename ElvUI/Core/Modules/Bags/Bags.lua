@@ -327,8 +327,10 @@ function B:UpdateItemDisplay()
 		end
 	end
 
-	for _, slot in next, B.BankFrame.reagentFrame.slots do
-		slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+	if B.BankFrame.reagentFrame then
+		for _, slot in next, B.BankFrame.reagentFrame.slots do
+			slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+		end
 	end
 end
 
@@ -888,7 +890,7 @@ function B:Layout(isBank)
 	local reverseSlots = B.db.reverseSlots
 
 	f.holderFrame:SetWidth(holderWidth)
-	if isBank then
+	if E.Retail and isBank then
 		f.reagentFrame:SetWidth(holderWidth)
 	end
 
@@ -1965,14 +1967,20 @@ function B:ShowBankTab(f, showReagent)
 	if showReagent then
 		_G.BankFrame.selectedTab = 2
 
+		if E.Retail then
+			f.reagentFrame:Show()
+		end
+
 		f.holderFrame:Hide()
-		f.reagentFrame:Show()
 		f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Reagent Bank"])
 	else
 		_G.BankFrame.selectedTab = 1
 
-		f.reagentFrame:Hide()
+		if E.Retail then
+			f.reagentFrame:Hide()
+		end
+
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Bank"])

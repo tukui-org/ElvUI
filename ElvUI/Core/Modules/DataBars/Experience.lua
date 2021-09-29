@@ -21,6 +21,10 @@ local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 local QuestLogXP = 0
 
+local function hasDisabledXP()
+	return E.Retail and IsXPUserDisabled()
+end
+
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if not questID then return end
 
@@ -31,7 +35,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 end
 
 function DB:ExperienceBar_ShouldBeVisible()
-	return not IsPlayerAtEffectiveMaxLevel() and not IsXPUserDisabled()
+	return not IsPlayerAtEffectiveMaxLevel() and not hasDisabledXP()
 end
 
 local function RestedQuestLayering()
@@ -67,7 +71,7 @@ function DB:ExperienceBar_Update()
 		bar:SetValue(1)
 
 		if textFormat ~= 'NONE' then
-			displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
+			displayString = hasDisabledXP() and L["Disabled"] or L["Max Level"]
 		end
 	else
 		bar:SetMinMaxValues(0, XPToLevel)
@@ -165,7 +169,10 @@ function DB:ExperienceBar_OnEnter()
 
 	_G.GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
 	_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
-	_G.GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
+
+	if E.Retail then
+		_G.GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
+	end
 
 	if RestedXP and RestedXP > 0 then
 		_G.GameTooltip:AddDoubleLine(L["Rested:"], format('%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
@@ -178,7 +185,10 @@ function DB:ExperienceBar_OnClick() end
 
 function DB:ExperienceBar_XPGain()
 	DB:ExperienceBar_Update()
-	DB:ExperienceBar_QuestXP()
+
+	if E.Retail then
+		DB:ExperienceBar_QuestXP()
+	end
 end
 
 function DB:ExperienceBar_Toggle()
@@ -194,17 +204,23 @@ function DB:ExperienceBar_Toggle()
 	if bar.db.enable and not bar:ShouldHide() then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_XPGain')
 		DB:RegisterEvent('UPDATE_EXHAUSTION', 'ExperienceBar_Update')
-		DB:RegisterEvent('QUEST_LOG_UPDATE', 'ExperienceBar_QuestXP')
-		DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
-		DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
-		DB:RegisterEvent('SUPER_TRACKING_CHANGED', 'ExperienceBar_QuestXP')
+
+		if E.Retail then
+			DB:RegisterEvent('QUEST_LOG_UPDATE', 'ExperienceBar_QuestXP')
+			DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
+			DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
+			DB:RegisterEvent('SUPER_TRACKING_CHANGED', 'ExperienceBar_QuestXP')
+		end
 	else
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('UPDATE_EXHAUSTION')
-		DB:UnregisterEvent('QUEST_LOG_UPDATE')
-		DB:UnregisterEvent('ZONE_CHANGED')
-		DB:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
-		DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
+
+		if E.Retail then
+			DB:UnregisterEvent('QUEST_LOG_UPDATE')
+			DB:UnregisterEvent('ZONE_CHANGED')
+			DB:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
+			DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
+		end
 	end
 
 	DB:ExperienceBar_Update()

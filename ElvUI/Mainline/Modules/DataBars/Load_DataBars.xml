@@ -1,5 +1,4 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='DataBars.lua'/>
 	<Script file='Honor.lua'/>
 	<Script file='Azerite.lua'/>
 </Ui>

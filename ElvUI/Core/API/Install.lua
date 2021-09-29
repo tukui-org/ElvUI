@@ -58,7 +58,7 @@ local ELV_TOONS = {
 function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(_G.ChatFrame4)
+	FCF_UnDockFrame(E.Retail and _G.ChatFrame4 or _G.ChatFrame3)
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
@@ -68,28 +68,24 @@ function E:SetupChat(noDisplayMsg)
 			CH:FCFTab_UpdateColors(CH:GetTab(_G[name]))
 		end
 
-		-- move general bottom left
 		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
-		elseif id == 4 then
-			frame:ClearAllPoints()
-			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
-		elseif id == 3 then
+		elseif id == 2 then
+			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
+		elseif (E.Retail and id == 3) then
 			VoiceTranscriptionFrame_UpdateVisibility(frame)
 			VoiceTranscriptionFrame_UpdateVoiceTab(frame)
 			VoiceTranscriptionFrame_UpdateEditBox(frame)
-		end
-
-		FCF_SavePositionAndDimensions(frame)
-		FCF_StopDragging(frame)
-		FCF_SetChatWindowFontSize(nil, frame, 12)
-
-		if id == 2 then
-			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif id == 4 then
+		elseif (E.Retail and id == 4) or id == 3 then
+			frame:ClearAllPoints()
+			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
 		end
+
+		FCF_SetChatWindowFontSize(nil, frame, 12)
+		FCF_SavePositionAndDimensions(frame)
+		FCF_StopDragging(frame)
 	end
 
 	-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
@@ -164,8 +160,10 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('showQuestTrackingTooltips', 1)
 	SetCVar('fstack_preferParentKeys', 0) --Add back the frame names via fstack!
 
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
+	if E.Retail then -- bugs on Classic ERA
+		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
+		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
+	end
 
 	if E.private.nameplates.enable then
 		NP:CVarReset()
@@ -722,13 +720,13 @@ function E:SetPage(PageNum)
 
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallOption1Button:SetText(_G.STAT_CATEGORY_MELEE)
+		InstallOption1Button:SetText(_G.MELEE)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
-		InstallOption2Button:SetText(_G.CLUB_FINDER_HEALER)
+		InstallOption2Button:SetText(_G.HEALER)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-		InstallOption3Button:SetText(_G.STAT_CATEGORY_RANGED)
+		InstallOption3Button:SetText(_G.RANGED)
 	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."])

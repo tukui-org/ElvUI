@@ -1413,7 +1413,10 @@ function E:UpdateActionBars(skipCallback)
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroPositionDimensions()
 	ActionBars:UpdatePetCooldownSettings()
-	ActionBars:UpdateExtraButtons()
+
+	if E.Retail then
+		ActionBars:UpdateExtraButtons()
+	end
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
@@ -1453,11 +1456,20 @@ function E:UpdateChat(skipCallback)
 end
 
 function E:UpdateDataBars(skipCallback)
-	DataBars:AzeriteBar_Toggle()
 	DataBars:ExperienceBar_Toggle()
-	DataBars:HonorBar_Toggle()
 	DataBars:ReputationBar_Toggle()
-	DataBars:ThreatBar_Toggle()
+
+	if E.Retail then
+		DataBars:HonorBar_Toggle()
+		DataBars:AzeriteBar_Toggle()
+		DataBars:ThreatBar_Toggle()
+	elseif E.TBC then
+		DataBars:PetExperienceBar_Toggle()
+		DataBars:ThreatBar_Toggle()
+	elseif E.Classic then
+		DataBars:PetExperienceBar_Toggle()
+	end
+
 	DataBars:UpdateAll()
 
 	if not skipCallback then
@@ -1492,9 +1504,13 @@ end
 
 function E:UpdateMisc(skipCallback)
 	AFK:Toggle()
-	Blizzard:SetObjectiveFrameHeight()
 
-	Totems:PositionAndSize()
+	if E.Retail then
+		Blizzard:SetObjectiveFrameHeight()
+		Totems:PositionAndSize()
+	elseif E.TBC then
+		Totems:PositionAndSize()
+	end
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

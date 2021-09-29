@@ -695,7 +695,13 @@ function CH:StyleChat(frame)
 		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
-	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
+	if E.Retail then -- wtf is this lol
+		local a, b, c = select(6, editbox:GetRegions())
+		a:Kill()
+		b:Kill()
+		c:Kill()
+	end
+
 	_G[name..'EditBoxLeft']:Kill()
 	_G[name..'EditBoxMid']:Kill()
 	_G[name..'EditBoxRight']:Kill()

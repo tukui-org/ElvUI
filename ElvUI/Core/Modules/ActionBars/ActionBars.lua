@@ -1393,7 +1393,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	end
 
-	if E.Retail or E.WotLK then
+	if E.Retail or E.Wrath then
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
