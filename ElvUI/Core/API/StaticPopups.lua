@@ -327,48 +327,6 @@ E.PopupDialogs.RESETUI_CHECK = {
 	whileDead = 1,
 }
 
-E.PopupDialogs.HARLEM_SHAKE = {
-	text = L["ElvUI needs to perform database optimizations please be patient."],
-	button1 = OKAY,
-	OnAccept = function()
-		if E.isMassiveShaking then
-			E:StopHarlemShake()
-		else
-			E:BeginHarlemShake()
-			return true
-		end
-	end,
-	whileDead = 1,
-}
-
-E.PopupDialogs.HELLO_KITTY = {
-	text = L["ElvUI needs to perform database optimizations please be patient."],
-	button1 = OKAY,
-	OnAccept = function()
-		E:SetupHelloKitty()
-	end,
-	whileDead = 1,
-}
-
-E.PopupDialogs.HELLO_KITTY_END = {
-	text = L["Do you enjoy the new ElvUI?"],
-	button1 = L["Yes, Keep Changes!"],
-	button2 = L["No, Revert Changes!"],
-	OnAccept = function()
-		E:Print(L["Type /hellokitty to revert to old settings."])
-		StopMusic()
-		SetCVar('Sound_EnableAllSound', E.oldEnableAllSound)
-		SetCVar('Sound_EnableMusic', E.oldEnableMusic)
-	end,
-	OnCancel = function()
-		E:RestoreHelloKitty()
-		StopMusic()
-		SetCVar('Sound_EnableAllSound', E.oldEnableAllSound)
-		SetCVar('Sound_EnableMusic', E.oldEnableMusic)
-	end,
-	whileDead = 1,
-}
-
 E.PopupDialogs.DISBAND_RAID = {
 	text = L["Are you sure you want to disband the group?"],
 	button1 = ACCEPT,

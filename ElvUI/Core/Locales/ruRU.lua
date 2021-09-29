@@ -338,7 +338,6 @@ L["Total CPU:"] = "Использование процессора:"
 L["Total Memory:"] = "Всего памяти:"
 L["Total: "] = "Всего: "
 L["Trigger"] = "Триггер"
-L["Type /hellokitty to revert to old settings."] = "Напишите /hellokitty для возврата к предыдущим настройкам."
 L["BelowMinimapWidget"] = "Виджет миникарты"
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true

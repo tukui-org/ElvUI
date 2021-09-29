@@ -338,7 +338,6 @@ L["Total CPU:"] = "CPU佔用"
 L["Total Memory:"] = "總記憶體:"
 L["Total: "] = "合計: "
 L["Trigger"] = "觸發器"
-L["Type /hellokitty to revert to old settings."] = "輸入 /hellokitty 來回復舊設定"
 L["BelowMinimapWidget"] = true
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true

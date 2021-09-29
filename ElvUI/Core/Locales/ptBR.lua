@@ -338,7 +338,6 @@ L["Total CPU:"] = "CPU Total:"
 L["Total Memory:"] = "Memória Total:"
 L["Total: "] = "Total: "
 L["Trigger"] = "Gatilho"
-L["Type /hellokitty to revert to old settings."] = "Digite /hellokitty para reverter para as configurações anteriores."
 L["BelowMinimapWidget"] = true
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true

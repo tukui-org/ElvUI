@@ -338,7 +338,6 @@ L["Total CPU:"] = "전체 CPU 사용량:"
 L["Total Memory:"] = "전체 메모리:"
 L["Total: "] = "합계:"
 L["Trigger"] = "묶음을 펼치고 각 주문에 지정하세요."
-L["Type /hellokitty to revert to old settings."] = "/hellokitty 를 입력해서 예전 세팅으로 돌릴 수 있습니다."
 L["BelowMinimapWidget"] = true
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true
