@@ -81,6 +81,7 @@ function S:CharacterFrame()
 			slot:StyleButton()
 
 			S:HandleIcon(icon)
+			icon:SetInside()
 
 			if cooldown then
 				E:RegisterCooldown(cooldown)
@@ -89,11 +90,13 @@ function S:CharacterFrame()
 	end
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', function(self)
-		local rarity = GetInventoryItemQuality('player', self:GetID())
-		if rarity and rarity > 1 then
-			E:SetBackdropBorderColor(self, GetItemQualityColor(rarity))
-		else
-			E:SetBackdropBorderColor(self, unpack(E.media.bordercolor))
+		if self.SetBackdropBorderColor then
+			local rarity = GetInventoryItemQuality('player', self:GetID())
+			if rarity and rarity > 1 then
+				self:SetBackdropBorderColor(GetItemQualityColor(rarity))
+			else
+				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
 		end
 	end)
 
@@ -277,21 +280,6 @@ function S:CharacterFrame()
 	_G.SkillDetailStatusBarUnlearnButton:Size(24)
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
 	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
-
-	-- Honor Frame
-	local HonorFrame = _G.HonorFrame
-	S:HandleFrame(HonorFrame, true, nil, 18, -105, -39, 83)
-	HonorFrame.backdrop:SetFrameLevel(HonorFrame:GetFrameLevel())
-
-	_G.HonorFrameProgressButton:CreateBackdrop('Transparent')
-
-	local HonorFrameProgressBar = _G.HonorFrameProgressBar
-	HonorFrameProgressBar:Width(325)
-	HonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
-
-	S:HandlePointXY(HonorFrameProgressBar, 19, -74)
-
-	E:RegisterStatusBar(HonorFrameProgressBar)
 end
 
 S:AddCallback('CharacterFrame')

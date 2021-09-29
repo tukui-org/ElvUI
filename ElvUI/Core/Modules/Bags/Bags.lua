@@ -566,7 +566,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
-	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end

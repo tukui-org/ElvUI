@@ -60,6 +60,68 @@ S.ArrowRotation = {
 	right = -1.57,
 }
 
+function S:HandleButtonHighlight(frame, r, g, b)
+	if frame.SetHighlightTexture then
+		frame:SetHighlightTexture('')
+	end
+
+	if not r then r = 0.9 end
+	if not g then g = 0.9 end
+	if not b then b = 0.9 end
+
+	local leftGrad = frame:CreateTexture(nil, 'HIGHLIGHT')
+	leftGrad:Size(frame:GetWidth() * 0.5, frame:GetHeight() * 0.95)
+	leftGrad:Point('LEFT', frame, 'CENTER')
+	leftGrad:SetTexture(E.media.blankTex)
+	leftGrad:SetGradientAlpha('Horizontal', r, g, b, 0.35, r, g, b, 0)
+
+	local rightGrad = frame:CreateTexture(nil, 'HIGHLIGHT')
+	rightGrad:Size(frame:GetWidth() * 0.5, frame:GetHeight() * 0.95)
+	rightGrad:Point('RIGHT', frame, 'CENTER')
+	rightGrad:SetTexture(E.media.blankTex)
+	rightGrad:SetGradientAlpha('Horizontal', r, g, b, 0, r, g, b, 0.35)
+end
+
+function S:HandlePointXY(frame, x, y)
+	local a, b, c, d, e = frame:GetPoint()
+	frame:SetPoint(a, b, c, x or d, y or e)
+end
+
+function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
+	assert(frame, "doesn't exist!")
+
+	local name = frame and frame.GetName and frame:GetName()
+	local insetFrame = name and _G[name..'Inset'] or frame.Inset
+	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
+	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
+	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
+
+	frame:StripTextures()
+
+	if portraitFrame then portraitFrame:SetAlpha(0) end
+	if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
+	if artFrameOverlay then artFrameOverlay:SetAlpha(0) end
+
+	if insetFrame then
+		S:HandleInsetFrame(insetFrame)
+	end
+
+	if frame.CloseButton then
+		S:HandleCloseButton(frame.CloseButton)
+	end
+
+	if setBackdrop then
+		frame:CreateBackdrop(template or 'Transparent')
+	else
+		frame:SetTemplate(template or 'Transparent')
+	end
+
+	if frame.backdrop then
+		frame.backdrop:Point('TOPLEFT', x1 or 0, y1 or 0)
+		frame.backdrop:Point('BOTTOMRIGHT', x2 or 0, y2 or 0)
+	end
+end
+
 function S:HandleInsetFrame(frame)
 	assert(frame, 'doesnt exist!')
 

@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
+local pairs, ipairs = pairs, ipairs
 local unpack, select = unpack, select
+local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -42,10 +44,10 @@ function S:TradeFrame()
 		_G[frame]:Kill()
 	end
 
-	for _, Frame in pairs({"TradePlayerItem", "TradeRecipientItem"}) do
+	for _, Frame in pairs({'TradePlayerItem', 'TradeRecipientItem'}) do
 		for i = 1, 7 do
 			local ItemBackground = _G[Frame..i]
-			local ItemButton = _G[Frame..i.."ItemButton"]
+			local ItemButton = _G[Frame..i..'ItemButton']
 
 			ItemBackground:StripTextures()
 			S:HandleItemButton(ItemButton)
@@ -54,12 +56,12 @@ function S:TradeFrame()
 			S:HandleIcon(ItemButton.icon, true)
 
 			ItemButton.backdrop:SetBackdropColor(0, 0, 0, 0)
-			ItemButton.backdrop:SetPoint("TOPLEFT", ItemButton, "TOPRIGHT", 4, 0)
-			ItemButton.backdrop:SetPoint("BOTTOMRIGHT", _G[Frame..i.."NameFrame"], "BOTTOMRIGHT", -1, 14)
+			ItemButton.backdrop:SetPoint('TOPLEFT', ItemButton, 'TOPRIGHT', 4, 0)
+			ItemButton.backdrop:SetPoint('BOTTOMRIGHT', _G[Frame..i..'NameFrame'], 'BOTTOMRIGHT', -1, 14)
 		end
 	end
 
-	for _, Inset in pairs({ _G.TradePlayerItemsInset, _G.TradeRecipientItemsInset, _G.TradePlayerEnchantInset, _G.TradeRecipientEnchantInset }) do
+	for _, Inset in pairs({ _G.TradePlayerItemsInset, _G.TradeRecipientItemsInset, _G.TradePlayerEnchantInset, _G.TradeRecipientEnchantInset, _G.TradeRecipientMoneyInset }) do
 		Inset:StripTextures()
 		Inset:SetTemplate('Transparent')
 	end
@@ -68,7 +70,7 @@ function S:TradeFrame()
 		Highlight:StripTextures()
 	end
 
-	_G.TradeFrame:HookScript("OnShow", function()
+	_G.TradeFrame:HookScript('OnShow', function()
 		_G.TradePlayerItemsInset:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		_G.TradePlayerEnchantInset:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		_G.TradeRecipientItemsInset:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -99,6 +101,7 @@ function S:TradeFrame()
 		local tradeItemButton = _G['TradePlayerItem'..id..'ItemButton']
 		local link = GetTradePlayerItemLink(id)
 
+		tradeItemButton:SetTemplate('NoBackdrop')
 		tradeItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 		if link then
@@ -117,6 +120,7 @@ function S:TradeFrame()
 		local tradeItemButton = _G['TradeRecipientItem'..id..'ItemButton']
 		local link = GetTradeTargetItemLink(id)
 
+		tradeItemButton:SetTemplate('NoBackdrop')
 		tradeItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 		if link then
