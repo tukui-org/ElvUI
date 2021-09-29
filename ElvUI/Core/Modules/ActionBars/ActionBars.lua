@@ -486,7 +486,10 @@ function AB:ReassignBindings(event)
 	if event == 'UPDATE_BINDINGS' then
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings()
-		AB:UpdateExtraBindings()
+
+		if E.Retail then
+			AB:UpdateExtraBindings()
+		end
 	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
