@@ -56,7 +56,7 @@ function S:Blizzard_TimeManager()
 
 	_G.StopwatchPlayPauseButton:CreateBackdrop('Default', true)
 	_G.StopwatchPlayPauseButton:SetSize(12, 12)
-	_G.StopwatchPlayPauseButton:SetNormalTexture('Interface\\AddOns\\ElvUI\\media\\textures\\play')
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	_G.StopwatchPlayPauseButton:SetHighlightTexture('')
 	_G.StopwatchPlayPauseButton.backdrop:SetOutside(_G.StopwatchPlayPauseButton, 2, 2)
 	_G.StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -64,14 +64,14 @@ function S:Blizzard_TimeManager()
 	_G.StopwatchPlayPauseButton:Point('RIGHT', _G.StopwatchResetButton, 'LEFT', -4, 0)
 	S:HandleButton(_G.StopwatchResetButton)
 	_G.StopwatchResetButton:SetSize(16,16)
-	_G.StopwatchResetButton:SetNormalTexture('Interface\\AddOns\\ElvUI\\media\\textures\\reset')
+	_G.StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
 	_G.StopwatchResetButton:Point('BOTTOMRIGHT', _G.StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
 
 	local function SetPlayTexture()
-		_G.StopwatchPlayPauseButton:SetNormalTexture('Interface\\AddOns\\ElvUI\\media\\textures\\play')
+		_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	end
 	local function SetPauseTexture()
-		_G.StopwatchPlayPauseButton:SetNormalTexture('Interface\\AddOns\\ElvUI\\media\\textures\\pause')
+		_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
 	end
 
 	hooksecurefunc('Stopwatch_Play', SetPauseTexture)
