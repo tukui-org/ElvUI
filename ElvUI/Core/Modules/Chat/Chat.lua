@@ -308,9 +308,20 @@ do --this can save some main file locals
 	specialChatIcons = z
 
 	if E.Classic then
+		-- Shrimpy
 		z['Simpy-Myzrael'] = itsSimpy -- Warlock
+		-- Luckyone
+		z["Luckyone-Shazzrah"]   = ElvGreen -- Hunter
+		z["Luckydruid-Shazzrah"] = ElvGreen -- Druid
 	elseif E.TBC then
+		-- Shrimpy
 		z['Cutepally-Myzrael'] = itsSimpy -- Paladin
+		-- Luckyone
+		z["Luckyone-Shazzrah"]    = ElvGreen -- Hunter
+		z["Luckyfear-Shazzrah"]   = ElvGreen -- Warlock
+		z["Luckydruid-Shazzrah"]  = ElvGreen -- Druid
+		z["Luckypriest-Shazzrah"] = ElvGreen -- Priest
+		z["Luckyshaman-Shazzrah"] = ElvGreen -- Shaman
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
