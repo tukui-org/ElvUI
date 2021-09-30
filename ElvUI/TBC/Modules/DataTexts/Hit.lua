@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local DT = E:GetModule("DataTexts")
+local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 
@@ -14,7 +14,7 @@ local lastPanel
 local function OnEvent(self)
 	lastPanel = self
 
-	local hitRatingBonus = GetCombatRatingBonus(E.myclass == "HUNTER" and CR_HIT_RANGED or CR_HIT_MELEE)
+	local hitRatingBonus = GetCombatRatingBonus(E.myclass == 'HUNTER' and CR_HIT_RANGED or CR_HIT_MELEE)
 
 	if E.global.datatexts.settings.Hit.NoLabel then
 		self.text:SetFormattedText(displayString, hitRatingBonus)
@@ -32,4 +32,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext("Hit", STAT_CATEGORY_ENHANCEMENTS, {"COMBAT_RATING_UPDATE"}, OnEvent, nil, nil, nil, nil, STAT_HIT_CHANCE, nil, ValueColorUpdate)
+DT:RegisterDatatext('Hit', STAT_CATEGORY_ENHANCEMENTS, {'COMBAT_RATING_UPDATE'}, OnEvent, nil, nil, nil, nil, STAT_HIT_CHANCE, nil, ValueColorUpdate)

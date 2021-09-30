@@ -31,8 +31,8 @@ local function OnEvent(self, event)
 	lastPanel = self
 
 	if event == 'UNIT_PET' then
-		petGUID = UnitGUID("pet")
-	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
+		petGUID = UnitGUID('pet')
+	elseif event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_LEAVE_COMBAT' then
 		local now = time()
 		if now - lastSegment > 20 then
 			Reset()
@@ -59,7 +59,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%s")
+	displayString = strjoin('', '%s: ', hex, '%s')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

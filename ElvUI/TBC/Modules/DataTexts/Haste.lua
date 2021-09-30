@@ -17,7 +17,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

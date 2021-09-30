@@ -12,14 +12,14 @@ local displayString, lastPanel = ''
 local movementSpeedText, beforeFalling = L["Mov. Speed:"]
 
 local function OnEvent(self)
-	local _, runSpeed, _, swimSpeed = GetUnitSpeed("player")
+	local _, runSpeed, _, swimSpeed = GetUnitSpeed('player')
 
 	local speed = runSpeed
-	if IsSwimming("player") then
+	if IsSwimming('player') then
 		speed = swimSpeed
 	end
 
-	if IsFalling("player") then
+	if IsFalling('player') then
 		speed = beforeFalling or speed
 	else
 		beforeFalling = speed
@@ -30,7 +30,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s ", hex, "%.0f%%|r")
+	displayString = strjoin('', '%s ', hex, '%.0f%%|r')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

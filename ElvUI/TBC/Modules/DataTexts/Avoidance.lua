@@ -10,6 +10,8 @@ local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetParryChance = GetParryChance
 local UnitLevel = UnitLevel
+local UnitExists = UnitExists
+local UnitDefense = UnitDefense
 local BOSS = BOSS
 local BLOCK_CHANCE = BLOCK_CHANCE
 local DODGE_CHANCE = DODGE_CHANCE
@@ -33,9 +35,9 @@ end
 
 local function OnEvent(self)
 	targetlv, playerlv = UnitLevel('target'), E.mylevel
-	
-	basemisschance = 5	--Base miss chance is 5%. 
-	
+
+	basemisschance = 5	--Base miss chance is 5%.
+
 	if targetlv == -1 then
 		leveldifference = 3
 	elseif targetlv > playerlv then
@@ -45,7 +47,7 @@ local function OnEvent(self)
 	else
 		leveldifference = 0
 	end
-	if UnitExists("target")==false then	--If there's no target, we'll assume we're talking about a lvl +3 boss. You can click yourself to see against your level.
+	if not UnitExists('target') then --If there's no target, we'll assume we're talking about a lvl +3 boss. You can click yourself to see against your level.
 		leveldifference = 3
 		targetlv = 73
 	end
@@ -63,16 +65,16 @@ local function OnEvent(self)
 
 	local unhittableMax = 100
 	local numAvoidances = 4
-	if dodge <= 0 then 
+	if dodge <= 0 then
 		dodge = 0
 		numAvoidances = numAvoidances - 1
 	end
-	if parry <= 0 then 
-		parry = 0 
+	if parry <= 0 then
+		parry = 0
 		numAvoidances = numAvoidances - 1
 	end
-	if block <= 0 then 
-		block = 0 
+	if block <= 0 then
+		block = 0
 		numAvoidances = numAvoidances - 1
 	end
 
@@ -87,7 +89,7 @@ local function OnEvent(self)
 	end
 
 	unhittableMax = unhittableMax + ((AVD_DECAY_RATE * leveldifference) * numAvoidances);
-    baseDef, armorDef = UnitDefense("player");
+    baseDef, armorDef = UnitDefense('player');
     misschance = (basemisschance + (armorDef + baseDef - (5*playerlv))*0.04);
 
 	local avoided = (dodge+parry+misschance) --First roll on hit table determining if the hit missed

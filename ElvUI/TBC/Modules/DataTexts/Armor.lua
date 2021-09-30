@@ -6,7 +6,7 @@ local format = format
 local strjoin = strjoin
 local UnitArmor = UnitArmor
 
-local chanceString = "%.2f%%"
+local chanceString = '%.2f%%'
 local displayString, lastPanel, effectiveArmor, _ = ''
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR

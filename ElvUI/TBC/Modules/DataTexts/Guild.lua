@@ -34,18 +34,18 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local groupedTable = { "|cffaaaaaa*|r", "" }
+local groupedTable = { '|cffaaaaaa*|r', "" }
 local displayString = ""
 local noGuildString = ""
-local guildInfoString = "%s"
-local guildInfoString2 = GUILD..": %d/%d"
-local guildMotDString = "%s |cffaaaaaa- |cffffffff%s"
-local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
-local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
-local nameRankString = "%s |cff999999-|cffffffff %s"
-local moreMembersOnlineString = strjoin("", "+ %d ", _G.FRIENDS_LIST_ONLINE, "...")
-local noteString = strjoin("", "|cff999999   ", _G.LABEL_NOTE, ":|r %s")
-local officerNoteString = strjoin("", "|cff999999   ", _G.GUILD_RANK1_DESC, ":|r %s")
+local guildInfoString = '%s'
+local guildInfoString2 = GUILD..': %d/%d'
+local guildMotDString = '%s |cffaaaaaa- |cffffffff%s'
+local levelNameString = '|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s'
+local levelNameStatusString = '|cff%02x%02x%02x%d|r %s%s %s'
+local nameRankString = '%s |cff999999-|cffffffff %s'
+local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '...')
+local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
+local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local guildTable, guildMotD, lastPanel = {}, ""
 
 local function sortByRank(a, b)
@@ -68,20 +68,20 @@ local function SortGuildTable(shift)
 	end
 end
 
-local onlinestatusstring = "|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r"
+local onlinestatusstring = '|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r'
 local onlinestatus = {
 	[0] = '',
 	[1] = format(onlinestatusstring, L["AFK"]),
 	[2] = format(onlinestatusstring, L["DND"]),
 }
 local mobilestatus = {
-	[0] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat:14:14:0:0:16:16:0:16:0:16:73:177:73|t",
-	[1] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t",
-	[2] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t",
+	[0] = '|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat:14:14:0:0:16:16:0:16:0:16:73:177:73|t',
+	[1] = '|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t',
+	[2] = '|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t',
 }
 
 local function inGroup(name)
-	return (UnitInParty(name) or UnitInRaid(name)) and "|cffaaaaaa*|r" or ""
+	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ""
 end
 
 local function BuildGuildTable()
@@ -108,35 +108,35 @@ end
 
 local resendRequest = false
 local eventHandlers = {
-	["CHAT_MSG_SYSTEM"] = function(_, arg1)
+	CHAT_MSG_SYSTEM = function(_, arg1)
 		if FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE) then
 			resendRequest = true
 		end
 	end,-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
-	["PLAYER_ENTERING_WORLD"] = function()
+	PLAYER_ENTERING_WORLD = function()
 		if not _G.GuildFrame and IsInGuild() then
-			LoadAddOn("Blizzard_GuildUI")
+			LoadAddOn('Blizzard_GuildUI')
 		end
 	end,
 	-- Guild Roster updated, so rebuild the guild table
-	["GUILD_ROSTER_UPDATE"] = function(self)
-		if(resendRequest) then
+	GUILD_ROSTER_UPDATE = function(self)
+		if resendRequest then
 			resendRequest = false
 			BuildGuildTable()
 		else
 			BuildGuildTable()
 			UpdateGuildMessage()
 			if GetMouseFocus() == self then
-				self:GetScript("OnEnter")(self, nil, true)
+				self:GetScript('OnEnter')(self, nil, true)
 			end
 		end
 	end,
-	["PLAYER_GUILD_UPDATE"] = function()
+	PLAYER_GUILD_UPDATE = function()
 		BuildGuildTable()
 	end,
 	-- our guild message of the day changed
-	["GUILD_MOTD"] = function (self, arg1)
+	GUILD_MOTD = function (self, arg1)
 		guildMotD = arg1
 	end
 }
@@ -154,9 +154,9 @@ local function inviteClick(_, name, guid)
 
 	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
-		if inviteType == "INVITE" or inviteType == "SUGGEST_INVITE" then
+		if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
 			InviteToGroup(name)
-		elseif inviteType == "REQUEST_INVITE" then
+		elseif inviteType == 'REQUEST_INVITE' then
 			RequestInviteFromUnit(name)
 		end
 	else
@@ -168,11 +168,11 @@ end
 
 local function whisperClick(_, playerName)
 	DT.EasyMenu:Hide()
-	SetItemRef( "player:"..playerName, format("|Hplayer:%1$s|h[%1$s]|h",playerName), "LeftButton" )
+	SetItemRef('player:'..playerName, format('|Hplayer:%1$s|h[%1$s]|h',playerName), 'LeftButton')
 end
 
 local function Click(self, btn)
-	if btn == "RightButton" and IsInGuild() then
+	if btn == 'RightButton' and IsInGuild() then
 		DT.tooltip:Hide()
 
 		local grouped
@@ -186,7 +186,7 @@ local function Click(self, btn)
 			if info[7] and info[1] ~= E.myname then
 				local classc, levelc = E:ClassColor(info[9]) or PRIEST_COLOR, GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
-					grouped = "|cffaaaaaa*|r"
+					grouped = '|cffaaaaaa*|r'
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
 					grouped = ""
@@ -199,7 +199,7 @@ local function Click(self, btn)
 		end
 
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else
@@ -256,7 +256,7 @@ local function OnEnter()
 			if info[5] ~= "" then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info[6] ~= "" then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit("-", info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit('-', info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 
@@ -281,7 +281,7 @@ local function OnEvent(self, event, ...)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = E.global.datatexts.settings.Guild.NoLabel and strjoin("", hex, "%d|r") or strjoin("", GUILD, ": ", hex, "%d|r")
+	displayString = E.global.datatexts.settings.Guild.NoLabel and strjoin('', hex, '%d|r') or strjoin('', GUILD, ': ', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
 	if lastPanel ~= nil then

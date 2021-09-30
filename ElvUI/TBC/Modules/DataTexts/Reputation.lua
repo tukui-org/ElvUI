@@ -74,7 +74,7 @@ local function OnEnter()
 end
 
 local function OnClick()
-	ToggleCharacter("ReputationFrame")
+	ToggleCharacter('ReputationFrame')
 end
 
 DT:RegisterDatatext('Reputation', nil, {'UPDATE_FACTION', 'COMBAT_TEXT_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, REPUTATION)

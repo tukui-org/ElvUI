@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local DT = E:GetModule("DataTexts")
+local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -17,7 +17,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", L["Spell Hit"], ": ", hex, "%.2f%%|r")
+	displayString = strjoin('', L["Spell Hit"], ': ', hex, '%.2f%%|r')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
@@ -25,4 +25,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext("Spell Hit", STAT_CATEGORY_ENHANCEMENTS, {"COMBAT_RATING_UPDATE"}, OnEvent, nil, nil, nil, nil, "Spell Hit")
+DT:RegisterDatatext('Spell Hit', STAT_CATEGORY_ENHANCEMENTS, {'COMBAT_RATING_UPDATE'}, OnEvent, nil, nil, nil, nil, L["Spell Hit"])

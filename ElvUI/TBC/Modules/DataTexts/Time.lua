@@ -10,18 +10,18 @@ local RequestRaidInfo = RequestRaidInfo
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 
-local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
+local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
-local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
-local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")
+local europeDisplayFormat_nocolor = strjoin('', '%02d', ':|r%02d')
+local ukDisplayFormat_nocolor = strjoin('', '', '%d', ':|r%02d', ' %s|r')
 local lockoutColorNormal = { r=.8,g=.8,b=.8 }
 local enteredFrame, curHr, curMin, curAmPm = false
 
 local Update, lastPanel
 
 local function ValueColorUpdate(hex)
-	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
-	ukDisplayFormat = strjoin("", "", "%d", hex, ":|r%02d", hex, " %s|r")
+	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
+	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
 	if lastPanel ~= nil then
 		Update(lastPanel, 20000)
@@ -49,7 +49,7 @@ local function CalculateTimeValues(tooltip)
 	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
 		return ConvertTime(GetGameTime())
 	else
-		local dateTable = date("*t")
+		local dateTable = date('*t')
 		return ConvertTime(dateTable.hour, dateTable.min)
 	end
 end
@@ -69,7 +69,7 @@ local function OnEnter()
 
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 	if DT.tooltip:NumLines() > 0 then
-		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(' ')
 	end
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
@@ -81,7 +81,7 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
-	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
+	if event == 'UPDATE_INSTANCE_INFO' and enteredFrame then
 		OnEnter(self)
 	end
 end
@@ -124,10 +124,10 @@ function Update(self, t)
 end
 
 local function OnClick(self, btn)
-	if btn == "RightButton" then
+	if btn == 'RightButton' then
 		-- Show clock
 		_G.TimeManager_Toggle()
-	elseif btn == "LeftButton" then
+	elseif btn == 'LeftButton' then
 		-- Show stopwatch
 		_G.Stopwatch_Toggle()
 	end
