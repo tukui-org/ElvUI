@@ -1,5 +1,5 @@
-## Interface: 90100
-## Author: Elv
+## Interface: 11400
+## Author: Elv, Simpy
 ## Version: 1.07
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptionsUI|r
 ## Notes: Options for ElvUI.
