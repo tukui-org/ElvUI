@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local AFK = E:GetModule('AFK')
 local CH = E:GetModule('Chat')
 

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
 
 local pairs, select, wipe = pairs, select, wipe

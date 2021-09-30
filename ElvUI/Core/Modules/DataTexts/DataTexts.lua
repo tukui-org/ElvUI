@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
 local LibCompress = E.Libs.Compress

@@ -1,5 +1,5 @@
 -- Russian localization file for ruRU.
-local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
 
 L["BoP"] = "ПпП"

@@ -1,3 +1,3 @@
-local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI)
 
 E:AddLib('DualSpec', 'LibDualSpec-1.0')

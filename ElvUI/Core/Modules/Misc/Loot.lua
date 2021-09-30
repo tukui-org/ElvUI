@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local LBG = E.Libs.ButtonGlow
 

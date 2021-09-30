@@ -1,5 +1,5 @@
 -- Traditional Chinese localization file for zhTW.
-local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
 L["BoP"] = true

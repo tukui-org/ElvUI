@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local CopyTable = CopyTable -- Our function doesn't exist yet.
 
 P.gridSize = 64

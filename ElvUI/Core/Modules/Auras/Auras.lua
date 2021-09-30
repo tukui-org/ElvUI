@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 

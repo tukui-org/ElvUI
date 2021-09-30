@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local CH = E:GetModule('Chat')
 local LO = E:GetModule('Layout')
 local Skins = E:GetModule('Skins')

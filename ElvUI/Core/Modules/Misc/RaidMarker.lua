@@ -1,5 +1,5 @@
 --Credit Baudzilla
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 
 local sin, cos, rad = math.sin, math.cos, rad -- sin~=math.sin, cos~=math.cos, rad==math.rad; why? who knows? :P

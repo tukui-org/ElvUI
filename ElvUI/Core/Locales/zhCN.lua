@@ -1,5 +1,5 @@
 -- Simplified Chinese localization file for zhCN.
-local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
 L["BoP"] = true

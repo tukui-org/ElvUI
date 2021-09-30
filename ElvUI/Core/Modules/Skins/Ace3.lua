@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local next = next

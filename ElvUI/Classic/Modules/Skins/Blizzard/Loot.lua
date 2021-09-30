@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
@@ -36,7 +36,7 @@ local function UpdateLoots()
 
 			if (itemRarity) then
 				local color = ITEM_QUALITY_COLORS[itemRarity]
-				
+
 				if (color) then
 					frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end

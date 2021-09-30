@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local MC = E:GetModule('ModuleCopy')
 
 local pairs, next, type = pairs, next, type

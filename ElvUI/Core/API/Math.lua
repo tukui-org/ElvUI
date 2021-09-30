@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch

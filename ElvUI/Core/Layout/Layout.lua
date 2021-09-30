@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local LO = E:GetModule('Layout')
 local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')

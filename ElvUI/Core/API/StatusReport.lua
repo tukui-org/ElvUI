@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local LSM = E.Libs.LSM
 
 local wipe, sort, unpack = wipe, sort, unpack
