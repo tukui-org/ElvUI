@@ -3,16 +3,16 @@ local DT = E:GetModule('DataTexts')
 
 local format, strjoin = format, strjoin
 
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpeed = GetSpeed
 local CR_SPEED = CR_SPEED
+local STAT_SPEED = STAT_SPEED
 local CR_SPEED_TOOLTIP = CR_SPEED_TOOLTIP
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
-local STAT_SPEED = STAT_SPEED
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''

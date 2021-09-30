@@ -7,8 +7,8 @@ local strjoin = strjoin
 local GetCritChance = GetCritChance
 local GetRangedCritChance = GetRangedCritChance
 local GetSpellCritChance = GetSpellCritChance
-local CRIT_ABBR = CRIT_ABBR
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local CRIT_ABBR = CRIT_ABBR
 
 local displayString, lastPanel = ''
 local spellCrit, rangedCrit, meleeCrit = 0, 0, 0

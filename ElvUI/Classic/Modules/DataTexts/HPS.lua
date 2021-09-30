@@ -5,9 +5,10 @@ local time, max, strjoin = time, max, strjoin
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local UnitGUID = UnitGUID
 
-local timeStamp, combatTime, healTotal = 0, 0, 0
 local lastSegment, petGUID = 0
+local timeStamp, combatTime, healTotal = 0, 0, 0
 local displayString, lastPanel = ''
+
 local events = {
 	SPELL_HEAL = true,
 	SPELL_PERIODIC_HEAL = true

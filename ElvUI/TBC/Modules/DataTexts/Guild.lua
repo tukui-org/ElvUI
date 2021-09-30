@@ -34,9 +34,9 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local groupedTable = { '|cffaaaaaa*|r', "" }
-local displayString = ""
-local noGuildString = ""
+local groupedTable = { '|cffaaaaaa*|r', '' }
+local displayString = ''
+local noGuildString = ''
 local guildInfoString = '%s'
 local guildInfoString2 = GUILD..': %d/%d'
 local guildMotDString = '%s |cffaaaaaa- |cffffffff%s'
@@ -46,7 +46,7 @@ local nameRankString = '%s |cff999999-|cffffffff %s'
 local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '...')
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
-local guildTable, guildMotD, lastPanel = {}, ""
+local guildTable, guildMotD, lastPanel = {}, ''
 
 local function sortByRank(a, b)
 	if a and b then
@@ -81,7 +81,7 @@ local mobilestatus = {
 }
 
 local function inGroup(name)
-	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ""
+	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ''
 end
 
 local function BuildGuildTable()
@@ -150,7 +150,7 @@ local menuList = {
 local function inviteClick(_, name, guid)
 	DT.EasyMenu:Hide()
 
-	if not (name and name ~= "") then return end
+	if not (name and name ~= '') then return end
 
 	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
@@ -189,11 +189,11 @@ local function Click(self, btn)
 					grouped = '|cffaaaaaa*|r'
 				elseif not (info[11] and info[4] == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
-					grouped = ""
-					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ""), arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
+					grouped = ''
+					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], ''), arg1 = info[1], arg2 = info[12], notCheckable=true, func = inviteClick}
 				end
 				menuCountWhispers = menuCountWhispers + 1
-				if not grouped then grouped = "" end
+				if not grouped then grouped = '' end
 				menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info[3], classc.r*255,classc.g*255,classc.b*255, info[1], grouped), arg1 = info[1], notCheckable=true, func = whisperClick}
 			end
 		end
@@ -230,7 +230,7 @@ local function OnEnter()
 		DT.tooltip:AddLine(guildRank, unpack(tthead))
 	end
 
-	if guildMotD ~= "" then
+	if guildMotD ~= '' then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1)
 	end
@@ -253,8 +253,8 @@ local function OnEnter()
 
 		if shiftDown then
 			DT.tooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
-			if info[5] ~= "" then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
-			if info[6] ~= "" then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
+			if info[5] ~= '' then DT.tooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+			if info[6] ~= '' then DT.tooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
 			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], strsplit('-', info[1]), groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end

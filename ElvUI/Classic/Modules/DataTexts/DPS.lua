@@ -8,14 +8,15 @@ local UnitGUID = UnitGUID
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
 local displayString, lastPanel = ''
+
 local events = {
 	SWING_DAMAGE = true,
 	RANGE_DAMAGE = true,
 	SPELL_DAMAGE = true,
-	SPELL_PERIODIC_DAMAGE = true,
 	DAMAGE_SHIELD = true,
 	DAMAGE_SPLIT = true,
-	SPELL_EXTRA_ATTACKS = true
+	SPELL_EXTRA_ATTACKS = true,
+	SPELL_PERIODIC_DAMAGE = true
 }
 
 local function Reset()

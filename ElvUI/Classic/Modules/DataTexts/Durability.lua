@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local select = select
 local wipe = wipe
+local select = select
 local format, pairs = format, pairs
 local GetInventoryItemDurability = GetInventoryItemDurability
 local ToggleCharacter = ToggleCharacter

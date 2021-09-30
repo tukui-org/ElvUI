@@ -7,7 +7,7 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local CR_HIT_SPELL = CR_HIT_SPELL
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
-local displayString = ""
+local displayString = ''
 local lastPanel
 
 local function OnEvent(self)

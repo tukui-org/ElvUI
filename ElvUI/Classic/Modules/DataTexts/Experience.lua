@@ -7,7 +7,7 @@ local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GetXPExhaustion = GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
-local displayString = ""
+local displayString = ''
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars

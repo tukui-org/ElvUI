@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local strjoin = strjoin
 local GetSpellHitModifier = GetSpellHitModifier
 
-local displayString = ""
+local displayString = ''
 local lastPanel
 
 local function OnEvent(self)
