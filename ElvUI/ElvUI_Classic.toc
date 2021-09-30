@@ -1,7 +1,7 @@
 ## Interface: 11400
 ## Author: Elv, Simpy
 ## Version: 1.44
-## Title: |cff1784d1ElvUI|r
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bClassic|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
