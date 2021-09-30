@@ -124,12 +124,10 @@ function Update(self, t)
 	int = 5
 end
 
-local function OnClick(self, btn)
+local function OnClick(_, btn)
 	if btn == 'RightButton' then
-		-- Show clock
 		_G.TimeManager_Toggle()
 	elseif btn == 'LeftButton' then
-		-- Show stopwatch
 		_G.Stopwatch_Toggle()
 	end
 end

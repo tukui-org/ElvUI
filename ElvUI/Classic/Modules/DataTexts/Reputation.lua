@@ -9,7 +9,7 @@ local NOT_APPLICABLE = NOT_APPLICABLE
 local REPUTATION = REPUTATION
 local STANDING = STANDING
 
-local function OnEvent(self, event, eventType)
+local function OnEvent(self)
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	if not name then
 		return 	self.text:SetText(NOT_APPLICABLE)

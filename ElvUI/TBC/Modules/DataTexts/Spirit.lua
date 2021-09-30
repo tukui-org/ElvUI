@@ -5,6 +5,7 @@ local strjoin = strjoin
 local UnitStat = UnitStat
 local ITEM_MOD_SPIRIT_SHORT = ITEM_MOD_SPIRIT_SHORT
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+
 local displayNumberString, lastPanel = ''
 
 local function OnEvent(self)
