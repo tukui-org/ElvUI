@@ -6,33 +6,33 @@ local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 local GetSpecialization = GetSpecialization
 local GetActiveSpecGroup = GetActiveSpecGroup
-local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local DispelList, BlackList = {}, {}
 -- GLOBALS: DebuffTypeColor
 
 --local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
 --local FilterList = {}
 
-if Classic then
-	DispelList.PRIEST	= { Magic = true, Disease = true }
-	DispelList.SHAMAN	= { Poison = true, Disease = true }
-	DispelList.PALADIN	= { Magic = true, Poison = true, Disease = true }
-	DispelList.MAGE		= { Curse = true }
-	DispelList.DRUID	= { Curse = true, Poison = true }
-	DispelList.WARLOCK	= { Magic = true }
-else
+if Retail then
 	DispelList.PRIEST	= { Magic = true, Disease = true }
 	DispelList.SHAMAN	= { Magic = false, Curse = true }
 	DispelList.PALADIN	= { Magic = false, Poison = true, Disease = true }
 	DispelList.DRUID	= { Magic = false, Curse = true, Poison = true, Disease = false }
 	DispelList.MONK		= { Magic = false, Poison = true, Disease = true }
 	DispelList.MAGE		= { Curse = true }
+else
+	DispelList.PRIEST	= { Magic = true, Disease = true }
+	DispelList.SHAMAN	= { Poison = true, Disease = true }
+	DispelList.PALADIN	= { Magic = true, Poison = true, Disease = true }
+	DispelList.MAGE		= { Curse = true }
+	DispelList.DRUID	= { Curse = true, Poison = true }
+	DispelList.WARLOCK	= { Magic = true }
 end
 
 local playerClass = select(2, UnitClass('player'))
 local CanDispel = DispelList[playerClass] or {}
 
-if not Classic then
+if Retail then
 	BlackList[140546] = true -- Fully Mutated
 	BlackList[136184] = true -- Thick Bones
 	BlackList[136186] = true -- Clear mind
@@ -96,7 +96,7 @@ local function CheckTalentTree(tree)
 end
 
 local function CheckSpec()
-	if Classic then return end
+	if not Retail then return end
 
 	-- Check for certain talents to see if we can dispel magic or not
 	if playerClass == 'PALADIN' then
@@ -176,7 +176,7 @@ end
 local f = CreateFrame('Frame')
 f:RegisterEvent('CHARACTER_POINTS_CHANGED')
 
-if not Classic then
+if Retail then
 	f:RegisterEvent('PLAYER_TALENT_UPDATE')
 	f:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end
