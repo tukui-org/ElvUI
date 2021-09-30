@@ -28,7 +28,7 @@ AceLocale.appnames = AceLocale.appnames or {}  -- array of [localetableref]="App
 -- ElvUI modded by Darth
 local readmeta = {
 	__index = function(self, key) -- requesting totally unknown entries: fire off a nonbreaking error and return key
-		AceLocale.MissingLinesElvUI[key] = key
+		AceLocale.MissingLinesElvUI[key] = true
 		rawset(self, key, key)      -- only need to see the warning once, really
 		geterrorhandler()(MAJOR..": "..tostring(AceLocale.appnames[self])..": Missing entry for '"..tostring(key).."'")
 		return key
