@@ -95,6 +95,8 @@ function DB:UpdateAll()
 		bar.holder:SetFrameLevel(bar.db.frameLevel)
 		bar.holder:SetFrameStrata(bar.db.frameStrata)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+		bar.text:ClearAllPoints()
+		bar.text:Point(bar.db.anchorPoint, bar.db.xOffset, bar.db.yOffset)
 		bar:SetStatusBarTexture(texture)
 		bar:SetReverseFill(bar.db.reverseFill)
 

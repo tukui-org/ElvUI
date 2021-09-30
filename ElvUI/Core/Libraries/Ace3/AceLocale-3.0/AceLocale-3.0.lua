@@ -25,13 +25,17 @@ AceLocale.apps = AceLocale.apps or {}          -- array of ["AppName"]=localetab
 AceLocale.appnames = AceLocale.appnames or {}  -- array of [localetableref]="AppName"
 
 -- This metatable is used on all tables returned from GetLocale
+-- ElvUI modded by Darth
 local readmeta = {
 	__index = function(self, key) -- requesting totally unknown entries: fire off a nonbreaking error and return key
+		AceLocale.MissingLinesElvUI[key] = key
 		rawset(self, key, key)      -- only need to see the warning once, really
 		geterrorhandler()(MAJOR..": "..tostring(AceLocale.appnames[self])..": Missing entry for '"..tostring(key).."'")
 		return key
 	end
 }
+AceLocale.MissingLinesElvUI = {}
+-- end block
 
 -- This metatable is used on all tables returned from GetLocale if the silent flag is true, it does not issue a warning on unknown keys
 local readmetasilent = {

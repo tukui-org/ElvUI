@@ -6,33 +6,33 @@ local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 local GetSpecialization = GetSpecialization
 local GetActiveSpecGroup = GetActiveSpecGroup
-local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local DispelList, BlackList = {}, {}
 -- GLOBALS: DebuffTypeColor
 
 --local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
 --local FilterList = {}
 
-if Retail then
-	DispelList.PRIEST	= { Magic = true, Disease = true }
-	DispelList.SHAMAN	= { Magic = false, Curse = true }
-	DispelList.PALADIN	= { Magic = false, Poison = true, Disease = true }
-	DispelList.DRUID	= { Magic = false, Curse = true, Poison = true, Disease = false }
-	DispelList.MONK		= { Magic = false, Poison = true, Disease = true }
-	DispelList.MAGE		= { Curse = true }
-else
+if Classic then
 	DispelList.PRIEST	= { Magic = true, Disease = true }
 	DispelList.SHAMAN	= { Poison = true, Disease = true }
 	DispelList.PALADIN	= { Magic = true, Poison = true, Disease = true }
 	DispelList.MAGE		= { Curse = true }
 	DispelList.DRUID	= { Curse = true, Poison = true }
 	DispelList.WARLOCK	= { Magic = true }
+else
+	DispelList.PRIEST	= { Magic = true, Disease = true }
+	DispelList.SHAMAN	= { Magic = false, Curse = true }
+	DispelList.PALADIN	= { Magic = false, Poison = true, Disease = true }
+	DispelList.DRUID	= { Magic = false, Curse = true, Poison = true, Disease = false }
+	DispelList.MONK		= { Magic = false, Poison = true, Disease = true }
+	DispelList.MAGE		= { Curse = true }
 end
 
 local playerClass = select(2, UnitClass('player'))
 local CanDispel = DispelList[playerClass] or {}
 
-if Retail then
+if not Classic then
 	BlackList[140546] = true -- Fully Mutated
 	BlackList[136184] = true -- Thick Bones
 	BlackList[136186] = true -- Clear mind
@@ -44,46 +44,47 @@ if Retail then
 	BlackList[137637] = true -- Warbringer, Slow
 end
 
-local function GetAuraType(unit, filter, filterTable)
+local function DebuffLoop(check, list, name, icon, _, debuffType, _, _, _, _, _, spellID)
+	local spell = list and (list[spellID] or list[name])
+	if spell then
+		if spell.enable then
+			return debuffType, icon, true, spell.style, spell.color
+		end
+	elseif debuffType and (not check or CanDispel[debuffType]) and not (BlackList[spellID] or BlackList[name]) then
+		return debuffType, icon
+	end
+end
+
+local function BuffLoop(_, list, name, icon, _, debuffType, _, _, source, _, _, spellID)
+	local spell = list and (list[spellID] or list[name])
+	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
+		return debuffType, icon, true, spell.style, spell.color
+	end
+end
+
+local function Looper(unit, filter, check, list, func)
+	local index = 1
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+	while name do
+		local DebuffType, Icon, filtered, style, color = func(check, list, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+		if Icon then
+			return DebuffType, Icon, filtered, style, color
+		else
+			index = index + 1
+			name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+		end
+	end
+end
+
+local function GetAuraType(unit, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local i = 1
-	while true do
-		local name, texture, _, debufftype, _, _, _, _, _, spellID = UnitAura(unit, i, 'HARMFUL')
-		if not texture then break end
+	local debuffType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
+	if icon then return debuffType, icon, filtered, style, color end
 
-		local filterSpell = filterTable[spellID] or filterTable[name]
-		if filterTable and filterSpell then
-			if filterSpell.enable then
-				return debufftype, texture, true, filterSpell.style, filterSpell.color
-			end
-		elseif debufftype and (not filter or (filter and CanDispel[debufftype])) and not (BlackList[name] or BlackList[spellID]) then
-			return debufftype, texture
-		end
-
-		i = i + 1
-	end
-
-	i = 1
-	while true do
-		local _, texture, _, debufftype, _, _, caster, _, _, spellID = UnitAura(unit, i)
-		if not texture then break end
-
-		local filterSpell = filterTable[spellID]
-		if filterTable and filterSpell and filterSpell.enable and (not filterSpell.ownOnly or caster == 'player') then
-			return debufftype, texture, true, filterSpell.style, filterSpell.color
-		end
-
-		i = i + 1
-	end
+	debuffType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
+	if icon then return debuffType, icon, filtered, style, color end
 end
-
---[[
-local function FilterTable()
-	local debufftype, texture, filterSpell
-	return debufftype, texture, true, filterSpell.style, filterSpell.color
-end
-]]
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
@@ -95,7 +96,7 @@ local function CheckTalentTree(tree)
 end
 
 local function CheckSpec()
-	if not Retail then return end
+	if Classic then return end
 
 	-- Check for certain talents to see if we can dispel magic or not
 	if playerClass == 'PALADIN' then
@@ -175,7 +176,7 @@ end
 local f = CreateFrame('Frame')
 f:RegisterEvent('CHARACTER_POINTS_CHANGED')
 
-if Retail then
+if not Classic then
 	f:RegisterEvent('PLAYER_TALENT_UPDATE')
 	f:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end

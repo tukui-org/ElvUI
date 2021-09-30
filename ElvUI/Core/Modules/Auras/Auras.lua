@@ -103,11 +103,12 @@ function A:UpdateStatusBar(button)
 end
 
 function A:CreateIcon(button)
-	local header = button:GetParent()
-	local auraType = header.filter
+	button.header = button:GetParent()
+	button.filter = button.header.filter
+	button.auraType = button.header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 
-	button.auraType = auraType == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
-	button.filter = auraType
+	button.name = button:GetName()
+	button.enchantOffset = strmatch(button.name, '2$') and 6 or 2 -- offHandExpiration or mainHandExpiration
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
@@ -147,11 +148,11 @@ function A:CreateIcon(button)
 	E:SetSmoothing(button.statusBar)
 	E:SetUpAnimGroup(button)
 
-	if auraType == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
+	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
 		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
 		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
 		MasqueGroupBuffs:ReSkin()
-	elseif auraType == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
 		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
 		MasqueGroupDebuffs:ReSkin()
@@ -217,54 +218,55 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local unit = button:GetParent():GetAttribute('unit')
-	local name, texture, count, debuffType, duration, expiration = UnitAura(unit, index, button.filter)
-	if not debuffType then debuffType = 'none' end
+	local name, icon, count, debuffType, duration, expiration = UnitAura(button.header:GetAttribute('unit'), index, button.filter)
+	if not name then return end
 
-	if name then
-		local db = A.db[button.auraType]
-		if duration > 0 and expiration then
-			A:SetAuraTime(button, expiration, duration)
-		else
-			A:ClearAuraTime(button)
-		end
-
-		local r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
-		if button.timeLeft and db.barColorGradient then
-			r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
-		end
-
-		button.count:SetText(count > 1 and count)
-		button.text:SetShown(db.showDuration)
-		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
-		button.statusBar:SetStatusBarColor(r, g, b)
-		button.texture:SetTexture(texture)
-
-		if button.debuffType ~= debuffType then
-			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[debuffType] or E.db.general.bordercolor
-			button:SetBackdropBorderColor(color.r, color.g, color.b)
-			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		end
+	if duration > 0 and expiration then
+		A:SetAuraTime(button, expiration, duration)
+	else
+		A:ClearAuraTime(button)
 	end
 
-	button.debuffType = debuffType
+	local db, r, g, b = A.db[button.auraType]
+	if button.timeLeft and db.barColorGradient then
+		r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+	else
+		r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
+	end
+
+	button.text:SetShown(db.showDuration)
+	button.count:SetText(count > 1 and count)
+	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
+	button.statusBar:SetStatusBarColor(r, g, b)
+	button.texture:SetTexture(icon)
+
+	local dtype = debuffType or 'none'
+	if button.debuffType ~= dtype then
+		local color = (button.filter == 'HARMFUL' and _G.DebuffTypeColor[dtype]) or E.db.general.bordercolor
+		button:SetBackdropBorderColor(color.r, color.g, color.b)
+		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+
+		button.debuffType = dtype
+	end
 end
 
 function A:UpdateTempEnchant(button, index)
-	local offset = (strmatch(button:GetName(), '2$') and 6) or 2
 	local db = A.db[button.auraType]
-
 	local duration, remaining = 600, 0
-	local expiration = select(offset, GetWeaponEnchantInfo())
+	local expiration = select(button.enchantOffset, GetWeaponEnchantInfo())
 	if expiration then
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
+		local r, g, b
 		local quality = GetInventoryItemQuality('player', index)
 		if quality and quality > 1 then
-			button:SetBackdropBorderColor(GetItemQualityColor(quality))
+			r, g, b = GetItemQualityColor(quality)
 		else
-			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			r, g, b = unpack(E.media.bordercolor)
 		end
+
+		button:SetBackdropBorderColor(r, g, b)
+		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
 
 		remaining = expiration / 1000
 		if remaining <= 3600 and remaining > 1800 then

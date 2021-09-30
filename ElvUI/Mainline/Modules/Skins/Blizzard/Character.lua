@@ -39,7 +39,7 @@ local function UpdateAzeriteEmpoweredItem(self)
 end
 
 local function ColorizeStatPane(frame)
-	if frame.leftGrad then return end
+	frame.Background:SetAlpha(0)
 
 	local r, g, b = 0.8, 0.8, 0.8
 	frame.leftGrad = frame:CreateTexture(nil, 'BORDER')
@@ -240,20 +240,17 @@ local function UpdateCurrencySkins()
 end
 
 local function PaperDollUpdateStats()
-	for _, data in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
-		if type(data) == 'table' then
-			for statFrame in pairs(data) do
-				ColorizeStatPane(statFrame)
+	local _, stats = _G.CharacterStatsPane.statsFramePool:EnumerateActive()
+	if not stats then return end
 
-				if statFrame.Background:IsShown() then
-					statFrame.leftGrad:Show()
-					statFrame.rightGrad:Show()
-				else
-					statFrame.leftGrad:Hide()
-					statFrame.rightGrad:Hide()
-				end
-			end
+	for frame in pairs(stats) do
+		if not frame.leftGrad then
+			ColorizeStatPane(frame)
 		end
+
+		local shown = frame.Background:IsShown()
+		frame.leftGrad:SetShown(shown)
+		frame.rightGrad:SetShown(shown)
 	end
 end
 
@@ -332,7 +329,6 @@ function S:CharacterFrame()
 
 	_G.CharacterLevelText:FontTemplate()
 	_G.CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
-	_G.CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
 	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
 
 	if not E:IsAddOnEnabled('DejaCharacterStats') then

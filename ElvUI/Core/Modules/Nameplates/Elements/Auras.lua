@@ -25,6 +25,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.growthY = 'UP'
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == _G.ElvNP_Test
+	Buffs.tickers = {} -- StyleFilters
 	Buffs.stacks = {}
 	Buffs.rows = {}
 
@@ -43,6 +44,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.growthY = 'UP'
 	Debuffs.type = 'debuffs'
 	Debuffs.forceShow = nameplate == _G.ElvNP_Test
+	Debuffs.tickers = {} -- StyleFilters
 	Debuffs.stacks = {}
 	Debuffs.rows = {}
 
@@ -129,9 +131,6 @@ function NP:Update_Auras(nameplate)
 	local db = NP:PlateDB(nameplate)
 
 	if db.debuffs.enable or db.buffs.enable then
-		nameplate:SetAuraUpdateMethod(E.global.nameplate.effectiveAura)
-		nameplate:SetAuraUpdateSpeed(E.global.nameplate.effectiveAuraSpeed)
-
 		if not nameplate:IsElementEnabled('Auras') then
 			nameplate:EnableElement('Auras')
 		end

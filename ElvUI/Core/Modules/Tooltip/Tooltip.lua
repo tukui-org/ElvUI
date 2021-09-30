@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...))
+local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
@@ -39,7 +39,6 @@ local SetTooltipMoney = SetTooltipMoney
 local UnitAura = UnitAura
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitBattlePetType = UnitBattlePetType
-local UnitBuff = UnitBuff
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
@@ -198,10 +197,10 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:SetUnitText(tt, unit)
+function TT:SetUnitText(tt, unit, isPlayerUnit)
 	local name, realm = UnitName(unit)
 
-	if UnitIsPlayer(unit) then
+	if isPlayerUnit then
 		local localeClass, class = UnitClass(unit)
 		if not localeClass or not class then return end
 
@@ -261,51 +260,11 @@ function TT:SetUnitText(tt, unit)
 			end
 		end
 
-		if TT.db.role and E.Retail then
-			local r, g, b, role = 1, 1, 1, UnitGroupRolesAssigned(unit)
-			if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= 'NONE') then
-				if role == 'HEALER' then
-					role, r, g, b = L["Healer"], 0, 1, .59
-				elseif role == 'TANK' then
-					role, r, g, b = _G.TANK, .16, .31, .61
-				elseif role == 'DAMAGER' then
-					role, r, g, b = L["DPS"], .77, .12, .24
-				end
-
-				GameTooltip:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
-			end
-		end
-
-		local mythicInfo = E.Retail and TT.db.mythicDataEnable and C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
-		if mythicInfo then
-			local mythicScore = mythicInfo.currentSeasonScore
-			if mythicScore and mythicScore > 0 then
-				local color = (TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(mythicScore)) or whiteRGB
-
-				if TT.db.dungeonScore then
-					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], mythicScore, nil, nil, nil, color.r, color.g, color.b)
-				end
-
-				if TT.db.mythicBestRun then
-					local bestRun = 0
-					for _, run in next, mythicInfo.runs do
-						if run.finishedSuccess and run.bestRunLevel > bestRun then
-							bestRun = run.bestRunLevel
-						end
-					end
-
-					if bestRun > 0 then
-						GameTooltip:AddDoubleLine(L["Mythic+ Best Run:"], bestRun, nil, nil, nil, color.r, color.g, color.b)
-					end
-				end
-			end
-		end
-
 		if TT.db.showElvUIUsers then
 			local addonUser = E.UserList[nameRealm]
 			if addonUser then
 				local same = addonUser == E.version
-				GameTooltip:AddDoubleLine(L["ElvUI Version:"], format('%.2f', addonUser), nil, nil, nil, same and 0.2 or 1, same and 1 or 0.2, 0.2)
+				tt:AddDoubleLine(L["ElvUI Version:"], format('%.2f', addonUser), nil, nil, nil, same and 0.2 or 1, same and 1 or 0.2, 0.2)
 			end
 		end
 
@@ -456,6 +415,110 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 	end
 end
 
+function TT:AddMountInfo(tt, unit)
+	local index = 1
+	local name, _, _, _, _, _, _, _, _, spellID = UnitAura(unit, index, 'HELPFUL')
+	while name do
+		local mountID = TT.MountIDs[spellID]
+		if mountID then
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+			tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
+
+			local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+			if mountText then
+				local sourceModified = gsub(mountText, '|n', '\10')
+				for x in gmatch(sourceModified, '[^\10]+\10?') do
+					local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
+					if left and right then
+						tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+					else
+						tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+					end
+				end
+			end
+
+			break
+		else
+			index = index + 1
+			name, _, _, _, _, _, _, _, _, spellID = UnitAura(unit, index, 'HELPFUL')
+		end
+	end
+end
+
+function TT:AddTargetInfo(tt, unit)
+	local unitTarget = unit..'target'
+	if unit ~= 'player' and UnitExists(unitTarget) then
+		local targetColor
+		if UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
+			local _, class = UnitClass(unitTarget)
+			targetColor = E:ClassColor(class) or PRIEST_COLOR
+		else
+			local reaction = UnitReaction(unitTarget, 'player')
+			targetColor = (TT.db.useCustomFactionColors and TT.db.factionColors[reaction]) or _G.FACTION_BAR_COLORS[reaction] or PRIEST_COLOR
+		end
+
+		tt:AddDoubleLine(format('%s:', _G.TARGET), format('|cff%02x%02x%02x%s|r', targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
+	end
+
+	if IsInGroup() then
+		local isInRaid = IsInRaid()
+		for i = 1, GetNumGroupMembers() do
+			local groupUnit = (isInRaid and 'raid' or 'party')..i
+			if UnitIsUnit(groupUnit..'target', unit) and not UnitIsUnit(groupUnit,'player') then
+				local _, class = UnitClass(groupUnit)
+				local classColor = E:ClassColor(class) or PRIEST_COLOR
+				tinsert(targetList, format('|c%s%s|r', classColor.colorStr, UnitName(groupUnit)))
+			end
+		end
+
+		local numList = #targetList
+		if numList > 0 then
+			tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true)
+			wipe(targetList)
+		end
+	end
+end
+
+function TT:AddRoleInfo(tt, unit)
+	local r, g, b, role = 1, 1, 1, UnitGroupRolesAssigned(unit)
+	if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= 'NONE') then
+		if role == 'HEALER' then
+			role, r, g, b = L["Healer"], 0, 1, .59
+		elseif role == 'TANK' then
+			role, r, g, b = _G.TANK, .16, .31, .61
+		elseif role == 'DAMAGER' then
+			role, r, g, b = L["DPS"], .77, .12, .24
+		end
+
+		tt:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
+	end
+end
+
+function TT:AddMythicInfo(tt, unit)
+	local info = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
+	local score = info and info.currentSeasonScore
+	if score and score > 0 then
+		local color = (TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(score)) or whiteRGB
+
+		if TT.db.dungeonScore then
+			tt:AddDoubleLine(L["Mythic+ Score:"], score, nil, nil, nil, color.r, color.g, color.b)
+		end
+
+		if TT.db.mythicBestRun then
+			local bestRun = 0
+			for _, run in next, info.runs do
+				if run.finishedSuccess and run.bestRunLevel > bestRun then
+					bestRun = run.bestRunLevel
+				end
+			end
+
+			if bestRun > 0 then
+				tt:AddDoubleLine(L["Mythic+ Best Run:"], bestRun, nil, nil, nil, color.r, color.g, color.b)
+			end
+		end
+	end
+end
+
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() or not TT.db.visibility then return end
 
@@ -479,80 +542,33 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
-	if E.Retail and TT.db.showMount and isPlayerUnit and unit ~= 'player' and not isShiftKeyDown then
-		for i = 1, 40 do
-			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
-			if not name then break end
 
-			if TT.MountIDs[id] then
-				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
-				tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
-
-				local mountText = isControlKeyDown and sourceText and gsub(sourceText, blanchyFix, '|n')
-				if mountText then
-					local sourceModified = gsub(mountText, '|n', '\10')
-					for x in gmatch(sourceModified, '[^\10]+\10?') do
-						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
-						if left and right then
-							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-						else
-							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
-						end
-					end
-				end
-
-				break
-			end
-		end
+	if TT.db.showMount and (isPlayerUnit and unit ~= 'player') and not isShiftKeyDown then
+		TT:AddMountInfo(tt, unit)
 	end
 
-	if not isShiftKeyDown and not isControlKeyDown then
-		local unitTarget = unit..'target'
-		if TT.db.targetInfo and unit ~= 'player' and UnitExists(unitTarget) then
-			local targetColor
-			if UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
-				local _, class = UnitClass(unitTarget)
-				targetColor = E:ClassColor(class) or PRIEST_COLOR
-			else
-				local reaction = UnitReaction(unitTarget, 'player')
-				targetColor = (TT.db.useCustomFactionColors and TT.db.factionColors[reaction]) or _G.FACTION_BAR_COLORS[reaction] or PRIEST_COLOR
-			end
-
-			tt:AddDoubleLine(format('%s:', _G.TARGET), format('|cff%02x%02x%02x%s|r', targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
-		end
-
-		if TT.db.targetInfo and IsInGroup() then
-			local isInRaid = IsInRaid()
-			for i = 1, GetNumGroupMembers() do
-				local groupUnit = (isInRaid and 'raid' or 'party')..i
-				if UnitIsUnit(groupUnit..'target', unit) and not UnitIsUnit(groupUnit,'player') then
-					local _, class = UnitClass(groupUnit)
-					local classColor = E:ClassColor(class) or PRIEST_COLOR
-					tinsert(targetList, format('|c%s%s|r', classColor.colorStr, UnitName(groupUnit)))
-				end
-			end
-
-			local numList = #targetList
-			if numList > 0 then
-				tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true)
-				wipe(targetList)
-			end
-		end
+	if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
+		TT:AddTargetInfo(tt, unit)
 	end
 
-	local color = TT:SetUnitText(tt, unit)
+	if E.Retail and TT.db.role then
+		TT:AddRoleInfo(tt, unit)
+	end
+
+	if TT.db.mythicDataEnable then
+		TT:AddMythicInfo(tt, unit)
+	end
+
+	local color = TT:SetUnitText(tt, unit, isPlayerUnit)
 	if isShiftKeyDown and isPlayerUnit then
 		TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 	end
 
-	-- NPC ID's
-	if unit and not isPlayerUnit and TT:IsModKeyDown() then
-		if not (E.Retail and C_PetBattles_IsInBattle()) then
-			local guid = UnitGUID(unit) or ''
-			local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
-			if id then
-				tt:AddLine(format(IDLine, _G.ID, id))
-			end
+	if unit and not isPlayerUnit and TT:IsModKeyDown() and not (E.Retail and C_PetBattles_IsInBattle()) then
+		local guid = UnitGUID(unit) or ''
+		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
+		if id then -- NPC ID's
+			tt:AddLine(format(IDLine, _G.ID, id))
 		end
 	end
 
@@ -723,37 +739,36 @@ end
 
 function TT:SetUnitAura(tt, unit, index, filter)
 	if not tt or tt:IsForbidden() then return end
-	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 
-	if id then
-		local mountText
-		if E.Retail and TT.MountIDs[id] then
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
-			mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
+	local name, _, _, _, _, _, source, _, _, spellID = UnitAura(unit, index, filter)
+	if not name then return end
 
-			if mountText then
-				tt:AddLine(' ')
-				tt:AddLine(mountText, 1, 1, 1)
-			end
+	local mountID, mountText = E.Retail and TT.MountIDs[spellID]
+	if mountID then
+		local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+		mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
+
+		if mountText then
+			tt:AddLine(' ')
+			tt:AddLine(mountText, 1, 1, 1)
 		end
-
-		if TT:IsModKeyDown() then
-			if mountText then
-				tt:AddLine(' ')
-			end
-
-			if caster then
-				local name = UnitName(caster)
-				local _, class = UnitClass(caster)
-				local color = E:ClassColor(class) or PRIEST_COLOR
-				tt:AddDoubleLine(format(IDLine, _G.ID, id), format('|c%s%s|r', color.colorStr, name))
-			else
-				tt:AddLine(format(IDLine, _G.ID, id))
-			end
-		end
-
-		tt:Show()
 	end
+
+	if TT:IsModKeyDown() then
+		if mountText then
+			tt:AddLine(' ')
+		end
+
+		if source then
+			local _, class = UnitClass(source)
+			local color = E:ClassColor(class) or PRIEST_COLOR
+			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, UnitName(source) or UNKNOWN))
+		else
+			tt:AddLine(format(IDLine, _G.ID, spellID))
+		end
+	end
+
+	tt:Show()
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
@@ -808,14 +823,19 @@ function TT:SetCurrencyTokenByID(tt, id)
 	end
 end
 
-function TT:QuestID(tt)
-	if not tt or tt:IsForbidden() then return end
-	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
-	if id and TT:IsModKeyDown() then
-		GameTooltip:AddLine(format(IDLine, _G.ID, id))
-		if GameTooltip.ItemTooltip:IsShown() then GameTooltip:AddLine(' ') end
-		GameTooltip:Show()
+function TT:AddQuestID(frame)
+	if GameTooltip:IsForbidden() then return end
+
+	local questID = TT:IsModKeyDown() and (frame.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(frame.questLogIndex) or frame.questID)
+	if not questID then return end
+
+	GameTooltip:AddLine(format(IDLine, _G.ID, questID))
+
+	if GameTooltip.ItemTooltip:IsShown() then
+		GameTooltip:AddLine(' ')
 	end
+
+	GameTooltip:Show()
 end
 
 function TT:SetBackpackToken(tt, id)
@@ -934,8 +954,8 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 		TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
-		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'QuestID')
-		TT:SecureHook('TaskPOI_OnEnter', 'QuestID')
+		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
+		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
 	end
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created

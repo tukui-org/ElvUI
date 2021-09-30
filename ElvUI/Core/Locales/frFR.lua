@@ -338,6 +338,7 @@ L["Total CPU:"] = "Charge du CPU :"
 L["Total Memory:"] = "Mémoire totale :"
 L["Total: "] = "Total : "
 L["Trigger"] = "Déclencheur"
+L["Type /hellokitty to revert to old settings."] = "Tapez /hellokitty pour recharger les anciennes configurations"
 L["BelowMinimapWidget"] = true
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true

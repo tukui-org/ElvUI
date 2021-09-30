@@ -33,6 +33,10 @@ SharedOptions.fontGroup.inline = true
 SharedOptions.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 SharedOptions.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 SharedOptions.fontGroup.args.fontOutline = ACH:Select(L["Font Outline"], nil, 3, C.Values.FontFlags)
+SharedOptions.fontGroup.args.spacer = ACH:Spacer(4, 'full')
+SharedOptions.fontGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 5, C.Values.AllPoints)
+SharedOptions.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+SharedOptions.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 local DataBars = ACH:Group(L["DataBars"], nil, 2, 'tab', function(info) return E.db.databars[info[#info]] end, function(info, value) E.db.databars[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars = DataBars
@@ -108,6 +112,7 @@ DataBars.args.honor.args.conditionGroup.values = {
 DataBars.args.threat = ACH:Group(L["Threat"], nil, 4, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() DB:UpdateAll() end)
 DataBars.args.threat.args = CopyTable(SharedOptions)
 DataBars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
+DataBars.args.threat.args.displayText = ACH:Toggle(L["Display Text"], nil, 2, nil, nil, nil, nil, nil, nil, nil)
 DataBars.args.threat.args.textFormat = nil
 DataBars.args.threat.args.conditionGroup = nil
 DataBars.args.threat.args.showBubbles = nil

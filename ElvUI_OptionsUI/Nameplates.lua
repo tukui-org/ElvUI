@@ -416,16 +416,6 @@ E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.args.anch
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 8, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.nameplates.bossMods.anchorPoint return point == 'LEFT' or point == 'RIGHT' end)
 E.Options.args.nameplate.args.generalGroup.args.bossMods.args.settings.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 9, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.nameplates.bossMods.anchorPoint return point == 'TOP' or point == 'BOTTOM' end)
 
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup = ACH:Group(L["Effective Updates"], nil, 60, nil, function(info) return E.global.nameplate[info[#info]] end, function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end)
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.warning = ACH:Description(L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]..'\n'..L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."], 0, 'medium')
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.effectiveHealth = ACH:Toggle(L["Health"], nil, 1)
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.effectivePower = ACH:Toggle(L["Power"], nil, 2)
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.effectiveAura = ACH:Toggle(L["Aura"], nil, 3)
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.spacer1 = ACH:Spacer(4, 'full')
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.effectiveHealthSpeed = ACH:Range(L["Health Speed"], nil, 5, { min = .1, max = .5, step = .05 }, nil, nil, nil, function() return not E.global.nameplate.effectiveHealth end)
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.effectivePowerSpeed = ACH:Range(L["Power Speed"], nil, 6, { min = .1, max = .5, step = .05 }, nil, nil, nil, function() return not E.global.nameplate.effectivePower end)
-E.Options.args.nameplate.args.generalGroup.args.effectiveGroup.args.effectiveAuraSpeed = ACH:Range(L["Aura Speed"], nil, 7, { min = .1, max = .5, step = .05 }, nil, nil, nil, function() return not E.global.nameplate.effectiveAura end)
-
 E.Options.args.nameplate.args.generalGroup.args.clickThrough = ACH:Group(L["Click Through"], nil, 65, nil, function(info) return E.db.nameplates.clickThrough[info[#info]] end)
 E.Options.args.nameplate.args.generalGroup.args.clickThrough.args.personal = ACH:Toggle(L["Personal"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateSelfClickThrough() end)
 E.Options.args.nameplate.args.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly"], nil, 2, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateFriendlyClickThrough() end)

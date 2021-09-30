@@ -110,12 +110,6 @@ G.datatexts = {
 }
 
 G.nameplate = {
-	effectiveHealth = false,
-	effectivePower = false,
-	effectiveAura = false,
-	effectiveHealthSpeed = 0.3,
-	effectivePowerSpeed = 0.3,
-	effectiveAuraSpeed = 0.3,
 	widgetMap = {
 		[149805] = 1940, -- Farseer Ori
 		[149804] = 1613, -- Hunter Akana
@@ -144,12 +138,6 @@ G.nameplate = {
 G.unitframe = {
 	aurafilters = {},
 	aurawatch = {},
-	effectiveHealth = false,
-	effectivePower = false,
-	effectiveAura = false,
-	effectiveHealthSpeed = 0.3,
-	effectivePowerSpeed = 0.3,
-	effectiveAuraSpeed = 0.3,
 	raidDebuffIndicator = {
 		instanceFilter = 'RaidDebuffs',
 		otherFilter = 'CCDebuffs'

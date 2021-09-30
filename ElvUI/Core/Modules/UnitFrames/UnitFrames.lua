@@ -1153,6 +1153,9 @@ function UF:RegisterRaidDebuffIndicator()
 			local otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
 			ORD:RegisterDebuffs(otherSpells)
 		end
+
+		local dispelColor = ORD:GetDispelColor()
+		E:CopyTable(dispelColor.none, E.media.bordercolor)
 	end
 end
 

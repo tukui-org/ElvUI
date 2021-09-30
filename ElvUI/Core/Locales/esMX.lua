@@ -338,6 +338,7 @@ L["Total CPU:"] = "CPU Total:"
 L["Total Memory:"] = "Memoria Total:"
 L["Total: "] = "Total: "
 L["Trigger"] = "Disparador"
+L["Type /hellokitty to revert to old settings."] = "Escribe /hellokitty para revertir a las opciones antiguas."
 L["BelowMinimapWidget"] = true
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true

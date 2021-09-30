@@ -275,23 +275,11 @@ local blacklistedKeys = {
 			}
 		},
 		nameplate = {
-			effectiveHealth = true,
-			effectivePower = true,
-			effectiveAura = true,
-			effectiveHealthSpeed = true,
-			effectivePowerSpeed = true,
-			effectiveAuraSpeed = true,
 			filters = true
 		},
 		unitframe = {
 			aurafilters = true,
 			aurawatch = true,
-			effectiveHealth = true,
-			effectivePower = true,
-			effectiveAura = true,
-			effectiveHealthSpeed = true,
-			effectivePowerSpeed = true,
-			effectiveAuraSpeed = true,
 			newCustomText = true,
 		}
 	},

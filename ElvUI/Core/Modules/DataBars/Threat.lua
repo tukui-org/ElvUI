@@ -94,6 +94,8 @@ function DB:ThreatBar_Update()
 		bar.showBar = false
 	end
 
+	bar.text:SetShown(bar.db.displayText)
+
 	DB:SetVisibility(bar) -- lower visibility because of using showBar variable
 
 	wipe(bar.list)

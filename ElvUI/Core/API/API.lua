@@ -22,6 +22,7 @@ local IsWargame = IsWargame
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAttackPower = UnitAttackPower
+local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -127,6 +128,31 @@ do
 		end
 
 		return tt.gems, tt.essences
+	end
+end
+
+do
+	local function FindAura(key, value, unit, index, filter, ...)
+		local name, _, _, _, _, _, _, _, _, spellID = ...
+
+		if not name then
+			return
+		elseif key == 'name' and value == name then
+			return ...
+		elseif key == 'spellID' and value == spellID then
+			return ...
+		else
+			index = index + 1
+			FindAura(value, key, unit, index, filter, UnitAura(unit, index, filter))
+		end
+	end
+
+	function E:GetAuraByID(unit, spellID, filter)
+		return FindAura('spellID', spellID, unit, 1, filter, UnitAura(unit, 1, filter))
+	end
+
+	function E:GetAuraByName(unit, name, filter)
+		return FindAura('name', name, unit, 1, filter, UnitAura(unit, 1, filter))
 	end
 end
 
