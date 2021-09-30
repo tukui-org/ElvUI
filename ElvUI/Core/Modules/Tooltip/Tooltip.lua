@@ -543,20 +543,22 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
 
-	if TT.db.showMount and (isPlayerUnit and unit ~= 'player') and not isShiftKeyDown then
-		TT:AddMountInfo(tt, unit)
-	end
-
 	if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
 		TT:AddTargetInfo(tt, unit)
 	end
 
-	if E.Retail and TT.db.role then
-		TT:AddRoleInfo(tt, unit)
-	end
+	if E.Retail then
+		if TT.db.showMount and (isPlayerUnit and unit ~= 'player') and not isShiftKeyDown then
+			TT:AddMountInfo(tt, unit)
+		end
 
-	if TT.db.mythicDataEnable then
-		TT:AddMythicInfo(tt, unit)
+		if TT.db.role then
+			TT:AddRoleInfo(tt, unit)
+		end
+
+		if TT.db.mythicDataEnable then
+			TT:AddMythicInfo(tt, unit)
+		end
 	end
 
 	local color = TT:SetUnitText(tt, unit, isPlayerUnit)
