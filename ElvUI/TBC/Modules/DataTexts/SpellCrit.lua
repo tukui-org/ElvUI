@@ -3,10 +3,9 @@ local DT = E:GetModule('DataTexts')
 
 local min = min
 local strjoin = strjoin
-
 local GetSpellCritChance = GetSpellCritChance
-local CRIT_ABBR = CRIT_ABBR
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local CRIT_ABBR = CRIT_ABBR
 
 local displayString, lastPanel = ''
 

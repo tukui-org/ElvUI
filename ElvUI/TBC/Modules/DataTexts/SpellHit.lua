@@ -3,12 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 local GetCombatRatingBonus = GetCombatRatingBonus
-
-local CR_HIT_SPELL = CR_HIT_SPELL
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local CR_HIT_SPELL = CR_HIT_SPELL
 
-local displayString = ''
-local lastPanel
+local displayString, lastPanel = ''
 
 local function OnEvent(self)
 	lastPanel = self

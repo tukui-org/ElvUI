@@ -2,17 +2,20 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
-local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
+local ipairs, sort, unpack, wipe = ipairs, sort, unpack, wipe
+local format, strfind, strjoin, strsplit = format, strfind, strjoin, strsplit
 
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildInfo = GetGuildInfo
+local GetGuildRosterInfo = GetGuildRosterInfo
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetMouseFocus = GetMouseFocus
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GetGuildRosterInfo = GetGuildRosterInfo
+local GuildRoster = GuildRoster
+local InCombatLockdown = InCombatLockdown
 local InviteToGroup = InviteToGroup
+local IsAltKeyDown = IsAltKeyDown
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
@@ -22,9 +25,6 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local GuildRoster = GuildRoster
-local InCombatLockdown = InCombatLockdown
-local IsAltKeyDown = IsAltKeyDown
 
 local GUILD = GUILD
 local GUILD_MOTD = GUILD_MOTD
@@ -80,10 +80,6 @@ local mobilestatus = {
 	[2] = '|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t',
 }
 
-local function inGroup(name)
-	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ''
-end
-
 local function BuildGuildTable()
 	GuildRoster()
 	wipe(guildTable)
@@ -136,7 +132,7 @@ local eventHandlers = {
 		BuildGuildTable()
 	end,
 	-- our guild message of the day changed
-	GUILD_MOTD = function (self, arg1)
+	GUILD_MOTD = function(_, arg1)
 		guildMotD = arg1
 	end
 }

@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, strjoin = format, strjoin
 local date = date
+local format = format
+local strjoin = strjoin
 
 local GetGameTime = GetGameTime
 local RequestRaidInfo = RequestRaidInfo

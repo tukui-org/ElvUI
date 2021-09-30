@@ -7,12 +7,15 @@ local format, strfind, strjoin, strsplit = format, strfind, strjoin, strsplit
 
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildInfo = GetGuildInfo
+local GetGuildRosterInfo = GetGuildRosterInfo
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetMouseFocus = GetMouseFocus
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GetGuildRosterInfo = GetGuildRosterInfo
+local GuildRoster = GuildRoster
+local InCombatLockdown = InCombatLockdown
 local InviteToGroup = InviteToGroup
+local IsAltKeyDown = IsAltKeyDown
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
@@ -22,9 +25,6 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local GuildRoster = GuildRoster
-local InCombatLockdown = InCombatLockdown
-local IsAltKeyDown = IsAltKeyDown
 
 local GUILD = GUILD
 local GUILD_MOTD = GUILD_MOTD
@@ -277,7 +277,7 @@ local function OnEvent(self, event, ...)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', GUILD, ': ', hex, '%d|r')
+	displayString = E.global.datatexts.settings.Guild.NoLabel and strjoin('', hex, '%d|r') or strjoin('', GUILD, ': ', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
 	if lastPanel ~= nil then

@@ -1,6 +1,4 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-if E.myclass ~= 'HUNTER' and E.myclass ~= 'ROGUE' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'WARRIOR' then return end
-
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
@@ -26,9 +24,7 @@ local LE_ITEM_CLASS_QUIVER = LE_ITEM_CLASS_QUIVER
 local LE_ITEM_CLASS_CONTAINER = LE_ITEM_CLASS_CONTAINER
 
 local iconString = '|T%s:16:16:0:0:64:64:4:55:4:55|t'
-local displayString = ''
-
-local lastPanel
+local displayString, lastPanel = ''
 local itemName = {}
 
 local waitingItemID

@@ -3,11 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
-
-local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
+local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
-local REPUTATION, STANDING = REPUTATION, STANDING
 local NOT_APPLICABLE = NOT_APPLICABLE
+local REPUTATION = REPUTATION
+local STANDING = STANDING
 
 local function OnEvent(self, event, eventType)
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
@@ -22,15 +22,15 @@ local function OnEvent(self, event, eventType)
 		isCapped = true
 	end
 
-	local color = _G.FACTION_BAR_COLORS[reaction]
 	local text = name
+	local color = _G.FACTION_BAR_COLORS[reaction]
 	local textFormat = E.global.datatexts.settings.Reputation.textFormat
 
 	standingLabel = E:RGBToHex(color.r, color.g, color.b, nil, _G['FACTION_STANDING_LABEL'..reaction]..'|r')
 
 	--Prevent a division by zero
 	local maxMinDiff = max - min
-	if (maxMinDiff == 0) then
+	if maxMinDiff == 0 then
 		maxMinDiff = 1
 	end
 

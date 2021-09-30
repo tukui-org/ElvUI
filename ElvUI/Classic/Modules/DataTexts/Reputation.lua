@@ -3,12 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
-
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
+local NOT_APPLICABLE = NOT_APPLICABLE
 local REPUTATION = REPUTATION
 local STANDING = STANDING
-local NOT_APPLICABLE = NOT_APPLICABLE
 
 local function OnEvent(self, event, eventType)
 	local name, reaction, min, max, value = GetWatchedFactionInfo()

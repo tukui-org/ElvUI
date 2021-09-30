@@ -2,10 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
-local GetUnitSpeed = GetUnitSpeed
 local IsFalling = IsFalling
 local IsSwimming = IsSwimming
+local GetUnitSpeed = GetUnitSpeed
+local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''

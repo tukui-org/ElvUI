@@ -17,16 +17,14 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetItemQualityColor = GetItemQualityColor
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
-local INVTYPE_AMMO = INVTYPE_AMMO
 local INVSLOT_RANGED = INVSLOT_RANGED
 local INVSLOT_AMMO = INVSLOT_AMMO
+local INVTYPE_AMMO = INVTYPE_AMMO
 local LE_ITEM_CLASS_QUIVER = LE_ITEM_CLASS_QUIVER
 local LE_ITEM_CLASS_CONTAINER = LE_ITEM_CLASS_CONTAINER
 
 local iconString = '|T%s:16:16:0:0:64:64:4:55:4:55|t'
-local displayString = ''
-
-local lastPanel
+local displayString, lastPanel = ''
 local itemName = {}
 
 local waitingItemID

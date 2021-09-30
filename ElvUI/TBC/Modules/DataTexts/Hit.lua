@@ -2,14 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_HIT_CHANCE = STAT_HIT_CHANCE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HIT_MELEE = CR_HIT_MELEE
 local CR_HIT_RANGED = CR_HIT_RANGED
-local displayString = ''
-local lastPanel
+
+local displayString, lastPanel = ''
 
 local function OnEvent(self)
 	lastPanel = self

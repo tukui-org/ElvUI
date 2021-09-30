@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, strjoin = format, strjoin
 local date = date
+local format = format
+local strjoin = strjoin
 
 local GetGameTime = GetGameTime
 local RequestRaidInfo = RequestRaidInfo
@@ -14,7 +15,7 @@ local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
 local europeDisplayFormat_nocolor = strjoin('', '%02d', ':|r%02d')
 local ukDisplayFormat_nocolor = strjoin('', '', '%d', ':|r%02d', ' %s|r')
-local lockoutColorNormal = { r=.8,g=.8,b=.8 }
+local lockoutColorNormal = { r=.8, g=.8, b=.8 }
 local enteredFrame, curHr, curMin, curAmPm = false
 
 local Update, lastPanel

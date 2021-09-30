@@ -3,8 +3,8 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local format = format
-local UnitLevel = UnitLevel
 local HasPetUI = HasPetUI
+local UnitLevel = UnitLevel
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local GetPetExperience = GetPetExperience

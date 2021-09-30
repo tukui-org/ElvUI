@@ -7,16 +7,15 @@ local format, strjoin = format, strjoin
 local UnitAttackPower = UnitAttackPower
 local UnitRangedAttackPower = UnitRangedAttackPower
 local ATTACK_POWER = ATTACK_POWER
-local ATTACK_POWER_MAGIC_NUMBER = ATTACK_POWER_MAGIC_NUMBER
 local MELEE_ATTACK_POWER = MELEE_ATTACK_POWER
 local MELEE_ATTACK_POWER_TOOLTIP = MELEE_ATTACK_POWER_TOOLTIP
 local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
 local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local ATTACK_POWER_MAGIC_NUMBER = ATTACK_POWER_MAGIC_NUMBER
 
 local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
-local displayNumberString = ''
-local lastPanel
+local displayString, lastPanel = ''
 
 local function OnEvent(self)
 	if E.myclass == 'HUNTER' then
@@ -29,7 +28,7 @@ local function OnEvent(self)
 		pwr = effective
 	end
 
-	self.text:SetFormattedText(displayNumberString, ATTACK_POWER, pwr)
+	self.text:SetFormattedText(displayString, ATTACK_POWER, pwr)
 
 	lastPanel = self
 end
@@ -51,7 +50,7 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(hex)
-	displayNumberString = strjoin('', '%s: ', hex, '%d|r')
+	displayString = strjoin('', '%s: ', hex, '%d|r')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

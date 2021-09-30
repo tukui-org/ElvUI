@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
 local MANA_REGEN = MANA_REGEN
