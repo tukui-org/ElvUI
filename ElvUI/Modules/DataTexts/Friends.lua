@@ -149,6 +149,7 @@ local clientTags = {
 	[_G.BNET_CLIENT_COD_MW] = 'MW',
 	[_G.BNET_CLIENT_COD_MW2] = 'MW2',
 	[_G.BNET_CLIENT_COD_BOCW] = 'CW',
+	[_G.BNET_CLIENT_COD_VANGUARD] = 'FORE',
 	BSAp = L["Mobile"],
 }
 
@@ -188,6 +189,7 @@ local clientFullName = {
 	[_G.BNET_CLIENT_COD_MW] = "COD: Modern Warfare",
 	[_G.BNET_CLIENT_COD_MW2] = "COD: Modern Warfare 2",
 	[_G.BNET_CLIENT_COD_BOCW] = "COD: Cold War",
+	[_G.BNET_CLIENT_COD_VANGUARD] = "COD: Vanguard",
 	App = "App",
 	BSAp = L["Mobile"],
 }
