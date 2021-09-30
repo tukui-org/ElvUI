@@ -169,8 +169,9 @@ local clientIndex = {
 	[_G.BNET_CLIENT_COD_MW] = 13,
 	[_G.BNET_CLIENT_COD_MW2] = 14,
 	[_G.BNET_CLIENT_COD_BOCW] = 15,
-	App = 16,
-	BSAp = 17,
+	[_G.BNET_CLIENT_COD_VANGUARD] = 16,
+	App = 17,
+	BSAp = 18,
 }
 
 local clientFullName = {
