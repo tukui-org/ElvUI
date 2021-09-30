@@ -6,7 +6,6 @@ local strjoin = strjoin
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
 local MANA_REGEN = MANA_REGEN
-local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
 
@@ -22,7 +21,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%.2f|r")
+	displayString = strjoin('', '%s: ', hex, '%.2f|r')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
@@ -30,4 +29,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Mana Regen', STAT_CATEGORY_ATTRIBUTES, {'UNIT_STATS', 'UNIT_AURA'}, OnEvent, nil, nil, nil, nil, MANA_REGEN, nil, ValueColorUpdate)
+DT:RegisterDatatext('Mana Regen', _G.STAT_CATEGORY_ATTRIBUTES, {'UNIT_STATS', 'UNIT_AURA'}, OnEvent, nil, nil, nil, nil, MANA_REGEN, nil, ValueColorUpdate)

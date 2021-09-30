@@ -310,17 +310,17 @@ function S:BlizzardOptions()
 
 	-- Categories Buttons
 	for i = 1, 10 do
-		local Button = _G["InterfaceOptionsFrameCategoriesButton"..i]
+		local Button = _G['InterfaceOptionsFrameCategoriesButton'..i]
 		S:HandleCategoriesButtons(Button)
 	end
 
 	for i = 1, MAX_ADDONS_DISPLAYED do
-		local Button = _G["InterfaceOptionsFrameAddOnsButton"..i]
+		local Button = _G['InterfaceOptionsFrameAddOnsButton'..i]
 		S:HandleCategoriesButtons(Button)
 	end
 
 	for i = 1, 6 do
-		local Button = _G["VideoOptionsFrameCategoryFrameButton"..i]
+		local Button = _G['VideoOptionsFrameCategoryFrameButton'..i]
 		S:HandleCategoriesButtons(Button)
 	end
 

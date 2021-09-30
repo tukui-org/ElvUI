@@ -500,7 +500,7 @@ function S:FriendsFrame()
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
 	for _, CheckBox in pairs({ _G.GuildControlPopupFrameCheckboxes:GetChildren()}) do
-		if CheckBox:IsObjectType("CheckButton") then
+		if CheckBox:IsObjectType('CheckButton') then
 			S:HandleCheckBox(CheckBox)
 		end
 	end

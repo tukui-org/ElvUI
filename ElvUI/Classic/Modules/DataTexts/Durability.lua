@@ -15,7 +15,7 @@ local GetMoneyString = GetMoneyString
 local DURABILITY = DURABILITY
 local REPAIR_COST = REPAIR_COST
 local displayString = DURABILITY..': %s%d%%|r'
-local tooltipString = "%d%%"
+local tooltipString = '%d%%'
 local totalDurability = 0
 local invDurability = {}
 local totalRepairCost
@@ -50,7 +50,7 @@ local function OnEvent(self)
 				totalDurability = perc
 			end
 
-			totalRepairCost = totalRepairCost + select(3, E.ScanTooltip:SetInventoryItem("player", index))
+			totalRepairCost = totalRepairCost + select(3, E.ScanTooltip:SetInventoryItem('player', index))
 		end
 	end
 
@@ -67,7 +67,7 @@ end
 
 local function Click()
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	ToggleCharacter("PaperDollFrame")
+	ToggleCharacter('PaperDollFrame')
 end
 
 local function OnEnter()
@@ -85,4 +85,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Durability', nil, {"UPDATE_INVENTORY_DURABILITY", "MERCHANT_SHOW"}, OnEvent, nil, Click, OnEnter, nil, DURABILITY)
+DT:RegisterDatatext('Durability', nil, {'UPDATE_INVENTORY_DURABILITY', 'MERCHANT_SHOW'}, OnEvent, nil, Click, OnEnter, nil, DURABILITY)

@@ -52,7 +52,7 @@ function S:BlizzardMiscFrames()
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then
 		-- reskin all esc/menu buttons
 		for _, Button in pairs({_G.GameMenuFrame:GetChildren()}) do
-			if Button.IsObjectType and Button:IsObjectType("Button") then
+			if Button.IsObjectType and Button:IsObjectType('Button') then
 				S:HandleButton(Button)
 			end
 		end

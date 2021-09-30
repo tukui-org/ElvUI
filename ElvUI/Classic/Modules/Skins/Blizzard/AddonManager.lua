@@ -30,8 +30,8 @@ function S:AddonList()
 	S:HandleFrame(_G.AddonListScrollFrame, true, nil, -14, 0, 0, -1)
 
 	for i = 1, maxShown do
-		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"], nil, nil, true)
-		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
+		S:HandleCheckBox(_G['AddonListEntry'..i..'Enabled'], nil, nil, true)
+		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
 	local font = E.Libs.LSM:Fetch('font', 'Expressway')
@@ -40,9 +40,9 @@ function S:AddonList()
 		for i = 1, maxShown do
 			local index = AddonList.offset + i
 			if index <= numEntrys then
-				local entry = _G["AddonListEntry"..i]
-				local string = _G["AddonListEntry"..i.."Title"]
-				local checkbox = _G["AddonListEntry"..i.."Enabled"]
+				local entry = _G['AddonListEntry'..i]
+				local string = _G['AddonListEntry'..i..'Title']
+				local checkbox = _G['AddonListEntry'..i..'Enabled']
 				local name, title, _, loadable, reason = GetAddOnInfo(index)
 
 				-- Get the character from the current list (nil is all characters)
@@ -72,15 +72,15 @@ function S:AddonList()
 					entry.Status:SetTextColor(0.7, 0.7, 0.7)
 				end
 
-				if disabled or reason == "DEP_DISABLED" then
+				if disabled or reason == 'DEP_DISABLED' then
 					string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
 				end
 
 				if enabledForSome then
 					string:SetTextColor(0.5, 0.5, 0.5)
-				elseif enabled and (loadable or reason == "DEP_DEMAND_LOADED" or reason == "DEMAND_LOADED") then
+				elseif enabled and (loadable or reason == 'DEP_DEMAND_LOADED' or reason == 'DEMAND_LOADED') then
 					string:SetTextColor(0.9, 0.9, 0.9)
-				elseif enabled and reason ~= "DEP_DISABLED" then
+				elseif enabled and reason ~= 'DEP_DISABLED' then
 					string:SetTextColor(1.0, 0.2, 0.2)
 				else
 					string:SetTextColor(0.3, 0.3, 0.3)

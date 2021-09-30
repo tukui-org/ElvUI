@@ -4,13 +4,11 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local format = format
 
-local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
-local ExpandAllFactionHeaders = ExpandAllFactionHeaders
-local SetWatchedFactionIndex = SetWatchedFactionIndex
-
-local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
+local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
-local REPUTATION, STANDING = REPUTATION, STANDING
+local REPUTATION = REPUTATION
+local STANDING = STANDING
+local NOT_APPLICABLE = NOT_APPLICABLE
 
 local function OnEvent(self, event, eventType)
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
@@ -77,7 +75,7 @@ local function OnEnter()
 end
 
 local function OnClick()
-	ToggleCharacter("ReputationFrame")
+	ToggleCharacter('ReputationFrame')
 end
 
 DT:RegisterDatatext('Reputation', nil, {'UPDATE_FACTION', 'COMBAT_TEXT_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, REPUTATION)

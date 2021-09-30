@@ -45,9 +45,9 @@ function S:Blizzard_GMChatUI()
 	GMChatTab:SetPoint('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
 	_G.GMChatTabIcon:SetTexture('Interface\\ChatFrame\\UI-ChatIcon-Blizz')
 
-	GMChatStatusFrame:HookScript("OnShow", function(self)
+	GMChatStatusFrame:HookScript('OnShow', function(self)
 		if TicketStatusFrame and TicketStatusFrame:IsShown() then
-			self:Point("TOPLEFT", TicketStatusFrame, "BOTTOMLEFT", 0, 1)
+			self:Point('TOPLEFT', TicketStatusFrame, 'BOTTOMLEFT', 0, 1)
 		else
 			self:SetAllPoints(TicketStatusFrame)
 		end
@@ -56,10 +56,10 @@ function S:Blizzard_GMChatUI()
 	local GMChatFrameCloseButton = _G.GMChatFrameCloseButton
 	S:HandleCloseButton(GMChatFrameCloseButton, GMChatTab.backdrop, 2, 4)
 
-	TicketStatusFrame:HookScript("OnShow", function(self)
-		GMChatStatusFrame:Point("TOPLEFT", self, "BOTTOMLEFT", 0, 1)
+	TicketStatusFrame:HookScript('OnShow', function(self)
+		GMChatStatusFrame:Point('TOPLEFT', self, 'BOTTOMLEFT', 0, 1)
 	end)
-	TicketStatusFrame:HookScript("OnHide", function(self)
+	TicketStatusFrame:HookScript('OnHide', function(self)
 		GMChatStatusFrame:SetAllPoints(self)
 	end)
 

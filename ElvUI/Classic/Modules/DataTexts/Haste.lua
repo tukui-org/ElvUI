@@ -5,7 +5,6 @@ local strjoin = strjoin
 
 local GetHaste = GetHaste
 local STAT_HASTE = STAT_HASTE
-local CR_HASTE_MELEE = CR_HASTE_MELEE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
@@ -18,7 +17,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

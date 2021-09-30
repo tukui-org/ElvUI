@@ -4,14 +4,12 @@ local DT = E:GetModule('DataTexts')
 local select = select
 local format = format
 local strjoin = strjoin
-local UnitLevel = UnitLevel
 local UnitArmor = UnitArmor
 
-local armorString = ARMOR..": "
-local chanceString = "%.2f%%"
+local chanceString = '%.2f%%'
 local displayString, lastPanel, effectiveArmor, _ = ''
-local ARMOR = ARMOR
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+local ARMOR = ARMOR
 
 local function OnEvent(self)
 	effectiveArmor = select(2, UnitArmor('player'))

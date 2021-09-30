@@ -9,6 +9,7 @@ local GetInventoryItemID = GetInventoryItemID
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetParryChance = GetParryChance
+local UnitDefense = UnitDefense
 local UnitLevel = UnitLevel
 local BOSS = BOSS
 local BLOCK_CHANCE = BLOCK_CHANCE
@@ -74,7 +75,7 @@ local function OnEvent(self)
 	end
 
 	unhittableMax = unhittableMax + ((AVD_DECAY_RATE * leveldifference) * numAvoidances);
-    baseDef, armorDef = UnitDefense("player");
+    baseDef, armorDef = UnitDefense('player');
     misschance = (basemisschance + (armorDef + baseDef - (5*playerlv))*0.04);
 
 	local avoided = (dodge+parry+misschance) --First roll on hit table determining if the hit missed

@@ -13,7 +13,6 @@ local MELEE_ATTACK_POWER_TOOLTIP = MELEE_ATTACK_POWER_TOOLTIP
 local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
 local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
-local ATTACK_POWER_TOOLTIP = ATTACK_POWER_TOOLTIP
 
 local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
 local displayNumberString = ''
@@ -60,4 +59,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER'}, OnEvent, nil, nil, OnEnter, nil, STAT_ATTACK_POWER)
+DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER'}, OnEvent, nil, nil, OnEnter, nil, _G.STAT_ATTACK_POWER)

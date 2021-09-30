@@ -36,14 +36,14 @@ local function HandleCommunitiesButtons(self, color)
 	self:SetFrameLevel(self:GetFrameLevel() + 5)
 
 	S:HandleIcon(self.Icon)
-	self.Icon:Point("TOPLEFT", 8, -20)
+	self.Icon:Point('TOPLEFT', 8, -20)
 	self.IconRing:Hide()
 
 	if not self.bg then
-		self.bg = CreateFrame("Frame", nil, self)
-		self.bg:CreateBackdrop("Transparent")
-		self.bg:SetPoint("TOPLEFT", 7, -16)
-		self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
+		self.bg = CreateFrame('Frame', nil, self)
+		self.bg:CreateBackdrop('Transparent')
+		self.bg:SetPoint('TOPLEFT', 7, -16)
+		self.bg:SetPoint('BOTTOMRIGHT', -10, 12)
 	end
 
 	if color then
@@ -133,8 +133,8 @@ function S:Blizzard_Communities()
 	end)
 
 	-- Add Community Button
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(self) HandleCommunitiesButtons(self, 1) end)
-	--hooksecurefunc(_G.CommunitiesListEntryMixin, "SetFindCommunity", function(self) HandleCommunitiesButtons(self, 2) end) -- Not on classic.. huh!?
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(self) HandleCommunitiesButtons(self, 1) end)
+	--hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', function(self) HandleCommunitiesButtons(self, 2) end) -- Not on classic.. huh!?
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
