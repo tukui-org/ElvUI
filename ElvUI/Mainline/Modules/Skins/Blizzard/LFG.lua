@@ -257,36 +257,36 @@ function S:LookingForGroupFrames()
 		checkButton:ClearAllPoints()
 		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
-	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(self) --Copy from Blizzard, we just fix position
+	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) --Copy from Blizzard, we just fix position
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
 		local avail1, avail2
 		if availTank then
-			avail1 = self.TankButton
+			avail1 = dialog.TankButton
 		end
 		if availHealer then
 			if avail1 then
-				avail2 = self.HealerButton
+				avail2 = dialog.HealerButton
 			else
-				avail1 = self.HealerButton
+				avail1 = dialog.HealerButton
 			end
 		end
 		if availDPS then
 			if avail1 then
-				avail2 = self.DamagerButton
+				avail2 = dialog.DamagerButton
 			else
-				avail1 = self.DamagerButton
+				avail1 = dialog.DamagerButton
 			end
 		end
 
 		if avail2 then
 			avail1:ClearAllPoints()
-			avail1:Point('TOPRIGHT', self, 'TOP', -40, -35)
+			avail1:Point('TOPRIGHT', dialog, 'TOP', -40, -35)
 			avail2:ClearAllPoints()
-			avail2:Point('TOPLEFT', self, 'TOP', 40, -35)
+			avail2:Point('TOPLEFT', dialog, 'TOP', 40, -35)
 		elseif avail1 then
 			avail1:ClearAllPoints()
-			avail1:Point('TOP', self, 'TOP', 0, -35)
+			avail1:Point('TOP', dialog, 'TOP', 0, -35)
 		end
 	end)
 
@@ -324,10 +324,10 @@ function S:LookingForGroupFrames()
 		button.checkButton:SetAlpha(1)
 	end)
 
-	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(self)
-		if self.background then
-			self.background:Show()
-			self.background:SetDesaturated(true)
+	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
+		if button.background then
+			button.background:Show()
+			button.background:SetDesaturated(true)
 		end
 	end)
 
@@ -551,20 +551,6 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGListInviteDialog_Show', SetRoleIcon)
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
-
-	--[[local columns = {
-		Name = true,
-		Tank = true,
-		Healer = true,
-		Damager = true
-	}
-
-	for x in pairs(columns) do
-		LFGListFrame.SearchPanel[x..'ColumnHeader'].Left:Hide()
-		LFGListFrame.SearchPanel[x..'ColumnHeader'].Middle:Hide()
-		LFGListFrame.SearchPanel[x..'ColumnHeader'].Right:Hide()
-	end]]
-
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 	S:HandleButton(_G.LFGListSearchPanelScrollFrameScrollChild.StartGroupButton)
@@ -600,7 +586,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', function(self)
+	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', function(panel)
 		for i = 1, LFGListFrame.SearchPanel.AutoCompleteFrame:GetNumChildren() do
 			local child = select(i, LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren())
 			if child and not child.isSkinned and child:IsObjectType('Button') then
@@ -609,19 +595,19 @@ function S:LookingForGroupFrames()
 			end
 		end
 
-		local text = self.SearchBox:GetText()
-		local matchingActivities = C_LFGList_GetAvailableActivities(self.categoryID, nil, self.filters, text)
+		local text = panel.SearchBox:GetText()
+		local matchingActivities = C_LFGList_GetAvailableActivities(panel.categoryID, nil, panel.filters, text)
 		local numResults = min(#matchingActivities, _G.MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
 
 		for i = 2, numResults do
-			local button = self.AutoCompleteFrame.Results[i]
+			local button = panel.AutoCompleteFrame.Results[i]
 			if button and not button.moved then
-				button:Point('TOPLEFT', self.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
-				button:Point('TOPRIGHT', self.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
+				button:Point('TOPLEFT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
+				button:Point('TOPRIGHT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
 				button.moved = true
 			end
 		end
-		self.AutoCompleteFrame:Height(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
+		panel.AutoCompleteFrame:Height(numResults * (panel.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
 	end)
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
@@ -718,33 +704,33 @@ function S:Blizzard_ChallengesUI()
 	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 26, 'OUTLINE')
 	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 20, 'OUTLINE')
 
-	hooksecurefunc('ChallengesFrame_Update', function(self)
-		for _, frame in ipairs(self.DungeonIcons) do
-			if not frame.template then
-				frame:GetRegions():SetAlpha(0)
-				frame:SetTemplate('Transparent')
-				S:HandleIcon(frame.Icon, true)
-				frame.Icon:SetDrawLayer('ARTWORK')
-				frame.HighestLevel:SetDrawLayer('OVERLAY')
-				frame.Icon:SetInside()
+	hooksecurefunc('ChallengesFrame_Update', function(frame)
+		for _, child in ipairs(frame.DungeonIcons) do
+			if not child.template then
+				child:GetRegions():SetAlpha(0)
+				child:SetTemplate('Transparent')
+				S:HandleIcon(child.Icon, true)
+				child.Icon:SetDrawLayer('ARTWORK')
+				child.HighestLevel:SetDrawLayer('OVERLAY')
+				child.Icon:SetInside()
 			end
 		end
 	end)
 
-	hooksecurefunc(ChallengesFrame.WeeklyInfo, 'SetUp', function(self)
+	hooksecurefunc(ChallengesFrame.WeeklyInfo, 'SetUp', function(info)
 		local affixes = C_MythicPlus_GetCurrentAffixes()
 		if affixes then
-			HandleAffixIcons(self.Child)
+			HandleAffixIcons(info.Child)
 		end
 	end)
 
-	hooksecurefunc(KeyStoneFrame, 'Reset', function(self)
-		self:GetRegions():SetAlpha(0)
-		self.InstructionBackground:SetAlpha(0)
-		self.KeystoneSlotGlow:Hide()
-		self.SlotBG:Hide()
-		self.KeystoneFrame:Hide()
-		self.Divider:Hide()
+	hooksecurefunc(KeyStoneFrame, 'Reset', function(frame)
+		frame:GetRegions():SetAlpha(0)
+		frame.InstructionBackground:SetAlpha(0)
+		frame.KeystoneSlotGlow:Hide()
+		frame.SlotBG:Hide()
+		frame.KeystoneFrame:Hide()
+		frame.Divider:Hide()
 	end)
 
 	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
@@ -768,7 +754,7 @@ function S:Blizzard_ChallengesUI()
 	affix.AffixBorder:Hide()
 	affix.Portrait:SetTexCoord(unpack(E.TexCoords))
 
-	hooksecurefunc(affix, 'SetUp', function(self, affixID)
+	hooksecurefunc(affix, 'SetUp', function(_, affixID)
 		local _, _, texture = C_ChallengeMode_GetAffixInfo(affixID)
 		if texture then
 			affix.Portrait:SetTexture(texture)
