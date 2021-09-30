@@ -7,7 +7,10 @@ E.OptionsUI = select(2, ...)
 E.OptionsUI[1] = C
 E.OptionsUI[2] = L
 
-local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
+local _G = _G
+local sort = sort
+local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
+local tconcat, tinsert, tremove, type, wipe, ceil, tonumber = table.concat, tinsert, tremove, type, wipe, ceil, tonumber
 
 C.Values = {
 	FontFlags = {
@@ -30,7 +33,15 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', CENTER = 'CENTER', TOP = 'TOP', BOTTOM = 'BOTTOM' }
+	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
+	Anchors = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },
+	SmartAuraPositions = {
+		DISABLED = L["DISABLE"],
+		BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
+		DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
+		FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
+		FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
+	}
 }
 
 C.StateSwitchGetText = function(_, TEXT)
@@ -40,6 +51,60 @@ C.StateSwitchGetText = function(_, TEXT)
 	if SF and localized and text:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
 	local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or text
 	return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
+end
+
+local function filterMatch(s,v)
+	local m1, m2, m3, m4 = '^'..v..'$', '^'..v..',', ','..v..'$', ','..v..','
+	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
+end
+
+C.SetFilterPriority = function(db, groupName, auraType, value, remove, movehere, friendState)
+	if not auraType or not value then return end
+	local filter = db[groupName] and db[groupName][auraType] and db[groupName][auraType].priority
+	if not filter then return end
+	local found = filterMatch(filter, E:EscapeString(value))
+	if found and movehere then
+		local tbl, sv, sm = {strsplit(',',filter)}
+		for i in ipairs(tbl) do
+			if tbl[i] == value then sv = i elseif tbl[i] == movehere then sm = i end
+			if sv and sm then break end
+		end
+		tremove(tbl, sm)
+		tinsert(tbl, sv, movehere)
+		db[groupName][auraType].priority = tconcat(tbl,',')
+	elseif found and friendState then
+		local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
+		local friend = filterMatch(filter, E:EscapeString('Friendly:'..realValue))
+		local enemy = filterMatch(filter, E:EscapeString('Enemy:'..realValue))
+		local default = filterMatch(filter, E:EscapeString(realValue))
+
+		local state =
+			(friend and (not enemy) and format('%s%s','Enemy:',realValue))					--[x] friend [ ] enemy: > enemy
+		or	((not enemy and not friend) and format('%s%s','Friendly:',realValue))			--[ ] friend [ ] enemy: > friendly
+		or	(enemy and (not friend) and default and format('%s%s','Friendly:',realValue))	--[ ] friend [x] enemy: (default exists) > friendly
+		or	(enemy and (not friend) and strmatch(value, '^Enemy:') and realValue)			--[ ] friend [x] enemy: (no default) > realvalue
+		or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
+
+		if state then
+			local stateFound = filterMatch(filter, E:EscapeString(state))
+			if not stateFound then
+				local tbl, sv = {strsplit(',',filter)}
+				for i in ipairs(tbl) do
+					if tbl[i] == value then
+						sv = i
+						break
+					end
+				end
+				tinsert(tbl, sv, state)
+				tremove(tbl, sv+1)
+				db[groupName][auraType].priority = tconcat(tbl,',')
+			end
+		end
+	elseif found and remove then
+		db[groupName][auraType].priority = gsub(filter, found, '')
+	elseif not found and not remove then
+		db[groupName][auraType].priority = (filter == '' and value) or (filter..','..value)
+	end
 end
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
@@ -120,8 +185,8 @@ local DEVELOPERS = {
 	'|cff0070DEAzilroka|r',
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020Nihilistzsche|r',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
+	'|cffff2020Nihilistzsche|r',
+	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
 	E:TextGradient('Simpy but my name needs to be longer.', 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23)
 }
 
@@ -143,9 +208,9 @@ local TESTERS = {
 	'Catok',
 	'Caedis',
 	'|cff00c0faBenik|r',
-	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r |T656558:15:15:0:0:64:64:5:59:5:59|t',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t Luckyone',
-	'AcidWeb |TInterface/AddOns/ElvUI/Media/ChatLogos/Gem:15:15:-1:2:64:64:6:60:8:60|t',
+	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r',
+	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t Luckyone',
+	'AcidWeb |TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Gem:15:15:-1:2:64:64:6:60:8:60|t',
 	'|T135167:15:15:0:0:64:64:5:59:5:59|t Loon - For being right',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR',
 }
@@ -424,7 +489,10 @@ E.Options.args.profiles.args.private.name = L["Private"]
 E.Options.args.profiles.args.private.order = 2
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
-E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+
+if E.Retail then
+	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+end
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvPrivates', E.Options.args.profiles.args.private)
 

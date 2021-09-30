@@ -92,7 +92,7 @@ General.args.media.args.fontGroup = ACH:Group(L["Fonts"], nil, 3)
 General.args.media.args.fontGroup.inline = true
 General.args.media.args.fontGroup.args.main = ACH:Group(L["General"], nil, 1, nil, nil, function(info, value) E.db.general[info[#info]] = value E:UpdateMedia() E:UpdateFontTemplates() end)
 General.args.media.args.fontGroup.args.main.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the core of the UI will use."], 1)
-General.args.media.args.fontGroup.args.main.args.fontSize = ACH:Range(L["FONT_SIZE"], L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"], 2, C.Values.FontSize)
+General.args.media.args.fontGroup.args.main.args.fontSize = ACH:Range(L["Font Size"], L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"], 2, C.Values.FontSize)
 General.args.media.args.fontGroup.args.main.args.fontStyle = ACH:FontFlags(L["Font Outline"], nil, 3)
 General.args.media.args.fontGroup.args.main.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."], 4, function() E:StaticPopup_Show('APPLY_FONT_WARNING') end)
 
@@ -143,7 +143,7 @@ General.args.cosmetic.args.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 
 General.args.cosmetic.args.chatBubblesGroup.inline = true
 General.args.cosmetic.args.chatBubblesGroup.args.replaceBubbleFont = ACH:Toggle(L["Replace Font"], nil, 1)
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFont = ACH:SharedMediaFont(L["Font"], nil, 2, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontSize = ACH:Range(L["FONT_SIZE"], nil, 3, C.Values.FontSize, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
 General.args.cosmetic.args.chatBubblesGroup.args.spacer1 = ACH:Spacer(10, 'full')
 General.args.cosmetic.args.chatBubblesGroup.args.warning = ACH:Description('|cffFF0000This does not work in Instances or Garrisons!|r', 11, 'medium')
@@ -165,7 +165,7 @@ General.args.alternativePowerGroup.args.statusBarGroup.args.statusBarColor = ACH
 General.args.alternativePowerGroup.args.textGroup = ACH:Group(L["Text"], nil, 6)
 General.args.alternativePowerGroup.args.textGroup.inline = true
 General.args.alternativePowerGroup.args.textGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-General.args.alternativePowerGroup.args.textGroup.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 2, C.Values.FontSize)
+General.args.alternativePowerGroup.args.textGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 General.args.alternativePowerGroup.args.textGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 General.args.alternativePowerGroup.args.textGroup.args.textFormat = ACH:Select(L["Text Format"], nil, 4, { NONE = L["NONE"], NAME = L["NAME"], NAMEPERC = L["Name: Percent"], NAMECURMAX = L["Name: Current / Max"], NAMECURMAXPERC = L["Name: Current / Max - Percent"], PERCENT = L["Percent"], CURMAX = L["Current / Max"], CURMAXPERC = L["Current / Max - Percent"] })
 General.args.alternativePowerGroup.args.textGroup.args.textFormat.sortByValue = true
@@ -201,7 +201,7 @@ General.args.blizzUIImprovements.args.itemLevelInfo.args.displayInspectInfo = AC
 
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup = ACH:Group(L["Font Group"], nil, 3, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value Misc:UpdateInspectPageFonts('Character') Misc:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 4)
-General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["FONT_SIZE"], nil, 5, C.Values.FontSize)
+General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 5, C.Values.FontSize)
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 
 General.args.blizzUIImprovements.args.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 4, nil, function(info) return E.db.general[info[#info]] end, nil, function() return (E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')) end)
