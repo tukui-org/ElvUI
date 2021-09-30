@@ -338,7 +338,6 @@ L["Total CPU:"] = true
 L["Total Memory:"] = true
 L["Total: "] = true
 L["Trigger"] = true
-L["Type /hellokitty to revert to old settings."] = true
 L["BelowMinimapWidget"] = true
 L["TopCenterWidget"] = true
 L["MawBuffsWidget"] = true
