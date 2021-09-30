@@ -8,7 +8,6 @@
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
 	<Script file='Experience.lua'/>
-	<Script file='Guild.lua'/>
 	<Script file='Haste.lua'/>
 	<Script file='Hit.lua'/>
 	<Script file='HPS.lua'/>
@@ -19,5 +18,4 @@
 	<Script file='Reputation.lua'/>
 	<Script file='SpellPower.lua'/>
 	<Script file='Spirit.lua'/>
-	<Script file='Time.lua'/>
 </Ui>
