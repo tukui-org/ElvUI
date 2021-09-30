@@ -94,7 +94,7 @@ function AFK:SetAFK(status)
 		AFK.AFKMode.chat:UnregisterAllEvents()
 		AFK.AFKMode.chat:Clear()
 
-		if _G.PVEFrame:IsShown() then --odd bug, frame is blank
+		if E.Retail and _G.PVEFrame:IsShown() then --odd bug, frame is blank
 			PVEFrame_ToggleFrame()
 			PVEFrame_ToggleFrame()
 		end
