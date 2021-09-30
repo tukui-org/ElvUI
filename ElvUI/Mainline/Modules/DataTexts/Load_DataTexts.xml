@@ -10,7 +10,6 @@
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
 	<Script file='Experience.lua'/>
-	<Script file='Friends.lua'/>
 	<Script file='Haste.lua'/>
 	<Script file='HPS.lua'/>
 	<Script file='ItemLevel.lua'/>
