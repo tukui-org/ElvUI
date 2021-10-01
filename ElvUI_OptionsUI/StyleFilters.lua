@@ -1,12 +1,10 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(E.OptionsUI)
 local NP = E:GetModule('NamePlates')
-local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
-local tostring = tostring
-local wipe = wipe
-local pairs, strmatch = pairs, strmatch
+local _G = _G
+local wipe, pairs, strmatch, tostring = wipe, pairs, strmatch, tostring
 local next, ipairs, tinsert, sort, tonumber, format = next, ipairs, tinsert, sort, tonumber, format
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
@@ -23,11 +21,11 @@ local GetSpellInfo = GetSpellInfo
 local GetSpellTexture = GetSpellTexture
 local GetTalentInfo = GetTalentInfo
 
+local filters = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
+local function blank() return '' end
 
 C.SelectedNameplateStyleFilter = nil
-
-local filters = {}
 
 local specListOrder = 50 -- start at 50
 local classTable, classIndexTable, classOrder
@@ -75,8 +73,8 @@ local function UpdateClassSection()
 				classTable[classTag].name = classDisplayName
 				classTable[classTag].classID = classID
 			end
-			for classTag in pairs(classTable) do
-				tinsert(classIndexTable, classTag)
+			for tag in pairs(classTable) do
+				tinsert(classIndexTable, tag)
 			end
 			sort(classIndexTable)
 		end
@@ -98,11 +96,11 @@ local function UpdateClassSection()
 				order = classOrder,
 				name = format('|c%s%s|r', coloredName, classTable[classTag].name),
 				type = 'toggle',
-				get = function(info)
+				get = function()
 					local tagTrigger = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.class[classTag]
 					return tagTrigger and tagTrigger.enabled
 				end,
-				set = function(info, value)
+				set = function(_, value)
 					local tagTrigger = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.class[classTag]
 					if not tagTrigger then
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.class[classTag] = {}
@@ -160,10 +158,10 @@ local function UpdateTalentSection()
 				type = 'toggle',
 				order = 1,
 				name = L["Enable"],
-				get = function(info)
+				get = function()
 					return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.enabled
 				end,
-				set = function(info, value)
+				set = function(_, value)
 					E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.enabled = value
 					UpdateTalentSection()
 					NP:ConfigureAll()
@@ -176,10 +174,10 @@ local function UpdateTalentSection()
 				disabled = function()
 					return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.enabled
 				end,
-				get = function(info)
+				get = function()
 					return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.type == 'pvp'
 				end,
-				set = function(info, value)
+				set = function(_, value)
 					E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.type = value and 'pvp' or 'normal'
 					UpdateTalentSection()
 					NP:ConfigureAll()
@@ -192,10 +190,10 @@ local function UpdateTalentSection()
 				disabled = function()
 					return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.enabled
 				end,
-				get = function(info)
+				get = function()
 					return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.requireAll
 				end,
-				set = function(info, value)
+				set = function(_, value)
 					E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent.requireAll = value
 					UpdateTalentSection()
 					NP:ConfigureAll()
@@ -222,10 +220,10 @@ local function UpdateTalentSection()
 				type = 'toggle',
 				order = order,
 				name = format(L["GARRISON_CURRENT_LEVEL"], i),
-				get = function(info)
+				get = function()
 					return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent['tier' .. i .. 'enabled']
 				end,
-				set = function(info, value)
+				set = function(_, value)
 					E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.talent['tier' .. i .. 'enabled'] = value
 					UpdateTalentSection()
 					NP:ConfigureAll()
@@ -357,12 +355,12 @@ local function UpdateStyleLists()
 						name = name,
 						type = 'toggle',
 						order = -1,
-						get = function(info)
+						get = function()
 							return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers[which] and
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers[which][name]
 						end,
-						set = function(info, value)
+						set = function(_, value)
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers[which][name] = value
 							NP:ConfigureAll()
 						end
@@ -407,12 +405,12 @@ local function UpdateStyleLists()
 					desc = spellDescription,
 					type = 'toggle',
 					order = -1,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.casting.spells and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.casting.spells[name]
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.casting.spells[name] = value
 						NP:ConfigureAll()
 					end
@@ -461,12 +459,12 @@ local function UpdateStyleLists()
 						OFFCD = L["Off Cooldown"]
 					},
 					order = -1,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.names and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.names[name]
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.names[name] = value
 						NP:ConfigureAll()
 					end
@@ -512,12 +510,12 @@ local function UpdateStyleLists()
 					desc = spellDescription,
 					type = 'toggle',
 					order = -1,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.buffs.names and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.buffs.names[name]
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.buffs.names[name] = value
 						NP:ConfigureAll()
 					end
@@ -563,12 +561,12 @@ local function UpdateStyleLists()
 					desc = spellDescription,
 					type = 'toggle',
 					order = -1,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.debuffs.names and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.debuffs.names[name]
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.debuffs.names[name] = value
 						NP:ConfigureAll()
 					end
@@ -602,13 +600,13 @@ local function UpdateStyleLists()
 					desc = E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'),
 					type = 'toggle',
 					order = -1,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods.auras and
 							E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods.auras[aura]
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods.auras[aura] = value
 						NP:ConfigureAll()
 					end
@@ -630,13 +628,13 @@ local function UpdateBossModAuras()
 				desc = E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'),
 				type = 'toggle',
 				order = -1,
-				get = function(info)
+				get = function()
 					return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers and
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods and
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods.auras and
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods.auras[texture]
 				end,
-				set = function(info, value)
+				set = function(_, value)
 					E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.bossMods.auras[texture] = value
 					UpdateFilterGroup()
 					NP:ConfigureAll()
@@ -663,12 +661,12 @@ function UpdateFilterGroup()
 					name = L["Enable"],
 					order = 0,
 					type = 'toggle',
-					get = function(info)
+					get = function()
 						return (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[C.SelectedNameplateStyleFilter] and
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						if not E.db.nameplates then
 							E.db.nameplates = {}
 						end
@@ -699,10 +697,10 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers and
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.priority or 1
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.priority = value
 						NP:ConfigureAll()
 					end
@@ -741,10 +739,8 @@ function UpdateFilterGroup()
 							name = L["Add Name or NPC ID"],
 							desc = L["Add a Name or NPC ID to the list."],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.names[value] = true
@@ -757,10 +753,8 @@ function UpdateFilterGroup()
 							name = L["Remove Name or NPC ID"],
 							desc = L["Remove a Name or NPC ID from the list."],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.names[value] = nil
@@ -919,10 +913,8 @@ function UpdateFilterGroup()
 							order = 2,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.casting.spells[value] = true
@@ -935,10 +927,8 @@ function UpdateFilterGroup()
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.casting.spells[value] = nil
@@ -1309,10 +1299,8 @@ function UpdateFilterGroup()
 							name = L["Add Item Name or ID"],
 							desc = L["Add a Item Name or ID to the list."],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.items[value] = true
@@ -1325,10 +1313,8 @@ function UpdateFilterGroup()
 							name = L["Remove Item Name or ID"],
 							desc = L["Remove a Item Name or ID from the list."],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.items[value] = nil
@@ -1528,7 +1514,7 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.healthThreshold
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.underHealthThreshold or 0
 							end
 						},
@@ -1544,7 +1530,7 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.healthThreshold
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.overHealthThreshold or 0
 							end
 						}
@@ -1593,7 +1579,7 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.powerThreshold
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.underPowerThreshold or 0
 							end
 						},
@@ -1609,7 +1595,7 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.powerThreshold
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.overPowerThreshold or 0
 							end
 						}
@@ -1629,11 +1615,11 @@ function UpdateFilterGroup()
 							name = L["Enable"],
 							order = 0,
 							type = 'toggle',
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.keyMod and
 									E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.keyMod.enable
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.keyMod.enable = value
 								NP:ConfigureAll()
 							end
@@ -1755,7 +1741,7 @@ function UpdateFilterGroup()
 								return not (E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.level and
 									not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.mylevel)
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.minlevel or 0
 							end
 						},
@@ -1771,7 +1757,7 @@ function UpdateFilterGroup()
 								return not (E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.level and
 									not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.mylevel)
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.maxlevel or 0
 							end
 						},
@@ -1787,7 +1773,7 @@ function UpdateFilterGroup()
 								return not (E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.level and
 									not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.mylevel)
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.curlevel or 0
 							end
 						}
@@ -1807,10 +1793,8 @@ function UpdateFilterGroup()
 							order = 1,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.names[value] = 'ONCD'
@@ -1823,10 +1807,8 @@ function UpdateFilterGroup()
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
-							get = function(info)
-								return ''
-							end,
-							set = function(info, value)
+							get = blank,
+							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.names[value] = nil
@@ -1844,11 +1826,11 @@ function UpdateFilterGroup()
 									E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers and
 									E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns and
 									E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.mustHaveAll
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.cooldowns.mustHaveAll = value
 								NP:ConfigureAll()
 							end
@@ -1927,10 +1909,8 @@ function UpdateFilterGroup()
 									order = 1,
 									name = L["Add Spell ID or Name"],
 									type = 'input',
-									get = function(info)
-										return ''
-									end,
-									set = function(info, value)
+									get = blank,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 										if stackBuff then value = value .. '\n' .. stackBuff end
 
@@ -1944,10 +1924,8 @@ function UpdateFilterGroup()
 									name = L["Remove Spell ID or Name"],
 									desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 									type = 'input',
-									get = function(info)
-										return ''
-									end,
-									set = function(info, value)
+									get = blank,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										if stackBuff then
@@ -1974,8 +1952,8 @@ function UpdateFilterGroup()
 									max = 250,
 									softMax = 100,
 									step = 1,
-									get = function(info) return stackBuff or 1 end,
-									set = function(info, value) stackBuff = (value > 1 and value) or nil end
+									get = function() return stackBuff or 1 end,
+									set = function(_, value) stackBuff = (value > 1 and value) or nil end
 								},
 							}
 						}
@@ -2058,10 +2036,8 @@ function UpdateFilterGroup()
 									order = 6,
 									name = L["Add Spell ID or Name"],
 									type = 'input',
-									get = function(info)
-										return ''
-									end,
-									set = function(info, value)
+									get = blank,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 										if stackDebuff then value = value .. '\n' .. stackDebuff end
 
@@ -2075,10 +2051,8 @@ function UpdateFilterGroup()
 									name = L["Remove Spell ID or Name"],
 									desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 									type = 'input',
-									get = function(info)
-										return ''
-									end,
-									set = function(info, value)
+									get = blank,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										if stackDebuff then
@@ -2104,8 +2078,8 @@ function UpdateFilterGroup()
 									max = 250,
 									softMax = 100,
 									step = 1,
-									get = function(info) return stackDebuff or 1 end,
-									set = function(info, value) stackDebuff = (value > 1 and value) or nil end
+									get = function() return stackDebuff or 1 end,
+									set = function(_, value) stackDebuff = (value > 1 and value) or nil end
 								},
 							}
 						}
@@ -2193,10 +2167,8 @@ function UpdateFilterGroup()
 									order = 1,
 									name = L["Add Texture"],
 									type = 'input',
-									get = function(info)
-										return ''
-									end,
-									set = function(info, value)
+									get = blank,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										local textureID = tonumber(value) or value
@@ -2209,10 +2181,8 @@ function UpdateFilterGroup()
 									order = 2,
 									name = L["Remove Texture"],
 									type = 'input',
-									get = function(info)
-										return ''
-									end,
-									set = function(info, value)
+									get = blank,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										local textureID = tonumber(value) or value
@@ -2251,11 +2221,11 @@ function UpdateFilterGroup()
 							name = L["Enable"],
 							order = 0,
 							type = 'toggle',
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.threat and
 									E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.threat.enable
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.threat.enable = value
 								NP:ConfigureAll()
 							end
@@ -2335,11 +2305,11 @@ function UpdateFilterGroup()
 							name = L["Enable"],
 							order = 0,
 							type = 'toggle',
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.nameplateType and
 									E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.nameplateType.enable
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.nameplateType.enable = value
 								NP:ConfigureAll()
 							end
@@ -2593,10 +2563,10 @@ function UpdateFilterGroup()
 									type = 'toggle',
 									order = 3,
 									name = L["DUNGEONS"],
-									get = function(info)
+									get = function()
 										return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.instanceType.party
 									end,
-									set = function(info, value)
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.instanceType.party = value
 										UpdateInstanceDifficulty()
 										NP:ConfigureAll()
@@ -2606,10 +2576,10 @@ function UpdateFilterGroup()
 									type = 'toggle',
 									order = 5,
 									name = L["RAID"],
-									get = function(info)
+									get = function()
 										return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.instanceType.raid
 									end,
-									set = function(info, value)
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.instanceType.raid = value
 										UpdateInstanceDifficulty()
 										NP:ConfigureAll()
@@ -2663,8 +2633,8 @@ function UpdateFilterGroup()
 									type = 'input',
 									order = 2,
 									name = L["Add Map ID"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										if E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.mapIDs[value] then return end
@@ -2677,8 +2647,8 @@ function UpdateFilterGroup()
 									type = 'select',
 									order = 3,
 									name = L["Remove Map ID"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.mapIDs[value] = nil
 										NP:ConfigureAll()
 									end,
@@ -2712,8 +2682,8 @@ function UpdateFilterGroup()
 									type = 'input',
 									order = 5,
 									name = L["Add Instance ID"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										if E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.instanceIDs[value] then return end
@@ -2726,8 +2696,8 @@ function UpdateFilterGroup()
 									type = 'select',
 									order = 6,
 									name = L["Remove Instance ID"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.instanceIDs[value] = nil
 										NP:ConfigureAll()
 									end,
@@ -2761,8 +2731,8 @@ function UpdateFilterGroup()
 									type = 'input',
 									order = 8,
 									name = L["Add Zone Name"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
 										if E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.zoneNames[value] then return end
@@ -2775,8 +2745,8 @@ function UpdateFilterGroup()
 									type = 'select',
 									order = 9,
 									name = L["Remove Zone Name"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.zoneNames[value] = nil
 										NP:ConfigureAll()
 									end,
@@ -2804,8 +2774,8 @@ function UpdateFilterGroup()
 									type = 'input',
 									order = 11,
 									name = L["Add Subzone Name"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.subZoneNames[value] = true
 										NP:ConfigureAll()
 									end,
@@ -2815,8 +2785,8 @@ function UpdateFilterGroup()
 									type = 'select',
 									order = 12,
 									name = L["Remove Subzone Name"],
-									get = function(info) return end,
-									set = function(info, value)
+									get = E.noop,
+									set = function(_, value)
 										E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.location.subZoneNames[value] = nil
 										NP:ConfigureAll()
 									end,
@@ -3023,7 +2993,7 @@ function UpdateFilterGroup()
 					disabled = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.hide
 					end,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.scale or 1
 					end,
 					min = 0.5,
@@ -3040,7 +3010,7 @@ function UpdateFilterGroup()
 					disabled = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.hide
 					end,
-					get = function(info)
+					get = function()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.alpha or -1
 					end,
 					min = -1,
@@ -3076,11 +3046,11 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.health
 							end,
-							get = function(info)
+							get = function()
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.healthColor
 								return t.r, t.g, t.b, t.a, 136 / 255, 255 / 255, 102 / 255, 1
 							end,
-							set = function(info, r, g, b, a)
+							set = function(_, r, g, b, a)
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.healthColor
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
@@ -3105,11 +3075,11 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.power
 							end,
-							get = function(info)
+							get = function()
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.powerColor
 								return t.r, t.g, t.b, t.a, 102 / 255, 136 / 255, 255 / 255, 1
 							end,
-							set = function(info, r, g, b, a)
+							set = function(_, r, g, b, a)
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.powerColor
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
@@ -3134,11 +3104,11 @@ function UpdateFilterGroup()
 							disabled = function()
 								return not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.border
 							end,
-							get = function(info)
+							get = function()
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.borderColor
 								return t.r, t.g, t.b, t.a, 0, 0, 0, 1
 							end,
-							set = function(info, r, g, b, a)
+							set = function(_, r, g, b, a)
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.color.borderColor
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
@@ -3197,10 +3167,10 @@ function UpdateFilterGroup()
 							name = L["Enable"],
 							order = 1,
 							type = 'toggle',
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.enable
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.enable = value
 								NP:ConfigureAll()
 							end
@@ -3213,11 +3183,11 @@ function UpdateFilterGroup()
 							disabled = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.hide
 							end,
-							get = function(info)
+							get = function()
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.color
 								return t.r, t.g, t.b, t.a, 104 / 255, 138 / 255, 217 / 255, 1
 							end,
-							set = function(info, r, g, b, a)
+							set = function(_, r, g, b, a)
 								local t = E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.color
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
@@ -3227,10 +3197,10 @@ function UpdateFilterGroup()
 							type = 'toggle',
 							order = 3,
 							name = L["Unit Class Color"],
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.class
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.class = value
 								NP:ConfigureAll()
 							end
@@ -3242,10 +3212,10 @@ function UpdateFilterGroup()
 							disabled = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.hide
 							end,
-							get = function(info)
+							get = function()
 								return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.speed or 4
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.flash.speed = value
 								NP:ConfigureAll()
 							end,
@@ -3361,7 +3331,7 @@ E.Options.args.nameplate.args.filters = {
 			order = 1,
 			name = L["Create Filter"],
 			type = 'input',
-			get = function() return '' end,
+			get = blank,
 			set = function(_, value)
 				if strmatch(value, '^[%s%p]-$') then return end
 
