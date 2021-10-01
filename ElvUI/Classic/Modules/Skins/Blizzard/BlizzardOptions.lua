@@ -35,7 +35,7 @@ function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
 end
 
 function S:BlizzardOptions()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.BlizzardOptions) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
 	-- here we reskin all 'normal' buttons
 	S:HandleButton(_G.ReadyCheckFrameYesButton)

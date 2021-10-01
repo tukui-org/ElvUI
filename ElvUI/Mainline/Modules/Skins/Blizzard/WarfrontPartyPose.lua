@@ -5,7 +5,7 @@ local _G = _G
 local unpack = unpack
 
 function S:Blizzard_WarfrontsPartyPoseUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandsPartyPose) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.islandsPartyPose) then return end
 
 	local WarfrontsPartyPoseFrame = _G.WarfrontsPartyPoseFrame
 	WarfrontsPartyPoseFrame:StripTextures()
