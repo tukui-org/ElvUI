@@ -4,16 +4,21 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
 local ContainerIDToInventoryID = ContainerIDToInventoryID
 local GetContainerItemLink = GetContainerItemLink
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetInventoryItemLink = GetInventoryItemLink
-local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemID = GetInventoryItemID
+local GetItemInfo = GetItemInfo
+local CreateFrame = CreateFrame
 
 local BANK_CONTAINER = BANK_CONTAINER
+local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
+local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
 function S:ContainerFrame()
@@ -135,7 +140,7 @@ function S:ContainerFrame()
 	BankFrame:StripTextures(true)
 	S:HandleFrame(BankFrame, true, nil, 11, -12, -32, 93)
 
-	S:HandleCloseButton(BankCloseButton, BankFrame.backdrop)
+	S:HandleCloseButton(_G.BankCloseButton, BankFrame.backdrop)
 
 	_G.BankSlotsFrame:StripTextures()
 
@@ -174,7 +179,7 @@ function S:ContainerFrame()
 	BankFrame.bagBackdrop:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag6, 'BOTTOMRIGHT', 6, -6)
 	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
-	S:HandleButton(BankFramePurchaseButton)
+	S:HandleButton(_G.BankFramePurchaseButton)
 
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
 		local id = button:GetID()

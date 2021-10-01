@@ -7,8 +7,9 @@ local ipairs = ipairs
 local pairs = pairs
 
 local hooksecurefunc = hooksecurefunc
-local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
+local UnitIsUnit = UnitIsUnit
+local MAX_ADDONS_DISPLAYED = MAX_ADDONS_DISPLAYED
 
 local function HandlePushToTalkButton(button)
 	button:Size(button:GetSize())

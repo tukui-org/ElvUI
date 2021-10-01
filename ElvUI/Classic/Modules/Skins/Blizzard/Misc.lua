@@ -106,9 +106,9 @@ function S:BlizzardMiscFrames()
 
 	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript('OnShow', function(self) self:SetTemplate('Transparent', true) self:SetBackdropColor(unpack(E.media.backdropfadecolor)) self:ClearAllPoints() self:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
+			_G[ChatMenus[i]]:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else
-			_G[ChatMenus[i]]:HookScript('OnShow', function(self) self:SetTemplate('Transparent', true) self:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+			_G[ChatMenus[i]]:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
 
@@ -156,18 +156,18 @@ function S:BlizzardMiscFrames()
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
-			hooksecurefunc(normTex, 'SetTexture', function(self, tex)
-				if tex ~= nil then self:SetTexture() end
+			hooksecurefunc(normTex, 'SetTexture', function(texture, tex)
+				if tex ~= nil then texture:SetTexture() end
 			end)
 		end
 
 		-- Quality IconBorder
-		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent():SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
+		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'SetVertexColor', function(frame, r, g, b)
+			frame:GetParent():SetBackdropBorderColor(r, g, b)
+			frame:SetTexture()
 		end)
-		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'Hide', function(self)
-			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'Hide', function(frame)
+			frame:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 

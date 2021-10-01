@@ -42,7 +42,7 @@ function S:Blizzard_MacroUI()
 	end
 
 	_G.MacroCancelButton:ClearAllPoints()
-	_G.MacroCancelButton:Point('TOPRIGHT', MacroFrameTextBackground.backdrop, 'TOPRIGHT', 0, 34)
+	_G.MacroCancelButton:Point('TOPRIGHT', _G.MacroFrameTextBackground.backdrop, 'TOPRIGHT', 0, 34)
 	_G.MacroSaveButton:Point('BOTTOMLEFT', _G.MacroCancelButton, 'TOPLEFT', 0, 2)
 
 	_G.MacroDeleteButton:Point('BOTTOMLEFT', 0, 4)
@@ -133,9 +133,9 @@ function S:Blizzard_MacroUI()
 
 	S:HandleIconSelectionFrame(MacroPopupFrame, _G.NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
 
-	MacroPopupFrame:HookScript('OnShow', function(self)
-		self:ClearAllPoints()
-		self:Point('TOPLEFT', MacroFrame, 'TOPRIGHT', 2, 0)
+	MacroPopupFrame:HookScript('OnShow', function(frame)
+		frame:ClearAllPoints()
+		frame:Point('TOPLEFT', MacroFrame, 'TOPRIGHT', 2, 0)
 	end)
 end
 

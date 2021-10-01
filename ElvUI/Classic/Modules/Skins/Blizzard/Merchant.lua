@@ -3,10 +3,17 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local select = select
 
+local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
+local GetMerchantNumItems = GetMerchantNumItems
+local GetBuybackItemInfo = GetBuybackItemInfo
+local GetNumBuybackItems = GetNumBuybackItems
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
+
+local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
@@ -166,14 +173,14 @@ function S:MerchantFrame()
 
 				if quality and quality > 1 then
 					local r, g, b = GetItemQualityColor(quality)
-					MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
-					MerchantBuyBackItemName:SetTextColor(r, g, b)
+					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
+					_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
 				else
-					MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					MerchantBuyBackItemName:SetTextColor(1, 1, 1)
+					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					_G.MerchantBuyBackItemName:SetTextColor(1, 1, 1)
 				end
 			else
-				MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 

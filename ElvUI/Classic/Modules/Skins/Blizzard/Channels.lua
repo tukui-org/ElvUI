@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Channels()
@@ -15,7 +14,7 @@ function S:Blizzard_Channels()
 	S:HandleButton(ChannelFrame.SettingsButton)
 
 	S:HandlePointXY(ChannelFrame.NewButton, -1, 4)
-	S:HandlePointXY(ChannelFrameCloseButton, 2, 2)
+	S:HandlePointXY(_G.ChannelFrameCloseButton, 2, 2)
 
 	S:HandleScrollBar(ChannelFrame.ChannelRoster.ScrollFrame.scrollBar)
 	ChannelFrame.ChannelRoster.ScrollFrame.scrollBar:Point('TOPLEFT', ChannelFrame.ChannelRoster.ScrollFrame, 'TOPRIGHT', 1, -13)

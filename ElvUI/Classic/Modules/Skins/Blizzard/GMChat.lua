@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local select = select
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_GMChatUI()
@@ -35,8 +34,8 @@ function S:Blizzard_GMChatUI()
 
 	local GMChatFrameEditBoxLanguage = _G.GMChatFrameEditBoxLanguage
 	GMChatFrameEditBoxLanguage:GetRegions():SetAlpha(0)
-	GMChatFrameEditBoxLanguage:SetPoint('TOPLEFT', eb, 'TOPRIGHT', 3, 0)
-	GMChatFrameEditBoxLanguage:SetPoint('BOTTOMRIGHT', eb, 'BOTTOMRIGHT', 28, 0)
+	GMChatFrameEditBoxLanguage:SetPoint('TOPLEFT', GMChatFrameEditBox, 'TOPRIGHT', 3, 0)
+	GMChatFrameEditBoxLanguage:SetPoint('BOTTOMRIGHT', GMChatFrameEditBox, 'BOTTOMRIGHT', 28, 0)
 
 	local GMChatTab = _G.GMChatTab
 	S:HandleFrame(GMChatTab, true)
@@ -45,22 +44,24 @@ function S:Blizzard_GMChatUI()
 	GMChatTab:SetPoint('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
 	_G.GMChatTabIcon:SetTexture('Interface\\ChatFrame\\UI-ChatIcon-Blizz')
 
-	GMChatStatusFrame:HookScript('OnShow', function(self)
+	local GMChatStatusFrame = _G.GMChatStatusFrame
+	local TicketStatusFrame = _G.TicketStatusFrame
+	GMChatStatusFrame:HookScript('OnShow', function(frame)
 		if TicketStatusFrame and TicketStatusFrame:IsShown() then
-			self:Point('TOPLEFT', TicketStatusFrame, 'BOTTOMLEFT', 0, 1)
+			frame:Point('TOPLEFT', TicketStatusFrame, 'BOTTOMLEFT', 0, 1)
 		else
-			self:SetAllPoints(TicketStatusFrame)
+			frame:SetAllPoints(TicketStatusFrame)
 		end
 	end)
 
 	local GMChatFrameCloseButton = _G.GMChatFrameCloseButton
 	S:HandleCloseButton(GMChatFrameCloseButton, GMChatTab.backdrop, 2, 4)
 
-	TicketStatusFrame:HookScript('OnShow', function(self)
-		GMChatStatusFrame:Point('TOPLEFT', self, 'BOTTOMLEFT', 0, 1)
+	TicketStatusFrame:HookScript('OnShow', function(frame)
+		GMChatStatusFrame:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, 1)
 	end)
-	TicketStatusFrame:HookScript('OnHide', function(self)
-		GMChatStatusFrame:SetAllPoints(self)
+	TicketStatusFrame:HookScript('OnHide', function(frame)
+		GMChatStatusFrame:SetAllPoints(frame)
 	end)
 
 end
@@ -68,19 +69,19 @@ end
 function S:Blizzard_GMSurveyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.GMChat) then return end
 
-	S:HandleFrame(GMSurveyFrame, true, nil, 4, 4, -44, 10)
+	S:HandleFrame(_G.GMSurveyFrame, true, nil, 4, 4, -44, 10)
 
-	GMSurveyHeader:StripTextures()
-	S:HandleCloseButton(GMSurveyCloseButton, GMSurveyFrame.backdrop)
+	_G.GMSurveyHeader:StripTextures()
+	S:HandleCloseButton(_G.GMSurveyCloseButton, _G.GMSurveyFrame.backdrop)
 
-	GMSurveyScrollFrame:StripTextures()
-	S:HandleScrollBar(GMSurveyScrollFrameScrollBar)
+	_G.GMSurveyScrollFrame:StripTextures()
+	S:HandleScrollBar(_G.GMSurveyScrollFrameScrollBar)
 
-	GMSurveyCancelButton:Point('BOTTOMLEFT', 19, 18)
-	S:HandleButton(GMSurveyCancelButton)
+	_G.GMSurveyCancelButton:Point('BOTTOMLEFT', 19, 18)
+	S:HandleButton(_G.GMSurveyCancelButton)
 
-	GMSurveySubmitButton:Point('BOTTOMRIGHT', -57, 18)
-	S:HandleButton(GMSurveySubmitButton)
+	_G.GMSurveySubmitButton:Point('BOTTOMRIGHT', -57, 18)
+	S:HandleButton(_G.GMSurveySubmitButton)
 
 	for i = 1, 7 do
 		local frame = _G['GMSurveyQuestion'..i]
@@ -88,8 +89,8 @@ function S:Blizzard_GMSurveyUI()
 		frame:SetTemplate('Transparent')
 	end
 
-	GMSurveyCommentFrame:StripTextures()
-	GMSurveyCommentFrame:SetTemplate('Transparent')
+	_G.GMSurveyCommentFrame:StripTextures()
+	_G.GMSurveyCommentFrame:SetTemplate('Transparent')
 end
 
 S:AddCallbackForAddon('Blizzard_GMChatUI')

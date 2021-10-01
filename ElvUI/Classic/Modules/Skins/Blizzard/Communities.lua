@@ -2,20 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local ipairs, select, unpack = ipairs, select, unpack
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
-local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
-local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
+local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local GetGuildRewardInfo = GetGuildRewardInfo
-local GetItemQualityColor = GetItemQualityColor
-local GetItemInfo = GetItemInfo
-local Enum = Enum
+local CreateFrame = CreateFrame
+
+local ClubTypeGuild = Enum.ClubType.Guild
+local ClubTypeBattleNet = Enum.ClubType.BattleNet
 
 local function UpdateNames(self)
 	if not self.expanded then return end
@@ -106,7 +104,7 @@ function S:Blizzard_Communities()
 				self.bg:Point('BOTTOMRIGHT', -10, 12)
 			end
 
-			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
+			local isGuild = clubInfo.clubType == ClubTypeGuild
 			if isGuild then
 				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(0, 1, 0, 0.2)
@@ -116,7 +114,7 @@ function S:Blizzard_Communities()
 			end
 
 			if not isInvitation and not isGuild and not isTicket then
-				if clubInfo.clubType == _G.Enum.ClubType.BattleNet then
+				if clubInfo.clubType == ClubTypeBattleNet then
 					self.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
 				else
 					self.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)

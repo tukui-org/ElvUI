@@ -6,6 +6,8 @@ local ipairs = ipairs
 local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
