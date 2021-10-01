@@ -58,8 +58,8 @@ function S:Blizzard_TrainerUI()
 		highlight:SetTexture('')
 		highlight.SetTexture = E.noop
 
-		hooksecurefunc(button, 'SetNormalTexture', function(button, texture)
-			local tex = button:GetNormalTexture()
+		hooksecurefunc(button, 'SetNormalTexture', function(frame, texture)
+			local tex = frame:GetNormalTexture()
 
 			if strfind(texture, 'MinusButton') then
 				tex:SetTexture(E.Media.Textures.MinusButton)

@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, unpack = pairs, unpack
 
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
+local CreateFrame = CreateFrame
 
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
@@ -228,7 +228,6 @@ function S:Blizzard_AuctionUI()
 			local ItemButton = _G[Frame..'Button'..i..'Item']
 			local Texture = _G[Frame..'Button'..i..'ItemIconTexture']
 			local Name = _G[Frame..'Button'..i..'Name']
-			local Highlight = _G[Frame..'Button'..i..'Highlight']
 
 			ItemButton:SetTemplate()
 			ItemButton:StyleButton()
