@@ -395,8 +395,8 @@ function S:BlizzardQuestFrames()
 			end
 
 			local numEntries = GetNumQuestLogEntries()
-			for _ = 1, numEntries do
-				local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(i)
+			for y = 1, numEntries do
+				local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
 				if strmatch(questLogTitleText, textString) then
 					if (isComplete == 1 or IsQuestComplete(questId)) then
 						icon:SetDesaturation(0)
