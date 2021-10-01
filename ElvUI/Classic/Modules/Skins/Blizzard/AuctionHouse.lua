@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, unpack = pairs, unpack
 
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
+local CreateFrame = CreateFrame
 
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
@@ -186,11 +186,12 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsItemButton:StyleButton()
 
 	_G.AuctionsItemButton:HookScript('OnEvent', function(button, event)
-		if event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture() then
-			button:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			button:GetNormalTexture():SetInside()
+		local normal = event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture()
+		if normal then
+			normal:SetTexCoord(unpack(E.TexCoords))
+			normal:SetInside()
 
-			local quality = select(4, GetAuctionSellItemInfo())
+			local _, _, _, quality = GetAuctionSellItemInfo()
 			if quality and quality > 1 then
 				button:SetBackdropBorderColor(GetItemQualityColor(quality))
 			else
