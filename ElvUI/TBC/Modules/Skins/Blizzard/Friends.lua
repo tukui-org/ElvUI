@@ -293,39 +293,36 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:Point('LEFT', _G.GuildFrameColumnHeader1, 'RIGHT', -2, -0)
 	_G.GuildFrameColumnHeader2:Width(127)
 
-	do
-		local button, level, name, class, statusButton, statusName
-		for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
-			button = _G['GuildFrameButton'..i]
-			level = _G['GuildFrameButton'..i..'Level']
-			name = _G['GuildFrameButton'..i..'Name']
-			class = _G['GuildFrameButton'..i..'Class']
-			statusButton = _G['GuildFrameGuildStatusButton'..i]
-			statusName = _G['GuildFrameGuildStatusButton'..i..'Name']
+	for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
+		local button = _G['GuildFrameButton'..i]
+		local level = _G['GuildFrameButton'..i..'Level']
+		local name = _G['GuildFrameButton'..i..'Name']
+		local class = _G['GuildFrameButton'..i..'Class']
+		local statusButton = _G['GuildFrameGuildStatusButton'..i]
+		local statusName = _G['GuildFrameGuildStatusButton'..i..'Name']
 
-			button.icon = button:CreateTexture('$parentIcon', 'ARTWORK')
-			button.icon:Point('LEFT', 48, 0)
-			button.icon:Size(15)
-			button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+		button.icon = button:CreateTexture('$parentIcon', 'ARTWORK')
+		button.icon:Point('LEFT', 48, 0)
+		button.icon:Size(15)
+		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 
-			button:CreateBackdrop('Default', true)
-			button.backdrop:SetAllPoints(button.icon)
+		button:CreateBackdrop('Default', true)
+		button.backdrop:SetAllPoints(button.icon)
 
-			S:HandleButtonHighlight(button)
-			S:HandleButtonHighlight(statusButton)
+		S:HandleButtonHighlight(button)
+		S:HandleButtonHighlight(statusButton)
 
-			level:ClearAllPoints()
-			level:SetPoint('TOPLEFT', 10, -1)
+		level:ClearAllPoints()
+		level:SetPoint('TOPLEFT', 10, -1)
 
-			name:SetSize(100, 14)
-			name:ClearAllPoints()
-			name:SetPoint('LEFT', 85, 0)
+		name:SetSize(100, 14)
+		name:ClearAllPoints()
+		name:SetPoint('LEFT', 85, 0)
 
-			class:Hide()
+		class:Hide()
 
-			statusName:ClearAllPoints()
-			statusName:SetPoint('LEFT', 10, 0)
-		end
+		statusName:ClearAllPoints()
+		statusName:SetPoint('LEFT', 10, 0)
 	end
 
 	hooksecurefunc('GuildStatus_Update', function()
@@ -342,15 +339,13 @@ function S:FriendsFrame()
 						local classTextColor = E:ClassColor(classFileName)
 						local levelTextColor = GetQuestDifficultyColor(level)
 
-						local buttonText = _G['GuildFrameButton'..i..'Name']
-						buttonText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-						buttonText = _G['GuildFrameButton'..i..'Level']
-						buttonText:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
-						buttonText = _G['GuildFrameButton'..i..'Zone']
-						buttonText:SetTextColor(1, 1, 1)
+						_G['GuildFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+						_G['GuildFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
 
 						if zone == playerZone then
-							buttonText:SetTextColor(0, 1, 0)
+							_G['GuildFrameButton'..i..'Zone']:SetTextColor(0, 1, 0)
+						else
+							_G['GuildFrameButton'..i..'Zone']:SetTextColor(1, 1, 1)
 						end
 					end
 
@@ -362,8 +357,8 @@ function S:FriendsFrame()
 				local button = _G['GuildFrameGuildStatusButton'..i]
 				local _, _, _, _, class, _, _, _, online = GetGuildRosterInfo(button.guildIndex)
 
-				local classFileName = E:UnlocalizedClassName(class)
-				if classFileName and online then
+				local classFileName = online and E:UnlocalizedClassName(class)
+				if classFileName then
 					local classTextColor = E:ClassColor(classFileName)
 					_G['GuildFrameGuildStatusButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 					_G['GuildFrameGuildStatusButton'..i..'Online']:SetTextColor(1, 1, 1)
