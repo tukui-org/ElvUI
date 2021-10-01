@@ -225,8 +225,6 @@ else -- cause it doesnt exist on tbc or classic
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
 	end
 	CH.BNGetGameAccountInfoByGUID = function(guid)
-		if not guid then return end
-
 		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByGUID(guid)
 		local accountInfo = C_BattleNet_GetAccountInfoByGUID(guid)
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
@@ -1944,8 +1942,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
 				message = format(globalstring, arg2)
 			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
-				local _, characterName, clientProgram = CH.BNGetGameAccountInfoByGUID(arg12)
-				local _, _, battleTag = CH.BNGetFriendInfoByID(arg13)
+				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
