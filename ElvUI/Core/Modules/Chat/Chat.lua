@@ -161,8 +161,8 @@ if not E.Retail then
 	CH.BNGetGameAccountInfoByGUID = _G.BNGetGameAccountInfoByGUID
 	CH.BNGetNumFriendGameAccounts = _G.BNGetNumFriendGameAccounts
 
-	CH.BNGetGameAccountInfo = function(_, accountIndex)
-		return _G.BNGetGameAccountInfo(accountIndex)
+	CH.BNGetGameAccountInfo = function(_, gameAccountID)
+		return _G.BNGetGameAccountInfo(gameAccountID)
 	end
 else -- cause it doesnt exist on tbc or classic
 	local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
