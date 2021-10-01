@@ -330,14 +330,12 @@ function S:FriendsFrame()
 	end
 
 	hooksecurefunc('GuildStatus_Update', function()
-		local _, level, class, zone, online
-		local button, buttonText
 		local playerZone = E.MapInfo.realZoneText
 
 		if FriendsFrame.playerStatusFrame then
 			for i = 1, GUILDMEMBERS_TO_DISPLAY, 1 do
-				button = _G['GuildFrameButton'..i]
-				_, _, _, level, class, zone, _, _, online = GetGuildRosterInfo(button.guildIndex)
+				local button = _G['GuildFrameButton'..i]
+				local _, _, _, level, class, zone, _, _, online = GetGuildRosterInfo(button.guildIndex)
 
 				local classFileName = E:UnlocalizedClassName(class)
 				if classFileName then
@@ -345,7 +343,7 @@ function S:FriendsFrame()
 						local classTextColor = E:ClassColor(classFileName)
 						local levelTextColor = GetQuestDifficultyColor(level)
 
-						buttonText = _G['GuildFrameButton'..i..'Name']
+						local buttonText = _G['GuildFrameButton'..i..'Name']
 						buttonText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 						buttonText = _G['GuildFrameButton'..i..'Level']
 						buttonText:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
@@ -362,8 +360,8 @@ function S:FriendsFrame()
 			end
 		else
 			for i = 1, _G.GUILDMEMBERS_TO_DISPLAY, 1 do
-				button = _G['GuildFrameGuildStatusButton'..i]
-				_, _, _, _, class, _, _, _, online = GetGuildRosterInfo(button.guildIndex)
+				local button = _G['GuildFrameGuildStatusButton'..i]
+				local _, _, _, _, class, _, _, _, online = GetGuildRosterInfo(button.guildIndex)
 
 				local classFileName = E:UnlocalizedClassName(class)
 				if classFileName then

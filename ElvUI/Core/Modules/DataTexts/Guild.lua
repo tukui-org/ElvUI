@@ -234,7 +234,7 @@ local function OnEnter(_, _, noUpdate)
 	SortGuildTable(shiftDown)
 
 	local guildName, guildRank = GetGuildInfo('player')
-	local applicants = GetNumGuildApplicants()
+	local applicants = E.Retail and GetNumGuildApplicants() or 0
 
 	if guildName and guildRank then
 		DT.tooltip:AddDoubleLine(format(guildInfoString, guildName), format(guildInfoString2..(applicants > 0 and ' |cFFFFFFFF(|cff33ff33%d|r|cFFFFFFFF)|r' or ''), online, total, applicants), tthead.r, tthead.g, tthead.b, tthead.r, tthead.g, tthead.b)
@@ -246,11 +246,13 @@ local function OnEnter(_, _, noUpdate)
 		DT.tooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1)
 	end
 
-	local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
-	if standingID ~= 8 then -- Not Max Rep
-		barMax = barMax - barMin
-		barValue = barValue - barMin
-		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
+	if E.Retail then
+		local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
+		if standingID ~= 8 then -- Not Max Rep
+			barMax = barMax - barMin
+			barValue = barValue - barMin
+			DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
+		end
 	end
 
 	local zonec
