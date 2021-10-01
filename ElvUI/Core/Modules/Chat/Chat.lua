@@ -219,8 +219,8 @@ else -- cause it doesnt exist on tbc or classic
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(friendIndex)
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
 	end
-	CH.BNGetGameAccountInfo = function(id, accountIndex)
-		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByID(id, accountIndex)
+	CH.BNGetGameAccountInfo = function(id, gameAccountID)
+		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByID(gameAccountID)
 		local accountInfo = C_BattleNet_GetAccountInfoByID(id)
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
 	end
