@@ -64,10 +64,12 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
+local UnitLevel = UnitLevel
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
@@ -116,6 +118,15 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 --	Tag Functions
 ------------------------------------------------------------------------
+
+local function UnitEffectiveLevel(unit)
+	if E.Retail then
+		return _G.UnitEffectiveLevel(unit)
+	else
+		return UnitLevel(unit)
+	end
+end
+E.TagFunctions.UnitEffectiveLevel = UnitEffectiveLevel
 
 local function UnitName(unit)
 	local name, realm = _G.UnitName(unit)
@@ -511,14 +522,14 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal.GetPetTeamAverageLevel()
+		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
 			color = GetRelativeDifficultyColor(teamLevel, level)
 		else
 			color = QuestDifficultyColors.difficult
 		end
 	else
-		color = GetCreatureDifficultyColor((E.Retail and UnitEffectiveLevel or UnitLevel)(unit))
+		color = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
 	end
 
 	return Hex(color.r, color.g, color.b)
@@ -556,10 +567,10 @@ E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 end)
 
 E:AddTag('smartlevel', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
-	local level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
+	local level = UnitEffectiveLevel(unit)
 	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		return UnitBattlePetLevel(unit)
-	elseif level == (E.Retail and UnitEffectiveLevel or UnitLevel)('player') then
+	elseif level == UnitEffectiveLevel('player') then
 		return nil
 	elseif level > 0 then
 		return level
