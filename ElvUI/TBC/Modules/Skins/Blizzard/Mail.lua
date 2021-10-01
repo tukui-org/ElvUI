@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, select = unpack, select
 
-local CreateFrame = CreateFrame
 local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxItemLink = GetInboxItemLink
 local GetInboxNumItems = GetInboxNumItems

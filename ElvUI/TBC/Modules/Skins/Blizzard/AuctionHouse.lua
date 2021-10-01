@@ -186,19 +186,20 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsItemButton:SetTemplate('Default', true)
 	_G.AuctionsItemButton:StyleButton()
 
-	_G.AuctionsItemButton:HookScript('OnEvent', function(self, event)
-		if event == 'NEW_AUCTION_UPDATE' and self:GetNormalTexture() then
-			self:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			self:GetNormalTexture():SetInside()
+	_G.AuctionsItemButton:HookScript('OnEvent', function(button, event)
+		local normal = event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture()
+		if normal then
+			normal:SetTexCoord(unpack(E.TexCoords))
+			normal:SetInside()
 
-			local quality = select(4, GetAuctionSellItemInfo())
+			local _, _, _, quality = GetAuctionSellItemInfo()
 			if quality and quality > 1 then
-				self:SetBackdropBorderColor(GetItemQualityColor(quality))
+				button:SetBackdropBorderColor(GetItemQualityColor(quality))
 			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		else
-			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 

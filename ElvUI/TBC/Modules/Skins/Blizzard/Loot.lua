@@ -188,13 +188,13 @@ function S:LootFrame()
 		end
 	end)
 
-	LootFrame:HookScript('OnShow', function(self)
-		if(IsFishingLoot()) then
-			self.Title:SetText(L["Fishy Loot"])
+	LootFrame:HookScript('OnShow', function(frame)
+		if IsFishingLoot() then
+			frame.Title:SetText(L["Fishy Loot"])
 		elseif(not UnitIsFriend('player', 'target') and UnitIsDead'target') then
-			self.Title:SetText(UnitName('target'))
+			frame.Title:SetText(UnitName('target'))
 		else
-			self.Title:SetText(LOOT)
+			frame.Title:SetText(LOOT)
 		end
 	end)
 

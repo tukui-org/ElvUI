@@ -45,22 +45,21 @@ function S:LFGFrame()
 	S:HandleDropDownBox(LFMFrameTypeDropDown, 150)
 	S:HandleDropDownBox(LFMFrameActivityDropDown, 225)
 
-	local LFGSearchBg = _G.LFGSearchBg
 	-- 1st icon
-	LFGSearchBg1:StripTextures()
-	LFGSearchBg1:CreateBackdrop('Transparent')
-	LFGSearchBg1:Width(58)
-	LFGSearchBg1:Height(53)
+	_G.LFGSearchBg1:StripTextures()
+	_G.LFGSearchBg1:CreateBackdrop('Transparent')
+	_G.LFGSearchBg1:Width(58)
+	_G.LFGSearchBg1:Height(53)
 	-- 2nd icon
-	LFGSearchBg2:StripTextures()
-	LFGSearchBg2:CreateBackdrop('Transparent')
-	LFGSearchBg2:Width(58)
-	LFGSearchBg2:Height(53)
+	_G.LFGSearchBg2:StripTextures()
+	_G.LFGSearchBg2:CreateBackdrop('Transparent')
+	_G.LFGSearchBg2:Width(58)
+	_G.LFGSearchBg2:Height(53)
 	-- 3rd icon
-	LFGSearchBg3:StripTextures()
-	LFGSearchBg3:CreateBackdrop('Transparent')
-	LFGSearchBg3:Width(58)
-	LFGSearchBg3:Height(53)
+	_G.LFGSearchBg3:StripTextures()
+	_G.LFGSearchBg3:CreateBackdrop('Transparent')
+	_G.LFGSearchBg3:Width(58)
+	_G.LFGSearchBg3:Height(53)
 
 	local LFMFrameInsetBg = _G.LFMFrameInsetBg
 	LFMFrameInsetBg:StripTextures()

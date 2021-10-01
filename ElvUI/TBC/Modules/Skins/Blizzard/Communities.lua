@@ -2,18 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local ipairs, select = ipairs, select
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
-local GetClassInfo = GetClassInfo
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local Enum = Enum
+
+local ClubTypeGuild = Enum.ClubType.Guild
+local ClubTypeBattleNet = Enum.ClubType.BattleNet
 
 local function UpdateNames(self)
 	if not self.expanded then return end
@@ -26,20 +26,6 @@ local function UpdateNames(self)
 			self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 		end
 	end
-end
-
-local function HandleRoleChecks(button, ...)
-	button:StripTextures()
-	button:DisableDrawLayer('ARTWORK')
-	button:DisableDrawLayer('OVERLAY')
-
-	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture(E.Media.Textures.RolesHQ)
-	button.bg:SetTexCoord(...)
-	button.bg:Point('CENTER')
-	button.bg:Size(40, 40)
-	button.bg:SetAlpha(0.6)
-	S:HandleCheckBox(button.CheckBox)
 end
 
 local function HandleCommunitiesButtons(self, color)
@@ -77,17 +63,6 @@ local function HandleCommunitiesButtons(self, color)
 	local highlight = self:GetHighlightTexture()
 	highlight:SetColorTexture(1, 1, 1, 0.3)
 	highlight:SetInside(self.bg)
-end
-
-local function ColorMemberName(self, info)
-	if not info then return end
-
-	local class = self.Class
-	local classInfo = select(2, GetClassInfo(info.classID))
-	if classInfo then
-		local tcoords = CLASS_ICON_TCOORDS[classInfo]
-		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
-	end
 end
 
 function S:Blizzard_Communities()
@@ -130,7 +105,7 @@ function S:Blizzard_Communities()
 				s.bg:Point('BOTTOMRIGHT', -10, 12)
 			end
 
-			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
+			local isGuild = clubInfo.clubType == ClubTypeGuild
 			if isGuild then
 				s.Background:SetAtlas(nil)
 				s.Selection:SetAtlas(nil)
@@ -144,7 +119,7 @@ function S:Blizzard_Communities()
 			end
 
 			if not isInvitation and not isGuild and not isTicket then
-				if clubInfo.clubType == _G.Enum.ClubType.BattleNet then
+				if clubInfo.clubType == ClubTypeBattleNet then
 					s.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
 				else
 					s.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)

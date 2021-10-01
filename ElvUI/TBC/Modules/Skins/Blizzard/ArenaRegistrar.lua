@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 
+local MAX_TEAM_BORDERS = MAX_TEAM_BORDERS
+
 function S:SkinArenaRegistrar()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.arenaRegistrar) then return end
 
@@ -21,7 +23,7 @@ function S:SkinArenaRegistrar()
 	ArenaRegistrarGreetingFrame:StripTextures()
 
 	select(1, ArenaRegistrarGreetingFrame:GetRegions()):SetTextColor(1, 0.80, 0.10)
-	RegistrationText:SetTextColor(1, 0.80, 0.10)
+	_G.RegistrationText:SetTextColor(1, 0.80, 0.10)
 
 	local ArenaRegistrarFrameGoodbyeButton = _G.ArenaRegistrarFrameGoodbyeButton
 	S:HandleButton(ArenaRegistrarFrameGoodbyeButton)
@@ -35,13 +37,13 @@ function S:SkinArenaRegistrar()
 		obj:SetTextColor(1, 1, 1)
 	end
 
-	ArenaRegistrarPurchaseText:SetTextColor(1, 1, 1)
+	_G.ArenaRegistrarPurchaseText:SetTextColor(1, 1, 1)
 
-	S:HandleButton(ArenaRegistrarFrameCancelButton)
-	S:HandleButton(ArenaRegistrarFramePurchaseButton)
+	S:HandleButton(_G.ArenaRegistrarFrameCancelButton)
+	S:HandleButton(_G.ArenaRegistrarFramePurchaseButton)
 
-	S:HandleEditBox(ArenaRegistrarFrameEditBox)
-	ArenaRegistrarFrameEditBox:Height(18)
+	S:HandleEditBox(_G.ArenaRegistrarFrameEditBox)
+	_G.ArenaRegistrarFrameEditBox:Height(18)
 
 	local PVPBannerFrame = _G.PVPBannerFrame
 	PVPBannerFrame:CreateBackdrop('Transparent')
@@ -50,9 +52,8 @@ function S:SkinArenaRegistrar()
 
 	PVPBannerFrame:StripTextures()
 
-	PVPBannerFramePortrait:Kill()
-
-	PVPBannerFrameCustomizationFrame:StripTextures()
+	_G.PVPBannerFramePortrait:Kill()
+	_G.PVPBannerFrameCustomizationFrame:StripTextures()
 
 	local customization, customizationLeft, customizationRight
 	for i = 1, 2 do
@@ -70,17 +71,16 @@ function S:SkinArenaRegistrar()
 		pickerButton = _G['PVPColorPickerButton'..i]
 		S:HandleButton(pickerButton)
 		if i == 2 then
-			pickerButton:Point('TOP', PVPBannerFrameCustomization2, 'BOTTOM', 0, -33)
+			pickerButton:Point('TOP', _G.PVPBannerFrameCustomization2, 'BOTTOM', 0, -33)
 		elseif i == 3 then
-			pickerButton:Point('TOP', PVPBannerFrameCustomization2, 'BOTTOM', 0, -59)
+			pickerButton:Point('TOP', _G.PVPBannerFrameCustomization2, 'BOTTOM', 0, -59)
 		end
 	end
 
-	S:HandleButton(PVPBannerFrameAcceptButton)
-	S:HandleButton(PVPBannerFrameCancelButton)
+	S:HandleButton(_G.PVPBannerFrameAcceptButton)
+	S:HandleButton(_G.PVPBannerFrameCancelButton)
 	S:HandleButton(select(4, PVPBannerFrame:GetChildren()))
-
-	S:HandleCloseButton(PVPBannerFrameCloseButton)
+	S:HandleCloseButton(_G.PVPBannerFrameCloseButton)
 end
 
 S:AddCallback('SkinArenaRegistrar')

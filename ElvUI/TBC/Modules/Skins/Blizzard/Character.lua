@@ -11,10 +11,12 @@ local GetPetHappiness = GetPetHappiness
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local GetNumFactions = GetNumFactions
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local hooksecurefunc = hooksecurefunc
+
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
-local hooksecurefunc = hooksecurefunc
+local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
@@ -96,13 +98,13 @@ function S:CharacterFrame()
 		end
 	end
 
-	hooksecurefunc('PaperDollItemSlotButton_Update', function(self)
-		if self.SetBackdropBorderColor then
-			local rarity = GetInventoryItemQuality('player', self:GetID())
+	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
+		if frame.SetBackdropBorderColor then
+			local rarity = GetInventoryItemQuality('player', frame:GetID())
 			if rarity and rarity > 1 then
-				self:SetBackdropBorderColor(GetItemQualityColor(rarity))
+				frame:SetBackdropBorderColor(GetItemQualityColor(rarity))
 			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
@@ -131,12 +133,12 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
 	_G.PetPaperDollFrameExpBar:CreateBackdrop('Default')
 
-	local function updHappiness(self)
+	local function updHappiness(frame)
 		local happiness = GetPetHappiness()
 		local _, isHunterPet = HasPetUI()
 		if not (happiness and isHunterPet) then return end
 
-		local texture = self:GetRegions()
+		local texture = frame:GetRegions()
 		if happiness == 1 then
 			texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
 		elseif happiness == 2 then
@@ -261,7 +263,7 @@ function S:CharacterFrame()
 		label:SetHighlightTexture(nil)
 	end
 
-	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex, numSkills)
+	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID)
 		local skillLine = _G['SkillTypeLabel'..statusBarID]
 		if strfind(skillLine:GetNormalTexture():GetTexture(), 'MinusButton') then
 			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
