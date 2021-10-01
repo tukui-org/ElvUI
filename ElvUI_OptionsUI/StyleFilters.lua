@@ -800,48 +800,13 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 2,
 							args = {
-								isTarget = {
-									name = L["Is Targeted"],
-									desc = L["If enabled then the filter will only activate when you are targeting the unit."],
-									order = 1,
-									type = 'toggle'
-								},
-								notTarget = {
-									name = L["Not Targeted"],
-									desc = L["If enabled then the filter will only activate when you are not targeting the unit."],
-									order = 2,
-									type = 'toggle'
-								},
-								requireTarget = {
-									name = L["Require Target"],
-									desc = L["If enabled then the filter will only activate when you have a target."],
-									order = 2,
-									type = 'toggle'
-								},
-								targetMe = {
-									name = L["Is Targeting Player"],
-									desc = L["If enabled then the filter will only activate when the unit is targeting you."],
-									order = 4,
-									type = 'toggle'
-								},
-								notTargetMe = {
-									name = L["Not Targeting Player"],
-									desc = L["If enabled then the filter will only activate when the unit is not targeting you."],
-									order = 5,
-									type = 'toggle'
-								},
-								isFocus = {
-									name = L["Is Focused"],
-									desc = L["If enabled then the filter will only activate when you are focusing the unit."],
-									order = 7,
-									type = 'toggle'
-								},
-								notFocus = {
-									name = L["Not Focused"],
-									desc = L["If enabled then the filter will only activate when you are not focusing the unit."],
-									order = 8,
-									type = 'toggle'
-								}
+								isTarget = ACH:Toggle(L["Is Targeted"], L["If enabled then the filter will only activate when you are targeting the unit."], 1),
+								notTarget = ACH:Toggle(L["Not Targeted"], L["If enabled then the filter will only activate when you are not targeting the unit."], 2),
+								requireTarget = ACH:Toggle(L["Require Target"], L["If enabled then the filter will only activate when you have a target."], 2),
+								targetMe = ACH:Toggle(L["Is Targeting Player"], L["If enabled then the filter will only activate when the unit is targeting you."], 4),
+								notTargetMe = ACH:Toggle(L["Not Targeting Player"], L["If enabled then the filter will only activate when the unit is not targeting you."], 5),
+								isFocus = ACH:Toggle(L["Is Focused"], L["If enabled then the filter will only activate when you are focusing the unit."], 7),
+								notFocus = ACH:Toggle(L["Not Focused"], L["If enabled then the filter will only activate when you are not focusing the unit."], 8)
 							}
 						}
 					}
@@ -869,44 +834,14 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 1,
 							args = {
-								interruptible = {
-									type = 'toggle',
-									order = 1,
-									name = L["Interruptible"],
-									desc = L["If enabled then the filter will only activate if the unit is casting interruptible spells."]
-								},
-								notInterruptible = {
-									type = 'toggle',
-									order = 2,
-									name = L["Non-Interruptible"],
-									desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."]
-								},
+								interruptible = ACH:Toggle(L["Interruptible"], L["If enabled then the filter will only activate if the unit is casting interruptible spells."], 1),
+								notInterruptible = ACH:Toggle(L["Non-Interruptible"], L["If enabled then the filter will only activate if the unit is casting not interruptible spells."], 2),
 								spacer1 = ACH:Spacer(3, 'full'),
-								isCasting = {
-									type = 'toggle',
-									order = 4,
-									name = L["Is Casting Anything"],
-									desc = L["If enabled then the filter will activate if the unit is casting anything."]
-								},
-								notCasting = {
-									type = 'toggle',
-									order = 5,
-									name = L["Not Casting Anything"],
-									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
-								},
+								isCasting = ACH:Toggle(L["Is Casting Anything"], L["If enabled then the filter will activate if the unit is casting anything."], 4),
+								notCasting = ACH:Toggle(L["Not Casting Anything"], L["If enabled then the filter will activate if the unit is not casting anything."], 5),
 								spacer2 = ACH:Spacer(6, 'full'),
-								isChanneling = {
-									type = 'toggle',
-									order = 7,
-									name = L["Is Channeling Anything"],
-									desc = L["If enabled then the filter will activate if the unit is channeling anything."]
-								},
-								notChanneling = {
-									type = 'toggle',
-									order = 8,
-									name = L["Not Channeling Anything"],
-									desc = L["If enabled then the filter will activate if the unit is not channeling anything."]
-								},
+								isChanneling = ACH:Toggle(L["Is Channeling Anything"], L["If enabled then the filter will activate if the unit is channeling anything."], 7),
+								notChanneling = ACH:Toggle(L["Not Channeling Anything"], L["If enabled then the filter will activate if the unit is not channeling anything."], 8),
 							}
 						},
 						addSpell = {
@@ -936,12 +871,7 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						notSpell = {
-							type = 'toggle',
-							order = 4,
-							name = L["Not Spell"],
-							desc = L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."]
-						},
+						notSpell = ACH:Toggle(L["Not Spell"], L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."], 4),
 						description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10),
 						description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11),
 					}
@@ -969,48 +899,13 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 1,
 							args = {
-								inCombat = {
-									type = 'toggle',
-									name = L["In Combat"],
-									desc = L["If enabled then the filter will only activate when you are in combat."],
-									order = 1
-								},
-								outOfCombat = {
-									type = 'toggle',
-									name = L["Out of Combat"],
-									desc = L["If enabled then the filter will only activate when you are out of combat."],
-									order = 2
-								},
-								inVehicle = {
-									type = 'toggle',
-									name = L["In Vehicle"],
-									desc = L["If enabled then the filter will only activate when you are in a Vehicle."],
-									order = 3
-								},
-								outOfVehicle = {
-									type = 'toggle',
-									name = L["Out of Vehicle"],
-									desc = L["If enabled then the filter will only activate when you are not in a Vehicle."],
-									order = 4
-								},
-								isResting = {
-									type = 'toggle',
-									name = L["Is Resting"],
-									desc = L["If enabled then the filter will only activate when you are resting at an Inn."],
-									order = 5
-								},
-								playerCanAttack = {
-									type = 'toggle',
-									name = L["Can Attack"],
-									desc = L["If enabled then the filter will only activate when the unit can be attacked by the active player."],
-									order = 6
-								},
-								playerCanNotAttack = {
-									type = 'toggle',
-									name = L["Can Not Attack"],
-									desc = L["If enabled then the filter will only activate when the unit can not be attacked by the active player."],
-									order = 7
-								}
+								inCombat = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when you are in combat."], 1),
+								outOfCombat = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when you are out of combat."], 2),
+								inVehicle = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when you are in a Vehicle."], 3),
+								outOfVehicle = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when you are not in a Vehicle."], 4),
+								isResting = ACH:Toggle(L["Is Resting"], L["If enabled then the filter will only activate when you are resting at an Inn."], 5),
+								playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 6),
+								playerCanNotAttack = ACH:Toggle(L["Can Not Attack"], L["If enabled then the filter will only activate when the unit can not be attacked by the active player."], 7)
 							}
 						},
 						unitGroup = {
@@ -1019,114 +914,24 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 2,
 							args = {
-								inCombatUnit = {
-									type = 'toggle',
-									name = L["In Combat"],
-									desc = L["If enabled then the filter will only activate when the unit is in combat."],
-									order = 1
-								},
-								outOfCombatUnit = {
-									type = 'toggle',
-									name = L["Out of Combat"],
-									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
-									order = 2
-								},
-								inVehicleUnit = {
-									type = 'toggle',
-									name = L["In Vehicle"],
-									desc = L["If enabled then the filter will only activate when the unit is in a Vehicle."],
-									order = 3
-								},
-								outOfVehicleUnit = {
-									type = 'toggle',
-									name = L["Out of Vehicle"],
-									desc = L["If enabled then the filter will only activate when the unit is not in a Vehicle."],
-									order = 4
-								},
-								inParty = {
-									type = 'toggle',
-									name = L["In Party"],
-									desc = L["If enabled then the filter will only activate when the unit is in your Party."],
-									order = 5
-								},
-								notInParty = {
-									type = 'toggle',
-									name = L["Not in Party"],
-									desc = L["If enabled then the filter will only activate when the unit is not in your Party."],
-									order = 6
-								},
-								inRaid = {
-									type = 'toggle',
-									name = L["In Raid"],
-									desc = L["If enabled then the filter will only activate when the unit is in your Raid."],
-									order = 7
-								},
-								notInRaid = {
-									type = 'toggle',
-									name = L["Not in Raid"],
-									desc = L["If enabled then the filter will only activate when the unit is not in your Raid."],
-									order = 8
-								},
-								isPet = {
-									type = 'toggle',
-									name = L["Is Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is the active player's pet."],
-									order = 9
-								},
-								isNotPet= {
-									type = 'toggle',
-									name =L["Not Pet"],
-									desc = L["If enabled then the filter will only activate when the unit is not the active player's pet."],
-									order = 10
-								},
-								isPlayerControlled = {
-									type = 'toggle',
-									name = L["Player Controlled"],
-									desc = L["If enabled then the filter will only activate when the unit is controlled by the player."],
-									order = 11
-								},
-								isNotPlayerControlled = {
-									type = 'toggle',
-									name = L["Not Player Controlled"],
-									desc = L["If enabled then the filter will only activate when the unit is not controlled by the player."],
-									order = 12
-								},
-								isOwnedByPlayer = {
-									type = 'toggle',
-									name = L["Owned By Player"],
-									desc = L["If enabled then the filter will only activate when the unit is owned by the player."],
-									order = 13
-								},
-								isNotOwnedByPlayer = {
-									type = 'toggle',
-									name = L["Not Owned By Player"],
-									desc = L["If enabled then the filter will only activate when the unit is not owned by the player."],
-									order = 14
-								},
-								isPvP = {
-									type = 'toggle',
-									name = L["Is PvP"],
-									desc = L["If enabled then the filter will only activate when the unit is pvp-flagged."],
-									order = 15
-								},
-								isNotPvP = {
-									type = 'toggle',
-									name = L["Not PvP"],
-									desc = L["If enabled then the filter will only activate when the unit is not pvp-flagged."],
-									order = 16
-								},
-								isTapDenied = {
-									type = 'toggle',
-									name = L["Tap Denied"],
-									desc = L["If enabled then the filter will only activate when the unit is tap denied."],
-									order = 17
-								},
-								isNotTapDenied = {
-									type = 'toggle',
-									name = L["Not Tap Denied"],
-									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
-									order = 18
-								},
+								inCombatUnit = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when the unit is in combat."], 1),
+								outOfCombatUnit = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when the unit is out of combat."], 2),
+								inVehicleUnit = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when the unit is in a Vehicle."], 3),
+								outOfVehicleUnit = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when the unit is not in a Vehicle."], 4),
+								inParty = ACH:Toggle(L["In Party"], L["If enabled then the filter will only activate when the unit is in your Party."], 5),
+								notInParty = ACH:Toggle(L["Not in Party"], L["If enabled then the filter will only activate when the unit is not in your Party."], 6),
+								inRaid = ACH:Toggle(L["In Raid"], L["If enabled then the filter will only activate when the unit is in your Raid."], 7),
+								notInRaid = ACH:Toggle(L["Not in Raid"], L["If enabled then the filter will only activate when the unit is not in your Raid."], 8),
+								isPet = ACH:Toggle(L["Is Pet"], L["If enabled then the filter will only activate when the unit is the active player's pet."], 9),
+								isNotPet= ACH:Toggle(L["Not Pet"], L["If enabled then the filter will only activate when the unit is not the active player's pet."], 10),
+								isPlayerControlled = ACH:Toggle(L["Player Controlled"], L["If enabled then the filter will only activate when the unit is controlled by the player."], 11),
+								isNotPlayerControlled = ACH:Toggle(L["Not Player Controlled"], L["If enabled then the filter will only activate when the unit is not controlled by the player."], 12),
+								isOwnedByPlayer = ACH:Toggle(L["Owned By Player"], L["If enabled then the filter will only activate when the unit is owned by the player."], 13),
+								isNotOwnedByPlayer = ACH:Toggle(L["Not Owned By Player"], L["If enabled then the filter will only activate when the unit is not owned by the player."], 14),
+								isPvP = ACH:Toggle(L["Is PvP"], L["If enabled then the filter will only activate when the unit is pvp-flagged."], 15),
+								isNotPvP = ACH:Toggle(L["Not PvP"], L["If enabled then the filter will only activate when the unit is not pvp-flagged."], 16),
+								isTapDenied = ACH:Toggle(L["Tap Denied"], L["If enabled then the filter will only activate when the unit is tap denied."], 17),
+								isNotTapDenied = ACH:Toggle(L["Not Tap Denied"], L["If enabled then the filter will only activate when the unit is not tap denied."], 18),
 							}
 						},
 						npcGroup = {
@@ -1135,16 +940,8 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 3,
 							args = {
-								hasTitleNPC = {
-									type = 'toggle',
-									name = L["Has NPC Title"],
-									order = 1
-								},
-								noTitleNPC = {
-									type = 'toggle',
-									name = L["No NPC Title"],
-									order = 2
-								},
+								hasTitleNPC = ACH:Toggle(L["Has NPC Title"], nil, 1),
+								noTitleNPC = ACH:Toggle(L["No NPC Title"], nil, 2),
 							}
 						},
 						questGroup = {
@@ -1153,21 +950,9 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 4,
 							args = {
-								isQuest = {
-									type = 'toggle',
-									name = L["Quest Unit"],
-									order = 1
-								},
-								notQuest = {
-									type = 'toggle',
-									name = L["Not Quest Unit"],
-									order = 2
-								},
-								questBoss = {
-									type = 'toggle',
-									name = L["Quest Boss"],
-									order = 3,
-								},
+								isQuest = ACH:Toggle(L["Quest Unit"], nil, 1),
+								notQuest = ACH:Toggle(L["Not Quest Unit"], nil, 2),
+								questBoss = ACH:Toggle(L["Quest Boss"], nil, 3,),
 							}
 						}
 					}
@@ -1195,21 +980,9 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 2,
 							args = {
-								Alliance = {
-									type = 'toggle',
-									order = 1,
-									name = L["Alliance"]
-								},
-								Horde = {
-									type = 'toggle',
-									order = 2,
-									name = L["Horde"]
-								},
-								Neutral = {
-									type = 'toggle',
-									order = 3,
-									name = L["Neutral"]
-								}
+								Alliance = ACH:Toggle(L["Alliance"], nil, 1),
+								Horde = ACH:Toggle(L["Horde"], nil, 2),
+								Neutral = ACH:Toggle(L["Neutral"], nil, 3)
 							}
 						}
 					}
@@ -1360,21 +1133,9 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 							args = {
-								tank = {
-									type = 'toggle',
-									order = 1,
-									name = L["TANK"]
-								},
-								healer = {
-									type = 'toggle',
-									order = 2,
-									name = L["Healer"]
-								},
-								damager = {
-									type = 'toggle',
-									order = 3,
-									name = L["DAMAGER"]
-								}
+								tank = ACH:Toggle(L["TANK"], nil, 1),
+								healer = ACH:Toggle(L["Healer"], nil, 2),
+								damager = ACH:Toggle(L["DAMAGER"], nil, 3)
 							}
 						},
 						unitRole = {
@@ -1390,21 +1151,9 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end,
 							args = {
-								tank = {
-									type = 'toggle',
-									order = 1,
-									name = L["TANK"]
-								},
-								healer = {
-									type = 'toggle',
-									order = 2,
-									name = L["Healer"]
-								},
-								damager = {
-									type = 'toggle',
-									order = 3,
-									name = L["DAMAGER"]
-								}
+								tank = ACH:Toggle(L["TANK"], nil, 1),
+								healer = ACH:Toggle(L["Healer"], nil, 2),
+								damager = ACH:Toggle(L["DAMAGER"], nil, 3)
 							}
 						}
 					}
@@ -1432,41 +1181,13 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 2,
 							args = {
-								worldboss = {
-									type = 'toggle',
-									order = 1,
-									name = L["RAID_INFO_WORLD_BOSS"]
-								},
-								rareelite = {
-									type = 'toggle',
-									order = 2,
-									name = L["Rare Elite"]
-								},
-								normal = {
-									type = 'toggle',
-									order = 3,
-									name = L["PLAYER_DIFFICULTY1"]
-								},
-								rare = {
-									type = 'toggle',
-									order = 4,
-									name = L["ITEM_QUALITY3_DESC"]
-								},
-								trivial = {
-									type = 'toggle',
-									order = 5,
-									name = L["Trivial"]
-								},
-								elite = {
-									type = 'toggle',
-									order = 6,
-									name = L["ELITE"]
-								},
-								minus = {
-									type = 'toggle',
-									order = 7,
-									name = L["Minus"]
-								},
+								worldboss = ACH:Toggle(L["RAID_INFO_WORLD_BOSS"], nil, 1),
+								rareelite = ACH:Toggle(L["Rare Elite"], nil, 2),
+								normal = ACH:Toggle(L["PLAYER_DIFFICULTY1"], nil, 3),
+								rare = ACH:Toggle(L["ITEM_QUALITY3_DESC"], nil, 4),
+								trivial = ACH:Toggle(L["Trivial"], nil, 5),
+								elite = ACH:Toggle(L["ELITE"], nil, 6),
+								minus = ACH:Toggle(L["Minus"], nil, 7),
 							}
 						}
 					}
@@ -1488,11 +1209,7 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
 					args = {
-						healthThreshold = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"]
-						},
+						healthThreshold = ACH:Toggle(L["Enable"], nil, 1),
 						healthUsePlayer = {
 							type = 'toggle',
 							order = 2,
@@ -1553,11 +1270,7 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
 					args = {
-						powerThreshold = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"]
-						},
+						powerThreshold = ACH:Toggle(L["Enable"], nil, 1),
 						powerUsePlayer = {
 							type = 'toggle',
 							order = 2,
@@ -1643,56 +1356,16 @@ function UpdateFilterGroup()
 									not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.keyMod.enable
 							end,
 							args = {
-								Shift = {
-									name = L["SHIFT_KEY_TEXT"],
-									order = 1,
-									type = 'toggle'
-								},
-								Alt = {
-									name = L["ALT_KEY_TEXT"],
-									order = 2,
-									type = 'toggle'
-								},
-								Control = {
-									name = L["CTRL_KEY_TEXT"],
-									order = 3,
-									type = 'toggle'
-								},
-								Modifier = {
-									name = L["Any"],
-									order = 4,
-									type = 'toggle'
-								},
-								LeftShift = {
-									name = L["Left Shift"],
-									order = 6,
-									type = 'toggle'
-								},
-								LeftAlt = {
-									name = L["Left Alt"],
-									order = 7,
-									type = 'toggle'
-								},
-								LeftControl = {
-									name = L["Left Control"],
-									order = 8,
-									type = 'toggle'
-								},
-								RightShift = {
-									name = L["Right Shift"],
-									order = 10,
-									type = 'toggle'
-								},
-								RightAlt = {
-									name = L["Right Alt"],
-									order = 11,
-									type = 'toggle'
-								},
-								RightControl = {
-									name = L["Right Control"],
-									order = 12,
-									type = 'toggle'
-								}
+								Shift = ACH:Toggle(L["SHIFT_KEY_TEXT"], nil, 1),
+								Alt = ACH:Toggle(L["ALT_KEY_TEXT"], nil, 2),
+								Control = ACH:Toggle(L["CTRL_KEY_TEXT"], nil, 3),
+								Modifier = ACH:Toggle(L["Any"], nil, 4),
+								LeftShift = ACH:Toggle(L["Left Shift"], nil, 6),
+								LeftAlt = ACH:Toggle(L["Left Alt"], nil, 7),
+								LeftControl = ACH:Toggle(L["Left Control"], nil, 8),
+								RightShift = ACH:Toggle(L["Right Shift"], nil, 10),
+								RightAlt = ACH:Toggle(L["Right Alt"], nil, 11),
+								RightControl = ACH:Toggle(L["Right Control"], nil, 12)
 							}
 						}
 					}
@@ -1714,11 +1387,7 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
 					args = {
-						level = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"]
-						},
+						level = ACH:Toggle(L["Enable"], nil, 1),
 						mylevel = {
 							type = 'toggle',
 							order = 2,
@@ -1887,18 +1556,8 @@ function UpdateFilterGroup()
 							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = 'toggle'
 						},
-						hasStealable = {
-							order = 5,
-							type = "toggle",
-							name = L["Has Stealable"],
-							desc = L["If enabled then the filter will only activate when the unit has a stealable buff(s)."]
-						},
-						hasNoStealable = {
-							order = 6,
-							type = "toggle",
-							name = L["Has No Stealable"],
-							desc = L["If enabled then the filter will only activate when the unit has no stealable buff(s)."],
-						},
+						hasStealable = ACH:Toggle(L["Has Stealable"], L["If enabled then the filter will only activate when the unit has a stealable buff(s)."], 5),
+						hasNoStealable = ACH:Toggle(L["Has No Stealable"], L["If enabled then the filter will only activate when the unit has no stealable buff(s)."],, 6),
 						changeList = {
 							type = 'group',
 							inline = true,
@@ -2014,18 +1673,8 @@ function UpdateFilterGroup()
 									E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 							end
 						},
-						hasDispellable = {
-							order = 5,
-							type = "toggle",
-							name = L["Has Dispellable"],
-							desc = L["If enabled then the filter will only activate when the unit has a dispellable buff(s)."]
-						},
-						hasNoDispellable = {
-							order = 6,
-							type = "toggle",
-							name = L["Has No Dispellable"],
-							desc = L["If enabled then the filter will only activate when the unit has no dispellable buff(s)."],
-						},
+						hasDispellable = ACH:Toggle(L["Has Dispellable"], L["If enabled then the filter will only activate when the unit has a dispellable buff(s)."], 5),
+						hasNoDispellable = ACH:Toggle(L["Has No Dispellable"], L["If enabled then the filter will only activate when the unit has no dispellable buff(s)."],, 6),
 						changeList = {
 							type = 'group',
 							inline = true,
@@ -2105,11 +1754,7 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
 					args = {
-						enable = {
-							name = L["Enable"],
-							order = 0,
-							type = 'toggle'
-						},
+						enable = ACH:Toggle(L["Enable"], nil, 0),
 						hasAura = {
 							name = L["Has Aura"],
 							order = 1,
@@ -2249,32 +1894,12 @@ function UpdateFilterGroup()
 									not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.threat.enable
 							end,
 							args = {
-								good = {
-									name = L["Good"],
-									order = 1,
-									type = 'toggle'
-								},
-								goodTransition = {
-									name = L["Good Transition"],
-									order = 2,
-									type = 'toggle'
-								},
-								badTransition = {
-									name = L["Bad Transition"],
-									order = 3,
-									type = 'toggle'
-								},
-								bad = {
-									name = L["Bad"],
-									order = 4,
-									type = 'toggle'
-								},
+								good = ACH:Toggle(L["Good"], nil, 1),
+								goodTransition = ACH:Toggle(L["Good Transition"], nil, 2),
+								badTransition = ACH:Toggle(L["Bad Transition"], nil, 3),
+								bad = ACH:Toggle(L["Bad"], nil, 4),
 								spacer1 = ACH:Spacer(5, 'full'),
-								offTank = {
-									name = L["Off Tank"],
-									order = 6,
-									type = 'toggle'
-								},
+								offTank = ACH:Toggle(L["Off Tank"], nil, 6),
 								offTankGoodTransition = {
 									name = L["Off Tank Good Transition"],
 									customWidth = 200,
@@ -2333,31 +1958,11 @@ function UpdateFilterGroup()
 									not E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.nameplateType.enable
 							end,
 							args = {
-								friendlyPlayer = {
-									name = L["FRIENDLY_PLAYER"],
-									order = 1,
-									type = 'toggle'
-								},
-								friendlyNPC = {
-									name = L["FRIENDLY_NPC"],
-									order = 2,
-									type = 'toggle'
-								},
-								enemyPlayer = {
-									name = L["ENEMY_PLAYER"],
-									order = 3,
-									type = 'toggle'
-								},
-								enemyNPC = {
-									name = L["ENEMY_NPC"],
-									order = 4,
-									type = 'toggle'
-								},
-								player = {
-									name = L["Player"],
-									order = 5,
-									type = 'toggle'
-								}
+								friendlyPlayer = ACH:Toggle(L["FRIENDLY_PLAYER"], nil, 1),
+								friendlyNPC = ACH:Toggle(L["FRIENDLY_NPC"], nil, 2),
+								enemyPlayer = ACH:Toggle(L["ENEMY_PLAYER"], nil, 3),
+								enemyNPC = ACH:Toggle(L["ENEMY_NPC"], nil, 4),
+								player = ACH:Toggle(L["Player"], nil, 5)
 							}
 						}
 					}
@@ -2380,11 +1985,7 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
 					args = {
-						enable = {
-							name = L["Enable"],
-							order = 0,
-							type = 'toggle'
-						},
+						enable = ACH:Toggle(L["Enable"], nil, 0),
 						reputation = {
 							name = L["Reputation"],
 							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
@@ -2421,11 +2022,7 @@ function UpdateFilterGroup()
 											E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.reactionType.reputation)
 									end
 								},
-								hostile = {
-									name = L["FACTION_STANDING_LABEL2"],
-									order = 2,
-									type = 'toggle'
-								},
+								hostile = ACH:Toggle(L["FACTION_STANDING_LABEL2"], nil, 2),
 								unfriendly = {
 									name = L["FACTION_STANDING_LABEL3"],
 									order = 3,
@@ -2438,16 +2035,8 @@ function UpdateFilterGroup()
 											E.global.nameplate.filters[C.SelectedNameplateStyleFilter].triggers.reactionType.reputation)
 									end
 								},
-								neutral = {
-									name = L["FACTION_STANDING_LABEL4"],
-									order = 4,
-									type = 'toggle'
-								},
-								friendly = {
-									name = L["FACTION_STANDING_LABEL5"],
-									order = 5,
-									type = 'toggle'
-								},
+								neutral = ACH:Toggle(L["FACTION_STANDING_LABEL4"], nil, 4),
+								friendly = ACH:Toggle(L["FACTION_STANDING_LABEL5"], nil, 5),
 								honored = {
 									name = L["FACTION_STANDING_LABEL6"],
 									order = 6,
@@ -2505,12 +2094,7 @@ function UpdateFilterGroup()
 							E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 					end,
 					args = {
-						enable = {
-							type = 'toggle',
-							order = 1,
-							name = L["Enable"],
-							width = 'full'
-						},
+						enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 'full'),
 						types = {
 							name = '',
 							type = 'group',
@@ -2549,16 +2133,8 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 2,
 							args = {
-								none = {
-									type = 'toggle',
-									order = 1,
-									name = L["NONE"]
-								},
-								scenario = {
-									type = 'toggle',
-									order = 2,
-									name = L["SCENARIOS"]
-								},
+								none = ACH:Toggle(L["NONE"], nil, 1),
+								scenario = ACH:Toggle(L["SCENARIOS"], nil, 2),
 								party = {
 									type = 'toggle',
 									order = 3,
@@ -2585,16 +2161,8 @@ function UpdateFilterGroup()
 										NP:ConfigureAll()
 									end
 								},
-								arena = {
-									type = 'toggle',
-									order = 7,
-									name = L["ARENA"]
-								},
-								pvp = {
-									type = 'toggle',
-									order = 8,
-									name = L["BATTLEFIELDS"]
-								}
+								arena = ACH:Toggle(L["ARENA"], nil, 7),
+								pvp = ACH:Toggle(L["BATTLEFIELDS"], nil, 8)
 							}
 						}
 					}
@@ -2896,46 +2464,14 @@ function UpdateFilterGroup()
 							inline = true,
 							order = 2,
 							args = {
-								star = {
-									type = 'toggle',
-									order = 1,
-									name = format(raidTargetIcon, 1, L["RAID_TARGET_1"])
-								},
-								circle = {
-									type = 'toggle',
-									order = 2,
-									name = format(raidTargetIcon, 2, L["RAID_TARGET_2"])
-								},
-								diamond = {
-									type = 'toggle',
-									order = 3,
-									name = format(raidTargetIcon, 3, L["RAID_TARGET_3"])
-								},
-								triangle = {
-									type = 'toggle',
-									order = 4,
-									name = format(raidTargetIcon, 4, L["RAID_TARGET_4"])
-								},
-								moon = {
-									type = 'toggle',
-									order = 5,
-									name = format(raidTargetIcon, 5, L["RAID_TARGET_5"])
-								},
-								square = {
-									type = 'toggle',
-									order = 6,
-									name = format(raidTargetIcon, 6, L["RAID_TARGET_6"])
-								},
-								cross = {
-									type = 'toggle',
-									order = 7,
-									name = format(raidTargetIcon, 7, L["RAID_TARGET_7"])
-								},
-								skull = {
-									type = 'toggle',
-									order = 8,
-									name = format(raidTargetIcon, 8, L["RAID_TARGET_8"])
-								}
+								star = ACH:Toggle(format(raidTargetIcon, 1, L["RAID_TARGET_1"]), nil, 1),
+								circle = ACH:Toggle(format(raidTargetIcon, 2, L["RAID_TARGET_2"]), nil, 2),
+								diamond = ACH:Toggle(format(raidTargetIcon, 3, L["RAID_TARGET_3"]), nil, 3),
+								triangle = ACH:Toggle(format(raidTargetIcon, 4, L["RAID_TARGET_4"]), nil, 4),
+								moon = ACH:Toggle(format(raidTargetIcon, 5, L["RAID_TARGET_5"]), nil, 5),
+								square = ACH:Toggle(format(raidTargetIcon, 6, L["RAID_TARGET_6"]), nil, 6),
+								cross = ACH:Toggle(format(raidTargetIcon, 7, L["RAID_TARGET_7"]), nil, 7),
+								skull = ACH:Toggle(format(raidTargetIcon, 8, L["RAID_TARGET_8"]), nil, 8)
 							}
 						}
 					}
@@ -2964,11 +2500,7 @@ function UpdateFilterGroup()
 					E.db.nameplates.filters[C.SelectedNameplateStyleFilter].triggers.enable)
 			end,
 			args = {
-				hide = {
-					order = 1,
-					type = 'toggle',
-					name = L["Hide Frame"]
-				},
+				hide = ACH:Toggle(L["Hide Frame"], nil, 1),
 				usePortrait = {
 					order = 2,
 					type = 'toggle',
@@ -3033,11 +2565,7 @@ function UpdateFilterGroup()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.hide
 					end,
 					args = {
-						health = {
-							name = L["Health"],
-							order = 1,
-							type = 'toggle'
-						},
+						health = ACH:Toggle(L["Health"], nil, 1),
 						healthColor = {
 							name = L["Health Color"],
 							type = 'color',
@@ -3056,17 +2584,9 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						healthClass = {
-							type = 'toggle',
-							order = 3,
-							name = L["Unit Class Color"]
-						},
+						healthClass = ACH:Toggle(L["Unit Class Color"], nil, 3),
 						spacer1 = ACH:Spacer(4, 'full'),
-						power = {
-							name = L["Power"],
-							order = 10,
-							type = 'toggle'
-						},
+						power = ACH:Toggle(L["Power"], nil, 10),
 						powerColor = {
 							name = L["Power Color"],
 							type = 'color',
@@ -3085,17 +2605,9 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						powerClass = {
-							type = 'toggle',
-							order = 12,
-							name = L["Unit Class Color"]
-						},
+						powerClass = ACH:Toggle(L["Unit Class Color"], nil, 12),
 						spacer2 = ACH:Spacer(13, 'full'),
-						border = {
-							name = L["Border"],
-							order = 20,
-							type = 'toggle'
-						},
+						border = ACH:Toggle(L["Border"], nil, 20),
 						borderColor = {
 							name = L["Border Color"],
 							type = 'color',
@@ -3114,11 +2626,7 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						borderClass = {
-							type = 'toggle',
-							order = 22,
-							name = L["Unit Class Color"]
-						}
+						borderClass = ACH:Toggle(L["Unit Class Color"], nil, 22)
 					}
 				},
 				texture = {
@@ -3137,11 +2645,7 @@ function UpdateFilterGroup()
 						return E.global.nameplate.filters[C.SelectedNameplateStyleFilter].actions.hide
 					end,
 					args = {
-						enable = {
-							name = L["Enable"],
-							order = 1,
-							type = 'toggle'
-						},
+						enable = ACH:Toggle(L["Enable"], nil, 1),
 						texture = {
 							order = 2,
 							type = 'select',
