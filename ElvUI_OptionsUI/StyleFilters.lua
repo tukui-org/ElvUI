@@ -463,7 +463,7 @@ local function UpdateStyleLists()
 					order = -1,
 					get = function()
 						local triggers = GetFilter(true)
-						return filter.triggers and triggers.casting.spells and triggers.casting.spells[name]
+						return triggers and triggers.casting.spells and triggers.casting.spells[name]
 					end,
 					set = function(_, value)
 						local triggers = GetFilter(true)
@@ -511,7 +511,7 @@ local function UpdateStyleLists()
 					order = -1,
 					get = function()
 						local triggers = GetFilter(true)
-						return filter.triggers and triggers.cooldowns.names and triggers.cooldowns.names[name]
+						return triggers and triggers.cooldowns.names and triggers.cooldowns.names[name]
 					end,
 					set = function(_, value)
 						local triggers = GetFilter(true)
@@ -556,7 +556,7 @@ local function UpdateStyleLists()
 					order = -1,
 					get = function()
 						local triggers = GetFilter(true)
-						return filter.triggers and triggers.buffs.names and triggers.buffs.names[name]
+						return triggers and triggers.buffs.names and triggers.buffs.names[name]
 					end,
 					set = function(_, value)
 						local triggers = GetFilter(true)
@@ -601,7 +601,7 @@ local function UpdateStyleLists()
 					order = -1,
 					get = function()
 						local triggers = GetFilter(true)
-						return filter.triggers and triggers.debuffs.names and triggers.debuffs.names[name]
+						return triggers and triggers.debuffs.names and triggers.debuffs.names[name]
 					end,
 					set = function(_, value)
 						local triggers = GetFilter(true)
@@ -634,7 +634,7 @@ local function UpdateStyleLists()
 					order = -1,
 					get = function()
 						local triggers = GetFilter(true)
-						return filter.triggers and triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[aura]
+						return triggers and triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[aura]
 					end,
 					set = function(_, value)
 						local triggers = GetFilter(true)
@@ -659,7 +659,7 @@ local function UpdateBossModAuras()
 				order = -1,
 				get = function()
 					local triggers = GetFilter(true)
-					return filter.triggers and triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[texture]
+					return triggers and triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[texture]
 				end,
 				set = function(_, value)
 					local triggers = GetFilter(true)
