@@ -225,6 +225,8 @@ else -- cause it doesnt exist on tbc or classic
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
 	end
 	CH.BNGetGameAccountInfoByGUID = function(guid)
+		if not guid then return end
+
 		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByGUID(guid)
 		local accountInfo = C_BattleNet_GetAccountInfoByGUID(guid)
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
