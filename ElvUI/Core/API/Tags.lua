@@ -521,7 +521,6 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	local color
 	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		local level = UnitBattlePetLevel(unit)
-
 		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
 			color = GetRelativeDifficultyColor(teamLevel, level)
