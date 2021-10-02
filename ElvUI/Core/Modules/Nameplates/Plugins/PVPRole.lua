@@ -16,7 +16,7 @@ local Healers, HealerSpecs = {}, {}
 local Tanks, TankSpecs = {}, {}
 
 if E.Retail then
-	for i = 1, MAX_CLASSES do
+	for i = 1, _G.MAX_CLASSES do
 		local _, _, classID = GetClassInfo(i)
 		if classID then
 			for specIndex = 1, GetNumSpecializationsForClassID(classID) do

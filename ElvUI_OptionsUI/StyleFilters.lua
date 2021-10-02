@@ -100,15 +100,16 @@ local function UpdateClassSection()
 	local filter = GetFilter()
 	if filter then
 		if not classTable then
-			local classDisplayName, classTag, classID
 			classTable, classIndexTable = {}, {}
 			for i = 1, GetNumClasses() do
-				classDisplayName, classTag, classID = GetClassInfo(i)
-				if not classTable[classTag] then
-					classTable[classTag] = {}
+				local classDisplayName, classTag, classID = GetClassInfo(i)
+				if classTag then
+					if not classTable[classTag] then
+						classTable[classTag] = {}
+					end
+					classTable[classTag].name = classDisplayName
+					classTable[classTag].classID = classID
 				end
-				classTable[classTag].name = classDisplayName
-				classTable[classTag].classID = classID
 			end
 			for tag in pairs(classTable) do
 				tinsert(classIndexTable, tag)
@@ -116,10 +117,10 @@ local function UpdateClassSection()
 			sort(classIndexTable)
 		end
 		classOrder = 0
-		local coloredName
+
 		for _, classTag in ipairs(classIndexTable) do
 			classOrder = classOrder + 1
-			coloredName = E:ClassColor(classTag)
+			local coloredName = E:ClassColor(classTag)
 			coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
 			local classTrigger = filter.triggers.class
 			if classTrigger then

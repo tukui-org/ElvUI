@@ -93,9 +93,9 @@ local function ColorMemberName(self, info)
 	if not info then return end
 
 	local class = self.Class
-	local classInfo = select(2, GetClassInfo(info.classID))
-	if classInfo then
-		local tcoords = CLASS_ICON_TCOORDS[classInfo]
+	local _, classTag = GetClassInfo(info.classID)
+	if classTag then
+		local tcoords = CLASS_ICON_TCOORDS[classTag]
 		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 	end
 end
