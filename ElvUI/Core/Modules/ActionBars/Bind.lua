@@ -258,11 +258,12 @@ function AB:SwapKeybindButton(event, addon)
 	if event and addon ~= 'Blizzard_BindingUI' then return end
 
 	local parent = _G.KeyBindingFrame
-	parent.quickKeybindButton:Hide()
+	if parent.quickKeybindButton then parent.quickKeybindButton:Hide() end
 
 	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate')
 	frame:Width(150)
-	frame:Point('TOPLEFT', parent.quickKeybindButton)
+	frame:Point('LEFT', parent.bindingsContainer)
+	frame:Point('BOTTOM', parent.cancelButton)
 	frame:SetScript('OnClick', keybindButtonClick)
 	frame:SetText('ElvUI Keybind')
 
