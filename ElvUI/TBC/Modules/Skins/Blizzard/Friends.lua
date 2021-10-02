@@ -94,12 +94,11 @@ function S:FriendsFrame()
 
 	hooksecurefunc('FriendsFrame_CheckBattlenetStatus', function()
 		if BNFeaturesEnabled() then
-			local frame = FriendsFrameBattlenetFrame
 
-			frame.BroadcastButton:Hide()
+			FriendsFrameBattlenetFrame.BroadcastButton:Hide()
 
 			if BNConnected() then
-				frame:Hide()
+				FriendsFrameBattlenetFrame:Hide()
 				_G.FriendsFrameBroadcastInput:Show()
 				_G.FriendsFrameBroadcastInput_UpdateDisplay()
 			end
@@ -205,49 +204,45 @@ function S:FriendsFrame()
 	_G.WhoListScrollFrameScrollBar:Point('TOPRIGHT', _G.WhoListScrollFrame, 'TOPRIGHT', 26, -13)
 	_G.WhoListScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.WhoListScrollFrame, 'BOTTOMRIGHT', 0, 18)
 
-	do
-		local button, level, name, class
+	for i = 1, _G.WHOS_TO_DISPLAY do
+		local button = _G['WhoFrameButton'..i]
+		local level = _G['WhoFrameButton'..i..'Level']
+		local name = _G['WhoFrameButton'..i..'Name']
+		local class = _G['WhoFrameButton'..i..'Class']
 
-		for i = 1, _G.WHOS_TO_DISPLAY do
-			button = _G['WhoFrameButton'..i]
-			level = _G['WhoFrameButton'..i..'Level']
-			name = _G['WhoFrameButton'..i..'Name']
-			class = _G['WhoFrameButton'..i..'Class']
+		button.icon = button:CreateTexture('$parentIcon', 'ARTWORK')
+		button.icon:Point('LEFT', 45, 0)
+		button.icon:Size(15)
+		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 
-			button.icon = button:CreateTexture('$parentIcon', 'ARTWORK')
-			button.icon:Point('LEFT', 45, 0)
-			button.icon:Size(15)
-			button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+		button:CreateBackdrop('Default', true)
+		button.backdrop:SetAllPoints(button.icon)
+		S:HandleButtonHighlight(button)
 
-			button:CreateBackdrop('Default', true)
-			button.backdrop:SetAllPoints(button.icon)
-			S:HandleButtonHighlight(button)
+		level:ClearAllPoints()
+		level:SetPoint('TOPLEFT', 11, -1)
 
-			level:ClearAllPoints()
-			level:SetPoint('TOPLEFT', 11, -1)
+		name:SetSize(100, 14)
+		name:ClearAllPoints()
+		name:SetPoint('LEFT', 85, 0)
 
-			name:SetSize(100, 14)
-			name:ClearAllPoints()
-			name:SetPoint('LEFT', 85, 0)
-
-			class:Hide()
-		end
+		class:Hide()
 	end
 
 	hooksecurefunc('WhoList_Update', function()
 		local numWhos = C_FriendList_GetNumWhoResults()
 		if numWhos == 0 then return end
 
+		if numWhos > _G.WHOS_TO_DISPLAY then
+			numWhos = _G.WHOS_TO_DISPLAY
+		end
+
 		local playerZone = E.MapInfo.realZoneText
-		local WHOS_TO_DISPLAY = _G.WHOS_TO_DISPLAY
-
-		numWhos = (numWhos > WHOS_TO_DISPLAY and WHOS_TO_DISPLAY) or numWhos
-
-		local button, buttonText, classTextColor, levelTextColor, info
+		local classTextColor, levelTextColor
 
 		for i = 1, numWhos do
-			button = _G['WhoFrameButton'..i]
-			info = C_FriendList_GetWhoInfo(button.whoIndex)
+			local button = _G['WhoFrameButton'..i]
+			local info = C_FriendList_GetWhoInfo(button.whoIndex)
 
 			if info.filename then
 				classTextColor = E:ClassColor(info.filename)
@@ -260,17 +255,14 @@ function S:FriendsFrame()
 
 			levelTextColor = GetQuestDifficultyColor(info.level)
 
-			buttonText = _G['WhoFrameButton'..i..'Name']
-			buttonText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-			buttonText = _G['WhoFrameButton'..i..'Level']
-			buttonText:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
-			buttonText = _G['WhoFrameButton'..i..'Class']
-			buttonText:SetTextColor(1, 1, 1)
-			buttonText = _G['WhoFrameButton'..i..'Variable']
-			buttonText:SetTextColor(1, 1, 1)
+			_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+			_G['WhoFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
+			_G['WhoFrameButton'..i..'Class']:SetTextColor(1, 1, 1)
 
 			if info.area == playerZone then
-				buttonText:SetTextColor(0, 1, 0)
+				_G['WhoFrameButton'..i..'Variable']:SetTextColor(0, 1, 0)
+			else
+				_G['WhoFrameButton'..i..'Variable']:SetTextColor(1, 1, 1)
 			end
 		end
 	end)
