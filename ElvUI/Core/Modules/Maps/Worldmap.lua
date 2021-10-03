@@ -211,6 +211,10 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
 
 		WorldMapFrame:HookScript('OnShow', function()
+			if not E.Retail and E.global.general.fadeMapWhenMoving then
+				M:EnableMapFading(WorldMapFrame)
+			end
+
 			if not M.CoordsTimer then
 				M:UpdateCoords(true)
 				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
@@ -254,8 +258,10 @@ function M:Initialize()
 		end
 	end
 
-	-- This lets us control the maps fading function
-	hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
+	if E.Retail then
+		-- This lets us control the maps fading function
+		hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
+	end
 
 	-- Enable/Disable map fading when moving
 	-- currently we dont need to touch this cvar because we have our own control for this currently
