@@ -24,7 +24,7 @@ function S:StyleTooltips()
 		_G.ElvUIConfigTooltip,
 		_G.ElvUISpellBookTooltip
 	}) do
-		TT:SecureHookScript(tt, 'OnShow', 'SetStyle')
+		TT:SetStyle(tt)
 	end
 end
 
@@ -53,6 +53,7 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ClearProgressBars')
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
+	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle')
 end
 
 S:AddCallback('TooltipFrames')
