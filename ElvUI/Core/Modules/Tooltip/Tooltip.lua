@@ -562,7 +562,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	local color = TT:SetUnitText(tt, unit, isPlayerUnit)
-	if isShiftKeyDown and isPlayerUnit then
+	if isShiftKeyDown and isPlayerUnit and E.Retail then
 		TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 	end
 
