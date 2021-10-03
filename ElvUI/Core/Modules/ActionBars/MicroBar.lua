@@ -2,14 +2,15 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local next = next
+local wipe = wipe
 local gsub = gsub
 local pairs = pairs
 local assert = assert
 local unpack = unpack
+local tinsert = tinsert
 local CreateFrame = CreateFrame
-local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
-local GetCurrentRegionName = GetCurrentRegionName
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 
@@ -110,14 +111,6 @@ function AB:UpdateMicroButtonsParent()
 		_G[x]:SetParent(microBar)
 	end
 end
-
--- we use this table to sort the micro buttons on our bar to match Blizzard's button placements.
-local __buttonIndex = {
-	[8] = 'CollectionsMicroButton',
-	[9] = 'EJMicroButton',
-	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == 'CN') and 'HelpMicroButton' or 'StoreMicroButton',
-	[11] = 'MainMenuMicroButton'
-}
 
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
