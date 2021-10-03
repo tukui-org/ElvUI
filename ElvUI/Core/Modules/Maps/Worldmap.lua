@@ -61,7 +61,17 @@ end
 
 function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
-	if not WorldMapFrame:IsMaximized() then
+	if not E.Retail then
+		WorldMapFrame:SetParent(E.UIParent)
+		WorldMapFrame:SetScale(1)
+		WorldMapFrame:EnableKeyboard(false)
+		WorldMapFrame:EnableMouse(false)
+		WorldMapFrame:SetFrameStrata('HIGH')
+
+		M:UpdateMaximizedSize()
+
+		_G.WorldMapTooltip:SetFrameLevel(WorldMapFrame.ScrollContainer:GetFrameLevel() + 100)
+	elseif not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
 	end
@@ -244,18 +254,18 @@ function M:Initialize()
 			self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
 			self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
-
-			self:SecureHookScript(WorldMapFrame, 'OnShow', function()
-				if WorldMapFrame:IsMaximized() then
-					WorldMapFrame:UpdateMaximizedSize()
-					self:SetLargeWorldMap()
-				else
-					self:SetSmallWorldMap()
-				end
-
-				M:Unhook(WorldMapFrame, 'OnShow', nil)
-			end)
 		end
+
+		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
+			if E.Retail and WorldMapFrame:IsMaximized() then
+				WorldMapFrame:UpdateMaximizedSize()
+				self:SetLargeWorldMap()
+			else
+				self:SetSmallWorldMap()
+			end
+
+			M:Unhook(WorldMapFrame, 'OnShow', nil)
+		end)
 	end
 
 	if E.Retail then
