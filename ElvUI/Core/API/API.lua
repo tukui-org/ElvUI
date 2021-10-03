@@ -15,6 +15,7 @@ local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
+local GetThreatStatusColor = GetThreatStatusColor
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
@@ -161,7 +162,7 @@ end
 
 function E:GetThreatStatusColor(status)
 	if E.Retail then
-		return _G.GetThreatStatusColor(status)
+		return GetThreatStatusColor(status)
 	else
 		return unpack(ElvUF.colors.threat[status])
 	end
