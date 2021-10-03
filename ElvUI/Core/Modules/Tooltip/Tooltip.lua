@@ -542,6 +542,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
+	local color = TT:SetUnitText(tt, unit, isPlayerUnit)
 
 	if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
 		TT:AddTargetInfo(tt, unit)
@@ -559,11 +560,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if TT.db.mythicDataEnable then
 			TT:AddMythicInfo(tt, unit)
 		end
-	end
 
-	local color = TT:SetUnitText(tt, unit, isPlayerUnit)
-	if isShiftKeyDown and isPlayerUnit and E.Retail then
-		TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
+		if isShiftKeyDown and color then
+			TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
+		end
 	end
 
 	if unit and not isPlayerUnit and TT:IsModKeyDown() and not (E.Retail and C_PetBattles_IsInBattle()) then
