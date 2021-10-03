@@ -222,7 +222,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		-- Prevent losing que inside LFD if someone invites you to group
 		if _G.QueueStatusMinimapButton:IsShown() or IsInGroup() or (not inviterGUID or inviterGUID == '') then return end
 
-		if E.Retail and (CH.BNGetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID)) or IsGuildMember(inviterGUID) then
+		if CH.BNGetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end

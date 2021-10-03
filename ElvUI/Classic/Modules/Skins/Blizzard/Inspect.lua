@@ -4,10 +4,11 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local ipairs = ipairs
+local select = select
 
 local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
+local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_InspectUI()

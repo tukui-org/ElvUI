@@ -10,7 +10,6 @@ local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end

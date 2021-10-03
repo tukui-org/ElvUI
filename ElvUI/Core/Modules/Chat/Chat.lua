@@ -161,8 +161,8 @@ if not E.Retail then
 	CH.BNGetGameAccountInfoByGUID = _G.BNGetGameAccountInfoByGUID
 	CH.BNGetNumFriendGameAccounts = _G.BNGetNumFriendGameAccounts
 
-	CH.BNGetGameAccountInfo = function(_, accountIndex)
-		return _G.BNGetGameAccountInfo(accountIndex)
+	CH.BNGetGameAccountInfo = function(_, gameAccountID)
+		return _G.BNGetGameAccountInfo(gameAccountID)
 	end
 else -- cause it doesnt exist on tbc or classic
 	local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
@@ -219,8 +219,8 @@ else -- cause it doesnt exist on tbc or classic
 		local accountInfo = C_BattleNet_GetFriendAccountInfo(friendIndex)
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
 	end
-	CH.BNGetGameAccountInfo = function(id, accountIndex)
-		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByID(id, accountIndex)
+	CH.BNGetGameAccountInfo = function(id, gameAccountID)
+		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByID(gameAccountID)
 		local accountInfo = C_BattleNet_GetAccountInfoByID(id)
 		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
 	end
@@ -1942,8 +1942,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
 				message = format(globalstring, arg2)
 			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
-				local _, characterName, clientProgram = CH.BNGetGameAccountInfoByGUID(arg12)
-				local _, _, battleTag = CH.BNGetFriendInfoByID(arg13)
+				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
@@ -2596,7 +2595,8 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	if not CH.db.lfgIcons or not IsInGroup() then return end
+	if not E.Retail or not CH.db.lfgIcons or not IsInGroup() then return end
+
 	wipe(lfgRoles)
 
 	local playerRole = UnitGroupRolesAssigned('player')

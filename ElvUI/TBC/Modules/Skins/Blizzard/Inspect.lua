@@ -6,9 +6,11 @@ local unpack, select = unpack, select
 local ipairs = ipairs
 
 local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
+local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
+
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end

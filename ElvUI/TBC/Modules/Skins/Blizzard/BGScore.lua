@@ -50,6 +50,11 @@ function S:SkinWorldStateScore()
 						name = format('%s|cffffffff - |r%s%s|r', Name, (faction == 1 and '|cff00adf0') or '|cffff1919', Realm)
 					end
 				end
+
+				local classTextColor = E:ClassColor(classToken)
+				local nameText = _G['WorldStateScoreButton'..i..'NameText']
+				nameText:SetText(' '..name)
+				nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 			end
 		end
 	end)

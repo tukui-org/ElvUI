@@ -102,4 +102,6 @@ function UF:Update_FocusFrame(frame, db)
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
-tinsert(UF.unitstoload, 'focus')
+if not E.Classic then
+	tinsert(UF.unitstoload, 'focus')
+end

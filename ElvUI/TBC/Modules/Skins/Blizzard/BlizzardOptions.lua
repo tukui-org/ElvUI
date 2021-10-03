@@ -52,10 +52,10 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', function(self)
+	ReadyCheckFrame:HookScript('OnShow', function(frame)
 		-- bug fix, don't show it if player is initiator
-		if self.initiator and UnitIsUnit('player', self.initiator) then
-			self:Hide()
+		if frame.initiator and UnitIsUnit('player', frame.initiator) then
+			frame:Hide()
 		end
 	end)
 
@@ -63,21 +63,21 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrame:SetMovable(true)
 	_G.InterfaceOptionsFrame:EnableMouse(true)
 	_G.InterfaceOptionsFrame:RegisterForDrag('LeftButton', 'RightButton')
-	_G.InterfaceOptionsFrame:SetScript('OnDragStart', function(self)
+	_G.InterfaceOptionsFrame:SetScript('OnDragStart', function(frame)
 		if InCombatLockdown() then return end
-		self:StartMoving()
-		self.isMoving = true
+		frame:StartMoving()
+		frame.isMoving = true
 	end)
-	_G.InterfaceOptionsFrame:SetScript('OnDragStop', function(self)
-		self:StopMovingOrSizing()
-		self.isMoving = false
+	_G.InterfaceOptionsFrame:SetScript('OnDragStop', function(frame)
+		frame:StopMovingOrSizing()
+		frame.isMoving = false
 	end)
 
 	--Chat Config
 	local ChatConfigFrame = _G.ChatConfigFrame
 
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(self)
-		for tab in self.tabPool:EnumerateActive() do
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(frame)
+		for tab in frame.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
 				tab:StripTextures()
 

@@ -10,6 +10,7 @@ local GetLootSlotInfo = GetLootSlotInfo
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
+local GetItemInfo = GetItemInfo
 local IsFishingLoot = IsFishingLoot
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
@@ -188,13 +189,13 @@ function S:LootFrame()
 		end
 	end)
 
-	LootFrame:HookScript('OnShow', function(self)
-		if(IsFishingLoot()) then
-			self.Title:SetText(L["Fishy Loot"])
+	LootFrame:HookScript('OnShow', function(frame)
+		if IsFishingLoot() then
+			frame.Title:SetText(L["Fishy Loot"])
 		elseif(not UnitIsFriend('player', 'target') and UnitIsDead'target') then
-			self.Title:SetText(UnitName('target'))
+			frame.Title:SetText(UnitName('target'))
 		else
-			self.Title:SetText(LOOT)
+			frame.Title:SetText(LOOT)
 		end
 	end)
 

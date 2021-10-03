@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, type, gsub = unpack, type, gsub
-local select, ipairs, pairs = select, ipairs, pairs
+local unpack, gsub = unpack, gsub
+local select, pairs = select, pairs
 local strfind, strmatch = strfind, strmatch
 
 local GetItemInfo = GetItemInfo
@@ -183,18 +183,18 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 	end)
 
-	hooksecurefunc('QuestInfoItem_OnClick', function(self)
-		if self.type == 'choice' then
-			self:SetBackdropBorderColor(1, 0.80, 0.10)
-			self.backdrop:SetBackdropBorderColor(1, 0.80, 0.10)
-			_G[self:GetName()..'Name']:SetTextColor(1, 0.80, 0.10)
+	hooksecurefunc('QuestInfoItem_OnClick', function(frame)
+		if frame.type == 'choice' then
+			frame:SetBackdropBorderColor(1, 0.80, 0.10)
+			frame.backdrop:SetBackdropBorderColor(1, 0.80, 0.10)
+			_G[frame:GetName()..'Name']:SetTextColor(1, 0.80, 0.10)
 
 			local item, name, link
 
 			for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
 				item = _G['QuestInfoRewardsFrameQuestInfoItem'..i]
 
-				if item ~= self then
+				if item ~= frame then
 					name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 					link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
@@ -400,8 +400,8 @@ function S:BlizzardQuestFrames()
 			end
 
 			local numEntries = GetNumQuestLogEntries()
-			for i = 1, numEntries, 1 do
-				local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(i)
+			for y = 1, numEntries do
+				local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
 				if strmatch(questLogTitleText, textString) then
 					if (isComplete == 1 or IsQuestComplete(questId)) then
 						icon:SetDesaturation(0)
@@ -473,8 +473,8 @@ function S:BlizzardQuestFrames()
 
 		_G['QuestLogTitle'..index..'Highlight']:SetAlpha(0)
 
-		hooksecurefunc(questLogTitle, 'SetNormalTexture', function(self, texture)
-			local tex = self:GetNormalTexture()
+		hooksecurefunc(questLogTitle, 'SetNormalTexture', function(title, texture)
+			local tex = title:GetNormalTexture()
 
 			if strfind(texture, 'MinusButton') then
 				tex:SetTexture(E.Media.Textures.MinusButton)
@@ -505,8 +505,8 @@ function S:BlizzardQuestFrames()
 	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)
 	QuestLogCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	hooksecurefunc(_G.QuestLogCollapseAllButton, 'SetNormalTexture', function(self, texture)
-		local tex = self:GetNormalTexture()
+	hooksecurefunc(_G.QuestLogCollapseAllButton, 'SetNormalTexture', function(button, texture)
+		local tex = button:GetNormalTexture()
 
 		if strfind(texture, 'MinusButton') then
 			tex:SetTexture(E.Media.Textures.MinusButton)

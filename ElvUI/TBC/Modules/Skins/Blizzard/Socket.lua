@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local unpack = unpack
+local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 
@@ -35,7 +36,7 @@ function S:Blizzard_ItemSocketingUI()
 	hooksecurefunc('ItemSocketingFrame_Update', function()
 		local numSockets = GetNumSockets()
 		for i = 1, numSockets do
-			local socket = _G[format('ItemSocketingSocket%d', i)]
+			local socket = _G['ItemSocketingSocket'..i]
 			local gemColor = GetSocketTypes(i)
 			local color = E.GemTypeInfo[gemColor]
 			socket.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)

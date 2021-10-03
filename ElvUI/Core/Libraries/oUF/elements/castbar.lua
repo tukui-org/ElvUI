@@ -223,7 +223,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or element.spellID ~= spellID) then
+	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
 
@@ -276,7 +276,7 @@ local function CastStop(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or element.spellID ~= spellID) then
+	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
 
@@ -306,7 +306,7 @@ local function CastFail(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or element.spellID ~= spellID) then
+	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
 
@@ -440,9 +440,9 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
 		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
 		self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
+		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 
 		if oUF.isRetail then
-			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
@@ -497,9 +497,9 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
 		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
+		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 
 		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end

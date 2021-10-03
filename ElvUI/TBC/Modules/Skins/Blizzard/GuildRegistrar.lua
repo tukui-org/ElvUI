@@ -14,7 +14,6 @@ function S:GuildRegistrarFrame()
 	_G.GuildRegistrarGreetingFrame:StripTextures()
 
 	S:HandleCloseButton(_G.GuildRegistrarFrameCloseButton)
-
 	S:HandleButton(_G.GuildRegistrarFrameGoodbyeButton)
 	S:HandleButton(_G.GuildRegistrarFrameCancelButton)
 	S:HandleButton(_G.GuildRegistrarFramePurchaseButton)

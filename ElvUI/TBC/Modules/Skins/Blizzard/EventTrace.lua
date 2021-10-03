@@ -2,20 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local pairs = pairs
+local select = select
+local hooksecurefunc = hooksecurefunc
 
 local function ReskinEventTraceButton(button)
 	S:HandleButton(button)
 	button.NormalTexture:SetAlpha(0)
 	button.MouseoverOverlay:SetAlpha(0)
-end
-
-local function ReskinScrollArrow(self, direction)
-	self.Texture:SetAlpha(0)
-	self.Overlay:SetAlpha(0)
-
-	local tex = self:CreateTexture(nil, 'ARTWORK')
-	tex:SetAllPoints()
-	tex:CreateBackdrop('Transparent')
 end
 
 local function reskinScrollChild(self)

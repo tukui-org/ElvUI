@@ -15,17 +15,15 @@ local UNKNOWN = UNKNOWN
 local Healers, HealerSpecs = {}, {}
 local Tanks, TankSpecs = {}, {}
 
-if E.Retail then
-	for i = 1, MAX_CLASSES do
-		local _, _, classID = GetClassInfo(i)
-		if classID then
-			for specIndex = 1, GetNumSpecializationsForClassID(classID) do
-				local _, name, _, _, role = GetSpecializationInfoForClassID(classID, specIndex)
-				if role == 'HEALER' then
-					HealerSpecs[name] = true
-				elseif role == 'TANK' then
-					TankSpecs[name] = true
-				end
+for i = 1, _G.MAX_CLASSES do
+	local _, _, classID = GetClassInfo(i)
+	if classID then
+		for specIndex = 1, GetNumSpecializationsForClassID(classID) do
+			local _, name, _, _, role = GetSpecializationInfoForClassID(classID, specIndex)
+			if role == 'HEALER' then
+				HealerSpecs[name] = true
+			elseif role == 'TANK' then
+				TankSpecs[name] = true
 			end
 		end
 	end

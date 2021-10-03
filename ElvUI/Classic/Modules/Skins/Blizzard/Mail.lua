@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, select = unpack, select
 
+local CreateFrame = CreateFrame
+local GetInboxNumItems = GetInboxNumItems
 local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxItemLink = GetInboxItemLink
 local GetItemInfo = GetItemInfo
@@ -23,7 +25,7 @@ function S:MailFrame()
 	_G.InboxFrameBg:StripTextures()
 	_G.MailFrameBg:StripTextures()
 
-	_G.InboxTitleText:Point('CENTER', InboxFrame, 'TOP', -10, -17)
+	_G.InboxTitleText:Point('CENTER', _G.InboxFrame, 'TOP', -10, -17)
 
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local mail = _G['MailItem'..i]

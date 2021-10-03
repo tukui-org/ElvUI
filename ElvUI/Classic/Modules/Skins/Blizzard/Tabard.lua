@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-
+local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 function S:TabardFrame()
@@ -53,18 +53,18 @@ function S:TabardFrame()
 	_G.TabardCharacterModelRotateLeftButton:Point('BOTTOMLEFT', 4, 4)
 	_G.TabardCharacterModelRotateRightButton:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
 
-	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(self)
-		if self._blocked then return end
-		self._blocked = true
-		self:Point('BOTTOMLEFT', 4, 4)
-		self._blocked = nil
+	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(button)
+		if button._blocked then return end
+		button._blocked = true
+		button:Point('BOTTOMLEFT', 4, 4)
+		button._blocked = nil
 	end)
 
-	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', function(self)
-		if self._blocked then return end
-		self._blocked = true
-		self:Point('TOPLEFT', TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
-		self._blocked = nil
+	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', function(button)
+		if button._blocked then return end
+		button._blocked = true
+		button:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
+		button._blocked = nil
 	end)
 end
 

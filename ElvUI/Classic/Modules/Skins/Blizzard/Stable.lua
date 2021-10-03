@@ -14,10 +14,10 @@ function S:PetStableFrame()
 	local PetStableFrame = _G.PetStableFrame
 	S:HandleFrame(PetStableFrame, true, nil, 10, -11, -32, 71)
 
-	S:HandleButton(PetStablePurchaseButton)
-	S:HandleCloseButton(PetStableFrameCloseButton)
-	S:HandleRotateButton(PetStableModelRotateRightButton)
-	S:HandleRotateButton(PetStableModelRotateLeftButton)
+	S:HandleButton(_G.PetStablePurchaseButton)
+	S:HandleCloseButton(_G.PetStableFrameCloseButton)
+	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
+	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
 
 	S:HandleItemButton(_G.PetStableCurrentPet, true)
 	_G.PetStableCurrentPetIconTexture:SetDrawLayer('ARTWORK')
@@ -27,8 +27,9 @@ function S:PetStableFrame()
 		_G['PetStableStabledPet'..i..'IconTexture']:SetDrawLayer('ARTWORK')
 	end
 
+	local PetStablePetInfo = _G.PetStablePetInfo
 	PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-	PetStablePetInfo:SetFrameLevel(PetModelFrame:GetFrameLevel() + 2)
+	PetStablePetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
 	PetStablePetInfo:CreateBackdrop('Default')
 	PetStablePetInfo:Size(24)
 

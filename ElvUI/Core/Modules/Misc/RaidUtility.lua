@@ -281,43 +281,45 @@ function RU:Initialize()
 	CloseButton:SetScript('OnMouseUp', function() RaidUtilityPanel.toggled = false end)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
-	local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
-	RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
-	RoleIcons:Size(36, PANEL_HEIGHT)
-	RoleIcons:SetTemplate('Transparent')
-	RoleIcons:RegisterEvent('PLAYER_ENTERING_WORLD')
-	RoleIcons:RegisterEvent('GROUP_ROSTER_UPDATE')
-	RoleIcons:SetScript('OnEvent', UpdateIcons)
-	RoleIcons.icons = {}
+	if E.Retail then
+		local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
+		RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
+		RoleIcons:Size(36, PANEL_HEIGHT)
+		RoleIcons:SetTemplate('Transparent')
+		RoleIcons:RegisterEvent('PLAYER_ENTERING_WORLD')
+		RoleIcons:RegisterEvent('GROUP_ROSTER_UPDATE')
+		RoleIcons:SetScript('OnEvent', UpdateIcons)
+		RoleIcons.icons = {}
 
-	local roles = {'TANK', 'HEALER', 'DAMAGER'}
-	for i, role in ipairs(roles) do
-		local frame = CreateFrame('Frame', '$parent_'..role, RoleIcons)
-		if i == 1 then
-			frame:Point('TOP', 0, -5)
-		else
-			frame:Point('TOP', _G['RaidUtilityRoleIcons_'..roles[i-1]], 'BOTTOM', 0, -8)
+		local roles = {'TANK', 'HEALER', 'DAMAGER'}
+		for i, role in ipairs(roles) do
+			local frame = CreateFrame('Frame', '$parent_'..role, RoleIcons)
+			if i == 1 then
+				frame:Point('TOP', 0, -5)
+			else
+				frame:Point('TOP', _G['RaidUtilityRoleIcons_'..roles[i-1]], 'BOTTOM', 0, -8)
+			end
+
+			local texture = frame:CreateTexture(nil, 'OVERLAY')
+			texture:SetTexture(E.Media.Textures.RoleIcons) --(337499)
+			local texA, texB, texC, texD = GetTexCoordsForRole(role)
+			texture:SetTexCoord(texA, texB, texC, texD)
+			texture:Point('TOPLEFT', frame, 'TOPLEFT', -2, 2)
+			texture:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 2, -2)
+			frame.texture = texture
+
+			local Count = frame:CreateFontString(nil, 'OVERLAY', 'GameFontHighlight')
+			Count:Point('BOTTOMRIGHT', -2, 2)
+			Count:SetText(0)
+			frame.count = Count
+
+			frame.role = role
+			frame:SetScript('OnEnter', RU.RoleOnEnter)
+			frame:SetScript('OnLeave', GameTooltip_Hide)
+			frame:Size(28)
+
+			RoleIcons.icons[role] = frame
 		end
-
-		local texture = frame:CreateTexture(nil, 'OVERLAY')
-		texture:SetTexture(E.Media.Textures.RoleIcons) --(337499)
-		local texA, texB, texC, texD = GetTexCoordsForRole(role)
-		texture:SetTexCoord(texA, texB, texC, texD)
-		texture:Point('TOPLEFT', frame, 'TOPLEFT', -2, 2)
-		texture:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 2, -2)
-		frame.texture = texture
-
-		local Count = frame:CreateFontString(nil, 'OVERLAY', 'GameFontHighlight')
-		Count:Point('BOTTOMRIGHT', -2, 2)
-		Count:SetText(0)
-		frame.count = Count
-
-		frame.role = role
-		frame:SetScript('OnEnter', RU.RoleOnEnter)
-		frame:SetScript('OnLeave', GameTooltip_Hide)
-		frame:Size(28)
-
-		RoleIcons.icons[role] = frame
 	end
 
 	local BUTTON_WIDTH = PANEL_WIDTH - 20

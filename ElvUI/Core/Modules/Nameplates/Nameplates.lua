@@ -508,7 +508,7 @@ function NP:GROUP_ROSTER_UPDATE()
 
 	wipe(NP.GroupRoles)
 
-	if NP.IsInGroup then
+	if NP.IsInGroup and E.Retail then
 		local Unit = (isInRaid and 'raid') or 'party'
 		for i = 1, ((isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers()) do
 			if UnitExists(Unit .. i) then

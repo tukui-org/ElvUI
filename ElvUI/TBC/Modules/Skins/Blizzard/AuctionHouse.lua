@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local pairs, unpack = pairs, unpack
 
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
+local CreateFrame = CreateFrame
 
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
@@ -186,19 +186,20 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsItemButton:SetTemplate('Default', true)
 	_G.AuctionsItemButton:StyleButton()
 
-	_G.AuctionsItemButton:HookScript('OnEvent', function(self, event)
-		if event == 'NEW_AUCTION_UPDATE' and self:GetNormalTexture() then
-			self:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			self:GetNormalTexture():SetInside()
+	_G.AuctionsItemButton:HookScript('OnEvent', function(button, event)
+		local normal = event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture()
+		if normal then
+			normal:SetTexCoord(unpack(E.TexCoords))
+			normal:SetInside()
 
-			local quality = select(4, GetAuctionSellItemInfo())
+			local _, _, _, quality = GetAuctionSellItemInfo()
 			if quality and quality > 1 then
-				self:SetBackdropBorderColor(GetItemQualityColor(quality))
+				button:SetBackdropBorderColor(GetItemQualityColor(quality))
 			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		else
-			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -227,7 +228,6 @@ function S:Blizzard_AuctionUI()
 			local ItemButton = _G[Frame..'Button'..i..'Item']
 			local Texture = _G[Frame..'Button'..i..'ItemIconTexture']
 			local Name = _G[Frame..'Button'..i..'Name']
-			local Highlight = _G[Frame..'Button'..i..'Highlight']
 
 			ItemButton:SetTemplate()
 			ItemButton:StyleButton()

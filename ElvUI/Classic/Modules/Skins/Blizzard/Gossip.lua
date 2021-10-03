@@ -2,6 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local gsub = gsub
+local pairs = pairs
+local strmatch = strmatch
+local hooksecurefunc = hooksecurefunc
+
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetQuestLogTitle = GetQuestLogTitle
+local IsQuestComplete = IsQuestComplete
 
 function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
@@ -99,8 +107,7 @@ function S:GossipFrame()
 	end
 
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-
-	S:HandleCloseButton(_G.ItemTextCloseButton, ItemTextFrame.backdrop)
+	S:HandleCloseButton(_G.ItemTextCloseButton, _G.ItemTextFrame.backdrop)
 
 	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
 	NPCFriendshipStatusBar:StripTextures()

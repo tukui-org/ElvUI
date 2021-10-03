@@ -1389,7 +1389,7 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:HookScript('OnEnter', function(ch) B.SetSlotAlphaForBag(ch, f) end)
 		holder:HookScript('OnLeave', function(ch) B.ResetSlotAlphaForBags(ch, f) end)
 
-		holder.icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
+		holder.icon:SetTexture(E.Media.Textures.Backpack)
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
 		holder.icon:SetInside()
 		holder.IconBorder:Kill()
@@ -1431,19 +1431,19 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	f.stackButton = CreateFrame('Button', name..'StackButton', f.holderFrame)
-	f.stackButton:SetSize(16 + E.Border, 16 + E.Border)
+	f.stackButton:Size(18)
 	f.stackButton:SetTemplate()
-	B:SetButtonTexture(f.stackButton, 'Interface/Cursor/Repair')
+	B:SetButtonTexture(f.stackButton, E.Media.Textures.Repair)
 	f.stackButton:StyleButton(nil, true)
 	f.stackButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.stackButton:SetScript('OnLeave', GameTooltip_Hide)
 
 	--Sort Button
 	f.sortButton = CreateFrame('Button', name..'SortButton', f)
-	f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, E.Border * 2)
-	f.sortButton:Size(16 + E.Border, 16 + E.Border)
+	f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
+	f.sortButton:Size(18)
 	f.sortButton:SetTemplate()
-	B:SetButtonTexture(f.sortButton, E.Retail and 'Interface/ICONS/INV_Pet_Broom' or 'Interface/AddOns/ElvUI/Core/Media/Textures/INV_Pet_Broom')
+	B:SetButtonTexture(f.sortButton, E.Media.Textures.PetBroom)
 	f.sortButton:StyleButton(nil, true)
 	f.sortButton.ttText = L["Sort Bags"]
 	f.sortButton:SetScript('OnEnter', E.Retail and _G.BagItemAutoSortButton:GetScript('OnEnter') or B.Tooltip_Show)
@@ -1455,10 +1455,10 @@ function B:ConstructContainerFrame(name, isBank)
 
 	--Toggle Bags Button
 	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
-	f.bagsButton:Size(16 + E.Border, 16 + E.Border)
-	f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -5, E.Border * 2)
+	f.bagsButton:Size(18)
+	f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	f.bagsButton:SetTemplate()
-	B:SetButtonTexture(f.bagsButton, 'Interface/AddOns/ElvUI/Core/Media/Textures/Button-Backpack-Up')
+	B:SetButtonTexture(f.bagsButton, E.Media.Textures.Backpack)
 	f.bagsButton:StyleButton(nil, true)
 	f.bagsButton.ttText = L["Toggle Bags"]
 	f.bagsButton.ttText2 = format('|cffFFFFFF%s|r', L["Right Click the bag icon to assign a type of item to this bag."])
@@ -1532,9 +1532,9 @@ function B:ConstructContainerFrame(name, isBank)
 			f.bagText:SetText(L["Bank"])
 
 			f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
-			f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
+			f.reagentToggle:Size(18)
 			f.reagentToggle:SetTemplate()
-			f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, E.Border * 2)
+			f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, 2)
 			B:SetButtonTexture(f.reagentToggle, 'Interface/ICONS/INV_Enchant_DustArcane')
 			f.reagentToggle:StyleButton(nil, true)
 			f.reagentToggle.ttText = L["Show/Hide Reagents"]
@@ -1547,7 +1547,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 			--Deposite Reagents Button
 			f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
-			f.depositButton:Size(16 + E.Border, 16 + E.Border)
+			f.depositButton:Size(18)
 			f.depositButton:SetTemplate()
 			f.depositButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.depositButton, 'Interface/ICONS/misc_arrowdown')
@@ -1561,7 +1561,7 @@ function B:ConstructContainerFrame(name, isBank)
 			end)
 
 			f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame)
-			f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
+			f.depositButtonBank:Size(18)
 			f.depositButtonBank:SetTemplate()
 			f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.depositButtonBank, 'Interface/ICONS/misc_arrowdown')
@@ -1577,7 +1577,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		-- Stack
 		if E.Retail then
-			f.stackButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, E.Border * 2)
+			f.stackButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
 		else
 			f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
 		end
@@ -1585,13 +1585,13 @@ function B:ConstructContainerFrame(name, isBank)
 		f.stackButton.ttText = L["Stack Items In Bank"]
 		f.stackButton.ttText2 = L["Hold Shift:"]
 		f.stackButton.ttText2desc = L["Stack Items To Bags"]
-		f.stackButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.stackButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.stackButton:SetScript("OnClick", function()
+		f.stackButton:SetScript('OnEnter', self.Tooltip_Show)
+		f.stackButton:SetScript('OnLeave', self.Tooltip_Hide)
+		f.stackButton:SetScript('OnClick', function()
 			if IsShiftKeyDown() then
-				B:CommandDecorator(B.Stack, "bank bags")()
+				B:CommandDecorator(B.Stack, 'bank bags')()
 			else
-				B:CommandDecorator(B.Compress, "bank")()
+				B:CommandDecorator(B.Compress, 'bank')()
 			end
 		end)
 
@@ -1618,7 +1618,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
 		f.purchaseBagButton:SetShown(not f.fullBank)
-		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
+		f.purchaseBagButton:Size(18)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.purchaseBagButton, 'Interface/ICONS/INV_Misc_Coin_01')
@@ -1645,10 +1645,10 @@ function B:ConstructContainerFrame(name, isBank)
 		f.goldText:SetJustifyH('RIGHT')
 
 		-- Stack/Transfer Button
-		f.stackButton:SetPoint('RIGHT', f.goldText, 'LEFT', -5, E.Border * 2)
 		f.stackButton.ttText = L["Stack Items In Bags"]
 		f.stackButton.ttText2 = L["Hold Shift:"]
 		f.stackButton.ttText2desc = L["Stack Items To Bank"]
+		f.stackButton:Point('RIGHT', f.goldText, 'LEFT', -5, 2)
 		f.stackButton:SetScript('OnClick', function()
 			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
 			if not f.sortingSlots then f.sortingSlots = true end
@@ -1676,7 +1676,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
-		f.vendorGraysButton:Size(16 + E.Border, 16 + E.Border)
+		f.vendorGraysButton:Size(18)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 'Interface/ICONS/INV_Misc_Coin_01')
@@ -1702,7 +1702,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 			for i = 1, MAX_WATCHED_TOKENS do
 				local currency = CreateFrame('Button', format('%sCurrencyButton%d', name, i), f.currencyButton, 'BackpackTokenTemplate')
-				currency:Size(16)
+				currency:Size(18)
 				currency:SetTemplate()
 				currency:SetID(i)
 				currency.icon:SetInside()

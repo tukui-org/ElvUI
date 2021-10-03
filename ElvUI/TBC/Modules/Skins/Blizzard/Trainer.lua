@@ -58,8 +58,8 @@ function S:Blizzard_TrainerUI()
 		highlight:SetTexture('')
 		highlight.SetTexture = E.noop
 
-		hooksecurefunc(button, 'SetNormalTexture', function(self, texture)
-			local tex = self:GetNormalTexture()
+		hooksecurefunc(button, 'SetNormalTexture', function(frame, texture)
+			local tex = frame:GetNormalTexture()
 
 			if strfind(texture, 'MinusButton') then
 				tex:SetTexture(E.Media.Textures.MinusButton)
@@ -85,8 +85,8 @@ function S:Blizzard_TrainerUI()
 	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():Size(15)
 	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	hooksecurefunc(_G.ClassTrainerCollapseAllButton, 'SetNormalTexture', function(self, texture)
-		local tex = self:GetNormalTexture()
+	hooksecurefunc(_G.ClassTrainerCollapseAllButton, 'SetNormalTexture', function(button, texture)
+		local tex = button:GetNormalTexture()
 
 		if strfind(texture, 'MinusButton') then
 			tex:SetTexture(E.Media.Textures.MinusButton)

@@ -73,7 +73,7 @@ function S:ContainerFrame()
 
 	local bagIconCache = {
 		[-2] = 'Interface\\ICONS\\INV_Misc_Key_03',
-		[0] = 'Interface\\Buttons\\Button-Backpack-Up'
+		[0] = E.Media.Textures.Backpack
 	}
 
 	hooksecurefunc('ContainerFrame_GenerateFrame', function(frame)

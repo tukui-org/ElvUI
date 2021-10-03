@@ -17,7 +17,6 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 
 local displayString, lastPanel = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
-local bagIcon = 'Interface/Buttons/Button-Backpack-Up'
 
 local function OnEvent(self)
 	lastPanel = self
@@ -62,7 +61,7 @@ local function OnEnter()
 				icon = GetInventoryItemTexture('player', sumNum)
 			end
 
-			DT.tooltip:AddDoubleLine(format(iconString, icon or bagIcon, bagName), format('%d / %d', usedSlots, numSlots), r or 1, g or 1, b or 1, r2, g2, b2)
+			DT.tooltip:AddDoubleLine(format(iconString, icon or E.Media.Textures.Backpack, bagName), format('%d / %d', usedSlots, numSlots), r or 1, g or 1, b or 1, r2, g2, b2)
 		end
 	end
 

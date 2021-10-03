@@ -3,10 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local GetPetHappiness = GetPetHappiness
 local HasPetUI = HasPetUI
-local hooksecurefunc = hooksecurefunc
 local UnitExists = UnitExists
+local GetPetHappiness = GetPetHappiness
+local hooksecurefunc = hooksecurefunc
 
 function S:PetStableFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end

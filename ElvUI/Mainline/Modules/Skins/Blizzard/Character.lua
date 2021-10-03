@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, ipairs = pairs, ipairs
-local unpack, select, type = unpack, select, type
+local unpack, select = unpack, select
 local hooksecurefunc = hooksecurefunc
 
 local FLYOUT_LOCATIONS = {

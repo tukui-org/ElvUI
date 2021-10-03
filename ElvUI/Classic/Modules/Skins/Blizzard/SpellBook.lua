@@ -52,8 +52,8 @@ function S:SpellBookFrame()
 		local cooldown = _G['SpellButton'..i..'Cooldown']
 		local highlight = _G['SpellButton'..i..'Highlight']
 
-		for i = 1, button:GetNumRegions() do
-			local region = select(i, button:GetRegions())
+		for y = 1, button:GetNumRegions() do
+			local region = select(y, button:GetRegions())
 			if region:GetObjectType() == 'Texture' then
 				if region:GetTexture() ~= 'Interface\\Buttons\\ActionBarFlyoutButton' then
 					region:SetTexture(nil)
@@ -76,9 +76,9 @@ function S:SpellBookFrame()
 		icon:SetTexCoord(unpack(E.TexCoords))
 
 		highlight:SetAllPoints()
-		hooksecurefunc(highlight, 'SetTexture', function(self, texture)
-			if texture == 'Interface\\Buttons\\ButtonHilight-Square' or texture == 'Interface\\Buttons\\UI-PassiveHighlight' then
-				self:SetColorTexture(1, 1, 1, 0.3)
+		hooksecurefunc(highlight, 'SetTexture', function(texture, tex)
+			if tex == 'Interface\\Buttons\\ButtonHilight-Square' or tex == 'Interface\\Buttons\\UI-PassiveHighlight' then
+				texture:SetColorTexture(1, 1, 1, 0.3)
 			end
 		end)
 
@@ -96,8 +96,8 @@ function S:SpellBookFrame()
 		S:HandlePointXY(_G['SpellButton'..i], 0, -20)
 	end
 
-	hooksecurefunc('SpellButton_UpdateButton', function(self)
-		local spellName = _G[self:GetName()..'SpellName']
+	hooksecurefunc('SpellButton_UpdateButton', function(button)
+		local spellName = _G[button:GetName()..'SpellName']
 		local r = spellName:GetTextColor()
 
 		if r < 0.8 then
@@ -122,15 +122,15 @@ function S:SpellBookFrame()
 			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -32, -70)
 		end
 
-		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(self, texPath)
-			if texPath ~= nil then
-				self:SetPushedTexture(nil)
+		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(texture, tex)
+			if tex ~= nil then
+				texture:SetPushedTexture(nil)
 			end
 		end)
 
-		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(self, texPath)
-			if texPath ~= nil then
-				self:SetHighlightTexture(nil)
+		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(texture, tex)
+			if tex ~= nil then
+				texture:SetHighlightTexture(nil)
 			end
 		end)
 

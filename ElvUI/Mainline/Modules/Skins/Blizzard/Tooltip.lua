@@ -4,7 +4,6 @@ local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local pairs = pairs
-local unpack = unpack
 
 function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end

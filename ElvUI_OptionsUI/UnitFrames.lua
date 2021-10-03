@@ -1006,7 +1006,7 @@ UnitFrame.generalOptionsGroup.args.raidDebuffIndicator.inline = true
 UnitFrame.generalOptionsGroup.args.raidDebuffIndicator.args.instanceFilter = ACH:Select(L["Dungeon & Raid Filter"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
 UnitFrame.generalOptionsGroup.args.raidDebuffIndicator.args.otherFilter = ACH:Select(L["Other Filter"], nil, 2, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
 
-UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames = ACH:Group(L["Disabled Blizzard Frames"], nil, 8, nil, function(info) return E.private.unitframe.disabledBlizzardFrames[info[#info]] end, function(info, value) E.private.unitframe.disabledBlizzardFrames[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
+UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames = ACH:Group(L["Disabled Blizzard Frames"], nil, 8, nil, function(_, key) return E.private.unitframe.disabledBlizzardFrames[key] end, function(_, key, value) E.private.unitframe.disabledBlizzardFrames[key] = value E:StaticPopup_Show('PRIVATE_RL') end)
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { player = L["Player"], target = L["Target"], focus = L["Focus"] })
@@ -2077,7 +2077,7 @@ TargetTargetTarget.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'ta
 TargetTargetTarget.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'targettargettarget')
 TargetTargetTarget.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget')
 
-IndividualUnits.focus = ACH:Group(L["Focus"], nil, 6, nil, function(info) return E.db.unitframe.units.focus[info[#info]] end, function(info, value) E.db.unitframe.units.focus[info[#info]] = value UF:CreateAndUpdateUF('focus') end)
+IndividualUnits.focus = ACH:Group(L["Focus"], nil, 6, nil, function(info) return E.db.unitframe.units.focus[info[#info]] end, function(info, value) E.db.unitframe.units.focus[info[#info]] = value UF:CreateAndUpdateUF('focus') end, nil, function() return E.Classic end)
 local Focus = IndividualUnits.focus.args
 
 Focus.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -2103,7 +2103,7 @@ Focus.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus')
 Focus.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'focus')
 Focus.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus')
 
-IndividualUnits.focustarget = ACH:Group(L["FocusTarget"], nil, 8, nil, function(info) return E.db.unitframe.units.focus[info[#info]] end, function(info, value) E.db.unitframe.units.focus[info[#info]] = value UF:CreateAndUpdateUF('focus') end)
+IndividualUnits.focustarget = ACH:Group(L["FocusTarget"], nil, 8, nil, function(info) return E.db.unitframe.units.focus[info[#info]] end, function(info, value) E.db.unitframe.units.focus[info[#info]] = value UF:CreateAndUpdateUF('focus') end, nil, function() return E.Classic end)
 local FocusTarget = IndividualUnits.focustarget.args
 
 FocusTarget.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -2148,7 +2148,7 @@ PetTarget.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'pettarget')
 UnitFrame.groupUnits = ACH:Group(L["Group Units"], nil, 16, 'tab')
 local GroupUnits = UnitFrame.groupUnits.args
 
-GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end)
+GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end, nil, function() return E.Classic end)
 local Boss = GroupUnits.boss.args
 
 Boss.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -2170,7 +2170,7 @@ Boss.castbar = GetOptionsTable_Castbar(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX
 Boss.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES)
 Boss.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES)
 
-GroupUnits.arena = ACH:Group(L["Arena"], nil, nil, nil, function(info) return E.db.unitframe.units.arena[info[#info]] end, function(info, value) E.db.unitframe.units.arena[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end)
+GroupUnits.arena = ACH:Group(L["Arena"], nil, nil, nil, function(info) return E.db.unitframe.units.arena[info[#info]] end, function(info, value) E.db.unitframe.units.arena[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end, nil, function() return E.Classic end)
 local Arena = GroupUnits.arena.args
 
 Arena.enable = ACH:Toggle(L["Enable"], nil, 1)

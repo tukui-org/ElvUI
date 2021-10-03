@@ -2,14 +2,15 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local next = next
+local wipe = wipe
 local gsub = gsub
 local pairs = pairs
 local assert = assert
 local unpack = unpack
+local tinsert = tinsert
 local CreateFrame = CreateFrame
-local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
-local GetCurrentRegionName = GetCurrentRegionName
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 
@@ -78,15 +79,20 @@ function AB:HandleMicroButton(button)
 		button.Flash:SetTexture()
 	end
 
-	pushed:SetTexCoord(0.22, 0.81, 0.26, 0.82)
-	pushed:SetInside(button)
+	local l, r, t, b = 0.22, 0.81, 0.26, 0.82
+	if not E.Retail then
+		l, r, t, b = 0.17, 0.87, 0.5, 0.908
+	end
 
-	normal:SetTexCoord(0.22, 0.81, 0.21, 0.82)
-	normal:SetInside(button)
+	pushed:SetTexCoord(l, r, t, b)
+	pushed:SetInside(button.backdrop)
+
+	normal:SetTexCoord(l, r, t, b)
+	normal:SetInside(button.backdrop)
 
 	if disabled then
-		disabled:SetTexCoord(0.22, 0.81, 0.21, 0.82)
-		disabled:SetInside(button)
+		disabled:SetTexCoord(l, r, t, b)
+		disabled:SetInside(button.backdrop)
 	end
 end
 
@@ -106,14 +112,6 @@ function AB:UpdateMicroButtonsParent()
 	end
 end
 
--- we use this table to sort the micro buttons on our bar to match Blizzard's button placements.
-local __buttonIndex = {
-	[8] = 'CollectionsMicroButton',
-	[9] = 'EJMicroButton',
-	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == 'CN') and 'HelpMicroButton' or 'StoreMicroButton',
-	[11] = 'MainMenuMicroButton'
-}
-
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
 		AB.NeedsUpdateMicroBarVisibility = true
@@ -127,6 +125,41 @@ function AB:UpdateMicroBarVisibility()
 	RegisterStateDriver(microBar.visibility, 'visibility', (AB.db.microbar.enabled and visibility) or 'hide')
 end
 
+local commandKeys = {
+	CharacterMicroButton = 'TOGGLECHARACTER0',
+	SpellbookMicroButton = 'TOGGLESPELLBOOK',
+	TalentMicroButton = 'TOGGLETALENTS',
+	AchievementMicroButton = 'TOGGLEACHIEVEMENT',
+	QuestLogMicroButton = 'TOGGLEQUESTLOG',
+	GuildMicroButton = 'TOGGLEGUILDTAB',
+	LFDMicroButton = 'TOGGLEGROUPFINDER',
+	CollectionsMicroButton = 'TOGGLECOLLECTIONS',
+	EJMicroButton = 'TOGGLEENCOUNTERJOURNAL',
+	MainMenuMicroButton = 'TOGGLEGAMEMENU',
+	StoreMicroButton = nil, -- special
+
+	-- tbc specific
+	SocialsMicroButton = 'TOGGLESOCIAL',
+	WorldMapMicroButton = 'TOGGLEWORLDMAP',
+	HelpMicroButton = nil, -- special
+}
+
+do
+	local buttons = {}
+	function AB:ShownMicroButtons()
+		wipe(buttons)
+
+		for _, name in next, _G.MICRO_BUTTONS do
+			local button = _G[name]
+			if button and button:IsShown() then
+				tinsert(buttons, name)
+			end
+		end
+
+		return buttons
+	end
+end
+
 function AB:UpdateMicroPositionDimensions()
 	local db = AB.db.microbar
 	microBar.db = db
@@ -136,22 +169,24 @@ function AB:UpdateMicroPositionDimensions()
 
 	AB:MoverMagic(microBar)
 
-	local btns = _G.MICRO_BUTTONS
-	local numBtns = #btns-1
-	db.buttons = numBtns
+	local btns = AB:ShownMicroButtons()
+	db.buttons = #btns
 
 	local buttonsPerRow = db.buttonsPerRow
 	local backdropSpacing = db.backdropSpacing
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
 	local lastButton, anchorRowButton = microBar
-	for i = 1, numBtns do
-		local name = __buttonIndex[i] or btns[i]
+	for i, name in next, btns do
 		local button = _G[name]
 
 		local columnIndex = i - buttonsPerRow
-		local columnName = __buttonIndex[columnIndex] or btns[columnIndex]
+		local columnName = btns[columnIndex]
 		local columnButton = _G[columnName]
+
+		if not E.Retail then
+			button.commandName = commandKeys[name] -- to support KB like retail
+		end
 
 		button.db = db
 

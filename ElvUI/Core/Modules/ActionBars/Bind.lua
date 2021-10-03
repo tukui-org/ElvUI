@@ -15,7 +15,7 @@ local GetSpellBookItemName = GetSpellBookItemName
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
-local IsShiftKeyDown, IsModifiedClick = IsShiftKeyDown, IsModifiedClick
+local IsShiftKeyDown = IsShiftKeyDown
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
 local SetBinding = SetBinding
@@ -258,11 +258,12 @@ function AB:SwapKeybindButton(event, addon)
 	if event and addon ~= 'Blizzard_BindingUI' then return end
 
 	local parent = _G.KeyBindingFrame
-	parent.quickKeybindButton:Hide()
+	if parent.quickKeybindButton then parent.quickKeybindButton:Hide() end
 
 	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate')
 	frame:Width(150)
-	frame:Point('TOPLEFT', parent.quickKeybindButton)
+	frame:Point('LEFT', parent.bindingsContainer)
+	frame:Point('BOTTOM', parent.cancelButton)
 	frame:SetScript('OnClick', keybindButtonClick)
 	frame:SetText('ElvUI Keybind')
 

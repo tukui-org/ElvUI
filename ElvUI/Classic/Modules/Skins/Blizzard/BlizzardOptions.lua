@@ -7,8 +7,9 @@ local ipairs = ipairs
 local pairs = pairs
 
 local hooksecurefunc = hooksecurefunc
-local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
+local UnitIsUnit = UnitIsUnit
+local MAX_ADDONS_DISPLAYED = MAX_ADDONS_DISPLAYED
 
 local function HandlePushToTalkButton(button)
 	button:Size(button:GetSize())
@@ -34,7 +35,7 @@ function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
 end
 
 function S:BlizzardOptions()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.BlizzardOptions) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
 	-- here we reskin all 'normal' buttons
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
