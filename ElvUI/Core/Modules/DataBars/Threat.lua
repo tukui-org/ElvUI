@@ -3,7 +3,6 @@ local DB = E:GetModule('DataBars')
 
 local pairs, select, wipe = pairs, select, wipe
 
-local GetThreatStatusColor = GetThreatStatusColor
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitClass = UnitClass
 local UnitAffectingCombat = UnitAffectingCombat
@@ -75,16 +74,16 @@ function DB:ThreatBar_Update()
 					bar:SetStatusBarColor(0, 0.839, 0)
 					bar:SetValue(leadPercent)
 				else
-					bar:SetStatusBarColor(GetThreatStatusColor(status))
+					bar:SetStatusBarColor(E:GetThreatStatusColor(status))
 					bar:SetValue(percent)
 				end
 			else
-				bar:SetStatusBarColor(GetThreatStatusColor(status))
+				bar:SetStatusBarColor(E:GetThreatStatusColor(status))
 				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 				bar:SetValue(percent)
 			end
 		elseif percent then
-			bar:SetStatusBarColor(GetThreatStatusColor(status))
+			bar:SetStatusBarColor(E:GetThreatStatusColor(status))
 			bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 			bar:SetValue(percent)
 		else

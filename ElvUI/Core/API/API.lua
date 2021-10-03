@@ -4,7 +4,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local wipe, date, max = wipe, date, max
+local wipe, date, max, unpack = wipe, date, max, unpack
 local select, type, ipairs, pairs = select, type, ipairs, pairs
 local strfind, tonumber, tostring = strfind, tonumber, tostring
 local strlen, CreateFrame = strlen, CreateFrame
@@ -32,11 +32,14 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 local UnitStat = UnitStat
 
+local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
+
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
--- GLOBALS: ElvDB
+-- GLOBALS: ElvDB, ElvUF
 
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
@@ -153,6 +156,14 @@ do
 
 	function E:GetAuraByName(unit, name, filter)
 		return FindAura('name', name, unit, 1, filter, UnitAura(unit, 1, filter))
+	end
+end
+
+function E:GetThreatStatusColor(status)
+	if E.Retail then
+		return _G.GetThreatStatusColor(status)
+	else
+		return unpack(ElvUF.colors.threat[status])
 	end
 end
 
@@ -345,7 +356,7 @@ function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
 	object = _G[object] or object
 
 	--If already doing pokemon
-	if E.Retail and C_PetBattles.IsInBattle() then
+	if E.Retail and C_PetBattles_IsInBattle() then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -541,7 +552,7 @@ function E:GetUnitBattlefieldFaction(unit)
 	-- this might be a rated BG or wargame and if so the player's faction might be altered
 	-- should also apply if `player` is a mercenary.
 	if unit == 'player' and E.Retail then
-		if (C_PvP.IsRatedBattleground() or IsWargame()) then
+		if C_PvP_IsRatedBattleground() or IsWargame() then
 			englishFaction = PLAYER_FACTION_GROUP[GetBattlefieldArenaFaction()]
 			localizedFaction = (englishFaction == 'Alliance' and FACTION_ALLIANCE) or FACTION_HORDE
 		elseif UnitIsMercenary(unit) then
