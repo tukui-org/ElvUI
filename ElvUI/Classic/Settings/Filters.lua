@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local unpack = unpack
-local strlower = strlower
-local strfind = strfind
+local strfind, strlower, unpack = strfind, strlower, unpack
 
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellSubtext = GetSpellSubtext
