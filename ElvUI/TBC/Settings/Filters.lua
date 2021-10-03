@@ -17,160 +17,155 @@ G.unitframe.aurafilters = {}
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
 	spells = {
-	-- Death Knight
-		[47476]  = Defaults(2), -- Strangulate
-		[108194] = Defaults(4), -- Asphyxiate UH
-		[221562] = Defaults(4), -- Asphyxiate Blood
-		[207171] = Defaults(4), -- Winter is Coming
-		[206961] = Defaults(3), -- Tremble Before Me
-		[207167] = Defaults(4), -- Blinding Sleet
-		[212540] = Defaults(1), -- Flesh Hook (Pet)
-		[91807]  = Defaults(1), -- Shambling Rush (Pet)
-		[204085] = Defaults(1), -- Deathchill
-		[233395] = Defaults(1), -- Frozen Center
-		[212332] = Defaults(4), -- Smash (Pet)
-		[212337] = Defaults(4), -- Powerful Smash (Pet)
-		[91800]  = Defaults(4), -- Gnaw (Pet)
-		[91797]  = Defaults(4), -- Monstrous Blow (Pet)
-		[210141] = Defaults(3), -- Zombie Explosion
-	-- Demon Hunter
-		[207685] = Defaults(4), -- Sigil of Misery
-		[217832] = Defaults(3), -- Imprison
-		[221527] = Defaults(5), -- Imprison (Banished version)
-		[204490] = Defaults(2), -- Sigil of Silence
-		[179057] = Defaults(3), -- Chaos Nova
-		[211881] = Defaults(4), -- Fel Eruption
-		[205630] = Defaults(3), -- Illidan's Grasp
-		[208618] = Defaults(3), -- Illidan's Grasp (Afterward)
-		[213491] = Defaults(4), -- Demonic Trample (it's this one or the other)
-		[208645] = Defaults(4), -- Demonic Trample
 	-- Druid
-		[81261]  = Defaults(2), -- Solar Beam
-		[5211]   = Defaults(4), -- Mighty Bash
-		[163505] = Defaults(4), -- Rake
-		[203123] = Defaults(4), -- Maim
-		[202244] = Defaults(4), -- Overrun
-		[99]     = Defaults(4), -- Incapacitating Roar
-		[33786]  = Defaults(5), -- Cyclone
-		[209753] = Defaults(5), -- Cyclone Balance
-		[45334]  = Defaults(1), -- Immobilized
-		[102359] = Defaults(1), -- Mass Entanglement
-		[339]    = Defaults(1), -- Entangling Roots
-		[2637]   = Defaults(1), -- Hibernate
-		[102793] = Defaults(1), -- Ursol's Vortex
+		[339]    = Defaults(1), -- Entangling Roots(Rank 1)
+		[1062]   = Defaults(1), -- Entangling Roots(Rank 2)
+		[5195]   = Defaults(1), -- Entangling Roots(Rank 3)
+		[5196]   = Defaults(1), -- Entangling Roots(Rank 4)
+		[9852]   = Defaults(1), -- Entangling Roots(Rank 5)
+		[9853]   = Defaults(1), -- Entangling Roots(Rank 6)
+		[26989]  = Defaults(1), -- Entangling Roots(Rank 7)
+		[2637]   = Defaults(1), -- Hibernate(Rank 1)
+		[18657]  = Defaults(1), -- Hibernate(Rank 2)
+		[18658]  = Defaults(1), -- Hibernate(Rank 3)
+		[19675]  = Defaults(2), -- Feral Charge Effect
+		[5211]   = Defaults(4), -- Bash(Rank 1)
+		[6798]   = Defaults(4), -- Bash(Rank 2)
+		[8983]   = Defaults(4), -- Bash(Rank 3)
+		[16922]  = Defaults(2), -- Starfire Stun
+		[9005]   = Defaults(2), -- Pounce(Rank 1)
+		[9823]   = Defaults(2), -- Pounce(Rank 2)
+		[9827]   = Defaults(2), -- Pounce(Rank 3)
+		[27006]  = Defaults(2), -- Pounce(Rank 4)
+		[770]    = Defaults(5), -- Faerie Fire(Rank 1)
+		[778]    = Defaults(5), -- Faerie Fire(Rank 2)
+		[9749]   = Defaults(5), -- Faerie Fire(Rank 3)
+		[9907]   = Defaults(5), -- Faerie Fire(Rank 4)
+		[16857]  = Defaults(5), -- Faerie Fire(Feral)(Rank 1)
+		[17390]  = Defaults(5), -- Faerie Fire(Feral)(Rank 2)
+		[17391]  = Defaults(5), -- Faerie Fire(Feral)(Rank 3)
+		[17392]  = Defaults(5), -- Faerie Fire(Feral)(Rank 4)
 	-- Hunter
-		[202933] = Defaults(2), -- Spider Sting (it's this one or the other)
-		[233022] = Defaults(2), -- Spider Sting
-		[213691] = Defaults(4), -- Scatter Shot
-		[19386]  = Defaults(3), -- Wyvern Sting
-		[3355]   = Defaults(3), -- Freezing Trap
-		[203337] = Defaults(5), -- Freezing Trap (Survival PvPT)
-		[209790] = Defaults(3), -- Freezing Arrow
-		[24394]  = Defaults(4), -- Intimidation
-		[117526] = Defaults(4), -- Binding Shot
-		[190927] = Defaults(1), -- Harpoon
-		[201158] = Defaults(1), -- Super Sticky Tar
-		[162480] = Defaults(1), -- Steel Trap
-		[212638] = Defaults(1), -- Tracker's Net
-		[200108] = Defaults(1), -- Ranger's Net
+		[1499]   = Defaults(3), -- Freezing Trap(Rank 1)
+		[14310]  = Defaults(3), -- Freezing Trap(Rank 2)
+		[14311]  = Defaults(3), -- Freezing Trap(Rank 3)
+		[14308]  = Defaults(3), -- Freezing Trap Effect(Rank 2)
+		[14309]  = Defaults(3), -- Freezing Trap Effect(Rank 3)
+		[13809]  = Defaults(1), -- Frost Trap
+		[19503]  = Defaults(4), -- Scatter Shot
+		[5116]   = Defaults(2), -- Concussive Shot
+		[297]    = Defaults(2), -- Wing Clip(Rank 1)
+		[14267]  = Defaults(2), -- Wing Clip(Rank 2)
+		[14268]  = Defaults(2), -- Wing Clip(Rank 3)
+		[1513]   = Defaults(2), -- Scare Beast(Rank 1)
+		[14326]  = Defaults(2), -- Scare Beast(Rank 2)
+		[14327]  = Defaults(2), -- Scare Beast(Rank 3)
+		[19577]  = Defaults(2), -- Intimidation
+		[19386]  = Defaults(2), -- Wyvern Sting(Rank 1)
+		[24132]  = Defaults(2), -- Wyvern Sting(Rank 2)
+		[24133]  = Defaults(2), -- Wyvern Sting(Rank 3)
+		[19229]  = Defaults(2), -- Improved Wing Clip
+		[19306]  = Defaults(2), -- Counterattack(Rank 1)
+		[20909]  = Defaults(2), -- Counterattack(Rank 2)
+		[20910]  = Defaults(2), -- Counterattack(Rank 3)
 	-- Mage
-		[61721]  = Defaults(3), -- Rabbit (Poly)
-		[61305]  = Defaults(3), -- Black Cat (Poly)
-		[28272]  = Defaults(3), -- Pig (Poly)
-		[28271]  = Defaults(3), -- Turtle (Poly)
-		[126819] = Defaults(3), -- Porcupine (Poly)
-		[161354] = Defaults(3), -- Monkey (Poly)
-		[161353] = Defaults(3), -- Polar bear (Poly)
-		[61780]  = Defaults(3),  -- Turkey (Poly)
-		[161355] = Defaults(3), -- Penguin (Poly)
-		[161372] = Defaults(3), -- Peacock (Poly)
-		[277787] = Defaults(3), -- Direhorn (Poly)
-		[277792] = Defaults(3), -- Bumblebee (Poly)
-		[118]    = Defaults(3), -- Polymorph
-		[82691]  = Defaults(3), -- Ring of Frost
-		[31661]  = Defaults(3), -- Dragon's Breath
-		[122]    = Defaults(1), -- Frost Nova
-		[33395]  = Defaults(1), -- Freeze
-		[157997] = Defaults(1), -- Ice Nova
-		[228600] = Defaults(1), -- Glacial Spike
-		[198121] = Defaults(1), -- Forstbite
-	-- Monk
-		[119381] = Defaults(4), -- Leg Sweep
-		[202346] = Defaults(4), -- Double Barrel
-		[115078] = Defaults(4), -- Paralysis
-		[198909] = Defaults(3), -- Song of Chi-Ji
-		[202274] = Defaults(3), -- Incendiary Brew
-		[233759] = Defaults(2), -- Grapple Weapon
-		[123407] = Defaults(1), -- Spinning Fire Blossom
-		[116706] = Defaults(1), -- Disable
-		[232055] = Defaults(4), -- Fists of Fury (it's this one or the other)
+		[118]    = Defaults(3), -- Polymorph(Rank 1)
+		[12824]  = Defaults(3), -- Polymorph(Rank 2)
+		[12825]  = Defaults(3), -- Polymorph(Rank 3)
+		[12826]  = Defaults(3), -- Polymorph(Rank 4)
+		[122]    = Defaults(1), -- Frost Nova(Rank 1)
+		[865]    = Defaults(1), -- Frost Nova(Rank 2)
+		[6131]   = Defaults(1), -- Frost Nova(Rank 3)
+		[10230]  = Defaults(1), -- Frost Nova(Rank 4)
+		[27088]  = Defaults(1), -- Frost Nova(Rank 5)
+		[12494]  = Defaults(2), -- Frostbite
+		[116]    = Defaults(2), -- Frostbolt(Rank 1)
+		[205]    = Defaults(2), -- Frostbolt(Rank 2)
+		[837]    = Defaults(2), -- Frostbolt(Rank 3)
+		[7322]   = Defaults(2), -- Frostbolt(Rank 4)
+		[8406]   = Defaults(2), -- Frostbolt(Rank 5)
+		[8407]   = Defaults(2), -- Frostbolt(Rank 6)
+		[8408]   = Defaults(2), -- Frostbolt(Rank 7)
+		[10179]  = Defaults(2), -- Frostbolt(Rank 8)
+		[10180]  = Defaults(2), -- Frostbolt(Rank 9)
+		[10181]  = Defaults(2), -- Frostbolt(Rank 10)
+		[25304]  = Defaults(2), -- Frostbolt(Rank 11)
+		[27071]  = Defaults(2), -- Frostbolt(Rank 12)
+		[27072]  = Defaults(2), -- Frostbolt(Rank 13)
+		[12355]  = Defaults(2), -- Impact
 	-- Paladin
-		[853]    = Defaults(3), -- Hammer of Justice
+		[853]    = Defaults(3), -- Hammer of Justice(Rank 1)
+		[5588]   = Defaults(3), -- Hammer of Justice(Rank 2)
+		[5589]   = Defaults(3), -- Hammer of Justice(Rank 3)
+		[10308]  = Defaults(3), -- Hammer of Justice(Rank 4)
 		[20066]  = Defaults(3), -- Repentance
-		[105421] = Defaults(3), -- Blinding Light
-		[31935]  = Defaults(2), -- Avenger's Shield
-		[217824] = Defaults(2), -- Shield of Virtue
-		[205290] = Defaults(3), -- Wake of Ashes
 	-- Priest
-		[9484]   = Defaults(3), -- Shackle Undead
-		[200196] = Defaults(4), -- Holy Word: Chastise
-		[200200] = Defaults(4), -- Holy Word: Chastise
-		[226943] = Defaults(3), -- Mind Bomb
-		[605]    = Defaults(5), -- Mind Control
-		[8122]   = Defaults(3), -- Psychic Scream
-		[15487]  = Defaults(2), -- Silence
-		[64044]  = Defaults(1), -- Psychic Horror
-		[453]    = Defaults(5), -- Mind Soothe
+		[8122]   = Defaults(3), -- Psychic Scream(Rank 1)
+		[8124]   = Defaults(3), -- Psychic Scream(Rank 2)
+		[10888]  = Defaults(3), -- Psychic Scream(Rank 3)
+		[10890]  = Defaults(3), -- Psychic Scream(Rank 4)
+		[605]    = Defaults(5), -- Mind Control(Rank 1)
+		[10911]  = Defaults(5), -- Mind Control(Rank 2)
+		[10912]  = Defaults(5), -- Mind Control(Rank 3)
+		[15269]  = Defaults(2), -- Blackout
+		[15407]  = Defaults(2), -- Mind Flay(Rank 1)
+		[17311]  = Defaults(2), -- Mind Flay(Rank 2)
+		[17312]  = Defaults(2), -- Mind Flay(Rank 3)
+		[17313]  = Defaults(2), -- Mind Flay(Rank 4)
+		[17314]  = Defaults(2), -- Mind Flay(Rank 5)
+		[18807]  = Defaults(2), -- Mind Flay(Rank 6)
+		[25387]  = Defaults(2), -- Mind Flay(Rank 7)
 	-- Rogue
-		[2094]   = Defaults(4), -- Blind
-		[6770]   = Defaults(4), -- Sap
-		[1776]   = Defaults(4), -- Gouge
-		[1330]   = Defaults(2), -- Garrote - Silence
-		[207777] = Defaults(2), -- Dismantle
-		[199804] = Defaults(4), -- Between the Eyes
-		[408]    = Defaults(4), -- Kidney Shot
-		[1833]   = Defaults(4), -- Cheap Shot
-		[207736] = Defaults(5), -- Shadowy Duel (Smoke effect)
-		[212182] = Defaults(5), -- Smoke Bomb
+		[6770]   = Defaults(4), -- Sap(Rank 1)
+		[2070]   = Defaults(4), -- Sap(Rank 2)
+		[11297]  = Defaults(4), -- Sap(Rank 3)
+		[2094]   = Defaults(5), -- Blind
+		[408]    = Defaults(4), -- Kidney Shot(Rank 1)
+		[8643]   = Defaults(4), -- Kidney Shot(Rank 2)
+		[1833]   = Defaults(2), -- Cheap Shot
+		[1776]   = Defaults(2), -- Gouge(Rank 1)
+		[1777]   = Defaults(2), -- Gouge(Rank 2)
+		[8629]   = Defaults(2), -- Gouge(Rank 3)
+		[11285]  = Defaults(2), -- Gouge(Rank 4)
+		[11286]  = Defaults(2), -- Gouge(Rank 5)
+		[38764]  = Defaults(2), -- Gouge(Rank 6)
+		[5530]   = Defaults(2), -- Mace Stun Effect
 	-- Shaman
-		[51514]  = Defaults(3), -- Hex
-		[211015] = Defaults(3), -- Hex (Cockroach)
-		[211010] = Defaults(3), -- Hex (Snake)
-		[211004] = Defaults(3), -- Hex (Spider)
-		[210873] = Defaults(3), -- Hex (Compy)
-		[196942] = Defaults(3), -- Hex (Voodoo Totem)
-		[269352] = Defaults(3), -- Hex (Skeletal Hatchling)
-		[277778] = Defaults(3), -- Hex (Zandalari Tendonripper)
-		[277784] = Defaults(3), -- Hex (Wicker Mongrel)
-		[118905] = Defaults(3), -- Static Charge
-		[77505]  = Defaults(4), -- Earthquake (Knocking down)
-		[118345] = Defaults(4), -- Pulverize (Pet)
-		[204399] = Defaults(3), -- Earthfury
-		[204437] = Defaults(3), -- Lightning Lasso
-		[157375] = Defaults(4), -- Gale Force
-		[64695]  = Defaults(1), -- Earthgrab
+		[2484]   = Defaults(1), -- Earthbind Totem
+		[8056]   = Defaults(2), -- Frost Shock(Rank 1)
+		[8058]   = Defaults(2), -- Frost Shock(Rank 2)
+		[10472]  = Defaults(2), -- Frost Shock(Rank 3)
+		[10473]  = Defaults(2), -- Frost Shock(Rank 4)
+		[25464]  = Defaults(2), -- Frost Shock(Rank 5)
 	-- Warlock
-		[710]    = Defaults(5), -- Banish
-		[6789]   = Defaults(3), -- Mortal Coil
-		[118699] = Defaults(3), -- Fear
+		[5782]   = Defaults(3), -- Fear(Rank 1)
+		[6213]   = Defaults(3), -- Fear(Rank 2)
+		[6215]   = Defaults(3), -- Fear(Rank 3)
 		[6358]   = Defaults(3), -- Seduction (Succub)
-		[171017] = Defaults(4), -- Meteor Strike (Infernal)
-		[22703]  = Defaults(4), -- Infernal Awakening (Infernal CD)
-		[30283]  = Defaults(3), -- Shadowfury
-		[89766]  = Defaults(4), -- Axe Toss
-		[233582] = Defaults(1), -- Entrenched in Flame
+		[18223]  = Defaults(2), -- Curse of Exhaustion
+		[18093]  = Defaults(2), -- Pyroclasm
+		[710]    = Defaults(2), -- Banish(Rank 1)
+		[18647]  = Defaults(2), -- Banish(Rank 2)
+		[30413]  = Defaults(2), -- Shadowfury
 	-- Warrior
 		[5246]   = Defaults(4), -- Intimidating Shout
-		[7922]   = Defaults(4), -- Warbringer
-		[132169] = Defaults(4), -- Storm Bolt
-		[132168] = Defaults(4), -- Shockwave
-		[199085] = Defaults(4), -- Warpath
-		[105771] = Defaults(1), -- Charge
-		[199042] = Defaults(1), -- Thunderstruck
-		[236077] = Defaults(2), -- Disarm
+		[1715]   = Defaults(2), -- Hamstring(Rank 1)
+		[7372]   = Defaults(2), -- Hamstring(Rank 2)
+		[7373]   = Defaults(2), -- Hamstring(Rank 3)
+		[25212]  = Defaults(2), -- Hamstring(Rank 4)
+		[12809]  = Defaults(2), -- Concussion Blow
+		[20252]  = Defaults(2), -- Intercept(Rank 1)
+		[20616]  = Defaults(2), -- Intercept(Rank 2)
+		[20617]  = Defaults(2), -- Intercept(Rank 3)
+		[25272]  = Defaults(2), -- Intercept(Rank 4)
+		[25275]  = Defaults(2), -- Intercept(Rank 5)
+		[7386]   = Defaults(6), -- Sunder Armor(Rank 1)
+		[7405]   = Defaults(6), -- Sunder Armor(Rank 2)
+		[8380]   = Defaults(6), -- Sunder Armor(Rank 3)
+		[11596]  = Defaults(6), -- Sunder Armor(Rank 4)
+		[11597]  = Defaults(6), -- Sunder Armor(Rank 5)
 	-- Racial
-		[20549]  = Defaults(4), -- War Stomp
-		[107079] = Defaults(4), -- Quaking Palm
+		[20549]  = Defaults(2), -- War Stomp
 	},
 }
 
@@ -178,462 +173,183 @@ G.unitframe.aurafilters.CCDebuffs = {
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
-	-- Death Knight
-		[48707]  = Defaults(), -- Anti-Magic Shell
-		[81256]  = Defaults(), -- Dancing Rune Weapon
-		[55233]  = Defaults(), -- Vampiric Blood
-		[193320] = Defaults(), -- Umbilicus Eternus
-		[219809] = Defaults(), -- Tombstone
-		[48792]  = Defaults(), -- Icebound Fortitude
-		[207319] = Defaults(), -- Corpse Shield
-		[194844] = Defaults(), -- BoneStorm
-		[145629] = Defaults(), -- Anti-Magic Zone
-		[194679] = Defaults(), -- Rune Tap
-	-- Demon Hunter
-		[207811] = Defaults(), -- Nether Bond (DH)
-		[207810] = Defaults(), -- Nether Bond (Target)
-		[187827] = Defaults(), -- Metamorphosis
-		[263648] = Defaults(), -- Soul Barrier
-		[209426] = Defaults(), -- Darkness
-		[196555] = Defaults(), -- Netherwalk
-		[212800] = Defaults(), -- Blur
-		[188499] = Defaults(), -- Blade Dance
-		[203819] = Defaults(), -- Demon Spikes
-	-- Druid
-		[102342] = Defaults(), -- Ironbark
-		[61336]  = Defaults(), -- Survival Instincts
-		[210655] = Defaults(), -- Protection of Ashamane
-		[22812]  = Defaults(), -- Barkskin
-		[200851] = Defaults(), -- Rage of the Sleeper
-		[234081] = Defaults(), -- Celestial Guardian
-		[202043] = Defaults(), -- Protector of the Pack (it's this one or the other)
-		[201940] = Defaults(), -- Protector of the Pack
-		[201939] = Defaults(), -- Protector of the Pack (Allies)
-		[192081] = Defaults(), -- Ironfur
-		[50334]  = Defaults(), -- Berserk (Guardian)
-	-- Hunter
-		[186265] = Defaults(), -- Aspect of the Turtle
-		[53480]  = Defaults(), -- Roar of Sacrifice
-		[202748] = Defaults(), -- Survival Tactics
 	-- Mage
-		[45438]  = Defaults(), -- Ice Block
-		[113862] = Defaults(), -- Greater Invisibility
-		[198111] = Defaults(), -- Temporal Shield
-		[198065] = Defaults(), -- Prismatic Cloak
-		[11426]  = Defaults(), -- Ice Barrier
-		[235313] = Defaults(), -- Blazing Barrier
-		[110909] = Defaults(), -- Alter Time
-	-- Monk
-		[122783] = Defaults(), -- Diffuse Magic
-		[122278] = Defaults(), -- Dampen Harm
-		[125174] = Defaults(), -- Touch of Karma
-		[201318] = Defaults(), -- Fortifying Elixir
-		[201325] = Defaults(), -- Zen Moment
-		[202248] = Defaults(), -- Guided Meditation
-		[120954] = Defaults(), -- Fortifying Brew
-		[116849] = Defaults(), -- Life Cocoon
-		[202162] = Defaults(), -- Guard
-		[215479] = Defaults(), -- Ironskin Brew
-		[353319] = Defaults(), -- Peaceweaver (PvP)
-		[353362] = Defaults(), -- Dematerialize (PvP)
+		[11958] = Defaults(2), -- Ice Block A
+		[27619] = Defaults(2), -- Ice Block B
+		[45438] = Defaults(2), -- Ice Block C
 	-- Paladin
-		[642]    = Defaults(), -- Divine Shield
-		[498]    = Defaults(), -- Divine Protection
-		[205191] = Defaults(), -- Eye for an Eye
-		[184662] = Defaults(), -- Shield of Vengeance
-		[1022]   = Defaults(), -- Blessing of Protection
-		[6940]   = Defaults(), -- Blessing of Sacrifice
-		[204018] = Defaults(), -- Blessing of Spellwarding
-		[199507] = Defaults(), -- Spreading The Word: Protection
-		[216857] = Defaults(), -- Guarded by the Light
-		[228049] = Defaults(), -- Guardian of the Forgotten Queen
-		[31850]  = Defaults(), -- Ardent Defender
-		[86659]  = Defaults(), -- Guardian of Ancien Kings
-		[212641] = Defaults(), -- Guardian of Ancien Kings (Glyph of the Queen)
-		[209388] = Defaults(), -- Bulwark of Order
-		[204335] = Defaults(), -- Aegis of Light
-		[152262] = Defaults(), -- Seraphim
-		[132403] = Defaults(), -- Shield of the Righteous
-	-- Priest
-		[81782]  = Defaults(), -- Power Word: Barrier
-		[47585]  = Defaults(), -- Dispersion
-		[19236]  = Defaults(), -- Desperate Prayer
-		[213602] = Defaults(), -- Greater Fade
-		[27827]  = Defaults(), -- Spirit of Redemption
-		[197268] = Defaults(), -- Ray of Hope
-		[47788]  = Defaults(), -- Guardian Spirit
-		[33206]  = Defaults(), -- Pain Suppression
-	-- Rogue
-		[5277]   = Defaults(), -- Evasion
-		[31224]  = Defaults(), -- Cloak of Shadows
-		[1966]   = Defaults(), -- Feint
-		[199754] = Defaults(), -- Riposte
-		[45182]  = Defaults(), -- Cheating Death
-		[199027] = Defaults(), -- Veil of Midnight
-	-- Shaman
-		[204293] = Defaults(), -- Spirit Link
-		[204288] = Defaults(), -- Earth Shield
-		[210918] = Defaults(), -- Ethereal Form
-		[207654] = Defaults(), -- Servant of the Queen
-		[108271] = Defaults(), -- Astral Shift
-		[98007]  = Defaults(), -- Spirit Link Totem
-		[207498] = Defaults(), -- Ancestral Protection
-	-- Warlock
-		[108416] = Defaults(), -- Dark Pact
-		[104773] = Defaults(), -- Unending Resolve
-		[221715] = Defaults(), -- Essence Drain
-		[212295] = Defaults(), -- Nether Ward
+		[498]   = Defaults(2), -- Divine Protection(Rank 1)
+		[5573]  = Defaults(2), -- Divine Protection(Rank 2)
+		[642]   = Defaults(2), -- Divine Shield(Rank 1)
+		[1020]  = Defaults(2), -- Divine Shield(Rank 2)
+		[1022]  = Defaults(2), -- Blessing of Protection(Rank 1)
+		[5599]  = Defaults(2), -- Blessing of Protection(Rank 2)
+		[10278] = Defaults(2), -- Blessing of Protection(Rank 3)
 	-- Warrior
-		[118038] = Defaults(), -- Die by the Sword
-		[184364] = Defaults(), -- Enraged Regeneration
-		[209484] = Defaults(), -- Tactical Advance
-		[97463]  = Defaults(), -- Commanding Shout
-		[213915] = Defaults(), -- Mass Spell Reflection
-		[199038] = Defaults(), -- Leave No Man Behind
-		[223658] = Defaults(), -- Safeguard
-		[147833] = Defaults(), -- Intervene
-		[198760] = Defaults(), -- Intercept
-		[12975]  = Defaults(), -- Last Stand
-		[871]    = Defaults(), -- Shield Wall
-		[23920]  = Defaults(), -- Spell Reflection
-		[216890] = Defaults(), -- Spell Reflection (PvPT)
-		[227744] = Defaults(), -- Ravager
-		[203524] = Defaults(), -- Neltharion's Fury
-		[190456] = Defaults(), -- Ignore Pain
-		[132404] = Defaults(), -- Shield Block
+		[20230] = Defaults(2), -- Retaliation
+	-- Consumables
+		[3169]  = Defaults(2), -- Limited Invulnerability Potion
+		[6615]  = Defaults(2), -- Free Action Potion
 	-- Racial
-		[65116]  = Defaults(), -- Stoneform
-	-- Potion
-		[251231] = Defaults(), -- Steelskin Potion (BfA Armor Potion)
+		[7744]  = Defaults(2), -- Will of the Forsaken
+		[6346]  = Defaults(2), -- Fear Ward
+		[20594] = Defaults(2), -- Stoneform
+	-- All Classes
+		[19753] = Defaults(2), -- Divine Intervention
+	-- Druid
+	-- Hunter
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
 	},
 }
 
 G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
-	-- Death Knight
-		[48707]  = Defaults(), -- Anti-Magic Shell
-		[81256]  = Defaults(), -- Dancing Rune Weapon
-		[55233]  = Defaults(), -- Vampiric Blood
-		[193320] = Defaults(), -- Umbilicus Eternus
-		[219809] = Defaults(), -- Tombstone
-		[48792]  = Defaults(), -- Icebound Fortitude
-		[207319] = Defaults(), -- Corpse Shield
-		[194844] = Defaults(), -- BoneStorm
-		[145629] = Defaults(), -- Anti-Magic Zone
-		[194679] = Defaults(), -- Rune Tap
-		[51271]  = Defaults(), -- Pillar of Frost
-		[207256] = Defaults(), -- Obliteration
-		[152279] = Defaults(), -- Breath of Sindragosa
-		[233411] = Defaults(), -- Blood for Blood
-		[212552] = Defaults(), -- Wraith Walk
-		[215711] = Defaults(), -- Soul Reaper
-		[194918] = Defaults(), -- Blighted Rune Weapon
-		[48265]  = Defaults(), -- Death's Advance
-		[49039]  = Defaults(), -- Lichborne
-		[47568]  = Defaults(), -- Empower Rune Weapon
-	-- Demon Hunter
-		[207811] = Defaults(), -- Nether Bond (DH)
-		[207810] = Defaults(), -- Nether Bond (Target)
-		[187827] = Defaults(), -- Metamorphosis
-		[263648] = Defaults(), -- Soul Barrier
-		[209426] = Defaults(), -- Darkness
-		[196555] = Defaults(), -- Netherwalk
-		[212800] = Defaults(), -- Blur
-		[188499] = Defaults(), -- Blade Dance
-		[203819] = Defaults(), -- Demon Spikes
-		[206804] = Defaults(), -- Rain from Above
-		[211510] = Defaults(), -- Solitude
-		[162264] = Defaults(), -- Metamorphosis
-		[205629] = Defaults(), -- Demonic Trample
-		[188501] = Defaults(), -- Spectral Sight
 	-- Druid
-		[102342] = Defaults(), -- Ironbark
-		[61336]  = Defaults(), -- Survival Instincts
-		[210655] = Defaults(), -- Protection of Ashamane
-		[22812]  = Defaults(), -- Barkskin
-		[200851] = Defaults(), -- Rage of the Sleeper
-		[234081] = Defaults(), -- Celestial Guardian
-		[202043] = Defaults(), -- Protector of the Pack (it's this one or the other)
-		[201940] = Defaults(), -- Protector of the Pack
-		[201939] = Defaults(), -- Protector of the Pack (Allies)
-		[192081] = Defaults(), -- Ironfur
-		[29166]  = Defaults(), -- Innervate
-		[208253] = Defaults(), -- Essence of G'Hanir
-		[194223] = Defaults(), -- Celestial Alignment
-		[102560] = Defaults(), -- Incarnation: Chosen of Elune
-		[102543] = Defaults(), -- Incarnation: King of the Jungle
-		[102558] = Defaults(), -- Incarnation: Guardian of Ursoc
-		[117679] = Defaults(), -- Incarnation
-		[106951] = Defaults(), -- Berserk (Feral)
-		[50334]  = Defaults(), -- Berserk (Guardian)
-		[5217]   = Defaults(), -- Tiger's Fury
-		[1850]   = Defaults(), -- Dash
-		[137452] = Defaults(), -- Displacer Beast
-		[102416] = Defaults(), -- Wild Charge
-		[77764]  = Defaults(), -- Stampeding Roar (Cat)
-		[77761]  = Defaults(), -- Stampeding Roar (Bear)
-		[305497] = Defaults(), -- Thorns
-		[233756] = Defaults(), -- Moon and Stars (not used?)
-		[234084] = Defaults(), -- Moon and Stars (PvP)
-		[22842]  = Defaults(), -- Frenzied Regeneration
+		[29166] = Defaults(), -- Innervate
+		[22812] = Defaults(), -- Barkskin
+		[17116] = Defaults(), -- Nature's Swiftness
+		[16689] = Defaults(), -- Nature's Grasp(Rank 1)
+		[16810] = Defaults(), -- Nature's Grasp(Rank 2)
+		[16811] = Defaults(), -- Nature's Grasp(Rank 3)
+		[16812] = Defaults(), -- Nature's Grasp(Rank 4)
+		[16813] = Defaults(), -- Nature's Grasp(Rank 5)
+		[17329] = Defaults(), -- Nature's Grasp(Rank 6)
+		[27009] = Defaults(), -- Nature's Grasp(Rank 7)
+		[16864] = Defaults(), -- Omen of Clarity
+		[5217]  = Defaults(), -- Tiger's Fury(Rank 1)
+		[6793]  = Defaults(), -- Tiger's Fury(Rank 2)
+		[9845]  = Defaults(), -- Tiger's Fury(Rank 3)
+		[9846]  = Defaults(), -- Tiger's Fury(Rank 4)
+		[2893]  = Defaults(), -- Abolish Poison
+		[5229]  = Defaults(), -- Enrage
+		[1850]  = Defaults(), -- Dash(Rank 1)
+		[9821]  = Defaults(), -- Dash(Rank 2)
+		[23110] = Defaults(), -- Dash(Rank 3)
 	-- Hunter
-		[186265] = Defaults(), -- Aspect of the Turtle
-		[53480]  = Defaults(), -- Roar of Sacrifice
-		[202748] = Defaults(), -- Survival Tactics
-		[62305]  = Defaults(), -- Master's Call (it's this one or the other)
-		[54216]  = Defaults(), -- Master's Call
-		[288613] = Defaults(), -- Trueshot
-		[193530] = Defaults(), -- Aspect of the Wild
-		[19574]  = Defaults(), -- Bestial Wrath
-		[186289] = Defaults(), -- Aspect of the Eagle
-		[186257] = Defaults(), -- Aspect of the Cheetah
-		[118922] = Defaults(), -- Posthaste
-		[90355]  = Defaults(), -- Ancient Hysteria (Pet)
-		[160452] = Defaults(), -- Netherwinds (Pet)
-		[266779] = Defaults(), -- Coordinated Assault
+		[13161] = Defaults(), -- Aspect of the Beast
+		[5118]  = Defaults(), -- Aspect of the Cheetah
+		[13163] = Defaults(), -- Aspect of the Monkey
+		[13159] = Defaults(), -- Aspect of the Pack
+		[20043] = Defaults(), -- Aspect of the Wild(Rank 1)
+		[20190] = Defaults(), -- Aspect of the Wild(Rank 2)
+		[27045] = Defaults(), -- Aspect of the Wild(Rank 3)
+		[3045]  = Defaults(), -- Rapid Fire
+		[19263] = Defaults(), -- Deterrence
+		[13165] = Defaults(), -- Aspect of the Hawk(Rank 1)
+		[14318] = Defaults(), -- Aspect of the Hawk(Rank 2)
+		[14319] = Defaults(), -- Aspect of the Hawk(Rank 3)
+		[14320] = Defaults(), -- Aspect of the Hawk(Rank 4)
+		[14321] = Defaults(), -- Aspect of the Hawk(Rank 5)
+		[14322] = Defaults(), -- Aspect of the Hawk(Rank 6)
+		[25296] = Defaults(), -- Aspect of the Hawk(Rank 7)
+		[27044] = Defaults(), -- Aspect of the Hawk(Rank 8)
 	-- Mage
-		[45438]  = Defaults(), -- Ice Block
-		[113862] = Defaults(), -- Greater Invisibility
-		[198111] = Defaults(), -- Temporal Shield
-		[198065] = Defaults(), -- Prismatic Cloak
-		[11426]  = Defaults(), -- Ice Barrier
-		[190319] = Defaults(), -- Combustion
-		[80353]  = Defaults(), -- Time Warp
-		[12472]  = Defaults(), -- Icy Veins
-		[12042]  = Defaults(), -- Arcane Power
-		[116014] = Defaults(), -- Rune of Power
-		[198144] = Defaults(), -- Ice Form
-		[108839] = Defaults(), -- Ice Floes
-		[205025] = Defaults(), -- Presence of Mind
-		[198158] = Defaults(), -- Mass Invisibility
-		[221404] = Defaults(), -- Burning Determination
-		[110909] = Defaults(), -- Alter Time
-	-- Monk
-		[122783] = Defaults(), -- Diffuse Magic
-		[122278] = Defaults(), -- Dampen Harm
-		[125174] = Defaults(), -- Touch of Karma
-		[201318] = Defaults(), -- Fortifying Elixir
-		[201325] = Defaults(), -- Zen Moment
-		[202248] = Defaults(), -- Guided Meditation
-		[120954] = Defaults(), -- Fortifying Brew
-		[116849] = Defaults(), -- Life Cocoon
-		[202162] = Defaults(), -- Guard
-		[215479] = Defaults(), -- Ironskin Brew
-		[152173] = Defaults(), -- Serenity
-		[137639] = Defaults(), -- Storm, Earth, and Fire
-		[216113] = Defaults(), -- Way of the Crane
-		[213664] = Defaults(), -- Nimble Brew
-		[201447] = Defaults(), -- Ride the Wind
-		[195381] = Defaults(), -- Healing Winds
-		[116841] = Defaults(), -- Tiger's Lust
-		[119085] = Defaults(), -- Chi Torpedo
-		[199407] = Defaults(), -- Light on Your Feet
-		[209584] = Defaults(), -- Zen Focus Tea
+		[11958] = Defaults(), -- Ice Block A
+		[27619] = Defaults(), -- Ice Block B
+		[12043] = Defaults(), -- Presence of Mind
+		[11129] = Defaults(), -- Combustion
+		[12042] = Defaults(), -- Arcane Power
+		[11426] = Defaults(), -- Ice Barrier(Rank 1)
+		[13031] = Defaults(), -- Ice Barrier(Rank 2)
+		[13032] = Defaults(), -- Ice Barrier(Rank 3)
+		[13033] = Defaults(), -- Ice Barrier(Rank 4)
+		[27134] = Defaults(), -- Ice Barrier(Rank 5)
+		[33405] = Defaults(), -- Ice Barrier(Rank 6)
 	-- Paladin
-		[642]    = Defaults(), -- Divine Shield
-		[498]    = Defaults(), -- Divine Protection
-		[205191] = Defaults(), -- Eye for an Eye
-		[184662] = Defaults(), -- Shield of Vengeance
-		[1022]   = Defaults(), -- Blessing of Protection
-		[6940]   = Defaults(), -- Blessing of Sacrifice
-		[204018] = Defaults(), -- Blessing of Spellwarding
-		[199507] = Defaults(), -- Spreading The Word: Protection
-		[216857] = Defaults(), -- Guarded by the Light
-		[228049] = Defaults(), -- Guardian of the Forgotten Queen
-		[31850]  = Defaults(), -- Ardent Defender
-		[86659]  = Defaults(), -- Guardian of Ancien Kings
-		[212641] = Defaults(), -- Guardian of Ancien Kings (Glyph of the Queen)
-		[209388] = Defaults(), -- Bulwark of Order
-		[204335] = Defaults(), -- Aegis of Light
-		[152262] = Defaults(), -- Seraphim
-		[132403] = Defaults(), -- Shield of the Righteous
-		[31884]  = Defaults(), -- Avenging Wrath
-		[105809] = Defaults(), -- Holy Avenger
-		[231895] = Defaults(), -- Crusade
-		[200652] = Defaults(), -- Tyr's Deliverance
-		[216331] = Defaults(), -- Avenging Crusader
-		[1044]   = Defaults(), -- Blessing of Freedom
-		[210256] = Defaults(), -- Blessing of Sanctuary
-		[199545] = Defaults(), -- Steed of Glory
-		[210294] = Defaults(), -- Divine Favor
-		[221886] = Defaults(), -- Divine Steed
-		[31821]  = Defaults(), -- Aura Mastery
-		[203538] = Defaults(), -- Greater Blessing of Kings
-		[203539] = Defaults(), -- Greater Blessing of Wisdom
+		[1044]  = Defaults(), -- Blessing of Freedom
+		[1038]  = Defaults(), -- Blessing of Salvation
+		[465]   = Defaults(), -- Devotion Aura(Rank 1)
+		[10290] = Defaults(), -- Devotion Aura(Rank 2)
+		[643]   = Defaults(), -- Devotion Aura(Rank 3)
+		[10291] = Defaults(), -- Devotion Aura(Rank 4)
+		[1032]  = Defaults(), -- Devotion Aura(Rank 5)
+		[10292] = Defaults(), -- Devotion Aura(Rank 6)
+		[10293] = Defaults(), -- Devotion Aura(Rank 7)
+		[27149] = Defaults(), -- Devotion Aura(Rank 8)
+		[19746] = Defaults(), -- Concentration Aura
+		[7294]  = Defaults(), -- Retribution Aura(Rank 1)
+		[10298] = Defaults(), -- Retribution Aura(Rank 2)
+		[10299] = Defaults(), -- Retribution Aura(Rank 3)
+		[10300] = Defaults(), -- Retribution Aura(Rank 4)
+		[10301] = Defaults(), -- Retribution Aura(Rank 5)
+		[27150] = Defaults(), -- Retribution Aura(Rank 6)
+		[19876] = Defaults(), -- Shadow Resistance Aura(Rank 1)
+		[19895] = Defaults(), -- Shadow Resistance Aura(Rank 2)
+		[19896] = Defaults(), -- Shadow Resistance Aura(Rank 3)
+		[27151] = Defaults(), -- Shadow Resistance Aura(Rank 4)
+		[19888] = Defaults(), -- Frost Resistance Aura(Rank 1)
+		[19897] = Defaults(), -- Frost Resistance Aura(Rank 2)
+		[19898] = Defaults(), -- Frost Resistance Aura(Rank 3)
+		[27152] = Defaults(), -- Frost Resistance Aura(Rank 4)
+		[19891] = Defaults(), -- Fire Resistance Aura(Rank 1)
+		[19899] = Defaults(), -- Fire Resistance Aura(Rank 2)
+		[19900] = Defaults(), -- Fire Resistance Aura(Rank 3)
+		[27153] = Defaults(), -- Fire Resistance Aura(Rank 4)
 	-- Priest
-		[81782]  = Defaults(), -- Power Word: Barrier
-		[47585]  = Defaults(), -- Dispersion
-		[19236]  = Defaults(), -- Desperate Prayer
-		[213602] = Defaults(), -- Greater Fade
-		[27827]  = Defaults(), -- Spirit of Redemption
-		[197268] = Defaults(), -- Ray of Hope
-		[47788]  = Defaults(), -- Guardian Spirit
-		[33206]  = Defaults(), -- Pain Suppression
-		[200183] = Defaults(), -- Apotheosis
-		[10060]  = Defaults(), -- Power Infusion
-		[47536]  = Defaults(), -- Rapture
-		[194249] = Defaults(), -- Voidform
-		[193223] = Defaults(), -- Surrdender to Madness
-		[197862] = Defaults(), -- Archangel
-		[197871] = Defaults(), -- Dark Archangel
-		[197874] = Defaults(), -- Dark Archangel
-		[215769] = Defaults(), -- Spirit of Redemption
-		[213610] = Defaults(), -- Holy Ward
-		[121557] = Defaults(), -- Angelic Feather
-		[214121] = Defaults(), -- Body and Mind
-		[65081]  = Defaults(), -- Body and Soul
-		[197767] = Defaults(), -- Speed of the Pious
-		[210980] = Defaults(), -- Focus in the Light
-		[221660] = Defaults(), -- Holy Concentration
-		[15286]  = Defaults(), -- Vampiric Embrace
+		[15473] = Defaults(), -- Shadowform
+		[10060] = Defaults(), -- Power Infusion
+		[14751] = Defaults(), -- Inner Focus
+		[1706]  = Defaults(), -- Levitate
+		[586]   = Defaults(), -- Fade(Rank 1)
+		[9578]  = Defaults(), -- Fade(Rank 2)
+		[9579]  = Defaults(), -- Fade(Rank 3)
+		[9592]  = Defaults(), -- Fade(Rank 4)
+		[10941] = Defaults(), -- Fade(Rank 5)
+		[10942] = Defaults(), -- Fade(Rank 6)
+		[25429] = Defaults(), -- Fade(Rank 7)
 	-- Rogue
-		[5277]   = Defaults(), -- Evasion
-		[31224]  = Defaults(), -- Cloak of Shadows
-		[1966]   = Defaults(), -- Feint
-		[199754] = Defaults(), -- Riposte
-		[45182]  = Defaults(), -- Cheating Death
-		[199027] = Defaults(), -- Veil of Midnight
-		[121471] = Defaults(), -- Shadow Blades
-		[13750]  = Defaults(), -- Adrenaline Rush
-		[51690]  = Defaults(), -- Killing Spree
-		[185422] = Defaults(), -- Shadow Dance
-		[198368] = Defaults(), -- Take Your Cut
-		[198027] = Defaults(), -- Turn the Tables
-		[213985] = Defaults(), -- Thief's Bargain
-		[197003] = Defaults(), -- Maneuverability
-		[212198] = Defaults(), -- Crimson Vial
-		[185311] = Defaults(), -- Crimson Vial
-		[209754] = Defaults(), -- Boarding Party
-		[36554]  = Defaults(), -- Shadowstep
-		[2983]   = Defaults(), -- Sprint
-		[202665] = Defaults(), -- Curse of the Dreadblades (Self Debuff)
+		[14177] = Defaults(), -- Cold Blood
+		[13877] = Defaults(), -- Blade Flurry
+		[13750] = Defaults(), -- Adrenaline Rush
+		[2983]  = Defaults(), -- Sprint(Rank 1)
+		[8696]  = Defaults(), -- Sprint(Rank 2)
+		[11305] = Defaults(), -- Sprint(Rank 3)
+		[5171]  = Defaults(), -- Slice and Dice(Rank 1)
+		[6774]  = Defaults(), -- Slice and Dice(Rank 2)
 	-- Shaman
-		[204293] = Defaults(), -- Spirit Link
-		[204288] = Defaults(), -- Earth Shield
-		[210918] = Defaults(), -- Ethereal Form
-		[207654] = Defaults(), -- Servant of the Queen
-		[108271] = Defaults(), -- Astral Shift
-		[98007]  = Defaults(), -- Spirit Link Totem
-		[207498] = Defaults(), -- Ancestral Protection
-		[204366] = Defaults(), -- Thundercharge
-		[209385] = Defaults(), -- Windfury Totem
-		[208963] = Defaults(), -- Skyfury Totem
-		[204945] = Defaults(), -- Doom Winds
-		[205495] = Defaults(), -- Stormkeeper
-		[208416] = Defaults(), -- Sense of Urgency
-		[2825]   = Defaults(), -- Bloodlust
-		[16166]  = Defaults(), -- Elemental Mastery
-		[167204] = Defaults(), -- Feral Spirit
-		[114050] = Defaults(), -- Ascendance (Elem)
-		[114051] = Defaults(), -- Ascendance (Enh)
-		[114052] = Defaults(), -- Ascendance (Resto)
-		[79206]  = Defaults(), -- Spiritwalker's Grace
-		[58875]  = Defaults(), -- Spirit Walk
-		[157384] = Defaults(), -- Eye of the Storm
-		[192082] = Defaults(), -- Wind Rush
-		[2645]   = Defaults(), -- Ghost Wolf
-		[32182]  = Defaults(), -- Heroism
-		[108281] = Defaults(), -- Ancestral Guidance
+		[2645]  = Defaults(), -- Ghost Wolf
+		[324]   = Defaults(), -- Lightning Shield(Rank 1)
+		[325]   = Defaults(), -- Lightning Shield(Rank 2)
+		[905]   = Defaults(), -- Lightning Shield(Rank 3)
+		[945]   = Defaults(), -- Lightning Shield(Rank 4)
+		[8134]  = Defaults(), -- Lightning Shield(Rank 5)
+		[10431] = Defaults(), -- Lightning Shield(Rank 6)
+		[10432] = Defaults(), -- Lightning Shield(Rank 7)
+		[25469] = Defaults(), -- Lightning Shield(Rank 8)
+		[25472] = Defaults(), -- Lightning Shield(Rank 9)
+		[16188] = Defaults(), -- Nature's Swiftness
+		[16166] = Defaults(), -- Elemental Mastery
+		[24398] = Defaults(), -- Water Shield(Rank 1)
+		[33736] = Defaults(), -- Water Shield(Rank 2)
 	-- Warlock
-		[108416] = Defaults(), -- Dark Pact
-		[113860] = Defaults(), -- Dark Soul: Misery
-		[104773] = Defaults(), -- Unending Resolve
-		[221715] = Defaults(), -- Essence Drain
-		[212295] = Defaults(), -- Nether Ward
-		[212284] = Defaults(), -- Firestone
-		[196098] = Defaults(), -- Soul Harvest
-		[221705] = Defaults(), -- Casting Circle
-		[111400] = Defaults(), -- Burning Rush
-		[196674] = Defaults(), -- Planeswalker
+		[18788] = Defaults(), -- Demonic Sacrifice
+		[5697]  = Defaults(), -- Unending Breath
+		[19028] = Defaults(), -- Soul Link A
+		[25228] = Defaults(), -- Soul Link B
 	-- Warrior
-		[118038] = Defaults(), -- Die by the Sword
-		[184364] = Defaults(), -- Enraged Regeneration
-		[209484] = Defaults(), -- Tactical Advance
-		[97463]  = Defaults(), -- Commanding Shout
-		[213915] = Defaults(), -- Mass Spell Reflection
-		[199038] = Defaults(), -- Leave No Man Behind
-		[223658] = Defaults(), -- Safeguard
-		[147833] = Defaults(), -- Intervene
-		[198760] = Defaults(), -- Intercept
-		[12975]  = Defaults(), -- Last Stand
-		[871]    = Defaults(), -- Shield Wall
-		[23920]  = Defaults(), -- Spell Reflection
-		[216890] = Defaults(), -- Spell Reflection (PvPT)
-		[227744] = Defaults(), -- Ravager
-		[203524] = Defaults(), -- Neltharion's Fury
-		[190456] = Defaults(), -- Ignore Pain
-		[132404] = Defaults(), -- Shield Block
-		[1719]   = Defaults(), -- Battle Cry
-		[107574] = Defaults(), -- Avatar
-		[227847] = Defaults(), -- Bladestorm (Arm)
-		[46924]  = Defaults(), -- Bladestorm (Fury)
-		[12292]  = Defaults(), -- Bloodbath
-		[118000] = Defaults(), -- Dragon Roar
-		[199261] = Defaults(), -- Death Wish
-		[18499]  = Defaults(), -- Berserker Rage
-		[202164] = Defaults(), -- Bounding Stride
-		[215572] = Defaults(), -- Frothing Berserker
-		[199203] = Defaults(), -- Thirst for Battle
-	-- Racials
-		[65116]  = Defaults(), -- Stoneform
-		[59547]  = Defaults(), -- Gift of the Naaru
-		[20572]  = Defaults(), -- Blood Fury
-		[26297]  = Defaults(), -- Berserking
-		[68992]  = Defaults(), -- Darkflight
-		[58984]  = Defaults(), -- Shadowmeld
-	-- Consumables
-		[251231] = Defaults(), -- Steelskin Potion (BfA Armor)
-		[251316] = Defaults(), -- Potion of Bursting Blood (BfA Melee)
-		[269853] = Defaults(), -- Potion of Rising Death (BfA Caster)
-		[279151] = Defaults(), -- Battle Potion of Intellect (BfA Intellect)
-		[279152] = Defaults(), -- Battle Potion of Agility (BfA Agility)
-		[279153] = Defaults(), -- Battle Potion of Strength (BfA Strength)
-		[178207] = Defaults(), -- Drums of Fury
-		[230935] = Defaults(), -- Drums of the Mountain (Legion)
-		[256740] = Defaults(), -- Drums of the Maelstrom (BfA)
-		[298155] = Defaults(), -- Superior Steelskin Potion
-		[298152] = Defaults(), -- Superior Battle Potion of Intellect
-		[298146] = Defaults(), -- Superior Battle Potion of Agility
-		[298154] = Defaults(), -- Superior Battle Potion of Strength
-		[298153] = Defaults(), -- Superior Battle Potion of Stamina
-		[298836] = Defaults(), -- Greater Flask of the Currents
-		[298837] = Defaults(), -- Greater Flask of Endless Fathoms
-		[298839] = Defaults(), -- Greater Flask of the Vast Horizon
-		[298841] = Defaults(), -- Greater Flask of the Undertow
-	-- Shadowlands Consumables
-		[307159] = Defaults(), -- Potion of Spectral Agility
-		[307160] = Defaults(), -- Potion of Hardened Shadows
-		[307161] = Defaults(), -- Potion of Spiritual Clarity
-		[307162] = Defaults(), -- Potion of Spectral Intellect
-		[307163] = Defaults(), -- Potion of Spectral Stamina
-		[307164] = Defaults(), -- Potion of Spectral Strength
-		[307165] = Defaults(), -- Spiritual Anti-Venom
-		[307185] = Defaults(), -- Spectral Flask of Power
-		[307187] = Defaults(), -- Spectral Flask of Stamina
-		[307195] = Defaults(), -- Potion of Hidden Spirit
-		[307196] = Defaults(), -- Potion of Shaded Sight
-		[307199] = Defaults(), -- Potion of Soul Purity
-		[307494] = Defaults(), -- Potion of Empowered Exorcisms
-		[307495] = Defaults(), -- Potion of Phantom Fire
-		[307496] = Defaults(), -- Potion of Divine Awakening
-		[307497] = Defaults(), -- Potion of Deathly Fixation
-		[307501] = Defaults(), -- Potion of Specter Swiftness
-		[308397] = Defaults(), -- Butterscotch Marinated Ribs
-		[308402] = Defaults(), -- Surprisingly Palatable Feast
-		[308404] = Defaults(), -- Cinnamon Bonefish Stew
-		[308412] = Defaults(), -- Meaty Apple Dumplings
-		[308425] = Defaults(), -- Sweet Silvergrill Sausages
-		[308434] = Defaults(), -- Phantasmal Souffle and Fries
-		[308488] = Defaults(), -- Tenebrous Crown Roast Aspic
-		[308506] = Defaults(), -- Crawler Ravioli with Apple Sauce
-		[308514] = Defaults(), -- Steak a la Mode
-		[308525] = Defaults(), -- Banana Beef Pudding
-		[308637] = Defaults(), -- Smothered Shank
-		[322302] = Defaults(), -- Potion of Sacrificial Anima
-		[327708] = Defaults(), -- Feast of Gluttonous Hedonism
-		[327715] = Defaults(), -- Fried Bonefish
-		[327851] = Defaults(), -- Seraph Tenders
+		[12975] = Defaults(), -- Last Stand
+		[871]   = Defaults(), -- Shield Wall
+		[20230] = Defaults(), -- Retaliation
+		[1719]  = Defaults(), -- Recklessness
+		[18499] = Defaults(), -- Berserker Rage
+		[2687]  = Defaults(), -- Bloodrage
+		[12328] = Defaults(), -- Death Wish
+		[2565]  = Defaults(), -- Shield Block
+		[12880] = Defaults(), -- Enrage(Rank 1)
+		[14201] = Defaults(), -- Enrage(Rank 2)
+		[14202] = Defaults(), -- Enrage(Rank 3)
+		[14203] = Defaults(), -- Enrage(Rank 4)
+		[14204] = Defaults(), -- Enrage(Rank 5)
+	-- Racial
+		[20554] = Defaults(), -- Berserking
+		[7744]  = Defaults(), -- Will of the Forsaken
+		[20572] = Defaults(), -- Blood Fury
+		[6346]  = Defaults(), -- Fear Ward
+		[20594] = Defaults(), -- Stoneform
 	},
 }
 
@@ -641,41 +357,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
-		[36900]  = Defaults(), -- Soul Split: Evil!
-		[36901]  = Defaults(), -- Soul Split: Good
-		[36893]  = Defaults(), -- Transporter Malfunction
-		[97821]  = Defaults(), -- Void-Touched
-		[36032]  = Defaults(), -- Arcane Charge
-		[8733]   = Defaults(), -- Blessing of Blackfathom
-		[25771]  = Defaults(), -- Forbearance (Pally: Divine Shield, Blessing of Protection, and Lay on Hands)
-		[57724]  = Defaults(), -- Sated (lust debuff)
-		[57723]  = Defaults(), -- Exhaustion (heroism debuff)
-		[80354]  = Defaults(), -- Temporal Displacement (timewarp debuff)
-		[95809]  = Defaults(), -- Insanity debuff (hunter pet heroism: ancient hysteria)
-		[58539]  = Defaults(), -- Watcher's Corpse
-		[26013]  = Defaults(), -- Deserter
-		[71041]  = Defaults(), -- Dungeon Deserter
-		[41425]  = Defaults(), -- Hypothermia
-		[55711]  = Defaults(), -- Weakened Heart
-		[8326]   = Defaults(), -- Ghost
-		[23445]  = Defaults(), -- Evil Twin
-		[24755]  = Defaults(), -- Tricked or Treated
-		[25163]  = Defaults(), -- Oozeling's Disgusting Aura
-		[124275] = Defaults(), -- Stagger
-		[124274] = Defaults(), -- Stagger
-		[124273] = Defaults(), -- Stagger
-		[117870] = Defaults(), -- Touch of The Titans
-		[123981] = Defaults(), -- Perdition
-		[15007]  = Defaults(), -- Ress Sickness
-		[113942] = Defaults(), -- Demonic: Gateway
-		[89140]  = Defaults(), -- Demonic Rebirth: Cooldown
-		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
-		[206662] = Defaults(), -- Experience Eliminated (in range)
-		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
-		[348443] = Defaults(), -- Experience Eliminated
-		[206151] = Defaults(), -- Challenger's Burden
-		[313015] = Defaults(), -- Recently Failed (mechagnome racial)
-		[322695] = Defaults(), -- Drained
+	-- General
+		[186403] = Defaults(), -- Sign of Battle
 	},
 }
 
@@ -683,383 +366,173 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-		-- Bloodlust effects
-		[2825]   = Defaults(), -- Bloodlust
-		[32182]  = Defaults(), -- Heroism
-		[80353]  = Defaults(), -- Time Warp
-		[90355]  = Defaults(), -- Ancient Hysteria
-		-- Paladin
-		[31821]  = Defaults(), -- Aura Mastery
-		[1022]   = Defaults(), -- Blessing of Protection
-		[204018] = Defaults(), -- Blessing of Spellwarding
-		[6940]   = Defaults(), -- Blessing of Sacrifice
-		[1044]   = Defaults(), -- Blessing of Freedom
-		-- Priest
-		[47788]  = Defaults(), -- Guardian Spirit
-		[33206]  = Defaults(), -- Pain Suppression
-		[62618]  = Defaults(), -- Power Word: Barrier
-		-- Monk
-		[116849] = Defaults(), -- Life Cocoon
-		-- Druid
-		[102342] = Defaults(), -- Ironbark
-		-- Shaman
-		[98008]  = Defaults(), -- Spirit Link Totem
-		[20608]  = Defaults(), -- Reincarnation
-		-- Other
-		[97462]  = Defaults(), -- Rallying Cry
-		[196718] = Defaults(), -- Darkness
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	-- Racial
 	},
 }
 
 -- RAID DEBUFFS: This should be pretty self explainitory
+-- Template: [123456] = Defaults(2)
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
-	----------------------------------------------------------
-	-------------------- Mythic+ Specific --------------------
-	----------------------------------------------------------
-	-- General Affixes
-		[209858] = Defaults(), -- Necrotic
-		[226512] = Defaults(), -- Sanguine
-		[240559] = Defaults(), -- Grievous
-		[240443] = Defaults(), -- Bursting
-	-- Shadowlands Season 1
-		[342494] = Defaults(), -- Belligerent Boast (Prideful)
-	-- Shadowlands Season 2
-		[356667] = Defaults(6), -- Biting Cold 1
-		[356666] = Defaults(6), -- Biting Cold 2
-		[355732] = Defaults(6), -- Melt Soul
-		[356925] = Defaults(6), -- Carnage
-		[358777] = Defaults(6), -- Bindings of Misery
-	----------------------------------------------------------
-	------------------ Shadowlands Dungeons ------------------
-	----------------------------------------------------------
-	-- Tazavesh, the Veiled Market
-		[350804] = Defaults(), -- Collapsing Energy
-		[350885] = Defaults(), -- Hyperlight Jolt
-		[351101] = Defaults(), -- Energy Fragmentation
-		[346828] = Defaults(), -- Sanitizing Field
-		[355641] = Defaults(), -- Scintillate
-		[355451] = Defaults(), -- Undertow
-		[355581] = Defaults(), -- Crackle
-		[349999] = Defaults(), -- Anima Detonation
-		[346961] = Defaults(), -- Purging Field
-		[351956] = Defaults(), -- High-Value Target
-		[346297] = Defaults(), -- Unstable Explosion
-		[347728] = Defaults(), -- Flock!
-		[356408] = Defaults(), -- Ground Stomp
-		[347744] = Defaults(), -- Quickblade
-		[347481] = Defaults(), -- Shuri
-		[355915] = Defaults(), -- Glyph of Restraint
-		[350134] = Defaults(), -- Infinite Breath
-		[350013] = Defaults(), -- Gluttonous Feast
-		[355465] = Defaults(), -- Boulder Throw
-		[346116] = Defaults(), -- Shearing Swings
-		[356011] = Defaults(), -- Beam Splicer
-	-- Halls of Atonement
-		[335338] = Defaults(), -- Ritual of Woe
-		[326891] = Defaults(), -- Anguish
-		[329321] = Defaults(), -- Jagged Swipe 1
-		[344993] = Defaults(), -- Jagged Swipe 2
-		[319603] = Defaults(), -- Curse of Stone
-		[319611] = Defaults(), -- Turned to Stone
-		[325876] = Defaults(), -- Curse of Obliteration
-		[326632] = Defaults(), -- Stony Veins
-		[323650] = Defaults(), -- Haunting Fixation
-		[326874] = Defaults(), -- Ankle Bites
-		[340446] = Defaults(), -- Mark of Envy
-	-- Mists of Tirna Scithe
-		[325027] = Defaults(), -- Bramble Burst
-		[323043] = Defaults(), -- Bloodletting
-		[322557] = Defaults(), -- Soul Split
-		[331172] = Defaults(), -- Mind Link
-		[322563] = Defaults(), -- Marked Prey
-		[322487] = Defaults(), -- Overgrowth 1
-		[322486] = Defaults(), -- Overgrowth 2
-		[328756] = Defaults(), -- Repulsive Visage
-		[325021] = Defaults(), -- Mistveil Tear
-		[321891] = Defaults(), -- Freeze Tag Fixation
-		[325224] = Defaults(), -- Anima Injection
-		[326092] = Defaults(), -- Debilitating Poison
-		[325418] = Defaults(), -- Volatile Acid
-	-- Plaguefall
-		[336258] = Defaults(), -- Solitary Prey
-		[331818] = Defaults(), -- Shadow Ambush
-		[329110] = Defaults(), -- Slime Injection
-		[325552] = Defaults(), -- Cytotoxic Slash
-		[336301] = Defaults(), -- Web Wrap
-		[322358] = Defaults(), -- Burning Strain
-		[322410] = Defaults(), -- Withering Filth
-		[328180] = Defaults(), -- Gripping Infection
-		[320542] = Defaults(), -- Wasting Blight
-		[340355] = Defaults(), -- Rapid Infection
-		[328395] = Defaults(), -- Venompiercer
-		[320512] = Defaults(), -- Corroded Claws
-		[333406] = Defaults(), -- Assassinate
-		[332397] = Defaults(), -- Shroudweb
-		[330069] = Defaults(), -- Concentrated Plague
-	-- The Necrotic Wake
-		[321821] = Defaults(), -- Disgusting Guts
-		[323365] = Defaults(), -- Clinging Darkness
-		[338353] = Defaults(), -- Goresplatter
-		[333485] = Defaults(), -- Disease Cloud
-		[338357] = Defaults(), -- Tenderize
-		[328181] = Defaults(), -- Frigid Cold
-		[320170] = Defaults(), -- Necrotic Bolt
-		[323464] = Defaults(), -- Dark Ichor
-		[323198] = Defaults(), -- Dark Exile
-		[343504] = Defaults(), -- Dark Grasp
-		[343556] = Defaults(), -- Morbid Fixation 1
-		[338606] = Defaults(), -- Morbid Fixation 2
-		[324381] = Defaults(), -- Chill Scythe
-		[320573] = Defaults(), -- Shadow Well
-		[333492] = Defaults(), -- Necrotic Ichor
-		[334748] = Defaults(), -- Drain Fluids
-		[333489] = Defaults(), -- Necrotic Breath
-		[320717] = Defaults(), -- Blood Hunger
-	-- Theater of Pain
-		[333299] = Defaults(), -- Curse of Desolation 1
-		[333301] = Defaults(), -- Curse of Desolation 2
-		[319539] = Defaults(), -- Soulless
-		[326892] = Defaults(), -- Fixate
-		[321768] = Defaults(), -- On the Hook
-		[323825] = Defaults(), -- Grasping Rift
-		[342675] = Defaults(), -- Bone Spear
-		[323831] = Defaults(), -- Death Grasp
-		[330608] = Defaults(), -- Vile Eruption
-		[330868] = Defaults(), -- Necrotic Bolt Volley
-		[323750] = Defaults(), -- Vile Gas
-		[323406] = Defaults(), -- Jagged Gash
-		[330700] = Defaults(), -- Decaying Blight
-		[319626] = Defaults(), -- Phantasmal Parasite
-		[324449] = Defaults(), -- Manifest Death
-		[341949] = Defaults(), -- Withering Blight
-	-- Sanguine Depths
-		[326827] = Defaults(), -- Dread Bindings
-		[326836] = Defaults(), -- Curse of Suppression
-		[322554] = Defaults(), -- Castigate
-		[321038] = Defaults(), -- Burden Soul
-		[328593] = Defaults(), -- Agonize
-		[325254] = Defaults(), -- Iron Spikes
-		[335306] = Defaults(), -- Barbed Shackles
-		[322429] = Defaults(), -- Severing Slice
-		[334653] = Defaults(), -- Engorge
-	-- Spires of Ascension
-		[338729] = Defaults(), -- Charged Stomp
-		[338747] = Defaults(), -- Purifying Blast
-		[327481] = Defaults(), -- Dark Lance
-		[322818] = Defaults(), -- Lost Confidence
-		[322817] = Defaults(), -- Lingering Doubt
-		[324205] = Defaults(), -- Blinding Flash
-		[331251] = Defaults(), -- Deep Connection
-		[328331] = Defaults(), -- Forced Confession
-		[341215] = Defaults(), -- Volatile Anima
-		[323792] = Defaults(), -- Anima Field
-		[317661] = Defaults(), -- Insidious Venom
-		[330683] = Defaults(), -- Raw Anima
-		[328434] = Defaults(), -- Intimidated
-	-- De Other Side
-		[320786] = Defaults(), -- Power Overwhelming
-		[334913] = Defaults(), -- Master of Death
-		[325725] = Defaults(), -- Cosmic Artifice
-		[328987] = Defaults(), -- Zealous
-		[334496] = Defaults(), -- Soporific Shimmerdust
-		[339978] = Defaults(), -- Pacifying Mists
-		[323692] = Defaults(), -- Arcane Vulnerability
-		[333250] = Defaults(), -- Reaver
-		[330434] = Defaults(), -- Buzz-Saw 1
-		[320144] = Defaults(), -- Buzz-Saw 2
-		[331847] = Defaults(), -- W-00F
-		[327649] = Defaults(), -- Crushed Soul
-		[331379] = Defaults(), -- Lubricate
-		[332678] = Defaults(), -- Gushing Wound
-		[322746] = Defaults(), -- Corrupted Blood
-		[323687] = Defaults(), -- Arcane Lightning
-		[323877] = Defaults(), -- Echo Finger Laser X-treme
-		[334535] = Defaults(), -- Beak Slice
-	--------------------------------------------------------
-	---------------- Sanctum of Domination -----------------
-	--------------------------------------------------------
-	-- The Tarragrue
-		[347283] = Defaults(5), -- Predator's Howl
-		[347286] = Defaults(5), -- Unshakeable Dread
-		[346986] = Defaults(3), -- Crushed Armor
-		[347269] = Defaults(6), -- Chains of Eternity
-		[346985] = Defaults(3), -- Overpower
-	-- Eye of the Jailer
-		[350606] = Defaults(4), -- Hopeless Lethargy
-		[355240] = Defaults(5), -- Scorn
-		[355245] = Defaults(5), -- Ire
-		[349979] = Defaults(2), -- Dragging Chains
-		[348074] = Defaults(3), -- Assailing Lance
-		[351827] = Defaults(6), -- Spreading Misery
-		[355143] = Defaults(6), -- Deathlink
-		[350763] = Defaults(6), -- Annihilating Glare
-	-- The Nine
-		[350287] = Defaults(2), -- Song of Dissolution
-		[350542] = Defaults(6), -- Fragments of Destiny
-		[350202] = Defaults(3), -- Unending Strike
-		[350475] = Defaults(5), -- Pierce Soul
-		[350555] = Defaults(3), -- Shard of Destiny
-		[350109] = Defaults(5), -- Brynja's Mournful Dirge
-		[350483] = Defaults(6), -- Link Essence
-		[350039] = Defaults(5), -- Arthura's Crushing Gaze
-		[350184] = Defaults(5), -- Daschla's Mighty Impact
-		[350374] = Defaults(5), -- Wings of Rage
-	-- Remnant of Ner'zhul
-		[350073] = Defaults(2), -- Torment
-		[349890] = Defaults(5), -- Suffering
-		[350469] = Defaults(6), -- Malevolence
-		[354634] = Defaults(6), -- Spite 1
-		[354479] = Defaults(6), -- Spite 2
-		[354534] = Defaults(6), -- Spite 3
-	-- Soulrender Dormazain
-		[353429] = Defaults(2), -- Tormented
-		[353023] = Defaults(3), -- Torment
-		[351787] = Defaults(5), -- Agonizing Spike
-		[350647] = Defaults(5), -- Brand of Torment
-		[350422] = Defaults(6), -- Ruinblade
-		[350851] = Defaults(6), -- Vessel of Torment
-		[354231] = Defaults(6), -- Soul Manacles
-		[348987] = Defaults(6), -- Warmonger Shackle 1
-		[350927] = Defaults(6), -- Warmonger Shackle 2
-	-- Painsmith Raznal
-		[356472] = Defaults(5), -- Lingering Flames
-		[355505] = Defaults(6), -- Shadowsteel Chains 1
-		[355506] = Defaults(6), -- Shadowsteel Chains 2
-		[348456] = Defaults(6), -- Flameclasp Trap
-		[356870] = Defaults(2), -- Flameclasp Eruption
-		[355568] = Defaults(6), -- Cruciform Axe
-		[355786] = Defaults(5), -- Blackened Armor
-		[348255] = Defaults(6), -- Spiked
-	-- Guardian of the First Ones
-		[352394] = Defaults(5), -- Radiant Energy
-		[350496] = Defaults(6), -- Threat Neutralization
-		[347359] = Defaults(6), -- Suppression Field
-		[355357] = Defaults(6), -- Obliterate
-		[350732] = Defaults(5), -- Sunder
-		[352833] = Defaults(6), -- Disintegration
-	-- Fatescribe Roh-Kalo
-		[354365] = Defaults(5), -- Grim Portent
-		[350568] = Defaults(5), -- Call of Eternity
-		[353435] = Defaults(6), -- Overwhelming Burden
-		[351680] = Defaults(6), -- Invoke Destiny
-		[353432] = Defaults(6), -- Burden of Destiny
-		[353693] = Defaults(6), -- Unstable Accretion
-		[350355] = Defaults(6), -- Fated Conjunction
-		[353931] = Defaults(2), -- Twist Fate
-	-- Kel'Thuzad
-		[346530] = Defaults(2), -- Frozen Destruction
-		[354289] = Defaults(2), -- Sinister Miasma
-		[347454] = Defaults(6), -- Oblivion's Echo 1
-		[347518] = Defaults(6), -- Oblivion's Echo 2
-		[347292] = Defaults(6), -- Oblivion's Echo 3
-		[348978] = Defaults(6), -- Soul Exhaustion
-		[355389] = Defaults(6), -- Relentless Haunt (Fixate)
-		[357298] = Defaults(6), -- Frozen Binds
-		[355137] = Defaults(5), -- Shadow Pool
-		[348638] = Defaults(4), -- Return of the Damned
-		[348760] = Defaults(6), -- Frost Blast
-	-- Sylvanas Windrunner
-		[349458] = Defaults(2), -- Domination Chains
-		[347704] = Defaults(2), -- Veil of Darkness
-		[347607] = Defaults(5), -- Banshee's Mark
-		[347670] = Defaults(5), -- Shadow Dagger
-		[351117] = Defaults(5), -- Crushing Dread
-		[351870] = Defaults(5), -- Haunting Wave
-		[351253] = Defaults(5), -- Banshee Wail
-		[351451] = Defaults(6), -- Curse of Lethargy
-		[351092] = Defaults(6), -- Destabilize 1
-		[351091] = Defaults(6), -- Destabilize 2
-		[348064] = Defaults(6), -- Wailing Arrow
-	--------------------------------------------------------
-	-------------------- Castle Nathria --------------------
-	--------------------------------------------------------
-	-- Shriekwing
-		[328897] = Defaults(), -- Exsanguinated
-		[330713] = Defaults(), -- Reverberating Pain
-		[329370] = Defaults(), -- Deadly Descent
-		[336494] = Defaults(), -- Echo Screech
-		[346301] = Defaults(), -- Bloodlight
-		[342077] = Defaults(), -- Echolocation
-	-- Huntsman Altimor
-		[335304] = Defaults(), -- Sinseeker
-		[334971] = Defaults(), -- Jagged Claws
-		[335111] = Defaults(), -- Huntsman's Mark 3
-		[335112] = Defaults(), -- Huntsman's Mark 2
-		[335113] = Defaults(), -- Huntsman's Mark 1
-		[334945] = Defaults(), -- Vicious Lunge
-		[334852] = Defaults(), -- Petrifying Howl
-		[334695] = Defaults(), -- Destabilize
-	-- Hungering Destroyer
-		[334228] = Defaults(), -- Volatile Ejection
-		[329298] = Defaults(), -- Gluttonous Miasma
-	-- Lady Inerva Darkvein
-		[325936] = Defaults(), -- Shared Cognition
-		[335396] = Defaults(), -- Hidden Desire
-		[324983] = Defaults(), -- Shared Suffering
-		[324982] = Defaults(), -- Shared Suffering (Partner)
-		[332664] = Defaults(), -- Concentrate Anima
-		[325382] = Defaults(), -- Warped Desires
-	-- Sun King's Salvation
-		[333002] = Defaults(), -- Vulgar Brand
-		[326078] = Defaults(), -- Infuser's Boon
-		[325251] = Defaults(), -- Sin of Pride
-		[341475] = Defaults(), -- Crimson Flurry
-		[341473] = Defaults(), -- Crimson Flurry Teleport
-		[328479] = Defaults(), -- Eyes on Target
-		[328889] = Defaults(), -- Greater Castigation
-	-- Artificer Xy'mox
-		[327902] = Defaults(), -- Fixate
-		[326302] = Defaults(), -- Stasis Trap
-		[325236] = Defaults(), -- Glyph of Destruction
-		[327414] = Defaults(), -- Possession
-		[328468] = Defaults(), -- Dimensional Tear 1
-		[328448] = Defaults(), -- Dimensional Tear 2
-		[340860] = Defaults(), -- Withering Touch
-	-- The Council of Blood
-		[327052] = Defaults(), -- Drain Essence 1
-		[327773] = Defaults(), -- Drain Essence 2
-		[346651] = Defaults(), -- Drain Essence Mythic
-		[328334] = Defaults(), -- Tactical Advance
-		[330848] = Defaults(), -- Wrong Moves
-		[331706] = Defaults(), -- Scarlet Letter
-		[331636] = Defaults(), -- Dark Recital 1
-		[331637] = Defaults(), -- Dark Recital 2
-	-- Sludgefist
-		[335470] = Defaults(), -- Chain Slam
-		[339181] = Defaults(), -- Chain Slam (Root)
-		[331209] = Defaults(), -- Hateful Gaze
-		[335293] = Defaults(), -- Chain Link
-		[335270] = Defaults(), -- Chain This One!
-		[342419] = Defaults(), -- Chain Them! 1
-		[342420] = Defaults(), -- Chain Them! 2
-		[335295] = Defaults(), -- Shattering Chain
-		[332572] = Defaults(), -- Falling Rubble
-	-- Stone Legion Generals
-		[334498] = Defaults(), -- Seismic Upheaval
-		[337643] = Defaults(), -- Unstable Footing
-		[334765] = Defaults(), -- Heart Rend
-		[334771] = Defaults(), -- Heart Hemorrhage
-		[333377] = Defaults(), -- Wicked Mark
-		[334616] = Defaults(), -- Petrified
-		[334541] = Defaults(), -- Curse of Petrification
-		[339690] = Defaults(), -- Crystalize
-		[342655] = Defaults(), -- Volatile Anima Infusion
-		[342698] = Defaults(), -- Volatile Anima Infection
-		[343881] = Defaults(), -- Serrated Tear
-	-- Sire Denathrius
-		[326851] = Defaults(), -- Blood Price
-		[327796] = Defaults(), -- Night Hunter
-		[327992] = Defaults(), -- Desolation
-		[328276] = Defaults(), -- March of the Penitent
-		[326699] = Defaults(), -- Burden of Sin
-		[329181] = Defaults(), -- Wracking Pain
-		[335873] = Defaults(), -- Rancor
-		[329951] = Defaults(), -- Impale
-		[327039] = Defaults(), -- Feeding Time
-		[332794] = Defaults(), -- Fatal Finesse
-		[334016] = Defaults(), -- Unworthy
+	-------------------------------------------------
+	-------------------- Phase 1 --------------------
+	-------------------------------------------------
+	-- Karazhan
+		-- Attument the Huntsman
+		[29833] = Defaults(2), -- Intangible Presence
+		[29711] = Defaults(2), -- Knockdown
+		-- Moroes
+		[29425] = Defaults(2), -- Gouge
+		[34694] = Defaults(2), -- Blind
+		[37066] = Defaults(2), -- Garrote
+		-- Opera Hall Event
+		[30822] = Defaults(2), -- Poisoned Thrust
+		[30889] = Defaults(2), -- Powerful Attraction
+		[30890] = Defaults(2), -- Blinding Passion
+		-- Maiden of Virtue
+		[29511] = Defaults(2), -- Repentance
+		[29522] = Defaults(2), -- Holy Fire
+		[29512] = Defaults(2), -- Holy Ground
+		-- The Curator
+		-- Terestian Illhoof
+		[30053] = Defaults(2), -- Amplify Flames
+		[30115] = Defaults(2), -- Sacrifice
+		-- Shade of Aran
+		[29946] = Defaults(2), -- Flame Wreath
+		[29947] = Defaults(2), -- Flame Wreath
+		[29990] = Defaults(2), -- Slow
+		[29991] = Defaults(2), -- Chains of Ice
+		[29954] = Defaults(2), -- Frostbolt
+		[29951] = Defaults(2), -- Blizzard
+		-- Netherspite
+		[38637] = Defaults(2), -- Nether Exhaustion (Red)
+		[38638] = Defaults(2), -- Nether Exhaustion (Green)
+		[38639] = Defaults(2), -- Nether Exhaustion (Blue)
+		[30400] = Defaults(2), -- Nether Beam - Perseverence
+		[30401] = Defaults(2), -- Nether Beam - Serenity
+		[30402] = Defaults(2), -- Nether Beam - Dominance
+		[30421] = Defaults(2), -- Nether Portal - Perseverence
+		[30422] = Defaults(2), -- Nether Portal - Serenity
+		[30423] = Defaults(2), -- Nether Portal - Dominance
+		-- Chess Event
+		[30529] = Defaults(2), -- Recently In Game
+		-- Prince Malchezaar
+		[39095] = Defaults(2), -- Amplify Damage
+		[30898] = Defaults(2), -- Shadow Word: Pain 1
+		[30854] = Defaults(2), -- Shadow Word: Pain 2
+		-- Nightbane
+		[37091] = Defaults(2), -- Rain of Bones
+		[30210] = Defaults(2), -- Smoldering Breath
+		[30129] = Defaults(2), -- Charred Earth
+		[30127] = Defaults(2), -- Searing Cinders
+		[36922] = Defaults(2), -- Bellowing Roar
+	-- Gruul's Lair
+		-- High King Maulgar
+		[36032] = Defaults(2), -- Arcane Blast
+		[11726] = Defaults(2), -- Enslave Demon
+		[33129] = Defaults(2), -- Dark Decay
+		[33175] = Defaults(2), -- Arcane Shock
+		[33061] = Defaults(2), -- Blast Wave
+		[33130] = Defaults(2), -- Death Coil
+		[16508] = Defaults(2), -- Intimidating Roar
+		-- Gruul the Dragonkiller
+		[38927] = Defaults(2), -- Fel Ache
+		[36240] = Defaults(2), -- Cave In
+		[33652] = Defaults(2), -- Stoned
+		[33525] = Defaults(2), -- Ground Slam
+	-- Magtheridon's Lair
+		-- Magtheridon
+		[44032] = Defaults(2), -- Mind Exhaustion
+		[30530] = Defaults(2), -- Fear
+		[38927] = Defaults(2), -- Fel Ache
+	-------------------------------------------------
+	-------------------- Phase 2 --------------------
+	-------------------------------------------------
+	-- Serpentshrine Cavern
+		-- Hydross the Unstable
+		-- The Lurker Below
+		-- Leotheras the Blind
+		-- Fathom-Lord Karathress
+		-- Morogrim Tidewalker
+		-- Lady Vashj
+	-- The Eye
+		-- Al'ar
+		-- Void Reaver
+		-- High Astromancer Solarian
+		-- Kael'thas Sunstrider
+	-------------------------------------------------
+	-------------------- Phase 3 --------------------
+	-------------------------------------------------
+	-- The Battle for Mount Hyjal
+		-- Rage Winterchill
+		-- Anetheron
+		-- Kaz'rogal
+		-- Azgalor
+		-- Archimonde
+	-- Black Temple
+		-- High Warlord Naj'entus
+		-- Supremus
+		-- Shade of Akama
+		-- Teron Gorefiend
+		-- Gurtogg Bloodboil
+		-- Reliquary of Souls
+		-- Mother Shahraz
+		-- Illidari Council
+		-- Illidan Stormrage
+	-------------------------------------------------
+	-------------------- Phase 4 --------------------
+	-------------------------------------------------
+	-- Zul'Aman
+		-- Nalorakk
+		-- Jan'alai
+		-- Akil'zon
+		-- Halazzi
+		-- Hexxlord Jin'Zakk
+		-- Zul'jin
+	-------------------------------------------------
+	-------------------- Phase 5 --------------------
+	-------------------------------------------------
+	-- Sunwell Plateau
+		-- Kalecgos
+		-- Sathrovarr
+		-- Brutallus
+		-- Felmyst
+		-- Alythess
+		-- Sacrolash
+		-- M'uru
+		-- Kil'Jaeden
+	},
+}
+
+G.unitframe.aurafilters.DungeonDebuffs = {
+	type = 'Whitelist',
+	spells = {
+	-- Hellfire Ramparts
+	-- The Blood Furnace
+	-- The Shattered Halls
+	-- The Slave Pens
+	-- The Underbog
+	-- The Steamvault
+	-- Mana-Tombs
+	-- Auchenai Crypts
+	-- Sethekk Halls
+	-- Shadow Labyrinth
+	-- Old Hillsbrad Foothills
+	-- The Black Morass
+	-- Magisters Terrace
+	-- The Arcatraz
+	-- The Mechanar
+	-- The Botanica
 	},
 }
 
@@ -1071,142 +544,108 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-	----------------------------------------------------------
-	----------------- Sanctum of Domination ------------------
-	----------------------------------------------------------
-	-- The Tarragrue
-		[352491] = Defaults(), -- Remnant: Mort'regar's Echoes 1
-		[352389] = Defaults(), -- Remnant: Mort'regar's Echoes 2
-		[352473] = Defaults(), -- Remnant: Upper Reaches' Might 1
-		[352382] = Defaults(), -- Remnant: Upper Reaches' Might 2
-		[352398] = Defaults(), -- Remnant: Soulforge Heat
-		[347490] = Defaults(), -- Fury of the Ages
-		[347740] = Defaults(), -- Hungering Mist 1
-		[347679] = Defaults(), -- Hungering Mist 2
-		[347369] = Defaults(), -- The Jailer's Gaze
-	-- Eye of the Jailer
-		[350006] = Defaults(), -- Pulled Down
-		[351413] = Defaults(), -- Annihilating Glare
-		[348805] = Defaults(), -- Stygian Darkshield
-		[351994] = Defaults(), -- Dying Suffering
-		[351825] = Defaults(), -- Shared Suffering
-		[345521] = Defaults(), -- Molten Aura
-	-- The Nine
-		[355294] = Defaults(), -- Resentment
-		[350286] = Defaults(), -- Song of Dissolution
-		[352756] = Defaults(), -- Wings of Rage 1
-		[350365] = Defaults(), -- Wings of Rage 2
-		[352752] = Defaults(), -- Reverberating Refrain 1
-		[350385] = Defaults(), -- Reverberating Refrain 2
-		[350158] = Defaults(), -- Annhylde's Bright Aegis
-	-- Remnant of Ner'zhul
-		[355790] = Defaults(), -- Eternal Torment
-		[355151] = Defaults(), -- Malevolence
-		[355439] = Defaults(), -- Aura of Spite 1
-		[354441] = Defaults(), -- Aura of Spite 2
-		[350671] = Defaults(), -- Aura of Spite 3
-		[354440] = Defaults(), -- Aura of Spite 4
-	-- Soulrender Dormazain
-		[351946] = Defaults(), -- Hellscream
-		[352066] = Defaults(), -- Rendered Soul
-		[353554] = Defaults(), -- Infuse Defiance
-		[351773] = Defaults(), -- Defiance
-		[350415] = Defaults(), -- Warmonger's Shackles
-		[352933] = Defaults(), -- Tormented Eruptions
-	-- Painsmith Raznal
-		[355525] = Defaults(), -- Forge Weapon
-	-- Guardian of the First Ones
-		[352538] = Defaults(), -- Purging Protocol
-		[353448] = Defaults(), -- Suppression Field
-		[350534] = Defaults(), -- Purging Protocol
-		[352385] = Defaults(), -- Energizing Link
-	-- Fatescribe Roh-Kalo
-		[353604] = Defaults(), -- Diviner's Probe
-	-- Kel'Thuzad
-		[355935] = Defaults(), -- Banshee's Cry 1
-		[352141] = Defaults(), -- Banshee's Cry 2
-		[355948] = Defaults(), -- Necrotic Empowerment
-		[352051] = Defaults(), -- Necrotic Surge
-	-- Sylvanas Windrunner
-		[352650] = Defaults(), -- Ranger's Heartseeker 1
-		[352663] = Defaults(), -- Ranger's Heartseeker 2
-		[350865] = Defaults(), -- Accursed Might
-		[348146] = Defaults(), -- Banshee Form
-		[347504] = Defaults(), -- Windrunner
-		[350857] = Defaults(), -- Banshee Shroud
-		[351109] = Defaults(), -- Enflame
-		[351452] = Defaults(), -- Lethargic Focus
-	----------------------------------------------------------
-	--------------------- Castle Nathria ---------------------
-	----------------------------------------------------------
-	-- Sun King's Salvation
-		[343026] = Defaults(), -- Cloak of Flames
-	-- Stone Legion Generals
-		[329808] = Defaults(), -- Hardened Stone Form Grashaal
-		[329636] = Defaults(), -- Hardened Stone Form Kaal
-		[340037] = Defaults(), -- Volatile Stone Shell
-	----------------------------------------------------------
-	-------------------- Mythic+ Specific --------------------
-	----------------------------------------------------------
-	-- Mythic+ General
-		[209859] = Defaults(), -- Bolster
-		[178658] = Defaults(), -- Raging
-		[226510] = Defaults(), -- Sanguine
-		[343502] = Defaults(), -- Inspiring
-	-- Shadowlands Season 1
-		[340873] = Defaults(), -- Bursting With Pride (Prideful)
-		[340880] = Defaults(), -- Prideful
-	-- Shadowlands Season 2
-	----------------------------------------------------------
-	------------------ Shadowlands Dungeons ------------------
-	----------------------------------------------------------
-	-- Tazavesh, the Veiled Market
-		[355147] = Defaults(), -- Fish Invigoration
-		[351960] = Defaults(), -- Static Cling
-		[351088] = Defaults(), -- Relic Link
-		[346296] = Defaults(), -- Instability
-		[355057] = Defaults(), -- Cry of Mrrggllrrgg
-		[355640] = Defaults(), -- Phalanx Field
-		[355783] = Defaults(), -- Force Multiplied
-		[351086] = Defaults(), -- Power Overwhelming
-		[347840] = Defaults(), -- Feral
-		[355782] = Defaults(), -- Force Multiplier
-		[347992] = Defaults(), -- Rotar Body Armor
-	-- Halls of Atonement
-		[326450] = Defaults(), -- Loyal Beasts
-	-- Mists of Tirna Scithe
-		[336499] = Defaults(), -- Guessing Game
-	-- Plaguefall
-		[336451] = Defaults(), -- Bulwark of Maldraxxus
-		[333737] = Defaults(), -- Congealed Contagion
-	-- The Necrotic Wake
-		[321754] = Defaults(), -- Icebound Aegis
-		[343558] = Defaults(), -- Morbid Fixation
-		[343470] = Defaults(), -- Boneshatter Shield
-	-- Theater of Pain
-		[331510] = Defaults(), -- Death Wish
-		[333241] = Defaults(), -- Raging Tantrum
-		[326892] = Defaults(), -- Fixate
-		[330545] = Defaults(), -- Commanding Presences
-	-- Sanguine Depths
-		[322433] = Defaults(), -- Stoneskin
-		[321402] = Defaults(), -- Engorge
-	-- Spires of Ascension
-		[327416] = Defaults(), -- Recharge Anima
-		[317936] = Defaults(), -- Forsworn Doctrine
-		[327808] = Defaults(), -- Inspiring Presence
-	-- De Other Side
-		[344739] = Defaults(), -- Spectral
-		[333227] = Defaults(), -- Undying Rage
-		[322773] = Defaults(), -- Blood Barrier
-	---------------------------------------------------------
-	----------------------- Open World ----------------------
-	---------------------------------------------------------
-	-- Korthia
-		[354840] = Defaults(), -- Rift Veiled (Silent Soulstalker, Deadsoul Hatcher, Screaming Shade)
-		[355249] = Defaults(), -- Anima Gorged (Consumption)
+	-------------------------------------------------
+	-------------------- Phase 1 --------------------
+	-------------------------------------------------
+	-- Karazhan
+		-- Attument the Huntsman
+		-- Moroes
+		[29448] = Defaults(), -- Vanish
+		[37023] = Defaults(), -- Enrage
+		-- Opera Hall Event
+		[30887] = Defaults(), -- Devotion
+		[30841] = Defaults(), -- Daring
+		-- Maiden of Virtue
+		[32429] = Defaults(), -- Draining Touch
+		-- The Curator
+		-- Terestian Illhoof
+		[29908] = Defaults(), -- Astral Bite
+		-- Shade of Aran
+		[29920] = Defaults(), -- Phasing Invisibility
+		[29921] = Defaults(), -- Phasing Invisibility
+		-- Netherspite
+		[30522] = Defaults(), -- Nether Burn
+		[30487] = Defaults(), -- Nether Portal - Perseverence
+		[30491] = Defaults(), -- Nether Portal - Domination
+		-- Chess Event
+		[37469] = Defaults(), -- Poison Cloud
+		-- Prince Malchezaar
+		[30859] = Defaults(), -- Hellfire
+		-- Nightbane
+		[37098] = Defaults(), -- Rain of Bones
+	-- Gruul's Lair
+		-- High King Maulgar
+		[33232] = Defaults(), -- Flurry
+		[33238] = Defaults(), -- Whirlwind
+		[33054] = Defaults(), -- Spell Shield
+		-- Gruul the Dragonkiller
+		[36300] = Defaults(), -- Growth
+	-- Magtheridon's Lair
+		-- Magtheridon
+		[30205] = Defaults(), -- Shadow Cage
+		[30576] = Defaults(), -- Quake
+		[30207] = Defaults(), -- Shadow Grasp
+	-------------------------------------------------
+	-------------------- Phase 2 --------------------
+	-------------------------------------------------
+	-- Serpentshrine Cavern
+		-- Hydross the Unstable
+		-- The Lurker Below
+		-- Leotheras the Blind
+		-- Fathom-Lord Karathress
+		-- Morogrim Tidewalker
+		-- Lady Vashj
+	-- The Eye
+		-- Al'ar
+		-- Void Reaver
+		-- High Astromancer Solarian
+		-- Kael'thas Sunstrider
+	-------------------------------------------------
+	-------------------- Phase 3 --------------------
+	-------------------------------------------------
+	-- The Battle for Mount Hyjal
+		-- Rage Winterchill
+		-- Anetheron
+		-- Kaz'rogal
+		-- Azgalor
+		-- Archimonde
+	-- Black Temple
+		-- High Warlord Naj'entus
+		-- Supremus
+		-- Shade of Akama
+		-- Teron Gorefiend
+		-- Gurtogg Bloodboil
+		-- Reliquary of Souls
+		-- Mother Shahraz
+		-- Illidari Council
+		-- Illidan Stormrage
+	-------------------------------------------------
+	-------------------- Phase 4 --------------------
+	-------------------------------------------------
+	-- Zul'Aman
+		-- Nalorakk
+		-- Jan'alai
+		-- Akil'zon
+		-- Halazzi
+		-- Hexxlord Jin'Zakk
+		-- Zul'jin
+	-------------------------------------------------
+	-------------------- Phase 5 --------------------
+	-------------------------------------------------
+	-- Sunwell Plateau
+		-- Kalecgos
+		-- Sathrovarr
+		-- Brutallus
+		-- Felmyst
+		-- Alythess
+		-- Sacrolash
+		-- M'uru
+		-- Kil'Jaeden
 	},
 }
+
+-- Spells that we want to show the duration backwards
+E.ReverseTimer = {}
 
 -- AuraWatch: List of personal spells to show on unitframes as icon
 function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
@@ -1233,74 +672,252 @@ end
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	PRIEST = {
-		[139]    = UF:AuraWatch_AddSpell(139, 'BOTTOMLEFT', {0.4, 0.7, 0.2}),			-- Renew
-		[17]     = UF:AuraWatch_AddSpell(17, 'TOPLEFT', {0.7, 0.7, 0.7}, true), 		-- Power Word: Shield
-		[193065] = UF:AuraWatch_AddSpell(193065, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}),	-- Masochism
-		[194384] = UF:AuraWatch_AddSpell(194384, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement
-		[214206] = UF:AuraWatch_AddSpell(214206, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement (PvP)
-		[33206]  = UF:AuraWatch_AddSpell(33206, 'LEFT', {0.47, 0.35, 0.74}, true),		-- Pain Suppression
-		[41635]  = UF:AuraWatch_AddSpell(41635, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}),		-- Prayer of Mending
-		[47788]  = UF:AuraWatch_AddSpell(47788, 'LEFT', {0.86, 0.45, 0}, true), 		-- Guardian Spirit
-		[6788]   = UF:AuraWatch_AddSpell(6788, 'BOTTOMLEFT', {0.89, 0.1, 0.1}), 		-- Weakened Soul
+		[1243]    = UF:AuraWatch_AddSpell(1243, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 1)
+		[1244]    = UF:AuraWatch_AddSpell(1244, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 2)
+		[1245]    = UF:AuraWatch_AddSpell(1245, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 3)
+		[2791]    = UF:AuraWatch_AddSpell(2791, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 4)
+		[10937]   = UF:AuraWatch_AddSpell(10937, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 5)
+		[10938]   = UF:AuraWatch_AddSpell(10938, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 6)
+		[25389]   = UF:AuraWatch_AddSpell(25389, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude(Rank 7)
+		[21562]   = UF:AuraWatch_AddSpell(21562, 'TOPLEFT', {1, 1, 0.66}, true), -- Prayer of Fortitude(Rank 1)
+		[21564]   = UF:AuraWatch_AddSpell(21564, 'TOPLEFT', {1, 1, 0.66}, true), -- Prayer of Fortitude(Rank 2)
+		[25392]   = UF:AuraWatch_AddSpell(25392, 'TOPLEFT', {1, 1, 0.66}, true), -- Prayer of Fortitude(Rank 3)
+		[14752]   = UF:AuraWatch_AddSpell(14752, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit(Rank 1)
+		[14818]   = UF:AuraWatch_AddSpell(14818, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit(Rank 2)
+		[14819]   = UF:AuraWatch_AddSpell(14819, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit(Rank 3)
+		[27841]   = UF:AuraWatch_AddSpell(27841, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit(Rank 4)
+		[25312]   = UF:AuraWatch_AddSpell(25312, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit(Rank 5)
+		[27681]   = UF:AuraWatch_AddSpell(27681, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Prayer of Spirit(Rank 1)
+		[32999]   = UF:AuraWatch_AddSpell(32999, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Prayer of Spirit(Rank 2)
+		[976]     = UF:AuraWatch_AddSpell(976, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection(Rank 1)
+		[10957]   = UF:AuraWatch_AddSpell(10957, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection(Rank 2)
+		[10958]   = UF:AuraWatch_AddSpell(10958, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection(Rank 3)
+		[25433]   = UF:AuraWatch_AddSpell(25433, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection(Rank 4)
+		[27683]   = UF:AuraWatch_AddSpell(27683, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Prayer of Shadow Protection(Rank 1)
+		[39374]   = UF:AuraWatch_AddSpell(39374, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Prayer of Shadow Protection(Rank 2)
+		[17]      = UF:AuraWatch_AddSpell(17, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 1)
+		[592]     = UF:AuraWatch_AddSpell(592, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 2)
+		[600]     = UF:AuraWatch_AddSpell(600, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 3)
+		[3747]    = UF:AuraWatch_AddSpell(3747, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 4)
+		[6065]    = UF:AuraWatch_AddSpell(6065, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 5)
+		[6066]    = UF:AuraWatch_AddSpell(6066, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 6)
+		[10898]   = UF:AuraWatch_AddSpell(10898, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 7)
+		[10899]   = UF:AuraWatch_AddSpell(10899, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 8)
+		[10900]   = UF:AuraWatch_AddSpell(10900, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 9)
+		[10901]   = UF:AuraWatch_AddSpell(10901, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 10)
+		[25217]   = UF:AuraWatch_AddSpell(25217, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 11)
+		[25218]   = UF:AuraWatch_AddSpell(25218, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield(Rank 12)
+		[139]     = UF:AuraWatch_AddSpell(139, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 1)
+		[6074]    = UF:AuraWatch_AddSpell(6074, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 2)
+		[6075]    = UF:AuraWatch_AddSpell(6075, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 3)
+		[6076]    = UF:AuraWatch_AddSpell(6076, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 4)
+		[6077]    = UF:AuraWatch_AddSpell(6077, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 5)
+		[6078]    = UF:AuraWatch_AddSpell(6078, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 6)
+		[10927]   = UF:AuraWatch_AddSpell(10927, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 7)
+		[10928]   = UF:AuraWatch_AddSpell(10928, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 8)
+		[10929]   = UF:AuraWatch_AddSpell(10929, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 9)
+		[25315]   = UF:AuraWatch_AddSpell(25315, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 10)
+		[25221]   = UF:AuraWatch_AddSpell(25221, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 11)
+		[25222]   = UF:AuraWatch_AddSpell(25222, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew(Rank 12)
 	},
 	DRUID = {
-		[774]    = UF:AuraWatch_AddSpell(774, 'TOPRIGHT', {0.8, 0.4, 0.8}), 			-- Rejuvenation
-		[155777] = UF:AuraWatch_AddSpell(155777, 'RIGHT', {0.8, 0.4, 0.8}), 			-- Germination
-		[8936]   = UF:AuraWatch_AddSpell(8936, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),			-- Regrowth
-		[33763]  = UF:AuraWatch_AddSpell(33763, 'TOPLEFT', {0.4, 0.8, 0.2}), 			-- Lifebloom
-		[188550] = UF:AuraWatch_AddSpell(188550, 'TOPLEFT', {0.4, 0.8, 0.2}),			-- Lifebloom (Shadowlands Legendary)
-		[48438]  = UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),			-- Wild Growth
-		[207386] = UF:AuraWatch_AddSpell(207386, 'TOP', {0.4, 0.2, 0.8}), 				-- Spring Blossoms
-		[102351] = UF:AuraWatch_AddSpell(102351, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (Initial Buff)
-		[102352] = UF:AuraWatch_AddSpell(102352, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (HoT)
-		[200389] = UF:AuraWatch_AddSpell(200389, 'BOTTOM', {1, 1, 0.4}),				-- Cultivation
-		[203554] = UF:AuraWatch_AddSpell(203554, 'TOP', {1, 1, 0.4}),					-- Focused Growth (PvP)
+		[1126]    = UF:AuraWatch_AddSpell(1126, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 1)
+		[5232]    = UF:AuraWatch_AddSpell(5232, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 2)
+		[6756]    = UF:AuraWatch_AddSpell(6756, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 3)
+		[5234]    = UF:AuraWatch_AddSpell(5234, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 4)
+		[8907]    = UF:AuraWatch_AddSpell(8907, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 5)
+		[9884]    = UF:AuraWatch_AddSpell(9884, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 6)
+		[9885]    = UF:AuraWatch_AddSpell(9885, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 7)
+		[26990]   = UF:AuraWatch_AddSpell(26990, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild(Rank 8)
+		[21849]   = UF:AuraWatch_AddSpell(21849, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Gift of the Wild(Rank 1)
+		[21850]   = UF:AuraWatch_AddSpell(21850, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Gift of the Wild(Rank 2)
+		[26991]   = UF:AuraWatch_AddSpell(26991, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Gift of the Wild(Rank 3)
+		[467]     = UF:AuraWatch_AddSpell(467, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 1)
+		[782]     = UF:AuraWatch_AddSpell(782, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 2)
+		[1075]    = UF:AuraWatch_AddSpell(1075, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 3)
+		[8914]    = UF:AuraWatch_AddSpell(8914, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 4)
+		[9756]    = UF:AuraWatch_AddSpell(9756, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 5)
+		[9910]    = UF:AuraWatch_AddSpell(9910, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 6)
+		[26992]   = UF:AuraWatch_AddSpell(26992, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns(Rank 7)
+		[774]     = UF:AuraWatch_AddSpell(774, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 1)
+		[1058]    = UF:AuraWatch_AddSpell(1058, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 2)
+		[1430]    = UF:AuraWatch_AddSpell(1430, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 3)
+		[2090]    = UF:AuraWatch_AddSpell(2090, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 4)
+		[2091]    = UF:AuraWatch_AddSpell(2091, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 5)
+		[3627]    = UF:AuraWatch_AddSpell(3627, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 6)
+		[8910]    = UF:AuraWatch_AddSpell(8910, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 7)
+		[9839]    = UF:AuraWatch_AddSpell(9839, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 8)
+		[9840]    = UF:AuraWatch_AddSpell(9840, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 9)
+		[9841]    = UF:AuraWatch_AddSpell(9841, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 10)
+		[25299]   = UF:AuraWatch_AddSpell(25299, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 11)
+		[26981]   = UF:AuraWatch_AddSpell(26981, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 12)
+		[26982]   = UF:AuraWatch_AddSpell(26982, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation(Rank 13)
+		[8936]    = UF:AuraWatch_AddSpell(8936, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 1)
+		[8938]    = UF:AuraWatch_AddSpell(8938, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 2)
+		[8939]    = UF:AuraWatch_AddSpell(8939, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 3)
+		[8940]    = UF:AuraWatch_AddSpell(8940, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 4)
+		[8941]    = UF:AuraWatch_AddSpell(8941, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 5)
+		[9750]    = UF:AuraWatch_AddSpell(9750, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 6)
+		[9856]    = UF:AuraWatch_AddSpell(9856, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 7)
+		[9857]    = UF:AuraWatch_AddSpell(9857, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 8)
+		[9858]    = UF:AuraWatch_AddSpell(9858, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 9)
+		[26980]   = UF:AuraWatch_AddSpell(26980, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth(Rank 10)
+		[29166]   = UF:AuraWatch_AddSpell(29166, 'CENTER', {0.49, 0.60, 0.55}, true), -- Innervate
+		[33763]   = UF:AuraWatch_AddSpell(33763, 'BOTTOM', {0.33, 0.37, 0.47}), -- Lifebloom
 	},
 	PALADIN = {
-		[53563]  = UF:AuraWatch_AddSpell(53563, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Light
-		[156910] = UF:AuraWatch_AddSpell(156910, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Faith
-		[200025] = UF:AuraWatch_AddSpell(200025, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Virtue
-		[1022]   = UF:AuraWatch_AddSpell(1022, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), 	-- Blessing of Protection
-		[1044]   = UF:AuraWatch_AddSpell(1044, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true),	-- Blessing of Freedom
-		[6940]   = UF:AuraWatch_AddSpell(6940, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true),	-- Blessing of Sacrifice
-		[204018] = UF:AuraWatch_AddSpell(204018, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true),	-- Blessing of Spellwarding
-		[223306] = UF:AuraWatch_AddSpell(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),		-- Bestow Faith
-		[287280] = UF:AuraWatch_AddSpell(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),			-- Glimmer of Light (T50 Talent)
-		[157047] = UF:AuraWatch_AddSpell(157047, 'TOP', {0.15, 0.58, 0.84}),			-- Saved by the Light (T25 Talent)
+		[1044]    = UF:AuraWatch_AddSpell(1044, 'CENTER', {0.89, 0.45, 0}), -- Blessing of Freedom
+		[1038]    = UF:AuraWatch_AddSpell(1038, 'TOPLEFT', {0.11, 1.00, 0.45}, true), -- Blessing of Salvation
+		[6940]    = UF:AuraWatch_AddSpell(6940, 'CENTER', {0.89, 0.1, 0.1}), -- Blessing Sacrifice(Rank 1)
+		[20729]   = UF:AuraWatch_AddSpell(20729, 'CENTER', {0.89, 0.1, 0.1}), -- Blessing Sacrifice(Rank 2)
+		[27147]   = UF:AuraWatch_AddSpell(27147, 'CENTER', {0.89, 0.1, 0.1}), -- Blessing Sacrifice(Rank 3)
+		[27148]   = UF:AuraWatch_AddSpell(27148, 'CENTER', {0.89, 0.1, 0.1}), -- Blessing Sacrifice(Rank 4)
+		[19740]   = UF:AuraWatch_AddSpell(19740, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 1)
+		[19834]   = UF:AuraWatch_AddSpell(19834, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 2)
+		[19835]   = UF:AuraWatch_AddSpell(19835, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 3)
+		[19836]   = UF:AuraWatch_AddSpell(19836, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 4)
+		[19837]   = UF:AuraWatch_AddSpell(19837, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 5)
+		[19838]   = UF:AuraWatch_AddSpell(19838, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 6)
+		[25291]   = UF:AuraWatch_AddSpell(25291, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 7)
+		[27140]   = UF:AuraWatch_AddSpell(27140, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might(Rank 8)
+		[19742]   = UF:AuraWatch_AddSpell(19742, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 1)
+		[19850]   = UF:AuraWatch_AddSpell(19850, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 2)
+		[19852]   = UF:AuraWatch_AddSpell(19852, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 3)
+		[19853]   = UF:AuraWatch_AddSpell(19853, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 4)
+		[19854]   = UF:AuraWatch_AddSpell(19854, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 5)
+		[25290]   = UF:AuraWatch_AddSpell(25290, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 6)
+		[27142]   = UF:AuraWatch_AddSpell(27142, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom(Rank 7)
+		[25782]   = UF:AuraWatch_AddSpell(25782, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Might(Rank 1)
+		[25916]   = UF:AuraWatch_AddSpell(25916, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Might(Rank 2)
+		[27141]   = UF:AuraWatch_AddSpell(27141, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Might(Rank 3)
+		[25894]   = UF:AuraWatch_AddSpell(25894, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Wisdom(Rank 1)
+		[25918]   = UF:AuraWatch_AddSpell(25918, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Wisdom(Rank 2)
+		[27143]   = UF:AuraWatch_AddSpell(27143, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Wisdom(Rank 3)
+		[465]     = UF:AuraWatch_AddSpell(465, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 1)
+		[10290]   = UF:AuraWatch_AddSpell(10290, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 2)
+		[643]     = UF:AuraWatch_AddSpell(643, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 3)
+		[10291]   = UF:AuraWatch_AddSpell(10291, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 4)
+		[1032]    = UF:AuraWatch_AddSpell(1032, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 5)
+		[10292]   = UF:AuraWatch_AddSpell(10292, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 6)
+		[10293]   = UF:AuraWatch_AddSpell(10293, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 7)
+		[27149]   = UF:AuraWatch_AddSpell(27149, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura(Rank 8)
+		[19977]   = UF:AuraWatch_AddSpell(19977, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Light(Rank 1)
+		[19978]   = UF:AuraWatch_AddSpell(19978, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Light(Rank 2)
+		[19979]   = UF:AuraWatch_AddSpell(19979, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Light(Rank 3)
+		[27144]   = UF:AuraWatch_AddSpell(27144, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Light(Rank 4)
+		[1022]    = UF:AuraWatch_AddSpell(1022, 'TOPRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Protection(Rank 1)
+		[5599]    = UF:AuraWatch_AddSpell(5599, 'TOPRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Protection(Rank 2)
+		[10278]   = UF:AuraWatch_AddSpell(10278, 'TOPRIGHT', {0.17, 1.00, 0.75}, true), -- Blessing of Protection(Rank 3)
+		[19746]   = UF:AuraWatch_AddSpell(19746, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Concentration Aura
+		[32223]   = UF:AuraWatch_AddSpell(32223, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Crusader Aura
 	},
 	SHAMAN = {
-		[61295]  = UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Riptide
-		[974]    = UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),			-- Earth Shield
-	},
-	MONK = {
-		[119611] = UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),			-- Renewing Mist
-		[116849] = UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Life Cocoon
-		[124682] = UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),		-- Enveloping Mist
-		[191840] = UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),		-- Essence Font
-		[116841] = UF:AuraWatch_AddSpell(116841, 'TOP', {0.12, 1.00, 0.53}),			-- Tiger's Lust (Freedom)
-		[325209] = UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.8, 0.6}),			-- Enveloping Breath
-	},
-	ROGUE = {
-		[57934]  = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Tricks of the Trade
+		[29203]   = UF:AuraWatch_AddSpell(29203, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Healing Way
+		[16237]   = UF:AuraWatch_AddSpell(16237, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
+		[8185]    = UF:AuraWatch_AddSpell(8185, 'TOPLEFT', {0.05, 1.00, 0.50}), -- Fire Resistance Totem(Rank 1)
+		[10534]   = UF:AuraWatch_AddSpell(10534, 'TOPLEFT', {0.05, 1.00, 0.50}), -- Fire Resistance Totem(Rank 2)
+		[10535]   = UF:AuraWatch_AddSpell(10535, 'TOPLEFT', {0.05, 1.00, 0.50}), -- Fire Resistance Totem(Rank 3)
+		[25563]   = UF:AuraWatch_AddSpell(25563, 'TOPLEFT', {0.05, 1.00, 0.50}), -- Fire Resistance Totem(Rank 4)
+		[8182]    = UF:AuraWatch_AddSpell(8182, 'TOPLEFT', {0.54, 0.53, 0.79}), -- Frost Resistance Totem(Rank 1)
+		[10476]   = UF:AuraWatch_AddSpell(10476, 'TOPLEFT', {0.54, 0.53, 0.79}), -- Frost Resistance Totem(Rank 2)
+		[10477]   = UF:AuraWatch_AddSpell(10477, 'TOPLEFT', {0.54, 0.53, 0.79}), -- Frost Resistance Totem(Rank 3)
+		[25560]   = UF:AuraWatch_AddSpell(25560, 'TOPLEFT', {0.54, 0.53, 0.79}), -- Frost Resistance Totem(Rank 4)
+		[10596]   = UF:AuraWatch_AddSpell(10596, 'TOPLEFT', {0.33, 1.00, 0.20}), -- Nature Resistance Totem(Rank 1)
+		[10598]   = UF:AuraWatch_AddSpell(10598, 'TOPLEFT', {0.33, 1.00, 0.20}), -- Nature Resistance Totem(Rank 2)
+		[10599]   = UF:AuraWatch_AddSpell(10599, 'TOPLEFT', {0.33, 1.00, 0.20}), -- Nature Resistance Totem(Rank 3)
+		[25574]   = UF:AuraWatch_AddSpell(25574, 'TOPLEFT', {0.33, 1.00, 0.20}), -- Nature Resistance Totem(Rank 4)
+		[5672]    = UF:AuraWatch_AddSpell(5672, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem(Rank 1)
+		[6371]    = UF:AuraWatch_AddSpell(6371, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem(Rank 2)
+		[6372]    = UF:AuraWatch_AddSpell(6372, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem(Rank 3)
+		[10460]   = UF:AuraWatch_AddSpell(10460, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem(Rank 4)
+		[10461]   = UF:AuraWatch_AddSpell(10461, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem(Rank 5)
+		[25567]   = UF:AuraWatch_AddSpell(25567, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem(Rank 6)
+		[16191]   = UF:AuraWatch_AddSpell(16191, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), -- Mana Tide Totem(Rank 1)
+		[17355]   = UF:AuraWatch_AddSpell(17355, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), -- Mana Tide Totem(Rank 2)
+		[17360]   = UF:AuraWatch_AddSpell(17360, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), -- Mana Tide Totem(Rank 3)
+		[5677]    = UF:AuraWatch_AddSpell(5677, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem(Rank 1)
+		[10491]   = UF:AuraWatch_AddSpell(10491, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem(Rank 2)
+		[10493]   = UF:AuraWatch_AddSpell(10493, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem(Rank 3)
+		[10494]   = UF:AuraWatch_AddSpell(10494, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem(Rank 4)
+		[25570]   = UF:AuraWatch_AddSpell(25570, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem(Rank 5)
+		[8072]    = UF:AuraWatch_AddSpell(8072, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 1)
+		[8156]    = UF:AuraWatch_AddSpell(8156, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 2)
+		[8157]    = UF:AuraWatch_AddSpell(8157, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 3)
+		[10403]   = UF:AuraWatch_AddSpell(10403, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 4)
+		[10404]   = UF:AuraWatch_AddSpell(10404, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 5)
+		[10405]   = UF:AuraWatch_AddSpell(10405, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 6)
+		[25508]   = UF:AuraWatch_AddSpell(25508, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 7)
+		[25509]   = UF:AuraWatch_AddSpell(25509, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem(Rank 8)
+		[974]     = UF:AuraWatch_AddSpell(974, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield(Rank 1)
+		[32593]   = UF:AuraWatch_AddSpell(32593, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield(Rank 2)
+		[32594]   = UF:AuraWatch_AddSpell(32594, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield(Rank 3)
 	},
 	WARRIOR = {
-		[3411]   = UF:AuraWatch_AddSpell(3411, 'TOPRIGHT', {0.89, 0.09, 0.05}),			-- Intervene
+		[6673]    = UF:AuraWatch_AddSpell(6673, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 1)
+		[5242]    = UF:AuraWatch_AddSpell(5242, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 2)
+		[6192]    = UF:AuraWatch_AddSpell(6192, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 3)
+		[11549]   = UF:AuraWatch_AddSpell(11549, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 4)
+		[11550]   = UF:AuraWatch_AddSpell(11550, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 5)
+		[11551]   = UF:AuraWatch_AddSpell(11551, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 6)
+		[25289]   = UF:AuraWatch_AddSpell(25289, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 7)
+		[2048]    = UF:AuraWatch_AddSpell(2048, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout(Rank 8)
+		[469]     = UF:AuraWatch_AddSpell(469, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Commanding Shout
 	},
-	PET = {
-		-- Warlock Pets
-		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
-		-- Hunter Pets
-		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
-		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
+	MAGE = {
+		[1459]    = UF:AuraWatch_AddSpell(1459, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect(Rank 1)
+		[1460]    = UF:AuraWatch_AddSpell(1460, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect(Rank 2)
+		[1461]    = UF:AuraWatch_AddSpell(1461, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect(Rank 3)
+		[10156]   = UF:AuraWatch_AddSpell(10156, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect(Rank 4)
+		[10157]   = UF:AuraWatch_AddSpell(10157, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect(Rank 5)
+		[27126]   = UF:AuraWatch_AddSpell(27126, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect(Rank 6)
+		[23028]   = UF:AuraWatch_AddSpell(23028, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Brilliance(Rank 1)
+		[27127]   = UF:AuraWatch_AddSpell(27127, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Brilliance(Rank 2)
+		[604]     = UF:AuraWatch_AddSpell(604, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic(Rank 1)
+		[8450]    = UF:AuraWatch_AddSpell(8450, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic(Rank 2)
+		[8451]    = UF:AuraWatch_AddSpell(8451, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic(Rank 3)
+		[10173]   = UF:AuraWatch_AddSpell(10173, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic(Rank 4)
+		[10174]   = UF:AuraWatch_AddSpell(10174, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic(Rank 5)
+		[33944]   = UF:AuraWatch_AddSpell(33944, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic(Rank 6)
+		[1008]    = UF:AuraWatch_AddSpell(1008, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic(Rank 1)
+		[8455]    = UF:AuraWatch_AddSpell(8455, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic(Rank 2)
+		[10169]   = UF:AuraWatch_AddSpell(10169, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic(Rank 3)
+		[10170]   = UF:AuraWatch_AddSpell(10170, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic(Rank 4)
+		[27130]   = UF:AuraWatch_AddSpell(27130, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic(Rank 5)
+		[33946]   = UF:AuraWatch_AddSpell(33946, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic(Rank 6)
+		[130]     = UF:AuraWatch_AddSpell(130, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
 	},
 	HUNTER = {
-		[90361]  = UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
+		[19506]   = UF:AuraWatch_AddSpell(19506, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura (Rank 1)
+		[20905]   = UF:AuraWatch_AddSpell(20905, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura (Rank 2)
+		[20906]   = UF:AuraWatch_AddSpell(20906, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura (Rank 3)
+		[27066]   = UF:AuraWatch_AddSpell(27066, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura (Rank 4)
+		[13159]   = UF:AuraWatch_AddSpell(13159, 'TOP', {0.00, 0.00, 0.85}, true), -- Aspect of the Pack
+		[20043]   = UF:AuraWatch_AddSpell(20043, 'TOP', {0.33, 0.93, 0.79}), -- Aspect of the Wild (Rank 1)
+		[20190]   = UF:AuraWatch_AddSpell(20190, 'TOP', {0.33, 0.93, 0.79}), -- Aspect of the Wild (Rank 2)
+		[27045]   = UF:AuraWatch_AddSpell(27045, 'TOP', {0.33, 0.93, 0.79}), -- Aspect of the Wild (Rank 3)
 	},
-	-- Keep those for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
-	DEMONHUNTER = {},
-	WARLOCK = {},
-	MAGE = {},
-	DEATHKNIGHT = {},
+	WARLOCK = {
+		[5597]    = UF:AuraWatch_AddSpell(5597, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
+		[6512]    = UF:AuraWatch_AddSpell(6512, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Lesser Invisibility
+		[2970]    = UF:AuraWatch_AddSpell(2970, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Invisibility
+		[11743]   = UF:AuraWatch_AddSpell(11743, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Greater Invisibility
+	},
+	PET = {
+	-- Warlock Imp
+		[6307]    = UF:AuraWatch_AddSpell(6307, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact(Rank 1)
+		[7804]    = UF:AuraWatch_AddSpell(7804, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact(Rank 2)
+		[7805]    = UF:AuraWatch_AddSpell(7805, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact(Rank 3)
+		[11766]   = UF:AuraWatch_AddSpell(11766, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact(Rank 4)
+		[11767]   = UF:AuraWatch_AddSpell(11767, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact(Rank 5)
+	-- Warlock Felhunter
+		[19480]   = UF:AuraWatch_AddSpell(19480, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Paranoia
+	-- Hunter Pets
+		[24604]   = UF:AuraWatch_AddSpell(24604, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl(Rank 1)
+		[24605]   = UF:AuraWatch_AddSpell(24605, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl(Rank 2)
+		[24603]   = UF:AuraWatch_AddSpell(24603, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl(Rank 3)
+		[24597]   = UF:AuraWatch_AddSpell(24597, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl(Rank 4)
+	},
+	ROGUE = {}, -- No buffs
 }
 
 -- Profile specific BuffIndicator
@@ -1310,58 +927,123 @@ P.unitframe.filters = {
 
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
-	-- Racials
-	[291944] = 6, -- Regeneratin (Zandalari)
+	-- First Aid
+	[27031]  = 8, -- Heavy Netherweave Bandage
+	[27030]  = 8, -- Netherweave Bandage
+	[23567]  = 8, -- Warsong Gulch Runecloth Bandage
+	[23696]  = 8, -- Alterac Heavy Runecloth Bandage
+	[24414]  = 8, -- Arathi Basin Runecloth Bandage
+	[18610]  = 8, -- Heavy Runecloth Bandage
+	[18608]  = 8, -- Runecloth Bandage
+	[10839]  = 8, -- Heavy Mageweave Bandage
+	[10838]  = 8, -- Mageweave Bandage
+	[7927]   = 8, -- Heavy Silk Bandage
+	[7926]   = 8, -- Silk Bandage
+	[3268]   = 7, -- Heavy Wool Bandage
+	[3267]   = 7, -- Wool Bandage
+	[1159]   = 6, -- Heavy Linen Bandage
+	[746]    = 6, -- Linen Bandage
 	-- Warlock
-	[198590] = 5, -- Drain Soul
-	[755]    = 5, -- Health Funnel
-	[234153] = 5, -- Drain Life
+	[1120]   = 5, -- Drain Soul(Rank 1)
+	[8288]   = 5, -- Drain Soul(Rank 2)
+	[8289]   = 5, -- Drain Soul(Rank 3)
+	[11675]  = 5, -- Drain Soul(Rank 4)
+	[27217]  = 5, -- Drain Soul(Rank 5)
+	[755]    = 10, -- Health Funnel(Rank 1)
+	[3698]   = 10, -- Health Funnel(Rank 2)
+	[3699]   = 10, -- Health Funnel(Rank 3)
+	[3700]   = 10, -- Health Funnel(Rank 4)
+	[11693]  = 10, -- Health Funnel(Rank 5)
+	[11694]  = 10, -- Health Funnel(Rank 6)
+	[11695]  = 10, -- Health Funnel(Rank 7)
+	[27259]  = 10, -- Health Funnel(Rank 8)
+	[689]    = 5, -- Drain Life(Rank 1)
+	[699]    = 5, -- Drain Life(Rank 2)
+	[709]    = 5, -- Drain Life(Rank 3)
+	[7651]   = 5, -- Drain Life(Rank 4)
+	[11699]  = 5, -- Drain Life(Rank 5)
+	[11700]  = 5, -- Drain Life(Rank 6)
+	[27219]  = 5, -- Drain Life(Rank 7)
+	[27220]  = 5, -- Drain Life(Rank 8)
+	[5740]   = 4, -- Rain of Fire(Rank 1)
+	[6219]   = 4, -- Rain of Fire(Rank 2)
+	[11677]  = 4, -- Rain of Fire(Rank 3)
+	[11678]  = 4, -- Rain of Fire(Rank 4)
+	[27212]  = 4, -- Rain of Fire(Rank 5)
+	[1949]   = 15, -- Hellfire(Rank 1)
+	[11683]  = 15, -- Hellfire(Rank 2)
+	[11684]  = 15, -- Hellfire(Rank 3)
+	[27213]  = 15, -- Hellfire(Rank 4)
+	[5138]   = 5, -- Drain Mana(Rank 1)
+	[6226]   = 5, -- Drain Mana(Rank 2)
+	[11703]  = 5, -- Drain Mana(Rank 3)
+	[11704]  = 5, -- Drain Mana(Rank 4)
+	[27221]  = 5, -- Drain Mana(Rank 5)
+	[30908]  = 5, -- Drain Mana(Rank 6)
 	-- Priest
-	[64843]  = 4, -- Divine Hymn
-	[15407]  = 6, -- Mind Flay
-	[48045]  = 6, -- Mind Sear
-	[47757]  = 3, -- Penance (heal)
-	[47758]  = 3, -- Penance (dps)
-	[64902]  = 5, -- Symbol of Hope (Mana Hymn)
+	[15407]  = 3, -- Mind Flay(Rank 1)
+	[17311]  = 3, -- Mind Flay(Rank 2)
+	[17312]  = 3, -- Mind Flay(Rank 3)
+	[17313]  = 3, -- Mind Flay(Rank 4)
+	[17314]  = 3, -- Mind Flay(Rank 5)
+	[18807]  = 3, -- Mind Flay(Rank 6)
+	[25387]  = 3, -- Mind Flay(Rank 7)
 	-- Mage
-	[5143]   = 4, -- Arcane Missiles
-	[12051]  = 6, -- Evocation
-	[205021] = 5, -- Ray of Frost
-	-- Druid
-	[740]    = 4, -- Tranquility
-	-- DK
-	[206931] = 3, -- Blooddrinker
-	-- DH
-	[198013] = 10, -- Eye Beam
-	[212084] = 10, -- Fel Devastation
-	-- Hunter
-	[120360] = 15, -- Barrage
-	[257044] = 7, -- Rapid Fire
+	[10]     = 8, -- Blizzard(Rank 1)
+	[6141]   = 8, -- Blizzard(Rank 2)
+	[8427]   = 8, -- Blizzard(Rank 3)
+	[10185]  = 8, -- Blizzard(Rank 4)
+	[10186]  = 8, -- Blizzard(Rank 5)
+	[10187]  = 8, -- Blizzard(Rank 6)
+	[27085]  = 8, -- Blizzard(Rank 7)
+	[5143]   = 3, -- Arcane Missiles(Rank 1)
+	[5144]   = 4, -- Arcane Missiles(Rank 2)
+	[5145]   = 5, -- Arcane Missiles(Rank 3)
+	[8416]   = 5, -- Arcane Missiles(Rank 4)
+	[8417]   = 5, -- Arcane Missiles(Rank 5)
+	[10211]  = 5, -- Arcane Missiles(Rank 6)
+	[10212]  = 5, -- Arcane Missiles(Rank 7)
+	[25345]  = 5, -- Arcane Missiles(Rank 8)
+	[27075]  = 5, -- Arcane Missiles(Rank 9)
+	[38699]  = 5, -- Arcane Missiles(Rank 10)
+	[12051]  = 4, -- Evocation
+	--Druid
+	[740]    = 5, -- Tranquility(Rank 1)
+	[8918]   = 5, -- Tranquility(Rank 2)
+	[9862]   = 5, -- Tranquility(Rank 3)
+	[9863]   = 5, -- Tranquility(Rank 4)
+	[26983]  = 5, -- Tranquility(Rank 5)
+	[16914]  = 10, -- Hurricane(Rank 1)
+	[17401]  = 10, -- Hurricane(Rank 2)
+	[17402]  = 10, -- Hurricane(Rank 3)
+	[27012]  = 10, -- Hurricane(Rank 4)
+	--Hunter
+	[1510]   = 6, -- Volley(Rank 1)
+	[14294]  = 6, -- Volley(Rank 2)
+	[14295]  = 6, -- Volley(Rank 3)
+	[27022]  = 6, -- Volley(Rank 4)
 }
 
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	-- Priest
-	[47757]  = {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
-	[47758]  = {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
+	[47757] = {tier = 1, column = 1, ticks = 4}, -- Penance (heal)
+	[47758] = {tier = 1, column = 1, ticks = 4}, -- Penance (dps)
 }
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
 	[198590] = 1, -- Drain Soul
-	-- Mage
-	[205021] = 1, -- Ray of Frost
 }
 
--- Spells Effected By Haste, these spells require a Tick Size (table above)
+-- Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-	-- Mage
 	[205021] = true, -- Ray of Frost
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]  = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
+	[2825]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
 	[32182] = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
 	[80353] = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
 	[90355] = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
