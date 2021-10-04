@@ -162,7 +162,9 @@ end
 
 function E:GetThreatStatusColor(status)
 	local color = ElvUF.colors.threat[status]
-	return color.r, color.g, color.b, color.a or 1
+	if color then
+		return color.r, color.g, color.b, color.a or 1
+	end
 end
 
 function E:GetPlayerRole()
