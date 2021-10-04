@@ -157,6 +157,7 @@ AddMedia('texture','TukuiLogo')
 AddMedia('texture','PetBroom')
 AddMedia('texture','Backpack')
 AddMedia('texture','Repair')
+AddMedia('texture','Blank')
 
 AddMedia('emoji','Angry')
 AddMedia('emoji','Blush')

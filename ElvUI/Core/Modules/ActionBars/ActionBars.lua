@@ -735,7 +735,7 @@ end
 
 function AB:FadeBlingTexture(cooldown, alpha)
 	if not cooldown then return end
-	cooldown:SetBlingTexture(alpha > 0.5 and (E.Retail and 131010 or [[interface/cooldown/star4.blp]]) or E.media.blankTex) -- interface/cooldown/star4.blp
+	cooldown:SetBlingTexture(alpha > 0.5 and (E.Retail and 131010 or [[interface/cooldown/star4.blp]]) or E.Media.Textures.Blank) -- interface/cooldown/star4.blp
 end
 
 function AB:FadeBlings(alpha)
