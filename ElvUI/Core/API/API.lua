@@ -4,7 +4,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local wipe, date, max, unpack = wipe, date, max, unpack
+local wipe, date, max = wipe, date, max
 local select, type, ipairs, pairs = select, type, ipairs, pairs
 local strfind, tonumber, tostring = strfind, tonumber, tostring
 local strlen, CreateFrame = strlen, CreateFrame
@@ -15,7 +15,6 @@ local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
-local GetThreatStatusColor = GetThreatStatusColor
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
@@ -163,7 +162,7 @@ end
 function E:GetThreatStatusColor(status)
 	local color = ElvUF.colors.threat[status]
 	if color then
-		return color.r, color.g, color.b, color.a or 1
+		return color[1], color[2], color[3], color[4] or 1
 	end
 end
 
