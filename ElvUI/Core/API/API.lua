@@ -161,11 +161,8 @@ do
 end
 
 function E:GetThreatStatusColor(status)
-	if E.Retail then
-		return GetThreatStatusColor(status)
-	else
-		return unpack(ElvUF.colors.threat[status])
-	end
+	local color = ElvUF.colors.threat[status]
+	return color.r, color.g, color.b, color.a or 1
 end
 
 function E:GetPlayerRole()
