@@ -84,9 +84,9 @@ function DB:ThreatBar_Update()
 			bar.showBar = false
 		end
 
-		local color = E:GetThreatStatusColor(isTank and tankStatus[status] or status)
-		if color then
-			bar:SetStatusBarColor(color.r, color.g, color.b, 0.8)
+		local r, g, b = E:GetThreatStatusColor(isTank and tankStatus[status] or status)
+		if r then
+			bar:SetStatusBarColor(r, g, b, 0.8)
 		end
 	else
 		bar.showBar = false
