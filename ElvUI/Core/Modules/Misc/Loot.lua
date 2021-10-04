@@ -155,7 +155,7 @@ local function createSlot(id)
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, 'ARTWORK')
-	drop:SetTexture('Interface/QuestFrame/UI-QuestLogTitleHighlight')
+	drop:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
 	drop:Point('LEFT', icon, 'RIGHT', 0, 0)
 	drop:Point('RIGHT', frame)
 	drop:SetAllPoints(frame)

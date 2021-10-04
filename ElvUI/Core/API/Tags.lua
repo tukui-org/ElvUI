@@ -824,9 +824,9 @@ end)
 
 E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return '|TInterface/FriendsFrame/StatusIcon-Away:16:16|t'
+		return [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
 	elseif UnitIsDND(unit) then
-		return '|TInterface/FriendsFrame/StatusIcon-DnD:16:16|t'
+		return [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
 	end
 end)
 
@@ -872,8 +872,8 @@ end)
 
 do
 	local faction = {
-		Horde = '|TInterface/FriendsFrame/PlusManz-Horde:16:16|t',
-		Alliance = '|TInterface/FriendsFrame/PlusManz-Alliance:16:16|t'
+		Horde = [[|TInterface\FriendsFrame\PlusManz-Horde:16:16|t]],
+		Alliance = [[|TInterface\FriendsFrame\PlusManz-Alliance:16:16|t]]
 	}
 
 	E:AddTag('faction:icon', 'UNIT_FACTION', function(unit)
@@ -1218,7 +1218,7 @@ do
 			local _, class = UnitClass(unit)
 			local icon = classIcons[class]
 			if icon then
-				return format('|TInterface\\WorldStateFrame\\ICONS-CLASSES:32:32:0:0:256:256:%s|t', icon)
+				return format([[|TInterface\WorldStateFrame\ICONS-CLASSES:32:32:0:0:256:256:%s|t]], icon)
 			end
 		end
 	end)

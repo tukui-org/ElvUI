@@ -42,7 +42,7 @@ function S:Blizzard_GMChatUI()
 	GMChatTab:SetBackdropColor(0, .6, 1, .3)
 	GMChatTab:SetPoint('BOTTOMLEFT', GMChatFrame, 'TOPLEFT', 0, 3)
 	GMChatTab:SetPoint('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
-	_G.GMChatTabIcon:SetTexture('Interface\\ChatFrame\\UI-ChatIcon-Blizz')
+	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
 
 	local GMChatStatusFrame = _G.GMChatStatusFrame
 	local TicketStatusFrame = _G.TicketStatusFrame

@@ -183,7 +183,7 @@ function S:CharacterFrame()
 		factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
 		factionWar.Icon:Point('LEFT', 6, -8)
 		factionWar.Icon:Size(32)
-		factionWar.Icon:SetTexture('Interface\\Buttons\\UI-CheckBox-SwordCheck')
+		factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
 	hooksecurefunc('ReputationFrame_Update', function()

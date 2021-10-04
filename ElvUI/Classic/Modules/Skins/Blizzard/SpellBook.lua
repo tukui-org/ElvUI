@@ -55,7 +55,7 @@ function S:SpellBookFrame()
 		for y = 1, button:GetNumRegions() do
 			local region = select(y, button:GetRegions())
 			if region:GetObjectType() == 'Texture' then
-				if region:GetTexture() ~= 'Interface\\Buttons\\ActionBarFlyoutButton' then
+				if region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
 					region:SetTexture(nil)
 				end
 			end
@@ -77,7 +77,7 @@ function S:SpellBookFrame()
 
 		highlight:SetAllPoints()
 		hooksecurefunc(highlight, 'SetTexture', function(texture, tex)
-			if tex == 'Interface\\Buttons\\ButtonHilight-Square' or tex == 'Interface\\Buttons\\UI-PassiveHighlight' then
+			if tex == [[Interface\Buttons\ButtonHilight-Square]] or tex == [[Interface\Buttons\UI-PassiveHighlight]] then
 				texture:SetColorTexture(1, 1, 1, 0.3)
 			end
 		end)
