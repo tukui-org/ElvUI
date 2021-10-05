@@ -76,7 +76,7 @@ function S:ContainerFrame()
 	end
 
 	local bagIconCache = {
-		[-2] = 'Interface\\ICONS\\INV_Misc_Key_03',
+		[-2] = [[Interface\ICONS\INV_Misc_Key_03]],
 		[0] = E.Media.Textures.Backpack
 	}
 

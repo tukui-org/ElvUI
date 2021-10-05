@@ -169,11 +169,11 @@ local function OnEnter()
 	for _, g in ipairs(myGold) do
 		local nameLine = ''
 		if g.faction ~= '' and g.faction ~= 'Neutral' then
-			nameLine = format('|TInterface/FriendsFrame/PlusManz-%s:14|t ', g.faction)
+			nameLine = format([[|TInterface\FriendsFrame\PlusManz-%s:14|t ]], g.faction)
 		end
 
 		local toonName = format('%s%s%s', nameLine, g.name, (g.realm and g.realm ~= E.myrealm and ' - '..g.realm) or '')
-		DT.tooltip:AddDoubleLine((g.name == E.myname and toonName..' |TInterface/COMMON/Indicator-Green:14|t') or toonName, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		DT.tooltip:AddDoubleLine((g.name == E.myname and toonName..[[ |TInterface\COMMON\Indicator-Green:14|t]]) or toonName, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

@@ -3,19 +3,20 @@ local DB = E:GetModule('DataBars')
 
 local pairs, select, wipe = pairs, select, wipe
 
-local GetThreatStatusColor = GetThreatStatusColor
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
-local UnitClass = UnitClass
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local GetNumGroupMembers = GetNumGroupMembers
-local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
-local UnitIsUnit = UnitIsUnit
-local UnitName = UnitName
 local UnitReaction = UnitReaction
+local UnitExists = UnitExists
+local UnitIsUnit = UnitIsUnit
+local UnitClass = UnitClass
+local UnitName = UnitName
 local UNKNOWN = UNKNOWN
 -- GLOBALS: ElvUF
+
+local tankStatus = {[0] = 3, 2, 1, 0}
 
 function DB:ThreatBar_GetLargestThreatOnList(percent)
 	local largestValue, largestUnit = 0, nil
@@ -32,11 +33,11 @@ end
 function DB:ThreatBar_GetColor(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local _, unitClass = UnitClass(unit)
-	if (UnitIsPlayer(unit)) then
+	if UnitIsPlayer(unit) then
 		local class = E:ClassColor(unitClass)
 		if not class then return 194, 194, 194 end
 		return class.r*255, class.g*255, class.b*255
-	elseif (unitReaction) then
+	elseif unitReaction then
 		local reaction = ElvUF.colors.reaction[unitReaction]
 		return reaction[1]*255, reaction[2]*255, reaction[3]*255
 	else
@@ -53,6 +54,7 @@ function DB:ThreatBar_Update()
 		local name = UnitName('target') or UNKNOWN
 		bar.showBar = true
 
+		local isTank = E.myrole == 'TANK'
 		if percent == 100 then
 			if petExists then
 				bar.list.pet = select(3, UnitDetailedThreatSituation('pet', 'target'))
@@ -70,25 +72,21 @@ function DB:ThreatBar_Update()
 			if leadPercent > 0 and largestUnit ~= nil then
 				local r, g, b = DB:ThreatBar_GetColor(largestUnit)
 				bar.text:SetFormattedText(L["ABOVE_THREAT_FORMAT"], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
-
-				if E.myrole == 'TANK' then
-					bar:SetStatusBarColor(0, 0.839, 0)
-					bar:SetValue(leadPercent)
-				else
-					bar:SetStatusBarColor(GetThreatStatusColor(status))
-					bar:SetValue(percent)
-				end
+				bar:SetValue(isTank and leadPercent or percent)
 			else
-				bar:SetStatusBarColor(GetThreatStatusColor(status))
 				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 				bar:SetValue(percent)
 			end
 		elseif percent then
-			bar:SetStatusBarColor(GetThreatStatusColor(status))
 			bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 			bar:SetValue(percent)
 		else
 			bar.showBar = false
+		end
+
+		local r, g, b = E:GetThreatStatusColor(isTank and tankStatus[status] or status)
+		if r then
+			bar:SetStatusBarColor(r, g, b, 0.8)
 		end
 	else
 		bar.showBar = false

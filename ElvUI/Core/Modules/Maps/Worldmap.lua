@@ -61,7 +61,15 @@ end
 
 function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
-	if not WorldMapFrame:IsMaximized() then
+	if not E.Retail then
+		WorldMapFrame:EnableMouse(false)
+		WorldMapFrame:EnableKeyboard(false)
+		WorldMapFrame:SetFrameStrata('HIGH')
+		WorldMapFrame:SetParent(E.UIParent)
+		WorldMapFrame:SetScale(smallerMapScale)
+
+		_G.WorldMapTooltip:SetFrameLevel(WorldMapFrame.ScrollContainer:GetFrameLevel() + 100)
+	elseif not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
 	end
@@ -115,6 +123,14 @@ function M:PositionCoords()
 	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
+end
+
+function M:GetCursorPosition()
+	local s = _G.WorldMapFrame:GetScale()
+	local sc = _G.WorldMapFrame.ScrollContainer
+	local x, y = self.hooks[sc].GetCursorPosition(sc)
+
+	return x / s, y / s
 end
 
 function M:MapShouldFade()
@@ -211,6 +227,10 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
 
 		WorldMapFrame:HookScript('OnShow', function()
+			if not E.Retail and E.global.general.fadeMapWhenMoving then
+				M:EnableMapFading(WorldMapFrame)
+			end
+
 			if not M.CoordsTimer then
 				M:UpdateCoords(true)
 				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
@@ -240,22 +260,25 @@ function M:Initialize()
 			self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
 			self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
-
-			self:SecureHookScript(WorldMapFrame, 'OnShow', function()
-				if WorldMapFrame:IsMaximized() then
-					WorldMapFrame:UpdateMaximizedSize()
-					self:SetLargeWorldMap()
-				else
-					self:SetSmallWorldMap()
-				end
-
-				M:Unhook(WorldMapFrame, 'OnShow', nil)
-			end)
 		end
+
+		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
+			if E.Retail and WorldMapFrame:IsMaximized() then
+				WorldMapFrame:UpdateMaximizedSize()
+				self:SetLargeWorldMap()
+			else
+				self:SetSmallWorldMap()
+			end
+
+			M:Unhook(WorldMapFrame, 'OnShow', nil)
+		end)
 	end
 
-	-- This lets us control the maps fading function
-	hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
+	if E.Retail then -- This lets us control the maps fading function
+		hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
+	else -- This is to keep cursor correct on non-retail smaller world map
+		self:RawHook(WorldMapFrame.ScrollContainer, 'GetCursorPosition', 'GetCursorPosition', true)
+	end
 
 	-- Enable/Disable map fading when moving
 	-- currently we dont need to touch this cvar because we have our own control for this currently

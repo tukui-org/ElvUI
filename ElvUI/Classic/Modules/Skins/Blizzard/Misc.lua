@@ -235,7 +235,7 @@ function S:BlizzardMiscFrames()
 				uncheck:SetTexture()
 				local _, co = check:GetTexCoord()
 				if co == 0 then
-					check:SetTexture('Interface\\Buttons\\UI-CheckBox-Check')
+					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
 					check:Size(20, 20)
 					check:SetDesaturated(true)
