@@ -644,9 +644,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	},
 }
 
--- Spells that we want to show the duration backwards
-E.ReverseTimer = {}
-
 -- AuraWatch: List of personal spells to show on unitframes as icon
 function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
 

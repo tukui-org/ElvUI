@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local strfind, strlower, unpack = strfind, strlower, unpack
+local strfind, unpack = strfind, unpack
 
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellSubtext = GetSpellSubtext
@@ -15,7 +15,7 @@ local function Defaults(priorityOverride)
 	}
 end
 
-G.unitframe.aurafilters = {};
+G.unitframe.aurafilters = {}
 
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
@@ -161,7 +161,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 	},
 }
 
--- These are buffs that can be considered "protection" buffs
+-- These are buffs that can be considered 'protection' buffs
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
@@ -528,22 +528,23 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	},
 }
 
--- Spells that we want to show the duration backwards
-E.ReverseTimer = {}
-
 -- AuraWatch: List of personal spells to show on unitframes as icon
 function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
 
 	local r, g, b = 1, 1, 1
 	if color then r, g, b = unpack(color) end
 
+	local spellRank
+	local spellName = GetSpellInfo(id)
 	local rankText = GetSpellSubtext(id)
-	local spellRank = rankText and strfind(rankText, '%d') and GetSpellSubtext(id) or nil
+	if rankText and strfind(rankText, '%d') then
+		spellRank = rankText
+	end
 
 	return {
 		id = id,
 		enabled = true,
-		name = GetSpellInfo(id),
+		name = spellName,
 		rank = spellRank,
 		point = point or 'TOPLEFT',
 		color = { r = r, g = g, b = b },
@@ -561,206 +562,206 @@ end
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	PRIEST = {
-		[1243] = UF:AuraWatch_AddSpell(1243, "TOPLEFT", {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 1)
-		[1244] = UF:AuraWatch_AddSpell(1244, "TOPLEFT", {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 2)
-		[1245] = UF:AuraWatch_AddSpell(1245, "TOPLEFT", {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 3)
-		[2791] = UF:AuraWatch_AddSpell(2791, "TOPLEFT", {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 4)
-		[10937] = UF:AuraWatch_AddSpell(10937, "TOPLEFT", {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 5)
-		[10938] = UF:AuraWatch_AddSpell(10938, "TOPLEFT", {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 6)
-		[21562] = UF:AuraWatch_AddSpell(21562, "TOPLEFT", {1, 1, 0.66}, true), --Prayer of Fortitude(Rank 1)
-		[21564] = UF:AuraWatch_AddSpell(21564, "TOPLEFT", {1, 1, 0.66}, true), --Prayer of Fortitude(Rank 2)
-		[14752] = UF:AuraWatch_AddSpell(14752, "TOPRIGHT", {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 1)
-		[14818] = UF:AuraWatch_AddSpell(14818, "TOPRIGHT", {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 2)
-		[14819] = UF:AuraWatch_AddSpell(14819, "TOPRIGHT", {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 3)
-		[27841] = UF:AuraWatch_AddSpell(27841, "TOPRIGHT", {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 4)
-		[27681] = UF:AuraWatch_AddSpell(27681, "TOPRIGHT", {0.2, 0.7, 0.2}, true), --Prayer of Spirit(Rank 1)
-		[976] = UF:AuraWatch_AddSpell(976, "BOTTOMLEFT", {0.7, 0.7, 0.7}, true), --Shadow Protection(Rank 1)
-		[10957] = UF:AuraWatch_AddSpell(10957, "BOTTOMLEFT", {0.7, 0.7, 0.7}, true), --Shadow Protection(Rank 2)
-		[10958] = UF:AuraWatch_AddSpell(10958, "BOTTOMLEFT", {0.7, 0.7, 0.7}, true), --Shadow Protection(Rank 3)
-		[27683] = UF:AuraWatch_AddSpell(27683, "BOTTOMLEFT", {0.7, 0.7, 0.7}, true), --Prayer of Shadow Protection(Rank 1)
-		[17] = UF:AuraWatch_AddSpell(17, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 1)
-		[592] = UF:AuraWatch_AddSpell(592, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 2)
-		[600] = UF:AuraWatch_AddSpell(600, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 3)
-		[3747] = UF:AuraWatch_AddSpell(3747, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 4)
-		[6065] = UF:AuraWatch_AddSpell(6065, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 5)
-		[6066] = UF:AuraWatch_AddSpell(6066, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 6)
-		[10898] = UF:AuraWatch_AddSpell(10898, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 7)
-		[10899] = UF:AuraWatch_AddSpell(10899, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 8)
-		[10900] = UF:AuraWatch_AddSpell(10900, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 9)
-		[10901] = UF:AuraWatch_AddSpell(10901, "BOTTOM", {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 10)
-		[139] = UF:AuraWatch_AddSpell(139, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 1)
-		[6074] = UF:AuraWatch_AddSpell(6074, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 2)
-		[6075] = UF:AuraWatch_AddSpell(6075, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 3)
-		[6076] = UF:AuraWatch_AddSpell(6076, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 4)
-		[6077] = UF:AuraWatch_AddSpell(6077, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 5)
-		[6078] = UF:AuraWatch_AddSpell(6078, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 6)
-		[10927] = UF:AuraWatch_AddSpell(10927, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 7)
-		[10928] = UF:AuraWatch_AddSpell(10928, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 8)
-		[10929] = UF:AuraWatch_AddSpell(10929, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 9)
-		[25315] = UF:AuraWatch_AddSpell(25315, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Renew(Rank 10)
+		[1243] = UF:AuraWatch_AddSpell(1243, 'TOPLEFT', {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 1)
+		[1244] = UF:AuraWatch_AddSpell(1244, 'TOPLEFT', {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 2)
+		[1245] = UF:AuraWatch_AddSpell(1245, 'TOPLEFT', {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 3)
+		[2791] = UF:AuraWatch_AddSpell(2791, 'TOPLEFT', {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 4)
+		[10937] = UF:AuraWatch_AddSpell(10937, 'TOPLEFT', {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 5)
+		[10938] = UF:AuraWatch_AddSpell(10938, 'TOPLEFT', {1, 1, 0.66}, true), --Power Word: Fortitude(Rank 6)
+		[21562] = UF:AuraWatch_AddSpell(21562, 'TOPLEFT', {1, 1, 0.66}, true), --Prayer of Fortitude(Rank 1)
+		[21564] = UF:AuraWatch_AddSpell(21564, 'TOPLEFT', {1, 1, 0.66}, true), --Prayer of Fortitude(Rank 2)
+		[14752] = UF:AuraWatch_AddSpell(14752, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 1)
+		[14818] = UF:AuraWatch_AddSpell(14818, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 2)
+		[14819] = UF:AuraWatch_AddSpell(14819, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 3)
+		[27841] = UF:AuraWatch_AddSpell(27841, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), --Divine Spirit(Rank 4)
+		[27681] = UF:AuraWatch_AddSpell(27681, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), --Prayer of Spirit(Rank 1)
+		[976] = UF:AuraWatch_AddSpell(976, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), --Shadow Protection(Rank 1)
+		[10957] = UF:AuraWatch_AddSpell(10957, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), --Shadow Protection(Rank 2)
+		[10958] = UF:AuraWatch_AddSpell(10958, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), --Shadow Protection(Rank 3)
+		[27683] = UF:AuraWatch_AddSpell(27683, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), --Prayer of Shadow Protection(Rank 1)
+		[17] = UF:AuraWatch_AddSpell(17, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 1)
+		[592] = UF:AuraWatch_AddSpell(592, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 2)
+		[600] = UF:AuraWatch_AddSpell(600, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 3)
+		[3747] = UF:AuraWatch_AddSpell(3747, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 4)
+		[6065] = UF:AuraWatch_AddSpell(6065, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 5)
+		[6066] = UF:AuraWatch_AddSpell(6066, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 6)
+		[10898] = UF:AuraWatch_AddSpell(10898, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 7)
+		[10899] = UF:AuraWatch_AddSpell(10899, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 8)
+		[10900] = UF:AuraWatch_AddSpell(10900, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 9)
+		[10901] = UF:AuraWatch_AddSpell(10901, 'BOTTOM', {0.00, 0.00, 1.00}), --Power Word: Shield(Rank 10)
+		[139] = UF:AuraWatch_AddSpell(139, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 1)
+		[6074] = UF:AuraWatch_AddSpell(6074, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 2)
+		[6075] = UF:AuraWatch_AddSpell(6075, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 3)
+		[6076] = UF:AuraWatch_AddSpell(6076, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 4)
+		[6077] = UF:AuraWatch_AddSpell(6077, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 5)
+		[6078] = UF:AuraWatch_AddSpell(6078, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 6)
+		[10927] = UF:AuraWatch_AddSpell(10927, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 7)
+		[10928] = UF:AuraWatch_AddSpell(10928, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 8)
+		[10929] = UF:AuraWatch_AddSpell(10929, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 9)
+		[25315] = UF:AuraWatch_AddSpell(25315, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Renew(Rank 10)
 	},
 	DRUID = {
-		[1126] = UF:AuraWatch_AddSpell(1126, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 1)
-		[5232] = UF:AuraWatch_AddSpell(5232, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 2)
-		[6756] = UF:AuraWatch_AddSpell(6756, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 3)
-		[5234] = UF:AuraWatch_AddSpell(5234, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 4)
-		[8907] = UF:AuraWatch_AddSpell(8907, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 5)
-		[9884] = UF:AuraWatch_AddSpell(9884, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 6)
-		[9885] = UF:AuraWatch_AddSpell(9885, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 7)
-		[21849] = UF:AuraWatch_AddSpell(21849, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Gift of the Wild(Rank 1)
-		[21850] = UF:AuraWatch_AddSpell(21850, "TOPLEFT", {0.2, 0.8, 0.8}, true), --Gift of the Wild(Rank 2)
-		[467] = UF:AuraWatch_AddSpell(467, "TOPRIGHT", {0.4, 0.2, 0.8}, true), --Thorns(Rank 1)
-		[782] = UF:AuraWatch_AddSpell(782, "TOPRIGHT", {0.4, 0.2, 0.8}, true), --Thorns(Rank 2)
-		[1075] = UF:AuraWatch_AddSpell(1075, "TOPRIGHT", {0.4, 0.2, 0.8}, true), --Thorns(Rank 3)
-		[8914] = UF:AuraWatch_AddSpell(8914, "TOPRIGHT", {0.4, 0.2, 0.8}, true), --Thorns(Rank 4)
-		[9756] = UF:AuraWatch_AddSpell(9756, "TOPRIGHT", {0.4, 0.2, 0.8}, true), --Thorns(Rank 5)
-		[9910] = UF:AuraWatch_AddSpell(9910, "TOPRIGHT", {0.4, 0.2, 0.8}, true), --Thorns(Rank 6)
-		[774] = UF:AuraWatch_AddSpell(774, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 1)
-		[1058] = UF:AuraWatch_AddSpell(1058, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 2)
-		[1430] = UF:AuraWatch_AddSpell(1430, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 3)
-		[2090] = UF:AuraWatch_AddSpell(2090, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 4)
-		[2091] = UF:AuraWatch_AddSpell(2091, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 5)
-		[3627] = UF:AuraWatch_AddSpell(3627, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 6)
-		[8910] = UF:AuraWatch_AddSpell(8910, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 7)
-		[9839] = UF:AuraWatch_AddSpell(9839, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 8)
-		[9840] = UF:AuraWatch_AddSpell(9840, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 9)
-		[9841] = UF:AuraWatch_AddSpell(9841, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 10)
-		[25299] = UF:AuraWatch_AddSpell(25299, "BOTTOMLEFT", {0.83, 1.00, 0.25}), --Rejuvenation(Rank 11)
-		[8936] = UF:AuraWatch_AddSpell(8936, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 1)
-		[8938] = UF:AuraWatch_AddSpell(8938, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 2)
-		[8939] = UF:AuraWatch_AddSpell(8939, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 3)
-		[8940] = UF:AuraWatch_AddSpell(8940, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 4)
-		[8941] = UF:AuraWatch_AddSpell(8941, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 5)
-		[9750] = UF:AuraWatch_AddSpell(9750, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 6)
-		[9856] = UF:AuraWatch_AddSpell(9856, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 7)
-		[9857] = UF:AuraWatch_AddSpell(9857, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 8)
-		[9858] = UF:AuraWatch_AddSpell(9858, "BOTTOMRIGHT", {0.33, 0.73, 0.75}), --Regrowth(Rank 9)
-		[29166] = UF:AuraWatch_AddSpell(29166, "CENTER", {0.49, 0.60, 0.55}, true), --Innervate
+		[1126] = UF:AuraWatch_AddSpell(1126, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 1)
+		[5232] = UF:AuraWatch_AddSpell(5232, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 2)
+		[6756] = UF:AuraWatch_AddSpell(6756, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 3)
+		[5234] = UF:AuraWatch_AddSpell(5234, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 4)
+		[8907] = UF:AuraWatch_AddSpell(8907, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 5)
+		[9884] = UF:AuraWatch_AddSpell(9884, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 6)
+		[9885] = UF:AuraWatch_AddSpell(9885, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Mark of the Wild(Rank 7)
+		[21849] = UF:AuraWatch_AddSpell(21849, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Gift of the Wild(Rank 1)
+		[21850] = UF:AuraWatch_AddSpell(21850, 'TOPLEFT', {0.2, 0.8, 0.8}, true), --Gift of the Wild(Rank 2)
+		[467] = UF:AuraWatch_AddSpell(467, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), --Thorns(Rank 1)
+		[782] = UF:AuraWatch_AddSpell(782, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), --Thorns(Rank 2)
+		[1075] = UF:AuraWatch_AddSpell(1075, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), --Thorns(Rank 3)
+		[8914] = UF:AuraWatch_AddSpell(8914, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), --Thorns(Rank 4)
+		[9756] = UF:AuraWatch_AddSpell(9756, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), --Thorns(Rank 5)
+		[9910] = UF:AuraWatch_AddSpell(9910, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), --Thorns(Rank 6)
+		[774] = UF:AuraWatch_AddSpell(774, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 1)
+		[1058] = UF:AuraWatch_AddSpell(1058, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 2)
+		[1430] = UF:AuraWatch_AddSpell(1430, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 3)
+		[2090] = UF:AuraWatch_AddSpell(2090, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 4)
+		[2091] = UF:AuraWatch_AddSpell(2091, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 5)
+		[3627] = UF:AuraWatch_AddSpell(3627, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 6)
+		[8910] = UF:AuraWatch_AddSpell(8910, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 7)
+		[9839] = UF:AuraWatch_AddSpell(9839, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 8)
+		[9840] = UF:AuraWatch_AddSpell(9840, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 9)
+		[9841] = UF:AuraWatch_AddSpell(9841, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 10)
+		[25299] = UF:AuraWatch_AddSpell(25299, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), --Rejuvenation(Rank 11)
+		[8936] = UF:AuraWatch_AddSpell(8936, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 1)
+		[8938] = UF:AuraWatch_AddSpell(8938, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 2)
+		[8939] = UF:AuraWatch_AddSpell(8939, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 3)
+		[8940] = UF:AuraWatch_AddSpell(8940, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 4)
+		[8941] = UF:AuraWatch_AddSpell(8941, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 5)
+		[9750] = UF:AuraWatch_AddSpell(9750, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 6)
+		[9856] = UF:AuraWatch_AddSpell(9856, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 7)
+		[9857] = UF:AuraWatch_AddSpell(9857, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 8)
+		[9858] = UF:AuraWatch_AddSpell(9858, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), --Regrowth(Rank 9)
+		[29166] = UF:AuraWatch_AddSpell(29166, 'CENTER', {0.49, 0.60, 0.55}, true), --Innervate
 	},
 	PALADIN = {
-		[1044] = UF:AuraWatch_AddSpell(1044, "CENTER", {0.89, 0.45, 0}), --Blessing of Freedom
-		[6940] = UF:AuraWatch_AddSpell(6940, "CENTER", {0.89, 0.1, 0.1}), --Blessing Sacrifice(Rank 1)
-		[20729] = UF:AuraWatch_AddSpell(20729, "CENTER", {0.89, 0.1, 0.1}), --Blessing Sacrifice(Rank 2)
-		[19740] = UF:AuraWatch_AddSpell(19740, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 1)
-		[19834] = UF:AuraWatch_AddSpell(19834, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 2)
-		[19835] = UF:AuraWatch_AddSpell(19835, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 3)
-		[19836] = UF:AuraWatch_AddSpell(19836, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 4)
-		[19837] = UF:AuraWatch_AddSpell(19837, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 5)
-		[19838] = UF:AuraWatch_AddSpell(19838, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 6)
-		[25291] = UF:AuraWatch_AddSpell(25291, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 7)
-		[19742] = UF:AuraWatch_AddSpell(19742, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 1)
-		[19850] = UF:AuraWatch_AddSpell(19850, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 2)
-		[19852] = UF:AuraWatch_AddSpell(19852, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 3)
-		[19853] = UF:AuraWatch_AddSpell(19853, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 4)
-		[19854] = UF:AuraWatch_AddSpell(19854, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 5)
-		[25290] = UF:AuraWatch_AddSpell(25290, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 6)
-		[25782] = UF:AuraWatch_AddSpell(25782, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Greater Blessing of Might(Rank 1)
-		[25916] = UF:AuraWatch_AddSpell(25916, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Greater Blessing of Might(Rank 2)
-		[25894] = UF:AuraWatch_AddSpell(25894, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Greater Blessing of Wisdom(Rank 1)
-		[25918] = UF:AuraWatch_AddSpell(25918, "TOPLEFT", {0.2, 0.8, 0.2}, true), --Greater Blessing of Wisdom(Rank 2)
-		[465] = UF:AuraWatch_AddSpell(465, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 1)
-		[10290] = UF:AuraWatch_AddSpell(10290, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 2)
-		[643] = UF:AuraWatch_AddSpell(643, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 3)
-		[10291] = UF:AuraWatch_AddSpell(10291, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 4)
-		[1032] = UF:AuraWatch_AddSpell(1032, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 5)
-		[10292] = UF:AuraWatch_AddSpell(10292, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 6)
-		[10293] = UF:AuraWatch_AddSpell(10293, "BOTTOMLEFT", {0.58, 1.00, 0.50}), --Devotion Aura(Rank 7)
-		[19977] = UF:AuraWatch_AddSpell(19977, "BOTTOMRIGHT", {0.17, 1.00, 0.75}, true), --Blessing of Light(Rank 1)
-		[19978] = UF:AuraWatch_AddSpell(19978, "BOTTOMRIGHT", {0.17, 1.00, 0.75}, true), --Blessing of Light(Rank 2)
-		[19979] = UF:AuraWatch_AddSpell(19979, "BOTTOMRIGHT", {0.17, 1.00, 0.75}, true), --Blessing of Light(Rank 3)
-		[1022] = UF:AuraWatch_AddSpell(1022, "TOPRIGHT", {0.17, 1.00, 0.75}, true), --Blessing of Protection(Rank 1)
-		[5599] = UF:AuraWatch_AddSpell(5599, "TOPRIGHT", {0.17, 1.00, 0.75}, true), --Blessing of Protection(Rank 2)
-		[10278] = UF:AuraWatch_AddSpell(10278, "TOPRIGHT", {0.17, 1.00, 0.75}, true), --Blessing of Protection(Rank 3)
-		[19746] = UF:AuraWatch_AddSpell(19746, "BOTTOMLEFT", {0.83, 1.00, 0.07}), --Concentration Aura
+		[1044] = UF:AuraWatch_AddSpell(1044, 'CENTER', {0.89, 0.45, 0}), --Blessing of Freedom
+		[6940] = UF:AuraWatch_AddSpell(6940, 'CENTER', {0.89, 0.1, 0.1}), --Blessing Sacrifice(Rank 1)
+		[20729] = UF:AuraWatch_AddSpell(20729, 'CENTER', {0.89, 0.1, 0.1}), --Blessing Sacrifice(Rank 2)
+		[19740] = UF:AuraWatch_AddSpell(19740, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 1)
+		[19834] = UF:AuraWatch_AddSpell(19834, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 2)
+		[19835] = UF:AuraWatch_AddSpell(19835, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 3)
+		[19836] = UF:AuraWatch_AddSpell(19836, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 4)
+		[19837] = UF:AuraWatch_AddSpell(19837, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 5)
+		[19838] = UF:AuraWatch_AddSpell(19838, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 6)
+		[25291] = UF:AuraWatch_AddSpell(25291, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Might(Rank 7)
+		[19742] = UF:AuraWatch_AddSpell(19742, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 1)
+		[19850] = UF:AuraWatch_AddSpell(19850, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 2)
+		[19852] = UF:AuraWatch_AddSpell(19852, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 3)
+		[19853] = UF:AuraWatch_AddSpell(19853, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 4)
+		[19854] = UF:AuraWatch_AddSpell(19854, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 5)
+		[25290] = UF:AuraWatch_AddSpell(25290, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Blessing of Wisdom(Rank 6)
+		[25782] = UF:AuraWatch_AddSpell(25782, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Greater Blessing of Might(Rank 1)
+		[25916] = UF:AuraWatch_AddSpell(25916, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Greater Blessing of Might(Rank 2)
+		[25894] = UF:AuraWatch_AddSpell(25894, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Greater Blessing of Wisdom(Rank 1)
+		[25918] = UF:AuraWatch_AddSpell(25918, 'TOPLEFT', {0.2, 0.8, 0.2}, true), --Greater Blessing of Wisdom(Rank 2)
+		[465] = UF:AuraWatch_AddSpell(465, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 1)
+		[10290] = UF:AuraWatch_AddSpell(10290, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 2)
+		[643] = UF:AuraWatch_AddSpell(643, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 3)
+		[10291] = UF:AuraWatch_AddSpell(10291, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 4)
+		[1032] = UF:AuraWatch_AddSpell(1032, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 5)
+		[10292] = UF:AuraWatch_AddSpell(10292, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 6)
+		[10293] = UF:AuraWatch_AddSpell(10293, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), --Devotion Aura(Rank 7)
+		[19977] = UF:AuraWatch_AddSpell(19977, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), --Blessing of Light(Rank 1)
+		[19978] = UF:AuraWatch_AddSpell(19978, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), --Blessing of Light(Rank 2)
+		[19979] = UF:AuraWatch_AddSpell(19979, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true), --Blessing of Light(Rank 3)
+		[1022] = UF:AuraWatch_AddSpell(1022, 'TOPRIGHT', {0.17, 1.00, 0.75}, true), --Blessing of Protection(Rank 1)
+		[5599] = UF:AuraWatch_AddSpell(5599, 'TOPRIGHT', {0.17, 1.00, 0.75}, true), --Blessing of Protection(Rank 2)
+		[10278] = UF:AuraWatch_AddSpell(10278, 'TOPRIGHT', {0.17, 1.00, 0.75}, true), --Blessing of Protection(Rank 3)
+		[19746] = UF:AuraWatch_AddSpell(19746, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), --Concentration Aura
 	},
 	SHAMAN = {
-		[29203] = UF:AuraWatch_AddSpell(29203, "TOPRIGHT", {0.7, 0.3, 0.7}), --Healing Way
-		[16237] = UF:AuraWatch_AddSpell(16237, "RIGHT", {0.2, 0.2, 1}), --Ancestral Fortitude
-		[25909] = UF:AuraWatch_AddSpell(25909, "TOP", {0.00, 0.00, 0.50}), --Tranquil Air
-		[8185] = UF:AuraWatch_AddSpell(8185, "TOPLEFT", {0.05, 1.00, 0.50}), --Fire Resistance Totem(Rank 1)
-		[10534] = UF:AuraWatch_AddSpell(10534, "TOPLEFT", {0.05, 1.00, 0.50}), --Fire Resistance Totem(Rank 2)
-		[10535] = UF:AuraWatch_AddSpell(10535, "TOPLEFT", {0.05, 1.00, 0.50}), --Fire Resistance Totem(Rank 3)
-		[8182] = UF:AuraWatch_AddSpell(8182, "TOPLEFT", {0.54, 0.53, 0.79}), --Frost Resistance Totem(Rank 1)
-		[10476] = UF:AuraWatch_AddSpell(10476, "TOPLEFT", {0.54, 0.53, 0.79}), --Frost Resistance Totem(Rank 2)
-		[10477] = UF:AuraWatch_AddSpell(10477, "TOPLEFT", {0.54, 0.53, 0.79}), --Frost Resistance Totem(Rank 3)
-		[10596] = UF:AuraWatch_AddSpell(10596, "TOPLEFT", {0.33, 1.00, 0.20}), --Nature Resistance Totem(Rank 1)
-		[10598] = UF:AuraWatch_AddSpell(10598, "TOPLEFT", {0.33, 1.00, 0.20}), --Nature Resistance Totem(Rank 2)
-		[10599] = UF:AuraWatch_AddSpell(10599, "TOPLEFT", {0.33, 1.00, 0.20}), --Nature Resistance Totem(Rank 3)
-		[5672] = UF:AuraWatch_AddSpell(5672, "BOTTOM", {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 1)
-		[6371] = UF:AuraWatch_AddSpell(6371, "BOTTOM", {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 2)
-		[6372] = UF:AuraWatch_AddSpell(6372, "BOTTOM", {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 3)
-		[10460] = UF:AuraWatch_AddSpell(10460, "BOTTOM", {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 4)
-		[10461] = UF:AuraWatch_AddSpell(10461, "BOTTOM", {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 5)
-		[16191] = UF:AuraWatch_AddSpell(16191, "BOTTOMLEFT", {0.67, 1.00, 0.80}), --Mana Tide Totem(Rank 1)
-		[17355] = UF:AuraWatch_AddSpell(17355, "BOTTOMLEFT", {0.67, 1.00, 0.80}), --Mana Tide Totem(Rank 2)
-		[17360] = UF:AuraWatch_AddSpell(17360, "BOTTOMLEFT", {0.67, 1.00, 0.80}), --Mana Tide Totem(Rank 3)
-		[5677] = UF:AuraWatch_AddSpell(5677, "LEFT", {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 1)
-		[10491] = UF:AuraWatch_AddSpell(10491, "LEFT", {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 2)
-		[10493] = UF:AuraWatch_AddSpell(10493, "LEFT", {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 3)
-		[10494] = UF:AuraWatch_AddSpell(10494, "LEFT", {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 4)
-		[8072] = UF:AuraWatch_AddSpell(8072, "BOTTOMRIGHT", {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 1)
-		[8156] = UF:AuraWatch_AddSpell(8156, "BOTTOMRIGHT", {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 2)
-		[8157] = UF:AuraWatch_AddSpell(8157, "BOTTOMRIGHT", {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 3)
-		[10403] = UF:AuraWatch_AddSpell(10403, "BOTTOMRIGHT", {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 4)
-		[10404] = UF:AuraWatch_AddSpell(10404, "BOTTOMRIGHT", {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 5)
-		[10405] = UF:AuraWatch_AddSpell(10405, "BOTTOMRIGHT", {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 6)
+		[29203] = UF:AuraWatch_AddSpell(29203, 'TOPRIGHT', {0.7, 0.3, 0.7}), --Healing Way
+		[16237] = UF:AuraWatch_AddSpell(16237, 'RIGHT', {0.2, 0.2, 1}), --Ancestral Fortitude
+		[25909] = UF:AuraWatch_AddSpell(25909, 'TOP', {0.00, 0.00, 0.50}), --Tranquil Air
+		[8185] = UF:AuraWatch_AddSpell(8185, 'TOPLEFT', {0.05, 1.00, 0.50}), --Fire Resistance Totem(Rank 1)
+		[10534] = UF:AuraWatch_AddSpell(10534, 'TOPLEFT', {0.05, 1.00, 0.50}), --Fire Resistance Totem(Rank 2)
+		[10535] = UF:AuraWatch_AddSpell(10535, 'TOPLEFT', {0.05, 1.00, 0.50}), --Fire Resistance Totem(Rank 3)
+		[8182] = UF:AuraWatch_AddSpell(8182, 'TOPLEFT', {0.54, 0.53, 0.79}), --Frost Resistance Totem(Rank 1)
+		[10476] = UF:AuraWatch_AddSpell(10476, 'TOPLEFT', {0.54, 0.53, 0.79}), --Frost Resistance Totem(Rank 2)
+		[10477] = UF:AuraWatch_AddSpell(10477, 'TOPLEFT', {0.54, 0.53, 0.79}), --Frost Resistance Totem(Rank 3)
+		[10596] = UF:AuraWatch_AddSpell(10596, 'TOPLEFT', {0.33, 1.00, 0.20}), --Nature Resistance Totem(Rank 1)
+		[10598] = UF:AuraWatch_AddSpell(10598, 'TOPLEFT', {0.33, 1.00, 0.20}), --Nature Resistance Totem(Rank 2)
+		[10599] = UF:AuraWatch_AddSpell(10599, 'TOPLEFT', {0.33, 1.00, 0.20}), --Nature Resistance Totem(Rank 3)
+		[5672] = UF:AuraWatch_AddSpell(5672, 'BOTTOM', {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 1)
+		[6371] = UF:AuraWatch_AddSpell(6371, 'BOTTOM', {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 2)
+		[6372] = UF:AuraWatch_AddSpell(6372, 'BOTTOM', {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 3)
+		[10460] = UF:AuraWatch_AddSpell(10460, 'BOTTOM', {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 4)
+		[10461] = UF:AuraWatch_AddSpell(10461, 'BOTTOM', {0.67, 1.00, 0.50}), --Healing Stream Totem(Rank 5)
+		[16191] = UF:AuraWatch_AddSpell(16191, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), --Mana Tide Totem(Rank 1)
+		[17355] = UF:AuraWatch_AddSpell(17355, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), --Mana Tide Totem(Rank 2)
+		[17360] = UF:AuraWatch_AddSpell(17360, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), --Mana Tide Totem(Rank 3)
+		[5677] = UF:AuraWatch_AddSpell(5677, 'LEFT', {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 1)
+		[10491] = UF:AuraWatch_AddSpell(10491, 'LEFT', {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 2)
+		[10493] = UF:AuraWatch_AddSpell(10493, 'LEFT', {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 3)
+		[10494] = UF:AuraWatch_AddSpell(10494, 'LEFT', {0.67, 1.00, 0.80}), --Mana Spring Totem(Rank 4)
+		[8072] = UF:AuraWatch_AddSpell(8072, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 1)
+		[8156] = UF:AuraWatch_AddSpell(8156, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 2)
+		[8157] = UF:AuraWatch_AddSpell(8157, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 3)
+		[10403] = UF:AuraWatch_AddSpell(10403, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 4)
+		[10404] = UF:AuraWatch_AddSpell(10404, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 5)
+		[10405] = UF:AuraWatch_AddSpell(10405, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), --Stoneskin Totem(Rank 6)
 	},
 	WARRIOR = {
-		[6673] = UF:AuraWatch_AddSpell(6673, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 1)
-		[5242] = UF:AuraWatch_AddSpell(5242, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 2)
-		[6192] = UF:AuraWatch_AddSpell(6192, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 3)
-		[11549] = UF:AuraWatch_AddSpell(11549, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 4)
-		[11550] = UF:AuraWatch_AddSpell(11550, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 5)
-		[11551] = UF:AuraWatch_AddSpell(11551, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 6)
-		[25289] = UF:AuraWatch_AddSpell(25289, "TOPLEFT", {0.2, 0.2, 1}, true), --Battle Shout(Rank 7)
+		[6673] = UF:AuraWatch_AddSpell(6673, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 1)
+		[5242] = UF:AuraWatch_AddSpell(5242, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 2)
+		[6192] = UF:AuraWatch_AddSpell(6192, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 3)
+		[11549] = UF:AuraWatch_AddSpell(11549, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 4)
+		[11550] = UF:AuraWatch_AddSpell(11550, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 5)
+		[11551] = UF:AuraWatch_AddSpell(11551, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 6)
+		[25289] = UF:AuraWatch_AddSpell(25289, 'TOPLEFT', {0.2, 0.2, 1}, true), --Battle Shout(Rank 7)
 	},
 	MAGE = {
-		[1459] = UF:AuraWatch_AddSpell(1459, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 1)
-		[1460] = UF:AuraWatch_AddSpell(1460, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 2)
-		[1461] = UF:AuraWatch_AddSpell(1461, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 3)
-		[10156] = UF:AuraWatch_AddSpell(10156, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 4)
-		[10157] = UF:AuraWatch_AddSpell(10157, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 5)
-		[23028] = UF:AuraWatch_AddSpell(23028, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Brilliance(Rank 1)
-		[27127] = UF:AuraWatch_AddSpell(27127, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Arcane Brilliance(Rank 2)
-		[604] = UF:AuraWatch_AddSpell(604, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 1)
-		[8450] = UF:AuraWatch_AddSpell(8450, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 2)
-		[8451] = UF:AuraWatch_AddSpell(8451, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 3)
-		[10173] = UF:AuraWatch_AddSpell(10173, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 4)
-		[10174] = UF:AuraWatch_AddSpell(10174, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 5)
-		[1008] = UF:AuraWatch_AddSpell(1008, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 1)
-		[8455] = UF:AuraWatch_AddSpell(8455, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 2)
-		[10169] = UF:AuraWatch_AddSpell(10169, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 3)
-		[10170] = UF:AuraWatch_AddSpell(10170, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 4)
-		[130] = UF:AuraWatch_AddSpell(130, "CENTER", {0.00, 0.00, 0.50}, true), --Slow Fall
+		[1459] = UF:AuraWatch_AddSpell(1459, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 1)
+		[1460] = UF:AuraWatch_AddSpell(1460, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 2)
+		[1461] = UF:AuraWatch_AddSpell(1461, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 3)
+		[10156] = UF:AuraWatch_AddSpell(10156, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 4)
+		[10157] = UF:AuraWatch_AddSpell(10157, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Intellect(Rank 5)
+		[23028] = UF:AuraWatch_AddSpell(23028, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Brilliance(Rank 1)
+		[27127] = UF:AuraWatch_AddSpell(27127, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Arcane Brilliance(Rank 2)
+		[604] = UF:AuraWatch_AddSpell(604, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 1)
+		[8450] = UF:AuraWatch_AddSpell(8450, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 2)
+		[8451] = UF:AuraWatch_AddSpell(8451, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 3)
+		[10173] = UF:AuraWatch_AddSpell(10173, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 4)
+		[10174] = UF:AuraWatch_AddSpell(10174, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Dampen Magic(Rank 5)
+		[1008] = UF:AuraWatch_AddSpell(1008, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 1)
+		[8455] = UF:AuraWatch_AddSpell(8455, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 2)
+		[10169] = UF:AuraWatch_AddSpell(10169, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 3)
+		[10170] = UF:AuraWatch_AddSpell(10170, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Amplify Magic(Rank 4)
+		[130] = UF:AuraWatch_AddSpell(130, 'CENTER', {0.00, 0.00, 0.50}, true), --Slow Fall
 	},
 	HUNTER = {
-		[19506] = UF:AuraWatch_AddSpell(19506, "TOPLEFT", {0.89, 0.09, 0.05}), --Trueshot Aura (Rank 1)
-		[20905] = UF:AuraWatch_AddSpell(20905, "TOPLEFT", {0.89, 0.09, 0.05}), --Trueshot Aura (Rank 2)
-		[20906] = UF:AuraWatch_AddSpell(20906, "TOPLEFT", {0.89, 0.09, 0.05}), --Trueshot Aura (Rank 3)
-		[13159] = UF:AuraWatch_AddSpell(13159, "BOTTOMLEFT", {0.00, 0.00, 0.85}), --Aspect of the Pack
-		[20043] = UF:AuraWatch_AddSpell(20043, "BOTTOMLEFT", {0.33, 0.93, 0.79}), --Aspect of the Wild (Rank 1)
-		[20190] = UF:AuraWatch_AddSpell(20190, "BOTTOMLEFT", {0.33, 0.93, 0.79}), --Aspect of the Wild (Rank 2)
+		[19506] = UF:AuraWatch_AddSpell(19506, 'TOPLEFT', {0.89, 0.09, 0.05}), --Trueshot Aura (Rank 1)
+		[20905] = UF:AuraWatch_AddSpell(20905, 'TOPLEFT', {0.89, 0.09, 0.05}), --Trueshot Aura (Rank 2)
+		[20906] = UF:AuraWatch_AddSpell(20906, 'TOPLEFT', {0.89, 0.09, 0.05}), --Trueshot Aura (Rank 3)
+		[13159] = UF:AuraWatch_AddSpell(13159, 'BOTTOMLEFT', {0.00, 0.00, 0.85}), --Aspect of the Pack
+		[20043] = UF:AuraWatch_AddSpell(20043, 'BOTTOMLEFT', {0.33, 0.93, 0.79}), --Aspect of the Wild (Rank 1)
+		[20190] = UF:AuraWatch_AddSpell(20190, 'BOTTOMLEFT', {0.33, 0.93, 0.79}), --Aspect of the Wild (Rank 2)
 	},
 	WARLOCK = {
-		[5597] = UF:AuraWatch_AddSpell(5597, "TOPLEFT", {0.89, 0.09, 0.05}, true), --Unending Breath
-		[6512] = UF:AuraWatch_AddSpell(6512, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Detect Lesser Invisibility
-		[2970] = UF:AuraWatch_AddSpell(2970, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Detect Invisibility
-		[11743] = UF:AuraWatch_AddSpell(11743, "TOPRIGHT", {0.2, 0.8, 0.2}, true), --Detect Greater Invisibility
+		[5597] = UF:AuraWatch_AddSpell(5597, 'TOPLEFT', {0.89, 0.09, 0.05}, true), --Unending Breath
+		[6512] = UF:AuraWatch_AddSpell(6512, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Detect Lesser Invisibility
+		[2970] = UF:AuraWatch_AddSpell(2970, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Detect Invisibility
+		[11743] = UF:AuraWatch_AddSpell(11743, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), --Detect Greater Invisibility
 	},
 	PET = {
 	--Warlock Imp
-		[6307] = UF:AuraWatch_AddSpell(6307, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact(Rank 1)
-		[7804] = UF:AuraWatch_AddSpell(7804, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact(Rank 2)
-		[7805] = UF:AuraWatch_AddSpell(7805, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact(Rank 3)
-		[11766] = UF:AuraWatch_AddSpell(11766, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact(Rank 4)
-		[11767] = UF:AuraWatch_AddSpell(11767, "BOTTOMLEFT", {0.89, 0.09, 0.05}), --Blood Pact(Rank 5)
+		[6307] = UF:AuraWatch_AddSpell(6307, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), --Blood Pact(Rank 1)
+		[7804] = UF:AuraWatch_AddSpell(7804, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), --Blood Pact(Rank 2)
+		[7805] = UF:AuraWatch_AddSpell(7805, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), --Blood Pact(Rank 3)
+		[11766] = UF:AuraWatch_AddSpell(11766, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), --Blood Pact(Rank 4)
+		[11767] = UF:AuraWatch_AddSpell(11767, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), --Blood Pact(Rank 5)
 	--Warlock Felhunter
-		[19480] = UF:AuraWatch_AddSpell(19480, "BOTTOMLEFT", {0.2, 0.8, 0.2}), --Paranoia
+		[19480] = UF:AuraWatch_AddSpell(19480, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), --Paranoia
 	--Hunter Pets
-		[24604] = UF:AuraWatch_AddSpell(24604, "TOPRIGHT", {0.08, 0.59, 0.41}), --Furious Howl(Rank 1)
-		[24605] = UF:AuraWatch_AddSpell(24605, "TOPRIGHT", {0.08, 0.59, 0.41}), --Furious Howl(Rank 2)
-		[24603] = UF:AuraWatch_AddSpell(24603, "TOPRIGHT", {0.08, 0.59, 0.41}), --Furious Howl(Rank 3)
-		[24597] = UF:AuraWatch_AddSpell(24597, "TOPRIGHT", {0.08, 0.59, 0.41}), --Furious Howl(Rank 4)
+		[24604] = UF:AuraWatch_AddSpell(24604, 'TOPRIGHT', {0.08, 0.59, 0.41}), --Furious Howl(Rank 1)
+		[24605] = UF:AuraWatch_AddSpell(24605, 'TOPRIGHT', {0.08, 0.59, 0.41}), --Furious Howl(Rank 2)
+		[24603] = UF:AuraWatch_AddSpell(24603, 'TOPRIGHT', {0.08, 0.59, 0.41}), --Furious Howl(Rank 3)
+		[24597] = UF:AuraWatch_AddSpell(24597, 'TOPRIGHT', {0.08, 0.59, 0.41}), --Furious Howl(Rank 4)
 	},
 	ROGUE = {}, --No buffs
 }
@@ -858,13 +859,12 @@ G.unitframe.ChannelTicks = {
 	[13544] = 5, --Mend Pet(Rank 7)
 }
 
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function()
-	if strlower(E.myclass) ~= "priest" then return end
-
-	local penanceTicks = IsPlayerSpell(193134) and 4 or 3
-	E.global.unitframe.ChannelTicks[47540] = penanceTicks --Penance
+local checkTicks = CreateFrame('Frame')
+checkTicks:RegisterEvent('PLAYER_ENTERING_WORLD')
+checkTicks:SetScript('OnEvent', function()
+	if E.myclass == 'PRIEST' then
+		E.global.unitframe.ChannelTicks[47540] = (IsPlayerSpell(193134) and 4 or 3) --Penance
+	end
 end)
 
 G.unitframe.ChannelTicksSize = {
@@ -886,7 +886,7 @@ G.unitframe.AuraBarColors = {
 }
 
 G.unitframe.AuraHighlightColors = {
-	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+	[25771] = {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}},
 }
 
 G.unitframe.specialFilters = {
