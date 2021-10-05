@@ -537,7 +537,7 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displ
 	local spellRank
 	local spellName = GetSpellInfo(id)
 	local rankText = GetSpellSubtext(id)
-	if rankText and strfind (RankText, '%d') then
+	if rankText and strfind(rankText, '%d') then
 		spellRank = rankText
 	end
 
