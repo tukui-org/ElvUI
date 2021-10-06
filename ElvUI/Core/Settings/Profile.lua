@@ -144,6 +144,7 @@ P.databars = {
 	colors = {
 		reputationAlpha = 1,
 		useCustomFactionColors = false,
+		petExperience = { r = 1, g = 1, b = .41, a = .8 },
 		experience = { r = 0, g = .4, b = 1, a = .8 },
 		rested = { r = 1, g = 0, b = 1, a = .4},
 		quest = { r = 0, g = 1, b = 0, a = .4},
@@ -163,7 +164,7 @@ P.databars = {
 	}
 }
 
-for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite'}) do
+for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite', 'petExperience'}) do
 	P.databars[databar] = {
 		enable = true,
 		width = 222,

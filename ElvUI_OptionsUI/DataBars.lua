@@ -48,6 +48,7 @@ DataBars.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 
 
 DataBars.args.colorGroup = ACH:Group(L["COLORS"], nil, -1, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
 DataBars.args.colorGroup.args.experience = ACH:Color(L["Experience"], nil, 1, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
+DataBars.args.colorGroup.args.petExperience = ACH:Color(L["Pet Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:PetExperienceBar_Update() end, nil, E.myclass ~= 'HUNTER')
 DataBars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.quest = ACH:Color(L["Quest Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_QuestXP() end)
 DataBars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 4, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
@@ -80,6 +81,17 @@ DataBars.args.experience.args.questGroup.inline = true
 DataBars.args.experience.args.questGroup.args.showQuestXP = ACH:Toggle(L["Show QuestXP"], nil, 1)
 DataBars.args.experience.args.questGroup.args.questCompletedOnly = ACH:Toggle(L["Completed Quests Only"], nil, 2, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
 DataBars.args.experience.args.questGroup.args.questsCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
+
+E.Options.args.databars.args.petExperience = ACH:Group(L["Pet Experience"], nil, 2, nil, function(info) return DB.db.petExperience[info[#info]] end, function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Update() DB:UpdateAll() end, nil, function() return E.Retail or E.myclass ~= 'HUNTER' end)
+E.Options.args.databars.args.petExperience.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.petExperience.args.enable.set = function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.petExperience.args.textFormat.set = function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Update() end
+E.Options.args.databars.args.petExperience.args.conditionGroup.get = function(_, key) return DB.db.petExperience[key] end
+E.Options.args.databars.args.petExperience.args.conditionGroup.set = function(_, key, value) DB.db.petExperience[key] = value DB:PetExperienceBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.petExperience.args.conditionGroup.values = {
+	hideAtMaxLevel = L["Hide At Max Level"],
+	hideInCombat = L["Hide In Combat"],
+}
 
 DataBars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
 DataBars.args.reputation.args = CopyTable(SharedOptions)
