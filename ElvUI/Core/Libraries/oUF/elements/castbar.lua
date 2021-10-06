@@ -513,4 +513,12 @@ local function Disable(self)
 	end
 end
 
+if oUF.isRetail then -- ElvUI
+	hooksecurefunc(C_TradeSkillUI, 'CraftRecipe', function(_, num)
+		tradeskillCurrent = 0
+		tradeskillTotal = num or 1
+		mergeTradeskill = true
+	end)
+end
+
 oUF:AddElement('Castbar', Update, Enable, Disable)
