@@ -60,48 +60,44 @@ S.ArrowRotation = {
 	right = -1.57,
 }
 
-function S:HandleCategoriesButtons(button, strip)
-	if button.isSkinned then return end
-
-	local ButtonName = button.GetName and button:GetName()
-
-	if button.SetNormalTexture then button:SetNormalTexture("") end
-	if button.SetHighlightTexture then button:SetHighlightTexture("") end
-	if button.SetPushedTexture then button:SetPushedTexture("") end
-	if button.SetDisabledTexture then button:SetDisabledTexture("") end
-
-	if strip then button:StripTextures() end
-
-	for _, Region in pairs(S.Blizzard.Regions) do
-		Region = ButtonName and _G[ButtonName..Region] or button[Region]
-		if Region and Region.SetAlpha then
-			Region:SetAlpha(0)
-		end
-	end
-
-	local r, g, b = unpack(E.media.rgbvaluecolor)
-
-	button.HighlightTexture = button:CreateTexture(nil, "BACKGROUND")
-	button.HighlightTexture:SetBlendMode("BLEND")
-	button.HighlightTexture:SetSnapToPixelGrid(false)
-	button.HighlightTexture:SetTexelSnappingBias(0)
-	button.HighlightTexture:Size(button:GetSize())
-	button.HighlightTexture:Point("CENTER", button, 0, 2)
-	button.HighlightTexture:SetTexture(E.Media.Textures.Highlight)
-	button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
-	button.HighlightTexture:Hide()
-
-	button:HookScript("OnEnter", function()
+do
+	local function HighlightOnEnter(button)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
 		button.HighlightTexture:SetVertexColor(r, g, b, 0.50)
 		button.HighlightTexture:Show()
-	end)
+	end
 
-	button:HookScript("OnLeave", function()
+	local function HighlightOnLeave(button)
 		button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
 		button.HighlightTexture:Hide()
-	end)
+	end
 
-	button.isSkinned = true
+	function S:HandleCategoriesButtons(button, strip)
+		if button.isSkinned then return end
+
+		if button.SetNormalTexture then button:SetNormalTexture('') end
+		if button.SetHighlightTexture then button:SetHighlightTexture('') end
+		if button.SetPushedTexture then button:SetPushedTexture('') end
+		if button.SetDisabledTexture then button:SetDisabledTexture('') end
+
+		if strip then button:StripTextures() end
+		S:HandleBlizzardRegions(button)
+
+		button.HighlightTexture = button:CreateTexture(nil, "BACKGROUND")
+		button.HighlightTexture:SetBlendMode("BLEND")
+		button.HighlightTexture:SetSnapToPixelGrid(false)
+		button.HighlightTexture:SetTexelSnappingBias(0)
+		button.HighlightTexture:Size(button:GetSize())
+		button.HighlightTexture:Point("CENTER", button, 0, 2)
+		button.HighlightTexture:SetTexture(E.Media.Textures.Highlight)
+		button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
+		button.HighlightTexture:Hide()
+
+		button:HookScript('OnEnter', HighlightOnEnter)
+		button:HookScript('OnLeave', HighlightOnLeave)
+
+		button.isSkinned = true
+	end
 end
 
 function S:HandleButtonHighlight(frame, r, g, b)
