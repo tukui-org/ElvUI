@@ -301,7 +301,7 @@ function E:UpdateStatusFrame()
 	Section2.Content.Line4.Text:SetFormattedText('Resolution: |cff4beb2c%s|r', E.resolution)
 
 	local Section3 = StatusFrame.Section3
-	Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName())
+	Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', E.Retail and GetSpecName() or UNKNOWN)
 	Section3.Content.Line5.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
 	Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText() or UNKNOWN)
 
