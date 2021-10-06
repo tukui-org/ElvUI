@@ -1481,6 +1481,13 @@ function B:ConstructContainerFrame(name, isBank)
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
 
+		--Bank Text
+		f.bankText = f:CreateFontString(nil, 'OVERLAY')
+		f.bankText:FontTemplate()
+		f.bankText:Point('RIGHT', f.helpButton, 'LEFT', -5, -2)
+		f.bankText:SetJustifyH('RIGHT')
+		f.bankText:SetText(L["Bank"])
+
 		if E.Retail then
 			f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
 			f.reagentFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
@@ -1519,13 +1526,6 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame.cover.purchaseText:FontTemplate()
 			f.reagentFrame.cover.purchaseText:Point('BOTTOM', f.reagentFrame.cover.purchaseButton, 'TOP', 0, 10)
 			f.reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
-
-			--Bag Text
-			f.bagText = f:CreateFontString(nil, 'OVERLAY')
-			f.bagText:FontTemplate()
-			f.bagText:Point('RIGHT', f.helpButton, 'LEFT', -5, 0)
-			f.bagText:SetJustifyH('RIGHT')
-			f.bagText:SetText(L["Bank"])
 
 			f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
 			f.reagentToggle:Size(18)
@@ -1637,7 +1637,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
 		f.goldText:FontTemplate()
-		f.goldText:Point('RIGHT', f.helpButton, 'LEFT', -20, 0)
+		f.goldText:Point('RIGHT', f.helpButton, 'LEFT', -10, -2)
 		f.goldText:SetJustifyH('RIGHT')
 
 		-- Stack/Transfer Button
@@ -1971,7 +1971,7 @@ function B:ShowBankTab(f, showReagent)
 			f.reagentFrame:Show()
 			f.depositButtonBank:Show()
 			f.sortButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
-			f.bagText:SetText(L["Reagent Bank"])
+			f.bankText:SetText(L["Reagent Bank"])
 		end
 
 		f.holderFrame:Hide()
@@ -1983,7 +1983,7 @@ function B:ShowBankTab(f, showReagent)
 			f.reagentFrame:Hide()
 			f.depositButtonBank:Hide()
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
-			f.bagText:SetText(L["Bank"])
+			f.bankText:SetText(L["Bank"])
 		end
 
 		f.holderFrame:Show()
