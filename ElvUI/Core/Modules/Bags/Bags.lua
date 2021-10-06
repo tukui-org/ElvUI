@@ -909,10 +909,6 @@ function B:Layout(isBank)
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
 		f.purchaseBagButton:SetShown(not f.fullBank)
-
-		if _G.BankFrame.selectedTab == 1 then
-			f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
-		end
 	end
 
 	for _, bagID in next, f.BagIDs do
@@ -1409,9 +1405,9 @@ function B:ConstructContainerFrame(name, isBank)
 		end
 
 		if i == 1 then
-			holder:Point('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', E.Border * 2, E.Border * 2)
+			holder:Point('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', 4, 4)
 		else
-			holder:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', E.Border * 2, 0)
+			holder:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', 4, 0)
 		end
 
 		local bag = CreateFrame('Frame', format('%sBag%d', name, bagNum), f.holderFrame)
@@ -1527,14 +1523,14 @@ function B:ConstructContainerFrame(name, isBank)
 			--Bag Text
 			f.bagText = f:CreateFontString(nil, 'OVERLAY')
 			f.bagText:FontTemplate()
-			f.bagText:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
+			f.bagText:Point('RIGHT', f.helpButton, 'LEFT', -5, 0)
 			f.bagText:SetJustifyH('RIGHT')
 			f.bagText:SetText(L["Bank"])
 
 			f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
 			f.reagentToggle:Size(18)
 			f.reagentToggle:SetTemplate()
-			f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, 2)
+			f.reagentToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 			B:SetButtonTexture(f.reagentToggle, [[Interface\ICONS\INV_Enchant_DustArcane]])
 			f.reagentToggle:StyleButton(nil, true)
 			f.reagentToggle.ttText = L["Show/Hide Reagents"]
@@ -1560,7 +1556,7 @@ function B:ConstructContainerFrame(name, isBank)
 				DepositReagentBank()
 			end)
 
-			f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame)
+			f.depositButtonBank = CreateFrame('Button', name..'DepositButtonBank', f.holderFrame)
 			f.depositButtonBank:Size(18)
 			f.depositButtonBank:SetTemplate()
 			f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
@@ -1605,7 +1601,7 @@ function B:ConstructContainerFrame(name, isBank)
 					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
 				end
-			else
+			elseif E.Retail then
 				SortReagentBankBags()
 			end
 		end)
@@ -1636,19 +1632,19 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Search
-		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, E.Border * 2 + 2)
+		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 	else
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
 		f.goldText:FontTemplate()
-		f.goldText:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
+		f.goldText:Point('RIGHT', f.helpButton, 'LEFT', -20, 0)
 		f.goldText:SetJustifyH('RIGHT')
 
 		-- Stack/Transfer Button
 		f.stackButton.ttText = L["Stack Items In Bags"]
 		f.stackButton.ttText2 = L["Hold Shift:"]
 		f.stackButton.ttText2desc = L["Stack Items To Bank"]
-		f.stackButton:Point('RIGHT', f.goldText, 'LEFT', -5, 2)
+		f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 		f.stackButton:SetScript('OnClick', function()
 			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
 			if not f.sortingSlots then f.sortingSlots = true end
@@ -1671,7 +1667,6 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Bags Button
-		f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
 		--Vendor Grays
@@ -1688,7 +1683,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.vendorGraysButton:SetScript('OnClick', B.VendorGrayCheck)
 
 		--Search
-		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, E.Border * 2 + 2)
+		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
 		if E.Retail then
@@ -1974,16 +1969,20 @@ function B:ShowBankTab(f, showReagent)
 
 		if E.Retail then
 			f.reagentFrame:Show()
+			f.depositButtonBank:Show()
+			f.sortButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
 			f.bagText:SetText(L["Reagent Bank"])
 		end
 
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', f.depositButtonBank or f.sortButton, 'LEFT', -5, 0)
 	else
 		_G.BankFrame.selectedTab = 1
 
 		if E.Retail then
 			f.reagentFrame:Hide()
+			f.depositButtonBank:Hide()
+			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 			f.bagText:SetText(L["Bank"])
 		end
 
