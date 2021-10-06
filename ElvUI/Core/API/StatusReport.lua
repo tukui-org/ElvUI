@@ -85,7 +85,7 @@ local EnglishSpecName = {
 }
 
 local function GetSpecName()
-	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())] or UNKNOWN
+	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())]
 end
 
 function E:CreateStatusContent(num, width, parent, anchorTo, content)
