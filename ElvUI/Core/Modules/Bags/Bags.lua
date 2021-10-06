@@ -1542,10 +1542,10 @@ function B:ConstructContainerFrame(name, isBank)
 			end)
 
 			--Deposite Reagents Button
-			f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
+			f.depositButton = CreateFrame('Button', name..'DepositButton', f)
 			f.depositButton:Size(18)
 			f.depositButton:SetTemplate()
-			f.depositButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+			f.depositButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.depositButton, [[Interface\ICONS\misc_arrowdown]])
 			f.depositButton:StyleButton(nil, true)
 			f.depositButton.ttText = L["Deposit Reagents"]
@@ -1555,25 +1555,11 @@ function B:ConstructContainerFrame(name, isBank)
 				PlaySound(852) --IG_MAINMENU_OPTION
 				DepositReagentBank()
 			end)
-
-			f.depositButtonBank = CreateFrame('Button', name..'DepositButtonBank', f.holderFrame)
-			f.depositButtonBank:Size(18)
-			f.depositButtonBank:SetTemplate()
-			f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
-			B:SetButtonTexture(f.depositButtonBank, [[Interface\ICONS\misc_arrowdown]])
-			f.depositButtonBank:StyleButton(nil, true)
-			f.depositButtonBank.ttText = L["Deposit Reagents"]
-			f.depositButtonBank:SetScript('OnEnter', B.Tooltip_Show)
-			f.depositButtonBank:SetScript('OnLeave', GameTooltip_Hide)
-			f.depositButtonBank:SetScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
-				DepositReagentBank()
-			end)
 		end
 
 		-- Stack
 		if E.Retail then
-			f.stackButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
+			f.stackButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		else
 			f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
 		end
@@ -1969,19 +1955,17 @@ function B:ShowBankTab(f, showReagent)
 
 		if E.Retail then
 			f.reagentFrame:Show()
-			f.depositButtonBank:Show()
-			f.sortButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
+			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 			f.bankText:SetText(L["Reagent Bank"])
 		end
 
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', f.depositButtonBank or f.sortButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	else
 		_G.BankFrame.selectedTab = 1
 
 		if E.Retail then
 			f.reagentFrame:Hide()
-			f.depositButtonBank:Hide()
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 			f.bankText:SetText(L["Bank"])
 		end
