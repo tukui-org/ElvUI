@@ -1097,7 +1097,7 @@ function CH:FindChatWindows()
 	local docker = _G.GeneralDockManager.primary
 	for index, name in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[name]
-		if (chat.isDocked and docker) or chat:IsShown() then
+		if (chat.isDocked and chat == docker) or (not chat.isDocked and chat:IsShown()) then
 			if not left and index ~= CH.db.panelSnapRightID then
 				if CH.db.panelSnapLeftID then
 					if CH.db.panelSnapLeftID == index then
