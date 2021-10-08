@@ -907,6 +907,8 @@ P.auras.debuffs.maxWraps = 1
 --Chat
 P.chat = {
 	url = true,
+	panelSnapLeftID = 1,
+	panelSnapRightID = E.Retail and 4 or 3, -- 3 is Voice on retail
 	panelSnapping = true,
 	shortChannels = true,
 	hyperlinkHover = true,

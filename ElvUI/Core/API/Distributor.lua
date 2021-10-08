@@ -247,7 +247,9 @@ local blacklistedKeys = {
 			numberPrefixStyle = true
 		},
 		chat = {
-			hideVoiceButtons = true
+			hideVoiceButtons = true,
+			panelSnapLeftID = true,
+			panelSnapRightID = true
 		}
 	},
 	private = {},

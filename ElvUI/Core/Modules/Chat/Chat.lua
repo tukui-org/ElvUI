@@ -1095,13 +1095,29 @@ function CH:FindChatWindows()
 	end
 
 	local docker = _G.GeneralDockManager.primary
-	for _, name in ipairs(_G.CHAT_FRAMES) do
+	for index, name in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[name]
 		if (chat.isDocked and docker) or chat:IsShown() then
-			if not left and E:FramesOverlap(chat, _G.LeftChatPanel) then
-				left = chat
-			elseif not right and E:FramesOverlap(chat, _G.RightChatPanel) then
-				right = chat
+			if not left and index ~= CH.db.panelSnapRightID then
+				if CH.db.panelSnapLeftID then
+					if CH.db.panelSnapLeftID == index then
+						left = chat
+					end
+				elseif E:FramesOverlap(chat, _G.LeftChatPanel) then
+					CH.db.panelSnapLeftID = index
+					left = chat
+				end
+			end
+
+			if not right and index ~= CH.db.panelSnapLeftID then
+				if CH.db.panelSnapRightID then
+					if CH.db.panelSnapRightID == index then
+						right = chat
+					end
+				elseif E:FramesOverlap(chat, _G.RightChatPanel) then
+					CH.db.panelSnapRightID = index
+					right = chat
+				end
 			end
 
 			-- if both are found just return now, don't wait
@@ -1195,14 +1211,18 @@ end
 function CH:Unsnapped(chat)
 	if chat == CH.LeftChatWindow then
 		CH.LeftChatWindow = nil
+		CH.db.panelSnapLeftID = nil
 	elseif chat == CH.RightChatWindow then
 		CH.RightChatWindow = nil
+		CH.db.panelSnapRightID = nil
 	end
 end
 
 function CH:ClearSnapping()
 	CH.LeftChatWindow = nil
 	CH.RightChatWindow = nil
+	CH.db.panelSnapLeftID = nil
+	CH.db.panelSnapRightID = nil
 end
 
 function CH:SnappingChanged(chat)
