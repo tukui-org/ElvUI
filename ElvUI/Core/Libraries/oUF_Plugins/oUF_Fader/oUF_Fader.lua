@@ -85,10 +85,10 @@ local function Update(self, _, unit)
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.PlayerTarget and UnitExists('target')) or
 		(element.UnitTarget and UnitExists(unit..'target')) or
-		(element.Focus and UnitExists('focus')) or
+		(element.Focus and not oUF.isClassic and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
-		(element.Vehicle and UnitHasVehicleUI(unit)) or
+		(element.Vehicle and oUF.isRetail and UnitHasVehicleUI(unit)) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
@@ -216,12 +216,6 @@ local options = {
 			end
 		end
 	},
-	Focus = {
-		enable = function(self)
-			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
-		end,
-		events = {'PLAYER_FOCUS_CHANGED'}
-	},
 	Health = {
 		enable = function(self)
 			self:RegisterEvent('UNIT_HEALTH', Update)
@@ -235,13 +229,6 @@ local options = {
 			self:RegisterEvent('UNIT_MAXPOWER', Update)
 		end,
 		events = {'UNIT_POWER_UPDATE','UNIT_MAXPOWER'}
-	},
-	Vehicle = {
-		enable = function(self)
-			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
-			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
-		end,
-		events = {'UNIT_ENTERED_VEHICLE','UNIT_EXITED_VEHICLE'}
 	},
 	Casting = {
 		enable = function(self)
@@ -270,6 +257,22 @@ local options = {
 	DelayAlpha = {countIgnored = true},
 	Delay = {countIgnored = true},
 }
+
+if not oUF.isClassic then
+	options.Focus = {
+		enable = function(self)
+			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
+		end,
+		events = {'PLAYER_FOCUS_CHANGED'}
+	}
+	options.Vehicle = {
+		enable = function(self)
+			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
+			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
+		end,
+		events = {'UNIT_ENTERED_VEHICLE','UNIT_EXITED_VEHICLE'}
+	}
+end
 
 local function CountOption(element, state, oldState)
 	if state and not oldState then
