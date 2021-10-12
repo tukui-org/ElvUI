@@ -80,18 +80,13 @@ local InteractLists = {
 }
 
 local MeleeRange = 2
+local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
 
--- list of friendly spells that have different ranges
-local FriendSpells = {}
--- list of harmful spells that have different ranges
-local HarmSpells = {}
--- list of resurrect spells that have different ranges
-local ResSpells = {}
--- list of pet spells that have different ranges
-local PetSpells = {}
+for _, className in next, { 'DEATHKNIGHT', 'DEMONHUNTER', 'DRUID', 'HUNTER', 'MAGE', 'PALADIN', 'PRIEST', 'WARLOCK', 'WARRIOR', 'MONK', 'ROGUE' } do
+    FriendSpells[className], HarmSpells[className], ResSpells[className], PetSpells[className] = {}, {}, {}, {}
+end
 
 -- Death Knights
-FriendSpells["DEATHKNIGHT"] = {}
 HarmSpells["DEATHKNIGHT"] = {
     49576, -- Death Grip (30 yards)
     47541, -- Death Coil (Unholy) (40 yards)
@@ -99,25 +94,23 @@ HarmSpells["DEATHKNIGHT"] = {
 ResSpells["DEATHKNIGHT"] = {
     61999, -- Raise Ally (40 yards)
 }
-PetSpells["DEATHKNIGHT"] = {}
 
 -- Demon Hunters
-FriendSpells["DEMONHUNTER"] = {}
 HarmSpells["DEMONHUNTER"] = {
     185123, -- Throw Glaive (Havoc) (30 yards)
     183752, -- Consume Magic (20 yards)
     204021, -- Fiery Brand (Vengeance) (30 yards)
 }
-ResSpells["DEMONHUNTER"] = {}
-PetSpells["DEMONHUNTER"] = {}
 
 -- Druids
 FriendSpells["DRUID"] = {
+    774, -- ["Rejuvenation"], -- 40
     8936,  -- Regrowth (40 yards, level 3)
     774,   -- Rejuvenation (Restoration) (40 yards, level 10)
     2782,  -- Remove Corruption (Restoration) (40 yards, level 19)
     88423, -- Natures Cure (Restoration) (40 yards, level 19)
 }
+
 HarmSpells["DRUID"] = {
     5176,  -- Wrath (40 yards)
     339,   -- Entangling Roots (35 yards)
@@ -131,14 +124,11 @@ ResSpells["DRUID"] = {
     20484,  -- Rebirth (40 yards, level 29)
 --  212040, -- Revitalize (100 yards, level 47)
 }
-PetSpells["DRUID"] = {}
 
 -- Hunters
-FriendSpells["HUNTER"] = {}
 HarmSpells["HUNTER"] = {
     75, -- Auto Shot (40 yards)
 }
-ResSpells["HUNTER"] = {}
 PetSpells["HUNTER"] = {
     136, -- Mend Pet (45 yards)
 }
@@ -157,8 +147,6 @@ HarmSpells["MAGE"] = {
     133,   -- Fireball (40 yards)
     44425, -- Arcane Barrage (40 yards)
 }
-ResSpells["MAGE"] = {}
-PetSpells["MAGE"] = {}
 
 -- Monks
 FriendSpells["MONK"] = {
@@ -176,7 +164,6 @@ ResSpells["MONK"] = {
     115178, -- Resuscitate (40 yards, level 13)
 --  212051, -- Reawaken (100 yards, level 47)
 }
-PetSpells["MONK"] = {}
 
 -- Paladins
 FriendSpells["PALADIN"] = {
@@ -196,7 +183,6 @@ HarmSpells["PALADIN"] = {
 ResSpells["PALADIN"] = {
     7328, -- Redemption (40 yards)
 }
-PetSpells["PALADIN"] = {}
 
 -- Priests
 FriendSpells["PRIEST"] = {
@@ -214,7 +200,6 @@ ResSpells["PRIEST"] = {
     2006,   -- Resurrection (40 yards, level 10)
 --  212036, -- Mass Resurrection (100 yards, level 37)
 }
-PetSpells["PRIEST"] = {}
 
 -- Rogues
 FriendSpells["ROGUE"] = {
@@ -231,11 +216,10 @@ HarmSpells["ROGUE"] = {
     2094,   -- Blind (15 yards)
     921,    -- Pick Pocket (10 yards, level 24)
 }
-ResSpells["ROGUE"] = {}
-PetSpells["ROGUE"] = {}
 
 -- Shamans
 FriendSpells["SHAMAN"] = {
+    331,    -- Healing Wave
     546,    -- Water Walking (30 yards)
     8004,   -- Healing Surge (Resto, Elemental) (40 yards)
     188070, -- Healing Surge (Enhancement) (40 yards)
@@ -249,17 +233,13 @@ ResSpells["SHAMAN"] = {
     2008,   -- Ancestral Spirit (40 yards, level 13)
 --  212048, -- Ancestral Vision (100 yards)
 }
-PetSpells["SHAMAN"] = {}
 
 -- Warriors
-FriendSpells["WARRIOR"] = {}
 HarmSpells["WARRIOR"] = {
     355,  -- Taunt (30 yards)
     5246, -- Intimidating Shout (Arms, Fury) (8 yards)
     100,  -- Charge (Arms, Fury) (8-25 yards)
 }
-ResSpells["WARRIOR"] = {}
-PetSpells["WARRIOR"] = {}
 
 -- Warlocks
 FriendSpells["WARLOCK"] = {
@@ -1208,7 +1188,6 @@ end
 --- BEGIN CallbackHandler stuff
 
 do
-    local lib = lib -- to keep a ref even though later we nil lib
     --- Register a callback to get called when checkers are updated
     -- @class function
     -- @name lib.RegisterCallback
@@ -1229,4 +1208,3 @@ end
 --- END CallbackHandler stuff
 
 lib:activate()
-lib = nil

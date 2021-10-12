@@ -258,6 +258,10 @@ local options = {
 	Delay = {countIgnored = true},
 }
 
+if not oUF.Retail then
+	tinsert(options.Health.events, 'UNIT_HEALTH_FREQUENT')
+end
+
 if not oUF.isClassic then
 	options.Focus = {
 		enable = function(self)
@@ -265,6 +269,9 @@ if not oUF.isClassic then
 		end,
 		events = {'PLAYER_FOCUS_CHANGED'}
 	}
+end
+
+if oUF.isRetail then
 	options.Vehicle = {
 		enable = function(self)
 			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
