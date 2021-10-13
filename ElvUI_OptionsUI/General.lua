@@ -29,11 +29,12 @@ E.Options.args.general = General
 General.args.general = ACH:Group(L["General"], nil, 1)
 General.args.general.args.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
 General.args.general.args.taintLog = ACH:Toggle(L["Log Taints"], L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."], 2)
-General.args.general.args.spacer1 = ACH:Spacer(3, 'full')
-General.args.general.args.locale = ACH:Select(L["LANGUAGE"], nil, 4, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', zhCN = '简体中文', zhTW = '正體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale end, function(_, value) E.global.general.locale = value E:StaticPopup_Show('CONFIG_RL') end)
-General.args.general.args.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 5, function() return GetChatWindowInfo() end)
-General.args.general.args.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 6, { TCHINESE = '萬, 億', CHINESE = '万, 亿', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', KOREAN = '천, 만, 억', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
-General.args.general.args.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 7, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+General.args.general.args.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 3, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+General.args.general.args.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
+
+General.args.general.args.locale = ACH:Select(L["LANGUAGE"], nil, 5, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', zhCN = '简体中文', zhTW = '正體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale end, function(_, value) E.global.general.locale = value E:StaticPopup_Show('CONFIG_RL') end)
+General.args.general.args.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 6, function() return GetChatWindowInfo() end)
+General.args.general.args.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 7, { TCHINESE = '萬, 億', CHINESE = '万, 亿', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', KOREAN = '천, 만, 억', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
 
 General.args.general.args.monitor = ACH:Group(L["Monitor"], nil, 50, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end)
 General.args.general.args.monitor.inline = true
@@ -115,8 +116,6 @@ General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.namepla
 General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateLargeFontOutline = ACH:FontFlags(L["Larger Outline"], nil, 13)
 
 General.args.cosmetic = ACH:Group(L["Cosmetic"], nil, 10)
-General.args.cosmetic.args.afk = ACH:Toggle(L["AFK Mode"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-General.args.cosmetic.args.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 2, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
 General.args.cosmetic.args.bordersGroup = ACH:Group(L["Borders"], nil, 15)
 General.args.cosmetic.args.bordersGroup.inline = true
@@ -139,7 +138,13 @@ General.args.cosmetic.args.cosmeticTopPanel.args.topPanelTransparent = ACH:Toggl
 General.args.cosmetic.args.cosmeticTopPanel.args.topPanelWidth = ACH:Range(L["Width"], nil, 3, { min = 0, max = ceil(E.screenWidth), step = 1 }, nil, function() return E.db.general.topPanelSettings.width end, function(_, value) E.db.general.topPanelSettings.width = value Layout:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
 General.args.cosmetic.args.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, { min = 5, max = 128, step = 1 }, nil, function() return E.db.general.topPanelSettings.height end, function(_, value) E.db.general.topPanelSettings.height = value Layout:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
 
-General.args.cosmetic.args.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 30, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.cosmetic.args.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
+General.args.cosmetic.args.afkGroup.inline = true
+General.args.cosmetic.args.afkGroup.args.afk = ACH:Toggle(L["Enable"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+General.args.cosmetic.args.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+General.args.cosmetic.args.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 3, function() AFK:ResetChatPosition(true) end)
+
+General.args.cosmetic.args.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.cosmetic.args.chatBubblesGroup.inline = true
 General.args.cosmetic.args.chatBubblesGroup.args.replaceBubbleFont = ACH:Toggle(L["Replace Font"], nil, 1)
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFont = ACH:SharedMediaFont(L["Font"], nil, 2, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)

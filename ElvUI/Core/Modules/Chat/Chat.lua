@@ -2002,15 +2002,16 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local showLink = 1
 			if strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS' then
 				showLink = nil
-			else
-				arg1 = gsub(arg1, '%%', '%%%%')
 			end
 
-			-- Search for icon links and replace them with texture links.
-			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
+			--Escape any % characters, as it may otherwise cause an 'invalid option in format' error
+			arg1 = gsub(arg1, '%%', '%%%%')
 
 			--Remove groups of many spaces
 			arg1 = RemoveExtraSpaces(arg1)
+
+			-- Search for icon links and replace them with texture links.
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
 
 			--ElvUI: Get class colored name for BattleNet friend
 			if chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then

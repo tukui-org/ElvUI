@@ -52,6 +52,7 @@ P.general = {
 	},
 	durabilityScale = 1,
 	afk = true,
+	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
 	decimalLength = 1,
 	altPowerBar = {
