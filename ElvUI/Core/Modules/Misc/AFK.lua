@@ -142,18 +142,7 @@ function AFK:OnEvent(event, ...)
 	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
 end
 
-local function OnKeyDown(_, key)
-	if ignoreKeys[key] then return end
-
-	if printKeys[key] then
-		Screenshot()
-	else
-		AFK:SetAFK(false)
-		AFK:ScheduleTimer('OnEvent', 60)
-	end
-end
-
-local function Chat_OnMouseWheel(self, delta)
+function AFK:Chat_OnMouseWheel(delta)
 	if delta == 1 then
 		if IsShiftKeyDown() then
 			self:ScrollToTop()
@@ -169,7 +158,7 @@ local function Chat_OnMouseWheel(self, delta)
 	end
 end
 
-local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	local chatType = strsub(event, 10)
 	local info = _G.ChatTypeInfo[chatType]
 
@@ -245,7 +234,7 @@ function AFK:Toggle()
 	end
 
 	if E.db.general.afkChat then
-		chat:SetScript('OnEvent', Chat_OnEvent)
+		chat:SetScript('OnEvent', AFK.Chat_OnEvent)
 	else
 		chat:SetScript('OnEvent', nil)
 		chat:Clear()
@@ -275,6 +264,29 @@ function AFK:ResetChatPosition(force)
 	end
 end
 
+function AFK:OnKeyDown(key)
+	if ignoreKeys[key] then return end
+
+	if printKeys[key] then
+		Screenshot()
+	else
+		AFK:SetAFK(false)
+		AFK:ScheduleTimer('OnEvent', 60)
+	end
+end
+
+function AFK:Model_OnUpdate()
+	if not self.isIdle then
+		local timePassed = GetTime() - self.startTime
+		if timePassed > self.duration then
+			self:SetAnimation(0)
+			self.isIdle = true
+
+			AFK.animTimer = AFK:ScheduleTimer('LoopAnimations', self.idleDuration)
+		end
+	end
+end
+
 function AFK:Initialize()
 	AFK.Initialized = true
 
@@ -282,7 +294,7 @@ function AFK:Initialize()
 	afk:SetScale(E.uiscale)
 	afk:SetAllPoints(_G.UIParent)
 	afk:EnableKeyboard(true)
-	afk:SetScript('OnKeyDown', OnKeyDown)
+	afk:SetScript('OnKeyDown', AFK.OnKeyDown)
 	afk:Hide()
 
 	chat:Size(500, 200)
@@ -295,7 +307,7 @@ function AFK:Initialize()
 	chat:RegisterForDrag('LeftButton')
 	chat:SetScript('OnDragStart', chat.StartMoving)
 	chat:SetScript('OnDragStop', chat.StopMovingOrSizing)
-	chat:SetScript('OnMouseWheel', Chat_OnMouseWheel)
+	chat:SetScript('OnMouseWheel', AFK.Chat_OnMouseWheel)
 	AFK:ResetChatPosition()
 
 	bottom:SetFrameLevel(0)
@@ -360,16 +372,7 @@ function AFK:Initialize()
 	model:Size(E.screenWidth * 2, E.screenHeight * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
 	model:SetFacing(6)
-	model:SetScript('OnUpdate', function(Model)
-		if not Model.isIdle then
-			local timePassed = GetTime() - Model.startTime
-			if timePassed > Model.duration then
-				Model:SetAnimation(0)
-				Model.isIdle = true
-				AFK.animTimer = AFK:ScheduleTimer('LoopAnimations', Model.idleDuration)
-			end
-		end
-	end)
+	model:SetScript('OnUpdate', AFK.Model_OnUpdate)
 	bottom.model = model
 
 	AFK:Toggle()
