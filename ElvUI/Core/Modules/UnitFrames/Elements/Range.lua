@@ -7,7 +7,7 @@ local UnitInRange = UnitInRange
 local UnitIsConnected = UnitIsConnected
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
-local UnitInPhase = UnitInPhase -- true = same phase
+local UnitInPhase = UnitInPhase
 local UnitPhaseReason = UnitPhaseReason
 
 local function friendlyIsInRange(realUnit)

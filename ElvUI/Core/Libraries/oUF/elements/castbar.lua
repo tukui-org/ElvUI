@@ -550,14 +550,14 @@ if LCC then
 		return LCC:UnitChannelInfo(unit)
 	end
 
-	EventFunctions["UNIT_SPELLCAST_START"] = CastStart
-	EventFunctions["UNIT_SPELLCAST_FAILED"] = CastFail
-	EventFunctions["UNIT_SPELLCAST_INTERRUPTED"] = CastFail
-	EventFunctions["UNIT_SPELLCAST_DELAYED"] = CastUpdate
-	EventFunctions["UNIT_SPELLCAST_STOP"] = CastStop
-	EventFunctions["UNIT_SPELLCAST_CHANNEL_START"] = CastStart
-	EventFunctions["UNIT_SPELLCAST_CHANNEL_UPDATE"] = CastUpdate
-	EventFunctions["UNIT_SPELLCAST_CHANNEL_STOP"] = CastStop
+	EventFunctions.UNIT_SPELLCAST_START = CastStart
+	EventFunctions.UNIT_SPELLCAST_FAILED = CastFail
+	EventFunctions.UNIT_SPELLCAST_INTERRUPTED = CastFail
+	EventFunctions.UNIT_SPELLCAST_DELAYED = CastUpdate
+	EventFunctions.UNIT_SPELLCAST_STOP = CastStop
+	EventFunctions.UNIT_SPELLCAST_CHANNEL_START = CastStart
+	EventFunctions.UNIT_SPELLCAST_CHANNEL_UPDATE = CastUpdate
+	EventFunctions.UNIT_SPELLCAST_CHANNEL_STOP = CastStop
 end
 
 if oUF.isRetail then -- ElvUI
