@@ -10,6 +10,7 @@ local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
+local GetSpellBookItemInfo = GetSpellBookItemInfo
 local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -1432,6 +1433,7 @@ function AB:Initialize()
 	AB:LoadKeyBinder()
 	--AB:ActionBarEffects()
 
+	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
@@ -1443,10 +1445,12 @@ function AB:Initialize()
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
+	if _G.MacroFrame then
+		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
+	end
+
 	if _G.KeyBindingFrame then
-		AB:SwapKeybindButton()
-	else
-		AB:RegisterEvent('ADDON_LOADED', 'SwapKeybindButton')
+		AB:ADDON_LOADED(nil, 'Blizzard_BindingUI')
 	end
 
 	if E.Retail and C_PetBattles_IsInBattle() then

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
+local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -79,14 +80,12 @@ local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMyth
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local UNKNOWN = UNKNOWN
 
--- GLOBALS: ElvUF, ElvUI_KeyBinder, ElvUI_ContainerFrame
-
 -- Custom to find LEVEL string on tooltip
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s|r %d'
 local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBar
-local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
+local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
@@ -109,7 +108,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	local owner = tt:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
-	if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) and not keybindFrame.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
+	if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) and not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
 		tt:Hide()
 		return
 	end
@@ -148,11 +147,11 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
 
-	if anchor == nil or (ElvUI_ContainerFrame and anchor == ElvUI_ContainerFrame) or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.UIParent or anchor == E.UIParent then
+	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
 		if not E:HasMoverBeenMoved('TooltipMover') then
-			if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-				tt:Point('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
+			if B.BagFrame and B.BagFrame:IsShown() then
+				tt:Point('BOTTOMRIGHT', B.BagFrame, 'TOPRIGHT', 0, 18)
 			elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
 				tt:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
 			else
@@ -960,10 +959,6 @@ function TT:Initialize()
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
 	end
-
-	--Variable is localized at top of file, then set here when we're sure the frame has been created
-	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
-	keybindFrame = ElvUI_KeyBinder
 end
 
 E:RegisterModule(TT:GetName())
