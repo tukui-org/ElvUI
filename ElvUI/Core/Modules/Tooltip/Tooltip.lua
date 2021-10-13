@@ -73,7 +73,7 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
-local C_PetJournalGetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
@@ -270,15 +270,14 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		return nameColor
 	else
+		local isPetCompanion = E.Retail and UnitIsBattlePetCompanion(unit)
 		local levelLine = TT:GetLevelLine(tt, 2)
 		if levelLine then
-			local isPetWild, isPetCompanion = E.Retail and UnitIsWildBattlePet(unit), E.Retail and UnitIsBattlePetCompanion(unit)
+			local pvpFlag, classificationString, diffColor, level = '', ''
 			local creatureClassification = UnitClassification(unit)
 			local creatureType = UnitCreatureType(unit) or ''
-			local pvpFlag, classificationString, diffColor = '', ''
 
-			local level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
-			if isPetWild or isPetCompanion then
+			if isPetCompanion or (E.Retail and UnitIsWildBattlePet(unit)) then
 				level = UnitBattlePetLevel(unit)
 
 				local petType = _G['BATTLE_PET_NAME_'..UnitBattlePetType(unit)]
@@ -288,13 +287,14 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 					creatureType = petType
 				end
 
-				local teamLevel = C_PetJournalGetPetTeamAverageLevel()
+				local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 				if teamLevel then
 					diffColor = GetRelativeDifficultyColor(teamLevel, level)
 				else
 					diffColor = GetCreatureDifficultyColor(level)
 				end
 			else
+				level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
 				diffColor = GetCreatureDifficultyColor(level)
 			end
 
@@ -303,7 +303,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			end
 
 			if creatureClassification == 'rare' or creatureClassification == 'elite' or creatureClassification == 'rareelite' or creatureClassification == 'worldboss' then
-				classificationString = format('%s %s|r', ElvUF.Tags.Methods['classificationcolor'](unit), ElvUF.Tags.Methods['classification'](unit))
+				classificationString = format('%s %s|r', E:CallTag('classificationcolor', unit), E:CallTag('classification', unit))
 			end
 
 			levelLine:SetFormattedText('|cff%02x%02x%02x%s|r%s %s%s', diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or '??', classificationString, creatureType, pvpFlag)
@@ -311,9 +311,10 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		local unitReaction = UnitReaction(unit, 'player')
 		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or _G.FACTION_BAR_COLORS[unitReaction]) or PRIEST_COLOR
-		local nameColorStr = nameColor.colorStr or E:RGBToHex(nameColor.r, nameColor.g, nameColor.b, 'ff')
 
-		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s|r', nameColorStr, name or UNKNOWN)
+		if not isPetCompanion then
+			_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s|r', nameColor.colorStr or E:RGBToHex(nameColor.r, nameColor.g, nameColor.b, 'ff'), name or UNKNOWN)
+		end
 
 		return (UnitIsTapDenied(unit) and TAPPED_COLOR) or nameColor
 	end

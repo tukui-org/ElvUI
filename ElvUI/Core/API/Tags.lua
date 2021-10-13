@@ -103,6 +103,13 @@ function E:AddTag(tagName, eventsOrSeconds, func)
 	end
 end
 
+function E:CallTag(tag, ...)
+	local func = ElvUF.Tags.Methods[tag]
+	if func then
+		return func(...)
+	end
+end
+
 --Expose local functions for plugins onto this table
 E.TagFunctions = {}
 
