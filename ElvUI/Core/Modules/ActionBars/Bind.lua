@@ -13,7 +13,6 @@ local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
