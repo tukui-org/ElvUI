@@ -486,7 +486,7 @@ function E:RefreshCustomTextsConfigs()
 end
 
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab', function() E:RefreshCustomTextsConfigs() end)
+	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab')
 	config.args.tags = ACH:Group(L["Texts"])
 	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', function() return '' end)
 	config.args.createCustomText.set = function(_, textName) -- Needs split into a validate
@@ -849,7 +849,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["General"], nil, 1)
+	local config = ACH:Group(L["General"], nil, 1, nil, function() E:RefreshCustomTextsConfigs() end)
 	config.args.orientation = ACH:Select(L["Frame Orientation"], L["Set the orientation of the UnitFrame."], 1, orientationValues)
 	config.args.disableMouseoverGlow = ACH:Toggle(L["Block Mouseover Glow"], L["Forces Mouseover Glow to be disabled for these frames"], 2)
 	config.args.disableTargetGlow = ACH:Toggle(L["Block Target Glow"], L["Forces Target Glow to be disabled for these frames"], 3)
