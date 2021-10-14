@@ -486,7 +486,7 @@ function E:RefreshCustomTextsConfigs()
 end
 
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab')
+	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab', function() E:RefreshCustomTextsConfigs() end)
 	config.args.tags = ACH:Group(L["Texts"])
 	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', function() return '' end)
 	config.args.createCustomText.set = function(_, textName) -- Needs split into a validate
