@@ -723,7 +723,6 @@ function E:Config_DialogOpened(name)
 
 	local frame = E:Config_GetWindow()
 	if frame and frame.leftHolder then
-		E:RefreshCustomTextsConfigs()
 		E:Config_WindowOpened(frame)
 	end
 end
