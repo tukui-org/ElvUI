@@ -458,17 +458,58 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
 	-- Serpentshrine Cavern
+		-- Trash
+		[38634] = Defaults(3), -- Arcane Lightning
+		[39032] = Defaults(4), -- Initial Infection
+		[38572] = Defaults(3), -- Mortal Cleave
+		[38635] = Defaults(3), -- Rain of Fire
+		[39042] = Defaults(5), -- Rampent Infection
+		[39044] = Defaults(4), -- Serpentshrine Parasite
+		[38591] = Defaults(4), -- Shatter Armor
+		[38491] = Defaults(3), -- Silence
 		-- Hydross the Unstable
-		-- The Lurker Below
+		[38246] = Defaults(3), -- Vile Sludge
+		[38235] = Defaults(4), -- Water Tomb
 		-- Leotheras the Blind
+		[37675] = Defaults(3), -- Chaos Blast
+		[37749] = Defaults(5), -- Consuming Madness
+		[37676] = Defaults(4), -- Insidious Whisper
+		[37641] = Defaults(3), -- Whirlwind
 		-- Fathom-Lord Karathress
+		[39261] = Defaults(3), -- Gusting Winds
+		[29436] = Defaults(4), -- Leeching Throw
 		-- Morogrim Tidewalker
+		[38049] = Defaults(4), -- Watery Grave
+		[37850] = Defaults(4), -- Watery Grave
 		-- Lady Vashj
+		[38280] = Defaults(5), -- Static Charge
+		[38316] = Defaults(3), -- Entangle
 	-- The Eye
+		-- Trash
+		[37133] = Defaults(4), -- Arcane Buffet
+		[37132] = Defaults(3), -- Arcane Shock
+		[37122] = Defaults(5), -- Domination
+		[37135] = Defaults(5), -- Domination
+		[37120] = Defaults(4), -- Fragmentation Bomb
+		[13005] = Defaults(3), -- Hammer of Justice
+		[39077] = Defaults(3), -- Hammer of Justice
+		[37279] = Defaults(3), -- Rain of Fire
+		[37123] = Defaults(4), -- Saw Blade
+		[37118] = Defaults(5), -- Shell Shock
+		[37160] = Defaults(3), -- Silence
 		-- Al'ar
-		-- Void Reaver
+		[35410] = Defaults(4), -- Melt Armor
 		-- High Astromancer Solarian
+		[34322] = Defaults(4), -- Psychic Scream
+		[42783] = Defaults(5), -- Wrath of the Astromancer (Patch 2.2.0)
 		-- Kael'thas Sunstrider
+		[36965] = Defaults(4), -- Rend
+		[30225] = Defaults(4), -- Silence
+		[44863] = Defaults(5), -- Bellowing Roar
+		[37018] = Defaults(4), -- Conflagration
+		[37027] = Defaults(5), -- Remote Toy
+		[36991] = Defaults(4), -- Rend
+		[36797] = Defaults(5), -- Mind Control
 	-------------------------------------------------
 	-------------------- Phase 3 --------------------
 	-------------------------------------------------
