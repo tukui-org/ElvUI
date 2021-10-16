@@ -266,6 +266,9 @@ P.bags = {
 	showAssignedIcon = true,
 	colors = {
 		profession = {
+			quiver = { r = 1, g = 0.69, b = 0.41 },
+			ammoPouch = { r = 1, g = 0.69, b = 0.41 },
+			soulBag = { r = 1, g = 0.69, b = 0.41 },
 			leatherworking = { r = .88, g = .73, b = .29 },
 			inscription = { r = .29, g = .30, b = .88 },
 			herbs = { r = .07, g = .71, b = .13 },
