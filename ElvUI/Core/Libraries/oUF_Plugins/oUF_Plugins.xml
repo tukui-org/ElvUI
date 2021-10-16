@@ -7,4 +7,5 @@
 	<Script file="oUF_RaidDebuffs\oUF_RaidDebuffs.lua"/>
 	<Script file="oUF_Trinkets\oUF_Trinkets.lua"/>
 	<Script file='oUF_PVPSpecIcons\oUF_PVPSpecIcons.lua'/>
+	<Script file="oUF_EnergyManaRegen\oUF_EnergyManaRegen.lua"/>
 </Ui>

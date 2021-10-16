@@ -69,6 +69,10 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
+	if not E.Retail then
+		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
+	end
+
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')
 
@@ -156,6 +160,10 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_RaidRoleIcons(frame)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
+
+	if not E.Retail then
+		UF:Configure_EnergyManaRegen(frame)
+	end
 
 	--We need to update Target AuraBars if attached to Player AuraBars
 	--mainly because of issues when using power offset on player and switching to/from middle orientation

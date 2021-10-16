@@ -1954,6 +1954,7 @@ P.unitframe.units.player.healPrediction.enable = true
 P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent:shortvalue]'
 P.unitframe.units.player.health.xOffset = 2
+P.unitframe.units.player.power.EnergyManaRegen = false
 P.unitframe.units.player.power.position = 'RIGHT'
 P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current:shortvalue][powercolor][  >power:current:shortvalue]'
 P.unitframe.units.player.power.xOffset = -2
