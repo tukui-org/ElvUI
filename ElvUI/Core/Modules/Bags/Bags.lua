@@ -465,7 +465,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		r, g, b = qR, qG, qB
 	else
 		local bag = slot.bagFrame.Bags[slot.bagID]
-		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
+		local colors = bag and ((slot.bagID == -2 and B.KeyRingColor) or (B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
 			r, g, b, a = unpack(colors)
 		end
@@ -491,6 +491,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
+	local keyring = not E.Retail and (bagID == -2)
+
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
@@ -506,6 +508,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
+
+	if keyring then
+		slot.keyringTexture:SetShown(not texture)
+	end
 
 	local isQuestItem, questId, isActiveQuest
 	B:SearchSlotUpdate(slot, itemLink, locked)
@@ -2247,6 +2253,9 @@ function B:UpdateSellFrameSettings()
 end
 
 B.BagIndice = {
+	quiver = 0x0001,
+	ammoPouch = 0x0002,
+	soulBag = 0x0003,
 	leatherworking = 0x0008,
 	inscription = 0x0010,
 	herbs = 0x0020,
@@ -2290,6 +2299,8 @@ function B:Initialize()
 
 	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
 
+	B.KeyRingColor = { 1, 1, 0 }
+
 	B.AssignmentColors = {
 		[0] = { .99, .23, .21 }, -- fallback
 		[2] = { B.db.colors.assignment.equipment.r , B.db.colors.assignment.equipment.g, B.db.colors.assignment.equipment.b },
@@ -2298,6 +2309,9 @@ function B:Initialize()
 	}
 
 	B.ProfessionColors = {
+		[0x0001]   = { B.db.colors.profession.quiver.r, B.db.colors.profession.quiver.g, B.db.colors.profession.quiver.b},
+		[0x0002]   = { B.db.colors.profession.ammoPouch.r, B.db.colors.profession.ammoPouch.g, B.db.colors.profession.ammoPouch.b},
+		[0x0003]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
 		[0x0008]	= { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
 		[0x0010]	= { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
 		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
