@@ -92,13 +92,8 @@ function E:AddTag(tagName, eventsOrSeconds, func)
 	if type(eventsOrSeconds) == 'number' then
 		Tags.OnUpdateThrottle[tagName] = eventsOrSeconds
 	else
-		if E.Retail then
-			eventsOrSeconds = gsub(eventsOrSeconds, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')
-		else
-			eventsOrSeconds = gsub(eventsOrSeconds, 'UNIT_HEALTH([^_])', 'UNIT_HEALTH_FREQUENT%1')
-		end
 
-		Tags.Events[tagName] = eventsOrSeconds
+		Tags.Events[tagName] = (E.Retail and gsub(eventsOrSeconds, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')) or gsub(eventsOrSeconds, 'UNIT_HEALTH([^_])', 'UNIT_HEALTH_FREQUENT%1')
 	end
 
 	Tags.Methods[tagName] = func
@@ -835,13 +830,18 @@ E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
 	end
 end)
 
-E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
-	if UnitIsAFK(unit) then
-		return [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
-	elseif UnitIsDND(unit) then
-		return [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
-	end
-end)
+do
+	local afk = [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
+	local dnd = [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
+
+	E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
+		if UnitIsAFK(unit) then
+			return afk
+		elseif UnitIsDND(unit) then
+			return dnd
+		end
+	end)
+end
 
 E:AddTag('name:abbrev', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	local name = UnitName(unit)
@@ -1211,96 +1211,92 @@ do
 end
 
 do
+	local classIcon = [[|TInterface\WorldStateFrame\ICONS-CLASSES:32:32:0:0:256:256:%s|t]]
 	local classIcons = {
-		WARRIOR 	= '0:64:0:64',
-		MAGE 		= '64:128:0:64',
-		ROGUE 		= '128:196:0:64',
-		DRUID 		= '196:256:0:64',
-		HUNTER 		= '0:64:64:128',
-		SHAMAN 		= '64:128:64:128',
-		PRIEST 		= '128:196:64:128',
-		WARLOCK 	= '196:256:64:128',
-		PALADIN 	= '0:64:128:196',
+		WARRIOR		= '0:64:0:64',
+		MAGE		= '64:128:0:64',
+		ROGUE		= '128:196:0:64',
+		DRUID		= '196:256:0:64',
+		HUNTER		= '0:64:64:128',
+		SHAMAN		= '64:128:64:128',
+		PRIEST		= '128:196:64:128',
+		WARLOCK		= '196:256:64:128',
+		PALADIN		= '0:64:128:196',
 		DEATHKNIGHT = '64:128:128:196',
-		MONK 		= '128:192:128:196',
+		MONK		= '128:192:128:196',
 		DEMONHUNTER = '192:256:128:196',
-	 }
+	}
 
 	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
 		if UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit)
 			local icon = classIcons[class]
 			if icon then
-				return format([[|TInterface\WorldStateFrame\ICONS-CLASSES:32:32:0:0:256:256:%s|t]], icon)
+				return format(classIcon, icon)
 			end
 		end
 	end)
 end
 
 if not E.Retail then
+	local HasPetUI = HasPetUI
+	local GetPetLoyalty = GetPetLoyalty
+	local GetPetHappiness = GetPetHappiness
+	local GetPetFoodTypes = GetPetFoodTypes
+
+	local emotionsIcons = {
+		[[|TInterface\\PetPaperDollFrame\\UI-PetHappiness:16:16:0:0:128:64:48:72:0:23|t]],
+		[[|TInterface\\PetPaperDollFrame\\UI-PetHappiness:16:16:0:0:128:64:24:48:0:23|t]],
+		[[|TInterface\\PetPaperDollFrame\\UI-PetHappiness:16:16:0:0:128:64:0:24:0:23|t]]
+	}
+
+	local emotionsDiscord = {
+		[[|TInterface\AddOns\ElvUI\Media\ChatEmojis\Rage:16:16:0:0:32:32:0:32:0:32|t]],
+		[[|TInterface\AddOns\ElvUI\Media\ChatEmojis\SlightFrown:16:16:0:0:32:32:0:32:0:32|t]],
+		[[|TInterface\AddOns\ElvUI\Media\ChatEmojis\HeartEyes:16:16:0:0:32:32:0:32:0:32|t]]
+	}
 
 	E:AddTag('happiness:full', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 			return _G['PET_HAPPINESS'..GetPetHappiness()]
 		end
 	end)
 
 	E:AddTag('happiness:icon', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
-			local left, right, top, bottom
-			local happiness = GetPetHappiness()
-
-			if(happiness == 1) then
-				left, right, top, bottom = 0.375, 0.5625, 0, 0.359375
-			elseif(happiness == 2) then
-				left, right, top, bottom = 0.1875, 0.375, 0, 0.359375
-			elseif(happiness == 3) then
-				left, right, top, bottom = 0, 0.1875, 0, 0.359375
-			end
-
-			return CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 16, left, right, top, bottom, 0, 0)
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return emotionsIcons[GetPetHappiness()]
 		end
 	end)
 
 	E:AddTag('happiness:discord', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
-			local happiness = GetPetHappiness()
-
-			if(happiness == 1) then
-				return CreateTextureMarkup([[Interface\AddOns\ElvUI\Media\ChatEmojis\Rage]], 32, 32, 16, 16, 0, 1, 0, 1, 0, 0)
-			elseif(happiness == 2) then
-				return CreateTextureMarkup([[Interface\AddOns\ElvUI\Media\ChatEmojis\SlightFrown]], 32, 32, 16, 16, 0, 1, 0, 1, 0, 0)
-			elseif(happiness == 3) then
-				return CreateTextureMarkup([[Interface\AddOns\ElvUI\Media\ChatEmojis\HeartEyes]], 32, 32, 16, 16, 0, 1, 0, 1, 0, 0)
-			end
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return emotionsDiscord[GetPetHappiness()]
 		end
 	end)
 
 	E:AddTag('happiness:color', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 			return Hex(_COLORS.happiness[GetPetHappiness()])
 		end
 	end)
 
 	E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
-			local loyalty = gsub(GetPetLoyalty(), '.-(%d).*', '%1')
-			return loyalty
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 		end
 	end)
 
 	E:AddTag('diet', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 			return GetPetFoodTypes()
 		end
 	end)
-
 end
 
 ------------------------------------------------------------------------

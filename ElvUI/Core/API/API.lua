@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
 local wipe, date, max = wipe, date, max
-local select, type, ipairs, pairs = select, type, ipairs, pairs
+local type, ipairs, pairs = type, ipairs, pairs
 local strfind, tonumber, tostring = strfind, tonumber, tostring
 local strlen, CreateFrame = strlen, CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -21,7 +21,6 @@ local IsInRaid = IsInRaid
 local IsWargame = IsWargame
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
-local UnitAttackPower = UnitAttackPower
 local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -30,7 +29,6 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
-local UnitStat = UnitStat
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
