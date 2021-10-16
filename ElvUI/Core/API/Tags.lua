@@ -1245,9 +1245,9 @@ if not E.Retail then
 	local GetPetFoodTypes = GetPetFoodTypes
 
 	local emotionsIcons = {
-		[[|TInterface\\PetPaperDollFrame\\UI-PetHappiness:16:16:0:0:128:64:48:72:0:23|t]],
-		[[|TInterface\\PetPaperDollFrame\\UI-PetHappiness:16:16:0:0:128:64:24:48:0:23|t]],
-		[[|TInterface\\PetPaperDollFrame\\UI-PetHappiness:16:16:0:0:128:64:0:24:0:23|t]]
+		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:48:72:0:23|t]],
+		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:24:48:0:23|t]],
+		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:0:24:0:23|t]]
 	}
 
 	local emotionsDiscord = {
