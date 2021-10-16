@@ -34,7 +34,11 @@ function DB:ReputationBar_Update()
 
 	local displayString, textFormat, label, rewardPending = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
+	local friendshipID, standingText, nextThreshold, _
+
+	if E.Retail then
+		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
+	end
 
 	if friendshipID then
 		reaction, label = 5, standingText
@@ -110,7 +114,7 @@ function DB:ReputationBar_OnEnter()
 		_G.GameTooltip:AddLine(' ')
 
 		local friendID, friendTextLevel, _
-		if factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
+		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
 		_G.GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 
