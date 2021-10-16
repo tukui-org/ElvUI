@@ -322,7 +322,7 @@ P.bags = {
 		mouseover = false,
 		showCount = true,
 		justBackpack = false,
-		visibility = '[petbattle] hide; show',
+		visibility = E.Retail and '[petbattle] hide; show' or 'show',
 	},
 }
 
@@ -2321,7 +2321,7 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = '[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide',
+		visibility = (E.Retail and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2341,7 +2341,7 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = '[vehicleui] hide; [petbattle] hide;show',
+		visibility = E.Retail and '[vehicleui] hide; [petbattle] hide;show' or 'show',
 	},
 	microbar = {
 		enabled = false,
@@ -2353,7 +2353,7 @@ P.actionbar = {
 		buttonHeight = 28,
 		buttonSpacing = 2,
 		alpha = 1,
-		visibility = '[petbattle] hide; show',
+		visibility = E.Retail and '[petbattle] hide; show' or 'show',
 		backdrop = false,
 		backdropSpacing = 2,
 		heightMult = 1,
@@ -2402,7 +2402,7 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
+		visibility = (E.Retail and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
@@ -2465,11 +2465,18 @@ for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionBu
 end
 
 P.actionbar.bar1.enabled = true
-P.actionbar.bar1.visibility = '[petbattle] hide; show'
+P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 P.actionbar.bar1.paging = {
-	DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;',
 	ROGUE = '[bonusbar:1] 7;',
 }
+
+if E.Retail then
+	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
+else
+	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 10;'
+	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
+	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3]9;'
+end
 
 P.actionbar.bar3.enabled = true
 P.actionbar.bar3.buttons = 6
