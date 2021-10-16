@@ -526,6 +526,7 @@ P.nameplates = {
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
 	highlight = true,
+	loadDistance = 41, -- TBC only
 	lowHealthThreshold = 0.4,
 	motionType = 'STACKED',
 	nameColoredGlow = false,
