@@ -92,6 +92,10 @@ function E:AddTag(tagName, eventsOrSeconds, func)
 	if type(eventsOrSeconds) == 'number' then
 		Tags.OnUpdateThrottle[tagName] = eventsOrSeconds
 	else
+		if not E.Retail then
+			eventsOrSeconds = gsub(eventsOrSeconds, 'UNIT_HEALTH', 'UNIT_HEALTH_FREQUENT')
+		end
+
 		Tags.Events[tagName] = eventsOrSeconds
 	end
 
