@@ -115,11 +115,88 @@ local inventorySlots = {
 	INVTYPE_TABARD = 25,
 }
 
-local conjured_items = {
-	[5512] = true, -- Healthstone
-	[162518] = true, -- Mystical Flask
-	[113509] = true, -- Conjured Mana Bun
-}
+if E.Retail then
+
+	local conjured_items = {
+		[5512] = true, -- Healthstone
+		[162518] = true, -- Mystical Flask
+		[113509] = true, -- Conjured Mana Bun
+	}
+
+else
+
+	local conjured_items = {
+		-- Mage Water
+		[5350]	= true, -- Conjured Water
+		[2288]	= true, -- Conjured Fresh Water (Level 5)
+		[2136]	= true, -- Conjured Purified Water (Level 15)
+		[3772]	= true, -- Conjured Spring Water (Level 25)
+		[8077]	= true, -- Conjured Mineral Water (Level 35)
+		[8078]	= true, -- Conjured Sparkling Water (Level 45)
+		[8079]	= true, -- Conjured Crystal Water (Level 55)
+		[30703] = true, -- Conjured Mountain Spring Water (Level 60)
+		[22018] = true, -- Conjured Glacier Water (Level 65)
+
+		-- Mage Food
+		[5349]	= true, -- Conjured Muffin
+		[1113]	= true, -- Conjured Bread (Level 5)
+		[1114]	= true, -- Conjured Rye (Level 15)
+		[1487]	= true, -- Conjured Pumpernickel (Level 25)
+		[8075]	= true, -- Conjured Sourdough (Level 35)
+		[8076]	= true, -- Conjured Sweet Roll (Level 45)
+		[22895] = true, -- Conjured Cinnamon Roll (Level 55)
+		[22019] = true, -- Conjured Croissant (Level 65)
+
+		-- Mage Mana
+		[5514]	= true, -- Mana Agate
+		[5513]	= true, -- Mana Jade
+		[8007]	= true, -- Mana Citrine
+		[8008]	= true, -- Mana Ruby
+		[22044] = true, -- Mana Emerald
+
+		-- Warlock Soulstones
+		[5232]	= true, -- Minor Soulstone
+		[16892] = true, -- Lesser Soulstone
+		[16893] = true, -- Soulstone
+		[16895] = true, -- Greater Soulstone
+		[16896] = true, -- Major Soulstone
+		[22116] = true, -- Master Soulstone
+
+		-- Warlock Firestones
+		[1254]	= true, -- Lesser Firestone
+		[13699] = true, -- Firestone
+		[13700] = true, -- Greater Firestone
+		[13701] = true, -- Major Firestone
+		[22128] = true, -- Master Firestone
+
+		-- Warlock Spellstones
+		[5522]	= true, -- Spellstone
+		[13602] = true, -- Greater Spellstone
+		[13603] = true, -- Major Spellstone
+		[22646] = true, -- Master Spellstone
+
+		-- Warlock Healthstones
+		[5512]	= true, -- Minor Healthstone
+		[19004] = true, -- Minor Healthstone (1/2 Improved Healthstone)
+		[19005] = true, -- Minor Healthstone (2/2 Improved Healthstone)
+		[5511]	= true, -- Lesser Healthstone
+		[19006] = true, -- Lesser Healthstone (1/2 Improved Healthstone)
+		[19007] = true, -- Lesser Healthstone (2/2 Improved Healthstone)
+		[5509]	= true, -- Healthstone
+		[19008] = true, -- Healthstone (1/2 Improved Healthstone)
+		[19009] = true, -- Healthstone (2/2 Improved Healthstone)
+		[5510]	= true, -- Greater Healthstone
+		[19010] = true, -- Greater Healthstone (1/2 Improved Healthstone)
+		[19011] = true, -- Greater Healthstone (2/2 Improved Healthstone)
+		[9421]	= true, -- Major Healthstone
+		[19012] = true, -- Major Healthstone (1/2 Improved Healthstone)
+		[19013] = true, -- Major Healthstone (2/2 Improved Healthstone)
+		[22103] = true, -- Master Healthstone
+		[22104] = true, -- Master Healthstone (1/2 Improved Healthstone)
+		[22105] = true, -- Master Healthstone (2/2 Improved Healthstone)
+	}
+
+end
 
 local safe = {
 	[BANK_CONTAINER] = true,
