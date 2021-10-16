@@ -5,19 +5,12 @@ local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
-local gsub = gsub
-local pairs = pairs
-local select = select
-local strmatch = strmatch
-local strsplit = strsplit
-local tinsert = tinsert
-local wipe = wipe
-local ceil = ceil
-local tonumber = tonumber
-local format = format
-local CopyTable = CopyTable
+local next, select, format, strmatch, strsplit = next, select, format, strmatch, strsplit
+local tinsert, tonumber, gsub, pairs, wipe, ceil = tinsert, tonumber, gsub, pairs, wipe, ceil
+
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
+local CopyTable = CopyTable
 
 local orientationValues = {
 	LEFT = L["Left"],

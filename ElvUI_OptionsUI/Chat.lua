@@ -9,6 +9,7 @@ local wipe = wipe
 local pairs = pairs
 local format = format
 local strlower = strlower
+local GameTooltip_Hide = GameTooltip_Hide
 
 local tabSelectorTable = {}
 local Chat = ACH:Group(L["Chat"], nil, 2, 'tab', function(info) return E.db.chat[info[#info]] end, function(info, value) E.db.chat[info[#info]] = value end)

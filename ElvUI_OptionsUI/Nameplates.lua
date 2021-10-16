@@ -10,8 +10,8 @@ local pairs, type, strsplit = pairs, type, strsplit
 local next, tonumber, format = next, tonumber, format
 
 local IsAddOnLoaded = IsAddOnLoaded
-local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
+local GetCVar = GetCVar
 local SetCVar = SetCVar
 
 local function GetAddOnStatus(index, locale, name)
