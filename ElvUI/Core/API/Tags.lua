@@ -1395,6 +1395,12 @@ E.TagInfo = {
 		['maxhp'] = { category = 'Health', description = "Displays max HP without decimals" },
 		['missinghp'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" },
 		['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." },
+	--Hunter
+		['diet'] = { category = 'Hunter', description = "Displays the diet of your pet (Fish, Meat, ...)" },
+		['happiness:discord'] = { category = 'Hunter', description = "Displays the pet happiness like a Discord emoji" },
+		['happiness:full'] = { category = 'Hunter', description = "Displays the pet happiness as a word (e.g. 'Happy')" },
+		['happiness:icon'] = { category = 'Hunter', description = "Displays the pet happiness like the default Blizzard icon" },
+		['loyalty'] = { category = 'Hunter', description = "Displays the pet loyalty level" },
 	-- Level
 		['level'] = { category = 'Level', description = "Displays the level of the unit" },
 		['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
