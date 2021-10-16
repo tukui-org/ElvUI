@@ -1237,6 +1237,72 @@ do
 	end)
 end
 
+if not E.Retail then
+
+	E:AddTag('happiness:full', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+			return _G['PET_HAPPINESS'..GetPetHappiness()]
+		end
+	end)
+
+	E:AddTag('happiness:icon', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+			local left, right, top, bottom
+			local happiness = GetPetHappiness()
+
+			if(happiness == 1) then
+				left, right, top, bottom = 0.375, 0.5625, 0, 0.359375
+			elseif(happiness == 2) then
+				left, right, top, bottom = 0.1875, 0.375, 0, 0.359375
+			elseif(happiness == 3) then
+				left, right, top, bottom = 0, 0.1875, 0, 0.359375
+			end
+
+			return CreateTextureMarkup([[Interface\PetPaperDollFrame\UI-PetHappiness]], 128, 64, 16, 16, left, right, top, bottom, 0, 0)
+		end
+	end)
+
+	E:AddTag('happiness:discord', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+			local happiness = GetPetHappiness()
+
+			if(happiness == 1) then
+				return CreateTextureMarkup([[Interface\AddOns\ElvUI\Media\ChatEmojis\Rage]], 32, 32, 16, 16, 0, 1, 0, 1, 0, 0)
+			elseif(happiness == 2) then
+				return CreateTextureMarkup([[Interface\AddOns\ElvUI\Media\ChatEmojis\SlightFrown]], 32, 32, 16, 16, 0, 1, 0, 1, 0, 0)
+			elseif(happiness == 3) then
+				return CreateTextureMarkup([[Interface\AddOns\ElvUI\Media\ChatEmojis\HeartEyes]], 32, 32, 16, 16, 0, 1, 0, 1, 0, 0)
+			end
+		end
+	end)
+
+	E:AddTag('happiness:color', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+			return Hex(_COLORS.happiness[GetPetHappiness()])
+		end
+	end)
+
+	E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+			local loyalty = gsub(GetPetLoyalty(), '.-(%d).*', '%1')
+			return loyalty
+		end
+	end)
+
+	E:AddTag('diet', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if (UnitIsUnit('pet', unit) and hasPetUI and isHunterPet) then
+			return GetPetFoodTypes()
+		end
+	end)
+
+end
+
 ------------------------------------------------------------------------
 --	Available Tags
 ------------------------------------------------------------------------
