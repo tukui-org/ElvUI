@@ -23,7 +23,6 @@ local GetTalentInfo = GetTalentInfo
 
 local filters = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
-local function blank() return '' end
 
 C.SelectedNameplateStyleFilter = nil
 
@@ -763,7 +762,7 @@ function UpdateFilterGroup()
 							name = L["Add Name or NPC ID"],
 							desc = L["Add a Name or NPC ID to the list."],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -778,7 +777,7 @@ function UpdateFilterGroup()
 							name = L["Remove Name or NPC ID"],
 							desc = L["Remove a Name or NPC ID from the list."],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -872,7 +871,7 @@ function UpdateFilterGroup()
 							order = 2,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -887,7 +886,7 @@ function UpdateFilterGroup()
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1080,7 +1079,7 @@ function UpdateFilterGroup()
 							name = L["Add Item Name or ID"],
 							desc = L["Add a Item Name or ID to the list."],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1095,7 +1094,7 @@ function UpdateFilterGroup()
 							name = L["Remove Item Name or ID"],
 							desc = L["Remove a Item Name or ID from the list."],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1473,7 +1472,7 @@ function UpdateFilterGroup()
 							order = 1,
 							name = L["Add Spell ID or Name"],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1488,7 +1487,7 @@ function UpdateFilterGroup()
 							name = L["Remove Spell ID or Name"],
 							desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 							type = 'input',
-							get = blank,
+							get = C.Blank,
 							set = function(_, value)
 								if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1575,7 +1574,7 @@ function UpdateFilterGroup()
 									order = 1,
 									name = L["Add Spell ID or Name"],
 									type = 'input',
-									get = blank,
+									get = C.Blank,
 									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 										if stackBuff then value = value .. '\n' .. stackBuff end
@@ -1591,7 +1590,7 @@ function UpdateFilterGroup()
 									name = L["Remove Spell ID or Name"],
 									desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 									type = 'input',
-									get = blank,
+									get = C.Blank,
 									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1687,7 +1686,7 @@ function UpdateFilterGroup()
 									order = 6,
 									name = L["Add Spell ID or Name"],
 									type = 'input',
-									get = blank,
+									get = C.Blank,
 									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 										if stackDebuff then value = value .. '\n' .. stackDebuff end
@@ -1703,7 +1702,7 @@ function UpdateFilterGroup()
 									name = L["Remove Spell ID or Name"],
 									desc = L["If the aura is listed with a number then you need to use that to remove it from the list."],
 									type = 'input',
-									get = blank,
+									get = C.Blank,
 									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1801,7 +1800,7 @@ function UpdateFilterGroup()
 									order = 1,
 									name = L["Add Texture"],
 									type = 'input',
-									get = blank,
+									get = C.Blank,
 									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
@@ -1816,7 +1815,7 @@ function UpdateFilterGroup()
 									order = 2,
 									name = L["Remove Texture"],
 									type = 'input',
-									get = blank,
+									get = C.Blank,
 									set = function(_, value)
 										if strmatch(value, '^[%s%p]-$') then return end
 
@@ -2857,7 +2856,7 @@ E.Options.args.nameplate.args.filters = {
 			order = 1,
 			name = L["Create Filter"],
 			type = 'input',
-			get = blank,
+			get = C.Blank,
 			set = function(_, value)
 				if strmatch(value, '^[%s%p]-$') then return end
 

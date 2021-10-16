@@ -488,7 +488,7 @@ end
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab')
 	config.args.tags = ACH:Group(L["Texts"])
-	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', function() return '' end)
+	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', C.Blank)
 	config.args.createCustomText.set = function(_, textName) -- Needs split into a validate
 		for object in pairs(E.db.unitframe.units[groupName]) do
 			if object:lower() == textName:lower() then
