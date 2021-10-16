@@ -1251,9 +1251,9 @@ if not E.Retail then
 	}
 
 	local emotionsDiscord = {
-		[[|TInterface\AddOns\ElvUI\Media\ChatEmojis\Rage:16:16:0:0:32:32:0:32:0:32|t]],
-		[[|TInterface\AddOns\ElvUI\Media\ChatEmojis\SlightFrown:16:16:0:0:32:32:0:32:0:32|t]],
-		[[|TInterface\AddOns\ElvUI\Media\ChatEmojis\HeartEyes:16:16:0:0:32:32:0:32:0:32|t]]
+		E:TextureString(E.Media.ChatEmojis.Rage, ':16:16:0:0:32:32:0:32:0:32'),
+		E:TextureString(E.Media.ChatEmojis.SlightFrown, ':16:16:0:0:32:32:0:32:0:32'),
+		E:TextureString(E.Media.ChatEmojis.HeartEyes, ':16:16:0:0:32:32:0:32:0:32')
 	}
 
 	E:AddTag('happiness:full', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
