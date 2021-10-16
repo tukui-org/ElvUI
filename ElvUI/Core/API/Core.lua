@@ -108,21 +108,6 @@ E.InversePoints = {
 	CENTER = 'CENTER'
 }
 
-E.ClassRole = {
-	HUNTER		= 'Melee',
-	ROGUE		= 'Melee',
-	MAGE		= 'Caster',
-	PRIEST		= 'Caster',
-	WARLOCK		= 'Caster',
-	DEMONHUNTER	= {'Melee',  'Tank'},
-	WARRIOR		= {'Melee',  'Melee',  'Tank'},
-	DEATHKNIGHT	= {'Tank',   'Melee',  'Melee'},
-	MONK		= {'Tank',   'Caster', 'Melee'},
-	PALADIN		= {'Caster', 'Tank',   'Melee'},
-	SHAMAN		= {'Caster', 'Melee',  'Caster'},
-	DRUID		= {'Caster', 'Melee',  'Tank',  'Caster'},
-}
-
 E.DispelClasses = {
 	PRIEST	= { Magic = true,  Disease = true },
 	SHAMAN	= { Magic = false, Curse = true },

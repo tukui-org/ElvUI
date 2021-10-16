@@ -179,30 +179,6 @@ function E:CheckRole()
 	self.myspec = GetSpecialization()
 	self.myrole = E:GetPlayerRole()
 
-	-- myrole = group role; TANK, HEALER, DAMAGER
-	-- role   = class role; Tank, Melee, Caster
-
-	local role
-	if type(self.ClassRole[self.myclass]) == 'string' then
-		role = self.ClassRole[self.myclass]
-	elseif self.myspec then
-		role = self.ClassRole[self.myclass][self.myspec]
-	end
-
-	if not role then
-		local playerint = select(2, UnitStat('player', 4))
-		local playeragi	= select(2, UnitStat('player', 2))
-		local base, posBuff, negBuff = UnitAttackPower('player')
-		local playerap = base + posBuff + negBuff
-
-		role = ((playerap > playerint) or (playeragi > playerint)) and 'Melee' or 'Caster'
-	end
-
-	if self.role ~= role then
-		self.role = role
-		self.callbacks:Fire('RoleChanged')
-	end
-
 	local dispel = self.DispelClasses[self.myclass]
 	if self.myrole and (self.myclass ~= 'PRIEST' and dispel ~= nil) then
 		dispel.Magic = (self.myrole == 'HEALER')
