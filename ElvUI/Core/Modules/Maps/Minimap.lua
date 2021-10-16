@@ -397,6 +397,10 @@ function M:Initialize()
 		_G.MiniMapMailBorder
 	}
 
+	if E.TBC then
+		tinsert(frames, _G.MinimapToggleButton)
+	end
+
 	for _, frame in pairs(frames) do
 		frame:Kill()
 	end
