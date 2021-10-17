@@ -79,7 +79,7 @@ V.skins = {
 		animaDiversion = true,
 		archaeology = true,
 		arena = true,
-		arenaRegistrar,
+		arenaRegistrar = true,
 		artifact = true,
 		auctionhouse = true,
 		azerite = true,
