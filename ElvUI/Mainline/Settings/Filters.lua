@@ -1279,7 +1279,7 @@ G.unitframe.aurawatch = {
 		[974]		= UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),			-- Earth Shield
 	},
 	HUNTER = {
-		[90361]		= UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
+		[90361]		= UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),			-- Spirit Mend (HoT)
 	},
 	MONK = {
 		[119611]	= UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),		-- Renewing Mist
