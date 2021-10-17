@@ -136,19 +136,21 @@ local function DeleteFilterListDisable()
 end
 
 local function GetSpellNameRank(id)
-	if not id then return ' ' end
+	if not id then
+		return ' '
+	end
 
-	local spellName = tonumber(id) and GetSpellInfo(id)
-	if not spellName then
+	local name = tonumber(id) and GetSpellInfo(id)
+	if not name then
 		return tostring(id)
 	end
 
-	local subText = not E.Retail and GetSpellSubtext(id)
-	if not subText or not strfind(subText, '%d') then
-		return format('%s |cFF888888(%s)|r', spellName, id)
+	local rank = not E.Retail and GetSpellSubtext(id)
+	if not rank or not strfind(rank, '%d') then
+		return format('%s |cFF888888(%s)|r', name, id)
 	end
 
-	return format('%s %s[%s]|r |cFF888888(%s)|r', spellName, E.media.hexvaluecolor, subText, id)
+	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, rank, id)
 end
 
 local function SetSpellList()
