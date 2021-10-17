@@ -108,6 +108,12 @@ P.general = {
 				xOffset = 3,
 				yOffset = 4,
 			},
+			tracking = {
+				scale = 0.8,
+				position = 'BOTTOMRIGHT',
+				xOffset = -2,
+				yOffset = 2,
+			},
 			lfgEye = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
