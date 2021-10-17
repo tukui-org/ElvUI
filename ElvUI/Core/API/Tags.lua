@@ -88,7 +88,9 @@ local PVP = PVP
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
 local RefreshNewTags -- will turn true at EOF
-function E:AddTag(tagName, eventsOrSeconds, func)
+function E:AddTag(tagName, eventsOrSeconds, func, block)
+	if block then return end -- easy killer for tags
+
 	if type(eventsOrSeconds) == 'number' then
 		Tags.OnUpdateThrottle[tagName] = eventsOrSeconds
 	else
@@ -334,7 +336,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
 			return E:GetFormattedText(textFormat, cur, max)
 		end
-	end)
+	end, not E.Retail)
 
 	if tagFormat ~= 'percent' then
 		E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
@@ -805,7 +807,7 @@ E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_
 
 		return Hex(r,g,b)
 	end
-end)
+end, not E.Retail)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
@@ -1332,7 +1334,7 @@ E.TagInfo = {
 		['runes'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the runes (Death Knight)" },
 		['soulshards'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the soulshards (Warlock)" },
 	-- Colors
-		['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
+		['altpowercolor'] = { hidden = not E.Retail, category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
 		['classificationcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's classification" },
 		['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 		['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
