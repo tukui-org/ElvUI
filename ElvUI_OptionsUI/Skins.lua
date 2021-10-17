@@ -45,6 +45,7 @@ Skins.args.blizzard.values = {
 	dressingroom = L["DRESSUP_FRAME"],
 	eventLog = L["Event Log"],
 	friends = L["FRIENDS"],
+	gbank = L["GUILD_BANK"],
 	gossip = L["Gossip Frame"],
 	guild = L["GUILD"],
 	guildcontrol = L["Guild Control Frame"],
@@ -100,7 +101,6 @@ if E.Retail then
 	Skins.args.blizzard.values.deathRecap = L["DEATH_RECAP_TITLE"]
 	Skins.args.blizzard.values.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	Skins.args.blizzard.values.garrison = L["GARRISON_LOCATION_TOOLTIP"]
-	Skins.args.blizzard.values.gbank = L["GUILD_BANK"]
 	Skins.args.blizzard.values.gmChat = L["GM Chat"]
 	Skins.args.blizzard.values.guide = L["Guide Frame"]
 	Skins.args.blizzard.values.islandQueue = L["ISLANDS_HEADER"]
@@ -129,7 +129,6 @@ elseif E.TBC then
 	Skins.args.blizzard.values.arenaRegistrar = L["Arena Registrar"]
 	Skins.args.blizzard.values.battlefield = L["Battlefield"]
 	Skins.args.blizzard.values.craft = L["Craft"]
-	Skins.args.blizzard.values.guildBank = L["GUILD_BANK"]
 elseif E.Classic then
 	Skins.args.blizzard.values.battlefield = L["Battlefield"]
 	Skins.args.blizzard.values.craft = L["Craft"]

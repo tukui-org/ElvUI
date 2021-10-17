@@ -7,7 +7,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function S:Blizzard_GuildBankUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildBank) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
