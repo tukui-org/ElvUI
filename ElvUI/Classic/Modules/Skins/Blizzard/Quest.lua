@@ -132,43 +132,28 @@ function S:BlizzardQuestFrames()
 		end
 	end
 
-	local items = {
-		['QuestLogItem'] = MAX_NUM_ITEMS,
-		['QuestProgressItem'] = MAX_REQUIRED_ITEMS
-	}
-
-	for frame, numItems in pairs(items) do
+	for frame, numItems in pairs({ QuestLogItem = MAX_NUM_ITEMS, QuestProgressItem = MAX_REQUIRED_ITEMS }) do
 		for i = 1, numItems do
-			local item = _G[frame..i]
-
-			handleItemButton(item)
+			handleItemButton(_G[frame..i])
 		end
 	end
 
 	local function questQualityColors(frame, text, link)
-		local quality
-		if link then
-			quality = select(3, GetItemInfo(link))
+		if not frame.backdrop then
+			handleItemButton(frame)
 		end
 
+		local quality = link and select(3, GetItemInfo(link))
 		if quality and quality > 1 then
 			local r, g, b = GetItemQualityColor(quality)
 
-			frame:SetBackdropBorderColor(r, g, b)
-
-			if frame.backdrop then
-				frame.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-
 			text:SetTextColor(r, g, b)
+			frame:SetBackdropBorderColor(r, g, b)
+			frame.backdrop:SetBackdropBorderColor(r, g, b)
 		else
-			frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-
-			if frame.backdrop then
-				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-
 			text:SetTextColor(1, 1, 1)
+			frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 
