@@ -1232,11 +1232,11 @@ end
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
-	WARRIOR = {
-		[3411]		= UF:AuraWatch_AddSpell(3411, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Intervene
-	},
 	ROGUE = {
 		[57934]		= UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Tricks of the Trade
+	},
+	WARRIOR = {
+		[3411]		= UF:AuraWatch_AddSpell(3411, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Intervene
 	},
 	PRIEST = {
 		[139]		= UF:AuraWatch_AddSpell(139, 'BOTTOMLEFT', {0.4, 0.7, 0.2}),		-- Renew
@@ -1262,18 +1262,6 @@ G.unitframe.aurawatch = {
 		[200389]	= UF:AuraWatch_AddSpell(200389, 'BOTTOM', {1, 1, 0.4}),				-- Cultivation
 		[203554]	= UF:AuraWatch_AddSpell(203554, 'TOP', {1, 1, 0.4}),				-- Focused Growth (PvP)
 	},
-	SHAMAN = {
-		[61295]		= UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),		-- Riptide
-		[974]		= UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),			-- Earth Shield
-	},
-	MONK = {
-		[119611]	= UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),		-- Renewing Mist
-		[116849]	= UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Life Cocoon
-		[124682]	= UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),	-- Enveloping Mist
-		[191840]	= UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),	-- Essence Font
-		[116841]	= UF:AuraWatch_AddSpell(116841, 'TOP', {0.12, 1.00, 0.53}),			-- Tiger's Lust (Freedom)
-		[325209]	= UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.8, 0.6}),			-- Enveloping Breath
-	},
 	PALADIN = {
 		[53563]		= UF:AuraWatch_AddSpell(53563, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Light
 		[156910]	= UF:AuraWatch_AddSpell(156910, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Faith
@@ -1286,6 +1274,21 @@ G.unitframe.aurawatch = {
 		[287280]	= UF:AuraWatch_AddSpell(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),			-- Glimmer of Light (T50 Talent)
 		[157047]	= UF:AuraWatch_AddSpell(157047, 'TOP', {0.15, 0.58, 0.84}),				-- Saved by the Light (T25 Talent)
 	},
+	SHAMAN = {
+		[61295]		= UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),		-- Riptide
+		[974]		= UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),			-- Earth Shield
+	},
+	HUNTER = {
+		[90361]		= UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
+	},
+	MONK = {
+		[119611]	= UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),		-- Renewing Mist
+		[116849]	= UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Life Cocoon
+		[124682]	= UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),	-- Enveloping Mist
+		[191840]	= UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),	-- Essence Font
+		[116841]	= UF:AuraWatch_AddSpell(116841, 'TOP', {0.12, 1.00, 0.53}),			-- Tiger's Lust (Freedom)
+		[325209]	= UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.8, 0.6}),			-- Enveloping Breath
+	},
 	PET = {
 		-- Warlock Pets
 		[193396]	= UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),		-- Demonic Empowerment
@@ -1293,14 +1296,11 @@ G.unitframe.aurawatch = {
 		[272790]	= UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
 		[136]		= UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
 	},
-	HUNTER = {
-		[90361]		= UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
-	},
 	-- Keep those for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
-	DEMONHUNTER = {},
 	WARLOCK = {},
 	MAGE = {},
 	DEATHKNIGHT = {},
+	DEMONHUNTER = {},
 }
 
 -- Profile specific BuffIndicator
