@@ -293,6 +293,7 @@ E.Options.args.filters = {
 							type = 'select',
 							order = 1,
 							customWidth = 350,
+							sortByValue = true,
 							get = function(info) return selectedSpell or '' end,
 							set = function(info, value)
 								selectedSpell = (value ~= '' and value) or nil
