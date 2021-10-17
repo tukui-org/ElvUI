@@ -27,7 +27,7 @@ Bags.args.general.args.moneyFormat = ACH:Select(L["Gold Format"], L["The display
 Bags.args.general.args.moneyCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 4, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 
 Bags.args.general.args.generalGroup = ACH:MultiSelect(L["General"], nil, 5, nil, nil, nil, function(_, key) return E.db.bags[key] end)
-Bags.args.general.args.generalGroup.values = {
+Bags.args.general.args.generalGroup.values = E.Retail and {
 	transparent = L["Transparent"],
 	junkIcon = L["Junk Icon"],
 	junkDesaturate = L["Desaturate Junk"],
@@ -35,6 +35,17 @@ Bags.args.general.args.generalGroup.values = {
 	scrapIcon = L["Scrap Icon"],
 	newItemGlow = L["New Item Glow"],
 	showAssignedIcon = L["Assigned Icon"],
+	showBindType = L["Bind on Equip/Use Text"],
+	clearSearchOnClose = L["Clear Search On Close"],
+	reverseLoot = L["REVERSE_NEW_LOOT_TEXT"],
+	reverseSlots = L["Reverse Bag Slots"],
+	useBlizzardCleanup = L["Use Blizzard Cleanup"],
+	auctionToggle = L["Auction Toggle"],
+} or {
+	transparent = L["Transparent"],
+	junkIcon = L["Junk Icon"],
+	junkDesaturate = L["Desaturate Junk"],
+	newItemGlow = L["New Item Glow"],
 	showBindType = L["Bind on Equip/Use Text"],
 	clearSearchOnClose = L["Clear Search On Close"],
 	reverseLoot = L["REVERSE_NEW_LOOT_TEXT"],
