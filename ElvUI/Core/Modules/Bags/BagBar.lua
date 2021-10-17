@@ -29,23 +29,23 @@ local commandNames = {
 	'TOGGLEBAG1'  -- 3
 }
 
-local function OnEnter()
+function B:BarBar_OnEnter()
 	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeIn(B.BagBar, 0.2, B.BagBar:GetAlpha(), 1)
 end
 
-local function OnLeave()
+function B:BarBar_OnLeave()
 	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
 end
 
-function B:BagButton_OnEnter()
+function B:BagBarButton_OnEnter()
 	-- bag keybind support from actionbar module
 	if E.private.actionbar.enable then
 		AB:BindUpdate(self)
 	end
 
-	OnEnter()
+	B:BarBar_OnEnter()
 end
 
 function B:SkinBag(bag)
@@ -192,8 +192,8 @@ function B:LoadBagBar()
 	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, true)
-	B.BagBar:SetScript('OnEnter', OnEnter)
-	B.BagBar:SetScript('OnLeave', OnLeave)
+	B.BagBar:SetScript('OnEnter', B.BarBar_OnEnter)
+	B.BagBar:SetScript('OnLeave', B.BarBar_OnLeave)
 	B.BagBar:EnableMouse(true)
 	B.BagBar.buttons = {}
 
@@ -202,8 +202,8 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
-	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
-	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
+	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagBarButton_OnEnter)
+	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BarBar_OnLeave)
 
 	if not E.Retail then
 		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
@@ -215,8 +215,8 @@ function B:LoadBagBar()
 	for i = 0, NUM_BAG_FRAMES-1 do
 		local b = _G['CharacterBag'..i..'Slot']
 		b:SetParent(B.BagBar)
-		b:HookScript('OnEnter', B.BagButton_OnEnter)
-		b:HookScript('OnLeave', OnLeave)
+		b:HookScript('OnEnter', B.BagBarButton_OnEnter)
+		b:HookScript('OnLeave', B.BarBar_OnLeave)
 
 		B:SkinBag(b)
 
