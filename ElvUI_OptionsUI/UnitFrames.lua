@@ -676,7 +676,9 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 8)
 	end
 
-	config.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 3, nil, nil, nil, nil, nil, nil, not E.Retail)
+	if groupName == 'player' then
+		config.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 3, nil, nil, nil, nil, nil, nil, not E.Retail)
+	end
 
 	return config
 end
