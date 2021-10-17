@@ -2,12 +2,7 @@ local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalD
 local D = E:GetModule('Distributor')
 
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
-local C = {
-	Blank = function() return '' end,
-	NotRetail = not E.Retail,
-	NotClassic = not E.Classic,
-	NotTBC = not E.TBC
-}
+local C = { Blank = function() return '' end }
 
 E.OptionsUI = select(2, ...)
 E.OptionsUI[1] = C

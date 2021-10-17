@@ -677,7 +677,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	end
 
 	if groupName == 'player' and not E.Retail then
-		config.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 3, nil, nil, nil, nil, nil, nil, C.NotTBC)
+		config.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 3, nil, nil, nil, nil, nil, nil, not E.TBC)
 	end
 
 	return config
