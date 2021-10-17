@@ -226,8 +226,8 @@ local SharedButtonOptions = {
 
 ActionBar.args.masqueGroup = ACH:Group(L["Masque"], nil, -1, nil, nil, nil, function() return not E.Masque end)
 ActionBar.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { actionbars = L["ActionBars"], petBar = L["Pet Bar"], stanceBar = L["Stance Bar"] }, nil, nil, function(_, key) return E.private.actionbar.masque[key] end, function(_, key, value) E.private.actionbar.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end)
-
-ActionBar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end)
+-- ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, func)
+ActionBar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end, not E.Retail)
 ActionBar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"], nil, 1, nil, function(info) return E.db.actionbar.extraActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.extraActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
 ActionBar.args.extraButtons.args.extraActionButton.inline = true
 ActionBar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButtonOptions)
