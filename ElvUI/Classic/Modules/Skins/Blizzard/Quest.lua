@@ -83,8 +83,7 @@ function S:BlizzardQuestFrames()
 		if not item then return end
 
 		if item then
-			item:CreateBackdrop()
-			item.backdrop:SetInside()
+			item:SetTemplate()
 			item:Size(143, 40)
 			item:SetFrameLevel(item:GetFrameLevel() + 2)
 		end
@@ -97,7 +96,7 @@ function S:BlizzardQuestFrames()
 		end
 
 		if item.IconBorder then
-			item.IconBorder:SetAlpha(0)
+			S:HandleIconBorder(item.IconBorder)
 		end
 
 		if item.Count then
@@ -139,7 +138,7 @@ function S:BlizzardQuestFrames()
 	end
 
 	local function questQualityColors(frame, text, link)
-		if not frame.backdrop then
+		if not frame.template then
 			handleItemButton(frame)
 		end
 
@@ -149,27 +148,22 @@ function S:BlizzardQuestFrames()
 
 			text:SetTextColor(r, g, b)
 			frame:SetBackdropBorderColor(r, g, b)
-			frame.backdrop:SetBackdropBorderColor(r, g, b)
 		else
 			text:SetTextColor(1, 1, 1)
 			frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = rewardsFrame.RewardButtons[index]
-		if not button and button.backdrop then return end
+		if not button and button.template then return end
 
 		handleItemButton(button)
-
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 	end)
 
 	hooksecurefunc('QuestInfoItem_OnClick', function(frame)
 		if frame.type == 'choice' then
 			frame:SetBackdropBorderColor(1, 0.80, 0.10)
-			frame.backdrop:SetBackdropBorderColor(1, 0.80, 0.10)
 			_G[frame:GetName()..'Name']:SetTextColor(1, 0.80, 0.10)
 
 			for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
@@ -328,7 +322,9 @@ function S:BlizzardQuestFrames()
 			spellHeader:SetVertexColor(1, 1, 1)
 		end
 		for spellIcon, _ in _G.QuestInfoFrame.rewardsFrame.spellRewardPool:EnumerateActive() do
-			handleItemButton(spellIcon)
+			if not spellIcon.template then
+				handleItemButton(spellIcon)
+			end
 		end
 
 		if requiredMoney > 0 then
