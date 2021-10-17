@@ -12,7 +12,6 @@ local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
-local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
 local BackpackButton_OnClick = BackpackButton_OnClick
 local IsModifiedClick = IsModifiedClick
@@ -149,7 +148,7 @@ function B:UpdateMainButtonCount()
 end
 
 function B:MainMenuBarBackpackButton_OnClick(button)
-	if E.Retail and (KeybindFrames_InQuickKeybindMode() or AB.KeyBinder.active) then return end
+	if E.Retail and AB.KeyBinder.active then return end
 
 	if IsModifiedClick() then
 		BackpackButton_OnModifiedClick(self, button)
