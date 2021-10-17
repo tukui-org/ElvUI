@@ -1188,7 +1188,7 @@ end
 
 -- These items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sold automatically
 -- Link for more info: https://www.wow-petguide.com/News/311/Patch_9.1_Pet_Compilation_2021-04-14
-B.PetGrays = {
+B.excludeGrays = E.Retail and {
 	[3300] = "Rabbit's Foot",
 	[3670] = "Large Slimy Bone",
 	[6150] = "A Frayed Knot",
@@ -1198,6 +1198,9 @@ B.PetGrays = {
 	[36812] = "Ground Gear",
 	[62072] = "Robble's Wobbly Staff",
 	[67410] = "Very Unlucky Rock",
+} or {
+	[32888] = "The Relics of Terokk",
+	[28664] = "Nitrin's Instructions",
 }
 
 function B:GetGrays(vendor)
@@ -1206,7 +1209,7 @@ function B:GetGrays(vendor)
 	for bagID = 0, 4 do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local _, count, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-			if itemLink and not B.PetGrays[itemID] then
+			if itemLink and not B.excludeGrays[itemID] then
 				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemLink)
 				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
 					local stackCount = count or 1
