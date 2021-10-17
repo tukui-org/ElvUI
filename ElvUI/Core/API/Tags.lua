@@ -1533,7 +1533,7 @@ E.TagInfo = {
 	order = This is optional. It's used for sorting the tags by order and not by name. The +10 is not a rule. I reserve the first 10 slots.
 ]]
 
-function E:AddTagInfo(tagName, category, description, order)
+function E:AddTagInfo(tagName, category, description, order, hidden)
 	if type(order) == 'number' then order = order + 10 else order = nil end
 
 	local info = E.TagInfo[tagName]
@@ -1546,6 +1546,7 @@ function E:AddTagInfo(tagName, category, description, order)
 	info.category = category or 'Miscellaneous'
 	info.description = description or ''
 	info.order = order or nil
+	info.hidden = hidden or nil
 
 	return info
 end
