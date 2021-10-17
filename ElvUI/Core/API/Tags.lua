@@ -1480,6 +1480,9 @@ E.TagInfo = {
 	-- Quest
 		['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 		['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
+		['quest:count'] = { category = 'Quest', description = "Displays the quest count" },
+		['quest:full'] = { category = 'Quest', description = "Quest full" },
+		['quest:text'] = { category = 'Quest', description = "Quest text" },
 	-- Range
 		['range'] = { category = 'Range', description = "Displays the range" },
 		['range:min'] = { category = 'Range', description = "Displays the min range" },
