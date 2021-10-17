@@ -130,10 +130,7 @@ elseif E.TBC then
 	Skins.args.blizzard.values.battlefield = L["Battlefield"]
 	Skins.args.blizzard.values.craft = L["Craft"]
 	Skins.args.blizzard.values.guildBank = L["GUILD_BANK"]
-	Skins.args.blizzard.values.socket = L["Socket Frame"]
-	Skins.args.blizzard.values.trainer = L["Trainer Frame"]
 elseif E.Classic then
 	Skins.args.blizzard.values.battlefield = L["Battlefield"]
 	Skins.args.blizzard.values.craft = L["Craft"]
-	Skins.args.blizzard.values.trainer = L["Trainer Frame"]
 end
