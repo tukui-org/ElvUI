@@ -317,7 +317,7 @@ function M:UpdateSettings()
 	end
 
 	local MiniMapTracking = _G.MiniMapTrackingFrame
-	if (MiniMapTracking) then
+	if MiniMapTracking then
 		if E.private.general.minimap.hideTracking then
 			MiniMapTracking:SetParent(E.HiddenFrame)
 		else
@@ -331,15 +331,15 @@ function M:UpdateSettings()
 			MiniMapTracking:SetScale(scale)
 			MiniMapTracking:SetParent(Minimap)
 
-			if (_G.MiniMapTrackingBorder) then
+			if _G.MiniMapTrackingBorder then
 				_G.MiniMapTrackingBorder:Hide()
 			end
 
-			if (_G.MiniMapTrackingBackground) then
+			if _G.MiniMapTrackingBackground then
 				_G.MiniMapTrackingBackground:Hide()
 			end
 
-			if (_G.MiniMapTrackingIcon) then
+			if _G.MiniMapTrackingIcon then
 				_G.MiniMapTrackingIcon:SetDrawLayer('ARTWORK')
 				_G.MiniMapTrackingIcon:SetTexCoord(unpack(E.TexCoords))
 				_G.MiniMapTrackingIcon:SetInside()
