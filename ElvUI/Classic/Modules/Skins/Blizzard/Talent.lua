@@ -7,30 +7,30 @@ local unpack = unpack
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
-	local TalentFrame = _G.TalentFrame
-	S:HandleFrame(TalentFrame, true, nil, 11, -12, -32, 76)
+	local PlayerTalentFrame = _G.PlayerTalentFrame
+	S:HandleFrame(PlayerTalentFrame, true, nil, 11, -12, -32, 76)
 
-	S:HandleCloseButton(_G.TalentFrameCloseButton, TalentFrame.backdrop)
+	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, PlayerTalentFrame.backdrop)
 
-	_G.TalentFrameCancelButton:Kill()
+	_G.PlayerTalentFrameCancelButton:Kill()
 
 	for i = 1, 5 do
-		S:HandleTab(_G['TalentFrameTab'..i])
+		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 	end
 
-	_G.TalentFrameScrollFrame:StripTextures()
-	_G.TalentFrameScrollFrame:CreateBackdrop('Default')
+	_G.PlayerTalentFrameScrollFrame:StripTextures()
+	_G.PlayerTalentFrameScrollFrame:CreateBackdrop('Default')
 
-	S:HandleScrollBar(_G.TalentFrameScrollFrameScrollBar)
-	_G.TalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.TalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
+	S:HandleScrollBar(_G.PlayerTalentFrameScrollFrameScrollBar)
+	_G.PlayerTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
 
-	_G.TalentFrameSpentPoints:Point('TOP', 0, -42)
-	_G.TalentFrameTalentPointsText:Point('BOTTOMRIGHT', TalentFrame, 'BOTTOMLEFT', 220, 84)
+	_G.PlayerTalentFrameSpentPoints:Point('TOP', 0, -42)
+	_G.PlayerTalentFrameTalentPointsText:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMLEFT', 220, 84)
 
 	for i = 1, _G.MAX_NUM_TALENTS do
-		local talent = _G['TalentFrameTalent'..i]
-		local icon = _G['TalentFrameTalent'..i..'IconTexture']
-		local rank = _G['TalentFrameTalent'..i..'Rank']
+		local talent = _G['PlayerTalentFrameTalent'..i]
+		local icon = _G['PlayerTalentFrameTalent'..i..'IconTexture']
+		local rank = _G['PlayerTalentFrameTalent'..i..'Rank']
 
 		if talent then
 			talent:StripTextures()
