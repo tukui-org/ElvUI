@@ -12,6 +12,7 @@ local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
+local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
 local BackpackButton_OnClick = BackpackButton_OnClick
 local IsModifiedClick = IsModifiedClick
@@ -19,6 +20,14 @@ local IsModifiedClick = IsModifiedClick
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
+
+local commandNames = {
+	[-1] = 'TOGGLEBACKPACK',
+	[0] = 'TOGGLEBAG4',
+	'TOGGLEBAG3', -- 1
+	'TOGGLEBAG2', -- 2
+	'TOGGLEBAG1'  -- 3
+}
 
 local function OnEnter()
 	if not E.db.bags.bagBar.mouseover then return end
@@ -28,6 +37,15 @@ end
 local function OnLeave()
 	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
+end
+
+function B:BagButton_OnEnter()
+	-- bag keybind support from actionbar module
+	if E.private.actionbar.enable then
+		AB:BindUpdate(self)
+	end
+
+	OnEnter()
 end
 
 function B:SkinBag(bag)
@@ -148,7 +166,7 @@ function B:UpdateMainButtonCount()
 end
 
 function B:MainMenuBarBackpackButton_OnClick(button)
-	if E.Retail and AB.KeyBinder.active then return end
+	if E.Retail and (E.private.actionbar.enable and AB.KeyBinder.active or KeybindFrames_InQuickKeybindMode()) then return end
 
 	if IsModifiedClick() then
 		BackpackButton_OnModifiedClick(self, button)
@@ -184,8 +202,12 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
-	_G.MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
+	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
+
+	if not E.Retail then
+		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
+	end
 
 	tinsert(B.BagBar.buttons, _G.MainMenuBarBackpackButton)
 	B:SkinBag(_G.MainMenuBarBackpackButton)
@@ -193,10 +215,14 @@ function B:LoadBagBar()
 	for i = 0, NUM_BAG_FRAMES-1 do
 		local b = _G['CharacterBag'..i..'Slot']
 		b:SetParent(B.BagBar)
-		b:HookScript('OnEnter', OnEnter)
+		b:HookScript('OnEnter', B.BagButton_OnEnter)
 		b:HookScript('OnLeave', OnLeave)
 
 		B:SkinBag(b)
+
+		if not E.Retail then
+			b.commandName = commandNames[i]
+		end
 
 		tinsert(B.BagBar.buttons, b)
 	end
