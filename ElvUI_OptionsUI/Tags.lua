@@ -55,7 +55,7 @@ end
 for _, group in pairs(groups) do
 	local hide = true
 	for _, section in pairs(group.args) do
-		if not section.hidden then
+		if section.type ~= 'input' or not section.hidden then
 			hide = false
 			break
 		end
