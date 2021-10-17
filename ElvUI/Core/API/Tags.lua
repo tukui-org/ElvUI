@@ -1305,12 +1305,12 @@ end
 
 E.TagInfo = {
 	-- Altpower
-		['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
-		['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
-		['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" },
-		['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" },
-		['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
-		['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
+		['altpower:current-max-percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
+		['altpower:current-max'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
+		['altpower:current-percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" },
+		['altpower:current'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current format" },
+		['altpower:deficit'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
+		['altpower:percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
 	-- Classification
 		['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
 		['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
@@ -1319,18 +1319,18 @@ E.TagInfo = {
 		['rare'] = { category = 'Classification', description = "Displays 'Rare' when the unit is a rare or rareelite" },
 		['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
 	-- Classpower
-		['arcanecharges'] = { category = 'Classpower', description = "Displays the arcane charges (Mage)" },
-		['chi'] = { category = 'Classpower', description = "Displays the chi points (Monk)" },
-		['classpower:current-max-percent'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
-		['classpower:current-max'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
-		['classpower:current-percent'] = { category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
-		['classpower:current'] = { category = 'Classpower', description = "Displays the unit's current amount of special power" },
-		['classpower:deficit'] = { category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
-		['classpower:percent'] = { category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
 		['cpoints'] = { category = 'Classpower', description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" },
-		['holypower'] = { category = 'Classpower', description = "Displays the holy power (Paladin)" },
-		['runes'] = { category = 'Classpower', description = "Displays the runes (Death Knight)" },
-		['soulshards'] = { category = 'Classpower', description = "Displays the soulshards (Warlock)" },
+		['arcanecharges'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the arcane charges (Mage)" },
+		['chi'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the chi points (Monk)" },
+		['classpower:current-max-percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
+		['classpower:current-max'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
+		['classpower:current-percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
+		['classpower:current'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current amount of special power" },
+		['classpower:deficit'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
+		['classpower:percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
+		['holypower'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the holy power (Paladin)" },
+		['runes'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the runes (Death Knight)" },
+		['soulshards'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the soulshards (Warlock)" },
 	-- Colors
 		['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
 		['classificationcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's classification" },
@@ -1536,10 +1536,18 @@ E.TagInfo = {
 function E:AddTagInfo(tagName, category, description, order)
 	if type(order) == 'number' then order = order + 10 else order = nil end
 
-	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
-	E.TagInfo[tagName].category = category or 'Miscellaneous'
-	E.TagInfo[tagName].description = description or ''
-	E.TagInfo[tagName].order = order or nil
+	local info = E.TagInfo[tagName]
+	if not info then
+		info = {}
+
+		E.TagInfo[tagName] = info
+	end
+
+	info.category = category or 'Miscellaneous'
+	info.description = description or ''
+	info.order = order or nil
+
+	return info
 end
 
 RefreshNewTags = true
