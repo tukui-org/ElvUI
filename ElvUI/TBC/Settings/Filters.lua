@@ -954,7 +954,7 @@ G.unitframe.aurawatch = {
 		[24603]	= UF:AuraWatch_AddSpell(24603, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl (Rank 3)
 		[24597]	= UF:AuraWatch_AddSpell(24597, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl (Rank 4)
 	},
-	ROGUE = {},	-- No buffs
+	ROGUE = {}, -- No buffs
 }
 
 -- Profile specific BuffIndicator
