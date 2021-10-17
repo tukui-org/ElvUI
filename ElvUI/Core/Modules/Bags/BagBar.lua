@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
+local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs = ipairs
@@ -10,6 +11,11 @@ local GetCVarBool = GetCVarBool
 local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
+
+local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
+local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
+local BackpackButton_OnClick = BackpackButton_OnClick
+local IsModifiedClick = IsModifiedClick
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
@@ -142,6 +148,27 @@ function B:UpdateMainButtonCount()
 	B.BagBar.buttons[1].Count:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
+function B:MainMenuBarBackpackButton_OnClick(button)
+	if E.Retail and (KeybindFrames_InQuickKeybindMode() or AB.KeyBinder.active) then return end
+
+	if IsModifiedClick() then
+		BackpackButton_OnModifiedClick(self, button)
+	else
+		BackpackButton_OnClick(self, button)
+	end
+end
+
+function B:BagButton_OnClick(button)
+	if E.Retail and button == 'RightButton' then
+		B.AssignBagDropdown.holder = self
+		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
+	elseif self.id == 0 then
+		B.MainMenuBarBackpackButton_OnClick(self, button)
+	else
+		_G.BagSlotButton_OnClick(self)
+	end
+end
+
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
@@ -180,18 +207,7 @@ function B:LoadBagBar()
 		B:CreateFilterIcon(bagButton)
 		bagButton.id = (i - 1)
 
-		bagButton:SetScript('OnClick', function(holder, button)
-			if button == 'RightButton' then
-				B.AssignBagDropdown.holder = holder
-				_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-			else
-				if holder.id == 0 then
-					_G.MainMenuBarBackpackButton_OnClick(holder)
-				else
-					_G.BagSlotButton_OnClick(holder)
-				end
-			end
-		end)
+		bagButton:SetScript('OnClick', B.BagButton_OnClick)
 	end
 
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
