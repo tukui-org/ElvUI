@@ -40,8 +40,11 @@ G.nameplate.filters = {
 		actions = {
 			alpha = 50
 		}
-	},
-	ElvUI_Explosives = E.Retail and {
+	}
+}
+
+if E.Retail then
+	G.nameplate.filters.ElvUI_Explosives = {
 		triggers = {
 			priority = 2,
 			nameplateType = {
@@ -61,7 +64,7 @@ G.nameplate.filters = {
 			}
 		}
 	}
-}
+end
 
 E.StyleFilterDefaults = {
 	triggers = {
