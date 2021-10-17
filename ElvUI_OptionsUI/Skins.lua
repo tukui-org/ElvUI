@@ -5,16 +5,18 @@ local ACH = E.Libs.ACH
 
 local pairs = pairs
 
-E.Options.args.skins = ACH:Group(L["Skins"], nil, 2, 'tab')
-E.Options.args.skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
-E.Options.args.skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil, function(_, key) if key == 'blizzardEnable' then return E.private.skins.blizzard.enable else return E.private.skins[key] end end, function(_, key, value) if key == 'blizzardEnable' then E.private.skins.blizzard.enable = value else E.private.skins[key] = value end E:StaticPopup_Show('PRIVATE_RL') end)
-E.Options.args.skins.args.general.sortByValue = true
-E.Options.args.skins.args.general.values = { ace3Enable = 'Ace3', blizzardEnable = L["Blizzard"], checkBoxSkin = L["CheckBox Skin"], parchmentRemoverEnable = L["Parchment Remover"] }
+local Skins = ACH:Group(L["Skins"], nil, 2, 'tab')
+E.Options.args.skins = Skins
 
-E.Options.args.skins.args.talkingHead = ACH:Group(L["TalkingHead"], nil, 2, nil, function(info) return E.db.general[info[#info]] end)
-E.Options.args.skins.args.talkingHead.inline = true
-E.Options.args.skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end)
-E.Options.args.skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show('CONFIG_RL') end)
+Skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
+Skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil, function(_, key) if key == 'blizzardEnable' then return E.private.skins.blizzard.enable else return E.private.skins[key] end end, function(_, key, value) if key == 'blizzardEnable' then E.private.skins.blizzard.enable = value else E.private.skins[key] = value end E:StaticPopup_Show('PRIVATE_RL') end)
+Skins.args.general.sortByValue = true
+Skins.args.general.values = { ace3Enable = 'Ace3', blizzardEnable = L["Blizzard"], checkBoxSkin = L["CheckBox Skin"], parchmentRemoverEnable = L["Parchment Remover"] }
+
+Skins.args.talkingHead = ACH:Group(L["TalkingHead"], nil, 2, nil, function(info) return E.db.general[info[#info]] end)
+Skins.args.talkingHead.inline = true
+Skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end)
+Skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show('CONFIG_RL') end)
 
 local function ToggleSkins(value)
 	for key in pairs(E.private.skins.blizzard) do
@@ -24,11 +26,11 @@ local function ToggleSkins(value)
 	end
 end
 
-E.Options.args.skins.args.disableBlizzardSkins = ACH:Execute(L["Disable Blizzard Skins"], nil, 3, function() ToggleSkins(false); E:StaticPopup_Show('PRIVATE_RL') end)
-E.Options.args.skins.args.enableBlizzardSkins = ACH:Execute(L["Enable Blizzard Skins"], nil, 4, function() ToggleSkins(true); E:StaticPopup_Show('PRIVATE_RL') end)
-E.Options.args.skins.args.blizzard = ACH:MultiSelect(L["Blizzard"], L["TOGGLESKIN_DESC"], -1, nil, nil, nil, function(_, key) return E.private.skins.blizzard[key] end, function(_, key, value) E.private.skins.blizzard[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.private.skins.blizzard.enable end)
-E.Options.args.skins.args.blizzard.sortByValue = true
-E.Options.args.skins.args.blizzard.values = {
+Skins.args.disableBlizzardSkins = ACH:Execute(L["Disable Blizzard Skins"], nil, 3, function() ToggleSkins(false); E:StaticPopup_Show('PRIVATE_RL') end)
+Skins.args.enableBlizzardSkins = ACH:Execute(L["Enable Blizzard Skins"], nil, 4, function() ToggleSkins(true); E:StaticPopup_Show('PRIVATE_RL') end)
+Skins.args.blizzard = ACH:MultiSelect(L["Blizzard"], L["TOGGLESKIN_DESC"], -1, nil, nil, nil, function(_, key) return E.private.skins.blizzard[key] end, function(_, key, value) E.private.skins.blizzard[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.private.skins.blizzard.enable end)
+Skins.args.blizzard.sortByValue = true
+Skins.args.blizzard.values = {
 	addonManager = L["AddOn Manager"],
 	auctionhouse = L["AUCTIONS"],
 	bags = L["Bags"],
@@ -76,61 +78,61 @@ E.Options.args.skins.args.blizzard.values = {
 }
 
 if E.Retail then
-	E.Options.args.skins.args.blizzard.values.achievement = L["ACHIEVEMENTS"]
-	E.Options.args.skins.args.blizzard.values.adventureMap = L["ADVENTURE_MAP_TITLE"]
-	E.Options.args.skins.args.blizzard.values.alertframes = L["Alert Frames"]
-	E.Options.args.skins.args.blizzard.values.alliedRaces = L["Allied Races"]
-	E.Options.args.skins.args.blizzard.values.animaDiversion = L["Anima Diversion"]
-	E.Options.args.skins.args.blizzard.values.artifact = L["ITEM_QUALITY6_DESC"]
-	E.Options.args.skins.args.blizzard.values.archaeology = L["Archaeology Frame"]
-	E.Options.args.skins.args.blizzard.values.azeriteEssence = L["Azerite Essence"]
-	E.Options.args.skins.args.blizzard.values.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
-	E.Options.args.skins.args.blizzard.values.azerite = L["Azerite"]
-	E.Options.args.skins.args.blizzard.values.barber = L["BARBERSHOP"]
-	E.Options.args.skins.args.blizzard.values.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
-	E.Options.args.skins.args.blizzard.values.calendar = L["Calendar Frame"]
-	E.Options.args.skins.args.blizzard.values.chromieTime = L["Chromie Time Frame"]
-	E.Options.args.skins.args.blizzard.values.collections = L["COLLECTIONS"]
-	E.Options.args.skins.args.blizzard.values.contribution = L["Contribution"]
-	E.Options.args.skins.args.blizzard.values.covenantPreview = L["Covenant Preview"]
-	E.Options.args.skins.args.blizzard.values.covenantRenown = L["Covenant Renown"]
-	E.Options.args.skins.args.blizzard.values.covenantSanctum = L["Covenant Sanctum"]
-	E.Options.args.skins.args.blizzard.values.deathRecap = L["DEATH_RECAP_TITLE"]
-	E.Options.args.skins.args.blizzard.values.encounterjournal = L["ENCOUNTER_JOURNAL"]
-	E.Options.args.skins.args.blizzard.values.garrison = L["GARRISON_LOCATION_TOOLTIP"]
-	E.Options.args.skins.args.blizzard.values.gbank = L["GUILD_BANK"]
-	E.Options.args.skins.args.blizzard.values.gmChat = L["GM Chat"]
-	E.Options.args.skins.args.blizzard.values.guide = L["Guide Frame"]
-	E.Options.args.skins.args.blizzard.values.islandQueue = L["ISLANDS_HEADER"]
-	E.Options.args.skins.args.blizzard.values.islandsPartyPose = L["Island Party Pose"]
-	E.Options.args.skins.args.blizzard.values.itemInteraction = L["Item Interaction"]
-	E.Options.args.skins.args.blizzard.values.itemUpgrade = L["Item Upgrade"]
-	E.Options.args.skins.args.blizzard.values.lfguild = L["LF Guild Frame"]
-	E.Options.args.skins.args.blizzard.values.losscontrol = L["LOSS_OF_CONTROL"]
-	E.Options.args.skins.args.blizzard.values.nonraid = L["Non-Raid Frame"]
-	E.Options.args.skins.args.blizzard.values.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
-	E.Options.args.skins.args.blizzard.values.obliterum = L["OBLITERUM_FORGE_TITLE"]
-	E.Options.args.skins.args.blizzard.values.orderhall = L["Orderhall"]
-	E.Options.args.skins.args.blizzard.values.petbattleui = L["Pet Battle"]
-	E.Options.args.skins.args.blizzard.values.playerChoice = L["Player Choice Frame"]
-	E.Options.args.skins.args.blizzard.values.pvp = L["PvP Frames"]
-	E.Options.args.skins.args.blizzard.values.runeforge = L["Runeforge"]
-	E.Options.args.skins.args.blizzard.values.scrapping = L["SCRAP_BUTTON"]
-	E.Options.args.skins.args.blizzard.values.soulbinds = L["Soulbinds"]
-	E.Options.args.skins.args.blizzard.values.talkinghead = L["TalkingHead"]
-	E.Options.args.skins.args.blizzard.values.torghastLevelPicker = L["Torghast Level Picker"]
-	E.Options.args.skins.args.blizzard.values.transmogrify = L["TRANSMOGRIFY"]
-	E.Options.args.skins.args.blizzard.values.voidstorage = L["VOID_STORAGE"]
-	E.Options.args.skins.args.blizzard.values.weeklyRewards = L["Weekly Rewards"]
+	Skins.args.blizzard.values.achievement = L["ACHIEVEMENTS"]
+	Skins.args.blizzard.values.adventureMap = L["ADVENTURE_MAP_TITLE"]
+	Skins.args.blizzard.values.alertframes = L["Alert Frames"]
+	Skins.args.blizzard.values.alliedRaces = L["Allied Races"]
+	Skins.args.blizzard.values.animaDiversion = L["Anima Diversion"]
+	Skins.args.blizzard.values.artifact = L["ITEM_QUALITY6_DESC"]
+	Skins.args.blizzard.values.archaeology = L["Archaeology Frame"]
+	Skins.args.blizzard.values.azeriteEssence = L["Azerite Essence"]
+	Skins.args.blizzard.values.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
+	Skins.args.blizzard.values.azerite = L["Azerite"]
+	Skins.args.blizzard.values.barber = L["BARBERSHOP"]
+	Skins.args.blizzard.values.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
+	Skins.args.blizzard.values.calendar = L["Calendar Frame"]
+	Skins.args.blizzard.values.chromieTime = L["Chromie Time Frame"]
+	Skins.args.blizzard.values.collections = L["COLLECTIONS"]
+	Skins.args.blizzard.values.contribution = L["Contribution"]
+	Skins.args.blizzard.values.covenantPreview = L["Covenant Preview"]
+	Skins.args.blizzard.values.covenantRenown = L["Covenant Renown"]
+	Skins.args.blizzard.values.covenantSanctum = L["Covenant Sanctum"]
+	Skins.args.blizzard.values.deathRecap = L["DEATH_RECAP_TITLE"]
+	Skins.args.blizzard.values.encounterjournal = L["ENCOUNTER_JOURNAL"]
+	Skins.args.blizzard.values.garrison = L["GARRISON_LOCATION_TOOLTIP"]
+	Skins.args.blizzard.values.gbank = L["GUILD_BANK"]
+	Skins.args.blizzard.values.gmChat = L["GM Chat"]
+	Skins.args.blizzard.values.guide = L["Guide Frame"]
+	Skins.args.blizzard.values.islandQueue = L["ISLANDS_HEADER"]
+	Skins.args.blizzard.values.islandsPartyPose = L["Island Party Pose"]
+	Skins.args.blizzard.values.itemInteraction = L["Item Interaction"]
+	Skins.args.blizzard.values.itemUpgrade = L["Item Upgrade"]
+	Skins.args.blizzard.values.lfguild = L["LF Guild Frame"]
+	Skins.args.blizzard.values.losscontrol = L["LOSS_OF_CONTROL"]
+	Skins.args.blizzard.values.nonraid = L["Non-Raid Frame"]
+	Skins.args.blizzard.values.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
+	Skins.args.blizzard.values.obliterum = L["OBLITERUM_FORGE_TITLE"]
+	Skins.args.blizzard.values.orderhall = L["Orderhall"]
+	Skins.args.blizzard.values.petbattleui = L["Pet Battle"]
+	Skins.args.blizzard.values.playerChoice = L["Player Choice Frame"]
+	Skins.args.blizzard.values.pvp = L["PvP Frames"]
+	Skins.args.blizzard.values.runeforge = L["Runeforge"]
+	Skins.args.blizzard.values.scrapping = L["SCRAP_BUTTON"]
+	Skins.args.blizzard.values.soulbinds = L["Soulbinds"]
+	Skins.args.blizzard.values.talkinghead = L["TalkingHead"]
+	Skins.args.blizzard.values.torghastLevelPicker = L["Torghast Level Picker"]
+	Skins.args.blizzard.values.transmogrify = L["TRANSMOGRIFY"]
+	Skins.args.blizzard.values.voidstorage = L["VOID_STORAGE"]
+	Skins.args.blizzard.values.weeklyRewards = L["Weekly Rewards"]
 elseif E.TBC then
-	E.Options.args.skins.args.blizzard.values.arena = L["Arena"]
-	E.Options.args.skins.args.blizzard.values.arenaRegistrar = L["Arena Registrar"]
-	E.Options.args.skins.args.blizzard.values.battlefield = L["Battlefield"]
-	E.Options.args.skins.args.blizzard.values.craft = L["Craft"]
-	E.Options.args.skins.args.blizzard.values.guildBank = L["GUILD_BANK"]
-	E.Options.args.skins.args.blizzard.values.socket = L["Socket Frame"]
-	E.Options.args.skins.args.blizzard.values.trainer = L["Trainer Frame"]
-	E.Options.args.skins.args.blizzard.values.tutorials = L["Tutorials"]
+	Skins.args.blizzard.values.arena = L["Arena"]
+	Skins.args.blizzard.values.arenaRegistrar = L["Arena Registrar"]
+	Skins.args.blizzard.values.battlefield = L["Battlefield"]
+	Skins.args.blizzard.values.craft = L["Craft"]
+	Skins.args.blizzard.values.guildBank = L["GUILD_BANK"]
+	Skins.args.blizzard.values.socket = L["Socket Frame"]
+	Skins.args.blizzard.values.trainer = L["Trainer Frame"]
+	Skins.args.blizzard.values.tutorials = L["Tutorials"]
 elseif E.Classic then
 	-- Beep Boop
 end
