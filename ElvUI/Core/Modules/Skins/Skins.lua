@@ -695,7 +695,7 @@ function S:HandleDropDownBox(frame, width, pos, template)
 	end
 
 	button.SetPoint = E.noop
-	S:HandleNextPrevButton(button)
+	S:HandleNextPrevButton(button, 'down')
 
 	if text then
 		text:ClearAllPoints()
@@ -915,6 +915,7 @@ do
 
 		if not arrowDir then
 			arrowDir = 'down'
+
 			local name = btn:GetDebugName()
 			local ButtonName = name and name:lower()
 			if ButtonName then
