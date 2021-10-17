@@ -429,9 +429,7 @@ function M:Initialize()
 
 	if E.TBC then
 		tinsert(frames, _G.MinimapToggleButton)
-	end
-
-	if E.Retail then
+	elseif E.Retail then
 		tinsert(frames, _G.MiniMapTracking)
 	end
 
