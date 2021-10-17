@@ -78,7 +78,7 @@ Maps.args.minimap.args.icons.args.calendar.args.scale = ACH:Range(L["Scale"], ni
 Maps.args.minimap.args.icons.args.calendar.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
 Maps.args.minimap.args.icons.args.calendar.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
 
-Maps.args.minimap.args.icons.args.tracking = ACH:Group(L["Tracking"], nil, nil, nil, nil, nil, nil, C.NotRetail)
+Maps.args.minimap.args.icons.args.tracking = ACH:Group(L["Tracking"], nil, nil, nil, nil, nil, nil, E.Retail)
 Maps.args.minimap.args.icons.args.tracking.args.hideTracking = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideTracking end, function(_, value) E.private.general.minimap.hideTracking = value; MM:UpdateSettings() end)
 Maps.args.minimap.args.icons.args.tracking.args.spacer = ACH:Spacer(2, "full")
 Maps.args.minimap.args.icons.args.tracking.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return E.private.general.minimap.hideTracking end)

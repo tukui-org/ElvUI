@@ -4,9 +4,9 @@ local D = E:GetModule('Distributor')
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = {
 	Blank = function() return '' end,
-	NotRetail = function() return not E.Retail end,
-	NotClassic = function() return not E.Classic end,
-	NotTBC = function() return not E.TBC end
+	NotRetail = not E.Retail,
+	NotClassic = not E.Classic,
+	NotTBC = not E.TBC
 }
 
 E.OptionsUI = select(2, ...)
