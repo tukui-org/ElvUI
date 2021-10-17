@@ -663,7 +663,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
 	-- Zul'Aman
-		-- Nalor 
+		-- Nalor
 		-- Jan'alai
 		-- Akil'zon
 		-- Halazzi
