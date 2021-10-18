@@ -1454,6 +1454,11 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar.hookedColor = true
 	end
 
+	--This fixes Center Pixel offset problem
+	local barTexture = statusBar:GetStatusBarTexture()
+	barTexture:ClearAllPoints()
+	barTexture:SetAllPoints()
+
 	local parent = statusBar:GetParent()
 	local orientation = statusBar:GetOrientation()
 	if isTransparent then
@@ -1466,9 +1471,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
-		local barTexture = statusBar:GetStatusBarTexture()
-		barTexture:SetInside(nil, 0, 0) --This fixes Center Pixel offset problem
-
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
 		if statusBar.backdrop then
@@ -1480,9 +1482,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		local texture = LSM:Fetch('statusbar', self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
-
-		local barTexture = statusBar:GetStatusBarTexture()
-		barTexture:SetInside(nil, 0, 0)
 
 		if adjustBackdropPoints then
 			UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)

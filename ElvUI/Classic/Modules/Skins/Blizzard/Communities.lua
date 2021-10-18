@@ -45,7 +45,9 @@ local function HandleCommunitiesButtons(self, color)
 	end
 
 	if color then
-		self.Selection:SetInside(self.bg, 0, 0)
+		self.Selection:ClearAllPoints()
+		self.Selection:SetAllPoints(self.bg)
+
 		if color == 1 then
 			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
 		else
