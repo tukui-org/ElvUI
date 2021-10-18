@@ -1454,7 +1454,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar.hookedColor = true
 	end
 
-	--This fixes Center Pixel offset problem
+	-- This fixes Center Pixel offset problem (normally this has > 2 points)
 	local barTexture = statusBar:GetStatusBarTexture()
 	barTexture:ClearAllPoints()
 	barTexture:SetAllPoints()
