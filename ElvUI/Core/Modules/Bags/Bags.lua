@@ -1898,12 +1898,18 @@ function B:ConstructReagentSlot(f, slotID)
 end
 
 function B:ToggleBags(id)
-	if id and (GetContainerNumSlots(id) == 0) then return end
+	if E.private.bags.bagBar and id == -2 then
+		B.ShowKeyRing = not B.ShowKeyRing
 
-	if B.BagFrame:IsShown() then
-		B:CloseBags()
-	else
-		B:OpenBags()
+		if B.BagFrame:IsShown() then
+			B:Layout()
+		end
+	elseif id and GetContainerNumSlots(id) == 0 then
+		if B.BagFrame:IsShown() then
+			B:CloseBags()
+		else
+			B:OpenBags()
+		end
 	end
 end
 

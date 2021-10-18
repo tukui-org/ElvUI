@@ -168,8 +168,9 @@ function B:SizeAndPositionBagBar()
 end
 
 function B:UpdateMainButtonCount()
-	B.BagBar.buttons[1].Count:SetShown(GetCVarBool('displayFreeBagSlots'))
-	B.BagBar.buttons[1].Count:SetText(CalculateTotalNumberOfFreeBagSlots())
+	local mainCount = B.BagBar.buttons[1].Count
+	mainCount:SetShown(GetCVarBool('displayFreeBagSlots'))
+	mainCount:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
 function B:MainMenuBarBackpackButton_OnClick(button)
@@ -234,24 +235,18 @@ function B:LoadBagBar()
 		tinsert(B.BagBar.buttons, b)
 	end
 
+	local KeyRing = not E.Retail and _G.KeyRingButton
 	if not E.Retail then
-		_G.KeyRingButton:SetParent(B.BagBar)
-		_G.KeyRingButton:HookScript('OnEnter', B.BagBar_OnEnter)
-		_G.KeyRingButton:HookScript('OnLeave', B.BagBar_OnLeave)
+		KeyRing:SetParent(B.BagBar)
+		KeyRing:HookScript('OnEnter', B.BagBar_OnEnter)
+		KeyRing:HookScript('OnLeave', B.BagBar_OnLeave)
 
-		if E.private.bags.enable then
-			_G.KeyRingButton:HookScript('PostClick', function()
-				B.ShowKeyRing = true
-				B:Layout()
-			end)
-		end
+		KeyRing:StripTextures()
+		KeyRing:SetTemplate(nil, true)
+		KeyRing:StyleButton(true)
 
-		_G.KeyRingButton:StripTextures()
-		_G.KeyRingButton:SetTemplate(nil, true)
-		_G.KeyRingButton:StyleButton(true)
-
-		B:SetButtonTexture(_G.KeyRingButton, [[Interface\ICONS\INV_Misc_Key_03]])
-		tinsert(B.BagBar.buttons, _G.KeyRingButton)
+		B:SetButtonTexture(KeyRing, [[Interface\ICONS\INV_Misc_Key_03]])
+		tinsert(B.BagBar.buttons, KeyRing)
 	end
 
 	--Item assignment
@@ -259,9 +254,12 @@ function B:LoadBagBar()
 		if E.Retail then
 			B:CreateFilterIcon(bagButton)
 		end
-		bagButton.id = (i - 1)
 
-		bagButton:SetScript('OnClick', B.BagButton_OnClick)
+		bagButton.id = i - 1
+
+		if bagButton ~= KeyRing then
+			bagButton:SetScript('OnClick', B.BagButton_OnClick)
+		end
 	end
 
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
