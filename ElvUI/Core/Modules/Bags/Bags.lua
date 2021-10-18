@@ -1899,10 +1899,13 @@ end
 
 function B:ToggleBags(id)
 	if E.private.bags.bagBar and id == -2 then
-		B.ShowKeyRing = not B.ShowKeyRing
+		local closed = not B.BagFrame:IsShown()
+		B.ShowKeyRing = closed or not B.ShowKeyRing
 
-		if B.BagFrame:IsShown() then
-			B:Layout()
+		B:Layout()
+
+		if closed then
+			B:OpenBags()
 		end
 	elseif id and GetContainerNumSlots(id) == 0 then
 		if B.BagFrame:IsShown() then
