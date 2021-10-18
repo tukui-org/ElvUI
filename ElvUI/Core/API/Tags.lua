@@ -328,7 +328,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
-	end)
+	end, not E.Retail)
 
 	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
 		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
@@ -381,7 +381,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
 			end
-		end)
+		end, not E.Retail)
 	end
 end
 
