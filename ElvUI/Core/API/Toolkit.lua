@@ -405,7 +405,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 	local cooldown = name and _G[name..'Cooldown']
 	if cooldown then
 		cooldown:ClearAllPoints()
-		cooldown:SetInside()
+		cooldown:SetAllPoints()
 		cooldown:SetDrawEdge(false)
 		cooldown:SetSwipeColor(0, 0, 0, 1)
 	end
