@@ -1314,6 +1314,7 @@ E.TagInfo = {
 		['altpower:deficit'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
 		['altpower:percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
 	-- Classification
+		['affix'] = { category = 'Classification', description = "Displays low level critter mobs" },
 		['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
 		['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
 		['creature'] = { category = 'Classification', description = "Displays the creature type of the unit" },
@@ -1437,7 +1438,6 @@ E.TagInfo = {
 		['mana:deficit:shortvalue'] = { category = 'Mana', description = "" },
 		['mana:max:shortvalue'] = { category = 'Mana', description = "" },
 	-- Miscellaneous
-		['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
 		['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
 		['class:icon'] = { category = 'Miscellaneous', description = "Displays the class icon of the unit, if that unit is a player" },
 		['race'] = { category = 'Miscellaneous', description = "Displays the race" },
