@@ -252,14 +252,16 @@ function B:LoadBagBar()
 		_G.KeyRingButton:StyleButton(true)
 		B:SetButtonTexture(_G.KeyRingButton, [[Interface\ICONS\INV_Misc_Key_03]])
 		tinsert(B.BagBar.buttons, _G.KeyRingButton)
-	else
-		--Item assignment
-		for i, bagButton in ipairs(B.BagBar.buttons) do
-			B:CreateFilterIcon(bagButton)
-			bagButton.id = (i - 1)
+	end
 
-			bagButton:SetScript('OnClick', B.BagButton_OnClick)
+	--Item assignment
+	for i, bagButton in ipairs(B.BagBar.buttons) do
+		if E.Retail then
+			B:CreateFilterIcon(bagButton)
 		end
+		bagButton.id = (i - 1)
+
+		bagButton:SetScript('OnClick', B.BagButton_OnClick)
 	end
 
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
