@@ -106,12 +106,13 @@ function S:Blizzard_Communities()
 				self.bg:Point('BOTTOMRIGHT', -10, 12)
 			end
 
+			self.Selection:ClearAllPoints()
+			self.Selection:SetAllPoints(self.bg)
+
 			local isGuild = clubInfo.clubType == ClubTypeGuild
 			if isGuild then
-				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
-				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
 
