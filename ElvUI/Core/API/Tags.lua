@@ -1313,6 +1313,11 @@ E.TagInfo = {
 		['altpower:current'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current format" },
 		['altpower:deficit'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
 		['altpower:percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
+	-- Class
+		['class'] = { category = 'Class', description = "Displays the class of the unit, if that unit is a player" },
+		['class:icon'] = { category = 'Class', description = "Displays the class icon of the unit, if that unit is a player" },
+		['smartclass'] = { category = 'Class', description = "Displays the player's class or creature's type" },
+		['specialization'] = { hidden = not E.Retail, category = 'Class', description = "Displays your current specialization as text" },
 	-- Classification
 		['affix'] = { category = 'Classification', description = "Displays low level critter mobs" },
 		['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
@@ -1438,11 +1443,7 @@ E.TagInfo = {
 		['mana:deficit:shortvalue'] = { category = 'Mana', description = "" },
 		['mana:max:shortvalue'] = { category = 'Mana', description = "" },
 	-- Miscellaneous
-		['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
-		['class:icon'] = { category = 'Miscellaneous', description = "Displays the class icon of the unit, if that unit is a player" },
 		['race'] = { category = 'Miscellaneous', description = "Displays the race" },
-		['smartclass'] = { category = 'Miscellaneous', description = "Displays the player's class or creature's type" },
-		['specialization'] = { hidden = not E.Retail, category = 'Miscellaneous', description = "Displays your current specialization as text" },
 	-- Names
 		['name:abbrev:long'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 20 letters)" },
 		['name:abbrev:medium'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 15 letters)" },
