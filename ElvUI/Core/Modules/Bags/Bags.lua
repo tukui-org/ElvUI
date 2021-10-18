@@ -1673,16 +1673,16 @@ function B:ConstructContainerFrame(name, isBank)
 
 		if not E.Retail then
 			--Keyring Button
-			f.keyButton = CreateFrame("Button", name.."KeyButton", f.holderFrame)
+			f.keyButton = CreateFrame('Button', name..'KeyButton', f.holderFrame)
 			f.keyButton:Size(18)
 			f.keyButton:SetTemplate()
-			f.keyButton:Point("RIGHT", f.bagsButton, "LEFT", -5, 0)
+			f.keyButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.keyButton, [[Interface\ICONS\INV_Misc_Key_03]])
 			f.keyButton:StyleButton(nil, true)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
-			f.keyButton:SetScript("OnEnter", B.Tooltip_Show)
-			f.keyButton:SetScript("OnLeave", B.Tooltip_Hide)
-			f.keyButton:SetScript("OnClick", function() B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
+			f.keyButton:SetScript('OnLeave', B.Tooltip_Hide)
+			f.keyButton:SetScript('OnClick', function() B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
 		end
 
 		--Vendor Grays
