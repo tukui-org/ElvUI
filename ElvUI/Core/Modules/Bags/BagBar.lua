@@ -249,15 +249,15 @@ function B:LoadBagBar()
 		tinsert(B.BagBar.buttons, KeyRing)
 	end
 
-	for i, bagButton in ipairs(B.BagBar.buttons) do
-		bagButton.id = i - 1
+	for i, button in ipairs(B.BagBar.buttons) do
+		button.id = i - 1
 
 		if E.Retail then -- Item Assignment
-			B:CreateFilterIcon(bagButton)
+			B:CreateFilterIcon(button)
 		end
 
-		if bagButton ~= KeyRing then
-			bagButton:SetScript('OnClick', B.BagButton_OnClick)
+		if button ~= KeyRing then
+			button:SetScript('OnClick', B.BagButton_OnClick)
 		end
 	end
 
