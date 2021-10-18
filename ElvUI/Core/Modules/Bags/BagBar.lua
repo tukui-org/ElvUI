@@ -236,7 +236,6 @@ function B:LoadBagBar()
 
 	if not E.Retail then
 		_G.KeyRingButton:SetParent(B.BagBar)
-		_G.KeyRingButton.SetParent = E.dummy
 		_G.KeyRingButton:HookScript('OnEnter', B.BagBar_OnEnter)
 		_G.KeyRingButton:HookScript('OnLeave', B.BagBar_OnLeave)
 
@@ -250,6 +249,7 @@ function B:LoadBagBar()
 		_G.KeyRingButton:StripTextures()
 		_G.KeyRingButton:SetTemplate(nil, true)
 		_G.KeyRingButton:StyleButton(true)
+
 		B:SetButtonTexture(_G.KeyRingButton, [[Interface\ICONS\INV_Misc_Key_03]])
 		tinsert(B.BagBar.buttons, _G.KeyRingButton)
 	end

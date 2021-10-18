@@ -38,6 +38,7 @@ local IsReagentBankUnlocked = IsReagentBankUnlocked
 local PlaySound = PlaySound
 local PutItemInBackpack = PutItemInBackpack
 local PutItemInBag = PutItemInBag
+local PutKeyInKeyRing = PutKeyInKeyRing
 local ReagentButtonInventorySlot = ReagentButtonInventorySlot
 local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
 local SetBagSlotFlag = SetBagSlotFlag
@@ -93,6 +94,7 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
+local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 
 local GameTooltip = _G.GameTooltip
 
@@ -1671,8 +1673,8 @@ function B:ConstructContainerFrame(name, isBank)
 		--Bags Button
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
+		--Keyring Button
 		if not E.Retail then
-			--Keyring Button
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f.holderFrame)
 			f.keyButton:Size(18)
 			f.keyButton:SetTemplate()
@@ -1791,7 +1793,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.keyringTexture = slot:CreateTexture(nil, 'BORDER')
 		slot.keyringTexture:SetAlpha(.5)
 		slot.keyringTexture:SetInside(slot)
-		slot.keyringTexture:SetTexture('Interface/ContainerFrame/KeyRing-Bag-Icon')
+		slot.keyringTexture:SetTexture([[Interface\ContainerFrame\KeyRing-Bag-Icon]])
 		slot.keyringTexture:SetTexCoord(unpack(E.TexCoords))
 		slot.keyringTexture:SetDesaturated(true)
 	end
