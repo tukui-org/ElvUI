@@ -1671,23 +1671,25 @@ function B:ConstructContainerFrame(name, isBank)
 		--Bags Button
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
-		--Keyring Button
-		f.keyButton = CreateFrame("Button", name.."KeyButton", f.holderFrame)
-		f.keyButton:Size(18)
-		f.keyButton:SetTemplate()
-		f.keyButton:Point("RIGHT", f.bagsButton, "LEFT", -5, 0)
-		B:SetButtonTexture(f.keyButton, [[Interface\ICONS\INV_Misc_Key_03]])
-		f.keyButton:StyleButton(nil, true)
-		f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
-		f.keyButton:SetScript("OnEnter", B.Tooltip_Show)
-		f.keyButton:SetScript("OnLeave", B.Tooltip_Hide)
-		f.keyButton:SetScript("OnClick", function() B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+		if not E.Retail then
+			--Keyring Button
+			f.keyButton = CreateFrame("Button", name.."KeyButton", f.holderFrame)
+			f.keyButton:Size(18)
+			f.keyButton:SetTemplate()
+			f.keyButton:Point("RIGHT", f.bagsButton, "LEFT", -5, 0)
+			B:SetButtonTexture(f.keyButton, [[Interface\ICONS\INV_Misc_Key_03]])
+			f.keyButton:StyleButton(nil, true)
+			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
+			f.keyButton:SetScript("OnEnter", B.Tooltip_Show)
+			f.keyButton:SetScript("OnLeave", B.Tooltip_Hide)
+			f.keyButton:SetScript("OnClick", function() B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+		end
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(18)
 		f.vendorGraysButton:SetTemplate()
-		f.vendorGraysButton:Point('RIGHT', f.keyButton, 'LEFT', -5, 0)
+		f.vendorGraysButton:Point('RIGHT', not E.Retail and f.keyButton or f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, [[Interface\ICONS\INV_Misc_Coin_01]])
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor / Delete Grays"]
