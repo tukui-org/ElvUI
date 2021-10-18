@@ -38,6 +38,7 @@ local IsReagentBankUnlocked = IsReagentBankUnlocked
 local PlaySound = PlaySound
 local PutItemInBackpack = PutItemInBackpack
 local PutItemInBag = PutItemInBag
+local GetKeyRingSize = GetKeyRingSize
 local PutKeyInKeyRing = PutKeyInKeyRing
 local ReagentButtonInventorySlot = ReagentButtonInventorySlot
 local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
@@ -929,7 +930,7 @@ function B:Layout(isBank)
 		--Bag Slots
 		local isKeyRing = bagID == -2
 		local bag = f.Bags[bagID]
-		local numSlots = GetContainerNumSlots(bagID)
+		local numSlots = isKeyRing and GetKeyRingSize() or GetContainerNumSlots(bagID)
 		local hasSlots = numSlots > 0
 		bag.numSlots = numSlots
 		bag:SetShown(isKeyRing and B.ShowKeyRing or not isKeyRing and hasSlots)
