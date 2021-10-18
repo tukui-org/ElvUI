@@ -155,6 +155,8 @@ local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_
 if E.Retail then
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
 	tinsert(bankIDs, 11)
+else
+	tinsert(bagIDs, -2)
 end
 
 function B:GetContainerFrame(arg)
@@ -923,13 +925,14 @@ function B:Layout(isBank)
 		end
 
 		--Bag Slots
+		local isKeyRing = bagID == -2
 		local bag = f.Bags[bagID]
 		local numSlots = GetContainerNumSlots(bagID)
 		local hasSlots = numSlots > 0
 		bag.numSlots = numSlots
-		bag:SetShown(hasSlots)
+		bag:SetShown(isKeyRing and B.ShowKeyRing or not isKeyRing and hasSlots)
 
-		if hasSlots then
+		if hasSlots and bag:IsShown() then
 			for slotID, slot in ipairs(bag) do
 				slot:SetShown(slotID <= numSlots)
 			end
@@ -1408,6 +1411,10 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetInventorySlot()) end)
 		elseif bagID == 0 then -- Backpack needs different setup
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
+			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
+		elseif bagID == -2 then
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
+			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		else
 			holder:SetID(GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
@@ -1664,11 +1671,23 @@ function B:ConstructContainerFrame(name, isBank)
 		--Bags Button
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
+		--Keyring Button
+		f.keyButton = CreateFrame("Button", name.."KeyButton", f.holderFrame)
+		f.keyButton:Size(18)
+		f.keyButton:SetTemplate()
+		f.keyButton:Point("RIGHT", f.bagsButton, "LEFT", -5, 0)
+		B:SetButtonTexture(f.keyButton, [[Interface\ICONS\INV_Misc_Key_03]])
+		f.keyButton:StyleButton(nil, true)
+		f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
+		f.keyButton:SetScript("OnEnter", B.Tooltip_Show)
+		f.keyButton:SetScript("OnLeave", B.Tooltip_Hide)
+		f.keyButton:SetScript("OnClick", function() B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(18)
 		f.vendorGraysButton:SetTemplate()
-		f.vendorGraysButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
+		f.vendorGraysButton:Point('RIGHT', f.keyButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, [[Interface\ICONS\INV_Misc_Coin_01]])
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor / Delete Grays"]
@@ -1764,6 +1783,15 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.ScrapIcon:Size(14, 12)
 		slot.ScrapIcon:Point('TOPRIGHT', -1, -1)
 		slot.ScrapIcon:Hide()
+	end
+
+	if bagID == -2 then
+		slot.keyringTexture = slot:CreateTexture(nil, 'BORDER')
+		slot.keyringTexture:SetAlpha(.5)
+		slot.keyringTexture:SetInside(slot)
+		slot.keyringTexture:SetTexture('Interface/ContainerFrame/KeyRing-Bag-Icon')
+		slot.keyringTexture:SetTexCoord(unpack(E.TexCoords))
+		slot.keyringTexture:SetDesaturated(true)
 	end
 
 	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
