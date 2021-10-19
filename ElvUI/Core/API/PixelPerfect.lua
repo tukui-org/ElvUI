@@ -105,15 +105,11 @@ function E:PixelScaleChanged(event)
 end
 
 function E:Scale(n)
-	if n == 0 then
+	local m = E.mult
+	if m == 1 or n == 0 then
 		return n
 	else
-		local m = E.mult
-		if m == 1 then
-			return n
-		else
-			local y = m > 1 and m or -m
-			return n - n % (n >= 0 and -y or y)
-		end
+		local y = m > 1 and m or -m
+		return n - n % (n > 0 and -y or y)
 	end
 end
