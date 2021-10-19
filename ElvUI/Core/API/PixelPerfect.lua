@@ -104,9 +104,12 @@ function E:PixelScaleChanged(event)
 	E:Config_UpdateSize(true) -- Reposition config
 end
 
-local trunc = function(s) return s >= 0 and s-s%01 or s-s%-1 end
-local round = function(s) return s >= 0 and s-s%-1 or s-s%01 end
-function E:Scale(n)
+function E:Scale(x)
 	local m = E.mult
-	return (m == 1 or n == 0) and n or ((m < 1 and trunc(n/m) or round(n/m)) * m)
+	if m == 1 or x == 0 then
+		return x
+	else
+		local y = m > 1 and m or -m
+		return x - x % (x < 0 and y or -y)
+	end
 end

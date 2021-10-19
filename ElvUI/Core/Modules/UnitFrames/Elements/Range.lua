@@ -13,7 +13,7 @@ local UnitPhaseReason = UnitPhaseReason
 local function friendlyIsInRange(realUnit)
 	local unit = E:GetGroupUnit(realUnit) or realUnit
 
-	if UnitIsPlayer(unit) and (UnitInPhase or UnitPhaseReason)(unit) then
+	if UnitIsPlayer(unit) and (E.Retail and UnitPhaseReason(unit) or not E.Retail and not UnitInPhase(unit)) then
 		return false -- is not in same phase
 	end
 

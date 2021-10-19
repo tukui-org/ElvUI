@@ -10,8 +10,8 @@ local pairs, type, strsplit = pairs, type, strsplit
 local next, tonumber, format = next, tonumber, format
 
 local IsAddOnLoaded = IsAddOnLoaded
-local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
+local GetCVar = GetCVar
 local SetCVar = SetCVar
 
 local function GetAddOnStatus(index, locale, name)
@@ -39,7 +39,7 @@ local function GetUnitSettings(unit, name)
 	group.args.enable = ACH:Toggle(L["Enable"], nil, -10)
 	group.args.showTestFrame = ACH:Execute(L["Show/Hide Test Frame"], nil, -9, function() if not _G.ElvNP_Test:IsEnabled() or _G.ElvNP_Test.frameType ~= unit then _G.ElvNP_Test:Enable() _G.ElvNP_Test.frameType = unit NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED') _G.ElvNP_Test:UpdateAllElements('ForceUpdate') else NP:DisablePlate(_G.ElvNP_Test) _G.ElvNP_Test:Disable() end end)
 	group.args.defaultSettings = ACH:Execute(L["Default Settings"], L["Set Settings to Default"], -8, function() NP:ResetSettings(unit) NP:ConfigureAll() end)
-	group.args.copySettings = ACH:Select(L["Copy settings from"], L["Copy settings from another unit."], -7, copyValues, nil, nil, function() return '' end, function(_, value) NP:CopySettings(value, unit) NP:ConfigureAll() end)
+	group.args.copySettings = ACH:Select(L["Copy settings from"], L["Copy settings from another unit."], -7, copyValues, nil, nil, C.Blank, function(_, value) NP:CopySettings(value, unit) NP:ConfigureAll() end)
 
 	group.args.general = ACH:Group(L["General"], nil, 1, nil, function(info) return E.db.nameplates.units[unit][info[#info]] end, function(info, value) E.db.nameplates.units[unit][info[#info]] = value NP:SetCVars() NP:ConfigureAll() end)
 	group.args.general.args.visibilityShortcut = ACH:Execute(L["Visibility"], nil, 100, function() ACD:SelectGroup('ElvUI', 'nameplate', 'generalGroup', 'general', 'plateVisibility') end)
@@ -374,11 +374,12 @@ E.Options.args.nameplate.args.generalGroup.args.spacer1 = ACH:Spacer(6, 'full')
 E.Options.args.nameplate.args.generalGroup.args.overlapV = ACH:Range(L["Overlap Vertical"], L["Percentage amount for vertical overlap of Nameplates."], 10, { min = 0, max = 3, step = .1 }, nil, function() return tonumber(GetCVar('nameplateOverlapV')) end, function(_, value) SetCVar('nameplateOverlapV', value) end)
 E.Options.args.nameplate.args.generalGroup.args.overlapH = ACH:Range(L["Overlap Horizontal"], L["Percentage amount for horizontal overlap of Nameplates."], 10, { min = 0, max = 3, step = .1 }, nil, function() return tonumber(GetCVar('nameplateOverlapH')) end, function(_, value) SetCVar('nameplateOverlapH', value) end)
 E.Options.args.nameplate.args.generalGroup.args.lowHealthThreshold = ACH:Range(L["Low Health Threshold"], L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."], 11, { min = 0, softMax = .5, max = .8, step = .01, isPercent = true })
+E.Options.args.nameplate.args.generalGroup.args.loadDistance = ACH:Range(L["Load Distance"], L["Only load nameplates for units within this range."], 12, { min = 0, max = 41, step = 1 }, nil, nil, nil, nil, not E.TBC)
 
-E.Options.args.nameplate.args.generalGroup.args.highlight = ACH:Toggle(L["Hover Highlight"], nil, 12)
+E.Options.args.nameplate.args.generalGroup.args.highlight = ACH:Toggle(L["Hover Highlight"], nil, 13)
 E.Options.args.nameplate.args.generalGroup.args.highlight.customWidth = 125
 
-E.Options.args.nameplate.args.generalGroup.args.fadeIn = ACH:Toggle(L["Alpha Fading"], nil, 13)
+E.Options.args.nameplate.args.generalGroup.args.fadeIn = ACH:Toggle(L["Alpha Fading"], nil, 14)
 E.Options.args.nameplate.args.generalGroup.args.fadeIn.customWidth = 125
 
 E.Options.args.nameplate.args.generalGroup.args.spacer2 = ACH:Spacer(15, 'full')

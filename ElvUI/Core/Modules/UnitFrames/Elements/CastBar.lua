@@ -198,7 +198,7 @@ function UF:Configure_Castbar(frame)
 		local anchor = frame[db.overlayOnFrame]
 
 		if not db.iconAttached then
-			castbar:SetInside(anchor, 0, 0)
+			castbar:SetAllPoints(anchor)
 		else
 			if castbar.Icon then
 				castbar.Icon.bg:Size(anchor:GetHeight() - UF.SPACING*2)

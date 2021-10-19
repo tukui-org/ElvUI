@@ -33,7 +33,7 @@ E.Options.args.tooltip.args.general.args.cursorAnchorType = ACH:Select(L["Cursor
 E.Options.args.tooltip.args.general.args.cursorAnchorX = ACH:Range(L["Cursor Anchor Offset X"], nil, 11, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == 'ANCHOR_CURSOR') end)
 E.Options.args.tooltip.args.general.args.cursorAnchorY = ACH:Range(L["Cursor Anchor Offset Y"], nil, 12, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == 'ANCHOR_CURSOR') end)
 
-E.Options.args.tooltip.args.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, 7)
+E.Options.args.tooltip.args.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, 7, nil, nil, nil, nil, not E.Retail)
 E.Options.args.tooltip.args.mythicPlus.inline = true
 E.Options.args.tooltip.args.mythicPlus.args.mythicDataEnable = ACH:Toggle(L["Enable"], nil, 1)
 E.Options.args.tooltip.args.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)

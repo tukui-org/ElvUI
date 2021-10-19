@@ -316,6 +316,37 @@ function M:UpdateSettings()
 		_G.QueueStatusFrame:SetScale(scale)
 	end
 
+	local MiniMapTracking = E.Classic and _G.MiniMapTrackingFrame or E.TBC and _G.MiniMapTracking
+	if MiniMapTracking then
+		if E.private.general.minimap.hideTracking then
+			MiniMapTracking:SetParent(E.HiddenFrame)
+		else
+			local pos = E.db.general.minimap.icons.tracking.position or 'BOTTOMRIGHT'
+			local scale = E.db.general.minimap.icons.tracking.scale or 0.8
+			local x = E.db.general.minimap.icons.tracking.xOffset or 0
+			local y = E.db.general.minimap.icons.tracking.yOffset or 0
+
+			MiniMapTracking:ClearAllPoints()
+			MiniMapTracking:Point(pos, Minimap, pos, x, y)
+			MiniMapTracking:SetScale(scale)
+			MiniMapTracking:SetParent(Minimap)
+
+			if _G.MiniMapTrackingBorder then
+				_G.MiniMapTrackingBorder:Hide()
+			end
+
+			if _G.MiniMapTrackingBackground then
+				_G.MiniMapTrackingBackground:Hide()
+			end
+
+			if _G.MiniMapTrackingIcon then
+				_G.MiniMapTrackingIcon:SetDrawLayer('ARTWORK')
+				_G.MiniMapTrackingIcon:SetTexCoord(unpack(E.TexCoords))
+				_G.MiniMapTrackingIcon:SetInside()
+			end
+		end
+	end
+
 	local MiniMapInstanceDifficulty = _G.MiniMapInstanceDifficulty
 	local GuildInstanceDifficulty = _G.GuildInstanceDifficulty
 	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
@@ -393,9 +424,14 @@ function M:Initialize()
 		_G.MinimapZoomOut,
 		_G.MinimapNorthTag,
 		_G.MinimapZoneTextButton,
-		_G.MiniMapTracking,
 		_G.MiniMapMailBorder
 	}
+
+	if E.TBC then
+		tinsert(frames, _G.MinimapToggleButton)
+	elseif E.Retail then
+		tinsert(frames, _G.MiniMapTracking)
+	end
 
 	for _, frame in pairs(frames) do
 		frame:Kill()

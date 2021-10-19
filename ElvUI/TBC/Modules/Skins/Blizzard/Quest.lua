@@ -83,8 +83,7 @@ function S:BlizzardQuestFrames()
 		if not item then return end
 
 		if item then
-			item:CreateBackdrop()
-			item.backdrop:SetInside()
+			item:SetTemplate()
 			item:Size(143, 40)
 			item:SetFrameLevel(item:GetFrameLevel() + 2)
 		end
@@ -97,7 +96,7 @@ function S:BlizzardQuestFrames()
 		end
 
 		if item.IconBorder then
-			item.IconBorder:SetAlpha(0)
+			S:HandleIconBorder(item.IconBorder)
 		end
 
 		if item.Count then
@@ -132,61 +131,39 @@ function S:BlizzardQuestFrames()
 		end
 	end
 
-	local items = {
-		['QuestLogItem'] = MAX_NUM_ITEMS,
-		['QuestProgressItem'] = MAX_REQUIRED_ITEMS
-	}
-
-	for frame, numItems in pairs(items) do
+	for frame, numItems in pairs({ QuestLogItem = MAX_NUM_ITEMS, QuestProgressItem = MAX_REQUIRED_ITEMS }) do
 		for i = 1, numItems do
-			local item = _G[frame..i]
-
-			handleItemButton(item)
+			handleItemButton(_G[frame..i])
 		end
 	end
 
 	local function questQualityColors(frame, text, link)
-		local quality
-		if link then
-			quality = select(3, GetItemInfo(link))
+		if not frame.template then
+			handleItemButton(frame)
 		end
 
-		frame:SetTemplate('NoBackdrop')
-
+		local quality = link and select(3, GetItemInfo(link))
 		if quality and quality > 1 then
 			local r, g, b = GetItemQualityColor(quality)
 
-			frame:SetBackdropBorderColor(r, g, b)
-
-			if frame.backdrop then
-				frame.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-
 			text:SetTextColor(r, g, b)
+			frame:SetBackdropBorderColor(r, g, b)
 		else
-			frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-
-			if frame.backdrop then
-				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-
 			text:SetTextColor(1, 1, 1)
+			frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = rewardsFrame.RewardButtons[index]
-		if not button and button.backdrop then return end
+		if not button and button.template then return end
 
 		handleItemButton(button)
-
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
 	end)
 
 	hooksecurefunc('QuestInfoItem_OnClick', function(frame)
 		if frame.type == 'choice' then
 			frame:SetBackdropBorderColor(1, 0.80, 0.10)
-			frame.backdrop:SetBackdropBorderColor(1, 0.80, 0.10)
 			_G[frame:GetName()..'Name']:SetTextColor(1, 0.80, 0.10)
 
 			local item, name, link
@@ -348,7 +325,9 @@ function S:BlizzardQuestFrames()
 			spellHeader:SetVertexColor(1, 1, 1)
 		end
 		for spellIcon, _ in _G.QuestInfoFrame.rewardsFrame.spellRewardPool:EnumerateActive() do
-			handleItemButton(spellIcon)
+			if not spellIcon.template then
+				handleItemButton(spellIcon)
+			end
 		end
 
 		if requiredMoney > 0 then

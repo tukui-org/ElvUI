@@ -13,7 +13,6 @@ local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
@@ -24,15 +23,15 @@ local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
--- GLOBALS: ElvUIBindPopupWindow, ElvUIBindPopupWindowCheckButton
 
 local bind = CreateFrame('Frame', 'ElvUI_KeyBinder', E.UIParent)
+AB.KeyBinder = bind
 
 function AB:ActivateBindMode()
 	if InCombatLockdown() then return end
 
 	bind.active = true
-	E:StaticPopupSpecial_Show(ElvUIBindPopupWindow)
+	E:StaticPopupSpecial_Show(bind.Popup)
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false)
 end
 
@@ -48,7 +47,7 @@ function AB:DeactivateBindMode(save)
 	bind.active = false
 	self:BindHide()
 	self:UnregisterEvent('PLAYER_REGEN_DISABLED')
-	E:StaticPopupSpecial_Hide(ElvUIBindPopupWindow)
+	E:StaticPopupSpecial_Hide(bind.Popup)
 	AB.bindingsChanged = false
 end
 
@@ -128,25 +127,29 @@ function AB:DisplayBindings()
 	end
 end
 
-function AB:BindTooltip(triggerTooltip)
-	if GameTooltip:IsForbidden() then return end
-
-	if triggerTooltip then -- this is needed for some tooltip magic, also it helps show a tooltip when a spell isnt there
-		AB:DisplayBindsTooltip()
-		GameTooltip:AddLine(L["Trigger"])
-
-		GameTooltip:Show()
-		GameTooltip:SetScript('OnHide', function(tt)
-			AB:DisplayBindsTooltip()
-			AB:DisplayBindings()
-
-			tt:Show()
-			tt:SetScript('OnHide', nil)
-		end)
-	else
+do
+	local function OnHide(tt)
 		AB:DisplayBindsTooltip()
 		AB:DisplayBindings()
-		GameTooltip:Show()
+
+		tt:Show()
+		tt:SetScript('OnHide', nil)
+	end
+
+	function AB:BindTooltip(triggerTooltip)
+		if GameTooltip:IsForbidden() then return end
+
+		if triggerTooltip then -- this is needed for some tooltip magic, also it helps show a tooltip when a spell isnt there
+			AB:DisplayBindsTooltip()
+			GameTooltip:AddLine(L["Trigger"])
+
+			GameTooltip:Show()
+			GameTooltip:SetScript('OnHide', OnHide)
+		else
+			AB:DisplayBindsTooltip()
+			AB:DisplayBindings()
+			GameTooltip:Show()
+		end
 	end
 end
 
@@ -227,16 +230,8 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-function AB:RegisterMacro(addon)
-	if addon == 'Blizzard_MacroUI' then
-		for i=1, MAX_ACCOUNT_MACROS do
-			_G['MacroButton'..i]:HookScript('OnEnter', function(btn) AB:BindUpdate(btn, 'MACRO') end)
-		end
-	end
-end
-
 function AB:ChangeBindingProfile()
-	if ElvUIBindPopupWindowCheckButton:GetChecked() then
+	if bind.Popup.perCharCheck:GetChecked() then
 		LoadBindings(2)
 		SaveBindings(2)
 	else
@@ -254,20 +249,42 @@ local function keybindButtonClick()
 	HideUIPanel(_G.GameMenuFrame)
 end
 
-function AB:SwapKeybindButton(event, addon)
-	if event and addon ~= 'Blizzard_BindingUI' then return end
+do
+	local function OnEnter(button)
+		AB:BindUpdate(button, 'MACRO')
+	end
 
-	local parent = _G.KeyBindingFrame
-	if parent.quickKeybindButton then parent.quickKeybindButton:Hide() end
+	local macro, binding = false, false
+	function AB:ADDON_LOADED(_, addon)
+		if addon == 'Blizzard_MacroUI' then
+			for i = 1, MAX_ACCOUNT_MACROS do
+				_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)
+			end
 
-	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate')
-	frame:Width(150)
-	frame:Point('LEFT', parent.bindingsContainer)
-	frame:Point('BOTTOM', parent.cancelButton)
-	frame:SetScript('OnClick', keybindButtonClick)
-	frame:SetText('ElvUI Keybind')
+			macro = true
+		elseif addon == 'Blizzard_BindingUI' then
+			local parent = _G.KeyBindingFrame
 
-	Skins:HandleButton(frame)
+			if parent.quickKeybindButton then
+				parent.quickKeybindButton:Hide()
+			end
+
+			local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate')
+			frame:Width(150)
+			frame:Point('LEFT', parent.bindingsContainer)
+			frame:Point('BOTTOM', parent.cancelButton)
+			frame:SetScript('OnClick', keybindButtonClick)
+			frame:SetText('ElvUI Keybind')
+
+			Skins:HandleButton(frame)
+
+			binding = true
+		end
+
+		if macro and binding then
+			AB:UnregisterEvent('ADDON_LOADED')
+		end
+	end
 end
 
 function AB:LoadKeyBinder()
@@ -299,12 +316,6 @@ function AB:LoadKeyBinder()
 		end
 	end
 
-	if not IsAddOnLoaded('Blizzard_MacroUI') then
-		self:SecureHook('LoadAddOn', 'RegisterMacro')
-	else
-		self:RegisterMacro('Blizzard_MacroUI')
-	end
-
 	--Special Popup
 	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent)
 	Popup:SetFrameStrata('DIALOG')
@@ -319,7 +330,9 @@ function AB:LoadKeyBinder()
 	Popup:SetScript('OnMouseUp', Popup.StopMovingOrSizing)
 	Popup:Hide()
 
-	Popup.header = CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate')
+	bind.Popup = Popup
+
+	Popup.header = CreateFrame('Button', 'ElvUIBindPopupWindowHeader', Popup, 'OptionsButtonTemplate')
 	Popup.header:Size(100, 25)
 	Popup.header:Point('CENTER', Popup, 'TOP')
 	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -327,7 +340,7 @@ function AB:LoadKeyBinder()
 	Popup.header:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
 	Popup.header:SetText('Key Binds')
 
-	Popup.desc = Popup:CreateFontString(nil, 'ARTWORK')
+	Popup.desc = Popup:CreateFontString('ElvUIBindPopupWindowDescription', 'ARTWORK')
 	Popup.desc:SetFontObject('GameFontHighlight')
 	Popup.desc:SetJustifyV('TOP')
 	Popup.desc:SetJustifyH('LEFT')
@@ -335,17 +348,17 @@ function AB:LoadKeyBinder()
 	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
 	Popup.desc:SetText(L["BINDINGS_HELP"])
 
-	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate')
+	Popup.save = CreateFrame('Button', 'ElvUIBindPopupWindowSaveButton', Popup, 'OptionsButtonTemplate')
 	Popup.save:SetText(L["Save"])
 	Popup.save:Width(150)
 	Popup.save:SetScript('OnClick', function() AB:DeactivateBindMode(true) end)
 
-	Popup.discard = CreateFrame('Button', Popup:GetName()..'DiscardButton', Popup, 'OptionsButtonTemplate')
+	Popup.discard = CreateFrame('Button', 'ElvUIBindPopupWindowDiscardButton', Popup, 'OptionsButtonTemplate')
 	Popup.discard:Width(150)
 	Popup.discard:SetText(L["Discard"])
 	Popup.discard:SetScript('OnClick', function() AB:DeactivateBindMode(false) end)
 
-	Popup.perCharCheck = CreateFrame('CheckButton', Popup:GetName()..'CheckButton', Popup, 'OptionsCheckButtonTemplate')
+	Popup.perCharCheck = CreateFrame('CheckButton', 'ElvUIBindPopupWindowCheckButton', Popup, 'OptionsCheckButtonTemplate')
 	_G[Popup.perCharCheck:GetName()..'Text']:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 	Popup.perCharCheck:SetScript('OnLeave', GameTooltip_Hide)
 	Popup.perCharCheck:SetScript('OnShow', function(checkBtn) checkBtn:SetChecked(GetCurrentBindingSet() == 2) end)

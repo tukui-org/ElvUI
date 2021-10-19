@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = "Muestra los mensajes de Guild y Whisper en la pantalla de AFK.\nEste chat puede ser arrastrado (la posición se guardará)."
 L["Copy Primary Texture"] = "Copiar Textura Primaria"
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "Reemplaza el ajuste de la textura de la barra de estado en los marcos de las unidades y las placas de identificación con la textura primaria."
 L["# Displayed Auras"] = "# Auras mostradas"

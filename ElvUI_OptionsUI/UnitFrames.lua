@@ -5,19 +5,12 @@ local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
-local gsub = gsub
-local pairs = pairs
-local select = select
-local strmatch = strmatch
-local strsplit = strsplit
-local tinsert = tinsert
-local wipe = wipe
-local ceil = ceil
-local tonumber = tonumber
-local format = format
-local CopyTable = CopyTable
+local next, select, format, strmatch, strsplit = next, select, format, strmatch, strsplit
+local tinsert, tonumber, gsub, pairs, wipe, ceil = tinsert, tonumber, gsub, pairs, wipe, ceil
+
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
+local CopyTable = CopyTable
 
 local orientationValues = {
 	LEFT = L["Left"],
@@ -488,7 +481,7 @@ end
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Custom Texts"], nil, nil, 'tab')
 	config.args.tags = ACH:Group(L["Texts"])
-	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', function() return '' end)
+	config.args.createCustomText = ACH:Input(L["Create Custom Text"], nil, 1, nil, 'full', C.Blank)
 	config.args.createCustomText.set = function(_, textName) -- Needs split into a validate
 		for object in pairs(E.db.unitframe.units[groupName]) do
 			if object:lower() == textName:lower() then
@@ -681,6 +674,10 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
 		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 8)
+	end
+
+	if groupName == 'player' then
+		config.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 3, nil, nil, nil, nil, nil, nil, not E.Retail)
 	end
 
 	return config
@@ -2321,7 +2318,7 @@ Raid40.readycheckIcon = GetOptionsTable_ReadyCheckIcon(UF.CreateAndUpdateHeaderG
 Raid40.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGroup, 'raid40')
 Raid40.summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid40')
 
-GroupUnits.raidpet = ACH:Group(L["Raid-40"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
+GroupUnits.raidpet = ACH:Group(L["Raid Pet"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
 local RaidPet = GroupUnits.raidpet.args
 
 RaidPet.header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, 'large', nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end)
@@ -2399,3 +2396,5 @@ Assist.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateH
 
 Assist.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 Assist.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+
+E:RefreshCustomTextsConfigs() -- Fire the current profile for custom texts

@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
 local wipe, date, max = wipe, date, max
-local select, type, ipairs, pairs = select, type, ipairs, pairs
+local type, ipairs, pairs = type, ipairs, pairs
 local strfind, tonumber, tostring = strfind, tonumber, tostring
 local strlen, CreateFrame = strlen, CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -21,7 +21,6 @@ local IsInRaid = IsInRaid
 local IsWargame = IsWargame
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
-local UnitAttackPower = UnitAttackPower
 local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -30,7 +29,6 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
-local UnitStat = UnitStat
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
@@ -178,30 +176,6 @@ end
 function E:CheckRole()
 	self.myspec = GetSpecialization()
 	self.myrole = E:GetPlayerRole()
-
-	-- myrole = group role; TANK, HEALER, DAMAGER
-	-- role   = class role; Tank, Melee, Caster
-
-	local role
-	if type(self.ClassRole[self.myclass]) == 'string' then
-		role = self.ClassRole[self.myclass]
-	elseif self.myspec then
-		role = self.ClassRole[self.myclass][self.myspec]
-	end
-
-	if not role then
-		local playerint = select(2, UnitStat('player', 4))
-		local playeragi	= select(2, UnitStat('player', 2))
-		local base, posBuff, negBuff = UnitAttackPower('player')
-		local playerap = base + posBuff + negBuff
-
-		role = ((playerap > playerint) or (playeragi > playerint)) and 'Melee' or 'Caster'
-	end
-
-	if self.role ~= role then
-		self.role = role
-		self.callbacks:Fire('RoleChanged')
-	end
 
 	local dispel = self.DispelClasses[self.myclass]
 	if self.myrole and (self.myclass ~= 'PRIEST' and dispel ~= nil) then

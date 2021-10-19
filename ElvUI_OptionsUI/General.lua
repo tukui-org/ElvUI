@@ -29,11 +29,12 @@ E.Options.args.general = General
 General.args.general = ACH:Group(L["General"], nil, 1)
 General.args.general.args.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
 General.args.general.args.taintLog = ACH:Toggle(L["Log Taints"], L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."], 2)
-General.args.general.args.spacer1 = ACH:Spacer(3, 'full')
-General.args.general.args.locale = ACH:Select(L["LANGUAGE"], nil, 4, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', zhCN = '简体中文', zhTW = '正體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale end, function(_, value) E.global.general.locale = value E:StaticPopup_Show('CONFIG_RL') end)
-General.args.general.args.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 5, function() return GetChatWindowInfo() end)
-General.args.general.args.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 6, { TCHINESE = '萬, 億', CHINESE = '万, 亿', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', KOREAN = '천, 만, 억', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
-General.args.general.args.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 7, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+General.args.general.args.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 3, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+General.args.general.args.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
+
+General.args.general.args.locale = ACH:Select(L["LANGUAGE"], nil, 5, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', zhCN = '简体中文', zhTW = '正體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale end, function(_, value) E.global.general.locale = value E:StaticPopup_Show('CONFIG_RL') end)
+General.args.general.args.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 6, function() return GetChatWindowInfo() end)
+General.args.general.args.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 7, { TCHINESE = '萬, 億', CHINESE = '万, 亿', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', KOREAN = '천, 만, 억', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
 
 General.args.general.args.monitor = ACH:Group(L["Monitor"], nil, 50, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end)
 General.args.general.args.monitor.inline = true
@@ -115,8 +116,6 @@ General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.namepla
 General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateLargeFontOutline = ACH:FontFlags(L["Larger Outline"], nil, 13)
 
 General.args.cosmetic = ACH:Group(L["Cosmetic"], nil, 10)
-General.args.cosmetic.args.afk = ACH:Toggle(L["AFK Mode"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-General.args.cosmetic.args.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 2, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
 General.args.cosmetic.args.bordersGroup = ACH:Group(L["Borders"], nil, 15)
 General.args.cosmetic.args.bordersGroup.inline = true
@@ -139,7 +138,13 @@ General.args.cosmetic.args.cosmeticTopPanel.args.topPanelTransparent = ACH:Toggl
 General.args.cosmetic.args.cosmeticTopPanel.args.topPanelWidth = ACH:Range(L["Width"], nil, 3, { min = 0, max = ceil(E.screenWidth), step = 1 }, nil, function() return E.db.general.topPanelSettings.width end, function(_, value) E.db.general.topPanelSettings.width = value Layout:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
 General.args.cosmetic.args.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, { min = 5, max = 128, step = 1 }, nil, function() return E.db.general.topPanelSettings.height end, function(_, value) E.db.general.topPanelSettings.height = value Layout:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
 
-General.args.cosmetic.args.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 30, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.cosmetic.args.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
+General.args.cosmetic.args.afkGroup.inline = true
+General.args.cosmetic.args.afkGroup.args.afk = ACH:Toggle(L["Enable"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+General.args.cosmetic.args.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+General.args.cosmetic.args.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 3, function() AFK:ResetChatPosition(true) end)
+
+General.args.cosmetic.args.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.cosmetic.args.chatBubblesGroup.inline = true
 General.args.cosmetic.args.chatBubblesGroup.args.replaceBubbleFont = ACH:Toggle(L["Replace Font"], nil, 1)
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFont = ACH:SharedMediaFont(L["Font"], nil, 2, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
@@ -150,7 +155,7 @@ General.args.cosmetic.args.chatBubblesGroup.args.warning = ACH:Description('|cff
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 12, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["DISABLE"] })
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleName = ACH:Toggle(L["Chat Bubble Names"], L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."], 13)
 
-General.args.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 15, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarSettings() end)
+General.args.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 15, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarSettings() end, nil, not E.Retail)
 General.args.alternativePowerGroup.args.enable = ACH:Toggle(L["Enable"], L["Replace Blizzard's Alternative Power Bar"], 1, nil, nil, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.alternativePowerGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
 General.args.alternativePowerGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 100, step = 1 })
@@ -179,8 +184,8 @@ General.args.blizzUIImprovements.args.general.args.disableTutorialButtons = ACH:
 General.args.blizzUIImprovements.args.general.args.raidUtility = ACH:Toggle(L["RAID_CONTROL"], L["Enables the ElvUI Raid Control panel."], 5, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.general.args.voiceOverlay = ACH:Toggle(L["Voice Overlay"], L["Replace Blizzard's Voice Overlay."], 6, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.general.args.resurrectSound = ACH:Toggle(L["Resurrect Sound"], L["Enable to hear sound if you receive a resurrect."], 7)
-General.args.blizzUIImprovements.args.general.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 8, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end)
-General.args.blizzUIImprovements.args.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 9, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateVehicleFrame() end)
+General.args.blizzUIImprovements.args.general.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 8, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end, nil, not E.Retail)
+General.args.blizzUIImprovements.args.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 9, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateVehicleFrame() end, nil, not E.Retail)
 General.args.blizzUIImprovements.args.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 10, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateDurabilityScale() end)
 
 General.args.blizzUIImprovements.args.quest = ACH:Group(L["Quest"], nil, 2)
@@ -194,7 +199,7 @@ General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L["Loot"]
 General.args.blizzUIImprovements.args.lootGroup.args.lootRoll = ACH:Toggle(L["Loot Roll"], L["Enable/Disable the loot roll frame."], 2)
 General.args.blizzUIImprovements.args.lootGroup.args.autoRoll = ACH:Toggle(L["Auto Greed/DE"], L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."], 3, nil, nil, nil, function() return E.db.general.autoRoll end, function(_, value) E.db.general.autoRoll = value end, function() return not E.private.general.lootRoll end)
 
-General.args.blizzUIImprovements.args.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value Misc:ToggleItemLevelInfo() end, nil, function() return not E.Retail end)
+General.args.blizzUIImprovements.args.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value Misc:ToggleItemLevelInfo() end, nil, not E.Retail)
 General.args.blizzUIImprovements.args.itemLevelInfo.inline = true
 General.args.blizzUIImprovements.args.itemLevelInfo.args.displayCharacterInfo = ACH:Toggle(L["Display Character Info"], L["Shows item level of each item, enchants, and gems on the character page."], 1)
 General.args.blizzUIImprovements.args.itemLevelInfo.args.displayInspectInfo = ACH:Toggle(L["Display Inspect Info"], L["Shows item level of each item, enchants, and gems when inspecting another player."], 2)
@@ -204,7 +209,7 @@ General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLeve
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 5, C.Values.FontSize)
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 
-General.args.blizzUIImprovements.args.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 4, nil, function(info) return E.db.general[info[#info]] end, nil, function() return (E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')) end, function() return not E.Retail end)
+General.args.blizzUIImprovements.args.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 4, nil, function(info) return E.db.general[info[#info]] end, nil, function() return (E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')) end, not E.Retail)
 General.args.blizzUIImprovements.args.objectiveFrameGroup.inline = true
 General.args.blizzUIImprovements.args.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:SetObjectiveFrameAutoHide() end)
 General.args.blizzUIImprovements.args.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], nil, 2, nil, nil, nil, nil, nil, nil, function() return not E.db.general.objectiveFrameAutoHide end)

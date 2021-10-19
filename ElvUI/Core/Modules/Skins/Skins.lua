@@ -60,6 +60,44 @@ S.ArrowRotation = {
 	right = -1.57,
 }
 
+do
+	local function HighlightOnEnter(button)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		button.HighlightTexture:SetVertexColor(r, g, b, 0.50)
+		button.HighlightTexture:Show()
+	end
+
+	local function HighlightOnLeave(button)
+		button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
+		button.HighlightTexture:Hide()
+	end
+
+	function S:HandleCategoriesButtons(button, strip)
+		if button.isSkinned then return end
+
+		if button.SetNormalTexture then button:SetNormalTexture('') end
+		if button.SetHighlightTexture then button:SetHighlightTexture('') end
+		if button.SetPushedTexture then button:SetPushedTexture('') end
+		if button.SetDisabledTexture then button:SetDisabledTexture('') end
+
+		if strip then button:StripTextures() end
+		S:HandleBlizzardRegions(button)
+
+		button.HighlightTexture = button:CreateTexture(nil, "BACKGROUND")
+		button.HighlightTexture:SetBlendMode("BLEND")
+		button.HighlightTexture:SetSize(button:GetSize())
+		button.HighlightTexture:Point('CENTER', button, 0, 2)
+		button.HighlightTexture:SetTexture(E.Media.Textures.Highlight)
+		button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
+		button.HighlightTexture:Hide()
+
+		button:HookScript('OnEnter', HighlightOnEnter)
+		button:HookScript('OnLeave', HighlightOnLeave)
+
+		button.isSkinned = true
+	end
+end
+
 function S:HandleButtonHighlight(frame, r, g, b)
 	if frame.SetHighlightTexture then
 		frame:SetHighlightTexture('')
@@ -199,19 +237,14 @@ function S:UpdateRecapButton()
 	end
 end
 
--- We need to test this for the BGScore frame
-S.PVPHonorXPBarFrames = {}
-S.PVPHonorXPBarSkinned = false
+do -- We need to test this for the BGScore frame
+	S.PVPHonorXPBarFrames = {}
+	S.PVPHonorXPBarSkinned = false
 
-function S:SkinPVPHonorXPBar(frame)
-	S.PVPHonorXPBarFrames[frame] = true
-
-	if S.PVPHonorXPBarSkinned then return end
-	S.PVPHonorXPBarSkinned = true
-
-	hooksecurefunc('PVPHonorXPBar_SetNextAvailable', function(XPBar)
+	local function SetNextAvailable(XPBar)
 		if not S.PVPHonorXPBarFrames[XPBar:GetParent():GetName()] then return end
-		XPBar:StripTextures() --XPBar
+
+		XPBar:StripTextures()
 
 		if XPBar.Bar and not XPBar.Bar.backdrop then
 			XPBar.Bar:CreateBackdrop()
@@ -258,7 +291,16 @@ function S:SkinPVPHonorXPBar(frame)
 				XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
-	end)
+	end
+
+	function S:SkinPVPHonorXPBar(frame)
+		S.PVPHonorXPBarFrames[frame] = true
+
+		if S.PVPHonorXPBarSkinned then return end
+		S.PVPHonorXPBarSkinned = true
+
+		hooksecurefunc('PVPHonorXPBar_SetNextAvailable', SetNextAvailable)
+	end
 end
 
 function S:StatusBarColorGradient(bar, value, max, backdrop)
@@ -553,6 +595,17 @@ end
 
 do
 	local btns = {MaximizeButton = 'up', MinimizeButton = 'down'}
+
+	local function buttonOnEnter(btn)
+		local r,g,b = unpack(E.media.rgbvaluecolor)
+		btn:GetNormalTexture():SetVertexColor(r,g,b)
+		btn:GetPushedTexture():SetVertexColor(r,g,b)
+	end
+	local function buttonOnLeave(btn)
+		btn:GetNormalTexture():SetVertexColor(1, 1, 1)
+		btn:GetPushedTexture():SetVertexColor(1, 1, 1)
+	end
+
 	function S:HandleMaxMinFrame(frame)
 		assert(frame, 'does not exist.')
 
@@ -569,16 +622,8 @@ do
 				button:SetHitRectInsets(1, 1, 1, 1)
 				button:GetHighlightTexture():Kill()
 
-				button:SetScript('OnEnter', function(btn)
-					local r,g,b = unpack(E.media.rgbvaluecolor)
-					btn:GetNormalTexture():SetVertexColor(r,g,b)
-					btn:GetPushedTexture():SetVertexColor(r,g,b)
-				end)
-
-				button:SetScript('OnLeave', function(btn)
-					btn:GetNormalTexture():SetVertexColor(1, 1, 1)
-					btn:GetPushedTexture():SetVertexColor(1, 1, 1)
-				end)
+				button:SetScript('OnEnter', buttonOnEnter)
+				button:SetScript('OnLeave', buttonOnLeave)
 
 				button:SetNormalTexture(E.Media.Textures.ArrowUp)
 				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
@@ -648,7 +693,7 @@ function S:HandleDropDownBox(frame, width, pos, template)
 	end
 
 	button.SetPoint = E.noop
-	S:HandleNextPrevButton(button)
+	S:HandleNextPrevButton(button, 'down')
 
 	if text then
 		text:ClearAllPoints()
@@ -672,6 +717,19 @@ end
 do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
+
+	local function checkNormalTexture(checkbox, texture) if texture ~= '' then checkbox:SetNormalTexture('') end end
+	local function checkPushedTexture(checkbox, texture) if texture ~= '' then checkbox:SetPushedTexture('') end end
+	local function checkHighlightTexture(checkbox, texture) if texture ~= '' then checkbox:SetHighlightTexture('') end end
+	local function checkCheckedTexture(checkbox, texture)
+		if texture == E.Media.Textures.Melli or texture == check then return end
+		checkbox:SetCheckedTexture(E.private.skins.checkBoxSkin and E.Media.Textures.Melli or check)
+	end
+	local function checkOnDisable(checkbox)
+		if not checkbox.SetDisabledTexture then return end
+		checkbox:SetDisabledTexture(checkbox:GetChecked() and (E.private.skins.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
+	end
+
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
 		assert(frame, 'does not exist.')
 
@@ -719,91 +777,73 @@ do
 				end
 			end
 
-			frame:HookScript('OnDisable', function(checkbox)
-				if not checkbox.SetDisabledTexture then return end
-				if checkbox:GetChecked() then
-					if E.private.skins.checkBoxSkin then
-						checkbox:SetDisabledTexture(E.Media.Textures.Melli)
-					else
-						checkbox:SetDisabledTexture(disabled)
-					end
-				else
-					checkbox:SetDisabledTexture('')
-				end
-			end)
+			frame:HookScript('OnDisable', checkOnDisable)
 
-			hooksecurefunc(frame, 'SetNormalTexture', function(checkbox, texPath)
-				if texPath ~= '' then checkbox:SetNormalTexture('') end
-			end)
-			hooksecurefunc(frame, 'SetPushedTexture', function(checkbox, texPath)
-				if texPath ~= '' then checkbox:SetPushedTexture('') end
-			end)
-			hooksecurefunc(frame, 'SetHighlightTexture', function(checkbox, texPath)
-				if texPath ~= '' then checkbox:SetHighlightTexture('') end
-			end)
-			hooksecurefunc(frame, 'SetCheckedTexture', function(checkbox, texPath)
-				if texPath == E.Media.Textures.Melli or texPath == check then return end
-				if E.private.skins.checkBoxSkin then
-					checkbox:SetCheckedTexture(E.Media.Textures.Melli)
-				else
-					checkbox:SetCheckedTexture(check)
-				end
-			end)
+			hooksecurefunc(frame, 'SetNormalTexture', checkNormalTexture)
+			hooksecurefunc(frame, 'SetPushedTexture', checkPushedTexture)
+			hooksecurefunc(frame, 'SetCheckedTexture', checkCheckedTexture)
+			hooksecurefunc(frame, 'SetHighlightTexture', checkHighlightTexture)
 		end
 
 		frame.isSkinned = true
 	end
 end
 
-function S:HandleRadioButton(Button)
-	if Button.isSkinned then return end
+do
+	local background = [[Interface\Minimap\UI-Minimap-Background]]
+	local function buttonNormalTexture(frame, texture) if texture ~= '' then frame:SetNormalTexture('') end end
+	local function buttonPushedTexture(frame, texture) if texture ~= '' then frame:SetPushedTexture('') end end
+	local function buttonDisabledTexture(frame, texture) if texture ~= '' then frame:SetDisabledTexture('') end end
+	local function buttonHighlightTexture(frame, texture) if texture ~= '' then frame:SetHighlightTexture('') end end
 
-	local InsideMask = Button:CreateMaskTexture()
-	InsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-	InsideMask:Size(10, 10)
-	InsideMask:Point('CENTER')
+	function S:HandleRadioButton(Button)
+		if Button.isSkinned then return end
 
-	Button.InsideMask = InsideMask
+		local InsideMask = Button:CreateMaskTexture()
+		InsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
+		InsideMask:Size(10, 10)
+		InsideMask:Point('CENTER')
+		Button.InsideMask = InsideMask
 
-	local OutsideMask = Button:CreateMaskTexture()
-	OutsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-	OutsideMask:Size(13, 13)
-	OutsideMask:Point('CENTER')
+		local OutsideMask = Button:CreateMaskTexture()
+		OutsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
+		OutsideMask:Size(13, 13)
+		OutsideMask:Point('CENTER')
+		Button.OutsideMask = OutsideMask
 
-	Button.OutsideMask = OutsideMask
+		Button:SetCheckedTexture(E.media.normTex)
+		Button:SetNormalTexture(E.media.normTex)
+		Button:SetHighlightTexture(E.media.normTex)
+		Button:SetDisabledTexture(E.media.normTex)
 
-	Button:SetCheckedTexture(E.media.normTex)
-	Button:SetNormalTexture(E.media.normTex)
-	Button:SetHighlightTexture(E.media.normTex)
-	Button:SetDisabledTexture(E.media.normTex)
+		local Check = Button:GetCheckedTexture()
+		Check:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		Check:SetTexCoord(0, 1, 0, 1)
+		Check:SetInside()
+		Check:AddMaskTexture(InsideMask)
 
-	local Check = Button:GetCheckedTexture()
-	Check:SetVertexColor(unpack(E.media.rgbvaluecolor))
-	Check:SetTexCoord(0, 1, 0, 1)
-	Check:SetInside()
-	Check:AddMaskTexture(InsideMask)
+		local Highlight = Button:GetHighlightTexture()
+		Highlight:SetTexCoord(0, 1, 0, 1)
+		Highlight:SetVertexColor(1, 1, 1)
+		Highlight:AddMaskTexture(InsideMask)
 
-	local Highlight = Button:GetHighlightTexture()
-	Highlight:SetTexCoord(0, 1, 0, 1)
-	Highlight:SetVertexColor(1, 1, 1)
-	Highlight:AddMaskTexture(InsideMask)
+		local Normal = Button:GetNormalTexture()
+		Normal:SetOutside()
+		Normal:SetTexCoord(0, 1, 0, 1)
+		Normal:SetVertexColor(unpack(E.media.bordercolor))
+		Normal:AddMaskTexture(OutsideMask)
 
-	local Normal = Button:GetNormalTexture()
-	Normal:SetOutside()
-	Normal:SetTexCoord(0, 1, 0, 1)
-	Normal:SetVertexColor(unpack(E.media.bordercolor))
-	Normal:AddMaskTexture(OutsideMask)
+		local Disabled = Button:GetDisabledTexture()
+		Disabled:SetVertexColor(.3, .3, .3)
+		Disabled:AddMaskTexture(OutsideMask)
 
-	local Disabled = Button:GetDisabledTexture()
-	Disabled:SetVertexColor(.3, .3, .3)
-	Disabled:AddMaskTexture(OutsideMask)
+		hooksecurefunc(Button, 'SetNormalTexture', buttonNormalTexture)
+		hooksecurefunc(Button, 'SetPushedTexture', buttonPushedTexture)
+		hooksecurefunc(Button, 'SetDisabledTexture', buttonDisabledTexture)
+		hooksecurefunc(Button, 'SetHighlightTexture', buttonHighlightTexture)
 
-	hooksecurefunc(Button, 'SetNormalTexture', function(f, t) if t ~= '' then f:SetNormalTexture('') end end)
-	hooksecurefunc(Button, 'SetPushedTexture', function(f, t) if t ~= '' then f:SetPushedTexture('') end end)
-	hooksecurefunc(Button, 'SetHighlightTexture', function(f, t) if t ~= '' then f:SetHighlightTexture('') end end)
-	hooksecurefunc(Button, 'SetDisabledTexture', function(f, t) if t ~= '' then f:SetDisabledTexture('') end end)
-
-	Button.isSkinned = true
+		Button.isSkinned = true
+	end
 end
 
 function S:HandleIcon(icon, backdrop)
@@ -844,26 +884,100 @@ function S:HandleItemButton(b, setInside)
 	b.isSkinned = true
 end
 
-local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
-local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
+do
+	local closeOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
+	local closeOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
-function S:HandleCloseButton(f, point, x, y)
-	assert(f, 'doenst exist!')
+	function S:HandleCloseButton(f, point, x, y)
+		assert(f, 'doenst exist!')
 
-	f:StripTextures()
+		f:StripTextures()
 
-	if not f.Texture then
-		f.Texture = f:CreateTexture(nil, 'OVERLAY')
-		f.Texture:Point('CENTER')
-		f.Texture:SetTexture(E.Media.Textures.Close)
-		f.Texture:Size(12, 12)
-		f:HookScript('OnEnter', handleCloseButtonOnEnter)
-		f:HookScript('OnLeave', handleCloseButtonOnLeave)
-		f:SetHitRectInsets(6, 6, 7, 7)
+		if not f.Texture then
+			f.Texture = f:CreateTexture(nil, 'OVERLAY')
+			f.Texture:Point('CENTER')
+			f.Texture:SetTexture(E.Media.Textures.Close)
+			f.Texture:Size(12, 12)
+			f:HookScript('OnEnter', closeOnEnter)
+			f:HookScript('OnLeave', closeOnLeave)
+			f:SetHitRectInsets(6, 6, 7, 7)
+		end
+
+		if point then
+			f:Point('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
+		end
 	end
 
-	if point then
-		f:Point('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
+	function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)
+		if btn.isSkinned then return end
+
+		if not arrowDir then
+			arrowDir = 'down'
+
+			local name = btn:GetDebugName()
+			local ButtonName = name and name:lower()
+			if ButtonName then
+				if strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'backward') or strfind(ButtonName, 'back') then
+					arrowDir = 'left'
+				elseif strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward') then
+					arrowDir = 'right'
+				elseif strfind(ButtonName, 'scrollup') or strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize') then
+					arrowDir = 'up'
+				end
+			end
+		end
+
+		btn:StripTextures()
+		if not noBackdrop then
+			S:HandleButton(btn, nil, nil, nil, nil, nil, nil, nil, frameLevel)
+		end
+
+		if stripTexts then
+			btn:StripTexts()
+		end
+
+		btn:SetNormalTexture(E.Media.Textures.ArrowUp)
+		btn:SetPushedTexture(E.Media.Textures.ArrowUp)
+		btn:SetDisabledTexture(E.Media.Textures.ArrowUp)
+
+		local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
+
+		if noBackdrop then
+			btn:Size(20, 20)
+			Disabled:SetVertexColor(.5, .5, .5)
+			btn.Texture = Normal
+
+			if not color then
+				btn:HookScript('OnEnter', closeOnEnter)
+				btn:HookScript('OnLeave', closeOnLeave)
+			end
+		else
+			btn:Size(18, 18)
+			Disabled:SetVertexColor(.3, .3, .3)
+		end
+
+		Normal:SetInside()
+		Pushed:SetInside()
+		Disabled:SetInside()
+
+		Normal:SetTexCoord(0, 1, 0, 1)
+		Pushed:SetTexCoord(0, 1, 0, 1)
+		Disabled:SetTexCoord(0, 1, 0, 1)
+
+		local rotation = S.ArrowRotation[arrowDir]
+		if rotation then
+			Normal:SetRotation(rotation)
+			Pushed:SetRotation(rotation)
+			Disabled:SetRotation(rotation)
+		end
+
+		if color then
+			Normal:SetVertexColor(color.r, color.g, color.b)
+		else
+			Normal:SetVertexColor(1, 1, 1)
+		end
+
+		btn.isSkinned = true
 	end
 end
 
@@ -1064,22 +1178,28 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 	end
 end
 
-S.FollowerListUpdateDataFrames = {}
-function S:HandleFollowerListOnUpdateData(frame)
-	if frame == 'GarrisonLandingPageFollowerList' and (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then
-		return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
-	end
+do
+	S.FollowerListUpdateDataFrames = {}
+	local function UpdateData(dataFrame)
+		if not dataFrame or not dataFrame.listScroll or not not S.FollowerListUpdateDataFrames[dataFrame:GetName()] then return end
 
-	if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
-	S.FollowerListUpdateDataFrames[frame] = true
-
-	hooksecurefunc(_G[frame], 'UpdateData', function(dataFrame)
-		if not S.FollowerListUpdateDataFrames[frame] or (not dataFrame or not dataFrame.listScroll) then return end
-		local buttons, list = dataFrame.listScroll.buttons, dataFrame.followersList
+		local list = dataFrame.followersList
+		local buttons = dataFrame.listScroll.buttons
 		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
 
 		S:HandleFollowerListOnUpdateDataFunc(buttons, buttons and #buttons, offset, list and #list)
-	end)
+	end
+
+	function S:HandleFollowerListOnUpdateData(frame)
+		if frame == 'GarrisonLandingPageFollowerList' and (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then
+			return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
+		end
+
+		if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
+		S.FollowerListUpdateDataFrames[frame] = true
+
+		hooksecurefunc(_G[frame], 'UpdateData', UpdateData)
+	end
 end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
@@ -1211,77 +1331,6 @@ do
 
 		frame.isSkinned = true
 	end
-end
-
-function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)
-	if btn.isSkinned then return end
-
-	if not arrowDir then
-		arrowDir = 'down'
-		local name = btn:GetDebugName()
-		local ButtonName = name and name:lower()
-		if ButtonName then
-			if strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'backward') or strfind(ButtonName, 'back') then
-				arrowDir = 'left'
-			elseif strfind(ButtonName, 'right') or strfind(ButtonName, 'next') or strfind(ButtonName, 'increment') or strfind(ButtonName, 'forward') then
-				arrowDir = 'right'
-			elseif strfind(ButtonName, 'scrollup') or strfind(ButtonName, 'upbutton') or strfind(ButtonName, 'top') or strfind(ButtonName, 'asc') or strfind(ButtonName, 'home') or strfind(ButtonName, 'maximize') then
-				arrowDir = 'up'
-			end
-		end
-	end
-
-	btn:StripTextures()
-	if not noBackdrop then
-		S:HandleButton(btn, nil, nil, nil, nil, nil, nil, nil, frameLevel)
-	end
-
-	if stripTexts then
-		btn:StripTexts()
-	end
-
-	btn:SetNormalTexture(E.Media.Textures.ArrowUp)
-	btn:SetPushedTexture(E.Media.Textures.ArrowUp)
-	btn:SetDisabledTexture(E.Media.Textures.ArrowUp)
-
-	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
-
-	if noBackdrop then
-		btn:Size(20, 20)
-		Disabled:SetVertexColor(.5, .5, .5)
-		btn.Texture = Normal
-
-		if not color then
-			btn:HookScript('OnEnter', handleCloseButtonOnEnter)
-			btn:HookScript('OnLeave', handleCloseButtonOnLeave)
-		end
-	else
-		btn:Size(18, 18)
-		Disabled:SetVertexColor(.3, .3, .3)
-	end
-
-	Normal:SetInside()
-	Pushed:SetInside()
-	Disabled:SetInside()
-
-	Normal:SetTexCoord(0, 1, 0, 1)
-	Pushed:SetTexCoord(0, 1, 0, 1)
-	Disabled:SetTexCoord(0, 1, 0, 1)
-
-	local rotation = S.ArrowRotation[arrowDir]
-	if rotation then
-		Normal:SetRotation(rotation)
-		Pushed:SetRotation(rotation)
-		Disabled:SetRotation(rotation)
-	end
-
-	if color then
-		Normal:SetVertexColor(color.r, color.g, color.b)
-	else
-		Normal:SetVertexColor(1, 1, 1)
-	end
-
-	btn.isSkinned = true
 end
 
 do -- Handle collapse

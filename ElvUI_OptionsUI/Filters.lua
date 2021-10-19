@@ -8,10 +8,13 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local format = format
+local strfind = strfind
+local strlower = strlower
 local strmatch = strmatch
 local tonumber = tonumber
 local tostring = tostring
 local GetSpellInfo = GetSpellInfo
+local GetSpellSubtext = GetSpellSubtext
 
 -- GLOBALS: MAX_PLAYER_LEVEL
 
@@ -132,6 +135,24 @@ local function DeleteFilterListDisable()
 	return true
 end
 
+local function GetSpellNameRank(id)
+	if not id then
+		return ' '
+	end
+
+	local name = tonumber(id) and GetSpellInfo(id)
+	if not name then
+		return tostring(id)
+	end
+
+	local rank = not E.Retail and GetSpellSubtext(id)
+	if not rank or not strfind(rank, '%d') then
+		return format('%s |cFF888888(%s)|r', name, id)
+	end
+
+	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, rank, id)
+end
+
 local function SetSpellList()
 	local list
 	if selectedFilter == 'Aura Highlight' then
@@ -153,10 +174,8 @@ local function SetSpellList()
 			filter = spell.id
 		end
 
-		local spellName = tonumber(filter) and GetSpellInfo(filter)
-		local name = (spellName and format('%s |cFF888888(%s)|r', spellName, filter)) or tostring(filter)
-
-		if name:lower():find(searchText) then
+		local name = GetSpellNameRank(filter)
+		if strfind(strlower(name), searchText) then
 			spellList[filter] = name
 		end
 	end
@@ -274,6 +293,7 @@ E.Options.args.filters = {
 							type = 'select',
 							order = 1,
 							customWidth = 350,
+							sortByValue = true,
 							get = function(info) return selectedSpell or '' end,
 							set = function(info, value)
 								selectedSpell = (value ~= '' and value) or nil
@@ -308,9 +328,7 @@ E.Options.args.filters = {
 							desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 							type = 'select',
 							confirm = function(info, value)
-								local spellName = tonumber(value) and GetSpellInfo(value)
-								local name = (spellName and format('%s |cFF888888(%s)|r', spellName, value)) or tostring(value)
-								return 'Remove Spell - '..name
+								return 'Remove Spell - '..GetSpellNameRank(value)
 							end,
 							customWidth = 350,
 							get = function(info) return '' end,
@@ -384,9 +402,7 @@ E.Options.args.filters = {
 				buffIndicator = {
 					type = 'group',
 					name = function()
-						local spell = GetSelectedSpell()
-						local spellName = spell and GetSpellInfo(spell)
-						return (spellName and spellName..' |cFF888888('..spell..')|r') or spell or ' '
+						return GetSpellNameRank(GetSelectedSpell())
 					end,
 					hidden = function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end,
 					get = function(info)
@@ -525,9 +541,7 @@ E.Options.args.filters = {
 				spellGroup = {
 					type = 'group',
 					name = function()
-						local spell = GetSelectedSpell()
-						local spellName = spell and GetSpellInfo(spell)
-						return (spellName and spellName..' |cFF888888('..spell..')|r') or spell or ' '
+						return GetSpellNameRank(GetSelectedSpell())
 					end,
 					hidden = function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
 					order = -15,

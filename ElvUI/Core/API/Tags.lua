@@ -88,11 +88,14 @@ local PVP = PVP
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
 local RefreshNewTags -- will turn true at EOF
-function E:AddTag(tagName, eventsOrSeconds, func)
+function E:AddTag(tagName, eventsOrSeconds, func, block)
+	if block then return end -- easy killer for tags
+
 	if type(eventsOrSeconds) == 'number' then
 		Tags.OnUpdateThrottle[tagName] = eventsOrSeconds
 	else
-		Tags.Events[tagName] = eventsOrSeconds
+
+		Tags.Events[tagName] = (E.Retail and gsub(eventsOrSeconds, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')) or gsub(eventsOrSeconds, 'UNIT_HEALTH([^_])', 'UNIT_HEALTH_FREQUENT%1')
 	end
 
 	Tags.Methods[tagName] = func
@@ -100,6 +103,13 @@ function E:AddTag(tagName, eventsOrSeconds, func)
 	if RefreshNewTags then
 		Tags:RefreshEvents(tagName)
 		Tags:RefreshMethods(tagName)
+	end
+end
+
+function E:CallTag(tag, ...)
+	local func = ElvUF.Tags.Methods[tag]
+	if func then
+		return func(...)
 	end
 end
 
@@ -318,7 +328,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
-	end)
+	end, not E.Retail)
 
 	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
 		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
@@ -326,7 +336,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
 			return E:GetFormattedText(textFormat, cur, max)
 		end
-	end)
+	end, not E.Retail)
 
 	if tagFormat ~= 'percent' then
 		E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
@@ -371,7 +381,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
 			end
-		end)
+		end, not E.Retail)
 	end
 end
 
@@ -797,7 +807,7 @@ E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_
 
 		return Hex(r,g,b)
 	end
-end)
+end, not E.Retail)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
@@ -822,13 +832,18 @@ E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
 	end
 end)
 
-E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
-	if UnitIsAFK(unit) then
-		return [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
-	elseif UnitIsDND(unit) then
-		return [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
-	end
-end)
+do
+	local afk = [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
+	local dnd = [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
+
+	E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
+		if UnitIsAFK(unit) then
+			return afk
+		elseif UnitIsDND(unit) then
+			return dnd
+		end
+	end)
+end
 
 E:AddTag('name:abbrev', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	local name = UnitName(unit)
@@ -1198,28 +1213,90 @@ do
 end
 
 do
+	local classIcon = [[|TInterface\WorldStateFrame\ICONS-CLASSES:32:32:0:0:256:256:%s|t]]
 	local classIcons = {
-		WARRIOR 	= '0:64:0:64',
-		MAGE 		= '64:128:0:64',
-		ROGUE 		= '128:196:0:64',
-		DRUID 		= '196:256:0:64',
-		HUNTER 		= '0:64:64:128',
-		SHAMAN 		= '64:128:64:128',
-		PRIEST 		= '128:196:64:128',
-		WARLOCK 	= '196:256:64:128',
-		PALADIN 	= '0:64:128:196',
+		WARRIOR		= '0:64:0:64',
+		MAGE		= '64:128:0:64',
+		ROGUE		= '128:196:0:64',
+		DRUID		= '196:256:0:64',
+		HUNTER		= '0:64:64:128',
+		SHAMAN		= '64:128:64:128',
+		PRIEST		= '128:196:64:128',
+		WARLOCK		= '196:256:64:128',
+		PALADIN		= '0:64:128:196',
 		DEATHKNIGHT = '64:128:128:196',
-		MONK 		= '128:192:128:196',
+		MONK		= '128:192:128:196',
 		DEMONHUNTER = '192:256:128:196',
-	 }
+	}
 
 	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
 		if UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit)
 			local icon = classIcons[class]
 			if icon then
-				return format([[|TInterface\WorldStateFrame\ICONS-CLASSES:32:32:0:0:256:256:%s|t]], icon)
+				return format(classIcon, icon)
 			end
+		end
+	end)
+end
+
+if not E.Retail then
+	local HasPetUI = HasPetUI
+	local GetPetLoyalty = GetPetLoyalty
+	local GetPetHappiness = GetPetHappiness
+	local GetPetFoodTypes = GetPetFoodTypes
+
+	local emotionsIcons = {
+		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:48:72:0:23|t]],
+		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:24:48:0:23|t]],
+		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:0:24:0:23|t]]
+	}
+
+	local emotionsDiscord = {
+		E:TextureString(E.Media.ChatEmojis.Rage, ':16:16:0:0:32:32:0:32:0:32'),
+		E:TextureString(E.Media.ChatEmojis.SlightFrown, ':16:16:0:0:32:32:0:32:0:32'),
+		E:TextureString(E.Media.ChatEmojis.HeartEyes, ':16:16:0:0:32:32:0:32:0:32')
+	}
+
+	E:AddTag('happiness:full', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return _G['PET_HAPPINESS'..GetPetHappiness()]
+		end
+	end)
+
+	E:AddTag('happiness:icon', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return emotionsIcons[GetPetHappiness()]
+		end
+	end)
+
+	E:AddTag('happiness:discord', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return emotionsDiscord[GetPetHappiness()]
+		end
+	end)
+
+	E:AddTag('happiness:color', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return Hex(_COLORS.happiness[GetPetHappiness()])
+		end
+	end)
+
+	E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
+		end
+	end)
+
+	E:AddTag('diet', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+			return GetPetFoodTypes()
 		end
 	end)
 end
@@ -1230,13 +1307,19 @@ end
 
 E.TagInfo = {
 	-- Altpower
-		['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
-		['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
-		['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" },
-		['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" },
-		['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
-		['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
+		['altpower:current-max-percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" },
+		['altpower:current-max'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current-max format" },
+		['altpower:current-percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" },
+		['altpower:current'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in current format" },
+		['altpower:deficit'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in deficit format" },
+		['altpower:percent'] = { hidden = not E.Retail, category = 'Altpower', description = "Displays altpower text on a unit in percent format" },
+	-- Class
+		['class'] = { category = 'Class', description = "Displays the class of the unit, if that unit is a player" },
+		['class:icon'] = { category = 'Class', description = "Displays the class icon of the unit, if that unit is a player" },
+		['smartclass'] = { category = 'Class', description = "Displays the player's class or creature's type" },
+		['specialization'] = { hidden = not E.Retail, category = 'Class', description = "Displays your current specialization as text" },
 	-- Classification
+		['affix'] = { category = 'Classification', description = "Displays low level critter mobs" },
 		['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
 		['classification'] = { category = 'Classification', description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" },
 		['creature'] = { category = 'Classification', description = "Displays the creature type of the unit" },
@@ -1244,20 +1327,25 @@ E.TagInfo = {
 		['rare'] = { category = 'Classification', description = "Displays 'Rare' when the unit is a rare or rareelite" },
 		['shortclassification'] = { category = 'Classification', description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" },
 	-- Classpower
-		['arcanecharges'] = { category = 'Classpower', description = "Displays the arcane charges (Mage)" },
-		['chi'] = { category = 'Classpower', description = "Displays the chi points (Monk)" },
-		['classpower:current-max-percent'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
-		['classpower:current-max'] = { category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
-		['classpower:current-percent'] = { category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
-		['classpower:current'] = { category = 'Classpower', description = "Displays the unit's current amount of special power" },
-		['classpower:deficit'] = { category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
-		['classpower:percent'] = { category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
 		['cpoints'] = { category = 'Classpower', description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" },
-		['holypower'] = { category = 'Classpower', description = "Displays the holy power (Paladin)" },
-		['runes'] = { category = 'Classpower', description = "Displays the runes (Death Knight)" },
-		['soulshards'] = { category = 'Classpower', description = "Displays the soulshards (Warlock)" },
+		['arcanecharges'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the arcane charges (Mage)" },
+		['chi'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the chi points (Monk)" },
+		['classpower:current-max-percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
+		['classpower:current-max'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
+		['classpower:current-percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
+		['classpower:current'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current amount of special power" },
+		['classpower:deficit'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
+		['classpower:percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
+		['classpower:current-max-percent:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
+		['classpower:current-max:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
+		['classpower:current-percent:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
+		['classpower:current:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
+		['classpower:deficit:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
+		['holypower'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the holy power (Paladin)" },
+		['runes'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the runes (Death Knight)" },
+		['soulshards'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the soulshards (Warlock)" },
 	-- Colors
-		['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
+		['altpowercolor'] = { hidden = not E.Retail, category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
 		['classificationcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's classification" },
 		['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 		['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
@@ -1265,10 +1353,13 @@ E.TagInfo = {
 		['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
 		['selectioncolor'] = { category = 'Colors', description = "Colors the text, depending on the type of the unit's selection" },
 		['classcolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" },
+		['namecolor'] = { hidden = true, category = 'Colors', description = "Deprecated version of [classcolor]" },
 		['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
+		['manacolor'] = { category = 'Colors', description = "Colors the power text based on the mana color" },
 		['factioncolor'] = { category = 'Colors', description = "Colors names by Faction (Alliance, Horde, Neutral)" },
 		['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 		['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
+		['happiness:color'] = { hidden = E.Retail, category = 'Colors', description = "Changes the text color, depending on the pet happiness" },
 	-- Guild
 		['guild:brackets:translit'] = { category = 'Guild', description = "Displays the guild name with < > and transliteration (e.g. <GUILD>)" },
 		['guild:brackets'] = { category = 'Guild', description = "Displays the guild name with < > brackets (e.g. <GUILD>)" },
@@ -1316,6 +1407,12 @@ E.TagInfo = {
 		['maxhp'] = { category = 'Health', description = "Displays max HP without decimals" },
 		['missinghp'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" },
 		['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." },
+	--Hunter
+		['diet'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the diet of your pet (Fish, Meat, ...)" },
+		['happiness:discord'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet happiness like a Discord emoji" },
+		['happiness:full'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet happiness as a word (e.g. 'Happy')" },
+		['happiness:icon'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet happiness like the default Blizzard icon" },
+		['loyalty'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet loyalty level" },
 	-- Level
 		['level'] = { category = 'Level', description = "Displays the level of the unit" },
 		['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
@@ -1326,6 +1423,11 @@ E.TagInfo = {
 		['additionalmana:current'] = { category = 'Mana', description = "Displays the unit's current additional mana" },
 		['additionalmana:deficit'] = { category = 'Mana', description = "Displays the player's additional mana as a deficit" },
 		['additionalmana:percent'] = { category = 'Mana', description = "Displays the player's additional mana as a percentage" },
+		['additionalmana:current-max-percent:shortvalue'] = { category = 'Mana', description = "" },
+		['additionalmana:current-max:shortvalue'] = { category = 'Mana', description = "" },
+		['additionalmana:current-percent:shortvalue'] = { category = 'Mana', description = "" },
+		['additionalmana:current:shortvalue'] = { category = 'Mana', description = "" },
+		['additionalmana:deficit:shortvalue'] = { category = 'Mana', description = "" },
 		['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
 		['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
 		['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
@@ -1334,13 +1436,14 @@ E.TagInfo = {
 		['mana:deficit'] = { category = 'Mana', description = "Displays the player's mana as a deficit" },
 		['mana:percent'] = { category = 'Mana', description = "Displays the player's mana as a percentage" },
 		['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
+		['mana:current-max-percent:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current-max:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current-percent:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:deficit:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:max:shortvalue'] = { category = 'Mana', description = "" },
 	-- Miscellaneous
-		['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
-		['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
-		['class:icon'] = { category = 'Miscellaneous', description = "Displays the class icon of the unit, if that unit is a player" },
 		['race'] = { category = 'Miscellaneous', description = "Displays the race" },
-		['smartclass'] = { category = 'Miscellaneous', description = "Displays the player's class or creature's type" },
-		['specialization'] = { category = 'Miscellaneous', description = "Displays your current specialization as text" },
 	-- Names
 		['name:abbrev:long'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 20 letters)" },
 		['name:abbrev:medium'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 15 letters)" },
@@ -1362,6 +1465,7 @@ E.TagInfo = {
 		['name:veryshort:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
 		['name:veryshort'] = { category = 'Names', description = "Displays the name of the unit (limited to 5 letters)" },
 		['name'] = { category = 'Names', description = "Displays the full name of the unit without any letter limitation" },
+		['name:health'] = { hidden = true, category = 'Names', description = "" },
 		['npctitle:brackets'] = { category = 'Names', description = "Displays the NPC title with brackets (e.g. <General Goods Vendor>)" },
 		['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. General Goods Vendor)" },
 		['title'] = { category = 'Names', description = "Displays player title" },
@@ -1397,12 +1501,23 @@ E.TagInfo = {
 	-- Quest
 		['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 		['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
+		['quest:count'] = { category = 'Quest', description = "Displays the quest count" },
+		['quest:full'] = { category = 'Quest', description = "Quest full" },
+		['quest:text'] = { category = 'Quest', description = "Quest text" },
 	-- Range
 		['range'] = { category = 'Range', description = "Displays the range" },
 		['range:min'] = { category = 'Range', description = "Displays the min range" },
 		['range:max'] = { category = 'Range', description = "Displays the max range" },
 		['distance'] = { category = 'Range', description = "Displays the distance" },
-		['nearbyplayers:20'] = { category = 'Range', description = "Displays all players within 4, 8, 10, 15, 20, 25, 30, 35, or 40 yards (change the number)" },
+		['nearbyplayers:4'] = { category = 'Range', description = "Displays all players within 4 yards" },
+		['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
+		['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
+		['nearbyplayers:15'] = { category = 'Range', description = "Displays all players within 15 yards" },
+		['nearbyplayers:20'] = { category = 'Range', description = "Displays all players within 20 yards" },
+		['nearbyplayers:25'] = { category = 'Range', description = "Displays all players within 25 yards" },
+		['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
+		['nearbyplayers:35'] = { category = 'Range', description = "Displays all players within 35 yards" },
+		['nearbyplayers:40'] = { category = 'Range', description = "Displays all players within 40 yards" },
 	-- Realm
 		['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
 		['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
@@ -1452,13 +1567,22 @@ E.TagInfo = {
 	order = This is optional. It's used for sorting the tags by order and not by name. The +10 is not a rule. I reserve the first 10 slots.
 ]]
 
-function E:AddTagInfo(tagName, category, description, order)
+function E:AddTagInfo(tagName, category, description, order, hidden)
 	if type(order) == 'number' then order = order + 10 else order = nil end
 
-	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
-	E.TagInfo[tagName].category = category or 'Miscellaneous'
-	E.TagInfo[tagName].description = description or ''
-	E.TagInfo[tagName].order = order or nil
+	local info = E.TagInfo[tagName]
+	if not info then
+		info = {}
+
+		E.TagInfo[tagName] = info
+	end
+
+	info.category = category or 'Miscellaneous'
+	info.description = description or ''
+	info.order = order or nil
+	info.hidden = hidden or nil
+
+	return info
 end
 
 RefreshNewTags = true

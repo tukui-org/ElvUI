@@ -147,6 +147,10 @@ function NP:SetCVars()
 
 	NP:SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
+	if E.TBC then
+		NP:SetCVar('nameplateMaxDistance', NP.db.loadDistance)
+	end
+
 	NP:SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
 	NP:SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
 	NP:SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)

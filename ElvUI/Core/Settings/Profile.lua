@@ -52,6 +52,7 @@ P.general = {
 	},
 	durabilityScale = 1,
 	afk = true,
+	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
 	decimalLength = 1,
 	altPowerBar = {
@@ -107,6 +108,12 @@ P.general = {
 				xOffset = 3,
 				yOffset = 4,
 			},
+			tracking = {
+				scale = 0.8,
+				position = 'BOTTOMRIGHT',
+				xOffset = -2,
+				yOffset = 2,
+			},
 			lfgEye = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
@@ -144,6 +151,7 @@ P.databars = {
 	colors = {
 		reputationAlpha = 1,
 		useCustomFactionColors = false,
+		petExperience = { r = 1, g = 1, b = .41, a = .8 },
 		experience = { r = 0, g = .4, b = 1, a = .8 },
 		rested = { r = 1, g = 0, b = 1, a = .4},
 		quest = { r = 0, g = 1, b = 0, a = .4},
@@ -163,7 +171,7 @@ P.databars = {
 	}
 }
 
-for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite'}) do
+for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite', 'petExperience'}) do
 	P.databars[databar] = {
 		enable = true,
 		width = 222,
@@ -264,6 +272,9 @@ P.bags = {
 	showAssignedIcon = true,
 	colors = {
 		profession = {
+			quiver = { r = 1, g = 0.69, b = 0.41 },
+			ammoPouch = { r = 1, g = 0.69, b = 0.41 },
+			soulBag = { r = 1, g = 0.69, b = 0.41 },
 			leatherworking = { r = .88, g = .73, b = .29 },
 			inscription = { r = .29, g = .30, b = .88 },
 			herbs = { r = .07, g = .71, b = .13 },
@@ -317,7 +328,7 @@ P.bags = {
 		mouseover = false,
 		showCount = true,
 		justBackpack = false,
-		visibility = '[petbattle] hide; show',
+		visibility = E.Retail and '[petbattle] hide; show' or 'show',
 	},
 }
 
@@ -524,6 +535,7 @@ P.nameplates = {
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
 	highlight = true,
+	loadDistance = 41, -- TBC only
 	lowHealthThreshold = 0.4,
 	motionType = 'STACKED',
 	nameColoredGlow = false,
@@ -906,6 +918,8 @@ P.auras.debuffs.maxWraps = 1
 --Chat
 P.chat = {
 	url = true,
+	panelSnapLeftID = nil, -- set by the snap code
+	panelSnapRightID = nil, -- same deal
 	panelSnapping = true,
 	shortChannels = true,
 	hyperlinkHover = true,
@@ -1946,6 +1960,7 @@ P.unitframe.units.player.healPrediction.enable = true
 P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent:shortvalue]'
 P.unitframe.units.player.health.xOffset = 2
+P.unitframe.units.player.power.EnergyManaRegen = false
 P.unitframe.units.player.power.position = 'RIGHT'
 P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current:shortvalue][powercolor][  >power:current:shortvalue]'
 P.unitframe.units.player.power.xOffset = -2
@@ -2312,7 +2327,7 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = '[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide',
+		visibility = (E.Retail and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2332,7 +2347,7 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = '[vehicleui] hide; [petbattle] hide;show',
+		visibility = E.Retail and '[vehicleui] hide; [petbattle] hide;show' or 'show',
 	},
 	microbar = {
 		enabled = false,
@@ -2344,7 +2359,7 @@ P.actionbar = {
 		buttonHeight = 28,
 		buttonSpacing = 2,
 		alpha = 1,
-		visibility = '[petbattle] hide; show',
+		visibility = E.Retail and '[petbattle] hide; show' or 'show',
 		backdrop = false,
 		backdropSpacing = 2,
 		heightMult = 1,
@@ -2393,7 +2408,7 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
+		visibility = (E.Retail and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
@@ -2456,11 +2471,18 @@ for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionBu
 end
 
 P.actionbar.bar1.enabled = true
-P.actionbar.bar1.visibility = '[petbattle] hide; show'
+P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 P.actionbar.bar1.paging = {
-	DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;',
 	ROGUE = '[bonusbar:1] 7;',
 }
+
+if E.Retail then
+	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
+else
+	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 10;'
+	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
+	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3]9;'
+end
 
 P.actionbar.bar3.enabled = true
 P.actionbar.bar3.buttons = 6

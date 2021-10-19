@@ -45,7 +45,9 @@ local function HandleCommunitiesButtons(self, color)
 	end
 
 	if color then
-		self.Selection:SetInside(self.bg, 0, 0)
+		self.Selection:ClearAllPoints()
+		self.Selection:SetAllPoints(self.bg)
+
 		if color == 1 then
 			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
 		else
@@ -104,12 +106,13 @@ function S:Blizzard_Communities()
 				self.bg:Point('BOTTOMRIGHT', -10, 12)
 			end
 
+			self.Selection:ClearAllPoints()
+			self.Selection:SetAllPoints(self.bg)
+
 			local isGuild = clubInfo.clubType == ClubTypeGuild
 			if isGuild then
-				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
-				self.Selection:SetAllPoints(self.bg)
 				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
 

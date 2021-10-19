@@ -9,6 +9,7 @@ local wipe = wipe
 local pairs = pairs
 local format = format
 local strlower = strlower
+local GameTooltip_Hide = GameTooltip_Hide
 
 local tabSelectorTable = {}
 local Chat = ACH:Group(L["Chat"], nil, 2, 'tab', function(info) return E.db.chat[info[#info]] end, function(info, value) E.db.chat[info[#info]] = value end)
@@ -25,11 +26,11 @@ General.args.shortChannels = ACH:Toggle(L["Short Channels"], L["Shorten the chan
 General.args.hyperlinkHover = ACH:Toggle(L["Hyperlink Hover"], L["Display the hyperlink tooltip while hovering over a hyperlink."], 3, nil, nil, nil, nil, function(info, value) E.db.chat[info[#info]] = value CH:ToggleHyperlink(value) end)
 General.args.sticky = ACH:Toggle(L["Sticky Chat"], L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."], 4)
 General.args.emotionIcons = ACH:Toggle(L["Emotion Icons"], L["Display emotion icons in chat."], 5)
-General.args.lfgIcons = ACH:Toggle(L["Role Icon"], L["Display LFG Icons in group chat."], 6, nil, nil, nil, nil, function(info, value) E.db.chat.lfgIcons = value CH:CheckLFGRoles() end)
+General.args.lfgIcons = ACH:Toggle(L["Role Icon"], L["Display LFG Icons in group chat."], 6, nil, nil, nil, nil, function(info, value) E.db.chat.lfgIcons = value CH:CheckLFGRoles() end, nil, not E.Retail)
 General.args.useAltKey = ACH:Toggle(L["Use Alt Key"], L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."], 7, nil, nil, nil, nil, function(info, value) E.db.chat.useAltKey = value CH:UpdateSettings() end)
-General.args.autoClosePetBattleLog = ACH:Toggle(L["Auto-Close Pet Battle Log"], nil, 8)
+General.args.autoClosePetBattleLog = ACH:Toggle(L["Auto-Close Pet Battle Log"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.useBTagName = ACH:Toggle(L["Use Real ID BattleTag"], L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."], 9)
-General.args.socialQueueMessages = ACH:Toggle(L["Quick Join Messages"], L["Show clickable Quick Join messages inside of the chat."], 10)
+General.args.socialQueueMessages = ACH:Toggle(L["Quick Join Messages"], L["Show clickable Quick Join messages inside of the chat."], 10, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.copyChatLines = ACH:Toggle(L["Copy Chat Lines"], L["Adds an arrow infront of the chat lines to copy the entire line."], 11)
 General.args.hideCopyButton = ACH:Toggle(L["Hide Copy Button"], nil, 12, nil, nil, nil, nil, function(info, value) E.db.chat.hideCopyButton = value CH:ToggleCopyChatButtons() end)
 General.args.spacer = ACH:Spacer(13, 'full')
@@ -51,7 +52,7 @@ General.args.historyGroup = ACH:Group(L["History"], nil, 65)
 General.args.historyGroup.args.chatHistory = ACH:Toggle(L["Enable"], L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."], 1)
 General.args.historyGroup.args.resetHistory = ACH:Execute(L["Reset History"], nil, 2, function() CH:ResetHistory() end)
 General.args.historyGroup.args.historySize = ACH:Range(L["History Size"], nil, 3, { min = 10, max = 500, step = 1 }, nil, nil, nil, function() return not E.db.chat.chatHistory end)
-General.args.historyGroup.args.historyTypes = ACH:MultiSelect(L["Display Types"], nil, 4, { WHISPER = L["Whisper"], GUILD = L["Guild"], OFFICER = L["Officer"], PARTY = L["Party"], RAID = L["Raid"], INSTANCE = L["Instance"], CHANNEL = L["Channel"], SAY = L["Say"], YELL = L["Yell"], EMOTE = L["Emote"] }, nil, nil, function(info, key) return E.db.chat[info[#info]][key] end, function(info, key, value) E.db.chat[info[#info]][key] = value end, function() return not E.db.chat.chatHistory end)
+General.args.historyGroup.args.showHistory = ACH:MultiSelect(L["Display Types"], nil, 4, { WHISPER = L["Whisper"], GUILD = L["Guild"], OFFICER = L["Officer"], PARTY = L["Party"], RAID = L["Raid"], INSTANCE = L["Instance"], CHANNEL = L["Channel"], SAY = L["Say"], YELL = L["Yell"], EMOTE = L["Emote"] }, nil, nil, function(info, key) return E.db.chat[info[#info]][key] end, function(info, key, value) E.db.chat[info[#info]][key] = value end, function() return not E.db.chat.chatHistory end)
 
 General.args.combatRepeat = ACH:Group(L["Combat Repeat"], nil, 70)
 General.args.combatRepeat.args.enableCombatRepeat = ACH:Toggle(L["Enable"], nil, 1)
@@ -101,8 +102,8 @@ General.args.timestampGroup.args.customTimeColor = ACH:Color('', nil, 4, nil, ni
 General.args.classColorMentionGroup = ACH:Group(L["Class Color Mentions"], nil, 100, nil, nil, nil, function() return not E.Chat.Initialized end)
 General.args.classColorMentionGroup.args.classColorMentionsChat = ACH:Toggle(L["Chat"], L["Use class color for the names of players when they are mentioned."], 1, nil, nil, nil, function(info) return E.db.chat[info[#info]] end, function(info, value) E.db.chat[info[#info]] = value end, function() return E.private.general.chatBubbles == 'disabled' end)
 General.args.classColorMentionGroup.args.classColorMentionsSpeech = ACH:Toggle(L["Chat Bubbles"], L["Use class color for the names of players when they are mentioned."], 2, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
-General.args.classColorMentionGroup.args.classColorMentionExcludeName = ACH:Input(L["Exclude Name"], L["Excluded names will not be class colored."], 3, nil, nil, function() return '' end, function(_, value) if value == '' or gsub(value, '%s+', '') == '' then return end E.global.chat.classColorMentionExcludedNames[strlower(value)] = value end)
-General.args.classColorMentionGroup.args.classColorMentionExcludedNames = ACH:MultiSelect(L["Excluded Names"], nil, 4, function(info) return E.global.chat[info[#info]] end, nil, nil, function() return '' end, function(info, value) E.global.chat[info[#info]][value] = nil GameTooltip_Hide() end)
+General.args.classColorMentionGroup.args.classColorMentionExcludeName = ACH:Input(L["Exclude Name"], L["Excluded names will not be class colored."], 3, nil, nil, C.Blank, function(_, value) if value == '' or gsub(value, '%s+', '') == '' then return end E.global.chat.classColorMentionExcludedNames[strlower(value)] = value end)
+General.args.classColorMentionGroup.args.classColorMentionExcludedNames = ACH:MultiSelect(L["Excluded Names"], nil, 4, function(info) return E.global.chat[info[#info]] end, nil, nil, C.Blank, function(info, value) E.global.chat[info[#info]][value] = nil GameTooltip_Hide() end)
 
 local Panels = ACH:Group(L["Panels"], nil, 85)
 Chat.args.panels = Panels

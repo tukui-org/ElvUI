@@ -160,10 +160,8 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('showQuestTrackingTooltips', 1)
 	SetCVar('fstack_preferParentKeys', 0) --Add back the frame names via fstack!
 
-	if E.Retail then -- bugs on Classic ERA
-		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
-		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
-	end
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
 	if E.private.nameplates.enable then
 		NP:CVarReset()
