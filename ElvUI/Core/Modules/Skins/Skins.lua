@@ -85,10 +85,8 @@ do
 
 		button.HighlightTexture = button:CreateTexture(nil, "BACKGROUND")
 		button.HighlightTexture:SetBlendMode("BLEND")
-		button.HighlightTexture:SetSnapToPixelGrid(false)
-		button.HighlightTexture:SetTexelSnappingBias(0)
-		button.HighlightTexture:Size(button:GetSize())
-		button.HighlightTexture:Point("CENTER", button, 0, 2)
+		button.HighlightTexture:SetSize(button:GetSize())
+		button.HighlightTexture:Point('CENTER', button, 0, 2)
 		button.HighlightTexture:SetTexture(E.Media.Textures.Highlight)
 		button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
 		button.HighlightTexture:Hide()
