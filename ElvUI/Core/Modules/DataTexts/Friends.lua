@@ -131,37 +131,31 @@ local statusTable = {
 
 -- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=='string' and i:match('BNET_CLIENT_') then print(i,'=',v) end end
 local clientSorted = {}
-local clientTags = {}
-local clientIndex = {}
-local clientFullName = {}
+local clientList = {
+	WoW =	{ index = 1, tag = 'WoW',	name = 'World of Warcraft'},
+	WTCG =	{ index = 2, tag = 'HS',	name = 'Hearthstone'},
+	Hero =	{ index = 3, tag = 'HotS',	name = 'Heroes of the Storm'},
+	Pro =	{ index = 4, tag = 'OW',	name = 'Overwatch'},
+	OSI =	{ index = 5, tag = 'D2',	name = 'Diablo 2: Resurrected'},
+	D3 =	{ index = 6, tag = 'D3',	name = 'Diablo 3'},
+	S1 =	{ index = 7, tag = 'SC',	name = 'Starcraft'},
+	S2 =	{ index = 8, tag = 'SC2',	name = 'Starcraft 2'},
+	W3 =	{ index = 9, tag = 'WC3',	name = 'Warcraft 3: Reforged'},
+	RTRO =	{ index = 10, tag = 'AC',	name = 'Arcade Collection'},
+	WLBY =	{ index = 11, tag = 'CB4',	name = 'Crash Bandicoot 4'},
+	VIPR =	{ index = 12, tag = 'BO4',	name = 'COD: Black Ops 4'},
+	ODIN =	{ index = 13, tag = 'MW',	name = 'COD: Modern Warfare'},
+	LAZR =	{ index = 14, tag = 'MW2',	name = 'COD: Modern Warfare 2'},
+	ZEUS =	{ index = 15, tag = 'CW',	name = 'COD: Cold War'},
+	FORE =	{ index = 16, tag = 'VG',	name = 'COD: Vanguard'},
+	App =	{ index = 17, tag = 'App',	name = 'App'},
+	BSAp =	{ index = 18, tag = L["Mobile"], name = L["Mobile"]}
+}
 
-for i, val in next, {
-	{'WoW','WoW','World of Warcraft'},
-	{'WTCG','HS','Hearthstone'},
-	{'Hero','HotS','Heroes of the Storm'},
-	{'Pro','OW','Overwatch'},
-	{'OSI','D2','Diablo 2: Resurrected'},
-	{'D3','D3','Diablo 3'},
-	{'S1','SC','Starcraft'},
-	{'S2','SC2','Starcraft 2'},
-	{'W3','WC3','Warcraft 3: Reforged'},
-	{'RTRO','AC','Arcade Collection'},
-	{'WLBY','CB4','Crash Bandicoot 4'},
-	{'VIPR','BO4','COD: Black Ops 4'},
-	{'ODIN','MW','COD: Modern Warfare'},
-	{'LAZR','MW2','COD: Modern Warfare 2'},
-	{'ZEUS','CW','COD: Cold War'},
-	{'FORE','VG','COD: Vanguard'},
-	{'App','App','App'},
-	{'BSAp',L["Mobile"],L["Mobile"]}
-} do
-	local name = val[1]
-	clientIndex[name] = i
-	clientTags[name] = val[2]
-	clientFullName[name] = val[3]
+DT.clientFullName = {}
+for key, data in next, clientList do
+	DT.clientFullName[key] = data.name
 end
-
-DT.clientFullName = clientFullName
 
 local function inGroup(name, realmName)
 	if realmName and realmName ~= '' and realmName ~= E.myrealm then
@@ -224,8 +218,9 @@ end
 --Sort client by statically given index (this is a `pairs by keys` sorting method)
 local function clientSort(a, b)
 	if a and b then
-		if clientIndex[a] and clientIndex[b] then
-			return clientIndex[a] < clientIndex[b]
+		local A, B = clientList[a], clientList[b]
+		if A and B then
+			return A.index < B.index
 		end
 		return a < b
 	end
@@ -516,7 +511,8 @@ local function OnEnter()
 						end
 
 						if not shouldSkip then
-							local header = format('%s (%s)', battleNetString, info.classicText or clientTags[client] or client)
+							local clientInfo = clientList[client]
+							local header = format('%s (%s)', battleNetString, info.classicText or (clientInfo and clientInfo.tag) or client)
 							if info.client and info.client == wowString then
 								classc = E:ClassColor(info.className)
 								if info.level and info.level ~= '' then
