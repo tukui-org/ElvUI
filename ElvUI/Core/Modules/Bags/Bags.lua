@@ -1027,7 +1027,7 @@ end
 function B:TotalSlotsChanged(bagFrame)
 	local total = 0
 	for _, bagID in next, bagFrame.BagIDs do
-		total = total + GetContainerNumSlots(bagID)
+		total = total + (bagID == -2 and GetKeyRingSize() or GetContainerNumSlots(bagID))
 	end
 
 	return bagFrame.totalSlots ~= total
