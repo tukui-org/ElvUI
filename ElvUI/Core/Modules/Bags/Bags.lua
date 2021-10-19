@@ -1422,7 +1422,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end
 
 		if i == 1 then
-			holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 4)
+			holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
 		else
 			holder:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', 4, 0)
 		end
