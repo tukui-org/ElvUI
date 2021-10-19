@@ -895,6 +895,7 @@ function B:Layout(isBank)
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
 
+	local lastButton, lastRowButton, newBag
 	local buttonSpacing = isBank and B.db.bankButtonSpacing or B.db.bagButtonSpacing
 	local buttonSize = E:Scale(isBank and B.db.bankSize or B.db.bagSize)
 	local containerWidth = ((isBank and B.db.bankWidth) or B.db.bagWidth)
@@ -905,17 +906,12 @@ function B:Layout(isBank)
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 	local reverseSlots = B.db.reverseSlots
 
+	f.totalSlots = 0
 	f.holderFrame:SetWidth(holderWidth)
+
 	if E.Retail and isBank then
 		f.reagentFrame:SetWidth(holderWidth)
 	end
-
-	local lastButton, lastRowButton, newBag
-	local numContainerSlots = isBank and 8 or 5
-
-	f.totalSlots = 0
-	f.holderFrame:SetWidth(holderWidth)
-	f.ContainerHolder:SetSize(((buttonSize + E.Border * 2) * numContainerSlots) + E.Border * 2, buttonSize + (E.Border * 4))
 
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -928,10 +924,11 @@ function B:Layout(isBank)
 		end
 
 		--Bag Slots
-		local isKeyRing = bagID == -2
 		local bag = f.Bags[bagID]
+		local isKeyRing = bagID == -2
 		local numSlots = isKeyRing and GetKeyRingSize() or GetContainerNumSlots(bagID)
 		local hasSlots = numSlots > 0
+
 		bag.numSlots = numSlots
 		bag:SetShown(isKeyRing and B.ShowKeyRing or not isKeyRing and hasSlots)
 
@@ -1381,6 +1378,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
+	f.ContainerHolder.totalBags = #f.BagIDs
 	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
@@ -1424,9 +1422,13 @@ function B:ConstructContainerFrame(name, isBank)
 		end
 
 		if i == 1 then
-			holder:Point('BOTTOMLEFT', f.ContainerHolder, 'BOTTOMLEFT', 4, 4)
+			holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 4)
 		else
 			holder:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', 4, 0)
+		end
+
+		if i == f.ContainerHolder.totalBags then
+			f.ContainerHolder:Point('TOPRIGHT', holder, 4, 4)
 		end
 
 		local bag = CreateFrame('Frame', format('%sBag%d', name, bagNum), f.holderFrame)
