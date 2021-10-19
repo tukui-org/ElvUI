@@ -104,12 +104,12 @@ function E:PixelScaleChanged(event)
 	E:Config_UpdateSize(true) -- Reposition config
 end
 
-function E:Scale(n)
+function E:Scale(x)
 	local m = E.mult
-	if m == 1 or n == 0 then
-		return n
+	if m == 1 or x == 0 then
+		return x
 	else
 		local y = m > 1 and m or -m
-		return n - n % (n < 0 and y or -y)
+		return x - x % (x < 0 and y or -y)
 	end
 end
