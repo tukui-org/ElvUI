@@ -70,23 +70,26 @@ function UF:Configure_Portrait(frame)
 			portrait.backdrop:Hide()
 
 			if portrait.db.fullOverlay then
-				portrait:SetAllPoints(frame.Health)
+				portrait:SetInside(frame.Health, 0, 0)
 			else
 				local healthTex = frame.Health:GetStatusBarTexture()
-				if db.health.reverseFill then
-					portrait:Point('TOPLEFT', healthTex, 'TOPLEFT')
-					portrait:Point('BOTTOMLEFT', healthTex, 'BOTTOMLEFT')
-					portrait:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT')
+				local orientation = frame.Health:GetOrientation()
+				if orientation == 'VERTICAL' then
+					if db.health.reverseFill then
+						portrait:SetInside(frame.Health, 0, 0, healthTex)
+					else
+						portrait:SetInside(healthTex, 0, 0, frame.Health)
+					end
+				elseif db.health.reverseFill then
+					portrait:SetInside(healthTex, 0, 0, frame.Health)
 				else
-					portrait:Point('TOPLEFT', frame.Health, 'TOPLEFT')
-					portrait:Point('BOTTOMRIGHT', healthTex, 'BOTTOMRIGHT')
-					portrait:Point('BOTTOMLEFT', healthTex, 'BOTTOMLEFT')
+					portrait:SetInside(frame.Health, 0, 0, healthTex)
 				end
 			end
 		else
 			portrait:SetAlpha(1)
 			portrait.backdrop:Show()
-			portrait:SetInside(portrait.backdrop, UF.BORDER)
+			portrait:SetInside(portrait.backdrop, UF.BORDER, UF.BORDER)
 
 			if frame.ORIENTATION == 'LEFT' then
 				portrait.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', UF.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+UF.SPACING) or -UF.SPACING)
