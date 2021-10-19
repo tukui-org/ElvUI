@@ -110,6 +110,6 @@ function E:Scale(n)
 		return n
 	else
 		local y = m > 1 and m or -m
-		return n - n % (n > 0 and -y or y)
+		return n - n % (n < 0 and y or -y)
 	end
 end
