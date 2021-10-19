@@ -131,64 +131,35 @@ local statusTable = {
 
 -- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=='string' and i:match('BNET_CLIENT_') then print(i,'=',v) end end
 local clientSorted = {}
-local clientTags = {
-	[_G.BNET_CLIENT_WOW] = 'WoW',
-	[_G.BNET_CLIENT_WTCG] = 'HS',
-	[_G.BNET_CLIENT_HEROES] = 'HotS',
-	[_G.BNET_CLIENT_OVERWATCH] = 'OW',
-	[_G.BNET_CLIENT_D2] = 'D2',
-	[_G.BNET_CLIENT_D3] = 'D3',
-	[_G.BNET_CLIENT_SC] = 'SC',
-	[_G.BNET_CLIENT_SC2] = 'SC2',
-	[_G.BNET_CLIENT_WC3] = 'WC3',
-	[_G.BNET_CLIENT_ARCADE] = 'AC',
-	[_G.BNET_CLIENT_CRASH4] = 'CB4',
-	[_G.BNET_CLIENT_COD] = 'BO4',
-	[_G.BNET_CLIENT_COD_MW] = 'MW',
-	[_G.BNET_CLIENT_COD_MW2] = 'MW2',
-	[_G.BNET_CLIENT_COD_BOCW] = 'CW',
-	BSAp = L["Mobile"],
-}
+local clientTags = {}
+local clientIndex = {}
+local clientFullName = {}
 
-local clientIndex = {
-	[_G.BNET_CLIENT_WOW] = 1,
-	[_G.BNET_CLIENT_WTCG] = 2,
-	[_G.BNET_CLIENT_HEROES] = 3,
-	[_G.BNET_CLIENT_OVERWATCH] = 4,
-	[_G.BNET_CLIENT_D2] = 5,
-	[_G.BNET_CLIENT_D3] = 6,
-	[_G.BNET_CLIENT_SC] = 7,
-	[_G.BNET_CLIENT_SC2] = 8,
-	[_G.BNET_CLIENT_WC3] = 9,
-	[_G.BNET_CLIENT_ARCADE] = 10,
-	[_G.BNET_CLIENT_CRASH4] = 11,
-	[_G.BNET_CLIENT_COD] = 12,
-	[_G.BNET_CLIENT_COD_MW] = 13,
-	[_G.BNET_CLIENT_COD_MW2] = 14,
-	[_G.BNET_CLIENT_COD_BOCW] = 15,
-	App = 16,
-	BSAp = 17,
-}
-
-local clientFullName = {
-	[_G.BNET_CLIENT_WOW] = "World of Warcraft",
-	[_G.BNET_CLIENT_WTCG] = "Hearthstone",
-	[_G.BNET_CLIENT_HEROES] = "Heroes of the Storm",
-	[_G.BNET_CLIENT_OVERWATCH] = "Overwatch",
-	[_G.BNET_CLIENT_D2] = "Diablo 2: Resurrected",
-	[_G.BNET_CLIENT_D3] = "Diablo 3",
-	[_G.BNET_CLIENT_SC] = "Starcraft",
-	[_G.BNET_CLIENT_SC2] = "Starcraft 2",
-	[_G.BNET_CLIENT_WC3] = "Warcraft 3: Reforged",
-	[_G.BNET_CLIENT_ARCADE] = "Arcade Collection",
-	[_G.BNET_CLIENT_CRASH4] = "Crash Bandicoot 4",
-	[_G.BNET_CLIENT_COD] = "COD: Black Ops 4",
-	[_G.BNET_CLIENT_COD_MW] = "COD: Modern Warfare",
-	[_G.BNET_CLIENT_COD_MW2] = "COD: Modern Warfare 2",
-	[_G.BNET_CLIENT_COD_BOCW] = "COD: Cold War",
-	App = "App",
-	BSAp = L["Mobile"],
-}
+for i, val in next, {
+	{'WoW','WoW','World of Warcraft'},
+	{'WTCG','HS','Hearthstone'},
+	{'Hero','HotS','Heroes of the Storm'},
+	{'Pro','OW','Overwatch'},
+	{'OSI','D2','Diablo 2: Resurrected'},
+	{'D3','D3','Diablo 3'},
+	{'S1','SC','Starcraft'},
+	{'S2','SC2','Starcraft 2'},
+	{'W3','WC3','Warcraft 3: Reforged'},
+	{'RTRO','AC','Arcade Collection'},
+	{'WLBY','CB4','Crash Bandicoot 4'},
+	{'VIPR','BO4','COD: Black Ops 4'},
+	{'ODIN','MW','COD: Modern Warfare'},
+	{'LAZR','MW2','COD: Modern Warfare 2'},
+	{'ZEUS','CW','COD: Cold War'},
+	{'FORE','VG','COD: Vanguard'},
+	{'App','App','App'},
+	{'BSAp',L["Mobile"],L["Mobile"]}
+} do
+	local name = val[1]
+	clientIndex[name] = i
+	clientTags[name] = val[2]
+	clientFullName[name] = val[3]
+end
 
 DT.clientFullName = clientFullName
 
