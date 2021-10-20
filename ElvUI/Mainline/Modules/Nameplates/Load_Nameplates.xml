@@ -1,3 +1,3 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='Plugins\PVPRole.lua'/>
+	<Script file='PVPRole.lua'/>
 </Ui>
