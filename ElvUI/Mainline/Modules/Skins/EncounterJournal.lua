@@ -312,9 +312,8 @@ function S:Blizzard_EncounterJournal()
 	end)
 
 	-- Loot buttons
-	local items = _G.EncounterJournal.encounter.info.lootScroll.buttons
-	for i = 1, #items do
-		local item = items[i].lootFrame
+	for i, items in next, _G.EncounterJournal.encounter.info.lootScroll.buttons do
+		local item = items.lootFrame
 
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
@@ -350,12 +349,10 @@ function S:Blizzard_EncounterJournal()
 			item.armorType:SetTextColor(1, 1, 1)
 		end
 
-		-- Fix me or delete me??
-		--[[if i == 1 then
-			item:ClearAllPoints()
-			item:Point('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 'TOPLEFT', 5, 0)
+		if i == 1 then
+			items:ClearAllPoints()
+			items:Point('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 10, 0)
 		end
-		--]]
 	end
 
 	-- Search
