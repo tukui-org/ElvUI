@@ -431,6 +431,8 @@ function M:Initialize()
 		tinsert(frames, _G.MinimapToggleButton)
 	elseif E.Retail then
 		tinsert(frames, _G.MiniMapTracking)
+	elseif E.Classic then
+		tinsert(frames, _G.MiniMapWorldMapButton)
 	end
 
 	for _, frame in pairs(frames) do
