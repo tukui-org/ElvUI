@@ -1408,9 +1408,11 @@ local function HyperLinkedCPL(data)
 		local chatID = strsub(data, 5)
 		local chat = _G[format('ChatFrame%d', chatID)]
 		if not chat then return end
+
 		local scale = chat:GetEffectiveScale() --blizzard does this with `scale = UIParent:GetScale()`
 		local cursorX, cursorY = GetCursorPosition()
 		cursorX, cursorY = (cursorX / scale), (cursorY / scale)
+
 		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(cursorX, cursorY)
 		if lineIndex then
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
