@@ -74,6 +74,10 @@ E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] 
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
 E.UserList = {}
 
+if E.Retail then
+	E.myspec = GetSpecialization()
+end
+
 -- oUF Defines
 E.oUF.Tags.Vars.E = E
 E.oUF.Tags.Vars.L = L

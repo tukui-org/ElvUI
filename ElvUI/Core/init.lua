@@ -125,6 +125,10 @@ do
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
 
+	if E.Retail then
+		E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	end
+
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
