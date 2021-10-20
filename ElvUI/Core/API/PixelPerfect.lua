@@ -55,7 +55,7 @@ function E:UIScale()
 		UIParent:SetScale(E.global.general.UIScale)
 
 		E.uiscale = UIParent:GetScale()
-		E.mult = E.perfect / UIParent:GetScale()
+		E.mult = E.perfect / E.uiscale
 		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 
 		local width, height = E.physicalWidth, E.physicalHeight
