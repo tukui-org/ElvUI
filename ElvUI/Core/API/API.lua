@@ -4,10 +4,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local wipe, date, max = wipe, date, max
-local type, ipairs, pairs = type, ipairs, pairs
-local strfind, tonumber, tostring = strfind, tonumber, tostring
-local strlen, CreateFrame = strlen, CreateFrame
+local wipe, date, max, format = wipe, date, max, format
+local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
+local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
+
+local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -29,6 +30,12 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
+local hooksecurefunc = hooksecurefunc
+
+local HideUIPanel = HideUIPanel
+local GameMenuButtonAddons = GameMenuButtonAddons
+local GameMenuButtonLogout = GameMenuButtonLogout
+local GameMenuFrame = GameMenuFrame
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
@@ -540,6 +547,24 @@ function E:GetUnitBattlefieldFaction(unit)
 	return englishFaction, localizedFaction
 end
 
+function E:PositionGameMenuButton()
+	if E.Retail then
+		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
+	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+
+	local button = GameMenuFrame[E.name]
+	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
+
+	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
+	if relTo ~= button then
+		button:ClearAllPoints()
+		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+		GameMenuButtonLogout:ClearAllPoints()
+		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+	end
+end
+
 function E:NEUTRAL_FACTION_SELECT_RESULT()
 	E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 end
@@ -601,5 +626,20 @@ function E:LoadAPI()
 				Frame:UnregisterEvent(event)
 			end
 		end)
+	end
+
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	GameMenuButton:SetScript('OnClick', function()
+		E:ToggleOptionsUI() --We already prevent it from opening in combat
+		if not InCombatLockdown() then
+			HideUIPanel(GameMenuFrame)
+		end
+	end)
+	GameMenuFrame[E.name] = GameMenuButton
+
+	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
+		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 end

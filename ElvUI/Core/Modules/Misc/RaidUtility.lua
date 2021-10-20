@@ -408,4 +408,4 @@ function RU:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'ToggleRaidUtil')
 end
 
-E:RegisterInitialModule(RU:GetName())
+E:RegisterModule(RU:GetName())
