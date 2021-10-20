@@ -48,6 +48,10 @@ function E:IsUltrawide(width, height)
 	end
 end
 
+function E:UIMult()
+	E.mult = E.perfect / E.global.general.UIScale
+end
+
 function E:UIScale()
 	if InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
@@ -56,7 +60,6 @@ function E:UIScale()
 
 		E.uiscale = UIParent:GetScale()
 		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
-		E.mult = E.perfect / E.uiscale
 
 		local width, height = E.physicalWidth, E.physicalHeight
 		E.eyefinity = E:IsEyefinity(width, height)
@@ -97,6 +100,7 @@ function E:PixelScaleChanged(event)
 		E.perfect = 768 / E.physicalHeight
 	end
 
+	E:UIMult()
 	E:UIScale()
 
 	E:Config_UpdateSize(true) -- Reposition config

@@ -193,6 +193,7 @@ function E:OnInitialize()
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
 
+	E:UIMult()
 	E:UpdateMedia()
 	E:InitializeInitialModules()
 
