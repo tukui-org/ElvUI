@@ -286,4 +286,4 @@ function M:Initialize()
 	-- SetCVar('mapFade', E.global.general.fadeMapWhenMoving and 1 or 0)
 end
 
-E:RegisterInitialModule(M:GetName())
+E:RegisterModule(M:GetName())

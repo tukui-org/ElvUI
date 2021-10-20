@@ -74,6 +74,10 @@ E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] 
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
 E.UserList = {}
 
+if E.Retail then
+	E.myspec = GetSpecialization()
+end
+
 -- oUF Defines
 E.oUF.Tags.Vars.E = E
 E.oUF.Tags.Vars.L = L
@@ -1908,6 +1912,7 @@ function E:Initialize()
 	E:LoadMovers()
 	E:UpdateMedia()
 	E:UpdateCooldownSettings('all')
+	E:Contruct_StaticPopups()
 
 	if E.Retail then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
@@ -1915,6 +1920,13 @@ function E:Initialize()
 	end
 
 	E.initialized = true
+
+	if E.private.general.minimap.enable then
+		E.Minimap:SetGetMinimapShape()
+		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+	else
+		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+	end
 
 	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= 0.33) then
 		E:SetSmoothingAmount(E.db.general.smoothingAmount)

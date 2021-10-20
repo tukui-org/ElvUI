@@ -32,6 +32,19 @@ function S:QuestInfoSealFrameText(text)
 	end
 end
 
+local function GreetingPanel_OnShow(frame)
+	for button in frame.titleButtonPool:EnumerateActive() do
+		button.Icon:SetDrawLayer('ARTWORK')
+
+		if E.private.skins.parchmentRemoverEnable then
+			local text = button:GetFontString():GetText()
+			if text and strfind(text, '|cff000000') then
+				button:GetFontString():SetText(gsub(text, '|cff000000', '|cffffe519'))
+			end
+		end
+	end
+end
+
 local function HandleReward(frame)
 	if not frame then return end
 
@@ -404,18 +417,8 @@ function S:BlizzardQuestFrames()
 	_G.QuestProgressScrollFrame:CreateBackdrop('Transparent')
 	_G.QuestGreetingScrollFrame:CreateBackdrop('Transparent')
 
-	_G.QuestFrameGreetingPanel:HookScript('OnShow', function(frame)
-		for button in frame.titleButtonPool:EnumerateActive() do
-			button.Icon:SetDrawLayer('ARTWORK')
-
-			if E.private.skins.parchmentRemoverEnable then
-				local text = button:GetFontString():GetText()
-				if text and strfind(text, '|cff000000') then
-					button:GetFontString():SetText(gsub(text, '|cff000000', '|cffffe519'))
-				end
-			end
-		end
-	end)
+	_G.QuestFrameGreetingPanel:HookScript('OnShow', GreetingPanel_OnShow) -- called when actually shown
+	hooksecurefunc('QuestFrameGreetingPanel_OnShow', GreetingPanel_OnShow) -- called through QUEST_LOG_UPDATE
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestFrameProgressItems_Update', S.QuestFrameProgressItems_Update)

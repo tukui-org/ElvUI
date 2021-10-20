@@ -5,25 +5,17 @@
 ]]
 
 local _G = _G
-local unpack = unpack
 local format, gsub, pairs, type = format, gsub, pairs, type
 
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local CreateFrame = CreateFrame
-local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
-local HideUIPanel = HideUIPanel
-local hooksecurefunc = hooksecurefunc
-local IsAddOnLoaded = IsAddOnLoaded
 local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
 local GetLocale = GetLocale
 local GetTime = GetTime
 
-local GameMenuButtonAddons = GameMenuButtonAddons
-local GameMenuButtonLogout = GameMenuButtonLogout
-local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
 _G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
@@ -133,6 +125,10 @@ do
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
 
+	if E.Retail then
+		E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	end
+
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
@@ -201,56 +197,15 @@ function E:OnInitialize()
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
 
-	E:UIScale(true)
+	E:UIMult()
 	E:UpdateMedia()
-	E:Contruct_StaticPopups()
 	E:InitializeInitialModules()
-
-	if E.private.general.minimap.enable then
-		E.Minimap:SetGetMinimapShape()
-		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
-	else
-		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
-	end
 
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
-	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetScript('OnClick', function()
-		E:ToggleOptionsUI() --We already prevent it from opening in combat
-		if not InCombatLockdown() then
-			HideUIPanel(GameMenuFrame)
-		end
-	end)
-	GameMenuFrame[E.name] = GameMenuButton
-
-	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
-		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
-	end
-
 	E.loadedtime = GetTime()
-end
-
-function E:PositionGameMenuButton()
-	if E.Retail then
-		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	end
-	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
-
-	local button = GameMenuFrame[E.name]
-	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
-
-	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
-	if relTo ~= button then
-		button:ClearAllPoints()
-		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
-		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
-	end
 end
 
 function E:ResetProfile()

@@ -49,7 +49,7 @@ function S:BlizzardMiscFrames()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	if not IsAddOnLoaded('ConsolePortUI_Menu') then
+	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
 		-- reskin all esc/menu buttons
 		for _, Button in pairs({_G.GameMenuFrame:GetChildren()}) do
 			if Button.IsObjectType and Button:IsObjectType('Button') then
@@ -64,7 +64,7 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrameHeader:Point('TOP', _G.GameMenuFrame, 0, 7)
 	end
 
-	if IsAddOnLoaded('OptionHouse') then
+	if E:IsAddOnEnabled('OptionHouse') then
 		S:HandleButton(_G.GameMenuButtonOptionHouse)
 	end
 
@@ -75,7 +75,8 @@ function S:BlizzardMiscFrames()
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:SetTemplate('Transparent')
-			s:SetScale(_G.UIParent:GetScale())
+			s:SetScale(E.uiscale)
+
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
 			local resumeButton = s.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
@@ -89,7 +90,7 @@ function S:BlizzardMiscFrames()
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
 	hooksecurefunc('MovieFrame_PlayMovie', function(s)
 		if s and s.CloseDialog and not s.CloseDialog.template then
-			s:SetScale(_G.UIParent:GetScale())
+			s:SetScale(E.uiscale)
 			s.CloseDialog:StripTextures()
 			s.CloseDialog:SetTemplate('Transparent')
 			S:HandleButton(s.CloseDialog.ConfirmButton)

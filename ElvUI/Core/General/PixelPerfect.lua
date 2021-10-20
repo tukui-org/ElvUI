@@ -48,10 +48,12 @@ function E:IsUltrawide(width, height)
 	end
 end
 
-function E:UIScale(init) -- `init` will be the `event` if its triggered after combat
-	if init == true then -- E.OnInitialize
-		E.mult = E.perfect / E.global.general.UIScale
-	elseif InCombatLockdown() then
+function E:UIMult()
+	E.mult = E.perfect / E.global.general.UIScale
+end
+
+function E:UIScale()
+	if InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
 		UIParent:SetScale(E.global.general.UIScale)
@@ -98,8 +100,8 @@ function E:PixelScaleChanged(event)
 		E.perfect = 768 / E.physicalHeight
 	end
 
-	E:UIScale(true) -- Repopulate variables
-	E:UIScale() -- Setup the scale
+	E:UIMult()
+	E:UIScale()
 
 	E:Config_UpdateSize(true) -- Reposition config
 end

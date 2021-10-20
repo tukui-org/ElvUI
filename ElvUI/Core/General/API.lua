@@ -4,10 +4,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local wipe, date, max = wipe, date, max
-local type, ipairs, pairs = type, ipairs, pairs
-local strfind, tonumber, tostring = strfind, tonumber, tostring
-local strlen, CreateFrame = strlen, CreateFrame
+local wipe, date, max, format = wipe, date, max, format
+local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
+local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
+
+local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -29,6 +30,12 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
+local hooksecurefunc = hooksecurefunc
+
+local HideUIPanel = HideUIPanel
+local GameMenuButtonAddons = GameMenuButtonAddons
+local GameMenuButtonLogout = GameMenuButtonLogout
+local GameMenuFrame = GameMenuFrame
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
@@ -174,17 +181,17 @@ function E:GetPlayerRole()
 end
 
 function E:CheckRole()
-	self.myspec = GetSpecialization()
-	self.myrole = E:GetPlayerRole()
+	E.myspec = GetSpecialization()
+	E.myrole = E:GetPlayerRole()
 
-	local dispel = self.DispelClasses[self.myclass]
-	if self.myrole and (self.myclass ~= 'PRIEST' and dispel ~= nil) then
-		dispel.Magic = (self.myrole == 'HEALER')
+	local dispel = E.DispelClasses[E.myclass]
+	if E.myrole and (E.myclass ~= 'PRIEST' and dispel ~= nil) then
+		dispel.Magic = (E.myrole == 'HEALER')
 	end
 end
 
 function E:IsDispellableByMe(debuffType)
-	local dispel = self.DispelClasses[self.myclass]
+	local dispel = E.DispelClasses[E.myclass]
 	return dispel and dispel[debuffType]
 end
 
@@ -431,7 +438,7 @@ end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	if E.Retail then
-		self:CheckRole()
+		E:CheckRole()
 	end
 
 	if initLogin or not ElvDB.DisabledAddOns then
@@ -439,39 +446,39 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	end
 
 	if initLogin or isReload then
-		self:CheckIncompatible()
+		E:CheckIncompatible()
 	end
 
-	if not self.MediaUpdated then
-		self:UpdateMedia()
-		self.MediaUpdated = true
+	if not E.MediaUpdated then
+		E:UpdateMedia()
+		E.MediaUpdated = true
 	end
 
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' then
-		self.BGTimer = self:ScheduleRepeatingTimer('RequestBGInfo', 5)
-		self:RequestBGInfo()
-	elseif self.BGTimer then
-		self:CancelTimer(self.BGTimer)
-		self.BGTimer = nil
+		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
+		E:RequestBGInfo()
+	elseif E.BGTimer then
+		E:CancelTimer(E.BGTimer)
+		E.BGTimer = nil
 	end
 end
 
 function E:PLAYER_REGEN_ENABLED()
-	if self.CVarUpdate then
-		for cvarName, value in pairs(self.LockedCVars) do
-			if not self.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value) then
+	if E.CVarUpdate then
+		for cvarName, value in pairs(E.LockedCVars) do
+			if not E.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value) then
 				SetCVar(cvarName, value)
 			end
 		end
 
-		self.CVarUpdate = nil
+		E.CVarUpdate = nil
 	end
 
-	if self.ShowOptionsUI then
-		self:ToggleOptionsUI()
+	if E.ShowOptionsUI then
+		E:ToggleOptionsUI()
 
-		self.ShowOptionsUI = nil
+		E.ShowOptionsUI = nil
 	end
 end
 
@@ -479,15 +486,15 @@ function E:PLAYER_REGEN_DISABLED()
 	local err
 
 	if IsAddOnLoaded('ElvUI_OptionsUI') then
-		local ACD = self.Libs.AceConfigDialog
+		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			ACD:Close('ElvUI')
 			err = true
 		end
 	end
 
-	if self.CreatedMovers then
-		for name in pairs(self.CreatedMovers) do
+	if E.CreatedMovers then
+		for name in pairs(E.CreatedMovers) do
 			local mover = _G[name]
 			if mover and mover:IsShown() then
 				mover:Hide()
@@ -497,7 +504,7 @@ function E:PLAYER_REGEN_DISABLED()
 	end
 
 	if err then
-		self:Print(ERR_NOT_IN_COMBAT)
+		E:Print(ERR_NOT_IN_COMBAT)
 	end
 end
 
@@ -538,6 +545,24 @@ function E:GetUnitBattlefieldFaction(unit)
 	end
 
 	return englishFaction, localizedFaction
+end
+
+function E:PositionGameMenuButton()
+	if E.Retail then
+		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
+	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+
+	local button = GameMenuFrame[E.name]
+	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
+
+	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
+	if relTo ~= button then
+		button:ClearAllPoints()
+		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+		GameMenuButtonLogout:ClearAllPoints()
+		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+	end
 end
 
 function E:NEUTRAL_FACTION_SELECT_RESULT()
@@ -601,5 +626,20 @@ function E:LoadAPI()
 				Frame:UnregisterEvent(event)
 			end
 		end)
+	end
+
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	GameMenuButton:SetScript('OnClick', function()
+		E:ToggleOptionsUI() --We already prevent it from opening in combat
+		if not InCombatLockdown() then
+			HideUIPanel(GameMenuFrame)
+		end
+	end)
+	GameMenuFrame[E.name] = GameMenuButton
+
+	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
+		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 end
