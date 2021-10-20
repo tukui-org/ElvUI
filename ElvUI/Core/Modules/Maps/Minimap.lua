@@ -424,6 +424,7 @@ function M:Initialize()
 		_G.MinimapZoomOut,
 		_G.MinimapNorthTag,
 		_G.MinimapZoneTextButton,
+		_G.MiniMapWorldMapButton,
 		_G.MiniMapMailBorder
 	}
 
@@ -431,8 +432,6 @@ function M:Initialize()
 		tinsert(frames, _G.MinimapToggleButton)
 	elseif E.Retail then
 		tinsert(frames, _G.MiniMapTracking)
-	elseif E.Classic then
-		tinsert(frames, _G.MiniMapWorldMapButton)
 	end
 
 	for _, frame in pairs(frames) do
@@ -460,8 +459,6 @@ function M:Initialize()
 		_G.GuildInstanceDifficulty:SetParent(Minimap)
 		_G.MiniMapChallengeMode:SetParent(Minimap)
 	end
-
-	_G.MiniMapWorldMapButton:Hide()
 
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
