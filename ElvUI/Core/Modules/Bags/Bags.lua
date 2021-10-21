@@ -932,7 +932,7 @@ function B:Layout(isBank)
 
 		--Bag Slots
 		local bag = f.Bags[bagID]
-		local isKeyRing = bagID == -2
+		local isKeyRing = bagID == KEYRING_CONTAINER
 		local numSlots = isKeyRing and GetKeyRingSize() or GetContainerNumSlots(bagID)
 		local hasSlots = numSlots > 0
 
@@ -1034,7 +1034,7 @@ end
 function B:TotalSlotsChanged(bagFrame)
 	local total = 0
 	for _, bagID in next, bagFrame.BagIDs do
-		total = total + (bagID == -2 and GetKeyRingSize() or GetContainerNumSlots(bagID))
+		total = total + (bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID))
 	end
 
 	return bagFrame.totalSlots ~= total
@@ -1389,9 +1389,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
-		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
-		local bagName = bagID == 0 and 'ElvUIMainBagBackpack' or bagID == -2 and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
-		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 or bagID == -2) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+		local bagNum = isBank and (bagID == -1 and BACKPACK_CONTAINER or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
+		local bagName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
+		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), bagName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
@@ -1803,7 +1803,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.ScrapIcon:Hide()
 	end
 
-	if bagID == -2 then
+	if bagID == KEYRING_CONTAINER then
 		slot.keyringTexture = slot:CreateTexture(nil, 'BORDER')
 		slot.keyringTexture:SetAlpha(.5)
 		slot.keyringTexture:SetInside(slot)
@@ -1912,7 +1912,7 @@ function B:ConstructReagentSlot(f, slotID)
 end
 
 function B:ToggleBags(id)
-	if E.private.bags.bagBar and id == -2 then
+	if E.private.bags.bagBar and id == KEYRING_CONTAINER then
 		local closed = not B.BagFrame:IsShown()
 		B.ShowKeyRing = closed or not B.ShowKeyRing
 
