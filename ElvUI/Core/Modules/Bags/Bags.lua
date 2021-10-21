@@ -610,6 +610,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 end
 
+function B:GetContainerNumSlots(bagID)
+	return bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
+end
+
 function B:UpdateReagentSlot(slotID)
 	local bagID = REAGENTBANK_CONTAINER
 	local bag = B.BankFrame and B.BankFrame.Bags[bagID]
@@ -666,7 +670,7 @@ function B:UpdateBagSlots(frame, bagID)
 			B:UpdateReagentSlot(i)
 		end
 	else
-		local slotMax = bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
+		local slotMax = B:GetContainerNumSlots(bagID)
 		for slotID = 1, slotMax do
 			B:UpdateSlot(frame, bagID, slotID)
 		end
@@ -682,7 +686,7 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	bagFrame.sortingSlots = sortingSlots
 
 	for _, bagID in next, bagFrame.BagIDs do
-		local slotMax = bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
+		local slotMax = B:GetContainerNumSlots(bagID)
 		for slotID = 1, slotMax do
 			bagFrame.Bags[bagID][slotID].searchOverlay:SetShown(true)
 		end
@@ -932,8 +936,8 @@ function B:Layout(isBank)
 
 		--Bag Slots
 		local bag = f.Bags[bagID]
+		local numSlots = B:GetContainerNumSlots(bagID)
 		local isKeyRing = bagID == KEYRING_CONTAINER
-		local numSlots = isKeyRing and GetKeyRingSize() or GetContainerNumSlots(bagID)
 		local hasSlots = numSlots > 0
 
 		bag.numSlots = numSlots
@@ -1034,7 +1038,7 @@ end
 function B:TotalSlotsChanged(bagFrame)
 	local total = 0
 	for _, bagID in next, bagFrame.BagIDs do
-		total = total + (bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID))
+		total = total + B:GetContainerNumSlots(bagID)
 	end
 
 	return bagFrame.totalSlots ~= total
