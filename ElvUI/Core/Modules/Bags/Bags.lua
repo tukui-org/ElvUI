@@ -93,7 +93,9 @@ local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
+local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
+local KEYRING_CONTAINER = KEYRING_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 
@@ -157,9 +159,9 @@ local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_
 
 if E.Retail then
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
-	tinsert(bankIDs, 11)
+	tinsert(bankIDs, REAGENTBANK_CONTAINER)
 else
-	tinsert(bagIDs, -2)
+	tinsert(bagIDs, KEYRING_CONTAINER)
 end
 
 function B:GetContainerFrame(arg)
@@ -470,7 +472,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		r, g, b = qR, qG, qB
 	else
 		local bag = slot.bagFrame.Bags[slot.bagID]
-		local colors = bag and ((slot.bagID == -2 and B.KeyRingColor) or (B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
+		local colors = bag and ((slot.bagID == KEYRING_CONTAINER and B.KeyRingColor) or (B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
 			r, g, b, a = unpack(colors)
 		end
@@ -496,7 +498,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
-	local keyring = not E.Retail and (bagID == -2)
+	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
@@ -522,16 +524,15 @@ function B:UpdateSlot(frame, bagID, slotID)
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
-		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
+		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
 
-		if not slot.rarity then slot.rarity = itemRarity end
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		end
 
 		if B.db.itemLevel then
-			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
+			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, rarity)
 			local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
 
 			if iLvl and iLvl >= B.db.itemLevelThreshold then
@@ -539,7 +540,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if B.db.showBindType and (bindType == 2 or bindType == 3) and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+		if B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -608,7 +609,8 @@ end
 
 function B:UpdateReagentSlot(slotID)
 	local bagID = REAGENTBANK_CONTAINER
-	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
+	local bag = B.BankFrame and B.BankFrame.Bags[bagID]
+	local slot = bag and bag[slotID]
 	if not slot then return end
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
@@ -661,7 +663,8 @@ function B:UpdateBagSlots(frame, bagID)
 			B:UpdateReagentSlot(i)
 		end
 	else
-		for slotID = 1, GetContainerNumSlots(bagID) do
+		local slotMax = bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
+		for slotID = 1, slotMax do
 			B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
@@ -676,7 +679,8 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	bagFrame.sortingSlots = sortingSlots
 
 	for _, bagID in next, bagFrame.BagIDs do
-		for slotID = 1, GetContainerNumSlots(bagID) do
+		local slotMax = bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
+		for slotID = 1, slotMax do
 			bagFrame.Bags[bagID][slotID].searchOverlay:SetShown(true)
 		end
 	end
@@ -1398,24 +1402,28 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:HookScript('OnEnter', function(ch) B.SetSlotAlphaForBag(ch, f) end)
 		holder:HookScript('OnLeave', function(ch) B.ResetSlotAlphaForBags(ch, f) end)
 
-		holder.icon:SetTexture(E.Media.Textures.Backpack)
+		if not E.Retail then
+			holder:SetCheckedTexture('')
+		end
+
+		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and [[Interface\ICONS\INV_Misc_Key_03]] or E.Media.Textures.Backpack)
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
 		holder.icon:SetInside()
 		holder.IconBorder:Kill()
 
 		B:CreateFilterIcon(holder)
 
-		if isBank then
+		if bagID == BACKPACK_CONTAINER then
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
+			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
+		elseif bagID == KEYRING_CONTAINER then
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
+		elseif isBank then
 			holder:SetID(i == 1 and -1 or (bagID - 4))
 			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetInventorySlot()) end)
-		elseif bagID == 0 then -- Backpack needs different setup
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
-			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
-		elseif bagID == -2 then
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
-			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		else
 			holder:SetID(GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
