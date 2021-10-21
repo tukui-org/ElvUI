@@ -159,7 +159,7 @@ local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_
 
 if E.Retail then
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
-	tinsert(bankIDs, REAGENTBANK_CONTAINER)
+	tinsert(bankIDs, 11)
 else
 	tinsert(bagIDs, KEYRING_CONTAINER)
 end
