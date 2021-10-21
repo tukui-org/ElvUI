@@ -385,13 +385,15 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
-local function PostUpdateRunes(self)
-	local useRunes = not UnitHasVehicleUI('player')
-	if useRunes then
+local function PostUpdateRunes(self, _, hasVehicle, allReady)
+	local frame = self.origParent or self:GetParent()
+	local db = frame.db
+
+	if hasVehicle or (allReady and db.classbar.autoHide) then
+		self:Hide()
+	else
 		self:Show()
 		UF.ClassPower_UpdateColor(self, 'RUNES')
-	else
-		self:Hide()
 	end
 end
 
