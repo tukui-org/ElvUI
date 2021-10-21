@@ -47,6 +47,13 @@ if(select(2, UnitClass('player')) ~= 'DEATHKNIGHT') then return end
 local _, ns = ...
 local oUF = ns.oUF
 
+local sort, next = sort, next
+local UnitHasVehicleUI = UnitHasVehicleUI
+local GetSpecialization = GetSpecialization
+local GetRuneCooldown = GetRuneCooldown
+local UnitIsUnit = UnitIsUnit
+local GetTime = GetTime
+
 local runemap = {1, 2, 3, 4, 5, 6}
 local hasSortOrder = false
 
@@ -132,17 +139,18 @@ local function Update(self, event)
 	local element = self.Runes
 
 	if element.sortOrder == 'asc' then
-		table.sort(runemap, ascSort)
+		sort(runemap, ascSort)
 		hasSortOrder = true
 	elseif element.sortOrder == 'desc' then
-		table.sort(runemap, descSort)
+		sort(runemap, descSort)
 		hasSortOrder = true
 	elseif hasSortOrder then
-		table.sort(runemap)
+		sort(runemap)
 		hasSortOrder = false
 	end
 
 	local allReady = true
+	local currentTime = GetTime()
 	local hasVehicle = UnitHasVehicleUI('player')
 	for index, runeID in next, runemap do
 		local rune = element[index]
@@ -159,7 +167,7 @@ local function Update(self, event)
 				rune:SetValue(1)
 				rune:SetScript('OnUpdate', nil)
 			elseif start then
-				rune.duration = GetTime() - start
+				rune.duration = currentTime - start
 				rune:SetMinMaxValues(0, duration)
 				rune:SetValue(0)
 				rune:SetScript('OnUpdate', onUpdate)
