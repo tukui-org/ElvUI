@@ -1181,7 +1181,7 @@ end
 do
 	S.FollowerListUpdateDataFrames = {}
 	local function UpdateData(dataFrame)
-		if not dataFrame or not dataFrame.listScroll or not not S.FollowerListUpdateDataFrames[dataFrame:GetName()] then return end
+		if not (dataFrame and dataFrame.listScroll and S.FollowerListUpdateDataFrames[dataFrame:GetName()]) then return end
 
 		local list = dataFrame.followersList
 		local buttons = dataFrame.listScroll.buttons

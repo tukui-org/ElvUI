@@ -53,15 +53,19 @@ local function SkinMissionBoards(board)
 end
 
 local function UpdateSpellAbilities(spell, followerInfo)
-	local autoSpellInfo = followerInfo.autoSpellAbilities
-	for _ in ipairs(autoSpellInfo) do
+	for _ in ipairs(followerInfo.autoSpellAbilities) do
 		local abilityFrame = spell.autoSpellPool:Acquire()
 		if not abilityFrame.IsSkinned then
 			S:HandleIcon(abilityFrame.Icon, true)
 
+			if abilityFrame.IconMask then
+				abilityFrame.IconMask:Hide()
+			end
+
 			if abilityFrame.SpellBorder then
 				abilityFrame.SpellBorder:Hide()
 			end
+
 			abilityFrame.IsSkinned = true
 		end
 	end
@@ -376,6 +380,7 @@ function S:Blizzard_GarrisonUI()
 				reward.border = CreateFrame('Frame', nil, reward)
 				S:HandleIcon(reward.Icon, reward.border)
 				S:HandleIconBorder(reward.IconBorder, reward.Icon.backdrop)
+
 				hooksecurefunc(reward.Icon, "SetTexture", FixLandingPageRewardBorder)
 				reward.Quantity:SetParent(reward.border)
 				reward:ClearAllPoints()
@@ -664,12 +669,14 @@ function S:GarrisonTooltips()
 		if tooltipFrame.numAbilitiesStyled == nil then
 			tooltipFrame.numAbilitiesStyled = 1
 		end
+
 		local numAbilitiesStyled = tooltipFrame.numAbilitiesStyled
 		local abilities = tooltipFrame.Abilities
 		local ability = abilities[numAbilitiesStyled]
 		while ability do
 			local icon = ability.Icon
 			icon:SetTexCoord(unpack(E.TexCoords))
+
 			if not ability.border then
 				ability.border = CreateFrame('Frame', nil, ability)
 				S:HandleIcon(ability.Icon, ability.border)
@@ -684,12 +691,14 @@ function S:GarrisonTooltips()
 		if tooltipFrame.numTraitsStyled == nil then
 			tooltipFrame.numTraitsStyled = 1
 		end
+
 		local numTraitsStyled = tooltipFrame.numTraitsStyled
 		local traits = tooltipFrame.Traits
 		local trait = traits[numTraitsStyled]
 		while trait do
 			local icon = trait.Icon
 			icon:SetTexCoord(unpack(E.TexCoords))
+
 			if not trait.border then
 				trait.border = CreateFrame('Frame', nil, trait)
 				S:HandleIcon(trait.Icon, trait.border)
