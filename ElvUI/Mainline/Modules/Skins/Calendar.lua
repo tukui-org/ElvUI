@@ -2,11 +2,45 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, select, unpack = ipairs, select, unpack
+local next, select, unpack = next, select, unpack
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local hooksecurefunc = hooksecurefunc
+
+local function SkinContainer(frame, container)
+	frame:StripTextures()
+
+	local child = container or frame.scrollFrame
+	if child and not child.backdrop then
+		child:CreateBackdrop('Transparent')
+	end
+end
+
+local function StripClassTextures(button)
+	for y = 1, button:GetNumRegions() do
+		local region = select(y, button:GetRegions())
+		if region:GetObjectType() == 'Texture' then
+			local texture = region:GetTexture()
+			if texture == [[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]] then
+				local c = CLASS_ICON_TCOORDS[button.class]
+				region:SetTexCoord(c[1] + 0.02, c[2] - 0.02, c[3] + 0.02, c[4] - 0.02)
+				region:SetInside()
+			else
+				region:SetTexture(nil)
+			end
+		end
+	end
+end
+
+local function HandleEventIcon(icon)
+	icon:Size(54)
+	icon:ClearAllPoints()
+	icon:Point('TOPLEFT', _G.CalendarViewEventFrame.HeaderFrame, 'TOPLEFT', 15, -20)
+	icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
+	icon:SetTexCoord(unpack(E.TexCoords))
+	icon.SetTexCoord = E.noop
+end
 
 function S:Blizzard_Calendar()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.calendar) then return end
@@ -24,14 +58,11 @@ function S:Blizzard_Calendar()
 
 	_G.CalendarViewEventDivider:Hide()
 	_G.CalendarCreateEventDivider:Hide()
-	_G.CalendarViewEventInviteList:GetRegions():Hide()
-	_G.CalendarViewEventDescriptionContainer:GetRegions():Hide()
-	select(5, _G.CalendarCreateEventCloseButton:GetRegions()):Hide()
-	select(5, _G.CalendarViewEventCloseButton:GetRegions()):Hide()
-	select(5, _G.CalendarViewHolidayCloseButton:GetRegions()):Hide()
-	select(5, _G.CalendarViewRaidCloseButton:GetRegions()):Hide()
-	select(5, _G.CalendarMassInviteCloseButton:GetRegions()):Hide()
-	--_G.CalendarCreateEventBackground:Hide()
+	SkinContainer(_G.CalendarViewEventInviteList)
+	SkinContainer(_G.CalendarCreateEventInviteList)
+	SkinContainer(_G.CalendarViewEventDescriptionContainer, _G.CalendarViewEventDescriptionScrollFrame)
+	SkinContainer(_G.CalendarCreateEventDescriptionContainer, _G.CalendarCreateEventDescriptionScrollFrame)
+
 	_G.CalendarCreateEventFrameButtonBackground:Hide()
 	_G.CalendarCreateEventMassInviteButtonBorder:Hide()
 	_G.CalendarCreateEventCreateButtonBorder:Hide()
@@ -71,13 +102,8 @@ function S:Blizzard_Calendar()
 	_G.CalendarFilterFrame.backdrop:Point('TOPLEFT', 20, 2)
 	_G.CalendarFilterFrame.backdrop:Point('BOTTOMRIGHT', _G.CalendarFilterButton, 'BOTTOMRIGHT', 2, -2)
 
-	_G.CalendarContextMenu:SetTemplate()
-	_G.CalendarContextMenu.SetBackdropColor = E.noop
-	_G.CalendarContextMenu.SetBackdropBorderColor = E.noop
-
-	_G.CalendarInviteStatusContextMenu:SetTemplate()
-	_G.CalendarInviteStatusContextMenu.SetBackdropColor = E.noop
-	_G.CalendarInviteStatusContextMenu.SetBackdropBorderColor = E.noop
+	_G.CalendarContextMenu:SetTemplate('Transparent')
+	_G.CalendarInviteStatusContextMenu:SetTemplate('Transparent')
 
 	--Boost frame levels
 	for i = 1, 42 do
@@ -95,25 +121,25 @@ function S:Blizzard_Calendar()
 
 		local hl = bu:GetHighlightTexture()
 		hl:SetVertexColor(1, 1, 1, 0.3)
-		hl.SetAlpha = E.noop
 		hl:Point('TOPLEFT', -1, 1)
 		hl:Point('BOTTOMRIGHT')
+		hl.SetAlpha = E.noop
 	end
 
 	_G.CalendarWeekdaySelectedTexture:SetDesaturated(true)
 	_G.CalendarWeekdaySelectedTexture:SetVertexColor(1, 1, 1, 0.6)
 
-	hooksecurefunc('CalendarFrame_SetToday', function()
-		_G.CalendarTodayFrame:SetAllPoints()
-	end)
-
-	_G.CalendarTodayFrame:SetScript('OnUpdate', nil)
-	_G.CalendarTodayTextureGlow:Hide()
 	_G.CalendarTodayTexture:Hide()
+	_G.CalendarTodayTextureGlow:Hide()
 
 	_G.CalendarTodayFrame:SetTemplate()
 	_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	_G.CalendarTodayFrame:SetBackdropColor(0,0,0,0)
+	_G.CalendarTodayFrame:SetScript('OnUpdate', nil)
+
+	hooksecurefunc('CalendarFrame_SetToday', function()
+		_G.CalendarTodayFrame:SetAllPoints()
+	end)
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
@@ -127,53 +153,51 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventInviteButton:Point('TOPLEFT', _G.CalendarCreateEventInviteEdit, 'TOPRIGHT', 4, 1)
 	_G.CalendarCreateEventInviteEdit:Width(_G.CalendarCreateEventInviteEdit:GetWidth() - 2)
 
-	_G.CalendarCreateEventInviteList:StripTextures()
-	_G.CalendarCreateEventInviteList:SetTemplate()
-
 	S:HandleEditBox(_G.CalendarCreateEventInviteEdit)
 	S:HandleEditBox(_G.CalendarCreateEventTitleEdit)
 	S:HandleDropDownBox(_G.CalendarCreateEventTypeDropDown, 120)
 	S:HandleDropDownBox(_G.CalendarCreateEventCommunityDropDown, 240)
 
-	_G.CalendarCreateEventDescriptionContainer:StripTextures()
-	_G.CalendarCreateEventDescriptionContainer:SetTemplate()
-
 	S:HandleCloseButton(_G.CalendarCreateEventCloseButton)
-
 	S:HandleCheckBox(_G.CalendarCreateEventLockEventCheck)
 
-	S:HandleDropDownBox(_G.CalendarCreateEventHourDropDown, 68)
-	S:HandleDropDownBox(_G.CalendarCreateEventMinuteDropDown, 68)
-	S:HandleDropDownBox(_G.CalendarCreateEventAMPMDropDown, 68)
+	S:HandleDropDownBox(_G.CalendarCreateEventHourDropDown, 75)
+	S:HandleDropDownBox(_G.CalendarCreateEventMinuteDropDown, 75)
+	S:HandleDropDownBox(_G.CalendarCreateEventAMPMDropDown, 75)
 	S:HandleDropDownBox(_G.CalendarCreateEventDifficultyOptionDropDown)
-	--S:HandleDropDownBox(CalendarCreateEventRepeatOptionDropDown, 120)
-	_G.CalendarCreateEventIcon:SetTexCoord(unpack(E.TexCoords))
-	_G.CalendarCreateEventIcon.SetTexCoord = E.noop
 
-	_G.CalendarCreateEventInviteListSection:StripTextures()
+	_G.CalendarViewEventTitle:ClearAllPoints()
+	_G.CalendarViewEventTitle:Point('TOPLEFT', _G.CalendarViewEventIcon, 'TOPRIGHT', 5, 0)
+	HandleEventIcon(_G.CalendarViewEventIcon)
 
-	_G.CalendarClassButtonContainer:HookScript('OnShow', function()
-		for i, class in ipairs(CLASS_SORT_ORDER) do
-			local button = _G['CalendarClassButton'..i]
-			local tcoords = CLASS_ICON_TCOORDS[class]
-			local buttonIcon = button:GetNormalTexture()
-			buttonIcon:SetTexture([[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]])
-			buttonIcon:SetTexCoord(tcoords[1] + 0.015, tcoords[2] - 0.02, tcoords[3] + 0.018, tcoords[4] - 0.02) --F U C K I N G H A X
-		end
-	end)
+	_G.CalendarCreateEventDateLabel:ClearAllPoints()
+	_G.CalendarCreateEventDateLabel:Point('TOPLEFT', _G.CalendarCreateEventIcon, 'TOPRIGHT', 5, 0)
+	HandleEventIcon(_G.CalendarCreateEventIcon)
 
-	_G.CalendarClassButton1:Point('TOPLEFT', _G.CalendarClassButtonContainer, 'TOPLEFT', E.PixelMode and 4 or 8, 0)
+	_G.CalendarClassButton1:Point('TOPLEFT', _G.CalendarClassButtonContainer, 'TOPLEFT', E.PixelMode and 3 or 5, 0)
 
-	for i = 1, #CLASS_SORT_ORDER do
-		local button = _G['CalendarClassButton'..i]
-		button:StripTextures()
+	local lastClassButton
+	for index in next, CLASS_SORT_ORDER do
+		local button = _G['CalendarClassButton'..index]
+		local count = _G['CalendarClassButton'..index..'Count']
+		StripClassTextures(button)
 		button:SetTemplate()
-		button:Size(24)
+		button:Size(28)
+
+		count:FontTemplate()
+		count:ClearAllPoints()
+		count:Point('BOTTOMRIGHT', 0, 1)
+
+		if lastClassButton then
+			button:Point('TOPLEFT', lastClassButton, 'BOTTOMLEFT', 0, -8)
+		end
+
+		lastClassButton = button
 	end
 
 	_G.CalendarClassTotalsButton:StripTextures()
 	_G.CalendarClassTotalsButton:SetTemplate()
-	_G.CalendarClassTotalsButton:Width(24)
+	_G.CalendarClassTotalsButton:Size(28, 18)
 
 	--Texture Picker Frame
 	_G.CalendarTexturePickerFrame:StripTextures()
@@ -216,14 +240,10 @@ function S:Blizzard_Calendar()
 	_G.CalendarViewEventFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarViewEventFrame.Header:StripTextures()
 	_G.CalendarViewHolidayFrame.Header:StripTextures()
-	_G.CalendarViewEventDescriptionContainer:StripTextures()
-	_G.CalendarViewEventDescriptionContainer:SetTemplate('Transparent')
-	_G.CalendarViewEventInviteList:StripTextures()
-	_G.CalendarViewEventInviteList:SetTemplate('Transparent')
 	_G.CalendarViewEventInviteListSection:StripTextures()
+
 	S:HandleCloseButton(_G.CalendarViewEventCloseButton)
 	S:HandleScrollBar(_G.CalendarViewEventInviteListScrollFrameScrollBar)
-
 	S:HandleButton(_G.CalendarViewEventAcceptButton)
 	S:HandleButton(_G.CalendarViewEventTentativeButton)
 	S:HandleButton(_G.CalendarViewEventRemoveButton)
