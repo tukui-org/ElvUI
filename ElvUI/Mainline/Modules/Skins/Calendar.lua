@@ -17,7 +17,7 @@ local function SkinContainer(frame, container)
 	end
 end
 
-local function StripButtonTextures(button)
+local function StripClassTextures(button)
 	for y = 1, button:GetNumRegions() do
 		local region = select(y, button:GetRegions())
 		if region:GetObjectType() == 'Texture' then
@@ -166,7 +166,7 @@ function S:Blizzard_Calendar()
 	for index in next, CLASS_SORT_ORDER do
 		local button = _G['CalendarClassButton'..index]
 		local count = _G['CalendarClassButton'..index..'Count']
-		StripButtonTextures(button)
+		StripClassTextures(button)
 		button:SetTemplate()
 		button:Size(26)
 
