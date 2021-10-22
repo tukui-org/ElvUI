@@ -189,6 +189,7 @@ function S:Blizzard_Calendar()
 		count:Point('BOTTOMRIGHT', 0, 1)
 
 		if lastClassButton then
+			button:ClearAllPoints()
 			button:Point('TOPLEFT', lastClassButton, 'BOTTOMLEFT', 0, -8)
 		end
 
