@@ -370,7 +370,8 @@ E.Options.args.filters = {
 							customWidth = 200,
 							get = function(info) return '' end,
 							set = function(info, value)
-								value = tonumber(value)
+								local infoType, _, _, spellID = GetCursorInfo()
+								value = tonumber(infoType == 'spell' and spellID or value)
 								if not value then return end
 
 								local spellName = GetSpellInfo(value)
