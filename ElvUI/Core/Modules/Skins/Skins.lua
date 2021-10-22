@@ -1127,7 +1127,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 
 						local hl = fl:GetHighlightTexture()
 						hl:SetColorTexture(0.9, 0.9, 0.9, 0.25)
-						hl:SetAllPoints()
+						hl:SetInside()
 					end
 
 					if fl.Counters then
@@ -1259,9 +1259,8 @@ function S:HandleGarrisonPortrait(portrait)
 
 		local background = portrait.HealthBar.Background
 		background:SetAlpha(0)
-		background:ClearAllPoints()
-		background:Point('TOPLEFT', portrait.Portrait.backdrop, 'BOTTOMLEFT', 1, 6)
-		background:Point('BOTTOMRIGHT', portrait.Portrait.backdrop, 'BOTTOMRIGHT', -1, 1)
+		background:SetInside(portrait.Portrait.backdrop, 2, 1) -- unsnap it
+		background:Point('TOPLEFT', portrait.Portrait.backdrop, 'BOTTOMLEFT', 2, 7)
 		portrait.HealthBar.Health:SetTexture(E.media.normTex)
 	end
 end
