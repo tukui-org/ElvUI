@@ -120,17 +120,17 @@ function S:Blizzard_Calendar()
 	_G.CalendarWeekdaySelectedTexture:SetDesaturated(true)
 	_G.CalendarWeekdaySelectedTexture:SetVertexColor(1, 1, 1, 0.6)
 
-	hooksecurefunc('CalendarFrame_SetToday', function()
-		_G.CalendarTodayFrame:SetAllPoints()
-	end)
-
-	_G.CalendarTodayFrame:SetScript('OnUpdate', nil)
-	_G.CalendarTodayTextureGlow:Hide()
 	_G.CalendarTodayTexture:Hide()
+	_G.CalendarTodayTextureGlow:Hide()
 
 	_G.CalendarTodayFrame:SetTemplate()
 	_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
 	_G.CalendarTodayFrame:SetBackdropColor(0,0,0,0)
+	_G.CalendarTodayFrame:SetScript('OnUpdate', nil)
+
+	hooksecurefunc('CalendarFrame_SetToday', function()
+		_G.CalendarTodayFrame:SetAllPoints()
+	end)
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
