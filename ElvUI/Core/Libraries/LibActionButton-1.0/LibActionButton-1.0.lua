@@ -537,9 +537,8 @@ function Generic:OnEvent(event, key, down)
 		local action = GetModifiedClick('PICKUPACTION')
 		local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
 		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-	elseif event == 'MODIFIER_STATE_CHANGED' then
-		local isDragKeyDown = down == 1 and GetModifiedClick('PICKUPACTION') == (key and strsub(key, 2))
-		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
+	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
 	end
 end
 
