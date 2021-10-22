@@ -2470,7 +2470,7 @@ function UpdateFilterGroup()
 		}
 
 		if NP.StyleFilterCustomChecks then
-			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.pluginSpacer = ACH:Spacer(49, 'full')
+			E.Options.args.nameplate.args.filters.args.triggers.args.pluginSpacer = ACH:Spacer(49, 'full')
 		end
 
 		E.Options.args.nameplate.args.filters.args.actions = {
