@@ -413,11 +413,11 @@ end
 
 function M:QueueStatusSetTime(seconds)
 	local timeInQueue = GetTime() - seconds
-	local waitTime = timeInQueue / M.QueueStatusDisplay.averageWait
-
 	M:QueueStatusTimeFormat(timeInQueue)
 
-	if waitTime >= 1 then
+	local wait = M.QueueStatusDisplay.averageWait
+	local waitTime = wait and wait > 0 and (timeInQueue / wait)
+	if not waitTime or waitTime >= 1 then
 		M.QueueStatusDisplay.text:SetTextColor(1, 1, 1)
 	else
 		M.QueueStatusDisplay.text:SetTextColor(E:ColorGradient(waitTime, 1,.1,.1, 1,1,.1, .1,1,.1))
