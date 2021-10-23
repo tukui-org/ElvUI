@@ -99,8 +99,8 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras.numRows = db.numRows
 	auras.onlyShowPlayer = false
 	auras.spacing = db.spacing
-	auras.growthY = UF.matchGrowthY[db.anchorPoint] or db.growthY
-	auras.growthX = UF.matchGrowthX[db.anchorPoint] or db.growthX
+	auras.growthY = UF.MatchGrowthY[db.anchorPoint] or db.growthY
+	auras.growthX = UF.MatchGrowthX[db.anchorPoint] or db.growthX
 	auras.xOffset = db.xOffset
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
