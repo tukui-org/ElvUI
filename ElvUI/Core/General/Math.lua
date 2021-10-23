@@ -403,15 +403,14 @@ do
 			end
 		end
 
-		local minLeft = mod(s, HOUR)
-		local minutes = minLeft / MINUTE
+		local minutes = mod(s, HOUR) / MINUTE
 		if mmss and s < mmss then
-			return minutes, 5, 0.51, minLeft
+			return minutes, 5, 0.51, mod(s, MINUTE)
 		end
 
 		local hours = mod(s, DAY) / HOUR
 		if hhmm and s < (hhmm * MINUTE) then
-			return hours, 6, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH), minLeft
+			return hours, 6, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH), mod(minutes, MINUTE)
 		end
 
 		if s < HOUR then
