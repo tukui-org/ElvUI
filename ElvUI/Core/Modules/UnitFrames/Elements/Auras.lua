@@ -20,7 +20,8 @@ local UnitIsUnit = UnitIsUnit
 UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
 UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
 UF.ExcludeStacks = {
-	[113862] = 'Greater Invisibility'
+	[113862] = 'Greater Invisibility',
+	[324631] = 'Fleshcraft' -- Necrolord
 }
 
 UF.SmartPosition = {
