@@ -646,6 +646,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[8326]		= Defaults(), -- Ghost
 		[23445]		= Defaults(), -- Evil Twin
 		[24755]		= Defaults(), -- Tricked or Treated
+		[96041]		= Defaults(), -- Stink Bombed
 		[25163]		= Defaults(), -- Oozeling's Disgusting Aura
 		[124275]	= Defaults(), -- Stagger
 		[124274]	= Defaults(), -- Stagger

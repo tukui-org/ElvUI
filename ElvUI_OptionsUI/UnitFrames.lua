@@ -857,7 +857,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	end
 
 	if groupName ~= 'party' and groupName ~= 'raid' and groupName ~= 'raid40' and groupName ~= 'raidpet' and groupName ~= 'assist' and groupName ~= 'tank' then
-		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, C.Values.SmartAuraPosition)
+		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, C.Values.SmartAuraPositions)
 	end
 
 	if groupName ~= 'arena' then

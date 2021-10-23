@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 26 -- the real minor version is 80
+local MINOR_VERSION = 27 -- the real minor version is 80
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -167,6 +167,7 @@ function lib:CreateButton(id, name, header, config)
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
 	button:SetScript("OnLeave", Generic.OnLeave)
+	button:SetScript("OnEvent", Generic.OnEvent)
 	button:SetScript("PreClick", Generic.PreClick)
 	button:SetScript("PostClick", Generic.PostClick)
 
@@ -527,28 +528,17 @@ local function PickupAny(kind, target, detail, ...)
 	end
 end
 
-function Generic:OnUpdate(elapsed)
-	if not GetCVarBool('lockActionBars') then return; end
+function Generic:OnEvent(event, key, down)
+	if not GetCVarBool('lockActionBars') then return end
 
-	self.lastupdate = (self.lastupdate or 0) + elapsed;
-	if (self.lastupdate < .2) then return end
-	self.lastupdate = 0
-
-	local isDragKeyDown
-	if GetModifiedClick("PICKUPACTION") == 'ALT' then
-		isDragKeyDown = IsAltKeyDown()
-	elseif GetModifiedClick("PICKUPACTION") == 'CTRL' then
-		isDragKeyDown = IsControlKeyDown()
-	elseif GetModifiedClick("PICKUPACTION") == 'SHIFT' then
-		isDragKeyDown = IsShiftKeyDown()
-	end
-
-	if isDragKeyDown and (self.clickState == 'AnyDown' or self.clickState == nil) then
-		self.clickState = 'AnyUp'
-		self:RegisterForClicks(self.clickState)
-	elseif self.clickState == 'AnyUp' and not isDragKeyDown then
-		self.clickState = 'AnyDown'
-		self:RegisterForClicks(self.clickState)
+	if event == 'OnLeave' then
+		self:RegisterForClicks('AnyDown')
+	elseif event == 'OnEnter' then
+		local action = GetModifiedClick('PICKUPACTION')
+		local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
+	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
 	end
 end
 
@@ -566,14 +556,19 @@ function Generic:OnEnter()
 	end
 
 	if self.config.clickOnDown then
-		self:SetScript('OnUpdate', Generic.OnUpdate)
+		Generic.OnEvent(self, 'OnEnter')
+		self:RegisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
 function Generic:OnLeave()
 	if GameTooltip:IsForbidden() then return end
 	GameTooltip:Hide()
-	self:SetScript('OnUpdate', nil)
+
+	if self.config.clickOnDown then
+		Generic.OnEvent(self, 'OnLeave')
+		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	end
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor

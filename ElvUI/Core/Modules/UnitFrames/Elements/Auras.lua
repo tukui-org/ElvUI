@@ -17,8 +17,11 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
-UF.matchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
-UF.matchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
+UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
+UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
+UF.ExcludeStacks = {
+	[113862] = 'Greater Invisibility'
+}
 
 UF.SmartPosition = {
 	BUFFS_ON_DEBUFFS = {
@@ -335,8 +338,8 @@ function UF:Configure_Auras(frame, which)
 	auras.forceShow = frame.forceShowAuras
 	auras.disableMouse = settings.clickThrough
 	auras.anchorPoint = settings.anchorPoint
-	auras.growthX = UF.matchGrowthX[settings.anchorPoint] or settings.growthX
-	auras.growthY = UF.matchGrowthY[settings.anchorPoint] or settings.growthY
+	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
+	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 	auras.initialAnchor = E.InversePoints[settings.anchorPoint]
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 	auras.numAuras = settings.perrow
@@ -435,6 +438,31 @@ function UF:PostUpdateAura(_, button)
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
+	end
+end
+
+function UF:GetSmartAuraElements(auras)
+	local Buffs, Debuffs = UF:GetAuraElements(auras:GetParent())
+	if auras == Buffs then
+		return Debuffs, Buffs, auras.visibleBuffs
+	else
+		return Buffs, Debuffs, auras.visibleDebuffs
+	end
+end
+
+function UF:UpdateAuraSmartPoisition()
+	local element, other, visible = UF:GetSmartAuraElements(self)
+
+	if visible == 0 then
+		if self.smartFluid then
+			element:ClearAllPoints()
+			element:Point(other.initialAnchor, other.attachTo, other.anchorPoint, other.xOffset, other.yOffset)
+		else
+			other:Height(other.size)
+		end
+	else
+		element:ClearAllPoints()
+		element:Point(element.initialAnchor, element.attachTo, element.anchorPoint, element.xOffset, element.yOffset)
 	end
 end
 
@@ -550,7 +578,7 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	if isStealable then self.hasStealable = true end
 	if dispel then self.hasDispellable = true end
 
-	if db.stackAuras then
+	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', source, name) or name
 		local stack = self.stacks[matching]
 		if not stack then
@@ -572,30 +600,5 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 		return filterCheck
 	else
 		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
-	end
-end
-
-function UF:GetSmartAuraElements(auras)
-	local Buffs, Debuffs = UF:GetAuraElements(auras:GetParent())
-	if auras == Buffs then
-		return Debuffs, Buffs, auras.visibleBuffs
-	else
-		return Buffs, Debuffs, auras.visibleDebuffs
-	end
-end
-
-function UF:UpdateAuraSmartPoisition()
-	local element, other, visible = UF:GetSmartAuraElements(self)
-
-	if visible == 0 then
-		if self.smartFluid then
-			element:ClearAllPoints()
-			element:Point(other.initialAnchor, other.attachTo, other.anchorPoint, other.xOffset, other.yOffset)
-		else
-			other:Height(other.size)
-		end
-	else
-		element:ClearAllPoints()
-		element:Point(element.initialAnchor, element.attachTo, element.anchorPoint, element.xOffset, element.yOffset)
 	end
 end

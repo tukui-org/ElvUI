@@ -187,6 +187,54 @@ local function SetSpellList()
 	return spellList
 end
 
+local function FilterSettings(info, ...)
+	local spell = GetSelectedSpell()
+	if not spell then return end
+
+	local color, value, r, g, b, a
+	if info.type == 'color' then
+		r, g, b, a = ...
+	else
+		value = ...
+	end
+
+	if selectedFilter == 'Aura Highlight' then
+		if info.type == 'color' then
+			color = E.global.unitframe.AuraHighlightColors[spell].color
+			if r ~= nil then
+				color.r, color.g, color.b, color.a = r, g, b, a
+			else
+				return color.r, color.g, color.b, color.a
+			end
+		elseif value ~= nil then
+			E.global.unitframe.AuraHighlightColors[spell][info[#info]] = value
+		else
+			return E.global.unitframe.AuraHighlightColors[spell][info[#info]]
+		end
+	elseif selectedFilter == 'AuraBar Colors' then
+		if info.type == 'color' then
+			color = E.global.unitframe.AuraBarColors[spell].color
+			if value ~= nil then
+				color.r, color.g, color.b, color.a = r, g, b, a
+			else
+				return color.r, color.g, color.b, color.a
+			end
+		elseif value ~= nil then
+			E.global.unitframe.AuraBarColors[spell][info[#info]] = value
+		else
+			return E.global.unitframe.AuraBarColors[spell][info[#info]]
+		end
+	else
+		if value ~= nil then
+			E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
+		else
+			return E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable
+		end
+	end
+
+	UF:Update_AllFrames()
+end
+
 E.Options.args.filters = {
 	type = 'group',
 	name = L["FILTERS"],
@@ -203,8 +251,8 @@ E.Options.args.filters = {
 					name = L["Create Filter"],
 					desc = L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."],
 					type = 'input',
-					get = function(info) return '' end,
-					set = function(info, value)
+					get = function(_) return '' end,
+					set = function(_, value)
 						if strmatch(value, '^[%s%p]-$') then
 							return
 						end
@@ -219,7 +267,7 @@ E.Options.args.filters = {
 							E:Print(L["Filter already exists!"])
 							return
 						end
-						E.global.unitframe.aurafilters[value] = { spells = {} }
+						E.global.unitframe.aurafilters[value] = { type = 'whitelist', spells = {} }
 						selectedFilter = value
 					end,
 				},
@@ -227,8 +275,8 @@ E.Options.args.filters = {
 					order = 2,
 					type = 'select',
 					name = L["Select Filter"],
-					get = function(info) return selectedFilter end,
-					set = function(info, value)
+					get = function() return selectedFilter end,
+					set = function(_, value)
 						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
 						if value ~= '' then
 							selectedFilter = value
@@ -241,10 +289,8 @@ E.Options.args.filters = {
 					order = 3,
 					name = L["Delete Filter"],
 					desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
-					confirm = function(info, value)
-						return 'Remove Filter - '..value
-					end,
-					set = function(info, value)
+					confirm = function(_, value) return 'Remove Filter - '..value end,
+					set = function(_, value)
 						E.global.unitframe.aurafilters[value] = nil
 						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
 
@@ -258,10 +304,10 @@ E.Options.args.filters = {
 					name = L["Reset Filter"],
 					order = 4,
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
-					confirm = function(info, value)
+					confirm = function(_, value)
 						return 'Reset Filter - '..value
 					end,
-					set = function(info, value)
+					set = function(_, value)
 						if value == 'Aura Highlight' then
 							E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
 						elseif value == 'AuraBar Colors' then
@@ -294,10 +340,8 @@ E.Options.args.filters = {
 							order = 1,
 							customWidth = 350,
 							sortByValue = true,
-							get = function(info) return selectedSpell or '' end,
-							set = function(info, value)
-								selectedSpell = (value ~= '' and value) or nil
-							end,
+							get = function(_) return selectedSpell or '' end,
+							set = function(_, value) selectedSpell = (value ~= '' and value) end,
 							values = SetSpellList,
 						},
 						quickSearch = {
@@ -307,7 +351,7 @@ E.Options.args.filters = {
 							type = 'input',
 							customWidth = 200,
 							get = function() return quickSearchText end,
-							set = function(info,value) quickSearchText = value end,
+							set = function(_, value) quickSearchText = value end,
 						},
 						filterType = {
 							order = 3,
@@ -319,7 +363,7 @@ E.Options.args.filters = {
 								Blacklist = L["Blacklist"],
 							},
 							get = function() return E.global.unitframe.aurafilters[selectedFilter].type end,
-							set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames() end,
+							set = function(_, value) E.global.unitframe.aurafilters[selectedFilter].type = value UF:Update_AllFrames() end,
 							hidden = function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') or G.unitframe.aurafilters[selectedFilter] end,
 						},
 						removeSpell = {
@@ -327,12 +371,12 @@ E.Options.args.filters = {
 							name = L["Remove Spell"],
 							desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 							type = 'select',
-							confirm = function(info, value)
+							confirm = function(_, value)
 								return 'Remove Spell - '..GetSpellNameRank(value)
 							end,
 							customWidth = 350,
-							get = function(info) return '' end,
-							set = function(info, value)
+							get = function() return '' end,
+							set = function(_, value)
 								if not value then return end
 								selectedSpell = nil
 
@@ -368,18 +412,18 @@ E.Options.args.filters = {
 							desc = L["Add a spell to the filter."],
 							type = 'input',
 							customWidth = 200,
-							get = function(info) return '' end,
-							set = function(info, value)
+							get = function(_) return '' end,
+							set = function(_, value)
 								value = tonumber(value)
 								if not value then return end
 
 								local spellName = GetSpellInfo(value)
-								selectedSpell = (spellName and value) or nil
+								selectedSpell = (spellName and value)
 								if not selectedSpell then return end
 
 								if selectedFilter == 'Aura Highlight' then
 									if not E.global.unitframe.AuraHighlightColors[value] then
-										E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85}, ownOnly = false }
+										E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = { r = 0.8, g = 0, b = 0, a = 0.85 }, ownOnly = false }
 									end
 								elseif selectedFilter == 'AuraBar Colors' then
 									if not E.global.unitframe.AuraBarColors[value] then
@@ -540,44 +584,18 @@ E.Options.args.filters = {
 				},
 				spellGroup = {
 					type = 'group',
-					name = function()
-						return GetSpellNameRank(GetSelectedSpell())
-					end,
+					name = function() return GetSpellNameRank(GetSelectedSpell()) end,
 					hidden = function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
 					order = -15,
 					inline = true,
 					args = {
-						enabled = {
+						enable = {
 							name = L["Enable"],
 							order = 0,
 							type = 'toggle',
 							hidden = function() return (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-
-								if selectedFilter == 'Aura Highlight' then
-									return E.global.unitframe.AuraHighlightColors[spell].enable
-								elseif selectedFilter == 'AuraBar Colors' then
-									return E.global.unitframe.AuraBarColors[spell].enable
-								else
-									return E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable
-								end
-							end,
-							set = function(info, value)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-
-								if selectedFilter == 'Aura Highlight' then
-									E.global.unitframe.AuraHighlightColors[spell].enable = value
-								elseif selectedFilter == 'AuraBar Colors' then
-									E.global.unitframe.AuraBarColors[spell].enable = value
-								else
-									E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
-								end
-
-								UF:Update_AllFrames()
-							end,
+							get = FilterSettings,
+							set = FilterSettings,
 						},
 						style = {
 							name = L["Style"],
@@ -585,19 +603,8 @@ E.Options.args.filters = {
 							order = 1,
 							values = { GLOW = L["Glow"], FILL = L["Fill"] },
 							hidden = function() return selectedFilter ~= 'Aura Highlight' end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-
-								return E.global.unitframe.AuraHighlightColors[spell].style
-							end,
-							set = function(info, value)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-
-								E.global.unitframe.AuraHighlightColors[spell].style = value
-								UF:Update_AllFrames()
-							end,
+							get = FilterSettings,
+							set = FilterSettings,
 						},
 						color = {
 							name = L["COLOR"],
@@ -605,44 +612,15 @@ E.Options.args.filters = {
 							order = 2,
 							hasAlpha = function() return selectedFilter ~= 'AuraBar Colors' end,
 							hidden = function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-
-								local t
-								if selectedFilter == 'Aura Highlight' then
-									t = E.global.unitframe.AuraHighlightColors[spell].color
-								elseif selectedFilter == 'AuraBar Colors' then
-									t = E.global.unitframe.AuraBarColors[spell].color
-								end
-
-								if t then
-									return t.r, t.g, t.b, t.a
-								end
-							end,
-							set = function(info, r, g, b, a)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-
-								local t
-								if selectedFilter == 'Aura Highlight' then
-									t = E.global.unitframe.AuraHighlightColors[spell].color
-								elseif selectedFilter == 'AuraBar Colors' then
-									t = E.global.unitframe.AuraBarColors[spell].color
-								end
-
-								if t then
-									t.r, t.g, t.b, t.a = r, g, b, a
-									UF:Update_AllFrames()
-								end
-							end,
+							get = FilterSettings,
+							set = FilterSettings,
 						},
 						removeColor = {
 							type = 'execute',
 							order = 3,
 							name = L["Restore Defaults"],
 							hidden = function() return selectedFilter ~= 'AuraBar Colors' end,
-							func = function(info)
+							func = function()
 								local spell = GetSelectedSpell()
 								if not spell then return end
 
@@ -676,7 +654,7 @@ E.Options.args.filters = {
 											return E.global.unitframe.aurafilters[selectedFilter].spells[spell].priority
 										end
 									end,
-									set = function(info, value)
+									set = function(_, value)
 										local spell = GetSelectedSpell()
 										if not spell then return end
 
@@ -698,7 +676,7 @@ E.Options.args.filters = {
 											return E.global.unitframe.aurafilters[selectedFilter].spells[spell].stackThreshold
 										end
 									end,
-									set = function(info, value)
+									set = function(_, value)
 										local spell = GetSelectedSpell()
 										if not spell then return end
 
@@ -714,7 +692,7 @@ E.Options.args.filters = {
 							order = 5,
 							type = 'toggle',
 							hidden = function() return selectedFilter ~= 'Aura Highlight' end,
-							get = function(info)
+							get = function(_)
 								local spell = GetSelectedSpell()
 								if not spell then return end
 
@@ -722,7 +700,7 @@ E.Options.args.filters = {
 									return E.global.unitframe.AuraHighlightColors[spell].ownOnly or false
 								end
 							end,
-							set = function(info, value)
+							set = function(_, value)
 								local spell = GetSelectedSpell()
 								if not spell then return end
 
@@ -733,10 +711,10 @@ E.Options.args.filters = {
 								UF:Update_AllFrames()
 							end,
 						},
-					},
+					}
 				}
-			},
-		},
+			}
+		}
 	}
 }
 
