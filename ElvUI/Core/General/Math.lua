@@ -401,43 +401,29 @@ do
 			else
 				return s, 4, 0.051
 			end
-		elseif s < HOUR then
-			local minLeft = mod(s, HOUR)
-			local minutes = minLeft / MINUTE
-			if mmss and s < mmss then
-				return minutes, 5, 0.51, minLeft
-			else
-				local nextUpdate = E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH)
-				if hhmm and s < (hhmm * MINUTE) then
-					local hourLeft = mod(s, DAY)
-					local hours = hourLeft / HOUR
-					return hours, 6, nextUpdate, hourLeft
-				else
-					return minutes, 2, nextUpdate
-				end
-			end
-		elseif s < DAY then
-			if mmss and s < mmss then
-				local minLeft = mod(s, HOUR)
-				local minutes = minLeft / MINUTE
-				return minutes, 5, 0.51, minLeft
-			else
-				local hours = mod(s, DAY) / HOUR
-				if hhmm and s < (hhmm * MINUTE) then
-					local minLeft = mod(s, HOUR)
-					local minutes = minLeft / MINUTE
-					local nextUpdate = E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH)
-					return hours, 6, nextUpdate, minLeft
-				else
-					local nextUpdate = E:GetTimeNextUpdate(s, hours, HOUR, HALFHOURISH, HOURISH)
-					return hours, 1, nextUpdate
-				end
-			end
-		else
-			local days = mod(s, YEAR) / DAY
-			local nextUpdate = E:GetTimeNextUpdate(s, days, DAY, HALFDAYISH, DAYISH)
-			return days, 0, nextUpdate
 		end
+
+		local minLeft = mod(s, HOUR)
+		local minutes = minLeft / MINUTE
+		if mmss and s < mmss then
+			return minutes, 5, 0.51, minLeft
+		end
+
+		local hours = mod(s, DAY) / HOUR
+		if hhmm and s < (hhmm * MINUTE) then
+			return hours, 6, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH), minLeft
+		end
+
+		if s < HOUR then
+			return minutes, 2, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH)
+		end
+
+		if s < DAY then
+			return hours, 1, E:GetTimeNextUpdate(s, hours, HOUR, HALFHOURISH, HOURISH)
+		end
+
+		local days = mod(s, YEAR) / DAY
+		return days, 0, E:GetTimeNextUpdate(s, days, DAY, HALFDAYISH, DAYISH)
 	end
 end
 
