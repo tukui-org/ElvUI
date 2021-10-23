@@ -439,11 +439,15 @@ function M:SetFullQueueStatus(title, queuedTime, averageWait)
 
 	local display = M.QueueStatusDisplay
 	if not display.title or display.title == title then
-		display.title = title
-		display.updateThrottle = 0
-		display.queuedTime = queuedTime
-		display.averageWait = averageWait
-		display:SetScript('OnUpdate', M.QueueStatusOnUpdate)
+		if queuedTime then
+			display.title = title
+			display.updateThrottle = 0
+			display.queuedTime = queuedTime
+			display.averageWait = averageWait
+			display:SetScript('OnUpdate', M.QueueStatusOnUpdate)
+		else
+			M:ClearQueueStatus()
+		end
 	end
 end
 
