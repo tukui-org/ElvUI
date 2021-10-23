@@ -118,7 +118,16 @@ P.general = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 3,
-				yOffset = 0,
+				yOffset = 0
+			},
+			queueStatus = {
+				enable = true,
+				position = 'BOTTOMRIGHT',
+				xOffset = -2,
+				yOffset = 2,
+				font = 'Expressway',
+				fontSize = 11,
+				fontOutline = 'NONE',
 			},
 			difficulty = {
 				scale = 1,

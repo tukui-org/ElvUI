@@ -3,22 +3,25 @@ local M = E:GetModule('Minimap')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local mod = mod
+local floor = floor
 local pairs = pairs
 local tinsert = tinsert
+local unpack = unpack
 local utf8sub = string.utf8sub
 
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
-local PlaySound = PlaySound
 local CreateFrame = CreateFrame
-local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
+local GetTime = GetTime
 local GetZonePVPInfo = GetZonePVPInfo
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
-local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
+local PlaySound = PlaySound
+local ShowUIPanel = ShowUIPanel
+local HideUIPanel = HideUIPanel
 local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleCharacter = ToggleCharacter
 local ToggleCollectionsJournal = ToggleCollectionsJournal
@@ -28,6 +31,8 @@ local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
+local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
 local WorldMapFrame = _G.WorldMapFrame
 local Minimap = _G.Minimap
@@ -289,10 +294,9 @@ function M:UpdateSettings()
 			GameTimeFrame:Hide()
 		else
 			local pos = E.db.general.minimap.icons.calendar.position or 'TOPRIGHT'
-			local scale = E.db.general.minimap.icons.calendar.scale or 1
 			GameTimeFrame:ClearAllPoints()
 			GameTimeFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
-			GameTimeFrame:SetScale(scale)
+			GameTimeFrame:SetScale(E.db.general.minimap.icons.calendar.scale or 1)
 			GameTimeFrame:Show()
 		end
 	end
@@ -300,20 +304,30 @@ function M:UpdateSettings()
 	local MiniMapMailFrame = _G.MiniMapMailFrame
 	if MiniMapMailFrame then
 		local pos = E.db.general.minimap.icons.mail.position or 'TOPRIGHT'
-		local scale = E.db.general.minimap.icons.mail.scale or 1
 		MiniMapMailFrame:ClearAllPoints()
 		MiniMapMailFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
-		MiniMapMailFrame:SetScale(scale)
+		MiniMapMailFrame:SetScale(E.db.general.minimap.icons.mail.scale or 1)
 	end
 
 	local QueueStatusMinimapButton = _G.QueueStatusMinimapButton
 	if QueueStatusMinimapButton then
 		local pos = E.db.general.minimap.icons.lfgEye.position or 'BOTTOMRIGHT'
-		local scale = E.db.general.minimap.icons.lfgEye.scale or 1
 		QueueStatusMinimapButton:ClearAllPoints()
 		QueueStatusMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
-		QueueStatusMinimapButton:SetScale(scale)
-		_G.QueueStatusFrame:SetScale(scale)
+		QueueStatusMinimapButton:SetScale(E.db.general.minimap.icons.lfgEye.scale or 1)
+	end
+
+	local queueStatusDisplay = M.QueueStatusDisplay
+	if queueStatusDisplay then
+		local db = E.db.general.minimap.icons.queueStatus
+		local pos = db.position or 'BOTTOMRIGHT'
+		queueStatusDisplay.text:ClearAllPoints()
+		queueStatusDisplay.text:Point(pos, Minimap, pos, db.xOffset or 3, db.yOffset or 0)
+		queueStatusDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+
+		if not db.enable and queueStatusDisplay.title then
+			M:ClearQueueStatus()
+		end
 	end
 
 	local MiniMapTracking = E.Classic and _G.MiniMapTrackingFrame or E.TBC and _G.MiniMapTracking
@@ -365,10 +379,9 @@ function M:UpdateSettings()
 	local MiniMapChallengeMode = _G.MiniMapChallengeMode
 	if MiniMapChallengeMode then
 		local pos = E.db.general.minimap.icons.challengeMode.position or 'TOPLEFT'
-		local scale = E.db.general.minimap.icons.challengeMode.scale or 1
 		MiniMapChallengeMode:ClearAllPoints()
 		MiniMapChallengeMode:Point(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
-		MiniMapChallengeMode:SetScale(scale)
+		MiniMapChallengeMode:SetScale(E.db.general.minimap.icons.challengeMode.scale or 1)
 	end
 end
 
@@ -382,8 +395,81 @@ function M:GetMinimapShape()
 end
 
 function M:SetGetMinimapShape()
-	GetMinimapShape = M.GetMinimapShape --This is just to support for other mods
+	GetMinimapShape = M.GetMinimapShape -- This is just to support for other mods
 	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
+end
+
+function M:QueueStatusTimeFormat(seconds)
+	local hours = floor(mod(seconds,86400)/3600)
+	if hours > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%dh', hours) end
+
+	local mins = floor(mod(seconds,3600)/60)
+	if mins > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%dm', mins) end
+
+	local secs = mod(seconds,60)
+	if secs > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%ds', secs) end
+end
+
+function M:QueueStatusSetTime(seconds)
+	local timeInQueue = GetTime() - seconds
+	local waitTime = timeInQueue / M.QueueStatusDisplay.averageWait
+
+	M:QueueStatusTimeFormat(timeInQueue)
+
+	if waitTime >= 1 then
+		M.QueueStatusDisplay.text:SetTextColor(1, 1, 1)
+	else
+		M.QueueStatusDisplay.text:SetTextColor(E:ColorGradient(waitTime, 1,.1,.1, 1,1,.1, .1,1,.1))
+	end
+end
+
+function M:QueueStatusOnUpdate(elapsed)
+	-- Replicate QueueStatusEntry_OnUpdate throttle
+	self.updateThrottle = self.updateThrottle - elapsed
+	if self.updateThrottle <= 0 then
+		M:QueueStatusSetTime(self.queuedTime)
+		self.updateThrottle = 0.1
+	end
+end
+
+function M:SetFullQueueStatus(title, queuedTime, averageWait)
+	local db = E.db.general.minimap.icons.queueStatus
+	if not db or not db.enable then return end
+
+	local display = M.QueueStatusDisplay
+	if not display.title or display.title == title then
+		display.title = title
+		display.updateThrottle = 0
+		display.queuedTime = queuedTime
+		display.averageWait = averageWait
+		display:SetScript('OnUpdate', M.QueueStatusOnUpdate)
+	end
+end
+
+function M:SetMinimalQueueStatus(title)
+	if M.QueueStatusDisplay.title == title then
+		M:ClearQueueStatus()
+	end
+end
+
+function M:ClearQueueStatus()
+	local display = M.QueueStatusDisplay
+	display.text:SetText('')
+	display.title = nil
+	display.queuedTime = nil
+	display.averageWait = nil
+	display:SetScript('OnUpdate', nil)
+end
+
+function M:CreateQueueStatusText()
+	local display = CreateFrame('Frame', 'ElvUIQueueStatusDisplay', _G.QueueStatusMinimapButton)
+	display.text = display:CreateFontString(nil, 'OVERLAY')
+
+	M.QueueStatusDisplay = display
+
+	_G.QueueStatusMinimapButton:HookScript('OnHide', M.ClearQueueStatus)
+	hooksecurefunc('QueueStatusEntry_SetMinimalDisplay', M.SetMinimalQueueStatus)
+	hooksecurefunc('QueueStatusEntry_SetFullDisplay', M.SetFullQueueStatus)
 end
 
 function M:Initialize()
@@ -460,6 +546,7 @@ function M:Initialize()
 		_G.MiniMapChallengeMode:SetParent(Minimap)
 	end
 
+	if _G.QueueStatusMinimapButton then M:CreateQueueStatusText() end
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
 	if _G.HybridMinimap then M:SetupHybridMinimap() end
