@@ -127,7 +127,7 @@ P.general = {
 				yOffset = 2,
 				font = 'Expressway',
 				fontSize = 11,
-				fontOutline = 'NONE',
+				fontOutline = 'OUTLINE',
 			},
 			difficulty = {
 				scale = 1,
