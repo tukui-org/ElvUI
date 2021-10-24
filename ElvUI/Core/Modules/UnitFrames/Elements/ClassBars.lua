@@ -26,12 +26,10 @@ function UF:GetClassPower_Construct(frame)
 		elseif E.myclass == 'MONK' then
 			frame.Stagger = UF:Construct_Stagger(frame)
 		end
-	else
-		if E.myclass == "SHAMAN" then
-			frame.Totems = UF:Construct_Totems(frame)
-		elseif E.myclass == "DRUID" then
-			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
-		end
+	elseif E.myclass == 'SHAMAN' then
+		frame.Totems = UF:Construct_Totems(frame)
+	elseif E.myclass == 'DRUID' then
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	end
 end
 
@@ -546,31 +544,32 @@ local TotemColors = {
 }
 
 function UF:Construct_Totems(frame)
-	local totems = CreateFrame("Frame", nil, frame)
+	local totems = CreateFrame('Frame', nil, frame)
 	totems:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	totems.Destroy = {}
 
 	for i = 1, 4 do
 		local r, g, b = unpack(TotemColors[i])
+		local totem = CreateFrame('StatusBar', frame:GetName()..'Totem'..i, totems)
+		totem:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+		totem.backdrop:SetParent(totems)
 
-		totems[i] = CreateFrame("StatusBar", frame:GetName().."Totem"..i, totems)
-		totems[i]:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-		totems[i].backdrop:SetParent(totems)
+		totem:SetStatusBarTexture(E.media.blankTex)
+		totem:SetStatusBarColor(r, g, b)
 
-		totems[i]:SetStatusBarTexture(E.media.blankTex)
-		totems[i]:SetStatusBarColor(r, g, b)
+		UF.statusbars[totem] = true
 
-		UF.statusbars[totems[i]] = true
+		totem:SetMinMaxValues(0, 1)
+		totem:SetValue(0)
 
-		totems[i]:SetMinMaxValues(0, 1)
-		totems[i]:SetValue(0)
+		totem.bg = totem:CreateTexture(nil, 'BORDER')
+		totem.bg:SetTexture(E.media.blankTex)
+		totem.bg:SetInside(totem, 0, 0)
+		totem.bg.multiplier = 0.3
 
-		totems[i].bg = totems[i]:CreateTexture(nil, "BORDER")
-		totems[i].bg:SetAllPoints(totems[i])
-		totems[i].bg:SetTexture(E.media.blankTex)
-		totems[i].bg.multiplier = 0.3
+		totem.bg:SetVertexColor(r * .3, g * .3, b * .3)
 
-		totems[i].bg:SetVertexColor(r * .3, g * .3, b * .3)
+		totems[i] = totem
 	end
 
 	frame.MAX_CLASS_BAR = 4
