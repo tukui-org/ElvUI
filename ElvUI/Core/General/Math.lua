@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
-local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
+local modf, atan2, floor, abs, sqrt, mod = math.modf, atan2, floor, abs, sqrt, mod
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
@@ -384,42 +384,45 @@ E.TimeIndicatorColors = {
 	[6] = '|cff00b3ff',
 }
 
-local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
-local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
-local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
+do
+	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60 --used for calculating aura time text
+	local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
+	local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 
--- will return the the value to display, the formatter id to use and calculates the next update for the Aura
-function E:GetTimeInfo(s, threshhold, hhmm, mmss)
-	if s < MINUTE then
-		if s >= threshhold then
-			return floor(s), 3, 0.51
-		else
-			return s, 4, 0.051
-		end
-	elseif s < HOUR then
-		if mmss and s < mmss then
-			return s/MINUTE, 5, 0.51, s%MINUTE
-		else
-			local minutes = floor((s/MINUTE)+.5)
-			if hhmm and s < (hhmm * MINUTE) then
-				return s/HOUR, 6, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH), minutes%MINUTE
+	function E:GetTimeNextUpdate(sec, arg1, arg2, arg3, arg4)
+		return arg1 > 1 and (sec - (arg1 * arg2 - arg3)) or (sec - arg4)
+	end
+
+	-- will return the the value to display, the formatter id to use and calculates the next update for the Aura
+	function E:GetTimeInfo(s, threshhold, hhmm, mmss)
+		if s < MINUTE then
+			if s >= threshhold then
+				return floor(s), 3, 0.51
 			else
-				return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+				return s, 4, 0.051
 			end
 		end
-	elseif s < DAY then
+
+		local minutes = mod(s, HOUR) / MINUTE
 		if mmss and s < mmss then
-			return s/MINUTE, 5, 0.51, s%MINUTE
-		elseif hhmm and s < (hhmm * MINUTE) then
-			local minutes = floor((s/MINUTE)+.5)
-			return s/HOUR, 6, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH), minutes%MINUTE
-		else
-			local hours = floor((s/HOUR)+.5)
-			return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+			return minutes, 5, 0.51, mod(s, MINUTE)
 		end
-	else
-		local days = floor((s/DAY)+.5)
-		return ceil(s / DAY), 0, days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
+
+		local hours = mod(s, DAY) / HOUR
+		if hhmm and s < (hhmm * MINUTE) then
+			return hours, 6, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH), mod(minutes, MINUTE)
+		end
+
+		if s < HOUR then
+			return minutes, 2, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH)
+		end
+
+		if s < DAY then
+			return hours, 1, E:GetTimeNextUpdate(s, hours, HOUR, HALFHOURISH, HOURISH)
+		end
+
+		local days = mod(s, YEAR) / DAY
+		return days, 0, E:GetTimeNextUpdate(s, days, DAY, HALFDAYISH, DAYISH)
 	end
 end
 

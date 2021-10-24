@@ -220,6 +220,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[198065]	= Defaults(), -- Prismatic Cloak
 		[11426]		= Defaults(), -- Ice Barrier
 		[235313]	= Defaults(), -- Blazing Barrier
+		[235450]	= Defaults(), -- Prismatic Barrier
 		[110909]	= Defaults(), -- Alter Time
 	-- Monk
 		[122783]	= Defaults(), -- Diffuse Magic
@@ -298,7 +299,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	-- Racial
 		[65116]		= Defaults(), -- Stoneform
 	-- Potion
-		[251231]	= Defaults(), -- Steelskin Potion (BfA Armor Potion)
+		[251231]	= Defaults(), -- Steelskin Potion
+	-- Covenant
+		[324867]	= Defaults(), -- Fleshcraft (Necrolord)
 	},
 }
 
@@ -392,6 +395,9 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[198111]	= Defaults(), -- Temporal Shield
 		[198065]	= Defaults(), -- Prismatic Cloak
 		[11426]		= Defaults(), -- Ice Barrier
+		[235313]	= Defaults(), -- Blazing Barrier
+		[235450]	= Defaults(), -- Prismatic Barrier
+		[110909]	= Defaults(), -- Alter Time
 		[190319]	= Defaults(), -- Combustion
 		[80353]		= Defaults(), -- Time Warp
 		[12472]		= Defaults(), -- Icy Veins
@@ -402,7 +408,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[205025]	= Defaults(), -- Presence of Mind
 		[198158]	= Defaults(), -- Mass Invisibility
 		[221404]	= Defaults(), -- Burning Determination
-		[110909]	= Defaults(), -- Alter Time
 	-- Monk
 		[122783]	= Defaults(), -- Diffuse Magic
 		[122278]	= Defaults(), -- Dampen Harm
@@ -662,6 +667,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[348443]	= Defaults(), -- Experience Eliminated
 		[206151]	= Defaults(), -- Challenger's Burden
 		[313015]	= Defaults(), -- Recently Failed (mechagnome racial)
+		[195776]	= Defaults(), -- Moonfeather Fever
 		[322695]	= Defaults(), -- Drained
 	},
 }
