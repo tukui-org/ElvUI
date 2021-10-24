@@ -13,6 +13,26 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
+function UF:GetClassPower_Construct(frame)
+	frame.ClassPower = UF:Construct_ClassBar(frame)
+	frame.ClassBar = 'ClassPower'
+
+	if E.Retail then
+		if E.myclass == 'DEATHKNIGHT' then
+			frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
+			frame.ClassBar = 'Runes'
+		elseif E.myclass == 'DRUID' or E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' then
+			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+		elseif E.myclass == 'MONK' then
+			frame.Stagger = UF:Construct_Stagger(frame)
+		end
+	elseif E.myclass == 'SHAMAN' then
+		frame.Totems = UF:Construct_Totems(frame)
+	elseif E.myclass == 'DRUID' then
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+	end
+end
+
 function UF:PostVisibility_ClassBars(frame)
 	if not (frame and frame.db) then return end
 
@@ -511,4 +531,49 @@ function UF:PostUpdateVisibilityStagger(_, _, isShown, stateChanged)
 	if stateChanged then
 		UF:PostVisibility_ClassBars(self)
 	end
+end
+
+-----------------------------------------------------------
+-- Totems
+-----------------------------------------------------------
+local TotemColors = {
+	[1] = {.58,.23,.10},
+	[2] = {.23,.45,.13},
+	[3] = {.19,.48,.60},
+	[4] = {.42,.18,.74},
+}
+
+function UF:Construct_Totems(frame)
+	local totems = CreateFrame('Frame', nil, frame)
+	totems:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	totems.Destroy = {}
+
+	for i = 1, 4 do
+		local r, g, b = unpack(TotemColors[i])
+		local totem = CreateFrame('StatusBar', frame:GetName()..'Totem'..i, totems)
+		totem:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+		totem.backdrop:SetParent(totems)
+
+		totem:SetStatusBarTexture(E.media.blankTex)
+		totem:SetStatusBarColor(r, g, b)
+
+		UF.statusbars[totem] = true
+
+		totem:SetMinMaxValues(0, 1)
+		totem:SetValue(0)
+
+		totem.bg = totem:CreateTexture(nil, 'BORDER')
+		totem.bg:SetTexture(E.media.blankTex)
+		totem.bg:SetInside(totem, 0, 0)
+		totem.bg.multiplier = 0.3
+
+		totem.bg:SetVertexColor(r * .3, g * .3, b * .3)
+
+		totems[i] = totem
+	end
+
+	frame.MAX_CLASS_BAR = 4
+	frame.ClassBar = 'Totems'
+
+	return totems
 end
