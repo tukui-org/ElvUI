@@ -188,7 +188,7 @@ end
 function TT:GetLevelLine(tt, offset, guildName)
 	if tt:IsForbidden() then return end
 
-	if guildName then
+	if guildName and not E.Classic then
 		offset = 3
 	end
 
