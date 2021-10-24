@@ -49,6 +49,8 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local GameTooltip = GameTooltip
+local GetTotemInfo = GetTotemInfo
+local GetTime = GetTime
 
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -69,6 +71,23 @@ local function OnLeave()
 	GameTooltip:Hide()
 end
 
+local function TotemOnUpdate(self, elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+
+	if self.elapsed >= .01 then
+		self.elapsed = 0
+
+		local _, _, startTime, expiration = GetTotemInfo(self:GetID())
+		local currentTime = GetTime() - startTime
+
+		if currentTime <= 0 or expiration <= 0 then
+			self:SetValue(0)
+		else
+			self:SetValue(1 - (currentTime / expiration))
+		end
+	end
+end
+
 local function UpdateTotem(self, event, slot)
 	local element = self.Totems
 	if(slot > #element) then return end
@@ -84,31 +103,22 @@ local function UpdateTotem(self, event, slot)
 	local totem = element[slot]
 	local haveTotem, name, start, duration, icon = GetTotemInfo(slot)
 
-	if(haveTotem and duration > 0) then
-		if(totem.Icon) then
+	if haveTotem and duration > 0 then
+		if totem.Icon then
 			totem.Icon:SetTexture(icon)
 		end
 
-		if(totem.Cooldown) then
+		if totem.Cooldown then
 			totem.Cooldown:SetCooldown(start, duration)
 		end
 
-		if totem:IsObjectType("Statusbar") then
+		if totem:IsObjectType('StatusBar') then
 			totem:SetValue(0)
-			totem:Show()
-			totem:SetScript("OnUpdate",function(self,elapsed)
-				self.total = (self.total or 0) + elapsed
-				if (self.total >= .01) then
-					self.total = 0
-					local _, _, startTime, expiration = GetTotemInfo(slot)
-					if ((GetTime() - startTime) == 0) then
-						self:SetValue(0)
-					else
-						self:SetValue(1 - ((GetTime() - startTime) / expiration))
-					end
-				end
-			end)
 		end
+
+		totem:Show()
+	else
+		totem:Hide()
 	end
 
 	--[[ Callback: Totems:PostUpdate(slot, haveTotem, name, start, duration, icon)
@@ -159,7 +169,11 @@ local function Enable(self)
 
 			totem:SetID(i)
 
-			if(totem:IsMouseEnabled()) then
+			if totem:IsObjectType('StatusBar') then
+				totem:SetScript('OnUpdate', TotemOnUpdate)
+			end
+
+			if totem:IsMouseEnabled() then
 				totem:SetScript('OnEnter', OnEnter)
 				totem:SetScript('OnLeave', OnLeave)
 

@@ -117,12 +117,12 @@ function UF:Configure_ClassBar(frame)
 	bars:Width(CLASSBAR_WIDTH - SPACING)
 	bars:Height(frame.CLASSBAR_HEIGHT - SPACING)
 
-	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
+	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
 		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 		end
 
-		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
+		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			bars[i].backdrop:Hide()
 
@@ -176,7 +176,7 @@ function UF:Configure_ClassBar(frame)
 					bars[i]:SetOrientation('HORIZONTAL')
 				end
 
-				if frame.ClassBar == 'ClassPower' then
+				if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Totems' then
 					bars[i].bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
 				end
 			end
