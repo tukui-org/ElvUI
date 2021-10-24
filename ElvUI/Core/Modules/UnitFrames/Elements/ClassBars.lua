@@ -6,7 +6,6 @@ local next = next
 local ipairs = ipairs
 local unpack = unpack
 local CreateFrame = CreateFrame
-local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player
 
@@ -342,7 +341,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 	local isShown = self:IsShown()
 	local stateChanged
 
-	if not frame.USE_CLASSBAR or (current == 0 and db.classbar.autoHide) or maxBars == nil then
+	if not frame.USE_CLASSBAR or (current == 0 and db.classbar.autoHide) or maxBars == 0 or not maxBars then
 		self:Hide()
 		if isShown then
 			stateChanged = true
