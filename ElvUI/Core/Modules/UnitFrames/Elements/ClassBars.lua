@@ -156,13 +156,8 @@ function UF:Configure_ClassBar(frame)
 					bars[i]:SetOrientation('HORIZONTAL')
 				end
 
-				--Fix missing backdrop colors on Combo Points when using Spaced style
 				if frame.ClassBar == 'ClassPower' then
-					if frame.USE_MINI_CLASSBAR then
-						bars[i].bg:SetParent(bars[i].backdrop)
-					else
-						bars[i].bg:SetParent(bars)
-					end
+					bars[i].bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
 				end
 			end
 		end
@@ -314,8 +309,8 @@ function UF:Construct_ClassBar(frame)
 		bars[i].backdrop:SetParent(bars)
 
 		bars[i].bg = bars:CreateTexture(nil, 'BORDER')
-		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E.media.blankTex)
+		bars[i].bg:SetInside(bars[i].backdrop)
 	end
 
 	bars.PostVisibility = UF.PostVisibilityClassBar
@@ -411,8 +406,8 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].backdrop:SetParent(runes)
 
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
-		runes[i].bg:SetAllPoints()
 		runes[i].bg:SetTexture(E.media.blankTex)
+		runes[i].bg:SetInside(runes[i].backdrop)
 		runes[i].bg.multiplier = 0.35
 	end
 
@@ -442,8 +437,8 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
-	additionalPower.bg:SetAllPoints(additionalPower)
 	additionalPower.bg:SetTexture(E.media.blankTex)
+	additionalPower.bg:SetInside(nil, 0, 0)
 	additionalPower.bg.multiplier = 0.35
 
 	additionalPower:SetScript('OnShow', ToggleResourceBar)
