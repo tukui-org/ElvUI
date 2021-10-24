@@ -814,7 +814,7 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Classbar"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	local config = ACH:Group(L["Classbar"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return groupName ~= 'player' and not E.Retail end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.height = ACH:Range(L["Height"], nil, 1, { min = 2, max = 30, step = 1 })
 	config.args.fill = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], spaced = L["Spaced"] })
