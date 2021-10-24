@@ -566,10 +566,10 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 	local config = ACH:Group(L["Heal Prediction"], L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."], nil, nil, function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
-	config.args.colorsButton = ACH:Execute(L["COLORS"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.colorsButton = ACH:Execute(L["COLORS"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
-	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["NONE"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] })
-	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["NONE"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
+	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.warning = ACH:Description(function()
 				if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
 					local text = L["Max Overflow is set to zero. Absorb Overflows will be hidden when using Overflow style.\nIf used together Max Overflow at zero and Overflow mode will act like Normal mode without the ending sliver of overflow."]
@@ -1597,24 +1597,28 @@ UnitFrame.allColorsGroup = {
 							name = L["Absorbs"],
 							type = 'color',
 							hasAlpha = true,
+							hidden = not E.Retail,
 						},
 						healAbsorbs = {
 							order = 6,
 							name = L["Heal Absorbs"],
 							type = 'color',
 							hasAlpha = true,
+							hidden = not E.Retail,
 						},
 						overabsorbs = {
 							order = 7,
 							name = L["Over Absorbs"],
 							type = 'color',
 							hasAlpha = true,
+							hidden = not E.Retail,
 						},
 						overhealabsorbs = {
 							order = 8,
 							name = L["Over Heal Absorbs"],
 							type = 'color',
 							hasAlpha = true,
+							hidden = not E.Retail,
 						},
 					},
 				},
