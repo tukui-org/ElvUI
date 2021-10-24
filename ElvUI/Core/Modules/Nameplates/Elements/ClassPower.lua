@@ -125,10 +125,6 @@ function NP:Update_ClassPower(nameplate)
 		local anchor = target and NP:GetClassAnchor()
 		nameplate.ClassPower:ClearAllPoints()
 		nameplate.ClassPower:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
-
-		local maxClassBarButtons = nameplate.ClassPower.__max
-
-		local Width = db.classpower.width / maxClassBarButtons
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
 		for i = 1, #nameplate.ClassPower do
@@ -136,26 +132,30 @@ function NP:Update_ClassPower(nameplate)
 			nameplate.ClassPower[i].bg:Hide()
 		end
 
-		for i = 1, maxClassBarButtons do
-			nameplate.ClassPower[i]:Show()
-			nameplate.ClassPower[i].bg:Show()
-			nameplate.ClassPower[i]:ClearAllPoints()
-
-			if i == 1 then
-				nameplate.ClassPower[i]:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
-				nameplate.ClassPower[i].bg:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
-
+		local maxButtons = nameplate.ClassPower.__max
+		if maxButtons > 0 then
+			local Width = db.classpower.width / maxButtons
+			for i = 1, maxButtons do
+				nameplate.ClassPower[i]:Show()
+				nameplate.ClassPower[i].bg:Show()
 				nameplate.ClassPower[i]:ClearAllPoints()
-				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
-			else
-				nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
-				nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
 
-				nameplate.ClassPower[i]:ClearAllPoints()
-				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
+				if i == 1 then
+					nameplate.ClassPower[i]:Size(Width - (maxButtons == 6 and 2 or 0), db.classpower.height)
+					nameplate.ClassPower[i].bg:Size(Width - (maxButtons == 6 and 2 or 0), db.classpower.height)
 
-				if i == maxClassBarButtons then
-					nameplate.ClassPower[i]:Point('RIGHT', nameplate.ClassPower)
+					nameplate.ClassPower[i]:ClearAllPoints()
+					nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
+				else
+					nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
+					nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
+
+					nameplate.ClassPower[i]:ClearAllPoints()
+					nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
+
+					if i == maxButtons then
+						nameplate.ClassPower[i]:Point('RIGHT', nameplate.ClassPower)
+					end
 				end
 			end
 		end
