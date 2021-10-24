@@ -36,7 +36,9 @@ function NP:ClassPower_UpdateColor(powerType)
 
 		self[i]:SetStatusBarColor(r, g, b)
 
-		if self[i].bg then self[i].bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
+		if self[i].bg then
+			self[i].bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		end
 	end
 end
 
@@ -83,8 +85,8 @@ function NP:Construct_ClassPower(nameplate)
 		NP.StatusBars[ClassPower[i]] = true
 
 		ClassPower[i].bg = ClassPower:CreateTexture(frameName..'ClassPower'..i..'bg', 'BORDER')
-		ClassPower[i].bg:SetAllPoints(ClassPower[i])
 		ClassPower[i].bg:SetTexture(texture)
+		ClassPower[i].bg:SetInside()
 	end
 
 	if nameplate == _G.ElvNP_Test then
@@ -136,25 +138,21 @@ function NP:Update_ClassPower(nameplate)
 		if maxButtons > 0 then
 			local Width = db.classpower.width / maxButtons
 			for i = 1, maxButtons do
-				nameplate.ClassPower[i]:Show()
-				nameplate.ClassPower[i].bg:Show()
-				nameplate.ClassPower[i]:ClearAllPoints()
+				local button = nameplate.ClassPower[i]
+				button:Show()
+				button.bg:Show()
+				button:ClearAllPoints()
 
 				if i == 1 then
-					nameplate.ClassPower[i]:Size(Width - (maxButtons == 6 and 2 or 0), db.classpower.height)
-					nameplate.ClassPower[i].bg:Size(Width - (maxButtons == 6 and 2 or 0), db.classpower.height)
-
-					nameplate.ClassPower[i]:ClearAllPoints()
-					nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
+					local width = Width - (maxButtons == 6 and 2 or 0)
+					button:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
+					button:Size(width, db.classpower.height)
 				else
-					nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
-					nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
-
-					nameplate.ClassPower[i]:ClearAllPoints()
-					nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
+					button:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
+					button:Size(Width - 1, db.classpower.height)
 
 					if i == maxButtons then
-						nameplate.ClassPower[i]:Point('RIGHT', nameplate.ClassPower)
+						button:Point('RIGHT', nameplate.ClassPower)
 					end
 				end
 			end
@@ -199,7 +197,7 @@ function NP:Construct_Runes(nameplate)
 		Runes[i].bg = Runes[i]:CreateTexture(frameName..'Runes'..i..'bg', 'BORDER')
 		Runes[i].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
 		Runes[i].bg:SetTexture(texture)
-		Runes[i].bg:SetAllPoints()
+		Runes[i].bg:SetInside()
 	end
 
 	return Runes
@@ -232,14 +230,10 @@ function NP:Update_Runes(nameplate)
 
 			if i == 1 then
 				nameplate.Runes[i]:Size(width, db.classpower.height)
-				nameplate.Runes[i].bg:Size(width, db.classpower.height)
-
 				nameplate.Runes[i]:ClearAllPoints()
 				nameplate.Runes[i]:Point('LEFT', nameplate.Runes, 'LEFT', 0, 0)
 			else
 				nameplate.Runes[i]:Size(width - 1, db.classpower.height)
-				nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
-
 				nameplate.Runes[i]:ClearAllPoints()
 				nameplate.Runes[i]:Point('LEFT', nameplate.Runes[i-1], 'RIGHT', 1, 0)
 
