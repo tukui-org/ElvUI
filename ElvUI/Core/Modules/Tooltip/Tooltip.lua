@@ -185,8 +185,13 @@ function TT:RemoveTrashLines(tt)
 	end
 end
 
-function TT:GetLevelLine(tt, offset)
+function TT:GetLevelLine(tt, offset, guildName)
 	if tt:IsForbidden() then return end
+
+	if guildName and not E.Classic then
+		offset = 3
+	end
+
 	for i = offset, tt:NumLines() do
 		local tipLine = _G['GameTooltipTextLeft'..i]
 		local tipText = tipLine and tipLine:GetText() and strlower(tipLine:GetText())
@@ -229,22 +234,20 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local awayText = UnitIsAFK(unit) and AFK_LABEL or UnitIsDND(unit) and DND_LABEL or ''
 		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s%s|r', nameColor.colorStr, name or UNKNOWN, awayText)
 
-		local lineOffset = 2
+		local levelLine = TT:GetLevelLine(tt, 2, guildName)
 		if guildName then
 			if guildRealm and isShiftKeyDown then
 				guildName = guildName..'-'..guildRealm
 			end
 
-			if TT.db.guildRanks then
-				_G.GameTooltipTextLeft2:SetFormattedText('<|cff00ff10%s|r> [|cff00ff10%s|r]', guildName, guildRankName)
+			local text = TT.db.guildRanks and format('<|cff00ff10%s|r> [|cff00ff10%s|r]', guildName, guildRankName) or format('<|cff00ff10%s|r>', guildName)
+			if levelLine == _G.GameTooltipTextLeft2 then
+				tt:AddLine(text, 1, 1, 1)
 			else
-				_G.GameTooltipTextLeft2:SetFormattedText('<|cff00ff10%s|r>', guildName)
+				_G.GameTooltipTextLeft2:SetText(text)
 			end
-
-			lineOffset = 3
 		end
 
-		local levelLine = TT:GetLevelLine(tt, lineOffset)
 		if levelLine then
 			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
