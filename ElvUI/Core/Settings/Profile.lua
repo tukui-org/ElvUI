@@ -1974,7 +1974,7 @@ P.unitframe.units.player.health.text_format = '[healthcolor][health:current-perc
 P.unitframe.units.player.health.xOffset = 2
 P.unitframe.units.player.power.EnergyManaRegen = false
 P.unitframe.units.player.power.position = 'RIGHT'
-P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current:shortvalue][powercolor][  >power:current:shortvalue]'
+P.unitframe.units.player.power.text_format = (E.Retail and '[classpowercolor][classpower:current:shortvalue]' or '[cpoints]') .. '[powercolor][  >power:current:shortvalue]'
 P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
