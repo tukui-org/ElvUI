@@ -220,6 +220,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[198065]	= Defaults(), -- Prismatic Cloak
 		[11426]		= Defaults(), -- Ice Barrier
 		[235313]	= Defaults(), -- Blazing Barrier
+		[235450]	= Defaults(), -- Prismatic Barrier
 		[110909]	= Defaults(), -- Alter Time
 	-- Monk
 		[122783]	= Defaults(), -- Diffuse Magic
@@ -662,6 +663,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[348443]	= Defaults(), -- Experience Eliminated
 		[206151]	= Defaults(), -- Challenger's Burden
 		[313015]	= Defaults(), -- Recently Failed (mechagnome racial)
+		[195776]	= Defaults(), -- Moonfeather Fever
 		[322695]	= Defaults(), -- Drained
 	},
 }
