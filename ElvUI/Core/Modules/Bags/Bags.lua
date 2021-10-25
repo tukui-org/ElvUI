@@ -615,11 +615,10 @@ function B:GetContainerNumSlots(bagID)
 end
 
 function B:UpdateReagentSlot(slotID)
-	local bagID = REAGENTBANK_CONTAINER
-	local bag = B.BankFrame and B.BankFrame.Bags[bagID]
-	local slot = bag and bag[slotID]
+	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
 	if not slot then return end
 
+	local bagID = REAGENTBANK_CONTAINER
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 
