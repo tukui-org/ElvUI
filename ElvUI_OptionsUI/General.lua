@@ -59,7 +59,7 @@ General.args.general.args.automation.inline = true
 General.args.general.args.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["NONE"], SAY = L["SAY"], YELL = L["YELL"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value if value == 'NONE' then Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED') else Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED') end end)
 General.args.general.args.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Automatically accept invites from guild/friends."], 2)
 General.args.general.args.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
-General.args.general.args.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["NONE"], GUILD = L["GUILD"], PLAYER = L["PLAYER"] })
+General.args.general.args.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["NONE"], GUILD = not E.Classic and L["GUILD"] or nil, PLAYER = L["PLAYER"] })
 
 General.args.general.args.totems = ACH:Group(L["Class Totems"], nil, 53, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value Totems:PositionAndSize() end, function() return not E.private.general.totemBar end)
 General.args.general.args.totems.inline = true
