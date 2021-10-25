@@ -582,9 +582,8 @@ function S:Blizzard_Communities()
 	-- Guild Log
 	local GuildLogFrame = _G.CommunitiesGuildLogFrame
 	GuildLogFrame:StripTextures()
-	GuildLogFrame.Container:StripTextures()
 	GuildLogFrame:SetTemplate('Transparent')
-	GuildLogFrame.Container:SetTemplate('Transparent')
+	GuildLogFrame.Container.NineSlice:SetTemplate('Transparent')
 
 	S:HandleScrollBar(_G.CommunitiesGuildLogFrameScrollBar)
 	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
