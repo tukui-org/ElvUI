@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 local pairs = pairs
+local select = select
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function ReskinEventTraceButton(button)
@@ -18,6 +19,7 @@ local function reskinScrollChild(self)
 		local hideButton = child and child.HideButton
 		if hideButton and not hideButton.IsSkinned then
 			S:HandleCloseButton(hideButton)
+
 			hideButton:ClearAllPoints()
 			hideButton:SetPoint('LEFT', 3, 0)
 
@@ -38,8 +40,37 @@ local function ReskinEventTraceScrollBox(frame)
 	hooksecurefunc(frame, 'Update', reskinScrollChild)
 end
 
+local function ReskinScrollBarArrow(frame, direction)
+	S:HandleNextPrevButton(frame, direction)
+	frame.Overlay:SetAlpha(0)
+	frame.Texture:Hide()
+end
+
+local function ReskinEventTraceScrollBar(frame)
+	frame.Background:Hide()
+	frame:StripTextures()
+
+	local track = frame.Track
+	track:SetTemplate('Transparent')
+	track:ClearAllPoints()
+	track:SetPoint('TOPLEFT', 4, -21)
+	track:SetPoint('BOTTOMRIGHT', -3, 21)
+
+	local thumb = track.Thumb
+	thumb.Middle:Hide()
+	thumb.Begin:Hide()
+	thumb.End:Hide()
+
+	thumb:SetTemplate(nil, true, true)
+	thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+
+	ReskinScrollBarArrow(frame.Back, 'up')
+	ReskinScrollBarArrow(frame.Forward, 'down')
+end
+
 local function ReskinEventTraceFrame(frame)
 	ReskinEventTraceScrollBox(frame.ScrollBox)
+	ReskinEventTraceScrollBar(frame.ScrollBar)
 end
 
 function S:Blizzard_EventTrace()
@@ -100,6 +131,7 @@ function S:Blizzard_EventTrace()
 		FilterBar.UncheckAllButton,
 		FilterBar.CheckAllButton,
 	}
+
 	for _, button in pairs(buttons) do
 		ReskinEventTraceButton(button)
 	end

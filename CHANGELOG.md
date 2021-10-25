@@ -1,7 +1,33 @@
 ### Version 12.45 [ ETA: 🍨 ]
 
-**Development:**  
+**General:**  
+Added an option to hide chat in afk screensaver mode  
 
+Development is now on GitHub (was GitLab)  
+Unified our codebase to support Retail, TBC and Classic in one version  
+Updated issue tracker link  
+Updated dev version link  
+Updated wiki link  
+Updated available tags and descriptions  
+Updated russian locale (Credits: Evgeniy)  
+
+**Shadowlands:**  
+Added a button in bags and bank to stack items of the same type  
+Added an option to color tooltip border based on item quality  
+Added support for the new Call of Duty in friends DataText  
+Fixed a bug with the border color on top auras  
+Fixed AuraWatch sizeOffset Lua error  
+Fixed island expedition queue tooltip  
+Skin fixes and new skins for patch 9.1.5  
+
+**Burning Crusade Classic:**  
+Added guild option for auto repair  
+Added phase 2 support for our custom RaidDebuffs list  
+Fixed combo points not updating correctly on target switch  
+Updated threat for NamePlates  
+
+**Classic Era and Season of Mastery:**  
+Initial support for Blizzards 1.14. live server update and upcoming Season of Mastery  
 
 ___
 ### Version 12.44 [ August 27th 2021 ]

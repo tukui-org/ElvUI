@@ -9,7 +9,6 @@ local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
 local DressUpItemLink = DressUpItemLink
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
@@ -262,14 +261,6 @@ function M:START_LOOT_ROLL(_, rollID, time)
 			end
 			completedRolls[rollid] = true
 			break
-		end
-	end
-
-	if E.db.general.autoRoll and IsPlayerAtEffectiveMaxLevel() and quality == 2 and not bop then
-		if canDisenchant then
-			RollOnLoot(rollID, 3)
-		else
-			RollOnLoot(rollID, 2)
 		end
 	end
 end
