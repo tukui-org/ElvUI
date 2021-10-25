@@ -3,18 +3,18 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local select = select
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Contribution()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.contribution) then return end
 
-	--Main Frame
-	local ContributionCollectionFrame = _G.ContributionCollectionFrame
-	S:HandleCloseButton(ContributionCollectionFrame.CloseButton)
-	ContributionCollectionFrame.CloseButton.CloseButtonBackground:SetAlpha(0)
+	local MainFrame = _G.ContributionCollectionFrame
+	S:HandleCloseButton(MainFrame.CloseButton)
+	MainFrame.CloseButton.CloseButtonBackground:SetAlpha(0)
 
+	-- Reward Tooltip
 	if E.private.skins.blizzard.tooltip then
-		--Reward Tooltip
 		local ContributionBuffTooltip = _G.ContributionBuffTooltip
 		ContributionBuffTooltip:StripTextures()
 		ContributionBuffTooltip:SetTemplate('Transparent')
@@ -23,8 +23,7 @@ function S:Blizzard_Contribution()
 		ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	local ContributionMixin = _G.ContributionMixin
-	hooksecurefunc(ContributionMixin, 'SetupContributeButton', function(s)
+	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', function(s)
 		-- Skin the Contribute Buttons
 		if not s.isSkinned then
 			S:HandleButton(s.ContributeButton)
@@ -40,17 +39,17 @@ function S:Blizzard_Contribution()
 		end
 	end)
 
-	--Skin the reward icons
-	hooksecurefunc(ContributionMixin, 'AddReward', function(s, _, rewardID)
+	-- Skin the reward icons
+	hooksecurefunc(_G.ContributionMixin, 'AddReward', function(s, _, rewardID)
 		local reward = s:FindOrAcquireReward(rewardID)
-		if reward and not reward.isSkinned then
+		if reward and not reward.backdrop then
 			reward:SetFrameLevel(5)
-			reward:SetTemplate()
-			reward:StyleButton()
+			reward:CreateBackdrop()
+
 			reward.Border:SetAlpha(0)
-			reward.Icon:SetDrawLayer('OVERLAY')
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
-			reward.isSkinned = true
+			reward.Icon:SetDrawLayer('ARTWORK', -1)
+			reward.backdrop:SetOutside(reward.Icon)
 		end
 	end)
 end
