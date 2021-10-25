@@ -564,6 +564,7 @@ for key, arrow in pairs(E.Media.Arrows) do
 end
 
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup = ACH:Group(L["Classbar"], nil, 13, nil, function(info) return E.db.nameplates.units.TARGET.classpower[info[#info]] end, function(info, value) E.db.nameplates.units.TARGET.classpower[info[#info]] = value NP:ConfigureAll() end)
+E.Options.args.nameplate.args.targetGroup.args.classBarGroup.guiInline = true
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = NamePlateMaxWidth('PLAYER'), step = 1 })
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 4, max = NamePlateMaxHeight('PLAYER'), step = 1 })
