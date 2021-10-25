@@ -483,11 +483,10 @@ function S:BlizzardOptions()
 
 	--What's New
 	local SplashFrame = _G.SplashFrame
-	SplashFrame:SetTemplate('Transparent')
-	SplashFrame.Header:FontTemplate(nil, 22)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
 	SplashFrame.BottomCloseButton:SetFrameLevel(SplashFrame.BottomCloseButton:GetFrameLevel() + 1)
+	SplashFrame.Header:FontTemplate(nil, 22)
 
 	-- New Voice Sliders
 	S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)
