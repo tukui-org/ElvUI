@@ -28,6 +28,8 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetTime = GetTime
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -656,6 +658,13 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
 		local left, right, bankCount = ' ', ' ', ' '
+
+		if TT.db.itemQuality then
+			local _, _, quality = GetItemInfo(link)
+			if quality and quality > 1 then
+				tt:SetBackdropBorderColor(GetItemQualityColor(quality))
+			end
+		end
 
 		if link and TT:IsModKeyDown() then
 			left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
