@@ -455,7 +455,7 @@ function S:Blizzard_EncounterJournal()
 		local tooltip = _G.EncounterJournalTooltip
 		local item1 = tooltip.Item1
 		local item2 = tooltip.Item2
-		tooltip:SetTemplate('Transparent')
+		tooltip.NineSlice:SetTemplate('Transparent')
 		S:HandleIcon(item1.icon)
 		S:HandleIcon(item2.icon)
 		item1.IconBorder:Kill()
