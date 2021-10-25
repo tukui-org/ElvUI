@@ -1907,7 +1907,7 @@ UnitFrame.frameGlowGroup.args.targetGlow.args.spacer = ACH:Spacer(2)
 UnitFrame.frameGlowGroup.args.targetGlow.args.class = ACH:Toggle(L["Use Class Color"], L["Alpha channel is taken from the color option."], 3)
 UnitFrame.frameGlowGroup.args.targetGlow.args.color = ACH:Color(L["COLOR"], nil, 4, true)
 
-UnitFrame.frameGlowGroup.args.focusGlow = ACH:Group(L["Focused Glow"], nil, 2, nil, function(info) local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] if info.type == 'color' then local d = P.unitframe.colors.frameGlow.focusGlow[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return t end end, function(info, ...) if info.type == 'color' then local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] t.r, t.g, t.b, t.a = ... else E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] = ... end UF:FrameGlow_UpdateFrames() end, function() return not E.db.unitframe.colors.frameGlow.focusGlow.enable end)
+UnitFrame.frameGlowGroup.args.focusGlow = ACH:Group(L["Focused Glow"], nil, 2, nil, function(info) local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] if info.type == 'color' then local d = P.unitframe.colors.frameGlow.focusGlow[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return t end end, function(info, ...) if info.type == 'color' then local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] t.r, t.g, t.b, t.a = ... else E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] = ... end UF:FrameGlow_UpdateFrames() end, function() return not E.db.unitframe.colors.frameGlow.focusGlow.enable end, E.Classic)
 UnitFrame.frameGlowGroup.args.focusGlow.inline = true
 UnitFrame.frameGlowGroup.args.focusGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
 UnitFrame.frameGlowGroup.args.focusGlow.args.spacer = ACH:Spacer(2)
@@ -2149,7 +2149,7 @@ PetTarget.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'pettarget')
 UnitFrame.groupUnits = ACH:Group(L["Group Units"], nil, 16, 'tab')
 local GroupUnits = UnitFrame.groupUnits.args
 
-GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end, nil, function() return E.Classic end)
+GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end, nil, not E.Retail)
 local Boss = GroupUnits.boss.args
 
 Boss.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -2171,13 +2171,13 @@ Boss.castbar = GetOptionsTable_Castbar(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX
 Boss.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES)
 Boss.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES)
 
-GroupUnits.arena = ACH:Group(L["Arena"], nil, nil, nil, function(info) return E.db.unitframe.units.arena[info[#info]] end, function(info, value) E.db.unitframe.units.arena[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end, nil, function() return E.Classic end)
+GroupUnits.arena = ACH:Group(L["Arena"], nil, nil, nil, function(info) return E.db.unitframe.units.arena[info[#info]] end, function(info, value) E.db.unitframe.units.arena[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end, nil, E.Classic)
 local Arena = GroupUnits.arena.args
 
 Arena.enable = ACH:Toggle(L["Enable"], nil, 1)
 Arena.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('arena', 5) end)
 Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, { unit = 'arena', mover = 'Arena Frames' }) end)
-Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end)
+Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end, nil, not E.Retail)
 
 Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUFGroup, 'arena', 5)

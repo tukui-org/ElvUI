@@ -132,7 +132,7 @@ general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Colo
 general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
 general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
 general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
-general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true)
+general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, not E.Retail)
 general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
 
 general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 30)
