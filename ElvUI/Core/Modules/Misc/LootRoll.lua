@@ -25,7 +25,6 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 
-local pos = 'TOP'
 local cancelled_rolls = {}
 local cachedRolls = {}
 local completedRolls = {}
@@ -167,8 +166,7 @@ function M:CreateRollFrame()
 
 	local need, needtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], [[Interface\Buttons\UI-GroupLoot-Dice-Highlight]], [[Interface\Buttons\UI-GroupLoot-Dice-Down]], 1, NEED, 'LEFT', frame.button, 'RIGHT', 5, -1)
 	local greed, greedtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], [[Interface\Buttons\UI-GroupLoot-Coin-Highlight]], [[Interface\Buttons\UI-GroupLoot-Coin-Down]], 2, GREED, 'LEFT', need, 'RIGHT', 0, -1)
-	local de, detext
-	de, detext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE-Up]], [[Interface\Buttons\UI-GroupLoot-DE-Highlight]], [[Interface\Buttons\UI-GroupLoot-DE-Down]], 3, ROLL_DISENCHANT, 'LEFT', greed, 'RIGHT', 0, -1)
+	local de, detext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE-Up]], [[Interface\Buttons\UI-GroupLoot-DE-Highlight]], [[Interface\Buttons\UI-GroupLoot-DE-Down]], 3, ROLL_DISENCHANT, 'LEFT', greed, 'RIGHT', 0, -1)
 	local pass, passtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], nil, [[Interface\Buttons\UI-GroupLoot-Pass-Down]], 0, PASS, 'LEFT', de or greed, 'RIGHT', 0, 2)
 	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
@@ -193,21 +191,23 @@ end
 
 local function GetFrame()
 	for _,f in ipairs(M.RollBars) do
-		if not f.rollID then return f end
+		if not f.rollID then
+			return f
+		end
 	end
 
 	local f = M:CreateRollFrame()
-	if pos == 'TOP' then
-		f:Point('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
-	else
-		f:Point('BOTTOM', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'TOP', 0, 4)
-	end
+	f:ClearAllPoints()
+	f:Point('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
+
 	tinsert(M.RollBars, f)
+
 	return f
 end
 
 function M:START_LOOT_ROLL(_, rollID, time)
 	if cancelled_rolls[rollID] then return end
+
 	local f = GetFrame()
 	f.rollID = rollID
 	f.time = time
@@ -247,8 +247,10 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
-	f:Point('CENTER', _G.WorldFrame, 'CENTER')
+	f:ClearAllPoints()
+	f:Point('CENTER', _G.WorldFrame)
 	f:Show()
+
 	_G.AlertFrame:UpdateAnchors()
 
 	--Add cached roll info, if any
