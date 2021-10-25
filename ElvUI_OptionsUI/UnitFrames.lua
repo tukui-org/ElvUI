@@ -2177,7 +2177,7 @@ local Arena = GroupUnits.arena.args
 Arena.enable = ACH:Toggle(L["Enable"], nil, 1)
 Arena.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('arena', 5) end)
 Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, { unit = 'arena', mover = 'Arena Frames' }) end)
-Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end)
+Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end, nil, not E.Retail)
 
 Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUFGroup, 'arena', 5)
