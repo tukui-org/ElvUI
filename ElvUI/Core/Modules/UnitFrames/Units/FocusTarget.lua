@@ -69,40 +69,20 @@ function UF:Update_FocusTargetFrame(frame, db)
 	frame.colors = ElvUF.colors
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+
 	UF:Configure_InfoPanel(frame)
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	--Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--Fader
-	UF:Configure_Fader(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
+	UF:Configure_Fader(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
