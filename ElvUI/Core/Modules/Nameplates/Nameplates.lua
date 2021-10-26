@@ -800,10 +800,13 @@ local optionsTable = {
 	'FriendlyMinions',
 	'PersonalResource',
 	'PersonalResourceOnEnemy',
-	'NameplateMaxDistanceSlider',
 	'MotionDropDown',
 	'ShowAll'
 }
+
+if E.TBC then
+	tinsert(optionsTable, 'NameplateMaxDistanceSlider')
+end
 
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
