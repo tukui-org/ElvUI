@@ -558,6 +558,7 @@ E.Options.args.nameplate.args.targetGroup.args.glowStyle.customWidth = 225
 E.Options.args.nameplate.args.targetGroup.args.arrowScale = ACH:Range(L["Arrow Scale"], nil, 5, { min = .2, max = 2, step = .01, isPercent = true })
 E.Options.args.nameplate.args.targetGroup.args.arrowSpacing = ACH:Range(L["Arrow Spacing"], nil, 6, { min = 0, max = 50, step = 1 })
 E.Options.args.nameplate.args.targetGroup.args.arrows = ACH:MultiSelect(L["Arrow Texture"], nil, 30, nil, nil, nil, function(_, key) return E.db.nameplates.units.TARGET.arrow == key end, function(_, key) E.db.nameplates.units.TARGET.arrow = key NP:SetCVars() NP:ConfigureAll() end)
+E.Options.args.nameplate.args.targetGroup.args.arrows.customWidth = 80
 
 for key, arrow in pairs(E.Media.Arrows) do
 	E.Options.args.nameplate.args.targetGroup.args.arrows.values[key] = E:TextureString(arrow, ':32:32')
