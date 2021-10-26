@@ -269,8 +269,8 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.searchBox.backdrop:Point('TOPLEFT', AchievementFrame.searchBox, 'TOPLEFT', -3, -3)
 	AchievementFrame.searchBox.backdrop:Point('BOTTOMRIGHT', AchievementFrame.searchBox, 'BOTTOMRIGHT', 0, 3)
 	AchievementFrame.searchBox:ClearAllPoints()
-	AchievementFrame.searchBox:Point('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -50, 8)
-	AchievementFrame.searchBox:Size(107, 25)
+	AchievementFrame.searchBox:Point('TOPRIGHT', _G.AchievementFrameHeaderRightDDLInset, 25, -5)
+	AchievementFrame.searchBox:Size(170, 25)
 
 	local scrollBars = {
 		_G.AchievementFrameCategoriesContainerScrollBar,
