@@ -17,19 +17,19 @@ function UF:GetClassPower_Construct(frame)
 	frame.ClassPower = UF:Construct_ClassBar(frame)
 	frame.ClassBar = 'ClassPower'
 
-	if E.Retail then
-		if E.myclass == 'DEATHKNIGHT' then
+	if E.myclass == 'DRUID' then
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+	elseif E.Retail then
+		if E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' then
+			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+		elseif E.myclass == 'DEATHKNIGHT' then
 			frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 			frame.ClassBar = 'Runes'
-		elseif E.myclass == 'DRUID' or E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' then
-			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 		elseif E.myclass == 'MONK' then
 			frame.Stagger = UF:Construct_Stagger(frame)
 		end
 	elseif E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
-	elseif E.myclass == 'DRUID' then
-		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	end
 end
 
