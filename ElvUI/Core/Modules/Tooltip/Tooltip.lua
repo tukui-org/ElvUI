@@ -613,17 +613,22 @@ end
 
 function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt:IsForbidden() then return end
-	tt.itemCleared = nil
+
+	if tt.qualityChanged then
+		tt.qualityChanged = nil
+
+		tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+
+	if tt.ItemTooltip then
+		tt.ItemTooltip:Hide()
+	end
 
 	-- This code is to reset stuck widgets.
 	GameTooltip_ClearMoney(tt)
 	GameTooltip_ClearStatusBars(tt)
 	GameTooltip_ClearProgressBars(tt)
 	GameTooltip_ClearWidgetSet(tt)
-
-	if tt.ItemTooltip then
-		tt.ItemTooltip:Hide()
-	end
 end
 
 function TT:EmbeddedItemTooltip_ID(tt, id)
@@ -648,46 +653,42 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	local owner = tt:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
 	if ownerName and (strfind(ownerName, 'ElvUI_Container') or strfind(ownerName, 'ElvUI_BankContainer')) and not TT:IsModKeyDown(TT.db.visibility.bags) then
-		tt.itemCleared = true
 		tt:Hide()
 		return
 	end
 
-	if not tt.itemCleared then
-		local _, link = tt:GetItem()
-		local num = GetItemCount(link)
-		local numall = GetItemCount(link,true)
-		local left, right, bankCount = ' ', ' ', ' '
+	local _, link = tt:GetItem()
+	local num = GetItemCount(link)
+	local numall = GetItemCount(link,true)
+	local left, right, bankCount = ' ', ' ', ' '
 
-		if TT.db.itemQuality then
-			local _, _, quality = GetItemInfo(link)
-			if quality and quality > 1 then
-				tt:SetBackdropBorderColor(GetItemQualityColor(quality))
-			end
+	if TT.db.itemQuality then
+		local _, _, quality = GetItemInfo(link)
+		if quality and quality > 1 then
+			tt:SetBackdropBorderColor(GetItemQualityColor(quality))
+			tt.qualityChanged = true
 		end
+	end
 
-		if link and TT:IsModKeyDown() then
-			left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
-		end
+	if link and TT:IsModKeyDown() then
+		left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
+	end
 
-		if TT.db.itemCount == 'BAGS_ONLY' then
-			right = format(IDLine, L["Count"], num)
-		elseif TT.db.itemCount == 'BANK_ONLY' then
-			bankCount = format(IDLine, L["Bank"], numall - num)
-		elseif TT.db.itemCount == 'BOTH' then
-			right = format(IDLine, L["Count"], num)
-			bankCount = format(IDLine, L["Bank"], numall - num)
-		end
+	if TT.db.itemCount == 'BAGS_ONLY' then
+		right = format(IDLine, L["Count"], num)
+	elseif TT.db.itemCount == 'BANK_ONLY' then
+		bankCount = format(IDLine, L["Bank"], numall - num)
+	elseif TT.db.itemCount == 'BOTH' then
+		right = format(IDLine, L["Count"], num)
+		bankCount = format(IDLine, L["Bank"], numall - num)
+	end
 
-		if left ~= ' ' or right ~= ' ' then
-			tt:AddLine(' ')
-			tt:AddDoubleLine(left, right)
-		end
-		if bankCount ~= ' ' then
-			tt:AddDoubleLine(' ', bankCount)
-		end
-
-		tt.itemCleared = true
+	if left ~= ' ' or right ~= ' ' then
+		tt:AddLine(' ')
+		tt:AddDoubleLine(left, right)
+	end
+	if bankCount ~= ' ' then
+		tt:AddDoubleLine(' ', bankCount)
 	end
 end
 
