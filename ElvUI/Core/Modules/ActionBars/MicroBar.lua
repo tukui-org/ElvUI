@@ -96,16 +96,6 @@ function AB:HandleMicroButton(button)
 	end
 end
 
-function AB:MainMenuMicroButton_SetNormal()
-	_G.MainMenuBarPerformanceBar:ClearAllPoints()
-	_G.MainMenuBarPerformanceBar:Point('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 9, -36)
-end
-
-function AB:MainMenuMicroButton_SetPushed()
-	_G.MainMenuBarPerformanceBar:ClearAllPoints()
-	_G.MainMenuBarPerformanceBar:Point('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 8, -37)
-end
-
 function AB:UpdateMicroButtonsParent()
 	for _, x in pairs(_G.MICRO_BUTTONS) do
 		_G[x]:SetParent(microBar)
@@ -217,18 +207,20 @@ function AB:UpdateMicroPositionDimensions()
 end
 
 function AB:UpdateMicroButtons()
-	if E.Retail then
-		local GuildMicroButton = _G.GuildMicroButton
-		local GuildMicroButtonTabard = _G.GuildMicroButtonTabard
-		GuildMicroButtonTabard:SetInside(GuildMicroButton)
-		GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
-		GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-		GuildMicroButtonTabard.emblem:ClearAllPoints()
-		GuildMicroButtonTabard.emblem:Point('TOPLEFT', GuildMicroButton, 'TOPLEFT', 4, -4)
-		GuildMicroButtonTabard.emblem:Point('BOTTOMRIGHT', GuildMicroButton, 'BOTTOMRIGHT', -4, 8)
-	end
+	local GuildMicroButton = _G.GuildMicroButton
+	local GuildMicroButtonTabard = _G.GuildMicroButtonTabard
+	GuildMicroButtonTabard:SetInside(GuildMicroButton)
+	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
+	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	GuildMicroButtonTabard.emblem:ClearAllPoints()
+	GuildMicroButtonTabard.emblem:Point('TOPLEFT', GuildMicroButton, 4, -4)
+	GuildMicroButtonTabard.emblem:Point('BOTTOMRIGHT', GuildMicroButton, -4, 8)
+end
 
-	AB:UpdateMicroPositionDimensions()
+function AB:UIParent_OnEvent(event)
+	if event == 'PLAYER_ENTERING_WORLD' then
+		AB:UpdateMicroPositionDimensions()
+	end
 end
 
 function AB:SetupMicroBar()
@@ -246,16 +238,20 @@ function AB:SetupMicroBar()
 
 	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
 
-	AB:SecureHook('UpdateMicroButtonsParent')
 	AB:SecureHook('MoveMicroButtons', 'UpdateMicroPositionDimensions')
-	AB:SecureHook('UpdateMicroButtons')
+	AB:SecureHook('UpdateMicroButtonsParent')
 	UpdateMicroButtonsParent(microBar)
-	AB:MainMenuMicroButton_SetNormal()
-	AB:UpdateMicroPositionDimensions()
+
+	if E.Retail then
+		AB:SecureHook('UpdateMicroButtons')
+	end
 
 	-- With this method we might don't taint anything. Instead of using :Kill()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
 	_G.MainMenuBarPerformanceBar:SetScale(0.00001)
+
+	-- Classic Mastery needs to call this late because of SetLookingForGroupUIAvailable
+	_G.UIParent:HookScript('OnEvent', AB.UIParent_OnEvent)
 
 	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
 end

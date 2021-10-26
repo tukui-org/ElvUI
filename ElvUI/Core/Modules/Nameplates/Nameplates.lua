@@ -804,6 +804,10 @@ local optionsTable = {
 	'ShowAll'
 }
 
+if E.TBC then
+	tinsert(optionsTable, 'NameplateMaxDistanceSlider')
+end
+
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates' .. x]

@@ -41,14 +41,6 @@ local Minimap = _G.Minimap
 
 -- GLOBALS: GetMinimapShape
 
---Create the new minimap tracking dropdown frame and initialize it
-local ElvUIMiniMapTrackingDropDown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', _G.UIParent, 'UIDropDownMenuTemplate')
-ElvUIMiniMapTrackingDropDown:SetID(1)
-ElvUIMiniMapTrackingDropDown:SetClampedToScreen(true)
-ElvUIMiniMapTrackingDropDown:Hide()
-_G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
-ElvUIMiniMapTrackingDropDown.noResize = true
-
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
 local menuList = {
@@ -195,9 +187,24 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
+function M:CreateMinimapTrackingDropdown()
+	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', _G.UIParent, 'UIDropDownMenuTemplate')
+	dropdown:SetID(1)
+	dropdown:SetClampedToScreen(true)
+	dropdown:Hide()
+
+	_G.UIDropDownMenu_Initialize(dropdown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
+	dropdown.noResize = true
+
+	return dropdown
+end
+
 function M:Minimap_OnMouseDown(btn)
-	_G.HideDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown)
 	menuFrame:Hide()
+
+	if M.TrackingDropdown then
+		_G.HideDropDownMenu(1, nil, M.TrackingDropdown)
+	end
 
 	local position = self:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
@@ -207,16 +214,19 @@ function M:Minimap_OnMouseDown(btn)
 		else
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
-	elseif btn == 'RightButton' then
-		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, 'cursor')
+	elseif btn == 'RightButton' and M.TrackingDropdown then
+		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	else
 		_G.Minimap_OnClick(self)
 	end
 end
 
 function M:MapCanvas_OnMouseDown(btn)
-	_G.HideDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown)
 	menuFrame:Hide()
+
+	if M.TrackingDropdown then
+		_G.HideDropDownMenu(1, nil, M.TrackingDropdown)
+	end
 
 	local position = self:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
@@ -226,8 +236,8 @@ function M:MapCanvas_OnMouseDown(btn)
 		else
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
-	elseif btn == 'RightButton' then
-		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, 'cursor')
+	elseif btn == 'RightButton' and M.TrackingDropdown then
+		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	end
 end
 
@@ -555,6 +565,9 @@ function M:Initialize()
 		_G.MiniMapInstanceDifficulty:SetParent(Minimap)
 		_G.GuildInstanceDifficulty:SetParent(Minimap)
 		_G.MiniMapChallengeMode:SetParent(Minimap)
+
+		--Create the new minimap tracking dropdown frame and initialize it
+		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
 	end
 
 	if _G.QueueStatusMinimapButton then M:CreateQueueStatusText() end
