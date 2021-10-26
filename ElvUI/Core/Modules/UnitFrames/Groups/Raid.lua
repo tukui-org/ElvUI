@@ -36,9 +36,12 @@ function UF:Construct_RaidFrames()
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
-	self.AlternativePower = UF:Construct_AltPowerBar(self)
-	self.ClassBar = 'AlternativePower'
 	self.customTexts = {}
+
+	if E.Retail then
+		self.AlternativePower = UF:Construct_AltPowerBar(self)
+		self.ClassBar = 'AlternativePower'
+	end
 
 	self.unitframeType = 'raid'
 
@@ -124,8 +127,11 @@ function UF:Update_RaidFrames(frame, db)
 	UF:Configure_PhaseIcon(frame)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_ClassBar(frame)
-	UF:Configure_AltPowerBar(frame)
 	UF:UpdateNameSettings(frame)
+
+	if E.Retail then
+		UF:Configure_AltPowerBar(frame)
+	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

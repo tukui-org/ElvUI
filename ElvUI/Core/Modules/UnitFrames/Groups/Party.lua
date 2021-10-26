@@ -67,9 +67,12 @@ function UF:Construct_PartyFrames()
 		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
-		self.AlternativePower = UF:Construct_AltPowerBar(self)
-		self.ClassBar = 'AlternativePower'
 		self.customTexts = {}
+
+		if E.Retail then
+			self.AlternativePower = UF:Construct_AltPowerBar(self)
+			self.ClassBar = 'AlternativePower'
+		end
 
 		self.Sparkle = CreateFrame('Frame', nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
@@ -190,8 +193,11 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_HealComm(frame)
 		UF:Configure_ReadyCheckIcon(frame)
 		UF:Configure_ClassBar(frame)
-		UF:Configure_AltPowerBar(frame)
 		UF:Configure_CustomTexts(frame)
+
+		if E.Retail then
+			UF:Configure_AltPowerBar(frame)
+		end
 	end
 
 	UF:UpdateNameSettings(frame)
