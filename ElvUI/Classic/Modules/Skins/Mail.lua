@@ -187,7 +187,7 @@ function S:MailFrame()
 
 	_G.OpenMailFrameCloseButton:Point('TOPRIGHT', OpenMailFrame.backdrop, 'TOPRIGHT', 4, 3)
 
-	for i = 1, _G.ATTACHMENTS_MAX_SEND do
+	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
 		local button = _G['OpenMailAttachmentButton'..i]
 		local icon = _G['OpenMailAttachmentButton'..i..'IconTexture']
 		local count = _G['OpenMailAttachmentButton'..i..'Count']
@@ -210,14 +210,9 @@ function S:MailFrame()
 			local itemLink = GetInboxItemLink(_G.InboxFrame.openMailID, i)
 			local button = _G['OpenMailAttachmentButton'..i]
 
-			if itemLink then
-				local quality = select(3, GetItemInfo(itemLink))
-
-				if quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
+			local quality = itemLink and select(3, GetItemInfo(itemLink))
+			if itemLink and quality and quality > 1 then
+				button:SetBackdropBorderColor(GetItemQualityColor(quality))
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
