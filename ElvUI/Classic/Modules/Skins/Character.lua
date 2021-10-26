@@ -283,6 +283,13 @@ function S:CharacterFrame()
 
 	-- Honor Tab
 	_G.HonorFrame:StripTextures()
+
+	_G.HonorFrameProgressBar:StripTextures()
+	_G.HonorFrameProgressBar:Height(22)
+	_G.HonorFrameProgressBar:SetParent(_G.HonorFrame)
+	_G.HonorFrameProgressBar:CreateBackdrop('Default')
+	_G.HonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(_G.HonorFrameProgressBar)
 end
 
 S:AddCallback('CharacterFrame')
