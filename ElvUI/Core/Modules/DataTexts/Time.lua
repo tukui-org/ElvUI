@@ -103,7 +103,7 @@ local function OnClick(_, btn)
 
 	if btn == 'RightButton' then
 		ToggleFrame(_G.TimeManagerFrame)
-	else
+	elseif E.Retail then
 		_G.GameTimeFrame:Click()
 	end
 end
