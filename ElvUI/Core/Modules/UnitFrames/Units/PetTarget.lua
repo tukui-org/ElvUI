@@ -78,9 +78,9 @@ function UF:Update_PetTargetFrame(frame, db)
 	UF:Configure_Threat(frame)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
+	UF:Configure_Fader(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
