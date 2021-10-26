@@ -807,10 +807,15 @@ local optionsTable = {
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates' .. x]
+		local q = E.TBC and _G['InterfaceOptionsNamesPanelUnitNameplatesNameplateMaxDistanceSlider']
 		if o then
 			o:SetSize(0.0001, 0.0001)
 			o:SetAlpha(0)
 			o:Hide()
+		elseif q then
+			q:SetSize(0.0001, 0.0001)
+			q:SetAlpha(0)
+			q:Hide()
 		end
 	end
 end
