@@ -54,21 +54,24 @@ function B:Initialize()
 	B.Initialized = true
 
 	B:EnhanceColorPicker()
+	B:AlertMovers()
 
 	if E.Retail then
 		B:KillBlizzard()
 		B:DisableHelpTip()
 		B:DisableNPE()
-		B:AlertMovers()
 		B:SkinBlizzTimers()
 		B:PositionCaptureBar()
 		B:PositionVehicleFrame()
 		B:PositionTalkingHead()
 		B:HandleWidgets()
-	end
 
-	if E.Retail then
-		if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
+		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
+
+		--Add (+X%) to quest rewards experience text
+		B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
+
+		if not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
 			B:MoveObjectiveFrame()
 		end
 
@@ -76,18 +79,14 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-
-		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 	end
 
 	-- Battle.Net Frame
 	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)
 	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
+
 	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
 	TT:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionBNET')
-
-	--Add (+X%) to quest rewards experience text
-	B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
 end
 
 E:RegisterModule(B:GetName())

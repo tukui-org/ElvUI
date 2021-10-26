@@ -197,7 +197,6 @@ local function GetFrame()
 	end
 
 	local f = M:CreateRollFrame()
-	f:ClearAllPoints()
 	f:Point('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
 
 	tinsert(M.RollBars, f)
