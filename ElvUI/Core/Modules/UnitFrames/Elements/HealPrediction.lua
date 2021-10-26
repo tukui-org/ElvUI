@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
 function UF.HealthClipFrame_HealComm(frame)
@@ -102,14 +103,14 @@ function UF:Configure_HealComm(frame)
 		local health = frame.Health
 		local orientation = health:GetOrientation()
 		local reverseFill = health:GetReverseFill()
-		local healthBarTexture = health:GetStatusBarTexture()
+		local healthBarTexture = health:GetStatusBarTexture() -- :GetTexture() from here sometimes messes up? so use LSM
 
 		pred.reverseFill = reverseFill
 		pred.healthBarTexture = healthBarTexture
 		pred.myBarTexture = myBar:GetStatusBarTexture()
 		pred.otherBarTexture = otherBar:GetStatusBarTexture()
 
-		UF:SetTexture_HealComm(pred, UF.db.colors.transparentHealth and E.media.blankTex or healthBarTexture:GetTexture())
+		UF:SetTexture_HealComm(pred, UF.db.colors.transparentHealth and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
 
 		myBar:SetReverseFill(reverseFill)
 		otherBar:SetReverseFill(reverseFill)
@@ -209,7 +210,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	UF:SetSize_HealComm(frame)
 
 	-- absorbs is set to none so hide both and kill code execution
-	if db.absorbStyle == 'NONE' then
+	if not E.Retail or db.absorbStyle == 'NONE' then
 		healAbsorbBar:Hide()
 		absorbBar:Hide()
 		return
