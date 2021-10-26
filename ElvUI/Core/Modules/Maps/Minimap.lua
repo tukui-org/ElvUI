@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local mod = mod
+local sort = sort
 local floor = floor
 local pairs = pairs
 local tinsert = tinsert
@@ -29,6 +30,7 @@ local ToggleFrame = ToggleFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
+local ToggleLFGParentFrame = ToggleLFGParentFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
@@ -50,56 +52,61 @@ ElvUIMiniMapTrackingDropDown.noResize = true
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
 local menuList = {
-	{text = _G.CHARACTER_BUTTON,
-	func = function() ToggleCharacter('PaperDollFrame') end},
+	{text = _G.CHARACTER_BUTTON, func = function() ToggleCharacter('PaperDollFrame') end},
 	{text = _G.SPELLBOOK_ABILITIES_BUTTON,
-	func = function()
-		if not _G.SpellBookFrame:IsShown() then
-			ShowUIPanel(_G.SpellBookFrame)
-		else
-			HideUIPanel(_G.SpellBookFrame)
+		func = function()
+			if not _G.SpellBookFrame:IsShown() then
+				ShowUIPanel(_G.SpellBookFrame)
+			else
+				HideUIPanel(_G.SpellBookFrame)
+			end
 		end
-	end},
-	{text = _G.TALENTS_BUTTON,
-	func = function()
-		if not _G.PlayerTalentFrame then
-			_G.TalentFrame_LoadUI()
-		end
+	},
+	{text = _G.CHAT_CHANNELS, func = _G.ToggleChannelFrame},
+	{text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end},
+	{text = _G.SOCIAL_BUTTON, func = ToggleFriendsFrame},
+	{text = _G.GUILD, func = ToggleGuildFrame}
+}
 
-		local PlayerTalentFrame = _G.PlayerTalentFrame
-		if not PlayerTalentFrame:IsShown() then
-			ShowUIPanel(PlayerTalentFrame)
-		else
-			HideUIPanel(PlayerTalentFrame)
-		end
-	end},
-	{text = _G.COLLECTIONS,
-	func = ToggleCollectionsJournal},
-	{text = _G.CHAT_CHANNELS,
-	func = _G.ToggleChannelFrame},
-	{text = _G.TIMEMANAGER_TITLE,
-	func = function() ToggleFrame(_G.TimeManagerFrame) end},
-	{text = _G.ACHIEVEMENT_BUTTON,
-	func = ToggleAchievementFrame},
-	{text = _G.SOCIAL_BUTTON,
-	func = ToggleFriendsFrame},
-	{text = L["Calendar"],
-	func = function() _G.GameTimeFrame:Click() end},
-	{text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE,
-	func = function() GarrisonLandingPageMinimapButton_OnClick(_G.GarrisonLandingPageMinimapButton) end},
-	{text = _G.ACHIEVEMENTS_GUILD_TAB,
-	func = ToggleGuildFrame},
-	{text = _G.LFG_TITLE,
-	func = ToggleLFDParentFrame},
-	{text = _G.ENCOUNTER_JOURNAL,
-	func = function()
-		if not IsAddOnLoaded('Blizzard_EncounterJournal') then
-			_G.EncounterJournal_LoadUI()
-		end
+if E.Retail then
+	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end})
+	tinsert(menuList, {text = _G.COLLECTIONS, func = ToggleCollectionsJournal})
+	tinsert(menuList, {text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end})
+	tinsert(menuList, {text = _G.ACHIEVEMENT_BUTTON, func = ToggleAchievementFrame})
+	tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() GarrisonLandingPageMinimapButton_OnClick(_G.GarrisonLandingPageMinimapButton) end})
+	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL,
+		func = function()
+			if not IsAddOnLoaded('Blizzard_EncounterJournal') then
+				_G.EncounterJournal_LoadUI()
+			end
 
-		ToggleFrame(_G.EncounterJournal)
-	end},
-	{text = _G.MAINMENU_BUTTON,
+			ToggleFrame(_G.EncounterJournal)
+		end
+	})
+end
+
+if not E.Classic then
+	tinsert(menuList, {text = _G.LFG_TITLE, func = ToggleLFGParentFrame or ToggleLFDParentFrame})
+	tinsert(menuList, {text = _G.TALENTS_BUTTON,
+		func = function()
+			if not _G.PlayerTalentFrame then
+				_G.TalentFrame_LoadUI()
+			end
+
+			local PlayerTalentFrame = _G.PlayerTalentFrame
+			if not PlayerTalentFrame:IsShown() then
+				ShowUIPanel(PlayerTalentFrame)
+			else
+				HideUIPanel(PlayerTalentFrame)
+			end
+		end
+	})
+end
+
+sort(menuList, function(a, b) if a and b and a.text and b.text then return a.text < b.text end end)
+
+-- want these two on the bottom
+tinsert(menuList, {text = _G.MAINMENU_BUTTON,
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
 			if _G.VideoOptionsFrame:IsShown() then
@@ -119,11 +126,10 @@ local menuList = {
 			HideUIPanel(_G.GameMenuFrame)
 			MainMenuMicroButton_SetNormal()
 		end
-	end}
-}
+	end
+})
 
-tinsert(menuList, {text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end})
-tinsert(menuList, {text = _G.HELP_BUTTON, func = ToggleHelpFrame})
+tinsert(menuList, {text = _G.HELP_BUTTON, bottom = true, func = ToggleHelpFrame})
 
 function M:HandleGarrisonButton()
 	local button = _G.GarrisonLandingPageMinimapButton
