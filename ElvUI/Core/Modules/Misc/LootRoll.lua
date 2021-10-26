@@ -164,15 +164,15 @@ function M:CreateRollFrame()
 	spark:SetBlendMode('ADD')
 	status.spark = spark
 
-	local need, needtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], [[Interface\Buttons\UI-GroupLoot-Dice-Highlight]], [[Interface\Buttons\UI-GroupLoot-Dice-Down]], 1, NEED, 'LEFT', frame.button, 'RIGHT', 5, -1)
-	local greed, greedtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], [[Interface\Buttons\UI-GroupLoot-Coin-Highlight]], [[Interface\Buttons\UI-GroupLoot-Coin-Down]], 2, GREED, 'LEFT', need, 'RIGHT', 0, -1)
-	local de, detext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE-Up]], [[Interface\Buttons\UI-GroupLoot-DE-Highlight]], [[Interface\Buttons\UI-GroupLoot-DE-Down]], 3, ROLL_DISENCHANT, 'LEFT', greed, 'RIGHT', 0, -1)
-	local pass, passtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], nil, [[Interface\Buttons\UI-GroupLoot-Pass-Down]], 0, PASS, 'LEFT', de or greed, 'RIGHT', 0, 2)
-	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
-	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
+	frame.needbtn, frame.need = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], [[Interface\Buttons\UI-GroupLoot-Dice-Highlight]], [[Interface\Buttons\UI-GroupLoot-Dice-Down]], 1, NEED, 'LEFT', frame.button, 'RIGHT', 5, -1)
+	frame.greedbtn, frame.greed = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], [[Interface\Buttons\UI-GroupLoot-Coin-Highlight]], [[Interface\Buttons\UI-GroupLoot-Coin-Down]], 2, GREED, 'LEFT', frame.needbtn, 'RIGHT', 0, -1)
+	if E.Retail then
+		frame.debtn, frame.disenchant = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE-Up]], [[Interface\Buttons\UI-GroupLoot-DE-Highlight]], [[Interface\Buttons\UI-GroupLoot-DE-Down]], 3, ROLL_DISENCHANT, 'LEFT', frame.greedbtn, 'RIGHT', 0, -1)
+	end
+	frame.passbtn, frame.pass = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], nil, [[Interface\Buttons\UI-GroupLoot-Pass-Down]], 0, PASS, 'LEFT', frame.debtn or frame.greedbtn, 'RIGHT', 0, 2)
 
 	local bind = frame:CreateFontString(nil, 'ARTWORK')
-	bind:Point('LEFT', pass, 'RIGHT', 3, 1)
+	bind:Point('LEFT', frame.passbtn, 'RIGHT', 3, 1)
 	bind:FontTemplate(nil, nil, 'OUTLINE')
 	frame.fsbind = bind
 
@@ -215,26 +215,30 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.need:SetText(0)
 	f.greed:SetText(0)
 	f.pass:SetText(0)
-	f.disenchant:SetText(0)
 
 	local texture, name, _, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	f.button.icon:SetTexture(texture)
 	f.button.link = GetLootRollItemLink(rollID)
 
-	if canNeed then f.needbutt:Enable() else f.needbutt:Disable() end
-	if canGreed then f.greedbutt:Enable() else f.greedbutt:Disable() end
-	if canDisenchant then f.disenchantbutt:Enable() else f.disenchantbutt:Disable() end
+	if canNeed then f.needbtn:Enable() else f.needbtn:Disable() end
+	if canGreed then f.greedbtn:Enable() else f.greedbtn:Disable() end
 
-	local needTexture = f.needbutt:GetNormalTexture()
-	local greenTexture = f.greedbutt:GetNormalTexture()
-	local disenchantTexture = f.disenchantbutt:GetNormalTexture()
+	local needTexture = f.needbtn:GetNormalTexture()
+	local greenTexture = f.greedbtn:GetNormalTexture()
 	needTexture:SetDesaturation(not canNeed)
 	greenTexture:SetDesaturation(not canGreed)
-	disenchantTexture:SetDesaturation(not canDisenchant)
 
-	if canNeed then f.needbutt:SetAlpha(1) else f.needbutt:SetAlpha(0.2) end
-	if canGreed then f.greedbutt:SetAlpha(1) else f.greedbutt:SetAlpha(0.2) end
-	if canDisenchant then f.disenchantbutt:SetAlpha(1) else f.disenchantbutt:SetAlpha(0.2) end
+	if canNeed then f.needbtn:SetAlpha(1) else f.needbtn:SetAlpha(0.2) end
+	if canGreed then f.greedbtn:SetAlpha(1) else f.greedbtn:SetAlpha(0.2) end
+
+	if f.debtn then
+		f.disenchant:SetText(0)
+
+		if canDisenchant then f.debtn:Enable() else f.debtn:Disable() end
+		local disenchantTexture = f.debtn:GetNormalTexture()
+		disenchantTexture:SetDesaturation(not canDisenchant)
+		if canDisenchant then f.debtn:SetAlpha(1) else f.debtn:SetAlpha(0.2) end
+	end
 
 	f.fsbind:SetText(bop and L["BoP"] or L["BoE"])
 	f.fsbind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
