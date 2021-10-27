@@ -1199,8 +1199,7 @@ function B:UpdateGoldText()
 	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
 
--- These items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sold automatically
--- Link for more info: https://www.wow-petguide.com/News/311/Patch_9.1_Pet_Compilation_2021-04-14
+-- These items should not be destroyed/sold automatically
 B.ExcludeGrays = E.Retail and {
 	[3300] = "Rabbit's Foot",
 	[3670] = "Large Slimy Bone",
@@ -1211,7 +1210,7 @@ B.ExcludeGrays = E.Retail and {
 	[36812] = "Ground Gear",
 	[62072] = "Robble's Wobbly Staff",
 	[67410] = "Very Unlucky Rock",
-} or {
+} or { -- TBC and Classic
 	[32888] = "The Relics of Terokk",
 	[28664] = "Nitrin's Instructions",
 }
