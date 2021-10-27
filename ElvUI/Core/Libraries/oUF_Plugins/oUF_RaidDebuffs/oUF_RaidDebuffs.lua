@@ -87,34 +87,37 @@ end
 local DispelFilter
 do
 	local dispelClasses = {
+		MONK = {
+			Disease = true,
+			Poison = true
+		},
 		PRIEST = {
 			Magic = true,
-			Disease = true,
+			Disease = true
 		},
-		SHAMAN = {
-			Magic = false,
+		DRUID = {
 			Curse = true,
+			Poison = true
 		},
 		PALADIN = {
 			Poison = true,
-			Magic = false,
-			Disease = true,
-		},
-		DRUID = {
-			Magic = false,
-			Curse = true,
-			Poison = true,
-			Disease = false,
-		},
-		MONK = {
-			Magic = false,
-			Disease = true,
-			Poison = true,
+			Disease = true
 		},
 		MAGE = {
 			Curse = true
-		}
+		},
+		SHAMAN = {},
+		WARLOCK = {} -- need to add pet detection to add affy pet dispel
 	}
+
+	if oUF.isRetail then
+		dispelClasses.SHAMAN.Curse = true
+	else
+		dispelClasses.SHAMAN.Poison = true
+		dispelClasses.SHAMAN.Disease = true
+
+		dispelClasses.PALADIN.Magic = true
+	end
 
 	DispelFilter = dispelClasses[select(2, UnitClass('player'))] or {}
 end
