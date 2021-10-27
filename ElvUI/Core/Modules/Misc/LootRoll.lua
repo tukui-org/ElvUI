@@ -220,24 +220,24 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.button.icon:SetTexture(texture)
 	f.button.link = GetLootRollItemLink(rollID)
 
-	if canNeed then f.needbtn:Enable() else f.needbtn:Disable() end
-	if canGreed then f.greedbtn:Enable() else f.greedbtn:Disable() end
+	f.needbtn:SetEnabled(canNeed)
+	f.greedbtn:SetEnabled(canGreed)
 
 	local needTexture = f.needbtn:GetNormalTexture()
 	local greenTexture = f.greedbtn:GetNormalTexture()
 	needTexture:SetDesaturation(not canNeed)
 	greenTexture:SetDesaturation(not canGreed)
 
-	if canNeed then f.needbtn:SetAlpha(1) else f.needbtn:SetAlpha(0.2) end
-	if canGreed then f.greedbtn:SetAlpha(1) else f.greedbtn:SetAlpha(0.2) end
+	f.needbtn:SetAlpha(canNeed and 1 or .2)
+	f.greedbtn:SetAlpha(canGreed and 1 or .2)
 
 	if f.debtn then
 		f.disenchant:SetText(0)
 
-		if canDisenchant then f.debtn:Enable() else f.debtn:Disable() end
+		f.debtn:SetEnabled(canDisenchant)
 		local disenchantTexture = f.debtn:GetNormalTexture()
 		disenchantTexture:SetDesaturation(not canDisenchant)
-		if canDisenchant then f.debtn:SetAlpha(1) else f.debtn:SetAlpha(0.2) end
+		f.debtn:SetAlpha(canDisenchant and 1 or .2)
 	end
 
 	f.fsbind:SetText(bop and L["BoP"] or L["BoE"])
