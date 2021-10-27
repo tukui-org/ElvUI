@@ -296,13 +296,12 @@ local function Update(self, event, unit)
 end
 
 local function Enable(self)
-	if oUF.isRetail then
-		self:RegisterEvent('PLAYER_TALENT_UPDATE', CheckSpec, true)
-	end
-
-	self:RegisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec, true)
-
 	if self.RaidDebuffs then
+		if oUF.isRetail then
+			self:RegisterEvent('PLAYER_TALENT_UPDATE', CheckSpec, true)
+			self:RegisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec, true)
+		end
+
 		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
@@ -311,16 +310,15 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
+		if oUF.isRetail then
+			self:UnregisterEvent('PLAYER_TALENT_UPDATE', CheckSpec)
+			self:UnregisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec)
+		end
+
 		self:UnregisterEvent('UNIT_AURA', Update)
 
 		self.RaidDebuffs:Hide()
 	end
-
-	if oUF.isRetail then
-		self:UnregisterEvent('PLAYER_TALENT_UPDATE', CheckSpec)
-	end
-
-	self:UnregisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec)
 end
 
 oUF:AddElement('RaidDebuffs', Update, Enable, Disable)
