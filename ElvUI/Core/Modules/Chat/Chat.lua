@@ -1268,9 +1268,7 @@ function CH:PositionChat(chat)
 	end
 
 	if chat.FontStringContainer then
-		chat.FontStringContainer:ClearAllPoints()
-		chat.FontStringContainer:SetPoint('TOPLEFT', chat, 'TOPLEFT', -1, 1)
-		chat.FontStringContainer:SetPoint('BOTTOMRIGHT', chat, 'BOTTOMRIGHT', 1, -1)
+		chat.FontStringContainer:SetInside(nil, 1, 1)
 	end
 
 	if chat:IsShown() then
