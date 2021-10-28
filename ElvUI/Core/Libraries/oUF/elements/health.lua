@@ -333,6 +333,10 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
+		if not oUF.isRetail then
+			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		end
+
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
