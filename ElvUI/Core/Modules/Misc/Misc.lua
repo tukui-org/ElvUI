@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local B = E:GetModule('Bags')
 local CH = E:GetModule('Chat')
+local MM = E:GetModule('Minimap')
 
 local _G = _G
 local select = select
@@ -219,16 +220,20 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 	if not E.db.general.autoAcceptInvite then return end
 
 	if event == 'PARTY_INVITE_REQUEST' then
-		if IsInGroup() or (not inviterGUID or inviterGUID == '') or (_G.QueueStatusMinimapButton and _G.QueueStatusMinimapButton:IsShown()) then
-			return -- Prevent losing que inside LFD if someone invites you to group
-		end
+		if not inviterGUID or inviterGUID == '' or IsInGroup() then return end
+
+		local queueButton = MM:GetQueueStatusButton() -- don't auto accept during a queue
+		if queueButton and queueButton:IsShown() then return end
 
 		if CH.BNGetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' and hideStatic then
-		StaticPopupSpecial_Hide(_G.LFGInvitePopup) --New LFD popup when invited in custom created group
+		if _G.LFGInvitePopup then -- invited in custom created group
+			StaticPopupSpecial_Hide(_G.LFGInvitePopup)
+		end
+
 		StaticPopup_Hide('PARTY_INVITE')
 		hideStatic = nil
 	end
