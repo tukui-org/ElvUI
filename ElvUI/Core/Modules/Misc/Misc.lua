@@ -228,7 +228,10 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 			AcceptGroup()
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' and hideStatic then
-		StaticPopupSpecial_Hide(_G.LFGInvitePopup) --New LFD popup when invited in custom created group
+		if _G.LFGInvitePopup then -- invited in custom created group
+			StaticPopupSpecial_Hide(_G.LFGInvitePopup)
+		end
+
 		StaticPopup_Hide('PARTY_INVITE')
 		hideStatic = nil
 	end
