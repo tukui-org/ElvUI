@@ -357,7 +357,7 @@ function M:UpdateSettings()
 		end
 	end
 
-	local MiniMapTracking = E.Classic and _G.MiniMapTrackingFrame or E.TBC and _G.MiniMapTracking
+	local MiniMapTracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if MiniMapTracking then
 		if E.private.general.minimap.hideTracking then
 			MiniMapTracking:SetParent(E.HiddenFrame)
