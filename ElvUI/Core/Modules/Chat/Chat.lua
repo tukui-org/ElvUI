@@ -1267,16 +1267,10 @@ function CH:PositionChat(chat)
 		chat:SetUserPlaced(true)
 	end
 
-	if chat.FontStringContainer then
-		chat.FontStringContainer:SetOutside(nil, 2, 2)
-	end
-
-	if chat:IsShown() then
-		-- that chat font container leaks outside of its frame
-		-- we cant clip it, so lets force that leak sooner so
-		-- i can position it properly, patch: 8.3.0 ~Simpy
-		chat:Hide()
-		chat:Show()
+	if chat.FontStringContainer then -- dont use setoutside
+		chat.FontStringContainer:ClearAllPoints()
+		chat.FontStringContainer:SetPoint('TOPLEFT', -3, 3)
+		chat.FontStringContainer:SetPoint('BOTTOMRIGHT', 3, -3)
 	end
 
 	local BASE_OFFSET = 32
