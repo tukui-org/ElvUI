@@ -7,7 +7,7 @@ local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strlen, strjoin, gsub = strlen, strjoin, gsub
+local strlen, strjoin, gsub, next = strlen, strjoin, gsub, next
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
 local CreateFrame = CreateFrame
 local IsControlKeyDown = IsControlKeyDown
@@ -152,30 +152,28 @@ end
 function B:EnhanceColorPicker()
 	if E:IsAddOnEnabled('ColorPickerPlus') then return end
 
-	--Skin the default frame, move default buttons into place
-	_G.ColorPickerFrame:SetClampedToScreen(true)
-	_G.ColorPickerFrame:SetTemplate('Transparent')
+	local Picker = _G.ColorPickerFrame
 
 	if E.Retail then
-		_G.ColorPickerFrame.Border:Hide()
+		Picker.Border:Hide()
 	end
 
-	local Header = _G.ColorPickerFrame.Header or _G.ColorPickerFrameHeader
+	local Header = Picker.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
 	Header:ClearAllPoints()
-	Header:Point('TOP', _G.ColorPickerFrame, 0, 5)
+	Header:Point('TOP', Picker, 0, 5)
 
 	_G.ColorPickerCancelButton:ClearAllPoints()
 	_G.ColorPickerOkayButton:ClearAllPoints()
-	_G.ColorPickerCancelButton:Point('BOTTOMRIGHT', _G.ColorPickerFrame, 'BOTTOMRIGHT', -6, 6)
-	_G.ColorPickerCancelButton:Point('BOTTOMLEFT', _G.ColorPickerFrame, 'BOTTOM', 0, 6)
-	_G.ColorPickerOkayButton:Point('BOTTOMLEFT', _G.ColorPickerFrame,'BOTTOMLEFT', 6,6)
+	_G.ColorPickerCancelButton:Point('BOTTOMRIGHT', Picker, 'BOTTOMRIGHT', -6, 6)
+	_G.ColorPickerCancelButton:Point('BOTTOMLEFT', Picker, 'BOTTOM', 0, 6)
+	_G.ColorPickerOkayButton:Point('BOTTOMLEFT', Picker,'BOTTOMLEFT', 6,6)
 	_G.ColorPickerOkayButton:Point('RIGHT', _G.ColorPickerCancelButton,'LEFT', -4,0)
 	S:HandleSliderFrame(_G.OpacitySliderFrame)
 	S:HandleButton(_G.ColorPickerOkayButton)
 	S:HandleButton(_G.ColorPickerCancelButton)
 
-	_G.ColorPickerFrame:HookScript('OnShow', function(frame)
+	Picker:HookScript('OnShow', function(frame)
 		-- get color that will be replaced
 		local r, g, b = frame:GetColorRGB()
 		_G.ColorPPOldColorSwatch:SetColorTexture(r,g,b)
@@ -203,108 +201,98 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- make the Color Picker dialog a bit taller, to make room for edit boxes
-	_G.ColorPickerFrame:Height(_G.ColorPickerFrame:GetHeight() + 40)
+	Picker:Height(Picker:GetHeight() + 40)
 
 	-- move the Color Swatch
 	_G.ColorSwatch:ClearAllPoints()
-	_G.ColorSwatch:Point('TOPLEFT', _G.ColorPickerFrame, 'TOPLEFT', 215, -45)
+	_G.ColorSwatch:Point('TOPLEFT', Picker, 'TOPLEFT', 215, -45)
+	local swatchWidth, swatchHeight = _G.ColorSwatch:GetSize()
 
 	-- add Color Swatch for original color
-	local t = _G.ColorPickerFrame:CreateTexture('ColorPPOldColorSwatch')
-	local w, h = _G.ColorSwatch:GetSize()
-	t:Size(w*0.75,h*0.75)
-	t:SetColorTexture(0,0,0)
+	local originalColor = Picker:CreateTexture('ColorPPOldColorSwatch')
+	originalColor:Size(swatchWidth*0.75, swatchHeight*0.75)
+	originalColor:SetColorTexture(0,0,0)
 	-- OldColorSwatch to appear beneath ColorSwatch
-	t:SetDrawLayer('BORDER')
-	t:Point('BOTTOMLEFT', 'ColorSwatch', 'TOPRIGHT', -(w/2), -(h/3))
+	originalColor:SetDrawLayer('BORDER')
+	originalColor:Point('BOTTOMLEFT', 'ColorSwatch', 'TOPRIGHT', -(swatchWidth/2), -(swatchHeight/3))
 
 	-- add Color Swatch for the copied color
-	t = _G.ColorPickerFrame:CreateTexture('ColorPPCopyColorSwatch')
-	t:SetColorTexture(0,0,0)
-	t:Size(w,h)
-	t:Hide()
+	local copiedColor = Picker:CreateTexture('ColorPPCopyColorSwatch')
+	copiedColor:SetColorTexture(0,0,0)
+	copiedColor:Size(swatchWidth, swatchHeight)
+	copiedColor:Hide()
 
-	-- add copy button to the _G.ColorPickerFrame
-	local b = CreateFrame('Button', 'ColorPPCopy', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
-	S:HandleButton(b)
-	b:SetText(CALENDAR_COPY_EVENT)
-	b:Size(60, 22)
-	b:Point('TOPLEFT', 'ColorSwatch', 'BOTTOMLEFT', 0, -5)
+	-- add copy button to the ColorPickerFrame
+	local copyButton = CreateFrame('Button', 'ColorPPCopy', Picker, 'UIPanelButtonTemplate')
+	copyButton:SetText(CALENDAR_COPY_EVENT)
+	copyButton:Size(60, 22)
+	copyButton:Point('TOPLEFT', 'ColorSwatch', 'BOTTOMLEFT', 0, -5)
+	S:HandleButton(copyButton)
 
 	-- copy color into buffer on button click
-	b:SetScript('OnClick', function()
+	copyButton:SetScript('OnClick', function()
 		-- copy current dialog colors into buffer
-		colorBuffer.r, colorBuffer.g, colorBuffer.b = _G.ColorPickerFrame:GetColorRGB()
+		colorBuffer.r, colorBuffer.g, colorBuffer.b = Picker:GetColorRGB()
 
 		-- enable Paste button and display copied color into swatch
 		_G.ColorPPPaste:Enable()
 		_G.ColorPPCopyColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 		_G.ColorPPCopyColorSwatch:Show()
 
-		colorBuffer.a = (_G.ColorPickerFrame.hasOpacity and _G.OpacitySliderFrame:GetValue()) or nil
+		colorBuffer.a = (Picker.hasOpacity and _G.OpacitySliderFrame:GetValue()) or nil
 	end)
 
 	--class color button
-	b = CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
-	b:SetText(CLASS)
-	S:HandleButton(b)
-	b:Size(80, 22)
-	b:Point('TOP', 'ColorPPCopy', 'BOTTOMRIGHT', 0, -7)
+	local classButton = CreateFrame('Button', 'ColorPPClass', Picker, 'UIPanelButtonTemplate')
+	classButton:SetText(CLASS)
+	classButton:Size(80, 22)
+	classButton:Point('TOP', 'ColorPPCopy', 'BOTTOMRIGHT', 0, -7)
+	S:HandleButton(classButton)
 
-	b:SetScript('OnClick', function()
+	classButton:SetScript('OnClick', function()
 		local color = E:ClassColor(E.myclass, true)
-		_G.ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
+		Picker:SetColorRGB(color.r, color.g, color.b)
 		_G.ColorSwatch:SetColorTexture(color.r, color.g, color.b)
-		if _G.ColorPickerFrame.hasOpacity then
+		if Picker.hasOpacity then
 			_G.OpacitySliderFrame:SetValue(0)
 		end
 	end)
 
-	-- add paste button to the _G.ColorPickerFrame
-	b = CreateFrame('Button', 'ColorPPPaste', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
-	b:SetText(CALENDAR_PASTE_EVENT)
-	S:HandleButton(b)
-	b:Size(60, 22)
-	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
-	b:Disable() -- enable when something has been copied
+	-- add paste button to the ColorPickerFrame
+	local pasteButton = CreateFrame('Button', 'ColorPPPaste', Picker, 'UIPanelButtonTemplate')
+	pasteButton:SetText(CALENDAR_PASTE_EVENT)
+	pasteButton:Size(60, 22)
+	pasteButton:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
+	pasteButton:Disable() -- enable when something has been copied
+	S:HandleButton(pasteButton)
 
 	-- paste color on button click, updating frame components
-	b:SetScript('OnClick', function()
-		_G.ColorPickerFrame:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
+	pasteButton:SetScript('OnClick', function()
+		Picker:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 		_G.ColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
-		if _G.ColorPickerFrame.hasOpacity then
+		if Picker.hasOpacity then
 			if colorBuffer.a then --color copied had an alpha value
 				_G.OpacitySliderFrame:SetValue(colorBuffer.a)
 			end
 		end
 	end)
 
-	-- add defaults button to the _G.ColorPickerFrame
-	b = CreateFrame('Button', 'ColorPPDefault', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
-	b:SetText(DEFAULT)
-	S:HandleButton(b)
-	b:Size(80, 22)
-	b:Point('TOPLEFT', 'ColorPPClass', 'BOTTOMLEFT', 0, -7)
-	b:Disable() -- enable when something has been copied
-	b:SetScript('OnHide', function(btn)
-		if btn.colors then
-			wipe(btn.colors)
-		end
-	end)
-	b:SetScript('OnShow', function(btn)
-		if btn.colors then
-			btn:Enable()
-		else
-			btn:Disable()
-		end
-	end)
+	-- add defaults button to the ColorPickerFrame
+	local defaultButton = CreateFrame('Button', 'ColorPPDefault', Picker, 'UIPanelButtonTemplate')
+	defaultButton:SetText(DEFAULT)
+	defaultButton:Size(80, 22)
+	defaultButton:Point('TOPLEFT', 'ColorPPClass', 'BOTTOMLEFT', 0, -7)
+	defaultButton:Disable() -- enable when something has been copied
+	defaultButton:SetScript('OnHide', function(btn) if btn.colors then wipe(btn.colors) end end)
+	defaultButton:SetScript('OnShow', function(btn) btn:SetEnabled(btn.colors) end)
+	S:HandleButton(defaultButton)
 
 	-- paste color on button click, updating frame components
-	b:SetScript('OnClick', function(btn)
+	defaultButton:SetScript('OnClick', function(btn)
 		local colors = btn.colors
-		_G.ColorPickerFrame:SetColorRGB(colors.r, colors.g, colors.b)
+		Picker:SetColorRGB(colors.r, colors.g, colors.b)
 		_G.ColorSwatch:SetColorTexture(colors.r, colors.g, colors.b)
-		if _G.ColorPickerFrame.hasOpacity then
+		if Picker.hasOpacity then
 			if colors.a then
 				_G.OpacitySliderFrame:SetValue(colors.a)
 			end
@@ -314,16 +302,14 @@ function B:EnhanceColorPicker()
 	-- position Color Swatch for copy color
 	_G.ColorPPCopyColorSwatch:Point('BOTTOM', 'ColorPPPaste', 'TOP', 0, 10)
 
-	-- move the Opacity Slider Frame to align with bottom of Copy ColorSwatch
+	-- move the Opacity Slider Picker to align with bottom of Copy ColorSwatch
 	_G.OpacitySliderFrame:ClearAllPoints()
 	_G.OpacitySliderFrame:Point('BOTTOM', 'ColorPPDefault', 'BOTTOM', 0, 0)
 	_G.OpacitySliderFrame:Point('RIGHT', 'ColorPickerFrame', 'RIGHT', -35, 18)
 
 	-- set up edit box frames and interior label and text areas
-	local boxes = { 'R', 'G', 'B', 'H', 'A' }
-	for i = 1, #boxes do
-		local rgb = boxes[i]
-		local box = CreateFrame('EditBox', 'ColorPPBox'..rgb, _G.ColorPickerFrame, 'InputBoxTemplate')
+	for i, rgb in next, { 'R', 'G', 'B', 'H', 'A' } do
+		local box = CreateFrame('EditBox', 'ColorPPBox'..rgb, Picker, 'InputBoxTemplate')
 		box:Point('TOP', 'ColorPickerWheel', 'BOTTOM', 0, -15)
 		box:SetFrameStrata('DIALOG')
 		box:SetAutoFocus(false)
@@ -395,13 +381,16 @@ function B:EnhanceColorPicker()
 	_G.ColorPPBoxA:SetScript('OnTabPressed', function() _G.ColorPPBoxR:SetFocus() end)
 
 	-- make the color picker movable.
-	local mover = CreateFrame('Frame', nil, _G.ColorPickerFrame)
-	mover:Point('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
-	mover:Point('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
-	mover:SetScript('OnMouseDown', function() _G.ColorPickerFrame:StartMoving() end)
-	mover:SetScript('OnMouseUp', function() _G.ColorPickerFrame:StopMovingOrSizing() end)
+	local mover = CreateFrame('Frame', nil, Picker)
+	mover:Point('TOPLEFT', Picker, 'TOP', -60, 0)
+	mover:Point('BOTTOMRIGHT', Picker, 'TOP', 60, -15)
+	mover:SetScript('OnMouseDown', function() Picker:StartMoving() end)
+	mover:SetScript('OnMouseUp', function() Picker:StopMovingOrSizing() end)
 	mover:EnableMouse(true)
 
-	_G.ColorPickerFrame:SetUserPlaced(true)
-	_G.ColorPickerFrame:EnableKeyboard(false)
+	--Skin the default frame, move default buttons into place
+	Picker:SetClampedToScreen(true)
+	Picker:SetTemplate('Transparent')
+	Picker:SetUserPlaced(true)
+	Picker:EnableKeyboard(false)
 end
