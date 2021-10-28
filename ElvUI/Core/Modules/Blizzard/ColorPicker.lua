@@ -158,10 +158,12 @@ function B:EnhanceColorPicker()
 
 	if E.Retail then
 		_G.ColorPickerFrame.Border:Hide()
-		_G.ColorPickerFrame.Header:StripTextures()
-		_G.ColorPickerFrame.Header:ClearAllPoints()
-		_G.ColorPickerFrame.Header:Point('TOP', _G.ColorPickerFrame, 0, 0)
 	end
+
+	local Header = _G.ColorPickerFrame.Header or _G.ColorPickerFrameHeader
+	Header:StripTextures()
+	Header:ClearAllPoints()
+	Header:Point('TOP', _G.ColorPickerFrame, 0, 5)
 
 	_G.ColorPickerCancelButton:ClearAllPoints()
 	_G.ColorPickerOkayButton:ClearAllPoints()
