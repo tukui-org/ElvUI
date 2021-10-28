@@ -281,6 +281,10 @@ function M:GetIconSettings(button)
 	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset, profile.yOffset or defaults.yOffset
 end
 
+function M:GetQueueStatusButton()
+	return _G.QueueStatusMinimapButton or _G.MiniMapLFGFrame
+end
+
 function M:UpdateSettings()
 	if not E.private.general.minimap.enable then return end
 
@@ -332,12 +336,12 @@ function M:UpdateSettings()
 		MiniMapMailFrame:SetScale(scale)
 	end
 
-	local QueueStatusMinimapButton = _G.QueueStatusMinimapButton
-	if QueueStatusMinimapButton then
+	local queueStatusButton = M:GetQueueStatusButton()
+	if queueStatusButton then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-		QueueStatusMinimapButton:ClearAllPoints()
-		QueueStatusMinimapButton:Point(position, Minimap, position, xOffset, yOffset)
-		QueueStatusMinimapButton:SetScale(scale)
+		queueStatusButton:ClearAllPoints()
+		queueStatusButton:Point(position, Minimap, position, xOffset, yOffset)
+		queueStatusButton:SetScale(scale)
 	end
 
 	local queueStatusDisplay = M.QueueStatusDisplay
@@ -560,7 +564,6 @@ function M:Initialize()
 			_G.GarrisonLandingPageMinimapButton.IsShown = function() return true end
 		end
 
-		_G.QueueStatusMinimapButtonBorder:Hide()
 		_G.QueueStatusFrame:SetClampedToScreen(true)
 		_G.MiniMapInstanceDifficulty:SetParent(Minimap)
 		_G.GuildInstanceDifficulty:SetParent(Minimap)
@@ -570,7 +573,13 @@ function M:Initialize()
 		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
 	end
 
-	if _G.QueueStatusMinimapButton then M:CreateQueueStatusText() end
+	if _G.QueueStatusMinimapButton then
+		_G.QueueStatusMinimapButtonBorder:Hide()
+		M:CreateQueueStatusText()
+	elseif _G.MiniMapLFGFrame then
+		_G.MiniMapLFGBorder:Hide()
+	end
+
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
 	if _G.HybridMinimap then M:SetupHybridMinimap() end

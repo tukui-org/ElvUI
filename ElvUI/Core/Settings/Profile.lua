@@ -93,6 +93,12 @@ P.general = {
 				yOffset = 0,
 				hide = false,
 			},
+			tracking = {
+				scale = 0.8,
+				position = 'BOTTOMLEFT',
+				xOffset = 3,
+				yOffset = 3,
+			},
 			calendar = {
 				scale = 1,
 				position = 'TOPRIGHT',
@@ -106,12 +112,6 @@ P.general = {
 				position = 'TOPRIGHT',
 				xOffset = 3,
 				yOffset = 4,
-			},
-			tracking = {
-				scale = 0.8,
-				position = 'BOTTOMRIGHT',
-				xOffset = -2,
-				yOffset = 2,
 			},
 			lfgEye = {
 				scale = 1,
