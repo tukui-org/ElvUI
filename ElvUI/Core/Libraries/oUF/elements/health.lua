@@ -292,7 +292,12 @@ local function Enable(self)
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
+		if not oUF.isRetail and element.frequentUpdates then
+			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		else
+			self:RegisterEvent('UNIT_HEALTH', Path)
+		end
+
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 
 		if(element.colorDisconnected) then
@@ -327,6 +332,10 @@ local function Disable(self)
 	local element = self.Health
 	if(element) then
 		element:Hide()
+
+		if not oUF.isRetail then
+			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		end
 
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
