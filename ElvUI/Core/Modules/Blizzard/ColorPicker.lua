@@ -200,9 +200,6 @@ function B:EnhanceColorPicker()
 		frame:SetScript('OnColorSelect', onColorSelect)
 	end)
 
-	-- make the Color Picker dialog a bit taller, to make room for edit boxes
-	Picker:Height(Picker:GetHeight() + 40)
-
 	-- move the Color Swatch
 	_G.ColorSwatch:ClearAllPoints()
 	_G.ColorSwatch:Point('TOPLEFT', Picker, 'TOPLEFT', 215, -45)
@@ -242,7 +239,7 @@ function B:EnhanceColorPicker()
 		colorBuffer.a = (Picker.hasOpacity and _G.OpacitySliderFrame:GetValue()) or nil
 	end)
 
-	--class color button
+	-- class color button
 	local classButton = CreateFrame('Button', 'ColorPPClass', Picker, 'UIPanelButtonTemplate')
 	classButton:SetText(CLASS)
 	classButton:Size(80, 22)
@@ -302,7 +299,7 @@ function B:EnhanceColorPicker()
 	-- position Color Swatch for copy color
 	_G.ColorPPCopyColorSwatch:Point('BOTTOM', 'ColorPPPaste', 'TOP', 0, 10)
 
-	-- move the Opacity Slider Picker to align with bottom of Copy ColorSwatch
+	-- move the Opacity Slider to align with bottom of Copy ColorSwatch
 	_G.OpacitySliderFrame:ClearAllPoints()
 	_G.OpacitySliderFrame:Point('BOTTOM', 'ColorPPDefault', 'BOTTOM', 0, 0)
 	_G.OpacitySliderFrame:Point('RIGHT', 'ColorPickerFrame', 'RIGHT', -35, 18)
@@ -388,9 +385,12 @@ function B:EnhanceColorPicker()
 	mover:SetScript('OnMouseUp', function() Picker:StopMovingOrSizing() end)
 	mover:EnableMouse(true)
 
-	--Skin the default frame, move default buttons into place
-	Picker:SetClampedToScreen(true)
+	-- make the frame a bit taller, to make room for edit boxes
+	Picker:Height(Picker:GetHeight() + 40)
+
+	-- skin the frame
 	Picker:SetTemplate('Transparent')
+	Picker:SetClampedToScreen(true)
 	Picker:SetUserPlaced(true)
 	Picker:EnableKeyboard(false)
 end
