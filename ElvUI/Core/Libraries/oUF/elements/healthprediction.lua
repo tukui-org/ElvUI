@@ -217,9 +217,11 @@ local function Enable(self)
 		if oUF.isRetail then
 			self:RegisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
+		else
+			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if(not element.maxOverflow) then
+		if (not element.maxOverflow) then
 			element.maxOverflow = 1.05
 		end
 
@@ -299,6 +301,8 @@ local function Disable(self)
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:UnregisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
+		else
+			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 	end
 end
