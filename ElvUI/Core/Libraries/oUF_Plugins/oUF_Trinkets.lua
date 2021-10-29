@@ -88,7 +88,7 @@ local function Enable(self)
 		self:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
 
-		if oUF.Retail then
+		if oUF.isRetail then
 			self:RegisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns, true)
 		end
 
@@ -104,7 +104,7 @@ local function Disable(self)
 		self:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 
-		if oUF.Retail then
+		if oUF.isRetail then
 			self:UnregisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns)
 		end
 

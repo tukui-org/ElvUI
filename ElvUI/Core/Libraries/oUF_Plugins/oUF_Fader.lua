@@ -258,7 +258,7 @@ local options = {
 	Delay = {countIgnored = true},
 }
 
-if not oUF.Retail then
+if not oUF.isRetail then
 	tinsert(options.Health.events, 'UNIT_HEALTH_FREQUENT')
 end
 

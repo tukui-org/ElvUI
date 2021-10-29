@@ -117,7 +117,7 @@ local function updateArenaPreparation(self, event)
 		end
 	elseif(event == 'PLAYER_ENTERING_WORLD' and not UnitExists(self.unit)) then
 		-- semi-recursive call for when the player zones into an arena
-		if oUF.Retail then
+		if oUF.isRetail then
 			updateArenaPreparation(self, 'ARENA_PREP_OPPONENT_SPECIALIZATIONS')
 		end
 	elseif(event == 'ARENA_PREP_OPPONENT_SPECIALIZATIONS') then
