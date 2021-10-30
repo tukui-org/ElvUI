@@ -615,10 +615,10 @@ function B:GetContainerNumSlots(bagID)
 end
 
 function B:UpdateReagentSlot(slotID)
-	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
+	local bagID = REAGENTBANK_CONTAINER
+	local slot = B.BankFrame and B.BankFrame.reagentFrame.slots[slotID]
 	if not slot then return end
 
-	local bagID = REAGENTBANK_CONTAINER
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 
@@ -1532,7 +1532,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 			for i = 1, B.REAGENTBANK_SIZE do
 				f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
-				B:UpdateReagentSlot(i)
 			end
 
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
@@ -2438,6 +2437,7 @@ function B:Initialize()
 
 	--Hook onto Blizzard Functions
 	if E.Retail then
+		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
