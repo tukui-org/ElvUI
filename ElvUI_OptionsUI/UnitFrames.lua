@@ -1338,7 +1338,7 @@ UnitFrame.allColorsGroup = {
 							order = 10,
 							name = function() return E.Retail and L["Non-Interruptible"] or L["COLOR"] end,
 							type = 'color',
-						},	
+						},
 						castInterruptedColor = {
 							name = L["Interrupted"],
 							order = 11,
