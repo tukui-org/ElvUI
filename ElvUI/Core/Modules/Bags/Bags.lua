@@ -1716,7 +1716,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', B.Tooltip_Hide)
-			f.keyButton:SetScript('OnClick', function() B:ToggleBag(KEYRING_CONTAINER) end)
+			f.keyButton:SetScript('OnClick', function() B:ToggleBag(f.ContainerHolderByBagID[KEYRING_CONTAINER]) end)
 		end
 
 		--Vendor Grays
