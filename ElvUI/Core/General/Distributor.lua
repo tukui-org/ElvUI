@@ -248,6 +248,9 @@ local blacklistedKeys = {
 		},
 		chat = {
 			hideVoiceButtons = true
+		},
+		bags = {
+			shownBags = true
 		}
 	},
 	private = {},
