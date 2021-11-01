@@ -185,8 +185,6 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_Portrait(frame)
 		UF:Configure_RaidDebuffs(frame)
 		UF:Configure_Castbar(frame)
-		UF:Configure_ResurrectionIcon(frame)
-		UF:Configure_SummonIcon(frame)
 		UF:Configure_RoleIcon(frame)
 		UF:Configure_RaidRoleIcons(frame)
 		UF:Configure_AuraWatch(frame)
@@ -197,6 +195,8 @@ function UF:Update_PartyFrames(frame, db)
 
 		if E.Retail then
 			UF:Configure_AltPowerBar(frame)
+			UF:Configure_ResurrectionIcon(frame)
+			UF:Configure_SummonIcon(frame)
 		end
 	end
 

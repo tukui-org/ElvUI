@@ -98,7 +98,6 @@ function UF:Update_TargetFrame(frame, db)
 	UF:Configure_Threat(frame)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-	UF:Configure_ResurrectionIcon(frame)
 	UF:Configure_RaidRoleIcons(frame)
 	UF:Configure_AuraHighlight(frame)
 	UF:Configure_HealComm(frame)
@@ -111,6 +110,10 @@ function UF:Update_TargetFrame(frame, db)
 	UF:Configure_CombatIndicator(frame)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
+
+	if E.Retail then
+		UF:Configure_ResurrectionIcon(frame)
+	end
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

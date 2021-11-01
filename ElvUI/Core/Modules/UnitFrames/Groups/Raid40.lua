@@ -114,8 +114,6 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_Threat(frame)
 	UF:Configure_RaidDebuffs(frame)
 	UF:Configure_RaidIcon(frame)
-	UF:Configure_ResurrectionIcon(frame)
-	UF:Configure_SummonIcon(frame)
 	UF:Configure_AuraHighlight(frame)
 	UF:Configure_RoleIcon(frame)
 	UF:Configure_HealComm(frame)
@@ -131,6 +129,8 @@ function UF:Update_Raid40Frames(frame, db)
 
 	if E.Retail then
 		UF:Configure_AltPowerBar(frame)
+		UF:Configure_ResurrectionIcon(frame)
+		UF:Configure_SummonIcon(frame)
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
