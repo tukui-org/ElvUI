@@ -1,14 +1,16 @@
 ### Version 12.45 [ ETA: 🍨 ]
 
-**General:**  
-Added an option to hide chat in afk screensaver mode  
-
+**Note:**  
 Development is now on GitHub (was GitLab)  
 Unified our codebase to support Retail, TBC and Classic in one version  
-Updated issue tracker link  
-Updated dev version link  
-Updated wiki link  
+
+**General:**  
+Added an option to hide chat in afk screensaver mode  
+Added support to toggle single bags  
 Updated available tags and descriptions  
+Updated dev version link  
+Updated issue tracker link  
+Updated wiki link  
 Updated russian locale (Credits: Evgeniy)  
 
 **Shadowlands:**  
@@ -16,7 +18,9 @@ Added a button in bags and bank to stack items of the same type
 Added an option to color tooltip border based on item quality  
 Added support for the new Call of Duty in friends DataText  
 Fixed a bug with the border color on top auras  
+Fixed Arena-Prep frames  
 Fixed AuraWatch sizeOffset Lua error  
+Fixed experience DataBar error on trial accounts  
 Fixed island expedition queue tooltip  
 Skin fixes and new skins for patch 9.1.5  
 
@@ -24,6 +28,8 @@ Skin fixes and new skins for patch 9.1.5
 Added guild option for auto repair  
 Added phase 2 support for our custom RaidDebuffs list  
 Fixed combo points not updating correctly on target switch  
+Master Looter & Loot Roll fixes  
+Updated color picker skin  
 Updated threat for NamePlates  
 
 **Classic Era and Season of Mastery:**  
