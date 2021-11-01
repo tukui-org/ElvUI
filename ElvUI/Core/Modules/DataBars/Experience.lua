@@ -25,6 +25,10 @@ local function hasDisabledXP()
 	return E.Retail and IsXPUserDisabled()
 end
 
+local function isTrialMax()
+	return E.Retail and IsTrialAccount() and (E.myLevel ~= 20)
+end
+
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if not questID then return end
 
@@ -35,7 +39,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 end
 
 function DB:ExperienceBar_ShouldBeVisible()
-	return not IsPlayerAtEffectiveMaxLevel() and not hasDisabledXP()
+	return not IsPlayerAtEffectiveMaxLevel() and not hasDisabledXP() and not isTrialMax()
 end
 
 local function RestedQuestLayering()

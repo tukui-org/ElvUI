@@ -326,6 +326,7 @@ P.bags = {
 		bag10 = false,
 		bag11 = false,
 	},
+	shownBags = {},
 	bagBar = {
 		growthDirection = 'VERTICAL',
 		sortDirection = 'ASCENDING',
@@ -339,6 +340,10 @@ P.bags = {
 		visibility = E.Retail and '[petbattle] hide; show' or 'show',
 	},
 }
+
+for i = -3, 11 do
+	P.bags.shownBags['bag'..i] = true
+end
 
 local NP_Auras = {
 	enable = true,

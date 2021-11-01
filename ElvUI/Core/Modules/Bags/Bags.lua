@@ -615,10 +615,10 @@ function B:GetContainerNumSlots(bagID)
 end
 
 function B:UpdateReagentSlot(slotID)
-	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
+	local bagID = REAGENTBANK_CONTAINER
+	local slot = B.BankFrame and B.BankFrame.reagentFrame.slots[slotID]
 	if not slot then return end
 
-	local bagID = REAGENTBANK_CONTAINER
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 
@@ -936,11 +936,10 @@ function B:Layout(isBank)
 		--Bag Slots
 		local bag = f.Bags[bagID]
 		local numSlots = B:GetContainerNumSlots(bagID)
-		local isKeyRing = bagID == KEYRING_CONTAINER
 		local hasSlots = numSlots > 0
 
 		bag.numSlots = numSlots
-		bag:SetShown(isKeyRing and B.ShowKeyRing or not isKeyRing and hasSlots)
+		bag:SetShown(B.db.shownBags['bag'..bagID])
 
 		if hasSlots and bag:IsShown() then
 			for slotID, slot in ipairs(bag) do
@@ -1322,8 +1321,20 @@ function B:BagItemAction(button, holder, func, id)
 		B.AssignBagDropdown.holder = holder
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	else
-		func(id)
+		if CursorHasItem() then
+			func(id)
+		else
+			B:ToggleBag(holder)
+		end
 	end
+end
+
+function B:ToggleBag(holder)
+	if not holder then return end
+	local id = holder.id
+	B.db.shownBags['bag'..id] = not B.db.shownBags['bag'..id]
+	holder.shownIcon:SetTexture(B.db.shownBags['bag'..id] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+	B:Layout(holder.isBank)
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1398,6 +1409,7 @@ function B:ConstructContainerFrame(name, isBank)
 		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), bagName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
+		holder.isBank = isBank
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
 		holder:StyleButton()
@@ -1416,13 +1428,18 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.icon:SetInside()
 		holder.IconBorder:Kill()
 
+		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
+		holder.shownIcon:Size(16)
+		holder.shownIcon:Point('BOTTOMLEFT', 1, 1)
+		holder.shownIcon:SetTexture(B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+
 		B:CreateFilterIcon(holder)
 
 		if bagID == BACKPACK_CONTAINER then
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
 			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 		elseif bagID == KEYRING_CONTAINER then
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
 			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		elseif isBank then
 			holder:SetID(i == 1 and -1 or (bagID - 4))
@@ -1532,7 +1549,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 			for i = 1, B.REAGENTBANK_SIZE do
 				f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
-				B:UpdateReagentSlot(i)
 			end
 
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
@@ -1700,7 +1716,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', B.Tooltip_Hide)
-			f.keyButton:SetScript('OnClick', function() B.ShowKeyRing = not B.ShowKeyRing B:Layout() end)
+			f.keyButton:SetScript('OnClick', function() B:ToggleBag(f.ContainerHolderByBagID[KEYRING_CONTAINER]) end)
 		end
 
 		--Vendor Grays
@@ -2438,6 +2454,7 @@ function B:Initialize()
 
 	--Hook onto Blizzard Functions
 	if E.Retail then
+		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
