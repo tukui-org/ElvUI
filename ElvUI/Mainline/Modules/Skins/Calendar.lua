@@ -9,7 +9,7 @@ local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local hooksecurefunc = hooksecurefunc
 
 local function SkinContainer(frame, container)
-	frame:StripTextures()
+	frame.NineSlice:Kill()
 
 	local child = container or frame.scrollFrame
 	if child and not child.backdrop then
@@ -102,8 +102,8 @@ function S:Blizzard_Calendar()
 	_G.CalendarFilterFrame.backdrop:Point('TOPLEFT', 20, 2)
 	_G.CalendarFilterFrame.backdrop:Point('BOTTOMRIGHT', _G.CalendarFilterButton, 'BOTTOMRIGHT', 2, -2)
 
-	_G.CalendarContextMenu:SetTemplate('Transparent')
-	_G.CalendarInviteStatusContextMenu:SetTemplate('Transparent')
+	_G.CalendarContextMenu.NineSlice:SetTemplate('Transparent')
+	_G.CalendarInviteStatusContextMenu.NineSlice:SetTemplate('Transparent')
 
 	--Boost frame levels
 	for i = 1, 42 do

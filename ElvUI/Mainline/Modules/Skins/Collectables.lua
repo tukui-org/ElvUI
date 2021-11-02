@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local select = select
@@ -317,23 +318,7 @@ local function SkinPetFrame()
 	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 
 	if E.private.skins.blizzard.tooltip then
-		local tt = _G.PetJournalPrimaryAbilityTooltip
-		if tt.Delimiter1 then
-			tt.Delimiter1:SetTexture()
-			tt.Delimiter2:SetTexture()
-		end
-
-		tt.Background:SetTexture()
-		tt.BorderTop:SetTexture()
-		tt.BorderTopLeft:SetTexture()
-		tt.BorderTopRight:SetTexture()
-		tt.BorderLeft:SetTexture()
-		tt.BorderRight:SetTexture()
-		tt.BorderBottom:SetTexture()
-		tt.BorderBottomRight:SetTexture()
-		tt.BorderBottomLeft:SetTexture()
-
-		tt:SetTemplate('Transparent')
+		TT:SetStyle(_G.PetJournalPrimaryAbilityTooltip)
 	end
 
 	for i=1, 6 do

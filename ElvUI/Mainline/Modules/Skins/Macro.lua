@@ -7,6 +7,10 @@ local format = format
 local HideUIPanel = HideUIPanel
 local ShowUIPanel = ShowUIPanel
 
+local NUM_ICONS_PER_ROW = 10
+local NUM_ICON_ROWS = 9
+local NUM_MACRO_ICONS_SHOWN = NUM_ICONS_PER_ROW * NUM_ICON_ROWS
+
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
@@ -14,10 +18,9 @@ function S:Blizzard_MacroUI()
 	S:HandlePortraitFrame(MacroFrame)
 	MacroFrame:Width(360)
 
-	_G.MacroFrameTextBackground:StripTextures()
-	_G.MacroFrameTextBackground:SetTemplate('Transparent')
 	_G.MacroButtonScrollFrame:StripTextures()
 	_G.MacroButtonScrollFrame:SetTemplate('Transparent')
+	_G.MacroFrameTextBackground.NineSlice:SetTemplate('Transparent')
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
@@ -82,28 +85,8 @@ function S:Blizzard_MacroUI()
 	--Icon selection frame
 	ShowUIPanel(MacroFrame) --Toggle frame to create necessary variables needed for popup frame
 	HideUIPanel(MacroFrame)
-	local MacroPopupFrame = _G.MacroPopupFrame
-	MacroPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
-	MacroPopupFrame:Hide()
 
-	-- Popout Frame
-	S:HandleButton(MacroPopupFrame.BorderBox.OkayButton)
-	local cancel_btn = MacroPopupFrame.BorderBox.CancelButton
-	S:HandleButton(cancel_btn)
-	cancel_btn:ClearAllPoints()
-	cancel_btn:Point('RIGHT', MacroPopupFrame.BorderBox, 'BOTTOMRIGHT', -5, 15)
-	S:HandleScrollBar(_G.MacroPopupScrollFrameScrollBar)
-	S:HandleEditBox(_G.MacroPopupEditBox)
-	_G.MacroPopupNameLeft:SetTexture()
-	_G.MacroPopupNameMiddle:SetTexture()
-	_G.MacroPopupNameRight:SetTexture()
-
-	S:HandleIconSelectionFrame(MacroPopupFrame, _G.NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
-
-	MacroPopupFrame:HookScript('OnShow', function(s)
-		s:ClearAllPoints()
-		s:Point('TOPLEFT', MacroFrame, 'TOPRIGHT', 2, 0)
-	end)
+	S:HandleIconSelectionFrame(_G.MacroPopupFrame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
 end
 
 S:AddCallbackForAddon('Blizzard_MacroUI')

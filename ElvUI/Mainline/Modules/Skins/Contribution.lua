@@ -16,9 +16,8 @@ function S:Blizzard_Contribution()
 	if E.private.skins.blizzard.tooltip then
 		local ContributionBuffTooltip = _G.ContributionBuffTooltip
 		ContributionBuffTooltip:StripTextures()
-		ContributionBuffTooltip:SetTemplate('Transparent')
-		ContributionBuffTooltip:StyleButton()
 		ContributionBuffTooltip.Border:SetAlpha(0)
+		ContributionBuffTooltip.NineSlice:SetTemplate('Transparent')
 		ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	end
 

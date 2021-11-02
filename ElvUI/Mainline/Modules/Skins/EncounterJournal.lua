@@ -312,7 +312,9 @@ function S:Blizzard_EncounterJournal()
 	end)
 
 	-- Loot buttons
-	for i, item in next, _G.EncounterJournal.encounter.info.lootScroll.buttons do
+	for i, items in next, _G.EncounterJournal.encounter.info.lootScroll.buttons do
+		local item = items.lootFrame
+
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
 
@@ -348,8 +350,8 @@ function S:Blizzard_EncounterJournal()
 		end
 
 		if i == 1 then
-			item:ClearAllPoints()
-			item:Point('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 10, 0)
+			items:ClearAllPoints()
+			items:Point('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 10, 0)
 		end
 	end
 
@@ -453,7 +455,7 @@ function S:Blizzard_EncounterJournal()
 		local tooltip = _G.EncounterJournalTooltip
 		local item1 = tooltip.Item1
 		local item2 = tooltip.Item2
-		tooltip:SetTemplate('Transparent')
+		tooltip.NineSlice:SetTemplate('Transparent')
 		S:HandleIcon(item1.icon)
 		S:HandleIcon(item2.icon)
 		item1.IconBorder:Kill()
