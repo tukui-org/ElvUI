@@ -32,6 +32,7 @@ function UF:Construct_RaidFrames()
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
+	self.SummonIndicator = UF:Construct_SummonIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
@@ -39,7 +40,6 @@ function UF:Construct_RaidFrames()
 
 	if E.Retail then
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
-		self.SummonIndicator = UF:Construct_SummonIcon(self)
 		self.ClassBar = 'AlternativePower'
 	end
 
