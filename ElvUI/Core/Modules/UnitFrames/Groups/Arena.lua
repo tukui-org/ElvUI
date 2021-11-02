@@ -30,7 +30,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 	if E.Retail then -- during `PostUpdateArenaPreparation` this means spec class and name exist
 		frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass])
 
-		if frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') and show then
+		if show and frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
 			frame.PVPSpecIcon.Icon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 			frame.PVPSpecIcon.Icon:SetTexCoord(unpack(E.TexCoords))
 			frame.PVPSpecIcon:Show()
@@ -123,7 +123,7 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
-		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
+		frame.PVPINFO_WIDTH = (E.Retail and db.pvpSpecIcon and frame.UNIT_HEIGHT) or 0
 	end
 
 	if not E:IsAddOnEnabled('Clique') then
