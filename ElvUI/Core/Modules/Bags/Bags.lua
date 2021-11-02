@@ -14,10 +14,10 @@ local next, floor, format, sub = next, floor, format, strsub
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local ContainerIDToInventoryID = ContainerIDToInventoryID
 local CreateFrame = CreateFrame
+local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
-local GetInventorySlotInfo = GetInventorySlotInfo
 local GetBagSlotFlag = GetBagSlotFlag
 local GetBankAutosortDisabled = GetBankAutosortDisabled
 local GetBankBagSlotFlag = GetBankBagSlotFlag
@@ -27,9 +27,11 @@ local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetCVarBool = GetCVarBool
+local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetItemSpell = GetItemSpell
+local GetKeyRingSize = GetKeyRingSize
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
 local hooksecurefunc = hooksecurefunc
@@ -38,7 +40,6 @@ local IsReagentBankUnlocked = IsReagentBankUnlocked
 local PlaySound = PlaySound
 local PutItemInBackpack = PutItemInBackpack
 local PutItemInBag = PutItemInBag
-local GetKeyRingSize = GetKeyRingSize
 local PutKeyInKeyRing = PutKeyInKeyRing
 local ReagentButtonInventorySlot = ReagentButtonInventorySlot
 local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
@@ -362,7 +363,7 @@ function B:UpdateAllBagSlots(skip)
 		B:UpdateAllSlots(bagFrame)
 	end
 
-	if not skip then
+	if E.Retail and not skip then
 		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 	end
 end
@@ -1320,12 +1321,10 @@ function B:BagItemAction(button, holder, func, id)
 	if button == 'RightButton' and holder.id then
 		B.AssignBagDropdown.holder = holder
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
+	elseif CursorHasItem() then
+		if func then func(id) end
 	else
-		if CursorHasItem() then
-			func(id)
-		else
-			B:ToggleBag(holder)
-		end
+		B:ToggleBag(holder)
 	end
 end
 
