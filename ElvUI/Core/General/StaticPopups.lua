@@ -657,7 +657,8 @@ function E:StaticPopup_EditBoxOnEnterPressed()
 	end
 
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnEnterPressed(self) then
-		local onEnterPressed = E.PopupDialogs[which].EditBoxOnEnterPressed
+		local popup = E.PopupDialogs[which]
+		local onEnterPressed = popup and popup.EditBoxOnEnterPressed
 		if onEnterPressed then
 			onEnterPressed(self, dialog.data)
 		end
