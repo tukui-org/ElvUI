@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local pairs = pairs
 
 function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
