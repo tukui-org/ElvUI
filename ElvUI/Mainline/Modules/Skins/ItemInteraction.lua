@@ -33,9 +33,6 @@ function S:Blizzard_ItemInteractionUI()
 	ButtonFrame.ButtonBorder:Hide()
 	ButtonFrame.ButtonBottomBorder:Hide()
 
-	ButtonFrame.Currency:Point('BOTTOMRIGHT', ButtonFrame.MoneyFrameEdge, -9, 4)
-	ButtonFrame.MoneyFrame:Point('BOTTOMRIGHT', ButtonFrame.MoneyFrameEdge, 7, 5)
-
 	S:HandleIcon(ButtonFrame.Currency.icon)
 	S:HandleButton(ButtonFrame.ActionButton)
 
