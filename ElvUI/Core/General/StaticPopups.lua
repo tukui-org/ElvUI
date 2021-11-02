@@ -8,7 +8,7 @@ local Skins = E:GetModule('Skins')
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
-local format, error, ipairs = format, error, ipairs
+local format, error, ipairs, ceil = format, error, ipairs, ceil
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -414,7 +414,8 @@ function E:StaticPopup_OnShow()
 		OnShow(self, self.data)
 	end
 	if dialog.hasMoneyInputFrame then
-		_G[self:GetName()..'MoneyInputFrameGold']:SetFocus()
+		local dialogName = self:GetName()
+		_G[dialogName..'MoneyInputFrameGold']:SetFocus()
 	end
 	if dialog.enterClicksFirstButton or dialog.hideOnEscape then
 		self:SetScript('OnKeyDown', E.StaticPopup_OnKeyDown)
@@ -512,8 +513,8 @@ function E:StaticPopup_OnKeyDown(key)
 	local dialog = E.PopupDialogs[self.which]
 	if dialog then
 		if key == 'ENTER' and dialog.enterClicksFirstButton then
-			local i, frameName = 1, self:GetName()
-			local button = _G[frameName..'Button'..i]
+			local i, dialogName = 1, self:GetName()
+			local button = _G[dialogName..'Button'..i]
 			while button do
 				if button:IsShown() then
 					E:StaticPopup_OnClick(self, i)
@@ -521,7 +522,7 @@ function E:StaticPopup_OnKeyDown(key)
 				end
 
 				i = i + 1
-				button = _G[frameName..'Button'..i]
+				button = _G[dialogName..'Button'..i]
 			end
 		end
 	end
@@ -579,14 +580,30 @@ function E:StaticPopup_OnUpdate(elapsed)
 		if self.startDelay <= 0 then
 			self.startDelay = nil
 
-			local name = self:GetName()
-			local text = _G[name..'Text']
+			local dialogName = self:GetName()
+			local text = _G[dialogName..'Text']
 			text:SetFormattedText(info.text, text.text_arg1, text.text_arg2)
-			_G[name..'Button1']:Enable()
+			_G[dialogName..'Button1']:Enable()
 
 			StaticPopup_Resize(self, self.which)
 
 			return
+		end
+	end
+
+	if self.acceptDelay then
+		self.acceptDelay = self.acceptDelay - elapsed
+		if self.acceptDelay <= 0 then
+			self.button1:Enable()
+			self.button1:SetText(info.button1)
+			self.acceptDelay = nil
+
+			if info.OnAcceptDelayExpired ~= nil then
+				info.OnAcceptDelayExpired(self, self.data)
+			end
+		else
+			self.button1:Disable()
+			self.button1:SetText(ceil(self.acceptDelay))
 		end
 	end
 
@@ -683,9 +700,10 @@ function E:StaticPopup_Resize(dialog, which)
 		return nil
 	end
 
-	local text = _G[dialog:GetName()..'Text']
-	local editBox = _G[dialog:GetName()..'EditBox']
-	local button1 = _G[dialog:GetName()..'Button1']
+	local dialogName = dialog:GetName()
+	local text = _G[dialogName..'Text']
+	local editBox = _G[dialogName..'EditBox']
+	local button1 = _G[dialogName..'Button1']
 
 	local maxHeightSoFar, maxWidthSoFar = (dialog.maxHeightSoFar or 0), (dialog.maxWidthSoFar or 0)
 	local width = 320
@@ -704,6 +722,14 @@ function E:StaticPopup_Resize(dialog, which)
 		dialog.maxWidthSoFar = width
 	end
 
+	if info.wideText then
+		dialog.text:SetWidth(360)
+		dialog.SubText:SetWidth(360)
+	else
+		dialog.text:SetWidth(290)
+		dialog.SubText:SetWidth(290)
+	end
+
 	local height = 32 + (text and text:GetHeight() or 0) + 8 + button1:GetHeight()
 	if info.hasEditBox then
 		height = height + 8 + editBox:GetHeight()
@@ -713,7 +739,11 @@ function E:StaticPopup_Resize(dialog, which)
 		height = height + 22
 	end
 	if info.hasItemFrame then
-		height = height + 64
+		if info.compactItemFrame then
+			height = height + 44
+		else
+			height = height + 64
+		end
 	end
 	if info.hasCheckButton then
 		height = height + 32
@@ -808,13 +838,15 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	end
 
 	dialog.maxHeightSoFar, dialog.maxWidthSoFar = 0, 0
+
 	-- Set the text of the dialog
-	local text = _G[dialog:GetName()..'Text']
+	local dialogName = dialog:GetName()
+	local text = _G[dialogName..'Text']
 	text:SetFormattedText(info.text, text_arg1, text_arg2)
 
 	-- Show or hide the close button
 	if info.closeButton then
-		local closeButton = _G[dialog:GetName()..'CloseButton']
+		local closeButton = _G[dialogName..'CloseButton']
 		if info.closeButtonIsHide then
 			closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-HideButton-Up]])
 			closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-HideButton-Down]])
@@ -824,11 +856,11 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		closeButton:Show()
 	else
-		_G[dialog:GetName()..'CloseButton']:Hide()
+		_G[dialogName..'CloseButton']:Hide()
 	end
 
 	-- Set the editbox of the dialog
-	local editBox = _G[dialog:GetName()..'EditBox']
+	local editBox = _G[dialogName..'EditBox']
 	if info.hasEditBox then
 		editBox:Show()
 
@@ -851,12 +883,12 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 
 	-- Show or hide money frame
 	if info.hasMoneyFrame then
-		_G[dialog:GetName()..'MoneyFrame']:Show()
-		_G[dialog:GetName()..'MoneyInputFrame']:Hide()
+		_G[dialogName..'MoneyFrame']:Show()
+		_G[dialogName..'MoneyInputFrame']:Hide()
 	elseif info.hasMoneyInputFrame then
-		local moneyInputFrame = _G[dialog:GetName()..'MoneyInputFrame']
+		local moneyInputFrame = _G[dialogName..'MoneyInputFrame']
 		moneyInputFrame:Show()
-		_G[dialog:GetName()..'MoneyFrame']:Hide()
+		_G[dialogName..'MoneyFrame']:Hide()
 		-- Set OnEnterPress for money input frames
 		if info.EditBoxOnEnterPressed then
 			moneyInputFrame.gold:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
@@ -868,28 +900,28 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 			moneyInputFrame.copper:SetScript('OnEnterPressed', nil)
 		end
 	else
-		_G[dialog:GetName()..'MoneyFrame']:Hide()
-		_G[dialog:GetName()..'MoneyInputFrame']:Hide()
+		_G[dialogName..'MoneyFrame']:Hide()
+		_G[dialogName..'MoneyInputFrame']:Hide()
 	end
 
 	-- Show or hide item button
 	if info.hasItemFrame then
-		_G[dialog:GetName()..'ItemFrame']:Show()
+		_G[dialogName..'ItemFrame']:Show()
 		if data and type(data) == 'table' then
-			_G[dialog:GetName()..'ItemFrame'].link = data.link
-			_G[dialog:GetName()..'ItemFrameIconTexture']:SetTexture(data.texture)
-			local nameText = _G[dialog:GetName()..'ItemFrameText']
+			_G[dialogName..'ItemFrame'].link = data.link
+			_G[dialogName..'ItemFrameIconTexture']:SetTexture(data.texture)
+			local nameText = _G[dialogName..'ItemFrameText']
 			nameText:SetTextColor(unpack(data.color or {1, 1, 1, 1}))
 			nameText:SetText(data.name)
 			if data.count and data.count > 1 then
-				_G[dialog:GetName()..'ItemFrameCount']:SetText(data.count)
-				_G[dialog:GetName()..'ItemFrameCount']:Show()
+				_G[dialogName..'ItemFrameCount']:SetText(data.count)
+				_G[dialogName..'ItemFrameCount']:Show()
 			else
-				_G[dialog:GetName()..'ItemFrameCount']:Hide()
+				_G[dialogName..'ItemFrameCount']:Hide()
 			end
 		end
 	else
-		_G[dialog:GetName()..'ItemFrame']:Hide()
+		_G[dialogName..'ItemFrame']:Hide()
 	end
 
 	-- Set the miscellaneous variables for the dialog
@@ -902,10 +934,10 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	dialog.data = data
 
 	-- Set the buttons of the dialog
-	local button1 = _G[dialog:GetName()..'Button1']
-	local button2 = _G[dialog:GetName()..'Button2']
-	local button3 = _G[dialog:GetName()..'Button3']
-	local button4 = _G[dialog:GetName()..'Button4']
+	local button1 = _G[dialogName..'Button1']
+	local button2 = _G[dialogName..'Button2']
+	local button3 = _G[dialogName..'Button3']
+	local button4 = _G[dialogName..'Button4']
 
 	do	--If there is any recursion in this block, we may get errors (tempButtonLocs is static). If you have to recurse, we'll have to create a new table each time.
 		assert(#tempButtonLocs == 0)	--If this fails, we're recursing. (See the table.wipe at the end of the block)
@@ -957,7 +989,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	end
 
 	-- Show or hide the alert icon
-	local alertIcon = _G[dialog:GetName()..'AlertIcon']
+	local alertIcon = _G[dialogName..'AlertIcon']
 	if info.showAlert then
 		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERT)
 		if button3:IsShown() then
@@ -980,8 +1012,8 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	end
 
 	-- Show or hide the checkbox
-	local checkButton = _G[dialog:GetName()..'CheckButton']
-	local checkButtonText = _G[dialog:GetName()..'CheckButtonText']
+	local checkButton = _G[dialogName..'CheckButton']
+	local checkButtonText = _G[dialogName..'CheckButtonText']
 	if info.hasCheckButton then
 		checkButton:ClearAllPoints()
 		checkButton:Point('BOTTOMLEFT', 24, 20 + button1:GetHeight())
@@ -1002,6 +1034,14 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		button1:Disable()
 	else
 		dialog.startDelay = nil
+		button1:Enable()
+	end
+
+	if info.acceptDelay then
+		dialog.acceptDelay = info.acceptDelay
+		button1:Disable()
+	else
+		dialog.acceptDelay = nil
 		button1:Enable()
 	end
 
