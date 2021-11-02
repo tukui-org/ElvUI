@@ -644,19 +644,19 @@ function E:StaticPopup_OnClick(index)
 end
 
 function E:StaticPopup_EditBoxOnEnterPressed()
-	local parent = self:GetParent()
-	local owner = parent:GetParent()
-	local which, dialog
-
-	if parent.which then
-		which = parent.which
-		dialog = parent
-	elseif owner and owner.which then -- This is needed if this is a money input frame since it's nested deeper than a normal edit box
-		which = owner.which
-		dialog = owner
-	end
-
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnEnterPressed(self) then
+		local parent = self:GetParent()
+		local owner = parent:GetParent()
+		local which, dialog
+
+		if parent.which then
+			which = parent.which
+			dialog = parent
+		elseif owner and owner.which then -- This is needed if this is a money input frame since it's nested deeper than a normal edit box
+			which = owner.which
+			dialog = owner
+		end
+
 		local popup = E.PopupDialogs[which]
 		local onEnterPressed = popup and popup.EditBoxOnEnterPressed
 		if onEnterPressed then
