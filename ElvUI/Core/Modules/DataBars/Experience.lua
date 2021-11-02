@@ -7,6 +7,7 @@ local error = error
 local type, pairs = type, pairs
 local min, format = min, format
 local CreateFrame = CreateFrame
+local IsTrialAccount = IsTrialAccount
 local GetXPExhaustion = GetXPExhaustion
 local IsXPUserDisabled = IsXPUserDisabled
 local GetQuestLogRewardXP = GetQuestLogRewardXP
