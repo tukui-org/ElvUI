@@ -617,7 +617,7 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt.qualityChanged then
 		tt.qualityChanged = nil
 
-		tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		tt.NineSlice:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 
 	if tt.ItemTooltip then
@@ -665,7 +665,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	if TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
-			tt:SetBackdropBorderColor(GetItemQualityColor(quality))
+			tt.NineSlice:SetBackdropBorderColor(GetItemQualityColor(quality))
 			tt.qualityChanged = true
 		end
 	end
