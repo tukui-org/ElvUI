@@ -644,36 +644,40 @@ function E:StaticPopup_OnClick(index)
 end
 
 function E:StaticPopup_EditBoxOnEnterPressed()
-	local EditBoxOnEnterPressed, which, dialog
 	local parent = self:GetParent()
+	local owner = parent:GetParent()
+	local which, dialog
+
 	if parent.which then
 		which = parent.which
 		dialog = parent
-	elseif parent:GetParent().which then
-		-- This is needed if this is a money input frame since it's nested deeper than a normal edit box
-		which = parent:GetParent().which
-		dialog = parent:GetParent()
+	elseif owner and owner.which then -- This is needed if this is a money input frame since it's nested deeper than a normal edit box
+		which = owner.which
+		dialog = owner
 	end
+
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnEnterPressed(self) then
-		EditBoxOnEnterPressed = E.PopupDialogs[which].EditBoxOnEnterPressed
-		if EditBoxOnEnterPressed then
-			EditBoxOnEnterPressed(self, dialog.data)
+		local onEnterPressed = E.PopupDialogs[which].EditBoxOnEnterPressed
+		if onEnterPressed then
+			onEnterPressed(self, dialog.data)
 		end
 	end
 end
 
 function E:StaticPopup_EditBoxOnEscapePressed()
-	local EditBoxOnEscapePressed = E.PopupDialogs[self:GetParent().which].EditBoxOnEscapePressed
-	if EditBoxOnEscapePressed then
-		EditBoxOnEscapePressed(self, self:GetParent().data)
+	local parent = self:GetParent()
+	local onEscapePressed = E.PopupDialogs[parent.which].EditBoxOnEscapePressed
+	if onEscapePressed then
+		onEscapePressed(self, parent.data)
 	end
 end
 
 function E:StaticPopup_EditBoxOnTextChanged(userInput)
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnTextChanged(self, userInput) then
-		local EditBoxOnTextChanged = E.PopupDialogs[self:GetParent().which].EditBoxOnTextChanged
-		if EditBoxOnTextChanged then
-			EditBoxOnTextChanged(self, self:GetParent().data)
+		local parent = self:GetParent()
+		local onTextChanged = E.PopupDialogs[parent.which].EditBoxOnTextChanged
+		if onTextChanged then
+			onTextChanged(self, parent.data)
 		end
 	end
 end
