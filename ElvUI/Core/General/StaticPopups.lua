@@ -667,7 +667,8 @@ end
 
 function E:StaticPopup_EditBoxOnEscapePressed()
 	local parent = self:GetParent()
-	local onEscapePressed = E.PopupDialogs[parent.which].EditBoxOnEscapePressed
+	local popup = E.PopupDialogs[parent.which]
+	local onEscapePressed = popup and popup.EditBoxOnEscapePressed
 	if onEscapePressed then
 		onEscapePressed(self, parent.data)
 	end
@@ -676,7 +677,8 @@ end
 function E:StaticPopup_EditBoxOnTextChanged(userInput)
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnTextChanged(self, userInput) then
 		local parent = self:GetParent()
-		local onTextChanged = E.PopupDialogs[parent.which].EditBoxOnTextChanged
+		local popup = E.PopupDialogs[parent.which]
+		local onTextChanged = popup and popup.EditBoxOnTextChanged
 		if onTextChanged then
 			onTextChanged(self, parent.data)
 		end
@@ -789,7 +791,9 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 			local frame = _G['ElvUI_StaticPopup'..index]
 			if frame:IsShown() and (frame.which == info.cancels) then
 				frame:Hide()
-				local OnCancel = E.PopupDialogs[frame.which].OnCancel
+
+				local popup = E.PopupDialogs[frame.which]
+				local OnCancel = popup and popup.OnCancel
 				if OnCancel then
 					OnCancel(frame, frame.data, 'override')
 				end
