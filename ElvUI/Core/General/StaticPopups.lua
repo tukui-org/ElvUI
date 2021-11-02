@@ -511,19 +511,17 @@ function E:StaticPopup_OnKeyDown(key)
 	end
 
 	local dialog = E.PopupDialogs[self.which]
-	if dialog then
-		if key == 'ENTER' and dialog.enterClicksFirstButton then
-			local i, dialogName = 1, self:GetName()
-			local button = _G[dialogName..'Button'..i]
-			while button do
-				if button:IsShown() then
-					E:StaticPopup_OnClick(self, i)
-					return
-				end
-
-				i = i + 1
-				button = _G[dialogName..'Button'..i]
+	if dialog and key == 'ENTER' and dialog.enterClicksFirstButton then
+		local i, dialogName = 1, self:GetName()
+		local button = _G[dialogName..'Button'..i]
+		while button do
+			if button:IsShown() then
+				E:StaticPopup_OnClick(self, i)
+				return
 			end
+
+			i = i + 1
+			button = _G[dialogName..'Button'..i]
 		end
 	end
 end
