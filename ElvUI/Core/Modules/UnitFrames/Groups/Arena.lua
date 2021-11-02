@@ -14,14 +14,11 @@ local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
 function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specClass)
-	local specIcon = (frame.db and frame.db.pvpSpecIcon) and frame:IsElementEnabled('PVPSpecIcon')
-
 	frame.forceInRange = show -- used to force unitframe range
 
 	local visibility = not show
 	if show then frame.Trinket:Hide() end
 
-	frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass]) -- during `PostUpdateArenaPreparation` this means spec class and name exist
 	UF:ToggleVisibility_CustomTexts(frame, visibility)
 
 	frame.Health.value:SetShown(visibility)
@@ -30,10 +27,14 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 	frame.PvPClassificationIndicator:SetAtlas(nil)
 	frame.Trinket.cd:Clear()
 
-	if specIcon and show then
-		frame.PVPSpecIcon.Icon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-		frame.PVPSpecIcon.Icon:SetTexCoord(unpack(E.TexCoords))
-		frame.PVPSpecIcon:Show()
+	if E.Retail then -- during `PostUpdateArenaPreparation` this means spec class and name exist
+		frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass])
+
+		if frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') and show then
+			frame.PVPSpecIcon.Icon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+			frame.PVPSpecIcon.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.PVPSpecIcon:Show()
+		end
 	end
 end
 
@@ -72,7 +73,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.TargetGlow = UF:Construct_TargetGlow(frame)
 		frame.FocusGlow = UF:Construct_FocusGlow(frame)
 		frame.Trinket = UF:Construct_Trinket(frame)
-		frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
+
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
 		frame:SetAttribute('type2', 'focus')
@@ -81,9 +82,13 @@ function UF:Construct_ArenaFrames(frame)
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.unitframeType = 'arena'
 
-		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, 'OVERLAY')
-		frame.ArenaPrepSpec:Point('CENTER')
-		UF:Configure_FontString(frame.ArenaPrepSpec)
+		if E.Retail then
+			frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
+
+			frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, 'OVERLAY')
+			frame.ArenaPrepSpec:Point('CENTER')
+			UF:Configure_FontString(frame.ArenaPrepSpec)
+		end
 
 		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation -- used to update arena prep info
 		frame.PostUpdate = self.PostUpdateArenaFrame -- used to hide arena prep info
@@ -142,13 +147,16 @@ function UF:Update_ArenaFrames(frame, db)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
 	UF:Configure_Castbar(frame)
-	UF:Configure_PVPSpecIcon(frame)
 	UF:Configure_Trinket(frame)
 	UF:Configure_Fader(frame)
 	UF:Configure_HealComm(frame)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_PvPClassificationIndicator(frame)
+
+	if E.Retail then
+		UF:Configure_PVPSpecIcon(frame)
+	end
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then
