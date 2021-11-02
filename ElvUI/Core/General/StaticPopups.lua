@@ -573,15 +573,16 @@ function E:StaticPopup_OnUpdate(elapsed)
 		end
 	end
 
+	local dialogName = self:GetName()
+	local button1 = _G[dialogName..'Button1']
 	if self.startDelay then
 		self.startDelay = self.startDelay - elapsed
 		if self.startDelay <= 0 then
 			self.startDelay = nil
 
-			local dialogName = self:GetName()
 			local text = _G[dialogName..'Text']
 			text:SetFormattedText(info.text, text.text_arg1, text.text_arg2)
-			_G[dialogName..'Button1']:Enable()
+			button1:Enable()
 
 			StaticPopup_Resize(self, self.which)
 
@@ -592,16 +593,17 @@ function E:StaticPopup_OnUpdate(elapsed)
 	if self.acceptDelay then
 		self.acceptDelay = self.acceptDelay - elapsed
 		if self.acceptDelay <= 0 then
-			self.button1:Enable()
-			self.button1:SetText(info.button1)
+			button1:Enable()
+			button1:SetText(info.button1)
+
 			self.acceptDelay = nil
 
 			if info.OnAcceptDelayExpired ~= nil then
 				info.OnAcceptDelayExpired(self, self.data)
 			end
 		else
-			self.button1:Disable()
-			self.button1:SetText(ceil(self.acceptDelay))
+			button1:Disable()
+			button1:SetText(ceil(self.acceptDelay))
 		end
 	end
 
