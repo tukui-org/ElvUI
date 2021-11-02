@@ -22,8 +22,6 @@ function UF:Construct_RaidFrames()
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.AuraHighlight = UF:Construct_AuraHighlight(self)
-	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
-	self.SummonIndicator = UF:Construct_SummonIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
@@ -40,6 +38,8 @@ function UF:Construct_RaidFrames()
 
 	if E.Retail then
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
+		self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
+		self.SummonIndicator = UF:Construct_SummonIcon(self)
 		self.ClassBar = 'AlternativePower'
 	end
 
@@ -114,8 +114,6 @@ function UF:Update_RaidFrames(frame, db)
 	UF:Configure_Threat(frame)
 	UF:Configure_RaidDebuffs(frame)
 	UF:Configure_RaidIcon(frame)
-	UF:Configure_ResurrectionIcon(frame)
-	UF:Configure_SummonIcon(frame)
 	UF:Configure_AuraHighlight(frame)
 	UF:Configure_RoleIcon(frame)
 	UF:Configure_HealComm(frame)
@@ -131,6 +129,8 @@ function UF:Update_RaidFrames(frame, db)
 
 	if E.Retail then
 		UF:Configure_AltPowerBar(frame)
+		UF:Configure_ResurrectionIcon(frame)
+		UF:Configure_SummonIcon(frame)
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
