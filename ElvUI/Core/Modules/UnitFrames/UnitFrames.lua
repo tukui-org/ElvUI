@@ -936,7 +936,7 @@ function UF:HandleSmartVisibility(skip)
 			end
 		end
 	else
-		sv.raid.visibility = '[@raid6,noexists][@raid31,exists] hide;show'
+		sv.raid.visibility = E.Retail and '[@raid6,noexists][@raid31,exists] hide;show' or '[@raid6,noexists][@raid26,exists] hide;show'
 		sv.raid40.visibility = E.Retail and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
 		sv.raid.enable = true
 		sv.raid40.enable = true
