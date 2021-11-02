@@ -1,0 +1,28 @@
+## Interface: 20502
+## Author: Elv, Simpy
+## Version: 1.07
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptionsUI|r
+## Notes: Options for ElvUI.
+## RequiredDeps: ElvUI
+## LoadOnDemand: 1
+
+Libraries\Load_Libraries.xml
+Locales\Load_Locales.xml
+Core.lua
+General.lua
+ActionBars.lua
+Auras.lua
+Bags.lua
+Chat.lua
+Cooldown.lua
+DataTexts.lua
+DataBars.lua
+Filters.lua
+Skins.lua
+Tooltip.lua
+UnitFrames.lua
+Nameplates.lua
+StyleFilters.lua
+Maps.lua
+ModuleControl.lua
+Tags.lua

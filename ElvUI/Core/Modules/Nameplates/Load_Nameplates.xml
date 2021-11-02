@@ -1,0 +1,20 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='Nameplates.lua'/>
+	<Script file='StyleFilter.lua'/>
+	<Script file='Elements\Auras.lua'/>
+	<Script file='Elements\BossMods.lua'/>
+	<Script file='Elements\CastBar.lua'/>
+	<Script file='Elements\ClassPower.lua'/>
+	<Script file='Elements\Health.lua'/>
+	<Script file='Elements\Plugins.lua'/>
+	<Script file='Elements\Power.lua'/>
+	<Script file='Elements\Portraits.lua'/>
+	<Script file='Elements\PvP.lua'/>
+	<Script file='Elements\RaidTargetIndicator.lua'/>
+	<Script file='Elements\Tags.lua'/>
+	<Script file='Elements\Threat.lua'/>
+	<Script file='Plugins\ClassificationIndicator.lua'/>
+	<Script file='Plugins\Highlight.lua'/>
+	<Script file='Plugins\QuestIcons.lua'/>
+	<Script file='Plugins\TargetIndicator.lua'/>
+</Ui>
