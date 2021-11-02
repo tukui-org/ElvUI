@@ -362,7 +362,7 @@ function B:UpdateAllBagSlots(skip)
 		B:UpdateAllSlots(bagFrame)
 	end
 
-	if not skip then
+	if E.Retail and not skip then
 		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 	end
 end
