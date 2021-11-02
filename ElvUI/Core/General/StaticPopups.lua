@@ -510,8 +510,8 @@ function E:StaticPopup_OnKeyDown(key)
 		return E:StaticPopup_EscapePressed()
 	end
 
-	local dialog = E.PopupDialogs[self.which]
-	if dialog and key == 'ENTER' and dialog.enterClicksFirstButton then
+	local dialog = key == 'ENTER' and E.PopupDialogs[self.which]
+	if dialog and dialog.enterClicksFirstButton then
 		local i, dialogName = 1, self:GetName()
 		local button = _G[dialogName..'Button'..i]
 		while button do
