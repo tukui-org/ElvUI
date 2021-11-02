@@ -305,7 +305,7 @@ do
 
 		if(PlayerClass == 'DRUID') then
 			RequirePower = SPELL_POWER_ENERGY
-			RequireSpell = 5221 -- Shred
+			RequireSpell = oUF.isRetail and 5221 or 768
 		end
 	elseif(PlayerClass == 'MAGE') then
 		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
