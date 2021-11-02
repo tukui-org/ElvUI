@@ -728,11 +728,11 @@ function E:StaticPopup_Resize(dialog, which)
 	end
 
 	if info.wideText then
-		dialog.text:SetWidth(360)
-		dialog.SubText:SetWidth(360)
+		dialog.text:Width(360)
+		dialog.SubText:Width(360)
 	else
-		dialog.text:SetWidth(290)
-		dialog.SubText:SetWidth(290)
+		dialog.text:Width(290)
+		dialog.SubText:Width(290)
 	end
 
 	local height = 32 + (text and text:GetHeight() or 0) + 8 + button1:GetHeight()
