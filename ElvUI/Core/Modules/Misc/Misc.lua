@@ -77,11 +77,11 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
 	local announce = event == 'SPELL_INTERRUPT' and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and destGUID ~= E.myguid
 	if not announce then return end -- No announce-able interrupt from player or pet, exit.
-	local inRaid, inPartyLFG = IsInRaid(), IsPartyLFG()
+	local inRaid, inPartyLFG = IsInRaid(), E.Retail and IsPartyLFG()
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns 'false'
 	local _, instanceType = GetInstanceInfo()
-	if instanceType == 'arena' then
+	if E.Retail and instanceType == 'arena' then
 		local skirmish = IsArenaSkirmish()
 		local _, isRegistered = IsActiveBattlefieldArena()
 		if skirmish or not isRegistered then
