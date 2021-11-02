@@ -456,11 +456,6 @@ function E:StaticPopup_EscapePressed()
 	return closed
 end
 
-function E:StaticPopupSpecial_Hide(frame)
-	frame:Hide()
-	E:StaticPopup_CollapseTable()
-end
-
 function E:StaticPopup_CollapseTable()
 	local displayedFrames = E.StaticPopup_DisplayedFrames
 	local index = #displayedFrames
