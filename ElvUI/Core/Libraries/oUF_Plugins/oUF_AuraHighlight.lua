@@ -92,10 +92,9 @@ end
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
-	local spec = activeGroup and GetSpecialization(false, false, activeGroup)
-
-	if spec then
-		return tree == spec
+	local activeSpec = activeGroup and GetSpecialization(false, false, activeGroup)
+	if activeSpec then
+		return tree == activeSpec
 	end
 end
 

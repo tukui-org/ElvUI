@@ -4,8 +4,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local wipe, date, max, format = wipe, date, max, format
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
+local wipe, date, max, next, format = wipe, date, max, next, format
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
 local CreateFrame = CreateFrame
@@ -20,6 +20,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
 local IsWargame = IsWargame
+local IsSpellKnown = IsSpellKnown
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAura = UnitAura
