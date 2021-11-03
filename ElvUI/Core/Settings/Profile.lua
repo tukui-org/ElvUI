@@ -2246,12 +2246,10 @@ P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
 for i = 1, 12 do
 	local _, classTag = GetClassInfo(i)
-	if classTag then
-		P.unitframe.units.party['CLASS'..i] = classTag
-		P.unitframe.units.raid['CLASS'..i] = classTag
-		P.unitframe.units.raid40['CLASS'..i] = classTag
-		P.unitframe.units.raidpet['CLASS'..i] = classTag
-	end
+	P.unitframe.units.party['CLASS'..i] = classTag or ''
+	P.unitframe.units.raid['CLASS'..i] = classTag or ''
+	P.unitframe.units.raid40['CLASS'..i] = classTag or ''
+	P.unitframe.units.raidpet['CLASS'..i] = classTag or ''
 end
 
 for i, role in ipairs({ 'TANK', 'HEALER', 'DAMAGER' }) do
