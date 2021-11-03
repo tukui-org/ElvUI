@@ -120,11 +120,11 @@ E.DispelClasses = E.Retail and {
 	MONK	= { Magic = false, Disease = true, Poison = true },
 	MAGE	= { Curse = true }
 } or {
-	PRIEST	= { Magic = true, Disease = true }
-	SHAMAN	= { Poison = true, Disease = true }
-	PALADIN	= { Magic = true, Poison = true, Disease = true }
-	MAGE	= { Curse = true }
-	DRUID	= { Curse = true, Poison = true }
+	PRIEST	= { Magic = true, Disease = true },
+	SHAMAN	= { Poison = true, Disease = true },
+	PALADIN	= { Magic = true, Poison = true, Disease = true },
+	MAGE	= { Curse = true },
+	DRUID	= { Curse = true, Poison = true },
 	WARLOCK	= { Magic = true }
 }
 
