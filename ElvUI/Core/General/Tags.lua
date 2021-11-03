@@ -480,6 +480,13 @@ E:AddTag('health:max:shortvalue', 'UNIT_MAXHEALTH', function(unit)
 	return E:GetFormattedText('CURRENT', max, max, nil, true)
 end)
 
+E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
+	local absorb = UnitGetTotalAbsorbs(unit) or 0
+	if absorb ~= 0 then
+		return E:ShortValue(absorb)
+	end
+end, not E.Retail)
+
 E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
@@ -494,7 +501,7 @@ E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end)
+end, not E.Retail)
 
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)
@@ -664,13 +671,6 @@ end)
 E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 	local r, g, b = unpack(ElvUF.colors.power.MANA)
 	return Hex(r, g, b)
-end)
-
-E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
-	local absorb = UnitGetTotalAbsorbs(unit) or 0
-	if absorb ~= 0 then
-		return E:ShortValue(absorb)
-	end
 end)
 
 E:AddTag('incomingheals:personal', 'UNIT_HEAL_PREDICTION', function(unit)
@@ -1367,7 +1367,7 @@ E.TagInfo = {
 		['guild:translit'] = { category = 'Guild', description = "Displays the guild name with transliteration for cyrillic letters" },
 		['guild'] = { category = 'Guild', description = "Displays the guild name" },
 	-- Health
-		['absorbs'] = { category = 'Health', description = 'Displays the amount of absorbs' },
+		['absorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of absorbs' },
 		['curhp'] = { category = 'Health', description = "Displays the current HP without decimals" },
 		['deficit:name'] = { category = 'Health', description = "Displays the health as a deficit and the name at full health" },
 		['health:current-max-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current and max health, without status" },
@@ -1399,7 +1399,7 @@ E.TagInfo = {
 		['health:max:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's maximum health" },
 		['health:max'] = { category = 'Health', description = "Displays the maximum health of the unit" },
 		['health:percent-nostatus'] = { category = 'Health', description = "Displays the unit's current health as a percentage, without status" },
-		['health:percent-with-absorbs'] = { category = 'Health', description = "Displays the unit's current health as a percentage with absorb values" },
+		['health:percent-with-absorbs'] = { hidden = not E.Retail, category = 'Health', description = "Displays the unit's current health as a percentage with absorb values" },
 		['health:percent'] = { category = 'Health', description = "Displays the current health of the unit as a percentage" },
 		['incomingheals:others'] = { category = 'Health', description = "Displays only incoming heals from other units" },
 		['incomingheals:personal'] = { category = 'Health', description = "Displays only personal incoming heals" },
