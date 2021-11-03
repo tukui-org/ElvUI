@@ -188,7 +188,7 @@ function E:CheckRole()
 	E:UpdateDispelClasses()
 end
 
-do
+do -- keep this synced with oUF_AuraHighlight and oUF_RaidDebuffs
 	local SingeMagic = 89808
 	local DevourMagic = {
 		[19505] = 'Rank 1',
