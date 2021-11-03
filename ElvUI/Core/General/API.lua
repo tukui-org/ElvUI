@@ -221,7 +221,7 @@ do
 			end
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
-		else
+		elseif E.myrole and E.myclass ~= 'PRIEST' then
 			dispel.Magic = (E.myrole == 'HEALER')
 		end
 	end
