@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["Remove Spell - %s"] = true
 L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
 L["Copy Primary Texture"] = "複製主要材質"
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "使用主要材質來替換單位框架及血條的狀態條材質設定."

@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Remove Spell - %s"] = "Eliminar el Hechizo - %s"
 L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = "Muestra los mensajes de Guild y Whisper en la pantalla de AFK.\nEste chat puede ser arrastrado (la posición se guardará)."
 L["Copy Primary Texture"] = "Copiar Textura Primaria"
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "Reemplaza el ajuste de la textura de la barra de estado en los marcos de las unidades y las placas de identificación con la textura primaria."
@@ -998,11 +999,11 @@ L["Remaining"] = "Restante"
 L["Remove a Name or NPC ID from the list."] = true
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = true
 L["Remove Backdrop"] = "Quitar Fondo"
-L["Remove Instance ID"] = true
-L["Remove Map ID"] = true
-L["Remove Name or NPC ID"] = true
-L["Remove Spell ID or Name"] = true
-L["Remove Spell"] = true
+L["Remove Instance ID"] = "Eliminar el ID de la Instancia"
+L["Remove Map ID"] = "Eliminar el ID del mapa"
+L["Remove Name or NPC ID"] = "Eliminar el ID o el nombre del NPC"
+L["Remove Spell ID or Name"] = "Eliminar el ID o el nombre del Hechizo"
+L["Remove Spell"] = "Eliminar el Hechizo"
 L["Remove Subzone Name"] = true
 L["Remove Zone Name"] = true
 L["Replace Blizzard Fonts"] = true
