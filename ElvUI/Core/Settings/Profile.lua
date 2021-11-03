@@ -144,6 +144,7 @@ P.general = {
 			},
 		}
 	},
+	objectiveTracker = true,
 	totems = {
 		enable = true,
 		growthDirection = 'VERTICAL',

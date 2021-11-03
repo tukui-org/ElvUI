@@ -79,6 +79,9 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
+	else
+		-- Classic & TBC
+		B:QuestWatchFrame()
 	end
 
 	-- Battle.Net Frame
