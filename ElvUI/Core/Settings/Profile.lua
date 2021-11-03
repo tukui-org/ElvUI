@@ -1944,6 +1944,7 @@ P.unitframe = {
 			verticalSpacing = 7,
 			targetsGroup = CopyTable(UF_SubGroup),
 			buffIndicator = CopyTable(UF_AuraWatch),
+			healPrediction = CopyTable(UF_HealthPrediction),
 			buffs = CopyTable(UF_Auras),
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
