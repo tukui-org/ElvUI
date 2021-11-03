@@ -11,7 +11,7 @@ if not _G.oUF_RaidDebuffs then
 end
 
 local abs = math.abs
-local format, floor = format, floor
+local format, floor, next = format, floor, next
 local type, pairs, wipe = type, pairs, wipe
 
 local GetActiveSpecGroup = GetActiveSpecGroup
@@ -19,6 +19,7 @@ local GetSpecialization = GetSpecialization
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
 local GetSpellInfo = GetSpellInfo
+local IsSpellKnown = IsSpellKnown
 local UnitAura = UnitAura
 local GetTime = GetTime
 
@@ -90,6 +91,7 @@ local DispelList = {
 	MONK = { Disease = true, Poison = true },
 	DRUID = { Curse = true, Poison = true },
 	MAGE = { Curse = true },
+	WARLOCK = {},
 	SHAMAN = {}
 }
 
@@ -102,7 +104,8 @@ else
 	DispelList.PALADIN.Magic = true
 end
 
-local DispelFilter = DispelList[select(2, UnitClass('player'))] or {}
+local playerClass = select(2, UnitClass('player'))
+local DispelFilter = DispelList[playerClass] or {}
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
@@ -112,20 +115,46 @@ local function CheckTalentTree(tree)
 	end
 end
 
-local playerClass = select(2, UnitClass('player'))
-local function CheckSpec(self, event, levels)
-	-- Not interested in gained points from leveling
-	if event == 'CHARACTER_POINTS_CHANGED' and levels > 0 then return end
+local SingeMagic = 89808
+local DevourMagic = {
+	[19505] = 'Rank 1',
+	[19731] = 'Rank 2',
+	[19734] = 'Rank 3',
+	[19736] = 'Rank 4',
+	[27276] = 'Rank 5',
+	[27277] = 'Rank 6'
+}
 
-	--Check for certain talents to see if we can dispel magic or not
-	if playerClass == 'PALADIN' then
-		DispelFilter.Magic = CheckTalentTree(1)
-	elseif playerClass == 'SHAMAN' then
-		DispelFilter.Magic = CheckTalentTree(3)
-	elseif playerClass == 'DRUID' then
-		DispelFilter.Magic = CheckTalentTree(4)
-	elseif playerClass == 'MONK' then
-		DispelFilter.Magic = CheckTalentTree(2)
+local function CheckPetSpells()
+	if oUF.isRetail then
+		return IsSpellKnown(SingeMagic, true)
+	else
+		for spellID in next, DevourMagic do
+			if IsSpellKnown(spellID, true) then
+				return true
+			end
+		end
+	end
+end
+
+-- Check for certain talents to see if we can dispel magic or not
+local function CheckDispel(_, event, arg1)
+	if event == 'UNIT_PET' then
+		if arg1 == 'player' and playerClass == 'WARLOCK' then
+			DispelFilter.Magic = CheckPetSpells()
+		end
+	elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
+		return -- Not interested in gained points from leveling
+	else
+		if playerClass == 'PALADIN' then
+			DispelFilter.Magic = CheckTalentTree(1)
+		elseif playerClass == 'SHAMAN' then
+			DispelFilter.Magic = CheckTalentTree(3)
+		elseif playerClass == 'DRUID' then
+			DispelFilter.Magic = CheckTalentTree(4)
+		elseif playerClass == 'MONK' then
+			DispelFilter.Magic = CheckTalentTree(2)
+		end
 	end
 end
 
@@ -282,11 +311,6 @@ end
 
 local function Enable(self)
 	if self.RaidDebuffs then
-		if oUF.isRetail then
-			self:RegisterEvent('PLAYER_TALENT_UPDATE', CheckSpec, true)
-			self:RegisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec, true)
-		end
-
 		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
@@ -295,15 +319,20 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
-		if oUF.isRetail then
-			self:UnregisterEvent('PLAYER_TALENT_UPDATE', CheckSpec)
-			self:UnregisterEvent('CHARACTER_POINTS_CHANGED', CheckSpec)
-		end
-
 		self:UnregisterEvent('UNIT_AURA', Update)
 
 		self.RaidDebuffs:Hide()
 	end
+end
+
+local frame = CreateFrame('Frame')
+frame:SetScript('OnEvent', CheckDispel)
+frame:RegisterEvent('UNIT_PET', CheckDispel)
+
+if oUF.isRetail then
+	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
+	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
 end
 
 oUF:AddElement('RaidDebuffs', Update, Enable, Disable)

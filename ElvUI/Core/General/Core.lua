@@ -118,6 +118,7 @@ E.DispelClasses = {
 	MONK = { Disease = true, Poison = true },
 	DRUID = { Curse = true, Poison = true },
 	MAGE = { Curse = true },
+	WARLOCK = {},
 	SHAMAN = {}
 }
 

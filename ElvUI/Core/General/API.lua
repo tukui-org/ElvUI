@@ -184,9 +184,43 @@ function E:CheckRole()
 	E.myspec = GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 
-	if E.myclass ~= 'PRIEST' then
+	E:UpdateDispelClasses()
+end
+
+do
+	local SingeMagic = 89808
+	local DevourMagic = {
+		[19505] = 'Rank 1',
+		[19731] = 'Rank 2',
+		[19734] = 'Rank 3',
+		[19736] = 'Rank 4',
+		[27276] = 'Rank 5',
+		[27277] = 'Rank 6'
+	}
+
+	local function CheckPetSpells()
+		if E.Retail then
+			return IsSpellKnown(SingeMagic, true)
+		else
+			for spellID in next, DevourMagic do
+				if IsSpellKnown(spellID, true) then
+					return true
+				end
+			end
+		end
+	end
+
+	function E:UpdateDispelClasses(event, arg1)
 		local dispel = E.DispelClasses[E.myclass]
-		if E.myrole and dispel ~= nil then
+		if dispel == nil then return end
+
+		if event == 'UNIT_PET' then
+			if arg1 == 'player' and E.myclass == 'WARLOCK' then
+				dispel.Magic = CheckPetSpells()
+			end
+		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
+			return -- Not interested in gained points from leveling
+		elseif E.myrole and E.myclass ~= 'PRIEST' then
 			dispel.Magic = (E.myrole == 'HEALER')
 		end
 	end
@@ -581,12 +615,15 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
+	E:RegisterEvent('UNIT_PET', 'UpdateDispelClasses')
 
 	if E.Retail then
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
+		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
+		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
 	end
 
 	if E.Retail or E.Wrath then
