@@ -2247,12 +2247,11 @@ P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
-for i = 1, 12 do
-	local _, classTag = GetClassInfo(i)
-	P.unitframe.units.party['CLASS'..i] = classTag or ''
-	P.unitframe.units.raid['CLASS'..i] = classTag or ''
-	P.unitframe.units.raid40['CLASS'..i] = classTag or ''
-	P.unitframe.units.raidpet['CLASS'..i] = classTag or ''
+for i, classTag in pairs({'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'}) do
+	P.unitframe.units.party['CLASS'..i] = classTag
+	P.unitframe.units.raid['CLASS'..i] = classTag
+	P.unitframe.units.raid40['CLASS'..i] = classTag
+	P.unitframe.units.raidpet['CLASS'..i] = classTag
 end
 
 for i, role in ipairs({ 'TANK', 'HEALER', 'DAMAGER' }) do
