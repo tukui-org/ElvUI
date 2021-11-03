@@ -112,7 +112,7 @@ local function Update(self, event, unit, powerType)
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
-		cur = UnitPower(unit, powerID, true)
+		cur = not oUF.isRetail and powerType == SPELL_POWER_COMBO_POINTS and GetComboPoints('player', unit) or UnitPower(unit, powerID, true)
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
 
@@ -259,6 +259,10 @@ do
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
+		if not oUF.isRetail then
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', Path)
+		end
+
 		if oUF.isRetail and (PlayerClass == 'ROGUE') then
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
@@ -275,6 +279,10 @@ do
 	function ClassPowerDisable(self)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
+
+		if not oUF.isRetail then
+			self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
+		end
 
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
