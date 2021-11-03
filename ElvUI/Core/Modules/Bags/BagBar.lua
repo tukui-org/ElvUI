@@ -11,8 +11,6 @@ local CreateFrame = CreateFrame
 local GetBagSlotFlag = GetBagSlotFlag
 local GetCVarBool = GetCVarBool
 local IsModifiedClick = IsModifiedClick
-local PutItemInBackpack = PutItemInBackpack
-local PutItemInBag = PutItemInBag
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
@@ -20,7 +18,6 @@ local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
 local BackpackButton_OnClick = BackpackButton_OnClick
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
-local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 
