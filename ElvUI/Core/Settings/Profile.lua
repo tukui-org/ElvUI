@@ -2256,7 +2256,7 @@ for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGU
 	P.unitframe.units.raidpet['CLASS'..i] = classTag
 end
 
-for i, role in next, { 'TANK', 'HEALER', 'DAMAGER' } do
+for i, role in next, {'TANK', 'HEALER', 'DAMAGER'} do
 	P.unitframe.units.party['ROLE'..i] = role
 	P.unitframe.units.raid['ROLE'..i] = role
 	P.unitframe.units.raid40['ROLE'..i] = role
@@ -2460,7 +2460,7 @@ for i = 1, 10 do
 	}
 end
 
-for _, bar in next, { 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton' } do
+for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
 	local db = P.actionbar[bar]
 	db.frameStrata = 'LOW'
 	db.frameLevel = 1
