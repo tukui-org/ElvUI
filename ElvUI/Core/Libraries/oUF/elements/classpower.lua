@@ -281,7 +281,7 @@ do
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		if not oUF.isRetail then
-			self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
+			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 
 		if oUF.isRetail then
