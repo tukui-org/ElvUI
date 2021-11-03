@@ -1,5 +1,50 @@
-### Version 12.45 [ ETA: 🍨 ]
+### Retail Version 12.47 [ ETA: 🍨 ]
+- Fix /groster skin
+- Bags: Fix Bag Bar bags not toggling bags
+- Bags: Fix Bag Bar backdrop for only backpack option
+- Nameplates: Add aura sorting
+- Skins: Fix itemupgrade button
+- ToolTips: Fix item quality color
 
+### TBC Version 2.20 [ ETA: 🍨 ]
+- Announce Fix
+- Classbar Fixed
+- Fix Dispell list
+- Bags: Fix BagBar backdrop for only backpack option
+- Bags: Fix BagBar bags not toggling bags
+- Bags: Protect reagent from firing
+- Chat: Fix class color chat names cvar
+- Chat: Fix voice chat buttons
+- Nameplates: Add aura sorting
+- UnitFrames: Adjust smart visibility
+- UnitFrames: Fix class sort order
+- UnitFrames: Fix combo points when target changing
+- UnitFrames: Fix tank heal prediction
+- UnitFrames: Re-add Resurrect/Summon Icons
+- UnitFrames, Arena: protect spec error
+- UnitFrames, Arena: pvp spec error
+- ToolTips: Fix item quality color
+
+### Classic Version 1.46 [ ETA: 🍨 ]
+- Announce Fix
+- Classbar Fixed
+- Fix Dispell list
+- Bags: Fix Bag Bar backdrop for only backpack option
+- Bags: Fix Bag Bar bags not toggling bags
+- Bags: Protect reagent from firing
+- Chat: Fix class color chat names cvar
+- Chat: Fix voice chat buttons
+- Nameplates: Add aura sorting
+- UnitFrames: Adjust smart visibility
+- UnitFrames: Fix class sort order
+- UnitFrames: Fix combo points when target changing
+- UnitFrames: Fix tank heal prediction
+- UnitFrames: Re-add Resurrect/Summon Icons
+- UnitFrames, Arena: protect spec error
+- UnitFrames, Arena: pvp spec error
+- ToolTips: Fix item quality color
+
+### Version 12.45 [ ETA: 🍨 ]
 **Note:**  
 Development is now on GitHub (was GitLab)  
 Unified our codebase to support Retail, TBC and Classic in one version  
