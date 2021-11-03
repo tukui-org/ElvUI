@@ -184,9 +184,11 @@ function E:CheckRole()
 	E.myspec = GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 
-	local dispel = E.DispelClasses[E.myclass]
-	if E.myrole and (E.myclass ~= 'PRIEST' and dispel ~= nil) then
-		dispel.Magic = (E.myrole == 'HEALER')
+	if E.myclass ~= 'PRIEST' then
+		local dispel = E.DispelClasses[E.myclass]
+		if E.myrole and dispel ~= nil then
+			dispel.Magic = (E.myrole == 'HEALER')
+		end
 	end
 end
 

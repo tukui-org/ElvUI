@@ -84,43 +84,25 @@ function addon:GetDispelColor()
 	return DispelColor
 end
 
-local DispelFilter
-do
-	local dispelClasses = {
-		MONK = {
-			Disease = true,
-			Poison = true
-		},
-		PRIEST = {
-			Magic = true,
-			Disease = true
-		},
-		DRUID = {
-			Curse = true,
-			Poison = true
-		},
-		PALADIN = {
-			Poison = true,
-			Disease = true
-		},
-		MAGE = {
-			Curse = true
-		},
-		SHAMAN = {},
-		WARLOCK = {} -- need to add pet detection to add affy pet dispel
-	}
+local DispelList = {
+	PALADIN = { Poison = true, Disease = true },
+	PRIEST = { Magic = true, Disease = true },
+	MONK = { Disease = true, Poison = true },
+	DRUID = { Curse = true, Poison = true },
+	MAGE = { Curse = true },
+	SHAMAN = {}
+}
 
-	if oUF.isRetail then
-		dispelClasses.SHAMAN.Curse = true
-	else
-		dispelClasses.SHAMAN.Poison = true
-		dispelClasses.SHAMAN.Disease = true
+if oUF.isRetail then
+	DispelList.SHAMAN.Curse = true
+else
+	DispelList.SHAMAN.Poison = true
+	DispelList.SHAMAN.Disease = true
 
-		dispelClasses.PALADIN.Magic = true
-	end
-
-	DispelFilter = dispelClasses[select(2, UnitClass('player'))] or {}
+	DispelList.PALADIN.Magic = true
 end
+
+local DispelFilter = DispelList[select(2, UnitClass('player'))] or {}
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()

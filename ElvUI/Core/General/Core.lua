@@ -112,21 +112,23 @@ E.InversePoints = {
 	CENTER = 'CENTER'
 }
 
-E.DispelClasses = E.Retail and {
-	PRIEST	= { Magic = true,  Disease = true },
-	SHAMAN	= { Magic = false, Curse = true },
-	PALADIN	= { Poison = true, Magic = false,  Disease = true },
-	DRUID	= { Magic = false, Curse = true,   Poison = true,  Disease = false },
-	MONK	= { Magic = false, Disease = true, Poison = true },
-	MAGE	= { Curse = true }
-} or {
-	PRIEST	= { Magic = true, Disease = true },
-	SHAMAN	= { Poison = true, Disease = true },
-	PALADIN	= { Magic = true, Poison = true, Disease = true },
-	MAGE	= { Curse = true },
-	DRUID	= { Curse = true, Poison = true },
-	WARLOCK	= { Magic = true }
+E.DispelClasses = {
+	PALADIN = { Poison = true, Disease = true },
+	PRIEST = { Magic = true, Disease = true },
+	MONK = { Disease = true, Poison = true },
+	DRUID = { Curse = true, Poison = true },
+	MAGE = { Curse = true },
+	SHAMAN = {}
 }
+
+if E.Retail then
+	E.DispelClasses.SHAMAN.Curse = true
+else
+	E.DispelClasses.SHAMAN.Poison = true
+	E.DispelClasses.SHAMAN.Disease = true
+
+	E.DispelClasses.PALADIN.Magic = true
+end
 
 E.BadDispels = {
 	[34914]		= 'Vampiric Touch',		-- horrifies
