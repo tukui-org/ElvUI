@@ -2244,7 +2244,7 @@ P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
-for i = 1, GetNumClasses() do
+for i = 1, 12 do
 	local _, classTag = GetClassInfo(i)
 	if classTag then
 		P.unitframe.units.party['CLASS'..i] = classTag
