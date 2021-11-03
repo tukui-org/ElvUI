@@ -55,16 +55,16 @@ function B:Initialize()
 
 	B:EnhanceColorPicker()
 	B:AlertMovers()
+	B:KillBlizzard()
+	B:HandleWidgets()
+	B:PositionCaptureBar()
 
 	if E.Retail then
-		B:KillBlizzard()
 		B:DisableHelpTip()
 		B:DisableNPE()
 		B:SkinBlizzTimers()
-		B:PositionCaptureBar()
 		B:PositionVehicleFrame()
 		B:PositionTalkingHead()
-		B:HandleWidgets()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
