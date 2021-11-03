@@ -1941,7 +1941,7 @@ function B:ToggleBags(id)
 		if closed then
 			B:OpenBags()
 		end
-	elseif id and GetContainerNumSlots(id) == 0 then
+	elseif id and GetContainerNumSlots(id) ~= 0 then
 		if B.BagFrame:IsShown() then
 			B:CloseBags()
 		else

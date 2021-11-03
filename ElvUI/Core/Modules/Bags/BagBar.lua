@@ -187,13 +187,7 @@ function B:MainMenuBarBackpackButton_OnClick(button)
 end
 
 function B:BagButton_OnClick(key)
-	if E.private.bags.enable then
-		if self.id == BACKPACK_CONTAINER then
-			B:BagItemAction(key, self, PutItemInBackpack)
-		else
-			B:BagItemAction(key, self, PutItemInBag, self.id)
-		end
-	elseif E.Retail and key == 'RightButton' then
+	if E.Retail and key == 'RightButton' then
 		B.AssignBagDropdown.holder = self
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif self.id == 0 then
@@ -264,14 +258,6 @@ function B:LoadBagBar()
 
 		if E.Retail then -- Item Assignment
 			B:CreateFilterIcon(button)
-		end
-
-		if E.private.bags.enable then
-			local shownIcon = button:CreateTexture(nil, 'OVERLAY', nil, 1)
-			shownIcon:Size(16)
-			shownIcon:Point('BOTTOMLEFT', 1, 1)
-			shownIcon:SetTexture(B.db.shownBags['bag'..button.id] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
-			button.shownIcon = shownIcon
 		end
 
 		if button ~= KeyRing then
