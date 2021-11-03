@@ -9,6 +9,7 @@ local GetRewardXP = GetRewardXP
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
+local hooksecurefunc = hooksecurefunc
 
 --This changes the growth direction of the toast frame depending on position of the mover
 local function PostBNToastMove(mover)
@@ -79,9 +80,12 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-	else
-		-- Classic & TBC
-		B:QuestWatchFrame()
+	else -- Classic & TBC
+		if E.db.general.objectiveTracker then
+			B:QuestWatch_MoveFrames()
+
+			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
+		end
 	end
 
 	-- Battle.Net Frame

@@ -3,105 +3,77 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local CreateFrame = CreateFrame
+local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestWatches = GetNumQuestWatches
 local GetQuestIndexForWatch = GetQuestIndexForWatch
-local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
-local ShowUIPanel = ShowUIPanel
 local QuestLog_SetSelection = QuestLog_SetSelection
 local QuestLog_Update = QuestLog_Update
-local hooksecurefunc = hooksecurefunc
+local ShowUIPanel = ShowUIPanel
 
-local ClickFrames = {}
-
-function B:MoveQuestWatchFrame()
+B.QuestWatch_ClickFrames = {}
+function B:QuestWatch_MoveFrames()
 	local QuestWatchFrameHolder = CreateFrame('Frame', nil, E.UIParent)
 	QuestWatchFrameHolder:Size(130, 22)
 	QuestWatchFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-
 	E:CreateMover(QuestWatchFrameHolder, 'QuestWatchFrameMover', L["Quest Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
 
 	local QuestTimerFrameHolder = CreateFrame('Frame', nil, E.UIParent)
 	QuestTimerFrameHolder:Size(158, 72)
 	QuestTimerFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-
 	E:CreateMover(QuestTimerFrameHolder, 'QuestTimerFrameMover', L["Quest Timer Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
 
-	local QuestWatchFrameMover = _G.QuestWatchFrameMover
-	local QuestTimerFrameMover = _G.QuestTimerFrameMover
 	local QuestWatchFrame = _G.QuestWatchFrame
-	local QuestTimerFrame = _G.QuestTimerFrame
-
-	QuestWatchFrameHolder:SetAllPoints(QuestWatchFrameMover)
-
+	QuestWatchFrameHolder:SetAllPoints(_G.QuestWatchFrameMover)
 	QuestWatchFrame:ClearAllPoints()
 	QuestWatchFrame:SetAllPoints(QuestWatchFrameHolder)
 
-	QuestTimerFrameHolder:SetAllPoints(QuestTimerFrameMover)
-
+	local QuestTimerFrame = _G.QuestTimerFrame
+	QuestTimerFrameHolder:SetAllPoints(_G.QuestTimerFrameMover)
 	QuestTimerFrame:ClearAllPoints()
 	QuestTimerFrame:SetAllPoints(QuestTimerFrameHolder)
-
 end
 
-function B:OnQuestClick()
+function B:QuestWatch_OnClick()
 	ShowUIPanel(_G.QuestLogFrame)
 	QuestLog_SetSelection(self.Quest)
 	QuestLog_Update()
 end
 
-function B:SetClickFrame(index, quest, text)
-	if not ClickFrames[index] then
-		ClickFrames[index] = CreateFrame('Frame')
+function B:QuestWatch_SetClickFrames(index, quest, text)
+	if not B.QuestWatch_ClickFrames[index] then
+		B.QuestWatch_ClickFrames[index] = CreateFrame('Frame')
 	end
 
-	local Frame = ClickFrames[index]
-	Frame:SetScript('OnMouseUp', self.OnQuestClick)
-
-	Frame:SetAllPoints(text)
-	Frame.Quest = quest
+	local frame = B.QuestWatch_ClickFrames[index]
+	frame:SetScript('OnMouseUp', B.QuestWatch_OnClick)
+	frame:SetAllPoints(text)
+	frame.Quest = quest
 end
 
-function B:AddQuestClick()
-	local Index = 0
+function B:QuestWatch_AddQuestClick()
+	local clickIndex = 1
+	local clickFrame = B.QuestWatch_ClickFrames[clickIndex]
+	while clickFrame do
+		clickFrame:SetScript('OnMouseUp', nil)
 
-	-- Reset clicks
-	for i = 1, 5 do
-		local Frame = ClickFrames[i]
-
-		if Frame then
-			Frame:SetScript('OnMouseUp', nil)
-		end
+		clickIndex = clickIndex + 1
+		clickFrame = B.QuestWatch_ClickFrames[clickIndex]
 	end
 
-	-- Set new clicks
-	for i = 1, GetNumQuestWatches() do
-		local Quest = GetQuestIndexForWatch(i)
+	if not E.db.general.objectiveTracker then return end
 
-		if Quest then
-			local NumQuest = GetNumQuestLeaderBoards(Quest)
+	local lineIndex = 0
+	for i = 1, GetNumQuestWatches() do -- Set clicks
+		local questIndex = GetQuestIndexForWatch(i)
+		if questIndex then
+			local numQuests = GetNumQuestLeaderBoards(questIndex)
+			if numQuests > 0 then
+				local text = _G['QuestWatchLine'..lineIndex + 1]
 
-			if NumQuest > 0 then
-				Index = Index + 1
+				lineIndex = numQuests + lineIndex + 1 -- Bump index
 
-				local Text = _G['QuestWatchLine'..Index]
-
-				for j = 1, NumQuest do
-					Index = Index + 1
-				end
-
-				B:SetClickFrame(i, Quest, Text)
+				B:QuestWatch_SetClickFrames(i, questIndex, text)
 			end
 		end
-	end
-end
-
-function B:AddHook()
-	hooksecurefunc('QuestWatch_Update', self.AddQuestClick)
-end
-
-function B:QuestWatchFrame()
-	if E.db.general.objectiveTracker then
-		self:MoveQuestWatchFrame()
-		self:AddHook()
 	end
 end
