@@ -280,12 +280,10 @@ do
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
-		if not oUF.isRetail then
-			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
-		end
-
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		else
+			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 
 		local element = self.ClassPower
