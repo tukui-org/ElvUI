@@ -199,6 +199,11 @@ do
 		[27277] = 'Rank 6'
 	}
 
+	local ExcludeClass = {
+		PRIEST = true, -- has Mass Dispel on Shadow
+		WARLOCK = true, -- uses PET check only
+	}
+
 	local function CheckPetSpells()
 		if E.Retail then
 			return IsSpellKnown(SingeMagic, true)
@@ -221,7 +226,7 @@ do
 			end
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
-		elseif E.myrole and E.myclass ~= 'PRIEST' then
+		elseif E.myrole and not ExcludeClass[E.myclass] then
 			dispel.Magic = (E.myrole == 'HEALER')
 		end
 	end
