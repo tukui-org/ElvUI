@@ -8,6 +8,7 @@ Locales: Updated russian translation (Credits Hollicsh)
 Minimap: Fixes for minimap addon icons  
 Nameplates: Added back offset options for power  
 Nameplates: Fixed an issue which broke the "Add Filter" dropdown  
+UnitFrames: Added back Master Looter indicator  
 UnitFrames: Fixed resurrect icon for real  
 UnitFrames: Updated out of range fader  
 
