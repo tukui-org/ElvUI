@@ -287,10 +287,10 @@ function UF:CreateRaisedElement(frame, bar)
 	raised.AuraLevel = level
 	raised.AuraBarLevel = level + 10
 	raised.RaidDebuffLevel = level + 15
-	raised.AuraWatchLevel = level + 25
-	raised.RestingIconLevel = level + 20
-	raised.RaidRoleLevel = level + 25
-	raised.CastBarLevel = level + 30
+	raised.AuraWatchLevel = level + 20
+	raised.RestingIconLevel = level + 25
+	raised.RaidRoleLevel = level + 30
+	raised.CastBarLevel = level + 35
 
 	if bar then
 		raised:SetAllPoints()
