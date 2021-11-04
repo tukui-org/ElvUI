@@ -24,8 +24,9 @@ local carryFilterFrom, carryFilterTo
 local ORDER = 100
 local filters = {}
 
-local function NamePlateMaxHeight(unit) local heightType = unit == 'PLAYER' and 'personalHeight' or strfind('FRIENDLY', unit) and 'friendlyHeight' or strfind('ENEMY', unit) and 'enemyHeight' return max(NP.db.plateSize[heightType] or 0, 20) end
-local function NamePlateMaxWidth(unit) local widthType = unit == 'PLAYER' and 'personalWidth' or strfind('FRIENDLY', unit) and 'friendlyWidth' or strfind('ENEMY', unit) and 'enemyWidth' return max(NP.db.plateSize[widthType] or 0, 250) end
+local minHeight, minWidth = 2, 40
+local function MaxHeight(unit) local heightType = unit == 'PLAYER' and 'personalHeight' or strfind('FRIENDLY', unit) and 'friendlyHeight' or strfind('ENEMY', unit) and 'enemyHeight' return max(NP.db.plateSize[heightType] or 0, 20) end
+local function MaxWidth(unit) local widthType = unit == 'PLAYER' and 'personalWidth' or strfind('FRIENDLY', unit) and 'friendlyWidth' or strfind('ENEMY', unit) and 'enemyWidth' return max(NP.db.plateSize[widthType] or 0, 250) end
 
 local function GetUnitSettings(unit, name)
 	local copyValues = {}
@@ -49,7 +50,7 @@ local function GetUnitSettings(unit, name)
 
 	group.args.healthGroup = ACH:Group(L["Health"], nil, 2, nil, function(info) return E.db.nameplates.units[unit].health[info[#info]] end, function(info, value) E.db.nameplates.units[unit].health[info[#info]] = value NP:ConfigureAll() end)
 	group.args.healthGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, nil, function() return unit == 'PLAYER' end)
-	group.args.healthGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 4, max = NamePlateMaxHeight(unit), step = 1 })
+	group.args.healthGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = minHeight, max = MaxHeight(unit), step = 1 })
 	group.args.healthGroup.args.width = ACH:Execute(L["Width"], nil, 4, function() ACD:SelectGroup('ElvUI', 'nameplate', 'generalGroup', 'general', 'clickableRange') end)
 	group.args.healthGroup.args.healPrediction = ACH:Toggle(L["Heal Prediction"], nil, 5)
 
@@ -71,8 +72,8 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup = ACH:Group(L["Power"], nil, 3, nil, function(info) return E.db.nameplates.units[unit].power[info[#info]] end, function(info, value) E.db.nameplates.units[unit].power[info[#info]] = value NP:ConfigureAll() end)
 	group.args.powerGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.powerGroup.args.hideWhenEmpty = ACH:Toggle(L["Hide When Empty"], nil, 2)
-	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = NamePlateMaxWidth(unit), step = 1 })
-	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = 2, max = NamePlateMaxHeight(unit), step = 1 })
+	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = minWidth, max = MaxWidth(unit), step = 1 })
+	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = minHeight, max = MaxHeight(unit), step = 1 })
 	group.args.powerGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 7)
@@ -100,8 +101,8 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.sourceInterruptClassColor = ACH:Toggle(L["Class Color Source"], nil, 3, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end)
 	-- order 4 is player Display Target
 	group.args.castGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 5, { min = 0, max = 5, step = .1 })
-	group.args.castGroup.args.width = ACH:Range(L["Width"], nil, 6, { min = 50, max = NamePlateMaxWidth(unit), step = 1 })
-	group.args.castGroup.args.height = ACH:Range(L["Height"], nil, 7, { min = 4, max = NamePlateMaxHeight(unit), step = 1 })
+	group.args.castGroup.args.width = ACH:Range(L["Width"], nil, 6, { min = minWidth, max = MaxWidth(unit), step = 1 })
+	group.args.castGroup.args.height = ACH:Range(L["Height"], nil, 7, { min = minHeight, max = MaxHeight(unit), step = 1 })
 	group.args.castGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
 	group.args.castGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
 
@@ -307,8 +308,8 @@ local function GetUnitSettings(unit, name)
 	if unit == 'PLAYER' then
 		group.args.classBarGroup = ACH:Group(L["Classbar"], nil, 13, nil, function(info) return E.db.nameplates.units[unit].classpower[info[#info]] end, function(info, value) E.db.nameplates.units[unit].classpower[info[#info]] = value NP:ConfigureAll() end)
 		group.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-		group.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = NamePlateMaxWidth(unit), step = 1 })
-		group.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 4, max = NamePlateMaxHeight(unit), step = 1 })
+		group.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = minWidth, max = MaxWidth(unit), step = 1 })
+		group.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = minHeight, max = MaxHeight(unit), step = 1 })
 		group.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["NONE"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
@@ -573,8 +574,8 @@ end
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup = ACH:Group(L["Classbar"], nil, 13, nil, function(info) return E.db.nameplates.units.TARGET.classpower[info[#info]] end, function(info, value) E.db.nameplates.units.TARGET.classpower[info[#info]] = value NP:ConfigureAll() end)
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.inline = true
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = NamePlateMaxWidth('PLAYER'), step = 1 })
-E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 4, max = NamePlateMaxHeight('PLAYER'), step = 1 })
+E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = minWidth, max = MaxWidth('PLAYER'), step = 1 })
+E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = minHeight, max = MaxHeight('PLAYER'), step = 1 })
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 E.Options.args.nameplate.args.targetGroup.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["NONE"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
