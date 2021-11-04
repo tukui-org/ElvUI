@@ -1931,13 +1931,6 @@ function E:Initialize()
 
 	E.initialized = true
 
-	if E.private.general.minimap.enable then
-		E:SetGetMinimapShape()
-		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
-	else
-		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
-	end
-
 	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= 0.33) then
 		E:SetSmoothingAmount(E.db.general.smoothingAmount)
 	end

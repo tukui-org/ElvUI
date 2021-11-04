@@ -411,6 +411,14 @@ local function MinimapPostDrag()
 	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
 end
 
+function M:GetMinimapShape()
+	return 'SQUARE'
+end
+
+function M:SetGetMinimapShape()
+	GetMinimapShape = M.GetMinimapShape
+end
+
 function M:QueueStatusTimeFormat(seconds)
 	local hours = floor(mod(seconds,86400)/3600)
 	if hours > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%dh', hours) end
@@ -489,7 +497,13 @@ function M:CreateQueueStatusText()
 end
 
 function M:Initialize()
-	if not E.private.general.minimap.enable then return end
+	if E.private.general.minimap.enable then
+		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+	else
+		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+		return
+	end
+
 	self.Initialized = true
 
 	menuFrame:SetTemplate('Transparent')
