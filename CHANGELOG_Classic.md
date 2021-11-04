@@ -1,5 +1,6 @@
 ### Version 1.47 [ ETA: 🍨 ]
 Bags: Added back quest icon for quest items  
+Bags: Special color fixes (Soul Shards)  
 DataTexts: Added left panel defaults ([1] and [3] were empty)  
 General: Updated RaidUtility  
 Locales: Updated russian translation (Credits Hollicsh)  
