@@ -17,6 +17,12 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate
 
+	if not E.Retail then
+		frame.MasterLooterIndicator = anchor:CreateTexture(nil, 'OVERLAY')
+		frame.MasterLooterIndicator:Size(12)
+		frame.MasterLooterIndicator.PostUpdate = UF.RaidRoleUpdate
+	end
+
 	return anchor
 end
 
@@ -28,6 +34,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		if not frame:IsElementEnabled('LeaderIndicator') then
 			frame:EnableElement('LeaderIndicator')
 			frame:EnableElement('AssistantIndicator')
+			if not E.Retail then frame:EnableElement('MasterLooterIndicator') end
 		end
 
 		raidRoleFrameAnchor:ClearAllPoints()
@@ -36,6 +43,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		raidRoleFrameAnchor:Hide()
 		frame:DisableElement('LeaderIndicator')
 		frame:DisableElement('AssistantIndicator')
+		if not E.Retail then frame:DisableElement('MasterLooterIndicator') end
 	end
 end
 
@@ -44,8 +52,9 @@ function UF:RaidRoleUpdate()
 	local frame = anchor:GetParent():GetParent()
 	local leader = frame.LeaderIndicator
 	local assistant = frame.AssistantIndicator
+	local masterlooter = not E.Retail and frame.MasterLooterIndicator
 
-	if not leader or not assistant then return end
+	if not leader or not assistant or not masterlooter then return; end
 
 	local db = frame.db
 	local isLeader = leader:IsShown()
