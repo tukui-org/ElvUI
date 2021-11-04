@@ -112,8 +112,8 @@ function UF:Configure_Power(frame)
 			db.power.height = 7
 			heightChanged = true
 		elseif UF.thinBorders and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
-			frame.POWERBAR_HEIGHT = 2
-			db.power.height = 2
+			frame.POWERBAR_HEIGHT = 3
+			db.power.height = 3
 			heightChanged = true
 		end
 		if heightChanged then
