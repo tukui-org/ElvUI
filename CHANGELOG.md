@@ -1,10 +1,11 @@
-### Retail Version 12.47 [ ETA: 🍨 ]
+### Retail Version 12.47 [ November 4th 2021 ]
 Bags: Fixed Bag Bar bags not toggling bags
 Bags: Fixed Bag Bar backdrop for only backpack option
 Nameplates: Added aura sorting
 Skins: Fixed groster skin error
 Skins: Fixed itemupgrade button
 Tooltips: Fixed item quality color
+UnitFrames: Adjusted leader icon frame strata
 
 ### TBC Version 2.20 [ November 4th 2021 ]
 Bags: Fixed BagBar backdrop for only backpack option
@@ -39,6 +40,7 @@ General: Added back widget movers
 General: Announce interrupts fixed
 Nameplates: Add aura sorting
 Tooltips: Fixed item quality color
+Tooltips: Fixed skin
 UnitFrames (Arena): fixed pvp spec error
 UnitFrames (Arena): fixed spec error
 UnitFrames: Added back tank & assist heal prediction
