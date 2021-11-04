@@ -56,15 +56,19 @@ function UF:RaidRoleUpdate()
 	local db = frame.db
 	local isLeader = leader:IsShown()
 	local isAssist = assistant:IsShown()
+	local isMasterLooter = not E.Retail and masterlooter:IsShown()
 
 	leader:ClearAllPoints()
 	assistant:ClearAllPoints()
+	if not E.Retail then masterlooter:ClearAllPoints() end
 
 	if db and db.raidRoleIcons then
 		if isLeader then
 			leader:Point(db.raidRoleIcons.position, anchor, db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			masterlooter:Point('LEFT', leader, 'RIGHT')
 		elseif isAssist then
 			assistant:Point(db.raidRoleIcons.position, anchor, db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			masterlooter:Point('LEFT', assistant, 'RIGHT')
 		end
 	end
 end
