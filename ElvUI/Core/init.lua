@@ -15,7 +15,6 @@ local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
 local GetLocale = GetLocale
 local GetTime = GetTime
-local Minimap = _G.Minimap
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
@@ -144,17 +143,6 @@ do
 	local a4,a5,a6,a7 = '|c[fF][fF]%x%x%x%x%x%x','|r','|[TA].-|[ta]','^%s*'
 	function E:StripString(s)
 		return gsub(gsub(gsub(gsub(s,a4,a1),a5,a1),a6,a1),a7,a1)
-	end
-end
-
-do
-	function E:GetMinimapShape()
-		return 'SQUARE'
-	end
-
-	function E:SetGetMinimapShape()
-		GetMinimapShape = E.GetMinimapShape -- This is just to support for other mods
-		Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 	end
 end
 
