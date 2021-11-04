@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs = pairs
+local unpack, pairs = unpack, pairs
 
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled

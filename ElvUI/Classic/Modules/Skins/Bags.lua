@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local unpack = unpack
+local select, unpack = select, unpack
 local hooksecurefunc = hooksecurefunc
 
 local ContainerIDToInventoryID = ContainerIDToInventoryID
