@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, L, V, P, G = unpack(ElvUI)
 local RU = E:GetModule('RaidUtility')
 
 local _G = _G

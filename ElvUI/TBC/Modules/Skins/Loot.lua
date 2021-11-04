@@ -20,7 +20,7 @@ local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
-	for i=1, numItems do
+	for i = 1, numItems do
 		local frame = _G.LootHistoryFrame.itemFrames[i]
 		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
@@ -93,7 +93,7 @@ function S:LootFrame()
 			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
-		for i=1, MasterLooterFrame:GetNumChildren() do
+		for i = 1, MasterLooterFrame:GetNumChildren() do
 			local child = select(i, MasterLooterFrame:GetChildren())
 			if child and not child.isSkinned and not child:GetName() then
 				if child:IsObjectType('Button') then
@@ -114,7 +114,7 @@ function S:LootFrame()
 	LootFrame:Height(LootFrame:GetHeight() - 30)
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
-	for i=1, LootFrame:GetNumRegions() do
+	for i = 1, LootFrame:GetNumRegions() do
 		local region = select(i, LootFrame:GetRegions())
 		if(region:IsObjectType('FontString')) then
 			if(region:GetText() == ITEMS) then
@@ -127,7 +127,7 @@ function S:LootFrame()
 	LootFrame.Title:Point('TOPLEFT', LootFrame, 'TOPLEFT', 4, -4)
 	LootFrame.Title:SetJustifyH('LEFT')
 
-	for i=1, _G.LOOTFRAME_NUMBUTTONS do
+	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		local button = _G['LootButton'..i]
 		_G['LootButton'..i..'NameFrame']:Hide()
 		S:HandleItemButton(button, true)
