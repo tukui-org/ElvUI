@@ -51,7 +51,7 @@ UnitFrames: Re-add Resurrect/Summon Icons
 
 ### Version 12.46 [ November 2nd 2021 ]
 
-Can't remember
+The text on Popups is now displaying correctly
 
 ### Version 12.45 [ November 2nd 2021 ]
 **Note:**  
