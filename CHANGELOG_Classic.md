@@ -1,5 +1,7 @@
+### Version 1.47 [ ETA: 🍨 ]
+
 ___
-### Classic Version 1.46 [ November 4th 2021 ]
+### Version 1.46 [ November 4th 2021 ]
 Bags: Fixed Bag Bar backdrop for only backpack option  
 Bags: Fixed Bag Bar bags not toggling bags  
 Bags: Protect reagent from firing  
@@ -22,5 +24,5 @@ UnitFrames: Fixed combo points when target changing
 UnitFrames: Re-add Resurrect/Summon Icons  
 
 ___
-### Classic Version 1.45 [ November 2nd 2021 ]
+### Version 1.45 [ November 2nd 2021 ]
 Initial support for Blizzards 1.14. live server update and upcoming Season of Mastery  

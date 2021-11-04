@@ -1,5 +1,7 @@
+### Version 2.21 [ ETA: 🍨 ]
+
 ___
-### TBC Version 2.20 [ November 4th 2021 ]
+### Version 2.20 [ November 4th 2021 ]
 Bags: Fixed BagBar backdrop for only backpack option  
 Bags: Fixed BagBar bags not toggling bags  
 Bags: Protect reagent from firing  
@@ -22,7 +24,7 @@ UnitFrames: Fixed combo points when target changing
 UnitFrames: Re-add Resurrect/Summon Icons  
 
 ___
-### TBC Version 2.19 [ November 2nd 2021 ]
+### Version 2.19 [ November 2nd 2021 ]
 Added guild option for auto repair  
 Added phase 2 support for our custom RaidDebuffs list  
 Fixed combo points not updating correctly on target switch  
