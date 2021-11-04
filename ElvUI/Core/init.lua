@@ -198,13 +198,13 @@ function E:OnInitialize()
 	E.Spacing = E.PixelMode and 0 or 1
 	E.loadedtime = GetTime()
 
-	if E.private.general.minimap.enable then
-		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods
-	end
-
 	E:UIMult()
 	E:UpdateMedia()
 	E:InitializeInitialModules()
+
+	if E.private.general.minimap.enable then
+		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
+	end
 
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
