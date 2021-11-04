@@ -1,4 +1,5 @@
 ### Version 1.47 [ ETA: 🍨 ]
+ActionBars: Added keybind mode for Stance Bar  
 Bags: Added back quest icon for quest items  
 Bags: Special color fixes (Soul Shards)  
 DataTexts: Added left panel defaults ([1] and [3] were empty)  
