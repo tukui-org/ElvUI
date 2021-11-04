@@ -411,15 +411,6 @@ local function MinimapPostDrag()
 	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
 end
 
-function M:GetMinimapShape()
-	return 'SQUARE'
-end
-
-function M:SetGetMinimapShape()
-	GetMinimapShape = M.GetMinimapShape -- This is just to support for other mods
-	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
-end
-
 function M:QueueStatusTimeFormat(seconds)
 	local hours = floor(mod(seconds,86400)/3600)
 	if hours > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%dh', hours) end
