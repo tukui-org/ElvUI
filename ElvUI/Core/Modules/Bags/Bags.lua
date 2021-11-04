@@ -533,6 +533,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+		else
+			isQuestItem = itemClassID == LE_ITEM_CLASS_QUESTITEM
 		end
 
 		if B.db.itemLevel then
