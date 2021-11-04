@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -74,13 +75,14 @@ function UF:Configure_PowerPrediction(frame)
 		local altBar = pred.altBar
 		local power = frame.Power
 
-		local powerBarTexture = power:GetStatusBarTexture()
 		local orientation = power:GetOrientation()
 		local reverseFill = power:GetReverseFill()
+		local powerBarTexture = power:GetStatusBarTexture()
+		local barTexture = UF.db.colors.transparentPower and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar)
 
 		mainBar:ClearAllPoints()
 		mainBar:SetReverseFill(not reverseFill)
-		mainBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or powerBarTexture:GetTexture())
+		mainBar:SetStatusBarTexture(barTexture)
 
 		if orientation == 'HORIZONTAL' then
 			local point = reverseFill and 'LEFT' or 'RIGHT'
@@ -101,7 +103,7 @@ function UF:Configure_PowerPrediction(frame)
 
 			altBar:ClearAllPoints()
 			altBar:SetReverseFill(true)
-			altBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or altPowerBarTexture:GetTexture())
+			altBar:SetStatusBarTexture(barTexture)
 			altBar:SetOrientation(altPowerOrientation)
 
 			if altPowerOrientation == 'HORIZONTAL' then
