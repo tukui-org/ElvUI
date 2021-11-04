@@ -417,7 +417,9 @@ end
 
 function M:SetGetMinimapShape()
 	GetMinimapShape = M.GetMinimapShape
-	Minimap:Size(E.db.general.minimap.size)
+
+	local size = E.db.general.minimap.size
+	Minimap:SetSize(size, size)
 end
 
 function M:QueueStatusTimeFormat(seconds)
