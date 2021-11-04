@@ -6,16 +6,16 @@ local _G = _G
 local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
+
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 local GetBagSlotFlag = GetBagSlotFlag
+local GetCVarBool = GetCVarBool
+local IsModifiedClick = IsModifiedClick
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
-
 local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
 local BackpackButton_OnClick = BackpackButton_OnClick
-local IsModifiedClick = IsModifiedClick
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
@@ -48,9 +48,9 @@ function B:BagBarButton_OnEnter()
 	B:BagBar_OnEnter()
 end
 
-function B:SkinBag(bag, keyring)
+function B:SkinBag(bag)
 	local icon = _G[bag:GetName()..'IconTexture']
-	bag.oldTex = keyring and [[Interface\ContainerFrame\KeyRing-Bag-Icon]] or icon:GetTexture()
+	bag.oldTex = icon:GetTexture()
 
 	bag:StripTextures()
 	bag:SetTemplate()
@@ -58,7 +58,7 @@ function B:SkinBag(bag, keyring)
 	bag.IconBorder:Kill()
 
 	icon:SetInside()
-	icon:SetTexture(bag.oldTex)
+	icon:SetTexture(bag.oldTex == 1721259 and E.Media.Textures.Backpack or bag.oldTex)
 	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
@@ -154,7 +154,7 @@ function B:SizeAndPositionBagBar()
 
 	B.BagBar.backdrop:ClearAllPoints()
 	B.BagBar.backdrop:Point('TOPLEFT', firstButton, 'TOPLEFT', -backdropSpacing, backdropSpacing)
-	B.BagBar.backdrop:Point('BOTTOMRIGHT', lastButton, 'BOTTOMRIGHT', backdropSpacing, -backdropSpacing)
+	B.BagBar.backdrop:Point('BOTTOMRIGHT', justBackpack and firstButton or lastButton, 'BOTTOMRIGHT', backdropSpacing, -backdropSpacing)
 	B.BagBar.backdrop:SetShown(showBackdrop)
 
 	if growthDirection == 'HORIZONTAL' then
@@ -183,12 +183,12 @@ function B:MainMenuBarBackpackButton_OnClick(button)
 	end
 end
 
-function B:BagButton_OnClick(button)
-	if E.Retail and button == 'RightButton' then
+function B:BagButton_OnClick(key)
+	if E.Retail and key == 'RightButton' then
 		B.AssignBagDropdown.holder = self
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif self.id == 0 then
-		B.MainMenuBarBackpackButton_OnClick(self, button)
+		B.MainMenuBarBackpackButton_OnClick(self, key)
 	else
 		_G.BagSlotButton_OnClick(self)
 	end
@@ -235,8 +235,8 @@ function B:LoadBagBar()
 		tinsert(B.BagBar.buttons, b)
 	end
 
-	local KeyRing = not E.Retail and _G.KeyRingButton
-	if not E.Retail then
+	local KeyRing = _G.KeyRingButton
+	if KeyRing then
 		KeyRing:SetParent(B.BagBar)
 		KeyRing:HookScript('OnEnter', B.BagBar_OnEnter)
 		KeyRing:HookScript('OnLeave', B.BagBar_OnLeave)
@@ -246,6 +246,7 @@ function B:LoadBagBar()
 		KeyRing:StyleButton(true)
 
 		B:SetButtonTexture(KeyRing, [[Interface\ICONS\INV_Misc_Key_03]])
+
 		tinsert(B.BagBar.buttons, KeyRing)
 	end
 

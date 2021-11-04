@@ -306,31 +306,29 @@ end
 
 local STRIP_TEX = 'Texture'
 local STRIP_FONT = 'FontString'
-local function StripRegion(which, object, kill, alpha)
+local function StripRegion(which, object, kill, zero)
 	if kill then
 		object:Kill()
+	elseif zero then
+		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
 		object:SetTexture('')
 		object:SetAtlas('')
 	elseif which == STRIP_FONT then
 		object:SetText('')
 	end
-
-	if alpha and object.SetAlpha then
-		object:SetAlpha(0)
-	end
 end
 
-local function StripType(which, object, kill, alpha)
+local function StripType(which, object, kill, zero)
 	if object:IsObjectType(which) then
-		StripRegion(which, object, kill, alpha)
+		StripRegion(which, object, kill, zero)
 	else
 		if which == STRIP_TEX then
 			local FrameName = object.GetName and object:GetName()
 			for _, Blizzard in pairs(StripTexturesBlizzFrames) do
 				local BlizzFrame = object[Blizzard] or (FrameName and _G[FrameName..Blizzard])
 				if BlizzFrame and BlizzFrame.StripTextures then
-					BlizzFrame:StripTextures(kill, alpha)
+					BlizzFrame:StripTextures(kill, zero)
 				end
 			end
 		end
@@ -339,19 +337,19 @@ local function StripType(which, object, kill, alpha)
 			for i = 1, object:GetNumRegions() do
 				local region = select(i, object:GetRegions())
 				if region and region.IsObjectType and region:IsObjectType(which) then
-					StripRegion(which, region, kill, alpha)
+					StripRegion(which, region, kill, zero)
 				end
 			end
 		end
 	end
 end
 
-local function StripTextures(object, kill, alpha)
-	StripType(STRIP_TEX, object, kill, alpha)
+local function StripTextures(object, kill, zero)
+	StripType(STRIP_TEX, object, kill, zero)
 end
 
-local function StripTexts(object, kill, alpha)
-	StripType(STRIP_FONT, object, kill, alpha)
+local function StripTexts(object, kill, zero)
+	StripType(STRIP_FONT, object, kill, zero)
 end
 
 local function FontTemplate(fs, font, size, style, skip)

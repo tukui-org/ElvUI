@@ -112,7 +112,7 @@ local function Update(self, event, unit, powerType)
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
-		cur = UnitPower(unit, powerID, true)
+		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints('player', 'target') or UnitPower(unit, powerID, true)
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
 
@@ -259,6 +259,10 @@ do
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
+		if not oUF.isRetail then
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
+		end
+
 		if oUF.isRetail and (PlayerClass == 'ROGUE') then
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
@@ -278,6 +282,8 @@ do
 
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		else
+			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 
 		local element = self.ClassPower
@@ -305,7 +311,7 @@ do
 
 		if(PlayerClass == 'DRUID') then
 			RequirePower = SPELL_POWER_ENERGY
-			RequireSpell = 5221 -- Shred
+			RequireSpell = oUF.isRetail and 5221 or 768
 		end
 	elseif(PlayerClass == 'MAGE') then
 		ClassPowerID = SPELL_POWER_ARCANE_CHARGES

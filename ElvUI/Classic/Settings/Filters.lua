@@ -877,6 +877,8 @@ G.unitframe.HastedChannelTicks = {
 	[205021]	= true, -- Ray of Frost
 }
 
+G.unitframe.TalentChannelTicks = {}
+
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
 	[2825]	= {r = 0.98, g = 0.57, b = 0.10}, -- Bloodlust

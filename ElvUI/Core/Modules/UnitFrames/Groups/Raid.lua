@@ -31,6 +31,8 @@ function UF:Construct_RaidFrames()
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
+	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
+	self.SummonIndicator = UF:Construct_SummonIcon(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
@@ -38,8 +40,6 @@ function UF:Construct_RaidFrames()
 
 	if E.Retail then
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
-		self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
-		self.SummonIndicator = UF:Construct_SummonIcon(self)
 		self.ClassBar = 'AlternativePower'
 	end
 
@@ -121,6 +121,8 @@ function UF:Update_RaidFrames(frame, db)
 	UF:Configure_Fader(frame)
 	UF:Configure_AuraWatch(frame)
 	UF:Configure_ReadyCheckIcon(frame)
+	UF:Configure_ResurrectionIcon(frame)
+	UF:Configure_SummonIcon(frame)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_PhaseIcon(frame)
 	UF:Configure_Cutaway(frame)
@@ -129,8 +131,6 @@ function UF:Update_RaidFrames(frame, db)
 
 	if E.Retail then
 		UF:Configure_AltPowerBar(frame)
-		UF:Configure_ResurrectionIcon(frame)
-		UF:Configure_SummonIcon(frame)
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

@@ -114,7 +114,7 @@ function DB:ExperienceBar_Update()
 			end
 		end
 
-		if bar.db.showLevel then
+		if bar.db.showLevel and textFormat ~= 'NONE' then
 			displayString = format('%s %s : %s', L["Level"], E.mylevel, displayString)
 		end
 

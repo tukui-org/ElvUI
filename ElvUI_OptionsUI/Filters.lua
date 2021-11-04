@@ -372,7 +372,7 @@ E.Options.args.filters = {
 							desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 							type = 'select',
 							confirm = function(_, value)
-								return 'Remove Spell - '..GetSpellNameRank(value)
+								return format(L["Remove Spell - %s"], GetSpellNameRank(value))
 							end,
 							customWidth = 350,
 							get = function() return '' end,

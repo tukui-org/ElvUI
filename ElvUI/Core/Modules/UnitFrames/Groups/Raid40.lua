@@ -121,6 +121,8 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_Fader(frame)
 	UF:Configure_AuraWatch(frame)
 	UF:Configure_ReadyCheckIcon(frame)
+	UF:Configure_ResurrectionIcon(frame)
+	UF:Configure_SummonIcon(frame)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_PhaseIcon(frame)
 	UF:Configure_Cutaway(frame)
@@ -129,8 +131,6 @@ function UF:Update_Raid40Frames(frame, db)
 
 	if E.Retail then
 		UF:Configure_AltPowerBar(frame)
-		UF:Configure_ResurrectionIcon(frame)
-		UF:Configure_SummonIcon(frame)
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

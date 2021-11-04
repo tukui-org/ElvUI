@@ -379,7 +379,7 @@ function S:BlizzardOptions()
 	end
 
 	for _, Tab in pairs(OptionsButtons) do
-		S:HandleButton(Tab)
+		S:HandleButton(Tab, true)
 	end
 
 	for _, Panel in pairs(InterfaceOptions) do

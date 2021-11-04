@@ -412,7 +412,7 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel)
+function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
@@ -423,7 +423,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 	if button.SetDisabledTexture then button:SetDisabledTexture('') end
 
 	if strip then button:StripTextures() end
-	S:HandleBlizzardRegions(button)
+	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
 	if button.Icon then
 		local Texture = button.Icon:GetTexture()
@@ -637,15 +637,17 @@ do
 	end
 end
 
-function S:HandleBlizzardRegions(frame, name, kill)
+function S:HandleBlizzardRegions(frame, name, kill, zero)
 	if not name then name = frame.GetName and frame:GetName() end
 	for _, area in pairs(S.Blizzard.Regions) do
 		local object = (name and _G[name..area]) or frame[area]
 		if object then
 			if kill then
 				object:Kill()
-			elseif object.SetAlpha then
+			elseif zero then
 				object:SetAlpha(0)
+			else
+				object:Hide()
 			end
 		end
 	end

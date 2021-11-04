@@ -21,6 +21,7 @@ function UF:Construct_TankFrames()
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
 	self.FocusGlow = UF:Construct_FocusGlow(self)
+	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 
@@ -120,6 +121,7 @@ function UF:Update_TankFrames(frame, db)
 	UF:Configure_Threat(frame)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
+	UF:Configure_HealComm(frame)
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then

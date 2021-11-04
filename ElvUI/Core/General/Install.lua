@@ -160,6 +160,10 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('showQuestTrackingTooltips', 1)
 	SetCVar('fstack_preferParentKeys', 0) --Add back the frame names via fstack!
 
+	if not E.Retail then
+		SetCVar('chatClassColorOverride', 0)
+	end
+
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 

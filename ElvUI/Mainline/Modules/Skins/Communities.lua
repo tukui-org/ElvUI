@@ -709,7 +709,7 @@ function S:Blizzard_Communities()
 	ApplicantList.ColumnDisplay:StripTextures()
 	S:HandleScrollBar(ApplicantList.ListScrollFrame.scrollBar)
 
-	ApplicantList:CreateBackdrop()
+	ApplicantList:CreateBackdrop('Transparent')
 	ApplicantList.backdrop:Point('TOPLEFT', 0, 0)
 	ApplicantList.backdrop:Point('BOTTOMRIGHT', -15, 0)
 

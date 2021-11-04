@@ -2881,9 +2881,12 @@ end
 
 local channelButtons = {
 	_G.ChatFrameChannelButton,
-	_G.ChatFrameToggleVoiceDeafenButton,
-	_G.ChatFrameToggleVoiceMuteButton
 }
+
+if E.Retail then
+	tinsert(channelButtons, _G.ChatFrameToggleVoiceDeafenButton)
+	tinsert(channelButtons, _G.ChatFrameToggleVoiceMuteButton)
+end
 
 function CH:GetAnchorParents(chat)
 	local Left = (chat == CH.LeftChatWindow and _G.LeftChatPanel)
@@ -2912,7 +2915,7 @@ function CH:RepositionOverflowButton()
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 
 	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(E.Retail and channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
 	else
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
 	end
@@ -2942,8 +2945,10 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
-		channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
+		if E.Retail then
+			channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
+			channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
+		end
 	else
 		CH:CreateChatVoicePanel()
 	end
@@ -3036,7 +3041,6 @@ function CH:SetupQuickJoin(holder)
 
 	Button:HookScript('OnMouseDown', function(t) t.FriendsButton:SetTexture(friendTex) end)
 	Button:HookScript('OnMouseUp', function(t) t.FriendsButton:SetTexture(friendTex) end)
-
 	-- Skin the `QuickJoinToastButton.Toast`
 	Button.Toast:ClearAllPoints()
 	Button.Toast:Point('LEFT', Button, 'RIGHT', -6, 0)
@@ -3425,9 +3429,7 @@ function CH:Initialize()
 	CH:UpdateEditboxAnchors()
 	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
 
-	if E.Retail then
-		CH:HandleChatVoiceIcons()
-	end
+	CH:HandleChatVoiceIcons()
 
 	CH:SecureHook('ChatEdit_ActivateChat')
 	CH:SecureHook('ChatEdit_DeactivateChat')
