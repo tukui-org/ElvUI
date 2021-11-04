@@ -1,4 +1,6 @@
-### Retail Version 12.47 [ November 4th 2021 ]
+___
+### Version 12.47 [ November 4th 2021 ]
+
 Bags: Fixed Bag Bar bags not toggling bags  
 Bags: Fixed Bag Bar backdrop for only backpack option  
 Nameplates: Added aura sorting  
@@ -7,89 +9,32 @@ Skins: Fixed itemupgrade button
 Tooltips: Fixed item quality color  
 UnitFrames: Adjusted leader icon frame strata  
 
-### TBC Version 2.20 [ November 4th 2021 ]
-Bags: Fixed BagBar backdrop for only backpack option  
-Bags: Fixed BagBar bags not toggling bags  
-Bags: Protect reagent from firing  
-Chat: Fixed class color chat names cvar  
-Chat: Fixed voice chat buttons  
-DataTexts: Guild text now toggles guild roster  
-General: Added back quest movers and option in Blizz UI Improvements  
-General: Added back widget movers  
-General: Announce interrupts fixed  
-Nameplates: Add aura sorting  
-Tooltips: Fixed item quality color  
-UnitFrames (Arena): fixed pvp spec error  
-UnitFrames (Arena): fixed spec error  
-UnitFrames: Added back tank & assist heal prediction  
-UnitFrames: Adjust smart visibility  
-UnitFrames: Classbar fixed  
-UnitFrames: Dispell list fixed  
-UnitFrames: Fixed class sort order  
-UnitFrames: Fixed combo points when target changing  
-UnitFrames: Re-add Resurrect/Summon Icons  
-
-### Classic Version 1.46 [ November 4th 2021 ]
-Bags: Fixed Bag Bar backdrop for only backpack option  
-Bags: Fixed Bag Bar bags not toggling bags  
-Bags: Protect reagent from firing  
-Chat: Fixed class color chat names cvar  
-Chat: Fixed voice chat buttons  
-General: Added back quest movers and option in Blizz UI Improvements  
-General: Added back widget movers  
-General: Announce interrupts fixed  
-Nameplates: Add aura sorting  
-Tooltips: Fixed item quality color  
-Tooltips: Fixed skin  
-UnitFrames (Arena): fixed pvp spec error  
-UnitFrames (Arena): fixed spec error  
-UnitFrames: Added back tank & assist heal prediction  
-UnitFrames: Adjust smart visibility  
-UnitFrames: Classbar fixed  
-UnitFrames: Dispell list fixed  
-UnitFrames: Fixed class sort order  
-UnitFrames: Fixed combo points when target changing  
-UnitFrames: Re-add Resurrect/Summon Icons  
-
+___
 ### Version 12.46 [ November 2nd 2021 ]
 
 The text on Popups is now displaying correctly  
 
+___
 ### Version 12.45 [ November 2nd 2021 ]
+
 **Note:**  
 Development is now on GitHub (was GitLab)  
 Unified our codebase to support Retail, TBC and Classic in one version  
 
 **General:**  
-Added an option to hide chat in afk screensaver mode  
-Added support to toggle single bags  
-Updated available tags and descriptions  
-Updated dev version link  
-Updated issue tracker link  
-Updated wiki link  
-Updated russian locale (Credits: Evgeniy)  
-
-**Shadowlands:**  
 Added a button in bags and bank to stack items of the same type  
 Added an option to color tooltip border based on item quality  
+Added an option to hide chat in afk screensaver mode  
 Added support for the new Call of Duty in friends DataText  
+Added support to toggle single bags  
 Fixed a bug with the border color on top auras  
 Fixed Arena-Prep frames  
 Fixed AuraWatch sizeOffset Lua error  
 Fixed experience DataBar error on trial accounts  
 Fixed island expedition queue tooltip  
 Skin fixes and new skins for patch 9.1.5  
-
-**Burning Crusade Classic:**  
-Added guild option for auto repair  
-Added phase 2 support for our custom RaidDebuffs list  
-Fixed combo points not updating correctly on target switch  
-Master Looter & Loot Roll fixes  
-Updated color picker skin  
-Updated threat for NamePlates  
-
-**Classic Era and Season of Mastery:**  
-Initial support for Blizzards 1.14. live server update and upcoming Season of Mastery  
+Updated available tags and descriptions  
+Updated russian locale (Credits: Evgeniy)  
 
 ___
 ### Version 12.44 [ August 27th 2021 ]
