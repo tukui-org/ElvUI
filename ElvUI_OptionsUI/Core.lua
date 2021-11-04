@@ -252,7 +252,7 @@ E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil
 E.Options.args.info.args.support.args.git.customWidth = 140
 E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end)
 E.Options.args.info.args.support.args.discord.customWidth = 140
-E.Options.args.info.args.support.args.changelog = ACH:Execute(L["Changelog"], nil, 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/download.php?ui=elvui#changelog') end)
+E.Options.args.info.args.support.args.changelog = ACH:Execute(L["Changelog"], nil, 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/download.php?ui=elvui&changelog') end)
 E.Options.args.info.args.support.args.changelog.customWidth = 140
 E.Options.args.info.args.support.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 5, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end)
 E.Options.args.info.args.support.args.development.customWidth = 140
