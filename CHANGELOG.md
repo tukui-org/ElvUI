@@ -1,50 +1,59 @@
 ### Retail Version 12.47 [ ETA: 🍨 ]
-- Fix /groster skin
-- Bags: Fix Bag Bar bags not toggling bags
-- Bags: Fix Bag Bar backdrop for only backpack option
-- Nameplates: Add aura sorting
-- Skins: Fix itemupgrade button
-- ToolTips: Fix item quality color
+Fixed /groster skin
+Bags: Fixed Bag Bar bags not toggling bags
+Bags: Fixed Bag Bar backdrop for only backpack option
+Nameplates: Add aura sorting
+Skins: Fixed itemupgrade button
+Tooltips: Fixed item quality color
 
-### TBC Version 2.20 [ ETA: 🍨 ]
-- Announce Fix
-- Classbar Fixed
-- Fix Dispell list
-- Bags: Fix BagBar backdrop for only backpack option
-- Bags: Fix BagBar bags not toggling bags
-- Bags: Protect reagent from firing
-- Chat: Fix class color chat names cvar
-- Chat: Fix voice chat buttons
-- Nameplates: Add aura sorting
-- UnitFrames: Adjust smart visibility
-- UnitFrames: Fix class sort order
-- UnitFrames: Fix combo points when target changing
-- UnitFrames: Fix tank heal prediction
-- UnitFrames: Re-add Resurrect/Summon Icons
-- UnitFrames, Arena: protect spec error
-- UnitFrames, Arena: pvp spec error
-- ToolTips: Fix item quality color
+### TBC Version 2.20 [ November 4th 2021 ]
+Bags: Fixed BagBar backdrop for only backpack option
+Bags: Fixed BagBar bags not toggling bags
+Bags: Protect reagent from firing
+Chat: Fixed class color chat names cvar
+Chat: Fixed voice chat buttons
+DataTexts: Guild text now toggles guild roster
+General: Added back quest movers and option in Blizz UI Improvements
+General: Added back widget movers
+General: Announce interrupts fixed
+Nameplates: Add aura sorting
+Tooltips: Fixed item quality color
+UnitFrames (Arena): fixed pvp spec error
+UnitFrames (Arena): fixed spec error
+UnitFrames: Added back tank & assist heal prediction
+UnitFrames: Adjust smart visibility
+UnitFrames: Classbar fixed
+UnitFrames: Dispell list fixed
+UnitFrames: Fixed class sort order
+UnitFrames: Fixed combo points when target changing
+UnitFrames: Re-add Resurrect/Summon Icons
 
-### Classic Version 1.46 [ ETA: 🍨 ]
-- Announce Fix
-- Classbar Fixed
-- Fix Dispell list
-- Bags: Fix Bag Bar backdrop for only backpack option
-- Bags: Fix Bag Bar bags not toggling bags
-- Bags: Protect reagent from firing
-- Chat: Fix class color chat names cvar
-- Chat: Fix voice chat buttons
-- Nameplates: Add aura sorting
-- UnitFrames: Adjust smart visibility
-- UnitFrames: Fix class sort order
-- UnitFrames: Fix combo points when target changing
-- UnitFrames: Fix tank heal prediction
-- UnitFrames: Re-add Resurrect/Summon Icons
-- UnitFrames, Arena: protect spec error
-- UnitFrames, Arena: pvp spec error
-- ToolTips: Fix item quality color
+### Classic Version 1.46 [ November 4th 2021 ]
+Bags: Fixed Bag Bar backdrop for only backpack option
+Bags: Fixed Bag Bar bags not toggling bags
+Bags: Protect reagent from firing
+Chat: Fixed class color chat names cvar
+Chat: Fixed voice chat buttons
+General: Added back quest movers and option in Blizz UI Improvements
+General: Added back widget movers
+General: Announce interrupts fixed
+Nameplates: Add aura sorting
+Tooltips: Fixed item quality color
+UnitFrames (Arena): fixed pvp spec error
+UnitFrames (Arena): fixed spec error
+UnitFrames: Added back tank & assist heal prediction
+UnitFrames: Adjust smart visibility
+UnitFrames: Classbar fixed
+UnitFrames: Dispell list fixed
+UnitFrames: Fixed class sort order
+UnitFrames: Fixed combo points when target changing
+UnitFrames: Re-add Resurrect/Summon Icons
 
-### Version 12.45 [ ETA: 🍨 ]
+### Version 12.46 [ November 2nd 2021 ]
+
+Can't remember
+
+### Version 12.45 [ November 2nd 2021 ]
 **Note:**  
 Development is now on GitHub (was GitLab)  
 Unified our codebase to support Retail, TBC and Classic in one version  
