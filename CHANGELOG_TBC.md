@@ -1,5 +1,13 @@
 ### Version 2.21 [ ETA: 🍨 ]
+Bags: Added back quest icon for quest items  
 DataTexts: Added left panel defaults ([1] and [3] were empty)  
+General: Updated RaidUtility  
+Locales: Updated russian translation (Credits Hollicsh)  
+Minimap: Fixes for minimap addon icons  
+Nameplates: Added back offset options for power  
+Nameplates: Fixed an issue which broke the "Add Filter" dropdown  
+UnitFrames: Fixed resurrect icon for real  
+UnitFrames: Updated out of range fader  
 
 ___
 ### Version 2.20 [ November 4th 2021 ]
