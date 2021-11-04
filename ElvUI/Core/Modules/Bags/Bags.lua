@@ -2335,7 +2335,7 @@ end
 B.BagIndice = {
 	quiver = 0x0001,
 	ammoPouch = 0x0002,
-	soulBag = 0x0003,
+	soulBag = 0x0004,
 	leatherworking = 0x0008,
 	inscription = 0x0010,
 	herbs = 0x0020,
@@ -2391,7 +2391,7 @@ function B:Initialize()
 	B.ProfessionColors = {
 		[0x0001]   = { B.db.colors.profession.quiver.r, B.db.colors.profession.quiver.g, B.db.colors.profession.quiver.b},
 		[0x0002]   = { B.db.colors.profession.ammoPouch.r, B.db.colors.profession.ammoPouch.g, B.db.colors.profession.ammoPouch.b},
-		[0x0003]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
+		[0x0004]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
 		[0x0008]	= { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
 		[0x0010]	= { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
 		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
