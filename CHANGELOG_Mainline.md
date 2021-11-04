@@ -1,4 +1,9 @@
 ### Version 12.48 [ ETA: 🍨 ]
+General: Updated RaidUtility  
+Locales: Updated russian translation (Credits Hollicsh)  
+Minimap: Fixes for minimap addon icons  
+Nameplates: Added back offset options for power  
+Nameplates: Fixed an issue which broke the "Add Filter" dropdown  
 
 ___
 ### Version 12.47 [ November 4th 2021 ]
