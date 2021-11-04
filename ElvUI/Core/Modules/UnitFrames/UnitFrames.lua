@@ -279,8 +279,18 @@ end
 
 function UF:CreateRaisedElement(frame, bar)
 	local raised = CreateFrame('Frame', nil, frame)
-	raised:SetFrameLevel(frame:GetFrameLevel() + 100)
+	local level = frame:GetFrameLevel() + 100
+	raised:SetFrameLevel(level)
 	raised.__owner = frame
+
+	-- layer levels (level +1 is icons)
+	raised.AuraLevel = level
+	raised.AuraBarLevel = level + 10
+	raised.RaidDebuffLevel = level + 15
+	raised.AuraWatchLevel = level + 25
+	raised.RestingIconLevel = level + 20
+	raised.RaidRoleLevel = level + 25
+	raised.CastBarLevel = level + 30
 
 	if bar then
 		raised:SetAllPoints()
