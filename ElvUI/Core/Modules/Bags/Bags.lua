@@ -1330,9 +1330,12 @@ end
 
 function B:ToggleBag(holder)
 	if not holder then return end
-	local id = holder.id
-	B.db.shownBags['bag'..id] = not B.db.shownBags['bag'..id]
-	holder.shownIcon:SetTexture(B.db.shownBags['bag'..id] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+
+	local slotID = 'bag'..holder.id
+	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
+
+	holder.shownIcon:SetTexture(B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+
 	B:Layout(holder.isBank)
 end
 
@@ -1938,7 +1941,7 @@ function B:ToggleBags(id)
 		if closed then
 			B:OpenBags()
 		end
-	elseif id and GetContainerNumSlots(id) == 0 then
+	elseif id and GetContainerNumSlots(id) ~= 0 then
 		if B.BagFrame:IsShown() then
 			B:CloseBags()
 		else

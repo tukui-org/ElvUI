@@ -32,7 +32,7 @@ local ticks = {}
 
 function UF:Construct_Castbar(frame, moverName)
 	local castbar = CreateFrame('StatusBar', '$parent_CastBar', frame)
-	castbar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 30) --Make it appear above everything else
+	castbar:SetFrameLevel(frame.RaisedElementParent.CastBarLevel)
 
 	UF.statusbars[castbar] = true
 	castbar.CustomDelayText = UF.CustomCastDelayText

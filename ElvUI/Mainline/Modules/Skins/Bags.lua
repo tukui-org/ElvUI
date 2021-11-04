@@ -289,7 +289,7 @@ function S:ContainerFrame()
 		icon:StyleButton()
 
 		icon.Icon = icon:CreateTexture()
-		icon.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
+		icon.Icon:SetTexture(E.Media.Textures.PetBroom)
 		icon.Icon:SetTexCoord(unpack(E.TexCoords))
 		icon.Icon:SetInside()
 	end

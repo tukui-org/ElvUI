@@ -131,10 +131,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_ClassBar(frame)
 	UF:Configure_PVPText(frame)
 	UF:Configure_PartyIndicator(frame)
-
-	if E.Retail then
-		UF:Configure_ResurrectionIcon(frame)
-	end
+	UF:Configure_ResurrectionIcon(frame)
 
 	frame:DisableElement('Castbar')
 	UF:Configure_Castbar(frame)

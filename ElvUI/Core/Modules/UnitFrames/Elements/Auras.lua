@@ -64,7 +64,7 @@ function UF:Construct_Buffs(frame)
 	buffs.rows = {}
 	buffs.type = 'buffs'
 
-	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
+	buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 	buffs:SetSize(1, 1)
 
 	return buffs
@@ -82,7 +82,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.rows = {}
 	debuffs.type = 'debuffs'
 
-	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
+	debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 	debuffs:SetSize(1, 1)
 
 	return debuffs

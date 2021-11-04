@@ -104,11 +104,13 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras.xOffset = db.xOffset
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
+	auras.auraSort = UF.SortAuraFuncs[db.sortMethod]
 	auras.initialAnchor = E.InversePoints[db.anchorPoint]
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.attachTo = UF:GetAuraAnchorFrame(nameplate, db.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
 	auras.num = db.numAuras * db.numRows
+	auras.db = db -- for auraSort
 
 	local index = 1
 	while auras[index] do

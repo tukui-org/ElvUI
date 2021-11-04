@@ -13,9 +13,7 @@ function S:Blizzard_GuildUI()
 
 	local GuildFrame = _G.GuildFrame
 	S:HandlePortraitFrame(GuildFrame)
-
 	S:HandleCloseButton(_G.GuildMemberDetailCloseButton)
-	S:HandleScrollBar(_G.GuildInfoFrameApplicantsContainerScrollBar)
 
 	local striptextures = {
 		'GuildFrameInset',
@@ -24,20 +22,10 @@ function S:Blizzard_GuildUI()
 		'GuildMemberDetailFrame',
 		'GuildMemberNoteBackground',
 		'GuildInfoFrameInfo',
-		'GuildLogContainer',
 		'GuildLogFrame',
 		'GuildRewardsFrame',
 		'GuildMemberOfficerNoteBackground',
-		'GuildTextEditContainer',
 		'GuildTextEditFrame',
-		'GuildRecruitmentRolesFrame',
-		'GuildRecruitmentAvailabilityFrame',
-		'GuildRecruitmentInterestFrame',
-		'GuildRecruitmentLevelFrame',
-		'GuildRecruitmentCommentFrame',
-		'GuildRecruitmentCommentInputFrame',
-		'GuildInfoFrameApplicantsContainer',
-		'GuildInfoFrameApplicants',
 		'GuildNewsBossModel',
 		'GuildNewsBossModelTextFrame',
 	}
@@ -59,11 +47,7 @@ function S:Blizzard_GuildUI()
 		'GuildAddMemberButton',
 		'GuildViewLogButton',
 		'GuildControlButton',
-		'GuildRecruitmentListGuildButton',
 		'GuildTextEditFrameAcceptButton',
-		'GuildRecruitmentInviteButton',
-		'GuildRecruitmentMessageButton',
-		'GuildRecruitmentDeclineButton',
 	}
 
 	for i, button in pairs(buttons) do
@@ -73,26 +57,6 @@ function S:Blizzard_GuildUI()
 			S:HandleButton(_G[button], true)
 		end
 	end
-
-	local checkbuttons = {
-		'Quest',
-		'Dungeon',
-		'Raid',
-		'PvP',
-		'RP',
-		'Weekdays',
-		'Weekends',
-	}
-
-	for _, frame in pairs(checkbuttons) do
-		S:HandleCheckBox(_G['GuildRecruitment'..frame..'Button'])
-	end
-
-	S:HandleCheckBox(_G.GuildRecruitmentTankButton:GetChildren())
-	S:HandleCheckBox(_G.GuildRecruitmentHealerButton:GetChildren())
-	S:HandleCheckBox(_G.GuildRecruitmentDamagerButton:GetChildren())
-	S:HandleButton(_G.GuildRecruitmentLevelAnyButton)
-	S:HandleButton(_G.GuildRecruitmentLevelMaxButton)
 
 	for i=1,5 do
 		S:HandleTab(_G['GuildFrameTab'..i])
@@ -119,7 +83,11 @@ function S:Blizzard_GuildUI()
 	S:HandleDropDownBox(_G.GuildRosterViewDropdown, 200)
 
 	for i=1, 14 do
-		S:HandleButton(_G['GuildRosterContainerButton'..i..'HeaderButton'], true)
+		local button = _G['GuildRosterContainerButton'..i]
+		local header = button and button.header
+		if header then
+			S:HandleButton(header, true)
+		end
 	end
 
 	--Detail Frame
@@ -145,8 +113,9 @@ function S:Blizzard_GuildUI()
 	--News
 	_G.GuildNewsFrame:StripTextures()
 	for i=1, 17 do
-		if _G['GuildNewsContainerButton'..i] then
-			_G['GuildNewsContainerButton'..i].header:Kill()
+		local button = _G['GuildNewsContainerButton'..i]
+		if button and button.header then
+			button.header:Kill()
 		end
 	end
 
@@ -163,10 +132,9 @@ function S:Blizzard_GuildUI()
 
 	--Info Frame
 	S:HandleScrollBar(_G.GuildInfoDetailsFrameScrollBar)
+	S:HandleScrollBar(_G.GuildInfoFrameInfoMOTDScrollFrameScrollBar)
 
-	for i=1, 3 do
-		_G['GuildInfoFrameTab'..i]:StripTextures()
-	end
+	_G.GuildInfoFrameTab1:StripTextures()
 
 	local GuildInfoFrameInfo = _G.GuildInfoFrameInfo
 	local backdrop1 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
@@ -187,18 +155,12 @@ function S:Blizzard_GuildUI()
 	backdrop3:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -233)
 	backdrop3:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 3)
 
-	_G.GuildRecruitmentCommentInputFrame:SetTemplate('Transparent')
-
-	for _, button in next, _G.GuildInfoFrameApplicantsContainer.buttons do
-		button.selectedTex:Kill()
-		button:GetHighlightTexture():Kill()
-		button:SetBackdrop()
-	end
-
 	--Text Edit Frame
 	_G.GuildTextEditFrame:SetTemplate('Transparent')
+	_G.GuildLogContainer.NineSlice:SetTemplate('Transparent')
+	_G.GuildTextEditContainer.NineSlice:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar)
-	_G.GuildTextEditContainer:SetTemplate('Transparent')
+
 	for i=1, _G.GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, _G.GuildTextEditFrame:GetChildren())
 		if child:GetName() == 'GuildTextEditFrameCloseButton' and child:GetWidth() < 33 then

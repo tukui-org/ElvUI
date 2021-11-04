@@ -19,6 +19,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local LoadAddOn = LoadAddOn
 local SetItemRef = SetItemRef
 local ToggleGuildFrame = ToggleGuildFrame
+local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local InCombatLockdown = InCombatLockdown
@@ -217,8 +218,10 @@ local function Click(self, btn)
 		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
-	else
+	elseif E.Retail then
 		ToggleGuildFrame()
+	else
+		ToggleFriendsFrame(3)
 	end
 end
 

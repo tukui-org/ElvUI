@@ -8,7 +8,7 @@ local CreateFrame = CreateFrame
 function UF:Construct_RaidDebuffs(frame)
 	local debuff = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	debuff:SetTemplate(nil, nil, nil, nil, true)
-	debuff:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 20) --Make them appear above regular buffs or debuffs
+	debuff:SetFrameLevel(frame.RaisedElementParent.RaidDebuffLevel)
 
 	debuff.icon = debuff:CreateTexture(nil, 'OVERLAY')
 	debuff.icon:SetInside(debuff, UF.BORDER, UF.BORDER)

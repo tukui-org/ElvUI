@@ -1,5 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
+
 local CopyTable = CopyTable -- Our function doesn't exist yet.
+local next = next
 
 P.gridSize = 64
 P.layoutSetting = 'tank'
@@ -142,6 +144,7 @@ P.general = {
 			},
 		}
 	},
+	objectiveTracker = true,
 	totems = {
 		enable = true,
 		growthDirection = 'VERTICAL',
@@ -179,7 +182,7 @@ P.databars = {
 	}
 }
 
-for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite', 'petExperience'}) do
+for _, databar in next, {'experience', 'reputation', 'honor', 'threat', 'azerite', 'petExperience'} do
 	P.databars[databar] = {
 		enable = true,
 		width = 222,
@@ -359,6 +362,8 @@ local NP_Auras = {
 	growthY = 'UP',
 	onlyShowPlayer = false,
 	stackAuras = true,
+	sortDirection = 'DESCENDING',
+	sortMethod = 'TIME_REMAINING',
 	spacing = 1,
 	yOffset = 5,
 	xOffset = 0,
@@ -1030,9 +1035,9 @@ P.datatexts = {
 			backdrop = true,
 			border = true,
 			panelTransparency = false,
-			'Talent/Loot Specialization',
+			E.Retail and 'Talent/Loot Specialization' or 'ElvUI',
 			'Durability',
-			'BfA Missions'
+			E.Retail and 'Missions' or 'Mail'
 		},
 		RightChatDataPanel = {
 			enable = true,
@@ -1942,6 +1947,7 @@ P.unitframe = {
 			verticalSpacing = 7,
 			targetsGroup = CopyTable(UF_SubGroup),
 			buffIndicator = CopyTable(UF_AuraWatch),
+			healPrediction = CopyTable(UF_HealthPrediction),
 			buffs = CopyTable(UF_Auras),
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
@@ -2244,17 +2250,14 @@ P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
-for i = 1, GetNumClasses() do
-	local _, classTag = GetClassInfo(i)
-	if classTag then
-		P.unitframe.units.party['CLASS'..i] = classTag
-		P.unitframe.units.raid['CLASS'..i] = classTag
-		P.unitframe.units.raid40['CLASS'..i] = classTag
-		P.unitframe.units.raidpet['CLASS'..i] = classTag
-	end
+for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'} do
+	P.unitframe.units.party['CLASS'..i] = classTag
+	P.unitframe.units.raid['CLASS'..i] = classTag
+	P.unitframe.units.raid40['CLASS'..i] = classTag
+	P.unitframe.units.raidpet['CLASS'..i] = classTag
 end
 
-for i, role in ipairs({ 'TANK', 'HEALER', 'DAMAGER' }) do
+for i, role in next, {'TANK', 'HEALER', 'DAMAGER'} do
 	P.unitframe.units.party['ROLE'..i] = role
 	P.unitframe.units.raid['ROLE'..i] = role
 	P.unitframe.units.raid40['ROLE'..i] = role
@@ -2458,32 +2461,33 @@ for i = 1, 10 do
 	}
 end
 
-for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton' }) do
-	P.actionbar[bar].frameStrata = 'LOW'
-	P.actionbar[bar].frameLevel = 1
+for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
+	local db = P.actionbar[bar]
+	db.frameStrata = 'LOW'
+	db.frameLevel = 1
 
 	if bar == 'barPet' then
-		P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
-		P.actionbar[bar].countFont = 'Homespun'
-		P.actionbar[bar].countFontOutline = 'MONOCHROMEOUTLINE'
-		P.actionbar[bar].countFontSize = 10
-		P.actionbar[bar].countFontXOffset = 0
-		P.actionbar[bar].countFontYOffset = 2
-		P.actionbar[bar].counttext = true
-		P.actionbar[bar].countTextPosition = 'BOTTOMRIGHT'
-		P.actionbar[bar].useCountColor = false
+		db.countColor = { r = 1, g = 1, b = 1 }
+		db.countFont = 'Homespun'
+		db.countFontOutline = 'MONOCHROMEOUTLINE'
+		db.countFontSize = 10
+		db.countFontXOffset = 0
+		db.countFontYOffset = 2
+		db.counttext = true
+		db.countTextPosition = 'BOTTOMRIGHT'
+		db.useCountColor = false
 	end
 
 	if bar ~= 'zoneActionButton' then
-		P.actionbar[bar].hotkeyColor = { r = 1, g = 1, b = 1 }
-		P.actionbar[bar].hotkeyFont = 'Homespun'
-		P.actionbar[bar].hotkeyFontOutline = 'MONOCHROMEOUTLINE'
-		P.actionbar[bar].hotkeyFontSize = 10
-		P.actionbar[bar].hotkeytext = true
-		P.actionbar[bar].hotkeyTextPosition = 'TOPRIGHT'
-		P.actionbar[bar].hotkeyTextXOffset = 0
-		P.actionbar[bar].hotkeyTextYOffset = -3
-		P.actionbar[bar].useHotkeyColor = false
+		db.hotkeyColor = { r = 1, g = 1, b = 1 }
+		db.hotkeyFont = 'Homespun'
+		db.hotkeyFontOutline = 'MONOCHROMEOUTLINE'
+		db.hotkeyFontSize = 10
+		db.hotkeytext = true
+		db.hotkeyTextPosition = 'TOPRIGHT'
+		db.hotkeyTextXOffset = 0
+		db.hotkeyTextYOffset = -3
+		db.useHotkeyColor = false
 	end
 end
 

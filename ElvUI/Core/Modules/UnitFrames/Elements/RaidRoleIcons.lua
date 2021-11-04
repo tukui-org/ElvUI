@@ -9,6 +9,8 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.AssistantIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 
 	anchor:Size(24, 12)
+	anchor:SetFrameLevel(frame.RaisedElementParent.RaidRoleLevel)
+
 	frame.LeaderIndicator:Size(12)
 	frame.AssistantIndicator:Size(12)
 
