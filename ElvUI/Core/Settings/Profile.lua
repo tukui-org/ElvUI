@@ -1037,7 +1037,7 @@ P.datatexts = {
 			panelTransparency = false,
 			E.Retail and 'Talent/Loot Specialization' or 'ElvUI',
 			'Durability',
-			E.Retail and 'BfA Missions' or 'Mail'
+			E.Retail and 'Missions' or 'Mail'
 		},
 		RightChatDataPanel = {
 			enable = true,
