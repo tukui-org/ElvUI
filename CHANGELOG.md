@@ -1,8 +1,8 @@
 ### Retail Version 12.47 [ ETA: 🍨 ]
-Fixed /groster skin
 Bags: Fixed Bag Bar bags not toggling bags
 Bags: Fixed Bag Bar backdrop for only backpack option
-Nameplates: Add aura sorting
+Nameplates: Added aura sorting
+Skins: Fixed groster skin error
 Skins: Fixed itemupgrade button
 Tooltips: Fixed item quality color
 
