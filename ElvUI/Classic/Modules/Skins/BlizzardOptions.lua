@@ -115,7 +115,6 @@ function S:BlizzardOptions()
 		_G.ChatConfigFrameDefaultButton,
 		_G.ChatConfigFrameRedockButton,
 		_G.ChatConfigFrameOkayButton,
-		_G.ChatConfigFrame.ToggleChatButton,
 		_G.ChatConfigCombatSettingsFiltersDeleteButton,
 		_G.ChatConfigCombatSettingsFiltersAddFilterButton,
 		_G.ChatConfigCombatSettingsFiltersCopyFilterButton,
@@ -355,6 +354,12 @@ function S:BlizzardOptions()
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
+
+	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
+	VUMeter:SetBackdrop(nil)
+	VUMeter.Status:CreateBackdrop()
+	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(VUMeter.Status)
 
 	-- PushToTalk KeybindButton - Wow 8.0
 	hooksecurefunc('AudioOptionsVoicePanel_InitializeCommunicationModeUI', S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
