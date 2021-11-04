@@ -65,29 +65,29 @@ end
 function B:SizeAndPositionBagBar()
 	if not B.BagBar then return end
 
-	local bagBarSize = E.db.bags.bagBar.size
-	local buttonSpacing = E.db.bags.bagBar.spacing
-	local growthDirection = E.db.bags.bagBar.growthDirection
-	local sortDirection = E.db.bags.bagBar.sortDirection
+	local db = E.db.bags.bagBar
+	local bagBarSize = db.size
+	local buttonSpacing = db.spacing
+	local growthDirection = db.growthDirection
+	local sortDirection = db.sortDirection
+	local showBackdrop = db.showBackdrop
+	local justBackpack = db.justBackpack
+	local backdropSpacing = not showBackdrop and 0 or db.backdropSpacing
 
-	local showBackdrop = E.db.bags.bagBar.showBackdrop
-	local backdropSpacing = not showBackdrop and 0 or E.db.bags.bagBar.backdropSpacing
-	local justBackpack = E.private.bags.enable and E.db.bags.bagBar.justBackpack
-
-	local visibility = E.db.bags.bagBar.visibility
+	local visibility = db.visibility
 	if visibility and visibility:match('[\n\r]') then
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
-	B.BagBar:SetAlpha(E.db.bags.bagBar.mouseover and 0 or 1)
+	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
 
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
-		local prevButton = B.BagBar.buttons[i-1]
 		if E.Retail then
 			button.ElvUIFilterIcon.FilterBackdrop:Size(bagBarSize / 2)
 		end
+
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
 		button:SetShown(i == 1 and justBackpack or not justBackpack)
@@ -98,6 +98,7 @@ function B:SizeAndPositionBagBar()
 			if i == 1 then lastButton = button else firstButton = button end
 		end
 
+		local prevButton = B.BagBar.buttons[i-1]
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
 				button:Point('LEFT', B.BagBar, 'LEFT', backdropSpacing, 0)
@@ -125,8 +126,7 @@ function B:SizeAndPositionBagBar()
 		end
 
 		for j = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			local active = GetBagSlotFlag(i - 1, j)
-			if active then
+			if GetBagSlotFlag(i - 1, j) then -- active
 				if E.Retail then
 					button.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[j])
 					button.ElvUIFilterIcon:SetShown(E.db.bags.showAssignedIcon)
