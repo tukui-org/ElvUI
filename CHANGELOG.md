@@ -1,59 +1,59 @@
 ### Retail Version 12.47 [ November 4th 2021 ]
-Bags: Fixed Bag Bar bags not toggling bags
-Bags: Fixed Bag Bar backdrop for only backpack option
-Nameplates: Added aura sorting
-Skins: Fixed groster skin error
-Skins: Fixed itemupgrade button
-Tooltips: Fixed item quality color
-UnitFrames: Adjusted leader icon frame strata
+Bags: Fixed Bag Bar bags not toggling bags  
+Bags: Fixed Bag Bar backdrop for only backpack option  
+Nameplates: Added aura sorting  
+Skins: Fixed groster skin error  
+Skins: Fixed itemupgrade button  
+Tooltips: Fixed item quality color  
+UnitFrames: Adjusted leader icon frame strata  
 
 ### TBC Version 2.20 [ November 4th 2021 ]
-Bags: Fixed BagBar backdrop for only backpack option
-Bags: Fixed BagBar bags not toggling bags
-Bags: Protect reagent from firing
-Chat: Fixed class color chat names cvar
-Chat: Fixed voice chat buttons
-DataTexts: Guild text now toggles guild roster
-General: Added back quest movers and option in Blizz UI Improvements
-General: Added back widget movers
-General: Announce interrupts fixed
-Nameplates: Add aura sorting
-Tooltips: Fixed item quality color
-UnitFrames (Arena): fixed pvp spec error
-UnitFrames (Arena): fixed spec error
-UnitFrames: Added back tank & assist heal prediction
-UnitFrames: Adjust smart visibility
-UnitFrames: Classbar fixed
-UnitFrames: Dispell list fixed
-UnitFrames: Fixed class sort order
-UnitFrames: Fixed combo points when target changing
-UnitFrames: Re-add Resurrect/Summon Icons
+Bags: Fixed BagBar backdrop for only backpack option  
+Bags: Fixed BagBar bags not toggling bags  
+Bags: Protect reagent from firing  
+Chat: Fixed class color chat names cvar  
+Chat: Fixed voice chat buttons  
+DataTexts: Guild text now toggles guild roster  
+General: Added back quest movers and option in Blizz UI Improvements  
+General: Added back widget movers  
+General: Announce interrupts fixed  
+Nameplates: Add aura sorting  
+Tooltips: Fixed item quality color  
+UnitFrames (Arena): fixed pvp spec error  
+UnitFrames (Arena): fixed spec error  
+UnitFrames: Added back tank & assist heal prediction  
+UnitFrames: Adjust smart visibility  
+UnitFrames: Classbar fixed  
+UnitFrames: Dispell list fixed  
+UnitFrames: Fixed class sort order  
+UnitFrames: Fixed combo points when target changing  
+UnitFrames: Re-add Resurrect/Summon Icons  
 
 ### Classic Version 1.46 [ November 4th 2021 ]
-Bags: Fixed Bag Bar backdrop for only backpack option
-Bags: Fixed Bag Bar bags not toggling bags
-Bags: Protect reagent from firing
-Chat: Fixed class color chat names cvar
-Chat: Fixed voice chat buttons
-General: Added back quest movers and option in Blizz UI Improvements
-General: Added back widget movers
-General: Announce interrupts fixed
-Nameplates: Add aura sorting
-Tooltips: Fixed item quality color
-Tooltips: Fixed skin
-UnitFrames (Arena): fixed pvp spec error
-UnitFrames (Arena): fixed spec error
-UnitFrames: Added back tank & assist heal prediction
-UnitFrames: Adjust smart visibility
-UnitFrames: Classbar fixed
-UnitFrames: Dispell list fixed
-UnitFrames: Fixed class sort order
-UnitFrames: Fixed combo points when target changing
-UnitFrames: Re-add Resurrect/Summon Icons
+Bags: Fixed Bag Bar backdrop for only backpack option  
+Bags: Fixed Bag Bar bags not toggling bags  
+Bags: Protect reagent from firing  
+Chat: Fixed class color chat names cvar  
+Chat: Fixed voice chat buttons  
+General: Added back quest movers and option in Blizz UI Improvements  
+General: Added back widget movers  
+General: Announce interrupts fixed  
+Nameplates: Add aura sorting  
+Tooltips: Fixed item quality color  
+Tooltips: Fixed skin  
+UnitFrames (Arena): fixed pvp spec error  
+UnitFrames (Arena): fixed spec error  
+UnitFrames: Added back tank & assist heal prediction  
+UnitFrames: Adjust smart visibility  
+UnitFrames: Classbar fixed  
+UnitFrames: Dispell list fixed  
+UnitFrames: Fixed class sort order  
+UnitFrames: Fixed combo points when target changing  
+UnitFrames: Re-add Resurrect/Summon Icons  
 
 ### Version 12.46 [ November 2nd 2021 ]
 
-The text on Popups is now displaying correctly
+The text on Popups is now displaying correctly  
 
 ### Version 12.45 [ November 2nd 2021 ]
 **Note:**  
