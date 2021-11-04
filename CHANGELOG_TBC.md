@@ -1,4 +1,5 @@
 ### Version 2.21 [ ETA: 🍨 ]
+DataTexts: Added left panel defaults ([1] and [3] were empty)  
 
 ___
 ### Version 2.20 [ November 4th 2021 ]

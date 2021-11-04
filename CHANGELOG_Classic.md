@@ -1,9 +1,10 @@
 ### Version 1.47 [ ETA: 🍨 ]
+DataTexts: Added left panel defaults ([1] and [3] were empty)  
 
 ___
 ### Version 1.46 [ November 4th 2021 ]
-Bags: Fixed Bag Bar backdrop for only backpack option  
-Bags: Fixed Bag Bar bags not toggling bags  
+Bags: Fixed BagBar backdrop for only backpack option  
+Bags: Fixed BagBar bags not toggling bags  
 Bags: Protect reagent from firing  
 Chat: Fixed class color chat names cvar  
 Chat: Fixed voice chat buttons  
