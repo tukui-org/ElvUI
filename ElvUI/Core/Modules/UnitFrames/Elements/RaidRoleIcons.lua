@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
+local strfind = strfind
 local CreateFrame = CreateFrame
 
 function UF:Construct_RaidRoleFrames(frame)
@@ -35,7 +36,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		end
 
 		raidRoleFrameAnchor:ClearAllPoints()
-		raidRoleFrameAnchor:Point(frame.db.raidRoleIcons.position, frame, frame.db.raidRoleIcons.position, frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
+		raidRoleFrameAnchor:Point(frame.db.raidRoleIcons.position, frame, frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
 	elseif frame:IsElementEnabled('LeaderIndicator') then
 		raidRoleFrameAnchor:Hide()
 		frame:DisableElement('LeaderIndicator')
@@ -62,14 +63,20 @@ function UF:RaidRoleUpdate()
 	masterlooter:ClearAllPoints()
 
 	if db and db.raidRoleIcons then
+		local pos, x, y = db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset
+
+		local right = strfind(pos, 'RIGHT')
+		local pos1 = right and 'RIGHT' or 'LEFT'
+		local pos2 = right and 'LEFT' or 'RIGHT'
+
 		if isLeader then
-			leader:Point(db.raidRoleIcons.position, anchor, db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
-			masterlooter:Point('LEFT', leader, 'RIGHT')
+			leader:Point(pos, anchor, x, y)
+			masterlooter:Point(pos1, leader, pos2)
 		elseif isAssist then
-			assistant:Point(db.raidRoleIcons.position, anchor, db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
-			masterlooter:Point('LEFT', assistant, 'RIGHT')
+			assistant:Point(pos, anchor, x, y)
+			masterlooter:Point(pos1, assistant, pos2)
 		else
-			masterlooter:Point(db.raidRoleIcons.position, anchor, db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			masterlooter:Point(pos, anchor, x, y)
 		end
 	end
 end
