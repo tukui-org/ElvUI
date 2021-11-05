@@ -1,3 +1,7 @@
+### Version 2.22 [ ETA: 🍨 ]
+Locales: Updated russian translation (Credits Hollicsh)  
+
+___
 ### Version 2.21 [ November 5th 2021 ]
 ActionBars: Added keybind mode for Stance Bar  
 Bags: Added back quest icon for quest items  
