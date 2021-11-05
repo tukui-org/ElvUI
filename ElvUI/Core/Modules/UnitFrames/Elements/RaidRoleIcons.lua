@@ -49,14 +49,13 @@ function UF:RaidRoleUpdate()
 	local frame = anchor:GetParent():GetParent()
 	local leader = frame.LeaderIndicator
 	local assistant = frame.AssistantIndicator
-	local masterlooter = not E.Retail and frame.MasterLooterIndicator
+	local masterlooter = frame.MasterLooterIndicator
 
 	if not leader or not assistant or not masterlooter then return end
 
 	local db = frame.db
 	local isLeader = leader:IsShown()
 	local isAssist = assistant:IsShown()
-	local isMasterLooter = masterlooter:IsShown()
 
 	leader:ClearAllPoints()
 	assistant:ClearAllPoints()
