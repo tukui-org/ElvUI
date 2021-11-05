@@ -226,7 +226,7 @@ function M:LOOT_OPENED(_, autoloot)
 	local m, w, t = 0, 0, lootFrame.title:GetStringWidth()
 	local items = GetNumLootItems()
 	if items > 0 then
-		for i=1, items do
+		for i = 1, items do
 			local slot = lootFrame.slots[i] or createSlot(i)
 			local textureID, item, quantity, _, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality or 0]

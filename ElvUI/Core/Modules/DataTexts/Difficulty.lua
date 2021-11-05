@@ -2,17 +2,17 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local pairs, format = pairs, format
+local pairs, format, tinsert = pairs, format, tinsert
 local GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID = GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID
 local SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID = SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID
 local GetInstanceInfo, GetDifficultyInfo, ResetInstances = GetInstanceInfo, GetDifficultyInfo, ResetInstances
-local C_ChallengeMode_GetActiveChallengeMapID = C_ChallengeMode.GetActiveChallengeMapID
-local C_ChallengeMode_GetActiveKeystoneInfo = C_ChallengeMode.GetActiveKeystoneInfo
-local C_ChallengeMode_IsChallengeModeActive = C_ChallengeMode.IsChallengeModeActive
-local C_MythicPlus_IsMythicPlusActive = C_MythicPlus.IsMythicPlusActive
+local C_ChallengeMode_GetActiveChallengeMapID = E.Retail and C_ChallengeMode.GetActiveChallengeMapID
+local C_ChallengeMode_GetActiveKeystoneInfo = E.Retail and C_ChallengeMode.GetActiveKeystoneInfo
+local C_ChallengeMode_IsChallengeModeActive = E.Retail and C_ChallengeMode.IsChallengeModeActive
+local C_MythicPlus_IsMythicPlusActive = E.Retail and C_MythicPlus.IsMythicPlusActive
 
 local DungeonTexture, RaidTexture, LegacyTexture = CreateAtlasMarkup('Dungeon', 20, 20), CreateAtlasMarkup('Raid', 20, 20), CreateAtlasMarkup('worldquest-icon-raid', 20, 20)
-local DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), GetLegacyRaidDifficultyID()
+local DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), E.Retail and GetLegacyRaidDifficultyID()
 
 local RightClickMenu, DiffLabel = {
 	{ text = _G.DUNGEON_DIFFICULTY, isTitle = true, notCheckable = true },
@@ -25,15 +25,17 @@ local RightClickMenu, DiffLabel = {
 	{ text = _G.PLAYER_DIFFICULTY2, checked = function() return GetRaidDifficultyID() == 15 end, func = function() SetRaidDifficultyID(15) end },
 	{ text = _G.PLAYER_DIFFICULTY6, checked = function() return GetRaidDifficultyID() == 16 end, func = function() SetRaidDifficultyID(16) end },
 	{ text = '', isTitle = true, notCheckable = true },
-	{ text = _G.UNIT_FRAME_DROPDOWN_SUBSECTION_TITLE_LEGACY_RAID, isTitle = true, notCheckable = true },
-	{ text = _G.RAID_DIFFICULTY1, checked = function() return GetLegacyRaidDifficultyID() == 3 end, func = function() SetLegacyRaidDifficultyID(3) end },
-	{ text = _G.RAID_DIFFICULTY1..' '.._G.PLAYER_DIFFICULTY2, checked = function() return GetLegacyRaidDifficultyID() == 5 end, func = function() SetLegacyRaidDifficultyID(5) end },
-	{ text = _G.RAID_DIFFICULTY2, checked = function() return GetLegacyRaidDifficultyID() == 4 end, func = function() SetLegacyRaidDifficultyID(4) end },
-	{ text = _G.RAID_DIFFICULTY2..' '.._G.PLAYER_DIFFICULTY2, checked = function() return GetLegacyRaidDifficultyID() == 6 end, func = function() SetLegacyRaidDifficultyID(6) end },
-	{ text = '', isTitle = true, notCheckable = true },
 	{ text = _G.RESET_INSTANCES, notCheckable = true, func = function() ResetInstances() end},
 }, {}
 
+if E.Retail then
+	tinsert(RightClickMenu, 10, { text = '', isTitle = true, notCheckable = true })
+	tinsert(RightClickMenu, 11, { text = _G.UNIT_FRAME_DROPDOWN_SUBSECTION_TITLE_LEGACY_RAID, isTitle = true, notCheckable = true })
+	tinsert(RightClickMenu, 12, { text = _G.RAID_DIFFICULTY1, checked = function() return GetLegacyRaidDifficultyID() == 3 end, func = function() SetLegacyRaidDifficultyID(3) end })
+	tinsert(RightClickMenu, 13, { text = _G.RAID_DIFFICULTY1..' '.._G.PLAYER_DIFFICULTY2, checked = function() return GetLegacyRaidDifficultyID() == 5 end, func = function() SetLegacyRaidDifficultyID(5) end })
+	tinsert(RightClickMenu, 14, { text = _G.RAID_DIFFICULTY2, checked = function() return GetLegacyRaidDifficultyID() == 4 end, func = function() SetLegacyRaidDifficultyID(4) end })
+	tinsert(RightClickMenu, 15, { text = _G.RAID_DIFFICULTY2..' '.._G.PLAYER_DIFFICULTY2, checked = function() return GetLegacyRaidDifficultyID() == 6 end, func = function() SetLegacyRaidDifficultyID(6) end })
+end
 
 for i = 1, 200 do
 	local Name = GetDifficultyInfo(i)
@@ -106,15 +108,16 @@ end
 
 local function OnEvent(self)
 	local name, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
-	local keyStoneLevel = C_MythicPlus_IsMythicPlusActive() and C_ChallengeMode_GetActiveChallengeMapID() and C_ChallengeMode_IsChallengeModeActive() and C_ChallengeMode_GetActiveKeystoneInfo()
+	local keyStoneLevel = E.Retail and C_MythicPlus_IsMythicPlusActive() and C_ChallengeMode_GetActiveChallengeMapID() and C_ChallengeMode_IsChallengeModeActive() and C_ChallengeMode_GetActiveKeystoneInfo()
 
 	if keyStoneLevel then
 		self.text:SetFormattedText('%s %s +%s', GetLabelTexture(difficultyID), name, keyStoneLevel)
 	elseif instanceType ~= 'none' and difficultyID and not Garrison[instanceID] then
 		self.text:SetFormattedText('%s %s %s', GetLabelTexture(difficultyID), name, GetDiffIDLabel(difficultyID))
 	else
-		DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), GetLegacyRaidDifficultyID()
-		self.text:SetFormattedText('%s %s %s %s %s %s', DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), LegacyTexture, GetDiffIDLabel(LegacyRaidDifficultyID))
+		DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), E.Retail and GetLegacyRaidDifficultyID()
+		local displayString = E.Retail and '%s %s %s %s %s %s' or '%s %s %s %s'
+		self.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), LegacyTexture, GetDiffIDLabel(LegacyRaidDifficultyID))
 	end
 end
 
