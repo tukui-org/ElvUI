@@ -722,7 +722,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 
 	config.args.duration = ACH:Group(L["Duration Text"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.duration.inline = true
-	config.args.duration.args.anchorPoint = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+	config.args.duration.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 	config.args.duration.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
 	config.args.duration.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
 	config.args.duration.args.color = ACH:Color(L["COLOR"], nil, 4, true, nil, function() local c, d = E.db.unitframe.units.raid.rdebuffs.duration.color, P.unitframe.units.raid.rdebuffs.duration.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units.raid.rdebuffs.duration.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName) end)
@@ -730,7 +730,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 	config.args.stack = ACH:Group(L["Stack Counter"], nil, 13, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.stack.inline = true
 	config.args.stack.args.color = ACH:Color(L["COLOR"], nil, 4, true, nil, function() local c, d = E.db.unitframe.units[groupName].rdebuffs.stack.color, P.unitframe.units[groupName].rdebuffs.stack.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].rdebuffs.stack.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName) end)
-	config.args.stack.args.anchorPoint = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
+	config.args.stack.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 	config.args.stack.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
 	config.args.stack.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
 
