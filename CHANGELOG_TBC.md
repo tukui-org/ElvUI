@@ -1,4 +1,4 @@
-### Version 2.21 [ ETA: 🍨 ]
+### Version 2.21 [ November 5th 2021 ]
 ActionBars: Added keybind mode for Stance Bar  
 Bags: Added back quest icon for quest items  
 Bags: Special color fixes (Soul Shards)  
