@@ -218,7 +218,7 @@ function UF:Configure_Power(frame)
 end
 
 function UF:GetDisplayPower()
-	local barInfo = GetUnitPowerBarInfo(self.__owner.unit)
+	local barInfo = E.Retail and GetUnitPowerBarInfo(self.__owner.unit)
 	if barInfo then
 		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
