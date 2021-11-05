@@ -840,9 +840,9 @@ function lib:init(forced)
 	minRangeCheck = nil
 
 	-- first try to find a nice item we can use for minRangeCheck
-	local harmItem = HarmItems[15] -- Sturdy Rope
-	if harmItem then
-		for _, item in next, harmItem do
+	local harmItems = HarmItems[15]
+	if harmItems then
+		for _, item in next, harmItems do
 			local minCheck = minItemChecker(item)
 			if minCheck then
 				minRangeCheck = minCheck
