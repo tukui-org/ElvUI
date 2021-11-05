@@ -10,11 +10,14 @@ local PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$','')
 local displayString, lastPanel = ''
 
 local function OnEvent(self)
-	local StatID = DT.SPECIALIZATION_CACHE[GetSpecialization()] and DT.SPECIALIZATION_CACHE[GetSpecialization()].statID
+	local Spec = E.Retail and GetSpecialization()
+	local StatID = Spec and DT.SPECIALIZATION_CACHE[Spec] and DT.SPECIALIZATION_CACHE[Spec].statID
 
 	local name = StatID and _G['SPELL_STAT'..StatID..'_NAME']
 	if name then
 		self.text:SetFormattedText(displayString, name..': ', UnitStat('player', StatID))
+	else
+		self.text:SetText('N/A')
 	end
 
 	lastPanel = self
