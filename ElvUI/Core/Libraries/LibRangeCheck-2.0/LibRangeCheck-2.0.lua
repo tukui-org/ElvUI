@@ -775,7 +775,7 @@ end
 
 local minItemChecker = function(item)
 	if GetItemInfo(item) then
-		minRangeCheck = function(unit)
+		return function(unit)
 			return IsItemInRange(item, unit)
 		end
 	end
