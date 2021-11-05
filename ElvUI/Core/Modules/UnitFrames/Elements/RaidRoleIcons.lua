@@ -31,7 +31,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		if not frame:IsElementEnabled('LeaderIndicator') then
 			frame:EnableElement('LeaderIndicator')
 			frame:EnableElement('AssistantIndicator')
-			if not E.Retail then frame:EnableElement('MasterLooterIndicator') end
+			frame:EnableElement('MasterLooterIndicator')
 		end
 
 		raidRoleFrameAnchor:ClearAllPoints()
@@ -40,7 +40,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		raidRoleFrameAnchor:Hide()
 		frame:DisableElement('LeaderIndicator')
 		frame:DisableElement('AssistantIndicator')
-		if not E.Retail then frame:DisableElement('MasterLooterIndicator') end
+		frame:DisableElement('MasterLooterIndicator')
 	end
 end
 
