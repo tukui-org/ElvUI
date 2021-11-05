@@ -48,6 +48,8 @@ local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '..
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local guildTable, guildMotD, lastPanel = {}, ''
+local InviteToGroup = InviteToGroup
+local RequestInviteFromUnit = RequestInviteFromUnit
 
 local function sortByRank(a, b)
 	if a and b then
@@ -172,9 +174,9 @@ local function inviteClick(_, name, guid)
 	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
 		if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
-			C_PartyInfo_InviteUnit(name)
+			if E.Retail then C_PartyInfo_InviteUnit(name) else InviteToGroup(name) end
 		elseif inviteType == 'REQUEST_INVITE' then
-			C_PartyInfo_RequestInviteFromUnit(name)
+			if E.Retail then C_PartyInfo_RequestInviteFromUnit(name) else RequestInviteFromUnit(name) end
 		end
 	else
 		-- if for some reason guid isnt here fallback and just try to invite them
