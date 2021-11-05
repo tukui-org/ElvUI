@@ -112,10 +112,10 @@ local InteractLists = {
 }
 
 local MeleeRange = 2
-local FriendSpells, HarmSpells, ResSpells, PetSpells, MinSpells = {}, {}, {}, {}, {}
+local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
 
 for _, n in next, { 'DEATHKNIGHT', 'DEMONHUNTER', 'DRUID', 'HUNTER', 'SHAMAN', 'MAGE', 'PALADIN', 'PRIEST', 'WARLOCK', 'WARRIOR', 'MONK', 'ROGUE' } do
-	FriendSpells[n], HarmSpells[n], ResSpells[n], PetSpells[n], MinSpells[n] = {}, {}, {}, {}, {}
+	FriendSpells[n], HarmSpells[n], ResSpells[n], PetSpells[n] = {}, {}, {}, {}
 end
 
 -- Death Knights
@@ -136,7 +136,7 @@ tinsert(FriendSpells.DRUID, 2782)	-- Remove Corruption (Restoration) (40 yards, 
 tinsert(FriendSpells.DRUID, 88423)	-- Natures Cure (Restoration) (40 yards, level 19)
 
 if not isRetail then
-	tinsert(FriendSpells.DRUID, 5185) -- Healing Touch (40 yards)
+	tinsert(FriendSpells.DRUID, 5185) -- Healing Touch (40 yards, level 1, rank 1)
 end
 
 tinsert(HarmSpells.DRUID, 5176)		-- Wrath (40 yards)
@@ -153,7 +153,7 @@ tinsert(ResSpells.DRUID, 20484)		-- Rebirth (40 yards, level 29)
 tinsert(HarmSpells.HUNTER, 75)		-- Auto Shot (40 yards)
 
 if not isRetail then
-	tinsert(HarmSpells.HUNTER, 2764) -- Throw (30 yards)
+	tinsert(HarmSpells.HUNTER, 2764) -- Throw (30 yards, level 1)
 end
 
 tinsert(PetSpells.HUNTER, 136)		-- Mend Pet (45 yards)
@@ -163,7 +163,7 @@ tinsert(FriendSpells.MAGE, 1459)	-- Arcane Intellect (40 yards, level 8)
 tinsert(FriendSpells.MAGE, 475)		-- Remove Curse (40 yards, level 28)
 
 if not isRetail then
-	tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards)
+	tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
 end
 
 tinsert(HarmSpells.MAGE, 44614)		-- Flurry (40 yards)
@@ -192,7 +192,7 @@ tinsert(FriendSpells.PALADIN, 4987)		-- Cleanse (Holy) (40 yards, level 12)
 tinsert(FriendSpells.PALADIN, 213644)	-- Cleanse Toxins (Protection, Retribution) (40 yards, level 12)
 
 if not isRetail then
-	tinsert(FriendSpells.PALADIN, 635)	-- Holy Light (40 yards)
+	tinsert(FriendSpells.PALADIN, 635)	-- Holy Light (40 yards, level 1, rank 1)
 end
 
 tinsert(HarmSpells.PALADIN, 853)	-- Hammer of Justice (10 yards)
@@ -211,7 +211,7 @@ tinsert(FriendSpells.PRIEST, 21562)	-- Power Word: Fortitude (40 yards, level 6)
 tinsert(FriendSpells.PRIEST, 527)	-- Purify (40 yards, level 18)
 
 if not isRetail then
-	tinsert(FriendSpells.PRIEST, 1706) -- Levitate (40 yards)
+	tinsert(FriendSpells.PRIEST, 1706) -- Levitate (40 yards, level 34)
 end
 
 tinsert(HarmSpells.PRIEST, 589)		-- Shadow Word: Pain (40 yards)
@@ -219,16 +219,17 @@ tinsert(HarmSpells.PRIEST, 585)		-- Smite (40 yards)
 tinsert(HarmSpells.PRIEST, 5019)	-- Shoot (30 yards)
 
 if not isRetail then
-	tinsert(HarmSpells.PRIEST, 8092) -- Mindblast (30 yards)
+	tinsert(HarmSpells.PRIEST, 8092) -- Mindblast (30 yards, level 10)
 end
 
 tinsert(ResSpells.PRIEST, 2006)		-- Resurrection (40 yards, level 10)
 
 -- Rogues
-tinsert(MinSpells.ROGUE, 2094)		-- Blind (15 yards)
-
-tinsert(FriendSpells.ROGUE, 921)	-- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly aswell
 tinsert(FriendSpells.ROGUE, 36554)	-- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
+
+if isRetail then
+	tinsert(FriendSpells.ROGUE, 921) -- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly aswell
+end
 
 tinsert(HarmSpells.ROGUE, 185565)	-- Poisoned Knife (Assassination) (30 yards)
 tinsert(HarmSpells.ROGUE, 185763)	-- Pistol Shot (Outlaw) (20 yards)
@@ -238,19 +239,15 @@ tinsert(HarmSpells.ROGUE, 2764)		-- Throw (30 yards)
 tinsert(HarmSpells.ROGUE, 2094)		-- Blind (15 yards)
 tinsert(HarmSpells.ROGUE, 921)		-- Pick Pocket (10 yards, level 24)
 
-if not isRetail then
-	tinsert(HarmSpells.ROGUE, 3018) -- Shoot
-end
-
 -- Shamans
 tinsert(FriendSpells.SHAMAN, 546)		-- Water Walking (30 yards)
 tinsert(FriendSpells.SHAMAN, 8004)		-- Healing Surge (Resto, Elemental) (40 yards)
 tinsert(FriendSpells.SHAMAN, 188070)	-- Healing Surge (Enhancement) (40 yards)
 
 if not isRetail then
-	tinsert(FriendSpells.SHAMAN, 331)	-- Healing Wave (40 yards) (Rank 1)
-	tinsert(FriendSpells.SHAMAN, 526)	-- Cure Poison (40 yards)
-	tinsert(FriendSpells.SHAMAN, 2860)	-- Cure Disease (40 yards)
+	tinsert(FriendSpells.SHAMAN, 331)	-- Healing Wave (40 yards, level 1, rank 1)
+	tinsert(FriendSpells.SHAMAN, 526)	-- Cure Poison (40 yards, level 16)
+	tinsert(FriendSpells.SHAMAN, 2870)	-- Cure Disease (40 yards, level 22)
 end
 
 tinsert(HarmSpells.SHAMAN, 370)		-- Purge (30 yards)
@@ -258,23 +255,19 @@ tinsert(HarmSpells.SHAMAN, 188196)	-- Lightning Bolt (40 yards)
 tinsert(HarmSpells.SHAMAN, 73899)	-- Primal Strike (Melee Range)
 
 if not isRetail then
-	tinsert(HarmSpells.SHAMAN, 403)		-- Lightning Bolt (30 yards)
-	tinsert(HarmSpells.SHAMAN, 421)		-- Chain Lightning (30 yards)
-	tinsert(HarmSpells.SHAMAN, 8042)	-- Earth Shock (20 yards)
+	tinsert(HarmSpells.SHAMAN, 403)		-- Lightning Bolt (30 yards, level 1, rank 1)
+	tinsert(HarmSpells.SHAMAN, 8042)	-- Earth Shock (20 yards, level 4, rank 1)
 end
 
 tinsert(ResSpells.SHAMAN, 2008)		-- Ancestral Spirit (40 yards, level 13)
 
 -- Warriors
-tinsert(MinSpells.WARRIOR, 5246)	-- Intimidating Shout (Arms, Fury) (8 yards)
-
 tinsert(HarmSpells.WARRIOR, 355)	-- Taunt (30 yards)
 tinsert(HarmSpells.WARRIOR, 5246)	-- Intimidating Shout (Arms, Fury) (8 yards)
 tinsert(HarmSpells.WARRIOR, 100)	-- Charge (Arms, Fury) (8-25 yards)
 
 if not isRetail then
-	tinsert(HarmSpells.WARRIOR, 3018) -- Shoot (30 yards)
-	tinsert(HarmSpells.WARRIOR, 2764) -- Throw (30 yards)
+	tinsert(HarmSpells.WARRIOR, 2764) -- Throw (30 yards, level 1, 5-30 range)
 end
 
 -- Warlocks
@@ -282,7 +275,7 @@ tinsert(FriendSpells.WARLOCK, 5697)		-- Unending Breath (30 yards)
 tinsert(FriendSpells.WARLOCK, 20707)	-- Soulstone (40 yards) ~ this can be precasted so leave it in friendly aswell as res
 
 if isRetail then
-	tinsert(FriendSpells.WARLOCK, 132)	-- Detect Invisibility (30 yards)
+	tinsert(FriendSpells.WARLOCK, 132)	-- Detect Invisibility (30 yards, level 26)
 end
 
 tinsert(HarmSpells.WARLOCK, 5019)		-- Shoot (30 yards)
@@ -293,8 +286,8 @@ tinsert(HarmSpells.WARLOCK, 232670)		-- Shadow Bolt (40 yards)
 tinsert(HarmSpells.WARLOCK, 5782)		-- Fear (30 yards)
 
 if not isRetail then
-	tinsert(HarmSpells.WARLOCK, 172)	-- Corruption (30 yards)
-	tinsert(HarmSpells.WARLOCK, 348)	-- Immolate (30 yards)
+	tinsert(HarmSpells.WARLOCK, 172)	-- Corruption (30 yards, level 4, rank 1)
+	tinsert(HarmSpells.WARLOCK, 348)	-- Immolate (30 yards, level 1, rank 1)
 end
 
 tinsert(ResSpells.WARLOCK, 20707)	-- Soulstone (40 yards)
@@ -763,16 +756,6 @@ local function createSmartChecker(friendChecker, harmChecker, miscChecker)
 	end
 end
 
-local minSpellChecker = function(spell)
-	local name = GetSpellInfo(spell)
-	local spellIdx = findSpellIdx(name)
-	if spellIdx then
-		return function(unit)
-			return IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1
-		end
-	end
-end
-
 local minItemChecker = function(item)
 	if GetItemInfo(item) then
 		return function(unit)
@@ -847,19 +830,6 @@ function lib:init(forced)
 			if minCheck then
 				minRangeCheck = minCheck
 				break
-			end
-		end
-	end
-
-	if not minRangeCheck then -- some classes on classic don't have a minrange friendly spell, this allows us to use another spell as minRangeCheck
-		local minSpell = MinSpells[playerClass]
-		if minSpell then
-			for _, spell in next, minSpell do
-				local minCheck = minSpellChecker(spell)
-				if minCheck then
-					minRangeCheck = minCheck
-					break -- only use first found
-				end
 			end
 		end
 	end
