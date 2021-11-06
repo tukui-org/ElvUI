@@ -27,12 +27,18 @@ local function colorize(num)
 end
 
 local function OnEvent(self)
-	local avg, avgEquipped = GetAverageItemLevel()
-	local same = avg == avgEquipped
-	self.text:SetFormattedText(title .. (same and '%0.2f|r' or '%0.2f / %0.2f|r'), ITEM_LEVEL_ABBR, avgEquipped, (not same and avg) or '0')
+	if E.Retail then
+		local avg, avgEquipped = GetAverageItemLevel()
+		local same = avg == avgEquipped
+		self.text:SetFormattedText(title .. (same and '%0.2f|r' or '%0.2f / %0.2f|r'), ITEM_LEVEL_ABBR, avgEquipped, (not same and avg) or '0')
+	else
+		self.text:SetText('N/A')
+	end
 end
 
 local function OnEnter(self)
+	if not E.Retail then return end
+
 	DT.tooltip:ClearLines()
 
 	local avg, avgEquipped, avgPvp = GetAverageItemLevel()
