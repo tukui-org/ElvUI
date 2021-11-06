@@ -2,9 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local ipairs = ipairs
-local pairs = pairs
+local select, ipairs, pairs = select, ipairs, pairs
 
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -115,7 +113,6 @@ function S:BlizzardOptions()
 		_G.ChatConfigFrameDefaultButton,
 		_G.ChatConfigFrameRedockButton,
 		_G.ChatConfigFrameOkayButton,
-		_G.ChatConfigFrame.ToggleChatButton,
 		_G.ChatConfigCombatSettingsFiltersDeleteButton,
 		_G.ChatConfigCombatSettingsFiltersAddFilterButton,
 		_G.ChatConfigCombatSettingsFiltersCopyFilterButton,
@@ -288,7 +285,7 @@ function S:BlizzardOptions()
 	end
 
 	for _, Tab in pairs(OptionsButtons) do
-		S:HandleButton(Tab)
+		S:HandleButton(Tab, true)
 	end
 
 	for _, Panel in pairs(InterfaceOptions) do
@@ -355,6 +352,12 @@ function S:BlizzardOptions()
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
+
+	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
+	VUMeter:StripTextures()
+	VUMeter.Status:CreateBackdrop()
+	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(VUMeter.Status)
 
 	-- PushToTalk KeybindButton - Wow 8.0
 	hooksecurefunc('AudioOptionsVoicePanel_InitializeCommunicationModeUI', S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)

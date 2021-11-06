@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local ipairs = ipairs
@@ -53,7 +54,7 @@ end
 
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
-	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
+	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 	auraBar:Height(1)
 	auraBar.PreSetPosition = UF.SortAuras
 	auraBar.PostCreateBar = UF.Construct_AuraBars
@@ -211,7 +212,9 @@ function UF:PostUpdateBar_AuraBars(_, statusBar, _, _, _, _, debuffType) -- unit
 			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, statusBar, statusBar.bg, nil, UF.db.colors.invertAurabars)
 		else
 			local sbTexture = statusBar:GetStatusBarTexture()
-			if not statusBar.bg:GetTexture() then UF:Update_StatusBar(statusBar.bg, sbTexture:GetTexture()) end
+			if not statusBar.bg:GetTexture() then
+				UF:Update_StatusBar(statusBar.bg, UF.db.colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
+			end
 
 			UF:SetStatusBarBackdropPoints(statusBar, sbTexture, statusBar.bg)
 		end

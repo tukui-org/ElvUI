@@ -416,8 +416,9 @@ function M:GetMinimapShape()
 end
 
 function M:SetGetMinimapShape()
-	GetMinimapShape = M.GetMinimapShape -- This is just to support for other mods
-	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
+	GetMinimapShape = M.GetMinimapShape
+
+	Minimap:Size(E.db.general.minimap.size)
 end
 
 function M:QueueStatusTimeFormat(seconds)
@@ -498,7 +499,13 @@ function M:CreateQueueStatusText()
 end
 
 function M:Initialize()
-	if not E.private.general.minimap.enable then return end
+	if E.private.general.minimap.enable then
+		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+	else
+		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+		return
+	end
+
 	self.Initialized = true
 
 	menuFrame:SetTemplate('Transparent')

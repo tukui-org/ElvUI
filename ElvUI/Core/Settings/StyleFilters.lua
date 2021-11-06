@@ -3,7 +3,7 @@
 
 	Add the nameplates name that you do NOT want to see.
 ]]
-local E, L, V, P, G = unpack(ElvUI) --Engine
+local E, L, V, P, G = unpack(ElvUI)
 
 G.nameplate.filters = {
 	ElvUI_Boss = {

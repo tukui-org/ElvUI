@@ -137,6 +137,11 @@ function AB:PositionAndSizeBarShapeShift()
 		button = _G['ElvUI_StanceBarButton'..i]
 		lastButton = _G['ElvUI_StanceBarButton'..i-1]
 		lastColumnButton = _G['ElvUI_StanceBarButton'..i-buttonsPerRow]
+
+		if not E.Retail then
+			button.commandName = 'SHAPESHIFTBUTTON'..i -- to support KB like retail
+		end
+
 		button.db = db
 
 		if i == 1 or i == buttonsPerRow then

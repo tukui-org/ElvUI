@@ -12,6 +12,7 @@ function S:WorldMapFrame()
 
 	S:HandleDropDownBox(_G.WorldMapContinentDropDown)
 	S:HandleDropDownBox(_G.WorldMapZoneDropDown)
+	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropDown)
 
 	_G.WorldMapContinentDropDown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
 	_G.WorldMapContinentDropDown:Width(205)

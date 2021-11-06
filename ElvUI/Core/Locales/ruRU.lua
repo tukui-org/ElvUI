@@ -162,7 +162,7 @@ L["HPS"] = "ИВС"
 L["I Swear"] = "Я клянусь!"
 L["I"] = "П"
 L["Icons Only"] = "Только иконки"
-L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."] = "Если вы случайно удалили вкладку чата по умолчанию,вы всегда можете повторно запустить часть установщика ElvUI по настройке чата."
+L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."] = "Если вы случайно удалили вкладку чата по умолчанию, вы всегда можете повторно запустить часть установщика ElvUI по настройке чата."
 L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI first."] = "Если у вас возникли проблемы с ElvUI, попробуйте сначала отключить все ваши аддоны, кроме ElvUI."
 L["IL"] = "ЛП"
 L["Import Profile"] = "Импорт профиля"
@@ -201,8 +201,8 @@ L["Legs"] = "Ноги"
 L["Level"] = "Уровень"
 L["List of installations in queue:"] = "Очередь установки:"
 L["Lock"] = "Закрепить"
-L["LOGIN_MSG_HELP"] = ("Используйте */ehelp|r для вызова достуцпных команд *ElvUI|r."):gsub('*', E.InfoColor)
-L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
+L["LOGIN_MSG_HELP"] = ("Используйте */ehelp|r для вызова доступных команд *ElvUI|r."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%.2f|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Чтоб его! Загрузка была... да всплыла. Попробуйте еще раз!"
@@ -287,7 +287,7 @@ L["Save"] = "Сохранить"
 L["Saved Dungeon(s)"] = "Сохраненные подземелья"
 L["Saved Raid(s)"] = "Сохраненные рейды"
 L["says"] = "говорит"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."] = "Выберите тип си стемы аур, который будет применен к рамкам юнитов. Выберите \"Полосы и иконки\" для показа полос аур и иконок, выберите \"Только иконки\" для показа исключительно иконок."
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."] = "Выберите тип системы аур, который будет применен к рамкам юнитов. Выберите \"Полосы и иконки\" для показа полос аур и иконок, выберите \"Только иконки\" для показа исключительно иконок."
 L["Server: "] = "На сервере:"
 L["Session:"] = "За сеанс:"
 L["Setup Chat"] = "Настроить чат"
@@ -395,7 +395,7 @@ L["EHELP_COMMANDS"] = ([=[Ниже представлен список всех 
  */ereset|r  -  Сброс всех фреймов на из изначальные места.
  */bgstats|r  -  Показать/скрыть статистику полей боя на панелях инфо-текстов.
  */hdt|r  -  Изменять инфо-тексты без открытия *окна конфигурации|r.
- */estatus|r  -  Важная информаци по вопросам поддержки.
+ */estatus|r  -  Важная информация по вопросам поддержки.
  */egrid|r ^64|r или ^128|r или ^256|r  -  Вкл/выкл экранную сетку.
  */edebug|r ^on|r или ^off|r  -  Отключить все аддоны, кроме ElvUI.
   ВАЖНО: */edebug|r ^off|r включит обратно все отключенные В ДАННОЙ СЕССИИ (без /rl) командой */edebug|r ^on|r аддоны.

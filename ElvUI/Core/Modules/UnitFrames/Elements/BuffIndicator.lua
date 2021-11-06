@@ -6,7 +6,7 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
 	local auras = CreateFrame('Frame', frame:GetName() .. 'AuraWatch', frame)
-	auras:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
+	auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0

@@ -80,7 +80,7 @@ DataBars.args.experience.args.questGroup = ACH:Group(L["Quests"], nil, -3, nil, 
 DataBars.args.experience.args.questGroup.inline = true
 DataBars.args.experience.args.questGroup.args.showQuestXP = ACH:Toggle(L["Show QuestXP"], nil, 1)
 DataBars.args.experience.args.questGroup.args.questCompletedOnly = ACH:Toggle(L["Completed Quests Only"], nil, 2, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
-DataBars.args.experience.args.questGroup.args.questsCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
+DataBars.args.experience.args.questGroup.args.questCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
 
 E.Options.args.databars.args.petExperience = ACH:Group(L["Pet Experience"], nil, 2, nil, function(info) return DB.db.petExperience[info[#info]] end, function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Update() DB:UpdateAll() end, nil, function() return E.Retail or E.myclass ~= 'HUNTER' end)
 E.Options.args.databars.args.petExperience.args = CopyTable(SharedOptions)

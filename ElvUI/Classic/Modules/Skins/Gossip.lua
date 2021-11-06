@@ -2,9 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub = gsub
-local pairs = pairs
-local strmatch = strmatch
+local gsub, pairs, strmatch = gsub, pairs, strmatch
 local hooksecurefunc = hooksecurefunc
 
 local GetNumQuestLogEntries = GetNumQuestLogEntries

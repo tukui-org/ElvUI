@@ -97,6 +97,7 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local KEYRING_CONTAINER = KEYRING_CONTAINER
+local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 
@@ -533,6 +534,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+		else
+			isQuestItem = itemClassID == LE_ITEM_CLASS_QUESTITEM
 		end
 
 		if B.db.itemLevel then
@@ -587,7 +590,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		B:HideCooldown(slot)
 	end
 
-	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
@@ -1330,9 +1333,12 @@ end
 
 function B:ToggleBag(holder)
 	if not holder then return end
-	local id = holder.id
-	B.db.shownBags['bag'..id] = not B.db.shownBags['bag'..id]
-	holder.shownIcon:SetTexture(B.db.shownBags['bag'..id] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+
+	local slotID = 'bag'..holder.id
+	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
+
+	holder.shownIcon:SetTexture(B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+
 	B:Layout(holder.isBank)
 end
 
@@ -1938,7 +1944,7 @@ function B:ToggleBags(id)
 		if closed then
 			B:OpenBags()
 		end
-	elseif id and GetContainerNumSlots(id) == 0 then
+	elseif id and GetContainerNumSlots(id) ~= 0 then
 		if B.BagFrame:IsShown() then
 			B:CloseBags()
 		else
@@ -2330,7 +2336,7 @@ end
 B.BagIndice = {
 	quiver = 0x0001,
 	ammoPouch = 0x0002,
-	soulBag = 0x0003,
+	soulBag = 0x0004,
 	leatherworking = 0x0008,
 	inscription = 0x0010,
 	herbs = 0x0020,
@@ -2386,7 +2392,7 @@ function B:Initialize()
 	B.ProfessionColors = {
 		[0x0001]   = { B.db.colors.profession.quiver.r, B.db.colors.profession.quiver.g, B.db.colors.profession.quiver.b},
 		[0x0002]   = { B.db.colors.profession.ammoPouch.r, B.db.colors.profession.ammoPouch.g, B.db.colors.profession.ammoPouch.b},
-		[0x0003]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
+		[0x0004]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
 		[0x0008]	= { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
 		[0x0010]	= { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
 		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
