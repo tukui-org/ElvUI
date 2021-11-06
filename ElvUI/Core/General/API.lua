@@ -430,7 +430,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if UnitHasVehicleUI('player') then
+	if E.Retail and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 
