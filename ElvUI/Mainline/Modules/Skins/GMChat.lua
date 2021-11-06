@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 
 function S:Blizzard_GMChatUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gmChat) then return end
@@ -14,15 +13,18 @@ function S:Blizzard_GMChatUI()
 	frame.buttonFrame:Hide()
 
 	local editbox = frame.editBox
-	editbox:SetTemplate('Transparent')
 	editbox:SetAltArrowKeyMode(false)
+	editbox:SetTemplate()
 	editbox:ClearAllPoints()
-	editbox:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -7)
+	editbox:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -5)
 	editbox:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 0, -32)
 
-	for i = 3, 8 do
-		select(i, editbox:GetRegions()):SetAlpha(0)
-	end
+	_G.GMChatFrameEditBoxRight:SetAlpha(0)
+	_G.GMChatFrameEditBoxLeft:SetAlpha(0)
+	_G.GMChatFrameEditBoxMid:SetAlpha(0)
+	_G.GMChatFrameEditBoxFocusRight:SetAlpha(0)
+	_G.GMChatFrameEditBoxFocusLeft:SetAlpha(0)
+	_G.GMChatFrameEditBoxFocusMid:SetAlpha(0)
 
 	local lang = _G.GMChatFrameEditBoxLanguage
 	lang:GetRegions():SetAlpha(0)
@@ -35,7 +37,7 @@ function S:Blizzard_GMChatUI()
 	tab:SetTemplate('Transparent')
 	tab:SetBackdropColor(0, .6, 1, .3)
 	tab:ClearAllPoints()
-	tab:Point('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
+	tab:Point('BOTTOMLEFT', frame, 'TOPLEFT', 0, 2)
 	tab:Point('TOPRIGHT', frame, 'TOPRIGHT', 0, 28)
 	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
 
