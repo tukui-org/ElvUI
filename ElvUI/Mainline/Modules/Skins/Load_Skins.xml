@@ -37,6 +37,7 @@
 	<Script file='FlightMap.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Garrison.lua'/>
+	<Script file='GarrisonTooltip.lua'/>
 	<Script file='GarrisonTemplate.lua'/>
 	<Script file='GMChat.lua'/>
 	<Script file='Gossip.lua'/>
