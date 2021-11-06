@@ -235,78 +235,38 @@ local function FilterSettings(info, ...)
 	UF:Update_AllFrames()
 end
 
-E.Options.args.filters = {
-	type = 'group',
-	name = L["FILTERS"],
-	order = 3,
-	childGroups = 'tab',
-	args = {
-		mainOptions = {
-			type = 'group',
-			name = 'Main Options',
-			order = 1,
-			args = {
-				createFilter = {
-					order = 1,
-					name = L["Create Filter"],
-					desc = L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."],
-					type = 'input',
-					get = function(_) return '' end,
-					set = function(_, value)
-						if strmatch(value, '^[%s%p]-$') then
-							return
-						end
-						if strmatch(value, ',') then
-							E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
-							value = gsub(value, ',', '')
-						end
-						if strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') then
-							return --dont allow people to create Friendly: or Enemy: filters
-						end
-						if G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value] then
-							E:Print(L["Filter already exists!"])
-							return
-						end
-						E.global.unitframe.aurafilters[value] = { type = 'whitelist', spells = {} }
-						selectedFilter = value
-					end,
-				},
-				selectFilter = {
-					order = 2,
-					type = 'select',
-					name = L["Select Filter"],
-					get = function() return selectedFilter end,
-					set = function(_, value)
-						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
-						if value ~= '' then
-							selectedFilter = value
-						end
-					end,
-					values = SetFilterList,
-				},
-				deleteFilter = {
+local function getSelectedFilter() return selectedFilter end
+local function resetSelectedFilter(_, value) selectedFilter, selectedSpell, quickSearchText = nil, nil, '' if value ~= '' then selectedFilter = value end end
+
+local function returnBlank() return '' end
+
+local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') or G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value]) end
+local function confirmResetFilter(_, value) return 'Reset Filter - '..value end
+
+E.Options.args.filters = ACH:Group(L["FILTERS"], nil, 3, 'tab')
+E.Options.args.filters.args.mainOptions = ACH:Group('Main Options', nil, 1)
+E.Options.args.filters.args.mainOptions.args.createFilter = ACH:Input(L["Create Filter"], L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."], 1, nil, nil, nil, function(_, value) value = gsub(value, ',', '') E.global.unitframe.aurafilters[value] = { type = 'whitelist', spells = {} } selectedFilter = value end, nil, nil, validateCreateFilter)
+E.Options.args.filters.args.mainOptions.args.selectFilter = ACH:Select(L["Select Filter"], nil, 2, SetFilterList, nil, nil, getSelectedFilter, resetSelectedFilter)
+E.Options.args.filters.args.mainOptions.args.deleteFilter = {
 					type = 'select',
 					order = 3,
 					name = L["Delete Filter"],
 					desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
-					confirm = function(_, value) return 'Remove Filter - '..value end,
+					confirm = confirmResetFilter,
 					set = function(_, value)
 						E.global.unitframe.aurafilters[value] = nil
-						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
-
+						resetSelectedFilter()
 						removePriority(value) --This will wipe a filter from the new aura system profile settings.
 					end,
 					disabled = DeleteFilterListDisable,
 					values = DeleteFilterList,
-				},
-				resetGroup = {
+				}
+E.Options.args.filters.args.mainOptions.args.resetGroup = {
 					type = 'select',
 					name = L["Reset Filter"],
 					order = 4,
 					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
-					confirm = function(_, value)
-						return 'Reset Filter - '..value
-					end,
+					confirm = confirmResetFilter,
 					set = function(_, value)
 						if value == 'Aura Highlight' then
 							E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
@@ -325,8 +285,9 @@ E.Options.args.filters = {
 						UF:Update_AllFrames()
 					end,
 					values = ResetFilterList,
-				},
-				filterGroup = {
+				}
+
+E.Options.args.filters.args.mainOptions.args.filterGroup = {
 					type = 'group',
 					name = function() return selectedFilter end,
 					hidden = function() return not selectedFilter end,
@@ -375,7 +336,6 @@ E.Options.args.filters = {
 								return format(L["Remove Spell - %s"], GetSpellNameRank(value))
 							end,
 							customWidth = 350,
-							get = function() return '' end,
 							set = function(_, value)
 								if not value then return end
 								selectedSpell = nil
@@ -412,7 +372,6 @@ E.Options.args.filters = {
 							desc = L["Add a spell to the filter."],
 							type = 'input',
 							customWidth = 200,
-							get = function(_) return '' end,
 							set = function(_, value)
 								value = tonumber(value)
 								if not value then return end
@@ -441,9 +400,10 @@ E.Options.args.filters = {
 								UF:Update_AllFrames()
 							end,
 						},
-					},
-				},
-				buffIndicator = {
+					}
+				}
+
+E.Options.args.filters.args.mainOptions.args.buffIndicator = {
 					type = 'group',
 					name = function()
 						return GetSpellNameRank(GetSelectedSpell())
@@ -476,17 +436,7 @@ E.Options.args.filters = {
 							name = L["Anchor Point"],
 							order = 2,
 							type = 'select',
-							values = {
-								TOPLEFT = 'TOPLEFT',
-								LEFT = 'LEFT',
-								BOTTOMLEFT = 'BOTTOMLEFT',
-								RIGHT = 'RIGHT',
-								TOPRIGHT = 'TOPRIGHT',
-								BOTTOMRIGHT = 'BOTTOMRIGHT',
-								CENTER = 'CENTER',
-								TOP = 'TOP',
-								BOTTOM = 'BOTTOM',
-							}
+							values = C.Values.AllPoints
 						},
 						style = {
 							name = L["Style"],
@@ -581,8 +531,8 @@ E.Options.args.filters = {
 							end
 						},
 					},
-				},
-				spellGroup = {
+				}
+E.Options.args.filters.args.mainOptions.args.spellGroup = {
 					type = 'group',
 					name = function() return GetSpellNameRank(GetSelectedSpell()) end,
 					hidden = function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
@@ -713,10 +663,6 @@ E.Options.args.filters = {
 						},
 					}
 				}
-			}
-		}
-	}
-}
 
 E.Options.args.filters.args.help = ACH:Group('Help', nil, 2)
 
