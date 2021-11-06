@@ -38,6 +38,7 @@
 	<Script file='Friends.lua'/>
 	<Script file='Garrison.lua'/>
 	<Script file='GarrisonTemplate.lua'/>
+	<Script file='GMChat.lua'/>
 	<Script file='Gossip.lua'/>
 	<Script file='Guide.lua'/>
 	<Script file='Guild.lua'/>

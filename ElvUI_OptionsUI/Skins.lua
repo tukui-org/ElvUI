@@ -28,7 +28,6 @@ end
 
 Skins.args.disableBlizzardSkins = ACH:Execute(L["Disable Blizzard Skins"], nil, 3, function() ToggleSkins(false); E:StaticPopup_Show('PRIVATE_RL') end)
 Skins.args.enableBlizzardSkins = ACH:Execute(L["Enable Blizzard Skins"], nil, 4, function() ToggleSkins(true); E:StaticPopup_Show('PRIVATE_RL') end)
-
 Skins.args.blizzard = ACH:MultiSelect(L["Blizzard"], L["TOGGLESKIN_DESC"], -1, nil, nil, nil, function(_, key) return E.private.skins.blizzard[key] end, function(_, key, value) E.private.skins.blizzard[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.private.skins.blizzard.enable end)
 Skins.args.blizzard.sortByValue = true
 Skins.args.blizzard.values = {
@@ -80,7 +79,6 @@ Skins.args.blizzard.values = {
 }
 
 local blizzard = Skins.args.blizzard.values
-
 if E.Retail then
 	blizzard.achievement = L["ACHIEVEMENTS"]
 	blizzard.adventureMap = L["ADVENTURE_MAP_TITLE"]
@@ -104,6 +102,7 @@ if E.Retail then
 	blizzard.deathRecap = L["DEATH_RECAP_TITLE"]
 	blizzard.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	blizzard.garrison = L["GARRISON_LOCATION_TOOLTIP"]
+	blizzard.gmChat = L["GM Chat"]
 	blizzard.guide = L["Guide Frame"]
 	blizzard.islandQueue = L["ISLANDS_HEADER"]
 	blizzard.islandsPartyPose = L["Island Party Pose"]
@@ -126,12 +125,12 @@ if E.Retail then
 	blizzard.transmogrify = L["TRANSMOGRIFY"]
 	blizzard.voidstorage = L["VOID_STORAGE"]
 	blizzard.weeklyRewards = L["Weekly Rewards"]
-else
-	if E.TBC then
-		blizzard.arena = L["Arena"]
-		blizzard.arenaRegistrar = L["Arena Registrar"]
-	end
-
+elseif E.TBC then
+	blizzard.arena = L["Arena"]
+	blizzard.arenaRegistrar = L["Arena Registrar"]
+	blizzard.battlefield = L["Battlefield"]
+	blizzard.craft = L["Craft"]
+elseif E.Classic then
 	blizzard.battlefield = L["Battlefield"]
 	blizzard.craft = L["Craft"]
 end
