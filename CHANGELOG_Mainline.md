@@ -1,9 +1,16 @@
-### Version 12.48 [ ETA: 🍨 ]
+### Version 12.49 [ ETA: 🍨 ]
+
 General: Updated RaidUtility  
 Locales: Updated russian translation (Credits Hollicsh)  
 Minimap: Fixes for minimap addon icons  
 Nameplates: Added back offset options for power  
 Nameplates: Fixed an issue which broke the "Add Filter" dropdown  
+Tooltips: Fixed item quality color error with Tooltips skin disabled  
+
+___
+### Version 12.48 [ November 4th 2021 ]
+
+Options: Fixed Add Filter for Nameplate Debuffs
 
 ___
 ### Version 12.47 [ November 4th 2021 ]
