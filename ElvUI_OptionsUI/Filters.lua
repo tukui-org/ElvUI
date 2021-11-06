@@ -290,7 +290,7 @@ local function resetSelectedFilter(_, value) selectedFilter, selectedSpell, quic
 local function returnBlank() return '' end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') or G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value]) end
-local function confirmResetFilter(_, value) return format(L["Reset Filter - %s"], value) end
+local function confirmResetFilter(_, value) return value ~= '' and format(L["Reset Filter - %s"], value) end
 local function resetFilter(_, value)
 	 if value == 'Aura Highlight' then
 		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
@@ -360,7 +360,7 @@ E.Options.args.filters.args.mainOptions.args.filterGroup = {
 							desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 							type = 'select',
 							confirm = function(_, value)
-								return format(L["Remove Spell - %s"], GetSpellNameRank(value))
+								return value ~= '' and format(L["Remove Spell - %s"], GetSpellNameRank(value))
 							end,
 							customWidth = 350,
 							set = AddOrRemoveSpellID,
