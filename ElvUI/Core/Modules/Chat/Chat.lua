@@ -1141,6 +1141,8 @@ function CH:GetDockerParent(docker, chat)
 end
 
 function CH:UpdateChatTab(chat)
+	if chat.lastGM then return end -- ignore GM Chat
+
 	local fadeLeft, fadeRight
 	if CH.db.fadeTabsNoBackdrop then
 		local both = CH.db.panelBackdrop == 'HIDEBOTH'
@@ -1148,13 +1150,14 @@ function CH:UpdateChatTab(chat)
 		fadeRight = (both or CH.db.panelBackdrop == 'LEFT')
 	end
 
+	local tab = CH:GetTab(chat)
 	if chat == CH.LeftChatWindow then
-		CH:GetTab(chat):SetParent(_G.LeftChatPanel or _G.UIParent)
+		tab:SetParent(_G.LeftChatPanel or _G.UIParent)
 		chat:SetParent(_G.LeftChatPanel or _G.UIParent)
 
 		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
-		CH:GetTab(chat):SetParent(_G.RightChatPanel or _G.UIParent)
+		tab:SetParent(_G.RightChatPanel or _G.UIParent)
 		chat:SetParent(_G.RightChatPanel or _G.UIParent)
 
 		CH:HandleFadeTabs(chat, fadeRight)
@@ -1163,7 +1166,7 @@ function CH:UpdateChatTab(chat)
 		local parent = CH:GetDockerParent(docker, chat)
 
 		-- we need to update the tab parent to mimic the docker
-		CH:GetTab(chat):SetParent(parent or _G.UIParent)
+		tab:SetParent(parent or _G.UIParent)
 		chat:SetParent(parent or _G.UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
