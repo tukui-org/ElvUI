@@ -117,7 +117,7 @@ local function OnEvent(self)
 	else
 		DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), E.Retail and GetLegacyRaidDifficultyID()
 		local displayString = E.Retail and '%s %s %s %s %s %s' or '%s %s %s %s'
-		self.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), LegacyTexture, GetDiffIDLabel(LegacyRaidDifficultyID))
+		self.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), E.Retail and LegacyTexture, E.Retail and GetDiffIDLabel(LegacyRaidDifficultyID))
 	end
 end
 
