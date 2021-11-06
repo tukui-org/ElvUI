@@ -310,6 +310,23 @@ function mod:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 	end
 end
 
+function mod:StyleFilterDispelCheck(frame, filter)
+	local index = 1
+	local name, _, _, debuffType, _, _, _, isStealable = UnitAura(frame.unit, index, filter)
+	while name do
+		if filter == 'HELPFUL' then
+			if isStealable then
+				return true
+			end
+		elseif debuffType and E:IsDispellableByMe(debuffType) then
+			return true
+		end
+
+		index = index + 1
+		name, _, _, debuffType, _, _, _, isStealable = UnitAura(frame.unit, index, filter)
+	end
+end
+
 function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
 	local total, matches = 0, 0
 	for key, value in pairs(names) do
@@ -990,7 +1007,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Buffs and trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
-			if (trigger.buffs.hasStealable and frame.Buffs.hasStealable) or (trigger.buffs.hasNoStealable and not frame.Buffs.hasStealable) then passed = true else return end
+			local isStealable = mod:StyleFilterDispelCheck(frame, filter)
+			if (trigger.buffs.hasStealable and isStealable) or (trigger.buffs.hasNoStealable and not isStealable) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
@@ -1006,7 +1024,8 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
-			if (trigger.debuffs.hasDispellable and frame.Debuffs.hasDispellable) or (trigger.debuffs.hasNoDispellable and not frame.Debuffs.hasDispellable) then passed = true else return end
+			local canDispel = mod:StyleFilterDispelCheck(frame, filter)
+			if (trigger.debuffs.hasDispellable and canDispel) or (trigger.debuffs.hasNoDispellable and not canDispel) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
