@@ -101,7 +101,6 @@ if E.Retail then
 	Skins.args.blizzard.values.deathRecap = L["DEATH_RECAP_TITLE"]
 	Skins.args.blizzard.values.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	Skins.args.blizzard.values.garrison = L["GARRISON_LOCATION_TOOLTIP"]
-	Skins.args.blizzard.values.gmChat = L["GM Chat"]
 	Skins.args.blizzard.values.guide = L["Guide Frame"]
 	Skins.args.blizzard.values.islandQueue = L["ISLANDS_HEADER"]
 	Skins.args.blizzard.values.islandsPartyPose = L["Island Party Pose"]
@@ -124,12 +123,12 @@ if E.Retail then
 	Skins.args.blizzard.values.transmogrify = L["TRANSMOGRIFY"]
 	Skins.args.blizzard.values.voidstorage = L["VOID_STORAGE"]
 	Skins.args.blizzard.values.weeklyRewards = L["Weekly Rewards"]
-elseif E.TBC then
-	Skins.args.blizzard.values.arena = L["Arena"]
-	Skins.args.blizzard.values.arenaRegistrar = L["Arena Registrar"]
-	Skins.args.blizzard.values.battlefield = L["Battlefield"]
-	Skins.args.blizzard.values.craft = L["Craft"]
-elseif E.Classic then
+else
+	if E.TBC then
+		Skins.args.blizzard.values.arena = L["Arena"]
+		Skins.args.blizzard.values.arenaRegistrar = L["Arena Registrar"]
+	end
+
 	Skins.args.blizzard.values.battlefield = L["Battlefield"]
 	Skins.args.blizzard.values.craft = L["Craft"]
 end
