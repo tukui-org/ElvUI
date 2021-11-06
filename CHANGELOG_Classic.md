@@ -1,5 +1,10 @@
 ### Version 1.48 [ ETA: 🍨 ]
+Bags: Added an option to enable/disable Quest icons  
+DataTexts: Fixed invite function for guild datatext  
 Locales: Updated russian translation (Credits Hollicsh)  
+UnitFrames: Fixed an error in power bars  
+UnitFrames: Master Looter indicator fixes  
+UnitFrames: Out of range fader fixes  
 
 ___
 ### Version 1.47 [ November 4th 2021 ]

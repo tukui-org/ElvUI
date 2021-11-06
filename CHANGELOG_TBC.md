@@ -1,5 +1,10 @@
 ### Version 2.22 [ ETA: 🍨 ]
+Bags: Added an option to enable/disable Quest icons  
+DataTexts: Fixed invite function for guild datatext  
 Locales: Updated russian translation (Credits Hollicsh)  
+UnitFrames: Fixed an error in power bars  
+UnitFrames: Master Looter indicator fixes  
+UnitFrames: Out of range fader fixes  
 
 ___
 ### Version 2.21 [ November 5th 2021 ]
