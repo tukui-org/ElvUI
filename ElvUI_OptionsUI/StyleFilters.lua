@@ -1563,8 +1563,8 @@ function UpdateFilterGroup()
 						},
 						hasStealable = ACH:Toggle(L["Has Stealable"], L["If enabled then the filter will only activate when the unit has a stealable buff(s)."], 6),
 						hasNoStealable = ACH:Toggle(L["Has No Stealable"], L["If enabled then the filter will only activate when the unit has no stealable buff(s)."], 7),
-						isPlayer = ACH:Toggle(L["Is Player"], nil, 8),
-						myPet = ACH:Toggle(L["My Pet"], nil, 9),
+						fromMe = ACH:Toggle(L["From Me"], nil, 8),
+						fromPet = ACH:Toggle(L["From Pet"], nil, 9),
 						changeList = {
 							type = 'group',
 							inline = true,
@@ -1676,8 +1676,8 @@ function UpdateFilterGroup()
 						},
 						hasDispellable = ACH:Toggle(L["Has Dispellable"], L["If enabled then the filter will only activate when the unit has a dispellable buff(s)."], 6),
 						hasNoDispellable = ACH:Toggle(L["Has No Dispellable"], L["If enabled then the filter will only activate when the unit has no dispellable buff(s)."], 7),
-						isPlayer = ACH:Toggle(L["Is Player"], nil, 8),
-						myPet = ACH:Toggle(L["My Pet"], nil, 9),
+						fromMe = ACH:Toggle(L["From Me"], nil, 8),
+						fromPet = ACH:Toggle(L["From Pet"], nil, 9),
 						changeList = {
 							type = 'group',
 							inline = true,

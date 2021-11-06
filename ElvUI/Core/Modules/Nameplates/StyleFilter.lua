@@ -327,7 +327,7 @@ function mod:StyleFilterDispelCheck(frame, filter)
 	end
 end
 
-function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, isPlayer, myPet)
+function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
 	local total, matches = 0, 0
 	for key, value in pairs(names) do
 		if value then -- only if they are turned on
@@ -339,8 +339,8 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 				local spell, stacks, failed = strmatch(key, mod.StyleFilterStackPattern)
 				if stacks ~= '' then failed = not (count and count >= tonumber(stacks)) end
 				if not failed and ((name and name == spell) or (spellID and spellID == tonumber(spell))) then
-					local fromMe, fromPet = source == 'player' or source == 'vehicle', source == 'pet'
-					if isPlayer and myPet and (fromMe or fromPet) or (isPlayer and fromMe) or (myPet and fromPet) or (not isPlayer and not myPet) then
+					local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
+					if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
 						local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 						local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
 						local timeLeft = (hasMinTime or hasMaxTime) and expiration and (expiration - GetTime())
@@ -1016,7 +1016,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.isPlayer, trigger.buffs.myPet)
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1032,7 +1032,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Names / Spell IDs
-		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.isPlayer, trigger.debuffs.myPet)
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end

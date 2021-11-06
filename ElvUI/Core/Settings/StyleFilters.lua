@@ -261,8 +261,8 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 			hasStealable = false,
 			hasNoStealable = false,
-			isPlayer = false,
-			myPet = false,
+			fromMe = false,
+			fromPet = false,
 			names = {}
 		},
 		debuffs = {
@@ -272,8 +272,8 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 			hasDispellable = false,
 			hasNoDispellable = false,
-			isPlayer = false,
-			myPet = false,
+			fromMe = false,
+			fromPet = false,
 			names = {}
 		},
 		bossMods = {
