@@ -589,7 +589,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		B:HideCooldown(slot)
 	end
 
-	if slot.questIcon then slot.questIcon:SetShown(not E.Retail and isQuestItem or questId and not isActiveQuest) end
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 

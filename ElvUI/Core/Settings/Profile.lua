@@ -239,6 +239,7 @@ P.bags = {
 	currencyFormat = 'ICON_TEXT_ABBR',
 	moneyFormat = 'SMART',
 	moneyCoins = true,
+	questIcon = true,
 	junkIcon = false,
 	junkDesaturate = false,
 	scrapIcon = false,
