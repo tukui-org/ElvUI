@@ -1,5 +1,6 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='CallToArms.lua'/>
+	<Script file='Mastery.lua'/>
 	<Script file='Missions.lua'/>
 	<Script file='Quickjoin.lua'/>
 	<Script file='SpecSwitch.lua'/>
