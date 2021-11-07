@@ -27,7 +27,7 @@ function AB:ExtraButtons_BossStyle(frame)
 		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 		button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
-		button.HotKey:SetText(GetBindingKey(button:GetName()))
+		button.HotKey:SetText(GetBindingKey(button.commandName))
 		AB:FixKeybindText(button)
 
 		AB:ExtraButtons_BossAlpha(button)
@@ -216,7 +216,7 @@ function AB:UpdateExtraBindings()
 	_G.ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
 
 	for _, button in pairs(ExtraButtons) do
-		button.HotKey:SetText(GetBindingKey(button:GetName()))
+		button.HotKey:SetText(GetBindingKey(button.commandName))
 		AB:FixKeybindText(button)
 	end
 end
