@@ -1100,7 +1100,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 end
 
 function AB:FixKeybindText(button)
-	local hotkey = _G[button:GetName()..'HotKey']
+	local hotkey = button.HotKey
 	local text = hotkey:GetText()
 
 	local db = button:GetParent().db
