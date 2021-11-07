@@ -14,6 +14,7 @@ TaintLess.xml
 
 Core\Developer\Load_Developer.xml
 
+TBC\Libraries\Load_Libraries.xml
 Core\Libraries\Load_Libraries.xml
 Core\Libraries\oUF\oUF_TBC.xml
 Core\Libraries\oUF_Plugins\oUF_Plugins.xml
