@@ -293,7 +293,7 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function confirmResetFilter(_, value) return value ~= '' and format(L["Reset Filter - %s"], value) end
 
 local function resetFilter(_, value)
-	 if value == 'Aura Highlight' then
+	if value == 'Aura Highlight' then
 		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
 	elseif value == 'AuraBar Colors' then
 		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
