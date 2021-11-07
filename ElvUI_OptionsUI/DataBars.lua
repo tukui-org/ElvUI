@@ -9,10 +9,10 @@ local CopyTable = CopyTable
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
-	textFormat = ACH:Select(L["Text Format"], nil, 2, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
-	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
-	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
+	mouseover = ACH:Toggle(L["Mouseover"], nil, 2),
+	clickThrough = ACH:Toggle(L["Click Through"], nil, 3),
 	showBubbles = ACH:Toggle(L["Show Bubbles"], nil, 5),
+	textFormat = ACH:Select(L["Text Format"], nil, 10, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
 	sizeGroup = ACH:Group(L["Size"], nil, -4),
 	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -3),
 	strataAndLevel = ACH:Group(L["Strata and Level"], nil, -2),
@@ -98,9 +98,9 @@ DataBars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info
 DataBars.args.reputation.args = CopyTable(SharedOptions)
 DataBars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Toggle() DB:UpdateAll() end
 DataBars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 6)
+DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 15)
 DataBars.args.reputation.args.showReward.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 7, { TOP = 'Top', BOTTOM = 'Bottom', LEFT = 'LEFT', RIGHT = 'RIGHT' })
+DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 16, { TOP = 'Top', BOTTOM = 'Bottom', LEFT = 'LEFT', RIGHT = 'RIGHT' })
 DataBars.args.reputation.args.rewardPosition.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
 DataBars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end
@@ -125,7 +125,8 @@ DataBars.args.honor.args.conditionGroup.values = {
 DataBars.args.threat = ACH:Group(L["Threat"], nil, 4, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() DB:UpdateAll() end)
 DataBars.args.threat.args = CopyTable(SharedOptions)
 DataBars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
-DataBars.args.threat.args.displayText = ACH:Toggle(L["Display Text"], nil, 2, nil, nil, nil, nil, nil, nil, nil)
+DataBars.args.threat.args.displayText = ACH:Toggle(L["Display Text"], nil, 5)
+DataBars.args.threat.args.tankStatus = ACH:Toggle(L["Tank Colors"], nil, 6)
 DataBars.args.threat.args.textFormat = nil
 DataBars.args.threat.args.conditionGroup = nil
 DataBars.args.threat.args.showBubbles = nil

@@ -207,6 +207,7 @@ for _, databar in next, {'experience', 'reputation', 'honor', 'threat', 'azerite
 end
 
 P.databars.threat.hideInCombat = nil -- always on in code
+P.databars.threat.tankStatus = true
 
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.showLevel = false
