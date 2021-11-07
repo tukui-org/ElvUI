@@ -107,6 +107,12 @@ AB.barDefaults = {
 	},
 }
 
+if E.Retail then
+	AB.barDefaults.bar1.conditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
+else
+	AB.barDefaults.bar1.conditions = '[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
+end
+
 AB.customExitButton = {
 	func = function()
 		if UnitExists('vehicle') then
