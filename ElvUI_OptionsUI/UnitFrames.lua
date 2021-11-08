@@ -380,14 +380,14 @@ end
 
 local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Cutaway Bars"])
-	config.args.health = ACH:Group(L["Health"], nil, 1, nil, nil, function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.health = ACH:Group(L["Health"], nil, 1, nil, function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.health.inline = true
 	config.args.health.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.health.args.forceBlankTexture = ACH:Toggle(L["Blank Texture"], nil, 2)
 	config.args.health.args.lengthBeforeFade = ACH:Range(L["Fade Out Delay"], L["How much time before the cutaway health starts to fade."], 3, { min = .1, max = 1, step = .1 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].cutaway.health.enabled end)
 	config.args.health.args.fadeOutTime = ACH:Range(L["Fade Out"], L["How long the cutaway health will take to fade out."], 4, { min = .1, max = 1, step = .1 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].cutaway.health.enabled end)
 
-	config.args.power = ACH:Group(L["Power"], nil, 2, nil, nil, function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.power = ACH:Group(L["Power"], nil, 2, nil, function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.power.inline = true
 	config.args.power.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.power.args.forceBlankTexture = ACH:Toggle(L["Blank Texture"], nil, 2)
