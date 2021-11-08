@@ -454,9 +454,9 @@ end
 
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
 local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = '|cffeda55f', '|cffc7c7cf', '|cffffd700'
-local ICON_COPPER = E:TextureString(E.Media.Textures.Coins, ':16:16:0:0:64:32:0:22:1:20')
-local ICON_GOLD = E:TextureString(E.Media.Textures.Coins, ':16:16:0:0:64:32:23:44:1:20')
-local ICON_SILVER = E:TextureString(E.Media.Textures.Coins, ':16:16:0:0:64:32:44:64:1:20')
+local ICON_COPPER = E:TextureString(E.Media.Textures.Coins, ':14:14:0:0:64:32:0:21:1:20')
+local ICON_GOLD = E:TextureString(E.Media.Textures.Coins, ':14:14:0:0:64:32:22:42:1:20')
+local ICON_SILVER = E:TextureString(E.Media.Textures.Coins, ':14:14:0:0:64:32:43:64:1:20')
 function E:FormatMoney(amount, style, textonly)
 	local coppername = textonly and L["copperabbrev"] or ICON_COPPER
 	local silvername = textonly and L["silverabbrev"] or ICON_SILVER
