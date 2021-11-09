@@ -14,7 +14,6 @@
 	<Script file='CustomCurrency.lua'/>
 	<Script file='Crit.lua'/>
 	<Script file='Date.lua'/>
-	<Script file='Difficulty.lua'/>
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
 	<Script file='Experience.lua'/>
@@ -40,6 +39,5 @@
 	<Script file='Strength.lua'/>
 	<Script file='System.lua'/>
 	<Script file='Time.lua'/>
-	<Script file='Versatility.lua'/>
 	<Script file='Volume.lua'/>
 </Ui>
