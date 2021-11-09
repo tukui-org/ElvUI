@@ -15,6 +15,7 @@ local _G = _G
 local GetTime = GetTime
 local UnitAura = UnitAura
 local CreateFrame = CreateFrame
+local UnitIsUnit = UnitIsUnit
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
