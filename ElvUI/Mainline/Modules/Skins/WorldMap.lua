@@ -19,6 +19,15 @@ local function SkinHeaders(header)
 	end
 end
 
+-- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
+function S:WorldMap_QuestMapHide()
+	local parent = self:GetParent() -- variant of QuestFrame_HideQuestPortrait
+	if not parent or parent == _G.QuestModelScene:GetParent() then
+		_G.QuestModelScene:SetParent(nil)
+		_G.QuestModelScene:Hide()
+	end
+end
+
 function S:WorldMapFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
 
@@ -43,7 +52,7 @@ function S:WorldMapFrame()
 	-- Quest Frames
 	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
-	QuestMapFrame:SetScript('OnHide', nil) -- This script would taint the Quest Objective Tracker Button, so unsetting it ~Simpy
+	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
 	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
