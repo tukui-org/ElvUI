@@ -180,11 +180,7 @@ local function UpdateContainerButton(frame)
 		if icon then
 			BagIcon(frame, icon)
 		elseif name then
-			if name == BACKPACK_TOOLTIP then
-				icon = _G.MainMenuBarBackpackButtonIconTexture:GetTexture()
-			else
-				icon = select(10, GetItemInfo(name))
-			end
+			icon = (name ~= BACKPACK_TOOLTIP and select(10, GetItemInfo(name))) or E.Media.Textures.Backpack
 
 			BagIcon(frame, icon)
 			bagIconCache[name] = icon
