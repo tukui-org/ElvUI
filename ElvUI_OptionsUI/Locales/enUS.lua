@@ -1,6 +1,9 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
 L["Remove Spell - %s"] = true
 L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
 L["Copy Primary Texture"] = true
@@ -1676,7 +1679,7 @@ L["TARGET"] = "Target"
 L["TIMEMANAGER_TITLE"] = "Clock"
 L["TIMESTAMPS_LABEL"] = "Chat Timestamps"
 L["TRADE"] = "Trade"
-L["TRADESKILLS"] = "Tradeskills"
+L["TRADESKILLS"] = "Trade Skills"
 L["TRANSMOGRIFY"] = "Transmogrify"
 L["UI_SCALE"] = "UI Scale"
 L["UNIT_NAME_PLAYER_TITLE"] = "Titles"
