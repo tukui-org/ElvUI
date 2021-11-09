@@ -17,6 +17,11 @@ function S:SpellBookFrame()
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame)
 
+	-- hide flyout backgrounds
+	_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
+	_G.SpellFlyoutVerticalBackground:SetAlpha(0)
+	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
+
 	for _, object in pairs({ 'SpellBookSpellIconsFrame', 'SpellBookSideTabsFrame', 'SpellBookPageNavigationFrame' }) do
 		_G[object]:StripTextures()
 	end
@@ -35,6 +40,7 @@ function S:SpellBookFrame()
 		pagebackdrop:Point('TOPLEFT', _G.SpellBookPage1, 'TOPLEFT', -2, 2)
 		pagebackdrop:Point('BOTTOMRIGHT', SpellBookFrame, 'BOTTOMRIGHT', -8, 4)
 		SpellBookFrame.pagebackdrop = pagebackdrop
+
 		for i = 1, 2 do
 			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
 			_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)

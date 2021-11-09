@@ -127,6 +127,13 @@ do
 
 	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	elseif E.Classic then
+		E:AddLib('LCD', 'LibClassicDurations')
+		E:AddLib('LCC', 'LibClassicCasterino')
+
+		if E.Libs.LCD then
+			E.Libs.LCD:Register('ElvUI')
+		end
 	end
 
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
@@ -196,16 +203,19 @@ function E:OnInitialize()
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
+	E.loadedtime = GetTime()
 
 	E:UIMult()
 	E:UpdateMedia()
 	E:InitializeInitialModules()
 
+	if E.private.general.minimap.enable then
+		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
+	end
+
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
-
-	E.loadedtime = GetTime()
 end
 
 function E:ResetProfile()

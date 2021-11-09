@@ -398,10 +398,6 @@ function UF:PreUpdateAura()
 	wipe(self.stacks)
 
 	self.currentRow = nil
-
-	-- used for StyleFilters
-	self.hasStealable = nil
-	self.hasDispellable = nil
 end
 
 function UF:PostUpdateAura(_, button)
@@ -574,10 +570,6 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	button.spellID = spellID
 	button.name = name
 	button.priority = 0
-
-	-- used for StyleFilters
-	if isStealable then self.hasStealable = true end
-	if dispel then self.hasDispellable = true end
 
 	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', source, name) or name

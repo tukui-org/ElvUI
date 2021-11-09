@@ -7,7 +7,7 @@ local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 function S:Blizzard_GarrisonTemplates()
-	if E.private.skins.blizzard.enable ~= true or (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then return end
+	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.orderhall or not E.private.skins.blizzard.garrison then return end
 
 	hooksecurefunc(_G.GarrisonFollowerTabMixin, 'ShowFollower', function(s, followerID)
 		local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)

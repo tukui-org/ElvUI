@@ -97,6 +97,7 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local KEYRING_CONTAINER = KEYRING_CONTAINER
+local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 
@@ -533,6 +534,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+		else
+			isQuestItem = itemClassID == LE_ITEM_CLASS_QUESTITEM
 		end
 
 		if B.db.itemLevel then
@@ -587,7 +590,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		B:HideCooldown(slot)
 	end
 
-	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
@@ -1951,9 +1954,7 @@ function B:ToggleBags(id)
 end
 
 function B:ToggleBackpack()
-	if IsOptionFrameOpen() then
-		return
-	end
+	if IsOptionFrameOpen() then return end
 
 	if IsBagOpen(0) then
 		B:OpenBags()
@@ -1961,6 +1962,16 @@ function B:ToggleBackpack()
 	else
 		B:CloseBags()
 		PlaySound(IG_BACKPACK_CLOSE)
+	end
+end
+
+function B:OpenAllBags(frame)
+	local isMail = frame == _G.MailFrame and frame:IsShown()
+
+	if not isMail or B.db.autoToggle.mail then
+		B:OpenBags()
+	else
+		B:CloseBags()
 	end
 end
 
@@ -2104,18 +2115,6 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow.Fade:SetChange(0)
 	frame.NewItemGlow.Fade:SetEasing('in')
 	frame.NewItemGlow.Fade:SetScript('OnFinished', B.ItemGlowOnFinished)
-end
-
-function B:OpenAuction()
-	if B.db.auctionToggle then
-		B:OpenBags()
-	end
-end
-
-function B:CloseAuction()
-	if B.db.auctionToggle then
-		B:CloseBags()
-	end
 end
 
 function B:OpenBank()
@@ -2333,7 +2332,7 @@ end
 B.BagIndice = {
 	quiver = 0x0001,
 	ammoPouch = 0x0002,
-	soulBag = 0x0003,
+	soulBag = 0x0004,
 	leatherworking = 0x0008,
 	inscription = 0x0010,
 	herbs = 0x0020,
@@ -2352,6 +2351,29 @@ B.QuestKeys = {
 	questStarter = 'questStarter',
 	questItem = 'questItem',
 }
+
+B.AutoToggleEvents = {
+	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
+	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
+	tradeSkills = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
+	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
+}
+
+if E.Retail then
+	B.AutoToggleEvents.soulBind = { SOULBIND_FORGE_INTERACTION_STARTED = 'OpenBags', SOULBIND_FORGE_INTERACTION_ENDED = 'CloseBags' }
+end
+
+function B:AutoToggle()
+	for option, eventTable in next, B.AutoToggleEvents do
+		for event, func in next, eventTable do
+			if B.db.autoToggle[option] then
+				B:RegisterEvent(event, func)
+			else
+				B:UnregisterEvent(event)
+			end
+		end
+	end
+end
 
 function B:UpdateBagColors(table, indice, r, g, b)
 	local colorTable
@@ -2389,7 +2411,7 @@ function B:Initialize()
 	B.ProfessionColors = {
 		[0x0001]   = { B.db.colors.profession.quiver.r, B.db.colors.profession.quiver.g, B.db.colors.profession.quiver.b},
 		[0x0002]   = { B.db.colors.profession.ammoPouch.r, B.db.colors.profession.ammoPouch.g, B.db.colors.profession.ammoPouch.b},
-		[0x0003]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
+		[0x0004]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
 		[0x0008]	= { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
 		[0x0010]	= { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
 		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
@@ -2460,7 +2482,7 @@ function B:Initialize()
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
-	B:SecureHook('OpenAllBags', 'OpenBags')
+	B:SecureHook('OpenAllBags')
 	B:SecureHook('CloseAllBags', 'CloseBags')
 	B:SecureHook('ToggleBag', 'ToggleBags')
 	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
@@ -2475,15 +2497,10 @@ function B:Initialize()
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateBagButtons')
 	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
-	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenAuction')
-	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseAuction')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 
-	if E.Retail then
-		B:RegisterEvent('SOULBIND_FORGE_INTERACTION_STARTED', 'OpenBags')
-		B:RegisterEvent('SOULBIND_FORGE_INTERACTION_ENDED', 'CloseBags')
-	end
+	B:AutoToggle()
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)

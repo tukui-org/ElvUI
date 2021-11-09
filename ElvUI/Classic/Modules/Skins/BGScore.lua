@@ -2,11 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local format, strsplit = format, strsplit
-
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
-local GetBattlefieldScore = GetBattlefieldScore
-local hooksecurefunc = hooksecurefunc
 
 function S:SkinWorldStateScore()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgscore) then return end
@@ -34,28 +29,6 @@ function S:SkinWorldStateScore()
 	for i = 1, 7 do
 		_G['WorldStateScoreColumn'..i]:StyleButton()
 	end
-
-	hooksecurefunc('WorldStateScoreFrame_Update', function()
-		local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)
-		for i = 1, 22 do
-			local name, _, _, _, _, faction, _, _, _, classToken = GetBattlefieldScore(offset + i)
-			if name then
-				if name == E.myname then
-					name = format('> %s <', name)
-				else
-					local Name, Realm = strsplit('-', name, 2)
-					if Realm then
-						name = format('%s|cffffffff - |r%s%s|r', Name, (faction == 1 and '|cff00adf0') or '|cffff1919', Realm)
-					end
-				end
-
-				local classTextColor = E:ClassColor(classToken)
-				local nameText = _G['WorldStateScoreButton'..i..'NameText']
-				nameText:SetText(' '..name)
-				nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-			end
-		end
-	end)
 end
 
 S:AddCallback('SkinWorldStateScore')

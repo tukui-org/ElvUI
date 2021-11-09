@@ -224,7 +224,7 @@ local function Update(self, event, unit)
 	end
 
 	local displayType, min
-	if(element.displayAltPower) then
+	if(oUF.isRetail and element.displayAltPower) then
 		displayType, min = element:GetDisplayPower()
 	end
 
@@ -413,7 +413,7 @@ local function Enable(self)
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		if(not element.GetDisplayPower) then
+		if(oUF.isRetail and not element.GetDisplayPower) then
 			element.GetDisplayPower = GetDisplayPower
 		end
 

@@ -50,11 +50,13 @@ function S:LFGFrame()
 	_G.LFGSearchBg1:CreateBackdrop('Transparent')
 	_G.LFGSearchBg1:Width(58)
 	_G.LFGSearchBg1:Height(53)
+
 	-- 2nd icon
 	_G.LFGSearchBg2:StripTextures()
 	_G.LFGSearchBg2:CreateBackdrop('Transparent')
 	_G.LFGSearchBg2:Width(58)
 	_G.LFGSearchBg2:Height(53)
+
 	-- 3rd icon
 	_G.LFGSearchBg3:StripTextures()
 	_G.LFGSearchBg3:CreateBackdrop('Transparent')

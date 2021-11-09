@@ -207,6 +207,7 @@ for _, databar in next, {'experience', 'reputation', 'honor', 'threat', 'azerite
 end
 
 P.databars.threat.hideInCombat = nil -- always on in code
+P.databars.threat.tankStatus = true
 
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.showLevel = false
@@ -239,12 +240,12 @@ P.bags = {
 	currencyFormat = 'ICON_TEXT_ABBR',
 	moneyFormat = 'SMART',
 	moneyCoins = true,
+	questIcon = true,
 	junkIcon = false,
 	junkDesaturate = false,
 	scrapIcon = false,
 	upgradeIcon = true,
 	newItemGlow = true,
-	auctionToggle = true,
 	ignoredItems = {},
 	itemLevel = true,
 	itemLevelThreshold = 1,
@@ -330,6 +331,14 @@ P.bags = {
 		bag11 = false,
 	},
 	shownBags = {},
+	autoToggle = {
+		mail = true,
+		soulBind = true,
+		auctionHouse = true,
+		tradeSkills = false,
+		guildBank = false,
+		trade = false,
+	},
 	bagBar = {
 		growthDirection = 'VERTICAL',
 		sortDirection = 'ASCENDING',

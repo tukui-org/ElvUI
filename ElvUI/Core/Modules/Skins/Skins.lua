@@ -1193,7 +1193,7 @@ do
 	end
 
 	function S:HandleFollowerListOnUpdateData(frame)
-		if frame == 'GarrisonLandingPageFollowerList' and (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then
+		if frame == 'GarrisonLandingPageFollowerList' and (not E.private.skins.blizzard.orderhall or not E.private.skins.blizzard.garrison) then
 			return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
 		end
 

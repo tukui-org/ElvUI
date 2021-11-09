@@ -3,7 +3,7 @@
 
 	Add the nameplates name that you do NOT want to see.
 ]]
-local E, L, V, P, G = unpack(ElvUI) --Engine
+local E, L, V, P, G = unpack(ElvUI)
 
 G.nameplate.filters = {
 	ElvUI_Boss = {
@@ -261,6 +261,8 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 			hasStealable = false,
 			hasNoStealable = false,
+			fromMe = false,
+			fromPet = false,
 			names = {}
 		},
 		debuffs = {
@@ -270,6 +272,8 @@ E.StyleFilterDefaults = {
 			maxTimeLeft = 0,
 			hasDispellable = false,
 			hasNoDispellable = false,
+			fromMe = false,
+			fromPet = false,
 			names = {}
 		},
 		bossMods = {

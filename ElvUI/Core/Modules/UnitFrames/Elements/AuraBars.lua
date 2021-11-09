@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local ipairs = ipairs
@@ -211,7 +212,9 @@ function UF:PostUpdateBar_AuraBars(_, statusBar, _, _, _, _, debuffType) -- unit
 			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, statusBar, statusBar.bg, nil, UF.db.colors.invertAurabars)
 		else
 			local sbTexture = statusBar:GetStatusBarTexture()
-			if not statusBar.bg:GetTexture() then UF:Update_StatusBar(statusBar.bg, sbTexture:GetTexture()) end
+			if not statusBar.bg:GetTexture() then
+				UF:Update_StatusBar(statusBar.bg, UF.db.colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
+			end
 
 			UF:SetStatusBarBackdropPoints(statusBar, sbTexture, statusBar.bg)
 		end
