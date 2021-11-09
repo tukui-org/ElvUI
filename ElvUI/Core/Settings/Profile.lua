@@ -332,12 +332,12 @@ P.bags = {
 	},
 	shownBags = {},
 	autoToggle = {
-		mail = false,
-		guildBank = false,
+		mail = true,
+		soulBind = true,
 		auctionHouse = true,
 		tradeSkills = false,
+		guildBank = false,
 		trade = false,
-		soulBind = true,
 	},
 	bagBar = {
 		growthDirection = 'VERTICAL',

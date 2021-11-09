@@ -1954,9 +1954,7 @@ function B:ToggleBags(id)
 end
 
 function B:ToggleBackpack()
-	if IsOptionFrameOpen() then
-		return
-	end
+	if IsOptionFrameOpen() then return end
 
 	if IsBagOpen(0) then
 		B:OpenBags()
@@ -1964,6 +1962,16 @@ function B:ToggleBackpack()
 	else
 		B:CloseBags()
 		PlaySound(IG_BACKPACK_CLOSE)
+	end
+end
+
+function B:OpenAllBags(frame)
+	local isMail = frame == _G.MailFrame and frame:IsShown()
+
+	if not isMail or B.db.autoToggle.mail then
+		B:OpenBags()
+	else
+		B:CloseBags()
 	end
 end
 
@@ -2345,7 +2353,6 @@ B.QuestKeys = {
 }
 
 B.AutoToggleEvents = {
-	mail = { MAIL_SHOW = 'OpenBags', MAIL_CLOSED = 'CloseBags' },
 	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
 	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
 	tradeSkills = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
@@ -2475,7 +2482,7 @@ function B:Initialize()
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
-	B:SecureHook('OpenAllBags', 'OpenBags')
+	B:SecureHook('OpenAllBags')
 	B:SecureHook('CloseAllBags', 'CloseBags')
 	B:SecureHook('ToggleBag', 'ToggleBags')
 	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
