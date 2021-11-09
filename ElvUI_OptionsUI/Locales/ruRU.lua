@@ -1,11 +1,11 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
-L["Guild Bank"] = true
+L["Guild Bank"] = "Банк гильдии"
 L["Soul Binds"] = true
-L["Auction House"] = true
-L["Remove Spell - %s"] = true
-L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
+L["Auction House"] = "Аукционный дом"
+L["Remove Spell - %s"] = "Удалить заклинание - %s"
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = "Отображение сообщений от гильдии и шепота на экране AFK.\nЭтот чат можно перетаскивать (позиция будет сохранена)."
 L["Copy Primary Texture"] = "Копировать основную текстуру"
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "Заменяет значение опции полос состояния на рамках юнитов и индикаторах здоровья на основную текстуру."
 L["# Displayed Auras"] = "Кол-во аур"
