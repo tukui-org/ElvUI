@@ -1,0 +1,4 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='..\..\..\Core\Modules\DataTexts\Ammo.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Avoidance.lua'/>
+</Ui>

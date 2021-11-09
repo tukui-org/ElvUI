@@ -288,14 +288,14 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys: Mindaro, Sea Green, Purple Plum, Paradise Pink, Orange Yellow
-		local SimpyColors = function(t) return specialText(t, 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23) end
+		--Simpys: Amethyst, Magenta Crayola, Minion Yellow, Capri, Spring Green
+		local SimpyColors = function(t) return specialText(t, 0.6,0.36,0.89, 0.94,0.35,0.7, 0.99,0.89,0.25, 0,0.73,0.97, 0.4,1.0,0.60) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
-		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
-		--Mels: Electric Blue, Purpureus, Blush, Bitter Sweet, Emerald
-		local MelColors = function(t) return specialText(t, 0.09,0.94,1.00, 0.60,0.34,0.63, 0.91,0.32,0.49, 0.95,0.42,0.32, 0.19,0.77,0.41) end
+		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.5,0.75) end
+		--Mels: Sky Blue, Maya Blue, Dodger Blue, Cornflower Blue, Medium Purple, Lavender Floral, Persian Pink
+		local MelColors = function(t) return specialText(t, 0.4,0.87,0.95, 0.34,0.75,0.98, 0.27,0.62,1, 0.45,0.54,0.98, 0.61,0.46,0.97, 0.78,0.49,0.86, 0.95,0.52,0.75) end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end

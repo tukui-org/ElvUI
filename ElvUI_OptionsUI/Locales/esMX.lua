@@ -1,6 +1,9 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
 L["Remove Spell - %s"] = "Eliminar el Hechizo - %s"
 L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = "Muestra los mensajes de Guild y Whisper en la pantalla de AFK.\nEste chat puede ser arrastrado (la posición se guardará)."
 L["Copy Primary Texture"] = "Copiar Textura Primaria"

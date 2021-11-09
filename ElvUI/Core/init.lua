@@ -132,7 +132,7 @@ do
 		E:AddLib('LCC', 'LibClassicCasterino')
 
 		if E.Libs.LCD then
-			E.Libs.LCD:Register("ElvUI")
+			E.Libs.LCD:Register('ElvUI')
 		end
 	end
 

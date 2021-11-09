@@ -389,7 +389,7 @@ function S:BlizzardOptions()
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child, nil, nil, true)
 				elseif Child:IsObjectType('Button') then
-					S:HandleButton(Child)
+					S:HandleButton(Child, true)
 				elseif Child:IsObjectType('Slider') then
 					S:HandleSliderFrame(Child, nil, true)
 				elseif Child:IsObjectType('Tab') then
