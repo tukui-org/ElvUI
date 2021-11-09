@@ -5,8 +5,8 @@ local strjoin = strjoin
 local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_HIT_CHANCE = STAT_HIT_CHANCE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
-local CR_HIT_MELEE = CR_HIT_MELEE
-local CR_HIT_RANGED = CR_HIT_RANGED
+local CR_HIT_MELEE = CR_HIT_MELEE or 6
+local CR_HIT_RANGED = CR_HIT_RANGED or 7
 
 local displayString, lastPanel = ''
 

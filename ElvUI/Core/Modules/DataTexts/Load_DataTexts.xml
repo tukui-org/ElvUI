@@ -2,10 +2,8 @@
 	<Script file='DataTexts.lua'/>
 
 	<Script file='Agility.lua'/>
-	<Script file='Ammo.lua'/>
 	<Script file='Armor.lua'/>
 	<Script file='AttackPower.lua'/>
-	<Script file='Avoidance.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='BattleStats.lua'/>
 	<Script file='CombatTime.lua'/>
@@ -16,7 +14,6 @@
 	<Script file='CustomCurrency.lua'/>
 	<Script file='Crit.lua'/>
 	<Script file='Date.lua'/>
-	<Script file='Difficulty.lua'/>
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
 	<Script file='Experience.lua'/>
@@ -24,7 +21,6 @@
 	<Script file='Gold.lua'/>
 	<Script file='Guild.lua'/>
 	<Script file='Haste.lua'/>
-	<Script file='Hit.lua'/>
 	<Script file='HPS.lua'/>
 	<Script file='Intellect.lua'/>
 	<Script file='ItemLevel.lua'/>
@@ -42,6 +38,5 @@
 	<Script file='Strength.lua'/>
 	<Script file='System.lua'/>
 	<Script file='Time.lua'/>
-	<Script file='Versatility.lua'/>
 	<Script file='Volume.lua'/>
 </Ui>
