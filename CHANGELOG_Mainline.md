@@ -1,17 +1,22 @@
-### Version 12.49 [ ETA: 🍨 ]
+### Version 12.50 [ ETA: 🍨 ]
+Add: Stuff
 
-ActionBars: Fixed invisible ExtraActionButton hotkey text  
-Bags: Use Blizzards new coin icons  
+___
+### Version 12.49 [ November 9th 2021 ]
+
+ActionBars: Fixed ExtraActionButton hotkey text  
+Bags: Added Auto Toggle options to open bags with specific frames  
+Bags, DataTexts: Use Blizzards new coin icons  
 DataBars: Added an option to flip threat colors on tanks  
-General: Updated RaidUtility  
-Locales: Updated russian translation (Credits Hollicsh)  
+General: Updated RaidUtility (added Main Tank and Main Assist buttons)  
+Locales: Updated russian translation (Thanks Hollicsh)  
 Minimap: Fixes for minimap addon icons  
 Nameplates: Added back offset options for power  
 Nameplates: Fixed an issue which broke the "Add Filter" dropdown  
-Skins: Fixed an issue in Garrison / Covenant skins  
+Skins: Fixed Covenant Follower tooltip skins  
 Tooltips: Fixed item quality color error with Tooltips skin disabled  
 UnitFrames: Fixed an issue in Boss frames options (Issue #44)  
-UnitFrames: Fixed Castbar Icon setting  
+UnitFrames: Fixed Castbar Icon settings  
 
 ___
 ### Version 12.48 [ November 4th 2021 ]
