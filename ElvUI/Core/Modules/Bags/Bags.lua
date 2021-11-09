@@ -2109,18 +2109,6 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow.Fade:SetScript('OnFinished', B.ItemGlowOnFinished)
 end
 
-function B:OpenAuction()
-	if B.db.auctionToggle then
-		B:OpenBags()
-	end
-end
-
-function B:CloseAuction()
-	if B.db.auctionToggle then
-		B:CloseBags()
-	end
-end
-
 function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
@@ -2356,6 +2344,30 @@ B.QuestKeys = {
 	questItem = 'questItem',
 }
 
+B.AutoToggleEvents = {
+	mail = { MAIL_SHOW = 'OpenBags', MAIL_CLOSED = 'CloseBags' },
+	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
+	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
+	tradeSkills = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
+	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
+}
+
+if E.Retail then
+	B.AutoToggleEvents.soulBind = { SOULBIND_FORGE_INTERACTION_STARTED = 'OpenBags', SOULBIND_FORGE_INTERACTION_ENDED = 'CloseBags' }
+end
+
+function B:AutoToggle()
+	for option, eventTable in next, B.AutoToggleEvents do
+		for event, func in next, eventTable do
+			if B.db.autoToggle[option] then
+				B:RegisterEvent(event, func)
+			else
+				B:UnregisterEvent(event)
+			end
+		end
+	end
+end
+
 function B:UpdateBagColors(table, indice, r, g, b)
 	local colorTable
 	if table == 'items' then
@@ -2478,15 +2490,10 @@ function B:Initialize()
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateBagButtons')
 	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
-	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenAuction')
-	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseAuction')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 
-	if E.Retail then
-		B:RegisterEvent('SOULBIND_FORGE_INTERACTION_STARTED', 'OpenBags')
-		B:RegisterEvent('SOULBIND_FORGE_INTERACTION_ENDED', 'CloseBags')
-	end
+	B:AutoToggle()
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)
