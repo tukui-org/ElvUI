@@ -1958,10 +1958,8 @@ function B:ToggleBackpack()
 
 	if IsBagOpen(0) then
 		B:OpenBags()
-		PlaySound(IG_BACKPACK_OPEN)
 	else
 		B:CloseBags()
-		PlaySound(IG_BACKPACK_CLOSE)
 	end
 end
 
@@ -2028,7 +2026,10 @@ function B:ClearListeners(frame)
 end
 
 function B:OpenBags()
+	if B.BagFrame:IsShown() then return end
+
 	B.BagFrame:Show()
+	PlaySound(IG_BACKPACK_OPEN)
 
 	B:UpdateAllBagSlots(true)
 
@@ -2038,6 +2039,7 @@ end
 function B:CloseBags()
 	B.BagFrame:Hide()
 	B.BankFrame:Hide()
+	PlaySound(IG_BACKPACK_CLOSE)
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
