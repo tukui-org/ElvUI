@@ -11,7 +11,7 @@ L["(Modifer Click) Collect Garbage"] = "(Клик с модификатором)
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Фрейм %s содержит конфликтующие точки крепления. Баффы будут принудительно закреплены на самом фрейме."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s хочет передать Вам свои фильтры. Желаете ли Вы принять их?"
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s хочет передать Вам профиль %s. Желаете ли Вы принять его?"
-L["%s: %s tried to call the protected function '%s'."] = "%s: %s tried to call the protected function '%s'."
+L["%s: %s tried to call the protected function '%s'."] = "%s: %s попытался вызвать защищенную функцию '%s'."
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000Обнаружена ошибка lua. Вы получите отчет о ней после завершения боя."
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFЛКМ:|r Изменить набор талантов"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFПКМ:|r Изменить специализацию для получения добычи"
@@ -318,7 +318,7 @@ L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Temporary Move"] = "Временное перемещение"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "Окна чата работают так же, как и в стандартном чате Blizzard. Вы можете нажать правую кнопку мыши на вкладках для перемещения, переименования и тд. Пожалуйста, нажмите кнопку ниже для настройки чата."
 L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."] = "Окно конфигурации можно вызвать, введя команду /ec. Нажмите кнопку ниже, если вы хотите пропустить установку."
-L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Профиль, который вы хотите импортировать, уже существует. Задайте новой имя или примите для перезаписи существующего профиля."
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Профиль, который вы хотите импортировать, уже существует. Задайте новое имя или примите для перезаписи существующего профиля."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "Заклинание \"%s\" было добавлено в фильтр \"Blacklist\" аур рамок юнитов."
 L["Theme Set"] = "Тема установлена"
 L["Theme Setup"] = "Тема"
@@ -381,11 +381,11 @@ L["Zone Ability"] = "Способность зоны"
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите "Закрепить", когда закончите.
 
-Options:
-  LeftClick - Toggle Nudge Frame.
-  RightClick - Open Config Section.
-  Shift + RightClick - Hides mover temporarily.
-  Ctrl + RightClick - Resets mover position to default.
+Параметры:
+  Левый клик - Возможность двигать рамку как угодно.
+  Правый клик - Открыть раздел конфигурации.
+  Shift + Правый клик - Временно скрывает рамку.
+  Ctrl + Правый клик - Сбрасывает позицию рамки по умолчанию.
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Ниже представлен список всех важных команд *ElvUI|r:
