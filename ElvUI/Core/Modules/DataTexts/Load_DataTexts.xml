@@ -2,10 +2,8 @@
 	<Script file='DataTexts.lua'/>
 
 	<Script file='Agility.lua'/>
-	<Script file='Ammo.lua'/>
 	<Script file='Armor.lua'/>
 	<Script file='AttackPower.lua'/>
-	<Script file='Avoidance.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='BattleStats.lua'/>
 	<Script file='CombatTime.lua'/>
