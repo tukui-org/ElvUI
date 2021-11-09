@@ -110,7 +110,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 
 		if colorIcon then
 			button.icon:SetTexture(E.media.blankTex)
-			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b)
+			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b, settings.color.a)
 		elseif textureIcon then
 			button.icon:SetVertexColor(1, 1, 1)
 			button.icon:SetTexCoord(unpack(E.TexCoords))

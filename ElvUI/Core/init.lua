@@ -127,6 +127,13 @@ do
 
 	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	elseif E.Classic then
+		E:AddLib('LCD', 'LibClassicDurations')
+		E:AddLib('LCC', 'LibClassicCasterino')
+
+		if E.Libs.LCD then
+			E.Libs.LCD:Register("ElvUI")
+		end
 	end
 
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions

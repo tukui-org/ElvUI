@@ -1,4 +1,3 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='ActionBars.lua'/>
 	<Script file='ExtraAB.lua'/>
 </Ui>

@@ -336,7 +336,8 @@ function M:Initialize()
 
 		MostValue.Icon = MostValue:CreateTexture(nil, 'OVERLAY')
 		MostValue.Icon:SetAllPoints(MostValue)
-		MostValue.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
+		MostValue.Icon:SetTexture(E.Media.Textures.Coins)
+		MostValue.Icon:SetTexCoord(0.33, 0.66, 0.022, 0.66)
 
 		M.QuestRewardGoldIconFrame = MostValue
 

@@ -310,32 +310,52 @@ function mod:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 	end
 end
 
-function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft)
+function mod:StyleFilterDispelCheck(frame, filter)
+	local index = 1
+	local name, _, _, debuffType, _, _, _, isStealable = UnitAura(frame.unit, index, filter)
+	while name do
+		if filter == 'HELPFUL' then
+			if isStealable then
+				return true
+			end
+		elseif debuffType and E:IsDispellableByMe(debuffType) then
+			return true
+		end
+
+		index = index + 1
+		name, _, _, debuffType, _, _, _, isStealable = UnitAura(frame.unit, index, filter)
+	end
+end
+
+function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
 	local total, matches = 0, 0
 	for key, value in pairs(names) do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
 
 			local index = 1
-			local name, _, count, _, _, expiration, _, _, _, spellID = UnitAura(frame.unit, index, filter)
+			local name, _, count, _, _, expiration, source, _, _, spellID = UnitAura(frame.unit, index, filter)
 			while name do
 				local spell, stacks, failed = strmatch(key, mod.StyleFilterStackPattern)
 				if stacks ~= '' then failed = not (count and count >= tonumber(stacks)) end
 				if not failed and ((name and name == spell) or (spellID and spellID == tonumber(spell))) then
-					local hasMinTime = minTimeLeft and minTimeLeft ~= 0
-					local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-					local timeLeft = (hasMinTime or hasMaxTime) and expiration and (expiration - GetTime())
-					local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
-					local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+					local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
+					if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
+						local hasMinTime = minTimeLeft and minTimeLeft ~= 0
+						local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+						local timeLeft = (hasMinTime or hasMaxTime) and expiration and (expiration - GetTime())
+						local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+						local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
-					if minTimeAllow and maxTimeAllow then
-						matches = matches + 1 -- keep track of how many matches we have
-					end
+						if minTimeAllow and maxTimeAllow then
+							matches = matches + 1 -- keep track of how many matches we have
+						end
 
-					if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-						if not tickers[matches] then tickers[matches] = {} end
-						if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMinTimer', timeLeft, minTimeLeft) end
-						if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMaxTimer', timeLeft, maxTimeLeft) end
+						if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+							if not tickers[matches] then tickers[matches] = {} end
+							if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMinTimer', timeLeft, minTimeLeft) end
+							if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMaxTimer', timeLeft, maxTimeLeft) end
+						end
 					end
 				end
 
@@ -990,12 +1010,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Buffs and trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
-			if (trigger.buffs.hasStealable and frame.Buffs.hasStealable) or (trigger.buffs.hasNoStealable and not frame.Buffs.hasStealable) then passed = true else return end
+			local isStealable = mod:StyleFilterDispelCheck(frame, filter)
+			if (trigger.buffs.hasStealable and isStealable) or (trigger.buffs.hasNoStealable and not isStealable) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1006,11 +1027,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
-			if (trigger.debuffs.hasDispellable and frame.Debuffs.hasDispellable) or (trigger.debuffs.hasNoDispellable and not frame.Debuffs.hasDispellable) then passed = true else return end
+			local canDispel = mod:StyleFilterDispelCheck(frame, filter)
+			if (trigger.debuffs.hasDispellable and canDispel) or (trigger.debuffs.hasNoDispellable and not canDispel) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
-		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft)
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end

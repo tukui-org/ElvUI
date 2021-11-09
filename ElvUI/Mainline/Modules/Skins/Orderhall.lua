@@ -6,7 +6,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_OrderHallUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall) then return end
+	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.orderhall then return end
 
 	local classColor = E:ClassColor(E.myclass, true)
 

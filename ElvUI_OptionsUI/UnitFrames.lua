@@ -331,7 +331,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.iconSettings = ACH:Group(L["Icon"], nil, 17, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, function() return not E.db.unitframe.units[groupName].castbar.icon or E.db.unitframe.units[groupName].castbar.iconAttached end)
 	config.args.iconSettings.inline = true
 	config.args.iconSettings.args.icon = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
-	config.args.iconSettings.args.iconAttached = ACH:Toggle(L["Icon Inside Castbar"], L["Display the castbar icon inside the castbar."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon end)
+	config.args.iconSettings.args.iconAttached = ACH:Toggle(L["Icon Inside Castbar"], L["Display the castbar icon inside the castbar."], 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon end)
 	config.args.iconSettings.args.iconSize = ACH:Range(L["Icon Size"], L["This dictates the size of the icon when it is not attached to the castbar."], 3, { min = 8, max = 150, step = 1 })
 	config.args.iconSettings.args.iconAttachedTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, { Frame = L["Frame"], Castbar = L["Castbar"] })
 	config.args.iconSettings.args.iconPosition = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints)
@@ -380,14 +380,14 @@ end
 
 local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Cutaway Bars"])
-	config.args.health = ACH:Group(L["Health"], nil, 1, nil, nil, function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.health = ACH:Group(L["Health"], nil, 1, nil, function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.health.inline = true
 	config.args.health.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.health.args.forceBlankTexture = ACH:Toggle(L["Blank Texture"], nil, 2)
 	config.args.health.args.lengthBeforeFade = ACH:Range(L["Fade Out Delay"], L["How much time before the cutaway health starts to fade."], 3, { min = .1, max = 1, step = .1 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].cutaway.health.enabled end)
 	config.args.health.args.fadeOutTime = ACH:Range(L["Fade Out"], L["How long the cutaway health will take to fade out."], 4, { min = .1, max = 1, step = .1 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].cutaway.health.enabled end)
 
-	config.args.power = ACH:Group(L["Power"], nil, 2, nil, nil, function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.power = ACH:Group(L["Power"], nil, 2, nil, function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.power.inline = true
 	config.args.power.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.power.args.forceBlankTexture = ACH:Toggle(L["Blank Texture"], nil, 2)

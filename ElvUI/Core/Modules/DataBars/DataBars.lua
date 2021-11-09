@@ -169,15 +169,12 @@ function DB:Initialize()
 
 	DB:ExperienceBar()
 	DB:ReputationBar()
+	DB:ThreatBar()
 
 	if E.Retail then
 		DB:HonorBar()
 		DB:AzeriteBar()
-		DB:ThreatBar()
-	elseif E.TBC then
-		DB:PetExperienceBar()
-		DB:ThreatBar()
-	elseif E.Classic then
+	else
 		DB:PetExperienceBar()
 	end
 
