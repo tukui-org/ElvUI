@@ -295,7 +295,7 @@ function S:BlizzardOptions()
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child)
 				elseif Child:IsObjectType('Button') then
-					S:HandleButton(Child)
+					S:HandleButton(Child, true)
 				elseif Child:IsObjectType('Slider') then
 					S:HandleSliderFrame(Child)
 				elseif Child:IsObjectType('Tab') then
@@ -324,9 +324,7 @@ function S:BlizzardOptions()
 	end
 
 	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab1:StripTextures()
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
-	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
 	--Create New Raid Profle

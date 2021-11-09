@@ -389,7 +389,7 @@ function S:BlizzardOptions()
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child, nil, nil, true)
 				elseif Child:IsObjectType('Button') then
-					S:HandleButton(Child)
+					S:HandleButton(Child, true)
 				elseif Child:IsObjectType('Slider') then
 					S:HandleSliderFrame(Child, nil, true)
 				elseif Child:IsObjectType('Tab') then
@@ -410,10 +410,8 @@ function S:BlizzardOptions()
 	_G.VideoOptionsFrameOkay:Point('RIGHT', _G.VideoOptionsFrameCancel, 'LEFT', -4, 0)
 
 	-- Interface options buttons
-	_G.InterfaceOptionsFrameTab1:StripTextures()
 	_G.InterfaceOptionsFrameTab1:ClearAllPoints()
 	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 0, 1)
-	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsFrameTab2:ClearAllPoints()
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 3, 0)
 	_G.InterfaceOptionsFrameDefaults:ClearAllPoints()
