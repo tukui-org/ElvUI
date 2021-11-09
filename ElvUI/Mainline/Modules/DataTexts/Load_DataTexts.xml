@@ -1,4 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='..\..\..\Core\Modules\DataTexts\Hit.lua'/>
 	<Script file='CallToArms.lua'/>
 	<Script file='Difficulty.lua'/>
 	<Script file='Mastery.lua'/>
