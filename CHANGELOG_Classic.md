@@ -1,10 +1,18 @@
-### Version 1.48 [ ETA: 🍨 ]
+### Version 1.48 [ November 9th 2021 ]
 Bags: Added an option to enable/disable Quest icons  
+Bags: Use Blizzards new coin icons  
+DataBars: Added Quest XP in Experience bar  
+DataBars: Fixed / Re-added Threat bar  
 DataTexts: Fixed invite function for guild datatext  
+Libraries: LibClassicDurations Minor 69  
 Locales: Updated russian translation (Credits Hollicsh)  
+Skins: Fixed an error in Battleground Score  
+Skins: Fixed an error in Blizzard Options  
+Tooltips: Fixed an error if ElvUI skin was disabled  
 UnitFrames: Fixed an error in power bars  
 UnitFrames: Master Looter indicator fixes  
 UnitFrames: Out of range fader fixes  
+UnitFrames: Raid Debuffs position fixes  
 
 ___
 ### Version 1.47 [ November 4th 2021 ]
