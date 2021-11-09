@@ -410,8 +410,10 @@ function S:BlizzardOptions()
 	_G.VideoOptionsFrameOkay:Point('RIGHT', _G.VideoOptionsFrameCancel, 'LEFT', -4, 0)
 
 	-- Interface options buttons
+	_G.InterfaceOptionsFrameTab1:StripTextures()
 	_G.InterfaceOptionsFrameTab1:ClearAllPoints()
 	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 0, 1)
+	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsFrameTab2:ClearAllPoints()
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 3, 0)
 	_G.InterfaceOptionsFrameDefaults:ClearAllPoints()
