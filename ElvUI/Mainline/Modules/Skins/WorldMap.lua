@@ -21,8 +21,7 @@ end
 
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
 function S:WorldMap_QuestMapHide()
-	local parent = self:GetParent() -- variant of QuestFrame_HideQuestPortrait
-	if not parent or parent == _G.QuestModelScene:GetParent() then
+	if self:GetParent() == _G.QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
 		_G.QuestModelScene:SetParent(nil)
 		_G.QuestModelScene:Hide()
 	end
