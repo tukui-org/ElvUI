@@ -246,7 +246,6 @@ P.bags = {
 	scrapIcon = false,
 	upgradeIcon = true,
 	newItemGlow = true,
-	auctionToggle = true,
 	ignoredItems = {},
 	itemLevel = true,
 	itemLevelThreshold = 1,
@@ -332,6 +331,14 @@ P.bags = {
 		bag11 = false,
 	},
 	shownBags = {},
+	autoToggle = {
+		mail = false,
+		guildBank = false,
+		auctionHouse = true,
+		tradeSkills = false,
+		trade = false,
+		soulBind = true,
+	},
 	bagBar = {
 		growthDirection = 'VERTICAL',
 		sortDirection = 'ASCENDING',

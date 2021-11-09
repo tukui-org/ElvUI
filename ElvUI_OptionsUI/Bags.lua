@@ -38,7 +38,6 @@ Bags.args.general.args.generalGroup.values = {
 	reverseLoot = L["REVERSE_NEW_LOOT_TEXT"],
 	reverseSlots = L["Reverse Bag Slots"],
 	useBlizzardCleanup = L["Use Blizzard Cleanup"],
-	auctionToggle = L["Auction Toggle"],
 }
 
 if E.Retail then
@@ -129,6 +128,13 @@ Bags.args.general.args.itemLevelGroup.args.positionGroup.inline = true
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelPosition = ACH:Select(L["Position"], nil, 10, textAnchors, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelxOffset = ACH:Range(L["X-Offset"], nil, 11, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+
+Bags.args.general.args.autoToggle = ACH:Group(L["Auto Toggle"], nil, 11)
+Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 1, { mail = 'Mail', guildBank = 'Guild Bank', auctionHouse = 'Auction House', tradeSkills = 'Trade Skills', trade = 'Trade' }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value B:AutoToggle() end)
+
+if E.Retail then
+	Bags.args.general.args.autoToggle.args.toggles.values.soulBind = 'Soul Binds'
+end
 
 Bags.args.colorGroup = ACH:Group(L["COLORS"], nil, 2, nil, function(info) local t = E.db.bags.colors[info[#info - 1]][info[#info]] local d = P.bags.colors[info[#info - 1]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags.colors[info[#info - 1]][info[#info]] t.r, t.g, t.b = r, g, b B:UpdateBagColors(info[#info - 1], info[#info], r, g, b) B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
 Bags.args.colorGroup.args.general = ACH:Group(L["General"], nil, 0, nil, function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
