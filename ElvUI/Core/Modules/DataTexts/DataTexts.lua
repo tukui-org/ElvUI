@@ -786,6 +786,10 @@ function DT:Initialize()
 		DT:BuildPanelFrame(name, true)
 	end
 
+	-- we need to register the panels to access them for the text
+	DT.BattleStats.LEFT.panel = _G.LeftChatDataPanel.dataPanels
+	DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
+
 	DT:RegisterHyperDT()
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
 end

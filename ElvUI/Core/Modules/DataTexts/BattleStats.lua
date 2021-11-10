@@ -104,9 +104,6 @@ function DT:ToggleBattleStats()
 		E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats"])
 	end
 
-	holder.LEFT.panel = _G.LeftChatDataPanel.dataPanels
-	holder.RIGHT.panel = _G.RightChatDataPanel.dataPanels
-
 	DT:UpdatePanelInfo('LeftChatDataPanel')
 	DT:UpdatePanelInfo('RightChatDataPanel')
 
