@@ -527,9 +527,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
-			if E.Retail then
-				tinsert(dt.MouseEnters, DT.HoverBattleStats)
-			end
+			if E.Retail then tinsert(dt.MouseEnters, DT.HoverBattleStats) end
 		else
 			local assigned = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
 			DT.AssignedDatatexts[dt] = assigned
