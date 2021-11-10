@@ -238,6 +238,8 @@ function DB:ExperienceBar_Toggle()
 		if E.Retail then
 			DB:RegisterEvent('SUPER_TRACKING_CHANGED', 'ExperienceBar_QuestXP')
 		end
+
+		DB:ExperienceBar_Update()
 	else
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('UPDATE_EXHAUSTION')
@@ -249,8 +251,6 @@ function DB:ExperienceBar_Toggle()
 			DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
 		end
 	end
-
-	DB:ExperienceBar_Update()
 end
 
 function DB:ExperienceBar()

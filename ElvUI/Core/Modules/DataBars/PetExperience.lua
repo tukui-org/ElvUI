@@ -73,19 +73,18 @@ end
 function DB:PetExperienceBar_OnClick() end
 
 function DB:PetExperienceBar_Toggle()
-	if E.myclass ~= 'HUNTER' then return end
-
 	local bar = DB.StatusBars.PetExperience
 	bar.db = DB.db.petExperience
 
-	if bar.db.enable then
+	if bar.db.enable and E.myclass == 'HUNTER' then
 		E:EnableMover(bar.holder.mover:GetName())
+
+		DB:PetExperienceBar_Update()
 	else
 		bar:Hide()
+
 		E:DisableMover(bar.holder.mover:GetName())
 	end
-
-	DB:PetExperienceBar_Update()
 end
 
 function DB:PetExperienceBar()
