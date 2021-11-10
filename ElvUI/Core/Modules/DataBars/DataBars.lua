@@ -26,7 +26,6 @@ function DB:CreateBar(name, key, db, updateFunc, onEnter, onClick, points)
 	holder:SetScript('OnEnter', onEnter)
 	holder:SetScript('OnLeave', DB.OnLeave)
 	holder:SetScript('OnMouseDown', onClick)
-	holder.db = db
 
 	if points then
 		holder:ClearAllPoints()
@@ -38,6 +37,7 @@ function DB:CreateBar(name, key, db, updateFunc, onEnter, onClick, points)
 	bar:EnableMouse(false)
 	bar:SetInside()
 	bar:Hide()
+	bar.db = db
 
 	bar.barTexture = bar:GetStatusBarTexture()
 	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
