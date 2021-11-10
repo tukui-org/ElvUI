@@ -8,7 +8,6 @@ local IsSwimming = IsSwimming
 local GetUnitSpeed = GetUnitSpeed
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
-local STAT_MOVEMENT_SPEED = STAT_MOVEMENT_SPEED
 
 local displayString, lastPanel = ''
 local beforeFalling, wasFlying
@@ -41,7 +40,7 @@ local function DelayUpdate()
 	if E.global.datatexts.settings.MovementSpeed.NoLabel then
 		lastPanel.text:SetFormattedText(displayString, percent)
 	else
-		lastPanel.text:SetFormattedText(displayString, E.global.datatexts.settings.MovementSpeed.Label ~= '' and E.global.datatexts.settings.MovementSpeed.Label or STAT_MOVEMENT_SPEED, percent)
+		lastPanel.text:SetFormattedText(displayString, E.global.datatexts.settings.MovementSpeed.Label ~= '' and E.global.datatexts.settings.MovementSpeed.Label or L["Mov. Speed"], percent)
 	end
 
 	delayed = nil
@@ -62,4 +61,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('MovementSpeed', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'UNIT_SPELL_HASTE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE'}, OnEvent, nil, nil, nil, nil, STAT_MOVEMENT_SPEED, nil, ValueColorUpdate)
+DT:RegisterDatatext('MovementSpeed', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'UNIT_SPELL_HASTE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE'}, OnEvent, nil, nil, nil, nil, _G.STAT_MOVEMENT_SPEED, nil, ValueColorUpdate)

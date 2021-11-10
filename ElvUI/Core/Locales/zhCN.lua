@@ -5,6 +5,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 L["BoP"] = true
 L["BoE"] = true
 L["BoU"] = true
+L["Mov. Speed"] = true
 L["Vendored gray items for: %s"] = "已出售灰色物品: %s"
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 内存占用"
