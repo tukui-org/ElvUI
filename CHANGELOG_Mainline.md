@@ -1,5 +1,7 @@
 ### Version 12.51 [ ETA: 🍨 ]
-Add: Stuff
+
+Bags: Added auto toggle option for vendor aswell  
+Filters: Fixed AuraBar colors not setting the selected color  
 
 ___
 ### Version 12.50 [ November 9th 2021 ]
@@ -13,7 +15,7 @@ ___
 
 ActionBars: Fixed ExtraActionButton hotkey text  
 Bags: Added Auto Toggle options to open bags with specific frames  
-Bags, DataTexts: Use Blizzards new coin icons  
+Bags: DataTexts: Use Blizzards new coin icons  
 DataBars: Added an option to flip threat colors on tanks  
 General: Updated RaidUtility (added Main Tank and Main Assist buttons)  
 Locales: Updated Russian translation (Thanks Hollicsh)  

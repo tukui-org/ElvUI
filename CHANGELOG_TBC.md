@@ -1,3 +1,11 @@
+### Version 2.23 [ ETA: 🍨 ]
+Bags: Added Auto Toggle options to open bags with specific frames  
+Bags: Fix main bag icon when bag module is off (Bag skin)  
+DataBars: Fixed an error in experience bar when entering a Dungeon  
+Filters: Fixed AuraBar colors not setting the selected color  
+General: Fixed interrupt announce for real  
+Misc: Added back chat print for vendor grays  
+___
 ### Version 2.22 [ November 9th 2021 ]
 Bags: Added an option to enable/disable Quest icons  
 Bags: Use Blizzards new coin icons  
