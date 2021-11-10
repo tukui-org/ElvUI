@@ -16,8 +16,6 @@ local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
-local C_Map_GetMapInfo = C_Map.GetMapInfo
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
@@ -41,15 +39,12 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 			QuestLogXP = QuestLogXP + GetQuestLogRewardXP(questID)
 		end
 	elseif not E.Retail then
-		local bar = DB.StatusBars.Experience
-		local numEntries = GetNumQuestLogEntries()
-		local mapID = C_Map_GetBestMapForUnit("player")
-		if not mapID then return end
-		local currentZone = mapID and C_Map_GetMapInfo(mapID).name
-		local currentZoneCheck
+		local currentZone = E.MapInfo.name
+		if not currentZone then return end
 
-		local isHeader, isComplete, name, _
-		for i = 1, numEntries do
+		local bar = DB.StatusBars.Experience
+		local currentZoneCheck, isHeader, isComplete, name, _
+		for i = 1, GetNumQuestLogEntries() do
 			name, _, _, isHeader, _, isComplete, _, questID = GetQuestLogTitle(i)
 			if isHeader then
 				currentZoneCheck = bar.db.questCurrentZoneOnly and currentZone == name or not bar.db.questCurrentZoneOnly
