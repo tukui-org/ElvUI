@@ -2127,7 +2127,9 @@ function B:OpenBank()
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
-	B:OpenBags()
+	if B.db.autoToggle.bank then
+		B:OpenBags()
+	end
 end
 
 function B:CloseBank()
@@ -2362,7 +2364,7 @@ B.QuestKeys = {
 B.AutoToggleEvents = {
 	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
 	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
-	tradeSkills = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
+	professions = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
 	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
 }
 
