@@ -331,11 +331,12 @@ P.bags = {
 	},
 	shownBags = {},
 	autoToggle = {
+		bank = true,
 		mail = true,
 		vendor = true,
 		soulBind = true,
 		auctionHouse = true,
-		tradeSkills = false,
+		professions = false,
 		guildBank = false,
 		trade = false,
 	},
