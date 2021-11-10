@@ -309,9 +309,11 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy
 		z['Simpy-Myzrael']			= itsSimpy -- Warlock
-		-- Luckyone
+		-- Luckyone Classic Era
 		z['Luckyone-Shazzrah']		= ElvGreen -- Hunter
 		z['Luckydruid-Shazzrah']	= ElvGreen -- Druid
+		-- Luckyone Season of Mastery
+		z['Luckyone-Dreadnaught']	= ElvGreen -- Hunter
 	elseif E.TBC then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
