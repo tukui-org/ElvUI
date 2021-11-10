@@ -38,7 +38,7 @@ E.Options.args.tooltip.args.general.args.cursorAnchorY = ACH:Range(L["Cursor Anc
 E.Options.args.tooltip.args.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, 7, nil, nil, nil, nil, not E.Retail)
 E.Options.args.tooltip.args.mythicPlus.inline = true
 E.Options.args.tooltip.args.mythicPlus.args.mythicDataEnable = ACH:Toggle(L["Enable"], nil, 1)
-E.Options.args.tooltip.args.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
+E.Options.args.tooltip.args.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 2, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 E.Options.args.tooltip.args.mythicPlus.args.mythicBestRun = ACH:Toggle(L["Mythic+ Best Run"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 E.Options.args.tooltip.args.mythicPlus.args.dungeonScoreColor = ACH:Toggle(L["Color Score"], L["Color score based on Blizzards API."], 4, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 
