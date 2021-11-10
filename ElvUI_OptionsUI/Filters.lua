@@ -214,7 +214,7 @@ local function FilterSettings(info, ...)
 	elseif selectedFilter == 'AuraBar Colors' then
 		if info.type == 'color' then
 			color = E.global.unitframe.AuraBarColors[spell].color
-			if value ~= nil then
+			if r ~= nil then
 				color.r, color.g, color.b, color.a = r, g, b, a or 1
 			else
 				return color.r, color.g, color.b, color.a
