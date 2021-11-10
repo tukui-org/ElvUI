@@ -333,6 +333,7 @@ P.bags = {
 	shownBags = {},
 	autoToggle = {
 		mail = true,
+		vendor = true,
 		soulBind = true,
 		auctionHouse = true,
 		tradeSkills = false,

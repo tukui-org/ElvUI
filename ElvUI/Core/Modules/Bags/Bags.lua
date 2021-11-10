@@ -1964,9 +1964,10 @@ function B:ToggleBackpack()
 end
 
 function B:OpenAllBags(frame)
-	local isMail = frame == _G.MailFrame and frame:IsShown()
+	local mail = frame == _G.MailFrame and frame:IsShown()
+	local vendor = frame == _G.MerchantFrame and frame:IsShown()
 
-	if not isMail or B.db.autoToggle.mail then
+	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
 		B:OpenBags()
 	else
 		B:CloseBags()
