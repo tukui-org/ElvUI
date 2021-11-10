@@ -44,7 +44,8 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 		local bar = DB.StatusBars.Experience
 		local numEntries = GetNumQuestLogEntries()
 		local mapID = C_Map_GetBestMapForUnit("player")
-		local currentZone = C_Map_GetMapInfo(mapID).name
+		if not mapID then return end
+		local currentZone = mapID and C_Map_GetMapInfo(mapID).name
 		local currentZoneCheck
 
 		local isHeader, isComplete, name, _
