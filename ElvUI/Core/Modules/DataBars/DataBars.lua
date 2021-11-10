@@ -20,12 +20,13 @@ function DB:OnLeave()
 	end
 end
 
-function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
+function DB:CreateBar(name, key, db, updateFunc, onEnter, onClick, points)
 	local holder = CreateFrame('Frame', name..'Holder', E.UIParent)
 	holder:SetTemplate(DB.db.transparent and 'Transparent')
 	holder:SetScript('OnEnter', onEnter)
 	holder:SetScript('OnLeave', DB.OnLeave)
 	holder:SetScript('OnMouseDown', onClick)
+	holder.db = db
 
 	if points then
 		holder:ClearAllPoints()
