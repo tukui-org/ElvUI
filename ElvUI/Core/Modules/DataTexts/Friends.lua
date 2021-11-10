@@ -119,7 +119,7 @@ local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local friendTable, BNTable, tableList = {}, {}, {}
-local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,'\124Hplayer:%%s\124h%[%%s%]\124h',''), gsub(_G.ERR_FRIEND_OFFLINE_S,'%%s','')
+local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,'|Hplayer:%%s|h%[%%s%]|h',''), gsub(_G.ERR_FRIEND_OFFLINE_S,'%%s','')
 local wowString = _G.BNET_CLIENT_WOW
 local retailID = _G.WOW_PROJECT_ID
 local WOW_CLASSIC = _G.BNET_FRIEND_TOOLTIP_WOW_CLASSIC

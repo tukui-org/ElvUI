@@ -1964,9 +1964,10 @@ function B:ToggleBackpack()
 end
 
 function B:OpenAllBags(frame)
-	local isMail = frame == _G.MailFrame and frame:IsShown()
+	local mail = frame == _G.MailFrame and frame:IsShown()
+	local vendor = frame == _G.MerchantFrame and frame:IsShown()
 
-	if not isMail or B.db.autoToggle.mail then
+	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
 		B:OpenBags()
 	else
 		B:CloseBags()
@@ -2278,6 +2279,10 @@ function B:VendorGrays_OnUpdate(elapsed)
 		B.SellFrame.statusbar.ValueText:SetText(B.SellFrame.Info.itemsSold..' / '..B.SellFrame.Info.ProgressMax..' ( '..timeLeft..'s )')
 	elseif lastItem then
 		B.SellFrame:Hide()
+
+		if not E.Retail and B.SellFrame.Info.goldGained > 0 then
+			E:Print((L["Vendored gray items for: %s"]):format(E:FormatMoney(B.SellFrame.Info.goldGained, B.db.moneyFormat, not B.db.moneyCoins)))
+		end
 	end
 end
 

@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["Vendor"] = true
 L["Guild Bank"] = "Банк гильдии"
 L["Soul Binds"] = true
 L["Auction House"] = "Аукционный дом"

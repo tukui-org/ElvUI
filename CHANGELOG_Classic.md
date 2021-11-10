@@ -1,4 +1,15 @@
+### Version 1.49 [ ETA: 🍨 ]
+
+Bags: Added Auto toggle options to open bags with specific frames  
+Bags: Fix main bag icon when bag module is off (Bag skin)  
+DataBars: Fixed an error in experience bar when entering a dungeon  
+Filters: Fixed AuraBar colors not setting the selected color  
+General: Fixed interrupt announce for real  
+Misc: Added back chat print for vendor grays  
+
+___
 ### Version 1.48 [ November 9th 2021 ]
+
 Bags: Added an option to enable/disable Quest icons  
 Bags: Use Blizzards new coin icons  
 DataBars: Added Quest XP in Experience bar  
@@ -16,6 +27,7 @@ UnitFrames: Raid Debuffs position fixes
 
 ___
 ### Version 1.47 [ November 4th 2021 ]
+
 ActionBars: Added keybind mode for Stance Bar  
 Bags: Added back quest icon for quest items  
 Bags: Special color fixes (Soul Shards)  
@@ -31,6 +43,7 @@ UnitFrames: Updated out of range fader
 
 ___
 ### Version 1.46 [ November 4th 2021 ]
+
 Bags: Fixed BagBar backdrop for only backpack option  
 Bags: Fixed BagBar bags not toggling bags  
 Bags: Protect reagent from firing  
@@ -54,4 +67,5 @@ UnitFrames: Re-add Resurrect/Summon Icons
 
 ___
 ### Version 1.45 [ November 2nd 2021 ]
+
 Initial support for Blizzards 1.14. live server update and upcoming Season of Mastery  
