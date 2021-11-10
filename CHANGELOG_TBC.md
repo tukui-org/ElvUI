@@ -1,7 +1,7 @@
 ### Version 2.23 [ ETA: 🍨 ]
-Bags: Added Auto Toggle options to open bags with specific frames  
+Bags: Added Auto toggle options to open bags with specific frames  
 Bags: Fix main bag icon when bag module is off (Bag skin)  
-DataBars: Fixed an error in experience bar when entering a Dungeon  
+DataBars: Fixed an error in experience bar when entering a dungeon  
 Filters: Fixed AuraBar colors not setting the selected color  
 General: Fixed interrupt announce for real  
 Misc: Added back chat print for vendor grays  
