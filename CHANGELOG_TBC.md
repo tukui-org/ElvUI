@@ -6,6 +6,7 @@ DataBars: Fixed an error in experience bar when entering a dungeon
 Filters: Fixed AuraBar colors not setting the selected color  
 General: Fixed interrupt announce for real  
 Misc: Added back chat print for vendor grays  
+
 ___
 ### Version 2.22 [ November 9th 2021 ]
 
