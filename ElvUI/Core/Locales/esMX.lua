@@ -5,6 +5,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
 L["BoP"] = true
 L["BoE"] = true
 L["BoU"] = true
+L["Vendored gray items for: %s"] = "Objetos grises vendidos por: %s"
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
 L["(Modifer Click) Collect Garbage"] = "(Clic Mod) Recolectar basura"

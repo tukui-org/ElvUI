@@ -5,6 +5,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
 L["BoP"] = "획귀"
 L["BoE"] = "착귀"
 L["BoU"] = true
+L["Vendored gray items for: %s"] = "모든 잡동사니를 팔았습니다: %s"
 L[" |cff00ff00bound to |r"] = " 키로 다음의 행동을 실행합니다: |cff2eb7e4"
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
 L["(Modifer Click) Collect Garbage"] = true
