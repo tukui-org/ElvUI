@@ -221,6 +221,7 @@ end
 
 function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
+	bar.db = DB.db.experience
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -254,7 +255,7 @@ function DB:ExperienceBar_Toggle()
 end
 
 function DB:ExperienceBar()
-	local Experience = DB:CreateBar('ElvUI_ExperienceBar', 'Experience', DB.db.experience, DB.ExperienceBar_Update, DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, {'BOTTOM', E.UIParent, 'BOTTOM', 0, 43})
+	local Experience = DB:CreateBar('ElvUI_ExperienceBar', 'Experience', DB.ExperienceBar_Update, DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, {'BOTTOM', E.UIParent, 'BOTTOM', 0, 43})
 	Experience.barTexture:SetDrawLayer('ARTWORK', 4)
 	DB:CreateBarBubbles(Experience)
 

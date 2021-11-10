@@ -20,7 +20,7 @@ function DB:OnLeave()
 	end
 end
 
-function DB:CreateBar(name, key, db, updateFunc, onEnter, onClick, points)
+function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	local holder = CreateFrame('Frame', name..'Holder', E.UIParent)
 	holder:SetTemplate(DB.db.transparent and 'Transparent')
 	holder:SetScript('OnEnter', onEnter)
@@ -37,7 +37,6 @@ function DB:CreateBar(name, key, db, updateFunc, onEnter, onClick, points)
 	bar:EnableMouse(false)
 	bar:SetInside()
 	bar:Hide()
-	bar.db = db
 
 	bar.barTexture = bar:GetStatusBarTexture()
 	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
@@ -162,13 +161,20 @@ function DB:HandleVisibility()
 	end
 end
 
-function DB:Initialize()
-	DB.Initialized = true
-	DB.StatusBars = {}
+function DB:ToggleAll()
+	DB:ExperienceBar_Toggle()
+	DB:ReputationBar_Toggle()
+	DB:ThreatBar_Toggle()
 
-	DB.db = E.db.databars
+	if E.Retail then
+		DB:HonorBar_Toggle()
+		DB:AzeriteBar_Toggle()
+	elseif E.myclass == 'HUNTER' then
+		DB:PetExperienceBar_Toggle()
+	end
+end
 
-	-- don't forget to also update UpdateDataBars in Core
+function DB:CreateAll()
 	DB:ExperienceBar()
 	DB:ReputationBar()
 	DB:ThreatBar()
@@ -179,7 +185,15 @@ function DB:Initialize()
 	elseif E.myclass == 'HUNTER' then
 		DB:PetExperienceBar()
 	end
+end
 
+function DB:Initialize()
+	DB.Initialized = true
+	DB.StatusBars = {}
+
+	DB.db = E.db.databars
+
+	DB:CreateAll()
 	DB:UpdateAll()
 
 	DB:RegisterEvent('PLAYER_LEVEL_UP', 'HandleVisibility')

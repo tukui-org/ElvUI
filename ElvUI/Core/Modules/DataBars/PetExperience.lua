@@ -73,6 +73,7 @@ function DB:PetExperienceBar_OnClick() end
 
 function DB:PetExperienceBar_Toggle()
 	local bar = DB.StatusBars.PetExperience
+	bar.db = DB.db.petExperience
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -86,7 +87,7 @@ function DB:PetExperienceBar_Toggle()
 end
 
 function DB:PetExperienceBar()
-	local PetExperience = DB:CreateBar('ElvUI_PetExperienceBar', 'PetExperience', DB.db.petExperience, DB.PetExperienceBar_Update, DB.PetExperienceBar_OnEnter, DB.PetExperienceBar_OnClick, {'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing * 3, 0})
+	local PetExperience = DB:CreateBar('ElvUI_PetExperienceBar', 'PetExperience', DB.PetExperienceBar_Update, DB.PetExperienceBar_OnEnter, DB.PetExperienceBar_OnClick, {'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing * 3, 0})
 	PetExperience.ShouldHide = function()
 		return not HasPetUI() or (HasPetUI() and DB.db.petExperience.hideAtMaxLevel and not DB:PetExperienceBar_ShouldBeVisible())
 	end

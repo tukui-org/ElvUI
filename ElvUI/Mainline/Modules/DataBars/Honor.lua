@@ -80,6 +80,7 @@ end
 
 function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
+	bar.db = DB.db.honor
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -97,7 +98,7 @@ function DB:HonorBar_Toggle()
 end
 
 function DB:HonorBar()
-	local Honor = DB:CreateBar('ElvUI_HonorBar', 'Honor', DB.db.honor, DB.HonorBar_Update, DB.HonorBar_OnEnter, DB.HonorBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255})
+	local Honor = DB:CreateBar('ElvUI_HonorBar', 'Honor', DB.HonorBar_Update, DB.HonorBar_OnEnter, DB.HonorBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255})
 	DB:CreateBarBubbles(Honor)
 
 	Honor.ShouldHide = function()

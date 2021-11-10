@@ -101,6 +101,7 @@ end
 
 function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
+	bar.db = DB.db.threat
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -124,7 +125,7 @@ function DB:ThreatBar_Toggle()
 end
 
 function DB:ThreatBar()
-	local Threat = DB:CreateBar('ElvUI_ThreatBar', 'Threat', DB.db.threat, DB.ThreatBar_Update, nil, nil, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
+	local Threat = DB:CreateBar('ElvUI_ThreatBar', 'Threat', DB.ThreatBar_Update, nil, nil, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
 	Threat:SetMinMaxValues(0, 100)
 	Threat.list = {}
 

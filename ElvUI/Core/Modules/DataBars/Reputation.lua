@@ -134,6 +134,7 @@ end
 
 function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
+	bar.db = DB.db.reputation
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -153,7 +154,7 @@ function DB:ReputationBar_Toggle()
 end
 
 function DB:ReputationBar()
-	local Reputation = DB:CreateBar('ElvUI_ReputationBar', 'Reputation', DB.db.reputation, DB.ReputationBar_Update, DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264})
+	local Reputation = DB:CreateBar('ElvUI_ReputationBar', 'Reputation', DB.ReputationBar_Update, DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264})
 	DB:CreateBarBubbles(Reputation)
 
 	Reputation.Reward = Reputation:CreateTexture()

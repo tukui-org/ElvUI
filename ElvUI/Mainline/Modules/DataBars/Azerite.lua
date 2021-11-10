@@ -105,6 +105,7 @@ end
 
 function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
+	bar.db = DB.db.azerite
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -122,7 +123,7 @@ function DB:AzeriteBar_Toggle()
 end
 
 function DB:AzeriteBar()
-	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.db.azerite, DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
+	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
 	DB:CreateBarBubbles(Azerite)
 
 	Azerite.ShouldHide = function()
