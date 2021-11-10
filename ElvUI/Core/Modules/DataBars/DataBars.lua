@@ -168,6 +168,7 @@ function DB:Initialize()
 
 	DB.db = E.db.databars
 
+	-- don't forget to also update UpdateDataBars in Core
 	DB:ExperienceBar()
 	DB:ReputationBar()
 	DB:ThreatBar()

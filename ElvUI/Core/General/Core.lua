@@ -1457,15 +1457,12 @@ end
 function E:UpdateDataBars(skipCallback)
 	DataBars:ExperienceBar_Toggle()
 	DataBars:ReputationBar_Toggle()
+	DataBars:ThreatBar_Toggle()
 
 	if E.Retail then
 		DataBars:HonorBar_Toggle()
 		DataBars:AzeriteBar_Toggle()
-		DataBars:ThreatBar_Toggle()
-	elseif E.TBC then
-		DataBars:PetExperienceBar_Toggle()
-		DataBars:ThreatBar_Toggle()
-	elseif E.Classic then
+	elseif E.myclass == 'HUNTER' then
 		DataBars:PetExperienceBar_Toggle()
 	end
 
