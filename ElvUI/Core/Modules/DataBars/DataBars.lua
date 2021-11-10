@@ -174,7 +174,7 @@ function DB:Initialize()
 	if E.Retail then
 		DB:HonorBar()
 		DB:AzeriteBar()
-	else
+	elseif E.myclass == 'HUNTER' then
 		DB:PetExperienceBar()
 	end
 
