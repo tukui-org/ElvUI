@@ -1,4 +1,5 @@
 ### Version 2.23 [ ETA: 🍨 ]
+
 Bags: Added Auto toggle options to open bags with specific frames  
 Bags: Fix main bag icon when bag module is off (Bag skin)  
 DataBars: Fixed an error in experience bar when entering a dungeon  
@@ -7,6 +8,7 @@ General: Fixed interrupt announce for real
 Misc: Added back chat print for vendor grays  
 ___
 ### Version 2.22 [ November 9th 2021 ]
+
 Bags: Added an option to enable/disable Quest icons  
 Bags: Use Blizzards new coin icons  
 DataBars: Added Quest XP in Experience bar  
@@ -24,6 +26,7 @@ UnitFrames: Raid Debuffs position fixes
 
 ___
 ### Version 2.21 [ November 5th 2021 ]
+
 ActionBars: Added keybind mode for Stance Bar  
 Bags: Added back quest icon for quest items  
 Bags: Special color fixes (Soul Shards)  
@@ -39,6 +42,7 @@ UnitFrames: Updated out of range fader
 
 ___
 ### Version 2.20 [ November 4th 2021 ]
+
 Bags: Fixed BagBar backdrop for only backpack option  
 Bags: Fixed BagBar bags not toggling bags  
 Bags: Protect reagent from firing  
@@ -62,6 +66,7 @@ UnitFrames: Re-add Resurrect/Summon Icons
 
 ___
 ### Version 2.19 [ November 2nd 2021 ]
+
 Added guild option for auto repair  
 Added phase 2 support for our custom RaidDebuffs list  
 Fixed combo points not updating correctly on target switch  
