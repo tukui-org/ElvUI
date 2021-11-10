@@ -198,31 +198,19 @@ local function FilterSettings(info, ...)
 		value = ...
 	end
 
-	if selectedFilter == 'Aura Highlight' then
+	if selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' then
+		local settingTable = selectedFilter == 'Aura Highlight' and 'AuraHighlightColors' or 'AuraBarColors'
 		if info.type == 'color' then
-			color = E.global.unitframe.AuraHighlightColors[spell].color
+			color = E.global.unitframe[settingTable][spell].color
 			if r ~= nil then
 				color.r, color.g, color.b, color.a = r, g, b, a or 1
 			else
 				return color.r, color.g, color.b, color.a
 			end
 		elseif value ~= nil then
-			E.global.unitframe.AuraHighlightColors[spell][info[#info]] = value
+			E.global.unitframe[settingTable][spell][info[#info]] = value
 		else
-			return E.global.unitframe.AuraHighlightColors[spell][info[#info]]
-		end
-	elseif selectedFilter == 'AuraBar Colors' then
-		if info.type == 'color' then
-			color = E.global.unitframe.AuraBarColors[spell].color
-			if r ~= nil then
-				color.r, color.g, color.b, color.a = r, g, b, a or 1
-			else
-				return color.r, color.g, color.b, color.a
-			end
-		elseif value ~= nil then
-			E.global.unitframe.AuraBarColors[spell][info[#info]] = value
-		else
-			return E.global.unitframe.AuraBarColors[spell][info[#info]]
+			return E.global.unitframe[settingTable][spell][info[#info]]
 		end
 	else
 		if value ~= nil then
