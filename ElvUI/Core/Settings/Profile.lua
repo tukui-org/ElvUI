@@ -4,6 +4,7 @@ local CopyTable = CopyTable -- Our function doesn't exist yet.
 local next = next
 
 P.gridSize = 64
+P.layoutSetting = 'tank'
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
