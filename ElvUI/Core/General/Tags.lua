@@ -1240,38 +1240,6 @@ do
 	end)
 end
 
-E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
-	if (UnitIsPlayer(unit)) then
-		local rank = UnitPVPRank(unit)
-		local title = GetPVPRankInfo(rank, unit)
-
-		return title
-	end
-end)
-
-E:AddTag('pvp:rank', 'UNIT_NAME_UPDATE', function(unit)
-	if (UnitIsPlayer(unit)) then
-		local rank = UnitPVPRank(unit)
-		local _, rankNumber = GetPVPRankInfo(rank, unit)
-
-		if rankNumber > 0 then
-			return rankNumber
-		end
-	end
-end)
-
-E:AddTag('pvp:icon', 'UNIT_NAME_UPDATE', function(unit)
-	if (UnitIsPlayer(unit)) then
-		local rank = UnitPVPRank(unit)
-		local _, rankNumber = GetPVPRankInfo(rank, unit)
-		local texture = format('%s%02d', 'Interface\\PvPRankBadges\\PvPRank', rankNumber)
-
-		if rankNumber > 0 then
-			return CreateTextureMarkup(texture, 12, 12, 12, 12, 0, 1, 0, 1, 0, 0)
-		end
-	end
-end)
-
 if not E.Retail then
 	local HasPetUI = HasPetUI
 	local GetPetLoyalty = GetPetLoyalty
@@ -1329,6 +1297,38 @@ if not E.Retail then
 		local hasPetUI, isHunterPet = HasPetUI()
 		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 			return GetPetFoodTypes()
+		end
+	end)
+
+	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
+		if (UnitIsPlayer(unit)) then
+			local rank = UnitPVPRank(unit)
+			local title = GetPVPRankInfo(rank, unit)
+	
+			return title
+		end
+	end)
+	
+	E:AddTag('pvp:rank', 'UNIT_NAME_UPDATE', function(unit)
+		if (UnitIsPlayer(unit)) then
+			local rank = UnitPVPRank(unit)
+			local _, rankNumber = GetPVPRankInfo(rank, unit)
+	
+			if rankNumber > 0 then
+				return rankNumber
+			end
+		end
+	end)
+	
+	E:AddTag('pvp:icon', 'UNIT_NAME_UPDATE', function(unit)
+		if (UnitIsPlayer(unit)) then
+			local rank = UnitPVPRank(unit)
+			local _, rankNumber = GetPVPRankInfo(rank, unit)
+			local texture = format('%s%02d', 'Interface\\PvPRankBadges\\PvPRank', rankNumber)
+	
+			if rankNumber > 0 then
+				return CreateTextureMarkup(texture, 12, 12, 12, 12, 0, 1, 0, 1, 0, 0)
+			end
 		end
 	end)
 end
@@ -1530,9 +1530,9 @@ E.TagInfo = {
 		['faction'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde'" },
 		['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 		['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
-		['pvp:icon'] = { category = 'PvP', description = "Displays player pvp rank icon" },
-		['pvp:rank'] = { category = 'PvP', description = "Displays player pvp rank number" },
-		['pvp:title'] = { category = 'PvP', description = "Displays player pvp title" },
+		['pvp:icon'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp rank icon" },
+		['pvp:rank'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp rank number" },
+		['pvp:title'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp title" },
 	-- Quest
 		['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 		['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
