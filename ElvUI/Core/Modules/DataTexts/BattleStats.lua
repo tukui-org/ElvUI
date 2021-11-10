@@ -13,15 +13,15 @@ local GetBattlefieldScore = GetBattlefieldScore
 local BATTLEGROUND = BATTLEGROUND
 
 local displayString = ''
+local LEFT, RIGHT = {}, {}
 local holder = {
-	LEFT = { data = {}, _G.KILLS, _G.KILLING_BLOWS, _G.DEATHS },
-	RIGHT = { data = {}, _G.DAMAGE, E.Retail and _G.SHOW_COMBAT_HEALING or _G.HEALS, _G.HONOR }
+	LEFT = { data = LEFT, _G.KILLS, _G.KILLING_BLOWS, _G.DEATHS },
+	RIGHT = { data = RIGHT, _G.DAMAGE, E.Retail and _G.SHOW_COMBAT_HEALING or _G.HEALS, _G.HONOR }
 }
 
 DT.BattleStats = holder
 function DT:UpdateBattlePanel(which)
 	local info = which and holder[which]
-
 	local panel = info and info.panel
 	if not panel then return end
 
@@ -34,8 +34,6 @@ function DT:UpdateBattlePanel(which)
 end
 
 local myIndex
-local LEFT = holder.LEFT.data
-local RIGHT = holder.RIGHT.data
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	myIndex = nil
 
