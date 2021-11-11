@@ -226,7 +226,7 @@ tinsert(ResSpells.PRIEST, 2006)		-- Resurrection (40 yards, level 10)
 
 -- Rogues
 if isRetail then
-	tinsert(FriendSpells.ROGUE, 36554)	-- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
+	tinsert(FriendSpells.ROGUE, 36554)	-- Shadowstep (Assassination, Subtlety) (25 yards, level 18) -- works on friendly in retail
 	tinsert(FriendSpells.ROGUE, 921)	-- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly aswell for retail but on classic this is melee range and will return min 0 range 0
 end
 
