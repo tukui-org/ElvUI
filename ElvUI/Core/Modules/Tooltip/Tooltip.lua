@@ -617,10 +617,15 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt.qualityChanged then
 		tt.qualityChanged = nil
 
+		local r, g, b = 1, 1, 1
+		if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+			r, g, b = unpack(E.media.bordercolor)
+		end
+
 		if tt.NineSlice then
-			tt.NineSlice:SetBorderColor(unpack(E.media.bordercolor))
+			tt.NineSlice:SetBorderColor(r, g, b)
 		else
-			tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			tt:SetBackdropBorderColor(r, g, b)
 		end
 	end
 
@@ -669,7 +674,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	if TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
-
 			if tt.NineSlice then
 				tt.NineSlice:SetBorderColor(GetItemQualityColor(quality))
 			else
