@@ -1167,8 +1167,8 @@ function CH:UpdateChatTab(chat)
 		local docker = _G.GeneralDockManager.primary
 		local parent = CH:GetDockerParent(docker, chat)
 
-		-- we need to update the tab parent to mimic the docker
-		tab:SetParent(parent or _G.UIParent)
+		-- we need to update the tab parent to mimic the docker if its not docked
+		if not chat.isDocked then tab:SetParent(parent or _G.UIParent) end
 		chat:SetParent(parent or _G.UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
