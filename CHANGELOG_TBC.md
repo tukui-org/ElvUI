@@ -1,11 +1,17 @@
-### Version 2.23 [ ETA: 🍨 ]
+### Version 2.23 [ November 11th 2021 ]
 
 Bags: Added Auto toggle options to open bags with specific frames  
 Bags: Fix main bag icon when bag module is off (Bag skin)  
 DataBars: Fixed an error in experience bar when entering a dungeon  
+DataBars: Fixed issues in PetExperience and show only on Hunters  
+DataTexts: Fixed Battlestats  
+DataTexts: Updated Movementspeed  
 Filters: Fixed AuraBar colors not setting the selected color  
 General: Fixed interrupt announce for real  
+Locales: Updated Russian translation (Credits Hollicsh)  
+Minimap: Added back Quest Log to middle-mouse dropdown  
 Misc: Added back chat print for vendor grays  
+Tags: Added back pvp tags  
 
 ___
 ### Version 2.22 [ November 9th 2021 ]
