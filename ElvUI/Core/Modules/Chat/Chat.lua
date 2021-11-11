@@ -2196,6 +2196,7 @@ function CH:FCFDockOverflowButton_UpdatePulseState(btn)
 	if not btn.Texture then return end
 
 	if btn.alerting then
+		btn:SetAlpha(1)
 		btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	elseif not btn:IsMouseOver() then
 		btn.Texture:SetVertexColor(1, 1, 1)
@@ -2204,24 +2205,42 @@ end
 
 do
 	local overflowColor = { r = 1, g = 1, b = 1 } -- use this to prevent HandleNextPrevButton from setting the scripts, as this has its own
+	local btn = _G.GeneralDockManagerOverflowButton
+
 	function CH:Overflow_OnEnter()
 		if self.Texture then
 			self.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		end
 	end
+
 	function CH:Overflow_OnLeave()
 		if self.Texture and not self.alerting then
 			self.Texture:SetVertexColor(1, 1, 1)
 		end
 	end
 
+	local overflow_SetAlpha = btn.SetAlpha
+	function CH:Overflow_SetAlpha(alpha)
+		if self.alerting then
+			alpha = 1
+		elseif alpha < 0.5 then
+			local hooks = CH.hooks and CH.hooks[_G.GeneralDockManager.primary]
+			if not (hooks and hooks.OnEnter) then
+				alpha = 0.5
+			end
+		end
+
+		overflow_SetAlpha(btn, alpha)
+	end
+
 	function CH:StyleOverflowButton()
-		local btn = _G.GeneralDockManagerOverflowButton
 		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
 		Skins:HandleNextPrevButton(btn, 'down', overflowColor, true)
 		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
 		if not wasSkinned then
+			btn.SetAlpha = CH.Overflow_SetAlpha
+
 			btn:HookScript('OnEnter', CH.Overflow_OnEnter)
 			btn:HookScript('OnLeave', CH.Overflow_OnLeave)
 		end
