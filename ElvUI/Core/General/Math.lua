@@ -392,20 +392,20 @@ do
 	function E:GetTimeInfo(sec, threshhold, hhmm, mmss)
 		if sec < MINUTE then
 			if sec >= threshhold then
-				return floor(sec), 3, 0.51
+				return floor(sec), 3, 0.5
 			else
-				return sec, 4, 0.051
+				return sec, 4, 0.05
 			end
 		end
 
 		local minutes = mod(sec, HOUR) / MINUTE
 		if mmss and sec < mmss then
-			return minutes, 5, 0.51, mod(sec, MINUTE)
+			return minutes, 5, 1, mod(sec, MINUTE)
 		end
 
 		local hours = mod(sec, DAY) / HOUR
 		if hhmm and sec < (hhmm * MINUTE) then
-			return hours, 6, sec - MINUTEISH, mod(minutes, MINUTE)
+			return hours, 6, MINUTE, mod(minutes, MINUTE)
 		end
 
 		if sec < HOUR then
