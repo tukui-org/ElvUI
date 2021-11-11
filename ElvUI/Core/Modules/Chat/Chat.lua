@@ -2152,7 +2152,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) then
 				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == 'WHISPER' or chatType == 'BN_WHISPER' then
 					if not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
-						_G.FCF_StartAlertFlash(frame) --This would taint if we were not using LibChatAnims
+						_G.FCF_StartAlertFlash(frame)
 					end
 				end
 			end
@@ -2189,6 +2189,48 @@ end
 function CH:ChatFrame_SetScript(script, func)
 	if script == 'OnMouseWheel' and func ~= CH.ChatFrame_OnMouseScroll then
 		self:SetScript(script, CH.ChatFrame_OnMouseScroll)
+	end
+end
+
+function CH:FCFDockOverflowButton_UpdatePulseState(btn)
+	if not btn.Texture then return end
+
+	if btn.alerting then
+		btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
+	elseif not btn:IsMouseOver() then
+		btn.Texture:SetVertexColor(1, 1, 1)
+	end
+end
+
+do
+	local overflowColor = { r = 1, g = 1, b = 1 } -- use this to prevent HandleNextPrevButton from setting the scripts, as this has its own
+	function CH:Overflow_OnEnter()
+		if self.Texture then
+			self.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		end
+	end
+	function CH:Overflow_OnLeave()
+		if self.Texture and not self.alerting then
+			self.Texture:SetVertexColor(1, 1, 1)
+		end
+	end
+
+	function CH:StyleOverflowButton()
+		local btn = _G.GeneralDockManagerOverflowButton
+		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
+		Skins:HandleNextPrevButton(btn, 'down', overflowColor, true)
+		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
+
+		if not wasSkinned then
+			btn:HookScript('OnEnter', CH.Overflow_OnEnter)
+			btn:HookScript('OnLeave', CH.Overflow_OnLeave)
+		end
+
+		local hl = btn:GetHighlightTexture()
+		hl:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		hl:SetRotation(Skins.ArrowRotation.down)
+
+		btn.list:SetTemplate('Transparent')
 	end
 end
 
@@ -2240,9 +2282,7 @@ function CH:SetupChat()
 		_G.QuickJoinToastButton:Hide()
 	end
 
-	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
-
+	CH:StyleOverflowButton()
 	CH:PositionChats()
 
 	if not CH.HookSecured then
@@ -3388,18 +3428,26 @@ function CH:FCF_PopInWindow(fallback)
 	CH.FCF_Close(self) -- use ours to fix close chat bug
 end
 
-function CH:UIDropDownMenu_AddButton(info, level)
-	if info and info.text == _G.CLOSE_CHAT_WINDOW then
-		if not level then level = 1 end
+do
+	local closeButtons = {
+		[_G.CLOSE_CHAT_CONVERSATION_WINDOW] = true,
+		[_G.CLOSE_CHAT_WHISPER_WINDOW] = true,
+		[_G.CLOSE_CHAT_WINDOW] = true
+	}
 
-		local list = _G['DropDownList'..level]
-		local index = (list and list.numButtons) or 1
-		local button = _G[list:GetName()..'Button'..index]
+	function CH:UIDropDownMenu_AddButton(info, level)
+		if info and closeButtons[info.text] then
+			if not level then level = 1 end
 
-		if button.func == _G.FCF_PopInWindow then
-			button.func = CH.FCF_PopInWindow
-		elseif button.func == _G.FCF_Close then
-			button.func = CH.FCF_Close
+			local list = _G['DropDownList'..level]
+			local index = (list and list.numButtons) or 1
+			local button = _G[list:GetName()..'Button'..index]
+
+			if button.func == _G.FCF_PopInWindow then
+				button.func = CH.FCF_PopInWindow
+			elseif button.func == _G.FCF_Close then
+				button.func = CH.FCF_Close
+			end
 		end
 	end
 end
@@ -3453,6 +3501,7 @@ function CH:Initialize()
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
 	CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
 	CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
+	CH:SecureHook('FCFDockOverflowButton_UpdatePulseState')
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
 
