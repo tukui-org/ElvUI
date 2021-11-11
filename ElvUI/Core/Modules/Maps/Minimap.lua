@@ -75,6 +75,8 @@ if E.Retail then
 			ToggleFrame(_G.EncounterJournal)
 		end
 	})
+else
+	tinsert(menuList, {text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end})
 end
 
 if not E.Classic then
