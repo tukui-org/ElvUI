@@ -389,7 +389,7 @@ do
 	function E:GetTimeInfo(sec, threshhold, hhmm, mmss)
 		if sec < MINUTE then
 			if sec >= threshhold then
-				return floor(sec), 3, 1
+				return floor(sec), 3, 0.5
 			else
 				return sec, 4, 0.1
 			end
