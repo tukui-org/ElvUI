@@ -1,10 +1,6 @@
 ### Version 12.52 [ ETA: 🍨 ]
 
 ___
-### Version 12.51 [ November 11th 2021 ]
-
-
-___
 ### Version 12.51 [ November 10th 2021 ]
 
 Bags: Added auto toggle option for vendor and bank  
