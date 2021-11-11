@@ -47,8 +47,8 @@ function S:Blizzard_BindingUI()
 
 	local Quick = _G.QuickKeybindFrame
 	Quick:StripTextures()
-	Quick.Header:StripTextures()
 	Quick:SetTemplate('Transparent')
+	Quick.Header:StripTextures()
 
 	for _, v in next, { 'okayButton', 'defaultsButton', 'cancelButton' } do
 		S:HandleButton(Quick[v])
