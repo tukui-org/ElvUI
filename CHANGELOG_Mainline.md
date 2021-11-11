@@ -1,7 +1,11 @@
 ### Version 12.51 [ ETA: 🍨 ]
 
 Bags: Added auto toggle option for vendor aswell  
-Filters: Fixed AuraBar colors not setting the selected color  
+Bags: Added auto toggle option for bank aswell  
+Datatexts: Fixed BattleStats datatexts
+Datatexts: Fixed Movement Speed datatext
+Filters: Fixed AuraBar colors not setting the selected color 
+Tooltips: Fixed Mythic+ Score options
 
 ___
 ### Version 12.50 [ November 9th 2021 ]
