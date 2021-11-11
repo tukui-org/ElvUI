@@ -2205,8 +2205,6 @@ end
 
 do
 	local overflowColor = { r = 1, g = 1, b = 1 } -- use this to prevent HandleNextPrevButton from setting the scripts, as this has its own
-	local btn = _G.GeneralDockManagerOverflowButton
-
 	function CH:Overflow_OnEnter()
 		if self.Texture then
 			self.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
@@ -2219,7 +2217,7 @@ do
 		end
 	end
 
-	local overflow_SetAlpha = btn.SetAlpha
+	local overflow_SetAlpha
 	function CH:Overflow_SetAlpha(alpha)
 		if self.alerting then
 			alpha = 1
@@ -2230,15 +2228,17 @@ do
 			end
 		end
 
-		overflow_SetAlpha(btn, alpha)
+		overflow_SetAlpha(self, alpha)
 	end
 
 	function CH:StyleOverflowButton()
+		local btn = _G.GeneralDockManagerOverflowButton
 		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
 		Skins:HandleNextPrevButton(btn, 'down', overflowColor, true)
 		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
 		if not wasSkinned then
+			overflow_SetAlpha = btn.SetAlpha
 			btn.SetAlpha = CH.Overflow_SetAlpha
 
 			btn:HookScript('OnEnter', CH.Overflow_OnEnter)
