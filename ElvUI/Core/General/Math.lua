@@ -399,13 +399,12 @@ do
 			return sec / MINUTE, 5, 1, mod(sec, MINUTE)
 		end
 
-		local minutes = mod(sec, HOUR) / MINUTE
 		if hhmm and sec < (hhmm * MINUTE) then
-			return sec / HOUR, 6, 30, mod(minutes, MINUTE)
+			return sec / HOUR, 6, 30, mod(sec, HOUR) / MINUTE
 		end
 
 		if sec < HOUR then
-			return minutes, 2, 30
+			return mod(sec, HOUR) / MINUTE, 2, 30
 		end
 
 		if sec < DAY then
