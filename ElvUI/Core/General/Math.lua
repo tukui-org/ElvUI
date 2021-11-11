@@ -398,14 +398,13 @@ do
 			end
 		end
 
-		local minutes = mod(sec, HOUR) / MINUTE
 		if mmss and sec < mmss then
-			return minutes, 5, 1, mod(sec, MINUTE)
+			return sec / MINUTE, 5, 1, mod(sec, MINUTE)
 		end
 
-		local hours = mod(sec, DAY) / HOUR
+		local minutes = mod(sec, HOUR) / MINUTE
 		if hhmm and sec < (hhmm * MINUTE) then
-			return hours, 6, MINUTE, mod(minutes, MINUTE)
+			return sec / HOUR, 6, MINUTE, mod(minutes, MINUTE)
 		end
 
 		if sec < HOUR then
@@ -413,11 +412,10 @@ do
 		end
 
 		if sec < DAY then
-			return hours, 1, sec - HOURISH
+			return mod(sec, DAY) / HOUR, 1, sec - HOURISH
 		end
 
-		local days = mod(sec, YEAR) / DAY
-		return days, 0, sec - DAYISH
+		return mod(sec, YEAR) / DAY, 0, sec - DAYISH
 	end
 end
 
