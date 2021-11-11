@@ -2604,13 +2604,8 @@ function CH:FCFDock_UpdateTabs(dock)
 	if dock == _G.GeneralDockManager then
 		local logchat, logchattab = CH:GetCombatLog()
 		dock.scrollFrame:ClearAllPoints()
+		dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
 		dock.scrollFrame:Point('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
-
-		if dock.overflowButton:IsShown() then
-			dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
-		else
-			dock.scrollFrame:Point('RIGHT', dock, 0, -5)
-		end
 	end
 end
 
