@@ -548,10 +548,10 @@ function M:Initialize()
 		_G.MiniMapMailBorder
 	}
 
-	if E.TBC then
-		tinsert(frames, _G.MinimapToggleButton)
-	elseif E.Retail then
+	if E.Retail then
 		tinsert(frames, _G.MiniMapTracking)
+	else
+		tinsert(frames, _G.MinimapToggleButton)
 	end
 
 	for _, frame in pairs(frames) do
