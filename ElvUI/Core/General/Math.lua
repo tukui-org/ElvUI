@@ -385,16 +385,13 @@ E.TimeIndicatorColors = {
 }
 
 do
-	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60 --used for calculating aura time text
-	local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
-
-	-- will return the the value to display, the formatter id to use and calculates the next update for the Aura
+	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
 	function E:GetTimeInfo(sec, threshhold, hhmm, mmss)
 		if sec < MINUTE then
 			if sec >= threshhold then
-				return floor(sec), 3, 0.5
+				return floor(sec), 3, 1
 			else
-				return sec, 4, 0.05
+				return sec, 4, 0.1
 			end
 		end
 
@@ -404,18 +401,18 @@ do
 
 		local minutes = mod(sec, HOUR) / MINUTE
 		if hhmm and sec < (hhmm * MINUTE) then
-			return sec / HOUR, 6, MINUTE, mod(minutes, MINUTE)
+			return sec / HOUR, 6, 30, mod(minutes, MINUTE)
 		end
 
 		if sec < HOUR then
-			return minutes, 2, sec - MINUTEISH
+			return minutes, 2, 30
 		end
 
 		if sec < DAY then
-			return mod(sec, DAY) / HOUR, 1, sec - HOURISH
+			return mod(sec, DAY) / HOUR, 1, 30
 		end
 
-		return mod(sec, YEAR) / DAY, 0, sec - DAYISH
+		return mod(sec, YEAR) / DAY, 0, 60
 	end
 end
 
