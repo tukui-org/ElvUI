@@ -1,3 +1,6 @@
+### Version 2.24 [ ETA: 🍨 ]
+
+___
 ### Version 2.23 [ November 11th 2021 ]
 
 Bags: Added Auto toggle options to open bags with specific frames  
