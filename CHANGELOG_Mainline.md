@@ -1,10 +1,12 @@
 ### Version 12.51 [ ETA: 🍨 ]
 
+Fixed error when switching profiles due to databars
 Bags: Added auto toggle option for vendor aswell  
 Bags: Added auto toggle option for bank aswell  
 Datatexts: Fixed BattleStats datatexts
 Datatexts: Fixed Movement Speed datatext
 Filters: Fixed AuraBar colors not setting the selected color 
+Skins: Fixed keybind skins
 Tooltips: Fixed Mythic+ Score options
 
 ___
