@@ -65,6 +65,8 @@ local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 local UnitLevel = UnitLevel
+local UnitPVPRank = UnitPVPRank
+local GetPVPRankInfo = GetPVPRankInfo
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
@@ -1301,33 +1303,33 @@ if not E.Retail then
 	end)
 
 	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
-		if (UnitIsPlayer(unit)) then
+		if UnitIsPlayer(unit) then
 			local rank = UnitPVPRank(unit)
 			local title = GetPVPRankInfo(rank, unit)
-	
+
 			return title
 		end
 	end)
-	
+
 	E:AddTag('pvp:rank', 'UNIT_NAME_UPDATE', function(unit)
-		if (UnitIsPlayer(unit)) then
+		if UnitIsPlayer(unit) then
 			local rank = UnitPVPRank(unit)
-			local _, rankNumber = GetPVPRankInfo(rank, unit)
-	
-			if rankNumber > 0 then
-				return rankNumber
+			local _, num = GetPVPRankInfo(rank, unit)
+
+			if num > 0 then
+				return num
 			end
 		end
 	end)
-	
+
+	local rankIcon = [[|TInterface\PvPRankBadges\PvPRank%02d:12:12:0:0:12:12:0:12:0:12|t]]
 	E:AddTag('pvp:icon', 'UNIT_NAME_UPDATE', function(unit)
-		if (UnitIsPlayer(unit)) then
+		if UnitIsPlayer(unit) then
 			local rank = UnitPVPRank(unit)
-			local _, rankNumber = GetPVPRankInfo(rank, unit)
-			local texture = format('%s%02d', 'Interface\\PvPRankBadges\\PvPRank', rankNumber)
-	
-			if rankNumber > 0 then
-				return CreateTextureMarkup(texture, 12, 12, 12, 12, 0, 1, 0, 1, 0, 0)
+			local _, num = GetPVPRankInfo(rank, unit)
+
+			if num > 0 then
+				return format(rankIcon, num)
 			end
 		end
 	end)
