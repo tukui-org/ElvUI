@@ -393,25 +393,17 @@ do
 			else
 				return sec, 4, 0.1
 			end
-		end
-
-		if mmss and sec < mmss then
+		elseif mmss and sec < mmss then
 			return sec / MINUTE, 5, 1, mod(sec, MINUTE)
-		end
-
-		if hhmm and sec < (hhmm * MINUTE) then
+		elseif hhmm and sec < (hhmm * MINUTE) then
 			return sec / HOUR, 6, 30, mod(sec, HOUR) / MINUTE
-		end
-
-		if sec < HOUR then
+		elseif sec < HOUR then
 			return mod(sec, HOUR) / MINUTE, 2, 30
-		end
-
-		if sec < DAY then
+		elseif sec < DAY then
 			return mod(sec, DAY) / HOUR, 1, 30
+		else
+			return mod(sec, YEAR) / DAY, 0, 60
 		end
-
-		return mod(sec, YEAR) / DAY, 0, 60
 	end
 end
 
