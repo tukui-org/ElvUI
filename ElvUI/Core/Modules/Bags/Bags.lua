@@ -1958,17 +1958,16 @@ function B:ToggleBackpack()
 
 	if IsBagOpen(0) then
 		B:OpenBags()
-		PlaySound(IG_BACKPACK_OPEN)
 	else
 		B:CloseBags()
-		PlaySound(IG_BACKPACK_CLOSE)
 	end
 end
 
 function B:OpenAllBags(frame)
-	local isMail = frame == _G.MailFrame and frame:IsShown()
+	local mail = frame == _G.MailFrame and frame:IsShown()
+	local vendor = frame == _G.MerchantFrame and frame:IsShown()
 
-	if not isMail or B.db.autoToggle.mail then
+	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
 		B:OpenBags()
 	else
 		B:CloseBags()
@@ -2028,7 +2027,10 @@ function B:ClearListeners(frame)
 end
 
 function B:OpenBags()
+	if B.BagFrame:IsShown() then return end
+
 	B.BagFrame:Show()
+	PlaySound(IG_BACKPACK_OPEN)
 
 	B:UpdateAllBagSlots(true)
 
@@ -2038,6 +2040,7 @@ end
 function B:CloseBags()
 	B.BagFrame:Hide()
 	B.BankFrame:Hide()
+	PlaySound(IG_BACKPACK_CLOSE)
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
@@ -2124,7 +2127,9 @@ function B:OpenBank()
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
-	B:OpenBags()
+	if B.db.autoToggle.bank then
+		B:OpenBags()
+	end
 end
 
 function B:CloseBank()
@@ -2276,6 +2281,10 @@ function B:VendorGrays_OnUpdate(elapsed)
 		B.SellFrame.statusbar.ValueText:SetText(B.SellFrame.Info.itemsSold..' / '..B.SellFrame.Info.ProgressMax..' ( '..timeLeft..'s )')
 	elseif lastItem then
 		B.SellFrame:Hide()
+
+		if not E.Retail and B.SellFrame.Info.goldGained > 0 then
+			E:Print((L["Vendored gray items for: %s"]):format(E:FormatMoney(B.SellFrame.Info.goldGained, B.db.moneyFormat, not B.db.moneyCoins)))
+		end
 	end
 end
 
@@ -2355,7 +2364,7 @@ B.QuestKeys = {
 B.AutoToggleEvents = {
 	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
 	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
-	tradeSkills = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
+	professions = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
 	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
 }
 

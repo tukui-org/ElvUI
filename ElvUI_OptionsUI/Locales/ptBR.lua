@@ -1,6 +1,7 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 
+L["Vendor"] = true
 L["Guild Bank"] = true
 L["Soul Binds"] = true
 L["Auction House"] = true

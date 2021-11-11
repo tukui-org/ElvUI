@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["Vendor"] = true
 L["Guild Bank"] = true
 L["Soul Binds"] = true
 L["Auction House"] = true

@@ -1455,20 +1455,7 @@ function E:UpdateChat(skipCallback)
 end
 
 function E:UpdateDataBars(skipCallback)
-	DataBars:ExperienceBar_Toggle()
-	DataBars:ReputationBar_Toggle()
-
-	if E.Retail then
-		DataBars:HonorBar_Toggle()
-		DataBars:AzeriteBar_Toggle()
-		DataBars:ThreatBar_Toggle()
-	elseif E.TBC then
-		DataBars:PetExperienceBar_Toggle()
-		DataBars:ThreatBar_Toggle()
-	elseif E.Classic then
-		DataBars:PetExperienceBar_Toggle()
-	end
-
+	DataBars:ToggleAll()
 	DataBars:UpdateAll()
 
 	if not skipCallback then

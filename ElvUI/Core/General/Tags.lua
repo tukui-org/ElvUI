@@ -65,6 +65,8 @@ local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 local UnitLevel = UnitLevel
+local UnitPVPRank = UnitPVPRank
+local GetPVPRankInfo = GetPVPRankInfo
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
@@ -1299,6 +1301,38 @@ if not E.Retail then
 			return GetPetFoodTypes()
 		end
 	end)
+
+	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
+		if UnitIsPlayer(unit) then
+			local rank = UnitPVPRank(unit)
+			local title = GetPVPRankInfo(rank, unit)
+
+			return title
+		end
+	end)
+
+	E:AddTag('pvp:rank', 'UNIT_NAME_UPDATE', function(unit)
+		if UnitIsPlayer(unit) then
+			local rank = UnitPVPRank(unit)
+			local _, num = GetPVPRankInfo(rank, unit)
+
+			if num > 0 then
+				return num
+			end
+		end
+	end)
+
+	local rankIcon = [[|TInterface\PvPRankBadges\PvPRank%02d:12:12:0:0:12:12:0:12:0:12|t]]
+	E:AddTag('pvp:icon', 'UNIT_NAME_UPDATE', function(unit)
+		if UnitIsPlayer(unit) then
+			local rank = UnitPVPRank(unit)
+			local _, num = GetPVPRankInfo(rank, unit)
+
+			if num > 0 then
+				return format(rankIcon, num)
+			end
+		end
+	end)
 end
 
 ------------------------------------------------------------------------
@@ -1498,6 +1532,9 @@ E.TagInfo = {
 		['faction'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde'" },
 		['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 		['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
+		['pvp:icon'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp rank icon" },
+		['pvp:rank'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp rank number" },
+		['pvp:title'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp title" },
 	-- Quest
 		['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 		['quest:title'] = { category = 'Quest', description = "Displays the quest title" },

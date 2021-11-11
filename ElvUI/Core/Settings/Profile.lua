@@ -332,10 +332,12 @@ P.bags = {
 	},
 	shownBags = {},
 	autoToggle = {
+		bank = true,
 		mail = true,
+		vendor = true,
 		soulBind = true,
 		auctionHouse = true,
-		tradeSkills = false,
+		professions = false,
 		guildBank = false,
 		trade = false,
 	},
@@ -2227,6 +2229,7 @@ P.unitframe.units.raid40.roleIcon.enable = false
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid)
 P.unitframe.units.raidpet.enable = false
+P.unitframe.units.raidpet.raidWideSorting = true
 P.unitframe.units.raidpet.buffs.numrows = 1
 P.unitframe.units.raidpet.buffs.perrow = 3
 P.unitframe.units.raidpet.buffs.priority = 'Blacklist,Personal,Boss,PlayerBuffs,blockNoDuration,nonPersonal'
@@ -2235,7 +2238,7 @@ P.unitframe.units.raidpet.debuffs.perrow = 3
 P.unitframe.units.raidpet.debuffs.priority = 'Blacklist,Personal,Boss,Whitelist,RaidDebuffs,blockNoDuration,nonPersonal'
 P.unitframe.units.raidpet.growthDirection = 'DOWN_RIGHT'
 P.unitframe.units.raidpet.height = 30
-P.unitframe.units.raidpet.numGroups = 2
+P.unitframe.units.raidpet.numGroups = 8
 P.unitframe.units.raidpet.visibility = '[group:raid] show; hide'
 
 P.unitframe.units.tank.buffs.numrows = 1

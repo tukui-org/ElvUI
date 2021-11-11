@@ -309,9 +309,11 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy
 		z['Simpy-Myzrael']			= itsSimpy -- Warlock
-		-- Luckyone
+		-- Luckyone Classic Era
 		z['Luckyone-Shazzrah']		= ElvGreen -- Hunter
 		z['Luckydruid-Shazzrah']	= ElvGreen -- Druid
+		-- Luckyone Season of Mastery
+		z['Luckyone-Dreadnaught']	= ElvGreen -- Hunter
 	elseif E.TBC then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
@@ -1600,7 +1602,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		local classColor = data and data.classColor
 		if classColor then
-			return format('\124cff%.2x%.2x%.2x%s\124r', classColor.r*255, classColor.g*255, classColor.b*255, arg2)
+			return format('|cff%.2x%.2x%.2x%s|r', classColor.r*255, classColor.g*255, classColor.b*255, arg2)
 		end
 	end
 
@@ -1627,7 +1629,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 					if name and subgroup == groupIndex then
 						local classColorTable = E:ClassColor(classFileName)
 						if classColorTable then
-							name = format('\124cff%.2x%.2x%.2x%s\124r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
+							name = format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
 						end
 						groupList = groupList..(groupList == '[' and '' or _G.PLAYER_LIST_DELIMITER)..name
 					end
@@ -2359,7 +2361,7 @@ function CH:CheckKeyword(message, author)
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
 					if classColorTable then
-						word = gsub(word, gsub(tempWord, '%-','%%-'), format('\124cff%.2x%.2x%.2x%s\124r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+						word = gsub(word, gsub(tempWord, '%-','%%-'), format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 					end
 				end
 			end
