@@ -43,6 +43,16 @@ function S:SkinCraftFrame()
 
 	S:HandleButton(_G.CraftCreateButton)
 
+	local CraftFrameAvailableFilterCheckButton = _G.CraftFrameAvailableFilterCheckButton
+	S:HandleCheckBox(CraftFrameAvailableFilterCheckButton)
+	CraftFrameAvailableFilterCheckButton:ClearAllPoints()
+	CraftFrameAvailableFilterCheckButton:Point('LEFT', _G.CraftRankFrameBorder, 'LEFT', 0, -20)
+
+	local CraftFrameFilterDropDown = _G.CraftFrameFilterDropDown
+	S:HandleDropDownBox(CraftFrameFilterDropDown, 160)
+	CraftFrameFilterDropDown:ClearAllPoints()
+	CraftFrameFilterDropDown:Point('RIGHT', _G.CraftRankFrameBorder, 'RIGHT', 55, -25)
+
 	local CraftIcon = _G.CraftIcon
 
 	_G.CraftRequirements:SetTextColor(1, 0.80, 0.10)
