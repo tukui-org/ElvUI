@@ -119,7 +119,7 @@ P.general = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 3,
-				yOffset = 0
+				yOffset = 2
 			},
 			queueStatus = {
 				enable = true,
