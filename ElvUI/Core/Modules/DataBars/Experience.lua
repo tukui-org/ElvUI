@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local error = error
 local type, pairs = type, pairs
 local min, format = min, format
@@ -11,7 +10,7 @@ local IsTrialAccount = IsTrialAccount
 local GetXPExhaustion = GetXPExhaustion
 local IsXPUserDisabled = IsXPUserDisabled
 local GetQuestLogRewardXP = GetQuestLogRewardXP
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
@@ -57,7 +56,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 end
 
 function DB:ExperienceBar_ShouldBeVisible()
-	return not IsPlayerAtEffectiveMaxLevel() and not hasDisabledXP() and not isTrialMax()
+	return not IsLevelAtEffectiveMaxLevel(E.mylevel) and not hasDisabledXP() and not isTrialMax()
 end
 
 local function RestedQuestLayering()

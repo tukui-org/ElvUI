@@ -5,13 +5,12 @@ local _G = _G
 local format = format
 local HasPetUI = HasPetUI
 local UnitLevel = UnitLevel
-local GetExpansionLevel = GetExpansionLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local GetPetExperience = GetPetExperience
 local GameTooltip = GameTooltip
 
 function DB:PetExperienceBar_ShouldBeVisible()
-	return UnitLevel('pet') ~= MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
+	return not IsLevelAtEffectiveMaxLevel(UnitLevel('pet'))
 end
 
 function DB:PetExperienceBar_Update()

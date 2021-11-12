@@ -5,7 +5,7 @@ local _G = _G
 local format = format
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local UnitHonorMax = UnitHonorMax
 local TogglePVPUI = TogglePVPUI
 local HONOR = HONOR
@@ -102,7 +102,7 @@ function DB:HonorBar()
 	DB:CreateBarBubbles(Honor)
 
 	Honor.ShouldHide = function()
-		return DB.db.honor.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()
+		return DB.db.honor.hideBelowMaxLevel and not IsLevelAtEffectiveMaxLevel(E.mylevel)
 	end
 
 	E:CreateMover(Honor.holder, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
