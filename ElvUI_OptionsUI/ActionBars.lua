@@ -33,6 +33,13 @@ SharedBarOptions.buttonGroup.args.buttonSpacing = ACH:Range(L["Button Spacing"],
 SharedBarOptions.buttonGroup.args.buttonSize = ACH:Range('', nil, 4, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 
+local splitButtonsGroup = ACH:Group(L["Split"], nil, 20, nil, function(info) return E.db.actionbar[info[#info-3]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdateButtonSettings(info[#info-3]) end)
+splitButtonsGroup.inline = true
+splitButtonsGroup.args.splitToggle = ACH:Toggle(L["Enable"], L["Split bar into two sections."], 0, nil, nil, nil, nil, nil, nil, false)
+splitButtonsGroup.args.splitStart = ACH:Range(L["Split Start"], L["Split bar from this button."], 1, { min = 2, max = _G.NUM_ACTIONBAR_BUTTONS, step = 1 }, nil, nil, nil, nil, function(info) return not E.db.actionbar[info[#info-3]].splitToggle end)
+splitButtonsGroup.args.splitSpacing = ACH:Range(L["Split Spacing"], L["Split bar with this spacing."], 2, { min = -3, max = 512, step = 1 }, nil, nil, nil, nil, function(info) return not E.db.actionbar[info[#info-3]].splitToggle end)
+SharedBarOptions.buttonGroup.args.splitButtonsGroup = splitButtonsGroup
+
 SharedBarOptions.barGroup.inline = true
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })

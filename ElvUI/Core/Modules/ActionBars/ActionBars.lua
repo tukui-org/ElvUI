@@ -169,6 +169,12 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
 
+	-- Split bars
+	local buttonSpacing = db.buttonSpacing
+	if db.splitToggle and index == db.splitStart then
+		buttonSpacing = db.splitSpacing
+	end
+
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
 	local point, relativeFrame, relativePoint, x, y
 	if index == 1 then
@@ -185,14 +191,14 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 
 		point, relativeFrame, relativePoint = db.point, bar, db.point
 	elseif (index - 1) % buttonsPerRow == 0 then
-		point, relativeFrame, relativePoint, x, y = 'TOP', lastColumnButton, 'BOTTOM', 0, -db.buttonSpacing
+		point, relativeFrame, relativePoint, x, y = 'TOP', lastColumnButton, 'BOTTOM', 0, -buttonSpacing
 		if anchorUp then
-			point, relativePoint, y = 'BOTTOM', 'TOP', db.buttonSpacing
+			point, relativePoint, y = 'BOTTOM', 'TOP', buttonSpacing
 		end
 	else
-		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', db.buttonSpacing, 0
+		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', buttonSpacing, 0
 		if anchorLeft then
-			point, relativePoint, x = 'RIGHT', 'LEFT', -db.buttonSpacing
+			point, relativePoint, x = 'RIGHT', 'LEFT', -buttonSpacing
 		end
 	end
 
