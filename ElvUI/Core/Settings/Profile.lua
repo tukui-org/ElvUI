@@ -96,7 +96,7 @@ P.general = {
 				hide = false,
 			},
 			tracking = {
-				scale = 0.7,
+				scale = 0.6,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
@@ -131,7 +131,7 @@ P.general = {
 				fontOutline = 'OUTLINE',
 			},
 			battlefield = {
-				scale = 1,
+				scale = 1.1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 0,
 				yOffset = 4,
