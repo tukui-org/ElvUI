@@ -96,7 +96,7 @@ P.general = {
 				hide = false,
 			},
 			tracking = {
-				scale = 0.6,
+				scale = 0.65,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
@@ -119,7 +119,7 @@ P.general = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 3,
-				yOffset = 2
+				yOffset = -3
 			},
 			queueStatus = {
 				enable = true,
@@ -133,8 +133,8 @@ P.general = {
 			battlefield = {
 				scale = 1.1,
 				position = 'BOTTOMRIGHT',
-				xOffset = -2,
-				yOffset = 2,
+				xOffset = 4,
+				yOffset = -4,
 			},
 			difficulty = {
 				scale = 1,
