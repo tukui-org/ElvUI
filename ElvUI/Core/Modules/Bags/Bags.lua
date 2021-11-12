@@ -2032,8 +2032,6 @@ function B:OpenBags()
 	B.BagFrame:Show()
 	PlaySound(IG_BACKPACK_OPEN)
 
-	B:UpdateAllBagSlots(true)
-
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
 
@@ -2123,6 +2121,8 @@ end
 function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
+
+	B:UpdateAllSlots(B.BankFrame)
 
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
@@ -2484,10 +2484,10 @@ function B:Initialize()
 	--Create Containers
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
+	B:UpdateAllBagSlots()
 
 	--Hook onto Blizzard Functions
 	if E.Retail then
-		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
