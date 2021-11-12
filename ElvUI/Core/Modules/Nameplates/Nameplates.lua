@@ -130,6 +130,10 @@ function NP:CVarReset()
 	NP:SetCVar('nameplateSelfScale', 1)
 	NP:SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
 	NP:SetCVar('nameplateTargetBehindMaxDistance', 40)
+
+	if E.TBC then
+		NP:SetCVar('nameplateNotSelectedAlpha', 1)
+	end
 end
 
 function NP:SetCVars()
