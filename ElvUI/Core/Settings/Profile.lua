@@ -142,6 +142,12 @@ P.general = {
 				xOffset = 8,
 				yOffset = -8,
 			},
+			battlefield = {
+				scale = 1.25,
+				position = 'BOTTOMLEFT',
+				xOffset = 0,
+				yOffset = -4,
+			}
 		}
 	},
 	objectiveTracker = true,

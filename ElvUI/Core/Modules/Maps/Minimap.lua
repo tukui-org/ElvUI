@@ -338,6 +338,20 @@ function M:UpdateSettings()
 		MiniMapMailFrame:SetScale(scale)
 	end
 
+	local MiniMapBattlefieldFrame = not E.Retail and _G.MiniMapBattlefieldFrame
+	if MiniMapBattlefieldFrame then
+		local pos = E.db.general.minimap.icons.battlefield.position or 'BOTTOMLEFT'
+		local scale = E.db.general.minimap.icons.battlefield.scale or 1
+		MiniMapBattlefieldFrame:ClearAllPoints()
+		MiniMapBattlefieldFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.battlefield.xOffset or -2, E.db.general.minimap.icons.battlefield.yOffset or -2)
+		MiniMapBattlefieldFrame:SetScale(scale)
+		MiniMapBattlefieldFrame:SetParent(Minimap)
+
+		if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
+		if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
+		if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
+	end
+
 	local queueStatusButton = M:GetQueueStatusButton()
 	if queueStatusButton then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
