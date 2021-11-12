@@ -1,4 +1,16 @@
-### Version 2.24 [ ETA: 🍨 ]
+### Version 2.25 [ ETA: 🍨 ]
+
+___
+### Version 2.24 [ November 12th 2021 ]
+
+Chat: Fixes for overflowing chat tabs  
+Cooldown Text: Fixed issues with HH:MM and MM:SS  
+Locales: Updated Russian translation (Credits Hollicsh)  
+Minimap: Added back options for Battlefield icon  
+Skins: Updated Enchanting skin  
+Skins: Updated estatus  
+UnitFrames: Fixed Focus and FocusTarget  
+UnitFrames: Fixed Rogue fading issue finally  
 
 ___
 ### Version 2.23 [ November 11th 2021 ]

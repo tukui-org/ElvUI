@@ -1,4 +1,13 @@
-### Version 12.52 [ ETA: 🍨 ]
+### Version 12.53 [ ETA: 🍨 ]
+
+___
+### Version 12.52 [ November 11th 2021 ]
+
+Chat: Fixes for overflowing chat tabs  
+Cooldown Text: Fixed issues with HH:MM and MM:SS  
+Locales: Updated Russian translation (Credits Hollicsh)  
+Skins: Updated estatus  
+UnitFrames: Fixed Focus and FocusTarget  
 
 ___
 ### Version 12.51 [ November 10th 2021 ]
