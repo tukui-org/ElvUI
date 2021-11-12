@@ -7,6 +7,7 @@ Chat: Fixes for overflowing chat tabs
 Cooldown Text: Fixed issues with HH:MM and MM:SS  
 Locales: Updated Russian translation (Credits Hollicsh)  
 Minimap: Added back options for Battlefield icon  
+Minimap: Slightly adjusted defaults and size for lfg/tracking/battlefield  
 Skins: Updated estatus  
 UnitFrames: Fixed Focus and FocusTarget  
 UnitFrames: Fixed Rogue fading issue finally  
