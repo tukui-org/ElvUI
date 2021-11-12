@@ -133,8 +133,8 @@ P.general = {
 			battlefield = {
 				scale = 1.1,
 				position = 'BOTTOMRIGHT',
-				xOffset = 0,
-				yOffset = 4,
+				xOffset = -2,
+				yOffset = 2,
 			},
 			difficulty = {
 				scale = 1,
