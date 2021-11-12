@@ -341,9 +341,9 @@ function M:UpdateSettings()
 	local MiniMapBattlefieldFrame = not E.Retail and _G.MiniMapBattlefieldFrame
 	if MiniMapBattlefieldFrame then
 		local pos = E.db.general.minimap.icons.battlefield.position or 'BOTTOMLEFT'
-		local scale = E.db.general.minimap.icons.battlefield.scale or 1
+		local scale = E.db.general.minimap.icons.battlefield.scale or 1.25
 		MiniMapBattlefieldFrame:ClearAllPoints()
-		MiniMapBattlefieldFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.battlefield.xOffset or -2, E.db.general.minimap.icons.battlefield.yOffset or -2)
+		MiniMapBattlefieldFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.battlefield.xOffset or 0, E.db.general.minimap.icons.battlefield.yOffset or -4)
 		MiniMapBattlefieldFrame:SetScale(scale)
 		MiniMapBattlefieldFrame:SetParent(Minimap)
 
