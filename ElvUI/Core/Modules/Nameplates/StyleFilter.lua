@@ -1539,7 +1539,7 @@ function mod:StyleFilterClearDefaults(tbl)
 end
 
 function mod:StyleFilterCopyDefaults(tbl)
-	E:CopyDefaults(tbl, E.StyleFilterDefaults)
+	return E:CopyDefaults(tbl, E.StyleFilterDefaults)
 end
 
 function mod:StyleFilterInitialize()

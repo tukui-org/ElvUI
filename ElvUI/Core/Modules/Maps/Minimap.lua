@@ -324,7 +324,7 @@ function M:UpdateSettings()
 		else
 			local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
 			GameTimeFrame:ClearAllPoints()
-			GameTimeFrame:Point(position, Minimap, position, xOffset, yOffset)
+			GameTimeFrame:Point(position, Minimap, xOffset, yOffset)
 			GameTimeFrame:SetScale(scale)
 			GameTimeFrame:Show()
 		end
@@ -334,15 +334,27 @@ function M:UpdateSettings()
 	if MiniMapMailFrame then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 		MiniMapMailFrame:ClearAllPoints()
-		MiniMapMailFrame:Point(position, Minimap, position, xOffset, yOffset)
+		MiniMapMailFrame:Point(position, Minimap, xOffset, yOffset)
 		MiniMapMailFrame:SetScale(scale)
+	end
+
+	local MiniMapBattlefieldFrame = _G.MiniMapBattlefieldFrame
+	if MiniMapBattlefieldFrame then
+		local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
+		MiniMapBattlefieldFrame:ClearAllPoints()
+		MiniMapBattlefieldFrame:Point(position, Minimap, xOffset, yOffset)
+		MiniMapBattlefieldFrame:SetScale(scale)
+
+		if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
+		if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
+		if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
 	end
 
 	local queueStatusButton = M:GetQueueStatusButton()
 	if queueStatusButton then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
 		queueStatusButton:ClearAllPoints()
-		queueStatusButton:Point(position, Minimap, position, xOffset, yOffset)
+		queueStatusButton:Point(position, Minimap, xOffset, yOffset)
 		queueStatusButton:SetScale(scale)
 	end
 
@@ -351,7 +363,7 @@ function M:UpdateSettings()
 		local db = E.db.general.minimap.icons.queueStatus
 		local _, position, xOffset, yOffset = M:GetIconSettings('queueStatus')
 		queueStatusDisplay.text:ClearAllPoints()
-		queueStatusDisplay.text:Point(position, Minimap, position, xOffset, yOffset)
+		queueStatusDisplay.text:Point(position, Minimap, xOffset, yOffset)
 		queueStatusDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 
 		if not db.enable and queueStatusDisplay.title then
@@ -367,7 +379,7 @@ function M:UpdateSettings()
 			local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
 			MiniMapTracking:ClearAllPoints()
-			MiniMapTracking:Point(position, Minimap, position, xOffset, yOffset)
+			MiniMapTracking:Point(position, Minimap, xOffset, yOffset)
 			MiniMapTracking:SetScale(scale)
 			MiniMapTracking:SetParent(Minimap)
 
@@ -392,10 +404,10 @@ function M:UpdateSettings()
 	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		MiniMapInstanceDifficulty:ClearAllPoints()
-		MiniMapInstanceDifficulty:Point(position, Minimap, position, xOffset, yOffset)
+		MiniMapInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
 		MiniMapInstanceDifficulty:SetScale(scale)
 		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:Point(position, Minimap, position, xOffset, yOffset)
+		GuildInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
 		GuildInstanceDifficulty:SetScale(scale)
 	end
 
@@ -403,7 +415,7 @@ function M:UpdateSettings()
 	if MiniMapChallengeMode then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('challengeMode')
 		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:Point(position, Minimap, position, xOffset, yOffset)
+		MiniMapChallengeMode:Point(position, Minimap, xOffset, yOffset)
 		MiniMapChallengeMode:SetScale(scale)
 	end
 end
@@ -548,10 +560,10 @@ function M:Initialize()
 		_G.MiniMapMailBorder
 	}
 
-	if E.TBC then
-		tinsert(frames, _G.MinimapToggleButton)
-	elseif E.Retail then
+	if E.Retail then
 		tinsert(frames, _G.MiniMapTracking)
+	else
+		tinsert(frames, _G.MinimapToggleButton)
 	end
 
 	for _, frame in pairs(frames) do

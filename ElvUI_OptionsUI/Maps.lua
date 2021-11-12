@@ -102,6 +102,12 @@ do -- mail icons
 	end
 end
 
+Maps.args.minimap.args.icons.args.battlefield = ACH:Group(L["Battlefield"], nil, 2, nil, nil, nil, nil, E.Retail)
+Maps.args.minimap.args.icons.args.battlefield.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+Maps.args.minimap.args.icons.args.battlefield.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+Maps.args.minimap.args.icons.args.battlefield.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+Maps.args.minimap.args.icons.args.battlefield.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
 Maps.args.minimap.args.icons.args.lfgEye = ACH:Group(L["LFG Queue"], nil, 5)
 Maps.args.minimap.args.icons.args.lfgEye.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
 Maps.args.minimap.args.icons.args.lfgEye.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)

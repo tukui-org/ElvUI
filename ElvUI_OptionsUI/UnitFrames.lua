@@ -2107,7 +2107,7 @@ Focus.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus')
 Focus.power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'focus')
 Focus.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus')
 
-IndividualUnits.focustarget = ACH:Group(L["FocusTarget"], nil, 8, nil, function(info) return E.db.unitframe.units.focus[info[#info]] end, function(info, value) E.db.unitframe.units.focus[info[#info]] = value UF:CreateAndUpdateUF('focus') end, nil, function() return E.Classic end)
+IndividualUnits.focustarget = ACH:Group(L["FocusTarget"], nil, 8, nil, function(info) return E.db.unitframe.units.focustarget[info[#info]] end, function(info, value) E.db.unitframe.units.focustarget[info[#info]] = value UF:CreateAndUpdateUF('focustarget') end, nil, E.Classic)
 local FocusTarget = IndividualUnits.focustarget.args
 
 FocusTarget.enable = ACH:Toggle(L["Enable"], nil, 1)

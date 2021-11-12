@@ -96,7 +96,7 @@ P.general = {
 				hide = false,
 			},
 			tracking = {
-				scale = 0.8,
+				scale = 0.65,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
@@ -119,7 +119,7 @@ P.general = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 3,
-				yOffset = 0
+				yOffset = -3
 			},
 			queueStatus = {
 				enable = true,
@@ -129,6 +129,12 @@ P.general = {
 				font = 'Expressway',
 				fontSize = 11,
 				fontOutline = 'OUTLINE',
+			},
+			battlefield = {
+				scale = 1.1,
+				position = 'BOTTOMRIGHT',
+				xOffset = 4,
+				yOffset = -4,
 			},
 			difficulty = {
 				scale = 1,
@@ -141,7 +147,7 @@ P.general = {
 				position = 'TOPLEFT',
 				xOffset = 8,
 				yOffset = -8,
-			},
+			}
 		}
 	},
 	objectiveTracker = true,
