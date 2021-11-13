@@ -44,9 +44,10 @@ end
 local specListOrder = 50 -- start at 50
 local classTable, classIndexTable, classOrder
 local function UpdateClassSpec(classTag, enabled)
-	if not (classTable[classTag] and classTable[classTag].classID) then
+	if not E.Retail or not (classTable[classTag] and classTable[classTag].classID) then
 		return
 	end
+
 	local classSpec = format('%s%s', classTag, 'spec')
 	if enabled == false then
 		if E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
@@ -55,12 +56,14 @@ local function UpdateClassSpec(classTag, enabled)
 		end
 		return -- stop when we remove one OR when we pass disable with clear filter
 	end
+
 	local group = E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec]
 	if not E.Options.args.nameplate.args.filters.args.triggers.args.class.args[classSpec] then
 		specListOrder = specListOrder + 1
 		group = ACH:Group(classTable[classTag].name, nil, specListOrder)
 		group.inline = true
 	end
+
 	local coloredName = E:ClassColor(classTag)
 	coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
 	for i = 1, GetNumSpecializationsForClassID(classTable[classTag].classID) do
@@ -181,11 +184,13 @@ local function GenerateValues(tier, isPvP)
 	local values = {}
 
 	if isPvP then
-		local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(tier)
-		if slotInfo.availableTalentIDs then
-			for i = 1, #slotInfo.availableTalentIDs do
-				local talentID = slotInfo.availableTalentIDs[i]
-				values[talentID] = GetPvpTalentString(talentID)
+		if E.Retail then
+			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(tier)
+			if slotInfo.availableTalentIDs then
+				for i = 1, #slotInfo.availableTalentIDs do
+					local talentID = slotInfo.availableTalentIDs[i]
+					values[talentID] = GetPvpTalentString(talentID)
+				end
 			end
 		end
 	else
