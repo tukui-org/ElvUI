@@ -365,8 +365,8 @@ E.TimeFormats = { -- short / indicator color
 	[1] = {'%dh', '%d%sh|r', '%.0fh', '%.0f%sh|r'},
 	[2] = {'%dm', '%d%sm|r', '%.0fm', '%.0f%sm|r'},
 	-- special options (3, 4): no seconds
-	[3] = {'%ds', '%d%ss|r', '%d', '%d%s|r'},
-	[4] = {'%.1fs', '%.1f%ss|r', '%.1f', '%.1f%s|r'},
+	[3] = {'%ds', '%d%ss|r', '%d', '%d'},
+	[4] = {'%.1fs', '%.1f%ss|r', '%.1f', '%.1f'},
 
 	[5] = {'%d:%02d', '%d%s:|r%02d'}, -- mmss
 	[6] = {'%d:%02d', '%d%s:|r%02d'}, -- hhmm
