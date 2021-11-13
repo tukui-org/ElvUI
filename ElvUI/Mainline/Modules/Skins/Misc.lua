@@ -388,8 +388,7 @@ function S:BlizzardMiscFrames()
 	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
 
 	-- Ticket Frames (not GMTicketFrames)
-	local TicketStatusFrameButton = _G.TicketStatusFrameButton
-	TicketStatusFrameButton.Background.NineSlice:SetTemplate('Transparent')
+	_G.TicketStatusFrameButton.Background.NineSlice:SetTemplate('Transparent')
 end
 
 S:AddCallback('BlizzardMiscFrames')
