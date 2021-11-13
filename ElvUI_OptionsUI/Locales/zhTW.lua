@@ -810,6 +810,7 @@ L["Missing Talent Alert"] = "缺失天賦警告"
 L["Missing"] = "缺失"
 L["MM:SS Threshold"] = "MM:SS（分:秒） 閾值"
 L["Model Rotation"] = "模型旋轉"
+L["Modifier Count"] = true
 L["Module Control"] = "模組控制"
 L["Module Copy"] = "模組複製"
 L["Module Reset"] = "模組重置"
@@ -1361,6 +1362,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "使用指示器顏色"
 L["Use Instance ID or Name"] = "使用副本ID或名字"
 L["Use Map ID or Name"] = "使用地圖ID或名字"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "使用頭像"
 L["Use Real ID BattleTag"] = "使用 Real ID BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用 Shift + 左键 来切换友方狀態, 敵方狀態及正常狀態. 正常狀態將允許在所有單位上設為啟用的過濾器.友方狀態僅允許用於友方單位的過濾器, 敵方狀態僅允許用於敵方單位的過濾器."

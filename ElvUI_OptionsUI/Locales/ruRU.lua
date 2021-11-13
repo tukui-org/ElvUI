@@ -811,6 +811,7 @@ L["Missing Talent Alert"] = "Предупреждение о талантах"
 L["Missing"] = "Отсутствует"
 L["MM:SS Threshold"] = "Граница ММ:СС"
 L["Model Rotation"] = "Вращение модели"
+L["Modifier Count"] = true
 L["Module Control"] = "Управление модулями"
 L["Module Copy"] = "Копирование модуля"
 L["Module Reset"] = "Сброс модуля"
@@ -1362,6 +1363,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Использовать цвет индикатора"
 L["Use Instance ID or Name"] = "Использовать название или ID инстанса"
 L["Use Map ID or Name"] = "Использовать название или ID карты"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Отображать портрет"
 L["Use Real ID BattleTag"] = "Использовать BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Используйте Shift+ЛКМ для переключения между дружественным, враждебным или нормальным режимами. В нормальном режиме фильтр будет проверять все юниты. В дружеском только дружественные, во враждебном только враждебные."

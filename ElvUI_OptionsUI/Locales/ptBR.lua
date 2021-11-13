@@ -811,6 +811,7 @@ L["Missing Talent Alert"] = "Alerta de Talento Faltando"
 L["Missing"] = "Faltando"
 L["MM:SS Threshold"] = "Limiar MM:SS"
 L["Model Rotation"] = "Girar o Modelo"
+L["Modifier Count"] = true
 L["Module Control"] = "Controle de Módulo"
 L["Module Copy"] = "Copiar Módulo"
 L["Module Reset"] = "Resetar Módulo"
@@ -1362,6 +1363,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Usar Indicador de Cores"
 L["Use Instance ID or Name"] = "Usar ID de Instância ou Nome"
 L["Use Map ID or Name"] = "Usar ID de Mapa ou Nome"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Usar Retrato"
 L["Use Real ID BattleTag"] = "Usar ID Real Battletag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true

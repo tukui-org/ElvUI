@@ -816,6 +816,7 @@ L["Missing"] = true
 L["MM:SS Threshold"] = true
 L["MM:SS"] = true
 L["Model Rotation"] = true
+L["Modifier Count"] = true
 L["Module Control"] = true
 L["Module Copy"] = true
 L["Module Reset"] = true
@@ -1367,6 +1368,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = true
 L["Use Real ID BattleTag"] = true
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true

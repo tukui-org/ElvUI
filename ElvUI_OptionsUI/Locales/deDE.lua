@@ -813,6 +813,7 @@ L["Missing Talent Alert"] = "Fehlende Talente Alarm"
 L["Missing"] = "Fehlend"
 L["MM:SS Threshold"] = "MM:SS Schwellenwert"
 L["Model Rotation"] = "Modellrotation"
+L["Modifier Count"] = true
 L["Module Control"] = "Modulkontrolle"
 L["Module Copy"] = "Module kopieren"
 L["Module Reset"] = "Module zurücksetzen"
@@ -1366,6 +1367,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Benutze Indikator Farbe"
 L["Use Instance ID or Name"] = "Benutze Instanz ID oder Name"
 L["Use Map ID or Name"] = "Benutze Map ID oder Name"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Benutze Portrait"
 L["Use Real ID BattleTag"] = "Benutze Real ID BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Benutze Shift+Linksklick um zwischen freundlichem oder freindlichen Status umzuschalten. Normaler Status erlaubt den Filter alle Einheiten zu überprüfen. Freundlicher Status überprüft nur freundliche Einheiten. Feindliche überprüft nur feindliche Einheiten."

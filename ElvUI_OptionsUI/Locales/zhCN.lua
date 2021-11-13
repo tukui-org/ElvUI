@@ -816,6 +816,7 @@ L["Missing"] = "缺失"
 L["MM:SS Threshold"] = "分:秒 阈值"
 L["MM:SS"] = "分:秒"
 L["Model Rotation"] = "模型旋转"
+L["Modifier Count"] = true
 L["Module Control"] = "模块控制"
 L["Module Copy"] = "模块复制"
 L["Module Reset"] = "模块重置"
@@ -1367,6 +1368,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "使用指示器颜色"
 L["Use Instance ID or Name"] = "使用副本ID或名字"
 L["Use Map ID or Name"] = "使用地图ID或名字"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "使用头像"
 L["Use Real ID BattleTag"] = "显示战网昵称"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用Shift+左键来改变友方/敌方/普通状态. 普通状态将允许过滤器检查所有单位. 友方/敌方将只检查对应单位."
