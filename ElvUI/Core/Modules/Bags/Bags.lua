@@ -1057,7 +1057,6 @@ end
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UnregisterEvent(event)
 	B:UpdateLayout(B.BagFrame)
-	B:UpdateAllBagSlots()
 end
 
 function B:UpdateLayouts()
@@ -1368,6 +1367,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.events = (isBank and bankEvents) or bagEvents
 	f.DelayedContainers = {}
+	f.firstOpen = true
 	f:Hide()
 
 	f.isBank = isBank
@@ -1552,7 +1552,6 @@ function B:ConstructContainerFrame(name, isBank)
 	if isBank then
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
-		f.firstOpen = true
 
 		--Bank Text
 		f.bankText = f:CreateFontString(nil, 'OVERLAY')
@@ -2048,6 +2047,11 @@ end
 function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
+	if B.BagFrame.firstOpen then
+		B:UpdateAllSlots(B.BagFrame)
+		B.BagFrame.firstOpen = nil
+	end
+
 	B.BagFrame:Show()
 	PlaySound(IG_BACKPACK_OPEN)
 
@@ -2507,8 +2511,8 @@ function B:Initialize()
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
-	--Hook onto Blizzard Functions
 	if E.Retail then
+		E:Delay(1, B.UpdateBagSlots, B, nil, REAGENTBANK_CONTAINER)
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
