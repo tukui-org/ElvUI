@@ -1097,6 +1097,7 @@ P.tooltip = {
 	guildRanks = true,
 	itemQuality = false,
 	itemCount = 'BAGS_ONLY',
+	modifierCount = true,
 	showMount = true,
 	modifierID = 'SHOW',
 	role = true,
