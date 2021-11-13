@@ -34,8 +34,9 @@ function S:Blizzard_ArchaeologyUI()
 			local artifact = ArchaeologyFrame.completedPage['artifact'..i]
 			frame.raceName:SetTextColor(1, 1, 1)
 
-			artifact.border:SetTexture()
 			S:HandleIcon(artifact.icon, true)
+
+			artifact.border:SetTexture()
 			artifact.artifactName:SetTextColor(1, .8, .1)
 			artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
 		end
@@ -48,6 +49,9 @@ function S:Blizzard_ArchaeologyUI()
 				end
 			end
 		end
+	else
+		_G.ArchaeologyFrameBgLeft:SetDrawLayer('BACKGROUND', 2)
+		_G.ArchaeologyFrameBgRight:SetDrawLayer('BACKGROUND', 2)
 	end
 
 	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton)
@@ -56,19 +60,19 @@ function S:Blizzard_ArchaeologyUI()
 	S:HandleButton(ArchaeologyFrame.completedPage.nextPageButton)
 
 	ArchaeologyFrame.rankBar:StripTextures()
-	ArchaeologyFrame.rankBar:SetStatusBarTexture(E.media.normTex)
 	ArchaeologyFrame.rankBar:CreateBackdrop()
+	ArchaeologyFrame.rankBar:SetStatusBarTexture(E.media.normTex)
+	ArchaeologyFrame.rankBar.backdrop.Center:SetDrawLayer('BACKGROUND', 3) -- over BgLeft and BgRight
 	E:RegisterStatusBar(ArchaeologyFrame.rankBar)
 
 	S:HandleStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, {0.7, 0.2, 0})
 	S:HandleIcon(_G.ArchaeologyFrameArtifactPageIcon)
 
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
-	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
-	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
 	_G.ArcheologyDigsiteProgressBar:Point('TOP', _G.UIParent, 'TOP', 0, -400)
-	E:RegisterStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar)
+	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
+	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ArcheologyDigsiteProgressBar = nil
 	E:CreateMover(_G.ArcheologyDigsiteProgressBar, 'DigSiteProgressBarMover', L["Archeology Progress Bar"])
