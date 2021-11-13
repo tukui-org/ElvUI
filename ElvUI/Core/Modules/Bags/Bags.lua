@@ -1552,6 +1552,7 @@ function B:ConstructContainerFrame(name, isBank)
 	if isBank then
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
+		f.firstOpen = true
 
 		--Bank Text
 		f.bankText = f:CreateFontString(nil, 'OVERLAY')
@@ -2140,7 +2141,10 @@ function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
 
-	B:UpdateAllSlots(B.BankFrame)
+	if B.BankFrame.firstOpen then
+		B:UpdateAllSlots(B.BankFrame)
+		B.BankFrame.firstOpen = nil
+	end
 
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
