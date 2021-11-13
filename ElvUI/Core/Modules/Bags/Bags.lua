@@ -1049,6 +1049,7 @@ end
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UnregisterEvent(event)
 	B:UpdateLayout(B.BagFrame)
+	B:UpdateAllBagSlots()
 end
 
 function B:UpdateLayouts()
@@ -2484,7 +2485,6 @@ function B:Initialize()
 	--Create Containers
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
-	B:UpdateAllBagSlots()
 
 	--Hook onto Blizzard Functions
 	if E.Retail then
