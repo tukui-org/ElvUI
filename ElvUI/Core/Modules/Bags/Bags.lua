@@ -1057,6 +1057,7 @@ end
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UnregisterEvent(event)
 	B:UpdateLayout(B.BagFrame)
+	B:UpdateAllBagSlots()
 end
 
 function B:UpdateLayouts()
@@ -1106,7 +1107,7 @@ function B:SetBagAssignments(holder, skip)
 end
 
 function B:DelayedContainer(bagFrame, event, bagID)
-	local container = bagID and bagID ~= 0 and bagFrame.ContainerHolderByBagID[bagID]
+	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
 	if container then
 		bagFrame.DelayedContainers[bagID] = container
 
@@ -1132,7 +1133,9 @@ function B:OnEvent(event, ...)
 		B:DelayedContainer(self, event, ...)
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
-			B:SetBagAssignments(container)
+			if bagID ~= 0 then
+				B:SetBagAssignments(container)
+			end
 
 			local bag = self.Bags[bagID]
 			if bag and bag.needsUpdate then
@@ -2045,7 +2048,6 @@ function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
 	B.BagFrame:Show()
-	B:UpdateAllSlots(B.BagFrame)
 	PlaySound(IG_BACKPACK_OPEN)
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
