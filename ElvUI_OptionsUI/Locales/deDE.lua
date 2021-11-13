@@ -1504,23 +1504,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
  Beispiel: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
+L["TEXTURE_EXAMPLE"] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
 
 Bitte beachten:
 -Als Bildgröße 256x128 wird empfohlen.
 -Du musst das Spiel komplett neu starten, nachdem du die Datei hinzugefügt hast.
 -Der Dateityp muss im Format tga sein.
 
-Zum Beispiel: Interface\AddOns\ElvUI\Media\Textures\Copy
+Zum Beispiel: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren WoW-Ordner abzulegen. Anschließend kann man den Namen der Datei hier eingeben.]=]
 

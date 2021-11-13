@@ -1499,23 +1499,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[此功能與巨集概念類似, 可根據不同情境, 切換顯示/隱藏快捷列.
 例如：'[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[指定一個在魔獸世界資料夾之中的文件名. 將欲設置為面板背景的材質置於材質資料夾中.
+L["TEXTURE_EXAMPLE"] = [=[指定一個在魔獸世界資料夾之中的文件名. 將欲設置為面板背景的材質置於材質資料夾中.
 
 請注意：
 - 影像尺寸建議為 256 x 128
 - 在此資料夾新增檔案後, 請務必重新啟動遊戲.
 - 檔案必須為 tga 格式.
 
-範例：Interface\AddOns\ElvUI\Media\Textures\Copy
+範例：Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入魔獸世界資料夾中, 然後在此處輸入檔案名稱.]=]
 
