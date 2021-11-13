@@ -935,7 +935,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Talents
-	if trigger.talent.enabled then
+	if trigger.talent.enabled and E.Retail then
 		local pvpTalent = trigger.talent.type == 'pvp'
 		local selected, complete
 
