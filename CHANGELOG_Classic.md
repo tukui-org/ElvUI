@@ -1,5 +1,10 @@
 ### Version 1.51 [ ETA: 🍨 ]
 
+ActionBars: Fixed quick keybind mode for Pet Bar  
+Bags: Fixed bank not updating correctly  
+Cooldown Text: Added a global option for rounding  
+DataBars: Fixed "Show Bubbles" for Pet Experience  
+
 ___
 ### Version 1.50 [ November 12th 2021 ]
 

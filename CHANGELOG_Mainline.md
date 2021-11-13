@@ -1,4 +1,12 @@
-### Version 12.53 [ ETA: 🍨 ]
+### Version 12.54 [ ETA: 🍨 ]
+
+Bags: Fixed bank not updating correctly  
+Cooldown Text: Added a global option for rounding  
+
+___
+### Version 12.53 [ November 11th 2021 ]
+
+Fixed an error in DataTexts & DataBars  
 
 ___
 ### Version 12.52 [ November 11th 2021 ]
