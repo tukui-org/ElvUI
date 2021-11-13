@@ -700,7 +700,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	if itemID or bagCount or bankCount then tt:AddLine(' ') end
-	if itemID or bagCount then tt:AddDoubleLine(itemID, bagCount) end
+	if itemID or bagCount then tt:AddDoubleLine(itemID or ' ', bagCount or ' ') end
 	if bankCount then tt:AddDoubleLine(' ', bankCount) end
 end
 
