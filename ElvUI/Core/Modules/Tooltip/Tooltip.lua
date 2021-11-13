@@ -681,13 +681,12 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local modKey = TT:IsModKeyDown()
-	local itemID, bagCount, bankCount = ' ', ' ', ' '
-
+	local itemID, bagCount, bankCount
 	if link and modKey then
 		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
 	end
 
-	if not TT.db.modifierCount or modKey then
+	if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
 		local count = GetItemCount(link)
 		local total = GetItemCount(link, true)
 		if TT.db.itemCount == 'BAGS_ONLY' then
@@ -700,11 +699,9 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 	end
 
-	local showSecond = bankCount ~= ' '
-	local showFirst = itemID ~= ' ' or bagCount ~= ' '
-	if showFirst or showSecond then tt:AddLine(' ') end
-	if showFirst then tt:AddDoubleLine(itemID, bagCount) end
-	if showSecond then tt:AddDoubleLine(' ', bankCount) end
+	if itemID or bagCount or bankCount then tt:AddLine(' ') end
+	if itemID or bagCount then tt:AddDoubleLine(itemID, bagCount) end
+	if bankCount then tt:AddDoubleLine(' ', bankCount) end
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
