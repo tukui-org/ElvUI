@@ -46,6 +46,10 @@ function S:Blizzard_GMChatUI()
 
 	local GMChatStatusFrame = _G.GMChatStatusFrame
 	local TicketStatusFrame = _G.TicketStatusFrame
+
+	TicketStatusFrame:StripTextures()
+	TicketStatusFrame:SetTemplate('Transparent')
+
 	GMChatStatusFrame:HookScript('OnShow', function(frame)
 		if TicketStatusFrame and TicketStatusFrame:IsShown() then
 			frame:Point('TOPLEFT', TicketStatusFrame, 'BOTTOMLEFT', 0, 1)
