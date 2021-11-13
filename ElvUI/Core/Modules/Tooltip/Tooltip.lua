@@ -667,10 +667,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local _, link = tt:GetItem()
-	local num = GetItemCount(link)
-	local numall = GetItemCount(link,true)
-	local left, right, bankCount = ' ', ' ', ' '
-
 	if TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
@@ -684,17 +680,22 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 	end
 
-	if link and TT:IsModKeyDown() then
-		left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
-	end
+	local left, right, bankCount = ' ', ' ', ' '
+	if TT:IsModKeyDown() then
+		if link then
+			left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
+		end
 
-	if TT.db.itemCount == 'BAGS_ONLY' then
-		right = format(IDLine, L["Count"], num)
-	elseif TT.db.itemCount == 'BANK_ONLY' then
-		bankCount = format(IDLine, L["Bank"], numall - num)
-	elseif TT.db.itemCount == 'BOTH' then
-		right = format(IDLine, L["Count"], num)
-		bankCount = format(IDLine, L["Bank"], numall - num)
+		local num = GetItemCount(link)
+		local numall = GetItemCount(link, true)
+		if TT.db.itemCount == 'BAGS_ONLY' then
+			right = format(IDLine, L["Count"], num)
+		elseif TT.db.itemCount == 'BANK_ONLY' then
+			bankCount = format(IDLine, L["Bank"], numall - num)
+		elseif TT.db.itemCount == 'BOTH' then
+			right = format(IDLine, L["Count"], num)
+			bankCount = format(IDLine, L["Bank"], numall - num)
+		end
 	end
 
 	if left ~= ' ' or right ~= ' ' then
