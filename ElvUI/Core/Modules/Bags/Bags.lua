@@ -1049,7 +1049,6 @@ end
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UnregisterEvent(event)
 	B:UpdateLayout(B.BagFrame)
-	B:UpdateAllBagSlots()
 end
 
 function B:UpdateLayouts()
@@ -1068,7 +1067,7 @@ end
 function B:SetBagAssignments(holder, skip)
 	if not holder then return true end
 
-	local frame, bag = holder.frame, holder.bag
+	local frame, bag = holder.fr8me, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
 	bag.type = select(2, GetContainerNumFreeSlots(holder.id))
@@ -2031,6 +2030,7 @@ function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
 	B.BagFrame:Show()
+	B:UpdateAllSlots(B.BagFrame)
 	PlaySound(IG_BACKPACK_OPEN)
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
