@@ -396,11 +396,14 @@ do
 		elseif hhmm and sec < (hhmm * MINUTE) then
 			return sec / HOUR, 6, 30, mod(sec, HOUR) / MINUTE
 		elseif sec < HOUR then
-			return mod(sec, HOUR) / MINUTE, 2, 30
+			local mins = mod(sec, HOUR) / MINUTE
+			return mins, 2, mins > 2 and 30 or 1
 		elseif sec < DAY then
-			return mod(sec, DAY) / HOUR, 1, 30
+			local hrs = mod(sec, DAY) / HOUR
+			return hrs, 1, hrs > 1 and 60 or 30
 		else
-			return mod(sec, YEAR) / DAY, 0, 60
+			local days = mod(sec, YEAR) / DAY
+			return days, 0, days > 1 and 120 or 60
 		end
 	end
 end
