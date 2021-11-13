@@ -158,6 +158,11 @@ local bagIDs = {0, 1, 2, 3, 4}
 local bankIDs = {-1, 5, 6, 7, 8, 9, 10}
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
+local presistentEvents = {
+	BAG_UPDATE_DELAYED = true,
+	BAG_UPDATE = true,
+	BAG_CLOSED = true
+}
 
 if E.Retail then
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
@@ -1096,13 +1101,15 @@ function B:SetBagAssignments(holder, skip)
 	end
 end
 
-function B:DelayedContainer(bagFrame, bagID, bagClosed)
+function B:DelayedContainer(bagFrame, event, bagID)
 	local container = bagID and bagID ~= 0 and bagFrame.ContainerHolderByBagID[bagID]
 	if container then
 		bagFrame.DelayedContainers[bagID] = container
 
-		if bagClosed then -- let it call layout
+		if event == 'BAG_CLOSED' then -- let it call layout
 			bagFrame.totalSlots = 0
+		else
+			bagFrame.Bags[bagID].needsUpdate = true
 		end
 	end
 end
@@ -1117,15 +1124,18 @@ function B:OnEvent(event, ...)
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local bankID = ...
 		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and -1 or (bankID - NUM_BANKGENERIC_SLOTS))
-	elseif event == 'BAG_UPDATE' then
-		local bagID = ...
-		B:UpdateBagSlots(self, bagID)
-		B:DelayedContainer(self, bagID)
-	elseif event == 'BAG_CLOSED' then
-		B:DelayedContainer(self, ..., true)
+	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
+		B:DelayedContainer(self, event, ...)
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
 			B:SetBagAssignments(container)
+
+			local bag = self.Bags[bagID]
+			if bag and bag.needsUpdate then
+				B:UpdateBagSlots(self, bagID)
+				bag.needsUpdate = nil
+			end
+
 			self.DelayedContainers[bagID] = nil
 		end
 	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
@@ -2021,7 +2031,9 @@ end
 
 function B:ClearListeners(frame)
 	for _, event in next, frame.events do
-		frame:UnregisterEvent(event)
+		if not presistentEvents[event] then
+			frame:UnregisterEvent(event)
+		end
 	end
 end
 
