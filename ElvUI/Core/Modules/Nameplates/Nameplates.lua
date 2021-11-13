@@ -600,7 +600,11 @@ function NP:ConfigureAll(init)
 
 	NP:StyleFilterConfigure() -- keep this at the top
 	NP:SetNamePlateClickThrough()
-	NP:SetNamePlateSizes()
+
+	if E.Retail then
+		NP:SetNamePlateSizes()
+	end
+
 	NP:PLAYER_REGEN_ENABLED()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 	NP:Update_StatusBars()
