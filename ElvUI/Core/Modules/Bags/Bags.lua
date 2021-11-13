@@ -432,7 +432,6 @@ function B:BagFrameHidden(bagFrame)
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local slot = bagFrame.Bags[bagID][slotID]
 			if slot then
-				B.SearchSlots[slot] = nil
 				B:NewItemGlowSlotSwitch(slot)
 			end
 		end
