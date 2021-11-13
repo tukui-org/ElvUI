@@ -384,9 +384,9 @@ E.TimeIndicatorColors = {
 
 do
 	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
-	function E:GetTimeInfo(sec, threshhold, hhmm, mmss)
+	function E:GetTimeInfo(sec, threshold, hhmm, mmss)
 		if sec < MINUTE then
-			if sec >= threshhold then
+			if sec > threshold then
 				return sec, 3, 0.5
 			else
 				return sec, 4, 0.1
