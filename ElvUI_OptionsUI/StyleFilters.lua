@@ -975,7 +975,7 @@ function UpdateFilterGroup()
 							args = {
 								isQuest = ACH:Toggle(L["Quest Unit"], nil, 1),
 								notQuest = ACH:Toggle(L["Not Quest Unit"], nil, 2),
-								questBoss = ACH:Toggle(L["Quest Boss"], nil, 3),
+								questBoss = ACH:Toggle(L["Quest Boss"], nil, 3, nil, nil, nil, nil, nil, nil, E.Retail),
 							}
 						}
 					}

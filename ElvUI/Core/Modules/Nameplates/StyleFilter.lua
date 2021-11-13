@@ -716,7 +716,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Quest Boss
-	if trigger.questBoss then
+	if trigger.questBoss and E.Retail then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
 	end
 
