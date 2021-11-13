@@ -160,13 +160,21 @@ end
 
 local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
 local function GetTalentString(tier, column)
-	local _, name, texture = GetTalentInfo(tier, column, 1)
-	return formatStr:format(texture, name)
+	local arg1, arg2, arg3 = GetTalentInfo(tier, column, 1)
+	if E.Retail then
+		if arg3 then
+			return formatStr:format(arg3, arg2)
+		end
+	elseif arg2 then -- doesnt work right now, could later?
+		return formatStr:format(arg2, arg1)
+	end
 end
 
 local function GetPvpTalentString(talentID)
 	local _, name, texture = GetPvpTalentInfoByID(talentID)
-	return formatStr:format(texture, name)
+	if texture then
+		return formatStr:format(texture, name)
+	end
 end
 
 local function GenerateValues(tier, isPvP)
@@ -830,8 +838,8 @@ function UpdateFilterGroup()
 								requireTarget = ACH:Toggle(L["Require Target"], L["If enabled then the filter will only activate when you have a target."], 2),
 								targetMe = ACH:Toggle(L["Is Targeting Player"], L["If enabled then the filter will only activate when the unit is targeting you."], 4),
 								notTargetMe = ACH:Toggle(L["Not Targeting Player"], L["If enabled then the filter will only activate when the unit is not targeting you."], 5),
-								isFocus = ACH:Toggle(L["Is Focused"], L["If enabled then the filter will only activate when you are focusing the unit."], 7),
-								notFocus = ACH:Toggle(L["Not Focused"], L["If enabled then the filter will only activate when you are not focusing the unit."], 8)
+								isFocus = ACH:Toggle(L["Is Focused"], L["If enabled then the filter will only activate when you are focusing the unit."], 7, nil, nil, nil, nil, nil, nil, E.Classic),
+								notFocus = ACH:Toggle(L["Not Focused"], L["If enabled then the filter will only activate when you are not focusing the unit."], 8, nil, nil, nil, nil, nil, nil, E.Classic)
 							}
 						}
 					}
@@ -924,8 +932,8 @@ function UpdateFilterGroup()
 							args = {
 								inCombat = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when you are in combat."], 1),
 								outOfCombat = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when you are out of combat."], 2),
-								inVehicle = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when you are in a Vehicle."], 3),
-								outOfVehicle = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when you are not in a Vehicle."], 4),
+								inVehicle = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when you are in a Vehicle."], 3, nil, nil, nil, nil, nil, nil, not E.Retail),
+								outOfVehicle = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when you are not in a Vehicle."], 4, nil, nil, nil, nil, nil, nil, not E.Retail),
 								isResting = ACH:Toggle(L["Is Resting"], L["If enabled then the filter will only activate when you are resting at an Inn."], 5),
 								playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 6),
 								playerCanNotAttack = ACH:Toggle(L["Can Not Attack"], L["If enabled then the filter will only activate when the unit can not be attacked by the active player."], 7)
@@ -939,8 +947,8 @@ function UpdateFilterGroup()
 							args = {
 								inCombatUnit = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when the unit is in combat."], 1),
 								outOfCombatUnit = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when the unit is out of combat."], 2),
-								inVehicleUnit = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when the unit is in a Vehicle."], 3),
-								outOfVehicleUnit = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when the unit is not in a Vehicle."], 4),
+								inVehicleUnit = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when the unit is in a Vehicle."], 3, nil, nil, nil, nil, nil, nil, not E.Retail),
+								outOfVehicleUnit = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when the unit is not in a Vehicle."], 4, nil, nil, nil, nil, nil, nil, not E.Retail),
 								inParty = ACH:Toggle(L["In Party"], L["If enabled then the filter will only activate when the unit is in your Party."], 5),
 								notInParty = ACH:Toggle(L["Not in Party"], L["If enabled then the filter will only activate when the unit is not in your Party."], 6),
 								inRaid = ACH:Toggle(L["In Raid"], L["If enabled then the filter will only activate when the unit is in your Raid."], 7),
@@ -975,7 +983,7 @@ function UpdateFilterGroup()
 							args = {
 								isQuest = ACH:Toggle(L["Quest Unit"], nil, 1),
 								notQuest = ACH:Toggle(L["Not Quest Unit"], nil, 2),
-								questBoss = ACH:Toggle(L["Quest Boss"], nil, 3, nil, nil, nil, nil, nil, nil, E.Retail),
+								questBoss = ACH:Toggle(L["Quest Boss"], nil, 3, nil, nil, nil, nil, nil, nil, not E.Retail),
 							}
 						}
 					}
@@ -1020,6 +1028,7 @@ function UpdateFilterGroup()
 					type = 'group',
 					name = L["TALENT"],
 					disabled = DisabledFilter,
+					hidden = not E.Retail,
 					args = {}
 				},
 				slots = {
@@ -1126,6 +1135,7 @@ function UpdateFilterGroup()
 					type = 'group',
 					name = L["ROLE"],
 					disabled = DisabledFilter,
+					hidden = not E.Retail,
 					args = {
 						myRole = {
 							name = L["Player"],
@@ -1890,18 +1900,20 @@ function UpdateFilterGroup()
 								badTransition = ACH:Toggle(L["Bad Transition"], nil, 3),
 								bad = ACH:Toggle(L["Bad"], nil, 4),
 								spacer1 = ACH:Spacer(5, 'full'),
-								offTank = ACH:Toggle(L["Off Tank"], nil, 6),
+								offTank = ACH:Toggle(L["Off Tank"], nil, 6, nil, nil, nil, nil, nil, nil, not E.Retail),
 								offTankGoodTransition = {
 									name = L["Off Tank Good Transition"],
 									customWidth = 200,
 									order = 7,
-									type = 'toggle'
+									type = 'toggle',
+									hidden = not E.Retail
 								},
 								offTankBadTransition = {
 									name = L["Off Tank Bad Transition"],
 									customWidth = 200,
 									order = 8,
-									type = 'toggle'
+									type = 'toggle',
+									hidden = not E.Retail
 								}
 							}
 						}
