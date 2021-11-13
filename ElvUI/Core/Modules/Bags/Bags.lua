@@ -2512,8 +2512,10 @@ function B:Initialize()
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
 	if E.Retail then
-		E:Delay(1, B.UpdateBagSlots, B, nil, REAGENTBANK_CONTAINER)
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+
+		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
+		E:Delay(1, B.UpdateBagSlots, B, nil, REAGENTBANK_CONTAINER)
 	end
 
 	B:SecureHook('OpenAllBags')
