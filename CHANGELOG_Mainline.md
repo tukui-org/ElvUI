@@ -2,6 +2,7 @@
 
 Bags: Fixed bank not updating correctly  
 Cooldown Text: Added a global option for rounding  
+Skins: Updated GM Ticket  
 
 ___
 ### Version 12.53 [ November 11th 2021 ]
