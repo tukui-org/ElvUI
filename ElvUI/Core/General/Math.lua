@@ -349,30 +349,28 @@ end
 
 E.TimeThreshold = 3
 
-E.TimeColors = { --aura time colors
-	[0] = '|cffeeeeee', --days
-	[1] = '|cffeeeeee', --hours
-	[2] = '|cffeeeeee', --minutes
-	[3] = '|cffeeeeee', --seconds
-	[4] = '|cfffe0000', --expire (fade timer)
-	[5] = '|cff909090', --mmss
-	[6] = '|cff707070', --hhmm
+E.TimeColors = { -- aura time colors
+	[0] = '|cffeeeeee', -- days
+	[1] = '|cffeeeeee', -- hours
+	[2] = '|cffeeeeee', -- minutes
+	[3] = '|cffeeeeee', -- seconds
+	[4] = '|cfffe0000', -- expire (fade timer)
+	[5] = '|cff909090', -- mmss
+	[6] = '|cff707070', -- hhmm
 }
 
 E.TimeFormats = { -- short / indicator color
-	[0] = {'%dd', '%d%sd|r'},
-	[1] = {'%dh', '%d%sh|r'},
-	[2] = {'%dm', '%d%sm|r'},
-	[3] = {'%ds', '%d%ss|r'},
-	[4] = {'%.1fs', '%.1f%ss|r'},
-	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
-	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
-}
+	-- special options (3, 4): rounding
+	[0] = {'%dd', '%d%sd|r', '%.0fd', '%.0f%sd|r'},
+	[1] = {'%dh', '%d%sh|r', '%.0fh', '%.0f%sh|r'},
+	[2] = {'%dm', '%d%sm|r', '%.0fm', '%.0f%sm|r'},
+	-- special options (3, 4): no seconds
+	[3] = {'%ds', '%d%ss|r', '%d', '%d%s|r'},
+	[4] = {'%.1fs', '%.1f%ss|r', '%.1f', '%.1f%s|r'},
 
-for _, x in pairs(E.TimeFormats) do
-	x[3] = gsub(x[1], 's$', '') -- 1 without seconds
-	x[4] = gsub(x[2], '%%ss', '%%s') -- 2 without seconds
-end
+	[5] = {'%d:%02d', '%d%s:|r%02d'}, -- mmss
+	[6] = {'%d:%02d', '%d%s:|r%02d'}, -- hhmm
+}
 
 E.TimeIndicatorColors = {
 	[0] = '|cff00b3ff',

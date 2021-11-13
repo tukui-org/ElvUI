@@ -2285,6 +2285,7 @@ end
 --Cooldown
 P.cooldown = {
 	threshold = 3,
+	roundTime = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
 	expiringColor = { r = 1, g = 0, b = 0 },
