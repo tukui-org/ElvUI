@@ -90,6 +90,7 @@ function DB:PetExperienceBar()
 	PetExperience.ShouldHide = function()
 		return not HasPetUI() or (HasPetUI() and DB.db.petExperience.hideAtMaxLevel and not DB:PetExperienceBar_ShouldBeVisible())
 	end
+	DB:CreateBarBubbles(PetExperience)
 
 	DB:RegisterEvent('PET_BAR_UPDATE', 'PetExperienceBar_Toggle')
 	DB:RegisterEvent('UNIT_PET_EXPERIENCE', 'PetExperienceBar_Update')
