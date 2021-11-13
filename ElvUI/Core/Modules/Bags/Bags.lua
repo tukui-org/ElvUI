@@ -1067,7 +1067,7 @@ end
 function B:SetBagAssignments(holder, skip)
 	if not holder then return true end
 
-	local frame, bag = holder.fr8me, holder.bag
+	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
 	bag.type = select(2, GetContainerNumFreeSlots(holder.id))
