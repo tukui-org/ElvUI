@@ -87,10 +87,11 @@ end
 
 function DB:PetExperienceBar()
 	local PetExperience = DB:CreateBar('ElvUI_PetExperienceBar', 'PetExperience', DB.PetExperienceBar_Update, DB.PetExperienceBar_OnEnter, DB.PetExperienceBar_OnClick, {'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing * 3, 0})
+	DB:CreateBarBubbles(PetExperience)
+
 	PetExperience.ShouldHide = function()
 		return not HasPetUI() or (HasPetUI() and DB.db.petExperience.hideAtMaxLevel and not DB:PetExperienceBar_ShouldBeVisible())
 	end
-	DB:CreateBarBubbles(PetExperience)
 
 	DB:RegisterEvent('PET_BAR_UPDATE', 'PetExperienceBar_Toggle')
 	DB:RegisterEvent('UNIT_PET_EXPERIENCE', 'PetExperienceBar_Update')
