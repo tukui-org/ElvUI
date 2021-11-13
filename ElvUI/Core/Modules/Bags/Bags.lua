@@ -587,8 +587,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		B.UpdateCooldown(slot)
 
-		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
+			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 	else
 		B:HideCooldown(slot)
@@ -647,8 +647,8 @@ function B:UpdateReagentSlot(slotID)
 
 		B.UpdateCooldown(slot)
 
-		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
+			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 	else
 		B:HideCooldown(slot)
@@ -706,17 +706,12 @@ function B:HideCooldown(slot, keep)
 	slot.Cooldown.start = nil
 	slot.Cooldown.duration = nil
 
-	if not keep and E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+	if not keep and E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
+		E:UnregisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 	end
 end
 
 function B:UpdateCooldown()
-	if not self:IsVisible() then
-		B:HideCooldown(self)
-		return
-	end
-
 	local start, duration, enabled = GetContainerItemCooldown(self.bagID, self.slotID)
 	if duration > 0 and enabled == 0 then
 		SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
