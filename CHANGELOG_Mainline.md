@@ -2,7 +2,10 @@
 
 Bags: Fixed bank not updating correctly  
 Cooldown Text: Added a global option for rounding  
+Datatexts: Add Leech back in (oops)  
+Datatexts: Fix MovementSpeed not updating  
 Skins: Updated GM Ticket  
+Tooltips: Add option to display Item Count while using the Modifier for ids  
 
 ___
 ### Version 12.53 [ November 11th 2021 ]

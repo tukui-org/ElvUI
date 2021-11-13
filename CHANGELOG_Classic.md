@@ -4,6 +4,10 @@ ActionBars: Fixed quick keybind mode for Pet Bar
 Bags: Fixed bank not updating correctly  
 Cooldown Text: Added a global option for rounding  
 DataBars: Fixed "Show Bubbles" for Pet Experience  
+Datatexts: Fix MovementSpeed not updating  
+Nameplates:  Fixed WoW's Nameplate scaling issue  
+Tooltips: Add option to display Item Count while using the Modifier for ids  
+
 
 ___
 ### Version 1.50 [ November 12th 2021 ]
