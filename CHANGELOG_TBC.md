@@ -1,12 +1,15 @@
-### Version 2.25 [ ETA: 🍨 ]
+### Version 2.26 [ ETA: 🍨 ]
+
+___
+### Version 2.25 [ November 14th 2021 ]
 
 ActionBars: Fixed quick keybind mode for Pet Bar  
 Bags: Fixed bank not updating correctly  
 Cooldown Text: Added a global option for rounding  
 DataBars: Fixed "Show Bubbles" for Pet Experience  
-Datatexts: Fix MovementSpeed not updating  
+DataTexts: Fixed MovementSpeed not updating  
 Nameplates: Fixed scaling issue which broke default friendly plates in dungeons  
-Tooltips: Add option to display Item Count while using the Modifier for ids  
+Tooltips: Added an option to display Item Count while using the Modifier for ids  
 
 ___
 ### Version 2.24 [ November 12th 2021 ]
