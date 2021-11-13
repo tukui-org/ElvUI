@@ -271,6 +271,10 @@ function B:ResetAndClear()
 	B.BankFrame.editBox:SetText('')
 	B.BankFrame.editBox:ClearFocus()
 
+	if next(B.SearchSlots) then
+		wipe(B.SearchSlots)
+	end
+
 	-- pass bool to say whether it was from a script,
 	-- as this only needs to update from the scripts
 	B:SearchReset(self == B)
