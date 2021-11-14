@@ -11,6 +11,20 @@ local ARMOR = ARMOR
 local chanceString = '%.2f%%'
 local displayString, lastPanel, effectiveArmor = ''
 
+local function GetArmorReduction(armor, attackerLevel)
+	local levelModifier = attackerLevel
+	if levelModifier > 59 then
+		levelModifier = levelModifier + (4.5 * (levelModifier - 59))
+	end
+	local temp = 0.1 * armor / (8.5 * levelModifier + 40)
+	temp = temp/(1 + temp)
+
+	if temp > 0.75 then return 75 end
+	if temp < 0 then return 0 end
+
+	return temp * 100
+end
+
 local function OnEvent(self)
 	effectiveArmor = select(2, UnitArmor('player'))
 
@@ -30,10 +44,15 @@ local function OnEnter()
 
 	local playerLevel = E.mylevel + 3
 	for _ = 1, 4 do
-		local armorReduction = effectiveArmor/((85 * playerLevel) + 400);
-		armorReduction = 100 * (armorReduction/(armorReduction + 1));
-		DT.tooltip:AddDoubleLine(playerLevel,format(chanceString, armorReduction),1,1,1)
+		local armorReduction = GetArmorReduction(effectiveArmor, playerLevel)
+		DT.tooltip:AddDoubleLine(playerLevel, format(chanceString, armorReduction), 1, 1, 1)
 		playerLevel = playerLevel - 1
+	end
+
+	local targetLevel = UnitLevel("target")
+	if targetLevel and targetLevel > 0 and (targetLevel > playerLevel + 3 or targetLevel < playerLevel) then
+		local armorReduction = GetArmorReduction(effectiveArmor, targetLevel)
+		DT.tooltip:AddDoubleLine(targetLevel, format(chanceString, armorReduction), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
