@@ -1,13 +1,18 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["Vendor"] = true
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
+L["Remove Spell - %s"] = true
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
 L["Copy Primary Texture"] = true
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
 L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
-L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = true
 L["24-Hour Time"] = true
 L["2D"] = true
 L["3D"] = true
@@ -111,7 +116,6 @@ L["Aura Filters"] = true
 L["Aura Speed"] = true
 L["Aura"] = true
 L["Auto Add New Spells"] = true
-L["Auto Greed/DE"] = true
 L["Auto Hide"] = true
 L["Auto Repair"] = true
 L["Auto-Close Pet Battle Log"] = true
@@ -120,7 +124,6 @@ L["Automatic"] = true
 L["Automatically accept invites from guild/friends."] = true
 L["Automatically hide the objective frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = true
-L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = true
 L["Automatically vendor gray items when visiting a vendor."] = true
 L["Available Tags"] = true
 L["AzeriteUI"] = true -- No need to translate
@@ -454,7 +457,6 @@ L["Enable/Disable the loot roll frame."] = true
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
 L["Enables the ElvUI Raid Control panel."] = true
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = true
-L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = true
 L["Enabling this will check your health amount."] = true
 L["Enabling this will check your power amount."] = true
@@ -814,6 +816,7 @@ L["Missing"] = true
 L["MM:SS Threshold"] = true
 L["MM:SS"] = true
 L["Model Rotation"] = true
+L["Modifier Count"] = true
 L["Module Control"] = true
 L["Module Copy"] = true
 L["Module Reset"] = true
@@ -1365,6 +1368,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = true
 L["Use Real ID BattleTag"] = true
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
@@ -1499,16 +1503,16 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
  Example: '[combat] show;hide']=] ] = true
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
+L["TEXTURE_EXAMPLE"] = [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 
 Please Note:
 -The image size recommended is 256x128
 -You must do a complete game restart after adding a file to the folder.
 -The file type must be tga format.
 
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
+Example: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true
+Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=]
 
 -- Global Strings
 L["ACHIEVEMENTS"] = "Achievements"
@@ -1678,7 +1682,7 @@ L["TARGET"] = "Target"
 L["TIMEMANAGER_TITLE"] = "Clock"
 L["TIMESTAMPS_LABEL"] = "Chat Timestamps"
 L["TRADE"] = "Trade"
-L["TRADESKILLS"] = "Tradeskills"
+L["TRADESKILLS"] = "Trade Skills"
 L["TRANSMOGRIFY"] = "Transmogrify"
 L["UI_SCALE"] = "UI Scale"
 L["UNIT_NAME_PLAYER_TITLE"] = "Titles"

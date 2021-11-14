@@ -1,13 +1,18 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["Vendor"] = true
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
+L["Remove Spell - %s"] = true
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
 L["Copy Primary Texture"] = true
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = true
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000警告:|r 点击下拉菜单的箭头来查看法术列表."
 L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF0000警告:|r 启用和队伍数目由智能团队过滤控制. 在(团队框架-通用)内禁用智能团队过滤来改变该设置."
-L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000警告:|r 这将会在几分之一秒就更新一次"
 L["24-Hour Time"] = "24小时制"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -110,7 +115,6 @@ L["Aura Filters"] = "光环过滤器"
 L["Aura Speed"] = "光环速度"
 L["Aura"] = "光环"
 L["Auto Add New Spells"] = "自动添加新技能"
-L["Auto Greed/DE"] = "自动贪婪/分解"
 L["Auto Hide"] = "自动隐藏"
 L["Auto Repair"] = "自动修理"
 L["Auto-Close Pet Battle Log"] = "自动关闭宠物对战日志"
@@ -119,7 +123,6 @@ L["Automatic"] = "自动"
 L["Automatically accept invites from guild/friends."] = "自动接受工会或好友的邀请"
 L["Automatically hide the objective frame during boss or arena fights."] = "在首领战/竞技场中自动隐藏任务框体"
 L["Automatically repair using the following method when visiting a merchant."] = "使用以下方式来自动修理装备"
-L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "当你满级时, 自动选择贪婪或分解绿色物品"
 L["Automatically vendor gray items when visiting a vendor."] = "当访问商人时自动出售灰色物品"
 L["Available Tags"] = "可用的文字格式"
 L["AzeriteUI"] = "艾泽里特界面"
@@ -453,7 +456,6 @@ L["Enable/Disable the loot roll frame."] = "开/关掷骰子框架"
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = "是否启用小地图. |cffFF0000警告: 关掉后你将看不到小地图周围的信息文字.|r"
 L["Enables the ElvUI Raid Control panel."] = "启用ElvUI团队控制面板"
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "启用后将可以在整个团队内排序, 但你不再可以区分不同小队"
-L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."] = "启用此功能会使更新速度加快，将速度值设置得太大可能会导致其实际更新速度比默认方案慢，默认方案仅在Blizzard事件触发时更新。"
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "启用后翻转未满团队的队伍顺序(起始方向)"
 L["Enabling this will check your health amount."] = "启用后将检查你的血量"
 L["Enabling this will check your power amount."] = "启用后将检查你的能量"
@@ -814,6 +816,7 @@ L["Missing"] = "缺失"
 L["MM:SS Threshold"] = "分:秒 阈值"
 L["MM:SS"] = "分:秒"
 L["Model Rotation"] = "模型旋转"
+L["Modifier Count"] = true
 L["Module Control"] = "模块控制"
 L["Module Copy"] = "模块复制"
 L["Module Reset"] = "模块重置"
@@ -1365,6 +1368,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "使用指示器颜色"
 L["Use Instance ID or Name"] = "使用副本ID或名字"
 L["Use Map ID or Name"] = "使用地图ID或名字"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "使用头像"
 L["Use Real ID BattleTag"] = "显示战网昵称"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用Shift+左键来改变友方/敌方/普通状态. 普通状态将允许过滤器检查所有单位. 友方/敌方将只检查对应单位."
@@ -1501,23 +1505,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条显示或隐藏.
  例如: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[若要设定聊天框背景, 请你指定位于WoW目录下的「Textures」文件夹中的材质文件名.
+L["TEXTURE_EXAMPLE"] = [=[若要设定聊天框背景, 请你指定位于WoW目录下的「Textures」文件夹中的材质文件名.
 
 请注意：
 - 图片尺寸建议为256x128
 - 在添加文件后你必须完全重新启动游戏
 - 文件必须为tga格式
 
-举例：Interface\AddOns\ElvUI\Media\Textures\Copy
+举例：Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 对多数玩家来说, 较简易的方式是将tga文件放入WoW文件夹中, 然后在此处输入文件名.]=]
 

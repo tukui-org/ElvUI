@@ -1,13 +1,18 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 
+L["Vendor"] = true
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
+L["Remove Spell - %s"] = true
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
 L["Copy Primary Texture"] = true
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = true
 L["# Displayed Auras"] = "표시되는 효과 갯수"
 L["%s and then %s"] = "%s 이후 %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
 L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
-L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = true
 L["24-Hour Time"] = "24시제로 표시"
 L["2D"] = "이미지"
 L["3D"] = "3d 모델"
@@ -109,7 +114,6 @@ L["Aura Bars"] = "클래스타이머"
 L["Aura Filters"] = "오라 필터"
 L["Aura Speed"] = true
 L["Auto Add New Spells"] = "새로운 주문 자동 추가"
-L["Auto Greed/DE"] = "자동 차비/추출 선택"
 L["Auto Hide"] = true
 L["Auto Repair"] = "자동 수리"
 L["Auto-Close Pet Battle Log"] = "애완동물 대전 기록 자동닫기"
@@ -118,7 +122,6 @@ L["Automatic"] = "자동"
 L["Automatically accept invites from guild/friends."] = "길드원이나 친구가 플레이어를 파티를 초대하면 자동으로 수락합니다."
 L["Automatically hide the objective frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = "수리가 가능한 상점을 열면 이 옵션에서 선택한 자금으로 장비를 자동 수리합니다."
-L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "녹템 주사위창이 뜨면 자동으로 차비나 마력추출을 선택합니다. 이 기능은 오로지 만렙 캐릭터에서만 동작합니다."
 L["Automatically vendor gray items when visiting a vendor."] = "상점이 열리면 잡동사니를 자동으로 판매합니다."
 L["Available Tags"] = true
 L["AzeriteUI"] = true
@@ -452,7 +455,6 @@ L["Enable/Disable the loot roll frame."] = "ElvUI 디자인의 입찰 / 차비 /
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = "미니맵을 켜고 끕니다. |cffFF0000주의: 정보 문자를 보지못하게 될 수 있습니다.|r"
 L["Enables the ElvUI Raid Control panel."] = true
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "파티가 가득 차 있지 않아도 다음 파티의 유저를 끌어와 빈칸 없이 나열합니다. 파티구별하기가 힘들다는 단점이 있습니다."
-L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "유닛프레임의 배치를 역순으로 정렬합니다."
 L["Enabling this will check your health amount."] = "활성화하면 내 체력량을 점검합니다."
 L["Enabling this will check your power amount."] = "활성화하면 내 자원량을 점검합니다."
@@ -807,6 +809,7 @@ L["Missing Talent Alert"] = "안찍은 특성 알림"
 L["Missing"] = true
 L["MM:SS Threshold"] = true
 L["Model Rotation"] = "3d 모델 회전"
+L["Modifier Count"] = true
 L["Module Control"] = true
 L["Module Copy"] = true
 L["Module Reset"] = true
@@ -1358,6 +1361,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "초상화 사용"
 L["Use Real ID BattleTag"] = "배틀태그 사용"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Shift+클릭으로 우호적 또는 적대적 또는 일반 상태로 전환합니다. 일반 상태는 필터가 모든 유닛을 점검하도록 합니다. 우호적 상태는 우호적 유닛에만, 적대적 상태는 적대적 유닛에만 작동합니다."
@@ -1534,19 +1538,10 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 |cffceff00[combat]show;hide|r
  : 전투에 돌입하면 표시, 전투가 끝나면 숨김]=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[패널 배경에 그림을 입히고 싶으면 위치와 파일명를 이곳에 입력해야 합니다.
+L["TEXTURE_EXAMPLE"] = [=[패널 배경에 그림을 입히고 싶으면 위치와 파일명를 이곳에 입력해야 합니다.
 
 |cff2eb7e4< 예시 >|r
-|cffceff00Interface/AddOns/ElvUI/media/textures/|cff2eb7e4TestImage|r
+|cffceff00Interface\AddOns\ElvUI\Core\Media\Textures\Copy|cff2eb7e4TestImage|r
 - 위의 주소로 된 texture 폴더 안 TestImage.tga 그림을 불러옴
 - 위의 주소는 \ 대신 / 를 사용한 것. 직접 적을 땐 반드시 \ 로 주소구분
 

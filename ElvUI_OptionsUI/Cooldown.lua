@@ -68,6 +68,8 @@ local function group(order, db, label)
 		mainArgs.colorGroup.disabled = nil
 		mainArgs.colorGroup.name = L["COLORS"]
 
+		mainArgs.roundTime = ACH:Toggle(L["Round Timers"], nil, 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
+
 		-- keep these two in this order
 		E.Options.args.cooldown.args.hideBlizzard = mainArgs.hideBlizzard
 		mainArgs.hideBlizzard = nil

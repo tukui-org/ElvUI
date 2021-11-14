@@ -8,10 +8,13 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local format = format
+local strfind = strfind
+local strlower = strlower
 local strmatch = strmatch
 local tonumber = tonumber
 local tostring = tostring
 local GetSpellInfo = GetSpellInfo
+local GetSpellSubtext = GetSpellSubtext
 
 -- GLOBALS: MAX_PLAYER_LEVEL
 
@@ -132,6 +135,24 @@ local function DeleteFilterListDisable()
 	return true
 end
 
+local function GetSpellNameRank(id)
+	if not id then
+		return ' '
+	end
+
+	local name = tonumber(id) and GetSpellInfo(id)
+	if not name then
+		return tostring(id)
+	end
+
+	local rank = not E.Retail and GetSpellSubtext(id)
+	if not rank or not strfind(rank, '%d') then
+		return format('%s |cFF888888(%s)|r', name, id)
+	end
+
+	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, rank, id)
+end
+
 local function SetSpellList()
 	local list
 	if selectedFilter == 'Aura Highlight' then
@@ -153,10 +174,8 @@ local function SetSpellList()
 			filter = spell.id
 		end
 
-		local spellName = tonumber(filter) and GetSpellInfo(filter)
-		local name = (spellName and format('%s |cFF888888(%s)|r', spellName, filter)) or tostring(filter)
-
-		if name:lower():find(searchText) then
+		local name = GetSpellNameRank(filter)
+		if strfind(strlower(name), searchText) then
 			spellList[filter] = name
 		end
 	end
@@ -168,565 +187,221 @@ local function SetSpellList()
 	return spellList
 end
 
-E.Options.args.filters = {
-	type = 'group',
-	name = L["FILTERS"],
-	order = 3,
-	childGroups = 'tab',
-	args = {
-		mainOptions = {
-			type = 'group',
-			name = 'Main Options',
-			order = 1,
-			args = {
-				createFilter = {
-					order = 1,
-					name = L["Create Filter"],
-					desc = L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."],
-					type = 'input',
-					get = function(info) return '' end,
-					set = function(info, value)
-						if strmatch(value, '^[%s%p]-$') then
-							return
-						end
-						if strmatch(value, ',') then
-							E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
-							value = gsub(value, ',', '')
-						end
-						if strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') then
-							return --dont allow people to create Friendly: or Enemy: filters
-						end
-						if G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value] then
-							E:Print(L["Filter already exists!"])
-							return
-						end
-						E.global.unitframe.aurafilters[value] = { spells = {} }
-						selectedFilter = value
-					end,
-				},
-				selectFilter = {
-					order = 2,
-					type = 'select',
-					name = L["Select Filter"],
-					get = function(info) return selectedFilter end,
-					set = function(info, value)
-						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
-						if value ~= '' then
-							selectedFilter = value
-						end
-					end,
-					values = SetFilterList,
-				},
-				deleteFilter = {
-					type = 'select',
-					order = 3,
-					name = L["Delete Filter"],
-					desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
-					confirm = function(info, value)
-						return 'Remove Filter - '..value
-					end,
-					set = function(info, value)
-						E.global.unitframe.aurafilters[value] = nil
-						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
+local function FilterSettings(info, ...)
+	local spell = GetSelectedSpell()
+	if not spell then return end
 
-						removePriority(value) --This will wipe a filter from the new aura system profile settings.
-					end,
-					disabled = DeleteFilterListDisable,
-					values = DeleteFilterList,
-				},
-				resetGroup = {
-					type = 'select',
-					name = L["Reset Filter"],
-					order = 4,
-					desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
-					confirm = function(info, value)
-						return 'Reset Filter - '..value
-					end,
-					set = function(info, value)
-						if value == 'Aura Highlight' then
-							E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
-						elseif value == 'AuraBar Colors' then
-							E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
-						elseif value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator (Class)' or value == 'Aura Indicator (Global)' then
-							local selectedTable, defaultTable = GetSelectedFilters()
-							wipe(selectedTable)
-							E:CopyTable(selectedTable, defaultTable)
-						else
-							E.global.unitframe.aurafilters[value].spells = E:CopyTable({}, G.unitframe.aurafilters[value].spells)
-						end
+	local color, value, r, g, b, a
+	if info.type == 'color' then
+		r, g, b, a = ...
+	else
+		value = ...
+	end
 
-						selectedFilter, selectedSpell, quickSearchText = nil, nil, ''
+	if selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' then
+		local settingTable = selectedFilter == 'Aura Highlight' and 'AuraHighlightColors' or 'AuraBarColors'
+		if info.type == 'color' then
+			color = E.global.unitframe[settingTable][spell].color
+			if r ~= nil then
+				color.r, color.g, color.b, color.a = r, g, b, a or 1
+			else
+				return color.r, color.g, color.b, color.a
+			end
+		elseif value ~= nil then
+			E.global.unitframe[settingTable][spell][info[#info]] = value
+		else
+			return E.global.unitframe[settingTable][spell][info[#info]]
+		end
+	else
+		if value ~= nil then
+			E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
+		else
+			return E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable
+		end
+	end
 
-						UF:Update_AllFrames()
-					end,
-					values = ResetFilterList,
-				},
-				filterGroup = {
-					type = 'group',
-					name = function() return selectedFilter end,
-					hidden = function() return not selectedFilter end,
-					inline = true,
-					order = 10,
-					args = {
-						selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium'),
-						selectSpell = {
-							name = L["Select Spell"],
-							type = 'select',
-							order = 1,
-							customWidth = 350,
-							get = function(info) return selectedSpell or '' end,
-							set = function(info, value)
-								selectedSpell = (value ~= '' and value) or nil
-							end,
-							values = SetSpellList,
-						},
-						quickSearch = {
-							order = 2,
-							name = L["Filter Search"],
-							desc = L["Search for a spell name inside of a filter."],
-							type = 'input',
-							customWidth = 200,
-							get = function() return quickSearchText end,
-							set = function(info,value) quickSearchText = value end,
-						},
-						filterType = {
-							order = 3,
-							name = L["Filter Type"],
-							desc = L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."],
-							type = 'select',
-							values = {
-								Whitelist = L["Whitelist"],
-								Blacklist = L["Blacklist"],
-							},
-							get = function() return E.global.unitframe.aurafilters[selectedFilter].type end,
-							set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames() end,
-							hidden = function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') or G.unitframe.aurafilters[selectedFilter] end,
-						},
-						removeSpell = {
-							order = 4,
-							name = L["Remove Spell"],
-							desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
-							type = 'select',
-							confirm = function(info, value)
-								local spellName = tonumber(value) and GetSpellInfo(value)
-								local name = (spellName and format('%s |cFF888888(%s)|r', spellName, value)) or tostring(value)
-								return 'Remove Spell - '..name
-							end,
-							customWidth = 350,
-							get = function(info) return '' end,
-							set = function(info, value)
-								if not value then return end
-								selectedSpell = nil
+	UF:Update_AllFrames()
+end
 
-								if selectedFilter == 'Aura Highlight' then
-									E.global.unitframe.AuraHighlightColors[value] = nil
-								elseif selectedFilter == 'AuraBar Colors' then
-									if G.unitframe.AuraBarColors[value] then
-										E.global.unitframe.AuraBarColors[value].enable = false
-									else
-										E.global.unitframe.AuraBarColors[value] = nil
-									end
-								elseif selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' then
-									local selectedTable, defaultTable = GetSelectedFilters()
+local function AddOrRemoveSpellID(info, value)
+	value = tonumber(value)
+	if not value then return end
 
-									if defaultTable[value] then
-										selectedTable[value].enabled = false
-									else
-										selectedTable[value] = nil
-									end
-								elseif G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
-									E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false
-								else
-									E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil
-								end
+	local spellName = GetSpellInfo(value)
+	selectedSpell = (spellName and value)
 
-								UF:Update_AllFrames()
-							end,
-							values = SetSpellList,
-						},
-						addSpell = {
-							order = 5,
-							name = L["Add SpellID"],
-							desc = L["Add a spell to the filter."],
-							type = 'input',
-							customWidth = 200,
-							get = function(info) return '' end,
-							set = function(info, value)
-								value = tonumber(value)
-								if not value then return end
+	if selectedFilter == 'Aura Highlight' then
+		if info.type == 'select' then
+			E.global.unitframe.AuraHighlightColors[value] = nil
+		elseif not E.global.unitframe.AuraHighlightColors[value] then
+			E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = { r = 0.8, g = 0, b = 0, a = 0.85 }, ownOnly = false }
+		end
+	elseif selectedFilter == 'AuraBar Colors' then
+		if info.type == 'select' then
+			if G.unitframe.AuraBarColors[value] then
+				E.global.unitframe.AuraBarColors[value].enable = false
+			else
+				E.global.unitframe.AuraBarColors[value] = nil
+			end
+		elseif not E.global.unitframe.AuraBarColors[value] then
+			E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
+		end
+	elseif selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' then
+		local selectedTable, defaultTable = GetSelectedFilters()
+		if info.type == 'select' then
+			if defaultTable[value] then
+				selectedTable[value].enabled = false
+			else
+				selectedTable[value] = nil
+			end
+		elseif not selectedTable[value] then
+			selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+		end
+	elseif G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
+		if info.type == 'select' then
+			E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false
+		end
+	else
+		if info.type == 'select' then
+			E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil
+		elseif not E.global.unitframe.aurafilters[selectedFilter].spells[value] then
+			E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
+		end
+	end
 
-								local spellName = GetSpellInfo(value)
-								selectedSpell = (spellName and value) or nil
-								if not selectedSpell then return end
+	UF:Update_AllFrames()
+end
 
-								if selectedFilter == 'Aura Highlight' then
-									if not E.global.unitframe.AuraHighlightColors[value] then
-										E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85}, ownOnly = false }
-									end
-								elseif selectedFilter == 'AuraBar Colors' then
-									if not E.global.unitframe.AuraBarColors[value] then
-										E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
-									end
-								elseif selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' then
-									local selectedTable = GetSelectedFilters()
-									if not selectedTable[value] then
-										selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
-									end
-								elseif not E.global.unitframe.aurafilters[selectedFilter].spells[value] then
-									E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
-								end
+local function getSelectedFilter() return selectedFilter end
 
-								UF:Update_AllFrames()
-							end,
-						},
-					},
-				},
-				buffIndicator = {
-					type = 'group',
-					name = function()
-						local spell = GetSelectedSpell()
-						local spellName = spell and GetSpellInfo(spell)
-						return (spellName and spellName..' |cFF888888('..spell..')|r') or spell or ' '
-					end,
-					hidden = function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end,
-					get = function(info)
-						local spell = GetSelectedSpell()
-						if not spell then return end
+local function resetSelectedFilter(_, value) selectedFilter, selectedSpell, quickSearchText = nil, nil, '' if value ~= '' then selectedFilter = value end end
 
-						local selectedTable = GetSelectedFilters()
-						return selectedTable[spell][info[#info]]
-					end,
-					set = function(info, value)
-						local spell = GetSelectedSpell()
-						if not spell then return end
+local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') or G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value]) end
 
-						local selectedTable = GetSelectedFilters()
-						selectedTable[spell][info[#info]] = value
-						UF:Update_AllFrames()
-					end,
-					order = -10,
-					inline = true,
-					args = {
-						enabled = {
-							name = L["Enable"],
-							order = 1,
-							type = 'toggle',
-						},
-						point = {
-							name = L["Anchor Point"],
-							order = 2,
-							type = 'select',
-							values = {
-								TOPLEFT = 'TOPLEFT',
-								LEFT = 'LEFT',
-								BOTTOMLEFT = 'BOTTOMLEFT',
-								RIGHT = 'RIGHT',
-								TOPRIGHT = 'TOPRIGHT',
-								BOTTOMRIGHT = 'BOTTOMRIGHT',
-								CENTER = 'CENTER',
-								TOP = 'TOP',
-								BOTTOM = 'BOTTOM',
-							}
-						},
-						style = {
-							name = L["Style"],
-							order = 3,
-							type = 'select',
-							values = {
-								timerOnly = L["Timer Only"],
-								coloredIcon = L["Colored Icon"],
-								texturedIcon = L["Textured Icon"],
-							},
-						},
-						color = {
-							name = L["COLOR"],
-							type = 'color',
-							order = 4,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-								local selectedTable = GetSelectedFilters()
-								local t = selectedTable[spell][info[#info]]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								local spell = GetSelectedSpell()
-								if not spell then return end
-								local selectedTable = GetSelectedFilters()
-								local t = selectedTable[spell][info[#info]]
-								t.r, t.g, t.b = r, g, b
+local function confirmResetFilter(_, value) return value ~= '' and format(L["Reset Filter - %s"], value) end
 
-								UF:Update_AllFrames()
-							end,
-							disabled = function()
-								local spell = GetSelectedSpell()
-								if not spell then return end
-								local selectedTable = GetSelectedFilters()
-								return selectedTable[spell].style == 'texturedIcon'
-							end,
-						},
-						sizeOffset = {
-							order = 5,
-							type = 'range',
-							name = L["Size Offset"],
-							desc = L["This changes the size of the Aura Icon by this value."],
-							min = -25, max = 25, step = 1,
-						},
-						xOffset = {
-							order = 6,
-							type = 'range',
-							name = L["X-Offset"],
-							min = -75, max = 75, step = 1,
-						},
-						yOffset = {
-							order = 7,
-							type = 'range',
-							name = L["Y-Offset"],
-							min = -75, max = 75, step = 1,
-						},
-						textThreshold = {
-							name = L["Text Threshold"],
-							desc = L["At what point should the text be displayed. Set to -1 to disable."],
-							type = 'range',
-							order = 8,
-							min = -1, max = 60, step = 1,
-						},
-						anyUnit = {
-							name = L["Show Aura From Other Players"],
-							order = 9,
-							customWidth = 205,
-							type = 'toggle',
-						},
-						onlyShowMissing = {
-							name = L["Show When Not Active"],
-							order = 10,
-							type = 'toggle',
-						},
-						displayText = {
-							name = L["Display Text"],
-							type = 'toggle',
-							order = 11,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+local function resetFilter(_, value)
+	if value == 'Aura Highlight' then
+		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
+	elseif value == 'AuraBar Colors' then
+		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
+	elseif value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator (Class)' or value == 'Aura Indicator (Global)' then
+		local selectedTable, defaultTable = GetSelectedFilters()
+		wipe(selectedTable)
+		E:CopyTable(selectedTable, defaultTable)
+	else
+		E.global.unitframe.aurafilters[value].spells = E:CopyTable({}, G.unitframe.aurafilters[value].spells)
+	end
+	resetSelectedFilter()
+	UF:Update_AllFrames()
+end
 
-								local selectedTable = GetSelectedFilters()
-								return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]]
-							end,
-							disabled = function()
-								local spell = GetSelectedSpell()
-								if not spell then return end
-								local selectedTable = GetSelectedFilters()
-								return selectedTable[spell].style == 'timerOnly'
-							end
-						},
-					},
-				},
-				spellGroup = {
-					type = 'group',
-					name = function()
-						local spell = GetSelectedSpell()
-						local spellName = spell and GetSpellInfo(spell)
-						return (spellName and spellName..' |cFF888888('..spell..')|r') or spell or ' '
-					end,
-					hidden = function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
-					order = -15,
-					inline = true,
-					args = {
-						enabled = {
-							name = L["Enable"],
-							order = 0,
-							type = 'toggle',
-							hidden = function() return (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+local function auraIndicator(info, ...)
+	local spell = GetSelectedSpell()
+	if not spell then return end
 
-								if selectedFilter == 'Aura Highlight' then
-									return E.global.unitframe.AuraHighlightColors[spell].enable
-								elseif selectedFilter == 'AuraBar Colors' then
-									return E.global.unitframe.AuraBarColors[spell].enable
-								else
-									return E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable
-								end
-							end,
-							set = function(info, value)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+	local color, value, r, g, b, a
+	if info.type == 'color' then
+		r, g, b, a = ...
+	else
+		value = ...
+	end
 
-								if selectedFilter == 'Aura Highlight' then
-									E.global.unitframe.AuraHighlightColors[spell].enable = value
-								elseif selectedFilter == 'AuraBar Colors' then
-									E.global.unitframe.AuraBarColors[spell].enable = value
-								else
-									E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
-								end
+	local selectedTable = GetSelectedFilters()
 
-								UF:Update_AllFrames()
-							end,
-						},
-						style = {
-							name = L["Style"],
-							type = 'select',
-							order = 1,
-							values = { GLOW = L["Glow"], FILL = L["Fill"] },
-							hidden = function() return selectedFilter ~= 'Aura Highlight' end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+	if info.type == 'color' then
+		color = selectedTable[spell][info[#info]]
+		if r ~= nil then
+			color.r, color.g, color.b, color.a = r, g, b, a or 1
+		else
+			return color.r, color.g, color.b, color.a
+		end
+	elseif value ~= nil then
+		selectedTable[spell][info[#info]] = value
+	else
+		return selectedTable[spell][info[#info]]
+	end
 
-								return E.global.unitframe.AuraHighlightColors[spell].style
-							end,
-							set = function(info, value)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+	UF:Update_AllFrames()
+end
 
-								E.global.unitframe.AuraHighlightColors[spell].style = value
-								UF:Update_AllFrames()
-							end,
-						},
-						color = {
-							name = L["COLOR"],
-							type = 'color',
-							order = 2,
-							hasAlpha = function() return selectedFilter ~= 'AuraBar Colors' end,
-							hidden = function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+local function debuffIndicator(info, value)
+	local spell = GetSelectedSpell()
+	if not spell then
+		return 0
+	else
+		if selectedFilter == 'Aura Highlight' then
+			if value ~= nil then
+				E.global.unitframe.AuraHighlightColors[spell][info[#info]] = value
+			else
+				return E.global.unitframe.AuraHighlightColors[spell][info[#info]]
+			end
+		elseif value ~= nil then
+			E.global.unitframe.aurafilters[selectedFilter].spells[spell][info[#info]] = value
+		else
+			return E.global.unitframe.aurafilters[selectedFilter].spells[spell][info[#info]]
+		end
 
-								local t
-								if selectedFilter == 'Aura Highlight' then
-									t = E.global.unitframe.AuraHighlightColors[spell].color
-								elseif selectedFilter == 'AuraBar Colors' then
-									t = E.global.unitframe.AuraBarColors[spell].color
-								end
+		UF:Update_AllFrames()
+	end
+end
 
-								if t then
-									return t.r, t.g, t.b, t.a
-								end
-							end,
-							set = function(info, r, g, b, a)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+E.Options.args.filters = ACH:Group(L["FILTERS"], nil, 3, 'tab')
+local Filters = E.Options.args.filters.args
 
-								local t
-								if selectedFilter == 'Aura Highlight' then
-									t = E.global.unitframe.AuraHighlightColors[spell].color
-								elseif selectedFilter == 'AuraBar Colors' then
-									t = E.global.unitframe.AuraBarColors[spell].color
-								end
+Filters.mainOptions = ACH:Group('Main Options', nil, 1)
+Filters.mainOptions.args.createFilter = ACH:Input(L["Create Filter"], L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."], 1, nil, nil, nil, function(_, value) value = gsub(value, ',', '') E.global.unitframe.aurafilters[value] = { type = 'whitelist', spells = {} } selectedFilter = value end, nil, nil, validateCreateFilter)
+Filters.mainOptions.args.selectFilter = ACH:Select(L["Select Filter"], nil, 2, SetFilterList, nil, nil, getSelectedFilter, resetSelectedFilter)
+Filters.mainOptions.args.deleteFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, DeleteFilterList, confirmResetFilter, nil, nil, function(_, value) E.global.unitframe.aurafilters[value] = nil resetSelectedFilter() removePriority(value) end, DeleteFilterListDisable)
+Filters.mainOptions.args.resetGroup = ACH:Select(L["Reset Filter"], L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."], 4, ResetFilterList, confirmResetFilter, nil, nil, resetFilter)
 
-								if t then
-									t.r, t.g, t.b, t.a = r, g, b, a
-									UF:Update_AllFrames()
-								end
-							end,
-						},
-						removeColor = {
-							type = 'execute',
-							order = 3,
-							name = L["Restore Defaults"],
-							hidden = function() return selectedFilter ~= 'AuraBar Colors' end,
-							func = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+Filters.mainOptions.args.filterGroup = ACH:Group(function() return selectedFilter end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
+Filters.mainOptions.args.filterGroup.inline = true
+Filters.mainOptions.args.filterGroup.args.selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium')
+Filters.mainOptions.args.filterGroup.args.selectSpell = ACH:Select(L["Select Spell"], nil, 1, SetSpellList, nil, nil, function(_) return selectedSpell or '' end, function(_, value) selectedSpell = (value ~= '' and value) end)
+Filters.mainOptions.args.filterGroup.args.selectSpell.customWidth = 350
+Filters.mainOptions.args.filterGroup.args.selectSpell.sortByValue = true
 
-								if G.unitframe.AuraBarColors[spell] then
-									E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, G.unitframe.AuraBarColors[spell])
-								else
-									E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, auraBarDefaults)
-								end
+Filters.mainOptions.args.filterGroup.args.quickSearch = ACH:Input(L["Filter Search"], L["Search for a spell name inside of a filter."], 2, nil, nil, function() return quickSearchText end, function(_, value) quickSearchText = value end)
+Filters.mainOptions.args.filterGroup.args.quickSearch.customWidth = 200
 
-								UF:Update_AllFrames()
-							end,
-						},
-						forDebuffIndicator = {
-							order = 4,
-							type = 'group',
-							name = L["Used as RaidDebuff Indicator"],
-							inline = true,
-							hidden = function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end,
-							args = {
-								priority = {
-									order = 1,
-									type = 'range',
-									name = L["Priority"],
-									desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
-									min = 0, max = 99, step = 1,
-									get = function()
-										local spell = GetSelectedSpell()
-										if not spell then
-											return 0
-										else
-											return E.global.unitframe.aurafilters[selectedFilter].spells[spell].priority
-										end
-									end,
-									set = function(info, value)
-										local spell = GetSelectedSpell()
-										if not spell then return end
+Filters.mainOptions.args.filterGroup.args.filterType = ACH:Select(L["Filter Type"], L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."], 2, { Whitelist = L["Whitelist"], Blacklist = L["Blacklist"] }, nil, nil, function() return E.global.unitframe.aurafilters[selectedFilter].type end, function(_, value) E.global.unitframe.aurafilters[selectedFilter].type = value UF:Update_AllFrames() end, nil, function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') or G.unitframe.aurafilters[selectedFilter] end)
 
-										E.global.unitframe.aurafilters[selectedFilter].spells[spell].priority = value
-										UF:Update_AllFrames()
-									end,
-								},
-								stackThreshold = {
-									order = 2,
-									type = 'range',
-									name = L["Stack Threshold"],
-									desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
-									min = 0, max = 99, step = 1,
-									get = function()
-										local spell = GetSelectedSpell()
-										if not spell then
-											return 0
-										else
-											return E.global.unitframe.aurafilters[selectedFilter].spells[spell].stackThreshold
-										end
-									end,
-									set = function(info, value)
-										local spell = GetSelectedSpell()
-										if not spell then return end
+Filters.mainOptions.args.filterGroup.args.removeSpell = ACH:Select(L["Remove Spell"], nil, 4, SetSpellList, function(_, value) return value ~= '' and format(L["Remove Spell - %s"], GetSpellNameRank(value)) end, nil, nil, AddOrRemoveSpellID)
+Filters.mainOptions.args.filterGroup.args.removeSpell.customWidth = 350
 
-										E.global.unitframe.aurafilters[selectedFilter].spells[spell].stackThreshold = value
-										UF:Update_AllFrames()
-									end,
-								},
-							},
-						},
-						ownOnly = {
-							name = L["Casted by Player Only"],
-							desc = L["Only highlight the aura that originated from you and not others."],
-							order = 5,
-							type = 'toggle',
-							hidden = function() return selectedFilter ~= 'Aura Highlight' end,
-							get = function(info)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], nil, 5, nil, nil, nil, AddOrRemoveSpellID)
+Filters.mainOptions.args.filterGroup.args.addSpell.customWidth = 350
 
-								if selectedFilter == 'Aura Highlight' then
-									return E.global.unitframe.AuraHighlightColors[spell].ownOnly or false
-								end
-							end,
-							set = function(info, value)
-								local spell = GetSelectedSpell()
-								if not spell then return end
+Filters.mainOptions.args.auraIndicator = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -1, nil, auraIndicator, auraIndicator, nil, function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end)
+Filters.mainOptions.args.auraIndicator.inline = true
+Filters.mainOptions.args.auraIndicator.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
+Filters.mainOptions.args.auraIndicator.args.point = ACH:Select(L["Anchor Point"], nil, 2, C.Values.AllPoints)
+Filters.mainOptions.args.auraIndicator.args.style = ACH:Select(L["Style"], nil, 3, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
+Filters.mainOptions.args.auraIndicator.args.color = ACH:Color(' ', nil, 4, true, nil, nil, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'texturedIcon' end)
+Filters.mainOptions.args.auraIndicator.args.sizeOffset = ACH:Range(L["Size Offset"], L["This changes the size of the Aura Icon by this value."], 5, { min = -25, max = 25, step = 1 })
+Filters.mainOptions.args.auraIndicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -75, max = 75, step = 1 })
+Filters.mainOptions.args.auraIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -75, max = 75, step = 1 })
+Filters.mainOptions.args.auraIndicator.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 8, { min = -1, max = 60, step = 1 })
+Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura From Other Players"], nil, 9)
+Filters.mainOptions.args.auraIndicator.args.anyUnit.customWidth = 205
+Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 10)
+Filters.mainOptions.args.auraIndicator.args.displayText = ACH:Toggle(L["Display Text"], nil, 11, nil, nil, nil, function(info) local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]] end, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'timerOnly' end)
 
-								if selectedFilter == 'Aura Highlight' then
-									E.global.unitframe.AuraHighlightColors[spell].ownOnly = value
-								end
+Filters.mainOptions.args.spellGroup = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -15, nil, FilterSettings, FilterSettings, nil, function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
+Filters.mainOptions.args.spellGroup.inline = true
+Filters.mainOptions.args.spellGroup.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, function() return (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
+Filters.mainOptions.args.spellGroup.args.style = ACH:Select(L["Style"], nil, 1, { GLOW = L["Glow"], FILL = L["Fill"] }, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'Aura Highlight' end)
+Filters.mainOptions.args.spellGroup.args.color = ACH:Color(L["COLOR"], nil, 2, function() return selectedFilter ~= 'AuraBar Colors' end, nil, nil, nil, nil, function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end)
+Filters.mainOptions.args.spellGroup.args.removeColor = ACH:Execute(L["Restore Defaults"], nil, 3, function() local spell = GetSelectedSpell() if not spell then return end if G.unitframe.AuraBarColors[spell] then E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, G.unitframe.AuraBarColors[spell]) else E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, auraBarDefaults) end UF:Update_AllFrames() end, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'AuraBar Colors' end)
 
-								UF:Update_AllFrames()
-							end,
-						},
-					},
-				}
-			},
-		},
-	}
-}
+Filters.mainOptions.args.spellGroup.args.forDebuffIndicator = ACH:Group(L["Used as RaidDebuff Indicator"], L["Used as RaidDebuff Indicator"], 4, nil, debuffIndicator, debuffIndicator, nil, function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
+Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.inline = true
+Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.priority = ACH:Range(L["Priority"], L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."], 1, { min = 0, max = 99, step = 1 })
+Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."], 2, { min = 0, max = 99, step = 1 })
+Filters.mainOptions.args.spellGroup.args.ownOnly = ACH:Toggle(L["Casted by Player Only"], L["Only highlight the aura that originated from you and not others."], 5, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'Aura Highlight' end)
 
-E.Options.args.filters.args.help = ACH:Group('Help', nil, 2)
+Filters.help = ACH:Group('Help', nil, 2)
 
 local COLOR = E:ClassColor(E.myclass, true)
 local COLOR1 = format('|c%s', COLOR.colorStr)
@@ -759,12 +434,10 @@ local FilterHelp = {
 }
 
 for i, text in ipairs(FilterHelp) do
-	E.Options.args.filters.args.help.args['help'..i] = ACH:Description(text:gsub('*', COLOR1):gsub('%^', COLOR2), i, 'medium')
+	Filters.help.args['help'..i] = ACH:Description(text:gsub('*', COLOR1):gsub('%^', COLOR2), i, 'medium')
 end
 
 function E:SetToFilterConfig(filter)
-	selectedSpell = nil
-	quickSearchText = ''
-	selectedFilter = filter or ''
+	resetSelectedFilter(_, filter)
 	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'filters')
 end

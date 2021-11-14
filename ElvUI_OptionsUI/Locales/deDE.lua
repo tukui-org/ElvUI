@@ -1,13 +1,18 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
+L["Vendor"] = true
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
+L["Remove Spell - %s"] = true
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = true
 L["Copy Primary Texture"] = true
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = true
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000Warnung:|r Klick auf den Pfeil rechts in der Dropdown Box um eine Liste der Fähigkeiten zu sehen."
 L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF0000Warnung:|r Die Optionen 'Eingeschaltet' und 'Anzahl der Gruppen' sind ausgegraut durch den intelligenten Raid-Filter. Schalte Intelligenter Raid-Filter in (Einheitenfenster - Allgemein) aus, um diese Einstellungen zu ändern."
-L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000Warnung:|r Dieses verursacht, dass die Updates in einem Bruchteil einer Sekunde passieren."
 L["24-Hour Time"] = "24-Stunden-Format"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -111,7 +116,6 @@ L["Aura Filters"] = "Auren Filter"
 L["Aura Speed"] = "Auren Geschwindigkeit"
 L["Aura"] = true -- No need to translate
 L["Auto Add New Spells"] = "Automatisches hinzufügen von neuen Zaubern"
-L["Auto Greed/DE"] = "Auto-Gier/DE"
 L["Auto Hide"] = "Auto Verstecken"
 L["Auto Repair"] = "Auto-Reparatur"
 L["Auto-Close Pet Battle Log"] = "Kampfhaustier Kampflog automatisch schließen"
@@ -120,7 +124,6 @@ L["Automatic"] = "Automatisch"
 L["Automatically accept invites from guild/friends."] = "Automatisch Einladungen von Gildenmitgliedern/Freunden akzeptieren"
 L["Automatically hide the objective frame during boss or arena fights."] = "Versteckt automatisch die Questverfolgung während eines Boss oder Arena Kampfes."
 L["Automatically repair using the following method when visiting a merchant."] = "Repariere automatisch deine Ausrüstungsgegenstände, wenn du eine der folgenden Methoden auswählst."
-L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "Automatisch Gier oder Entzauberung auf Gegenstände von grüner Qualität wählen (sofern verfügbar). Das funktioniert nur, wenn du die maximale Stufe erreicht hast."
 L["Automatically vendor gray items when visiting a vendor."] = "Automatischer Verkauf von grauen Gegenständen bei einem Händlerbesuch."
 L["Available Tags"] = "Verfügbare Tags"
 L["AzeriteUI"] = true -- No need to translate
@@ -455,7 +458,6 @@ L["Enable/Disable the loot roll frame."] = "Aktiviere/Deaktiviere das Beutewürf
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = "Aktiviere/Deaktiviere die Minimap. |cffFF0000Warnung: Durch diese Einstellung wird verhindert dass die Infotextleisten an der Minimap angezeigt werden.|r"
 L["Enables the ElvUI Raid Control panel."] = "Aktiviert das ElvUI Raid Control Panel."
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "Aktivieren dieses Punktes erlaubt Raidweites sortieren, allerdings wirst du nicht zwischen Gruppen unterscheiden können"
-L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."] = "Aktivieren hat zur Ursache dass die Updates schneller passieren, wenn du jedoch eine höhere Geschwindigkeit wählst, könnte es passieren dass es langsamer als das Standardschema ausgeführt wird, welches nur die Blizzard Events benutzt ohne Update-Schleifen."
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "Aktivieren dieses Punktes kehrt die Gruppierungsrichtung um wenn der Raid nicht voll ist, die Startrichtung wird ebenfalls umgekehrt"
 L["Enabling this will check your health amount."] = "Wenn aktiviert wird dein Lebenswert überprüft."
 L["Enabling this will check your power amount."] = "Wenn aktiviert wird dein Kraftwert überprüft."
@@ -811,6 +813,7 @@ L["Missing Talent Alert"] = "Fehlende Talente Alarm"
 L["Missing"] = "Fehlend"
 L["MM:SS Threshold"] = "MM:SS Schwellenwert"
 L["Model Rotation"] = "Modellrotation"
+L["Modifier Count"] = true
 L["Module Control"] = "Modulkontrolle"
 L["Module Copy"] = "Module kopieren"
 L["Module Reset"] = "Module zurücksetzen"
@@ -1163,7 +1166,7 @@ L["Spacing"] = "Abstand"
 L["Spam Interval"] = "Spam Intervall"
 L["Spark"] = "Funken"
 L["Spec Icon"] = "Talentspezialisierungssymbol"
-L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = "Spezifiziere einen Dateinamen in deinem World of Warcraft Ordner.\n\nBitte beachte:\n-Die Bildgröße sollte 256x128 sein\n-Du musst dein Spiel komplett neu starten nachdem du eine Datei zum Ordner hinzugefügt hast.\n-Der Dateityp muss tga sein.\n\nBeispiel: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nFür die meisten Benutzter ist es einfacher die tga Datei einfach in deinem World of Warcraft Ordner zu plazieren."
+L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Core\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = "Spezifiziere einen Dateinamen in deinem World of Warcraft Ordner.\n\nBitte beachte:\n-Die Bildgröße sollte 256x128 sein\n-Du musst dein Spiel komplett neu starten nachdem du eine Datei zum Ordner hinzugefügt hast.\n-Der Dateityp muss tga sein.\n\nBeispiel: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nFür die meisten Benutzter ist es einfacher die tga Datei einfach in deinem World of Warcraft Ordner zu plazieren."
 L["Spell/Item IDs"] = "Zauber/Gegenstand IDs"
 L["Split"] = "Aufteilen"
 L["Stable"] = "Stall"
@@ -1364,6 +1367,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Benutze Indikator Farbe"
 L["Use Instance ID or Name"] = "Benutze Instanz ID oder Name"
 L["Use Map ID or Name"] = "Benutze Map ID oder Name"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Benutze Portrait"
 L["Use Real ID BattleTag"] = "Benutze Real ID BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Benutze Shift+Linksklick um zwischen freundlichem oder freindlichen Status umzuschalten. Normaler Status erlaubt den Filter alle Einheiten zu überprüfen. Freundlicher Status überprüft nur freundliche Einheiten. Feindliche überprüft nur feindliche Einheiten."
@@ -1500,23 +1504,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
  Beispiel: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
+L["TEXTURE_EXAMPLE"] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
 
 Bitte beachten:
 -Als Bildgröße 256x128 wird empfohlen.
 -Du musst das Spiel komplett neu starten, nachdem du die Datei hinzugefügt hast.
 -Der Dateityp muss im Format tga sein.
 
-Zum Beispiel: Interface\AddOns\ElvUI\Media\Textures\Copy
+Zum Beispiel: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren WoW-Ordner abzulegen. Anschließend kann man den Namen der Datei hier eingeben.]=]
 

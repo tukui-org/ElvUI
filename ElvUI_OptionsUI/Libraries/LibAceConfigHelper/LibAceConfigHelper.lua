@@ -1,5 +1,5 @@
-local LibStub = LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 5
+local LibStub = _G.LibStub
+local MAJOR, MINOR = 'LibAceConfigHelper', 6
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -11,7 +11,7 @@ function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)
 end
 
 function ACH:Description(name, order, fontSize, image, imageCoords, imageWidth, imageHeight, width, hidden)
-	return { type = 'description', name = name, order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, width = width, hidden = hidden }
+	return { type = 'description', name = name or '', order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, width = width, hidden = hidden }
 end
 
 function ACH:Execute(name, desc, order, func, image, confirm, width, get, set, disabled, hidden)

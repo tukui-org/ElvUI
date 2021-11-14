@@ -9,10 +9,10 @@ local CopyTable = CopyTable
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
-	textFormat = ACH:Select(L["Text Format"], nil, 2, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
-	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
-	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
+	mouseover = ACH:Toggle(L["Mouseover"], nil, 2),
+	clickThrough = ACH:Toggle(L["Click Through"], nil, 3),
 	showBubbles = ACH:Toggle(L["Show Bubbles"], nil, 5),
+	textFormat = ACH:Select(L["Text Format"], nil, 10, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
 	sizeGroup = ACH:Group(L["Size"], nil, -4),
 	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -3),
 	strataAndLevel = ACH:Group(L["Strata and Level"], nil, -2),
@@ -33,6 +33,10 @@ SharedOptions.fontGroup.inline = true
 SharedOptions.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 SharedOptions.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 SharedOptions.fontGroup.args.fontOutline = ACH:Select(L["Font Outline"], nil, 3, C.Values.FontFlags)
+SharedOptions.fontGroup.args.spacer = ACH:Spacer(4, 'full')
+SharedOptions.fontGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 5, C.Values.AllPoints)
+SharedOptions.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+SharedOptions.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 local DataBars = ACH:Group(L["DataBars"], nil, 2, 'tab', function(info) return E.db.databars[info[#info]] end, function(info, value) E.db.databars[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars = DataBars
@@ -44,6 +48,7 @@ DataBars.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 
 
 DataBars.args.colorGroup = ACH:Group(L["COLORS"], nil, -1, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
 DataBars.args.colorGroup.args.experience = ACH:Color(L["Experience"], nil, 1, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
+DataBars.args.colorGroup.args.petExperience = ACH:Color(L["Pet Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:PetExperienceBar_Update() end, nil, function() return E.Retail or E.myclass ~= 'HUNTER' end)
 DataBars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.quest = ACH:Color(L["Quest Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_QuestXP() end)
 DataBars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 4, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
@@ -75,15 +80,27 @@ DataBars.args.experience.args.questGroup = ACH:Group(L["Quests"], nil, -3, nil, 
 DataBars.args.experience.args.questGroup.inline = true
 DataBars.args.experience.args.questGroup.args.showQuestXP = ACH:Toggle(L["Show QuestXP"], nil, 1)
 DataBars.args.experience.args.questGroup.args.questCompletedOnly = ACH:Toggle(L["Completed Quests Only"], nil, 2, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
-DataBars.args.experience.args.questGroup.args.questsCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
+DataBars.args.experience.args.questGroup.args.questCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
+DataBars.args.experience.args.questGroup.args.questTrackedOnly = ACH:Toggle(L["Tracked Quests Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end, not E.Retail)
+
+E.Options.args.databars.args.petExperience = ACH:Group(L["Pet Experience"], nil, 2, nil, function(info) return DB.db.petExperience[info[#info]] end, function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Update() DB:UpdateAll() end, nil, function() return E.Retail or E.myclass ~= 'HUNTER' end)
+E.Options.args.databars.args.petExperience.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.petExperience.args.enable.set = function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.petExperience.args.textFormat.set = function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Update() end
+E.Options.args.databars.args.petExperience.args.conditionGroup.get = function(_, key) return DB.db.petExperience[key] end
+E.Options.args.databars.args.petExperience.args.conditionGroup.set = function(_, key, value) DB.db.petExperience[key] = value DB:PetExperienceBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.petExperience.args.conditionGroup.values = {
+	hideAtMaxLevel = L["Hide At Max Level"],
+	hideInCombat = L["Hide In Combat"],
+}
 
 DataBars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
 DataBars.args.reputation.args = CopyTable(SharedOptions)
 DataBars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Toggle() DB:UpdateAll() end
 DataBars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 6)
+DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 15)
 DataBars.args.reputation.args.showReward.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 7, { TOP = 'Top', BOTTOM = 'Bottom', LEFT = 'LEFT', RIGHT = 'RIGHT' })
+DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 16, { TOP = 'Top', BOTTOM = 'Bottom', LEFT = 'LEFT', RIGHT = 'RIGHT' })
 DataBars.args.reputation.args.rewardPosition.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
 DataBars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end
@@ -92,7 +109,7 @@ DataBars.args.reputation.args.conditionGroup.values = {
 	hideInCombat = L["Hide In Combat"],
 }
 
-DataBars.args.honor = ACH:Group(L["Honor"], nil, 3, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() DB:UpdateAll() end)
+DataBars.args.honor = ACH:Group(L["Honor"], nil, 3, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() DB:UpdateAll() end, nil, not E.Retail)
 DataBars.args.honor.args = CopyTable(SharedOptions)
 DataBars.args.honor.args.enable.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Toggle() DB:UpdateAll() end
 DataBars.args.honor.args.textFormat.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() end
@@ -108,11 +125,13 @@ DataBars.args.honor.args.conditionGroup.values = {
 DataBars.args.threat = ACH:Group(L["Threat"], nil, 4, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() DB:UpdateAll() end)
 DataBars.args.threat.args = CopyTable(SharedOptions)
 DataBars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
+DataBars.args.threat.args.displayText = ACH:Toggle(L["Display Text"], nil, 5)
+DataBars.args.threat.args.tankStatus = ACH:Toggle(L["Tank Colors"], nil, 6)
 DataBars.args.threat.args.textFormat = nil
 DataBars.args.threat.args.conditionGroup = nil
 DataBars.args.threat.args.showBubbles = nil
 
-DataBars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end)
+DataBars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end, nil, not E.Retail)
 DataBars.args.azerite.args = CopyTable(SharedOptions)
 DataBars.args.azerite.args.enable.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Toggle() DB:UpdateAll() end
 DataBars.args.azerite.args.textFormat.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() end

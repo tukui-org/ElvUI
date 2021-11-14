@@ -5,46 +5,67 @@ local ACH = E.Libs.ACH
 local _G = _G
 local format = format
 
-E.Options.args.tagGroup = ACH:Group(L["Available Tags"], nil, 3)
-E.Options.args.tagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, nil, function() return 'https://www.tukui.org/forum/viewtopic.php?f=9&t=6' end)
-E.Options.args.tagGroup.args.GuideLink.customWidth = 310
-E.Options.args.tagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, nil, function() return 'https://git.tukui.org/elvui/elvui/-/wikis/home' end)
-E.Options.args.tagGroup.args.WikiLink.customWidth = 290
-E.Options.args.tagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end)
-E.Options.args.tagGroup.args.ColorWheel.customWidth = 120
-E.Options.args.tagGroup.args.description = ACH:Description('|cffFF0000This is for information. This will not change the tags in the UI.|r', 4, 'large')
-E.Options.args.tagGroup.args.spacer = ACH:Spacer(5)
+local TagGroup = ACH:Group(L["Available Tags"], nil, 3)
+TagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, nil, function() return 'https://www.tukui.org/forum/viewtopic.php?f=9&t=6' end)
+TagGroup.args.GuideLink.customWidth = 310
+TagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, nil, function() return 'https://git.tukui.org/elvui/elvui/-/wikis/home' end)
+TagGroup.args.WikiLink.customWidth = 290
+TagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end)
+TagGroup.args.ColorWheel.customWidth = 120
+TagGroup.args.description = ACH:Description('|cffFF0000This is for information. This will not change the tags in the UI.|r', 4, 'large')
+TagGroup.args.spacer = ACH:Spacer(5)
 
-E.Options.args.tagGroup.args.Colors = ACH:Group(L["Colors"])
-E.Options.args.tagGroup.args.Colors.args.customTagColorInfo  = ACH:Input('Custom color your Text: replace the XXXXXX with a Hex color code', nil, 1, nil, 'full', function() return '||cffXXXXXX [tags] or text here ||r' end)
-E.Options.args.tagGroup.args.Names = ACH:Group(L["Names"])
-E.Options.args.tagGroup.args.Names.args.nameHealthInfo1 = ACH:Input('|cFF666666[1/5]|r White name text, missing hp red', nil, 1, nil, 'full', function() return '[name:health]' end)
-E.Options.args.tagGroup.args.Names.args.nameHealthInfo2 = ACH:Input('|cFF666666[2/5]|r Class color name text, missing hp red', nil, 2, nil, 'full', function() return '[name:health{class}]' end)
-E.Options.args.tagGroup.args.Names.args.nameHealthInfo3 = ACH:Input('|cFF666666[3/5]|r Class color name text, missing hp based on hex code', nil, 3, nil, 'full', function() return '[name:health{class:00ff00}]' end)
-E.Options.args.tagGroup.args.Names.args.nameHealthInfo4 = ACH:Input('|cFF666666[4/5]|r Name text based on hex code, missing hp red', nil, 4, nil, 'full', function() return '[name:health{00ff00}]' end)
-E.Options.args.tagGroup.args.Names.args.nameHealthInfo5 = ACH:Input('|cFF666666[5/5]|r Name text based on hex code, missing hp class color', nil, 5, nil, 'full', function() return '[name:health{00ff00:class}]' end)
+TagGroup.args.Colors = ACH:Group(L["Colors"])
+TagGroup.args.Colors.args.customTagColorInfo  = ACH:Input('Custom color your Text: replace the XXXXXX with a Hex color code', nil, 1, nil, 'full', function() return '||cffXXXXXX [tags] or text here ||r' end)
+
+TagGroup.args.Names = ACH:Group(L["Names"])
+TagGroup.args.Names.args.nameHealthInfo1 = ACH:Input('|cFF666666[1/5]|r White name text, missing hp red', nil, 1, nil, 'full', function() return '[name:health]' end)
+TagGroup.args.Names.args.nameHealthInfo2 = ACH:Input('|cFF666666[2/5]|r Class color name text, missing hp red', nil, 2, nil, 'full', function() return '[name:health{class}]' end)
+TagGroup.args.Names.args.nameHealthInfo3 = ACH:Input('|cFF666666[3/5]|r Class color name text, missing hp based on hex code', nil, 3, nil, 'full', function() return '[name:health{class:00ff00}]' end)
+TagGroup.args.Names.args.nameHealthInfo4 = ACH:Input('|cFF666666[4/5]|r Name text based on hex code, missing hp red', nil, 4, nil, 'full', function() return '[name:health{00ff00}]' end)
+TagGroup.args.Names.args.nameHealthInfo5 = ACH:Input('|cFF666666[5/5]|r Name text based on hex code, missing hp class color', nil, 5, nil, 'full', function() return '[name:health{00ff00:class}]' end)
 
 local getTag = function(info) return format('[%s]', info[#info]) end
+local groups = {}
 
-for _, Table in pairs({'Events', 'Methods'}) do
-	for Tag in next, E.oUF.Tags[Table] do
-		if not E.TagInfo[Tag] then E:AddTagInfo(Tag, 'Miscellaneous') end
-		if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
-			E.Options.args.tagGroup.args[E.TagInfo[Tag].category] = {
-				name = E.TagInfo[Tag].category,
-				type = 'group',
-				args = {}
-			}
+for _, which in pairs({'Events','OnUpdateThrottle'}) do
+	for Tag in next, E.oUF.Tags[which] do
+		local info = E.TagInfo[Tag] or E:AddTagInfo(Tag, 'Miscellaneous')
+
+		local group = TagGroup.args[info.category]
+		if not group then
+			group = { name = info.category, type = 'group', args = {} }
+			TagGroup.args[info.category] = group
+			groups[info.category] = group
 		end
 
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] or {}
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].type = 'input'
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].name = E.TagInfo[Tag].description ~= '' and E.TagInfo[Tag].description or getTag
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].order = E.TagInfo[Tag].order or nil
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].width = 'full'
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].get = getTag
+		local input = group.args[Tag] or {}
+		input.name = info.description ~= '' and info.description or getTag
+		input.order = info.order or nil
+		input.width = 'full'
+		input.type = 'input'
+		input.hidden = info.hidden
+		input.get = getTag
+
+		group.args[Tag] = input
 	end
 end
+
+-- hide groups when all their inputs are hidden
+for _, group in pairs(groups) do
+	local hide = true
+	for _, section in pairs(group.args) do
+		if section.type ~= 'input' or not section.hidden then
+			hide = false
+			break
+		end
+	end
+	if hide then
+		group.hidden = true
+	end
+end
+
+E.Options.args.tagGroup = TagGroup
 
 --[[ THIS SHOULD BE EXECUTED IN THE LAST LOADED CONFIG FILE, AT THE BOTTOM
 	NOTE: This is used to make sure Plugins use no less than the options order we want. ]]

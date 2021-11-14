@@ -1,13 +1,17 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('Distributor')
 
-local C, L = {}, E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+local C = { Blank = function() return '' end }
 
 E.OptionsUI = select(2, ...)
 E.OptionsUI[1] = C
 E.OptionsUI[2] = L
 
-local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
+local _G = _G
+local sort, strmatch, strsplit = sort, strmatch, strsplit
+local format, gsub, ipairs, pairs = format, gsub, ipairs, pairs
+local tconcat, tinsert, tremove = table.concat, tinsert, tremove
 
 C.Values = {
 	FontFlags = {
@@ -30,16 +34,80 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', CENTER = 'CENTER', TOP = 'TOP', BOTTOM = 'BOTTOM' }
+	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
+	Anchors = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },
+	SmartAuraPositions = {
+		DISABLED = L["DISABLE"],
+		BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
+		DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
+		FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
+		FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
+	}
 }
 
-C.StateSwitchGetText = function(_, TEXT)
-	local friend, enemy = strmatch(TEXT, '^Friendly:([^,]*)'), strmatch(TEXT, '^Enemy:([^,]*)')
-	local text, blockB, blockS, blockT = friend or enemy or TEXT
-	local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-	if SF and localized and text:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
-	local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or text
-	return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
+do
+	C.StateSwitchGetText = function(_, TEXT)
+		local friend, enemy = strmatch(TEXT, '^Friendly:([^,]*)'), strmatch(TEXT, '^Enemy:([^,]*)')
+		local text, blockB, blockS, blockT = friend or enemy or TEXT
+		local SF, localized = E.global.unitframe.specialFilters[text], L[text]
+		if SF and localized and text:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
+		local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or text
+		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
+	end
+
+	local function filterMatch(s,v)
+		local m1, m2, m3, m4 = '^'..v..'$', '^'..v..',', ','..v..'$', ','..v..','
+		return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
+	end
+
+	C.SetFilterPriority = function(db, groupName, auraType, value, remove, movehere, friendState)
+		if not auraType or not value then return end
+		local filter = db[groupName] and db[groupName][auraType] and db[groupName][auraType].priority
+		if not filter then return end
+		local found = filterMatch(filter, E:EscapeString(value))
+		if found and movehere then
+			local tbl, sv, sm = {strsplit(',',filter)}
+			for i in ipairs(tbl) do
+				if tbl[i] == value then sv = i elseif tbl[i] == movehere then sm = i end
+				if sv and sm then break end
+			end
+			tremove(tbl, sm)
+			tinsert(tbl, sv, movehere)
+			db[groupName][auraType].priority = tconcat(tbl,',')
+		elseif found and friendState then
+			local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
+			local friend = filterMatch(filter, E:EscapeString('Friendly:'..realValue))
+			local enemy = filterMatch(filter, E:EscapeString('Enemy:'..realValue))
+			local default = filterMatch(filter, E:EscapeString(realValue))
+
+			local state =
+				(friend and (not enemy) and format('%s%s','Enemy:',realValue))					--[x] friend [ ] enemy: > enemy
+			or	((not enemy and not friend) and format('%s%s','Friendly:',realValue))			--[ ] friend [ ] enemy: > friendly
+			or	(enemy and (not friend) and default and format('%s%s','Friendly:',realValue))	--[ ] friend [x] enemy: (default exists) > friendly
+			or	(enemy and (not friend) and strmatch(value, '^Enemy:') and realValue)			--[ ] friend [x] enemy: (no default) > realvalue
+			or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
+
+			if state then
+				local stateFound = filterMatch(filter, E:EscapeString(state))
+				if not stateFound then
+					local tbl, sv = {strsplit(',',filter)}
+					for i in ipairs(tbl) do
+						if tbl[i] == value then
+							sv = i
+							break
+						end
+					end
+					tinsert(tbl, sv, state)
+					tremove(tbl, sv+1)
+					db[groupName][auraType].priority = tconcat(tbl,',')
+				end
+			end
+		elseif found and remove then
+			db[groupName][auraType].priority = gsub(filter, found, '')
+		elseif not found and not remove then
+			db[groupName][auraType].priority = (filter == '' and value) or (filter..','..value)
+		end
+	end
 end
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
@@ -116,13 +184,15 @@ local DEVELOPERS = {
 	'Nightcracker',
 	'Omega1970',
 	'Blazeflack',
+	'Crum',
 	'|cffFFC44DHydra|r',
 	'|cff0070DEAzilroka|r',
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020Nihilistzsche|r',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23)
+	'|cffff2020Nihilistzsche|r',
+	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
+	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t |cff4beb2cLuckyone|r',
+	E:TextGradient('Simpy but my name needs to be longer.', 0.6,0.36,0.89, 0.94,0.35,0.7, 0.99,0.89,0.25, 0,0.73,0.97, 0.4,1.0,0.60)
 }
 
 local TESTERS = {
@@ -143,9 +213,8 @@ local TESTERS = {
 	'Catok',
 	'Caedis',
 	'|cff00c0faBenik|r',
-	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r |T656558:15:15:0:0:64:64:5:59:5:59|t',
-	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t Luckyone',
-	'AcidWeb |TInterface/AddOns/ElvUI/Media/ChatLogos/Gem:15:15:-1:2:64:64:6:60:8:60|t',
+	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r',
+	'AcidWeb |TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Gem:15:15:-1:2:64:64:6:60:8:60|t',
 	'|T135167:15:15:0:0:64:64:5:59:5:59|t Loon - For being right',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR',
 }
@@ -179,13 +248,13 @@ E.Options.args.info.args.support = ACH:Group(L["Support & Download"], nil, 3)
 E.Options.args.info.args.support.inline = true
 E.Options.args.info.args.support.args.homepage = ACH:Execute(L["Support Forum"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/forum/viewforum.php?f=4') end)
 E.Options.args.info.args.support.args.homepage.customWidth = 140
-E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://git.tukui.org/elvui/elvui/issues') end)
+E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end)
 E.Options.args.info.args.support.args.git.customWidth = 140
-E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discordapp.com/invite/xFWcfgE') end)
+E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end)
 E.Options.args.info.args.support.args.discord.customWidth = 140
-E.Options.args.info.args.support.args.changelog = ACH:Execute(L["Changelog"], nil, 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/download.php?ui=elvui#changelog') end)
+E.Options.args.info.args.support.args.changelog = ACH:Execute(L["Changelog"], nil, 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/download.php?ui=elvui&changelog') end)
 E.Options.args.info.args.support.args.changelog.customWidth = 140
-E.Options.args.info.args.support.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 5, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://git.tukui.org/elvui/elvui/-/archive/development/elvui-development.zip') end)
+E.Options.args.info.args.support.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 5, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end)
 E.Options.args.info.args.support.args.development.customWidth = 140
 
 E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 4)
@@ -424,7 +493,10 @@ E.Options.args.profiles.args.private.name = L["Private"]
 E.Options.args.profiles.args.private.order = 2
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
-E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+
+if E.Retail then
+	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+end
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvPrivates', E.Options.args.profiles.args.private)
 

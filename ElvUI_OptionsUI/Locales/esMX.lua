@@ -1,13 +1,18 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Vendor"] = true
+L["Guild Bank"] = true
+L["Soul Binds"] = true
+L["Auction House"] = true
+L["Remove Spell - %s"] = "Eliminar el Hechizo - %s"
+L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."] = "Muestra los mensajes de Guild y Whisper en la pantalla de AFK.\nEste chat puede ser arrastrado (la posición se guardará)."
 L["Copy Primary Texture"] = "Copiar Textura Primaria"
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "Reemplaza el ajuste de la textura de la barra de estado en los marcos de las unidades y las placas de identificación con la textura primaria."
 L["# Displayed Auras"] = "# Auras mostradas"
 L["%s and then %s"] = "%s y entonces %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000Advertencia:|r Haz clic en la flecha del cuadro desplegable para ver una lista de hechizos."
 L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF0000Advertencia:|r La habilitar y el número de grupos es controlado por Smart Raid Filter. Deshabilite el Filtro de Banda Inteligente en (Marco de Unidad - General) para cambiar esta configuración."
-L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."] = "|cffFF0000Advertencia:|r Esto hace que las actualizaciones suceden en una fracción de segundo."
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -109,7 +114,6 @@ L["Aura Bars"] = "Barra de Auras"
 L["Aura Filters"] = "Filtros de Aura"
 L["Aura Speed"] = "Velocidad del Aura"
 L["Auto Add New Spells"] = "Agregar automáticamente nuevos hechizos"
-L["Auto Greed/DE"] = "Codicia/Desencantar Automático"
 L["Auto Hide"] = "Ocultar Automáticamente"
 L["Auto Repair"] = "Reparación Automática"
 L["Auto-Close Pet Battle Log"] = "Registro de batalla de mascotas con cierre automático"
@@ -118,7 +122,6 @@ L["Automatic"] = "Automático"
 L["Automatically accept invites from guild/friends."] = "Aceptar de forma automática invitaciones de la hermandad/amigos."
 L["Automatically hide the objective frame during boss or arena fights."] = "Ocultar automáticamente el marco objetivo durante las peleas de jefe o arena."
 L["Automatically repair using the following method when visiting a merchant."] = "Repara de forma automática usando el siguiente método cuando visites un comerciante."
-L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "Tira codicia o desencanta (si se puede) automáticamente para los objetos verdes. Esto sólo funciona si ya tienes el nivel máximo."
 L["Automatically vendor gray items when visiting a vendor."] = "Vender automáticamente los objetos grises al visitar al vendedor."
 L["Available Tags"] = "Tags de Disponibles"
 L["AzeriteUI"] = true
@@ -452,7 +455,6 @@ L["Enable/Disable the loot roll frame."] = "Activa/Desactiva el marco de sorteo 
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
 L["Enables the ElvUI Raid Control panel."] = true
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = true
-L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = true
 L["Enabling this will check your health amount."] = true
 L["Enabling this will check your power amount."] = true
@@ -808,6 +810,7 @@ L["Missing Talent Alert"] = true
 L["Missing"] = true
 L["MM:SS Threshold"] = true
 L["Model Rotation"] = "Rotación del Modelo"
+L["Modifier Count"] = true
 L["Module Control"] = "Control del Módulo"
 L["Module Copy"] = true
 L["Module Reset"] = true
@@ -1001,11 +1004,11 @@ L["Remaining"] = "Restante"
 L["Remove a Name or NPC ID from the list."] = true
 L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = true
 L["Remove Backdrop"] = "Quitar Fondo"
-L["Remove Instance ID"] = true
-L["Remove Map ID"] = true
-L["Remove Name or NPC ID"] = true
-L["Remove Spell ID or Name"] = true
-L["Remove Spell"] = true
+L["Remove Instance ID"] = "Eliminar el ID de la Instancia"
+L["Remove Map ID"] = "Eliminar el ID del mapa"
+L["Remove Name or NPC ID"] = "Eliminar el ID o el nombre del NPC"
+L["Remove Spell ID or Name"] = "Eliminar el ID o el nombre del Hechizo"
+L["Remove Spell"] = "Eliminar el Hechizo"
 L["Remove Subzone Name"] = true
 L["Remove Zone Name"] = true
 L["Replace Blizzard Fonts"] = true
@@ -1360,6 +1363,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = true
 L["Use Real ID BattleTag"] = true
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
@@ -1496,23 +1500,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[Esto funciona como una macro. Puede ejecutar diferentes situaciones para mostrar u ocultar la barra de acción de forma diferente.
  Ejemplo: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Especifica un archivo ubicado en el directorio texture de World of Warcraft que deseas tener establecido como fondo de panel.
+L["TEXTURE_EXAMPLE"] = [=[Especifica un archivo ubicado en el directorio texture de World of Warcraft que deseas tener establecido como fondo de panel.
 
 Nota:
 -El tamaño de imagen recomendada es 256x128
 -Debes reiniciar el juego completamente después de agregar un archivo a la carpeta.
 -El archivo debe ser formato tga.
 
-Ejemplo: Interface\AddOns\ElvUI\Media\Textures\Copy
+Ejemplo: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 O también puedes simplemente colocar un archivo tga en la carpeta de WoW, y escribir aquí el nombre del archivo.]=]
 
