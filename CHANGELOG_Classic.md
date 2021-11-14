@@ -1,5 +1,6 @@
 ### Version 1.52 [ ETA: 🍨 ]
 
+Datatexts: Fixed Spell Hit lua error  
 Tooltips: Fixed an error with item quality  
 
 ___
