@@ -45,14 +45,15 @@ local function OnEnter()
 	local playerLevel = E.mylevel + 3
 	for _ = 1, 4 do
 		local armorReduction = GetArmorReduction(effectiveArmor, playerLevel)
-		DT.tooltip:AddDoubleLine(playerLevel, format(chanceString, armorReduction), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(format(L["Level %d"], playerLevel), format(chanceString, armorReduction), 1, 1, 1)
 		playerLevel = playerLevel - 1
 	end
 
 	local targetLevel = UnitLevel("target")
 	if targetLevel and targetLevel > 0 and (targetLevel > playerLevel + 3 or targetLevel < playerLevel) then
 		local armorReduction = GetArmorReduction(effectiveArmor, targetLevel)
-		DT.tooltip:AddDoubleLine(targetLevel, format(chanceString, armorReduction), 1, 1, 1)
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine(L["Target Mitigation"], format(chanceString, armorReduction), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
