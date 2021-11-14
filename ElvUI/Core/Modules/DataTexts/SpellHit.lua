@@ -6,12 +6,14 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HIT_SPELL = CR_HIT_SPELL
 
-local displayString, lastPanel = ''
+local displayString, lastPanel, spellHit = ''
 
 local function OnEvent(self)
 	lastPanel = self
 
-	self.text:SetFormattedText(displayString, GetCombatRatingBonus(CR_HIT_SPELL) or 0)
+	spellHit = E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0
+
+	self.text:SetFormattedText(displayString, spellHit)
 end
 
 local function ValueColorUpdate(hex)
