@@ -36,4 +36,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Spell/Heal Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS' }, OnEvent, nil, nil, nil, nil, L["Spell/Heal Power"])
+DT:RegisterDatatext('Spell/Heal Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell/Heal Power"])
