@@ -667,7 +667,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local _, link = tt:GetItem()
-	if TT.db.itemQuality then
+	if link and TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
 			if tt.NineSlice then
