@@ -1,4 +1,9 @@
-### Version 12.54 [ ETA: 🍨 ]
+### Version 12.55 [ ETA: 🍨 ]
+
+Tooltips: Fixed an error with item quality  
+
+___
+### Version 12.54 [ November 13th 2021 ]
 
 Bags: Fixed bank not updating correctly  
 Cooldown Text: Added a global option for rounding  
