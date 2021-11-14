@@ -1,5 +1,7 @@
 ### Version 1.52 [ ETA: 🍨 ]
 
+Tooltips: Fixed an error with item quality  
+
 ___
 ### Version 1.51 [ November 14th 2021 ]
 
