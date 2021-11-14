@@ -1857,6 +1857,8 @@ do
 				rawset(dest, k, v)
 			end
 		end
+
+		return dest
 	end
 
 	function E:RemoveDefaults(db, defaults)
@@ -1870,6 +1872,8 @@ do
 				db[k] = nil
 			end
 		end
+
+		return db
 	end
 end
 
