@@ -667,7 +667,11 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local _, link = tt:GetItem()
-	if link and TT.db.itemQuality then
+	if not link then return end
+
+	local modKey = TT:IsModKeyDown()
+	local itemID, bagCount, bankCount
+	if TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
 			if tt.NineSlice then
@@ -680,9 +684,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 	end
 
-	local modKey = TT:IsModKeyDown()
-	local itemID, bagCount, bankCount
-	if link and modKey then
+	if modKey then
 		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
 	end
 
