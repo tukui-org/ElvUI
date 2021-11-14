@@ -19,9 +19,9 @@ local displayString, lastPanel = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
 local BAG_TYPES = {
-	[0x0001]  = 'Quiver',
-	[0x0002]  = 'Ammo Pouch',
-	[0x0004]  = 'Soul Bag',
+	[0x0001] = 'Quiver',
+	[0x0002] = 'Ammo Pouch',
+	[0x0004] = 'Soul Bag',
 }
 
 local function OnEvent(self)

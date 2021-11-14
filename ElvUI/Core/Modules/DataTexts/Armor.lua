@@ -5,6 +5,7 @@ local select = select
 local format = format
 local strjoin = strjoin
 local UnitArmor = UnitArmor
+local UnitLevel = UnitLevel
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
 
@@ -49,7 +50,7 @@ local function OnEnter()
 		playerLevel = playerLevel - 1
 	end
 
-	local targetLevel = UnitLevel("target")
+	local targetLevel = UnitLevel('target')
 	if targetLevel and targetLevel > 0 and (targetLevel > playerLevel + 3 or targetLevel < playerLevel) then
 		local armorReduction = GetArmorReduction(effectiveArmor, targetLevel)
 		DT.tooltip:AddLine(' ')
