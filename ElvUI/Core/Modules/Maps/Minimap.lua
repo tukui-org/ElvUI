@@ -589,7 +589,9 @@ function M:Initialize()
 		_G.MiniMapInstanceDifficulty:SetParent(Minimap)
 		_G.GuildInstanceDifficulty:SetParent(Minimap)
 		_G.MiniMapChallengeMode:SetParent(Minimap)
+	end
 
+	if not E.Classic then
 		--Create the new minimap tracking dropdown frame and initialize it
 		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
 	end

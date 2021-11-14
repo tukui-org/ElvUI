@@ -667,10 +667,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local _, link = tt:GetItem()
-	local num = GetItemCount(link)
-	local numall = GetItemCount(link,true)
-	local left, right, bankCount = ' ', ' ', ' '
-
 	if TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
@@ -684,26 +680,28 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 	end
 
-	if link and TT:IsModKeyDown() then
-		left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
+	local modKey = TT:IsModKeyDown()
+	local itemID, bagCount, bankCount
+	if link and modKey then
+		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
 	end
 
-	if TT.db.itemCount == 'BAGS_ONLY' then
-		right = format(IDLine, L["Count"], num)
-	elseif TT.db.itemCount == 'BANK_ONLY' then
-		bankCount = format(IDLine, L["Bank"], numall - num)
-	elseif TT.db.itemCount == 'BOTH' then
-		right = format(IDLine, L["Count"], num)
-		bankCount = format(IDLine, L["Bank"], numall - num)
+	if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
+		local count = GetItemCount(link)
+		local total = GetItemCount(link, true)
+		if TT.db.itemCount == 'BAGS_ONLY' then
+			bagCount = format(IDLine, L["Count"], count)
+		elseif TT.db.itemCount == 'BANK_ONLY' then
+			bankCount = format(IDLine, L["Bank"], total - count)
+		elseif TT.db.itemCount == 'BOTH' then
+			bagCount = format(IDLine, L["Count"], count)
+			bankCount = format(IDLine, L["Bank"], total - count)
+		end
 	end
 
-	if left ~= ' ' or right ~= ' ' then
-		tt:AddLine(' ')
-		tt:AddDoubleLine(left, right)
-	end
-	if bankCount ~= ' ' then
-		tt:AddDoubleLine(' ', bankCount)
-	end
+	if itemID or bagCount or bankCount then tt:AddLine(' ') end
+	if itemID or bagCount then tt:AddDoubleLine(itemID or ' ', bagCount or ' ') end
+	if bankCount then tt:AddDoubleLine(' ', bankCount) end
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)

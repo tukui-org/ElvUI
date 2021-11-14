@@ -811,6 +811,7 @@ L["Missing Talent Alert"] = "Предупреждение о талантах"
 L["Missing"] = "Отсутствует"
 L["MM:SS Threshold"] = "Граница ММ:СС"
 L["Model Rotation"] = "Вращение модели"
+L["Modifier Count"] = true
 L["Module Control"] = "Управление модулями"
 L["Module Copy"] = "Копирование модуля"
 L["Module Reset"] = "Сброс модуля"
@@ -1362,6 +1363,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Использовать цвет индикатора"
 L["Use Instance ID or Name"] = "Использовать название или ID инстанса"
 L["Use Map ID or Name"] = "Использовать название или ID карты"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Отображать портрет"
 L["Use Real ID BattleTag"] = "Использовать BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Используйте Shift+ЛКМ для переключения между дружественным, враждебным или нормальным режимами. В нормальном режиме фильтр будет проверять все юниты. В дружеском только дружественные, во враждебном только враждебные."
@@ -1497,23 +1499,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[Работает как макрос. Вы можете задать различные условия для показа/скрытия панели.
  Пример: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Укажите имя файла в папке World of Warcraft, который Вы хотите использовать в качестве фона панелей.
+L["TEXTURE_EXAMPLE"] = [=[Укажите имя файла в папке World of Warcraft, который Вы хотите использовать в качестве фона панелей.
 
 Пожалуйста, учтите:
 -Рекомендованный размер изображения 256x128
 -Вы должны полностью перезапустить игру после добавления нового файла в папку.
 -Тип файла должен быть tga.
 
-Пример: Interface\AddOns\ElvUI\Media\Textures\Copy
+Пример: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Для большинства пользователей будет легче просто положить tga файл в папку игры, а затем написать имя файла здесь.]=]
 

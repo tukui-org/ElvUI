@@ -716,7 +716,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Quest Boss
-	if trigger.questBoss then
+	if trigger.questBoss and E.Retail then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
 	end
 
@@ -826,7 +826,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Unit Role
-	if trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager then
+	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
 		local role = UnitGroupRolesAssigned(frame.unit)
 		if trigger.unitRole[mod.TriggerConditions.roles[role]] then passed = true else return end
 	end
@@ -886,7 +886,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Class and Specialization
 	if trigger.class and next(trigger.class) then
 		local Class = trigger.class[E.myclass]
-		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
+		if not Class or (E.Retail and Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
 			return
 		else
 			passed = true
@@ -935,7 +935,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Talents
-	if trigger.talent.enabled then
+	if trigger.talent.enabled and E.Retail then
 		local pvpTalent = trigger.talent.type == 'pvp'
 		local selected, complete
 

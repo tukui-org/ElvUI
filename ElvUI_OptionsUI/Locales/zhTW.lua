@@ -810,6 +810,7 @@ L["Missing Talent Alert"] = "缺失天賦警告"
 L["Missing"] = "缺失"
 L["MM:SS Threshold"] = "MM:SS（分:秒） 閾值"
 L["Model Rotation"] = "模型旋轉"
+L["Modifier Count"] = true
 L["Module Control"] = "模組控制"
 L["Module Copy"] = "模組複製"
 L["Module Reset"] = "模組重置"
@@ -1361,6 +1362,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "使用指示器顏色"
 L["Use Instance ID or Name"] = "使用副本ID或名字"
 L["Use Map ID or Name"] = "使用地圖ID或名字"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "使用頭像"
 L["Use Real ID BattleTag"] = "使用 Real ID BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用 Shift + 左键 来切换友方狀態, 敵方狀態及正常狀態. 正常狀態將允許在所有單位上設為啟用的過濾器.友方狀態僅允許用於友方單位的過濾器, 敵方狀態僅允許用於敵方單位的過濾器."
@@ -1497,23 +1499,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[此功能與巨集概念類似, 可根據不同情境, 切換顯示/隱藏快捷列.
 例如：'[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[指定一個在魔獸世界資料夾之中的文件名. 將欲設置為面板背景的材質置於材質資料夾中.
+L["TEXTURE_EXAMPLE"] = [=[指定一個在魔獸世界資料夾之中的文件名. 將欲設置為面板背景的材質置於材質資料夾中.
 
 請注意：
 - 影像尺寸建議為 256 x 128
 - 在此資料夾新增檔案後, 請務必重新啟動遊戲.
 - 檔案必須為 tga 格式.
 
-範例：Interface\AddOns\ElvUI\Media\Textures\Copy
+範例：Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入魔獸世界資料夾中, 然後在此處輸入檔案名稱.]=]
 

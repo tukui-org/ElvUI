@@ -810,6 +810,7 @@ L["Missing Talent Alert"] = true
 L["Missing"] = "Manquant"
 L["MM:SS Threshold"] = true
 L["Model Rotation"] = "Rotation du Modèle"
+L["Modifier Count"] = true
 L["Module Control"] = true
 L["Module Copy"] = true
 L["Module Reset"] = true
@@ -1361,6 +1362,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = true
 L["Use Instance ID or Name"] = true
 L["Use Map ID or Name"] = true
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = true
 L["Use Real ID BattleTag"] = true
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
@@ -1497,23 +1499,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour afficher ou masquer la barre d'actions différemment.
 Exemple: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Indiquez un nom de fichier situé dans le répertoire World of Warcraft, le dossier des Textures que vous souhaitez utiliser en fond de panneau.
+L["TEXTURE_EXAMPLE"] = [=[Indiquez un nom de fichier situé dans le répertoire World of Warcraft, le dossier des Textures que vous souhaitez utiliser en fond de panneau.
 
 Notez:
 La taille de l'image recommandée est de 256x128 pixels
 Vous devez redémarrer le jeu après avoir ajouté un fichier dans le dossier.
 Le format du fichier doit être en .tga
 
-Exemple: Interface\AddOns\ElvUI\Media\Textures\Copy
+Exemple: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Ou pour la majorité des utilsateurs, il serait plus simple de mettre le fichier tga dans le dossier de World of Warcraft puis de taper son nom ici.]=]
 

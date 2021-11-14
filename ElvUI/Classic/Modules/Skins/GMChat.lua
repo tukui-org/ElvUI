@@ -37,13 +37,6 @@ function S:Blizzard_GMChatUI()
 	GMChatFrameEditBoxLanguage:SetPoint('TOPLEFT', GMChatFrameEditBox, 'TOPRIGHT', 3, 0)
 	GMChatFrameEditBoxLanguage:SetPoint('BOTTOMRIGHT', GMChatFrameEditBox, 'BOTTOMRIGHT', 28, 0)
 
-	local GMChatTab = _G.GMChatTab
-	S:HandleFrame(GMChatTab, true)
-	GMChatTab:SetBackdropColor(0, .6, 1, .3)
-	GMChatTab:SetPoint('BOTTOMLEFT', GMChatFrame, 'TOPLEFT', 0, 3)
-	GMChatTab:SetPoint('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
-	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
-
 	local GMChatStatusFrame = _G.GMChatStatusFrame
 	local TicketStatusFrame = _G.TicketStatusFrame
 	GMChatStatusFrame:HookScript('OnShow', function(frame)
@@ -54,6 +47,13 @@ function S:Blizzard_GMChatUI()
 		end
 	end)
 
+	local GMChatTab = _G.GMChatTab
+	S:HandleFrame(GMChatTab, true)
+	GMChatTab:SetBackdropColor(0, .6, 1, .3)
+	GMChatTab:SetPoint('BOTTOMLEFT', GMChatFrame, 'TOPLEFT', 0, 3)
+	GMChatTab:SetPoint('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
+	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
+
 	local GMChatFrameCloseButton = _G.GMChatFrameCloseButton
 	S:HandleCloseButton(GMChatFrameCloseButton, GMChatTab.backdrop, 2, 4)
 
@@ -63,7 +63,6 @@ function S:Blizzard_GMChatUI()
 	TicketStatusFrame:HookScript('OnHide', function(frame)
 		GMChatStatusFrame:SetAllPoints(frame)
 	end)
-
 end
 
 function S:Blizzard_GMSurveyUI()

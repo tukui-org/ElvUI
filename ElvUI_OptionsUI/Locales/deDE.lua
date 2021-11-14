@@ -813,6 +813,7 @@ L["Missing Talent Alert"] = "Fehlende Talente Alarm"
 L["Missing"] = "Fehlend"
 L["MM:SS Threshold"] = "MM:SS Schwellenwert"
 L["Model Rotation"] = "Modellrotation"
+L["Modifier Count"] = true
 L["Module Control"] = "Modulkontrolle"
 L["Module Copy"] = "Module kopieren"
 L["Module Reset"] = "Module zurücksetzen"
@@ -1165,7 +1166,7 @@ L["Spacing"] = "Abstand"
 L["Spam Interval"] = "Spam Intervall"
 L["Spark"] = "Funken"
 L["Spec Icon"] = "Talentspezialisierungssymbol"
-L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = "Spezifiziere einen Dateinamen in deinem World of Warcraft Ordner.\n\nBitte beachte:\n-Die Bildgröße sollte 256x128 sein\n-Du musst dein Spiel komplett neu starten nachdem du eine Datei zum Ordner hinzugefügt hast.\n-Der Dateityp muss tga sein.\n\nBeispiel: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nFür die meisten Benutzter ist es einfacher die tga Datei einfach in deinem World of Warcraft Ordner zu plazieren."
+L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Core\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."] = "Spezifiziere einen Dateinamen in deinem World of Warcraft Ordner.\n\nBitte beachte:\n-Die Bildgröße sollte 256x128 sein\n-Du musst dein Spiel komplett neu starten nachdem du eine Datei zum Ordner hinzugefügt hast.\n-Der Dateityp muss tga sein.\n\nBeispiel: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nFür die meisten Benutzter ist es einfacher die tga Datei einfach in deinem World of Warcraft Ordner zu plazieren."
 L["Spell/Item IDs"] = "Zauber/Gegenstand IDs"
 L["Split"] = "Aufteilen"
 L["Stable"] = "Stall"
@@ -1366,6 +1367,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Benutze Indikator Farbe"
 L["Use Instance ID or Name"] = "Benutze Instanz ID oder Name"
 L["Use Map ID or Name"] = "Benutze Map ID oder Name"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Benutze Portrait"
 L["Use Real ID BattleTag"] = "Benutze Real ID BattleTag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Benutze Shift+Linksklick um zwischen freundlichem oder freindlichen Status umzuschalten. Normaler Status erlaubt den Filter alle Einheiten zu überprüfen. Freundlicher Status überprüft nur freundliche Einheiten. Feindliche überprüft nur feindliche Einheiten."
@@ -1502,23 +1504,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
  Beispiel: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
+L["TEXTURE_EXAMPLE"] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
 
 Bitte beachten:
 -Als Bildgröße 256x128 wird empfohlen.
 -Du musst das Spiel komplett neu starten, nachdem du die Datei hinzugefügt hast.
 -Der Dateityp muss im Format tga sein.
 
-Zum Beispiel: Interface\AddOns\ElvUI\Media\Textures\Copy
+Zum Beispiel: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren WoW-Ordner abzulegen. Anschließend kann man den Namen der Datei hier eingeben.]=]
 

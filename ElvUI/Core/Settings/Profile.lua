@@ -1097,6 +1097,7 @@ P.tooltip = {
 	guildRanks = true,
 	itemQuality = false,
 	itemCount = 'BAGS_ONLY',
+	modifierCount = true,
 	showMount = true,
 	modifierID = 'SHOW',
 	role = true,
@@ -2285,6 +2286,7 @@ end
 --Cooldown
 P.cooldown = {
 	threshold = 3,
+	roundTime = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
 	expiringColor = { r = 1, g = 0, b = 0 },

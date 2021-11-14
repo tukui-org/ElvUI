@@ -811,6 +811,7 @@ L["Missing Talent Alert"] = "Alerta de Talento Faltando"
 L["Missing"] = "Faltando"
 L["MM:SS Threshold"] = "Limiar MM:SS"
 L["Model Rotation"] = "Girar o Modelo"
+L["Modifier Count"] = true
 L["Module Control"] = "Controle de Módulo"
 L["Module Copy"] = "Copiar Módulo"
 L["Module Reset"] = "Resetar Módulo"
@@ -1362,6 +1363,7 @@ L["Use drag and drop to rearrange filter priority or right click to remove a fil
 L["Use Indicator Color"] = "Usar Indicador de Cores"
 L["Use Instance ID or Name"] = "Usar ID de Instância ou Nome"
 L["Use Map ID or Name"] = "Usar ID de Mapa ou Nome"
+L["Use Modifier for Item Count"] = true
 L["Use Portrait"] = "Usar Retrato"
 L["Use Real ID BattleTag"] = "Usar ID Real Battletag"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
@@ -1498,23 +1500,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 Example: '[combat] show;hide']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para mostrar/ocultar a barra de ação de forma diferente.
 Exemplo: '[combat] show;hide']=]
 
-L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
-
-Please Note:
--The image size recommended is 256x128
--You must do a complete game restart after adding a file to the folder.
--The file type must be tga format.
-
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
-
-Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = [=[Especificar o nome de um ficheiro (arquivo) localizado na diretório do WoW. Ficheiros de textura que deseje ter como fundo dos painéis.
+L["TEXTURE_EXAMPLE"] = [=[Especificar o nome de um ficheiro (arquivo) localizado na diretório do WoW. Ficheiros de textura que deseje ter como fundo dos painéis.
 
 Atenção:
 -O tamanho de imagem recomendado é 256x128
 -Deve reiniciar o jogo completamente depois de adicionar um ficheiro à pasta.
 -O ficheiro tem de ser em formato tga.
 
-Example: Interface\AddOns\ElvUI\Media\Textures\Copy
+Example: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Para a maioria dos usuários seria mais fácil simplesmente copiar o ficheiro tga na pasta do WoW e depois escrever o nome dele aqui.]=]
 

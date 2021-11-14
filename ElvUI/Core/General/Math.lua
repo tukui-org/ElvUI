@@ -349,30 +349,28 @@ end
 
 E.TimeThreshold = 3
 
-E.TimeColors = { --aura time colors
-	[0] = '|cffeeeeee', --days
-	[1] = '|cffeeeeee', --hours
-	[2] = '|cffeeeeee', --minutes
-	[3] = '|cffeeeeee', --seconds
-	[4] = '|cfffe0000', --expire (fade timer)
-	[5] = '|cff909090', --mmss
-	[6] = '|cff707070', --hhmm
+E.TimeColors = { -- aura time colors
+	[0] = '|cffeeeeee', -- days
+	[1] = '|cffeeeeee', -- hours
+	[2] = '|cffeeeeee', -- minutes
+	[3] = '|cffeeeeee', -- seconds
+	[4] = '|cfffe0000', -- expire (fade timer)
+	[5] = '|cff909090', -- mmss
+	[6] = '|cff707070', -- hhmm
 }
 
 E.TimeFormats = { -- short / indicator color
-	[0] = {'%dd', '%d%sd|r'},
-	[1] = {'%dh', '%d%sh|r'},
-	[2] = {'%dm', '%d%sm|r'},
-	[3] = {'%ds', '%d%ss|r'},
-	[4] = {'%.1fs', '%.1f%ss|r'},
-	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
-	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
-}
+	-- special options (3, 4): rounding
+	[0] = {'%dd', '%d%sd|r', '%.0fd', '%.0f%sd|r'},
+	[1] = {'%dh', '%d%sh|r', '%.0fh', '%.0f%sh|r'},
+	[2] = {'%dm', '%d%sm|r', '%.0fm', '%.0f%sm|r'},
+	-- special options (3, 4): show seconds
+	[3] = {'%d', '%d', '%ds', '%d%ss|r'},
+	[4] = {'%.1f', '%.1f', '%.1fs', '%.1f%ss|r'},
 
-for _, x in pairs(E.TimeFormats) do
-	x[3] = gsub(x[1], 's$', '') -- 1 without seconds
-	x[4] = gsub(x[2], '%%ss', '%%s') -- 2 without seconds
-end
+	[5] = {'%d:%02d', '%d%s:|r%02d'}, -- mmss
+	[6] = {'%d:%02d', '%d%s:|r%02d'}, -- hhmm
+}
 
 E.TimeIndicatorColors = {
 	[0] = '|cff00b3ff',
@@ -386,9 +384,9 @@ E.TimeIndicatorColors = {
 
 do
 	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
-	function E:GetTimeInfo(sec, threshhold, hhmm, mmss)
+	function E:GetTimeInfo(sec, threshold, hhmm, mmss)
 		if sec < MINUTE then
-			if sec >= threshhold then
+			if sec > threshold then
 				return sec, 3, 0.5
 			else
 				return sec, 4, 0.1
@@ -398,11 +396,14 @@ do
 		elseif hhmm and sec < (hhmm * MINUTE) then
 			return sec / HOUR, 6, 30, mod(sec, HOUR) / MINUTE
 		elseif sec < HOUR then
-			return mod(sec, HOUR) / MINUTE, 2, 30
+			local mins = mod(sec, HOUR) / MINUTE
+			return mins, 2, mins > 2 and 30 or 1
 		elseif sec < DAY then
-			return mod(sec, DAY) / HOUR, 1, 30
+			local hrs = mod(sec, DAY) / HOUR
+			return hrs, 1, hrs > 1 and 60 or 30
 		else
-			return mod(sec, YEAR) / DAY, 0, 60
+			local days = mod(sec, YEAR) / DAY
+			return days, 0, days > 1 and 120 or 60
 		end
 	end
 end

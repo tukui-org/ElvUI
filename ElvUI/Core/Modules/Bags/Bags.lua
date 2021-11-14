@@ -158,6 +158,11 @@ local bagIDs = {0, 1, 2, 3, 4}
 local bankIDs = {-1, 5, 6, 7, 8, 9, 10}
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
+local presistentEvents = {
+	BAG_UPDATE_DELAYED = true,
+	BAG_UPDATE = true,
+	BAG_CLOSED = true
+}
 
 if E.Retail then
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
@@ -432,7 +437,6 @@ function B:BagFrameHidden(bagFrame)
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local slot = bagFrame.Bags[bagID][slotID]
 			if slot then
-				B.SearchSlots[slot] = nil
 				B:NewItemGlowSlotSwitch(slot)
 			end
 		end
@@ -583,8 +587,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		B.UpdateCooldown(slot)
 
-		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
+			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 	else
 		B:HideCooldown(slot)
@@ -643,8 +647,8 @@ function B:UpdateReagentSlot(slotID)
 
 		B.UpdateCooldown(slot)
 
-		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
+			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 	else
 		B:HideCooldown(slot)
@@ -702,17 +706,12 @@ function B:HideCooldown(slot, keep)
 	slot.Cooldown.start = nil
 	slot.Cooldown.duration = nil
 
-	if not keep and E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+	if not keep and E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
+		E:UnregisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 	end
 end
 
 function B:UpdateCooldown()
-	if not self:IsVisible() then
-		B:HideCooldown(self)
-		return
-	end
-
 	local start, duration, enabled = GetContainerItemCooldown(self.bagID, self.slotID)
 	if duration > 0 and enabled == 0 then
 		SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
@@ -1097,13 +1096,15 @@ function B:SetBagAssignments(holder, skip)
 	end
 end
 
-function B:DelayedContainer(bagFrame, bagID, bagClosed)
-	local container = bagID and bagID ~= 0 and bagFrame.ContainerHolderByBagID[bagID]
+function B:DelayedContainer(bagFrame, event, bagID)
+	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
 	if container then
 		bagFrame.DelayedContainers[bagID] = container
 
-		if bagClosed then -- let it call layout
+		if event == 'BAG_CLOSED' then -- let it call layout
 			bagFrame.totalSlots = 0
+		else
+			bagFrame.Bags[bagID].needsUpdate = true
 		end
 	end
 end
@@ -1118,15 +1119,20 @@ function B:OnEvent(event, ...)
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local bankID = ...
 		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and -1 or (bankID - NUM_BANKGENERIC_SLOTS))
-	elseif event == 'BAG_UPDATE' then
-		local bagID = ...
-		B:UpdateBagSlots(self, bagID)
-		B:DelayedContainer(self, bagID)
-	elseif event == 'BAG_CLOSED' then
-		B:DelayedContainer(self, ..., true)
+	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
+		B:DelayedContainer(self, event, ...)
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
-			B:SetBagAssignments(container)
+			if bagID ~= 0 then
+				B:SetBagAssignments(container)
+			end
+
+			local bag = self.Bags[bagID]
+			if bag and bag.needsUpdate then
+				B:UpdateBagSlots(self, bagID)
+				bag.needsUpdate = nil
+			end
+
 			self.DelayedContainers[bagID] = nil
 		end
 	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
@@ -1352,6 +1358,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.events = (isBank and bankEvents) or bagEvents
 	f.DelayedContainers = {}
+	f.firstOpen = true
 	f:Hide()
 
 	f.isBank = isBank
@@ -2022,17 +2029,22 @@ end
 
 function B:ClearListeners(frame)
 	for _, event in next, frame.events do
-		frame:UnregisterEvent(event)
+		if not presistentEvents[event] then
+			frame:UnregisterEvent(event)
+		end
 	end
 end
 
 function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
+	if B.BagFrame.firstOpen then
+		B:UpdateAllSlots(B.BagFrame)
+		B.BagFrame.firstOpen = nil
+	end
+
 	B.BagFrame:Show()
 	PlaySound(IG_BACKPACK_OPEN)
-
-	B:UpdateAllBagSlots(true)
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
@@ -2123,6 +2135,11 @@ end
 function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
+
+	if B.BankFrame.firstOpen then
+		B:UpdateAllSlots(B.BankFrame)
+		B.BankFrame.firstOpen = nil
+	end
 
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
@@ -2485,10 +2502,11 @@ function B:Initialize()
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
-	--Hook onto Blizzard Functions
 	if E.Retail then
-		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+
+		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
+		E:Delay(1, B.UpdateBagSlots, B, nil, REAGENTBANK_CONTAINER)
 	end
 
 	B:SecureHook('OpenAllBags')
