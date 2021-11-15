@@ -732,6 +732,27 @@ function TT:GameTooltip_ShowProgressBar(tt)
 	end
 end
 
+function TT:GameTooltip_ShowStatusBar(tt)
+	if not tt or not tt.statusBarPool or tt:IsForbidden() then return end
+
+	local sb = tt.statusBarPool:GetNextActive()
+	if not sb or sb.backdrop then return end
+
+	sb:StripTextures()
+	sb:CreateBackdrop(nil, nil, true, true)
+	sb:SetStatusBarTexture(E.media.normTex)
+end
+
+function TT:SetStyle(tt, _, isEmbedded)
+	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded or not tt.NineSlice) or tt:IsForbidden() then return end
+
+	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
+	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+
+	tt.NineSlice.customBackdropAlpha = TT.db.colorAlpha
+	tt.NineSlice:SetTemplate('Transparent')
+end
+
 function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
