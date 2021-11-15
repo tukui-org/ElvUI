@@ -696,13 +696,13 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
-function B:SlotOnEvent(event)
+function B:BagSlot_OnEvent(event)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
 	end
 end
 
-function B:CooldownOnHide()
+function B:Cooldown_OnHide()
 	self.start = nil
 	self.duration = nil
 end
@@ -1781,7 +1781,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
-	slot:SetScript('OnEvent', B.SlotOnEvent)
+	slot:SetScript('OnEvent', B.BagSlot_OnEvent)
 	slot:SetNormalTexture(nil)
 
 	if not E.Retail then
@@ -1852,7 +1852,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.Cooldown = _G[slotName..'Cooldown']
 	slot.Cooldown.CooldownOverride = 'bags'
-	slot.Cooldown:HookScript('OnHide', B.CooldownOnHide)
+	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
 	E:RegisterCooldown(slot.Cooldown)
 
 	slot.icon:SetInside()
