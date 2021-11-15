@@ -585,13 +585,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		B.UpdateCooldown(slot)
-
-		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-		end
+		B:UpdateCooldown(slot)
+		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
 	else
-		B:HideCooldown(slot)
+		slot.Cooldown:Hide()
+		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
@@ -645,13 +643,11 @@ function B:UpdateReagentSlot(slotID)
 		if not slot.rarity then slot.rarity = itemRarity end
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
-		B.UpdateCooldown(slot)
-
-		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-		end
+		B:UpdateCooldown(slot)
+		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
 	else
-		B:HideCooldown(slot)
+		slot.Cooldown:Hide()
+		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
 	end
 
 	if slot.questIcon then
@@ -700,29 +696,27 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
-function B:Cooldown_OnHide()
+function B:SlotOnEvent(event)
+	if event == 'SPELL_UPDATE_COOLDOWN' then
+		B:UpdateCooldown(self)
+	end
+end
+
+function B:CooldownOnHide()
 	self.start = nil
 	self.duration = nil
 end
 
-function B:HideCooldown(slot, keep)
-	slot.Cooldown:Hide()
-
-	if not keep and E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
-		E:UnregisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-	end
-end
-
-function B:UpdateCooldown()
-	local start, duration, enabled = GetContainerItemCooldown(self.bagID, self.slotID)
+function B:UpdateCooldown(slot)
+	local start, duration, enabled = GetContainerItemCooldown(slot.bagID, slot.slotID)
 	if duration > 0 and enabled == 0 then
-		SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
+		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 	else
-		SetItemButtonTextureVertexColor(self, 1, 1, 1)
+		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 	end
 
+	local cd = slot.Cooldown
 	if duration > 0 and enabled == 1 then
-		local cd = self.Cooldown
 		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
 		if newStart or newDuration then
 			cd:SetCooldown(start, duration)
@@ -731,7 +725,7 @@ function B:UpdateCooldown()
 			cd.duration = duration
 		end
 	else
-		B:HideCooldown(self, true)
+		cd:Hide()
 	end
 end
 
@@ -1787,6 +1781,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
+	slot:SetScript('OnEvent', B.SlotOnEvent)
 	slot:SetNormalTexture(nil)
 
 	if not E.Retail then
@@ -1857,7 +1852,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.Cooldown = _G[slotName..'Cooldown']
 	slot.Cooldown.CooldownOverride = 'bags'
-	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
+	slot.Cooldown:HookScript('OnHide', B.CooldownOnHide)
 	E:RegisterCooldown(slot.Cooldown)
 
 	slot.icon:SetInside()
