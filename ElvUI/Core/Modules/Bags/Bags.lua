@@ -700,11 +700,13 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
+function B:Cooldown_OnHide()
+	self.start = nil
+	self.duration = nil
+end
+
 function B:HideCooldown(slot, keep)
 	slot.Cooldown:Hide()
-
-	slot.Cooldown.start = nil
-	slot.Cooldown.duration = nil
 
 	if not keep and E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
 		E:UnregisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
@@ -1781,7 +1783,8 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
+	local slotName = f.Bags[bagID]:GetName()..'Slot'..slotID
+	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
@@ -1793,8 +1796,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.bagFrame = f
 	slot.bagID = bagID
 	slot.slotID = slotID
+	slot.name = slotName
 
-	local newItemTexture = _G[slot:GetName()..'NewItemTexture']
+	local newItemTexture = _G[slotName..'NewItemTexture']
 	if newItemTexture then
 		newItemTexture:Hide()
 	end
@@ -1804,7 +1808,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
 	if not slot.questIcon then
-		slot.questIcon = _G[slot:GetName()..'IconQuestTexture'] or _G[slot:GetName()].IconQuestTexture
+		slot.questIcon = _G[slotName..'IconQuestTexture'] or _G[slotName].IconQuestTexture
 		slot.questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
 		slot.questIcon:SetTexCoord(0, 1, 0, 1)
 		slot.questIcon:SetInside()
@@ -1851,8 +1855,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.IconOverlay2:SetInside()
 	end
 
-	slot.Cooldown = _G[slot:GetName()..'Cooldown']
+	slot.Cooldown = _G[slotName..'Cooldown']
 	slot.Cooldown.CooldownOverride = 'bags'
+	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
 	E:RegisterCooldown(slot.Cooldown)
 
 	slot.icon:SetInside()
