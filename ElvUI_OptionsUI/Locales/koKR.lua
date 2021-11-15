@@ -772,7 +772,6 @@ L["Maps"] = "지도"
 L["Mark Quest Reward"] = true
 L["Marks the most valuable quest reward with a gold coin."] = true
 L["Masque Support"] = "Masque 지원"
-L["Match Frame Width"] = "프레임 너비와 맞춤"
 L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the talent is not selected"] = true
