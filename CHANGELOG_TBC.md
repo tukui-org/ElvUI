@@ -1,4 +1,7 @@
-### Version 2.26 [ ETA: 🍨 ]
+### Version 2.27 [ ETA: 🍨 ]
+
+___
+### Version 2.26 [ November 16th 2021 ]
 
 Cooldown Text: Updates for Bag CD text  
 DataTexts: Fixed Spell Hit lua error  
