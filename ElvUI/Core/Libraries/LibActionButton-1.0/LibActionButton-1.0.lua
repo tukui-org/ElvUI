@@ -694,6 +694,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_SHOW")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
+	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
 
 	lib.eventFrame:RegisterEvent("PLAYER_ENTER_COMBAT")
 	lib.eventFrame:RegisterEvent("PLAYER_LEAVE_COMBAT")
@@ -793,7 +794,7 @@ function OnEvent(frame, event, arg1, ...)
 		for button in next, ActiveButtons do
 			UpdateCooldown(button)
 		end
-	elseif event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" then
+	elseif event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == 'TRADE_CLOSED' then
 		ForAllButtons(UpdateButtonState, true)
 	elseif event == "PLAYER_ENTER_COMBAT" then
 		for button in next, ActiveButtons do

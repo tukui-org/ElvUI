@@ -64,7 +64,7 @@ local function OnEvent(self, event, ...)
 			itemID, count = GetInventoryItemID('player', INVSLOT_AMMO), GetInventoryItemCount('player', INVSLOT_AMMO)
 		end
 
-		if (itemID and itemID > 0) and (count > 0) then
+		if (itemID and itemID > 0) and (count and count > 0) then
 			if itemID then
 				name = itemName[itemID] or GetItemInfo(itemID)
 			end
@@ -89,6 +89,7 @@ end
 local itemCount = {}
 local function OnEnter()
 	DT.tooltip:ClearLines()
+
 	if E.myclass == 'HUNTER' or E.myclass == 'ROGUE' or E.myclass == 'WARRIOR' then
 		wipe(itemCount)
 		DT.tooltip:AddLine(INVTYPE_AMMO)

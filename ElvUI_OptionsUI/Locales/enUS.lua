@@ -778,7 +778,6 @@ L["Maps"] = true
 L["Mark Quest Reward"] = true
 L["Marks the most valuable quest reward with a gold coin."] = true
 L["Masque Support"] = true
-L["Match Frame Width"] = true
 L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the talent is not selected"] = true

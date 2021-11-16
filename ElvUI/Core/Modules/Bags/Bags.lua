@@ -72,7 +72,6 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
-local C_Item_IsAnimaItemByID = C_Item.IsAnimaItemByID
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 
@@ -508,9 +507,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if not slot then return end
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
-
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (texture and 1) or nil -- used for ShowInspectCursor
@@ -533,8 +531,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
+		local _, spellID = GetItemSpell(itemLink)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
+		slot.name, slot.spellID, slot.isEquipment = name, spellID, B.IsEquipmentSlot[itemEquipLoc]
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
@@ -578,25 +577,23 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if E.Retail and B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) then
-			local _, spellID = GetItemSpell(itemLink)
-			if animaSpellID[spellID] then
-				slot.centerText:SetText(animaSpellID[spellID] * count)
-			end
+		local animaCount = E.Retail and B.db.itemInfo and animaSpellID[spellID]
+		if animaCount then
+			slot.centerText:SetText(animaCount * count)
 		end
-
-		B.UpdateCooldown(slot)
-
-		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-		end
-	else
-		B:HideCooldown(slot)
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+
+	if slot.spellID then
+		B:UpdateCooldown(slot)
+		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
+	else
+		slot.Cooldown:Hide()
+		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
+	end
 
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
@@ -628,7 +625,7 @@ function B:UpdateReagentSlot(slotID)
 	if not slot then return end
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
@@ -639,23 +636,24 @@ function B:UpdateReagentSlot(slotID)
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
+		local _, spellID = GetItemSpell(itemLink)
 		local name, _, itemRarity = GetItemInfo(itemLink)
-		slot.name = name
+		slot.name, slot.spellID = name, spellID
 
 		if not slot.rarity then slot.rarity = itemRarity end
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		B.UpdateCooldown(slot)
-
-		if not E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-		end
-	else
-		B:HideCooldown(slot)
 	end
 
 	if slot.questIcon then
 		slot.questIcon:SetShown(questId and not isActiveQuest)
+	end
+
+	if slot.spellID then
+		B:UpdateCooldown(slot)
+		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
+	else
+		slot.Cooldown:Hide()
+		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
 	end
 
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
@@ -700,27 +698,27 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
-function B:HideCooldown(slot, keep)
-	slot.Cooldown:Hide()
-
-	slot.Cooldown.start = nil
-	slot.Cooldown.duration = nil
-
-	if not keep and E:IsEventRegisteredForObject('SPELL_UPDATE_COOLDOWN', slot) then
-		E:UnregisterEventForObject('SPELL_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+function B:BagSlot_OnEvent(event)
+	if event == 'SPELL_UPDATE_COOLDOWN' then
+		B:UpdateCooldown(self)
 	end
 end
 
-function B:UpdateCooldown()
-	local start, duration, enabled = GetContainerItemCooldown(self.bagID, self.slotID)
+function B:Cooldown_OnHide()
+	self.start = nil
+	self.duration = nil
+end
+
+function B:UpdateCooldown(slot)
+	local start, duration, enabled = GetContainerItemCooldown(slot.bagID, slot.slotID)
 	if duration > 0 and enabled == 0 then
-		SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
+		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 	else
-		SetItemButtonTextureVertexColor(self, 1, 1, 1)
+		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 	end
 
+	local cd = slot.Cooldown
 	if duration > 0 and enabled == 1 then
-		local cd = self.Cooldown
 		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
 		if newStart or newDuration then
 			cd:SetCooldown(start, duration)
@@ -729,7 +727,7 @@ function B:UpdateCooldown()
 			cd.duration = duration
 		end
 	else
-		B:HideCooldown(self, true)
+		cd:Hide()
 	end
 end
 
@@ -1781,9 +1779,11 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
+	local slotName = f.Bags[bagID]:GetName()..'Slot'..slotID
+	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
+	slot:SetScript('OnEvent', B.BagSlot_OnEvent)
 	slot:SetNormalTexture(nil)
 
 	if not E.Retail then
@@ -1793,8 +1793,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.bagFrame = f
 	slot.bagID = bagID
 	slot.slotID = slotID
+	slot.name = slotName
 
-	local newItemTexture = _G[slot:GetName()..'NewItemTexture']
+	local newItemTexture = _G[slotName..'NewItemTexture']
 	if newItemTexture then
 		newItemTexture:Hide()
 	end
@@ -1804,7 +1805,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
 	if not slot.questIcon then
-		slot.questIcon = _G[slot:GetName()..'IconQuestTexture'] or _G[slot:GetName()].IconQuestTexture
+		slot.questIcon = _G[slotName..'IconQuestTexture'] or _G[slotName].IconQuestTexture
 		slot.questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
 		slot.questIcon:SetTexCoord(0, 1, 0, 1)
 		slot.questIcon:SetInside()
@@ -1851,8 +1852,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.IconOverlay2:SetInside()
 	end
 
-	slot.Cooldown = _G[slot:GetName()..'Cooldown']
+	slot.Cooldown = _G[slotName..'Cooldown']
 	slot.Cooldown.CooldownOverride = 'bags'
+	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
 	E:RegisterCooldown(slot.Cooldown)
 
 	slot.icon:SetInside()

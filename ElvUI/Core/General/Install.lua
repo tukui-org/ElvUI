@@ -145,10 +145,6 @@ end
 function E:SetupCVars(noDisplayMsg)
 	SetCVar('statusTextDisplay', 'BOTH')
 	SetCVar('screenshotQuality', 10)
-	SetCVar('chatMouseScroll', 1)
-	SetCVar('chatStyle', 'classic')
-	SetCVar('whisperMode', 'inline')
-	SetCVar('wholeChatWindowClickable', 0)
 	SetCVar('showTutorials', 0)
 	SetCVar('showNPETutorials', 0)
 	SetCVar('UberTooltips', 1)
@@ -169,6 +165,13 @@ function E:SetupCVars(noDisplayMsg)
 
 	if E.private.nameplates.enable then
 		NP:CVarReset()
+	end
+
+	if E.private.chat.enable then
+		SetCVar('chatMouseScroll', 1)
+		SetCVar('chatStyle', 'classic')
+		SetCVar('whisperMode', 'inline')
+		SetCVar('wholeChatWindowClickable', 0)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
