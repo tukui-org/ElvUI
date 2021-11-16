@@ -508,9 +508,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if not slot then return end
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
-
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (texture and 1) or nil -- used for ShowInspectCursor
@@ -533,8 +532,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
+		local _, spellID = GetItemSpell(itemLink)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
+		slot.name, slot.spellID, slot.isEquipment = name, spellID, B.IsEquipmentSlot[itemEquipLoc]
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
@@ -578,23 +578,23 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if E.Retail and B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) then
-			local _, spellID = GetItemSpell(itemLink)
-			if animaSpellID[spellID] then
-				slot.centerText:SetText(animaSpellID[spellID] * count)
-			end
+		local animaCount = E.Retail and B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) and animaSpellID[spellID]
+		if animaCount then
+			slot.centerText:SetText(animaCount * count)
 		end
+	end
 
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
+	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
+	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+
+	if slot.spellID then
 		B:UpdateCooldown(slot)
 		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
 	else
 		slot.Cooldown:Hide()
 		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
 	end
-
-	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
-	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
-	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
@@ -626,7 +626,7 @@ function B:UpdateReagentSlot(slotID)
 	if not slot then return end
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
@@ -637,21 +637,24 @@ function B:UpdateReagentSlot(slotID)
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
+		local _, spellID = GetItemSpell(itemLink)
 		local name, _, itemRarity = GetItemInfo(itemLink)
-		slot.name = name
+		slot.name, slot.spellID = name, spellID
 
 		if not slot.rarity then slot.rarity = itemRarity end
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+	end
 
+	if slot.questIcon then
+		slot.questIcon:SetShown(questId and not isActiveQuest)
+	end
+
+	if slot.spellID then
 		B:UpdateCooldown(slot)
 		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
 	else
 		slot.Cooldown:Hide()
 		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
-	end
-
-	if slot.questIcon then
-		slot.questIcon:SetShown(questId and not isActiveQuest)
 	end
 
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
