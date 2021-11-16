@@ -1,5 +1,7 @@
 ### Version 12.55 [ ETA: 🍨 ]
 
+Datatexts: Fixed Haste Datatext Customization Settings  
+Datatexts: Readded the Haste DT Tooltip  
 Tooltips: Fixed an error with item quality  
 
 ___

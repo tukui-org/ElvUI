@@ -2,6 +2,7 @@
 
 Cooldown Text: Updates for Bag CD text  
 DataTexts: Fixed Spell Hit lua error  
+Datatexts: Fixed Haste Datatext Customization Settings  
 Tooltips: Fixed an error with item quality  
 UnitFrames: Fixed castbar/custom colors  
 
