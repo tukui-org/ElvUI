@@ -72,7 +72,6 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
-local C_Item_IsAnimaItemByID = C_Item.IsAnimaItemByID
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 
@@ -578,7 +577,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		local animaCount = E.Retail and B.db.itemInfo and C_Item_IsAnimaItemByID(itemLink) and animaSpellID[spellID]
+		local animaCount = E.Retail and B.db.itemInfo and animaSpellID[spellID]
 		if animaCount then
 			slot.centerText:SetText(animaCount * count)
 		end
