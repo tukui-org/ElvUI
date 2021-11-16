@@ -1,23 +1,34 @@
-### Version 12.55 [ ETA: 🍨 ]
+### Version 12.57 [ ETA: 🍨 ]
 
-Datatexts: Fixed Haste Datatext Customization Settings  
-Datatexts: Readded the Haste DT Tooltip  
-Tooltips: Fixed an error with item quality  
+
+
+___
+### Version 12.56 [ November 16th 2021 ]
+
+Datatext: Readded Haste customization settings  
+Skins: Fixed Tooltip skin when they have an embedded statusbar  
+ActionBars: Fixed issue when buttons wouldn't update count after being traded  
+Bags: Corrected the display of Cooldown timers (sometimes they wouldn't appear)  
+Filters: Added Soothing Mist to Monk Aurawatch  
+
+___
+### Version 12.55 [ November 13th 2021 ]
+
+Tooltip: Fixed Item Quality Color error  
+Datatext: Readded events for several stat datatexts  
 
 ___
 ### Version 12.54 [ November 13th 2021 ]
 
-Bags: Fixed bank not updating correctly  
-Cooldown Text: Added a global option for rounding  
-Datatexts: Add Leech back in (oops)  
-Datatexts: Fix MovementSpeed not updating  
-Skins: Updated GM Ticket  
-Tooltips: Add option to display Item Count while using the Modifier for ids  
+Bags: Adjusted how Bags and Bank are updated  
+Cooldown Text: Added a global option for rounding and improved transition between one minute and seconds  
+Datatexts: Add Leech back in and fixed MovementSpeed not updating properly  
+Tooltips: Add option to display Item Count when using the Modifier for Item IDs  
 
 ___
 ### Version 12.53 [ November 11th 2021 ]
 
-Fixed an error in DataTexts & DataBars  
+Datatext: Fix error with Experience  
 
 ___
 ### Version 12.52 [ November 11th 2021 ]
