@@ -1,4 +1,9 @@
-### Version 1.53 [ ETA: 🍨 ]
+### Version 1.54 [ ETA: 🍨 ]
+
+___
+### Version 1.53 [ November 16th 2021 ]
+
+ActionBars: Fixed Microbar bugs  
 
 ___
 ### Version 1.52 [ November 16th 2021 ]
