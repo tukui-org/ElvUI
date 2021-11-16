@@ -1274,12 +1274,13 @@ G.unitframe.aurawatch = {
 		[90361]		= UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),			-- Spirit Mend (HoT)
 	},
 	MONK = {
-		[119611]	= UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),		-- Renewing Mist
+		[115175]	= UF:AuraWatch_AddSpell(115175, 'TOP', {0.6, 0.9, 0.9}),			-- Soothing Mist
+		[116841]	= UF:AuraWatch_AddSpell(116841, 'RIGHT', {0.12, 1.00, 0.53}),		-- Tiger's Lust (Freedom)
 		[116849]	= UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Life Cocoon
+		[119611]	= UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),		-- Renewing Mist
 		[124682]	= UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),	-- Enveloping Mist
 		[191840]	= UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),	-- Essence Font
-		[116841]	= UF:AuraWatch_AddSpell(116841, 'TOP', {0.12, 1.00, 0.53}),			-- Tiger's Lust (Freedom)
-		[325209]	= UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.8, 0.6}),			-- Enveloping Breath
+		[325209]	= UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.6, 0.6}),			-- Enveloping Breath
 	},
 	PET = {
 		-- Warlock Pets
