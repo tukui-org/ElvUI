@@ -1410,7 +1410,7 @@ end
 function E:UpdateActionBars(skipCallback)
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
-	ActionBars:UpdateMicroPositionDimensions()
+	ActionBars:UpdateMicroButtons()
 	ActionBars:UpdatePetCooldownSettings()
 
 	if E.Retail then
