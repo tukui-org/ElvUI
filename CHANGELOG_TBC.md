@@ -1,6 +1,9 @@
 ### Version 2.26 [ ETA: 🍨 ]
 
+Cooldown Text: Updates for Bag CD text  
+DataTexts: Fixed Spell Hit lua error  
 Tooltips: Fixed an error with item quality  
+UnitFrames: Fixed castbar/custom colors  
 
 ___
 ### Version 2.25 [ November 14th 2021 ]
