@@ -1,4 +1,9 @@
-### Version 2.27 [ ETA: 🍨 ]
+### Version 2.28 [ ETA: 🍨 ]
+
+___
+### Version 2.27 [ November 16th 2021 ]
+
+ActionBars: Fixed Microbar bugs  
 
 ___
 ### Version 2.26 [ November 16th 2021 ]
