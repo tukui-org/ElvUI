@@ -141,7 +141,7 @@ do
 
 		for _, name in next, _G.MICRO_BUTTONS do
 			local button = _G[name]
-			if button and button:IsShown() then
+			if button and button:IsVisible() then
 				tinsert(buttons, name)
 			end
 		end
