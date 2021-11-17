@@ -1,5 +1,7 @@
 ### Version 1.54 [ ETA: 🍨 ]
 
+Nameplates: Reset CVar fix for non-selected unit alpha (Fixes Setup CVar step in the installer as well.)  
+
 ___
 ### Version 1.53 [ November 16th 2021 ]
 
