@@ -219,15 +219,17 @@ function M:WorldMap_OnShow()
 		M:EnableMapFading(_G.WorldMapFrame)
 	end
 
-	if not M.CoordsTimer then
+	if CoordsHolder and not M.CoordsTimer then
 		M:UpdateCoords(true)
 		M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
 	end
 end
 
 function M:WorldMap_OnHide()
-	M:CancelTimer(M.CoordsTimer)
-	M.CoordsTimer = nil
+	if M.CoordsTimer then
+		M:CancelTimer(M.CoordsTimer)
+		M.CoordsTimer = nil
+	end
 end
 
 function M:Initialize()
@@ -250,9 +252,6 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetFontObject('NumberFontNormal')
 		CoordsHolder.playerCoords:SetText(PLAYER..':   0, 0')
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
-
-		WorldMapFrame:HookScript('OnShow', M.WorldMap_OnShow)
-		WorldMapFrame:HookScript('OnHide', M.WorldMap_OnHide)
 
 		M:PositionCoords()
 
@@ -279,6 +278,8 @@ function M:Initialize()
 		end
 	end
 
+	WorldMapFrame:HookScript('OnShow', M.WorldMap_OnShow)
+	WorldMapFrame:HookScript('OnHide', M.WorldMap_OnHide)
 	self:SecureHookScript(WorldMapFrame, 'OnShow', M.WorldMap_FirstShow)
 
 	if E.Retail then -- This lets us control the maps fading function
