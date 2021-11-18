@@ -333,6 +333,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
+	--Seasonal
+	[362859] = Defaults(), -- Adventure Awaits "40% Increased XP"
 	--Druid
 	--Hunter
 	--Mage
