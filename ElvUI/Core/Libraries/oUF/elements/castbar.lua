@@ -126,7 +126,7 @@ end
 
 local function CastStart(self, real, unit, castGUID)
 	if self.unit ~= unit then return end
-	if real == 'UNIT_SPELLCAST_START' and not castGUID then return end
+	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
 	local name, _, texture, startTime, endTime
@@ -237,7 +237,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if(not element:IsShown() or (unit == 'player' and (element.castID ~= castID or element.spellID ~= spellID))) then
 		return
 	end
 
@@ -290,7 +290,7 @@ local function CastStop(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if(not element:IsShown() or (unit == 'player' and (element.castID ~= castID or element.spellID ~= spellID))) then
 		return
 	end
 
@@ -320,7 +320,7 @@ local function CastFail(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if(not element:IsShown() or (unit == 'player' and (element.castID ~= castID or element.spellID ~= spellID))) then
 		return
 	end
 
