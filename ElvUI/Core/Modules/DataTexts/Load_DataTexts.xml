@@ -10,7 +10,6 @@
 	<Script file='ConfigElvUI.lua'/>
 	<Script file='Coordinates.lua'/>
 	<Script file='Crit.lua'/>
-	<Script file='Currencies.lua'/>
 	<Script file='CustomCurrency.lua'/>
 	<Script file='Crit.lua'/>
 	<Script file='Date.lua'/>
