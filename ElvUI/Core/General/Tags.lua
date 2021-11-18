@@ -646,7 +646,7 @@ end)
 E:AddTag('threatcolor', 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE', function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
 	if status and (IsInGroup() or UnitExists('pet')) then
-		return Hex(E:GetThreatStatusColor(status))
+		return Hex(E:GetThreatStatusColor(status, true))
 	end
 end)
 
