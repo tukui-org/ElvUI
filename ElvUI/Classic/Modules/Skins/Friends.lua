@@ -430,6 +430,7 @@ function S:FriendsFrame()
 	_G.GuildInfoFrame.backdrop:Point('TOPLEFT', 3, -6)
 	_G.GuildInfoFrame.backdrop:Point('BOTTOMRIGHT', -2, 3)
 
+	_G.GuildInfoTextBackground.NineSlice:SetTemplate('Transparent')
 	_G.GuildInfoTextBackground:SetTemplate('Default')
 	S:HandleScrollBar(_G.GuildInfoFrameScrollFrameScrollBar)
 
