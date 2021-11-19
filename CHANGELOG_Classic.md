@@ -4,6 +4,8 @@ ___
 ### Version 1.55 [ November 19th 2021 ]
 
 UnitFrames: Fixed priest fader issue  
+UnitFrames: Castbar tweaks  
+UnitFrames: Fixed Castbar ChannelTicks  
 
 ___
 ### Version 1.54 [ November 19th 2021 ]
