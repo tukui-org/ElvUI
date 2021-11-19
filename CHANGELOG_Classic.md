@@ -1,4 +1,9 @@
-### Version 1.55 [ ETA: 🍨 ]
+### Version 1.56 [ ETA: 🍨 ]
+
+___
+### Version 1.55 [ November 19th 2021 ]
+
+UnitFrames: Fixed priest fader issue  
 
 ___
 ### Version 1.54 [ November 19th 2021 ]

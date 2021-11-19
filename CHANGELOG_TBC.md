@@ -1,4 +1,10 @@
-### Version 2.29 [ ETA: 🍨 ]
+### Version 2.30 [ ETA: 🍨 ]
+
+___
+### Version 2.29 [ November 19th 2021 ]
+
+UnitFrames: Castbar color hotfix  
+UnitFrames: ChannelTicks hotfix  
 
 ___
 ### Version 2.28 [ November 19th 2021 ]
