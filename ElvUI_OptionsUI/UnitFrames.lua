@@ -344,16 +344,16 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.customColor.inline = true
 	config.args.customColor.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.customColor.args.transparent = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
-	config.args.customColor.args.invertColors = ACH:Toggle(L["Invert Colors"], L["Invert foreground and background colors."], 3, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.invertColors = ACH:Toggle(L["Invert Colors"], L["Invert foreground and background colors."], 3, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.transparent end, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.spacer1 = ACH:Spacer(4, 'full')
 	config.args.customColor.args.useClassColor = ACH:Toggle(L["Class Color"], L["Color castbar by the class of the unit's class."], 5, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.useReactionColor = ACH:Toggle(L["Reaction Color"], L["Color castbar by the reaction of the unit to the player."], 6, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or (groupName == 'player' or groupName == 'pet') end)
 	config.args.customColor.args.useCustomBackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 7, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.spacer2 = ACH:Spacer(8, 'full', function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.colorBackdrop = ACH:Color(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 9, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or not E.db.unitframe.units[groupName].castbar.customColor.useCustomBackdrop end)
-	config.args.customColor.args.color = ACH:Color(L["Interruptible"], nil, 10, true, nil, nil, nil, nil, function() return not E.Retail or not E.db.unitframe.units[groupName].castbar.customColor.enable end)
-	config.args.customColor.args.colorNoInterrupt = ACH:Color('', nil, 11, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
-	config.args.customColor.args.colorNoInterrupt.name = function() return E.Retail and L["Non-Interruptible"] or L["COLOR"] end
+	config.args.customColor.args.color = ACH:Color('', nil, 10, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.color.name = function() return E.Retail and L["Interruptible"] or L["COLOR"] end
+	config.args.customColor.args.colorNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 11, true, nil, nil, nil, nil, function() return not E.Retail or not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.spacer3 = ACH:Spacer(11, 'full', function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.colorInterrupted = ACH:Color(L["Interrupted"], nil, 12, true, nil, nil, nil, nil, function() return not E.Retail or not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 
@@ -1330,14 +1330,14 @@ UnitFrame.allColorsGroup = {
 						spacer2 = ACH:Spacer(8, 'full'),
 						castColor = {
 							order = 9,
-							name = L["Interruptible"],
+							name = function() return E.Retail and L["Interruptible"] or L["COLOR"] end,
 							type = 'color',
-							hidden = not E.Retail,
 						},
 						castNoInterrupt = {
 							order = 10,
-							name = function() return E.Retail and L["Non-Interruptible"] or L["COLOR"] end,
+							name = L["Non-Interruptible"],
 							type = 'color',
+							hidden = not E.Retail,
 						},
 						castInterruptedColor = {
 							name = L["Interrupted"],
