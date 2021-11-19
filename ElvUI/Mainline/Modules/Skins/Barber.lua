@@ -14,6 +14,14 @@ function S:Blizzard_BarbershopUI()
 end
 S:AddCallbackForAddon('Blizzard_BarbershopUI')
 
+local function HandleButton(button)
+	S:HandleNextPrevButton(button)
+
+	-- remove these to fix error on SetHighlightAtlas from AlphaHighlightButtonMixin
+	button:SetScript('OnMouseUp', nil)
+	button:SetScript('OnMouseDown', nil)
+end
+
 function S:Blizzard_CharacterCustomize()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end -- yes, it belongs also to tbe BarberUI
 
@@ -29,8 +37,8 @@ function S:Blizzard_CharacterCustomize()
 		if list.selectionPopoutPool then
 			for button in list.selectionPopoutPool:EnumerateActive() do
 				if not button.IsSkinned then
-					S:HandleNextPrevButton(button.DecrementButton)
-					S:HandleNextPrevButton(button.IncrementButton)
+					HandleButton(button.DecrementButton)
+					HandleButton(button.IncrementButton)
 
 					local popoutButton = button.SelectionPopoutButton
 					popoutButton.HighlightTexture:SetAlpha(0)
