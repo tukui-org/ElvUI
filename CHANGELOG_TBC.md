@@ -1,5 +1,10 @@
 ### Version 2.28 [ ETA: 🍨 ]
 
+Map: Fixes for the fade while moving option  
+Minimap: Updated middle-mouse dropdown  
+NamePlates: Reset CVar fix for non-selected unit alpha (Fixes Setup CVar step in the installer as well.)  
+Tags: Fixed threatcolor  
+
 ___
 ### Version 2.27 [ November 16th 2021 ]
 

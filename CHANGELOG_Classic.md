@@ -1,6 +1,12 @@
 ### Version 1.54 [ ETA: 🍨 ]
 
-Nameplates: Reset CVar fix for non-selected unit alpha (Fixes Setup CVar step in the installer as well.)  
+Map: Fixes for the fade while moving option  
+Minimap: Updated middle-mouse dropdown  
+NamePlates: Castbar tweaks/fixes  
+NamePlates: Reset CVar fix for non-selected unit alpha (Fixes Setup CVar step in the installer as well.)  
+Skins: Updated Guildinfo  
+Tags: Fixed threatcolor  
+UnitFrames: Castbar tweaks/fixes  
 
 ___
 ### Version 1.53 [ November 16th 2021 ]
