@@ -1,4 +1,7 @@
-### Version 1.54 [ ETA: 🍨 ]
+### Version 1.55 [ ETA: 🍨 ]
+
+___
+### Version 1.54 [ November 19th 2021 ]
 
 Map: Fixes for the fade while moving option  
 Minimap: Updated middle-mouse dropdown  
