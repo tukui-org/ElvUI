@@ -1,4 +1,7 @@
-### Version 2.28 [ ETA: 🍨 ]
+### Version 2.29 [ ETA: 🍨 ]
+
+___
+### Version 2.28 [ November 19th 2021 ]
 
 Map: Fixes for the fade while moving option  
 Minimap: Updated middle-mouse dropdown  
