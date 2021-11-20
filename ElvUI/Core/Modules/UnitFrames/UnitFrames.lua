@@ -1402,8 +1402,8 @@ function UF:MergeUnitSettings(from, to)
 	UF:Update_AllFrames()
 end
 
-function UF:UpdateBackdropTextureColor(r, g, b)
-	local m = 0.35
+function UF:UpdateBackdropTextureColor(r, g, b, a)
+	local m, _ = 0.35
 	local n = self.isTransparent and (m * 2) or m
 
 	if self.invertColors then
@@ -1412,12 +1412,12 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 
 	if self.isTransparent then
 		if self.backdrop then
-			local _, _, _, a = self.backdrop:GetBackdropColor()
+			if not a then _, _, _, a = self.backdrop:GetBackdropColor() end
 			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
 		else
 			local parent = self:GetParent()
 			if parent and parent.template then
-				local _, _, _, a = parent:GetBackdropColor()
+				if not a then _, _, _, a = parent:GetBackdropColor() end
 				parent:SetBackdropColor(r * n, g * n, b * n, a)
 			end
 		end
@@ -1458,6 +1458,14 @@ function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, sta
 	end
 end
 
+function UF:HandleStatusBarTemplate(statusBar, parent, isTransparent)
+	if statusBar.backdrop then
+		statusBar.backdrop:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+	elseif parent.template then
+		parent:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+	end
+end
+
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertColors, reverseFill)
 	statusBar.isTransparent = isTransparent
 	statusBar.invertColors = invertColors
@@ -1468,30 +1476,21 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar.hookedColor = true
 	end
 
+	local parent = statusBar:GetParent()
+	local orientation = statusBar:GetOrientation()
+
 	-- This fixes Center Pixel offset problem (normally this has > 2 points)
 	local barTexture = statusBar:GetStatusBarTexture()
 	barTexture:SetInside(nil, 0, 0) -- This also unsnaps the texture
 
-	local parent = statusBar:GetParent()
-	local orientation = statusBar:GetOrientation()
-	if isTransparent then
-		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate('Transparent', nil, nil, nil, true)
-		elseif parent.template then
-			parent:SetTemplate('Transparent', nil, nil, nil, true)
-		end
+	UF:HandleStatusBarTemplate(statusBar, parent, isTransparent)
 
+	if isTransparent then
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
-		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate(nil, nil, nil, nil, true)
-		elseif parent.template then
-			parent:SetTemplate(nil, nil, nil, nil, true)
-		end
-
 		local texture = LSM:Fetch('statusbar', self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
