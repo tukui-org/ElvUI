@@ -239,12 +239,11 @@ function AB:SetupMicroBar()
 
 	AB:SecureHook('UpdateMicroButtons')
 	AB:SecureHook('UpdateMicroButtonsParent')
+	UpdateMicroButtonsParent(microBar)
 
 	if E.Classic then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
-
-	UpdateMicroButtonsParent(microBar)
 
 	-- With this method we might don't taint anything. Instead of using :Kill()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
