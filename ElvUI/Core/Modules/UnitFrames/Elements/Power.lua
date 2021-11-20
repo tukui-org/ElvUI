@@ -215,13 +215,19 @@ function UF:Configure_Power(frame)
 	end
 
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
+
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower, db.power.reverseFill)
 end
 
 function UF:PowerBackdropColor()
 	local parent = self:GetParent()
-	local r, g, b = parent:GetStatusBarColor()
-	UF.UpdateBackdropTextureColor(parent, r, g, b, parent.isTransparent and E.media.backdropfadecolor[4] or 1)
+	if parent.isTransparent then
+		local r, g, b = parent:GetStatusBarColor()
+		UF.UpdateBackdropTextureColor(parent, r, g, b, E.media.backdropfadecolor[4])
+	else
+		self:SetBackdropColor(unpack(E.media.backdropfadecolor))
+		self:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
+	end
 end
 
 function UF:GetDisplayPower()
