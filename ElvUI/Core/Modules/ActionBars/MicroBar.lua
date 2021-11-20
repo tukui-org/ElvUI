@@ -13,6 +13,7 @@ local CreateFrame = CreateFrame
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
+local hooksecurefunc = hooksecurefunc
 
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)
@@ -238,6 +239,11 @@ function AB:SetupMicroBar()
 
 	AB:SecureHook('UpdateMicroButtons')
 	AB:SecureHook('UpdateMicroButtonsParent')
+
+	if E.Classic then
+		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
+	end
+
 	UpdateMicroButtonsParent(microBar)
 
 	-- With this method we might don't taint anything. Instead of using :Kill()

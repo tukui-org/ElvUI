@@ -100,16 +100,45 @@ tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = ToggleHelpFrame
 function M:HandleGarrisonButton()
 	local button = _G.GarrisonLandingPageMinimapButton
 	if button then
-		local db = E.db.general.minimap.icons.classHall
-		local scale, pos = db.scale or 1, db.position or 'BOTTOMLEFT'
+		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
 		button:ClearAllPoints()
-		button:Point(pos, Minimap, pos, db.xOffset or 0, db.yOffset or 0)
+		button:Point(position, Minimap, xOffset, yOffset)
 		button:SetScale(scale)
 
 		local box = _G.GarrisonLandingPageTutorialBox
 		if box then
 			box:SetScale(1/scale)
 			box:SetClampedToScreen(true)
+		end
+	end
+end
+
+function M:HandleTrackingButton()
+	local MiniMapTracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	if MiniMapTracking then
+		if E.private.general.minimap.hideTracking then
+			MiniMapTracking:SetParent(E.HiddenFrame)
+		else
+			local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
+
+			MiniMapTracking:ClearAllPoints()
+			MiniMapTracking:Point(position, Minimap, xOffset, yOffset)
+			MiniMapTracking:SetScale(scale)
+			MiniMapTracking:SetParent(Minimap)
+
+			if _G.MiniMapTrackingBorder then
+				_G.MiniMapTrackingBorder:Hide()
+			end
+
+			if _G.MiniMapTrackingBackground then
+				_G.MiniMapTrackingBackground:Hide()
+			end
+
+			if _G.MiniMapTrackingIcon then
+				_G.MiniMapTrackingIcon:SetDrawLayer('ARTWORK')
+				_G.MiniMapTrackingIcon:SetTexCoord(unpack(E.TexCoords))
+				_G.MiniMapTrackingIcon:SetInside()
+			end
 		end
 	end
 end
@@ -286,6 +315,7 @@ function M:UpdateSettings()
 	end
 
 	M.HandleGarrisonButton()
+	M.HandleTrackingButton()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
@@ -340,36 +370,6 @@ function M:UpdateSettings()
 
 		if not db.enable and queueStatusDisplay.title then
 			M:ClearQueueStatus()
-		end
-	end
-
-	local MiniMapTracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
-	if MiniMapTracking then
-		if E.private.general.minimap.hideTracking then
-			MiniMapTracking:SetParent(E.HiddenFrame)
-		else
-			local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
-
-			MiniMapTracking:ClearAllPoints()
-			MiniMapTracking.SetPoint = nil
-			MiniMapTracking:Point(position, Minimap, xOffset, yOffset)
-			MiniMapTracking.SetPoint = E.noop
-			MiniMapTracking:SetScale(scale)
-			MiniMapTracking:SetParent(Minimap)
-
-			if _G.MiniMapTrackingBorder then
-				_G.MiniMapTrackingBorder:Hide()
-			end
-
-			if _G.MiniMapTrackingBackground then
-				_G.MiniMapTrackingBackground:Hide()
-			end
-
-			if _G.MiniMapTrackingIcon then
-				_G.MiniMapTrackingIcon:SetDrawLayer('ARTWORK')
-				_G.MiniMapTrackingIcon:SetTexCoord(unpack(E.TexCoords))
-				_G.MiniMapTrackingIcon:SetInside()
-			end
 		end
 	end
 
@@ -563,6 +563,8 @@ function M:Initialize()
 		_G.MiniMapInstanceDifficulty:SetParent(Minimap)
 		_G.GuildInstanceDifficulty:SetParent(Minimap)
 		_G.MiniMapChallengeMode:SetParent(Minimap)
+	elseif E.Classic then
+		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end
 
 	if not E.Classic then
