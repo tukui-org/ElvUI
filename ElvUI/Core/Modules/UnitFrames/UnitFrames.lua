@@ -1403,7 +1403,7 @@ function UF:MergeUnitSettings(from, to)
 end
 
 function UF:UpdateBackdropTextureColor(r, g, b, a)
-	local m, _ = 0.35
+	local m = 0.35
 	local n = self.isTransparent and (m * 2) or m
 
 	if self.invertColors then
@@ -1412,13 +1412,11 @@ function UF:UpdateBackdropTextureColor(r, g, b, a)
 
 	if self.isTransparent then
 		if self.backdrop then
-			if not a then _, _, _, a = self.backdrop:GetBackdropColor() end
-			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
+			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a or E.media.backdropfadecolor[4])
 		else
 			local parent = self:GetParent()
 			if parent and parent.template then
-				if not a then _, _, _, a = parent:GetBackdropColor() end
-				parent:SetBackdropColor(r * n, g * n, b * n, a)
+				parent:SetBackdropColor(r * n, g * n, b * n, a or E.media.backdropfadecolor[4])
 			end
 		end
 	end
