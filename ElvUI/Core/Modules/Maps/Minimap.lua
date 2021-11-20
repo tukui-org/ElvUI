@@ -98,47 +98,47 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = ToggleHelpFrame })
 
 function M:HandleGarrisonButton()
-	local button = _G.GarrisonLandingPageMinimapButton
-	if button then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
-		button:ClearAllPoints()
-		button:Point(position, Minimap, xOffset, yOffset)
-		button:SetScale(scale)
+	local garrison = _G.GarrisonLandingPageMinimapButton
+	if not garrison then return end
 
-		local box = _G.GarrisonLandingPageTutorialBox
-		if box then
-			box:SetScale(1/scale)
-			box:SetClampedToScreen(true)
-		end
+	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
+	garrison:ClearAllPoints()
+	garrison:Point(position, Minimap, xOffset, yOffset)
+	garrison:SetScale(scale)
+
+	local box = _G.GarrisonLandingPageTutorialBox
+	if box then
+		box:SetScale(1 / scale)
+		box:SetClampedToScreen(true)
 	end
 end
 
 function M:HandleTrackingButton()
-	local MiniMapTracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
-	if MiniMapTracking then
-		if E.private.general.minimap.hideTracking then
-			MiniMapTracking:SetParent(E.HiddenFrame)
-		else
-			local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
+	local tracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	if not tracking then return end
 
-			MiniMapTracking:ClearAllPoints()
-			MiniMapTracking:Point(position, Minimap, xOffset, yOffset)
-			MiniMapTracking:SetScale(scale)
-			MiniMapTracking:SetParent(Minimap)
+	if E.private.general.minimap.hideTracking then
+		tracking:SetParent(E.HiddenFrame)
+	else
+		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
-			if _G.MiniMapTrackingBorder then
-				_G.MiniMapTrackingBorder:Hide()
-			end
+		tracking:ClearAllPoints()
+		tracking:Point(position, Minimap, xOffset, yOffset)
+		tracking:SetScale(scale)
+		tracking:SetParent(Minimap)
 
-			if _G.MiniMapTrackingBackground then
-				_G.MiniMapTrackingBackground:Hide()
-			end
+		if _G.MiniMapTrackingBorder then
+			_G.MiniMapTrackingBorder:Hide()
+		end
 
-			if _G.MiniMapTrackingIcon then
-				_G.MiniMapTrackingIcon:SetDrawLayer('ARTWORK')
-				_G.MiniMapTrackingIcon:SetTexCoord(unpack(E.TexCoords))
-				_G.MiniMapTrackingIcon:SetInside()
-			end
+		if _G.MiniMapTrackingBackground then
+			_G.MiniMapTrackingBackground:Hide()
+		end
+
+		if _G.MiniMapTrackingIcon then
+			_G.MiniMapTrackingIcon:SetDrawLayer('ARTWORK')
+			_G.MiniMapTrackingIcon:SetTexCoord(unpack(E.TexCoords))
+			_G.MiniMapTrackingIcon:SetInside()
 		end
 	end
 end
@@ -310,8 +310,8 @@ function M:UpdateSettings()
 	Minimap.location:Width(E.MinimapSize)
 	Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
 
-	M:HandleGarrisonButton()
-	M:HandleTrackingButton()
+	M.HandleGarrisonButton()
+	M.HandleTrackingButton()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
