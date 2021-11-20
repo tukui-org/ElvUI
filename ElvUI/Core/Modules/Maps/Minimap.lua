@@ -308,14 +308,10 @@ function M:UpdateSettings()
 	MMHolder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
 	Minimap.location:Width(E.MinimapSize)
-	if E.db.general.minimap.locationText ~= 'SHOW' then
-		Minimap.location:Hide()
-	else
-		Minimap.location:Show()
-	end
+	Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
 
-	M.HandleGarrisonButton()
-	M.HandleTrackingButton()
+	M:HandleGarrisonButton()
+	M:HandleTrackingButton()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
@@ -494,7 +490,7 @@ function M:Initialize()
 		return
 	end
 
-	self.Initialized = true
+	M.Initialized = true
 
 	menuFrame:SetTemplate('Transparent')
 
@@ -504,8 +500,6 @@ function M:Initialize()
 
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
-	Minimap:ClearAllPoints()
-	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
 
@@ -519,9 +513,6 @@ function M:Initialize()
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
-	if E.db.general.minimap.locationText ~= 'SHOW' then
-		Minimap.location:Hide()
-	end
 
 	local frames = {
 		_G.MinimapBorder,
@@ -591,12 +582,12 @@ function M:Initialize()
 	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 	Minimap:SetScript('OnMouseUp', E.noop)
 
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_ZoneText')
-	self:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
-	self:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
-	self:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
-	self:RegisterEvent('ADDON_LOADED')
-	self:UpdateSettings()
+	M:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_ZoneText')
+	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
+	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
+	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
+	M:RegisterEvent('ADDON_LOADED')
+	M:UpdateSettings()
 end
 
 E:RegisterModule(M:GetName())
