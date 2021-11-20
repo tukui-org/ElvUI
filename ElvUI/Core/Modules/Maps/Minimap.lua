@@ -351,7 +351,9 @@ function M:UpdateSettings()
 			local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
 			MiniMapTracking:ClearAllPoints()
+			MiniMapTracking.SetPoint = nil
 			MiniMapTracking:Point(position, Minimap, xOffset, yOffset)
+			MiniMapTracking.SetPoint = E.noop
 			MiniMapTracking:SetScale(scale)
 			MiniMapTracking:SetParent(Minimap)
 
