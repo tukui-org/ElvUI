@@ -143,25 +143,6 @@ function M:HandleTrackingButton()
 	end
 end
 
-function M:GetLocTextColor()
-	local pvpType = GetZonePVPInfo()
-	if pvpType == 'arena' then
-		return 0.84, 0.03, 0.03
-	elseif pvpType == 'friendly' then
-		return 0.05, 0.85, 0.03
-	elseif pvpType == 'contested' then
-		return 0.9, 0.85, 0.05
-	elseif pvpType == 'hostile' then
-		return 0.84, 0.03, 0.03
-	elseif pvpType == 'sanctuary' then
-		return 0.035, 0.58, 0.84
-	elseif pvpType == 'combat' then
-		return 0.84, 0.03, 0.03
-	else
-		return 0.9, 0.85, 0.05
-	end
-end
-
 function M:SetupHybridMinimap()
 	local MapCanvas = _G.HybridMinimap.MapCanvas
 	MapCanvas:SetMaskTexture(E.Media.Textures.White8x8)
@@ -252,9 +233,28 @@ function M:Minimap_OnMouseWheel(d)
 	end
 end
 
+function M:GetLocTextColor()
+	local pvpType = GetZonePVPInfo()
+	if pvpType == 'arena' then
+		return 0.84, 0.03, 0.03
+	elseif pvpType == 'friendly' then
+		return 0.05, 0.85, 0.03
+	elseif pvpType == 'contested' then
+		return 0.9, 0.85, 0.05
+	elseif pvpType == 'hostile' then
+		return 0.84, 0.03, 0.03
+	elseif pvpType == 'sanctuary' then
+		return 0.035, 0.58, 0.84
+	elseif pvpType == 'combat' then
+		return 0.84, 0.03, 0.03
+	else
+		return 0.9, 0.85, 0.05
+	end
+end
+
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' then return end
-	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
@@ -274,6 +274,7 @@ do
 			E:Delay(E.db.general.minimap.resetZoom.time, ResetZoom)
 		end
 	end
+
 	hooksecurefunc(Minimap, 'SetZoom', SetupZoomReset)
 end
 
@@ -309,6 +310,7 @@ function M:UpdateSettings()
 
 	Minimap.location:Width(E.MinimapSize)
 	Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
+	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 
 	M.HandleGarrisonButton()
 	M.HandleTrackingButton()
@@ -509,7 +511,6 @@ function M:Initialize()
 	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
-	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
