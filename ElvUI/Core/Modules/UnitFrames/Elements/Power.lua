@@ -10,6 +10,7 @@ local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+local InCombatLockdown = InCombatLockdown
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
@@ -254,7 +255,7 @@ function UF:PostUpdatePower(unit, cur, min, max)
 
 	if individualUnits[unit] and db.autoHide and parent.POWERBAR_DETACHED then
 		local _, powerType = UnitPowerType(unit)
-		if (powerTypesFull[powerType] and cur == max) or cur == min then
+		if (powerTypesFull[powerType] and cur == max) or cur == min or (db.notInCombat and not InCombatLockdown()) then
 			self:Hide()
 		else
 			self:Show()
