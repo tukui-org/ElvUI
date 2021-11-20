@@ -241,10 +241,7 @@ do
 	function UF:PostUpdatePowerColor()
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced and not self.colorClass then
-			local r, g, b = GetRandomPowerColor()
-
-			self:SetStatusBarColor(r, g, b)
-			UF.UpdateBackdropTextureColor(self, r, g, b)
+			self:SetStatusBarColor(GetRandomPowerColor())
 		end
 	end
 end
