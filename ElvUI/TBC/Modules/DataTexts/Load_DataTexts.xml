@@ -2,4 +2,7 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\Ammo.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Avoidance.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Hit.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\SpellCrit.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\SpellHit.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\SpellPower.lua'/>
 </Ui>
