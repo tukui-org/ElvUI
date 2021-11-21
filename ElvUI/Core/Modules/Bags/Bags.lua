@@ -550,7 +550,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) or (not E.Retail and isQuestItem) then
+		if (not E.Retail and isQuestItem) or B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
