@@ -1,6 +1,6 @@
 ### Version 12.57 [ ETA: 🍨 ]
 
-
+UnitFrames: Fixed an issue with transparent power color  
 
 ___
 ### Version 12.56 [ November 16th 2021 ]
