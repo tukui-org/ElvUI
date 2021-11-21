@@ -550,7 +550,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
+		if B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) or (not E.Retail and isQuestItem) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -566,13 +566,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 				if not line or line == '' then break end
 				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
-				BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
-				if BoE or BoU then break end
+				BoE, BoU, isActiveQuest = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE, line == _G.ITEM_STARTS_QUEST
+				if (BoE or BoU) or (not E.Retail and isActiveQuest) then break end
 			end
 
 			E.ScanTooltip:Hide()
 
-			if BoE or BoU then
+			if B.db.showBindType and (BoE or BoU) then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 			end
 		end
@@ -583,7 +583,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and (not E.Retail and isQuestItem or questId and not isActiveQuest)) end
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
