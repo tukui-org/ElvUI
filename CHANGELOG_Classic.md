@@ -1,5 +1,9 @@
 ### Version 1.56 [ ETA: 🍨 ]
 
+Minimap: Fixed tracking icon (Blizzard broke it)  
+UnitFrames: Fixed an issue with transparent power color  
+UnitFrames: Smart Raid Filter defaults to 5 groups for "Raid" now (8 for Raid40)  
+
 ___
 ### Version 1.55 [ November 19th 2021 ]
 

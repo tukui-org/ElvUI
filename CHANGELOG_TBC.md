@@ -1,5 +1,8 @@
 ### Version 2.30 [ ETA: 🍨 ]
 
+UnitFrames: Fixed an issue with transparent power color  
+UnitFrames: Smart Raid Filter defaults to 5 groups for "Raid" now (8 for Raid40)  
+
 ___
 ### Version 2.29 [ November 19th 2021 ]
 
