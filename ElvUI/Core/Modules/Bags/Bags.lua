@@ -566,7 +566,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 				if not line or line == '' then break end
 				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
-				BoE, BoU, isActiveQuest = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE, line == _G.ITEM_STARTS_QUEST
+				BoE, BoU, isActiveQuest = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE, line ~= _G.ITEM_STARTS_QUEST
 				if (BoE or BoU) or (not E.Retail and isActiveQuest) then break end
 			end
 
