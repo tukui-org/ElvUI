@@ -30,9 +30,9 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 
 	power.RaisedElementParent = UF:CreateRaisedElement(power, true)
 
-	power.PostUpdate = self.PostUpdatePower
-	power.PostUpdateColor = self.PostUpdatePowerColor
-	power.GetDisplayPower = self.GetDisplayPower
+	power.PostUpdate = UF.PostUpdatePower
+	power.PostUpdateColor = UF.PostUpdatePowerColor
+	power.GetDisplayPower = UF.GetDisplayPower
 
 	if bg then
 		power.BG = power:CreateTexture(nil, 'BORDER')
@@ -49,7 +49,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.colorDisconnected = false
 	power.colorTapping = false
 	power:CreateBackdrop(nil, nil, nil, nil, true)
-	power.backdrop.callbackBackdropColor = self.PowerBackdropColor
+	power.backdrop.callbackBackdropColor = UF.PowerBackdropColor
 
 	UF:Construct_ClipFrame(frame, power)
 
@@ -69,7 +69,7 @@ function UF:Configure_Power(frame)
 		--Show the power here so that attached texts can be displayed correctly.
 		power:Show() --Since it is updated in the PostUpdatePower, so it's fine!
 
-		E:SetSmoothing(power, self.db.smoothbars)
+		E:SetSmoothing(power, UF.db.smoothbars)
 
 		--Text
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo)
@@ -96,11 +96,11 @@ function UF:Configure_Power(frame)
 		power.colorSelection = nil
 		power.displayAltPower = db.power.displayAltPower
 
-		if self.db.colors.powerselection then
+		if E.Retail and UF.db.colors.powerselection then
 			power.colorSelection = true
-		--[[elseif self.db.colors.powerthreat then
+		--[[elseif UF.db.colors.powerthreat then
 			power.colorThreat = true]]
-		elseif self.db.colors.powerclass then
+		elseif UF.db.colors.powerclass then
 			power.colorClass = true
 			power.colorReaction = true
 		else
