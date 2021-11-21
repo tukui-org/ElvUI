@@ -927,7 +927,7 @@ UF.SmartSettings = {
 
 function UF:HandleSmartVisibility(skip)
 	local sv = UF.SmartSettings
-	sv.raid.numGroups = 6
+	sv.raid.numGroups = E.Retail and 6 or 5
 
 	local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
 	if instanceType == 'raid' or instanceType == 'pvp' then
