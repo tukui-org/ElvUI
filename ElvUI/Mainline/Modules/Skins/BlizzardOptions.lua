@@ -267,7 +267,6 @@ function S:BlizzardOptions()
 		end
 	end)
 
-	--9.1 -- Text To Speech
 	local TextToSpeechCheckBoxes = {
 		'PlayActivitySoundWhenNotFocusedCheckButton',
 		'PlaySoundSeparatingChatLinesCheckButton',
@@ -283,6 +282,8 @@ function S:BlizzardOptions()
 	S:HandleButton(_G.TextToSpeechFramePlaySampleButton)
 	S:HandleButton(_G.TextToSpeechFramePlaySampleAlternateButton)
 	S:HandleButton(_G.TextToSpeechDefaultButton)
+
+	S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
 
 	S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceDropdown)
 	S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
