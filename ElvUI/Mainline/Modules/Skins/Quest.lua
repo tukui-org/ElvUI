@@ -404,7 +404,6 @@ function S:BlizzardQuestFrames()
 	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture()
 	QuestInfoPlayerTitleFrame.FrameRight:SetTexture()
 	QuestInfoPlayerTitleFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	QuestInfoPlayerTitleFrame:SetTemplate()
 
 	--Quest Frame
 	local QuestFrame = _G.QuestFrame
