@@ -100,6 +100,8 @@ mod.TriggerConditions = {
 		[4] = 'legacy25normal',
 		[5] = 'legacy10heroic',
 		[6] = 'legacy25heroic',
+		[9] = 'legacy40normal',
+		[148] = 'legacy20normal',
 	}
 }
 
