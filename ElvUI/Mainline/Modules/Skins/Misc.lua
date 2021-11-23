@@ -386,9 +386,6 @@ function S:BlizzardMiscFrames()
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
-
-	-- Ticket Frames (not GMTicketFrames)
-	_G.TicketStatusFrameButton.Background.NineSlice:SetTemplate('Transparent')
 end
 
 S:AddCallback('BlizzardMiscFrames')
