@@ -1,6 +1,11 @@
-### Version 1.56 [ ETA: 🍨 ]
+### Version 1.57 [ ETA: 🍨 ]
 
+___
+### Version 1.56 [ November 24th 2021 ]
+
+DataTexts: Updated Friends  
 Minimap: Fixed tracking icon (Blizzard broke it)  
+NamePlates: Updates for StyleFilters config  
 UnitFrames: Fixed an issue with transparent power color  
 UnitFrames: Smart Raid Filter defaults to 5 groups for "Raid" now (8 for Raid40)  
 
