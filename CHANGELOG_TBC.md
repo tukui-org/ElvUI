@@ -1,5 +1,11 @@
-### Version 2.30 [ ETA: 🍨 ]
+### Version 2.31 [ ETA: 🍨 ]
 
+___
+### Version 2.30 [ November 24th 2021 ]
+
+DataTexts: Updated Friends  
+NamePlates: Updates for StyleFilters config  
+Skins: Updated trade window  
 UnitFrames: Fixed an issue with transparent power color  
 UnitFrames: Smart Raid Filter defaults to 5 groups for "Raid" now (8 for Raid40)  
 
