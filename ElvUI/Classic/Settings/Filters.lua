@@ -52,7 +52,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[1513]	= Defaults(2), -- Scare Beast (Rank 1)
 		[14326]	= Defaults(2), -- Scare Beast (Rank 2)
 		[14327]	= Defaults(2), -- Scare Beast (Rank 3)
-		[19577]	= Defaults(2), -- Intimidation
+		[24394]	= Defaults(6), -- Intimidation
 		[19386]	= Defaults(2), -- Wyvern Sting (Rank 1)
 		[24132]	= Defaults(2), -- Wyvern Sting (Rank 2)
 		[24133]	= Defaults(2), -- Wyvern Sting (Rank 3)
@@ -333,6 +333,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
+	--Seasonal
+	[362859] = Defaults(), -- Adventure Awaits "40% Increased XP"
 	--Druid
 	--Hunter
 	--Mage

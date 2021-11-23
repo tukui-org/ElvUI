@@ -8,6 +8,7 @@ local CreateFrame = CreateFrame
 
 local UnitSex = UnitSex
 local GetNumSpecializations = GetNumSpecializations
+local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
@@ -297,15 +298,20 @@ function S:Blizzard_TalentUI()
 			if slotInfo.enabled then
 				S:HandleIcon(slot.Texture)
 
-				if not slotInfo.selectedTalentID then
+				if slotInfo.selectedTalentID then
+					local _, _, texture = GetPvpTalentInfoByID(slotInfo.selectedTalentID)
+					if texture then
+						slot.Texture:SetTexture(texture)
+					end
+
+					if slot.backdrop then
+						slot.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end
+				else
 					slot.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
 
 					if slot.backdrop then
 						slot.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
-					end
-				else
-					if slot.backdrop then
-						slot.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
 				end
 			else

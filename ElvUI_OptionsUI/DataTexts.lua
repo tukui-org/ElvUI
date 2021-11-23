@@ -310,7 +310,7 @@ DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], ni
 DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, table in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = table.NAME end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].NAME DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 
-DataTexts.args.settings = ACH:Group(L["DataText Customization"], nil, 7)
+DataTexts.args.settings = ACH:Group(L["Customization"], nil, 7)
 
 E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOptions)
 E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.get = function(_, key) return E.global.datatexts.newPanelInfo[key] end

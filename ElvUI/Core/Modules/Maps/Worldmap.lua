@@ -23,20 +23,11 @@ local INVERTED_POINTS = {
 
 -- this will be updated later
 local smallerMapScale = 0.8
-
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetScale(1)
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
-
-	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-		SetUIPanelAttribute(WorldMapFrame, 'area', 'center')
-	end
-
-	if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
-		SetUIPanelAttribute(WorldMapFrame, 'allowOtherPanels', true)
-	end
 
 	WorldMapFrame:OnFrameSizeChanged()
 	if WorldMapFrame:GetMapID() then
@@ -205,18 +196,54 @@ function M:UpdateMapFade(minAlpha, maxAlpha, durationSec, fadePredicate) -- self
 	end
 end
 
+function M:WorldMap_FirstShow()
+	local frame = _G.WorldMapFrame
+	local maxed = E.Retail and frame:IsMaximized()
+	if maxed then -- this needs to be called outside of smallerWorldMap
+		frame:UpdateMaximizedSize()
+	end
+
+	if E.global.general.smallerWorldMap then
+		if maxed then
+			M:SetLargeWorldMap()
+		else
+			M:SetSmallWorldMap()
+		end
+	end
+
+	M:Unhook(frame, 'OnShow') -- only need the first
+end
+
+function M:WorldMap_OnShow()
+	if not E.Retail and E.global.general.fadeMapWhenMoving then
+		M:EnableMapFading(_G.WorldMapFrame)
+	end
+
+	if CoordsHolder and not M.CoordsTimer then
+		M:UpdateCoords(true)
+		M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
+	end
+end
+
+function M:WorldMap_OnHide()
+	if M.CoordsTimer then
+		M:CancelTimer(M.CoordsTimer)
+		M.CoordsTimer = nil
+	end
+end
+
 function M:Initialize()
 	self.Initialized = true
 
-	if not E.private.general.worldMap then
-		return
-	end
+	if not E.private.general.worldMap then return end
+	local useSmallerMap = E.global.general.smallerWorldMap
 
 	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
 		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', WorldMapFrame)
-		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 10)
-		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
+		CoordsHolder:SetFrameStrata(not E.Retail and not useSmallerMap and 'FULLSCREEN' or 'MEDIUM')
+		CoordsHolder:SetFrameLevel(10)
+
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
@@ -226,21 +253,6 @@ function M:Initialize()
 		CoordsHolder.playerCoords:SetText(PLAYER..':   0, 0')
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
 
-		WorldMapFrame:HookScript('OnShow', function()
-			if not E.Retail and E.global.general.fadeMapWhenMoving then
-				M:EnableMapFading(WorldMapFrame)
-			end
-
-			if not M.CoordsTimer then
-				M:UpdateCoords(true)
-				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
-			end
-		end)
-		WorldMapFrame:HookScript('OnHide', function()
-			M:CancelTimer(M.CoordsTimer)
-			M.CoordsTimer = nil
-		end)
-
 		M:PositionCoords()
 
 		E:RegisterEventForObject('LOADING_SCREEN_DISABLED', E.MapInfo, M.UpdateRestrictedArea)
@@ -249,8 +261,11 @@ function M:Initialize()
 		E:RegisterEventForObject('ZONE_CHANGED', E.MapInfo, M.UpdateRestrictedArea)
 	end
 
-	if E.global.general.smallerWorldMap then
+	if useSmallerMap then
 		smallerMapScale = E.global.general.smallerWorldMapScale
+
+		SetUIPanelAttribute(_G.WorldMapFrame, 'area', 'center')
+		SetUIPanelAttribute(_G.WorldMapFrame, 'allowOtherPanels', true)
 
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture()
 		WorldMapFrame.BlackoutFrame:EnableMouse(false)
@@ -261,18 +276,11 @@ function M:Initialize()
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
 			self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
 		end
-
-		self:SecureHookScript(WorldMapFrame, 'OnShow', function()
-			if E.Retail and WorldMapFrame:IsMaximized() then
-				WorldMapFrame:UpdateMaximizedSize()
-				self:SetLargeWorldMap()
-			else
-				self:SetSmallWorldMap()
-			end
-
-			M:Unhook(WorldMapFrame, 'OnShow', nil)
-		end)
 	end
+
+	WorldMapFrame:HookScript('OnShow', M.WorldMap_OnShow)
+	WorldMapFrame:HookScript('OnHide', M.WorldMap_OnHide)
+	self:SecureHookScript(WorldMapFrame, 'OnShow', M.WorldMap_FirstShow)
 
 	if E.Retail then -- This lets us control the maps fading function
 		hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
