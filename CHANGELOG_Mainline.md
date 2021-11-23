@@ -7,7 +7,7 @@ ___
 Bags: Count position was getting stuck  
 UnitFrames: Fixed an issue with transparent power color  
 UnitFrames: Added option to Auto Hide Power out of combat  
-WorldMap: Fixed Coordinates level and Fullscreen Map issues  
+WorldMap: Fixed Coordinates level and a few Fullscreen Map issues  
 Skins: Fixed the Widget Bar not being skinned properly  
 Skins: Error when using Barbershop  
 
