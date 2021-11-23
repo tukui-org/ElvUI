@@ -73,7 +73,7 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+E.TBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 E.Wrath = false
 
 -- Item Qualitiy stuff - used by MerathilisUI
