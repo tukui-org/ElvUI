@@ -1510,8 +1510,8 @@ function CH:ShortChannel()
 	return format('|Hchannel:%s|h[%s]|h', self, DEFAULT_STRINGS[strupper(self)] or gsub(self, 'channel:', ''))
 end
 
-function CH:HandleShortChannels(msg)
-	msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
+function CH:HandleShortChannels(msg, hide)
+	msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', hide and '' or CH.ShortChannel)
 	msg = gsub(msg, 'CHANNEL:', '')
 	msg = gsub(msg, '^(.-|h) '..L["whispers"], '%1')
 	msg = gsub(msg, '^(.-|h) '..L["says"], '%1')
@@ -2123,8 +2123,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				body = '|Hchannel:channel:'..arg8..'|h['.._G.ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
 			end
 
-			if CH.db.shortChannels and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') then
-				body = CH:HandleShortChannels(body)
+			if (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
+				body = CH:HandleShortChannels(body, CH.db.hideChannels)
 			end
 
 			for _, filter in ipairs(CH.PluginMessageFilters) do
