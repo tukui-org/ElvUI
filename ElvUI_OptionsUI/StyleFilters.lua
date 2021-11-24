@@ -7,25 +7,26 @@ local _G = _G
 local wipe, pairs, strmatch, strsplit, tostring = wipe, pairs, strmatch, strsplit, tostring
 local next, sort, tonumber, format = next, sort, tonumber, format
 
-local C_Map_GetMapInfo = C_Map.GetMapInfo
-local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
+local CopyTable = CopyTable
 local GetClassInfo = GetClassInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetInstanceInfo = GetInstanceInfo
-local tIndexOf = tIndexOf
-local CopyTable = CopyTable
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
-local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetRealZoneText = GetRealZoneText
-local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetSpellInfo = GetSpellInfo
 local GetSpellTexture = GetSpellTexture
 local GetTalentInfo = GetTalentInfo
+local tIndexOf = tIndexOf
 
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local C_Map_GetMapInfo = C_Map.GetMapInfo
+local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
+local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
+local sortedClasses = CopyTable(CLASS_SORT_ORDER)
+sort(sortedClasses)
 
 C.SelectedNameplateStyleFilter = nil
 
@@ -237,7 +238,7 @@ local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') 
 E.Options.args.nameplate.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
 local StyleFitlers = E.Options.args.nameplate.args.filters.args
 
-StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) print(value, E.global.nameplate.filters[value], NP:StyleFilterCopyDefaults()) E.global.nameplate.filters[value] = NP:StyleFilterCopyDefaults() print(value, E.global.nameplate.filters[value]) C.SelectedNameplateStyleFilter = value UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateCreateFilter)
+StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplate.filters[value] = NP:StyleFilterCopyDefaults() C.SelectedNameplateStyleFilter = value UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateCreateFilter)
 StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplate.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.SelectedNameplateStyleFilter end, function(_, value) C.SelectedNameplateStyleFilter = value UpdateFilterGroup() end)
 StyleFitlers.selectFilter.sortByValue = true
 StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplate.filters do if not G.nameplate.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function() for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] then E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] = nil end end E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = nil C.SelectedNameplateStyleFilter = nil UpdateFilterGroup() NP:ConfigureAll() end)
@@ -326,6 +327,7 @@ StyleFitlers.triggers.args.combat.args.npcGroup.args.hasTitleNPC = ACH:Toggle(L[
 StyleFitlers.triggers.args.combat.args.npcGroup.args.noTitleNPC = ACH:Toggle(L["No NPC Title"], nil, 2)
 
 StyleFitlers.triggers.args.combat.args.questGroup = ACH:Group('', nil, 4, nil, nil, nil, nil, not E.Retail)
+StyleFitlers.triggers.args.combat.args.questGroup.inline = true
 StyleFitlers.triggers.args.combat.args.questGroup.args.isQuest = ACH:Toggle(L["Quest Unit"], nil, 1)
 StyleFitlers.triggers.args.combat.args.questGroup.args.notQuest = ACH:Toggle(L["Not Quest Unit"], nil, 2)
 StyleFitlers.triggers.args.combat.args.questGroup.args.questBoss = ACH:Toggle(L["Quest Boss"], nil, 3)
@@ -339,30 +341,25 @@ StyleFitlers.triggers.args.faction.args.types.args.Neutral = ACH:Toggle(L["Neutr
 
 StyleFitlers.triggers.args.class = ACH:Group(L["CLASS"], nil, 11, nil, nil, nil, DisabledFilter)
 
-do
-	local sortClassTable = CopyTable(CLASS_SORT_ORDER)
-	sort(sortClassTable, function(a, b) return a < b end)
+for index = 1, 12 do
+	local className, classTag, classID = GetClassInfo(index)
+	if classTag then
+		local coloredName = E:ClassColor(classTag)
+		coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
+		StyleFitlers.triggers.args.class.args[classTag] = ACH:Toggle(format('|c%s%s|r', coloredName, className), nil, tIndexOf(sortedClasses, classTag), nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.enabled end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger then triggers.class[classTag] = {} end if value then triggers.class[classTag].enabled = value else triggers.class[classTag] = nil end NP:ConfigureAll() end)
 
-	for index = 1, 12 do
-		local className, classTag, classID = GetClassInfo(index)
-		if classTag then
-			local coloredName = E:ClassColor(classTag)
-			coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
-			StyleFitlers.triggers.args.class.args[classTag] = ACH:Toggle(format('|c%s%s|r', coloredName, className), nil, tIndexOf(sortClassTable, classTag), nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.enabled end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger then triggers.class[classTag] = {} end if value then triggers.class[classTag].enabled = value else triggers.class[classTag] = nil end NP:ConfigureAll() end)
+		if E.Retail then
+			local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classTag) + 12, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
+			group.inline = true
 
-			if E.Retail then
-				local group = ACH:Group(className, nil, tIndexOf(sortClassTable, classTag) + 12, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
-				group.inline = true
+			for k = 1, GetNumSpecializationsForClassID(classID) do
+				local specID, name = GetSpecializationInfoForClassID(classID, k)
 
-				for k = 1, GetNumSpecializationsForClassID(classID) do
-					local specID, name = GetSpecializationInfoForClassID(classID, k)
-
-					local tagID = format('%s%s', classTag, specID)
-					group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger.specs then triggers.class[classTag].specs = {} end triggers.class[classTag].specs[specID] = value or nil if not next(triggers.class[classTag].specs) then triggers.class[classTag].specs = nil end NP:ConfigureAll() end)
-				end
-
-				StyleFitlers.triggers.args.class.args[format('%s%s', classTag, 'spec')] = group
+				local tagID = format('%s%s', classTag, specID)
+				group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger.specs then triggers.class[classTag].specs = {} end triggers.class[classTag].specs[specID] = value or nil if not next(triggers.class[classTag].specs) then triggers.class[classTag].specs = nil end NP:ConfigureAll() end)
 			end
+
+			StyleFitlers.triggers.args.class.args[format('%s%s', classTag, 'spec')] = group
 		end
 	end
 end
