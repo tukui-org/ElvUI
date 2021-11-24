@@ -7,7 +7,6 @@ local _G = _G
 local wipe, pairs, strmatch, strsplit, tostring = wipe, pairs, strmatch, strsplit, tostring
 local next, sort, tonumber, format = next, sort, tonumber, format
 
-local CopyTable = CopyTable
 local GetClassInfo = GetClassInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetInstanceInfo = GetInstanceInfo
@@ -25,7 +24,7 @@ local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
-local sortedClasses = CopyTable(CLASS_SORT_ORDER)
+local sortedClasses = E:CopyTable({}, CLASS_SORT_ORDER)
 sort(sortedClasses)
 
 C.SelectedNameplateStyleFilter = nil
