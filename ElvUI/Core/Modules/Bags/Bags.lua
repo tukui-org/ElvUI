@@ -1205,6 +1205,7 @@ function B:UpdateTokens()
 end
 
 function B:UpdateGoldText()
+	B.BagFrame.goldText:SetShown(B.db.moneyFormat ~= 'HIDE')
 	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
 
