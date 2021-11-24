@@ -1630,8 +1630,8 @@ function B:ConstructContainerFrame(name, isBank)
 		f.stackButton.ttText = L["Stack Items In Bank"]
 		f.stackButton.ttText2 = L["Hold Shift:"]
 		f.stackButton.ttText2desc = L["Stack Items To Bags"]
-		f.stackButton:SetScript('OnEnter', self.Tooltip_Show)
-		f.stackButton:SetScript('OnLeave', self.Tooltip_Hide)
+		f.stackButton:SetScript('OnEnter', B.Tooltip_Show)
+		f.stackButton:SetScript('OnLeave', GameTooltip_Hide)
 		f.stackButton:SetScript('OnClick', function()
 			if IsShiftKeyDown() then
 				B:CommandDecorator(B.Stack, 'bank bags')()
@@ -1728,7 +1728,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton:StyleButton(nil, true)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
-			f.keyButton:SetScript('OnLeave', B.Tooltip_Hide)
+			f.keyButton:SetScript('OnLeave', GameTooltip_Hide)
 			f.keyButton:SetScript('OnClick', function() B:ToggleBag(f.ContainerHolderByBagID[KEYRING_CONTAINER]) end)
 		end
 
