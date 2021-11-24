@@ -15,8 +15,7 @@ local function OnEvent(self)
 		minSpellPower = GetSpellBonusDamage(2)
 
 		for i = 3, MAX_SPELL_SCHOOLS do
-			local spellPower = GetSpellBonusDamage(i)
-			minSpellPower = min(minSpellPower, spellPower)
+			minSpellPower = min(minSpellPower, GetSpellBonusDamage(i))
 		end
 	else
 		minSpellPower = GetSpellBonusDamage(E.global.datatexts.settings.SpellPower.school)
@@ -31,8 +30,8 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	for i = 2, MAX_SPELL_SCHOOLS do
-		DT.tooltip:AddDoubleLine(_G["DAMAGE_SCHOOL"..i], GetSpellBonusDamage(i))
-		DT.tooltip:AddTexture("Interface\\PaperDollInfoFrame\\SpellSchoolIcon"..i)
+		DT.tooltip:AddDoubleLine(_G['DAMAGE_SCHOOL'..i], GetSpellBonusDamage(i))
+		DT.tooltip:AddTexture([[Interface\PaperDollInfoFrame\SpellSchoolIcon]]..i)
 	end
 
 	DT.tooltip:Show()
