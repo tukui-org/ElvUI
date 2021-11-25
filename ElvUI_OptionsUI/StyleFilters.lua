@@ -217,14 +217,18 @@ local function UpdateBossModAuras()
 	local filter = GetFilter()
 
 	E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.args = {}
+	E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.hidden = true
+	E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.hidden = true
 
 	if filter and filter.triggers and filter.triggers.bossMods and next(filter.triggers.bossMods.auras) then
+		E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.hidden = false
 		for aura in pairs(filter.triggers.bossMods.auras) do
 			E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
 		end
 	end
 
 	if filter and filter.triggers and filter.triggers.bossMods and next(NP.BossMods_TextureCache) then
+		E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.hidden = false
 		for texture in pairs(NP.BossMods_TextureCache) do
 			E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
 		end
@@ -599,7 +603,7 @@ StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["RAI
 StyleFitlers.triggers.args.instanceType.args.types.args.arena = ACH:Toggle(L["ARENA"], nil, 7, nil, nil, nil, nil, nil, nil, E.Classic)
 StyleFitlers.triggers.args.instanceType.args.types.args.pvp = ACH:Toggle(L["BATTLEFIELDS"], nil, 8)
 
-StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty = ACH:MultiSelect(L["DUNGEON_DIFFICULTY"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 10, { normal = GetDifficultyInfo(1), heroic = GetDifficultyInfo(2) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.dungeon[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.dungeon[key] = value NP:ConfigureAll() end, function() local filter = GetFilter() return filter.triggers.instanceType.party end)
+StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty = ACH:MultiSelect(L["DUNGEON_DIFFICULTY"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 10, { normal = GetDifficultyInfo(1), heroic = GetDifficultyInfo(2) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.dungeon[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.dungeon[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.party end)
 
 if E.Retail then
 	StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty.values.mythic = GetDifficultyInfo(23)
@@ -607,7 +611,7 @@ if E.Retail then
 	StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty.values.timewalking = GetDifficultyInfo(24)
 end
 
-StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty = ACH:MultiSelect(L["Raid Difficulty"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 11, { legacy10normal = GetDifficultyInfo(3), legacy25normal = GetDifficultyInfo(4) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.raid[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.raid[key] = value NP:ConfigureAll() end, function() local filter = GetFilter() return filter.triggers.instanceType.raid end)
+StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty = ACH:MultiSelect(L["Raid Difficulty"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 11, { legacy10normal = GetDifficultyInfo(3), legacy25normal = GetDifficultyInfo(4) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.raid[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.raid[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.raid end)
 
 if E.Retail then
 	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.lfr = GetDifficultyInfo(17)
