@@ -115,7 +115,7 @@ local function GetSpellFilterInfo(name)
 	local spellTexture = GetSpellTexture(spellID or spell)
 	local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 
-	return spellTexture, spellDescription
+	return spell, spellDescription
 end
 
 local function UpdateStyleLists()
