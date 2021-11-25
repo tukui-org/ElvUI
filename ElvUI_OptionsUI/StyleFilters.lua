@@ -107,7 +107,7 @@ local isSpellType = { casting = true, debuffs = true, buffs = true, cooldowns = 
 
 local function UpdateFilterList(which, initial, option, addOption)
 	local filter = GetFilter()
-	local newOption
+	local newOption, spell, spellDescription
 
 	if which == 'cooldowns' then
 		newOption = ACH:Select('', nil, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
@@ -124,13 +124,13 @@ local function UpdateFilterList(which, initial, option, addOption)
 			StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = false
 
 			for name in next, (filter.triggers[which][getOptionTable[which]] or filter.triggers[which]) do
-				local spell, spellDescription = GetSpellFilterInfo(name)
+				if isSpellType[which] then spell, spellDescription = GetSpellFilterInfo(name) end
 				newOption.name, newOption.desc = isSpellType[which] and spell or name, isSpellType[which] and spell and spellDescription or nil
 				StyleFitlers.triggers.args[which].args[getOptionTable[which]].args[name] = newOption
 			end
 		end
 	elseif not initial then
-		local spell, spellDescription = GetSpellFilterInfo(option)
+		if isSpellType[which] then spell, spellDescription = GetSpellFilterInfo(option) end
 		newOption.name, newOption.desc = isSpellType[which] and spell or option, isSpellType[which] and spell and spellDescription or nil
 
 		StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = not next(filter.triggers[which][getOptionTable[which]] or filter.triggers[which])
