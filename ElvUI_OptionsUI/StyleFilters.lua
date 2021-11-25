@@ -102,9 +102,8 @@ local function GetSpellFilterInfo(name)
 	return spell, spellDescription
 end
 
+local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true }
 local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
-local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true}
-
 local function UpdateFilterList(which, initial, opt, add)
 	local filter = GetFilter()
 	local option, spell, desc
@@ -147,23 +146,25 @@ local function UpdateFilterList(which, initial, opt, add)
 end
 
 local function UpdateBossModAuras()
+	local setting = StyleFitlers.triggers.args.bossModAuras.args
+	setting.auras.args = {}
+	setting.auras.hidden = true
+	setting.seenList.hidden = true
+
 	local filter = GetFilter()
-
-	StyleFitlers.triggers.args.bossModAuras.args.auras.args = {}
-	StyleFitlers.triggers.args.bossModAuras.args.auras.hidden = true
-	StyleFitlers.triggers.args.bossModAuras.args.seenList.hidden = true
-
 	if filter and filter.triggers and filter.triggers.bossMods and next(filter.triggers.bossMods.auras) then
-		StyleFitlers.triggers.args.bossModAuras.args.auras.hidden = false
+		setting.auras.hidden = false
+
 		for aura in pairs(filter.triggers.bossMods.auras) do
-			StyleFitlers.triggers.args.bossModAuras.args.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
+			setting.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
 		end
 	end
 
 	if filter and filter.triggers and filter.triggers.bossMods and next(NP.BossMods_TextureCache) then
-		StyleFitlers.triggers.args.bossModAuras.args.seenList.hidden = false
+		setting.seenList.hidden = false
+
 		for texture in pairs(NP.BossMods_TextureCache) do
-			StyleFitlers.triggers.args.bossModAuras.args.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
+			setting.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
 		end
 	end
 end
@@ -311,16 +312,13 @@ StyleFitlers.triggers.args.talent.args.enabled = ACH:Toggle(L["Enable"], nil, 1,
 StyleFitlers.triggers.args.talent.args.type = ACH:Toggle(L["Is PvP Talents"], nil, 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.type == 'pvp' end, function(_, value) local triggers = GetFilter(true) triggers.talent.type = value and 'pvp' or 'normal' NP:ConfigureAll() end, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
 StyleFitlers.triggers.args.talent.args.requireAll = ACH:Toggle(L["Require All"], nil, 3, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.requireAll end, function(_, value) local triggers = GetFilter(true) triggers.talent.requireAll = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
 
-do
-	for i = 1, 7 do
-		local tier, enable = 'tier'..i, 'tier'..i..'enabled'
-
-		StyleFitlers.triggers.args.talent.args[tier] = ACH:Group(L["Tier "..i], nil, i + 4)
-		StyleFitlers.triggers.args.talent.args[tier].inline = true
-		StyleFitlers.triggers.args.talent.args[tier].args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[enable] end, function(_, value) local triggers = GetFilter(true) triggers.talent[enable] = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
-		StyleFitlers.triggers.args.talent.args[tier].args.missing = ACH:Toggle(L["Missing"], L["Match this trigger if the talent is not selected"], 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].missing end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].missing = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
-		StyleFitlers.triggers.args.talent.args[tier].args.column = ACH:Select(L["TALENT"], L["Talent to match"], 3, function() local triggers = GetFilter(true) return GenerateValues(i, triggers.talent.type == 'pvp') end, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].column end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].column = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
-	end
+for i = 1, 7 do
+	local tier, enable = 'tier'..i, 'tier'..i..'enabled'
+	StyleFitlers.triggers.args.talent.args[tier] = ACH:Group(L["Tier "..i], nil, i + 4)
+	StyleFitlers.triggers.args.talent.args[tier].inline = true
+	StyleFitlers.triggers.args.talent.args[tier].args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[enable] end, function(_, value) local triggers = GetFilter(true) triggers.talent[enable] = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
+	StyleFitlers.triggers.args.talent.args[tier].args.missing = ACH:Toggle(L["Missing"], L["Match this trigger if the talent is not selected"], 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].missing end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].missing = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
+	StyleFitlers.triggers.args.talent.args[tier].args.column = ACH:Select(L["TALENT"], L["Talent to match"], 3, function() local triggers = GetFilter(true) return GenerateValues(i, triggers.talent.type == 'pvp') end, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].column end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].column = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
 end
 
 StyleFitlers.triggers.args.slots = ACH:Group(L["Slots"], nil, 13, nil, nil, nil, DisabledFilter)
@@ -349,7 +347,6 @@ StyleFitlers.triggers.args.slots.args.types.values = {
 	[_G.INVSLOT_TABARD] = L["INVTYPE_TABARD"], -- 19
 }
 
-
 StyleFitlers.triggers.args.items = ACH:Group(L["Items"], nil, 14, nil, nil, nil, DisabledFilter)
 StyleFitlers.triggers.args.items.args.addItem = ACH:Input(L["Add Item Name or ID"], L["Add a Item Name or ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = true UpdateFilterList('items', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
 StyleFitlers.triggers.args.items.args.removeItem = ACH:Select(L["Remove Item Name or ID"], L["Remove a Item Name or ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.items do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = nil UpdateFilterList('items', nil, value) NP:ConfigureAll() end)
@@ -360,14 +357,12 @@ StyleFitlers.triggers.args.items.args.list.inline = true
 
 StyleFitlers.triggers.args.role = ACH:Group(L["ROLE"], nil, 15, nil, nil, nil, DisabledFilter)
 
-do
-	for option, name in next, { myRole = L["Player"], unitRole = L["Unit"] } do
-		StyleFitlers.triggers.args.role.args[option] = ACH:Group(name, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[option] and triggers[option][info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers[option] then triggers[option] = {} end triggers[option][info[#info]] = value NP:ConfigureAll() end)
-		StyleFitlers.triggers.args.role.args[option].inline = true
+for option, name in next, { myRole = L["Player"], unitRole = L["Unit"] } do
+	StyleFitlers.triggers.args.role.args[option] = ACH:Group(name, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[option] and triggers[option][info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers[option] then triggers[option] = {} end triggers[option][info[#info]] = value NP:ConfigureAll() end)
+	StyleFitlers.triggers.args.role.args[option].inline = true
 
-		for role, roleLocale in next, { tank = L["TANK"], healer = L["Healer"], damager = L["DAMAGER"] } do
-			StyleFitlers.triggers.args.role.args[option].args[role] = ACH:Toggle(roleLocale)
-		end
+	for role, roleLocale in next, { tank = L["TANK"], healer = L["Healer"], damager = L["DAMAGER"] } do
+		StyleFitlers.triggers.args.role.args[option].args[role] = ACH:Toggle(roleLocale)
 	end
 end
 
@@ -456,7 +451,7 @@ StyleFitlers.triggers.args.bossModAuras.args.enable = ACH:Toggle(L["Enable"], ni
 StyleFitlers.triggers.args.bossModAuras.args.hasAura = ACH:Toggle(L["Has Aura"], nil, 1, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.bossMods.enable end)
 StyleFitlers.triggers.args.bossModAuras.args.missingAura = ACH:Toggle(L["Missing Aura"], nil, 2, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.bossMods.enable end)
 
-StyleFitlers.triggers.args.bossModAuras.args.seenList = ACH:Group(L["Seen Textures"], nil, 3, nil,  function(info) local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods.auras[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or triggers.bossMods.missingAura or triggers.bossMods.hasAura or not triggers.bossMods.enable end)
+StyleFitlers.triggers.args.bossModAuras.args.seenList = ACH:Group(L["Seen Textures"], nil, 3, nil, function(info) local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods.auras[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or triggers.bossMods.missingAura or triggers.bossMods.hasAura or not triggers.bossMods.enable end)
 StyleFitlers.triggers.args.bossModAuras.args.seenList.inline = true
 StyleFitlers.triggers.args.bossModAuras.args.seenList.args.desc = ACH:Description(L["This list will display any textures Boss Mods have sent to the Boss Mod Auras element during the current session."], 0, 'medium')
 
@@ -466,7 +461,7 @@ StyleFitlers.triggers.args.bossModAuras.args.changeList.args.addAura = ACH:Input
 StyleFitlers.triggers.args.bossModAuras.args.changeList.args.removeAura = ACH:Select(L["Remove Texture"], nil, 2, function() local triggers, values = GetFilter(true), {} for textureID in next, triggers.bossMods.auras do values[tostring(textureID)] = tostring(textureID) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) local textureID = tonumber(value) or value triggers.bossMods.auras[textureID] = nil UpdateBossModAuras() NP:ConfigureAll() end)
 StyleFitlers.triggers.args.bossModAuras.args.changeList.args.missingAuras = ACH:Toggle(L["Missing Aura"], nil, 2, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers.bossMods[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods[info[#info]] = value NP:ConfigureAll() end)
 
-StyleFitlers.triggers.args.bossModAuras.args.auras = ACH:Group('', nil, 50, nil,  function(info) local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods.auras[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or triggers.bossMods.missingAura or triggers.bossMods.hasAura or not triggers.bossMods.enable end)
+StyleFitlers.triggers.args.bossModAuras.args.auras = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods.auras[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or triggers.bossMods.missingAura or triggers.bossMods.hasAura or not triggers.bossMods.enable end)
 StyleFitlers.triggers.args.bossModAuras.args.auras.inline = true
 
 StyleFitlers.triggers.args.threat = ACH:Group(L["Threat"], nil, 25, nil, nil, nil, DisabledFilter)
@@ -566,7 +561,6 @@ else
 end
 
 local removeLocationTable = { removeMapID = 'mapIDs', removeInstanceID = 'instanceIDs', removeZoneName = 'zoneNames', removeSubZoneName = 'subZoneNames' }
-
 local function removeLocationList(info)
 	local vals = {}
 	local triggers = GetFilter(true)
@@ -656,6 +650,7 @@ local function actionSubGroup(info, ...)
 			return actions[info[#info-1]][info[#info]]
 		end
 	end
+
 	NP:ConfigureAll()
 end
 
