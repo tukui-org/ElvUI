@@ -102,39 +102,49 @@ local function GetSpellFilterInfo(name)
 	return spell, spellDescription
 end
 
-local getOptionTable = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
-local isSpellType = { casting = true, debuffs = true, buffs = true, cooldowns = true}
+local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
+local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true}
 
-local function UpdateFilterList(which, initial, option, addOption)
+local function UpdateFilterList(which, initial, opt, add)
 	local filter = GetFilter()
-	local newOption, spell, spellDescription
+	local option, spell, desc
 
 	if which == 'cooldowns' then
-		newOption = ACH:Select('', nil, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
+		option = ACH:Select('', nil, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
 	else
-		newOption = ACH:Toggle('', nil)
-		newOption.textWidth = true
+		option = ACH:Toggle('', nil)
+		option.textWidth = true
 	end
 
-	if initial and filter and filter.triggers[which] then
-		StyleFitlers.triggers.args[which].args[getOptionTable[which]].args = {}
-		StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = true
+	local subType = subTypes[which]
+	local isSpell = spellTypes[which]
+	local setting = StyleFitlers.triggers.args[which].args[subType]
+	local triggers = filter.triggers[which][subType] or filter.triggers[which]
 
-		if next(filter.triggers[which][getOptionTable[which]] or filter.triggers[which]) then
-			StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = false
+	setting.hidden = not next(triggers)
 
-			for name in next, (filter.triggers[which][getOptionTable[which]] or filter.triggers[which]) do
-				if isSpellType[which] then spell, spellDescription = GetSpellFilterInfo(name) end
-				newOption.name, newOption.desc = isSpellType[which] and spell or name, isSpellType[which] and spell and spellDescription or nil
-				StyleFitlers.triggers.args[which].args[getOptionTable[which]].args[name] = newOption
+	if initial and filter.triggers[which] then
+		setting.args = {}
+
+		for name in next, triggers do
+			if isSpell then
+				spell, desc = GetSpellFilterInfo(name)
+			else
+				spell, desc = nil, nil
 			end
+
+			option.name, option.desc = spell or name, spell and desc or nil
+
+			setting.args[name] = option
 		end
 	elseif not initial then
-		if isSpellType[which] then spell, spellDescription = GetSpellFilterInfo(option) end
-		newOption.name, newOption.desc = isSpellType[which] and spell or option, isSpellType[which] and spell and spellDescription or nil
+		if isSpell then
+			spell, desc = GetSpellFilterInfo(opt)
+		end
 
-		StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = not next(filter.triggers[which][getOptionTable[which]] or filter.triggers[which])
-		StyleFitlers.triggers.args[which].args[getOptionTable[which]].args[option] = addOption and newOption or nil
+		option.name, option.desc = spell or opt, spell and desc or nil
+
+		setting.args[opt] = add and option or nil
 	end
 end
 
