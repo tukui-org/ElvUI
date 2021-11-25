@@ -35,9 +35,6 @@ local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)
 end
 
-local function HideTip() _G.GameTooltip:Hide() end
-local function HideTip2() _G.GameTooltip:Hide(); ResetCursor() end
-
 local rolltypes = {[1] = 'need', [2] = 'greed', [3] = 'disenchant', [0] = 'pass'}
 local function SetTip(frame)
 	local GameTooltip = _G.GameTooltip
@@ -104,7 +101,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f.parent = parent
 	f.tiptext = tiptext
 	f:SetScript('OnEnter', SetTip)
-	f:SetScript('OnLeave', HideTip)
+	f:SetScript('OnLeave', GameTooltip_Hide)
 	f:SetScript('OnClick', ClickRoll)
 	f:SetMotionScriptsWhileDisabled(true)
 	local txt = f:CreateFontString(nil, 'ARTWORK')
@@ -128,7 +125,7 @@ function M:CreateRollFrame()
 	button:Size(FRAME_HEIGHT - (E.Border * 2), FRAME_HEIGHT - (E.Border * 2))
 	button:CreateBackdrop()
 	button:SetScript('OnEnter', SetItemTip)
-	button:SetScript('OnLeave', HideTip2)
+	button:SetScript('OnLeave', GameTooltip_Hide)
 	button:SetScript('OnUpdate', ItemOnUpdate)
 	button:SetScript('OnClick', LootClick)
 	frame.button = button
