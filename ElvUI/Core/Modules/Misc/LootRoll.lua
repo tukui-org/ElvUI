@@ -8,6 +8,7 @@ local ChatEdit_InsertLink = ChatEdit_InsertLink
 local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
 local DressUpItemLink = DressUpItemLink
+local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
