@@ -314,11 +314,13 @@ StyleFitlers.triggers.args.talent.args.requireAll = ACH:Toggle(L["Require All"],
 
 for i = 1, 7 do
 	local tier, enable = 'tier'..i, 'tier'..i..'enabled'
-	StyleFitlers.triggers.args.talent.args[tier] = ACH:Group(L["Tier "..i], nil, i + 4)
-	StyleFitlers.triggers.args.talent.args[tier].inline = true
-	StyleFitlers.triggers.args.talent.args[tier].args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[enable] end, function(_, value) local triggers = GetFilter(true) triggers.talent[enable] = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
-	StyleFitlers.triggers.args.talent.args[tier].args.missing = ACH:Toggle(L["Missing"], L["Match this trigger if the talent is not selected"], 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].missing end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].missing = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
-	StyleFitlers.triggers.args.talent.args[tier].args.column = ACH:Select(L["TALENT"], L["Talent to match"], 3, function() local triggers = GetFilter(true) return GenerateValues(i, triggers.talent.type == 'pvp') end, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].column end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].column = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
+	local option = ACH:Group(L["Tier "..i], nil, i + 4)
+	option.args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[enable] end, function(_, value) local triggers = GetFilter(true) triggers.talent[enable] = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
+	option.args.missing = ACH:Toggle(L["Missing"], L["Match this trigger if the talent is not selected"], 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].missing end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].missing = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
+	option.args.column = ACH:Select(L["TALENT"], L["Talent to match"], 3, function() local triggers = GetFilter(true) return GenerateValues(i, triggers.talent.type == 'pvp') end, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].column end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].column = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
+	option.inline = true
+
+	StyleFitlers.triggers.args.talent.args[tier] = option
 end
 
 StyleFitlers.triggers.args.slots = ACH:Group(L["Slots"], nil, 13, nil, nil, nil, DisabledFilter)
@@ -418,24 +420,25 @@ StyleFitlers.triggers.args.debuffs = ACH:Group(L["Debuffs"], nil, 22, nil, funct
 do
 	local stackThreshold
 	for _, auraType in next, { 'buffs', 'debuffs' } do
-		StyleFitlers.triggers.args[auraType].args.minTimeLeft = ACH:Range(L["Minimum Time Left"], L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
-		StyleFitlers.triggers.args[auraType].args.maxTimeLeft = ACH:Range(L["Maximum Time Left"], L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
-		StyleFitlers.triggers.args[auraType].args.spacer1 = ACH:Spacer(3, 'full')
-		StyleFitlers.triggers.args[auraType].args.mustHaveAll = ACH:Toggle(L["Require All"], L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."], 4)
-		StyleFitlers.triggers.args[auraType].args.missing = ACH:Toggle(L["Missing"], L["If enabled then it checks if auras are missing instead of being present on the unit."], 5, nil, nil, nil, nil, nil, DisabledFilter)
-		StyleFitlers.triggers.args[auraType].args.hasStealable = ACH:Toggle(L["Has Stealable"], L["If enabled then the filter will only activate when the unit has a stealable buff(s)."], 6)
-		StyleFitlers.triggers.args[auraType].args.hasNoStealable = ACH:Toggle(L["Has No Stealable"], L["If enabled then the filter will only activate when the unit has no stealable buff(s)."], 7)
-		StyleFitlers.triggers.args[auraType].args.fromMe = ACH:Toggle(L["From Me"], nil, 8)
-		StyleFitlers.triggers.args[auraType].args.fromPet = ACH:Toggle(L["From Pet"], nil, 9)
+		local option = StyleFitlers.triggers.args[auraType].args
+		option.minTimeLeft = ACH:Range(L["Minimum Time Left"], L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
+		option.maxTimeLeft = ACH:Range(L["Maximum Time Left"], L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
+		option.spacer1 = ACH:Spacer(3, 'full')
+		option.mustHaveAll = ACH:Toggle(L["Require All"], L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."], 4)
+		option.missing = ACH:Toggle(L["Missing"], L["If enabled then it checks if auras are missing instead of being present on the unit."], 5, nil, nil, nil, nil, nil, DisabledFilter)
+		option.hasStealable = ACH:Toggle(L["Has Stealable"], L["If enabled then the filter will only activate when the unit has a stealable buff(s)."], 6)
+		option.hasNoStealable = ACH:Toggle(L["Has No Stealable"], L["If enabled then the filter will only activate when the unit has no stealable buff(s)."], 7)
+		option.fromMe = ACH:Toggle(L["From Me"], nil, 8)
+		option.fromPet = ACH:Toggle(L["From Pet"], nil, 9)
 
-		StyleFitlers.triggers.args[auraType].args.changeList = ACH:Group(L["Add / Remove"], nil, 10)
-		StyleFitlers.triggers.args[auraType].args.changeList.inline = true
-		StyleFitlers.triggers.args[auraType].args.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) if stackThreshold then value = value .. '\n' .. stackThreshold end local triggers = GetFilter(true) triggers[auraType].names[value] = true stackThreshold = nil UpdateFilterList(auraType, nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
-		StyleFitlers.triggers.args[auraType].args.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in pairs(triggers[auraType].names) do values[name] = format('%s (%d)', strsplit('\n', name)) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers[auraType].names[value] = nil UpdateFilterList(auraType, nil, value) end)
-		StyleFitlers.triggers.args[auraType].args.changeList.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."], 3, { min = 1, max = 250, softMax = 100, step = 1 }, nil, function() return stackThreshold or 1 end, function(_, value) stackThreshold = (value > 1 and value) or nil end)
+		option.changeList = ACH:Group(L["Add / Remove"], nil, 10)
+		option.changeList.inline = true
+		option.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) if stackThreshold then value = value .. '\n' .. stackThreshold end local triggers = GetFilter(true) triggers[auraType].names[value] = true stackThreshold = nil UpdateFilterList(auraType, nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
+		option.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in pairs(triggers[auraType].names) do values[name] = format('%s (%d)', strsplit('\n', name)) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers[auraType].names[value] = nil UpdateFilterList(auraType, nil, value) end)
+		option.changeList.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."], 3, { min = 1, max = 250, softMax = 100, step = 1 }, nil, function() return stackThreshold or 1 end, function(_, value) stackThreshold = (value > 1 and value) or nil end)
 
-		StyleFitlers.triggers.args[auraType].args.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers[auraType].names and triggers[auraType].names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[auraType].names[info[#info]] = value NP:ConfigureAll() end, nil, true)
-		StyleFitlers.triggers.args[auraType].args.names.inline = true
+		option.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers[auraType].names and triggers[auraType].names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[auraType].names[info[#info]] = value NP:ConfigureAll() end, nil, true)
+		option.names.inline = true
 	end
 end
 
