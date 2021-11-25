@@ -116,11 +116,9 @@ local function UpdateFilterList(which, initial, opt, add)
 		option.textWidth = true
 	end
 
-	local subType = subTypes[which]
-	local isSpell = spellTypes[which]
+	local subType, isSpell = subTypes[which], spellTypes[which]
 	local setting = StyleFitlers.triggers.args[which].args[subType]
 	local triggers = filter.triggers[which][subType] or filter.triggers[which]
-
 	setting.hidden = not next(triggers)
 
 	if initial and filter.triggers[which] then
