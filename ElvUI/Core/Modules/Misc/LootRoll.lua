@@ -137,6 +137,10 @@ function M:CreateRollFrame()
 	button.icon:SetAllPoints()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 
+	button.stack = button:CreateFontString(nil, 'OVERLAY')
+	button.stack:SetPoint('BOTTOMRIGHT', -1, 1)
+	button.stack:FontTemplate(nil, nil, 'OUTLINE')
+
 	local tfade = frame:CreateTexture(nil, 'BORDER')
 	tfade:Point('TOPLEFT', frame, 'TOPLEFT', 4, 0)
 	tfade:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -4, 0)
@@ -216,8 +220,10 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.greed:SetText(0)
 	f.pass:SetText(0)
 
-	local texture, name, _, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
+	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
+
 	f.button.icon:SetTexture(texture)
+	f.button.stack:SetText(count > 1 and count or '')
 	f.button.link = GetLootRollItemLink(rollID)
 
 	f.needbtn:SetEnabled(canNeed)
