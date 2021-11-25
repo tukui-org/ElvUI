@@ -94,7 +94,7 @@ local function UpdateNameItemsList(which)
 	end
 end
 
-local function GetSoellInfo(name)
+local function GetSpellFilterInfo(name)
 	local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
 	local spellID = tonumber(spell)
 	if spellID then
@@ -129,7 +129,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.casting.args.spells.hidden = false
 
 			for name in pairs(filter.triggers.casting.spells) do
-				local spell, spellDescription = GetSoellInfo(name)
+				local spell, spellDescription = GetSpellFilterInfo(name)
 
 				StyleFitlers.triggers.args.casting.args.spells.args[name] = ACH:Toggle(spell, spellDescription)
 			end
@@ -144,7 +144,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.cooldowns.args.names.hidden = false
 
 			for name in pairs(filter.triggers.cooldowns.names) do
-				local spell, spellDescription = GetSoellInfo(name)
+				local spell, spellDescription = GetSpellFilterInfo(name)
 
 				StyleFitlers.triggers.args.cooldowns.args.names.args[name] = ACH:Select(spell, spellDescription, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
 			end
@@ -159,7 +159,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.buffs.args.names.hidden = false
 
 			for name in pairs(filter.triggers.buffs.names) do
-				local spell, spellDescription = GetSoellInfo(name)
+				local spell, spellDescription = GetSpellFilterInfo(name)
 
 				StyleFitlers.triggers.args.buffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
 				StyleFitlers.triggers.args.buffs.args.names.args[name].textWidth = true
@@ -175,7 +175,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.debuffs.args.names.hidden = false
 
 			for name in pairs(filter.triggers.debuffs.names) do
-				local spell, spellDescription = GetSoellInfo(name)
+				local spell, spellDescription = GetSpellFilterInfo(name)
 
 				StyleFitlers.triggers.args.debuffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
 				StyleFitlers.triggers.args.debuffs.args.names.args[name].textWidth = true
