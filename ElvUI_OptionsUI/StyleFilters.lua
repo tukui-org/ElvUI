@@ -78,22 +78,48 @@ local function GenerateValues(tier, isPvP)
 	return values
 end
 
-local function UpdateStyleLists()
+local function UpdateNameItemsList(which)
 	local filter = GetFilter()
-	for _, which in next, {'names', 'items'} do
-		if filter and filter.triggers and filter.triggers[which] then
-			StyleFitlers.triggers.args[which].args.list.args = {}
-			StyleFitlers.triggers.args[which].args.list.hidden = true
+	if filter and filter.triggers and filter.triggers[which] then
+		StyleFitlers.triggers.args[which].args.list.args = {}
+		StyleFitlers.triggers.args[which].args.list.hidden = true
 
-			if next(filter.triggers[which]) then
-				StyleFitlers.triggers.args[which].args.list.hidden = false
+		if next(filter.triggers[which]) then
+			StyleFitlers.triggers.args[which].args.list.hidden = false
 
-				for name in pairs(filter.triggers[which]) do
-					StyleFitlers.triggers.args[which].args.list.args[name] = ACH:Toggle(name)
+			for name in pairs(filter.triggers[which]) do
+				StyleFitlers.triggers.args[which].args.list.args[name] = ACH:Toggle(name)
+			end
+		end
+	end
+end
+
+local function GetSoellInfo(name)
+	local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
+	local spellID = tonumber(spell)
+	if spellID then
+		local spellName = GetSpellInfo(spellID)
+		if spellName then
+			if DisabledFilter() then
+				spell = format('%s (%d)', spellName, spellID)
+			else
+				spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
+
+				if stacks ~= '' then
+					spell = format('%s|cFF999999%s|r', spell, ' x'..stacks)
 				end
 			end
 		end
 	end
+
+	local spellTexture = GetSpellTexture(spellID or spell)
+	local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
+
+	return spellTexture, spellDescription
+end
+
+local function UpdateStyleLists()
+	local filter = GetFilter()
 
 	if filter and filter.triggers.casting and filter.triggers.casting.spells then
 		StyleFitlers.triggers.args.casting.args.spells.args = {}
@@ -103,20 +129,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.casting.args.spells.hidden = false
 
 			for name in pairs(filter.triggers.casting.spells) do
-				local spell, spellID = name, tonumber(name)
-				if spellID then
-					local spellName = GetSpellInfo(spellID)
-					if spellName then
-						if DisabledFilter() then
-							spell = format('%s (%d)', spellName, spellID)
-						else
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
-						end
-					end
-				end
-
-				local spellTexture = GetSpellTexture(spellID or spell)
-				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
+				local spell, spellDescription = GetSoellInfo(name)
 
 				StyleFitlers.triggers.args.casting.args.spells.args[name] = ACH:Toggle(spell, spellDescription)
 			end
@@ -131,20 +144,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.cooldowns.args.names.hidden = false
 
 			for name in pairs(filter.triggers.cooldowns.names) do
-				local spell, spellID = name, tonumber(name)
-				if spellID then
-					local spellName = GetSpellInfo(spellID)
-					if spellName then
-						if DisabledFilter() then
-							spell = format('%s (%d)', spellName, spellID)
-						else
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
-						end
-					end
-				end
-
-				local spellTexture = GetSpellTexture(spellID or spell)
-				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
+				local spell, spellDescription = GetSoellInfo(name)
 
 				StyleFitlers.triggers.args.cooldowns.args.names.args[name] = ACH:Select(spell, spellDescription, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
 			end
@@ -159,21 +159,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.buffs.args.names.hidden = false
 
 			for name in pairs(filter.triggers.buffs.names) do
-				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
-				local spellID = tonumber(spell)
-				if spellID then
-					local spellName = GetSpellInfo(spellID)
-					if spellName then
-						if DisabledFilter() then
-							spell = format('%s (%d)', spellName, spellID)
-						else
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r', spellName, spellID, (stacks ~= '' and ' x'..stacks) or '')
-						end
-					end
-				end
-
-				local spellTexture = GetSpellTexture(spellID or spell)
-				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
+				local spell, spellDescription = GetSoellInfo(name)
 
 				StyleFitlers.triggers.args.buffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
 				StyleFitlers.triggers.args.buffs.args.names.args[name].textWidth = true
@@ -189,21 +175,7 @@ local function UpdateStyleLists()
 			StyleFitlers.triggers.args.debuffs.args.names.hidden = false
 
 			for name in pairs(filter.triggers.debuffs.names) do
-				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
-				local spellID = tonumber(spell)
-				if spellID then
-					local spellName = GetSpellInfo(spellID)
-					if spellName then
-						if DisabledFilter() then
-							spell = format('%s (%d)', spellName, spellID)
-						else
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r', spellName, spellID, (stacks ~= '' and ' x'..stacks) or '')
-						end
-					end
-				end
-
-				local spellTexture = GetSpellTexture(spellID or spell)
-				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
+				local spell, spellDescription = GetSoellInfo(name)
 
 				StyleFitlers.triggers.args.debuffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
 				StyleFitlers.triggers.args.debuffs.args.names.args[name].textWidth = true
@@ -213,6 +185,8 @@ local function UpdateStyleLists()
 end
 
 local function UpdateFilterGroup() -- Check all instances of this function call
+	UpdateNameItemsList('names')
+	UpdateNameItemsList('items')
 	UpdateStyleLists()
 end
 
