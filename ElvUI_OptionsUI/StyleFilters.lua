@@ -181,38 +181,14 @@ end
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplate.filters[value]) end
 local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
 
-local function triggersMainGroup(info, value)
-	local triggers = GetFilter(true)
-
-	if value ~= nil then
-		triggers[info[#info]] = value
-		NP:ConfigureAll()
-	else
-		return triggers[info[#info]]
-	end
-end
-
-local function triggersSubGroup(info, value)
-	local triggers = GetFilter(true)
-	local subGroup = info[#info - 1]
-
-	if value ~= nil then
-		triggers[subGroup] = triggers[subGroup] or {}
-		triggers[subGroup][info[#info]] = value
-		NP:ConfigureAll()
-	else
-		return triggers[subGroup] and triggers[subGroup][info[#info]]
-	end
-end
-
 StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplate.filters[value] = NP:StyleFilterCopyDefaults() C.SelectedNameplateStyleFilter = value UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateCreateFilter)
 StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplate.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.SelectedNameplateStyleFilter end, function(_, value) C.SelectedNameplateStyleFilter = value UpdateFilterGroup() end)
 StyleFitlers.selectFilter.sortByValue = true
-StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplate.filters do if not G.nameplate.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function() for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] then E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] = nil end end E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = nil C.SelectedNameplateStyleFilter = nil NP:ConfigureAll() end)
+StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplate.filters do if not G.nameplate.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function() for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] then E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] = nil end end E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = nil C.SelectedNameplateStyleFilter = nil UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.SelectedNameplateStyleFilter end)
 StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.SelectedNameplateStyleFilter] = E.db.nameplates.filters[C.SelectedNameplateStyleFilter] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value NP:ConfigureAll() end)
-StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers.priority or 1 end, triggersMainGroup, DisabledFilter)
+StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) triggers.priority = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = G.nameplate.filters[C.SelectedNameplateStyleFilter] and E:CopyTable({}, G.nameplate.filters[C.SelectedNameplateStyleFilter]) or NP:StyleFilterCopyDefaults() UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names = ACH:Group(L["Name"], nil, 6, nil, nil, nil, DisabledFilter)
@@ -220,10 +196,10 @@ StyleFitlers.triggers.args.names.args.addName = ACH:Input(L["Add Name or NPC ID"
 StyleFitlers.triggers.args.names.args.removeName = ACH:Select(L["Remove Name or NPC ID"], L["Remove a Name or NPC ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.names do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = nil UpdateFilterList('names', nil, value) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.names.args.negativeMatch = ACH:Toggle(L["Negative Match"], L["Match if Name or NPC ID is NOT in the list."], 3, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end)
 
-StyleFitlers.triggers.args.names.args.list = ACH:Group('', nil, 50, nil, triggersSubGroup, triggersSubGroup, nil, true)
+StyleFitlers.triggers.args.names.args.list = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.names and triggers.names[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.names then triggers.names = {} end triggers.names[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFitlers.triggers.args.names.args.list.inline = true
 
-StyleFitlers.triggers.args.targeting = ACH:Group(L["Targeting"], nil, 7, nil, triggersMainGroup, triggersMainGroup, DisabledFilter)
+StyleFitlers.triggers.args.targeting = ACH:Group(L["Targeting"], nil, 7, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.targeting.args.types = ACH:Group('', nil, 1)
 StyleFitlers.triggers.args.targeting.args.types.inline = true
 StyleFitlers.triggers.args.targeting.args.types.args.isTarget = ACH:Toggle(L["Is Targeted"], L["If enabled then the filter will only activate when you are targeting the unit."], 1)
@@ -234,7 +210,7 @@ StyleFitlers.triggers.args.targeting.args.types.args.notTargetMe = ACH:Toggle(L[
 StyleFitlers.triggers.args.targeting.args.types.args.isFocus = ACH:Toggle(L["Is Focused"], L["If enabled then the filter will only activate when you are focusing the unit."], 7)
 StyleFitlers.triggers.args.targeting.args.types.args.notFocus = ACH:Toggle(L["Not Focused"], L["If enabled then the filter will only activate when you are not focusing the unit."], 8)
 
-StyleFitlers.triggers.args.casting = ACH:Group(L["Casting"], nil, 8, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.casting = ACH:Group(L["Casting"], nil, 8, nil, function(info) local triggers = GetFilter(true) return triggers.casting[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.casting[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.casting.args.types = ACH:Group('', nil, 1)
 StyleFitlers.triggers.args.casting.args.types.inline = true
 StyleFitlers.triggers.args.casting.args.types.args.interruptible = ACH:Toggle(L["Interruptible"], L["If enabled then the filter will only activate if the unit is casting interruptible spells."], 1)
@@ -252,10 +228,10 @@ StyleFitlers.triggers.args.casting.args.notSpell = ACH:Toggle(L["Not Spell"], L[
 StyleFitlers.triggers.args.casting.args.description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10)
 StyleFitlers.triggers.args.casting.args.description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11)
 
-StyleFitlers.triggers.args.casting.args.spells = ACH:Group('', nil, 50, nil, triggersSubGroup, triggersSubGroup, nil, true)
+StyleFitlers.triggers.args.casting.args.spells = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.casting.spells and triggers.casting.spells[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.casting.spells then triggers.casting.spells = {} end triggers.casting.spells[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFitlers.triggers.args.casting.args.spells.inline = true
 
-StyleFitlers.triggers.args.combat = ACH:Group(L["Unit Conditions"], nil, 9, nil, triggersMainGroup, triggersMainGroup, DisabledFilter)
+StyleFitlers.triggers.args.combat = ACH:Group(L["Unit Conditions"], nil, 9, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 
 StyleFitlers.triggers.args.combat.args.playerGroup = ACH:Group(L["Player"], nil, 1)
 StyleFitlers.triggers.args.combat.args.playerGroup.inline = true
@@ -299,7 +275,7 @@ StyleFitlers.triggers.args.combat.args.questGroup.args.isQuest = ACH:Toggle(L["Q
 StyleFitlers.triggers.args.combat.args.questGroup.args.notQuest = ACH:Toggle(L["Not Quest Unit"], nil, 2)
 StyleFitlers.triggers.args.combat.args.questGroup.args.questBoss = ACH:Toggle(L["Quest Boss"], nil, 3)
 
-StyleFitlers.triggers.args.faction = ACH:Group(L["Unit Faction"], nil, 10, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.faction = ACH:Group(L["Unit Faction"], nil, 10, nil, function(info) local triggers = GetFilter(true) return triggers.faction[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.faction[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.faction.args.types = ACH:Group('', nil, 2)
 StyleFitlers.triggers.args.faction.args.types.inline = true
 StyleFitlers.triggers.args.faction.args.types.args.Alliance = ACH:Toggle(L["Alliance"], nil, 1)
@@ -332,14 +308,14 @@ for index = 1, 12 do
 end
 
 StyleFitlers.triggers.args.talent = ACH:Group(L["TALENT"], nil, 12, nil, nil, nil, DisabledFilter, not E.Retail)
-StyleFitlers.triggers.args.talent.args.enabled = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, triggersSubGroup, triggersSubGroup)
+StyleFitlers.triggers.args.talent.args.enabled = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.enabled end, function(_, value) local triggers = GetFilter(true) triggers.talent.enabled = value NP:ConfigureAll() end)
 StyleFitlers.triggers.args.talent.args.type = ACH:Toggle(L["Is PvP Talents"], nil, 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.type == 'pvp' end, function(_, value) local triggers = GetFilter(true) triggers.talent.type = value and 'pvp' or 'normal' NP:ConfigureAll() end, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
-StyleFitlers.triggers.args.talent.args.requireAll = ACH:Toggle(L["Require All"], nil, 3, nil, nil, nil, triggersSubGroup, triggersSubGroup, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
+StyleFitlers.triggers.args.talent.args.requireAll = ACH:Toggle(L["Require All"], nil, 3, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.requireAll end, function(_, value) local triggers = GetFilter(true) triggers.talent.requireAll = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
 
 for i = 1, 7 do
 	local tier, enable = 'tier'..i, 'tier'..i..'enabled'
 	local option = ACH:Group(L["Tier "..i], nil, i + 4)
-	option.args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, triggersSubGroup, triggersSubGroup, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
+	option.args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[enable] end, function(_, value) local triggers = GetFilter(true) triggers.talent[enable] = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
 	option.args.missing = ACH:Toggle(L["Missing"], L["Match this trigger if the talent is not selected"], 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].missing end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].missing = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
 	option.args.column = ACH:Select(L["TALENT"], L["Talent to match"], 3, function() local triggers = GetFilter(true) return GenerateValues(i, triggers.talent.type == 'pvp') end, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].column end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].column = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
 	option.inline = true
@@ -378,13 +354,13 @@ StyleFitlers.triggers.args.items.args.addItem = ACH:Input(L["Add Item Name or ID
 StyleFitlers.triggers.args.items.args.removeItem = ACH:Select(L["Remove Item Name or ID"], L["Remove a Item Name or ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.items do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = nil UpdateFilterList('items', nil, value) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.items.args.negativeMatch = ACH:Toggle(L["Negative Match"], L["Match if Item Name or ID is NOT in the list."], 3, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end)
 
-StyleFitlers.triggers.args.items.args.list = ACH:Group('', nil, 50, nil, triggersSubGroup, triggersSubGroup, nil, true)
+StyleFitlers.triggers.args.items.args.list = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.items and triggers.items[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.items then triggers.items = {} end triggers.items[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFitlers.triggers.args.items.args.list.inline = true
 
 StyleFitlers.triggers.args.role = ACH:Group(L["ROLE"], nil, 15, nil, nil, nil, DisabledFilter)
 
 for option, name in next, { myRole = L["Player"], unitRole = L["Unit"] } do
-	StyleFitlers.triggers.args.role.args[option] = ACH:Group(name, nil, nil, nil, triggersSubGroup, triggersSubGroup)
+	StyleFitlers.triggers.args.role.args[option] = ACH:Group(name, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[option] and triggers[option][info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers[option] then triggers[option] = {} end triggers[option][info[#info]] = value NP:ConfigureAll() end)
 	StyleFitlers.triggers.args.role.args[option].inline = true
 
 	for role, roleLocale in next, { tank = L["TANK"], healer = L["Healer"], damager = L["DAMAGER"] } do
@@ -392,7 +368,7 @@ for option, name in next, { myRole = L["Player"], unitRole = L["Unit"] } do
 	end
 end
 
-StyleFitlers.triggers.args.classification = ACH:Group(L["Classification"], nil, 16, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.classification = ACH:Group(L["Classification"], nil, 16, nil, function(info) local triggers = GetFilter(true) return triggers.classification[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.classification[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.classification.args.types = ACH:Group('', nil, 2)
 StyleFitlers.triggers.args.classification.args.types.inline = true
 StyleFitlers.triggers.args.classification.args.types.args.worldboss = ACH:Toggle(L["RAID_INFO_WORLD_BOSS"], nil, 1)
@@ -403,19 +379,19 @@ StyleFitlers.triggers.args.classification.args.types.args.trivial = ACH:Toggle(L
 StyleFitlers.triggers.args.classification.args.types.args.elite = ACH:Toggle(L["ELITE"], nil, 6)
 StyleFitlers.triggers.args.classification.args.types.args.minus = ACH:Toggle(L["Minus"], nil, 7)
 
-StyleFitlers.triggers.args.health = ACH:Group(L["Health Threshold"], nil, 17, nil, triggersMainGroup, triggersMainGroup, DisabledFilter)
+StyleFitlers.triggers.args.health = ACH:Group(L["Health Threshold"], nil, 17, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.health.args.healthThreshold = ACH:Toggle(L["Enable"], nil, 1)
 StyleFitlers.triggers.args.health.args.healthUsePlayer = ACH:Toggle(L["Player Health"], L["Enabling this will check your health amount."], 2, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return not triggers.healthThreshold end)
 StyleFitlers.triggers.args.health.args.underHealthThreshold = ACH:Range(L["Under Health Threshold"], L["If this threshold is used then the health of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."], 4, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function() local triggers = GetFilter(true) return triggers.underHealthThreshold or 0 end, nil, function() local triggers = GetFilter(true) return not triggers.healthThreshold end)
 StyleFitlers.triggers.args.health.args.overHealthThreshold = ACH:Range(L["Over Health Threshold"], L["If this threshold is used then the health of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."], 5, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function() local triggers = GetFilter(true) return triggers.overHealthThreshold or 0 end, nil, function() local triggers = GetFilter(true) return not triggers.healthThreshold end)
 
-StyleFitlers.triggers.args.power = ACH:Group(L["Power Threshold"], nil, 18, nil, triggersMainGroup, triggersMainGroup, DisabledFilter)
+StyleFitlers.triggers.args.power = ACH:Group(L["Power Threshold"], nil, 18, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.power.args.powerThreshold = ACH:Toggle(L["Enable"], nil, 1)
 StyleFitlers.triggers.args.power.args.powerUsePlayer = ACH:Toggle(L["Player Power"], L["Enabling this will check your power amount."], 2, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return not triggers.powerThreshold end)
 StyleFitlers.triggers.args.power.args.underPowerThreshold = ACH:Range(L["Under Power Threshold"], L["If this threshold is used then the power of the unit needs to be lower than this value in order for the filter to activate. Set to 0 to disable."], 4, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function() local triggers = GetFilter(true) return triggers.underPowerThreshold or 0 end, nil, function() local triggers = GetFilter(true) return not triggers.powerThreshold end)
 StyleFitlers.triggers.args.power.args.overPowerThreshold = ACH:Range(L["Over Power Threshold"], L["If this threshold is used then the power of the unit needs to be higher than this value in order for the filter to activate. Set to 0 to disable."], 4, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function() local triggers = GetFilter(true) return triggers.overPowerThreshold or 0 end, nil, function() local triggers = GetFilter(true) return not triggers.powerThreshold end)
 
-StyleFitlers.triggers.args.keyMod = ACH:Group(L["Key Modifiers"], nil, 19, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.keyMod = ACH:Group(L["Key Modifiers"], nil, 19, nil, function(info) local triggers = GetFilter(true) return triggers.keyMod and triggers.keyMod[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.keyMod[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.keyMod.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 StyleFitlers.triggers.args.keyMod.args.types = ACH:Group('', nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.keyMod.enable end)
 StyleFitlers.triggers.args.keyMod.args.types.inline = true
@@ -430,7 +406,7 @@ StyleFitlers.triggers.args.keyMod.args.types.args.RightShift = ACH:Toggle(L["Rig
 StyleFitlers.triggers.args.keyMod.args.types.args.RightAlt = ACH:Toggle(L["Right Alt"], nil, 11)
 StyleFitlers.triggers.args.keyMod.args.types.args.RightControl = ACH:Toggle(L["Right Control"], nil, 12)
 
-StyleFitlers.triggers.args.levels = ACH:Group(L["Level"], nil, 20, nil, triggersMainGroup, triggersMainGroup, DisabledFilter)
+StyleFitlers.triggers.args.levels = ACH:Group(L["Level"], nil, 20, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.levels.args.level = ACH:Toggle(L["Enable"], nil, 1)
 StyleFitlers.triggers.args.levels.args.mylevel = ACH:Toggle(L["Match Player Level"], L["If enabled then the filter will only activate if the level of the unit matches your own."], 2, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return not triggers.level end)
 StyleFitlers.triggers.args.levels.args.spacer1 = ACH:Description(L["LEVEL_BOSS"], 3)
@@ -438,8 +414,8 @@ StyleFitlers.triggers.args.levels.args.minlevel = ACH:Range(L["Minimum Level"], 
 StyleFitlers.triggers.args.levels.args.maxlevel = ACH:Range(L["Maximum Level"], L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."], 5, { min = -1, max = _G.MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
 StyleFitlers.triggers.args.levels.args.curlevel = ACH:Range(L["Current Level"], L["If enabled then the filter will only activate if the level of the unit matches this value."], 6, { min = -1, max = _G.MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
 
-StyleFitlers.triggers.args.buffs = ACH:Group(L["Buffs"], nil, 21, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
-StyleFitlers.triggers.args.debuffs = ACH:Group(L["Debuffs"], nil, 22, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.buffs = ACH:Group(L["Buffs"], nil, 21, nil, function(info) local triggers = GetFilter(true) return triggers.buffs and triggers.buffs[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.buffs[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.triggers.args.debuffs = ACH:Group(L["Debuffs"], nil, 22, nil, function(info) local triggers = GetFilter(true) return triggers.debuffs and triggers.debuffs[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.debuffs[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 
 do
 	local stackThreshold
@@ -492,8 +468,8 @@ StyleFitlers.triggers.args.bossModAuras.args.auras = ACH:Group('', nil, 50, nil,
 StyleFitlers.triggers.args.bossModAuras.args.auras.inline = true
 
 StyleFitlers.triggers.args.threat = ACH:Group(L["Threat"], nil, 25, nil, nil, nil, DisabledFilter)
-StyleFitlers.triggers.args.threat.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, triggersSubGroup, triggersSubGroup)
-StyleFitlers.triggers.args.threat.args.types = ACH:Group('', nil, 1, nil, triggersSubGroup, triggersSubGroup, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.threat.enable end)
+StyleFitlers.triggers.args.threat.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.threat and triggers.threat.enable end, function(_, value) local triggers = GetFilter(true) triggers.threat.enable = value NP:ConfigureAll() end)
+StyleFitlers.triggers.args.threat.args.types = ACH:Group('', nil, 1, nil, function(info) local triggers = GetFilter(true) return triggers.threat[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.threat[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.threat.enable end)
 StyleFitlers.triggers.args.threat.args.types.inline = true
 StyleFitlers.triggers.args.threat.args.types.args.good = ACH:Toggle(L["Good"], nil, 1)
 StyleFitlers.triggers.args.threat.args.types.args.goodTransition = ACH:Toggle(L["Good Transition"], nil, 2)
@@ -507,15 +483,15 @@ StyleFitlers.triggers.args.threat.args.types.args.offTankBadTransition = ACH:Tog
 StyleFitlers.triggers.args.threat.args.types.args.offTankBadTransition.customWidth = 200
 
 StyleFitlers.triggers.args.nameplateType = ACH:Group(L["Unit Type"], nil, 26, nil, nil, nil, DisabledFilter)
-StyleFitlers.triggers.args.nameplateType.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, triggersSubGroup, triggersSubGroup)
-StyleFitlers.triggers.args.nameplateType.args.types = ACH:Group('', nil, 1, nil, triggersSubGroup, triggersSubGroup, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.nameplateType.enable end)
+StyleFitlers.triggers.args.nameplateType.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.nameplateType and triggers.nameplateType.enable end, function(_, value) local triggers = GetFilter(true) triggers.nameplateType.enable = value NP:ConfigureAll() end)
+StyleFitlers.triggers.args.nameplateType.args.types = ACH:Group('', nil, 1, nil, function(info) local triggers = GetFilter(true) return triggers.nameplateType[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.nameplateType[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.nameplateType.enable end)
 StyleFitlers.triggers.args.nameplateType.args.types.inline = true
 
 for frameType, keyName in next, E.NamePlates.TriggerConditions.frameTypes do
 	StyleFitlers.triggers.args.nameplateType.args.types.args[keyName] = ACH:Toggle(L[frameType == 'PLAYER' and 'Player' or frameType])
 end
 
-StyleFitlers.triggers.args.reactionType = ACH:Group(L["Reaction Type"], nil, 27, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.reactionType = ACH:Group(L["Reaction Type"], nil, 27, nil, function(info) local triggers = GetFilter(true) return triggers.reactionType and triggers.reactionType[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.reactionType[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.reactionType.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 StyleFitlers.triggers.args.reactionType.args.reputation = ACH:Toggle(L["Reputation"], L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."], 1, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.reactionType.enable end)
 StyleFitlers.triggers.args.reactionType.args.types = ACH:Group('', nil, 2, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.reactionType.enable end)
@@ -525,7 +501,7 @@ for i, reactionType in next, E.NamePlates.TriggerConditions.reactions do
 	StyleFitlers.triggers.args.reactionType.args.types.args[reactionType] = ACH:Toggle(L["FACTION_STANDING_LABEL"..i], nil, i)
 end
 
-StyleFitlers.triggers.args.creatureType = ACH:Group(L["Creature Type"], nil, 28, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.creatureType = ACH:Group(L["Creature Type"], nil, 28, nil, function(info) local triggers = GetFilter(true) return triggers.creatureType[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.creatureType[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.creatureType.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 'full')
 StyleFitlers.triggers.args.creatureType.args.types = ACH:Group('', nil, 2, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.creatureType.enable end)
 StyleFitlers.triggers.args.creatureType.args.types.inline = true
@@ -554,7 +530,7 @@ do -- build creatureType options
 	end
 end
 
-StyleFitlers.triggers.args.instanceType = ACH:Group(L["Instance Type"], nil, 29, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.instanceType = ACH:Group(L["Instance Type"], nil, 29, nil, function(info) local triggers = GetFilter(true) return triggers.instanceType[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.instanceType[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.instanceType.args.types = ACH:Group('', nil, 2)
 StyleFitlers.triggers.args.instanceType.args.types.inline = true
 StyleFitlers.triggers.args.instanceType.args.types.args.none = ACH:Toggle(L["NONE"], nil, 1)
@@ -608,7 +584,7 @@ local function removeLocationList(info)
 	return vals
 end
 
-StyleFitlers.triggers.args.location = ACH:Group(L["Location"], nil, 30, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.location = ACH:Group(L["Location"], nil, 30, nil, function(info) local triggers = GetFilter(true) return triggers.location[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.location[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.location.args.types = ACH:Group('', nil, 2)
 StyleFitlers.triggers.args.location.args.types.inline = true
 StyleFitlers.triggers.args.location.args.types.args.mapIDEnabled = ACH:Toggle(L["Use Map ID or Name"], L["If enabled, the style filter will only activate when you are in one of the maps specified in Map ID."], 1)
@@ -635,7 +611,7 @@ StyleFitlers.triggers.args.location.args.btns.args.instanceID = ACH:Execute(L["I
 StyleFitlers.triggers.args.location.args.btns.args.zoneName = ACH:Execute(L["Zone Name"], nil, 3, function() local zone = E.MapInfo.realZoneText if not zone then return end local triggers = GetFilter(true) if triggers.location.zoneNames[zone] then return end triggers.location.zoneNames[zone] = true NP:ConfigureAll() E:Print(format(L["Added Zone Name: %s"], zone)) end)
 StyleFitlers.triggers.args.location.args.btns.args.subZoneName = ACH:Execute(L["Subzone Name"], nil, 4, function() local subZone = E.MapInfo.subZoneText if not subZone then return end local triggers = GetFilter(true) if triggers.location.subZoneNames[subZone] then return end triggers.location.subZoneNames[subZone] = true NP:ConfigureAll() E:Print(format(L["Added Subzone Name: %s"], subZone)) end)
 
-StyleFitlers.triggers.args.raidTarget = ACH:Group(L["BINDING_HEADER_RAID_TARGET"], nil, nil, nil, triggersSubGroup, triggersSubGroup, DisabledFilter)
+StyleFitlers.triggers.args.raidTarget = ACH:Group(L["BINDING_HEADER_RAID_TARGET"], nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers.raidTarget[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.raidTarget[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.raidTarget.args.types = ACH:Group('')
 StyleFitlers.triggers.args.raidTarget.args.types.inline = true
 
