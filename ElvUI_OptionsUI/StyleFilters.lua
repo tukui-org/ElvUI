@@ -78,22 +78,6 @@ local function GenerateValues(tier, isPvP)
 	return values
 end
 
-local function UpdateNameItemsList(which)
-	local filter = GetFilter()
-	if filter and filter.triggers and filter.triggers[which] then
-		StyleFitlers.triggers.args[which].args.list.args = {}
-		StyleFitlers.triggers.args[which].args.list.hidden = true
-
-		if next(filter.triggers[which]) then
-			StyleFitlers.triggers.args[which].args.list.hidden = false
-
-			for name in pairs(filter.triggers[which]) do
-				StyleFitlers.triggers.args[which].args.list.args[name] = ACH:Toggle(name)
-			end
-		end
-	end
-end
-
 local function GetSpellFilterInfo(name)
 	local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
 	local spellID = tonumber(spell)
@@ -118,76 +102,37 @@ local function GetSpellFilterInfo(name)
 	return spell, spellDescription
 end
 
-local function UpdateStyleLists()
+local getOptionTable = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
+
+local function UpdateFilterList(which, initial, option, addOption)
 	local filter = GetFilter()
+	local newOption
 
-	if filter and filter.triggers.casting and filter.triggers.casting.spells then
-		StyleFitlers.triggers.args.casting.args.spells.args = {}
-		StyleFitlers.triggers.args.casting.args.spells.hidden = true
-
-		if next(filter.triggers.casting.spells) then
-			StyleFitlers.triggers.args.casting.args.spells.hidden = false
-
-			for name in pairs(filter.triggers.casting.spells) do
-				local spell, spellDescription = GetSpellFilterInfo(name)
-
-				StyleFitlers.triggers.args.casting.args.spells.args[name] = ACH:Toggle(spell, spellDescription)
-			end
-		end
+	if which == 'cooldowns' then
+		newOption = ACH:Select('', nil, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
+	else
+		newOption = ACH:Toggle('', nil)
+		newOption.textWidth = true
 	end
 
-	if filter and filter.triggers.cooldowns and filter.triggers.cooldowns.names then
-		StyleFitlers.triggers.args.cooldowns.args.names.args = {}
-		StyleFitlers.triggers.args.cooldowns.args.names.hidden = true
+	if initial and filter and filter.triggers[which] and filter.triggers[which][getOptionTable[which]] then
+		StyleFitlers.triggers.args[which].args[getOptionTable[which]].args = {}
+		StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = true
 
-		if next(filter.triggers.cooldowns.names) then
-			StyleFitlers.triggers.args.cooldowns.args.names.hidden = false
+		if next(filter.triggers[which][getOptionTable[which]]) then
+			StyleFitlers.triggers.args[which].args[getOptionTable[which]].hidden = false
 
-			for name in pairs(filter.triggers.cooldowns.names) do
+			for name in pairs(filter.triggers[which][getOptionTable[which]]) do
 				local spell, spellDescription = GetSpellFilterInfo(name)
-
-				StyleFitlers.triggers.args.cooldowns.args.names.args[name] = ACH:Select(spell, spellDescription, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
+				newOption.name, newOption.desc = spell or option, spell and spellDescription or nil
+				StyleFitlers.triggers.args.cooldowns.args.names.args[name] = newOption
 			end
 		end
+	else
+		local spell, spellDescription = GetSpellFilterInfo(option)
+		newOption.name, newOption.desc = spell or option, spell and spellDescription or nil
+		StyleFitlers.triggers.args.cooldowns.args.names.args[option] = addOption and newOption or nil
 	end
-
-	if filter and filter.triggers.buffs and filter.triggers.buffs.names then
-		StyleFitlers.triggers.args.buffs.args.names.args = {}
-		StyleFitlers.triggers.args.buffs.args.names.hidden = true
-
-		if next(filter.triggers.buffs.names) then
-			StyleFitlers.triggers.args.buffs.args.names.hidden = false
-
-			for name in pairs(filter.triggers.buffs.names) do
-				local spell, spellDescription = GetSpellFilterInfo(name)
-
-				StyleFitlers.triggers.args.buffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
-				StyleFitlers.triggers.args.buffs.args.names.args[name].textWidth = true
-			end
-		end
-	end
-
-	if filter and filter.triggers.debuffs and filter.triggers.debuffs.names then
-		StyleFitlers.triggers.args.debuffs.args.names.args = {}
-		StyleFitlers.triggers.args.debuffs.args.names.hidden = true
-
-		if next(filter.triggers.debuffs.names) then
-			StyleFitlers.triggers.args.debuffs.args.names.hidden = false
-
-			for name in pairs(filter.triggers.debuffs.names) do
-				local spell, spellDescription = GetSpellFilterInfo(name)
-
-				StyleFitlers.triggers.args.debuffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
-				StyleFitlers.triggers.args.debuffs.args.names.args[name].textWidth = true
-			end
-		end
-	end
-end
-
-local function UpdateFilterGroup() -- Check all instances of this function call
-	UpdateNameItemsList('names')
-	UpdateNameItemsList('items')
-	UpdateStyleLists()
 end
 
 local function UpdateBossModAuras()
@@ -212,6 +157,15 @@ local function UpdateBossModAuras()
 	end
 end
 
+local function UpdateFilterGroup()
+	UpdateFilterList('names', true)
+	UpdateFilterList('items', true)
+	UpdateFilterList('cooldowns', true)
+	UpdateFilterList('buffs', true)
+	UpdateFilterList('debuffs', true)
+	UpdateFilterList('casting', true)
+end
+
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplate.filters[value]) end
 local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
 
@@ -221,13 +175,13 @@ StyleFitlers.selectFilter.sortByValue = true
 StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplate.filters do if not G.nameplate.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function() for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] then E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] = nil end end E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = nil C.SelectedNameplateStyleFilter = nil UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.SelectedNameplateStyleFilter end)
-StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.SelectedNameplateStyleFilter] = E.db.nameplates.filters[C.SelectedNameplateStyleFilter] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value UpdateStyleLists() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.SelectedNameplateStyleFilter] = E.db.nameplates.filters[C.SelectedNameplateStyleFilter] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value NP:ConfigureAll() end)
 StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) triggers.priority = value NP:ConfigureAll() end, DisabledFilter)
-StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = G.nameplate.filters[C.SelectedNameplateStyleFilter] and E:CopyTable({}, G.nameplate.filters[C.SelectedNameplateStyleFilter]) or NP:StyleFilterCopyDefaults() UpdateStyleLists() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = G.nameplate.filters[C.SelectedNameplateStyleFilter] and E:CopyTable({}, G.nameplate.filters[C.SelectedNameplateStyleFilter]) or NP:StyleFilterCopyDefaults() UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names = ACH:Group(L["Name"], nil, 6, nil, nil, nil, DisabledFilter)
-StyleFitlers.triggers.args.names.args.addName = ACH:Input(L["Add Name or NPC ID"], L["Add a Name or NPC ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = true UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateString)
-StyleFitlers.triggers.args.names.args.removeName = ACH:Select(L["Remove Name or NPC ID"], L["Remove a Name or NPC ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.names do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = nil UpdateFilterGroup() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.names.args.addName = ACH:Input(L["Add Name or NPC ID"], L["Add a Name or NPC ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = true UpdateFilterList('names', nil, value) NP:ConfigureAll() end, nil, nil, validateString)
+StyleFitlers.triggers.args.names.args.removeName = ACH:Select(L["Remove Name or NPC ID"], L["Remove a Name or NPC ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.names do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = nil UpdateFilterList('names', nil, value, true) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.names.args.negativeMatch = ACH:Toggle(L["Negative Match"], L["Match if Name or NPC ID is NOT in the list."], 3, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names.args.list = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.names and triggers.names[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.names then triggers.names = {} end triggers.names[info[#info]] = value NP:ConfigureAll() end, nil, true)
@@ -256,8 +210,8 @@ StyleFitlers.triggers.args.casting.args.types.args.spacer2 = ACH:Spacer(6, 'full
 StyleFitlers.triggers.args.casting.args.types.args.isChanneling = ACH:Toggle(L["Is Channeling Anything"], L["If enabled then the filter will activate if the unit is channeling anything."], 7)
 StyleFitlers.triggers.args.casting.args.types.args.notChanneling = ACH:Toggle(L["Not Channeling Anything"], L["If enabled then the filter will activate if the unit is not channeling anything."], 8)
 
-StyleFitlers.triggers.args.casting.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = true UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateString)
-StyleFitlers.triggers.args.casting.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.casting.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = nil UpdateFilterGroup() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.casting.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = true UpdateFilterList('casting', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
+StyleFitlers.triggers.args.casting.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.casting.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = nil UpdateFilterList('casting', nil, value) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.casting.args.notSpell = ACH:Toggle(L["Not Spell"], L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."], 4)
 StyleFitlers.triggers.args.casting.args.description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10)
 StyleFitlers.triggers.args.casting.args.description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11)
@@ -386,8 +340,8 @@ StyleFitlers.triggers.args.slots.args.types.values = {
 
 
 StyleFitlers.triggers.args.items = ACH:Group(L["Items"], nil, 14, nil, nil, nil, DisabledFilter)
-StyleFitlers.triggers.args.items.args.addItem = ACH:Input(L["Add Item Name or ID"], L["Add a Item Name or ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = true UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateString)
-StyleFitlers.triggers.args.items.args.removeItem = ACH:Select(L["Remove Item Name or ID"], L["Remove a Item Name or ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.items do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = nil UpdateFilterGroup() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.items.args.addItem = ACH:Input(L["Add Item Name or ID"], L["Add a Item Name or ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = true UpdateFilterList('items', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
+StyleFitlers.triggers.args.items.args.removeItem = ACH:Select(L["Remove Item Name or ID"], L["Remove a Item Name or ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.items do values[name] = name end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = nil UpdateFilterList('items', nil, value) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.items.args.negativeMatch = ACH:Toggle(L["Negative Match"], L["Match if Item Name or ID is NOT in the list."], 3, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.items.args.list = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.items and triggers.items[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.items then triggers.items = {} end triggers.items[info[#info]] = value NP:ConfigureAll() end, nil, true)
@@ -470,8 +424,8 @@ do
 
 		StyleFitlers.triggers.args[auraType].args.changeList = ACH:Group(L["Add / Remove"], nil, 10)
 		StyleFitlers.triggers.args[auraType].args.changeList.inline = true
-		StyleFitlers.triggers.args[auraType].args.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) if stackThreshold then value = value .. '\n' .. stackThreshold end local triggers = GetFilter(true) triggers[auraType].names[value] = true stackThreshold = nil UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateString)
-		StyleFitlers.triggers.args[auraType].args.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in pairs(triggers[auraType].names) do values[name] = format('%s (%d)', strsplit('\n', name)) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers[auraType].names[value] = nil end)
+		StyleFitlers.triggers.args[auraType].args.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) if stackThreshold then value = value .. '\n' .. stackThreshold end local triggers = GetFilter(true) triggers[auraType].names[value] = true stackThreshold = nil UpdateFilterList(auraType, nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
+		StyleFitlers.triggers.args[auraType].args.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in pairs(triggers[auraType].names) do values[name] = format('%s (%d)', strsplit('\n', name)) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers[auraType].names[value] = nil UpdateFilterList(auraType, nil, value) end)
 		StyleFitlers.triggers.args[auraType].args.changeList.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."], 3, { min = 1, max = 250, softMax = 100, step = 1 }, nil, function() return stackThreshold or 1 end, function(_, value) stackThreshold = (value > 1 and value) or nil end)
 
 		StyleFitlers.triggers.args[auraType].args.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers[auraType].names and triggers[auraType].names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[auraType].names[info[#info]] = value NP:ConfigureAll() end, nil, true)
@@ -480,8 +434,8 @@ do
 end
 
 StyleFitlers.triggers.args.cooldowns = ACH:Group(L["Cooldowns"], nil, 23, nil, nil, nil, DisabledFilter)
-StyleFitlers.triggers.args.cooldowns.args.addCooldown = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = 'ONCD' UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateString)
-StyleFitlers.triggers.args.cooldowns.args.removeCooldown = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local values = {} local triggers = GetFilter(true) for item in next, triggers.cooldowns.names do values[item] = item end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = nil UpdateFilterGroup() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.cooldowns.args.addCooldown = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = 'ONCD' UpdateFilterList('cooldowns', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
+StyleFitlers.triggers.args.cooldowns.args.removeCooldown = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local values = {} local triggers = GetFilter(true) for item in next, triggers.cooldowns.names do values[item] = item end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = nil UpdateFilterList('cooldowns', nil, value) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.cooldowns.args.mustHaveAll = ACH:Toggle(L["Require All"], L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."], 3, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.cooldowns and triggers.cooldowns.mustHaveAll end, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.mustHaveAll = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.cooldowns.args.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.cooldowns.names and triggers.cooldowns.names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.cooldowns.names[info[#info]] = value NP:ConfigureAll() end)
 StyleFitlers.triggers.args.cooldowns.args.names.inline = true
