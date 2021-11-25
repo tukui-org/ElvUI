@@ -29,6 +29,9 @@ sort(sortedClasses)
 
 C.SelectedNameplateStyleFilter = nil
 
+E.Options.args.nameplate.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
+local StyleFitlers = E.Options.args.nameplate.args.filters.args
+
 local function GetFilter(collect, profile)
 	local setting = (profile and E.db.nameplates.filters[C.SelectedNameplateStyleFilter]) or E.global.nameplate.filters[C.SelectedNameplateStyleFilter]
 
@@ -79,25 +82,25 @@ local function UpdateStyleLists()
 	local filter = GetFilter()
 	for _, which in next, {'names', 'items'} do
 		if filter and filter.triggers and filter.triggers[which] then
-			E.Options.args.nameplate.args.filters.args.triggers.args[which].args.list.args = {}
-			E.Options.args.nameplate.args.filters.args.triggers.args[which].args.list.hidden = true
+			StyleFitlers.triggers.args[which].args.list.args = {}
+			StyleFitlers.triggers.args[which].args.list.hidden = true
 
 			if next(filter.triggers[which]) then
-				E.Options.args.nameplate.args.filters.args.triggers.args[which].args.list.hidden = false
+				StyleFitlers.triggers.args[which].args.list.hidden = false
 
 				for name in pairs(filter.triggers[which]) do
-					E.Options.args.nameplate.args.filters.args.triggers.args[which].args.list.args[name] = ACH:Toggle(name)
+					StyleFitlers.triggers.args[which].args.list.args[name] = ACH:Toggle(name)
 				end
 			end
 		end
 	end
 
 	if filter and filter.triggers.casting and filter.triggers.casting.spells then
-		E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells.args = {}
-		E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells.hidden = true
+		StyleFitlers.triggers.args.casting.args.spells.args = {}
+		StyleFitlers.triggers.args.casting.args.spells.hidden = true
 
 		if next(filter.triggers.casting.spells) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells.hidden = false
+			StyleFitlers.triggers.args.casting.args.spells.hidden = false
 
 			for name in pairs(filter.triggers.casting.spells) do
 				local spell, spellID = name, tonumber(name)
@@ -115,17 +118,17 @@ local function UpdateStyleLists()
 				local spellTexture = GetSpellTexture(spellID or spell)
 				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 
-				E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells.args[name] = ACH:Toggle(spell, spellDescription)
+				StyleFitlers.triggers.args.casting.args.spells.args[name] = ACH:Toggle(spell, spellDescription)
 			end
 		end
 	end
 
 	if filter and filter.triggers.cooldowns and filter.triggers.cooldowns.names then
-		E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.args = {}
-		E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.hidden = true
+		StyleFitlers.triggers.args.cooldowns.args.names.args = {}
+		StyleFitlers.triggers.args.cooldowns.args.names.hidden = true
 
 		if next(filter.triggers.cooldowns.names) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.hidden = false
+			StyleFitlers.triggers.args.cooldowns.args.names.hidden = false
 
 			for name in pairs(filter.triggers.cooldowns.names) do
 				local spell, spellID = name, tonumber(name)
@@ -143,17 +146,17 @@ local function UpdateStyleLists()
 				local spellTexture = GetSpellTexture(spellID or spell)
 				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 
-				E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.args[name] = ACH:Select(spell, spellDescription, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
+				StyleFitlers.triggers.args.cooldowns.args.names.args[name] = ACH:Select(spell, spellDescription, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
 			end
 		end
 	end
 
 	if filter and filter.triggers.buffs and filter.triggers.buffs.names then
-		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args = {}
-		E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.hidden = true
+		StyleFitlers.triggers.args.buffs.args.names.args = {}
+		StyleFitlers.triggers.args.buffs.args.names.hidden = true
 
 		if next(filter.triggers.buffs.names) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.hidden = false
+			StyleFitlers.triggers.args.buffs.args.names.hidden = false
 
 			for name in pairs(filter.triggers.buffs.names) do
 				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
@@ -172,18 +175,18 @@ local function UpdateStyleLists()
 				local spellTexture = GetSpellTexture(spellID or spell)
 				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 
-				E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
-				E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name].textWidth = true
+				StyleFitlers.triggers.args.buffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
+				StyleFitlers.triggers.args.buffs.args.names.args[name].textWidth = true
 			end
 		end
 	end
 
 	if filter and filter.triggers.debuffs and filter.triggers.debuffs.names then
-		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args = {}
-		E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.hidden = true
+		StyleFitlers.triggers.args.debuffs.args.names.args = {}
+		StyleFitlers.triggers.args.debuffs.args.names.hidden = true
 
 		if next(filter.triggers.debuffs.names) then
-			E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.hidden = false
+			StyleFitlers.triggers.args.debuffs.args.names.hidden = false
 
 			for name in pairs(filter.triggers.debuffs.names) do
 				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
@@ -202,8 +205,8 @@ local function UpdateStyleLists()
 				local spellTexture = GetSpellTexture(spellID or spell)
 				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 
-				E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
-				E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name].textWidth = true
+				StyleFitlers.triggers.args.debuffs.args.names.args[name] = ACH:Toggle(spell, spellDescription)
+				StyleFitlers.triggers.args.debuffs.args.names.args[name].textWidth = true
 			end
 		end
 	end
@@ -216,30 +219,27 @@ end
 local function UpdateBossModAuras()
 	local filter = GetFilter()
 
-	E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.args = {}
-	E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.hidden = true
-	E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.hidden = true
+	StyleFitlers.triggers.args.bossModAuras.args.auras.args = {}
+	StyleFitlers.triggers.args.bossModAuras.args.auras.hidden = true
+	StyleFitlers.triggers.args.bossModAuras.args.seenList.hidden = true
 
 	if filter and filter.triggers and filter.triggers.bossMods and next(filter.triggers.bossMods.auras) then
-		E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.hidden = false
+		StyleFitlers.triggers.args.bossModAuras.args.auras.hidden = false
 		for aura in pairs(filter.triggers.bossMods.auras) do
-			E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
+			StyleFitlers.triggers.args.bossModAuras.args.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
 		end
 	end
 
 	if filter and filter.triggers and filter.triggers.bossMods and next(NP.BossMods_TextureCache) then
-		E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.hidden = false
+		StyleFitlers.triggers.args.bossModAuras.args.seenList.hidden = false
 		for texture in pairs(NP.BossMods_TextureCache) do
-			E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
+			StyleFitlers.triggers.args.bossModAuras.args.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
 		end
 	end
 end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplate.filters[value]) end
 local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
-
-E.Options.args.nameplate.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
-local StyleFitlers = E.Options.args.nameplate.args.filters.args
 
 StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplate.filters[value] = NP:StyleFilterCopyDefaults() C.SelectedNameplateStyleFilter = value UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateCreateFilter)
 StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplate.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.SelectedNameplateStyleFilter end, function(_, value) C.SelectedNameplateStyleFilter = value UpdateFilterGroup() end)
@@ -253,7 +253,7 @@ StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Retur
 
 StyleFitlers.triggers.args.names = ACH:Group(L["Name"], nil, 6, nil, nil, nil, DisabledFilter)
 StyleFitlers.triggers.args.names.args.addName = ACH:Input(L["Add Name or NPC ID"], L["Add a Name or NPC ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = true UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateString)
-StyleFitlers.triggers.args.names.args.removeName = ACH:Select(L["Remove Name or NPC ID"], L["Remove a Name or NPC ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.names do values[tostring(name)] = tostring(name) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[tonumber(value) or value] = nil UpdateFilterGroup() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.names.args.removeName = ACH:Select(L["Remove Name or NPC ID"], L["Remove a Name or NPC ID from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in next, triggers.names do values[tostring(name)] = tostring(name) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = nil UpdateFilterGroup() NP:ConfigureAll() end)
 StyleFitlers.triggers.args.names.args.negativeMatch = ACH:Toggle(L["Negative Match"], L["Match if Name or NPC ID is NOT in the list."], 3, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names.args.list = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.names and triggers.names[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.names then triggers.names = {} end triggers.names[info[#info]] = value NP:ConfigureAll() end, nil, true)
@@ -603,27 +603,27 @@ StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["RAI
 StyleFitlers.triggers.args.instanceType.args.types.args.arena = ACH:Toggle(L["ARENA"], nil, 7, nil, nil, nil, nil, nil, nil, E.Classic)
 StyleFitlers.triggers.args.instanceType.args.types.args.pvp = ACH:Toggle(L["BATTLEFIELDS"], nil, 8)
 
-StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty = ACH:MultiSelect(L["DUNGEON_DIFFICULTY"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 10, { normal = GetDifficultyInfo(1), heroic = GetDifficultyInfo(2) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.dungeon[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.dungeon[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.party end)
+StyleFitlers.triggers.args.instanceType.args.dungeonDifficulty = ACH:MultiSelect(L["DUNGEON_DIFFICULTY"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 10, { normal = GetDifficultyInfo(1), heroic = GetDifficultyInfo(2) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.dungeon[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.dungeon[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.party end)
 
 if E.Retail then
-	StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty.values.mythic = GetDifficultyInfo(23)
-	StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty.values['mythic+'] = GetDifficultyInfo(8)
-	StyleFitlers.triggers.args.instanceType.args.types.args.dungeonDifficulty.values.timewalking = GetDifficultyInfo(24)
+	StyleFitlers.triggers.args.instanceType.args.dungeonDifficulty.values.mythic = GetDifficultyInfo(23)
+	StyleFitlers.triggers.args.instanceType.args.dungeonDifficulty.values['mythic+'] = GetDifficultyInfo(8)
+	StyleFitlers.triggers.args.instanceType.args.dungeonDifficulty.values.timewalking = GetDifficultyInfo(24)
 end
 
-StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty = ACH:MultiSelect(L["Raid Difficulty"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 11, { legacy10normal = GetDifficultyInfo(3), legacy25normal = GetDifficultyInfo(4) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.raid[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.raid[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.raid end)
+StyleFitlers.triggers.args.instanceType.args.raidDifficulty = ACH:MultiSelect(L["Raid Difficulty"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 11, { legacy10normal = GetDifficultyInfo(3), legacy25normal = GetDifficultyInfo(4) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.raid[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.raid[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.raid end)
 
 if E.Retail then
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.lfr = GetDifficultyInfo(17)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.normal = GetDifficultyInfo(14)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.heroic = GetDifficultyInfo(15)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.mythic = GetDifficultyInfo(16)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.timewalking = GetDifficultyInfo(24)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.legacy10heroic = GetDifficultyInfo(5)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.legacy25heroic = GetDifficultyInfo(6)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.lfr = GetDifficultyInfo(17)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.normal = GetDifficultyInfo(14)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.heroic = GetDifficultyInfo(15)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.mythic = GetDifficultyInfo(16)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.timewalking = GetDifficultyInfo(24)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.legacy10heroic = GetDifficultyInfo(5)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.legacy25heroic = GetDifficultyInfo(6)
 else
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.legacy40normal = GetDifficultyInfo(9)
-	StyleFitlers.triggers.args.instanceType.args.types.args.raidDifficulty.values.legacy20normal = GetDifficultyInfo(148)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.legacy40normal = GetDifficultyInfo(9)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.legacy20normal = GetDifficultyInfo(148)
 end
 
 local removeLocationTable = { removeMapID = 'mapIDs', removeInstanceID = 'instanceIDs', removeZoneName = 'zoneNames', removeSubZoneName = 'subZoneNames' }
