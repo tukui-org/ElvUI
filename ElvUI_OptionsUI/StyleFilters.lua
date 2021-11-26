@@ -103,14 +103,14 @@ local function GetSpellFilterInfo(name)
 end
 
 local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true }
+local cdOptions = { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] }
 local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
-local cooldownsOptions = { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] }
 local function UpdateFilterList(which, initial, opt, add)
 	local filter = GetFilter()
 	local option, spell, desc
 
 	if which == 'cooldowns' then
-		option = ACH:Select('', nil, nil, cooldownsOptions)
+		option = ACH:Select('', nil, nil, cdOptions)
 	else
 		option = ACH:Toggle('', nil)
 		option.textWidth = true
@@ -629,9 +629,13 @@ StyleFitlers.triggers.args.location.args.subZoneName.args.removeSubZoneName = AC
 StyleFitlers.triggers.args.location.args.btns = ACH:Group(L["Add Current"], nil, 5)
 StyleFitlers.triggers.args.location.args.btns.inline = true
 StyleFitlers.triggers.args.location.args.btns.args.mapID = ACH:Execute(L["Map ID"], nil, 1, function() local mapID = E.MapInfo.mapID if not mapID then return end mapID = tostring(mapID) local triggers = GetFilter(true) if triggers.location.mapIDs[mapID] then return end triggers.location.mapIDs[mapID] = true NP:ConfigureAll() E:Print(format(L["Added Map ID: %s"], E.MapInfo.name..' ('..mapID..')')) end)
+StyleFitlers.triggers.args.location.args.btns.args.mapID.customWidth = 125
 StyleFitlers.triggers.args.location.args.btns.args.instanceID = ACH:Execute(L["Instance ID"], nil, 2, function() local instanceName, _, _, _, _, _, _, instanceID = GetInstanceInfo() if not instanceID then return end instanceID = tostring(instanceID) local triggers = GetFilter(true) if triggers.location.instanceIDs[instanceID] then return end triggers.location.instanceIDs[instanceID] = true NP:ConfigureAll() E:Print(format(L["Added Instance ID: %s"], instanceName..' ('..instanceID..')')) end)
+StyleFitlers.triggers.args.location.args.btns.args.instanceID.customWidth = 125
 StyleFitlers.triggers.args.location.args.btns.args.zoneName = ACH:Execute(L["Zone Name"], nil, 3, function() local zone = E.MapInfo.realZoneText if not zone then return end local triggers = GetFilter(true) if triggers.location.zoneNames[zone] then return end triggers.location.zoneNames[zone] = true NP:ConfigureAll() E:Print(format(L["Added Zone Name: %s"], zone)) end)
+StyleFitlers.triggers.args.location.args.btns.args.zoneName.customWidth = 125
 StyleFitlers.triggers.args.location.args.btns.args.subZoneName = ACH:Execute(L["Subzone Name"], nil, 4, function() local subZone = E.MapInfo.subZoneText if not subZone then return end local triggers = GetFilter(true) if triggers.location.subZoneNames[subZone] then return end triggers.location.subZoneNames[subZone] = true NP:ConfigureAll() E:Print(format(L["Added Subzone Name: %s"], subZone)) end)
+StyleFitlers.triggers.args.location.args.btns.args.subZoneName.customWidth = 125
 
 StyleFitlers.triggers.args.raidTarget = ACH:Group(L["BINDING_HEADER_RAID_TARGET"], nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers.raidTarget[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.raidTarget[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.raidTarget.args.types = ACH:Group('')
