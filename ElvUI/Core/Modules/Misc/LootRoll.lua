@@ -12,6 +12,7 @@ local GameTooltip = GameTooltip
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
+local IsModifiedClick = IsModifiedClick
 local IsShiftKeyDown = IsShiftKeyDown
 local RollOnLoot = RollOnLoot
 
@@ -65,7 +66,9 @@ local function SetItemTip(frame)
 end
 
 local function LootClick(frame)
-	_G.HandleModifiedItemClick(frame.link)
+	if IsModifiedClick() then
+		_G.HandleModifiedItemClick(frame.link)
+	end
 end
 
 local function StatusUpdate(frame)
