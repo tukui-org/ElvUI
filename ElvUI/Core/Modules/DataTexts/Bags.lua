@@ -17,6 +17,11 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 
 local displayString, lastPanel = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
+local BAG_TYPES = {
+	[0x0001] = 'Quiver',
+	[0x0002] = 'Ammo Pouch',
+	[0x0004] = 'Soul Bag',
+}
 
 local function OnEvent(self)
 	lastPanel = self
@@ -55,10 +60,16 @@ local function OnEnter()
 		local bagName = GetBagName(i)
 		if bagName then
 			local numSlots = GetContainerNumSlots(i)
-			local freeSlots = GetContainerNumFreeSlots(i)
+			local freeSlots, bagType = GetContainerNumFreeSlots(i)
 			local usedSlots, sumNum = numSlots - freeSlots, 19 + i
+			local r2, g2, b2
 
-			local r2, g2, b2 = E:ColorGradient(usedSlots / numSlots, .1,1,.1, 1,1,.1, 1,.1,.1)
+			if BAG_TYPES[bagType] then
+				r2, g2, b2 = E:ColorGradient(usedSlots/numSlots, 1, .1, .1, 1, 1, .1, .1, 1, .1) -- red, yellow, green
+			else
+				r2, g2, b2 = E:ColorGradient(usedSlots/numSlots, .1, 1, .1, 1, 1, .1, 1, .1, .1) -- green, yellow, red
+			end
+
 			local r, g, b, icon
 
 			if i > 0 then
