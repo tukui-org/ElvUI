@@ -148,13 +148,13 @@ function M:CreateRollFrame()
 	frame.greed = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
 	frame.need = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
 
-	local name = frame:CreateFontString(nil, 'ARTWORK', nil, 2)
+	local name = frame:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	name:Size(200, 10)
 	name:SetJustifyH('LEFT')
 	frame.name = name
 
-	local bind = frame:CreateFontString(nil, 'ARTWORK', nil, 2)
+	local bind = frame:CreateFontString(nil, 'OVERLAY')
 	bind:FontTemplate(nil, nil, 'OUTLINE')
 	frame.bind = bind
 
@@ -277,7 +277,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 
 	local rollIsHidden = true
 	if name and rollType then
-		for _, f in ipairs(M.RollBars) do
+		for _, f in next, M.RollBars do
 			if f.rollID == rollID then
 				f.rolls[name] = { rollType, class }
 				f[rolltypes[rollType]].text:SetText(tonumber(f[rolltypes[rollType]].text:GetText()) + 1)
