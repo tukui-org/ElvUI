@@ -1,5 +1,10 @@
 ### Version 2.31 [ ETA: 🍨 ]
 
+Bags: Added an option to hide Gold  
+Bags: Fixed an issue with mouseover tooltip  
+Misc: Updated LootRoll  
+NamePlates: Updated StyleFilters config  
+
 ___
 ### Version 2.30 [ November 24th 2021 ]
 
