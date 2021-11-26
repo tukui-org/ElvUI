@@ -145,27 +145,32 @@ local function UpdateFilterList(which, initial, opt, add)
 	end
 end
 
-local function UpdateBossModAuras()
-	local setting = StyleFitlers.triggers.args.bossModAuras.args
-	setting.auras.args = {}
-	setting.auras.hidden = true
-	setting.seenList.hidden = true
-
+local function UpdateBossModAuras(initial, opt, add)
 	local filter = GetFilter()
-	if filter and filter.triggers and filter.triggers.bossMods and next(filter.triggers.bossMods.auras) then
-		setting.auras.hidden = false
 
-		for aura in pairs(filter.triggers.bossMods.auras) do
-			setting.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
+	local setting = StyleFitlers.triggers.args.bossModAuras.args
+	setting.auras.hidden = not next(filter.triggers.bossMods.auras)
+
+	if initial then
+		setting.auras.args = {}
+		setting.seenList.hidden = true
+
+		if filter and filter.triggers and filter.triggers.bossMods and filter.triggers.bossMods.auras then
+
+			for aura in next, filter.triggers.bossMods.auras do
+				setting.auras.args[aura] = ACH:Toggle(aura, E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'))
+			end
 		end
-	end
 
-	if filter and filter.triggers and filter.triggers.bossMods and next(NP.BossMods_TextureCache) then
-		setting.seenList.hidden = false
+		if filter and filter.triggers and filter.triggers.bossMods and next(NP.BossMods_TextureCache) then
+			setting.seenList.hidden = false
 
-		for texture in pairs(NP.BossMods_TextureCache) do
-			setting.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
+			for texture in next, NP.BossMods_TextureCache do
+				setting.seenList.args[texture] = ACH:Toggle(texture, E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'))
+			end
 		end
+	elseif not initial then
+		setting.auras.args[opt] = add and ACH:Toggle(opt, E:TextureString(opt, ':32:32:0:0:32:32:4:28:4:28')) or nil
 	end
 end
 
@@ -176,6 +181,7 @@ local function UpdateFilterGroup()
 	UpdateFilterList('buffs', true)
 	UpdateFilterList('debuffs', true)
 	UpdateFilterList('casting', true)
+	UpdateBossModAuras(true)
 end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplate.filters[value]) end
@@ -449,7 +455,7 @@ StyleFitlers.triggers.args.cooldowns.args.mustHaveAll = ACH:Toggle(L["Require Al
 StyleFitlers.triggers.args.cooldowns.args.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.cooldowns.names and triggers.cooldowns.names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.cooldowns.names[info[#info]] = value NP:ConfigureAll() end)
 StyleFitlers.triggers.args.cooldowns.args.names.inline = true
 
-StyleFitlers.triggers.args.bossModAuras = ACH:Group(L["Boss Mod Auras"], nil, 24, nil, function(info) UpdateBossModAuras() local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.triggers.args.bossModAuras = ACH:Group(L["Boss Mod Auras"], nil, 24, nil, function(info) local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.bossModAuras.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 StyleFitlers.triggers.args.bossModAuras.args.hasAura = ACH:Toggle(L["Has Aura"], nil, 1, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.bossMods.enable end)
 StyleFitlers.triggers.args.bossModAuras.args.missingAura = ACH:Toggle(L["Missing Aura"], nil, 2, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or not triggers.bossMods.enable end)
@@ -460,8 +466,8 @@ StyleFitlers.triggers.args.bossModAuras.args.seenList.args.desc = ACH:Descriptio
 
 StyleFitlers.triggers.args.bossModAuras.args.changeList = ACH:Group(L["Texture Matching"], nil, 5, nil, nil, nil, function() local triggers = GetFilter(true) return DisabledFilter() or triggers.bossMods.missingAura or triggers.bossMods.hasAura or not triggers.bossMods.enable end)
 StyleFitlers.triggers.args.bossModAuras.args.changeList.inline = true
-StyleFitlers.triggers.args.bossModAuras.args.changeList.args.addAura = ACH:Input(L["Add Texture"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) local textureID = tonumber(value) or value triggers.bossMods.auras[textureID] = true UpdateBossModAuras() NP:ConfigureAll() end, nil, nil, validateString)
-StyleFitlers.triggers.args.bossModAuras.args.changeList.args.removeAura = ACH:Select(L["Remove Texture"], nil, 2, function() local triggers, values = GetFilter(true), {} for textureID in next, triggers.bossMods.auras do values[tostring(textureID)] = tostring(textureID) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) local textureID = tonumber(value) or value triggers.bossMods.auras[textureID] = nil UpdateBossModAuras() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.bossModAuras.args.changeList.args.addAura = ACH:Input(L["Add Texture"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) local textureID = tonumber(value) or value triggers.bossMods.auras[textureID] = true UpdateBossModAuras(nil, textureID, true) NP:ConfigureAll() end, nil, nil, validateString)
+StyleFitlers.triggers.args.bossModAuras.args.changeList.args.removeAura = ACH:Select(L["Remove Texture"], nil, 2, function() local triggers, values = GetFilter(true), {} for textureID in next, triggers.bossMods.auras do values[tostring(textureID)] = tostring(textureID) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) local textureID = tonumber(value) or value triggers.bossMods.auras[textureID] = nil UpdateBossModAuras(nil, textureID) NP:ConfigureAll() end)
 StyleFitlers.triggers.args.bossModAuras.args.changeList.args.missingAuras = ACH:Toggle(L["Missing Aura"], nil, 2, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers.bossMods[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods[info[#info]] = value NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.bossModAuras.args.auras = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.bossMods and triggers.bossMods.auras and triggers.bossMods.auras[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.bossMods.auras[info[#info]] = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return DisabledFilter() or triggers.bossMods.missingAura or triggers.bossMods.hasAura or not triggers.bossMods.enable end)
