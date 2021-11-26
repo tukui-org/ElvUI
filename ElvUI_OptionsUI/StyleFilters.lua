@@ -184,11 +184,16 @@ local function UpdateFilterGroup()
 	UpdateBossModAuras(true)
 end
 
+function E:SetStyleFilterConfig(filter)
+	C.SelectedNameplateStyleFilter = filter
+	UpdateFilterGroup()
+end
+
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplate.filters[value]) end
 local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
 
-StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplate.filters[value] = NP:StyleFilterCopyDefaults() C.SelectedNameplateStyleFilter = value UpdateFilterGroup() NP:ConfigureAll() end, nil, nil, validateCreateFilter)
-StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplate.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.SelectedNameplateStyleFilter end, function(_, value) C.SelectedNameplateStyleFilter = value UpdateFilterGroup() end)
+StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplate.filters[value] = NP:StyleFilterCopyDefaults() E:SetStyleFilterConfig(value) end, nil, nil, validateCreateFilter)
+StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplate.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.SelectedNameplateStyleFilter end, function(_, value) E:SetStyleFilterConfig(value) end)
 StyleFitlers.selectFilter.sortByValue = true
 StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplate.filters do if not G.nameplate.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function() for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters and E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] then E.data.profiles[profile].nameplates.filters[C.SelectedNameplateStyleFilter] = nil end end E.global.nameplate.filters[C.SelectedNameplateStyleFilter] = nil C.SelectedNameplateStyleFilter = nil NP:ConfigureAll() end)
 
