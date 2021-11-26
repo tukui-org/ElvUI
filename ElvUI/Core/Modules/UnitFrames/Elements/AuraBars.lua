@@ -14,9 +14,9 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar:Point('RIGHT')
 
 	statusBar.spark:SetTexture(E.media.blankTex)
+	statusBar.spark:Point('RIGHT', statusBar:GetStatusBarTexture())
 	statusBar.spark:SetVertexColor(1, 1, 1, 0.4)
 	statusBar.spark:Size(2)
-	statusBar.spark:Point('RIGHT', statusBar:GetStatusBarTexture())
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true

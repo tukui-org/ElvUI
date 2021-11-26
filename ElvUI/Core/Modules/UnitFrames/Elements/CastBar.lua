@@ -176,6 +176,7 @@ function UF:Configure_Castbar(frame)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_
+		castbar.Spark:ClearAllPoints()
 		castbar.Spark:Point(db.reverse and 'LEFT' or 'RIGHT', castbar:GetStatusBarTexture())
 		castbar.Spark:Height(db.height)
 	elseif castbar.Spark then
