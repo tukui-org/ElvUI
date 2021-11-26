@@ -1,5 +1,6 @@
 ### Version 2.31 [ ETA: 🍨 ]
 
+Chat: Added an option to hide channel names  
 Bags: Added an option to hide Gold  
 Bags: Fixed an issue with mouseover tooltip  
 Misc: Updated LootRoll  
