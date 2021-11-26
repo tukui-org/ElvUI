@@ -18,12 +18,6 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local displayString, lastPanel = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
-local BAG_TYPES = {
-	[0x0001] = 'Quiver',
-	[0x0002] = 'Ammo Pouch',
-	[0x0004] = 'Soul Bag',
-}
-
 local function OnEvent(self)
 	lastPanel = self
 
@@ -60,24 +54,19 @@ local function OnEnter()
 	for i = 0, NUM_BAG_SLOTS do
 		local bagName = GetBagName(i)
 		if bagName then
-			local bagFreeSlots, bagType = GetContainerNumFreeSlots(i)
-			local bagSlots = GetContainerNumSlots(i)
-			local bagInventoryID = 19 + i
-			local r, g, b, r2, g2, b2, icon
+			local numSlots = GetContainerNumSlots(i)
+			local freeSlots = GetContainerNumFreeSlots(i)
+			local usedSlots, sumNum = numSlots - freeSlots, 19 + i
 
-			if BAG_TYPES[bagType] then
-				r2, g2, b2 = E:ColorGradient(bagFreeSlots/bagSlots, 1, .1, .1, 1, 1, .1, .1, 1, .1) -- red, yellow, green
-			else
-				r2, g2, b2 = E:ColorGradient(bagFreeSlots/bagSlots, .1, 1, .1, 1, 1, .1, 1, .1, .1) -- green, yellow, red
-			end
+			local r2, g2, b2 = E:ColorGradient(usedSlots / numSlots, .1,1,.1, 1,1,.1, 1,.1,.1)
+			local r, g, b, icon
 
 			if i > 0 then
-				local quality = GetInventoryItemQuality('player', bagInventoryID) or 1
-				r, g, b = GetItemQualityColor(quality)
-				icon = GetInventoryItemTexture('player', bagInventoryID)
+				r, g, b = GetItemQualityColor(GetInventoryItemQuality('player', sumNum) or 1)
+				icon = GetInventoryItemTexture('player', sumNum)
 			end
 
-			DT.tooltip:AddDoubleLine(format(iconString, icon or E.Media.Textures.Backpack, bagName), format('%d / %d', bagFreeSlots, bagSlots), r, g, b, r2, g2, b2)
+			DT.tooltip:AddDoubleLine(format(iconString, icon or E.Media.Textures.Backpack, bagName), format('%d / %d', usedSlots, numSlots), r or 1, g or 1, b or 1, r2, g2, b2)
 		end
 	end
 
