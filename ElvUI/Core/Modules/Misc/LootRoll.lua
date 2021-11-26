@@ -3,18 +3,20 @@ local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local pairs, unpack, next, tinsert = pairs, unpack, next, tinsert
-local wipe = wipe
+local pairs, unpack, next = pairs, unpack, next
+local wipe, tinsert = wipe, tinsert
 
 local CreateFrame = CreateFrame
-local GameTooltip_Hide = GameTooltip_Hide
-local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local GetItemInfo = GetItemInfo
+local GameTooltip = GameTooltip
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
-local GetItemInfo = GetItemInfo
 local IsShiftKeyDown = IsShiftKeyDown
 local RollOnLoot = RollOnLoot
+
+local GameTooltip_Hide = GameTooltip_Hide
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
@@ -22,10 +24,8 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 
-local GameTooltip = _G.GameTooltip
-
-local cancelled_rolls = {}
 local cachedRolls = {}
+local cancelled_rolls = {}
 local completedRolls = {}
 M.RollBars = {}
 
@@ -39,7 +39,9 @@ local function SetTip(frame)
 	GameTooltip:AddLine(frame.tiptext)
 
 	local lineAdded
-	if frame:IsEnabled() == 0 then GameTooltip:AddLine('|cffff3333'..L["Can't Roll"]) end
+	if frame:IsEnabled() == 0 then
+		GameTooltip:AddLine('|cffff3333'..L["Can't Roll"])
+	end
 
 	for _, infoTable in next, frame.parent.rolls[frame.rolltype] do
 		local playerName, className = unpack(infoTable)
@@ -47,6 +49,7 @@ local function SetTip(frame)
 			GameTooltip:AddLine(' ')
 			lineAdded = true
 		end
+
 		local classColor = E:ClassColor(className)
 		GameTooltip:AddLine(playerName, classColor.r, classColor.g, classColor.b)
 	end
@@ -62,7 +65,7 @@ local function SetItemTip(frame)
 end
 
 local function LootClick(frame)
-	HandleModifiedItemClick(frame.link) -- Dont localize this.
+	_G.HandleModifiedItemClick(frame.link)
 end
 
 local function StatusUpdate(frame)
@@ -180,10 +183,10 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 	end
 end
 
-function M:START_LOOT_ROLL(_, rollID, time)
+function M:START_LOOT_ROLL(_, rollID, rollTime)
 	if cancelled_rolls[rollID] then return end
-	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	local link = GetLootRollItemLink(rollID)
+	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	local _, _, _, _, _, _, _, _, _, _, _, _, _, bindType = GetItemInfo(link)
 	local color = ITEM_QUALITY_COLORS[quality]
 
@@ -191,7 +194,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	wipe(f.rolls)
 
 	f.rollID = rollID
-	f.time = time
+	f.time = rollTime
 
 	f.button.link = link
 	f.button.rollID = rollID
@@ -237,8 +240,8 @@ function M:START_LOOT_ROLL(_, rollID, time)
 		f.status.backdrop:SetBackdropColor(r, g, b, .1)
 	end
 
-	f.status:SetMinMaxValues(0, time)
-	f.status:SetValue(time)
+	f.status:SetMinMaxValues(0, rollTime)
+	f.status:SetValue(rollTime)
 
 	f:ClearAllPoints()
 	f:Point('CENTER', _G.WorldFrame)
@@ -255,6 +258,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 				tinsert(f.rolls[rollType], { rollerName, class })
 				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 			end
+
 			completedRolls[rollid] = true
 			break
 		end
@@ -322,9 +326,10 @@ function M:UpdateLootRollFrames()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 
 			for _, button in next, rolltypes do
-				if frame[button] then
-					frame[button]:Size(E.db.general.lootRoll.height / 1.5)
-					frame[button]:ClearAllPoints()
+				local icon = frame[button]
+				if icon then
+					icon:Size(E.db.general.lootRoll.height / 1.5)
+					icon:ClearAllPoints()
 				end
 			end
 
@@ -351,9 +356,10 @@ function M:UpdateLootRollFrames()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 
 			for _, button in next, rolltypes do
-				if frame[button] then
-					frame[button]:Size(E.db.general.lootRoll.height / 1.5)
-					frame[button]:ClearAllPoints()
+				local icon = frame[button]
+				if icon then
+					icon:Size(E.db.general.lootRoll.height / 1.5)
+					icon:ClearAllPoints()
 				end
 			end
 

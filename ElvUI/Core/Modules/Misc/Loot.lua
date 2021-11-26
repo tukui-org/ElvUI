@@ -16,7 +16,6 @@ local GetCVarBool = GetCVarBool
 local GetLootSlotInfo = GetLootSlotInfo
 local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
-local HandleModifiedItemClick = HandleModifiedItemClick
 local IsFishingLoot = IsFishingLoot
 local IsModifiedClick = IsModifiedClick
 local LootSlot = LootSlot
@@ -80,7 +79,7 @@ local OnClick = function(self)
 	LootFrame.selectedTexture = self.icon:GetTexture()
 
 	if IsModifiedClick() then
-		HandleModifiedItemClick(GetLootSlotLink(self:GetID()))
+		_G.HandleModifiedItemClick(GetLootSlotLink(self:GetID()))
 	else
 		StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')
 		LootSlot(self:GetID())
