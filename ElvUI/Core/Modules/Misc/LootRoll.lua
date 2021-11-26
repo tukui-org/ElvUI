@@ -293,7 +293,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 		if rollIsHidden then
 			if not cachedRolls[rollID] then cachedRolls[rollID] = {} end
 			if not cachedRolls[rollID][rollType] then
-				cachedRolls[rollID][rollType] = cachedRolls[rollID][rollType] or {}
+				if not cachedRolls[rollID][rollType] then cachedRolls[rollID][rollType] = {} end
 				tinsert(cachedRolls[rollID][rollType], { name, class })
 			end
 		end
