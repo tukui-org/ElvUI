@@ -593,6 +593,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	else
 		slot.Cooldown:Hide()
 		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
+		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 	end
 
 	if E.Retail then
@@ -656,6 +657,7 @@ function B:UpdateReagentSlot(slotID)
 	else
 		slot.Cooldown:Hide()
 		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
+		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 	end
 
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
