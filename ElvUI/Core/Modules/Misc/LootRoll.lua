@@ -129,7 +129,7 @@ function M:CreateRollFrame()
 	button:SetScript('OnEnter', SetItemTip)
 	button:SetScript('OnLeave', GameTooltip_Hide)
 	button:SetScript('OnClick', LootClick)
-	button:SetScript('OnEvent', LootClick)
+	button:SetScript('OnEvent', SetItemTip)
 	button:RegisterEvent('MODIFIER_STATE_CHANGED')
 	frame.button = button
 
