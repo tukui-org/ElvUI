@@ -115,6 +115,8 @@ function M:CreateRollFrame()
 	frame:Hide()
 
 	local status = CreateFrame('StatusBar', nil, frame)
+	status:SetFrameLevel(frame:GetFrameLevel())
+	status:SetFrameStrata(frame:GetFrameStrata())
 	status:CreateBackdrop()
 	status:SetScript('OnUpdate', StatusUpdate)
 	status:SetStatusBarTexture(E.db.general.lootRoll.statusBarTexture)
