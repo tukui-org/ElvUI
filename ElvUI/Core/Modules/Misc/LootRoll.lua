@@ -41,7 +41,7 @@ end
 local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [0] = 'pass' }
 local function SetTip(frame)
 	GameTooltip:SetOwner(frame, 'ANCHOR_RIGHT')
-	GameTooltip:SetLootRollItem(frame.parent.rollID)
+	GameTooltip:AddLine(frame.tiptext)
 
 	local lineAdded
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine('|cffff3333'..L["Can't Roll"]) end
@@ -61,8 +61,8 @@ end
 
 local function SetItemTip(frame)
 	if not frame.link then return end
-	_G.GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT')
-	_G.GameTooltip:SetHyperlink(frame.link)
+	GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT')
+	GameTooltip:SetLootRollItem(frame.rollID)
 
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
 	if IsModifiedClick('DRESSUP') then ShowInspectCursor() end
@@ -80,10 +80,6 @@ local function StatusUpdate(frame)
 	local perc = t / frame.parent.time
 	frame.spark:Point('CENTER', frame, 'LEFT', perc * frame:GetWidth(), 0)
 	frame:SetValue(t)
-
-	if t > 1000000000 then
-		frame:GetParent():Hide()
-	end
 end
 
 local function CreateRollButton(parent, texture, rolltype, tiptext)
@@ -206,6 +202,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.time = time
 
 	f.button.link = link
+	f.button.rollID = rollID
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
