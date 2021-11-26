@@ -102,14 +102,40 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 			threat.PowerGlow:Hide()
 		end
 	elseif threatStyle == 'BORDERS' then
-		if parent.InfoPanel then UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b) end
-		if parent.Power then UF:ThreatBorderColor(parent.Power.backdrop, status, r, g, b) end
+		local cb = parent.Castbar
+		if cb and parent.db.castbar.overlayOnFrame ~= 'None' then
+			UF:ThreatBorderColor(cb.backdrop, status, r, g, b)
+			UF:ThreatBorderColor(cb.ButtonIcon.bg, status, r, g, b)
+		end
+
+		if parent.InfoPanel then
+			UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b)
+		end
+
+		if parent.Power then
+			UF:ThreatBorderColor(parent.Power.backdrop, status, r, g, b)
+		end
+
 		UF:ThreatBorderColor(parent.Health.backdrop, status, r, g, b)
 		UF:ThreatClassBarBorderColor(parent, status, r, g, b)
 	elseif threatStyle == 'HEALTHBORDER' then
+		local cb = parent.Castbar
+		if cb and parent.db.castbar.overlayOnFrame == 'Health' then
+			UF:ThreatBorderColor(cb.backdrop, status, r, g, b)
+			UF:ThreatBorderColor(cb.ButtonIcon.bg, status, r, g, b)
+		end
+
 		UF:ThreatBorderColor(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
-		if parent.InfoPanel then UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b) end
+		local cb = parent.Castbar
+		if cb and parent.db.castbar.overlayOnFrame == 'InfoPanel' then
+			UF:ThreatBorderColor(cb.backdrop, status, r, g, b)
+			UF:ThreatBorderColor(cb.ButtonIcon.bg, status, r, g, b)
+		end
+
+		if parent.InfoPanel then
+			UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b)
+		end
 	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
 		if status then
 			threat.TextureIcon:Show()
