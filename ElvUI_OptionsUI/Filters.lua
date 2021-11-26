@@ -437,7 +437,7 @@ for i, text in ipairs(FilterHelp) do
 	Filters.help.args['help'..i] = ACH:Description(text:gsub('*', COLOR1):gsub('%^', COLOR2), i, 'medium')
 end
 
-function E:SetToFilterConfig(filter)
+function C:SetToFilterConfig(filter)
 	resetSelectedFilter(_, filter)
 	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'filters')
 end

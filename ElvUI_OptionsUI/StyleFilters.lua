@@ -184,7 +184,7 @@ local function UpdateFilterGroup()
 	UpdateBossModAuras(true)
 end
 
-function E:SetStyleFilterConfig(filter)
+function C:SetStyleFilterConfig(filter)
 	C.SelectedNameplateStyleFilter = filter
 	UpdateFilterGroup()
 end

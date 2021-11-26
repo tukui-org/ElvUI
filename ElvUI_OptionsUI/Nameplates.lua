@@ -557,8 +557,8 @@ E.Options.args.nameplate.args.enemyPlayerGroup = GetUnitSettings('ENEMY_PLAYER',
 E.Options.args.nameplate.args.enemyNPCGroup = GetUnitSettings('ENEMY_NPC', L["ENEMY_NPC"])
 
 E.Options.args.nameplate.args.targetGroup = ACH:Group(L["TARGET"], nil, 101, nil, function(info) return E.db.nameplates.units.TARGET[info[#info]] end, function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
-E.Options.args.nameplate.args.targetGroup.args.nonTargetAlphaShortcut = ACH:Execute(L["Non-Target Alpha"], nil, 1, function() E:SetStyleFilterConfig('ElvUI_NonTarget') ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions') end)
-E.Options.args.nameplate.args.targetGroup.args.targetScaleShortcut = ACH:Execute(L["Scale"], nil, 2, function() E:SetStyleFilterConfig('ElvUI_Target') ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions') end)
+E.Options.args.nameplate.args.targetGroup.args.nonTargetAlphaShortcut = ACH:Execute(L["Non-Target Alpha"], nil, 1, function() C:SetStyleFilterConfig('ElvUI_NonTarget') ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions') end)
+E.Options.args.nameplate.args.targetGroup.args.targetScaleShortcut = ACH:Execute(L["Scale"], nil, 2, function() C:SetStyleFilterConfig('ElvUI_Target') ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions') end)
 E.Options.args.nameplate.args.targetGroup.args.spacer1 = ACH:Spacer(3, 'full')
 E.Options.args.nameplate.args.targetGroup.args.glowStyle = ACH:Select(L["Target/Low Health Indicator"], nil, 4, { none = L["NONE"], style1 = L["Border Glow"], style2 = L["Background Glow"], style3 = L["Top Arrow"], style4 = L["Side Arrows"], style5 = L["Border Glow"]..' + '..L["Top Arrow"], style6 = L["Background Glow"]..' + '..L["Top Arrow"], style7 = L["Border Glow"]..' + '..L["Side Arrows"], style8 = L["Background Glow"]..' + '..L["Side Arrows"] })
 E.Options.args.nameplate.args.targetGroup.args.glowStyle.customWidth = 225
