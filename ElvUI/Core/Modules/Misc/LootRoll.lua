@@ -21,8 +21,8 @@ local IsModifiedClick = IsModifiedClick
 local IsShiftKeyDown = IsShiftKeyDown
 local RollOnLoot = RollOnLoot
 
-local C_LootHistoryGetItem = C_LootHistory.GetItem
-local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
+local C_LootHistory_GetItem = C_LootHistory.GetItem
+local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
@@ -272,8 +272,8 @@ function M:START_LOOT_ROLL(_, rollID, time)
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
-	local rollID = C_LootHistoryGetItem(itemIdx)
-	local name, class, rollType = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx)
+	local rollID = C_LootHistory_GetItem(itemIdx)
+	local name, class, rollType = C_LootHistory_GetPlayerInfo(itemIdx, playerIdx)
 
 	local rollIsHidden = true
 	if name and rollType then
