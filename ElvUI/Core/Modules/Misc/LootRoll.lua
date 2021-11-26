@@ -41,20 +41,19 @@ end
 local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [0] = 'pass' }
 local function SetTip(frame)
 	GameTooltip:SetOwner(frame, 'ANCHOR_RIGHT')
-	GameTooltip:AddLine(frame.tiptext)
+	GameTooltip:SetLootRollItem(frame.parent.rollID)
 
 	local lineAdded
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine('|cffff3333'..L["Can't Roll"]) end
 
-	for name, tbl in next, frame.parent.rolls do
-		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
-			if not lineAdded then
-				GameTooltip:AddLine(' ')
-				lineAdded = true
-			end
-			local classColor = E:ClassColor(tbl[2])
-			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
+	for _, infoTable in next, frame.parent.rolls[frame.rolltype] do
+		local playerName, className = unpack(infoTable)
+		if not lineAdded then
+			GameTooltip:AddLine(' ')
+			lineAdded = true
 		end
+		local classColor = E:ClassColor(className)
+		GameTooltip:AddLine(playerName, classColor.r, classColor.g, classColor.b)
 	end
 
 	GameTooltip:Show()
@@ -224,7 +223,6 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	end
 
 	f.name:SetText(name)
-	f.name:SetWidth(f.name:GetStringWidth())
 
 	if E.db.general.lootRoll.qualityName then
 		f.name:SetTextColor(color.r, color.g, color.b)
@@ -262,10 +260,10 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	--Add cached roll info, if any
 	for rollid, rollTable in pairs(cachedRolls) do
 		if f.rollID == rollid then --rollid matches cached rollid
-			for rollerName, rollerInfo in pairs(rollTable) do
-				local rollType, class = rollerInfo[1], rollerInfo[2]
-				f.rolls[rollerName] = { rollType, class }
-				f[rolltypes[rollType]].text:SetText(tonumber(f[rolltypes[rollType]].text:GetText()) + 1)
+			for rollType, rollerInfo in pairs(rollTable) do
+				local rollerName, class = rollerInfo[1], rollerInfo[2]
+				f.rolls[rollType] = { rollerName, class }
+				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 			end
 			completedRolls[rollid] = true
 			break
@@ -281,8 +279,8 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 	if name and rollType then
 		for _, f in next, M.RollBars do
 			if f.rollID == rollID then
-				f.rolls[name] = { rollType, class }
-				f[rolltypes[rollType]].text:SetText(tonumber(f[rolltypes[rollType]].text:GetText()) + 1)
+				tinsert(f.rolls[rollType], { name, class })
+				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 				rollIsHidden = false
 				break
 			end
@@ -291,19 +289,16 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 		--History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
 		if rollIsHidden then
 			cachedRolls[rollID] = cachedRolls[rollID] or {}
-			if not cachedRolls[rollID][name] then
-				cachedRolls[rollID][name] = { rollType, class }
+			if not cachedRolls[rollID][rollType] then
+				tinsert(cachedRolls[rollID][rollType], { name, class })
 			end
 		end
 	end
 end
 
 function M:LOOT_HISTORY_ROLL_COMPLETE()
-	--Remove completed rolls from cache
-	for rollID in pairs(completedRolls) do
-		cachedRolls[rollID] = nil
-		completedRolls[rollID] = nil
-	end
+	wipe(cachedRolls)
+	wipe(completedRolls)
 end
 M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
