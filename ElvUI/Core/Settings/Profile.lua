@@ -151,6 +151,11 @@ P.general = {
 			}
 		}
 	},
+	lootRoll = {
+		width = 328,
+		height = 28,
+		style = 'halfbar'
+	},
 	objectiveTracker = true,
 	totems = {
 		enable = true,
