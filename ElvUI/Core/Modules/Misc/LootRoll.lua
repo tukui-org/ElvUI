@@ -370,6 +370,7 @@ function M:LoadLootRoll()
 	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE')
 	M:RegisterEvent('START_LOOT_ROLL')
+	M:RegisterEvent('CANCEL_LOOT_ROLL')
 	M:RegisterEvent('LOOT_ROLLS_COMPLETE')
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
