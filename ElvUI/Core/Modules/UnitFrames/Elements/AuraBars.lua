@@ -16,6 +16,7 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar.spark:SetTexture(E.media.blankTex)
 	statusBar.spark:SetVertexColor(1, 1, 1, 0.4)
 	statusBar.spark:Size(2)
+	statusBar.spark:Point('RIGHT', statusBar:GetStatusBarTexture())
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true
@@ -95,7 +96,6 @@ function UF:Configure_AuraBars(frame)
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db
-			statusBar.spark:SetHeight(auraBars.height)
 			UF:Update_FontString(statusBar.timeText)
 			UF:Update_FontString(statusBar.nameText)
 		end
@@ -188,6 +188,7 @@ function UF:PostUpdateBar_AuraBars(_, statusBar, _, _, _, _, debuffType) -- unit
 
 	statusBar.db = self.db
 	statusBar.icon:SetTexCoord(unpack(E.TexCoords))
+	statusBar.spark:SetHeight(self.height)
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
 
