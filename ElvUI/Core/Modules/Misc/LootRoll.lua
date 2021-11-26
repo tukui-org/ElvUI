@@ -262,7 +262,8 @@ function M:START_LOOT_ROLL(_, rollID, time)
 		if f.rollID == rollid then --rollid matches cached rollid
 			for rollType, rollerInfo in pairs(rollTable) do
 				local rollerName, class = rollerInfo[1], rollerInfo[2]
-				f.rolls[rollType] = { rollerName, class }
+				f.rolls[rollType] = f.rolls[rollType] or {}
+				tinsert(f.rolls[rollType], { rollerName, class })
 				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 			end
 			completedRolls[rollid] = true
@@ -279,6 +280,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 	if name and rollType then
 		for _, f in next, M.RollBars do
 			if f.rollID == rollID then
+				f.rolls[rollType] = f.rolls[rollType] or {}
 				tinsert(f.rolls[rollType], { name, class })
 				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 				rollIsHidden = false
@@ -290,6 +292,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 		if rollIsHidden then
 			cachedRolls[rollID] = cachedRolls[rollID] or {}
 			if not cachedRolls[rollID][rollType] then
+				cachedRolls[rollID][rollType] = cachedRolls[rollID][rollType] or {}
 				tinsert(cachedRolls[rollID][rollType], { name, class })
 			end
 		end
