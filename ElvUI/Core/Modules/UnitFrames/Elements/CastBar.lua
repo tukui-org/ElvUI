@@ -59,10 +59,10 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text:FontTemplate()
 
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
-	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
+	castbar.Spark_:SetTexture(E.media.blankTex)
 	castbar.Spark_:SetBlendMode('ADD')
 	castbar.Spark_:SetVertexColor(1, 1, 1)
-	castbar.Spark_:Size(20, 40)
+	castbar.Spark_:Size(2)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY')
@@ -178,7 +178,7 @@ function UF:Configure_Castbar(frame)
 	if db.spark then
 		castbar.Spark = castbar.Spark_
 		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
-		castbar.Spark:Height(db.height * 2)
+		castbar.Spark:Height(db.height)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
 		castbar.Spark = nil

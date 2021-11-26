@@ -13,6 +13,9 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar:Point('LEFT')
 	statusBar:Point('RIGHT')
 
+	statusBar.spark:SetTexture(E.media.blankTex)
+	statusBar.spark:SetWidth(2)
+
 	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true
 	UF:Update_StatusBar(statusBar)
@@ -91,6 +94,7 @@ function UF:Configure_AuraBars(frame)
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db
+			statusBar.spark:Height(auraBars.height)
 			UF:Update_FontString(statusBar.timeText)
 			UF:Update_FontString(statusBar.nameText)
 		end
@@ -167,7 +171,6 @@ function UF:Configure_AuraBars(frame)
 		auraBars:ClearAllPoints()
 		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', xOffset or -SPACING, yOffset)
 		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', xOffset or -(SPACING + BORDER), yOffset)
-
 		auraBars.width = E:Scale((db.aurabar.attachTo == 'DETACHED' and db.aurabar.detachedWidth or frame.UNIT_WIDTH) - (BORDER * 4) - auraBars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		auraBars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
