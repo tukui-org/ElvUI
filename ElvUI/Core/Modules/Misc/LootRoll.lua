@@ -90,13 +90,14 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 	f:GetDisabledTexture():SetAlpha(.2)
 	f:SetPushedTexture(texture..'-Down')
 	f:SetHighlightTexture(texture..'-Highlight')
-	f.rolltype = rolltype
-	f.parent = parent
-	f.tiptext = tiptext
 	f:SetScript('OnEnter', SetTip)
 	f:SetScript('OnLeave', GameTooltip_Hide)
 	f:SetScript('OnClick', ClickRoll)
 	f:SetMotionScriptsWhileDisabled(true)
+
+	f.parent = parent
+	f.rolltype = rolltype
+	f.tiptext = tiptext
 
 	f.text = f:CreateFontString(nil, 'ARTWORK')
 	f.text:FontTemplate(nil, nil, 'OUTLINE')
@@ -259,7 +260,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 		if f.rollID == rollid then --rollid matches cached rollid
 			for rollType, rollerInfo in pairs(rollTable) do
 				local rollerName, class = rollerInfo[1], rollerInfo[2]
-				f.rolls[rollType] = f.rolls[rollType] or {}
+				if not f.rolls[rollType] then f.rolls[rollType] = {} end
 				tinsert(f.rolls[rollType], { rollerName, class })
 				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 			end
@@ -277,7 +278,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 	if name and rollType then
 		for _, f in next, M.RollBars do
 			if f.rollID == rollID then
-				f.rolls[rollType] = f.rolls[rollType] or {}
+				if not f.rolls[rollType] then f.rolls[rollType] = {} end
 				tinsert(f.rolls[rollType], { name, class })
 				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
 				rollIsHidden = false
@@ -287,7 +288,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 
 		--History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
 		if rollIsHidden then
-			cachedRolls[rollID] = cachedRolls[rollID] or {}
+			if not cachedRolls[rollID] then cachedRolls[rollID] = {} end
 			if not cachedRolls[rollID][rollType] then
 				cachedRolls[rollID][rollType] = cachedRolls[rollID][rollType] or {}
 				tinsert(cachedRolls[rollID][rollType], { name, class })
