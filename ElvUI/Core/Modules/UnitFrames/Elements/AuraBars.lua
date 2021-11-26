@@ -87,16 +87,18 @@ function UF:Configure_AuraBars(frame)
 		auraBars.growth = db.aurabar.anchorPoint
 		auraBars.maxBars = db.aurabar.maxBars
 		auraBars.spacing = db.aurabar.spacing
+		auraBars.reverseFill = auraBars.db.reverseFill
 		auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
 		auraBars.enemyAuraType = db.aurabar.enemyAuraType
 		auraBars.disableMouse = db.aurabar.clickThrough
 		auraBars.filterList = UF:ConvertFilters(auraBars, db.aurabar.priority)
-		auraBars.auraSort = UF.SortAuraFuncs[auraBars.db.sortMethod]
+		auraBars.auraSort = UF.SortAuraFuncs[db.aurabar.sortMethod]
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db
-			statusBar:SetReverseFill(auraBars.db.reverseFill)
-			statusBar.spark:Point(statusBar:GetReverseFill() and 'LEFT' or 'RIGHT', statusBar:GetStatusBarTexture())
+			statusBar:SetReverseFill(auraBars.reverseFill)
+			statusBar.spark:Point(auraBars.reverseFill and 'LEFT' or 'RIGHT', statusBar:GetStatusBarTexture())
+
 			UF:Update_FontString(statusBar.timeText)
 			UF:Update_FontString(statusBar.nameText)
 		end
