@@ -14,7 +14,8 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar:Point('RIGHT')
 
 	statusBar.spark:SetTexture(E.media.blankTex)
-	statusBar.spark:SetWidth(2)
+	statusBar.spark:SetVertexColor(1, 1, 1, 0.4)
+	statusBar.spark:Size(2)
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true
@@ -94,7 +95,7 @@ function UF:Configure_AuraBars(frame)
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db
-			statusBar.spark:Height(auraBars.height)
+			statusBar.spark:SetHeight(auraBars.height)
 			UF:Update_FontString(statusBar.timeText)
 			UF:Update_FontString(statusBar.nameText)
 		end
