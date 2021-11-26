@@ -154,7 +154,11 @@ P.general = {
 	lootRoll = {
 		width = 328,
 		height = 28,
-		style = 'halfbar'
+		style = 'halfbar',
+		statusBarTexture = 'ElvUI Norm',
+		qualityName = false,
+		qualityStatusBar = true,
+		qualityStatusBarBackdrop = true,
 	},
 	objectiveTracker = true,
 	totems = {

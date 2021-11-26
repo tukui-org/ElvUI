@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local pairs, unpack, ipairs, next, tonumber, tinsert = pairs, unpack, ipairs, next, tonumber, tinsert
@@ -116,10 +117,7 @@ function M:CreateRollFrame()
 	local status = CreateFrame('StatusBar', nil, frame)
 	status:CreateBackdrop()
 	status:SetScript('OnUpdate', StatusUpdate)
-	status:SetFrameLevel(status:GetFrameLevel()-1)
-	status:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(status)
-	status:SetStatusBarColor(.8, .8, .8, .9)
+	status:SetStatusBarTexture(E.db.general.lootRoll.statusBarTexture)
 	status.parent = frame
 	frame.status = status
 
@@ -226,12 +224,29 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.name:SetText(name)
 	f.name:SetWidth(f.name:GetStringWidth())
 
+	if E.db.general.lootRoll.qualityName then
+		f.name:SetTextColor(color.r, color.g, color.b)
+	else
+		f.name:SetTextColor(1, 1, 1)
+	end
+
 	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"])
 	f.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
-	f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
-	f.status.spark:SetColorTexture(color.r, color.g, color.b, .9)
-	f.status.backdrop:SetBackdropColor(color.r, color.g, color.b, .1)
+	if E.db.general.lootRoll.qualityStatusBar then
+		f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
+		f.status.spark:SetColorTexture(color.r, color.g, color.b, .9)
+	else
+		f.status:SetStatusBarColor(1, 1, 0, .7)
+		f.status.spark:SetColorTexture(1, 1, 0, .9)
+	end
+
+	if E.db.general.lootRoll.qualityStatusBarBackdrop then
+		f.status.backdrop:SetBackdropColor(color.r, color.g, color.b, .1)
+	else
+		local r, g, b = unpack(E.media.backdropfadecolor)
+		f.status.backdrop:SetBackdropColor(r, g, b, .1)
+	end
 
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
@@ -292,9 +307,12 @@ M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
+	local texture = LSM:Fetch('statusbar', E.db.general.lootRoll.statusBarTexture)
 
 	for i = 1, 4 do
 		local frame = M.RollBars[i]
+		frame.status:SetStatusBarTexture(texture)
+		frame.status.backdrop.Center:SetTexture(E.db.general.lootRoll.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
 		if E.db.general.lootRoll.style == 'halfbar' then
 			frame:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height)
