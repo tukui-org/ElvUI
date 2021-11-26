@@ -199,7 +199,7 @@ General.args.blizzUIImprovements.args.lootGroup.inline = true
 General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L["Loot"], L["Enable/Disable the loot frame."], 1)
 
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 4, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value Misc:UpdateLootRollFrames() end)
-General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.lootRoll = ACH:Toggle(L["Loot Roll"], L["Enable/Disable the loot roll frame."], 0, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.lootRoll = ACH:Toggle(L["Enable"], L["Enable/Disable the loot roll frame."], 0, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 50, max = 1000, step = 1 })
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 100, step = 1 })
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.style = ACH:Select(L["Style"], nil, 3, { halfbar = 'Half Bar', fullbar = 'Full Bar' })
