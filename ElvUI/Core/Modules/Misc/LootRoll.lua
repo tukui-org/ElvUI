@@ -44,8 +44,9 @@ local function SetTip(frame)
 		GameTooltip:AddLine('|cffff3333'..L["Can't Roll"])
 	end
 
-	if next(frame.parent.rolls[frame.rolltype]) then
-		for _, infoTable in next, frame.parent.rolls[frame.rolltype] do
+	local rolls = frame.parent.rolls[frame.rolltype]
+	if rolls then
+		for _, infoTable in next, rolls do
 			local playerName, className = unpack(infoTable)
 			if not lineAdded then
 				GameTooltip:AddLine(' ')
