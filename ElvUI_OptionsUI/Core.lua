@@ -128,7 +128,7 @@ local ACH = E.Libs.ACH
 
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
-	E:RefreshCustomTextsConfigs()
+	E.OptionsUI[1]:RefreshCustomTextsConfigs()
 	E.Libs.AceConfigRegistry:NotifyChange('ElvUI')
 end
 

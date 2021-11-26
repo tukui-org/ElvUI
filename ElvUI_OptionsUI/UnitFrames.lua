@@ -462,7 +462,7 @@ local function CreateCustomTextGroup(unit, objectName)
 end
 
 --Custom Texts
-function E:RefreshCustomTextsConfigs()
+function C:RefreshCustomTextsConfigs()
 	--Hide any custom texts that don't belong to current profile
 	for _, customText in pairs(CUSTOMTEXT_CONFIGS) do
 		customText.hidden = true
@@ -2409,4 +2409,4 @@ Assist.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateH
 Assist.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 Assist.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 
-E:RefreshCustomTextsConfigs() -- Fire the current profile for custom texts
+C:RefreshCustomTextsConfigs() -- Fire the current profile for custom texts
