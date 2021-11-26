@@ -294,7 +294,7 @@ function M:GetQueueStatusButton()
 end
 
 function M:UpdateSettings()
-	if not E.private.general.minimap.enable then return end
+	if not M.Initialized then return end
 
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
