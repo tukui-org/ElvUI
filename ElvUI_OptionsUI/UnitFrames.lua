@@ -79,7 +79,8 @@ end
 
 local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	local config = ACH:Group(L["Aura Bars"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value updateFunc(UF, groupName) end)
-	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
 	config.args.configureButton1 = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 2, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 	config.args.configureButton1 = ACH:Execute(L["Coloring (Specific)"], L["This opens the AuraBar Colors filter. These settings affect specific spells."], 3, function() C:SetToFilterConfig('AuraBar Colors') end)
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 4, { ABOVE = L["Above"], BELOW = L["Below"] })

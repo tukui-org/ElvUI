@@ -1196,6 +1196,7 @@ local UF_AuraBars = {
 	spacing = 0,
 	yOffset = 0,
 	clickThrough = false,
+	reverseFill = false,
 }
 
 local UF_AuraWatch = {

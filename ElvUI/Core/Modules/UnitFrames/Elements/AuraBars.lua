@@ -14,7 +14,6 @@ function UF:Construct_AuraBars(statusBar)
 	statusBar:Point('RIGHT')
 
 	statusBar.spark:SetTexture(E.media.blankTex)
-	statusBar.spark:Point('RIGHT', statusBar:GetStatusBarTexture())
 	statusBar.spark:SetVertexColor(1, 1, 1, 0.4)
 	statusBar.spark:Size(2)
 
@@ -96,6 +95,8 @@ function UF:Configure_AuraBars(frame)
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db
+			statusBar:SetReverseFill(auraBars.db.reverseFill)
+			statusBar.spark:Point(statusBar:GetReverseFill() and 'LEFT' or 'RIGHT', statusBar:GetStatusBarTexture())
 			UF:Update_FontString(statusBar.timeText)
 			UF:Update_FontString(statusBar.nameText)
 		end
