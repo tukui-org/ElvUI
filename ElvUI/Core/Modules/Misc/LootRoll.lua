@@ -3,21 +3,16 @@ local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local pairs, unpack, ipairs, next, tonumber, tinsert = pairs, unpack, ipairs, next, tonumber, tinsert
+local pairs, unpack, next, tinsert = pairs, unpack, next, tinsert
 local wipe = wipe
 
-local ChatEdit_InsertLink = ChatEdit_InsertLink
 local CreateFrame = CreateFrame
-local DressUpItemLink = DressUpItemLink
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
 local GetItemInfo = GetItemInfo
-local ShowInspectCursor = ShowInspectCursor
-local IsControlKeyDown = IsControlKeyDown
-local IsModifiedClick = IsModifiedClick
 local IsShiftKeyDown = IsShiftKeyDown
 local RollOnLoot = RollOnLoot
 
@@ -60,18 +55,14 @@ local function SetTip(frame)
 end
 
 local function SetItemTip(frame)
-	if not frame.link then return end
 	GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT')
 	GameTooltip:SetLootRollItem(frame.rollID)
 
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
-	if IsModifiedClick('DRESSUP') then ShowInspectCursor() end
 end
 
-
 local function LootClick(frame)
-	if IsControlKeyDown() then DressUpItemLink(frame.link)
-	elseif IsShiftKeyDown() then ChatEdit_InsertLink(frame.link) end
+	HandleModifiedItemClick(frame.link) -- Dont localize this.
 end
 
 local function StatusUpdate(frame)
