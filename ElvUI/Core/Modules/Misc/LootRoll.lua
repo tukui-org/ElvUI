@@ -263,7 +263,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 			for rollerName, rollerInfo in pairs(rollTable) do
 				local rollType, class = rollerInfo[1], rollerInfo[2]
 				f.rolls[rollerName] = { rollType, class }
-				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
+				f[rolltypes[rollType]].text:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 			end
 			completedRolls[rollid] = true
 			break
@@ -280,7 +280,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 		for _, f in ipairs(M.RollBars) do
 			if f.rollID == rollID then
 				f.rolls[name] = { rollType, class }
-				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
+				f[rolltypes[rollType]].text:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 				rollIsHidden = false
 				break
 			end
