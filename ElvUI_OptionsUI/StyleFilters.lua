@@ -104,12 +104,13 @@ end
 
 local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true }
 local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
+local cooldownsOptions = { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] }
 local function UpdateFilterList(which, initial, opt, add)
 	local filter = GetFilter()
 	local option, spell, desc
 
 	if which == 'cooldowns' then
-		option = ACH:Select('', nil, nil, { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] })
+		option = ACH:Select('', nil, nil, cooldownsOptions)
 	else
 		option = ACH:Toggle('', nil)
 		option.textWidth = true
