@@ -538,7 +538,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		else
-			isQuestItem = itemClassID == LE_ITEM_CLASS_QUESTITEM
+			isQuestItem = bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM
 		end
 
 		if B.db.itemLevel then
@@ -550,7 +550,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if (not E.Retail and isQuestItem) or B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
+		if (not E.Retail and not isQuestItem and not slot.isEquipment) or B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -565,7 +565,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			for i = 2, bindTypeLines do
 				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 				if not line or line == '' then break end
-				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
+				if slot.isEquipment and (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then break end
 				BoE, BoU, isStarterItem = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE, line == _G.ITEM_STARTS_QUEST
 				if (BoE or BoU) then break end
 			end
@@ -583,10 +583,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
-	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
-	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
-
 	if slot.spellID then
 		B:UpdateCooldown(slot)
 		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
@@ -599,9 +595,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
-	else
-		isActiveQuest = not isStarterItem
+	elseif isQuestItem or isStarterItem then
+		isQuestItem, isActiveQuest = true, not isStarterItem
 	end
+
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
+	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
+	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
