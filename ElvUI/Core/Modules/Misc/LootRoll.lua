@@ -332,6 +332,14 @@ function M:UpdateLootRollFrames()
 		frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
 		frame.button:Size(E.db.general.lootRoll.height)
 
+		for _, button in next, rolltypes do
+			local icon = frame[button]
+			if icon then
+				icon:Size(E.db.general.lootRoll.height / 1.5)
+				icon:ClearAllPoints()
+			end
+		end
+
 		if E.db.general.lootRoll.style == 'halfbar' then
 			frame.status:ClearAllPoints()
 			frame.status:Point('BOTTOM', 3, 0)
@@ -343,14 +351,6 @@ function M:UpdateLootRollFrames()
 
 			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
-
-			for _, button in next, rolltypes do
-				local icon = frame[button]
-				if icon then
-					icon:Size(E.db.general.lootRoll.height / 1.5)
-					icon:ClearAllPoints()
-				end
-			end
 
 			frame.pass:Point('TOPRIGHT', frame, 4, 0)
 			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', 1, 0) end
@@ -367,14 +367,6 @@ function M:UpdateLootRollFrames()
 
 			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
-
-			for _, button in next, rolltypes do
-				local icon = frame[button]
-				if icon then
-					icon:Size(E.db.general.lootRoll.height / 1.5)
-					icon:ClearAllPoints()
-				end
-			end
 
 			frame.pass:Point('RIGHT', frame.status, 'RIGHT', -4, 0)
 			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', 1, 0) end
