@@ -108,7 +108,7 @@ local CONTAINER_WIDTH = 192
 local CONTAINER_SPACING = 0
 local VISIBLE_CONTAINER_SPACING = 3
 local CONTAINER_SCALE = 0.75
-local BIND_START, BIND_MAX
+local BIND_START, BIND_END
 
 local SEARCH_STRING = ''
 B.SearchSlots = {}
@@ -511,7 +511,7 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		E.ScanTooltip:SetHyperlink(itemLink)
 		E.ScanTooltip:Show()
 
-		for i = BIND_START, BIND_MAX do
+		for i = BIND_START, BIND_END do
 			local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 
 			if not line or line == '' then break end
@@ -585,7 +585,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 			E.ScanTooltip:Show()
 
-			for i = BIND_START, BIND_MAX do
+			for i = BIND_START, BIND_END do
 				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 				if not line or line == '' then break end
 				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
@@ -2455,14 +2455,14 @@ end
 
 function B:UpdateBindLines(_, cvar)
 	if cvar == 'USE_COLORBLIND_MODE' then
-		BIND_START, BIND_MAX = B:GetBindLines()
+		BIND_START, BIND_END = B:GetBindLines()
 	end
 end
 
 function B:Initialize()
 	B.db = E.db.bags
 
-	BIND_START, BIND_MAX = B:GetBindLines()
+	BIND_START, BIND_END = B:GetBindLines()
 
 	--Bag Assignment Dropdown Menu (also used by BagBar)
 	B.AssignBagDropdown = CreateFrame('Frame', 'ElvUIAssignBagDropdown', E.UIParent, 'UIDropDownMenuTemplate')
