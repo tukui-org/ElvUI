@@ -203,6 +203,11 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonSummaryPlayerBackground:Hide()
 	_G.AchievementFrameComparisonSummaryFriendBackground:Hide()
 
+	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
+	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
+	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
+	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:Point('CENTER')
+
 	for _, frame in next, { _G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend } do
 		frame.NineSlice:SetAlpha(0)
 		frame:SetBackdrop()
@@ -346,10 +351,6 @@ function S:Blizzard_AchievementUI()
 	end
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
-	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
-	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
-	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
-	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:Point('CENTER')
 
 	for i=1, 12 do
 		local frame = _G['AchievementFrameSummaryCategoriesCategory'..i]
