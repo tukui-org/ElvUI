@@ -9,6 +9,7 @@ Minimap: Added option to scale the Minimap
 Misc: Reworked LootRoll and added options  
 NamePlates: Updated StyleFilters config  
 UnitFrames: Added reverse fill option for Aura Bars  
+UnitFrames: Updated spark for EnergyManaRegen ticks  
 
 ___
 ### Version 2.30 [ November 24th 2021 ]
