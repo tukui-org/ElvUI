@@ -28,7 +28,7 @@ function UF:Configure_EnergyManaRegen(frame)
 
 		frame.EnergyManaRegen:SetFrameStrata(frame.Power:GetFrameStrata())
 		frame.EnergyManaRegen:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
-		frame.EnergyManaRegen:Height(frame.Power:GetHeight())
+		frame.EnergyManaRegen.Spark:Height(frame.Power:GetHeight())
 	elseif frame:IsElementEnabled('EnergyManaRegen') then
 		frame:DisableElement('EnergyManaRegen')
 	end
