@@ -7,7 +7,12 @@ function UF:Construct_EnergyManaRegen(frame)
 	local EnergyManaRegen = CreateFrame("StatusBar", nil, frame.Power)
 	EnergyManaRegen:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
 	EnergyManaRegen:SetAllPoints()
+
 	EnergyManaRegen.Spark = EnergyManaRegen:CreateTexture(nil, 'OVERLAY')
+	EnergyManaRegen:SetBlendMode('ADD')
+	EnergyManaRegen:SetPoint('CENTER', EnergyManaRegen:GetStatusBarTexture(), 'RIGHT')
+	EnergyManaRegen:SetColorTexture(1, 1, 1, .7)
+	EnergyManaRegen:Width(2)
 
 	return EnergyManaRegen
 end
@@ -20,6 +25,7 @@ function UF:Configure_EnergyManaRegen(frame)
 
 		frame.EnergyManaRegen:SetFrameStrata(frame.Power:GetFrameStrata())
 		frame.EnergyManaRegen:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
+		frame.EnergyManaRegen:Height(frame.Power:GetHeight())
 	elseif frame:IsElementEnabled('EnergyManaRegen') then
 		frame:DisableElement('EnergyManaRegen')
 	end
