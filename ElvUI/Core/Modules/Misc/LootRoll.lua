@@ -322,7 +322,7 @@ function M:UpdateLootRollFrames()
 
 		frame.button:ClearAllPoints()
 		frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
-		frame.button:Size(E.db.general.lootRoll.height, E.db.general.lootRoll.height)
+		frame.button:Size(E.db.general.lootRoll.height)
 
 		if E.db.general.lootRoll.style == 'halfbar' then
 			frame.status:ClearAllPoints()
