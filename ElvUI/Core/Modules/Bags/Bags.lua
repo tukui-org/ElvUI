@@ -886,13 +886,13 @@ function B:GetBagAssignedInfo(holder)
 			if active then
 				color = B.AssignmentColors[i]
 				active = (color and i) or 0
-				holder.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[i])
+				holder.filterIcon:SetTexture(B.BAG_FILTER_ICONS[i])
 				break
 			end
 		end
 	end
 
-	holder.ElvUIFilterIcon:SetShown(active and B.db.showAssignedIcon)
+	holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 
 	if not active then
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -912,8 +912,8 @@ function B:FilterIconShown(show)
 end
 
 function B:CreateFilterIcon(parent)
-	if parent.ElvUIFilterIcon then
-		return parent.ElvUIFilterIcon
+	if parent.filterIcon then
+		return parent.filterIcon
 	end
 
 	--Create the texture showing the assignment type
@@ -922,14 +922,14 @@ function B:CreateFilterIcon(parent)
 	FilterBackdrop:SetTemplate()
 	FilterBackdrop:Size(20, 20)
 
-	parent.ElvUIFilterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
-	parent.ElvUIFilterIcon:SetTexture([[Interface\ICONS\INV_Potion_93]])
-	parent.ElvUIFilterIcon:SetTexCoord(unpack(E.TexCoords))
-	parent.ElvUIFilterIcon:SetInside()
-	parent.ElvUIFilterIcon.FilterBackdrop = FilterBackdrop
+	parent.filterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
+	parent.filterIcon:SetTexture([[Interface\ICONS\INV_Potion_93]])
+	parent.filterIcon:SetTexCoord(unpack(E.TexCoords))
+	parent.filterIcon:SetInside()
+	parent.filterIcon.FilterBackdrop = FilterBackdrop
 
-	hooksecurefunc(parent.ElvUIFilterIcon, 'SetShown', B.FilterIconShown)
-	parent.ElvUIFilterIcon:SetShown(false)
+	hooksecurefunc(parent.filterIcon, 'SetShown', B.FilterIconShown)
+	parent.filterIcon:SetShown(false)
 end
 
 function B:Layout(isBank)
@@ -986,8 +986,8 @@ function B:Layout(isBank)
 				slot:SetID(slotID)
 				slot:SetSize(buttonSize, buttonSize)
 
-				if slot.ElvUIFilterIcon then
-					slot.ElvUIFilterIcon.FilterBackdrop:SetSize(buttonSize, buttonSize)
+				if slot.filterIcon then
+					slot.filterIcon.FilterBackdrop:SetSize(buttonSize, buttonSize)
 				end
 
 				slot.JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
