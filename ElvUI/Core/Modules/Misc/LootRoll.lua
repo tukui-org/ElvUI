@@ -142,6 +142,11 @@ function M:CreateRollFrame()
 	button.stack:SetPoint('BOTTOMRIGHT', -1, 1)
 	button.stack:FontTemplate(nil, nil, 'OUTLINE')
 
+	button.questIcon = button:CreateTexture(nil, 'OVERLAY')
+	button.questIcon:SetTexture([[Interface\TargetingFrame\PortraitQuestBadge]])
+	button.questIcon:Point('RIGHT', button, 'LEFT', -2)
+	button.questIcon:Hide()
+
 	frame.pass = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
 	if E.Retail then
 		frame.disenchant = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT)
@@ -197,7 +202,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	if cancelled_rolls[rollID] then return end
 	local link = GetLootRollItemLink(rollID)
 	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
-	local _, _, _, _, _, _, _, _, _, _, _, _, _, bindType = GetItemInfo(link)
+	local _, _, _, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
 	local color = ITEM_QUALITY_COLORS[quality]
 
 	local f = GetFrame()
@@ -212,6 +217,8 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
+
+	f.button.questIcon:SetShown(E.Bags:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
 	f.greed:SetEnabled(canGreed)
@@ -233,7 +240,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.name:SetTextColor(1, 1, 1)
 	end
 
-	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"])
+	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"])
 	f.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
 	if E.db.general.lootRoll.qualityStatusBar then
