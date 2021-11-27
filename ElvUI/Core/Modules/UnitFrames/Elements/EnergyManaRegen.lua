@@ -12,10 +12,10 @@ function UF:Construct_EnergyManaRegen(frame)
 	element:SetAllPoints()
 
 	element.Spark = element:CreateTexture(nil, 'OVERLAY')
-	element:SetPoint('CENTER', element:GetStatusBarTexture(), 'RIGHT')
-	element:SetColorTexture(1, 1, 1, .7)
-	element:SetBlendMode('ADD')
-	element:Width(2)
+	element.Spark:SetPoint('CENTER', element:GetStatusBarTexture(), 'RIGHT')
+	element.Spark:SetColorTexture(1, 1, 1, .7)
+	element.Spark:SetBlendMode('ADD')
+	element.Spark:Width(2)
 
 	return element
 end
