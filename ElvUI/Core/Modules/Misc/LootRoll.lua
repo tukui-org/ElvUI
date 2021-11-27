@@ -240,8 +240,9 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
 		f.status.spark:SetColorTexture(color.r, color.g, color.b, .9)
 	else
-		f.status:SetStatusBarColor(1, 1, 0, .7)
-		f.status.spark:SetColorTexture(1, 1, 0, .9)
+		local c = E.db.general.lootRoll.statusBarColor
+		f.status:SetStatusBarColor(c.r, c.g, c.b, .7)
+		f.status.spark:SetColorTexture(c.r, c.g, c.b, .9)
 	end
 
 	if E.db.general.lootRoll.qualityStatusBarBackdrop then

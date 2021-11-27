@@ -159,6 +159,7 @@ P.general = {
 		qualityName = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
+		statusBarColor = { r = 0, g = .4, b = 1 }
 	},
 	objectiveTracker = true,
 	totems = {

@@ -206,6 +206,7 @@ General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.style = 
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.statusBarTexture = ACH:SharedMediaStatusbar(L["Texture"], L["The texture that will be used mainly for statusbars."], 1)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityName = ACH:Toggle(L["Quality Name"], nil, 4)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityStatusBar = ACH:Toggle(L["Quality StatusBar"], nil, 5)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.statusBarColor = ACH:Color(L["StatusBar Color"], nil, 5, nil, nil, function(info) local c = E.db.general.lootRoll[info[#info]] return c.r, c.g, c.b end, function(info, r, g, b) local c = E.db.general.lootRoll[info[#info]] c.r, c.g, c.b = r, g, b end, nil, function() return E.db.general.lootRoll.qualityStatusBar end)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityStatusBarBackdrop = ACH:Toggle(L["Quality Background"], nil, 6)
 
 General.args.blizzUIImprovements.args.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value Misc:ToggleItemLevelInfo() end, nil, not E.Retail)
