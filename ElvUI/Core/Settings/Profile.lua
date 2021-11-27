@@ -300,18 +300,19 @@ P.bags = {
 	showAssignedIcon = true,
 	colors = {
 		profession = {
-			quiver = { r = 1, g = 0.69, b = 0.41 },
 			ammoPouch = { r = 1, g = 0.69, b = 0.41 },
-			soulBag = { r = 1, g = 0.69, b = 0.41 },
-			leatherworking = { r = .88, g = .73, b = .29 },
-			inscription = { r = .29, g = .30, b = .88 },
-			herbs = { r = .07, g = .71, b = .13 },
+			cooking = { r = .87, g = .05, b = .25 },
 			enchanting = { r = .76, g = .02, b = .8 },
 			engineering = { r = .91, g = .46, b = .18 },
-			gems = { r = .03, g = .71, b = .81 },
-			mining = { r = .54, g = .40, b = .04 },
 			fishing = { r = .42, g = .59, b = 1 },
-			cooking = { r = .87, g = .05, b = .25 },
+			gems = { r = .03, g = .71, b = .81 },
+			herbs = { r = .07, g = .71, b = .13 },
+			inscription = { r = .29, g = .30, b = .88 },
+			keyring = { r = 1, g = .96, b = .41 },
+			leatherworking = { r = .88, g = .73, b = .29 },
+			mining = { r = .54, g = .40, b = .04 },
+			quiver = { r = 1, g = 0.69, b = 0.41 },
+			soulBag = { r = 1, g = 0.69, b = 0.41 },
 		},
 		assignment = {
 			equipment = { r = 0, g = .50, b = .47 },
@@ -319,8 +320,8 @@ P.bags = {
 			tradegoods = { r = 1, g = .32, b = .66 },
 		},
 		items = {
-			questStarter = {r = 1, g = 1, b = 0},
-			questItem = {r = 1, g = 0.30, b = 0.30},
+			questStarter = { r = 1, g = .96, b = .41 },
+			questItem = { r = 1, g = 0.30, b = 0.30 },
 		}
 	},
 	vendorGrays = {

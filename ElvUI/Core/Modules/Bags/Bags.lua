@@ -101,6 +101,7 @@ local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 
 local GameTooltip = _G.GameTooltip
+local bindTypeStart, bindTypeMaxLines = (GetCVarBool('colorblindmode') and 3) or 2, (GetCVarBool('colorblindmode') and 5) or 4
 
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
@@ -480,7 +481,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		r, g, b = qR, qG, qB
 	else
 		local bag = slot.bagFrame.Bags[slot.bagID]
-		local colors = bag and ((slot.bagID == KEYRING_CONTAINER and B.KeyRingColor) or (B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
+		local colors = (B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned])
 		if colors then
 			r, g, b, a = unpack(colors)
 		end
@@ -498,6 +499,30 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		slot:SetBackdropColor(r, g, b, fadeAlpha or a)
 	else
 		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+	end
+end
+
+function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
+	if bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM then
+		return true, true
+	else
+		local isQuestItem, isStarterItem
+
+		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetHyperlink(itemLink)
+		E.ScanTooltip:Show()
+
+		for i = bindTypeStart, bindTypeMaxLines do
+			local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
+
+			if not line or line == '' then break end
+			if not isQuestItem and line == _G.ITEM_BIND_QUEST then isQuestItem = true end
+			if not isStarterItem and line == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+		end
+
+		E.ScanTooltip:Hide()
+
+		return isQuestItem or isStarterItem, not isStarterItem
 	end
 end
 
@@ -527,7 +552,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.keyringTexture:SetShown(not texture)
 	end
 
-	local isQuestItem, questId, isActiveQuest, isStarterItem
+	local isQuestItem, questId, isActiveQuest
 	B:SearchSlotUpdate(slot, itemLink, locked)
 
 	if itemLink then
@@ -538,7 +563,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		else
-			isQuestItem = bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM
+			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		end
 
 		if B.db.itemLevel then
@@ -550,7 +575,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if (not E.Retail and not isQuestItem and not slot.isEquipment) or B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
+		if B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU
 
 			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -561,18 +586,17 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 			E.ScanTooltip:Show()
 
-			local bindTypeLines = (GetCVarBool('colorblindmode') and 5) or 4
-			for i = 2, bindTypeLines do
+			for i = bindTypeStart, bindTypeMaxLines do
 				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 				if not line or line == '' then break end
-				if slot.isEquipment and (line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND) then break end
-				BoE, BoU, isStarterItem = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE, line == _G.ITEM_STARTS_QUEST
+				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
+				BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
 				if (BoE or BoU) then break end
 			end
 
 			E.ScanTooltip:Hide()
 
-			if B.db.showBindType and (BoE or BoU) then
+			if (BoE or BoU) then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 			end
 		end
@@ -595,8 +619,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
-	elseif isQuestItem or isStarterItem then
-		isQuestItem, isActiveQuest = true, not isStarterItem
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
@@ -1072,6 +1094,11 @@ function B:SetBagAssignments(holder, skip)
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
 	bag.type = select(2, GetContainerNumFreeSlots(holder.id))
+
+	if holder.id == KEYRING_CONTAINER then
+		bag.type = B.BagIndice.keyring
+	end
+
 	bag.assigned = B:GetBagAssignedInfo(holder)
 
 	if not skip and B:TotalSlotsChanged(frame) then
@@ -2371,6 +2398,7 @@ B.BagIndice = {
 	herbs = 0x0020,
 	enchanting = 0x0040,
 	engineering = 0x0080,
+	keyring = 0x0100,
 	gems = 0x0200,
 	mining = 0x0400,
 	fishing = 0x8000,
@@ -2421,6 +2449,12 @@ function B:UpdateBagColors(table, indice, r, g, b)
 	colorTable[1], colorTable[2], colorTable[3] = r, g, b
 end
 
+function B:UpdateBindLines(_, cvar)
+	if cvar == "USE_COLORBLIND_MODE" then
+		bindTypeStart, bindTypeMaxLines = (GetCVarBool('colorblindmode') and 3) or 2, (GetCVarBool('colorblindmode') and 5) or 4
+	end
+end
+
 function B:Initialize()
 	B.db = E.db.bags
 
@@ -2431,8 +2465,6 @@ function B:Initialize()
 	B.AssignBagDropdown:Hide()
 
 	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
-
-	B.KeyRingColor = { 1, 1, 0 }
 
 	B.AssignmentColors = {
 		[0] = { .99, .23, .21 }, -- fallback
@@ -2450,6 +2482,7 @@ function B:Initialize()
 		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
 		[0x0040]	= { B.db.colors.profession.enchanting.r, B.db.colors.profession.enchanting.g, B.db.colors.profession.enchanting.b },
 		[0x0080]	= { B.db.colors.profession.engineering.r, B.db.colors.profession.engineering.g, B.db.colors.profession.engineering.b },
+		[0x0100]    = { B.db.colors.profession.keyring.r, B.db.colors.profession.keyring.g, B.db.colors.profession.keyring.b },
 		[0x0200]	= { B.db.colors.profession.gems.r, B.db.colors.profession.gems.g, B.db.colors.profession.gems.b },
 		[0x0400]	= { B.db.colors.profession.mining.r, B.db.colors.profession.mining.g, B.db.colors.profession.mining.b },
 		[0x8000]	= { B.db.colors.profession.fishing.r, B.db.colors.profession.fishing.g, B.db.colors.profession.fishing.b },
@@ -2533,6 +2566,7 @@ function B:Initialize()
 	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
+	B:RegisterEvent('CVAR_UPDATE', 'UpdateBindLines')
 
 	B:AutoToggle()
 
