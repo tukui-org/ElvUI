@@ -16,7 +16,7 @@ function UF:Construct_EnergyManaRegen(frame)
 	element.Spark = element:CreateTexture(nil, 'OVERLAY')
 	element.Spark:SetPoint('RIGHT', barTexture)
 	element.Spark:SetTexture(E.media.blankTex)
-	element.Spark:SetVertexColor(1, 1, 1, 0.6)
+	element.Spark:SetVertexColor(1, 1, 1, 0.4)
 	element.Spark:Width(2)
 
 	return element
