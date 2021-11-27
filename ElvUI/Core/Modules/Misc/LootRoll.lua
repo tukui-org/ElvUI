@@ -318,12 +318,12 @@ function M:UpdateLootRollFrames()
 		frame.status:SetStatusBarTexture(texture)
 		frame.status.backdrop.Center:SetTexture(E.db.general.lootRoll.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
+		frame.button:ClearAllPoints()
+		frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
+		frame.button:Size(E.db.general.lootRoll.height, E.db.general.lootRoll.height)
+
 		if E.db.general.lootRoll.style == 'halfbar' then
 			frame:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height)
-
-			frame.button:ClearAllPoints()
-			frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
-			frame.button:Size(E.db.general.lootRoll.height, E.db.general.lootRoll.height)
 
 			frame.status:ClearAllPoints()
 			frame.status:Point('BOTTOM', 3, 0)
@@ -350,10 +350,6 @@ function M:UpdateLootRollFrames()
 			frame.need:Point('RIGHT', frame.greed, 'LEFT', 1, 0)
 		else
 			frame:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height)
-
-			frame.button:ClearAllPoints()
-			frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
-			frame.button:Size(E.db.general.lootRoll.height, E.db.general.lootRoll.height)
 
 			frame.status:ClearAllPoints()
 			frame.status:SetAllPoints()
