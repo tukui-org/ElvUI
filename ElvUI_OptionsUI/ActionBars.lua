@@ -8,7 +8,7 @@ local ipairs = ipairs
 local format = format
 local SetCVar = SetCVar
 local CopyTable = CopyTable
-local GameTooltip = _G.GameTooltip
+local GameTooltip = GameTooltip
 
 -- GLOBALS: LOCK_ACTIONBAR
 

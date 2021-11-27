@@ -9,8 +9,8 @@ local next = next
 local strmatch = strmatch
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
+local GameTooltip = GameTooltip
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
-local GameTooltip = _G.GameTooltip
 local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
 local Bags = ACH:Group(L["BAGSLOT"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)

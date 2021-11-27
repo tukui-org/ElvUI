@@ -4,10 +4,9 @@ local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local ACH = E.Libs.ACH
 
-local _G = _G
 local tonumber = tonumber
-local GameTooltip = _G.GameTooltip
-local GameTooltipStatusBar = _G.GameTooltipStatusBar
+local GameTooltip = GameTooltip
+local GameTooltipStatusBar = GameTooltipStatusBar
 
 local modifierValues = { SHOW = L["Show"], HIDE = L["Hide"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
