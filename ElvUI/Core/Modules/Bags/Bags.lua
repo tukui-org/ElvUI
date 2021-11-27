@@ -480,7 +480,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		r, g, b = qR, qG, qB
 	else
 		local bag = slot.bagFrame.Bags[slot.bagID]
-		local colors = (B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned])
+		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
 			r, g, b, a = unpack(colors)
 		end
@@ -505,12 +505,11 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 	if bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM then
 		return true, true
 	else
-		local isQuestItem, isStarterItem
-
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetHyperlink(itemLink)
 		E.ScanTooltip:Show()
 
+		local isQuestItem, isStarterItem
 		for i = BIND_START, BIND_END do
 			local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 
@@ -523,6 +522,32 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 
 		return isQuestItem or isStarterItem, not isStarterItem
 	end
+end
+
+function B:GetItemBindInfo(slot, bagID, slotID)
+	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+	if slot.GetInventorySlot then -- this fixes bank bagid -1
+		E.ScanTooltip:SetInventoryItem('player', slot:GetInventorySlot())
+	else
+		E.ScanTooltip:SetBagItem(bagID, slotID)
+	end
+	E.ScanTooltip:Show()
+
+	local BoE, BoU
+	for i = BIND_START, BIND_END do
+		local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
+
+		if not line or line == '' then break end
+		if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
+
+		BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
+
+		if BoE or BoU then break end
+	end
+
+	E.ScanTooltip:Hide()
+
+	return BoE, BoU
 end
 
 function B:UpdateSlot(frame, bagID, slotID)
@@ -575,27 +600,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 
 		if B.db.showBindType and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
-			local BoE, BoU
+			local BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
 
-			E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-			if slot.GetInventorySlot then -- this fixes bank bagid -1
-				E.ScanTooltip:SetInventoryItem('player', slot:GetInventorySlot())
-			else
-				E.ScanTooltip:SetBagItem(bagID, slotID)
-			end
-			E.ScanTooltip:Show()
-
-			for i = BIND_START, BIND_END do
-				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
-				if not line or line == '' then break end
-				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
-				BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
-				if (BoE or BoU) then break end
-			end
-
-			E.ScanTooltip:Hide()
-
-			if (BoE or BoU) then
+			if BoE or BoU then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 			end
 		end
