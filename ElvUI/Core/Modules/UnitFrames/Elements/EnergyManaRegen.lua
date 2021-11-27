@@ -4,17 +4,20 @@ local UF = E:GetModule('UnitFrames')
 local CreateFrame = CreateFrame
 
 function UF:Construct_EnergyManaRegen(frame)
-	local EnergyManaRegen = CreateFrame("StatusBar", nil, frame.Power)
-	EnergyManaRegen:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
-	EnergyManaRegen:SetAllPoints()
+	local element = CreateFrame("StatusBar", nil, frame.Power)
+	element:SetStatusBarTexture(E.media.blankTex)
+	element:GetStatusBarTexture():SetAlpha(0)
+	element:SetMinMaxValues(0, 2)
+	element:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
+	element:SetAllPoints()
 
-	EnergyManaRegen.Spark = EnergyManaRegen:CreateTexture(nil, 'OVERLAY')
-	EnergyManaRegen:SetBlendMode('ADD')
-	EnergyManaRegen:SetPoint('CENTER', EnergyManaRegen:GetStatusBarTexture(), 'RIGHT')
-	EnergyManaRegen:SetColorTexture(1, 1, 1, .7)
-	EnergyManaRegen:Width(2)
+	element.Spark = element:CreateTexture(nil, 'OVERLAY')
+	element:SetBlendMode('ADD')
+	element:SetPoint('CENTER', element:GetStatusBarTexture(), 'RIGHT')
+	element:SetColorTexture(1, 1, 1, .7)
+	element:Width(2)
 
-	return EnergyManaRegen
+	return element
 end
 
 function UF:Configure_EnergyManaRegen(frame)

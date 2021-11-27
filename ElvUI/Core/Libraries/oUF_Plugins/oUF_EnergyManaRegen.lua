@@ -131,14 +131,14 @@ local Enable = function(self, unit)
 	if unit == 'player' and element and Power and myClass ~= 'WARRIOR' then
 		element.__owner = self
 
-		if element:IsObjectType('StatusBar') then
+		if element:IsObjectType('StatusBar') and not element:GetStatusBarTexture() then
 			element:SetStatusBarTexture([[Interface\Buttons\WHITE8X8]])
 			element:GetStatusBarTexture():SetAlpha(0)
 			element:SetMinMaxValues(0, 2)
 		end
 
 		local spark = element.Spark
-		if spark and spark:IsObjectType('Texture') then
+		if spark and spark:IsObjectType('Texture') and not spark:GetTexture() then
 			spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 			spark:SetSize(20, 20)
 			spark:SetBlendMode('ADD')
