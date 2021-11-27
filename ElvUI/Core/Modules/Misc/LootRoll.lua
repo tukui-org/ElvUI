@@ -131,7 +131,6 @@ function M:CreateRollFrame()
 	button:SetScript('OnLeave', GameTooltip_Hide)
 	button:SetScript('OnClick', LootClick)
 	button:SetScript('OnEvent', SetItemTip)
-	button:RegisterEvent('MODIFIER_STATE_CHANGED')
 	frame.button = button
 
 	button.icon = button:CreateTexture(nil, 'OVERLAY')
@@ -188,6 +187,7 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 			bar.rollID = nil
 			bar.time = nil
 			bar:Hide()
+			bar.button:UnregisterAllEvents()
 		end
 	end
 end
@@ -207,6 +207,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 
 	f.button.link = link
 	f.button.rollID = rollID
+	f.button:RegisterEvent('MODIFIER_STATE_CHANGED')
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
