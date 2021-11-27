@@ -1,11 +1,14 @@
 ### Version 1.57 [ ETA: 🍨 ]
 
+ActionBars: Fixed layering issue (Keybinds on Pet Bar)  
 Bags: Added an option to hide Gold  
 Bags: Fixed an issue with mouseover tooltip  
 Chat: Added an option to hide channel names  
-Datatexts: Bags datatext fix  
-Misc: Updated LootRoll  
+DataTexts: Fixed Bags DataText  
+Minimap: Added option to scale the Minimap  
+Misc: Reworked LootRoll and added options  
 NamePlates: Updated StyleFilters config  
+UnitFrames: Added reverse fill option for Aura Bars  
 
 ___
 ### Version 1.56 [ November 24th 2021 ]
