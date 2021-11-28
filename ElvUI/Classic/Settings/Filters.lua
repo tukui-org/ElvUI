@@ -356,7 +356,7 @@ G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
 	--Druid
-	--Hunterw
+	--Hunter
 	--Mage
 	--Paladin
 	--Priest
