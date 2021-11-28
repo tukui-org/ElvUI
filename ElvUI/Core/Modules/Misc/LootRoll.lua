@@ -156,7 +156,6 @@ function M:CreateRollFrame()
 
 	local name = frame:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, nil, 'OUTLINE')
-	name:Size(200, 10)
 	name:SetJustifyH('LEFT')
 	frame.name = name
 
