@@ -143,8 +143,8 @@ function M:CreateRollFrame()
 	button.stack:FontTemplate(nil, nil, 'OUTLINE')
 
 	button.questIcon = button:CreateTexture(nil, 'OVERLAY')
-	button.questIcon:SetTexture([[Interface\TargetingFrame\PortraitQuestBadge]])
-	button.questIcon:Point('RIGHT', button, 'LEFT', -2)
+	button.questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
+	button.questIcon:SetTexCoord(1, 0, 0, 1)
 	button.questIcon:Hide()
 
 	frame.pass = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
@@ -331,6 +331,10 @@ function M:UpdateLootRollFrames()
 		frame.button:ClearAllPoints()
 		frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
 		frame.button:Size(E.db.general.lootRoll.height)
+
+		frame.button.questIcon:ClearAllPoints()
+		frame.button.questIcon:Point('RIGHT', frame.button, 'LEFT', -3, 0)
+		frame.button.questIcon:Size(E.db.general.lootRoll.height)
 
 		for _, button in next, rolltypes do
 			local icon = frame[button]
