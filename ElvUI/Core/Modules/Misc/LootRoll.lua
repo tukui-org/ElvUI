@@ -24,6 +24,7 @@ local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local cachedRolls = {}
 local cancelled_rolls = {}
@@ -53,7 +54,7 @@ local function SetTip(frame)
 				lineAdded = true
 			end
 
-			local classColor = E:ClassColor(className)
+			local classColor = E:ClassColor(className) or PRIEST_COLOR
 			GameTooltip:AddLine(playerName, classColor.r, classColor.g, classColor.b)
 		end
 	end
