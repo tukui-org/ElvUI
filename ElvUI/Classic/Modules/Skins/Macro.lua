@@ -117,7 +117,9 @@ function S:Blizzard_MacroUI()
 	S:HandleButton(_G.MacroPopupFrame.BorderBox.CancelButton)
 	_G.MacroPopupFrame.BorderBox.CancelButton:Point('BOTTOMRIGHT', _G.MacroPopupFrame.BorderBox, 'BOTTOMRIGHT', -4, 4)
 
-	_G.MacroPopupButton1:Point('TOPLEFT', _G.MacroPopupScrollFrame, 'TOPLEFT', 6, -6)
+	if _G.MacroPopupButton1 then -- Doesn't exist if you open it in combat for some reason
+		_G.MacroPopupButton1:Point('TOPLEFT', _G.MacroPopupScrollFrame, 'TOPLEFT', 6, -6)
+	end
 
 	_G.MacroPopupScrollFrame:CreateBackdrop('Default')
 	_G.MacroPopupScrollFrame.backdrop:Point('BOTTOMRIGHT', -2, -1)
