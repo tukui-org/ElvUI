@@ -124,7 +124,7 @@ L["ElvUI is five or more revisions out of date. You can download the newest vers
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI已过期。你可以在www.tukui.org下载到最新的版本。购买会员可以使用Tukui客户端自动更新ElvUI"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI需要进行数据库优化，请耐性等待。"
 L["ElvUI Plugin Installation"] = "ElvUI插件安装"
-L["ElvUI Status"] = true
+L["ElvUI Status"] = "ElvUI 信息"
 L["Empty Slot"] = "空拾取位"
 L["Enable"] = "启用"
 L["Error resetting UnitFrame."] = "重置单位框架出现错误."
