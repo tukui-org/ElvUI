@@ -2,9 +2,9 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
-L["BoP"] = true
-L["BoE"] = true
-L["BoU"] = true
+L["BoP"] = "拾取綁定"
+L["BoE"] = "裝備綁定"
+L["BoU"] = "使用綁定"
 L["Mov. Speed"] = true
 L["Vendored gray items for: %s"] = "已售出灰色物品, 共得： %s"
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
@@ -236,7 +236,7 @@ L["O"] = "幹部"
 L["Objective Frame"] = "任務框架"
 L["Offhand"] = "副手"
 L["Offline"] = "離線"
-L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "喔 拜託,你不能同時使用 Elvui 和 Tukui,  請選擇一個停用."
+L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "喔 拜託,你不能同時使用 ElvUI 和 Tukui,  請選擇一個停用."
 L["One or more of the changes you have made require a ReloadUI."] = "已變更一或多個設定, 需重載介面."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "你所做的改動可能會影響到使用這個插件的所有角色, 你需要重新加載介面才能使改動生效."
 L["P"] = "隊伍"
