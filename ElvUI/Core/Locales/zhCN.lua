@@ -98,6 +98,7 @@ L["Current Difficulties:"] = true
 L["Current Level:"] = "当前等级:"
 L["CVars Set"] = "参数设定"
 L["CVars"] = "参数"
+L["Daily Reset"]="日常重置："
 L["Dark"] = "黑暗"
 L["Data From: %s"] = "数据来源: %s"
 L["Dead"] = "死亡"
