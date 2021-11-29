@@ -2,9 +2,9 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
-L["BoP"] = true
-L["BoE"] = true
-L["BoU"] = true
+L["BoP"] = "拾取綁定"
+L["BoE"] = "裝備綁定"
+L["BoU"] = "使用綁定"
 L["Mov. Speed"] = true
 L["Vendored gray items for: %s"] = "已售出灰色物品, 共得： %s"
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
