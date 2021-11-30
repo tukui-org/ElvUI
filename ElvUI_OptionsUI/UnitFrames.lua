@@ -567,7 +567,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 	local config = ACH:Group(L["Heal Prediction"], L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."], nil, nil, function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
-	config.args.colorsButton = ACH:Execute(L["COLORS"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
+	config.args.colorsButton = ACH:Execute(L["Colors"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
 	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["NONE"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
@@ -1017,7 +1017,7 @@ UnitFrame.allColorsGroup = {
 			order = 10,
 			type = 'group',
 			childGroups = 'tree',
-			name = L["COLORS"],
+			name = L["Colors"],
 			get = function(info) return E.db.unitframe.colors[info[#info]] end,
 			set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
 			disabled = function() return not E.UnitFrames.Initialized end,

@@ -66,7 +66,7 @@ local function group(order, db, label)
 		mainArgs.reverse = nil
 		mainArgs.colorGroup.args.override = nil
 		mainArgs.colorGroup.disabled = nil
-		mainArgs.colorGroup.name = L["COLORS"]
+		mainArgs.colorGroup.name = L["Colors"]
 
 		mainArgs.roundTime = ACH:Toggle(L["Round Timers"], nil, 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
 

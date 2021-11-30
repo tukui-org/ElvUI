@@ -468,7 +468,7 @@ E.Options.args.nameplate.args.generalGroup.args.threatGroup.args.indicator = ACH
 E.Options.args.nameplate.args.generalGroup.args.threatGroup.args.goodScale = ACH:Range(L["Good Scale"], nil, 4, { min = .5, max = 1.5, step = .01, isPercent = true }, nil, nil, nil, function() return not E.db.nameplates.threat.enable end)
 E.Options.args.nameplate.args.generalGroup.args.threatGroup.args.badScale = ACH:Range(L["Bad Scale"], nil, 5, { min = .5, max = 1.5, step = .01, isPercent = true }, nil, nil, nil, function() return not E.db.nameplates.threat.enable end)
 
-E.Options.args.nameplate.args.colorsGroup = ACH:Group(L["COLORS"], nil, 15, nil, nil, nil, function() return not E.NamePlates.Initialized end)
+E.Options.args.nameplate.args.colorsGroup = ACH:Group(L["Colors"], nil, 15, nil, nil, nil, function() return not E.NamePlates.Initialized end)
 E.Options.args.nameplate.args.colorsGroup.args.general = ACH:Group(L["General"], nil, 1, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end)
 E.Options.args.nameplate.args.colorsGroup.args.general.inline = true
 E.Options.args.nameplate.args.colorsGroup.args.general.args.glowColor = ACH:Color(L["Target Indicator Color"], nil, 1, true, nil, function(info) local t, d = E.db.nameplates.colors[info[#info]], P.nameplates.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
