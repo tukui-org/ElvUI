@@ -433,8 +433,8 @@ do
 	local stackThreshold
 	for _, auraType in next, { 'buffs', 'debuffs' } do
 		local option = StyleFitlers.triggers.args[auraType].args
-		option.minTimeLeft = ACH:Range(L["Minimum Time Left"], L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
-		option.maxTimeLeft = ACH:Range(L["Maximum Time Left"], L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
+		option.minTimeLeft = ACH:Range(L["Minimum Time Left"], nil, 1, { min = 0, max = 10800, step = 1 })
+		option.maxTimeLeft = ACH:Range(L["Maximum Time Left"], nil, 2, { min = 0, max = 10800, step = 1 })
 		option.spacer1 = ACH:Spacer(3, 'full')
 		option.mustHaveAll = ACH:Toggle(L["Require All"], L["If enabled then it will require all auras to activate the filter. Otherwise it will only require any one of the auras to activate it."], 4)
 		option.missing = ACH:Toggle(L["Missing"], L["If enabled then it checks if auras are missing instead of being present on the unit."], 5, nil, nil, nil, nil, nil, DisabledFilter)
@@ -453,6 +453,11 @@ do
 		option.names.inline = true
 	end
 end
+
+StyleFitlers.triggers.args.buffs.args.minTimeLeft.desc = L["Apply this filter if a buff has remaining time greater than this. Set to zero to disable."]
+StyleFitlers.triggers.args.buffs.args.maxTimeLeft.desc = L["Apply this filter if a buff has remaining time less than this. Set to zero to disable."]
+StyleFitlers.triggers.args.debuffs.args.minTimeLeft.desc = L["Apply this filter if a debbuff has remaining time greater than this. Set to zero to disable."]
+StyleFitlers.triggers.args.debuffs.args.maxTimeLeft.desc = L["Apply this filter if a debbuff has remaining time less than this. Set to zero to disable."]
 
 StyleFitlers.triggers.args.cooldowns = ACH:Group(L["Cooldowns"], nil, 23, nil, nil, nil, DisabledFilter)
 StyleFitlers.triggers.args.cooldowns.args.addCooldown = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = 'ONCD' UpdateFilterList('cooldowns', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
