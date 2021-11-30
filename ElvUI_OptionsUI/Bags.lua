@@ -70,7 +70,7 @@ Bags.args.general.args.playerGroup = ACH:Group(L["Player"], nil, 6, nil, nil, fu
 Bags.args.general.args.playerGroup.args.disableBagSort = ACH:Toggle(L["Disable Sort"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(false) end)
 Bags.args.general.args.playerGroup.args.bagSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.playerGroup.args.bagButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
-Bags.args.general.args.playerGroup.args.bagWidth = ACH:Range(L["Panel Width"], nil, 4, { min = 150, max = 1400, step = 1 })
+Bags.args.general.args.playerGroup.args.bagWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bag frame."], 4, { min = 150, max = 1400, step = 1 })
 
 Bags.args.general.args.playerGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout() end)
 Bags.args.general.args.playerGroup.args.split.args.player = ACH:Toggle(L["Enable"], nil, 1)
@@ -82,7 +82,7 @@ Bags.args.general.args.bankGroup = ACH:Group(L["Bank"], nil, 7, nil, nil, functi
 Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
 Bags.args.general.args.bankGroup.args.bankSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
-Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], nil, 4, { min = 150, max = 1400, step = 1 })
+Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
