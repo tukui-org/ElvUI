@@ -84,6 +84,7 @@ L["Arrow Scale"] = true
 L["Arrow Spacing"] = true
 L["Ascending or Descending order."] = "Ordem crescente ou decrescente."
 L["Ascending"] = "Ascendente"
+L["Assist Frames"] = true
 L["Assist Target"] = "Alvo do Assistente"
 L["Assist"] = "Assistente"
 L["At what point should the text be displayed. Set to -1 to disable."] = "Em qual ponto o texto deve ser mostrado. Defina como -1 para desabilitar."

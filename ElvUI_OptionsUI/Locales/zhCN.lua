@@ -84,6 +84,7 @@ L["Arrow Scale"] = true
 L["Arrow Spacing"] = true
 L["Ascending or Descending order."] = "升序或降序"
 L["Ascending"] = "升序"
+L["Assist Frames"] = true
 L["Assist Target"] = "助理目标"
 L["Assist"] = "助理框架"
 L["At what point should the text be displayed. Set to -1 to disable."] = "在何时显示文本. 设为-1以禁用此功能"
