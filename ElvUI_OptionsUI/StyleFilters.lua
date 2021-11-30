@@ -553,7 +553,7 @@ StyleFitlers.triggers.args.instanceType.args.types.inline = true
 StyleFitlers.triggers.args.instanceType.args.types.args.none = ACH:Toggle(L["NONE"], nil, 1)
 StyleFitlers.triggers.args.instanceType.args.types.args.scenario = ACH:Toggle(L["SCENARIOS"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 StyleFitlers.triggers.args.instanceType.args.types.args.party = ACH:Toggle(L["PARTY"], nil, 5)
-StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["RAID"], nil, 5)
+StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["Raid"], nil, 5)
 StyleFitlers.triggers.args.instanceType.args.types.args.arena = ACH:Toggle(L["ARENA"], nil, 7, nil, nil, nil, nil, nil, nil, E.Classic)
 StyleFitlers.triggers.args.instanceType.args.types.args.pvp = ACH:Toggle(L["BATTLEFIELDS"], nil, 8)
 

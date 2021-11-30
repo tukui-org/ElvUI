@@ -268,7 +268,6 @@ L["R"] = true
 L["Raid Menu"] = true
 L["Raid Pet"] = true
 L["Raid-40"] = true
-L["Raid"] = true
 L["Reagent Bank"] = true
 L["Remaining:"] = true
 L["Remove Bar %d Action Page"] = true

@@ -268,7 +268,6 @@ L["R"] = "R"
 L["Raid Menu"] = "Menu de Raide"
 L["Raid Pet"] = "Pet da Raid"
 L["Raid-40"] = true
-L["Raid"] = true
 L["Reagent Bank"] = "Banco de Reagentes"
 L["Remaining:"] = "Restante:"
 L["Remove Bar %d Action Page"] = "Remover paginação de ação da barra %d."

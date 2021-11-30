@@ -1640,7 +1640,6 @@ L["RAID_TARGET_5"] = "Moon"
 L["RAID_TARGET_6"] = "Square"
 L["RAID_TARGET_7"] = "Cross"
 L["RAID_TARGET_8"] = "Skull"
-L["RAID"] = "Raid"
 L["Reputation"] = true
 L["REVERSE_NEW_LOOT_TEXT"] = "Loot to Leftmost Bag"
 L["ROLE"] = "Role"
