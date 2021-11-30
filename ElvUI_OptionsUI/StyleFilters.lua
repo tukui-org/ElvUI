@@ -642,7 +642,7 @@ StyleFitlers.triggers.args.location.args.btns.args.zoneName.customWidth = 130
 StyleFitlers.triggers.args.location.args.btns.args.subZoneName = ACH:Execute(L["Subzone Name"], nil, 4, function() local subZone = E.MapInfo.subZoneText if not subZone then return end local triggers = GetFilter(true) if triggers.location.subZoneNames[subZone] then return end triggers.location.subZoneNames[subZone] = true NP:ConfigureAll() E:Print(format(L["Added Subzone Name: %s"], subZone)) end)
 StyleFitlers.triggers.args.location.args.btns.args.subZoneName.customWidth = 130
 
-StyleFitlers.triggers.args.raidTarget = ACH:Group(L["BINDING_HEADER_RAID_TARGET"], nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers.raidTarget[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.raidTarget[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.triggers.args.raidTarget = ACH:Group(L["BINDING_HEADER_RAID_TARGET"], nil, 31, nil, function(info) local triggers = GetFilter(true) return triggers.raidTarget[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.raidTarget[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.raidTarget.args.types = ACH:Group('')
 StyleFitlers.triggers.args.raidTarget.args.types.inline = true
 
@@ -687,8 +687,6 @@ local function actionSubGroup(info, ...)
 
 	NP:ConfigureAll()
 end
-
-StyleFitlers.triggers.args.pluginSpacer = ACH:Spacer(49, 'full', function() return not NP.StyleFilterCustomChecks end)
 
 StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
