@@ -554,7 +554,7 @@ StyleFitlers.triggers.args.instanceType.args.types.args.none = ACH:Toggle(L["NON
 StyleFitlers.triggers.args.instanceType.args.types.args.scenario = ACH:Toggle(L["SCENARIOS"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 StyleFitlers.triggers.args.instanceType.args.types.args.party = ACH:Toggle(L["PARTY"], nil, 5)
 StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["Raid"], nil, 5)
-StyleFitlers.triggers.args.instanceType.args.types.args.arena = ACH:Toggle(L["ARENA"], nil, 7, nil, nil, nil, nil, nil, nil, E.Classic)
+StyleFitlers.triggers.args.instanceType.args.types.args.arena = ACH:Toggle(L["Arena"], nil, 7, nil, nil, nil, nil, nil, nil, E.Classic)
 StyleFitlers.triggers.args.instanceType.args.types.args.pvp = ACH:Toggle(L["BATTLEFIELDS"], nil, 8)
 
 StyleFitlers.triggers.args.instanceType.args.dungeonDifficulty = ACH:MultiSelect(L["DUNGEON_DIFFICULTY"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 10, { normal = GetDifficultyInfo(1), heroic = GetDifficultyInfo(2) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.dungeon[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.dungeon[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.party end)
