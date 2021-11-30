@@ -1414,7 +1414,6 @@ L["You must be targeting a player."] = true
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = true
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = true
-L["Zone Ability"] = true
 L["Zone Name"] = true
 
 ----------------------------------

@@ -1414,7 +1414,6 @@ L["You must be targeting a player."] = "你必須以一名玩家為目標."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "按住設置按鍵+右鍵單擊會把該玩家加入黑名單, 設為無以關閉該功能"
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "您仍然安裝有ElvUI_Config. ElvUI_Config已經被重命名為ElvUI_OptionsUI, 請刪除原資料夾."
 L["Your Auras First"] = "自身光環優先"
-L["Zone Ability"] = "要塞技能"
 L["Zone Name"] = "地區名"
 
 ----------------------------------

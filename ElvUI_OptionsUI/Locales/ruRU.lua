@@ -1413,7 +1413,6 @@ L["You must be targeting a player."] = "Целью должен быть игр�
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Вам нужно будет удерживать этот модификатор для занесения ауры в черный список при нажатии ПКМ. Установите на \"Нет\" для отключения возможности заносить их туда."
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "У Вас все еще стоит ElvUI_Config. Кое-кто переименовал его в ElvUI_OptionsUI, удалите папку со старым именем."
 L["Your Auras First"] = "Сначала свои"
-L["Zone Ability"] = "Способность местности"
 L["Zone Name"] = "Название зоны"
 
 ----------------------------------

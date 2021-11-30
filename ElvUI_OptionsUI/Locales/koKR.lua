@@ -1413,7 +1413,6 @@ L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = true
 L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "자기 주문 우선"
-L["Zone Ability"] = "특수능력 버튼"
 L["Zone Name"] = true
 
 ----------------------------------
