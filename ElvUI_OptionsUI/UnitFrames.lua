@@ -2367,7 +2367,7 @@ Tank.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGro
 Tank.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank')
 Tank.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank')
 
-Tank.targetsGroup = ACH:Group(L["Party Targets"], nil, nil, nil, function(info) return E.db.unitframe.units.tank.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.tank.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('tank') end)
+Tank.targetsGroup = ACH:Group(L["Tank Target"], nil, nil, nil, function(info) return E.db.unitframe.units.tank.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.tank.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('tank') end)
 Tank.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Tank.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
 Tank.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
@@ -2396,7 +2396,7 @@ Assist.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderG
 Assist.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist')
 Assist.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist')
 
-Assist.targetsGroup = ACH:Group(L["Party Targets"], nil, nil, nil, function(info) return E.db.unitframe.units.assist.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.assist.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('assist') end)
+Assist.targetsGroup = ACH:Group(L["Assist Target"], nil, nil, nil, function(info) return E.db.unitframe.units.assist.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.assist.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('assist') end)
 Assist.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Assist.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
 Assist.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
