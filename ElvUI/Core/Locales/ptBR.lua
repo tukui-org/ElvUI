@@ -4,7 +4,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "ptBR")
 
 L[" |cff00ff00bound to |r"] = " |cff00ff00Ligado a |r"
 L["(Hold Shift) Memory Usage"] = "(Segurar Shift) Memória em Uso"
-L["(Shift Click) Collect Garbage"] = "(Clique de modificação) Coletar lixo"
+L["(Shift Click) Collect Garbage"] = "(Clique Shift) Coletar lixo"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "O quadro %s está conflitando com outro ponto de fixação. Forçando os Buffs serem anexados ao Quadro de Unidade principal."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s está tentando compartilhar os filtros dele com você. Gostaria de aceitar o pedido?"
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s está tentando compartilhar o perfil %s com você. Gostaria de aceitar o pedido?"

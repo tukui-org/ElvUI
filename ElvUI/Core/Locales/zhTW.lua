@@ -4,7 +4,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
 L["(Hold Shift) Memory Usage"] = "(按住 Shift) 記憶體使用量"
-L["(Shift Click) Collect Garbage"] = "(按住修飾鍵點擊) 垃圾收集"
+L["(Shift Click) Collect Garbage"] = true
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架存在一個衝突錨點，將強制將Buff附加到主單位框架之上。"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 試圖與你分享過濾器設定. 你是否接受?"
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s 試圖與你分享設定檔 %s. 你是否接受?"
