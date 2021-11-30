@@ -96,7 +96,6 @@ L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"] = tr
 L["Auction House"] = true
 L["Aura Bars"] = "Auren Leisten"
 L["Aura Filters"] = "Auren Filter"
-L["Auras"] = true
 L["Auto Add New Spells"] = "Automatisches hinzufügen von neuen Zaubern"
 L["Auto Hide"] = "Auto Verstecken"
 L["Auto Repair"] = "Auto-Reparatur"
