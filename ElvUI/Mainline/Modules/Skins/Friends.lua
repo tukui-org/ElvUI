@@ -174,7 +174,8 @@ function S:FriendsFrame()
 		if region then region:Hide() end
 	end
 
-	S:HandleEditBox(FriendsFrameBattlenetFrame.BroadcastFrame.EditBox)
+	S:HandleEditBox(broadcastEdit)
+
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
 
