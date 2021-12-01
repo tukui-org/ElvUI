@@ -556,7 +556,7 @@ E.Options.args.nameplate.args.friendlyNPCGroup = GetUnitSettings('FRIENDLY_NPC',
 E.Options.args.nameplate.args.enemyPlayerGroup = GetUnitSettings('ENEMY_PLAYER', L["ENEMY_PLAYER"])
 E.Options.args.nameplate.args.enemyNPCGroup = GetUnitSettings('ENEMY_NPC', L["ENEMY_NPC"])
 
-E.Options.args.nameplate.args.targetGroup = ACH:Group(L["TARGET"], nil, 101, nil, function(info) return E.db.nameplates.units.TARGET[info[#info]] end, function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
+E.Options.args.nameplate.args.targetGroup = ACH:Group(L["Target"], nil, 101, nil, function(info) return E.db.nameplates.units.TARGET[info[#info]] end, function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
 E.Options.args.nameplate.args.targetGroup.args.nonTargetAlphaShortcut = ACH:Execute(L["Non-Target Alpha"], nil, 1, function() C:SetStyleFilterConfig('ElvUI_NonTarget') ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions') end)
 E.Options.args.nameplate.args.targetGroup.args.targetScaleShortcut = ACH:Execute(L["Scale"], nil, 2, function() C:SetStyleFilterConfig('ElvUI_Target') ACD:SelectGroup('ElvUI', 'nameplate', 'filters', 'actions') end)
 E.Options.args.nameplate.args.targetGroup.args.spacer1 = ACH:Spacer(3, 'full')
