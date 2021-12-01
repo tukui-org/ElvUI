@@ -50,14 +50,11 @@ function S:TradeFrame()
 			local ItemButton = _G[Frame..i..'ItemButton']
 
 			ItemBackground:StripTextures()
+			ItemBackground:SetTemplate()
 			S:HandleItemButton(ItemButton)
 			ItemButton:StyleButton()
 
 			S:HandleIcon(ItemButton.icon, true)
-
-			ItemButton.backdrop:SetBackdropColor(0, 0, 0, 0)
-			ItemButton.backdrop:SetPoint('TOPLEFT', ItemButton, 'TOPRIGHT', 4, 0)
-			ItemButton.backdrop:SetPoint('BOTTOMRIGHT', _G[Frame..i..'NameFrame'], 'BOTTOMRIGHT', -1, 14)
 		end
 	end
 

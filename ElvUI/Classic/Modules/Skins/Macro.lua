@@ -83,8 +83,8 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
 	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	_G.MacroFrameSelectedMacroButtonIcon:Point('TOPLEFT', E.mult, -E.mult)
-	_G.MacroFrameSelectedMacroButtonIcon:Point('BOTTOMRIGHT', -E.mult, E.mult)
+	_G.MacroFrameSelectedMacroButtonIcon:Point('TOPLEFT', 1, -1)
+	_G.MacroFrameSelectedMacroButtonIcon:Point('BOTTOMRIGHT', -1, 1)
 
 	-- Skin all buttons
 	for i = 1, _G.MAX_ACCOUNT_MACROS do
@@ -99,8 +99,8 @@ function S:Blizzard_MacroUI()
 
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:Point('TOPLEFT', E.mult, -E.mult)
-			t:Point('BOTTOMRIGHT', -E.mult, E.mult)
+			t:Point('TOPLEFT', 1, -1)
+			t:Point('BOTTOMRIGHT', -1, 1)
 		end
 	end
 
@@ -117,7 +117,9 @@ function S:Blizzard_MacroUI()
 	S:HandleButton(_G.MacroPopupFrame.BorderBox.CancelButton)
 	_G.MacroPopupFrame.BorderBox.CancelButton:Point('BOTTOMRIGHT', _G.MacroPopupFrame.BorderBox, 'BOTTOMRIGHT', -4, 4)
 
-	_G.MacroPopupButton1:Point('TOPLEFT', _G.MacroPopupScrollFrame, 'TOPLEFT', 6, -6)
+	if _G.MacroPopupButton1 then -- Doesn't exist if you open it in combat for some reason
+		_G.MacroPopupButton1:Point('TOPLEFT', _G.MacroPopupScrollFrame, 'TOPLEFT', 6, -6)
+	end
 
 	_G.MacroPopupScrollFrame:CreateBackdrop('Default')
 	_G.MacroPopupScrollFrame.backdrop:Point('BOTTOMRIGHT', -2, -1)

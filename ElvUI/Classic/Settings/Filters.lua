@@ -52,7 +52,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[1513]	= Defaults(2), -- Scare Beast (Rank 1)
 		[14326]	= Defaults(2), -- Scare Beast (Rank 2)
 		[14327]	= Defaults(2), -- Scare Beast (Rank 3)
-		[19577]	= Defaults(2), -- Intimidation
+		[24394]	= Defaults(6), -- Intimidation
 		[19386]	= Defaults(2), -- Wyvern Sting (Rank 1)
 		[24132]	= Defaults(2), -- Wyvern Sting (Rank 2)
 		[24133]	= Defaults(2), -- Wyvern Sting (Rank 3)
@@ -333,6 +333,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
+	--Seasonal
+	[362859] = Defaults(), -- Adventure Awaits "40% Increased XP"
 	--Druid
 	--Hunter
 	--Mage
@@ -370,60 +372,74 @@ G.unitframe.aurafilters.Whitelist = {
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
-	-- Onyxia's Lair
-		[18431]	= Defaults(2), -- Bellowing Roar
-	-- Molten Core
-		[19703]	= Defaults(2), -- Lucifron's Curse
-		[19408]	= Defaults(2), -- Panic
-		[19716]	= Defaults(2), -- Gehennas' Curse
-		[20277]	= Defaults(2), -- Fist of Ragnaros
-		[20475]	= Defaults(6), -- Living Bomb
-		[19695]	= Defaults(6), -- Inferno
-		[19659]	= Defaults(2), -- Ignite Mana
-		[19714]	= Defaults(2), -- Deaden Magic
-		[19713]	= Defaults(2), -- Shazzrah's Curse
-	-- Blackwing's Lair
-		[23023]	= Defaults(2), -- Conflagration
-		[18173]	= Defaults(2), -- Burning Adrenaline
-		[24573]	= Defaults(2), -- Mortal Strike
-		[23340]	= Defaults(2), -- Shadow of Ebonroc
-		[23170]	= Defaults(2), -- Brood Affliction: Bronze
-		[22687]	= Defaults(2), -- Veil of Shadow
-	-- Zul'Gurub
-		[23860]	= Defaults(2), -- Holy Fire
-		[22884]	= Defaults(2), -- Psychic Scream
-		[23918]	= Defaults(2), -- Sonic Burst
-		[24111]	= Defaults(2), -- Corrosive Poison
-		[21060]	= Defaults(2), -- Blind
-		[24328]	= Defaults(2), -- Corrupted Blood
-		[16856]	= Defaults(2), -- Mortal Strike
-		[24664]	= Defaults(2), -- Sleep
-		[17172]	= Defaults(2), -- Hex
-		[24306]	= Defaults(2), -- Delusions of Jin'do
-		[24099]	= Defaults(2), -- Poison Bolt Volley
-	-- Ahn'Qiraj Ruins
-		[25646]	= Defaults(2), -- Mortal Wound
-		[25471]	= Defaults(2), -- Attack Order
-		[96]	= Defaults(2), -- Dismember
-		[25725]	= Defaults(2), -- Paralyze
-		[25189]	= Defaults(2), -- Enveloping Winds
-	-- Ahn'Qiraj Temple
-		[785]	= Defaults(2), -- True Fulfillment
-		[26580]	= Defaults(2), -- Fear
-		[26050]	= Defaults(2), -- Acid Spit
-		[26180]	= Defaults(2), -- Wyvern Sting
-		[26053]	= Defaults(2), -- Noxious Poison
-		[26613]	= Defaults(2), -- Unbalancing Strike
-		[26029]	= Defaults(2), -- Dark Glare
-	-- Naxxramas
-		[28732]	= Defaults(2), -- Widow's Embrace
-		[28622]	= Defaults(2), -- Web Wrap
-		[28169]	= Defaults(2), -- Mutating Injection
-		[29213]	= Defaults(2), -- Curse of the Plaguebringer
-		[28835]	= Defaults(2), -- Mark of Zeliek
-		[27808]	= Defaults(2), -- Frost Blast
-		[28410]	= Defaults(2), -- Chains of Kel'Thuzad
-		[27819]	= Defaults(2), -- Detonate Mana
+	----------------------------------------------------------
+	--------------------- Onyxia's Lair ----------------------
+	----------------------------------------------------------
+	[18431] = Defaults(2), -- Bellowing Roar
+	----------------------------------------------------------
+	---------------------- Molten Core -----------------------
+	----------------------------------------------------------
+	[19703] = Defaults(5), -- Lucifron's Curse
+	[19408] = Defaults(2), -- Panic
+	[19716] = Defaults(3), -- Gehennas' Curse
+	[20475] = Defaults(6), -- Living Bomb
+	[19695] = Defaults(3), -- Inferno
+	[19713] = Defaults(5), -- Shazzrah's Curse
+	[20277] = Defaults(2), -- Fist of Ragnaros
+	[19659] = Defaults(2), -- Ignite Mana
+	[19714] = Defaults(2), -- Deaden Magic
+	----------------------------------------------------------
+	--------------------- Blackwing Lair ---------------------
+	----------------------------------------------------------
+	[23023]	= Defaults(2), -- Conflagration
+	[18173]	= Defaults(2), -- Burning Adrenaline
+	[24573]	= Defaults(2), -- Mortal Strike
+	[23340]	= Defaults(2), -- Shadow of Ebonroc
+	[23170]	= Defaults(2), -- Brood Affliction: Bronze
+	[22687]	= Defaults(2), -- Veil of Shadow
+	----------------------------------------------------------
+	------------------------ Zul'Gurub -----------------------
+	----------------------------------------------------------
+	[23860]	= Defaults(2), -- Holy Fire
+	[22884]	= Defaults(2), -- Psychic Scream
+	[23918]	= Defaults(2), -- Sonic Burst
+	[24111]	= Defaults(2), -- Corrosive Poison
+	[21060]	= Defaults(2), -- Blind
+	[24328]	= Defaults(2), -- Corrupted Blood
+	[16856]	= Defaults(2), -- Mortal Strike
+	[24664]	= Defaults(2), -- Sleep
+	[17172]	= Defaults(2), -- Hex
+	[24306]	= Defaults(2), -- Delusions of Jin'do
+	[24099]	= Defaults(2), -- Poison Bolt Volley
+	----------------------------------------------------------
+	--------------------- Ahn'Qiraj Ruins --------------------
+	----------------------------------------------------------
+	[25646]	= Defaults(2), -- Mortal Wound
+	[25471]	= Defaults(2), -- Attack Order
+	[96]	= Defaults(2), -- Dismember
+	[25725]	= Defaults(2), -- Paralyze
+	[25189]	= Defaults(2), -- Enveloping Winds
+	----------------------------------------------------------
+	--------------------- Ahn'Qiraj Temple -------------------
+	----------------------------------------------------------
+	[785]	= Defaults(2), -- True Fulfillment
+	[26580]	= Defaults(2), -- Fear
+	[26050]	= Defaults(2), -- Acid Spit
+	[26180]	= Defaults(2), -- Wyvern Sting
+	[26053]	= Defaults(2), -- Noxious Poison
+	[26613]	= Defaults(2), -- Unbalancing Strike
+	[26029]	= Defaults(2), -- Dark Glare
+	----------------------------------------------------------
+	------------------------ Naxxramas -----------------------
+	----------------------------------------------------------
+	[28732]	= Defaults(2), -- Widow's Embrace
+	[28622]	= Defaults(2), -- Web Wrap
+	[28169]	= Defaults(2), -- Mutating Injection
+	[29213]	= Defaults(2), -- Curse of the Plaguebringer
+	[28835]	= Defaults(2), -- Mark of Zeliek
+	[27808]	= Defaults(2), -- Frost Blast
+	[28410]	= Defaults(2), -- Chains of Kel'Thuzad
+	[27819]	= Defaults(2), -- Detonate Mana
 	},
 }
 

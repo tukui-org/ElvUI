@@ -2,40 +2,63 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-local GetUnitSpeed = GetUnitSpeed
 local IsFalling = IsFalling
+local IsFlying = IsFlying
 local IsSwimming = IsSwimming
-local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
+local GetUnitSpeed = GetUnitSpeed
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
 
 local displayString, lastPanel = ''
-local movementSpeedText, beforeFalling = L["Mov. Speed:"]
+local beforeFalling, wasFlying
 
-local function OnEvent(self)
-	local _, runSpeed, _, swimSpeed = GetUnitSpeed('player')
+local delayed
+local function DelayUpdate()
+	if not lastPanel then return end
 
-	local speed = runSpeed
-	if IsSwimming('player') then
+	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed('player')
+	local speed
+
+	if IsSwimming() then
 		speed = swimSpeed
+		wasFlying = false
+	elseif IsFlying() then
+		speed = flightSpeed
+		wasFlying = true
+	else
+		speed = runSpeed
+		wasFlying = false
 	end
 
-	if IsFalling('player') then
-		speed = beforeFalling or speed
+	if IsFalling() and wasFlying and beforeFalling then
+		speed = beforeFalling
 	else
 		beforeFalling = speed
 	end
 
-	self.text:SetFormattedText(displayString, movementSpeedText, (speed/BASE_MOVEMENT_SPEED) * 100)
+	local percent = speed / BASE_MOVEMENT_SPEED * 100
+	if E.global.datatexts.settings.MovementSpeed.NoLabel then
+		lastPanel.text:SetFormattedText(displayString, percent)
+	else
+		lastPanel.text:SetFormattedText(displayString, E.global.datatexts.settings.MovementSpeed.Label ~= '' and E.global.datatexts.settings.MovementSpeed.Label or L["Mov. Speed"], percent)
+	end
+
+	delayed = nil
+end
+
+local function OnEvent(self)
+	if not delayed then
+		delayed = E:Delay(0.05, DelayUpdate)
+	end
+
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s ', hex, '%.0f%%|r')
+	displayString = strjoin('', E.global.datatexts.settings.MovementSpeed.NoLabel and '' or '%s: ', hex, '%.'..E.global.datatexts.settings.MovementSpeed.decimalLength..'f%%|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Movement Speed', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'UNIT_SPELL_HASTE'}, OnEvent, nil, nil, nil, nil, _G.STAT_MOVEMENT_SPEED, nil, ValueColorUpdate)
+DT:RegisterDatatext('MovementSpeed', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'UNIT_SPELL_HASTE' }, OnEvent, nil, nil, nil, nil, _G.STAT_MOVEMENT_SPEED, nil, ValueColorUpdate)

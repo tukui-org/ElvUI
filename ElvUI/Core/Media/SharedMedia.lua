@@ -117,6 +117,7 @@ end
 AddMedia('texture','Arrow')
 AddMedia('texture','ArrowRight')
 AddMedia('texture','ArrowUp')
+AddMedia('texture','ArrowUpGlow')
 AddMedia('texture','Backpack')
 AddMedia('texture','BagNewItemGlow')
 AddMedia('texture','BagQuestIcon')

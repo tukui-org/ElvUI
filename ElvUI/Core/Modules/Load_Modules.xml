@@ -9,7 +9,7 @@
 	<Include file='UnitFrames\Load_UnitFrames.xml'/>
 	<Include file='Chat\Load_Chat.xml'/>
 	<Include file='Bags\Load_Bags.xml'/>
+	<Include file='Blizzard\Load_Blizzard.xml'/>
 	<Include file='Misc\Load_Misc.xml'/>
 	<Include file='Skins\Load_Skins.xml'/>
-	<Include file='Blizzard\Load_Blizzard.xml'/>
 </Ui>

@@ -438,7 +438,7 @@ function S:Ace3_RegisterAsContainer(widget)
 end
 
 function S:Ace3_StyleTooltip()
-	if not self:IsForbidden() and E.private.skins.ace3Enable then
+	if not self:IsForbidden() and E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
 		self:SetTemplate('Transparent')
 	end
 end

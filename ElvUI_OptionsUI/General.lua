@@ -152,7 +152,7 @@ General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontSize = ACH:Range(
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
 General.args.cosmetic.args.chatBubblesGroup.args.spacer1 = ACH:Spacer(10, 'full')
 General.args.cosmetic.args.chatBubblesGroup.args.warning = ACH:Description('|cffFF0000This does not work in Instances or Garrisons!|r', 11, 'medium')
-General.args.cosmetic.args.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 12, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["DISABLE"] })
+General.args.cosmetic.args.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 12, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["Disable"] })
 General.args.cosmetic.args.chatBubblesGroup.args.chatBubbleName = ACH:Toggle(L["Chat Bubble Names"], L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."], 13)
 
 General.args.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 15, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarSettings() end, nil, not E.Retail)
@@ -197,7 +197,17 @@ General.args.blizzUIImprovements.args.quest.args.objectiveTracker = ACH:Toggle(L
 General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L["Loot"], nil, 3, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.lootGroup.inline = true
 General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L["Loot"], L["Enable/Disable the loot frame."], 1)
-General.args.blizzUIImprovements.args.lootGroup.args.lootRoll = ACH:Toggle(L["Loot Roll"], L["Enable/Disable the loot roll frame."], 2)
+
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 4, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value Misc:UpdateLootRollFrames() end)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.lootRoll = ACH:Toggle(L["Enable"], L["Enable/Disable the loot roll frame."], 0, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 50, max = 1000, step = 1 })
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 100, step = 1 })
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.style = ACH:Select(L["Style"], nil, 3, { halfbar = 'Half Bar', fullbar = 'Full Bar' })
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.statusBarTexture = ACH:SharedMediaStatusbar(L["Texture"], L["The texture that will be used mainly for statusbars."], 1)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityName = ACH:Toggle(L["Quality Name"], nil, 4)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityStatusBar = ACH:Toggle(L["Quality StatusBar"], nil, 5)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.statusBarColor = ACH:Color(L["StatusBar Color"], nil, 5, nil, nil, function(info) local c, d = E.db.general.lootRoll[info[#info]], P.general.lootRoll[info[#info]] return c.r, c.g, c.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local c = E.db.general.lootRoll[info[#info]] c.r, c.g, c.b = r, g, b end, nil, function() return E.db.general.lootRoll.qualityStatusBar end)
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityStatusBarBackdrop = ACH:Toggle(L["Quality Background"], nil, 6)
 
 General.args.blizzUIImprovements.args.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value Misc:ToggleItemLevelInfo() end, nil, not E.Retail)
 General.args.blizzUIImprovements.args.itemLevelInfo.inline = true

@@ -57,8 +57,9 @@ local ELV_TOONS = {
 
 function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()
-	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(E.Retail and _G.ChatFrame4 or _G.ChatFrame3)
+
+	local rightChatFrame = FCF_OpenNewWindow(LOOT)
+	FCF_UnDockFrame(rightChatFrame)
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
@@ -97,14 +98,14 @@ function E:SetupChat(noDisplayMsg)
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame4)
+	ChatFrame_RemoveAllMessageGroups(rightChatFrame)
 	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(_G.ChatFrame4, v)
+		ChatFrame_AddMessageGroup(rightChatFrame, v)
 	end
 
 	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
-	ChatFrame_AddChannel(_G.ChatFrame4, TRADE)
+	ChatFrame_AddChannel(rightChatFrame, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
@@ -145,10 +146,6 @@ end
 function E:SetupCVars(noDisplayMsg)
 	SetCVar('statusTextDisplay', 'BOTH')
 	SetCVar('screenshotQuality', 10)
-	SetCVar('chatMouseScroll', 1)
-	SetCVar('chatStyle', 'classic')
-	SetCVar('whisperMode', 'inline')
-	SetCVar('wholeChatWindowClickable', 0)
 	SetCVar('showTutorials', 0)
 	SetCVar('showNPETutorials', 0)
 	SetCVar('UberTooltips', 1)
@@ -169,6 +166,13 @@ function E:SetupCVars(noDisplayMsg)
 
 	if E.private.nameplates.enable then
 		NP:CVarReset()
+	end
+
+	if E.private.chat.enable then
+		SetCVar('chatMouseScroll', 1)
+		SetCVar('chatStyle', 'classic')
+		SetCVar('whisperMode', 'inline')
+		SetCVar('wholeChatWindowClickable', 0)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then

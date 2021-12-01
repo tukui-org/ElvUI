@@ -8,6 +8,7 @@ local min, strlower = min, strlower
 
 local hooksecurefunc = hooksecurefunc
 local GetLFGProposal = GetLFGProposal
+local UnitIsGroupLeader = UnitIsGroupLeader
 local GetLFGProposalMember = GetLFGProposalMember
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
@@ -17,6 +18,7 @@ local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
 local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LBG.ShowOverlayGlow(self:GetParent().checkButton)
@@ -653,16 +655,27 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.BrowseGroupsButton, true)
-	LFGListFrame.ApplicationViewer.RemoveEntryButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.EditButton:Point('BOTTOMRIGHT', -6, 3)
+	LFGListFrame.ApplicationViewer.BrowseGroupsButton:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Point('BOTTOMLEFT', -1, 3)
+	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Size(120, 22)
 
 	local LFGListApplicationViewerScrollFrameScrollBar = _G.LFGListApplicationViewerScrollFrameScrollBar
 	S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
 	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
-	LFGListApplicationViewerScrollFrameScrollBar:Point('TOPLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 0, -14)
-	LFGListApplicationViewerScrollFrameScrollBar:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'BOTTOMRIGHT', 0, 14)
+	LFGListApplicationViewerScrollFrameScrollBar:Point('TOPLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 0, -16)
+	LFGListApplicationViewerScrollFrameScrollBar:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'BOTTOMRIGHT', 0, 16)
+
+	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
+		frame.RemoveEntryButton:ClearAllPoints()
+
+		if UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
+			frame.RemoveEntryButton:Point('RIGHT', frame.EditButton, 'LEFT', -2, 0)
+		else
+			frame.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
+		end
+	end)
 
 	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
 		local button = btn.CategoryButtons[btnIndex]

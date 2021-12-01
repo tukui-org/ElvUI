@@ -37,9 +37,8 @@ function M:RaidMarkCanMark()
 end
 
 function M:RaidMarkShowIcons()
-	if not UnitExists('target') or UnitIsDead('target')then
-		return
-	end
+	if not UnitExists('target') or UnitIsDead('target') then return end
+
 	local x, y = GetCursorPosition()
 	local scale = E.UIParent:GetEffectiveScale()
 	self.RaidMarkFrame:Point('CENTER', E.UIParent, 'BOTTOMLEFT', x / scale, y / scale)

@@ -193,6 +193,8 @@ local function CreateDTOptions(name, data)
 			optionTable.args.textFormat = ACH:Select(L["Text Format"], nil, nil, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
 		elseif key == 'latency' then
 			optionTable.args.latency = ACH:Select(L["Latency"], nil, nil, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
+		elseif key == 'school' then
+			optionTable.args.school = ACH:Select(L["School"], nil, nil, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
 		end
 	end
 
@@ -310,7 +312,7 @@ DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], ni
 DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, table in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = table.NAME end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].NAME DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 
-DataTexts.args.settings = ACH:Group(L["DataText Customization"], nil, 7)
+DataTexts.args.settings = ACH:Group(L["Customization"], nil, 7)
 
 E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOptions)
 E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.get = function(_, key) return E.global.datatexts.newPanelInfo[key] end

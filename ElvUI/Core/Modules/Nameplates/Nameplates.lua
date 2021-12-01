@@ -130,6 +130,10 @@ function NP:CVarReset()
 	NP:SetCVar('nameplateSelfScale', 1)
 	NP:SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
 	NP:SetCVar('nameplateTargetBehindMaxDistance', 40)
+
+	if not E.Retail then
+		NP:SetCVar('nameplateNotSelectedAlpha', 1)
+	end
 end
 
 function NP:SetCVars()
@@ -596,7 +600,11 @@ function NP:ConfigureAll(init)
 
 	NP:StyleFilterConfigure() -- keep this at the top
 	NP:SetNamePlateClickThrough()
-	NP:SetNamePlateSizes()
+
+	if E.Retail then
+		NP:SetNamePlateSizes()
+	end
+
 	NP:PLAYER_REGEN_ENABLED()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 	NP:Update_StatusBars()

@@ -168,4 +168,4 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-DT:RegisterDatatext('CallToArms', nil, {"LFG_UPDATE_RANDOM_INFO"}, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)
+DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)

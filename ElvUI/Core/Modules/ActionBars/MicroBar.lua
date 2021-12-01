@@ -13,6 +13,7 @@ local CreateFrame = CreateFrame
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
+local hooksecurefunc = hooksecurefunc
 
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)
@@ -150,7 +151,7 @@ do
 	end
 end
 
-function AB:UpdateMicroPositionDimensions()
+function AB:UpdateMicroButtons()
 	local db = AB.db.microbar
 	microBar.db = db
 
@@ -203,24 +204,22 @@ function AB:UpdateMicroPositionDimensions()
 		end
 	end
 
+	if E.Retail then
+		AB:UpdateGuildMicroButton()
+	end
+
 	AB:UpdateMicroBarVisibility()
 end
 
-function AB:UpdateMicroButtons()
-	local GuildMicroButton = _G.GuildMicroButton
-	local GuildMicroButtonTabard = _G.GuildMicroButtonTabard
-	GuildMicroButtonTabard:SetInside(GuildMicroButton)
-	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
-	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-	GuildMicroButtonTabard.emblem:ClearAllPoints()
-	GuildMicroButtonTabard.emblem:Point('TOPLEFT', GuildMicroButton, 4, -4)
-	GuildMicroButtonTabard.emblem:Point('BOTTOMRIGHT', GuildMicroButton, -4, 8)
-end
-
-function AB:UIParent_OnEvent(event)
-	if event == 'PLAYER_ENTERING_WORLD' then
-		AB:UpdateMicroPositionDimensions()
-	end
+function AB:UpdateGuildMicroButton()
+	local btn = _G.GuildMicroButton
+	local tabard = _G.GuildMicroButtonTabard
+	tabard:SetInside(btn)
+	tabard.background:SetInside(btn)
+	tabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
+	tabard.emblem:ClearAllPoints()
+	tabard.emblem:Point('TOPLEFT', btn, 4, -4)
+	tabard.emblem:Point('BOTTOMRIGHT', btn, -4, 8)
 end
 
 function AB:SetupMicroBar()
@@ -238,20 +237,17 @@ function AB:SetupMicroBar()
 
 	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
 
-	AB:SecureHook('MoveMicroButtons', 'UpdateMicroPositionDimensions')
+	AB:SecureHook('UpdateMicroButtons')
 	AB:SecureHook('UpdateMicroButtonsParent')
 	UpdateMicroButtonsParent(microBar)
 
-	if E.Retail then
-		AB:SecureHook('UpdateMicroButtons')
+	if E.Classic then
+		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
 
 	-- With this method we might don't taint anything. Instead of using :Kill()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
 	_G.MainMenuBarPerformanceBar:SetScale(0.00001)
-
-	-- Classic Mastery needs to call this late because of SetLookingForGroupUIAvailable
-	_G.UIParent:HookScript('OnEvent', AB.UIParent_OnEvent)
 
 	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
 end

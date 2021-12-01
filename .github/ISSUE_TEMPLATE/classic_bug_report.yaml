@@ -45,7 +45,7 @@ body:
     id: terms
     attributes:
       label: ElvUI Changelog/Troubleshooting
-      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://www.tukui.org)
+      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://www.tukui.org/forum/viewtopic.php?p=28#p28)
       options:
-        - label: I have confirmed that I have read the [Changelog](https://www.tukui.org/classic-addons.php?id=2&changelog) and done the [Troubelshooting Steps](https://www.tukui.org).
+        - label: I have confirmed that I have read the [Changelog](https://www.tukui.org/classic-addons.php?id=2&changelog) and done the [Troubelshooting Steps](https://www.tukui.org/forum/viewtopic.php?p=28#p28).
           required: true

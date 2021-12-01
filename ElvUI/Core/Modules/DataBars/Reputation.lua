@@ -3,7 +3,8 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local format = format
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local GameTooltip = GameTooltip
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
@@ -107,23 +108,23 @@ function DB:ReputationBar_OnEnter()
 		end
 	end
 
-	if name and not _G.GameTooltip:IsForbidden() then
-		_G.GameTooltip:ClearLines()
-		_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
-		_G.GameTooltip:AddLine(name)
-		_G.GameTooltip:AddLine(' ')
+	if name and not GameTooltip:IsForbidden() then
+		GameTooltip:ClearLines()
+		GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
+		GameTooltip:AddLine(name)
+		GameTooltip:AddLine(' ')
 
 		local friendID, friendTextLevel, _
 		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
-		_G.GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
+		GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 
 		if reaction ~= _G.MAX_REPUTATION_REACTION or isParagon then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
-			_G.GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
+			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
 		end
 
-		_G.GameTooltip:Show()
+		GameTooltip:Show()
 	end
 end
 
@@ -161,7 +162,7 @@ function DB:ReputationBar()
 	Reputation.Reward:Size(20)
 
 	Reputation.ShouldHide = function()
-		return (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) or not GetWatchedFactionInfo()
+		return (DB.db.reputation.hideBelowMaxLevel and not IsLevelAtEffectiveMaxLevel(E.mylevel)) or not GetWatchedFactionInfo()
 	end
 
 	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')

@@ -5,6 +5,7 @@ Author: d87
 if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then return end
 
 local apiLevel = math.floor(select(4,GetBuildInfo())/10000)
+local isClassic = apiLevel <= 2
 local isVanilla = apiLevel == 1
 local isBC = apiLevel == 2
 
@@ -361,7 +362,7 @@ function lib:UnitCastingInfo(unit)
 
         if castType == "CAST" and endTimeMS > GetTime()*1000 then
             local castID = nil
-            return name, nil, icon, startTimeMS, endTimeMS, nil, castID, spellID
+            return name, nil, icon, startTimeMS, endTimeMS, nil, castID, false, spellID
         end
     end
 end

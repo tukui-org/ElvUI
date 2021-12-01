@@ -207,11 +207,10 @@ tinsert(ResSpells.PALADIN, 7328)	-- Redemption (40 yards)
 -- Priests
 tinsert(FriendSpells.PRIEST, 2061)	-- Flash Heal (40 yards, level 3)
 tinsert(FriendSpells.PRIEST, 17)	-- Power Word: Shield (40 yards, level 4)
-tinsert(FriendSpells.PRIEST, 21562)	-- Power Word: Fortitude (40 yards, level 6)
-tinsert(FriendSpells.PRIEST, 527)	-- Purify (40 yards, level 18)
+tinsert(FriendSpells.PRIEST, 527)	-- Purify / Dispel Magic (40 yards retail, 30 yards tbc, level 18, rank 1)
 
 if not isRetail then
-	tinsert(FriendSpells.PRIEST, 1706) -- Levitate (40 yards, level 34)
+	tinsert(FriendSpells.PRIEST, 2050) -- Lesser Heal (40 yards, level 1, rank 1)
 end
 
 tinsert(HarmSpells.PRIEST, 589)		-- Shadow Word: Pain (40 yards)
@@ -225,17 +224,14 @@ end
 tinsert(ResSpells.PRIEST, 2006)		-- Resurrection (40 yards, level 10)
 
 -- Rogues
-tinsert(FriendSpells.ROGUE, 36554)	-- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
-
 if isRetail then
-	tinsert(FriendSpells.ROGUE, 921) -- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly aswell for retail but on classic this is melee range and will return min 0 range 0
+	tinsert(FriendSpells.ROGUE, 36554)	-- Shadowstep (Assassination, Subtlety) (25 yards, level 18) -- works on friendly in retail
+	tinsert(FriendSpells.ROGUE, 921)	-- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly aswell for retail but on classic this is melee range and will return min 0 range 0
 end
 
-tinsert(HarmSpells.ROGUE, 185565)	-- Poisoned Knife (Assassination) (30 yards)
-tinsert(HarmSpells.ROGUE, 185763)	-- Pistol Shot (Outlaw) (20 yards)
-tinsert(HarmSpells.ROGUE, 114014)	-- Shuriken Toss (Sublety) (30 yards)
-tinsert(HarmSpells.ROGUE, 1725)		-- Distract (30 yards)
 tinsert(HarmSpells.ROGUE, 2764)		-- Throw (30 yards)
+tinsert(HarmSpells.ROGUE, 36554)	-- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
+tinsert(HarmSpells.ROGUE, 185763)	-- Pistol Shot (Outlaw) (20 yards)
 tinsert(HarmSpells.ROGUE, 2094)		-- Blind (15 yards)
 tinsert(HarmSpells.ROGUE, 921)		-- Pick Pocket (10 yards, level 24)
 

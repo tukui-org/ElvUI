@@ -1,11 +1,93 @@
-### Version 2.23 [ ETA: 🍨 ]
+### Version 2.31 [ ETA: 🍨 ]
+
+ActionBars: Fixed layering issue (Keybinds on Pet Bar)  
+Bags: Added an option to hide Gold  
+Bags: Fixed an issue with mouseover tooltip  
+Chat: Added an option to hide channel names  
+DataTexts: Fixed Bags DataText  
+Minimap: Added option to scale the Minimap  
+Misc: Reworked LootRoll and added options  
+NamePlates: Updated StyleFilters config  
+UnitFrames: Added reverse fill option for Aura Bars  
+UnitFrames: Updated spark for EnergyManaRegen ticks  
+
+___
+### Version 2.30 [ November 24th 2021 ]
+
+DataTexts: Updated Friends  
+NamePlates: Updates for StyleFilters config  
+Skins: Updated trade window  
+UnitFrames: Fixed an issue with transparent power color  
+UnitFrames: Smart Raid Filter defaults to 5 groups for "Raid" now (8 for Raid40)  
+
+___
+### Version 2.29 [ November 19th 2021 ]
+
+UnitFrames: Castbar color hotfix  
+UnitFrames: ChannelTicks hotfix  
+
+___
+### Version 2.28 [ November 19th 2021 ]
+
+Map: Fixes for the fade while moving option  
+Minimap: Updated middle-mouse dropdown  
+NamePlates: Reset CVar fix for non-selected unit alpha (Fixes Setup CVar step in the installer as well.)  
+Tags: Fixed threatcolor  
+
+___
+### Version 2.27 [ November 16th 2021 ]
+
+ActionBars: Fixed Microbar bugs  
+
+___
+### Version 2.26 [ November 16th 2021 ]
+
+Cooldown Text: Updates for Bag CD text  
+DataTexts: Fixed Spell Hit lua error  
+DataTexts: Fixed Haste Datatext Customization Settings  
+DataTexts: Readded the Haste DT Tooltip  
+Tooltips: Fixed an error with item quality  
+UnitFrames: Fixed castbar/custom colors  
+
+___
+### Version 2.25 [ November 14th 2021 ]
+
+ActionBars: Fixed quick keybind mode for Pet Bar  
+Bags: Fixed bank not updating correctly  
+Cooldown Text: Added a global option for rounding  
+DataBars: Fixed "Show Bubbles" for Pet Experience  
+DataTexts: Fixed MovementSpeed not updating  
+Nameplates: Fixed scaling issue which broke default friendly plates in dungeons  
+Tooltips: Added an option to display Item Count while using the Modifier for ids  
+
+___
+### Version 2.24 [ November 12th 2021 ]
+
+Chat: Fixes for overflowing chat tabs  
+Cooldown Text: Fixed issues with HH:MM and MM:SS  
+Locales: Updated Russian translation (Credits Hollicsh)  
+Minimap: Added back options for Battlefield icon  
+Minimap: Slightly adjusted defaults and size for lfg/tracking/battlefield  
+Skins: Updated Enchanting skin  
+Skins: Updated estatus  
+UnitFrames: Fixed Focus and FocusTarget  
+UnitFrames: Fixed Rogue fading issue finally  
+
+___
+### Version 2.23 [ November 11th 2021 ]
 
 Bags: Added Auto toggle options to open bags with specific frames  
 Bags: Fix main bag icon when bag module is off (Bag skin)  
 DataBars: Fixed an error in experience bar when entering a dungeon  
+DataBars: Fixed issues in PetExperience and show only on Hunters  
+DataTexts: Fixed Battlestats  
+DataTexts: Updated Movementspeed  
 Filters: Fixed AuraBar colors not setting the selected color  
 General: Fixed interrupt announce for real  
+Locales: Updated Russian translation (Credits Hollicsh)  
+Minimap: Added back Quest Log to middle-mouse dropdown  
 Misc: Added back chat print for vendor grays  
+Tags: Added back pvp tags  
 
 ___
 ### Version 2.22 [ November 9th 2021 ]

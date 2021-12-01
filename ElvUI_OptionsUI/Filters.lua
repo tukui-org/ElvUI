@@ -370,7 +370,7 @@ Filters.mainOptions.args.filterGroup.args.filterType = ACH:Select(L["Filter Type
 Filters.mainOptions.args.filterGroup.args.removeSpell = ACH:Select(L["Remove Spell"], nil, 4, SetSpellList, function(_, value) return value ~= '' and format(L["Remove Spell - %s"], GetSpellNameRank(value)) end, nil, nil, AddOrRemoveSpellID)
 Filters.mainOptions.args.filterGroup.args.removeSpell.customWidth = 350
 
-Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], nil, 5, nil, nil, nil, AddOrRemoveSpellID)
+Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], L["Add a spell to the filter."], 5, nil, nil, nil, AddOrRemoveSpellID)
 Filters.mainOptions.args.filterGroup.args.addSpell.customWidth = 350
 
 Filters.mainOptions.args.auraIndicator = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -1, nil, auraIndicator, auraIndicator, nil, function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end)
@@ -437,7 +437,7 @@ for i, text in ipairs(FilterHelp) do
 	Filters.help.args['help'..i] = ACH:Description(text:gsub('*', COLOR1):gsub('%^', COLOR2), i, 'medium')
 end
 
-function E:SetToFilterConfig(filter)
+function C:SetToFilterConfig(filter)
 	resetSelectedFilter(_, filter)
 	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'filters')
 end

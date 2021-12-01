@@ -927,7 +927,7 @@ UF.SmartSettings = {
 
 function UF:HandleSmartVisibility(skip)
 	local sv = UF.SmartSettings
-	sv.raid.numGroups = 6
+	sv.raid.numGroups = E.Retail and 6 or 5
 
 	local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
 	if instanceType == 'raid' or instanceType == 'pvp' then
@@ -1402,7 +1402,7 @@ function UF:MergeUnitSettings(from, to)
 	UF:Update_AllFrames()
 end
 
-function UF:UpdateBackdropTextureColor(r, g, b)
+function UF:UpdateBackdropTextureColor(r, g, b, a)
 	local m = 0.35
 	local n = self.isTransparent and (m * 2) or m
 
@@ -1412,13 +1412,11 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 
 	if self.isTransparent then
 		if self.backdrop then
-			local _, _, _, a = self.backdrop:GetBackdropColor()
-			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
+			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a or E.media.backdropfadecolor[4])
 		else
 			local parent = self:GetParent()
 			if parent and parent.template then
-				local _, _, _, a = parent:GetBackdropColor()
-				parent:SetBackdropColor(r * n, g * n, b * n, a)
+				parent:SetBackdropColor(r * n, g * n, b * n, a or E.media.backdropfadecolor[4])
 			end
 		end
 	end
@@ -1458,6 +1456,14 @@ function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, sta
 	end
 end
 
+function UF:HandleStatusBarTemplate(statusBar, parent, isTransparent)
+	if statusBar.backdrop then
+		statusBar.backdrop:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+	elseif parent.template then
+		parent:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+	end
+end
+
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertColors, reverseFill)
 	statusBar.isTransparent = isTransparent
 	statusBar.invertColors = invertColors
@@ -1468,30 +1474,18 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar.hookedColor = true
 	end
 
-	-- This fixes Center Pixel offset problem (normally this has > 2 points)
-	local barTexture = statusBar:GetStatusBarTexture()
+	local orientation = statusBar:GetOrientation()
+	local barTexture = statusBar:GetStatusBarTexture() -- This fixes Center Pixel offset problem (normally this has > 2 points)
 	barTexture:SetInside(nil, 0, 0) -- This also unsnaps the texture
 
-	local parent = statusBar:GetParent()
-	local orientation = statusBar:GetOrientation()
-	if isTransparent then
-		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate('Transparent', nil, nil, nil, true)
-		elseif parent.template then
-			parent:SetTemplate('Transparent', nil, nil, nil, true)
-		end
+	UF:HandleStatusBarTemplate(statusBar, statusBar:GetParent(), isTransparent)
 
+	if isTransparent then
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
-		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate(nil, nil, nil, nil, true)
-		elseif parent.template then
-			parent:SetTemplate(nil, nil, nil, nil, true)
-		end
-
 		local texture = LSM:Fetch('statusbar', self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)

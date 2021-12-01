@@ -126,27 +126,25 @@ end
 
 local function CastStart(self, real, unit, castGUID)
 	if self.unit ~= unit then return end
-	if real == 'UNIT_SPELLCAST_START' and not castGUID then return end
+	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
-	local name, _, texture, startTime, endTime
-	local isTradeSkill, castID, notInterruptible, spellID
+	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID
 
-	if oUF.isRetail then
-		name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
-	else
+	if oUF.isTBC then
 		name, _, texture, startTime, endTime, isTradeSkill, castID, spellID = UnitCastingInfo(unit)
-		notInterruptible = false
+	else
+		name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 	end
 
 	local event = 'UNIT_SPELLCAST_START'
 	if (not name) then
-		if oUF.isRetail then
-			name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
-		else
+		if oUF.isTBC then
 			name, _, texture, startTime, endTime, isTradeSkill, spellID = UnitChannelInfo(unit)
-			notInterruptible = false
+		else
+			name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
 		end
+
 		event = 'UNIT_SPELLCAST_CHANNEL_START'
 	end
 
@@ -237,7 +235,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
 
@@ -290,7 +288,7 @@ local function CastStop(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
 
@@ -320,7 +318,7 @@ local function CastFail(self, event, unit, castID, spellID)
 	if(self.unit ~= unit) then return end
 
 	local element = self.Castbar
-	if(not element:IsShown() or element.castID ~= castID or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
 

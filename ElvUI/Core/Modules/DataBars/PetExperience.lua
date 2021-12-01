@@ -5,16 +5,15 @@ local _G = _G
 local format = format
 local HasPetUI = HasPetUI
 local UnitLevel = UnitLevel
-local GetExpansionLevel = GetExpansionLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local GetPetExperience = GetPetExperience
+local GameTooltip = GameTooltip
 
 function DB:PetExperienceBar_ShouldBeVisible()
-	return UnitLevel('pet') ~= MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
+	return not IsLevelAtEffectiveMaxLevel(UnitLevel('pet'))
 end
 
 function DB:PetExperienceBar_Update()
-	if E.myclass ~= 'HUNTER' then return end
 	local bar = DB.StatusBars.PetExperience
 	DB:SetVisibility(bar)
 
@@ -50,7 +49,6 @@ function DB:PetExperienceBar_Update()
 end
 
 function DB:PetExperienceBar_OnEnter()
-	local GameTooltip = _G.GameTooltip
 	if self.db.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
@@ -73,25 +71,23 @@ end
 function DB:PetExperienceBar_OnClick() end
 
 function DB:PetExperienceBar_Toggle()
-	if E.myclass ~= 'HUNTER' then return end
-
 	local bar = DB.StatusBars.PetExperience
 	bar.db = DB.db.petExperience
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
+
+		DB:PetExperienceBar_Update()
 	else
 		bar:Hide()
+
 		E:DisableMover(bar.holder.mover:GetName())
 	end
-
-	DB:PetExperienceBar_Update()
 end
 
 function DB:PetExperienceBar()
-	if E.myclass ~= 'HUNTER' then return end
-
 	local PetExperience = DB:CreateBar('ElvUI_PetExperienceBar', 'PetExperience', DB.PetExperienceBar_Update, DB.PetExperienceBar_OnEnter, DB.PetExperienceBar_OnClick, {'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing * 3, 0})
+	DB:CreateBarBubbles(PetExperience)
 
 	PetExperience.ShouldHide = function()
 		return not HasPetUI() or (HasPetUI() and DB.db.petExperience.hideAtMaxLevel and not DB:PetExperienceBar_ShouldBeVisible())

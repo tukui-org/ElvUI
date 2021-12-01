@@ -59,10 +59,9 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text:FontTemplate()
 
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
-	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
-	castbar.Spark_:SetBlendMode('ADD')
-	castbar.Spark_:SetVertexColor(1, 1, 1)
-	castbar.Spark_:Size(20, 40)
+	castbar.Spark_:SetTexture(E.media.blankTex)
+	castbar.Spark_:SetVertexColor(1, 1, 1, 0.4)
+	castbar.Spark_:Size(2)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY')
@@ -177,8 +176,9 @@ function UF:Configure_Castbar(frame)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_
-		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
-		castbar.Spark:Height(db.height * 2)
+		castbar.Spark:ClearAllPoints()
+		castbar.Spark:Point(db.reverse and 'LEFT' or 'RIGHT', castbar:GetStatusBarTexture())
+		castbar.Spark:Height(db.height)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
 		castbar.Spark = nil
@@ -196,26 +196,27 @@ function UF:Configure_Castbar(frame)
 
 	if db.overlayOnFrame ~= 'None' then
 		local anchor = frame[db.overlayOnFrame]
+		local height = anchor:GetHeight()
 
 		if not db.iconAttached then
 			castbar:SetAllPoints(anchor)
 		else
 			if castbar.Icon then
-				castbar.Icon.bg:Size(anchor:GetHeight() - UF.SPACING*2)
+				castbar.Icon.bg:SetSize(height, height)
 			end
 
-			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - UF.BORDER) or 0
+			local iconWidth = db.icon and (height - UF.SPACING*2) or 0
 			if frame.ORIENTATION == 'RIGHT' then
 				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
-				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - UF.SPACING*3, 0)
+				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth, 0)
 			else
-				castbar:Point('TOPLEFT', anchor, 'TOPLEFT', iconWidth + UF.SPACING*3, 0)
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT', iconWidth, 0)
 				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
 		end
 
 		if db.spark then
-			castbar.Spark:Height(anchor:GetHeight() * 2)
+			castbar.Spark:SetHeight(height)
 		end
 	else
 		if db.positionsGroup then

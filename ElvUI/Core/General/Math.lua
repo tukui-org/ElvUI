@@ -349,30 +349,28 @@ end
 
 E.TimeThreshold = 3
 
-E.TimeColors = { --aura time colors
-	[0] = '|cffeeeeee', --days
-	[1] = '|cffeeeeee', --hours
-	[2] = '|cffeeeeee', --minutes
-	[3] = '|cffeeeeee', --seconds
-	[4] = '|cfffe0000', --expire (fade timer)
-	[5] = '|cff909090', --mmss
-	[6] = '|cff707070', --hhmm
+E.TimeColors = { -- aura time colors
+	[0] = '|cffeeeeee', -- days
+	[1] = '|cffeeeeee', -- hours
+	[2] = '|cffeeeeee', -- minutes
+	[3] = '|cffeeeeee', -- seconds
+	[4] = '|cfffe0000', -- expire (fade timer)
+	[5] = '|cff909090', -- mmss
+	[6] = '|cff707070', -- hhmm
 }
 
 E.TimeFormats = { -- short / indicator color
-	[0] = {'%dd', '%d%sd|r'},
-	[1] = {'%dh', '%d%sh|r'},
-	[2] = {'%dm', '%d%sm|r'},
-	[3] = {'%ds', '%d%ss|r'},
-	[4] = {'%.1fs', '%.1f%ss|r'},
-	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
-	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
-}
+	-- special options (3, 4): rounding
+	[0] = {'%dd', '%d%sd|r', '%.0fd', '%.0f%sd|r'},
+	[1] = {'%dh', '%d%sh|r', '%.0fh', '%.0f%sh|r'},
+	[2] = {'%dm', '%d%sm|r', '%.0fm', '%.0f%sm|r'},
+	-- special options (3, 4): show seconds
+	[3] = {'%d', '%d', '%ds', '%d%ss|r'},
+	[4] = {'%.1f', '%.1f', '%.1fs', '%.1f%ss|r'},
 
-for _, x in pairs(E.TimeFormats) do
-	x[3] = gsub(x[1], 's$', '') -- 1 without seconds
-	x[4] = gsub(x[2], '%%ss', '%%s') -- 2 without seconds
-end
+	[5] = {'%d:%02d', '%d%s:|r%02d'}, -- mmss
+	[6] = {'%d:%02d', '%d%s:|r%02d'}, -- hhmm
+}
 
 E.TimeIndicatorColors = {
 	[0] = '|cff00b3ff',
@@ -385,44 +383,28 @@ E.TimeIndicatorColors = {
 }
 
 do
-	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60 --used for calculating aura time text
-	local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
-	local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
-
-	function E:GetTimeNextUpdate(sec, arg1, arg2, arg3, arg4)
-		return arg1 > 1 and (sec - (arg1 * arg2 - arg3)) or (sec - arg4)
-	end
-
-	-- will return the the value to display, the formatter id to use and calculates the next update for the Aura
-	function E:GetTimeInfo(s, threshhold, hhmm, mmss)
-		if s < MINUTE then
-			if s >= threshhold then
-				return floor(s), 3, 0.51
+	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
+	function E:GetTimeInfo(sec, threshold, hhmm, mmss)
+		if sec < MINUTE then
+			if sec > threshold then
+				return sec, 3, 0.5
 			else
-				return s, 4, 0.051
+				return sec, 4, 0.1
 			end
+		elseif mmss and sec < mmss then
+			return sec / MINUTE, 5, 1, mod(sec, MINUTE)
+		elseif hhmm and sec < (hhmm * MINUTE) then
+			return sec / HOUR, 6, 30, mod(sec, HOUR) / MINUTE
+		elseif sec < HOUR then
+			local mins = mod(sec, HOUR) / MINUTE
+			return mins, 2, mins > 2 and 30 or 1
+		elseif sec < DAY then
+			local hrs = mod(sec, DAY) / HOUR
+			return hrs, 1, hrs > 1 and 60 or 30
+		else
+			local days = mod(sec, YEAR) / DAY
+			return days, 0, days > 1 and 120 or 60
 		end
-
-		local minutes = mod(s, HOUR) / MINUTE
-		if mmss and s < mmss then
-			return minutes, 5, 0.51, mod(s, MINUTE)
-		end
-
-		local hours = mod(s, DAY) / HOUR
-		if hhmm and s < (hhmm * MINUTE) then
-			return hours, 6, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH), mod(minutes, MINUTE)
-		end
-
-		if s < HOUR then
-			return minutes, 2, E:GetTimeNextUpdate(s, minutes, MINUTE, HALFMINUTEISH, MINUTEISH)
-		end
-
-		if s < DAY then
-			return hours, 1, E:GetTimeNextUpdate(s, hours, HOUR, HALFHOURISH, HOURISH)
-		end
-
-		local days = mod(s, YEAR) / DAY
-		return days, 0, E:GetTimeNextUpdate(s, days, DAY, HALFDAYISH, DAYISH)
 	end
 end
 

@@ -3,17 +3,17 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
-local UnitXP, UnitXPMax = UnitXP, UnitXPMax
+local UnitXP = UnitXP
+local UnitXPMax = UnitXPMax
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local GetXPExhaustion = GetXPExhaustion
-local GetExpansionLevel = GetExpansionLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local displayString = ''
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
-	if E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()] then
+	if IsLevelAtEffectiveMaxLevel(E.mylevel) then
 		displayString = L['Max Level']
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
@@ -59,7 +59,7 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
-	if E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()] then return end
+	if IsLevelAtEffectiveMaxLevel(E.mylevel) then return end
 
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(L["Experience"])

@@ -78,7 +78,8 @@ P.general = {
 	valuecolor = {r = 23/255, g = 132/255, b = 209/255},
 	cropIcon = 2,
 	minimap = {
-		size = 176,
+		size = 175,
+		scale = 1,
 		locationText = 'MOUSEOVER',
 		locationFontSize = 12,
 		locationFontOutline = 'OUTLINE',
@@ -96,7 +97,7 @@ P.general = {
 				hide = false,
 			},
 			tracking = {
-				scale = 0.8,
+				scale = 0.65,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
@@ -119,7 +120,7 @@ P.general = {
 				scale = 1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 3,
-				yOffset = 0
+				yOffset = -3
 			},
 			queueStatus = {
 				enable = true,
@@ -129,6 +130,12 @@ P.general = {
 				font = 'Expressway',
 				fontSize = 11,
 				fontOutline = 'OUTLINE',
+			},
+			battlefield = {
+				scale = 1.1,
+				position = 'BOTTOMRIGHT',
+				xOffset = 4,
+				yOffset = -4,
 			},
 			difficulty = {
 				scale = 1,
@@ -141,8 +148,18 @@ P.general = {
 				position = 'TOPLEFT',
 				xOffset = 8,
 				yOffset = -8,
-			},
+			}
 		}
+	},
+	lootRoll = {
+		width = 328,
+		height = 28,
+		style = 'halfbar',
+		statusBarTexture = 'ElvUI Norm',
+		qualityName = false,
+		qualityStatusBar = true,
+		qualityStatusBarBackdrop = true,
+		statusBarColor = { r = 0, g = .4, b = 1 }
 	},
 	objectiveTracker = true,
 	totems = {
@@ -284,18 +301,19 @@ P.bags = {
 	showAssignedIcon = true,
 	colors = {
 		profession = {
-			quiver = { r = 1, g = 0.69, b = 0.41 },
 			ammoPouch = { r = 1, g = 0.69, b = 0.41 },
-			soulBag = { r = 1, g = 0.69, b = 0.41 },
-			leatherworking = { r = .88, g = .73, b = .29 },
-			inscription = { r = .29, g = .30, b = .88 },
-			herbs = { r = .07, g = .71, b = .13 },
+			cooking = { r = .87, g = .05, b = .25 },
 			enchanting = { r = .76, g = .02, b = .8 },
 			engineering = { r = .91, g = .46, b = .18 },
-			gems = { r = .03, g = .71, b = .81 },
-			mining = { r = .54, g = .40, b = .04 },
 			fishing = { r = .42, g = .59, b = 1 },
-			cooking = { r = .87, g = .05, b = .25 },
+			gems = { r = .03, g = .71, b = .81 },
+			herbs = { r = .07, g = .71, b = .13 },
+			inscription = { r = .29, g = .30, b = .88 },
+			keyring = { r = 1, g = .96, b = .41 },
+			leatherworking = { r = .88, g = .73, b = .29 },
+			mining = { r = .54, g = .40, b = .04 },
+			quiver = { r = 1, g = 0.69, b = 0.41 },
+			soulBag = { r = 1, g = 0.69, b = 0.41 },
 		},
 		assignment = {
 			equipment = { r = 0, g = .50, b = .47 },
@@ -303,8 +321,8 @@ P.bags = {
 			tradegoods = { r = 1, g = .32, b = .66 },
 		},
 		items = {
-			questStarter = {r = 1, g = 1, b = 0},
-			questItem = {r = 1, g = 0.30, b = 0.30},
+			questStarter = { r = 1, g = .96, b = .41 },
+			questItem = { r = 1, g = 0.30, b = 0.30 },
 		}
 	},
 	vendorGrays = {
@@ -1091,6 +1109,7 @@ P.tooltip = {
 	guildRanks = true,
 	itemQuality = false,
 	itemCount = 'BAGS_ONLY',
+	modifierCount = true,
 	showMount = true,
 	modifierID = 'SHOW',
 	role = true,
@@ -1183,6 +1202,7 @@ local UF_AuraBars = {
 	spacing = 0,
 	yOffset = 0,
 	clickThrough = false,
+	reverseFill = false,
 }
 
 local UF_AuraWatch = {
@@ -2279,6 +2299,7 @@ end
 --Cooldown
 P.cooldown = {
 	threshold = 3,
+	roundTime = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
 	expiringColor = { r = 1, g = 0, b = 0 },

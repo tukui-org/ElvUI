@@ -184,6 +184,7 @@ function S:Blizzard_GarrisonUI()
 
 			if not reward.Icon.backdrop then
 				S:HandleIcon(reward.Icon, true)
+				reward.Icon.backdrop:SetFrameLevel(reward:GetFrameLevel())
 			end
 
 			reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)

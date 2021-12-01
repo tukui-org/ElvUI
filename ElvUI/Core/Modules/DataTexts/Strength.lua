@@ -11,9 +11,9 @@ local displayString, lastPanel = ''
 
 local function OnEvent(self)
 	if E.global.datatexts.settings.Strength.NoLabel then
-		self.text:SetFormattedText(displayString, UnitStat("player", LE_UNIT_STAT_STRENGTH))
+		self.text:SetFormattedText(displayString, UnitStat('player', LE_UNIT_STAT_STRENGTH))
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Strength.Label ~= '' and E.global.datatexts.settings.Strength.Label or ITEM_MOD_STRENGTH_SHORT..': ', UnitStat("player", LE_UNIT_STAT_STRENGTH))
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Strength.Label ~= '' and E.global.datatexts.settings.Strength.Label or ITEM_MOD_STRENGTH_SHORT..': ', UnitStat('player', LE_UNIT_STAT_STRENGTH))
 	end
 
 	lastPanel = self
@@ -27,4 +27,4 @@ end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Strength', STAT_CATEGORY_ATTRIBUTES, { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent, nil, nil, nil, nil, ITEM_MOD_STRENGTH_SHORT, nil, ValueColorUpdate)
+DT:RegisterDatatext('Strength', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_STRENGTH_SHORT, nil, ValueColorUpdate)

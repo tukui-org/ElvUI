@@ -1,7 +1,71 @@
-### Version 12.51 [ ETA: 🍨 ]
+### Version 12.58 [ ETA: 🍨 ]
 
-Bags: Added auto toggle option for vendor aswell  
+ActionBars: Fixed layering issue (Keybinds on Pet Bar)  
+Bags: Added an option to hide Gold  
+Bags: Fixed an issue with mouseover tooltip  
+Chat: Added an option to hide channel names  
+DataTexts: Fixed Bags DataText  
+Minimap: Added option to scale the Minimap  
+Misc: Reworked LootRoll and added options  
+NamePlates: Updated StyleFilters config  
+UnitFrames: Added reverse fill option for Aura Bars  
+
+___
+### Version 12.57 [ November 22nd 2021 ]
+
+Bags: Count position was getting stuck  
+UnitFrames: Fixed an issue with transparent power color  
+UnitFrames: Added option to Auto Hide Power out of combat  
+WorldMap: Fixed Coordinates level and a few Fullscreen Map issues  
+Skins: Fixed the Widget Bar not being skinned properly  
+Skins: Error when using Barbershop  
+
+___
+### Version 12.56 [ November 16th 2021 ]
+
+Datatext: Readded Haste customization settings  
+Skins: Fixed Tooltip skin when they have an embedded statusbar  
+ActionBars: Fixed issue when buttons wouldn't update count after being traded  
+Bags: Corrected the display of Cooldown timers (sometimes they wouldn't appear)  
+Filters: Added Soothing Mist to Monk Aurawatch  
+
+___
+### Version 12.55 [ November 13th 2021 ]
+
+Tooltip: Fixed Item Quality Color error  
+Datatext: Readded events for several stat datatexts  
+
+___
+### Version 12.54 [ November 13th 2021 ]
+
+Bags: Adjusted how Bags and Bank are updated  
+Cooldown Text: Added a global option for rounding and improved transition between one minute and seconds  
+Datatexts: Add Leech back in and fixed MovementSpeed not updating properly  
+Tooltips: Add option to display Item Count when using the Modifier for Item IDs  
+
+___
+### Version 12.53 [ November 11th 2021 ]
+
+Datatext: Fix error with Experience  
+
+___
+### Version 12.52 [ November 11th 2021 ]
+
+Chat: Fixes for overflowing chat tabs  
+Cooldown Text: Fixed issues with HH:MM and MM:SS  
+Locales: Updated Russian translation (Credits Hollicsh)  
+Skins: Updated estatus  
+UnitFrames: Fixed Focus and FocusTarget  
+
+___
+### Version 12.51 [ November 10th 2021 ]
+
+Bags: Added auto toggle option for vendor and bank  
+DataBars: Fixed an error when switching profiles  
+Datatexts: Fixed BattleStats and Movement Speed  
 Filters: Fixed AuraBar colors not setting the selected color  
+Skins: Fixed Keybind Frame having weird shadows  
+Tooltips: Fixed Mythic+ Score options  
 
 ___
 ### Version 12.50 [ November 9th 2021 ]

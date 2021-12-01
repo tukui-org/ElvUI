@@ -62,7 +62,8 @@ function E:Cooldown_OnUpdate(elapsed)
 
 			local style = E.TimeFormats[id]
 			if style then
-				local which = (self.textColors and 2 or 1) + (self.showSeconds and 0 or 2)
+				local opt = (id < 3 and self.roundTime) or (id > 2 and id < 5 and self.showSeconds)
+				local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
 				if self.textColors then
 					self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
 				else
@@ -136,6 +137,7 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.hhmmThreshold = hhmm or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
 	timer.mmssThreshold = mmss or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
 	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
+	timer.roundTime = E.db.cooldown.roundTime
 
 	if db.reverse ~= nil then
 		timer.reverseToggle = (E.db.cooldown.enable and not db.reverse) or (db.reverse and not E.db.cooldown.enable)
@@ -334,10 +336,7 @@ function E:UpdateCooldownSettings(module)
 		for key in pairs(E.RegisteredCooldowns) do
 			E:UpdateCooldownOverride(key)
 		end
-	end
-
-	-- okay update the other override settings if it was one of the core file calls
-	if module and (module == 'all') then
+	elseif module == 'all' then -- okay update the other override settings if it was one of the core file calls
 		E:UpdateCooldownSettings('bags')
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')

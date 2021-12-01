@@ -165,10 +165,16 @@ do
 	end
 end
 
-function E:GetThreatStatusColor(status)
+function E:GetThreatStatusColor(status, nothreat)
 	local color = ElvUF.colors.threat[status]
 	if color then
 		return color[1], color[2], color[3], color[4] or 1
+	elseif nothreat then
+		if status == -1 then -- how or why?
+			return 1, 1, 1, 1
+		else
+			return .7, .7, .7, 1
+		end
 	end
 end
 

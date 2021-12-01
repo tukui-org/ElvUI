@@ -100,6 +100,9 @@ mod.TriggerConditions = {
 		[4] = 'legacy25normal',
 		[5] = 'legacy10heroic',
 		[6] = 'legacy25heroic',
+		-- classic / tbc
+		[9] = 'legacy40normal',
+		[148] = 'legacy20normal',
 	}
 }
 
@@ -360,7 +363,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 				end
 
 				index = index + 1
-				name, _, count, _, _, expiration, _, _, _, spellID = UnitAura(frame.unit, index, filter)
+				name, _, count, _, _, expiration, source, _, _, spellID = UnitAura(frame.unit, index, filter)
 			end
 
 			local stale = matches + 1
@@ -716,7 +719,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Quest Boss
-	if trigger.questBoss then
+	if trigger.questBoss and E.Retail then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
 	end
 
@@ -826,7 +829,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Unit Role
-	if trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager then
+	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
 		local role = UnitGroupRolesAssigned(frame.unit)
 		if trigger.unitRole[mod.TriggerConditions.roles[role]] then passed = true else return end
 	end
@@ -886,7 +889,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Class and Specialization
 	if trigger.class and next(trigger.class) then
 		local Class = trigger.class[E.myclass]
-		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
+		if not Class or (E.Retail and Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
 			return
 		else
 			passed = true
@@ -935,7 +938,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Talents
-	if trigger.talent.enabled then
+	if trigger.talent.enabled and E.Retail then
 		local pvpTalent = trigger.talent.type == 'pvp'
 		local selected, complete
 
@@ -1539,7 +1542,7 @@ function mod:StyleFilterClearDefaults(tbl)
 end
 
 function mod:StyleFilterCopyDefaults(tbl)
-	E:CopyDefaults(tbl, E.StyleFilterDefaults)
+	return E:CopyDefaults(tbl or {}, E.StyleFilterDefaults)
 end
 
 function mod:StyleFilterInitialize()

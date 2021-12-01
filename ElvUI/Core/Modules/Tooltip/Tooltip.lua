@@ -69,6 +69,7 @@ local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
+local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode and C_ChallengeMode.GetDungeonScoreRarityColor
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
@@ -86,7 +87,6 @@ local UNKNOWN = UNKNOWN
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s|r %d'
-local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBar
 local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
@@ -617,10 +617,15 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt.qualityChanged then
 		tt.qualityChanged = nil
 
+		local r, g, b = 1, 1, 1
+		if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+			r, g, b = unpack(E.media.bordercolor)
+		end
+
 		if tt.NineSlice then
-			tt.NineSlice:SetBorderColor(unpack(E.media.bordercolor))
+			tt.NineSlice:SetBorderColor(r, g, b)
 		else
-			tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			tt:SetBackdropBorderColor(r, g, b)
 		end
 	end
 
@@ -662,14 +667,13 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local _, link = tt:GetItem()
-	local num = GetItemCount(link)
-	local numall = GetItemCount(link,true)
-	local left, right, bankCount = ' ', ' ', ' '
+	if not link then return end
 
+	local modKey = TT:IsModKeyDown()
+	local itemID, bagCount, bankCount
 	if TT.db.itemQuality then
 		local _, _, quality = GetItemInfo(link)
 		if quality and quality > 1 then
-
 			if tt.NineSlice then
 				tt.NineSlice:SetBorderColor(GetItemQualityColor(quality))
 			else
@@ -680,26 +684,26 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 	end
 
-	if link and TT:IsModKeyDown() then
-		left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
+	if modKey then
+		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
 	end
 
-	if TT.db.itemCount == 'BAGS_ONLY' then
-		right = format(IDLine, L["Count"], num)
-	elseif TT.db.itemCount == 'BANK_ONLY' then
-		bankCount = format(IDLine, L["Bank"], numall - num)
-	elseif TT.db.itemCount == 'BOTH' then
-		right = format(IDLine, L["Count"], num)
-		bankCount = format(IDLine, L["Bank"], numall - num)
+	if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
+		local count = GetItemCount(link)
+		local total = GetItemCount(link, true)
+		if TT.db.itemCount == 'BAGS_ONLY' then
+			bagCount = format(IDLine, L["Count"], count)
+		elseif TT.db.itemCount == 'BANK_ONLY' then
+			bankCount = format(IDLine, L["Bank"], total - count)
+		elseif TT.db.itemCount == 'BOTH' then
+			bagCount = format(IDLine, L["Count"], count)
+			bankCount = format(IDLine, L["Bank"], total - count)
+		end
 	end
 
-	if left ~= ' ' or right ~= ' ' then
-		tt:AddLine(' ')
-		tt:AddDoubleLine(left, right)
-	end
-	if bankCount ~= ' ' then
-		tt:AddDoubleLine(' ', bankCount)
-	end
+	if itemID or bagCount or bankCount then tt:AddLine(' ') end
+	if itemID or bagCount then tt:AddDoubleLine(itemID or ' ', bagCount or ' ') end
+	if bankCount then tt:AddDoubleLine(' ', bankCount) end
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
@@ -726,6 +730,27 @@ function TT:GameTooltip_ShowProgressBar(tt)
 		sb.Bar:CreateBackdrop('Transparent', nil, true)
 		sb.Bar:SetStatusBarTexture(E.media.normTex)
 	end
+end
+
+function TT:GameTooltip_ShowStatusBar(tt)
+	if not tt or not tt.statusBarPool or tt:IsForbidden() then return end
+
+	local sb = tt.statusBarPool:GetNextActive()
+	if not sb or sb.backdrop then return end
+
+	sb:StripTextures()
+	sb:CreateBackdrop(nil, nil, true, true)
+	sb:SetStatusBarTexture(E.media.normTex)
+end
+
+function TT:SetStyle(tt, _, isEmbedded)
+	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded or not tt.NineSlice) or tt:IsForbidden() then return end
+
+	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
+	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+
+	tt.NineSlice.customBackdropAlpha = TT.db.colorAlpha
+	tt.NineSlice:SetTemplate('Transparent')
 end
 
 function TT:MODIFIER_STATE_CHANGED()

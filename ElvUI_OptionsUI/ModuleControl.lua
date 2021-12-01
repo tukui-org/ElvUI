@@ -65,7 +65,7 @@ local function CreateBagsConfig()
 	config.args.cooldown.order = 2
 
 	config.args.ignoredItems = nil
-	config.args.colors.name = L["COLORS"]
+	config.args.colors.name = L["Colors"]
 	config.args.bagBar.name = L["Bag-Bar"]
 	config.args.split.name = L["Split"]
 	config.args.vendorGrays.name = L["Vendor Grays"]
@@ -138,7 +138,7 @@ local function CreateNamePlatesConfig()
 	config.args.cutaway.name = L["Cutaway Bars"]
 	config.args.clickThrough.name = L["Click Through"]
 	config.args.plateSize.name = L["Clickable Size"]
-	config.args.colors.name = L["COLORS"]
+	config.args.colors.name = L["Colors"]
 	config.args.visibility.name = L["Visibility"]
 
 	-- Modify Tables
@@ -176,7 +176,7 @@ end
 local function CreateUnitframesConfig()
 	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
 	config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
-	config.args.colors = ACH:Group(L["COLORS"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+	config.args.colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 	config.args.colors.inline = true
 
 	MC:AddConfigOptions(P.unitframe.colors, config.args.colors)

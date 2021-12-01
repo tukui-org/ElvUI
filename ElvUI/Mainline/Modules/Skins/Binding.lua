@@ -2,39 +2,29 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_BindingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
 
-	local buttons = {
-		'defaultsButton',
-		'unbindButton',
-		'okayButton',
-		'cancelButton',
-		'quickKeybindButton'
-	}
-
-	local KeyBindingFrame = _G.KeyBindingFrame
-	for _, v in pairs(buttons) do
-		S:HandleButton(KeyBindingFrame[v])
+	local KB = _G.KeyBindingFrame
+	for _, v in next, { 'defaultsButton', 'unbindButton', 'okayButton', 'cancelButton', 'quickKeybindButton' } do
+		S:HandleButton(KB[v])
 	end
 
 	_G.KeyBindingFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.KeyBindingFrameScrollFrameScrollBar)
 
-	S:HandleCheckBox(KeyBindingFrame.characterSpecificButton)
-	KeyBindingFrame.Header:StripTextures()
-	KeyBindingFrame.Header:ClearAllPoints()
-	KeyBindingFrame.Header:Point('TOP', KeyBindingFrame, 'TOP', 0, -4)
-	KeyBindingFrame:StripTextures()
-	KeyBindingFrame:SetTemplate('Transparent')
+	S:HandleCheckBox(KB.characterSpecificButton)
+	KB.Header:StripTextures()
+	KB.Header:ClearAllPoints()
+	KB.Header:Point('TOP', KB, 'TOP', 0, -4)
+	KB:StripTextures()
+	KB:SetTemplate('Transparent')
 
-	_G.KeyBindingFrameCategoryList:StripTextures()
-	_G.KeyBindingFrameCategoryList:SetTemplate('Transparent')
-	KeyBindingFrame.bindingsContainer:StripTextures()
-	KeyBindingFrame.bindingsContainer:SetTemplate('Transparent')
+	KB.categoryList.NineSlice:SetTemplate('Transparent')
+	KB.bindingsContainer.NineSlice:SetTemplate('Transparent')
 
 	for i = 1, _G.KEY_BINDINGS_DISPLAYED, 1 do
 		local button1 = _G['KeyBindingFrameKeyBinding'..i..'Key1Button']
@@ -55,23 +45,16 @@ function S:Blizzard_BindingUI()
 		end
 	end)
 
-	-- QuickKeybind
-	local Quickie = _G.QuickKeybindFrame
-	Quickie:StripTextures()
-	Quickie.Header:StripTextures()
-	Quickie:SetTemplate('Transparent')
+	local Quick = _G.QuickKeybindFrame
+	Quick:StripTextures()
+	Quick:SetTemplate('Transparent')
+	Quick.Header:StripTextures()
 
-	local quickies = {
-		'okayButton',
-		'defaultsButton',
-		'cancelButton'
-	}
-
-	for _, v in pairs(quickies) do
-		S:HandleButton(Quickie[v])
+	for _, v in next, { 'okayButton', 'defaultsButton', 'cancelButton' } do
+		S:HandleButton(Quick[v])
 	end
 
-	S:HandleCheckBox(Quickie.characterSpecificButton)
+	S:HandleCheckBox(Quick.characterSpecificButton)
 end
 
 S:AddCallbackForAddon('Blizzard_BindingUI')
