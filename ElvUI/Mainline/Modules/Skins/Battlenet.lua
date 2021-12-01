@@ -9,6 +9,7 @@ function S:BattleNetFrames()
 
 	local skins = {
 		_G.BNToastFrame,
+		_G.TimeAlertFrame,
 		_G.TicketStatusFrameButton.Background.NineSlice -- Ticket Frames (not GMTicketFrames)
 	}
 
