@@ -1417,7 +1417,7 @@ L["Your Auras First"] = "自身光环优先"
 L["Zone Name"] = "区域名"
 
 ----------------------------------
-L["BlizzardNameplate"] = "暴雪姓名版"
+L["BlizzardNameplate"] = "暴雪姓名板"
 L["blockCastByPlayers"] = "[屏蔽]玩家施放的"
 L["blockDispellable"] = "[屏蔽]可驱散的"
 L["blockNoDuration"] = "[屏蔽]永久的"
