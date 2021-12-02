@@ -375,7 +375,7 @@ for option, name in next, { myRole = L["Player"], unitRole = L["Unit"] } do
 	StyleFitlers.triggers.args.role.args[option] = ACH:Group(name, nil, nil, nil, function(info) local triggers = GetFilter(true) return triggers[option] and triggers[option][info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers[option] then triggers[option] = {} end triggers[option][info[#info]] = value NP:ConfigureAll() end)
 	StyleFitlers.triggers.args.role.args[option].inline = true
 
-	for role, roleLocale in next, { tank = L["TANK"], healer = L["Healer"], damager = L["DAMAGER"] } do
+	for role, roleLocale in next, { tank = L["Tank"], healer = L["Healer"], damager = L["DAMAGER"] } do
 		StyleFitlers.triggers.args.role.args[option].args[role] = ACH:Toggle(roleLocale)
 	end
 end
@@ -552,7 +552,7 @@ StyleFitlers.triggers.args.instanceType.args.types = ACH:Group('', nil, 2)
 StyleFitlers.triggers.args.instanceType.args.types.inline = true
 StyleFitlers.triggers.args.instanceType.args.types.args.none = ACH:Toggle(L["None"], nil, 1)
 StyleFitlers.triggers.args.instanceType.args.types.args.scenario = ACH:Toggle(L["SCENARIOS"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
-StyleFitlers.triggers.args.instanceType.args.types.args.party = ACH:Toggle(L["PARTY"], nil, 5)
+StyleFitlers.triggers.args.instanceType.args.types.args.party = ACH:Toggle(L["Party"], nil, 5)
 StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["Raid"], nil, 5)
 StyleFitlers.triggers.args.instanceType.args.types.args.arena = ACH:Toggle(L["Arena"], nil, 7, nil, nil, nil, nil, nil, nil, E.Classic)
 StyleFitlers.triggers.args.instanceType.args.types.args.pvp = ACH:Toggle(L["BATTLEFIELDS"], nil, 8)

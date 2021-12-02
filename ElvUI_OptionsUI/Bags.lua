@@ -13,7 +13,7 @@ local GameTooltip = GameTooltip
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
-local Bags = ACH:Group(L["BAGSLOT"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
+local Bags = ACH:Group(L["Bags"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
 E.Options.args.bags = Bags
 
 Bags.args.intro = ACH:Description(L["BAGS_DESC"], 0)
@@ -158,12 +158,12 @@ Bags.args.colorGroup.args.profession.args.engineering = ACH:Color(L["Engineering
 Bags.args.colorGroup.args.profession.args.fishing = ACH:Color(L["PROFESSIONS_FISHING"])
 Bags.args.colorGroup.args.profession.args.gems = ACH:Color(L["Gems"])
 Bags.args.colorGroup.args.profession.args.herbs = ACH:Color(L["Herbalism"])
-Bags.args.colorGroup.args.profession.args.inscription = ACH:Color(L["INSCRIPTION"])
+Bags.args.colorGroup.args.profession.args.inscription = ACH:Color(L["Inscription"])
 Bags.args.colorGroup.args.profession.args.keyring = ACH:Color(L["Key Ring"])
 Bags.args.colorGroup.args.profession.args.leatherworking = ACH:Color(L["Leatherworking"])
 Bags.args.colorGroup.args.profession.args.mining = ACH:Color(L["Mining"])
 
-Bags.args.colorGroup.args.items = ACH:Group(L["ITEMS"], nil, 3)
+Bags.args.colorGroup.args.items = ACH:Group(L["Items"], nil, 3)
 Bags.args.colorGroup.args.items.inline = true
 Bags.args.colorGroup.args.items.args.questStarter = ACH:Color(L["Quest Starter"])
 Bags.args.colorGroup.args.items.args.questItem = ACH:Color(L["ITEM_BIND_QUEST"])
