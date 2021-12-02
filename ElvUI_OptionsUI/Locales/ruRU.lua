@@ -2,7 +2,7 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
 -- Added many untranslated phrases. Start.
-L["|cffFF0000This does not work in Instances or Garrisons!|r"] = "cffFF0000Это не работает в подземельях и гарнизонах!|r"
+L["|cffFF0000This does not work in Instances or Garrisons!|r"] = "|cffFF0000Это не работает в подземельях и гарнизонах!|r"
 L["Unitframes Border"] = "Граница рамок юнитов"
 L["Quality Background"] = "Качество фона"
 L["Quality StatusBar"] = "Качество полосы состояния"
