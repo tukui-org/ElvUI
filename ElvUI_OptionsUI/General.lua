@@ -56,10 +56,10 @@ General.args.general.args.scaling.args.ScaleAuto.customWidth = 100
 General.args.general.args.automation = ACH:Group(L["Automation"], nil, 52)
 General.args.general.args.automation.inline = true
 
-General.args.general.args.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["NONE"], SAY = L["SAY"], YELL = L["YELL"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value if value == 'NONE' then Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED') else Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED') end end)
+General.args.general.args.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["None"], SAY = L["SAY"], YELL = L["YELL"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value if value == 'NONE' then Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED') else Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED') end end)
 General.args.general.args.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Automatically accept invites from guild/friends."], 2)
 General.args.general.args.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
-General.args.general.args.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["NONE"], GUILD = not E.Classic and L["GUILD"] or nil, PLAYER = L["PLAYER"] })
+General.args.general.args.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
 
 General.args.general.args.totems = ACH:Group(L["Class Totems"], nil, 53, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value Totems:PositionAndSize() end, function() return not E.private.general.totemBar end)
 General.args.general.args.totems.inline = true
@@ -172,7 +172,7 @@ General.args.alternativePowerGroup.args.textGroup.inline = true
 General.args.alternativePowerGroup.args.textGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 General.args.alternativePowerGroup.args.textGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 General.args.alternativePowerGroup.args.textGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-General.args.alternativePowerGroup.args.textGroup.args.textFormat = ACH:Select(L["Text Format"], nil, 4, { NONE = L["NONE"], NAME = L["NAME"], NAMEPERC = L["Name: Percent"], NAMECURMAX = L["Name: Current / Max"], NAMECURMAXPERC = L["Name: Current / Max - Percent"], PERCENT = L["Percent"], CURMAX = L["Current / Max"], CURMAXPERC = L["Current / Max - Percent"] })
+General.args.alternativePowerGroup.args.textGroup.args.textFormat = ACH:Select(L["Text Format"], nil, 4, { NONE = L["None"], NAME = L["Name"], NAMEPERC = L["Name: Percent"], NAMECURMAX = L["Name: Current / Max"], NAMECURMAXPERC = L["Name: Current / Max - Percent"], PERCENT = L["Percent"], CURMAX = L["Current / Max"], CURMAXPERC = L["Current / Max - Percent"] })
 General.args.alternativePowerGroup.args.textGroup.args.textFormat.sortByValue = true
 
 General.args.blizzUIImprovements = ACH:Group(L["BlizzUI Improvements"], nil, 20)

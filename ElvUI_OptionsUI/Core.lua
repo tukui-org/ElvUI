@@ -15,7 +15,7 @@ local tconcat, tinsert, tremove = table.concat, tinsert, tremove
 
 C.Values = {
 	FontFlags = {
-		NONE = L["NONE"],
+		NONE = L["None"],
 		OUTLINE = 'Outline',
 		THICKOUTLINE = 'Thick',
 		MONOCHROME = '|cffaaaaaaMono|r',

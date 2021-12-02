@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "Нужна по�
 L["No bindings set."] = "Нет назначений"
 L["No gray items to delete."] = "Нет предметов серого качества для удаления."
 L["No Guild"] = "Нет гильдии"
+L["None"] = "Нет"
 L["Nudge"] = "Сдвиг"
 L["O"] = "Оф"
 L["Objective Frame"] = "Задачи"

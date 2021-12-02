@@ -65,6 +65,7 @@ function S:Blizzard_GuildBankUI()
 		for x = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = column['Button'..x]
 			button:StripTextures()
+			button:StyleButton()
 			button:SetTemplate('Transparent')
 
 			button.icon:SetInside()

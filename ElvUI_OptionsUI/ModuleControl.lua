@@ -202,15 +202,15 @@ local function CreateUnitframesConfig()
 	config.args.units.args.targettargettarget.name = L["TargetTargetTarget"]
 	config.args.units.args.focus.name = L["Focus"]
 	config.args.units.args.focustarget.name = L["FocusTarget"]
-	config.args.units.args.pet.name = L["PET"]
+	config.args.units.args.pet.name = L["Pet"]
 	config.args.units.args.pettarget.name = L["PetTarget"]
 	config.args.units.args.boss.name = L["Boss"]
 	config.args.units.args.arena.name = L["Arena"]
-	config.args.units.args.party.name = L["PARTY"]
+	config.args.units.args.party.name = L["Party"]
 	config.args.units.args.raid.name = L["Raid"]
 	config.args.units.args.raid40.name = L["Raid-40"]
 	config.args.units.args.raidpet.name = L["Raid Pet"]
-	config.args.units.args.tank.name = L["TANK"]
+	config.args.units.args.tank.name = L["Tank"]
 	config.args.units.args.assist.name = L["Assist"]
 
 	return config

@@ -12,7 +12,7 @@ local SharedOptions = {
 	mouseover = ACH:Toggle(L["Mouseover"], nil, 2),
 	clickThrough = ACH:Toggle(L["Click Through"], nil, 3),
 	showBubbles = ACH:Toggle(L["Show Bubbles"], nil, 5),
-	textFormat = ACH:Select(L["Text Format"], nil, 10, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
+	textFormat = ACH:Select(L["Text Format"], nil, 10, { NONE = L["None"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
 	sizeGroup = ACH:Group(L["Size"], nil, -4),
 	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -3),
 	strataAndLevel = ACH:Group(L["Strata and Level"], nil, -2),

@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "需要幫助? �
 L["No bindings set."] = "未設定快捷綁定."
 L["No gray items to delete."] = "沒有可刪除的灰色物品."
 L["No Guild"] = "沒有公會"
+L["None"] = "無"
 L["Nudge"] = "微調"
 L["O"] = "幹部"
 L["Objective Frame"] = "任務框架"

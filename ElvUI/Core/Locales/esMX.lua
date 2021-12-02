@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "¿Necesitas ayud
 L["No bindings set."] = "No hay teclas establecidas."
 L["No gray items to delete."] = "No hay objetos grises para eliminar."
 L["No Guild"] = "Sin Hermandad"
+L["None"] = "Ninguno"
 L["Nudge"] = "Ajuste Fino"
 L["O"] = "O"
 L["Objective Frame"] = "Marco de Objetivo"

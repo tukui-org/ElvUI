@@ -28,7 +28,7 @@ E.Options.args.tooltip.args.general.args.itemQuality = ACH:Toggle(L["Item Qualit
 
 E.Options.args.tooltip.args.general.args.colorAlpha = ACH:Range(L["OPACITY"], nil, 20, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; Skins:StyleTooltips() end)
 E.Options.args.tooltip.args.general.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 21, modifierValues)
-E.Options.args.tooltip.args.general.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 22, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["NONE"] })
+E.Options.args.tooltip.args.general.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 22, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["None"] })
 E.Options.args.tooltip.args.general.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 23, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
 
 E.Options.args.tooltip.args.anchorGroup = ACH:Group(L["Cursor Anchor"], nil, 7)

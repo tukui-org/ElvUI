@@ -8,6 +8,7 @@ DataTexts: Fixed Bags DataText
 Minimap: Added option to scale the Minimap  
 Misc: Reworked LootRoll and added options  
 NamePlates: Updated StyleFilters config  
+Skins: Button Hover Glow in the Guild Bank fixed  
 UnitFrames: Added reverse fill option for Aura Bars  
 UnitFrames: Updated spark for EnergyManaRegen ticks  
 

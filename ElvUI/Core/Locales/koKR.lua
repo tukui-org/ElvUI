@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "도움이 필요
 L["No bindings set."] = "설정한 단축키가 없습니다."
 L["No gray items to delete."] = "잡동사니가 없습니다."
 L["No Guild"] = "길드 없음"
+L["None"] = "없음"
 L["Nudge"] = "미세조정"
 L["O"] = "관리자"
 L["Objective Frame"] = "퀘스트 프레임"

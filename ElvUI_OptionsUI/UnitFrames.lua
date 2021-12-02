@@ -31,7 +31,7 @@ local threatValues = {
 	ICONRIGHT = L["Icon: RIGHT"],
 	ICONTOP = L["Icon: TOP"],
 	ICONBOTTOM = L["Icon: BOTTOM"],
-	NONE = L["NONE"],
+	NONE = L["None"],
 }
 
 local attachToValues = {
@@ -88,7 +88,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.height = ACH:Range(L["Height"], nil, 6, { min = 5, max = 40, step = 1 })
 	config.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 7, { min = 30, max = 1000, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo ~= 'DETACHED' end)
 	config.args.maxBars = ACH:Range(L["Max Bars"], nil, 8, { min = 1, max = 40, step = 1 })
-	config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 9, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+	config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 9, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = L["Player"] })
 	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 10, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 11)
 	config.args.friendlyAuraType = ACH:Select(L["Friendly Aura Type"], L["Set the type of auras to show when a unit is friendly."], 12, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] })
@@ -146,7 +146,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 17, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 
 	if not strmatch(groupName, '%w+target') then -- these frames are special and run onupdate because of that we dont sort them.
-		config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+		config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = L["Player"] })
 	end
 
 	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
@@ -248,7 +248,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	-- Need a better way for Test Frames
 	config.args.forceshow = {
 				order = 6,
-				name = L["SHOW"]..' / '..L["HIDE"],
+				name = L["Show"]..' / '..L["Hide"],
 				func = function()
 					local frameName = gsub('ElvUF_'..E:StringTitle(groupName), 't(arget)', 'T%1')
 					if groupName == 'party' then
@@ -304,7 +304,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.latency = ACH:Toggle(L["Latency"], nil, 10, nil, nil, nil, nil, nil, nil, function() return groupName ~= 'player' end)
 	config.args.format = ACH:Select(L["Format"], L["Cast Time Format"], 11, { CURRENTMAX = L["Current / Max"], CURRENT = L["Current"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
 	config.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 12, { min = 0, max = 10, step = .1 })
-	config.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 3, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["NONE"] })
+	config.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 3, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["None"] })
 
 	config.args.textGroup = ACH:Group(L["Text"], nil, 16, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.inline = true
@@ -442,7 +442,7 @@ local function CreateCustomTextGroup(unit, objectName)
 	end
 
 	local config = ACH:Group(objectName, nil, nil, nil, function(info) return E.db.unitframe.units[unit].customTexts[objectName][info[#info]] end, function(info, value) E.db.unitframe.units[unit].customTexts[objectName][info[#info]] = value UpdateCustomTextGroup(unit) end)
-	config.args.delete = ACH:Execute(L["DELETE"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
+	config.args.delete = ACH:Execute(L["Delete"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2)
 	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 3)
 	config.args.size = ACH:Range(L["Font Size"], nil, 4, C.Values.FontSize)
@@ -569,7 +569,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
 	config.args.colorsButton = ACH:Execute(L["Colors"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
-	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["NONE"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
+	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["None"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.warning = ACH:Description(function()
 				if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
@@ -628,7 +628,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Portrait"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].portrait[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.warning = ACH:Description(function() return (E.db.unitframe.units[groupName].orientation == 'MIDDLE' and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or '' end, 1, 'medium', nil, nil, nil, nil, 'full')
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."])
-	config.args.style = ACH:Select(L["Style"], L["Select the display method of the portrait."], 3, { ['2D'] = L["2D"], ['3D'] = L["3D"], Class = L["Class"] })
+	config.args.style = ACH:Select(L["Style"], L["Select the display method of the portrait."], 3, { ['2D'] = L["2D"], ['3D'] = L["3D"], Class = L["CLASS"] })
 	config.args.paused = ACH:Toggle(L["Pause"], nil, 4, nil, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
 	config.args.overlay = ACH:Toggle(L["Overlay"], L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."], 5, nil, nil, nil, function(info) return (E.db.unitframe.units[groupName].orientation == 'MIDDLE') or E.db.unitframe.units[groupName].portrait[info[#info]] end, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
 	config.args.fullOverlay = ACH:Toggle(L["Full Overlay"], L["This option allows the overlay to span the whole health, including the background."], 6, nil, nil, nil, nil, nil, function() return not (E.db.unitframe.units[groupName].orientation == 'MIDDLE' or E.db.unitframe.units[groupName].portrait.overlay) end)
@@ -829,7 +829,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	elseif groupName == 'player' then
 		config.args.height.max = function() return E.db.unitframe.units.player.classbar.detachFromFrame and 300 or 30 end
 		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 5)
-		config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["NONE"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
+		config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
 		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 20, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, groupName ~= 'player')
 		config.args.detachGroup.inline = true
@@ -892,9 +892,9 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.args.raidWideSorting = ACH:Toggle(L["Raid-Wide Sorting"], L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."], 1, nil, nil, nil, nil, nil, nil, groupName == 'party')
 		config.args.sortingGroup.args.invertGroupingOrder = ACH:Toggle(L["Invert Grouping Order"], L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].raidWideSorting end)
 		config.args.sortingGroup.args.startFromCenter = ACH:Toggle(L["Start Near Center"], L["The initial group will start near the center and grow out."], 3, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].raidWideSorting end)
-		config.args.sortingGroup.args.groupBy = ACH:Select(L["Group By"], L["Set the order that the group will sort."], 4, { CLASS = L["CLASS"], ROLE = L["Role"], NAME = L["NAME"], GROUP = L["GROUP"], INDEX = L["Index"] })
+		config.args.sortingGroup.args.groupBy = ACH:Select(L["Group By"], L["Set the order that the group will sort."], 4, { CLASS = L["CLASS"], ROLE = L["ROLE"], NAME = L["Name"], GROUP = L["GROUP"], INDEX = L["Index"] })
 		config.args.sortingGroup.args.sortDir = ACH:Select(L["Sort Direction"], nil, 5, { ASC = L["Ascending"], DESC = L["Descending"] })
-		config.args.sortingGroup.args.sortMethod = ACH:Select(L["Sort Method"], nil, 6, { NAME = L["NAME"], INDEX = L["Index"] }, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy == 'INDEX' or E.db.unitframe.units[groupName].groupBy == 'NAME' end)
+		config.args.sortingGroup.args.sortMethod = ACH:Select(L["Sort Method"], nil, 6, { NAME = L["Name"], INDEX = L["Index"] }, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy == 'INDEX' or E.db.unitframe.units[groupName].groupBy == 'NAME' end)
 
 		config.args.sortingGroup.args.roleSetup = ACH:Group(L["Role Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'ROLE' end)
 		config.args.sortingGroup.args.roleSetup.inline = true
@@ -959,7 +959,7 @@ local filterList = {}
 local function modifierList()
 	wipe(filterList)
 
-	filterList.NONE = L["NONE"]
+	filterList.NONE = L["None"]
 	filterList.Blacklist = L["Blacklist"]
 	filterList.Whitelist = L["Whitelist"]
 
@@ -1011,7 +1011,7 @@ UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames = ACH:Group(L["Disable
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
-UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["PARTY"], raid = L["Raid"], boss = E.Retail and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
+UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = E.Retail and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
 
 UnitFrame.allColorsGroup = {
 			order = 10,
@@ -1025,7 +1025,7 @@ UnitFrame.allColorsGroup = {
 				healthGroup = {
 					order = 2,
 					type = 'group',
-					name = L["HEALTH"],
+					name = L["Health"],
 					get = function(info)
 						if info.type == 'color' then
 							local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]]
@@ -1528,7 +1528,7 @@ UnitFrame.allColorsGroup = {
 						},
 						['6'] = {
 							order = 6,
-							name = L["PARTY"],
+							name = L["Party"],
 							type = 'color',
 						},
 						['7'] = {
@@ -1989,7 +1989,7 @@ Player.pvpText = ACH:Group(L["PvP Text"], nil, nil, nil, function(info) return E
 Player.pvpText.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 Player.pvpText.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
 
-IndividualUnits.pet = ACH:Group(L["PET"], nil, 2, nil, function(info) return E.db.unitframe.units.pet[info[#info]] end, function(info, value) E.db.unitframe.units.pet[info[#info]] = value UF:CreateAndUpdateUF('pet') end)
+IndividualUnits.pet = ACH:Group(L["Pet"], nil, 2, nil, function(info) return E.db.unitframe.units.pet[info[#info]] end, function(info, value) E.db.unitframe.units.pet[info[#info]] = value UF:CreateAndUpdateUF('pet') end)
 local Pet = IndividualUnits.pet.args
 
 Pet.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -2209,7 +2209,7 @@ Arena.pvpTrinket.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, m
 Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
 --Party Frames
-GroupUnits.party = ACH:Group(L["PARTY"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
+GroupUnits.party = ACH:Group(L["Party"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
 local Party = GroupUnits.party.args
 
 Party.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -2352,7 +2352,7 @@ RaidPet.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid
 RaidPet.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 
-GroupUnits.tank = ACH:Group(L["TANK"], nil, nil, nil, function(info) return E.db.unitframe.units.tank[info[#info]] end, function(info, value) E.db.unitframe.units.tank[info[#info]] = value UF:CreateAndUpdateHeaderGroup('tank') end)
+GroupUnits.tank = ACH:Group(L["Tank"], nil, nil, nil, function(info) return E.db.unitframe.units.tank[info[#info]] end, function(info, value) E.db.unitframe.units.tank[info[#info]] = value UF:CreateAndUpdateHeaderGroup('tank') end)
 local Tank = GroupUnits.tank.args
 
 Tank.enable = ACH:Toggle(L["Enable"], nil, 1)
