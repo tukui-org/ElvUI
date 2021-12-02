@@ -196,12 +196,6 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[20594]	= Defaults(2), -- Stoneform
 	-- All Classes
 		[19753]	= Defaults(2), -- Divine Intervention
-	-- Druid
-	-- Hunter
-	-- Priest
-	-- Rogue
-	-- Shaman
-	-- Warlock
 	},
 }
 
@@ -380,7 +374,6 @@ G.unitframe.aurafilters.Whitelist = {
 }
 
 -- RAID DEBUFFS: This should be pretty self explainitory
--- Template: [123456] = Defaults(2)
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
