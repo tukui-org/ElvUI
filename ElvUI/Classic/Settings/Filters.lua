@@ -165,8 +165,6 @@ G.unitframe.aurafilters.CCDebuffs = {
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
-	--Druid
-	--Hunter
 	--Mage
 		[11958]	= Defaults(2), -- Ice Block A
 		[27619]	= Defaults(2), -- Ice Block B
@@ -178,11 +176,6 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[1022]	= Defaults(2), -- Blessing of Protection (Rank 1)
 		[5599]	= Defaults(2), -- Blessing of Protection (Rank 2)
 		[10278]	= Defaults(2), -- Blessing of Protection (Rank 3)
-	--Priest
-	--Rogue
-	--Shaman
-	--Warlock
-	--Warrior
 	--Consumables
 		[3169]	= Defaults(2), -- Limited Invulnerability Potion
 		[6615]	= Defaults(2), -- Free Action Potion
@@ -334,7 +327,7 @@ G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
 	--Seasonal
-	[362859] = Defaults(), -- Adventure Awaits "40% Increased XP"
+	[362859] = Defaults(), -- Adventure Awaits "40% Increased Quest XP"
 	--Druid
 	--Hunter
 	--Mage
@@ -522,25 +515,22 @@ G.unitframe.aurafilters.DungeonDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-	--Molten Core
-		--Magmadar
-		[19451]	= Defaults(), -- Frenzy
-		--Shazzrah
-		[19714]	= Defaults(), -- Deaden Magic
-		--Garr
-		[19516]	= Defaults(), -- Enrage
-		--Baron Geddon
-		[19695]	= Defaults(), -- Inferno
-		[20478]	= Defaults(), -- Armageddon
-		--Sulfuron Harbinger
-		[19779]	= Defaults(), -- Inspire
-		--Majordomo Executus
-		[20620]	= Defaults(), -- Aegis of Ragnaros
-		[21075]	= Defaults(), -- Damage Shield
-		[20619]	= Defaults(), -- Magic Reflection
-	--Zul'Gurub
-		--High Priest Venoxis
-		[23895]	= Defaults(), -- Renew
+	----------------------------------------------------------
+	---------------------- Molten Core -----------------------
+	----------------------------------------------------------
+	[19451] = Defaults(), -- Frenzy
+	[19714] = Defaults(), -- Deaden Magic
+	[19516] = Defaults(), -- Enrage
+	[19695] = Defaults(), -- Inferno
+	[20478] = Defaults(), -- Armageddon
+	[19779] = Defaults(), -- Inspire
+	[20620] = Defaults(), -- Aegis of Ragnaros
+	[21075] = Defaults(), -- Damage Shield
+	[20619] = Defaults(), -- Magic Reflection
+	----------------------------------------------------------
+	------------------------ Zul'Gurub -----------------------
+	----------------------------------------------------------
+	[23895] = Defaults(), -- Renew
 	},
 }
 

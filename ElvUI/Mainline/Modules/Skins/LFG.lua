@@ -3,10 +3,10 @@ local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
 local _G = _G
-local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
-local min, strlower = min, strlower
+local unpack, ipairs, pairs = unpack, ipairs, pairs
+local min, strlower, select = min, strlower, select
 
-local hooksecurefunc = hooksecurefunc
+local GetItemInfo = GetItemInfo
 local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
 local GetLFGProposalMember = GetLFGProposalMember
@@ -19,6 +19,7 @@ local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
 local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local hooksecurefunc = hooksecurefunc
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LBG.ShowOverlayGlow(self:GetParent().checkButton)
@@ -246,7 +247,9 @@ function S:LookingForGroupFrames()
 	end
 
 	hooksecurefunc('SetCheckButtonIsRadio', function(button)
-		S:HandleCheckBox(button)
+		if not button.isSkinned then
+			S:HandleCheckBox(button)
+		end
 	end)
 
 	--Fix issue with role buttons overlapping each other (Blizzard bug)
@@ -255,10 +258,12 @@ function S:LookingForGroupFrames()
 		_G.LFGListApplicationDialog.HealerButton.CheckButton,
 		_G.LFGListApplicationDialog.DamagerButton.CheckButton,
 	}
+
 	for _, checkButton in pairs(repositionCheckButtons) do
 		checkButton:ClearAllPoints()
 		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
+
 	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) --Copy from Blizzard, we just fix position
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
@@ -410,11 +415,14 @@ function S:LookingForGroupFrames()
 	_G.LFRQueueFrameCommentScrollFrame:SetTemplate()
 	_G.LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
 	_G.LFRBrowseFrameColumnHeader2:Width(38)
+	_G.LFDQueueFrameSpecificListScrollFrame:StripTextures()
 
 	_G.RaidBrowserFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
 	S:HandleButton(_G.LFRQueueFrameFindGroupButton)
 	S:HandleButton(_G.LFRQueueFrameAcceptCommentButton)
+	S:HandleScrollBar(_G.LFRQueueFrameCommentScrollFrameScrollBar)
+	S:HandleScrollBar(_G.LFDQueueFrameSpecificListScrollFrameScrollBar)
 
 	local RoleButtons2 = {
 		_G.LFRQueueFrameRoleButtonHealer,
@@ -422,13 +430,11 @@ function S:LookingForGroupFrames()
 		_G.LFRQueueFrameRoleButtonTank,
 	}
 
-	S:HandleScrollBar(_G.LFRQueueFrameCommentScrollFrameScrollBar)
-	S:HandleScrollBar(_G.LFDQueueFrameSpecificListScrollFrameScrollBar)
-	_G.LFDQueueFrameSpecificListScrollFrame:StripTextures()
 	_G.RaidBrowserFrame:HookScript('OnShow', function()
 		if not _G.LFRQueueFrameSpecificListScrollFrameScrollBar.skinned then
 			S:HandleScrollBar(_G.LFRQueueFrameSpecificListScrollFrameScrollBar)
 			_G.LFRBrowseFrame:StripTextures()
+
 			for _, roleButton in pairs(RoleButtons2) do
 				roleButton:SetNormalTexture('')
 				S:HandleCheckBox(roleButton.checkButton, nil, true)
@@ -715,12 +721,23 @@ function S:Blizzard_ChallengesUI()
 	-- Mythic+ KeyStoneFrame
 	local KeyStoneFrame = _G.ChallengesKeystoneFrame
 	KeyStoneFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(KeyStoneFrame.CloseButton)
-	S:HandleButton(KeyStoneFrame.StartButton)
-	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
-
 	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 26, 'OUTLINE')
 	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 20, 'OUTLINE')
+
+	S:HandleButton(KeyStoneFrame.StartButton)
+	S:HandleCloseButton(KeyStoneFrame.CloseButton)
+	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
+
+	KeyStoneFrame.KeystoneSlot:HookScript('OnEvent', function(frame, event, itemID)
+		if event == 'CHALLENGE_MODE_KEYSTONE_SLOTTED' and frame.Texture then
+			local texture = select(10, GetItemInfo(itemID))
+			if texture then
+				frame.Texture:SetTexture(texture)
+			end
+		end
+	end)
+
+	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
 
 	hooksecurefunc('ChallengesFrame_Update', function(frame)
 		for _, child in ipairs(frame.DungeonIcons) do
@@ -736,8 +753,7 @@ function S:Blizzard_ChallengesUI()
 	end)
 
 	hooksecurefunc(ChallengesFrame.WeeklyInfo, 'SetUp', function(info)
-		local affixes = C_MythicPlus_GetCurrentAffixes()
-		if affixes then
+		if C_MythicPlus_GetCurrentAffixes() then
 			HandleAffixIcons(info.Child)
 		end
 	end)
@@ -750,8 +766,6 @@ function S:Blizzard_ChallengesUI()
 		frame.KeystoneFrame:Hide()
 		frame.Divider:Hide()
 	end)
-
-	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
 
 	-- New Season Frame
 	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
