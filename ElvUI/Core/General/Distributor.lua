@@ -364,16 +364,13 @@ local function GetProfileData(profileType)
 		profileKey = 'global'
 	elseif profileType == 'filters' then
 		profileData.unitframe = {}
-		profileData.unitframe.aurafilters = {}
 		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
-		profileData.unitframe.aurawatch = {}
 		profileData.unitframe.aurawatch = E:CopyTable(profileData.unitframe.aurawatch, ElvDB.global.unitframe.aurawatch)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileKey = 'filters'
 	elseif profileType == 'styleFilters' then
 		profileKey = 'styleFilters'
 		profileData.nameplate = {}
-		profileData.nameplate.filters = {}
 		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
 		NP:StyleFilterClearDefaults(profileData.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
