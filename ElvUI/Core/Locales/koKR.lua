@@ -310,6 +310,7 @@ L["Total CPU:"] = "전체 CPU 사용량:"
 L["Total Memory:"] = "전체 메모리:"
 L["Total: "] = "합계:"
 L["Trigger"] = "묶음을 펼치고 각 주문에 지정하세요."
+L["UI Scale"] = true
 L["Unhittable:"] = "100% 방어행동까지"
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
 L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"

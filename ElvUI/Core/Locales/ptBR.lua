@@ -310,6 +310,7 @@ L["Total CPU:"] = "CPU Total:"
 L["Total Memory:"] = "Memória Total:"
 L["Total: "] = "Total: "
 L["Trigger"] = "Gatilho"
+L["UI Scale"] = true
 L["Unhittable:"] = "Inacertável"
 L["Vehicle Seat Frame"] = "Quadro de Assento de Veículo"
 L["Vendor / Delete Grays"] = "Vendedor / Deletar Cinzentos"

@@ -310,6 +310,7 @@ L["Total CPU:"] = "CPU占用"
 L["Total Memory:"] = "总内存:"
 L["Total: "] = "合计: "
 L["Trigger"] = "触发器"
+L["UI Scale"] = true
 L["Unhittable:"] = "未命中:"
 L["Vehicle Seat Frame"] = "载具座位框"
 L["Vendor / Delete Grays"] = "出售/删除灰色物品"
