@@ -724,6 +724,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355732]	= Defaults(6), -- Melt Soul
 		[356925]	= Defaults(6), -- Carnage
 		[358777]	= Defaults(6), -- Bindings of Misery
+	-- Shadowlands Season 3
+	-- Legion Timewalking Mythic+
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
@@ -1063,6 +1065,20 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
+	----------------------------------------------------------
+	-------------- Sepulcher of the First Ones ---------------
+	----------------------------------------------------------
+	-- Vigilant Guardian
+	-- Dausegne, The Fallen Oracle
+	-- Prototype Pantheon
+	-- Lithuvim, Principle Architect
+	-- Skolex, the Insatiable Ravener
+	-- Halondrus the Reclaimer
+	-- Anduin Wrynn
+	-- Rygelon
+	-- Lords of the Dread
+	-- Artificer Xy'mox
+	-- The Jailer
 	----------------------------------------------------------
 	----------------- Sanctum of Domination ------------------
 	----------------------------------------------------------
