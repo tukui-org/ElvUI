@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = true
 L["No bindings set."] = "Sem atalhos definidos"
 L["No gray items to delete."] = "Nenhum item cinzento para destruir."
 L["No Guild"] = "Sem Guilda"
+L["None"] = "Nenhum"
 L["Nudge"] = "Ajuste fino"
 L["O"] = "O"
 L["Objective Frame"] = "Quadro de objetivos"

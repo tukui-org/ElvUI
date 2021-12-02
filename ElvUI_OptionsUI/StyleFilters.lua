@@ -550,7 +550,7 @@ end
 StyleFitlers.triggers.args.instanceType = ACH:Group(L["Instance Type"], nil, 29, nil, function(info) local triggers = GetFilter(true) return triggers.instanceType[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.instanceType[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.triggers.args.instanceType.args.types = ACH:Group('', nil, 2)
 StyleFitlers.triggers.args.instanceType.args.types.inline = true
-StyleFitlers.triggers.args.instanceType.args.types.args.none = ACH:Toggle(L["NONE"], nil, 1)
+StyleFitlers.triggers.args.instanceType.args.types.args.none = ACH:Toggle(L["None"], nil, 1)
 StyleFitlers.triggers.args.instanceType.args.types.args.scenario = ACH:Toggle(L["SCENARIOS"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 StyleFitlers.triggers.args.instanceType.args.types.args.party = ACH:Toggle(L["PARTY"], nil, 5)
 StyleFitlers.triggers.args.instanceType.args.types.args.raid = ACH:Toggle(L["Raid"], nil, 5)

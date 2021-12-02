@@ -31,7 +31,7 @@ local threatValues = {
 	ICONRIGHT = L["Icon: RIGHT"],
 	ICONTOP = L["Icon: TOP"],
 	ICONBOTTOM = L["Icon: BOTTOM"],
-	NONE = L["NONE"],
+	NONE = L["None"],
 }
 
 local attachToValues = {
@@ -959,7 +959,7 @@ local filterList = {}
 local function modifierList()
 	wipe(filterList)
 
-	filterList.NONE = L["NONE"]
+	filterList.NONE = L["None"]
 	filterList.Blacklist = L["Blacklist"]
 	filterList.Whitelist = L["Whitelist"]
 

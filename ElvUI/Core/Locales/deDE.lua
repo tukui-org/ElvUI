@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = "Brauchst du Hilf
 L["No bindings set."] = "Keine Belegungen gesetzt."
 L["No gray items to delete."] = "Es sind keine grauen Gegenstände zum Löschen vorhanden."
 L["No Guild"] = "Keine Gilde"
+L["None"] = "Nichts"
 L["Nudge"] = "Stoß"
 L["O"] = "O"
 L["Objective Frame"] = "Questfenster"

@@ -84,7 +84,7 @@ local function PanelGroup_Create(panel)
 	return opts
 end
 
-local dts = { [''] = L["NONE"] }
+local dts = { [''] = L["None"] }
 
 function DT:SetupPanelOptions(name)
 	local options = PanelGroup_Create(name)

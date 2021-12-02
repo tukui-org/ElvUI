@@ -209,6 +209,7 @@ L["Need help? Join our Discord: https://discord.gg/xFWcfgE"] = true
 L["No bindings set."] = true
 L["No gray items to delete."] = true
 L["No Guild"] = true
+L["None"] = true
 L["Nudge"] = true
 L["O"] = true
 L["Objective Frame"] = true

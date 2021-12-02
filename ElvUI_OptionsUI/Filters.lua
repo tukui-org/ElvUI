@@ -181,7 +181,7 @@ local function SetSpellList()
 	end
 
 	if not next(spellList) then
-		spellList[''] = L["NONE"]
+		spellList[''] = L["None"]
 	end
 
 	return spellList
