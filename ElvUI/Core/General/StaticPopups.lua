@@ -397,7 +397,7 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 }
 
 E.PopupDialogs.ELVUI_CONFIG_FOUND = {
-	text = L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."],
+	text = L["You still have ElvUI_Config installed. ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."],
 	button1 = ACCEPT,
 	whileDead = 1,
 	hideOnEscape = false,
