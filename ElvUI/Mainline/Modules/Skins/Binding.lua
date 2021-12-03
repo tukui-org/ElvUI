@@ -74,10 +74,6 @@ function S:Blizzard_ClickBindingUI()
 	for _, v in next, { 'ResetButton', 'AddBindingButton', 'SaveButton' } do
 		S:HandleButton(frame[v])
 	end
-
-	for i = 1, frame.ScrollBox.buttons do
-		print(i)
-	end
 end
 
 S:AddCallbackForAddon('Blizzard_ClickBindingUI')
