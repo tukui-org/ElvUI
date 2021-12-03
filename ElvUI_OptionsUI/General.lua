@@ -43,7 +43,7 @@ General.args.general.args.monitor.args.ultrawide = ACH:Toggle(L["Ultrawide Suppo
 
 General.args.general.args.scaling = ACH:Group(L["UI Scale"], nil, 51)
 General.args.general.args.scaling.inline = true
-General.args.general.args.scaling.args.UIScale = ACH:Range(L["UI_SCALE"], nil, 1, { min = 0.1, max = 1.25, step = 0.000000000000001, softMin = 0.40, softMax = 1.15, bigStep = 0.01 }, nil, function() return E.global.general.UIScale end, function(_, value) E.global.general.UIScale = value if not IsMouseButtonDown() then E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end end)
+General.args.general.args.scaling.args.UIScale = ACH:Range(L["UI Scale"], nil, 1, { min = 0.1, max = 1.25, step = 0.000000000000001, softMin = 0.40, softMax = 1.15, bigStep = 0.01 }, nil, function() return E.global.general.UIScale end, function(_, value) E.global.general.UIScale = value if not IsMouseButtonDown() then E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end end)
 General.args.general.args.scaling.args.ScaleSmall = ACH:Execute(L["Small"], nil, 2, function() E.global.general.UIScale = .6 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.general.args.scaling.args.ScaleMedium = ACH:Execute(L["Medium"], nil, 3, function() E.global.general.UIScale = .7 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.general.args.scaling.args.ScaleLarge = ACH:Execute(L["Large"], nil, 4, function() E.global.general.UIScale = .8 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
@@ -56,7 +56,7 @@ General.args.general.args.scaling.args.ScaleAuto.customWidth = 100
 General.args.general.args.automation = ACH:Group(L["Automation"], nil, 52)
 General.args.general.args.automation.inline = true
 
-General.args.general.args.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["None"], SAY = L["SAY"], YELL = L["Yell"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value if value == 'NONE' then Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED') else Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED') end end)
+General.args.general.args.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["None"], SAY = L["Say"], YELL = L["Yell"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value if value == 'NONE' then Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED') else Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED') end end)
 General.args.general.args.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Automatically accept invites from guild/friends."], 2)
 General.args.general.args.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 General.args.general.args.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
@@ -106,7 +106,7 @@ General.args.media.args.fontGroup.args.blizzard.args.replaceBlizzFonts = ACH:Tog
 General.args.media.args.fontGroup.args.blizzard.args.unifiedBlizzFonts = ACH:Toggle(L["Unified Font Sizes"], L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."], 6, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
 General.args.media.args.fontGroup.args.blizzard.args.replaceNameplateFont = ACH:Toggle(L["Replace Nameplate Fonts"], nil, 7)
 General.args.media.args.fontGroup.args.blizzard.args.replaceNameplateFont.customWidth = 200
-General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup = ACH:Group(L["NamePlates"], nil, 10, nil, nil, nil, function() return not E.private.general.replaceNameplateFont end)
+General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup = ACH:Group(L["Nameplates"], nil, 10, nil, nil, nil, function() return not E.private.general.replaceNameplateFont end)
 General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateFont = ACH:SharedMediaFont(L["Normal Font"], nil, 7)
 General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateFontSize = ACH:Range(L["Normal Size"], nil, 8, C.Values.FontSize)
 General.args.media.args.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateFontOutline = ACH:FontFlags(L["Normal Outline"], nil, 9)
