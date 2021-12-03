@@ -9,7 +9,7 @@ function S:Blizzard_BindingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
 
 	local KB = _G.KeyBindingFrame
-	for _, v in next, { 'defaultsButton', 'unbindButton', 'okayButton', 'cancelButton', 'quickKeybindButton' } do
+	for _, v in next, { 'defaultsButton', 'unbindButton', 'okayButton', 'cancelButton', 'quickKeybindButton', 'clickCastingButton' } do
 		S:HandleButton(KB[v])
 	end
 
@@ -58,3 +58,26 @@ function S:Blizzard_BindingUI()
 end
 
 S:AddCallbackForAddon('Blizzard_BindingUI')
+
+function S:Blizzard_ClickBindingUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
+
+	local frame = _G.ClickBindingFrame
+	S:HandlePortraitFrame(frame)
+
+	frame.TutorialButton:Kill()
+
+	-- New ScrollBar ??
+	frame.ScrollBar.Background:Hide()
+	S:HandleScrollBar(frame.ScrollBar)
+
+	for _, v in next, { 'ResetButton', 'AddBindingButton', 'SaveButton' } do
+		S:HandleButton(frame[v])
+	end
+
+	for i = 1, frame.ScrollBox.buttons do
+		print(i)
+	end
+end
+
+S:AddCallbackForAddon('Blizzard_ClickBindingUI')
