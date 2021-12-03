@@ -1539,6 +1539,7 @@ L["This will join auras together which are normally separated. Example: Bolsteri
 L["This will override the global cooldown settings."] = "这将强制覆盖全局冷却设置"
 L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."] = "这将固定语音按钮到聊天标签栏上. 取消勾选将创建一个有锚点的语音按钮框体."
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "这会重置这个过滤器到初始状态. 你添加到这个过滤器的任何技能都会被移除."
+L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "仇恨显示模式"
 L["Threat Health"] = "仇恨血量"
 L["Threat Power"] = "仇恨能量"
