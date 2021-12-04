@@ -872,6 +872,28 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323687]	= Defaults(), -- Arcane Lightning
 		[323877]	= Defaults(), -- Echo Finger Laser X-treme
 		[334535]	= Defaults(), -- Beak Slice
+	----------------------------------------------------------
+	-------------- Sepulcher of the First Ones ---------------
+	----------------------------------------------------------
+	-- Vigilant Guardian
+	-- Dausegne, The Fallen Oracle
+		[361751] = Defaults(2), -- Disintegration Halo
+		[364289] = Defaults(2), -- Staggering Barrage
+		[361225] = Defaults(2), -- Encroaching Dominion
+		[361966] = Defaults(2), -- Infused Strikes
+	-- Prototype Pantheon
+	-- Lithuvim, Principle Architect
+	-- Skolex, the Insatiable Ravener
+		[364522] = Defaults(2), -- Devouring Blood
+		[359976] = Defaults(2), -- Riftmaw
+		[359981] = Defaults(2), -- Rend
+		[360098] = Defaults(3), -- Warp Sickness
+	-- Halondrus the Reclaimer
+	-- Anduin Wrynn
+	-- Rygelon
+	-- Lords of the Dread
+	-- Artificer Xy'mox
+	-- The Jailer
 	--------------------------------------------------------
 	---------------- Sanctum of Domination -----------------
 	--------------------------------------------------------
@@ -1070,9 +1092,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	-- Vigilant Guardian
 	-- Dausegne, The Fallen Oracle
+		[361651] = Defaults(), -- Siphoned Barrier
+		[362432] = Defaults(), -- Collapsed Barrier
+		[361513] = Defaults(), -- Obliteraion Arc
 	-- Prototype Pantheon
 	-- Lithuvim, Principle Architect
 	-- Skolex, the Insatiable Ravener
+		[360193] = Defaults(), -- Insatiable (stacking)
 	-- Halondrus the Reclaimer
 	-- Anduin Wrynn
 	-- Rygelon
