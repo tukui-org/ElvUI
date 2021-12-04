@@ -1,7 +1,6 @@
  local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local min = min
 local strjoin = strjoin
 local GetSpellBonusHealing = GetSpellBonusHealing
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
