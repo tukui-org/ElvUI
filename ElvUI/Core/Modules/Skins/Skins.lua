@@ -211,25 +211,25 @@ end
 function S:SetBackdropBorderColor(frame, script)
 	if frame.backdrop then frame = frame.backdrop end
 	if frame.SetBackdropBorderColor then
-		frame:SetBackdropBorderColor(unpack(script == 1 and E.media.rgbvaluecolor or E.media.bordercolor))
+		frame:SetBackdropBorderColor(unpack(script == 'OnEnter' and E.media.rgbvaluecolor or E.media.bordercolor))
 	end
 end
 
-function S:SetModifiedBackdrop() -- OnEnter
+function S:SetModifiedBackdrop()
 	if self:IsEnabled() then
-		S:SetBackdropBorderColor(self, 1)
+		S:SetBackdropBorderColor(self, 'OnEnter')
 	end
 end
 
-function S:SetOriginalBackdrop() -- OnLeave
+function S:SetOriginalBackdrop()
 	if self:IsEnabled() then
-		S:SetBackdropBorderColor(self, 2)
+		S:SetBackdropBorderColor(self, 'OnLeave')
 	end
 end
 
-function S:SetDisabledBackdrop() -- OnDisable
+function S:SetDisabledBackdrop()
 	if self:IsMouseOver() then
-		S:SetBackdropBorderColor(self, 3)
+		S:SetBackdropBorderColor(self, 'OnDisable')
 	end
 end
 
