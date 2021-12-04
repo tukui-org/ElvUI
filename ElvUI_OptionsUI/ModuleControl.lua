@@ -65,7 +65,7 @@ local function CreateBagsConfig()
 	config.args.cooldown.order = 2
 
 	config.args.ignoredItems = nil
-	config.args.colors.name = L["COLORS"]
+	config.args.colors.name = L["Colors"]
 	config.args.bagBar.name = L["Bag-Bar"]
 	config.args.split.name = L["Split"]
 	config.args.vendorGrays.name = L["Vendor Grays"]
@@ -117,7 +117,7 @@ local function CreateGeneralConfig()
 	MC:AddConfigOptions(P.general, config)
 
 	config.args.altPowerBar.name = L["Alternative Power"]
-	config.args.minimap.name = L["MINIMAP_LABEL"]
+	config.args.minimap.name = L["Minimap"]
 	config.args.totems.name = L["Class Totems"]
 	config.args.itemLevel.name = L["Item Level"]
 
@@ -126,7 +126,7 @@ end
 
 --NamePlates
 local function CreateNamePlatesConfig()
-	local config = MC:CreateModuleConfigGroup(L["NamePlates"], 'nameplates')
+	local config = MC:CreateModuleConfigGroup(L["Nameplates"], 'nameplates')
 
 	MC:AddConfigOptions(P.nameplates, config)
 
@@ -138,12 +138,12 @@ local function CreateNamePlatesConfig()
 	config.args.cutaway.name = L["Cutaway Bars"]
 	config.args.clickThrough.name = L["Click Through"]
 	config.args.plateSize.name = L["Clickable Size"]
-	config.args.colors.name = L["COLORS"]
+	config.args.colors.name = L["Colors"]
 	config.args.visibility.name = L["Visibility"]
 
 	-- Modify Tables
 	config.args.filters = nil
-	config.args.units = ACH:Group(L["NamePlates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
+	config.args.units = ACH:Group(L["Nameplates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
 	config.args.units.inline = true
 
 	MC:AddConfigOptions(P.nameplates.units, config.args.units)
@@ -176,7 +176,7 @@ end
 local function CreateUnitframesConfig()
 	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
 	config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
-	config.args.colors = ACH:Group(L["COLORS"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+	config.args.colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 	config.args.colors.inline = true
 
 	MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
@@ -202,15 +202,15 @@ local function CreateUnitframesConfig()
 	config.args.units.args.targettargettarget.name = L["TargetTargetTarget"]
 	config.args.units.args.focus.name = L["Focus"]
 	config.args.units.args.focustarget.name = L["FocusTarget"]
-	config.args.units.args.pet.name = L["PET"]
+	config.args.units.args.pet.name = L["Pet"]
 	config.args.units.args.pettarget.name = L["PetTarget"]
 	config.args.units.args.boss.name = L["Boss"]
 	config.args.units.args.arena.name = L["Arena"]
-	config.args.units.args.party.name = L["PARTY"]
+	config.args.units.args.party.name = L["Party"]
 	config.args.units.args.raid.name = L["Raid"]
 	config.args.units.args.raid40.name = L["Raid-40"]
 	config.args.units.args.raidpet.name = L["Raid Pet"]
-	config.args.units.args.tank.name = L["TANK"]
+	config.args.units.args.tank.name = L["Tank"]
 	config.args.units.args.assist.name = L["Assist"]
 
 	return config
@@ -251,6 +251,6 @@ E.Options.args.modulecontrol.args.modulereset.args.chat = ACH:Execute(L["Chat"],
 E.Options.args.modulecontrol.args.modulereset.args.cooldown = ACH:Execute(L["Cooldown Text"], nil, 8, nil, nil, L["Are you sure you want to reset Cooldown settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.databars = ACH:Execute(L["DataBars"], nil, 9, nil, nil, L["Are you sure you want to reset DataBars settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.datatexts = ACH:Execute(L["DataTexts"], nil, 10, nil, nil, L["Are you sure you want to reset DataTexts settings?"])
-E.Options.args.modulecontrol.args.modulereset.args.nameplates = ACH:Execute(L["NamePlates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.nameplates = ACH:Execute(L["Nameplates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, nil, L["Are you sure you want to reset Tooltip settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, nil, L["Are you sure you want to reset UnitFrames settings?"])

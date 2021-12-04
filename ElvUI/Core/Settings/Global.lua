@@ -76,6 +76,7 @@ G.datatexts = {
 		MovementSpeed = { Label = '', NoLabel = false, decimalLength = 1 },
 		QuickJoin = { Label = '', NoLabel = false },
 		Reputation = { textFormat = 'CUR' },
+		SpellPower = { school = 0 },
 		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Stamina = { Label = '', NoLabel = false },
 		Strength = { Label = '', NoLabel = false },

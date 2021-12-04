@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local next, unpack = next, unpack
+local ipairs, pairs, select = ipairs, pairs, select
 
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
@@ -192,16 +193,24 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:Hide()
 	select(3, _G.AchievementFrameStats:GetChildren()):Hide()
 	select(5, _G.AchievementFrameComparison:GetChildren()):Hide()
+	_G.AchievementFrameComparisonHeader:ClearAllPoints()
+	_G.AchievementFrameComparisonHeader:Point('BOTTOMRIGHT', _G.AchievementFrameComparison, 'TOPRIGHT', 35, -15)
 	_G.AchievementFrameComparisonHeaderBG:Hide()
 	_G.AchievementFrameComparisonHeaderPortrait:Hide()
 	_G.AchievementFrameComparisonHeaderPortraitBg:Hide()
+	_G.AchievementFrameComparisonHeaderName:Width(90)
 	_G.AchievementFrameComparisonBackground:Hide()
 	_G.AchievementFrameComparisonDark:SetAlpha(0)
 	_G.AchievementFrameComparisonSummaryPlayerBackground:Hide()
 	_G.AchievementFrameComparisonSummaryFriendBackground:Hide()
 
-	local summaries = {_G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend}
-	for _, frame in pairs(summaries) do
+	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
+	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
+	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
+	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:Point('CENTER')
+
+	for _, frame in next, { _G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend } do
+		frame.NineSlice:SetAlpha(0)
 		frame:SetBackdrop()
 	end
 
@@ -343,11 +352,6 @@ function S:Blizzard_AchievementUI()
 	end
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
-	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
-	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
-	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
-	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:Point('CENTER')
-	_G.AchievementFrameComparisonHeader:Point('BOTTOMRIGHT', _G.AchievementFrameComparison, 'TOPRIGHT', 45, -20)
 
 	for i=1, 12 do
 		local frame = _G['AchievementFrameSummaryCategoriesCategory'..i]

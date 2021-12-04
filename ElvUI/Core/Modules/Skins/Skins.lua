@@ -208,21 +208,28 @@ function S:HandlePortraitFrame(frame, createBackdrop)
 	end
 end
 
+function S:SetBackdropBorderColor(frame, script)
+	if frame.backdrop then frame = frame.backdrop end
+	if frame.SetBackdropBorderColor then
+		frame:SetBackdropBorderColor(unpack(script == 'OnEnter' and E.media.rgbvaluecolor or E.media.bordercolor))
+	end
+end
+
 function S:SetModifiedBackdrop()
 	if self:IsEnabled() then
-		if self.backdrop then self = self.backdrop end
-		if self.SetBackdropBorderColor then
-			self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-		end
+		S:SetBackdropBorderColor(self, 'OnEnter')
 	end
 end
 
 function S:SetOriginalBackdrop()
 	if self:IsEnabled() then
-		if self.backdrop then self = self.backdrop end
-		if self.SetBackdropBorderColor then
-			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
+		S:SetBackdropBorderColor(self, 'OnLeave')
+	end
+end
+
+function S:SetDisabledBackdrop()
+	if self:IsMouseOver() then
+		S:SetBackdropBorderColor(self, 'OnDisable')
 	end
 end
 
@@ -447,6 +454,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
 		button:HookScript('OnLeave', S.SetOriginalBackdrop)
+		button:HookScript('OnDisable', S.SetDisabledBackdrop)
 	end
 
 	button.isSkinned = true

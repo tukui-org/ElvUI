@@ -65,6 +65,7 @@ function S:Blizzard_GuildBankUI()
 		for x = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = column['Button'..x]
 			button:StripTextures()
+			button:StyleButton()
 			button:SetTemplate('Transparent')
 
 			button.icon:SetInside()
@@ -85,7 +86,9 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.searchIcon:Kill()
 	GuildItemSearchBox:SetTemplate()
 
-	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+	if not E:IsAddOnEnabled('ArkInventory') then
+		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_GuildBankUI')

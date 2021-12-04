@@ -240,7 +240,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 end
 
 --Keys that should not be exported
-local blacklistedKeys = {
+D.blacklistedKeys = {
 	profile = {
 		gridSize = true,
 		general = {
@@ -350,31 +350,28 @@ local function GetProfileData(profileType)
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
 		profileData = E:RemoveTableDuplicates(profileData, P, D.GeneratedKeys.profile)
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
+		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile)
 	elseif profileType == 'private' then
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateKey])
 		profileData = E:RemoveTableDuplicates(profileData, V, D.GeneratedKeys.private)
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
+		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.private)
 		profileKey = 'private'
 	elseif profileType == 'global' then
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
+		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.global)
 		profileKey = 'global'
 	elseif profileType == 'filters' then
 		profileData.unitframe = {}
-		profileData.unitframe.aurafilters = {}
-		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
-		profileData.unitframe.aurawatch = {}
-		profileData.unitframe.aurawatch = E:CopyTable(profileData.unitframe.aurawatch, ElvDB.global.unitframe.aurawatch)
+		profileData.unitframe.aurafilters = E:CopyTable({}, ElvDB.global.unitframe.aurafilters)
+		profileData.unitframe.aurawatch = E:CopyTable({}, ElvDB.global.unitframe.aurawatch)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileKey = 'filters'
 	elseif profileType == 'styleFilters' then
 		profileKey = 'styleFilters'
 		profileData.nameplate = {}
-		profileData.nameplate.filters = {}
-		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
+		profileData.nameplate.filters = E:CopyTable({}, ElvDB.global.nameplate.filters)
 		NP:StyleFilterClearDefaults(profileData.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 	end
@@ -495,7 +492,7 @@ end
 
 local function SetImportedProfile(profileType, profileKey, profileData, force)
 	if profileType == 'profile' then
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile) --Remove unwanted options from import
+		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile) --Remove unwanted options from import
 
 		if not ElvDB.profiles[profileKey] or force then
 			if force and E.data.keys.profile == profileKey then
@@ -514,12 +511,12 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 	elseif profileType == 'private' then
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		if privateKey then
-			profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
+			profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.private) --Remove unwanted options from import
 			ElvPrivateDB.profiles[privateKey] = profileData
 			E:StaticPopup_Show('IMPORT_RL')
 		end
 	elseif profileType == 'global' then
-		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global) --Remove unwanted options from import
+		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'filters' then

@@ -85,7 +85,7 @@ function B:SizeAndPositionBagBar()
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
 		if E.Retail then
-			button.ElvUIFilterIcon.FilterBackdrop:Size(bagBarSize / 2)
+			button.filterIcon.FilterBackdrop:Size(bagBarSize / 2)
 		end
 
 		button:Size(bagBarSize)
@@ -128,8 +128,8 @@ function B:SizeAndPositionBagBar()
 		for j = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
 			if GetBagSlotFlag(i - 1, j) then -- active
 				if E.Retail then
-					button.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[j])
-					button.ElvUIFilterIcon:SetShown(E.db.bags.showAssignedIcon)
+					button.filterIcon:SetTexture(B.BAG_FILTER_ICONS[j])
+					button.filterIcon:SetShown(E.db.bags.showAssignedIcon)
 				end
 
 				local r, g, b, a = unpack(B.AssignmentColors[j])
@@ -139,7 +139,7 @@ function B:SizeAndPositionBagBar()
 				break -- this loop
 			else
 				if E.Retail then
-					button.ElvUIFilterIcon:SetShown(false)
+					button.filterIcon:SetShown(false)
 				end
 
 				button.forcedBorderColors = nil

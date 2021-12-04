@@ -663,7 +663,7 @@ function DT:RegisterHyperDT()
 	end
 
 	tinsert(HyperList, {
-		order = 100, text = L["NONE"],
+		order = 100, text = L["None"],
 		checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
 		func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
 	})

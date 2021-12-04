@@ -1,30 +1,41 @@
  local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local _G = _G
 local min = min
 local strjoin = strjoin
 local GetSpellBonusDamage = GetSpellBonusDamage
-local GetSpellBonusHealing = GetSpellBonusHealing
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
-
+local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
 local displayString, lastPanel = ''
 
 local function OnEvent(self)
-	local minSpellPower = GetSpellBonusDamage(2)
-	local HealingPower = GetSpellBonusHealing()
+	local minSpellPower
 
-	for i = 3, 7 do
-		local spellPower = GetSpellBonusDamage(i);
-		minSpellPower = min(minSpellPower, spellPower);
-	end
+	if E.global.datatexts.settings.SpellPower.school == 0 then
+		minSpellPower = GetSpellBonusDamage(2)
 
-	if HealingPower > minSpellPower then
-		self.text:SetFormattedText(displayString, L["HP"], HealingPower)
+		for i = 3, MAX_SPELL_SCHOOLS do
+			minSpellPower = min(minSpellPower, GetSpellBonusDamage(i))
+		end
 	else
-		self.text:SetFormattedText(displayString, L["SP"], minSpellPower)
+		minSpellPower = GetSpellBonusDamage(E.global.datatexts.settings.SpellPower.school)
 	end
+
+	self.text:SetFormattedText(displayString, L["SP"], minSpellPower)
 
 	lastPanel = self
+end
+
+local function OnEnter()
+	DT.tooltip:ClearLines()
+
+	for i = 2, MAX_SPELL_SCHOOLS do
+		DT.tooltip:AddDoubleLine(_G['DAMAGE_SCHOOL'..i], GetSpellBonusDamage(i))
+		DT.tooltip:AddTexture([[Interface\PaperDollInfoFrame\SpellSchoolIcon]]..i)
+	end
+
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)
@@ -36,4 +47,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Spell/Heal Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell/Heal Power"])
+DT:RegisterDatatext('SpellPower', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, OnEnter, nil, L["Spell Power"])

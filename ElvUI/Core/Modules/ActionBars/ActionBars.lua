@@ -623,6 +623,7 @@ end
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName()
 	local macroText = _G[name..'Name']
+	local hotKey = _G[name..'HotKey']
 	local icon = _G[name..'Icon']
 	local shine = _G[name..'Shine']
 	local count = _G[name..'Count']
@@ -640,6 +641,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.ignoreNormal = ignoreNormal
 
 	icon:SetDrawLayer('ARTWORK', -1)
+	hotKey:SetDrawLayer('OVERLAY')
 
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end

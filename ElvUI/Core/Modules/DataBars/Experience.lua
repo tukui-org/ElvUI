@@ -29,7 +29,7 @@ local function hasDisabledXP()
 end
 
 local function isTrialMax()
-	return E.Retail and IsTrialAccount() and (E.myLevel ~= 20)
+	return E.Retail and IsTrialAccount() and (E.myLevel == 20)
 end
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)

@@ -84,7 +84,7 @@ local function PanelGroup_Create(panel)
 	return opts
 end
 
-local dts = { [''] = L["NONE"] }
+local dts = { [''] = L["None"] }
 
 function DT:SetupPanelOptions(name)
 	local options = PanelGroup_Create(name)
@@ -193,11 +193,13 @@ local function CreateDTOptions(name, data)
 			optionTable.args.textFormat = ACH:Select(L["Text Format"], nil, nil, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
 		elseif key == 'latency' then
 			optionTable.args.latency = ACH:Select(L["Latency"], nil, nil, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
+		elseif key == 'school' then
+			optionTable.args.school = ACH:Select(L["School"], nil, nil, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
 		end
 	end
 
 	if name == 'Combat' then
-		optionTable.args.TimeFull = ACH:Toggle('Full Time')
+		optionTable.args.TimeFull = ACH:Toggle(L["Full Time"])
 	elseif name == 'Currencies' then
 		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, 0, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
 		optionTable.args.displayedCurrency.sortByValue = true

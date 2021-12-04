@@ -15,7 +15,7 @@ local tconcat, tinsert, tremove = table.concat, tinsert, tremove
 
 C.Values = {
 	FontFlags = {
-		NONE = L["NONE"],
+		NONE = L["None"],
 		OUTLINE = 'Outline',
 		THICKOUTLINE = 'Thick',
 		MONOCHROME = '|cffaaaaaaMono|r',
@@ -37,7 +37,7 @@ C.Values = {
 	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
 	Anchors = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },
 	SmartAuraPositions = {
-		DISABLED = L["DISABLE"],
+		DISABLED = L["Disable"],
 		BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
 		DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
 		FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
@@ -128,7 +128,7 @@ local ACH = E.Libs.ACH
 
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
-	E:RefreshCustomTextsConfigs()
+	C:RefreshCustomTexts()
 	E.Libs.AceConfigRegistry:NotifyChange('ElvUI')
 end
 
@@ -509,7 +509,7 @@ E.Options.args.profiles.args.private.args.choose.confirm = function(info, value)
 end
 
 E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
-	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
+	return format(L["Copy settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
 end
 
 if GetAddOnEnableState(nil, 'ElvUI_Config') ~= 0 then

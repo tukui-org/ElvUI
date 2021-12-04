@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next = next
+local pairs = pairs
+local unpack = unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -146,18 +148,35 @@ function S:FriendsFrame()
 	button:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
-
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 1, -18)
 
 	FriendsFrameBattlenetFrame.BroadcastFrame:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:SetTemplate('Transparent')
-	FriendsFrameBattlenetFrame.BroadcastFrame.EditBox:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:ClearAllPoints()
 	FriendsFrameBattlenetFrame.BroadcastFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 3, -1)
-	S:HandleEditBox(FriendsFrameBattlenetFrame.BroadcastFrame.EditBox)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton)
+
+	local editBoxBorders = {
+		'BottomBorder',
+		'BottomLeftBorder',
+		'BottomRightBorder',
+		'LeftBorder',
+		'MiddleBorder',
+		'RightBorder',
+		'TopBorder',
+		'TopLeftBorder',
+		'TopRightBorder'
+	}
+
+	local broadcastEdit = FriendsFrameBattlenetFrame.BroadcastFrame.EditBox
+	for _, name in next, editBoxBorders do
+		local region = broadcastEdit[name]
+		if region then region:Hide() end
+	end
+
+	S:HandleEditBox(broadcastEdit)
 
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')

@@ -4,10 +4,9 @@ local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local ACH = E.Libs.ACH
 
-local _G = _G
 local tonumber = tonumber
-local GameTooltip = _G.GameTooltip
-local GameTooltipStatusBar = _G.GameTooltipStatusBar
+local GameTooltip = GameTooltip
+local GameTooltipStatusBar = GameTooltipStatusBar
 
 local modifierValues = { SHOW = L["Show"], HIDE = L["Hide"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
@@ -21,7 +20,7 @@ E.Options.args.tooltip.args.general.args.targetInfo = ACH:Toggle(L["Target Info"
 E.Options.args.tooltip.args.general.args.playerTitles = ACH:Toggle(L["Player Titles"], L["Display player titles."], 2)
 E.Options.args.tooltip.args.general.args.guildRanks = ACH:Toggle(L["Guild Ranks"], L["Display guild ranks if a unit is guilded."], 3)
 E.Options.args.tooltip.args.general.args.alwaysShowRealm = ACH:Toggle(L["Always Show Realm"], nil, 4)
-E.Options.args.tooltip.args.general.args.role = ACH:Toggle(L["ROLE"], L["Display the unit role in the tooltip."], 5).args
+E.Options.args.tooltip.args.general.args.role = ACH:Toggle(L["ROLE"], L["Display the unit role in the tooltip."], 5, nil, nil, nil, nil, nil, nil, not E.Retail)
 E.Options.args.tooltip.args.general.args.showMount = ACH:Toggle(L["Current Mount"], L["Display current mount the unit is riding."], 6)
 E.Options.args.tooltip.args.general.args.gender = ACH:Toggle(L["Gender"], L["Displays the gender of players."], 7)
 E.Options.args.tooltip.args.general.args.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users and their version of ElvUI."], 8)
@@ -29,7 +28,7 @@ E.Options.args.tooltip.args.general.args.itemQuality = ACH:Toggle(L["Item Qualit
 
 E.Options.args.tooltip.args.general.args.colorAlpha = ACH:Range(L["OPACITY"], nil, 20, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; Skins:StyleTooltips() end)
 E.Options.args.tooltip.args.general.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 21, modifierValues)
-E.Options.args.tooltip.args.general.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 22, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["NONE"] })
+E.Options.args.tooltip.args.general.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 22, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["None"] })
 E.Options.args.tooltip.args.general.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 23, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
 
 E.Options.args.tooltip.args.anchorGroup = ACH:Group(L["Cursor Anchor"], nil, 7)

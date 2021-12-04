@@ -52,6 +52,7 @@ function UF:Construct_PartyFrames()
 		self.Name = UF:Construct_NameText(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
+		self.Castbar = UF:Construct_Castbar(self)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
@@ -73,10 +74,6 @@ function UF:Construct_PartyFrames()
 			self.AlternativePower = UF:Construct_AltPowerBar(self)
 			self.ClassBar = 'AlternativePower'
 		end
-
-		self.Sparkle = CreateFrame('Frame', nil, self)
-		self.Sparkle:SetAllPoints(self.Health)
-		self.Castbar = UF:Construct_Castbar(self)
 
 		self.unitframeType = 'party'
 	end

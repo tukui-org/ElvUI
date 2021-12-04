@@ -100,6 +100,9 @@ mod.TriggerConditions = {
 		[4] = 'legacy25normal',
 		[5] = 'legacy10heroic',
 		[6] = 'legacy25heroic',
+		-- classic / tbc
+		[9] = 'legacy40normal',
+		[148] = 'legacy20normal',
 	}
 }
 
@@ -360,7 +363,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 				end
 
 				index = index + 1
-				name, _, count, _, _, expiration, _, _, _, spellID = UnitAura(frame.unit, index, filter)
+				name, _, count, _, _, expiration, source, _, _, spellID = UnitAura(frame.unit, index, filter)
 			end
 
 			local stale = matches + 1

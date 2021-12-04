@@ -97,6 +97,11 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 
 tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = ToggleHelpFrame })
 
+function M:SetScale(frame, scale)
+	frame:SetIgnoreParentScale(true)
+	frame:SetScale(scale * E.uiscale)
+end
+
 function M:HandleGarrisonButton()
 	local garrison = _G.GarrisonLandingPageMinimapButton
 	if not garrison then return end
@@ -104,7 +109,7 @@ function M:HandleGarrisonButton()
 	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
 	garrison:ClearAllPoints()
 	garrison:Point(position, Minimap, xOffset, yOffset)
-	garrison:SetScale(scale)
+	M:SetScale(garrison, scale)
 
 	local box = _G.GarrisonLandingPageTutorialBox
 	if box then
@@ -124,8 +129,7 @@ function M:HandleTrackingButton()
 
 		tracking:ClearAllPoints()
 		tracking:Point(position, Minimap, xOffset, yOffset)
-		tracking:SetScale(scale)
-		tracking:SetParent(Minimap)
+		M:SetScale(tracking, scale)
 
 		if _G.MiniMapTrackingBorder then
 			_G.MiniMapTrackingBorder:Hide()
@@ -290,17 +294,19 @@ function M:GetQueueStatusButton()
 end
 
 function M:UpdateSettings()
-	if not E.private.general.minimap.enable then return end
+	if not M.Initialized then return end
 
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
 	local MinimapPanel, MMHolder = _G.MinimapPanel, _G.MMHolder
 	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
+	M:SetScale(MinimapPanel, 1)
 
 	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
+	Minimap:SetScale(E.db.general.minimap.scale)
 
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
@@ -325,7 +331,7 @@ function M:UpdateSettings()
 			local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
 			GameTimeFrame:ClearAllPoints()
 			GameTimeFrame:Point(position, Minimap, xOffset, yOffset)
-			GameTimeFrame:SetScale(scale)
+			M:SetScale(GameTimeFrame, scale)
 			GameTimeFrame:Show()
 		end
 	end
@@ -335,7 +341,7 @@ function M:UpdateSettings()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 		MiniMapMailFrame:ClearAllPoints()
 		MiniMapMailFrame:Point(position, Minimap, xOffset, yOffset)
-		MiniMapMailFrame:SetScale(scale)
+		M:SetScale(MiniMapMailFrame, scale)
 	end
 
 	local MiniMapBattlefieldFrame = _G.MiniMapBattlefieldFrame
@@ -343,7 +349,7 @@ function M:UpdateSettings()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:Point(position, Minimap, xOffset, yOffset)
-		MiniMapBattlefieldFrame:SetScale(scale)
+		M:SetScale(MiniMapBattlefieldFrame, scale)
 
 		if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
 		if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
@@ -355,7 +361,7 @@ function M:UpdateSettings()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
 		queueStatusButton:ClearAllPoints()
 		queueStatusButton:Point(position, Minimap, xOffset, yOffset)
-		queueStatusButton:SetScale(scale)
+		M:SetScale(queueStatusButton, scale)
 	end
 
 	local queueStatusDisplay = M.QueueStatusDisplay
@@ -377,10 +383,10 @@ function M:UpdateSettings()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		MiniMapInstanceDifficulty:ClearAllPoints()
 		MiniMapInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
-		MiniMapInstanceDifficulty:SetScale(scale)
+		M:SetScale(MiniMapInstanceDifficulty, scale)
 		GuildInstanceDifficulty:ClearAllPoints()
 		GuildInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
-		GuildInstanceDifficulty:SetScale(scale)
+		M:SetScale(GuildInstanceDifficulty, scale)
 	end
 
 	local MiniMapChallengeMode = _G.MiniMapChallengeMode
@@ -388,7 +394,7 @@ function M:UpdateSettings()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('challengeMode')
 		MiniMapChallengeMode:ClearAllPoints()
 		MiniMapChallengeMode:Point(position, Minimap, xOffset, yOffset)
-		MiniMapChallengeMode:SetScale(scale)
+		M:SetScale(MiniMapChallengeMode, scale)
 	end
 end
 
@@ -508,12 +514,14 @@ function M:Initialize()
 	if Minimap.backdrop then -- level to hybrid maps fixed values
 		Minimap.backdrop:SetFrameLevel(99)
 		Minimap.backdrop:SetFrameStrata('BACKGROUND')
+		M:SetScale(Minimap.backdrop, 1)
 	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
+	M:SetScale(Minimap.location, 1)
 
 	local frames = {
 		_G.MinimapBorder,

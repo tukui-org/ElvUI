@@ -175,9 +175,9 @@ do -- Auto Repair Functions
 end
 
 function M:MERCHANT_CLOSED()
-	self:UnregisterEvent('UI_ERROR_MESSAGE')
-	self:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
-	self:UnregisterEvent('MERCHANT_CLOSED')
+	M:UnregisterEvent('UI_ERROR_MESSAGE')
+	M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
+	M:UnregisterEvent('MERCHANT_CLOSED')
 end
 
 function M:MERCHANT_SHOW()
@@ -186,10 +186,10 @@ function M:MERCHANT_SHOW()
 	if E.db.general.autoRepair == 'NONE' or IsShiftKeyDown() or not CanMerchantRepair() then return end
 
 	--Prepare to catch 'not enough money' messages
-	self:RegisterEvent('UI_ERROR_MESSAGE')
+	M:RegisterEvent('UI_ERROR_MESSAGE')
 
 	--Use this to unregister events afterwards
-	self:RegisterEvent('MERCHANT_CLOSED')
+	M:RegisterEvent('MERCHANT_CLOSED')
 
 	M:AttemptAutoRepair()
 end
@@ -254,7 +254,7 @@ function M:ForceCVars()
 end
 
 function M:PLAYER_ENTERING_WORLD()
-	self:ForceCVars()
+	M:ForceCVars()
 end
 
 function M:RESURRECT_REQUEST()
@@ -316,25 +316,25 @@ function M:BossBanner_ConfigureLootFrame(lootFrame)
 end
 
 function M:Initialize()
-	self.Initialized = true
-	self:LoadRaidMarker()
-	self:LoadLootRoll()
-	self:LoadChatBubbles()
-	self:LoadLoot()
-	self:ToggleItemLevelInfo(true)
-	self:RegisterEvent('MERCHANT_SHOW')
-	self:RegisterEvent('RESURRECT_REQUEST')
-	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
-	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
-	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
-	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
-	self:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
-	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
-	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
-	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
-	self:RegisterEvent('COMBAT_TEXT_UPDATE')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('QUEST_COMPLETE')
+	M.Initialized = true
+	M:LoadRaidMarker()
+	M:LoadLootRoll()
+	M:LoadChatBubbles()
+	M:LoadLoot()
+	M:ToggleItemLevelInfo(true)
+	M:RegisterEvent('MERCHANT_SHOW')
+	M:RegisterEvent('RESURRECT_REQUEST')
+	M:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
+	M:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
+	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
+	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
+	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
+	M:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
+	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
+	M:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
+	M:RegisterEvent('COMBAT_TEXT_UPDATE')
+	M:RegisterEvent('PLAYER_ENTERING_WORLD')
+	M:RegisterEvent('QUEST_COMPLETE')
 
 	do	-- questRewardMostValueIcon
 		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.UIParent)
@@ -357,13 +357,13 @@ function M:Initialize()
 	end
 
 	if E.db.general.interruptAnnounce ~= 'NONE' then
-		self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+		M:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 
 	if IsAddOnLoaded('Blizzard_InspectUI') then
 		M:SetupInspectPageInfo()
 	else
-		self:RegisterEvent('ADDON_LOADED')
+		M:RegisterEvent('ADDON_LOADED')
 	end
 
 	if E.Retail then

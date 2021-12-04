@@ -181,7 +181,7 @@ local function SetSpellList()
 	end
 
 	if not next(spellList) then
-		spellList[''] = L["NONE"]
+		spellList[''] = L["None"]
 	end
 
 	return spellList
@@ -349,7 +349,7 @@ end
 E.Options.args.filters = ACH:Group(L["FILTERS"], nil, 3, 'tab')
 local Filters = E.Options.args.filters.args
 
-Filters.mainOptions = ACH:Group('Main Options', nil, 1)
+Filters.mainOptions = ACH:Group(L["Main Options"], nil, 1)
 Filters.mainOptions.args.createFilter = ACH:Input(L["Create Filter"], L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."], 1, nil, nil, nil, function(_, value) value = gsub(value, ',', '') E.global.unitframe.aurafilters[value] = { type = 'whitelist', spells = {} } selectedFilter = value end, nil, nil, validateCreateFilter)
 Filters.mainOptions.args.selectFilter = ACH:Select(L["Select Filter"], nil, 2, SetFilterList, nil, nil, getSelectedFilter, resetSelectedFilter)
 Filters.mainOptions.args.deleteFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, DeleteFilterList, confirmResetFilter, nil, nil, function(_, value) E.global.unitframe.aurafilters[value] = nil resetSelectedFilter() removePriority(value) end, DeleteFilterListDisable)
@@ -370,7 +370,7 @@ Filters.mainOptions.args.filterGroup.args.filterType = ACH:Select(L["Filter Type
 Filters.mainOptions.args.filterGroup.args.removeSpell = ACH:Select(L["Remove Spell"], nil, 4, SetSpellList, function(_, value) return value ~= '' and format(L["Remove Spell - %s"], GetSpellNameRank(value)) end, nil, nil, AddOrRemoveSpellID)
 Filters.mainOptions.args.filterGroup.args.removeSpell.customWidth = 350
 
-Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], nil, 5, nil, nil, nil, AddOrRemoveSpellID)
+Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], L["Add a spell to the filter."], 5, nil, nil, nil, AddOrRemoveSpellID)
 Filters.mainOptions.args.filterGroup.args.addSpell.customWidth = 350
 
 Filters.mainOptions.args.auraIndicator = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -1, nil, auraIndicator, auraIndicator, nil, function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end)
@@ -437,7 +437,7 @@ for i, text in ipairs(FilterHelp) do
 	Filters.help.args['help'..i] = ACH:Description(text:gsub('*', COLOR1):gsub('%^', COLOR2), i, 'medium')
 end
 
-function E:SetToFilterConfig(filter)
+function C:SetToFilterConfig(filter)
 	resetSelectedFilter(_, filter)
 	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'filters')
 end

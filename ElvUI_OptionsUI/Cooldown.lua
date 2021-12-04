@@ -66,7 +66,7 @@ local function group(order, db, label)
 		mainArgs.reverse = nil
 		mainArgs.colorGroup.args.override = nil
 		mainArgs.colorGroup.disabled = nil
-		mainArgs.colorGroup.name = L["COLORS"]
+		mainArgs.colorGroup.name = L["Colors"]
 
 		mainArgs.roundTime = ACH:Toggle(L["Round Timers"], nil, 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
 
@@ -88,5 +88,5 @@ group(5,  'global',     L["Global"])
 group(6,  'auras',      L["BUFFOPTIONS_LABEL"])
 group(7,  'actionbar',  L["ActionBars"])
 group(8,  'bags',       L["Bags"])
-group(9,  'nameplates', L["NamePlates"])
+group(9,  'nameplates', L["Nameplates"])
 group(10, 'unitframe',  L["UnitFrames"])

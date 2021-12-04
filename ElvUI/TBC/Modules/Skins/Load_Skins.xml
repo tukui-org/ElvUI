@@ -20,7 +20,7 @@
 	<Script file='EventTrace.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Gossip.lua'/>
-	<Script file='Guildbank.lua'/>
+	<Script file='GuildBank.lua'/>
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
 	<Script file='Inspect.lua'/>

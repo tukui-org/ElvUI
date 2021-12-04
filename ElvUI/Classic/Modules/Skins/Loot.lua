@@ -33,13 +33,15 @@ local function UpdateLoots()
 			frame.Icon:SetParent(frame.backdrop)
 
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
-			local _, _, itemRarity = GetItemInfo(itemLink)
+			if itemLink then
+				local _, _, itemRarity = GetItemInfo(itemLink)
 
-			if (itemRarity) then
-				local color = ITEM_QUALITY_COLORS[itemRarity]
+				if (itemRarity) then
+					local color = ITEM_QUALITY_COLORS[itemRarity]
 
-				if (color) then
-					frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					if (color) then
+						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					end
 				end
 			end
 
