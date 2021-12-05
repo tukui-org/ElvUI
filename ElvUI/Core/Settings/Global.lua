@@ -109,31 +109,7 @@ G.datatexts = {
 	},
 }
 
-G.nameplate = {
-	widgetMap = {
-		[149805] = 1940, -- Farseer Ori
-		[149804] = 1613, -- Hunter Akana
-		[149803] = 1966, -- Bladesman Inowari
-		[149904] = 1621, -- Neri Sharpfin
-		[149902] = 1622, -- Poen Gillbrack
-		[149906] = 1920, -- Vim Brineheart
-
-		[154304] = 1940, -- Farseer Ori
-		[150202] = 1613, -- Hunter Akana
-		[154297] = 1966, -- Bladesman Inowari
-		[151300] = 1621, -- Neri Sharpfin
-		[151310] = 1622, -- Poen Gillbrack
-		[151309] = 1920, -- Vim Brineheart
-
-		[163541] = 2342, -- Voidtouched Egg
-		[163592] = 2342, -- Yu'gaz
-		[163593] = 2342, -- Bitey McStabface
-		[163595] = 2342, -- Reginald
-		[163596] = 2342, -- Picco
-		[163648] = 2342, -- Bitey McStabface
-		[163651] = 2342, -- Yu'gaz
-	}
-}
+G.nameplates = {}
 
 G.unitframe = {
 	aurafilters = {},
