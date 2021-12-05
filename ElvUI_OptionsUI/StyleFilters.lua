@@ -29,8 +29,8 @@ sort(sortedClasses)
 
 C.SelectedNameplateStyleFilter = nil
 
-E.Options.args.nameplate.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
-local StyleFitlers = E.Options.args.nameplate.args.filters.args
+E.Options.args.nameplates.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
+local StyleFitlers = E.Options.args.nameplates.args.filters.args
 
 local function GetFilter(collect, profile)
 	local setting = (profile and E.db.nameplates.filters[C.SelectedNameplateStyleFilter]) or E.global.nameplate.filters[C.SelectedNameplateStyleFilter]
