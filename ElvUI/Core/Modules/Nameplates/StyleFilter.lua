@@ -1531,9 +1531,9 @@ end
 
 function mod:StyleFilterClearDefaults(tbl)
 	for filterName, filterTable in pairs(tbl) do
-		if G.nameplates.filters[filterName] then
+		if G.nameplate.filters[filterName] then
 			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults)
-			E:CopyTable(defaultTable, G.nameplates.filters[filterName])
+			E:CopyTable(defaultTable, G.nameplate.filters[filterName])
 			E:RemoveDefaults(filterTable, defaultTable)
 		else
 			E:RemoveDefaults(filterTable, E.StyleFilterDefaults)

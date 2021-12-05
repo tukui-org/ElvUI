@@ -5,7 +5,7 @@
 ]]
 local E, L, V, P, G = unpack(ElvUI)
 
-G.nameplates.filters = {
+G.nameplate.filters = {
 	ElvUI_Boss = {
 		triggers = {
 			level = true,
@@ -44,7 +44,7 @@ G.nameplates.filters = {
 }
 
 if E.Retail then
-	G.nameplates.filters.ElvUI_Explosives = {
+	G.nameplate.filters.ElvUI_Explosives = {
 		triggers = {
 			priority = 2,
 			nameplateType = {
