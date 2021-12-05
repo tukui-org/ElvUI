@@ -1246,7 +1246,7 @@ function mod:StyleFilterConfigure()
 	wipe(list)
 
 	if mod.db.filters then
-		for filterName, filter in pairs(E.global.nameplate.filters) do
+		for filterName, filter in pairs(E.global.nameplates.filters) do
 			local t = filter.triggers
 			if t and mod.db.filters[filterName] and mod.db.filters[filterName].triggers and mod.db.filters[filterName].triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
@@ -1397,7 +1397,7 @@ function mod:StyleFilterUpdate(frame, event)
 	mod:StyleFilterClear(frame)
 
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
-		local filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
+		local filter = E.global.nameplates.filters[mod.StyleFilterTriggerList[filterNum][1]]
 		if filter then
 			mod:StyleFilterConditionCheck(frame, filter, filter.triggers)
 		end
@@ -1526,7 +1526,7 @@ function mod:StyleFilterRemoveCustomCheck(name)
 end
 
 function mod:PLAYER_LOGOUT()
-	mod:StyleFilterClearDefaults(E.global.nameplate.filters)
+	mod:StyleFilterClearDefaults(E.global.nameplates.filters)
 end
 
 function mod:StyleFilterClearDefaults(tbl)
@@ -1546,7 +1546,7 @@ function mod:StyleFilterCopyDefaults(tbl)
 end
 
 function mod:StyleFilterInitialize()
-	for _, filterTable in pairs(E.global.nameplate.filters) do
+	for _, filterTable in pairs(E.global.nameplates.filters) do
 		mod:StyleFilterCopyDefaults(filterTable)
 	end
 end
