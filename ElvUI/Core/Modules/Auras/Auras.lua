@@ -132,10 +132,10 @@ function A:CreateIcon(button)
 	button.statusBar:CreateBackdrop()
 
 	button:RegisterForClicks('RightButtonUp')
-	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
-	button:SetScript('OnUpdate', A.ButtonOnUpdate)
-	button:SetScript('OnEnter', A.ButtonOnEnter)
-	button:SetScript('OnLeave', A.ButtonOnLeave)
+	button:SetScript('OnAttributeChanged', A.Button_OnAttributeChanged)
+	button:SetScript('OnUpdate', A.Button_OnUpdate)
+	button:SetScript('OnEnter', A.Button_OnEnter)
+	button:SetScript('OnLeave', A.Button_OnLeave)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
@@ -306,16 +306,16 @@ function A:SetTooltip(button)
 	end
 end
 
-function A:ButtonOnLeave()
+function A:Button_OnLeave()
 	GameTooltip_Hide()
 end
 
-function A:ButtonOnEnter()
+function A:Button_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
 	A:SetTooltip(self)
 end
 
-function A:ButtonOnUpdate(elapsed)
+function A:Button_OnUpdate(elapsed)
 	if self.timeLeft then
 		E.Cooldown_OnUpdate(self, elapsed)
 	end
@@ -331,7 +331,7 @@ function A:ButtonOnUpdate(elapsed)
 	end
 end
 
-function A:OnAttributeChanged(attribute, value)
+function A:Button_OnAttributeChanged(attribute, value)
 	if attribute == 'index' then
 		A:UpdateAura(self, value)
 	elseif attribute == 'target-slot' then
