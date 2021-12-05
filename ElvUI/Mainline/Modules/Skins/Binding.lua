@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local next, select = next, select
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_BindingUI()
@@ -59,21 +59,60 @@ end
 
 S:AddCallbackForAddon('Blizzard_BindingUI')
 
+local function updateNewGlow(self)
+	if self.NewOutline:IsShown() then
+		self.backdrop:SetBackdropBorderColor(0, .8, 0)
+	else
+		self.backdrop:SetBackdropBorderColor(0, 0, 0)
+	end
+end
+
+local function HandleScrollChild(self)
+	for i = 1, self.ScrollTarget:GetNumChildren() do
+		local child = select(i, self.ScrollTarget:GetChildren())
+		local icon = child and child.Icon
+		if icon and not icon.IsSkinned then
+			S:HandleIcon(icon)
+			child.Background:Hide()
+			child:CreateBackdrop()
+
+			S:HandleButton(child.DeleteButton)
+			child.DeleteButton:SetSize(20, 20)
+			child.FrameHighlight:SetInside(child.bg)
+			child.FrameHighlight:SetColorTexture(1, 1, 1, .20)
+
+			child.NewOutline:SetTexture('')
+			child.BindingText:FontTemplate()
+			hooksecurefunc(child, 'Init', updateNewGlow)
+
+			icon.IsSkinned = true
+		end
+	end
+end
+
 function S:Blizzard_ClickBindingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
 
 	local frame = _G.ClickBindingFrame
 	S:HandlePortraitFrame(frame)
 
-	frame.TutorialButton:Kill()
-
-	-- New ScrollBar ??
-	frame.ScrollBar.Background:Hide()
-	S:HandleScrollBar(frame.ScrollBar)
+	frame.TutorialButton.Ring:Hide()
+	frame.TutorialButton:SetPoint('TOPLEFT', frame, 'TOPLEFT', -12, 12)
 
 	for _, v in next, { 'ResetButton', 'AddBindingButton', 'SaveButton' } do
 		S:HandleButton(frame[v])
 	end
+
+	S:HandleTrimScrollBar(frame.ScrollBar)
+	frame.ScrollBoxBackground:Hide()
+	hooksecurefunc(frame.ScrollBox, 'Update', HandleScrollChild)
+
+	-- Tutorial Frame ugly af WIP
+	local tutorial = frame.TutorialFrame
+	tutorial.NineSlice:StripTextures()
+	tutorial.TitleBg:Hide()
+	tutorial:SetTemplate('Transparent')
+	S:HandleCloseButton(tutorial.CloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_ClickBindingUI')
