@@ -1,4 +1,7 @@
-### Version 12.58 [ ETA: 🍨 ]
+### Version 12.59 [ ETA: 🍨 ]
+
+___
+### Version 12.58 [ December 4th 2021 ]
 
 ActionBars: Fixed layering issue (Keybinds on Pet Bar)  
 Bags: Added an option to hide Gold  

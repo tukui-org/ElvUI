@@ -117,7 +117,7 @@ local function CreateGeneralConfig()
 	MC:AddConfigOptions(P.general, config)
 
 	config.args.altPowerBar.name = L["Alternative Power"]
-	config.args.minimap.name = L["MINIMAP_LABEL"]
+	config.args.minimap.name = L["Minimap"]
 	config.args.totems.name = L["Class Totems"]
 	config.args.itemLevel.name = L["Item Level"]
 
@@ -126,7 +126,7 @@ end
 
 --NamePlates
 local function CreateNamePlatesConfig()
-	local config = MC:CreateModuleConfigGroup(L["NamePlates"], 'nameplates')
+	local config = MC:CreateModuleConfigGroup(L["Nameplates"], 'nameplates')
 
 	MC:AddConfigOptions(P.nameplates, config)
 
@@ -143,7 +143,7 @@ local function CreateNamePlatesConfig()
 
 	-- Modify Tables
 	config.args.filters = nil
-	config.args.units = ACH:Group(L["NamePlates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
+	config.args.units = ACH:Group(L["Nameplates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
 	config.args.units.inline = true
 
 	MC:AddConfigOptions(P.nameplates.units, config.args.units)
@@ -251,6 +251,6 @@ E.Options.args.modulecontrol.args.modulereset.args.chat = ACH:Execute(L["Chat"],
 E.Options.args.modulecontrol.args.modulereset.args.cooldown = ACH:Execute(L["Cooldown Text"], nil, 8, nil, nil, L["Are you sure you want to reset Cooldown settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.databars = ACH:Execute(L["DataBars"], nil, 9, nil, nil, L["Are you sure you want to reset DataBars settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.datatexts = ACH:Execute(L["DataTexts"], nil, 10, nil, nil, L["Are you sure you want to reset DataTexts settings?"])
-E.Options.args.modulecontrol.args.modulereset.args.nameplates = ACH:Execute(L["NamePlates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.nameplates = ACH:Execute(L["Nameplates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, nil, L["Are you sure you want to reset Tooltip settings?"])
 E.Options.args.modulecontrol.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, nil, L["Are you sure you want to reset UnitFrames settings?"])

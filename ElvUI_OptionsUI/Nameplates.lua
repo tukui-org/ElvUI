@@ -359,7 +359,7 @@ local function GetUnitSettings(unit, name)
 	return group
 end
 
-E.Options.args.nameplate = ACH:Group(L["NamePlates"], nil, 2, 'tab', function(info) return E.db.nameplates[info[#info]] end, function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll() end)
+E.Options.args.nameplate = ACH:Group(L["Nameplates"], nil, 2, 'tab', function(info) return E.db.nameplates[info[#info]] end, function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll() end)
 E.Options.args.nameplate.args.intro = ACH:Description(L["NAMEPLATE_DESC"], 0)
 E.Options.args.nameplate.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.private.nameplates[info[#info]] end, function(info, value) E.private.nameplates[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 E.Options.args.nameplate.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 2)

@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local next, unpack = next, unpack
+local ipairs, pairs, select = ipairs, pairs, select
 
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo

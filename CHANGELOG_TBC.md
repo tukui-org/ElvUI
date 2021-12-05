@@ -1,4 +1,7 @@
-### Version 2.31 [ ETA: 🍨 ]
+### Version 2.32 [ ETA: 🍨 ]
+
+___
+### Version 2.31 [ December 4th 2021 ]
 
 ActionBars: Fixed layering issue (Keybinds on Pet Bar)  
 Bags: Added an option to hide Gold  
@@ -8,7 +11,7 @@ DataTexts: Fixed Bags DataText
 Minimap: Added option to scale the Minimap  
 Misc: Reworked LootRoll and added options  
 NamePlates: Updated StyleFilters config  
-Skins: Button Hover Glow in the Guild Bank fixed  
+Skins: Fixed button hover glow in GuildBank  
 UnitFrames: Added reverse fill option for Aura Bars  
 UnitFrames: Updated spark for EnergyManaRegen ticks  
 
