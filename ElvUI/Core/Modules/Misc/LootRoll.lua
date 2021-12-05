@@ -357,9 +357,6 @@ function M:UpdateLootRollFrames()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 
 			frame.pass:Point('TOPRIGHT', frame, 4, 0)
-			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', 1, 0) end
-			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', 1, 0)
-			frame.need:Point('RIGHT', frame.greed, 'LEFT', 1, 0)
 		else
 			frame.status:ClearAllPoints()
 			frame.status:SetAllPoints()
@@ -373,10 +370,11 @@ function M:UpdateLootRollFrames()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 
 			frame.pass:Point('RIGHT', frame.status, 'RIGHT', -4, 0)
-			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', 1, 0) end
-			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', 1, 0)
-			frame.need:Point('RIGHT', frame.greed, 'LEFT', 1, 0)
 		end
+
+		if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', 5, 0) end
+		frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', 5, 0)
+		frame.need:Point('RIGHT', frame.greed, 'LEFT', 5, 0)
 	end
 end
 

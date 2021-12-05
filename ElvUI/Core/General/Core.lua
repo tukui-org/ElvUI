@@ -331,11 +331,11 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.bags.countFont = font
 	E.db.bags.countFontSize = fontSize
 	E.db.nameplates.font = font
-	--E.db.nameplate.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-	--E.db.nameplate.buffs.font = font
-	--E.db.nameplate.buffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-	--E.db.nameplate.debuffs.font = font
-	--E.db.nameplate.debuffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplates.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplates.buffs.font = font
+	--E.db.nameplates.buffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplates.debuffs.font = font
+	--E.db.nameplates.debuffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 	E.db.actionbar.font = font
 	--E.db.actionbar.fontSize = fontSize	--This may not look good if a big font size is chosen
 	E.db.auras.buffs.countFont = font
@@ -1068,7 +1068,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
-			E.global.nameplate.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
+			E.global.nameplates.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
 			E.db.nameplates.units.TARGET.nonTargetTransparency = nil
 		end
 
@@ -1090,7 +1090,7 @@ do -- BFA Convert, deprecated..
 
 		--Moved target scale to a style filter
 		if E.db.nameplates.units.TARGET.scale ~= nil then
-			E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
+			E.global.nameplates.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
 			E.db.nameplates.units.TARGET.scale = nil
 		end
 
@@ -1344,6 +1344,11 @@ function E:DBConvertSL()
 		if E.global.unitframe.aurafilters[name] and E.global.unitframe.aurafilters[name].type ~= infoTable.type then
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
+	end
+
+	if E.global.nameplate then
+		E:CopyTable(E.global.nameplates, E.global.nameplate)
+		E.global.nameplate = nil
 	end
 end
 
