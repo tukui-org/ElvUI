@@ -11,6 +11,8 @@ local GetItemQualityColor = GetItemQualityColor
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local RegisterStateDriver = RegisterStateDriver
+local GameTooltip_Hide = GameTooltip_Hide
+local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local UnitAura = UnitAura
 local GetTime = GetTime
@@ -129,7 +131,11 @@ function A:CreateIcon(button)
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
 	button.statusBar:CreateBackdrop()
 
+	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
+	button:SetScript('OnUpdate', A.ButtonOnUpdate)
+	button:SetScript('OnEnter', A.ButtonOnEnter)
+	button:SetScript('OnLeave', A.ButtonOnLeave)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
@@ -201,7 +207,6 @@ function A:SetAuraTime(button, expiration, duration)
 	if oldEnd ~= button.endTime then
 		button.nextUpdate = 0
 		button.statusBar:SetMinMaxValues(0, duration)
-		button:SetScript('OnUpdate', E.Cooldown_OnUpdate)
 	end
 end
 
@@ -214,7 +219,6 @@ function A:ClearAuraTime(button, expired)
 	button.endTime = nil
 	button.timeLeft = nil
 	button.text:SetText('')
-	button:SetScript('OnUpdate', nil)
 end
 
 function A:UpdateAura(button, index)
@@ -294,6 +298,39 @@ function A:Update_CooldownOptions(button)
 	E:Cooldown_Options(button, A.db.cooldown, button)
 end
 
+function A:SetTooltip(button)
+	if button:GetAttribute('index') then
+		GameTooltip:SetUnitAura(button.header:GetAttribute('unit'), button:GetID(), button.filter)
+	elseif button:GetAttribute('target-slot') then
+		GameTooltip:SetInventoryItem('player', button:GetID())
+	end
+end
+
+function A:ButtonOnLeave()
+	GameTooltip_Hide()
+end
+
+function A:ButtonOnEnter()
+	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
+	A:SetTooltip(self)
+end
+
+function A:ButtonOnUpdate(elapsed)
+	if self.timeLeft then
+		E.Cooldown_OnUpdate(self, elapsed)
+	end
+
+	if self.ttElapsed and self.ttElapsed > 0.1 then
+		if GameTooltip:IsOwned(self) then
+			A:SetTooltip(self)
+		end
+
+		self.ttElapsed = 0
+	else
+		self.ttElapsed = (self.ttElapsed or 0) + elapsed
+	end
+end
+
 function A:OnAttributeChanged(attribute, value)
 	if attribute == 'index' then
 		A:UpdateAura(self, value)
@@ -369,8 +406,10 @@ function A:CreateAuraHeader(filter)
 	header:SetClampedToScreen(true)
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
+
 	header.filter = filter
 	header.auraType = auraType
+
 	RegisterStateDriver(header, 'visibility', '[petbattle] hide; show')
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 
