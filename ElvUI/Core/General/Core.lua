@@ -1068,7 +1068,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
-			E.global.nameplates.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
+			E.global.nameplate.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
 			E.db.nameplates.units.TARGET.nonTargetTransparency = nil
 		end
 
@@ -1090,7 +1090,7 @@ do -- BFA Convert, deprecated..
 
 		--Moved target scale to a style filter
 		if E.db.nameplates.units.TARGET.scale ~= nil then
-			E.global.nameplates.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
+			E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
 			E.db.nameplates.units.TARGET.scale = nil
 		end
 
