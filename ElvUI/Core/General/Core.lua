@@ -331,13 +331,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.bags.countFont = font
 	E.db.bags.countFontSize = fontSize
 	E.db.nameplates.font = font
-	--E.db.nameplates.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-	--E.db.nameplates.buffs.font = font
-	--E.db.nameplates.buffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-	--E.db.nameplates.debuffs.font = font
-	--E.db.nameplates.debuffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 	E.db.actionbar.font = font
-	--E.db.actionbar.fontSize = fontSize	--This may not look good if a big font size is chosen
 	E.db.auras.buffs.countFont = font
 	E.db.auras.buffs.countFontSize = fontSize
 	E.db.auras.buffs.timeFont = font
@@ -359,9 +353,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.tooltip.textFontSize = fontSize
 	E.db.tooltip.smallTextFontSize = fontSize
 	E.db.tooltip.healthBar.font = font
-	--E.db.tooltip.healthbar.fontSize = fontSize -- Size is smaller than default
 	E.db.unitframe.font = font
-	--E.db.unitframe.fontSize = fontSize -- Size is smaller than default
 	E.db.unitframe.units.party.rdebuffs.font = font
 	E.db.unitframe.units.raid.rdebuffs.font = font
 	E.db.unitframe.units.raid40.rdebuffs.font = font
