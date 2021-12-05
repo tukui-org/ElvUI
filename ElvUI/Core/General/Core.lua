@@ -1337,11 +1337,6 @@ function E:DBConvertSL()
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
 	end
-
-	if E.global.nameplate then
-		E:CopyTable(E.global.nameplates, E.global.nameplate)
-		E.global.nameplate = nil
-	end
 end
 
 function E:UpdateDB()
@@ -1811,28 +1806,34 @@ function E:DBConversions()
 		E:DBConvertSL()
 	end
 
-	-- development converts, always call
+	-- development converts
+	if E.global.nameplate then
+		E:CopyTable(E.global.nameplates, E.global.nameplate)
+		E.global.nameplate = nil
+	end
 
-	E:ConvertActionBarKeybinds()
+	-- always convert
+	if not ElvCharacterDB.ConvertKeybindings then
+		E:ConvertActionBarKeybinds()
+		ElvCharacterDB.ConvertKeybindings = true
+	end
 end
 
 function E:ConvertActionBarKeybinds()
-	if not ElvCharacterDB.ConvertKeybindings then
-		for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
-			for i = 1, 12 do
-				local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
-				if next(keys) then
-					for _, key in pairs(keys) do
-						SetBinding(key, format('%s%d', newKeybind, i))
-					end
+	for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
+		for i = 1, 12 do
+			local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
+			if next(keys) then
+				for _, key in pairs(keys) do
+					SetBinding(key, format('%s%d', newKeybind, i))
 				end
 			end
 		end
+	end
 
-		local cur = GetCurrentBindingSet()
-		if cur and cur > 0 then SaveBindings(cur) end
-
-		ElvCharacterDB.ConvertKeybindings = true
+	local cur = GetCurrentBindingSet()
+	if cur and cur > 0 then
+		SaveBindings(cur)
 	end
 end
 
