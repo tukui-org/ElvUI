@@ -1345,6 +1345,11 @@ function E:DBConvertSL()
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
 	end
+
+	if E.global.nameplate then
+		E:CopyTable(E.global.nameplates, E.global.nameplate)
+		E.global.nameplate = nil
+	end
 end
 
 function E:UpdateDB()
