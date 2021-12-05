@@ -523,7 +523,7 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 		E:StaggeredUpdateAll()
 	elseif profileType == 'styleFilters' then
-		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
+		E:CopyTable(ElvDB.global.nameplates, profileData.nameplates)
 		E:StaggeredUpdateAll()
 	end
 end
