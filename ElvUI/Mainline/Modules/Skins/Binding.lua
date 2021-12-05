@@ -77,7 +77,7 @@ local function HandleScrollChild(self)
 			child:CreateBackdrop()
 
 			S:HandleButton(child.DeleteButton)
-			child.DeleteButton:SetSize(20, 20)
+			child.DeleteButton:Size(20)
 			child.FrameHighlight:SetInside(child.bg)
 			child.FrameHighlight:SetColorTexture(1, 1, 1, .20)
 
@@ -97,7 +97,7 @@ function S:Blizzard_ClickBindingUI()
 	S:HandlePortraitFrame(frame)
 
 	frame.TutorialButton.Ring:Hide()
-	frame.TutorialButton:SetPoint('TOPLEFT', frame, 'TOPLEFT', -12, 12)
+	frame.TutorialButton:Point('TOPLEFT', frame, 'TOPLEFT', -12, 12)
 
 	for _, v in next, { 'ResetButton', 'AddBindingButton', 'SaveButton' } do
 		S:HandleButton(frame[v])

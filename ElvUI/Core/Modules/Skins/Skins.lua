@@ -555,8 +555,8 @@ do
 		local track = frame.Track
 		track:SetTemplate('Transparent')
 		track:ClearAllPoints()
-		track:SetPoint('TOPLEFT', 4, -21)
-		track:SetPoint('BOTTOMRIGHT', -3, 21)
+		track:Point('TOPLEFT', 4, -21)
+		track:Point('BOTTOMRIGHT', -3, 21)
 
 		local thumb = track.Thumb
 		thumb.Middle:Hide()
