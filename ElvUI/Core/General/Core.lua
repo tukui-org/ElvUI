@@ -331,13 +331,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.bags.countFont = font
 	E.db.bags.countFontSize = fontSize
 	E.db.nameplates.font = font
-	--E.db.nameplates.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-	--E.db.nameplates.buffs.font = font
-	--E.db.nameplates.buffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-	--E.db.nameplates.debuffs.font = font
-	--E.db.nameplates.debuffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 	E.db.actionbar.font = font
-	--E.db.actionbar.fontSize = fontSize	--This may not look good if a big font size is chosen
 	E.db.auras.buffs.countFont = font
 	E.db.auras.buffs.countFontSize = fontSize
 	E.db.auras.buffs.timeFont = font
@@ -359,9 +353,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.tooltip.textFontSize = fontSize
 	E.db.tooltip.smallTextFontSize = fontSize
 	E.db.tooltip.healthBar.font = font
-	--E.db.tooltip.healthbar.fontSize = fontSize -- Size is smaller than default
 	E.db.unitframe.font = font
-	--E.db.unitframe.fontSize = fontSize -- Size is smaller than default
 	E.db.unitframe.units.party.rdebuffs.font = font
 	E.db.unitframe.units.raid.rdebuffs.font = font
 	E.db.unitframe.units.raid40.rdebuffs.font = font
@@ -1345,11 +1337,6 @@ function E:DBConvertSL()
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
 	end
-
-	if E.global.nameplate then
-		E:CopyTable(E.global.nameplates, E.global.nameplate)
-		E.global.nameplate = nil
-	end
 end
 
 function E:UpdateDB()
@@ -1819,28 +1806,34 @@ function E:DBConversions()
 		E:DBConvertSL()
 	end
 
-	-- development converts, always call
+	-- development converts
+	if E.global.nameplate then
+		E:CopyTable(E.global.nameplates, E.global.nameplate)
+		E.global.nameplate = nil
+	end
 
-	E:ConvertActionBarKeybinds()
+	-- always convert
+	if not ElvCharacterDB.ConvertKeybindings then
+		E:ConvertActionBarKeybinds()
+		ElvCharacterDB.ConvertKeybindings = true
+	end
 end
 
 function E:ConvertActionBarKeybinds()
-	if not ElvCharacterDB.ConvertKeybindings then
-		for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
-			for i = 1, 12 do
-				local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
-				if next(keys) then
-					for _, key in pairs(keys) do
-						SetBinding(key, format('%s%d', newKeybind, i))
-					end
+	for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
+		for i = 1, 12 do
+			local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
+			if next(keys) then
+				for _, key in pairs(keys) do
+					SetBinding(key, format('%s%d', newKeybind, i))
 				end
 			end
 		end
+	end
 
-		local cur = GetCurrentBindingSet()
-		if cur and cur > 0 then SaveBindings(cur) end
-
-		ElvCharacterDB.ConvertKeybindings = true
+	local cur = GetCurrentBindingSet()
+	if cur and cur > 0 then
+		SaveBindings(cur)
 	end
 end
 
