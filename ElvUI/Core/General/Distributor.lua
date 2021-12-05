@@ -370,9 +370,9 @@ local function GetProfileData(profileType)
 		profileKey = 'filters'
 	elseif profileType == 'styleFilters' then
 		profileKey = 'styleFilters'
-		profileData.nameplates = {}
-		profileData.nameplates.filters = E:CopyTable({}, ElvDB.global.nameplates.filters)
-		NP:StyleFilterClearDefaults(profileData.nameplates.filters)
+		profileData.nameplate = {}
+		profileData.nameplate.filters = E:CopyTable({}, ElvDB.global.nameplate.filters)
+		NP:StyleFilterClearDefaults(profileData.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 	end
 
