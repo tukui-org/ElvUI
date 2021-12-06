@@ -125,10 +125,9 @@ local Path = function(self, ...)
 end
 
 local Enable = function(self, unit)
-	local element = self.EnergyManaRegen
-	local Power = self.Power
+	local element = self.Power and self.EnergyManaRegen
 
-	if unit == 'player' and element and Power and myClass ~= 'WARRIOR' then
+	if unit == 'player' and element and myClass ~= 'WARRIOR' then
 		element.__owner = self
 
 		if element:IsObjectType('StatusBar') and not element:GetStatusBarTexture() then
@@ -155,10 +154,9 @@ local Enable = function(self, unit)
 end
 
 local Disable = function(self)
-	local element = self.EnergyManaRegen
-	local Power = self.Power
+	local element = self.Power and self.EnergyManaRegen
 
-	if Power and element then
+	if element then
 		self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', OnUnitSpellcastSucceeded)
 		self:UnregisterEvent('UNIT_POWER_UPDATE', OnUnitPowerUpdate)
 

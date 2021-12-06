@@ -53,7 +53,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	if not E.Retail then
+	if not E.Retail and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end
 
@@ -145,7 +145,7 @@ function UF:Update_PlayerFrame(frame, db)
 		CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
 	end
 
-	if not E.Retail then
+	if not E.Retail and E.myclass ~= 'WARRIOR' then
 		UF:Configure_EnergyManaRegen(frame)
 	end
 
