@@ -194,7 +194,8 @@ function S:BlizzardMiscFrames()
 
 		local menuBackdrop = _G[listFrameName..'MenuBackdrop']
 		if menuBackdrop and not menuBackdrop.template then
-			menuBackdrop.NineSlice:SetTemplate('Transparent')
+			menuBackdrop:StripTextures()
+			menuBackdrop:SetTemplate('Transparent')
 		end
 	end)
 
