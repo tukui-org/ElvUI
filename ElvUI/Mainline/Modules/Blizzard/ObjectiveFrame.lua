@@ -113,7 +113,7 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
 
 	tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
-	tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'self:SetShown(newstate ~= 1)')
+	tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	tracker.AutoHider:SetScript('OnHide', Tracker_OnHide)
 	tracker.AutoHider:SetScript('OnShow', Tracker_OnShow)
 	B:SetObjectiveFrameAutoHide()
