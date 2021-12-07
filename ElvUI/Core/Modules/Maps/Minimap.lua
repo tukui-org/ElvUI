@@ -521,7 +521,6 @@ function M:Initialize()
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
-	M:SetScale(Minimap.location, 1)
 
 	local frames = {
 		_G.MinimapBorder,
