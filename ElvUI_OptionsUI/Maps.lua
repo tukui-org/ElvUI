@@ -19,6 +19,7 @@ local buttonPositions = {
 	BOTTOMRIGHT = L["Bottom Right"],
 }
 
+local textFontSize = { min = 6, max = 42, step = 1 }
 local buttonScale = { min = 0.5, max = 3, step = 0.05 }
 local buttonOffsets = { min = -60, max = 60, step = 1 }
 
@@ -53,7 +54,7 @@ Maps.args.minimap.args.scale = ACH:Range(L["Scale"], L["Adjust the scale of the 
 Maps.args.minimap.args.locationTextGroup = ACH:Group(L["Location Text"], nil, 5, nil, function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings(); MM:Update_ZoneText() end, function() return not E.private.general.minimap.enable end)
 Maps.args.minimap.args.locationTextGroup.args.locationText = ACH:Select(L["Location Text"], L["Change settings for the display of the location text that is on the minimap."], 1, { MOUSEOVER = L["Minimap Mouseover"], SHOW = L["Always Display"], HIDE = L["Hide"] })
 Maps.args.minimap.args.locationTextGroup.args.locationFont = ACH:SharedMediaFont(L["Font"], nil, 2)
-Maps.args.minimap.args.locationTextGroup.args.locationFontSize = ACH:Range(L["Font Size"], nil, 3, { min = 6, max = 36, step = 1 })
+Maps.args.minimap.args.locationTextGroup.args.locationFontSize = ACH:Range(L["Font Size"], nil, 3, textFontSize)
 Maps.args.minimap.args.locationTextGroup.args.locationFontOutline = ACH:Select(L["Font Outline"], nil, 4, C.Values.FontFlags)
 Maps.args.minimap.args.locationTextGroup.inline = true
 
@@ -122,7 +123,7 @@ Maps.args.minimap.args.icons.args.queueStatus.args.position = ACH:Select(L["Posi
 Maps.args.minimap.args.icons.args.queueStatus.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, buttonOffsets, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
 Maps.args.minimap.args.icons.args.queueStatus.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
 Maps.args.minimap.args.icons.args.queueStatus.args.font = ACH:SharedMediaFont(L["Font"], nil, 6, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
-Maps.args.minimap.args.icons.args.queueStatus.args.fontSize = ACH:Range(L["Font Size"], nil, 7, { min = 6, max = 36, step = 1 }, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
+Maps.args.minimap.args.icons.args.queueStatus.args.fontSize = ACH:Range(L["Font Size"], nil, 7, textFontSize, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
 Maps.args.minimap.args.icons.args.queueStatus.args.fontOutline = ACH:Select(L["Font Outline"], nil, 8, C.Values.FontFlags, nil, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
 
 Maps.args.minimap.args.icons.args.difficulty = ACH:Group(L["Instance Difficulty"], nil, 7, nil, nil, nil, nil, not E.Retail)
