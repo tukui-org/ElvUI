@@ -818,7 +818,7 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	if type(events) == 'function' then
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
 	else
-		data.events = type(events) == 'string' and { strsplit('[, ]', events) } or events
+		data.events = type(events) == 'string' and strsplittable('[, ]', events) or events
 		data.eventFunc = eventFunc
 		data.objectEvent = objectEvent
 	end
