@@ -40,7 +40,7 @@ local function RewardsFrame_SetPosition(block)
 	end
 end
 
-local function Tracker_OnHide()
+local function AutoHider_OnHide()
 	if not _G.ObjectiveTrackerFrame.collapsed then
 		if E.db.general.objectiveFrameAutoHideInKeystone then
 			_G.ObjectiveTracker_Collapse()
@@ -53,7 +53,7 @@ local function Tracker_OnHide()
 	end
 end
 
-local function Tracker_OnShow()
+local function AutoHider_OnShow()
 	if _G.ObjectiveTrackerFrame.collapsed then
 		_G.ObjectiveTracker_Expand()
 	end
@@ -114,8 +114,8 @@ function B:MoveObjectiveFrame()
 
 	tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
 	tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-	tracker.AutoHider:SetScript('OnHide', Tracker_OnHide)
-	tracker.AutoHider:SetScript('OnShow', Tracker_OnShow)
+	tracker.AutoHider:SetScript('OnHide', AutoHider_OnHide)
+	tracker.AutoHider:SetScript('OnShow', AutoHider_OnShow)
 	B:SetObjectiveFrameAutoHide()
 
 	B:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'HandleMawBuffsFrame')
