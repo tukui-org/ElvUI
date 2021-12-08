@@ -323,7 +323,6 @@ function M:UpdateSettings()
 		Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 		M:SetScale(Minimap.location, 1)
 		Minimap.location:Hide()
-		Minimap.location:Show()
 		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
 	end
 
