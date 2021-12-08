@@ -689,7 +689,7 @@ do
 				tinsert(HyperList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} })
 			end
 
-			if not hasName(HyperList[category].menuList, name) then
+			if not hasName(HyperList[category].menuList, info.localizedName or name) then
 				tinsert(HyperList[category].menuList, {
 					text = info.localizedName or name,
 					checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
