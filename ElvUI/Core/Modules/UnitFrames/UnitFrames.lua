@@ -1048,10 +1048,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local groupsChanged = (Header.numGroups ~= numGroups)
 	local stateChanged = (Header.enableState ~= enable)
 	Header.enableState = enable
-	Header.numGroups = group == 'party' and 1 or numGroups
+	Header.numGroups = numGroups
 	Header.db = db
 
-	if numGroups or group == 'party' then
+	if numGroups then
 		if db.raidWideSorting then
 			if not Header.groups[1] then
 				Header.groups[1] = self:CreateHeader(Header, nil, 'ElvUF_'..name..'Group1', template or Header.template, nil, headerTemplate or Header.headerTemplate)
