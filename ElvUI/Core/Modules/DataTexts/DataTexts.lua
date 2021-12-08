@@ -697,6 +697,8 @@ do
 				})
 			end
 		end
+
+		DT:SortMenuList(HyperList)
 	end
 end
 
