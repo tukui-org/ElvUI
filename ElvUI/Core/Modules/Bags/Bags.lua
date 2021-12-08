@@ -622,9 +622,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 	end
 
-	if E.Retail and slot.ScrapIcon then
-		B:UpdateItemScrapIcon(slot, B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
-		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open
+	if E.Retail then
+		if slot.ScrapIcon then
+			B:UpdateItemScrapIcon(slot, B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
+		end
+
+		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
