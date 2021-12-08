@@ -314,9 +314,16 @@ function M:UpdateSettings()
 	local HEIGHT, WIDTH = mHeight + (panelSize - joinPanel), mWidth
 	MMHolder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
-	Minimap.location:Width(E.MinimapSize)
-	Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
-	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+	if Minimap.backdrop then
+		M:SetScale(Minimap.backdrop, 1)
+	end
+
+	if Minimap.location then
+		Minimap.location:Width(E.MinimapSize)
+		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
+		Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+		M:SetScale(Minimap.location, 1)
+	end
 
 	M.HandleGarrisonButton()
 	M.HandleTrackingButton()
@@ -514,14 +521,12 @@ function M:Initialize()
 	if Minimap.backdrop then -- level to hybrid maps fixed values
 		Minimap.backdrop:SetFrameLevel(99)
 		Minimap.backdrop:SetFrameStrata('BACKGROUND')
-		M:SetScale(Minimap.backdrop, 1)
 	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
-	M:SetScale(Minimap.location, 1)
 
 	local frames = {
 		_G.MinimapBorder,
