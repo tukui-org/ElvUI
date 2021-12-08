@@ -524,7 +524,7 @@ function M:Initialize()
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 	M:SetScale(Minimap.location, 1)
-	Minimap.location:Hide()
+	Minimap.location:Hide()  -- Fixes blizzard's font rendering issue
 
 	local frames = {
 		_G.MinimapBorder,
