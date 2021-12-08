@@ -409,8 +409,8 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 	end
 end
 
-function B:UpdateItemScrapIcon(slot)
-	slot.ScrapIcon:SetShown(B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
+function B:UpdateItemScrapIcon(slot, shown)
+	slot.ScrapIcon:SetShown(shown)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -623,8 +623,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if E.Retail then
-		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
-		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
+		if slot.ScrapIcon then
+			B:UpdateItemScrapIcon(slot, B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
+		end
+
+		slot:UpdateItemContextMatching() -- Blizzards way to highlighting for Scrap, Rune Carving, Upgrade Items and whatever else.
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
@@ -969,12 +972,12 @@ function B:Layout(isBank)
 		--Bag Slots
 		local bag = f.Bags[bagID]
 		local numSlots = B:GetContainerNumSlots(bagID)
-		local hasSlots = numSlots > 0
+		local bagShown = numSlots > 0 and B.db.shownBags['bag'..bagID]
 
 		bag.numSlots = numSlots
-		bag:SetShown(B.db.shownBags['bag'..bagID])
+		bag:SetShown(bagShown)
 
-		if hasSlots and bag:IsShown() then
+		if bagShown then
 			for slotID, slot in ipairs(bag) do
 				slot:SetShown(slotID <= numSlots)
 			end

@@ -352,6 +352,7 @@ function M:UpdateLootRollFrames()
 
 			frame.name:ClearAllPoints()
 			frame.name:Point('BOTTOMLEFT', frame.status, 'TOPLEFT', 4, 4)
+			frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
 
 			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
@@ -365,6 +366,7 @@ function M:UpdateLootRollFrames()
 
 			frame.name:ClearAllPoints()
 			frame.name:Point('LEFT', frame.status, 4, 0)
+			frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
 
 			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)

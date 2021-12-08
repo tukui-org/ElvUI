@@ -1924,8 +1924,6 @@ P.unitframe = {
 			growthDirection = 'UP_RIGHT',
 			horizontalSpacing = 0,
 			verticalSpacing = 3,
-			numGroups = 1,
-			groupsPerRowCol = 1,
 			groupBy = 'INDEX',
 			sortDir = 'ASC',
 			sortMethod = 'INDEX',
@@ -2211,6 +2209,7 @@ P.unitframe.units.party.targetsGroup.buffIndicator = nil
 P.unitframe.units.party.targetsGroup.healPrediction = nil
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid.groupsPerRowCol = 1
 P.unitframe.units.raid.groupBy = 'GROUP'
 P.unitframe.units.raid.buffs.numrows = 1
 P.unitframe.units.raid.buffs.perrow = 3
