@@ -972,12 +972,12 @@ function B:Layout(isBank)
 		--Bag Slots
 		local bag = f.Bags[bagID]
 		local numSlots = B:GetContainerNumSlots(bagID)
-		local hasSlots = numSlots > 0
+		local bagShown = numSlots > 0 and B.db.shownBags['bag'..bagID]
 
 		bag.numSlots = numSlots
-		bag:SetShown(B.db.shownBags['bag'..bagID])
+		bag:SetShown(bagShown)
 
-		if hasSlots and bag:IsShown() then
+		if bagShown then
 			for slotID, slot in ipairs(bag) do
 				slot:SetShown(slotID <= numSlots)
 			end
