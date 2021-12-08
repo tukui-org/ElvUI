@@ -322,7 +322,7 @@ function M:UpdateSettings()
 		Minimap.location:Width(E.MinimapSize)
 		Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 		M:SetScale(Minimap.location, 1)
-		Minimap.location:Hide()
+		Minimap.location:Hide()  -- Fixes blizzard's font rendering issue
 		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
 	end
 
