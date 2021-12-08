@@ -409,8 +409,8 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 	end
 end
 
-function B:UpdateItemScrapIcon(slot)
-	slot.ScrapIcon:SetShown(B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
+function B:UpdateItemScrapIcon(slot, shown)
+	slot.ScrapIcon:SetShown(shown)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -623,7 +623,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if E.Retail then
-		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
+		if slot.ScrapIcon then
+			B:UpdateItemScrapIcon(slot, B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
+		end
+
 		slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 	end
 
