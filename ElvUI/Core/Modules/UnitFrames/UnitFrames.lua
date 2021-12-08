@@ -714,7 +714,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 	Header.db = db
 
 	local direction = db.growthDirection
-	local groupsPerRowCol = db.groupsPerRowCol
+	local groupsPerRowCol = Header.groupName == 'party' and 1 or db.groupsPerRowCol
 	local invertGroupingOrder = db.invertGroupingOrder
 	local startFromCenter = db.startFromCenter
 	local raidWideSorting = db.raidWideSorting
@@ -734,7 +734,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local HEIGHT_FIVE = HEIGHT * 5
 	local WIDTH_FIVE = WIDTH * 5
 
-	local numGroups = Header.numGroups
+	local numGroups = Header.groupName == 'party' and 1 or Header.numGroups
 	for i = 1, numGroups do
 		local group = Header.groups[i]
 		local lastIndex = i - 1
@@ -842,8 +842,8 @@ end
 
 function UF.groupPrototype:AdjustVisibility(Header)
 	if not Header.isForced then
-		local numGroups = Header.numGroups
-		for i=1, #Header.groups do
+		local numGroups = Header.groupName == 'party' and 1 or Header.numGroups
+		for i = 1, #Header.groups do
 			local group = Header.groups[i]
 			if i <= numGroups and ((Header.db.raidWideSorting and i <= 1) or not Header.db.raidWideSorting) then
 				group:Show()
@@ -1051,7 +1051,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	Header.numGroups = numGroups
 	Header.db = db
 
-	if numGroups then
+	if numGroups or group == 'party' then
 		if db.raidWideSorting then
 			if not Header.groups[1] then
 				Header.groups[1] = self:CreateHeader(Header, nil, 'ElvUF_'..name..'Group1', template or Header.template, nil, headerTemplate or Header.headerTemplate)
