@@ -1088,7 +1088,7 @@ function B:TotalSlotsChanged(bagFrame)
 	return bagFrame.totalSlots ~= total
 end
 
-function B:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
+function B:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	if initLogin or isReload then
 		B:UpdateLayout(B.BagFrame)
 	else
