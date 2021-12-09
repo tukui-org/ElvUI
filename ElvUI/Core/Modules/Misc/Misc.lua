@@ -53,7 +53,7 @@ local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local hooksecurefunc = hooksecurefunc
 
-local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
+local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -212,7 +212,7 @@ function M:DisbandRaidGroup()
 		end
 	end
 
-	C_PartyInfo_LeaveParty()
+	LeaveParty()
 end
 
 function M:PVPMessageEnhancement(_, msg)

@@ -31,7 +31,7 @@ local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 local InCombatLockdown = InCombatLockdown
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
-local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
+local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 -- create a popup
@@ -80,12 +80,12 @@ local function inviteClick(_, name, guid)
 			if isBNet then
 				BNInviteFriend(name)
 			else
-				C_PartyInfo_InviteUnit(name)
+				InviteUnit(name)
 			end
 		elseif inviteType == 'REQUEST_INVITE' then
 			if isBNet then
 				BNRequestInviteFriend(name)
-			else
+			elseif E.Retail then
 				C_PartyInfo_RequestInviteFromUnit(name)
 			end
 		end
@@ -95,7 +95,7 @@ local function inviteClick(_, name, guid)
 		if isBNet then
 			BNInviteFriend(name)
 		else
-			C_PartyInfo_InviteUnit(name)
+			InviteUnit(name)
 		end
 	end
 end
