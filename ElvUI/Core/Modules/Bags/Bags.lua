@@ -113,6 +113,7 @@ local BIND_START, BIND_END
 local SEARCH_STRING = ''
 B.SearchSlots = {}
 B.QuestSlots = {}
+B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
 	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
@@ -550,6 +551,22 @@ function B:GetItemBindInfo(slot, bagID, slotID)
 	return BoE, BoU
 end
 
+function B:UpdateItemLevel(slot)
+	if B.db.itemLevel then
+		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
+		local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
+		local isShown = iLvl and iLvl >= B.db.itemLevelThreshold
+
+		B.ItemLevelSlots[slot] = isShown or nil
+
+		if isShown then
+			slot.itemLevel:SetText(iLvl)
+		end
+	else
+		B.ItemLevelSlots[slot] = nil
+	end
+end
+
 function B:UpdateSlot(frame, bagID, slotID)
 	local bag = frame.Bags[bagID]
 	local slot = bag and bag[slotID]
@@ -557,7 +574,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID, isBound = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink = nil, nil, itemID, rarity, locked, readable, itemLink
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (texture and 1) or nil -- used for ShowInspectCursor
@@ -582,7 +599,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if itemLink then
 		local _, spellID = GetItemSpell(itemLink)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-		slot.name, slot.spellID, slot.isEquipment = name, spellID, B.IsEquipmentSlot[itemEquipLoc]
+		slot.name, slot.spellID, slot.isEquipment, slot.itemEquipLoc, slot.itemClassID, slot.itemSubClassID = name, spellID, B.IsEquipmentSlot[itemEquipLoc], itemEquipLoc, itemClassID, itemSubClassID
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
@@ -590,14 +607,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		end
 
-		if B.db.itemLevel then
-			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, rarity)
-			local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
-
-			if iLvl and iLvl >= B.db.itemLevelThreshold then
-				slot.itemLevel:SetText(iLvl)
-			end
-		end
+		B:UpdateItemLevel(slot)
 
 		if B.db.showBindType and not isBound and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
@@ -1078,9 +1088,14 @@ function B:TotalSlotsChanged(bagFrame)
 	return bagFrame.totalSlots ~= total
 end
 
-function B:PLAYER_ENTERING_WORLD(event)
-	B:UnregisterEvent(event)
-	B:UpdateLayout(B.BagFrame)
+function B:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
+	if initLogin or isReload then
+		B:UpdateLayout(B.BagFrame)
+	else
+		for slot in next, B.ItemLevelSlots do
+			B:UpdateItemLevel(slot)
+		end
+	end
 end
 
 function B:UpdateLayouts()
