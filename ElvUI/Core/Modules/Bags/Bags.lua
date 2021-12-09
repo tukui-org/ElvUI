@@ -1351,7 +1351,7 @@ function B:SlotOnEnter()
 	B.HideSlotItemGlow(self)
 
 	-- bag keybind support from actionbar module
-	if E.private.actionbar.enable then
+	if not self.isReagent and E.private.actionbar.enable then
 		AB:BindUpdate(self, 'BAG')
 	end
 end
@@ -1990,7 +1990,8 @@ function B:ConstructReagentSlot(f, slotID)
 		slot.newItemGlow:Hide()
 
 		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-		slot:HookScript('OnEnter', B.HideSlotItemGlow)
+		slot:HookScript('OnEnter', B.SlotOnEnter)
+		slot:HookScript('OnLeave', B.SlotOnLeave)
 	end
 
 	return slot
