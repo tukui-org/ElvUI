@@ -105,16 +105,21 @@ end
 local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true }
 local cdOptions = { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] }
 local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
-local function UpdateFilterList(which, initial, opt, add)
-	local filter = GetFilter()
-	local option, spell, desc
-
+local function GetFilterOption(which)
+	local option
 	if which == 'cooldowns' then
 		option = ACH:Select('', nil, nil, cdOptions)
 	else
 		option = ACH:Toggle('', nil)
 		option.textWidth = true
 	end
+
+	return option
+end
+
+local function UpdateFilterList(which, initial, opt, add)
+	local filter = GetFilter()
+	local spell, desc
 
 	local subType, isSpell = subTypes[which], spellTypes[which]
 	local setting = StyleFitlers.triggers.args[which].args[subType]
@@ -131,6 +136,7 @@ local function UpdateFilterList(which, initial, opt, add)
 				spell, desc = nil, nil
 			end
 
+			local option = GetFilterOption(which)
 			option.name, option.desc = spell or name, spell and desc or nil
 
 			setting.args[name] = option
@@ -140,6 +146,7 @@ local function UpdateFilterList(which, initial, opt, add)
 			spell, desc = GetSpellFilterInfo(opt)
 		end
 
+		local option = GetFilterOption(which)
 		option.name, option.desc = spell or opt, spell and desc or nil
 
 		setting.args[opt] = add and option or nil
@@ -148,9 +155,8 @@ end
 
 local function UpdateBossModAuras(initial, opt, add)
 	local filter = GetFilter()
-
 	local setting = StyleFitlers.triggers.args.bossModAuras.args
-	setting.auras.hidden = not next(filter.triggers.bossMods.auras)
+	setting.auras.hidden = not filter or not next(filter.triggers.bossMods.auras)
 
 	if initial then
 		setting.auras.args = {}
@@ -688,7 +694,7 @@ local function actionSubGroup(info, ...)
 	NP:ConfigureAll()
 end
 
-StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions and actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)

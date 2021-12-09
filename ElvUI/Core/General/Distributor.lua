@@ -277,7 +277,7 @@ D.blacklistedKeys = {
 				}
 			}
 		},
-		nameplate = {
+		nameplates = {
 			filters = true
 		},
 		unitframe = {
@@ -317,7 +317,7 @@ D.GeneratedKeys = {
 			aurafilters = true,
 			aurawatch = true
 		},
-		nameplate = {
+		nameplates = {
 			filters = true
 		}
 	}

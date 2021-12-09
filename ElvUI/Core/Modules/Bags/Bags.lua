@@ -113,6 +113,7 @@ local BIND_START, BIND_END
 local SEARCH_STRING = ''
 B.SearchSlots = {}
 B.QuestSlots = {}
+B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
 	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
@@ -409,8 +410,8 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 	end
 end
 
-function B:UpdateItemScrapIcon(slot, shown)
-	slot.ScrapIcon:SetShown(shown)
+function B:UpdateItemScrapIcon(slot)
+	slot.ScrapIcon:SetShown(B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -550,6 +551,22 @@ function B:GetItemBindInfo(slot, bagID, slotID)
 	return BoE, BoU
 end
 
+function B:UpdateItemLevel(slot)
+	if slot.itemLink and B.db.itemLevel then
+		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
+		local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
+		local isShown = iLvl and iLvl >= B.db.itemLevelThreshold
+
+		B.ItemLevelSlots[slot] = isShown or nil
+
+		if isShown then
+			slot.itemLevel:SetText(iLvl)
+		end
+	else
+		B.ItemLevelSlots[slot] = nil
+	end
+end
+
 function B:UpdateSlot(frame, bagID, slotID)
 	local bag = frame.Bags[bagID]
 	local slot = bag and bag[slotID]
@@ -557,7 +574,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID, isBound = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink = nil, nil, itemID, rarity, locked, readable, itemLink
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (texture and 1) or nil -- used for ShowInspectCursor
@@ -582,21 +599,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if itemLink then
 		local _, spellID = GetItemSpell(itemLink)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-		slot.name, slot.spellID, slot.isEquipment = name, spellID, B.IsEquipmentSlot[itemEquipLoc]
+		slot.name, slot.spellID, slot.isEquipment, slot.itemEquipLoc, slot.itemClassID, slot.itemSubClassID = name, spellID, B.IsEquipmentSlot[itemEquipLoc], itemEquipLoc, itemClassID, itemSubClassID
 
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		else
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
-		end
-
-		if B.db.itemLevel then
-			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, rarity)
-			local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
-
-			if iLvl and iLvl >= B.db.itemLevelThreshold then
-				slot.itemLevel:SetText(iLvl)
-			end
 		end
 
 		if B.db.showBindType and not isBound and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
@@ -623,10 +631,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if E.Retail then
-		if slot.ScrapIcon then
-			B:UpdateItemScrapIcon(slot, B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
-		end
-
+		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 		slot:UpdateItemContextMatching() -- Blizzards way to highlighting for Scrap, Rune Carving, Upgrade Items and whatever else.
 	end
 
@@ -634,6 +639,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
+	B:UpdateItemLevel(slot)
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
 	if B.db.newItemGlow then
@@ -659,7 +665,7 @@ function B:UpdateReagentSlot(slotID)
 	if not slot then return end
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, itemID, rarity, locked, readable
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink = nil, nil, itemID, rarity, locked, readable, itemLink
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
@@ -1078,9 +1084,14 @@ function B:TotalSlotsChanged(bagFrame)
 	return bagFrame.totalSlots ~= total
 end
 
-function B:PLAYER_ENTERING_WORLD(event)
-	B:UnregisterEvent(event)
-	B:UpdateLayout(B.BagFrame)
+function B:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
+	if initLogin or isReload then
+		B:UpdateLayout(B.BagFrame)
+	else
+		for slot in next, B.ItemLevelSlots do
+			B:UpdateItemLevel(slot)
+		end
+	end
 end
 
 function B:UpdateLayouts()
@@ -1339,7 +1350,7 @@ function B:SlotOnEnter()
 	B.HideSlotItemGlow(self)
 
 	-- bag keybind support from actionbar module
-	if E.private.actionbar.enable then
+	if not self.isReagent and E.private.actionbar.enable then
 		AB:BindUpdate(self, 'BAG')
 	end
 end
@@ -1978,7 +1989,8 @@ function B:ConstructReagentSlot(f, slotID)
 		slot.newItemGlow:Hide()
 
 		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-		slot:HookScript('OnEnter', B.HideSlotItemGlow)
+		slot:HookScript('OnEnter', B.SlotOnEnter)
+		slot:HookScript('OnLeave', B.SlotOnLeave)
 	end
 
 	return slot
