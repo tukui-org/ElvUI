@@ -552,7 +552,7 @@ function B:GetItemBindInfo(slot, bagID, slotID)
 end
 
 function B:UpdateItemLevel(slot)
-	if B.db.itemLevel then
+	if slot.itemLink and B.db.itemLevel then
 		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
 		local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
 		local isShown = iLvl and iLvl >= B.db.itemLevelThreshold
@@ -607,8 +607,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		end
 
-		B:UpdateItemLevel(slot)
-
 		if B.db.showBindType and not isBound and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			local BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
 
@@ -641,6 +639,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
+	B:UpdateItemLevel(slot)
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
 	if B.db.newItemGlow then
