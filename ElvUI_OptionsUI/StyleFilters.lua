@@ -105,16 +105,21 @@ end
 local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true }
 local cdOptions = { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] }
 local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
-local function UpdateFilterList(which, initial, opt, add)
-	local filter = GetFilter()
-	local option, spell, desc
-
+local function GetFilterOption(which)
+	local option
 	if which == 'cooldowns' then
 		option = ACH:Select('', nil, nil, cdOptions)
 	else
 		option = ACH:Toggle('', nil)
 		option.textWidth = true
 	end
+
+	return option
+end
+
+local function UpdateFilterList(which, initial, opt, add)
+	local filter = GetFilter()
+	local spell, desc
 
 	local subType, isSpell = subTypes[which], spellTypes[which]
 	local setting = StyleFitlers.triggers.args[which].args[subType]
@@ -131,6 +136,7 @@ local function UpdateFilterList(which, initial, opt, add)
 				spell, desc = nil, nil
 			end
 
+			local option = GetFilterOption(which)
 			option.name, option.desc = spell or name, spell and desc or nil
 
 			setting.args[name] = option
@@ -140,6 +146,7 @@ local function UpdateFilterList(which, initial, opt, add)
 			spell, desc = GetSpellFilterInfo(opt)
 		end
 
+		local option = GetFilterOption(which)
 		option.name, option.desc = spell or opt, spell and desc or nil
 
 		setting.args[opt] = add and option or nil
