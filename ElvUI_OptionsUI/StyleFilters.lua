@@ -155,9 +155,8 @@ end
 
 local function UpdateBossModAuras(initial, opt, add)
 	local filter = GetFilter()
-
 	local setting = StyleFitlers.triggers.args.bossModAuras.args
-	setting.auras.hidden = not next(filter.triggers.bossMods.auras)
+	setting.auras.hidden = not filter or not next(filter.triggers.bossMods.auras)
 
 	if initial then
 		setting.auras.args = {}
@@ -695,7 +694,7 @@ local function actionSubGroup(info, ...)
 	NP:ConfigureAll()
 end
 
-StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions and actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)
