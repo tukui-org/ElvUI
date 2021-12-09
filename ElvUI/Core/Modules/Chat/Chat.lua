@@ -1415,7 +1415,6 @@ local function HyperLinkedCPL(data)
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
 			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
 			if message and message ~= '' then
-				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
 				if not CH:MessageIsProtected(message) then
 					CH:SetChatEditBoxMessage(message)
