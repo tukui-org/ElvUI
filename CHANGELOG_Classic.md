@@ -1,5 +1,15 @@
 ### Version 1.58 [ ETA: 🍨 ]
 
+Auras: Tooltip fixes for top auras  
+DataTexts: Fixes for party invites  
+Minimap: Scaling and Font fixes  
+Misc: Adjusted spacing between LootRoll need/greed/pass  
+Misc: Adjusted text length for LootRoll items  
+UnitFrames: Fixed "attach to" option for Ready Check Icon  
+
+Note for plugin authors:  
+ElvDB.global.nameplate was renamed to ElvDB.global.nameplates  
+
 ___
 ### Version 1.57 [ December 4th 2021 ]
 
