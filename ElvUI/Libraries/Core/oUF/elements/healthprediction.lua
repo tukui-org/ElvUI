@@ -207,6 +207,22 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+local function HealComm_Check(self, element, ...)
+	if element and self:IsVisible() then
+		for i = 1, select('#', ...) do
+			if self.unit and UnitGUID(self.unit) == select(i, ...) then
+				Path(self, nil, self.unit)
+			end
+		end
+	end
+end
+
+local function HealComm_Create(self, element)
+	local update = function(event, casterGUID, spellID, healType, _, ...) HealComm_Check(self, element, ...) end
+	local modified = function(event, guid) HealComm_Check(self, element, guid) end
+	return update, modified
+end
+
 local function Enable(self)
 	local element = self.HealthPrediction
 	if(element) then
@@ -221,30 +237,16 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
-			local function HealCommUpdate(...)
-				if self.HealthPrediction and self:IsVisible() then
-					for i = 1, select('#', ...) do
-						if self.unit and UnitGUID(self.unit) == select(i, ...) then
-							Path(self, nil, self.unit)
-						end
-					end
-				end
+			if not self.HealComm_Update then
+				self.HealComm_Update, self.HealComm_Modified = HealComm_Create(self, element)
 			end
 
-			local function HealComm_Heal_Update(event, casterGUID, spellID, healType, _, ...)
-				HealCommUpdate(...)
-			end
-
-			local function HealComm_Modified(event, guid)
-				HealCommUpdate(guid)
-			end
-
-			HealComm.RegisterCallback(element, 'HealComm_HealStarted', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealUpdated', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealDelayed', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealStopped', HealComm_Heal_Update)
-			HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', HealComm_Modified)
-			HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', HealComm_Modified)
+			HealComm.RegisterCallback(element, 'HealComm_HealStarted', self.HealComm_Update)
+			HealComm.RegisterCallback(element, 'HealComm_HealUpdated', self.HealComm_Update)
+			HealComm.RegisterCallback(element, 'HealComm_HealDelayed', self.HealComm_Update)
+			HealComm.RegisterCallback(element, 'HealComm_HealStopped', self.HealComm_Update)
+			HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', self.HealComm_Modified)
+			HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', self.HealComm_Modified)
 
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
