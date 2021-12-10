@@ -273,6 +273,8 @@ function M:Initialize()
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
 			self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
 		else
+			-- Retail does't need this because WorldMapFrame inherits QuestLogOwnerMixin,
+			-- SetDisplayState will call ShowUIPanel on open which leads to hide frames (such as CharacterFrame)
 			SetUIPanelAttribute(_G.WorldMapFrame, 'area', 'center')
 			SetUIPanelAttribute(_G.WorldMapFrame, 'allowOtherPanels', true)
 		end
