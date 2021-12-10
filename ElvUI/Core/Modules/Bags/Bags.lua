@@ -1092,7 +1092,6 @@ end
 
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UpdateLayout(B.BagFrame)
-
 	B:UnregisterEvent(event)
 end
 
