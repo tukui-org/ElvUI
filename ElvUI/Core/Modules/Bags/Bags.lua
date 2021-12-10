@@ -1084,14 +1084,15 @@ function B:TotalSlotsChanged(bagFrame)
 	return bagFrame.totalSlots ~= total
 end
 
-function B:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if initLogin or isReload then
-		B:UpdateLayout(B.BagFrame)
-	else
-		for slot in next, B.ItemLevelSlots do
-			B:UpdateItemLevel(slot)
-		end
+function B:PLAYER_AVG_ITEM_LEVEL_UPDATE()
+	for slot in next, B.ItemLevelSlots do
+		B:UpdateItemLevel(slot)
 	end
+end
+
+function B:PLAYER_ENTERING_WORLD(event)
+	B:UpdateLayout(B.BagFrame)
+	B:UnregisterEvent(event)
 end
 
 function B:UpdateLayouts()
@@ -2587,6 +2588,7 @@ function B:Initialize()
 	B:UpdateGoldText()
 
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
+	B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
