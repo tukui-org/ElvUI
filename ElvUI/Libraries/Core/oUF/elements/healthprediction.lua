@@ -80,7 +80,7 @@ A default texture will be applied to the Texture widgets if they don't have a te
 
 local _, ns = ...
 local oUF = ns.oUF
-local HealComm = LibStub("LibHealComm-4.0", true)
+local HealComm = LibStub('LibHealComm-4.0', true)
 
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
