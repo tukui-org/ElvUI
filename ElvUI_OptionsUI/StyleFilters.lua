@@ -670,7 +670,7 @@ local actionDefaults = {
 	},
 }
 
-local function actionHidePlate() local _, actions = GetFilter(true) return actions.hide end
+local function actionHidePlate() local _, actions = GetFilter(true) return actions and actions.hide end
 local function actionSubGroup(info, ...)
 	local _, actions = GetFilter(true)
 	if info.type == 'color' then
