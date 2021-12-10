@@ -551,13 +551,13 @@ function B:GetItemBindInfo(slot, bagID, slotID)
 	return BoE, BoU
 end
 
-function B:UpdateItemLevel(slot)
+function B:UpdateItemLevel(slot, add)
 	if slot.itemLink and B.db.itemLevel then
 		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
 		local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
 		local isShown = iLvl and iLvl >= B.db.itemLevelThreshold
 
-		B.ItemLevelSlots[slot] = isShown or nil
+		B.ItemLevelSlots[slot] = (add and isShown) or nil
 
 		if isShown then
 			slot.itemLevel:SetText(iLvl)
@@ -633,7 +633,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 		slot:UpdateItemContextMatching() -- Blizzards way to highlighting for Scrap, Rune Carving, Upgrade Items and whatever else.
-		B:UpdateItemLevel(slot)
+		B:UpdateItemLevel(slot, true)
 	end
 
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
@@ -2573,6 +2573,7 @@ function B:Initialize()
 
 	if E.Retail then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 
 		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
 		E:Delay(1, B.UpdateBagSlots, B, nil, REAGENTBANK_CONTAINER)
@@ -2588,7 +2589,6 @@ function B:Initialize()
 	B:UpdateGoldText()
 
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
-	B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
