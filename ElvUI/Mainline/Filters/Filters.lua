@@ -876,13 +876,26 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
+	-- Prototype Pantheon
 	-- Dausegne, The Fallen Oracle
 		[361751] = Defaults(2), -- Disintegration Halo
 		[364289] = Defaults(2), -- Staggering Barrage
 		[361225] = Defaults(2), -- Encroaching Dominion
 		[361966] = Defaults(2), -- Infused Strikes
-	-- Prototype Pantheon
+	-- Artificer Xy'mox
+		[362850] = Defaults(2), -- Hyperlight Sparknova
+		[364030] = Defaults(3), -- Debilitating Ray
+		[365681] = Defaults(2), -- System Shock
+		[363413] = Defaults(4), -- Forerunner Rings A
+		[364604] = Defaults(4), -- Forerunner Rings B
+		[362615] = Defaults(6), -- Interdimensional Wormhole Player 1
+		[362614] = Defaults(6), -- Interdimensional Wormhole Player 2
+		[362803] = Defaults(5), -- Glyph of Relocation
 	-- Lithuvim, Principle Architect
+		[360159] = Defaults(2), -- Unstable Protoform Energy
+		[363681] = Defaults(3), -- Deconstructing Blast
+		[363676] = Defaults(4), -- Deconstructing Energy Player 1
+		[363795] = Defaults(4), -- Deconstructing Energy Player 2
 	-- Skolex, the Insatiable Ravener
 		[364522] = Defaults(2), -- Devouring Blood
 		[359976] = Defaults(2), -- Riftmaw
@@ -892,7 +905,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Anduin Wrynn
 	-- Rygelon
 	-- Lords of the Dread
-	-- Artificer Xy'mox
 	-- The Jailer
 	--------------------------------------------------------
 	---------------- Sanctum of Domination -----------------
@@ -1091,19 +1103,24 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
+	-- Prototype Pantheon
 	-- Dausegne, The Fallen Oracle
 		[361651] = Defaults(), -- Siphoned Barrier
 		[362432] = Defaults(), -- Collapsed Barrier
 		[361513] = Defaults(), -- Obliteraion Arc
-	-- Prototype Pantheon
+	-- Artificer Xy'mox
+		[363139] = Defaults(), -- Decipher Relic
 	-- Lithuvim, Principle Architect
+		[363537] = Defaults(), -- Protoform Radiance
+		[365036] = Defaults(), -- Ephemeral Barrier
+		[361200] = Defaults(), -- Recharge
+		[363130] = Defaults(), -- Synthesize
 	-- Skolex, the Insatiable Ravener
 		[360193] = Defaults(), -- Insatiable (stacking)
 	-- Halondrus the Reclaimer
 	-- Anduin Wrynn
 	-- Rygelon
 	-- Lords of the Dread
-	-- Artificer Xy'mox
 	-- The Jailer
 	----------------------------------------------------------
 	----------------- Sanctum of Domination ------------------
