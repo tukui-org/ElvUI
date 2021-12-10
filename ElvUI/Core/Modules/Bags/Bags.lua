@@ -554,7 +554,7 @@ end
 function B:UpdateItemLevel(slot)
 	if slot.itemLink and B.db.itemLevel then
 		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
-		local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
+		local iLvl = canShowItemLevel and C_Item_DoesItemExist(slot.itemLocation) and C_Item_GetCurrentItemLevel(slot.itemLocation)
 		local isShown = iLvl and iLvl >= B.db.itemLevelThreshold
 
 		B.ItemLevelSlots[slot] = isShown or nil
