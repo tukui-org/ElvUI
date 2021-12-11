@@ -52,6 +52,8 @@ P.general = {
 		itemLevelFontOutline = 'OUTLINE',
 	},
 	durabilityScale = 1,
+	loadCameraDistance = true,
+	cameraDistanceValue = E.Retail and 2.6 or 4,
 	afk = true,
 	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',

@@ -213,6 +213,12 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
+	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that.
+	-- Atleast in Classic. Didn't test in Retail. But might aswell make it a global option.
+	if E.db.general.loadCameraDistance then
+		SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceValue)
+	end
+
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end

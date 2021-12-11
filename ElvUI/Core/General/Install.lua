@@ -153,7 +153,6 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('alwaysShowActionBars', 1)
 	SetCVar('lockActionBars', 1)
 	SetCVar('spamFilter', 0)
-	SetCVar('cameraDistanceMaxZoomFactor', E.Retail and 2.6 or 3.4)
 	SetCVar('showQuestTrackingTooltips', 1)
 	SetCVar('fstack_preferParentKeys', 0) --Add back the frame names via fstack!
 

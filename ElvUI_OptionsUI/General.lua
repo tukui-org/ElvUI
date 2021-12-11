@@ -188,13 +188,18 @@ General.args.blizzUIImprovements.args.general.args.commandBarSetting = ACH:Selec
 General.args.blizzUIImprovements.args.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 9, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateVehicleFrame() end, nil, not E.Retail)
 General.args.blizzUIImprovements.args.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 10, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateDurabilityScale() end)
 
-General.args.blizzUIImprovements.args.quest = ACH:Group(L["Quests"], nil, 2)
+General.args.blizzUIImprovements.args.camera = ACH:Group(L["Camera"], nil, 2)
+General.args.blizzUIImprovements.args.camera.inline = true
+General.args.blizzUIImprovements.args.camera.args.loadCameraDistance = ACH:Toggle(L["Load Distance on Login"], nil, 11)
+General.args.blizzUIImprovements.args.camera.args.cameraDistanceValue = ACH:Range(L["Max Camera Distance"], nil, 12, { min = 1, max = E.Retail and 2.6 or 4, step = 0.1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value end)
+
+General.args.blizzUIImprovements.args.quest = ACH:Group(L["Quest"], nil, 3)
 General.args.blizzUIImprovements.args.quest.inline = true
 General.args.blizzUIImprovements.args.quest.args.questRewardMostValueIcon = ACH:Toggle(L["Mark Quest Reward"], L["Marks the most valuable quest reward with a gold coin."], 1)
 General.args.blizzUIImprovements.args.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.blizzUIImprovements.args.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 1, nil, function() E:StaticPopup_Show('CONFIG_RL') end, nil, nil, nil, nil, E.Retail)
 
-General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L["Loot"], nil, 3, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L["Loot"], nil, 4, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.lootGroup.inline = true
 General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L["Loot"], L["Enable/Disable the loot frame."], 1)
 
