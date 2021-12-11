@@ -856,12 +856,11 @@ end
 
 function TT:AddBattlePetID()
 	local tt = _G.BattlePetTooltip
-	if not tt or tt:IsForbidden() then return end
-	if tt.speciesID and TT:IsModKeyDown() then
-		tt:AddLine(' ')
-		tt:AddLine(format(IDLine, _G.ID, tt.speciesID))
-		tt:Show()
-	end
+	if not tt or not tt.speciesID or not TT:IsModKeyDown() then return end
+
+	tt:AddLine(' ')
+	tt:AddLine(format(IDLine, _G.ID, tt.speciesID))
+	tt:Show()
 end
 
 function TT:AddQuestID(frame)
