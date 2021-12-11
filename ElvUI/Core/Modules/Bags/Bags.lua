@@ -178,7 +178,7 @@ function B:GetContainerFrame(arg)
 	if arg == true then
 		return B.BankFrame
 	elseif type(arg) == 'number' then
-		for _, bagID in ipairs(B.BankFrame.BagIDs) do
+		for _, bagID in next, B.BankFrame.BagIDs do
 			if bagID == arg then
 				return B.BankFrame
 			end
@@ -357,7 +357,7 @@ function B:UpdateItemDisplay()
 end
 
 function B:UpdateAllSlots(frame)
-	for _, bagID in ipairs(frame.BagIDs) do
+	for _, bagID in next, frame.BagIDs do
 		B:UpdateBagSlots(frame, bagID)
 	end
 end
