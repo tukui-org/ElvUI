@@ -1091,7 +1091,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
 
-		button:SetAttribute('buttonlock', AB.db.lockActionBars)
+		button:SetAttribute('buttonlock', AB.db.lockActionBars or nil)
 		button:SetAttribute('checkselfcast', AB.db.checkSelfCast or nil)
 		button:SetAttribute('checkfocuscast', AB.db.checkFocusCast or nil)
 		button:SetAttribute('unit2', AB.db.rightClickSelfCast and 'player' or nil)
