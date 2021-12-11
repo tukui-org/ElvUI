@@ -339,7 +339,7 @@ function M:UpdateLootRollFrames()
 		for _, button in next, rolltypes do
 			local icon = frame[button]
 			if icon then
-				icon:Size(E.db.general.lootRoll.height / 1.5)
+				icon:Size(E.db.general.lootRoll.buttonSize)
 				icon:ClearAllPoints()
 			end
 		end
