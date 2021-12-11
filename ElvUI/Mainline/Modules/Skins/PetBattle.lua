@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
-local pairs, unpack = pairs, unpack
+local pairs, unpack, format = pairs, unpack, format
 
 local _G = _G
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
@@ -13,6 +13,7 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
+local IDLine = '|cFFCA3C3C%s|r %d'
 
 local function SkinPetButton(self, bf)
 	if not self.backdrop then
@@ -238,12 +239,17 @@ function S:PetBattleFrame()
 
 		-- BATTLEPET RARITY COLOR
 		hooksecurefunc('BattlePetToolTip_Show', function(_, _, rarity)
-			if not _G.BattlePetTooltip.backdrop then return end
 			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
 			if quality and rarity > 1 then
-				_G.BattlePetTooltip.backdrop:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				_G.BattlePetTooltip.NineSlice:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
-				_G.BattlePetTooltip.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G.BattlePetTooltip.NineSlice:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+
+			if TT:IsModKeyDown() then
+				_G.BattlePetTooltip:AddLine(' ')
+				_G.BattlePetTooltip:AddLine(format(IDLine, _G.ID, _G.BattlePetTooltip.speciesID))
+				_G.BattlePetTooltip:Show()
 			end
 		end)
 
