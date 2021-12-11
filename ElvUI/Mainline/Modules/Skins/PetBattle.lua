@@ -238,8 +238,8 @@ function S:PetBattleFrame()
 
 		-- BATTLEPET RARITY COLOR
 		hooksecurefunc('BattlePetToolTip_Show', function(_, _, rarity)
-			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
-			if quality and rarity > 1 then
+			local quality = rarity and rarity > 1 and ITEM_QUALITY_COLORS[rarity]
+			if quality then
 				_G.BattlePetTooltip.NineSlice:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
 				_G.BattlePetTooltip.NineSlice:SetBackdropBorderColor(unpack(E.media.bordercolor))
