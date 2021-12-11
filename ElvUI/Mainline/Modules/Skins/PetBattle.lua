@@ -2,16 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
-local pairs, unpack = pairs, unpack
+local pairs = pairs
+local unpack = unpack
 
 local _G = _G
-local C_PetBattles_GetPetType = C_PetBattles.GetPetType
-local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
-local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
-
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local C_PetBattles_GetPetType = C_PetBattles.GetPetType
+local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
+local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
 local function SkinPetButton(self, bf)
@@ -238,12 +238,16 @@ function S:PetBattleFrame()
 
 		-- BATTLEPET RARITY COLOR
 		hooksecurefunc('BattlePetToolTip_Show', function(_, _, rarity)
-			if not _G.BattlePetTooltip.backdrop then return end
-			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
-			if quality and rarity > 1 then
-				_G.BattlePetTooltip.backdrop:SetBackdropBorderColor(quality.r, quality.g, quality.b)
-			else
-				_G.BattlePetTooltip.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			local tt = _G.BattlePetTooltip
+			if not tt then return end
+
+			local quality = TT.db.itemQuality and rarity and rarity > 1 and ITEM_QUALITY_COLORS[rarity]
+			if quality then
+				tt.NineSlice:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				tt.qualityChanged = true
+			elseif tt.qualityChanged then
+				tt.NineSlice:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				tt.qualityChanged = nil
 			end
 		end)
 

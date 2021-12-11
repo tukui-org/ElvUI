@@ -4,6 +4,8 @@ Auras: Tooltip fixes for top auras
 Minimap: Scaling and Font fixes  
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
+NamePlates: Fixed error when deleting a StyleFilter  
+Skins: Fixed "New Mythic+ Season" overlap issue  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
 
 Note for plugin authors:  

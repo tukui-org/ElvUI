@@ -554,7 +554,7 @@ end
 function B:UpdateItemLevel(slot)
 	if slot.itemLink and B.db.itemLevel then
 		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
-		local iLvl = canShowItemLevel and C_Item_GetCurrentItemLevel(slot.itemLocation)
+		local iLvl = canShowItemLevel and C_Item_DoesItemExist(slot.itemLocation) and C_Item_GetCurrentItemLevel(slot.itemLocation)
 		local isShown = iLvl and iLvl >= B.db.itemLevelThreshold
 
 		B.ItemLevelSlots[slot] = isShown or nil
@@ -739,11 +739,22 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
-function B:BagSlot_OnEvent(event)
+function B:Slot_OnEvent(event)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
 	end
 end
+
+function B:Slot_OnEnter()
+	B.HideSlotItemGlow(self)
+
+	-- bag keybind support from actionbar module
+	if not self.isReagent and E.private.actionbar.enable then
+		AB:BindUpdate(self, 'BAG')
+	end
+end
+
+function B:Slot_OnLeave() end
 
 function B:Cooldown_OnHide()
 	self.start = nil
@@ -1347,17 +1358,6 @@ function B:VendorGrayCheck()
 	end
 end
 
-function B:SlotOnEnter()
-	B.HideSlotItemGlow(self)
-
-	-- bag keybind support from actionbar module
-	if not self.isReagent and E.private.actionbar.enable then
-		AB:BindUpdate(self, 'BAG')
-	end
-end
-
-function B:SlotOnLeave() end
-
 function B:SetButtonTexture(button, texture)
 	button:SetNormalTexture(texture)
 	button:SetPushedTexture(texture)
@@ -1836,7 +1836,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
-	slot:SetScript('OnEvent', B.BagSlot_OnEvent)
+	slot:SetScript('OnEvent', B.Slot_OnEvent)
+	slot:HookScript('OnEnter', B.Slot_OnEnter)
+	slot:HookScript('OnLeave', B.Slot_OnLeave)
 	slot:SetNormalTexture(nil)
 
 	if not E.Retail then
@@ -1940,9 +1942,6 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 		slot.newItemGlow:Hide()
 		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-
-		slot:HookScript('OnEnter', B.SlotOnEnter)
-		slot:HookScript('OnLeave', B.SlotOnLeave)
 	end
 
 	return slot
@@ -1957,6 +1956,8 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetID(slotID)
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
+	slot:HookScript('OnEnter', B.Slot_OnEnter)
+	slot:HookScript('OnLeave', B.Slot_OnLeave)
 	slot:SetNormalTexture(nil)
 	slot.isReagent = true
 
@@ -1990,8 +1991,6 @@ function B:ConstructReagentSlot(f, slotID)
 		slot.newItemGlow:Hide()
 
 		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-		slot:HookScript('OnEnter', B.SlotOnEnter)
-		slot:HookScript('OnLeave', B.SlotOnLeave)
 	end
 
 	return slot
@@ -2539,6 +2538,7 @@ function B:Initialize()
 		-- Set a different default anchor
 		BagFrameHolder:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMRIGHT', -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
 		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
+		CONTAINER_SPACING = E.private.skins.blizzard.enable and E.private.skins.blizzard.bags and (E.Border*2) or 0
 		B:SecureHook('UpdateContainerFrameAnchors')
 		return
 	end

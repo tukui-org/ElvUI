@@ -1932,6 +1932,11 @@ function E:Initialize()
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end
 
+	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
+	if not E.Retail and E.db.general.lockCameraDistanceMax then
+		E:LockCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
+	end
+
 	if E.db.general.loginmessage then
 		local msg = format(L["LOGIN_MSG"], E.version)
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
