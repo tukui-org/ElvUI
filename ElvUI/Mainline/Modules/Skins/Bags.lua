@@ -91,7 +91,7 @@ local function SkinItemButton(button, bagID)
 			button.quality = rarity
 		end
 	else
-		button.name, button.quality, button.type = nil, rarity or nil, nil
+		button.name, button.quality, button.type = nil, nil, nil
 	end
 
 	if questId or isQuestItem then
