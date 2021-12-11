@@ -41,7 +41,12 @@ General.args.general.args.monitor.inline = true
 General.args.general.args.monitor.args.eyefinity = ACH:Toggle(L["Multi-Monitor Support"], L["Attempt to support eyefinity/nvidia surround."])
 General.args.general.args.monitor.args.ultrawide = ACH:Toggle(L["Ultrawide Support"], L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"])
 
-General.args.general.args.scaling = ACH:Group(L["UI Scale"], nil, 51)
+General.args.general.args.camera = ACH:Group(L["Camera"], nil, 55, nil, nil, nil, nil, E.Retail)
+General.args.general.args.camera.args.lockCameraDistanceMax = ACH:Toggle(L["Lock Distance Max"], nil, 11)
+General.args.general.args.camera.args.cameraDistanceMax = ACH:Range(L["Max Distance"], nil, 12, { min = 1, max = 4, step = 0.1 }, nil, nil, nil, function() return not E.db.general.lockCameraDistanceMax end)
+General.args.general.args.camera.inline = true
+
+General.args.general.args.scaling = ACH:Group(L["UI Scale"], nil, 60)
 General.args.general.args.scaling.inline = true
 General.args.general.args.scaling.args.UIScale = ACH:Range(L["UI Scale"], nil, 1, { min = 0.1, max = 1.25, step = 0.000000000000001, softMin = 0.40, softMax = 1.15, bigStep = 0.01 }, nil, function() return E.global.general.UIScale end, function(_, value) E.global.general.UIScale = value if not IsMouseButtonDown() then E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end end)
 General.args.general.args.scaling.args.ScaleSmall = ACH:Execute(L["Small"], nil, 2, function() E.global.general.UIScale = .6 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
@@ -53,7 +58,7 @@ General.args.general.args.scaling.args.ScaleMedium.customWidth = 100
 General.args.general.args.scaling.args.ScaleLarge.customWidth = 100
 General.args.general.args.scaling.args.ScaleAuto.customWidth = 100
 
-General.args.general.args.automation = ACH:Group(L["Automation"], nil, 52)
+General.args.general.args.automation = ACH:Group(L["Automation"], nil, 65)
 General.args.general.args.automation.inline = true
 
 General.args.general.args.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["None"], SAY = L["Say"], YELL = L["Yell"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value if value == 'NONE' then Misc:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED') else Misc:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED') end end)
@@ -61,7 +66,7 @@ General.args.general.args.automation.args.autoAcceptInvite = ACH:Toggle(L["Accep
 General.args.general.args.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 General.args.general.args.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
 
-General.args.general.args.totems = ACH:Group(L["Class Totems"], nil, 53, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value Totems:PositionAndSize() end, function() return not E.private.general.totemBar end)
+General.args.general.args.totems = ACH:Group(L["Class Totems"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value Totems:PositionAndSize() end, function() return not E.private.general.totemBar end)
 General.args.general.args.totems.inline = true
 General.args.general.args.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemBar end, function(_, value) E.private.general.totemBar = value; E:StaticPopup_Show('PRIVATE_RL') end, false)
 General.args.general.args.totems.args.size = ACH:Range(L["Button Size"], nil, 2, { min = 24, max = 60, step = 1 })
@@ -187,11 +192,6 @@ General.args.blizzUIImprovements.args.general.args.resurrectSound = ACH:Toggle(L
 General.args.blizzUIImprovements.args.general.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 8, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end, nil, not E.Retail)
 General.args.blizzUIImprovements.args.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 9, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateVehicleFrame() end, nil, not E.Retail)
 General.args.blizzUIImprovements.args.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 10, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateDurabilityScale() end)
-
-General.args.blizzUIImprovements.args.camera = ACH:Group(L["Camera"], nil, 2)
-General.args.blizzUIImprovements.args.camera.inline = true
-General.args.blizzUIImprovements.args.camera.args.loadCameraDistance = ACH:Toggle(L["Load Distance on Login"], nil, 11)
-General.args.blizzUIImprovements.args.camera.args.cameraDistanceValue = ACH:Range(L["Max Camera Distance"], nil, 12, { min = 1, max = E.Retail and 2.6 or 4, step = 0.1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value end)
 
 General.args.blizzUIImprovements.args.quest = ACH:Group(L["Quest"], nil, 3)
 General.args.blizzUIImprovements.args.quest.inline = true
