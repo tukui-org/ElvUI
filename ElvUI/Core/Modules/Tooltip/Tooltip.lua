@@ -854,6 +854,16 @@ function TT:SetCurrencyTokenByID(tt, id)
 	end
 end
 
+function TT:AddBattlePetID()
+	local tt = _G.BattlePetTooltip
+	if not tt or tt:IsForbidden() then return end
+	if tt.speciesID and TT:IsModKeyDown() then
+		tt:AddLine(' ')
+		tt:AddLine(format(IDLine, _G.ID, tt.speciesID))
+		tt:Show()
+	end
+end
+
 function TT:AddQuestID(frame)
 	if GameTooltip:IsForbidden() then return end
 
@@ -985,6 +995,7 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 		TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
+		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
 	end
