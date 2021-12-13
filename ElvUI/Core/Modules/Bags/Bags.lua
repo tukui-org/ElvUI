@@ -1366,7 +1366,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.isBank = isBank
 	f.topOffset = 50
-	f.bottomOffset = (isBank and 8) or 28
+	f.bottomOffset = 8
 	f.BagIDs = (isBank and bankIDs) or bagIDs
 	f.Bags = {}
 
@@ -1760,7 +1760,6 @@ function B:ConstructContainerFrame(name, isBank)
 			f.currencyButton:Point('BOTTOM', 0, 4)
 			f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18)
 			f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
-
 			f.currencyButton:Height(22)
 
 			for i = 1, MAX_WATCHED_TOKENS do
