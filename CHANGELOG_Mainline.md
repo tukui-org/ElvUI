@@ -1,7 +1,9 @@
 ### Version 12.59 [ ETA: 🍨 ]
 
 Auras: Tooltip fixes for top auras  
+Config: Fixed some options displaying in russian  
 Minimap: Scaling and Font fixes  
+Misc: Added an option for LootRoll button size  
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
 NamePlates: Fixed error when deleting a StyleFilter  

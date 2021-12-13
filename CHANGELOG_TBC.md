@@ -1,9 +1,11 @@
 ### Version 2.32 [ ETA: 🍨 ]
 
 Auras: Tooltip fixes for top auras  
+Config: Fixed some options displaying in russian  
 DataTexts: Fixes for party invites  
 General: Added an option to load max camera distance on login  
 Minimap: Scaling and Font fixes  
+Misc: Added an option for LootRoll button size  
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
 NamePlates: Fixed error when deleting a StyleFilter  
