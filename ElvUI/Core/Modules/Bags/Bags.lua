@@ -94,6 +94,7 @@ local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
+local BANK_CONTAINER = BANK_CONTAINER
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local KEYRING_CONTAINER = KEYRING_CONTAINER
@@ -178,7 +179,7 @@ function B:GetContainerFrame(arg)
 	if arg == true then
 		return B.BankFrame
 	elseif type(arg) == 'number' then
-		for _, bagID in ipairs(B.BankFrame.BagIDs) do
+		for _, bagID in next, B.BankFrame.BagIDs do
 			if bagID == arg then
 				return B.BankFrame
 			end
@@ -338,6 +339,8 @@ function B:UpdateItemDisplay()
 						slot.itemLevel:SetTextColor(B:GetItemQualityColor(slot.rarity))
 					end
 
+					slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+
 					slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
 					slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
 
@@ -357,7 +360,7 @@ function B:UpdateItemDisplay()
 end
 
 function B:UpdateAllSlots(frame)
-	for _, bagID in ipairs(frame.BagIDs) do
+	for _, bagID in next, frame.BagIDs do
 		B:UpdateBagSlots(frame, bagID)
 	end
 end
@@ -568,7 +571,7 @@ function B:UpdateItemLevel(slot)
 end
 
 function B:UpdateSlot(frame, bagID, slotID)
-	local bag = frame.Bags[bagID]
+	local bag = bagID == REAGENTBANK_CONTAINER and frame.reagentFrame and frame.reagentFrame.slots or frame.Bags[bagID]
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
@@ -656,52 +659,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 end
 
 function B:GetContainerNumSlots(bagID)
-	return bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
-end
-
-function B:UpdateReagentSlot(slotID)
-	local bagID = REAGENTBANK_CONTAINER
-	local slot = B.BankFrame and B.BankFrame.reagentFrame.slots[slotID]
-	if not slot then return end
-
-	local texture, count, locked, rarity, readable, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink = nil, nil, itemID, rarity, locked, readable, itemLink
-
-	SetItemButtonTexture(slot, texture)
-	SetItemButtonCount(slot, count)
-	SetItemButtonDesaturated(slot, slot.locked)
-	SetItemButtonQuality(slot, rarity, itemLink)
-
-	local isQuestItem, questId, isActiveQuest
-	B:SearchSlotUpdate(slot, itemLink, locked)
-
-	if itemLink then
-		local _, spellID = GetItemSpell(itemLink)
-		local name, _, itemRarity = GetItemInfo(itemLink)
-		slot.name, slot.spellID = name, spellID
-
-		if not slot.rarity then slot.rarity = itemRarity end
-		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-	end
-
-	if slot.questIcon then
-		slot.questIcon:SetShown(questId and not isActiveQuest)
-	end
-
-	if slot.spellID then
-		B:UpdateCooldown(slot)
-		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
-	else
-		slot.Cooldown:Hide()
-		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
-		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
-	end
-
-	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
-
-	if B.db.newItemGlow then
-		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
-	end
+	return bagID == REAGENTBANK_CONTAINER and B.REAGENTBANK_SIZE or bagID == KEYRING_CONTAINER and GetKeyRingSize() or GetContainerNumSlots(bagID)
 end
 
 function B:UpdateBagButtons()
@@ -711,15 +669,9 @@ function B:UpdateBagButtons()
 end
 
 function B:UpdateBagSlots(frame, bagID)
-	if bagID == REAGENTBANK_CONTAINER then
-		for i = 1, B.REAGENTBANK_SIZE do
-			B:UpdateReagentSlot(i)
-		end
-	else
-		local slotMax = B:GetContainerNumSlots(bagID)
-		for slotID = 1, slotMax do
-			B:UpdateSlot(frame, bagID, slotID)
-		end
+	local slotMax = B:GetContainerNumSlots(bagID)
+	for slotID = 1, slotMax do
+		B:UpdateSlot(frame, bagID, slotID)
 	end
 end
 
@@ -862,9 +814,9 @@ function B:AssignBagFlagMenu()
 
 	info.text = BAG_FILTER_IGNORE
 	info.func = function(_, _, _, value)
-		if holder.id == -1 then
+		if holder.id == BANK_CONTAINER then
 			SetBankAutosortDisabled(not value)
-		elseif holder.id == 0 then
+		elseif holder.id == BACKPACK_CONTAINER then
 			SetBackpackAutosortDisabled(not value)
 		elseif holder.id > NUM_BAG_SLOTS then
 			SetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
@@ -872,9 +824,9 @@ function B:AssignBagFlagMenu()
 			SetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		end
 	end
-	if holder.id == -1 then
+	if holder.id == BANK_CONTAINER then
 		info.checked = GetBankAutosortDisabled()
-	elseif holder.id == 0 then
+	elseif holder.id == BACKPACK_CONTAINER then
 		info.checked = GetBackpackAutosortDisabled()
 	elseif holder.id > NUM_BAG_SLOTS then
 		info.checked = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
@@ -983,7 +935,7 @@ function B:Layout(isBank)
 
 	for _, bagID in next, f.BagIDs do
 		if isSplit then
-			newBag = (bagID ~= -1 or bagID ~= 0) and B.db.split['bag'..bagID] or false
+			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and B.db.split['bag'..bagID] or false
 		end
 
 		--Bag Slots
@@ -1138,7 +1090,7 @@ function B:SetBagAssignments(holder, skip)
 	end
 
 	if frame.isBank then
-		if holder.id ~= -1 then
+		if holder.id ~= BANK_CONTAINER then
 			BankFrameItemButton_Update(holder)
 		end
 
@@ -1179,7 +1131,7 @@ function B:OnEvent(event, ...)
 		end
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local bankID = ...
-		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and -1 or (bankID - NUM_BANKGENERIC_SLOTS))
+		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (bankID - NUM_BANKGENERIC_SLOTS))
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		B:DelayedContainer(self, event, ...)
 	elseif event == 'BAG_UPDATE_DELAYED' then
@@ -1201,7 +1153,7 @@ function B:OnEvent(event, ...)
 		B:SetBagAssignments(self.ContainerHolder[id], true)
 		B:UpdateBagSlots(self, self.BagIDs[id])
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
-		B:UpdateReagentSlot(...)
+		B:UpdateSlot(self, REAGENTBANK_CONTAINER, ...)
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
 		for slot in next, B.QuestSlots do
 			B:UpdateSlot(self, slot.bagID, slot.slotID)
@@ -1414,7 +1366,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.isBank = isBank
 	f.topOffset = 50
-	f.bottomOffset = (isBank and 8) or 28
+	f.bottomOffset = 8
 	f.BagIDs = (isBank and bankIDs) or bagIDs
 	f.Bags = {}
 
@@ -1465,13 +1417,14 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
-		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
-		local bagName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
+		local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
+		local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
 		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
-		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), bagName, f.ContainerHolder, inherit)
+		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
+		holder.name = holderName
 		holder.isBank = isBank
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
@@ -1505,7 +1458,7 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
 			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		elseif isBank then
-			holder:SetID(i == 1 and -1 or (bagID - 4))
+			holder:SetID(i == 1 and BANK_CONTAINER or (bagID - 4))
 			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetInventorySlot()) end)
@@ -1524,8 +1477,10 @@ function B:ConstructContainerFrame(name, isBank)
 			f.ContainerHolder:Point('TOPRIGHT', holder, 4, 4)
 		end
 
-		local bag = CreateFrame('Frame', format('%sBag%d', name, bagNum), f.holderFrame)
+		local bagName = format('%sBag%d', name, bagNum)
+		local bag = CreateFrame('Frame', bagName, f.holderFrame)
 		bag.holder = holder
+		bag.name = bagName
 		bag:SetID(bagID)
 
 		holder.id = bagID
@@ -1536,7 +1491,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.Bags[bagID] = bag
 
 		for slotID = 1, MAX_CONTAINER_ITEMS do
-			bag[slotID] = B:ConstructContainerButton(f, slotID, bagID)
+			bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
 		end
 	end
 
@@ -1610,8 +1565,8 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame:Hide()
 			f.reagentFrame.slots = {}
 
-			for i = 1, B.REAGENTBANK_SIZE do
-				f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
+			for slotID = 1, B.REAGENTBANK_SIZE do
+				f.reagentFrame.slots[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
 			end
 
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
@@ -1805,7 +1760,6 @@ function B:ConstructContainerFrame(name, isBank)
 			f.currencyButton:Point('BOTTOM', 0, 4)
 			f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18)
 			f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
-
 			f.currencyButton:Height(22)
 
 			for i = 1, MAX_WATCHED_TOKENS do
@@ -1831,15 +1785,21 @@ function B:ConstructContainerFrame(name, isBank)
 	return f
 end
 
-function B:ConstructContainerButton(f, slotID, bagID)
-	local slotName = f.Bags[bagID]:GetName()..'Slot'..slotID
-	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
+function B:ConstructContainerButton(f, bagID, slotID)
+	local bag = f.Bags[bagID]
+	local isReagent = bagID == REAGENTBANK_CONTAINER
+	local slotName = isReagent and ('ElvUIReagentBankFrameItem'..slotID) or (bag.name..'Slot'..slotID)
+	local parent = isReagent and f.reagentFrame or bag
+	local inherit = (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
+
+	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
 	slot:HookScript('OnEnter', B.Slot_OnEnter)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
 	slot:SetNormalTexture(nil)
+	slot:SetID(slotID)
 
 	if not E.Retail then
 		slot:SetCheckedTexture(nil)
@@ -1898,6 +1858,12 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.keyringTexture:SetDesaturated(true)
 	end
 
+	if isReagent then -- mimic ReagentBankItemButtonGenericTemplate
+		slot.GetInventorySlot = ReagentButtonInventorySlot
+		slot.SplitStack = B.ReagentSplitStack
+		slot.isReagent = true
+	end
+
 	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 
 	slot.IconBorder:Kill()
@@ -1949,51 +1915,6 @@ end
 
 function B:ReagentSplitStack(split)
 	SplitContainerItem(REAGENTBANK_CONTAINER, self.slotID, split)
-end
-
-function B:ConstructReagentSlot(f, slotID)
-	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'BankItemButtonGenericTemplate')
-	slot:SetID(slotID)
-	slot:StyleButton()
-	slot:SetTemplate(B.db.transparent and 'Transparent', true)
-	slot:HookScript('OnEnter', B.Slot_OnEnter)
-	slot:HookScript('OnLeave', B.Slot_OnLeave)
-	slot:SetNormalTexture(nil)
-	slot.isReagent = true
-
-	slot.bagFrame = f
-	slot.slotID = slotID
-	slot.bagID = REAGENTBANK_CONTAINER
-
-	slot.icon:SetTexCoord(unpack(E.TexCoords))
-	slot.icon:SetInside()
-	slot.IconBorder:Kill()
-	slot.IconOverlay:SetInside()
-	slot.IconOverlay2:SetInside()
-
-	slot.Count:ClearAllPoints()
-	slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
-	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
-
-	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
-
-	-- mimic ReagentBankItemButtonGenericTemplate
-	slot:RegisterForDrag('LeftButton')
-	slot:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
-	slot.GetInventorySlot = ReagentButtonInventorySlot
-	slot.UpdateTooltip = BankFrameItemButton_OnEnter
-	slot.SplitStack = B.ReagentSplitStack
-
-	if not slot.newItemGlow then
-		slot.newItemGlow = slot:CreateTexture(nil, 'OVERLAY')
-		slot.newItemGlow:SetInside()
-		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
-		slot.newItemGlow:Hide()
-
-		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-	end
-
-	return slot
 end
 
 function B:ToggleBags(id)
@@ -2576,7 +2497,7 @@ function B:Initialize()
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 
 		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
-		E:Delay(1, B.UpdateBagSlots, B, nil, REAGENTBANK_CONTAINER)
+		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
 	end
 
 	B:SecureHook('OpenAllBags')
