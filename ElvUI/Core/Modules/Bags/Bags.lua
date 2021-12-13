@@ -373,7 +373,7 @@ function B:UpdateAllBagSlots(skip)
 	end
 
 	if E.Retail and not skip then
-		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
+		B:UpdateBagSlots(B.BagFrame, REAGENTBANK_CONTAINER)
 	end
 end
 
@@ -611,7 +611,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 
 		if B.db.showBindType and not isBound and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
-			local BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
+			local BoE, BoU = bindType == 2, bindType == 3
+			if not E.Retail then
+				BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
+			end
 
 			if BoE or BoU then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
