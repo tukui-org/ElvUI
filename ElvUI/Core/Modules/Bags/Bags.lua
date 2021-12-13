@@ -1418,12 +1418,13 @@ function B:ConstructContainerFrame(name, isBank)
 
 	for i, bagID in next, f.BagIDs do
 		local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
-		local bagName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
+		local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
 		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
-		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), bagName, f.ContainerHolder, inherit)
+		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
+		holder.name = holderName
 		holder.isBank = isBank
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
@@ -1476,8 +1477,10 @@ function B:ConstructContainerFrame(name, isBank)
 			f.ContainerHolder:Point('TOPRIGHT', holder, 4, 4)
 		end
 
-		local bag = CreateFrame('Frame', format('%sBag%d', name, bagNum), f.holderFrame)
+		local bagName = format('%sBag%d', name, bagNum)
+		local bag = CreateFrame('Frame', bagName, f.holderFrame)
 		bag.holder = holder
+		bag.name = bagName
 		bag:SetID(bagID)
 
 		holder.id = bagID
@@ -1784,9 +1787,10 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, bagID, slotID)
+	local bag = f.Bags[bagID]
 	local isReagent = bagID == REAGENTBANK_CONTAINER
-	local slotName = isReagent and 'ElvUIReagentBankFrameItem'..slotID or f.Bags[bagID]:GetName()..'Slot'..slotID
-	local parent = isReagent and f.reagentFrame or f.Bags[bagID]
+	local slotName = isReagent and ('ElvUIReagentBankFrameItem'..slotID) or (bag.name..'Slot'..slotID)
+	local parent = isReagent and f.reagentFrame or bag
 	local inherit = (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
 
 	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
@@ -1855,9 +1859,8 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.keyringTexture:SetDesaturated(true)
 	end
 
-	if isReagent then
+	if isReagent then -- mimic ReagentBankItemButtonGenericTemplate
 		slot.GetInventorySlot = ReagentButtonInventorySlot
-		slot.UpdateTooltip = BankFrameItemButton_OnEnter
 		slot.SplitStack = B.ReagentSplitStack
 		slot.isReagent = true
 	end
