@@ -610,8 +610,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		end
 
-		if B.db.showBindType and not isBound and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
-			local BoE, BoU = bindType == 2, bindType == 3
+		local BoE, BoU = bindType == 2, bindType == 3
+		if B.db.showBindType and not isBound and (BoE or BoU) and (rarity and rarity > ITEMQUALITY_COMMON) then
 			if not E.Retail then
 				BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
 			end
