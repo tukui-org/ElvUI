@@ -571,7 +571,7 @@ function B:UpdateItemLevel(slot)
 end
 
 function B:UpdateSlot(frame, bagID, slotID)
-	local bag = bagID == REAGENTBANK_CONTAINER and frame.reagentFrame and frame.reagentFrame.slots or frame.Bags[bagID]
+	local bag = frame.Bags[bagID]
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
@@ -1014,20 +1014,22 @@ function B:Layout(isBank)
 
 		local totalSlots, lastReagentRowButton = 0
 		numContainerRows = 1
-		for i = 1, B.REAGENTBANK_SIZE do
+
+		local bag = f.Bags[REAGENTBANK_CONTAINER]
+		for slotID = 1, B.REAGENTBANK_SIZE do
 			totalSlots = totalSlots + 1
 
-			local slot = f.reagentFrame.slots[i]
+			local slot = bag[slotID]
 			slot:ClearAllPoints()
 			slot:SetSize(buttonSize, buttonSize)
 
-			if f.reagentFrame.slots[i-1] then
+			if bag[slotID - 1] then
 				if (totalSlots - 1) % numContainerColumns == 0 then
 					slot:Point('TOP', lastReagentRowButton, 'BOTTOM', 0, -buttonSpacing)
 					lastReagentRowButton = slot
 					numContainerRows = numContainerRows + 1
 				else
-					slot:Point('LEFT', f.reagentFrame.slots[i-1], 'RIGHT', buttonSpacing, 0)
+					slot:Point('LEFT', bag[slotID - 1], 'RIGHT', buttonSpacing, 0)
 				end
 			else
 				slot:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT')
@@ -1566,11 +1568,14 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
 			f.reagentFrame:SetID(REAGENTBANK_CONTAINER)
 			f.reagentFrame:Hide()
-			f.reagentFrame.slots = {}
 
+			local bag = {}
 			for slotID = 1, B.REAGENTBANK_SIZE do
-				f.reagentFrame.slots[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
+				bag[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
 			end
+
+			f.Bags[REAGENTBANK_CONTAINER] = bag
+			f.reagentFrame.slots = bag
 
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
 			f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
