@@ -744,10 +744,11 @@ function S:Blizzard_ChallengesUI()
 			if not child.template then
 				child:GetRegions():SetAlpha(0)
 				child:SetTemplate()
-				child.Center:SetDrawLayer('BACKGROUND', -1)
 				child.Icon:SetInside()
 				S:HandleIcon(child.Icon)
 			end
+
+			child.Center:SetDrawLayer('BACKGROUND', -1)
 		end
 	end)
 
