@@ -325,7 +325,7 @@ function B:UpdateItemDisplay()
 	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
-		for _, bagID in next, bagFrame.Bags do
+		for bagID in next, bagFrame.Bags do
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot then
