@@ -68,7 +68,6 @@ local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBa
 
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
-local BankFrameItemButton_OnEnter = BankFrameItemButton_OnEnter
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
@@ -325,36 +324,27 @@ function B:UpdateItemDisplay()
 	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
-		for _, bagID in next, bagFrame.BagIDs do
-			for slotID = 1, GetContainerNumSlots(bagID) do
-				local slot = bagFrame.Bags[bagID][slotID]
-				if slot then
-					slot.itemLevel:ClearAllPoints()
-					slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
-					slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+		for _, bag in next, bagFrame.Bags do
+			for _, slot in next, bag do
+				slot.itemLevel:ClearAllPoints()
+				slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
+				slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
-					if B.db.itemLevelCustomColorEnable then
-						slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
-					else
-						slot.itemLevel:SetTextColor(B:GetItemQualityColor(slot.rarity))
-					end
-
-					slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
-
-					slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
-					slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
-
-					slot.Count:ClearAllPoints()
-					slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
-					slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+				if B.db.itemLevelCustomColorEnable then
+					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+				else
+					slot.itemLevel:SetTextColor(B:GetItemQualityColor(slot.rarity))
 				end
-			end
-		end
-	end
 
-	if B.BankFrame.reagentFrame then
-		for _, slot in next, B.BankFrame.reagentFrame.slots do
-			slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+				slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+
+				slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
+				slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
+
+				slot.Count:ClearAllPoints()
+				slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
+				slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+			end
 		end
 	end
 end
@@ -373,7 +363,7 @@ function B:UpdateAllBagSlots(skip)
 	end
 
 	if E.Retail and not skip then
-		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
+		B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
 	end
 end
 
@@ -571,7 +561,7 @@ function B:UpdateItemLevel(slot)
 end
 
 function B:UpdateSlot(frame, bagID, slotID)
-	local bag = bagID == REAGENTBANK_CONTAINER and frame.reagentFrame and frame.reagentFrame.slots or frame.Bags[bagID]
+	local bag = frame.Bags[bagID]
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
@@ -610,8 +600,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		end
 
-		if B.db.showBindType and not isBound and (bindType == 2 or bindType == 3) and (rarity and rarity > ITEMQUALITY_COMMON) then
-			local BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
+		local BoE, BoU = bindType == 2, bindType == 3
+		if B.db.showBindType and not isBound and (BoE or BoU) and (rarity and rarity > ITEMQUALITY_COMMON) then
+			if not E.Retail then
+				BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
+			end
 
 			if BoE or BoU then
 				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
@@ -1009,22 +1002,24 @@ function B:Layout(isBank)
 			f.reagentFrame.cover:Hide()
 		end
 
-		local totalSlots, lastReagentRowButton = 0
 		numContainerRows = 1
-		for i = 1, B.REAGENTBANK_SIZE do
+
+		local totalSlots, lastReagentRowButton = 0
+		local bag = f.Bags[REAGENTBANK_CONTAINER]
+		for slotID, slot in next, bag do
 			totalSlots = totalSlots + 1
 
-			local slot = f.reagentFrame.slots[i]
 			slot:ClearAllPoints()
 			slot:SetSize(buttonSize, buttonSize)
 
-			if f.reagentFrame.slots[i-1] then
+			local prevSlot = bag[slotID - 1]
+			if prevSlot then
 				if (totalSlots - 1) % numContainerColumns == 0 then
 					slot:Point('TOP', lastReagentRowButton, 'BOTTOM', 0, -buttonSpacing)
 					lastReagentRowButton = slot
 					numContainerRows = numContainerRows + 1
 				else
-					slot:Point('LEFT', f.reagentFrame.slots[i-1], 'RIGHT', buttonSpacing, 0)
+					slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
 				end
 			else
 				slot:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT')
@@ -1563,11 +1558,14 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
 			f.reagentFrame:SetID(REAGENTBANK_CONTAINER)
 			f.reagentFrame:Hide()
-			f.reagentFrame.slots = {}
 
+			local bag = {}
 			for slotID = 1, B.REAGENTBANK_SIZE do
-				f.reagentFrame.slots[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
+				bag[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
 			end
+
+			f.Bags[REAGENTBANK_CONTAINER] = bag
+			f.reagentFrame.slots = bag
 
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
 			f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
