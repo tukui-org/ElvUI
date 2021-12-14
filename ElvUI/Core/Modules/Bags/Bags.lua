@@ -1002,24 +1002,23 @@ function B:Layout(isBank)
 			f.reagentFrame.cover:Hide()
 		end
 
-		local totalSlots, lastReagentRowButton = 0
 		numContainerRows = 1
 
+		local lastReagentRowButton
 		local bag = f.Bags[REAGENTBANK_CONTAINER]
-		for slotID = 1, B.REAGENTBANK_SIZE do
-			totalSlots = totalSlots + 1
-
-			local slot = bag[slotID]
+		local prevMax = #bag - 1
+		for slotID, slot in next, bag do
 			slot:ClearAllPoints()
 			slot:SetSize(buttonSize, buttonSize)
 
-			if bag[slotID - 1] then
-				if (totalSlots - 1) % numContainerColumns == 0 then
+			local prevSlot = bag[slotID - 1]
+			if prevSlot then
+				if prevMax % numContainerColumns == 0 then
 					slot:Point('TOP', lastReagentRowButton, 'BOTTOM', 0, -buttonSpacing)
 					lastReagentRowButton = slot
 					numContainerRows = numContainerRows + 1
 				else
-					slot:Point('LEFT', bag[slotID - 1], 'RIGHT', buttonSpacing, 0)
+					slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
 				end
 			else
 				slot:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT')
