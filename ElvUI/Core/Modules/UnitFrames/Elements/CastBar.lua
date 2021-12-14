@@ -69,8 +69,8 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
-	castbar.bg:SetAllPoints()
 	castbar.bg:SetTexture(E.media.blankTex)
+	castbar.bg:SetAllPoints()
 	castbar.bg:Show()
 
 	local button = CreateFrame('Frame', nil, castbar)
@@ -205,8 +205,23 @@ function UF:Configure_Castbar(frame)
 		castbar.Icon = castbar.ButtonIcon
 		castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 
-		castbar.Icon.bg:Size(db.iconAttached and (castbarHeight + UF.BORDER*2) or db.iconSize)
+		castbar.Icon.bg:ClearAllPoints()
 		castbar.Icon.bg:Show()
+
+		if db.overlayOnFrame == 'None' then
+			castbar.Icon.bg:Size(db.iconAttached and (castbarHeight - UF.SPACING*2) or db.iconSize)
+		else
+			castbar.Icon.bg:Size(db.iconAttached and (castbarHeight + UF.BORDER*2) or db.iconSize)
+		end
+
+		if not db.iconAttached then
+			local attachPoint = db.iconAttachedTo == 'Frame' and frame or frame.Castbar
+			castbar.Icon.bg:Point(INVERT_ANCHORPOINT[db.iconPosition], attachPoint, db.iconPosition, db.iconXOffset, db.iconYOffset)
+		elseif frame.ORIENTATION == 'RIGHT' then
+			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', (UF.thinBorders and 0 or 3), 0)
+		else
+			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -(UF.thinBorders and 0 or 3), 0)
+		end
 	else
 		castbar.ButtonIcon.bg:Hide()
 		castbar.Icon = nil
@@ -218,22 +233,6 @@ function UF:Configure_Castbar(frame)
 	else
 		castbar.Text:SetAlpha(1)
 		castbar.Time:SetAlpha(1)
-	end
-
-	if not db.iconAttached and db.icon then
-		local attachPoint = db.iconAttachedTo == 'Frame' and frame or frame.Castbar
-		local anchorPoint = db.iconPosition
-		castbar.Icon.bg:ClearAllPoints()
-		castbar.Icon.bg:Point(INVERT_ANCHORPOINT[anchorPoint], attachPoint, anchorPoint, db.iconXOffset, db.iconYOffset)
-	elseif db.icon then
-		castbar.Icon.bg:ClearAllPoints()
-
-		local offset = UF.thinBorders and 0 or 3
-		if frame.ORIENTATION == 'RIGHT' then
-			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', offset, 0)
-		else
-			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -offset, 0)
-		end
 	end
 
 	--Adjust tick heights
