@@ -325,7 +325,7 @@ function B:UpdateItemDisplay()
 	if not E.private.bags.enable then return end
 
 	for _, bagFrame in next, B.BagFrames do
-		for _, bagID in next, bagFrame.BagIDs do
+		for _, bagID in next, bagFrame.Bags do
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot then
@@ -349,13 +349,6 @@ function B:UpdateItemDisplay()
 					slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 				end
 			end
-		end
-	end
-
-	local reagents = E.Retail and B.BankFrame.Bags[REAGENTBANK_CONTAINER]
-	if reagents then
-		for _, slot in next, reagents do
-			slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 		end
 	end
 end

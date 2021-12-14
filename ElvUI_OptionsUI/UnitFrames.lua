@@ -1013,16 +1013,8 @@ UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = E.Retail and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
 
-UnitFrame.allColorsGroup = {
-			order = 10,
-			type = 'group',
-			childGroups = 'tree',
-			name = L["Colors"],
-			get = function(info) return E.db.unitframe.colors[info[#info]] end,
-			set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
-			disabled = function() return not E.UnitFrames.Initialized end,
-			args = {
-				healthGroup = {
+UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 10, 'tree', function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, function() return not E.UnitFrames.Initialized end)
+UnitFrame.allColorsGroup.args.healthGroup = {
 					order = 2,
 					type = 'group',
 					name = L["Health"],
@@ -1133,8 +1125,8 @@ UnitFrame.allColorsGroup = {
 							customWidth = 250,
 						},
 					},
-				},
-				powerGroup = {
+				}
+UnitFrame.allColorsGroup.args.powerGroup = {
 					order = 3,
 					type = 'group',
 					name = L["Powers"],
@@ -1265,8 +1257,8 @@ UnitFrame.allColorsGroup = {
 							type = 'color'
 						},
 					},
-				},
-				castBars = {
+				}
+UnitFrame.allColorsGroup.args.castBars = {
 					order = 4,
 					type = 'group',
 					name = L["Castbar"],
@@ -1350,8 +1342,8 @@ UnitFrame.allColorsGroup = {
 							hidden = not E.Retail,
 						},
 					},
-				},
-				auras = {
+				}
+UnitFrame.allColorsGroup.args.auras = {
 					order = 5,
 					type = 'group',
 					name = L["Auras"],
@@ -1367,8 +1359,8 @@ UnitFrame.allColorsGroup = {
 							type = 'toggle',
 						},
 					},
-				},
-				auraBars = {
+				}
+UnitFrame.allColorsGroup.args.auraBars = {
 					order = 5,
 					type = 'group',
 					name = L["Aura Bars"],
@@ -1453,8 +1445,8 @@ UnitFrame.allColorsGroup = {
 							type = 'color',
 						},
 					},
-				},
-				reactionGroup = {
+				}
+UnitFrame.allColorsGroup.args.reactionGroup = {
 					order = 6,
 					type = 'group',
 					name = L["Reactions"],
@@ -1484,8 +1476,8 @@ UnitFrame.allColorsGroup = {
 							type = 'color',
 						},
 					},
-				},
-				selectionGroup = {
+				}
+UnitFrame.allColorsGroup.args.selectionGroup = {
 					order = 7,
 					type = 'group',
 					name = L["Selection"],
@@ -1552,8 +1544,8 @@ UnitFrame.allColorsGroup = {
 							type = 'color',
 						},
 					},
-				},
-				healPrediction = {
+				}
+UnitFrame.allColorsGroup.args.healPrediction = {
 					order = 9,
 					type = 'group',
 					name = L["Heal Prediction"],
@@ -1628,8 +1620,8 @@ UnitFrame.allColorsGroup = {
 							hidden = not E.Retail,
 						},
 					},
-				},
-				powerPrediction = {
+				}
+UnitFrame.allColorsGroup.args.powerPrediction = {
 					order = 10,
 					type = 'group',
 					name = L["Power Prediction"],
@@ -1674,8 +1666,8 @@ UnitFrame.allColorsGroup = {
 							hasAlpha = true,
 						},
 					},
-				},
-				debuffHighlight = {
+				}
+UnitFrame.allColorsGroup.args.debuffHighlight = {
 					order = 11,
 					type = 'group',
 					name = L["Debuff Highlighting"],
@@ -1745,9 +1737,7 @@ UnitFrame.allColorsGroup = {
 							hasAlpha = true,
 						},
 					},
-				},
-			},
-		}
+				}
 
 --MORE COLORING STUFF YAY
 UnitFrame.allColorsGroup.args.classResourceGroup = {
@@ -1755,8 +1745,7 @@ UnitFrame.allColorsGroup.args.classResourceGroup = {
 	type = 'group',
 	name = L["Class Resources"],
 	get = function(info)
-		local t = E.db.unitframe.colors.classResources[info[#info]]
-		local d = P.unitframe.colors.classResources[info[#info]]
+		local t, d = E.db.unitframe.colors.classResources[info[#info]], P.unitframe.colors.classResources[info[#info]]
 		return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 	end,
 	set = function(info, r, g, b)
@@ -1764,139 +1753,72 @@ UnitFrame.allColorsGroup.args.classResourceGroup = {
 		t.r, t.g, t.b = r, g, b
 		UF:Update_AllFrames()
 	end,
-	args = {
-		--[=[transparentClasspower = {
-			order = 1,
-			type = 'toggle',
-			name = L["Transparent"],
-			desc = L["Make textures transparent."],
-			get = function(info) return E.db.unitframe.colors[info[#info]] end,
-			set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
-		},
-		invertClasspower = {
-			order = 2,
-			type = 'toggle',
-			name = L["Invert Colors"],
-			desc = L["Invert foreground and background colors."],
-			disabled = function() return not E.db.unitframe.colors.transparentClasspower end,
-			get = function(info) return E.db.unitframe.colors[info[#info]] end,
-			set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
-		},
-		spacer1 = {
-			order = 3,
-			type = 'description',
-			name = ' ',
-			width = 'full'
-		},]=]
-		customclasspowerbackdrop = {
-			order = 4,
-			type = 'toggle',
-			name = L["Use Custom Backdrop"],
-			desc = L["Use the custom backdrop color instead of a multiple of the main color."],
-			get = function(info) return E.db.unitframe.colors[info[#info]] end,
-			set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
-		},
-		classpower_backdrop = {
-			order = 5,
-			type = 'color',
-			name = L["Custom Backdrop"],
-			disabled = function() return not E.db.unitframe.colors.customclasspowerbackdrop end,
-			get = function(info)
-				local t = E.db.unitframe.colors[info[#info]]
-				local d = P.unitframe.colors[info[#info]]
-				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-			end,
-			set = function(info, r, g, b)
-				local t = E.db.unitframe.colors[info[#info]]
-				t.r, t.g, t.b = r, g, b
-				UF:Update_AllFrames()
-			end,
-		},
-		spacer2 = ACH:Spacer(6, 'full'),
-	}
+	args = {}
 }
 
-for i in pairs(P.unitframe.colors.classResources.comboPoints) do
-	UnitFrame.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
-		order = 10 + i,
-		type = 'color',
-		name = L["Combo Point"]..' #'..i,
-		get = function()
-			local t = E.db.unitframe.colors.classResources.comboPoints[i]
-			local d = P.unitframe.colors.classResources.comboPoints[i]
-			return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-		end,
-		set = function(_, r, g, b)
-			local t = E.db.unitframe.colors.classResources.comboPoints[i]
-			t.r, t.g, t.b = r, g, b
-			UF:Update_AllFrames()
-		end,
-	}
-end
+UnitFrame.allColorsGroup.args.classResourceGroup.args.main = ACH:Group(' ', nil, 0)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.main.inline = true
+--[=[UnitFrame.allColorsGroup.args.classResourceGroup.args.main.args.transparentClasspower = {
+	order = 1,
+	type = 'toggle',
+	name = L["Transparent"],
+	desc = L["Make textures transparent."],
+	get = function(info) return E.db.unitframe.colors[info[#info]] end,
+	set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
+},
+UnitFrame.allColorsGroup.args.classResourceGroup.args.main.args.invertClasspower = {
+	order = 2,
+	type = 'toggle',
+	name = L["Invert Colors"],
+	desc = L["Invert foreground and background colors."],
+	disabled = function() return not E.db.unitframe.colors.transparentClasspower end,
+	get = function(info) return E.db.unitframe.colors[info[#info]] end,
+	set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
+}]=]
 
-UnitFrame.allColorsGroup.args.classResourceGroup.args.chargedComboPoint = {
-	order = 17,
+UnitFrame.allColorsGroup.args.classResourceGroup.args.main.args.customclasspowerbackdrop = {
+	order = 1,
+	type = 'toggle',
+	name = L["Use Custom Backdrop"],
+	desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+	get = function(info) return E.db.unitframe.colors[info[#info]] end,
+	set = function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end,
+}
+UnitFrame.allColorsGroup.args.classResourceGroup.args.main.args.classpower_backdrop = {
+	order = 2,
 	type = 'color',
-	name = L["Charged Combo Point"],
-	get = function()
-		local t = E.db.unitframe.colors.classResources.chargedComboPoint
-		local d = P.unitframe.colors.classResources.chargedComboPoint
+	name = L["Custom Backdrop"],
+	disabled = function() return not E.db.unitframe.colors.customclasspowerbackdrop end,
+	get = function(info)
+		local t = E.db.unitframe.colors[info[#info]]
+		local d = P.unitframe.colors[info[#info]]
 		return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 	end,
-	set = function(_, r, g, b)
-		local t = E.db.unitframe.colors.classResources.chargedComboPoint
+	set = function(info, r, g, b)
+		local t = E.db.unitframe.colors[info[#info]]
 		t.r, t.g, t.b = r, g, b
 		UF:Update_AllFrames()
 	end,
 }
 
-if P.unitframe.colors.classResources[E.myclass] then
-	UnitFrame.allColorsGroup.args.classResourceGroup.args.spacer5 = ACH:Spacer(20, 'full')
+UnitFrame.allColorsGroup.args.classResourceGroup.args.class = ACH:Group(' ', nil, 1)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.class.inline = true
+UnitFrame.allColorsGroup.args.classResourceGroup.args.class.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.class.args.MAGE = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.class.args.WARLOCK = ACH:Color(L["SOUL_SHARDS"], nil, 3)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.class.args.DEATHKNIGHT = ACH:Color(L["RUNES"], nil, 4)
 
-	local ORDER = 30
-	if E.myclass == 'PALADIN' then
-		UnitFrame.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
-			type = 'color',
-			name = L["HOLY_POWER"],
-			order = ORDER,
-		}
-	elseif E.myclass == 'MAGE' then
-		UnitFrame.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
-			type = 'color',
-			name = L["POWER_TYPE_ARCANE_CHARGES"],
-			order = ORDER,
-		}
-	elseif E.myclass == 'MONK' then
-		for i = 1, 6 do
-			UnitFrame.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = L["CHI_POWER"]..' #'..i,
-				order = ORDER+i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.MONK[i]
-					local d = P.unitframe.colors.classResources.MONK[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					local t = E.db.unitframe.colors.classResources.MONK[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
-	elseif E.myclass == 'WARLOCK' then
-		UnitFrame.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
-			type = 'color',
-			name = L["SOUL_SHARDS"],
-			order = ORDER,
-		}
-	elseif E.myclass == 'DEATHKNIGHT' then
-		UnitFrame.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
-			type = 'color',
-			name = L["RUNES"],
-			order = ORDER,
-		}
-	end
+UnitFrame.allColorsGroup.args.classResourceGroup.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 2, nil, function(info) local t, d = E.db.unitframe.colors.classResources.comboPoints[tonumber(info[#info])], P.unitframe.colors.classResources.comboPoints[tonumber(info[#info])] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.COMBO_POINTS.inline = true
+
+UnitFrame.allColorsGroup.args.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 3, nil, function(info) local t, d = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])], P.unitframe.colors.classResources.MONK[tonumber(info[#info])] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+UnitFrame.allColorsGroup.args.classResourceGroup.args.CHI_POWER.inline = true
+
+UnitFrame.allColorsGroup.args.classResourceGroup.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+
+for i = 1, 6 do
+	UnitFrame.allColorsGroup.args.classResourceGroup.args.CHI_POWER.args[''..i] = ACH:Color(L["CHI_POWER"]..' #'..i)
+	UnitFrame.allColorsGroup.args.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(L["COMBO_POINTS"]..' #'..i)
 end
 
 UnitFrame.frameGlowGroup = ACH:Group(L["Frame Glow"], nil, 25, 'tree', nil, nil, function() return not E.UnitFrames.Initialized end)
