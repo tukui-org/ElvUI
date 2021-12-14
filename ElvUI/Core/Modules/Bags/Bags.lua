@@ -352,8 +352,9 @@ function B:UpdateItemDisplay()
 		end
 	end
 
-	if B.BankFrame.reagentFrame then
-		for _, slot in next, B.BankFrame.reagentFrame.slots do
+	local reagents = E.Retail and B.BankFrame.Bags[REAGENTBANK_CONTAINER]
+	if reagents then
+		for _, slot in next, reagents do
 			slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 		end
 	end
