@@ -6,9 +6,12 @@ Minimap: Scaling and Font fixes
 Misc: Added an option for LootRoll button size  
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
+NamePlates: Fixed Desaturate Icon option  
 NamePlates: Fixed error when deleting a StyleFilter  
+NamePlates: Fixed Quest Icon text position option  
 Skins: Fixed "New Mythic+ Season" overlap issue  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
+UnitFrames: Fixed non attached Castbar Icon  
 
 Note for plugin authors:  
 ElvDB.global.nameplate was renamed to ElvDB.global.nameplates  
