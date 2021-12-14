@@ -1466,7 +1466,10 @@ function S:SkinSpellDisplay(widgetFrame)
 
 	if spell.Icon then
 		S:HandleIcon(spell.Icon)
-		spell.Icon:SetTemplate()
+
+		if not spell.Icon.backdrop then
+			spell.Icon:CreateBackdrop()
+		end
 	end
 end
 
