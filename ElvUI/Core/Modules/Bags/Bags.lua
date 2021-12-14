@@ -120,11 +120,12 @@ B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
 
+-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
 local animaSpellID = {
-	[347555] = 3,  -- Deposit Anima: Infuse 3 stored Anima into your covenant's Reservoir.
-	[345706] = 5,  -- Deposit Anima: Infuse 5 stored Anima into your covenant's Reservoir.
-	[336327] = 35, -- Deposit Anima: Infuse 35 stored Anima into your covenant's Reservoir.
-	[336456] = 250 -- Deposit Anima: Infuse 250 stored Anima into your covenant's Reservoir.
+	[347555] = 3,
+	[345706] = 5,
+	[336327] = 35,
+	[336456] = 250
 }
 
 B.IsEquipmentSlot = {
