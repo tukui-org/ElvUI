@@ -98,6 +98,8 @@ function UF:Configure_AuraBars(frame)
 			statusBar.db = auraBars.db
 			statusBar:SetReverseFill(auraBars.reverseFill)
 			statusBar.spark:Point(auraBars.reverseFill and 'LEFT' or 'RIGHT', statusBar:GetStatusBarTexture())
+			statusBar.spark:Point('BOTTOM')
+			statusBar.spark:Point('TOP')
 
 			UF:Update_FontString(statusBar.timeText)
 			UF:Update_FontString(statusBar.nameText)
@@ -191,7 +193,6 @@ function UF:PostUpdateBar_AuraBars(_, statusBar, _, _, _, _, debuffType) -- unit
 
 	statusBar.db = self.db
 	statusBar.icon:SetTexCoord(unpack(E.TexCoords))
-	statusBar.spark:SetHeight(self.height)
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
 

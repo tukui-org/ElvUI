@@ -37,9 +37,13 @@ local function DetailsPanelRefresh(panel)
 	end
 end
 
-local function DressUpConfigureSize(frame)
+local function DressUpConfigureSize(frame, isMinimized)
 	frame.OutfitDetailsPanel:ClearAllPoints()
 	frame.OutfitDetailsPanel:Point('TOPLEFT', frame, 'TOPRIGHT', 4, 0)
+
+	frame.OutfitDropDown:ClearAllPoints()
+	frame.OutfitDropDown:Point('TOP', -(isMinimized and 42 or 28), -32)
+	frame.OutfitDropDown:Width(isMinimized and 140 or 190)
 end
 
 function S:DressUpFrame()
@@ -52,19 +56,25 @@ function S:DressUpFrame()
 	S:HandleButton(_G.DressUpFrameCancelButton)
 	S:HandleButton(DressUpFrame.LinkButton)
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
-
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
+
+	DressUpFrame.ModelBackground:SetDrawLayer('BACKGROUND', 1)
+	DressUpFrame.LinkButton:Size(110, 22)
+	DressUpFrame.LinkButton:ClearAllPoints()
 	DressUpFrame.LinkButton:Point('BOTTOMLEFT', 4, 4)
-	DressUpFrame.LinkButton:Size(120, 22)
 
 	_G.DressUpFrameCancelButton:Point('BOTTOMRIGHT', -4, 4)
 	_G.DressUpFrameResetButton:Point('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -3, 0)
 
-	local DressUpFrameOutfitDropDown = _G.DressUpFrameOutfitDropDown
-	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
-	S:HandleButton(DressUpFrameOutfitDropDown.SaveButton)
-	DressUpFrameOutfitDropDown.SaveButton:Point('LEFT', DressUpFrameOutfitDropDown, 'RIGHT', -7, 3)
-	DressUpFrameOutfitDropDown.backdrop:Point('TOPLEFT', -25, 3)
+	local OutfitDropDown = DressUpFrame.OutfitDropDown
+	S:HandleDropDownBox(OutfitDropDown)
+	S:HandleButton(OutfitDropDown.SaveButton)
+	OutfitDropDown.SaveButton:Size(80, 22)
+	OutfitDropDown.SaveButton:Point('LEFT', OutfitDropDown, 'RIGHT', -7, 3)
+	OutfitDropDown.Text:ClearAllPoints()
+	OutfitDropDown.Text:Point('LEFT', OutfitDropDown.backdrop, 4, 0)
+	OutfitDropDown.Text:Point('RIGHT', OutfitDropDown.backdrop, -4, 0)
+	OutfitDropDown.backdrop:Point('TOPLEFT', 3, 3)
 
 	-- 9.1.5 Outfit DetailPanel | Dont use StripTextures on the DetailsPanel, plx
 	DressUpFrame.OutfitDetailsPanel:DisableDrawLayer('BACKGROUND')

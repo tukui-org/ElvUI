@@ -10,6 +10,7 @@ Misc: Adjusted spacing between LootRoll need/greed/pass
 Misc: Adjusted text length for LootRoll items  
 NamePlates: Fixed error when deleting a StyleFilter  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
+UnitFrames: Fixed non attached Castbar Icon  
 UnitFrames: LibHealComm-4.0 for HoTs  
 
 Note for plugin authors:  
