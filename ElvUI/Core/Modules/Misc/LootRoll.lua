@@ -81,7 +81,9 @@ local function StatusUpdate(frame)
 	if not frame.parent.rollID then return end
 	local t = GetLootRollTimeLeft(frame.parent.rollID)
 	local perc = t / frame.parent.time
-	frame.spark:Point('CENTER', frame, 'LEFT', perc * frame:GetWidth(), 0)
+	frame.spark:Point('LEFT', frame, perc * frame:GetWidth(), 0)
+	frame.spark:Point('BOTTOM')
+	frame.spark:Point('TOP')
 	frame:SetValue(t)
 end
 
@@ -348,7 +350,6 @@ function M:UpdateLootRollFrames()
 			frame.status:ClearAllPoints()
 			frame.status:Point('BOTTOM', 3, 0)
 			frame.status:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height / 3)
-			frame.status.spark:Size(2, (E.db.general.lootRoll.height / 3))
 
 			frame.name:ClearAllPoints()
 			frame.name:Point('BOTTOMLEFT', frame.status, 'TOPLEFT', 4, 4)
@@ -362,7 +363,6 @@ function M:UpdateLootRollFrames()
 			frame.status:ClearAllPoints()
 			frame.status:SetAllPoints()
 			frame.status:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height)
-			frame.status.spark:Size(2, (E.db.general.lootRoll.height))
 
 			frame.name:ClearAllPoints()
 			frame.name:Point('LEFT', frame.status, 4, 0)
