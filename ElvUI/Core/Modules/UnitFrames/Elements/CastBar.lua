@@ -160,6 +160,8 @@ function UF:Configure_Castbar(frame)
 		castbar.Spark = castbar.Spark_
 		castbar.Spark:ClearAllPoints()
 		castbar.Spark:Point(db.reverse and 'LEFT' or 'RIGHT', castbar:GetStatusBarTexture())
+		castbar.Spark:Point('BOTTOM')
+		castbar.Spark:Point('TOP')
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
 		castbar.Spark = nil
@@ -181,10 +183,6 @@ function UF:Configure_Castbar(frame)
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', iconWidth, SPACING1)
 		end
 
-		if db.spark then
-			castbar.Spark:Height(db.height - SPACING2)
-		end
-
 		castbar:Size(db.width - iconWidth - SPACING1, db.height - SPACING2)
 	else
 		local anchor = frame[db.overlayOnFrame]
@@ -201,10 +199,6 @@ function UF:Configure_Castbar(frame)
 				castbar:Point('TOPLEFT', anchor, 'TOPLEFT', iconWidth, 0)
 				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
-		end
-
-		if db.spark then
-			castbar.Spark:SetHeight(height) -- already scaled by GetHeight
 		end
 
 		castbar:Size(db.width - SPACING2, db.height - SPACING2)
