@@ -79,12 +79,7 @@ end
 
 local function StatusUpdate(frame)
 	if not frame.parent.rollID then return end
-	local t = GetLootRollTimeLeft(frame.parent.rollID)
-	local perc = t / frame.parent.time
-	frame.spark:Point('RIGHT', frame, perc * frame:GetWidth(), 0)
-	frame.spark:Point('BOTTOM')
-	frame.spark:Point('TOP')
-	frame:SetValue(t)
+	frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
 end
 
 local function CreateRollButton(parent, texture, rolltype, tiptext)
@@ -125,8 +120,10 @@ function M:CreateRollFrame()
 	frame.status = status
 
 	local spark = frame:CreateTexture(nil, 'ARTWORK', nil, 1)
-	spark:SetPoint('CENTER', status:GetStatusBarTexture(), 'RIGHT', 0, 0)
 	spark:SetBlendMode('BLEND')
+	spark:Point('RIGHT', status:GetStatusBarTexture())
+	spark:Point('BOTTOM')
+	spark:Point('TOP')
 	status.spark = spark
 
 	local button = CreateFrame('Button', nil, frame)
