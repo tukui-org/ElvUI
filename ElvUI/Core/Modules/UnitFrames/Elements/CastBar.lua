@@ -204,7 +204,7 @@ function UF:Configure_Castbar(frame)
 		end
 
 		if db.spark then
-			castbar.Spark:SetHeight(height)
+			castbar.Spark:Height(height)
 		end
 
 		castbar:Size(db.width - SPACING2, db.height - SPACING2)
