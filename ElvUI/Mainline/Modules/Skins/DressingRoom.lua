@@ -58,6 +58,7 @@ function S:DressUpFrame()
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
 
+	DressUpFrame.ModelBackground:SetDrawLayer('BACKGROUND', 1)
 	DressUpFrame.LinkButton:Size(110, 22)
 	DressUpFrame.LinkButton:ClearAllPoints()
 	DressUpFrame.LinkButton:Point('BOTTOMLEFT', 4, 4)
