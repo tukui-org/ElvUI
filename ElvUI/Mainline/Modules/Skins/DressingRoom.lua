@@ -58,15 +58,16 @@ function S:DressUpFrame()
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
 
+	DressUpFrame.LinkButton:Size(110, 22)
+	DressUpFrame.LinkButton:ClearAllPoints()
+	DressUpFrame.LinkButton:Point('BOTTOMLEFT', 4, 4)
+
 	_G.DressUpFrameCancelButton:Point('BOTTOMRIGHT', -4, 4)
 	_G.DressUpFrameResetButton:Point('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -3, 0)
 
 	local OutfitDropDown = DressUpFrame.OutfitDropDown
 	S:HandleDropDownBox(OutfitDropDown)
 	S:HandleButton(OutfitDropDown.SaveButton)
-	DressUpFrame.LinkButton:Size(110, 22)
-	DressUpFrame.LinkButton:ClearAllPoints()
-	DressUpFrame.LinkButton:Point('BOTTOMLEFT', 4, 4)
 	OutfitDropDown.SaveButton:Size(80, 22)
 	OutfitDropDown.SaveButton:Point('LEFT', OutfitDropDown, 'RIGHT', -7, 3)
 	OutfitDropDown.Text:ClearAllPoints()
