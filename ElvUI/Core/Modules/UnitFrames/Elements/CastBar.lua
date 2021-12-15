@@ -193,7 +193,7 @@ function UF:Configure_Castbar(frame)
 		if not db.iconAttached then
 			castbar:SetAllPoints(anchor)
 		else
-			local iconWidth = db.icon and (height + (UF.thinBorders and 1 or 5)) or 0
+			local iconWidth = db.icon and (height + SPACING2 - 1) or 0
 			if frame.ORIENTATION == 'RIGHT' then
 				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
 				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth, 0)
