@@ -81,7 +81,7 @@ local function StatusUpdate(frame)
 	if not frame.parent.rollID then return end
 	local t = GetLootRollTimeLeft(frame.parent.rollID)
 	local perc = t / frame.parent.time
-	frame.spark:Point('LEFT', frame, perc * frame:GetWidth(), 0)
+	frame.spark:Point('RIGHT', frame, perc * frame:GetWidth(), 0)
 	frame.spark:Point('BOTTOM')
 	frame.spark:Point('TOP')
 	frame:SetValue(t)
