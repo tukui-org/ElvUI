@@ -84,7 +84,7 @@ local function StatusUpdate(frame, elapsed)
 		frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
 		frame.elapsed = 0
 	else
-		frame.elapsed = frame.elapsed + elapsed
+		frame.elapsed = (frame.elapsed or 0) + elapsed
 	end
 end
 
