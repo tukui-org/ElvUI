@@ -1347,6 +1347,18 @@ function B:ToggleBag(holder)
 	B:Layout(holder.isBank)
 end
 
+function B.Bag_OnEnter(ch)
+	B.SetSlotAlphaForBag(ch, ch.parent)
+
+	GameTooltip:AddLine(' ')
+	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+	GameTooltip:Show()
+end
+
+function B.Bag_OnLeave(ch)
+	B.ResetSlotAlphaForBags(ch, ch.parent)
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1422,14 +1434,14 @@ function B:ConstructContainerFrame(name, isBank)
 		f.ContainerHolder[i] = holder
 		holder.name = holderName
 		holder.isBank = isBank
+		holder.parent = f
+		holder.UpdateTooltip = nil -- This is needed to stop constant updates. It will still get updated by OnEnter.
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
 		holder:StyleButton()
 		holder:SetNormalTexture('')
 		holder:SetPushedTexture('')
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
-		holder:HookScript('OnEnter', function(ch) B.SetSlotAlphaForBag(ch, f) end)
-		holder:HookScript('OnLeave', function(ch) B.ResetSlotAlphaForBags(ch, f) end)
 
 		if not E.Retail then
 			holder:SetCheckedTexture('')
@@ -1437,6 +1449,9 @@ function B:ConstructContainerFrame(name, isBank)
 
 		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and [[Interface\ICONS\INV_Misc_Key_03]] or E.Media.Textures.Backpack)
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
+		if holder.animIcon then
+			holder.animIcon:SetTexCoord(unpack(E.TexCoords))
+		end
 		holder.icon:SetInside()
 		holder.IconBorder:Kill()
 
@@ -1448,9 +1463,19 @@ function B:ConstructContainerFrame(name, isBank)
 		B:CreateFilterIcon(holder)
 
 		if bagID == BACKPACK_CONTAINER then
+			holder:SetScript('OnEnter', function(s)
+				GameTooltip:SetOwner(s, "ANCHOR_LEFT")
+				GameTooltip:SetText(_G.BACKPACK_TOOLTIP, 1.0, 1.0, 1.0)
+				local keyBinding = _G.GetBindingKey("TOGGLEBACKPACK")
+				if ( keyBinding ) then
+					GameTooltip:AppendText(format(' |cffffd200(%s)|r', keyBinding))
+				end
+				GameTooltip:Show()
+			end)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
 			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 		elseif bagID == KEYRING_CONTAINER then
+			holder:SetScript('OnEnter', function(s) GameTooltip:SetOwner(s, "ANCHOR_RIGHT") GameTooltip:SetText(_G.KEYRING, 1, 1, 1) GameTooltip:AddLine() end)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
 			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		elseif isBank then
@@ -1462,6 +1487,9 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:SetID(GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
 		end
+
+		holder:HookScript('OnEnter', B.Bag_OnEnter)
+		holder:HookScript('OnLeave', B.Bag_OnLeave)
 
 		if i == 1 then
 			holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
