@@ -7,7 +7,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local tostring, format, type, pcall = tostring, format, type, pcall
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
-local next, strfind, strlen, strsplittable = next, strfind, strlen, strsplittable
+local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
 local hooksecurefunc = hooksecurefunc
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
@@ -848,7 +848,7 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	if type(events) == 'function' then
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
 	else
-		data.events = type(events) == 'string' and strsplittable('[, ]', events) or events
+		data.events = type(events) == 'string' and { strsplit('[, ]', events) } or events
 		data.eventFunc = eventFunc
 		data.objectEvent = objectEvent
 	end
