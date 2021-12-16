@@ -77,9 +77,14 @@ local function LootClick(frame)
 	end
 end
 
-local function StatusUpdate(frame)
+local function StatusUpdate(frame, elapsed)
 	if not frame.parent.rollID then return end
-	frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
+	frame.elapsed = (frame.elapsed or 0) + elapsed
+
+	if frame.elapsed and (frame.elapsed >= .5) then
+		frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
+		frame.elapsed = 0
+	end
 end
 
 local function CreateRollButton(parent, texture, rolltype, tiptext)
@@ -209,6 +214,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 
 	f.rollID = rollID
 	f.time = rollTime
+	f.elapsed = 1
 
 	f.button.link = link
 	f.button.rollID = rollID
