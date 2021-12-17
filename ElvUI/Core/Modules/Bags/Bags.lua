@@ -789,10 +789,10 @@ function B:AssignBagFlagMenu()
 	local holder = B.AssignBagDropdown.holder
 	B.AssignBagDropdown.holder = nil
 
-	if not (holder and holder.id) then return end
+	if not (holder and holder.bagID) then return end
 
 	local info = _G.UIDropDownMenu_CreateInfo()
-	if holder.id > 0 and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(holder.id)) then -- The actual bank has ID -1, backpack has ID 0, we want to make sure we're looking at a regular or bank bag
+	if holder.bagID > 0 and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(holder.bagID)) then -- The actual bank has ID -1, backpack has ID 0, we want to make sure we're looking at a regular or bank bag
 		info.text = BAG_FILTER_ASSIGN_TO
 		info.isTitle = 1
 		info.notCheckable = 1
@@ -809,10 +809,10 @@ function B:AssignBagFlagMenu()
 				info.func = function(_, _, _, value)
 					value = not value
 
-					if holder.id > NUM_BAG_SLOTS then
-						SetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, i, value)
+					if holder.bagID > NUM_BAG_SLOTS then
+						SetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, i, value)
 					else
-						SetBagSlotFlag(holder.id, i, value)
+						SetBagSlotFlag(holder.bagID, i, value)
 					end
 
 					holder.tempflag = (value and i) or -1
@@ -821,10 +821,10 @@ function B:AssignBagFlagMenu()
 				if holder.tempflag then
 					info.checked = holder.tempflag == i
 				else
-					if holder.id > NUM_BAG_SLOTS then
-						info.checked = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, i)
+					if holder.bagID > NUM_BAG_SLOTS then
+						info.checked = GetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, i)
 					else
-						info.checked = GetBagSlotFlag(holder.id, i)
+						info.checked = GetBagSlotFlag(holder.bagID, i)
 					end
 				end
 
@@ -847,33 +847,33 @@ function B:AssignBagFlagMenu()
 
 	info.text = BAG_FILTER_IGNORE
 	info.func = function(_, _, _, value)
-		if holder.id == BANK_CONTAINER then
+		if holder.bagID == BANK_CONTAINER then
 			SetBankAutosortDisabled(not value)
-		elseif holder.id == BACKPACK_CONTAINER then
+		elseif holder.bagID == BACKPACK_CONTAINER then
 			SetBackpackAutosortDisabled(not value)
-		elseif holder.id > NUM_BAG_SLOTS then
-			SetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
+		elseif holder.bagID > NUM_BAG_SLOTS then
+			SetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		else
-			SetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
+			SetBagSlotFlag(holder.bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		end
 	end
-	if holder.id == BANK_CONTAINER then
+	if holder.bagID == BANK_CONTAINER then
 		info.checked = GetBankAutosortDisabled()
-	elseif holder.id == BACKPACK_CONTAINER then
+	elseif holder.bagID == BACKPACK_CONTAINER then
 		info.checked = GetBackpackAutosortDisabled()
-	elseif holder.id > NUM_BAG_SLOTS then
-		info.checked = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+	elseif holder.bagID > NUM_BAG_SLOTS then
+		info.checked = GetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
 	else
-		info.checked = GetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+		info.checked = GetBagSlotFlag(holder.bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
 	end
 
 	_G.UIDropDownMenu_AddButton(info)
 end
 
 function B:GetBagAssignedInfo(holder)
-	if not (holder and holder.id and holder.id > 0) then return end
+	if not (holder and holder.bagID and holder.bagID > 0) then return end
 
-	local inventoryID = ContainerIDToInventoryID(holder.id)
+	local inventoryID = ContainerIDToInventoryID(holder.bagID)
 	if IsInventoryItemProfessionBag('player', inventoryID) then return end
 
 	-- clear tempflag from AssignBagFlagMenu
@@ -882,10 +882,10 @@ function B:GetBagAssignedInfo(holder)
 	local active, color
 	for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
 		if i ~= LE_BAG_FILTER_FLAG_JUNK then --ignore this one
-			if holder.id > NUM_BAG_SLOTS then
-				active = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, i)
+			if holder.bagID > NUM_BAG_SLOTS then
+				active = GetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, i)
 			else
-				active = GetBagSlotFlag(holder.id, i)
+				active = GetBagSlotFlag(holder.bagID, i)
 			end
 
 			if active then
@@ -1112,9 +1112,9 @@ function B:SetBagAssignments(holder, skip)
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
-	bag.type = select(2, GetContainerNumFreeSlots(holder.id))
+	bag.type = select(2, GetContainerNumFreeSlots(holder.bagID))
 
-	if holder.id == KEYRING_CONTAINER then
+	if holder.bagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
 	end
 
@@ -1125,7 +1125,7 @@ function B:SetBagAssignments(holder, skip)
 	end
 
 	if frame.isBank then
-		if holder.id ~= BANK_CONTAINER then
+		if holder.bagID ~= BANK_CONTAINER then
 			BankFrameItemButton_Update(holder)
 		end
 
@@ -1365,7 +1365,7 @@ function B:SetButtonTexture(button, texture)
 end
 
 function B:BagItemAction(button, holder, func, id)
-	if E.Retail and button == 'RightButton' and holder.id then
+	if E.Retail and button == 'RightButton' and holder.bagID then
 		B.AssignBagDropdown.holder = holder
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif CursorHasItem() then
@@ -1378,7 +1378,7 @@ end
 function B:ToggleBag(holder)
 	if not holder then return end
 
-	local slotID = 'bag'..holder.id
+	local slotID = 'bag'..holder.bagID
 	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
 
 	holder.shownIcon:SetTexture(B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
@@ -1521,7 +1521,7 @@ function B:ConstructContainerFrame(name, isBank)
 		bag.name = bagName
 		bag:SetID(bagID)
 
-		holder.id = bagID
+		holder.bagID = bagID
 		holder.bag = bag
 		holder.frame = f
 		holder.index = i
