@@ -716,9 +716,9 @@ function B:Holder_OnClick(button)
 end
 
 function B:Holder_OnEnter()
-	if not self.parent then return end
+	if not self.bagFrame then return end
 
-	B:SetSlotAlphaForBag(self.parent)
+	B:SetSlotAlphaForBag(self.bagFrame)
 
 	local bagID = self.id
 	if bagID == BACKPACK_CONTAINER then
@@ -737,7 +737,9 @@ function B:Holder_OnEnter()
 end
 
 function B:Holder_OnLeave()
-	B:ResetSlotAlphaForBags(self.parent)
+	if not self.bagFrame then return end
+
+	B:ResetSlotAlphaForBags(self.bagFrame)
 end
 
 function B:Cooldown_OnHide()
@@ -1460,7 +1462,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.ContainerHolder[i] = holder
 		holder.name = holderName
 		holder.isBank = isBank
-		holder.parent = f
+		holder.bagFrame = f
 		holder.UpdateTooltip = nil -- This is needed to stop constant updates. It will still get updated by OnEnter.
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
