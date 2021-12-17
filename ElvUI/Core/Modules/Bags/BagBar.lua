@@ -187,7 +187,7 @@ function B:BagButton_OnClick(key)
 	if E.Retail and key == 'RightButton' then
 		B.AssignBagDropdown.holder = self
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-	elseif self.id == 0 then
+	elseif self.bagID == 0 then
 		B.MainMenuBarBackpackButton_OnClick(self, key)
 	else
 		_G.BagSlotButton_OnClick(self)
@@ -251,7 +251,7 @@ function B:LoadBagBar()
 	end
 
 	for i, button in ipairs(B.BagBar.buttons) do
-		button.id = i - 1
+		button.bagID = i - 1
 
 		if E.Retail then -- Item Assignment
 			B:CreateFilterIcon(button)
