@@ -183,7 +183,7 @@ function UF:Configure_Castbar(frame)
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', iconWidth, SPACING1)
 		end
 
-		castbar:Size(db.width - iconWidth - SPACING1, db.height - SPACING2)
+		castbar:Size(db.width - (db.iconAttached and iconWidth or 0) - SPACING1, db.height - SPACING2)
 	else
 		local anchor = frame[db.overlayOnFrame]
 		height = anchor:GetHeight()
