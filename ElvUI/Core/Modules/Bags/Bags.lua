@@ -704,9 +704,9 @@ end
 function B:Slot_OnLeave() end
 
 function B:Holder_OnClick(button)
-	if self.id == BACKPACK_CONTAINER then
+	if self.bagID == BACKPACK_CONTAINER then
 		B:BagItemAction(button, self, PutItemInBackpack)
-	elseif self.id == KEYRING_CONTAINER then
+	elseif self.bagID == KEYRING_CONTAINER then
 		B:BagItemAction(button, self, PutKeyInKeyRing)
 	elseif self.isBank then
 		B:BagItemAction(button, self, PutItemInBag, self:GetInventorySlot())
@@ -720,12 +720,12 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame)
 
-	if self.id == BACKPACK_CONTAINER then
+	if self.bagID == BACKPACK_CONTAINER then
 		local kb = GetBindingKey('TOGGLEBACKPACK')
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 		GameTooltip:SetText(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
 		GameTooltip:AddLine(' ')
-	elseif self.id == KEYRING_CONTAINER then
+	elseif self.bagID == KEYRING_CONTAINER then
 		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 		GameTooltip:SetText(_G.KEYRING, 1, 1, 1)
 		GameTooltip:AddLine(' ')
@@ -770,7 +770,7 @@ end
 
 function B:SetSlotAlphaForBag(f)
 	for _, bagID in next, f.BagIDs do
-		f.Bags[bagID]:SetAlpha(bagID == self.id and 1 or .1)
+		f.Bags[bagID]:SetAlpha(bagID == self.bagID and 1 or .1)
 	end
 end
 
@@ -1159,10 +1159,10 @@ end
 
 function B:OnEvent(event, ...)
 	if event == 'PLAYERBANKBAGSLOTS_CHANGED' then
-		local id, holder = next(self.notPurchased)
-		if id then
+		local containerID, holder = next(self.notPurchased)
+		if containerID then
 			B:SetBagAssignments(holder, true)
-			self.notPurchased[id] = nil
+			self.notPurchased[containerID] = nil
 		end
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local bankID = ...
@@ -1958,8 +1958,8 @@ function B:ReagentSplitStack(split)
 	SplitContainerItem(REAGENTBANK_CONTAINER, self.slotID, split)
 end
 
-function B:ToggleBags(id)
-	if E.private.bags.bagBar and id == KEYRING_CONTAINER then
+function B:ToggleBags(bagID)
+	if E.private.bags.bagBar and bagID == KEYRING_CONTAINER then
 		local closed = not B.BagFrame:IsShown()
 		B.ShowKeyRing = closed or not B.ShowKeyRing
 
@@ -1968,7 +1968,7 @@ function B:ToggleBags(id)
 		if closed then
 			B:OpenBags()
 		end
-	elseif id and GetContainerNumSlots(id) ~= 0 then
+	elseif bagID and GetContainerNumSlots(bagID) ~= 0 then
 		if B.BagFrame:IsShown() then
 			B:CloseBags()
 		else
