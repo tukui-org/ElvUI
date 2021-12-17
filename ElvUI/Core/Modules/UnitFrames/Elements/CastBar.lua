@@ -176,14 +176,14 @@ function UF:Configure_Castbar(frame)
 			castbar.Holder:Point(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
 		end
 
-		local iconWidth = db.icon and (height + UF.BORDER) or 0
+		local iconWidth = db.icon and db.iconAttached and (height + UF.BORDER) or 0
 		if frame.ORIENTATION == 'RIGHT' then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -iconWidth, SPACING1)
 		else
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', iconWidth, SPACING1)
 		end
 
-		castbar:Size(db.width - (db.iconAttached and iconWidth or 0) - SPACING1, db.height - SPACING2)
+		castbar:Size(db.width - iconWidth - SPACING1, db.height - SPACING2)
 	else
 		local anchor = frame[db.overlayOnFrame]
 		height = anchor:GetHeight()
