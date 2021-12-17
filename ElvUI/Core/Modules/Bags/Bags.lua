@@ -703,6 +703,18 @@ end
 
 function B:Slot_OnLeave() end
 
+function B:Holder_OnClick(button)
+	if self.id == BACKPACK_CONTAINER then
+		B:BagItemAction(button, self, PutItemInBackpack)
+	elseif self.id == KEYRING_CONTAINER then
+		B:BagItemAction(button, self, PutKeyInKeyRing)
+	elseif self.isBank then
+		B:BagItemAction(button, self, PutItemInBag, self:GetInventorySlot())
+	else
+		B:BagItemAction(button, self, PutItemInBag, self:GetID())
+	end
+end
+
 function B:Holder_OnEnter()
 	if not self.parent then return end
 
@@ -710,14 +722,9 @@ function B:Holder_OnEnter()
 
 	local bagID = self.id
 	if bagID == BACKPACK_CONTAINER then
+		local kb = GetBindingKey('TOGGLEBACKPACK')
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
-		GameTooltip:SetText(_G.BACKPACK_TOOLTIP, 1, 1, 1)
-
-		local keyBinding = GetBindingKey('TOGGLEBACKPACK')
-		if keyBinding then
-			GameTooltip:AddLine(format(' |cffffd200(%s)|r', keyBinding))
-		end
-
+		GameTooltip:SetText(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
 		GameTooltip:AddLine(' ')
 	elseif bagID == KEYRING_CONTAINER then
 		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
@@ -1463,6 +1470,7 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 		holder:SetScript('OnEnter', B.Holder_OnEnter)
 		holder:SetScript('OnLeave', B.Holder_OnLeave)
+		holder:SetScript('OnClick', B.Holder_OnClick)
 
 		if not E.Retail then
 			holder:SetCheckedTexture('')
@@ -1485,19 +1493,15 @@ function B:ConstructContainerFrame(name, isBank)
 		B:CreateFilterIcon(holder)
 
 		if bagID == BACKPACK_CONTAINER then
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
 			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 		elseif bagID == KEYRING_CONTAINER then
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
 			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		elseif isBank then
 			holder:SetID(i == 1 and BANK_CONTAINER or (bagID - 4))
 			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetInventorySlot()) end)
 		else
 			holder:SetID(GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
-			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
 		end
 
 		if i == 1 then
