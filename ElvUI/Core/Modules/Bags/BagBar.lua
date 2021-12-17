@@ -39,13 +39,17 @@ function B:BagBar_OnLeave()
 	E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
 end
 
-function B:BagBarButton_OnEnter()
+function B:BagButton_OnEnter()
 	-- bag keybind support from actionbar module
 	if E.private.actionbar.enable then
 		AB:BindUpdate(self)
 	end
 
 	B:BagBar_OnEnter()
+end
+
+function B:BagButton_OnLeave()
+	B:BagBar_OnLeave()
 end
 
 function B:SkinBag(bag)
@@ -210,8 +214,8 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
-	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagBarButton_OnEnter)
-	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagBar_OnLeave)
+	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
+	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagButton_OnLeave)
 
 	if not E.Retail then
 		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
@@ -222,10 +226,9 @@ function B:LoadBagBar()
 
 	for i = 0, NUM_BAG_FRAMES-1 do
 		local b = _G['CharacterBag'..i..'Slot']
+		b:HookScript('OnEnter', B.BagButton_OnEnter)
+		b:HookScript('OnLeave', B.BagButton_OnLeave)
 		b:SetParent(B.BagBar)
-		b:HookScript('OnEnter', B.BagBarButton_OnEnter)
-		b:HookScript('OnLeave', B.BagBar_OnLeave)
-
 		B:SkinBag(b)
 
 		if not E.Retail then
