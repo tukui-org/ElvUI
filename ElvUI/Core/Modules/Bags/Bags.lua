@@ -30,6 +30,7 @@ local GetContainerNumSlots = GetContainerNumSlots
 local GetCVarBool = GetCVarBool
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
+local GetBindingKey = GetBindingKey
 local GetItemQualityColor = GetItemQualityColor
 local GetItemSpell = GetItemSpell
 local GetKeyRingSize = GetKeyRingSize
@@ -702,6 +703,36 @@ end
 
 function B:Slot_OnLeave() end
 
+function B:Holder_OnEnter()
+	if not self.parent then return end
+
+	B:SetSlotAlphaForBag(self.parent)
+
+	local bagID = self.id
+	if bagID == BACKPACK_CONTAINER then
+		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+		GameTooltip:SetText(_G.BACKPACK_TOOLTIP, 1, 1, 1)
+
+		local keyBinding = GetBindingKey('TOGGLEBACKPACK')
+		if keyBinding then
+			GameTooltip:AddLine(format(' |cffffd200(%s)|r', keyBinding))
+		end
+
+		GameTooltip:AddLine(' ')
+	elseif bagID == KEYRING_CONTAINER then
+		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+		GameTooltip:SetText(_G.KEYRING, 1, 1, 1)
+		GameTooltip:AddLine(' ')
+	end
+
+	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+	GameTooltip:Show()
+end
+
+function B:Holder_OnLeave()
+	B:ResetSlotAlphaForBags(self.parent)
+end
+
 function B:Cooldown_OnHide()
 	self.start = nil
 	self.duration = nil
@@ -889,7 +920,7 @@ function B:CreateFilterIcon(parent)
 	FilterBackdrop:Size(20, 20)
 
 	parent.filterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
-	parent.filterIcon:SetTexture(134873)
+	parent.filterIcon:SetTexture(134873) -- Interface\ICONS\INV_Potion_93
 	parent.filterIcon:SetTexCoord(unpack(E.TexCoords))
 	parent.filterIcon:SetInside()
 	parent.filterIcon.FilterBackdrop = FilterBackdrop
@@ -1347,18 +1378,6 @@ function B:ToggleBag(holder)
 	B:Layout(holder.isBank)
 end
 
-function B.Bag_OnEnter(ch)
-	B.SetSlotAlphaForBag(ch, ch.parent)
-
-	GameTooltip:AddLine(' ')
-	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-	GameTooltip:Show()
-end
-
-function B.Bag_OnLeave(ch)
-	B.ResetSlotAlphaForBags(ch, ch.parent)
-end
-
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1442,16 +1461,19 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:SetNormalTexture('')
 		holder:SetPushedTexture('')
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
+		holder:SetScript('OnEnter', B.Holder_OnEnter)
+		holder:SetScript('OnLeave', B.Holder_OnLeave)
 
 		if not E.Retail then
 			holder:SetCheckedTexture('')
 		end
 
-		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack)
-		holder.icon:SetTexCoord(unpack(E.TexCoords))
 		if holder.animIcon then
 			holder.animIcon:SetTexCoord(unpack(E.TexCoords))
 		end
+
+		holder.icon:SetTexCoord(unpack(E.TexCoords))
+		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack) -- Interface\ICONS\INV_Misc_Key_03
 		holder.icon:SetInside()
 		holder.IconBorder:Kill()
 
@@ -1463,19 +1485,9 @@ function B:ConstructContainerFrame(name, isBank)
 		B:CreateFilterIcon(holder)
 
 		if bagID == BACKPACK_CONTAINER then
-			holder:SetScript('OnEnter', function(s)
-				GameTooltip:SetOwner(s, "ANCHOR_LEFT")
-				GameTooltip:SetText(_G.BACKPACK_TOOLTIP, 1.0, 1.0, 1.0)
-				local keyBinding = _G.GetBindingKey("TOGGLEBACKPACK")
-				if ( keyBinding ) then
-					GameTooltip:AppendText(format(' |cffffd200(%s)|r', keyBinding))
-				end
-				GameTooltip:Show()
-			end)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
 			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 		elseif bagID == KEYRING_CONTAINER then
-			holder:SetScript('OnEnter', function(s) GameTooltip:SetOwner(s, "ANCHOR_RIGHT") GameTooltip:SetText(_G.KEYRING, 1, 1, 1) GameTooltip:AddLine() end)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutKeyInKeyRing) end)
 			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
 		elseif isBank then
@@ -1487,9 +1499,6 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:SetID(GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
 		end
-
-		holder:HookScript('OnEnter', B.Bag_OnEnter)
-		holder:HookScript('OnLeave', B.Bag_OnLeave)
 
 		if i == 1 then
 			holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
@@ -1626,7 +1635,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentToggle:Size(18)
 			f.reagentToggle:SetTemplate()
 			f.reagentToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
-			B:SetButtonTexture(f.reagentToggle, 132854)
+			B:SetButtonTexture(f.reagentToggle, 132854) -- Interface\ICONS\INV_Enchant_DustArcane
 			f.reagentToggle:StyleButton(nil, true)
 			f.reagentToggle.ttText = L["Show/Hide Reagents"]
 			f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
@@ -1641,7 +1650,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.depositButton:Size(18)
 			f.depositButton:SetTemplate()
 			f.depositButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
-			B:SetButtonTexture(f.depositButton, 450905)
+			B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
 			f.depositButton:StyleButton(nil, true)
 			f.depositButton.ttText = L["Deposit Reagents"]
 			f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
@@ -1698,7 +1707,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.purchaseBagButton:Size(18)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
-		B:SetButtonTexture(f.purchaseBagButton, 133784)
+		B:SetButtonTexture(f.purchaseBagButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.purchaseBagButton:StyleButton(nil, true)
 		f.purchaseBagButton.ttText = L["Purchase Bags"]
 		f.purchaseBagButton:SetScript('OnEnter', B.Tooltip_Show)
@@ -1756,7 +1765,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton:Size(18)
 			f.keyButton:SetTemplate()
 			f.keyButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
-			B:SetButtonTexture(f.keyButton, 134237)
+			B:SetButtonTexture(f.keyButton, 134237) -- Interface\ICONS\INV_Misc_Key_03
 			f.keyButton:StyleButton(nil, true)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
@@ -1769,7 +1778,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.vendorGraysButton:Size(18)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:Point('RIGHT', not E.Retail and f.keyButton or f.bagsButton, 'LEFT', -5, 0)
-		B:SetButtonTexture(f.vendorGraysButton, 133784)
+		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor / Delete Grays"]
 		f.vendorGraysButton.ttValue = B.GetGraysValue
@@ -1880,7 +1889,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.keyringTexture = slot:CreateTexture(nil, 'BORDER')
 		slot.keyringTexture:SetAlpha(.5)
 		slot.keyringTexture:SetInside(slot)
-		slot.keyringTexture:SetTexture(130980)
+		slot.keyringTexture:SetTexture(130980) -- Interface\ContainerFrame\KeyRing-Bag-Icon
 		slot.keyringTexture:SetTexCoord(unpack(E.TexCoords))
 		slot.keyringTexture:SetDesaturated(true)
 	end
