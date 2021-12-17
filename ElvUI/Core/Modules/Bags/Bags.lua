@@ -720,13 +720,12 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame)
 
-	local bagID = self.id
-	if bagID == BACKPACK_CONTAINER then
+	if self.id == BACKPACK_CONTAINER then
 		local kb = GetBindingKey('TOGGLEBACKPACK')
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 		GameTooltip:SetText(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
 		GameTooltip:AddLine(' ')
-	elseif bagID == KEYRING_CONTAINER then
+	elseif self.id == KEYRING_CONTAINER then
 		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 		GameTooltip:SetText(_G.KEYRING, 1, 1, 1)
 		GameTooltip:AddLine(' ')
