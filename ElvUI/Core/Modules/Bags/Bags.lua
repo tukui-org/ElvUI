@@ -720,18 +720,22 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame)
 
+	GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+
 	if self.bagID == BACKPACK_CONTAINER then
 		local kb = GetBindingKey('TOGGLEBACKPACK')
-		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
-		GameTooltip:SetText(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
 	elseif self.bagID == KEYRING_CONTAINER then
-		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-		GameTooltip:SetText(_G.KEYRING, 1, 1, 1)
-		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
 	end
 
-	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+	if self.bagID == BACKPACK_CONTAINER or self.bagID == KEYRING_CONTAINER or self.bag.numSlots ~= 0 then
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+	else
+		GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1.0, 1.0, 1.0);
+	end
+
 	GameTooltip:Show()
 end
 
@@ -739,6 +743,7 @@ function B:Holder_OnLeave()
 	if not self.bagFrame then return end
 
 	B:ResetSlotAlphaForBags(self.bagFrame)
+	GameTooltip:Hide()
 end
 
 function B:Cooldown_OnHide()

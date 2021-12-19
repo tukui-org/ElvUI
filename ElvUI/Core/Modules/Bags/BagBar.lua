@@ -52,6 +52,14 @@ function B:BagButton_OnLeave()
 	B:BagBar_OnLeave()
 end
 
+function B:KeyRing_OnEnter()
+	_G.GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+	_G.GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+	_G.GameTooltip:Show()
+
+	B:BagBar_OnEnter()
+end
+
 function B:SkinBag(bag)
 	local icon = _G[bag:GetName()..'IconTexture']
 	bag.oldTex = icon:GetTexture()
@@ -241,7 +249,7 @@ function B:LoadBagBar()
 	local KeyRing = _G.KeyRingButton
 	if KeyRing then
 		KeyRing:SetParent(B.BagBar)
-		KeyRing:HookScript('OnEnter', B.BagBar_OnEnter)
+		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
 		KeyRing:HookScript('OnLeave', B.BagBar_OnLeave)
 
 		KeyRing:StripTextures()
