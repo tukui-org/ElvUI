@@ -125,7 +125,7 @@ function M:CreateRollFrame()
 	status.parent = frame
 	frame.status = status
 
-	local spark = frame:CreateTexture(nil, 'ARTWORK', nil, 1)
+	local spark = status:CreateTexture(nil, 'ARTWORK', nil, 1)
 	spark:SetBlendMode('BLEND')
 	spark:Point('RIGHT', status:GetStatusBarTexture())
 	spark:Point('BOTTOM')
