@@ -191,6 +191,8 @@ function B:GetContainerFrame(arg)
 end
 
 function B:Tooltip_Show()
+	if GameTooltip:IsForbidden() then return end
+
 	GameTooltip:SetOwner(self)
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
@@ -1443,6 +1445,8 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
 	f.helpButton:SetScript('OnLeave', GameTooltip_Hide)
 	f.helpButton:SetScript('OnEnter', function(frame)
+		if GameTooltip:IsForbidden() then return end
+
 		GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
