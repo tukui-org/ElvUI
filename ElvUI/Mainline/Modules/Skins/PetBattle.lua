@@ -72,6 +72,7 @@ function S:PetBattleFrame()
 		E:RegisterStatusBar(infoBar.ActualHealthBar)
 		infoBar.PetTypeFrame = CreateFrame('Frame', nil, infoBar)
 		infoBar.PetTypeFrame:Size(100, 23)
+
 		infoBar.PetTypeFrame.text = infoBar.PetTypeFrame:CreateFontString(nil, 'OVERLAY')
 		infoBar.PetTypeFrame.text:FontTemplate()
 		infoBar.PetTypeFrame.text:SetText('')
@@ -82,6 +83,7 @@ function S:PetBattleFrame()
 		infoBar.FirstAttack = infoBar:CreateTexture(nil, 'ARTWORK')
 		infoBar.FirstAttack:Size(30)
 		infoBar.FirstAttack:SetTexture([[Interface\PetBattles\PetBattle-StatIcons]])
+
 		if index == 1 then
 			infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
 			infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -E.Border, -E.Border)
@@ -97,7 +99,6 @@ function S:PetBattleFrame()
 			infoBar.FirstAttack:Point('LEFT', infoBar.HealthBarBackdrop, 'RIGHT', 5, 0)
 			infoBar.FirstAttack:SetTexCoord(infoBar.SpeedIcon:GetTexCoord())
 			infoBar.FirstAttack:SetVertexColor(.1,.1,.1,1)
-
 		else
 			infoBar.HealthBarBackdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', E.Border, E.Border)
 			infoBar.HealthBarBackdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'BOTTOMRIGHT', E.Border, -E.Border)
@@ -313,35 +314,41 @@ function S:PetBattleFrame()
 	bar:SetFrameStrata('BACKGROUND')
 
 	bf:StripTextures()
-	bf.TurnTimer:StripTextures()
-	bf.TurnTimer.SkipButton:SetParent(bar)
-	S:HandleButton(bf.TurnTimer.SkipButton)
+	bf.MicroButtonFrame:Kill()
+	bf.FlowFrame:StripTextures()
+	bf.Delimiter:StripTextures()
 
-	bf.TurnTimer.SkipButton:Width(bar:GetWidth())
-	bf.TurnTimer.SkipButton:ClearAllPoints()
-	bf.TurnTimer.SkipButton:Point('BOTTOM', bar, 'TOP', 0, E.PixelMode and 1 or 2)
-	hooksecurefunc(bf.TurnTimer.SkipButton, 'SetPoint', function(btn, _, _, _, _, _, forced)
-		if forced ~= true then
-			btn:ClearAllPoints()
-			btn:Point('BOTTOM', bar, 'TOP', 0, E.PixelMode and 1 or 2, true)
-		end
+	local turnTimer = bf.TurnTimer
+	turnTimer:StripTextures()
+	turnTimer.SkipButton:SetParent(bar)
+	S:HandleButton(turnTimer.SkipButton)
+
+	local SkipOffset = E.PixelMode and -1 or 1
+	local XPOffset = E.PixelMode and -1 or 3
+	hooksecurefunc(turnTimer.SkipButton, 'SetPoint', function(btn, _, _, _, _, _, forced)
+		if forced == true then return end
+
+		btn:ClearAllPoints()
+		btn:Point('BOTTOMLEFT', bar, 'TOPLEFT', 0, SkipOffset, true)
+		btn:Point('BOTTOMRIGHT', bar, 'TOPRIGHT', 0, SkipOffset, true)
+
+		turnTimer:SetSize(turnTimer.SkipButton:GetSize()) -- set after the skip button points
 	end)
 
-	bf.TurnTimer:Size(bf.TurnTimer.SkipButton:GetWidth(), bf.TurnTimer.SkipButton:GetHeight())
-	bf.TurnTimer:ClearAllPoints()
-	bf.TurnTimer:Point('TOP', E.UIParent, 'TOP', 0, -140)
-	bf.TurnTimer.TimerText:Point('CENTER')
+	turnTimer:ClearAllPoints()
+	turnTimer:Point('TOP', E.UIParent, 'TOP', 0, -140)
+	turnTimer.TimerText:Point('CENTER')
 
-	bf.FlowFrame:StripTextures()
-	bf.MicroButtonFrame:Kill()
-	bf.Delimiter:StripTextures()
+	E:RegisterStatusBar(bf.xpBar)
 	bf.xpBar:SetParent(bar)
-	bf.xpBar:Width(bar:GetWidth() - (E.Border * 2))
 	bf.xpBar:CreateBackdrop()
 	bf.xpBar:ClearAllPoints()
-	bf.xpBar:Point('BOTTOM', bf.TurnTimer.SkipButton, 'TOP', 0, E.PixelMode and 0 or 3)
-	bf.xpBar:SetScript('OnShow', function(s) s:StripTextures() s:SetStatusBarTexture(E.media.normTex) end)
-	E:RegisterStatusBar(bf.xpBar)
+	bf.xpBar:Point('BOTTOMLEFT', turnTimer.SkipButton, 'TOPLEFT', E.Border, XPOffset)
+	bf.xpBar:Point('BOTTOMRIGHT', turnTimer.SkipButton, 'TOPRIGHT', -E.Border, XPOffset)
+	bf.xpBar:SetScript('OnShow', function(s)
+		s:StripTextures()
+		s:SetStatusBarTexture(E.media.normTex)
+	end)
 
 	-- PETS SELECTION SKIN
 	for i = 1, 3 do
