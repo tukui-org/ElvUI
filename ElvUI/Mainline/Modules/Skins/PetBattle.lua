@@ -77,6 +77,7 @@ function S:PetBattleFrame()
 		infoBar.PetTypeFrame.text:FontTemplate()
 		infoBar.PetTypeFrame.text:SetText('')
 
+		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.Name:ClearAllPoints()
 
 		infoBar.FirstAttack = infoBar:CreateTexture(nil, 'ARTWORK')
