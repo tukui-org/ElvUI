@@ -8,6 +8,7 @@ local unpack = unpack
 local tinsert = tinsert
 
 local CreateFrame = CreateFrame
+local GameTooltip = GameTooltip
 local GetBagSlotFlag = GetBagSlotFlag
 local GetCVarBool = GetCVarBool
 local IsModifiedClick = IsModifiedClick
@@ -53,9 +54,19 @@ function B:BagButton_OnLeave()
 end
 
 function B:KeyRing_OnEnter()
-	_G.GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-	_G.GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
-	_G.GameTooltip:Show()
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+		GameTooltip:Show()
+	end
+
+	B:BagBar_OnEnter()
+end
+
+function B:KeyRing_OnLeave()
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
+	end
 
 	B:BagBar_OnEnter()
 end
@@ -250,7 +261,7 @@ function B:LoadBagBar()
 	if KeyRing then
 		KeyRing:SetParent(B.BagBar)
 		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
-		KeyRing:HookScript('OnLeave', B.BagBar_OnLeave)
+		KeyRing:SetScript('OnLeave', B.KeyRing_OnLeave)
 
 		KeyRing:StripTextures()
 		KeyRing:SetTemplate(nil, true)

@@ -648,8 +648,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 		B.QuestSlots[slot] = questId or nil
 	end
 
-	if not texture and _G.GameTooltip:GetOwner() == slot then
-		GameTooltip_Hide()
+	if not texture and not GameTooltip:IsForbidden() and GameTooltip:GetOwner() == slot then
+		GameTooltip:Hide()
 	end
 end
 
@@ -720,30 +720,36 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame)
 
-	GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 
-	if self.bagID == BACKPACK_CONTAINER then
-		local kb = GetBindingKey('TOGGLEBACKPACK')
-		GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-	elseif self.bagID == KEYRING_CONTAINER then
-		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+		if self.bagID == BACKPACK_CONTAINER then
+			local kb = GetBindingKey('TOGGLEBACKPACK')
+			GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
+			GameTooltip:AddLine(' ')
+			GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+		elseif self.bagID == KEYRING_CONTAINER then
+			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+			GameTooltip:AddLine(' ')
+			GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+		elseif self.bag.numSlots ~= 0 then
+			GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+		else
+			GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1, 1, 1)
+		end
+
+		GameTooltip:Show()
 	end
-
-	if self.bagID == BACKPACK_CONTAINER or self.bagID == KEYRING_CONTAINER or self.bag.numSlots ~= 0 then
-		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-	else
-		GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1.0, 1.0, 1.0);
-	end
-
-	GameTooltip:Show()
 end
 
 function B:Holder_OnLeave()
 	if not self.bagFrame then return end
 
 	B:ResetSlotAlphaForBags(self.bagFrame)
-	GameTooltip:Hide()
+
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
+	end
 end
 
 function B:Cooldown_OnHide()
@@ -2069,7 +2075,7 @@ function B:OpenBags()
 	B.BagFrame:Show()
 	PlaySound(IG_BACKPACK_OPEN)
 
-	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
+	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
@@ -2077,7 +2083,7 @@ function B:CloseBags()
 	B.BankFrame:Hide()
 	PlaySound(IG_BACKPACK_CLOSE)
 
-	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
+	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:ShowBankTab(f, showReagent)
