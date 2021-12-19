@@ -327,6 +327,7 @@ function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
 	local db = E.db.general.lootRoll
 
+	local font = LSM:Fetch('font', db.nameFont)
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 
 	for i = 1, 4 do
@@ -344,8 +345,8 @@ function M:UpdateLootRollFrames()
 		frame.button.questIcon:Point('RIGHT', frame.button, 'LEFT', -3, 0)
 		frame.button.questIcon:Size(db.height)
 
-		frame.name:FontTemplate(LSM:Fetch('font', db.nameFont), db.nameFontSize, db.nameFontOutline)
-		frame.bind:FontTemplate(LSM:Fetch('font', db.nameFont), db.nameFontSize, db.nameFontOutline)
+		frame.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		frame.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 
 		for _, button in next, rolltypes do
 			local icon = frame[button]
