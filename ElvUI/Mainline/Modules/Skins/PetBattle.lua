@@ -88,6 +88,7 @@ function S:PetBattleFrame()
 			f.Ally2.iconPoint = infoBar.IconBackdrop
 			f.Ally3.iconPoint = infoBar.IconBackdrop
 
+			infoBar.ActualHealthBar:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMRIGHT', 10, 0)
 			infoBar.Name:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'TOPLEFT', 0, 10)
 			infoBar.PetTypeFrame:Point('BOTTOMRIGHT',infoBar.HealthBarBackdrop, 'TOPRIGHT', 0, 4)
 			infoBar.PetTypeFrame.text:Point('RIGHT')
@@ -100,6 +101,7 @@ function S:PetBattleFrame()
 			f.Enemy2.iconPoint = infoBar.IconBackdrop
 			f.Enemy3.iconPoint = infoBar.IconBackdrop
 
+			infoBar.ActualHealthBar:Point('BOTTOMRIGHT', infoBar.Icon, 'BOTTOMLEFT', -10, 0)
 			infoBar.Name:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', 0, 10)
 			infoBar.PetTypeFrame:Point('BOTTOMLEFT',infoBar.HealthBarBackdrop, 'TOPLEFT', 2, 4)
 			infoBar.PetTypeFrame.text:Point('LEFT')
