@@ -728,18 +728,14 @@ function B:Holder_OnEnter()
 		if self.bagID == BACKPACK_CONTAINER then
 			local kb = GetBindingKey('TOGGLEBACKPACK')
 			GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-			GameTooltip:AddLine(' ')
-			GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
 		elseif self.bagID == KEYRING_CONTAINER then
 			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
-			GameTooltip:AddLine(' ')
-			GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-		elseif self.bag.numSlots ~= 0 then
-			GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-		else
+		elseif self.bag.numSlots == 0 then
 			GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1, 1, 1)
 		end
 
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
 		GameTooltip:Show()
 	end
 end
