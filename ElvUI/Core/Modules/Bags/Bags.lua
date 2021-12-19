@@ -735,9 +735,9 @@ function B:Holder_OnEnter()
 		elseif self.bag.numSlots == 0 then
 			GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1, 1, 1)
 		elseif self.isBank then
-			GameTooltip:SetInventoryItem("player", self:GetInventorySlot())
+			GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
 		else
-			GameTooltip:SetInventoryItem("player", self:GetID())
+			GameTooltip:SetInventoryItem('player', self:GetID())
 		end
 
 		GameTooltip:AddLine(' ')
