@@ -52,6 +52,7 @@ function S:PetBattleFrame()
 	-- TOP FRAMES
 	f:StripTextures()
 
+	local borderSpace = E.PixelMode and 2 or 3
 	for index, infoBar in pairs(infoBars) do
 		infoBar.Border:SetAlpha(0)
 		infoBar.Border2:SetAlpha(0)
@@ -61,10 +62,12 @@ function S:PetBattleFrame()
 		infoBar.BorderFlash:Kill()
 		infoBar.HealthBarBG:Kill()
 		infoBar.HealthBarFrame:Kill()
-		infoBar.ActualHealthBar:CreateBackdrop()
-		infoBar.ActualHealthBar:ClearAllPoints()
+
 		infoBar.ActualHealthBar:SetTexCoord(0, 1, 0, 1)
 		infoBar.ActualHealthBar:SetTexture(E.media.normTex)
+		infoBar.ActualHealthBar:CreateBackdrop('Transparent')
+		infoBar.ActualHealthBar:ClearAllPoints()
+		infoBar.ActualHealthBar.backdrop:ClearAllPoints()
 
 		infoBar.PetTypeFrame = CreateFrame('Frame', nil, infoBar)
 		infoBar.PetTypeFrame:Size(100, 23)
@@ -83,6 +86,9 @@ function S:PetBattleFrame()
 
 			infoBar.ActualHealthBar:SetVertexColor(171/255, 214/255, 116/255)
 			infoBar.ActualHealthBar:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMRIGHT', 10, 0)
+			infoBar.ActualHealthBar.backdrop:Point('TOPLEFT', infoBar.ActualHealthBar, -E.Border, E.Border)
+			infoBar.ActualHealthBar.backdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, -E.Border, -E.Border)
+			infoBar.ActualHealthBar.backdrop:Point('RIGHT', infoBar.ActualHealthBar, 'LEFT', infoBar.healthBarWidth + borderSpace, 0)
 
 			infoBar.Name:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'TOPLEFT', 0, 10)
 			infoBar.PetTypeFrame:Point('BOTTOMRIGHT',infoBar.ActualHealthBar.backdrop, 'TOPRIGHT', 0, 4)
@@ -97,6 +103,9 @@ function S:PetBattleFrame()
 
 			infoBar.ActualHealthBar:SetVertexColor(196/255, 30/255, 60/255)
 			infoBar.ActualHealthBar:Point('BOTTOMRIGHT', infoBar.Icon, 'BOTTOMLEFT', -10, 0)
+			infoBar.ActualHealthBar.backdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, E.Border, E.Border)
+			infoBar.ActualHealthBar.backdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, E.Border, -E.Border)
+			infoBar.ActualHealthBar.backdrop:Point('LEFT', infoBar.ActualHealthBar, 'RIGHT', -(infoBar.healthBarWidth + borderSpace), 0)
 
 			infoBar.Name:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', 0, 10)
 			infoBar.PetTypeFrame:Point('BOTTOMLEFT',infoBar.ActualHealthBar.backdrop, 'TOPLEFT', 2, 4)
@@ -264,7 +273,7 @@ function S:PetBattleFrame()
 		f.Enemy3
 	}
 
-	local healthOffset = E.PixelMode and 0 or -3
+	local pixelSpace = E.PixelMode and 1
 	for _, infoBar in pairs(extraInfoBars) do
 		infoBar:Size(40)
 		infoBar:SetTemplate()
@@ -276,12 +285,16 @@ function S:PetBattleFrame()
 		infoBar.Icon:SetDrawLayer('ARTWORK')
 		infoBar.Icon:CreateBackdrop()
 
-		infoBar.ActualHealthBar:CreateBackdrop()
-		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.ActualHealthBar:SetTexCoord(0, 1, 0, 1)
 		infoBar.ActualHealthBar:SetTexture(E.media.normTex)
-		infoBar.ActualHealthBar:Point('TOPLEFT', infoBar.Icon.backdrop, 'BOTTOMLEFT', E.Border, healthOffset)
-		infoBar.ActualHealthBar:Point('TOPRIGHT', infoBar.Icon.backdrop, 'BOTTOMRIGHT', -E.Border, healthOffset)
+		infoBar.ActualHealthBar:ClearAllPoints()
+		infoBar.ActualHealthBar:Point('TOPLEFT', infoBar.Icon, 'BOTTOMLEFT', 0, -(pixelSpace or 5))
+
+		infoBar.ActualHealthBar:CreateBackdrop('Transparent')
+		infoBar.ActualHealthBar.backdrop:ClearAllPoints()
+		infoBar.ActualHealthBar.backdrop:Point('TOPLEFT', infoBar.Icon.backdrop, 'BOTTOMLEFT', 0, pixelSpace or -1)
+		infoBar.ActualHealthBar.backdrop:Point('TOPRIGHT', infoBar.Icon.backdrop, 'BOTTOMRIGHT', 0, pixelSpace or -1)
+		infoBar.ActualHealthBar.backdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 0, -(pixelSpace or 2))
 	end
 
 	f.Ally2:Point('TOPRIGHT', f.Ally2.iconPoint, 'TOPLEFT', -6, -2)
