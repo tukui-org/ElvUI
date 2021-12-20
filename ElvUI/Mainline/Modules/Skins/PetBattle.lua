@@ -278,6 +278,7 @@ function S:PetBattleFrame()
 		infoBar:Size(40)
 		infoBar:SetTemplate()
 		infoBar:ClearAllPoints()
+		infoBar.healthBarWidth = 40
 
 		infoBar.BorderAlive:SetAlpha(0)
 		infoBar.HealthBarBG:SetAlpha(0)
