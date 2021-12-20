@@ -742,6 +742,11 @@ function B:Holder_OnEnter()
 
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+
+		if E.Retail and self.bagID ~= KEYRING_CONTAINER then
+			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
+		end
+
 		GameTooltip:Show()
 	end
 end
@@ -1567,7 +1572,7 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.sortButton, E.Media.Textures.PetBroom)
 	f.sortButton:StyleButton(nil, true)
 	f.sortButton.ttText = L["Sort Bags"]
-	f.sortButton:SetScript('OnEnter', E.Retail and _G.BagItemAutoSortButton:GetScript('OnEnter') or B.Tooltip_Show)
+	f.sortButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.sortButton:SetScript('OnLeave', GameTooltip_Hide)
 
 	if isBank and B.db.disableBankSort or (not isBank and B.db.disableBagSort) then
@@ -1582,7 +1587,6 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.bagsButton, E.Media.Textures.Backpack)
 	f.bagsButton:StyleButton(nil, true)
 	f.bagsButton.ttText = L["Toggle Bags"]
-	f.bagsButton.ttText2 = format('|cffFFFFFF%s|r', L["Right Click the bag icon to assign a type of item to this bag."])
 	f.bagsButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.bagsButton:SetScript('OnLeave', GameTooltip_Hide)
 
