@@ -743,7 +743,7 @@ function B:Holder_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
 
-		if E.Retail and self.bagID ~= KEYRING_CONTAINER then
+		if E.Retail then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
 		end
 
