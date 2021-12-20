@@ -4,6 +4,7 @@ Auras: Tooltip fixes for top auras
 Config: Fixed some options displaying in russian  
 Minimap: Scaling and Font fixes  
 Misc: Added an option for LootRoll button size  
+Misc: Added font options for LootRoll  
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
 NamePlates: Fixed Desaturate Icon option  
