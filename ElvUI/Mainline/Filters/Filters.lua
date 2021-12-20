@@ -876,6 +876,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
+		[360403] = Defaults(2), -- Force Field
+		[364447] = Defaults(3), -- Dissonance
+		[364904] = Defaults(6), -- Anti-Matter
+		[364881] = Defaults(5), -- Matter Disolution
+		[360415] = Defaults(5), -- Defenseless
 	-- Prototype Pantheon
 		[365306] = Defaults(2), -- Invigorating Bloom
 		[361608] = Defaults(3), -- Burden of Sin
@@ -909,6 +914,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[361002] = Defaults(4), -- Ephemeral Fissure
 		[360114] = Defaults(4), -- Ephemeral Fissure II
 	-- Anduin Wrynn
+		[365293] = Defaults(2), -- Befouled Barrier
+		[361817] = Defaults(3), -- Hopebreaker
+		[363020] = Defaults(3), -- Necrotic Claws
+		[365021] = Defaults(4), -- Wicked Star
+		[365445] = Defaults(3), -- Scarred Soul
+		[365008] = Defaults(4), -- Psychic Terror
 	-- Rygelon
 	-- Lords of the Dread
 	-- The Jailer
@@ -1109,6 +1120,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
+		[360404] = Defaults(), -- Force Field
+		[366822] = Defaults(), -- Radioactive Core
+		[364843] = Defaults(), -- Fractured Core
+		[364962] = Defaults(), -- Core Overload
 	-- Prototype Pantheon
 		[361938] = Defaults(), -- Reconstruction
 		[360845] = Defaults(), -- Bastion's Ward
@@ -1131,6 +1146,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[359235] = Defaults(), -- Reclamation Form
 		[359236] = Defaults(), -- Relocation Form
 	-- Anduin Wrynn
+		[364248] = Defaults(), -- Dark Zeal
+		[364247] = Defaults(), -- Dark Zeal II
+		[365030] = Defaults(), -- Wicked Star
+		[362862] = Defaults(), -- Army of the Dead
 	-- Rygelon
 	-- Lords of the Dread
 	-- The Jailer
