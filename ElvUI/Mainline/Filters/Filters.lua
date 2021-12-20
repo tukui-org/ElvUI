@@ -877,6 +877,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	-- Vigilant Guardian
 	-- Prototype Pantheon
+		[365306] = Defaults(2), -- Invigorating Bloom
+		[361608] = Defaults(3), -- Burden of Sin
+		[361689] = Defaults(3), -- Wracking Pain
 	-- Dausegne, The Fallen Oracle
 		[361751] = Defaults(2), -- Disintegration Halo
 		[364289] = Defaults(2), -- Staggering Barrage
@@ -902,6 +905,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[359981] = Defaults(2), -- Rend
 		[360098] = Defaults(3), -- Warp Sickness
 	-- Halondrus the Reclaimer
+		[361309] = Defaults(3), -- Lightshatter Beam
+		[361002] = Defaults(4), -- Ephemeral Fissure
+		[360114] = Defaults(4), -- Ephemeral Fissure II
 	-- Anduin Wrynn
 	-- Rygelon
 	-- Lords of the Dread
@@ -1104,6 +1110,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	-- Vigilant Guardian
 	-- Prototype Pantheon
+		[361938] = Defaults(), -- Reconstruction
+		[360845] = Defaults(), -- Bastion's Ward
 	-- Dausegne, The Fallen Oracle
 		[361651] = Defaults(), -- Siphoned Barrier
 		[362432] = Defaults(), -- Collapsed Barrier
@@ -1118,6 +1126,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Skolex, the Insatiable Ravener
 		[360193] = Defaults(), -- Insatiable (stacking)
 	-- Halondrus the Reclaimer
+		[367078] = Defaults(), -- Phase Barrier
+		[363414] = Defaults(), -- Fractal Shell
+		[359235] = Defaults(), -- Reclamation Form
+		[359236] = Defaults(), -- Relocation Form
 	-- Anduin Wrynn
 	-- Rygelon
 	-- Lords of the Dread
