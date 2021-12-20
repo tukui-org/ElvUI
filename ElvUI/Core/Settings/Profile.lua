@@ -156,13 +156,16 @@ P.general = {
 	lootRoll = {
 		width = 328,
 		height = 28,
-		buttonSize = 14,
+		buttonSize = 17,
 		style = 'halfbar',
 		statusBarTexture = 'ElvUI Norm',
 		qualityName = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
-		statusBarColor = { r = 0, g = .4, b = 1 }
+		statusBarColor = { r = 0, g = .4, b = 1 },
+		nameFont = 'Expressway',
+		nameFontSize = '12',
+		nameFontOutline = 'OUTLINE',
 	},
 	objectiveTracker = true,
 	totems = {

@@ -125,7 +125,7 @@ function M:CreateRollFrame()
 	status.parent = frame
 	frame.status = status
 
-	local spark = frame:CreateTexture(nil, 'ARTWORK', nil, 1)
+	local spark = status:CreateTexture(nil, 'ARTWORK', nil, 1)
 	spark:SetBlendMode('BLEND')
 	spark:Point('RIGHT', status:GetStatusBarTexture())
 	spark:Point('BOTTOM')
@@ -325,27 +325,33 @@ M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
-	local texture = LSM:Fetch('statusbar', E.db.general.lootRoll.statusBarTexture)
+	local db = E.db.general.lootRoll
+
+	local font = LSM:Fetch('font', db.nameFont)
+	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 
 	for i = 1, 4 do
 		local frame = M.RollBars[i]
-		frame:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height)
+		frame:Size(db.width, db.height)
 
 		frame.status:SetStatusBarTexture(texture)
-		frame.status.backdrop.Center:SetTexture(E.db.general.lootRoll.statusBarBGTexture and E.media.normTex or E.media.blankTex)
+		frame.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
 		frame.button:ClearAllPoints()
 		frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
-		frame.button:Size(E.db.general.lootRoll.height)
+		frame.button:Size(db.height)
 
 		frame.button.questIcon:ClearAllPoints()
 		frame.button.questIcon:Point('RIGHT', frame.button, 'LEFT', -3, 0)
-		frame.button.questIcon:Size(E.db.general.lootRoll.height)
+		frame.button.questIcon:Size(db.height)
+
+		frame.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		frame.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 
 		for _, button in next, rolltypes do
 			local icon = frame[button]
 			if icon then
-				icon:Size(E.db.general.lootRoll.buttonSize)
+				icon:Size(db.buttonSize)
 				icon:ClearAllPoints()
 			end
 		end
@@ -353,7 +359,7 @@ function M:UpdateLootRollFrames()
 		if E.db.general.lootRoll.style == 'halfbar' then
 			frame.status:ClearAllPoints()
 			frame.status:Point('BOTTOM', 3, 0)
-			frame.status:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height / 3)
+			frame.status:Size(db.width, db.height / 3)
 
 			frame.name:ClearAllPoints()
 			frame.name:Point('BOTTOMLEFT', frame.status, 'TOPLEFT', 4, 4)
@@ -362,11 +368,11 @@ function M:UpdateLootRollFrames()
 			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 
-			frame.pass:Point('TOPRIGHT', frame, 4, 2)
+			frame.pass:Point('TOPRIGHT', frame, -3, 2)
 		else
 			frame.status:ClearAllPoints()
 			frame.status:SetAllPoints()
-			frame.status:Size(E.db.general.lootRoll.width, E.db.general.lootRoll.height)
+			frame.status:Size(db.width, db.height)
 
 			frame.name:ClearAllPoints()
 			frame.name:Point('LEFT', frame.status, 4, 0)
@@ -375,7 +381,7 @@ function M:UpdateLootRollFrames()
 			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 
-			frame.pass:Point('RIGHT', frame.status, 'RIGHT', -4, 0)
+			frame.pass:Point('RIGHT', frame.status, 'RIGHT', -3, 0)
 		end
 
 		if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, -2) end

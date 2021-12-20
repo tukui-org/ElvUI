@@ -191,6 +191,8 @@ function B:GetContainerFrame(arg)
 end
 
 function B:Tooltip_Show()
+	if GameTooltip:IsForbidden() then return end
+
 	GameTooltip:SetOwner(self)
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
@@ -648,8 +650,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 		B.QuestSlots[slot] = questId or nil
 	end
 
-	if not texture and _G.GameTooltip:GetOwner() == slot then
-		GameTooltip_Hide()
+	if not texture and not GameTooltip:IsForbidden() and GameTooltip:GetOwner() == slot then
+		GameTooltip:Hide()
 	end
 end
 
@@ -720,25 +722,43 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame)
 
-	if self.bagID == BACKPACK_CONTAINER then
-		local kb = GetBindingKey('TOGGLEBACKPACK')
+	if not GameTooltip:IsForbidden() then
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
-		GameTooltip:SetText(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-		GameTooltip:AddLine(' ')
-	elseif self.bagID == KEYRING_CONTAINER then
-		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-		GameTooltip:SetText(_G.KEYRING, 1, 1, 1)
-		GameTooltip:AddLine(' ')
-	end
 
-	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-	GameTooltip:Show()
+		if self.bagID == BACKPACK_CONTAINER then
+			local kb = GetBindingKey('TOGGLEBACKPACK')
+			GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
+		elseif self.bagID == BANK_CONTAINER then
+			GameTooltip:AddLine(_G.BANK, 1, 1, 1)
+		elseif self.bagID == KEYRING_CONTAINER then
+			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+		elseif self.bag.numSlots == 0 then
+			GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1, 1, 1)
+		elseif self.isBank then
+			GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
+		else
+			GameTooltip:SetInventoryItem('player', self:GetID())
+		end
+
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+
+		if E.Retail and self.bagID ~= KEYRING_CONTAINER then
+			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
+		end
+
+		GameTooltip:Show()
+	end
 end
 
 function B:Holder_OnLeave()
 	if not self.bagFrame then return end
 
 	B:ResetSlotAlphaForBags(self.bagFrame)
+
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
+	end
 end
 
 function B:Cooldown_OnHide()
@@ -1278,10 +1298,11 @@ function B:GetGrays(vendor)
 
 	for bagID = 0, 4 do
 		for slotID = 1, GetContainerNumSlots(bagID) do
-			local _, count, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-			if itemLink and not B.ExcludeGrays[itemID] then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemLink)
-				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+			local _, count, _, _, _, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
+			if itemLink and not noValue and not B.ExcludeGrays[itemID] then
+				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
+
+				if rarity and rarity == 0 and (classID ~= 12 or bindType ~= 4) then -- Quest can be classID:12 or bindType:4
 					local stackCount = count or 1
 					local stackPrice = itemPrice * stackCount
 
@@ -1431,6 +1452,8 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
 	f.helpButton:SetScript('OnLeave', GameTooltip_Hide)
 	f.helpButton:SetScript('OnEnter', function(frame)
+		if GameTooltip:IsForbidden() then return end
+
 		GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
@@ -1549,7 +1572,7 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.sortButton, E.Media.Textures.PetBroom)
 	f.sortButton:StyleButton(nil, true)
 	f.sortButton.ttText = L["Sort Bags"]
-	f.sortButton:SetScript('OnEnter', E.Retail and _G.BagItemAutoSortButton:GetScript('OnEnter') or B.Tooltip_Show)
+	f.sortButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.sortButton:SetScript('OnLeave', GameTooltip_Hide)
 
 	if isBank and B.db.disableBankSort or (not isBank and B.db.disableBagSort) then
@@ -1564,7 +1587,6 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.bagsButton, E.Media.Textures.Backpack)
 	f.bagsButton:StyleButton(nil, true)
 	f.bagsButton.ttText = L["Toggle Bags"]
-	f.bagsButton.ttText2 = format('|cffFFFFFF%s|r', L["Right Click the bag icon to assign a type of item to this bag."])
 	f.bagsButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.bagsButton:SetScript('OnLeave', GameTooltip_Hide)
 
@@ -2063,7 +2085,7 @@ function B:OpenBags()
 	B.BagFrame:Show()
 	PlaySound(IG_BACKPACK_OPEN)
 
-	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
+	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
@@ -2071,7 +2093,7 @@ function B:CloseBags()
 	B.BankFrame:Hide()
 	PlaySound(IG_BACKPACK_CLOSE)
 
-	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
+	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:ShowBankTab(f, showReagent)
