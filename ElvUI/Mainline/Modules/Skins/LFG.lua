@@ -517,10 +517,10 @@ function S:LookingForGroupFrames()
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.MythicPlusRating.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.PVPRating.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.PvpItemLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 
 	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
 	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
@@ -539,9 +539,10 @@ function S:LookingForGroupFrames()
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
-	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
+	S:HandleScrollBar(_G.LFGListCreationDescriptionScrollBar)
 
 	_G.LFGListApplicationDialog:StripTextures()
 	_G.LFGListApplicationDialog:SetTemplate('Transparent')
