@@ -24,18 +24,24 @@ function S:Blizzard_VoidStorageUI()
 	local VoidStorageFrame = _G.VoidStorageFrame
 	for i = 1, 2 do
 		local tab = VoidStorageFrame['Page'..i]
-		S:HandleButton(tab)
+		local icon = tab:GetNormalTexture()
+		local texture = icon:GetTexture()
+
 		tab:StripTextures()
-		tab:StyleButton(nil, true)
-		S:HandleIcon(tab:GetNormalTexture())
-		tab:GetNormalTexture():SetInside()
+		tab:StyleButton()
+
+		icon:SetInside(tab)
+		icon:SetTexture(texture)
+		S:HandleIcon(icon, true)
+
+		tab.pushed:SetTexture(texture)
+		S:HandleIcon(tab.pushed)
 	end
 
 	VoidStorageFrame:StripTextures()
 	VoidStorageFrame:SetTemplate('Transparent')
-	VoidStorageFrame.Page1:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceCosmicGreater]])
-	VoidStorageFrame.Page1:Point('LEFT', '$parent', 'TOPRIGHT', 1, -60)
-	VoidStorageFrame.Page2:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceArcaneLarge]])
+	VoidStorageFrame.Page1:ClearAllPoints()
+	VoidStorageFrame.Page1:Point('LEFT', '$parent', 'TOPRIGHT', E.PixelMode and -1 or 1, -60)
 
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	_G.VoidStoragePurchaseFrame:SetTemplate()
