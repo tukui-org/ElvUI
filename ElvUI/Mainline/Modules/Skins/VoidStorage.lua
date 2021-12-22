@@ -8,24 +8,54 @@ function S:Blizzard_VoidStorageUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.voidstorage) then return end
 
 	local StripAllTextures = {
-		'VoidStorageBorderFrame',
-		'VoidStorageDepositFrame',
-		'VoidStorageWithdrawFrame',
-		'VoidStorageCostFrame',
-		'VoidStorageStorageFrame',
-		'VoidStoragePurchaseFrame',
-		'VoidItemSearchBox',
+		_G.VoidStorageBorderFrame,
+		_G.VoidStorageDepositFrame,
+		_G.VoidStorageWithdrawFrame,
+		_G.VoidStorageCostFrame,
+		_G.VoidStorageStorageFrame,
+		_G.VoidStoragePurchaseFrame,
 	}
 
 	for _, object in pairs(StripAllTextures) do
-		_G[object]:StripTextures()
+		object:StripTextures()
 	end
 
-	local VoidStorageFrame = _G.VoidStorageFrame
-	for i = 1, 2 do
-		local tab = VoidStorageFrame['Page'..i]
+	local VSFrame = _G.VoidStorageFrame
+	VSFrame:StripTextures()
+	VSFrame:SetTemplate('Transparent')
+
+	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
+	_G.VoidStoragePurchaseFrame:SetTemplate()
+
+	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)
+	S:HandleButton(_G.VoidStoragePurchaseButton)
+	S:HandleButton(_G.VoidStorageTransferButton)
+	S:HandleEditBox(_G.VoidItemSearchBox)
+
+	for storageType, numSlots in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
+		for i = 1, numSlots do
+			local btn = _G['VoidStorage'..storageType..'Button'..i]
+			btn:StripTextures()
+			btn:SetTemplate()
+			btn:StyleButton()
+
+			btn.icon:SetInside()
+			S:HandleIcon(btn.icon)
+			S:HandleIconBorder(btn.IconBorder)
+		end
+	end
+
+	-- Handle Frame Tabs
+	local num = 1
+	local tab = VSFrame['Page'..num]
+	while tab do
 		local icon = tab:GetNormalTexture()
 		local texture = icon:GetTexture()
+
+		if num == 1 then
+			tab:ClearAllPoints()
+			tab:Point('LEFT', '$parent', 'TOPRIGHT', E.PixelMode and -1 or 1, -60)
+		end
 
 		tab:StripTextures()
 		tab:StyleButton()
@@ -36,31 +66,9 @@ function S:Blizzard_VoidStorageUI()
 
 		tab.pushed:SetTexture(texture)
 		S:HandleIcon(tab.pushed)
-	end
 
-	VoidStorageFrame:StripTextures()
-	VoidStorageFrame:SetTemplate('Transparent')
-	VoidStorageFrame.Page1:ClearAllPoints()
-	VoidStorageFrame.Page1:Point('LEFT', '$parent', 'TOPRIGHT', E.PixelMode and -1 or 1, -60)
-
-	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
-	_G.VoidStoragePurchaseFrame:SetTemplate()
-
-	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)
-	S:HandleButton(_G.VoidStoragePurchaseButton)
-	S:HandleButton(_G.VoidStorageTransferButton)
-	S:HandleEditBox(_G.VoidItemSearchBox)
-
-	for StorageType, NumSlots in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
-		for i = 1, NumSlots do
-			local Button = _G['VoidStorage'..StorageType..'Button'..i]
-			Button:StripTextures()
-			Button:SetTemplate()
-			Button:StyleButton()
-			S:HandleIcon(Button.icon)
-			Button.icon:SetInside()
-			S:HandleIconBorder(Button.IconBorder)
-		end
+		num = num + 1
+		tab = VSFrame['Page'..num]
 	end
 end
 
