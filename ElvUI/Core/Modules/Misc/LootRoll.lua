@@ -215,7 +215,6 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 
 	f.rollID = rollID
 	f.time = rollTime
-	f.elapsed = 1
 
 	f.button.link = link
 	f.button.rollID = rollID
@@ -265,6 +264,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.status.backdrop:SetBackdropColor(r, g, b, .1)
 	end
 
+	f.status.elapsed = 1
 	f.status:SetMinMaxValues(0, rollTime)
 	f.status:SetValue(rollTime)
 
