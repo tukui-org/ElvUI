@@ -585,7 +585,15 @@ do
 			'Kui_Nameplates',
 			'Plater',
 			'Aloft'
-		}
+		},
+		Minimap = {
+			info = {
+				enabled = function() return E.private.general.minimap.enable and (LeaPlusDB and LeaPlusDB["MinimapMod"] == 'On') end,
+				accept = function() E.private.general.minimap.enable = false; ReloadUI() end,
+				name = 'ElvUI Minimap',
+			},
+			'Leatrix_Plus'
+		},
 	}
 
 	E.INCOMPATIBLE_ADDONS = ADDONS -- let addons have the ability to alter this list to trigger our popup if they want
