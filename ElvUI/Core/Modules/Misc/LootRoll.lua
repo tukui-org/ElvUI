@@ -80,7 +80,7 @@ end
 local function StatusUpdate(frame, elapsed)
 	if not frame.parent.rollID then return end
 
-	if frame.elapsed > 0.5 then
+	if frame.elapsed and frame.elapsed > 0.5 then
 		frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
 		frame.elapsed = 0
 	else
@@ -112,8 +112,8 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 	return f
 end
 
-function M:CreateRollFrame()
-	local frame = CreateFrame('Frame', nil, E.UIParent)
+function M:CreateRollFrame(index)
+	local frame = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
 	frame:Hide()
 
 	local status = CreateFrame('StatusBar', nil, frame)
@@ -163,6 +163,7 @@ function M:CreateRollFrame()
 	local name = frame:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	name:SetJustifyH('LEFT')
+	name:SetWordWrap(false)
 	frame.name = name
 
 	local bind = frame:CreateFontString(nil, 'OVERLAY')
@@ -181,12 +182,8 @@ local function GetFrame(i)
 		end
 	end
 
-	local f = M:CreateRollFrame()
-	f:ClearAllPoints()
-	f:Point('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
-
+	local f = M:CreateRollFrame(i)
 	tinsert(M.RollBars, f)
-
 	return f
 end
 
@@ -222,7 +219,6 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
-
 	f.button.questIcon:SetShown(E.Bags:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
@@ -268,8 +264,6 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.status:SetMinMaxValues(0, rollTime)
 	f.status:SetValue(rollTime)
 
-	f:ClearAllPoints()
-	f:Point('CENTER', _G.WorldFrame)
 	f:Show()
 
 	_G.AlertFrame:UpdateAnchors()
@@ -323,6 +317,28 @@ function M:LOOT_HISTORY_ROLL_COMPLETE()
 end
 M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
+function M:UpdateLootRollAnchors(POSITION)
+	local pixel, lastFrame, lastShown = E.PixelMode and 4 or 5
+	for i, frame in pairs(M.RollBars) do
+		frame:ClearAllPoints()
+
+		local anchor = i ~= 1 and lastFrame or _G.AlertFrameHolder
+		if POSITION == 'TOP' then
+			frame:Point('TOP', anchor, 'BOTTOM', 0, -pixel)
+		else
+			frame:Point('BOTTOM', anchor, 'TOP', 0, pixel)
+		end
+
+		lastFrame = frame
+
+		if frame:IsShown() then
+			lastShown = frame
+		end
+	end
+
+	return lastShown
+end
+
 function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
 	local db = E.db.general.lootRoll
@@ -338,7 +354,7 @@ function M:UpdateLootRollFrames()
 		frame.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
 		frame.button:ClearAllPoints()
-		frame.button:Point('RIGHT', frame, 'LEFT', -3, 0)
+		frame.button:Point('RIGHT', frame, 'LEFT', E.PixelMode and -1 or -2, 0)
 		frame.button:Size(db.height)
 
 		frame.button.questIcon:ClearAllPoints()
@@ -359,40 +375,41 @@ function M:UpdateLootRollFrames()
 		frame.status:ClearAllPoints()
 		frame.name:ClearAllPoints()
 		frame.bind:ClearAllPoints()
-
-		if E.db.general.lootRoll.style == 'halfbar' then
-			frame.status:Point('BOTTOM', 3, 0)
-			frame.status:Size(db.width, db.height / 3)
-
-			frame.name:Point('BOTTOMLEFT', frame.status, 'TOPLEFT', 4, 4)
-			frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
-			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
-			frame.pass:Point('TOPRIGHT', frame, -3, 2)
-		else
-			frame.status:SetAllPoints()
-			frame.status:Size(db.width, db.height)
-
-			if E.db.general.lootRoll.style == 'fullbar' then
-				frame.name:Point('LEFT', frame.status, 4, 0)
-				frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
-				frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
-				frame.pass:Point('RIGHT', frame.status, 'RIGHT', -3, 0)
-			else
-				frame.need:Point('LEFT', frame.status, 4, 0)
-				frame.greed:Point('LEFT', frame.need, 'RIGHT', 3, 0)
-				if frame.disenchant then frame.disenchant:Point('LEFT', frame.greed, 'RIGHT', 3, 0) end
-				frame.pass:Point('LEFT', frame.disenchant or frame.greed, 'RIGHT', 3, 0)
-
-				frame.name:Point('LEFT', frame.bind, 'RIGHT', 0, 0)
-				frame.name:Point('RIGHT', frame.status)
-				frame.bind:Point('LEFT', frame.pass, 'RIGHT', 4, 0)
-			end
+		frame.greed:ClearAllPoints()
+		frame.need:ClearAllPoints()
+		frame.pass:ClearAllPoints()
+		if frame.disenchant then
+			frame.disenchant:ClearAllPoints()
 		end
 
-		if E.db.general.lootRoll.style == 'halfbar' or E.db.general.lootRoll.style == 'fullbar' then
+		local full = E.db.general.lootRoll.style == 'fullbar'
+		if full then
+			frame.status:SetAllPoints()
+			frame.status:Size(db.width, db.height)
+		else
+			frame.status:Point('BOTTOM', 3, 0)
+			frame.status:Size(db.width, db.height / 3)
+		end
+
+		local anchor = full and frame or frame.status
+		if E.db.general.lootRoll.leftButtons then
+			if frame.disenchant then frame.disenchant:Point('LEFT', frame.need, 'RIGHT', 3, -1) end
+			frame.pass:Point('LEFT', frame.greed, 'RIGHT', 3, 0)
+			frame.greed:Point('LEFT', frame.disenchant or frame.need, 'RIGHT', 3, frame.disenchant and 0 or -1)
+			frame.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
+
+			frame.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
+			frame.name:Point('LEFT', frame.bind, 'RIGHT', 1, 0)
+			frame.bind:Point('LEFT', frame.pass, 'RIGHT', 1, 0)
+		else
 			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, -1) end
-			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, frame.disenchant and 0 or -1)
 			frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
+			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, frame.disenchant and 0 or -1)
+			frame.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
+
+			frame.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
+			frame.name:Point('RIGHT', frame.bind, 'LEFT', -1, 0)
+			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
 		end
 	end
 end
