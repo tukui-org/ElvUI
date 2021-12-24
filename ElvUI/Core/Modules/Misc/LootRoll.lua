@@ -107,7 +107,7 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 
 	f.text = f:CreateFontString(nil, 'ARTWORK')
 	f.text:FontTemplate(nil, nil, 'OUTLINE')
-	f.text:SetPoint('BOTTOMRIGHT', 0, 0)
+	f.text:SetPoint('BOTTOMRIGHT', 2, -2)
 
 	return f
 end
@@ -356,37 +356,44 @@ function M:UpdateLootRollFrames()
 			end
 		end
 
+		frame.status:ClearAllPoints()
+		frame.name:ClearAllPoints()
+		frame.bind:ClearAllPoints()
+
 		if E.db.general.lootRoll.style == 'halfbar' then
-			frame.status:ClearAllPoints()
 			frame.status:Point('BOTTOM', 3, 0)
 			frame.status:Size(db.width, db.height / 3)
 
-			frame.name:ClearAllPoints()
 			frame.name:Point('BOTTOMLEFT', frame.status, 'TOPLEFT', 4, 4)
 			frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
-
-			frame.bind:ClearAllPoints()
 			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
-
 			frame.pass:Point('TOPRIGHT', frame, -3, 2)
 		else
-			frame.status:ClearAllPoints()
 			frame.status:SetAllPoints()
 			frame.status:Size(db.width, db.height)
 
-			frame.name:ClearAllPoints()
-			frame.name:Point('LEFT', frame.status, 4, 0)
-			frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
+			if E.db.general.lootRoll.style == 'fullbar' then
+				frame.name:Point('LEFT', frame.status, 4, 0)
+				frame.name:Point('RIGHT', frame.bind, 'LEFT', -4, 0)
+				frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
+				frame.pass:Point('RIGHT', frame.status, 'RIGHT', -3, 0)
+			else
+				frame.need:Point('LEFT', frame.status, 4, 0)
+				frame.greed:Point('LEFT', frame.need, 'RIGHT', 3, 0)
+				if frame.disenchant then frame.disenchant:Point('LEFT', frame.greed, 'RIGHT', 3, 0) end
+				frame.pass:Point('LEFT', frame.disenchant or frame.greed, 'RIGHT', 3, 0)
 
-			frame.bind:ClearAllPoints()
-			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
-
-			frame.pass:Point('RIGHT', frame.status, 'RIGHT', -3, 0)
+				frame.name:Point('LEFT', frame.bind, 'RIGHT', 0, 0)
+				frame.name:Point('RIGHT', frame.status)
+				frame.bind:Point('LEFT', frame.pass, 'RIGHT', 4, 0)
+			end
 		end
 
-		if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, -2) end
-		frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, frame.disenchant and 0 or -2)
-		frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
+		if E.db.general.lootRoll.style == 'halfbar' or E.db.general.lootRoll.style == 'fullbar' then
+			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, -1) end
+			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, frame.disenchant and 0 or -1)
+			frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
+		end
 	end
 end
 

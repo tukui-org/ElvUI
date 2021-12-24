@@ -208,7 +208,7 @@ General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.lootRoll
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 50, max = 1000, step = 1 })
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 100, step = 1 })
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.buttonSize = ACH:Range(L["Button Size"], nil, 3, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
-General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.style = ACH:Select(L["Style"], nil, 4, { halfbar = 'Half Bar', fullbar = 'Full Bar' })
+General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.style = ACH:Select(L["Style"], nil, 4, { halfbar = 'Half Bar', fullbar = 'Full Bar', lefties = 'Lefties' })
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.statusBarTexture = ACH:SharedMediaStatusbar(L["Texture"], L["The texture that will be used mainly for statusbars."], 5)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityName = ACH:Toggle(L["Quality Name"], nil, 6)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRollGroup.args.qualityStatusBar = ACH:Toggle(L["Quality StatusBar"], nil, 7)
