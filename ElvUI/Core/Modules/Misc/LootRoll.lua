@@ -375,14 +375,8 @@ function M:UpdateLootRollFrames()
 		frame.status:ClearAllPoints()
 		frame.name:ClearAllPoints()
 		frame.bind:ClearAllPoints()
-		frame.greed:ClearAllPoints()
-		frame.need:ClearAllPoints()
-		frame.pass:ClearAllPoints()
-		if frame.disenchant then
-			frame.disenchant:ClearAllPoints()
-		end
 
-		local full = E.db.general.lootRoll.style == 'fullbar'
+		local full = db.style == 'fullbar'
 		if full then
 			frame.status:SetAllPoints()
 			frame.status:Size(db.width, db.height)
@@ -392,7 +386,7 @@ function M:UpdateLootRollFrames()
 		end
 
 		local anchor = full and frame or frame.status
-		if E.db.general.lootRoll.leftButtons then
+		if db.leftButtons then
 			if frame.disenchant then frame.disenchant:Point('LEFT', frame.need, 'RIGHT', 3, -1) end
 			frame.pass:Point('LEFT', frame.greed, 'RIGHT', 3, 0)
 			frame.greed:Point('LEFT', frame.disenchant or frame.need, 'RIGHT', 3, frame.disenchant and 0 or -1)
