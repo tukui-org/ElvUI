@@ -176,6 +176,7 @@ function M:CreateRollFrame(index)
 	spark:Point('RIGHT', status:GetStatusBarTexture())
 	spark:Point('BOTTOM')
 	spark:Point('TOP')
+	spark:Width(2)
 	status.spark = spark
 
 	local button = CreateFrame('Button', nil, frame)
