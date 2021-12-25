@@ -588,7 +588,10 @@ do
 		},
 		Minimap = {
 			info = {
-				enabled = function() return E.private.general.minimap.enable and (LeaPlusDB and LeaPlusDB["MinimapMod"] == 'On') end,
+				enabled = function()
+					local db = E.private.general.minimap.enable and _G.LeaPlusDB
+					return db and db.MinimapMod == 'On'
+				end,
 				accept = function() E.private.general.minimap.enable = false; ReloadUI() end,
 				name = 'ElvUI Minimap',
 			},
