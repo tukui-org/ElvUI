@@ -362,7 +362,7 @@ end
 M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollAnchors(POSITION)
-	local spacing, lastFrame, lastShown = E.db.general.lootRoll.spacing
+	local spacing, lastFrame, lastShown = E.db.general.lootRoll.spacing + E.Spacing
 	for i, frame in next, M.RollBars do
 		frame:ClearAllPoints()
 
