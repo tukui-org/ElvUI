@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local pairs, unpack, next = pairs, unpack, next
-local wipe, tinsert = wipe, tinsert
+local wipe, tinsert, format = wipe, tinsert, format
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
@@ -88,18 +88,63 @@ local function StatusUpdate(frame, elapsed)
 	end
 end
 
+local iconCoords = {
+	[0] = {1.05, -0.1, 1.05, -0.1}, -- pass
+	[2] = {0.05, 1.05, -0.025, 0.85}, -- greed
+	[1] = {0.05, 1.05, -0.05, .95}, -- need
+	[3] = {0.05, 1.05, -0.05, .95}, -- disenchant
+}
+
+local function ButtonTexCoords(f, icon, rolltype, minX, maxX, minY, maxY)
+	local offset = icon == f.pushedTex and (rolltype == 0 and -0.05 or 0.05) or 0
+	icon:SetTexCoord(minX - offset, maxX, minY - offset, maxY)
+
+	if icon == f.disabledTex then
+		icon:SetDesaturated(true)
+		icon:SetAlpha(.2)
+	end
+end
+
+local function RollButtonTextures(f, texture, rolltype)
+	f:SetNormalTexture(texture)
+	f:SetPushedTexture(texture)
+	f:SetDisabledTexture(texture)
+	f:SetHighlightTexture(texture)
+
+	f.normalTex = f:GetNormalTexture()
+	f.disabledTex = f:GetDisabledTexture()
+	f.pushedTex = f:GetPushedTexture()
+	f.highlightTex = f:GetHighlightTexture()
+
+	local minX, maxX, minY, maxY = unpack(iconCoords[rolltype])
+	ButtonTexCoords(f, f.normalTex, rolltype, minX, maxX, minY, maxY)
+	ButtonTexCoords(f, f.disabledTex, rolltype, minX, maxX, minY, maxY)
+	ButtonTexCoords(f, f.pushedTex, rolltype, minX, maxX, minY, maxY)
+	ButtonTexCoords(f, f.highlightTex, rolltype, minX, maxX, minY, maxY)
+end
+
+local function RollMouseDown(f)
+	if f.highlightTex then
+		f.highlightTex:SetAlpha(0)
+	end
+end
+
+local function RollMouseUp(f)
+	if f.highlightTex then
+		f.highlightTex:SetAlpha(1)
+	end
+end
+
 local function CreateRollButton(parent, texture, rolltype, tiptext)
-	local f = CreateFrame('Button', nil, parent)
-	f:SetNormalTexture(texture..'-Up')
-	f:SetDisabledTexture(texture..'-Up')
-	f:GetDisabledTexture():SetDesaturated(true)
-	f:GetDisabledTexture():SetAlpha(.2)
-	f:SetPushedTexture(texture..'-Down')
-	f:SetHighlightTexture(texture..'-Highlight')
+	local f = CreateFrame('Button', format('$parent_%sButton', tiptext), parent)
+	f:SetScript('OnMouseDown', RollMouseDown)
+	f:SetScript('OnMouseUp', RollMouseUp)
+	f:SetScript('OnClick', ClickRoll)
 	f:SetScript('OnEnter', SetTip)
 	f:SetScript('OnLeave', GameTooltip_Hide)
-	f:SetScript('OnClick', ClickRoll)
 	f:SetMotionScriptsWhileDisabled(true)
+
+	RollButtonTextures(f, texture..'-Up', rolltype)
 
 	f.parent = parent
 	f.rolltype = rolltype
@@ -154,9 +199,7 @@ function M:CreateRollFrame(index)
 	button.questIcon:Hide()
 
 	frame.pass = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
-	if E.Retail then
-		frame.disenchant = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT)
-	end
+	frame.disenchant = E.Retail and CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT) or nil
 	frame.greed = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
 	frame.need = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
 
@@ -387,19 +430,19 @@ function M:UpdateLootRollFrames()
 
 		local anchor = full and frame or frame.status
 		if db.leftButtons then
-			if frame.disenchant then frame.disenchant:Point('LEFT', frame.need, 'RIGHT', 3, -1) end
-			frame.pass:Point('LEFT', frame.greed, 'RIGHT', 3, 0)
-			frame.greed:Point('LEFT', frame.disenchant or frame.need, 'RIGHT', 3, frame.disenchant and 0 or -1)
 			frame.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
+			if frame.disenchant then frame.disenchant:Point('LEFT', frame.need, 'RIGHT', 3, 0) end
+			frame.greed:Point('LEFT', frame.disenchant or frame.need, 'RIGHT', 3, 0)
+			frame.pass:Point('LEFT', frame.greed, 'RIGHT', 3, 0)
 
 			frame.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
 			frame.name:Point('LEFT', frame.bind, 'RIGHT', 1, 0)
 			frame.bind:Point('LEFT', frame.pass, 'RIGHT', 1, 0)
 		else
-			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, -1) end
-			frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
-			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, frame.disenchant and 0 or -1)
 			frame.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
+			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, 0) end
+			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, 0)
+			frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
 
 			frame.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
 			frame.name:Point('RIGHT', frame.bind, 'LEFT', -1, 0)
