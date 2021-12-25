@@ -61,7 +61,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark_:SetTexture(E.media.blankTex)
 	castbar.Spark_:SetVertexColor(1, 1, 1, 0.4)
-	castbar.Spark_:Size(2)
+	castbar.Spark_:Width(2)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY')
