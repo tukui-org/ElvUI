@@ -101,7 +101,7 @@ local function ButtonTexCoords(f, icon, rolltype, minX, maxX, minY, maxY)
 
 	if icon == f.disabledTex then
 		icon:SetDesaturated(true)
-		icon:SetAlpha(.2)
+		icon:SetAlpha(0.25)
 	end
 end
 
