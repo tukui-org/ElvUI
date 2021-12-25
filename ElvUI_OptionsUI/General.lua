@@ -207,7 +207,7 @@ General.args.blizzUIImprovements.args.lootRollGroup.args.qualityStatusBar = ACH:
 General.args.blizzUIImprovements.args.lootRollGroup.args.qualityStatusBarBackdrop = ACH:Toggle(L["Quality Background"], nil, 3)
 General.args.blizzUIImprovements.args.lootRollGroup.args.width = ACH:Range(L["Width"], nil, 4, { min = 50, max = 1000, step = 1 })
 General.args.blizzUIImprovements.args.lootRollGroup.args.height = ACH:Range(L["Height"], nil, 5, { min = 5, max = 100, step = 1 })
-General.args.blizzUIImprovements.args.lootRollGroup.args.buttonSize = ACH:Range(L["Button Size"], nil, 6, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
+General.args.blizzUIImprovements.args.lootRollGroup.args.buttonSize = ACH:Range(L["Button Size"], nil, 6, { min = 14, max = 34, step = 1 })
 General.args.blizzUIImprovements.args.lootRollGroup.args.statusBarColor = ACH:Color(L["StatusBar Color"], nil, 10, nil, nil, function(info) local c, d = E.db.general.lootRoll[info[#info]], P.general.lootRoll[info[#info]] return c.r, c.g, c.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local c = E.db.general.lootRoll[info[#info]] c.r, c.g, c.b = r, g, b end, nil, function() return E.db.general.lootRoll.qualityStatusBar end)
 General.args.blizzUIImprovements.args.lootRollGroup.args.spacing = ACH:Range(L["Spacing"], nil, 11, { min = 0, max = 20, step = 1 }, nil, nil, function(info, value) E.db.general.lootRoll[info[#info]] = value Misc:UpdateLootRollFrames() _G.AlertFrame:UpdateAnchors() end)
 General.args.blizzUIImprovements.args.lootRollGroup.args.style = ACH:Select(L["Style"], nil, 12, { halfbar = 'Half Bar', fullbar = 'Full Bar' })
