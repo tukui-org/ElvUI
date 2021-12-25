@@ -25,6 +25,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
 local cachedRolls = {}
 local cancelled_rolls = {}
@@ -389,7 +390,7 @@ function M:UpdateLootRollFrames()
 	local font = LSM:Fetch('font', db.nameFont)
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 
-	for i = 1, 4 do
+	for i = 1, NUM_GROUP_LOOT_FRAMES do
 		local frame = M.RollBars[i]
 		frame:Size(db.width, db.height)
 
@@ -454,7 +455,7 @@ end
 function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
 
-	for i = 1, 4 do
+	for i = 1, NUM_GROUP_LOOT_FRAMES do
 		GetFrame(i)
 	end
 
