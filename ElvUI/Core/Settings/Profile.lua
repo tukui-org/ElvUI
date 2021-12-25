@@ -156,6 +156,7 @@ P.general = {
 	lootRoll = {
 		width = 325,
 		height = 30,
+		spacing = 4,
 		buttonSize = 20,
 		style = 'halfbar',
 		statusBarTexture = 'ElvUI Norm',

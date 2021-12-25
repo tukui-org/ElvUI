@@ -362,15 +362,15 @@ end
 M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollAnchors(POSITION)
-	local pixel, lastFrame, lastShown = E.PixelMode and 4 or 5
+	local spacing, lastFrame, lastShown = E.db.general.lootRoll.spacing
 	for i, frame in next, M.RollBars do
 		frame:ClearAllPoints()
 
 		local anchor = i ~= 1 and lastFrame or _G.AlertFrameHolder
 		if POSITION == 'TOP' then
-			frame:Point('TOP', anchor, 'BOTTOM', 0, -pixel)
+			frame:Point('TOP', anchor, 'BOTTOM', 0, -spacing)
 		else
-			frame:Point('BOTTOM', anchor, 'TOP', 0, pixel)
+			frame:Point('BOTTOM', anchor, 'TOP', 0, spacing)
 		end
 
 		lastFrame = frame
