@@ -154,11 +154,13 @@ P.general = {
 		}
 	},
 	lootRoll = {
-		width = 328,
-		height = 28,
-		buttonSize = 17,
+		width = 325,
+		height = 30,
+		spacing = 4,
+		buttonSize = 20,
 		style = 'halfbar',
 		statusBarTexture = 'ElvUI Norm',
+		leftButtons = false,
 		qualityName = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
