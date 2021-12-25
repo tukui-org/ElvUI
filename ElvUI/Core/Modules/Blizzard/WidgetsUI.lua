@@ -28,18 +28,18 @@ function B:UIWidgetTemplateStatusBar()
 	local bar = self.Bar
 	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
-	if NP.Initialized and strmatch(self:GetDebugName(), 'NamePlate') then
-		self:SetScale(1)
-	end
-
-	if self.Label then
-		self.Label:FontTemplate(nil, nil, 'NONE')
-	end
-
 	if not bar.backdrop then
 		bar:CreateBackdrop('Transparent')
 
-		if bar.Label then
+		if NP.Initialized and strmatch(self:GetDebugName(), 'NamePlate') then
+			self:SetIgnoreParentScale(true)
+		end
+
+		if self.Label then -- title
+			self.Label:FontTemplate(nil, nil, 'NONE')
+		end
+
+		if bar.Label then -- precent text
 			bar.Label:FontTemplate(nil, nil, 'NONE')
 		end
 
