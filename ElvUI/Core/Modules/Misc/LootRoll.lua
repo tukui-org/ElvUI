@@ -95,7 +95,7 @@ local iconCoords = {
 	[3] = {0.05, 1.05, -0.05, .95}, -- disenchant
 }
 
-local function ButtonTexCoords(f, icon, rolltype, minX, maxX, minY, maxY)
+local function RollTexCoords(f, icon, rolltype, minX, maxX, minY, maxY)
 	local offset = icon == f.pushedTex and (rolltype == 0 and -0.05 or 0.05) or 0
 	icon:SetTexCoord(minX - offset, maxX, minY - offset, maxY)
 
@@ -117,10 +117,10 @@ local function RollButtonTextures(f, texture, rolltype)
 	f.highlightTex = f:GetHighlightTexture()
 
 	local minX, maxX, minY, maxY = unpack(iconCoords[rolltype])
-	ButtonTexCoords(f, f.normalTex, rolltype, minX, maxX, minY, maxY)
-	ButtonTexCoords(f, f.disabledTex, rolltype, minX, maxX, minY, maxY)
-	ButtonTexCoords(f, f.pushedTex, rolltype, minX, maxX, minY, maxY)
-	ButtonTexCoords(f, f.highlightTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(f, f.normalTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(f, f.disabledTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(f, f.pushedTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(f, f.highlightTex, rolltype, minX, maxX, minY, maxY)
 end
 
 local function RollMouseDown(f)
