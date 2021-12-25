@@ -3,6 +3,7 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local unpack = unpack
+local strmatch = strmatch
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -24,11 +25,22 @@ end
 
 function B:UIWidgetTemplateStatusBar()
 	local bar = self.Bar
-	local atlas = bar:GetStatusBarAtlas()
-	UpdateBarTexture(bar, atlas)
+	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
+
+	if strmatch(self:GetDebugName(), '^NamePlate') then
+		self:SetScale(1)
+	end
+
+	if self.Label then
+		self.Label:FontTemplate(nil, nil, 'NONE')
+	end
 
 	if not bar.backdrop then
 		bar:CreateBackdrop('Transparent')
+
+		if bar.Label then
+			bar.Label:FontTemplate(nil, nil, 'NONE')
+		end
 
 		bar.BGLeft:SetAlpha(0)
 		bar.BGRight:SetAlpha(0)
