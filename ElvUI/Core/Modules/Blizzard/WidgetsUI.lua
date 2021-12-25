@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
+local NP = E:GetModule('NamePlates')
 
 local _G = _G
 local unpack = unpack
@@ -27,7 +28,7 @@ function B:UIWidgetTemplateStatusBar()
 	local bar = self.Bar
 	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
-	if strmatch(self:GetDebugName(), 'NamePlate') then
+	if NP.Initialized and strmatch(self:GetDebugName(), 'NamePlate') then
 		self:SetScale(1)
 	end
 
