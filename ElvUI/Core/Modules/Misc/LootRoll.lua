@@ -81,7 +81,7 @@ end
 local function StatusUpdate(frame, elapsed)
 	if not frame.parent.rollID then return end
 
-	if frame.elapsed and frame.elapsed > 0.5 then
+	if frame.elapsed and frame.elapsed > 0.1 then
 		frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
 		frame.elapsed = 0
 	else
