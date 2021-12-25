@@ -27,7 +27,7 @@ function B:UIWidgetTemplateStatusBar()
 	local bar = self.Bar
 	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
-	if strmatch(self:GetDebugName(), 'NamePlate%d') then
+	if strmatch(self:GetDebugName(), 'NamePlate') then
 		self:SetScale(1)
 	end
 
