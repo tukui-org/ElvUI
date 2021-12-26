@@ -1002,7 +1002,6 @@ L["Module Copy"] = true
 L["Module Reset"] = true
 L["Money Format"] = true
 L["Monitor"] = true
-L["Mouse Over"] = true
 L["Mouseover Glow"] = true
 L["Mouseover Highlight"] = true
 L["Mouseover"] = true

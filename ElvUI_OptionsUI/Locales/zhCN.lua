@@ -1001,7 +1001,6 @@ L["Module Copy"] = "模块复制"
 L["Module Reset"] = "模块重置"
 L["Money Format"] = "金币格式"
 L["Monitor"] = true
-L["Mouse Over"] = "鼠标滑过显示"
 L["Mouseover Glow"] = "鼠标指向边框"
 L["Mouseover Highlight"] = "鼠标指向高亮"
 L["Mouseover"] = "鼠标滑过显示"

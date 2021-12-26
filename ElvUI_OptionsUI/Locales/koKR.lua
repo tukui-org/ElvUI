@@ -1001,7 +1001,6 @@ L["Module Copy"] = true
 L["Module Reset"] = true
 L["Money Format"] = "소지금 표시방법"
 L["Monitor"] = true
-L["Mouse Over"] = "마우스오버 시 표시"
 L["Mouseover Glow"] = "마우스오버 발광"
 L["Mouseover Highlight"] = "마우스오버 강조"
 L["Mouseover"] = "마우스오버 시 표시"

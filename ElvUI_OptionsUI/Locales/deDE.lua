@@ -1001,7 +1001,6 @@ L["Module Copy"] = "Module kopieren"
 L["Module Reset"] = "Module zurücksetzen"
 L["Money Format"] = "Geldformat"
 L["Monitor"] = true
-L["Mouse Over"] = "Mouseover"
 L["Mouseover Glow"] = "Mouseover Leuchten"
 L["Mouseover Highlight"] = "Mouseover Hervorhebung"
 L["Mouseover"] = "Mouseover"

@@ -1001,7 +1001,6 @@ L["Module Copy"] = true
 L["Module Reset"] = true
 L["Money Format"] = true
 L["Monitor"] = true
-L["Mouse Over"] = "Pasar el ratón sobre"
 L["Mouseover Glow"] = true
 L["Mouseover Highlight"] = true
 L["Mouseover"] = "Pasar el ratón por encima"

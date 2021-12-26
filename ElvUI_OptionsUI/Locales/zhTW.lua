@@ -1001,7 +1001,6 @@ L["Module Copy"] = "模組複製"
 L["Module Reset"] = "模組重置"
 L["Money Format"] = "金幣格式"
 L["Monitor"] = true
-L["Mouse Over"] = "滑鼠滑過顯示"
 L["Mouseover Glow"] = "滑鼠指向發光"
 L["Mouseover Highlight"] = "滑鼠指向高亮"
 L["Mouseover"] = "滑鼠滑過顯示"

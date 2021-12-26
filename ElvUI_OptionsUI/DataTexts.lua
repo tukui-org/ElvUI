@@ -20,7 +20,7 @@ DTPanelOptions.width = ACH:Range(L["Width"], nil, 4, { min = 24, max = ceil(E.sc
 DTPanelOptions.height = ACH:Range(L["Height"], nil, 5, { min = 12, max = ceil(E.screenHeight), step = 1})
 DTPanelOptions.textJustify = ACH:Select(L["Text Justify"], L["Sets the font instance's horizontal text alignment style."], 6, { CENTER = L["Center"], LEFT = L["Left"], RIGHT = L["Right"] })
 
-DTPanelOptions.templateGroup = ACH:MultiSelect(L["Template"], nil, 10, { backdrop = L["Backdrop"], panelTransparency = L["Backdrop Transparency"], mouseover = L["Mouse Over"], border = L["Show Border"] })
+DTPanelOptions.templateGroup = ACH:MultiSelect(L["Template"], nil, 10, { backdrop = L["Backdrop"], panelTransparency = L["Backdrop Transparency"], mouseover = L["Mouseover"], border = L["Show Border"] })
 DTPanelOptions.templateGroup.sortByValue = true
 
 DTPanelOptions.strataAndLevel = ACH:Group(L["Strata and Level"], nil, 15)

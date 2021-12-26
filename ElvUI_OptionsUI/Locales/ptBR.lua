@@ -1002,7 +1002,6 @@ L["Module Copy"] = "Copiar Módulo"
 L["Module Reset"] = "Resetar Módulo"
 L["Money Format"] = "Formato do Dinheiro"
 L["Monitor"] = true
-L["Mouse Over"] = "Com o Rato (Mouse) por cima"
 L["Mouseover Glow"] = "Brilhar ao Pairar o Mouse"
 L["Mouseover Highlight"] = "Realçar ao Pairar o Mouse"
 L["Mouseover"] = "Pairar o Mouse"
