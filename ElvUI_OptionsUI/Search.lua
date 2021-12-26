@@ -56,31 +56,23 @@ function C:ClearSearchResults()
 	wipe(Search.results.args)
 end
 
+function C:GetReturn(value, ...)
+	if type(value) == 'function' then
+		local success, arg1 = pcall(value, ...)
+		if success then return arg1 end
+	else
+		return value
+	end
+end
+
 function C:SearchConfig(tbl, loc, locName)
 	if SearchText == '' then return end
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
 		if not BlockInfoOptions[option] and not invalidTypes[infoTable.type] then
-			local name, desc, values
-			if type(infoTable.name) == 'function' then
-				local success, arg1 = pcall(infoTable.name, option)
-				if success then name = arg1 end
-			else
-				name = infoTable.name
-			end
-			if type(infoTable.desc) == 'function' then
-				local success, arg1 = pcall(infoTable.desc, option)
-				if success then desc = arg1 end
-			else
-				desc = infoTable.desc
-			end
+			local name, desc, values = C:GetReturn(infoTable.name, option), C:GetReturn(infoTable.desc, option)
 			if valueTypes[infoTable.type] and not infoTable.dialogControl then
-				if type(infoTable.values) == 'function' then
-					local success, arg1 = pcall(infoTable.values, option)
-					if success then values = arg1 end
-				elseif type(infoTable.values) == 'table' then
-					values = infoTable.values
-				end
+				values = C:GetReturn(infoTable.values, option)
 			end
 
 			local location = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
