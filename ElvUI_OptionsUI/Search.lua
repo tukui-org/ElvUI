@@ -87,8 +87,7 @@ function C:SearchConfig(tbl, loc, locName)
 			local locationName = name and (locName and ((name ~= '' and name ~= ' ') and strjoin(' - ', locName, name) or locName) or name)
 			if strfind(strlower(name or '\a'), SearchText) or strfind(strlower(desc or '\a'), SearchText) then
 				C.SearchCache[location] = locationName
-			end
-			if values then
+			elseif values then
 				for _, subName in next, values do
 					if strfind(strlower(subName or '\a'), SearchText) then
 						C.SearchCache[location] = locationName
