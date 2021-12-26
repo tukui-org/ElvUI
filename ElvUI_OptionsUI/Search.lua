@@ -33,6 +33,11 @@ local invalidTypes = {
 	header = true
 }
 
+local valueTypes = {
+	multiselect = true,
+	select = true
+}
+
 function C:AddSearchResults()
 	local resultNum = 1
 	for loc, name in pairs(C.SearchCache) do
@@ -63,17 +68,19 @@ function C:SearchConfig(tbl, loc, locName)
 			else
 				name = infoTable.name
 			end
-			if infoTable.desc and type(infoTable.desc) == 'function' then
+			if type(infoTable.desc) == 'function' then
 				local success, arg1 = pcall(infoTable.desc, option)
 				if success then desc = arg1 end
 			else
 				desc = infoTable.desc
 			end
-			if type(infoTable.values) == 'function' then
-				local success, arg1 = pcall(infoTable.values, option)
-				if success then values = arg1 end
-			elseif type(infoTable.values) == 'table' then
-				values = infoTable.values
+			if valueTypes[infoTable.type] and not infoTable.dialogControl then
+				if type(infoTable.values) == 'function' then
+					local success, arg1 = pcall(infoTable.values, option)
+					if success then values = arg1 end
+				elseif type(infoTable.values) == 'table' then
+					values = infoTable.values
+				end
 			end
 
 			local location = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
