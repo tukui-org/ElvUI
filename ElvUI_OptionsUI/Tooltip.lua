@@ -31,9 +31,9 @@ General.itemQuality = ACH:Toggle(L["Item Quality"], L["Color tooltip border base
 General.colorAlpha = ACH:Range(L["OPACITY"], nil, 10, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; Skins:StyleTooltips() end)
 
 General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -2)
-General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 1, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
+General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues)
 General.modifierGroup.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 2, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["None"] })
-General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 3, modifierValues)
+General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 3, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
 General.modifierGroup.inline = true
 
 General.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, -1, nil, nil, nil, nil, not E.Retail)
