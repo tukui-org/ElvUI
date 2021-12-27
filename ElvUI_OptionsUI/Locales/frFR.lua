@@ -1001,7 +1001,6 @@ L["Module Copy"] = true
 L["Module Reset"] = true
 L["Money Format"] = "Format monétaire"
 L["Monitor"] = true
-L["Mouse Over"] = "Au survol"
 L["Mouseover Glow"] = true
 L["Mouseover Highlight"] = true
 L["Mouseover"] = "Au survol de la souris"

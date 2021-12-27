@@ -15,7 +15,7 @@ function UF:Construct_AuraBars(statusBar)
 
 	statusBar.spark:SetTexture(E.media.blankTex)
 	statusBar.spark:SetVertexColor(1, 1, 1, 0.4)
-	statusBar.spark:Size(2)
+	statusBar.spark:Width(2)
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true

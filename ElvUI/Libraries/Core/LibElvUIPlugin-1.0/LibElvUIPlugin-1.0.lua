@@ -187,7 +187,7 @@ end
 
 function lib:GetPluginOptions()
 	E.Options.args.plugins = {
-		order = 3,
+		order = 5,
 		type = "group",
 		name = L["Plugins"],
 		inline = false,

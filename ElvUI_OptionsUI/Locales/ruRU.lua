@@ -1001,7 +1001,6 @@ L["Module Copy"] = "Копирование модуля"
 L["Module Reset"] = "Сброс модуля"
 L["Money Format"] = "Формат денег"
 L["Monitor"] = true
-L["Mouse Over"] = "При наведении"
 L["Mouseover Glow"] = "Свечение при наведении"
 L["Mouseover Highlight"] = "Подсветка при наведении"
 L["Mouseover"] = "При наведении"

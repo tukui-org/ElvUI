@@ -8,7 +8,6 @@
 	<Script file='Auras.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='Chat.lua'/>
-	<!--Script file='Colors.lua'/-->
 	<Script file='Cooldown.lua'/>
 	<Script file='DataTexts.lua'/>
 	<Script file='DataBars.lua'/>
@@ -20,5 +19,6 @@
 	<Script file='StyleFilters.lua'/>
 	<Script file='Maps.lua'/>
 	<Script file='ModuleControl.lua'/>
+	<Script file='Search.lua'/>
 	<Script file='Tags.lua'/>
 </Ui>
