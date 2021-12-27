@@ -10,6 +10,7 @@ local type = type
 local pcall = pcall
 local pairs = pairs
 local gmatch = gmatch
+local strtrim = strtrim
 local strfind = strfind
 local strjoin = strjoin
 local strlower = strlower
@@ -20,7 +21,7 @@ C.SearchCache = {}
 E.Options.args.search = ACH:Group(L["Search"], nil, 4)
 
 local Search =  E.Options.args.search.args
-local EditBox = ACH:Input(L["Search"], nil, 0, nil, nil, function() return SearchText end, function(_, value) C:Search_ClearResults() SearchText = strlower(value) C:Search_Config() C:Search_AddResults() end)
+local EditBox = ACH:Input(L["Search"], nil, 0, nil, nil, function() return SearchText end, function(_, value) C:Search_ClearResults() if strmatch(value, '%S+') then SearchText = strtrim(strlower(value)) C:Search_Config() C:Search_AddResults() end end)
 Search.editbox = EditBox
 
 local start = 100
@@ -130,6 +131,7 @@ function C:Search_ClearResults()
 	wipe(Search)
 
 	Search.editbox = EditBox
+	SearchText = ''
 end
 
 function C:Search_GetReturn(value, ...)
@@ -146,6 +148,7 @@ function C:Search_Config(tbl, loc, locName)
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
 		if not blockOption[option] and not typeInvalid[infoTable.type] then
+			local location, locationName = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
 			local name = C:Search_GetReturn(infoTable.name, option)
 			if name then -- bad apples
 				local desc, values = C:Search_GetReturn(infoTable.desc, option)
@@ -153,21 +156,21 @@ function C:Search_Config(tbl, loc, locName)
 					values = C:Search_GetReturn(infoTable.values, option)
 				end
 
-				local locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
-				local location = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
-				if strfind(strlower(name or '\a'), SearchText) or strfind(strlower(desc or '\a'), SearchText) then
+				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
+				if strfind(strlower(name or '\a'), SearchText, nil, true) or strfind(strlower(desc or '\a'), SearchText, nil, true) then
 					C.SearchCache[location] = locationName
 				elseif values then
 					for _, subName in next, values do
-						if strfind(strlower(subName or '\a'), SearchText) then
+						if strfind(strlower(subName or '\a'), SearchText, nil, true) then
 							C.SearchCache[location] = locationName
 						end
 					end
 				end
+			end
 
-				if type(infoTable) == 'table' and infoTable.args then
-					C:Search_Config(infoTable.args, location, locationName)
-				end
+			-- process objects (sometimes without a locationName)
+			if type(infoTable) == 'table' and infoTable.args then
+				C:Search_Config(infoTable.args, location, locationName)
 			end
 		end
 	end
