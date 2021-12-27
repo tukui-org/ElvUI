@@ -631,6 +631,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local border = _G[name..'Border']
 	local normal = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
+	local nat = button.NewActionTexture
 
 	local db = button:GetParent().db
 	local color = AB.db.fontColor
@@ -646,6 +647,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
+	if nat then nat:SetAlpha(0) end
 
 	if count then
 		local position, xOffset, yOffset = db and db.countTextPosition or 'BOTTOMRIGHT', db and db.countTextXOffset or 0, db and db.countTextYOffset or 2
@@ -948,6 +950,27 @@ function AB:ButtonEventsRegisterFrame(added)
 	end
 end
 
+function AB:IconIntroTracker_Skin()
+	local l, r, t, b = unpack(E.TexCoords)
+	for _, iconIntro in ipairs(self.iconList) do
+		if not iconIntro.isSkinned then
+			iconIntro.trail1.icon:SetTexCoord(l, r, t, b)
+			iconIntro.trail1.bg:SetTexCoord(l, r, t, b)
+
+			iconIntro.trail2.icon:SetTexCoord(l, r, t, b)
+			iconIntro.trail2.bg:SetTexCoord(l, r, t, b)
+
+			iconIntro.trail3.icon:SetTexCoord(l, r, t, b)
+			iconIntro.trail3.bg:SetTexCoord(l, r, t, b)
+
+			iconIntro.icon.icon:SetTexCoord(l, r, t, b)
+			iconIntro.icon.bg:SetTexCoord(l, r, t, b)
+
+			iconIntro.isSkinned = true
+		end
+	end
+end
+
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MultiCastActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}) do
@@ -998,6 +1021,7 @@ function AB:DisableBlizzard()
 		AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
 		AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
+		_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 	end
 
 	-- hide some interface options we dont use
