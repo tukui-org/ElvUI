@@ -923,7 +923,6 @@ L["Log the main chat frames history. So when you reloadui or log in and out you 
 L["Login Message"] = "Message de connexion"
 L["Loot Frames"] = "Fenêtre de butin"
 L["Loot Roll"] = "Cadre de butin"
-L["Loot"] = "Butin"
 L["Losing Threat"] = true
 L["LOSS_OF_CONTROL"] = "Alertes Perte de contrôle"
 L["Low Health Threshold"] = "Seuil vie faible"

@@ -923,7 +923,6 @@ L["Log the main chat frames history. So when you reloadui or log in and out you 
 L["Login Message"] = "Login Nachricht"
 L["Loot Frames"] = "Beutefenster"
 L["Loot Roll"] = "Würfelfenster"
-L["Loot"] = "Beute"
 L["Losing Threat"] = "Bedroungsverlust"
 L["LOSS_OF_CONTROL"] = "Alarmierungen für Kontrollverluste"
 L["Low Health Threshold"] = "Wenig Leben Schwellenwert"

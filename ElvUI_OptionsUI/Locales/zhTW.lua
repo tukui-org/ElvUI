@@ -923,7 +923,6 @@ L["Log the main chat frames history. So when you reloadui or log in and out you 
 L["Login Message"] = "登入資訊"
 L["Loot Frames"] = "拾取框架"
 L["Loot Roll"] = "擲骰"
-L["Loot"] = "拾取"
 L["Losing Threat"] = "丟失仇恨"
 L["LOSS_OF_CONTROL"] = "喪失控制警告"
 L["Low Health Threshold"] = "低生命值閾值"

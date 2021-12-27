@@ -924,7 +924,6 @@ L["Log the main chat frames history. So when you reloadui or log in and out you 
 L["Login Message"] = "Messaggio Di Accesso"
 L["Loot Frames"] = true
 L["Loot Roll"] = true
-L["Loot"] = true
 L["Losing Threat"] = true
 L["LOSS_OF_CONTROL"] = "Loss of Control Alerts"
 L["Low Health Threshold"] = true

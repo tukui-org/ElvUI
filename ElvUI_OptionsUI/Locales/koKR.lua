@@ -923,7 +923,6 @@ L["Log the main chat frames history. So when you reloadui or log in and out you 
 L["Login Message"] = "로그인 메세지 표시"
 L["Loot Frames"] = "루팅 창"
 L["Loot Roll"] = "주사위 굴림창"
-L["Loot"] = "전리품 확인창"
 L["Losing Threat"] = true
 L["LOSS_OF_CONTROL"] = "제어 불가 효과 경보"
 L["Low Health Threshold"] = "낮은 생명력 임계점"

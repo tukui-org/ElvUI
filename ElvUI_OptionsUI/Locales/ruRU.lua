@@ -923,7 +923,6 @@ L["Log the main chat frames history. So when you reloadui or log in and out you 
 L["Login Message"] = "Сообщение загрузки"
 L["Loot Frames"] = "Добыча"
 L["Loot Roll"] = "Раздел добычи"
-L["Loot"] = "Добыча"
 L["Losing Threat"] = "Потеря угрозы"
 L["LOSS_OF_CONTROL"] = "Предупреждения о потере контроля"
 L["Low Health Threshold"] = "Пороговое значение здоровья"
