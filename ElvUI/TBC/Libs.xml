@@ -20,7 +20,7 @@
 
 	<Include file='..\Libraries\TBC\LibQuestXP\LibQuestXP.xml'/>
 	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
-	<Script file='..\Libraries\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
+	<Script file='..\Libraries\TBC\LibClassicSpecs\LibClassicSpecs.lua'/>
 
 	<Include file='..\Libraries\Core\LibActionButton-1.0\LibActionButton-1.0.xml'/>
 	<Include file='..\Libraries\Core\LibItemSearch-1.2\LibItemSearch-1.2.xml'/>
