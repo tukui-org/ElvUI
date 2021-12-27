@@ -153,7 +153,7 @@ function C:Search_Config(tbl, loc, locName)
 	if SearchText == '' then return end
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
-		if not blockOption[option] and not typeInvalid[infoTable.type] then
+		if not infoTable.hidden and not blockOption[option] and not typeInvalid[infoTable.type] then
 			local location, locationName = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
 			local name = C:Search_GetReturn(infoTable.name, option)
 			if name then -- bad apples
