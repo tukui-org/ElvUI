@@ -17,7 +17,6 @@ local strlower = strlower
 local strmatch = strmatch
 local strsplit = strsplit
 
-C.SearchCache = {}
 E.Options.args.search = ACH:Group(L["Search"], nil, 4)
 
 local Search =  E.Options.args.search.args
@@ -30,6 +29,7 @@ local inline = depth - 1
 local results, entries = {}, {}
 local sep = ' |cFF888888>|r '
 
+local searchCache = {}
 local blockOption = {
 	filters = true,
 	info = true,
@@ -99,7 +99,7 @@ function C:Search_AddResults()
 	wipe(results)
 	wipe(entries)
 
-	for location, name in pairs(C.SearchCache) do
+	for location, name in pairs(searchCache) do
 		local group, index, clean = results, start, name
 		for groupName in gmatch(name, '(.-)'..sep) do
 			if index > depth then break end
@@ -127,7 +127,7 @@ function C:Search_AddResults()
 end
 
 function C:Search_ClearResults()
-	wipe(C.SearchCache)
+	wipe(searchCache)
 	wipe(Search)
 
 	Search.editbox = EditBox
@@ -153,23 +153,23 @@ function C:Search_Config(tbl, loc, locName)
 	if SearchText == '' then return end
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
-		if not infoTable.hidden and not blockOption[option] and not typeInvalid[infoTable.type] then
+		if not (blockOption[option] or infoTable.hidden or typeInvalid[infoTable.type]) then
 			local location, locationName = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
 			local name = C:Search_GetReturn(infoTable.name, option)
 			if name then -- bad apples
 				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
 				if C:Search_FindText(name) then
-					C.SearchCache[location] = locationName
+					searchCache[location] = locationName
 				else
 					local desc = C:Search_GetReturn(infoTable.desc, option)
 					if desc and C:Search_FindText(desc) then
-						C.SearchCache[location] = locationName
+						searchCache[location] = locationName
 					else
 						local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
 						if values then
 							for _, subName in next, values do
 								if C:Search_FindText(subName) then
-									C.SearchCache[location] = locationName
+									searchCache[location] = locationName
 									break -- only need one
 								end
 							end
