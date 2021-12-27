@@ -921,7 +921,6 @@ L["LOCK_ACTIONBAR_TEXT"] = "Lock ActionBars"
 L["Log Taints"] = true
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = true
 L["Login Message"] = true
-L["Loot Frames"] = true
 L["Loot Roll"] = true
 L["Losing Threat"] = true
 L["LOSS_OF_CONTROL"] = "Loss of Control Alerts"
