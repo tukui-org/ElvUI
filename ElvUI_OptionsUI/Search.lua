@@ -134,10 +134,16 @@ function C:Search_ClearResults()
 	SearchText = ''
 end
 
+function C:Search_FindText(text)
+	return strfind(strlower(text or '\a'), SearchText, nil, true)
+end
+
 function C:Search_GetReturn(value, ...)
 	if type(value) == 'function' then
 		local success, arg1 = pcall(value, ...)
-		if success then return arg1 end
+		if success then
+			return arg1
+		end
 	else
 		return value
 	end
@@ -151,18 +157,22 @@ function C:Search_Config(tbl, loc, locName)
 			local location, locationName = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
 			local name = C:Search_GetReturn(infoTable.name, option)
 			if name then -- bad apples
-				local desc, values = C:Search_GetReturn(infoTable.desc, option)
-				if typeValue[infoTable.type] and not infoTable.dialogControl then
-					values = C:Search_GetReturn(infoTable.values, option)
-				end
-
 				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
-				if strfind(strlower(name or '\a'), SearchText, nil, true) or strfind(strlower(desc or '\a'), SearchText, nil, true) then
+				if C:Search_FindText(name) then
 					C.SearchCache[location] = locationName
-				elseif values then
-					for _, subName in next, values do
-						if strfind(strlower(subName or '\a'), SearchText, nil, true) then
-							C.SearchCache[location] = locationName
+				else
+					local desc = C:Search_GetReturn(infoTable.desc, option)
+					if desc and C:Search_FindText(desc) then
+						C.SearchCache[location] = locationName
+					else
+						local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
+						if values then
+							for _, subName in next, values do
+								if C:Search_FindText(subName) then
+									C.SearchCache[location] = locationName
+									break -- only need one
+								end
+							end
 						end
 					end
 				end
