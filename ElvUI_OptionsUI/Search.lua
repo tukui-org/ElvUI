@@ -3,22 +3,33 @@ local C, L = unpack(E.OptionsUI)
 local ACH = E.Libs.ACH
 local SearchText = ''
 
+local gsub = gsub
 local wipe = wipe
+local next = next
+local type = type
 local pcall = pcall
+local pairs = pairs
+local gmatch = gmatch
 local strfind = strfind
-local strlower = strlower
 local strjoin = strjoin
+local strlower = strlower
+local strmatch = strmatch
 local strsplit = strsplit
 
 C.SearchCache = {}
+E.Options.args.search = ACH:Group(L["Search"], nil, 4)
 
-E.Options.args.search = ACH:Group(L["Search"], nil, 4, 'tab')
 local Search =  E.Options.args.search.args
+local EditBox = ACH:Input(L["Search"], nil, 0, nil, nil, function() return SearchText end, function(_, value) C:Search_ClearResults() SearchText = strlower(value) C:Search_Config() C:Search_AddResults() end)
+Search.editbox = EditBox
 
-Search.editbox = ACH:Input(L["Search"], nil, 0, nil, nil, function() return SearchText end, function(_, value) C:ClearSearchResults() SearchText = strlower(value) C:SearchConfig() C:AddSearchResults() end)
-Search.results = ACH:Group(L["Results"], nil, 1, 'tree')
+local start = 100
+local depth = start + 2
+local inline = depth - 1
+local results, entries = {}, {}
+local sep = ' |cFF888888>|r '
 
-local BlockInfoOptions = {
+local blockOption = {
 	filters = true,
 	info = true,
 	plugins = true,
@@ -28,55 +39,120 @@ local BlockInfoOptions = {
 	profiles = true
 }
 
-local invalidTypes = {
+local typeInvalid = {
 	description = true,
 	header = true
 }
 
-local valueTypes = {
+local typeValue = {
 	multiselect = true,
-	select = true
+	select = true,
 }
 
-function C:AddSearchResults()
-	local resultNum = 1
-	for loc, name in pairs(C.SearchCache) do
-		local locName = strsplit(',', loc)
-		local headerName = E.Options.args[locName].name
+local nameIndex = {
+	[L["General"]] = 1,
+	[L["Global"]] = 0
+}
 
-		Search.results.args[headerName] = Search.results.args[headerName] or ACH:Group(headerName, nil, E.Options.args[locName].order)
-		Search.results.args[headerName].args[''..resultNum] = ACH:Execute(name, nil, nil, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', strsplit(',', loc)) end, nil, nil, 'full')
+function C:Search_DisplayResults(groups, section)
+	if groups.entries then
+		groups.entries.section = section
+	end
 
-		resultNum = resultNum + 1
+	local index = groups.index or start
+	groups.index = nil
+
+	for name, group in pairs(groups) do
+		if name ~= 'entries' then
+			local sub = ACH:Group(name, nil, nameIndex[name] or index, 'tab')
+			sub.inline = index == inline
+			section[name] = sub
+
+			C:Search_DisplayResults(group, sub.args)
+		end
+	end
+
+	if groups.entries then
+		C:Search_DisplayButtons(groups.entries)
 	end
 end
 
-function C:ClearSearchResults()
+function C:Search_ButtonFunc()
+	if self.option then
+		E.Libs.AceConfigDialog:SelectGroup('ElvUI', strsplit(',', self.option.location))
+	end
+end
+
+function C:Search_DisplayButtons(buttons)
+	local section = buttons.section
+	buttons.section = nil
+
+	for _, data in next, buttons do
+		local button = ACH:Execute(data.clean, nil, nil, C.Search_ButtonFunc, nil, nil, 1.5)
+		button.location = data.location
+		section[data.name] = button
+	end
+end
+
+function C:Search_AddResults()
+	wipe(results)
+	wipe(entries)
+
+	for location, name in pairs(C.SearchCache) do
+		local group, index, clean = results, start, name
+		for groupName in gmatch(name, '(.-)'..sep) do
+			if index > depth then break end
+
+			-- button name
+			clean = gsub(clean, '^' .. E:EscapeString(groupName) .. sep, '')
+
+			-- sub groups
+			if not group[groupName] then group[groupName] = { index = index } end
+			group = group[groupName]
+
+			index = index + 1
+		end
+
+		-- sub buttons
+		local count, entry = (entries.count or 0) + 1, { name = name, clean = clean, location = location }
+		entries.count, entries[count] = count, entry
+
+		-- linking
+		if not group.entries then group.entries = {} end
+		group.entries[count] = entry
+	end
+
+	C:Search_DisplayResults(results, Search)
+end
+
+function C:Search_ClearResults()
 	wipe(C.SearchCache)
-	wipe(Search.results.args)
+	wipe(Search)
+
+	Search.editbox = EditBox
 end
 
-function C:GetReturn(value, ...)
-	if type(value) == 'function' then
-		local success, arg1 = pcall(value, ...)
-		if success then return arg1 end
-	else
-		return value
-	end
+function C:Search_GetReturn(value, ...)
+    if type(value) == 'function' then
+        local success, arg1 = pcall(value, ...)
+        if success then return arg1 end
+    else
+        return value
+    end
 end
 
-function C:SearchConfig(tbl, loc, locName)
+function C:Search_Config(tbl, loc, locName)
 	if SearchText == '' then return end
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
-		if not BlockInfoOptions[option] and not invalidTypes[infoTable.type] then
-			local name, desc, values = C:GetReturn(infoTable.name, option), C:GetReturn(infoTable.desc, option)
-			if valueTypes[infoTable.type] and not infoTable.dialogControl then
-				values = C:GetReturn(infoTable.values, option)
-			end
+		if not blockOption[option] and not typeInvalid[infoTable.type] then
+            local name, desc, values = C:Search_GetReturn(infoTable.name, option), C:Search_GetReturn(infoTable.desc, option)
+            if typeValue[infoTable.type] and not infoTable.dialogControl then
+                values = C:Search_GetReturn(infoTable.values, option)
+            end
 
 			local location = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
-			local locationName = name and (locName and ((name ~= '' and name ~= ' ') and strjoin(' - ', locName, name) or locName) or name)
+			local locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
 			if strfind(strlower(name or '\a'), SearchText) or strfind(strlower(desc or '\a'), SearchText) then
 				C.SearchCache[location] = locationName
 			elseif values then
@@ -86,8 +162,9 @@ function C:SearchConfig(tbl, loc, locName)
 					end
 				end
 			end
+
 			if type(infoTable) == 'table' and infoTable.args then
-				C:SearchConfig(infoTable.args, location, locationName)
+				C:Search_Config(infoTable.args, location, locationName)
 			end
 		end
 	end
