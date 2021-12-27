@@ -140,13 +140,18 @@ function C:Search_FindText(text)
 end
 
 function C:Search_GetReturn(value, ...)
+	local text
 	if type(value) == 'function' then
 		local success, arg1 = pcall(value, ...)
 		if success then
-			return arg1
+			text = arg1
 		end
 	else
-		return value
+		text = value
+	end
+
+	if text then
+		return E:StripString(text)
 	end
 end
 
