@@ -46,7 +46,7 @@ E.Options.args.tooltip.args.mythicPlus.args.mythicBestRun = ACH:Toggle(L["Mythic
 E.Options.args.tooltip.args.mythicPlus.args.dungeonScoreColor = ACH:Toggle(L["Color Score"], L["Color score based on Blizzards API."], 4, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 
 E.Options.args.tooltip.args.factionColors = ACH:Group(L["Custom Faction Colors"], nil, 9, nil, function(info) local v = tonumber(info[#info]) local t = E.db.tooltip.factionColors[v] local d = P.tooltip.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.tooltip.factionColors[v]; t.r, t.g, t.b = r, g, b end)
-E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], nil, 0, nil, nil, nil, function() return E.db.tooltip.useCustomFactionColors end, function(_, value) E.db.tooltip.useCustomFactionColors = value; end)
+E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() return E.db.tooltip.useCustomFactionColors end, function(_, value) E.db.tooltip.useCustomFactionColors = value; end)
 
 for i = 1, 8 do
 	E.Options.args.tooltip.args.factionColors.args[''..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true, nil, nil, nil, function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end)
