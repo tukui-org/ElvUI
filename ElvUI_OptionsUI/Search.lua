@@ -161,17 +161,12 @@ function C:Search_Config(tbl, loc, locName)
 				if C:Search_FindText(name) then
 					searchCache[location] = locationName
 				else
-					local desc = C:Search_GetReturn(infoTable.desc, option)
-					if desc and C:Search_FindText(desc) then
-						searchCache[location] = locationName
-					else
-						local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
-						if values then
-							for _, subName in next, values do
-								if C:Search_FindText(subName) then
-									searchCache[location] = locationName
-									break -- only need one
-								end
+					local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
+					if values then
+						for _, subName in next, values do
+							if C:Search_FindText(subName) then
+								searchCache[location] = locationName
+								break -- only need one
 							end
 						end
 					end
