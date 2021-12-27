@@ -2,6 +2,7 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
+local LCS = E.Libs.LCS
 
 local _G = _G
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
@@ -179,12 +180,16 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local assignedRole = E.Retail and UnitGroupRolesAssigned('player') or E.Libs.LCS.GetSpecializationRole(E.Libs.LCS.GetSpecialization())
-	if E.Retail and assignedRole == 'NONE' then
-		return E.myspec and GetSpecializationRole(E.myspec)
+	if E.Retail then
+		local role = UnitGroupRolesAssigned('player')
+		if role == 'NONE' then
+			return E.myspec and GetSpecializationRole(E.myspec)
+		else
+			return role
+		end
+	else
+		return LCS.GetSpecializationRole(LCS.GetSpecialization())
 	end
-
-	return assignedRole
 end
 
 function E:CheckRole()
