@@ -133,12 +133,12 @@ function C:Search_ClearResults()
 end
 
 function C:Search_GetReturn(value, ...)
-    if type(value) == 'function' then
-        local success, arg1 = pcall(value, ...)
-        if success then return arg1 end
-    else
-        return value
-    end
+	if type(value) == 'function' then
+		local success, arg1 = pcall(value, ...)
+		if success then return arg1 end
+	else
+		return value
+	end
 end
 
 function C:Search_Config(tbl, loc, locName)
@@ -146,25 +146,28 @@ function C:Search_Config(tbl, loc, locName)
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
 		if not blockOption[option] and not typeInvalid[infoTable.type] then
-            local name, desc, values = C:Search_GetReturn(infoTable.name, option), C:Search_GetReturn(infoTable.desc, option)
-            if typeValue[infoTable.type] and not infoTable.dialogControl then
-                values = C:Search_GetReturn(infoTable.values, option)
-            end
+			local name = C:Search_GetReturn(infoTable.name, option)
+			if name then -- bad apples
+				local desc, values = C:Search_GetReturn(infoTable.desc, option)
+				if typeValue[infoTable.type] and not infoTable.dialogControl then
+					values = C:Search_GetReturn(infoTable.values, option)
+				end
 
-			local location = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
-			local locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
-			if strfind(strlower(name or '\a'), SearchText) or strfind(strlower(desc or '\a'), SearchText) then
-				C.SearchCache[location] = locationName
-			elseif values then
-				for _, subName in next, values do
-					if strfind(strlower(subName or '\a'), SearchText) then
-						C.SearchCache[location] = locationName
+				local locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
+				local location = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
+				if strfind(strlower(name or '\a'), SearchText) or strfind(strlower(desc or '\a'), SearchText) then
+					C.SearchCache[location] = locationName
+				elseif values then
+					for _, subName in next, values do
+						if strfind(strlower(subName or '\a'), SearchText) then
+							C.SearchCache[location] = locationName
+						end
 					end
 				end
-			end
 
-			if type(infoTable) == 'table' and infoTable.args then
-				C:Search_Config(infoTable.args, location, locationName)
+				if type(infoTable) == 'table' and infoTable.args then
+					C:Search_Config(infoTable.args, location, locationName)
+				end
 			end
 		end
 	end
