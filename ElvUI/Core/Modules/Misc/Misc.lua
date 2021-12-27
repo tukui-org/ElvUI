@@ -118,8 +118,8 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 	if not E.db.general.autoTrackReputation then return end
 
 	if messagetype == 'FACTION' then
-		local faction = GetCurrentCombatTextEventInfo()
-		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() then
+		local faction, rep = GetCurrentCombatTextEventInfo()
+		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() and rep > 0 then
 			ExpandAllFactionHeaders()
 
 			for i = 1, GetNumFactions() do
