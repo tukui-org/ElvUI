@@ -154,7 +154,7 @@ function C:Search_Config(tbl, loc, locName)
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
 		if not (blockOption[option] or infoTable.hidden or typeInvalid[infoTable.type]) then
-			local location, locationName = loc and (not infoTable.inline and strjoin(',', loc, option) or loc) or option
+			local location, locationName = loc and (infoTable.type == 'group' and not infoTable.inline and strjoin(',', loc, option) or loc) or option
 			local name = C:Search_GetReturn(infoTable.name, option)
 			if name then -- bad apples
 				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
