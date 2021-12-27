@@ -136,6 +136,9 @@ do
 		end
 	end
 
+	if not E.Retail then
+		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
+	end
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM

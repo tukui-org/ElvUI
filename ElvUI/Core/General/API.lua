@@ -179,8 +179,9 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local assignedRole = UnitGroupRolesAssigned('player')
-	if assignedRole == 'NONE' then
+	local assignedRole = E.Retail and UnitGroupRolesAssigned('player') or E.Libs.LCS.GetSpecializationRole(E.Libs.LCS.GetSpecialization())
+	print(E.Libs.LCS.GetSpecializationRole(E.Libs.LCS.GetSpecialization()), E.Libs.LCS.GetSpecialization())
+	if E.Retail and assignedRole == 'NONE' then
 		return E.myspec and GetSpecializationRole(E.myspec)
 	end
 
@@ -485,9 +486,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if E.Retail then
-		E:CheckRole()
-	end
+	E:CheckRole()
 
 	if initLogin or not ElvDB.DisabledAddOns then
 		ElvDB.DisabledAddOns = {}
@@ -636,6 +635,8 @@ function E:LoadAPI()
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
 		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
+	else
+		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
 	end
 
 	if E.Retail or E.Wrath then

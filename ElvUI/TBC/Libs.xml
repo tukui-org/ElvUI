@@ -18,6 +18,7 @@
 	<Include file='..\Libraries\Core\LibSharedMedia-3.0\lib.xml'/>
 	<Include file='..\Libraries\Core\Taintless\Taintless.xml'/>
 
+	<Script file='..\Libraries\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 	<Include file='..\Libraries\TBC\LibQuestXP\LibQuestXP.xml'/>
 	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
 
