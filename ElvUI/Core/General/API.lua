@@ -180,7 +180,6 @@ end
 
 function E:GetPlayerRole()
 	local assignedRole = E.Retail and UnitGroupRolesAssigned('player') or E.Libs.LCS.GetSpecializationRole(E.Libs.LCS.GetSpecialization())
-	print(E.Libs.LCS.GetSpecializationRole(E.Libs.LCS.GetSpecialization()), E.Libs.LCS.GetSpecialization())
 	if E.Retail and assignedRole == 'NONE' then
 		return E.myspec and GetSpecializationRole(E.myspec)
 	end
