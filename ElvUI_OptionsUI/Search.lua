@@ -136,22 +136,17 @@ function C:Search_ClearResults()
 end
 
 function C:Search_FindText(text)
-	return strfind(strlower(text or '\a'), SearchText, nil, true)
+	return strfind(strlower(text and E:StripString(text) or '\a'), SearchText, nil, true)
 end
 
 function C:Search_GetReturn(value, ...)
-	local text
 	if type(value) == 'function' then
 		local success, arg1 = pcall(value, ...)
 		if success then
-			text = arg1
+			return arg1
 		end
 	else
-		text = value
-	end
-
-	if text then
-		return E:StripString(text)
+		return value
 	end
 end
 
