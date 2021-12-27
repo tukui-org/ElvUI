@@ -182,11 +182,7 @@ end
 function E:GetPlayerRole()
 	if E.Retail then
 		local role = UnitGroupRolesAssigned('player')
-		if role == 'NONE' then
-			return E.myspec and GetSpecializationRole(E.myspec)
-		else
-			return role
-		end
+		return (role == 'NONE' and E.myspec and GetSpecializationRole(E.myspec)) or role
 	else
 		return LCS.GetSpecializationRole(LCS.GetSpecialization())
 	end
