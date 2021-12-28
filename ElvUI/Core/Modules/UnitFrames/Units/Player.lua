@@ -137,11 +137,6 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 
-	if (db.enable and not db.castbar.enable) then
-		CastingBarFrame_SetUnit(_G.CastingBarFrame, nil)
-		CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
-	end
-
 	if not E.Retail and E.myclass ~= 'WARRIOR' then
 		UF:Configure_EnergyManaRegen(frame)
 	end
