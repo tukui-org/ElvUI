@@ -309,19 +309,17 @@ for index = 1, 12 do
 		coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
 		StyleFitlers.triggers.args.class.args[classTag] = ACH:Toggle(format('|c%s%s|r', coloredName, className), nil, tIndexOf(sortedClasses, classTag), nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.enabled end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger then triggers.class[classTag] = {} end if value then triggers.class[classTag].enabled = value else triggers.class[classTag] = nil end NP:ConfigureAll() end)
 
-		if E.Retail then
-			local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classTag) + 12, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
-			group.inline = true
+		local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classTag) + 12, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
+		group.inline = true
 
-			for k = 1, GetNumSpecializationsForClassID(classID) do
-				local specID, name = GetSpecializationInfoForClassID(classID, k)
+		for k = 1, GetNumSpecializationsForClassID(classID) do
+			local specID, name = GetSpecializationInfoForClassID(classID, k)
 
-				local tagID = format('%s%s', classTag, specID)
-				group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger.specs then triggers.class[classTag].specs = {} end triggers.class[classTag].specs[specID] = value or nil if not next(triggers.class[classTag].specs) then triggers.class[classTag].specs = nil end NP:ConfigureAll() end)
-			end
-
-			StyleFitlers.triggers.args.class.args[format('%s%s', classTag, 'spec')] = group
+			local tagID = format('%s%s', classTag, specID)
+			group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger.specs then triggers.class[classTag].specs = {} end triggers.class[classTag].specs[specID] = value or nil if not next(triggers.class[classTag].specs) then triggers.class[classTag].specs = nil end NP:ConfigureAll() end)
 		end
+
+		StyleFitlers.triggers.args.class.args[format('%s%s', classTag, 'spec')] = group
 	end
 end
 

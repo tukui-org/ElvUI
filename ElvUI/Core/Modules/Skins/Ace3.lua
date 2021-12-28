@@ -248,7 +248,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
+		frame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(frame, true)

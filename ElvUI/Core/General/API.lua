@@ -2,10 +2,11 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
+local LCS = E.Libs.LCS
 
 local _G = _G
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
-local wipe, date, max, next, format = wipe, date, max, next, format
+local wipe, max, next, format = wipe, max, next, format
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
 local CreateFrame = CreateFrame
@@ -86,10 +87,6 @@ do -- other non-english locales require this
 	function E:UnlocalizedClassName(className)
 		return (className and className ~= '') and E.UnlocalizedClasses[className]
 	end
-end
-
-function E:IsFoolsDay()
-	return strfind(date(), '04/01/') and not E.global.aprilFools
 end
 
 do
@@ -179,12 +176,12 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local assignedRole = UnitGroupRolesAssigned('player')
-	if assignedRole == 'NONE' then
-		return E.myspec and GetSpecializationRole(E.myspec)
+	if E.Retail then
+		local role = UnitGroupRolesAssigned('player')
+		return (role == 'NONE' and E.myspec and GetSpecializationRole(E.myspec)) or role
+	else
+		return LCS.GetSpecializationRole(LCS.GetSpecialization())
 	end
-
-	return assignedRole
 end
 
 function E:CheckRole()
@@ -485,9 +482,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if E.Retail then
-		E:CheckRole()
-	end
+	E:CheckRole()
 
 	if initLogin or not ElvDB.DisabledAddOns then
 		ElvDB.DisabledAddOns = {}
@@ -636,6 +631,8 @@ function E:LoadAPI()
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
 		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
+	else
+		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
 	end
 
 	if E.Retail or E.Wrath then
@@ -655,13 +652,9 @@ function E:LoadAPI()
 		end
 	end
 
-	if not strfind(date(), '04/01/') then
-		E.global.aprilFools = nil
-	end
-
 	if _G.OrderHallCommandBar then
 		E:HandleCommandBar()
-	else
+	elseif E.Retail then
 		local frame = CreateFrame('Frame')
 		frame:RegisterEvent('ADDON_LOADED')
 		frame:SetScript('OnEvent', function(Frame, event, addon)

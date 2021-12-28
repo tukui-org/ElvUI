@@ -127,12 +127,16 @@ do
 
 	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
-	elseif E.Classic then
-		E:AddLib('LCD', 'LibClassicDurations')
-		E:AddLib('LCC', 'LibClassicCasterino')
+	else
+		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
 
-		if E.Libs.LCD then
-			E.Libs.LCD:Register('ElvUI')
+		if E.Classic then
+			E:AddLib('LCD', 'LibClassicDurations')
+			E:AddLib('LCC', 'LibClassicCasterino')
+
+			if E.Libs.LCD then
+				E.Libs.LCD:Register('ElvUI')
+			end
 		end
 	end
 

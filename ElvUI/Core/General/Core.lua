@@ -64,6 +64,7 @@ E.myLocalizedRace, E.myrace = UnitRace('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
+E.myspec = GetSpecialization()
 E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
@@ -73,10 +74,6 @@ E.perfect = 768 / E.physicalHeight
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
 E.UserList = {}
-
-if E.Retail then
-	E.myspec = GetSpecialization()
-end
 
 -- oUF Defines
 E.oUF.Tags.Vars.E = E

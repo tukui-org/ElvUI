@@ -20,6 +20,7 @@
 
 	<Include file='..\Libraries\TBC\LibQuestXP\LibQuestXP.xml'/>
 	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
+	<Script file='..\Libraries\TBC\LibClassicSpecs\LibClassicSpecs.lua'/>
 	<Include file='..\Libraries\Classic\LibClassicDurations\LibClassicDurations.xml'/>
 	<Script file='..\Libraries\Classic\LibClassicCasterino-1.0\LibClassicCasterino.lua'/>
 	<Script file='..\Libraries\Classic\LibClassicSpellActionCount-1.0\LibClassicSpellActionCount-1.0.lua'/>
