@@ -6,7 +6,7 @@ local LCS = E.Libs.LCS
 
 local _G = _G
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
-local wipe, date, max, next, format = wipe, date, max, next, format
+local wipe, max, next, format = wipe, max, next, format
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
 local CreateFrame = CreateFrame
@@ -87,10 +87,6 @@ do -- other non-english locales require this
 	function E:UnlocalizedClassName(className)
 		return (className and className ~= '') and E.UnlocalizedClasses[className]
 	end
-end
-
-function E:IsFoolsDay()
-	return strfind(date(), '04/01/') and not E.global.aprilFools
 end
 
 do
@@ -656,13 +652,9 @@ function E:LoadAPI()
 		end
 	end
 
-	if not strfind(date(), '04/01/') then
-		E.global.aprilFools = nil
-	end
-
 	if _G.OrderHallCommandBar then
 		E:HandleCommandBar()
-	else
+	elseif E.Retail then
 		local frame = CreateFrame('Frame')
 		frame:RegisterEvent('ADDON_LOADED')
 		frame:SetScript('OnEvent', function(Frame, event, addon)
