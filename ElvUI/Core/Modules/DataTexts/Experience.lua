@@ -5,17 +5,30 @@ local _G = _G
 local format = format
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
-local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
+local IsTrialAccount = IsTrialAccount
+local IsVeteranTrialAccount = IsVeteranTrialAccount
 local GetXPExhaustion = GetXPExhaustion
+local IsXPUserDisabled = IsXPUserDisabled
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local displayString = ''
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
+local function hasDisabledXP()
+	return E.Retail and IsXPUserDisabled()
+end
+
+local function isTrialMax()
+	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+end
+
+local function shouldBeVisible()
+	return not IsLevelAtEffectiveMaxLevel(E.mylevel) and not hasDisabledXP() and not isTrialMax()
+end
+
 local function OnEvent(self)
-	if IsLevelAtEffectiveMaxLevel(E.mylevel) then
-		displayString = L['Max Level']
-	else
+	if shouldBeVisible() then
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 
 		local remainXP = XPToLevel - CurrentXP
@@ -53,6 +66,8 @@ local function OnEvent(self)
 				displayString = displayString..format(' R:%s', E:ShortValue(RestedXP))
 			end
 		end
+	else
+		displayString = L['Max Level']
 	end
 
 	self.text:SetText(displayString)

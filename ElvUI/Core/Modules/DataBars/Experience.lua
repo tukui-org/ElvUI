@@ -7,6 +7,7 @@ local type, pairs = type, pairs
 local min, format = min, format
 local CreateFrame = CreateFrame
 local IsTrialAccount = IsTrialAccount
+local IsVeteranTrialAccount = IsVeteranTrialAccount
 local GetXPExhaustion = GetXPExhaustion
 local IsXPUserDisabled = IsXPUserDisabled
 local GetQuestLogRewardXP = GetQuestLogRewardXP
@@ -29,7 +30,7 @@ local function hasDisabledXP()
 end
 
 local function isTrialMax()
-	return E.Retail and IsTrialAccount() and (E.myLevel == 20)
+	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
