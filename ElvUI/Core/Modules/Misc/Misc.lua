@@ -322,7 +322,6 @@ function M:Initialize()
 	M:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	M:RegisterEvent('COMBAT_TEXT_UPDATE')
-	M:RegisterEvent('PLAYER_ENTERING_WORLD')
 	M:RegisterEvent('QUEST_COMPLETE')
 
 	do	-- questRewardMostValueIcon
