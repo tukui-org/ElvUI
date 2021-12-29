@@ -10,11 +10,9 @@ local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, ne
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
 local CreateFrame = CreateFrame
-local GetCVar = GetCVar
 local GetSpellInfo = GetSpellInfo
 local GetCVarBool = GetCVarBool
 local GetNumGroupMembers = GetNumGroupMembers
-local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local UnitFactionGroup = UnitFactionGroup
@@ -93,9 +91,6 @@ E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
 E.CreditsList = {}
-E.LockedCVars = {}
-E.IgnoredCVars = {}
-E.UpdatedCVars = {}
 E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
 E.InversePoints = {
 	TOP = 'BOTTOM',
@@ -363,42 +358,6 @@ do	--Update font/texture paths when they are registered by the addon providing t
 	--We use a wrapper to avoid errors in :UpdateMedia because 'self' is passed to the function with a value other than ElvUI.
 	local function LSMCallback() E:UpdateMedia() end
 	LSM.RegisterCallback(E, 'LibSharedMedia_Registered', LSMCallback)
-end
-
-do
-	local function CVAR_UPDATE(name, value)
-		if not E.IgnoredCVars[name] then
-			local locked = E.LockedCVars[name]
-			if locked ~= nil and locked ~= value then
-				if InCombatLockdown() then
-					E.CVarUpdate = true
-					return
-				end
-
-				SetCVar(name, locked)
-			end
-
-			local func = E.UpdatedCVars[name]
-			if func then func(value) end
-		end
-	end
-
-	hooksecurefunc('SetCVar', CVAR_UPDATE)
-	function E:LockCVar(name, value)
-		if GetCVar(name) ~= value then
-			SetCVar(name, value)
-		end
-
-		E.LockedCVars[name] = value
-	end
-
-	function E:UpdatedCVar(name, func)
-		E.UpdatedCVars[name] = func
-	end
-
-	function E:IgnoreCVar(name, ignore)
-		E.IgnoredCVars[name] = (not not ignore) -- cast to bool, just in case
-	end
 end
 
 function E:ValueFuncCall()
@@ -1938,11 +1897,6 @@ function E:Initialize()
 
 	if GetCVarBool('scriptProfile') then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
-	end
-
-	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
-	if not E.Retail and E.db.general.lockCameraDistanceMax then
-		E:LockCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
 	end
 
 	if E.db.general.loginmessage then

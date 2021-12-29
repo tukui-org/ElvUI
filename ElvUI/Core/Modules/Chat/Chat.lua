@@ -1058,10 +1058,11 @@ function CH:ChatEdit_DeactivateChat(editbox)
 	if style == 'im' then editbox:Hide() end
 end
 
-function CH:UpdateEditboxAnchors()
-	local cvar = (type(self) == 'string' and self) or GetCVar('chatStyle')
+function CH:UpdateEditboxAnchors(event, cvar, value)
+	if event and cvar ~= 'chatStyle' then return
+	elseif not cvar then value = GetCVar('chatStyle') end
 
-	local classic = cvar == 'classic'
+	local classic = value == 'classic'
 	local leftChat = classic and _G.LeftChatPanel
 	local panel = 22
 
@@ -1069,7 +1070,7 @@ function CH:UpdateEditboxAnchors()
 		local frame = _G[name]
 		local editbox = frame and frame.editBox
 		if not editbox then return end
-		editbox.chatStyle = cvar
+		editbox.chatStyle = value
 		editbox:ClearAllPoints()
 
 		local anchorTo = leftChat or frame
@@ -3499,8 +3500,6 @@ function CH:Initialize()
 	CH:CheckLFGRoles()
 	CH:Panels_ColorUpdate()
 	CH:UpdateEditboxAnchors()
-	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
-
 	CH:HandleChatVoiceIcons()
 
 	CH:SecureHook('ChatEdit_ActivateChat')
@@ -3528,6 +3527,7 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
+	CH:RegisterEvent('CVAR_UPDATE', 'UpdateEditboxAnchors')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.Retail then

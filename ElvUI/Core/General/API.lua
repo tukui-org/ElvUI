@@ -497,6 +497,11 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		E.MediaUpdated = true
 	end
 
+	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
+	if not E.Retail and E.db.general.lockCameraDistanceMax then
+		SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
+	end
+
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' then
 		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
@@ -508,16 +513,6 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 end
 
 function E:PLAYER_REGEN_ENABLED()
-	if E.CVarUpdate then
-		for cvarName, value in pairs(E.LockedCVars) do
-			if not E.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value) then
-				SetCVar(cvarName, value)
-			end
-		end
-
-		E.CVarUpdate = nil
-	end
-
 	if E.ShowOptionsUI then
 		E:ToggleOptionsUI()
 
