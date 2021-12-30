@@ -129,6 +129,19 @@ local animaSpellID = {
 	[336456] = 250
 }
 
+-- Deliver Relic: Submit your findings to Archivist Roh-Suir to generate (value) Cataloged Research.
+local relicSpellID = {
+	[356931] = 6,
+	[356933] = 1,
+	[356934] = 8,
+	[356935] = 16,
+	[356936] = 48,
+	[356937] = 26,
+	[356938] = 100,
+	[356939] = 150,
+	[356940] = 300
+}
+
 B.IsEquipmentSlot = {
 	INVTYPE_HEAD = true,
 	INVTYPE_NECK = true,
@@ -615,9 +628,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		local animaCount = E.Retail and B.db.itemInfo and animaSpellID[spellID]
-		if animaCount then
-			slot.centerText:SetText(animaCount * count)
+		local currencyMult = E.Retail and B.db.itemInfo and (animaSpellID[spellID] or relicSpellID[spellID])
+		if currencyMult then
+			slot.centerText:SetText(currencyMult * count)
 		end
 	end
 
