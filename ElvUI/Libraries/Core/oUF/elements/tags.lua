@@ -562,6 +562,7 @@ local unitlessEvents = {
 	PLAYER_LEVEL_UP = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
+	RAID_TARGET_UPDATE = true,
 	RUNE_POWER_UPDATE = true,
 }
 

@@ -4,7 +4,6 @@ local DB = E:GetModule('DataBars')
 local _G = _G
 local format = format
 local GameTooltip = GameTooltip
-local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
@@ -162,7 +161,7 @@ function DB:ReputationBar()
 	Reputation.Reward:Size(20)
 
 	Reputation.ShouldHide = function()
-		return (DB.db.reputation.hideBelowMaxLevel and not IsLevelAtEffectiveMaxLevel(E.mylevel)) or not GetWatchedFactionInfo()
+		return (DB.db.reputation.hideBelowMaxLevel and not E:XPIsLevelMax()) or not GetWatchedFactionInfo()
 	end
 
 	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')

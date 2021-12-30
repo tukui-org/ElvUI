@@ -133,7 +133,6 @@ function A:CreateIcon(button)
 
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnAttributeChanged', A.Button_OnAttributeChanged)
-	button:SetScript('OnUpdate', A.Button_OnUpdate)
 	button:SetScript('OnEnter', A.Button_OnEnter)
 	button:SetScript('OnLeave', A.Button_OnLeave)
 
@@ -199,6 +198,7 @@ function A:SetAuraTime(button, expiration, duration)
 		return
 	end
 
+	button:SetScript('OnUpdate', A.Button_OnUpdate)
 	A:UpdateStatusBar(button)
 
 	local oldEnd = button.endTime
@@ -218,6 +218,7 @@ function A:ClearAuraTime(button, expired)
 
 	button.endTime = nil
 	button.timeLeft = nil
+	button:SetScript('OnUpdate', nil)
 	button.text:SetText('')
 end
 

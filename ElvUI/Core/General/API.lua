@@ -12,17 +12,22 @@ local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
-local GetCVar, SetCVar = GetCVar, SetCVar
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
-local IsWargame = IsWargame
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsSpellKnown = IsSpellKnown
+local IsTrialAccount = IsTrialAccount
+local IsVeteranTrialAccount = IsVeteranTrialAccount
+local IsWargame = IsWargame
+local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local SetCVar = SetCVar
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
@@ -32,7 +37,6 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
-local hooksecurefunc = hooksecurefunc
 
 local HideUIPanel = HideUIPanel
 local GameMenuButtonAddons = GameMenuButtonAddons
@@ -497,6 +501,11 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		E.MediaUpdated = true
 	end
 
+	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
+	if not E.Retail and E.db.general.lockCameraDistanceMax then
+		SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
+	end
+
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' then
 		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
@@ -508,16 +517,6 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 end
 
 function E:PLAYER_REGEN_ENABLED()
-	if E.CVarUpdate then
-		for cvarName, value in pairs(E.LockedCVars) do
-			if not E.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value) then
-				SetCVar(cvarName, value)
-			end
-		end
-
-		E.CVarUpdate = nil
-	end
-
 	if E.ShowOptionsUI then
 		E:ToggleOptionsUI()
 
@@ -549,6 +548,18 @@ function E:PLAYER_REGEN_DISABLED()
 	if err then
 		E:Print(ERR_NOT_IN_COMBAT)
 	end
+end
+
+function E:XPIsUserDisabled()
+	return E.Retail and IsXPUserDisabled()
+end
+
+function E:XPIsTrialMax()
+	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+end
+
+function E:XPIsLevelMax()
+	return IsLevelAtEffectiveMaxLevel(E.mylevel) or E:XPIsUserDisabled() or E:XPIsTrialMax()
 end
 
 function E:GetGroupUnit(unit)

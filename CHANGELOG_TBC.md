@@ -4,12 +4,17 @@ Auras: Tooltip fixes for top auras
 Config: Fixed some options displaying in russian  
 DataTexts: Fixes for party invites  
 General: Added an option to load max camera distance on login  
+General: Added new search section in our OptionsUI  
+Libraries: Added LibClassicSpecs for roles and specs  
 Minimap: Scaling and Font fixes  
-Misc: Added an option for LootRoll button size  
+Misc: Added button size option for LootRoll  
 Misc: Added font options for LootRoll  
+Misc: Added LootRoll option to position buttons on the left side  
+Misc: Added spacing option for LootRoll  
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
 NamePlates: Fixed error when deleting a StyleFilter  
+UnitFrames: Adjusted spark for EnergyManaRegen ticks  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
 UnitFrames: Fixed non attached Castbar Icon  
 UnitFrames: LibHealComm-4.0 for HoTs  
