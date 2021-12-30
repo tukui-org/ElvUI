@@ -6,12 +6,8 @@ local error = error
 local type, pairs = type, pairs
 local min, format = min, format
 local CreateFrame = CreateFrame
-local IsTrialAccount = IsTrialAccount
-local IsVeteranTrialAccount = IsVeteranTrialAccount
 local GetXPExhaustion = GetXPExhaustion
-local IsXPUserDisabled = IsXPUserDisabled
 local GetQuestLogRewardXP = GetQuestLogRewardXP
-local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
@@ -24,14 +20,6 @@ local GameTooltip = GameTooltip
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 local QuestLogXP = 0
-
-local function hasDisabledXP()
-	return E.Retail and IsXPUserDisabled()
-end
-
-local function isTrialMax()
-	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
-end
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if E.Retail and questID then
@@ -54,10 +42,6 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 			end
 		end
 	end
-end
-
-function DB:ExperienceBar_ShouldBeVisible()
-	return not IsLevelAtEffectiveMaxLevel(E.mylevel) and not hasDisabledXP() and not isTrialMax()
 end
 
 local function RestedQuestLayering()
@@ -88,12 +72,12 @@ function DB:ExperienceBar_Update()
 
 	local displayString, textFormat = '', DB.db.experience.textFormat
 
-	if not DB:ExperienceBar_ShouldBeVisible() then
+	if not E:XPShouldBeVisible() then
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(1)
 
 		if textFormat ~= 'NONE' then
-			displayString = hasDisabledXP() and L["Disabled"] or L["Max Level"]
+			displayString = E:XPIsUserDisabled() and L["Disabled"] or L["Max Level"]
 		end
 	else
 		bar:SetMinMaxValues(0, XPToLevel)
@@ -143,7 +127,7 @@ function DB:ExperienceBar_Update()
 end
 
 function DB:ExperienceBar_QuestXP()
-	if not DB:ExperienceBar_ShouldBeVisible() then return end
+	if not E:XPShouldBeVisible() then return end
 	local bar = DB.StatusBars.Experience
 
 	QuestLogXP = 0
@@ -187,7 +171,7 @@ function DB:ExperienceBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
-	if GameTooltip:IsForbidden() or not DB:ExperienceBar_ShouldBeVisible() then return end
+	if GameTooltip:IsForbidden() or not E:XPShouldBeVisible() then return end
 
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
@@ -260,7 +244,7 @@ function DB:ExperienceBar()
 	DB:CreateBarBubbles(Experience)
 
 	Experience.ShouldHide = function()
-		return DB.db.experience.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()
+		return DB.db.experience.hideAtMaxLevel and not E:XPShouldBeVisible()
 	end
 
 	local Rested = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Rested', Experience.holder)

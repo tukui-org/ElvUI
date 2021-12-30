@@ -20,8 +20,12 @@ local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsSpellKnown = IsSpellKnown
+local IsTrialAccount = IsTrialAccount
+local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
+local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local SetCVar = SetCVar
 local UIParentLoadAddOn = UIParentLoadAddOn
@@ -544,6 +548,18 @@ function E:PLAYER_REGEN_DISABLED()
 	if err then
 		E:Print(ERR_NOT_IN_COMBAT)
 	end
+end
+
+function E:XPIsUserDisabled()
+	return E.Retail and IsXPUserDisabled()
+end
+
+function E:XPIsTrialMax()
+	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+end
+
+function E:XPShouldBeVisible()
+	return not IsLevelAtEffectiveMaxLevel(E.mylevel) and not E:XPIsUserDisabled() and not E:XPIsTrialMax()
 end
 
 function E:GetGroupUnit(unit)
