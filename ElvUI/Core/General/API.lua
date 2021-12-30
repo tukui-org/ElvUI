@@ -558,8 +558,8 @@ function E:XPIsTrialMax()
 	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
-function E:XPShouldBeVisible()
-	return not IsLevelAtEffectiveMaxLevel(E.mylevel) and not E:XPIsUserDisabled() and not E:XPIsTrialMax()
+function E:XPIsLevelMax()
+	return IsLevelAtEffectiveMaxLevel(E.mylevel) or E:XPIsUserDisabled() or E:XPIsTrialMax()
 end
 
 function E:GetGroupUnit(unit)

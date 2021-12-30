@@ -101,7 +101,7 @@ function DB:HonorBar()
 	DB:CreateBarBubbles(Honor)
 
 	Honor.ShouldHide = function()
-		return DB.db.honor.hideBelowMaxLevel and E:XPShouldBeVisible()
+		return DB.db.honor.hideBelowMaxLevel and not E:XPIsLevelMax()
 	end
 
 	E:CreateMover(Honor.holder, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')

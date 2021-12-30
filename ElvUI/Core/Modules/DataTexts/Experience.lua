@@ -12,7 +12,9 @@ local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
-	if E:XPShouldBeVisible() then
+	if E:XPIsLevelMax() then
+		displayString = L['Max Level']
+	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 
 		local remainXP = XPToLevel - CurrentXP
@@ -50,15 +52,13 @@ local function OnEvent(self)
 				displayString = displayString..format(' R:%s', E:ShortValue(RestedXP))
 			end
 		end
-	else
-		displayString = L['Max Level']
 	end
 
 	self.text:SetText(displayString)
 end
 
 local function OnEnter()
-	if E:XPShouldBeVisible() then return end
+	if E:XPIsLevelMax() then return end
 
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(L["Experience"])
