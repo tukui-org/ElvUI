@@ -121,16 +121,14 @@ B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
 
--- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
-local animaSpellID = {
+local itemSpellID = {
+	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
 	[347555] = 3,
 	[345706] = 5,
 	[336327] = 35,
-	[336456] = 250
-}
+	[336456] = 250,
 
--- Deliver Relic: Submit your findings to Archivist Roh-Suir to generate (value) Cataloged Research.
-local relicSpellID = {
+	-- Deliver Relic: Submit your findings to Archivist Roh-Suir to generate (value) Cataloged Research.
 	[356931] = 6,
 	[356933] = 1,
 	[356934] = 8,
@@ -628,9 +626,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		local currencyMult = E.Retail and B.db.itemInfo and (animaSpellID[spellID] or relicSpellID[spellID])
-		if currencyMult then
-			slot.centerText:SetText(currencyMult * count)
+		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
+		if mult then
+			slot.centerText:SetText(mult * count)
 		end
 	end
 
