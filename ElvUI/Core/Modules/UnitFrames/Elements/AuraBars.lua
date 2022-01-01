@@ -93,7 +93,9 @@ function UF:Configure_AuraBars(frame)
 			frame:EnableElement('AuraBars')
 		end
 
+		local below = db.anchorPoint == 'BELOW'
 		local detached = db.attachTo == 'DETACHED'
+
 		bars.height = db.height
 		bars.growth = db.anchorPoint
 		bars.maxBars = db.maxBars
@@ -141,36 +143,22 @@ function UF:Configure_AuraBars(frame)
 			xOffset = 0
 		end
 
-		local anchorPoint, anchorTo, anchorWidth = 'BOTTOM', 'TOP'
-		if db.anchorPoint == 'BELOW' then
-			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-		end
-
-		local POWER_OFFSET = 0
+		local POWER_OFFSET, width = 0
 		if detached then
 			E:EnableMover(bars.Holder.mover:GetName())
 			SPACING = UF.thinBorders and 1 or 5
+			width = db.detachedWidth
 
-			anchorWidth = db.detachedWidth
+			yOffset = below and (BORDER + (UF.BORDER - UF.SPACING)) or -(db.height + BORDER)
+
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
-
-			if db.anchorPoint == 'BELOW' then
-				yOffset = BORDER + (UF.BORDER - UF.SPACING)
-			else
-				yOffset = -(db.height + BORDER)
-			end
 		else
 			E:DisableMover(bars.Holder.mover:GetName())
 			SPACING = UF.thinBorders and 1 or 4
-
-			anchorWidth = frame.UNIT_WIDTH
+			width = frame.UNIT_WIDTH
 
 			local offset = db.yOffset + (UF.thinBorders and 0 or 2)
-			if db.anchorPoint == 'BELOW' then
-				yOffset = -(db.height + offset) + 1
-			else
-				yOffset = offset + 1 -- 1 is connecting pixel
-			end
+			yOffset = (below and -(db.height + offset) or offset) + 1 -- 1 is connecting pixel
 
 			if db.attachTo ~= 'FRAME' then
 				POWER_OFFSET = frame.POWERBAR_OFFSET
@@ -182,8 +170,8 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		bars:ClearAllPoints()
-		bars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (xOffset or -SPACING) + (anchorWidth - (BORDER * 2)), yOffset)
-		bars.width = E:Scale(anchorWidth - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
+		bars:Point((below and 'TOP' or 'BOTTOM')..'LEFT', attachTo, (below and 'BOTTOM' or 'TOP')..'LEFT', (xOffset or -SPACING) + (width - (BORDER * 2)), yOffset)
+		bars.width = E:Scale(width - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
