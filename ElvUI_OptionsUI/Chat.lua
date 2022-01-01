@@ -116,8 +116,7 @@ Panels.args.fadeChatToggles = ACH:Toggle(L["Fade Chat Toggles"], L["Fades the bu
 
 Panels.args.tabGroup = ACH:Group(L["Tab Panels"], nil, 10, nil, nil, nil, nil, function() return not E.Chat.Initialized end)
 Panels.args.tabGroup.inline = true
-Panels.args.tabGroup.args.panelTabTransparency = ACH:Toggle(L["Tab Panel Transparency"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.chat[info[#info]] = value LO:SetChatTabStyle() end, function() return not E.db.chat.panelTabBackdrop end)
-Panels.args.tabGroup.args.panelTabTransparency.customWidth = 250
+Panels.args.tabGroup.args.panelTabTransparency = ACH:Toggle(L["Tab Panel Transparency"], nil, 1, nil, nil, 250, nil, function(info, value) E.db.chat[info[#info]] = value LO:SetChatTabStyle() end, function() return not E.db.chat.panelTabBackdrop end)
 Panels.args.tabGroup.args.panelTabBackdrop = ACH:Toggle(L["Tab Panel"], L["Toggle the chat tab panel backdrop."], 2, nil, nil, nil, nil, function(info, value) E.db.chat[info[#info]] = value LO:ToggleChatPanels() if E.db.chat.pinVoiceButtons and not E.db.chat.hideVoiceButtons then CH:ReparentVoiceChatIcon() end end)
 
 Panels.args.datatextGroup = ACH:Group(L["DataText Panels"], nil, 6)

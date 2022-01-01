@@ -358,20 +358,13 @@ Filters.mainOptions.args.resetGroup = ACH:Select(L["Reset Filter"], L["This will
 Filters.mainOptions.args.filterGroup = ACH:Group(function() return selectedFilter end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
 Filters.mainOptions.args.filterGroup.inline = true
 Filters.mainOptions.args.filterGroup.args.selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium')
-Filters.mainOptions.args.filterGroup.args.selectSpell = ACH:Select(L["Select Spell"], nil, 1, SetSpellList, nil, nil, function(_) return selectedSpell or '' end, function(_, value) selectedSpell = (value ~= '' and value) end)
-Filters.mainOptions.args.filterGroup.args.selectSpell.customWidth = 350
+Filters.mainOptions.args.filterGroup.args.selectSpell = ACH:Select(L["Select Spell"], nil, 1, SetSpellList, nil, 350, function(_) return selectedSpell or '' end, function(_, value) selectedSpell = (value ~= '' and value) end)
 Filters.mainOptions.args.filterGroup.args.selectSpell.sortByValue = true
 
-Filters.mainOptions.args.filterGroup.args.quickSearch = ACH:Input(L["Filter Search"], L["Search for a spell name inside of a filter."], 2, nil, nil, function() return quickSearchText end, function(_, value) quickSearchText = value end)
-Filters.mainOptions.args.filterGroup.args.quickSearch.customWidth = 200
-
+Filters.mainOptions.args.filterGroup.args.quickSearch = ACH:Input(L["Filter Search"], L["Search for a spell name inside of a filter."], 2, nil, 200, function() return quickSearchText end, function(_, value) quickSearchText = value end)
 Filters.mainOptions.args.filterGroup.args.filterType = ACH:Select(L["Filter Type"], L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."], 2, { Whitelist = L["Whitelist"], Blacklist = L["Blacklist"] }, nil, nil, function() return E.global.unitframe.aurafilters[selectedFilter].type end, function(_, value) E.global.unitframe.aurafilters[selectedFilter].type = value UF:Update_AllFrames() end, nil, function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') or G.unitframe.aurafilters[selectedFilter] end)
-
-Filters.mainOptions.args.filterGroup.args.removeSpell = ACH:Select(L["Remove Spell"], nil, 4, SetSpellList, function(_, value) return value ~= '' and format(L["Remove Spell - %s"], GetSpellNameRank(value)) end, nil, nil, AddOrRemoveSpellID)
-Filters.mainOptions.args.filterGroup.args.removeSpell.customWidth = 350
-
-Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], L["Add a spell to the filter."], 5, nil, nil, nil, AddOrRemoveSpellID)
-Filters.mainOptions.args.filterGroup.args.addSpell.customWidth = 350
+Filters.mainOptions.args.filterGroup.args.removeSpell = ACH:Select(L["Remove Spell"], nil, 4, SetSpellList, function(_, value) return value ~= '' and format(L["Remove Spell - %s"], GetSpellNameRank(value)) end, 350, nil, AddOrRemoveSpellID)
+Filters.mainOptions.args.filterGroup.args.addSpell = ACH:Input(L["Add SpellID"], L["Add a spell to the filter."], 5, nil, 350, nil, AddOrRemoveSpellID)
 
 Filters.mainOptions.args.auraIndicator = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -1, nil, auraIndicator, auraIndicator, nil, function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end)
 Filters.mainOptions.args.auraIndicator.inline = true
@@ -383,8 +376,7 @@ Filters.mainOptions.args.auraIndicator.args.sizeOffset = ACH:Range(L["Size Offse
 Filters.mainOptions.args.auraIndicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 8, { min = -1, max = 60, step = 1 })
-Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura From Other Players"], nil, 9)
-Filters.mainOptions.args.auraIndicator.args.anyUnit.customWidth = 205
+Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura From Other Players"], nil, 9, nil, nil, 205)
 Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 10)
 Filters.mainOptions.args.auraIndicator.args.displayText = ACH:Toggle(L["Display Text"], nil, 11, nil, nil, nil, function(info) local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]] end, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'timerOnly' end)
 

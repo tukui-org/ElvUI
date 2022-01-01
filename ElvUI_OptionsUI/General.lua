@@ -51,14 +51,10 @@ GenGen.camera.inline = true
 GenGen.scaling = ACH:Group(L["UI Scale"], nil, 60)
 GenGen.scaling.inline = true
 GenGen.scaling.args.UIScale = ACH:Range(L["UI Scale"], nil, 1, { min = 0.1, max = 1.25, step = 0.000000000000001, softMin = 0.40, softMax = 1.15, bigStep = 0.01 }, nil, function() return E.global.general.UIScale end, function(_, value) E.global.general.UIScale = value if not IsMouseButtonDown() then E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end end)
-GenGen.scaling.args.ScaleSmall = ACH:Execute(L["Small"], nil, 2, function() E.global.general.UIScale = .6 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
-GenGen.scaling.args.ScaleMedium = ACH:Execute(L["Medium"], nil, 3, function() E.global.general.UIScale = .7 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
-GenGen.scaling.args.ScaleLarge = ACH:Execute(L["Large"], nil, 4, function() E.global.general.UIScale = .8 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
-GenGen.scaling.args.ScaleAuto = ACH:Execute(L["Auto Scale"], nil, 5, function() E.global.general.UIScale = E:PixelBestSize() E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end)
-GenGen.scaling.args.ScaleSmall.customWidth = 100
-GenGen.scaling.args.ScaleMedium.customWidth = 100
-GenGen.scaling.args.ScaleLarge.customWidth = 100
-GenGen.scaling.args.ScaleAuto.customWidth = 100
+GenGen.scaling.args.ScaleSmall = ACH:Execute(L["Small"], nil, 2, function() E.global.general.UIScale = .6 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end, nil, nil, 100)
+GenGen.scaling.args.ScaleMedium = ACH:Execute(L["Medium"], nil, 3, function() E.global.general.UIScale = .7 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end, nil, nil, 100)
+GenGen.scaling.args.ScaleLarge = ACH:Execute(L["Large"], nil, 4, function() E.global.general.UIScale = .8 E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end, nil, nil, 100)
+GenGen.scaling.args.ScaleAuto = ACH:Execute(L["Auto Scale"], nil, 5, function() E.global.general.UIScale = E:PixelBestSize() E:PixelScaleChanged() E:StaticPopup_Show('PRIVATE_RL') end, nil, nil, 100)
 
 GenGen.automation = ACH:Group(L["Automation"], nil, 65)
 GenGen.automation.inline = true
@@ -87,15 +83,11 @@ Media.textureGroup.args.applyTextureToAll = ACH:Execute(L["Copy Primary Texture"
 
 Media.colorsGroup = ACH:Group(L["Colors"], nil, 2, nil, function(info) local t, d = E.db.general[info[#info]], P.general[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local setting = info[#info] local t = E.db.general[setting] t.r, t.g, t.b, t.a = r, g, b, a E:UpdateMedia() if setting == 'bordercolor' then E:UpdateBorderColors() elseif setting == 'backdropcolor' or setting == 'backdropfadecolor' then E:UpdateBackdropColors() end end)
 Media.colorsGroup.inline = true
-Media.colorsGroup.args.backdropcolor = ACH:Color(L["Backdrop"], L["Main backdrop color of the UI."], 1)
-Media.colorsGroup.args.backdropcolor.customWidth = 120
+Media.colorsGroup.args.backdropcolor = ACH:Color(L["Backdrop"], L["Main backdrop color of the UI."], 1, nil, 120)
 Media.colorsGroup.args.backdropfadecolor = ACH:Color(L["Backdrop Faded"], L["Backdrop color of transparent frames"], 2, true)
-Media.colorsGroup.args.valuecolor = ACH:Color(L["Value"], L["Color some texts use."], 3)
-Media.colorsGroup.args.valuecolor.customWidth = 100
-Media.colorsGroup.args.bordercolor = ACH:Color(L["Border"], L["Main border color of the UI."], 5)
-Media.colorsGroup.args.bordercolor.customWidth = 100
-Media.colorsGroup.args.ufBorderColors = ACH:Color(L["Unitframes Border"], nil, 6, nil, nil, function() local t, d = E.db.unitframe.colors.borderColor, P.unitframe.colors.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local t = E.db.unitframe.colors.borderColor t.r, t.g, t.b, t.a = r, g, b, a E:UpdateMedia() E:UpdateBorderColors() end)
-Media.colorsGroup.args.ufBorderColors.customWidth = 180
+Media.colorsGroup.args.valuecolor = ACH:Color(L["Value"], L["Color some texts use."], 3, nil, 120)
+Media.colorsGroup.args.bordercolor = ACH:Color(L["Border"], L["Main border color of the UI."], 5, nil, 100)
+Media.colorsGroup.args.ufBorderColors = ACH:Color(L["Unitframes Border"], nil, 6, nil, 180, function() local t, d = E.db.unitframe.colors.borderColor, P.unitframe.colors.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local t = E.db.unitframe.colors.borderColor t.r, t.g, t.b, t.a = r, g, b, a E:UpdateMedia() E:UpdateBorderColors() end)
 
 Media.fontGroup = ACH:Group(L["Fonts"], nil, 3)
 Media.fontGroup.inline = true
@@ -112,8 +104,7 @@ Media.fontGroup.args.blizzard.args.replaceNameFont = ACH:Toggle(L["Replace Name 
 Media.fontGroup.args.blizzard.args.namefont = ACH:SharedMediaFont(L["Name Font"], L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"], 4, nil, nil, nil, function() return not E.private.general.replaceNameFont end)
 Media.fontGroup.args.blizzard.args.replaceBlizzFonts = ACH:Toggle(L["Replace Blizzard Fonts"], L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI Options. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."], 5)
 Media.fontGroup.args.blizzard.args.unifiedBlizzFonts = ACH:Toggle(L["Unified Font Sizes"], L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."], 6, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
-Media.fontGroup.args.blizzard.args.replaceNameplateFont = ACH:Toggle(L["Replace Nameplate Fonts"], nil, 7)
-Media.fontGroup.args.blizzard.args.replaceNameplateFont.customWidth = 200
+Media.fontGroup.args.blizzard.args.replaceNameplateFont = ACH:Toggle(L["Replace Nameplate Fonts"], nil, 7, nil, nil, 200)
 Media.fontGroup.args.blizzard.args.nameplateGroup = ACH:Group(L["Nameplates"], nil, 10, nil, nil, nil, function() return not E.private.general.replaceNameplateFont end)
 Media.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateFont = ACH:SharedMediaFont(L["Normal Font"], nil, 7)
 Media.fontGroup.args.blizzard.args.nameplateGroup.args.nameplateFontSize = ACH:Range(L["Normal Size"], nil, 8, C.Values.FontSize)
