@@ -66,7 +66,7 @@ Bags.args.general.args.generalGroup.set = function(_, key, value)
 	end
 end
 
-Bags.args.general.args.playerGroup = ACH:Group(L["Player"], nil, 6, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout() end, function() return not E.Bags.Initialized end)
+Bags.args.general.args.playerGroup = ACH:Group(L["Bags"], nil, 6, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout() end, function() return not E.Bags.Initialized end)
 Bags.args.general.args.playerGroup.args.disableBagSort = ACH:Toggle(L["Disable Sort"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(false) end)
 Bags.args.general.args.playerGroup.args.bagSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.playerGroup.args.bagButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
