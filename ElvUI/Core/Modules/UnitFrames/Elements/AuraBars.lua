@@ -170,7 +170,7 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		bars:ClearAllPoints()
-		bars:SetPoint((below and 'TOP' or 'BOTTOM')..'LEFT', attachTo, (below and 'BOTTOM' or 'TOP')..'LEFT', (xOffset or -SPACING) + (width - (BORDER * 2)), yOffset) -- use SetPoint to avoid pixel goblins
+		bars:Point((below and 'TOP' or 'BOTTOM')..'LEFT', attachTo, (below and 'BOTTOM' or 'TOP')..'LEFT', (xOffset or -SPACING) + (width - (BORDER * 2)), yOffset)
 		bars.width = E:Scale(width - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
