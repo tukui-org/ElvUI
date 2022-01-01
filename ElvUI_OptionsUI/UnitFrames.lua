@@ -12,6 +12,8 @@ local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 local CopyTable = CopyTable
 
+local NUM_CLASSES = #CLASS_SORT_ORDER
+
 local orientationValues = {
 	LEFT = L["Left"],
 	MIDDLE = L["Middle"],
@@ -911,7 +913,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
 		config.args.sortingGroup.args.classSetup.inline = true
 
-		for i = 1, #_G.CLASS_SORT_ORDER do
+		for i = 1, NUM_CLASSES do
 			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, classTable)
 		end
 	else
