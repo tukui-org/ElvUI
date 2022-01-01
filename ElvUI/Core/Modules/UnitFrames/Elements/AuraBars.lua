@@ -132,7 +132,7 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local attachTo, xOffset, yOffset = frame, 'TOPLEFT'
+		local attachTo, xOffset, yOffset = frame
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
