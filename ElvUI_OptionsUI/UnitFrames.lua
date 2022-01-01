@@ -65,6 +65,8 @@ for i = 1, GetNumClasses() do
 	end
 end
 
+local roles = { L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
+
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
@@ -902,9 +904,9 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 
 		config.args.sortingGroup.args.roleSetup = ACH:Group(L["Role Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'ROLE' end)
 		config.args.sortingGroup.args.roleSetup.inline = true
-		config.args.sortingGroup.args.roleSetup.args.ROLE1 = ACH:Select(' ', nil, 1, { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] })
-		config.args.sortingGroup.args.roleSetup.args.ROLE2 = ACH:Select(' ', nil, 2, { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] })
-		config.args.sortingGroup.args.roleSetup.args.ROLE3 = ACH:Select(' ', nil, 3, { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] })
+		config.args.sortingGroup.args.roleSetup.args.ROLE1 = ACH:Select(' ', nil, 1, roles)
+		config.args.sortingGroup.args.roleSetup.args.ROLE2 = ACH:Select(' ', nil, 2, roles)
+		config.args.sortingGroup.args.roleSetup.args.ROLE3 = ACH:Select(' ', nil, 3, roles)
 
 		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
 		config.args.sortingGroup.args.classSetup.inline = true
