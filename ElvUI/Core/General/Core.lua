@@ -92,15 +92,27 @@ E.VehicleLocks = {}
 E.CreditsList = {}
 E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
 E.InversePoints = {
-	TOP = 'BOTTOM',
 	BOTTOM = 'TOP',
-	TOPLEFT = 'BOTTOMLEFT',
-	TOPRIGHT = 'BOTTOMRIGHT',
-	LEFT = 'RIGHT',
-	RIGHT = 'LEFT',
 	BOTTOMLEFT = 'TOPLEFT',
 	BOTTOMRIGHT = 'TOPRIGHT',
-	CENTER = 'CENTER'
+	CENTER = 'CENTER',
+	LEFT = 'RIGHT',
+	RIGHT = 'LEFT',
+	TOP = 'BOTTOM',
+	TOPLEFT = 'BOTTOMLEFT',
+	TOPRIGHT = 'BOTTOMRIGHT'
+}
+
+E.InverseAnchors = {
+	BOTTOM = 'TOP',
+	BOTTOMLEFT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'TOPLEFT',
+	CENTER = 'CENTER',
+	LEFT = 'RIGHT',
+	RIGHT = 'LEFT',
+	TOP = 'BOTTOM',
+	TOPLEFT = 'BOTTOMRIGHT',
+	TOPRIGHT = 'BOTTOMLEFT'
 }
 
 E.DispelClasses = {
