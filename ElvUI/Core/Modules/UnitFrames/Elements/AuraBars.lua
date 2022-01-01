@@ -167,7 +167,7 @@ function UF:Configure_AuraBars(frame)
 
 			local offset = db.yOffset + (UF.thinBorders and 0 or 2)
 			if db.anchorPoint == 'BELOW' then
-				yOffset = -(db.height + offset)
+				yOffset = -(db.height + offset) + 1
 			else
 				yOffset = offset + 1 -- 1 is connecting pixel
 			end
