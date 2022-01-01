@@ -95,6 +95,8 @@ function UF:Configure_AuraBars(frame)
 
 		local below = db.anchorPoint == 'BELOW'
 		local detached = db.attachTo == 'DETACHED'
+		local debuffs = db.attachTo == 'DEBUFFS'
+		local buffs = db.attachTo == 'BUFFS'
 
 		bars.height = db.height
 		bars.growth = db.anchorPoint
@@ -130,16 +132,14 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local attachTo, anchorPoint, xOffset, yOffset = frame, 'TOPLEFT'
+		local attachTo, xOffset, yOffset = frame, 'TOPLEFT'
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
-		elseif db.attachTo == 'BUFFS' then
+		elseif buffs then
 			attachTo = frame.Buffs
-			anchorPoint = attachTo.anchorPoint
-		elseif db.attachTo == 'DEBUFFS' then
+		elseif debuffs then
 			attachTo = frame.Debuffs
-			anchorPoint = attachTo.anchorPoint
 		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
 			xOffset = 0
@@ -169,7 +169,8 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local right = anchorPoint:find('RIGHT')
+		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
+		local right = point:find('RIGHT')
 		local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
 
 		bars:ClearAllPoints()
