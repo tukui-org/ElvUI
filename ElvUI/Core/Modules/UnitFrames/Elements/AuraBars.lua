@@ -130,32 +130,32 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local attachTo, xOffset, yOffset = frame
-		local BORDER, SPACING = UF.BORDER + UF.SPACING
+		local attachTo, anchorPoint, xOffset, yOffset = frame, 'TOPLEFT'
+		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
 		elseif db.attachTo == 'BUFFS' then
 			attachTo = frame.Buffs
+			anchorPoint = attachTo.anchorPoint
 		elseif db.attachTo == 'DEBUFFS' then
 			attachTo = frame.Debuffs
+			anchorPoint = attachTo.anchorPoint
 		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
 			xOffset = 0
 		end
 
-		local POWER_OFFSET, width = 0
+		local POWER_OFFSET, BAR_WIDTH = 0
 		if detached then
 			E:EnableMover(bars.Holder.mover:GetName())
-			SPACING = UF.thinBorders and 1 or 5
-			width = db.detachedWidth
+			BAR_WIDTH = db.detachedWidth
 
 			yOffset = below and (BORDER + (UF.BORDER - UF.SPACING)) or -(db.height + BORDER)
 
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
 		else
 			E:DisableMover(bars.Holder.mover:GetName())
-			SPACING = UF.thinBorders and 1 or 4
-			width = frame.UNIT_WIDTH
+			BAR_WIDTH = frame.UNIT_WIDTH
 
 			local offset = db.yOffset + (UF.thinBorders and 0 or 2)
 			yOffset = (below and -(db.height + offset) or offset) + 1 -- 1 is connecting pixel
@@ -169,9 +169,13 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
+		local right = anchorPoint:find('RIGHT')
+		local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
+
 		bars:ClearAllPoints()
-		bars:Point((below and 'TOP' or 'BOTTOM')..'LEFT', attachTo, (below and 'BOTTOM' or 'TOP')..'LEFT', (xOffset or -SPACING) + (width - (BORDER * 2)), yOffset)
-		bars.width = E:Scale(width - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
+		bars:Point(p1..p3, attachTo, p2..p3, xOffset or (right and -(UF.SPACING + BORDER * 2) or bars.height+UF.BORDER), yOffset)
+		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
+		bars.initialAnchor = 'BOTTOM'..p3
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
