@@ -1164,7 +1164,6 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power Threshold"] = true
 L["POWER_TYPE_ARCANE_CHARGES"] = "비전 충전물"
 L["Power"] = "자원"
-L["Powers"] = "자원 (마나, 분노, 기력...)"
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "같은 내용의 메시지는 이 값만큼 정해진 시간 내에선 한번만 보여줍니다.|n|n0으로 설정하면 이 기능을 끕니다."
 L["Primary Texture"] = "주 텍스쳐"
 L["Priority"] = "우선도"
