@@ -1009,10 +1009,10 @@ UnitFrame.generalOptionsGroup.args.raidDebuffIndicator.inline = true
 UnitFrame.generalOptionsGroup.args.raidDebuffIndicator.args.instanceFilter = ACH:Select(L["Dungeon & Raid Filter"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
 UnitFrame.generalOptionsGroup.args.raidDebuffIndicator.args.otherFilter = ACH:Select(L["Other Filter"], nil, 2, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
 
-UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames = ACH:Group(L["Disabled Blizzard Frames"], nil, 8, nil, function(_, key) return E.private.unitframe.disabledBlizzardFrames[key] end, function(_, key, value) E.private.unitframe.disabledBlizzardFrames[key] = value E.ShowPopup = true end)
+UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames = ACH:Group(L["Disabled Blizzard Frames"], nil, 8, nil, function(_, key) return E.private.unitframe.disabledBlizzardFrames[key] end, function(_, key, value) E.private.unitframe.disabledBlizzardFrames[key] = value if key == 'castbar' then UF:CreateAndUpdateUF('player') else E.ShowPopup = true end end)
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 
-UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
+UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { castbar = L["Castbar"], player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = E.Retail and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
 
 UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 10, 'tree', function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, function() return not E.UnitFrames.Initialized end)
