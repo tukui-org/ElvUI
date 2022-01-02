@@ -1,5 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
+local B = E:GetModule('Bags')
+
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -158,7 +160,7 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 	return f
 end
 
-function M:CreateRollFrame(index)
+function M:LootRoll_Create(index)
 	local frame = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
 	frame:Hide()
 
@@ -232,7 +234,7 @@ function M:LootFrame_GetFrame(i)
 			end
 		end
 
-		return M:CreateRollFrame(i)
+		return M:LootRoll_Create(i)
 	end
 end
 
@@ -268,7 +270,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
-	f.button.questIcon:SetShown(E.Bags:GetItemQuestInfo(link, bindType, itemClassID))
+	f.button.questIcon:SetShown(B:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
 	f.greed:SetEnabled(canGreed)
