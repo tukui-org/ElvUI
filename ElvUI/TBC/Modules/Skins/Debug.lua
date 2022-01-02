@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
@@ -91,7 +92,7 @@ function S:Blizzard_DebugTools()
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		_G.FrameStackTooltip:SetTemplate('Transparent')
+		TT:SetStyle(_G.FrameStackTooltip)
 	end
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
