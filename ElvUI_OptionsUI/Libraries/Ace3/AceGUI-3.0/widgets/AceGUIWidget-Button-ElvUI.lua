@@ -6,6 +6,7 @@ local Type, Version = "Button-ElvUI", 4
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
+local _G = _G
 local pairs = pairs
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -155,14 +156,10 @@ local function Constructor()
 		dragdropButton:SetPoint('BOTTOM', DragTooltip, "BOTTOM", 0, 10)
 		dragdropButton:Hide()
 
-		if not S then
-			S = ElvUI[1]:GetModule("Skins")
-
-			-- skin this once :)
-			DragTooltip:SetTemplate("Transparent", nil, true)
+		if not S and ElvUI[1].private.skins.ace3Enable then
+			S = ElvUI[1]:GetModule('Skins')
+			S:HandleButton(dragdropButton)
 		end
-
-		S:HandleButton(dragdropButton)
 	end
 
 	frame:HookScript("OnClick", dragdrop_OnClick)
