@@ -10,24 +10,19 @@ local hooksecurefunc = hooksecurefunc
 local function SkinFollowerTooltip(frame)
 	if not frame then return end
 
-	frame.NineSlice:SetTemplate('Transparent')
+	TT:SetStyle(frame)
 end
 
 local function SkinAbilityTooltip(frame)
 	if not frame then return end
 
-	if not frame.border then
-		frame.border = CreateFrame('Frame', nil, frame)
-		S:HandleIcon(frame.Icon, frame.border)
-	end
-
 	frame.Icon:SetTexCoord(unpack(E.TexCoords))
-	frame.NineSlice:SetTemplate('Transparent')
+	S:HandleIcon(frame.Icon, true)
+	TT:SetStyle(frame)
 end
 
 function S:GarrisonShipyardTooltip()
 	local tt = _G.GarrisonShipyardMapMissionTooltip
-	tt:StripTextures()
 	TT:SetStyle(tt)
 
 	local reward = tt.ItemTooltip
@@ -45,12 +40,10 @@ function S:GarrisonShipyardTooltip()
 		S:HandleIcon(bonusIcon)
 	end
 
-	-- Threat Counter Tooltips
-	_G.GarrisonMissionMechanicFollowerCounterTooltip:SetTemplate('Transparent')
-	_G.GarrisonMissionMechanicTooltip:SetTemplate('Transparent')
-
-	_G.GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
-	_G.GarrisonBuildingFrame.BuildingLevelTooltip:SetTemplate('Transparent')
+	-- other tooltips
+	SkinFollowerTooltip(_G.GarrisonBuildingFrame.BuildingLevelTooltip)
+	SkinFollowerTooltip(_G.GarrisonMissionMechanicFollowerCounterTooltip)
+	SkinFollowerTooltip(_G.GarrisonMissionMechanicTooltip)
 end
 
 function S:GarrisonTooltip()
