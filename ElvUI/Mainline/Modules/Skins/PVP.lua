@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
@@ -178,7 +179,7 @@ function S:Blizzard_PVPUI()
 	end)
 
 	if E.private.skins.blizzard.tooltip then
-		_G.ConquestTooltip:SetTemplate('Transparent')
+		TT:SetStyle(_G.ConquestTooltip)
 	end
 
 	-- PvP StatusBars
