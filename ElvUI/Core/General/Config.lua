@@ -1112,7 +1112,7 @@ function E:ToggleOptionsUI(msg)
 		end
 		if not ACD.CloseHookedElvUI then
 			hooksecurefunc(E.Libs.AceConfigDialog, 'CloseAll', E.Config_DialogClosed)
-			ACD.OpenHookedElvUI = true
+			ACD.CloseHookedElvUI = true
 		end
 
 		ACD[mode](ACD, E.name)
