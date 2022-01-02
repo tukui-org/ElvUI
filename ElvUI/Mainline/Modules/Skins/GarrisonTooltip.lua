@@ -7,13 +7,13 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function SkinFollowerTooltip(frame)
+local function StyleTooltip(frame)
 	if not frame then return end
 
 	TT:SetStyle(frame)
 end
 
-local function SkinAbilityTooltip(frame)
+local function AbilityTooltip(frame)
 	if not frame then return end
 
 	frame.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -41,24 +41,24 @@ function S:GarrisonShipyardTooltip()
 	end
 
 	-- other tooltips
-	SkinFollowerTooltip(_G.GarrisonBuildingFrame.BuildingLevelTooltip)
-	SkinFollowerTooltip(_G.GarrisonMissionMechanicFollowerCounterTooltip)
-	SkinFollowerTooltip(_G.GarrisonMissionMechanicTooltip)
+	StyleTooltip(_G.GarrisonBuildingFrame and _G.GarrisonBuildingFrame.BuildingLevelTooltip)
+	StyleTooltip(_G.GarrisonMissionMechanicFollowerCounterTooltip)
+	StyleTooltip(_G.GarrisonMissionMechanicTooltip)
 end
 
 function S:GarrisonTooltip()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.tooltip then return end
 
-	SkinFollowerTooltip(_G.GarrisonFollowerTooltip)
-	SkinFollowerTooltip(_G.FloatingGarrisonFollowerTooltip)
-	SkinFollowerTooltip(_G.FloatingGarrisonMissionTooltip)
-	SkinFollowerTooltip(_G.FloatingGarrisonShipyardFollowerTooltip)
-	SkinFollowerTooltip(_G.GarrisonShipyardFollowerTooltip)
+	StyleTooltip(_G.GarrisonFollowerTooltip)
+	StyleTooltip(_G.FloatingGarrisonFollowerTooltip)
+	StyleTooltip(_G.FloatingGarrisonMissionTooltip)
+	StyleTooltip(_G.FloatingGarrisonShipyardFollowerTooltip)
+	StyleTooltip(_G.GarrisonShipyardFollowerTooltip)
 
-	SkinAbilityTooltip(_G.GarrisonFollowerAbilityTooltip)
-	SkinAbilityTooltip(_G.FloatingGarrisonFollowerAbilityTooltip)
-	SkinAbilityTooltip(_G.GarrisonFollowerMissionAbilityWithoutCountersTooltip)
-	SkinAbilityTooltip(_G.GarrisonFollowerAbilityWithoutCountersTooltip)
+	AbilityTooltip(_G.GarrisonFollowerAbilityTooltip)
+	AbilityTooltip(_G.FloatingGarrisonFollowerAbilityTooltip)
+	AbilityTooltip(_G.GarrisonFollowerMissionAbilityWithoutCountersTooltip)
+	AbilityTooltip(_G.GarrisonFollowerAbilityWithoutCountersTooltip)
 
 	S:HandleCloseButton(_G.FloatingGarrisonFollowerTooltip.CloseButton)
 	S:HandleCloseButton(_G.FloatingGarrisonFollowerAbilityTooltip.CloseButton)
