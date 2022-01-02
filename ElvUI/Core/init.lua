@@ -118,7 +118,6 @@ do
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
 	E:AddLib('RangeCheck', 'LibRangeCheck-2.0-ElvUI')
-	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0')
 	E:AddLib('CustomGlow', 'LibCustomGlow-1.0')
 	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Compress', 'LibCompress')
@@ -146,26 +145,25 @@ do
 	E.LSM = E.Libs.LSM
 	E.UnitFrames.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
+end
 
-	-- Replace ButtonGlow with CustomGlow
-	local LBG = E.Libs.ButtonGlow
-	local LCG = E.Libs.CustomGlow
-
-	local glowFrames = {}
-	function LBG.ShowOverlayGlow(button)
-		if button:GetAttribute("type") == "action" then
-			glowFrames[button] = true
+do
+	local LCG, frames = E.Libs.CustomGlow, {}
+	function LCG.ShowOverlayGlow(button)
+		if button:GetAttribute('type') == 'action' then
 			LCG.startList[E.db.general.customGlow](button, E.db.general.customGlowColor)
+			frames[button] = true
 		end
 	end
 
-	function LBG.HideOverlayGlow(button)
+	function LCG.HideOverlayGlow(button)
 		LCG.stopList[E.db.general.customGlow](button)
+		frames[button] = nil
 	end
 
 	function E:StopAllCustomGlows()
-		for button in next, glowFrames do
-			LCG.stopList[E.db.general.customGlow](button)
+		for button in next, frames do
+			LCG.HideOverlayGlow(button)
 		end
 	end
 end

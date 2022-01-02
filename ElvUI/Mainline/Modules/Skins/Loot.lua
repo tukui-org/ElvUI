@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local LBG = E.Libs.ButtonGlow
+local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local unpack, select = unpack, select
@@ -232,11 +232,11 @@ function S:LootFrame()
 
 			if texture then
 				if questId and not isActive then
-					LBG.ShowOverlayGlow(button)
+					LCG.ShowOverlayGlow(button)
 				elseif questId or isQuestItem then
-					LBG.ShowOverlayGlow(button)
+					LCG.ShowOverlayGlow(button)
 				else
-					LBG.HideOverlayGlow(button)
+					LCG.HideOverlayGlow(button)
 				end
 			end
 		end
