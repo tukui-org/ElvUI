@@ -146,6 +146,28 @@ do
 	E.LSM = E.Libs.LSM
 	E.UnitFrames.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
+
+	-- Replace ButtonGlow with CustomGlow
+	local LBG = E.Libs.ButtonGlow
+	local LCG = E.Libs.CustomGlow
+
+	local glowFrames = {}
+	function LBG.ShowOverlayGlow(button)
+		if button:GetAttribute("type") == "action" then
+			glowFrames[button] = true
+			LCG.startList[E.db.general.customGlow](button, E.db.general.customGlowColor)
+		end
+	end
+
+	function LBG.HideOverlayGlow(button)
+		LCG.stopList[E.db.general.customGlow](button)
+	end
+
+	function E:StopAllCustomGlows()
+		for button in next, glowFrames do
+			LCG.stopList[E.db.general.customGlow](button)
+		end
+	end
 end
 
 do
