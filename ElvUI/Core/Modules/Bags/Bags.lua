@@ -2100,8 +2100,9 @@ function B:OpenBags()
 end
 
 function B:CloseBags()
-	B.BagFrame:Hide()
 	B.BankFrame:Hide()
+	B.BagFrame:Hide()
+
 	PlaySound(IG_BACKPACK_CLOSE)
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
