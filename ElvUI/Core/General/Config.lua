@@ -730,6 +730,7 @@ end
 function E:Config_DialogClosed()
 	if E.ShowPopup then
 		E:StaticPopup_Show('CONFIG_RL')
+		E.ShowPopup = nil
 	end
 end
 
