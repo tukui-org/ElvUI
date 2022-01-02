@@ -2100,8 +2100,8 @@ function B:OpenBags()
 end
 
 function B:CloseBags()
-	B.BankFrame:Hide()
 	B.BagFrame:Hide()
+	B.BankFrame:Hide()
 
 	PlaySound(IG_BACKPACK_CLOSE)
 
