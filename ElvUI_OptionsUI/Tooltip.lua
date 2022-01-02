@@ -14,7 +14,7 @@ E.Options.args.tooltip = ACH:Group(L["Tooltip"], nil, 2, 'tab', function(info) r
 local Tooltip = E.Options.args.tooltip.args
 
 Tooltip.intro = ACH:Description(L["TOOLTIP_DESC"], 1)
-Tooltip.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return E.private.tooltip[info[#info]] end, function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+Tooltip.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return E.private.tooltip[info[#info]] end, function(info, value) E.private.tooltip[info[#info]] = value; E.ShowPopup = true end)
 
 Tooltip.general = ACH:Group(L["General"], nil, 6, 'tree')
 local General = Tooltip.general.args

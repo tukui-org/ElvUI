@@ -27,12 +27,12 @@ local Maps = ACH:Group(L["Maps"], nil, 2, 'tab')
 E.Options.args.maps = Maps
 
 Maps.args.worldMap = ACH:Group(L["WORLD_MAP"], nil, 1, 'tab')
-Maps.args.worldMap.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the World Map Enhancements."], 0, nil, nil, nil, function() return E.private.general.worldMap end, function(_, value) E.private.general.worldMap = value; E:StaticPopup_Show("PRIVATE_RL") end)
+Maps.args.worldMap.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the World Map Enhancements."], 0, nil, nil, nil, function() return E.private.general.worldMap end, function(_, value) E.private.general.worldMap = value E.ShowPopup = true end)
 
 Maps.args.worldMap.args.generalGroup = ACH:Group(L["General"], nil, 1, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value end, function() return not E.private.general.worldMap end)
 Maps.args.worldMap.args.generalGroup.inline = true
-Maps.args.worldMap.args.generalGroup.args.smallerWorldMap = ACH:Toggle(L["Smaller World Map"], L["Make the world map smaller."], 1, nil, nil, nil, nil, function(_, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show('GLOBAL_RL') end)
-Maps.args.worldMap.args.generalGroup.args.smallerWorldMapScale = ACH:Range(L["Smaller World Map Scale"], nil, 2, { min = .5, max = .9, step = .01, isPercent = true }, nil, nil, function(_, value) E.global.general.smallerWorldMapScale = value; E:StaticPopup_Show('GLOBAL_RL') end)
+Maps.args.worldMap.args.generalGroup.args.smallerWorldMap = ACH:Toggle(L["Smaller World Map"], L["Make the world map smaller."], 1, nil, nil, nil, nil, function(_, value) E.global.general.smallerWorldMap = value; E.ShowPopup = true end)
+Maps.args.worldMap.args.generalGroup.args.smallerWorldMapScale = ACH:Range(L["Smaller World Map Scale"], nil, 2, { min = .5, max = .9, step = .01, isPercent = true }, nil, nil, function(_, value) E.global.general.smallerWorldMapScale = value; E.ShowPopup = true end)
 
 Maps.args.worldMap.args.generalGroup.args.spacer1 = ACH:Spacer(3)
 Maps.args.worldMap.args.generalGroup.args.fadeMapWhenMoving = ACH:Toggle(L["MAP_FADE_TEXT"], nil, 4)
@@ -41,13 +41,13 @@ Maps.args.worldMap.args.generalGroup.args.fadeMapDuration = ACH:Range(L["Fade Du
 
 Maps.args.worldMap.args.coordinatesGroup = ACH:Group(L["World Map Coordinates"], nil, 3, nil, function(info) return E.global.general.WorldMapCoordinates[info[#info]] end, function(info, value) E.global.general.WorldMapCoordinates[info[#info]] = value; WM:PositionCoords() end, function() return not E.private.general.worldMap end)
 Maps.args.worldMap.args.coordinatesGroup.inline = true
-Maps.args.worldMap.args.coordinatesGroup.args.enable = ACH:Toggle(L["Enable"], L["Puts coordinates on the world map."], 1, nil, nil, nil, nil, function(_, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show('GLOBAL_RL') end)
+Maps.args.worldMap.args.coordinatesGroup.args.enable = ACH:Toggle(L["Enable"], L["Puts coordinates on the world map."], 1, nil, nil, nil, nil, function(_, value) E.global.general.WorldMapCoordinates.enable = value; E.ShowPopup = true end)
 Maps.args.worldMap.args.coordinatesGroup.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
 Maps.args.worldMap.args.coordinatesGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -200, max = 200, step = 1 }, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
 Maps.args.worldMap.args.coordinatesGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -200, max = 200, step = 1 }, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
 
 Maps.args.minimap = ACH:Group(L["Minimap"], nil, 2, 'tab', function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end)
-Maps.args.minimap.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"], 1, nil, nil, nil, function(info) return E.private.general.minimap[info[#info]] end, function(info, value) E.private.general.minimap[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+Maps.args.minimap.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"], 1, nil, nil, nil, function(info) return E.private.general.minimap[info[#info]] end, function(info, value) E.private.general.minimap[info[#info]] = value; E.ShowPopup = true end)
 Maps.args.minimap.args.size = ACH:Range(L["Size"], L["Adjust the size of the minimap."], 2, { min = 24, max = 500, step = 1 }, nil, nil, nil, function() return not E.private.general.minimap.enable end)
 Maps.args.minimap.args.scale = ACH:Range(L["Scale"], L["Adjust the scale of the minimap and also the pins. Eg: Quests, Resource nodes, Group members"], 3, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, nil, function() return not E.private.general.minimap.enable end)
 

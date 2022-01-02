@@ -506,7 +506,3 @@ end
 E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
 	return format(L["Copy settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
 end
-
-if GetAddOnEnableState(nil, 'ElvUI_Config') ~= 0 then
-	E:StaticPopup_Show('ELVUI_CONFIG_FOUND')
-end

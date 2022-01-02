@@ -361,7 +361,7 @@ end
 
 E.Options.args.nameplates = ACH:Group(L["Nameplates"], nil, 2, 'tab', function(info) return E.db.nameplates[info[#info]] end, function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll() end)
 E.Options.args.nameplates.args.intro = ACH:Description(L["NAMEPLATE_DESC"], 0)
-E.Options.args.nameplates.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.private.nameplates[info[#info]] end, function(info, value) E.private.nameplates[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
+E.Options.args.nameplates.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.private.nameplates[info[#info]] end, function(info, value) E.private.nameplates[info[#info]] = value E.ShowPopup = true end)
 E.Options.args.nameplates.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 2)
 E.Options.args.nameplates.args.resetFilters = ACH:Execute(L["Reset Aura Filters"], nil, 3, function() E:StaticPopup_Show('RESET_NP_AF') end)
 E.Options.args.nameplates.args.resetcvars = ACH:Execute(L["Reset CVars"], L["Reset Nameplate CVars to the ElvUI recommended defaults."], 4, function() NP:CVarReset() end, nil, true)

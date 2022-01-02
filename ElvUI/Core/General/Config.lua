@@ -727,6 +727,12 @@ function E:Config_DialogOpened(name)
 	end
 end
 
+function E:Config_DialogClosed()
+	if E.ShowPopup then
+		E:StaticPopup_Show('CONFIG_RL')
+	end
+end
+
 function E:Config_UpdateLeftButtons()
 	local frame = E:Config_GetWindow()
 	if not (frame and frame.leftHolder) then return end
@@ -1102,6 +1108,10 @@ function E:ToggleOptionsUI(msg)
 	if ACD then
 		if not ACD.OpenHookedElvUI then
 			hooksecurefunc(E.Libs.AceConfigDialog, 'Open', E.Config_DialogOpened)
+			ACD.OpenHookedElvUI = true
+		end
+		if not ACD.CloseHookedElvUI then
+			hooksecurefunc(E.Libs.AceConfigDialog, 'CloseAll', E.Config_DialogClosed)
 			ACD.OpenHookedElvUI = true
 		end
 

@@ -17,7 +17,7 @@ local Bags = ACH:Group(L["Bags"], nil, 2, 'tab', function(info) return E.db.bags
 E.Options.args.bags = Bags
 
 Bags.args.intro = ACH:Description(L["BAGS_DESC"], 0)
-Bags.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the all-in-one bag."], 1, nil, nil, nil, function() return E.private.bags.enable end, function(info, value) E.private.bags[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+Bags.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the all-in-one bag."], 1, nil, nil, nil, function() return E.private.bags.enable end, function(info, value) E.private.bags[info[#info]] = value; E.ShowPopup = true end)
 Bags.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 3, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'bags') end)
 
 Bags.args.general = ACH:Group(L["General"], nil, 1, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateLayouts() B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
@@ -169,7 +169,7 @@ Bags.args.colorGroup.args.items.args.questStarter = ACH:Color(L["Quest Starter"]
 Bags.args.colorGroup.args.items.args.questItem = ACH:Color(L["ITEM_BIND_QUEST"])
 
 Bags.args.bagBar = ACH:Group(L["Bag Bar"], nil, 3, nil, function(info) return E.db.bags.bagBar[info[#info]] end, function(info, value) E.db.bags.bagBar[info[#info]] = value; B:SizeAndPositionBagBar() end)
-Bags.args.bagBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.bags.bagBar end, function(_, value) E.private.bags.bagBar = value E:StaticPopup_Show('PRIVATE_RL') end)
+Bags.args.bagBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.bags.bagBar end, function(_, value) E.private.bags.bagBar = value E.ShowPopup = true end)
 Bags.args.bagBar.args.showBackdrop = ACH:Toggle(L["Backdrop"], nil, 2)
 Bags.args.bagBar.args.mouseover = ACH:Toggle(L["Mouseover"], L["The frame is not shown unless you mouse over the frame."], 3)
 Bags.args.bagBar.args.showCount = ACH:Toggle(L["Show Count"], nil, 4, nil, nil, nil, function() return GetCVarBool('displayFreeBagSlots') end, function(_, value) SetCVar('displayFreeBagSlots', value and 1 or 0) B:SizeAndPositionBagBar() end)
