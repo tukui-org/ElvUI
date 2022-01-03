@@ -2065,13 +2065,20 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 			local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				local icon, prettify, emoter, emotext = chatIcon()
+				local icon, prettify, var1, var2, var3 = chatIcon()
 				if prettify and not CH:MessageIsProtected(message) then
 					if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
-						emoter, emotext = strmatch(message, '('..arg2..(realm and '%-'..realm or '')..')(.+)')
+						var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
 					end
 
-					message = emoter and (emoter..prettify(emotext)) or prettify(message)
+					if var2 then
+						if var1 ~= '' then var1 = prettify(var1) end
+						if var3 ~= '' then var3 = prettify(var3) end
+
+						message = var1..var2..var3
+					else
+						message = prettify(message)
+					end
 				end
 
 				chatIcon = icon or ''
