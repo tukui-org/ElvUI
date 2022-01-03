@@ -23,8 +23,8 @@ P.general = {
 	customGlow = {
 		style = 'Pixel Glow',
 		color = { 23/255, 132/255, 209/255, 0.9 }, -- not rgba format yet due to lib
-		speed = 0.25,
-		size = 2,
+		speed = 0.3,
+		size = 1,
 	},
 	topPanelSettings = {
 		transparent = true,
