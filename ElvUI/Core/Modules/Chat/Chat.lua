@@ -2068,7 +2068,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local icon, prettify, emoter, emotext = chatIcon()
 				if prettify and not CH:MessageIsProtected(message) then
 					if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
-						emoter, emotext = strmatch(message, '('..arg2..(realm and '%-'..realm or '')..'%s)(.+)')
+						emoter, emotext = strmatch(message, '('..arg2..(realm and '%-'..realm or '')..')(.+)')
 					end
 
 					message = emoter and (emoter..prettify(emotext)) or prettify(message)
