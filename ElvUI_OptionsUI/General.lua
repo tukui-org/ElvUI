@@ -126,7 +126,7 @@ Cosmetic.bordersGroup.args.cropIcon = ACH:Toggle(L["Crop Icons"], L["This is for
 
 Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16, nil, function(info) return E.db.general.customGlow[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general.customGlow[info[#info]] = value end)
 Cosmetic.customGlowGroup.inline = true
-Cosmetic.customGlowGroup.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end)
+Cosmetic.customGlowGroup.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for name in next, E.Libs.CustomGlow.GetGlows() do tbl[name] = name end return tbl end)
 Cosmetic.customGlowGroup.args.speed = ACH:Range(L["Speed"], nil, 2, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
 Cosmetic.customGlowGroup.args.size = ACH:Range(L["Size"], nil, 3, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Pixel Glow' end)
 Cosmetic.customGlowGroup.args.color = ACH:Color(L["Color"], nil, 4, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c[1], c[2], c[3], c[4], d[1], d[2], d[3], d[4] end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c[1], c[2], c[3], c[4] = r, g, b, a end)
