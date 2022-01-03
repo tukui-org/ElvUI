@@ -4,8 +4,8 @@
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
-local _G = _G
-local format, gsub, pairs, type = format, gsub, pairs, type
+local _G, format, next = _G, format, next
+local gsub, pairs, type = gsub, pairs, type
 
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local CreateFrame = CreateFrame
@@ -152,23 +152,27 @@ do -- expand LibCustomGlow for button handling
 	function LCG.ShowOverlayGlow(button)
 		if button:GetAttribute('type') == 'action' then
 			local opt = E.db.general.customGlow
-			local pixel = opt.style == 'Pixel Glow'
-			local shine = opt.style == 'Autocast Shine'
+			local glow = LCG.startList[opt.style]
+			if glow then
+				local arg3, arg4, arg6
+				local pixel = opt.style == 'Pixel Glow'
+				if pixel or (opt.style == 'Autocast Shine') then arg4 = opt.speed else arg3 = opt.speed end
+				if pixel then arg6 = opt.size end
 
-			local arg3, arg4, arg6
-			if pixel or shine then arg4 = opt.speed else arg3 = opt.speed end
-			if pixel then arg6 = opt.size end
+				glow(button, opt.color, arg3, arg4, nil, arg6)
 
-			LCG.startList[opt.style](button, opt.color, arg3, arg4, nil, arg6)
-
-			frames[button] = true
+				frames[button] = true
+			end
 		end
 	end
 
 	function LCG.HideOverlayGlow(button)
-		LCG.stopList[E.db.general.customGlow.style](button)
+		local glow = LCG.stopList[E.db.general.customGlow.style]
+		if glow then
+			glow(button)
 
-		frames[button] = nil
+			frames[button] = nil
+		end
 	end
 
 	function E:StopAllCustomGlows()
