@@ -27,13 +27,13 @@ local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t 
 local sortedClasses = E:CopyTable({}, CLASS_SORT_ORDER)
 sort(sortedClasses)
 
-C.SelectedNameplateStyleFilter = nil
+C.StyleFilterSelected = nil
 
 E.Options.args.nameplates.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
 local StyleFitlers = E.Options.args.nameplates.args.filters.args
 
 local function GetFilter(collect, profile)
-	local setting = (profile and E.db.nameplates.filters[C.SelectedNameplateStyleFilter]) or E.global.nameplates.filters[C.SelectedNameplateStyleFilter]
+	local setting = (profile and E.db.nameplates.filters[C.StyleFilterSelected]) or E.global.nameplates.filters[C.StyleFilterSelected]
 
 	if collect and setting then
 		return setting.triggers, setting.actions
@@ -41,12 +41,13 @@ local function GetFilter(collect, profile)
 		return setting
 	end
 end
+C.StyleFilterGetFilter = GetFilter
 
 local function DisabledFilter()
 	local profileTriggers = GetFilter(true, true)
 	return not (profileTriggers and profileTriggers.enable)
 end
-C.DisabledStyleFilter = DisabledFilter
+C.StyleFilterDisabledFilter = DisabledFilter
 
 local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
 local function GetTalentString(tier, column)
@@ -191,24 +192,24 @@ local function UpdateFilterGroup()
 	UpdateFilterList('casting', true)
 end
 
-function C:SetStyleFilterConfig(filter)
-	C.SelectedNameplateStyleFilter = filter
+function C:StyleFilterSetConfig(filter)
+	C.StyleFilterSelected = filter
 	UpdateFilterGroup()
 end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplates.filters[value]) end
 local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
 
-StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:SetStyleFilterConfig(value) end, nil, nil, validateCreateFilter)
-StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplates.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.SelectedNameplateStyleFilter end, function(_, value) C:SetStyleFilterConfig(value) end)
+StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
+StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplates.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
 StyleFitlers.selectFilter.sortByValue = true
 StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() end)
 
-StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.SelectedNameplateStyleFilter end)
+StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
 -- UpdateBossModAuras needed here in get to update the list once every time you load the config with a selected filter.
-StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() UpdateBossModAuras(true) local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.SelectedNameplateStyleFilter] = E.db.nameplates.filters[C.SelectedNameplateStyleFilter] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value NP:ConfigureAll() end)
+StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() UpdateBossModAuras(true) local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.StyleFilterSelected] = E.db.nameplates.filters[C.StyleFilterSelected] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value NP:ConfigureAll() end)
 StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) triggers.priority = value NP:ConfigureAll() end, DisabledFilter)
-StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplates.filters[C.SelectedNameplateStyleFilter] = G.nameplates.filters[C.SelectedNameplateStyleFilter] and E:CopyTable({}, G.nameplates.filters[C.SelectedNameplateStyleFilter]) or NP:StyleFilterCopyDefaults() UpdateFilterGroup() NP:ConfigureAll() end)
+StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplates.filters[C.StyleFilterSelected] = G.nameplates.filters[C.StyleFilterSelected] and E:CopyTable({}, G.nameplates.filters[C.StyleFilterSelected]) or NP:StyleFilterCopyDefaults() UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names = ACH:Group(L["Name"], nil, 6, nil, nil, nil, DisabledFilter)
 StyleFitlers.triggers.args.names.args.addName = ACH:Input(L["Add Name or NPC ID"], L["Add a Name or NPC ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.names[value] = true UpdateFilterList('names', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
