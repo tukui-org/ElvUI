@@ -3,6 +3,7 @@
 Auras: Tooltip fixes for top auras  
 Config: Fixed some options displaying in russian  
 General: Added new search section in our OptionsUI  
+Libraries: Added LibCustomGlow and options in General - Cosmetic  
 Minimap: Scaling and Font fixes  
 Misc: Added button size option for LootRoll  
 Misc: Added font options for LootRoll  
@@ -14,8 +15,12 @@ NamePlates: Fixed Desaturate Icon option
 NamePlates: Fixed error when deleting a StyleFilter  
 NamePlates: Fixed Quest Icon text position option  
 Skins: Fixed "New Mythic+ Season" overlap issue  
+Skins: Fixed conquest and pvp rating tooltip skin  
+UnitFrames: Added an option to toggle Blizzards default Castbar  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
+UnitFrames: Fixed kyrian rogue charged combo points  
 UnitFrames: Fixed non attached Castbar Icon  
+UnitFrames: Fixed sort by class  
 
 Note for plugin authors:  
 ElvDB.global.nameplate was renamed to ElvDB.global.nameplates  

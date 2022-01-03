@@ -6,6 +6,7 @@ DataTexts: Fixes for party invites
 General: Added an option to load max camera distance on login  
 General: Added new search section in our OptionsUI  
 Libraries: Added LibClassicSpecs for roles and specs  
+Libraries: Added LibCustomGlow and options in General - Cosmetic  
 Minimap: Scaling and Font fixes  
 Misc: Added button size option for LootRoll  
 Misc: Added font options for LootRoll  
@@ -14,9 +15,11 @@ Misc: Added spacing option for LootRoll
 Misc: Adjusted spacing between LootRoll need/greed/pass  
 Misc: Adjusted text length for LootRoll items  
 NamePlates: Fixed error when deleting a StyleFilter  
+UnitFrames: Added an option to toggle Blizzards default Castbar  
 UnitFrames: Adjusted spark for EnergyManaRegen ticks  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
 UnitFrames: Fixed non attached Castbar Icon  
+UnitFrames: Fixed sort by class  
 UnitFrames: LibHealComm-4.0 for HoTs  
 
 Note for plugin authors:  
