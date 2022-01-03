@@ -20,7 +20,7 @@
 
 	<Include file='..\Libraries\Core\LibItemSearch-1.2\LibItemSearch-1.2.xml'/>
 	<Include file='..\Libraries\Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
-	<Script file='..\Libraries\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
+	<Include file='..\Libraries\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.xml'/>
 	<Script file='..\Libraries\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibDataBroker\LibDataBroker-1.1.lua'/>
 	<Script file='..\Libraries\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/>
