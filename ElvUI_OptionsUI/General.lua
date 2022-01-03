@@ -124,10 +124,12 @@ Cosmetic.bordersGroup.args.ufThinBorders = ACH:Toggle(L["Unitframe Thin Borders"
 Cosmetic.bordersGroup.args.npThinBorders = ACH:Toggle(L["Nameplate Thin Borders"], L["Use thin borders on certain nameplate elements."], 3, nil, nil, nil, function() return E.db.nameplates.thinBorders end, function(_, value) E.db.nameplates.thinBorders = value E.ShowPopup = true end)
 Cosmetic.bordersGroup.args.cropIcon = ACH:Toggle(L["Crop Icons"], L["This is for Customized Icons in your Interface/Icons folder."], 4, true, nil, nil, function(info) local value = E.db.general[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end, function(info, value) E.db.general[info[#info]] = (value and 2) or (value == nil and 1) or 0 E.ShowPopup = true end)
 
-Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16)
+Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16, nil, function(info) return E.db.general.customGlow[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general.customGlow[info[#info]] = value end)
 Cosmetic.customGlowGroup.inline = true
-Cosmetic.customGlowGroup.args.customGlow = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end, nil, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general[info[#info]] = value end)
-Cosmetic.customGlowGroup.args.customGlowColor = ACH:Color(L["Color"], nil, 2, true, nil, function(info) local c, d = E.db.general[info[#info]], P.general[info[#info]] return c[1], c[2], c[3], c[4], d[1], d[2], d[3], d[4] end, function(info, r, g, b, a) local c = E.db.general[info[#info]] c[1], c[2], c[3], c[4] = r, g, b, a end)
+Cosmetic.customGlowGroup.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end)
+Cosmetic.customGlowGroup.args.speed = ACH:Range(L["Speed"], nil, 2, { min = -1, max = 1, step = .01, bigStep = .05 })
+Cosmetic.customGlowGroup.args.size = ACH:Range(L["Size"], nil, 3, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Pixel Glow' end)
+Cosmetic.customGlowGroup.args.color = ACH:Color(L["Color"], nil, 4, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c[1], c[2], c[3], c[4], d[1], d[2], d[3], d[4] end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c[1], c[2], c[3], c[4] = r, g, b, a end)
 
 Cosmetic.cosmeticBottomPanel = ACH:Group(L["Bottom Panel"], nil, 20)
 Cosmetic.cosmeticBottomPanel.inline = true

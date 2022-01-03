@@ -20,8 +20,12 @@ P.general = {
 	autoTrackReputation = false,
 	autoAcceptInvite = false,
 	topPanel = false,
-	customGlow = 'Pixel Glow',
-	customGlowColor = { 23/255, 132/255, 209/255, .8 }, -- not rgba format yet due to lib
+	customGlow = {
+		style = 'Pixel Glow',
+		color = { 23/255, 132/255, 209/255, 0.9 }, -- not rgba format yet due to lib
+		speed = 0.25,
+		size = 2,
+	},
 	topPanelSettings = {
 		transparent = true,
 		height = 22,
