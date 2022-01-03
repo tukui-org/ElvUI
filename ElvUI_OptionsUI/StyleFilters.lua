@@ -46,6 +46,7 @@ local function DisabledFilter()
 	local profileTriggers = GetFilter(true, true)
 	return not (profileTriggers and profileTriggers.enable)
 end
+C.DisabledStyleFilter = DisabledFilter
 
 local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
 local function GetTalentString(tier, column)
