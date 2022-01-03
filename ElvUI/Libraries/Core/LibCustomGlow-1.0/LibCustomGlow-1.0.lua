@@ -295,6 +295,7 @@ function lib.PixelGlow_Start(r,color,N,frequency,length,th,xOffset,yOffset,borde
         f.info.width = nil
         f.info.length = length
     end
+    pUpdate(f, 0)
     f:SetScript("OnUpdate",pUpdate)
 end
 
