@@ -100,6 +100,7 @@ function B:Initialize()
 	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
 
 	-- TimeAlertFrame Frame
+	_G.TimeAlertFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -60)
 	E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
 	_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
 	B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
