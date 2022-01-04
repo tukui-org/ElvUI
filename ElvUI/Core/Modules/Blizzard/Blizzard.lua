@@ -6,6 +6,7 @@ local _G = _G
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
 local GetRewardXP = GetRewardXP
+local GetCurrentRegion = GetCurrentRegion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
@@ -99,11 +100,12 @@ function B:Initialize()
 	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
 	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
 
-	-- TimeAlertFrame Frame
-	_G.TimeAlertFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -80)
-	E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
-	_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
-	B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
+	if GetCurrentRegion() == 2 then -- TimeAlertFrame Frame
+		_G.TimeAlertFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -80)
+		E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
+		_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
+		B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
+	end
 end
 
 E:RegisterModule(B:GetName())
