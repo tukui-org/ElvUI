@@ -12,38 +12,28 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local hooksecurefunc = hooksecurefunc
 
 --This changes the growth direction of the toast frame depending on position of the mover
-local function PostBNToastMove(mover)
+local function PostMove(mover)
 	local x, y = mover:GetCenter()
-	local screenHeight = E.UIParent:GetTop()
-	local screenWidth = E.UIParent:GetRight()
+	local top = E.UIParent:GetTop()
+	local right = E.UIParent:GetRight()
 
-	local anchorPoint
-	if y > (screenHeight / 2) then
-		anchorPoint = (x > (screenWidth/2)) and 'TOPRIGHT' or 'TOPLEFT'
+	local point
+	if y > (top/2) then
+		point = (x > (right/2)) and 'TOPRIGHT' or 'TOPLEFT'
 	else
-		anchorPoint = (x > (screenWidth/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
+		point = (x > (right/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
 	end
-	mover.anchorPoint = anchorPoint
+	mover.anchorPoint = point
 
-	_G.BNToastFrame:ClearAllPoints()
-	_G.BNToastFrame:Point(anchorPoint, mover)
+	mover.parent:ClearAllPoints()
+	mover.parent:Point(point, mover)
 end
 
-local function PostTimeAlertFrameMove(mover)
-	local x, y = mover:GetCenter()
-	local screenHeight = E.UIParent:GetTop()
-	local screenWidth = E.UIParent:GetRight()
-
-	local anchorPoint
-	if y > (screenHeight / 2) then
-		anchorPoint = (x > (screenWidth/2)) and 'TOPRIGHT' or 'TOPLEFT'
-	else
-		anchorPoint = (x > (screenWidth/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
+function B:RepositionFrame(frame, _, anchor)
+	if anchor ~= frame.mover then
+		frame:ClearAllPoints()
+		frame:Point(frame.mover.anchorPoint or 'TOPLEFT', frame.mover, frame.mover.anchorPoint or 'TOPLEFT')
 	end
-	mover.anchorPoint = anchorPoint
-
-	_G.TimeAlertFrame:ClearAllPoints()
-	_G.TimeAlertFrame:Point(anchorPoint, mover)
 end
 
 function B:QuestXPPercent()
@@ -65,13 +55,6 @@ function B:QuestXPPercent()
 			local text = _G.QuestInfoXPFrame.ValueText:GetText()
 			if text then _G.QuestInfoXPFrame.ValueText:SetFormattedText('%s (|cff4beb2c+%.2f%%|r)', text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
 		end
-	end
-end
-
-function B:RepositionFrame(frame, _, anchor)
-	if anchor ~= frame.mover then
-		frame:ClearAllPoints()
-		frame:Point(frame.mover.anchorPoint or 'TOPLEFT', frame.mover, frame.mover.anchorPoint or 'TOPLEFT')
 	end
 end
 
@@ -104,25 +87,21 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-	else -- Classic & TBC
-		if E.db.general.objectiveTracker then
-			B:QuestWatch_MoveFrames()
+	elseif E.db.general.objectiveTracker then
+		B:QuestWatch_MoveFrames()
 
-			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
-		end
+		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
 	-- Battle.Net Frame
 	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)
-	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
-
+	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
 	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
 	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
 
 	-- TimeAlertFrame Frame
-	E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostTimeAlertFrameMove)
+	E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
 	_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
-
 	B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
 end
 
