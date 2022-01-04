@@ -29,6 +29,23 @@ local function PostBNToastMove(mover)
 	_G.BNToastFrame:Point(anchorPoint, mover)
 end
 
+local function PostTimeAlertFrameMove(mover)
+	local x, y = mover:GetCenter()
+	local screenHeight = E.UIParent:GetTop()
+	local screenWidth = E.UIParent:GetRight()
+
+	local anchorPoint
+	if y > (screenHeight / 2) then
+		anchorPoint = (x > (screenWidth/2)) and 'TOPRIGHT' or 'TOPLEFT'
+	else
+		anchorPoint = (x > (screenWidth/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
+	end
+	mover.anchorPoint = anchorPoint
+
+	_G.TimeAlertFrame:ClearAllPoints()
+	_G.TimeAlertFrame:Point(anchorPoint, mover)
+end
+
 function B:QuestXPPercent()
 	if not E.db.general.questXPPercent then return end
 
@@ -48,6 +65,13 @@ function B:QuestXPPercent()
 			local text = _G.QuestInfoXPFrame.ValueText:GetText()
 			if text then _G.QuestInfoXPFrame.ValueText:SetFormattedText('%s (|cff4beb2c+%.2f%%|r)', text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
 		end
+	end
+end
+
+function B:RepositionFrame(frame, _, anchor)
+	if anchor ~= frame.mover then
+		frame:ClearAllPoints()
+		frame:Point(frame.mover.anchorPoint or 'TOPLEFT', frame.mover, frame.mover.anchorPoint or 'TOPLEFT')
 	end
 end
 
@@ -93,7 +117,13 @@ function B:Initialize()
 	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
 
 	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
-	TT:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionBNET')
+	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
+
+	-- TimeAlertFrame Frame
+	E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostTimeAlertFrameMove)
+	_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
+
+	B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
 end
 
 E:RegisterModule(B:GetName())

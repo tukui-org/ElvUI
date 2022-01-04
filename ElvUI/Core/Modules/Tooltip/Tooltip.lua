@@ -889,13 +889,6 @@ function TT:SetBackpackToken(tt, id)
 	end
 end
 
-function TT:RepositionBNET(frame, _, anchor)
-	if anchor ~= _G.BNETMover then
-		frame:ClearAllPoints()
-		frame:Point(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT')
-	end
-end
-
 function TT:SetTooltipFonts()
 	local font = LSM:Fetch('font', TT.db.font)
 	local fontOutline = TT.db.fontOutline
