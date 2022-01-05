@@ -121,12 +121,23 @@ B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
 
--- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
-local animaSpellID = {
+local itemSpellID = {
+	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
 	[347555] = 3,
 	[345706] = 5,
 	[336327] = 35,
-	[336456] = 250
+	[336456] = 250,
+
+	-- Deliver Relic: Submit your findings to Archivist Roh-Suir to generate (value) Cataloged Research.
+	[356931] = 6,
+	[356933] = 1,
+	[356934] = 8,
+	[356935] = 16,
+	[356936] = 48,
+	[356937] = 26,
+	[356938] = 100,
+	[356939] = 150,
+	[356940] = 300
 }
 
 B.IsEquipmentSlot = {
@@ -615,9 +626,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		local animaCount = E.Retail and B.db.itemInfo and animaSpellID[spellID]
-		if animaCount then
-			slot.centerText:SetText(animaCount * count)
+		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
+		if mult then
+			slot.centerText:SetText(mult * count)
 		end
 	end
 
@@ -1358,7 +1369,7 @@ function B:VendorGrayCheck()
 
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not _G.MerchantFrame or not _G.MerchantFrame:IsShown() then
+	elseif not _G.MerchantFrame:IsShown() and not E.Retail then
 		E.PopupDialogs.DELETE_GRAYS.Money = value
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else
@@ -2091,6 +2102,7 @@ end
 function B:CloseBags()
 	B.BagFrame:Hide()
 	B.BankFrame:Hide()
+
 	PlaySound(IG_BACKPACK_CLOSE)
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)

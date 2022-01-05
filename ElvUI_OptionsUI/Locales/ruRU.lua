@@ -1164,7 +1164,6 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power Threshold"] = "Лимит ресурса"
 L["POWER_TYPE_ARCANE_CHARGES"] = "Чародейские заряды"
 L["Power"] = "Ресурс"
-L["Powers"] = "Ресурсы"
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "Предотвращает появление одинаковых сообщения в чате чаще указанного количества секунд. Установите на 0 для отключения."
 L["Primary Texture"] = "Основная текстура"
 L["Priority"] = "Приоритет"

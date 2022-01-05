@@ -161,6 +161,10 @@ local function FixLandingPageRewardBorder(icon)
 end
 
 function S:Blizzard_GarrisonUI()
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		S:GarrisonShipyardTooltip() -- requires Garrison UI unlike the others
+	end
+
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
 	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
@@ -618,10 +622,6 @@ function S:Blizzard_GarrisonUI()
 
 	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
 	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
-
-	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
-		S:GarrisonShipyardTooltip() -- requires Garrison UI unlike the others
-	end
 end
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI')

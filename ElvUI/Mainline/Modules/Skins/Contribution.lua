@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local unpack = unpack
@@ -14,11 +15,10 @@ function S:Blizzard_Contribution()
 
 	-- Reward Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local ContributionBuffTooltip = _G.ContributionBuffTooltip
-		ContributionBuffTooltip:StripTextures()
-		ContributionBuffTooltip.Border:SetAlpha(0)
-		ContributionBuffTooltip.NineSlice:SetTemplate('Transparent')
-		ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+		local tt = _G.ContributionBuffTooltip
+		S:HandleIcon(tt.Icon, true)
+		tt.Border:SetAlpha(0)
+		TT:SetStyle(tt)
 	end
 
 	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', function(s)

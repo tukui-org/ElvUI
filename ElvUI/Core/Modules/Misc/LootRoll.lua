@@ -1,5 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
+local B = E:GetModule('Bags')
+
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -158,7 +160,7 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 	return f
 end
 
-function M:CreateRollFrame(index)
+function M:LootRoll_Create(index)
 	local frame = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
 	frame:Hide()
 
@@ -217,19 +219,23 @@ function M:CreateRollFrame(index)
 
 	frame.rolls = {}
 
+	tinsert(M.RollBars, frame)
+
 	return frame
 end
 
-local function GetFrame(i)
-	for _, f in next, M.RollBars do
-		if not f.rollID and not i then
-			return f
+function M:LootFrame_GetFrame(i)
+	if M.RollBars[i] then
+		return M.RollBars[i]
+	else
+		for _, f in next, M.RollBars do
+			if not f.rollID and not i then
+				return f
+			end
 		end
-	end
 
-	local f = M:CreateRollFrame(i)
-	tinsert(M.RollBars, f)
-	return f
+		return M:LootRoll_Create(i)
+	end
 end
 
 function M:CANCEL_LOOT_ROLL(_, rollID)
@@ -252,7 +258,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	local _, _, _, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
 	local color = ITEM_QUALITY_COLORS[quality]
 
-	local f = GetFrame()
+	local f = M:LootFrame_GetFrame()
 	wipe(f.rolls)
 
 	f.rollID = rollID
@@ -264,7 +270,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
-	f.button.questIcon:SetShown(E.Bags:GetItemQuestInfo(link, bindType, itemClassID))
+	f.button.questIcon:SetShown(B:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
 	f.greed:SetEnabled(canGreed)
@@ -392,7 +398,7 @@ function M:UpdateLootRollFrames()
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
-		local frame = M.RollBars[i]
+		local frame = M:LootFrame_GetFrame(i)
 		frame:Size(db.width, db.height)
 
 		frame.status:SetStatusBarTexture(texture)
@@ -455,10 +461,6 @@ end
 
 function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
-
-	for i = 1, NUM_GROUP_LOOT_FRAMES do
-		GetFrame(i)
-	end
 
 	M:UpdateLootRollFrames()
 

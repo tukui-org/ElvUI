@@ -16,18 +16,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
-local INVERT_ANCHORPOINT = {
-	TOPLEFT = 'BOTTOMRIGHT',
-	LEFT = 'RIGHT',
-	BOTTOMLEFT = 'TOPRIGHT',
-	RIGHT = 'LEFT',
-	TOPRIGHT = 'BOTTOMLEFT',
-	BOTTOMRIGHT = 'TOPLEFT',
-	CENTER = 'CENTER',
-	TOP = 'BOTTOM',
-	BOTTOM = 'TOP',
-}
-
 local ticks = {}
 
 function UF:Construct_Castbar(frame, moverName)
@@ -173,7 +161,7 @@ function UF:Configure_Castbar(frame)
 
 		if db.positionsGroup then
 			castbar.Holder:ClearAllPoints()
-			castbar.Holder:Point(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
+			castbar.Holder:Point(E.InverseAnchors[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
 		end
 
 		local iconWidth = db.icon and db.iconAttached and (height + UF.BORDER) or SPACING1
@@ -220,7 +208,7 @@ function UF:Configure_Castbar(frame)
 
 		if not db.iconAttached then
 			local attachPoint = db.iconAttachedTo == 'Frame' and frame or frame.Castbar
-			castbar.Icon.bg:Point(INVERT_ANCHORPOINT[db.iconPosition], attachPoint, db.iconPosition, db.iconXOffset, db.iconYOffset)
+			castbar.Icon.bg:Point(E.InverseAnchors[db.iconPosition], attachPoint, db.iconPosition, db.iconXOffset, db.iconYOffset)
 		elseif frame.ORIENTATION == 'RIGHT' then
 			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', (UF.thinBorders and 0 or 3), 0)
 		else

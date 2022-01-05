@@ -33,6 +33,7 @@ function B:UIWidgetTemplateStatusBar()
 
 		if NP.Initialized and strmatch(self:GetDebugName(), 'NamePlate') then
 			self:SetIgnoreParentScale(true)
+			self:SetIgnoreParentAlpha(true)
 		end
 
 		if self.Label then -- title

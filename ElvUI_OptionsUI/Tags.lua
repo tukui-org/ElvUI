@@ -6,12 +6,9 @@ local _G = _G
 local format = format
 
 local TagGroup = ACH:Group(L["Available Tags"], nil, 3)
-TagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, nil, function() return 'https://www.tukui.org/forum/viewtopic.php?f=9&t=6' end)
-TagGroup.args.GuideLink.customWidth = 310
-TagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, nil, function() return 'https://git.tukui.org/elvui/elvui/-/wikis/home' end)
-TagGroup.args.WikiLink.customWidth = 290
-TagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end)
-TagGroup.args.ColorWheel.customWidth = 120
+TagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, 310, function() return 'https://www.tukui.org/forum/viewtopic.php?f=9&t=6' end)
+TagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, 290, function() return 'https://git.tukui.org/elvui/elvui/-/wikis/home' end)
+TagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end, nil, nil, 120)
 TagGroup.args.description = ACH:Description('|cffFF0000This is for information. This will not change the tags in the UI.|r', 4, 'large')
 TagGroup.args.spacer = ACH:Spacer(5)
 

@@ -1,33 +1,52 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 6
+local MAJOR, MINOR = 'LibAceConfigHelper', 7
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
 if not ACH then return end
 local type, pairs = type, pairs
 
+local function insertWidth(opt, width)
+	if type(width) == 'number' and width > 5 then
+		opt.customWidth = width
+	else
+		opt.width = width
+	end
+end
+
+local function insertConfirm(opt, confirm)
+	local confirmType = type(confirm)
+	if confirmType == 'boolean' then
+		opt.confirm = true
+	elseif confirmType == 'string' then
+		opt.confirm = true
+		opt.confirmText = confirm
+	elseif confirmType == 'function' then
+		opt.confirm = confirm
+	end
+end
+
 function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)
-	return { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, get = get, set = set, disabled = disabled, hidden = hidden }
+
+	if width then insertWidth(optionTable, width) end
+
+	return optionTable
 end
 
 function ACH:Description(name, order, fontSize, image, imageCoords, imageWidth, imageHeight, width, hidden)
-	return { type = 'description', name = name or '', order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, width = width, hidden = hidden }
+	local optionTable = { type = 'description', name = name or '', order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, hidden = hidden }
+
+	if width then insertWidth(optionTable, width) end
+
+	return optionTable
 end
 
 function ACH:Execute(name, desc, order, func, image, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, image = image, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, image = image, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if confirm then
-		local confirmType = type(confirm)
-		if confirmType == 'boolean' then
-			optionTable.confirm = true
-		elseif confirmType == 'string' then
-			optionTable.confirm = true
-			optionTable.confirmText = confirm
-		elseif confirmType == 'function' then
-			optionTable.confirm = confirm
-		end
-	end
+	if width then insertWidth(optionTable, width) end
+	if confirm then insertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
@@ -41,59 +60,36 @@ function ACH:Header(name, order, get, set, hidden)
 end
 
 function ACH:Input(name, desc, order, multiline, width, get, set, disabled, hidden, validate)
-	return { type = 'input', name = name, desc = desc, order = order, multiline = multiline, width = width, get = get, set = set, disabled = disabled, hidden = hidden, validate = validate }
+	local optionTable = { type = 'input', name = name, desc = desc, order = order, multiline = multiline, get = get, set = set, disabled = disabled, hidden = hidden, validate = validate }
+
+	if width then insertWidth(optionTable, width) end
+
+	return optionTable
 end
 
 function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values or {}, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if confirm then
-		local confirmType = type(confirm)
-		if confirmType == 'boolean' then
-			optionTable.confirm = true
-		elseif confirmType == 'string' then
-			optionTable.confirm = true
-			optionTable.confirmText = confirm
-		elseif confirmType == 'function' then
-			optionTable.confirm = confirm
-		end
-	end
+	if width then insertWidth(optionTable, width) end
+	if confirm then insertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
 
 function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values or {}, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if confirm then
-		local confirmType = type(confirm)
-		if confirmType == 'boolean' then
-			optionTable.confirm = true
-		elseif confirmType == 'string' then
-			optionTable.confirm = true
-			optionTable.confirmText = confirm
-		elseif confirmType == 'function' then
-			optionTable.confirm = confirm
-		end
-	end
+	if width then insertWidth(optionTable, width) end
+	if confirm then insertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
 
 function ACH:Toggle(name, desc, order, tristate, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate  = tristate, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate  = tristate, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if confirm then
-		local confirmType = type(confirm)
-		if confirmType == 'boolean' then
-			optionTable.confirm = true
-		elseif confirmType == 'string' then
-			optionTable.confirm = true
-			optionTable.confirmText = confirm
-		elseif confirmType == 'function' then
-			optionTable.confirm = confirm
-		end
-	end
+	if width then insertWidth(optionTable, width) end
+	if confirm then insertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
@@ -108,8 +104,9 @@ end
 -- isPercent (boolean) - represent e.g. 1.0 as 100%, etc. (default=false)
 
 function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
-	local optionTable = { type = 'range', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'range', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden }
 
+	if width then insertWidth(optionTable, width) end
 	if values and type(values) == 'table' then
 		for key, value in pairs(values) do
 			optionTable[key] = value
@@ -120,11 +117,19 @@ function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
 end
 
 function ACH:Spacer(order, width, hidden)
-	return { name = ' ', type = 'description', order = order, width = width, hidden = hidden }
+	local optionTable = { name = ' ', type = 'description', order = order, hidden = hidden }
+
+	if width then insertWidth(optionTable, width) end
+
+	return optionTable
 end
 
 local function SharedMediaSelect(controlType, name, desc, order, values, width, get, set, disabled, hidden)
-	return { type = 'select', dialogControl = controlType, name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'select', dialogControl = controlType, name = name, desc = desc, order = order, values = values, get = get, set = set, disabled = disabled, hidden = hidden }
+
+	if width then insertWidth(optionTable, width) end
+
+	return optionTable
 end
 
 function ACH:SharedMediaFont(name, desc, order, width, get, set, disabled, hidden)
@@ -157,5 +162,9 @@ local FontFlagValues = {
 }
 
 function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)
-	return { type = 'select', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden, values = FontFlagValues }
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = FontFlagValues }
+
+	if width then insertWidth(optionTable, width) end
+
+	return optionTable
 end

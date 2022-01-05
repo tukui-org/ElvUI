@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local LBG = E.Libs.ButtonGlow
+local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local unpack, ipairs, pairs = unpack, ipairs, pairs
@@ -22,10 +22,10 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local hooksecurefunc = hooksecurefunc
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
-	LBG.ShowOverlayGlow(self:GetParent().checkButton)
+	LCG.ShowOverlayGlow(self:GetParent().checkButton)
 end
 local function LFDQueueFrameRoleButtonIconOnHide(self)
-	LBG.HideOverlayGlow(self:GetParent().checkButton)
+	LCG.HideOverlayGlow(self:GetParent().checkButton)
 end
 
 local function HandleGoldIcon(button)

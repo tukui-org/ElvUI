@@ -1164,7 +1164,6 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power Threshold"] = "能量阈值"
 L["POWER_TYPE_ARCANE_CHARGES"] = "奥术充能"
 L["Power"] = "能量条"
-L["Powers"] = "能量"
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "屏蔽设定时间(秒)内的重复聊天信息, 0为禁用此功能"
 L["Primary Texture"] = "主要材质"
 L["Priority"] = "优先级"

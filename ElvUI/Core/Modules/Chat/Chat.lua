@@ -2065,10 +2065,22 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 			local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				local icon, prettify = chatIcon()
+				local icon, prettify, var1, var2, var3 = chatIcon()
 				if prettify and not CH:MessageIsProtected(message) then
-					message = prettify(message)
+					if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
+						var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
+					end
+
+					if var2 then
+						if var1 ~= '' then var1 = prettify(var1) end
+						if var3 ~= '' then var3 = prettify(var3) end
+
+						message = var1..var2..var3
+					else
+						message = prettify(message)
+					end
 				end
+
 				chatIcon = icon or ''
 			end
 
@@ -2088,7 +2100,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if usingDifferentLanguage then
 				local languageHeader = '['..arg3..'] '
-				if showLink and (arg2 ~= '') then
+				if showLink and arg2 ~= '' then
 					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..playerLink)
 				else
 					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..arg2)

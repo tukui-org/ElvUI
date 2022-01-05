@@ -381,6 +381,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[62305]		= Defaults(), -- Master's Call (it's this one or the other)
 		[54216]		= Defaults(), -- Master's Call
 		[288613]	= Defaults(), -- Trueshot
+		[260402]	= Defaults(), -- Double Tap
 		[193530]	= Defaults(), -- Aspect of the Wild
 		[19574]		= Defaults(), -- Bestial Wrath
 		[186289]	= Defaults(), -- Aspect of the Eagle

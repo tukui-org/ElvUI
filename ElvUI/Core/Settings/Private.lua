@@ -179,6 +179,7 @@ V.tooltip = {
 V.unitframe = {
 	enable = true,
 	disabledBlizzardFrames = {
+		castbar = true,
 		player = true,
 		target = true,
 		focus = true,

@@ -1164,7 +1164,6 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power Threshold"] = true
 L["POWER_TYPE_ARCANE_CHARGES"] = "Cargas Arcanas"
 L["Power"] = "Poder"
-L["Powers"] = "Poderes"
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "Previene que los mismos mensajes se muestren más de una vez en el chat dentro de un cierto número de segundos. Establécelo a cero para desactivar."
 L["Primary Texture"] = "Textura Primaria"
 L["Priority"] = "Prioridad"
