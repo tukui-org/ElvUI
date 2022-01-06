@@ -165,7 +165,7 @@ function C:Search_Config(tbl, loc, locName)
 					local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
 					if values then
 						for _, subName in next, values do
-							if C:Search_FindText(subName) then
+							if type(subName) == 'string' and C:Search_FindText(subName) then
 								searchCache[location] = locationName
 								break -- only need one
 							end
