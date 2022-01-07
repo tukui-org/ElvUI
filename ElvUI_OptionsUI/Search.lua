@@ -157,7 +157,7 @@ function C:Search_Config(tbl, loc, locName)
 		if not (blockOption[option] or infoTable.hidden or typeInvalid[infoTable.type]) then
 			local location, locationName = loc and (infoTable.type == 'group' and not infoTable.inline and strjoin(',', loc, option) or loc) or option
 			local name = C:Search_GetReturn(infoTable.name, option)
-			if name then -- bad apples
+			if type(name) == 'string' then -- bad apples
 				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
 				if C:Search_FindText(name) then
 					searchCache[location] = locationName
@@ -165,7 +165,7 @@ function C:Search_Config(tbl, loc, locName)
 					local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
 					if values then
 						for _, subName in next, values do
-							if C:Search_FindText(subName) then
+							if type(subName) == 'string' and C:Search_FindText(subName) then
 								searchCache[location] = locationName
 								break -- only need one
 							end
