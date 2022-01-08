@@ -31,7 +31,7 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 
 	local unitTank, imTank = ROLE == 'TANK', E.myrole == 'TANK'
 	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and compareUnit) or 'player'
-	print('isTank', isTank, 'offTank', unitTank, offTank)
+	print('offTank', unitTank, ROLE)
 
 	self.__owner.ThreatScale = nil
 
