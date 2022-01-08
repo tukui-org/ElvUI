@@ -11,6 +11,7 @@
 	<Include file='..\Libraries\Core\Ace\AceSerializer-3.0\AceSerializer-3.0.xml'/>
 	<Include file='..\Libraries\Core\Ace\AceTimer-3.0\AceTimer-3.0.xml'/>
 	<Include file='..\Libraries\Core\Ace\AceHook-3.0\AceHook-3.0.xml'/>
+	<Script file='LibAceConfigHelper\LibAceConfigHelper.lua'/>
 
 	<Include file='..\Libraries\Core\UTF8\UTF8.xml'/>
 	<Include file='..\Libraries\Core\LibCompress\lib.xml'/>

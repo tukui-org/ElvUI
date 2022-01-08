@@ -111,6 +111,7 @@ do
 
 	E:AddLib('AceAddon', AceAddon, AceAddonMinor)
 	E:AddLib('AceDB', 'AceDB-3.0')
+	E:AddLib('ACH', 'LibAceConfigHelper')
 	E:AddLib('EP', 'LibElvUIPlugin-1.0')
 	E:AddLib('LSM', 'LibSharedMedia-3.0')
 	E:AddLib('ACL', 'AceLocale-3.0-ElvUI')

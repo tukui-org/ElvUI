@@ -186,20 +186,9 @@ function lib:GenerateVersionCheckMessage()
 end
 
 function lib:GetPluginOptions()
-	E.Options.args.plugins = {
-		order = 5,
-		type = "group",
-		name = L["Plugins"],
-		inline = false,
-		args = {
-			pluginheader = E.Libs.ACH:Header(format(HDR_INFORMATION, MINOR), 1),
-			plugins = {
-				order = 2,
-				type = "description",
-				name = lib:GeneratePluginList()
-			}
-		}
-	}
+	E.Options.args.plugins = E.Libs.ACH:Group(L["Plugins"], nil, 5)
+	E.Options.args.plugins.args.pluginheader = E.Libs.ACH:Header(format(HDR_INFORMATION, MINOR), 1)
+	E.Options.args.plugins.args.plugins = E.Libs.ACH:Description(lib:GeneratePluginList(), 2)
 end
 
 do	-- this will handle `8.1.5.0015` into `8.150015` etc
