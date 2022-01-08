@@ -1,7 +1,6 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='..\Libraries\Core\Ace\LibStub\LibStub.lua'/>
 	<Script file='..\Libraries\Core\Ace\CallbackHandler-1.0\CallbackHandler-1.0.lua'/>
-	<Script file='..\Libraries\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 
 	<Include file='..\Libraries\Core\Ace\AceAddon-3.0\AceAddon-3.0.xml'/>
 	<Include file='..\Libraries\Core\Ace\AceEvent-3.0\AceEvent-3.0.xml'/>
@@ -21,6 +20,7 @@
 
 	<Include file='..\Libraries\Core\LibItemSearch-1.2\LibItemSearch-1.2.xml'/>
 	<Include file='..\Libraries\Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
+	<Script file='..\Libraries\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='..\Libraries\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibDataBroker\LibDataBroker-1.1.lua'/>
