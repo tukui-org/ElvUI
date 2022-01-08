@@ -12,8 +12,6 @@ local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
 
-local luaSyntax = gui.luaSyntax -- ElvUI, this it to support plugins that use FAIAP
-
 AceConfigDialog.OpenFrames = AceConfigDialog.OpenFrames or {}
 AceConfigDialog.Status = AceConfigDialog.Status or {}
 AceConfigDialog.frame = AceConfigDialog.frame or CreateFrame("Frame")
@@ -1237,7 +1235,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						control:SetNumLines(tonumber(v.multiline) or 4)
 					end
 					-- ElvUI block
-					if luaSyntax and control.SetSyntaxHighlightingEnabled then
+					if gui.luaSyntax and control.SetSyntaxHighlightingEnabled then
 						control:SetSyntaxHighlightingEnabled(v.luaSyntax or false)
 					end
 					-- End ElvUI block
