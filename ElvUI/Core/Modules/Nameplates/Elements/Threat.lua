@@ -9,7 +9,7 @@ local GetPartyAssignment = GetPartyAssignment
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local compareUnit = unit..'target'
-	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit)) or 'NONE'
+	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (E.Retail and NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit)) or 'NONE'
 
 	local unitTank, imTank = ROLE == 'TANK', E.myrole == 'TANK'
 	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unit..'target') or 'player'
