@@ -7,7 +7,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 local GetPartyAssignment = GetPartyAssignment
 
-NP.OFFTANK_PETS = {
+NP.ThreatPets = {
 	["61146"] = true,	-- Monk's Black Ox Statue
 	["103822"] = true,	-- Druid's Force of Nature Treants
 	["95072"] = true,	-- Shaman's Earth Elemental
@@ -18,7 +18,7 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local nameplate, compareUnit = self.__owner, unit..'target'
 	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (E.Retail and NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit) and 'TANK') or 'NONE'
 
-	local unitTank, imTank = ROLE == 'TANK' or NP.OFFTANK_PETS[nameplate.npcID], E.myrole == 'TANK'
+	local unitTank, imTank = ROLE == 'TANK' or NP.ThreatPets[nameplate.npcID], E.myrole == 'TANK'
 	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and compareUnit) or 'player'
 
 	nameplate.ThreatScale = nil
