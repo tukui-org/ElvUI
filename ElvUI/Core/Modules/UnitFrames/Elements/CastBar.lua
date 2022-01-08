@@ -399,7 +399,7 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
-	if db.castbar.displayTarget and self.curTarget then
+	if unit == 'player' and db.castbar.displayTarget and self.curTarget then
 		self.Text:SetText(self.spellName..' > '..self.curTarget)
 	end
 
