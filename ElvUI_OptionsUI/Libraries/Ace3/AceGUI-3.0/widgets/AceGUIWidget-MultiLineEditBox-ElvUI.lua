@@ -10,7 +10,7 @@ local GetCursorInfo, GetSpellInfo, ClearCursor = GetCursorInfo, GetSpellInfo, Cl
 local CreateFrame, UIParent = CreateFrame, UIParent
 -- GLOBALS: ACCEPT, ChatFontNormal, BackdropTemplateMixin
 
-local indent = _G.ElvUI[1].Libs.indent -- ElvUI
+local luaSyntax = AceGUI.luaSyntax -- ElvUI, this it to support plugins that use FAIAP
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -259,9 +259,9 @@ local methods = {
 	-- ElvUI block
 	["SetSyntaxHighlightingEnabled"] = function(self, enabled)
 		if enabled then
-			indent.enable(self.editBox, nil, 4)
+			luaSyntax.enable(self.editBox, nil, 4)
 		else
-			indent.disable(self.editBox)
+			luaSyntax.disable(self.editBox)
 		end
 	end
 	-- End ElvUI block
