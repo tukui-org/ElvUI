@@ -5,7 +5,6 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
-local GetPartyAssignment = GetPartyAssignment
 
 NP.ThreatPets = {
 	["61146"] = true,	-- Monk's Black Ox Statue
@@ -15,16 +14,15 @@ NP.ThreatPets = {
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local nameplate, compareUnit = self.__owner, unit..'target'
-	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (E.Retail and NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit) and 'TANK') or 'NONE'
-
-	local unitTank, imTank = ROLE == 'TANK' or NP.ThreatPets[nameplate.npcID], E.myrole == 'TANK'
-	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and compareUnit) or 'player'
+	local nameplate, unitTarget, imTank = self.__owner, unit..'target', E.myrole == 'TANK'
+	local unitRole = NP.IsInGroup and (UnitExists(unitTarget) and not UnitIsUnit(unitTarget, 'player')) and NP.GroupRoles[UnitName(unitTarget)] or 'NONE'
+	local unitTank = unitRole == 'TANK' or NP.ThreatPets[nameplate.npcID]
+	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unitTarget) or 'player'
 
 	nameplate.ThreatScale = nil
 
 	if pass then
-		return isTank, offTank, feedbackUnit, ROLE
+		return isTank, offTank, feedbackUnit
 	else
 		self.feedbackUnit = feedbackUnit
 		self.offTank = offTank
