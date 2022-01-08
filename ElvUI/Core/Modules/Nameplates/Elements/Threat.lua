@@ -6,11 +6,29 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 local GetPartyAssignment = GetPartyAssignment
+local strsplit = strsplit
+
+local OFFTANK_PETS = {
+	["61146"] = true,  -- Monk's Black Ox Statue
+	["103822"] = true, -- Druid's Force of Nature Treants
+	["95072"] = true,  -- Shaman's Earth Elemental
+	["61056"] = true,  -- Primal Earth Elemental
+}
+
+function NP:IsOffTankPet(unit)
+	local guid = _G.UnitGUID(unit)
+	if not guid then return false end
+
+	local unitType, _,  _, _, _, npcID, _ = strsplit("-", guid)
+	local offTank = OFFTANK_PETS[npcID] and "Creature" == unitType
+
+	return offTank
+end
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local compareUnit = unit..'target'
 	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (E.Retail and NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit)) or 'NONE'
-
+	print(unit, compareUnit, GetPartyAssignment('MAINTANK', compareUnit), GetPartyAssignment('MAINTANK', unit))
 	local unitTank, imTank = ROLE == 'TANK', E.myrole == 'TANK'
 	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unit..'target') or 'player'
 
