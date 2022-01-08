@@ -28,9 +28,10 @@ end
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local compareUnit = unit..'target'
 	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (E.Retail and NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit)) or 'NONE'
-	print(unit, compareUnit, GetPartyAssignment('MAINTANK', compareUnit), GetPartyAssignment('MAINTANK', unit))
+
 	local unitTank, imTank = ROLE == 'TANK', E.myrole == 'TANK'
-	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unit..'target') or 'player'
+	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and compareUnit) or 'player'
+	print('isTank', isTank, 'offTank', unitTank, offTank)
 
 	self.__owner.ThreatScale = nil
 
