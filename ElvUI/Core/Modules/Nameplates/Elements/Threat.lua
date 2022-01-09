@@ -31,7 +31,7 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	local nameplate, db = self.__owner, NP.db.threat
+	local nameplate, colors, db = self.__owner, NP.db.colors.threat, NP.db.threat
 	local sf = NP:StyleFilterChanges(nameplate)
 	if not status and not sf.Scale then
 		nameplate.ThreatScale = 1
@@ -52,16 +52,16 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 
 		local Color, Scale
 		if status == 3 then -- securely tanking
-			Color = self.offTank and NP.db.colors.threat.offTankColor or self.isTank and NP.db.colors.threat.goodColor or NP.db.colors.threat.badColor
+			Color = self.offTank and colors.offTankColor or self.isTank and colors.goodColor or colors.badColor
 			Scale = self.isTank and db.goodScale or db.badScale
 		elseif status == 2 then -- insecurely tanking
-			Color = self.offTank and NP.db.colors.threat.offTankColorBadTransition or self.isTank and NP.db.colors.threat.badTransition or NP.db.colors.threat.goodTransition
+			Color = self.offTank and colors.offTankColorBadTransition or self.isTank and colors.badTransition or colors.goodTransition
 			Scale = 1
 		elseif status == 1 then -- not tanking but threat higher than tank
-			Color = self.offTank and NP.db.colors.threat.offTankColorGoodTransition or self.isTank and NP.db.colors.threat.goodTransition or NP.db.colors.threat.badTransition
+			Color = self.offTank and colors.offTankColorGoodTransition or self.isTank and colors.goodTransition or colors.badTransition
 			Scale = 1
 		else -- not tanking at all
-			Color = self.isTank and NP.db.colors.threat.badColor or NP.db.colors.threat.goodColor
+			Color = self.isTank and colors.badColor or colors.goodColor
 			Scale = self.isTank and db.badScale or db.goodScale
 		end
 
