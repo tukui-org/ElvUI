@@ -31,7 +31,7 @@ LibElvUIPlugin API:
 ----------------------------]]--
 
 local tonumber, strmatch, strsub, tinsert, strtrim = tonumber, strmatch, strsub, tinsert, strtrim
-local assert, pairs, ipairs, strlen, pcall = assert, pairs, ipairs, strlen, pcall
+local unpack, assert, pairs, ipairs, strlen, pcall = unpack, assert, pairs, ipairs, strlen, pcall
 local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
 
 local hooksecurefunc = hooksecurefunc
