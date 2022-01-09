@@ -799,9 +799,9 @@ function B:UpdateCooldown(slot)
 	end
 end
 
-function B:SetSlotAlphaForBag(f)
+function B:SetSlotAlphaForBag(f, bag)
 	for _, bagID in next, f.BagIDs do
-		f.Bags[bagID]:SetAlpha(bagID == self.bagID and 1 or .1)
+		f.Bags[bagID]:SetAlpha(bagID == bag and 1 or .1)
 	end
 end
 
