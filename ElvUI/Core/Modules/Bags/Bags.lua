@@ -731,7 +731,7 @@ end
 function B:Holder_OnEnter()
 	if not self.bagFrame then return end
 
-	B:SetSlotAlphaForBag(self.bagFrame)
+	B:SetSlotAlphaForBag(self.bagFrame, self.bagID)
 
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
