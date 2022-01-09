@@ -23,7 +23,9 @@ P.general = {
 	customGlow = {
 		style = 'Pixel Glow',
 		color = { 23/255, 132/255, 209/255, 0.9 }, -- not rgba format yet due to lib
+		useColor = true,
 		speed = 0.3,
+		lines = 8,
 		size = 1,
 	},
 	topPanelSettings = {
@@ -1251,7 +1253,6 @@ local UF_Castbar = {
 		fontSize = 12,
 		fontStyle = 'OUTLINE'
 	},
-	displayTarget = false,
 	enable = true,
 	format = 'REMAINING',
 	height = 18,
@@ -2011,6 +2012,8 @@ P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitel
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.player.castbar.latency = true
+P.unitframe.units.player.castbar.displayTarget = false
+
 P.unitframe.units.player.fader.enable = false
 P.unitframe.units.player.fader.casting = true
 P.unitframe.units.player.fader.combat = true

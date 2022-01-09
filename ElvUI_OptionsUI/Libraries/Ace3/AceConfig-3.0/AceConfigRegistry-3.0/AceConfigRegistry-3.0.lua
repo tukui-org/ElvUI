@@ -149,7 +149,7 @@ local typedkeys={
 		dialogControl=optstring,
 		dropdownControl=optstring,
 		multiline=optboolnumber,
-		luaHighlighting=optbool, -- ElvUI
+		luaSyntax=optbool, -- ElvUI
 	},
 	toggle={
 		tristate=optbool,

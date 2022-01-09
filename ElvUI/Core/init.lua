@@ -111,6 +111,7 @@ do
 
 	E:AddLib('AceAddon', AceAddon, AceAddonMinor)
 	E:AddLib('AceDB', 'AceDB-3.0')
+	E:AddLib('ACH', 'LibAceConfigHelper')
 	E:AddLib('EP', 'LibElvUIPlugin-1.0')
 	E:AddLib('LSM', 'LibSharedMedia-3.0')
 	E:AddLib('ACL', 'AceLocale-3.0-ElvUI')
@@ -155,11 +156,11 @@ do -- expand LibCustomGlow for button handling
 			local glow = LCG.startList[opt.style]
 			if glow then
 				local arg3, arg4, arg6
-				local pixel = opt.style == 'Pixel Glow'
-				if pixel or (opt.style == 'Autocast Shine') then arg4 = opt.speed else arg3 = opt.speed end
+				local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
+				if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
 				if pixel then arg6 = opt.size end
 
-				glow(button, opt.color, arg3, arg4, nil, arg6)
+				glow(button, opt.useColor and opt.color, arg3, arg4, nil, arg6)
 
 				frames[button] = true
 			end

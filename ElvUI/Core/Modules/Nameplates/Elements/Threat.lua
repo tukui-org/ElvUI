@@ -5,19 +5,24 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
-local GetPartyAssignment = GetPartyAssignment
+
+NP.ThreatPets = {
+	["61146"] = true,	-- Monk's Black Ox Statue
+	["103822"] = true,	-- Druid's Force of Nature Treants
+	["95072"] = true,	-- Shaman's Earth Elemental
+	["61056"] = true,	-- Primal Earth Elemental
+}
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local compareUnit = unit..'target'
-	local ROLE = NP.IsInGroup and (UnitExists(compareUnit) and not UnitIsUnit(compareUnit, 'player')) and (NP.GroupRoles[UnitName(compareUnit)] or GetPartyAssignment('MAINTANK', compareUnit)) or 'NONE'
+	local nameplate, unitTarget, imTank = self.__owner, unit..'target', E.myrole == 'TANK'
+	local unitRole = NP.IsInGroup and (UnitExists(unitTarget) and not UnitIsUnit(unitTarget, 'player')) and NP.GroupRoles[UnitName(unitTarget)] or 'NONE'
+	local unitTank = unitRole == 'TANK' or NP.ThreatPets[nameplate.npcID]
+	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unitTarget) or 'player'
 
-	local unitTank, imTank = ROLE == 'TANK', E.myrole == 'TANK'
-	local isTank, offTank, feedbackUnit = unitTank or imTank, (unitTank and imTank) or false, (unitTank and unit..'target') or 'player'
-
-	self.__owner.ThreatScale = nil
+	nameplate.ThreatScale = nil
 
 	if pass then
-		return isTank, offTank, feedbackUnit, ROLE
+		return isTank, offTank, feedbackUnit
 	else
 		self.feedbackUnit = feedbackUnit
 		self.offTank = offTank
@@ -26,23 +31,24 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	local sf = NP:StyleFilterChanges(self.__owner)
+	local nameplate = self.__owner
+	local sf = NP:StyleFilterChanges(nameplate)
 	if not status and not sf.Scale then
-		self.__owner.ThreatScale = 1
-		NP:ScalePlate(self.__owner, 1)
+		nameplate.ThreatScale = 1
+		NP:ScalePlate(nameplate, 1)
 	elseif status and NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
-		self.__owner.Health.colorTapping = false
-		self.__owner.Health.colorDisconnected = false
-		self.__owner.Health.colorClass = false
-		self.__owner.Health.colorClassNPC = false
-		self.__owner.Health.colorClassPet = false
-		self.__owner.Health.colorSelection = false
-		self.__owner.Health.colorThreat = false
-		self.__owner.Health.colorReaction = false
-		self.__owner.Health.colorSmooth = false
-		self.__owner.Health.colorHealth = false
+		nameplate.Health.colorTapping = false
+		nameplate.Health.colorDisconnected = false
+		nameplate.Health.colorClass = false
+		nameplate.Health.colorClassNPC = false
+		nameplate.Health.colorClassPet = false
+		nameplate.Health.colorSelection = false
+		nameplate.Health.colorThreat = false
+		nameplate.Health.colorReaction = false
+		nameplate.Health.colorSmooth = false
+		nameplate.Health.colorHealth = false
 
-		self.__owner.ThreatStatus = status
+		nameplate.ThreatStatus = status
 
 		local Color, Scale
 		if status == 3 then -- securely tanking
@@ -62,14 +68,14 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		if sf.HealthColor then
 			self.r, self.g, self.b = Color.r, Color.g, Color.b
 		else
-			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
+			nameplate.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
 		end
 
 		if Scale then
-			self.__owner.ThreatScale = Scale
+			nameplate.ThreatScale = Scale
 
 			if not sf.Scale then
-				NP:ScalePlate(self.__owner, Scale)
+				NP:ScalePlate(nameplate, Scale)
 			end
 		end
 	end

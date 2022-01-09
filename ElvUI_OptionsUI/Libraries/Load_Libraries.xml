@@ -1,6 +1,4 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='FAIAP\FAIAP.lua'/>
-	<Script file='LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Include file='Ace3\AceGUI-3.0\AceGUI-3.0.xml'/>
 	<Include file='Ace3\AceConfig-3.0\AceConfig-3.0.xml'/>
 	<Include file='Ace3\AceDBOptions-3.0\AceDBOptions-3.0.xml'/>

@@ -15,6 +15,7 @@ local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
+local GetPartyAssignment = GetPartyAssignment
 local InCombatLockdown = InCombatLockdown
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
@@ -516,11 +517,12 @@ function NP:GROUP_ROSTER_UPDATE()
 
 	wipe(NP.GroupRoles)
 
-	if NP.IsInGroup and E.Retail then
-		local Unit = (isInRaid and 'raid') or 'party'
-		for i = 1, ((isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers()) do
-			if UnitExists(Unit .. i) then
-				NP.GroupRoles[UnitName(Unit .. i)] = UnitGroupRolesAssigned(Unit .. i)
+	if NP.IsInGroup then
+		local group = isInRaid and 'raid' or 'party'
+		for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
+			local unit = group .. i
+			if UnitExists(unit) then
+				NP.GroupRoles[UnitName(unit)] = not E.Retail and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
 			end
 		end
 	end
