@@ -9,7 +9,6 @@ local next = next
 local type = type
 local pcall = pcall
 local pairs = pairs
-local format = format
 local gmatch = gmatch
 local strtrim = strtrim
 local strfind = strfind
@@ -18,7 +17,7 @@ local strlower = strlower
 local strmatch = strmatch
 local strsplit = strsplit
 
-E.Options.args.search = ACH:Group(format('%s%s|r', E.media.hexvaluecolor, L["Search"]), nil, 4)
+E.Options.args.search = ACH:Group(E.NewSign..L["Search"], nil, 4)
 
 local Search =  E.Options.args.search.args
 local EditBox = ACH:Input(L["Search"], nil, 0, nil, 1.5, function() return SearchText end, function(_, value) C:Search_ClearResults() if strmatch(value, '%S+') then SearchText = strtrim(strlower(value)) C:Search_Config() C:Search_AddResults() end end)
