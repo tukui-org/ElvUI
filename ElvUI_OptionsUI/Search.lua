@@ -9,7 +9,6 @@ local next = next
 local type = type
 local pcall = pcall
 local pairs = pairs
-local format = format
 local gmatch = gmatch
 local strtrim = strtrim
 local strfind = strfind
@@ -17,12 +16,6 @@ local strjoin = strjoin
 local strlower = strlower
 local strmatch = strmatch
 local strsplit = strsplit
-
-E.Options.args.search = ACH:Group(format('%s%s|r', E.media.hexvaluecolor, L["Search"]), nil, 4)
-
-local Search =  E.Options.args.search.args
-local EditBox = ACH:Input(L["Search"], nil, 0, nil, 1.5, function() return SearchText end, function(_, value) C:Search_ClearResults() if strmatch(value, '%S+') then SearchText = strtrim(strlower(value)) C:Search_Config() C:Search_AddResults() end end)
-Search.editbox = EditBox
 
 local start = 100
 local depth = start + 2
@@ -55,6 +48,15 @@ local nameIndex = {
 	[L["General"]] = 1,
 	[L["Global"]] = 0
 }
+
+E.Options.args.search = ACH:Group(E.NewSign..L["Search"], nil, 4)
+local Search =  E.Options.args.search.args
+
+local EditBox = ACH:Input(L["Search"], nil, 0, nil, 1.5, function() return SearchText end, function(_, value) C:Search_ClearResults() if strmatch(value, '%S+') then SearchText = strtrim(strlower(value)) C:Search_Config() C:Search_AddResults() end end)
+Search.editbox = EditBox
+
+local WhatsNew = ACH:Execute(L["Whats New"], nil, 1, function() C:Search_ClearResults() C:Search_Config(nil, nil, nil, true) C:Search_AddResults() end, nil, nil, nil, nil, nil, nil, function() return SearchText ~= '' or next(searchCache) end)
+Search.whatsNew = WhatsNew
 
 function C:Search_DisplayResults(groups, section)
 	if groups.entries then
@@ -132,11 +134,16 @@ function C:Search_ClearResults()
 	wipe(Search)
 
 	Search.editbox = EditBox
+	Search.whatsNew = WhatsNew
 	SearchText = ''
 end
 
-function C:Search_FindText(text)
-	return strfind(strlower(text and E:StripString(text) or '\a'), SearchText, nil, true)
+function C:Search_FindText(text, whatsNew)
+	if whatsNew then
+		return strfind(text, E.NewSign, nil, true)
+	else
+		return strfind(strlower(E:StripString(text)), SearchText, nil, true)
+	end
 end
 
 function C:Search_GetReturn(value, ...)
@@ -150,8 +157,8 @@ function C:Search_GetReturn(value, ...)
 	end
 end
 
-function C:Search_Config(tbl, loc, locName)
-	if SearchText == '' then return end
+function C:Search_Config(tbl, loc, locName, whatsNew)
+	if not whatsNew and SearchText == '' then return end
 
 	for option, infoTable in pairs(tbl or E.Options.args) do
 		if not (blockOption[option] or infoTable.hidden or typeInvalid[infoTable.type]) then
@@ -159,13 +166,13 @@ function C:Search_Config(tbl, loc, locName)
 			local name = C:Search_GetReturn(infoTable.name, option)
 			if type(name) == 'string' then -- bad apples
 				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
-				if C:Search_FindText(name) then
+				if C:Search_FindText(name, whatsNew) then
 					searchCache[location] = locationName
 				else
 					local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
 					if values then
 						for _, subName in next, values do
-							if type(subName) == 'string' and C:Search_FindText(subName) then
+							if type(subName) == 'string' and C:Search_FindText(subName, whatsNew) then
 								searchCache[location] = locationName
 								break -- only need one
 							end
@@ -176,7 +183,7 @@ function C:Search_Config(tbl, loc, locName)
 
 			-- process objects (sometimes without a locationName)
 			if type(infoTable) == 'table' and infoTable.args then
-				C:Search_Config(infoTable.args, location, locationName)
+				C:Search_Config(infoTable.args, location, locationName, whatsNew)
 			end
 		end
 	end
