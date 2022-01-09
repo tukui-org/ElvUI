@@ -635,6 +635,11 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	end
 end
 
+function NP:UnitNPCID(unit)
+	local guid = UnitGUID(unit)
+	return guid and select(6, strsplit('-', guid)), guid
+end
+
 function NP:UpdatePlateGUID(nameplate, guid)
 	NP.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
 end
@@ -723,14 +728,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.isBattlePet = E.Retail and UnitIsBattlePet(unit)
-		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
-		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
+		nameplate.npcID, nameplate.unitGUID = NP:UnitNPCID(unit)
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		if nameplate.unitGUID then
