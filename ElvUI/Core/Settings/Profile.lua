@@ -633,6 +633,7 @@ P.nameplates = {
 	},
 	threat = {
 		enable = true,
+		beingTankedByPet = true,
 		beingTankedByTank = true,
 		goodScale = 1,
 		badScale = 1,
