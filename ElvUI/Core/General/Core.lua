@@ -312,7 +312,7 @@ function E:UpdateMedia()
 
 	-- Custom Glow Color
 	E.db.general.customGlow.color = E:UpdateClassColor(E.db.general.customGlow.color) -- update the color for option gui
-	E.media.customGlowColor = E:SetColorTable(E.media.customGlowColor, E.db.general.customGlow.color) -- update the color for glow
+	E.media.customGlowColor = E:SetColorTable(E.media.customGlowColor, E.db.general.customGlow.color) -- update the color for glow (unpackable)
 
 	-- Chat Panel Background Texture
 	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
