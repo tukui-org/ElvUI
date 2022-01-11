@@ -2492,30 +2492,30 @@ function B:Initialize()
 
 	B.AssignmentColors = {
 		[0] = { .99, .23, .21 }, -- fallback
-		[2] = E:SetColorTable(nil, B.db.colors.assignment.equipment),
-		[3] = E:SetColorTable(nil, B.db.colors.assignment.consumables),
-		[4] = E:SetColorTable(nil, B.db.colors.assignment.tradegoods),
+		[2] = E:GetColorTable(B.db.colors.assignment.equipment),
+		[3] = E:GetColorTable(B.db.colors.assignment.consumables),
+		[4] = E:GetColorTable(B.db.colors.assignment.tradegoods),
 	}
 
 	B.ProfessionColors = {
-		[0x0001]   = E:SetColorTable(nil, B.db.colors.profession.quiver),
-		[0x0002]   = E:SetColorTable(nil, B.db.colors.profession.ammoPouch),
-		[0x0004]   = E:SetColorTable(nil, B.db.colors.profession.soulBag),
-		[0x0008]	= E:SetColorTable(nil, B.db.colors.profession.leatherworking),
-		[0x0010]	= E:SetColorTable(nil, B.db.colors.profession.inscription),
-		[0x0020]	= E:SetColorTable(nil, B.db.colors.profession.herbs),
-		[0x0040]	= E:SetColorTable(nil, B.db.colors.profession.enchanting),
-		[0x0080]	= E:SetColorTable(nil, B.db.colors.profession.engineering),
-		[0x0100]    = E:SetColorTable(nil, B.db.colors.profession.keyring),
-		[0x0200]	= E:SetColorTable(nil, B.db.colors.profession.gems),
-		[0x0400]	= E:SetColorTable(nil, B.db.colors.profession.mining),
-		[0x8000]	= E:SetColorTable(nil, B.db.colors.profession.fishing),
-		[0x010000]	= E:SetColorTable(nil, B.db.colors.profession.cooking),
+		[0x0001]   = E:GetColorTable(B.db.colors.profession.quiver),
+		[0x0002]   = E:GetColorTable(B.db.colors.profession.ammoPouch),
+		[0x0004]   = E:GetColorTable(B.db.colors.profession.soulBag),
+		[0x0008]	= E:GetColorTable(B.db.colors.profession.leatherworking),
+		[0x0010]	= E:GetColorTable(B.db.colors.profession.inscription),
+		[0x0020]	= E:GetColorTable(B.db.colors.profession.herbs),
+		[0x0040]	= E:GetColorTable(B.db.colors.profession.enchanting),
+		[0x0080]	= E:GetColorTable(B.db.colors.profession.engineering),
+		[0x0100]    = E:GetColorTable(B.db.colors.profession.keyring),
+		[0x0200]	= E:GetColorTable(B.db.colors.profession.gems),
+		[0x0400]	= E:GetColorTable(B.db.colors.profession.mining),
+		[0x8000]	= E:GetColorTable(B.db.colors.profession.fishing),
+		[0x010000]	= E:GetColorTable(B.db.colors.profession.cooking),
 	}
 
 	B.QuestColors = {
-		questStarter = E:SetColorTable(nil, B.db.colors.items.questStarter),
-		questItem = E:SetColorTable(nil, B.db.colors.items.questItem),
+		questStarter = E:GetColorTable(B.db.colors.items.questStarter),
+		questItem = E:GetColorTable(B.db.colors.items.questItem),
 	}
 
 	B:LoadBagBar()
