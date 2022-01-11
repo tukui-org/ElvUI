@@ -1,29 +1,29 @@
 ### Version 12.59 [ ETA: 🍨 ]
 
-Auras: Tooltip fixes for top auras  
-Config: Fixed some options displaying in russian  
-General: Added new search section in our OptionsUI  
-Libraries: Added LibCustomGlow and options in General - Cosmetic  
-Minimap: Scaling and Font fixes  
-Misc: Added button size option for LootRoll  
-Misc: Added font options for LootRoll  
-Misc: Added LootRoll option to position buttons on the left side  
-Misc: Added spacing option for LootRoll  
-Misc: Adjusted spacing between LootRoll need/greed/pass  
-Misc: Adjusted text length for LootRoll items  
+**Important**  
+ActionBars: Swapped to Custom Glow (General -> Cosmetic)  
+Config: Added Search section (with Whats New button)  
+
+**Changes**  
+Auras: Top Aurs time will have cooldown time updated properly in Tooltip  
+Config: Fixed some options displaying in Russian  
+Config: Fixed error when deleting a StyleFilter  
+Minimap: Scaling and Font fixes for Location  
+Misc: LootRoll has several new options  
 NamePlates: Fixed Desaturate Icon option  
-NamePlates: Fixed error when deleting a StyleFilter  
 NamePlates: Fixed Quest Icon text position option  
-Skins: Fixed "New Mythic+ Season" overlap issue  
-Skins: Fixed conquest and pvp rating tooltip skin  
+NamePlates: Attempted to fix Widget alpha/scaling issues  
+NamePlates: Fixed Off Tank setting and added an Off Tank (Pets) which shows some off tank pets  
+Skins: Attempted to fix "New Mythic+ Season" overlap issue another way  
+Skins: Fixed conquest and PVP rating tooltip skin  
 UnitFrames: Added an option to toggle Blizzards default Castbar  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
 UnitFrames: Fixed kyrian rogue charged combo points  
 UnitFrames: Fixed non attached Castbar Icon  
-UnitFrames: Fixed sort by class  
-
-Note for plugin authors:  
-ElvDB.global.nameplate was renamed to ElvDB.global.nameplates  
+UnitFrames: Fixed sort by class option  
+UnitFrames: Fixed "Display Target" as it only works for Player  
+Tags: Fixed [class:icon] cropping  
+Movers: Added mover for TimeAlertFrame on Korean region  
 
 ___
 ### Version 12.58 [ December 4th 2021 ]

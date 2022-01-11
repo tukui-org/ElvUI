@@ -22,8 +22,8 @@ P.general = {
 	topPanel = false,
 	customGlow = {
 		style = 'Pixel Glow',
-		color = { 23/255, 132/255, 209/255, 0.9 }, -- not rgba format yet due to lib
-		useColor = true,
+		color = { r = 23/255, g = 132/255, b = 209/255, a = 0.9 },
+		useColor = false,
 		speed = 0.3,
 		lines = 8,
 		size = 1,
