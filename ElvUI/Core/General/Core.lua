@@ -1794,6 +1794,11 @@ function E:DBConversions()
 		E.global.nameplate = nil
 	end
 
+	-- just for people using dev build at the moment
+	if E.db.general.customGlow.color[1] then
+		E.db.general.customGlow.color = E:CopyTable({}, P.general.customGlow.color)
+	end
+
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
