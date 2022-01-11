@@ -161,7 +161,7 @@ do -- expand LibCustomGlow for button handling
 				if pixel then arg6 = opt.size end
 
 				color = E:SetColorTable(color, E:UpdateClassColor(opt.color))
-				glow(button, opt.useColor and opt.color, arg3, arg4, nil, arg6)
+				glow(button, opt.useColor and color, arg3, arg4, nil, arg6)
 
 				frames[button] = true
 			end
