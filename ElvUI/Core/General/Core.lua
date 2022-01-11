@@ -1794,8 +1794,8 @@ function E:DBConversions()
 	end
 
 	-- just for people using dev build at the moment
-	if E.db.general.customGlow.color[1] then
-		E.db.general.customGlow.color = E:CopyTable({}, P.general.customGlow.color)
+	if type(E.db.general.customGlow) ~= 'table' then
+		E.db.general.customGlow = E:CopyTable({}, P.general.customGlow)
 	end
 
 	-- always convert
