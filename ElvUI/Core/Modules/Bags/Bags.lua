@@ -644,9 +644,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if E.Retail then
 		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 		slot:UpdateItemContextMatching() -- Blizzards way to highlighting for Scrap, Rune Carving, Upgrade Items and whatever else.
-		B:UpdateItemLevel(slot)
 	end
 
+	B:UpdateItemLevel(slot)
 	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
