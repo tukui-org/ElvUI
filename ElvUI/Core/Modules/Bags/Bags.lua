@@ -2492,30 +2492,30 @@ function B:Initialize()
 
 	B.AssignmentColors = {
 		[0] = { .99, .23, .21 }, -- fallback
-		[2] = { B.db.colors.assignment.equipment.r , B.db.colors.assignment.equipment.g, B.db.colors.assignment.equipment.b },
-		[3] = { B.db.colors.assignment.consumables.r , B.db.colors.assignment.consumables.g, B.db.colors.assignment.consumables.b },
-		[4] = { B.db.colors.assignment.tradegoods.r , B.db.colors.assignment.tradegoods.g, B.db.colors.assignment.tradegoods.b },
+		[2] = E:SetColorTable(nil, B.db.colors.assignment.equipment),
+		[3] = E:SetColorTable(nil, B.db.colors.assignment.consumables),
+		[4] = E:SetColorTable(nil, B.db.colors.assignment.tradegoods),
 	}
 
 	B.ProfessionColors = {
-		[0x0001]   = { B.db.colors.profession.quiver.r, B.db.colors.profession.quiver.g, B.db.colors.profession.quiver.b},
-		[0x0002]   = { B.db.colors.profession.ammoPouch.r, B.db.colors.profession.ammoPouch.g, B.db.colors.profession.ammoPouch.b},
-		[0x0004]   = { B.db.colors.profession.soulBag.r, B.db.colors.profession.soulBag.g, B.db.colors.profession.soulBag.b},
-		[0x0008]	= { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
-		[0x0010]	= { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
-		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
-		[0x0040]	= { B.db.colors.profession.enchanting.r, B.db.colors.profession.enchanting.g, B.db.colors.profession.enchanting.b },
-		[0x0080]	= { B.db.colors.profession.engineering.r, B.db.colors.profession.engineering.g, B.db.colors.profession.engineering.b },
-		[0x0100]    = { B.db.colors.profession.keyring.r, B.db.colors.profession.keyring.g, B.db.colors.profession.keyring.b },
-		[0x0200]	= { B.db.colors.profession.gems.r, B.db.colors.profession.gems.g, B.db.colors.profession.gems.b },
-		[0x0400]	= { B.db.colors.profession.mining.r, B.db.colors.profession.mining.g, B.db.colors.profession.mining.b },
-		[0x8000]	= { B.db.colors.profession.fishing.r, B.db.colors.profession.fishing.g, B.db.colors.profession.fishing.b },
-		[0x010000]	= { B.db.colors.profession.cooking.r, B.db.colors.profession.cooking.g, B.db.colors.profession.cooking.b },
+		[0x0001]   = E:SetColorTable(nil, B.db.colors.profession.quiver),
+		[0x0002]   = E:SetColorTable(nil, B.db.colors.profession.ammoPouch),
+		[0x0004]   = E:SetColorTable(nil, B.db.colors.profession.soulBag),
+		[0x0008]	= E:SetColorTable(nil, B.db.colors.profession.leatherworking),
+		[0x0010]	= E:SetColorTable(nil, B.db.colors.profession.inscription),
+		[0x0020]	= E:SetColorTable(nil, B.db.colors.profession.herbs),
+		[0x0040]	= E:SetColorTable(nil, B.db.colors.profession.enchanting),
+		[0x0080]	= E:SetColorTable(nil, B.db.colors.profession.engineering),
+		[0x0100]    = E:SetColorTable(nil, B.db.colors.profession.keyring),
+		[0x0200]	= E:SetColorTable(nil, B.db.colors.profession.gems),
+		[0x0400]	= E:SetColorTable(nil, B.db.colors.profession.mining),
+		[0x8000]	= E:SetColorTable(nil, B.db.colors.profession.fishing),
+		[0x010000]	= E:SetColorTable(nil, B.db.colors.profession.cooking),
 	}
 
 	B.QuestColors = {
-		questStarter = {B.db.colors.items.questStarter.r, B.db.colors.items.questStarter.g, B.db.colors.items.questStarter.b},
-		questItem = {B.db.colors.items.questItem.r, B.db.colors.items.questItem.g, B.db.colors.items.questItem.b},
+		questStarter = E:SetColorTable(nil, B.db.colors.items.questStarter),
+		questItem = E:SetColorTable(nil, B.db.colors.items.questItem),
 	}
 
 	B:LoadBagBar()
