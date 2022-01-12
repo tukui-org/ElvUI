@@ -303,16 +303,15 @@ function E:UpdateMedia()
 	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E:UpdateClassColor(E.db.general.backdropcolor))
 	E.media.backdropfadecolor = E:SetColorTable(E.media.backdropfadecolor, E:UpdateClassColor(E.db.general.backdropfadecolor))
 
+	-- Custom Glow Color
+	E.media.customGlowColor = E:SetColorTable(E.media.customGlowColor, E:UpdateClassColor(E.db.general.customGlow.color))
+
 	local value = E:UpdateClassColor(E.db.general.valuecolor)
 	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
 	-- Chat Tab Selector Color
 	E:UpdateClassColor(E.db.chat.tabSelectorColor)
-
-	-- Custom Glow Color
-	E.db.general.customGlow.color = E:UpdateClassColor(E.db.general.customGlow.color) -- update the color for option gui
-	E.media.customGlowColor = E:SetColorTable(E.media.customGlowColor, E.db.general.customGlow.color) -- update the color for glow (unpackable)
 
 	-- Chat Panel Background Texture
 	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
@@ -1795,8 +1794,8 @@ function E:DBConversions()
 	end
 
 	-- just for people using dev build at the moment
-	if E.db.general.customGlow.color[1] then
-		E.db.general.customGlow.color = E:CopyTable({}, P.general.customGlow.color)
+	if type(E.db.general.customGlow) ~= 'table' then
+		E.db.general.customGlow = E:CopyTable({}, P.general.customGlow)
 	end
 
 	-- always convert
