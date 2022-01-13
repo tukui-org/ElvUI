@@ -912,6 +912,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[359976] = Defaults(2), -- Riftmaw
 		[359981] = Defaults(2), -- Rend
 		[360098] = Defaults(3), -- Warp Sickness
+		[366070] = Defaults(3), -- Volatile Residue
 	-- Halondrus the Reclaimer
 		[361309] = Defaults(3), -- Lightshatter Beam
 		[361002] = Defaults(4), -- Ephemeral Fissure
