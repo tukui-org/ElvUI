@@ -99,4 +99,4 @@ function S:LFGFrame()
 	end
 end
 
-S:AddCallback('LFGFrame')
+S:AddCallbackForAddon('Blizzard_LookingForGroupUI', 'LFGFrame')

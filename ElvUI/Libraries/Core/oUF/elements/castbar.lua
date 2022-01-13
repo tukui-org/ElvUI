@@ -129,22 +129,11 @@ local function CastStart(self, real, unit, castGUID)
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
-	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID
-
-	if oUF.isTBC then
-		name, _, texture, startTime, endTime, isTradeSkill, castID, spellID = UnitCastingInfo(unit)
-	else
-		name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
-	end
+	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
 	local event = 'UNIT_SPELLCAST_START'
 	if (not name) then
-		if oUF.isTBC then
-			name, _, texture, startTime, endTime, isTradeSkill, spellID = UnitChannelInfo(unit)
-		else
-			name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
-		end
-
+		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
 		event = 'UNIT_SPELLCAST_CHANNEL_START'
 	end
 
