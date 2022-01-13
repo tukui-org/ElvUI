@@ -913,6 +913,7 @@ L["LFG Queue"] = "LFG Warteschlange"
 L["LFG_TITLE"] = "Suche nach Gruppe"
 L["Limit the number of rows or columns."] = "Beschränkung für die Anzahl an Leisten oder Spalten."
 L["Lines"] = true
+L["Particles"] = true
 L["Link to the latest development version."] = "Link zur neusten Entwicklungsversion."
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "Liste der Wörter die farblich im Chat erscheinen, wenn sie in einer Nachricht gefunden werden. Wenn du möchtest, kannst du mehrere Wörter hinzufügen. Diese müssen durch ein Komma getrennt werden. Um deinen momentanen Namen zu suchen, benutze %MYNAME%.\n\nBeispiel:\n%MYNAME%, ElvUI, RBGs, Tank"
 L["Local Time"] = "Lokale Zeit"

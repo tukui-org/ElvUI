@@ -913,6 +913,7 @@ L["LFG Queue"] = "随机队列"
 L["LFG_TITLE"] = "寻求组队"
 L["Limit the number of rows or columns."] = "最大行数或列数"
 L["Lines"] = true
+L["Particles"] = true
 L["Link to the latest development version."] = "最新开发版链接"
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "如果在聊天信息中发现如下文字会自动上色该文字. 如果你需要添加多个词必须用逗号分开. 搜索你的名字可使用 %MYNAME%.\n\n例如:\n%MYNAME%, ElvUI, RBGs, Tank"
 L["Local Time"] = "本地时间"
