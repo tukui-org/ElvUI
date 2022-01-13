@@ -902,6 +902,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[362615] = Defaults(6), -- Interdimensional Wormhole Player 1
 		[362614] = Defaults(6), -- Interdimensional Wormhole Player 2
 		[362803] = Defaults(5), -- Glyph of Relocation
+		[363413] = Defaults(4), -- Genesis Rings 1
+		[364604] = Defaults(4), -- Genesis Rings 2
+		[365681] = Defaults(3), -- Massive Blast
 	-- Lithuvim, Principle Architect
 		[360159] = Defaults(2), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
