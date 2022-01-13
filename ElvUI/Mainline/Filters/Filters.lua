@@ -889,6 +889,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Dausegne, The Fallen Oracle
 		[361751] = Defaults(2), -- Disintegration Halo
 		[364289] = Defaults(2), -- Staggering Barrage
+		[361018] = Defaults(2), -- Staggering Barrage Mythic 1
+		[360960] = Defaults(2), -- Staggering Barrage Mythic 2
 		[361225] = Defaults(2), -- Encroaching Dominion
 		[361966] = Defaults(2), -- Infused Strikes
 	-- Artificer Xy'mox
