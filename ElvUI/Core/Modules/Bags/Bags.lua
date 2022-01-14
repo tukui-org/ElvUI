@@ -2498,19 +2498,19 @@ function B:Initialize()
 	}
 
 	B.ProfessionColors = {
-		[0x0001]   = E:GetColorTable(B.db.colors.profession.quiver),
-		[0x0002]   = E:GetColorTable(B.db.colors.profession.ammoPouch),
-		[0x0004]   = E:GetColorTable(B.db.colors.profession.soulBag),
-		[0x0008]	= E:GetColorTable(B.db.colors.profession.leatherworking),
-		[0x0010]	= E:GetColorTable(B.db.colors.profession.inscription),
-		[0x0020]	= E:GetColorTable(B.db.colors.profession.herbs),
-		[0x0040]	= E:GetColorTable(B.db.colors.profession.enchanting),
-		[0x0080]	= E:GetColorTable(B.db.colors.profession.engineering),
-		[0x0100]    = E:GetColorTable(B.db.colors.profession.keyring),
-		[0x0200]	= E:GetColorTable(B.db.colors.profession.gems),
-		[0x0400]	= E:GetColorTable(B.db.colors.profession.mining),
+		[0x1]		= E:GetColorTable(B.db.colors.profession.quiver),
+		[0x2]		= E:GetColorTable(B.db.colors.profession.ammoPouch),
+		[0x4]		= E:GetColorTable(B.db.colors.profession.soulBag),
+		[0x8]		= E:GetColorTable(B.db.colors.profession.leatherworking),
+		[0x10]		= E:GetColorTable(B.db.colors.profession.inscription),
+		[0x20]		= E:GetColorTable(B.db.colors.profession.herbs),
+		[0x40]		= E:GetColorTable(B.db.colors.profession.enchanting),
+		[0x80]		= E:GetColorTable(B.db.colors.profession.engineering),
+		[0x100]		= E:GetColorTable(B.db.colors.profession.keyring),
+		[0x200]		= E:GetColorTable(B.db.colors.profession.gems),
+		[0x400]		= E:GetColorTable(B.db.colors.profession.mining),
 		[0x8000]	= E:GetColorTable(B.db.colors.profession.fishing),
-		[0x010000]	= E:GetColorTable(B.db.colors.profession.cooking),
+		[0x10000]	= E:GetColorTable(B.db.colors.profession.cooking),
 	}
 
 	B.QuestColors = {
