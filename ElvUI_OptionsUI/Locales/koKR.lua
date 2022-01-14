@@ -913,6 +913,7 @@ L["LFG Queue"] = "파티찾기 표시기"
 L["LFG_TITLE"] = "파티 찾기"
 L["Limit the number of rows or columns."] = "표시줄 수를 제한해 최종적으로 보여줄 오라의 총 개수를 제한합니다."
 L["Lines"] = true
+L["Particles"] = true
 L["Link to the latest development version."] = true
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "이 곳에 키워드를 적으면 모든 대화내용에서 해당 키워드를 발견 시 색깔을 입혀 강조합니다. 쉼표(,) 로 구분해서 작성하세요.|n|n내 이름을 강조하고 싶으면 |cff2eb7e4%MYNAME%|r 을 사용하면 됩니다."
 L["Local Time"] = "컴퓨터 시계 기준"
