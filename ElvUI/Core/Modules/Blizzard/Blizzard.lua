@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
-local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local UnitXP = UnitXP
