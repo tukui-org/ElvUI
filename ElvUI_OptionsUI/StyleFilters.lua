@@ -582,6 +582,8 @@ if E.Retail then
 else
 	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.legacy40normal = GetDifficultyInfo(9)
 	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.legacy20normal = GetDifficultyInfo(148)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.normal = GetDifficultyInfo(173)
+	StyleFitlers.triggers.args.instanceType.args.raidDifficulty.values.heroic = GetDifficultyInfo(174)
 end
 
 local removeLocationTable = { removeMapID = 'mapIDs', removeInstanceID = 'instanceIDs', removeZoneName = 'zoneNames', removeSubZoneName = 'subZoneNames' }

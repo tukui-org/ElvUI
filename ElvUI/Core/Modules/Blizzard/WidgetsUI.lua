@@ -25,6 +25,8 @@ local function UpdateBarTexture(bar, atlas)
 end
 
 function B:UIWidgetTemplateStatusBar()
+	if self:IsForbidden() then return end
+
 	local bar = self.Bar
 	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
@@ -40,7 +42,7 @@ function B:UIWidgetTemplateStatusBar()
 			self.Label:FontTemplate(nil, nil, 'NONE')
 		end
 
-		if bar.Label then -- precent text
+		if bar.Label then -- percent text
 			bar.Label:FontTemplate(nil, nil, 'NONE')
 		end
 
@@ -86,7 +88,7 @@ local CaptureBarSkins = {
 }
 
 function B:UIWidgetTemplateCaptureBar(_, widget)
-	if not widget then return end
+	if self:IsForbidden() or not widget then return end
 
 	local skinFunc = CaptureBarSkins[widget.widgetSetID]
 	if skinFunc then skinFunc(self) end
