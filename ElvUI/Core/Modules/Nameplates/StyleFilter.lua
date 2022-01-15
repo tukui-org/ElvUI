@@ -103,6 +103,11 @@ mod.TriggerConditions = {
 		-- classic / tbc
 		[9] = 'legacy40normal',
 		[148] = 'legacy20normal',
+		[173] = 'normal',
+		[174] = 'heroic',
+		-- wotlk (pretty sure)
+		--[175] = 'legacy10heroic',
+		--[176] = 'legacy25heroic',
 	}
 }
 
