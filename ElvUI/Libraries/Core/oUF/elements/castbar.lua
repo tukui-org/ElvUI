@@ -134,6 +134,7 @@ local function CastStart(self, real, unit, castGUID)
 	local event = 'UNIT_SPELLCAST_START'
 	if (not name) then
 		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
+
 		event = 'UNIT_SPELLCAST_CHANNEL_START'
 	end
 
