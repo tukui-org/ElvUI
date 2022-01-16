@@ -40,7 +40,7 @@ function S:Blizzard_RaidUI()
 
 	do
 		local prevButton
-		for index in pairs(RAID_CLASS_BUTTONS) do
+		for index in pairs(_G.RAID_CLASS_BUTTONS) do
 			local button = _G['RaidClassButton'..index]
 			local icon = _G['RaidClassButton'..index..'IconTexture']
 			local count = _G['RaidClassButton'..index..'Count']
