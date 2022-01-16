@@ -516,11 +516,15 @@ function NP:GROUP_ROSTER_UPDATE()
 
 	wipe(NP.GroupRoles)
 
-	if NP.IsInGroup and E.Retail then
+	if NP.IsInGroup then
 		local Unit = (isInRaid and 'raid') or 'party'
 		for i = 1, ((isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers()) do
 			if UnitExists(Unit .. i) then
-				NP.GroupRoles[UnitName(Unit .. i)] = UnitGroupRolesAssigned(Unit .. i)
+				if E.Retail then
+					NP.GroupRoles[UnitName(Unit .. i)] = UnitGroupRolesAssigned(Unit .. i)
+				else
+					NP.GroupRoles[UnitName(Unit .. i)] = (GetPartyAssignment('MAINTANK', Unit .. i) and 'TANK') or 'NONE'
+				end
 			end
 		end
 	end

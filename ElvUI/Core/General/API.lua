@@ -18,7 +18,7 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsInRaid = IsInRaid
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local IsWargame = IsWargame
 local IsSpellKnown = IsSpellKnown
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
@@ -173,16 +173,24 @@ function E:GetThreatStatusColor(status)
 end
 
 function E:GetPlayerRole()
-	local assignedRole = UnitGroupRolesAssigned('player')
-	if assignedRole == 'NONE' then
-		return E.myspec and GetSpecializationRole(E.myspec)
+	local assignedRole = 'NONE'
+
+	if E.Retail then
+		assignedRole = UnitGroupRolesAssigned('player')
+		if assignedRole == 'NONE' then
+			return E.myspec and GetSpecializationRole(E.myspec)
+		end
+	elseif IsInRaid() or IsInGroup() then
+		assignedRole = (GetPartyAssignment('MAINTANK', 'player') and 'TANK') or 'NONE'
 	end
 
 	return assignedRole
 end
 
 function E:CheckRole()
-	E.myspec = GetSpecialization()
+	if E.Retail then
+		E.myspec = GetSpecialization()
+	end
 	E.myrole = E:GetPlayerRole()
 
 	E:UpdateDispelClasses()
@@ -479,9 +487,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if E.Retail then
-		E:CheckRole()
-	end
+	E:CheckRole()
 
 	if initLogin or not ElvDB.DisabledAddOns then
 		ElvDB.DisabledAddOns = {}
@@ -630,6 +636,8 @@ function E:LoadAPI()
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
 		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
+	else
+		E:RegisterEvent('PLAYER_ROLES_ASSIGNED', 'CheckRole')
 	end
 
 	if E.Retail or E.Wrath then
