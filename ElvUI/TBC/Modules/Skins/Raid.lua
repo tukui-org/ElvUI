@@ -89,7 +89,6 @@ function S:Blizzard_RaidUI()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
 			rp = _G['RaidPullout'..i]
 			if not rp.backdrop then
-				_G['RaidPullout'..i..'MenuBackdrop']:SetBackdrop(nil)
 				S:HandleFrame(rp, true, nil, 9, -17, -7, 10)
 			end
 		end
