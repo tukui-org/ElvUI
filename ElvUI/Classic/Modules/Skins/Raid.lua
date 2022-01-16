@@ -3,10 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, unpack = ipairs, unpack
-
 local hooksecurefunc = hooksecurefunc
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
@@ -43,11 +40,10 @@ function S:Blizzard_RaidUI()
 
 	do
 		local prevButton
-		for index = 1, 13 do
+		for index in pairs(RAID_CLASS_BUTTONS) do
 			local button = _G['RaidClassButton'..index]
 			local icon = _G['RaidClassButton'..index..'IconTexture']
 			local count = _G['RaidClassButton'..index..'Count']
-
 			button:StripTextures()
 			button:SetTemplate('Default')
 			button:Size(22)
@@ -62,26 +58,24 @@ function S:Blizzard_RaidUI()
 			end
 			prevButton = button
 
-			icon:SetInside()
+			count:FontTemplate(nil, 12, 'OUTLINE')
 
-			if index == 11 then
+			icon:SetInside()
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			if ( index == "PETS" ) then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				icon:SetTexCoord(unpack(E.TexCoords))
-			elseif index == 12 then
+			elseif ( index == "MAINTANK" ) then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				icon:SetTexCoord(unpack(E.TexCoords))
-			elseif index == 13 then
+			elseif ( index == "MAINASSIST" ) then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-				icon:SetTexCoord(unpack(E.TexCoords))
 			else
-				local coords = CLASS_ICON_TCOORDS[CLASS_SORT_ORDER[index]]
+				local coords = _G.CLASS_ICON_TCOORDS[_G.CLASS_SORT_ORDER[index]]
 				if coords then
 					icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 					icon:SetTexCoord(coords[1] + 0.015, coords[2] - 0.02, coords[3] + 0.018, coords[4] - 0.02)
 				end
 			end
-
-			count:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end
 
