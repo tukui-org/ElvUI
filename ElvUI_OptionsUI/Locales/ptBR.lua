@@ -1563,6 +1563,7 @@ L["This will join auras together which are normally separated. Example: Bolsteri
 L["This will override the global cooldown settings."] = "Isto irá sobrescrever as configurações globais de Tempo de Recarga."
 L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."] = "Isto irá pinar os botões de voz no painel de bate-papo. Deselecionar isto irá criar um botão de voz que pode ser movido."
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Isto irá resetar todo o conteúdo de um filtro de volta para seu padrão. Qualquer feitiço que você adicionou a este filtro será removido."
+L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "Modo de Exibição de Ameaça"
 L["Threat Health"] = "Vida da Ameaça"
 L["Threat Power"] = "Poder da Ameaça"
