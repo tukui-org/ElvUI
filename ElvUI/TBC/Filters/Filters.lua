@@ -529,14 +529,46 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[28991] = Defaults(2), -- Web
 	-- Black Temple
 		-- High Warlord Naj'entus
+		[39837] = Defaults(2), -- Impaling Spine
 		-- Supremus
+		[40253] = Defaults(2), -- Molten Flame
 		-- Shade of Akama
+		[42023] = Defaults(2), -- Rain of Fire
 		-- Teron Gorefiend
+		[40243] = Defaults(5), -- Crushing Shadows
+		[40239] = Defaults(6), -- Incinerate
+		[40251] = Defaults(4), -- Shadow of Death
 		-- Gurtogg Bloodboil
+		[40481] = Defaults(6), -- Acidic Wound
+		[40599] = Dedaults(5), -- Arcing Smash
+		[40491] = Defaults(6), -- Bewildering Strike
+		[42005] = Defaults(4), -- Bloodboil
+		[40508] = Defaults(5), -- Fel Acid Breath
+		[40604] = Defaults(6), -- Fel Rage
 		-- Reliquary of Souls
+		[41303] = Defaults(3), -- Soul Drain
+		[41410] = Defaults(3), -- Deaden
+		[41426] = Defaults(2), -- Spirit Shack
+		[41294] = Defaults(2), -- Fixate
+		[41376] = Defaults(3), -- Spite
 		-- Mother Shahraz
+		[41001] = Defaults(6), -- Fatal Attraction
+		[40860] = Defaults(5), -- Vile Beam
+		[40823] = Defaults(4), -- Interrupting Shriek
 		-- Illidari Council
+		[41541] = Defaults(2), -- Consecration
+		[41468] = Defaults(3), -- Hammer of Justice
+		[41461] = Defaults(6), -- Judgement of Blood
+		[41485] = Defaults(6), -- Deadly Poison
+		[41472] = Defaults(6), -- Divine Wrath
+		[41482] = Defaults(2), -- Blizzard
+		[41481] = Defaults(3), -- Flamestrike
 		-- Illidan Stormrage
+		[40932] = Defaults(6), -- Agonizing Flame
+		[41032] = Defaults(6), -- Shear
+		[40585] = Defaults(5), -- Dark Barrage
+		[41914] = Defaults(4), -- Parasitic Shadowfiend
+		[41142] = Defaults(2), -- Aura of Dread
 	-------------------------------------------------
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
