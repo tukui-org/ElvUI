@@ -508,10 +508,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- The Battle for Mount Hyjal
 		-- Rage Winterchill
+		[31249] = Defaults(6), -- Icebolt
+		[31250] = Defaults(5), -- Frost Nova
 		-- Anetheron
+		[31302] = Defaults(4), -- Inferno
+		[31298] = Defaults(5), -- Sleep
+		[31306] = Defaults(6), -- Carrion Swarm
 		-- Kaz'rogal
+		[31447] = Defaults(3), -- Mark of Kaz'rogal
 		-- Azgalor
+		[31341] = Defaults(5), -- Unquenchable Flames
+		[31340] = Defaults(4), -- Rain of Fire
+		[31347] = Defaults(6), -- Doom
 		-- Archimonde
+		[31972] = Defaults(6), -- Grip of the Legion
+		[31970] = Defaults(3), -- Fear
+		[31944] = Defaults(5), -- Doomfire
+		-- Trash
+		[31610] = Defaults(3), -- Knockdown
+		[28991] = Defaults(2), -- Web
 	-- Black Temple
 		-- High Warlord Naj'entus
 		-- Supremus
