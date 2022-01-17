@@ -882,6 +882,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[364904] = Defaults(6), -- Anti-Matter
 		[364881] = Defaults(5), -- Matter Disolution
 		[360415] = Defaults(5), -- Defenseless
+		[360412] = Defaults(4), -- Exposed Core
+		[366393] = Defaults(5), -- Searing Ablation
 	-- Prototype Pantheon
 		[365306] = Defaults(2), -- Invigorating Bloom
 		[361608] = Defaults(3), -- Burden of Sin
