@@ -569,6 +569,19 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[40585] = Defaults(5), -- Dark Barrage
 		[41914] = Defaults(4), -- Parasitic Shadowfiend
 		[41142] = Defaults(2), -- Aura of Dread
+		-- Trash
+		[41213] = Defaults(3), -- Throw Shield
+		[40864] = Defaults(3), -- Throbbing Stun
+		[41197] = Defaults(3), -- Shield Bash
+		[41171] = Defaults(3), -- Skeleton Shot
+		[41338] = Defaults(3), -- Love Tap
+		[13444] = Defaults(2), -- Sunder Armor
+		[41396] = Defaults(2), -- Sleep
+		[41334] = Defaults(2), -- Polymorph
+		[24698] = Defaults(2), -- Gauge
+		[41150] = Defaults(2), -- Fear
+		[34654] = Defaults(2), -- Blind
+		[39674] = Defaults(2), -- Banish
 	-------------------------------------------------
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
