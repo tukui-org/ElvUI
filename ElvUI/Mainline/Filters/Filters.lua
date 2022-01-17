@@ -886,6 +886,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[365306] = Defaults(2), -- Invigorating Bloom
 		[361608] = Defaults(3), -- Burden of Sin
 		[361689] = Defaults(3), -- Wracking Pain
+		[366232] = Defaults(4), -- Animastorm
+		[364839] = Defaults(4), -- Sinful Projection
 	-- Dausegne, The Fallen Oracle
 		[361751] = Defaults(2), -- Disintegration Halo
 		[364289] = Defaults(2), -- Staggering Barrage
