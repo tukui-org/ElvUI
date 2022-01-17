@@ -121,8 +121,8 @@ function NP:CVarReset()
 	NP:SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
 	NP:SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	NP:SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
-	NP:SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
-	NP:SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
+	NP:SetCVar('nameplateOverlapH', E.db.nameplates.overlapH)
+	NP:SetCVar('nameplateOverlapV', E.db.nameplates.overlapV)
 	NP:SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
 	NP:SetCVar('nameplateSelectedAlpha', 1)
 	NP:SetCVar('nameplateSelectedScale', 1)
@@ -175,6 +175,10 @@ function NP:SetCVars()
 	NP:SetCVar('nameplateShowFriendlyNPCs', NP.db.visibility.friendly.npcs and 1 or 0)
 	NP:SetCVar('nameplateShowFriendlyPets', NP.db.visibility.friendly.pets and 1 or 0)
 	NP:SetCVar('nameplateShowFriendlyTotems', NP.db.visibility.friendly.totems and 1 or 0)
+
+	-- Blizzard bug resets them after reload
+	NP:SetCVar('nameplateOverlapH', E.db.nameplates.overlapH)
+	NP:SetCVar('nameplateOverlapV', E.db.nameplates.overlapV)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
