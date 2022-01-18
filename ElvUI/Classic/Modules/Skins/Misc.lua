@@ -3,9 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-
 local hooksecurefunc = hooksecurefunc
-local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
 local function SkinNavBarButtons(self)
