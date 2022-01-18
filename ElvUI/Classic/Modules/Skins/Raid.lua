@@ -63,11 +63,11 @@ function S:Blizzard_RaidUI()
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
 
-			if ( index == "PETS" ) then
+			if index == 'PETS' then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-			elseif ( index == "MAINTANK" ) then
+			elseif index == 'MAINTANK' then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-			elseif ( index == "MAINASSIST" ) then
+			elseif index == 'MAINASSIST' then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
 			else
 				local coords = _G.CLASS_ICON_TCOORDS[_G.CLASS_SORT_ORDER[index]]
@@ -79,19 +79,14 @@ function S:Blizzard_RaidUI()
 		end
 	end
 
-	local function skinPulloutFrames()
-		local rp
+	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
-			rp = _G['RaidPullout'..i]
-			if not rp.backdrop then
+			local rp = _G['RaidPullout'..i]
+			if rp and not rp.backdrop then
 				_G['RaidPullout'..i..'MenuBackdrop']:SetBackdrop(nil)
 				S:HandleFrame(rp, true, nil, 9, -17, -7, 10)
 			end
 		end
-	end
-
-	hooksecurefunc('RaidPullout_GetFrame', function()
-		skinPulloutFrames()
 	end)
 
 	hooksecurefunc('RaidPullout_Update', function(pullOutFrame)
