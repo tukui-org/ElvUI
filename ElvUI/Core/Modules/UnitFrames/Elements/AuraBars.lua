@@ -21,10 +21,10 @@ function UF:Construct_AuraBars(bar)
 	UF.statusbars[bar] = true
 	UF:Update_StatusBar(bar)
 
-	UF:AuraBars_UpdateBar(bar)
-
 	UF:Configure_FontString(bar.timeText)
 	UF:Configure_FontString(bar.nameText)
+
+	UF:AuraBars_UpdateBar(bar)
 
 	bar.nameText:SetJustifyH('LEFT')
 	bar.nameText:SetJustifyV('MIDDLE')
