@@ -1,7 +1,7 @@
-### Version 12.60 [ ETA: 🍨 ]
+### Version 12.61 [ ETA: 🍨 ]
 
 ___
-### Version 12.59 [ January 18th 2022 ]
+### Version 12.60 [ January 18th 2022 ]
 
 **Important**  
 ActionBars: Swapped to Custom Glow (General -> Cosmetic)  
@@ -27,6 +27,10 @@ UnitFrames: Fixed "Display Target" as it only works for Player
 UnitFrames: Fixed kyrian rogue charged combo points  
 UnitFrames: Fixed non attached Castbar Icon  
 UnitFrames: Fixed sort by class option  
+
+___
+### Version 12.59 [ January 18th 2022 ]
+Simpy forgot to remove classic/tbc TOCs  
 
 ___
 ### Version 12.58 [ December 4th 2021 ]
