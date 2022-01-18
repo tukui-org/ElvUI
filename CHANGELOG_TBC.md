@@ -1,29 +1,29 @@
-### Version 2.32 [ ETA: 🍨 ]
+### Version 2.33 [ ETA: 🍨 ]
 
+___
+### Version 2.32 [ January 18th 2022 ]
+
+**Important**  
+ActionBars: Swapped to Custom Glow (General -> Cosmetic)  
+Config: Added Search section (with Whats New button)  
+
+**Changes**  
 Auras: Tooltip fixes for top auras  
 Config: Fixed some options displaying in russian  
 DataTexts: Fixes for party invites  
+Filters: Updated RaidDebuffs for phase 3 raids  
 General: Added an option to load max camera distance on login  
-General: Added new search section in our OptionsUI  
 Libraries: Added LibClassicSpecs for roles and specs  
-Libraries: Added LibCustomGlow and options in General - Cosmetic  
 Minimap: Scaling and Font fixes  
-Misc: Added button size option for LootRoll  
-Misc: Added font options for LootRoll  
-Misc: Added LootRoll option to position buttons on the left side  
-Misc: Added spacing option for LootRoll  
-Misc: Adjusted spacing between LootRoll need/greed/pass  
-Misc: Adjusted text length for LootRoll items  
+Misc: LootRoll has several new options  
 NamePlates: Fixed error when deleting a StyleFilter  
+Skins: Updated Raid Manager  
 UnitFrames: Added an option to toggle Blizzards default Castbar  
 UnitFrames: Adjusted spark for EnergyManaRegen ticks  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
 UnitFrames: Fixed non attached Castbar Icon  
 UnitFrames: Fixed sort by class  
 UnitFrames: LibHealComm-4.0 for HoTs  
-
-Note for plugin authors:  
-ElvDB.global.nameplate was renamed to ElvDB.global.nameplates  
 
 ___
 ### Version 2.31 [ December 4th 2021 ]
