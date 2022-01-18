@@ -3,14 +3,17 @@
 ___
 ### Version 2.32 [ January 18th 2022 ]
 
+**Important**  
+ActionBars: Swapped to Custom Glow (General -> Cosmetic)  
+Config: Added Search section (with Whats New button)  
+
+**Changes**  
 Auras: Tooltip fixes for top auras  
 Config: Fixed some options displaying in russian  
 DataTexts: Fixes for party invites  
 Filters: Updated RaidDebuffs for phase 3 raids  
 General: Added an option to load max camera distance on login  
-General: Added new search section in our OptionsUI  
 Libraries: Added LibClassicSpecs for roles and specs  
-Libraries: Added LibCustomGlow and options in General - Cosmetic  
 Minimap: Scaling and Font fixes  
 Misc: LootRoll has several new options  
 NamePlates: Fixed error when deleting a StyleFilter  
