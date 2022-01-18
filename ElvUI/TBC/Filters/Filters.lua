@@ -540,7 +540,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[40251] = Defaults(4), -- Shadow of Death
 		-- Gurtogg Bloodboil
 		[40481] = Defaults(6), -- Acidic Wound
-		[40599] = Dedaults(5), -- Arcing Smash
+		[40599] = Defaults(5), -- Arcing Smash
 		[40491] = Defaults(6), -- Bewildering Strike
 		[42005] = Defaults(4), -- Bloodboil
 		[40508] = Defaults(5), -- Fel Acid Breath
