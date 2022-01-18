@@ -2,24 +2,25 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
-local ipairs = ipairs
 local unpack = unpack
+local pairs, ipairs = pairs, ipairs
 local hooksecurefunc = hooksecurefunc
+
+local StripAllTextures = {
+	'RaidGroup1',
+	'RaidGroup2',
+	'RaidGroup3',
+	'RaidGroup4',
+	'RaidGroup5',
+	'RaidGroup6',
+	'RaidGroup7',
+	'RaidGroup8',
+}
 
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
-	for _, object in ipairs({
-		_G.RaidGroup1,
-		_G.RaidGroup2,
-		_G.RaidGroup3,
-		_G.RaidGroup4,
-		_G.RaidGroup5,
-		_G.RaidGroup6,
-		_G.RaidGroup7,
-		_G.RaidGroup8
-	}) do
+	for _, object in ipairs(StripAllTextures) do
 		object:StripTextures()
 	end
 
