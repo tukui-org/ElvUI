@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local unpack = unpack
+local pairs, ipairs = pairs, ipairs
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_RaidUI()
