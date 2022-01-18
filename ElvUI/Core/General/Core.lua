@@ -1237,6 +1237,11 @@ function E:DBConvertSL()
 		E.private.skins.cleanBossButton = nil
 	end
 
+	if E.global.nameplate then
+		E:CopyTable(E.global.nameplates, E.global.nameplate)
+		E.global.nameplate = nil
+	end
+
 	if E.global.unitframe.DebuffHighlightColors then
 		E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
 		E.global.unitframe.DebuffHighlightColors = nil
@@ -1788,15 +1793,6 @@ function E:DBConversions()
 	end
 
 	-- development converts
-	if E.global.nameplate then
-		E:CopyTable(E.global.nameplates, E.global.nameplate)
-		E.global.nameplate = nil
-	end
-
-	-- just for people using dev build at the moment
-	if type(E.db.general.customGlow) ~= 'table' then
-		E.db.general.customGlow = E:CopyTable({}, P.general.customGlow)
-	end
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
