@@ -1,4 +1,7 @@
-### Version 2.32 [ ETA: 🍨 ]
+### Version 2.33 [ ETA: 🍨 ]
+
+___
+### Version 2.32 [ January 18th 2022 ]
 
 Auras: Tooltip fixes for top auras  
 Config: Fixed some options displaying in russian  

@@ -1,4 +1,7 @@
-### Version 1.58 [ ETA: 🍨 ]
+### Version 1.59 [ ETA: 🍨 ]
+
+___
+### Version 1.58 [ January 18th 2022 ]
 
 Auras: Tooltip fixes for top auras  
 Config: Fixed some options displaying in russian  

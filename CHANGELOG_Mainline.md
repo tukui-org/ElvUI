@@ -1,4 +1,7 @@
-### Version 12.59 [ ETA: 🍨 ]
+### Version 12.60 [ ETA: 🍨 ]
+
+___
+### Version 12.59 [ January 18th 2022 ]
 
 **Important**  
 ActionBars: Swapped to Custom Glow (General -> Cosmetic)  
