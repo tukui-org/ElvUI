@@ -6,24 +6,24 @@ Config: Added Search section (with Whats New button)
 
 **Changes**  
 Auras: Top Aurs time will have cooldown time updated properly in Tooltip  
-Config: Fixed some options displaying in Russian  
 Config: Fixed error when deleting a StyleFilter  
+Config: Fixed some options displaying in Russian  
 Minimap: Scaling and Font fixes for Location  
 Misc: LootRoll has several new options  
-NamePlates: Fixed Desaturate Icon option  
-NamePlates: Fixed Quest Icon text position option  
+Movers: Added mover for TimeAlertFrame on Korean region  
 NamePlates: Attempted to fix Widget alpha/scaling issues  
+NamePlates: Fixed Desaturate Icon option  
 NamePlates: Fixed Off Tank setting and added an Off Tank (Pets) which shows some off tank pets  
+NamePlates: Fixed Quest Icon text position option  
 Skins: Attempted to fix "New Mythic+ Season" overlap issue another way  
 Skins: Fixed conquest and PVP rating tooltip skin  
+Tags: Fixed [class:icon] cropping  
 UnitFrames: Added an option to toggle Blizzards default Castbar  
 UnitFrames: Fixed "attach to" option for Ready Check Icon  
+UnitFrames: Fixed "Display Target" as it only works for Player  
 UnitFrames: Fixed kyrian rogue charged combo points  
 UnitFrames: Fixed non attached Castbar Icon  
 UnitFrames: Fixed sort by class option  
-UnitFrames: Fixed "Display Target" as it only works for Player  
-Tags: Fixed [class:icon] cropping  
-Movers: Added mover for TimeAlertFrame on Korean region  
 
 ___
 ### Version 12.58 [ December 4th 2021 ]
