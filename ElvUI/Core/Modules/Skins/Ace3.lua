@@ -248,7 +248,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
+		frame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(frame, true)
@@ -471,11 +471,7 @@ function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
 	if not lib.tooltip then
 		S:Ace3_MetaTable(lib)
 	else
-		if E.Retail or E.Classic then
-			S.Ace3_StyleTooltip(lib.tooltip)
-		elseif not S:IsHooked(lib.tooltip, 'OnShow') then
-			S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
-		end
+		S.Ace3_StyleTooltip(lib.tooltip)
 
 		if lib.popup and not S:IsHooked(lib.popup, 'OnShow') then -- StaticPopup
 			S:SecureHookScript(lib.popup, 'OnShow', S.Ace3_StylePopup)
@@ -487,11 +483,7 @@ function S:Ace3_MetaIndex(k, v)
 	if k == 'tooltip' then
 		rawset(self, k, v)
 
-		if E.Retail or E.Classic then
-			S.Ace3_StyleTooltip(v)
-		else
-			S:SecureHookScript(v, 'OnShow', S.Ace3_StyleTooltip)
-		end
+		S.Ace3_StyleTooltip(v)
 	elseif k == 'popup' then
 		rawset(self, k, v)
 		S:SecureHookScript(v, 'OnShow', S.Ace3_StylePopup)

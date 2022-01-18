@@ -1465,8 +1465,7 @@ function S:SkinSpellDisplay(widgetFrame)
 	end
 
 	if spell.Icon then
-		S:HandleIcon(spell.Icon)
-		spell.Icon:SetTemplate()
+		S:HandleIcon(spell.Icon, true)
 	end
 end
 

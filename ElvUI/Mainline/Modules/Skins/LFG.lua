@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local LBG = E.Libs.ButtonGlow
+local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local unpack, ipairs, pairs = unpack, ipairs, pairs
@@ -22,10 +22,10 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local hooksecurefunc = hooksecurefunc
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
-	LBG.ShowOverlayGlow(self:GetParent().checkButton)
+	LCG.ShowOverlayGlow(self:GetParent().checkButton)
 end
 local function LFDQueueFrameRoleButtonIconOnHide(self)
-	LBG.HideOverlayGlow(self:GetParent().checkButton)
+	LCG.HideOverlayGlow(self:GetParent().checkButton)
 end
 
 local function HandleGoldIcon(button)
@@ -517,10 +517,10 @@ function S:LookingForGroupFrames()
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.MythicPlusRating.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.PVPRating.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.PvpItemLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 
 	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
 	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
@@ -539,9 +539,10 @@ function S:LookingForGroupFrames()
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
-	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
+	S:HandleScrollBar(_G.LFGListCreationDescriptionScrollBar)
 
 	_G.LFGListApplicationDialog:StripTextures()
 	_G.LFGListApplicationDialog:SetTemplate('Transparent')
@@ -743,12 +744,12 @@ function S:Blizzard_ChallengesUI()
 		for _, child in ipairs(frame.DungeonIcons) do
 			if not child.template then
 				child:GetRegions():SetAlpha(0)
-				child:SetTemplate('Transparent')
-				S:HandleIcon(child.Icon, true)
-				child.Icon:SetDrawLayer('ARTWORK')
-				child.HighestLevel:SetDrawLayer('OVERLAY')
+				child:SetTemplate()
 				child.Icon:SetInside()
+				S:HandleIcon(child.Icon)
 			end
+
+			child.Center:SetDrawLayer('BACKGROUND', -1)
 		end
 	end)
 
@@ -772,7 +773,8 @@ function S:Blizzard_ChallengesUI()
 	S:HandleButton(NoticeFrame.Leave)
 	NoticeFrame:StripTextures()
 	NoticeFrame:SetTemplate()
-	NoticeFrame:SetFrameLevel(5)
+	NoticeFrame.Center:SetInside()
+	NoticeFrame.Center:SetDrawLayer('ARTWORK', 2)
 	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
 	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
 	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)

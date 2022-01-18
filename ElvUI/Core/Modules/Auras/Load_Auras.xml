@@ -1,28 +1,10 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate, BackdropTemplate' virtual='true' framelevel='4'>
-		<!-- framelevel 4 for Masque support -->
-		<Size x='26' y='26'/>
-		<Attributes>
-			<Attribute name='type' value='cancelaura'/>
-		</Attributes>
-		<Scripts>
-			<OnLoad>
-				ElvUI[1]:GetModule('Auras'):CreateIcon(self)
-				self:RegisterForClicks('RightButtonUp')
-			</OnLoad>
-			<OnEnter>
-				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
-				if self:GetAttribute('index') then
-					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self:GetParent():GetAttribute('filter'))
-				elseif self:GetAttribute('target-slot') then
-					GameTooltip:SetInventoryItem('player', self:GetID())
-				end
-			</OnEnter>
-			<OnLeave function='GameTooltip_Hide'/>
-		</Scripts>
-	</Button>
+		<Scripts><OnLoad>ElvUI[1]:GetModule('Auras'):CreateIcon(self)</OnLoad></Scripts>
+		<Attributes><Attribute name='type' value='cancelaura'/></Attributes>
+	</Button> <!-- framelevel 4 for Masque support -->
 
-	<!-- Theres gotta be a better way to do this.. -->
+	<!-- Theres gotta be a better way to do this -->
 	<Button name='ElvUIAuraTemplate16' inherits='ElvUIAuraTemplate' virtual='true'><Size x='16' y='16'/></Button>
 	<Button name='ElvUIAuraTemplate18' inherits='ElvUIAuraTemplate' virtual='true'><Size x='18' y='18'/></Button>
 	<Button name='ElvUIAuraTemplate20' inherits='ElvUIAuraTemplate' virtual='true'><Size x='20' y='20'/></Button>
@@ -47,6 +29,6 @@
 	<Button name='ElvUIAuraTemplate58' inherits='ElvUIAuraTemplate' virtual='true'><Size x='58' y='58'/></Button>
 	<Button name='ElvUIAuraTemplate60' inherits='ElvUIAuraTemplate' virtual='true'><Size x='60' y='60'/></Button>
 
-	<!-- Oh, Look! A file we need to load.. -->
+	<!-- Oh, Look! A file we need to load -->
 	<Script file='Auras.lua'/>
 </Ui>

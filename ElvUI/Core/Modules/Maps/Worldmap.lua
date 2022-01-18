@@ -264,9 +264,6 @@ function M:Initialize()
 	if useSmallerMap then
 		smallerMapScale = E.global.general.smallerWorldMapScale
 
-		SetUIPanelAttribute(_G.WorldMapFrame, 'area', 'center')
-		SetUIPanelAttribute(_G.WorldMapFrame, 'allowOtherPanels', true)
-
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture()
 		WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
@@ -275,6 +272,12 @@ function M:Initialize()
 			self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
 			self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
+		else
+			-- Retail does't need this because WorldMapFrame inherits QuestLogOwnerMixin,
+			-- SetDisplayState will call ShowUIPanel on open which leads to hide frames (such as CharacterFrame)
+			-- These two lines are what securely calls a close on other frames when you open the Smaller Map
+			SetUIPanelAttribute(_G.WorldMapFrame, 'area', 'center')
+			SetUIPanelAttribute(_G.WorldMapFrame, 'allowOtherPanels', true)
 		end
 	end
 

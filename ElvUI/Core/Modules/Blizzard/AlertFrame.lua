@@ -3,7 +3,6 @@ local B = E:GetModule('Blizzard')
 local Misc = E:GetModule('Misc')
 
 local _G = _G
-local pairs = pairs
 local ipairs = ipairs
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -31,51 +30,20 @@ function E:PostAlertMove()
 	local AlertFrame = _G.AlertFrame
 	local GroupLootContainer = _G.GroupLootContainer
 
-	local rollBars = Misc.RollBars
-	if E.private.general.lootRoll then
-		local lastframe, lastShownFrame
-		for i, frame in pairs(rollBars) do
-			frame:ClearAllPoints()
-			if i ~= 1 then
-				if POSITION == 'TOP' then
-					frame:Point('TOP', lastframe, 'BOTTOM', 0, -4)
-				else
-					frame:Point('BOTTOM', lastframe, 'TOP', 0, 4)
-				end
-			else
-				if POSITION == 'TOP' then
-					frame:Point('TOP', AlertFrameHolder, 'BOTTOM', 0, -4)
-				else
-					frame:Point('BOTTOM', AlertFrameHolder, 'TOP', 0, 4)
-				end
-			end
-			lastframe = frame
+	AlertFrame:ClearAllPoints()
+	GroupLootContainer:ClearAllPoints()
 
-			if frame:IsShown() then
-				lastShownFrame = frame
-			end
-		end
-
-		AlertFrame:ClearAllPoints()
-		GroupLootContainer:ClearAllPoints()
-		if lastShownFrame then
-			AlertFrame:SetAllPoints(lastShownFrame)
-			GroupLootContainer:Point(POSITION, lastShownFrame, ANCHOR_POINT, 0, YOFFSET)
-		else
-			AlertFrame:SetAllPoints(AlertFrameHolder)
-			GroupLootContainer:Point(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
-		end
-		if GroupLootContainer:IsShown() then
-			B.GroupLootContainer_Update(GroupLootContainer)
-		end
+	local lastRollFrame = E.private.general.lootRoll and Misc:UpdateLootRollAnchors(POSITION)
+	if lastRollFrame then
+		AlertFrame:SetAllPoints(lastRollFrame)
+		GroupLootContainer:Point(POSITION, lastRollFrame, ANCHOR_POINT, 0, YOFFSET)
 	else
-		AlertFrame:ClearAllPoints()
 		AlertFrame:SetAllPoints(AlertFrameHolder)
-		GroupLootContainer:ClearAllPoints()
 		GroupLootContainer:Point(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
-		if GroupLootContainer:IsShown() then
-			B.GroupLootContainer_Update(GroupLootContainer)
-		end
+	end
+
+	if GroupLootContainer:IsShown() then
+		B.GroupLootContainer_Update(GroupLootContainer)
 	end
 end
 

@@ -58,6 +58,10 @@ local TorghastWidgets, TorghastInfo = {
 	{nameID = 2929, levelID = 2940}, -- The Upper Reaches
 }
 
+local function ToTime(start, seconds)
+	return SecondsToTime(start, not seconds, nil, 3)
+end
+
 local function CleanupLevelName(text)
 	return gsub(text, "|n", "")
 end
@@ -198,7 +202,7 @@ local function OnEnter()
 			elseif not startTime then
 				startTime = QUEUE_TIME_UNAVAILABLE
 			elseif startTime ~= 0 then
-				startTime = SecondsToTime(startTime, false, nil, 3)
+				startTime = ToTime(startTime)
 			end
 
 			if canEnter and startTime ~= 0 then
@@ -217,7 +221,7 @@ local function OnEnter()
 	for i = 1, GetNumSavedInstances() do
 		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i)
 		if (locked or extended) and name then
-			local isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23)
+			local isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23 or difficulty == 174)
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
 			local difficultyLetter = (displayMythic and difficultyTag[4] or (isHeroic or displayHeroic) and difficultyTag[3] or isLFR and difficultyTag[1] or difficultyTag[2])
@@ -246,9 +250,9 @@ local function OnEnter()
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			end
 		end
 	end
@@ -268,9 +272,9 @@ local function OnEnter()
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			end
 		end
 	end
@@ -293,7 +297,7 @@ local function OnEnter()
 					DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 					addedLine = true
 				end
-				DT.tooltip:AddDoubleLine(name, SecondsToTime(reset, true, nil, 3), 1, 1, 1, 0.8, 0.8, 0.8)
+				DT.tooltip:AddDoubleLine(name, ToTime(reset), 1, 1, 1, 0.8, 0.8, 0.8)
 			end
 		end
 
@@ -329,7 +333,10 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 
-	DT.tooltip:AddDoubleLine(L["Daily Reset"], SecondsToTime(C_DateAndTime_GetSecondsUntilDailyReset()), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+	local dailyReset = C_DateAndTime_GetSecondsUntilDailyReset()
+	if dailyReset then
+		DT.tooltip:AddDoubleLine(L["Daily Reset"], ToTime(dailyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+	end
 
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)

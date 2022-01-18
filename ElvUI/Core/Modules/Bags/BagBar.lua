@@ -8,6 +8,7 @@ local unpack = unpack
 local tinsert = tinsert
 
 local CreateFrame = CreateFrame
+local GameTooltip = GameTooltip
 local GetBagSlotFlag = GetBagSlotFlag
 local GetCVarBool = GetCVarBool
 local IsModifiedClick = IsModifiedClick
@@ -39,10 +40,32 @@ function B:BagBar_OnLeave()
 	E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
 end
 
-function B:BagBarButton_OnEnter()
+function B:BagButton_OnEnter()
 	-- bag keybind support from actionbar module
 	if E.private.actionbar.enable then
 		AB:BindUpdate(self)
+	end
+
+	B:BagBar_OnEnter()
+end
+
+function B:BagButton_OnLeave()
+	B:BagBar_OnLeave()
+end
+
+function B:KeyRing_OnEnter()
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+		GameTooltip:Show()
+	end
+
+	B:BagBar_OnEnter()
+end
+
+function B:KeyRing_OnLeave()
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
 	end
 
 	B:BagBar_OnEnter()
@@ -187,7 +210,7 @@ function B:BagButton_OnClick(key)
 	if E.Retail and key == 'RightButton' then
 		B.AssignBagDropdown.holder = self
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-	elseif self.id == 0 then
+	elseif self.bagID == 0 then
 		B.MainMenuBarBackpackButton_OnClick(self, key)
 	else
 		_G.BagSlotButton_OnClick(self)
@@ -210,8 +233,8 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
-	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagBarButton_OnEnter)
-	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagBar_OnLeave)
+	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
+	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagButton_OnLeave)
 
 	if not E.Retail then
 		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
@@ -222,10 +245,9 @@ function B:LoadBagBar()
 
 	for i = 0, NUM_BAG_FRAMES-1 do
 		local b = _G['CharacterBag'..i..'Slot']
+		b:HookScript('OnEnter', B.BagButton_OnEnter)
+		b:HookScript('OnLeave', B.BagButton_OnLeave)
 		b:SetParent(B.BagBar)
-		b:HookScript('OnEnter', B.BagBarButton_OnEnter)
-		b:HookScript('OnLeave', B.BagBar_OnLeave)
-
 		B:SkinBag(b)
 
 		if not E.Retail then
@@ -238,8 +260,8 @@ function B:LoadBagBar()
 	local KeyRing = _G.KeyRingButton
 	if KeyRing then
 		KeyRing:SetParent(B.BagBar)
-		KeyRing:HookScript('OnEnter', B.BagBar_OnEnter)
-		KeyRing:HookScript('OnLeave', B.BagBar_OnLeave)
+		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
+		KeyRing:SetScript('OnLeave', B.KeyRing_OnLeave)
 
 		KeyRing:StripTextures()
 		KeyRing:SetTemplate(nil, true)
@@ -251,7 +273,7 @@ function B:LoadBagBar()
 	end
 
 	for i, button in ipairs(B.BagBar.buttons) do
-		button.id = i - 1
+		button.bagID = i - 1
 
 		if E.Retail then -- Item Assignment
 			B:CreateFilterIcon(button)

@@ -25,7 +25,7 @@ local UnitInRaid = UnitInRaid
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 
-local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
+local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
@@ -48,8 +48,6 @@ local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '..
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local guildTable, guildMotD, lastPanel = {}, ''
-local InviteToGroup = InviteToGroup
-local RequestInviteFromUnit = RequestInviteFromUnit
 
 local function sortByRank(a, b)
 	if a and b then
@@ -174,14 +172,14 @@ local function inviteClick(_, name, guid)
 	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
 		if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
-			if E.Retail then C_PartyInfo_InviteUnit(name) else InviteToGroup(name) end
-		elseif inviteType == 'REQUEST_INVITE' then
-			if E.Retail then C_PartyInfo_RequestInviteFromUnit(name) else RequestInviteFromUnit(name) end
+			InviteUnit(name)
+		elseif inviteType == 'REQUEST_INVITE' and E.Retail then
+			C_PartyInfo_RequestInviteFromUnit(name)
 		end
 	else
 		-- if for some reason guid isnt here fallback and just try to invite them
 		-- this is unlikely but having a fallback doesnt hurt
-		C_PartyInfo_InviteUnit(name)
+		InviteUnit(name)
 	end
 end
 

@@ -4,18 +4,19 @@ local S = E:GetModule('Skins')
 local _G = _G
 local gsub, pairs, ipairs, select, unpack, strmatch, strfind = gsub, pairs, ipairs, select, unpack, strmatch, strfind
 
-local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
-local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local GetMoney = GetMoney
-local CreateFrame = CreateFrame
 local GetQuestID = GetQuestID
-local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
-local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
-local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
+local CreateFrame = CreateFrame
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
+local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
+local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumRewardSpells = GetNumRewardSpells
 local hooksecurefunc = hooksecurefunc
+
+local C_QuestLog_GetRequiredMoney = C_QuestLog.GetRequiredMoney
+local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
+local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 
 local sealFrameTextColor = {
 	['480404'] = 'c20606',
@@ -344,7 +345,7 @@ function S:QuestFrame_SetTextColor() -- self is fontString
 end
 
 function S:QuestInfo_ShowRequiredMoney() -- self is not S
-	local requiredMoney = GetQuestLogRequiredMoney()
+	local requiredMoney = C_QuestLog_GetRequiredMoney()
 	if requiredMoney > 0 then
 		if requiredMoney > GetMoney() then
 			_G.QuestInfoRequiredMoneyText:SetTextColor(.63, .09, .09)

@@ -35,7 +35,7 @@ end
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
 
-	if not Ticker then
+	if E.Retail and not Ticker then
 		C_WowTokenPublic_UpdateMarketPrice()
 		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic_UpdateMarketPrice)
 	end
@@ -184,8 +184,11 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
-	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
+
+	if E.Retail then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
+	end
 
 	if E.Retail then
 		for i = 1, _G.MAX_WATCHED_TOKENS do

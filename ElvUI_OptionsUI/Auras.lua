@@ -5,22 +5,18 @@ local ACH = E.Libs.ACH
 
 local CopyTable = CopyTable
 
-local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E.ShowPopup = true end)
 E.Options.args.auras = Auras
 
 Auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
 Auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 2)
-Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 3)
-Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 4)
+Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 2, nil, nil, 80)
+Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 3, nil, nil, 80)
+Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 4, nil, nil, 140)
 Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 5, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
 
-Auras.args.buffsHeader.customWidth = 80
-Auras.args.debuffsHeader.customWidth = 80
-Auras.args.disableBlizzard.customWidth = 140
-
 Auras.args.masqueGroup = ACH:Group(L["Masque"], nil, 7, nil, nil, nil, function() return not E.Masque or not E.private.auras.enable end)
-Auras.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], L["Allow Masque to handle the skinning of this element."], 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+Auras.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], L["Allow Masque to handle the skinning of this element."], 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E.ShowPopup = true end)
 
 local SharedOptions = {
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 1, C.Values.GrowthDirection),

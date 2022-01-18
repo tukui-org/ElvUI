@@ -1058,10 +1058,11 @@ function CH:ChatEdit_DeactivateChat(editbox)
 	if style == 'im' then editbox:Hide() end
 end
 
-function CH:UpdateEditboxAnchors()
-	local cvar = (type(self) == 'string' and self) or GetCVar('chatStyle')
+function CH:UpdateEditboxAnchors(event, cvar, value)
+	if event and cvar ~= 'chatStyle' then return
+	elseif not cvar then value = GetCVar('chatStyle') end
 
-	local classic = cvar == 'classic'
+	local classic = value == 'classic'
 	local leftChat = classic and _G.LeftChatPanel
 	local panel = 22
 
@@ -1069,7 +1070,7 @@ function CH:UpdateEditboxAnchors()
 		local frame = _G[name]
 		local editbox = frame and frame.editBox
 		if not editbox then return end
-		editbox.chatStyle = cvar
+		editbox.chatStyle = value
 		editbox:ClearAllPoints()
 
 		local anchorTo = leftChat or frame
@@ -1414,10 +1415,10 @@ local function HyperLinkedCPL(data)
 		if lineIndex then
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
 			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
-			if message and message ~= '' then
-				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
+			if message and not CH:MessageIsProtected(message) then
 				message = strtrim(removeIconFromLine(message))
-				if not CH:MessageIsProtected(message) then
+
+				if message ~= '' then
 					CH:SetChatEditBoxMessage(message)
 				end
 			end
@@ -2064,10 +2065,22 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 			local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
-				local icon, prettify = chatIcon()
+				local icon, prettify, var1, var2, var3 = chatIcon()
 				if prettify and not CH:MessageIsProtected(message) then
-					message = prettify(message)
+					if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
+						var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
+					end
+
+					if var2 then
+						if var1 ~= '' then var1 = prettify(var1) end
+						if var3 ~= '' then var3 = prettify(var3) end
+
+						message = var1..var2..var3
+					else
+						message = prettify(message)
+					end
 				end
+
 				chatIcon = icon or ''
 			end
 
@@ -2087,7 +2100,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if usingDifferentLanguage then
 				local languageHeader = '['..arg3..'] '
-				if showLink and (arg2 ~= '') then
+				if showLink and arg2 ~= '' then
 					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..playerLink)
 				else
 					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..arg2)
@@ -3499,8 +3512,6 @@ function CH:Initialize()
 	CH:CheckLFGRoles()
 	CH:Panels_ColorUpdate()
 	CH:UpdateEditboxAnchors()
-	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
-
 	CH:HandleChatVoiceIcons()
 
 	CH:SecureHook('ChatEdit_ActivateChat')
@@ -3528,6 +3539,7 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
+	CH:RegisterEvent('CVAR_UPDATE', 'UpdateEditboxAnchors')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.Retail then

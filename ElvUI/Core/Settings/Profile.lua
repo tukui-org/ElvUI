@@ -20,6 +20,14 @@ P.general = {
 	autoTrackReputation = false,
 	autoAcceptInvite = false,
 	topPanel = false,
+	customGlow = {
+		style = 'Pixel Glow',
+		color = { r = 23/255, g = 132/255, b = 209/255, a = 0.9 },
+		useColor = false,
+		speed = 0.3,
+		lines = 8,
+		size = 1,
+	},
 	topPanelSettings = {
 		transparent = true,
 		height = 22,
@@ -52,6 +60,8 @@ P.general = {
 		itemLevelFontOutline = 'OUTLINE',
 	},
 	durabilityScale = 1,
+	lockCameraDistanceMax = true,
+	cameraDistanceMax = E.Retail and 2.6 or 4,
 	afk = true,
 	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
@@ -75,7 +85,7 @@ P.general = {
 	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
 	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
-	valuecolor = {r = 23/255, g = 132/255, b = 209/255},
+	valuecolor = { r = 23/255, g = 132/255, b = 209/255 },
 	cropIcon = 2,
 	minimap = {
 		size = 175,
@@ -152,14 +162,20 @@ P.general = {
 		}
 	},
 	lootRoll = {
-		width = 328,
-		height = 28,
+		width = 325,
+		height = 30,
+		spacing = 4,
+		buttonSize = 20,
 		style = 'halfbar',
 		statusBarTexture = 'ElvUI Norm',
+		leftButtons = false,
 		qualityName = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
-		statusBarColor = { r = 0, g = .4, b = 1 }
+		statusBarColor = { r = 0, g = .4, b = 1 },
+		nameFont = 'Expressway',
+		nameFontSize = 12,
+		nameFontOutline = 'OUTLINE',
 	},
 	objectiveTracker = true,
 	totems = {
@@ -586,6 +602,8 @@ P.nameplates = {
 	lowHealthThreshold = 0.4,
 	motionType = 'STACKED',
 	nameColoredGlow = false,
+	overlapH = 0.8,
+	overlapV = 1.1,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	smoothbars = false,
@@ -617,6 +635,7 @@ P.nameplates = {
 	},
 	threat = {
 		enable = true,
+		beingTankedByPet = true,
 		beingTankedByTank = true,
 		goodScale = 1,
 		badScale = 1,
@@ -1237,7 +1256,6 @@ local UF_Castbar = {
 		fontSize = 12,
 		fontStyle = 'OUTLINE'
 	},
-	displayTarget = false,
 	enable = true,
 	format = 'REMAINING',
 	height = 18,
@@ -1924,8 +1942,6 @@ P.unitframe = {
 			growthDirection = 'UP_RIGHT',
 			horizontalSpacing = 0,
 			verticalSpacing = 3,
-			numGroups = 1,
-			groupsPerRowCol = 1,
 			groupBy = 'INDEX',
 			sortDir = 'ASC',
 			sortMethod = 'INDEX',
@@ -1999,6 +2015,8 @@ P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitel
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.player.castbar.latency = true
+P.unitframe.units.player.castbar.displayTarget = false
+
 P.unitframe.units.player.fader.enable = false
 P.unitframe.units.player.fader.casting = true
 P.unitframe.units.player.fader.combat = true
@@ -2211,6 +2229,7 @@ P.unitframe.units.party.targetsGroup.buffIndicator = nil
 P.unitframe.units.party.targetsGroup.healPrediction = nil
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid.groupsPerRowCol = 1
 P.unitframe.units.raid.groupBy = 'GROUP'
 P.unitframe.units.raid.buffs.numrows = 1
 P.unitframe.units.raid.buffs.perrow = 3
@@ -2358,6 +2377,8 @@ P.actionbar = {
 	noPowerColor = { r = 0.5, g = 0.5, b = 1 },
 	noRangeColor = { r = 0.8, g = 0.1, b = 0.1 },
 	notUsableColor = { r = 0.4, g = 0.4, b = 0.4 },
+	checkSelfCast = true,
+	checkFocusCast = true,
 	rightClickSelfCast = false,
 	transparent = false,
 	usableColor = { r = 1, g = 1, b = 1 },

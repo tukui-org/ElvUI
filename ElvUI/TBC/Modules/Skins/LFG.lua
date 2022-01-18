@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select = pairs, select
 
-function S:LFGFrame()
+function S:Blizzard_LookingForGroupUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local LFGParentFrame = _G.LFGParentFrame
@@ -99,4 +99,4 @@ function S:LFGFrame()
 	end
 end
 
-S:AddCallback('LFGFrame')
+S:AddCallbackForAddon('Blizzard_LookingForGroupUI')

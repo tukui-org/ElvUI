@@ -181,7 +181,7 @@ local function CreateUnitframesConfig()
 
 	MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
 
-	config.args.colors.args.power.name = L["Powers"]
+	config.args.colors.args.power.name = L["Power"]
 	config.args.colors.args.reaction.name = L["Reactions"]
 	config.args.colors.args.healPrediction.name = L["Heal Prediction"]
 	config.args.colors.args.classResources.name = L["Class Resources"]

@@ -906,6 +906,11 @@ function E:Config_WindowClosed()
 		E:Config_RestoreOldPosition(self.topHolder.version)
 		E:Config_RestoreOldPosition(self.obj.content)
 		E:Config_RestoreOldPosition(self.obj.titlebg)
+
+		if E.ShowPopup then
+			E:StaticPopup_Show('CONFIG_RL')
+			E.ShowPopup = nil
+		end
 	end
 end
 

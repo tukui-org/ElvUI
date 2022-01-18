@@ -80,13 +80,16 @@ local function SkinItemButton(button, bagID)
 	end
 
 	local slotID = button:GetID()
-	local texture, _, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
+	local texture, _, _, rarity, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	local isQuestItem, questId = GetContainerItemQuestInfo(bagID, slotID)
 	button.icon:SetTexture(texture)
 	button.itemID, button.ilink = itemID, itemLink
 
 	if itemLink then
 		button.name, _, button.quality, _, _, button.type = GetItemInfo(itemLink)
+		if not button.quality then
+			button.quality = rarity
+		end
 	else
 		button.name, button.quality, button.type = nil, nil, nil
 	end
@@ -150,8 +153,8 @@ local function SkinBag(bagID)
 
 			for j = 1, MAX_WATCHED_TOKENS do
 				local token = _G['BackpackTokenFrameToken'..j]
-				token:SetTemplate()
-				token.icon:SetTexCoord(unpack(E.TexCoords))
+				token.count:SetPoint('RIGHT', token.icon, 'LEFT', -3, 0)
+				S:HandleIcon(token.icon, true)
 			end
 		end
 	end
@@ -249,12 +252,15 @@ local function UpdateBankItem(button)
 
 	if not button.isBag then
 		local container = button:GetParent():GetID()
-		local _, _, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(container, slotID)
+		local _, _, _, rarity, _, _, itemLink, _, _, itemID = GetContainerItemInfo(container, slotID)
 		local isQuestItem, questId = GetContainerItemQuestInfo(container, slotID)
 		button.itemID, button.ilink = itemID, itemLink
 
 		if itemLink then
 			button.name, _, button.quality, _, _, button.type = GetItemInfo(itemLink)
+			if not button.quality then
+				button.quality = rarity
+			end
 		else
 			button.name, button.quality, button.type = nil, nil, nil
 		end

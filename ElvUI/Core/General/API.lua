@@ -2,26 +2,32 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
+local LCS = E.Libs.LCS
 
 local _G = _G
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
-local wipe, date, max, next, format = wipe, date, max, next, format
+local wipe, max, next, format = wipe, max, next, format
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
-local GetCVar, SetCVar = GetCVar, SetCVar
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
-local IsWargame = IsWargame
+local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsSpellKnown = IsSpellKnown
+local IsTrialAccount = IsTrialAccount
+local IsVeteranTrialAccount = IsVeteranTrialAccount
+local IsWargame = IsWargame
+local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local SetCVar = SetCVar
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
@@ -31,7 +37,6 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
-local hooksecurefunc = hooksecurefunc
 
 local HideUIPanel = HideUIPanel
 local GameMenuButtonAddons = GameMenuButtonAddons
@@ -86,10 +91,6 @@ do -- other non-english locales require this
 	function E:UnlocalizedClassName(className)
 		return (className and className ~= '') and E.UnlocalizedClasses[className]
 	end
-end
-
-function E:IsFoolsDay()
-	return strfind(date(), '04/01/') and not E.global.aprilFools
 end
 
 do
@@ -179,12 +180,12 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local assignedRole = UnitGroupRolesAssigned('player')
-	if assignedRole == 'NONE' then
-		return E.myspec and GetSpecializationRole(E.myspec)
+	if E.Retail then
+		local role = UnitGroupRolesAssigned('player')
+		return (role == 'NONE' and E.myspec and GetSpecializationRole(E.myspec)) or role
+	else
+		return LCS.GetSpecializationRole(LCS.GetSpecialization())
 	end
-
-	return assignedRole
 end
 
 function E:CheckRole()
@@ -485,9 +486,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	if E.Retail then
-		E:CheckRole()
-	end
+	E:CheckRole()
 
 	if initLogin or not ElvDB.DisabledAddOns then
 		ElvDB.DisabledAddOns = {}
@@ -502,6 +501,11 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		E.MediaUpdated = true
 	end
 
+	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
+	if not E.Retail and E.db.general.lockCameraDistanceMax then
+		SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
+	end
+
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' then
 		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
@@ -513,16 +517,6 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 end
 
 function E:PLAYER_REGEN_ENABLED()
-	if E.CVarUpdate then
-		for cvarName, value in pairs(E.LockedCVars) do
-			if not E.IgnoredCVars[cvarName] and (GetCVar(cvarName) ~= value) then
-				SetCVar(cvarName, value)
-			end
-		end
-
-		E.CVarUpdate = nil
-	end
-
 	if E.ShowOptionsUI then
 		E:ToggleOptionsUI()
 
@@ -554,6 +548,18 @@ function E:PLAYER_REGEN_DISABLED()
 	if err then
 		E:Print(ERR_NOT_IN_COMBAT)
 	end
+end
+
+function E:XPIsUserDisabled()
+	return E.Retail and IsXPUserDisabled()
+end
+
+function E:XPIsTrialMax()
+	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+end
+
+function E:XPIsLevelMax()
+	return IsLevelAtEffectiveMaxLevel(E.mylevel) or E:XPIsUserDisabled() or E:XPIsTrialMax()
 end
 
 function E:GetGroupUnit(unit)
@@ -636,6 +642,8 @@ function E:LoadAPI()
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
 		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
+	else
+		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
 	end
 
 	if E.Retail or E.Wrath then
@@ -655,13 +663,9 @@ function E:LoadAPI()
 		end
 	end
 
-	if not strfind(date(), '04/01/') then
-		E.global.aprilFools = nil
-	end
-
 	if _G.OrderHallCommandBar then
 		E:HandleCommandBar()
-	else
+	elseif E.Retail then
 		local frame = CreateFrame('Frame')
 		frame:RegisterEvent('ADDON_LOADED')
 		frame:SetScript('OnEvent', function(Frame, event, addon)

@@ -14,7 +14,6 @@ local AcceptGroup = AcceptGroup
 local C_FriendList_IsFriend = C_FriendList.IsFriend
 local CanGuildBankRepair = CanGuildBankRepair
 local CanMerchantRepair = CanMerchantRepair
-local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
 local GetInstanceInfo = GetInstanceInfo
 local GetItemInfo = GetItemInfo
@@ -53,7 +52,7 @@ local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local hooksecurefunc = hooksecurefunc
 
-local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
+local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -118,8 +117,8 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 	if not E.db.general.autoTrackReputation then return end
 
 	if messagetype == 'FACTION' then
-		local faction = GetCurrentCombatTextEventInfo()
-		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() then
+		local faction, rep = GetCurrentCombatTextEventInfo()
+		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() and rep > 0 then
 			ExpandAllFactionHeaders()
 
 			for i = 1, GetNumFactions() do
@@ -212,7 +211,7 @@ function M:DisbandRaidGroup()
 		end
 	end
 
-	C_PartyInfo_LeaveParty()
+	LeaveParty()
 end
 
 function M:PVPMessageEnhancement(_, msg)
@@ -245,16 +244,6 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		StaticPopup_Hide('PARTY_INVITE')
 		hideStatic = nil
 	end
-end
-
-function M:ForceCVars()
-	if not GetCVarBool('lockActionBars') and E.private.actionbar.enable then
-		SetCVar('lockActionBars', 1)
-	end
-end
-
-function M:PLAYER_ENTERING_WORLD()
-	M:ForceCVars()
 end
 
 function M:RESURRECT_REQUEST()
@@ -331,9 +320,7 @@ function M:Initialize()
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	M:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
-	M:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	M:RegisterEvent('COMBAT_TEXT_UPDATE')
-	M:RegisterEvent('PLAYER_ENTERING_WORLD')
 	M:RegisterEvent('QUEST_COMPLETE')
 
 	do	-- questRewardMostValueIcon

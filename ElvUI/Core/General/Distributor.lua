@@ -277,7 +277,7 @@ D.blacklistedKeys = {
 				}
 			}
 		},
-		nameplate = {
+		nameplates = {
 			filters = true
 		},
 		unitframe = {
@@ -317,7 +317,7 @@ D.GeneratedKeys = {
 			aurafilters = true,
 			aurawatch = true
 		},
-		nameplate = {
+		nameplates = {
 			filters = true
 		}
 	}
@@ -370,9 +370,9 @@ local function GetProfileData(profileType)
 		profileKey = 'filters'
 	elseif profileType == 'styleFilters' then
 		profileKey = 'styleFilters'
-		profileData.nameplate = {}
-		profileData.nameplate.filters = E:CopyTable({}, ElvDB.global.nameplate.filters)
-		NP:StyleFilterClearDefaults(profileData.nameplate.filters)
+		profileData.nameplates = {}
+		profileData.nameplates.filters = E:CopyTable({}, ElvDB.global.nameplates.filters)
+		NP:StyleFilterClearDefaults(profileData.nameplates.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 	end
 
@@ -523,7 +523,7 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 		E:StaggeredUpdateAll()
 	elseif profileType == 'styleFilters' then
-		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
+		E:CopyTable(ElvDB.global.nameplates, profileData.nameplates)
 		E:StaggeredUpdateAll()
 	end
 end

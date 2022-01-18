@@ -115,7 +115,6 @@ E:AddLib('AceConfig', 'AceConfig-3.0-ElvUI')
 E:AddLib('AceConfigDialog', 'AceConfigDialog-3.0-ElvUI')
 E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
-E:AddLib('ACH', 'LibAceConfigHelper')
 
 local UnitName = UnitName
 local UnitExists = UnitExists
@@ -246,16 +245,11 @@ E.Options.args.info.args.spacer = ACH:Spacer(2)
 
 E.Options.args.info.args.support = ACH:Group(L["Support & Download"], nil, 3)
 E.Options.args.info.args.support.inline = true
-E.Options.args.info.args.support.args.homepage = ACH:Execute(L["Support Forum"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/forum/viewforum.php?f=4') end)
-E.Options.args.info.args.support.args.homepage.customWidth = 140
-E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end)
-E.Options.args.info.args.support.args.git.customWidth = 140
-E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end)
-E.Options.args.info.args.support.args.discord.customWidth = 140
-E.Options.args.info.args.support.args.changelog = ACH:Execute(L["Changelog"], nil, 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/download.php?ui=elvui&changelog') end)
-E.Options.args.info.args.support.args.changelog.customWidth = 140
-E.Options.args.info.args.support.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 5, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end)
-E.Options.args.info.args.support.args.development.customWidth = 140
+E.Options.args.info.args.support.args.homepage = ACH:Execute(L["Support Forum"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/forum/viewforum.php?f=4') end, nil, nil, 140)
+E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 140)
+E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end, nil, nil, 140)
+E.Options.args.info.args.support.args.changelog = ACH:Execute(L["Changelog"], nil, 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/download.php?ui=elvui&changelog') end, nil, nil, 140)
+E.Options.args.info.args.support.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 5, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end, nil, nil, 140)
 
 E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 4)
 E.Options.args.info.args.credits.inline = true
@@ -475,7 +469,7 @@ local function ExportImport_Open(mode)
 end
 
 --Create Profiles Table
-E.Options.args.profiles = ACH:Group(L["Profiles"], nil, 5, 'tab')
+E.Options.args.profiles = ACH:Group(L["Profiles"], nil, 4, 'tab')
 E.Options.args.profiles.args.desc = ACH:Description(L["This feature will allow you to transfer settings to other characters."], 0)
 E.Options.args.profiles.args.distributeProfile = ACH:Execute(L["Share Current Profile"], L["Sends your current profile to your target."], 1, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name) elseif server then D:Distribute(name, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
 E.Options.args.profiles.args.distributeGlobal = ACH:Execute(L["Share Filters"], L["Sends your filter settings to your target."], 1, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name, false, true) elseif server then D:Distribute(name, true, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
@@ -510,8 +504,4 @@ end
 
 E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
 	return format(L["Copy settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
-end
-
-if GetAddOnEnableState(nil, 'ElvUI_Config') ~= 0 then
-	E:StaticPopup_Show('ELVUI_CONFIG_FOUND')
 end

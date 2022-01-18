@@ -314,9 +314,11 @@ function M:UpdateSettings()
 	local HEIGHT, WIDTH = mHeight + (panelSize - joinPanel), mWidth
 	MMHolder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
-	Minimap.location:Width(E.MinimapSize)
-	Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
-	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+	if Minimap.location then
+		Minimap.location:Width(E.MinimapSize)
+		Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
+	end
 
 	M.HandleGarrisonButton()
 	M.HandleTrackingButton()
@@ -522,6 +524,7 @@ function M:Initialize()
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 	M:SetScale(Minimap.location, 1)
+	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
 
 	local frames = {
 		_G.MinimapBorder,

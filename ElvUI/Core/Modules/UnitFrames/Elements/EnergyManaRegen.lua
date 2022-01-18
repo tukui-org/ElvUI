@@ -14,9 +14,11 @@ function UF:Construct_EnergyManaRegen(frame)
 	barTexture:SetAlpha(0)
 
 	element.Spark = element:CreateTexture(nil, 'OVERLAY')
-	element.Spark:SetPoint('RIGHT', barTexture)
 	element.Spark:SetTexture(E.media.blankTex)
-	element.Spark:SetVertexColor(1, 1, 1, 0.4)
+	element.Spark:SetVertexColor(1, 1, 1, .8)
+	element.Spark:Point('RIGHT', barTexture)
+	element.Spark:Point('BOTTOM')
+	element.Spark:Point('TOP')
 	element.Spark:Width(2)
 
 	return element
@@ -30,7 +32,6 @@ function UF:Configure_EnergyManaRegen(frame)
 
 		frame.EnergyManaRegen:SetFrameStrata(frame.Power:GetFrameStrata())
 		frame.EnergyManaRegen:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
-		frame.EnergyManaRegen.Spark:Height(frame.Power:GetHeight())
 	elseif frame:IsElementEnabled('EnergyManaRegen') then
 		frame:DisableElement('EnergyManaRegen')
 	end

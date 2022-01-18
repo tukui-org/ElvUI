@@ -5,7 +5,6 @@ local _G = _G
 local format = format
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
-local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local GetXPExhaustion = GetXPExhaustion
 local displayString = ''
 
@@ -13,7 +12,7 @@ local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
-	if IsLevelAtEffectiveMaxLevel(E.mylevel) then
+	if E:XPIsLevelMax() then
 		displayString = L['Max Level']
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
@@ -59,7 +58,7 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
-	if IsLevelAtEffectiveMaxLevel(E.mylevel) then return end
+	if E:XPIsLevelMax() then return end
 
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(L["Experience"])

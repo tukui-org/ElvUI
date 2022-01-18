@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
@@ -105,8 +106,7 @@ function S:WorldMapFrame()
 	S:HandleScrollBar(_G.QuestMapFrameScrollBar)
 
 	if E.private.skins.blizzard.tooltip then
-		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate('Transparent')
-		--QuestScrollFrame.WarCampaignTooltip:SetTemplate('Transparent')
+		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)
 	end
 
 	S:HandleScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)

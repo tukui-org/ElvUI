@@ -1,8 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
+local NP = E:GetModule('NamePlates')
 
 local _G = _G
 local unpack = unpack
+local strmatch = strmatch
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -23,12 +25,26 @@ local function UpdateBarTexture(bar, atlas)
 end
 
 function B:UIWidgetTemplateStatusBar()
+	if self:IsForbidden() then return end
+
 	local bar = self.Bar
-	local atlas = bar:GetStatusBarAtlas()
-	UpdateBarTexture(bar, atlas)
+	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
 	if not bar.backdrop then
 		bar:CreateBackdrop('Transparent')
+
+		if NP.Initialized and strmatch(self:GetDebugName(), 'NamePlate') then
+			self:SetIgnoreParentScale(true)
+			self:SetIgnoreParentAlpha(true)
+		end
+
+		if self.Label then -- title
+			self.Label:FontTemplate(nil, nil, 'NONE')
+		end
+
+		if bar.Label then -- percent text
+			bar.Label:FontTemplate(nil, nil, 'NONE')
+		end
 
 		bar.BGLeft:SetAlpha(0)
 		bar.BGRight:SetAlpha(0)
@@ -72,7 +88,7 @@ local CaptureBarSkins = {
 }
 
 function B:UIWidgetTemplateCaptureBar(_, widget)
-	if not widget then return end
+	if self:IsForbidden() or not widget then return end
 
 	local skinFunc = CaptureBarSkins[widget.widgetSetID]
 	if skinFunc then skinFunc(self) end

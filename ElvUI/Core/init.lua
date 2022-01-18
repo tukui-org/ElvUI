@@ -4,8 +4,8 @@
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
-local _G = _G
-local format, gsub, pairs, type = format, gsub, pairs, type
+local _G, format, next = _G, format, next
+local gsub, pairs, type = gsub, pairs, type
 
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local CreateFrame = CreateFrame
@@ -111,6 +111,7 @@ do
 
 	E:AddLib('AceAddon', AceAddon, AceAddonMinor)
 	E:AddLib('AceDB', 'AceDB-3.0')
+	E:AddLib('ACH', 'LibAceConfigHelper')
 	E:AddLib('EP', 'LibElvUIPlugin-1.0')
 	E:AddLib('LSM', 'LibSharedMedia-3.0')
 	E:AddLib('ACL', 'AceLocale-3.0-ElvUI')
@@ -118,7 +119,7 @@ do
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
 	E:AddLib('RangeCheck', 'LibRangeCheck-2.0-ElvUI')
-	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
+	E:AddLib('CustomGlow', 'LibCustomGlow-1.0')
 	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Compress', 'LibCompress')
 	E:AddLib('Base64', 'LibBase64-1.0-ElvUI')
@@ -127,12 +128,16 @@ do
 
 	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
-	elseif E.Classic then
-		E:AddLib('LCD', 'LibClassicDurations')
-		E:AddLib('LCC', 'LibClassicCasterino')
+	else
+		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
 
-		if E.Libs.LCD then
-			E.Libs.LCD:Register('ElvUI')
+		if E.Classic then
+			E:AddLib('LCD', 'LibClassicDurations')
+			E:AddLib('LCC', 'LibClassicCasterino')
+
+			if E.Libs.LCD then
+				E.Libs.LCD:Register('ElvUI')
+			end
 		end
 	end
 
@@ -141,6 +146,41 @@ do
 	E.LSM = E.Libs.LSM
 	E.UnitFrames.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
+end
+
+do -- expand LibCustomGlow for button handling
+	local LCG, frames = E.Libs.CustomGlow, {}
+	function LCG.ShowOverlayGlow(button)
+		if button:GetAttribute('type') == 'action' then
+			local opt = E.db.general.customGlow
+			local glow = LCG.startList[opt.style]
+			if glow then
+				local arg3, arg4, arg6
+				local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
+				if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
+				if pixel then arg6 = opt.size end
+
+				glow(button, opt.useColor and E.media.customGlowColor, arg3, arg4, nil, arg6)
+
+				frames[button] = true
+			end
+		end
+	end
+
+	function LCG.HideOverlayGlow(button)
+		local glow = LCG.stopList[E.db.general.customGlow.style]
+		if glow then
+			glow(button)
+
+			frames[button] = nil
+		end
+	end
+
+	function E:StopAllCustomGlows()
+		for button in next, frames do
+			LCG.HideOverlayGlow(button)
+		end
+	end
 end
 
 do
