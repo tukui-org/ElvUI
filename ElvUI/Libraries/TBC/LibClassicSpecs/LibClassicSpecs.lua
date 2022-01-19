@@ -433,12 +433,11 @@ function LCS.GetSpecializationInfo(specIndex, isInspect, isPet)
 
 	local _, _, classId = UnitClass('player')
 	local specId = ClassByID[classId].specs[specIndex]
+	local spec = SpecInfo[specId]
 
-	if not specId then
+	if not spec then
 		return
 	end
-
-	local spec = SpecInfo[specId]
 
 	return specId, spec.name, spec.description, spec.icon, spec.background, spec.role, spec.primaryStat
 end
@@ -463,7 +462,7 @@ function LCS.GetSpecializationInfoForClassID(classId, specIndex)
 end
 
 function LCS.GetSpecializationRoleByID(specId)
-	return SpecInfo[specId].role
+	return SpecInfo[specId] and SpecInfo[specId].role
 end
 
 function LCS.GetSpecializationRole(specIndex, isInspect, isPet)
