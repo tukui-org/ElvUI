@@ -1,5 +1,8 @@
 ### Version 2.33 [ ETA: 🍨 ]
 
+Skins: Fixed an error in Raid.lua  
+Libraries: Adjusted LibClassicSpecs to not break VuhDo  
+
 ___
 ### Version 2.32 [ January 18th 2022 ]
 
