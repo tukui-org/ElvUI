@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 12)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 12) -- based off v23
 if Lib then
 	Lib.Filters = {}
 	Lib.Scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'SharedTooltipTemplate')
