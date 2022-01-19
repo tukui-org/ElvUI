@@ -21,7 +21,10 @@ function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
 	for _, object in ipairs(StripAllTextures) do
-		object:StripTextures()
+		local obj = _G[object]
+		if obj then
+			obj:StripTextures()
+		end
 	end
 
 	S:HandleButton(_G.RaidFrameReadyCheckButton)
