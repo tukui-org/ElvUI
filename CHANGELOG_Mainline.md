@@ -1,5 +1,7 @@
 ### Version 12.61 [ ETA: 🍨 ]
 
+UnitFrames: Fixed AuraBars font issue  
+
 ___
 ### Version 12.60 [ January 18th 2022 ]
 

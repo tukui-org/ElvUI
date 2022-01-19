@@ -2,6 +2,7 @@
 
 Skins: Fixed errors in Raid.lua  
 Libraries: Adjusted LibClassicSpecs to not break VuhDo  
+UnitFrames: Fixed AuraBars font issue  
 
 ___
 ### Version 2.32 [ January 18th 2022 ]
