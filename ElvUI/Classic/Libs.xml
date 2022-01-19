@@ -12,11 +12,11 @@
 	<Include file='..\Libraries\Core\Ace\AceTimer-3.0\AceTimer-3.0.xml'/>
 	<Include file='..\Libraries\Core\Ace\AceHook-3.0\AceHook-3.0.xml'/>
 
-	<Include file='..\Libraries\Core\UTF8\UTF8.xml'/>
-	<Include file='..\Libraries\Core\LibCompress\lib.xml'/>
-	<Include file='..\Libraries\Core\LibBase64-1.0\lib.xml'/>
-	<Include file='..\Libraries\Core\LibSharedMedia-3.0\lib.xml'/>
+	<Script file='..\Libraries\Core\LibCompress\LibCompress.lua'/>
+	<Script file='..\Libraries\Core\LibBase64-1.0\LibBase64-1.0.lua'/>
+	<Script file='..\Libraries\Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Include file='..\Libraries\Core\Taintless\Taintless.xml'/>
+	<Include file='..\Libraries\Core\UTF8\UTF8.xml'/>
 
 	<Include file='..\Libraries\TBC\LibQuestXP\LibQuestXP.xml'/>
 	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
