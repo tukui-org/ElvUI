@@ -1,4 +1,7 @@
-### Version 1.59 [ ETA: 🍨 ]
+### Version 1.60 [ ETA: 🍨 ]
+
+___
+### Version 1.59 [ January 18th 2022 ]
 
 Skins: Fixed errors in Raid.lua  
 Libraries: Adjusted LibClassicSpecs to not break VuhDo  
