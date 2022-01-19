@@ -151,19 +151,17 @@ end
 do -- expand LibCustomGlow for button handling
 	local LCG, frames = E.Libs.CustomGlow, {}
 	function LCG.ShowOverlayGlow(button)
-		if button:GetAttribute('type') == 'action' then
-			local opt = E.db.general.customGlow
-			local glow = LCG.startList[opt.style]
-			if glow then
-				local arg3, arg4, arg6
-				local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
-				if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
-				if pixel then arg6 = opt.size end
+		local opt = E.db.general.customGlow
+		local glow = LCG.startList[opt.style]
+		if glow then
+			local arg3, arg4, arg6
+			local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
+			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
+			if pixel then arg6 = opt.size end
 
-				glow(button, opt.useColor and E.media.customGlowColor, arg3, arg4, nil, arg6)
+			glow(button, opt.useColor and E.media.customGlowColor, arg3, arg4, nil, arg6)
 
-				frames[button] = true
-			end
+			frames[button] = true
 		end
 	end
 
