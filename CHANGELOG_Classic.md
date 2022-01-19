@@ -1,6 +1,6 @@
 ### Version 1.59 [ ETA: 🍨 ]
 
-Skins: Fixed an error in Raid.lua  
+Skins: Fixed errors in Raid.lua  
 Libraries: Adjusted LibClassicSpecs to not break VuhDo  
 
 ___
