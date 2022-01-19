@@ -6,22 +6,25 @@ local unpack = unpack
 local pairs, ipairs = pairs, ipairs
 local hooksecurefunc = hooksecurefunc
 
+local StripAllTextures = {
+	'RaidGroup1',
+	'RaidGroup2',
+	'RaidGroup3',
+	'RaidGroup4',
+	'RaidGroup5',
+	'RaidGroup6',
+	'RaidGroup7',
+	'RaidGroup8',
+}
+
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
-	local StripAllTextures = {
-		_G.RaidGroup1,
-		_G.RaidGroup2,
-		_G.RaidGroup3,
-		_G.RaidGroup4,
-		_G.RaidGroup5,
-		_G.RaidGroup6,
-		_G.RaidGroup7,
-		_G.RaidGroup8
-	}
-
 	for _, object in ipairs(StripAllTextures) do
-		object:StripTextures()
+		local obj = _G[object]
+		if obj then
+			obj:StripTextures()
+		end
 	end
 
 	S:HandleButton(_G.RaidFrameReadyCheckButton)
@@ -41,40 +44,43 @@ function S:Blizzard_RaidUI()
 
 	do
 		local prevButton
-		for index in pairs(_G.RAID_CLASS_BUTTONS) do
-			local button = _G['RaidClassButton'..index]
-			local icon = _G['RaidClassButton'..index..'IconTexture']
-			local count = _G['RaidClassButton'..index..'Count']
-			button:StripTextures()
-			button:SetTemplate('Default')
-			button:Size(22)
+		for key, data in pairs(_G.RAID_CLASS_BUTTONS) do
+			local index = data.button
+			if index then
+				local button = _G['RaidClassButton'..index]
+				local icon = _G['RaidClassButton'..index..'IconTexture']
+				local count = _G['RaidClassButton'..index..'Count']
+				button:StripTextures()
+				button:SetTemplate('Default')
+				button:Size(22)
 
-			button:ClearAllPoints()
-			if index == 1 then
-				button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -34, -37)
-			elseif index == 11 then
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -20)
-			else
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -6)
-			end
-			prevButton = button
+				button:ClearAllPoints()
+				if index == 1 then
+					button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -34, -37)
+				elseif index == 11 then
+					button:Point('TOP', prevButton, 'BOTTOM', 0, -20)
+				else
+					button:Point('TOP', prevButton, 'BOTTOM', 0, -6)
+				end
+				prevButton = button
 
-			count:FontTemplate(nil, 12, 'OUTLINE')
+				count:FontTemplate(nil, 12, 'OUTLINE')
 
-			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetInside()
+				icon:SetTexCoord(unpack(E.TexCoords))
 
-			if index == 'PETS' then
-				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-			elseif index == 'MAINTANK' then
-				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-			elseif index == 'MAINASSIST' then
-				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-			else
-				local coords = _G.CLASS_ICON_TCOORDS[_G.CLASS_SORT_ORDER[index]]
-				if coords then
-					icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-					icon:SetTexCoord(coords[1] + 0.015, coords[2] - 0.02, coords[3] + 0.018, coords[4] - 0.02)
+				if key == 'PETS' then
+					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
+				elseif key == 'MAINTANK' then
+					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
+				elseif key == 'MAINASSIST' then
+					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
+				else
+					local coords = _G.CLASS_ICON_TCOORDS[_G.CLASS_SORT_ORDER[index]]
+					if coords then
+						icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+						icon:SetTexCoord(coords[1] + 0.015, coords[2] - 0.02, coords[3] + 0.018, coords[4] - 0.02)
+					end
 				end
 			end
 		end
