@@ -34,7 +34,7 @@ function Lib:TooltipPhrase(link, search)
 end
 
 function Lib:ForQuest(link)
-	return self:Tooltip(link, GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM):lower())
+	return self:Tooltip(link, GetItemClassInfo(Enum.ItemClass.Questitem):lower())
 end
 
 function Lib:IsReagent(link)
@@ -351,7 +351,7 @@ Lib.Filters.tipPhrases = {
 	keywords = {
 		[ITEM_SOULBOUND:lower()] = ITEM_BIND_ON_PICKUP,
 		[QUESTS_LABEL:lower()] = ITEM_BIND_QUEST,
-		[GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM):lower()] = ITEM_BIND_QUEST,
+		[GetItemClassInfo(Enum.ItemClass.Questitem):lower()] = ITEM_BIND_QUEST,
 		[PROFESSIONS_USED_IN_COOKING:lower()] = PROFESSIONS_USED_IN_COOKING,
 		[APPEARANCE_LABEL:lower()] = TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN,
 		[TOY:lower()] = TOY,
