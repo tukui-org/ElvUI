@@ -58,7 +58,7 @@ Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 3, nil, nil, 80)
 Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 4, nil, nil, 140)
 Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 5, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
 
-Auras.args.colorGroup = ACH:MultiSelect(L["Colors"], nil, 6, { colorEnchants = L["Color Enchants"], colorDebuffs = L["Color Debuffs"] }, nil, nil, function(_, key) return E.db.auras[key] end, function(_, key, value) E.db.auras[key] = value end)
+Auras.args.colorGroup = ACH:MultiSelect(E.NewSign..L["Colors"], nil, 6, { colorEnchants = L["Color Enchants"], colorDebuffs = L["Color Debuffs"] }, nil, nil, function(_, key) return E.db.auras[key] end, function(_, key, value) E.db.auras[key] = value end)
 
 Auras.args.buffs = ACH:Group(L["Buffs"], nil, 10, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
 Auras.args.buffs.args = CopyTable(SharedOptions)
