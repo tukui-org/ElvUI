@@ -5,19 +5,6 @@ local ACH = E.Libs.ACH
 
 local CopyTable = CopyTable
 
-local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E.ShowPopup = true end)
-E.Options.args.auras = Auras
-
-Auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
-Auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 2, nil, nil, 80)
-Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 3, nil, nil, 80)
-Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 4, nil, nil, 140)
-Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 5, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
-
-Auras.args.masqueGroup = ACH:Group(L["Masque"], nil, 7, nil, nil, nil, function() return not E.Masque or not E.private.auras.enable end)
-Auras.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], L["Allow Masque to handle the skinning of this element."], 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E.ShowPopup = true end)
-
 local SharedOptions = {
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 1, C.Values.GrowthDirection),
 	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 2, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
@@ -61,16 +48,31 @@ SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { T
 SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 })
 SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 })
 
-Auras.args.buffs = ACH:Group(L["Buffs"], nil, 2, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
+local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E.ShowPopup = true end)
+E.Options.args.auras = Auras
+
+Auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
+Auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 2, nil, nil, 80)
+Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 3, nil, nil, 80)
+Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 4, nil, nil, 140)
+Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 5, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
+
+Auras.args.colorGroup = ACH:MultiSelect(L["Colors"], nil, 6, { colorEnchants = L["Color Enchants"], colorDebuffs = L["Color Debuffs"] }, nil, nil, function(_, key) return E.db.auras[key] end, function(_, key, value) E.db.auras[key] = value end)
+
+Auras.args.buffs = ACH:Group(L["Buffs"], nil, 10, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
 Auras.args.buffs.args = CopyTable(SharedOptions)
 Auras.args.buffs.args.statusBar.disabled = function() return not E.db.auras.buffs.barShow end
 Auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.buffs.barColor local d = P.auras.buffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
 
-Auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 3, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
+Auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 11, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
 Auras.args.debuffs.args = CopyTable(SharedOptions)
 Auras.args.debuffs.args.statusBar.disabled = function() return not E.db.auras.debuffs.barShow end
 Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.debuffs.barColor local d = P.auras.debuffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
+
+Auras.args.masqueGroup = ACH:Group(L["Masque"], nil, 12, nil, nil, nil, function() return not E.Masque or not E.private.auras.enable end)
+Auras.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], L["Allow Masque to handle the skinning of this element."], 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E.ShowPopup = true end)
