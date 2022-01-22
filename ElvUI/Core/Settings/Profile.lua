@@ -977,6 +977,8 @@ local TopAuras = {
 P.auras = {
 	buffs = CopyTable(TopAuras),
 	debuffs = CopyTable(TopAuras),
+	colorEnchants = true,
+	colorDebuffs = true,
 }
 
 P.auras.debuffs.maxWraps = 1
