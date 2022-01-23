@@ -1981,6 +1981,7 @@ P.unitframe = {
 			roleIcon = CopyTable(UF_RoleIcon),
 			summonIcon = CopyTable(UF_SummonIcon),
 			targetsGroup = CopyTable(UF_SubGroup),
+			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
 		},
 		tank = {
 			enable = true,
@@ -2269,6 +2270,7 @@ P.unitframe.units.raid40.power.enable = false
 P.unitframe.units.raid40.roleIcon.enable = false
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid)
+P.unitframe.units.raidpet.pvpclassificationindicator = nil
 P.unitframe.units.raidpet.enable = false
 P.unitframe.units.raidpet.raidWideSorting = true
 P.unitframe.units.raidpet.buffs.numrows = 1

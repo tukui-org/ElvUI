@@ -39,6 +39,7 @@ function UF:Construct_Raid40Frames()
 	self.customTexts = {}
 
 	if E.Retail then
+		self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
 		self.ClassBar = 'AlternativePower'
 	end
@@ -131,6 +132,7 @@ function UF:Update_Raid40Frames(frame, db)
 
 	if E.Retail then
 		UF:Configure_AltPowerBar(frame)
+		UF:Configure_PvPClassificationIndicator(frame)
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
