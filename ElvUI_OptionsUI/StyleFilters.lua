@@ -18,8 +18,8 @@ local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = not E.Retail and E.Libs.LCS.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
+local GetSpecializationInfoForClassID = not E.Retail and E.Libs.LCS.GetSpecializationInfoForClassID or GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}
