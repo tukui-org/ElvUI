@@ -200,6 +200,7 @@ do
 	DisableAddOn('ElvUI_CustomTweaks')
 	DisableAddOn('ElvUI_DTBars2')
 	DisableAddOn('ElvUI_QuestXP')
+	DisableAddOn('ElvUI_CustomTags')
 end
 
 function E:OnEnable()
