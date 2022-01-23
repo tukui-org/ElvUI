@@ -192,15 +192,21 @@ do
 end
 
 do
-	DisableAddOn('ElvUI_VisualAuraTimers')
-	DisableAddOn('ElvUI_ExtraActionBars')
-	DisableAddOn('ElvUI_CastBarOverlay')
-	DisableAddOn('ElvUI_EverySecondCounts')
-	DisableAddOn('ElvUI_AuraBarsMovers')
-	DisableAddOn('ElvUI_CustomTweaks')
-	DisableAddOn('ElvUI_DTBars2')
-	DisableAddOn('ElvUI_QuestXP')
-	DisableAddOn('ElvUI_CustomTags')
+	local alwaysDisable = {
+		'ElvUI_VisualAuraTimers',
+		'ElvUI_ExtraActionBars',
+		'ElvUI_CastBarOverlay',
+		'ElvUI_EverySecondCounts',
+		'ElvUI_AuraBarsMovers',
+		'ElvUI_CustomTweaks',
+		'ElvUI_DTBars2',
+		'ElvUI_QuestXP',
+		'ElvUI_CustomTags'
+	}
+
+	for _, addon in next, alwaysDisable do
+		DisableAddOn(addon)
+	end
 end
 
 function E:OnEnable()
