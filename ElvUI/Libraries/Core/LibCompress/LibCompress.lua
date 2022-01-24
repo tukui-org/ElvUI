@@ -5,12 +5,12 @@
 -- Authors: jjsheets and Galmok of European Stormrage (Horde)
 -- Email : sheets.jeff@gmail.com and galmok@gmail.com
 -- Licence: GPL version 2 (General Public License)
--- Revision: $Revision: 75 $
--- Date: $Date: 2016-11-06 13:02:36 +0000 (Sun, 06 Nov 2016) $
+-- Revision: $Revision: 83 $
+-- Date: $Date: 2018-07-03 14:33:48 +0000 (Tue, 03 Jul 2018) $
 ----------------------------------------------------------------------------------
 
 
-local LibCompress = LibStub:NewLibrary("LibCompress", 90000 + tonumber(("$Revision: 75 $"):match("%d+")))
+local LibCompress = LibStub:NewLibrary("LibCompress", 90000 + tonumber(("$Revision: 83 $"):match("%d+")))
 
 if not LibCompress then return end
 
@@ -309,7 +309,8 @@ local function addBits(tbl, code, length)
 	end
 end
 
--- word size for this huffman algorithm is 8 bits (1 byte). This means the best compression is representing 1 byte with 1 bit, i.e. compress to 0.125 of original size.
+-- word size for this huffman algorithm is 8 bits (1 byte).
+-- this means the best compression is representing 1 byte with 1 bit, i.e. compress to 0.125 of original size.
 function LibCompress:CompressHuffman(uncompressed)
 	if type(uncompressed) ~= "string" then
 		return nil, "Can only compress strings"
@@ -320,7 +321,6 @@ function LibCompress:CompressHuffman(uncompressed)
 
 	-- make histogram
 	local hist = {}
-	local n = 0
 	-- don't have to use all data to make the histogram
 	local uncompressed_size = string_len(uncompressed)
 	local c
@@ -339,7 +339,8 @@ function LibCompress:CompressHuffman(uncompressed)
 		table_insert(leafs, leaf)
 	end
 
-	--Enqueue all leaf nodes into the first queue (by probability in increasing order so that the least likely item is in the head of the queue).
+	-- Enqueue all leaf nodes into the first queue (by probability in increasing order,
+	-- so that the least likely item is in the head of the queue).
 	sort(leafs, function(a, b)
 		if a.weight < b.weight then
 			return true
@@ -453,7 +454,7 @@ function LibCompress:CompressHuffman(uncompressed)
 
 	-- Header: byte 0 = #leafs, bytes 1-3 = size of uncompressed data
 	-- max 2^24 bytes
-	local length = string_len(uncompressed)
+	length = string_len(uncompressed)
 	compressed[2] = string_char(bit_band(nLeafs -1, 255))	-- number of leafs
 	compressed[3] = string_char(bit_band(length, 255))			-- bit 0-7
 	compressed[4] = string_char(bit_band(bit_rshift(length, 8), 255))	-- bit 8-15
@@ -654,7 +655,7 @@ function LibCompress:DecompressHuffman(compressed)
 	local c, cl
 	local minCodeLen = 1000
 	local maxCodeLen = 0
-	local symbol, code_high, code, code_len, temp_high, temp
+	local symbol, code_high, code, code_len, temp_high, temp, _bitfield_high, _bitfield, _bitfield_len
 	local n = 0
 	local state = 0 -- 0 = get symbol (8 bits),  1 = get code (varying bits, ends with 2 bits set)
 	while n < num_symbols do
@@ -706,7 +707,6 @@ function LibCompress:DecompressHuffman(compressed)
 	local large_uncompressed_size = 0
 	local test_code
 	local test_code_len = minCodeLen
-	local symbol
 	local dec_size = 0
 	compressed_size = compressed_size + 1
 	local temp_limit = 200 -- first limit of uncompressed data. large_uncompressed will hold strings of length 200
@@ -909,7 +909,7 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 	local decode_search = {}
 	local decode_translate = {}
 	local decode_func
-	local c, r, i, to, from
+	local c, r, to, from
 	local escapeCharIndex, escapeChar = 0
 
 	-- map single byte to single byte
@@ -938,19 +938,19 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 		c = string_sub(encodeBytes, i, i)
 		if not encode_translate[c] then
 			-- this loop will update escapeChar and r
-			while r < 256 and taken[string_char(r)] do
+			while r >= 256 or taken[string_char(r)] do
 				r = r + 1
 				if r > 255 then -- switch to next escapeChar
-					if escapeChar == "" then -- we are out of escape chars and we need more!
-						return nil, "Out of escape characters"
-					end
-
 					codecTable["decode_search"..tostring(escapeCharIndex)] = escape_for_gsub(escapeChar).."([".. escape_for_gsub(table_concat(decode_search)).."])"
 					codecTable["decode_translate"..tostring(escapeCharIndex)] = decode_translate
 					table_insert(decode_func_string, "str = str:gsub(self.decode_search"..tostring(escapeCharIndex)..", self.decode_translate"..tostring(escapeCharIndex)..");")
 
 					escapeCharIndex  = escapeCharIndex + 1
 					escapeChar = string_sub(escapeChars, escapeCharIndex, escapeCharIndex)
+
+					if escapeChar == "" then -- we are out of escape chars and we need more!
+						return nil, "Out of escape characters"
+					end
 
 					r = 0
 					decode_search = {}
@@ -980,7 +980,6 @@ function LibCompress:GetEncodeTable(reservedChars, escapeChars, mapChars)
 
 	encode_func = assert(loadstring("return function(self, str) return str:gsub(self.encode_search, self.encode_translate); end"))()
 	decode_func = assert(loadstring(decode_func_string))()
-
 	codecTable.encode_search = encode_search
 	codecTable.encode_translate = encode_translate
 	codecTable.Encode = encode_func
@@ -1023,7 +1022,6 @@ function LibCompress:GetChatEncodeTable(reservedChars, escapeChars, mapChars)
 	-- 0% (average with pure ascii text)
 	-- 53.5% (average with random data valued zero to 255)
 	-- 100% (only encoding data that encodes to two bytes)
-	local i
 	local r = {}
 
 	for i = 128, 255 do
@@ -1177,7 +1175,6 @@ function LibCompress:fcs16init()
 end
 
 function LibCompress:fcs16update(uFcs16, pBuffer)
-	local i
 	local length = string_len(pBuffer)
 	for i = 1, length do
 		uFcs16 = bit_bxor(bit_rshift(uFcs16,8), fcs16tab[bit_band(bit_bxor(uFcs16, string_byte(pBuffer, i)), 255)])
@@ -1246,7 +1243,6 @@ function LibCompress:fcs32init()
 end
 
 function LibCompress:fcs32update(uFcs32, pBuffer)
-	local i
 	local length = string_len(pBuffer)
 	for i = 1, length do
 		uFcs32 = bit_bxor(bit_rshift(uFcs32, 8), fcs32tab[bit_band(bit_bxor(uFcs32, string_byte(pBuffer, i)), 255)])

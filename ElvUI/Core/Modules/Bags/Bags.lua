@@ -75,6 +75,7 @@ local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
+local C_Item_IsBound = C_Item.IsBound
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -442,11 +443,9 @@ function B:BagFrameHidden(bagFrame)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 
 	for _, bagID in next, bagFrame.BagIDs do
-		for slotID = 1, GetContainerNumSlots(bagID) do
-			local slot = bagFrame.Bags[bagID][slotID]
-			if slot then
-				B:NewItemGlowSlotSwitch(slot)
-			end
+		local slotMax = B:GetContainerNumSlots(bagID)
+		for slotID = 1, slotMax do
+			B:NewItemGlowSlotSwitch(bagFrame.Bags[bagID][slotID])
 		end
 	end
 end
@@ -533,32 +532,6 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 	end
 end
 
-function B:GetItemBindInfo(slot, bagID, slotID)
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	if slot.GetInventorySlot then -- this fixes bank bagid -1
-		E.ScanTooltip:SetInventoryItem('player', slot:GetInventorySlot())
-	else
-		E.ScanTooltip:SetBagItem(bagID, slotID)
-	end
-	E.ScanTooltip:Show()
-
-	local BoE, BoU
-	for i = BIND_START, BIND_END do
-		local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
-
-		if not line or line == '' then break end
-		if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
-
-		BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
-
-		if BoE or BoU then break end
-	end
-
-	E.ScanTooltip:Hide()
-
-	return BoE, BoU
-end
-
 function B:UpdateItemLevel(slot)
 	if slot.itemLink and B.db.itemLevel then
 		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(slot.itemClassID, slot.itemSubClassID, slot.itemEquipLoc, slot.rarity)
@@ -612,18 +585,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if E.Retail then
 			isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		else
+			isBound = C_Item_IsBound(slot.itemLocation)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		end
 
 		local BoE, BoU = bindType == 2, bindType == 3
 		if B.db.showBindType and not isBound and (BoE or BoU) and (rarity and rarity > ITEMQUALITY_COMMON) then
-			if not E.Retail then
-				BoE, BoU = B:GetItemBindInfo(slot, bagID, slotID)
-			end
-
-			if BoE or BoU then
-				slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
-			end
+			slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 		end
 
 		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
@@ -1308,7 +1276,7 @@ function B:GetGrays(vendor)
 	local value = 0
 
 	for bagID = 0, 4 do
-		for slotID = 1, GetContainerNumSlots(bagID) do
+		for slotID = 1, B:GetContainerNumSlots(bagID) do
 			local _, count, _, _, _, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 			if itemLink and not noValue and not B.ExcludeGrays[itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
@@ -2001,7 +1969,7 @@ function B:ToggleBags(bagID)
 		if closed then
 			B:OpenBags()
 		end
-	elseif bagID and GetContainerNumSlots(bagID) ~= 0 then
+	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
 		if B.BagFrame:IsShown() then
 			B:CloseBags()
 		else

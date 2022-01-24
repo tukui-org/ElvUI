@@ -1,5 +1,5 @@
 local major = "LibHealComm-4.0"
-local minor = 100
+local minor = 101
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -17,6 +17,7 @@ local gsub = gsub
 local max = max
 local min = min
 local pairs = pairs
+local ipairs = ipairs
 local rawset = rawset
 local select = select
 local setmetatable = setmetatable
@@ -59,6 +60,7 @@ local SpellIsTargeting = SpellIsTargeting
 local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 local UnitExists = UnitExists
+local UnitBuff = UnitBuff
 local UnitGUID = UnitGUID
 local UnitIsCharmed = UnitIsCharmed
 local UnitIsVisible = UnitIsVisible
@@ -67,7 +69,10 @@ local UnitLevel = UnitLevel
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
 local CheckInteractDistance = CheckInteractDistance
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
+local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
+local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local COMBATLOG_OBJECT_AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 
 local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
@@ -919,7 +924,7 @@ if( playerClass == "DRUID" ) then
 				end
 
 				local bombSpell = bombSpellPower * hotData[spellName].dhCoeff * (1 + talentData[EmpoweredRejuv].current)
-				bombAmount = math.ceil(calculateGeneralAmount(hotData[spellName].levels[spellRank], hotData[spellName].bomb[spellRank], bombSpell, spModifier, healModifier))
+				bombAmount = ceil(calculateGeneralAmount(hotData[spellName].levels[spellRank], hotData[spellName].bomb[spellRank], bombSpell, spModifier, healModifier))
 
 				-- Figure out the hot tick healing
 				spellPower = spellPower * (hotData[spellName].coeff * (1 + talentData[EmpoweredRejuv].current))
@@ -1195,9 +1200,9 @@ if( playerClass == "PRIEST" ) then
 			local spellName = GetSpellInfo(spellID)
 			if( spellName == BindingHeal ) then
 				if guid == playerGUID then
-					return string.format("%s", compressGUID[playerGUID]), healAmount
+					return format("%s", compressGUID[playerGUID]), healAmount
 				else
-					return string.format("%s,%s", compressGUID[guid], compressGUID[playerGUID]), healAmount
+					return format("%s,%s", compressGUID[guid], compressGUID[playerGUID]), healAmount
 				end
 			elseif( spellName == PrayerofHealing ) then
 				guid = UnitGUID("player")
@@ -1429,7 +1434,8 @@ if( playerClass == "HUNTER" ) then
 		itemSetsData["Giantstalker"] = {16851, 16849, 16850, 16845, 16848, 16852, 16846, 16847}
 
 		GetHealTargets = function(bitType, guid, healAmount, spellID)
-			return compressGUID[UnitGUID("pet")], healAmount
+			local petGUID = UnitGUID("pet")
+			return petGUID and compressGUID[petGUID], healAmount
 		end
 
 		CalculateHotHealing = function(guid, spellID)
@@ -1464,7 +1470,8 @@ if( playerClass == "WARLOCK" ) then
 		talentData[ImpHealthFunnel] = { mod = 0.1, current = 0 }
 
 		GetHealTargets = function(bitType, guid, healAmount, spellID)
-			return compressGUID[UnitGUID("pet")], healAmount
+			local petGUID = UnitGUID("pet")
+			return petGUID and compressGUID[petGUID], healAmount
 		end
 
 		CalculateHealing = function(guid, spellID)
@@ -2077,8 +2084,8 @@ function HealComm:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		parseChannelHeal(casterGUID, spellID, tonumber(arg1), tonumber(arg2), strsplit(",", arg3))
 		-- New hot with a "bomb" component - B:<totalTicks>:<spellID>:<bombAmount>:target1,target2:<amount>:<isMulti>:<tickInterval>:target1,target2...
 	elseif( commType == "B" and arg1 and arg6 ) then
-		parseHotHeal(casterGUID, false, spellID, tonumber(arg3), tonumber(extraArg), tonumber(arg5), string.split(",", arg6))
-		parseHotBomb(casterGUID, false, spellID, tonumber(arg1), string.split(",", arg2))
+		parseHotHeal(casterGUID, false, spellID, tonumber(arg3), tonumber(extraArg), tonumber(arg5), strsplit(",", arg6))
+		parseHotBomb(casterGUID, false, spellID, tonumber(arg1), strsplit(",", arg2))
 		-- New hot - H:<totalTicks>:<spellID>:<amount>:<isMulti>:<tickInterval>:target1,target2...
 	elseif( commType == "H" and arg1 and arg4 ) then
 		parseHotHeal(casterGUID, false, spellID, tonumber(arg1), tonumber(extraArg), tonumber(arg3), strsplit(",", arg4))
@@ -2087,8 +2094,8 @@ function HealComm:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		parseHotHeal(casterGUID, true, spellID, tonumber(arg1), tonumber(extraArg), tonumber(arg2), strsplit(",", arg3))
 		-- New updated bomb hot - UB:<totalTicks>:<spellID>:<bombAmount>:target1,target2:<amount>:<tickInterval>:target1,target2...
 	elseif( commType == "UB" and arg1 and arg5 ) then
-		parseHotHeal(casterGUID, true, spellID, tonumber(arg3), tonumber(extraArg), tonumber(arg4), string.split(",", arg5))
-		parseHotBomb(casterGUID, true, spellID, tonumber(arg1), string.split(",", arg2))
+		parseHotHeal(casterGUID, true, spellID, tonumber(arg3), tonumber(extraArg), tonumber(arg4), strsplit(",", arg5))
+		parseHotBomb(casterGUID, true, spellID, tonumber(arg1), strsplit(",", arg2))
 		-- Heal stopped - S:<extra>:<spellID>:<ended early: 0/1>:target1,target2...
 	elseif( commType == "S" or commType == "HS" ) then
 		local interrupted = arg1 == "1" and true or false
@@ -2218,11 +2225,11 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 
 					-- Hot with a bomb!
 					if( bombAmount ) then
-						local bombTargets, bombAmount = GetHealTargets(BOMB_HEALS, destGUID, math.max(bombAmount, 0), spellName)
-						parseHotBomb(sourceGUID, false, spellID, bombAmount, string.split(",", bombTargets))
-						sendMessage(string.format("B:%d:%d:%d:%s:%d::%d:%s", totalTicks, spellID, bombAmount, bombTargets, amount, tickInterval, targets))
+						local bombTargets, bombAmount = GetHealTargets(BOMB_HEALS, destGUID, max(bombAmount, 0), spellName)
+						parseHotBomb(sourceGUID, false, spellID, bombAmount, strsplit(",", bombTargets))
+						sendMessage(format("B:%d:%d:%d:%s:%d::%d:%s", totalTicks, spellID, bombAmount, bombTargets, amount, tickInterval, targets))
 					else
-						sendMessage(string.format("H:%d:%d:%d::%d:%s", totalTicks, spellID, amount, tickInterval, targets))
+						sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, spellID, amount, tickInterval, targets))
 					end
 				end
 			end
@@ -2260,12 +2267,12 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 					if( bombAmount ) then
 						parseHotBomb(sourceGUID, true, spellID, bombAmount, compressGUID[destGUID])
 
-						sendMessage(string.format("UB:%s:%d:%d:%s:%d:%d:%s", pending.totalTicks, spellID, bombAmount, compressGUID[destGUID], amount, pending.tickInterval, compressGUID[destGUID]))
+						sendMessage(format("UB:%s:%d:%d:%s:%d:%d:%s", pending.totalTicks, spellID, bombAmount, compressGUID[destGUID], amount, pending.tickInterval, compressGUID[destGUID]))
 						return
 					end
 				end
 
-				sendMessage(string.format("U:%s:%d:%d:%d:%s", spellID, amount, pending.totalTicks, pending.tickInterval, compressGUID[destGUID]))
+				sendMessage(format("U:%s:%d:%d:%d:%s", spellID, amount, pending.totalTicks, pending.tickInterval, compressGUID[destGUID]))
 			end
 		end
 		-- Aura faded

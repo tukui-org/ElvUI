@@ -190,15 +190,12 @@ function UF:UnshowChildUnits(header, ...)
 end
 
 local function OnAttributeChanged(self)
-	if not self:GetParent().forceShow and not self.forceShow then return end
-	if not self:IsShown() then return end
+	if not self:IsShown() or (not self:GetParent().forceShow and not self.forceShow) then return end
 
 	local db = self.db or self:GetParent().db
-	local maxUnits = MAX_RAID_MEMBERS
-
-	local startingIndex = db.raidWideSorting and -(min(db.numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1) or -4
-	if self:GetAttribute('startingIndex') ~= startingIndex then
-		self:SetAttribute('startingIndex', startingIndex)
+	local index = not db.raidWideSorting and -4 or -(min((db.numGroups or 1) * ((db.groupsPerRowCol or 1) * 5), MAX_RAID_MEMBERS) + 1)
+	if self:GetAttribute('startingIndex') ~= index then
+		self:SetAttribute('startingIndex', index)
 		UF:ShowChildUnits(self, self:GetChildren())
 	end
 end

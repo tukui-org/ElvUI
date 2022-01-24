@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, Profil
 local C, L = unpack(E.OptionsUI)
 local NP = E:GetModule('NamePlates')
 local ACH = E.Libs.ACH
+local LCS = E.Libs.LCS
 
 local _G = _G
 local wipe, pairs, strmatch, strsplit, tostring = wipe, pairs, strmatch, strsplit, tostring
@@ -18,8 +19,8 @@ local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = not E.Retail and LCS.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
+local GetSpecializationInfoForClassID = not E.Retail and LCS.GetSpecializationInfoForClassID or GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}

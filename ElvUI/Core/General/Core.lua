@@ -1,6 +1,7 @@
 local ElvUI = select(2, ...)
 ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
 local E, L, V, P, G = unpack(ElvUI)
+local LCS = E.Libs.LCS
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
@@ -26,6 +27,7 @@ local GetBindingKey = GetBindingKey
 local SetBinding = SetBinding
 local SaveBindings = SaveBindings
 local GetCurrentBindingSet = GetCurrentBindingSet
+local GetSpecialization = not E.Retail and LCS.GetSpecialization or GetSpecialization
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
