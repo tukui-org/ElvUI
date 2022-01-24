@@ -6,7 +6,6 @@ local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
-local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 
 function UF:Construct_PartyFrames()
@@ -71,6 +70,7 @@ function UF:Construct_PartyFrames()
 		self.customTexts = {}
 
 		if E.Retail then
+			self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
 			self.AlternativePower = UF:Construct_AltPowerBar(self)
 			self.ClassBar = 'AlternativePower'
 		end
@@ -194,6 +194,7 @@ function UF:Update_PartyFrames(frame, db)
 			UF:Configure_AltPowerBar(frame)
 			UF:Configure_ResurrectionIcon(frame)
 			UF:Configure_SummonIcon(frame)
+			UF:Configure_PvPClassificationIndicator(frame)
 		end
 	end
 

@@ -38,6 +38,12 @@ local ClassByID = {
 
 for _, classInfo in pairs(ClassByID) do classInfo.displayName = LOCALIZED_CLASS_NAMES_MALE[classInfo.name] end
 
+-- Expansions
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local isTBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
+local isWrath = false
+
 local Stat = { Strength = 1, Agility = 2, Stamina = 3, Intellect = 4, Spirit = 5 }
 local Role = { Damager = 'DAMAGER', Tank = 'TANK', Healer = 'HEALER' }
 
@@ -413,7 +419,8 @@ function LCS.GetSpecialization(isInspect, isPet)
 	if (classId == 11) then -- Druid
 		local feralInstinctPoints = select(5, GetTalentInfo(DRUID_FERAL_TAB, DRUID_FERAL_INSTINCT))
 		local thickHidePoints = select(5, GetTalentInfo(DRUID_FERAL_TAB, DRUID_THICK_HIDE))
-		if (feralInstinctPoints == 5 and thickHidePoints >= 2) then
+
+		if (feralInstinctPoints >= 2 or thickHidePoints >= 2) then
 			return DRUID_GUARDIAN_SPEC_INDEX
 		end
 
@@ -478,16 +485,3 @@ end
 function LCS.GetNumClasses()
 	return #ClassByID
 end
-
--- Expose Entire Lib
-if not MAX_TALENT_TIERS then MAX_TALENT_TIERS = LCS.MAX_TALENT_TIERS end
-if not NUM_TALENT_COLUMNS then NUM_TALENT_COLUMNS = LCS.NUM_TALENT_COLUMNS end
-if not GetNumClasses then GetNumClasses = LCS.GetNumClasses end
-if not GetClassInfo then GetClassInfo = LCS.GetClassInfo end
-if not GetNumSpecializationsForClassID then GetNumSpecializationsForClassID = LCS.GetNumSpecializationsForClassID end
-if not GetActiveSpecGroup then GetActiveSpecGroup = LCS.GetActiveSpecGroup end
-if not GetSpecialization then GetSpecialization = LCS.GetSpecialization end
-if not GetSpecializationInfo then GetSpecializationInfo = LCS.GetSpecializationInfo end
-if not GetSpecializationInfoForClassID then GetSpecializationInfoForClassID = LCS.GetSpecializationInfoForClassID end
-if not GetSpecializationRole then GetSpecializationRole = LCS.GetSpecializationRole end
-if not GetSpecializationRoleByID then GetSpecializationRoleByID = LCS.GetSpecializationRoleByID end

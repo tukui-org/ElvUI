@@ -1,5 +1,9 @@
 ### Version 1.60 [ ETA: 🍨 ]
 
+Auras: Added color toggles for enchants & debuffs  
+Skins: Fixed another Raid.lua skin error  
+UnitFrames: LibHealComm fixes for Warlock & Hunter  
+
 ___
 ### Version 1.59 [ January 18th 2022 ]
 
