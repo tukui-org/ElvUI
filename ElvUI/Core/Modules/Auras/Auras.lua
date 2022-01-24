@@ -247,7 +247,7 @@ function A:UpdateAura(button, index)
 
 	local dtype = debuffType or 'none'
 	if button.debuffType ~= dtype then
-		local color = A.db.colorDebuffs and (button.filter == 'HARMFUL' and _G.DebuffTypeColor[dtype]) or E.db.general.bordercolor
+		local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and _G.DebuffTypeColor[dtype]) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.debuffType = dtype
@@ -262,8 +262,8 @@ function A:UpdateTempEnchant(button, index)
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
 		local r, g, b
-		local quality = GetInventoryItemQuality('player', index)
-		if A.db.colorEnchants and quality and quality > 1 then
+		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
+		if quality and quality > 1 then
 			r, g, b = GetItemQualityColor(quality)
 		else
 			r, g, b = unpack(E.media.bordercolor)
