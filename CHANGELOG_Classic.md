@@ -1,5 +1,8 @@
 ### Version 1.60 [ ETA: 🍨 ]
 
+Auras: Added color toggles for enchants & debuffs  
+UnitFrames: LibHealComm fixes for Warlock & Hunter  
+
 ___
 ### Version 1.59 [ January 18th 2022 ]
 
