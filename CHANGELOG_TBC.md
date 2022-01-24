@@ -1,6 +1,7 @@
 ### Version 2.34 [ ETA: 🍨 ]
 
 Auras: Added color toggles for enchants & debuffs  
+Skins: Fixed another Raid.lua skin error  
 UnitFrames: LibHealComm fixes for Warlock & Hunter  
 
 ___
