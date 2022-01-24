@@ -443,11 +443,9 @@ function B:BagFrameHidden(bagFrame)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 
 	for _, bagID in next, bagFrame.BagIDs do
-		for slotID = 1, GetContainerNumSlots(bagID) do
-			local slot = bagFrame.Bags[bagID][slotID]
-			if slot then
-				B:NewItemGlowSlotSwitch(slot)
-			end
+		local slotMax = B:GetContainerNumSlots(bagID)
+		for slotID = 1, slotMax do
+			B:NewItemGlowSlotSwitch(bagFrame.Bags[bagID][slotID])
 		end
 	end
 end
@@ -1278,7 +1276,7 @@ function B:GetGrays(vendor)
 	local value = 0
 
 	for bagID = 0, 4 do
-		for slotID = 1, GetContainerNumSlots(bagID) do
+		for slotID = 1, B:GetContainerNumSlots(bagID) do
 			local _, count, _, _, _, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 			if itemLink and not noValue and not B.ExcludeGrays[itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
@@ -1971,7 +1969,7 @@ function B:ToggleBags(bagID)
 		if closed then
 			B:OpenBags()
 		end
-	elseif bagID and GetContainerNumSlots(bagID) ~= 0 then
+	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
 		if B.BagFrame:IsShown() then
 			B:CloseBags()
 		else
