@@ -726,6 +726,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[356925]	= Defaults(6), -- Carnage
 		[358777]	= Defaults(6), -- Bindings of Misery
 	-- Shadowlands Season 3
+		[368241]	= Defaults(3), -- Decrypted Urh Cypher
+		[368244]	= Defaults(4), -- Urh Cloaking Field
+		[368240]	= Defaults(3), -- Decrypted Wo Cypher
+		[368239]	= Defaults(3), -- Decrypted Vy Cypher
+		[366297]	= Defaults(6), -- Deconstruct (Tank Debuff)
+		[366288]	= Defaults(6), -- Force Slam (Stun)
 	-- Legion Timewalking Mythic+
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
@@ -1252,6 +1258,9 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[340873]	= Defaults(), -- Bursting With Pride (Prideful)
 		[340880]	= Defaults(), -- Prideful
 	-- Shadowlands Season 2
+	-- Shadowlands Season 3
+		[368104]	= Defaults(), -- Acceleration Field
+		[368079]	= Defaults(), -- Defense Matrix
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
