@@ -67,7 +67,7 @@ for i = 1, GetNumClasses() do
 	end
 end
 
-local roles = { L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
+local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
