@@ -182,12 +182,13 @@ do -- expand LibCustomGlow for button handling
 end
 
 do
-	local a1,a2,a3 = '','([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
-	function E:EscapeString(s) return gsub(s,a2,a3) end
+	local a,b,c = '','([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
+	function E:EscapeString(s) return gsub(s,b,c) end
 
-	local a4,a5,a6,a7 = '|c[fF][fF]%x%x%x%x%x%x','|r','|[TA].-|[ta]','^%s*'
+	local d = {'|c[fF][fF]%x%x%x%x%x%x','|r','|[TA].-|[ta]','^%s+','%s+$'}
 	function E:StripString(s)
-		return gsub(gsub(gsub(gsub(s,a4,a1),a5,a1),a6,a1),a7,a1)
+		for _, z in next, d do s = gsub(s,z,a) end
+		return s
 	end
 end
 
