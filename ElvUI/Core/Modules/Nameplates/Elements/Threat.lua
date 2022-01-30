@@ -5,7 +5,6 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
-local GetPartyAssignment = GetPartyAssignment
 
 NP.ThreatPets = {
 	["61146"] = true,	-- Monk's Black Ox Statue
