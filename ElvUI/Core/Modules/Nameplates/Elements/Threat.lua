@@ -5,6 +5,7 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
+local GetPartyAssignment = GetPartyAssignment
 
 NP.ThreatPets = {
 	["61146"] = true,	-- Monk's Black Ox Statue
@@ -14,7 +15,7 @@ NP.ThreatPets = {
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local nameplate, db, unitTarget, imTank = self.__owner, NP.db.threat, unit..'target', E.myrole == 'TANK'
+	local nameplate, db, unitTarget, imTank = self.__owner, NP.db.threat, unit..'target', E.myrole == 'TANK' or GetPartyAssignment('MAINTANK', 'player')
 	local unitRole = NP.IsInGroup and (UnitExists(unitTarget) and not UnitIsUnit(unitTarget, 'player')) and NP.GroupRoles[UnitName(unitTarget)] or 'NONE'
 	local unitTank = unitRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(unitTarget)])
 	local isTank, offTank, feedbackUnit = unitTank or imTank, db.beingTankedByTank and (unitTank and imTank) or false, (unitTank and unitTarget) or 'player'
