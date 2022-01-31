@@ -47,6 +47,8 @@ local isWrath = false
 local Stat = { Strength = 1, Agility = 2, Stamina = 3, Intellect = 4, Spirit = 5 }
 local Role = { Damager = 'DAMAGER', Tank = 'TANK', Healer = 'HEALER' }
 
+local ClassID = select(3, UnitClass('player'))
+
 -- Detailed info for each spec
 local SpecInfo = {
 	[71] = { -- Warrior: Arms
@@ -414,9 +416,7 @@ function LCS.GetSpecialization(isInspect, isPet)
 		end
 	end
 
-	local classId = select(3, UnitClass('player'))
-
-	if (classId == 11) then -- Druid
+	if (ClassID == 11) then -- Druid
 		local feralInstinctPoints = select(5, GetTalentInfo(DRUID_FERAL_TAB, DRUID_FERAL_INSTINCT))
 		local thickHidePoints = select(5, GetTalentInfo(DRUID_FERAL_TAB, DRUID_THICK_HIDE))
 
@@ -438,8 +438,7 @@ function LCS.GetSpecializationInfo(specIndex, isInspect, isPet)
 		return
 	end
 
-	local _, _, classId = UnitClass('player')
-	local specId = ClassByID[classId].specs[specIndex]
+	local specId = ClassByID[ClassID].specs[specIndex]
 	local spec = SpecInfo[specId]
 
 	if not spec then
@@ -463,7 +462,7 @@ function LCS.GetSpecializationInfoForClassID(classId, specIndex)
 		return
 	end
 
-	local isAllowed = classId == select(3, UnitClass('player'))
+	local isAllowed = classId == ClassID
 
 	return specId, info.name, info.description, info.icon, info.role, info.isRecommended, isAllowed
 end
@@ -477,8 +476,7 @@ function LCS.GetSpecializationRole(specIndex, isInspect, isPet)
 		return
 	end
 
-	local _, _, classId = UnitClass('player')
-	local specId = ClassByID[classId].specs[specIndex]
+	local specId = ClassByID[ClassID].specs[specIndex]
 	return SpecInfo[specId] and SpecInfo[specId].role
 end
 
