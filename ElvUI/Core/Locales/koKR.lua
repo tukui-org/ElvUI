@@ -307,6 +307,7 @@ L["Setup Chat"] = "대화창 설치"
 L["Setup CVars"] = "인터페이스 설정 적용"
 L["Shared Profile will select the default profile."] = true
 L["Shared Profile"] = true
+L["Shift + Left Click to Toggle Bag"] = true
 L["Show/Hide Reagents"] = "재료은행 표시"
 L["Shows a frame with needed info for support."] = true
 L["silverabbrev"] = "|cffc7c7cfs|r"

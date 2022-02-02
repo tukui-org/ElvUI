@@ -307,6 +307,7 @@ L["Setup Chat"] = "Настроить чат"
 L["Setup CVars"] = "Сбросить настройки"
 L["Shared Profile will select the default profile."] = true
 L["Shared Profile"] = true
+L["Shift + Left Click to Toggle Bag"] = true
 L["Show/Hide Reagents"] = "Показать/скрыть материалы"
 L["Shows a frame with needed info for support."] = "Отображает окно с необходимой информацией для получения поддержки."
 L["silverabbrev"] = "|cffc7c7cfс|r"
