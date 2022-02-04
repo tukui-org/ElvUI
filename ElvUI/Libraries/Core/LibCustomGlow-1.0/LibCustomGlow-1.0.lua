@@ -6,7 +6,7 @@ https://www.wowace.com/projects/libbuttonglow-1-0
 -- luacheck: globals CreateFromMixins ObjectPoolMixin CreateTexturePool CreateFramePool
 
 local MAJOR_VERSION = "LibCustomGlow-1.0"
-local MINOR_VERSION = 15
+local MINOR_VERSION = 16
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -15,8 +15,12 @@ local Masque = LibStub("Masque", true)
 local textureList = {
     ["empty"] = [[Interface\AdventureMap\BrokenIsles\AM_29]],
     ["white"] = [[Interface\BUTTONS\WHITE8X8]],
-    ["shine"] = [[Interface\Artifacts\Artifacts]]
+    ["shine"] = [[Interface\ItemSocketingFrame\UI-ItemSockets]]
 }
+
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+     textureList.shine = [[Interface\Artifacts\Artifacts]]
+end
 
 function lib.RegisterTextures(texture,id)
     textureList[id] = texture
