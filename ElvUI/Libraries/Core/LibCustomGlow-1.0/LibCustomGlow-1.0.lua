@@ -18,8 +18,11 @@ local textureList = {
     ["shine"] = [[Interface\ItemSocketingFrame\UI-ItemSockets]]
 }
 
+local shineCoords = {0.3984375, 0.4453125, 0.40234375, 0.44921875}
+
 if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
      textureList.shine = [[Interface\Artifacts\Artifacts]]
+     shineCoords = {0.8115234375,0.9169921875,0.8798828125,0.9853515625}
 end
 
 function lib.RegisterTextures(texture,id)
@@ -110,6 +113,7 @@ local function addFrameAndTex(r,color,name,key,N,xOffset,yOffset,texture,texCoor
         if not f.textures[i] then
             f.textures[i] = GlowTexPool:Acquire()
             f.textures[i]: SetTexture(texture)
+            f.textures[i]: SetBlendMode("ADD")
             f.textures[i]: SetTexCoord(texCoord[1],texCoord[2],texCoord[3],texCoord[4])
             f.textures[i]: SetDesaturated(desaturated)
             f.textures[i]: SetParent(f)
@@ -382,7 +386,7 @@ function lib.AutoCastGlow_Start(r,color,N,frequency,scale,xOffset,yOffset,key,fr
     yOffset = yOffset or 0
     key = key or ""
 
-    addFrameAndTex(r,color,"_AutoCastGlow",key,N*4,xOffset,yOffset,textureList.shine,{0.8115234375,0.9169921875,0.8798828125,0.9853515625},true, frameLevel)
+    addFrameAndTex(r,color,"_AutoCastGlow",key,N*4,xOffset,yOffset,textureList.shine,shineCoords, true, frameLevel)
     local f = r["_AutoCastGlow"..key]
     local sizes = {7,6,5,4}
     for k,size in pairs(sizes) do
