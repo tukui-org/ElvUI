@@ -13,16 +13,15 @@ if not lib then return end
 local Masque = LibStub("Masque", true)
 
 local textureList = {
-    ["empty"] = [[Interface\AdventureMap\BrokenIsles\AM_29]],
-    ["white"] = [[Interface\BUTTONS\WHITE8X8]],
-    ["shine"] = [[Interface\ItemSocketingFrame\UI-ItemSockets]]
+    empty = [[Interface\AdventureMap\BrokenIsles\AM_29]],
+    white = [[Interface\BUTTONS\WHITE8X8]],
+    shine = [[Interface\ItemSocketingFrame\UI-ItemSockets]]
 }
 
 local shineCoords = {0.3984375, 0.4453125, 0.40234375, 0.44921875}
-
 if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-     textureList.shine = [[Interface\Artifacts\Artifacts]]
-     shineCoords = {0.8115234375,0.9169921875,0.8798828125,0.9853515625}
+    textureList.shine = [[Interface\Artifacts\Artifacts]]
+    shineCoords = {0.8115234375,0.9169921875,0.8798828125,0.9853515625}
 end
 
 function lib.RegisterTextures(texture,id)
@@ -112,12 +111,12 @@ local function addFrameAndTex(r,color,name,key,N,xOffset,yOffset,texture,texCoor
     for i=1,N do
         if not f.textures[i] then
             f.textures[i] = GlowTexPool:Acquire()
-            f.textures[i]: SetTexture(texture)
-            f.textures[i]: SetBlendMode("ADD")
-            f.textures[i]: SetTexCoord(texCoord[1],texCoord[2],texCoord[3],texCoord[4])
-            f.textures[i]: SetDesaturated(desaturated)
-            f.textures[i]: SetParent(f)
-            f.textures[i]: SetDrawLayer("ARTWORK",7)
+            f.textures[i]:SetTexture(texture)
+            f.textures[i]:SetBlendMode("ADD")
+            f.textures[i]:SetTexCoord(texCoord[1],texCoord[2],texCoord[3],texCoord[4])
+            f.textures[i]:SetDesaturated(desaturated)
+            f.textures[i]:SetParent(f)
+            f.textures[i]:SetDrawLayer("ARTWORK",7)
         end
         f.textures[i]:SetVertexColor(color[1],color[2],color[3],color[4])
         f.textures[i]:Show()
