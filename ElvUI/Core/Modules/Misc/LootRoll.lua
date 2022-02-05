@@ -146,6 +146,7 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 	f:SetScript('OnEnter', SetTip)
 	f:SetScript('OnLeave', GameTooltip_Hide)
 	f:SetMotionScriptsWhileDisabled(true)
+	f:SetHitRectInsets(3, 3, 3, 3)
 
 	RollButtonTextures(f, texture..'-Up', rolltype)
 

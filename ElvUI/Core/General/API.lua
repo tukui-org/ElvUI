@@ -604,7 +604,7 @@ function E:PositionGameMenuButton()
 	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
 	local button = GameMenuFrame[E.name]
-	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
+	button:SetFormattedText('%s%s|r', E.media.hexvaluecolor, E.name)
 
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= button then

@@ -307,6 +307,7 @@ L["Setup Chat"] = "設定對話視窗"
 L["Setup CVars"] = "設定參數"
 L["Shared Profile will select the default profile."] = true
 L["Shared Profile"] = true
+L["Shift + Left Click to Toggle Bag"] = true
 L["Show/Hide Reagents"] = "顯示/隱藏材料"
 L["Shows a frame with needed info for support."] = "顯示支持訊息。"
 L["silverabbrev"] = "|cffc7c7cf銀|r"

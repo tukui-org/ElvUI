@@ -307,6 +307,7 @@ L["Setup Chat"] = "Configurar Chat"
 L["Setup CVars"] = "Configurar CVars"
 L["Shared Profile will select the default profile."] = true
 L["Shared Profile"] = true
+L["Shift + Left Click to Toggle Bag"] = true
 L["Show/Hide Reagents"] = "Mostrar/Ocultar Componentes"
 L["Shows a frame with needed info for support."] = "Muestra un marco que contiene información para ayudar a apoyar."
 L["silverabbrev"] = "|cffc7c7cfs|r"

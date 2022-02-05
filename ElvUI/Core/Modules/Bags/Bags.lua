@@ -720,7 +720,7 @@ function B:Holder_OnEnter()
 		end
 
 		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
 
 		if E.Retail then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
@@ -1370,7 +1370,7 @@ function B:BagItemAction(button, holder, func, id)
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif CursorHasItem() then
 		if func then func(id) end
-	else
+	elseif IsShiftKeyDown() then
 		B:ToggleBag(holder)
 	end
 end
