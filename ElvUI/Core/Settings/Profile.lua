@@ -1227,7 +1227,7 @@ local UF_AuraBars = {
 }
 
 local UF_AuraWatch = {
-	enable = true,
+	enable = false,
 	profileSpecific = false,
 	size = 8,
 	countFontSize = 12,
@@ -2157,7 +2157,6 @@ P.unitframe.units.boss.buffs.perrow = 3
 P.unitframe.units.boss.buffs.priority = 'Blacklist,CastByUnit,Dispellable,Whitelist,RaidBuffsElvUI'
 P.unitframe.units.boss.buffs.sizeOverride = 22
 P.unitframe.units.boss.buffs.yOffset = 20
-P.unitframe.units.boss.buffIndicator.enable = false
 P.unitframe.units.boss.castbar.width = 215
 P.unitframe.units.boss.debuffs.enable = true
 P.unitframe.units.boss.debuffs.anchorPoint = 'LEFT'
@@ -2208,6 +2207,7 @@ P.unitframe.units.party.health.xOffset = 2
 P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
+P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = { anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
@@ -2237,6 +2237,7 @@ P.unitframe.units.raid.groupsPerRowCol = 1
 P.unitframe.units.raid.groupBy = 'GROUP'
 P.unitframe.units.raid.buffs.numrows = 1
 P.unitframe.units.raid.buffs.perrow = 3
+P.unitframe.units.raid.buffIndicator.enable = true
 P.unitframe.units.raid.castbar = nil
 P.unitframe.units.raid.debuffs.enable = false
 P.unitframe.units.raid.debuffs.numrows = 1
@@ -2272,6 +2273,7 @@ P.unitframe.units.raid40.roleIcon.enable = false
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid)
 P.unitframe.units.raidpet.pvpclassificationindicator = nil
+P.unitframe.units.raidpet.buffIndicator.enable = false
 P.unitframe.units.raidpet.enable = false
 P.unitframe.units.raidpet.raidWideSorting = true
 P.unitframe.units.raidpet.buffs.numrows = 1
