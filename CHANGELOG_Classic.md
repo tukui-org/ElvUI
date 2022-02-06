@@ -1,5 +1,8 @@
 ### Version 1.61 [ ETA: 🍨 ]
 
+Cosmetic: Fixed AutoCast Shine custom glow  
+UnitFrames: Classbar in Druid Bear Form can now display Mana  
+UnitFrames: Added additional power options  
 ___
 ### Version 1.60 [ January 24th 2022 ]
 

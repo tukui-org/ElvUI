@@ -1,4 +1,17 @@
-### Version 12.61 [ ETA: 🍨 ]
+### Version 12.63 [ ETA: 🍨 ]
+
+Chat: Fixed Copy Chat Lines  
+General: Fixed Alternative Power options  
+UnitFrames: Classbar in Druid Bear Form can now display Mana  
+
+___
+### Version 12.62 [ January 23rd 2022 ]
+
+Auras: Added color toggles for Enchants & Debuffs  
+Unitframes: Added PVP Classification Widget for Party, Raid, Raid40  
+
+___
+### Version 12.61 [ January 19th 2022 ]
 
 UnitFrames: Fixed AuraBars font issue  
 
