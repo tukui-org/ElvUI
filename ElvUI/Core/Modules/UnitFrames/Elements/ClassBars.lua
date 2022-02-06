@@ -121,60 +121,63 @@ function UF:Configure_ClassBar(frame)
 
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
-			bars[i].backdrop:Hide()
+			local button = bars[i]
+			button.backdrop:Hide()
 
 			if i <= MAX_CLASS_BAR then
-				if not bars[i].backdrop.forcedBorderColors then
-					bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				if not button.backdrop.forcedBorderColors then
+					button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 
-				bars[i]:Height(bars:GetHeight())
+				button:Height(bars:GetHeight())
+
 				if MAX_CLASS_BAR == 1 then
-					bars[i]:Width(CLASSBAR_WIDTH)
+					button:Width(CLASSBAR_WIDTH)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-						bars[i]:Width(CLASSBAR_WIDTH)
+						button:Width(CLASSBAR_WIDTH)
 					else
-						bars[i]:Width((CLASSBAR_WIDTH - ((5 + (UF.BORDER*2 + UF.SPACING*2))*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
+						button:Width((CLASSBAR_WIDTH - ((5 + (UF.BORDER*2 + UF.SPACING*2))*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 					end
 				elseif i ~= MAX_CLASS_BAR then
-					bars[i]:Width((CLASSBAR_WIDTH - ((MAX_CLASS_BAR-1)*(UF.BORDER*2-UF.SPACING))) / MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
+					button:Width((CLASSBAR_WIDTH - ((MAX_CLASS_BAR-1)*(UF.BORDER*2-UF.SPACING))) / MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
-				bars[i]:GetStatusBarTexture():SetHorizTile(false)
-				bars[i]:ClearAllPoints()
+				button:GetStatusBarTexture():SetHorizTile(false)
+				button:ClearAllPoints()
 
 				if i == 1 then
-					bars[i]:Point('LEFT', bars)
+					button:Point('LEFT', bars)
 				else
+					local prevButton = bars[i-1]
 					if frame.USE_MINI_CLASSBAR then
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-							bars[i]:Point('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2))
+							button:Point('BOTTOM', prevButton, 'TOP', 0, (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2))
 						else
-							bars[i]:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
+							button:Point('LEFT', prevButton, 'RIGHT', (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
 					elseif i == MAX_CLASS_BAR then
-						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', UF.BORDER-UF.SPACING, 0)
-						bars[i]:Point('RIGHT', bars)
+						button:Point('LEFT', prevButton, 'RIGHT', UF.BORDER-UF.SPACING, 0)
+						button:Point('RIGHT', bars)
 					else
-						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', UF.BORDER-UF.SPACING, 0)
+						button:Point('LEFT', prevButton, 'RIGHT', UF.BORDER-UF.SPACING, 0)
 					end
 				end
 
 				if not frame.USE_MINI_CLASSBAR then
-					bars[i].backdrop:Hide()
+					button.backdrop:Hide()
 				else
-					bars[i].backdrop:Show()
+					button.backdrop:Show()
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
-					bars[i]:SetOrientation('VERTICAL')
+					button:SetOrientation('VERTICAL')
 				else
-					bars[i]:SetOrientation('HORIZONTAL')
+					button:SetOrientation('HORIZONTAL')
 				end
 
 				if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Totems' then
-					bars[i].bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
+					button.bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
 				end
 			end
 		end
@@ -326,17 +329,19 @@ function UF:Construct_ClassBar(frame)
 
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
-		bars[i] = CreateFrame('StatusBar', frame:GetName()..'ClassIconButton'..i, bars)
-		bars[i]:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		UF.statusbars[bars[i]] = true
+		local bar = CreateFrame('StatusBar', frame:GetName()..'ClassIconButton'..i, bars)
+		bar:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
+		bar:GetStatusBarTexture():SetHorizTile(false)
+		UF.statusbars[bar] = true
 
-		bars[i]:CreateBackdrop(nil, nil, nil, nil, true)
-		bars[i].backdrop:SetParent(bars)
+		bar:CreateBackdrop(nil, nil, nil, nil, true)
+		bar.backdrop:SetParent(bars)
 
-		bars[i].bg = bars:CreateTexture(nil, 'BORDER')
-		bars[i].bg:SetTexture(E.media.blankTex)
-		bars[i].bg:SetInside(bars[i].backdrop)
+		bar.bg = bars:CreateTexture(nil, 'BORDER')
+		bar.bg:SetTexture(E.media.blankTex)
+		bar.bg:SetInside(bar.backdrop)
+
+		bars[i] = bar
 	end
 
 	bars.PostVisibility = UF.PostVisibilityClassBar
@@ -394,9 +399,12 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 
 		if chargedPoints then
 			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
-			for _, chargedIndex in next, chargedPoints do
-				self[chargedIndex]:SetStatusBarColor(r, g, b)
-				self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
+			for _, cIndex in next, chargedPoints do
+				local cPoint = self[cIndex]
+				if cPoint then
+					cPoint:SetStatusBarColor(r, g, b)
+					cPoint.bg:SetVertexColor(r * .35, g * .35, b * .35)
+				end
 			end
 		end
 	end
@@ -423,18 +431,20 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	runes.backdrop:Hide()
 
 	for i = 1, UF.classMaxResourceBar[E.myclass] do
-		runes[i] = CreateFrame('StatusBar', frame:GetName()..'RuneButton'..i, runes)
-		runes[i]:SetStatusBarTexture(E.media.blankTex)
-		runes[i]:GetStatusBarTexture():SetHorizTile(false)
-		UF.statusbars[runes[i]] = true
+		local rune = CreateFrame('StatusBar', frame:GetName()..'RuneButton'..i, runes)
+		rune:SetStatusBarTexture(E.media.blankTex)
+		rune:GetStatusBarTexture():SetHorizTile(false)
+		UF.statusbars[rune] = true
 
-		runes[i]:CreateBackdrop(nil, nil, nil, nil, true)
-		runes[i].backdrop:SetParent(runes)
+		rune:CreateBackdrop(nil, nil, nil, nil, true)
+		rune.backdrop:SetParent(runes)
 
-		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
-		runes[i].bg:SetTexture(E.media.blankTex)
-		runes[i].bg:SetInside(runes[i].backdrop)
-		runes[i].bg.multiplier = 0.35
+		rune.bg = rune:CreateTexture(nil, 'BORDER')
+		rune.bg:SetTexture(E.media.blankTex)
+		rune.bg:SetInside(rune.backdrop)
+		rune.bg.multiplier = 0.35
+
+		runes[i] = rune
 	end
 
 	runes.PostUpdate = PostUpdateRunes
