@@ -546,12 +546,37 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, subGroup)
+	local config = ACH:Group(L["Heal Prediction"], L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."], nil, nil, function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
+	config.args.colorsButton = ACH:Execute(L["Colors"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
+	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["None"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
+	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
+	config.args.warning = ACH:Description(function()
+		if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
+			local text = L["Max Overflow is set to zero. Absorb Overflows will be hidden when using Overflow style.\nIf used together Max Overflow at zero and Overflow mode will act like Normal mode without the ending sliver of overflow."]
+			return text .. (E.db.unitframe.units[groupName].healPrediction.absorbStyle == 'OVERFLOW' and ' |cffFF9933You are using Overflow with Max Overflow at zero.|r ' or '')
+		end
+	end, 50, 'medium', nil, nil, nil, nil, 'full')
+
+	if subGroup then
+		config.inline = true
+		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] end
+		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end
+	end
+
+	return config
+end
+
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Health"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 3, attachToValues)
 	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 4, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 5, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.healPrediction = GetOptionsTable_HealPrediction(updateFunc, groupName, numUnits)
 
 	config.args.textGroup = ACH:Group(L["Text Options"], nil, 10)
 	config.args.textGroup.inline = true
@@ -566,30 +591,6 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 
 	if groupName == 'pet' or groupName == 'raidpet' then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
-	end
-
-	return config
-end
-
-local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, subGroup)
-	local config = ACH:Group(L["Heal Prediction"], L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."], nil, nil, function(info) return E.db.unitframe.units[groupName].healPrediction[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
-	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
-	config.args.colorsButton = ACH:Execute(L["Colors"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
-	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
-	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["None"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
-	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
-	config.args.warning = ACH:Description(function()
-				if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
-					local text = L["Max Overflow is set to zero. Absorb Overflows will be hidden when using Overflow style.\nIf used together Max Overflow at zero and Overflow mode will act like Normal mode without the ending sliver of overflow."]
-					return text .. (E.db.unitframe.units[groupName].healPrediction.absorbStyle == 'OVERFLOW' and ' |cffFF9933You are using Overflow with Max Overflow at zero.|r ' or '')
-				end
-			end, 50, 'medium', nil, nil, nil, nil, 'full')
-
-	if subGroup then
-		config.inline = true
-		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] end
-		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end
 	end
 
 	return config
@@ -1206,7 +1207,6 @@ Player.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player')
 Player.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'player')
 Player.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'player')
 Player.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'player')
-Player.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'player')
 Player.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player')
 Player.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player')
 Player.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player')
@@ -1254,7 +1254,6 @@ Pet.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from
 Pet.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet')
 Pet.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pet')
 Pet.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'pet')
-Pet.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet')
 Pet.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet')
 Pet.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet')
 Pet.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet')
@@ -1286,7 +1285,6 @@ Target.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target')
 Target.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'target')
 Target.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'target')
 Target.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'target')
-Target.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'target')
 Target.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target')
 Target.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target')
 Target.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target')
@@ -1358,7 +1356,6 @@ Focus.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus')
 Focus.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'focus')
 Focus.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUF, 'focus')
 Focus.fader = GetOptionsTable_Fader(UF.CreateAndUpdateUF, 'focus')
-Focus.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'focus')
 Focus.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus')
 Focus.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focus')
 Focus.name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus')
@@ -1442,7 +1439,6 @@ Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:St
 Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end, nil, not E.Retail)
 
 Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'arena', 5)
-Arena.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5)
 Arena.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'arena', 5)
@@ -1481,7 +1477,6 @@ Party.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'pa
 Party.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'party')
 Party.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, 'party')
 Party.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'party')
-Party.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party')
 Party.health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party')
 Party.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'party')
 Party.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party')
@@ -1538,7 +1533,6 @@ Raid.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'rai
 Raid.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid')
 Raid.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, 'raid')
 Raid.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid')
-Raid.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid')
 Raid.health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid')
 Raid.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid')
 Raid.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid')
@@ -1571,7 +1565,6 @@ Raid40.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'r
 Raid40.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raid40')
 Raid40.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, 'raid40')
 Raid40.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raid40')
-Raid40.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raid40')
 Raid40.health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40')
 Raid40.infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40')
 Raid40.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40')
@@ -1603,7 +1596,6 @@ RaidPet.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, '
 RaidPet.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'raidpet')
-RaidPet.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raidpet')
