@@ -1,5 +1,9 @@
 ### Version 12.63 [ ETA: 🍨 ]
 
+Chat: Fixed Copy Chat Lines  
+General: Fixed Alternative Power options  
+UnitFrames: Classbar in Druid Bear Form can now display Mana  
+
 ___
 ### Version 12.62 [ January 23rd 2022 ]
 
