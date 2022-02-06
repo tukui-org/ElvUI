@@ -149,17 +149,18 @@ function UF:Configure_ClassBar(frame)
 				if i == 1 then
 					button:Point('LEFT', bars)
 				else
+					local prevButton = bars[i-1]
 					if frame.USE_MINI_CLASSBAR then
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-							button:Point('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2))
+							button:Point('BOTTOM', prevButton, 'TOP', 0, (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2))
 						else
-							button:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
+							button:Point('LEFT', prevButton, 'RIGHT', (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
 					elseif i == MAX_CLASS_BAR then
-						button:Point('LEFT', bars[i-1], 'RIGHT', UF.BORDER-UF.SPACING, 0)
+						button:Point('LEFT', prevButton, 'RIGHT', UF.BORDER-UF.SPACING, 0)
 						button:Point('RIGHT', bars)
 					else
-						button:Point('LEFT', bars[i-1], 'RIGHT', UF.BORDER-UF.SPACING, 0)
+						button:Point('LEFT', prevButton, 'RIGHT', UF.BORDER-UF.SPACING, 0)
 					end
 				end
 
@@ -398,9 +399,12 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 
 		if chargedPoints then
 			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
-			for _, chargedIndex in next, chargedPoints do
-				self[chargedIndex]:SetStatusBarColor(r, g, b)
-				self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
+			for _, cIndex in next, chargedPoints do
+				local cPoint = self[cIndex]
+				if cPoint then
+					cPoint:SetStatusBarColor(r, g, b)
+					cPoint.bg:SetVertexColor(r * .35, g * .35, b * .35)
+				end
 			end
 		end
 	end
@@ -427,18 +431,20 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	runes.backdrop:Hide()
 
 	for i = 1, UF.classMaxResourceBar[E.myclass] do
-		runes[i] = CreateFrame('StatusBar', frame:GetName()..'RuneButton'..i, runes)
-		runes[i]:SetStatusBarTexture(E.media.blankTex)
-		runes[i]:GetStatusBarTexture():SetHorizTile(false)
-		UF.statusbars[runes[i]] = true
+		local rune = CreateFrame('StatusBar', frame:GetName()..'RuneButton'..i, runes)
+		rune:SetStatusBarTexture(E.media.blankTex)
+		rune:GetStatusBarTexture():SetHorizTile(false)
+		UF.statusbars[rune] = true
 
-		runes[i]:CreateBackdrop(nil, nil, nil, nil, true)
-		runes[i].backdrop:SetParent(runes)
+		rune:CreateBackdrop(nil, nil, nil, nil, true)
+		rune.backdrop:SetParent(runes)
 
-		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
-		runes[i].bg:SetTexture(E.media.blankTex)
-		runes[i].bg:SetInside(runes[i].backdrop)
-		runes[i].bg.multiplier = 0.35
+		rune.bg = rune:CreateTexture(nil, 'BORDER')
+		rune.bg:SetTexture(E.media.blankTex)
+		rune.bg:SetInside(rune.backdrop)
+		rune.bg.multiplier = 0.35
+
+		runes[i] = rune
 	end
 
 	runes.PostUpdate = PostUpdateRunes
