@@ -24,7 +24,7 @@ PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
 RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
 
-local updateFrequency = oUF.isRetail and .5 or .1
+local updateFrequency = oUF.isRetail and 0.75 or 0.1
 
 -- updating of "invalid" units, function edited by ElvUI
 local function enableTargetUpdate(object)
@@ -36,6 +36,7 @@ local function enableTargetUpdate(object)
 			return
 		elseif self.elapsed and self.elapsed > self.onUpdateFrequency then
 			self:UpdateAllElements('OnUpdate')
+			--print(self.unit)
 
 			self.elapsed = 0
 		else
