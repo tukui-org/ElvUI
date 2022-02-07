@@ -990,12 +990,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[362614] = Defaults(6), -- Interdimensional Wormhole Player 2
 		[362803] = Defaults(5), -- Glyph of Relocation
 	-- Lithuvim, Principle Architect
-		[360159] = Defaults(2), -- Unstable Protoform Energy
+		[360159] = Defaults(5), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
 		[363676] = Defaults(4), -- Deconstructing Energy Player 1
 		[363795] = Defaults(4), -- Deconstructing Energy Player 2
 		[464312] = Defaults(5), -- Ephemeral Barrier
-		[360159] = Defaults(5), -- Unstable Mote
 	-- Skolex, the Insatiable Ravener
 		[364522] = Defaults(2), -- Devouring Blood
 		[359976] = Defaults(2), -- Riftmaw
