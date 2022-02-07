@@ -134,7 +134,7 @@ function AFK:OnEvent(event, ...)
 
 	if not E.db.general.afk or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
 
-	if UnitCastingInfo('player') then --Don't activate afk if player is crafting stuff, check back in 30 seconds
+	if UnitCastingInfo('player') then -- Don't activate afk if player is crafting stuff, check back in 30 seconds
 		AFK:ScheduleTimer('OnEvent', 30)
 		return
 	end
@@ -271,7 +271,6 @@ function AFK:OnKeyDown(key)
 		Screenshot()
 	elseif AFK.isAFK then
 		AFK:SetAFK(false)
-		AFK:ScheduleTimer('OnEvent', 60)
 	end
 end
 
