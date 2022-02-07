@@ -1,6 +1,5 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
-local Private = oUF.Private
 
 local _G = _G
 local addon = {}
@@ -312,7 +311,7 @@ end
 
 local function Enable(self)
 	if self.RaidDebuffs then
-		Private:RegisterEvent(self, 'UNIT_AURA', Update)
+		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
 	end
@@ -320,7 +319,7 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
-		Private:UnregisterEvent(self, 'UNIT_AURA', Update)
+		self:UnregisterEvent('UNIT_AURA', Update)
 
 		self.RaidDebuffs:Hide()
 	end

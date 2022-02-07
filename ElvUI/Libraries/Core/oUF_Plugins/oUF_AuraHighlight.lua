@@ -1,7 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
 if not oUF then return end
-local Private = oUF.Private
 
 local next = next
 local UnitAura = UnitAura
@@ -185,7 +184,7 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		Private:RegisterEvent(self, 'UNIT_AURA', Update)
+		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
 	end
@@ -194,7 +193,7 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		Private:UnregisterEvent(self, 'UNIT_AURA', Update)
+		self:UnregisterEvent('UNIT_AURA', Update)
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()

@@ -1,6 +1,5 @@
 local _, ns = ...
 local oUF = ns.oUF
-local Private = oUF.Private
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -289,7 +288,7 @@ local function Enable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		Private:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
@@ -325,7 +324,7 @@ local function Disable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		Private:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
 		element:Hide()
 	end
 end
