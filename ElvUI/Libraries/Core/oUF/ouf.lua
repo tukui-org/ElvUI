@@ -29,8 +29,8 @@ local function xtargetOnUpdate(self, elapsed)
 	if not self.unit or not UnitExists(self.unit) then
 		return
 	else
-		local update = self.elapsed or 0
-		if update > self.onUpdateFrequency then
+		local frequency = self.elapsed or 0
+		if frequency > self.onUpdateFrequency then
 			local guid = UnitGUID(self.unit)
 			if self.lastGUID ~= guid then
 				self:UpdateAllElements('OnUpdate')
@@ -42,7 +42,7 @@ local function xtargetOnUpdate(self, elapsed)
 
 			self.elapsed = 0
 		else
-			self.elapsed = update + elapsed
+			self.elapsed = frequency + elapsed
 		end
 
 		local prediction = self.elapsedPrediction or 0
