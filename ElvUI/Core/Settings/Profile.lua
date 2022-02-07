@@ -927,7 +927,7 @@ P.nameplates.units.FRIENDLY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_NPC.debuffs.growthX = 'LEFT'
 P.nameplates.units.FRIENDLY_NPC.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_NPC.debuffs.yOffset = 35
-P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Boss,CCDebuffs,RaidDebuffs,Dispellable'
+P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Dispellable,CCDebuffs,RaidDebuffs'
 P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortclassification]'
 P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
