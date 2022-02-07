@@ -33,7 +33,6 @@ if(select(2, UnitClass('player')) ~= 'MONK') then return end
 
 local _, ns = ...
 local oUF = ns.oUF
-local Private = oUF.Private
 
 -- ElvUI block
 local GetSpecialization = GetSpecialization
@@ -167,11 +166,11 @@ local function Visibility(self, event, unit)
 
 	if useClassbar and isShown then
 		element:Hide()
-		Private:UnregisterEvent(self, 'UNIT_AURA', Path)
+		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
 		stateChanged = true
 	elseif not useClassbar and not isShown then
 		element:Show()
-		Private:RegisterEvent(self, 'UNIT_AURA', Path)
+		oUF:RegisterEvent(self, 'UNIT_AURA', Path)
 		stateChanged = true
 	end
 
@@ -206,7 +205,7 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		Private:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 
 		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
@@ -231,8 +230,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		Private:UnregisterEvent(self, 'UNIT_AURA', Path)
-		Private:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
+		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 
 		MonkStaggerBar:RegisterEvent('PLAYER_ENTERING_WORLD')

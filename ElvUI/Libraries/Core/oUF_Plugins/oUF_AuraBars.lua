@@ -288,7 +288,7 @@ local function Enable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
@@ -324,7 +324,7 @@ local function Disable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
 		element:Hide()
 	end
 end

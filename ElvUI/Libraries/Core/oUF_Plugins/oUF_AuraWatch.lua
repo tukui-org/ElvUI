@@ -289,7 +289,7 @@ local function Enable(self)
 		element.anchoredIcons = 0
 		element.size = 8
 
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
 		element:Show()
 
 		return true
@@ -298,7 +298,7 @@ end
 
 local function Disable(self)
 	if self.AuraWatch then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		if self.AuraWatch then self.AuraWatch:Hide() end
 	end
