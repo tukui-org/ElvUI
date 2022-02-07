@@ -87,6 +87,12 @@ function S:SpellBookFrame()
 			button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
 		end
 
+		if E.private.skins.parchmentRemoverEnable then
+			button:SetHighlightTexture('')
+			button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
+			button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
+		end
+
 		highlight:SetAllPoints(icon)
 		hooksecurefunc(highlight, 'SetTexture', function(s, texture)
 			if texture == [[Interface\Buttons\ButtonHilight-Square]] then
@@ -114,14 +120,10 @@ function S:SpellBookFrame()
 			end
 
 			if E.private.skins.parchmentRemoverEnable then
-				button:SetHighlightTexture('')
-				button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
-				button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
-
 				local r = button.SpellName:GetTextColor()
 				if r < 0.8 then
 					button.SpellName:SetTextColor(0.6, 0.6, 0.6)
-				else
+				elseif r ~= 1 then
 					button.SpellName:SetTextColor(1, 1, 1)
 				end
 			end
