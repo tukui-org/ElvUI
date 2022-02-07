@@ -940,7 +940,7 @@ do -- Event Pooler by Simpy
 	pooler.times = {}
 
 	pooler.delay = 0.1 -- update check rate
-	pooler.instant = 10 -- seconds since last event
+	pooler.instant = 3 -- seconds since last event
 
 	pooler.run = function(funcs, frame, event, ...)
 		for _, func in pairs(funcs) do
@@ -974,9 +974,9 @@ do -- Event Pooler by Simpy
 	pooler.tracker = function(frame, event, arg1, ...)
 		-- print('tracker', frame, event, arg1, ...)
 
-		local now = time()
 		local pool = pooler.events[event]
 		if pool then
+			local now = time()
 			local last = pooler.times[event]
 			if last and (last + pooler.instant) < now then
 				pooler.execute(event, pool, true, arg1, ...)
