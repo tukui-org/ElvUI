@@ -544,7 +544,7 @@ end
 
 local function Enable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		local buffs = self.Buffs
 		if(buffs) then
@@ -594,7 +594,7 @@ end
 
 local function Disable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		if(self.Buffs) then self.Buffs:Hide() end
 		if(self.Debuffs) then self.Debuffs:Hide() end

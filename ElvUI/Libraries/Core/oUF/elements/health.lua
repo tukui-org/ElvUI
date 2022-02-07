@@ -292,28 +292,28 @@ local function Enable(self)
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
-		self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
+		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		if not oUF.isRetail then
-			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
 		if(element.colorDisconnected) then
-			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
-			self:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-			self:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
+			oUF:RegisterEvent(self, 'UNIT_CONNECTION', ColorPath)
+			oUF:RegisterEvent(self, 'PARTY_MEMBER_ENABLE', ColorPath)
+			oUF:RegisterEvent(self, 'PARTY_MEMBER_DISABLE', ColorPath)
 		end
 
 		if(element.colorSelection) then
-			self:RegisterEvent('UNIT_FLAGS', ColorPath)
+			oUF:RegisterEvent(self, 'UNIT_FLAGS', ColorPath)
 		end
 
 		if(element.colorTapping) then
-			self:RegisterEvent('UNIT_FACTION', ColorPath)
+			oUF:RegisterEvent(self, 'UNIT_FACTION', ColorPath)
 		end
 
 		if(element.colorThreat) then
-			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			oUF:RegisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
 		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
@@ -332,17 +332,17 @@ local function Disable(self)
 		element:Hide()
 
 		if not oUF.isRetail then
-			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		self:UnregisterEvent('UNIT_HEALTH', Path)
-		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
-		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
-		self:UnregisterEvent('UNIT_FACTION', ColorPath)
-		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
-		self:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-		self:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
-		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+		oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
+		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
+		oUF:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
+		oUF:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)
+		oUF:UnregisterEvent(self, 'UNIT_FLAGS', ColorPath)
+		oUF:UnregisterEvent(self, 'PARTY_MEMBER_ENABLE', ColorPath)
+		oUF:UnregisterEvent(self, 'PARTY_MEMBER_DISABLE', ColorPath)
+		oUF:UnregisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 end
 
