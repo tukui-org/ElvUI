@@ -961,6 +961,56 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
 	----------------------------------------------------------
+	-------------------- Mythic+ Specific --------------------
+	----------------------------------------------------------
+	-- Mythic+ General
+		[209859]	= Defaults(), -- Bolster
+		[178658]	= Defaults(), -- Raging
+		[226510]	= Defaults(), -- Sanguine
+		[343502]	= Defaults(), -- Inspiring
+	----------------------------------------------------------
+	------------------ Shadowlands Dungeons ------------------
+	----------------------------------------------------------
+	-- Tazavesh, the Veiled Market
+		[355147]	= Defaults(), -- Fish Invigoration
+		[351960]	= Defaults(), -- Static Cling
+		[351088]	= Defaults(), -- Relic Link
+		[346296]	= Defaults(), -- Instability
+		[355057]	= Defaults(), -- Cry of Mrrggllrrgg
+		[355640]	= Defaults(), -- Phalanx Field
+		[355783]	= Defaults(), -- Force Multiplied
+		[351086]	= Defaults(), -- Power Overwhelming
+		[347840]	= Defaults(), -- Feral
+		[355782]	= Defaults(), -- Force Multiplier
+		[347992]	= Defaults(), -- Rotar Body Armor
+	-- Halls of Atonement
+		[326450]	= Defaults(), -- Loyal Beasts
+	-- Mists of Tirna Scithe
+		[336499]	= Defaults(), -- Guessing Game
+	-- Plaguefall
+		[336451]	= Defaults(), -- Bulwark of Maldraxxus
+		[333737]	= Defaults(), -- Congealed Contagion
+	-- The Necrotic Wake
+		[321754]	= Defaults(), -- Icebound Aegis
+		[343558]	= Defaults(), -- Morbid Fixation
+		[343470]	= Defaults(), -- Boneshatter Shield
+	-- Theater of Pain
+		[331510]	= Defaults(), -- Death Wish
+		[333241]	= Defaults(), -- Raging Tantrum
+		[326892]	= Defaults(), -- Fixate
+		[330545]	= Defaults(), -- Commanding Presences
+	-- Sanguine Depths
+		[322433]	= Defaults(), -- Stoneskin
+		[321402]	= Defaults(), -- Engorge
+	-- Spires of Ascension
+		[327416]	= Defaults(), -- Recharge Anima
+		[317936]	= Defaults(), -- Forsworn Doctrine
+		[327808]	= Defaults(), -- Inspiring Presence
+	-- De Other Side
+		[344739]	= Defaults(), -- Spectral
+		[333227]	= Defaults(), -- Undying Rage
+		[322773]	= Defaults(), -- Blood Barrier
+	----------------------------------------------------------
 	----------------- Sanctum of Domination ------------------
 	----------------------------------------------------------
 	-- The Tarragrue
@@ -1025,56 +1075,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[350857]	= Defaults(), -- Banshee Shroud
 		[351109]	= Defaults(), -- Enflame
 		[351452]	= Defaults(), -- Lethargic Focus
-	----------------------------------------------------------
-	-------------------- Mythic+ Specific --------------------
-	----------------------------------------------------------
-	-- Mythic+ General
-		[209859]	= Defaults(), -- Bolster
-		[178658]	= Defaults(), -- Raging
-		[226510]	= Defaults(), -- Sanguine
-		[343502]	= Defaults(), -- Inspiring
-	----------------------------------------------------------
-	------------------ Shadowlands Dungeons ------------------
-	----------------------------------------------------------
-	-- Tazavesh, the Veiled Market
-		[355147]	= Defaults(), -- Fish Invigoration
-		[351960]	= Defaults(), -- Static Cling
-		[351088]	= Defaults(), -- Relic Link
-		[346296]	= Defaults(), -- Instability
-		[355057]	= Defaults(), -- Cry of Mrrggllrrgg
-		[355640]	= Defaults(), -- Phalanx Field
-		[355783]	= Defaults(), -- Force Multiplied
-		[351086]	= Defaults(), -- Power Overwhelming
-		[347840]	= Defaults(), -- Feral
-		[355782]	= Defaults(), -- Force Multiplier
-		[347992]	= Defaults(), -- Rotar Body Armor
-	-- Halls of Atonement
-		[326450]	= Defaults(), -- Loyal Beasts
-	-- Mists of Tirna Scithe
-		[336499]	= Defaults(), -- Guessing Game
-	-- Plaguefall
-		[336451]	= Defaults(), -- Bulwark of Maldraxxus
-		[333737]	= Defaults(), -- Congealed Contagion
-	-- The Necrotic Wake
-		[321754]	= Defaults(), -- Icebound Aegis
-		[343558]	= Defaults(), -- Morbid Fixation
-		[343470]	= Defaults(), -- Boneshatter Shield
-	-- Theater of Pain
-		[331510]	= Defaults(), -- Death Wish
-		[333241]	= Defaults(), -- Raging Tantrum
-		[326892]	= Defaults(), -- Fixate
-		[330545]	= Defaults(), -- Commanding Presences
-	-- Sanguine Depths
-		[322433]	= Defaults(), -- Stoneskin
-		[321402]	= Defaults(), -- Engorge
-	-- Spires of Ascension
-		[327416]	= Defaults(), -- Recharge Anima
-		[317936]	= Defaults(), -- Forsworn Doctrine
-		[327808]	= Defaults(), -- Inspiring Presence
-	-- De Other Side
-		[344739]	= Defaults(), -- Spectral
-		[333227]	= Defaults(), -- Undying Rage
-		[322773]	= Defaults(), -- Blood Barrier
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
