@@ -24,25 +24,58 @@ PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
 RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
 
-local updateFrequency = oUF.isRetail and 0.75 or 0.1
-
 -- updating of "invalid" units, function edited by ElvUI
-local function enableTargetUpdate(object)
-	object.onUpdateFrequency = object.onUpdateFrequency or updateFrequency
-	object.__eventless = true
-
-	object:SetScript('OnUpdate', function(self, elapsed)
-		if not self.unit then
-			return
-		elseif self.elapsed and self.elapsed > self.onUpdateFrequency then
-			self:UpdateAllElements('OnUpdate')
-			--print(self.unit)
+local function xtargetOnUpdate(self, elapsed)
+	if not self.unit or not UnitExists(self.unit) then
+		return
+	else
+		local iUpdates = self.elapsed or 0
+		if iUpdates > self.onUpdateFrequency then
+			local name = UnitName(self.unit)
+			if self.lastUnitName ~= name then
+				self:UpdateAllElements('OnUpdate')
+				self.lastUnitName = name
+			else
+				if self:IsElementEnabled('Health') then self.Health:ForceUpdate() end
+				if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
+			end
 
 			self.elapsed = 0
 		else
-			self.elapsed = (self.elapsed or 0) + elapsed
+			self.elapsed = iUpdates + elapsed
 		end
-	end)
+
+		local iPrediction = self.elapsedPrediction or 0
+		if iPrediction > self.onUpdatePrediction then
+			if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
+			if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
+			if self:IsElementEnabled('RaidTargetIndicator') then self.RaidTargetIndicator:ForceUpdate() end
+
+			self.elapsedPrediction = 0
+		else
+			self.elapsedPrediction = iPrediction + elapsed
+		end
+
+		local iAuras = self.elapsedAuras or 0
+		if iAuras > self.onUpdateAuras and self:IsElementEnabled('Auras') then
+			if self.Auras then self.Auras:ForceUpdate() end
+			if self.Buffs then self.Buffs:ForceUpdate() end
+			if self.Debuffs then self.Debuffs:ForceUpdate() end
+
+			self.elapsedAuras = 0
+		else
+			self.elapsedAuras = iAuras + elapsed
+		end
+	end
+end
+
+local function enableTargetUpdate(object)
+	if not object.onUpdateFrequency then object.onUpdateFrequency = 0.2 end
+	if not object.onUpdatePrediction then object.onUpdatePrediction = 0.4 end
+	if not object.onUpdateAuras then object.onUpdateAuras = 0.6 end
+
+	object.__eventless = true
+	object:SetScript('OnUpdate', xtargetOnUpdate)
 end
 Private.enableTargetUpdate = enableTargetUpdate
 
