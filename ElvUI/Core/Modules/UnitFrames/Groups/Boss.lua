@@ -32,7 +32,7 @@ function UF:Construct_BossFrames(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
-	frame.HealthPrediction = UF:Construct_HealComm(self)
+	frame.HealthPrediction = UF:Construct_HealComm(frame)
 	frame:SetAttribute('type2', 'focus')
 	frame.customTexts = {}
 
