@@ -269,7 +269,7 @@ function AFK:OnKeyDown(key)
 
 	if printKeys[key] then
 		Screenshot()
-	else
+	elseif AFK.isAFK then
 		AFK:SetAFK(false)
 		AFK:ScheduleTimer('OnEvent', 60)
 	end
