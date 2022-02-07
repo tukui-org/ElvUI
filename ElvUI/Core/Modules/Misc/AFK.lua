@@ -271,6 +271,7 @@ function AFK:OnKeyDown(key)
 		Screenshot()
 	elseif AFK.isAFK then
 		AFK:SetAFK(false)
+		AFK:ScheduleTimer('OnEvent', 60)
 	end
 end
 
