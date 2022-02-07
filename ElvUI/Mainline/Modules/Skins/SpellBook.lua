@@ -75,6 +75,12 @@ function S:SpellBookFrame()
 		button:CreateBackdrop(nil, true)
 		icon:SetInside(button.backdrop)
 
+		local ht = button.SpellHighlightTexture
+		if ht then
+			ht:SetColorTexture(0.8, 0.8, 0, 0.6)
+			ht:SetInside(button.backdrop)
+		end
+
 		if button.shine then
 			button.shine:ClearAllPoints()
 			button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
@@ -100,16 +106,11 @@ function S:SpellBookFrame()
 				button.backdrop:SetShown(button.SpellName:IsShown())
 			end
 
-			local highlight = button.SpellHighlightTexture
-			if highlight then
-				highlight:SetColorTexture(0.8, 0.8, 0, 0.6)
-				highlight:SetInside(button.backdrop)
-
-				if highlight:IsShown() then
-					E:Flash(highlight, 1, true)
-				else
-					E:StopFlash(highlight)
-				end
+			local ht = button.SpellHighlightTexture
+			if ht and ht:IsShown() then
+				E:Flash(ht, 1, true)
+			elseif ht then
+				E:StopFlash(ht)
 			end
 
 			if E.private.skins.parchmentRemoverEnable then
