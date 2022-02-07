@@ -1,6 +1,5 @@
 local _, ns = ...
 local oUF = ns.oUF
-if not oUF then return end
 
 local next = next
 local UnitAura = UnitAura
