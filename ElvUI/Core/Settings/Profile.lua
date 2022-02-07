@@ -919,7 +919,7 @@ P.nameplates.units.ENEMY_PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.ENEMY_PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.ENEMY_PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.ENEMY_PLAYER.debuffs.yOffset = 35
-P.nameplates.units.ENEMY_PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal,Boss,CCDebuffs,RaidDebuffs'
+P.nameplates.units.ENEMY_PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal,CCDebuffs'
 P.nameplates.units.ENEMY_PLAYER.name.format = '[classcolor][name:abbrev:long]'
 
 P.nameplates.units.FRIENDLY_NPC.buffs.priority = 'Blacklist,blockNoDuration,Personal,TurtleBuffs'
