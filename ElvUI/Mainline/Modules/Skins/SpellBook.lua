@@ -103,7 +103,7 @@ function S:SpellBookFrame()
 			local highlight = button.SpellHighlightTexture
 			if highlight then
 				highlight:SetColorTexture(0.8, 0.8, 0, 0.6)
-				highlight:SetInside(button)
+				highlight:SetInside(button.backdrop)
 
 				if highlight:IsShown() then
 					E:Flash(highlight, 1, true)
