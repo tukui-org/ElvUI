@@ -29,12 +29,12 @@ local function xtargetOnUpdate(self, elapsed)
 	if not self.unit or not UnitExists(self.unit) then
 		return
 	else
-		local iUpdates = self.elapsed or 0
-		if iUpdates > self.onUpdateFrequency then
-			local name = UnitName(self.unit)
-			if self.lastUnitName ~= name then
+		local update = self.elapsed or 0
+		if update > self.onUpdateFrequency then
+			local guid = UnitGUID(self.unit)
+			if self.lastGUID ~= guid then
 				self:UpdateAllElements('OnUpdate')
-				self.lastUnitName = name
+				self.lastGUID = guid
 			else
 				if self:IsElementEnabled('Health') then self.Health:ForceUpdate() end
 				if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
@@ -42,29 +42,29 @@ local function xtargetOnUpdate(self, elapsed)
 
 			self.elapsed = 0
 		else
-			self.elapsed = iUpdates + elapsed
+			self.elapsed = update + elapsed
 		end
 
-		local iPrediction = self.elapsedPrediction or 0
-		if iPrediction > self.onUpdatePrediction then
+		local prediction = self.elapsedPrediction or 0
+		if prediction > self.onUpdatePrediction then
 			if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
 			if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
 			if self:IsElementEnabled('RaidTargetIndicator') then self.RaidTargetIndicator:ForceUpdate() end
 
 			self.elapsedPrediction = 0
 		else
-			self.elapsedPrediction = iPrediction + elapsed
+			self.elapsedPrediction = prediction + elapsed
 		end
 
-		local iAuras = self.elapsedAuras or 0
-		if iAuras > self.onUpdateAuras and self:IsElementEnabled('Auras') then
+		local auras = self.elapsedAuras or 0
+		if auras > self.onUpdateAuras and self:IsElementEnabled('Auras') then
 			if self.Auras then self.Auras:ForceUpdate() end
 			if self.Buffs then self.Buffs:ForceUpdate() end
 			if self.Debuffs then self.Debuffs:ForceUpdate() end
 
 			self.elapsedAuras = 0
 		else
-			self.elapsedAuras = iAuras + elapsed
+			self.elapsedAuras = auras + elapsed
 		end
 	end
 end
