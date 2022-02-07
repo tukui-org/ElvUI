@@ -956,9 +956,10 @@ do -- Event Pooler by Simpy
 			else
 				local data = funcs and info.data[event]
 				local count = data and #data
-				if count and data[count] then
-					-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(data[count])) end
-					pooler.run(funcs, frame, event, unpack(data[count]))
+				local args = count and data[count]
+				if args then
+					-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
+					pooler.run(funcs, frame, event, unpack(args))
 					wipe(data)
 				end
 			end
