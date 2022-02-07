@@ -6,6 +6,7 @@ local pairs, select = pairs, select
 local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local hooksecurefunc = hooksecurefunc
+local BOOKTYPE_PROFESSION = BOOKTYPE_PROFESSION
 
 local function clearBackdrop(self)
 	self:SetBackdropColor(0, 0, 0, 1)
@@ -71,8 +72,8 @@ function S:SpellBookFrame()
 		E:RegisterCooldown(_G['SpellButton'..i..'Cooldown'])
 		S:HandleIcon(icon)
 
-		button:SetTemplate(nil, true)
-		icon:SetInside(button)
+		button:CreateBackdrop(nil, true)
+		icon:SetInside(button.backdrop)
 
 		if button.shine then
 			button.shine:ClearAllPoints()
@@ -89,14 +90,26 @@ function S:SpellBookFrame()
 	end
 
 	hooksecurefunc('SpellButton_UpdateButton', function()
+		if SpellBookFrame.bookType == BOOKTYPE_PROFESSION then
+			return
+		end
+
 		for i = 1, _G.SPELLS_PER_PAGE do
 			local button = _G['SpellButton'..i]
-			button:SetTemplate(not button.SpellName:IsShown() and 'NoBackdrop', true)
+			if button.backdrop then
+				button.backdrop:SetShown(button.SpellName:IsShown())
+			end
 
-			if button.SpellHighlightTexture then
-				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
-				button.SpellHighlightTexture:SetInside(button)
-				E:Flash(button.SpellHighlightTexture, 1, true)
+			local highlight = button.SpellHighlightTexture
+			if highlight then
+				highlight:SetColorTexture(0.8, 0.8, 0, 0.6)
+				highlight:SetInside(button)
+
+				if highlight:IsShown() then
+					E:Flash(highlight, 1, true)
+				else
+					E:StopFlash(highlight)
+				end
 			end
 
 			if E.private.skins.parchmentRemoverEnable then
@@ -125,10 +138,10 @@ function S:SpellBookFrame()
 
 	hooksecurefunc('SpellBookFrame_UpdateSkillLineTabs', function()
 		for i = 1, 8 do
-			local Tab = _G['SpellBookSkillLineTab'..i]
-			if Tab:GetNormalTexture() then
-				S:HandleIcon(Tab:GetNormalTexture())
-				Tab:GetNormalTexture():SetInside()
+			local tex = _G['SpellBookSkillLineTab'..i]:GetNormalTexture()
+			if tex then
+				S:HandleIcon(tex)
+				tex:SetInside()
 			end
 		end
 	end)
