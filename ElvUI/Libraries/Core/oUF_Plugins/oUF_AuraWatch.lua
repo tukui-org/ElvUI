@@ -3,6 +3,7 @@
 
 local _, ns = ...
 local oUF = ns.oUF
+local Private = oUF.Private
 local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 
 local VISIBLE = 1
@@ -289,7 +290,7 @@ local function Enable(self)
 		element.anchoredIcons = 0
 		element.size = 8
 
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		Private:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
 		element:Show()
 
 		return true
@@ -298,7 +299,7 @@ end
 
 local function Disable(self)
 	if self.AuraWatch then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		Private:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		if self.AuraWatch then self.AuraWatch:Hide() end
 	end
