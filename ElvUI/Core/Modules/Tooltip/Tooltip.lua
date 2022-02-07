@@ -553,7 +553,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	if E.Retail then
 		local combat = InCombatLockdown()
-		if TT.db.showMount and (isPlayerUnit and unit ~= 'player') and not isShiftKeyDown and not combat then
+		if not combat and not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
 			TT:AddMountInfo(tt, unit)
 		end
 
@@ -561,7 +561,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			TT:AddRoleInfo(tt, unit)
 		end
 
-		if TT.db.mythicDataEnable and not combat then
+		if not combat and TT.db.mythicDataEnable then
 			TT:AddMythicInfo(tt, unit)
 		end
 
