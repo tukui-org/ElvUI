@@ -3,20 +3,13 @@ local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local type, pairs, select = type, pairs, select
-local strmatch, tonumber, tostring = strmatch, tonumber, tostring
-local lower, format, wipe, next, print = strlower, format, wipe, next, print
+local type, pairs, select, tonumber = type, pairs, select, tonumber
+local lower, wipe, next, print = strlower, wipe, next, print
 
-local debugprofilestop = debugprofilestop
 local EnableAddOn = EnableAddOn
-local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetNumAddOns = GetNumAddOns
-local GetCVarBool = GetCVarBool
 local DisableAddOn = DisableAddOn
-local ResetCPUUsage = ResetCPUUsage
-local GetFunctionCPUUsage = GetFunctionCPUUsage
-local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local ReloadUI = ReloadUI
 local SetCVar = SetCVar
 -- GLOBALS: ElvUIGrid, ElvDB
@@ -48,8 +41,13 @@ function E:LuaError(msg)
 		ReloadUI()
 	elseif switch == 'off' or switch == '0' then
 		if switch == 'off' then
+			SetCVar('scriptProfile', 0)
 			SetCVar('scriptErrors', 0)
 			E:Print('Lua errors off.')
+
+			if E:IsAddOnEnabled('ElvUI_CPU') then
+				DisableAddOn('ElvUI_CPU')
+			end
 		end
 
 		if next(ElvDB.DisabledAddOns) then
