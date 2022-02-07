@@ -715,7 +715,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[368239]	= Defaults(3), -- Decrypted Vy Cypher
 		[366297]	= Defaults(6), -- Deconstruct (Tank Debuff)
 		[366288]	= Defaults(6), -- Force Slam (Stun)
-	-- Legion Timewalking Mythic+
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
@@ -862,69 +861,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323687]	= Defaults(), -- Arcane Lightning
 		[323877]	= Defaults(), -- Echo Finger Laser X-treme
 		[334535]	= Defaults(), -- Beak Slice
-	----------------------------------------------------------
-	-------------- Sepulcher of the First Ones ---------------
-	----------------------------------------------------------
-	-- Vigilant Guardian
-		[360403] = Defaults(2), -- Force Field
-		[364447] = Defaults(3), -- Dissonance
-		[364904] = Defaults(6), -- Anti-Matter
-		[364881] = Defaults(5), -- Matter Disolution
-		[360415] = Defaults(5), -- Defenseless
-		[360412] = Defaults(4), -- Exposed Core
-		[366393] = Defaults(5), -- Searing Ablation
-	-- Prototype Pantheon
-		[365306] = Defaults(2), -- Invigorating Bloom
-		[361608] = Defaults(3), -- Burden of Sin
-		[361689] = Defaults(3), -- Wracking Pain
-		[366232] = Defaults(4), -- Animastorm
-		[364839] = Defaults(4), -- Sinful Projection
-	-- Dausegne, The Fallen Oracle
-		[361751] = Defaults(2), -- Disintegration Halo
-		[364289] = Defaults(2), -- Staggering Barrage
-		[361018] = Defaults(2), -- Staggering Barrage Mythic 1
-		[360960] = Defaults(2), -- Staggering Barrage Mythic 2
-		[361225] = Defaults(2), -- Encroaching Dominion
-		[361966] = Defaults(2), -- Infused Strikes
-	-- Artificer Xy'mox
-		[362850] = Defaults(2), -- Hyperlight Sparknova
-		[364030] = Defaults(3), -- Debilitating Ray
-		[365681] = Defaults(2), -- System Shock
-		[363413] = Defaults(4), -- Forerunner Rings A
-		[364604] = Defaults(4), -- Forerunner Rings B
-		[362615] = Defaults(6), -- Interdimensional Wormhole Player 1
-		[362614] = Defaults(6), -- Interdimensional Wormhole Player 2
-		[362803] = Defaults(5), -- Glyph of Relocation
-		[363413] = Defaults(4), -- Genesis Rings 1
-		[364604] = Defaults(4), -- Genesis Rings 2
-		[365681] = Defaults(3), -- Massive Blast
-	-- Lithuvim, Principle Architect
-		[360159] = Defaults(2), -- Unstable Protoform Energy
-		[363681] = Defaults(3), -- Deconstructing Blast
-		[363676] = Defaults(4), -- Deconstructing Energy Player 1
-		[363795] = Defaults(4), -- Deconstructing Energy Player 2
-		[464312] = Defaults(5), -- Ephemeral Barrier
-		[360159] = Defaults(5), -- Unstable Mote
-	-- Skolex, the Insatiable Ravener
-		[364522] = Defaults(2), -- Devouring Blood
-		[359976] = Defaults(2), -- Riftmaw
-		[359981] = Defaults(2), -- Rend
-		[360098] = Defaults(3), -- Warp Sickness
-		[366070] = Defaults(3), -- Volatile Residue
-	-- Halondrus the Reclaimer
-		[361309] = Defaults(3), -- Lightshatter Beam
-		[361002] = Defaults(4), -- Ephemeral Fissure
-		[360114] = Defaults(4), -- Ephemeral Fissure II
-	-- Anduin Wrynn
-		[365293] = Defaults(2), -- Befouled Barrier
-		[361817] = Defaults(3), -- Hopebreaker
-		[363020] = Defaults(3), -- Necrotic Claws
-		[365021] = Defaults(4), -- Wicked Star
-		[365445] = Defaults(3), -- Scarred Soul
-		[365008] = Defaults(4), -- Psychic Terror
-	-- Rygelon
-	-- Lords of the Dread
-	-- The Jailer
 	--------------------------------------------------------
 	---------------- Sanctum of Domination -----------------
 	--------------------------------------------------------
@@ -1020,6 +956,69 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[351092]	= Defaults(6), -- Destabilize 1
 		[351091]	= Defaults(6), -- Destabilize 2
 		[348064]	= Defaults(6), -- Wailing Arrow
+	----------------------------------------------------------
+	-------------- Sepulcher of the First Ones ---------------
+	----------------------------------------------------------
+	-- Vigilant Guardian
+		[360403] = Defaults(2), -- Force Field
+		[364447] = Defaults(3), -- Dissonance
+		[364904] = Defaults(6), -- Anti-Matter
+		[364881] = Defaults(5), -- Matter Disolution
+		[360415] = Defaults(5), -- Defenseless
+		[360412] = Defaults(4), -- Exposed Core
+		[366393] = Defaults(5), -- Searing Ablation
+	-- Prototype Pantheon
+		[365306] = Defaults(2), -- Invigorating Bloom
+		[361608] = Defaults(3), -- Burden of Sin
+		[361689] = Defaults(3), -- Wracking Pain
+		[366232] = Defaults(4), -- Animastorm
+		[364839] = Defaults(4), -- Sinful Projection
+	-- Dausegne, The Fallen Oracle
+		[361751] = Defaults(2), -- Disintegration Halo
+		[364289] = Defaults(2), -- Staggering Barrage
+		[361018] = Defaults(2), -- Staggering Barrage Mythic 1
+		[360960] = Defaults(2), -- Staggering Barrage Mythic 2
+		[361225] = Defaults(2), -- Encroaching Dominion
+		[361966] = Defaults(2), -- Infused Strikes
+	-- Artificer Xy'mox
+		[362850] = Defaults(2), -- Hyperlight Sparknova
+		[364030] = Defaults(3), -- Debilitating Ray
+		[365681] = Defaults(2), -- System Shock
+		[363413] = Defaults(4), -- Forerunner Rings A
+		[364604] = Defaults(4), -- Forerunner Rings B
+		[362615] = Defaults(6), -- Interdimensional Wormhole Player 1
+		[362614] = Defaults(6), -- Interdimensional Wormhole Player 2
+		[362803] = Defaults(5), -- Glyph of Relocation
+		[363413] = Defaults(4), -- Genesis Rings 1
+		[364604] = Defaults(4), -- Genesis Rings 2
+		[365681] = Defaults(3), -- Massive Blast
+	-- Lithuvim, Principle Architect
+		[360159] = Defaults(2), -- Unstable Protoform Energy
+		[363681] = Defaults(3), -- Deconstructing Blast
+		[363676] = Defaults(4), -- Deconstructing Energy Player 1
+		[363795] = Defaults(4), -- Deconstructing Energy Player 2
+		[464312] = Defaults(5), -- Ephemeral Barrier
+		[360159] = Defaults(5), -- Unstable Mote
+	-- Skolex, the Insatiable Ravener
+		[364522] = Defaults(2), -- Devouring Blood
+		[359976] = Defaults(2), -- Riftmaw
+		[359981] = Defaults(2), -- Rend
+		[360098] = Defaults(3), -- Warp Sickness
+		[366070] = Defaults(3), -- Volatile Residue
+	-- Halondrus the Reclaimer
+		[361309] = Defaults(3), -- Lightshatter Beam
+		[361002] = Defaults(4), -- Ephemeral Fissure
+		[360114] = Defaults(4), -- Ephemeral Fissure II
+	-- Anduin Wrynn
+		[365293] = Defaults(2), -- Befouled Barrier
+		[361817] = Defaults(3), -- Hopebreaker
+		[363020] = Defaults(3), -- Necrotic Claws
+		[365021] = Defaults(4), -- Wicked Star
+		[365445] = Defaults(3), -- Scarred Soul
+		[365008] = Defaults(4), -- Psychic Terror
+	-- Rygelon
+	-- Lords of the Dread
+	-- The Jailer
 	},
 }
 
@@ -1032,42 +1031,58 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
 	----------------------------------------------------------
-	-------------- Sepulcher of the First Ones ---------------
+	-------------------- Mythic+ Specific --------------------
 	----------------------------------------------------------
-	-- Vigilant Guardian
-		[360404] = Defaults(), -- Force Field
-		[366822] = Defaults(), -- Radioactive Core
-		[364843] = Defaults(), -- Fractured Core
-		[364962] = Defaults(), -- Core Overload
-	-- Prototype Pantheon
-		[361938] = Defaults(), -- Reconstruction
-		[360845] = Defaults(), -- Bastion's Ward
-	-- Dausegne, The Fallen Oracle
-		[361651] = Defaults(), -- Siphoned Barrier
-		[362432] = Defaults(), -- Collapsed Barrier
-		[361513] = Defaults(), -- Obliteraion Arc
-	-- Artificer Xy'mox
-		[363139] = Defaults(), -- Decipher Relic
-	-- Lithuvim, Principle Architect
-		[363537] = Defaults(), -- Protoform Radiance
-		[365036] = Defaults(), -- Ephemeral Barrier
-		[361200] = Defaults(), -- Recharge
-		[363130] = Defaults(), -- Synthesize
-	-- Skolex, the Insatiable Ravener
-		[360193] = Defaults(), -- Insatiable (stacking)
-	-- Halondrus the Reclaimer
-		[367078] = Defaults(), -- Phase Barrier
-		[363414] = Defaults(), -- Fractal Shell
-		[359235] = Defaults(), -- Reclamation Form
-		[359236] = Defaults(), -- Relocation Form
-	-- Anduin Wrynn
-		[364248] = Defaults(), -- Dark Zeal
-		[364247] = Defaults(), -- Dark Zeal II
-		[365030] = Defaults(), -- Wicked Star
-		[362862] = Defaults(), -- Army of the Dead
-	-- Rygelon
-	-- Lords of the Dread
-	-- The Jailer
+	-- Mythic+ General
+		[209859]	= Defaults(), -- Bolster
+		[178658]	= Defaults(), -- Raging
+		[226510]	= Defaults(), -- Sanguine
+		[343502]	= Defaults(), -- Inspiring
+	-- Shadowlands Season 3
+		[368104]	= Defaults(), -- Acceleration Field
+		[368079]	= Defaults(), -- Defense Matrix
+	----------------------------------------------------------
+	------------------ Shadowlands Dungeons ------------------
+	----------------------------------------------------------
+	-- Tazavesh, the Veiled Market
+		[355147]	= Defaults(), -- Fish Invigoration
+		[351960]	= Defaults(), -- Static Cling
+		[351088]	= Defaults(), -- Relic Link
+		[346296]	= Defaults(), -- Instability
+		[355057]	= Defaults(), -- Cry of Mrrggllrrgg
+		[355640]	= Defaults(), -- Phalanx Field
+		[355783]	= Defaults(), -- Force Multiplied
+		[351086]	= Defaults(), -- Power Overwhelming
+		[347840]	= Defaults(), -- Feral
+		[355782]	= Defaults(), -- Force Multiplier
+		[347992]	= Defaults(), -- Rotar Body Armor
+	-- Halls of Atonement
+		[326450]	= Defaults(), -- Loyal Beasts
+	-- Mists of Tirna Scithe
+		[336499]	= Defaults(), -- Guessing Game
+	-- Plaguefall
+		[336451]	= Defaults(), -- Bulwark of Maldraxxus
+		[333737]	= Defaults(), -- Congealed Contagion
+	-- The Necrotic Wake
+		[321754]	= Defaults(), -- Icebound Aegis
+		[343558]	= Defaults(), -- Morbid Fixation
+		[343470]	= Defaults(), -- Boneshatter Shield
+	-- Theater of Pain
+		[331510]	= Defaults(), -- Death Wish
+		[333241]	= Defaults(), -- Raging Tantrum
+		[326892]	= Defaults(), -- Fixate
+		[330545]	= Defaults(), -- Commanding Presences
+	-- Sanguine Depths
+		[322433]	= Defaults(), -- Stoneskin
+		[321402]	= Defaults(), -- Engorge
+	-- Spires of Ascension
+		[327416]	= Defaults(), -- Recharge Anima
+		[317936]	= Defaults(), -- Forsworn Doctrine
+		[327808]	= Defaults(), -- Inspiring Presence
+	-- De Other Side
+		[344739]	= Defaults(), -- Spectral
+		[333227]	= Defaults(), -- Undying Rage
+		[322773]	= Defaults(), -- Blood Barrier
 	----------------------------------------------------------
 	----------------- Sanctum of Domination ------------------
 	----------------------------------------------------------
@@ -1134,58 +1149,42 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[351109]	= Defaults(), -- Enflame
 		[351452]	= Defaults(), -- Lethargic Focus
 	----------------------------------------------------------
-	-------------------- Mythic+ Specific --------------------
+	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
-	-- Mythic+ General
-		[209859]	= Defaults(), -- Bolster
-		[178658]	= Defaults(), -- Raging
-		[226510]	= Defaults(), -- Sanguine
-		[343502]	= Defaults(), -- Inspiring
-	-- Shadowlands Season 3
-		[368104]	= Defaults(), -- Acceleration Field
-		[368079]	= Defaults(), -- Defense Matrix
-	----------------------------------------------------------
-	------------------ Shadowlands Dungeons ------------------
-	----------------------------------------------------------
-	-- Tazavesh, the Veiled Market
-		[355147]	= Defaults(), -- Fish Invigoration
-		[351960]	= Defaults(), -- Static Cling
-		[351088]	= Defaults(), -- Relic Link
-		[346296]	= Defaults(), -- Instability
-		[355057]	= Defaults(), -- Cry of Mrrggllrrgg
-		[355640]	= Defaults(), -- Phalanx Field
-		[355783]	= Defaults(), -- Force Multiplied
-		[351086]	= Defaults(), -- Power Overwhelming
-		[347840]	= Defaults(), -- Feral
-		[355782]	= Defaults(), -- Force Multiplier
-		[347992]	= Defaults(), -- Rotar Body Armor
-	-- Halls of Atonement
-		[326450]	= Defaults(), -- Loyal Beasts
-	-- Mists of Tirna Scithe
-		[336499]	= Defaults(), -- Guessing Game
-	-- Plaguefall
-		[336451]	= Defaults(), -- Bulwark of Maldraxxus
-		[333737]	= Defaults(), -- Congealed Contagion
-	-- The Necrotic Wake
-		[321754]	= Defaults(), -- Icebound Aegis
-		[343558]	= Defaults(), -- Morbid Fixation
-		[343470]	= Defaults(), -- Boneshatter Shield
-	-- Theater of Pain
-		[331510]	= Defaults(), -- Death Wish
-		[333241]	= Defaults(), -- Raging Tantrum
-		[326892]	= Defaults(), -- Fixate
-		[330545]	= Defaults(), -- Commanding Presences
-	-- Sanguine Depths
-		[322433]	= Defaults(), -- Stoneskin
-		[321402]	= Defaults(), -- Engorge
-	-- Spires of Ascension
-		[327416]	= Defaults(), -- Recharge Anima
-		[317936]	= Defaults(), -- Forsworn Doctrine
-		[327808]	= Defaults(), -- Inspiring Presence
-	-- De Other Side
-		[344739]	= Defaults(), -- Spectral
-		[333227]	= Defaults(), -- Undying Rage
-		[322773]	= Defaults(), -- Blood Barrier
+	-- Vigilant Guardian
+		[360404] = Defaults(), -- Force Field
+		[366822] = Defaults(), -- Radioactive Core
+		[364843] = Defaults(), -- Fractured Core
+		[364962] = Defaults(), -- Core Overload
+	-- Prototype Pantheon
+		[361938] = Defaults(), -- Reconstruction
+		[360845] = Defaults(), -- Bastion's Ward
+	-- Dausegne, The Fallen Oracle
+		[361651] = Defaults(), -- Siphoned Barrier
+		[362432] = Defaults(), -- Collapsed Barrier
+		[361513] = Defaults(), -- Obliteraion Arc
+	-- Artificer Xy'mox
+		[363139] = Defaults(), -- Decipher Relic
+	-- Lithuvim, Principle Architect
+		[363537] = Defaults(), -- Protoform Radiance
+		[365036] = Defaults(), -- Ephemeral Barrier
+		[361200] = Defaults(), -- Recharge
+		[363130] = Defaults(), -- Synthesize
+	-- Skolex, the Insatiable Ravener
+		[360193] = Defaults(), -- Insatiable (stacking)
+	-- Halondrus the Reclaimer
+		[367078] = Defaults(), -- Phase Barrier
+		[363414] = Defaults(), -- Fractal Shell
+		[359235] = Defaults(), -- Reclamation Form
+		[359236] = Defaults(), -- Relocation Form
+	-- Anduin Wrynn
+		[364248] = Defaults(), -- Dark Zeal
+		[364247] = Defaults(), -- Dark Zeal II
+		[365030] = Defaults(), -- Wicked Star
+		[362862] = Defaults(), -- Army of the Dead
+	-- Rygelon
+	-- Lords of the Dread
+	-- The Jailer
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
