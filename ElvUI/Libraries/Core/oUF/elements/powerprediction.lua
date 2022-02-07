@@ -42,6 +42,7 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 local _, ns = ...
 local oUF = ns.oUF
+local Private = oUF.Private
 
 -- sourced from FrameXML/AlternatePowerBar.lua
 local ADDITIONAL_POWER_BAR_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
@@ -152,11 +153,11 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_SPELLCAST_START', Path)
-		self:RegisterEvent('UNIT_SPELLCAST_STOP', Path)
-		self:RegisterEvent('UNIT_SPELLCAST_FAILED', Path)
-		self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
-		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
+		Private:RegisterEvent(self, 'UNIT_SPELLCAST_START', Path)
+		Private:RegisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
+		Private:RegisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
+		Private:RegisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
+		Private:RegisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
 
 		if(element.mainBar) then
 			if(element.mainBar:IsObjectType('StatusBar')
@@ -187,11 +188,11 @@ local function Disable(self)
 			element.altBar:Hide()
 		end
 
-		self:UnregisterEvent('UNIT_SPELLCAST_START', Path)
-		self:UnregisterEvent('UNIT_SPELLCAST_STOP', Path)
-		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', Path)
-		self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
+		Private:UnregisterEvent(self, 'UNIT_SPELLCAST_START', Path)
+		Private:UnregisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
+		Private:UnregisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
+		Private:UnregisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
+		Private:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
 	end
 end
 

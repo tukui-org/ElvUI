@@ -381,33 +381,33 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 		element.SetFrequentUpdates = SetFrequentUpdates
 
-		self:RegisterEvent('UNIT_MAXPOWER', Path)
+		Private:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
 
 		if(element.frequentUpdates) then
-			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+			Private:RegisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
 		else
-			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+			Private:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
 		end
 
 		if(element.colorDisconnected) then
-			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_CONNECTION', ColorPath)
 		end
 
 		if(element.colorSelection) then
-			self:RegisterEvent('UNIT_FLAGS', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_FLAGS', ColorPath)
 		end
 
 		if(element.colorTapping) then
-			self:RegisterEvent('UNIT_FACTION', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_FACTION', ColorPath)
 		end
 
 		if(element.colorThreat) then
-			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
-		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
-		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)
-		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
+		Private:RegisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
+		Private:RegisterEvent(self, 'UNIT_POWER_BAR_HIDE', Path)
+		Private:RegisterEvent(self, 'UNIT_POWER_BAR_SHOW', Path)
 
 		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -428,16 +428,16 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
-		self:UnregisterEvent('UNIT_MAXPOWER', Path)
-		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)
-		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', Path)
-		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
-		self:UnregisterEvent('UNIT_FACTION', ColorPath)
-		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
-		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
+		Private:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
+		Private:UnregisterEvent(self, 'UNIT_POWER_BAR_HIDE', Path)
+		Private:UnregisterEvent(self, 'UNIT_POWER_BAR_SHOW', Path)
+		Private:UnregisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
+		Private:UnregisterEvent(self, 'UNIT_POWER_UPDATE', Path)
+		Private:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_FLAGS', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 end
 

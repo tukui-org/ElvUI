@@ -292,28 +292,28 @@ local function Enable(self)
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
-		self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		Private:RegisterEvent(self, 'UNIT_HEALTH', Path)
+		Private:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		if not oUF.isRetail then
-			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			Private:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
 		if(element.colorDisconnected) then
-			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
-			self:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-			self:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_CONNECTION', ColorPath)
+			Private:RegisterEvent(self, 'PARTY_MEMBER_ENABLE', ColorPath)
+			Private:RegisterEvent(self, 'PARTY_MEMBER_DISABLE', ColorPath)
 		end
 
 		if(element.colorSelection) then
-			self:RegisterEvent('UNIT_FLAGS', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_FLAGS', ColorPath)
 		end
 
 		if(element.colorTapping) then
-			self:RegisterEvent('UNIT_FACTION', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_FACTION', ColorPath)
 		end
 
 		if(element.colorThreat) then
-			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			Private:RegisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
 		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
@@ -332,17 +332,17 @@ local function Disable(self)
 		element:Hide()
 
 		if not oUF.isRetail then
-			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			Private:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		self:UnregisterEvent('UNIT_HEALTH', Path)
-		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
-		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
-		self:UnregisterEvent('UNIT_FACTION', ColorPath)
-		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
-		self:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-		self:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
-		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_HEALTH', Path)
+		Private:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
+		Private:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_FLAGS', ColorPath)
+		Private:UnregisterEvent(self, 'PARTY_MEMBER_ENABLE', ColorPath)
+		Private:UnregisterEvent(self, 'PARTY_MEMBER_DISABLE', ColorPath)
+		Private:UnregisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 end
 
