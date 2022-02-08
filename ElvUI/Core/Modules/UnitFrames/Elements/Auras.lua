@@ -391,7 +391,7 @@ function UF.SortAuraFunc(a, b)
 end
 
 function UF:SortAuras()
-	if self.auraSort then sort(self.active, UF.SortAuraFunc) end
+	if self.auraSort and #self.active > 1 then sort(self.active, UF.SortAuraFunc) end
 	return 1, self.visibleAuras or self.visibleBuffs or self.visibleDebuffs
 end
 
