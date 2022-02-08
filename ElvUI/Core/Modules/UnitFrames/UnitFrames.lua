@@ -92,22 +92,22 @@ UF.instanceMapIDs = {
 
 UF.SortAuraFuncs = {
 	TIME_REMAINING = function(a, b, dir)
-		local aTime = a.noTime and huge or a.expiration or -1
-		local bTime = b.noTime and huge or b.expiration or -1
-		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+		local A = a.noTime and huge or a.expiration or -huge
+		local B = b.noTime and huge or b.expiration or -huge
+		if dir == 'DESCENDING' then return A < B else return A > B end
 	end,
 	DURATION = function(a, b, dir)
-		local aTime = a.noTime and huge or a.duration or -1
-		local bTime = b.noTime and huge or b.duration or -1
-		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+		local A = a.noTime and huge or a.duration or -huge
+		local B = b.noTime and huge or b.duration or -huge
+		if dir == 'DESCENDING' then return A < B else return A > B end
 	end,
 	NAME = function(a, b, dir)
-		local aName, bName = a.name or '', b.name or ''
-		if dir == 'DESCENDING' then return aName < bName else return aName > bName end
+		local A, B = a.name or '', b.name or ''
+		if dir == 'DESCENDING' then return A < B else return A > B end
 	end,
 	PLAYER = function(a, b, dir)
-		local aPlayer, bPlayer = a.isPlayer or false, b.isPlayer or false
-		if dir == 'DESCENDING' then return (aPlayer and not bPlayer) else return (not aPlayer and bPlayer) end
+		local A, B = a.isPlayer or false, b.isPlayer or false
+		if dir == 'DESCENDING' then return A and not B else return not A and B end
 	end,
 }
 

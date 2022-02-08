@@ -41,14 +41,14 @@ function UF:AuraBars_SetPosition(from, to)
 	local SPACING = UF.thinBorders and 1 or 5
 
 	for i = from, to do
-		local button = self[i]
-		if not button then break end
+		local bar = self.active[i]
+		if not bar then break end
 
-		button:ClearAllPoints()
-		button:Point(anchor, self, anchor, SPACING, (i == 1 and 0) or (growth * ((i - 1) * (self.height + self.spacing))))
+		bar:ClearAllPoints()
+		bar:Point(anchor, self, anchor, SPACING, (i == 1 and 0) or (growth * ((i - 1) * (self.height + self.spacing))))
 
-		button.icon:ClearAllPoints()
-		button.icon:Point('RIGHT', button, 'LEFT', -SPACING, 0)
+		bar.icon:ClearAllPoints()
+		bar.icon:Point('RIGHT', bar, 'LEFT', -SPACING, 0)
 	end
 end
 
@@ -70,6 +70,7 @@ function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
 	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 	auraBar:Size(1)
+
 	auraBar.PreSetPosition = UF.SortAuras
 	auraBar.PostCreateBar = UF.Construct_AuraBars
 	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars

@@ -159,7 +159,7 @@ function UF:SetPosition(from, to)
 
 	local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
 	for index = from, to do
-		local button = self[index]
+		local button = self.active[index]
 		if not button then break end
 
 		UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
@@ -391,7 +391,7 @@ function UF.SortAuraFunc(a, b)
 end
 
 function UF:SortAuras()
-	if self.auraSort then sort(self, UF.SortAuraFunc) end
+	if self.auraSort then sort(self.active, UF.SortAuraFunc) end
 	return 1, self.visibleAuras or self.visibleBuffs or self.visibleDebuffs
 end
 
