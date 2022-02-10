@@ -1124,7 +1124,7 @@ function B:SetBagAssignments(holder, skip)
 		B:Layout(frame.isBank)
 	end
 
-	if frame.isBank and _G.BankFrame:IsShown() then
+	if frame.isBank and frame:IsShown() then
 		if holder.bagID ~= BANK_CONTAINER then
 			BankFrameItemButton_Update(holder)
 		end
