@@ -173,6 +173,7 @@ local bankIDs = {-1, 5, 6, 7, 8, 9, 10}
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
+	PLAYERREAGENTBANKSLOTS_CHANGED = true,
 	BAG_UPDATE_DELAYED = true,
 	BAG_UPDATE = true,
 	BAG_CLOSED = true
@@ -1045,7 +1046,7 @@ function B:Layout(isBank)
 
 		local totalSlots, lastReagentRowButton = 0
 		local bag = f.Bags[REAGENTBANK_CONTAINER]
-		for slotID, slot in next, bag do
+		for slotID, slot in ipairs(bag) do
 			totalSlots = totalSlots + 1
 
 			slot:ClearAllPoints()
@@ -1150,6 +1151,8 @@ function B:DelayedContainer(bagFrame, event, bagID)
 
 		if event == 'BAG_CLOSED' then -- let it call layout
 			bagFrame.totalSlots = 0
+		elseif bagFrame.isBank and not bagFrame:IsShown() then
+			bagFrame.staleBags[bagID] = bagFrame.Bags[bagID]
 		else
 			bagFrame.Bags[bagID].needsUpdate = true
 		end
@@ -1187,7 +1190,13 @@ function B:OnEvent(event, ...)
 		B:SetBagAssignments(self.ContainerHolder[id], true)
 		B:UpdateBagSlots(self, self.BagIDs[id])
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
-		B:UpdateSlot(self, REAGENTBANK_CONTAINER, ...)
+		if not self:IsShown() then
+			local bag = self.Bags[REAGENTBANK_CONTAINER]
+			self.staleBags[REAGENTBANK_CONTAINER] = bag
+			bag.staleSlots[...] = true
+		else
+			B:UpdateSlot(self, REAGENTBANK_CONTAINER, ...)
+		end
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
 		for slot in next, B.QuestSlots do
 			B:UpdateSlot(self, slot.bagID, slot.slotID)
@@ -1403,6 +1412,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.topOffset = 50
 	f.bottomOffset = 8
 	f.BagIDs = (isBank and bankIDs) or bagIDs
+	f.staleBags = {} -- used to keep track of bank items that need update on next open
 	f.Bags = {}
 
 	local mover = (isBank and _G.ElvUIBankMover) or _G.ElvUIBagMover
@@ -1607,6 +1617,9 @@ function B:ConstructContainerFrame(name, isBank)
 			for slotID = 1, B.REAGENTBANK_SIZE do
 				bag[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
 			end
+
+			bag.numSlots = B.REAGENTBANK_SIZE
+			bag.staleSlots = {}
 
 			f.Bags[REAGENTBANK_CONTAINER] = bag
 			f.reagentFrame.slots = bag
@@ -2158,6 +2171,19 @@ function B:OpenBank()
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame)
 		B.BankFrame.firstOpen = nil
+	elseif next(B.BankFrame.staleBags) then
+		for bagID, bag in next, B.BankFrame.staleBags do
+			if bagID == REAGENTBANK_CONTAINER then
+				for slotID in next, bag.staleSlots do
+					B:UpdateSlot(B.BankFrame, bagID, slotID)
+					bag.staleSlots[slotID] = nil
+				end
+			else
+				B:UpdateBagSlots(B.BankFrame, bagID)
+			end
+
+			B.BankFrame.staleBags[bagID] = nil
+		end
 	end
 
 	--Allow opening reagent tab directly by holding Shift
