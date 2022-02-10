@@ -2565,6 +2565,7 @@ function B:Initialize()
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 
+		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
 		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
 		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
 	end
