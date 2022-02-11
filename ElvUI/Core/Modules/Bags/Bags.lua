@@ -174,6 +174,7 @@ local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
 	PLAYERREAGENTBANKSLOTS_CHANGED = true,
+	PLAYERBANKSLOTS_CHANGED = true,
 	BAG_UPDATE_DELAYED = true,
 	BAG_UPDATE = true,
 	BAG_CLOSED = true
@@ -1151,8 +1152,6 @@ function B:DelayedContainer(bagFrame, event, bagID)
 
 		if event == 'BAG_CLOSED' then -- let it call layout
 			bagFrame.totalSlots = 0
-		elseif bagFrame.isBank and not bagFrame:IsShown() then
-			bagFrame.staleBags[bagID] = bagFrame.Bags[bagID]
 		else
 			bagFrame.Bags[bagID].needsUpdate = true
 		end
@@ -1167,10 +1166,21 @@ function B:OnEvent(event, ...)
 			self.notPurchased[containerID] = nil
 		end
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
-		local bankID = ...
-		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (bankID - NUM_BANKGENERIC_SLOTS))
+		local id = ...
+		local index = (id <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (id - NUM_BANKGENERIC_SLOTS)
+
+		if self:IsShown() then
+			B:UpdateBagSlots(self, index) -- for updating default bank slots
+		else
+			local bagID = self.BagIDs[index == -1 and 1 or index+1]
+			if bagID then
+				self.staleBags[bagID] = self.Bags[bagID]
+			end
+		end
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
-		B:DelayedContainer(self, event, ...)
+		if not self.isBank or self:IsShown() then
+			B:DelayedContainer(self, event, ...)
+		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
 			if bagID ~= 0 then
@@ -1190,12 +1200,12 @@ function B:OnEvent(event, ...)
 		B:SetBagAssignments(self.ContainerHolder[id], true)
 		B:UpdateBagSlots(self, self.BagIDs[id])
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
-		if not self:IsShown() then
+		if self:IsShown() then
+			B:UpdateSlot(self, REAGENTBANK_CONTAINER, ...)
+		else
 			local bag = self.Bags[REAGENTBANK_CONTAINER]
 			self.staleBags[REAGENTBANK_CONTAINER] = bag
 			bag.staleSlots[...] = true
-		else
-			B:UpdateSlot(self, REAGENTBANK_CONTAINER, ...)
 		end
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
 		for slot in next, B.QuestSlots do
@@ -1598,6 +1608,7 @@ function B:ConstructContainerFrame(name, isBank)
 	if isBank then
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
+		f:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 
 		--Bank Text
 		f.bankText = f:CreateFontString(nil, 'OVERLAY')
