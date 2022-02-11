@@ -1167,12 +1167,12 @@ function B:OnEvent(event, ...)
 		end
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local id = ...
-		local bankID = (id <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (id - NUM_BANKGENERIC_SLOTS)
+		local index = (id <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (id - NUM_BANKGENERIC_SLOTS)
 
 		if self:IsShown() then
-			B:UpdateBagSlots(self, bankID)
+			B:UpdateBagSlots(self, index) -- for updating default bank slots
 		else
-			local bagID = self.BagIDs[bankID == -1 and 1 or bankID+1]
+			local bagID = self.BagIDs[index == -1 and 1 or index+1]
 			if bagID then
 				self.staleBags[bagID] = self.Bags[bagID]
 			end
