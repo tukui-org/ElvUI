@@ -1166,21 +1166,22 @@ function B:OnEvent(event, ...)
 			self.notPurchased[containerID] = nil
 		end
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
-		local id = ...
-		local index = (id <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (id - NUM_BANKGENERIC_SLOTS)
+		local slotID = ...
+		local index = (slotID <= NUM_BANKGENERIC_SLOTS) and BANK_CONTAINER or (slotID - NUM_BANKGENERIC_SLOTS)
+		local default = index == BANK_CONTAINER
+		local bagID = self.BagIDs[default and 1 or index+1]
+		if not bagID then return end
 
-		if self:IsShown() then
-			B:UpdateBagSlots(self, index) -- for updating default bank slots
+		if self:IsShown() then -- when its shown we only want to update the default bank bags slot
+			if default then -- the other bags are handled by BAG_UPDATE
+				B:UpdateSlot(B.BankFrame, bagID, slotID)
+			end
 		else
-			local default = index == BANK_CONTAINER
-			local bagID = self.BagIDs[default and 1 or index+1]
-			if bagID then
-				local bag = self.Bags[bagID]
-				self.staleBags[bagID] = bag
+			local bag = self.Bags[bagID]
+			self.staleBags[bagID] = bag
 
-				if default then
-					bag.staleSlots[id] = true
-				end
+			if default then
+				bag.staleSlots[slotID] = true
 			end
 		end
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
