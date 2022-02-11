@@ -1172,9 +1172,15 @@ function B:OnEvent(event, ...)
 		if self:IsShown() then
 			B:UpdateBagSlots(self, index) -- for updating default bank slots
 		else
-			local bagID = self.BagIDs[index == -1 and 1 or index+1]
+			local default = index == BANK_CONTAINER
+			local bagID = self.BagIDs[default and 1 or index+1]
 			if bagID then
-				self.staleBags[bagID] = self.Bags[bagID]
+				local bag = self.Bags[bagID]
+				self.staleBags[bagID] = bag
+
+				if default then
+					bag.staleSlots[id] = true
+				end
 			end
 		end
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
@@ -1550,6 +1556,10 @@ function B:ConstructContainerFrame(name, isBank)
 
 		f.Bags[bagID] = bag
 
+		if bagID == BANK_CONTAINER then
+			bag.staleSlots = {}
+		end
+
 		for slotID = 1, MAX_CONTAINER_ITEMS do
 			bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
 		end
@@ -1608,7 +1618,6 @@ function B:ConstructContainerFrame(name, isBank)
 	if isBank then
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
-		f:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 
 		--Bank Text
 		f.bankText = f:CreateFontString(nil, 'OVERLAY')
@@ -2184,7 +2193,7 @@ function B:OpenBank()
 		B.BankFrame.firstOpen = nil
 	elseif next(B.BankFrame.staleBags) then
 		for bagID, bag in next, B.BankFrame.staleBags do
-			if bagID == REAGENTBANK_CONTAINER then
+			if bagID == REAGENTBANK_CONTAINER or bagID == BANK_CONTAINER then
 				for slotID in next, bag.staleSlots do
 					B:UpdateSlot(B.BankFrame, bagID, slotID)
 					bag.staleSlots[slotID] = nil
