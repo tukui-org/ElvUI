@@ -1146,8 +1146,6 @@ function B:SetBagAssignments(holder, skip)
 end
 
 function B:DelayedContainer(bagFrame, event, bagID)
-	if bagFrame.isBank and not bagFrame:IsShown() then return end
-
 	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
 	if container then
 		bagFrame.DelayedContainers[bagID] = container
@@ -1180,7 +1178,9 @@ function B:OnEvent(event, ...)
 			end
 		end
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
-		B:DelayedContainer(self, event, ...)
+		if not self.isBank or self:IsShown() then
+			B:DelayedContainer(self, event, ...)
+		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
 			if bagID ~= 0 then
