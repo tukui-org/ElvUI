@@ -578,6 +578,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207]	= Defaults(), -- Drums of Fury
 		[230935]	= Defaults(), -- Drums of the Mountain (Legion)
 		[256740]	= Defaults(), -- Drums of the Maelstrom (BfA)
+		[321923]	= Defaults(), -- Tome of the Still Mind
 	-- Shadowlands Consumables
 		[307159]	= Defaults(), -- Potion of Spectral Agility
 		[307160]	= Defaults(), -- Potion of Hardened Shadows
@@ -611,6 +612,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[327708]	= Defaults(), -- Feast of Gluttonous Hedonism
 		[327715]	= Defaults(), -- Fried Bonefish
 		[327851]	= Defaults(), -- Seraph Tenders
+		[354016]	= Defaults(), -- Venthyr Tea
 	},
 }
 
