@@ -156,17 +156,22 @@ end
 
 function UF:SetPosition(from, to)
 	if to < from then
-		local height = self.height or self.size
-		if height then self:Height(height) end
-		return
-	end
+		if self.lastActive ~= to then
+			self.lastActive = to
 
-	local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
-	for index = from, to do
-		local button = self.active[index]
-		if not button then break end
+			local height = self.height or self.size
+			if height then self:Height(height) end
+		end
+	elseif self.lastActive ~= to then
+		self.lastActive = to
 
-		UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
+		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
+		for index = from, to do
+			local button = self.active[index]
+			if not button then break end
+
+			UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
+		end
 	end
 end
 
