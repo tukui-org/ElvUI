@@ -1,4 +1,7 @@
-### Version 12.63 [ ETA: 🍨 ]
+### Version 12.64 [ ETA: 🍨 ]
+
+___
+### Version 12.63 [ February 12th 2022 ]
 
 **Important**  
 Increased overall performance (should be noticable in raids and battlegrounds).  

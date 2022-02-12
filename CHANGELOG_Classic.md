@@ -1,4 +1,7 @@
-### Version 1.61 [ ETA: 🍨 ]
+### Version 1.62 [ ETA: 🍨 ]
+
+___
+### Version 1.61 [ February 12th 2022 ]
 
 **Important**  
 Increased overall performance (should be noticable in raids and battlegrounds).  
