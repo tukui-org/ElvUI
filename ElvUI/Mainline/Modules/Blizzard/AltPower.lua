@@ -4,7 +4,6 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local floor = floor
-local format = format
 local UnitPower = UnitPower
 local CreateFrame = CreateFrame
 local UnitPowerMax = UnitPowerMax

@@ -7,7 +7,7 @@ local SlashCmdList = SlashCmdList
 local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded
 local UIParentLoadAddOn = UIParentLoadAddOn
--- GLOBALS: ElvUIDev, ElvUI
+-- GLOBALS: ElvUI_CPU, ElvUI
 
 local function GetName(frame, text)
 	if frame.GetDebugName then
