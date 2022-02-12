@@ -17,10 +17,9 @@ function UF:Construct_AuraBars(bar)
 	bar.spark:SetVertexColor(1, 1, 1, 0.4)
 	bar.spark:Width(2)
 
-	local SPACING = UF.thinBorders and 1 or 5
 	bar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	bar.icon:ClearAllPoints()
-	bar.icon:Point('RIGHT', bar, 'LEFT', -SPACING, 0)
+	bar.icon:Point('RIGHT', bar, 'LEFT', -self.barSpacing, 0)
 	bar.icon:SetTexCoord(unpack(E.TexCoords))
 
 	UF.statusbars[bar] = true
@@ -38,25 +37,6 @@ function UF:Construct_AuraBars(bar)
 
 	bar.bg = bar:CreateTexture(nil, 'BORDER')
 	bar.bg:Show()
-end
-
-function UF:AuraBars_SetPosition(from, to)
-	local anchor = self.initialAnchor
-	local growth = (self.growth == 'BELOW' and -1) or 1
-	local SPACING = UF.thinBorders and 1 or 5
-
-	for i = from, to do
-		local bar = self.active[i]
-		if not bar then break end
-
-		bar:ClearAllPoints()
-		bar:Point(anchor, self, anchor, SPACING, (i == 1 and 0) or (growth * ((i - 1) * (self.height + self.spacing))))
-
-		if bar.noTime then
-			bar:SetValue(1)
-			bar.timeText:SetText()
-		end
-	end
 end
 
 function UF:AuraBars_UpdateBar(bar)
@@ -82,7 +62,6 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.PostCreateBar = UF.Construct_AuraBars
 	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
 	auraBar.CustomFilter = UF.AuraFilter
-	auraBar.SetPosition = UF.AuraBars_SetPosition
 
 	auraBar.sparkEnabled = true
 	auraBar.initialAnchor = 'BOTTOMRIGHT'
@@ -107,8 +86,9 @@ function UF:Configure_AuraBars(frame)
 		local buffs = db.attachTo == 'BUFFS'
 
 		bars.height = db.height
-		bars.growth = db.anchorPoint
 		bars.maxBars = db.maxBars
+		bars.growth = below and 'DOWN' or 'UP'
+		bars.barSpacing = UF.thinBorders and 1 or 5
 		bars.spacing = db.spacing - (detached and 1 or 0)
 		bars.reverseFill = bars.db.reverseFill
 		bars.friendlyAuraType = db.friendlyAuraType
