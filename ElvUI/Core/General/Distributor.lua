@@ -244,6 +244,7 @@ D.blacklistedKeys = {
 	profile = {
 		gridSize = true,
 		general = {
+			cropIcon = true,
 			numberPrefixStyle = true
 		},
 		chat = {

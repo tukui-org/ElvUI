@@ -4,10 +4,9 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local floor = floor
-local format = format
+local UnitPower = UnitPower
 local CreateFrame = CreateFrame
 local UnitPowerMax = UnitPowerMax
-local UnitPower = UnitPower
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
@@ -22,10 +21,11 @@ local function updateTooltip(self)
 end
 
 local function onEnter(self)
-	if (not self:IsVisible()) or _G.GameTooltip:IsForbidden() then return end
+	if not self:IsVisible() or _G.GameTooltip:IsForbidden() then return end
 
 	_G.GameTooltip:ClearAllPoints()
 	_G.GameTooltip_SetDefaultAnchor(_G.GameTooltip, self)
+
 	updateTooltip(self)
 end
 
@@ -38,19 +38,19 @@ function B:SetAltPowerBarText(text, name, value, max, percent)
 	if textFormat == 'NONE' or not textFormat then
 		text:SetText('')
 	elseif textFormat == 'NAME' then
-		text:SetText(format('%s', name))
+		text:SetFormattedText('%s', name)
 	elseif textFormat == 'NAMEPERC' then
-		text:SetText(format('%s: %s%%', name, percent))
+		text:SetFormattedText('%s: %s%%', name, percent)
 	elseif textFormat == 'NAMECURMAX' then
-		text:SetText(format('%s: %s / %s', name, value, max))
+		text:SetFormattedText('%s: %s / %s', name, value, max)
 	elseif textFormat == 'NAMECURMAXPERC' then
-		text:SetText(format('%s: %s / %s - %s%%', name, value, max, percent))
+		text:SetFormattedText('%s: %s / %s - %s%%', name, value, max, percent)
 	elseif textFormat == 'PERCENT' then
-		text:SetText(format('%s%%', percent))
+		text:SetFormattedText('%s%%', percent)
 	elseif textFormat == 'CURMAX' then
-		text:SetText(format('%s / %s', value, max))
+		text:SetFormattedText('%s / %s', value, max)
 	elseif textFormat == 'CURMAXPERC' then
-		text:SetText(format('%s / %s - %s%%', value, max, percent))
+		text:SetFormattedText('%s / %s - %s%%', value, max, percent)
 	end
 end
 
@@ -58,6 +58,8 @@ function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -40)
 	holder:Size(128, 50)
+
+	B.AltPowerBarHolder = holder
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()
 	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
@@ -70,7 +72,8 @@ function B:PositionAltPowerBar()
 end
 
 function B:UpdateAltPowerBarColors()
-	local bar = _G.ElvUI_AltPowerBar
+	local bar = B.AltPowerBar
+	if not bar then return end
 
 	if E.db.general.altPowerBar.statusBarColorGradient then
 		if bar.colorGradientR and bar.colorGradientG and bar.colorGradientB then
@@ -94,13 +97,14 @@ function B:UpdateAltPowerBarColors()
 end
 
 function B:UpdateAltPowerBarSettings()
-	local bar = _G.ElvUI_AltPowerBar
-	local db = E.db.general.altPowerBar
+	local bar = B.AltPowerBar
+	if not bar then return end
 
+	local db = E.db.general.altPowerBar
 	bar:Size(db.width or 250, db.height or 20)
 	bar:SetStatusBarTexture(LSM:Fetch('statusbar', db.statusBar))
 	bar.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
-	_G.AltPowerBarHolder:Size(bar.backdrop:GetSize())
+	B.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
 	E:SetSmoothing(bar, db.smoothbars)
 
@@ -153,26 +157,26 @@ end
 function B:SkinAltPowerBar()
 	if not E.db.general.altPowerBar.enable then return end
 
-	local powerbar = CreateFrame('StatusBar', 'ElvUI_AltPowerBar', E.UIParent)
-	powerbar:CreateBackdrop(nil, true)
-	powerbar:SetMinMaxValues(0, 200)
-	powerbar:Point('CENTER', _G.AltPowerBarHolder)
-	powerbar:Hide()
+	local bar = CreateFrame('StatusBar', 'ElvUI_AltPowerBar', E.UIParent)
+	bar:CreateBackdrop(nil, true)
+	bar:SetMinMaxValues(0, 200)
+	bar:Point('CENTER', B.AltPowerBarHolder)
+	bar:SetScript('OnEnter', onEnter)
+	bar:SetScript('OnLeave', onLeave)
+	bar:Hide()
 
-	powerbar:SetScript('OnEnter', onEnter)
-	powerbar:SetScript('OnLeave', onLeave)
+	B.AltPowerBar = bar
 
-	powerbar.text = powerbar:CreateFontString(nil, 'OVERLAY')
-	powerbar.text:Point('CENTER', powerbar, 'CENTER')
-	powerbar.text:SetJustifyH('CENTER')
+	bar.text = bar:CreateFontString(nil, 'OVERLAY')
+	bar.text:Point('CENTER', bar, 'CENTER')
+	bar.text:SetJustifyH('CENTER')
 
 	B:UpdateAltPowerBarSettings()
 	B:UpdateAltPowerBarColors()
 
-	--Event handling
-	powerbar:RegisterEvent('UNIT_POWER_UPDATE')
-	powerbar:RegisterEvent('UNIT_POWER_BAR_SHOW')
-	powerbar:RegisterEvent('UNIT_POWER_BAR_HIDE')
-	powerbar:RegisterEvent('PLAYER_ENTERING_WORLD')
-	powerbar:SetScript('OnEvent', B.UpdateAltPowerBar)
+	bar:RegisterEvent('UNIT_POWER_UPDATE')
+	bar:RegisterEvent('UNIT_POWER_BAR_SHOW')
+	bar:RegisterEvent('UNIT_POWER_BAR_HIDE')
+	bar:RegisterEvent('PLAYER_ENTERING_WORLD')
+	bar:SetScript('OnEvent', B.UpdateAltPowerBar)
 end

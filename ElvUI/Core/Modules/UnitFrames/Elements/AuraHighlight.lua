@@ -26,7 +26,9 @@ end
 
 function UF:Configure_AuraHighlight(frame)
 	if E.db.unitframe.debuffHighlighting ~= 'NONE' then
-		frame:EnableElement('AuraHighlight')
+		if not frame:IsElementEnabled('AuraHighlight') then
+			frame:EnableElement('AuraHighlight')
+		end
 
 		frame.AuraHighlight:SetBlendMode(UF.db.colors.debuffHighlight.blendMode)
 		frame.AuraHighlight:SetAllPoints(frame.Health:GetStatusBarTexture())
@@ -42,7 +44,7 @@ function UF:Configure_AuraHighlight(frame)
 		else
 			frame.AuraHighlightBackdrop = false
 		end
-	else
+	elseif frame:IsElementEnabled('AuraHighlight') then
 		frame:DisableElement('AuraHighlight')
 	end
 end

@@ -80,6 +80,7 @@ A default texture will be applied to the Texture widgets if they don't have a te
 
 local _, ns = ...
 local oUF = ns.oUF
+
 local HealComm = LibStub('LibHealComm-4.0', true)
 
 local function Update(self, event, unit)
@@ -229,13 +230,13 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
-		self:RegisterEvent('UNIT_MAXHEALTH', Path)
-		self:RegisterEvent('UNIT_HEAL_PREDICTION', Path)
+		oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
+		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
+		oUF:RegisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
 
 		if oUF.isRetail then
-			self:RegisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
-			self:RegisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
+			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
+			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
 			if not self.HealComm_Update then
 				self.HealComm_Update, self.HealComm_Modified = HealComm_Create(self, element)
@@ -248,7 +249,7 @@ local function Enable(self)
 			HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', self.HealComm_Modified)
 			HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', self.HealComm_Modified)
 
-			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
 		if (not element.maxOverflow) then
@@ -324,13 +325,13 @@ local function Disable(self)
 			element.overHealAbsorb:Hide()
 		end
 
-		self:UnregisterEvent('UNIT_HEALTH', Path)
-		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
-		self:UnregisterEvent('UNIT_HEAL_PREDICTION', Path)
+		oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
+		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
+		oUF:UnregisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
 
 		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
-			self:UnregisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
+			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
+			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
 			HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
 			HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
@@ -339,7 +340,7 @@ local function Disable(self)
 			HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
 			HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
 
-			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 	end
 end

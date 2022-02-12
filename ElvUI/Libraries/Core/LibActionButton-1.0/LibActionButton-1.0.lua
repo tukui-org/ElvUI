@@ -1633,21 +1633,6 @@ Action.GetSpellId              = function(self)
 end
 Action.GetLossOfControlCooldown = function(self) return GetActionLossOfControlCooldown(self._state_action) end
 
--- Classic overrides for item count breakage
-if WoWClassic then
-	-- if the library is present, simply use it to override action counts
-	local LibClassicSpellActionCount = LibStub("LibClassicSpellActionCount-1.0", true)
-	if LibClassicSpellActionCount then
-		Action.GetCount = function(self) return LibClassicSpellActionCount:GetActionCount(self._state_action) end
-	else
-		-- if we don't have the library, only show count for items, like the default UI
-		Action.IsConsumableOrStackable = function(self) return IsItemAction(self._state_action) and (IsConsumableAction(self._state_action) or IsStackableAction(self._state_action)) end
-	end
-
-	-- disable loss of control cooldown on classic
-	-- Action.GetLossOfControlCooldown = function(self) return 0,0 end
-end
-
 -----------------------------------------------------------
 --- Spell Button
 Spell.HasAction               = function(self) return true end

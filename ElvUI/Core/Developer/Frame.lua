@@ -7,7 +7,7 @@ local SlashCmdList = SlashCmdList
 local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded
 local UIParentLoadAddOn = UIParentLoadAddOn
--- GLOBALS: ElvUIDev, ElvUI
+-- GLOBALS: ElvUI_CPU, ElvUI
 
 local function GetName(frame, text)
 	if frame.GetDebugName then
@@ -119,26 +119,26 @@ AddCommand('FRAMELIST', '/framelist', function(arg)
 	end
 end)
 
-AddCommand('EDEV', '/edev', function()
-	if not IsAddOnLoaded('ElvUIDev') then
-		local _, _, _, loadable, reason = GetAddOnInfo('ElvUIDev')
+AddCommand('ECPU', '/ecpu', function()
+	if not IsAddOnLoaded('ElvUI_CPU') then
+		local _, _, _, loadable, reason = GetAddOnInfo('ElvUI_CPU')
 		if not loadable then
 			if reason == 'MISSING' then
-				print('ElvUIDev addon is missing.')
+				print('ElvUI_CPU addon is missing.')
 			elseif reason == 'DISABLED' then
-				print('ElvUIDev addon is disabled.')
+				print('ElvUI_CPU addon is disabled.')
 			elseif reason == 'DEMAND_LOADED' then
-				local loaded, rsn = LoadAddOn('ElvUIDev')
+				local loaded, rsn = LoadAddOn('ElvUI_CPU')
 				if loaded then
-					ElvUIDev:ToggleFrame()
+					ElvUI_CPU:ToggleFrame()
 				else
-					print(format('ElvUIDev addon cannot be loaded: %s.', strlower(rsn)))
+					print(format('ElvUI_CPU addon cannot be loaded: %s.', strlower(rsn)))
 				end
 			end
 		end
-	elseif not ElvUIDev.frame:IsShown() then
-		ElvUIDev.frame:Show()
+	elseif not ElvUI_CPU.frame:IsShown() then
+		ElvUI_CPU.frame:Show()
 	else
-		ElvUIDev.frame:Hide()
+		ElvUI_CPU.frame:Hide()
 	end
 end)

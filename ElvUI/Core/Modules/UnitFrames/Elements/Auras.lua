@@ -155,14 +155,23 @@ function UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, g
 end
 
 function UF:SetPosition(from, to)
-	if to < from then return end
+	if to < from then
+		if self.lastActive ~= to then
+			self.lastActive = to
 
-	local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
-	for index = from, to do
-		local button = self[index]
-		if not button then break end
+			local height = self.height or self.size
+			if height then self:Height(height) end
+		end
+	elseif self.lastActive ~= to then
+		self.lastActive = to
 
-		UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
+		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
+		for index = from, to do
+			local button = self.active[index]
+			if not button then break end
+
+			UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
+		end
 	end
 end
 
@@ -313,8 +322,8 @@ function UF:Configure_Auras(frame, which)
 	-- not onUpdateFrequency ignores targettarget
 	auras.auraSort = UF.SortAuraFuncs[not frame.onUpdateFrequency and settings.sortMethod]
 
-	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
+	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
 
 	if settings.sizeOverride and settings.sizeOverride > 0 then
 		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
@@ -346,6 +355,7 @@ function UF:Configure_Auras(frame, which)
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
+	auras.lastActive = -1 -- for SetPosition
 
 	local x, y
 	if settings.attachTo == 'HEALTH' or settings.attachTo == 'POWER' then
@@ -391,7 +401,7 @@ function UF.SortAuraFunc(a, b)
 end
 
 function UF:SortAuras()
-	if self.auraSort then sort(self, UF.SortAuraFunc) end
+	if self.auraSort and #self.active > 1 then sort(self.active, UF.SortAuraFunc) end
 	return 1, self.visibleAuras or self.visibleBuffs or self.visibleDebuffs
 end
 
@@ -456,7 +466,8 @@ function UF:UpdateAuraSmartPoisition()
 			element:ClearAllPoints()
 			element:Point(other.initialAnchor, other.attachTo, other.anchorPoint, other.xOffset, other.yOffset)
 		else
-			other:Height(other.size)
+			local height = other.height or other.size
+			if height then other:Height(height) end
 		end
 	else
 		element:ClearAllPoints()

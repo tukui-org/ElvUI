@@ -14,7 +14,7 @@ NP.ThreatPets = {
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local nameplate, db, unitTarget, imTank = self.__owner, NP.db.threat, unit..'target', E.myrole == 'TANK'
+	local nameplate, db, unitTarget, imTank = self.__owner, NP.db.threat, unit..'target', E.myrole == 'TANK' or NP.GroupRoles[E.myname] == 'TANK'
 	local unitRole = NP.IsInGroup and (UnitExists(unitTarget) and not UnitIsUnit(unitTarget, 'player')) and NP.GroupRoles[UnitName(unitTarget)] or 'NONE'
 	local unitTank = unitRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(unitTarget)])
 	local isTank, offTank, feedbackUnit = unitTank or imTank, db.beingTankedByTank and (unitTank and imTank) or false, (unitTank and unitTarget) or 'player'

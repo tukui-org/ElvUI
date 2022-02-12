@@ -152,11 +152,11 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_SPELLCAST_START', Path)
-		self:RegisterEvent('UNIT_SPELLCAST_STOP', Path)
-		self:RegisterEvent('UNIT_SPELLCAST_FAILED', Path)
-		self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
-		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
+		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_START', Path)
+		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
+		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
+		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
+		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
 
 		if(element.mainBar) then
 			if(element.mainBar:IsObjectType('StatusBar')
@@ -187,11 +187,11 @@ local function Disable(self)
 			element.altBar:Hide()
 		end
 
-		self:UnregisterEvent('UNIT_SPELLCAST_START', Path)
-		self:UnregisterEvent('UNIT_SPELLCAST_STOP', Path)
-		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', Path)
-		self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
+		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_START', Path)
+		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
+		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
+		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
+		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
 	end
 end
 

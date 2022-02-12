@@ -78,6 +78,7 @@ local HIDDEN = 0
 -- ElvUI changed block
 local CREATED = 2
 
+local wipe = wipe
 local pcall = pcall
 local tinsert = tinsert
 local UnitAura = UnitAura
@@ -215,6 +216,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		element.createdIcons = element.createdIcons + 1
 	end
 
+	element.active[position] = button
+
 	button.caster = source
 	button.filter = filter
 	button.isDebuff = isDebuff
@@ -331,7 +334,7 @@ local function SetPosition(element, from, to)
 	local cols = floor(element:GetWidth() / sizex + 0.5)
 
 	for i = from, to do
-		local button = element[i]
+		local button = element.active[i]
 
 		-- Bail out if the to range is out of scope.
 		if(not button) then break end
@@ -391,6 +394,8 @@ local function UpdateAuras(self, event, unit)
 		* unit - the unit for which the update has been triggered (string)
 		--]]
 		if(auras.PreUpdate) then auras:PreUpdate(unit) end
+
+		wipe(auras.active)
 
 		local numBuffs = auras.numBuffs or 32
 		local numDebuffs = auras.numDebuffs or 40
@@ -486,6 +491,8 @@ local function UpdateAuras(self, event, unit)
 	if(buffs) then
 		if(buffs.PreUpdate) then buffs:PreUpdate(unit) end
 
+		wipe(buffs.active)
+
 		local numBuffs = buffs.num or 32
 		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
 		buffs.visibleBuffs = visibleBuffs
@@ -506,6 +513,8 @@ local function UpdateAuras(self, event, unit)
 	local debuffs = self.Debuffs
 	if(debuffs) then
 		if(debuffs.PreUpdate) then debuffs:PreUpdate(unit) end
+
+		wipe(debuffs.active)
 
 		local numDebuffs = debuffs.num or 40
 		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
@@ -544,7 +553,7 @@ end
 
 local function Enable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		local buffs = self.Buffs
 		if(buffs) then
@@ -552,6 +561,7 @@ local function Enable(self)
 			-- check if there's any anchoring restrictions
 			buffs.__restricted = not pcall(self.GetCenter, self)
 			buffs.ForceUpdate = ForceUpdate
+			buffs.active = {}
 
 			buffs.createdIcons = buffs.createdIcons or 0
 			buffs.anchoredIcons = 0
@@ -566,6 +576,7 @@ local function Enable(self)
 			-- check if there's any anchoring restrictions
 			debuffs.__restricted = not pcall(self.GetCenter, self)
 			debuffs.ForceUpdate = ForceUpdate
+			debuffs.active = {}
 
 			debuffs.createdIcons = debuffs.createdIcons or 0
 			debuffs.anchoredIcons = 0
@@ -580,6 +591,7 @@ local function Enable(self)
 			-- check if there's any anchoring restrictions
 			auras.__restricted = not pcall(self.GetCenter, self)
 			auras.ForceUpdate = ForceUpdate
+			auras.active = {}
 
 			auras.createdIcons = auras.createdIcons or 0
 			auras.anchoredIcons = 0
@@ -594,7 +606,7 @@ end
 
 local function Disable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		if(self.Buffs) then self.Buffs:Hide() end
 		if(self.Debuffs) then self.Debuffs:Hide() end

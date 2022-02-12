@@ -225,8 +225,10 @@ function S:LookingForGroupFrames()
 
 	for _, roleButton in pairs(RoleButtons1) do
 		local checkButton = roleButton.checkButton or roleButton.CheckButton
-		S:HandleCheckBox(checkButton)
-		checkButton.backdrop:SetFrameLevel(checkButton:GetFrameLevel())
+
+		S:HandleCheckBox(checkButton, nil, nil, true)
+		checkButton.backdrop:SetInside()
+		checkButton:Size(20)
 
 		roleButton:DisableDrawLayer('ARTWORK')
 		roleButton:DisableDrawLayer('OVERLAY')

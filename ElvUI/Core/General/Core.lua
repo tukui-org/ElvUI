@@ -1912,7 +1912,7 @@ function E:Initialize()
 		E:Install()
 	end
 
-	if GetCVarBool('scriptProfile') then
+	if GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end
 

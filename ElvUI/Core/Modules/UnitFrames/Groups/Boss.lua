@@ -32,6 +32,7 @@ function UF:Construct_BossFrames(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.HealthPrediction = UF:Construct_HealComm(frame)
 	frame:SetAttribute('type2', 'focus')
 	frame.customTexts = {}
 
@@ -90,6 +91,7 @@ function UF:Update_BossFrames(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
+	UF:Configure_HealComm(frame)
 	UF:Configure_AuraWatch(frame)
 
 	frame:ClearAllPoints()

@@ -165,19 +165,19 @@ Cosmetic.chatBubblesGroup.args.warning = ACH:Description(L["|cffFF0000This does 
 Cosmetic.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 12, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["Disable"] })
 Cosmetic.chatBubblesGroup.args.chatBubbleName = ACH:Toggle(L["Chat Bubble Names"], L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."], 13)
 
-General.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 15, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarSettings() end, nil, not E.Retail)
+General.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 15, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value if Blizzard.AltPowerBar then Blizzard:UpdateAltPowerBarSettings() end end, nil, not E.Retail)
 General.alternativePowerGroup.args.enable = ACH:Toggle(L["Enable"], L["Replace Blizzard's Alternative Power Bar"], 1, nil, nil, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value E.ShowPopup = true end)
 General.alternativePowerGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
 General.alternativePowerGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 100, step = 1 })
 
-General.alternativePowerGroup.args.statusBarGroup = ACH:Group(L["Status Bar"], nil, 4, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarColors() end)
+General.alternativePowerGroup.args.statusBarGroup = ACH:Group(L["Status Bar"], nil, 4, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value Blizzard:UpdateAltPowerBarColors() end, function() return not Blizzard.AltPowerBar end)
 General.alternativePowerGroup.args.statusBarGroup.inline = true
 General.alternativePowerGroup.args.statusBarGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 1)
 General.alternativePowerGroup.args.statusBarGroup.args.statusBar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 2)
 General.alternativePowerGroup.args.statusBarGroup.args.statusBarColorGradient = ACH:Toggle(L["Color Gradient"], nil, 3)
 General.alternativePowerGroup.args.statusBarGroup.args.statusBarColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t, d = E.db.general.altPowerBar[info[#info]], P.general.altPowerBar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.altPowerBar[info[#info]] t.r, t.g, t.b = r, g, b Blizzard:UpdateAltPowerBarColors() end, function() return E.db.general.altPowerBar.statusBarColorGradient end)
 
-General.alternativePowerGroup.args.textGroup = ACH:Group(L["Text"], nil, 6)
+General.alternativePowerGroup.args.textGroup = ACH:Group(L["Text"], nil, 6, nil, nil, nil, function() return not Blizzard.AltPowerBar end)
 General.alternativePowerGroup.args.textGroup.inline = true
 General.alternativePowerGroup.args.textGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 General.alternativePowerGroup.args.textGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)

@@ -552,20 +552,22 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	if E.Retail then
-		if TT.db.showMount and (isPlayerUnit and unit ~= 'player') and not isShiftKeyDown then
-			TT:AddMountInfo(tt, unit)
-		end
-
 		if TT.db.role then
 			TT:AddRoleInfo(tt, unit)
 		end
 
-		if TT.db.mythicDataEnable then
-			TT:AddMythicInfo(tt, unit)
-		end
+		if not InCombatLockdown() then
+			if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
+				TT:AddMountInfo(tt, unit)
+			end
 
-		if isShiftKeyDown and color then
-			TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
+			if TT.db.mythicDataEnable then
+				TT:AddMythicInfo(tt, unit)
+			end
+
+			if isShiftKeyDown and color then
+				TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
+			end
 		end
 	end
 

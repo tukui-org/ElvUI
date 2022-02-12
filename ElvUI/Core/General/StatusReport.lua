@@ -18,7 +18,7 @@ function E:AreOtherAddOnsEnabled()
 
 	for i = 1, GetNumAddOns() do
 		local name = GetAddOnInfo(i)
-		if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and E:IsAddOnEnabled(name) then
+		if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and name ~= 'ElvUI_CPU' and E:IsAddOnEnabled(name) then
 			if EP[name] then plugins = true else addons = true end
 		end
 	end

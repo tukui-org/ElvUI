@@ -1416,7 +1416,11 @@ local function HyperLinkedCPL(data)
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
 			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
 			if message and not CH:MessageIsProtected(message) then
-				message = strtrim(removeIconFromLine(message))
+				message = gsub(message,'|c(%x-)|H(.-)|h(.-)|h|r','\10c%1\10H%2\10h%3\10h\10r') -- strip colors and trim but not hyperlinks
+				message = gsub(message,'||','\11') -- for printing item lines from /dump, etc
+				message = E:StripString(removeIconFromLine(message))
+				message = gsub(message,'\11','||')
+				message = gsub(message,'\10c(%x-)\10H(.-)\10h(.-)\10h\10r','|c%1|H%2|h%3|h|r')
 
 				if message ~= '' then
 					CH:SetChatEditBoxMessage(message)
