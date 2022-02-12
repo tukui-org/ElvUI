@@ -18,6 +18,9 @@ function UF:Construct_AuraBars(bar)
 	bar.spark:Width(2)
 
 	bar.icon:CreateBackdrop(nil, nil, nil, nil, true)
+	bar.icon:ClearAllPoints()
+	bar.icon:Point('RIGHT', bar, 'LEFT', -SPACING, 0)
+
 	UF.statusbars[bar] = true
 	UF:Update_StatusBar(bar)
 
@@ -46,9 +49,6 @@ function UF:AuraBars_SetPosition(from, to)
 
 		bar:ClearAllPoints()
 		bar:Point(anchor, self, anchor, SPACING, (i == 1 and 0) or (growth * ((i - 1) * (self.height + self.spacing))))
-
-		bar.icon:ClearAllPoints()
-		bar.icon:Point('RIGHT', bar, 'LEFT', -SPACING, 0)
 	end
 end
 
