@@ -1,8 +1,8 @@
 ### Version 2.35 [ ETA: 🍨 ]
 
 **Important**  
-General performance boost in raids. Please post feedback in the  
-elvui-performance channel on our Discord  
+Increased overall performance (should be noticable in raids and battlegrounds).  
+Please post feedback in the elvui-performance channel on our Discord  
 
 **Changes**  
 Bank: Improved bank performance, fixed items not updating  

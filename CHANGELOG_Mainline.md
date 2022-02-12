@@ -1,14 +1,14 @@
 ### Version 12.63 [ ETA: 🍨 ]
 
 **Important**  
-Increased overall performance (should be noticable in raids and battlegrounds)  
+Increased overall performance (should be noticable in raids and battlegrounds).  
 Please post feedback in the elvui-performance channel on our Discord  
 
 **Changes**  
 Bank: Improved bank performance, fixed items not updating  
-Skins: Fixed performance issues in our spellbook skin  
 Chat: Fixed Copy Chat Lines  
 General: Fixed Alternative Power options  
+Skins: Fixed performance issues in our spellbook skin  
 UnitFrames: Added heal prediction to frames missing it  
 UnitFrames: Classbar in Druid Bear Form can now display Mana  
 UnitFrames: Fixed aura bar flickering  
