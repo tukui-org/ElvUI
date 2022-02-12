@@ -162,8 +162,6 @@ function UF:SetPosition(from, to)
 			local height = self.height or self.size
 			if height then self:Height(height) end
 		end
-
-		return
 	elseif self.lastActive ~= to then
 		self.lastActive = to
 
