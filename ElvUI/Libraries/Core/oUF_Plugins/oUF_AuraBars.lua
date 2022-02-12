@@ -78,7 +78,7 @@ local function createAuraBar(element, index)
 	spark:SetPoint('CENTER', bar:GetStatusBarTexture(), 'RIGHT')
 
 	local icon = bar:CreateTexture(nil, 'ARTWORK')
-	icon:SetPoint('RIGHT', bar, 'LEFT', -(element.gap or 2), 0)
+	icon:SetPoint('RIGHT', bar, 'LEFT', -element.barSpacing, 0)
 	icon:SetSize(element.height, element.height)
 
 	local nameText = bar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
@@ -115,11 +115,6 @@ local function updateBar(element, bar)
 		bar.spark:Show()
 	else
 		bar.spark:Hide()
-	end
-
-	if bar.noTime then
-		bar:SetValue(1)
-		bar.timeText:SetText()
 	end
 
 	local r, g, b = .2, .6, 1
@@ -206,16 +201,22 @@ end
 
 local function SetPosition(element, from, to)
 	local height = element.height
-	local spacing = element.spacing or 1
+	local spacing = element.spacing
 	local anchor = element.initialAnchor
+	local barSpacing = element.barSpacing
 	local growth = element.growth == 'DOWN' and -1 or 1
 
 	for i = from, to do
-		local button = element.active[i]
-		if not button then break end
+		local bar = element.active[i]
+		if not bar then break end
 
-		button:ClearAllPoints()
-		button:SetPoint(anchor, element, anchor, (height + element.gap), growth * (i > 1 and ((i - 1) * (height + spacing)) or 0))
+		bar:ClearAllPoints()
+		bar:SetPoint(anchor, element, anchor, barSpacing, (i == 1 and 0) or (growth * ((i - 1) * (height + spacing))))
+
+		if bar.noTime then
+			bar:SetValue(1)
+			bar.timeText:SetText()
+		end
 	end
 end
 
@@ -305,16 +306,16 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 		element.active = {}
 
-		element.createdBars = element.createdBars or 0
 		element.anchoredBars = 0
+		element.createdBars = element.createdBars or 0
 		element.width = element.width or 240
 		element.height = element.height or 12
 		element.sparkEnabled = element.sparkEnabled or true
 		element.spacing = element.spacing or 2
 		element.initialAnchor = element.initialAnchor or 'BOTTOMLEFT'
 		element.growth = element.growth or 'UP'
-		element.gap = element.gap or 2
 		element.maxBars = element.maxBars or 32
+		element.barSpacing = element.barSpacing or 2
 
 		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 		-- otherwise it'll inherit said restrictions which will cause issues
