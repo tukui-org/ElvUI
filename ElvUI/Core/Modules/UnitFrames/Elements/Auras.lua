@@ -156,11 +156,9 @@ end
 
 function UF:SetPosition(from, to)
 	if to < from then
-		self:SetHeight(1)
-		self:SetScale(0.0001)
+		local height = self.height or self.size
+		if height then self:Height(height) end
 		return
-	else
-		self:SetScale(1)
 	end
 
 	local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
@@ -462,7 +460,8 @@ function UF:UpdateAuraSmartPoisition()
 			element:ClearAllPoints()
 			element:Point(other.initialAnchor, other.attachTo, other.anchorPoint, other.xOffset, other.yOffset)
 		else
-			other:Height(other.size)
+			local height = other.height or other.size
+			if height then other:Height(height) end
 		end
 	else
 		element:ClearAllPoints()
