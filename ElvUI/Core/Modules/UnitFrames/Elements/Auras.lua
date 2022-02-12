@@ -159,11 +159,21 @@ function UF:SetPosition(from, to)
 		if self.lastActive ~= to then
 			self.lastActive = to
 
-			local height = self.height or self.size
-			if height then self:Height(height) end
+			if self.smartFluid then
+				self:SetScale(0.0001)
+				self.resetScale = true
+			else
+				local height = self.height or self.size
+				if height then self:Height(height) end
+			end
 		end
 	elseif self.lastActive ~= to then
 		self.lastActive = to
+
+		if self.resetScale then
+			self:SetScale(1)
+			self.resetScale = nil
+		end
 
 		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
 		for index = from, to do
@@ -371,6 +381,7 @@ function UF:Configure_Auras(frame, which)
 
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
+	auras:SetScale(1)
 
 	local index = 1
 	while auras[index] do
