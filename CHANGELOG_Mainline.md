@@ -6,9 +6,9 @@ elvui-performance channel on our Discord
 
 **Changes**  
 Bank: Improved bank performance, fixed items not updating  
+Skins: Fixed performance issues in our spellbook skin  
 Chat: Fixed Copy Chat Lines  
 General: Fixed Alternative Power options  
-Skins: Fixed issues in our spellbook skin  
 UnitFrames: Added heal prediction to frames missing it  
 UnitFrames: Classbar in Druid Bear Form can now display Mana  
 UnitFrames: Fixed aura bar flickering  
