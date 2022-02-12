@@ -12,7 +12,7 @@ Skins: Fixed issues in our spellbook skin
 UnitFrames: Added heal prediction to frames missing it  
 UnitFrames: Classbar in Druid Bear Form can now display Mana  
 UnitFrames: Fixed aura bar flickering  
-UnitFrames: Improved aura positioning  
+UnitFrames: Improved aura positioning and performance  
 
 ___
 ### Version 12.62 [ January 23rd 2022 ]
