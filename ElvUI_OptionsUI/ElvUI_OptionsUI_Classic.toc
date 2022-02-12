@@ -1,4 +1,4 @@
-## Interface: 11401
+## Interface: 11402
 ## Author: Elv, Simpy
 ## Version: 1.07
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptionsUI|r
