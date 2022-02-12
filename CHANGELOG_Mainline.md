@@ -1,8 +1,17 @@
 ### Version 12.63 [ ETA: 🍨 ]
 
+**Important**  
+General performance boost in raids. Please post feedback in the  
+elvui-performance channel on our Discord  
+
+**Changes**  
+Bank: Improved bank performance, fixed items not updating  
 Chat: Fixed Copy Chat Lines  
 General: Fixed Alternative Power options  
+UnitFrames: Added heal prediction to frames missing it  
 UnitFrames: Classbar in Druid Bear Form can now display Mana  
+UnitFrames: Fixed aura bar flickering  
+UnitFrames: Improved aura positioning  
 
 ___
 ### Version 12.62 [ January 23rd 2022 ]
