@@ -155,7 +155,13 @@ function UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, g
 end
 
 function UF:SetPosition(from, to)
-	if to < from then return end
+	if to < from then
+		self:SetHeight(1)
+		self:SetScale(0.0001)
+		return
+	else
+		self:SetScale(1)
+	end
 
 	local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
 	for index = from, to do
@@ -313,8 +319,8 @@ function UF:Configure_Auras(frame, which)
 	-- not onUpdateFrequency ignores targettarget
 	auras.auraSort = UF.SortAuraFuncs[not frame.onUpdateFrequency and settings.sortMethod]
 
-	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
+	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
 
 	if settings.sizeOverride and settings.sizeOverride > 0 then
 		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))

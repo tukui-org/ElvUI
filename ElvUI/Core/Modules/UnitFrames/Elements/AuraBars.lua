@@ -56,7 +56,7 @@ end
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
 	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
-	auraBar:Size(1)
+	auraBar:SetSize(1, 1)
 
 	auraBar.PreSetPosition = UF.SortAuras
 	auraBar.PostCreateBar = UF.Construct_AuraBars
