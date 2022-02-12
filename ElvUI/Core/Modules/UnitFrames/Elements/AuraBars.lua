@@ -17,7 +17,12 @@ function UF:Construct_AuraBars(bar)
 	bar.spark:SetVertexColor(1, 1, 1, 0.4)
 	bar.spark:Width(2)
 
+	local SPACING = UF.thinBorders and 1 or 5
 	bar.icon:CreateBackdrop(nil, nil, nil, nil, true)
+	bar.icon:ClearAllPoints()
+	bar.icon:Point('RIGHT', bar, 'LEFT', -SPACING, 0)
+	bar.icon:SetTexCoord(unpack(E.TexCoords))
+
 	UF.statusbars[bar] = true
 	UF:Update_StatusBar(bar)
 
@@ -47,8 +52,10 @@ function UF:AuraBars_SetPosition(from, to)
 		bar:ClearAllPoints()
 		bar:Point(anchor, self, anchor, SPACING, (i == 1 and 0) or (growth * ((i - 1) * (self.height + self.spacing))))
 
-		bar.icon:ClearAllPoints()
-		bar.icon:Point('RIGHT', bar, 'LEFT', -SPACING, 0)
+		if bar.noTime then
+			bar:SetValue(1)
+			bar.timeText:SetText()
+		end
 	end
 end
 
@@ -192,7 +199,6 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 	local spellName = bar.name
 
 	bar.db = self.db
-	bar.icon:SetTexCoord(unpack(E.TexCoords))
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
 

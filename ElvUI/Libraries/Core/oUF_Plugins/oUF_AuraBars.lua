@@ -117,11 +117,6 @@ local function updateBar(element, bar)
 		bar.spark:Hide()
 	end
 
-	if bar.noTime then
-		bar:SetValue(1)
-		bar.timeText:SetText()
-	end
-
 	local r, g, b = .2, .6, 1
 	local debuffType = bar.debuffType
 	if element.buffColor then r, g, b = unpack(element.buffColor) end
@@ -211,11 +206,16 @@ local function SetPosition(element, from, to)
 	local growth = element.growth == 'DOWN' and -1 or 1
 
 	for i = from, to do
-		local button = element.active[i]
-		if not button then break end
+		local bar = element.active[i]
+		if not bar then break end
 
-		button:ClearAllPoints()
-		button:SetPoint(anchor, element, anchor, (height + element.gap), growth * (i > 1 and ((i - 1) * (height + spacing)) or 0))
+		bar:ClearAllPoints()
+		bar:SetPoint(anchor, element, anchor, (height + element.gap), growth * (i > 1 and ((i - 1) * (height + spacing)) or 0))
+
+		if bar.noTime then
+			bar:SetValue(1)
+			bar.timeText:SetText()
+		end
 	end
 end
 
