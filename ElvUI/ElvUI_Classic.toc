@@ -1,6 +1,6 @@
-## Interface: 11401
+## Interface: 11402
 ## Author: Elv, Simpy
-## Version: 1.60
+## Version: 1.61
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bClassic|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB

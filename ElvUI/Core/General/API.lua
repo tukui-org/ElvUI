@@ -5,8 +5,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
+local wipe, max, next = wipe, max, next
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
-local wipe, max, next, format = wipe, max, next, format
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
 local CreateFrame = CreateFrame

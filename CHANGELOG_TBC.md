@@ -1,9 +1,22 @@
-### Version 2.35 [ ETA: 🍨 ]
+### Version 2.36 [ ETA: 🍨 ]
 
+___
+### Version 2.35 [ February 12th 2022 ]
+
+**Important**  
+Increased overall performance (should be noticable in raids and battlegrounds).  
+Please post feedback in the elvui-performance channel on our Discord  
+
+**Changes**  
+Bank: Improved bank performance, fixed items not updating  
 Chat: Fixed Copy Chat Lines  
 Cosmetic: Fixed AutoCast Shine custom glow  
-UnitFrames: Classbar in Druid Bear Form can now display Mana  
+Skins: Updated materials checkbox skin (first aid/enchant)  
 UnitFrames: Added additional power options  
+UnitFrames: Added heal prediction to frames missing it  
+UnitFrames: Classbar in Druid Bear Form can now display Mana  
+UnitFrames: Fixed aura bar flickering  
+UnitFrames: Improved aura positioning and performance  
 
 ___
 ### Version 2.34 [ January 24th 2022 ]

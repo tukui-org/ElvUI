@@ -1,6 +1,6 @@
 ## Interface: 90200
 ## Author: Elv, Simpy
-## Version: 12.62
+## Version: 12.63
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB

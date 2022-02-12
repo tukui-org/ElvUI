@@ -224,7 +224,6 @@ function E:LoadCommands()
 
 	self:RegisterChatCommand('moveui', 'ToggleMoveMode')
 	self:RegisterChatCommand('resetui', 'ResetUI')
-	self:RegisterChatCommand('luaerror', 'LuaError')
 
 	self:RegisterChatCommand('emove', 'ToggleMoveMode')
 	self:RegisterChatCommand('ereset', 'ResetUI')
