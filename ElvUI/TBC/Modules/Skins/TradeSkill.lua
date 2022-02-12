@@ -22,8 +22,7 @@ function S:Blizzard_TradeSkillUI()
 
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
 	TradeSkillRankFrame:Size(322, 16)
-	TradeSkillRankFrame:ClearAllPoints()
-	TradeSkillRankFrame:Point('TOP', -10, -45)
+	TradeSkillRankFrame:Point('TOPLEFT', 23, -37)
 	TradeSkillRankFrame:CreateBackdrop()
 	TradeSkillRankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
@@ -54,6 +53,10 @@ function S:Blizzard_TradeSkillUI()
 
 	_G.TradeSkillFrameTitleText:ClearAllPoints()
 	_G.TradeSkillFrameTitleText:Point('TOP', TradeSkillFrame, 'TOP', 0, -18)
+
+	local TradeSkillFrameAvailableFilterCheckButton = _G.TradeSkillFrameAvailableFilterCheckButton
+	S:HandleCheckBox(TradeSkillFrameAvailableFilterCheckButton)
+	TradeSkillFrameAvailableFilterCheckButton:Point('TOPLEFT', 18, -50)
 
 	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local button = _G['TradeSkillSkill'..i]
