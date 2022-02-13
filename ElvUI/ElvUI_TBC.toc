@@ -1,15 +1,15 @@
-## Interface: 20503
-## Author: Elv, Simpy
-## Version: 2.35
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bTBC|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
+## Author: Elv, Simpy
+## Version: 2.35
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
-## X-oUF: ElvUF
+## Interface: 20503
 ## X-Interface: 20503
 ## X-Tukui-ProjectID: 2
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
+## X-oUF: ElvUF
 
 TBC\Libs.xml
 
