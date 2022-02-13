@@ -56,6 +56,7 @@ local LSM = E.Libs.LSM
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
 E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
+E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
@@ -1923,9 +1924,9 @@ function E:Initialize()
 		print(L["LOGIN_MSG_HELP"])
 	end
 
-	if E.Retail and E.wowtoc > 90105 then -- Bump this once 9.2 is live
-		local link = format('|cffbf0008%s|r %s', L["You are running the retail version on the PTR server. Please download our PTR version instead."], 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip')
-		if Chat.Initialized then link = select(2, Chat:FindURL('CHAT_MSG_DUMMY', link)) end
-		E:Print(link)
+	if E.wowtoc > E.toc then
+		local msg = format(L["LOGIN_PTR"], 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip')
+		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
+		E:Print(msg)
 	end
 end
