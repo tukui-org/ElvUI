@@ -3,6 +3,7 @@
 Aura Bars will work with Fluid Smart Aura positioning.  
 Minimap mover will match Minimap that has a scale other than one.  
 Fixed errors when deleting a Style Filter.  
+Fixed Aura Style Filters not triggering because of the element being disabled.  
 Classic: PVP Indicator for Classic and TBC works again.  
 
 ___
