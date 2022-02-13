@@ -1,8 +1,8 @@
-## Interface: 11402
-## Author: Elv, Simpy
-## Version: 1.07
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptionsUI|r
 ## Notes: Options for ElvUI.
+## Author: Elv, Simpy
+## Version: 1.07
+## Interface: 11402
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
