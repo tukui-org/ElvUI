@@ -7,6 +7,7 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
 ## X-oUF: ElvUF
+## X-Interface: 20503
 ## X-Tukui-ProjectID: 2
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 

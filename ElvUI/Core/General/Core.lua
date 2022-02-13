@@ -56,6 +56,7 @@ local LSM = E.Libs.LSM
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
 E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
+E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
@@ -64,7 +65,7 @@ E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
 E.myspec = GetSpecialization()
-E.wowpatch, E.wowbuild = GetBuildInfo()
+E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
@@ -1921,5 +1922,11 @@ function E:Initialize()
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
 		print(L["LOGIN_MSG_HELP"])
+	end
+
+	if E.wowtoc > E.toc then
+		local msg = format(L["LOGIN_PTR"], 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip')
+		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
+		print(msg)
 	end
 end

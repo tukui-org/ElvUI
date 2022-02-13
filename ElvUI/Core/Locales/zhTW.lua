@@ -206,6 +206,7 @@ L["Level %d"] = true
 L["Level"] = "等級"
 L["List of installations in queue:"] = "即將安裝的列表"
 L["Lock"] = "鎖定"
+L["LOGIN_PTR"] = ("|cffff3333You are currently not running the PTR version of *ElvUI|r which may cause issues.|r ^Please download the PTR version from the following link.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
 L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%.2f 版本|r, 輸入 */ec|r 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "拾取 / 提醒框架"
