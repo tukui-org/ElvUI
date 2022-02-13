@@ -1927,6 +1927,6 @@ function E:Initialize()
 	if E.wowtoc > E.toc then
 		local msg = format(L["LOGIN_PTR"], 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip')
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
-		E:Print(msg)
+		print(msg)
 	end
 end
