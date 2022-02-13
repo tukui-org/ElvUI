@@ -1922,4 +1922,10 @@ function E:Initialize()
 		print(msg)
 		print(L["LOGIN_MSG_HELP"])
 	end
+
+	if E.Retail and E.wowtoc > 90105 then -- Bump this once 9.2 is live
+		local link = format('|cffbf0008%s|r %s', L["You are running the retail version on the PTR server. Please download our PTR version instead."], 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip')
+		if Chat.Initialized then link = select(2, Chat:FindURL('CHAT_MSG_DUMMY', link)) end
+		E:Print(link)
+	end
 end

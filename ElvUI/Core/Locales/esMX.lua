@@ -380,6 +380,7 @@ L["Wrist"] = "Muñeca"
 L["XP:"] = "XP:"
 L["yells"] = "grita"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Ya has terminado con el proceso de instalación. Si necesitas ayuda o soporte técnico por favor visítanos en http://www.tukui.org."
+L["You are running the retail version on the PTR server. Please download our PTR version instead."] = true
 L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "Está utilizando el perfil de CPU CVar. Esto provoca una disminución del rendimiento. ¿Desea deshabilitarlo o continuar?"
 L["You can access the copy chat and chat menu functions by left/right clicking on the icon in the top right corner of the chat panel."] = "Puedes acceder a las funciones de copiar el chat y el menú del chat haciendo clic izquierdo/derecho en el icono de la esquina superior derecha del panel de chat."
 L["You can access the microbar by using middle mouse button on the minimap. You can also enable the MicroBar in the actionbar settings."] = "Puedes acceder a la microbarra utilizando el botón central del ratón en el minimapa. También puedes activar la microbarra en los ajustes de la barra de acción."
