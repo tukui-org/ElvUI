@@ -53,12 +53,12 @@ local function Update(self, event, unit)
 
 	local status
 	local factionGroup = UnitFactionGroup(unit) or 'Neutral'
-	local honorRewardInfo = C_PvP.GetHonorRewardInfo(UnitHonorLevel(unit))
+	local honorRewardInfo = oUF.isRetail and C_PvP.GetHonorRewardInfo(UnitHonorLevel(unit))
 
 	if(UnitIsPVPFreeForAll(unit)) then
 		status = 'FFA'
 	elseif(factionGroup ~= 'Neutral' and UnitIsPVP(unit)) then
-		if(unit == 'player' and UnitIsMercenary(unit)) then
+		if oUF.isRetail and (unit == 'player' and UnitIsMercenary(unit)) then
 			if(factionGroup == 'Horde') then
 				factionGroup = 'Alliance'
 			elseif(factionGroup == 'Alliance') then
