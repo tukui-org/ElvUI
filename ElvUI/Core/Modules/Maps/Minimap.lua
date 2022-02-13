@@ -303,15 +303,16 @@ function M:UpdateSettings()
 	M:SetScale(MinimapPanel, 1)
 
 	local mmOffset = E.PixelMode and 1 or 3
+	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
-	Minimap:SetScale(E.db.general.minimap.scale)
+	Minimap:SetScale(mmScale)
 
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
 	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
-	local HEIGHT, WIDTH = mHeight + (panelSize - joinPanel), mWidth
+	local HEIGHT, WIDTH = (mHeight * mmScale) + (panelSize - joinPanel), mWidth * mmScale
 	MMHolder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
 	if Minimap.location then
