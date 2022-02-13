@@ -666,6 +666,8 @@ local actionDefaults = {
 local function actionHidePlate() local _, actions = GetFilter(true) return actions and actions.hide end
 local function actionSubGroup(info, ...)
 	local _, actions = GetFilter(true)
+	if not actions then return end
+
 	if info.type == 'color' then
 		local t = actions[info[#info-1]][info[#info]]
 		local r, g, b, a = ...
