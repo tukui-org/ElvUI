@@ -3,17 +3,19 @@ local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local format, tinsert = format, tinsert
+local format, tinsert, next = format, tinsert, next
 local select, unpack, strmatch = select, unpack, strmatch
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterStateDriver = RegisterStateDriver
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
+local UIParent = UIParent
 local UnitAura = UnitAura
 local GetTime = GetTime
 
@@ -90,9 +92,20 @@ function A:MasqueData(texture, highlight)
 	return btnData
 end
 
-function A:UpdateStatusBar(button)
+function A:UpdateButton(button)
 	local db = A.db[button.auraType]
-	button.statusBar:SetValue(button.timeLeft)
+
+	if button.statusBar then
+		local r, g, b
+		if db.barColorGradient then
+			r, g, b = E.oUF:ColorGradient(button.timeLeft, button.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+		else
+			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
+		end
+
+		button.statusBar:SetStatusBarColor(r, g, b)
+		button.statusBar:SetValue(button.timeLeft)
+	end
 
 	local threshold = db.fadeThreshold
 	if threshold == -1 then
@@ -109,6 +122,7 @@ function A:CreateIcon(button)
 	button.filter = button.header.filter
 	button.auraType = button.header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 
+	button.instant = true -- let instant update on attribute change
 	button.name = button:GetName()
 	button.enchantOffset = strmatch(button.name, '2$') and 6 or 2 -- offHandExpiration or mainHandExpiration
 
@@ -129,12 +143,16 @@ function A:CreateIcon(button)
 	button.statusBar = CreateFrame('StatusBar', nil, button)
 	button.statusBar:SetFrameLevel(button:GetFrameLevel())
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
+	button.statusBar:SetMinMaxValues(0, 1)
+	button.statusBar:SetValue(0)
 	button.statusBar:CreateBackdrop()
 
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnAttributeChanged', A.Button_OnAttributeChanged)
 	button:SetScript('OnEnter', A.Button_OnEnter)
 	button:SetScript('OnLeave', A.Button_OnLeave)
+	button:SetScript('OnHide', A.Button_OnHide)
+	button:SetScript('OnShow', A.Button_OnShow)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
@@ -190,34 +208,32 @@ function A:UpdateIcon(button)
 end
 
 function A:SetAuraTime(button, expiration, duration)
-	button.timeLeft = E:Round(expiration - GetTime(), 3)
+	local oldEnd = button.endTime
+	button.endTime = expiration
+	button.duration = duration
+	button.expiration = expiration
 
-	-- this keeps enchants from derping out when they expire
-	if button.timeLeft <= 0.05 then
-		A:ClearAuraTime(button, true)
-		return
+	if oldEnd ~= button.endTime then
+		button.statusBar:SetMinMaxValues(0, duration)
+		button.nextUpdate = 0
 	end
 
 	button:SetScript('OnUpdate', A.Button_OnUpdate)
-	A:UpdateStatusBar(button)
-
-	local oldEnd = button.endTime
-	button.endTime = expiration
-
-	if oldEnd ~= button.endTime then
-		button.nextUpdate = 0
-		button.statusBar:SetMinMaxValues(0, duration)
-	end
+	A:UpdateTime(button, expiration)
+	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
 function A:ClearAuraTime(button, expired)
 	if not expired then
-		button.statusBar:SetValue(1)
 		button.statusBar:SetMinMaxValues(0, 1)
+		button.statusBar:SetValue(0)
 	end
 
 	button.endTime = nil
 	button.timeLeft = nil
+	button.duration = nil
+	button.expiration = nil
+
 	button:SetScript('OnUpdate', nil)
 	button.text:SetText('')
 end
@@ -232,17 +248,10 @@ function A:UpdateAura(button, index)
 		A:ClearAuraTime(button)
 	end
 
-	local db, r, g, b = A.db[button.auraType]
-	if button.timeLeft and db.barColorGradient then
-		r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
-	else
-		r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
-	end
-
+	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
 	button.count:SetText(count > 1 and count)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
-	button.statusBar:SetStatusBarColor(r, g, b)
 	button.texture:SetTexture(icon)
 
 	local dtype = debuffType or 'none'
@@ -279,19 +288,13 @@ function A:UpdateTempEnchant(button, index)
 			duration = 1800
 		end
 
-		A:SetAuraTime(button, E:Round(remaining + GetTime(), 3), duration)
+		A:SetAuraTime(button, remaining + GetTime(), duration)
 	else
 		A:ClearAuraTime(button)
 	end
 
-	local r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
-	if expiration and db.barColorGradient then
-		r, g, b = E.oUF:ColorGradient(remaining, duration, .8, 0, 0, .8, .8, 0, 0, .8, 0)
-	end
-
 	button.text:SetShown(db.showDuration)
 	button.statusBar:SetShown((db.barShow and remaining > 0) or (db.barShow and db.barNoDuration and not expiration))
-	button.statusBar:SetStatusBarColor(r, g, b)
 end
 
 function A:Update_CooldownOptions(button)
@@ -312,30 +315,85 @@ end
 
 function A:Button_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
-	A:SetTooltip(self)
+
+	self.elapsed = 1 -- let the tooltip update instantly
+end
+
+function A:Button_OnShow()
+
+end
+
+function A:Button_OnHide()
+	self.instant = true
+end
+
+function A:UpdateTime(button, expiration)
+	button.timeLeft = expiration - GetTime()
+
+	A:UpdateButton(button)
 end
 
 function A:Button_OnUpdate(elapsed)
-	if self.timeLeft then
+	local xpr = self.expiration
+	if xpr then
 		E.Cooldown_OnUpdate(self, elapsed)
 	end
 
-	if self.ttElapsed and self.ttElapsed > 0.1 then
+	if self.elapsed and self.elapsed > 0.1 then
 		if GameTooltip:IsOwned(self) then
 			A:SetTooltip(self)
 		end
 
-		self.ttElapsed = 0
+		if xpr then
+			A:UpdateTime(self, xpr)
+		end
+
+		self.elapsed = 0
 	else
-		self.ttElapsed = (self.ttElapsed or 0) + elapsed
+		self.elapsed = (self.elapsed or 0) + elapsed
 	end
 end
 
-function A:Button_OnAttributeChanged(attribute, value)
-	if attribute == 'index' then
-		A:UpdateAura(self, value)
-	elseif attribute == 'target-slot' then
-		A:UpdateTempEnchant(self, value)
+function A:Button_OnAttributeChanged(attr, value)
+	if attr == 'index' then
+		if self.instant then
+			A:UpdateAura(self, value)
+			self.instant = nil
+		else
+			self.header.spells[self] = value
+		end
+	elseif attr == 'target-slot' then
+		if self.instant then
+			A:UpdateTempEnchant(self, value)
+			self.instant = nil
+		else
+			self.header.enchants[self] = value
+		end
+	end
+end
+
+function A:Header_OnUpdate(elapsed)
+	local header = self.frame
+	if header.elapsed and header.elapsed > 0.1 then
+		local button, value = next(header.spells)
+		while button do
+			A:UpdateAura(button, value)
+
+			header.spells[button] = nil
+			button, value = next(header.spells)
+		end
+
+		local btn, index = next(header.enchants)
+		while btn do
+			A:UpdateTempEnchant(btn, index)
+
+			header.enchants[btn] = nil
+			btn, index = next(header.enchants)
+		end
+
+		header.elapsed = 0
+	else
+		header.elapsed = (header.elapsed or 0) + elapsed
 	end
 end
 
@@ -406,12 +464,23 @@ function A:CreateAuraHeader(filter)
 	header:SetClampedToScreen(true)
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
+	header.enchants = {}
+	header.spells = {}
 
-	header.filter = filter
+	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
+	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
+	header.visibility.frame = header
 	header.auraType = auraType
+	header.filter = filter
 
-	RegisterStateDriver(header, 'visibility', '[petbattle] hide; show')
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
+	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
+	RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
+	header.visibility:SetAttribute('_onstate-customVisibility', [[
+		local header = self:GetFrameRef('AuraHeader')
+		local hide, shown = newstate == 0, header:IsShown()
+		if hide and shown then header:Hide() elseif not hide and not shown then header:Show() end
+	]]) -- use custom script that will only call hide when it needs to, this prevents spam to `SecureAuraHeader_Update`
 
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)

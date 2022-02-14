@@ -301,7 +301,7 @@ function E:UpdateCooldownOverride(module)
 
 				-- force update top aura cooldowns
 				if parent.CooldownOverride == 'auras' then
-					E:Cooldown_ForceUpdate(parent)
+					E.Cooldown_OnUpdate(parent, -1)
 				end
 			end
 		end
