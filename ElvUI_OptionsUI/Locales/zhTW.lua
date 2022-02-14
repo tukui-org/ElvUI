@@ -819,6 +819,7 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["INSANITY"] = "瘋狂"
 L["Inscription"] = "銘文學"
 L["Inset"] = "插入"
+L["Inspect Data"] = true
 L["Inspect"] = "觀察"
 L["Install"] = "安裝"
 L["Instance Difficulty"] = "副本難度"

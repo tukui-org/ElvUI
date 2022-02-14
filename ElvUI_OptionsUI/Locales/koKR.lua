@@ -819,6 +819,7 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["INSANITY"] = "광기"
 L["Inscription"] = "주문각인"
 L["Inset"] = "내부에 분리"
+L["Inspect Data"] = true
 L["Inspect"] = "살펴보기"
 L["Install"] = "설치"
 L["Instance Difficulty"] = "인스 난이도"

@@ -819,6 +819,7 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["INSANITY"] = "Insanidade"
 L["Inscription"] = "Escrivania"
 L["Inset"] = "Margem"
+L["Inspect Data"] = true
 L["Inspect"] = "Inspecionar"
 L["Install"] = "Instalação"
 L["Instance Difficulty"] = "Dificuldade da Instância"
