@@ -470,6 +470,7 @@ L["Display Text"] = "Afficher le texte"
 L["Display the castbar icon inside the castbar."] = "Afficher l'icône à l'intérieur de la barre d'incantation."
 L["Display the current Mythic+ Dungeon Score."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Afficher une infobulle pendant le survol d'un lien d'objet, sort, etc..."
+L["Display the item level and current specializtion of the unit."] = true
 L["Display the junk icon on all grey items that can be vendored."] = "Afficher l'cône de camelotte sur tous les objets gris qui peuvent être vendu"
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Display the New Item Glow"] = "Afficher la surbrillance des nouveaux objets"

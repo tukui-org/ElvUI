@@ -1120,6 +1120,7 @@ P.tooltip = {
 	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
+	inspectDataEnable = true,
 	mythicDataEnable = true,
 	mythicBestRun = true,
 	dungeonScore = true,

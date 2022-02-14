@@ -470,6 +470,7 @@ L["Display Text"] = "Zeige Text"
 L["Display the castbar icon inside the castbar."] = "Zeigt das Zauberleisten Symbol in der Zauberleiste."
 L["Display the current Mythic+ Dungeon Score."] = "Zeigt die aktuelle Mythic+ Dungeon Wertung an."
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Zeigt den Hyperlink Tooltip beim Überfahren eines Hyperlinks."
+L["Display the item level and current specializtion of the unit."] = true
 L["Display the junk icon on all grey items that can be vendored."] = "Zeigt das Müll Symbol auf allen grauen Gegenständen an die verkauft werden können."
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "Zeigt den Einheitennamen auf der Sprechblase an. Funktioniert nicht, wenn der Hintergrund deaktiviert ist oder wenn du in Instanzen bist."
 L["Display the New Item Glow"] = "Zeigt das neue Gegenstandsleuchten"

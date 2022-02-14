@@ -470,6 +470,7 @@ L["Display Text"] = "Показывать текст"
 L["Display the castbar icon inside the castbar."] = "Отображать иконку на полосе заклинаний."
 L["Display the current Mythic+ Dungeon Score."] = "Отображение текущего счета для ключей."
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Отображать подсказку ссылки при наведении на нее мыши. Действует на предметы, достижения, сохранения подземелий и тд."
+L["Display the item level and current specializtion of the unit."] = true
 L["Display the junk icon on all grey items that can be vendored."] = "Показывать иконку монетки на серых предметах, которые можно продать."
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "Отображать имя юнита на облачках сообщений. Не будет работать, если фон отключен или в подземельях."
 L["Display the New Item Glow"] = "Отображать свечение на новых предметах"
