@@ -484,6 +484,8 @@ function A:CreateAuraHeader(filter)
 
 	local header = CreateFrame('Frame', name, E.UIParent, 'SecureAuraHeaderTemplate')
 	header:SetClampedToScreen(true)
+	header:UnregisterEvent('UNIT_AURA') -- we only need to watch player and vehicle
+	header:RegisterUnitEvent('UNIT_AURA', 'player', 'vehicle')
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
 	header.enchants = {}
