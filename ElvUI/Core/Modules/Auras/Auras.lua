@@ -3,6 +3,7 @@ local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local tonumber = tonumber
 local format, tinsert, next = format, tinsert, next
 local select, unpack, strmatch = select, unpack, strmatch
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -95,7 +96,7 @@ end
 function A:UpdateButton(button)
 	local db = A.db[button.auraType]
 
-	if button.statusBar then
+	if button.statusBar and button.statusBar:IsShown() then
 		local r, g, b
 		if db.barColorGradient then
 			r, g, b = E.oUF:ColorGradient(button.timeLeft, button.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
@@ -122,9 +123,13 @@ function A:CreateIcon(button)
 	button.filter = button.header.filter
 	button.auraType = button.header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 
-	button.instant = true -- let instant update on attribute change
 	button.name = button:GetName()
-	button.enchantOffset = strmatch(button.name, '2$') and 6 or 2 -- offHandExpiration or mainHandExpiration
+	button.enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
+	if button.enchantIndex then
+		button.header['enchant'..button.enchantIndex] = button
+	else
+		button.instant = true -- let update on attribute change
+	end
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
@@ -210,12 +215,16 @@ end
 
 function A:SetAuraTime(button, expiration, duration)
 	local oldEnd = button.endTime
+	button.endCooldown = expiration - 0.05
+	button.expiration = expiration
 	button.endTime = expiration
 	button.duration = duration
-	button.expiration = expiration
 
 	if oldEnd ~= button.endTime then
-		button.statusBar:SetMinMaxValues(0, duration)
+		if button.statusBar:IsShown() then
+			button.statusBar:SetMinMaxValues(0, duration)
+		end
+
 		button.nextUpdate = 0
 	end
 
@@ -223,31 +232,34 @@ function A:SetAuraTime(button, expiration, duration)
 	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
-function A:ClearAuraTime(button, expired)
-	if not expired then
-		button.statusBar:SetMinMaxValues(0, 1)
-		button.statusBar:SetValue(0)
-	end
-
-	button.endTime = nil
-	button.timeLeft = nil
-	button.duration = nil
+function A:ClearAuraTime(button)
+	button.endCooldown = nil
 	button.expiration = nil
+	button.endTime = nil
+	button.duration = nil
+	button.timeLeft = nil
 
 	button.text:SetText('')
+
+	if button.statusBar:IsShown() then
+		button.statusBar:SetMinMaxValues(0, 1)
+		button.statusBar:SetValue(1)
+
+		local db = A.db[button.auraType]
+		if db.barColorGradient then -- value 1 is just green
+			button.statusBar:SetStatusBarColor(0, .8, 0)
+		else
+			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+		end
+	end
 end
 
 function A:UpdateAura(button, index)
 	local name, icon, count, debuffType, duration, expiration = UnitAura(button.header:GetAttribute('unit'), index, button.filter)
 	if not name then return end
 
-	if duration > 0 and expiration then
-		A:SetAuraTime(button, expiration, duration)
-	else
-		A:ClearAuraTime(button)
-	end
-
 	local db = A.db[button.auraType]
+
 	button.text:SetShown(db.showDuration)
 	button.count:SetText(count > 1 and count)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
@@ -260,17 +272,24 @@ function A:UpdateAura(button, index)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.debuffType = dtype
 	end
+
+	if duration > 0 and expiration then
+		A:SetAuraTime(button, expiration, duration)
+	else
+		A:ClearAuraTime(button)
+	end
 end
 
-function A:UpdateTempEnchant(button, index)
+function A:UpdateTempEnchant(button, index, expiration)
 	local db = A.db[button.auraType]
-	local duration, remaining = 600, 0
-	local expiration = select(button.enchantOffset, GetWeaponEnchantInfo())
+
+	button.text:SetShown(db.showDuration)
+	button.statusBar:SetShown((db.barShow and expiration) or (db.barShow and db.barNoDuration and not expiration))
+
 	if expiration then
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
-		local r, g, b
-		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
+		local quality, r, g, b = A.db.colorEnchants and GetInventoryItemQuality('player', index)
 		if quality and quality > 1 then
 			r, g, b = GetItemQualityColor(quality)
 		else
@@ -280,20 +299,11 @@ function A:UpdateTempEnchant(button, index)
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
 
-		remaining = expiration / 1000
-		if remaining <= 3600 and remaining > 1800 then
-			duration = 3600
-		elseif remaining <= 1800 and remaining > 600 then
-			duration = 1800
-		end
-
-		A:SetAuraTime(button, remaining + GetTime(), duration)
+		local remaining = (expiration / 1000) or 0
+		A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
 	else
 		A:ClearAuraTime(button)
 	end
-
-	button.text:SetShown(db.showDuration)
-	button.statusBar:SetShown((db.barShow and remaining > 0) or (db.barShow and db.barNoDuration and not expiration))
 end
 
 function A:Update_CooldownOptions(button)
@@ -319,11 +329,17 @@ function A:Button_OnEnter()
 end
 
 function A:Button_OnShow()
-
+	if self.enchantIndex then
+		self.header.enchants[self.enchantIndex] = self
+	end
 end
 
 function A:Button_OnHide()
-	self.instant = true
+	if self.enchantIndex then
+		self.header.enchants[self.enchantIndex] = nil
+	else
+		self.instant = true
+	end
 end
 
 function A:UpdateTime(button, expiration)
@@ -333,7 +349,7 @@ function A:UpdateTime(button, expiration)
 end
 
 function A:Button_OnUpdate(elapsed)
-	local xpr = self.expiration
+	local xpr = self.endTime
 	if xpr then
 		E.Cooldown_OnUpdate(self, elapsed)
 	end
@@ -361,13 +377,14 @@ function A:Button_OnAttributeChanged(attr, value)
 		else
 			self.header.spells[self] = value
 		end
-	elseif attr == 'target-slot' then
-		if self.instant then
-			A:UpdateTempEnchant(self, value)
-			self.instant = nil
-		else
-			self.header.enchants[self] = value
-		end
+	end
+end
+
+function A:Header_OnEvent()
+	local header = self.frame
+	if header then
+		header.enchants[1] = header.enchantMain and header.enchant1
+		header.enchants[2] = header.enchantOffhand and header.enchant2
 	end
 end
 
@@ -382,12 +399,20 @@ function A:Header_OnUpdate(elapsed)
 			button, value = next(header.spells)
 		end
 
-		local btn, index = next(header.enchants)
-		while btn do
-			A:UpdateTempEnchant(btn, index)
+		local _, main, _, _, _, offhand = GetWeaponEnchantInfo()
+		header.enchantOffhand = offhand
+		header.enchantMain = main
 
-			header.enchants[btn] = nil
-			btn, index = next(header.enchants)
+		local index, enchant = next(header.enchants)
+		while enchant do
+			if index == 1 then
+				A:UpdateTempEnchant(enchant, enchant:GetID(), main)
+			else
+				A:UpdateTempEnchant(enchant, enchant:GetID(), offhand)
+			end
+
+			header.enchants[index] = nil
+			index, enchant = next(header.enchants)
 		end
 
 		header.elapsed = 0
@@ -468,9 +493,13 @@ function A:CreateAuraHeader(filter)
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
 	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
+	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- same
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter
+	header.name = name
+
+	E:Delay(1, header.visibility.RegisterUnitEvent, header.visibility, 'UNIT_INVENTORY_CHANGED', 'player')
 
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
