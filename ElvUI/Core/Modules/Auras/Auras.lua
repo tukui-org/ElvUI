@@ -229,7 +229,7 @@ function A:SetAuraTime(button, expiration, duration)
 	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
-function A:ClearAuraTime(button)
+function A:ClearAuraTime(button, expired)
 	button.expiration = nil
 	button.endTime = nil
 	button.duration = nil
@@ -237,7 +237,7 @@ function A:ClearAuraTime(button)
 
 	button.text:SetText('')
 
-	if button.statusBar:IsShown() then
+	if not expired and button.statusBar:IsShown() then
 		button.statusBar:SetMinMaxValues(0, 1)
 		button.statusBar:SetValue(1)
 
@@ -339,7 +339,11 @@ end
 function A:UpdateTime(button, expiration)
 	button.timeLeft = expiration - GetTime()
 
-	A:UpdateButton(button)
+	if button.timeLeft < 0.1 then
+		A:ClearAuraTime(button, true)
+	else
+		A:UpdateButton(button)
+	end
 end
 
 function A:Button_OnUpdate(elapsed)
