@@ -493,6 +493,7 @@ function A:CreateAuraHeader(filter)
 	header.filter = filter
 	header.name = name
 
+	-- register event for temp enchants but skip the initial calls from it (they trigger when the button is shown)
 	E:Delay(1, header.visibility.RegisterUnitEvent, header.visibility, 'UNIT_INVENTORY_CHANGED', 'player')
 
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
