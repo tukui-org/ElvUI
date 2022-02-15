@@ -380,8 +380,8 @@ function A:Button_OnAttributeChanged(attr, value)
 	end
 end
 
-function A:Header_OnEvent(_, unit)
-	local header = unit == 'player' and self.frame
+function A:Header_OnEvent()
+	local header = self.frame
 	if header then
 		header.enchants[1] = header.enchantMain and header.enchant1
 		header.enchants[2] = header.enchantOffhand and header.enchant2
@@ -494,11 +494,12 @@ function A:CreateAuraHeader(filter)
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
 	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
 	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- same
-	header.visibility:RegisterEvent('UNIT_INVENTORY_CHANGED')
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter
 	header.name = name
+
+	E:Delay(1, header.visibility.RegisterUnitEvent, header.visibility, 'UNIT_INVENTORY_CHANGED', 'player')
 
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
