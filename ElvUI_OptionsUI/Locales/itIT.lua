@@ -470,6 +470,7 @@ L["Display Text"] = true
 L["Display the castbar icon inside the castbar."] = true
 L["Display the current Mythic+ Dungeon Score."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = true
+L["Display the item level and current specialization of the unit on modifier press."] = true
 L["Display the junk icon on all grey items that can be vendored."] = true
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = true
 L["Display the New Item Glow"] = true
@@ -818,6 +819,7 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["INSANITY"] = "Insanity"
 L["Inscription"] = "Inscription"
 L["Inset"] = true
+L["Inspect Data"] = true
 L["Inspect"] = true
 L["Install"] = "Installa"
 L["Instance Difficulty"] = true

@@ -470,6 +470,7 @@ L["Display Text"] = "남은시간 표시"
 L["Display the castbar icon inside the castbar."] = "시전바 내부에 시전바 아이콘을 표시합니다."
 L["Display the current Mythic+ Dungeon Score."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "각종 링크에 커서를 갖다 댄(마우스오버) 동안에 링크에 대한 툴팁을 표시합니다."
+L["Display the item level and current specialization of the unit on modifier press."] = true
 L["Display the junk icon on all grey items that can be vendored."] = "판매 가능한 모든 회색 템에 아이콘을 표시합니다."
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "말풍선에 화자의 이름을 표시합니다. 배경이 비활성화 돼 있거나 인스턴스 내부에 있을 때는 작동하지 않을 것입니다."
 L["Display the New Item Glow"] = true
@@ -818,6 +819,7 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["INSANITY"] = "광기"
 L["Inscription"] = "주문각인"
 L["Inset"] = "내부에 분리"
+L["Inspect Data"] = true
 L["Inspect"] = "살펴보기"
 L["Install"] = "설치"
 L["Instance Difficulty"] = "인스 난이도"

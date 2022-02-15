@@ -470,6 +470,7 @@ L["Display Text"] = "显示文本"
 L["Display the castbar icon inside the castbar."] = "在施法条内显示图标"
 L["Display the current Mythic+ Dungeon Score."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标指向链接时显示鼠标提示"
+L["Display the item level and current specialization of the unit on modifier press."] = true
 L["Display the junk icon on all grey items that can be vendored."] = "为所有能够卖店的灰色物品显示垃圾图标"
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "在聊天气泡上显示单位的名字. 禁用背景或者副本中时将不会工作."
 L["Display the New Item Glow"] = "显示新物品发光"
@@ -818,6 +819,7 @@ L["Inherit the global fade, mousing over, targetting, setting focus, losing heal
 L["INSANITY"] = "狂乱值"
 L["Inscription"] = "铭文"
 L["Inset"] = "插入"
+L["Inspect Data"] = true
 L["Inspect"] = "观察"
 L["Install"] = "安装"
 L["Instance Difficulty"] = "副本难度"

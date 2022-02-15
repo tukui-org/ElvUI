@@ -565,7 +565,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				TT:AddMythicInfo(tt, unit)
 			end
 
-			if isShiftKeyDown and color then
+			if isShiftKeyDown and color and TT.db.inspectDataEnable then
 				TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 			end
 		end

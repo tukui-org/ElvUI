@@ -1120,6 +1120,7 @@ P.tooltip = {
 	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
+	inspectDataEnable = true,
 	mythicDataEnable = true,
 	mythicBestRun = true,
 	dungeonScore = true,
@@ -2303,7 +2304,7 @@ P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.text_format = '[classcolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 P.unitframe.units.tank.targetsGroup.enable = true
-P.unitframe.units.tank.targetsGroup.buffIndicator = false
+P.unitframe.units.tank.targetsGroup.buffIndicator = nil
 P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
