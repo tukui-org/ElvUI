@@ -95,7 +95,6 @@ end
 
 function A:UpdateButton(button)
 	local db = A.db[button.auraType]
-
 	if button.statusBar and button.statusBar:IsShown() then
 		local r, g, b
 		if db.barColorGradient then
@@ -192,7 +191,6 @@ end
 
 function A:UpdateIcon(button)
 	local db = A.db[button.auraType]
-
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
 	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
@@ -257,7 +255,6 @@ function A:UpdateAura(button, index)
 	if not name then return end
 
 	local db = A.db[button.auraType]
-
 	button.text:SetShown(db.showDuration)
 	button.count:SetText(count > 1 and count)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
@@ -280,7 +277,6 @@ end
 
 function A:UpdateTempEnchant(button, index, expiration)
 	local db = A.db[button.auraType]
-
 	button.text:SetShown(db.showDuration)
 	button.statusBar:SetShown((db.barShow and expiration) or (db.barShow and db.barNoDuration and not expiration))
 
