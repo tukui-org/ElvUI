@@ -265,18 +265,18 @@ function A:UpdateAura(button, index)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 	button.texture:SetTexture(icon)
 
-	if duration > 0 and expiration then
-		A:SetAuraTime(button, expiration, duration)
-	else
-		A:ClearAuraTime(button)
-	end
-
 	local dtype = debuffType or 'none'
 	if button.debuffType ~= dtype then
 		local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and _G.DebuffTypeColor[dtype]) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.debuffType = dtype
+	end
+
+	if duration > 0 and expiration then
+		A:SetAuraTime(button, expiration, duration)
+	else
+		A:ClearAuraTime(button)
 	end
 end
 
