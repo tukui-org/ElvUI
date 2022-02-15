@@ -215,7 +215,6 @@ end
 
 function A:SetAuraTime(button, expiration, duration)
 	local oldEnd = button.endTime
-	button.endCooldown = expiration - 0.05
 	button.expiration = expiration
 	button.endTime = expiration
 	button.duration = duration
@@ -233,7 +232,6 @@ function A:SetAuraTime(button, expiration, duration)
 end
 
 function A:ClearAuraTime(button)
-	button.endCooldown = nil
 	button.expiration = nil
 	button.endTime = nil
 	button.duration = nil
