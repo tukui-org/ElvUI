@@ -381,8 +381,8 @@ end
 function A:Header_OnEvent()
 	local header = self.frame
 	if header then
-		header.enchants[1] = header.enchantMain and header.enchant1
-		header.enchants[2] = header.enchantOffhand and header.enchant2
+		header.enchants[1] = header.enchantMain and header.enchant1 or nil
+		header.enchants[2] = header.enchantOffhand and header.enchant2 or nil
 	end
 end
 
