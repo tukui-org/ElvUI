@@ -25,7 +25,9 @@ function S:StyleTooltips()
 		_G.QuestScrollFrame.CampaignTooltip,
 		-- ours
 		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip
+		_G.ElvUISpellBookTooltip,
+		-- libs
+		_G.LibDBIconTooltip
 	}) do
 		TT:SetStyle(tt)
 	end
