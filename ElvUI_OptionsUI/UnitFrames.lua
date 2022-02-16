@@ -1595,8 +1595,7 @@ Raid40.pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(U
 GroupUnits.raidpet = ACH:Group(L["Raid Pet"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
 local RaidPet = GroupUnits.raidpet.args
 
-RaidPet.header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, 'large', nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end)
-RaidPet.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, function() return E.db.unitframe.smartRaidFilter end)
+RaidPet.enable = ACH:Toggle(L["Enable"], nil, 1)
 RaidPet.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.raidpet, UF.raidpet.forceShow ~= true or nil) end)
 RaidPet.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit = 'raidpet', mover='Raid Pet Frames'}) end)
 RaidPet.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid = L["Raid Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raidpet') E:RefreshGUI() end)
