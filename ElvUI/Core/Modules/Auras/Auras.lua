@@ -391,8 +391,9 @@ function A:Header_OnUpdate(elapsed)
 			button, value = next(header.spells)
 		end
 
-		local _, main, _, _, _, offhand = GetWeaponEnchantInfo()
+		local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
 		header.enchantOffhand = offhand
+		header.enchantRanged = ranged
 		header.enchantMain = main
 
 		local index, enchant = next(header.enchants)
@@ -401,6 +402,8 @@ function A:Header_OnUpdate(elapsed)
 				A:UpdateTempEnchant(enchant, enchant:GetID(), main)
 			elseif index == 2 then
 				A:UpdateTempEnchant(enchant, enchant:GetID(), offhand)
+			elseif index == 3 then
+				A:UpdateTempEnchant(enchant, enchant:GetID(), ranged)
 			end
 
 			header.enchants[index] = nil
