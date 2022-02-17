@@ -375,14 +375,8 @@ function A:Button_OnAttributeChanged(attr, value)
 		else
 			self.header.spells[self] = value
 		end
-	end
-end
-
-function A:Header_OnEvent()
-	local header = self.frame
-	if header then
-		header.enchants[1] = header.enchantMain and header.enchant1 or nil
-		header.enchants[2] = header.enchantOffhand and header.enchant2 or nil
+	elseif attr == 'target-slot' and self.enchantIndex then
+		self.header.enchants[self.enchantIndex] = self
 	end
 end
 
@@ -493,14 +487,10 @@ function A:CreateAuraHeader(filter)
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
 	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
-	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- same
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter
 	header.name = name
-
-	-- register event for temp enchants but skip the initial calls from it (they trigger when the button is shown)
-	E:Delay(1, header.visibility.RegisterUnitEvent, header.visibility, 'UNIT_INVENTORY_CHANGED', 'player')
 
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
