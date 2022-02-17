@@ -394,15 +394,8 @@ function A:Header_OnUpdate(elapsed)
 		local index, enchant = next(header.enchants)
 		if index then
 			local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
-
 			while enchant do
-				if index == 1 then
-					A:UpdateTempEnchant(enchant, enchant:GetID(), main)
-				elseif index == 2 then
-					A:UpdateTempEnchant(enchant, enchant:GetID(), offhand)
-				elseif index == 3 then
-					A:UpdateTempEnchant(enchant, enchant:GetID(), ranged)
-				end
+				A:UpdateTempEnchant(enchant, enchant:GetID(), (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged))
 
 				header.enchants[index] = nil
 				index, enchant = next(header.enchants)
