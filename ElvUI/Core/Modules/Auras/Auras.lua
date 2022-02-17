@@ -373,10 +373,10 @@ function A:Button_OnAttributeChanged(attr, value)
 		if self.instant then
 			A:UpdateAura(self, value)
 			self.instant = nil
-		else
+		elseif self.header.spells[self] ~= value then
 			self.header.spells[self] = value
 		end
-	elseif attr == 'target-slot' and self.enchantIndex and not self.header.enchants[self.enchantIndex] then
+	elseif attr == 'target-slot' and self.enchantIndex and self.header.enchants[self.enchantIndex] ~= self then
 		self.header.enchants[self.enchantIndex] = self
 		self.header.elapsedEnchants = 0 -- reset the timer so we can wait for the data to be ready
 	end
