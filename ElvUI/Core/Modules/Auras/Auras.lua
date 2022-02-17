@@ -319,12 +319,13 @@ end
 function A:Button_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
 
-	self.elapsed = 1 -- let the tooltip update instantly
+	self.elapsed = 1 -- let the tooltip update next frame
 end
 
 function A:Button_OnShow()
 	if self.enchantIndex then
 		self.header.enchants[self.enchantIndex] = self
+		self.header.elapsedEnchants = 1 -- let the enchant update next frame
 	end
 end
 
@@ -372,17 +373,19 @@ function A:Button_OnAttributeChanged(attr, value)
 		if self.instant then
 			A:UpdateAura(self, value)
 			self.instant = nil
-		else
+		elseif self.header.spells[self] ~= value then
 			self.header.spells[self] = value
 		end
-	elseif attr == 'target-slot' and self.enchantIndex then
+	elseif attr == 'target-slot' and self.enchantIndex and self.header.enchants[self.enchantIndex] ~= self then
 		self.header.enchants[self.enchantIndex] = self
+		self.header.elapsedEnchants = 0 -- reset the timer so we can wait for the data to be ready
 	end
 end
 
 function A:Header_OnUpdate(elapsed)
 	local header = self.frame
-	if header.elapsed and header.elapsed > 0.1 then
+
+	if header.elapsedSpells and header.elapsedSpells > 0.1 then
 		local button, value = next(header.spells)
 		while button do
 			A:UpdateAura(button, value)
@@ -391,6 +394,12 @@ function A:Header_OnUpdate(elapsed)
 			button, value = next(header.spells)
 		end
 
+		header.elapsedSpells = 0
+	else
+		header.elapsedSpells = (header.elapsedSpells or 0) + elapsed
+	end
+
+	if header.elapsedEnchants and header.elapsedEnchants > 0.5 then
 		local index, enchant = next(header.enchants)
 		if index then
 			local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
@@ -402,9 +411,9 @@ function A:Header_OnUpdate(elapsed)
 			end
 		end
 
-		header.elapsed = 0
+		header.elapsedEnchants = 0
 	else
-		header.elapsed = (header.elapsed or 0) + elapsed
+		header.elapsedEnchants = (header.elapsedEnchants or 0) + elapsed
 	end
 end
 
