@@ -399,7 +399,7 @@ function A:Header_OnUpdate(elapsed)
 		while enchant do
 			if index == 1 then
 				A:UpdateTempEnchant(enchant, enchant:GetID(), main)
-			else
+			elseif index == 2 then
 				A:UpdateTempEnchant(enchant, enchant:GetID(), offhand)
 			end
 
