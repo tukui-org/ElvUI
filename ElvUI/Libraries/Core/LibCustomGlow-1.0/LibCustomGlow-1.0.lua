@@ -93,14 +93,14 @@ lib.GlowFramePool = GlowFramePool
 
 local function addFrameAndTex(r,color,name,key,N,xOffset,yOffset,texture,texCoord,desaturated,frameLevel)
     key = key or ""
-	frameLevel = frameLevel or 8
+    frameLevel = frameLevel or 8
     if not r[name..key] then
         r[name..key] = GlowFramePool:Acquire()
         r[name..key]:SetParent(r)
         r[name..key].name = name..key
     end
     local f = r[name..key]
-	f:SetFrameLevel(r:GetFrameLevel()+frameLevel)
+    f:SetFrameLevel(r:GetFrameLevel()+frameLevel)
     f:SetPoint("TOPLEFT",r,"TOPLEFT",-xOffset+0.05,yOffset+0.05)
     f:SetPoint("BOTTOMRIGHT",r,"BOTTOMRIGHT",xOffset,-yOffset+0.05)
     f:Show()
@@ -330,6 +330,7 @@ lib.stopList["Pixel Glow"] = lib.PixelGlow_Stop
 local function acUpdate(self,elapsed)
     local width,height = self:GetSize()
     if width ~= self.info.width or height ~= self.info.height then
+        if width*height == 0 then return end -- Avoid division by zero
         self.info.width = width
         self.info.height = height
         self.info.perimeter = 2*(width+height)
@@ -612,7 +613,7 @@ function lib.ButtonGlow_Start(r,color,frequency,frameLevel)
     if not r then
         return
     end
-	frameLevel = frameLevel or 8;
+    frameLevel = frameLevel or 8;
     local throttle
     if frequency and frequency > 0 then
         throttle = 0.25/frequency*0.01
@@ -627,8 +628,8 @@ function lib.ButtonGlow_Start(r,color,frequency,frameLevel)
         f:SetPoint("TOPLEFT", r, "TOPLEFT", -width * 0.2, height * 0.2)
         f:SetPoint("BOTTOMRIGHT", r, "BOTTOMRIGHT", width * 0.2, -height * 0.2)
         f.ants:SetSize(width*1.4*0.85, height*1.4*0.85)
-		AnimIn_OnFinished(f.animIn)
-		if f.animOut:IsPlaying() then
+        AnimIn_OnFinished(f.animIn)
+        if f.animOut:IsPlaying() then
             f.animOut:Stop()
             f.animIn:Play()
         end
