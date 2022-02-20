@@ -1749,11 +1749,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local chatFilters = _G.ChatFrame_GetMessageEventFilters(event)
 		if chatFilters then
 			for _, filterFunc in next, chatFilters do
-				local filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+				local filter, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 				if filter then
 					return true
-				elseif newarg1 then
-					arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14
+				elseif new1 then
+					arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
 				end
 			end
 		end
@@ -2584,6 +2584,8 @@ function CH:DisplayChatHistory()
 		return
 	end
 
+	CH.SoundTimer = true -- ignore sounds during pass through ChatFrame_GetMessageEventFilters
+
 	for _, chat in ipairs(_G.CHAT_FRAMES) do
 		for _, d in ipairs(data) do
 			if type(d) == 'table' then
@@ -2601,6 +2603,8 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
+
+	CH.SoundTimer = nil
 end
 
 tremove(_G.ChatTypeGroup.GUILD, 2)
