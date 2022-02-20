@@ -3576,7 +3576,12 @@ function CH:Initialize()
 		end
 	end
 
-	if CH.db.chatHistory then CH:DisplayChatHistory() end
+	if CH.db.chatHistory then
+		-- ensure no keyword alert sounds are played during the loading of the chat history
+		CH.SoundTimer = true
+		CH:DisplayChatHistory()
+		CH.ThrottleSound()
+	end
 	CH:BuildCopyChatFrame()
 
 	-- Editbox Backdrop Color
