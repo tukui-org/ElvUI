@@ -10,6 +10,7 @@ General: Minimap mover will match Minimap that has a scale other than one
 NamePlates: Fixed Aura Style Filters not triggering because of the element being disabled  
 NamePlates: Fixed errors when deleting a Style Filter  
 UnitFrames: Aura Bars will now work with Fluid Smart Aura positioning  
+UnitFrames: Raid Role Indicator now supports Main Assist and Main Tank  
 
 ___
 ### Version 12.63 [ February 12th 2022 ]

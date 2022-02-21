@@ -11,7 +11,7 @@ NamePlates: Fixed Aura Style Filters not triggering because of the element being
 NamePlates: Fixed errors when deleting a Style Filter  
 UnitFrames: Aura Bars will now work with Fluid Smart Aura positioning  
 UnitFrames: PVP Indicator working again  
-UnitFrames: Raid Role Indicator is working again (MA/MT)  
+UnitFrames: Raid Role Indicator now supports Main Assist and Main Tank  
 
 ___
 ### Version 2.35 [ February 12th 2022 ]
