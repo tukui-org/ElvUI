@@ -1,10 +1,15 @@
 ### Version 12.64 [ ETA: 🍨 ]
 
-Aura Bars will work with Fluid Smart Aura positioning.  
-Minimap mover will match Minimap that has a scale other than one.  
-Fixed errors when deleting a Style Filter.  
-Fixed Aura Style Filters not triggering because of the element being disabled.  
-Classic: PVP Indicator for Classic and TBC works again.  
+**Important**  
+Another overall performance update  
+Please post feedback in the elvui-performance channel on our Discord  
+
+**Changes**  
+Chat: Fixed chat alerts playing on chat history  
+General: Minimap mover will match Minimap that has a scale other than one  
+NamePlates: Fixed Aura Style Filters not triggering because of the element being disabled  
+NamePlates: Fixed errors when deleting a Style Filter  
+UnitFrames: Aura Bars will now work with Fluid Smart Aura positioning  
 
 ___
 ### Version 12.63 [ February 12th 2022 ]
