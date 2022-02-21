@@ -1,5 +1,18 @@
 ### Version 1.62 [ ETA: 🍨 ]
 
+**Important**  
+Another overall performance update  
+Please post feedback in the elvui-performance channel on our Discord  
+
+**Changes**  
+Chat: Fixed chat alerts playing on chat history  
+General: Minimap mover will match Minimap that has a scale other than one  
+NamePlates: Fixed Aura Style Filters not triggering because of the element being disabled  
+NamePlates: Fixed errors when deleting a Style Filter  
+UnitFrames: Aura Bars will now work with Fluid Smart Aura positioning  
+UnitFrames: PVP Indicator working again  
+UnitFrames: Raid Role Indicator now supports Main Assist and Main Tank  
+
 ___
 ### Version 1.61 [ February 12th 2022 ]
 

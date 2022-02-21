@@ -572,6 +572,7 @@ function S:Blizzard_Communities()
 	EditFrame:StripTextures()
 	EditFrame:SetTemplate('Transparent')
 	EditFrame.Container:SetTemplate('Transparent')
+	EditFrame.Container.NineSlice:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.CommunitiesGuildTextEditFrameScrollBar)
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
