@@ -998,7 +998,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[361689] = Defaults(3), -- Wracking Pain
 		[366232] = Defaults(4), -- Animastorm
 		[364839] = Defaults(4), -- Sinful Projection
-	-- Lithuvim, Principle Architect
+	-- Lihuvim, Principle Architect
 		[360159] = Defaults(5), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
 		[363676] = Defaults(4), -- Deconstructing Energy Player 1
@@ -1159,14 +1159,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[360193] = Defaults(), -- Insatiable (stacking)
 	-- Artificer Xy'mox
 		[363139] = Defaults(), -- Decipher Relic
-	-- Dausegne, The Fallen Oracle
+	-- Dausegne, the Fallen Oracle
 		[361651] = Defaults(), -- Siphoned Barrier
 		[362432] = Defaults(), -- Collapsed Barrier
 		[361513] = Defaults(), -- Obliteraion Arc
 	-- Prototype Pantheon
 		[361938] = Defaults(), -- Reconstruction
 		[360845] = Defaults(), -- Bastion's Ward
-	-- Lithuvim, Principle Architect
+	-- Lihuvim, Principle Architect
 		[363537] = Defaults(), -- Protoform Radiance
 		[365036] = Defaults(), -- Ephemeral Barrier
 		[361200] = Defaults(), -- Recharge
