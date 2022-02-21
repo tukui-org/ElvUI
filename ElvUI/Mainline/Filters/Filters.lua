@@ -970,19 +970,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360415] = Defaults(5), -- Defenseless
 		[360412] = Defaults(4), -- Exposed Core
 		[366393] = Defaults(5), -- Searing Ablation
-	-- Prototype Pantheon
-		[365306] = Defaults(2), -- Invigorating Bloom
-		[361608] = Defaults(3), -- Burden of Sin
-		[361689] = Defaults(3), -- Wracking Pain
-		[366232] = Defaults(4), -- Animastorm
-		[364839] = Defaults(4), -- Sinful Projection
-	-- Dausegne, The Fallen Oracle
-		[361751] = Defaults(2), -- Disintegration Halo
-		[364289] = Defaults(2), -- Staggering Barrage
-		[361018] = Defaults(2), -- Staggering Barrage Mythic 1
-		[360960] = Defaults(2), -- Staggering Barrage Mythic 2
-		[361225] = Defaults(2), -- Encroaching Dominion
-		[361966] = Defaults(2), -- Infused Strikes
+	-- Skolex, the Insatiable Ravener
+		[364522] = Defaults(2), -- Devouring Blood
+		[359976] = Defaults(2), -- Riftmaw
+		[359981] = Defaults(2), -- Rend
+		[360098] = Defaults(3), -- Warp Sickness
+		[366070] = Defaults(3), -- Volatile Residue
 	-- Artificer Xy'mox
 		[362850] = Defaults(2), -- Hyperlight Sparknova
 		[364030] = Defaults(3), -- Debilitating Ray
@@ -992,18 +985,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[362615] = Defaults(6), -- Interdimensional Wormhole Player 1
 		[362614] = Defaults(6), -- Interdimensional Wormhole Player 2
 		[362803] = Defaults(5), -- Glyph of Relocation
+	-- Dausegne, The Fallen Oracle
+		[361751] = Defaults(2), -- Disintegration Halo
+		[364289] = Defaults(2), -- Staggering Barrage
+		[361018] = Defaults(2), -- Staggering Barrage Mythic 1
+		[360960] = Defaults(2), -- Staggering Barrage Mythic 2
+		[361225] = Defaults(2), -- Encroaching Dominion
+		[361966] = Defaults(2), -- Infused Strikes
+	-- Prototype Pantheon
+		[365306] = Defaults(2), -- Invigorating Bloom
+		[361608] = Defaults(3), -- Burden of Sin
+		[361689] = Defaults(3), -- Wracking Pain
+		[366232] = Defaults(4), -- Animastorm
+		[364839] = Defaults(4), -- Sinful Projection
 	-- Lithuvim, Principle Architect
 		[360159] = Defaults(5), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
 		[363676] = Defaults(4), -- Deconstructing Energy Player 1
 		[363795] = Defaults(4), -- Deconstructing Energy Player 2
 		[464312] = Defaults(5), -- Ephemeral Barrier
-	-- Skolex, the Insatiable Ravener
-		[364522] = Defaults(2), -- Devouring Blood
-		[359976] = Defaults(2), -- Riftmaw
-		[359981] = Defaults(2), -- Rend
-		[360098] = Defaults(3), -- Warp Sickness
-		[366070] = Defaults(3), -- Volatile Residue
 	-- Halondrus the Reclaimer
 		[361309] = Defaults(3), -- Lightshatter Beam
 		[361002] = Defaults(4), -- Ephemeral Fissure
@@ -1015,8 +1015,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[365021] = Defaults(4), -- Wicked Star
 		[365445] = Defaults(3), -- Scarred Soul
 		[365008] = Defaults(4), -- Psychic Terror
+	-- Lords of Dread
 	-- Rygelon
-	-- Lords of the Dread
 	-- The Jailer
 	},
 }
@@ -1155,22 +1155,22 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[366822] = Defaults(), -- Radioactive Core
 		[364843] = Defaults(), -- Fractured Core
 		[364962] = Defaults(), -- Core Overload
-	-- Prototype Pantheon
-		[361938] = Defaults(), -- Reconstruction
-		[360845] = Defaults(), -- Bastion's Ward
+	-- Skolex, the Insatiable Ravener
+		[360193] = Defaults(), -- Insatiable (stacking)
+	-- Artificer Xy'mox
+		[363139] = Defaults(), -- Decipher Relic
 	-- Dausegne, The Fallen Oracle
 		[361651] = Defaults(), -- Siphoned Barrier
 		[362432] = Defaults(), -- Collapsed Barrier
 		[361513] = Defaults(), -- Obliteraion Arc
-	-- Artificer Xy'mox
-		[363139] = Defaults(), -- Decipher Relic
+	-- Prototype Pantheon
+		[361938] = Defaults(), -- Reconstruction
+		[360845] = Defaults(), -- Bastion's Ward
 	-- Lithuvim, Principle Architect
 		[363537] = Defaults(), -- Protoform Radiance
 		[365036] = Defaults(), -- Ephemeral Barrier
 		[361200] = Defaults(), -- Recharge
 		[363130] = Defaults(), -- Synthesize
-	-- Skolex, the Insatiable Ravener
-		[360193] = Defaults(), -- Insatiable (stacking)
 	-- Halondrus the Reclaimer
 		[367078] = Defaults(), -- Phase Barrier
 		[363414] = Defaults(), -- Fractal Shell
@@ -1181,8 +1181,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[364247] = Defaults(), -- Dark Zeal II
 		[365030] = Defaults(), -- Wicked Star
 		[362862] = Defaults(), -- Army of the Dead
+	-- Lords of Dread
 	-- Rygelon
-	-- Lords of the Dread
 	-- The Jailer
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
