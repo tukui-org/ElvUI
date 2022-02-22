@@ -80,16 +80,14 @@ local function SetupOptions(frame)
 	end
 end
 
-function S:Blizzard_PlayerChoice()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
-
-	B:BuildWidgetHolder('PlayerChoiceToggleHolder', 'PlayerChoiceToggle', 'CENTER', L["Player Choice Toggle"], _G.PlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
+local function SetupTorghastMover()
+	B:BuildWidgetHolder('TorghastChoiceToggleHolder', 'TorghastChoiceToggle', 'CENTER', L["Torghast Choice Toggle"], _G.TorghastPlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
 
 	-- whole area is clickable which is pretty big; keep an eye on this
-	_G.PlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
+	_G.TorghastPlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
 
 	-- this fixes the trajectory of the anima orb to stay in correct place
-	hooksecurefunc(_G.PlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
+	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
 		local controller = button.effectController
 		if not controller then return end
 
@@ -97,6 +95,12 @@ function S:Blizzard_PlayerChoice()
 			controller:SetDynamicOffsets(-5, -10, -1.33)
 		end
 	end)
+end
+
+function S:Blizzard_PlayerChoice()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
+
+	SetupTorghastMover()
 
 	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', SetupOptions)
 end
