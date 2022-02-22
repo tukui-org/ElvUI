@@ -288,14 +288,14 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys: Amethyst, Magenta Crayola, Minion Yellow, Capri, Spring Green
-		local SimpyColors = function(t) return specialText(t, 0.6,0.36,0.89, 0.94,0.35,0.7, 0.99,0.89,0.25, 0,0.73,0.97, 0.4,1.0,0.60) end
+		--Simpys: maximum blue (44b7db), slate blue (825bcc), electric purple (af47ef), rose bonbon (ef47a0), orange (ff8200), spring green (44f46d)
+		local SimpyColors = function(t) return specialText(t, 0.27,0.72,0.86, 0.51,0.36,0.80, 0.69,0.28,0.94, 0.94,0.28,0.63, 1.00,0.51,0.00, 0.27,0.96,0.43) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.5,0.75) end
-		--Mels: Sky Blue, Maya Blue, Dodger Blue, Cornflower Blue, Medium Purple, Lavender Floral, Persian Pink
-		local MelColors = function(t) return specialText(t, 0.4,0.87,0.95, 0.34,0.75,0.98, 0.27,0.62,1, 0.45,0.54,0.98, 0.61,0.46,0.97, 0.78,0.49,0.86, 0.95,0.52,0.75) end
+		--Mels: fiery rose (f94f6d), saffron (f7c621), emerald (4fc16d), medium slate blue (7c7af7), cyan process (11afea)
+		local MelColors = function(t) return specialText(t, 0.98,0.31,0.43, 0.97,0.78,0.13, 0.31,0.76,0.43, 0.49,0.48,0.97, 0.07,0.69,0.92) end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
@@ -1749,11 +1749,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local chatFilters = _G.ChatFrame_GetMessageEventFilters(event)
 		if chatFilters then
 			for _, filterFunc in next, chatFilters do
-				local filter, newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+				local filter, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 				if filter then
 					return true
-				elseif newarg1 then
-					arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14
+				elseif new1 then
+					arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
 				end
 			end
 		end
@@ -2584,6 +2584,8 @@ function CH:DisplayChatHistory()
 		return
 	end
 
+	CH.SoundTimer = true -- ignore sounds during pass through ChatFrame_GetMessageEventFilters
+
 	for _, chat in ipairs(_G.CHAT_FRAMES) do
 		for _, d in ipairs(data) do
 			if type(d) == 'table' then
@@ -2601,6 +2603,8 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
+
+	CH.SoundTimer = nil
 end
 
 tremove(_G.ChatTypeGroup.GUILD, 2)

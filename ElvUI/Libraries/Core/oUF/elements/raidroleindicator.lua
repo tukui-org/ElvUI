@@ -42,7 +42,8 @@ local function Update(self, event)
 	end
 
 	local role, isShown
-	if(UnitInRaid(unit) and not UnitHasVehicleUI(unit)) then
+	local inVehicle = oUF.isRetail and UnitHasVehicleUI(unit)
+	if(UnitInRaid(unit) and not inVehicle) then
 		if(GetPartyAssignment('MAINTANK', unit)) then
 			isShown = true
 			element:SetTexture(MAINTANK_ICON)

@@ -540,6 +540,35 @@ do
 			end
 		end
 	end
+
+	-- WoWTrimScrollBar
+	local function ReskinScrollBarArrow(frame, direction)
+		S:HandleNextPrevButton(frame, direction)
+		frame.Overlay:SetAlpha(0)
+		frame.Texture:Hide()
+	end
+
+	function S:HandleTrimScrollBar(frame)
+		frame.Background:Hide()
+		frame:StripTextures()
+
+		local track = frame.Track
+		track:SetTemplate('Transparent')
+		track:ClearAllPoints()
+		track:Point('TOPLEFT', 4, -21)
+		track:Point('BOTTOMRIGHT', -3, 21)
+
+		local thumb = track.Thumb
+		thumb.Middle:Hide()
+		thumb.Begin:Hide()
+		thumb.End:Hide()
+
+		thumb:SetTemplate(nil, true, true)
+		thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+
+		ReskinScrollBarArrow(frame.Back, 'up')
+		ReskinScrollBarArrow(frame.Forward, 'down')
+	end
 end
 
 do --Tab Regions

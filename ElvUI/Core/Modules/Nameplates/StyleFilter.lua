@@ -1015,7 +1015,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Buffs
-	if frame.Buffs and trigger.buffs then
+	if frame.Buffs_ and trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
 			local isStealable = mod:StyleFilterDispelCheck(frame, filter)
@@ -1024,7 +1024,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet)
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1032,7 +1032,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Debuffs
-	if frame.Debuffs and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+	if frame.Debuffs_ and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
 			local canDispel = mod:StyleFilterDispelCheck(frame, filter)
@@ -1040,7 +1040,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Names / Spell IDs
-		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet)
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end

@@ -9,13 +9,15 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.LeaderIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.AssistantIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.MasterLooterIndicator = anchor:CreateTexture(nil, 'OVERLAY')
+	frame.RaidRoleIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 
-	anchor:Size(24, 12)
+	anchor:Size(36, 12)
 	anchor:SetFrameLevel(frame.RaisedElementParent.RaidRoleLevel)
 
 	frame.LeaderIndicator:Size(12)
 	frame.AssistantIndicator:Size(12)
 	frame.MasterLooterIndicator:Size(12)
+	frame.RaidRoleIndicator:Size(12)
 
 	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate
@@ -33,6 +35,7 @@ function UF:Configure_RaidRoleIcons(frame)
 			frame:EnableElement('LeaderIndicator')
 			frame:EnableElement('AssistantIndicator')
 			frame:EnableElement('MasterLooterIndicator')
+			frame:EnableElement('RaidRoleIndicator')
 		end
 
 		raidRoleFrameAnchor:ClearAllPoints()
@@ -42,6 +45,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		frame:DisableElement('LeaderIndicator')
 		frame:DisableElement('AssistantIndicator')
 		frame:DisableElement('MasterLooterIndicator')
+		frame:DisableElement('RaidRoleIndicator')
 	end
 end
 
@@ -51,16 +55,20 @@ function UF:RaidRoleUpdate()
 	local leader = frame.LeaderIndicator
 	local assistant = frame.AssistantIndicator
 	local masterlooter = frame.MasterLooterIndicator
+	local mamt = frame.RaidRoleIndicator
 
-	if not leader or not assistant or not masterlooter then return end
+	if not anchor then return end
 
 	local db = frame.db
 	local isLeader = leader:IsShown()
 	local isAssist = assistant:IsShown()
+	local isMAMT = mamt:IsShown()
+	local isML = masterlooter:IsShown()
 
 	leader:ClearAllPoints()
 	assistant:ClearAllPoints()
 	masterlooter:ClearAllPoints()
+	mamt:ClearAllPoints()
 
 	if db and db.raidRoleIcons then
 		local pos, x, y = db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset
@@ -71,12 +79,30 @@ function UF:RaidRoleUpdate()
 
 		if isLeader then
 			leader:Point(pos, anchor, x, y)
-			masterlooter:Point(pos1, leader, pos2)
 		elseif isAssist then
 			assistant:Point(pos, anchor, x, y)
-			masterlooter:Point(pos1, assistant, pos2)
-		else
-			masterlooter:Point(pos, anchor, x, y)
+		end
+
+		if isMAMT then
+			if isLeader then
+				mamt:Point(pos1, leader, pos2)
+			elseif isAssist then
+				mamt:Point(pos1, assistant, pos2)
+			else
+				mamt:Point(pos, anchor, x, y)
+			end
+		end
+
+		if isML then
+			if isLeader then
+				masterlooter:Point(pos1, leader, pos2)
+			elseif isAssist then
+				masterlooter:Point(pos1, assistant, pos2)
+			elseif isMAMT then
+				masterlooter:Point(pos1, mamt, pos2)
+			else
+				masterlooter:Point(pos, anchor, x, y)
+			end
 		end
 	end
 end

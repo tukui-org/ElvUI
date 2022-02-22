@@ -23,7 +23,9 @@
 	<Script file="elements\portrait.lua"/>
 	<Script file="elements\power.lua"/>
 	<Script file="elements\powerprediction.lua"/>
+	<Script file="elements\pvpindicator.lua"/>
 	<Script file="elements\questindicator.lua"/>
+	<Script file="elements\raidroleindicator.lua"/>
 	<Script file="elements\raidtargetindicator.lua"/>
 	<Script file="elements\range.lua"/>
 	<Script file="elements\readycheckindicator.lua"/>

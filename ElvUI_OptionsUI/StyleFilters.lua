@@ -666,6 +666,8 @@ local actionDefaults = {
 local function actionHidePlate() local _, actions = GetFilter(true) return actions and actions.hide end
 local function actionSubGroup(info, ...)
 	local _, actions = GetFilter(true)
+	if not actions then return end
+
 	if info.type == 'color' then
 		local t = actions[info[#info-1]][info[#info]]
 		local r, g, b, a = ...
@@ -712,7 +714,7 @@ StyleFitlers.actions.args.color.args.borderClass = ACH:Toggle(L["Unit Class Colo
 StyleFitlers.actions.args.texture = ACH:Group(L["Texture"], nil, 20, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFitlers.actions.args.texture.inline = true
 StyleFitlers.actions.args.texture.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFitlers.actions.args.texture.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2, nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.texture.enable end)
+StyleFitlers.actions.args.texture.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2, nil, nil, nil, function() local _, actions = GetFilter(true) return actions and not actions.texture.enable end)
 
 StyleFitlers.actions.args.flash = ACH:Group(L["Flash"], nil, 30, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFitlers.actions.args.flash.inline = true
@@ -721,7 +723,7 @@ StyleFitlers.actions.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
 StyleFitlers.actions.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
 StyleFitlers.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
 
-StyleFitlers.actions.args.text_format = ACH:Group(L["Text Format"], nil, 40, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
+StyleFitlers.actions.args.text_format = ACH:Group(L["Text Format"], nil, 40, nil, function(info) local _, actions = GetFilter(true) return actions and actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) if actions then actions.tags[info[#info]] = value NP:ConfigureAll() end end)
 StyleFitlers.actions.args.text_format.inline = true
 StyleFitlers.actions.args.text_format.args.info = ACH:Description(L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 1, 'medium')
 StyleFitlers.actions.args.text_format.args.name = ACH:Input(L["Name"], nil, 1, nil, 'full')
