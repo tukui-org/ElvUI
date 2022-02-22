@@ -7,6 +7,7 @@ Please post feedback in the elvui-performance channel on our Discord
 **Changes**  
 Chat: Fixed chat alerts playing on chat history  
 General: Minimap mover will match Minimap that has a scale other than one  
+Locales: Updated Russian translation (Credits Enkaf)  
 NamePlates: Fixed Aura Style Filters not triggering because of the element being disabled  
 NamePlates: Fixed errors when deleting a Style Filter  
 UnitFrames: Aura Bars will now work with Fluid Smart Aura positioning  
