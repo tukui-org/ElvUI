@@ -719,7 +719,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not unit then unit = nameplate.unit end
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
-		nameplate.widgetsOnly = E.Retail and UnitNameplateShowsWidgetsOnly(unit)
+		nameplate.widgetsOnly = E.Retail and nameplate.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
 		nameplate.widgetSet = E.Retail and UnitWidgetSet(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
