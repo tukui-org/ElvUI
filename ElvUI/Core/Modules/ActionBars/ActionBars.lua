@@ -9,6 +9,7 @@ local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
+local GetCVarBool = GetCVarBool
 local GetBindingKey = GetBindingKey
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local HasOverrideActionBar = HasOverrideActionBar
@@ -1118,7 +1119,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		button:SetAttribute('buttonlock', AB.db.lockActionBars or nil)
 		button:SetAttribute('checkselfcast', AB.db.checkSelfCast or nil)
 		button:SetAttribute('checkfocuscast', AB.db.checkFocusCast or nil)
-		button:SetAttribute('checkmouseovercast', AB.db.checkMouseoverCast or nil)
+		button:SetAttribute('checkmouseovercast', GetCVarBool('enableMouseoverCast') or nil)
 		button:SetAttribute('unit2', AB.db.rightClickSelfCast and 'player' or nil)
 
 		button:UpdateConfig(bar.buttonConfig)

@@ -2387,7 +2387,6 @@ P.actionbar = {
 	notUsableColor = { r = 0.4, g = 0.4, b = 0.4 },
 	checkSelfCast = true,
 	checkFocusCast = true,
-	checkMouseoverCast = false,
 	rightClickSelfCast = false,
 	transparent = false,
 	usableColor = { r = 1, g = 1, b = 1 },

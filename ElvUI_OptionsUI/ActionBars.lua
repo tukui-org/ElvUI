@@ -9,6 +9,7 @@ local format = format
 local SetCVar = SetCVar
 local CopyTable = CopyTable
 local GameTooltip = GameTooltip
+local GetCVarBool = GetCVarBool
 
 -- GLOBALS: LOCK_ACTIONBAR
 
@@ -117,7 +118,7 @@ general.args.generalGroup.args.hideCooldownBling = ACH:Toggle(L["Hide Cooldown B
 general.args.generalGroup.args.addNewSpells = ACH:Toggle(L["Auto Add New Spells"], L["Allow newly learned spells to be automatically placed on an empty actionbar slot."], 4, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:IconIntroTracker_Toggle() end)
 general.args.generalGroup.args.checkFocusCast = ACH:Toggle(L["Check Focus Cast"], nil, 5, nil, nil, nil, nil, nil, nil, E.Classic)
 general.args.generalGroup.args.checkSelfCast = ACH:Toggle(L["Check Self Cast"], nil, 6)
-general.args.generalGroup.args.checkMouseoverCast = ACH:Toggle(L["Check Mouseover Cast"], nil, 7)
+general.args.generalGroup.args.checkMouseoverCast = ACH:Toggle(L["Check Mouseover Cast"], nil, 7, nil, nil, nil, function() return GetCVarBool('enableMouseoverCast') end, function(_, value) SetCVar('enableMouseoverCast', value and 1 or 0); AB:UpdateButtonSettings() end)
 general.args.generalGroup.args.rightClickSelfCast = ACH:Toggle(L["Right Click Self Cast"], nil, 8, nil, nil, nil, nil, nil, function() return not E.db.actionbar.checkSelfCast end)
 general.args.generalGroup.args.useDrawSwipeOnCharges = ACH:Toggle(L["Charge Draw Swipe"], L["Shows a swipe animation when a spell is recharging but still has charges left."], 9)
 general.args.generalGroup.args.chargeCooldown = ACH:Toggle(L["Charge Cooldown Text"], nil, 10, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:ToggleCooldownOptions() end)
