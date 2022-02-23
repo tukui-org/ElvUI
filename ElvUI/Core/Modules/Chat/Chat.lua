@@ -2006,8 +2006,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local showLink = 1
 			if strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS' then
 				showLink = nil
-			else -- Escape any % characters, as it may otherwise cause an 'invalid option in format' error
-				arg1 = gsub(arg1, '%%', '%%%%')
+
+				arg1 = gsub(arg1, '%%%d','%%s') -- errors on russian client because of arg1 containing %1 instead of %s, so we convert it (blizzard bug)
+			else
+				arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
 			end
 
 			--Remove groups of many spaces
