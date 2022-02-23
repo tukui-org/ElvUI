@@ -9,7 +9,9 @@ local next = next
 local type = type
 local pcall = pcall
 local pairs = pairs
+local ipairs = ipairs
 local gmatch = gmatch
+local tinsert = tinsert
 local strtrim = strtrim
 local strfind = strfind
 local strjoin = strjoin
@@ -49,7 +51,7 @@ local nameIndex = {
 	[L["Global"]] = 0
 }
 
-E.Options.args.search = ACH:Group(E.NewSign..L["Search"], nil, 4)
+E.Options.args.search = ACH:Group(L["Search"], nil, 4)
 local Search =  E.Options.args.search.args
 
 local EditBox = ACH:Input(L["Search"], nil, 0, nil, 1.5, function() return SearchText end, function(_, value) C:Search_ClearResults() if strmatch(value, '%S+') then SearchText = strtrim(strlower(value)) C:Search_Config() C:Search_AddResults() end end)
@@ -98,32 +100,42 @@ function C:Search_DisplayButtons(buttons)
 	end
 end
 
+function C:Search_AddButton(location, name)
+	local group, index, clean = results, start, name
+	for groupName in gmatch(name, '(.-)'..sep) do
+		if index > depth then break end
+
+		-- button name
+		clean = gsub(clean, '^' .. E:EscapeString(groupName) .. sep, '')
+
+		-- sub groups
+		if not group[groupName] then group[groupName] = { index = index } end
+		group = group[groupName]
+
+		index = index + 1
+	end
+
+	-- sub buttons
+	local count, entry = (entries.count or 0) + 1, { name = name, clean = clean, location = location }
+	entries.count, entries[count] = count, entry
+
+	-- linking
+	if not group.entries then group.entries = {} end
+	group.entries[count] = entry
+end
+
 function C:Search_AddResults()
 	wipe(results)
 	wipe(entries)
 
-	for location, name in pairs(searchCache) do
-		local group, index, clean = results, start, name
-		for groupName in gmatch(name, '(.-)'..sep) do
-			if index > depth then break end
-
-			-- button name
-			clean = gsub(clean, '^' .. E:EscapeString(groupName) .. sep, '')
-
-			-- sub groups
-			if not group[groupName] then group[groupName] = { index = index } end
-			group = group[groupName]
-
-			index = index + 1
+	for location, names in pairs(searchCache) do
+		if type(names) == 'table' then
+			for _, name in ipairs(names) do
+				C:Search_AddButton(location, name)
+			end
+		else
+			C:Search_AddButton(location, names)
 		end
-
-		-- sub buttons
-		local count, entry = (entries.count or 0) + 1, { name = name, clean = clean, location = location }
-		entries.count, entries[count] = count, entry
-
-		-- linking
-		if not group.entries then group.entries = {} end
-		group.entries[count] = entry
 	end
 
 	C:Search_DisplayResults(results, Search)
@@ -167,7 +179,13 @@ function C:Search_Config(tbl, loc, locName, whatsNew)
 			if type(name) == 'string' then -- bad apples
 				locationName = locName and (strmatch(name, '%S+') and strjoin(sep, locName, name) or locName) or name
 				if C:Search_FindText(name, whatsNew) then
-					searchCache[location] = locationName
+					if not searchCache[location] then
+						searchCache[location] = locationName
+					elseif type(searchCache[location]) == 'table' then
+						tinsert(searchCache[location], locationName)
+					else
+						searchCache[location] = { searchCache[location], locationName }
+					end
 				else
 					local values = (typeValue[infoTable.type] and not infoTable.dialogControl) and C:Search_GetReturn(infoTable.values, option)
 					if values then
