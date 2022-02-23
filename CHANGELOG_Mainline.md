@@ -1,4 +1,17 @@
-### Version 12.64 [ ETA: 🍨 ]
+### Version 12.66 [ ETA: 🍨 ]
+
+**Dev**  
+something is different probably, check commits ;P  
+
+___
+### Version 12.65 [ February 23rd 2022 ]
+
+**Hotfixes**  
+ActionBars: support for Check Mouseover Cast  
+Search: some options were hiding from the display (some still are)  
+
+___
+### Version 12.64 [ February 22nd 2022 ]
 
 **Important**  
 Another overall performance update  

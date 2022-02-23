@@ -1,4 +1,7 @@
-### Version 2.36 [ ETA: 🍨 ]
+### Version 2.37 [ ETA: 🍨 ]
+
+___
+### Version 2.36 [ February 22nd 2022 ]
 
 **Important**  
 Another overall performance update  

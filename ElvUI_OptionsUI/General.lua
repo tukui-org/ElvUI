@@ -208,7 +208,7 @@ blizz.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2, nil,
 blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 1, nil, function() E.ShowPopup = true end, nil, nil, nil, nil, E.Retail)
 blizz.quest.inline = true
 
-blizz.lootRollGroup = ACH:Group(E.NewSign..L["Loot Roll"], nil, 3, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value Misc:UpdateLootRollFrames() end)
+blizz.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 3, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value Misc:UpdateLootRollFrames() end)
 blizz.lootRollGroup.args.lootRoll = ACH:Toggle(L["Enable"], L["Enable/Disable the loot roll frame."], 0, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E.ShowPopup = true end)
 blizz.lootRollGroup.args.qualityName = ACH:Toggle(L["Quality Name"], nil, 1)
 blizz.lootRollGroup.args.qualityStatusBar = ACH:Toggle(L["Quality StatusBar"], nil, 2)
