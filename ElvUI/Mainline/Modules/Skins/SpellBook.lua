@@ -12,6 +12,12 @@ local function clearBackdrop(self)
 	self:SetBackdropColor(0, 0, 0, 1)
 end
 
+local function spellButtonHighlight(button, texture)
+	if texture == [[Interface\Buttons\ButtonHilight-Square]] then
+		button:SetColorTexture(1, 1, 1, 0.3)
+	end
+end
+
 function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
@@ -92,11 +98,7 @@ function S:SpellBookFrame()
 		end
 
 		highlight:SetAllPoints(icon)
-		hooksecurefunc(highlight, 'SetTexture', function(s, texture)
-			if texture == [[Interface\Buttons\ButtonHilight-Square]] then
-				s:SetColorTexture(1, 1, 1, 0.3)
-			end
-		end)
+		hooksecurefunc(highlight, 'SetTexture', spellButtonHighlight)
 	end
 
 	hooksecurefunc('SpellButton_UpdateButton', function()
@@ -201,11 +203,7 @@ function S:SpellBookFrame()
 			end
 
 			button.highlightTexture:SetInside()
-			hooksecurefunc(button.highlightTexture, 'SetTexture', function(s, texture)
-				if texture == [[Interface\Buttons\ButtonHilight-Square]] then
-					s:SetColorTexture(1, 1, 1, 0.3)
-				end
-			end)
+			hooksecurefunc(button.highlightTexture, 'SetTexture', spellButtonHighlight)
 		end
 	end
 
