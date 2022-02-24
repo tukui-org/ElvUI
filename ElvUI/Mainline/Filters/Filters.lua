@@ -1192,6 +1192,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[355249]	= Defaults(), -- Anima Gorged (Consumption)
 	-- Zereth Mortis
 		[360945]	= Defaults(), -- Creation Catalyst Overcharge (Nascent Servitor)
+		[366309]	= Defaults(), -- Meltdown (Destabilized Core)
+		[365596]	= Defaults(), -- Overload (Destabilized Core)
 	},
 }
 
