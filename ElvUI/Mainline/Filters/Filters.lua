@@ -1190,6 +1190,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Korthia
 		[354840]	= Defaults(), -- Rift Veiled (Silent Soulstalker, Deadsoul Hatcher, Screaming Shade)
 		[355249]	= Defaults(), -- Anima Gorged (Consumption)
+	-- Zereth Mortis
+		[360945]	= Defaults(), -- Creation Catalyst Overcharge (Nascent Servitor)
 	},
 }
 
