@@ -992,6 +992,15 @@ function AB:DisableBlizzard()
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
 	end
 
+	-- same deal with profession buttons, this will fix the tainting
+	for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
+		for i = 1, 2 do
+			local button = frame['button'..i]
+			button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+			button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+		end
+	end
+
 	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
