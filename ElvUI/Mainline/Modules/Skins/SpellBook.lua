@@ -89,8 +89,6 @@ function S:SpellBookFrame()
 
 		if E.private.skins.parchmentRemoverEnable then
 			button:SetHighlightTexture('')
-			button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
-			button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
 		end
 
 		highlight:SetAllPoints(icon)
@@ -120,6 +118,9 @@ function S:SpellBookFrame()
 			end
 
 			if E.private.skins.parchmentRemoverEnable then
+				button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
+				button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
+
 				local r = button.SpellName:GetTextColor()
 				if r < 0.8 then
 					button.SpellName:SetTextColor(0.6, 0.6, 0.6)
