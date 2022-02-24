@@ -195,14 +195,16 @@ function S:SpellBookFrame()
 
 		for i = 1, 2 do
 			local button = Frame['button'..i]
-			S:HandleButton(button, true)
+			S:HandleButton(button, true, nil, true)
 
-			if button.iconTexture then
-				S:HandleIcon(button.iconTexture)
-				button.iconTexture:SetInside()
+			if i == 1 and button:GetPoint() == 'TOPLEFT' then
+				button:Point('TOPLEFT', Frame.button2, 'BOTTOMLEFT', 0, -3)
 			end
 
-			button.highlightTexture:SetInside()
+			if button.iconTexture then
+				S:HandleIcon(button.iconTexture, true)
+			end
+
 			hooksecurefunc(button.highlightTexture, 'SetTexture', spellButtonHighlight)
 		end
 	end
