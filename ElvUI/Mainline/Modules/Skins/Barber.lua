@@ -35,22 +35,22 @@ function S:Blizzard_CharacterCustomize()
 
 	hooksecurefunc(frame, 'SetSelectedCategory', function(list)
 		if list.selectionPopoutPool then
-			for button in list.selectionPopoutPool:EnumerateActive() do
-				if not button.IsSkinned then
-					HandleButton(button.DecrementButton)
-					HandleButton(button.IncrementButton)
+			for popouts in list.selectionPopoutPool:EnumerateActive() do
+				if not popouts.IsSkinned then
+					HandleButton(popouts.DecrementButton)
+					HandleButton(popouts.IncrementButton)
 
-					local popoutButton = button.Button
-					popoutButton.HighlightTexture:SetAlpha(0)
-					popoutButton.NormalTexture:SetAlpha(0)
+					local button = popouts.Button
+					button.HighlightTexture:SetAlpha(0)
+					button.NormalTexture:SetAlpha(0)
 
-					popoutButton.Popout:StripTextures()
-					popoutButton.Popout:SetTemplate('Transparent')
+					button.Popout:StripTextures()
+					button.Popout:SetTemplate('Transparent')
 
-					S:HandleButton(popoutButton, nil, nil, nil, true)
-					popoutButton.backdrop:SetInside(nil, 4, 4)
+					S:HandleButton(button, nil, nil, nil, true)
+					button.backdrop:SetInside(nil, 4, 4)
 
-					button.IsSkinned = true
+					popouts.IsSkinned = true
 				end
 			end
 		end
