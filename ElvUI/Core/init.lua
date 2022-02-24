@@ -185,9 +185,9 @@ do
 	local a,b,c = '','([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
 	function E:EscapeString(s) return gsub(s,b,c) end
 
-	local d = {'|c[fF][fF]%x%x%x%x%x%x','|r','^%s+','%s+$','|[TA].-|[ta]'}
+	local d = {'|[TA].-|[ta]','|c[fF][fF]%x%x%x%x%x%x','|r','^%s+','%s+$'}
 	function E:StripString(s, ignoreTextures)
-		for i = 1, #d - (ignoreTextures and 1 or 0) do s = gsub(s,d[i],a) end
+		for i = ignoreTextures and 2 or 1, #d do s = gsub(s,d[i],a) end
 		return s
 	end
 end
