@@ -121,7 +121,7 @@ L["Don't forget to backup your WTF folder, all your profiles and settings are in
 L["Download"] = "Загрузка"
 L["DPS"] = "УВС"
 L["Durability Frame"] = "Фрейм прочности"
-L["Earned:"] = "Заработано"
+L["Earned:"] = "Заработано:"
 L["ElvUI Config"] = true
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable it in the profiles tab."] = "ElvUI имеет функцию двойной специализации, которая позволяет вам загружать различные профили на основе Вашей текущей специализации на лету. Вы можете включить ее на вкладке профили."
 L["ElvUI Installation"] = "Установка ElvUI"
@@ -148,7 +148,7 @@ L["Ghost"] = "Призрак"
 L["GM Ticket Frame"] = "Запрос ГМу"
 L["Gold"] = "Золото"
 L["goldabbrev"] = "|cffffd700з|r"
-L["Grays"] = "Серые"
+L["Grays"] = "Серые предметы:" --Быть может, проще "Хлам:" ?
 L["Grid Size:"] = "Размер сетки:"
 L["Heal Power"] = true
 L["Healer"] = "Лекарь"
