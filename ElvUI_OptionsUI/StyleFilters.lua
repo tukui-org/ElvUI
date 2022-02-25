@@ -395,7 +395,7 @@ StyleFitlers.triggers.args.classification.args.types.args.rareelite = ACH:Toggle
 StyleFitlers.triggers.args.classification.args.types.args.normal = ACH:Toggle(L["PLAYER_DIFFICULTY1"], nil, 3)
 StyleFitlers.triggers.args.classification.args.types.args.rare = ACH:Toggle(L["ITEM_QUALITY3_DESC"], nil, 4)
 StyleFitlers.triggers.args.classification.args.types.args.trivial = ACH:Toggle(L["Trivial"], nil, 5)
-StyleFitlers.triggers.args.classification.args.types.args.elite = ACH:Toggle(L["ELITE"], nil, 6)
+StyleFitlers.triggers.args.classification.args.types.args.elite = ACH:Toggle(L["Elite"], nil, 6)
 StyleFitlers.triggers.args.classification.args.types.args.minus = ACH:Toggle(L["Minus"], nil, 7)
 
 StyleFitlers.triggers.args.health = ACH:Group(L["Health Threshold"], nil, 17, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)

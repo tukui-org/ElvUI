@@ -716,6 +716,21 @@ E:AddTag('classificationcolor', 'UNIT_CLASSIFICATION_CHANGED', function(unit)
 	end
 end)
 
+E:AddTag('classification', 'UNIT_CLASSIFICATION_CHANGED', function(unit)
+	local c = UnitClassification(unit)
+	if(c == 'rare') then
+		return L["Rare"]
+	elseif(c == 'rareelite') then
+		return L["Rare Elite"]
+	elseif(c == 'elite') then
+		return L["Elite"]
+	elseif(c == 'worldboss') then
+		return L["Boss"]
+	elseif(c == 'minus') then
+		return L["Affix"]
+	end
+end)
+
 E:AddTag('guild', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
 	if UnitIsPlayer(unit) then
 		return GetGuildInfo(unit)
