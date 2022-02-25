@@ -82,7 +82,7 @@ function S:Blizzard_MacroUI()
 
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
 		if frame.isSkinned then return end
-		S:HandleIconSelectionFrame(_G.MacroPopupFrame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+		S:HandleIconSelectionFrame(frame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
 	end)
 end
 
