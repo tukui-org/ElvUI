@@ -3,6 +3,7 @@ local B = E:GetModule('Blizzard')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
+local pairs = pairs
 local unpack = unpack
 local strmatch = strmatch
 local CreateFrame = CreateFrame
