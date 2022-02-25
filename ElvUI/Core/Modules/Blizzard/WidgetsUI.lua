@@ -136,6 +136,11 @@ function B:HandleWidgets()
 		B:BuildWidgetHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', 'CENTER', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50, 'ALL,WIDGETS')
 		B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', 'TOP', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,WIDGETS')
 		B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', 'TOP', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,WIDGETS')
+
+		-- handle power bar widgets after reload as Setup will have fired before this
+		for _, widget in pairs(_G.UIWidgetPowerBarContainerFrame.widgetFrames) do
+			B.UIWidgetTemplateStatusBar(widget)
+		end
 	end
 
 	_G.DurabilityFrame:SetFrameStrata('HIGH')
@@ -146,9 +151,4 @@ function B:HandleWidgets()
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)
 	hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', B.UIWidgetTemplateCaptureBar)
-
-	-- handle power bar widgets after reload as Setup will have fired before this
-	for _, widget in pairs(_G.UIWidgetPowerBarContainerFrame.widgetFrames) do
-		B.UIWidgetTemplateStatusBar(widget)
-	end
 end

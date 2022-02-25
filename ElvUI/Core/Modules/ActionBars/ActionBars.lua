@@ -1000,12 +1000,13 @@ function AB:DisableBlizzard()
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
 	end
 
-	-- same deal with profession buttons, this will fix the tainting
-	for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-		for i = 1, 2 do
-			local button = frame['button'..i]
-			button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-			button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+	if E.Retail then -- same deal with profession buttons, this will fix the tainting
+		for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
+			for i = 1, 2 do
+				local button = frame['button'..i]
+				button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+				button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+			end
 		end
 	end
 
@@ -1059,10 +1060,16 @@ function AB:DisableBlizzard()
 
 	_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
 	_G.InterfaceOptionsCombatPanelSelfCastKeyDropDown:Hide()
-	_G.InterfaceOptionsCombatPanelEnableMouseoverCast:Hide()
-	_G.InterfaceOptionsCombatPanelMouseoverCastKeyDropDown:Hide()
-	_G.InterfaceOptionsCombatPanelFocusCastKeyDropDown:Hide()
-	_G.InterfaceOptionsCombatPanel.clickCastingButton:SetPoint(_G.InterfaceOptionsCombatPanelEnableMouseoverCast:GetPoint())
+
+	if not E.Classic then
+		_G.InterfaceOptionsCombatPanelFocusCastKeyDropDown:Hide()
+	end
+
+	if E.Retail then
+		_G.InterfaceOptionsCombatPanelEnableMouseoverCast:Hide()
+		_G.InterfaceOptionsCombatPanelMouseoverCastKeyDropDown:Hide()
+		_G.InterfaceOptionsCombatPanel.clickCastingButton:SetPoint(_G.InterfaceOptionsCombatPanelEnableMouseoverCast:GetPoint())
+	end
 
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
