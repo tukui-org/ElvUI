@@ -15,8 +15,7 @@ local function handleGossipText()
 
 				local text = str:GetText()
 				if text then
-					local stripped = E:StripString(text)
-					str:SetText(stripped)
+					str:SetText(E:StripString(text, true))
 				end
 			end
 		end

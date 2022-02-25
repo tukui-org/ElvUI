@@ -73,8 +73,10 @@ local function HandleScrollChild(self)
 		local icon = child and child.Icon
 		if icon and not icon.IsSkinned then
 			S:HandleIcon(icon)
+			icon:SetPoint('LEFT', 3, 0)
+
 			child.Background:Hide()
-			child:CreateBackdrop()
+			child:CreateBackdrop(nil, nil, nil, true, nil, nil, nil, true)
 
 			S:HandleButton(child.DeleteButton)
 			child.DeleteButton:Size(20)

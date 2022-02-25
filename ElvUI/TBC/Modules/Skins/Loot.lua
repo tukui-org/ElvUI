@@ -20,7 +20,7 @@ local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
-	for i = 1, numItems do
+	for i=1, numItems do
 		local frame = _G.LootHistoryFrame.itemFrames[i]
 		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
@@ -34,12 +34,15 @@ local function UpdateLoots()
 			frame.Icon:SetParent(frame.backdrop)
 
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
-			local _, _, itemRarity = GetItemInfo(itemLink)
+			if itemLink then
+				local _, _, itemRarity = GetItemInfo(itemLink)
 
-			if (itemRarity) then
-				local color = ITEM_QUALITY_COLORS[itemRarity]
-				if (color) then
-					frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				if (itemRarity) then
+					local color = ITEM_QUALITY_COLORS[itemRarity]
+
+					if (color) then
+						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					end
 				end
 			end
 

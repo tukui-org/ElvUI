@@ -269,7 +269,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[199027]	= Defaults(), -- Veil of Midnight
 	-- Shaman
 		[325174]	= Defaults(), -- Spirit Link
-		[204288]	= Defaults(), -- Earth Shield
+		[974]		= Defaults(), -- Earth Shield
 		[210918]	= Defaults(), -- Ethereal Form
 		[207654]	= Defaults(), -- Servant of the Queen
 		[108271]	= Defaults(), -- Astral Shift
@@ -505,7 +505,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[202665]	= Defaults(), -- Curse of the Dreadblades (Self Debuff)
 	-- Shaman
 		[325174]	= Defaults(), -- Spirit Link
-		[204288]	= Defaults(), -- Earth Shield
+		[974]		= Defaults(), -- Earth Shield
 		[210918]	= Defaults(), -- Ethereal Form
 		[207654]	= Defaults(), -- Servant of the Queen
 		[108271]	= Defaults(), -- Astral Shift
@@ -1190,6 +1190,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Korthia
 		[354840]	= Defaults(), -- Rift Veiled (Silent Soulstalker, Deadsoul Hatcher, Screaming Shade)
 		[355249]	= Defaults(), -- Anima Gorged (Consumption)
+	-- Zereth Mortis
+		[360945]	= Defaults(), -- Creation Catalyst Overcharge (Nascent Servitor)
+		[366309]	= Defaults(), -- Meltdown (Destabilized Core)
+		[365596]	= Defaults(), -- Overload (Destabilized Core)
 	},
 }
 
