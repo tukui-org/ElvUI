@@ -27,7 +27,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on NamePla
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = true
 L["Active Output Audio Device"] = true
 L["AddOn Memory:"] = true
-L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
+L["Adjust the UI Scale to fit your screen."] = true
 L["Affix"] = true
 L["AFK Mode"] = "Modalità AFK"
 L["AFK"] = true

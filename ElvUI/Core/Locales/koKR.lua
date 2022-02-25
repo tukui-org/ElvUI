@@ -27,7 +27,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on NamePla
 L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "수락하시면 유닛프레임에 적용된 모든 필터 목록이 초기화 됩니다. 정말로 하시겠습니까?"
 L["Active Output Audio Device"] = true
 L["AddOn Memory:"] = true
-L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = true
+L["Adjust the UI Scale to fit your screen."] = true
 L["Affix"] = true
 L["AFK Mode"] = "자리비움 모드"
 L["AFK"] = "자리비움"
