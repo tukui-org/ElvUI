@@ -130,9 +130,9 @@ general.args.generalGroup.args.equippedItem = ACH:Toggle(L["Equipped Item Color"
 general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind Text"], L["Color Keybind Text when Out of Range, instead of the button."], 15)
 general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 16)
 
-general.args.castGroup = ACH:Group(E.NewSign..L["Casting"], nil, 25)
+general.args.castGroup = ACH:Group(L["Casting"], nil, 25)
 general.args.castGroup.args.mouseoverCastKey = ACH:Select(E.NewSign..L["Mouseover Cast Key"], nil, 1, castKeyValues, nil, nil, function() return GetModifiedClick('MOUSEOVERCAST') end, function(_, value) SetModifiedClick('MOUSEOVERCAST', value); SaveBindings(GetCurrentBindingSet()) end)
-general.args.castGroup.args.checkMouseoverCast = ACH:Toggle(E.NewSign..L["Check Mouseover Cast"], nil, 2, nil, nil, nil, function() return GetCVarBool('enableMouseoverCast') end, function(_, value) SetCVar('enableMouseoverCast', value and 1 or 0); AB:UpdateButtonSettings() end, nil, not E.Retail)
+general.args.castGroup.args.checkMouseoverCast = ACH:Toggle(L["Check Mouseover Cast"], nil, 2, nil, nil, nil, function() return GetCVarBool('enableMouseoverCast') end, function(_, value) SetCVar('enableMouseoverCast', value and 1 or 0); AB:UpdateButtonSettings() end, nil, not E.Retail)
 general.args.castGroup.args.spacer2 = ACH:Spacer(3, 'full')
 general.args.castGroup.args.focusCastKey = ACH:Select(L["Focus Cast Key"], nil, 10, castKeyValues, nil, nil, function() return GetModifiedClick('FOCUSCAST') end, function(_, value) SetModifiedClick('FOCUSCAST', value); SaveBindings(GetCurrentBindingSet()) end, nil, E.Classic)
 general.args.castGroup.args.checkFocusCast = ACH:Toggle(L["Check Focus Cast"], nil, 11, nil, nil, nil, nil, nil, nil, E.Classic)
