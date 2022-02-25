@@ -124,7 +124,7 @@ function S:Blizzard_MacroUI()
 		frame:Point('TOPLEFT', MacroFrame, 'TOPRIGHT', 2, 0)
 
 		if not frame.isSkinned then
-			S:HandleIconSelectionFrame(MacroPopupFrame, _G.NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+			S:HandleIconSelectionFrame(frame, _G.NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
 		end
 	end)
 end
