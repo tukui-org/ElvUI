@@ -33,24 +33,24 @@ function S:Blizzard_CharacterCustomize()
 	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
-	hooksecurefunc(frame, 'SetSelectedCatgory', function(list)
+	hooksecurefunc(frame, 'SetSelectedCategory', function(list)
 		if list.selectionPopoutPool then
-			for button in list.selectionPopoutPool:EnumerateActive() do
-				if not button.IsSkinned then
-					HandleButton(button.DecrementButton)
-					HandleButton(button.IncrementButton)
+			for popout in list.selectionPopoutPool:EnumerateActive() do
+				if not popout.IsSkinned then
+					HandleButton(popout.DecrementButton)
+					HandleButton(popout.IncrementButton)
 
-					local popoutButton = button.SelectionPopoutButton
-					popoutButton.HighlightTexture:SetAlpha(0)
-					popoutButton.NormalTexture:SetAlpha(0)
+					local button = popout.Button
+					button.HighlightTexture:SetAlpha(0)
+					button.NormalTexture:SetAlpha(0)
 
-					popoutButton.Popout:StripTextures()
-					popoutButton.Popout:SetTemplate('Transparent')
+					button.Popout:StripTextures()
+					button.Popout:SetTemplate('Transparent')
 
-					S:HandleButton(popoutButton, nil, nil, nil, true)
-					popoutButton.backdrop:SetInside(nil, 4, 4)
+					S:HandleButton(button, nil, nil, nil, true)
+					button.backdrop:SetInside(nil, 4, 4)
 
-					button.IsSkinned = true
+					popout.IsSkinned = true
 				end
 			end
 		end

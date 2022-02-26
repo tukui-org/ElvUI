@@ -3,6 +3,7 @@ local B = E:GetModule('Blizzard')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
+local pairs = pairs
 local unpack = unpack
 local strmatch = strmatch
 local CreateFrame = CreateFrame
@@ -24,10 +25,14 @@ local function UpdateBarTexture(bar, atlas)
 	end
 end
 
-function B:UIWidgetTemplateStatusBar()
-	if self:IsForbidden() then return end
+local ignoreWidgetSetID = {
+	[283] = true -- Cosmic Energy
+}
 
-	local bar = self.Bar
+function B:UIWidgetTemplateStatusBar()
+	local bar = not self:IsForbidden() and self.Bar
+	if not bar or ignoreWidgetSetID[self.widgetSetID] then return end
+
 	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
 	if not bar.backdrop then
@@ -82,7 +87,7 @@ local function PVPCaptureBar(self)
 end
 
 local function EmberCourtCaptureBar() end
-local CaptureBarSkins = {
+local captureBarSkins = {
 	[2] = PVPCaptureBar,
 	[252] = EmberCourtCaptureBar
 }
@@ -90,7 +95,7 @@ local CaptureBarSkins = {
 function B:UIWidgetTemplateCaptureBar(_, widget)
 	if self:IsForbidden() or not widget then return end
 
-	local skinFunc = CaptureBarSkins[widget.widgetSetID]
+	local skinFunc = captureBarSkins[widget.widgetSetID]
 	if skinFunc then skinFunc(self) end
 end
 
@@ -131,6 +136,11 @@ function B:HandleWidgets()
 		B:BuildWidgetHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', 'CENTER', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50, 'ALL,WIDGETS')
 		B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', 'TOP', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,WIDGETS')
 		B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', 'TOP', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,WIDGETS')
+
+		-- handle power bar widgets after reload as Setup will have fired before this
+		for _, widget in pairs(_G.UIWidgetPowerBarContainerFrame.widgetFrames) do
+			B.UIWidgetTemplateStatusBar(widget)
+		end
 	end
 
 	_G.DurabilityFrame:SetFrameStrata('HIGH')

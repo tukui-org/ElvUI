@@ -1,7 +1,22 @@
-### Version 12.66 [ ETA: 🍨 ]
+### Version 12.67 [ ETA: 🍨 ]
 
 **Dev**  
 something is different probably, check commits ;P  
+
+___
+### Version 12.66 [ February 24th 2022 ]
+
+Click Casting: Moved into Actionbar settings (this includes Mouseover Click Key)  
+
+Added Zereth Mortis buffs to Raid Buffs  
+Fixed Chat Error from Monster Emotes on Russian Clients (this patches a Blizzard Issue)  
+Fixed Macrobook skin not showing the icons you can change to on open  
+Fixd Quest Interaction text not appearing in the new language  
+Fixed issues with text on Spellbook and updated the skin a bit  
+Fixed Spellbook profession buttons triggering a taint  
+Fixed various issues with Click Binding  
+Fixed Cosmic Energy Widget  
+Fixed Barbershop Error  
 
 ___
 ### Version 12.65 [ February 23rd 2022 ]

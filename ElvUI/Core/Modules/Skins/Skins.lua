@@ -1318,11 +1318,13 @@ do
 		assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
 		assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
 
-		if frame.isSkinned then return end
-
-		frame:Show() -- spawn the info so we can skin the buttons
-		if frame.Update then frame:Update() end -- guild bank popup has update function
-		frame:Hide() -- can hide it right away
+		if frame.isSkinned then
+			return
+		elseif frameNameOverride ~= 'MacroPopup' then -- skip macros because it skins on show
+			frame:Show() -- spawn the info so we can skin the buttons
+			if frame.Update then frame:Update() end -- guild bank popup has update function
+			frame:Hide() -- can hide it right away
+		end
 
 		frame:HookScript('OnShow', selectionOffset) -- place it off to the side of parent with correct offsets
 
@@ -1355,14 +1357,19 @@ do
 		for i = 1, numIcons do
 			local button = _G[buttonNameTemplate..i]
 			if button then
+				local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
+				if icon then
+					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetInside(button.backdrop)
+					texture = icon:GetTexture()
+				end
+
 				button:StripTextures()
 				button:SetTemplate()
 				button:StyleButton(nil, true)
 
-				local icon = button.Icon or _G[buttonNameTemplate..i..'Icon']
-				if icon then
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetInside(button.backdrop)
+				if texture then
+					icon:SetTexture(texture)
 				end
 			end
 		end

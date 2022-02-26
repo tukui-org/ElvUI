@@ -4,8 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local format = format
-local HideUIPanel = HideUIPanel
-local ShowUIPanel = ShowUIPanel
 
 local NUM_ICONS_PER_ROW = 10
 local NUM_ICON_ROWS = 9
@@ -82,11 +80,10 @@ function S:Blizzard_MacroUI()
 		end
 	end
 
-	--Icon selection frame
-	ShowUIPanel(MacroFrame) --Toggle frame to create necessary variables needed for popup frame
-	HideUIPanel(MacroFrame)
-
-	S:HandleIconSelectionFrame(_G.MacroPopupFrame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
+		if frame.isSkinned then return end
+		S:HandleIconSelectionFrame(frame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_MacroUI')
