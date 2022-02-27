@@ -893,7 +893,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
-	if InClickBindingMode() and not self.canClickBind then
+	if E.Retail and InClickBindingMode() and not self.canClickBind then
 		tt:AddLine(CLICK_BINDING_NOT_AVAILABLE, 1, .3, .3)
 		tt:Show()
 		return
