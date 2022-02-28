@@ -5,6 +5,7 @@ local Private = oUF.Private
 local argcheck = Private.argcheck
 local validateEvent = Private.validateEvent
 local validateUnit = Private.validateUnit
+local isUnitEvent = Private.isUnitEvent
 local frame_metatable = Private.frame_metatable
 
 -- Original event methods
@@ -144,6 +145,10 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 				if(secondaryUnits[event]) then
 					unit2 = secondaryUnits[event][unit1]
 				end
+
+				-- be helpful and throw a custom error when attempting to register
+				-- an event that is unitless
+				assert(isUnitEvent(event, unit1), string.format('Event "%s" is not an unit event', event))
 
 				registerUnitEvent(self, event, unit1, unit2 or '')
 			end

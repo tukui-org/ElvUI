@@ -78,3 +78,12 @@ function Private.validateEvent(event)
 
 	return isOK
 end
+
+function Private.isUnitEvent(event, unit)
+	local isOK = pcall(validator.RegisterUnitEvent, validator, event, unit)
+	if(isOK) then
+		validator:UnregisterEvent(event)
+	end
+
+	return isOK
+end

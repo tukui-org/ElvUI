@@ -132,13 +132,13 @@ local function CastStart(self, real, unit, castGUID)
 	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
 	local event = 'UNIT_SPELLCAST_START'
-	if (not name) then
+	if not name then
 		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
 
 		event = 'UNIT_SPELLCAST_CHANNEL_START'
 	end
 
-	if(not name or (isTradeSkill and element.hideTradeSkills)) then
+	if not name or (isTradeSkill and element.hideTradeSkills) then
 		resetAttributes(element)
 		element:Hide()
 
