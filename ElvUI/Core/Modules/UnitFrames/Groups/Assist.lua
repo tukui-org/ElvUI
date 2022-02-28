@@ -75,7 +75,6 @@ end
 function UF:Update_AssistFrames(frame, db)
 	frame.db = db
 	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
@@ -125,7 +124,15 @@ function UF:Update_AssistFrames(frame, db)
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
-		if not E:IsAddOnEnabled('Clique') then
+		UF:EnableDisable_Auras(frame)
+		UF:Configure_AllAuras(frame)
+		UF:Configure_RaidDebuffs(frame)
+		UF:Configure_AuraHighlight(frame)
+		UF:Configure_AuraWatch(frame)
+	end
+
+	if not E:IsAddOnEnabled('Clique') then
+		if not frame.isChild then
 			if db.middleClickFocus then
 				frame:SetAttribute('type3', 'focus')
 			elseif frame:GetAttribute('type3') == 'focus' then
@@ -133,11 +140,7 @@ function UF:Update_AssistFrames(frame, db)
 			end
 		end
 
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_AllAuras(frame)
-		UF:Configure_RaidDebuffs(frame)
-		UF:Configure_AuraHighlight(frame)
-		UF:Configure_AuraWatch(frame)
+		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
