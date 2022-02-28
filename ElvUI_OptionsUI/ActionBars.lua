@@ -309,7 +309,7 @@ for i = 1, 10 do
 		end
 	end
 
-	if (E.myclass == 'DRUID' and i >= 7 or E.myclass == 'ROGUE' and i == 7) then
+	if E.myclass == 'DRUID' and i >= 7 or E.myclass == 'ROGUE' and i == 7 then
 		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], i) end
 	end
 end
