@@ -1015,6 +1015,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[365021] = Defaults(4), -- Wicked Star
 		[365445] = Defaults(3), -- Scarred Soul
 		[365008] = Defaults(4), -- Psychic Terror
+		[366849] = Defaults(6), -- Domination Word: Pain
 	-- Lords of Dread
 	-- Rygelon
 	-- The Jailer
