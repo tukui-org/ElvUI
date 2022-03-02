@@ -994,10 +994,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[361966] = Defaults(2), -- Infused Strikes
 	-- Prototype Pantheon
 		[365306] = Defaults(2), -- Invigorating Bloom
-		[361608] = Defaults(3), -- Burden of Sin
 		[361689] = Defaults(3), -- Wracking Pain
 		[366232] = Defaults(4), -- Animastorm
-		[364839] = Defaults(4), -- Sinful Projection
+		[364839] = Defaults(2), -- Sinful Projection
+		[360259] = Defaults(5), -- Gloom Bolt
+		[362383] = Defaults(5), -- Anima Bolt
 	-- Lihuvim, Principle Architect
 		[360159] = Defaults(5), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
