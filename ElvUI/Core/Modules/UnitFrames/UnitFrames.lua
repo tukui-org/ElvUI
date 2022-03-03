@@ -1273,7 +1273,7 @@ do
 			if id then
 				HandleFrame('Boss' .. id .. 'TargetFrame')
 			else
-				for i = 1, _G.MAX_BOSS_FRAMES do
+				for i = 1, 10 do
 					HandleFrame(format('Boss%dTargetFrame', i))
 				end
 			end
