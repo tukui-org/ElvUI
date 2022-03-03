@@ -1293,6 +1293,7 @@ B.ExcludeGrays = E.Retail and {
 	[36812] = "Ground Gear",
 	[62072] = "Robble's Wobbly Staff",
 	[67410] = "Very Unlucky Rock",
+	[190382] = "Warped Pocket Dimension",
 } or { -- TBC and Classic
 	[32888] = "The Relics of Terokk",
 	[28664] = "Nitrin's Instructions",
