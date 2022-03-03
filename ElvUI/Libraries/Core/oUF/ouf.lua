@@ -24,6 +24,8 @@ PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
 RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
 
+local invalidBosses = {'boss6','boss7','boss8','boss9','boss10'}
+
 -- updating of "invalid" units, function edited by ElvUI
 local function xtargetOnUpdate(self, elapsed)
 	if not self.unit or not UnitExists(self.unit) then
@@ -350,7 +352,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 
 			-- Other boss and target units are handled by :HandleUnit().
-			if(suffix == 'target') then
+			if suffix == 'target' or invalidBosses[unit] then
 				enableTargetUpdate(object)
 			else
 				oUF:HandleUnit(object)
@@ -368,7 +370,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 				end
 			end
 
-			if(suffix == 'target') then
+			if suffix == 'target' or invalidBosses[unit] then
 				enableTargetUpdate(object)
 			end
 		end
