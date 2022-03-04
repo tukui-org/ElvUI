@@ -3,7 +3,7 @@ local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
-L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "（Ctrl 和 Shift 单击）切换 CPU 分析"
+L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "（Ctrl 和 Shift + 单击）切换 CPU 分析"
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 内存占用"
 L["(Shift Click) Collect Garbage"] = "(Shift + 点击) 回收垃圾"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架有一个冲突的锚点。强制将增益附加到主单元框架上。"
@@ -153,7 +153,7 @@ L["Gold"] = "金"
 L["goldabbrev"] = "|cffffd700金|r"
 L["Grays"] = true
 L["Grid Size:"] = "网格尺寸:"
-L["Heal Power"] = true
+L["Heal Power"] = "治疗强度"
 L["Healer"] = "治疗"
 L["Hold Control + Right Click:"] = "按住 Ctrl 并按鼠标右键:"
 L["Hold Shift + Drag:"] = "按住 Shift 并拖动:"
@@ -414,16 +414,16 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, �
   Ctrl + 右键 - 重置定位开关位置
 ]=]
 
-L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */kb|r  -  Toggle the keybind mode.
- */emove|r  -  Toggle anchors to reposition various elements.
- */ereset|r  -  Reset all frames to their original positions.
- */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
- */estatus|r  -  Important informations for support questions.
- */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
-  using */edebug|r ^on|r within that session.
+L["EHELP_COMMANDS"] = ([=[这里列出了重要的 *ElvUI|r 命令:
+ */ec|r or */elvui|r  -  切换 *选项界面|r.
+ */kb|r  -  切换键绑定模式.
+ */emove|r  -  切换锚点以重新定位各种元素.
+ */ereset|r  -  将所有框架重置为其原始位置.
+ */bgstats|r  -  在您的数据文本上切换战场统计信息.
+ */hdt|r  -  在不打开 *选项界面|r 的情况下编辑您的数据文本.
+ */estatus|r  -  需要支持方面问题的重要信息.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  切换像素网格.
+ */edebug|r ^on|r or ^off|r  -  禁用除 ElvUI 之外的所有插件.
+  注意: */edebug|r ^off|r 将重新启用禁用的插件从
+  使用 */edebug|r ^on|r 之前的会话中.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
