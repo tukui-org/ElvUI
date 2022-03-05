@@ -236,6 +236,7 @@ L["CHALLENGE_MODE"] = "挑戰模式"
 L["Change settings for the display of the location text that is on the minimap."] = "改變小地圖所在位置文字的顯示設定."
 L["Change the alpha level of the frame."] = "改變框架透明度."
 L["Change the width and controls how big of an area on the screen will accept clicks to target unit."] = true
+L["Changelog"] = true
 L["Channel Alerts"] = true
 L["Channel Time Format"] = "通道法術時間格式"
 L["Channel"] = true
@@ -1575,6 +1576,7 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "冷卻時間低於此秒數後將變為紅色數字, 並以小數顯示, 設為- 1 冷卻時間將不會變為紅色."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = "圖示會漸隱再出現的閾值. 設成-1來停用"
 L["Threshold Colors"] = "閾值顏色"
+L["Ticket Tracker"] = true
 L["Ticks"] = "週期傷害"
 L["Tiers"] = "天賦層"
 L["Time Indicator Colors"] = "時間指示器顏色"
