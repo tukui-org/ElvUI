@@ -694,7 +694,7 @@ StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.spacer1 = ACH:Spacer(4, 'full')
-StyleFitlers.actions.args.scale = ACH:Range(L["Scale"], nil, 5, { min = .5, max = 1.5, softMin = .75, softMax = 1.25, step = .01 }, nil, nil, nil, actionHidePlate)
+StyleFitlers.actions.args.scale = ACH:Range(L["Scale"], nil, 5, { min = .25, max = 1.5, softMin = .5, softMax = 1.25, step = .01 }, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 6, { min = -1, max = 100, step = 1 }, nil, nil, nil, actionHidePlate)
 
 StyleFitlers.actions.args.color = ACH:Group(L["COLOR"], nil, 10, nil, actionSubGroup, actionSubGroup, actionHidePlate)
