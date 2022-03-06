@@ -963,7 +963,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
-		[360403] = Defaults(2), -- Force Field
 		[364447] = Defaults(3), -- Dissonance
 		[364904] = Defaults(6), -- Anti-Matter
 		[364881] = Defaults(5), -- Matter Disolution
