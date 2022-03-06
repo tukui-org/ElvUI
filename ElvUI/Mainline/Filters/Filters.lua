@@ -976,7 +976,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360098] = Defaults(3), -- Warp Sickness
 		[366070] = Defaults(3), -- Volatile Residue
 	-- Artificer Xy'mox
-		[362850] = Defaults(2), -- Hyperlight Sparknova
 		[364030] = Defaults(3), -- Debilitating Ray
 		[365681] = Defaults(2), -- System Shock
 		[363413] = Defaults(4), -- Forerunner Rings A
