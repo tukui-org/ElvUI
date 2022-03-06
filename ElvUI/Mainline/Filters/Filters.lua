@@ -1011,7 +1011,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360114] = Defaults(4), -- Ephemeral Fissure II
 	-- Anduin Wrynn
 		[365293] = Defaults(2), -- Befouled Barrier
-		[361817] = Defaults(3), -- Hopebreaker
 		[363020] = Defaults(3), -- Necrotic Claws
 		[365021] = Defaults(4), -- Wicked Star
 		[365445] = Defaults(3), -- Scarred Soul
