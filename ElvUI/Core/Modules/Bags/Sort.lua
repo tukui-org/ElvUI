@@ -28,6 +28,15 @@ local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
 local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
+local GetBankAutosortDisabled = GetBankAutosortDisabled
+local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
+local GetBankBagSlotFlag = GetBankBagSlotFlag
+local GetBagSlotFlag = GetBagSlotFlag
+
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
+local BANK_CONTAINER = BANK_CONTAINER
+local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
 local ItemClass_Armor = Enum.ItemClass.Armor
@@ -557,6 +566,20 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	end
 end
 
+function B:IsIgnored(bag)
+	if not E.Retail then return end
+
+	if (bag == -1) then
+		return GetBankAutosortDisabled and GetBankAutosortDisabled()
+	elseif (bag == 0) then
+		return GetBackpackAutosortDisabled and GetBackpackAutosortDisabled()
+	elseif bag > NUM_BAG_SLOTS then
+		return GetBankBagSlotFlag(bag - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+	else
+		return GetBagSlotFlag(bag, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+	end
+end
+
 function B.Compress(...)
 	for i=1, select('#', ...) do
 		local bags = select(i, ...)
@@ -636,34 +659,36 @@ function B.Sort(bags, sorter, invertDirection)
 	B:BuildBlacklist(E.global.bags.ignoredItems)
 
 	for i, bag, slot in B:IterateBags(bags, nil, 'both') do
-		local bagSlot = B:Encode_BagSlot(bag, slot)
-		local link = B:GetItemLink(bag, slot)
+		if not B:IsIgnored(bag) then
+			local bagSlot = B:Encode_BagSlot(bag, slot)
+			local link = B:GetItemLink(bag, slot)
 
-		if link then
-			if blackList[GetItemInfo(link)] then
-				blackListedSlots[bagSlot] = true
-			end
+			if link then
+				if blackList[GetItemInfo(link)] then
+					blackListedSlots[bagSlot] = true
+				end
 
-			if not blackListedSlots[bagSlot] then
-				local method
-				for _,itemsearchquery in pairs(blackListQueries) do
-					method = Search.Matches
-					if Search.Filters.tipPhrases.keywords[itemsearchquery] then
-						method = Search.TooltipPhrase
-						itemsearchquery = Search.Filters.tipPhrases.keywords[itemsearchquery]
-					end
-					local success, result = pcall(method, Search, link, itemsearchquery)
-					if success and result then
-						blackListedSlots[bagSlot] = result
-						break
+				if not blackListedSlots[bagSlot] then
+					local method
+					for _,itemsearchquery in pairs(blackListQueries) do
+						method = Search.Matches
+						if Search.Filters.tipPhrases.keywords[itemsearchquery] then
+							method = Search.TooltipPhrase
+							itemsearchquery = Search.Filters.tipPhrases.keywords[itemsearchquery]
+						end
+						local success, result = pcall(method, Search, link, itemsearchquery)
+						if success and result then
+							blackListedSlots[bagSlot] = result
+							break
+						end
 					end
 				end
 			end
-		end
 
-		if not blackListedSlots[bagSlot] then
-			initialOrder[bagSlot] = i
-			tinsert(bagSorted, bagSlot)
+			if not blackListedSlots[bagSlot] then
+				initialOrder[bagSlot] = i
+				tinsert(bagSorted, bagSlot)
+			end
 		end
 	end
 
@@ -677,7 +702,7 @@ function B.Sort(bags, sorter, invertDirection)
 			local destination = B:Encode_BagSlot(bag, slot)
 			local source = bagSorted[i]
 
-			if not blackListedSlots[destination] then
+			if not B:IsIgnored(bag) or not blackListedSlots[destination] then
 				if ShouldMove(source, destination) then
 					if not (bagLocked[source] or bagLocked[destination]) then
 						B:AddMove(source, destination)
