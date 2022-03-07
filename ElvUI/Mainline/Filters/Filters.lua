@@ -963,7 +963,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
-		[360403] = Defaults(2), -- Force Field
 		[364447] = Defaults(3), -- Dissonance
 		[364904] = Defaults(6), -- Anti-Matter
 		[364881] = Defaults(5), -- Matter Disolution
@@ -977,7 +976,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360098] = Defaults(3), -- Warp Sickness
 		[366070] = Defaults(3), -- Volatile Residue
 	-- Artificer Xy'mox
-		[362850] = Defaults(2), -- Hyperlight Sparknova
 		[364030] = Defaults(3), -- Debilitating Ray
 		[365681] = Defaults(2), -- System Shock
 		[363413] = Defaults(4), -- Forerunner Rings A
@@ -1011,7 +1009,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360114] = Defaults(4), -- Ephemeral Fissure II
 	-- Anduin Wrynn
 		[365293] = Defaults(2), -- Befouled Barrier
-		[361817] = Defaults(3), -- Hopebreaker
 		[363020] = Defaults(3), -- Necrotic Claws
 		[365021] = Defaults(4), -- Wicked Star
 		[365445] = Defaults(3), -- Scarred Soul

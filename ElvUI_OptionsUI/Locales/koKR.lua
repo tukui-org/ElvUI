@@ -236,6 +236,7 @@ L["CHALLENGE_MODE"] = "도전 모드"
 L["Change settings for the display of the location text that is on the minimap."] = "미니맵 상단에 있는 지역이름의 표시방법을 결정합니다."
 L["Change the alpha level of the frame."] = "해당 프레임의 투명한 수준을 결정합니다."
 L["Change the width and controls how big of an area on the screen will accept clicks to target unit."] = true
+L["Changelog"] = true
 L["Channel Alerts"] = true
 L["Channel Time Format"] = "채널링 시간 형식"
 L["Channel"] = true
@@ -1575,6 +1576,7 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "이 값 이하로 시간이 내려가면 시간이 소숫점 단위 초읽기 형태로 표시됩니다.\n\n-1로 설정하면 이 기능을 사용하지 않습니다."
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
 L["Threshold Colors"] = true
+L["Ticket Tracker"] = true
 L["Ticks"] = "주문 틱 표시"
 L["Tiers"] = true
 L["Time Indicator Colors"] = true

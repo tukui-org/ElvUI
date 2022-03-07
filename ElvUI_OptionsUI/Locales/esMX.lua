@@ -236,6 +236,7 @@ L["CHALLENGE_MODE"] = "Modo desafío"
 L["Change settings for the display of the location text that is on the minimap."] = "Cambia la configuración para mostrar el texto de ubicación que está en el minimapa."
 L["Change the alpha level of the frame."] = "Cambia el nivel de transparencia del marco"
 L["Change the width and controls how big of an area on the screen will accept clicks to target unit."] = true
+L["Changelog"] = true
 L["Channel Alerts"] = true
 L["Channel Time Format"] = "Formato de la Hora del Canal"
 L["Channel"] = true
@@ -1575,6 +1576,7 @@ L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "Umbral para que el texto se ponga rojo y esté en forma decimal. Establécelo en -1 para que nunca se ponga rojo"
 L["Threshold before the icon will fade out and back in. Set to -1 to disable."] = true
 L["Threshold Colors"] = true
+L["Ticket Tracker"] = true
 L["Ticks"] = "Ticks"
 L["Tiers"] = true
 L["Time Indicator Colors"] = true

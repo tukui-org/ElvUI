@@ -29,6 +29,10 @@ local QueryGuildBankTab = QueryGuildBankTab
 local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
 
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
+local BANK_CONTAINER = BANK_CONTAINER
+
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
@@ -636,34 +640,36 @@ function B.Sort(bags, sorter, invertDirection)
 	B:BuildBlacklist(E.global.bags.ignoredItems)
 
 	for i, bag, slot in B:IterateBags(bags, nil, 'both') do
-		local bagSlot = B:Encode_BagSlot(bag, slot)
-		local link = B:GetItemLink(bag, slot)
+		if not E.Retail or not B:IsSortIgnored(bag) then
+			local bagSlot = B:Encode_BagSlot(bag, slot)
+			local link = B:GetItemLink(bag, slot)
 
-		if link then
-			if blackList[GetItemInfo(link)] then
-				blackListedSlots[bagSlot] = true
-			end
+			if link then
+				if blackList[GetItemInfo(link)] then
+					blackListedSlots[bagSlot] = true
+				end
 
-			if not blackListedSlots[bagSlot] then
-				local method
-				for _,itemsearchquery in pairs(blackListQueries) do
-					method = Search.Matches
-					if Search.Filters.tipPhrases.keywords[itemsearchquery] then
-						method = Search.TooltipPhrase
-						itemsearchquery = Search.Filters.tipPhrases.keywords[itemsearchquery]
-					end
-					local success, result = pcall(method, Search, link, itemsearchquery)
-					if success and result then
-						blackListedSlots[bagSlot] = result
-						break
+				if not blackListedSlots[bagSlot] then
+					local method
+					for _,itemsearchquery in pairs(blackListQueries) do
+						method = Search.Matches
+						if Search.Filters.tipPhrases.keywords[itemsearchquery] then
+							method = Search.TooltipPhrase
+							itemsearchquery = Search.Filters.tipPhrases.keywords[itemsearchquery]
+						end
+						local success, result = pcall(method, Search, link, itemsearchquery)
+						if success and result then
+							blackListedSlots[bagSlot] = result
+							break
+						end
 					end
 				end
 			end
-		end
 
-		if not blackListedSlots[bagSlot] then
-			initialOrder[bagSlot] = i
-			tinsert(bagSorted, bagSlot)
+			if not blackListedSlots[bagSlot] then
+				initialOrder[bagSlot] = i
+				tinsert(bagSorted, bagSlot)
+			end
 		end
 	end
 
@@ -672,12 +678,12 @@ function B.Sort(bags, sorter, invertDirection)
 	local passNeeded = true
 	while passNeeded do
 		passNeeded = false
+
 		local i = 1
 		for _, bag, slot in B:IterateBags(bags, nil, 'both') do
 			local destination = B:Encode_BagSlot(bag, slot)
-			local source = bagSorted[i]
-
-			if not blackListedSlots[destination] then
+			if not blackListedSlots[destination] and (not E.Retail or not B:IsSortIgnored(bag)) then
+				local source = bagSorted[i]
 				if ShouldMove(source, destination) then
 					if not (bagLocked[source] or bagLocked[destination]) then
 						B:AddMove(source, destination)
@@ -691,6 +697,7 @@ function B.Sort(bags, sorter, invertDirection)
 				i = i + 1
 			end
 		end
+
 		wipe(bagLocked)
 	end
 
@@ -745,6 +752,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 			B:AddMove(bagSlot, tremove(emptySlots, 1))
 		end
 	end
+
 	wipe(emptySlots)
 end
 
@@ -773,6 +781,7 @@ function B.SortBags(...)
 			B.Sort(bagCache.Normal, nil, B.db.sortInverted)
 			wipe(bagCache.Normal)
 		end
+
 		wipe(bagCache)
 		wipe(bagGroups)
 	end
