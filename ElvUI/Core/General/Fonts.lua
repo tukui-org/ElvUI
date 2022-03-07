@@ -37,8 +37,8 @@ function E:UpdateBlizzardFonts()
 
 	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if db.replaceCombatFont then
-		_G.DAMAGE_TEXT_FONT = COMBAT -- Damage
-		SetFont(_G.CombatTextFont,	COMBAT, 64, nil, 0, 0, 0, 1, 1, -1) -- Self Healing - Default 64px with black shadows. SystemFont_World font object.
+		_G.DAMAGE_TEXT_FONT = COMBAT -- not self
+		SetFont(_G.CombatTextFont, COMBAT, 120, nil, 0, 0, 0, 1, 1, -1) -- Blizzard_CombatText
 	end
 	if db.replaceBubbleFont then
 		local BUBBLE = LSM:Fetch('font', db.chatBubbleFont)
