@@ -28,15 +28,10 @@ local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
 local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
-local GetBankAutosortDisabled = GetBankAutosortDisabled
-local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
-local GetBankBagSlotFlag = GetBankBagSlotFlag
-local GetBagSlotFlag = GetBagSlotFlag
 
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
 local BANK_CONTAINER = BANK_CONTAINER
-local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
 local ItemClass_Armor = Enum.ItemClass.Armor
@@ -566,20 +561,6 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	end
 end
 
-function B:IsIgnored(bag)
-	if not E.Retail then return end
-
-	if (bag == -1) then
-		return GetBankAutosortDisabled and GetBankAutosortDisabled()
-	elseif (bag == 0) then
-		return GetBackpackAutosortDisabled and GetBackpackAutosortDisabled()
-	elseif bag > NUM_BAG_SLOTS then
-		return GetBankBagSlotFlag(bag - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
-	else
-		return GetBagSlotFlag(bag, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
-	end
-end
-
 function B.Compress(...)
 	for i=1, select('#', ...) do
 		local bags = select(i, ...)
@@ -659,7 +640,7 @@ function B.Sort(bags, sorter, invertDirection)
 	B:BuildBlacklist(E.global.bags.ignoredItems)
 
 	for i, bag, slot in B:IterateBags(bags, nil, 'both') do
-		if not B:IsIgnored(bag) then
+		if not E.Retail or not B:IsSortIgnored(bag) then
 			local bagSlot = B:Encode_BagSlot(bag, slot)
 			local link = B:GetItemLink(bag, slot)
 
@@ -697,12 +678,12 @@ function B.Sort(bags, sorter, invertDirection)
 	local passNeeded = true
 	while passNeeded do
 		passNeeded = false
+
 		local i = 1
 		for _, bag, slot in B:IterateBags(bags, nil, 'both') do
 			local destination = B:Encode_BagSlot(bag, slot)
-			local source = bagSorted[i]
-
-			if not B:IsIgnored(bag) or not blackListedSlots[destination] then
+			if (not E.Retail or not B:IsSortIgnored(bag)) and not blackListedSlots[destination] then
+				local source = bagSorted[i]
 				if ShouldMove(source, destination) then
 					if not (bagLocked[source] or bagLocked[destination]) then
 						B:AddMove(source, destination)
@@ -716,6 +697,7 @@ function B.Sort(bags, sorter, invertDirection)
 				i = i + 1
 			end
 		end
+
 		wipe(bagLocked)
 	end
 
@@ -770,6 +752,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 			B:AddMove(bagSlot, tremove(emptySlots, 1))
 		end
 	end
+
 	wipe(emptySlots)
 end
 
@@ -798,6 +781,7 @@ function B.SortBags(...)
 			B.Sort(bagCache.Normal, nil, B.db.sortInverted)
 			wipe(bagCache.Normal)
 		end
+
 		wipe(bagCache)
 		wipe(bagGroups)
 	end
