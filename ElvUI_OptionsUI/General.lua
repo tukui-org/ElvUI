@@ -89,32 +89,32 @@ Media.colorsGroup.args.valuecolor = ACH:Color(L["Value"], L["Color some texts us
 Media.colorsGroup.args.bordercolor = ACH:Color(L["Border"], L["Main border color of the UI."], 5, nil, 100)
 Media.colorsGroup.args.ufBorderColors = ACH:Color(L["Unitframes Border"], nil, 6, nil, 180, function() local t, d = E.db.unitframe.colors.borderColor, P.unitframe.colors.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local t = E.db.unitframe.colors.borderColor t.r, t.g, t.b, t.a = r, g, b, a E:UpdateMedia() E:UpdateBorderColors() end)
 
-Media.fontHeader = ACH:Header(L["Fonts"], 3)
+Media.fontHeader = ACH:Header(L["Fonts"], 10)
 
-Media.general = ACH:Group('', nil, 4, nil, nil, function(info, value) E.db.general[info[#info]] = value E:UpdateMedia() E:UpdateFontTemplates() end)
+Media.general = ACH:Group('', nil, 11, nil, nil, function(info, value) E.db.general[info[#info]] = value E:UpdateMedia() E:UpdateFontTemplates() end)
 Media.general.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the core of the UI will use."], 1)
 Media.general.args.fontSize = ACH:Range(L["Font Size"], L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"], 2, C.Values.FontSize)
 Media.general.args.fontStyle = ACH:FontFlags(L["Font Outline"], nil, 3)
 Media.general.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."], 4, function() E:StaticPopup_Show('APPLY_FONT_WARNING') end)
 Media.general.inline = true
 
-Media.blizzard = ACH:Group('', nil, 5, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
+Media.blizzard = ACH:Group('', nil, 12, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Media.blizzard.args.replaceBlizzFonts = ACH:Toggle(L["Replace Blizzard Fonts"], L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI Options. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."], 1)
 Media.blizzard.args.unifiedBlizzFonts = ACH:Toggle(L["Unified Font Sizes"], L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."], 2, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
 Media.blizzard.inline = true
 
-Media.names = ACH:Group('', nil, 6, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
+Media.names = ACH:Group('', nil, 13, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Media.names.args.replaceNameFont = ACH:Toggle(L["Replace Name Font"], nil, 1)
 Media.names.args.namefont = ACH:SharedMediaFont(L["Name Font"], L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"], 2, nil, nil, nil, function() return not E.private.general.replaceNameFont end)
 Media.names.inline = true
 
-Media.combat = ACH:Group('', nil, 7, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, nil, function() return E.eyefinity or E.ultrawide end)
+Media.combat = ACH:Group('', nil, 14, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, nil, function() return E.eyefinity or E.ultrawide end)
 Media.combat.args.replaceCombatFont = ACH:Toggle(L["Replace Combat Font"], nil, 1)
 Media.combat.args.dmgfont = ACH:SharedMediaFont(L["Combat Font"], L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"], 2, nil, nil, nil, function() return not E.private.general.replaceCombatFont end)
 Media.combat.args.replaceCombatText = ACH:Toggle(L["Replace Text on Me"], nil, 3)
 Media.combat.inline = true
 
-Media.nameplates = ACH:Group('', nil, 8, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, function() return not E.private.general.replaceNameplateFont end)
+Media.nameplates = ACH:Group('', nil, 15, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, function() return not E.private.general.replaceNameplateFont end)
 Media.nameplates.args.replaceNameplateFont = ACH:Toggle(L["Replace Nameplate Fonts"], nil, 1, nil, nil, nil, nil, nil, E.noop)
 Media.nameplates.args.spacer1 = ACH:Spacer(10, 'full')
 Media.nameplates.args.nameplateFont = ACH:SharedMediaFont(L["Normal Font"], L["Replaces the font on Blizzard Nameplates."], 11)
