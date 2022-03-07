@@ -682,7 +682,7 @@ function B.Sort(bags, sorter, invertDirection)
 		local i = 1
 		for _, bag, slot in B:IterateBags(bags, nil, 'both') do
 			local destination = B:Encode_BagSlot(bag, slot)
-			if (not E.Retail or not B:IsSortIgnored(bag)) and not blackListedSlots[destination] then
+			if not blackListedSlots[destination] and (not E.Retail or not B:IsSortIgnored(bag)) then
 				local source = bagSorted[i]
 				if ShouldMove(source, destination) then
 					if not (bagLocked[source] or bagLocked[destination]) then
