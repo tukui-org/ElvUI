@@ -1177,7 +1177,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[359236] = Defaults(), -- Relocation Form
 	-- Anduin Wrynn
 		[364248] = Defaults(), -- Dark Zeal
-		[364247] = Defaults(), -- Dark Zeal II
 		[365030] = Defaults(), -- Wicked Star
 		[362862] = Defaults(), -- Army of the Dead
 	-- Lords of Dread
