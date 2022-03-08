@@ -1010,7 +1010,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Anduin Wrynn
 		[365293] = Defaults(2), -- Befouled Barrier
 		[363020] = Defaults(3), -- Necrotic Claws
-		[365021] = Defaults(4), -- Wicked Star
+		[365021] = Defaults(5), -- Wicked Star (marked)
+		[365024] = Defaults(6), -- Wicked Star (hit)
 		[365445] = Defaults(3), -- Scarred Soul
 		[365008] = Defaults(4), -- Psychic Terror
 		[366849] = Defaults(6), -- Domination Word: Pain
