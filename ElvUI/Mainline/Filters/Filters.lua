@@ -926,6 +926,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360146] = Defaults(4), -- Fearful Trepidation
 		[360241] = Defaults(6), -- Unsettling Dreams
 	-- Rygelon
+		[362206] = Defaults(6), -- Event Horizon
+		[362137] = Defaults(4), -- Corrupted Wound
+		[361548] = Defaults(5), -- Dark Eclipse
 	-- The Jailer
 	},
 }
