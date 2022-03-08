@@ -921,6 +921,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[365008] = Defaults(4), -- Psychic Terror
 		[366849] = Defaults(6), -- Domination Word: Pain
 	-- Lords of Dread
+		[360148] = Defaults(5), -- Bursting Dread
+		[360012] = Defaults(4), -- Cloud of Carrion
+		[360146] = Defaults(4), -- Fearful Trepidation
+		[360241] = Defaults(6), -- Unsettling Dreams
 	-- Rygelon
 	-- The Jailer
 	},
