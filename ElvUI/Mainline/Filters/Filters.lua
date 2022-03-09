@@ -930,6 +930,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[362137] = Defaults(4), -- Corrupted Wound
 		[361548] = Defaults(5), -- Dark Eclipse
 	-- The Jailer
+		[362075] = Defaults(6), -- Domination
+		[365150] = Defaults(6), -- Rune of Domination
+		[363893] = Defaults(5), -- Martyrdom
+		[363886] = Defaults(5), -- Imprisonment
+		[365219] = Defaults(5), -- Chains of Anguish
+		[366285] = Defaults(6), -- Rune of Compulsion
+		[363332] = Defaults(5), -- Unbreaking Grasp
 	},
 }
 
