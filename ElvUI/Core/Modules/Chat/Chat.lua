@@ -2007,9 +2007,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS' then
 				showLink = nil
 
-				-- fix blizzard formatting errors
+				-- fix blizzard formatting errors from localization strings
 				arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?)
-				arg1 = gsub(arg1, '%%%.', '%%%1') -- replace %. to escaped %.
+				arg1 = gsub(arg1, '(%d%%)([^%%])', '%1%%%2') -- escape percentages that need it (example "100%." or "100% ")
 			else
 				arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
 			end
