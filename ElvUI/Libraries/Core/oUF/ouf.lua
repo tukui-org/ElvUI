@@ -992,15 +992,13 @@ do -- Event Pooler by Simpy
 				pooler.execute(event, pool, true, arg1, ...)
 				-- print('instant', frame:GetDebugName(), event, arg1)
 			else
-				local pooled = pool[frame]
+				local pooled = arg1 ~= nil and pool[frame]
 				if pooled then
 					if not pooled.data[event] then
 						pooled.data[event] = {}
 					end
 
-					if arg1 ~= nil then
-						tinsert(pooled.data[event], {arg1, ...})
-					end
+					tinsert(pooled.data[event], {arg1, ...})
 				end
 			end
 
