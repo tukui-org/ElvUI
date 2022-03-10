@@ -1010,13 +1010,28 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Anduin Wrynn
 		[365293] = Defaults(2), -- Befouled Barrier
 		[363020] = Defaults(3), -- Necrotic Claws
-		[365021] = Defaults(4), -- Wicked Star
+		[365021] = Defaults(5), -- Wicked Star (marked)
+		[365024] = Defaults(6), -- Wicked Star (hit)
 		[365445] = Defaults(3), -- Scarred Soul
 		[365008] = Defaults(4), -- Psychic Terror
 		[366849] = Defaults(6), -- Domination Word: Pain
 	-- Lords of Dread
+		[360148] = Defaults(5), -- Bursting Dread
+		[360012] = Defaults(4), -- Cloud of Carrion
+		[360146] = Defaults(4), -- Fearful Trepidation
+		[360241] = Defaults(6), -- Unsettling Dreams
 	-- Rygelon
+		[362206] = Defaults(6), -- Event Horizon
+		[362137] = Defaults(4), -- Corrupted Wound
+		[361548] = Defaults(5), -- Dark Eclipse
 	-- The Jailer
+		[362075] = Defaults(6), -- Domination
+		[365150] = Defaults(6), -- Rune of Domination
+		[363893] = Defaults(5), -- Martyrdom
+		[363886] = Defaults(5), -- Imprisonment
+		[365219] = Defaults(5), -- Chains of Anguish
+		[366285] = Defaults(6), -- Rune of Compulsion
+		[363332] = Defaults(5), -- Unbreaking Grasp
 	},
 }
 
@@ -1177,7 +1192,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[359236] = Defaults(), -- Relocation Form
 	-- Anduin Wrynn
 		[364248] = Defaults(), -- Dark Zeal
-		[364247] = Defaults(), -- Dark Zeal II
 		[365030] = Defaults(), -- Wicked Star
 		[362862] = Defaults(), -- Army of the Dead
 	-- Lords of Dread
