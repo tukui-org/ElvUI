@@ -1081,11 +1081,15 @@ end
 
 do
 	local gold, silver = '|A:nameplates-icon-elite-gold:16:16|a', '|A:nameplates-icon-elite-silver:16:16|a'
-	local classifications = { elite = gold, worldboss = gold, rareelite = silver, rare = silver }
-
+	local typeIcon = { elite = gold, worldboss = gold, rareelite = silver, rare = silver }
 	E:AddTag('classification:icon', 'UNIT_NAME_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
-		return classifications[UnitClassification(unit)]
+		return typeIcon[UnitClassification(unit)]
+	end)
+
+	local typeName = { rare = L["Rare"], rareelite = L["Rare Elite"], elite = L["Elite"], worldboss = L["Boss"], minus = L["Affix"] }
+	E:AddTag('classification', 'UNIT_CLASSIFICATION_CHANGED', function(unit)
+		return typeName[UnitClassification(unit)]
 	end)
 end
 

@@ -103,7 +103,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 			button.cd.hideText = (not onlyText and not settings.displayText) or nil
 			button.cd.timer.skipTextColor = onlyText or nil
 
-			if button.cd.timer.text then
+			if onlyText and button.cd.timer.text then
 				button.cd.timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 			end
 		end

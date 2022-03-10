@@ -963,7 +963,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------- Sepulcher of the First Ones ---------------
 	----------------------------------------------------------
 	-- Vigilant Guardian
-		[360403] = Defaults(2), -- Force Field
 		[364447] = Defaults(3), -- Dissonance
 		[364904] = Defaults(6), -- Anti-Matter
 		[364881] = Defaults(5), -- Matter Disolution
@@ -977,7 +976,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360098] = Defaults(3), -- Warp Sickness
 		[366070] = Defaults(3), -- Volatile Residue
 	-- Artificer Xy'mox
-		[362850] = Defaults(2), -- Hyperlight Sparknova
 		[364030] = Defaults(3), -- Debilitating Ray
 		[365681] = Defaults(2), -- System Shock
 		[363413] = Defaults(4), -- Forerunner Rings A
@@ -994,10 +992,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[361966] = Defaults(2), -- Infused Strikes
 	-- Prototype Pantheon
 		[365306] = Defaults(2), -- Invigorating Bloom
-		[361608] = Defaults(3), -- Burden of Sin
 		[361689] = Defaults(3), -- Wracking Pain
 		[366232] = Defaults(4), -- Animastorm
-		[364839] = Defaults(4), -- Sinful Projection
+		[364839] = Defaults(2), -- Sinful Projection
+		[360259] = Defaults(5), -- Gloom Bolt
+		[362383] = Defaults(5), -- Anima Bolt
 	-- Lihuvim, Principle Architect
 		[360159] = Defaults(5), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
@@ -1010,14 +1009,29 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[360114] = Defaults(4), -- Ephemeral Fissure II
 	-- Anduin Wrynn
 		[365293] = Defaults(2), -- Befouled Barrier
-		[361817] = Defaults(3), -- Hopebreaker
 		[363020] = Defaults(3), -- Necrotic Claws
-		[365021] = Defaults(4), -- Wicked Star
+		[365021] = Defaults(5), -- Wicked Star (marked)
+		[365024] = Defaults(6), -- Wicked Star (hit)
 		[365445] = Defaults(3), -- Scarred Soul
 		[365008] = Defaults(4), -- Psychic Terror
+		[366849] = Defaults(6), -- Domination Word: Pain
 	-- Lords of Dread
+		[360148] = Defaults(5), -- Bursting Dread
+		[360012] = Defaults(4), -- Cloud of Carrion
+		[360146] = Defaults(4), -- Fearful Trepidation
+		[360241] = Defaults(6), -- Unsettling Dreams
 	-- Rygelon
+		[362206] = Defaults(6), -- Event Horizon
+		[362137] = Defaults(4), -- Corrupted Wound
+		[361548] = Defaults(5), -- Dark Eclipse
 	-- The Jailer
+		[362075] = Defaults(6), -- Domination
+		[365150] = Defaults(6), -- Rune of Domination
+		[363893] = Defaults(5), -- Martyrdom
+		[363886] = Defaults(5), -- Imprisonment
+		[365219] = Defaults(5), -- Chains of Anguish
+		[366285] = Defaults(6), -- Rune of Compulsion
+		[363332] = Defaults(5), -- Unbreaking Grasp
 	},
 }
 
@@ -1178,7 +1192,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[359236] = Defaults(), -- Relocation Form
 	-- Anduin Wrynn
 		[364248] = Defaults(), -- Dark Zeal
-		[364247] = Defaults(), -- Dark Zeal II
 		[365030] = Defaults(), -- Wicked Star
 		[362862] = Defaults(), -- Army of the Dead
 	-- Lords of Dread

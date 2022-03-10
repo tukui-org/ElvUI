@@ -36,6 +36,7 @@ end
 
 function UF:Update_TargetTargetTargetFrame(frame, db)
 	frame.db = db
+	frame.colors = ElvUF.colors
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
@@ -65,8 +66,6 @@ function UF:Update_TargetTargetTargetFrame(frame, db)
 		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
 	end
 
-	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
@@ -85,7 +84,11 @@ function UF:Update_TargetTargetTargetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
 
-	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + self.db.units.player.castbar.height))
+	if not E:IsAddOnEnabled('Clique') then
+		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	end
+
+	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + UF.db.units.player.castbar.height))
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 

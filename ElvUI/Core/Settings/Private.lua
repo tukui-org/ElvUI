@@ -24,6 +24,7 @@ V.general = {
 	pixelPerfect = true,
 	replaceNameFont = true,
 	replaceCombatFont = true,
+	replaceCombatText = false,
 	replaceBubbleFont = true,
 	replaceNameplateFont = true,
 	replaceBlizzFonts = true,

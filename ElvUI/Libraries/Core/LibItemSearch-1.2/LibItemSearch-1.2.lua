@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 12) -- based off v23
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 13) -- based off v23
 if Lib then
 	Lib.Filters = {}
 	Lib.Scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'SharedTooltipTemplate')
@@ -246,7 +246,7 @@ if C_ArtifactUI then
 	}
 end
 
-if C_AzeriteItem then
+if C_AzeriteItem and C_CurrencyInfo.GetAzeriteCurrencyID then
 	Lib.Filters.azerite = {
 		keyword = C_CurrencyInfo.GetBasicCurrencyInfo(C_CurrencyInfo.GetAzeriteCurrencyID()).name:lower(),
 

@@ -7,7 +7,8 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local CreateFrame = CreateFrame
-local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES
+
 -- GLOBALS: BossHeaderMover
 
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
@@ -45,6 +46,7 @@ end
 
 function UF:Update_BossFrames(frame, db)
 	frame.db = db
+	frame.colors = ElvUF.colors
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
@@ -66,17 +68,8 @@ function UF:Update_BossFrames(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
-	if not E:IsAddOnEnabled('Clique') then
-		if db.middleClickFocus then
-			frame:SetAttribute('type3', 'focus')
-		elseif frame:GetAttribute('type3') == 'focus' then
-			frame:SetAttribute('type3', nil)
-		end
-	end
-
-	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)
@@ -123,6 +116,16 @@ function UF:Update_BossFrames(frame, db)
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
 		BossHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
 		BossHeader:Height(frame.UNIT_HEIGHT)
+	end
+
+	if not E:IsAddOnEnabled('Clique') then
+		if db.middleClickFocus then
+			frame:SetAttribute('type3', 'focus')
+		elseif frame:GetAttribute('type3') == 'focus' then
+			frame:SetAttribute('type3', nil)
+		end
+
+		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

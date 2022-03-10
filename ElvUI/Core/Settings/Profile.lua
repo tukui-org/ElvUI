@@ -2158,6 +2158,7 @@ P.unitframe.units.boss.buffs.perrow = 3
 P.unitframe.units.boss.buffs.priority = 'Blacklist,CastByUnit,Dispellable,Whitelist,RaidBuffsElvUI'
 P.unitframe.units.boss.buffs.sizeOverride = 22
 P.unitframe.units.boss.buffs.yOffset = 20
+P.unitframe.units.boss.buffIndicator.enable = true
 P.unitframe.units.boss.castbar.width = 215
 P.unitframe.units.boss.debuffs.enable = true
 P.unitframe.units.boss.debuffs.anchorPoint = 'LEFT'

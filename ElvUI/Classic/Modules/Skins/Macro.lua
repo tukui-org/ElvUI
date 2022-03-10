@@ -4,9 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-local HideUIPanel = HideUIPanel
-local ShowUIPanel = ShowUIPanel
-
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
@@ -104,22 +101,11 @@ function S:Blizzard_MacroUI()
 		end
 	end
 
-	--Icon selection frame
-	ShowUIPanel(MacroFrame) --Toggle frame to create necessary variables needed for popup frame
-	HideUIPanel(MacroFrame)
 	local MacroPopupFrame = _G.MacroPopupFrame
-	MacroPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
-	MacroPopupFrame:Hide()
-
-	-- Popout Frame
 	S:HandleButton(_G.MacroPopupFrame.BorderBox.OkayButton)
 	_G.MacroPopupFrame.BorderBox.OkayButton:Point('TOPRIGHT', _G.MacroPopupFrame.BorderBox.CancelButton, 'TOPLEFT', -2, 0)
 	S:HandleButton(_G.MacroPopupFrame.BorderBox.CancelButton)
 	_G.MacroPopupFrame.BorderBox.CancelButton:Point('BOTTOMRIGHT', _G.MacroPopupFrame.BorderBox, 'BOTTOMRIGHT', -4, 4)
-
-	if _G.MacroPopupButton1 then -- Doesn't exist if you open it in combat for some reason
-		_G.MacroPopupButton1:Point('TOPLEFT', _G.MacroPopupScrollFrame, 'TOPLEFT', 6, -6)
-	end
 
 	_G.MacroPopupScrollFrame:CreateBackdrop('Default')
 	_G.MacroPopupScrollFrame.backdrop:Point('BOTTOMRIGHT', -2, -1)
@@ -133,11 +119,13 @@ function S:Blizzard_MacroUI()
 	_G.MacroPopupNameMiddle:SetTexture()
 	_G.MacroPopupNameRight:SetTexture()
 
-	S:HandleIconSelectionFrame(MacroPopupFrame, _G.NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
-
 	MacroPopupFrame:HookScript('OnShow', function(frame)
 		frame:ClearAllPoints()
 		frame:Point('TOPLEFT', MacroFrame, 'TOPRIGHT', 2, 0)
+
+		if not frame.isSkinned then
+			S:HandleIconSelectionFrame(frame, _G.NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+		end
 	end)
 end
 

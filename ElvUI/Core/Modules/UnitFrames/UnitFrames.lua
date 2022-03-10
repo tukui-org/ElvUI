@@ -31,6 +31,7 @@ local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
+local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
@@ -984,7 +985,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 
 	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil,
 		'oUF-initialConfigFunction', format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height),
-		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= "party", 'showSolo', true,
+		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= 'party', 'showSolo', true,
 		template and 'template', template
 	)
 
@@ -1273,7 +1274,7 @@ do
 			if id then
 				HandleFrame('Boss' .. id .. 'TargetFrame')
 			else
-				for i = 1, _G.MAX_BOSS_FRAMES do
+				for i = 1, MAX_BOSS_FRAMES do
 					HandleFrame(format('Boss%dTargetFrame', i))
 				end
 			end

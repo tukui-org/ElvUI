@@ -209,7 +209,7 @@ StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created f
 StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
 -- UpdateBossModAuras needed here in get to update the list once every time you load the config with a selected filter.
 StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() UpdateBossModAuras(true) local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.StyleFilterSelected] = E.db.nameplates.filters[C.StyleFilterSelected] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value NP:ConfigureAll() end)
-StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) triggers.priority = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers and triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) if triggers then triggers.priority = value NP:ConfigureAll() end end, DisabledFilter)
 StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplates.filters[C.StyleFilterSelected] = E:CopyTable(NP:StyleFilterCopyDefaults(), G.nameplates.filters[C.StyleFilterSelected]) UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names = ACH:Group(L["Name"], nil, 6, nil, nil, nil, DisabledFilter)
@@ -395,7 +395,7 @@ StyleFitlers.triggers.args.classification.args.types.args.rareelite = ACH:Toggle
 StyleFitlers.triggers.args.classification.args.types.args.normal = ACH:Toggle(L["PLAYER_DIFFICULTY1"], nil, 3)
 StyleFitlers.triggers.args.classification.args.types.args.rare = ACH:Toggle(L["ITEM_QUALITY3_DESC"], nil, 4)
 StyleFitlers.triggers.args.classification.args.types.args.trivial = ACH:Toggle(L["Trivial"], nil, 5)
-StyleFitlers.triggers.args.classification.args.types.args.elite = ACH:Toggle(L["ELITE"], nil, 6)
+StyleFitlers.triggers.args.classification.args.types.args.elite = ACH:Toggle(L["Elite"], nil, 6)
 StyleFitlers.triggers.args.classification.args.types.args.minus = ACH:Toggle(L["Minus"], nil, 7)
 
 StyleFitlers.triggers.args.health = ACH:Group(L["Health Threshold"], nil, 17, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
@@ -694,7 +694,7 @@ StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.spacer1 = ACH:Spacer(4, 'full')
-StyleFitlers.actions.args.scale = ACH:Range(L["Scale"], nil, 5, { min = .5, max = 1.5, softMin = .75, softMax = 1.25, step = .01 }, nil, nil, nil, actionHidePlate)
+StyleFitlers.actions.args.scale = ACH:Range(L["Scale"], nil, 5, { min = .25, max = 1.5, softMin = .5, softMax = 1.25, step = .01 }, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 6, { min = -1, max = 100, step = 1 }, nil, nil, nil, actionHidePlate)
 
 StyleFitlers.actions.args.color = ACH:Group(L["COLOR"], nil, 10, nil, actionSubGroup, actionSubGroup, actionHidePlate)

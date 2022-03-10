@@ -37,6 +37,7 @@ end
 
 function UF:Update_FocusTargetFrame(frame, db)
 	frame.db = db
+	frame.colors = ElvUF.colors
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
@@ -66,8 +67,6 @@ function UF:Update_FocusTargetFrame(frame, db)
 		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
 	end
 
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame.colors = ElvUF.colors
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
@@ -85,6 +84,10 @@ function UF:Update_FocusTargetFrame(frame, db)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
+
+	if not E:IsAddOnEnabled('Clique') then
+		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

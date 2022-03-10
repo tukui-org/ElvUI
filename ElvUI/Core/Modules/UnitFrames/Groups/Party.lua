@@ -98,9 +98,7 @@ end
 
 function UF:Update_PartyFrames(frame, db)
 	frame.db = db
-
 	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
@@ -204,6 +202,10 @@ function UF:Update_PartyFrames(frame, db)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_AuraHighlight(frame)
+
+	if not E:IsAddOnEnabled('Clique') then
+		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

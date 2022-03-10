@@ -831,6 +831,7 @@ function B:AssignBagFlagMenu()
 
 				info.disabled = nil
 				info.tooltipTitle = nil
+
 				_G.UIDropDownMenu_AddButton(info)
 			end
 		end
@@ -847,6 +848,8 @@ function B:AssignBagFlagMenu()
 	info.disabled = nil
 
 	info.text = BAG_FILTER_IGNORE
+	info.checked = B:IsSortIgnored(holder.bagID)
+
 	info.func = function(_, _, _, value)
 		if holder.bagID == BANK_CONTAINER then
 			SetBankAutosortDisabled(not value)
@@ -858,17 +861,20 @@ function B:AssignBagFlagMenu()
 			SetBagSlotFlag(holder.bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		end
 	end
-	if holder.bagID == BANK_CONTAINER then
-		info.checked = GetBankAutosortDisabled()
-	elseif holder.bagID == BACKPACK_CONTAINER then
-		info.checked = GetBackpackAutosortDisabled()
-	elseif holder.bagID > NUM_BAG_SLOTS then
-		info.checked = GetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
-	else
-		info.checked = GetBagSlotFlag(holder.bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
-	end
 
 	_G.UIDropDownMenu_AddButton(info)
+end
+
+function B:IsSortIgnored(bagID)
+	if bagID == BANK_CONTAINER then
+		return GetBankAutosortDisabled()
+	elseif bagID == BACKPACK_CONTAINER then
+		return GetBackpackAutosortDisabled()
+	elseif bagID > NUM_BAG_SLOTS then
+		return GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+	else
+		return GetBagSlotFlag(bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+	end
 end
 
 function B:GetBagAssignedInfo(holder)
@@ -1293,6 +1299,7 @@ B.ExcludeGrays = E.Retail and {
 	[36812] = "Ground Gear",
 	[62072] = "Robble's Wobbly Staff",
 	[67410] = "Very Unlucky Rock",
+	[190382] = "Warped Pocket Dimension",
 } or { -- TBC and Classic
 	[32888] = "The Relics of Terokk",
 	[28664] = "Nitrin's Instructions",
