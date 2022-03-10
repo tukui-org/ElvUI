@@ -1523,6 +1523,14 @@ function UF:PLAYER_TARGET_CHANGED()
 	end
 end
 
+function UF:AllowRegisterClicks(frame)
+	if _G.Clique and _G.Clique.IsFrameBlacklisted then
+		return _G.Clique:IsFrameBlacklisted(frame)
+	else
+		return true
+	end
+end
+
 function UF:AfterStyleCallback()
 	-- this will wait until after ouf pushes `EnableElement` onto the newly spawned frames
 	-- calling an update onto assist or tank in the styleFunc is before the `EnableElement`

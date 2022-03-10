@@ -89,7 +89,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
 
-	if not E:IsAddOnEnabled('Clique') then
+	if UF:AllowRegisterClicks(frame) then
 		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 

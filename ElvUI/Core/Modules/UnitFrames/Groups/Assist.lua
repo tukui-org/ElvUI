@@ -131,7 +131,7 @@ function UF:Update_AssistFrames(frame, db)
 		UF:Configure_AuraWatch(frame)
 	end
 
-	if not E:IsAddOnEnabled('Clique') then
+	if UF:AllowRegisterClicks(frame) then
 		if not frame.isChild then
 			if db.middleClickFocus then
 				frame:SetAttribute('type3', 'focus')

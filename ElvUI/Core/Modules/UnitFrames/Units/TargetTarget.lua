@@ -84,7 +84,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
 
-	if not E:IsAddOnEnabled('Clique') then
+	if UF:AllowRegisterClicks(frame) then
 		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 

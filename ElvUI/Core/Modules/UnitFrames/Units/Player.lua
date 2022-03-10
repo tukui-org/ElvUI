@@ -155,7 +155,7 @@ function UF:Update_PlayerFrame(frame, db)
 		UF:Configure_AuraBars(UF.target)
 	end
 
-	if not E:IsAddOnEnabled('Clique') then
+	if UF:AllowRegisterClicks(frame) then
 		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 

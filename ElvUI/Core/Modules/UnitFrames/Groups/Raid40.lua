@@ -133,7 +133,7 @@ function UF:Update_Raid40Frames(frame, db)
 		UF:Configure_PvPClassificationIndicator(frame)
 	end
 
-	if not E:IsAddOnEnabled('Clique') then
+	if UF:AllowRegisterClicks(frame) then
 		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 

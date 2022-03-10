@@ -103,7 +103,7 @@ function UF:Update_TargetFrame(frame, db)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 
-	if not E:IsAddOnEnabled('Clique') then
+	if UF:AllowRegisterClicks(frame) then
 		if db.middleClickFocus then
 			frame:SetAttribute('type3', 'focus')
 		elseif frame:GetAttribute('type3') == 'focus' then
