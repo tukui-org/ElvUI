@@ -1,7 +1,22 @@
-### Version 12.67 [ ETA: 🍨 ]
+### Version 12.68 [ ETA: 🍨 ]
 
 **Dev**  
 something is different probably, check commits ;P  
+
+___
+### Version 12.67 [ March 10th 2022 ]
+
+Bags: let sort ignore bags which are flagged to be ignored  
+Options, Aura Bar: fixed custom backdrop color setting  
+Options, Nameplate: fixed clickable size not updating height slider max values  
+Options, StyleFilter: fixed error about triggers  
+Options, StyleFilter: allowed lower scale options  
+UnitFrames: fixed text color flickering on aura watch indicators  
+UnitFrames: updated oUF to fix vehicle and arena units not updating properly  
+UnitFrames: clique to handle mousedown state if enabled  
+Tags: [classification] is localized now  
+Locales: updated Chinese (thanks to Loukky!)  
+Filters: updated for Sepulcher fights  
 
 ___
 ### Version 12.66 [ February 24th 2022 ]
