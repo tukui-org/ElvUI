@@ -991,8 +991,8 @@ do -- Event Pooler by Simpy
 			if last and (last + pooler.instant) < now then
 				pooler.execute(event, pool, true, arg1, ...)
 				-- print('instant', frame:GetDebugName(), event, arg1)
-			else
-				local pooled = arg1 ~= nil and pool[frame]
+			elseif arg1 ~= nil then -- require arg1, no unitless
+				local pooled = pool[frame]
 				if pooled then
 					if not pooled.data[event] then
 						pooled.data[event] = {}
