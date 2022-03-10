@@ -2008,7 +2008,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				showLink = nil
 
 				-- fix blizzard formatting errors
-				arg1 = gsub(arg1, '%%%d', '%%s') -- %1 instead of %s on russian clients
+				arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?)
 				arg1 = gsub(arg1, '%%%.', '%%%1') -- replace %. to escaped %.
 			else
 				arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
