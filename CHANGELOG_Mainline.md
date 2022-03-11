@@ -1,7 +1,13 @@
-### Version 12.69 [ ETA: 🍨 ]
+### Version 12.70 [ ETA: 🍨 ]
 
 **Dev**  
 something is different probably, check commits ;P  
+
+___
+### Version 12.69 [ March 11th 2022 ]
+  
+Hotfix: adjust fix for the chat format error, it was causing an issue with colored boss names  
+Filters: Aurelid Lure added to RaidBuffs  
 
 ___
 ### Version 12.68 [ March 11th 2022 ]
