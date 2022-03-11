@@ -131,17 +131,7 @@ function UF:Update_AssistFrames(frame, db)
 		UF:Configure_AuraWatch(frame)
 	end
 
-	if UF:AllowRegisterClicks(frame) then
-		if not frame.isChild then
-			if db.middleClickFocus then
-				frame:SetAttribute('type3', 'focus')
-			elseif frame:GetAttribute('type3') == 'focus' then
-				frame:SetAttribute('type3', nil)
-			end
-		end
-
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

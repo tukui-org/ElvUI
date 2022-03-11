@@ -155,9 +155,7 @@ function UF:Update_PlayerFrame(frame, db)
 		UF:Configure_AuraBars(UF.target)
 	end
 
-	if UF:AllowRegisterClicks(frame) then
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

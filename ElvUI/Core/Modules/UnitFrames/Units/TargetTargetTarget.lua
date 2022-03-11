@@ -84,9 +84,7 @@ function UF:Update_TargetTargetTargetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
 
-	if UF:AllowRegisterClicks(frame) then
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + UF.db.units.player.castbar.height))
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

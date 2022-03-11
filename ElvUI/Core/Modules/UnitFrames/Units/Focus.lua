@@ -98,9 +98,7 @@ function UF:Update_FocusFrame(frame, db)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 
-	if UF:AllowRegisterClicks(frame) then
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

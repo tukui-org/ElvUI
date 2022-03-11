@@ -203,9 +203,7 @@ function UF:Update_PartyFrames(frame, db)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_AuraHighlight(frame)
 
-	if UF:AllowRegisterClicks(frame) then
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

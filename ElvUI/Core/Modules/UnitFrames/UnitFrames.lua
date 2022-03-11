@@ -1523,11 +1523,46 @@ function UF:PLAYER_TARGET_CHANGED()
 	end
 end
 
-function UF:AllowRegisterClicks(frame)
-	if _G.Clique and _G.Clique.IsFrameBlacklisted then
-		return _G.Clique:IsFrameBlacklisted(frame)
-	else
-		return true
+do -- Clique support for registering clicks
+	function UF:AllowRegisterClicks(frame)
+		if _G.Clique and _G.Clique.IsFrameBlacklisted then
+			return _G.Clique:IsFrameBlacklisted(frame)
+		else
+			return true
+		end
+	end
+
+	local focusClicks = {
+		arena = true, boss = true,
+		tank = true, assist = true,
+		target = true
+	}
+
+	function UF:RegisterClicks(frame, db)
+		if db and focusClicks[frame.unitframeType] and not frame.isChild then
+			if db.middleClickFocus then
+				frame:SetAttribute('type3', 'focus')
+			elseif frame:GetAttribute('type3') == 'focus' then
+				frame:SetAttribute('type3', nil)
+			end
+		end
+
+		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	end
+
+	local ignoredFrames = {}
+	function UF:UpdateRegisteredClicks()
+		for frame in next, ignoredFrames do
+			UF:HandleRegisterClicks(frame)
+		end
+	end
+
+	function UF:HandleRegisterClicks(frame)
+		if UF:AllowRegisterClicks(frame) then
+			UF:RegisterClicks(frame, frame.db)
+		else
+			ignoredFrames[frame] = true
+		end
 	end
 end
 
@@ -1584,6 +1619,10 @@ function UF:Initialize()
 
 	if (not E.private.unitframe.disabledBlizzardFrames.party) and (not E.private.unitframe.disabledBlizzardFrames.raid) then
 		E.RaidUtility.Initialize = E.noop
+	end
+
+	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
+		hooksecurefunc(_G.Clique, 'BLACKLIST_CHANGED', UF.UpdateRegisteredClicks)
 	end
 
 	if E.private.unitframe.disabledBlizzardFrames.arena then
