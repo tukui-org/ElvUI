@@ -1,7 +1,13 @@
-### Version 12.68 [ ETA: 🍨 ]
+### Version 12.69 [ ETA: 🍨 ]
 
 **Dev**  
 something is different probably, check commits ;P  
+
+___
+### Version 12.68 [ March 11th 2022 ]
+ 
+Hotfix: better Clique compatibility  
+Chat: fixed a blizzard format error from Charged Constructor  
 
 ___
 ### Version 12.67 [ March 10th 2022 ]

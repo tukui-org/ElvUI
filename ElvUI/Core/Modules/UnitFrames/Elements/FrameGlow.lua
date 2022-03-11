@@ -422,21 +422,19 @@ function UF:FrameGlow_UpdateFrames()
 	local dbTexture = LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 
 	-- focus, focustarget, pet, pettarget, player, target, targettarget, targettargettarget
-	for unit in pairs(self.units) do
-		UF:FrameGlow_ConfigureGlow(self[unit], unit, dbTexture)
+	for unit in pairs(UF.units) do
+		UF:FrameGlow_ConfigureGlow(UF[unit], unit, dbTexture)
 	end
 
 	-- arena{1-5}, boss{1-5}
-	for unit in pairs(self.groupunits) do
-		UF:FrameGlow_ConfigureGlow(self[unit], unit, dbTexture)
+	for unit in pairs(UF.groupunits) do
+		UF:FrameGlow_ConfigureGlow(UF[unit], unit, dbTexture)
 	end
 
 	-- assist, tank, party, raid, raid40, raidpet
-	for groupName in pairs(self.headers) do
-		assert(self[groupName], 'UF FrameGlow: Invalid group specified.')
-		local group = self[groupName]
-
-		if group.GetNumChildren then
+	for groupName in pairs(UF.headers) do
+		local group = UF[groupName]
+		if group and group.GetNumChildren then
 			for i=1, group:GetNumChildren() do
 				local frame = select(i, group:GetChildren())
 				if frame and frame.Health then
