@@ -85,9 +85,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
 
-	if not E:IsAddOnEnabled('Clique') then
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

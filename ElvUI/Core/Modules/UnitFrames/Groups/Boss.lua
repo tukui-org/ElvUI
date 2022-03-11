@@ -118,15 +118,7 @@ function UF:Update_BossFrames(frame, db)
 		BossHeader:Height(frame.UNIT_HEIGHT)
 	end
 
-	if not E:IsAddOnEnabled('Clique') then
-		if db.middleClickFocus then
-			frame:SetAttribute('type3', 'focus')
-		elseif frame:GetAttribute('type3') == 'focus' then
-			frame:SetAttribute('type3', nil)
-		end
-
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end

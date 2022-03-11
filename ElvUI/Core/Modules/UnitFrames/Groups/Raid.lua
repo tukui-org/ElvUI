@@ -133,9 +133,7 @@ function UF:Update_RaidFrames(frame, db)
 		UF:Configure_PvPClassificationIndicator(frame)
 	end
 
-	if not E:IsAddOnEnabled('Clique') then
-		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	end
+	UF:HandleRegisterClicks(frame)
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
