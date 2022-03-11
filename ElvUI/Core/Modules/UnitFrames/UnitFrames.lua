@@ -1532,14 +1532,9 @@ do -- Clique support for registering clicks
 		end
 	end
 
-	local focusClicks = {
-		arena = true, boss = true,
-		tank = true, assist = true,
-		target = true
-	}
-
+	local focus = { arena = 1, boss = 1, tank = 1, assist = 1, target = 1 }
 	function UF:RegisterClicks(frame, db)
-		if db and focusClicks[frame.unitframeType] and not frame.isChild then
+		if db and focus[frame.unitframeType] and not frame.isChild then
 			if db.middleClickFocus then
 				frame:SetAttribute('type3', 'focus')
 			elseif frame:GetAttribute('type3') == 'focus' then
@@ -1550,18 +1545,20 @@ do -- Clique support for registering clicks
 		frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	end
 
-	local ignoredFrames = {}
+	local frames = {}
 	function UF:UpdateRegisteredClicks()
-		for frame in next, ignoredFrames do
-			UF:HandleRegisterClicks(frame)
+		for frame in next, frames do
+			UF:HandleRegisterClicks(frame, true)
 		end
 	end
 
-	function UF:HandleRegisterClicks(frame)
+	function UF:HandleRegisterClicks(frame, skip)
 		if UF:AllowRegisterClicks(frame) then
 			UF:RegisterClicks(frame, frame.db)
-		else
-			ignoredFrames[frame] = true
+		end
+
+		if not skip then
+			frames[frame] = true
 		end
 	end
 end
