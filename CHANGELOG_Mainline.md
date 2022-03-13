@@ -1,7 +1,12 @@
-### Version 12.70 [ ETA: 🍨 ]
+### Version 12.71 [ ETA: 🍨 ]
 
 **Dev**  
 something is different probably, check commits ;P  
+
+___
+### Version 12.70 [ March 12th 2022 ]
+
+Hotfix: fixed an issue with middle click focus  
 
 ___
 ### Version 12.69 [ March 11th 2022 ]
