@@ -7,6 +7,7 @@ local SlashCmdList = SlashCmdList
 local GetMouseFocus = GetMouseFocus
 local IsAddOnLoaded = IsAddOnLoaded
 local UIParentLoadAddOn = UIParentLoadAddOn
+local find, match = string.find, string.match
 -- GLOBALS: ElvUI_CPU, ElvUI
 
 local function GetName(frame, text)
@@ -36,7 +37,60 @@ local function AddCommand(name, keys, func)
 		end
 	end
 end
+local function updateCopyChat()
+	if CopyChatFrame and CopyChatFrame:IsShown() then
+		CopyChatFrame:Hide()
+		ElvUI[1]:GetModule("Chat"):CopyChat(DEFAULT_CHAT_FRAME)
+	end
+end
+local function getObject(objName)
+	local obj
 
+	if objName == "" then
+		obj = GetMouseFocus()
+	else
+		obj = _G[objName]
+
+		if not obj then
+			local pass
+
+			if find(objName, "^[%.:]([A-z0-9_]+)") then
+				local _obj = GetMouseFocus()
+
+				if _obj and _obj ~= WorldFrame then
+					local res = match(objName, "^[%.:]([A-z0-9_]+)")
+
+					if res and _obj[res] and _obj:GetName() then
+						objName = format("%s%s", _obj:GetName(), objName)
+					end
+
+					pass = true
+				end
+			elseif find(objName, "[%.()%[%]'\"]") then
+				pass = true
+			end
+
+			if pass then
+				local success, ret = pcall(loadstring(format("return %s", objName)))
+				if success then
+					ret = ret == "string" and _G[ret] or ret
+
+					if type(ret) == "table" and ret.GetName then
+						obj = ret
+					end
+				end
+			end
+		end
+	end
+
+	if not obj then
+		print(format("Object |cffFFD100%s|r not found!", objName))
+	elseif not obj.GetParent then
+		print(format("Object |cffFFD100%s|r doesn't have Widget API!", objName))
+	else
+		return obj ~= WorldFrame and obj or nil
+	end
+end
 -- spawn console without starting with `-console`
 AddCommand('DEVCON', '/devcon', function()
 	if _G.DeveloperConsole then
@@ -141,4 +195,17 @@ AddCommand('ECPU', '/ecpu', function()
 	else
 		ElvUI_CPU.frame:Hide()
 	end
+end)
+
+SLASH_CHILDLIST1 = "/childlist"
+AddCommand('CHILDLIST', '/childlist', function(frame)
+	frame = getObject(frame)
+	if not frame then return end
+
+	for i = 1, frame:GetNumChildren() do
+		local obj = select(i, frame:GetChildren())
+		print(i, obj:GetObjectType(), obj:GetName(), obj:GetFrameStrata(), obj:GetFrameLevel())
+	end
+
+	updateCopyChat()
 end)
