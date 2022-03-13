@@ -1535,8 +1535,10 @@ do -- Clique support for registering clicks
 	local focusUnits = { arena=1, boss=1, tank=1, assist=1, target=1 }
 	function UF:RegisterForClicks(frame, db)
 		if focusUnits[frame.unitframeType] and not frame.isChild and db then
-			if db.middleClickFocus and frame:GetAttribute('type3') ~= 'focus' then
-				frame:SetAttribute('type3', 'focus')
+			if db.middleClickFocus then
+				if frame:GetAttribute('type3') ~= 'focus' then
+					frame:SetAttribute('type3', 'focus')
+				end
 			elseif frame:GetAttribute('type3') == 'focus' then
 				frame:SetAttribute('type3', nil)
 			end
