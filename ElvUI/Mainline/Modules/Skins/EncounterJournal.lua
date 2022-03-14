@@ -11,8 +11,8 @@ local rad = rad
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
+local GetItemQualityColor = GetItemQualityColor
 
 local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
@@ -295,7 +295,7 @@ function S:Blizzard_EncounterJournal()
 		local tab = tabs[i]
 
 		if i == 4 then
-			tab:Point('TOPRIGHT', _G.EncounterJournal, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
+			tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 		else
 			tab:Point('RIGHT', tabs[i+1], 'LEFT', -4, 0)
 		end
@@ -312,7 +312,7 @@ function S:Blizzard_EncounterJournal()
 	end)
 
 	-- Loot buttons
-	for i, items in next, _G.EncounterJournal.encounter.info.lootScroll.buttons do
+	for i, items in next, EJ.encounter.info.lootScroll.buttons do
 		local item = items.lootFrame
 
 		item.bossTexture:SetAlpha(0)
@@ -365,7 +365,7 @@ function S:Blizzard_EncounterJournal()
 
 	--Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-		local suggestion = _G.EncounterJournal.suggestFrame['Suggestion'..i]
+		local suggestion = EJ.suggestFrame['Suggestion'..i]
 		if i == 1 then
 			HandleButton(suggestion.button)
 			suggestion.button:SetFrameLevel(4)
@@ -377,7 +377,7 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
-		local suggestFrame = _G.EncounterJournal.suggestFrame
+		local suggestFrame = EJ.suggestFrame
 
 		-- Suggestion 1
 		local suggestion = suggestFrame.Suggestion1
@@ -463,21 +463,21 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	--Powers
-	local LootJournal = EJ.LootJournal
-	HandleButton(LootJournal.ClassDropDownButton, true)
-	LootJournal.ClassDropDownButton:SetFrameLevel(10)
-	HandleButton(LootJournal.RuneforgePowerFilterDropDownButton, true)
-	LootJournal.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
+	local LJ = EJ.LootJournal
+	HandleButton(LJ.ClassDropDownButton, true)
+	LJ.ClassDropDownButton:SetFrameLevel(10)
+	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
+	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
 	if E.private.skins.parchmentRemoverEnable then
-		_G.EncounterJournal.LootJournal:StripTextures()
-		_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
+		LJ:StripTextures()
+		LJ:SetTemplate('Transparent')
 	end
 
-	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
+	S:HandleScrollBar(LJ.PowersFrame.ScrollBar)
 
 	local IconColor = E.QualityColors[ITEMQUALITY_LEGENDARY]
-	hooksecurefunc(LootJournal.PowersFrame, 'RefreshListDisplay', function(buttons)
+	hooksecurefunc(LJ.PowersFrame, 'RefreshListDisplay', function(buttons)
 		if not buttons.elements then return end
 
 		for i = 1, buttons:GetNumElementFrames() do
@@ -503,20 +503,12 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournal_ListInstances()
 
 	if E.private.skins.parchmentRemoverEnable then
-		--Boss selection buttons
-		hooksecurefunc('EncounterJournal_DisplayInstance', SkinBosses)
-
-		--Overview Info (From Aurora)
-		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
-
-		--Overview Info Bullets (From Aurora)
-		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)
-
-		--Abilities Info (From Aurora)
-		hooksecurefunc('EncounterJournal_ToggleHeaders', SkinAbilitiesInfo)
+		hooksecurefunc('EncounterJournal_DisplayInstance', SkinBosses) --Boss selection buttons
+		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo) --Overview Info (From Aurora)
+		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets) --Overview Info Bullets (From Aurora)
+		hooksecurefunc('EncounterJournal_ToggleHeaders', SkinAbilitiesInfo) --Abilities Info (From Aurora)
 
 		_G.EncounterJournalEncounterFrameInfoBG:Kill()
-
 		EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 		EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
@@ -531,8 +523,75 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
 
-		local parch = _G.EncounterJournal.LootJournal:GetRegions()
-		parch:Kill()
+		local parchment = LJ:GetRegions()
+		parchment:Kill()
+	end
+
+	local LootDropdown = _G.EncounterJournalLootJournalViewDropDown
+	S:HandleDropDownBox(LootDropdown)
+	LootDropdown:SetScript('OnShow', function(dd)
+		dd:SetFrameLevel(5) -- might be able to hook a function later; hotfix builds didn't export Blizzard_LootJournalItems.xml
+	end)
+
+	do -- Item Sets
+		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
+		HandleButton(ItemSetsFrame.ClassButton, true)
+		S:HandleScrollBar(ItemSetsFrame.scrollBar)
+
+		if E.private.skins.parchmentRemoverEnable then
+			EJ.LootJournalItems:StripTextures()
+			EJ.LootJournalItems:SetTemplate('Transparent')
+
+			hooksecurefunc(ItemSetsFrame, 'UpdateList', function(frame)
+				if frame.buttons then
+					for _, button in ipairs(frame.buttons) do
+						if button and not button.backdrop then
+							button:CreateBackdrop('Transparent')
+							button.Background:Hide()
+						end
+					end
+				end
+			end)
+		end
+
+		local lootQuality = {
+			['loottab-set-itemborder-white'] = nil, -- dont show white
+			['loottab-set-itemborder-green'] = 2,
+			['loottab-set-itemborder-blue'] = 3,
+			['loottab-set-itemborder-purple'] = 4,
+			['loottab-set-itemborder-orange'] = 5,
+			['loottab-set-itemborder-artifact'] = 6,
+		}
+
+		local function ItemSetsItemBorder(border, atlas)
+			local parent = border:GetParent()
+			local backdrop = parent and parent.Icon and parent.Icon.backdrop
+			if backdrop then
+				local color = E.QualityColors[lootQuality[atlas]]
+				if color then
+					backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				else
+					backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end
+			end
+		end
+
+		hooksecurefunc(ItemSetsFrame, 'ConfigureItemButton', function(_, button)
+			if not button.Icon then return end
+
+			if not button.Icon.backdrop then
+				S:HandleIcon(button.Icon, true)
+			end
+
+			if button.Border and not button.Border.isSkinned then
+				button.Border:SetAlpha(0)
+
+				ItemSetsItemBorder(button.Border, button.Border:GetAtlas()) -- handle first one
+				hooksecurefunc(button.Border, 'SetAtlas', ItemSetsItemBorder)
+
+				button.Border.isSkinned = true
+			end
+		end)
 	end
 end
 
