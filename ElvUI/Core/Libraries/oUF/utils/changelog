@@ -1,0 +1,82 @@
+#!/usr/bin/env lua
+
+local tags = {}
+do
+	for tag in io.popen('git tag'):lines() do
+		local split = tag:gmatch('[^.]+')
+		local release, api, bugfix = split(), split(), split() or 0
+		table.insert(
+			tags,
+			{
+				string = tag,
+				release = release,
+				api = api,
+				bugfix = bugfix,
+			}
+		)
+	end
+
+	table.sort(tags, function(a,b)
+		a = a.release * 1e4 + a.api * 100 + a.bugfix
+		b = b.release * 1e4 + b.api * 100 + b.bugfix
+
+		return a > b
+	end)
+end
+
+local generateLog = function(prevTag, currentTag)
+	local ti = table.insert
+	local sf = string.format
+
+	local out = {}
+	local i = 0
+
+	ti(out, sf('**Changes in %s:**\n', currentTag))
+
+	for line in io.popen(sf('git shortlog --no-merges --reverse %s..%s', prevTag, currentTag)):lines() do
+		if(line:sub(1, 6) == '      ') then
+			local offset = line:match('()     ', 7)
+			if(offset) then
+				line = line:sub(7, offset - 1)
+			else
+				line = line:sub(7)
+			end
+			line = line:gsub('#(%d+)', '[#%1](https://github.com/oUF-wow/oUF/issues/%1)')
+
+			i = i + 1
+			ti(out, sf('    %s. %s', i, line))
+		elseif(#line ~= 0) then
+			i = 0
+			ti(out, sf('- _%s_', line))
+		end
+	end
+
+	local p = assert(io.popen(sf('git diff --shortstat %s..%s', prevTag, currentTag)))
+	local stat = p:read'*a'
+	p:close()
+
+	ti(out, sf('- %s\n', stat:sub(2, -2)))
+
+	return table.concat(out, '\n')
+end
+
+local stop
+local to = ...
+if(to) then
+	for i=1, #tags do
+		if(tags[i].string == to) then
+			stop = i + 1
+		end
+	end
+
+	if(not stop) then stop = #tags end
+else
+	stop = #tags
+end
+
+for i=2, stop do
+	local current, prev = tags[i -1], tags[i]
+	print(generateLog(prev.string, current.string))
+end
+
+-- vim: set filetype=lua :

@@ -785,6 +785,8 @@ L["If enabled, the style filter will only activate when you are in one of the ma
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
+L["If need shift key press to show"] = true
+L["Display the item level and current specialization of the unit"] = true
 L["If not set to 0 then override the size of the aura icon to this."] = true
 L["If not set to true then the server time will be displayed instead."] = true
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = true
@@ -820,6 +822,7 @@ L["INSANITY"] = "Insanity"
 L["Inscription"] = "Inscription"
 L["Inset"] = true
 L["Inspect Data"] = true
+L["Inspect Data Is Shift"] = true
 L["Inspect"] = true
 L["Install"] = true
 L["Instance Difficulty"] = true

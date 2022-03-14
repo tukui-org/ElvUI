@@ -785,6 +785,7 @@ L["If enabled, the style filter will only activate when you are in one of the ma
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = "활성화하면, 이 화폐는 주 화폐 정보문자의 툴팁에 표시됩니다."
+L["If need shift key press to show"] = true
 L["If not set to 0 then override the size of the aura icon to this."] = "아이콘의 가로세로 길이를 결정합니다.\n\n이 값이 0이면 아이콘이 유닛프레임의 가로길이에 한 줄에 표시할 갯수만큼 들어갈 정도의 크기가 됩니다."
 L["If not set to true then the server time will be displayed instead."] = "체크 시 컴퓨터의 시간을 표시하고, 체크 해제 시 서버시간으로 표시합니다."
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = true
@@ -820,6 +821,7 @@ L["INSANITY"] = "광기"
 L["Inscription"] = "주문각인"
 L["Inset"] = "내부에 분리"
 L["Inspect Data"] = true
+L["Inspect Data Is Shift"] = true
 L["Inspect"] = "살펴보기"
 L["Install"] = "설치"
 L["Instance Difficulty"] = "인스 난이도"

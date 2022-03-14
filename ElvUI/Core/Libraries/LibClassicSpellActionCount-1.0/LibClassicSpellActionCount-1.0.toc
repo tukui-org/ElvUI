@@ -1,0 +1,9 @@
+## Interface: 11303
+## Title: Lib: ClassicSpellActionCount-1.0
+## Notes: Provides a function to get the current reagent count for spells
+## Author: Ennea
+## X-Category: Library
+## X-License: MIT
+
+LibStub\LibStub.lua
+LibClassicSpellActionCount-1.0.lua

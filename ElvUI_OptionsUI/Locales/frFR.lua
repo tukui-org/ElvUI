@@ -785,6 +785,7 @@ L["If enabled, the style filter will only activate when you are in one of the ma
 L["If enabled, the style filter will only activate when you are in one of the subzones specified in Add Subzone Name."] = true
 L["If enabled, the style filter will only activate when you are in one of the zones specified in Add Zone Name."] = true
 L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."] = true
+L["If need shift key press to show"] = true
 L["If not set to 0 then override the size of the aura icon to this."] = "Si ce n'est pas réglé sur 0, alors remplacer la taille de l'icône d'aura à celui ci."
 L["If not set to true then the server time will be displayed instead."] = "Si non activé, l'heure du serveur sera affichée à la place."
 L["If the aura is listed with a number then you need to use that to remove it from the list."] = true
@@ -820,6 +821,7 @@ L["INSANITY"] = "Insanité"
 L["Inscription"] = "Calligraphie"
 L["Inset"] = "Insérer"
 L["Inspect Data"] = true
+L["Inspect Data Is Shift"] = true
 L["Inspect"] = "Inspecter"
 L["Install"] = "Installer"
 L["Instance Difficulty"] = "Difficulté de l'instance"
