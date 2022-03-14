@@ -1121,6 +1121,7 @@ P.tooltip = {
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
 	inspectDataEnable = true,
+	inspectDataEnableIsShift = true,
 	mythicDataEnable = true,
 	mythicBestRun = true,
 	dungeonScore = true,
