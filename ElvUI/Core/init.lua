@@ -76,10 +76,9 @@ E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 E.TBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 E.Wrath = false
 
--- Item Qualitiy stuff - used by MerathilisUI
+-- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = {}
-local qualityColors = BAG_ITEM_QUALITY_COLORS
-for index, value in pairs(qualityColors) do
+for index, value in pairs(BAG_ITEM_QUALITY_COLORS) do
 	E.QualityColors[index] = {r = value.r, g = value.g, b = value.b}
 end
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
