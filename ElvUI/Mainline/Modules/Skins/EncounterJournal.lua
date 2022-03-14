@@ -200,6 +200,7 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.LootJournalTab:ClearAllPoints()
 	InstanceSelect.LootJournalTab:Width(125)
 	InstanceSelect.LootJournalTab:Point('BOTTOMLEFT', InstanceSelect.raidsTab, 'BOTTOMRIGHT', 2, 0)
+	S:HandleDropDownBox(EncounterJournalLootJournalViewDropDown)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
