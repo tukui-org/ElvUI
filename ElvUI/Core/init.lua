@@ -7,7 +7,6 @@
 local _G, format, next = _G, format, next
 local gsub, pairs, type = gsub, pairs, type
 
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
@@ -78,7 +77,7 @@ E.Wrath = false
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = {}
-for index, value in pairs(BAG_ITEM_QUALITY_COLORS) do
+for index, value in pairs(_G.BAG_ITEM_QUALITY_COLORS) do
 	E.QualityColors[index] = {r = value.r, g = value.g, b = value.b}
 end
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
