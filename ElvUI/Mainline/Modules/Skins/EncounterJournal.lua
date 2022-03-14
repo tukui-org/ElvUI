@@ -534,6 +534,42 @@ function S:Blizzard_EncounterJournal()
 		local parch = _G.EncounterJournal.LootJournal:GetRegions()
 		parch:Kill()
 	end
+
+	--Item Sets
+	local ItemSetsFrame = _G.EncounterJournal.LootJournalItems.ItemSetsFrame
+	HandleButton(ItemSetsFrame.ClassButton, true)
+	S:HandleScrollBar(ItemSetsFrame.scrollBar)
+
+	if E.private.skins.parchmentRemoverEnable then
+		_G.EncounterJournal.LootJournalItems:StripTextures()
+		_G.EncounterJournal.LootJournalItems:SetTemplate('Transparent')
+
+		hooksecurefunc(ItemSetsFrame, 'UpdateList', function(self)
+			local buttons = self.buttons
+			for i = 1, #buttons do
+				local button = buttons[i]
+				if not button.IsSkinned then
+					button.Background:Hide()
+					if not button.backdrop then
+						button:CreateBackdrop('Transparent')
+					end
+
+					button.IsSkinned = true
+				end
+			end
+		end)
+	end
+
+	hooksecurefunc(ItemSetsFrame, 'ConfigureItemButton', function(_, button)
+		if not button.backdrop then
+			button.Border:SetAlpha(0)
+			S:HandleIcon(button.Icon, true)
+		end
+
+		local quality = select(3, GetItemInfo(button.itemID))
+		local color = E.QualityColors[quality or 1]
+		button.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
