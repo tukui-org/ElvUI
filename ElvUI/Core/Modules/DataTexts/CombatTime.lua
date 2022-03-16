@@ -31,7 +31,7 @@ local function OnEvent(self, event, _, timeSeconds)
 
 	if inArena and event == 'START_TIMER' then
 		timerText, timer, startTime = L["Arena"], 0, timeSeconds
-		self.text:SetFormattedText(displayString, timerText, '00:00:00')
+		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
 		self:SetScript('OnUpdate', DelayOnUpdate)
 	elseif not inArena and ((not inEncounter and event == 'PLAYER_REGEN_ENABLED') or ended) then
 		self:SetScript('OnUpdate', nil)
@@ -41,7 +41,7 @@ local function OnEvent(self, event, _, timeSeconds)
 		self:SetScript('OnUpdate', OnUpdate)
 		if started then inEncounter = true end
 	elseif not self.text:GetText() then
-		self.text:SetFormattedText(displayString, timerText, 'N/A')
+		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
 	end
 
 	lastPanel = self
