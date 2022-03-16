@@ -41,7 +41,7 @@ local function OnEvent(self, event, _, timeSeconds)
 		self:SetScript('OnUpdate', OnUpdate)
 		if started then inEncounter = true end
 	elseif not self.text:GetText() then
-		self.text:SetFormattedText(displayString, timerText, 'N/A')
+		self.text:SetFormattedText(displayString, timerText, '00:00')
 	end
 
 	lastPanel = self
