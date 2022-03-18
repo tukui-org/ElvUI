@@ -132,19 +132,20 @@ function UF:Configure_AuraBars(frame)
 			attachTo = _G.ElvUF_Player.AuraBars
 		end
 
+		local px = UF.thinBorders and 0 or 2
 		local POWER_OFFSET, BAR_WIDTH, yOffset = 0
 		if detached then
 			E:EnableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = db.detachedWidth
 
-			yOffset = below and (UF.BORDER - UF.SPACING) or -db.height
+			yOffset = below and BORDER or -(db.height + px)
 
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
 		else
 			E:DisableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = frame.UNIT_WIDTH
 
-			local offset = db.yOffset + (UF.thinBorders and 0 or 2)
+			local offset = db.yOffset + px
 			yOffset = (below and -(db.height + offset) or offset) + 1 -- 1 is connecting pixel
 
 			if db.attachTo ~= 'FRAME' then
@@ -160,7 +161,7 @@ function UF:Configure_AuraBars(frame)
 
 		local anchor = below and 'BOTTOM' or 'TOP'
 		bars:ClearAllPoints()
-		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + (detached and 0 or -UF.BORDER), yOffset)
+		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + -(detached and px or UF.BORDER), yOffset)
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
