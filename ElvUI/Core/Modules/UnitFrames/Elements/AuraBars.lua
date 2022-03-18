@@ -64,7 +64,7 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.CustomFilter = UF.AuraFilter
 
 	auraBar.sparkEnabled = true
-	auraBar.initialAnchor = 'BOTTOMRIGHT'
+	auraBar.initialAnchor = 'BOTTOM'
 	auraBar.type = 'aurabar'
 
 	return auraBar
@@ -120,7 +120,7 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local attachTo, xOffset, yOffset = frame
+		local attachTo = frame
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
@@ -130,10 +130,9 @@ function UF:Configure_AuraBars(frame)
 			attachTo = frame.Debuffs
 		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
-			xOffset = 0
 		end
 
-		local POWER_OFFSET, BAR_WIDTH = 0
+		local POWER_OFFSET, BAR_WIDTH, yOffset = 0
 		if detached then
 			E:EnableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = db.detachedWidth
@@ -159,20 +158,9 @@ function UF:Configure_AuraBars(frame)
 
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 
-		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
-		if point == 'TOP' or point == 'BOTTOM' then
-			bars.initialAnchor = 'BOTTOM'
-			bars:ClearAllPoints()
-			bars:Point(point, attachTo, point, bars.height / 2, yOffset)
-		else
-			local right = point:find('RIGHT')
-			local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
-			bars.initialAnchor = 'BOTTOM'..p3
-
-			bars:ClearAllPoints()
-			bars:Point(p1..p3, attachTo, p2..p3, xOffset or (right and -(UF.SPACING + BORDER * 2) or bars.height+UF.BORDER), yOffset)
-		end
-
+		local anchor = below and 'BOTTOM' or 'TOP'
+		bars:ClearAllPoints()
+		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + -UF.BORDER, yOffset)
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
