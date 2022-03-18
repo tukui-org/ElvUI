@@ -158,12 +158,12 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
-		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
 
+		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
 		if point == 'TOP' or point == 'BOTTOM' then
 			bars.initialAnchor = 'BOTTOM'
 			bars:ClearAllPoints()
-			bars:Point(point, attachTo, point, 0, yOffset)
+			bars:Point(point, attachTo, point, bars.height / 2, yOffset)
 		else
 			local right = point:find('RIGHT')
 			local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
