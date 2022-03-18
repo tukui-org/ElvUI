@@ -119,6 +119,9 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 		else
 			holder:SetPoint(anchor, element)
 		end
+	elseif element.resetRowHeight then
+		local size = element.height or element.size
+		if size then element:Height(size) end
 	end
 
 	return holder
@@ -156,25 +159,14 @@ end
 
 function UF:SetPosition(from, to)
 	if to < from then
-		if self.lastActive ~= to then
-			self.lastActive = to
-
-			if self.smartFluid then
-				self:SetScale(0.0001)
-				self.resetScale = true
-			else
-				local height = self.height or self.size
-				if height then self:Height(height) end
-			end
+		if self.smartFluid then
+			self:SetHeight(0.00001) -- dont scale this
+			self.resetRowHeight = true
+		else
+			local height = self.height or self.size
+			if height then self:Height(height) end
 		end
-	elseif self.lastActive ~= to then
-		self.lastActive = to
-
-		if self.resetScale then
-			self:SetScale(1)
-			self.resetScale = nil
-		end
-
+	else
 		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
 		for index = from, to do
 			local button = self.active[index]
@@ -365,7 +357,6 @@ function UF:Configure_Auras(frame, which)
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
-	auras.lastActive = -1 -- for SetPosition
 
 	local x, y
 	if settings.attachTo == 'HEALTH' or settings.attachTo == 'POWER' then
