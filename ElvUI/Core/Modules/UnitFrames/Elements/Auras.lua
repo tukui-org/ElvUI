@@ -119,6 +119,9 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 		else
 			holder:SetPoint(anchor, element)
 		end
+	elseif element.resetRowHeight then
+		local size = element.height or element.size
+		if size then element:Height(size) end
 	end
 
 	return holder
@@ -158,17 +161,12 @@ function UF:SetPosition(from, to)
 	if to < from then
 		if self.smartFluid then
 			self:SetHeight(0.00001) -- dont scale this
-			self.resetHeight = true
+			self.resetRowHeight = true
 		else
 			local height = self.height or self.size
 			if height then self:Height(height) end
 		end
 	else
-		if self.resetHeight then
-			local height = self.height or self.size
-			if height then self:Height(height) end
-		end
-
 		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
 		for index = from, to do
 			local button = self.active[index]
