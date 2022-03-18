@@ -157,14 +157,22 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
-		local right = point:find('RIGHT')
-		local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
-
-		bars:ClearAllPoints()
-		bars:Point(p1..p3, attachTo, p2..p3, xOffset or (right and -(UF.SPACING + BORDER * 2) or bars.height+UF.BORDER), yOffset)
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
-		bars.initialAnchor = 'BOTTOM'..p3
+		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
+
+		if point == 'TOP' or point == 'BOTTOM' then
+			bars.initialAnchor = 'BOTTOM'
+			bars:ClearAllPoints()
+			bars:Point(point, attachTo, point, 0, yOffset)
+		else
+			local right = point:find('RIGHT')
+			local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
+			bars.initialAnchor = 'BOTTOM'..p3
+
+			bars:ClearAllPoints()
+			bars:Point(p1..p3, attachTo, p2..p3, xOffset or (right and -(UF.SPACING + BORDER * 2) or bars.height+UF.BORDER), yOffset)
+		end
+
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
