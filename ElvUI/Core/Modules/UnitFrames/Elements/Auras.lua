@@ -359,7 +359,6 @@ function UF:Configure_Auras(frame, which)
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
-	auras.lastActive = -1 -- for SetPosition
 
 	local x, y
 	if settings.attachTo == 'HEALTH' or settings.attachTo == 'POWER' then
