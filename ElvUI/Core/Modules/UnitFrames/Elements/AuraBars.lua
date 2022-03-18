@@ -137,7 +137,7 @@ function UF:Configure_AuraBars(frame)
 			E:EnableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = db.detachedWidth
 
-			yOffset = below and (BORDER + (UF.BORDER - UF.SPACING)) or -(db.height + BORDER)
+			yOffset = below and (UF.BORDER - UF.SPACING) or -db.height
 
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
 		else
@@ -160,7 +160,7 @@ function UF:Configure_AuraBars(frame)
 
 		local anchor = below and 'BOTTOM' or 'TOP'
 		bars:ClearAllPoints()
-		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + -UF.BORDER, yOffset)
+		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + (detached and 0 or -UF.BORDER), yOffset)
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
