@@ -64,7 +64,7 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.CustomFilter = UF.AuraFilter
 
 	auraBar.sparkEnabled = true
-	auraBar.initialAnchor = 'BOTTOMRIGHT'
+	auraBar.initialAnchor = 'BOTTOM'
 	auraBar.type = 'aurabar'
 
 	return auraBar
@@ -120,7 +120,7 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local attachTo, xOffset, yOffset = frame
+		local attachTo = frame
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
@@ -130,22 +130,22 @@ function UF:Configure_AuraBars(frame)
 			attachTo = frame.Debuffs
 		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
-			xOffset = 0
 		end
 
-		local POWER_OFFSET, BAR_WIDTH = 0
+		local px = UF.thinBorders and 0 or 2
+		local POWER_OFFSET, BAR_WIDTH, yOffset = 0
 		if detached then
 			E:EnableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = db.detachedWidth
 
-			yOffset = below and (BORDER + (UF.BORDER - UF.SPACING)) or -(db.height + BORDER)
+			yOffset = below and BORDER or -(db.height + px)
 
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
 		else
 			E:DisableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = frame.UNIT_WIDTH
 
-			local offset = db.yOffset + (UF.thinBorders and 0 or 2)
+			local offset = db.yOffset + px
 			yOffset = (below and -(db.height + offset) or offset) + 1 -- 1 is connecting pixel
 
 			if db.attachTo ~= 'FRAME' then
@@ -157,14 +157,11 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local point = (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
-		local right = point:find('RIGHT')
-		local p1, p2, p3 = below and 'TOP' or 'BOTTOM', below and 'BOTTOM' or 'TOP', right and 'RIGHT' or 'LEFT'
-
-		bars:ClearAllPoints()
-		bars:Point(p1..p3, attachTo, p2..p3, xOffset or (right and -(UF.SPACING + BORDER * 2) or bars.height+UF.BORDER), yOffset)
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
-		bars.initialAnchor = 'BOTTOM'..p3
+
+		local anchor = below and 'BOTTOM' or 'TOP'
+		bars:ClearAllPoints()
+		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + -(detached and px or UF.BORDER), yOffset)
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')

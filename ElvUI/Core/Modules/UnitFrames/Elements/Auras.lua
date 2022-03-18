@@ -160,8 +160,8 @@ function UF:SetPosition(from, to)
 			self.lastActive = to
 
 			if self.smartFluid then
-				self:SetScale(0.0001)
-				self.resetScale = true
+				self:SetHeight(0.00001) -- dont scale this
+				self.resetHeight = true
 			else
 				local height = self.height or self.size
 				if height then self:Height(height) end
@@ -170,9 +170,9 @@ function UF:SetPosition(from, to)
 	elseif self.lastActive ~= to then
 		self.lastActive = to
 
-		if self.resetScale then
-			self:SetScale(1)
-			self.resetScale = nil
+		if self.resetHeight then
+			local height = self.height or self.size
+			if height then self:Height(height) end
 		end
 
 		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
