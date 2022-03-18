@@ -156,20 +156,14 @@ end
 
 function UF:SetPosition(from, to)
 	if to < from then
-		if self.lastActive ~= to then
-			self.lastActive = to
-
-			if self.smartFluid then
-				self:SetHeight(0.00001) -- dont scale this
-				self.resetHeight = true
-			else
-				local height = self.height or self.size
-				if height then self:Height(height) end
-			end
+		if self.smartFluid then
+			self:SetHeight(0.00001) -- dont scale this
+			self.resetHeight = true
+		else
+			local height = self.height or self.size
+			if height then self:Height(height) end
 		end
-	elseif self.lastActive ~= to then
-		self.lastActive = to
-
+	else
 		if self.resetHeight then
 			local height = self.height or self.size
 			if height then self:Height(height) end
