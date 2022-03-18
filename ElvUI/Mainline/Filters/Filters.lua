@@ -451,6 +451,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[200652]	= Defaults(), -- Tyr's Deliverance
 		[216331]	= Defaults(), -- Avenging Crusader
 		[1044]		= Defaults(), -- Blessing of Freedom
+		[305395] 	= Defaults(), -- Blessing of Freedom (Unbound Freedom - Ret/Prot PvP)
 		[210256]	= Defaults(), -- Blessing of Sanctuary
 		[199545]	= Defaults(), -- Steed of Glory
 		[210294]	= Defaults(), -- Divine Favor
