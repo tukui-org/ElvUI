@@ -371,7 +371,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[77764]		= Defaults(), -- Stampeding Roar (Cat)
 		[77761]		= Defaults(), -- Stampeding Roar (Bear)
 		[305497]	= Defaults(), -- Thorns
-		[233756]	= Defaults(), -- Moon and Stars (not used?)
 		[234084]	= Defaults(), -- Moon and Stars (PvP)
 		[22842]		= Defaults(), -- Frenzied Regeneration
 	-- Hunter
