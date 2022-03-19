@@ -17,22 +17,15 @@ local CreateFrame = CreateFrame
 local GetMinimapZoneText = GetMinimapZoneText
 local GetTime = GetTime
 local GetZonePVPInfo = GetZonePVPInfo
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
-local HideUIPanel = HideUIPanel
-local ToggleAchievementFrame = ToggleAchievementFrame
-local ToggleCharacter = ToggleCharacter
-local ToggleCollectionsJournal = ToggleCollectionsJournal
 local ToggleFrame = ToggleFrame
-local ToggleFriendsFrame = ToggleFriendsFrame
-local ToggleGuildFrame = ToggleGuildFrame
-local ToggleHelpFrame = ToggleHelpFrame
-local ToggleLFGParentFrame = ToggleLFGParentFrame
-local ToggleLFDParentFrame = ToggleLFDParentFrame
-local ToggleTalentFrame = ToggleTalentFrame
+local UIParentLoadAddOn = UIParentLoadAddOn
+
 local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
@@ -45,26 +38,28 @@ local Minimap = _G.Minimap
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
 local menuList = {
-	{ text = _G.CHARACTER_BUTTON, func = function() ToggleCharacter('PaperDollFrame') end },
+	{ text = _G.CHARACTER_BUTTON, func = function() _G.ToggleCharacter('PaperDollFrame') end },
 	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, func = function() ToggleFrame(_G.SpellBookFrame) end },
-	{ text = _G.CHAT_CHANNELS, func = _G.ToggleChannelFrame },
 	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end },
-	{ text = _G.SOCIAL_BUTTON, func = ToggleFriendsFrame },
-	{ text = _G.GUILD, func = ToggleGuildFrame },
-	{ text = _G.TALENTS_BUTTON, func = ToggleTalentFrame },
+	{ text = _G.CHAT_CHANNELS, func = _G.ToggleChannelFrame },
+	{ text = _G.SOCIAL_BUTTON, func = _G.ToggleFriendsFrame },
+	{ text = _G.TALENTS_BUTTON, func = _G.ToggleTalentFrame },
+	{ text = _G.GUILD, func = _G.ToggleGuildFrame },
 }
 
-if not E.Classic then
-	tinsert(menuList, { text = _G.LFG_TITLE, func = ToggleLFGParentFrame or ToggleLFDParentFrame })
+if E.Retail then
+	tinsert(menuList, { text = _G.LFG_TITLE, func = _G.ToggleLFDParentFrame })
+elseif not E.Classic then
+	tinsert(menuList, { text = _G.LFG_TITLE, func = function() if not IsAddOnLoaded('Blizzard_LookingForGroupUI') then UIParentLoadAddOn('Blizzard_LookingForGroupUI') end _G.ToggleLFGParentFrame() end })
 end
 
 if E.Retail then
+	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
+	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
 	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
-	tinsert(menuList, { text = _G.COLLECTIONS, func = ToggleCollectionsJournal })
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
-	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = ToggleAchievementFrame })
 	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() GarrisonLandingPageMinimapButton_OnClick(_G.GarrisonLandingPageMinimapButton) end })
-	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then _G.EncounterJournal_LoadUI() end ToggleFrame(_G.EncounterJournal) end })
+	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 else
 	tinsert(menuList, { text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end})
 end
@@ -159,6 +154,7 @@ end
 
 function M:HideNonInstancePanels()
 	if InCombatLockdown() or not WorldMapFrame:IsShown() then return end
+
 	HideUIPanel(WorldMapFrame)
 end
 
