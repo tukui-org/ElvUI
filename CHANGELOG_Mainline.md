@@ -1,7 +1,17 @@
-### Version 12.71 [ ETA: 🍨 ]
+### Version 12.72 [ ETA: 🍨 ]
 
 **Dev**  
 something is different probably, check commits ;P  
+
+___
+### Version 12.71 [ March 18th 2022 ]
+
+Skinned Encounter Journal Item Sets  
+Updated code for AuraBars anchoring (works better attached to centered elements)  
+Fixed Auras not being sorted correctly sometimes  
+Added Unbound Freedom to PlayerBuffs (thanks Shrom)  
+Updated German locales (thanks DlargeX)  
+Optimized Alt Power Bar code a bit  
 
 ___
 ### Version 12.70 [ March 12th 2022 ]
