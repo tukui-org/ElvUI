@@ -76,19 +76,14 @@ function B:UpdateAltPowerBarColors()
 	if not bar then return end
 
 	if E.db.general.altPowerBar.statusBarColorGradient then
-		if bar.colorGradientR and bar.colorGradientG and bar.colorGradientB then
-			bar:SetStatusBarColor(bar.colorGradientR, bar.colorGradientG, bar.colorGradientB)
-		elseif bar.powerValue then
-			local power, maxPower = bar.powerValue or 0, bar.powerMaxValue or 0
-			local value = (maxPower > 0 and power / maxPower) or 0
+		local power, maxPower = bar.powerValue or 0, bar.powerMaxValue or 0
+		local value = (maxPower > 0 and power / maxPower) or 0
+
+		if bar.colorGradientValue ~= value then
 			bar.colorGradientValue = value
 
 			local r, g, b = E:ColorGradient(value, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
-			bar.colorGradientR, bar.colorGradientG, bar.colorGradientB = r, g, b
-
 			bar:SetStatusBarColor(r, g, b)
-		else
-			bar:SetStatusBarColor(0.6, 0.6, 0.6) -- uh, fallback!
 		end
 	else
 		local color = E.db.general.altPowerBar.statusBarColor
@@ -116,9 +111,9 @@ function B:UpdateAltPowerBar()
 	_G.PlayerPowerBarAlt:Hide()
 
 	local barInfo = GetUnitPowerBarInfo('player')
-	local powerName, powerTooltip = GetUnitPowerBarStrings('player')
 	if barInfo then
-		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX)
+		local powerName, powerTooltip = GetUnitPowerBarStrings('player')
+		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
 
@@ -134,15 +129,16 @@ function B:UpdateAltPowerBar()
 
 		if E.db.general.altPowerBar.statusBarColorGradient then
 			local value = (maxPower > 0 and power / maxPower) or 0
-			self.colorGradientValue = value
 
-			local r, g, b = E:ColorGradient(value, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
-			self.colorGradientR, self.colorGradientG, self.colorGradientB = r, g, b
+			if self.colorGradientValue ~= value then
+				self.colorGradientValue = value
 
-			self:SetStatusBarColor(r, g, b)
+				local r, g, b = E:ColorGradient(value, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
+				self:SetStatusBarColor(r, g, b)
+			end
 		end
 
-		B:SetAltPowerBarText(self.text, powerName or '', power or 0, maxPower, perc)
+		B:SetAltPowerBarText(self.text, powerName or '', power, maxPower, perc)
 	else
 		self.powerMaxValue = nil
 		self.powerName = nil

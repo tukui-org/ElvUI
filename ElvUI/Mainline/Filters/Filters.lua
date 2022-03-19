@@ -371,7 +371,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[77764]		= Defaults(), -- Stampeding Roar (Cat)
 		[77761]		= Defaults(), -- Stampeding Roar (Bear)
 		[305497]	= Defaults(), -- Thorns
-		[233756]	= Defaults(), -- Moon and Stars (not used?)
 		[234084]	= Defaults(), -- Moon and Stars (PvP)
 		[22842]		= Defaults(), -- Frenzied Regeneration
 	-- Hunter
@@ -451,6 +450,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[200652]	= Defaults(), -- Tyr's Deliverance
 		[216331]	= Defaults(), -- Avenging Crusader
 		[1044]		= Defaults(), -- Blessing of Freedom
+		[305395] 	= Defaults(), -- Blessing of Freedom (Unbound Freedom - Ret/Prot PvP)
 		[210256]	= Defaults(), -- Blessing of Sanctuary
 		[199545]	= Defaults(), -- Steed of Glory
 		[210294]	= Defaults(), -- Divine Favor
