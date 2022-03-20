@@ -3,6 +3,7 @@
 ___
 ### Version 1.63 [ March 20th 2022 ]
 
+Libraries: Fixed another HealComm error  
 Locales: Updated Chinese (thanks to Loukky!)  
 Locales: Updated German (thanks DlargeX)  
 Options-AuraBars: Fixed custom backdrop color setting  
@@ -12,6 +13,7 @@ Options-StyleFilter: Fixed error about triggers
 Tags: [classification] is localized now  
 UnitFrames: Clique to handle mousedown state if enabled  
 UnitFrames: Fixed an issue with middle click focus  
+UnitFrames: Fixed AuraBars sorting  
 UnitFrames: Fixed text color flickering on aura watch indicators  
 UnitFrames: Updated code for AuraBars anchoring (Works better attached to centered elements)  
 

@@ -4,6 +4,7 @@ ___
 ### Version 2.37 [ March 20th 2022 ]
 
 General: Fixed error in the loot skin  
+Libraries: Fixed another HealComm error  
 Locales: Updated Chinese (thanks to Loukky!)  
 Locales: Updated German (thanks DlargeX)  
 MiniMap: Fixed LFG in middle click minimap menu  
@@ -14,6 +15,7 @@ Options-StyleFilter: Fixed error about triggers
 Tags: [classification] is localized now  
 UnitFrames: Clique to handle mousedown state if enabled  
 UnitFrames: Fixed an issue with middle click focus  
+UnitFrames: Fixed AuraBars sorting  
 UnitFrames: Fixed text color flickering on aura watch indicators  
 UnitFrames: Updated code for AuraBars anchoring (Works better attached to centered elements)  
 UnitFrames: Updated oUF to fix arena units not updating properly  
