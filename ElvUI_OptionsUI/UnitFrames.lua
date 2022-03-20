@@ -13,7 +13,7 @@ local GetClassInfo = GetClassInfo
 local CopyTable = CopyTable
 
 local NUM_CLASSES = #CLASS_SORT_ORDER
-local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES
+local MAX_BOSS_FRAMES = 10 --_G.MAX_BOSS_FRAMES
 
 local orientationValues = {
 	LEFT = L["Left"],
