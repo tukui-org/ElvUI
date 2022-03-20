@@ -1,3 +1,6 @@
+### Version 2.38 [ ETA: 🍨 ]
+
+___
 ### Version 2.37 [ March 20th 2022 ]
 
 General: Fixed error in the loot skin  
