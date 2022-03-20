@@ -1,4 +1,19 @@
-### Version 2.37 [ ETA: 🍨 ]
+### Version 2.37 [ March 20th 2022 ]
+
+General: Fixed error in the loot skin  
+Locales: Updated Chinese (thanks to Loukky!)  
+Locales: Updated German (thanks DlargeX)  
+MiniMap: Fixed LFG in middle click minimap menu  
+Options-AuraBars: Fixed custom backdrop color setting  
+Options-Nameplate: Fixed clickable size not updating height slider max values  
+Options-StyleFilter: Allowed lower scale options  
+Options-StyleFilter: Fixed error about triggers  
+Tags: [classification] is localized now  
+UnitFrames: Clique to handle mousedown state if enabled  
+UnitFrames: Fixed an issue with middle click focus  
+UnitFrames: Fixed text color flickering on aura watch indicators  
+UnitFrames: Updated code for AuraBars anchoring (Works better attached to centered elements)  
+UnitFrames: Updated oUF to fix arena units not updating properly  
 
 ___
 ### Version 2.36 [ February 22nd 2022 ]
