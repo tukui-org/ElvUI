@@ -87,6 +87,7 @@ local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetSpellInfo = GetSpellInfo
 local floor, min = math.floor, math.min
+local AuraUtil_ShouldSkipAuraUpdate = AuraUtil.ShouldSkipAuraUpdate
 local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 -- end block
 
@@ -403,7 +404,7 @@ end
 
 local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 	local onlyDispellable = false -- frame.optionTable.displayOnlyDispellableDebuffs (blizzards); need to do something more advanced here perhaps if we want that to be functional?
-	if self.unit ~= unit or AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuras, CouldDisplayAura, onlyDispellable) then return end
+	if self.unit ~= unit or AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuras, CouldDisplayAura, onlyDispellable) then return end
 
 	local auras = self.Auras
 	if(auras) then
