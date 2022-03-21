@@ -188,7 +188,9 @@ function E:CheckRole()
 	E.myspec = GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 
-	E:UpdateDispelClasses()
+	if E.Retail then
+		E:UpdateDispelClasses()
+	end
 end
 
 do -- keep this synced with oUF_AuraHighlight and oUF_RaidDebuffs
