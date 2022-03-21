@@ -28,7 +28,7 @@ local invalidBosses = {'boss6','boss7','boss8','boss9','boss10'}
 
 -- updating of "invalid" units, function edited by ElvUI
 local function xtargetOnUpdate(self, elapsed)
-	if not self.unit or not UnitExists(self.unit) then
+	if not self.unit or (not invalidBosses[self.unit] and not UnitExists(self.unit)) then
 		return
 	else
 		local frequency = self.elapsed or 0
