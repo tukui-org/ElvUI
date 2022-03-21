@@ -203,12 +203,12 @@ do
 		'ElvUI_CustomTags'
 	}
 
-	for _, addon in next, alwaysDisable do
-		DisableAddOn(addon)
-	end
-
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
 		tinsert(alwaysDisable, 'kExtraBossFrames')
+	end
+
+	for _, addon in next, alwaysDisable do
+		DisableAddOn(addon)
 	end
 end
 
