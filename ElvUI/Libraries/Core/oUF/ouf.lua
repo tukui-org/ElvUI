@@ -24,7 +24,7 @@ PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
 RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
 
-local invalidBosses = {'boss6','boss7','boss8','boss9','boss10'}
+local invalidBosses = { boss6 = true, boss7 = true, boss8 = true, boss9 = true, boss10 = true }
 
 -- updating of "invalid" units, function edited by ElvUI
 local function xtargetOnUpdate(self, elapsed)
