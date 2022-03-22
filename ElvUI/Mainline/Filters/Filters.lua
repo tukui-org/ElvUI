@@ -719,6 +719,34 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[366297]	= Defaults(6), -- Deconstruct (Tank Debuff)
 		[366288]	= Defaults(6), -- Force Slam (Stun)
 	----------------------------------------------------------
+	---------------- Old Dungeons (for 9.2.5) ----------------
+	----------------------------------------------------------
+	-- Operation Mechagon
+		[291928] = Defaults(), -- Giga-Zap
+		[292267] = Defaults(), -- Giga-Zap
+		[302274] = Defaults(), -- Fulminating Zap
+		[298669] = Defaults(), -- Taze
+		[295445] = Defaults(), -- Wreck
+		[294929] = Defaults(), -- Blazing Chomp
+		[297257] = Defaults(), -- Electrical Charge
+		[294855] = Defaults(), -- Blossom Blast
+		[291972] = Defaults(), -- Explosive Leap
+		[285443] = Defaults(), -- 'Hidden' Flame Cannon
+		[291974] = Defaults(), -- Obnoxious Monologue
+		[296150] = Defaults(), -- Vent Blast
+		[298602] = Defaults(), -- Smoke Cloud
+		[296560] = Defaults(), -- Clinging Static
+		[297283] = Defaults(), -- Cave In
+		[291914] = Defaults(), -- Cutting Beam
+		[302384] = Defaults(), -- Static Discharge
+		[294195] = Defaults(), -- Arcing Zap
+		[299572] = Defaults(), -- Shrink
+		[300659] = Defaults(), -- Consuming Slime
+		[300650] = Defaults(), -- Suffocating Smog
+		[301712] = Defaults(), -- Pounce
+		[299475] = Defaults(), -- B.O.R.K
+		[293670] = Defaults(), -- Chain Blade
+	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
 	-- Tazavesh, the Veiled Market
