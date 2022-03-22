@@ -24,6 +24,7 @@ local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterStateDriver = UnregisterStateDriver
 local PlaySound = PlaySound
+local UnitGUID = UnitGUID
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SOUNDKIT_IG_CREATURE_AGGRO_SELECT = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
@@ -31,7 +32,7 @@ local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
-local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES
+local MAX_BOSS_FRAMES = 8
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
@@ -1193,6 +1194,61 @@ function UF:DisableBlizzard()
 		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 		_G.CompactRaidFrameManager:UnregisterAllEvents()
 		_G.CompactRaidFrameManager:SetParent(hiddenParent)
+	end
+end
+
+do
+	local function EventlessUpdate(frame, elapsed)
+		if not frame.unit or not UnitExists(frame.unit) then
+			return
+		else
+			local frequency = frame.elapsed or 0
+			if frequency > frame.onUpdateElements then
+				local guid = UnitGUID(frame.unit)
+				if frame.lastGUID ~= guid then
+					frame:UpdateAllElements('OnUpdate')
+					frame.lastGUID = guid
+				else
+					if frame:IsElementEnabled('Health') then frame.Health:ForceUpdate() end
+					if frame:IsElementEnabled('Power') then frame.Power:ForceUpdate() end
+				end
+
+				frame.elapsed = 0
+			else
+				frame.elapsed = frequency + elapsed
+			end
+
+			local prediction = frame.elapsedPrediction or 0
+			if prediction > frame.onUpdatePrediction then
+				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
+				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
+				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
+
+				frame.elapsedPrediction = 0
+			else
+				frame.elapsedPrediction = prediction + elapsed
+			end
+
+			local auras = frame.elapsedAuras or 0
+			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
+				if frame.Auras then frame.Auras:ForceUpdate() end
+				if frame.Buffs then frame.Buffs:ForceUpdate() end
+				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
+
+				frame.elapsedAuras = 0
+			else
+				frame.elapsedAuras = auras + elapsed
+			end
+		end
+	end
+
+	function ElvUF:HandleEventlessUnit(frame)
+		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
+		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
+		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
+
+		frame.__eventless = true
+		frame:SetScript('OnUpdate', EventlessUpdate)
 	end
 end
 

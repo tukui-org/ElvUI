@@ -56,8 +56,6 @@ function S:Blizzard_Calendar()
 		_G['CalendarWeekday'..i..'Background']:SetAlpha(0)
 	end
 
-	_G.CalendarViewEventDivider:Hide()
-	_G.CalendarCreateEventDivider:Hide()
 	SkinContainer(_G.CalendarViewEventInviteList)
 	SkinContainer(_G.CalendarCreateEventInviteList)
 	SkinContainer(_G.CalendarViewEventDescriptionContainer, _G.CalendarViewEventDescriptionScrollFrame)
@@ -82,6 +80,8 @@ function S:Blizzard_Calendar()
 	_G.CalendarFilterFrameLeft:Hide()
 	_G.CalendarFilterFrameMiddle:Hide()
 	_G.CalendarFilterFrameRight:Hide()
+	_G.CalendarViewEventDivider:Hide()
+	_G.CalendarCreateEventDivider:Hide()
 
 	S:HandleNextPrevButton(_G.CalendarPrevMonthButton, nil, nil, true)
 	S:HandleNextPrevButton(_G.CalendarNextMonthButton, nil, nil, true)
@@ -233,6 +233,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarViewHolidayFrame:SetTemplate('Transparent')
 	_G.CalendarViewHolidayFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarViewHolidayFrame.Header:StripTextures()
+	_G.CalendarViewHolidayFrameModalOverlay:SetAlpha(0)
 	S:HandleCloseButton(_G.CalendarViewHolidayCloseButton)
 
 	-- Event View
@@ -240,7 +241,6 @@ function S:Blizzard_Calendar()
 	_G.CalendarViewEventFrame:SetTemplate('Transparent')
 	_G.CalendarViewEventFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarViewEventFrame.Header:StripTextures()
-	_G.CalendarViewHolidayFrame.Header:StripTextures()
 	_G.CalendarViewEventInviteListSection:StripTextures()
 
 	S:HandleCloseButton(_G.CalendarViewEventCloseButton)

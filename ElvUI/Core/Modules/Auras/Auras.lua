@@ -522,7 +522,7 @@ function A:Initialize()
 		_G.TemporaryEnchantFrame:Kill()
 	end
 
-	if not E.private.auras.enable then return end
+	if E.TBC or not E.private.auras.enable then return end
 
 	A.Initialized = true
 	A.db = E.db.auras
