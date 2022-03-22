@@ -1,5 +1,8 @@
 ### Version 2.38 [ ETA: 🍨 ]
 
+Chat: Updated chat installer (Requires you to re-run the chat installer)  
+Skins: Fixed mailbox skin and errors  
+
 ___
 ### Version 2.37 [ March 20th 2022 ]
 
