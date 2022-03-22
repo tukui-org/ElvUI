@@ -1,4 +1,6 @@
-### Version 1.64 [ ETA: 🍨 ]
+### Version 1.64 [ March 23rd 2022 ]
+
+UnitFrames: Fixed aura rows overlapping  
 
 ___
 ### Version 1.63 [ March 20th 2022 ]
