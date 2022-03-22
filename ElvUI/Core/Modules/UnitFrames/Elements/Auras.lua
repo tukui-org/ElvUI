@@ -321,10 +321,7 @@ function UF:Configure_Auras(frame, which)
 	local auraType = which:lower()
 	local settings = db[auraType]
 	auras.db = settings
-
-	-- not onUpdateFrequency ignores targettarget
-	auras.auraSort = UF.SortAuraFuncs[not frame.onUpdateFrequency and settings.sortMethod]
-
+	auras.auraSort = UF.SortAuraFuncs[settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
 
