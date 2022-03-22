@@ -119,6 +119,10 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 		else
 			holder:SetPoint(anchor, element)
 		end
+	elseif element.resetRowHeight then
+		local size = element.height or element.size
+		if size then element:Height(size) end
+		element.resetRowHeight = nil
 	end
 
 	return holder
@@ -164,11 +168,6 @@ function UF:SetPosition(from, to)
 			if height then self:Height(height) end
 		end
 	else
-		if self.resetRowHeight then
-			local height = self.height or self.size
-			if height then self:Height(height) end
-		end
-
 		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
 		for index = from, to do
 			local button = self.active[index]
