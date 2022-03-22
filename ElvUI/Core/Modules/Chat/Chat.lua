@@ -2276,7 +2276,7 @@ do
 end
 
 local ignoreChats = {[2]='Log'}
-if E.Retail then
+if not E.Classic then
 	tinsert(ignoreChats, 3, 'Voice')
 end
 
