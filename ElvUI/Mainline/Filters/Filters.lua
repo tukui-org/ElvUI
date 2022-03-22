@@ -865,6 +865,94 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323877]	= Defaults(), -- Echo Finger Laser X-treme
 		[334535]	= Defaults(), -- Beak Slice
 	--------------------------------------------------------
+	-------------------- Castle Nathria --------------------
+	--------------------------------------------------------
+	-- Shriekwing
+		[328897] = Defaults(), -- Exsanguinated
+		[330713] = Defaults(), -- Reverberating Pain
+		[329370] = Defaults(), -- Deadly Descent
+		[336494] = Defaults(), -- Echo Screech
+		[346301] = Defaults(), -- Bloodlight
+		[342077] = Defaults(), -- Echolocation
+	-- Huntsman Altimor
+		[335304] = Defaults(), -- Sinseeker
+		[334971] = Defaults(), -- Jagged Claws
+		[335111] = Defaults(), -- Huntsman's Mark 3
+		[335112] = Defaults(), -- Huntsman's Mark 2
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[334945] = Defaults(), -- Vicious Lunge
+		[334852] = Defaults(), -- Petrifying Howl
+		[334695] = Defaults(), -- Destabilize
+	-- Hungering Destroyer
+		[334228] = Defaults(), -- Volatile Ejection
+		[329298] = Defaults(), -- Gluttonous Miasma
+	-- Lady Inerva Darkvein
+		[325936] = Defaults(), -- Shared Cognition
+		[335396] = Defaults(), -- Hidden Desire
+		[324983] = Defaults(), -- Shared Suffering
+		[324982] = Defaults(), -- Shared Suffering (Partner)
+		[332664] = Defaults(), -- Concentrate Anima
+		[325382] = Defaults(), -- Warped Desires
+	-- Sun King's Salvation
+		[333002] = Defaults(), -- Vulgar Brand
+		[326078] = Defaults(), -- Infuser's Boon
+		[325251] = Defaults(), -- Sin of Pride
+		[341475] = Defaults(), -- Crimson Flurry
+		[341473] = Defaults(), -- Crimson Flurry Teleport
+		[328479] = Defaults(), -- Eyes on Target
+		[328889] = Defaults(), -- Greater Castigation
+	-- Artificer Xy'mox
+		[327902] = Defaults(), -- Fixate
+		[326302] = Defaults(), -- Stasis Trap
+		[325236] = Defaults(), -- Glyph of Destruction
+		[327414] = Defaults(), -- Possession
+		[328468] = Defaults(), -- Dimensional Tear 1
+		[328448] = Defaults(), -- Dimensional Tear 2
+		[340860] = Defaults(), -- Withering Touch
+	-- The Council of Blood
+		[327052] = Defaults(), -- Drain Essence 1
+		[327773] = Defaults(), -- Drain Essence 2
+		[346651] = Defaults(), -- Drain Essence Mythic
+		[328334] = Defaults(), -- Tactical Advance
+		[330848] = Defaults(), -- Wrong Moves
+		[331706] = Defaults(), -- Scarlet Letter
+		[331636] = Defaults(), -- Dark Recital 1
+		[331637] = Defaults(), -- Dark Recital 2
+	-- Sludgefist
+		[335470] = Defaults(), -- Chain Slam
+		[339181] = Defaults(), -- Chain Slam (Root)
+		[331209] = Defaults(), -- Hateful Gaze
+		[335293] = Defaults(), -- Chain Link
+		[335270] = Defaults(), -- Chain This One!
+		[342419] = Defaults(), -- Chain Them! 1
+		[342420] = Defaults(), -- Chain Them! 2
+		[335295] = Defaults(), -- Shattering Chain
+		[332572] = Defaults(), -- Falling Rubble
+	-- Stone Legion Generals
+		[334498] = Defaults(), -- Seismic Upheaval
+		[337643] = Defaults(), -- Unstable Footing
+		[334765] = Defaults(), -- Heart Rend
+		[334771] = Defaults(), -- Heart Hemorrhage
+		[333377] = Defaults(), -- Wicked Mark
+		[334616] = Defaults(), -- Petrified
+		[334541] = Defaults(), -- Curse of Petrification
+		[339690] = Defaults(), -- Crystalize
+		[342655] = Defaults(), -- Volatile Anima Infusion
+		[342698] = Defaults(), -- Volatile Anima Infection
+		[343881] = Defaults(), -- Serrated Tear
+	-- Sire Denathrius
+		[326851] = Defaults(), -- Blood Price
+		[327796] = Defaults(), -- Night Hunter
+		[327992] = Defaults(), -- Desolation
+		[328276] = Defaults(), -- March of the Penitent
+		[326699] = Defaults(), -- Burden of Sin
+		[329181] = Defaults(), -- Wracking Pain
+		[335873] = Defaults(), -- Rancor
+		[329951] = Defaults(), -- Impale
+		[327039] = Defaults(), -- Feeding Time
+		[332794] = Defaults(), -- Fatal Finesse
+		[334016] = Defaults(), -- Unworthy
+	--------------------------------------------------------
 	---------------- Sanctum of Domination -----------------
 	--------------------------------------------------------
 	-- The Tarragrue
@@ -1096,6 +1184,15 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[344739]	= Defaults(), -- Spectral
 		[333227]	= Defaults(), -- Undying Rage
 		[322773]	= Defaults(), -- Blood Barrier
+	----------------------------------------------------------
+	--------------------- Castle Nathria ---------------------
+	----------------------------------------------------------
+	-- Sun King's Salvation
+		[343026] = Defaults(), -- Cloak of Flames
+	-- Stone Legion Generals
+		[329808] = Defaults(), -- Hardened Stone Form Grashaal
+		[329636] = Defaults(), -- Hardened Stone Form Kaal
+		[340037] = Defaults(), -- Volatile Stone Shell
 	----------------------------------------------------------
 	----------------- Sanctum of Domination ------------------
 	----------------------------------------------------------
