@@ -3,6 +3,7 @@
 Filters: Added back Castle Nathria buffs and debuffs  
 UnitFrames: Added support to display all Seeds of the Pantheon fight in Boss Frames  
 UnitFrames: Boon of the Ascended will no longer fade out Raid Frames  
+UnitFrames: Fixed aura rows overlapping  
 
 ___
 ### Version 12.71 [ March 18th 2022 ]
