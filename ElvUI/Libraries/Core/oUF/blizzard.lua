@@ -5,7 +5,7 @@ local oUF = ns.oUF
 local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
 
 -- sourced from FrameXML/TargetFrame.lua
-local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES or 5
+local MAX_BOSS_FRAMES = 8
 
 -- sourced from FrameXML/PartyMemberFrame.lua
 local MAX_PARTY_MEMBERS = _G.MAX_PARTY_MEMBERS or 4
