@@ -37,6 +37,7 @@ end
 local function ReskinEventTraceScrollBox(frame)
 	frame:DisableDrawLayer('BACKGROUND')
 	frame:CreateBackdrop('Transparent')
+
 	hooksecurefunc(frame, 'Update', reskinScrollChild)
 end
 
@@ -53,6 +54,8 @@ function S:Blizzard_EventTrace()
 	EventTrace:StripTextures()
 	EventTrace:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.EventTraceCloseButton)
+
+	_G.EventTraceTooltip:SetFrameLevel(10)
 
 	-- Top Buttons
 	local SubtitleBar = EventTrace.SubtitleBar

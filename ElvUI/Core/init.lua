@@ -5,12 +5,13 @@
 ]]
 
 local _G, format, next = _G, format, next
-local gsub, pairs, type = gsub, pairs, type
+local gsub, pairs, tinsert, type = gsub, pairs, tinsert, type
 
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
 local DisableAddOn = DisableAddOn
+local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 local GetLocale = GetLocale
 local GetTime = GetTime
@@ -202,6 +203,10 @@ do
 		'ElvUI_QuestXP',
 		'ElvUI_CustomTags'
 	}
+
+	if not IsAddOnLoaded('ShadowedUnitFrames') then
+		tinsert(alwaysDisable, 'kExtraBossFrames')
+	end
 
 	for _, addon in next, alwaysDisable do
 		DisableAddOn(addon)

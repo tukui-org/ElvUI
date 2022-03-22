@@ -7,7 +7,7 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local CreateFrame = CreateFrame
-local MAX_BOSS_FRAMES = _G.MAX_BOSS_FRAMES
+local MAX_BOSS_FRAMES = 8
 
 -- GLOBALS: BossHeaderMover
 
