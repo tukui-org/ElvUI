@@ -87,7 +87,6 @@ local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetSpellInfo = GetSpellInfo
 local floor, min = math.floor, math.min
-local AuraUtil_ShouldSkipAuraUpdate = AuraUtil.ShouldSkipAuraUpdate
 local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 -- end block
 
@@ -383,28 +382,8 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	return visible, hidden
 end
 
--- code from Blizzard
-local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
-local function CouldDisplayAura(auraInfo, onlyDispellable)
-	if auraInfo.isNameplateOnly then return false end
-	if auraInfo.isBossAura then return true end
-	if auraInfo.isHarmful and CompactUnitFrame_Util_IsPriorityDebuff(auraInfo.spellId) then return true end
-	if auraInfo.isHarmful and (not onlyDispellable) and CompactUnitFrame_Util_ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) then return true end
-	if auraInfo.isHelpful and CompactUnitFrame_UtilShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
-
-	local isHarmfulAndRaid = auraInfo.isHarmful and auraInfo.isRaid
-	if isHarmfulAndRaid and (not auraInfo.isBossAura) and onlyDispellable and CompactUnitFrame_Util_ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) and (not CompactUnitFrame_Util_IsPriorityDebuff(auraInfo.spellId)) then
-		return true
-	end
-
-	if isHarmfulAndRaid and dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
-
-	return false
-end
-
 local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
-	local onlyDispellable = false -- frame.optionTable.displayOnlyDispellableDebuffs (blizzards); need to do something more advanced here perhaps if we want that to be functional?
-	if self.unit ~= unit or AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuras, CouldDisplayAura, onlyDispellable) then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, isFullUpdate, updatedAuras) then return end
 
 	local auras = self.Auras
 	if(auras) then
