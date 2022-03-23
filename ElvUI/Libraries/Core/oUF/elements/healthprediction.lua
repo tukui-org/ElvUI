@@ -230,11 +230,11 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:RegisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
 
 		if oUF.isRetail then
+			oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
@@ -325,11 +325,11 @@ local function Disable(self)
 			element.overHealAbsorb:Hide()
 		end
 
-		oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
 
 		if oUF.isRetail then
+			oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
