@@ -24,8 +24,6 @@ local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')
 local MasqueGroupDebuffs = Masque and Masque:Group('ElvUI', 'Debuffs')
 
-local ForEachAura = AuraUtil.ForEachAura
-
 local DIRECTION_TO_POINT = {
 	DOWN_RIGHT = 'TOPLEFT',
 	DOWN_LEFT = 'TOPRIGHT',
@@ -524,7 +522,7 @@ function A:Initialize()
 		_G.TemporaryEnchantFrame:Kill()
 	end
 
-	if (E.TBC and not ForEachAura) or not E.private.auras.enable then return end
+	if (E.TBC and E.wowbuild < 42873) or not E.private.auras.enable then return end
 
 	A.Initialized = true
 	A.db = E.db.auras
