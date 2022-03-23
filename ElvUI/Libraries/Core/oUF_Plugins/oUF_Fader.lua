@@ -218,10 +218,15 @@ local options = {
 	},
 	Health = {
 		enable = function(self)
-			self:RegisterEvent('UNIT_HEALTH', Update)
+			if oUF.isRetail then
+				self:RegisterEvent('UNIT_HEALTH', Update)
+			else
+				self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
+			end
+
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end,
-		events = {'UNIT_HEALTH','UNIT_MAXHEALTH'}
+		events = oUF.isRetail and {'UNIT_HEALTH','UNIT_MAXHEALTH'} or {'UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'}
 	},
 	Power = {
 		enable = function(self)
@@ -257,10 +262,6 @@ local options = {
 	DelayAlpha = {countIgnored = true},
 	Delay = {countIgnored = true},
 }
-
-if not oUF.isRetail then
-	tinsert(options.Health.events, 'UNIT_HEALTH_FREQUENT')
-end
 
 if not oUF.isClassic then
 	options.Focus = {
