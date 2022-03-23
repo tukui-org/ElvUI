@@ -1,7 +1,6 @@
 ### Version 12.73 [ ETA: 🍨 ]
 
-**Dev**  
-something is different probably, check commits ;P 
+Dev Branch: something is different probably, check commits ;P  
 
 ___
 ### Version 12.72 [ March 22nd 2022 ]
