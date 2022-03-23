@@ -10,6 +10,15 @@ local UnitIsUnit = UnitIsUnit
 local UnitInPhase = UnitInPhase
 local UnitPhaseReason = UnitPhaseReason
 
+local function getRange(unit)
+	local minRange, maxRange = RangeCheck:GetRange(unit, true, true)
+	local range = maxRange ~= nil and maxRange or minRange or 0
+
+	if range > 0 then
+		return range
+	end
+end
+
 local function friendlyIsInRange(realUnit)
 	local unit = E:GetGroupUnit(realUnit) or realUnit
 
@@ -22,8 +31,7 @@ local function friendlyIsInRange(realUnit)
 		return false -- blizz checked and said the unit is out of range
 	end
 
-	local _, maxRange = RangeCheck:GetRange(unit, true, true)
-	return maxRange
+	return getRange(unit)
 end
 
 function UF:UpdateRange(unit)
@@ -38,8 +46,7 @@ function UF:UpdateRange(unit)
 		alpha = self.Fader.MinAlpha
 	elseif unit then
 		if UnitCanAttack('player', unit) or UnitIsUnit(unit, 'pet') then
-			local _, maxRange = RangeCheck:GetRange(unit, true, true)
-			alpha = (maxRange and self.Fader.MaxAlpha) or self.Fader.MinAlpha
+			alpha = (getRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
 		else
 			alpha = (UnitIsConnected(unit) and friendlyIsInRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
 		end
