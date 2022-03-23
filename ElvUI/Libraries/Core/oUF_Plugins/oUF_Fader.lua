@@ -218,7 +218,7 @@ local options = {
 	},
 	Health = {
 		enable = function(self)
-			if E.Retail then
+			if oUF.isRetail then
 				self:RegisterEvent('UNIT_HEALTH', Update)
 			else
 				self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
@@ -226,7 +226,7 @@ local options = {
 
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end,
-		events = E.Retail and {'UNIT_HEALTH','UNIT_MAXHEALTH'} or {'UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'}
+		events = oUF.isRetail and {'UNIT_HEALTH','UNIT_MAXHEALTH'} or {'UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'}
 	},
 	Power = {
 		enable = function(self)
