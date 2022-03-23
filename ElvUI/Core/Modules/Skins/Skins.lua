@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local tinsert, xpcall, next = tinsert, xpcall, next
-local unpack, assert, pairs, select, type, strfind = unpack, assert, pairs, select, type, strfind
+local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
+local unpack, assert, select, type, strfind = unpack, assert, select, type, strfind
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -471,6 +471,18 @@ do
 		if name then return _G[name..element] end
 	end
 
+	local function GetButton(frame, buttons)
+		for _, data in ipairs(buttons) do
+			if type(data) == 'string' then
+				local found = GetElement(frame, data)
+				if found then return found end
+			else -- has useParent
+				local found = GetElement(frame, data[1], data[2])
+				if found then return found end
+			end
+		end
+	end
+
 	local function ThumbStatus(frame)
 		if not frame.Thumb then
 			return
@@ -495,30 +507,34 @@ do
 		ThumbStatus(frame)
 	end
 
+	local upButtons = {'ScrollUpButton', 'UpButton', 'ScrollUp', {'scrollUp', true}, 'Back'}
+	local downButtons = {'ScrollDownButton', 'DownButton', 'ScrollDown', {'scrollDown', true}, 'Forward'}
+	local thumbButtons = {'ThumbTexture', 'thumbTexture', 'Thumb'}
+
 	function S:HandleScrollBar(frame, thumbY, thumbX, template)
 		assert(frame, 'doesnt exist!')
 
 		if frame.backdrop then return end
 
-		local upButton = GetElement(frame, 'ScrollUpButton') or GetElement(frame, 'UpButton') or GetElement(frame, 'ScrollUp') or GetElement(frame, 'scrollUp', true)
-		local downButton = GetElement(frame, 'ScrollDownButton') or GetElement(frame, 'DownButton') or GetElement(frame, 'ScrollDown') or GetElement(frame, 'scrollDown', true)
-		local thumb = GetElement(frame, 'ThumbTexture') or GetElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
+		local upButton, downButton = GetButton(frame, upButtons), GetButton(frame, downButtons)
+		local thumb = GetButton(frame, thumbButtons) or (frame.GetThumbTexture and frame:GetThumbTexture())
 
 		frame:StripTextures()
 		frame:CreateBackdrop(template or 'Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', upButton or frame, upButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 1)
 		frame.backdrop:Point('BOTTOMRIGHT', downButton or frame, upButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, -1)
 
+		if frame.Background then frame.Background:Hide() end
 		if frame.ScrollUpBorder then frame.ScrollUpBorder:Hide() end
 		if frame.ScrollDownBorder then frame.ScrollDownBorder:Hide() end
 
 		local frameLevel = frame:GetFrameLevel()
 		if upButton then
-			S:HandleNextPrevButton(upButton)
+			S:HandleNextPrevButton(upButton, 'up')
 			upButton:SetFrameLevel(frameLevel + 2)
 		end
 		if downButton then
-			S:HandleNextPrevButton(downButton)
+			S:HandleNextPrevButton(downButton, 'down')
 			downButton:SetFrameLevel(frameLevel + 2)
 		end
 		if thumb and not thumb.backdrop then
@@ -536,7 +552,11 @@ do
 				thumb.backdrop:Point('TOPLEFT', thumb, thumbX, -thumbY)
 				thumb.backdrop:Point('BOTTOMRIGHT', thumb, -thumbX, thumbY)
 
-				ThumbWatcher(frame)
+				if frame.SetEnabled then
+					ThumbWatcher(frame)
+				else
+					thumb.backdrop:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+				end
 			end
 		end
 	end
@@ -967,6 +987,11 @@ do
 		end
 
 		btn:StripTextures()
+
+		if btn.Texture then
+			btn.Texture:SetAlpha(0)
+		end
+
 		if not noBackdrop then
 			S:HandleButton(btn, nil, nil, nil, nil, nil, nil, nil, frameLevel)
 		end

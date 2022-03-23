@@ -1,4 +1,10 @@
-### Version 2.38 [ ETA: 🍨 ]
+### Version 2.38 [ March 23rd 2022 ]
+
+Auras: Turned off ElvUI top auras until Blizzard fixes the bug (Untick "Disable Blizzard" if you want to see default auras)  
+Chat: Updated chat installer (Requires you to re-run the chat installer)  
+Skins: Fixed mailbox skin and errors  
+UnitFrames: Fixed aura rows overlapping  
+UnitFrames: Paladins can now always see magic dispells  
 
 ___
 ### Version 2.37 [ March 20th 2022 ]
