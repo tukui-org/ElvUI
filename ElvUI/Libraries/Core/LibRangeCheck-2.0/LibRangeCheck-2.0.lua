@@ -210,7 +210,7 @@ tinsert(FriendSpells.PRIEST, 17)	-- Power Word: Shield (40 yards, level 4)
 tinsert(FriendSpells.PRIEST, 527)	-- Purify / Dispel Magic (40 yards retail, 30 yards tbc, level 18, rank 1)
 
 if not isRetail then
-	tinsert(FriendSpells.PRIEST, 2050) -- Lesser Heal (40 yards, level 1, rank 1)
+	tinsert(FriendSpells.PRIEST, 2050)	-- Lesser Heal (40 yards, level 1, rank 1)
 end
 
 tinsert(HarmSpells.PRIEST, 589)		-- Shadow Word: Pain (40 yards)
@@ -668,7 +668,7 @@ local function getRange(unit, checkerList)
 	if lo > #checkerList then
 		return 0, checkerList[#checkerList].range
 	elseif lo <= 1 then
-		return checkerList[1].range, nil
+		return 0, checkerList[1].range
 	else
 		return checkerList[lo].range, checkerList[lo - 1].range
 	end
