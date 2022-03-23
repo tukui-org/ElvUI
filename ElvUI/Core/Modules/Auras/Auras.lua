@@ -522,7 +522,7 @@ function A:Initialize()
 		_G.TemporaryEnchantFrame:Kill()
 	end
 
-	if (E.TBC and E.wowbuild < 42873) or not E.private.auras.enable then return end
+	if not E.private.auras.enable then return end
 
 	A.Initialized = true
 	A.db = E.db.auras
