@@ -204,7 +204,7 @@ tinsert(HarmSpells.PALADIN, 20473)	-- Holy Shock (40 yards)
 
 tinsert(ResSpells.PALADIN, 7328)	-- Redemption (40 yards)
 
--- Priests
+-- Priests (dont add Flash Heal first, it causes Boon of the Ascended to mess up range return?)
 tinsert(FriendSpells.PRIEST, 17)	-- Power Word: Shield (40 yards, level 4)
 tinsert(FriendSpells.PRIEST, 527)	-- Purify / Dispel Magic (40 yards retail, 30 yards tbc, level 18, rank 1)
 tinsert(FriendSpells.PRIEST, 2061)	-- Flash Heal (40 yards, level 3)
