@@ -388,8 +388,6 @@ end
 local function SkinHeirloomFrame()
 	local HeirloomsJournal = _G.HeirloomsJournal
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
-	_G.HeirloomsJournalFilterButton:Point('LEFT', HeirloomsJournal.SearchBox, 'RIGHT', 2, 0)
-	S:HandleButton(_G.HeirloomsJournalFilterButton)
 	HeirloomsJournal.iconsFrame:StripTextures()
 
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
