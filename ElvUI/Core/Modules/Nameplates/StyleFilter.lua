@@ -1265,7 +1265,6 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_AURA = false,
 	UNIT_CONNECTION = false,
 	UNIT_DISPLAYPOWER = false,
-	UNIT_HEALTH = false,
 	UNIT_MAXHEALTH = false,
 	UNIT_NAME_UPDATE = false,
 	UNIT_PET = false,
@@ -1292,6 +1291,13 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_THREAT_SITUATION_UPDATE = false,
 	VEHICLE_UPDATE = true
 }
+
+if E.Retail then
+	mod.StyleFilterDefaultEvents.UNIT_HEALTH = false
+else
+	mod.StyleFilterDefaultEvents.UNIT_HEALTH_FREQUENT = false
+end
+
 mod.StyleFilterCastEvents = {
 	UNIT_SPELLCAST_START = 1,			-- start
 	UNIT_SPELLCAST_CHANNEL_START = 1,
@@ -1363,8 +1369,13 @@ function mod:StyleFilterConfigure()
 				end
 
 				if t.healthThreshold then
-					events.UNIT_HEALTH = 1
 					events.UNIT_MAXHEALTH = 1
+
+					if E.Retail then
+						events.UNIT_HEALTH = 1
+					else
+						events.UNIT_HEALTH_FREQUENT = 1
+					end
 				end
 
 				if t.powerThreshold then
