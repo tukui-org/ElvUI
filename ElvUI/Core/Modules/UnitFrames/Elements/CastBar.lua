@@ -5,12 +5,13 @@ local LSM = E.Libs.LSM
 local unpack, tonumber, abs = unpack, tonumber, abs
 
 local CreateFrame = CreateFrame
-local UnitSpellHaste = UnitSpellHaste
-local UnitIsPlayer = UnitIsPlayer
-local UnitClass = UnitClass
-local UnitReaction = UnitReaction
-local UnitCanAttack = UnitCanAttack
 local GetTalentInfo = GetTalentInfo
+local UnitCanAttack = UnitCanAttack
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
+local UnitName = UnitName
+local UnitReaction = UnitReaction
+local UnitSpellHaste = UnitSpellHaste
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -391,15 +392,25 @@ function UF:GetInterruptColor(db, unit)
 end
 
 function UF:PostCastStart(unit)
-	local db = self:GetParent().db
+	local parent = self.__owner
+	local db = parent and parent.db
 	if not db or not db.castbar then return end
 
 	if unit == 'vehicle' then unit = 'player' end
 
 	self.unit = unit
 
-	if unit == 'player' and db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(self.spellName..' > '..self.curTarget)
+	if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
+		if parent.unitframeType == 'player' then
+			if self.curTarget then
+				self.Text:SetText(self.spellName..' > '..self.curTarget)
+			end
+		elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
+			local target = self.curTarget or UnitName(unit..'target')
+			if target and target ~= '' and target ~= UnitName(unit) then
+				self.Text:SetText(self.spellName..' > '..target)
+			end
+		end
 	end
 
 	if self.channeling and db.castbar.ticks and unit == 'player' then
