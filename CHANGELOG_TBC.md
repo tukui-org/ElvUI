@@ -1,6 +1,8 @@
 ### ### Version 2.39 [ March 23rd 2022 ]
 
 Auras: Re enabled top auras, blizzard pushed a hotfix  
+UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option. 
+
 
 ___
 ### Version 2.38 [ March 23rd 2022 ]

@@ -1,6 +1,7 @@
 ### Version 12.73 [ ETA: 🍨 ]
 
 Dev Branch: something is different probably, check commits ;P  
+UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option. 
 
 ___
 ### Version 12.72 [ March 22nd 2022 ]
