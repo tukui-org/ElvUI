@@ -167,19 +167,17 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = NP:PlateDB(plate)
-			if db and db.castbar and db.castbar.enable and db.castbar.sourceInterrupt then
-				if db.castbar.timeToHold > 0 then
-					local name = strmatch(sourceName, '([^%-]+).*')
-					if db.castbar.sourceInterruptClassColor then
-						local data = CH:GetPlayerInfoByGUID(sourceGUID)
-						if data and data.classColor then
-							classColor = data.classColor.colorStr
-						end
-
-						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
-					else
-						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
+			if db.castbar and db.castbar.enable and db.castbar.sourceInterrupt and (db.castbar.timeToHold > 0) then
+				local name = strmatch(sourceName, '([^%-]+).*')
+				if db.castbar.sourceInterruptClassColor then
+					local data = CH:GetPlayerInfoByGUID(sourceGUID)
+					if data and data.classColor then
+						classColor = data.classColor.colorStr
 					end
+
+					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+				else
+					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
 				end
 			end
 		end
