@@ -915,38 +915,13 @@ do -- AuraUtil's ShouldSkipAuraUpdate by Blizzard (implemented and modified by S
 		return false
 	end
 
-	-- replaced to allow full override (ignoring shouldNeverShow)
-	local function ShouldSkipUpdate(isFullUpdate, updatedAuras, relevantFunc, ...)
-		if isFullUpdate == nil then
-			isFullUpdate = true
-		end
-
-		local skipUpdate = false
-		if not isFullUpdate and updatedAuras ~= nil and relevantFunc ~= nil then
-			skipUpdate = true
-
-			for _, auraInfo in ipairs(updatedAuras) do
-				if relevantFunc == CouldDisplayAura then -- this will skip any aura with shouldNevershow
-					if (not auraInfo.shouldNeverShow) and relevantFunc(auraInfo, ...) then
-						skipUpdate = false
-						break
-					end
-				elseif relevantFunc(auraInfo, ...) then -- this is an override function, so it can still process an aura with shouldNeverShow
-					skipUpdate = false
-					break
-				end
-			end
-		end
-
-		return skipUpdate
-	end
-
+	local ShouldSkipAuraUpdate = AuraUtil.ShouldSkipAuraUpdate
 	function oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc)
 		if not unit or frame.unit ~= unit then
 			return true
 		else
 			local onlyDispellable = false -- frame.optionTable.displayOnlyDispellableDebuffs (blizzards); need to do something more advanced here perhaps if we want that to be functional?
-			return ShouldSkipUpdate(isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, onlyDispellable)
+			return ShouldSkipAuraUpdate(isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, onlyDispellable)
 		end
 	end
 end
