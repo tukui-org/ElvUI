@@ -896,6 +896,36 @@ if(global) then
 	end
 end
 
+do -- AuraUtil's ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy) ~ any comments are from Simpy
+	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
+	local function CouldDisplayAura(auraInfo, onlyDispellable) -- copy of CompactUnitFrame_CouldDisplayAura; unchanged functionality
+		if auraInfo.isNameplateOnly then return false end
+		if auraInfo.isBossAura then return true end
+		if auraInfo.isHarmful and CompactUnitFrame_Util_IsPriorityDebuff(auraInfo.spellId) then return true end
+		if auraInfo.isHarmful and (not onlyDispellable) and CompactUnitFrame_Util_ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) then return true end
+		if auraInfo.isHelpful and CompactUnitFrame_UtilShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
+
+		local isHarmfulAndRaid = auraInfo.isHarmful and auraInfo.isRaid
+		if isHarmfulAndRaid and (not auraInfo.isBossAura) and onlyDispellable and CompactUnitFrame_Util_ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) and (not CompactUnitFrame_Util_IsPriorityDebuff(auraInfo.spellId)) then
+			return true
+		end
+
+		if isHarmfulAndRaid and dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
+
+		return false
+	end
+
+	local ShouldSkipAuraUpdate = AuraUtil.ShouldSkipAuraUpdate
+	function oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc)
+		if not unit or frame.unit ~= unit then
+			return true
+		else
+			local onlyDispellable = false -- frame.optionTable.displayOnlyDispellableDebuffs (blizzards); need to do something more advanced here perhaps if we want that to be functional?
+			return ShouldSkipAuraUpdate(isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, onlyDispellable)
+		end
+	end
+end
+
 do -- Event Pooler by Simpy
 	local pooler = CreateFrame('Frame')
 	pooler.events = {}
