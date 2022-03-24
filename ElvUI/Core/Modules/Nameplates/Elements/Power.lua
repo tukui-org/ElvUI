@@ -82,9 +82,8 @@ function NP:Power_UpdateColor(_, unit)
 end
 
 function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
-	local db = NP.db.units[self.__owner.frameType]
-
-	if not db then return end
+	local db = NP:PlateDB(self.__owner)
+	if not db.enable then return end
 
 	if self.__owner.frameType ~= 'PLAYER' and db.power.displayAltPower and not self.displayType then
 		self:Hide()
