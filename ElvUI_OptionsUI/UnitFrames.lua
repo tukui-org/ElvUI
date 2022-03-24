@@ -371,6 +371,8 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		config.args.ticks.args.ticks = ACH:Toggle(L["Ticks"], L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."], 1)
 		config.args.ticks.args.tickColor = ACH:Color(L["COLOR"], nil, 2, true, nil, function() local c, d = E.db.unitframe.units[groupName].castbar.tickColor, P.unitframe.units[groupName].castbar.tickColor return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].castbar.tickColor c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) end)
 		config.args.ticks.args.tickWidth = ACH:Range(L["Width"], nil, 3, { min = 1, max = 20, step = 1 })
+	elseif groupName == 'pet' or groupName == 'boss' then
+		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 13)
 	end
 
 	if groupName == 'party' then
