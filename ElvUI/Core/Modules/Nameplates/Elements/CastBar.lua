@@ -89,7 +89,7 @@ function NP:Castbar_PostCastStart(unit)
 	-- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
-	if db and db.castbar and db.castbar.enable and db.castbar.displayTarget then
+	if db.castbar and db.castbar.enable and db.castbar.displayTarget then
 		local frameType = plate.frameType
 		if frameType == 'PLAYER' then
 			if self.curTarget then
