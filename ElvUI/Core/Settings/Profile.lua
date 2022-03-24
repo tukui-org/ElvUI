@@ -1272,6 +1272,7 @@ local UF_Castbar = {
 	iconYOffset = 0,
 	insideInfoPanel = true,
 	overlayOnFrame = 'None',
+	displayTarget = false,
 	reverse = false,
 	spark = true,
 	textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
@@ -2021,7 +2022,6 @@ P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitel
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.player.castbar.latency = true
-P.unitframe.units.player.castbar.displayTarget = false
 
 P.unitframe.units.player.fader.enable = false
 P.unitframe.units.player.fader.casting = true

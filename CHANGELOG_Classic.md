@@ -2,6 +2,9 @@
 
 UnitFrames: Fixed aura rows overlapping  
 UnitFrames: Paladins can now always see magic dispells  
+UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option.  
+UnitFrames: Fix castbar custom backdrop when using reverse option.  
+UnitFrames: Fixed range (again)  
 
 ___
 ### Version 1.63 [ March 20th 2022 ]
