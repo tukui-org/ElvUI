@@ -8,30 +8,39 @@ local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, t
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
+local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
-local GetInventoryItemID = GetInventoryItemID
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
-local IsResting = IsResting
 local IsEquippedItem = IsEquippedItem
+local IsResting = IsResting
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitHasIncomingResurrection = UnitHasIncomingResurrection
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitInVehicle = UnitInVehicle
+local UnitIsCharmed = UnitIsCharmed
+local UnitIsConnected = UnitIsConnected
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsInMyGuild = UnitIsInMyGuild
+local UnitIsOtherPlayersPet = UnitIsOtherPlayersPet
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
+local UnitIsPossessed = UnitIsPossessed
 local UnitIsPVP = UnitIsPVP
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsTrivial = UnitIsTrivial
+local UnitIsUnconscious = UnitIsUnconscious
 local UnitIsUnit = UnitIsUnit
 local UnitLevel = UnitLevel
 local UnitPlayerControlled = UnitPlayerControlled
@@ -768,25 +777,91 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Pet
 	if trigger.isPet or trigger.isNotPet then
-		if (trigger.isPet and frame.isPet or trigger.isNotPet and not frame.isPet) then passed = true else return end
+		if (trigger.isPet and frame.isPet) or (trigger.isNotPet and not frame.isPet) then passed = true else return end
+	end
+
+	-- In Party
+	if trigger.inParty or trigger.notInParty then
+		local inParty = UnitInParty(frame.unit)
+		if (trigger.inParty and inParty) or (trigger.notInParty and not inParty) then passed = true else return end
+	end
+
+	-- In Raid
+	if trigger.inRaid or trigger.notInRaid then
+		local inRaid = UnitInRaid(frame.unit)
+		if (trigger.inRaid and inRaid) or (trigger.notInRaid and not inRaid) then passed = true else return end
+	end
+
+	-- My Guild
+	if trigger.inMyGuild or trigger.notMyGuild then
+		local myGuild = UnitIsInMyGuild(frame.unit)
+		if (trigger.inMyGuild and myGuild) or (trigger.notMyGuild and not myGuild) then passed = true else return end
+	end
+
+	-- Other Players Pet
+	if trigger.isOthersPet or trigger.notOthersPet then
+		local othersPet = UnitIsOtherPlayersPet(frame.unit)
+		if (trigger.isOthersPet and othersPet) or (trigger.notOthersPet and not othersPet) then passed = true else return end
+	end
+
+	-- Trivial (grey to player)
+	if trigger.isTrivial or trigger.notTrivial then
+		local trivial = UnitIsTrivial(frame.unit)
+		if (trigger.isTrivial and trivial) or (trigger.notTrivial and not trivial) then passed = true else return end
+	end
+
+	-- Conscious State
+	if trigger.isUnconscious or trigger.isConscious then
+		local unconscious = UnitIsUnconscious(frame.unit)
+		if (trigger.isUnconscious and unconscious) or (trigger.isConscious and not unconscious) then passed = true else return end
+	end
+
+	-- Possessed State
+	if trigger.isPossessed or trigger.notPossessed then
+		local possessed = UnitIsPossessed(frame.unit)
+		if (trigger.isPossessed and possessed) or (trigger.notPossessed and not possessed) then passed = true else return end
+	end
+
+	-- Charmed State
+	if trigger.isCharmed or trigger.notCharmed then
+		local charmed = UnitIsCharmed(frame.unit)
+		if (trigger.isCharmed and charmed) or (trigger.notCharmed and not charmed) then passed = true else return end
+	end
+
+	-- Dead or Ghost
+	if trigger.isDeadOrGhost or trigger.notDeadOrGhost then
+		local deadOrGhost = UnitIsDeadOrGhost(frame.unit)
+		if (trigger.isDeadOrGhost and deadOrGhost) or (trigger.notDeadOrGhost and not deadOrGhost) then passed = true else return end
+	end
+
+	-- Being Resurrected
+	if trigger.isBeingResurrected or trigger.notBeingResurrected then
+		local beingResurrected = UnitHasIncomingResurrection(frame.unit)
+		if (trigger.isBeingResurrected and beingResurrected) or (trigger.notBeingResurrected and not beingResurrected) then passed = true else return end
+	end
+
+	-- Unit Connected
+	if trigger.isConnected or trigger.notConnected then
+		local connected = UnitIsConnected(frame.unit)
+		if (trigger.isConnected and connected) or (trigger.notConnected and not connected) then passed = true else return end
 	end
 
 	-- Unit Player Controlled
 	if trigger.isPlayerControlled or trigger.isNotPlayerControlled then
 		local playerControlled = UnitPlayerControlled(frame.unit) and not frame.isPlayer
-		if (trigger.isPlayerControlled and playerControlled or trigger.isNotPlayerControlled and not playerControlled) then passed = true else return end
+		if (trigger.isPlayerControlled and playerControlled) or (trigger.isNotPlayerControlled and not playerControlled) then passed = true else return end
 	end
 
 	-- Unit Owned By Player
 	if trigger.isOwnedByPlayer or trigger.isNotOwnedByPlayer then
 		local ownedByPlayer = UnitIsOwnerOrControllerOfUnit('player', frame.unit)
-		if (trigger.isOwnedByPlayer and ownedByPlayer or trigger.isNotOwnedByPlayer and not ownedByPlayer) then passed = true else return end
+		if (trigger.isOwnedByPlayer and ownedByPlayer) or (trigger.isNotOwnedByPlayer and not ownedByPlayer) then passed = true else return end
 	end
 
 	-- Unit PvP
 	if trigger.isPvP or trigger.isNotPvP then
 		local isPvP = UnitIsPVP(frame.unit)
-		if (trigger.isPvP and isPvP or trigger.isNotPvP and not isPvP) then passed = true else return end
+		if (trigger.isPvP and isPvP) or (trigger.isNotPvP and not isPvP) then passed = true else return end
 	end
 
 	-- Unit Tap Denied
@@ -837,18 +912,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
 		local role = UnitGroupRolesAssigned(frame.unit)
 		if trigger.unitRole[mod.TriggerConditions.roles[role]] then passed = true else return end
-	end
-
-	-- In Party
-	if trigger.inParty or trigger.notInParty then
-		local inParty = UnitInParty(frame.unit)
-		if (trigger.inParty and inParty) or (trigger.notInParty and not inParty) then passed = true else return end
-	end
-
-	-- In Raid
-	if trigger.inRaid or trigger.notInRaid then
-		local inRaid = UnitInRaid(frame.unit)
-		if (trigger.inRaid and inRaid) or (trigger.notInRaid and not inRaid) then passed = true else return end
 	end
 
 	-- Unit Type
@@ -1200,6 +1263,7 @@ mod.StyleFilterPlateEvents = {} -- events watched inside of ouf, which is called
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents), true if unitless
 	-- existing:
 	UNIT_AURA = false,
+	UNIT_CONNECTION = false,
 	UNIT_DISPLAYPOWER = false,
 	UNIT_HEALTH = false,
 	UNIT_MAXHEALTH = false,
@@ -1208,8 +1272,10 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
 	GROUP_ROSTER_UPDATE = true,
+	INCOMING_RESURRECT_CHANGED = false,
 	MODIFIER_STATE_CHANGED = true,
 	PLAYER_EQUIPMENT_CHANGED = true,
+	PLAYER_FLAGS_CHANGED = false,
 	PLAYER_FOCUS_CHANGED = true,
 	PLAYER_REGEN_DISABLED = true,
 	PLAYER_REGEN_ENABLED = true,
@@ -1340,6 +1406,22 @@ function mod:StyleFilterConfigure()
 
 				if t.hasTitleNPC or t.noTitleNPC then
 					events.UNIT_NAME_UPDATE = 1
+				end
+
+				if t.isBeingResurrected or t.notBeingResurrected then
+					events.INCOMING_RESURRECT_CHANGED = 1
+				end
+
+				if t.isConnected or t.notConnected then
+					events.UNIT_CONNECTION = 1
+				end
+
+				if t.isDeadOrGhost or t.notDeadOrGhost then
+					events.PLAYER_FLAGS_CHANGED = 1
+				end
+
+				if t.isUnconscious or t.isConscious or t.isCharmed or t.notCharmed or t.isPossessed or t.notPossessed then
+					events.UNIT_FLAGS = 1 -- instead these might need UNIT_AURA
 				end
 
 				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
