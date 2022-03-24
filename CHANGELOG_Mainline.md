@@ -4,6 +4,7 @@ UnitFrames: Fix castbar custom backdrop color if set to a class color from not d
 UnitFrames: Fix castbar custom backdrop when using reverse option.  
 UnitFrames: Added Castbar Display Target to Pet and Boss frames.  
 NamePlates: Added Castbar Display Target to Enemy NPC and Friendly NPC.  
+UnitFrames: Fixed range (again)  
 
 ___
 ### Version 12.72 [ March 22nd 2022 ]
