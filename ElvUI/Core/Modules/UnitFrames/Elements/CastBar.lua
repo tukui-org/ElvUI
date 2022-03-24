@@ -246,9 +246,8 @@ function UF:Configure_Castbar(frame)
 		E:UpdateClassColor(customColor.color)
 		E:UpdateClassColor(customColor.colorNoInterrupt)
 		E:UpdateClassColor(customColor.colorInterrupted)
-		E:UpdateClassColor(customColor.colorBackdrop)
 
-		castbar.custom_backdrop = customColor.useCustomBackdrop and customColor.colorBackdrop
+		castbar.custom_backdrop = customColor.useCustomBackdrop and E:UpdateClassColor(customColor.colorBackdrop)
 		UF:ToggleTransparentStatusBar(customColor.transparent, castbar, castbar.bg, nil, customColor.invertColors)
 	else
 		castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and E:UpdateClassColor(UF.db.colors.castbar_backdrop)
