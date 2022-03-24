@@ -2,6 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
+local ElvUF = E.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
+
 local _G = _G
 local ipairs, next, pairs, select = ipairs, next, pairs, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
@@ -1503,9 +1506,13 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local update = function(frame, event, arg1, ...)
+	local update = function(frame, event, arg1, arg2, arg3, ...)
 		local eventFunc = mod.StyleFilterEventFunctions[event]
-		if eventFunc then eventFunc(frame, event, arg1, ...) end
+		if eventFunc then eventFunc(frame, event, arg1, arg2, arg3, ...) end
+
+		if event == 'UNIT_AURA' and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
+			return
+		end
 
 		if not mod.StyleFilterCastEvents[event] or (arg1 == frame.unit) then
 			mod:StyleFilterUpdate(frame, event)
