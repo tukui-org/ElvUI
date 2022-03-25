@@ -205,7 +205,7 @@ local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') 
 StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
 StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplates.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
 StyleFitlers.selectFilter.sortByValue = true
-StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() end)
+StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
 StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
 -- UpdateBossModAuras needed here in get to update the list once every time you load the config with a selected filter.
@@ -669,8 +669,6 @@ for i, iconName in next, E.NamePlates.TriggerConditions.raidTargets do
 end
 
 local actionDefaults = {
-	scale = 1,
-	alpha = -1,
 	color = {
 		healthColor = { r = 136 / 255, g = 255 / 255, b = 102 / 255, a = 1 },
 		powerColor = { r = 102 / 255, g = 136 / 255, b = 255 / 255, a = 1 },
@@ -708,7 +706,7 @@ local function actionSubGroup(info, ...)
 	NP:ConfigureAll()
 end
 
-StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)
