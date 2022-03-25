@@ -107,7 +107,7 @@ local staggerID = {
 	[124273] = true, -- [RED]    Heavy Stagger
 }
 
-local function verifyStagger(auraInfo)
+local function verifyStagger(frame, event, unit, auraInfo)
 	return staggerID[auraInfo.spellId]
 end
 

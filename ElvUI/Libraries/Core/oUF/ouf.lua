@@ -19,6 +19,21 @@ local callback, objects, headers = {}, {}, {}
 local elements = {}
 local activeElements = {}
 
+-- ElvUI
+local _G = _G
+local assert, setmetatable = assert, setmetatable
+local unpack, tinsert, tremove = unpack, tinsert, tremove
+local next, time, wipe, type = next, time, wipe, type
+local select, pairs, ipairs = select, pairs, ipairs
+local strupper, strsplit = strupper, strsplit
+
+local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local CreateFrame = CreateFrame
+local IsLoggedIn = IsLoggedIn
+local UnitGUID = UnitGUID
+local SetCVar = SetCVar
+-- end
+
 local PetBattleFrameHider = CreateFrame('Frame', (global or parent) .. '_PetBattleFrameHider', UIParent, 'SecureHandlerStateTemplate')
 PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
@@ -101,7 +116,7 @@ for k, v in next, {
 			activeElements[self][name] = true
 
 			if(element.update) then
-				table.insert(self.__elements, element.update)
+				tinsert(self.__elements, element.update)
 			end
 		end
 	end,
@@ -122,7 +137,7 @@ for k, v in next, {
 		if(update) then
 			for k, func in next, self.__elements do
 				if(func == update) then
-					table.remove(self.__elements, k)
+					tremove(self.__elements, k)
 					break
 				end
 			end
@@ -273,7 +288,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 		object = setmetatable(object, frame_metatable)
 
 		-- Expose the frame through oUF.objects.
-		table.insert(objects, object)
+		tinsert(objects, object)
 
 		-- We have to force update the frames when PEW fires.
 		-- It's also important to evaluate units before running an update
@@ -380,7 +395,7 @@ Used to add a function to a table to be executed upon unit frame/header initiali
 * func - function to be added
 --]]
 function oUF:RegisterInitCallback(func)
-	table.insert(callback, func)
+	tinsert(callback, func)
 end
 
 --[[ oUF:RegisterMetaFunction(name, func)
@@ -523,7 +538,7 @@ local function generateName(unit, ...)
 	elseif(party) then
 		append = 'Party'
 	elseif(unit) then
-		append = unit:gsub('^%l', string.upper)
+		append = unit:gsub('^%l', strupper)
 	end
 
 	if(append) then
@@ -653,7 +668,7 @@ do
 		header.visibility = visibility
 
 		-- Expose the header through oUF.headers.
-		table.insert(headers, header)
+		tinsert(headers, header)
 
 		-- We set it here so layouts can't directly override it.
 		header:SetAttribute('initialConfigFunction', initialConfigFunction)
@@ -697,12 +712,12 @@ do
 		end
 
 		if(visibility) then
-			local type, list = string.split(' ', visibility, 2)
+			local type, list = strsplit(' ', visibility, 2)
 			if(list and type == 'custom') then
 				RegisterAttributeDriver(header, 'state-visibility', list)
 				header.visibility = list
 			else
-				local condition = getCondition(string.split(',', visibility))
+				local condition = getCondition(strsplit(',', visibility))
 				RegisterAttributeDriver(header, 'state-visibility', condition)
 				header.visibility = condition
 			end
@@ -796,7 +811,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				end
 			end
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
-			local nameplate = C_NamePlate.GetNamePlateForUnit('target')
+			local nameplate = GetNamePlateForUnit('target')
 			if(nameplateCallback) then
 				nameplateCallback(nameplate and nameplate.unitFrame, event, 'target')
 			end
@@ -807,14 +822,14 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				nameplate.unitFrame:UpdateAllElements(event)
 			end
 		elseif(event == 'UNIT_FACTION' and unit) then
-			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
+			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
 			end
 		elseif(event == 'NAME_PLATE_UNIT_ADDED' and unit) then
-			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
+			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
 			if(not nameplate.unitFrame) then
@@ -841,7 +856,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			-- ForceUpdate calls layout devs have to do themselves
 			nameplate.unitFrame:UpdateAllElements(event)
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
-			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
+			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
 			nameplate.unitFrame:SetAttribute('unit', nil)
@@ -902,15 +917,31 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 	local SpellIsPriorityAura = SpellIsPriorityAura
 	local SpellIsSelfBuff = SpellIsSelfBuff
 
-	local hasValidPlayer, EventRegistry = false, _G.EventRegistry
-	EventRegistry:RegisterFrameEvent('PLAYER_ENTERING_WORLD')
-	EventRegistry:RegisterFrameEvent('PLAYER_LEAVING_WORLD')
-	EventRegistry:RegisterCallback('PLAYER_ENTERING_WORLD', function() hasValidPlayer = true end, {})
-	EventRegistry:RegisterCallback('PLAYER_LEAVING_WORLD', function() hasValidPlayer = false end, {})
-
+	local hasValidPlayer = false
 	local cachedVisualizationInfo = {}
-	EventRegistry:RegisterFrameEvent('PLAYER_SPECIALIZATION_CHANGED')
-	EventRegistry:RegisterCallback('PLAYER_SPECIALIZATION_CHANGED', function() cachedVisualizationInfo = {} end, {})
+	local cachedSelfBuffChecks = {}
+	local cachedPriorityChecks = {}
+	local unitPlayer = { player = true, pet = true, vehicle = true }
+
+	local eventFrame = CreateFrame('Frame')
+	eventFrame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+	eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
+	eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
+	eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+	eventFrame:RegisterEvent('PLAYER_LEAVING_WORLD')
+	eventFrame:SetScript('OnEvent', function(_, event)
+		if event == 'PLAYER_ENTERING_WORLD' then
+			hasValidPlayer = true
+		elseif event == 'PLAYER_LEAVING_WORLD' then
+			hasValidPlayer = false
+		elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
+			wipe(cachedVisualizationInfo)
+		elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
+			wipe(cachedVisualizationInfo)
+			wipe(cachedSelfBuffChecks)
+			wipe(cachedPriorityChecks)
+		end
+	end)
 
 	local function GetVisibilityInfo(spellId)
 		return SpellGetVisibilityInfo(spellId, UnitAffectingCombat('player') and 'RAID_INCOMBAT' or 'RAID_OUTOFCOMBAT')
@@ -928,67 +959,48 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 		return unpack(cachedVisualizationInfo[spellId])
 	end
 
+	local function CheckIsSelfBuff(spellId)
+		if cachedSelfBuffChecks[spellId] == nil then cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId) end
+		return cachedSelfBuffChecks[spellId]
+	end
+
+	local function CheckIsPriorityAura(spellId)
+		if cachedPriorityChecks[spellId] == nil then cachedPriorityChecks[spellId] = SpellIsPriorityAura(spellId) end
+		return cachedPriorityChecks[spellId]
+	end
+
+	local _, playerClass = UnitClass('player')
+	local paladinPriority = function(spellId) local isForbearance = (spellId == 25771) return isForbearance or CheckIsPriorityAura(spellId) end
+	local IsPriorityDebuff = playerClass == 'PALADIN' and paladinPriority or function(spellId) return CheckIsPriorityAura(spellId) end
+
 	local function ShouldDisplayDebuff(unitCaster, spellId)
 		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
 		if hasCustom then -- Would only be 'mine' in the case of something like forbearance.
-			return showForMySpec or (alwaysShowMine and (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'))
+			return showForMySpec or (alwaysShowMine and unitPlayer[unitCaster])
 		else
 			return true
 		end
-	end
-
-	local cachedSelfBuffChecks = {}
-	local function CheckIsSelfBuff(spellId)
-		if cachedSelfBuffChecks[spellId] == nil then
-			cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId)
-		end
-
-		return cachedSelfBuffChecks[spellId]
 	end
 
 	local function ShouldDisplayBuff(unitCaster, spellId, canApplyAura)
 		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
 
 		if hasCustom then
-			return showForMySpec or (alwaysShowMine and (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'))
+			return showForMySpec or (alwaysShowMine and unitPlayer[unitCaster])
 		else
-			return (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle') and (canApplyAura or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff
+			return unitPlayer[unitCaster] and (canApplyAura or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff ~Simpy
 		end
 	end
-
-	local cachedPriorityChecks = {}
-	local function CheckIsPriorityAura(spellId)
-		if cachedPriorityChecks[spellId] == nil then
-			cachedPriorityChecks[spellId] = SpellIsPriorityAura(spellId)
-		end
-
-		return cachedPriorityChecks[spellId]
-	end
-
-	local _, classFilename = UnitClass('player')
-	local paladinPriority = function(spellId) local isForbearance = (spellId == 25771) return isForbearance or CheckIsPriorityAura(spellId) end
-	local IsPriorityDebuff = classFilename == 'PALADIN' and paladinPriority or function(spellId) return CheckIsPriorityAura(spellId) end
-
-	local function DumpCaches()
-		cachedVisualizationInfo = {}
-		cachedSelfBuffChecks = {}
-		cachedPriorityChecks = {}
-	end
-
-	EventRegistry:RegisterFrameEvent('PLAYER_REGEN_ENABLED')
-	EventRegistry:RegisterFrameEvent('PLAYER_REGEN_DISABLED')
-	EventRegistry:RegisterCallback('PLAYER_REGEN_ENABLED', DumpCaches, {})
-	EventRegistry:RegisterCallback('PLAYER_REGEN_DISABLED', DumpCaches, {})
 
 	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
-	local function CouldDisplayAura(auraInfo, onlyDispellable)
-		if auraInfo.isNameplateOnly then return false end
+	local function CouldDisplayAura(frame, event, unit, auraInfo, onlyDispellable)
+		if auraInfo.isNameplateOnly then return not frame.isNamePlate end
 		if auraInfo.isBossAura then return true end
 
-		local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice
+		local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice ~Simpy
 		if auraInfo.isHarmful and priorityDebuff then return true end
 
-		local shouldShowDebuff = ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) -- don't call this twice
+		local shouldShowDebuff = ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) -- don't call this twice ~Simpy
 		if auraInfo.isHarmful and (not onlyDispellable) and shouldShowDebuff then return true end
 
 		if auraInfo.isHelpful and ShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
@@ -1001,7 +1013,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 		return false
 	end
 
-	local function ShouldSkipUpdate(isFullUpdate, updatedAuras, relevantFunc, ...)
+	local function ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, relevantFunc, ...)
 		if isFullUpdate == nil then
 			isFullUpdate = true
 		end
@@ -1011,7 +1023,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 			skipUpdate = true
 
 			for _, auraInfo in ipairs(updatedAuras) do
-				if relevantFunc(auraInfo, ...) then
+				if relevantFunc(frame, event, unit, auraInfo, ...) then
 					skipUpdate = false
 					break
 				end
@@ -1026,7 +1038,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 			return true
 		else
 			local onlyDispellable = false -- frame.optionTable.displayOnlyDispellableDebuffs (blizzards); need to do something more advanced here perhaps if we want that to be functional?
-			return ShouldSkipUpdate(isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, onlyDispellable)
+			return ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, onlyDispellable)
 		end
 	end
 end
