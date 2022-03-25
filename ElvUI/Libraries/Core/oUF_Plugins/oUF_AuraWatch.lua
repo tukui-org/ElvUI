@@ -234,8 +234,8 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	return visible, hidden
 end
 
-local function UpdateAuras(self, event, unit)
-	if self.unit ~= unit then return end
+local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, isFullUpdate, updatedAuras) then return end
 
 	local element = self.AuraWatch
 	if element then
@@ -289,7 +289,12 @@ local function Enable(self)
 		element.anchoredIcons = 0
 		element.size = 8
 
-		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		if oUF.isRetail then
+			self:RegisterEvent('UNIT_AURA', UpdateAuras)
+		else
+			oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		end
+
 		element:Show()
 
 		return true
@@ -298,7 +303,11 @@ end
 
 local function Disable(self)
 	if self.AuraWatch then
-		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_AURA', UpdateAuras)
+		else
+			oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		end
 
 		if self.AuraWatch then self.AuraWatch:Hide() end
 	end

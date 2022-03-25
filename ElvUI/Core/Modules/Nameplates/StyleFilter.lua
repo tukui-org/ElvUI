@@ -2,6 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
+local ElvUF = E.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
+
 local _G = _G
 local ipairs, next, pairs, select = ipairs, next, pairs, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
@@ -1263,16 +1266,18 @@ mod.StyleFilterPlateEvents = {} -- events watched inside of ouf, which is called
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents), true if unitless
 	-- existing:
 	UNIT_AURA = false,
+	UNIT_CONNECTION = false,
 	UNIT_DISPLAYPOWER = false,
-	UNIT_HEALTH = false,
 	UNIT_MAXHEALTH = false,
 	UNIT_NAME_UPDATE = false,
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
 	GROUP_ROSTER_UPDATE = true,
+	INCOMING_RESURRECT_CHANGED = false,
 	MODIFIER_STATE_CHANGED = true,
 	PLAYER_EQUIPMENT_CHANGED = true,
+	PLAYER_FLAGS_CHANGED = false,
 	PLAYER_FOCUS_CHANGED = true,
 	PLAYER_REGEN_DISABLED = true,
 	PLAYER_REGEN_ENABLED = true,
@@ -1289,6 +1294,13 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_THREAT_SITUATION_UPDATE = false,
 	VEHICLE_UPDATE = true
 }
+
+if E.Retail then
+	mod.StyleFilterDefaultEvents.UNIT_HEALTH = false
+else
+	mod.StyleFilterDefaultEvents.UNIT_HEALTH_FREQUENT = false
+end
+
 mod.StyleFilterCastEvents = {
 	UNIT_SPELLCAST_START = 1,			-- start
 	UNIT_SPELLCAST_CHANNEL_START = 1,
@@ -1360,8 +1372,13 @@ function mod:StyleFilterConfigure()
 				end
 
 				if t.healthThreshold then
-					events.UNIT_HEALTH = 1
 					events.UNIT_MAXHEALTH = 1
+
+					if E.Retail then
+						events.UNIT_HEALTH = 1
+					else
+						events.UNIT_HEALTH_FREQUENT = 1
+					end
 				end
 
 				if t.powerThreshold then
@@ -1403,6 +1420,22 @@ function mod:StyleFilterConfigure()
 
 				if t.hasTitleNPC or t.noTitleNPC then
 					events.UNIT_NAME_UPDATE = 1
+				end
+
+				if t.isBeingResurrected or t.notBeingResurrected then
+					events.INCOMING_RESURRECT_CHANGED = 1
+				end
+
+				if t.isConnected or t.notConnected then
+					events.UNIT_CONNECTION = 1
+				end
+
+				if t.isDeadOrGhost or t.notDeadOrGhost then
+					events.PLAYER_FLAGS_CHANGED = 1
+				end
+
+				if t.isUnconscious or t.isConscious or t.isCharmed or t.notCharmed or t.isPossessed or t.notPossessed then
+					events.UNIT_FLAGS = 1 -- instead these might need UNIT_AURA
 				end
 
 				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
@@ -1473,9 +1506,13 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local update = function(frame, event, arg1, ...)
+	local update = function(frame, event, arg1, arg2, arg3, ...)
 		local eventFunc = mod.StyleFilterEventFunctions[event]
-		if eventFunc then eventFunc(frame, event, arg1, ...) end
+		if eventFunc then eventFunc(frame, event, arg1, arg2, arg3, ...) end
+
+		if event == 'UNIT_AURA' and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
+			return
+		end
 
 		if not mod.StyleFilterCastEvents[event] or (arg1 == frame.unit) then
 			mod:StyleFilterUpdate(frame, event)
