@@ -994,7 +994,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 		if auraInfo.isHelpful and ShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
 
 		if auraInfo.isHarmful and auraInfo.isRaid then
-			if (not auraInfo.isBossAura) and onlyDispellable and shouldShowDebuff and (not priorityDebuff) then return true end
+			if (not auraInfo.isBossAura) and onlyDispellable and shouldShowDebuff and not priorityDebuff then return true end
 			if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
 		end
 
