@@ -107,7 +107,7 @@ local staggerID = {
 	[124273] = true, -- [RED]    Heavy Stagger
 }
 
-local function verifyStagger(auraInfo)
+local function verifyStagger(frame, event, unit, auraInfo)
 	return staggerID[auraInfo.spellId]
 end
 
@@ -176,11 +176,19 @@ local function Visibility(self, event, unit)
 
 	if useClassbar and isShown then
 		element:Hide()
-		self:UnregisterEvent('UNIT_AURA', Path)
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_AURA', Path)
+		else
+			oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
+		end
 		stateChanged = true
 	elseif not useClassbar and not isShown then
 		element:Show()
-		self:RegisterEvent('UNIT_AURA', Path)
+		if oUF.isRetail then
+			self:RegisterEvent('UNIT_AURA', Path)
+		else
+			oUF:RegisterEvent(self, 'UNIT_AURA', Path)
+		end
 		stateChanged = true
 	end
 
@@ -240,7 +248,12 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_AURA', Path)
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_AURA', Path)
+		else
+			oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
+		end
+
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 

@@ -312,7 +312,11 @@ end
 
 local function Enable(self)
 	if self.RaidDebuffs then
-		self:RegisterEvent('UNIT_AURA', Update)
+		if oUF.isRetail then
+			self:RegisterEvent('UNIT_AURA', Update)
+		else
+			oUF:RegisterEvent(self, 'UNIT_AURA', Update)
+		end
 
 		return true
 	end
@@ -320,7 +324,11 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
-		self:UnregisterEvent('UNIT_AURA', Update)
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_AURA', Update)
+		else
+			oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
+		end
 
 		self.RaidDebuffs:Hide()
 	end
