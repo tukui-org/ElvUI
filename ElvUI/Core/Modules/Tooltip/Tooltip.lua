@@ -196,8 +196,9 @@ function TT:GetLevelLine(tt, offset, guildName)
 
 	for i = offset, tt:NumLines() do
 		local tipLine = _G['GameTooltipTextLeft'..i]
-		local tipText = tipLine and tipLine:GetText() and strlower(tipLine:GetText())
-		if tipText and (strfind(tipText, LEVEL1) or strfind(tipText, LEVEL2)) then
+		local tipText = tipLine and tipLine:GetText()
+		local tipLower = tipText and strlower(tipText)
+		if tipLower and (strfind(tipLower, LEVEL1) or strfind(tipLower, LEVEL2)) then
 			return tipLine
 		end
 	end
