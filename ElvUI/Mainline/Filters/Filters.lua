@@ -1113,6 +1113,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[364839] = Defaults(2), -- Sinful Projection
 		[360259] = Defaults(5), -- Gloom Bolt
 		[362383] = Defaults(5), -- Anima Bolt
+		[362352] = Defaults(6), -- Pinned
 	-- Lihuvim, Principle Architect
 		[360159] = Defaults(5), -- Unstable Protoform Energy
 		[363681] = Defaults(3), -- Deconstructing Blast
