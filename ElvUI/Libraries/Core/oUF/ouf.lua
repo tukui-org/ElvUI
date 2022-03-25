@@ -998,7 +998,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 
 	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
 	local function CouldDisplayAura(frame, event, unit, auraInfo, onlyDispellable)
-		if auraInfo.isNameplateOnly then return not frame.isNamePlate end
+		if auraInfo.isNameplateOnly then return frame.isNamePlate end -- blizzard has this as false ~Simpy
 		if auraInfo.isBossAura then return true end
 
 		local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice ~Simpy
