@@ -183,7 +183,11 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		self:RegisterEvent('UNIT_AURA', Update)
+		if oUF.isRetail then
+			self:RegisterEvent('UNIT_AURA', Update)
+		else
+			oUF:RegisterEvent(self, 'UNIT_AURA', Update)
+		end
 
 		return true
 	end
@@ -192,7 +196,11 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		self:UnregisterEvent('UNIT_AURA', Update)
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_AURA', Update)
+		else
+			oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
+		end
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()
