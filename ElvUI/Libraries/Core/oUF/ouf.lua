@@ -896,21 +896,107 @@ if(global) then
 	end
 end
 
-do -- AuraUtil's ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy) ~ any comments are from Simpy
-	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
-	local function CouldDisplayAura(auraInfo, onlyDispellable) -- copy of CompactUnitFrame_CouldDisplayAura; unchanged functionality
-		if auraInfo.isNameplateOnly then return false end
-		if auraInfo.isBossAura then return true end
-		if auraInfo.isHarmful and CompactUnitFrame_Util_IsPriorityDebuff(auraInfo.spellId) then return true end
-		if auraInfo.isHarmful and (not onlyDispellable) and CompactUnitFrame_Util_ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) then return true end
-		if auraInfo.isHelpful and CompactUnitFrame_UtilShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
+do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
+	local SpellGetVisibilityInfo = SpellGetVisibilityInfo
+	local UnitAffectingCombat = UnitAffectingCombat
+	local SpellIsPriorityAura = SpellIsPriorityAura
+	local SpellIsSelfBuff = SpellIsSelfBuff
 
-		local isHarmfulAndRaid = auraInfo.isHarmful and auraInfo.isRaid
-		if isHarmfulAndRaid and (not auraInfo.isBossAura) and onlyDispellable and CompactUnitFrame_Util_ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) and (not CompactUnitFrame_Util_IsPriorityDebuff(auraInfo.spellId)) then
-			return true
+	local hasValidPlayer, EventRegistry = false, _G.EventRegistry
+	EventRegistry:RegisterFrameEvent('PLAYER_ENTERING_WORLD')
+	EventRegistry:RegisterFrameEvent('PLAYER_LEAVING_WORLD')
+	EventRegistry:RegisterCallback('PLAYER_ENTERING_WORLD', function() hasValidPlayer = true end, {})
+	EventRegistry:RegisterCallback('PLAYER_LEAVING_WORLD', function() hasValidPlayer = false end, {})
+
+	local cachedVisualizationInfo = {}
+	EventRegistry:RegisterFrameEvent('PLAYER_SPECIALIZATION_CHANGED')
+	EventRegistry:RegisterCallback('PLAYER_SPECIALIZATION_CHANGED', function() cachedVisualizationInfo = {} end, {})
+
+	local function GetVisibilityInfo(spellId)
+		return SpellGetVisibilityInfo(spellId, UnitAffectingCombat('player') and 'RAID_INCOMBAT' or 'RAID_OUTOFCOMBAT')
+	end
+
+	local function GetCachedVisibilityInfo(spellId)
+		if cachedVisualizationInfo[spellId] == nil then
+			if not hasValidPlayer then -- Don't cache the info if the player is not valid since we didn't get a valid result
+				return GetVisibilityInfo(spellId)
+			else
+				cachedVisualizationInfo[spellId] = {GetVisibilityInfo(spellId)}
+			end
 		end
 
-		if isHarmfulAndRaid and dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
+		return unpack(cachedVisualizationInfo[spellId])
+	end
+
+	local function ShouldDisplayDebuff(unitCaster, spellId)
+		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
+		if hasCustom then -- Would only be 'mine' in the case of something like forbearance.
+			return showForMySpec or (alwaysShowMine and (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'))
+		else
+			return true
+		end
+	end
+
+	local cachedSelfBuffChecks = {}
+	local function CheckIsSelfBuff(spellId) -- can't use this yet, something is wrong with multiple classes? ~Simpy
+		if cachedSelfBuffChecks[spellId] == nil then
+			cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId)
+		end
+
+		return cachedSelfBuffChecks[spellId]
+	end
+
+	local function ShouldDisplayBuff(unitCaster, spellId, canApplyAura)
+		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
+
+		if hasCustom then
+			return showForMySpec or (alwaysShowMine and (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'))
+		else
+			return (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle') and canApplyAura --and not CheckIsSelfBuff(spellId)
+		end
+	end
+
+	local cachedPriorityChecks = {}
+	local function CheckIsPriorityAura(spellId)
+		if cachedPriorityChecks[spellId] == nil then
+			cachedPriorityChecks[spellId] = SpellIsPriorityAura(spellId)
+		end
+
+		return cachedPriorityChecks[spellId]
+	end
+
+	local _, classFilename = UnitClass('player')
+	local paladinPriority = function(spellId) local isForbearance = (spellId == 25771) return isForbearance or CheckIsPriorityAura(spellId) end
+	local IsPriorityDebuff = classFilename == 'PALADIN' and paladinPriority or function(spellId) return CheckIsPriorityAura(spellId) end
+
+	local function DumpCaches()
+		cachedVisualizationInfo = {}
+		cachedSelfBuffChecks = {}
+		cachedPriorityChecks = {}
+	end
+
+	EventRegistry:RegisterFrameEvent('PLAYER_REGEN_ENABLED')
+	EventRegistry:RegisterFrameEvent('PLAYER_REGEN_DISABLED')
+	EventRegistry:RegisterCallback('PLAYER_REGEN_ENABLED', DumpCaches, {})
+	EventRegistry:RegisterCallback('PLAYER_REGEN_DISABLED', DumpCaches, {})
+
+	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
+	local function CouldDisplayAura(auraInfo, onlyDispellable)
+		if auraInfo.isNameplateOnly then return false end
+		if auraInfo.isBossAura then return true end
+
+		local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice
+		if auraInfo.isHarmful and priorityDebuff then return true end
+
+		local shouldShowDebuff = ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) -- don't call this twice
+		if auraInfo.isHarmful and (not onlyDispellable) and shouldShowDebuff then return true end
+
+		if auraInfo.isHelpful and ShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
+
+		if auraInfo.isHarmful and auraInfo.isRaid then
+			if (not auraInfo.isBossAura) and onlyDispellable and shouldShowDebuff and (not priorityDebuff) then return true end
+			if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
+		end
 
 		return false
 	end
