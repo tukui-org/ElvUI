@@ -212,7 +212,7 @@ local function FilterSettings(info, ...)
 		else
 			return E.global.unitframe[settingTable][spell][info[#info]]
 		end
-	else
+	elseif selectedFilter then
 		if value ~= nil then
 			E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
 		else
