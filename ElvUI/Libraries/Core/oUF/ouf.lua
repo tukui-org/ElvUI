@@ -938,7 +938,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 	end
 
 	local cachedSelfBuffChecks = {}
-	local function CheckIsSelfBuff(spellId) -- can't use this yet, something is wrong with multiple classes? ~Simpy
+	local function CheckIsSelfBuff(spellId)
 		if cachedSelfBuffChecks[spellId] == nil then
 			cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId)
 		end
@@ -952,7 +952,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 		if hasCustom then
 			return showForMySpec or (alwaysShowMine and (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle'))
 		else
-			return (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle') and canApplyAura --and not CheckIsSelfBuff(spellId)
+			return (unitCaster == 'player' or unitCaster == 'pet' or unitCaster == 'vehicle') and (canApplyAura or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff
 		end
 	end
 
