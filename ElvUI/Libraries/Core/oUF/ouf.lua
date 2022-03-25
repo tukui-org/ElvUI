@@ -924,11 +924,15 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 	local unitPlayer = { player = true, pet = true, vehicle = true }
 
 	local eventFrame = CreateFrame('Frame')
-	eventFrame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 	eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
 	eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
 	eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 	eventFrame:RegisterEvent('PLAYER_LEAVING_WORLD')
+
+	if oUF.isRetail then
+		eventFrame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+	end
+
 	eventFrame:SetScript('OnEvent', function(_, event)
 		if event == 'PLAYER_ENTERING_WORLD' then
 			hasValidPlayer = true
