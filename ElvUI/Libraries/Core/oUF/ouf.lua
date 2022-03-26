@@ -911,7 +911,7 @@ if(global) then
 	end
 end
 
-do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
+do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 	local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 	local UnitAffectingCombat = UnitAffectingCombat
 	local UnitIsUnit = UnitIsUnit
