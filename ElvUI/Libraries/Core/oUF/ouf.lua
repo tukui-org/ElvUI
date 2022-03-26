@@ -992,8 +992,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 
 		if hasCustom then
 			return showForMySpec or (alwaysShowMine and unitPlayer[sourceUnit])
-		else
-			return unitPlayer[sourceUnit] and (canApplyAura or UnitIsUnit(unit, sourceUnit) or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff ~Simpy
+		else -- this is modified from blizzard's to allow auras applied to self ~Simpy
+			return unitPlayer[sourceUnit] and (canApplyAura or UnitIsUnit(unit, sourceUnit) or CheckIsSelfBuff(spellId))
 		end
 	end
 
