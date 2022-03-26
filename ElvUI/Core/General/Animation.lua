@@ -216,7 +216,7 @@ function E:SlideOut(obj, customName)
 end
 
 local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
-FADEMANAGER.delay = 0.025
+FADEMANAGER.delay = 0.05
 
 function E:UIFrameFade_OnUpdate(elapsed)
 	FADEMANAGER.timer = (FADEMANAGER.timer or 0) + elapsed
