@@ -974,44 +974,47 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 	end
 
 	local _, playerClass = UnitClass('player')
-	local paladinPriority = function(spellId) local isForbearance = (spellId == 25771) return isForbearance or CheckIsPriorityAura(spellId) end
+	local paladinPriority = function(spellId) return spellId == 25771 or CheckIsPriorityAura(spellId) end -- isForbearance
 	local IsPriorityDebuff = playerClass == 'PALADIN' and paladinPriority or function(spellId) return CheckIsPriorityAura(spellId) end
 
-	local function ShouldDisplayDebuff(unitCaster, spellId)
+	local function ShouldDisplayDebuff(unit, sourceUnit, spellId)
 		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
 		if hasCustom then -- Would only be 'mine' in the case of something like forbearance.
-			return showForMySpec or (alwaysShowMine and unitPlayer[unitCaster])
+			return showForMySpec or (alwaysShowMine and unitPlayer[sourceUnit])
 		else
 			return true
 		end
 	end
 
-	local function ShouldDisplayBuff(unitCaster, spellId, canApplyAura)
+	local function ShouldDisplayBuff(unit, sourceUnit, spellId, canApplyAura)
 		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
 
 		if hasCustom then
-			return showForMySpec or (alwaysShowMine and unitPlayer[unitCaster])
+			return showForMySpec or (alwaysShowMine and unitPlayer[sourceUnit])
 		else
-			return unitPlayer[unitCaster] and (canApplyAura or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff ~Simpy
+			return unitPlayer[sourceUnit] and (canApplyAura or (unit == sourceUnit) or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff ~Simpy
 		end
 	end
 
 	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
 	local function CouldDisplayAura(frame, event, unit, auraInfo, onlyDispellable)
-		if auraInfo.isNameplateOnly then return frame.isNamePlate end -- blizzard has this as false ~Simpy
-		if auraInfo.isBossAura then return true end
+		if auraInfo.isNameplateOnly then
+			return frame.isNamePlate -- blizzard has this as false ~Simpy
+		elseif auraInfo.isBossAura then
+			return true
+		elseif auraInfo.isHarmful then
+			local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice ~Simpy
+			if priorityDebuff then return true end
 
-		local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice ~Simpy
-		if auraInfo.isHarmful and priorityDebuff then return true end
+			local shouldShowDebuff = ShouldDisplayDebuff(unit, auraInfo.sourceUnit, auraInfo.spellId) -- don't call this twice ~Simpy
+			if shouldShowDebuff and not onlyDispellable then return true end
 
-		local shouldShowDebuff = ShouldDisplayDebuff(auraInfo.sourceUnit, auraInfo.spellId) -- don't call this twice ~Simpy
-		if auraInfo.isHarmful and (not onlyDispellable) and shouldShowDebuff then return true end
-
-		if auraInfo.isHelpful and ShouldDisplayBuff(auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
-
-		if auraInfo.isHarmful and auraInfo.isRaid then
-			if (not auraInfo.isBossAura) and onlyDispellable and shouldShowDebuff and not priorityDebuff then return true end
-			if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
+			if auraInfo.isRaid then
+				if onlyDispellable and shouldShowDebuff and not priorityDebuff and not auraInfo.isBossAura then return true end
+				if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
+			end
+		elseif auraInfo.isHelpful then
+			if ShouldDisplayBuff(unit, auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
 		end
 
 		return false
