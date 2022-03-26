@@ -1043,9 +1043,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 	function oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc)
 		if not unit or frame.unit ~= unit then
 			return true
-		else
-			local onlyDispellable = false -- frame.optionTable.displayOnlyDispellableDebuffs (blizzards); need to do something more advanced here perhaps if we want that to be functional?
-			return ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, onlyDispellable)
+		else -- last arg false here is frame.optionTable.displayOnlyDispellableDebuffs (blizzards); we need to do something more advanced here, if we want dispellable switch functional
+			return ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, false)
 		end
 	end
 end
