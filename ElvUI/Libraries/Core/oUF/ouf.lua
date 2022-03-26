@@ -912,14 +912,16 @@ if(global) then
 end
 
 do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
-	local SpellGetVisibilityInfo = SpellGetVisibilityInfo
+	local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 	local UnitAffectingCombat = UnitAffectingCombat
-	local SpellIsPriorityAura = SpellIsPriorityAura
-	local SpellIsSelfBuff = SpellIsSelfBuff
 	local UnitIsUnit = UnitIsUnit
 
+	local SpellGetVisibilityInfo = SpellGetVisibilityInfo
+	local SpellIsPriorityAura = SpellIsPriorityAura
+	local SpellIsSelfBuff = SpellIsSelfBuff
+
 	local hasValidPlayer = false
-	local cachedVisualizationInfo = {}
+	local cachedVisualization = {}
 	local cachedSelfBuffChecks = {}
 	local cachedPriorityChecks = {}
 	local unitPlayer = { player = true, pet = true, vehicle = true }
@@ -940,60 +942,72 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 		elseif event == 'PLAYER_LEAVING_WORLD' then
 			hasValidPlayer = false
 		elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
-			wipe(cachedVisualizationInfo)
+			wipe(cachedVisualization)
 		elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
-			wipe(cachedVisualizationInfo)
+			wipe(cachedVisualization)
 			wipe(cachedSelfBuffChecks)
 			wipe(cachedPriorityChecks)
 		end
 	end)
 
-	local function GetVisibilityInfo(spellId)
+	local function VisibilityInfo(spellId)
 		return SpellGetVisibilityInfo(spellId, UnitAffectingCombat('player') and 'RAID_INCOMBAT' or 'RAID_OUTOFCOMBAT')
 	end
 
-	local function GetCachedVisibilityInfo(spellId)
-		if cachedVisualizationInfo[spellId] == nil then
+	local function CachedVisibility(spellId)
+		if cachedVisualization[spellId] == nil then
 			if not hasValidPlayer then -- Don't cache the info if the player is not valid since we didn't get a valid result
-				return GetVisibilityInfo(spellId)
+				return VisibilityInfo(spellId)
 			else
-				cachedVisualizationInfo[spellId] = {GetVisibilityInfo(spellId)}
+				cachedVisualization[spellId] = {VisibilityInfo(spellId)}
 			end
 		end
 
-		return unpack(cachedVisualizationInfo[spellId])
+		return unpack(cachedVisualization[spellId])
 	end
 
-	local function CheckIsSelfBuff(spellId)
+	local function SpellVisibility(spellId)
+		local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
+		if hasCustom then
+			return alwaysShowMine or showForMySpec
+		else
+			return nil
+		end
+	end
+
+	local function CachedSelfBuff(spellId)
 		if cachedSelfBuffChecks[spellId] == nil then cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId) end
 		return cachedSelfBuffChecks[spellId]
 	end
 
-	local function CheckIsPriorityAura(spellId)
+	local function CachedPriorityAura(spellId)
 		if cachedPriorityChecks[spellId] == nil then cachedPriorityChecks[spellId] = SpellIsPriorityAura(spellId) end
 		return cachedPriorityChecks[spellId]
 	end
 
 	local _, playerClass = UnitClass('player')
-	local paladinPriority = function(spellId) return spellId == 25771 or CheckIsPriorityAura(spellId) end -- isForbearance
-	local IsPriorityDebuff = playerClass == 'PALADIN' and paladinPriority or function(spellId) return CheckIsPriorityAura(spellId) end
+	local PaladinPriority = function(spellId) return spellId == 25771 or CachedPriorityAura(spellId) end -- isForbearance > Cannot be affected by Divine Shield, Hand of Protection, or Lay on Hands for 30 sec.
+	local IsPriorityDebuff = playerClass == 'PALADIN' and PaladinPriority or CachedPriorityAura
 
 	local function ShouldDisplayDebuff(unit, sourceUnit, spellId)
-		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
-		if hasCustom then -- Would only be 'mine' in the case of something like forbearance.
-			return showForMySpec or (alwaysShowMine and unitPlayer[sourceUnit])
-		else
+		local visibility = SpellVisibility(spellId)
+		if visibility ~= nil then
+			return visibility
+		else -- not hasCustom ~Simpy
 			return true
 		end
 	end
 
-	local function ShouldDisplayBuff(unit, sourceUnit, spellId, canApplyAura)
-		local hasCustom, alwaysShowMine, showForMySpec = GetCachedVisibilityInfo(spellId)
-
-		if hasCustom then
-			return showForMySpec or (alwaysShowMine and unitPlayer[sourceUnit])
-		else -- this is modified from blizzard's to allow auras applied to self ~Simpy
-			return unitPlayer[sourceUnit] and (canApplyAura or UnitIsUnit(unit, sourceUnit) or CheckIsSelfBuff(spellId))
+	local function ShouldDisplayBuff(unit, sourceUnit, spellId, canApplyAura, isFromPlayerOrPlayerPet)
+		local visibility = SpellVisibility(spellId)
+		if visibility ~= nil then
+			return visibility
+		elseif unit == sourceUnit or UnitIsUnit(unit, sourceUnit) or UnitIsOwnerOrControllerOfUnit('player', unit) then
+			return true -- self casted to show ~Simpy
+		elseif unitPlayer[sourceUnit] then -- modified to allow self auras ~Simpy
+			return canApplyAura or CachedSelfBuff(spellId)
+		else -- let any from a player show ~Simpy
+			return isFromPlayerOrPlayerPet
 		end
 	end
 
@@ -1015,7 +1029,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 				if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
 			end
 		elseif auraInfo.isHelpful then
-			if ShouldDisplayBuff(unit, auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
+			if ShouldDisplayBuff(unit, auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura, auraInfo.isFromPlayerOrPlayerPet) then return true end
 		end
 
 		return false
