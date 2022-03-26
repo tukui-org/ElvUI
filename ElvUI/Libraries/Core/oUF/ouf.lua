@@ -916,6 +916,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 	local UnitAffectingCombat = UnitAffectingCombat
 	local SpellIsPriorityAura = SpellIsPriorityAura
 	local SpellIsSelfBuff = SpellIsSelfBuff
+	local UnitIsUnit = UnitIsUnit
 
 	local hasValidPlayer = false
 	local cachedVisualizationInfo = {}
@@ -992,7 +993,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and modified by Simpy)
 		if hasCustom then
 			return showForMySpec or (alwaysShowMine and unitPlayer[sourceUnit])
 		else
-			return unitPlayer[sourceUnit] and (canApplyAura or (unit == sourceUnit) or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff ~Simpy
+			return unitPlayer[sourceUnit] and (canApplyAura or UnitIsUnit(unit, sourceUnit) or CheckIsSelfBuff(spellId)) -- swapped from: canApplyAura and not CheckIsSelfBuff ~Simpy
 		end
 	end
 
