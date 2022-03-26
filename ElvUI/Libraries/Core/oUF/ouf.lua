@@ -1002,7 +1002,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		local visibility = SpellVisibility(spellId)
 		if visibility ~= nil then
 			return visibility
-		elseif unit == sourceUnit or UnitIsUnit(unit, sourceUnit) or UnitIsOwnerOrControllerOfUnit('player', unit) then
+		elseif sourceUnit and (unit == sourceUnit or UnitIsUnit(unit, sourceUnit)) or UnitIsOwnerOrControllerOfUnit('player', unit) then
 			return true -- self casted to show ~Simpy
 		elseif unitPlayer[sourceUnit] then -- modified to allow self auras ~Simpy
 			return canApplyAura or CachedSelfBuff(spellId)
