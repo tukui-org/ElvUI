@@ -393,7 +393,7 @@ Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.priority = ACH:
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."], 2, { min = 0, max = 99, step = 1 })
 Filters.mainOptions.args.spellGroup.args.ownOnly = ACH:Toggle(L["Casted by Player Only"], L["Only highlight the aura that originated from you and not others."], 5, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'Aura Highlight' end)
 
-Filters.help = ACH:Group('Help', nil, 2)
+Filters.help = ACH:Group(L["Help"], nil, 2)
 
 local COLOR = E:ClassColor(E.myclass, true)
 local COLOR1 = format('|c%s', COLOR.colorStr)
