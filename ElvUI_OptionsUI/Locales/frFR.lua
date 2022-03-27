@@ -1554,7 +1554,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Ceci force la taille de l'icône lorsqu'elle n'est pas rattachée à la barre d'incantation."
 L["This feature will allow you to transfer settings to other characters."] = "Cette fonctionnalité vous permettra de transférer les paramètres à d'autres personnages."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
-L["|cffFF0000This is for information. This will not change the tags in the UI.|r"] = true
+L["|cffFF3030This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Ouvre la configuration des couleurs des unités. Ces options impactent toutes les barres d'unités."
 L["This option allows the overlay to span the whole health, including the background."] = true

@@ -1554,7 +1554,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Isso dita o tamanho do ícone quando não está anexado a barra de cast."
 L["This feature will allow you to transfer settings to other characters."] = "Este recurso permite enviar sus configurações a outros personagens."
 L["This is for Customized Icons in your Interface/Icons folder."] = "Isto é para os Ícones Customizados na sua pasta de Interface/Ícones."
-L["|cffFF0000This is for information. This will not change the tags in the UI.|r"] = true
+L["|cffFF3030This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = "Isto abre o Filtro de Cores das Barras de Aura. Estas configurações afetam feitiços específicos."
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Isto abre as configurações de Cor de Quadros de Unidades. Estas configurações afetam TODOS os Quadros de Unidades."
 L["This option allows the overlay to span the whole health, including the background."] = "Esta opção permite a sobreposição abranger toda a vida, incluindo o background."
