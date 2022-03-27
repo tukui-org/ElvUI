@@ -105,12 +105,12 @@ Media.blizzard.inline = true
 
 Media.names = ACH:Group('', nil, 13, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Media.names.args.replaceNameFont = ACH:Toggle(L["Replace Name Font"], nil, 1)
-Media.names.args.namefont = ACH:SharedMediaFont(L["Name Font"], L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"], 2, nil, nil, nil, function() return not E.private.general.replaceNameFont end)
+Media.names.args.namefont = ACH:SharedMediaFont(L["Name Font"], L["The font that appears on the text above players heads. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"], 2, nil, nil, nil, function() return not E.private.general.replaceNameFont end)
 Media.names.inline = true
 
 Media.combat = ACH:Group('', nil, 14, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Media.combat.args.replaceCombatFont = ACH:Toggle(L["Replace Combat Font"], nil, 1)
-Media.combat.args.dmgfont = ACH:SharedMediaFont(L["Combat Font"], L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"], 2, nil, nil, nil, function() return E.eyefinity or E.ultrawide or not E.private.general.replaceCombatFont end)
+Media.combat.args.dmgfont = ACH:SharedMediaFont(L["Combat Font"], L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"], 2, nil, nil, nil, function() return E.eyefinity or E.ultrawide or not E.private.general.replaceCombatFont end)
 Media.combat.args.replaceCombatText = ACH:Toggle(L["Replace Text on Me"], nil, 3)
 Media.combat.inline = true
 
@@ -173,7 +173,7 @@ Cosmetic.chatBubblesGroup.args.chatBubbleFont = ACH:SharedMediaFont(L["Font"], n
 Cosmetic.chatBubblesGroup.args.chatBubbleFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
 Cosmetic.chatBubblesGroup.args.chatBubbleFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4, nil, nil, nil, function() return not E.private.general.replaceBubbleFont end)
 Cosmetic.chatBubblesGroup.args.spacer1 = ACH:Spacer(10, 'full')
-Cosmetic.chatBubblesGroup.args.warning = ACH:Description(L["|cffFF0000This does not work in Instances or Garrisons!|r"], 11, 'medium')
+Cosmetic.chatBubblesGroup.args.warning = ACH:Description(L["|cffFF3333This does not work in Instances or Garrisons!|r"], 11, 'medium')
 Cosmetic.chatBubblesGroup.args.chatBubbles = ACH:Select(L["Chat Bubbles Style"], L["Skin the blizzard chat bubbles."], 12, { backdrop = L["Skin Backdrop"], nobackdrop = L["Remove Backdrop"], backdrop_noborder = L["Skin Backdrop (No Borders)"], disabled = L["Disable"] })
 Cosmetic.chatBubblesGroup.args.chatBubbleName = ACH:Toggle(L["Chat Bubble Names"], L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."], 13)
 

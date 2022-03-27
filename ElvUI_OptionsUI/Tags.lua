@@ -9,7 +9,7 @@ local TagGroup = ACH:Group(L["Available Tags"], nil, 3)
 TagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, 310, function() return 'https://github.com/tukui-org/ElvUI/wiki/custom-texts' end)
 TagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, 290, function() return 'https://github.com/tukui-org/ElvUI/wiki' end)
 TagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end, nil, nil, 120)
-TagGroup.args.description = ACH:Description('|cffFF0000This is for information. This will not change the tags in the UI.|r', 4, 'large')
+TagGroup.args.description = ACH:Description(L["|cffFF3333This is for information. This will not change the tags in the UI.|r"], 4, 'large')
 TagGroup.args.spacer = ACH:Spacer(5)
 
 TagGroup.args.Colors = ACH:Group(L["Colors"])

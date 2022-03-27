@@ -239,7 +239,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	else
 		config.args.applyToAll = ACH:Group(' ', nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet') end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet') updateFunc(UF, groupName, numGroup) end)
 		config.args.applyToAll.inline = true
-		config.args.applyToAll.args.header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
+		config.args.applyToAll.args.header = ACH:Description(L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
 		config.args.applyToAll.args.style = ACH:Select(L["Style"], nil, 2, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
 		config.args.applyToAll.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 3, { min = -1, max = 60, step = 1 })
 		config.args.applyToAll.args.displayText = ACH:Toggle(L["Display Text"], nil, 4)
@@ -1529,7 +1529,7 @@ Party.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHe
 GroupUnits.raid = ACH:Group(L["Raid"], nil, nil, nil, function(info) return E.db.unitframe.units.raid[info[#info]] end, function(info, value) E.db.unitframe.units.raid[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid') end)
 local Raid = GroupUnits.raid.args
 
-Raid.header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, 'large', nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end)
+Raid.header = ACH:Description(L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, 'large', nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end)
 Raid.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, function() return E.db.unitframe.smartRaidFilter end)
 Raid.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.raid, UF.raid.forceShow ~= true or nil) end)
 Raid.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Frames"], nil, {unit = 'raid', mover='Raid Frames'}) end)
@@ -1562,7 +1562,7 @@ Raid.pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.
 GroupUnits.raid40 = ACH:Group(L["Raid-40"], nil, nil, nil, function(info) return E.db.unitframe.units.raid40[info[#info]] end, function(info, value) E.db.unitframe.units.raid40[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid40') end)
 local Raid40 = GroupUnits.raid40.args
 
-Raid40.header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, 'large', nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end)
+Raid40.header = ACH:Description(L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, 'large', nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end)
 Raid40.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, function() return E.db.unitframe.smartRaidFilter end)
 Raid40.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.raid40, UF.raid40.forceShow ~= true or nil) end)
 Raid40.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Raid-40 Frames"], nil, {unit = 'raid40', mover='Raid Frames'}) end)
