@@ -1084,8 +1084,8 @@ do -- Event Pooler by Simpy
 			if instant and funcs then
 				if event == 'UNIT_AURA' and oUF.isRetail then
 					local isFullUpdate, updatedAuras = ...
-					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, isFullUpdate, updatedAuras, frame.ShouldSkipFunc) then
-						pooler.run(funcs, frame, event, arg1, isFullUpdate, updatedAuras, frame.ShouldSkipFunc)
+					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, isFullUpdate, updatedAuras) then
+						pooler.run(funcs, frame, event, arg1, isFullUpdate, updatedAuras)
 					end
 				else
 					pooler.run(funcs, frame, event, arg1, ...)
@@ -1097,7 +1097,7 @@ do -- Event Pooler by Simpy
 						local allowUnit = false
 						for _, args in ipairs(data) do
 							local unit, isFullUpdate, updatedAuras = unpack(args)
-							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, frame.ShouldSkipFunc) then
+							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras) then
 								allowUnit = unit
 								break
 							end
