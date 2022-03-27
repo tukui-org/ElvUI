@@ -166,12 +166,12 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
 	config.args.stacks.args.countXOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -60, max = 60, step = 1 })
 	config.args.stacks.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
-	config.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 6, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT' })
+	config.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], LEFT = L["Left"], BOTTOM = L["Bottom"], CENTER = L["Center"], TOPLEFT = L["Top Left"], BOTTOMLEFT = L["Bottom Left"], BOTTOMRIGHT = L["Bottom Right"], RIGHT = L["Right"], TOPRIGHT = L["Top Right"] })
 
 	config.args.duration = ACH:Group(L["Duration"], nil, 25, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.inline = true
 	config.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
-	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT' })
+	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, { TOP = L["Top"], LEFT = L["Left"], BOTTOM = L["Bottom"], CENTER = L["Center"], TOPLEFT = L["Top Left"], BOTTOMLEFT = L["Bottom Left"], TOPRIGHT = L["Top Right"] })
 
 	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
 	config.args.filtersGroup.inline = true
@@ -551,7 +551,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
 	config.args.colorsButton = ACH:Execute(L["Colors"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
-	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = L["Top"], BOTTOM = L["Bottom"], CENTER = L["Center"] })
 	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["None"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.warning = ACH:Description(function()

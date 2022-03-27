@@ -134,6 +134,7 @@ L["Backdrop color of transparent frames"] = "透明框架的背景顏色"
 L["Backdrop Color"] = "背景顏色"
 L["Backdrop Faded"] = true
 L["Backdrop Settings"] = true
+L["Bag Bar"] = true
 L["Backdrop Spacing"] = "背景間距"
 L["Backdrop Transparency"] = true
 L["Backdrop"] = "背景"
