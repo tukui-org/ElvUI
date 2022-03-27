@@ -239,7 +239,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 end
 
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, isFullUpdate, updatedAuras) then return end
+	if not unit or self.unit ~= unit then return end
 
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID
 	local _stackThreshold, _priority, priority = 0, 0, 0
@@ -312,11 +312,7 @@ end
 
 local function Enable(self)
 	if self.RaidDebuffs then
-		if oUF.isRetail then
-			self:RegisterEvent('UNIT_AURA', Update)
-		else
-			oUF:RegisterEvent(self, 'UNIT_AURA', Update)
-		end
+		oUF:RegisterEvent(self, 'UNIT_AURA', Update)
 
 		return true
 	end
@@ -324,11 +320,7 @@ end
 
 local function Disable(self)
 	if self.RaidDebuffs then
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_AURA', Update)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
-		end
+		oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
 
 		self.RaidDebuffs:Hide()
 	end

@@ -101,18 +101,8 @@ local function UpdateColor(self, event, unit)
 	end
 end
 
-local staggerID = {
-	[124275] = true, -- [GREEN]  Light Stagger
-	[124274] = true, -- [YELLOW] Moderate Stagger
-	[124273] = true, -- [RED]    Heavy Stagger
-}
-
-local function verifyStagger(frame, event, unit, auraInfo)
-	return staggerID[auraInfo.spellId]
-end
-
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, isFullUpdate, updatedAuras, verifyStagger) then return end
+	if not unit or self.unit ~= unit then return end
 
 	local element = self.Stagger
 
@@ -176,19 +166,11 @@ local function Visibility(self, event, unit)
 
 	if useClassbar and isShown then
 		element:Hide()
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_AURA', Path)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-		end
+		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
 		stateChanged = true
 	elseif not useClassbar and not isShown then
 		element:Show()
-		if oUF.isRetail then
-			self:RegisterEvent('UNIT_AURA', Path)
-		else
-			oUF:RegisterEvent(self, 'UNIT_AURA', Path)
-		end
+		oUF:RegisterEvent(self, 'UNIT_AURA', Path)
 		stateChanged = true
 	end
 
@@ -217,11 +199,22 @@ local function ForceUpdate(element)
 	VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+local staggerID = {
+	[124275] = true, -- [GREEN]  Light Stagger
+	[124274] = true, -- [YELLOW] Moderate Stagger
+	[124273] = true, -- [RED]    Heavy Stagger
+}
+
+local function verifyStagger(frame, event, unit, auraInfo)
+	return staggerID[auraInfo.spellId]
+end
+
 local function Enable(self, unit)
 	local element = self.Stagger
 	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.ShouldSkipFunc = verifyStagger
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
@@ -248,11 +241,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_AURA', Path)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-		end
+		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)

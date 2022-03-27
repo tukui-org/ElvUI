@@ -141,7 +141,7 @@ local function CheckDispel(_, event, arg1)
 end
 
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, isFullUpdate, updatedAuras) then return end
+	if not unit or self.unit ~= unit then return end
 
 	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
@@ -183,11 +183,7 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		if oUF.isRetail then
-			self:RegisterEvent('UNIT_AURA', Update)
-		else
-			oUF:RegisterEvent(self, 'UNIT_AURA', Update)
-		end
+		oUF:RegisterEvent(self, 'UNIT_AURA', Update)
 
 		return true
 	end
@@ -196,11 +192,7 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_AURA', Update)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
-		end
+		oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()

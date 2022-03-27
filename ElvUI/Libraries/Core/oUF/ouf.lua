@@ -998,7 +998,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		end
 	end
 
-	local function ShouldDisplayBuff(unit, sourceUnit, spellId, canApplyAura, isFromPlayerOrPlayerPet)
+	local function ShouldDisplayBuff(unit, sourceUnit, spellId, canApplyAura)
 		local visibility = SpellVisibility(spellId)
 		if visibility ~= nil then
 			return visibility
@@ -1006,8 +1006,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 			return true -- self casted to show ~Simpy
 		elseif unitPlayer[sourceUnit] then -- modified to allow self auras ~Simpy
 			return canApplyAura or CachedSelfBuff(spellId)
-		else -- let any from a player show ~Simpy
-			return isFromPlayerOrPlayerPet
+		else -- not hasCustom, let rest show ~Simpy
+			return true
 		end
 	end
 
@@ -1029,7 +1029,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 				if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
 			end
 		elseif auraInfo.isHelpful then
-			if ShouldDisplayBuff(unit, auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura, auraInfo.isFromPlayerOrPlayerPet) then return true end
+			if ShouldDisplayBuff(unit, auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura) then return true end
 		end
 
 		return false
@@ -1082,14 +1082,40 @@ do -- Event Pooler by Simpy
 		for frame, info in pairs(pool) do
 			local funcs = info.functions
 			if instant and funcs then
-				pooler.run(funcs, frame, event, arg1, ...)
+				if event == 'UNIT_AURA' and oUF.isRetail then
+					local isFullUpdate, updatedAuras = ...
+					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, isFullUpdate, updatedAuras, frame.ShouldSkipFunc) then
+						pooler.run(funcs, frame, event, arg1, isFullUpdate, updatedAuras, frame.ShouldSkipFunc)
+					end
+				else
+					pooler.run(funcs, frame, event, arg1, ...)
+				end
 			else
 				local data = funcs and info.data[event]
-				local count = data and #data
-				local args = count and data[count]
-				if args then
-					-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
-					pooler.run(funcs, frame, event, unpack(args))
+				if data then
+					if event == 'UNIT_AURA' and oUF.isRetail then
+						local allowUnit = false
+						for _, args in ipairs(data) do
+							local unit, isFullUpdate, updatedAuras = unpack(args)
+							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, frame.ShouldSkipFunc) then
+								allowUnit = unit
+								break
+							end
+						end
+
+						if allowUnit then
+							pooler.run(funcs, frame, event, allowUnit)
+						end
+					else
+						local count = #data
+						local args = count and data[count]
+						if args then
+							-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
+							pooler.run(funcs, frame, event, unpack(args))
+						end
+
+					end
+
 					wipe(data)
 				end
 			end
