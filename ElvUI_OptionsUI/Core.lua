@@ -34,8 +34,8 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	AllPoints = { TOPLEFT = L["Top Left"], LEFT = L["Left"], BOTTOMLEFT = L["Bottom Left"], RIGHT = L["Right"], TOPRIGHT = L["Top Right"], BOTTOMRIGHT = L["Bottom Right"], TOP = L["Top"], BOTTOM = L["Bottom"], CENTER = L["Center"] },
-	Anchors = { TOPLEFT = L["Top Left"], LEFT = L["Left"], BOTTOMLEFT = L["Bottom Left"], RIGHT = L["Right"], TOPRIGHT = L["Top Right"], BOTTOMRIGHT = L["Bottom Right"], TOP = L["Top"], BOTTOM = L["Bottom"] },
+	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
+	Anchors = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },
 	SmartAuraPositions = {
 		DISABLED = L["Disable"],
 		BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
