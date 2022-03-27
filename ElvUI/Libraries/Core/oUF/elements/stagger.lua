@@ -216,7 +216,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 		element.ShouldSkipFunc = verifyStagger
 
-		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 
 		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
@@ -242,8 +242,7 @@ local function Disable(self)
 		element:Hide()
 
 		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 
 		MonkStaggerBar:RegisterEvent('PLAYER_ENTERING_WORLD')
