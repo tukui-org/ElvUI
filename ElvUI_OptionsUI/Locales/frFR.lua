@@ -148,6 +148,7 @@ L["Bag 2"] = "Sac 2"
 L["Bag 3"] = "Sac 3"
 L["Bag 4"] = "Sac 4"
 L["Bag Assignment"] = "Affectation de sac"
+L["Bag Bar"] = true
 L["Bag Spacing"] = "Mauvais espacement"
 L["BAG_FILTER_CONSUMABLES"] = "Consommables"
 L["BAG_FILTER_EQUIPMENT"] = "Équipement"

@@ -148,6 +148,7 @@ L["Bag 2"] = "背包2"
 L["Bag 3"] = "背包3"
 L["Bag 4"] = "背包4"
 L["Bag Assignment"] = "背包分类"
+L["Bag Bar"] = true
 L["Bag Spacing"] = true
 L["BAG_FILTER_CONSUMABLES"] = "消耗品"
 L["BAG_FILTER_EQUIPMENT"] = "装备"
