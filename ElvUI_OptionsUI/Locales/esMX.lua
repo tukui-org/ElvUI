@@ -2,10 +2,10 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
 L["%s and then %s"] = "%s y entonces %s"
-L["|cffFF0000This does not work in Instances or Garrisons!|r"] = true
-L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
-L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000Advertencia:|r Haz clic en la flecha del cuadro desplegable para ver una lista de hechizos."
-L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF0000Advertencia:|r La habilitar y el número de grupos es controlado por Smart Raid Filter. Deshabilite el Filtro de Banda Inteligente en (Marco de Unidad - General) para cambiar esta configuración."
+L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
+L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
+L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333Advertencia:|r Haz clic en la flecha del cuadro desplegable para ver una lista de hechizos."
+L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF3333Advertencia:|r La habilitar y el número de grupos es controlado por Smart Raid Filter. Deshabilite el Filtro de Banda Inteligente en (Marco de Unidad - General) para cambiar esta configuración."
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -522,7 +522,7 @@ L["Enable/Disable the all-in-one bag."] = "Habilitar/Deshabilitar la bolsa todo 
 L["Enable/Disable the Bag-Bar."] = "Activa/Desactiva la barra de las bolsas."
 L["Enable/Disable the loot frame."] = "Activa/Desactiva el marco de botín."
 L["Enable/Disable the loot roll frame."] = "Activa/Desactiva el marco de sorteo de botín."
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
+L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
 L["Enables the ElvUI Raid Control panel."] = true
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = true
@@ -1526,8 +1526,8 @@ L["The display format of the money text that is shown at the top of the main bag
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true
 L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "El primer botón se fija a este punto de la barra."
-L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Cambia la fuente del texto que aparece encima de las cabezas de los jugadores. |cffFF0000AVISO: Esto requiere que reinicies el juego o reconectes."
-L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "La fuente que usará el texto de combate. |cffFF0000ADVERTENCIA: Esto requiere un reinicio del juego o salir y entrar nuevamente para que este cambio surta efecto.|r"
+L["The font that appears on the text above players heads. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Cambia la fuente del texto que aparece encima de las cabezas de los jugadores. |cffFF3333AVISO: Esto requiere que reinicies el juego o reconectes."
+L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "La fuente que usará el texto de combate. |cffFF3333ADVERTENCIA: Esto requiere un reinicio del juego o salir y entrar nuevamente para que este cambio surta efecto.|r"
 L["The font that the core of the UI will use."] = "La fuente que usará el núcleo de la interfaz."
 L["The font that the unitframes will use."] = "La fuente que usa el marco de unidad."
 L["The frame is not shown unless you mouse over the frame."] = "El marco no se muestra a menos que pases el ratón sobre él."
@@ -1554,7 +1554,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = true
 L["This feature will allow you to transfer settings to other characters."] = "Esta característica te permitirá transferir ciertos ajustes a otros personajes."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
-L["|cffFF3030This is for information. This will not change the tags in the UI.|r"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = true
 L["This option allows the overlay to span the whole health, including the background."] = true

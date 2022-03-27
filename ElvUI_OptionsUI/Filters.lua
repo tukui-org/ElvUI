@@ -357,7 +357,7 @@ Filters.mainOptions.args.resetGroup = ACH:Select(L["Reset Filter"], L["This will
 
 Filters.mainOptions.args.filterGroup = ACH:Group(function() return selectedFilter end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
 Filters.mainOptions.args.filterGroup.inline = true
-Filters.mainOptions.args.filterGroup.args.selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium')
+Filters.mainOptions.args.filterGroup.args.selectSpellheader = ACH:Description(L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium')
 Filters.mainOptions.args.filterGroup.args.selectSpell = ACH:Select(L["Select Spell"], nil, 1, SetSpellList, nil, 350, function(_) return selectedSpell or '' end, function(_, value) selectedSpell = (value ~= '' and value) end)
 Filters.mainOptions.args.filterGroup.args.selectSpell.sortByValue = true
 

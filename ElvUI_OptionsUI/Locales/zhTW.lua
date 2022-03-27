@@ -2,10 +2,10 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
 L["%s and then %s"] = "%s 與 %s"
-L["|cffFF0000This does not work in Instances or Garrisons!|r"] = true
-L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
-L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000警告:|r 點擊下拉選單中的箭頭來查看列表."
-L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF0000警告:|r 框架的開啟/關閉以及小隊編號功能正在由智能團隊過濾進行管理. 可以在 (單位框架 - 一般設定) 中停用智能團隊過濾後手動修改這些設定."
+L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
+L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
+L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333警告:|r 點擊下拉選單中的箭頭來查看列表."
+L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF3333警告:|r 框架的開啟/關閉以及小隊編號功能正在由智能團隊過濾進行管理. 可以在 (單位框架 - 一般設定) 中停用智能團隊過濾後手動修改這些設定."
 L["24-Hour Time"] = "24小時制"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -522,7 +522,7 @@ L["Enable/Disable the all-in-one bag."] = "啟用/停用整合背包."
 L["Enable/Disable the Bag-Bar."] = "啟用/停用背包條."
 L["Enable/Disable the loot frame."] = "啟用/停用拾取框架."
 L["Enable/Disable the loot roll frame."] = "啟用/停用擲骰框架."
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = "是否啟用小地圖. |cffFF0000警告: 關掉後你將看不到小地圖周圍的資訊文字.|r"
+L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = "是否啟用小地圖. |cffFF3333警告: 關掉後你將看不到小地圖周圍的資訊文字.|r"
 L["Enables the ElvUI Raid Control panel."] = "啟用ElvUI團隊控制台"
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "啟用後將可以在整個團隊內排序, 但你不再可以區分不同小隊"
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "啟用後翻轉未滿團隊的隊伍順序(起始方向)"
@@ -1526,8 +1526,8 @@ L["The display format of the money text that is shown at the top of the main bag
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "在信息文字中顯示的金錢格式"
 L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = "開始閃光的耐久度百分比. 設定 -1 以停用"
 L["The first button anchors itself to this point on the bar."] = "快捷列第一個按鈕的所在位置."
-L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
-L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "戰鬥資訊將使用此字體, |​​cffFF0000警告:需重啟遊戲或重新登入才可使此變更生效.|r"
+L["The font that appears on the text above players heads. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF3333警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
+L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "戰鬥資訊將使用此字體, |​​cffFF0000警告:需重啟遊戲或重新登入才可使此變更生效.|r"
 L["The font that the core of the UI will use."] = "核心UI 所使用的字體."
 L["The font that the unitframes will use."] = "單位框架字體."
 L["The frame is not shown unless you mouse over the frame."] = "僅於滑鼠移經快捷列時顯示框架."
@@ -1554,7 +1554,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "指定未吸附在施法條內時圖示的尺寸"
 L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["This is for Customized Icons in your Interface/Icons folder."] = "取決於你是否在 Interface/Icons 資料夾中放置了自定義圖標"
-L["|cffFF3030This is for information. This will not change the tags in the UI.|r"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = "這將開啟光環條顏色設置. 這些設置會影響指定法術."
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "這將開啟單位框架顏色設置.這些設置會影響所有單位框架"
 L["This option allows the overlay to span the whole health, including the background."] = "這將允許覆蓋層在包括背景的整個生命條之上."

@@ -2,10 +2,10 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
 L["%s and then %s"] = "%s et alors %s"
-L["|cffFF0000This does not work in Instances or Garrisons!|r"] = true
-L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
-L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
-L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
+L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
+L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
+L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
+L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
 L["24-Hour Time"] = "Mode 24 Heures"
 L["2D"] = "2D"
 L["3D"] = "3D"
@@ -522,7 +522,7 @@ L["Enable/Disable the all-in-one bag."] = "Activer / désactiver le sac tout-en-
 L["Enable/Disable the Bag-Bar."] = "Activer / Désactiver la barre des sacs."
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
+L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
 L["Enables the ElvUI Raid Control panel."] = "Activer le panneau de raid d'ElvUI"
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "Activer ceci permet d'afficher les cadres des joueurs sans 'trou' en remplissant les groupes, mais vous ne serez plus en mesure de distinguer les groupes de raid."
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "Activer ceci inverse l'ordre du groupe quand il n'est pas complet, ceci inversera son ordre de départ"
@@ -1526,8 +1526,8 @@ L["The display format of the money text that is shown at the top of the main bag
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "L'affichage du format de l'argent que vous possédez dans le texte d'informations Argent et dans son infobulle."
 L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "Ancrage du premier bouton sur le point de la barre."
-L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF0000ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
-L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "La police qui sera utilisée pour les textes de combat. |cffFF0000Note : Ce changement nécessite de relancer le jeu ou d'une reconnexion pour prendre effet.|r"
+L["The font that appears on the text above players heads. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF3333ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
+L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "La police qui sera utilisée pour les textes de combat. |cffFF3333Note : Ce changement nécessite de relancer le jeu ou d'une reconnexion pour prendre effet.|r"
 L["The font that the core of the UI will use."] = "La police que le cœur de l'Interface utilisera"
 L["The font that the unitframes will use."] = "Police utilisée par défaut pour les cadres d'unités."
 L["The frame is not shown unless you mouse over the frame."] = "Le cadre est invisible tant que vous n'avez pas passé votre souris dessus."
@@ -1554,7 +1554,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Ceci force la taille de l'icône lorsqu'elle n'est pas rattachée à la barre d'incantation."
 L["This feature will allow you to transfer settings to other characters."] = "Cette fonctionnalité vous permettra de transférer les paramètres à d'autres personnages."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
-L["|cffFF3030This is for information. This will not change the tags in the UI.|r"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Ouvre la configuration des couleurs des unités. Ces options impactent toutes les barres d'unités."
 L["This option allows the overlay to span the whole health, including the background."] = true

@@ -47,7 +47,7 @@ Maps.args.worldMap.args.coordinatesGroup.args.xOffset = ACH:Range(L["X-Offset"],
 Maps.args.worldMap.args.coordinatesGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -200, max = 200, step = 1 }, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
 
 Maps.args.minimap = ACH:Group(L["Minimap"], nil, 2, 'tab', function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end)
-Maps.args.minimap.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"], 1, nil, nil, nil, function(info) return E.private.general.minimap[info[#info]] end, function(info, value) E.private.general.minimap[info[#info]] = value; E.ShowPopup = true end)
+Maps.args.minimap.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"], 1, nil, nil, nil, function(info) return E.private.general.minimap[info[#info]] end, function(info, value) E.private.general.minimap[info[#info]] = value; E.ShowPopup = true end)
 Maps.args.minimap.args.size = ACH:Range(L["Size"], L["Adjust the size of the minimap."], 2, { min = 24, max = 500, step = 1 }, nil, nil, nil, function() return not E.private.general.minimap.enable end)
 Maps.args.minimap.args.scale = ACH:Range(L["Scale"], L["Adjust the scale of the minimap and also the pins. Eg: Quests, Resource nodes, Group members"], 3, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, nil, function() return not E.private.general.minimap.enable end)
 

@@ -2,10 +2,10 @@
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
 L["%s and then %s"] = true
-L["|cffFF0000This does not work in Instances or Garrisons!|r"] = true
-L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
-L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
-L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
+L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
+L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
+L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
+L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = true
 L["24-Hour Time"] = true
 L["2D"] = true
 L["3D"] = true
@@ -522,7 +522,7 @@ L["Enable/Disable the all-in-one bag."] = true
 L["Enable/Disable the Bag-Bar."] = true
 L["Enable/Disable the loot frame."] = true
 L["Enable/Disable the loot roll frame."] = true
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
+L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
 L["Enables the ElvUI Raid Control panel."] = true
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = true
@@ -1526,8 +1526,8 @@ L["The display format of the money text that is shown at the top of the main bag
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true
 L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = true
-L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
-L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
+L["The font that appears on the text above players heads. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
+L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true
 L["The font that the core of the UI will use."] = true
 L["The font that the unitframes will use."] = true
 L["The frame is not shown unless you mouse over the frame."] = true
@@ -1554,7 +1554,7 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = true
 L["This feature will allow you to transfer settings to other characters."] = true
 L["This is for Customized Icons in your Interface/Icons folder."] = true
-L["|cffFF3030This is for information. This will not change the tags in the UI.|r"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = true
 L["This option allows the overlay to span the whole health, including the background."] = true
