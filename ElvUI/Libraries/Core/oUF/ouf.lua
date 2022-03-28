@@ -917,8 +917,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 	local UnitAffectingCombat = UnitAffectingCombat
 
 	local hasValidPlayer = false
-	local cachedVisualization = {}
-	local cachedPriorityChecks = {}
+	local cachedVisibility = {}
+	local cachedPriority = {}
 
 	local eventFrame = CreateFrame('Frame')
 	eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -936,10 +936,10 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		elseif event == 'PLAYER_LEAVING_WORLD' then
 			hasValidPlayer = false
 		elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
-			wipe(cachedVisualization)
+			wipe(cachedVisibility)
 		elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
-			wipe(cachedVisualization)
-			wipe(cachedPriorityChecks)
+			wipe(cachedVisibility)
+			wipe(cachedPriority)
 		end
 	end)
 
@@ -948,15 +948,15 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 	end
 
 	local function CachedVisibility(spellId)
-		if cachedVisualization[spellId] == nil then
+		if cachedVisibility[spellId] == nil then
 			if not hasValidPlayer then -- Don't cache the info if the player is not valid since we didn't get a valid result
 				return VisibilityInfo(spellId)
 			else
-				cachedVisualization[spellId] = {VisibilityInfo(spellId)}
+				cachedVisibility[spellId] = {VisibilityInfo(spellId)}
 			end
 		end
 
-		return unpack(cachedVisualization[spellId])
+		return unpack(cachedVisibility[spellId])
 	end
 
 	local function AllowAura(spellId)
@@ -969,11 +969,11 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 	end
 
 	local function AuraIsPriority(spellId)
-		if cachedPriorityChecks[spellId] == nil then
-			cachedPriorityChecks[spellId] = SpellIsPriorityAura(spellId)
+		if cachedPriority[spellId] == nil then
+			cachedPriority[spellId] = SpellIsPriorityAura(spellId)
 		end
 
-		return cachedPriorityChecks[spellId]
+		return cachedPriority[spellId]
 	end
 
 	local function CouldDisplayAura(frame, event, unit, auraInfo)
