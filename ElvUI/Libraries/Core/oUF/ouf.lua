@@ -988,7 +988,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		return false
 	end
 
-	local function ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, relevantFunc, ...)
+	local function ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc, ...)
 		if updatedAuras and relevantFunc then
 			for _, auraInfo in ipairs(updatedAuras) do
 				if relevantFunc(frame, event, unit, auraInfo, ...) then
@@ -1000,8 +1000,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		end
 	end
 
-	function oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc)
-		return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura)
+	function oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras, overrideFunc)
+		return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, overrideFunc or CouldDisplayAura)
 	end
 end
 
@@ -1024,9 +1024,9 @@ do -- Event Pooler by Simpy
 			local funcs = info.functions
 			if instant and funcs then
 				if event == 'UNIT_AURA' and oUF.isRetail then
-					local isFullUpdate, updatedAuras = ...
-					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, isFullUpdate, updatedAuras) then
-						pooler.run(funcs, frame, event, arg1, isFullUpdate, updatedAuras)
+					local fullUpdate, updatedAuras = ...
+					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, fullUpdate, updatedAuras) then
+						pooler.run(funcs, frame, event, arg1, fullUpdate, updatedAuras)
 					end
 				else
 					pooler.run(funcs, frame, event, arg1, ...)
@@ -1037,8 +1037,8 @@ do -- Event Pooler by Simpy
 					if event == 'UNIT_AURA' and oUF.isRetail then
 						local allowUnit = false
 						for _, args in ipairs(data) do
-							local unit, isFullUpdate, updatedAuras = unpack(args)
-							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras) then
+							local unit, fullUpdate, updatedAuras = unpack(args)
+							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras) then
 								allowUnit = unit
 								break
 							end
