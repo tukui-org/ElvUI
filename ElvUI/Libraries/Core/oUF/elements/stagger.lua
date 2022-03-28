@@ -176,19 +176,11 @@ local function Visibility(self, event, unit)
 
 	if useClassbar and isShown then
 		element:Hide()
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_AURA', Path)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-		end
+		self:UnregisterEvent('UNIT_AURA', Path)
 		stateChanged = true
 	elseif not useClassbar and not isShown then
 		element:Show()
-		if oUF.isRetail then
-			self:RegisterEvent('UNIT_AURA', Path)
-		else
-			oUF:RegisterEvent(self, 'UNIT_AURA', Path)
-		end
+		self:RegisterEvent('UNIT_AURA', Path)
 		stateChanged = true
 	end
 
@@ -248,12 +240,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_AURA', Path)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-		end
-
+		self:UnregisterEvent('UNIT_AURA', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 

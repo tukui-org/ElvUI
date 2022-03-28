@@ -912,19 +912,13 @@ if(global) then
 end
 
 do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
-	local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
-	local UnitAffectingCombat = UnitAffectingCombat
-	local UnitIsUnit = UnitIsUnit
-
 	local SpellGetVisibilityInfo = SpellGetVisibilityInfo
 	local SpellIsPriorityAura = SpellIsPriorityAura
-	local SpellIsSelfBuff = SpellIsSelfBuff
+	local UnitAffectingCombat = UnitAffectingCombat
 
 	local hasValidPlayer = false
-	local cachedVisualization = {}
-	local cachedSelfBuffChecks = {}
-	local cachedPriorityChecks = {}
-	local unitPlayer = { player = true, pet = true, vehicle = true }
+	local cachedVisibility = {}
+	local cachedPriority = {}
 
 	local eventFrame = CreateFrame('Frame')
 	eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -942,11 +936,10 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		elseif event == 'PLAYER_LEAVING_WORLD' then
 			hasValidPlayer = false
 		elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
-			wipe(cachedVisualization)
+			wipe(cachedVisibility)
 		elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
-			wipe(cachedVisualization)
-			wipe(cachedSelfBuffChecks)
-			wipe(cachedPriorityChecks)
+			wipe(cachedVisibility)
+			wipe(cachedPriority)
 		end
 	end)
 
@@ -955,112 +948,62 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 	end
 
 	local function CachedVisibility(spellId)
-		if cachedVisualization[spellId] == nil then
+		if cachedVisibility[spellId] == nil then
 			if not hasValidPlayer then -- Don't cache the info if the player is not valid since we didn't get a valid result
 				return VisibilityInfo(spellId)
 			else
-				cachedVisualization[spellId] = {VisibilityInfo(spellId)}
+				cachedVisibility[spellId] = {VisibilityInfo(spellId)}
 			end
 		end
 
-		return unpack(cachedVisualization[spellId])
+		return unpack(cachedVisibility[spellId])
 	end
 
-	local function SpellVisibility(spellId)
+	local function AllowAura(spellId)
 		local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
 		if hasCustom then
 			return alwaysShowMine or showForMySpec
 		else
-			return nil
-		end
-	end
-
-	local function CachedSelfBuff(spellId)
-		if cachedSelfBuffChecks[spellId] == nil then cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId) end
-		return cachedSelfBuffChecks[spellId]
-	end
-
-	local function CachedPriorityAura(spellId)
-		if cachedPriorityChecks[spellId] == nil then cachedPriorityChecks[spellId] = SpellIsPriorityAura(spellId) end
-		return cachedPriorityChecks[spellId]
-	end
-
-	local _, playerClass = UnitClass('player')
-	local PaladinPriority = function(spellId) return spellId == 25771 or CachedPriorityAura(spellId) end -- isForbearance > Cannot be affected by Divine Shield, Hand of Protection, or Lay on Hands for 30 sec.
-	local IsPriorityDebuff = playerClass == 'PALADIN' and PaladinPriority or CachedPriorityAura
-
-	local function ShouldDisplayDebuff(unit, sourceUnit, spellId)
-		local visibility = SpellVisibility(spellId)
-		if visibility ~= nil then
-			return visibility
-		else -- not hasCustom ~Simpy
 			return true
 		end
 	end
 
-	local function ShouldDisplayBuff(unit, sourceUnit, spellId, canApplyAura, isFromPlayerOrPlayerPet)
-		local visibility = SpellVisibility(spellId)
-		if visibility ~= nil then
-			return visibility
-		elseif sourceUnit and (unit == sourceUnit or UnitIsUnit(unit, sourceUnit)) or UnitIsOwnerOrControllerOfUnit('player', unit) then
-			return true -- self casted to show ~Simpy
-		elseif unitPlayer[sourceUnit] then -- modified to allow self auras ~Simpy
-			return canApplyAura or CachedSelfBuff(spellId)
-		else -- let any from a player show ~Simpy
-			return isFromPlayerOrPlayerPet
+	local function AuraIsPriority(spellId)
+		if cachedPriority[spellId] == nil then
+			cachedPriority[spellId] = SpellIsPriorityAura(spellId)
 		end
+
+		return cachedPriority[spellId]
 	end
 
-	local dispellableDebuffTypes = { Magic = true, Curse = true, Disease = true, Poison = true }
-	local function CouldDisplayAura(frame, event, unit, auraInfo, onlyDispellable)
+	local function CouldDisplayAura(frame, event, unit, auraInfo)
 		if auraInfo.isNameplateOnly then
-			return frame.isNamePlate -- blizzard has this as false ~Simpy
-		elseif auraInfo.isBossAura then
+			return frame.isNamePlate
+		elseif auraInfo.isBossAura or AuraIsPriority(auraInfo.spellId) then
 			return true
-		elseif auraInfo.isHarmful then
-			local priorityDebuff = IsPriorityDebuff(auraInfo.spellId) -- don't call this twice ~Simpy
-			if priorityDebuff then return true end
-
-			local shouldShowDebuff = ShouldDisplayDebuff(unit, auraInfo.sourceUnit, auraInfo.spellId) -- don't call this twice ~Simpy
-			if shouldShowDebuff and not onlyDispellable then return true end
-
-			if auraInfo.isRaid then
-				if onlyDispellable and shouldShowDebuff and not priorityDebuff then return true end
-				if dispellableDebuffTypes[auraInfo.debuffType] ~= nil then return true end
-			end
-		elseif auraInfo.isHelpful then
-			if ShouldDisplayBuff(unit, auraInfo.sourceUnit, auraInfo.spellId, auraInfo.canApplyAura, auraInfo.isFromPlayerOrPlayerPet) then return true end
+		elseif auraInfo.isHarmful or auraInfo.isHelpful then
+			return AllowAura(auraInfo.spellId)
 		end
 
 		return false
 	end
 
-	local function ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, relevantFunc, ...)
-		if isFullUpdate == nil then
-			isFullUpdate = true
-		end
-
-		local skipUpdate = false
-		if not isFullUpdate and updatedAuras ~= nil and relevantFunc ~= nil then
-			skipUpdate = true
-
+	local function ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc, ...)
+		if fullUpdate or fullUpdate == nil then
+			return false
+		elseif updatedAuras and relevantFunc then
 			for _, auraInfo in ipairs(updatedAuras) do
 				if relevantFunc(frame, event, unit, auraInfo, ...) then
-					skipUpdate = false
-					break
+					return false
 				end
 			end
-		end
 
-		return skipUpdate
+			return true
+		end
 	end
 
-	function oUF:ShouldSkipAuraUpdate(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc)
-		if not unit or frame.unit ~= unit then
-			return true
-		else -- last arg false here is frame.optionTable.displayOnlyDispellableDebuffs (blizzards); we need to do something more advanced here, if we want dispellable switch functional
-			return ShouldSkipAura(frame, event, unit, isFullUpdate, updatedAuras, overrideFunc or CouldDisplayAura, false)
-		end
+	function oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras, relevantFunc)
+		return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc or CouldDisplayAura)
 	end
 end
 
@@ -1082,14 +1025,40 @@ do -- Event Pooler by Simpy
 		for frame, info in pairs(pool) do
 			local funcs = info.functions
 			if instant and funcs then
-				pooler.run(funcs, frame, event, arg1, ...)
+				if event == 'UNIT_AURA' and oUF.isRetail then
+					local fullUpdate, updatedAuras = ...
+					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, fullUpdate, updatedAuras) then
+						pooler.run(funcs, frame, event, arg1, fullUpdate, updatedAuras)
+					end
+				else
+					pooler.run(funcs, frame, event, arg1, ...)
+				end
 			else
 				local data = funcs and info.data[event]
-				local count = data and #data
-				local args = count and data[count]
-				if args then
-					-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
-					pooler.run(funcs, frame, event, unpack(args))
+				if data then
+					if event == 'UNIT_AURA' and oUF.isRetail then
+						local allowUnit = false
+						for _, args in ipairs(data) do
+							local unit, fullUpdate, updatedAuras = unpack(args)
+							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras) then
+								allowUnit = unit
+								break
+							end
+						end
+
+						if allowUnit then
+							pooler.run(funcs, frame, event, allowUnit)
+						end
+					else
+						local count = #data
+						local args = count and data[count]
+						if args then
+							-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
+							pooler.run(funcs, frame, event, unpack(args))
+						end
+
+					end
+
 					wipe(data)
 				end
 			end

@@ -148,6 +148,7 @@ L["Bag 2"] = true
 L["Bag 3"] = true
 L["Bag 4"] = true
 L["Bag Assignment"] = true
+L["Bag Bar"] = true
 L["Bag Spacing"] = true
 L["BAG_FILTER_CONSUMABLES"] = "소비용품"
 L["BAG_FILTER_EQUIPMENT"] = "장비"

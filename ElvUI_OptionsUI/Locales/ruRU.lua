@@ -148,6 +148,7 @@ L["Bag 2"] = "Сумка 2"
 L["Bag 3"] = "Сумка 3"
 L["Bag 4"] ="Сумка 4"
 L["Bag Assignment"] = "Назначение сумок"
+L["Bag Bar"] = true
 L["Bag Spacing"] = "Отступ сумок"
 L["BAG_FILTER_CONSUMABLES"] = "расходуемые"
 L["BAG_FILTER_EQUIPMENT"] = "снаряжение"
