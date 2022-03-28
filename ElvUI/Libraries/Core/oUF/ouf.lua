@@ -961,11 +961,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 
 	local function AllowAura(spellId)
 		local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
-		if hasCustom then
-			return alwaysShowMine or showForMySpec
-		else
-			return true
-		end
+		return (not hasCustom) or alwaysShowMine or showForMySpec
 	end
 
 	local function AuraIsPriority(spellId)
