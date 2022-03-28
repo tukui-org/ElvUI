@@ -1002,8 +1002,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		end
 	end
 
-	function oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras, overrideFunc)
-		return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, overrideFunc or CouldDisplayAura)
+	function oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras, relevantFunc)
+		return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc or CouldDisplayAura)
 	end
 end
 
