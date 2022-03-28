@@ -989,7 +989,9 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 	end
 
 	local function ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc, ...)
-		if updatedAuras and relevantFunc then
+		if fullUpdate or fullUpdate == nil then
+			return false
+		elseif updatedAuras and relevantFunc then
 			for _, auraInfo in ipairs(updatedAuras) do
 				if relevantFunc(frame, event, unit, auraInfo, ...) then
 					return false
