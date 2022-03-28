@@ -997,6 +997,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 					return false
 				end
 			end
+
+			return true
 		end
 	end
 
