@@ -1,3 +1,6 @@
+### ### Version 2.40 [ March 29th 2022 ]
+
+___
 ### ### Version 2.39 [ March 23rd 2022 ]
 
 Auras: Re enabled top auras, blizzard pushed a hotfix  
