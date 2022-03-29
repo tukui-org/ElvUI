@@ -120,19 +120,19 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 			holder:SetPoint(anchor, element)
 		end
 	elseif element.resetRowHeight then
-		local size = element.height or element.size
-		if size then element:Height(size) end
+		element:Height(height)
+
 		element.resetRowHeight = nil
 	end
 
 	return holder
 end
 
-function UF:GetAuraPosition(element)
+function UF:GetAuraPosition(element, onlyHeight)
 	local spacing = element.spacing or 0
 	local width = (element.size or 16) + spacing
 	local height = (not element.height and width) or element.height + spacing
-	local cols = floor(element:GetWidth() / width + 0.5)
+	if onlyHeight then return height end
 
 	local growthX = element.growthX == 'LEFT' and -1 or 1
 	local growthY = element.growthY == 'DOWN' and -1 or 1
@@ -145,6 +145,8 @@ function UF:GetAuraPosition(element)
 	local center = anchor == 'TOP' or anchor == 'BOTTOM'
 	local side = anchor == 'LEFT' or anchor == 'RIGHT'
 	local point = (center or side) and (y..x) or anchor
+
+	local cols = floor(element:GetWidth() / width + 0.5)
 
 	return anchor, inversed, growthX, growthY, width, height, cols, point, side and y
 end
@@ -164,8 +166,7 @@ function UF:SetPosition(from, to)
 			self:SetHeight(0.00001) -- dont scale this
 			self.resetRowHeight = true
 		else
-			local height = self.height or self.size
-			if height then self:Height(height) end
+			self:Height(UF:GetAuraPosition(self, true))
 		end
 	else
 		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
@@ -370,7 +371,6 @@ function UF:Configure_Auras(frame, which)
 
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
-	auras:SetScale(1)
 
 	local index = 1
 	while auras[index] do
@@ -466,8 +466,7 @@ function UF:UpdateAuraSmartPoisition()
 			element:ClearAllPoints()
 			element:Point(other.initialAnchor, other.attachTo, other.anchorPoint, other.xOffset, other.yOffset)
 		else
-			local height = other.height or other.size
-			if height then other:Height(height) end
+			other:Height(UF:GetAuraPosition(other, true))
 		end
 	else
 		element:ClearAllPoints()

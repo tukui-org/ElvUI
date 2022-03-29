@@ -10,6 +10,8 @@ local strjoin = strjoin
 local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
+local UnitName = UnitName
+
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
@@ -83,6 +85,23 @@ end
 
 function NP:Castbar_PostCastStart(unit)
 	self:CheckInterrupt(unit)
+
+	-- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
+	local plate = self.__owner
+	local db = NP:PlateDB(plate)
+	if db.castbar and db.castbar.enable and db.castbar.displayTarget then
+		local frameType = plate.frameType
+		if frameType == 'PLAYER' then
+			if self.curTarget then
+				self.Text:SetText(self.spellName..' > '..self.curTarget)
+			end
+		elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
+			local target = self.curTarget or UnitName(unit..'target')
+			if target and target ~= '' and target ~= plate.unitName then
+				self.Text:SetText(self.spellName..' > '..target)
+			end
+		end
+	end
 end
 
 function NP:Castbar_PostCastFail()
@@ -147,20 +166,18 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= '') then
 		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
-			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
-			if db and db.castbar and db.castbar.enable and db.castbar.sourceInterrupt then
-				if db.castbar.timeToHold > 0 then
-					local name = strmatch(sourceName, '([^%-]+).*')
-					if db.castbar.sourceInterruptClassColor then
-						local data = CH:GetPlayerInfoByGUID(sourceGUID)
-						if data and data.classColor then
-							classColor = data.classColor.colorStr
-						end
-
-						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
-					else
-						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
+			local db = NP:PlateDB(plate)
+			if db.castbar and db.castbar.enable and db.castbar.sourceInterrupt and (db.castbar.timeToHold > 0) then
+				local name = strmatch(sourceName, '([^%-]+).*')
+				if db.castbar.sourceInterruptClassColor then
+					local data = CH:GetPlayerInfoByGUID(sourceGUID)
+					if data and data.classColor then
+						classColor = data.classColor.colorStr
 					end
+
+					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+				else
+					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
 				end
 			end
 		end

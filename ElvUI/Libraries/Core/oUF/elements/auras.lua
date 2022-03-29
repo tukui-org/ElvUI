@@ -382,8 +382,8 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	return visible, hidden
 end
 
-local function UpdateAuras(self, event, unit)
-	if(self.unit ~= unit) then return end
+local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
+	if not unit or self.unit ~= unit then return end
 
 	local auras = self.Auras
 	if(auras) then

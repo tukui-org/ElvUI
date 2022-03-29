@@ -32,9 +32,10 @@ C.StyleFilterSelected = nil
 
 E.Options.args.nameplates.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
 local StyleFitlers = E.Options.args.nameplates.args.filters.args
+local StyleFallback = NP:StyleFilterCopyDefaults()
 
 local function GetFilter(collect, profile)
-	local setting = (profile and E.db.nameplates.filters[C.StyleFilterSelected]) or E.global.nameplates.filters[C.StyleFilterSelected]
+	local setting = (profile and E.db.nameplates.filters[C.StyleFilterSelected]) or E.global.nameplates.filters[C.StyleFilterSelected] or StyleFallback
 
 	if collect and setting then
 		return setting.triggers, setting.actions
@@ -204,12 +205,12 @@ local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') 
 StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
 StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplates.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
 StyleFitlers.selectFilter.sortByValue = true
-StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() end)
+StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
 StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
 -- UpdateBossModAuras needed here in get to update the list once every time you load the config with a selected filter.
 StyleFitlers.triggers.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() UpdateBossModAuras(true) local profileTriggers = GetFilter(true, true) return profileTriggers and profileTriggers.enable end, function(_, value) E.db.nameplates = E.db.nameplates or {} E.db.nameplates.filters = E.db.nameplates.filters or {} E.db.nameplates.filters[C.StyleFilterSelected] = E.db.nameplates.filters[C.StyleFilterSelected] or {} local profileFilter = GetFilter(nil, true) if not profileFilter.triggers then profileFilter.triggers = {} end profileFilter.triggers.enable = value NP:ConfigureAll() end)
-StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers and triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) if triggers then triggers.priority = value NP:ConfigureAll() end end, DisabledFilter)
+StyleFitlers.triggers.args.priority = ACH:Range(L["Filter Priority"], L["Lower numbers mean a higher priority. Filters are processed in order from 1 to 100."], 1, { min = 1, max = 100, step = 1 }, nil, function() local triggers = GetFilter(true) return triggers.priority or 1 end, function(_, value) local triggers = GetFilter(true) if triggers then triggers.priority = value NP:ConfigureAll() end end, DisabledFilter)
 StyleFitlers.triggers.args.resetFilter = ACH:Execute(L["Clear Filter"], L["Return filter to its default state."], 2, function() E.global.nameplates.filters[C.StyleFilterSelected] = E:CopyTable(NP:StyleFilterCopyDefaults(), G.nameplates.filters[C.StyleFilterSelected]) UpdateFilterGroup() NP:ConfigureAll() end)
 
 StyleFitlers.triggers.args.names = ACH:Group(L["Name"], nil, 6, nil, nil, nil, DisabledFilter)
@@ -284,6 +285,24 @@ StyleFitlers.triggers.args.combat.args.unitGroup.args.isPvP = ACH:Toggle(L["Is P
 StyleFitlers.triggers.args.combat.args.unitGroup.args.isNotPvP = ACH:Toggle(L["Not PvP"], L["If enabled then the filter will only activate when the unit is not pvp-flagged."], 16)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.isTapDenied = ACH:Toggle(L["Tap Denied"], L["If enabled then the filter will only activate when the unit is tap denied."], 17)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.isNotTapDenied = ACH:Toggle(L["Not Tap Denied"], L["If enabled then the filter will only activate when the unit is not tap denied."], 18)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.inMyGuild = ACH:Toggle(L["My Guild"], nil, 19)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notMyGuild = ACH:Toggle(L["Not My Guild"], nil, 20)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isOthersPet = ACH:Toggle(L["Another Players Pet"], nil, 21)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notOthersPet = ACH:Toggle(L["Not Another Players Pet"], nil, 22)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isTrivial = ACH:Toggle(L["Is Trivial"], nil, 23)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notTrivial = ACH:Toggle(L["Not Trivial"], nil, 24)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isUnconscious = ACH:Toggle(L["Unconscious"], nil, 25)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isConscious = ACH:Toggle(L["Conscious"], nil, 26)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isPossessed = ACH:Toggle(L["Is Possessed"], nil, 27)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notPossessed = ACH:Toggle(L["Not Possessed"], nil, 28)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isCharmed = ACH:Toggle(L["Is Charmed"], nil, 29)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notCharmed = ACH:Toggle(L["Not Charmed"], nil, 30)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isDeadOrGhost = ACH:Toggle(L["Dead or Ghost"], nil, 31)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notDeadOrGhost = ACH:Toggle(L["Alive"], nil, 32)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isBeingResurrected = ACH:Toggle(L["Is Being Resurrected"], nil, 33)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notBeingResurrected = ACH:Toggle(L["Not Being Resurrected"], nil, 34)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.isConnected = ACH:Toggle(L["Connected"], nil, 35)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notConnected = ACH:Toggle(L["Disconnected"], nil, 36)
 
 StyleFitlers.triggers.args.combat.args.npcGroup = ACH:Group('', nil, 3)
 StyleFitlers.triggers.args.combat.args.npcGroup.inline = true
@@ -650,8 +669,6 @@ for i, iconName in next, E.NamePlates.TriggerConditions.raidTargets do
 end
 
 local actionDefaults = {
-	scale = 1,
-	alpha = -1,
 	color = {
 		healthColor = { r = 136 / 255, g = 255 / 255, b = 102 / 255, a = 1 },
 		powerColor = { r = 102 / 255, g = 136 / 255, b = 255 / 255, a = 1 },
@@ -663,7 +680,7 @@ local actionDefaults = {
 	},
 }
 
-local function actionHidePlate() local _, actions = GetFilter(true) return actions and actions.hide end
+local function actionHidePlate() local _, actions = GetFilter(true) return actions.hide end
 local function actionSubGroup(info, ...)
 	local _, actions = GetFilter(true)
 	if not actions then return end
@@ -689,7 +706,7 @@ local function actionSubGroup(info, ...)
 	NP:ConfigureAll()
 end
 
-StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions and actions[info[#info]] or actionDefaults[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)
@@ -714,7 +731,7 @@ StyleFitlers.actions.args.color.args.borderClass = ACH:Toggle(L["Unit Class Colo
 StyleFitlers.actions.args.texture = ACH:Group(L["Texture"], nil, 20, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFitlers.actions.args.texture.inline = true
 StyleFitlers.actions.args.texture.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFitlers.actions.args.texture.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2, nil, nil, nil, function() local _, actions = GetFilter(true) return actions and not actions.texture.enable end)
+StyleFitlers.actions.args.texture.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2, nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.texture.enable end)
 
 StyleFitlers.actions.args.flash = ACH:Group(L["Flash"], nil, 30, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFitlers.actions.args.flash.inline = true
@@ -723,7 +740,7 @@ StyleFitlers.actions.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
 StyleFitlers.actions.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
 StyleFitlers.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
 
-StyleFitlers.actions.args.text_format = ACH:Group(L["Text Format"], nil, 40, nil, function(info) local _, actions = GetFilter(true) return actions and actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) if actions then actions.tags[info[#info]] = value NP:ConfigureAll() end end)
+StyleFitlers.actions.args.text_format = ACH:Group(L["Text Format"], nil, 40, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
 StyleFitlers.actions.args.text_format.inline = true
 StyleFitlers.actions.args.text_format.args.info = ACH:Description(L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 1, 'medium')
 StyleFitlers.actions.args.text_format.args.name = ACH:Input(L["Name"], nil, 1, nil, 'full')

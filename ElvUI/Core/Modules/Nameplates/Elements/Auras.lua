@@ -87,7 +87,10 @@ function NP:Construct_AuraIcon(button)
 	E:RegisterCooldown(button.cd)
 
 	local auras = button:GetParent()
-	button.db = auras and NP.db.units and NP.db.units[auras.__owner.frameType] and NP.db.units[auras.__owner.frameType][auras.type]
+	if auras and auras.type then
+		local db = NP:PlateDB(auras.__owner)
+		button.db = db[auras.type]
+	end
 
 	NP:UpdateAuraSettings(button)
 end

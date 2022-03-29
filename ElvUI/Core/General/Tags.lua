@@ -74,6 +74,7 @@ local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPet
 
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
+local LEVEL = strlower(LEVEL)
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
@@ -83,7 +84,6 @@ local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
-local LEVEL = LEVEL
 local PVP = PVP
 
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
@@ -95,8 +95,7 @@ function E:AddTag(tagName, eventsOrSeconds, func, block)
 	if type(eventsOrSeconds) == 'number' then
 		Tags.OnUpdateThrottle[tagName] = eventsOrSeconds
 	else
-
-		Tags.Events[tagName] = (E.Retail and gsub(eventsOrSeconds, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')) or gsub(eventsOrSeconds, 'UNIT_HEALTH([^_])', 'UNIT_HEALTH_FREQUENT%1')
+		Tags.Events[tagName] = (E.Retail and gsub(eventsOrSeconds, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')) or gsub(eventsOrSeconds, 'UNIT_HEALTH([^%s_]?)', 'UNIT_HEALTH_FREQUENT%1')
 	end
 
 	Tags.Methods[tagName] = func
@@ -1101,9 +1100,12 @@ do
 		E.ScanTooltip:SetUnit(unit)
 		E.ScanTooltip:Show()
 
-		local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-		if Title and not strfind(Title, '^'..LEVEL) then
-			return custom and format(custom, Title) or Title
+		-- similar to TT.GetLevelLine
+		local ttLine = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]
+		local ttText = ttLine and ttLine:GetText()
+		local ttLower = ttText and strlower(ttText)
+		if ttLower and not strfind(ttLower, LEVEL) then
+			return custom and format(custom, ttText) or ttText
 		end
 	end
 	E.TagFunctions.GetTitleNPC = GetTitleNPC

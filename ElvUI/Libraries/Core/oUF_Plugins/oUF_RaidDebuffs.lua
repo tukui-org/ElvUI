@@ -238,8 +238,9 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 	end
 end
 
-local function Update(self, event, unit)
-	if unit ~= self.unit then return end
+local function Update(self, event, unit, isFullUpdate, updatedAuras)
+	if not unit or self.unit ~= unit then return end
+
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID
 	local _stackThreshold, _priority, priority = 0, 0, 0
 

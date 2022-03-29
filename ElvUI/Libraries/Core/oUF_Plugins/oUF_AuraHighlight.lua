@@ -140,8 +140,8 @@ local function CheckDispel(_, event, arg1)
 	end
 end
 
-local function Update(self, _, unit)
-	if unit ~= self.unit then return end
+local function Update(self, event, unit, isFullUpdate, updatedAuras)
+	if not unit or self.unit ~= unit then return end
 
 	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
