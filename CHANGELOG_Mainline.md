@@ -1,7 +1,6 @@
 ### Version 12.73 [ ETA: 🍨 ]
 
 NamePlates: Added Castbar Display Target to Enemy NPC and Friendly NPC.  
-Skins: Fix mailbox skin when attachments exceeded the first row  
 StyleFilter: Added several Unit Condition triggers: Another Players Pet, Guild, Trivial, Connected, Conscious, Possessed, Charmed states, Dead / Alive, and Being Resurrected.  
 UnitFrames: Fixed range (again)  
 UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option.  
