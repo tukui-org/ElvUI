@@ -1,11 +1,18 @@
+### Version 1.66 [ ETA: 🍨 ]
+
+___
+### Version 1.65 [ March 29th 2022 ]
+
+UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option  
+UnitFrames: Fix castbar custom backdrop when using reverse option  
+UnitFrames: Fixed range (again)  
+StyleFilter: Added several Unit Condition triggers: Another Players Pet, Guild, Trivial, Connected, Conscious, Possessed, Charmed states, Dead / Alive, and Being Resurrected  
+
+___
 ### Version 1.64 [ March 23rd 2022 ]
 
 UnitFrames: Fixed aura rows overlapping  
 UnitFrames: Paladins can now always see magic dispells  
-UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option.  
-UnitFrames: Fix castbar custom backdrop when using reverse option.  
-UnitFrames: Fixed range (again)  
-StyleFilter: Added several Unit Condition triggers: Another Players Pet, Guild, Trivial, Connected, Conscious, Possessed, Charmed states, Dead / Alive, and Being Resurrected.  
 
 ___
 ### Version 1.63 [ March 20th 2022 ]

@@ -1,10 +1,18 @@
-### ### Version 2.39 [ March 23rd 2022 ]
+### Version 2.41 [ ETA: 🍨 ]
+
+___
+### Version 2.40 [ March 29th 2022 ]
+
+Skins: Fix mailbox skin when attachments exceeded the first row  
+StyleFilter: Added several Unit Condition triggers: Another Players Pet, Guild, Trivial, Connected, Conscious, Possessed, Charmed states, Dead / Alive, and Being Resurrected   
+UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option  
+UnitFrames: Fix castbar custom backdrop when using reverse option  
+UnitFrames: Fixed range (again)  
+
+___
+### Version 2.39 [ March 23rd 2022 ]
 
 Auras: Re enabled top auras, blizzard pushed a hotfix  
-StyleFilter: Added several Unit Condition triggers: Another Players Pet, Guild, Trivial, Connected, Conscious, Possessed, Charmed states, Dead / Alive, and Being Resurrected.   
-UnitFrames: Fix castbar custom backdrop color if set to a class color from not displaying other class colors properly if using the same profile that originally set the option.  
-UnitFrames: Fix castbar custom backdrop when using reverse option.  
-UnitFrames: Fixed range (again)  
 
 ___
 ### Version 2.38 [ March 23rd 2022 ]
