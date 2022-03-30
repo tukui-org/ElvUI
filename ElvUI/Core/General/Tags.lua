@@ -721,6 +721,22 @@ E:AddTag('guild', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
 	end
 end)
 
+-- Modified copy from oUF\Tags to only display in raids
+E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
+	if IsInRaid() then
+		local name, server = UnitName(unit)
+		if(server and server ~= '') then
+			name = string.format('%s-%s', name, server)
+		end
+		for i = 1, GetNumGroupMembers() do
+			local raidName, _, group = GetRaidRosterInfo(i)
+			if( raidName == name ) then
+				return group
+			end
+		end
+	end
+end)
+
 E:AddTag('guild:brackets', 'PLAYER_GUILD_UPDATE', function(unit)
 	local guildName = GetGuildInfo(unit)
 	if guildName then
@@ -1510,6 +1526,7 @@ E.TagInfo = {
 		['title'] = { category = 'Names', description = "Displays player title" },
 	-- Party and Raid
 		['group'] = { category = 'Party and Raid', description = "Displays the group number the unit is in ('1' - '8')" },
+		['group:raid'] = { category = 'Party and Raid', description = "Displays the group number the unit is in ('1' - '8') (Only while in a raid)" },
 		['leader'] = { category = 'Party and Raid', description = "Displays 'L' if the unit is the group/raid leader" },
 		['leaderlong'] = { category = 'Party and Raid', description = "Displays 'Leader' if the unit is the group/raid leader" },
 	-- Power
