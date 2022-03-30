@@ -20,6 +20,7 @@ local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPVPTimer = GetPVPTimer
+local GetRaidRosterInfo = GetRaidRosterInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -718,6 +719,21 @@ end)
 E:AddTag('guild', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
 	if UnitIsPlayer(unit) then
 		return GetGuildInfo(unit)
+	end
+end)
+
+E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
+	if IsInRaid() then
+		local name, realm = UnitName(unit)
+		if name then
+			local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
+			for i = 1, GetNumGroupMembers() do
+				local raidName, _, group = GetRaidRosterInfo(i)
+				if raidName == nameRealm then
+					return group
+				end
+			end
+		end
 	end
 end)
 
@@ -1509,7 +1525,8 @@ E.TagInfo = {
 		['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. General Goods Vendor)" },
 		['title'] = { category = 'Names', description = "Displays player title" },
 	-- Party and Raid
-		['group'] = { category = 'Party and Raid', description = "Displays the group number the unit is in ('1' - '8')" },
+		['group'] = { category = 'Party and Raid', description = "Displays the group number the unit is in (1-8)" },
+		['group:raid'] = { category = 'Party and Raid', description = "Displays the group number the unit is in (1-8): Only while in a raid." },
 		['leader'] = { category = 'Party and Raid', description = "Displays 'L' if the unit is the group/raid leader" },
 		['leaderlong'] = { category = 'Party and Raid', description = "Displays 'Leader' if the unit is the group/raid leader" },
 	-- Power
