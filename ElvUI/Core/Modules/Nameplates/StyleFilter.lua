@@ -685,6 +685,16 @@ end
 function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	local passed -- skip StyleFilterPass when triggers are empty
 
+	-- Class and Specialization
+	if trigger.class and next(trigger.class) then
+		local Class = trigger.class[E.myclass]
+		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
+			return
+		else
+			passed = true
+		end
+	end
+
 	-- Health
 	if trigger.healthThreshold then
 		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
@@ -927,16 +937,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.creatureType[E.CreatureTypes[frame.creatureType]] then passed = true else return end
 	end
 
-	-- Key Modifier
-	if trigger.keyMod and trigger.keyMod.enable then
-		for key, value in pairs(trigger.keyMod) do
-			local isDown = mod.TriggerConditions.keys[key]
-			if value and isDown then
-				if isDown() then passed = true else return end
-			end
-		end
-	end
-
 	-- Reaction (or Reputation) Type
 	if trigger.reactionType and trigger.reactionType.enable then
 		if trigger.reactionType[mod.TriggerConditions.reactions[(trigger.reactionType.reputation and frame.repReaction) or frame.reaction]] then passed = true else return end
@@ -955,16 +955,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Raid Target
 	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
 		if trigger.raidTarget[mod.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
-	end
-
-	-- Class and Specialization
-	if trigger.class and next(trigger.class) then
-		local Class = trigger.class[E.myclass]
-		if not Class or (Class.specs and next(Class.specs) and not Class.specs[E.myspec and GetSpecializationInfo(E.myspec)]) then
-			return
-		else
-			passed = true
-		end
 	end
 
 	do
@@ -1004,6 +994,46 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			end
 			if trigger.location.subZoneNamesEnabled and next(trigger.location.subZoneNames) then
 				if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
+			end
+		end
+	end
+
+	-- Key Modifier
+	if trigger.keyMod and trigger.keyMod.enable then
+		for key, value in pairs(trigger.keyMod) do
+			local isDown = mod.TriggerConditions.keys[key]
+			if value and isDown then
+				if isDown() then passed = true else return end
+			end
+		end
+	end
+
+	-- Name or GUID
+	if trigger.names and next(trigger.names) then
+		for _, value in pairs(trigger.names) do
+			if value then -- only run if at least one is selected
+				local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
+				if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
+				break -- we can execute this once on the first enabled option then kill the loop
+			end
+		end
+	end
+
+	-- Slots
+	if trigger.slots and next(trigger.slots) then
+		for slot, value in pairs(trigger.slots) do
+			if value then -- only run if at least one is selected
+				if GetInventoryItemID('player', slot) then passed = true else return end
+			end
+		end
+	end
+
+	-- Items
+	if trigger.items and next(trigger.items) then
+		for item, value in pairs(trigger.items) do
+			if value then -- only run if at least one is selected
+				local hasItem = IsEquippedItem(item)
+				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
 			end
 		end
 	end
@@ -1126,36 +1156,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 					if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
-			end
-		end
-	end
-
-	-- Slots
-	if trigger.slots and next(trigger.slots) then
-		for slot, value in pairs(trigger.slots) do
-			if value then -- only run if at least one is selected
-				if GetInventoryItemID('player', slot) then passed = true else return end
-			end
-		end
-	end
-
-	-- Items
-	if trigger.items and next(trigger.items) then
-		for item, value in pairs(trigger.items) do
-			if value then -- only run if at least one is selected
-				local hasItem = IsEquippedItem(item)
-				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
-			end
-		end
-	end
-
-	-- Name or GUID
-	if trigger.names and next(trigger.names) then
-		for _, value in pairs(trigger.names) do
-			if value then -- only run if at least one is selected
-				local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
-				if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
-				break -- we can execute this once on the first enabled option then kill the loop
 			end
 		end
 	end
