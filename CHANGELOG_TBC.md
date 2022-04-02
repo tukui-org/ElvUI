@@ -1,5 +1,9 @@
 ### Version 2.41 [ ETA: 🍨 ]
 
+Skins: Fixed guild information skin border  
+Skins: Updated tradeskill searchbox skin  
+Tags: Added [group:raid] which displays current group number only while in a raid  
+
 ___
 ### Version 2.40 [ March 29th 2022 ]
 
