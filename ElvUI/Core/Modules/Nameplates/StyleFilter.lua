@@ -1337,6 +1337,8 @@ function mod:StyleFilterConfigure()
 				events.PLAYER_TARGET_CHANGED = 1
 				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here
+				events.ForceUpdate = -1
+				events.PoolerUpdate = -1
 
 				if t.casting then
 					local spell
@@ -1493,7 +1495,7 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or (event ~= 'ForceUpdate' and not mod.StyleFilterTriggerEvents[event]) then return end
+	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
 	mod:StyleFilterClear(frame)
 
@@ -1506,16 +1508,42 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
+	local pooler = CreateFrame('Frame')
+	pooler.frames = {}
+	pooler.delay = 0.1 -- update check rate
+
+	pooler.update = function()
+		for frame in pairs(pooler.frames) do
+			mod:StyleFilterUpdate(frame, 'PoolerUpdate')
+		end
+
+		wipe(pooler.frames) -- clear it out
+	end
+
+	pooler.onUpdate = function(self, elapsed)
+		if self.elapsed and self.elapsed > pooler.delay then
+			pooler.update()
+
+			self.elapsed = 0
+		else
+			self.elapsed = (self.elapsed or 0) + elapsed
+		end
+	end
+
+	pooler:SetScript('OnUpdate', pooler.onUpdate)
+
 	local update = function(frame, event, arg1, arg2, arg3, ...)
 		local eventFunc = mod.StyleFilterEventFunctions[event]
-		if eventFunc then eventFunc(frame, event, arg1, arg2, arg3, ...) end
+		if eventFunc then
+			eventFunc(frame, event, arg1, arg2, arg3, ...)
+		end
 
 		if event == 'UNIT_AURA' and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
 			return
 		end
 
-		if not mod.StyleFilterCastEvents[event] or (arg1 == frame.unit) then
-			mod:StyleFilterUpdate(frame, event)
+		if mod.StyleFilterTriggerEvents[event] then
+			pooler.frames[frame] = true
 		end
 	end
 
