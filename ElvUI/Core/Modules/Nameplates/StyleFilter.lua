@@ -1538,12 +1538,13 @@ do -- oUF style filter inject watch functions without actually registering any e
 			eventFunc(frame, event, arg1, arg2, arg3, ...)
 		end
 
-		if event == 'UNIT_AURA' and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
+		local auraEvent = event == 'UNIT_AURA'
+		if auraEvent and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
 			return
 		end
 
-		-- trigger event and (unitless or verifiedUnit)
-		if mod.StyleFilterTriggerEvents[event] and (mod.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
+		-- Trigger Event and (auraEvent or unitless or verifiedUnit); auraEvent is already unit verified by ShouldSkipAuraUpdate
+		if mod.StyleFilterTriggerEvents[event] and (auraEvent or mod.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
 			pooler.frames[frame] = true
 		end
 	end
