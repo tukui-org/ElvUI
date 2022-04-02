@@ -316,7 +316,7 @@ function PI:CreateFrame()
 
 	local close = CreateFrame('Button', 'PluginInstallCloseButton', f, 'UIPanelCloseButton')
 	close:Point('TOPRIGHT', f, 'TOPRIGHT')
-	close:SetScript('OnClick', function() f:Hide() end)
+	close:SetScript('OnClick', function() f:Hide() PI:CloseInstall() end)
 	S:HandleCloseButton(close)
 
 	f.pending = CreateFrame('Frame', 'PluginInstallPendingButton', f)
@@ -373,8 +373,6 @@ function PI:CreateFrame()
 	end
 
 	f:Hide()
-
-	f:SetScript('OnHide', function() PI:CloseInstall() end)
 end
 
 function PI:Queue(addon)
