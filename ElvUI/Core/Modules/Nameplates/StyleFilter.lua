@@ -1542,7 +1542,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 			return
 		end
 
-		if mod.StyleFilterTriggerEvents[event] then
+		-- trigger event and (unitless or verifiedUnit)
+		if mod.StyleFilterTriggerEvents[event] and (mod.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
 			pooler.frames[frame] = true
 		end
 	end
