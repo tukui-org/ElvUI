@@ -1,5 +1,7 @@
 ### Version 1.66 [ ETA: 🍨 ]
 
+Tags: Added [group:raid] which displays current group number only while in a raid  
+
 ___
 ### Version 1.65 [ March 29th 2022 ]
 
