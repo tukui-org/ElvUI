@@ -66,15 +66,13 @@ end
 
 local function EquipmentDisplayButton(button)
 	if not button.isHooked then
-		local oldTex = button.icon:GetTexture()
-		button:StripTextures()
+		button:SetNormalTexture('')
+		button:SetPushedTexture('')
 		button:SetTemplate()
 		button:StyleButton()
-		button:GetNormalTexture():SetTexture()
 
 		button.icon:SetInside()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
-		button.icon:SetTexture(oldTex)
 
 		S:HandleIconBorder(button.IconBorder)
 
