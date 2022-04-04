@@ -80,6 +80,8 @@ function S:Blizzard_EventTrace()
 	EventTrace:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.EventTraceCloseButton)
 
+	_G.EventTraceTooltip:SetFrameLevel(10)
+
 	-- Top Buttons
 	local SubtitleBar = EventTrace.SubtitleBar
 	EventTrace.SubtitleBar.ViewLog:StripTextures()
