@@ -52,6 +52,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
+local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo and C_SpecializationInfo.GetPvpTalentSlotInfo
 
 local FallbackColor = {r=1, b=1, g=1}
@@ -746,7 +747,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Quest Boss
-	if trigger.questBoss and E.Retail then
+	if E.Retail and trigger.questBoss then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
 	end
 
@@ -791,6 +792,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	-- Unit Pet
 	if trigger.isPet or trigger.isNotPet then
 		if (trigger.isPet and frame.isPet) or (trigger.isNotPet and not frame.isPet) then passed = true else return end
+	end
+
+	-- In Pet Battle
+	if E.Retail and (trigger.inPetBattle or trigger.notPetBattle) then
+		local inBattle = C_PetBattles_IsInBattle()
+		if (trigger.inPetBattle and inBattle) or (trigger.notPetBattle and not inBattle) then passed = true else return end
 	end
 
 	-- In Party
@@ -1039,7 +1046,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Talents
-	if trigger.talent.enabled and E.Retail then
+	if E.Retail and trigger.talent.enabled then
 		local pvpTalent = trigger.talent.type == 'pvp'
 		local selected, complete
 

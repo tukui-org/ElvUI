@@ -303,6 +303,8 @@ StyleFitlers.triggers.args.combat.args.unitGroup.args.isBeingResurrected = ACH:T
 StyleFitlers.triggers.args.combat.args.unitGroup.args.notBeingResurrected = ACH:Toggle(L["Not Being Resurrected"], nil, 34)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.isConnected = ACH:Toggle(L["Connected"], nil, 35)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.notConnected = ACH:Toggle(L["Disconnected"], nil, 36)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 37, nil, nil, nil, nil, nil, nil, not E.Retail)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 38, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 StyleFitlers.triggers.args.combat.args.npcGroup = ACH:Group('', nil, 3)
 StyleFitlers.triggers.args.combat.args.npcGroup.inline = true
