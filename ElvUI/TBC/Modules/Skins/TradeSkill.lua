@@ -21,12 +21,18 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillRankFrameBorder:StripTextures()
 
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
-	TradeSkillRankFrame:Size(322, 16)
+	TradeSkillRankFrame:Size(322, 14)
 	TradeSkillRankFrame:Point('TOPLEFT', 23, -37)
 	TradeSkillRankFrame:CreateBackdrop()
 	TradeSkillRankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
 	E:RegisterStatusBar(TradeSkillRankFrame)
+
+	local TradeSearchInputBox = _G.TradeSearchInputBox
+	S:HandleEditBox(TradeSearchInputBox)
+	TradeSearchInputBox:ClearAllPoints()
+	TradeSearchInputBox:Point('TOPRIGHT', -39, -54)
+	TradeSearchInputBox:Size(120, 14)
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 

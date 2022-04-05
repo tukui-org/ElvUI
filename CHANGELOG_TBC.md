@@ -1,4 +1,11 @@
-### Version 2.41 [ ETA: 🍨 ]
+### Version 2.41 [ April 5th 2022 ]
+
+Chat: Repaired gold text will now match Vendored Grays gold format  
+Skins: Fixed guild information skin border  
+Skins: Updated EventTrace  
+Skins: Updated EventTrace  
+Skins: Updated tradeskill searchbox skin  
+Tags: Added [group:raid] which displays current group number only while in a raid  
 
 ___
 ### Version 2.40 [ March 29th 2022 ]

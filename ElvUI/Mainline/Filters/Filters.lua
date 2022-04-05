@@ -302,6 +302,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[251231]	= Defaults(), -- Steelskin Potion
 	-- Covenant
 		[324867]	= Defaults(), -- Fleshcraft (Necrolord)
+	-- PvP
+		[363522]	= Defaults(), -- Gladiator's Eternal Aegis
+		[362699]	= Defaults(), -- Gladiator's Resolve
 	},
 }
 
