@@ -264,6 +264,8 @@ StyleFitlers.triggers.args.combat.args.playerGroup.args.outOfVehicle = ACH:Toggl
 StyleFitlers.triggers.args.combat.args.playerGroup.args.isResting = ACH:Toggle(L["Is Resting"], L["If enabled then the filter will only activate when you are resting at an Inn."], 5)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 6)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanNotAttack = ACH:Toggle(L["Can Not Attack"], L["If enabled then the filter will only activate when the unit can not be attacked by the active player."], 7)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 9, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 StyleFitlers.triggers.args.combat.args.unitGroup = ACH:Group(L["Unit"], nil, 2)
 StyleFitlers.triggers.args.combat.args.unitGroup.inline = true
@@ -303,8 +305,6 @@ StyleFitlers.triggers.args.combat.args.unitGroup.args.isBeingResurrected = ACH:T
 StyleFitlers.triggers.args.combat.args.unitGroup.args.notBeingResurrected = ACH:Toggle(L["Not Being Resurrected"], nil, 34)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.isConnected = ACH:Toggle(L["Connected"], nil, 35)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.notConnected = ACH:Toggle(L["Disconnected"], nil, 36)
-StyleFitlers.triggers.args.combat.args.unitGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 37, nil, nil, nil, nil, nil, nil, not E.Retail)
-StyleFitlers.triggers.args.combat.args.unitGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 38, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 StyleFitlers.triggers.args.combat.args.npcGroup = ACH:Group('', nil, 3)
 StyleFitlers.triggers.args.combat.args.npcGroup.inline = true
