@@ -282,6 +282,10 @@ E.StyleFilterDefaults = {
 			missingAuras = false,
 			auras = {}
 		},
+		inRaid = false,
+		notInRaid = false,
+		inParty = false,
+		notInParty = false,
 		inMyGuild = false,
 		notMyGuild = false,
 		isOthersPet = false,
