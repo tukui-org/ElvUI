@@ -1,3 +1,6 @@
+### Version 1.67 [ ETA: 🍨 ]
+
+___
 ### Version 1.66 [ April 5th 2022 ]
 
 Chat: Repaired gold text will now match Vendored Grays gold format  
