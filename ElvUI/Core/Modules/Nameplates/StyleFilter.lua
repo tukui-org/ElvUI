@@ -741,25 +741,27 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
 	end
 
-	-- Resting
-	if trigger.isResting then
-		if IsResting() then passed = true else return end
-	end
-
 	-- Quest Boss
 	if E.Retail and trigger.questBoss then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
+	end
+
+	-- Resting State
+	if trigger.isResting or trigger.notResting then
+		local resting = IsResting()
+		if (trigger.isResting and resting) or (trigger.notResting and not resting) then passed = true else return end
+	end
+
+	-- Target Existence
+	if trigger.requireTarget or trigger.noTarget then
+		local target = UnitExists('target')
+		if (trigger.requireTarget and target) or (trigger.noTarget and not target) then passed = true else return end
 	end
 
 	-- Quest Unit
 	if trigger.isQuest or trigger.notQuest then
 		local quest = E.TagFunctions.GetQuestData(frame.unit)
 		if (trigger.isQuest and quest) or (trigger.notQuest and not quest) then passed = true else return end
-	end
-
-	-- Require Target
-	if trigger.requireTarget then
-		if UnitExists('target') then passed = true else return end
 	end
 
 	-- Player Combat
