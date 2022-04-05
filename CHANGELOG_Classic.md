@@ -1,5 +1,8 @@
-### Version 1.66 [ ETA: 🍨 ]
+### Version 1.66 [ April 5th 2022 ]
 
+Chat: Repaired gold text will now match Vendored Grays gold format  
+Skins: Updated EventTrace  
+StyleFilters: Optimized execution of filters for performance gain  
 Tags: Added [group:raid] which displays current group number only while in a raid  
 
 ___
