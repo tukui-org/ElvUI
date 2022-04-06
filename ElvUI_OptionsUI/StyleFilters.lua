@@ -226,9 +226,10 @@ StyleFitlers.triggers.args.targeting.args.types = ACH:Group('', nil, 1)
 StyleFitlers.triggers.args.targeting.args.types.inline = true
 StyleFitlers.triggers.args.targeting.args.types.args.isTarget = ACH:Toggle(L["Is Targeted"], L["If enabled then the filter will only activate when you are targeting the unit."], 1)
 StyleFitlers.triggers.args.targeting.args.types.args.notTarget = ACH:Toggle(L["Not Targeted"], L["If enabled then the filter will only activate when you are not targeting the unit."], 2)
-StyleFitlers.triggers.args.targeting.args.types.args.requireTarget = ACH:Toggle(L["Require Target"], L["If enabled then the filter will only activate when you have a target."], 2)
-StyleFitlers.triggers.args.targeting.args.types.args.targetMe = ACH:Toggle(L["Is Targeting Player"], L["If enabled then the filter will only activate when the unit is targeting you."], 4)
-StyleFitlers.triggers.args.targeting.args.types.args.notTargetMe = ACH:Toggle(L["Not Targeting Player"], L["If enabled then the filter will only activate when the unit is not targeting you."], 5)
+StyleFitlers.triggers.args.targeting.args.types.args.requireTarget = ACH:Toggle(L["Require Target"], L["If enabled then the filter will only activate when you have a target."], 3)
+StyleFitlers.triggers.args.targeting.args.types.args.noTarget = ACH:Toggle(L["No Target"], nil, 4)
+StyleFitlers.triggers.args.targeting.args.types.args.targetMe = ACH:Toggle(L["Is Targeting Player"], L["If enabled then the filter will only activate when the unit is targeting you."], 5)
+StyleFitlers.triggers.args.targeting.args.types.args.notTargetMe = ACH:Toggle(L["Not Targeting Player"], L["If enabled then the filter will only activate when the unit is not targeting you."], 6)
 StyleFitlers.triggers.args.targeting.args.types.args.isFocus = ACH:Toggle(L["Is Focused"], L["If enabled then the filter will only activate when you are focusing the unit."], 7)
 StyleFitlers.triggers.args.targeting.args.types.args.notFocus = ACH:Toggle(L["Not Focused"], L["If enabled then the filter will only activate when you are not focusing the unit."], 8)
 
@@ -262,8 +263,11 @@ StyleFitlers.triggers.args.combat.args.playerGroup.args.outOfCombat = ACH:Toggle
 StyleFitlers.triggers.args.combat.args.playerGroup.args.inVehicle = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when you are in a Vehicle."], 3)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.outOfVehicle = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when you are not in a Vehicle."], 4)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.isResting = ACH:Toggle(L["Is Resting"], L["If enabled then the filter will only activate when you are resting at an Inn."], 5)
-StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 6)
-StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanNotAttack = ACH:Toggle(L["Can Not Attack"], L["If enabled then the filter will only activate when the unit can not be attacked by the active player."], 7)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.notResting = ACH:Toggle(L["Not Resting"], nil, 6)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 7)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanNotAttack = ACH:Toggle(L["Can Not Attack"], L["If enabled then the filter will only activate when the unit can not be attacked by the active player."], 8)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 9, nil, nil, nil, nil, nil, nil, not E.Retail)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 10, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 StyleFitlers.triggers.args.combat.args.unitGroup = ACH:Group(L["Unit"], nil, 2)
 StyleFitlers.triggers.args.combat.args.unitGroup.inline = true
