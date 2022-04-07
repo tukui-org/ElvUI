@@ -524,6 +524,7 @@ L["Enable/Disable the Bag-Bar."] = "Ativar/Desativar a Barra das Bolsas."
 L["Enable/Disable the loot frame."] = "Ativar/Desativar painel de saques."
 L["Enable/Disable the loot roll frame."] = "Ativar/Desativar painel de disputa de saques"
 L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = "Habilitar/Desabilitar o minimapa. |cffFF3333Perigo: Isso irá prevení-lo de ver os Textos Informativos do minimapa.|r"
+L["Enabled"] = true
 L["Enables the ElvUI Raid Control panel."] = "Habilita o painel de Controle de Raid do ElvUI."
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "Habilitar isso irá permitir a organização pela largura da raid porém você não conseguirá distinguir os grupos."
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "Habilitar isso irá inverter a ordem dos grupos quando um Raid não está cheia, isso irá reverter a direção que uma raid começa."

@@ -524,6 +524,7 @@ L["Enable/Disable the Bag-Bar."] = "Activer / Désactiver la barre des sacs."
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
 L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
+L["Enabled"] = true
 L["Enables the ElvUI Raid Control panel."] = "Activer le panneau de raid d'ElvUI"
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "Activer ceci permet d'afficher les cadres des joueurs sans 'trou' en remplissant les groupes, mais vous ne serez plus en mesure de distinguer les groupes de raid."
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "Activer ceci inverse l'ordre du groupe quand il n'est pas complet, ceci inversera son ordre de départ"
