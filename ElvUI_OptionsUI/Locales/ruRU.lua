@@ -524,6 +524,7 @@ L["Enable/Disable the Bag-Bar."] = "Включить/выключить пане
 L["Enable/Disable the loot frame."] = "Включить/выключить окно добычи ElvUI."
 L["Enable/Disable the loot roll frame."] = "Включить/выключить фрейм распределения добычи ElvUI."
 L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = "Включить/выключить миникарту. |cffFF3333АХТУНГ: отключение карты уберет и соответственные инфотексты.|r"
+L["Enabled"] = true
 L["Enables the ElvUI Raid Control panel."] = "Включает панель управления рейдом ElvUI."
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = "Включение опции позволит Вам проводить сортировку в пределах всего рейда, но взамен Вы не сможете понять кто в какой группе."
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = "Включение опции инвертирует порядок группировки в неполном рейде, она изменит направление роста и точку его начала."

@@ -524,6 +524,7 @@ L["Enable/Disable the Bag-Bar."] = true
 L["Enable/Disable the loot frame."] = true
 L["Enable/Disable the loot roll frame."] = true
 L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = true
+L["Enabled"] = true
 L["Enables the ElvUI Raid Control panel."] = true
 L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."] = true
 L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."] = true
