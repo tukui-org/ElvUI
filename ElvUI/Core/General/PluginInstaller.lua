@@ -71,10 +71,10 @@ local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
 
 --Installation Functions
 PI.Installs = {}
-local f
 local BUTTON_HEIGHT = 20
+local f
 
-local function ResetAll()
+function PI:SetupReset()
 	f.Next:Disable()
 	f.Prev:Disable()
 	f.Option1:Hide()
@@ -102,18 +102,23 @@ local function ResetAll()
 	f.Desc2:SetText('')
 	f.Desc3:SetText('')
 	f.Desc4:SetText('')
+
 	f:Size(550, 400)
+
 	if f.StepTitles then
-		for i = 1, #f.side.Lines do f.side.Lines[i].text:SetText('') end
+		for i = 1, #f.side.Lines do
+			f.side.Lines[i].text:SetText('')
+		end
 	end
 end
 
-local function SetPage(PageNum, PrevPage)
-	f.CurrentPage = PageNum
-	f.PrevPage = PrevPage
-	ResetAll()
+function PI:SetPage(PageNum, PrevPage)
+	PI:SetupReset()
+
 	f.Status.anim.progress:SetChange(PageNum)
 	f.Status.anim.progress:Play()
+	f.CurrentPage = PageNum
+	f.PrevPage = PrevPage
 
 	local r, g, b = E:ColorGradient(f.CurrentPage / f.MaxPage, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	f.Status:SetStatusBarColor(r, g, b)
@@ -132,31 +137,33 @@ local function SetPage(PageNum, PrevPage)
 
 	f.Pages[f.CurrentPage]()
 	f.Status.text:SetFormattedText('%d / %d', f.CurrentPage, f.MaxPage)
+
 	if f.StepTitles then
 		for i = 1, #f.side.Lines do
 			local line, color = f.side.Lines[i]
-			line.text:SetText(f.StepTitles[i])
 			if i == f.CurrentPage then
 				color = f.StepTitlesColorSelected or {.09,.52,.82}
 			else
 				color = f.StepTitlesColor or {1,1,1}
 			end
+
+			line.text:SetText(f.StepTitles[i])
 			line.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
 		end
 	end
 end
 
-local function NextPage()
+function PI:NextPage()
 	if f.CurrentPage ~= f.MaxPage then
 		f.CurrentPage = f.CurrentPage + 1
-		SetPage(f.CurrentPage, f.CurrentPage - 1)
+		PI:SetPage(f.CurrentPage, f.CurrentPage - 1)
 	end
 end
 
-local function PreviousPage()
+function PI:PreviousPage()
 	if f.CurrentPage ~= 1 then
 		f.CurrentPage = f.CurrentPage - 1
-		SetPage(f.CurrentPage, f.CurrentPage + 1)
+		PI:SetPage(f.CurrentPage, f.CurrentPage + 1)
 	end
 end
 
@@ -206,14 +213,46 @@ function PI:CreateStepComplete()
 	imsg.text:SetJustifyH('CENTER')
 end
 
+function PI:Button_OnClick()
+	local id = self:GetID()
+	if id and id <= f.MaxPage then
+		PI:SetPage(id, f.CurrentPage)
+	end
+end
+
+function PI:Pending_OnEnter()
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
+	_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
+	_G.GameTooltip:AddLine(' ')
+	for i = 1, #PI.Installs do
+		_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L["In Progress"]) or format('|cffFF0000%s|r', L["Pending"]))
+	end
+	_G.GameTooltip:Show()
+end
+
+function PI:Pending_OnLeave()
+	_G.GameTooltip:Hide()
+end
+
+function PI:Frame_OnShow()
+	if f.CurrentPage == 0 then
+		PI:NextPage()
+	else
+		f.Pages[f.CurrentPage]()
+	end
+end
+
+function PI:Frame_OnHide() end -- for plugins
+
 function PI:CreateFrame()
 	f = CreateFrame('Button', 'PluginInstallFrame', E.UIParent)
-	f.SetPage = SetPage
 	f:Size(550, 400)
+	f:SetMovable(true)
+	f:SetFrameStrata('TOOLTIP')
+	f:SetScript('OnShow', PI.Frame_OnShow)
+	f:SetScript('OnHide', PI.Frame_OnHide)
 	f:SetTemplate('Transparent')
 	f:Point('CENTER')
-	f:SetFrameStrata('TOOLTIP')
-	f:SetMovable(true)
 
 	f.MoveFrame = CreateFrame('Frame', nil, f, 'TitleDragAreaTemplate')
 	f.MoveFrame:Size(450, 50)
@@ -228,7 +267,7 @@ function PI:CreateFrame()
 	f.Next:Point('BOTTOMRIGHT', -5, 5)
 	f.Next:SetText(CONTINUE)
 	f.Next:Disable()
-	f.Next:SetScript('OnClick', NextPage)
+	f.Next:SetScript('OnClick', PI.NextPage)
 	S:HandleButton(f.Next)
 
 	f.Prev = CreateFrame('Button', 'PluginInstallPrevButton', f, 'UIPanelButtonTemplate')
@@ -236,7 +275,7 @@ function PI:CreateFrame()
 	f.Prev:Point('BOTTOMLEFT', 5, 5)
 	f.Prev:SetText(PREVIOUS)
 	f.Prev:Disable()
-	f.Prev:SetScript('OnClick', PreviousPage)
+	f.Prev:SetScript('OnClick', PI.PreviousPage)
 	S:HandleButton(f.Prev)
 
 	f.Status = CreateFrame('StatusBar', 'PluginInstallStatus', f)
@@ -324,7 +363,7 @@ function PI:CreateFrame()
 
 	local close = CreateFrame('Button', 'PluginInstallCloseButton', f, 'UIPanelCloseButton')
 	close:Point('TOPRIGHT', f, 'TOPRIGHT')
-	close:SetScript('OnClick', function() f:Hide() PI:CloseInstall() end)
+	close:SetScript('OnClick', PI.CloseInstall)
 	S:HandleCloseButton(close)
 
 	f.pending = CreateFrame('Frame', 'PluginInstallPendingButton', f)
@@ -335,18 +374,8 @@ function PI:CreateFrame()
 	f.pending.tex:Point('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop('Transparent')
-	f.pending:SetScript('OnEnter', function(button)
-		_G.GameTooltip:SetOwner(button, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
-		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
-		_G.GameTooltip:AddLine(' ')
-		for i = 1, #PI.Installs do
-			_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L["In Progress"]) or format('|cffFF0000%s|r', L["Pending"]))
-		end
-		_G.GameTooltip:Show()
-	end)
-	f.pending:SetScript('OnLeave', function()
-		_G.GameTooltip:Hide()
-	end)
+	f.pending:SetScript('OnEnter', PI.Pending_OnEnter)
+	f.pending:SetScript('OnLeave', PI.Pending_OnLeave)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
 	f.tutorialImage2 = f:CreateTexture('PluginInstallTutorialImage2', 'OVERLAY')
@@ -362,6 +391,7 @@ function PI:CreateFrame()
 	f.side.text:SetText(L["Steps"])
 	f.side.Lines = {} --Table to keep shown lines
 	f.side:Hide()
+
 	for i = 1, 18 do
 		local button = CreateFrame('Button', nil, f)
 		if i == 1 then
@@ -369,15 +399,19 @@ function PI:CreateFrame()
 		else
 			button:Point('TOP', f.side.Lines[i - 1], 'BOTTOM')
 		end
-		button:Size(130, BUTTON_HEIGHT)
+
 		button.text = button:CreateFontString(nil, 'OVERLAY')
 		button.text:Point('TOPLEFT', button, 'TOPLEFT', 2, -2)
 		button.text:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -2, 2)
 		button.text:FontTemplate(nil, 14, 'OUTLINE')
-		button:SetScript('OnClick', function() if i <= f.MaxPage then SetPage(i, f.CurrentPage) end end)
 		button.text:SetText('')
-		f.side.Lines[i] = button
+
+		button:SetScript('OnClick', PI.Button_OnClick)
+		button:Size(130, BUTTON_HEIGHT)
+		button:SetID(i)
 		button:Hide()
+
+		f.side.Lines[i] = button
 	end
 
 	f:Hide()
@@ -385,26 +419,31 @@ end
 
 function PI:Queue(addon)
 	local addonIsQueued = false
-	for _, v in pairs(self.Installs) do
+	for _, v in pairs(PI.Installs) do
 		if v.Name == addon.Name then
 			addonIsQueued = true
 		end
 	end
 
 	if not addonIsQueued then
-		tinsert(self.Installs, #(self.Installs)+1, addon)
-		self:RunInstall()
+		tinsert(PI.Installs, #(PI.Installs)+1, addon)
+		PI:RunInstall()
 	end
 end
 
 function PI:CloseInstall()
-	tremove(self.Installs, 1)
+	tremove(PI.Installs, 1)
+
+	f:Hide()
 	f.side:Hide()
+
 	for i = 1, #f.side.Lines do
-		f.side.Lines[i].text:SetText('')
-		f.side.Lines[i]:Hide()
+		local line = f.side.Lines[i]
+		line.text:SetText('')
+		line:Hide()
 	end
-	if #self.Installs > 0 then
+
+	if #PI.Installs > 0 then
 		E:Delay(1, PI.RunInstall, PI)
 	end
 end
@@ -412,14 +451,15 @@ end
 function PI:RunInstall()
 	if not E.private.install_complete then return end
 
-	local db = self.Installs[1]
+	local db = PI.Installs[1]
 	if db and not f:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil
 
+		f.Pages = db.Pages
+		f.MaxPage = #f.Pages
 		f.CurrentPage = 0
-		f.MaxPage = #(db.Pages)
 
 		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
@@ -468,12 +508,6 @@ function PI:RunInstall()
 			end
 		end
 
-		f.Pages = db.Pages
-
-		f:Show()
-		f:ClearAllPoints()
-		f:Point('CENTER')
-
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
 			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
 			f.side:Width(db.StepTitleWidth or 140)
@@ -481,9 +515,10 @@ function PI:RunInstall()
 
 			for i = 1, #f.side.Lines do
 				if db.StepTitles[i] then
-					f.side.Lines[i]:Width(db.StepTitleButtonWidth or 130)
-					f.side.Lines[i].text:SetJustifyH(db.StepTitleTextJustification or 'CENTER')
-					f.side.Lines[i]:Show()
+					local line = f.side.Lines[i]
+					line.text:SetJustifyH(db.StepTitleTextJustification or 'CENTER')
+					line:Width(db.StepTitleButtonWidth or 130)
+					line:Show()
 				end
 			end
 
@@ -492,10 +527,12 @@ function PI:RunInstall()
 			f.StepTitlesColorSelected = db.StepTitlesColorSelected
 		end
 
-		NextPage()
+		f:ClearAllPoints()
+		f:Point('CENTER')
+		f:Show()
 	end
 
-	if #self.Installs > 1 then
+	if #PI.Installs > 1 then
 		f.pending:Show()
 		E:Flash(f.pending, 0.53, true)
 	else
