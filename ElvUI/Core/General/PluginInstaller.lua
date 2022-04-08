@@ -419,20 +419,20 @@ end
 
 function PI:Queue(addon)
 	local addonIsQueued = false
-	for _, v in pairs(self.Installs) do
+	for _, v in pairs(PI.Installs) do
 		if v.Name == addon.Name then
 			addonIsQueued = true
 		end
 	end
 
 	if not addonIsQueued then
-		tinsert(self.Installs, #(self.Installs)+1, addon)
-		self:RunInstall()
+		tinsert(PI.Installs, #(PI.Installs)+1, addon)
+		PI:RunInstall()
 	end
 end
 
 function PI:CloseInstall()
-	tremove(self.Installs, 1)
+	tremove(PI.Installs, 1)
 
 	f:Hide()
 	f.side:Hide()
@@ -443,7 +443,7 @@ function PI:CloseInstall()
 		line:Hide()
 	end
 
-	if #self.Installs > 0 then
+	if #PI.Installs > 0 then
 		E:Delay(1, PI.RunInstall, PI)
 	end
 end
@@ -451,7 +451,7 @@ end
 function PI:RunInstall()
 	if not E.private.install_complete then return end
 
-	local db = self.Installs[1]
+	local db = PI.Installs[1]
 	if db and not f:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
@@ -532,7 +532,7 @@ function PI:RunInstall()
 		f:Show()
 	end
 
-	if #self.Installs > 1 then
+	if #PI.Installs > 1 then
 		f.pending:Show()
 		E:Flash(f.pending, 0.53, true)
 	else
