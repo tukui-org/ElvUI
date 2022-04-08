@@ -1,7 +1,10 @@
-### Version 12.75 [ ETA: 🍨 ]
+### Version 12.76 [ ETA: 🍨 ]
 
-Nameplates: Add missing Style Filter defaults for party/raid  
-Nameplates: Add Pet Battle, Not Resting, No Target style filter condition  
+___
+### Version 12.75 [ April 9th 2022 ]
+
+NamePlates: Add missing Style Filter defaults for party/raid  
+NamePlates: Add Pet Battle, Not Resting, No Target style filter condition  
 
 ___
 ### Version 12.74 [ April 4th 2022 ]

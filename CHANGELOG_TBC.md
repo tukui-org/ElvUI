@@ -1,7 +1,10 @@
-### Version 2.42 [ ETA: 🍨 ]
+### Version 2.43 [ ETA: 🍨 ]
 
-Nameplates: Add missing Style Filter defaults for party/raid  
-Nameplates: Add Not Resting, No Target style filter condition  
+___
+### Version 2.42 [ April 9th 2022 ]
+
+NamePlates: Add missing Style Filter defaults for party/raid  
+NamePlates: Add Not Resting, No Target style filter condition  
 
 ___
 ### Version 2.41 [ April 5th 2022 ]
