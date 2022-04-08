@@ -71,8 +71,8 @@ local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
 
 --Installation Functions
 PI.Installs = {}
-local f
 local BUTTON_HEIGHT = 20
+local f
 
 function PI:SetupReset()
 	f.Next:Disable()
@@ -137,6 +137,7 @@ function PI:SetPage(PageNum, PrevPage)
 
 	f.Pages[f.CurrentPage]()
 	f.Status.text:SetFormattedText('%d / %d', f.CurrentPage, f.MaxPage)
+
 	if f.StepTitles then
 		for i = 1, #f.side.Lines do
 			local line, color = f.side.Lines[i]
@@ -219,13 +220,39 @@ function PI:Button_OnClick()
 	end
 end
 
+function PI:Pending_OnEnter()
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
+	_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
+	_G.GameTooltip:AddLine(' ')
+	for i = 1, #PI.Installs do
+		_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L["In Progress"]) or format('|cffFF0000%s|r', L["Pending"]))
+	end
+	_G.GameTooltip:Show()
+end
+
+function PI:Pending_OnLeave()
+	_G.GameTooltip:Hide()
+end
+
+function PI:Frame_OnShow()
+	if f.CurrentPage == 0 then
+		PI:NextPage()
+	else
+		f.Pages[f.CurrentPage]()
+	end
+end
+
+function PI:Frame_OnHide() end -- for plugins
+
 function PI:CreateFrame()
 	f = CreateFrame('Button', 'PluginInstallFrame', E.UIParent)
 	f:Size(550, 400)
+	f:SetMovable(true)
+	f:SetFrameStrata('TOOLTIP')
+	f:SetScript('OnShow', PI.Frame_OnShow)
+	f:SetScript('OnHide', PI.Frame_OnHide)
 	f:SetTemplate('Transparent')
 	f:Point('CENTER')
-	f:SetFrameStrata('TOOLTIP')
-	f:SetMovable(true)
 
 	f.MoveFrame = CreateFrame('Frame', nil, f, 'TitleDragAreaTemplate')
 	f.MoveFrame:Size(450, 50)
@@ -336,7 +363,7 @@ function PI:CreateFrame()
 
 	local close = CreateFrame('Button', 'PluginInstallCloseButton', f, 'UIPanelCloseButton')
 	close:Point('TOPRIGHT', f, 'TOPRIGHT')
-	close:SetScript('OnClick', function() f:Hide() PI:CloseInstall() end)
+	close:SetScript('OnClick', PI.CloseInstall)
 	S:HandleCloseButton(close)
 
 	f.pending = CreateFrame('Frame', 'PluginInstallPendingButton', f)
@@ -347,18 +374,8 @@ function PI:CreateFrame()
 	f.pending.tex:Point('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop('Transparent')
-	f.pending:SetScript('OnEnter', function(button)
-		_G.GameTooltip:SetOwner(button, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
-		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
-		_G.GameTooltip:AddLine(' ')
-		for i = 1, #PI.Installs do
-			_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L["In Progress"]) or format('|cffFF0000%s|r', L["Pending"]))
-		end
-		_G.GameTooltip:Show()
-	end)
-	f.pending:SetScript('OnLeave', function()
-		_G.GameTooltip:Hide()
-	end)
+	f.pending:SetScript('OnEnter', PI.Pending_OnEnter)
+	f.pending:SetScript('OnLeave', PI.Pending_OnLeave)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
 	f.tutorialImage2 = f:CreateTexture('PluginInstallTutorialImage2', 'OVERLAY')
@@ -417,6 +434,7 @@ end
 function PI:CloseInstall()
 	tremove(self.Installs, 1)
 
+	f:Hide()
 	f.side:Hide()
 
 	for i = 1, #f.side.Lines do
@@ -439,8 +457,9 @@ function PI:RunInstall()
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil
 
+		f.Pages = db.Pages
+		f.MaxPage = #f.Pages
 		f.CurrentPage = 0
-		f.MaxPage = #(db.Pages)
 
 		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
@@ -489,12 +508,6 @@ function PI:RunInstall()
 			end
 		end
 
-		f.Pages = db.Pages
-
-		f:Show()
-		f:ClearAllPoints()
-		f:Point('CENTER')
-
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
 			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
 			f.side:Width(db.StepTitleWidth or 140)
@@ -514,7 +527,9 @@ function PI:RunInstall()
 			f.StepTitlesColorSelected = db.StepTitlesColorSelected
 		end
 
-		PI:NextPage()
+		f:ClearAllPoints()
+		f:Point('CENTER')
+		f:Show()
 	end
 
 	if #self.Installs > 1 then
