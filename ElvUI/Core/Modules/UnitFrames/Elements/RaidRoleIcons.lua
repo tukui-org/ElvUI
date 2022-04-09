@@ -77,6 +77,10 @@ function UF:RaidRoleUpdate()
 		local pos1 = right and 'RIGHT' or 'LEFT'
 		local pos2 = right and 'LEFT' or 'RIGHT'
 
+		leader:Size(12 * (db.raidRoleIcons.scale or 1))
+		assistant:Size(12 * (db.raidRoleIcons.scale or 1))
+		mamt:Size(12 * (db.raidRoleIcons.scale or 1))
+		masterlooter:Size(12 * (db.raidRoleIcons.scale or 1))
 		if isLeader then
 			leader:Point(pos, anchor, x, y)
 		elseif isAssist then
