@@ -87,5 +87,7 @@ function UF:Configure_RestingIndicator(frame)
 end
 
 function UF:RestingIndicator_PostUpdate()
-	self:SetShown(not ShouldHide(self.__owner))
+	if self:IsShown() and ShouldHide(self.__owner) then
+		self:Hide()
+	end
 end
