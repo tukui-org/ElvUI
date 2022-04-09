@@ -7,7 +7,14 @@ local IsResting = IsResting
 local DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]]
 
 function UF:Construct_RestingIndicator(frame)
-	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
+	local restingIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
+	restingIndicator.PostUpdate = UF.RestingIndicatorUpdate
+
+	return restingIndicator
+end
+
+local function ShouldHide(frame)
+	return frame.db.RestIcon.hideAtMaxLevel and E:XPIsLevelMax()
 end
 
 local TestingTimer
@@ -27,7 +34,7 @@ function UF:TestingDisplay_RestingIndicator(frame)
 		TestingTimer:Cancel()
 	end
 
-	if not db.enable then
+	if not db.enable or ShouldHide(frame) then
 		Icon:Hide()
 		return
 	end
@@ -75,4 +82,9 @@ function UF:Configure_RestingIndicator(frame)
 	elseif frame:IsElementEnabled('RestingIndicator') then
 		frame:DisableElement('RestingIndicator')
 	end
+end
+
+function UF:RestingIndicatorUpdate()
+	local frame = self:GetParent():GetParent():GetParent()
+	frame.RestingIndicator:SetShown(not ShouldHide(frame))
 end

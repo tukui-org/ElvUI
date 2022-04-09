@@ -1741,6 +1741,7 @@ P.unitframe = {
 				xOffset = -3,
 				yOffset = 6,
 				size = 22,
+				hideAtMaxLevel = true,
 			},
 			CombatIcon = CopyTable(UF_CombatIcon),
 			classbar = CopyTable(UF_ClassBar),
