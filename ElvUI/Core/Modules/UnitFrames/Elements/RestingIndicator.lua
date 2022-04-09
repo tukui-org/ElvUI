@@ -49,7 +49,7 @@ function UF:Configure_RestingIndicator(frame)
 	local icon = frame.RestingIndicator
 	local db = frame.db.RestIcon
 
-	if db and db.enable then
+	if db.enable then
 		if not frame:IsElementEnabled('RestingIndicator') then
 			frame:EnableElement('RestingIndicator')
 		end
