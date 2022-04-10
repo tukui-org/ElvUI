@@ -536,6 +536,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 	-- Warlock
 		[108416]	= Defaults(), -- Dark Pact
 		[113860]	= Defaults(), -- Dark Soul: Misery
+		[113858]	= Defaults(), -- Dark Soul: Instability
 		[104773]	= Defaults(), -- Unending Resolve
 		[221715]	= Defaults(), -- Essence Drain
 		[212295]	= Defaults(), -- Nether Ward
