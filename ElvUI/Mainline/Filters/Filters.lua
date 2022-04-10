@@ -411,6 +411,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[205025]	= Defaults(), -- Presence of Mind
 		[198158]	= Defaults(), -- Mass Invisibility
 		[221404]	= Defaults(), -- Burning Determination
+		[324220]	= Defaults(), -- Deathborne (Covenant/Necrolord)
 	-- Monk
 		[122783]	= Defaults(), -- Diffuse Magic
 		[122278]	= Defaults(), -- Dampen Harm
