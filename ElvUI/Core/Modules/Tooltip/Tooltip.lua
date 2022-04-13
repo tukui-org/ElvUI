@@ -670,7 +670,6 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	local name, link = tt:GetItem()
-
 	if not E.Retail and _G.CraftFrame:IsShown() and name == '' then
 		local id = tonumber(strmatch(owner:GetName(), '%d+'))
 		link = GetCraftReagentItemLink(GetCraftSelectionIndex(), id)
