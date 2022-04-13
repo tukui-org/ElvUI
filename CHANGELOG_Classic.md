@@ -4,6 +4,7 @@ UnitFrames: Add ability to change pet happiness colors
 UnitFrames: Add ability to hide Rest Icon at max level  
 UnitFrames: Add ability to scale the Raid Role Icon  
 UnitFrames: Readd missing option to Show/Hide Spec Icon on Arena frames  
+Skins: Adjusted the 2 tabs on the Macro skin to accomadate larger toon names  
 Tooltips: Fix tooltip count on Enchant crafting window when mousing over the reagents  
 
 ___
