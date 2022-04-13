@@ -31,6 +31,8 @@ function S:Blizzard_MacroUI()
 		_G.MacroNewButton,
 		_G.MacroExitButton,
 		_G.MacroEditButton,
+		_G.MacroFrameTab1,
+		_G.MacroFrameTab2,
 	}
 
 	for i = 1, #buttons do
@@ -49,23 +51,12 @@ function S:Blizzard_MacroUI()
 	_G.MacroNewButton:SetPoint('TOPRIGHT', _G.MacroExitButton, 'TOPLEFT', -2 , 0)
 
 	for i = 1, 2 do
-		local tab = _G['MacroFrameTab'..i]
-		tab:StripTextures()
-		S:HandleButton(tab)
-
+		local tab = _G[format('MacroFrameTab%s', i)]
 		tab:Height(22)
-		tab:ClearAllPoints()
-
-		if i == 1 then
-			tab:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 7, -40)
-			tab:Width(125)
-		elseif i == 2 then
-			tab:Point('TOPRIGHT', MacroFrame, 'TOPRIGHT', -35, -40)
-			tab:Width(168)
-		end
-
-		tab.SetWidth = E.noop
 	end
+
+	_G.MacroFrameTab1:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 7, -40)
+	_G.MacroFrameTab2:Point('LEFT', _G.MacroFrameTab1, 'RIGHT', 4, 0)
 
 	--Reposition edit button
 	_G.MacroEditButton:ClearAllPoints()
