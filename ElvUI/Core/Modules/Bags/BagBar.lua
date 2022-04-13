@@ -7,6 +7,7 @@ local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
 
+local LSM = E.Libs.LSM
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetBagSlotFlag = GetBagSlotFlag
@@ -96,6 +97,7 @@ function B:SizeAndPositionBagBar()
 	local showBackdrop = db.showBackdrop
 	local justBackpack = db.justBackpack
 	local backdropSpacing = not showBackdrop and 0 or db.backdropSpacing
+	local font, fontSize, fontOutline = B.db.bagBar.font, B.db.bagBar.fontSize, B.db.bagBar.fontOutline
 
 	local visibility = db.visibility
 	if visibility and visibility:match('[\n\r]') then
@@ -104,6 +106,8 @@ function B:SizeAndPositionBagBar()
 
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
 	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
+
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', db and db.font or font), db and db.fontSize or fontSize, db and db.fontOutline or fontOutline)
 
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
@@ -220,6 +224,9 @@ end
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
+	local db = E.db.bags.bagBar
+	-- local font, fontSize, fontOutline = B.db.bagBar.font, B.db.bagBar.fontSize, B.db.bagBar.fontOutline
+
 	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, true)
@@ -230,7 +237,7 @@ function B:LoadBagBar()
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', db and db.font), db and db.fontSize, db and db.fontOutline)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)

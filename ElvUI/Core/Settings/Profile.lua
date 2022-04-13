@@ -386,6 +386,9 @@ P.bags = {
 		showCount = true,
 		justBackpack = false,
 		visibility = E.Retail and '[petbattle] hide; show' or 'show',
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
 	},
 }
 
