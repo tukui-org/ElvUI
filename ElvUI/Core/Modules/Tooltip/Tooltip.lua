@@ -669,7 +669,13 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		return
 	end
 
-	local _, link = tt:GetItem()
+	local name, link = tt:GetItem()
+
+	if not E.Retail and _G.CraftFrame:IsShown() and name == '' then
+		local id = tonumber(strmatch(owner:GetName(), '%d+'))
+		link = GetCraftReagentItemLink(GetCraftSelectionIndex(), id)
+	end
+
 	if not link then return end
 
 	local modKey = TT:IsModKeyDown()
