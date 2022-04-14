@@ -1,5 +1,5 @@
 local major = "LibHealComm-4.0"
-local minor = 101
+local minor = 102
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -2195,9 +2195,9 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 
 			if( pending.isMultiTarget and sourceGUID ) then
 				bucketHeals[sourceGUID] = bucketHeals[sourceGUID] or {}
-				bucketHeals[sourceGUID][spellID] = bucketHeals[sourceGUID][spellID] or {}
+				bucketHeals[sourceGUID][spellName] = bucketHeals[sourceGUID][spellName] or {}
 
-				local spellBucket = bucketHeals[sourceGUID][spellID]
+				local spellBucket = bucketHeals[sourceGUID][spellName]
 				if( not spellBucket[destGUID] ) then
 					spellBucket.timeout = BUCKET_FILLED
 					spellBucket.type = "tick"
