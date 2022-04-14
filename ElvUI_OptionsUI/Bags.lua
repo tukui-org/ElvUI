@@ -185,7 +185,7 @@ Bags.args.bagBar.args.countGroup.inline = true
 Bags.args.bagBar.args.countGroup.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the unitframes will use."], 1)
 Bags.args.bagBar.args.countGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 Bags.args.bagBar.args.countGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
-ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, func)
+
 Bags.args.vendorGrays = ACH:Group(L["Vendor Grays"], nil, 4, nil, function(info) return E.db.bags.vendorGrays[info[#info]] end, function(info, value) E.db.bags.vendorGrays[info[#info]] = value; B:UpdateSellFrameSettings() end)
 Bags.args.vendorGrays.args.enable = ACH:Toggle(L["Enable"], L["Automatically vendor gray items when visiting a vendor."], 1)
 Bags.args.vendorGrays.args.interval = ACH:Range(L["Sell Interval"], L["Will attempt to sell another item in set interval after previous one was sold."], 2, { min = .1, max = 1, step = .1 })
