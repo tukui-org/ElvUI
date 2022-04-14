@@ -180,12 +180,12 @@ Bags.args.bagBar.args.backdropSpacing = ACH:Range(L["Backdrop Spacing"], L["The 
 Bags.args.bagBar.args.sortDirection = ACH:Select(L["Sort Direction"], L["The direction that the bag frames will grow from the anchor."], 9, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 Bags.args.bagBar.args.growthDirection = ACH:Select(L["Bar Direction"], L["The direction that the bag frames be (Horizontal or Vertical)."], 10, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
 Bags.args.bagBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 12, true, 'full', nil, function(_, value) E.db.bags.bagBar.visibility = value B:SizeAndPositionBagBar() end)
-Bags.args.bagBar.args.fontGroup = ACH:Group(L["Fonts"], nil, 11, nil, nil, function(info, value) E.db.bags.bagBar[info[#info]] = value B:SizeAndPositionBagBar() end)
-Bags.args.bagBar.args.fontGroup.inline = true
-Bags.args.bagBar.args.fontGroup.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the unitframes will use."], 1)
-Bags.args.bagBar.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
-Bags.args.bagBar.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 5)
-
+Bags.args.bagBar.args.countGroup = ACH:Group(L["Font"], nil, 11, nil, nil, function(info, value) E.db.bags.bagBar[info[#info]] = value B:SizeAndPositionBagBar() end, nil, function() return not GetCVarBool('displayFreeBagSlots') end)
+Bags.args.bagBar.args.countGroup.inline = true
+Bags.args.bagBar.args.countGroup.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the unitframes will use."], 1)
+Bags.args.bagBar.args.countGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+Bags.args.bagBar.args.countGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
+ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, func)
 Bags.args.vendorGrays = ACH:Group(L["Vendor Grays"], nil, 4, nil, function(info) return E.db.bags.vendorGrays[info[#info]] end, function(info, value) E.db.bags.vendorGrays[info[#info]] = value; B:UpdateSellFrameSettings() end)
 Bags.args.vendorGrays.args.enable = ACH:Toggle(L["Enable"], L["Automatically vendor gray items when visiting a vendor."], 1)
 Bags.args.vendorGrays.args.interval = ACH:Range(L["Sell Interval"], L["Will attempt to sell another item in set interval after previous one was sold."], 2, { min = .1, max = 1, step = .1 })
