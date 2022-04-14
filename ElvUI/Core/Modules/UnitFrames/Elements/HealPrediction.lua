@@ -61,7 +61,7 @@ function UF:SetSize_HealComm(frame)
 	local db = frame.db.healPrediction
 	local width, height = health:GetSize()
 
-	-- fallback just incase? this shouldnt be need anymore
+	-- fallback just incase, can happen on profile switching
 	if not width or width <= 0 then width = health.WIDTH end
 	if not height or height <= 0 then height = health.HEIGHT end
 
