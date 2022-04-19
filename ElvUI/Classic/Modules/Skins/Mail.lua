@@ -107,8 +107,11 @@ function S:MailFrame()
 	-- Send Mail Frame
 	_G.SendMailFrame:StripTextures()
 
-	_G.SendMailScrollFrame:StripTextures(true)
-	_G.SendMailScrollFrame:SetTemplate('Default')
+	_G.SendStationeryBackgroundLeft:Hide()
+	_G.SendStationeryBackgroundRight:Hide()
+	_G.MailEditBox.ScrollBox:StripTextures(true)
+	_G.MailEditBox.ScrollBox:SetTemplate('Default')
+	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 
 	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
 
@@ -143,13 +146,7 @@ function S:MailFrame()
 		end
 	end)
 
-	_G.SendMailBodyEditBox:SetTextColor(1, 1, 1)
-
-	S:HandleScrollBar(_G.SendMailScrollFrameScrollBar)
-	_G.SendMailScrollFrameScrollBar:ClearAllPoints()
-	_G.SendMailScrollFrameScrollBar:Point('TOPRIGHT', _G.SendMailScrollFrame, 'TOPRIGHT', 20, -18)
-	_G.SendMailScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.SendMailScrollFrame, 'BOTTOMRIGHT', 0, 18)
-
+	S:HandleScrollBar(_G.MailEditBoxScrollBar)
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)
 	S:HandleEditBox(_G.SendMailMoneyGold)
