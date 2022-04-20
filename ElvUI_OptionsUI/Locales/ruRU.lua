@@ -1207,7 +1207,6 @@ L["Quest Icon"] = "Иконка задания"
 L["Quest Starter"] = "Начинает задание"
 L["Quests in Current Zone Only"] = true
 L["Quests"] = "Задания"
-L["Quest"] = "Задание"
 L["Queue Status"] = "Статус очереди"
 L["Quick Join Messages"] = "Сообщения быстрого присоединения"
 L["RAGE"] = "Ярость"
