@@ -901,30 +901,33 @@ function TT:SetBackpackToken(tt, id)
 end
 
 function TT:SetTooltipFonts()
-	local font = LSM:Fetch('font', TT.db.font)
-	local fontOutline = TT.db.fontOutline
+	local headerFont = LSM:Fetch('font', TT.db.headerFont)
 	local headerSize = TT.db.headerFontSize
-	local smallTextSize = TT.db.smallTextFontSize
-	local textSize = TT.db.textFontSize
+	local headerFontOutline = TT.db.headerFontOutline
+	_G.GameTooltipHeaderText:FontTemplate(headerFont, headerSize, headerFontOutline)
 
-	_G.GameTooltipHeaderText:FontTemplate(font, headerSize, fontOutline)
+	local font = LSM:Fetch('font', TT.db.font)
+	local fontSize = TT.db.textFontSize
+	local fontOutline = TT.db.fontOutline
+	_G.GameTooltipText:FontTemplate(font, fontSize, fontOutline)
+
+	local smallTextSize = TT.db.smallTextFontSize
 	_G.GameTooltipTextSmall:FontTemplate(font, smallTextSize, fontOutline)
-	_G.GameTooltipText:FontTemplate(font, textSize, fontOutline)
 
 	if GameTooltip.hasMoney then
 		for i = 1, GameTooltip.numMoneyFrames do
-			_G['GameTooltipMoneyFrame'..i..'PrefixText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'SuffixText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'GoldButtonText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'SilverButtonText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'CopperButtonText']:FontTemplate(font, textSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'PrefixText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'SuffixText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'GoldButtonText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'SilverButtonText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'CopperButtonText']:FontTemplate(font, fontSize, fontOutline)
 		end
 	end
 
 	-- Ignore header font size on DatatextTooltip
 	if _G.DatatextTooltip then
-		_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-		_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
+		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 	end
 
 	-- Comparison Tooltips should use smallTextSize
