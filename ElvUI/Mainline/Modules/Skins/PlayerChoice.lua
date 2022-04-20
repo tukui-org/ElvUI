@@ -50,7 +50,7 @@ local function SetupOptions(frame)
 		frame.CloseButton.Border:SetAlpha(0)
 	end
 
-	local kit = frame.uiTextureKit == 'jailerstower'
+	local kit = frame.uiTextureKit == 'jailerstower' or 'cypherchoice'
 	frame:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
 	if frame.optionFrameTemplate and frame.optionPools then
