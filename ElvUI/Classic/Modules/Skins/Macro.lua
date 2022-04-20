@@ -70,7 +70,7 @@ function S:Blizzard_MacroUI()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:SetTemplate(nil, true)
+			b:SetTemplate('Transparent')
 		end
 
 		if t then
