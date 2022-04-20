@@ -174,7 +174,7 @@ function S:MailFrame()
 
 	_G.OpenMailFrameCloseButton:Point('TOPRIGHT', OpenMailFrame.backdrop, 'TOPRIGHT', 4, 3)
 
-	for i = 1, _G.ATTACHMENTS_MAX_SEND do
+	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
 		local button = _G['OpenMailAttachmentButton'..i]
 		local icon = _G['OpenMailAttachmentButton'..i..'IconTexture']
 		local count = _G['OpenMailAttachmentButton'..i..'Count']
