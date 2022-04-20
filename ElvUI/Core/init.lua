@@ -8,7 +8,7 @@ local _G, format, next = _G, format, next
 local gsub, pairs, tinsert, type = gsub, pairs, tinsert, type
 
 local CreateFrame = CreateFrame
-local C_CVar_RegisterCVar = C_CVar.RegisterCVar
+local RegisterCVar = C_CVar.RegisterCVar
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
 local DisableAddOn = DisableAddOn
@@ -263,9 +263,8 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	-- Temp
-	if not E.Retail then
-		C_CVar_RegisterCVar('fstack_showhighlight', '1')
+	if not E.Retail then -- temp cause blizz broke it?
+		RegisterCVar('fstack_showhighlight', '1')
 	end
 
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
