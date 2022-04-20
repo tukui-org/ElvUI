@@ -1469,6 +1469,7 @@ L["Supported"] = true
 L["Swap to Alt Power"] = true
 L["Swipe: Loss of Control"] = true
 L["Swipe: Normal"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["Tab Font Outline"] = "Contorno de Fuente de la Pestaña"
 L["Tab Font Size"] = "Tamaño de Fuente de la Pestaña"
 L["Tab Font"] = "Fuente de la Pestaña"
@@ -1556,7 +1557,6 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = true
 L["This feature will allow you to transfer settings to other characters."] = "Esta característica te permitirá transferir ciertos ajustes a otros personajes."
 L["This is for Customized Icons in your Interface/Icons folder."] = true
-L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = true
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = true
 L["This option allows the overlay to span the whole health, including the background."] = true

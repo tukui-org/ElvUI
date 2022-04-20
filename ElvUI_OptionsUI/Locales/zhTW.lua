@@ -1469,6 +1469,7 @@ L["Supported"] = true
 L["Swap to Alt Power"] = "切換至副能量"
 L["Swipe: Loss of Control"] = true
 L["Swipe: Normal"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["Tab Font Outline"] = "分頁字體描邊"
 L["Tab Font Size"] = "分頁字體尺寸"
 L["Tab Font"] = "分頁字體"
@@ -1556,7 +1557,6 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "指定未吸附在施法條內時圖示的尺寸"
 L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["This is for Customized Icons in your Interface/Icons folder."] = "取決於你是否在 Interface/Icons 資料夾中放置了自定義圖標"
-L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = "這將開啟光環條顏色設置. 這些設置會影響指定法術."
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "這將開啟單位框架顏色設置.這些設置會影響所有單位框架"
 L["This option allows the overlay to span the whole health, including the background."] = "這將允許覆蓋層在包括背景的整個生命條之上."

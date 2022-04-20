@@ -1470,6 +1470,7 @@ L["Supported"] = true
 L["Swap to Alt Power"] = "Заменить на альт. ресурс"
 L["Swipe: Loss of Control"] = true
 L["Swipe: Normal"] = true
+L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["Tab Font Outline"] = "Граница шрифта вкладок"
 L["Tab Font Size"] = "Размер шрифта вкладок"
 L["Tab Font"] = "Шрифт вкладок"
@@ -1557,7 +1558,6 @@ L["This allows you to create a new datatext which will track the currency with t
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Определяет размер иконки, когда она не привязана к инфопанели."
 L["This feature will allow you to transfer settings to other characters."] = "Эта функция позволит Вам передавать свои настройки другим персонажам."
 L["This is for Customized Icons in your Interface/Icons folder."] = "Используется для кастомных иконок в папке Interface/Icons"
-L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
 L["This opens the AuraBar Colors filter. These settings affect specific spells."] = "Открывает фильтр цветов полос аур. Эти настройки специфичны для конкретного заклинания."
 L["This opens the UnitFrames Color settings. These settings affect all unitframes."] = "Открывает опции окрашивания рамок юнитов. Эти настройки влияют на все рамки."
 L["This option allows the overlay to span the whole health, including the background."] = "Позволяет портрету растягиваться на все здоровье, включая фон."
