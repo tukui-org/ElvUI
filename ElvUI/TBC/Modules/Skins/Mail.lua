@@ -108,12 +108,10 @@ function S:MailFrame()
 	hooksecurefunc('SendMailFrame_Update', function()
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
 			local button = _G['SendMailAttachment'..i]
-			if not button.skinned then
+			if not button.template then
 				button:StripTextures()
 				button:SetTemplate('Default', true)
 				button:StyleButton(nil, true)
-
-				button.skinned = true
 			end
 
 			local name = GetSendMailItem(i)
@@ -176,7 +174,7 @@ function S:MailFrame()
 
 	_G.OpenMailFrameCloseButton:Point('TOPRIGHT', OpenMailFrame.backdrop, 'TOPRIGHT', 4, 3)
 
-	for i = 1, _G.ATTACHMENTS_MAX_SEND do
+	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
 		local button = _G['OpenMailAttachmentButton'..i]
 		local icon = _G['OpenMailAttachmentButton'..i..'IconTexture']
 		local count = _G['OpenMailAttachmentButton'..i..'Count']
@@ -199,11 +197,8 @@ function S:MailFrame()
 			local itemLink = GetInboxItemLink(_G.InboxFrame.openMailID, i)
 			local button = _G['OpenMailAttachmentButton'..i]
 
-			button:SetTemplate('NoBackdrop')
-
 			if itemLink then
 				local quality = select(3, GetItemInfo(itemLink))
-
 				if quality and quality > 1 then
 					button:SetBackdropBorderColor(GetItemQualityColor(quality))
 				else

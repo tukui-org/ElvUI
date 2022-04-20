@@ -3,23 +3,19 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local format = format
 
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
 	local MacroFrame = _G.MacroFrame
-	S:HandleFrame(MacroFrame, true, nil, -5, 0, -2, -1)
-
-	_G.MacroFrameCloseButton:Point('TOPRIGHT', 0, 2)
+	S:HandlePortraitFrame(MacroFrame)
+	MacroFrame:Width(334)
 
 	_G.MacroFrameTextBackground:StripTextures()
-	_G.MacroFrameTextBackground:CreateBackdrop('Default')
-	_G.MacroFrameTextBackground.backdrop:Point('TOPLEFT', 0, -3)
-	_G.MacroFrameTextBackground.backdrop:Point('BOTTOMRIGHT', -3, 2)
-
+	_G.MacroFrameTextBackground:SetTemplate('Transparent')
 	_G.MacroButtonScrollFrame:StripTextures()
-	_G.MacroButtonScrollFrame:CreateBackdrop('Default')
-	_G.MacroButtonScrollFrame:Point('TOPLEFT', 8, -65)
+	_G.MacroButtonScrollFrame:CreateBackdrop('Transparent')
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
@@ -31,6 +27,8 @@ function S:Blizzard_MacroUI()
 		_G.MacroNewButton,
 		_G.MacroExitButton,
 		_G.MacroEditButton,
+		_G.MacroFrameTab1,
+		_G.MacroFrameTab2,
 	}
 
 	for i = 1, #buttons do
@@ -38,34 +36,16 @@ function S:Blizzard_MacroUI()
 		S:HandleButton(buttons[i])
 	end
 
-	_G.MacroCancelButton:ClearAllPoints()
-	_G.MacroCancelButton:Point('TOPRIGHT', _G.MacroFrameTextBackground.backdrop, 'TOPRIGHT', 0, 34)
-	_G.MacroSaveButton:Point('BOTTOMLEFT', _G.MacroCancelButton, 'TOPLEFT', 0, 2)
-
-	_G.MacroDeleteButton:Point('BOTTOMLEFT', 0, 4)
-	_G.MacroExitButton:Point('BOTTOMRIGHT', -7, 4)
-
 	_G.MacroNewButton:ClearAllPoints()
-	_G.MacroNewButton:SetPoint('TOPRIGHT', _G.MacroExitButton, 'TOPLEFT', -2 , 0)
+	_G.MacroNewButton:Point('RIGHT', _G.MacroExitButton, 'LEFT', -2 , 0)
 
 	for i = 1, 2 do
-		local tab = _G['MacroFrameTab'..i]
-		tab:StripTextures()
-		S:HandleButton(tab)
-
+		local tab = _G[format('MacroFrameTab%s', i)]
 		tab:Height(22)
-		tab:ClearAllPoints()
-
-		if i == 1 then
-			tab:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 7, -40)
-			tab:Width(125)
-		elseif i == 2 then
-			tab:Point('TOPRIGHT', MacroFrame, 'TOPRIGHT', -35, -40)
-			tab:Width(168)
-		end
-
-		tab.SetWidth = E.noop
 	end
+
+	_G.MacroFrameTab1:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 12, -39)
+	_G.MacroFrameTab2:Point('LEFT', _G.MacroFrameTab1, 'RIGHT', 4, 0)
 
 	--Reposition edit button
 	_G.MacroEditButton:ClearAllPoints()
@@ -91,7 +71,7 @@ function S:Blizzard_MacroUI()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:SetTemplate(nil, true)
+			b:SetTemplate('Transparent')
 		end
 
 		if t then
@@ -102,19 +82,13 @@ function S:Blizzard_MacroUI()
 	end
 
 	local MacroPopupFrame = _G.MacroPopupFrame
-	S:HandleButton(_G.MacroPopupFrame.BorderBox.OkayButton)
-	_G.MacroPopupFrame.BorderBox.OkayButton:Point('TOPRIGHT', _G.MacroPopupFrame.BorderBox.CancelButton, 'TOPLEFT', -2, 0)
-	S:HandleButton(_G.MacroPopupFrame.BorderBox.CancelButton)
-	_G.MacroPopupFrame.BorderBox.CancelButton:Point('BOTTOMRIGHT', _G.MacroPopupFrame.BorderBox, 'BOTTOMRIGHT', -4, 4)
-
-	_G.MacroPopupScrollFrame:CreateBackdrop('Default')
-	_G.MacroPopupScrollFrame.backdrop:Point('BOTTOMRIGHT', -2, -1)
-	_G.MacroPopupScrollFrame:Point('TOPLEFT', _G.MacroPopupFrame.BorderBox, 'TOPLEFT', 25, -75)
-
+	S:HandleButton(MacroPopupFrame.BorderBox.OkayButton)
+	local cancel_btn = MacroPopupFrame.BorderBox.CancelButton
+	S:HandleButton(cancel_btn)
+	cancel_btn:ClearAllPoints()
+	cancel_btn:Point('RIGHT', MacroPopupFrame.BorderBox, 'BOTTOMRIGHT', -5, 15)
 	S:HandleScrollBar(_G.MacroPopupScrollFrameScrollBar)
 	S:HandleEditBox(_G.MacroPopupEditBox)
-	_G.MacroPopupEditBox:Point('TOPLEFT', 25, -25)
-
 	_G.MacroPopupNameLeft:SetTexture()
 	_G.MacroPopupNameMiddle:SetTexture()
 	_G.MacroPopupNameRight:SetTexture()

@@ -14,13 +14,17 @@ local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatc
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
-local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
 local GameTooltip_ClearProgressBars = GameTooltip_ClearProgressBars
+local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
 local GameTooltip_ClearWidgetSet = GameTooltip_ClearWidgetSet
+local GetCraftReagentItemLink = GetCraftReagentItemLink
+local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
 local GetInspectSpecialization = GetInspectSpecialization
 local GetItemCount = GetItemCount
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -28,8 +32,6 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetTime = GetTime
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -669,7 +671,13 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		return
 	end
 
-	local _, link = tt:GetItem()
+	local name, link = tt:GetItem()
+
+	if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+		local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
+		if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
+	end
+
 	if not link then return end
 
 	local modKey = TT:IsModKeyDown()

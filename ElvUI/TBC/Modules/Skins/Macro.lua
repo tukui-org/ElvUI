@@ -43,7 +43,8 @@ function S:Blizzard_MacroUI()
 		local tab = _G[format('MacroFrameTab%s', i)]
 		tab:Height(22)
 	end
-	_G.MacroFrameTab1:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 40, -40)
+
+	_G.MacroFrameTab1:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 12, -39)
 	_G.MacroFrameTab2:Point('LEFT', _G.MacroFrameTab1, 'RIGHT', 4, 0)
 
 	--Reposition edit button
@@ -57,7 +58,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
-	_G.MacroFrameSelectedMacroButton:CreateBackdrop()
+	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:Point('TOPLEFT', 1, -1)
 	_G.MacroFrameSelectedMacroButtonIcon:Point('BOTTOMRIGHT', -1, 1)
@@ -70,7 +71,7 @@ function S:Blizzard_MacroUI()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:CreateBackdrop('Transparent')
+			b:SetTemplate('Transparent')
 		end
 
 		if t then

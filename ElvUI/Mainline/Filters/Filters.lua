@@ -411,6 +411,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[205025]	= Defaults(), -- Presence of Mind
 		[198158]	= Defaults(), -- Mass Invisibility
 		[221404]	= Defaults(), -- Burning Determination
+		[324220]	= Defaults(), -- Deathborne (Covenant/Necrolord)
 	-- Monk
 		[122783]	= Defaults(), -- Diffuse Magic
 		[122278]	= Defaults(), -- Dampen Harm
@@ -535,6 +536,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 	-- Warlock
 		[108416]	= Defaults(), -- Dark Pact
 		[113860]	= Defaults(), -- Dark Soul: Misery
+		[113858]	= Defaults(), -- Dark Soul: Instability
 		[104773]	= Defaults(), -- Unending Resolve
 		[221715]	= Defaults(), -- Essence Drain
 		[212295]	= Defaults(), -- Nether Ward

@@ -61,6 +61,10 @@ function UF:SetSize_HealComm(frame)
 	local db = frame.db.healPrediction
 	local width, height = health:GetSize()
 
+	-- fallback just incase, can happen on profile switching
+	if not width or width <= 0 then width = health.WIDTH end
+	if not height or height <= 0 then height = health.HEIGHT end
+
 	if orientation == 'HORIZONTAL' then
 		local barHeight = db.height
 		if barHeight == -1 or barHeight > height then barHeight = height end
