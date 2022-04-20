@@ -8,13 +8,12 @@ local hooksecurefunc = hooksecurefunc
 local function MailFrameSkin()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local btn = _G['SendMailAttachment'..i]
-		if not btn.skinned then
+		if not btn.template then
 			btn:StripTextures()
 			btn:SetTemplate()
 			btn:StyleButton()
-			S:HandleIconBorder(btn.IconBorder)
 
-			btn.skinned = true
+			S:HandleIconBorder(btn.IconBorder)
 		end
 
 		local t = btn:GetNormalTexture()

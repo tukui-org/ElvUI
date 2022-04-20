@@ -4,13 +4,12 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, select = unpack, select
 
-local CreateFrame = CreateFrame
-local GetInboxNumItems = GetInboxNumItems
 local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxItemLink = GetInboxItemLink
+local GetInboxNumItems = GetInboxNumItems
 local GetItemInfo = GetItemInfo
-local GetSendMailItem = GetSendMailItem
 local GetItemQualityColor = GetItemQualityColor
+local GetSendMailItem = GetSendMailItem
 local hooksecurefunc = hooksecurefunc
 
 function S:MailFrame()
@@ -34,21 +33,15 @@ function S:MailFrame()
 
 		mail:StripTextures()
 		mail:CreateBackdrop('Default')
-		mail.backdrop:Point('TOPLEFT', 42, -2)
-		mail.backdrop:Point('BOTTOMRIGHT', -2, 6)
-
-		mail.bg = CreateFrame('Frame', nil, mail)
-		mail.bg:SetTemplate('Default', true)
-		mail.bg:Point('TOPLEFT', -2, -2)
-		mail.bg:Point('BOTTOMRIGHT', -270, 6)
-		mail.bg:SetFrameLevel(mail.bg:GetFrameLevel() - 2)
+		mail.backdrop:Point('TOPLEFT', 42, -3)
+		mail.backdrop:Point('BOTTOMRIGHT', -2, 5)
 
 		button:StripTextures()
+		button:SetTemplate()
 		button:StyleButton()
-		button:SetAllPoints(mail.bg)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside(mail.bg)
+		icon:SetInside()
 	end
 
 	hooksecurefunc('InboxFrame_Update', function()
@@ -66,18 +59,18 @@ function S:MailFrame()
 						local quality = select(3, GetItemInfo(itemlink))
 
 						if quality and quality > 1 then
-							mail.bg:SetBackdropBorderColor(GetItemQualityColor(quality))
+							mail.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
 						else
-							mail.bg:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
 					end
 				elseif isGM then
-					mail.bg:SetBackdropBorderColor(0, 0.56, 0.94)
+					mail.backdrop:SetBackdropBorderColor(0, 0.56, 0.94)
 				else
-					mail.bg:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			else
-				mail.bg:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 
 			index = index + 1
@@ -104,7 +97,6 @@ function S:MailFrame()
 
 	-- Send Mail Frame
 	_G.SendMailFrame:StripTextures()
-
 	_G.SendStationeryBackgroundLeft:Hide()
 	_G.SendStationeryBackgroundRight:Hide()
 	_G.MailEditBox.ScrollBox:StripTextures(true)
@@ -116,13 +108,10 @@ function S:MailFrame()
 	hooksecurefunc('SendMailFrame_Update', function()
 		for i = 1, _G.ATTACHMENTS_MAX_SEND do
 			local button = _G['SendMailAttachment'..i]
-
-			if not button.skinned then
+			if not button.template then
 				button:StripTextures()
 				button:SetTemplate('Default', true)
 				button:StyleButton(nil, true)
-
-				button.skinned = true
 			end
 
 			local name = GetSendMailItem(i)
@@ -143,6 +132,7 @@ function S:MailFrame()
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
+
 		_G.MailEditBox:SetHeight(_G.SendStationeryBackgroundLeft:GetHeight())
 	end)
 
@@ -184,7 +174,7 @@ function S:MailFrame()
 
 	_G.OpenMailFrameCloseButton:Point('TOPRIGHT', OpenMailFrame.backdrop, 'TOPRIGHT', 4, 3)
 
-	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
+	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local button = _G['OpenMailAttachmentButton'..i]
 		local icon = _G['OpenMailAttachmentButton'..i..'IconTexture']
 		local count = _G['OpenMailAttachmentButton'..i..'Count']
@@ -207,9 +197,13 @@ function S:MailFrame()
 			local itemLink = GetInboxItemLink(_G.InboxFrame.openMailID, i)
 			local button = _G['OpenMailAttachmentButton'..i]
 
-			local quality = itemLink and select(3, GetItemInfo(itemLink))
-			if itemLink and quality and quality > 1 then
-				button:SetBackdropBorderColor(GetItemQualityColor(quality))
+			if itemLink then
+				local quality = select(3, GetItemInfo(itemLink))
+				if quality and quality > 1 then
+					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+				else
+					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
