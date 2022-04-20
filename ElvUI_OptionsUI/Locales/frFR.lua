@@ -1573,6 +1573,7 @@ L["This will join auras together which are normally separated. Example: Bolsteri
 L["This will override the global cooldown settings."] = true
 L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."] = true
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
+L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "Affichage du Mode de Menace."
 L["Threat Health"] = true
 L["Threat Power"] = true
