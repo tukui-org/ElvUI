@@ -358,7 +358,7 @@ function OnUpdate(self, t)
 	if self.timeElapsed > 0 then return end
 	self.timeElapsed = 5
 
-	if _G.GameTimeFrame.flashInvite then
+	if E.global.datatexts.settings.Time.flashInvite and _G.GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53, true)
 	else
 		E:StopFlash(self)

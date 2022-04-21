@@ -53,7 +53,7 @@ General.args.historyGroup = ACH:Group(L["History"], nil, 65)
 General.args.historyGroup.args.chatHistory = ACH:Toggle(L["Enable"], L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."], 1)
 General.args.historyGroup.args.resetHistory = ACH:Execute(L["Reset History"], nil, 2, function() CH:ResetHistory() end)
 General.args.historyGroup.args.historySize = ACH:Range(L["History Size"], nil, 3, { min = 10, max = 500, step = 1 }, nil, nil, nil, function() return not E.db.chat.chatHistory end)
-General.args.historyGroup.args.showHistory = ACH:MultiSelect(L["Display Types"], nil, 4, { WHISPER = L["Whisper"], GUILD = L["Guild"], OFFICER = L["Officer"], PARTY = L["Party"], RAID = L["Raid"], INSTANCE = L["Instance"], CHANNEL = L["Channel"], SAY = L["Say"], YELL = L["Yell"], EMOTE = L["Emote"] }, nil, nil, function(info, key) return E.db.chat[info[#info]][key] end, function(info, key, value) E.db.chat[info[#info]][key] = value end, function() return not E.db.chat.chatHistory end)
+General.args.historyGroup.args.showHistory = ACH:MultiSelect(L["Display Types"], nil, 4, { WHISPER = L["Whisper"], GUILD = L["Guild"], PARTY = L["Party"], RAID = L["Raid"], INSTANCE = L["Instance"], CHANNEL = L["Channel"], SAY = L["Say"], YELL = L["Yell"], EMOTE = L["Emote"] }, nil, nil, function(info, key) return E.db.chat[info[#info]][key] end, function(info, key, value) E.db.chat[info[#info]][key] = value end, function() return not E.db.chat.chatHistory end)
 
 General.args.combatRepeat = ACH:Group(L["Combat Repeat"], nil, 70)
 General.args.combatRepeat.args.enableCombatRepeat = ACH:Toggle(L["Enable"], nil, 1)
@@ -81,7 +81,6 @@ General.args.alerts.args.keywordAlerts.args.keywords = ACH:Input(L["Keywords"], 
 General.args.alerts.args.channelAlerts = ACH:Group(L["Channel Alerts"], nil, 3, nil, function(info) return E.db.chat.channelAlerts[info[#info]] end, function(info, value) E.db.chat.channelAlerts[info[#info]] = value end)
 General.args.alerts.args.channelAlerts.inline = true
 General.args.alerts.args.channelAlerts.args.GUILD = ACH:SharedMediaSound(L["Guild"], nil, nil, 'double')
-General.args.alerts.args.channelAlerts.args.OFFICER = ACH:SharedMediaSound(L["Officer"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.INSTANCE = ACH:SharedMediaSound(L["Instance"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.PARTY = ACH:SharedMediaSound(L["Party"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.RAID = ACH:SharedMediaSound(L["Raid"], nil, nil, 'double')
