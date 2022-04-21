@@ -1882,9 +1882,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					arg1 = arg1 .. ' ' .. _G.Social_GetShareAchievementLink(achieveID, true)
 				end
 			end
-			frame:AddMessage(format(arg1, GetPlayerLink(arg2, ('[%s]'):format(coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
+			frame:AddMessage(format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,18) == 'GUILD_ACHIEVEMENT' then
-			local message = format(arg1, GetPlayerLink(arg2, ('[%s]'):format(coloredName)))
+			local message = format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName)))
 			if C_SocialIsSocialEnabled() then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1)
 				if achieveID then
@@ -1913,7 +1913,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				globalstring = _G['CHAT_'..arg1..'_NOTICE']
 			end
 			if not globalstring then
-				GMError(('Missing global string for %q'):format('CHAT_'..arg1..'_NOTICE_BN'))
+				GMError(format('Missing global string for %q', 'CHAT_'..arg1..'_NOTICE_BN'))
 				return
 			end
 			if arg5 ~= '' then
@@ -1947,7 +1947,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					if not globalstring then
 						globalstring = _G['CHAT_'..arg1..'_NOTICE']
 						if not globalstring then
-							GMError(('Missing global string for %q'):format('CHAT_'..arg1..'_NOTICE'))
+							GMError(format('Missing global string for %q', 'CHAT_'..arg1..'_NOTICE'))
 							return
 						end
 					end
@@ -1958,7 +1958,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
 			local globalstring = _G['BN_INLINE_TOAST_'..arg1]
 			if not globalstring then
-				GMError(('Missing global string for %q'):format('BN_INLINE_TOAST_'..arg1))
+				GMError(format('Missing global string for %q', 'BN_INLINE_TOAST_'..arg1))
 				return
 			end
 
@@ -1975,16 +1975,16 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
 					local characterNameText = _G.BNet_GetClientEmbeddedTexture(clientProgram, 14)..name
-					local linkDisplayText = ('[%s] (%s)'):format(arg2, characterNameText)
+					local linkDisplayText = format('[%s] (%s)', arg2, characterNameText)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				else
-					local linkDisplayText = ('[%s]'):format(arg2)
+					local linkDisplayText = format('[%s]', arg2)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				end
 			else
-				local linkDisplayText = ('[%s]'):format(arg2)
+				local linkDisplayText = format('[%s]', arg2)
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				message = format(globalstring, playerLink)
 			end
@@ -1992,7 +1992,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
 			if arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
-				local linkDisplayText = ('[%s]'):format(arg2)
+				local linkDisplayText = format('[%s]', arg2)
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				frame:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
@@ -2040,7 +2040,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local usingEmote = (chatType == 'EMOTE') or (chatType == 'TEXT_EMOTE')
 
 			if usingDifferentLanguage or not usingEmote then
-				playerLinkDisplayText = ('[%s]'):format(coloredName)
+				playerLinkDisplayText = format('[%s]', coloredName)
 			end
 
 			local isCommunityType = chatType == 'COMMUNITIES_CHANNEL'
