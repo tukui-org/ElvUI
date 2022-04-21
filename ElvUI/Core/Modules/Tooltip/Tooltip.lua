@@ -14,13 +14,17 @@ local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatc
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
-local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
 local GameTooltip_ClearProgressBars = GameTooltip_ClearProgressBars
+local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
 local GameTooltip_ClearWidgetSet = GameTooltip_ClearWidgetSet
+local GetCraftReagentItemLink = GetCraftReagentItemLink
+local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
 local GetInspectSpecialization = GetInspectSpecialization
 local GetItemCount = GetItemCount
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -28,8 +32,6 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetTime = GetTime
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -669,7 +671,13 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		return
 	end
 
-	local _, link = tt:GetItem()
+	local name, link = tt:GetItem()
+
+	if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+		local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
+		if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
+	end
+
 	if not link then return end
 
 	local modKey = TT:IsModKeyDown()
@@ -893,38 +901,37 @@ function TT:SetBackpackToken(tt, id)
 end
 
 function TT:SetTooltipFonts()
-	local font = LSM:Fetch('font', TT.db.font)
-	local fontOutline = TT.db.fontOutline
-	local headerSize = TT.db.headerFontSize
-	local smallTextSize = TT.db.smallTextFontSize
-	local textSize = TT.db.textFontSize
-
-	_G.GameTooltipHeaderText:FontTemplate(font, headerSize, fontOutline)
-	_G.GameTooltipTextSmall:FontTemplate(font, smallTextSize, fontOutline)
-	_G.GameTooltipText:FontTemplate(font, textSize, fontOutline)
+	local font, fontSize, fontOutline = LSM:Fetch('font', TT.db.font), TT.db.textFontSize, TT.db.fontOutline
+	_G.GameTooltipText:FontTemplate(font, fontSize, fontOutline)
 
 	if GameTooltip.hasMoney then
 		for i = 1, GameTooltip.numMoneyFrames do
-			_G['GameTooltipMoneyFrame'..i..'PrefixText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'SuffixText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'GoldButtonText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'SilverButtonText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'CopperButtonText']:FontTemplate(font, textSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'PrefixText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'SuffixText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'GoldButtonText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'SilverButtonText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'CopperButtonText']:FontTemplate(font, fontSize, fontOutline)
 		end
 	end
 
+	-- Header has its own font settings
+	_G.GameTooltipHeaderText:FontTemplate(LSM:Fetch('font', TT.db.headerFont), TT.db.headerFontSize, TT.db.headerFontOutline)
+
 	-- Ignore header font size on DatatextTooltip
 	if _G.DatatextTooltip then
-		_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-		_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
+		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 	end
 
-	-- Comparison Tooltips should use smallTextSize
+	-- Comparison Tooltips has its own size setting
+	local smallSize = TT.db.smallTextFontSize
+	_G.GameTooltipTextSmall:FontTemplate(font, smallSize, fontOutline)
+
 	for _, tt in ipairs(GameTooltip.shoppingTooltips) do
 		for i=1, tt:GetNumRegions() do
 			local region = select(i, tt:GetRegions())
 			if region:IsObjectType('FontString') then
-				region:FontTemplate(font, smallTextSize, fontOutline)
+				region:FontTemplate(font, smallSize, fontOutline)
 			end
 		end
 	end

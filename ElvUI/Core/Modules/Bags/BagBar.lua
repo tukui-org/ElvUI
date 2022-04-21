@@ -7,6 +7,7 @@ local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
 
+local LSM = E.Libs.LSM
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetBagSlotFlag = GetBagSlotFlag
@@ -104,6 +105,8 @@ function B:SizeAndPositionBagBar()
 
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
 	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
+
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
@@ -230,7 +233,7 @@ function B:LoadBagBar()
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)

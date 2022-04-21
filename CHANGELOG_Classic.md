@@ -1,4 +1,23 @@
-### Version 1.67 [ ETA: 🍨 ]
+### Version 1.69 [ ETA: 🍨 ]
+
+
+
+___
+### Version 1.68 [ April 20th 2022 ]
+
+UnitFrames: Add ability to change pet happiness colors  
+UnitFrames: Add ability to hide Rest Icon at max level  
+UnitFrames: Add ability to scale the Raid Role Icon  
+UnitFrames: Readd missing option to Show/Hide Spec Icon on Arena frames  
+Skins: Adjusted the 2 tabs on the Macro skin to accommodate larger toon names  
+Skins: Fix mail skin error introduced with patch 1.14.3  
+Tooltips: Fix tooltip count on Enchant crafting window when mousing over the reagents  
+
+___
+### Version 1.67 [ April 9th 2022 ]
+
+NamePlates: Add missing Style Filter defaults for party/raid  
+NamePlates: Add Not Resting, No Target style filter condition  
 
 ___
 ### Version 1.66 [ April 5th 2022 ]

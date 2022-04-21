@@ -7,7 +7,14 @@ local IsResting = IsResting
 local DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]]
 
 function UF:Construct_RestingIndicator(frame)
-	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
+	local icon = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
+	icon.PostUpdate = UF.RestingIndicator_PostUpdate
+
+	return icon
+end
+
+local function ShouldHide(frame)
+	return frame.db.RestIcon.hideAtMaxLevel and E:XPIsLevelMax()
 end
 
 local TestingTimer
@@ -20,25 +27,26 @@ local function TestingFunc()
 end
 
 function UF:TestingDisplay_RestingIndicator(frame)
-	local Icon = frame.RestingIndicator
+	local icon = frame.RestingIndicator
 	local db = frame.db.RestIcon
 
 	if TestingTimer then
 		TestingTimer:Cancel()
 	end
 
-	if not db.enable then
-		Icon:Hide()
+	if not db.enable or ShouldHide(frame) then
+		icon:Hide()
 		return
 	end
 
-	Icon:Show()
-	TestingFrame = Icon
+	icon:Show()
+
+	TestingFrame = icon
 	TestingTimer = C_Timer_NewTimer(10, TestingFunc)
 end
 
 function UF:Configure_RestingIndicator(frame)
-	local Icon = frame.RestingIndicator
+	local icon = frame.RestingIndicator
 	local db = frame.db.RestIcon
 
 	if db.enable then
@@ -47,32 +55,39 @@ function UF:Configure_RestingIndicator(frame)
 		end
 
 		if db.defaultColor then
-			Icon:SetVertexColor(1, 1, 1, 1)
-			Icon:SetDesaturated(false)
+			icon:SetVertexColor(1, 1, 1, 1)
+			icon:SetDesaturated(false)
 		else
-			Icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
-			Icon:SetDesaturated(true)
+			icon:SetVertexColor(db.color.r, db.color.g, db.color.b, db.color.a)
+			icon:SetDesaturated(true)
 		end
 
 		if db.texture == 'CUSTOM' and db.customTexture then
-			Icon:SetTexture(db.customTexture)
-			Icon:SetTexCoord(0, 1, 0, 1)
+			icon:SetTexture(db.customTexture)
+			icon:SetTexCoord(0, 1, 0, 1)
 		elseif db.texture ~= 'DEFAULT' and E.Media.RestIcons[db.texture] then
-			Icon:SetTexture(E.Media.RestIcons[db.texture])
-			Icon:SetTexCoord(0, 1, 0, 1)
+			icon:SetTexture(E.Media.RestIcons[db.texture])
+			icon:SetTexCoord(0, 1, 0, 1)
 		else
-			Icon:SetTexture(DEFAULT)
-			Icon:SetTexCoord(0, .5, 0, .421875)
+			icon:SetTexture(DEFAULT)
+			icon:SetTexCoord(0, .5, 0, .421875)
 		end
 
-		Icon:Size(db.size)
-		Icon:ClearAllPoints()
+		icon:Size(db.size)
+		icon:ClearAllPoints()
+
 		if frame.ORIENTATION ~= 'RIGHT' and (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) then
-			Icon:Point('CENTER', frame.Portrait, db.anchorPoint, db.xOffset, db.yOffset)
+			icon:Point('CENTER', frame.Portrait, db.anchorPoint, db.xOffset, db.yOffset)
 		else
-			Icon:Point('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
+			icon:Point('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 		end
 	elseif frame:IsElementEnabled('RestingIndicator') then
 		frame:DisableElement('RestingIndicator')
+	end
+end
+
+function UF:RestingIndicator_PostUpdate()
+	if self:IsShown() and ShouldHide(self.__owner) then
+		self:Hide()
 	end
 end

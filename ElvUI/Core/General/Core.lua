@@ -358,6 +358,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.general.minimap.locationFont = font
 	E.db.tooltip.font = font
 	E.db.tooltip.fontSize = fontSize
+	E.db.tooltip.headerFont = font
 	E.db.tooltip.headerFontSize = fontSize
 	E.db.tooltip.textFontSize = fontSize
 	E.db.tooltip.smallTextFontSize = fontSize

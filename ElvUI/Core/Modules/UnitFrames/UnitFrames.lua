@@ -435,6 +435,10 @@ function UF:UpdateColors()
 	ElvUF.colors.threat[2] = E:SetColorTable(ElvUF.colors.threat[2], db.threat[2])
 	ElvUF.colors.threat[3] = E:SetColorTable(ElvUF.colors.threat[3], db.threat[3])
 
+	ElvUF.colors.happiness[1] = E:SetColorTable(ElvUF.colors.happiness[1], db.happiness[1])
+	ElvUF.colors.happiness[2] = E:SetColorTable(ElvUF.colors.happiness[2], db.happiness[2])
+	ElvUF.colors.happiness[3] = E:SetColorTable(ElvUF.colors.happiness[3], db.happiness[3])
+
 	ElvUF.colors.selection[0] = E:SetColorTable(ElvUF.colors.selection[0], db.selection[0])
 	ElvUF.colors.selection[1] = E:SetColorTable(ElvUF.colors.selection[1], db.selection[1])
 	ElvUF.colors.selection[2] = E:SetColorTable(ElvUF.colors.selection[2], db.selection[2])

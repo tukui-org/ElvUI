@@ -1,12 +1,12 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bClassic|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## Author: Elv, Simpy
-## Version: 1.66
+## Version: 1.68
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
-## Interface: 11402
-## X-Interface: 11402
+## Interface: 11403
+## X-Interface: 11403
 ## X-Tukui-ProjectID: 2
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 ## X-oUF: ElvUF
