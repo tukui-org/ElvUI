@@ -1019,7 +1019,6 @@ P.chat = {
 	showHistory = {
 		WHISPER = true,
 		GUILD = true,
-		OFFICER = true,
 		PARTY = true,
 		RAID = true,
 		INSTANCE = true,
