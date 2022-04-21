@@ -923,7 +923,7 @@ function TT:SetTooltipFonts()
 		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 	end
 
-	-- Comparison Tooltips also has its own size setting
+	-- Comparison Tooltips has its own size setting
 	local smallSize = TT.db.smallTextFontSize
 	_G.GameTooltipTextSmall:FontTemplate(font, smallSize, fontOutline)
 
