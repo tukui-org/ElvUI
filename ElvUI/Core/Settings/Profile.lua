@@ -1010,7 +1010,6 @@ P.chat = {
 	maxLines = 100,
 	channelAlerts = {
 		GUILD = 'None',
-		OFFICER = 'None',
 		INSTANCE = 'None',
 		PARTY = 'None',
 		RAID = 'None',
