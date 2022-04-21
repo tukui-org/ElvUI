@@ -901,18 +901,8 @@ function TT:SetBackpackToken(tt, id)
 end
 
 function TT:SetTooltipFonts()
-	local headerFont = LSM:Fetch('font', TT.db.headerFont)
-	local headerSize = TT.db.headerFontSize
-	local headerFontOutline = TT.db.headerFontOutline
-	_G.GameTooltipHeaderText:FontTemplate(headerFont, headerSize, headerFontOutline)
-
-	local font = LSM:Fetch('font', TT.db.font)
-	local fontSize = TT.db.textFontSize
-	local fontOutline = TT.db.fontOutline
+	local font, fontSize, fontOutline = LSM:Fetch('font', TT.db.font), TT.db.textFontSize, TT.db.fontOutline
 	_G.GameTooltipText:FontTemplate(font, fontSize, fontOutline)
-
-	local smallTextSize = TT.db.smallTextFontSize
-	_G.GameTooltipTextSmall:FontTemplate(font, smallTextSize, fontOutline)
 
 	if GameTooltip.hasMoney then
 		for i = 1, GameTooltip.numMoneyFrames do
@@ -924,18 +914,24 @@ function TT:SetTooltipFonts()
 		end
 	end
 
+	-- Header has its own font settings
+	_G.GameTooltipHeaderText:FontTemplate(LSM:Fetch('font', TT.db.headerFont), TT.db.headerFontSize, TT.db.headerFontOutline)
+
 	-- Ignore header font size on DatatextTooltip
 	if _G.DatatextTooltip then
 		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
 		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 	end
 
-	-- Comparison Tooltips should use smallTextSize
+	-- Comparison Tooltips also has its own size setting
+	local smallSize = TT.db.smallTextFontSize
+	_G.GameTooltipTextSmall:FontTemplate(font, smallSize, fontOutline)
+
 	for _, tt in ipairs(GameTooltip.shoppingTooltips) do
 		for i=1, tt:GetNumRegions() do
 			local region = select(i, tt:GetRegions())
 			if region:IsObjectType('FontString') then
-				region:FontTemplate(font, smallTextSize, fontOutline)
+				region:FontTemplate(font, smallSize, fontOutline)
 			end
 		end
 	end
