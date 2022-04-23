@@ -118,7 +118,7 @@ do
 	E:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	E:AddLib('RangeCheck', 'LibRangeCheck-2.0-ElvUI')
+	E:AddLib('RangeCheck', 'LibRangeCheck-2.0')
 	E:AddLib('CustomGlow', 'LibCustomGlow-1.0')
 	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Compress', 'LibCompress')
