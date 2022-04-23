@@ -65,8 +65,8 @@ local function SetTip(frame)
 	GameTooltip:Show()
 end
 
-local function SetItemTip(frame)
-	if not frame.rollID or not frame:IsMouseOver() then return end
+local function SetItemTip(frame, event)
+	if not frame.rollID or (event == 'MODIFIER_STATE_CHANGED' and not frame:IsMouseOver()) then return end
 
 	GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT')
 	GameTooltip:SetLootRollItem(frame.rollID)
