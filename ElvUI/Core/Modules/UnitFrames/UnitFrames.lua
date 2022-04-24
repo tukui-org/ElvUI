@@ -719,16 +719,16 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local width, height, newCols, newRows = 0, 0, 0, 0
 	Header.db = db
 
-	local direction = db.growthDirection
-	local groupsPerRowCol = Header.groupName == 'party' and 1 or db.groupsPerRowCol
+	local isParty = Header.groupName == 'party'
+	local dbWidth, dbHeight = db.width, db.height
+	local groupsPerRowCol = isParty and 1 or db.groupsPerRowCol
 	local invertGroupingOrder = db.invertGroupingOrder
 	local startFromCenter = db.startFromCenter
 	local raidWideSorting = db.raidWideSorting
+	local direction = db.growthDirection
 	local showPlayer = db.showPlayer
 	local groupBy = db.groupBy
 	local sortDir = db.sortDir
-
-	local dbWidth, dbHeight = db.width, db.height
 
 	local groupSpacing = E:Scale(db.groupSpacing)
 	local verticalSpacing = E:Scale(db.verticalSpacing)
@@ -794,7 +794,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 		--MATH!! WOOT
 		local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
-		if raidWideSorting and startFromCenter then
+		if (isParty or raidWideSorting) and startFromCenter then
 			point = DIRECTION_TO_GROUP_ANCHOR_POINT['OUT_'..direction]
 		end
 
