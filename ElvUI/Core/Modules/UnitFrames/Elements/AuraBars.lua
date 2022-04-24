@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local ipairs = ipairs
 local unpack = unpack
+local strfind = strfind
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(bar)
@@ -132,6 +133,7 @@ function UF:Configure_AuraBars(frame)
 			attachTo = _G.ElvUF_Player.AuraBars
 		end
 
+		local BORDERS = BORDER * 2
 		local px = UF.thinBorders and 0 or 2
 		local POWER_OFFSET, BAR_WIDTH, yOffset = 0
 		if detached then
@@ -140,7 +142,7 @@ function UF:Configure_AuraBars(frame)
 
 			yOffset = below and BORDER or -(db.height + px)
 
-			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
+			bars.Holder:Size(db.detachedWidth, db.height + BORDERS)
 		else
 			E:DisableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = frame.UNIT_WIDTH
@@ -157,11 +159,20 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
+		local extraWidth = bars.height + POWER_OFFSET + BORDERS - 1 -- 1 is connecting pixel
+		bars.width = E:Scale(BAR_WIDTH - extraWidth - BORDERS)
+
+		local xOffset
+		if detached then
+			xOffset = (bars.height / 2) - px
+		else
+			local attachWidth = attachTo:GetWidth() or 0
+			xOffset = extraWidth - ((attachWidth - bars.width) / 2)
+		end
 
 		local anchor = below and 'BOTTOM' or 'TOP'
 		bars:ClearAllPoints()
-		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + -(detached and px or UF.BORDER), yOffset)
+		bars:Point(anchor, attachTo, anchor, xOffset, yOffset)
 		bars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
