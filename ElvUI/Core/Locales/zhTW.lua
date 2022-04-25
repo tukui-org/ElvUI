@@ -3,7 +3,7 @@ local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
-L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(按住 Ctrl 或 Shift 點擊) 開啟/關閉CPU分析"
+L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(按住 Ctrl 和 Shift 點擊) 開啟/關閉CPU分析"
 L["(Hold Shift) Memory Usage"] = "(按住 Shift) 記憶體使用量"
 L["(Shift Click) Collect Garbage"] = "(Shift 點擊) 垃圾回收"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架存在一個衝突錨點, 將強制將Buff附加到主單位框架之上。"
@@ -65,7 +65,7 @@ L["Battleground datatexts temporarily hidden, to show type /bgstats"] = "戰場�
 L["Battleground datatexts will now show again if you are inside a battleground."] = "當你處於戰場時戰場資訊將再次顯示."
 L["BelowMinimapWidget"] = "小地圖下方組件"
 L["Binding"] = "綁定"
-L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
+L["BINDINGS_HELP"] = ("將滑鼠移動到任意 *動作|r, *菜單按鍵|r, *巨集|r, 或 *法術書中的法術|r 來進行綁定. 這同時支援 *背包|r 中的物品. 按下 ^ESC|r 鍵可以 ^清除|r 當前的綁定狀態."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["Binds Discarded"] = "取消綁定"
 L["Binds Saved"] = "儲存綁定"
 L["Blizzard Widgets"] = "暴雪組件"
@@ -74,7 +74,7 @@ L["BoE"] = "裝備綁定"
 L["BoP"] = "拾取綁定"
 L["Boss Button"] = "特殊技能鍵"
 L["Boss Frames"] = "首領框架"
-L["Boss"] = "首領的"
+L["Boss"] = "首領"
 L["BossBannerWidget"] = "首領旗幟"
 L["BoU"] = "使用綁定"
 L["Buffs"] = "增益光環"
@@ -93,7 +93,7 @@ L["Classic"] = "經典"
 L["Combat"] = "戰鬥"
 L["Combat/Arena Time"] = "戰鬥時間"
 L["Config Mode:"] = "設定模式:"
-L["Confused.. Try Again!"] = "請再試一次！"
+L["Confused.. Try Again!"] = "很奇怪... 請再試一次!"
 L["Continue"] = "下一步"
 L["Coords"] = "坐標"
 L["copperabbrev"] = "|cffeda55f銅|r"
@@ -278,7 +278,7 @@ L["Profile Settings Setup"] = "設定檔設置"
 L["Profit:"] = "利潤: "
 L["Purchase Bags"] = "購買背包"
 L["Purchase"] = "購買銀行欄位"
-L["Quest Log XP:"] = "追蹤任務經驗值: "
+L["Quest Log XP:"] = "任務經驗: "
 L["Quest Objective Frame"] = "任務目標框架"
 L["Quest Timer Frame"] = "任務計時框架"
 L["R"] = "團隊"
@@ -342,7 +342,7 @@ L["TargetTarget Frame"] = "目標的目標框架"
 L["TargetTargetTarget Frame"] = "目標的目標的目標框架"
 L["Temporary Move"] = "移動背包"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "對話視窗與魔獸世界原生對話視窗的操作方式相同, 你可以拖拉、移動分頁或重新命名分頁. 請按下方按鈕以設定對話視窗."
-L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."] = true
+L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."] = "你可以通過輸入 /ec 命令來開啟 ElvUI 配置介面. 若要略過安裝程序, 請按下方按鈕."
 L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "你嘗試導入的設定檔已存在. 選擇一個新名稱或是允許覆蓋原有設定檔"
 L["The spell '%s' has been added to the '%s' unitframe aura filter."] = "法術'%s'已經被添加到單位框架的光環過濾器中."
 L["Theme Set"] = "主題設定"
@@ -351,7 +351,7 @@ L["This install process will help you learn some of the features in ElvUI has to
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "此安裝步驟將會設定對話視窗的名稱、位置和顏色."
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "此安裝步驟將會設定魔獸世界的預設選項, 建議你執行此步驟, 以確保功能均可正常運作."
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "此設定造成了錨點衝突, '%s' 框架會依附於自己, 請檢查你的錨點. 將 '%s' 依附於 '%s'."
-L["This will change the layout of your unitframes and actionbars."] = "這將會改變你的單位框架和動作條的佈局"
+L["This will change the layout of your unitframes and actionbars."] = "這將會改變你的單位框架和快捷列的佈局"
 L["Threat Bar"] = "仇恨條"
 L["To list all available ElvUI commands, type in chat /ehelp"] = "你可以輸入 /ehelp 來獲取全部可用的 ElvUI 命令."
 L["To quickly move around certain elements of the UI, type /emove"] = "你可以輸入 /emove 來快速移動 UI 元素."
@@ -385,7 +385,7 @@ L["WoW Token:"] = "魔獸代幣:"
 L["Wrist"] = "護腕"
 L["XP:"] = "經驗:"
 L["yells"] = "大喊"
-L["You are now finished with the installation process. If you are in need of technical support please join our Discord."] = true
+L["You are now finished with the installation process. If you are in need of technical support please join our Discord."] = "您已完成安裝. 如果你需要技術支援請訪問我們的 Discord."
 L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"] = "你正在使用 CPU 使用記錄. 這將導致性能低下. 你想要關閉它還是繼續?"
 L["You can access the copy chat and chat menu functions by left/right clicking on the icon in the top right corner of the chat panel."] = "你可以點擊聊天面板的右上角圖示來拷貝聊天, 及訪問聊天菜單."
 L["You can access the microbar by using middle mouse button on the minimap. You can also enable the MicroBar in the actionbar settings."] = "你可以在小地圖上右鍵點擊來開啟微型菜單條. 你也可以在動作條設定中啟用微型系統條功能."
@@ -414,16 +414,16 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, �
   Ctrl + 右鍵 - 重置定位器位置到預設值.
 ]=]
 
-L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
- */kb|r  -  Toggle the keybind mode.
- */emove|r  -  Toggle anchors to reposition various elements.
- */ereset|r  -  Reset all frames to their original positions.
- */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
- */estatus|r  -  Important informations for support questions.
- */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
-  using */edebug|r ^on|r within that session.
+L["EHELP_COMMANDS"] = ([=[一些重要的 *ElvUI|r 命令:
+ */ec|r or */elvui|r  -  開關 *設定|r.
+ */kb|r  -  開關按鍵綁定.
+ */emove|r  -  開關介面元素移動.
+ */ereset|r  -  重置全部介面元素到預設位置.
+ */bgstats|r  -  開關戰場信息在資訊文字上的顯示.
+ */hdt|r  -  在不打開 *設定|r 的情況下修改資訊文字.
+ */estatus|r  -  一些對於支援服務非常重要的訊息.
+ */egrid|r ^64|r 或 ^128|r 或 ^256|r  -  開關像素網格.
+ */edebug|r ^on|r 或 ^off|r  -  禁用 ElvUI 以外的全部插件.
+  注意: 在不登出游戲的情況下, */edebug|r ^off|r 將會重新打開
+  之前使用 */edebug|r ^on|r 禁用的插件.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
