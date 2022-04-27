@@ -14,9 +14,9 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
-function E:Cooldown_TextThreshold(cd, now)
+function E:Cooldown_TextThreshold(cd, timeLeft)
 	if cd.parent and cd.parent.textThreshold and cd.endTime then
-		return (cd.endTime - now) >= cd.parent.textThreshold
+		return timeLeft >= cd.parent.textThreshold
 	end
 end
 
@@ -42,6 +42,7 @@ function E:Cooldown_OnUpdate(elapsed)
 		E:Cooldown_StopTimer(self)
 	else
 		local now = GetTime()
+
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
 		elseif E:Cooldown_BelowScale(self) then
@@ -49,30 +50,31 @@ function E:Cooldown_OnUpdate(elapsed)
 			if not forced then
 				self.nextUpdate = 500
 			end
-		elseif E:Cooldown_TextThreshold(self, now) then
-			self.text:SetText('')
-			if not forced then
-				self.nextUpdate = 1
-			end
 		elseif self.endTime then
-			local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
-			if not forced then
-				self.nextUpdate = nextUpdate
-			end
-
-			local style = E.TimeFormats[id]
-			if style then
-				local opt = (id < 3 and self.roundTime) or (id > 2 and id < 5 and self.showSeconds)
-				local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
-				if self.textColors then
-					self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
-				else
-					self.text:SetFormattedText(style[which], value, remainder)
+			local timeLeft = (self.endTime - now) / (self.modRate or 1)
+			if E:Cooldown_TextThreshold(self, timeLeft) then
+				self.text:SetText('')
+				if not forced then
+					self.nextUpdate = 1
 				end
-			end
+			else
+				local value, id, nextUpdate, remainder = E:GetTimeInfo(timeLeft, self.threshold, self.hhmmThreshold, self.mmssThreshold, self.modRate ~= 1 and self.modRate)
+				if not forced then self.nextUpdate = nextUpdate end
 
-			local color = not self.skipTextColor and self.timeColors[id]
-			if color then self.text:SetTextColor(color.r, color.g, color.b) end
+				local style = E.TimeFormats[id]
+				if style then
+					local opt = (id < 3 and self.roundTime) or ((id == 3 or id == 4 or id == 7) and self.showSeconds)
+					local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
+					if self.textColors then
+						self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
+					else
+						self.text:SetFormattedText(style[which], value, remainder)
+					end
+				end
+
+				local color = not self.skipTextColor and self.timeColors[id]
+				if color then self.text:SetTextColor(color.r, color.g, color.b) end
+			end
 		end
 	end
 end
@@ -207,13 +209,15 @@ function E:CreateCooldownTimer(parent)
 end
 
 E.RegisteredCooldowns = {}
-function E:OnSetCooldown(start, duration)
+function E:OnSetCooldown(start, duration, modRate)
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
+		timer.modRate = modRate
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
+
 		E:Cooldown_ForceUpdate(timer)
 	elseif self.timer then
 		E:Cooldown_StopTimer(self.timer)
@@ -249,13 +253,17 @@ end
 
 function E:GetCooldownColors(db)
 	if not db then db = E.db.cooldown end -- just incase someone calls this without a first arg use the global
-	local c13 = E:RGBToHex(db.hhmmColorIndicator.r, db.hhmmColorIndicator.g, db.hhmmColorIndicator.b) -- color for timers that are soon to expire
-	local c12 = E:RGBToHex(db.mmssColorIndicator.r, db.mmssColorIndicator.g, db.mmssColorIndicator.b) -- color for timers that are soon to expire
-	local c11 = E:RGBToHex(db.expireIndicator.r, db.expireIndicator.g, db.expireIndicator.b) -- color for timers that are soon to expire
-	local c10 = E:RGBToHex(db.secondsIndicator.r, db.secondsIndicator.g, db.secondsIndicator.b) -- color for timers that have seconds remaining
-	local c9 = E:RGBToHex(db.minutesIndicator.r, db.minutesIndicator.g, db.minutesIndicator.b) -- color for timers that have minutes remaining
-	local c8 = E:RGBToHex(db.hoursIndicator.r, db.hoursIndicator.g, db.hoursIndicator.b) -- color for timers that have hours remaining
-	local c7 = E:RGBToHex(db.daysIndicator.r, db.daysIndicator.g, db.daysIndicator.b) -- color for timers that have days remaining
+
+	local c15 = E:RGBToHex(db.modRateIndicator.r, db.modRateIndicator.g, db.modRateIndicator.b) -- color for timers with mod rate applied
+	local c14 = E:RGBToHex(db.hhmmColorIndicator.r, db.hhmmColorIndicator.g, db.hhmmColorIndicator.b) -- color for timers that are soon to expire
+	local c13 = E:RGBToHex(db.mmssColorIndicator.r, db.mmssColorIndicator.g, db.mmssColorIndicator.b) -- color for timers that are soon to expire
+	local c12 = E:RGBToHex(db.expireIndicator.r, db.expireIndicator.g, db.expireIndicator.b) -- color for timers that are soon to expire
+	local c11 = E:RGBToHex(db.secondsIndicator.r, db.secondsIndicator.g, db.secondsIndicator.b) -- color for timers that have seconds remaining
+	local c10 = E:RGBToHex(db.minutesIndicator.r, db.minutesIndicator.g, db.minutesIndicator.b) -- color for timers that have minutes remaining
+	local c9 = E:RGBToHex(db.hoursIndicator.r, db.hoursIndicator.g, db.hoursIndicator.b) -- color for timers that have hours remaining
+	local c8 = E:RGBToHex(db.daysIndicator.r, db.daysIndicator.g, db.daysIndicator.b) -- color for timers that have days remaining
+
+	local c7 = db.modRateColor -- color for timers with mod rate applied
 	local c6 = db.hhmmColor -- HH:MM color
 	local c5 = db.mmssColor -- MM:SS color
 	local c4 = db.expiringColor -- color for timers that are soon to expire
@@ -263,7 +271,8 @@ function E:GetCooldownColors(db)
 	local c2 = db.minutesColor -- color for timers that have minutes remaining
 	local c1 = db.hoursColor -- color for timers that have hours remaining
 	local c0 = db.daysColor -- color for timers that have days remaining
-	return c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13
+
+	return c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15
 end
 
 function E:UpdateCooldownOverride(module)
@@ -328,7 +337,7 @@ function E:UpdateCooldownSettings(module)
 		db, timeColors, textColors = E.db[module].cooldown, E.TimeColors[module], E.TimeIndicatorColors[module]
 	end
 
-	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4], timeColors[5], timeColors[6], textColors[0], textColors[1], textColors[2], textColors[3], textColors[4], textColors[5], textColors[6] = E:GetCooldownColors(db)
+	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4], timeColors[5], timeColors[6], timeColors[7], textColors[0], textColors[1], textColors[2], textColors[3], textColors[4], textColors[5], textColors[6], textColors[7] = E:GetCooldownColors(db)
 
 	if isModule then
 		E:UpdateCooldownOverride(module)

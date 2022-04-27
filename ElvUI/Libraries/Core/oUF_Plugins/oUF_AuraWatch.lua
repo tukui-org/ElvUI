@@ -80,10 +80,10 @@ local function getIcon(element, visible, offset)
 	return button, position
 end
 
-local function handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable)
+local function handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, modRate)
 	if button.cd then
 		if duration and duration > 0 then
-			button.cd:SetCooldown(expiration - duration, duration)
+			button.cd:SetCooldown(expiration - duration, duration, modRate)
 			button.cd:Show()
 		else
 			button.cd:Hide()
@@ -164,7 +164,7 @@ local function postOnlyMissing(element, unit, offset)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 	if not name then return end
 
 	local button, position = getIcon(element, visible, offset)
@@ -188,7 +188,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 	local show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
-		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
+		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
 	local setting = element.watched[spellID]
 	if setting and setting.onlyShowMissing then
@@ -196,7 +196,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	end
 
 	if show then
-		handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable)
+		handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, modRate)
 
 		if element.PostUpdateIcon then
 			element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)

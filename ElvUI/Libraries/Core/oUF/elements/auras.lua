@@ -169,11 +169,11 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3
 
 	if LCD and not UnitIsUnit('player', unit) then
 		local durationNew, expirationTimeNew
-		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
+		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
 
 		if spellID then
 			durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellID, source, name)
@@ -183,7 +183,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			duration, expiration = durationNew, expirationTimeNew
 		end
 	else
-		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 	end
 
 	if element.forceShow or element.forceCreate then
@@ -241,7 +241,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	if not (element.forceShow or element.forceCreate) then
 		show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
 			count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
-			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 	end
 	-- end block
 
@@ -251,7 +251,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		-- complicated.
 		if(button.cd and not element.disableCooldown) then
 			if(duration and duration > 0) then
-				button.cd:SetCooldown(expiration - duration, duration)
+				button.cd:SetCooldown(expiration - duration, duration, modRate)
 				button.cd:Show()
 			else
 				button.cd:Hide()
