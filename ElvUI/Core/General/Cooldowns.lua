@@ -42,7 +42,6 @@ function E:Cooldown_OnUpdate(elapsed)
 		E:Cooldown_StopTimer(self)
 	else
 		local now = GetTime()
-		local timeLeft = self.endTime and ((self.endTime - now) / (self.timeMod or 1))
 
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
@@ -51,7 +50,8 @@ function E:Cooldown_OnUpdate(elapsed)
 			if not forced then
 				self.nextUpdate = 500
 			end
-		elseif timeLeft then
+		elseif self.endTime then
+			local timeLeft = (self.endTime - now) / (self.timeMod or 1)
 			if E:Cooldown_TextThreshold(self, timeLeft) then
 				self.text:SetText('')
 				if not forced then
