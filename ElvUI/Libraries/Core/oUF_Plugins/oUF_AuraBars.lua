@@ -54,7 +54,7 @@ local function onUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
 
 	if bar.elapsed > 0.01 then
-		local remain = bar.expiration - GetTime()
+		local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
 		bar:SetValue(remain / bar.duration)
 		bar.timeText:SetFormattedText(FormatTime(remain))
 
@@ -143,11 +143,11 @@ local function updateBar(element, bar)
 end
 
 local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3
 
 	if LCD and not UnitIsUnit('player', unit) then
 		local durationNew, expirationTimeNew
-		name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
+		name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
 
 		if spellID then
 			durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellID, source, name)
@@ -157,7 +157,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 			duration, expiration = durationNew, expirationTimeNew
 		end
 	else
-		name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+		name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 	end
 
 	if not name then return end
@@ -185,13 +185,14 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 	bar.position = position
 	bar.duration = duration
 	bar.expiration = expiration
+	bar.modRate = modRate
 	bar.spellID = spellID
 	bar.spell = name
 	bar.noTime = (duration == 0 and expiration == 0)
 
 	local show = (element.CustomFilter or customFilter) (element, unit, bar, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
-		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
+		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
 	updateBar(element, bar)
 	bar:SetScript('OnUpdate', not bar.noTime and onUpdate or nil)

@@ -347,17 +347,14 @@ function E:StringTitle(str)
 	return gsub(str, '(.)', strupper, 1)
 end
 
+E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7:modRate
+E.TimeIndicatorColors = {} -- same color indexes
 E.TimeThreshold = 3
 
-E.TimeColors = { -- aura time colors
-	[0] = '|cffeeeeee', -- days
-	[1] = '|cffeeeeee', -- hours
-	[2] = '|cffeeeeee', -- minutes
-	[3] = '|cffeeeeee', -- seconds
-	[4] = '|cfffe0000', -- expire (fade timer)
-	[5] = '|cff909090', -- mmss
-	[6] = '|cff707070', -- hhmm
-}
+for i = 0, 7 do
+	E.TimeColors[i] = '|cFFffffff'
+	E.TimeIndicatorColors[i] = '|cFFffffff'
+end
 
 E.TimeFormats = { -- short / indicator color
 	-- special options (3, 4): rounding
@@ -369,24 +366,18 @@ E.TimeFormats = { -- short / indicator color
 	[4] = {'%.1f', '%.1f', '%.1fs', '%.1f%ss|r'},
 
 	[5] = {'%d:%02d', '%d%s:|r%02d'}, -- mmss
-	[6] = {'%d:%02d', '%d%s:|r%02d'}, -- hhmm
 }
 
-E.TimeIndicatorColors = {
-	[0] = '|cff00b3ff',
-	[1] = '|cff00b3ff',
-	[2] = '|cff00b3ff',
-	[3] = '|cff00b3ff',
-	[4] = '|cff00b3ff',
-	[5] = '|cff00b3ff',
-	[6] = '|cff00b3ff',
-}
+E.TimeFormats[6] = E:CopyTable({}, E.TimeFormats[5]) -- hhmm
+E.TimeFormats[7] = E:CopyTable({}, E.TimeFormats[3]) -- modRate
 
 do
 	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
-	function E:GetTimeInfo(sec, threshold, hhmm, mmss)
+	function E:GetTimeInfo(sec, threshold, hhmm, mmss, modRate)
 		if sec < MINUTE then
-			if sec > threshold then
+			if modRate then
+				return sec, 7, 0.5 / modRate
+			elseif sec > threshold then
 				return sec, 3, 0.5
 			else
 				return sec, 4, 0.1
