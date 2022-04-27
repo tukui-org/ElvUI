@@ -2279,11 +2279,7 @@ do
 	end
 end
 
-local ignoreChats = {[2]='Log'}
-if not E.Classic then
-	tinsert(ignoreChats, 3, 'Voice')
-end
-
+local ignoreChats = { [2]='Log', [3]='Voice' }
 function CH:SetupChat()
 	if not E.private.chat.enable then return end
 
