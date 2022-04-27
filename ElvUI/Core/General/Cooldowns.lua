@@ -63,7 +63,7 @@ function E:Cooldown_OnUpdate(elapsed)
 
 				local style = E.TimeFormats[id]
 				if style then
-					local opt = (id < 3 and self.roundTime) or (id > 2 and id < 5 and self.showSeconds)
+					local opt = (id < 3 and self.roundTime) or ((id == 3 or id == 4 or id == 7) and self.showSeconds)
 					local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
 					if self.textColors then
 						self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
