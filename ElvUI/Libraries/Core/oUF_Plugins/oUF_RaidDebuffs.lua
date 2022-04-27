@@ -189,14 +189,14 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellID, stackThreshold, timeMod)
+local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellID, stackThreshold, modRate)
 	local f = self.RaidDebuffs
 
 	if name and (count >= stackThreshold) then
 		f.icon:SetTexture(icon)
 		f.icon:Show()
 
-		f.timeMod = timeMod
+		f.modRate = modRate
 		f.endTime = endTime
 		f.duration = duration
 		f.reverse = f.ReverseTimer and f.ReverseTimer[spellID]
@@ -224,7 +224,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 
 		if f.cd then
 			if duration and (duration > 0) then
-				f.cd:SetCooldown(endTime - duration, duration, timeMod)
+				f.cd:SetCooldown(endTime - duration, duration, modRate)
 				f.cd:Show()
 			else
 				f.cd:Hide()
@@ -253,7 +253,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 	local canAttack = UnitCanAttack('player', unit)
 
 	local index = 1
-	local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, timeMod = UnitAura(unit, index, 'HARMFUL')
+	local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, 'HARMFUL')
 	while name do
 		--we coudln't dispel if the unit its charmed, or its not friendly
 		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
@@ -269,7 +269,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 			end
 
 			if priority > _priority then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod = priority, name, icon, count, debuffType, duration, expiration, spellID, timeMod
+				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 			end
 		end
 
@@ -286,11 +286,11 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 
 		priority = debuff and debuff.priority
 		if priority and not blackList[spellID] and (priority > _priority) then
-			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod = priority, name, icon, count, debuffType, duration, expiration, spellID, timeMod
+			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 		end
 
 		index = index + 1
-		name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, timeMod = UnitAura(unit, index, 'HARMFUL')
+		name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, 'HARMFUL')
 	end
 
 	if self.RaidDebuffs.forceShow then

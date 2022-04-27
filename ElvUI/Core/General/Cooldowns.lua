@@ -51,7 +51,7 @@ function E:Cooldown_OnUpdate(elapsed)
 				self.nextUpdate = 500
 			end
 		elseif self.endTime then
-			local timeLeft = (self.endTime - now) / (self.timeMod or 1)
+			local timeLeft = (self.endTime - now) / (self.modRate or 1)
 			if E:Cooldown_TextThreshold(self, timeLeft) then
 				self.text:SetText('')
 				if not forced then
@@ -209,14 +209,14 @@ function E:CreateCooldownTimer(parent)
 end
 
 E.RegisteredCooldowns = {}
-function E:OnSetCooldown(start, duration, timeMod)
+function E:OnSetCooldown(start, duration, modRate)
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
-		timer.timeMod = timeMod
+		timer.modRate = modRate
 
 		E:Cooldown_ForceUpdate(timer)
 	elseif self.timer then
