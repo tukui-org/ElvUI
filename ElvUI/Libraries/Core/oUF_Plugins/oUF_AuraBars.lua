@@ -54,7 +54,7 @@ local function onUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
 
 	if bar.elapsed > 0.01 then
-		local remain = bar.expiration - GetTime()
+		local remain = (bar.expiration - GetTime()) / (bar.timeMod or 1)
 		bar:SetValue(remain / bar.duration)
 		bar.timeText:SetFormattedText(FormatTime(remain))
 
@@ -185,6 +185,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 	bar.position = position
 	bar.duration = duration
 	bar.expiration = expiration
+	bar.timeMod = timeMod
 	bar.spellID = spellID
 	bar.spell = name
 	bar.noTime = (duration == 0 and expiration == 0)

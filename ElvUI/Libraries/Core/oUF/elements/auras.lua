@@ -241,7 +241,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	if not (element.forceShow or element.forceCreate) then
 		show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
 			count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
-			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
+			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3)
 	end
 	-- end block
 
@@ -251,7 +251,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		-- complicated.
 		if(button.cd and not element.disableCooldown) then
 			if(duration and duration > 0) then
-				button.cd:SetCooldown(expiration - duration, duration)
+				button.cd:SetCooldown(expiration - duration, duration, timeMod)
 				button.cd:Show()
 			else
 				button.cd:Hide()

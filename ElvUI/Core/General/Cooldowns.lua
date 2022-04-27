@@ -14,9 +14,9 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
-function E:Cooldown_TextThreshold(cd, now)
+function E:Cooldown_TextThreshold(cd, timeLeft)
 	if cd.parent and cd.parent.textThreshold and cd.endTime then
-		return (cd.endTime - now) >= cd.parent.textThreshold
+		return timeLeft >= cd.parent.textThreshold
 	end
 end
 
@@ -42,6 +42,8 @@ function E:Cooldown_OnUpdate(elapsed)
 		E:Cooldown_StopTimer(self)
 	else
 		local now = GetTime()
+		local timeLeft = self.endTime and ((self.endTime - now) / (self.timeMod or 1))
+
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_StopTimer(self)
 		elseif E:Cooldown_BelowScale(self) then
@@ -49,30 +51,30 @@ function E:Cooldown_OnUpdate(elapsed)
 			if not forced then
 				self.nextUpdate = 500
 			end
-		elseif E:Cooldown_TextThreshold(self, now) then
-			self.text:SetText('')
-			if not forced then
-				self.nextUpdate = 1
-			end
-		elseif self.endTime then
-			local value, id, nextUpdate, remainder = E:GetTimeInfo(self.endTime - now, self.threshold, self.hhmmThreshold, self.mmssThreshold)
-			if not forced then
-				self.nextUpdate = nextUpdate
-			end
-
-			local style = E.TimeFormats[id]
-			if style then
-				local opt = (id < 3 and self.roundTime) or (id > 2 and id < 5 and self.showSeconds)
-				local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
-				if self.textColors then
-					self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
-				else
-					self.text:SetFormattedText(style[which], value, remainder)
+		elseif timeLeft then
+			if E:Cooldown_TextThreshold(self, timeLeft) then
+				self.text:SetText('')
+				if not forced then
+					self.nextUpdate = 1
 				end
-			end
+			else
+				local value, id, nextUpdate, remainder = E:GetTimeInfo(timeLeft, self.threshold, self.hhmmThreshold, self.mmssThreshold)
+				if not forced then self.nextUpdate = nextUpdate end
 
-			local color = not self.skipTextColor and self.timeColors[id]
-			if color then self.text:SetTextColor(color.r, color.g, color.b) end
+				local style = E.TimeFormats[id]
+				if style then
+					local opt = (id < 3 and self.roundTime) or (id > 2 and id < 5 and self.showSeconds)
+					local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
+					if self.textColors then
+						self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
+					else
+						self.text:SetFormattedText(style[which], value, remainder)
+					end
+				end
+
+				local color = not self.skipTextColor and self.timeColors[id]
+				if color then self.text:SetTextColor(color.r, color.g, color.b) end
+			end
 		end
 	end
 end
@@ -207,13 +209,15 @@ function E:CreateCooldownTimer(parent)
 end
 
 E.RegisteredCooldowns = {}
-function E:OnSetCooldown(start, duration)
+function E:OnSetCooldown(start, duration, timeMod)
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
+		timer.timeMod = timeMod
+
 		E:Cooldown_ForceUpdate(timer)
 	elseif self.timer then
 		E:Cooldown_StopTimer(self.timer)

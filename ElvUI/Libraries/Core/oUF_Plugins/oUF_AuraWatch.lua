@@ -80,10 +80,10 @@ local function getIcon(element, visible, offset)
 	return button, position
 end
 
-local function handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable)
+local function handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, timeMod)
 	if button.cd then
 		if duration and duration > 0 then
-			button.cd:SetCooldown(expiration - duration, duration)
+			button.cd:SetCooldown(expiration - duration, duration, timeMod)
 			button.cd:Show()
 		else
 			button.cd:Hide()
@@ -196,7 +196,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	end
 
 	if show then
-		handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable)
+		handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, timeMod)
 
 		if element.PostUpdateIcon then
 			element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
