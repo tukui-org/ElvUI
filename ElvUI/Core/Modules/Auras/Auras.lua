@@ -211,11 +211,12 @@ function A:UpdateIcon(button)
 	button.statusBar:SetRotatesTexture(not isHorizontal)
 end
 
-function A:SetAuraTime(button, expiration, duration)
+function A:SetAuraTime(button, expiration, duration, modRate)
 	local oldEnd = button.endTime
 	button.expiration = expiration
 	button.endTime = expiration
 	button.duration = duration
+	button.modRate = modRate
 
 	if oldEnd ~= button.endTime then
 		if button.statusBar:IsShown() then
@@ -225,7 +226,7 @@ function A:SetAuraTime(button, expiration, duration)
 		button.nextUpdate = 0
 	end
 
-	A:UpdateTime(button, expiration)
+	A:UpdateTime(button, expiration, modRate)
 	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
@@ -233,6 +234,7 @@ function A:ClearAuraTime(button, expired)
 	button.expiration = nil
 	button.endTime = nil
 	button.duration = nil
+	button.modRate = nil
 	button.timeLeft = nil
 
 	button.text:SetText('')
@@ -251,7 +253,7 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local name, icon, count, debuffType, duration, expiration = UnitAura(button.header:GetAttribute('unit'), index, button.filter)
+	local name, icon, count, debuffType, duration, expiration, _, _, _, _, _, _, _, _, modRate = UnitAura(button.header:GetAttribute('unit'), index, button.filter)
 	if not name then return end
 
 	local db = A.db[button.auraType]
@@ -269,7 +271,7 @@ function A:UpdateAura(button, index)
 	end
 
 	if duration > 0 and expiration then
-		A:SetAuraTime(button, expiration, duration)
+		A:SetAuraTime(button, expiration, duration, modRate)
 	else
 		A:ClearAuraTime(button)
 	end
@@ -337,8 +339,8 @@ function A:Button_OnHide()
 	end
 end
 
-function A:UpdateTime(button, expiration)
-	button.timeLeft = expiration - GetTime()
+function A:UpdateTime(button, expiration, modRate)
+	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
 
 	if button.timeLeft < 0.1 then
 		A:ClearAuraTime(button, true)
@@ -359,7 +361,7 @@ function A:Button_OnUpdate(elapsed)
 		end
 
 		if xpr then
-			A:UpdateTime(self, xpr)
+			A:UpdateTime(self, xpr, self.modRate)
 		end
 
 		self.elapsed = 0

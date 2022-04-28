@@ -74,11 +74,11 @@ function E:SetupChat(noDisplayMsg)
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
 		elseif id == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif (not E.Classic and id == 3) then
+		elseif id == 3 then
 			VoiceTranscriptionFrame_UpdateVisibility(frame)
 			VoiceTranscriptionFrame_UpdateVoiceTab(frame)
 			VoiceTranscriptionFrame_UpdateEditBox(frame)
-		elseif (not E.Classic and id == 4) or id == 3 then
+		elseif id == 4 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
