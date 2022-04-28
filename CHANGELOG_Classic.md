@@ -1,6 +1,10 @@
 ### Version 1.69 [ ETA: 🍨 ]
 
-
+Chat: Updated chat installer to hide voice transcription by default  
+Locales: Updated deDE (Credits: Dlarge)  
+Locales: Updated zhTW (Credits: fang2hou)  
+Tooltip: Added font options for tooltip header  
+UnitFrames: Added "Start Near Center" option for party  
 
 ___
 ### Version 1.68 [ April 20th 2022 ]

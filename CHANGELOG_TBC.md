@@ -1,6 +1,9 @@
 ### Version 2.44 [ ETA: 🍨 ]
 
-
+Locales: Updated deDE (Credits: Dlarge)  
+Locales: Updated zhTW (Credits: fang2hou)  
+Tooltip: Added font options for tooltip header  
+UnitFrames: Added "Start Near Center" option for party  
 
 ___
 ### Version 2.43 [ April 20th 2022 ]
