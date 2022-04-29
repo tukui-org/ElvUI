@@ -73,8 +73,6 @@ local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 
-local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
-local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 local LEVEL = strlower(LEVEL)
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
@@ -83,7 +81,6 @@ local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
-local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
 local PVP = PVP
 
@@ -827,7 +824,7 @@ end, not E.Retail)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
+		return format('|cffFFFFFF[|r|cffFF9900%s|r|cFFFFFFFF]|r', L["AFK"])
 	end
 end)
 
@@ -842,16 +839,15 @@ end)
 
 E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return CHAT_FLAG_AFK
+		return format('|cffFF9900<|r%s|cffFF9900>|r', L["AFK"])
 	elseif UnitIsDND(unit) then
-		return CHAT_FLAG_DND
+		return format('|cffFF3333<|r%s|cffFF3333>|r', L["DND"])
 	end
 end)
 
 do
 	local afk = [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
 	local dnd = [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
-
 	E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
 		if UnitIsAFK(unit) then
 			return afk
