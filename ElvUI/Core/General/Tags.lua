@@ -824,7 +824,7 @@ end, not E.Retail)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return format('|cffFFFFFF[|r|cffFF3333%s|r|cFFFFFFFF]|r', L["AFK"])
+		return format('|cffFFFFFF[|r|cffFF9900%s|r|cFFFFFFFF]|r', L["AFK"])
 	end
 end)
 
@@ -839,9 +839,9 @@ end)
 
 E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return format('|cffFF3333<|r%s|cffFF3333>|r', L["AFK"])
+		return format('|cffFF9900<|r%s|cffFF9900>|r', L["AFK"])
 	elseif UnitIsDND(unit) then
-		return format('|cffFFFF33<|r%s|cffFFFF33>|r', L["DND"])
+		return format('|cffFF3333<|r%s|cffFF3333>|r', L["DND"])
 	end
 end)
 
