@@ -1,6 +1,12 @@
 ### Version 12.77 [ ETA: 🍨 ]
 
-something something etc etc, dragons wow
+Cooldown Text: Added support for cooldown reduction buffs (Urh Relic, Faeries, etc) with a color setting under Threshold Colors "Modified Rate"  
+DataTexts: Added option for time DataText to disable flashing for new calendar invites  
+Locales: Updated deDE (Credits: Dlarge)  
+Locales: Updated zhTW (Credits: fang2hou)  
+Tooltip: Added font options for tooltip header  
+UnitFrames: Readded "Start Near Center" option for party  
+Misc: Fixed Raid Utility not saving position correctly  
 
 ___
 ### Version 12.76 [ April 20th 2022 ]
