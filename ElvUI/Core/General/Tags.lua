@@ -827,7 +827,7 @@ end, not E.Retail)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
+		return CHAT_FLAG_AFK
 	end
 end)
 
