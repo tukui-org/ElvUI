@@ -3,7 +3,8 @@
 Locales: Updated deDE (Credits: Dlarge)  
 Locales: Updated zhTW (Credits: fang2hou)  
 Tooltip: Added font options for tooltip header  
-UnitFrames: Added "Start Near Center" option for party  
+UnitFrames: Readded "Start Near Center" option for party  
+Misc: Fixed Raid Utility not saving position correctly  
 
 ___
 ### Version 2.43 [ April 20th 2022 ]
