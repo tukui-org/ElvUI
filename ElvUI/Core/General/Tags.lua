@@ -837,15 +837,17 @@ E:AddTag('healthcolor', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS
 	end
 end)
 
-E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
-	if UnitIsAFK(unit) then
-		return format('|cffFF3333<|r%s|cffFF3333>|r', L["AFK"])
-	elseif UnitIsDND(unit) then
-		return format('|cffFF3333<|r%s|cffFF3333>|r', L["DND"])
-	end
-end)
-
 do
+	local displayString = '|cffFF3333<|r%s|cffFF3333>|r'
+
+	E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
+		if UnitIsAFK(unit) then
+			return format(displayString, L["AFK"])
+		elseif UnitIsDND(unit) then
+			return format(displayString, L["DND"])
+		end
+	end)
+
 	local afk = [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
 	local dnd = [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
 
