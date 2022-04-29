@@ -124,8 +124,8 @@ local wowString = _G.BNET_CLIENT_WOW
 local retailID, classicID, tbcID = _G.WOW_PROJECT_MAINLINE, _G.WOW_PROJECT_CLASSIC, _G.WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5
 local dataValid, lastPanel = false
 local statusTable = {
-	AFK = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r',
-	DND = ' |cffFFFFFF[|r|cffFF3333'..L["DND"]..'|r|cffFFFFFF]|r'
+	AFK = ' |cffFFFFFF[|r|cffFF3333'..L["AFK"]..'|r|cffFFFFFF]|r',
+	DND = ' |cffFFFFFF[|r|cffFFFF33'..L["DND"]..'|r|cffFFFFFF]|r'
 }
 
 -- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=='string' and i:match('BNET_CLIENT_') then print(i,'=',v) end end
