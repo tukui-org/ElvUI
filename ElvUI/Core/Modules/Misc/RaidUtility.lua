@@ -64,7 +64,7 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	btn:Size(width, height)
 	btn:SetTemplate(nil, true)
 
-	if not button then
+	if not btn:GetPoint() then
 		btn:Point(point, relativeto, point2, xOfs, yOfs)
 	end
 
