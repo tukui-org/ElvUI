@@ -44,13 +44,13 @@ function RU:CheckRaidStatus()
 end
 
 --Change border when mouse is inside the button
-function RU:ButtonEnter()
+function RU:Button_OnEnter()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
 --Change border back to normal when mouse leaves button
-function RU:ButtonLeave()
+function RU:Button_OnLeave()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
@@ -59,8 +59,8 @@ end
 function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, texture)
 	local button = type(name) == 'table' and name
 	local btn = button or CreateFrame('Button', name, parent, template)
-	btn:HookScript('OnEnter', RU.ButtonEnter)
-	btn:HookScript('OnLeave', RU.ButtonLeave)
+	btn:HookScript('OnEnter', RU.Button_OnEnter)
+	btn:HookScript('OnLeave', RU.Button_OnLeave)
 	btn:Size(width, height)
 	btn:SetTemplate(nil, true)
 
@@ -135,7 +135,7 @@ local function sortColoredNames(a, b)
 end
 
 local roleIconRoster = {}
-function RU:RoleOnEnter()
+function RU:Role_OnEnter()
 	wipe(roleIconRoster)
 
 	for i = 1, NUM_RAID_GROUPS do
@@ -191,12 +191,12 @@ function RU:PositionRoleIcons()
 end
 
 local count = {}
-local function UpdateIcons(icons)
+function RU:RoleIcons_OnEvent()
 	if not IsInRaid() then
-		icons:Hide()
+		self:Hide()
 		return
 	else
-		icons:Show()
+		self:Show()
 		RU:PositionRoleIcons()
 	end
 
@@ -296,7 +296,7 @@ function RU:Initialize()
 		RoleIcons:SetTemplate('Transparent')
 		RoleIcons:RegisterEvent('PLAYER_ENTERING_WORLD')
 		RoleIcons:RegisterEvent('GROUP_ROSTER_UPDATE')
-		RoleIcons:SetScript('OnEvent', UpdateIcons)
+		RoleIcons:SetScript('OnEvent', RU.RoleIcons_OnEvent)
 		RoleIcons.icons = {}
 
 		local roles = {'TANK', 'HEALER', 'DAMAGER'}
@@ -322,7 +322,7 @@ function RU:Initialize()
 			frame.count = Count
 
 			frame.role = role
-			frame:SetScript('OnEnter', RU.RoleOnEnter)
+			frame:SetScript('OnEnter', RU.Role_OnEnter)
 			frame:SetScript('OnLeave', GameTooltip_Hide)
 			frame:Size(28)
 
@@ -382,8 +382,8 @@ function RU:Initialize()
 			marker:ClearAllPoints()
 			marker:Point('TOPLEFT', _G.RoleCheckButton, 'TOPRIGHT', 3, 0)
 			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-			marker:HookScript('OnEnter', RU.ButtonEnter)
-			marker:HookScript('OnLeave', RU.ButtonLeave)
+			marker:HookScript('OnEnter', RU.Button_OnEnter)
+			marker:HookScript('OnLeave', RU.Button_OnLeave)
 			RU.MarkerButton = marker
 
 			-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
