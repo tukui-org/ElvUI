@@ -32,6 +32,8 @@ local BUTTON_HEIGHT = 20
 
 local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate')
 ShowButton:SetMovable(true)
+ShowButton:SetClampedToScreen(true)
+ShowButton:SetClampRectInsets(0, 0, -1, 1)
 
 --Check if We are Raid Leader or Raid Officer
 function RU:CheckRaidStatus()
@@ -230,6 +232,8 @@ function RU:Initialize()
 
 	RU:CreateUtilButton(ShowButton, nil, nil, 136, 18, 'TOP', E.UIParent, 'TOP', -400, E.Border, _G.RAID_CONTROL)
 	SecureHandlerSetFrameRef(ShowButton, 'RaidUtilityPanel', RaidUtilityPanel)
+	ShowButton:RegisterForDrag('RightButton')
+	ShowButton:SetFrameStrata('HIGH')
 	ShowButton:SetAttribute('_onclick', format([=[
 		local raidUtil = self:GetFrameRef('RaidUtilityPanel')
 		local closeButton = raidUtil:GetFrameRef('RaidUtility_CloseButton')
@@ -261,10 +265,6 @@ function RU:Initialize()
 		RaidUtilityPanel.toggled = true
 		RU:PositionRoleIcons()
 	end)
-	ShowButton:SetClampedToScreen(true)
-	ShowButton:SetClampRectInsets(0, 0, -1, 1)
-	ShowButton:RegisterForDrag('RightButton')
-	ShowButton:SetFrameStrata('HIGH')
 	ShowButton:SetScript('OnDragStart', function(sb)
 		sb:StartMoving()
 	end)
