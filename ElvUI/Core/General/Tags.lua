@@ -824,7 +824,7 @@ end, not E.Retail)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
 	if UnitIsAFK(unit) then
-		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', L["AFK"])
+		return format('|cffFFFFFF[|r|cffFF3333%s|r|cFFFFFFFF]|r', L["AFK"])
 	end
 end)
 
@@ -838,13 +838,13 @@ E:AddTag('healthcolor', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS
 end)
 
 do
-	local displayString = '|cffFF3333<|r%s|cffFF3333>|r'
+	local status = '|cffFF3333<|r%s|cffFF3333>|r'
 
 	E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
 		if UnitIsAFK(unit) then
-			return format(displayString, L["AFK"])
+			return format(status, L["AFK"])
 		elseif UnitIsDND(unit) then
-			return format(displayString, L["DND"])
+			return format(status, L["DND"])
 		end
 	end)
 
