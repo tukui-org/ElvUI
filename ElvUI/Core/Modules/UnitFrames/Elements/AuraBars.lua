@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local ipairs = ipairs
 local unpack = unpack
+local strfind = strfind
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(bar)
@@ -64,7 +65,7 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.CustomFilter = UF.AuraFilter
 
 	auraBar.sparkEnabled = true
-	auraBar.initialAnchor = 'BOTTOM'
+	auraBar.initialAnchor = 'BOTTOMRIGHT'
 	auraBar.type = 'aurabar'
 
 	return auraBar
@@ -120,7 +121,7 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-		local attachTo = frame
+		local attachTo, xOffset, yOffset = frame
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
@@ -130,10 +131,11 @@ function UF:Configure_AuraBars(frame)
 			attachTo = frame.Debuffs
 		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
+			xOffset = 0
 		end
 
 		local px = UF.thinBorders and 0 or 2
-		local POWER_OFFSET, BAR_WIDTH, yOffset = 0
+		local POWER_OFFSET, BAR_WIDTH = 0
 		if detached then
 			E:EnableMover(bars.Holder.mover:GetName())
 			BAR_WIDTH = db.detachedWidth
@@ -158,11 +160,20 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
-
-		local anchor = below and 'BOTTOM' or 'TOP'
 		bars:ClearAllPoints()
-		bars:Point(anchor, attachTo, anchor, (bars.height / 2) + -(detached and px or UF.BORDER), yOffset)
 		bars:Show()
+
+		local p1 = below and 'BOTTOM' or 'TOP'
+		local p2 = detached and p1 or (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
+		if p2 == 'TOP' or p2 == 'BOTTOM' then
+			bars.initialAnchor = 'BOTTOM'
+			bars:Point(p2, attachTo, p2, (bars.height / 2) + -(detached and px or UF.BORDER), yOffset)
+		else
+			local right = strfind(p2, 'RIGHT')
+			local p3, p4 = below and 'TOP' or 'BOTTOM', right and 'RIGHT' or 'LEFT'
+			bars.initialAnchor = 'BOTTOM'..p4
+			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
+		end
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
 		bars:Hide()

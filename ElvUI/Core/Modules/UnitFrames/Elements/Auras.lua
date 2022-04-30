@@ -89,7 +89,7 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
-function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, inversed, middle)
+function UF:GetAuraRow(element, row, col, growthY, width, height, spacing, anchor, inversed, middle)
 	local holder = element.rows[row]
 	if not holder then
 		holder = CreateFrame('Frame', '$parentRow'..row, element)
@@ -103,7 +103,7 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 		element.currentRow = row
 
 		holder:ClearAllPoints()
-		element:Height((row + 1) * height)
+		element:Height((row + 1) * height - spacing)
 
 		local last = element.rows[row - 1]
 		if last and holder ~= last then
@@ -120,7 +120,7 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 			holder:SetPoint(anchor, element)
 		end
 	elseif element.resetRowHeight then
-		element:Height(height)
+		element:Height(height - spacing)
 
 		element.resetRowHeight = nil
 	end
@@ -129,15 +129,16 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, anchor, invers
 end
 
 function UF:GetAuraPosition(element, onlyHeight)
-	local spacing = element.spacing or 0
-	local width = (element.size or 16) + spacing
-	local height = (not element.height and width) or element.height + spacing
+	local size = element.size or 16
+	local height = element.height or size
 	if onlyHeight then return height end
 
 	local growthX = element.growthX == 'LEFT' and -1 or 1
 	local growthY = element.growthY == 'DOWN' and -1 or 1
 	local anchor = element.initialAnchor or 'BOTTOMLEFT'
 	local inversed = E.InversePoints[anchor]
+	local spacing = element.spacing or 0
+	local width = size + spacing
 
 	local y = growthY == 1 and 'BOTTOM' or 'TOP'
 	local x = growthX == 1 and 'LEFT' or 'RIGHT'
@@ -148,14 +149,14 @@ function UF:GetAuraPosition(element, onlyHeight)
 
 	local cols = floor(element:GetWidth() / width + 0.5)
 
-	return anchor, inversed, growthX, growthY, width, height, cols, point, side and y
+	return anchor, inversed, growthX, growthY, width, height + spacing, spacing, cols, point, side and y
 end
 
-function UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
+function UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, growthY, width, height, spacing, cols, point, middle)
 	local z, col, row = index - 1, 0, 0
 	if cols > 0 then col, row = z % cols, floor(z / cols) end
 
-	local holder = UF:GetAuraRow(element, row, col + 1, growthY, width, height, anchor, inversed, middle)
+	local holder = UF:GetAuraRow(element, row, col + 1, growthY, width, height, spacing, anchor, inversed, middle)
 	button:ClearAllPoints()
 	button:SetPoint(point, holder, point, col * width * growthX, growthY)
 end
@@ -169,12 +170,12 @@ function UF:SetPosition(from, to)
 			self:Height(UF:GetAuraPosition(self, true))
 		end
 	else
-		local anchor, inversed, growthX, growthY, width, height, cols, point, middle = UF:GetAuraPosition(self)
+		local anchor, inversed, growthX, growthY, width, height, spacing, cols, point, middle = UF:GetAuraPosition(self)
 		for index = from, to do
 			local button = self.active[index]
 			if not button then break end
 
-			UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, cols, point, middle)
+			UF:SetAuraPosition(self, button, index, anchor, inversed, growthX, growthY, width, height, spacing, cols, point, middle)
 		end
 	end
 end
