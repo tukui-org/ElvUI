@@ -41,7 +41,7 @@ License: Public Domain
 -- @class file
 -- @name LibRangeCheck-2.0
 local MAJOR_VERSION = "LibRangeCheck-2.0"
-local MINOR_VERSION = tonumber(("$Revision: 213 $"):match("%d+")) + 100000
+local MINOR_VERSION = tonumber(("$Revision: 214 $"):match("%d+")) + 100000
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -206,15 +206,16 @@ tinsert(HarmSpells.PALADIN, 20473)	-- Holy Shock (40 yards)
 
 tinsert(ResSpells.PALADIN, 7328)	-- Redemption (40 yards)
 
--- Priests (dont add Flash Heal first, it causes Boon of the Ascended to mess up range return?)
+-- Priests
 if isRetail then
+	tinsert(FriendSpells.PRIEST, 21562) -- Power Word: Fortitude (40 yards, level 6) [use first to fix kyrian boon/fae soulshape]
 	tinsert(FriendSpells.PRIEST, 17)	-- Power Word: Shield (40 yards, level 4)
 else -- PWS is group only in classic, use lesser heal as main spell check
 	tinsert(FriendSpells.PRIEST, 2050)	-- Lesser Heal (40 yards, level 1, rank 1)
 end
 
 tinsert(FriendSpells.PRIEST, 527)	-- Purify / Dispel Magic (40 yards retail, 30 yards tbc, level 18, rank 1)
-tinsert(FriendSpells.PRIEST, 2061)	-- Flash Heal (40 yards, level 3)
+tinsert(FriendSpells.PRIEST, 2061)	-- Flash Heal (40 yards, level 3 retail, level 20 tbc)
 
 tinsert(HarmSpells.PRIEST, 589)		-- Shadow Word: Pain (40 yards)
 tinsert(HarmSpells.PRIEST, 585)		-- Smite (40 yards)
