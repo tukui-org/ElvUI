@@ -1562,6 +1562,11 @@ P.unitframe = {
 		CTRL = 'NONE',
 		ALT = 'NONE',
 	},
+	altManaPowers = {
+		DRUID = { Rage = true, LunarPower = true },
+		SHAMAN = { Maelstrom = true },
+		PRIEST = { Insanity = true }
+	},
 	thinBorders = true,
 	targetSound = false,
 	colors = {

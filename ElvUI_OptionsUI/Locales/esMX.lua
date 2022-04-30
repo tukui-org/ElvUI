@@ -1,6 +1,8 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Display Mana"] = "Mostrar mana"
+L["Will display mana when main power is:"] = "Mostrar mana cuando la poder principal es:"
 L["%s and then %s"] = "%s y entonces %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = true
@@ -42,7 +44,7 @@ L["Added Instance ID: %s"] = "ID de instancia agregado: %s"
 L["Added Map ID: %s"] = "ID de mapa agregado: %s"
 L["Added Subzone Name: %s"] = "Nombre de subzona agregado: %s"
 L["Added Zone Name: %s"] = "Nombre de zona agregado: %s"
-L["Additional Power Prediction Color"] = "Color de predicción de potencia adicional"
+L["Additional Power Prediction Color"] = "Color de predicción de poder adicional"
 L["Additional Power"] = true
 L["Additional spacing between each individual group."] = "Espaciado adicional entre cada grupo individual."
 L["Additive Blend"] = "Mezcla Aditiva"
@@ -1633,7 +1635,7 @@ L["Turtle Color"] = "Color de Tortuga"
 L["Tutorials"] = "Tutoriales"
 L["Ultrawide Support"] = true
 L["Under Health Threshold"] = "Por debajo del umbral de salud"
-L["Under Power Threshold"] = "Por debajo del umbral de potencia"
+L["Under Power Threshold"] = "Por debajo del umbral de poder"
 L["Unfriendly"] = true
 L["Unified Font Sizes"] = true
 L["Unit Conditions"] = true
