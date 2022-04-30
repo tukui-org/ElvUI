@@ -208,7 +208,7 @@ tinsert(ResSpells.PALADIN, 7328)	-- Redemption (40 yards)
 
 -- Priests
 if isRetail then
-	tinsert(FriendSpells.PRIEST, 21562) -- Power Word: Fortitude (40 yards, level 6) [use first to fix kyrian boon/fae soulshape]
+	tinsert(FriendSpells.PRIEST, 21562)	-- Power Word: Fortitude (40 yards, level 6) [use first to fix kyrian boon/fae soulshape]
 	tinsert(FriendSpells.PRIEST, 17)	-- Power Word: Shield (40 yards, level 4)
 else -- PWS is group only in classic, use lesser heal as main spell check
 	tinsert(FriendSpells.PRIEST, 2050)	-- Lesser Heal (40 yards, level 1, rank 1)
