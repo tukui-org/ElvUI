@@ -1,7 +1,7 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bTBC|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## Author: Elv, Simpy
-## Version: 2.43
+## Version: 2.44
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
