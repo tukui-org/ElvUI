@@ -818,7 +818,7 @@ do
 		label.name = (D:Decode(importText) == 'styleFilters' and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
 	end
 
-	StyleFitlers.import = ACH:Group(L["Import"], nil, 15)
+	StyleFitlers.import = ACH:Group(E.NewSign..L["Import"], nil, 15)
 	StyleFitlers.import.args.label = label
 	StyleFitlers.import.args.text = ACH:Input('', nil, 1, 10, 'full', Import_Get, Import_Set)
 	StyleFitlers.import.args.text.disableButton = true
@@ -859,7 +859,7 @@ do
 		StyleFitlers.export.args.text.hidden = not exportText
 	end
 
-	StyleFitlers.export = ACH:Group(L["Export"], nil, 20)
+	StyleFitlers.export = ACH:Group(E.NewSign..L["Export"], nil, 20)
 	StyleFitlers.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
 	StyleFitlers.export.args.filters.sortByValue = true
 	StyleFitlers.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)
