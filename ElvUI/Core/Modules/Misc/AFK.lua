@@ -210,8 +210,8 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	if CH.db.shortChannels then
 		body = body:gsub('|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
 		body = body:gsub('^(.-|h) '..L["whispers"], '%1')
-		body = body:gsub('<'..AFKstr..'>', '[|cffFF0000'..L["AFK"]..'|r] ')
-		body = body:gsub('<'..DNDstr..'>', '[|cffE7E716'..L["DND"]..'|r] ')
+		body = body:gsub('<'..AFKstr..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
+		body = body:gsub('<'..DNDstr..'>', '[|cffFF3333'..L["DND"]..'|r] ')
 		body = body:gsub('%[BN_CONVERSATION:', '%['..'')
 	end
 

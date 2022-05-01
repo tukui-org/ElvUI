@@ -73,7 +73,6 @@ local UnitPowerType = UnitPowerType
 local POWER_NAME = _G.ADDITIONAL_POWER_BAR_NAME or 'MANA'
 local POWER_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
 local ALT_MANA_INFO = _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO or {DRUID={[8]=true}, SHAMAN={[11]=true}, PRIEST={[13]=true}}
-if ALT_MANA_INFO.DRUID then ALT_MANA_INFO.DRUID[1] = true end -- allow Bears too, 1 is rage.
 
 local function UpdateColor(self, event, unit, powerType)
 	if(not (unit and UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end

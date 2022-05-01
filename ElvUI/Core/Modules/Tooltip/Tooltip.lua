@@ -90,8 +90,8 @@ local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s|r %d'
 local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
-local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
-local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
+local AFK_LABEL = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r'
+local DND_LABEL = ' |cffFFFFFF[|r|cffFF3333'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
 local blanchyFix = '|n%s*|n' -- thanks blizz -x- lol
 local whiteRGB = { r = 1, g = 1, b = 1 }
@@ -901,38 +901,37 @@ function TT:SetBackpackToken(tt, id)
 end
 
 function TT:SetTooltipFonts()
-	local font = LSM:Fetch('font', TT.db.font)
-	local fontOutline = TT.db.fontOutline
-	local headerSize = TT.db.headerFontSize
-	local smallTextSize = TT.db.smallTextFontSize
-	local textSize = TT.db.textFontSize
-
-	_G.GameTooltipHeaderText:FontTemplate(font, headerSize, fontOutline)
-	_G.GameTooltipTextSmall:FontTemplate(font, smallTextSize, fontOutline)
-	_G.GameTooltipText:FontTemplate(font, textSize, fontOutline)
+	local font, fontSize, fontOutline = LSM:Fetch('font', TT.db.font), TT.db.textFontSize, TT.db.fontOutline
+	_G.GameTooltipText:FontTemplate(font, fontSize, fontOutline)
 
 	if GameTooltip.hasMoney then
 		for i = 1, GameTooltip.numMoneyFrames do
-			_G['GameTooltipMoneyFrame'..i..'PrefixText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'SuffixText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'GoldButtonText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'SilverButtonText']:FontTemplate(font, textSize, fontOutline)
-			_G['GameTooltipMoneyFrame'..i..'CopperButtonText']:FontTemplate(font, textSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'PrefixText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'SuffixText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'GoldButtonText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'SilverButtonText']:FontTemplate(font, fontSize, fontOutline)
+			_G['GameTooltipMoneyFrame'..i..'CopperButtonText']:FontTemplate(font, fontSize, fontOutline)
 		end
 	end
 
+	-- Header has its own font settings
+	_G.GameTooltipHeaderText:FontTemplate(LSM:Fetch('font', TT.db.headerFont), TT.db.headerFontSize, TT.db.headerFontOutline)
+
 	-- Ignore header font size on DatatextTooltip
 	if _G.DatatextTooltip then
-		_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-		_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
+		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 	end
 
-	-- Comparison Tooltips should use smallTextSize
+	-- Comparison Tooltips has its own size setting
+	local smallSize = TT.db.smallTextFontSize
+	_G.GameTooltipTextSmall:FontTemplate(font, smallSize, fontOutline)
+
 	for _, tt in ipairs(GameTooltip.shoppingTooltips) do
 		for i=1, tt:GetNumRegions() do
 			local region = select(i, tt:GetRegions())
 			if region:IsObjectType('FontString') then
-				region:FontTemplate(font, smallTextSize, fontOutline)
+				region:FontTemplate(font, smallSize, fontOutline)
 			end
 		end
 	end

@@ -189,12 +189,15 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellID, stackThreshold)
+local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellID, stackThreshold, modRate)
 	local f = self.RaidDebuffs
 
 	if name and (count >= stackThreshold) then
 		f.icon:SetTexture(icon)
 		f.icon:Show()
+
+		f.modRate = modRate
+		f.endTime = endTime
 		f.duration = duration
 		f.reverse = f.ReverseTimer and f.ReverseTimer[spellID]
 
@@ -210,7 +213,6 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 
 		if f.time then
 			if duration and (duration > 0) then
-				f.endTime = endTime
 				f.nextUpdate = 0
 				f:SetScript('OnUpdate', OnUpdate)
 				f.time:Show()
@@ -222,7 +224,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 
 		if f.cd then
 			if duration and (duration > 0) then
-				f.cd:SetCooldown(endTime - duration, duration)
+				f.cd:SetCooldown(endTime - duration, duration, modRate)
 				f.cd:Show()
 			else
 				f.cd:Hide()
@@ -241,7 +243,7 @@ end
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
 	if not unit or self.unit ~= unit then return end
 
-	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID
+	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod
 	local _stackThreshold, _priority, priority = 0, 0, 0
 
 	--store if the unit its charmed, mind controlled units (Imperial Vizier Zor'lok: Convert)
@@ -251,7 +253,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 	local canAttack = UnitCanAttack('player', unit)
 
 	local index = 1
-	local name, icon, count, debuffType, duration, expiration, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
+	local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, 'HARMFUL')
 	while name do
 		--we coudln't dispel if the unit its charmed, or its not friendly
 		if addon.ShowDispellableDebuff and (self.RaidDebuffs.showDispellableDebuff ~= false) and debuffType and (not isCharmed) and (not canAttack) then
@@ -267,7 +269,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 			end
 
 			if priority > _priority then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expiration, spellID
+				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 			end
 		end
 
@@ -284,11 +286,11 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 
 		priority = debuff and debuff.priority
 		if priority and not blackList[spellID] and (priority > _priority) then
-			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID = priority, name, icon, count, debuffType, duration, expiration, spellID
+			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _timeMod = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 		end
 
 		index = index + 1
-		name, icon, count, debuffType, duration, expiration, _, _, _, spellID = UnitAura(unit, index, 'HARMFUL')
+		name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, 'HARMFUL')
 	end
 
 	if self.RaidDebuffs.forceShow then
@@ -301,7 +303,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 		_stackThreshold = debuff_data[addon.MatchBySpellName and _name or _spellID] and debuff_data[addon.MatchBySpellName and _name or _spellID].stackThreshold or _stackThreshold
 	end
 
-	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _stackThreshold)
+	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _stackThreshold, _timeMod)
 
 	--Reset the DispelPriority
 	DispelPriority.Magic = 4

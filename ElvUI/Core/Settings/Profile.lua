@@ -1010,7 +1010,6 @@ P.chat = {
 	maxLines = 100,
 	channelAlerts = {
 		GUILD = 'None',
-		OFFICER = 'None',
 		INSTANCE = 'None',
 		PARTY = 'None',
 		RAID = 'None',
@@ -1019,7 +1018,6 @@ P.chat = {
 	showHistory = {
 		WHISPER = true,
 		GUILD = true,
-		OFFICER = true,
 		PARTY = true,
 		RAID = true,
 		INSTANCE = true,
@@ -1141,8 +1139,10 @@ P.tooltip = {
 	gender = false,
 	font = 'PT Sans Narrow',
 	fontOutline = 'NONE',
-	headerFontSize = 12,
-	textFontSize = 12,
+	textFontSize = 12, -- is fontSize (has old name)
+	headerFont = 'PT Sans Narrow',
+	headerFontOutline = 'NONE',
+	headerFontSize = 13,
 	smallTextFontSize = 12,
 	colorAlpha = 0.8,
 	visibility = {
@@ -1561,6 +1561,11 @@ P.unitframe = {
 		SHIFT = 'NONE',
 		CTRL = 'NONE',
 		ALT = 'NONE',
+	},
+	altManaPowers = {
+		DRUID = { Rage = true, LunarPower = true },
+		SHAMAN = { Maelstrom = true },
+		PRIEST = { Insanity = true }
 	},
 	thinBorders = true,
 	targetSound = false,
@@ -2340,16 +2345,19 @@ P.cooldown = {
 	roundTime = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
-	expiringColor = { r = 1, g = 0, b = 0 },
-	secondsColor = { r = 1, g = 1, b = 0 },
+	modRateColor = { r = 0.6, g = 1, b = 0.4 },
+	expiringColor = { r = 1, g = 0.2, b = 0.2 },
+	secondsColor = { r = 1, g = 1, b = 0.2 },
 	minutesColor = { r = 1, g = 1, b = 1 },
 	hoursColor = { r = 0.4, g = 1, b = 1 },
 	daysColor = { r = 0.4, g = 0.4, b = 1 },
-	expireIndicator = { r = 1, g = 1, b = 1 },
-	secondsIndicator = { r = 1, g = 1, b = 1 },
-	minutesIndicator = { r = 1, g = 1, b = 1 },
-	hoursIndicator = { r = 1, g = 1, b = 1 },
-	daysIndicator = { r = 1, g = 1, b = 1 },
+
+	modRateIndicator = { r = 0.8, g = 0.8, b = 0.8 },
+	expireIndicator = { r = 0.8, g = 0.8, b = 0.8 },
+	secondsIndicator = { r = 0.8, g = 0.8, b = 0.8 },
+	minutesIndicator = { r = 0.8, g = 0.8, b = 0.8 },
+	hoursIndicator = { r = 0.8, g = 0.8, b = 0.8 },
+	daysIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	hhmmColorIndicator = { r = 1, g = 1, b = 1 },
 	mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
@@ -2593,7 +2601,7 @@ P.actionbar.bar5.buttonsPerRow = 6
 
 do -- cooldown stuff
 	P.actionbar.cooldown = CopyTable(P.cooldown)
-	P.actionbar.cooldown.expiringColor = { r = 1, g = 0, b = 0 }
+	P.actionbar.cooldown.expiringColor = { r = 1, g = 0.2, b = 0.2 }
 	P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
 	P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
 	P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }

@@ -1,6 +1,9 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(E.OptionsUI)
+local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
+local LibCompress = E.Libs.Compress
+local LibBase64 = E.Libs.Base64
 local ACH = E.Libs.ACH
 local LCS = E.Libs.LCS
 
@@ -30,8 +33,8 @@ sort(sortedClasses)
 
 C.StyleFilterSelected = nil
 
-E.Options.args.nameplates.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
-local StyleFitlers = E.Options.args.nameplates.args.filters.args
+E.Options.args.nameplates.args.stylefilters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
+local StyleFitlers = E.Options.args.nameplates.args.stylefilters.args
 local StyleFallback = NP:StyleFilterCopyDefaults()
 
 local function GetFilter(collect, profile)
@@ -50,6 +53,28 @@ local function DisabledFilter()
 	return not (profileTriggers and profileTriggers.enable)
 end
 C.StyleFilterDisabledFilter = DisabledFilter
+
+local function GetFilters(info)
+	wipe(filters)
+
+	local list = E.global.nameplates.filters
+	if not (list and next(list)) then
+		return filters
+	end
+
+	local profile, priority, name = E.db.nameplates.filters
+	for filter, content in pairs(list) do
+		if info[#info] == 'selectFilter' then
+			priority = (content.triggers and content.triggers.priority) or '?'
+			name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter
+			filters[filter] = format('|cFFffff00(%s)|r %s', priority, name)
+		else
+			filters[filter] = filter
+		end
+	end
+
+	return filters
+end
 
 local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
 local function GetTalentString(tier, column)
@@ -203,7 +228,7 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
 
 StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
-StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, function() wipe(filters) local list = E.global.nameplates.filters if not (list and next(list)) then return filters end local profile, priority, name = E.db.nameplates.filters for filter, content in pairs(list) do priority = (content.triggers and content.triggers.priority) or '?' name = (content.triggers and profile[filter] and profile[filter].triggers and profile[filter].triggers.enable and filter) or (content.triggers and format('|cFF666666%s|r', filter)) or filter filters[filter] = format('|cFFffff00(%s)|r %s', priority, name) end return filters end, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
+StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
 StyleFitlers.selectFilter.sortByValue = true
 StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
@@ -260,8 +285,8 @@ StyleFitlers.triggers.args.combat.args.playerGroup = ACH:Group(L["Player"], nil,
 StyleFitlers.triggers.args.combat.args.playerGroup.inline = true
 StyleFitlers.triggers.args.combat.args.playerGroup.args.inCombat = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when you are in combat."], 1)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.outOfCombat = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when you are out of combat."], 2)
-StyleFitlers.triggers.args.combat.args.playerGroup.args.inVehicle = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when you are in a Vehicle."], 3)
-StyleFitlers.triggers.args.combat.args.playerGroup.args.outOfVehicle = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when you are not in a Vehicle."], 4)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.inVehicle = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when you are in a Vehicle."], 3, nil, nil, nil, nil, nil, nil, not E.Retail)
+StyleFitlers.triggers.args.combat.args.playerGroup.args.outOfVehicle = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when you are not in a Vehicle."], 4, nil, nil, nil, nil, nil, nil, not E.Retail)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.isResting = ACH:Toggle(L["Is Resting"], L["If enabled then the filter will only activate when you are resting at an Inn."], 5)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.notResting = ACH:Toggle(L["Not Resting"], nil, 6)
 StyleFitlers.triggers.args.combat.args.playerGroup.args.playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 7)
@@ -273,8 +298,8 @@ StyleFitlers.triggers.args.combat.args.unitGroup = ACH:Group(L["Unit"], nil, 2)
 StyleFitlers.triggers.args.combat.args.unitGroup.inline = true
 StyleFitlers.triggers.args.combat.args.unitGroup.args.inCombatUnit = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when the unit is in combat."], 1)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.outOfCombatUnit = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when the unit is out of combat."], 2)
-StyleFitlers.triggers.args.combat.args.unitGroup.args.inVehicleUnit = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when the unit is in a Vehicle."], 3)
-StyleFitlers.triggers.args.combat.args.unitGroup.args.outOfVehicleUnit = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when the unit is not in a Vehicle."], 4)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.inVehicleUnit = ACH:Toggle(L["In Vehicle"], L["If enabled then the filter will only activate when the unit is in a Vehicle."], 3, nil, nil, nil, nil, nil, nil, not E.Retail)
+StyleFitlers.triggers.args.combat.args.unitGroup.args.outOfVehicleUnit = ACH:Toggle(L["Out of Vehicle"], L["If enabled then the filter will only activate when the unit is not in a Vehicle."], 4, nil, nil, nil, nil, nil, nil, not E.Retail)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.inParty = ACH:Toggle(L["In Party"], L["If enabled then the filter will only activate when the unit is in your Party."], 5)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.notInParty = ACH:Toggle(L["Not in Party"], L["If enabled then the filter will only activate when the unit is not in your Party."], 6)
 StyleFitlers.triggers.args.combat.args.unitGroup.args.inRaid = ACH:Toggle(L["In Raid"], L["If enabled then the filter will only activate when the unit is in your Raid."], 7)
@@ -710,7 +735,7 @@ local function actionSubGroup(info, ...)
 	NP:ConfigureAll()
 end
 
-StyleFitlers.actions = ACH:Group(L["Actions"], nil, 6, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFitlers.actions = ACH:Group(L["Actions"], nil, 10, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFitlers.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
 StyleFitlers.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, actionHidePlate)
 StyleFitlers.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, actionHidePlate)
@@ -752,3 +777,94 @@ StyleFitlers.actions.args.text_format.args.level = ACH:Input(L["Level"], nil, 2,
 StyleFitlers.actions.args.text_format.args.title = ACH:Input(L["Title"], nil, 3, nil, 'full')
 StyleFitlers.actions.args.text_format.args.health = ACH:Input(L["Health"], nil, 4, nil, 'full')
 StyleFitlers.actions.args.text_format.args.power = ACH:Input(L["Power"], nil, 5, nil, 'full')
+
+-- Import / Export
+local function DecodeString(text)
+	if not LibBase64:IsBase64(text) then return end
+
+	local profileType, profileKey, profileData = D:Decode(text)
+	if profileType == 'styleFilters' then
+		local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
+		return D:CreateProfileExport(decodedText, profileType, profileKey)
+	else
+		return ''
+	end
+end
+
+local function DecodeLabel(label, text)
+	if not validateString(nil, text) then
+		label.name = ''
+		return
+	end
+
+	local decode = DecodeString(text)
+	if decode then
+		return decode
+	else
+		label.name = L["Error decoding data. Import string may be corrupted!"]
+		return text
+	end
+end
+
+do
+	local importText = ''
+	local label = ACH:Description('', 1)
+	local function Import_Set() end
+	local function Import_Get() return importText end
+	local function Import_TextChanged(text) if text ~= importText then importText = text end end
+	local function Import_Decode() importText = DecodeLabel(label, importText) end
+	local function Import_Button()
+		if not validateString(nil, importText) then return end
+		label.name = (D:Decode(importText) == 'styleFilters' and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
+	end
+
+	StyleFitlers.import = ACH:Group(E.NewSign..L["Import"], nil, 15)
+	StyleFitlers.import.args.label = label
+	StyleFitlers.import.args.text = ACH:Input('', nil, 1, 10, 'full', Import_Get, Import_Set)
+	StyleFitlers.import.args.text.disableButton = true
+	StyleFitlers.import.args.text.textChanged = Import_TextChanged
+	StyleFitlers.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button)
+	StyleFitlers.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode)
+end
+
+do
+	local exportText, selected = '', {}
+	local label = ACH:Description('', 5)
+	local function Filters_Get(_, key) return selected[key] end
+	local function Filters_Set(_, key, value) selected[key] = value or nil end
+	local function Export_Get() label.name = '' return exportText end
+	local function Export_Set() end
+	local function Export_Decode() exportText = DecodeLabel(label, exportText) end
+	local function Export_Button()
+		local data = {nameplates = {filters = {}}}
+
+		if not next(selected) then
+			StyleFitlers.export.args.text.hidden = true
+			return
+		end
+
+		for key in pairs(selected) do
+			data.nameplates.filters[key] = E:CopyTable({}, E.global.nameplates.filters[key])
+		end
+
+		NP:StyleFilterClearDefaults(data.nameplates.filters)
+		data = E:RemoveTableDuplicates(data, G, D.GeneratedKeys.global)
+
+		local serialData = D:Serialize(data)
+		local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
+		local compressedData = LibCompress:Compress(exportString)
+		local encodedData = LibBase64:Encode(compressedData)
+
+		exportText = encodedData
+		StyleFitlers.export.args.text.hidden = not exportText
+	end
+
+	StyleFitlers.export = ACH:Group(E.NewSign..L["Export"], nil, 20)
+	StyleFitlers.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
+	StyleFitlers.export.args.filters.sortByValue = true
+	StyleFitlers.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)
+	StyleFitlers.export.args.exportDecode = ACH:Execute(L["Decode"], nil, 4, Export_Decode)
+	StyleFitlers.export.args.label = label
+	StyleFitlers.export.args.text = ACH:Input('', nil, -1, 10, 'full', Export_Get, Export_Set, nil, true)
+	StyleFitlers.export.args.text.disableButton = true
+end

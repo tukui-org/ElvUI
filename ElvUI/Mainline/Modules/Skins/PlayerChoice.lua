@@ -32,6 +32,11 @@ local function SetupRewards(rewards)
 	end
 end
 
+local useTextureKit = {
+	jailerstower = true,
+	cypherchoice = true
+}
+
 local function SetupOptions(frame)
 	if not frame.IsSkinned then
 		frame.BlackBackground:SetAlpha(0)
@@ -50,7 +55,7 @@ local function SetupOptions(frame)
 		frame.CloseButton.Border:SetAlpha(0)
 	end
 
-	local kit = frame.uiTextureKit == 'jailerstower'
+	local kit = useTextureKit[frame.uiTextureKit]
 	frame:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
 	if frame.optionFrameTemplate and frame.optionPools then

@@ -59,12 +59,20 @@ for i = 1, 8 do
 end
 
 General.fontGroup = ACH:Group(L["Font"], nil, 70, nil, function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; TT:SetTooltipFonts() end)
-General.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-General.fontGroup.args.fontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
-General.fontGroup.args.spacer = ACH:Spacer(3)
-General.fontGroup.args.headerFontSize = ACH:Range(L["Header Font Size"], nil, 4, C.Values.FontSize)
-General.fontGroup.args.textFontSize = ACH:Range(L["Text Font Size"], nil, 5, C.Values.FontSize)
-General.fontGroup.args.smallTextFontSize = ACH:Range(L["Comparison Font Size"], L["This setting controls the size of text in item comparison tooltips."], 6, C.Values.FontSize)
+General.fontGroup.args.smallTextFontSize = ACH:Range(L["Comparison Font Size"], L["This setting controls the size of text in item comparison tooltips."], 1, C.Values.FontSize)
+General.fontGroup.args.spacer = ACH:Spacer(2)
+
+General.fontGroup.args.header = ACH:Group(E.NewSign..L["Tooltip Header"], nil, 3)
+General.fontGroup.args.header.args.headerFont = ACH:SharedMediaFont(L["Font"], nil, 1)
+General.fontGroup.args.header.args.headerFontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
+General.fontGroup.args.header.args.headerFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+General.fontGroup.args.header.inline = true
+
+General.fontGroup.args.body = ACH:Group(L["Tooltip Body"], nil, 4)
+General.fontGroup.args.body.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+General.fontGroup.args.body.args.fontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
+General.fontGroup.args.body.args.textFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+General.fontGroup.args.body.inline = true
 
 General.healthBar = ACH:Group(L["Health Bar"], nil, 80, nil, function(info) return E.db.tooltip.healthBar[info[#info]] end, function(info, value) E.db.tooltip.healthBar[info[#info]] = value; end)
 General.healthBar.args.statusPosition = ACH:Select(L["Position"], nil, 1, { BOTTOM = L["Bottom"], TOP = L["Top"], DISABLED = L["Disabled"] })

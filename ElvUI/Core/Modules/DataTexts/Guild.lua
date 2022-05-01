@@ -72,11 +72,10 @@ local function SortGuildTable(shift)
 	end
 end
 
-local onlinestatusstring = '|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r'
 local onlinestatus = {
 	[0] = '',
-	[1] = format(onlinestatusstring, L["AFK"]),
-	[2] = format(onlinestatusstring, L["DND"]),
+	[1] = format('|cffFFFFFF[|r|cffFF9900%s|r|cffFFFFFF]|r', L["AFK"]),
+	[2] = format('|cffFFFFFF[|r|cffFF3333%s|r|cffFFFFFF]|r', L["DND"]),
 }
 local mobilestatus = {
 	[0] = [[|TInterface\ChatFrame\UI-ChatIcon-ArmoryChat:14:14:0:0:16:16:0:16:0:16:73:177:73|t]],

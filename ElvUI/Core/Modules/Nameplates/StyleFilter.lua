@@ -355,7 +355,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 			total = total + 1 -- keep track of the names
 
 			local index = 1
-			local name, _, count, _, _, expiration, source, _, _, spellID = UnitAura(frame.unit, index, filter)
+			local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
 			while name do
 				local spell, stacks, failed = strmatch(key, mod.StyleFilterStackPattern)
 				if stacks ~= '' then failed = not (count and count >= tonumber(stacks)) end
@@ -364,7 +364,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 					if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
 						local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 						local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-						local timeLeft = (hasMinTime or hasMaxTime) and expiration and (expiration - GetTime())
+						local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - GetTime()) / (modRate or 1))
 						local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 						local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
@@ -381,7 +381,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 				end
 
 				index = index + 1
-				name, _, count, _, _, expiration, source, _, _, spellID = UnitAura(frame.unit, index, filter)
+				name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
 			end
 
 			local stale = matches + 1
@@ -893,13 +893,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Player Vehicle
-	if trigger.inVehicle or trigger.outOfVehicle then
+	if E.Retail and (trigger.inVehicle or trigger.outOfVehicle) then
 		local inVehicle = UnitInVehicle('player')
 		if (trigger.inVehicle and inVehicle) or (trigger.outOfVehicle and not inVehicle) then passed = true else return end
 	end
 
 	-- Unit Vehicle
-	if trigger.inVehicleUnit or trigger.outOfVehicleUnit then
+	if E.Retail and (trigger.inVehicleUnit or trigger.outOfVehicleUnit) then
 		if (trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle) then passed = true else return end
 	end
 
