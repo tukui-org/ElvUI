@@ -113,7 +113,7 @@ ActionBar.args.general = general
 general.args.movementModifier = ACH:Select(L["PICKUP_ACTION_KEY_TEXT"], L["The button you must hold down in order to drag an ability to another action button."], 1, { NONE = L["None"], SHIFT = L["SHIFT_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"] }, nil, nil, nil, nil, nil, function() return not E.db.actionbar.lockActionBars end)
 general.args.flyoutSize = ACH:Range(L["Flyout Button Size"], nil, 2, { min = 15, max = 60, step = 1 })
 general.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end)
-general.args.customGlowShortcut = ACH:Execute(E.NewSign..L["Custom Glow"], nil, 4, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'general', 'cosmetic') end)
+general.args.customGlowShortcut = ACH:Execute(L["Custom Glow"], nil, 4, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'general', 'cosmetic') end)
 
 general.args.generalGroup = ACH:Group(L["General"], nil, 20, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
 general.args.generalGroup.inline = true
@@ -131,7 +131,7 @@ general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind T
 general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 16)
 
 general.args.castGroup = ACH:Group(L["Casting"], nil, 25)
-general.args.castGroup.args.mouseoverCastKey = ACH:Select(E.NewSign..L["Mouseover Cast Key"], nil, 1, castKeyValues, nil, nil, function() return GetModifiedClick('MOUSEOVERCAST') end, function(_, value) SetModifiedClick('MOUSEOVERCAST', value); SaveBindings(GetCurrentBindingSet()) end, nil, not E.Retail)
+general.args.castGroup.args.mouseoverCastKey = ACH:Select(L["Mouseover Cast Key"], nil, 1, castKeyValues, nil, nil, function() return GetModifiedClick('MOUSEOVERCAST') end, function(_, value) SetModifiedClick('MOUSEOVERCAST', value); SaveBindings(GetCurrentBindingSet()) end, nil, not E.Retail)
 general.args.castGroup.args.checkMouseoverCast = ACH:Toggle(L["Check Mouseover Cast"], nil, 2, nil, nil, nil, function() return GetCVarBool('enableMouseoverCast') end, function(_, value) SetCVar('enableMouseoverCast', value and 1 or 0); AB:UpdateButtonSettings() end, nil, not E.Retail)
 general.args.castGroup.args.spacer1 = ACH:Spacer(3, 'full', not E.Retail)
 general.args.castGroup.args.focusCastKey = ACH:Select(L["Focus Cast Key"], nil, 10, castKeyValues, nil, nil, function() return GetModifiedClick('FOCUSCAST') end, function(_, value) SetModifiedClick('FOCUSCAST', value); SaveBindings(GetCurrentBindingSet()) end, nil, E.Classic)

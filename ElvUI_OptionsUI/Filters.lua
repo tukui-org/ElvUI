@@ -227,8 +227,12 @@ local function AddOrRemoveSpellID(info, value)
 	value = tonumber(value)
 	if not value then return end
 
-	local spellName = GetSpellInfo(value)
-	selectedSpell = (spellName and value)
+	if info[#info] == 'removeSpell' then
+		selectedSpell = nil
+	else
+		local spellName = GetSpellInfo(value)
+		selectedSpell = (spellName and value)
+	end
 
 	if selectedFilter == 'Aura Highlight' then
 		if info.type == 'select' then

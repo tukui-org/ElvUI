@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local max = max
+local wipe = wipe
 local next = next
+local pairs = pairs
 local ipairs = ipairs
 local unpack = unpack
 local CreateFrame = CreateFrame
@@ -12,6 +14,13 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
+
+local AltManaTypes = { Rage = 1 }
+if E.Retail then
+	AltManaTypes.LunarPower = 8
+	AltManaTypes.Maelstrom = 11
+	AltManaTypes.Insanity = 13
+end
 
 function UF:GetClassPower_Construct(frame)
 	frame.ClassPower = UF:Construct_ClassBar(frame)
@@ -255,8 +264,26 @@ function UF:Configure_ClassBar(frame)
 		if frame.ClassPower and not frame:IsElementEnabled('ClassPower') then
 			frame:EnableElement('ClassPower')
 		end
-		if frame.AdditionalPower and not frame:IsElementEnabled('AdditionalPower') then
-			frame:EnableElement('AdditionalPower')
+		if frame.AdditionalPower then
+			local altMana, displayMana = E.db.unitframe.altManaPowers[E.myclass], frame.AdditionalPower.displayPairs[E.myclass]
+			wipe(displayMana)
+
+			if altMana then
+				for name, value in pairs(altMana) do
+					local powerType = AltManaTypes[name]
+					if powerType and value then
+						displayMana[powerType] = value
+					end
+				end
+			end
+
+			local display = next(displayMana)
+			local enabled = frame:IsElementEnabled('AdditionalPower')
+			if display and not enabled then
+				frame:EnableElement('AdditionalPower')
+			elseif enabled and not display then
+				frame:DisableElement('AdditionalPower')
+			end
 		end
 		if frame.Runes and not frame:IsElementEnabled('Runes') then
 			frame:EnableElement('Runes')
@@ -471,6 +498,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower, true)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
+	additionalPower.displayPairs = {[E.myclass] = {}} -- display power types
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
 	additionalPower.bg:SetTexture(E.media.blankTex)
