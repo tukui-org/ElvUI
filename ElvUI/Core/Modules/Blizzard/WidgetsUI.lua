@@ -25,13 +25,24 @@ local function UpdateBarTexture(bar, atlas)
 	end
 end
 
-local ignoreWidgetSetID = {
+local ignoreWidgets = {
 	[283] = true -- Cosmic Energy
 }
 
+local blockTooltips = {
+	[556] = true -- Stone Soup
+}
+
 function B:UIWidgetTemplateStatusBar()
-	local bar = not self:IsForbidden() and self.Bar
-	if not bar or ignoreWidgetSetID[self.widgetSetID] then return end
+	local forbidden = self:IsForbidden()
+	local bar = self.Bar
+
+	if forbidden and blockTooltips[self.widgetSetID] and bar then
+		bar.tooltip = nil -- EmbeddedItemTooltip is tainted just block the tooltip
+		return
+	elseif forbidden or ignoreWidgets[self.widgetSetID] or not bar then
+		return -- we don't want to handle these widgets
+	end
 
 	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
 
