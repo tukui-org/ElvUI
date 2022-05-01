@@ -11,7 +11,7 @@
 -- @release $Id$
 local CallbackHandler = LibStub("CallbackHandler-1.0")
 
-local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 21
+local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 22
 local AceConfigRegistry = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigRegistry then return end
