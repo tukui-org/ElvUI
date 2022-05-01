@@ -794,7 +794,7 @@ end
 local function DecodeLabel(label, text)
 	if not validateString(nil, text) then
 		label.name = ''
-		return
+		return text
 	end
 
 	local decode = DecodeString(text)
