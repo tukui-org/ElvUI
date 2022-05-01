@@ -124,8 +124,14 @@ end
 local function OnTextChanged(self, userInput)                                    -- EditBox
 	if userInput then
 		self = self.obj
-		self:Fire("OnTextChanged", self.editBox:GetText())
+
+		local value = self.editBox:GetText()
+		self:Fire("OnTextChanged", value)
 		self.button:Enable()
+
+		if self.textChanged then
+			self.textChanged(value)
+		end
 	end
 end
 
@@ -343,7 +349,6 @@ local function Constructor()
 	editBox:SetScript("OnTextChanged", OnTextChanged)
 	editBox:SetScript("OnTextSet", OnTextSet)
 	editBox:SetScript("OnEditFocusGained", OnEditFocusGained)
-
 
 	scrollFrame:SetScrollChild(editBox)
 

@@ -607,6 +607,7 @@ end
 
 function UF:Update_AllFrames()
 	if not E.private.unitframe.enable then return end
+
 	UF:UpdateColors()
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
