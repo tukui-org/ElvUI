@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
-local UF = E:GetModule('UnitFrames')
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 

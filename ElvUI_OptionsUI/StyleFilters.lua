@@ -780,6 +780,8 @@ StyleFitlers.actions.args.text_format.args.power = ACH:Input(L["Power"], nil, 5,
 
 -- Import / Export
 local function DecodeString(text)
+	if not LibBase64:IsBase64(text) then return end
+
 	local profileType, profileKey, profileData = D:Decode(text)
 	if profileType == 'styleFilters' then
 		local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
@@ -789,34 +791,50 @@ local function DecodeString(text)
 	end
 end
 
+local function DecodeLabel(label, text)
+	if not validateString(nil, text) then
+		label.name = ''
+		return
+	end
+
+	local decode = DecodeString(text)
+	if decode then
+		return decode
+	else
+		label.name = L["Error decoding data. Import string may be corrupted!"]
+		return text
+	end
+end
+
 do
 	local importText = ''
+	local label = ACH:Description('', 1)
 	local function Import_Set() end
 	local function Import_Get() return importText end
 	local function Import_TextChanged(text) if text ~= importText then importText = text end end
-	local function Import_Decode() importText = DecodeString(importText) end
+	local function Import_Decode() importText = DecodeLabel(label, importText) end
 	local function Import_Button()
-		if strmatch(importText, '^[%s%p]-$') then return end
-
-		StyleFitlers.import.args.label.name = (D:Decode(importText) == 'styleFilters' and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
+		if not validateString(nil, importText) then return end
+		label.name = (D:Decode(importText) == 'styleFilters' and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
 	end
 
 	StyleFitlers.import = ACH:Group(L["Import"], nil, 15)
-	StyleFitlers.import.args.label = ACH:Description('', 1)
+	StyleFitlers.import.args.label = label
 	StyleFitlers.import.args.text = ACH:Input('', nil, 1, 10, 'full', Import_Get, Import_Set)
 	StyleFitlers.import.args.text.disableButton = true
 	StyleFitlers.import.args.text.textChanged = Import_TextChanged
-	StyleFitlers.import.args.exportButton = ACH:Execute(L["Import"], nil, 2, Import_Button)
-	StyleFitlers.import.args.exportDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode, nil, nil, nil, nil, nil, function() return strmatch(importText, '^[%s%p]-$') or not LibBase64:IsBase64(importText) end)
+	StyleFitlers.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button)
+	StyleFitlers.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode)
 end
 
 do
 	local exportText, selected = '', {}
+	local label = ACH:Description('', 5)
 	local function Filters_Get(_, key) return selected[key] end
 	local function Filters_Set(_, key, value) selected[key] = value or nil end
-	local function Export_Get() StyleFitlers.export.args.label.name = '' return exportText end
+	local function Export_Get() label.name = '' return exportText end
 	local function Export_Set() end
-	local function Export_Decode() exportText = DecodeString(exportText) end
+	local function Export_Decode() exportText = DecodeLabel(label, exportText) end
 	local function Export_Button()
 		local data = {nameplates = {filters = {}}}
 
@@ -842,11 +860,11 @@ do
 	end
 
 	StyleFitlers.export = ACH:Group(L["Export"], nil, 20)
-	StyleFitlers.export.args.label = ACH:Description('', 1)
 	StyleFitlers.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
 	StyleFitlers.export.args.filters.sortByValue = true
+	StyleFitlers.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)
+	StyleFitlers.export.args.exportDecode = ACH:Execute(L["Decode"], nil, 4, Export_Decode)
+	StyleFitlers.export.args.label = label
 	StyleFitlers.export.args.text = ACH:Input('', nil, -1, 10, 'full', Export_Get, Export_Set, nil, true)
 	StyleFitlers.export.args.text.disableButton = true
-	StyleFitlers.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)
-	StyleFitlers.export.args.exportDecode = ACH:Execute(L["Decode"], nil, 4, Export_Decode, nil, nil, nil, nil, nil, function() return strmatch(exportText, '^[%s%p]-$') or not LibBase64:IsBase64(exportText) end)
 end
