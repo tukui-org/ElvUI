@@ -33,8 +33,8 @@ sort(sortedClasses)
 
 C.StyleFilterSelected = nil
 
-E.Options.args.nameplates.args.filters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
-local StyleFitlers = E.Options.args.nameplates.args.filters.args
+E.Options.args.nameplates.args.stylefilters = ACH:Group(L["Style Filter"], nil, 10, 'tab', nil, nil, function() return not E.NamePlates.Initialized end)
+local StyleFitlers = E.Options.args.nameplates.args.stylefilters.args
 local StyleFallback = NP:StyleFilterCopyDefaults()
 
 local function GetFilter(collect, profile)

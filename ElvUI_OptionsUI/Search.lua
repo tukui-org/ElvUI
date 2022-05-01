@@ -172,8 +172,6 @@ end
 function C:Search_Config(tbl, loc, locName, whatsNew)
 	if not whatsNew and SearchText == '' then return end
 
-	blockOption.filters = not whatsNew
-
 	for option, infoTable in pairs(tbl or E.Options.args) do
 		if not blockOption[option] and (whatsNew or not (infoTable.hidden or typeInvalid[infoTable.type])) then
 			local location, locationName = loc and (infoTable.type == 'group' and not infoTable.inline and strjoin(',', loc, option) or loc) or option
