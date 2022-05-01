@@ -395,11 +395,9 @@ local function GetProfileExport(profileType, exportFormat)
 		local compressedData = LibCompress:Compress(exportString)
 		local encodedData = LibBase64:Encode(compressedData)
 		profileExport = encodedData
-
 	elseif exportFormat == 'luaTable' then
 		exportString = E:TableToLuaString(profileData)
 		profileExport = D:CreateProfileExport(exportString, profileType, profileKey)
-
 	elseif exportFormat == 'luaPlugin' then
 		profileExport = E:ProfileTableToPluginFormat(profileData, profileType)
 	end
@@ -522,10 +520,10 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
-		E:StaggeredUpdateAll()
+		E:UpdateUnitFrames()
 	elseif profileType == 'styleFilters' then
 		E:CopyTable(ElvDB.global.nameplates, profileData.nameplates)
-		E:StaggeredUpdateAll()
+		E:UpdateNamePlates()
 	end
 end
 

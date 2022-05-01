@@ -1,10 +1,12 @@
 ### Version 2.44 [ ETA: 🍨 ]
 
+Aurabars: Fixed alignment with size override setting  
 Locales: Updated deDE (Credits: Dlarge)  
 Locales: Updated zhTW (Credits: fang2hou)  
+Misc: Fixed Raid Utility not saving position correctly  
+Nameplates: Added ability to export and import selected style filters  
 Tooltip: Added font options for tooltip header  
 UnitFrames: Readded "Start Near Center" option for party  
-Misc: Fixed Raid Utility not saving position correctly  
 
 ___
 ### Version 2.43 [ April 20th 2022 ]

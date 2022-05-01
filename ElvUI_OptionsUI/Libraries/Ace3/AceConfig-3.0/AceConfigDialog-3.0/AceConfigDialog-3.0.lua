@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 84
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 85
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -1234,13 +1234,22 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 					if v.multiline and control.SetNumLines then
 						control:SetNumLines(tonumber(v.multiline) or 4)
 					end
+					control:SetLabel(name)
+					control:SetCallback("OnEnterPressed",ActivateControl)
+
 					-- ElvUI block
 					if gui.luaSyntax and control.SetSyntaxHighlightingEnabled then
 						control:SetSyntaxHighlightingEnabled(v.luaSyntax or false)
 					end
+
+					local disableButton = GetOptionsMemberValue("disableButton", v, options, path, appName)
+					if disableButton then
+						control:DisableButton(true)
+					end
+
+					control.textChanged = v.textChanged
 					-- End ElvUI block
-					control:SetLabel(name)
-					control:SetCallback("OnEnterPressed",ActivateControl)
+
 					local text = GetOptionsMemberValue("get",v, options, path, appName)
 					if type(text) ~= "string" then
 						text = ""
@@ -1478,7 +1487,6 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						end
 						control:ResumeLayout()
 						control:DoLayout()
-
 
 					end
 

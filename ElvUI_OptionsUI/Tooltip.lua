@@ -62,7 +62,7 @@ General.fontGroup = ACH:Group(L["Font"], nil, 70, nil, function(info) return E.d
 General.fontGroup.args.smallTextFontSize = ACH:Range(L["Comparison Font Size"], L["This setting controls the size of text in item comparison tooltips."], 1, C.Values.FontSize)
 General.fontGroup.args.spacer = ACH:Spacer(2)
 
-General.fontGroup.args.header = ACH:Group(L["Tooltip Header"], nil, 3)
+General.fontGroup.args.header = ACH:Group(E.NewSign..L["Tooltip Header"], nil, 3)
 General.fontGroup.args.header.args.headerFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 General.fontGroup.args.header.args.headerFontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
 General.fontGroup.args.header.args.headerFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)

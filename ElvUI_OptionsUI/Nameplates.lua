@@ -11,7 +11,6 @@ local next, tonumber, format = next, tonumber, format
 
 local IsAddOnLoaded = IsAddOnLoaded
 local GetCVarBool = GetCVarBool
-local GetCVar = GetCVar
 local SetCVar = SetCVar
 
 local function GetAddOnStatus(index, locale, name)
