@@ -26,9 +26,13 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 	for i = 1, NUM_STANCE_SLOTS do
 		if i <= numForms then
 			local cooldown = _G['ElvUI_StanceBarButton'..i..'Cooldown']
-			local start, duration = GetShapeshiftFormCooldown(i)
-			cooldown:SetCooldown(start, duration)
-			cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
+			local start, duration, enabled = GetShapeshiftFormCooldown(i)
+			if enabled then
+				cooldown:SetCooldown(start, duration)
+				cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
+			else
+				cooldown:Clear()
+			end
 		end
 	end
 end
