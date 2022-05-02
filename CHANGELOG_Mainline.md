@@ -1,4 +1,8 @@
-### Version 12.77 [ ETA: 🍨 ]
+### Version 12.78 [ ETA: 🍨 ]
+
+
+___
+### Version 12.77 [ May 1st 2022 ]
 
 Aurabars: Fixed alignment with size override setting  
 Cooldown Text: Added support for cooldown reduction buffs (Urh Relic, Faeries, etc) with a color setting under Threshold Colors "Modified Rate"  
