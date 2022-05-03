@@ -1,4 +1,8 @@
-### Version 2.44 [ ETA: 🍨 ]
+### Version 2.45 [ ETA: 🍨 ]
+
+
+___
+### Version 2.44 [ May 1st 2022 ]
 
 Aurabars: Fixed alignment with size override setting  
 Locales: Updated deDE (Credits: Dlarge)  
