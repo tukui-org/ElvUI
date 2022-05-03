@@ -1,4 +1,8 @@
-### Version 1.69 [ ETA: 🍨 ]
+### Version 1.70 [ ETA: 🍨 ]
+
+
+___
+### Version 1.69 [ May 1st 2022 ]
 
 Aurabars: Fixed alignment with size override setting  
 Chat: Updated chat installer to handle voice transcription  
