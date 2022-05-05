@@ -133,7 +133,7 @@ local tabTexs = {
 	'Highlight'
 }
 
-local historyTypes = { -- the events set on the chats are still in FindURL_Events, this is used to ignore some types only
+local historyTypes = { -- most of these events are set in FindURL_Events, this is mainly used to ignore types
 	CHAT_MSG_WHISPER			= 'WHISPER',
 	CHAT_MSG_WHISPER_INFORM		= 'WHISPER',
 	CHAT_MSG_BN_WHISPER			= 'WHISPER',
@@ -150,7 +150,8 @@ local historyTypes = { -- the events set on the chats are still in FindURL_Event
 	CHAT_MSG_CHANNEL		= 'CHANNEL',
 	CHAT_MSG_SAY			= 'SAY',
 	CHAT_MSG_YELL			= 'YELL',
-	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime.
+	CHAT_MSG_OFFICER		= 'OFFICER', -- only used for alerts, not in FindURL_Events as this is a protected channel
+	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
 if not E.Retail then
