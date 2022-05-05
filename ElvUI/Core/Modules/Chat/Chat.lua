@@ -41,6 +41,7 @@ local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local IsSecureCmd = IsSecureCmd
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local PlaySoundFile = PlaySoundFile
@@ -2494,34 +2495,12 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	CH:UpdateEditboxFont(chatFrame)
 end
 
-CH.SecureSlashCMD = {
-	'^/rl',
-	'^/tar',
-	'^/target',
-	'^/startattack',
-	'^/stopattack',
-	'^/assist',
-	'^/cast',
-	'^/use',
-	'^/focus',
-	'^/castsequence',
-	'^/cancelaura',
-	'^/cancelform',
-	'^/equip',
-	'^/exit',
-	'^/camp',
-	'^/logout'
-}
-
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	line = line and strtrim(line)
 
 	if line and strlen(line) > 0 then
-		for _, command in next, CH.SecureSlashCMD do
-			if strmatch(line, command) then
-				return
-			end
-		end
+		local cmd = strmatch(line, '^/%w+')
+		if cmd and IsSecureCmd(cmd) then return end -- block secure commands from history
 
 		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
 			if text == line then
