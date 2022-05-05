@@ -2503,6 +2503,7 @@ CH.SecureSlashCMD = {
 	'^/assist',
 	'^/cast',
 	'^/use',
+	'^/focus',
 	'^/castsequence',
 	'^/cancelaura',
 	'^/cancelform',
@@ -2686,13 +2687,13 @@ function CH:GetCombatLog()
 	if LOG then return LOG, CH:GetTab(LOG) end
 end
 
-function CH:FCFDock_UpdateTabs(dock)
-	if dock == _G.GeneralDockManager then
-		local logchat, logchattab = CH:GetCombatLog()
-		dock.scrollFrame:ClearAllPoints()
-		dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
-		dock.scrollFrame:Point('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
-	end
+function CH:FCFDock_ScrollToSelectedTab(dock)
+	if dock ~= _G.GeneralDockManager then return end
+
+	local logchat, logchattab = CH:GetCombatLog()
+	dock.scrollFrame:ClearAllPoints()
+	dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
+	dock.scrollFrame:Point('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
 end
 
 function CH:FCF_SetWindowAlpha(frame, alpha)
@@ -3533,7 +3534,7 @@ function CH:Initialize()
 	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('FCFTab_UpdateColors')
 	CH:SecureHook('FCFDock_SelectWindow')
-	CH:SecureHook('FCFDock_UpdateTabs')
+	CH:SecureHook('FCFDock_ScrollToSelectedTab')
 	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('FCF_Close', 'PostChatClose')
 	CH:SecureHook('FCF_DockFrame', 'SnappingChanged')
