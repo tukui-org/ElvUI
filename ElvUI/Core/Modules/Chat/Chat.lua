@@ -2503,6 +2503,7 @@ CH.SecureSlashCMD = {
 	'^/assist',
 	'^/cast',
 	'^/use',
+	'^/focus',
 	'^/castsequence',
 	'^/cancelaura',
 	'^/cancelform',
