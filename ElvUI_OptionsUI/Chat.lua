@@ -81,6 +81,7 @@ General.args.alerts.args.keywordAlerts.args.keywords = ACH:Input(L["Keywords"], 
 General.args.alerts.args.channelAlerts = ACH:Group(L["Channel Alerts"], nil, 3, nil, function(info) return E.db.chat.channelAlerts[info[#info]] end, function(info, value) E.db.chat.channelAlerts[info[#info]] = value end)
 General.args.alerts.args.channelAlerts.inline = true
 General.args.alerts.args.channelAlerts.args.GUILD = ACH:SharedMediaSound(L["Guild"], nil, nil, 'double')
+General.args.alerts.args.channelAlerts.args.OFFICER = ACH:SharedMediaSound(L["Officer"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.INSTANCE = ACH:SharedMediaSound(L["Instance"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.PARTY = ACH:SharedMediaSound(L["Party"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.RAID = ACH:SharedMediaSound(L["Raid"], nil, nil, 'double')
