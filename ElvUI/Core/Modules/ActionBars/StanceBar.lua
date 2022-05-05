@@ -27,7 +27,7 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 		if i <= numForms then
 			local cooldown = _G['ElvUI_StanceBarButton'..i..'Cooldown']
 			local start, duration, active = GetShapeshiftFormCooldown(i)
-			if active then
+			if (active and active ~= 0) and start > 0 and duration > 0 then
 				cooldown:SetCooldown(start, duration)
 				cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
 			else
