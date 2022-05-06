@@ -1,5 +1,12 @@
 ### Version 12.78 [ ETA: 🍨 ]
 
+StyleFilter: fix a couple import and export bugs  
+Chat: block other secure commands like /focus from being saved to editbox history  
+NamePlates: fixed debuffs being able to attach to debuffs in options  
+NamePlates: block widget tooltips on forbidden nameplates  
+NamePlates: added new Perfer Target Color option along with Low Health Color and Low Health Half color settings  
+Cooldowns: fixed Rogue Stealth displaying as nan and flashing too often  
+Filters: blacklisted A Gilded Perspective  
 
 ___
 ### Version 12.77 [ May 1st 2022 ]
@@ -35,7 +42,7 @@ ___
 ### Version 12.74 [ April 4th 2022 ]
 
 Tags: Added [group:raid] which displays current group number only while in a raid  
-StyleFilters: Optimized execution quite a bit  
+StyleFilter: Optimized execution quite a bit  
 UnitFrames: Vehicle not swapping units  
 Added PvP trinket effects: Gladiator's Resolve and Eternal Aegis  
 Repaired gold text will now match Vendored Grays money format  
@@ -209,7 +216,7 @@ Chat: Added an option to hide channel names
 DataTexts: Fixed Bags DataText  
 Minimap: Added option to scale the Minimap  
 Misc: Reworked LootRoll and added options  
-NamePlates: Updated StyleFilters config  
+NamePlates: Updated StyleFilter config  
 Skins: Button Hover Glow in the Guild Bank fixed  
 UnitFrames: Added reverse fill option for Aura Bars  
 

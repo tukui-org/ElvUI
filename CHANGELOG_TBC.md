@@ -1,5 +1,13 @@
 ### Version 2.45 [ ETA: 🍨 ]
 
+StyleFilter: fix a couple import and export bugs  
+Chat: block other secure commands like /focus from being saved to editbox history  
+NamePlates: fixed debuffs being able to attach to debuffs in options  
+NamePlates: block widget tooltips on forbidden nameplates  
+NamePlates: added new Perfer Target Color option along with Low Health Color and Low Health Half color settings  
+Cooldowns: fixed Rogue Stealth displaying as nan and flashing too often  
+Skins: Chat Config Toggle button is now skinned  
+ActionBars: fixed microbar LFG icon being sized incorrectly  
 
 ___
 ### Version 2.44 [ May 1st 2022 ]
@@ -164,7 +172,7 @@ Chat: Added an option to hide channel names
 DataTexts: Fixed Bags DataText  
 Minimap: Added option to scale the Minimap  
 Misc: Reworked LootRoll and added options  
-NamePlates: Updated StyleFilters config  
+NamePlates: Updated StyleFilter config  
 Skins: Fixed button hover glow in GuildBank  
 UnitFrames: Added reverse fill option for Aura Bars  
 UnitFrames: Updated spark for EnergyManaRegen ticks  
@@ -173,7 +181,7 @@ ___
 ### Version 2.30 [ November 24th 2021 ]
 
 DataTexts: Updated Friends  
-NamePlates: Updates for StyleFilters config  
+NamePlates: Updates for StyleFilter config  
 Skins: Updated trade window  
 UnitFrames: Fixed an issue with transparent power color  
 UnitFrames: Smart Raid Filter defaults to 5 groups for "Raid" now (8 for Raid40)  
