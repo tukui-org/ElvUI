@@ -64,9 +64,10 @@ local function Update(self)
 
 	if element.style ~= 'none' then
 		local isTarget = UnitIsUnit(self.unit, 'target')
-		if isTarget and element.perferGlowColor then
+		local lowHealth = element.lowHealthThreshold > 0
+		if isTarget and (element.perferGlowColor or not lowHealth) then
 			ShowIndicators(element, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
-		elseif element.lowHealthThreshold > 0 then
+		elseif lowHealth then
 			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 			local perc = (maxHealth > 0 and health/maxHealth) or 0
 
