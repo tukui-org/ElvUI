@@ -469,15 +469,15 @@ E.Options.args.nameplates.args.colorsGroup.args.general.inline = true
 do
 	local function GetToggle(info) return E.db.nameplates.colors[info[#info]] end
 	local function SetToggle(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end
-	E.Options.args.nameplates.args.colorsGroup.args.general.args.perferGlowColor = ACH:Toggle(L["Perfer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
+	E.Options.args.nameplates.args.colorsGroup.args.general.args.perferGlowColor = ACH:Toggle(E.NewSign..L["Perfer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
 	E.Options.args.nameplates.args.colorsGroup.args.general.args.auraByDispels = ACH:Toggle(L["Borders By Dispel"], nil, 2, nil, nil, nil, GetToggle, SetToggle)
 	E.Options.args.nameplates.args.colorsGroup.args.general.args.auraByType = ACH:Toggle(L["Borders By Type"], nil, 3, nil, nil, nil, GetToggle, SetToggle)
 end
 
 E.Options.args.nameplates.args.colorsGroup.args.general.args.spacer1 = ACH:Spacer(5, 'full')
 E.Options.args.nameplates.args.colorsGroup.args.general.args.glowColor = ACH:Color(L["Target Indicator Color"], nil, 6, true)
-E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthColor = ACH:Color(L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true)
-E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true)
+E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthColor = ACH:Color(E.NewSign..L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true)
+E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(E.NewSign..L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true)
 
 E.Options.args.nameplates.args.colorsGroup.args.threat = ACH:Group(L["Threat"], nil, 2, nil, function(info) local t, d = E.db.nameplates.colors.threat[info[#info]], P.nameplates.colors.threat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.threat[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, function() return not E.db.nameplates.threat.useThreatColor end)
 E.Options.args.nameplates.args.colorsGroup.args.threat.inline = true
