@@ -33,8 +33,8 @@ function B:UIWidgetTemplateStatusBar()
 	local forbidden = self:IsForbidden()
 	local bar = self.Bar
 
-	if forbidden and bar and bar.tooltip then
-		bar.tooltip = nil -- EmbeddedItemTooltip is tainted just block the tooltip
+	if forbidden and bar then
+		if bar.tooltip then bar.tooltip = nil end -- EmbeddedItemTooltip is tainted just block the tooltip
 		return
 	elseif forbidden or ignoreWidgets[self.widgetSetID] or not bar then
 		return -- we don't want to handle these widgets
