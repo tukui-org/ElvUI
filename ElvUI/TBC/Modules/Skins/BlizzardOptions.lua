@@ -116,6 +116,7 @@ function S:BlizzardOptions()
 		_G.ChatConfigFrameDefaultButton,
 		_G.ChatConfigFrameRedockButton,
 		_G.ChatConfigFrameOkayButton,
+		_G.ChatConfigFrame.ToggleChatButton,
 		_G.ChatConfigCombatSettingsFiltersDeleteButton,
 		_G.ChatConfigCombatSettingsFiltersAddFilterButton,
 		_G.ChatConfigCombatSettingsFiltersCopyFilterButton,
