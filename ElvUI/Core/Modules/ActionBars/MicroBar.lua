@@ -241,7 +241,7 @@ function AB:SetupMicroBar()
 	AB:SecureHook('UpdateMicroButtonsParent')
 	UpdateMicroButtonsParent(microBar)
 
-	if E.Classic then
+	if not E.Retail then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
 
