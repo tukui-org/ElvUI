@@ -603,7 +603,6 @@ P.nameplates = {
 	highlight = true,
 	loadDistance = 41, -- TBC only
 	lowHealthThreshold = 0.4,
-	perferTargetColor = true,
 	motionType = 'STACKED',
 	nameColoredGlow = false,
 	overlapH = 0.8,
@@ -655,6 +654,7 @@ P.nameplates = {
 	colors = {
 		auraByType = true,
 		auraByDispels = true,
+		perferGlowColor = true,
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
 		lowHealthColor = {r = 1, g = 1, b = 0.3, a = 1},
 		lowHealthHalf = {r = 1, g = 0.3, b = 0.3, a = 1},

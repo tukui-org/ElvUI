@@ -64,7 +64,7 @@ local function Update(self)
 
 	if element.style ~= 'none' then
 		local isTarget = UnitIsUnit(self.unit, 'target')
-		if isTarget and element.perferTargetColor then
+		if isTarget and element.perferGlowColor then
 			ShowIndicators(element, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
 		elseif element.lowHealthThreshold > 0 then
 			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
@@ -100,7 +100,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if not element.style then element.style = 'style1' end
-		if not element.perferTargetColor then element.perferTargetColor = true end
+		if not element.perferGlowColor then element.perferGlowColor = true end
 		if not element.lowHealthThreshold then element.lowHealthThreshold = .4 end
 
 		if element.Shadow and element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() then
