@@ -63,18 +63,19 @@ local function Update(self)
 	HideIndicators(element)
 
 	if element.style ~= 'none' then
-		if element.useTargetColor and UnitIsUnit(self.unit, 'target') then
+		local isTarget = UnitIsUnit(self.unit, 'target')
+		if isTarget and element.perferTargetColor then
 			ShowIndicators(element, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
 		elseif element.lowHealthThreshold > 0 then
 			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 			local perc = (maxHealth > 0 and health/maxHealth) or 0
 
-			if perc <= element.lowHealthThreshold then
-				if perc <= element.lowHealthThreshold / 2 then
-					ShowIndicators(element, 1, 0.3, 0.3)
-				else
-					ShowIndicators(element, 1, 1, 0.3)
-				end
+			if perc <= element.lowHealthThreshold / 2 then
+				ShowIndicators(element, NP.db.colors.lowHealthHalf.r, NP.db.colors.lowHealthHalf.g, NP.db.colors.lowHealthHalf.b)
+			elseif perc <= element.lowHealthThreshold then
+				ShowIndicators(element, NP.db.colors.lowHealthColor.r, NP.db.colors.lowHealthColor.g, NP.db.colors.lowHealthColor.b)
+			elseif isTarget then
+				ShowIndicators(element, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
 			end
 		end
 	end
@@ -99,7 +100,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if not element.style then element.style = 'style1' end
-		if not element.useTargetColor then element.useTargetColor = true end
+		if not element.perferTargetColor then element.perferTargetColor = true end
 		if not element.lowHealthThreshold then element.lowHealthThreshold = .4 end
 
 		if element.Shadow and element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() then
