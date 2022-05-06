@@ -29,15 +29,11 @@ local ignoreWidgets = {
 	[283] = true -- Cosmic Energy
 }
 
-local blockTooltips = {
-	[556] = true -- Stone Soup
-}
-
 function B:UIWidgetTemplateStatusBar()
 	local forbidden = self:IsForbidden()
 	local bar = self.Bar
 
-	if forbidden and blockTooltips[self.widgetSetID] and bar then
+	if forbidden and bar and bar.tooltip then
 		bar.tooltip = nil -- EmbeddedItemTooltip is tainted just block the tooltip
 		return
 	elseif forbidden or ignoreWidgets[self.widgetSetID] or not bar then
