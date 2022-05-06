@@ -603,6 +603,7 @@ P.nameplates = {
 	highlight = true,
 	loadDistance = 41, -- TBC only
 	lowHealthThreshold = 0.4,
+	useTargetColor = true,
 	motionType = 'STACKED',
 	nameColoredGlow = false,
 	overlapH = 0.8,
