@@ -1,10 +1,15 @@
-### Version 1.70 [ ETA: 🍨 ]
+### Version 1.71 [ ETA: 🍨 ]
+
+:)
+
+___
+### Version 1.70 [ May 6th 2022 ]
 
 StyleFilter: fix a couple import and export bugs  
 Chat: block other secure commands like /focus from being saved to editbox history  
 NamePlates: fixed debuffs being able to attach to debuffs in options  
 NamePlates: block widget tooltips on forbidden nameplates  
-NamePlates: added new Perfer Target Color option along with Low Health Color and Low Health Half color settings  
+NamePlates: added new Prefer Target Color option along with Low Health Color and Low Health Half color settings  
 Cooldowns: fixed Rogue Stealth displaying as nan and flashing too often  
 
 ___
