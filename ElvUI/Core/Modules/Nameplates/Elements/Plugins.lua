@@ -114,6 +114,7 @@ function NP:Update_TargetIndicator(nameplate)
 	local indicator = nameplate.TargetIndicator
 	indicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
 	indicator.lowHealthThreshold = NP.db.lowHealthThreshold
+	indicator.preferGlowColor = NP.db.colors.preferGlowColor
 	indicator.style = tdb.glowStyle
 
 	if indicator.style ~= 'none' then

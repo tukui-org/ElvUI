@@ -1,8 +1,8 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["Display Mana"] = true
-L["Will display mana when main power is:"] = true
+L["Display Mana"] = "Mana Anzeige"
+L["Will display mana when main power is:"] = "Mana wird anzeigt, wenn die Hauptkraft ist:"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333Das funktioniert nicht in Instanzen oder Garnisonen!|r"
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = "|cffFF3333Warning:|r Das Ändern von Einstellungen in diesem Abschnitt gilt für alle Aura Indikator Auren. Um nur eine Aura zu ändern, klicke bitte \"Configure Auras\" und ändere diese spezifischen Auran Einstellungen. Wenn \"Profile Specific\" ausgewählt ist, wird es auf diesen Filter angewendet."
@@ -953,7 +953,8 @@ L["Main Options"] = "Standarteinstellungen"
 L["Main statusbar texture."] = "Haupt-Statusleisten Textur"
 L["Main Tanks / Main Assist"] = "Haupt Tank / Haupt Assistent"
 L["Make textures transparent."] = "Mache Texturen transparent."
-L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "Färbe das Einheitenfensterleuchten gelb, wenn es unter diesen Prozentwert des Lebens sinkt. Es wird Rot angezeigt, wenn es die Hälfte des Wertes erreicht."
+L["Make the unitframe glow when it is below this percent of health."] = true
+L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."] = true
 L["Make the world map smaller."] = "Macht die Weltkarte kleiner."
 L["MANA"] = "Mana"
 L["Map ID"] = "Map ID"

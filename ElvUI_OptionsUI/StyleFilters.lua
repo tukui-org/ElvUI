@@ -27,6 +27,7 @@ local GetSpecializationInfoForClassID = not E.Retail and LCS.GetSpecializationIn
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}
+local exportList = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
 local sortedClasses = E:CopyTable({}, CLASS_SORT_ORDER)
 sort(sortedClasses)
@@ -230,7 +231,7 @@ local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') 
 StyleFitlers.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
 StyleFitlers.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
 StyleFitlers.selectFilter.sortByValue = true
-StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
+StyleFitlers.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil exportList[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
 StyleFitlers.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
 -- UpdateBossModAuras needed here in get to update the list once every time you load the config with a selected filter.
@@ -794,7 +795,7 @@ end
 local function DecodeLabel(label, text)
 	if not validateString(nil, text) then
 		label.name = ''
-		return
+		return text
 	end
 
 	local decode = DecodeString(text)
@@ -828,22 +829,20 @@ do
 end
 
 do
-	local exportText, selected = '', {}
+	local exportText = ''
 	local label = ACH:Description('', 5)
-	local function Filters_Get(_, key) return selected[key] end
-	local function Filters_Set(_, key, value) selected[key] = value or nil end
+	local function Filters_Empty() if not next(exportList) then StyleFitlers.export.args.text.hidden = true return true end end
+	local function Filters_Get(_, key) Filters_Empty() return exportList[key] end
+	local function Filters_Set(_, key, value) exportList[key] = value or nil end
 	local function Export_Get() label.name = '' return exportText end
 	local function Export_Set() end
 	local function Export_Decode() exportText = DecodeLabel(label, exportText) end
 	local function Export_Button()
 		local data = {nameplates = {filters = {}}}
 
-		if not next(selected) then
-			StyleFitlers.export.args.text.hidden = true
-			return
-		end
+		if Filters_Empty() then return end
 
-		for key in pairs(selected) do
+		for key in pairs(exportList) do
 			data.nameplates.filters[key] = E:CopyTable({}, E.global.nameplates.filters[key])
 		end
 

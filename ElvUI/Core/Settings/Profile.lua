@@ -654,7 +654,10 @@ P.nameplates = {
 	colors = {
 		auraByType = true,
 		auraByDispels = true,
+		preferGlowColor = true,
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
+		lowHealthColor = {r = 1, g = 1, b = 0.3, a = 1},
+		lowHealthHalf = {r = 1, g = 0.3, b = 0.3, a = 1},
 		castColor = {r = 1, g = 0.81, b = 0},
 		tapped = {r = 0.6, g = 0.6, b = 0.6},
 		castNoInterruptColor = {r = 0.78, g = 0.25, b = 0.25},
@@ -1010,6 +1013,7 @@ P.chat = {
 	maxLines = 100,
 	channelAlerts = {
 		GUILD = 'None',
+		OFFICER = 'None',
 		INSTANCE = 'None',
 		PARTY = 'None',
 		RAID = 'None',

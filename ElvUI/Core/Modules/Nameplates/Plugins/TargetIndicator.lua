@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
+local _, ns = ...
+local oUF = ns.oUF
+
 local UnitHealth = UnitHealth
 local UnitIsUnit = UnitIsUnit
 local UnitHealthMax = UnitHealthMax
@@ -16,82 +19,65 @@ local UnitHealthMax = UnitHealthMax
 	style8:'Background + Side Arrows'
 ]]
 
-local _, ns = ...
-local oUF = ns.oUF
-
-local function Update(self)
-	local element = self.TargetIndicator
-	local isTarget = UnitIsUnit(self.unit, 'target')
-
-	if element.PreUpdate then
-		element:PreUpdate()
-	end
-
+local function HideIndicators(element)
 	if element.TopIndicator then element.TopIndicator:Hide() end
 	if element.LeftIndicator then element.LeftIndicator:Hide() end
 	if element.RightIndicator then element.RightIndicator:Hide() end
 	if element.Shadow then element.Shadow:Hide() end
 	if element.Spark then element.Spark:Hide() end
+end
 
-	if isTarget and (element.style ~= 'none') then
-		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
-			element.TopIndicator:Show()
-		end
-
-		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-			element.RightIndicator:Show()
-			element.LeftIndicator:Show()
-		end
-
-		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
-			element.Shadow:Show()
-		end
-
-		if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
-			element.Spark:Show()
-		end
+local function ShowIndicators(element, r, g, b)
+	if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
+		element.TopIndicator:SetVertexColor(r, g, b)
+		element.TopIndicator:SetTexture(element.arrow)
+		element.TopIndicator:Show()
 	end
 
-	local show, r, g, b
-	if isTarget then
-		show = true
-		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
-	elseif not isTarget and element.lowHealthThreshold > 0 then
-		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
-		local perc = (maxHealth > 0 and health/maxHealth) or 0
+	if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
+		element.LeftIndicator:SetVertexColor(r, g, b)
+		element.RightIndicator:SetVertexColor(r, g, b)
+		element.LeftIndicator:SetTexture(element.arrow)
+		element.RightIndicator:SetTexture(element.arrow)
+		element.RightIndicator:Show()
+		element.LeftIndicator:Show()
+	end
 
-		if perc <= element.lowHealthThreshold then
-			show = true
+	if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
+		element.Shadow:SetBackdropBorderColor(r, g, b)
+		element.Shadow:Show()
+	end
+
+	if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
+		element.Spark:SetVertexColor(r, g, b)
+		element.Spark:Show()
+	end
+end
+
+local function Update(self)
+	local element = self.TargetIndicator
+	if element.PreUpdate then
+		element:PreUpdate()
+	end
+
+	HideIndicators(element)
+
+	if element.style ~= 'none' then
+		local isTarget = UnitIsUnit(self.unit, 'target')
+		local lowHealth = element.lowHealthThreshold > 0
+		if isTarget and (element.preferGlowColor or not lowHealth) then
+			ShowIndicators(element, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
+		elseif lowHealth then
+			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
+			local perc = (maxHealth > 0 and health/maxHealth) or 0
+
 			if perc <= element.lowHealthThreshold / 2 then
-				r, g, b = 1, 0, 0
-			else
-				r, g, b = 1, 1, 0
+				ShowIndicators(element, NP.db.colors.lowHealthHalf.r, NP.db.colors.lowHealthHalf.g, NP.db.colors.lowHealthHalf.b)
+			elseif perc <= element.lowHealthThreshold then
+				ShowIndicators(element, NP.db.colors.lowHealthColor.r, NP.db.colors.lowHealthColor.g, NP.db.colors.lowHealthColor.b)
+			elseif isTarget then
+				ShowIndicators(element, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
 			end
-		end
-
-	end
-
-	if show then
-		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
-			element.TopIndicator:SetVertexColor(r, g, b)
-			element.TopIndicator:SetTexture(element.arrow)
-		end
-
-		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-			element.LeftIndicator:SetVertexColor(r, g, b)
-			element.RightIndicator:SetVertexColor(r, g, b)
-			element.LeftIndicator:SetTexture(element.arrow)
-			element.RightIndicator:SetTexture(element.arrow)
-		end
-
-		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
-			element.Shadow:Show()
-			element.Shadow:SetBackdropBorderColor(r, g, b)
-		end
-
-		if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
-			element.Spark:Show()
-			element.Spark:SetVertexColor(r, g, b)
 		end
 	end
 
@@ -114,13 +100,9 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if not element.style then
-			element.style = 'style1'
-		end
-
-		if not element.lowHealthThreshold then
-			element.lowHealthThreshold = .4
-		end
+		if not element.style then element.style = 'style1' end
+		if not element.preferGlowColor then element.preferGlowColor = true end
+		if not element.lowHealthThreshold then element.lowHealthThreshold = .4 end
 
 		if element.Shadow and element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() then
 			element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = 5})
@@ -154,11 +136,7 @@ end
 local function Disable(self)
 	local element = self.TargetIndicator
 	if element then
-		if element.TopIndicator then element.TopIndicator:Hide() end
-		if element.LeftIndicator then element.LeftIndicator:Hide() end
-		if element.RightIndicator then element.RightIndicator:Hide() end
-		if element.Shadow then element.Shadow:Hide() end
-		if element.Spark then element.Spark:Hide() end
+		HideIndicators(element)
 
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
 	end

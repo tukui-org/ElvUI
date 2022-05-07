@@ -41,6 +41,7 @@ local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local IsSecureCmd = IsSecureCmd
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local PlaySoundFile = PlaySoundFile
@@ -133,7 +134,7 @@ local tabTexs = {
 	'Highlight'
 }
 
-local historyTypes = { -- the events set on the chats are still in FindURL_Events, this is used to ignore some types only
+local historyTypes = { -- most of these events are set in FindURL_Events, this is mainly used to ignore types
 	CHAT_MSG_WHISPER			= 'WHISPER',
 	CHAT_MSG_WHISPER_INFORM		= 'WHISPER',
 	CHAT_MSG_BN_WHISPER			= 'WHISPER',
@@ -150,7 +151,8 @@ local historyTypes = { -- the events set on the chats are still in FindURL_Event
 	CHAT_MSG_CHANNEL		= 'CHANNEL',
 	CHAT_MSG_SAY			= 'SAY',
 	CHAT_MSG_YELL			= 'YELL',
-	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime.
+	CHAT_MSG_OFFICER		= 'OFFICER', -- only used for alerts, not in FindURL_Events as this is a protected channel
+	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
 if not E.Retail then
@@ -2493,33 +2495,12 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	CH:UpdateEditboxFont(chatFrame)
 end
 
-CH.SecureSlashCMD = {
-	'^/rl',
-	'^/tar',
-	'^/target',
-	'^/startattack',
-	'^/stopattack',
-	'^/assist',
-	'^/cast',
-	'^/use',
-	'^/castsequence',
-	'^/cancelaura',
-	'^/cancelform',
-	'^/equip',
-	'^/exit',
-	'^/camp',
-	'^/logout'
-}
-
 function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 	line = line and strtrim(line)
 
 	if line and strlen(line) > 0 then
-		for _, command in next, CH.SecureSlashCMD do
-			if strmatch(line, command) then
-				return
-			end
-		end
+		local cmd = strmatch(line, '^/%w+')
+		if cmd and IsSecureCmd(cmd) then return end -- block secure commands from history
 
 		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
 			if text == line then
@@ -2685,13 +2666,13 @@ function CH:GetCombatLog()
 	if LOG then return LOG, CH:GetTab(LOG) end
 end
 
-function CH:FCFDock_UpdateTabs(dock)
-	if dock == _G.GeneralDockManager then
-		local logchat, logchattab = CH:GetCombatLog()
-		dock.scrollFrame:ClearAllPoints()
-		dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
-		dock.scrollFrame:Point('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
-	end
+function CH:FCFDock_ScrollToSelectedTab(dock)
+	if dock ~= _G.GeneralDockManager then return end
+
+	local logchat, logchattab = CH:GetCombatLog()
+	dock.scrollFrame:ClearAllPoints()
+	dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
+	dock.scrollFrame:Point('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
 end
 
 function CH:FCF_SetWindowAlpha(frame, alpha)
@@ -3532,7 +3513,7 @@ function CH:Initialize()
 	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('FCFTab_UpdateColors')
 	CH:SecureHook('FCFDock_SelectWindow')
-	CH:SecureHook('FCFDock_UpdateTabs')
+	CH:SecureHook('FCFDock_ScrollToSelectedTab')
 	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('FCF_Close', 'PostChatClose')
 	CH:SecureHook('FCF_DockFrame', 'SnappingChanged')
