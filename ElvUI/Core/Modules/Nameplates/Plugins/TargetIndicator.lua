@@ -28,18 +28,22 @@ local function HideIndicators(element)
 end
 
 local function ShowIndicators(element, isTarget, r, g, b)
-	if isTarget then
-		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
-			element.TopIndicator:SetVertexColor(r, g, b)
-			element.TopIndicator:SetTexture(element.arrow)
+	if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
+		element.TopIndicator:SetVertexColor(r, g, b)
+		element.TopIndicator:SetTexture(element.arrow)
+
+		if isTarget then
 			element.TopIndicator:Show()
 		end
+	end
 
-		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-			element.LeftIndicator:SetVertexColor(r, g, b)
-			element.RightIndicator:SetVertexColor(r, g, b)
-			element.LeftIndicator:SetTexture(element.arrow)
-			element.RightIndicator:SetTexture(element.arrow)
+	if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
+		element.LeftIndicator:SetVertexColor(r, g, b)
+		element.RightIndicator:SetVertexColor(r, g, b)
+		element.LeftIndicator:SetTexture(element.arrow)
+		element.RightIndicator:SetTexture(element.arrow)
+
+		if isTarget then
 			element.RightIndicator:Show()
 			element.LeftIndicator:Show()
 		end
