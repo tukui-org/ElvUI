@@ -469,7 +469,7 @@ E.Options.args.nameplates.args.colorsGroup.args.general.inline = true
 do
 	local function GetToggle(info) return E.db.nameplates.colors[info[#info]] end
 	local function SetToggle(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end
-	E.Options.args.nameplates.args.colorsGroup.args.general.args.perferGlowColor = ACH:Toggle(E.NewSign..L["Perfer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
+	E.Options.args.nameplates.args.colorsGroup.args.general.args.preferGlowColor = ACH:Toggle(E.NewSign..L["Prefer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
 	E.Options.args.nameplates.args.colorsGroup.args.general.args.auraByDispels = ACH:Toggle(L["Borders By Dispel"], nil, 2, nil, nil, nil, GetToggle, SetToggle)
 	E.Options.args.nameplates.args.colorsGroup.args.general.args.auraByType = ACH:Toggle(L["Borders By Type"], nil, 3, nil, nil, nil, GetToggle, SetToggle)
 end
