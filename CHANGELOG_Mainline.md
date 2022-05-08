@@ -7,7 +7,7 @@ ___
 
 NamePlates: fixed target indicator displaying many arrows  
 DataTexts: added label / no label for durability and bags  
-DataTexts: custom labels can be colorised with color tags  
+DataTexts: custom labels can be colorized with color tags  
 
 ___
 ### Version 12.78 [ May 6th 2022 ]
