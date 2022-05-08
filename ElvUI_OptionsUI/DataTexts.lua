@@ -7,8 +7,8 @@ local Minimap = E:GetModule('Minimap')
 local ACH = E.Libs.ACH
 
 local _G = _G
-local next, wipe, ceil = next, wipe, ceil
 local type, pairs, ipairs = type, pairs, ipairs
+local gsub, next, wipe, ceil = gsub, next, wipe, ceil
 local format, tostring, tonumber = format, tostring, tonumber
 
 -- GLOBALS: AceGUIWidgetLSMlists
@@ -178,7 +178,7 @@ local function CreateDTOptions(name, data)
 
 	for key in pairs(settings) do
 		if key == 'Label' then
-			optionTable.args.Label = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value DT:ForceUpdate_DataText(name) end)
+			optionTable.args.Label = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
 		elseif key == 'NoLabel' then
 			optionTable.args.NoLabel = ACH:Toggle(L["No Label"], nil, 3)
 		elseif key == 'ShowOthers' then
