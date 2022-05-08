@@ -27,9 +27,10 @@ local function HideIndicators(element)
 	if element.Spark then element.Spark:Hide() end
 end
 
-local function ShowIndicators(element, isTarget, r, g, b)
+local function ShowIndicators(element, isTarget, color)
+	color = E:UpdateClassColor(color)
 	if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
-		element.TopIndicator:SetVertexColor(r, g, b)
+		element.TopIndicator:SetVertexColor(color.r, color.g, color.b)
 		element.TopIndicator:SetTexture(element.arrow)
 
 		if isTarget then
@@ -38,8 +39,8 @@ local function ShowIndicators(element, isTarget, r, g, b)
 	end
 
 	if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-		element.LeftIndicator:SetVertexColor(r, g, b)
-		element.RightIndicator:SetVertexColor(r, g, b)
+		element.LeftIndicator:SetVertexColor(color.r, color.g, color.b)
+		element.RightIndicator:SetVertexColor(color.r, color.g, color.b)
 		element.LeftIndicator:SetTexture(element.arrow)
 		element.RightIndicator:SetTexture(element.arrow)
 
@@ -50,12 +51,12 @@ local function ShowIndicators(element, isTarget, r, g, b)
 	end
 
 	if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
-		element.Shadow:SetBackdropBorderColor(r, g, b)
+		element.Shadow:SetBackdropBorderColor(color.r, color.g, color.b)
 		element.Shadow:Show()
 	end
 
 	if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
-		element.Spark:SetVertexColor(r, g, b)
+		element.Spark:SetVertexColor(color.r, color.g, color.b)
 		element.Spark:Show()
 	end
 end
@@ -72,17 +73,17 @@ local function Update(self)
 		local isTarget = UnitIsUnit(self.unit, 'target')
 		local lowHealth = element.lowHealthThreshold > 0
 		if isTarget and (element.preferGlowColor or not lowHealth) then
-			ShowIndicators(element, isTarget, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
+			ShowIndicators(element, isTarget, NP.db.colors.glowColor)
 		elseif lowHealth then
 			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 			local perc = (maxHealth > 0 and health/maxHealth) or 0
 
 			if perc <= element.lowHealthThreshold / 2 then
-				ShowIndicators(element, isTarget, NP.db.colors.lowHealthHalf.r, NP.db.colors.lowHealthHalf.g, NP.db.colors.lowHealthHalf.b)
+				ShowIndicators(element, isTarget, NP.db.colors.lowHealthHalf)
 			elseif perc <= element.lowHealthThreshold then
-				ShowIndicators(element, isTarget, NP.db.colors.lowHealthColor.r, NP.db.colors.lowHealthColor.g, NP.db.colors.lowHealthColor.b)
+				ShowIndicators(element, isTarget, NP.db.colors.lowHealthColor)
 			elseif isTarget then
-				ShowIndicators(element, isTarget, NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b)
+				ShowIndicators(element, isTarget, NP.db.colors.glowColor)
 			end
 		end
 	end
