@@ -59,7 +59,7 @@ local function OnEvent(self)
 	if E.global.datatexts.settings.Durability.NoLabel then
 		self.text:SetFormattedText('%s%d%%|r', hex, totalDurability)
 	else
-		self.text:SetFormattedText('%s%s%d%%|r', E.global.datatexts.settings.Durability.Label ~= '' and E.global.datatexts.settings.Durability.Label or DURABILITY..': ', hex, totalDurability)
+		self.text:SetFormattedText('%s%s%d%%|r', E.global.datatexts.settings.Durability.Label ~= '' and E.global.datatexts.settings.Durability.Label or (DURABILITY..': '), hex, totalDurability)
 	end
 
 	if totalDurability <= E.global.datatexts.settings.Durability.percThreshold then
