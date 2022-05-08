@@ -133,6 +133,13 @@ local function Enable(self)
 			element.RightIndicator:SetTexCoord(1, 1, 0, 1, 1, 0, 0, 0) --Flips texture horizontally (Right facing arrow to face left)
 		end
 
+		if E.Retail then
+			self:RegisterEvent('UNIT_HEALTH', Path)
+		else
+			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		end
+
+		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
 
 		return true
@@ -144,6 +151,13 @@ local function Disable(self)
 	if element then
 		HideIndicators(element)
 
+		if E.Retail then
+			self:UnregisterEvent('UNIT_HEALTH', Path)
+		else
+			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
+		end
+
+		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
 	end
 end
