@@ -1,6 +1,13 @@
-### Version 1.71 [ ETA: 🍨 ]
+### Version 1.72 [ ETA: 🍨 ]
 
 :)
+
+___
+### Version 1.71 [ May 8th 2022 ]
+
+NamePlates: fixed target indicator displaying many arrows  
+DataTexts: added label / no label for durability and bags  
+DataTexts: custom labels can be colorised with color tags  
 
 ___
 ### Version 1.70 [ May 6th 2022 ]
