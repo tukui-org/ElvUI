@@ -3238,7 +3238,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 			tab.whisperName = gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r')
 		end
 
-		if selected then
+		if selected then -- color tables are class updated in UpdateMedia
 			if CH.db.tabSelector == 'NONE' then
 				tab:SetFormattedText(CH.TabStyles.NONE, tab.whisperName or name)
 			else
