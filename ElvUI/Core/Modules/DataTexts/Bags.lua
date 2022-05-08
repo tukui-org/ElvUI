@@ -98,6 +98,7 @@ end
 local function ValueColorUpdate(hex)
 	local textFormat = E.global.datatexts.settings.Bags.textFormat
 	local nolabel = E.global.datatexts.settings.Bags.NoLabel
+
 	if textFormat == 'FREE' or textFormat == 'USED' then
 		displayString = strjoin('', nolabel and '' or L["Bags"], nolabel and '' or ': ', hex, '%d|r')
 	else
