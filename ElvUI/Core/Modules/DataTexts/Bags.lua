@@ -97,11 +97,10 @@ end
 
 local function ValueColorUpdate(hex)
 	local textFormat = E.global.datatexts.settings.Bags.textFormat
-	if textFormat == 'FREE' or textFormat == 'USED' then
-		displayString = strjoin('', L["Bags"], ': ', hex, '%d|r')
-	else
-		displayString = strjoin('', L["Bags"], ': ', hex, '%d/%d|r')
-	end
+	local noLabel = E.global.datatexts.settings.Bags.NoLabel and ''
+	local labelString = noLabel or (E.global.datatexts.settings.Bags.Label ~= '' and E.global.datatexts.settings.Bags.Label) or strjoin('', L["Bags"], ': ')
+
+	displayString = strjoin('', labelString, hex, (textFormat == 'FREE' or textFormat == 'USED') and '%d|r' or '%d/%d|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end

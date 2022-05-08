@@ -175,8 +175,8 @@ function NP:SetCVars()
 	NP:SetCVar('nameplateShowFriendlyTotems', NP.db.visibility.friendly.totems and 1 or 0)
 
 	-- Blizzard bug resets them after reload
-	NP:SetCVar('nameplateOverlapH', E.db.nameplates.overlapH)
-	NP:SetCVar('nameplateOverlapV', E.db.nameplates.overlapV)
+	NP:SetCVar('nameplateOverlapH', NP.db.overlapH)
+	NP:SetCVar('nameplateOverlapV', NP.db.overlapV)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
