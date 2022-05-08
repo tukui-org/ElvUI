@@ -178,7 +178,7 @@ local function CreateDTOptions(name, data)
 
 	for key in pairs(settings) do
 		if key == 'Label' then
-			optionTable.args.Label = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
+			optionTable.args.Label = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return gsub(settings[info[#info]], '|', '||') end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
 		elseif key == 'NoLabel' then
 			optionTable.args.NoLabel = ACH:Toggle(L["No Label"], nil, 3)
 		elseif key == 'ShowOthers' then
