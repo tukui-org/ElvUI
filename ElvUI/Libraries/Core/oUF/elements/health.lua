@@ -81,6 +81,7 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
+local _, PlayerClass = UnitClass('player')
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
@@ -91,6 +92,8 @@ local function UpdateColor(self, event, unit)
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
+	elseif(element.colorHappiness and not oUF.isRetail and PlayerClass == "HUNTER" and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
+		t = self.colors.happiness[GetPetHappiness()]
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		t =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit))
