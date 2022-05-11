@@ -100,12 +100,12 @@ function UF:RaidRoleUpdate()
 		end
 
 		if isML then
-			if isLeader then
+			if isMAMT then
+				masterlooter:Point(pos1, mamt, pos2)
+			elseif isLeader then
 				masterlooter:Point(pos1, leader, pos2)
 			elseif isAssist then
 				masterlooter:Point(pos1, assistant, pos2)
-			elseif isMAMT then
-				masterlooter:Point(pos1, mamt, pos2)
 			else
 				masterlooter:Point(pos, anchor, x, y)
 			end
