@@ -301,6 +301,7 @@ local function Enable(self)
 			oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 		else
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
+			oUF:RegisterEvent(self, 'UNIT_HAPPINESS', Path)
 		end
 
 		if(element.colorDisconnected) then
@@ -340,6 +341,7 @@ local function Disable(self)
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		else
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
+			oUF:UnregisterEvent(self, 'UNIT_HAPPINESS', Path)
 		end
 
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
