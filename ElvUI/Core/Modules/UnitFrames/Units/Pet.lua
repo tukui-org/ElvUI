@@ -74,7 +74,7 @@ function UF:Update_PetFrame(frame, db)
 	end
 
 	frame.Health.colorPetByUnitClass = db.health.colorPetByUnitClass
-	frame.Health:SetColorHappiness(E.myclass == 'HUNTER' and db.health.colorHappiness)
+	frame.Health:SetColorHappiness(E.Retail and E.myclass == 'HUNTER' and db.health.colorHappiness or nil)
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
