@@ -43,8 +43,6 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 		health.value:Point(textPos, health, textPos, textPos == 'LEFT' and 2 or -2, 0)
 	end
 
-	health.colorTapping = true
-	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, nil, true)
 
 	local clipFrame = UF:Construct_ClipFrame(frame, health)
@@ -57,6 +55,8 @@ function UF:Configure_HealthBar(frame)
 	local db = frame.db
 	local health = frame.Health
 
+	health:SetColorTapping(true)
+	health:SetColorDisconnected(true)
 	E:SetSmoothing(health, self.db.smoothbars)
 
 	--Text
@@ -68,11 +68,11 @@ function UF:Configure_HealthBar(frame)
 	end
 
 	--Colors
+	local colorSelection
 	health.colorSmooth = nil
 	health.colorHealth = nil
 	health.colorClass = nil
 	health.colorReaction = nil
-	health.colorSelection = nil
 
 	if db.colorOverride and db.colorOverride == 'FORCE_ON' then
 		health.colorClass = true
@@ -85,7 +85,7 @@ function UF:Configure_HealthBar(frame)
 		end
 	else
 		if E.Retail and self.db.colors.healthselection then
-			health.colorSelection = true
+			colorSelection = true
 		elseif self.db.colors.healthclass ~= true then
 			if self.db.colors.colorhealthbyvalue then
 				health.colorSmooth = true
@@ -97,6 +97,8 @@ function UF:Configure_HealthBar(frame)
 			health.colorReaction = true
 		end
 	end
+
+	health:SetColorSelection(colorSelection)
 
 	--Position
 	health:ClearAllPoints()

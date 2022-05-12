@@ -573,9 +573,9 @@ end
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Health"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
-	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 3, attachToValues)
-	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 4, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 5, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 5, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 6, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 
 	config.args.textGroup = ACH:Group(L["Text Options"], nil, 10)
 	config.args.textGroup.inline = true
@@ -590,6 +590,10 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 
 	if groupName == 'pet' or groupName == 'raidpet' then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
+
+		if groupName == 'pet' and E.myclass == 'HUNTER' then
+			config.args.colorHappiness = ACH:Toggle(L["Color by Happiness"], nil, 3)
+		end
 	end
 
 	return config

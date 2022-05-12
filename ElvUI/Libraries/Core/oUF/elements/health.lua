@@ -81,6 +81,7 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
+local _, PlayerClass = UnitClass('player')
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
@@ -91,6 +92,8 @@ local function UpdateColor(self, event, unit)
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
+	elseif(element.colorHappiness and not oUF.isRetail and PlayerClass == "HUNTER" and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
+		t = self.colors.happiness[GetPetHappiness()]
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		t =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit))
@@ -282,11 +285,24 @@ local function SetColorThreat(element, state, isForced)
 	end
 end
 
+local function SetColorHappiness(element, state, isForced)
+	if(element.colorHappiness ~= state or isForced) then
+		element.colorHappiness = state
+
+		if(state) then
+			element.__owner:RegisterEvent('UNIT_HAPPINESS', ColorPath)
+		else
+			element.__owner:UnregisterEvent('UNIT_HAPPINESS', ColorPath)
+		end
+	end
+end
+
 local function Enable(self)
 	local element = self.Health
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.SetColorHappiness = SetColorHappiness
 		element.SetColorDisconnected = SetColorDisconnected
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
