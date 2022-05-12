@@ -66,6 +66,8 @@ function NP:Construct_Health(nameplate)
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
+	Health.considerSelectionInCombatHostile = true
+	Health.UpdateColor = NP.Health_UpdateColor
 
 	NP.StatusBars[Health] = true
 
@@ -77,24 +79,31 @@ function NP:Construct_Health(nameplate)
 	healthFlashTexture:Hide()
 	nameplate.HealthFlashTexture = healthFlashTexture
 
-	Health.colorTapping = true
-	Health.colorSelection = E.Retail
-	Health.colorReaction = not E.Retail
-	Health.UpdateColor = NP.Health_UpdateColor
-
 	UF:Construct_ClipFrame(nameplate, Health)
 
 	return Health
 end
 
+function NP:Health_SetColors(nameplate, threatColors)
+	if threatColors then -- managed by ThreatIndicator_PostUpdate
+		nameplate.Health:SetColorTapping(nil)
+		nameplate.Health:SetColorSelection(nil)
+		nameplate.Health.colorReaction = nil
+		nameplate.Health.colorClass = nil
+	else
+		local db = NP:PlateDB(nameplate)
+		nameplate.Health:SetColorTapping(true)
+		nameplate.Health:SetColorSelection(E.Retail)
+		nameplate.Health.colorReaction = not E.Retail
+		nameplate.Health.colorClass = db.health and db.health.useClassColor
+	end
+end
+
 function NP:Update_Health(nameplate, skipUpdate)
 	local db = NP:PlateDB(nameplate)
 
-	nameplate.Health.colorTapping = true
-	nameplate.Health.colorSelection = E.Retail
-	nameplate.Health.colorReaction = not E.Retail
-	nameplate.Health.colorClass = db.health.useClassColor
-	nameplate.Health.considerSelectionInCombatHostile = true
+	NP:Health_SetColors(nameplate)
+
 	if skipUpdate then return end
 
 	if db.health.enable then

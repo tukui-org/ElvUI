@@ -37,17 +37,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		nameplate.ThreatScale = 1
 		NP:ScalePlate(nameplate, 1)
 	elseif status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
-		nameplate.Health.colorTapping = false
-		nameplate.Health.colorDisconnected = false
-		nameplate.Health.colorClass = false
-		nameplate.Health.colorClassNPC = false
-		nameplate.Health.colorClassPet = false
-		nameplate.Health.colorSelection = false
-		nameplate.Health.colorThreat = false
-		nameplate.Health.colorReaction = false
-		nameplate.Health.colorSmooth = false
-		nameplate.Health.colorHealth = false
-
+		NP:Health_SetColors(nameplate, true)
 		nameplate.ThreatStatus = status
 
 		local Color, Scale
