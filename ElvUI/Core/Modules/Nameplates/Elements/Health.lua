@@ -85,7 +85,7 @@ function NP:Construct_Health(nameplate)
 end
 
 function NP:Health_SetColors(nameplate, threatColors)
-	if threatColors then
+	if threatColors then -- managed by ThreatIndicator_PostUpdate
 		nameplate.Health:SetColorTapping(nil)
 		nameplate.Health:SetColorSelection(nil)
 		nameplate.Health.colorReaction = nil
