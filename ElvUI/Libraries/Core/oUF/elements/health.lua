@@ -285,11 +285,24 @@ local function SetColorThreat(element, state, isForced)
 	end
 end
 
+local function SetColorHappiness(element, state, isForced)
+	if(element.colorHappiness ~= state or isForced) then
+		element.colorHappiness = state
+
+		if(state) then
+			element.__owner:RegisterEvent('UNIT_HAPPINESS', ColorPath)
+		else
+			element.__owner:UnregisterEvent('UNIT_HAPPINESS', ColorPath)
+		end
+	end
+end
+
 local function Enable(self)
 	local element = self.Health
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.SetColorHappiness = SetColorHappiness
 		element.SetColorDisconnected = SetColorDisconnected
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
@@ -301,7 +314,6 @@ local function Enable(self)
 			oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 		else
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
-			oUF:RegisterEvent(self, 'UNIT_HAPPINESS', Path)
 		end
 
 		if(element.colorDisconnected) then
@@ -341,7 +353,6 @@ local function Disable(self)
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		else
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
-			oUF:UnregisterEvent(self, 'UNIT_HAPPINESS', Path)
 		end
 
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
