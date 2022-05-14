@@ -14,7 +14,7 @@ local displayString, lastPanel = ''
 local function OnEvent(self)
 	lastPanel = self
 
-	local hitRating = (E.Classic and GetHitModifier()) or GetCombatRatingBonus(E.myclass == 'HUNTER' and CR_HIT_RANGED or CR_HIT_MELEE)
+	local hitRating = (E.Classic and GetHitModifier()) or GetCombatRatingBonus(E.myclass == 'HUNTER' and CR_HIT_RANGED or CR_HIT_MELEE) or 0
 	if E.global.datatexts.settings.Hit.NoLabel then
 		self.text:SetFormattedText(displayString, hitRating)
 	else
