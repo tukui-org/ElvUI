@@ -125,6 +125,7 @@ L["Auto-Close Pet Battle Log"] = "自動關閉寵物對戰日誌"
 L["Auto-Hide"] = "自動隱藏"
 L["Automatic"] = "自動"
 L["Automatically accept invites from guild/friends."] = "自動接受公會成員/朋友的組隊邀請."
+L["Automatically hide the objective frame during boss fights while you are running a key."] = true
 L["Automatically hide the objective frame during boss or arena fights."] = "在首領戰鬥或是競技場時自動隱藏目標追蹤框架."
 L["Automatically repair using the following method when visiting a merchant."] = "與商人對話時, 透過下列方式自動修復裝備."
 L["Automatically vendor gray items when visiting a vendor."] = "當訪問商人時自動出售灰色物品."
