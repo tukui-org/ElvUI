@@ -125,6 +125,7 @@ L["Auto-Close Pet Battle Log"] = "Auto-fechar Log da Batalha de Pets"
 L["Auto-Hide"] = "Auto-Esconder"
 L["Automatic"] = "Automático"
 L["Automatically accept invites from guild/friends."] = "Aceitar convites de pessoas da lista de amigos ou guilda automaticamente"
+L["Automatically hide the objective frame during boss fights while you are running a key."] = true
 L["Automatically hide the objective frame during boss or arena fights."] = "Automaticamente esconder o quadro de objetivo durante uma luta de boss ou arena"
 L["Automatically repair using the following method when visiting a merchant."] = "Reparar automaticamente usando o seguinte método ao visitar um vendedor."
 L["Automatically vendor gray items when visiting a vendor."] = "Vender itens cinzentos automaticamente quando visitar um vendedor"
