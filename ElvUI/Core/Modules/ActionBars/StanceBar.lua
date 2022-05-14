@@ -40,7 +40,7 @@ end
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms()
 	local stance = GetShapeshiftForm()
-	local darkenInactive = AB.db.stanceBar.style == 'darkenInactive'
+	local darken = AB.db.stanceBar.style == 'darkenInactive'
 
 	for i = 1, NUM_STANCE_SLOTS do
 		local buttonName = 'ElvUI_StanceBarButton'..i
@@ -50,13 +50,13 @@ function AB:StyleShapeShift()
 		if i <= numForms then
 			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
 
-			if darkenInactive then
+			if darken then
 				_, _, texture = GetSpellInfo(spellID)
+			elseif isActive then
+				texture = nil
 			end
 
-			if not texture then texture = WispSplode end
-
-			button.icon:SetTexture(texture)
+			button.icon:SetTexture(texture or WispSplode)
 			button.icon:SetInside()
 
 			if not button.useMasque then
@@ -64,38 +64,29 @@ function AB:StyleShapeShift()
 
 				if isActive then
 					_G.StanceBarFrame.lastSelected = button:GetID()
-					if numForms == 1 then
-						button.checked:SetColorTexture(1, 1, 1, 0.5)
-						button:SetChecked(true)
-					else
-						button.checked:SetColorTexture(1, 1, 1, 0.5)
-						button:SetChecked(not darkenInactive)
-					end
+
+					button:SetChecked(numForms == 1 and darken)
+					button.checked:SetColorTexture(1, 1, 1, 0.3)
+				elseif numForms == 1 or stance == 0 then
+					button:SetChecked(false)
 				else
-					if numForms == 1 or stance == 0 then
-						button:SetChecked(false)
+					button:SetChecked(darken)
+					button.checked:SetAlpha(1)
+
+					if darken then
+						button.checked:SetColorTexture(0, 0, 0, 0.6)
 					else
-						button:SetChecked(darkenInactive)
-						button.checked:SetAlpha(1)
-						if darkenInactive then
-							button.checked:SetColorTexture(0, 0, 0, 0.5)
-						else
-							button.checked:SetColorTexture(1, 1, 1, 0.5)
-						end
+						button.checked:SetColorTexture(1, 1, 1, 0.6)
 					end
 				end
 			else
-				if isActive then
-					button:SetChecked(true)
-				else
-					button:SetChecked(false)
-				end
+				button:SetChecked(isActive)
 			end
 
 			if isCastable then
 				button.icon:SetVertexColor(1.0, 1.0, 1.0)
 			else
-				button.icon:SetVertexColor(0.4, 0.4, 0.4)
+				button.icon:SetVertexColor(0.3, 0.3, 0.3)
 			end
 		end
 	end

@@ -125,6 +125,7 @@ L["Auto-Close Pet Battle Log"] = true
 L["Auto-Hide"] = true
 L["Automatic"] = true
 L["Automatically accept invites from guild/friends."] = true
+L["Automatically hide the objective frame during boss fights while you are running a key."] = true
 L["Automatically hide the objective frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = true
 L["Automatically vendor gray items when visiting a vendor."] = true

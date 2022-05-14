@@ -853,8 +853,8 @@ function CH:GetChatTime()
 	local realm = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
 	if realm then -- blizzard is weird
 		realm.day = realm.monthDay
-		realm.min = date('%M', unix)
-		realm.sec = date('%S', unix)
+		realm.min = realm.minute
+		realm.sec = date('%S', unix) -- no seconds from CalendarTime
 		realm = time(realm)
 	end
 
