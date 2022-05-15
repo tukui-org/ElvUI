@@ -43,20 +43,13 @@ function AB:StyleShapeShift()
 	local darken = AB.db.stanceBar.style == 'darkenInactive'
 
 	for i = 1, NUM_STANCE_SLOTS do
-		local buttonName = 'ElvUI_StanceBarButton'..i
-		local button = _G[buttonName]
+		local button = _G['ElvUI_StanceBarButton'..i]
 
-		if i <= numForms then
+		if i > numForms then
+			break
+		else
 			local texture, isActive, isCastable, spellID = GetShapeshiftFormInfo(i)
-			local spell
-
-			if isActive and not darken then
-				texture = nil
-			elseif spellID then
-				spell = GetSpellTexture(spellID)
-			end
-
-			button.icon:SetTexture(spell or texture or WispSplode)
+			button.icon:SetTexture(((darken or not isActive) and spellID and GetSpellTexture(spellID)) or WispSplode)
 			button.icon:SetInside()
 
 			if not button.useMasque then
