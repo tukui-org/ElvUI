@@ -57,10 +57,12 @@ function S:WorldMapFrame()
 	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
 		QuestMapFrame.DetailsFrame:CreateBackdrop()
-		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', 0, 0)
-		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
+		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', -3, 5)
+		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
 		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
-		QuestMapFrame.DetailsFrame.RewardsFrame:SetTemplate()
+		QuestMapFrame.DetailsFrame.RewardsFrame:CreateBackdrop()
+		QuestMapFrame.DetailsFrame.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
+		QuestMapFrame.DetailsFrame.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
