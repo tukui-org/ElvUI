@@ -338,13 +338,13 @@ function UF:Construct_UF(frame, unit)
 	return frame
 end
 
-function UF:GetObjectAnchorPoint(frame, point)
+function UF:GetObjectAnchorPoint(frame, point, ignoreShown)
 	if point == 'Frame' then
 		return frame
 	end
 
 	local place = frame[point]
-	if place and place:IsShown() then
+	if place and (ignoreShown or place:IsShown()) then
 		return place
 	else
 		return frame

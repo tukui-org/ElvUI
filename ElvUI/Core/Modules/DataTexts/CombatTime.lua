@@ -28,19 +28,21 @@ end
 local function OnEvent(self, event, _, timeSeconds)
 	local _, instanceType = GetInstanceInfo()
 	local inArena, started, ended = instanceType == 'arena', event == 'ENCOUNTER_START', event == 'ENCOUNTER_END'
+	local noLabel = E.global.datatexts.settings.Combat.NoLabel and ''
 
 	if inArena and event == 'START_TIMER' then
-		timerText, timer, startTime = L["Arena"], 0, timeSeconds
+		timerText, timer, startTime = noLabel or L["Arena"], 0, timeSeconds
 		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
 		self:SetScript('OnUpdate', DelayOnUpdate)
 	elseif not inArena and ((not inEncounter and event == 'PLAYER_REGEN_ENABLED') or ended) then
 		self:SetScript('OnUpdate', nil)
 		if ended then inEncounter = nil end
 	elseif not inArena and (event == 'PLAYER_REGEN_DISABLED' or started) then
-		timerText, timer, startTime = L["Combat"], 0, GetTime()
+		timerText, timer, startTime = noLabel or L["Combat"], 0, GetTime()
 		self:SetScript('OnUpdate', OnUpdate)
 		if started then inEncounter = true end
-	elseif not self.text:GetText() then
+	elseif not self.text:GetText() or event == 'ELVUI_FORCE_UPDATE' then
+		timerText = noLabel or L["Combat"]
 		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
 	end
 
@@ -48,7 +50,8 @@ local function OnEvent(self, event, _, timeSeconds)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s: ', hex, '%s|r')
+	local noLabel = E.global.datatexts.settings.Combat.NoLabel and ''
+	displayString = strjoin('', '%s', noLabel or ': ', hex, '%s|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
