@@ -10,7 +10,7 @@ local GetNumShapeshiftForms = GetNumShapeshiftForms
 local GetShapeshiftForm = GetShapeshiftForm
 local GetShapeshiftFormCooldown = GetShapeshiftFormCooldown
 local GetShapeshiftFormInfo = GetShapeshiftFormInfo
-local GetSpellInfo = GetSpellInfo
+local GetSpellTexture = GetSpellTexture
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
@@ -43,24 +43,17 @@ function AB:StyleShapeShift()
 	local darken = AB.db.stanceBar.style == 'darkenInactive'
 
 	for i = 1, NUM_STANCE_SLOTS do
-		local buttonName = 'ElvUI_StanceBarButton'..i
-		local button = _G[buttonName]
-		local cooldown = _G[buttonName..'Cooldown']
+		local button = _G['ElvUI_StanceBarButton'..i]
 
-		if i <= numForms then
-			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
-
-			if darken then
-				_, _, texture = GetSpellInfo(spellID)
-			elseif isActive then
-				texture = nil
-			end
-
-			button.icon:SetTexture(texture or WispSplode)
+		if i > numForms then
+			break
+		else
+			local texture, isActive, isCastable, spellID = GetShapeshiftFormInfo(i)
+			button.icon:SetTexture(((darken or not isActive) and spellID and GetSpellTexture(spellID)) or WispSplode)
 			button.icon:SetInside()
 
 			if not button.useMasque then
-				cooldown:SetAlpha(1)
+				button.cooldown:SetAlpha(texture and 1 or 0)
 
 				if isActive then
 					_G.StanceBarFrame.lastSelected = button:GetID()
