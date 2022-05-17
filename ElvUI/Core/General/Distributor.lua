@@ -315,6 +315,7 @@ D.GeneratedKeys = {
 			customCurrencies = true
 		},
 		unitframe = {
+			AuraBarColors = true,
 			aurafilters = true,
 			aurawatch = true
 		},
