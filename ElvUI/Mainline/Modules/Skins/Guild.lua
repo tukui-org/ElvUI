@@ -135,6 +135,7 @@ function S:Blizzard_GuildUI()
 	S:HandleScrollBar(_G.GuildInfoFrameInfoMOTDScrollFrameScrollBar)
 
 	_G.GuildInfoFrameTab1:StripTextures()
+	_G.GuildInfoFrameTab1:SetTemplate('Transparent')
 
 	local GuildInfoFrameInfo = _G.GuildInfoFrameInfo
 	local backdrop1 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
