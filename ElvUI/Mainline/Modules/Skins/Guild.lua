@@ -92,8 +92,8 @@ function S:Blizzard_GuildUI()
 
 	--Detail Frame
 	_G.GuildMemberDetailFrame:SetTemplate('Transparent')
-	_G.GuildMemberNoteBackground:SetTemplate('Transparent')
-	_G.GuildMemberOfficerNoteBackground:SetTemplate('Transparent')
+	_G.GuildMemberNoteBackground.NineSlice:SetTemplate('Transparent')
+	_G.GuildMemberOfficerNoteBackground.NineSlice:SetTemplate('Transparent')
 	_G.GuildMemberRankDropdown:SetFrameLevel(_G.GuildMemberRankDropdown:GetFrameLevel() + 5)
 	S:HandleDropDownBox(_G.GuildMemberRankDropdown, 175)
 
