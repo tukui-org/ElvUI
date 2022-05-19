@@ -587,11 +587,21 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- Zul'Aman
 		-- Nalorakk
+		[42398] = Defaults(2), -- Mangle
 		-- Jan'alai
+		[43299] = Defaults(2), -- Flame Buffet
 		-- Akil'zon
+		[43657] = Defaults(3), -- Electrical Storm
+		[43622] = Defaults(2), -- Static Disruption
 		-- Halazzi
+		[43303] = Defaults(2), -- Flame Shock
 		-- Hexxlord Jin'Zakk
+		[43613] = Defaults(3), -- Cold Stare
+		[43501] = Defaults(2), -- Siphon Soul
 		-- Zul'jin
+		[43150] = Defaults(3), -- Rage
+		[43095] = Defaults(2), -- Paralyze
+		[43093] = Defaults(3), -- Throw
 	-------------------------------------------------
 	-------------------- Phase 5 --------------------
 	-------------------------------------------------
