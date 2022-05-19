@@ -671,41 +671,41 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Karazhan
 		-- Attument the Huntsman
 		-- Moroes
-		[29448]	= Defaults(), -- Vanish
-		[37023]	= Defaults(), -- Enrage
+		[29448] = Defaults(), -- Vanish
+		[37023] = Defaults(), -- Enrage
 		-- Opera Hall Event
-		[30887]	= Defaults(), -- Devotion
-		[30841]	= Defaults(), -- Daring
+		[30887] = Defaults(), -- Devotion
+		[30841] = Defaults(), -- Daring
 		-- Maiden of Virtue
-		[32429]	= Defaults(), -- Draining Touch
+		[32429] = Defaults(), -- Draining Touch
 		-- The Curator
 		-- Terestian Illhoof
-		[29908]	= Defaults(), -- Astral Bite
+		[29908] = Defaults(), -- Astral Bite
 		-- Shade of Aran
-		[29920]	= Defaults(), -- Phasing Invisibility
-		[29921]	= Defaults(), -- Phasing Invisibility
+		[29920] = Defaults(), -- Phasing Invisibility
+		[29921] = Defaults(), -- Phasing Invisibility
 		-- Netherspite
-		[30522]	= Defaults(), -- Nether Burn
-		[30487]	= Defaults(), -- Nether Portal - Perseverence
-		[30491]	= Defaults(), -- Nether Portal - Domination
+		[30522] = Defaults(), -- Nether Burn
+		[30487] = Defaults(), -- Nether Portal - Perseverence
+		[30491] = Defaults(), -- Nether Portal - Domination
 		-- Chess Event
-		[37469]	= Defaults(), -- Poison Cloud
+		[37469] = Defaults(), -- Poison Cloud
 		-- Prince Malchezaar
-		[30859]	= Defaults(), -- Hellfire
+		[30859] = Defaults(), -- Hellfire
 		-- Nightbane
-		[37098]	= Defaults(), -- Rain of Bones
+		[37098] = Defaults(), -- Rain of Bones
 	-- Gruul's Lair
 		-- High King Maulgar
-		[33232]	= Defaults(), -- Flurry
-		[33238]	= Defaults(), -- Whirlwind
-		[33054]	= Defaults(), -- Spell Shield
+		[33232] = Defaults(), -- Flurry
+		[33238] = Defaults(), -- Whirlwind
+		[33054] = Defaults(), -- Spell Shield
 		-- Gruul the Dragonkiller
-		[36300]	= Defaults(), -- Growth
+		[36300] = Defaults(), -- Growth
 	-- Magtheridon's Lair
 		-- Magtheridon
-		[30205]	= Defaults(), -- Shadow Cage
-		[30576]	= Defaults(), -- Quake
-		[30207]	= Defaults(), -- Shadow Grasp
+		[30205] = Defaults(), -- Shadow Cage
+		[30576] = Defaults(), -- Quake
+		[30207] = Defaults(), -- Shadow Grasp
 	-------------------------------------------------
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
@@ -755,13 +755,21 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------------------------------------
 	-- Sunwell Plateau
 		-- Kalecgos
-		-- Sathrovarr
+		[44806] = Defaults(), -- Crazed Rage
 		-- Brutallus
 		-- Felmyst
-		-- Alythess
-		-- Sacrolash
+		-- Eredar Twins
+		[45366] = Defaults(), -- Empower
+		[45230] = Defaults(), -- Pyrogenics
 		-- M'uru
+		[45934] = Defaults(), -- Dark Fiend
+		[46160] = Defaults(), -- Flurry
+		[45996] = Defaults(), -- Darkness
+		[46102] = Defaults(), -- Spell Fury
 		-- Kil'Jaeden
+		[46680] = Defaults(), -- Shadow Spike
+		[46474] = Defaults(), -- Sacrifice of Aveena
+		[46605] = Defaults(), -- Darkness of a Thousand Souls
 	},
 }
 
