@@ -607,13 +607,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- Sunwell Plateau
 		-- Kalecgos
-		-- Sathrovarr
+		[45018] = Defaults(2), -- Arcane Buffet
+		[45032] = Defaults(2), -- Boundless Agony
 		-- Brutallus
+		[46394] = Defaults(5), -- Burn
+		[45150] = Defaults(3), -- Meteor Slash
+		[45185] = Defaults(6), -- Stomp
 		-- Felmyst
-		-- Alythess
-		-- Sacrolash
+		[45855] = Defaults(3), -- Gas Nova
+		[45662] = Defaults(6), -- Encapsulate
+		[45402] = Defaults(2), -- Demonic Vapor
+		[45717] = Defaults(5), -- Fog of Corruption
+		-- Eredar Twins
+		[45256] = Defaults(3), -- Confounding Blow
+		[45270] = Defaults(2), -- Shadowfury
+		[45333] = Defaults(4), -- Conflagration
+		[45347] = Defaults(2), -- Dark Touched
+		[45348] = Defaults(2), -- Fire Touched
+		[46771] = Defaults(3), -- Flame Sear
 		-- M'uru
+		[45996] = Defaults(6), -- Darkness
 		-- Kil'Jaeden
+		[45442] = Defaults(2), -- Soul Flay
+		[45641] = Defaults(6), -- Fire Bloom
+		[45737] = Defaults(2), -- Flame Dart
+		[45885] = Defaults(2), -- Shadow Spike
 	},
 }
 
