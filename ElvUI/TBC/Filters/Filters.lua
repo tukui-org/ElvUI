@@ -744,12 +744,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
 	-- Zul'Aman
-		-- Nalor
+		-- Nalorakk
 		-- Jan'alai
+		[44779] = Defaults(), -- Enrage
 		-- Akil'zon
 		-- Halazzi
-		-- Hexxlord Jin'Zakk
+		[43290] = Defaults(), -- Lynx Flurry
+		-- Hexlord Jin'Zakk
+		[43578] = Defaults(), -- Bloodlust
+		[43430] = Defaults(), -- Avenging Wrath
 		-- Zul'jin
+		[17207] = Defaults(), -- Whirlwind
+		[43213] = Defaults(), -- Flame Whirl
+		[43120] = Defaults(), -- Cyclone
 	-------------------------------------------------
 	-------------------- Phase 5 --------------------
 	-------------------------------------------------
