@@ -726,20 +726,38 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------------------------------------
 	-- The Battle for Mount Hyjal
 		-- Rage Winterchill
+		[31256] = Defaults(), -- Frost Armor
 		-- Anetheron
 		-- Kaz'rogal
 		-- Azgalor
 		-- Archimonde
+		[31540] = Defaults(), -- Frenzy
 	-- Black Temple
 		-- High Warlord Naj'entus
+		[40076] = Defaults(), -- Electric Spur
 		-- Supremus
+		[42055] = Defaults(), -- Volcanic Geyser
 		-- Shade of Akama
+		[34970] = Defaults(), -- Enrage
 		-- Teron Gorefiend
+		[41254] = Defaults(), -- Frenzy
 		-- Gurtogg Bloodboil
+		[40594] = Defaults(), -- Fel Rage
+		[40601] = Defaults(), -- Fury
 		-- Reliquary of Souls
+		[41305] = Defaults(), -- Enrage
+		[41431] = Defaults(), -- Rune Shield
 		-- Mother Shahraz
 		-- Illidari Council
+		[41450] = Defaults(), -- Blessing of Protection
+		[41451] = Defaults(), -- Blessing of Spell Warding
+		[41452] = Defaults(), -- Devotion Aura
+		[41453] = Defaults(), -- Chromatic Resistance Aura
+		[41475] = Defaults(3), -- Reflective Shield
 		-- Illidan Stormrage
+		[40836] = Defaults(), -- Flame Crash
+		[40610] = Defaults(), -- Blaze
+		[40683] = Defaults(), -- Enrage
 	-------------------------------------------------
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
