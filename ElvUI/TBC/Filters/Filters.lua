@@ -711,16 +711,28 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------------------------------------
 	-- Serpentshrine Cavern
 		-- Hydross the Unstable
+		[37935] = Defaults(), -- Cleansing Field
 		-- The Lurker Below
 		-- Leotheras the Blind
+		[37640] = Defaults(), -- Whirlwind
 		-- Fathom-Lord Karathress
+		[38451] = Defaults(), -- Power of Caribdis
+		[38452] = Defaults(), -- Power of Tidalvess
+		[38455] = Defaults(), -- Power of Sharkkis
+		[38516] = Defaults(), -- Cyclone
+		[38373] = Defaults(), -- The Beast Within
 		-- Morogrim Tidewalker
 		-- Lady Vashj
+		[38112] = Defaults(), -- Magic Barrier
 	-- The Eye
 		-- Al'ar
+		[35412] = Defaults(), -- Charge
 		-- Void Reaver
+		[34162] = Defaults(), -- Pounding
 		-- High Astromancer Solarian
 		-- Kael'thas Sunstrider
+		[36981] = Defaults(), -- Whirlwind
+		[36815] = Defaults(), -- Shock Barrier
 	-------------------------------------------------
 	-------------------- Phase 3 --------------------
 	-------------------------------------------------
