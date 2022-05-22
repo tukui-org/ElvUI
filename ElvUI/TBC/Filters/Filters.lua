@@ -587,23 +587,51 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- Zul'Aman
 		-- Nalorakk
+		[42398] = Defaults(2), -- Mangle
 		-- Jan'alai
+		[43299] = Defaults(2), -- Flame Buffet
 		-- Akil'zon
+		[43657] = Defaults(3), -- Electrical Storm
+		[43622] = Defaults(2), -- Static Disruption
 		-- Halazzi
+		[43303] = Defaults(2), -- Flame Shock
 		-- Hexxlord Jin'Zakk
+		[43613] = Defaults(3), -- Cold Stare
+		[43501] = Defaults(2), -- Siphon Soul
 		-- Zul'jin
+		[43150] = Defaults(3), -- Rage
+		[43095] = Defaults(2), -- Paralyze
+		[43093] = Defaults(3), -- Throw
 	-------------------------------------------------
 	-------------------- Phase 5 --------------------
 	-------------------------------------------------
 	-- Sunwell Plateau
 		-- Kalecgos
-		-- Sathrovarr
+		[45018] = Defaults(2), -- Arcane Buffet
+		[45032] = Defaults(2), -- Boundless Agony
 		-- Brutallus
+		[46394] = Defaults(5), -- Burn
+		[45150] = Defaults(3), -- Meteor Slash
+		[45185] = Defaults(6), -- Stomp
 		-- Felmyst
-		-- Alythess
-		-- Sacrolash
+		[45855] = Defaults(3), -- Gas Nova
+		[45662] = Defaults(6), -- Encapsulate
+		[45402] = Defaults(2), -- Demonic Vapor
+		[45717] = Defaults(5), -- Fog of Corruption
+		-- Eredar Twins
+		[45256] = Defaults(3), -- Confounding Blow
+		[45270] = Defaults(2), -- Shadowfury
+		[45333] = Defaults(4), -- Conflagration
+		[45347] = Defaults(2), -- Dark Touched
+		[45348] = Defaults(2), -- Fire Touched
+		[46771] = Defaults(3), -- Flame Sear
 		-- M'uru
+		[45996] = Defaults(6), -- Darkness
 		-- Kil'Jaeden
+		[45442] = Defaults(2), -- Soul Flay
+		[45641] = Defaults(6), -- Fire Bloom
+		[45737] = Defaults(2), -- Flame Dart
+		[45885] = Defaults(2), -- Shadow Spike
 	},
 }
 
@@ -643,97 +671,142 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Karazhan
 		-- Attument the Huntsman
 		-- Moroes
-		[29448]	= Defaults(), -- Vanish
-		[37023]	= Defaults(), -- Enrage
+		[29448] = Defaults(), -- Vanish
+		[37023] = Defaults(), -- Enrage
 		-- Opera Hall Event
-		[30887]	= Defaults(), -- Devotion
-		[30841]	= Defaults(), -- Daring
+		[30887] = Defaults(), -- Devotion
+		[30841] = Defaults(), -- Daring
 		-- Maiden of Virtue
-		[32429]	= Defaults(), -- Draining Touch
+		[32429] = Defaults(), -- Draining Touch
 		-- The Curator
 		-- Terestian Illhoof
-		[29908]	= Defaults(), -- Astral Bite
+		[29908] = Defaults(), -- Astral Bite
 		-- Shade of Aran
-		[29920]	= Defaults(), -- Phasing Invisibility
-		[29921]	= Defaults(), -- Phasing Invisibility
+		[29920] = Defaults(), -- Phasing Invisibility
+		[29921] = Defaults(), -- Phasing Invisibility
 		-- Netherspite
-		[30522]	= Defaults(), -- Nether Burn
-		[30487]	= Defaults(), -- Nether Portal - Perseverence
-		[30491]	= Defaults(), -- Nether Portal - Domination
+		[30522] = Defaults(), -- Nether Burn
+		[30487] = Defaults(), -- Nether Portal - Perseverence
+		[30491] = Defaults(), -- Nether Portal - Domination
 		-- Chess Event
-		[37469]	= Defaults(), -- Poison Cloud
+		[37469] = Defaults(), -- Poison Cloud
 		-- Prince Malchezaar
-		[30859]	= Defaults(), -- Hellfire
+		[30859] = Defaults(), -- Hellfire
 		-- Nightbane
-		[37098]	= Defaults(), -- Rain of Bones
+		[37098] = Defaults(), -- Rain of Bones
 	-- Gruul's Lair
 		-- High King Maulgar
-		[33232]	= Defaults(), -- Flurry
-		[33238]	= Defaults(), -- Whirlwind
-		[33054]	= Defaults(), -- Spell Shield
+		[33232] = Defaults(), -- Flurry
+		[33238] = Defaults(), -- Whirlwind
+		[33054] = Defaults(), -- Spell Shield
 		-- Gruul the Dragonkiller
-		[36300]	= Defaults(), -- Growth
+		[36300] = Defaults(), -- Growth
 	-- Magtheridon's Lair
 		-- Magtheridon
-		[30205]	= Defaults(), -- Shadow Cage
-		[30576]	= Defaults(), -- Quake
-		[30207]	= Defaults(), -- Shadow Grasp
+		[30205] = Defaults(), -- Shadow Cage
+		[30576] = Defaults(), -- Quake
+		[30207] = Defaults(), -- Shadow Grasp
 	-------------------------------------------------
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
 	-- Serpentshrine Cavern
 		-- Hydross the Unstable
+		[37935] = Defaults(), -- Cleansing Field
 		-- The Lurker Below
 		-- Leotheras the Blind
+		[37640] = Defaults(), -- Whirlwind
 		-- Fathom-Lord Karathress
+		[38451] = Defaults(), -- Power of Caribdis
+		[38452] = Defaults(), -- Power of Tidalvess
+		[38455] = Defaults(), -- Power of Sharkkis
+		[38516] = Defaults(), -- Cyclone
+		[38373] = Defaults(), -- The Beast Within
 		-- Morogrim Tidewalker
 		-- Lady Vashj
+		[38112] = Defaults(), -- Magic Barrier
 	-- The Eye
 		-- Al'ar
+		[35412] = Defaults(), -- Charge
 		-- Void Reaver
+		[34162] = Defaults(), -- Pounding
 		-- High Astromancer Solarian
 		-- Kael'thas Sunstrider
+		[36981] = Defaults(), -- Whirlwind
+		[36815] = Defaults(), -- Shock Barrier
 	-------------------------------------------------
 	-------------------- Phase 3 --------------------
 	-------------------------------------------------
 	-- The Battle for Mount Hyjal
 		-- Rage Winterchill
+		[31256] = Defaults(), -- Frost Armor
 		-- Anetheron
 		-- Kaz'rogal
 		-- Azgalor
 		-- Archimonde
+		[31540] = Defaults(), -- Frenzy
 	-- Black Temple
 		-- High Warlord Naj'entus
+		[40076] = Defaults(), -- Electric Spur
 		-- Supremus
+		[42055] = Defaults(), -- Volcanic Geyser
 		-- Shade of Akama
+		[34970] = Defaults(), -- Enrage
 		-- Teron Gorefiend
+		[41254] = Defaults(), -- Frenzy
 		-- Gurtogg Bloodboil
+		[40594] = Defaults(), -- Fel Rage
+		[40601] = Defaults(), -- Fury
 		-- Reliquary of Souls
+		[41305] = Defaults(), -- Enrage
+		[41431] = Defaults(), -- Rune Shield
 		-- Mother Shahraz
 		-- Illidari Council
+		[41450] = Defaults(), -- Blessing of Protection
+		[41451] = Defaults(), -- Blessing of Spell Warding
+		[41452] = Defaults(), -- Devotion Aura
+		[41453] = Defaults(), -- Chromatic Resistance Aura
+		[41475] = Defaults(3), -- Reflective Shield
 		-- Illidan Stormrage
+		[40836] = Defaults(), -- Flame Crash
+		[40610] = Defaults(), -- Blaze
+		[40683] = Defaults(), -- Enrage
 	-------------------------------------------------
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
 	-- Zul'Aman
-		-- Nalor
+		-- Nalorakk
 		-- Jan'alai
+		[44779] = Defaults(), -- Enrage
 		-- Akil'zon
 		-- Halazzi
-		-- Hexxlord Jin'Zakk
+		[43290] = Defaults(), -- Lynx Flurry
+		-- Hexlord Jin'Zakk
+		[43578] = Defaults(), -- Bloodlust
+		[43430] = Defaults(), -- Avenging Wrath
 		-- Zul'jin
+		[17207] = Defaults(), -- Whirlwind
+		[43213] = Defaults(), -- Flame Whirl
+		[43120] = Defaults(), -- Cyclone
 	-------------------------------------------------
 	-------------------- Phase 5 --------------------
 	-------------------------------------------------
 	-- Sunwell Plateau
 		-- Kalecgos
-		-- Sathrovarr
+		[44806] = Defaults(), -- Crazed Rage
 		-- Brutallus
 		-- Felmyst
-		-- Alythess
-		-- Sacrolash
+		-- Eredar Twins
+		[45366] = Defaults(), -- Empower
+		[45230] = Defaults(), -- Pyrogenics
 		-- M'uru
+		[45934] = Defaults(), -- Dark Fiend
+		[46160] = Defaults(), -- Flurry
+		[45996] = Defaults(), -- Darkness
+		[46102] = Defaults(), -- Spell Fury
 		-- Kil'Jaeden
+		[46680] = Defaults(), -- Shadow Spike
+		[46474] = Defaults(), -- Sacrifice of Aveena
+		[46605] = Defaults(), -- Darkness of a Thousand Souls
 	},
 }
 

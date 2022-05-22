@@ -1,6 +1,15 @@
 ### Version 1.72 [ ETA: 🍨 ]
 
-:)
+ActionBars: Stance bar fixes (issue #163)  
+DataTexts: Added noLabel option for combat timer text  
+DataTexts: Fixed spell haste (issue #176)  
+Filters: Added SSC, TK, MH, BT, SWP RaidBuffs  
+Filters: Added SWP RaidDebuffs  
+Locales: Updated deDE (Credits: Dlarge)  
+NamePlates: Fixed class color source option for interrupts  
+UnitFrames: Added option to color health based on pet happiness  
+UnitFrames: Fixed overlapping master looter icon on RaidFrames  
+UnitFrames: Fixed power text getting misplaced onto health if power is hidden (issue #15)  
 
 ___
 ### Version 1.71 [ May 8th 2022 ]
