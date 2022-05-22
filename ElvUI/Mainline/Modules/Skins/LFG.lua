@@ -149,6 +149,7 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 	_G.ReadyStatus:StripTextures() -- Brawl & Solo Shuffle
 	_G.ReadyStatus:SetTemplate('Transparent') -- Brawl & Solo Shuffle
+	S:HandleCloseButton(_G.ReadyStatus.CloseButton) -- Brawl & Solo Shuffle
 
 	-- Artwork background (1)
 	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
