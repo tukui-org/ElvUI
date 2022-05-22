@@ -1146,6 +1146,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Rygelon
 		[362206] = Defaults(6), -- Event Horizon
 		[362137] = Defaults(4), -- Corrupted Wound
+		[362172] = Defaults(4), -- Corrupted Wound
 		[361548] = Defaults(5), -- Dark Eclipse
 	-- The Jailer
 		[362075] = Defaults(6), -- Domination
