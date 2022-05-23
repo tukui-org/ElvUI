@@ -57,7 +57,7 @@ local UnitName = UnitName
 
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
-local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
+local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_SocialGetLastItem = C_Social.GetLastItem
 local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
@@ -2794,7 +2794,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		end
 
 		if activityID or firstQueue.queueData.activityID then
-			fullName = C_LFGList_GetActivityInfoTable(activityID or firstQueue.queueData.activityID)
+			fullName = C_LFGList_GetActivityInfo(activityID or firstQueue.queueData.activityID)
 		end
 
 		if name then
