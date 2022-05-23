@@ -2786,7 +2786,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		local activityID, name, leaderName, fullName, isLeader
 
 		if firstQueue.queueData.lfgListID then
-			local searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
+			local searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID) -- Will be replaced with 'C_LFGList.GetActivityInfoTable: https://wowpedia.fandom.com/wiki/API_C_LFGList.GetActivityInfo'
 			if searchResultInfo then
 				activityID, name, leaderName = searchResultInfo.activityID, searchResultInfo.name, searchResultInfo.leaderName
 				isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
