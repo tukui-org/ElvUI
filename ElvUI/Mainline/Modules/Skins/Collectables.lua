@@ -195,6 +195,10 @@ local function SkinMountFrame()
 	_G.MountJournalFilterButton:ClearAllPoints()
 	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
+	S:HandleCloseButton(_G.MountJournalFilterButton.ResetButton)
+	_G.MountJournalFilterButton.ResetButton:ClearAllPoints()
+	_G.MountJournalFilterButton.ResetButton:Point('TOP', _G.MountJournalFilterButton, 'RIGHT', -8, 32)
+
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
 	MountJournal.MountDisplay:StripTextures()
