@@ -394,6 +394,8 @@ local function SkinHeirloomFrame()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
 
+	S:HandleButton(_G.HeirloomsJournal.FilterButton)
+
 	HeirloomsJournal.progressBar.border:Hide()
 	HeirloomsJournal.progressBar:DisableDrawLayer('BACKGROUND')
 	HeirloomsJournal.progressBar:SetStatusBarTexture(E.media.normTex)
