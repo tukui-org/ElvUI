@@ -2,7 +2,7 @@
 ## Notes: Options for ElvUI.
 ## Author: Elv, Simpy
 ## Version: 1.07
-## Interface: 90200
+## Interface: 90205
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
