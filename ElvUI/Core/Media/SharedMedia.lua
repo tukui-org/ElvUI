@@ -210,6 +210,7 @@ AddMedia('logo','Rainbow')
 AddMedia('logo','Hibiscus')
 AddMedia('logo','Gem')
 AddMedia('logo','Beer')
+AddMedia('logo','PalmTree')
 AddMedia('logo','TyroneBiggums')
 AddMedia('logo','SuperBear')
 

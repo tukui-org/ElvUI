@@ -1,8 +1,14 @@
-### Version 2.47 [ ETA: 🍨 ]
+### Version 2.48 [ ETA: 🍨 ]
+
+
+
+___
+### Version 2.47 [ May 31th 2022 ]
 
 ActionBars: Stance bar fixes (issue #163)  
 DataTexts: Added noLabel option for combat timer text  
-DataTexts: Fixed spell haste (issue #176)  
+DataTexts: Added spell haste (ticket #176)  
+DataTexts: Fixed spell hit  
 Filters: Added SSC, TK, MH, BT, SWP RaidBuffs  
 Filters: Added SWP RaidDebuffs  
 Locales: Updated deDE (Credits: Dlarge)  
