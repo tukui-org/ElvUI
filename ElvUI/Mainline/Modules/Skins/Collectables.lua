@@ -195,6 +195,10 @@ local function SkinMountFrame()
 	_G.MountJournalFilterButton:ClearAllPoints()
 	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
+	S:HandleCloseButton(_G.MountJournalFilterButton.ResetButton)
+	_G.MountJournalFilterButton.ResetButton:ClearAllPoints()
+	_G.MountJournalFilterButton.ResetButton:Point('TOP', _G.MountJournalFilterButton, 'RIGHT', -8, 32)
+
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
 	MountJournal.MountDisplay:StripTextures()
@@ -248,6 +252,9 @@ local function SkinPetFrame()
 	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
 	_G.PetJournalFilterButton:ClearAllPoints()
 	_G.PetJournalFilterButton:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
+	S:HandleCloseButton(_G.PetJournalFilterButton.ResetButton)
+	_G.PetJournalFilterButton.ResetButton:ClearAllPoints()
+	_G.PetJournalFilterButton.ResetButton:Point('TOP', _G.PetJournalFilterButton, 'RIGHT', -8, 32)
 	_G.PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.PetJournalListScrollFrameScrollBar)
 	JournalScrollButtons(PetJournal.listScroll)
@@ -342,9 +349,12 @@ end
 
 local function SkinToyFrame()
 	local ToyBox = _G.ToyBox
-	S:HandleButton(_G.ToyBoxFilterButton)
 	S:HandleEditBox(ToyBox.searchBox)
+	S:HandleButton(_G.ToyBoxFilterButton)
 	_G.ToyBoxFilterButton:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
+	S:HandleCloseButton(_G.ToyBoxFilterButton.ResetButton)
+	_G.ToyBoxFilterButton.ResetButton:ClearAllPoints()
+	_G.ToyBoxFilterButton.ResetButton:Point('TOP', _G.ToyBoxFilterButton, 'RIGHT', -8, 32)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
@@ -388,13 +398,16 @@ end
 local function SkinHeirloomFrame()
 	local HeirloomsJournal = _G.HeirloomsJournal
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
-	_G.HeirloomsJournalFilterButton:Point('LEFT', HeirloomsJournal.SearchBox, 'RIGHT', 2, 0)
-	S:HandleButton(_G.HeirloomsJournalFilterButton)
 	HeirloomsJournal.iconsFrame:StripTextures()
 
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
+
+	S:HandleButton(_G.HeirloomsJournal.FilterButton)
+	S:HandleCloseButton(_G.HeirloomsJournal.FilterButton.ResetButton)
+	_G.HeirloomsJournal.FilterButton.ResetButton:ClearAllPoints()
+	_G.HeirloomsJournal.FilterButton.ResetButton:Point('TOP', _G.HeirloomsJournal.FilterButton, 'RIGHT', -8, 32)
 
 	HeirloomsJournal.progressBar.border:Hide()
 	HeirloomsJournal.progressBar:DisableDrawLayer('BACKGROUND')
@@ -462,8 +475,11 @@ local function SkinTransmogFrames()
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
-	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
+	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
+	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
+	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
+	WardrobeCollectionFrame.FilterButton.ResetButton:Point('TOP', WardrobeCollectionFrame.FilterButton, 'RIGHT', -8, 32)
 	S:HandleDropDownBox(_G.WardrobeCollectionFrameWeaponDropDown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 

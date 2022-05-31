@@ -1037,6 +1037,7 @@ P.chat = {
 	tabSelectedTextColor = { r = 1, g = 1, b = 1 },
 	tabSelectorColor = { r = .3, g = 1, b = .3 },
 	timeStampFormat = 'NONE',
+	timeStampLocalTime = false,
 	keywords = 'ElvUI',
 	separateSizes = false,
 	panelWidth = 412,

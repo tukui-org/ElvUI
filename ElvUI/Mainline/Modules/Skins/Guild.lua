@@ -58,7 +58,7 @@ function S:Blizzard_GuildUI()
 		end
 	end
 
-	for i=1,5 do
+	for i = 1, 5 do
 		S:HandleTab(_G['GuildFrameTab'..i])
 	end
 
@@ -76,13 +76,13 @@ function S:Blizzard_GuildUI()
 	S:HandleScrollBar(_G.GuildRosterContainerScrollBar)
 	S:HandleCheckBox(_G.GuildRosterShowOfflineButton)
 
-	for i=1, 4 do
+	for i = 1, 4 do
 		_G['GuildRosterColumnButton'..i]:StripTextures(true)
 	end
 
 	S:HandleDropDownBox(_G.GuildRosterViewDropdown, 200)
 
-	for i=1, 14 do
+	for i = 1, 14 do
 		local button = _G['GuildRosterContainerButton'..i]
 		local header = button and button.header
 		if header then
@@ -92,8 +92,8 @@ function S:Blizzard_GuildUI()
 
 	--Detail Frame
 	_G.GuildMemberDetailFrame:SetTemplate('Transparent')
-	_G.GuildMemberNoteBackground:SetTemplate('Transparent')
-	_G.GuildMemberOfficerNoteBackground:SetTemplate('Transparent')
+	_G.GuildMemberNoteBackground.NineSlice:SetTemplate('Transparent')
+	_G.GuildMemberOfficerNoteBackground.NineSlice:SetTemplate('Transparent')
 	_G.GuildMemberRankDropdown:SetFrameLevel(_G.GuildMemberRankDropdown:GetFrameLevel() + 5)
 	S:HandleDropDownBox(_G.GuildMemberRankDropdown, 175)
 
@@ -112,7 +112,7 @@ function S:Blizzard_GuildUI()
 
 	--News
 	_G.GuildNewsFrame:StripTextures()
-	for i=1, 17 do
+	for i = 1, 17 do
 		local button = _G['GuildNewsContainerButton'..i]
 		if button and button.header then
 			button.header:Kill()
@@ -135,6 +135,7 @@ function S:Blizzard_GuildUI()
 	S:HandleScrollBar(_G.GuildInfoFrameInfoMOTDScrollFrameScrollBar)
 
 	_G.GuildInfoFrameTab1:StripTextures()
+	_G.GuildInfoFrameTab1:SetTemplate('Transparent')
 
 	local GuildInfoFrameInfo = _G.GuildInfoFrameInfo
 	local backdrop1 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
@@ -161,7 +162,7 @@ function S:Blizzard_GuildUI()
 	_G.GuildTextEditContainer.NineSlice:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar)
 
-	for i=1, _G.GuildTextEditFrame:GetNumChildren() do
+	for i = 1, _G.GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, _G.GuildTextEditFrame:GetChildren())
 		if child:GetName() == 'GuildTextEditFrameCloseButton' and child:GetWidth() < 33 then
 			S:HandleCloseButton(child)
@@ -176,7 +177,7 @@ function S:Blizzard_GuildUI()
 	GuildLogFrame:SetTemplate('Transparent')
 
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
-	for i=1, GuildLogFrame:GetNumChildren() do
+	for i = 1, GuildLogFrame:GetNumChildren() do
 		local child = select(i, GuildLogFrame:GetChildren())
 		if child:GetName() == 'GuildLogFrameCloseButton' and child:GetWidth() < 33 then
 			S:HandleCloseButton(child)
@@ -186,7 +187,7 @@ function S:Blizzard_GuildUI()
 	end
 
 	--Perks
-	for i=1, 9 do
+	for i = 1, 9 do
 		local button = _G['GuildPerksContainerButton'..i]
 		button:StripTextures()
 		button:SetTemplate('Transparent')
@@ -198,7 +199,7 @@ function S:Blizzard_GuildUI()
 	--Rewards
 	S:HandleScrollBar(_G.GuildRewardsContainerScrollBar)
 
-	for i=1, 8 do
+	for i = 1, 8 do
 		local button = _G['GuildRewardsContainerButton'..i]
 		button:StripTextures()
 

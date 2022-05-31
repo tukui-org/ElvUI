@@ -323,6 +323,7 @@ function E:UpdateMedia()
 	if E.private.chat.enable then
 		-- Chat Tab Selector Color
 		E:UpdateClassColor(E.db.chat.tabSelectorColor)
+		E:UpdateClassColor(E.db.chat.tabSelectedTextColor)
 
 		-- Chat Panel Background Texture
 		local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel

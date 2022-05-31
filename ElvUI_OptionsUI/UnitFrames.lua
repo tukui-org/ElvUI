@@ -573,9 +573,9 @@ end
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Health"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
-	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 3, attachToValues)
-	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 4, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 5, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
+	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 5, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 6, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 
 	config.args.textGroup = ACH:Group(L["Text Options"], nil, 10)
 	config.args.textGroup.inline = true
@@ -590,6 +590,10 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 
 	if groupName == 'pet' or groupName == 'raidpet' then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
+
+		if groupName == 'pet' and E.myclass == 'HUNTER' then
+			config.args.colorHappiness = ACH:Toggle(L["Color by Happiness"], nil, 3)
+		end
 	end
 
 	return config
@@ -1099,10 +1103,10 @@ Colors.happiness.args['2'] = ACH:Color(L["Content"], nil, 2)
 Colors.happiness.args['3'] = ACH:Color(L["Happy"], nil, 3)
 
 Colors.selectionGroup = ACH:Group(L["Selection"], nil, 7, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.selection[n], P.unitframe.colors.selection[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.selection[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
-Colors.selectionGroup.args['0'] = ACH:Color(L["Hostile"], nil, 0)
-Colors.selectionGroup.args['1'] = ACH:Color(L["Unfriendly"], nil, 1)
-Colors.selectionGroup.args['2'] = ACH:Color(L["Neutral"], nil, 2)
-Colors.selectionGroup.args['3'] = ACH:Color(L["Friendly"], nil, 3)
+Colors.selectionGroup.args['0'] = ACH:Color(L["Hostile"], nil, 1)
+Colors.selectionGroup.args['1'] = ACH:Color(L["Unfriendly"], nil, 2)
+Colors.selectionGroup.args['2'] = ACH:Color(L["Neutral"], nil, 3)
+Colors.selectionGroup.args['3'] = ACH:Color(L["Friendly"], nil, 4)
 Colors.selectionGroup.args['5'] = ACH:Color(L["Player"], nil, 5) -- Player Extended
 Colors.selectionGroup.args['6'] = ACH:Color(L["Party"], nil, 6)
 Colors.selectionGroup.args['7'] = ACH:Color(L["Party PVP"], nil, 7)
@@ -1134,6 +1138,12 @@ Colors.debuffHighlight.args.Magic = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG7
 Colors.debuffHighlight.args.Curse = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG8"], nil, 5, true)
 Colors.debuffHighlight.args.Disease = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG10"], nil, 6, true)
 Colors.debuffHighlight.args.Poison = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG9"], nil, 7, true)
+
+Colors.threatGroup = ACH:Group(L["Threat"], nil, 11, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.threat[n], P.unitframe.colors.threat[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.threat[n] t.r, t.g, t.b, t.a = r, g, b UF:Update_AllFrames() end)
+Colors.threatGroup.args['0'] = ACH:Color(L["Low Threat"], nil, 1)
+Colors.threatGroup.args['1'] = ACH:Color(L["Gaining Threat"], nil, 2)
+Colors.threatGroup.args['2'] = ACH:Color(L["Losing Threat"], nil, 3)
+Colors.threatGroup.args['3'] = ACH:Color(L["Securely Tanking"], nil, 4)
 
 Colors.classResourceGroup = ACH:Group(L["Class Resources"], nil, -10, nil, function(info) local t, d = E.db.unitframe.colors.classResources[info[#info]], P.unitframe.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 -- Colors.classResourceGroup.args.transparentClasspower = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 1, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end)

@@ -170,8 +170,7 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
 	TradeSkillFrame.DetailsFrame.GuildFrame:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame:SetTemplate('Transparent')
-	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
-	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate('Transparent')
+	TradeSkillFrame.DetailsFrame.GuildFrame.Container.NineSlice:SetTemplate('Transparent')
 	--S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 

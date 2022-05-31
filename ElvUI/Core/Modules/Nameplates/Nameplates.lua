@@ -136,9 +136,6 @@ function NP:CVarReset()
 end
 
 function NP:SetCVars()
-	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
-		NP:SetCVar('showQuestTrackingTooltips', 1)
-	end
 
 	if NP.db.clampToScreen then
 		NP:SetCVar('nameplateOtherTopInset', 0.08)

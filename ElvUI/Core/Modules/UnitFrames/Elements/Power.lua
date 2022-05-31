@@ -73,7 +73,7 @@ function UF:Configure_Power(frame)
 		E:SetSmoothing(power, UF.db.smoothbars)
 
 		--Text
-		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo, true)
 		power.value:ClearAllPoints()
 		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)

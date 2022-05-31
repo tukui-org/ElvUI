@@ -73,6 +73,7 @@ local function Update(self)
 			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 			local perc = (maxHealth > 0 and health/maxHealth) or 0
 
+			-- color tables are class updated in UpdateMedia
 			if perc <= element.lowHealthThreshold / 2 then
 				ShowIndicators(element, isTarget, NP.db.colors.lowHealthHalf)
 			elseif perc <= element.lowHealthThreshold then

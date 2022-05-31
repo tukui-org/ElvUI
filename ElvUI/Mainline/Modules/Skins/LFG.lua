@@ -148,6 +148,11 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyDialogBackground:SetInside()
 	_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
+	-- Brawl & Solo Shuffle
+	_G.ReadyStatus:StripTextures()
+	_G.ReadyStatus:SetTemplate('Transparent')
+	S:HandleCloseButton(_G.ReadyStatus.CloseButton)
+
 	-- Artwork background (1)
 	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 	_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
@@ -531,9 +536,10 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.MythicPlusRating.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PvpItemLevel.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.CrossFactionGroup.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
