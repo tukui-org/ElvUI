@@ -319,16 +319,16 @@ do --this can save some main file locals
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
-		z['Luckyone-Shazzrah']		= ElvGreen -- Hunter 1
-		z['Luckyfear-Shazzrah']		= ElvGreen -- Warlock
-		z['Luckydruid-Shazzrah']	= ElvGreen -- Druid
-		z['Luckypriest-Shazzrah']	= ElvGreen -- Priest
-		z['Luckyshaman-Shazzrah']	= ElvGreen -- Shaman
-		z['Luckyone-Gehennas']		= ElvGreen -- Hunter 2
-		z['Luckydruid-Gehennas']	= ElvGreen -- Druid
-		z['Luckypriest-Gehennas']	= ElvGreen -- Priest
-		z['Luckyshaman-Gehennas']	= ElvGreen -- Shaman
-		z['Luckyhunter-Gehennas']	= ElvGreen -- Hunter 3
+		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter 1
+		z['Luckyfear-Shazzrah']		= ElvBlue -- Warlock
+		z['Luckydruid-Shazzrah']	= ElvBlue -- Druid
+		z['Luckypriest-Shazzrah']	= ElvBlue -- Priest
+		z['Luckyshaman-Shazzrah']	= ElvBlue -- Shaman
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter 2
+		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
+		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
+		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
+		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter 3
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
@@ -357,18 +357,18 @@ do --this can save some main file locals
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvGreen -- Druid
-		z['Luckypriest-LaughingSkull']	= ElvGreen -- Priest
-		z['Luckymonkas-LaughingSkull']	= ElvGreen -- Monk
-		z['Luckydk-LaughingSkull']		= ElvGreen -- DK
-		z['Luckyhunter-LaughingSkull']	= ElvGreen -- Hunter
-		z['Unluckyone-LaughingSkull']	= ElvGreen -- Shaman
-		z['Notlucky-LaughingSkull']		= ElvGreen -- Warrior
-		z['Luckymage-LaughingSkull']	= ElvGreen -- Mage
-		z['Luckydh-LaughingSkull']		= ElvGreen -- DH
-		z['Luckywl-LaughingSkull']		= ElvGreen -- Warlock
-		z['Luckyrogue-LaughingSkull']	= ElvGreen -- Rogue
-		z['Luckypala-LaughingSkull']	= ElvGreen -- Paladin
+		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid
+		z['Luckypriest-LaughingSkull']	= ElvBlue -- Priest
+		z['Luckymonkas-LaughingSkull']	= ElvBlue -- Monk
+		z['Luckydk-LaughingSkull']		= ElvBlue -- DK
+		z['Luckyhunter-LaughingSkull']	= ElvBlue -- Hunter
+		z['Unluckyone-LaughingSkull']	= ElvBlue -- Shaman
+		z['Notlucky-LaughingSkull']		= ElvBlue -- Warrior
+		z['Luckymage-LaughingSkull']	= ElvBlue -- Mage
+		z['Luckydh-LaughingSkull']		= ElvBlue -- DH
+		z['Luckywl-LaughingSkull']		= ElvBlue -- Warlock
+		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
+		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
