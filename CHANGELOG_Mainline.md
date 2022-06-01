@@ -1,4 +1,9 @@
-### Version 12.80 [ ETA: 🍨 ]
+### Version 12.81 [ ETA: 🍨 ]
+
+
+
+___
+### Version 12.80 [ May 31th 2022 ]
 
 ActionBars: Stance bar fixes (issue #163)  
 DataTexts: Added noLabel option for combat timer text  
