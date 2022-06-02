@@ -440,12 +440,12 @@ do --this can save some main file locals
 		z['Teepac-Area52']		= TyroneBiggums
 		z['Teekettle-Area52']	= TyroneBiggums
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		z['Twunkie-Area52']			= itsMis
+		z['Misoracle-Area52']		= itsMis
+		z['MisMayhem-Area52']		= itsMis
 		z['Misdîrect-Spirestone']	= itsMis
-		z['Misoracle-Spirestone']	= itsMis
 		z['MisLight-Spirestone']	= itsMis
 		z['MisDivine-Spirestone']	= itsMis
-		z['MisMayhem-Spirestone']	= itsMis
-		z['Mismonk-Spirestone']		= itsMis
 		z['Misillidan-Spirestone']	= itsMis
 		z['Mispel-Spirestone']		= itsMis
 		z['Misdecay-Spirestone']	= itsMis
