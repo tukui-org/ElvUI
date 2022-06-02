@@ -72,6 +72,7 @@ G.datatexts = {
 		Guild = { Label = '', NoLabel = false },
 		Haste = { Label = '', NoLabel = false, decimalLength = 1 },
 		Hit = { Label = '', NoLabel = false, decimalLength = 1 },
+		Intellect = { Label = '', NoLabel = false},
 		Mastery = { Label = '', NoLabel = false, decimalLength = 1 },
 		MovementSpeed = { Label = '', NoLabel = false, decimalLength = 1 },
 		QuickJoin = { Label = '', NoLabel = false },
