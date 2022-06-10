@@ -288,7 +288,7 @@ function E:GetColorTable(data)
 	end
 end
 
-function E:UpdateMedia(onlyMedia)
+function E:UpdateMedia(fromLSM)
 	if not E.db.general or not E.private.general then return end
 
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
@@ -297,7 +297,7 @@ function E:UpdateMedia(onlyMedia)
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
 
-	if onlyMedia then
+	if fromLSM then
 		E:UpdateBlizzardFonts()
 
 		return
