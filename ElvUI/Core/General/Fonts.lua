@@ -54,8 +54,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_LargeNamePlateFixed,	LARGE, db.nameplateLargeFontSize, db.nameplateLargeFontOutline)	-- 12
 	end
 
-	if db.replaceBlizzFonts then
-		_G.STANDARD_TEXT_FONT	= NORMAL
+	if db.replaceBlizzFonts and (_G.STANDARD_TEXT_FONT ~= NORMAL) then
+		_G.STANDARD_TEXT_FONT = NORMAL
 
 		local size		= E.db.general.fontSize
 		local enormous	= size * 1.9
