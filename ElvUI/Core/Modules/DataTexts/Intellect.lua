@@ -10,13 +10,18 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local displayString, lastPanel = ''
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayString, ITEM_MOD_INTELLECT_SHORT, UnitStat('player', LE_UNIT_STAT_INTELLECT))
+	local intellect = UnitStat('player', LE_UNIT_STAT_INTELLECT)
+	if E.global.datatexts.settings.Intellect.NoLabel then
+		self.text:SetFormattedText(displayString, intellect)
+	else
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Intellect.Label ~= '' and E.global.datatexts.settings.Intellect.Label or ITEM_MOD_INTELLECT_SHORT..': ', intellect)
+	end
 
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s: ', hex, '%.f|r')
+	displayString = strjoin('', E.global.datatexts.settings.Intellect.NoLabel and '' or '%s: ', hex, '%.f|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
