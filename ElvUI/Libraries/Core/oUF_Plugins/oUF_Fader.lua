@@ -68,10 +68,6 @@ local function Update(self, _, unit)
 		if element.UpdateRange then
 			element.UpdateRange(self, unit)
 		end
-		if element.RangeAlpha then
-			ToggleAlpha(self, element, element.RangeAlpha)
-		end
-		return
 	end
 
 	-- normal fader
@@ -92,6 +88,11 @@ local function Update(self, _, unit)
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
+
+		-- range fader
+		if element.Range and element.RangeAlpha == element.MinAlpha then
+			ToggleAlpha(self, element, element.MinAlpha)
+		end
 	else
 		if element.Delay then
 			if element.DelayAlpha then
@@ -104,6 +105,23 @@ local function Update(self, _, unit)
 			ToggleAlpha(self, element, element.MinAlpha)
 		end
 	end
+
+    -- range fader
+    if element.Range then
+        if element.RangeAlpha and
+            not (element.Casting or
+				element.Combat or 
+				element.PlayerTarget or
+				element.UnitTarget or
+				element.Focus or
+                element.Health or
+				element.Power or
+				element.Vehicle or
+				element.Hover)
+		then
+            ToggleAlpha(self, element, element.RangeAlpha)
+        end
+    end
 end
 
 local function ForceUpdate(element)
