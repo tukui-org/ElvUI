@@ -96,7 +96,7 @@ General.args.voicechatGroup.args.voicePanelAlpha = ACH:Range(L["Alpha"], L["Chan
 
 General.args.timestampGroup = ACH:Group(L["TIMESTAMPS_LABEL"], nil, 95)
 General.args.timestampGroup.args.timeStampLocalTime = ACH:Toggle(L["Local Time"], L["If not set to true then the server time will be displayed instead."], 1)
-General.args.timestampGroup.args.timeStampFormat = ACH:Select(L["TIMESTAMPS_LABEL"], L["OPTION_TOOLTIP_TIMESTAMPS"], 2, { ['NONE'] = L["None"], ['%I:%M '] = '03:27', ['%I:%M:%S '] = '03:27:32', ['%I:%M %p '] = '03:27 PM', ['%I:%M:%S %p '] = '03:27:32 PM', ['%H:%M '] = '15:27', ['%H:%M:%S '] =	'15:27:32' })
+General.args.timestampGroup.args.timeStampFormat = ACH:Select(L["TIMESTAMPS_LABEL"], L["OPTION_TOOLTIP_TIMESTAMPS"], 2, { ['NONE'] = L["None"], ['%I:%M '] = '03:27', ['%I:%M:%S '] = '03:27:32', ['%I:%M %p '] = '03:27 PM', ['%I:%M:%S %p '] = '03:27:32 PM', ['%H:%M '] = '15:27', ['%H:%M:%S '] = '15:27:32' })
 General.args.timestampGroup.args.useCustomTimeColor = ACH:Toggle(L["Custom Timestamp Color"], nil, 3, nil, nil, nil, nil, nil, nil, function() return E.db.chat.timeStampFormat == 'NONE' end)
 General.args.timestampGroup.args.customTimeColor = ACH:Color('', nil, 4, nil, nil, function(info) local t, d = E.db.chat[info[#info]], P.chat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.chat[info[#info]] t.r, t.g, t.b = r, g, b end, nil, function() return (E.db.chat.timeStampFormat == 'NONE' or not E.db.chat.useCustomTimeColor) end)
 
