@@ -1,6 +1,8 @@
 ### Version 2.48 [ ETA: 🍨 ]
 
-
+ActionBars: Fixed bar backdrop multiplier (ticket #245)  
+DataTexts: Added Diablo Immortal and Warcraft Arclight Rumble support for Friends  
+DataTexts: Added NoLabel option for Intellect  
 
 ___
 ### Version 2.47 [ May 31th 2022 ]
