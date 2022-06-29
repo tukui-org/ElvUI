@@ -513,18 +513,18 @@ function S:Ace3_MetaIndex(k, v)
 	end
 end
 
+function S:Ace3_ColorizeEnable(L)
+	S.Ace3_L = L
+
+	-- Special Enable Coloring
+	S.Ace3_EnableMatch = '^|?c?[Ff]?[Ff]?%x?%x?%x?%x?%x?%x?' .. E:EscapeString(S.Ace3_L.Enable) .. '|?r?$'
+	S.Ace3_EnableOff = format('|cffff3333%s|r', S.Ace3_L.Enable)
+	S.Ace3_EnableOn = format('|cff33ff33%s|r', S.Ace3_L.Enable)
+end
+
 local lastMinor = 0
 function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 	if not lib or (not minor or minor < minorGUI) then return end
-
-	if not S.Ace3_L and not earlyLoad then
-		S.Ace3_L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
-
-		-- Special Enable Coloring
-		if not S.Ace3_EnableMatch then S.Ace3_EnableMatch = '^|?c?[Ff]?[Ff]?%x?%x?%x?%x?%x?%x?' .. E:EscapeString(S.Ace3_L.Enable) .. '|?r?$' end
-		if not S.Ace3_EnableOff then S.Ace3_EnableOff = format('|cffff3333%s|r', S.Ace3_L.Enable) end
-		if not S.Ace3_EnableOn then S.Ace3_EnableOn = format('|cff33ff33%s|r', S.Ace3_L.Enable) end
-	end
 
 	local earlyContainer, earlyWidget
 	local oldMinor = lastMinor

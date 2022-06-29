@@ -1,5 +1,6 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('Distributor')
+local S = E:GetModule('Skins')
 
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = { Blank = function() return '' end }
@@ -115,6 +116,10 @@ E:AddLib('AceConfig', 'AceConfig-3.0-ElvUI')
 E:AddLib('AceConfigDialog', 'AceConfigDialog-3.0-ElvUI')
 E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
+
+if E.private.skins.ace3Enable then
+	S:Ace3_ColorizeEnable(L)
+end
 
 local UnitName = UnitName
 local UnitExists = UnitExists
