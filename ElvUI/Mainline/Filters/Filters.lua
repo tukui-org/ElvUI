@@ -728,6 +728,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
+	-- Grimrail Depot
 	-- Iron Docks
 		[163276] = Defaults(), -- Shredded Tendons
 		[162415] = Defaults(), -- Time to Feed
@@ -1240,6 +1241,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
+	-- Grimrail Depot
 	-- Iron Docks
 		[164426] = Defaults(), -- Reckless Provocation
 		[173091] = Defaults(), -- Champion's Presence
@@ -1272,6 +1274,23 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[228575] = Defaults(), -- Alluring Aura
 		[233210] = Defaults(), -- Whip Rage
 	-- Operation Mechagon
+		[298651] = Defaults(), -- Pedal to the Metal 1
+		[299164] = Defaults(), -- Pedal to the Metal 2
+		[303941] = Defaults(), -- Defensive Countermeasure (Junkyard)
+		[297133] = Defaults(), -- Defensive Countermeasure (Workshop)
+		[299153] = Defaults(), -- Turbo Boost
+		[301689] = Defaults(), -- Charged Coil
+		[300207] = Defaults(), -- Shock Coil
+		[300414] = Defaults(), -- Enrage
+		[296080] = Defaults(), -- Haywire
+		[293729] = Defaults(), -- Tune Up
+		[282801] = Defaults(), -- Platinum Plating (Stacking)
+		[285388] = Defaults(), -- Vent Jets
+		[295169] = Defaults(), -- Capacitor Discharge
+		[283565] = Defaults(), -- Maximum Thrust
+		[293930] = Defaults(), -- Overclock
+		[291946] = Defaults(), -- Venting Flames
+		[294290] = Defaults(), -- Process Waste
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
