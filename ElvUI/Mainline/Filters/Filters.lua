@@ -748,7 +748,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[172771] = Defaults(), -- Incendiary Slug
 		[173307] = Defaults(), -- Serrated Spear
 		[169341] = Defaults(), -- Demoralizing Roar
-	-- Return to Karazhan
+	-- Return to Karazhan: Upper
+	-- Return to Karazhan: Lower
 	-- Operation Mechagon
 		[291928] = Defaults(), -- Giga-Zap
 		[292267] = Defaults(), -- Giga-Zap
@@ -1213,7 +1214,15 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[162424] = Defaults(), -- Feeding Frenzy
 		[167232] = Defaults(), -- Bladestorm
 		[178412] = Defaults(), -- Flurry
-	-- Return to Karazhan
+	-- Return to Karazhan: Upper
+		[228254] = Defaults(), -- Soul Leech
+		[227529] = Defaults(), -- Unstable Energy
+		[227254] = Defaults(), -- Evocation
+		[227257] = Defaults(), -- Overload
+		[228362] = Defaults(), -- Siphon Energy
+		[373388] = Defaults(), -- Nightmare Cloud
+		[227270] = Defaults(), -- Arc Lightning
+	-- Return to Karazhan: Lower
 	-- Operation Mechagon
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
