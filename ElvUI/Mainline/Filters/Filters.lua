@@ -1236,6 +1236,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[373388] = Defaults(), -- Nightmare Cloud
 		[227270] = Defaults(), -- Arc Lightning
 	-- Return to Karazhan: Lower
+		[227817] = Defaults(), -- Holy Bulwark
+		[228225] = Defaults(), -- Sultry Heat
+		[228895] = Defaults(), -- Enrage (100/100)
+		[232156] = Defaults(), -- Spectral Service
+		[232142] = Defaults(), -- Flashing Forks
+		[227931] = Defaults(), -- In The Spotlight
+		[227872] = Defaults(), -- Ghastly Purge
+		[233669] = Defaults(), -- Dinner Party
+		[227999] = Defaults(), -- Pennies From Heaven
+		[228729] = Defaults(), -- Eminence (Stacking)
+		[227983] = Defaults(), -- Rapid Fan
+		[228575] = Defaults(), -- Alluring Aura
+		[233210] = Defaults(), -- Whip Rage
 	-- Operation Mechagon
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
