@@ -1186,6 +1186,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Iron Docks
+		[164426] = Defaults(), -- Reckless Provocation
+		[173091] = Defaults(), -- Champion's Presence
+		[373724] = Defaults(), -- Blood Barrier
+		[172943] = Defaults(), -- Brutal Inspiration
+		[173455] = Defaults(), -- Pit Fighter
+		[162424] = Defaults(), -- Feeding Frenzy
+		[167232] = Defaults(), -- Bladestorm
+		[178412] = Defaults(), -- Flurry
 	-- Return to Karazhan
 	-- Operation Mechagon
 	----------------------------------------------------------
