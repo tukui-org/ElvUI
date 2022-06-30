@@ -729,6 +729,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Iron Docks
+		[163276] = Defaults(), -- Shredded Tendons
+		[162415] = Defaults(), -- Time to Feed
+		[168398] = Defaults(), -- Rapid Fire Targeting
+		[373570] = Defaults(), -- Hypnosis
+		[373607] = Defaults(), -- Shadowy Barrier (Hypnosis)
+		[172889] = Defaults(), -- Charging Slash
+		[374300] = Defaults(), -- Restoration (6% HP/MP)
+		[374295] = Defaults(), -- Restoration (20% HP/MP)
+		[164504] = Defaults(), -- Intimidated
+		[172631] = Defaults(), -- Knocked Down
+		[172636] = Defaults(), -- Slippery Grease
+		[158341] = Defaults(), -- Gushing Wounds
+		[167240] = Defaults(), -- Leg Shot
+		[373509] = Defaults(), -- Shadow Claws (Stacking)
+		[173105] = Defaults(), -- Whirling Chains
+		[173324] = Defaults(), -- Jagged Caltrops
+		[172771] = Defaults(), -- Incendiary Slug
+		[173307] = Defaults(), -- Serrated Spear
+		[169341] = Defaults(), -- Demoralizing Roar
 	-- Return to Karazhan
 	-- Operation Mechagon
 		[291928] = Defaults(), -- Giga-Zap
