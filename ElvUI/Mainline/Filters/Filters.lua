@@ -749,6 +749,19 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[173307] = Defaults(), -- Serrated Spear
 		[169341] = Defaults(), -- Demoralizing Roar
 	-- Return to Karazhan: Upper
+		[229248] = Defaults(), -- Fel Beam
+		[227592] = Defaults(6), -- Frostbite
+		[228252] = Defaults(), -- Shadow Rend
+		[227502] = Defaults(), -- Unstable Mana
+		[228261] = Defaults(6), -- Flame Wreath
+		[229241] = Defaults(), -- Acquiring Target
+		[230083] = Defaults(6), -- Nullification
+		[230221] = Defaults(), -- Absorbed Mana
+		[228249] = Defaults(5), -- Inferno Bolt 1
+		[228958] = Defaults(5), -- Inferno Bolt 2
+		[229159] = Defaults(), -- Chaotic Shadows
+		[227465] = Defaults(), -- Power Discharge
+		[229083] = Defaults(), -- Burning Blast (Stacking)
 	-- Return to Karazhan: Lower
 	-- Operation Mechagon
 		[291928] = Defaults(), -- Giga-Zap
