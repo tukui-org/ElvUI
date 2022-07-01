@@ -4,6 +4,8 @@ ActionBars: Fixed bar backdrop multiplier (ticket #245)
 DataTexts: Added Diablo Immortal and Warcraft Arclight Rumble support for Friends  
 DataTexts: Added NoLabel option for Intellect  
 DataTexts: Removed faction restriction from Friends invite  
+Filters: Added support for season 4 Affix and Dungeons  
+Filters: Updated for Castle Nathria and Sanctum of Domination  
 
 ___
 ### Version 12.80 [ May 31th 2022 ]
