@@ -725,6 +725,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[366297] = Defaults(6), -- Deconstruct (Tank Debuff)
 		[366288] = Defaults(6), -- Force Slam (Stun)
 	-- Shadowlands Season 4
+		[373364] = Defaults(), -- Vampiric Claws
+		[373429] = Defaults(), -- Carrion Swarm
+		[373370] = Defaults(), -- Nightmare Cloud
+		[373391] = Defaults(), -- Nightmare
+		[373570] = Defaults(), -- Hypnosis
+		[373607] = Defaults(), -- Shadowy Barrier (Hypnosis)
+		[373509] = Defaults(), -- Shadow Claws (Stacking)
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
@@ -743,17 +750,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[163276] = Defaults(), -- Shredded Tendons
 		[162415] = Defaults(), -- Time to Feed
 		[168398] = Defaults(), -- Rapid Fire Targeting
-		[373570] = Defaults(), -- Hypnosis
-		[373607] = Defaults(), -- Shadowy Barrier (Hypnosis)
 		[172889] = Defaults(), -- Charging Slash
-		[374300] = Defaults(), -- Restoration (6% HP/MP)
-		[374295] = Defaults(), -- Restoration (20% HP/MP)
 		[164504] = Defaults(), -- Intimidated
 		[172631] = Defaults(), -- Knocked Down
 		[172636] = Defaults(), -- Slippery Grease
 		[158341] = Defaults(), -- Gushing Wounds
 		[167240] = Defaults(), -- Leg Shot
-		[373509] = Defaults(), -- Shadow Claws (Stacking)
 		[173105] = Defaults(), -- Whirling Chains
 		[173324] = Defaults(), -- Jagged Caltrops
 		[172771] = Defaults(), -- Incendiary Slug
@@ -1248,10 +1250,11 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[368104] = Defaults(), -- Acceleration Field
 		[368079] = Defaults(), -- Defense Matrix
 	-- Shadowlands Season 4
-		[373108] = Defaults(), -- Bounty: Critical Strike (Stacking)
-		[373113] = Defaults(), -- Bounty: Haste (Stacking)
-		[373121] = Defaults(), -- Bounty: Versatility (Stacking)
-		[373116] = Defaults(), -- Bounty: Mastery (Stacking)
+		[373011] = Defaults(6), -- Disguised
+		[373108] = Defaults(2), -- Bounty: Critical Strike (Stacking)
+		[373113] = Defaults(2), -- Bounty: Haste (Stacking)
+		[373121] = Defaults(2), -- Bounty: Versatility (Stacking)
+		[373116] = Defaults(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
