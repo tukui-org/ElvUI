@@ -711,12 +711,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-	-- Shadowlands Season 2
-		[356667] = Defaults(6), -- Biting Cold 1
-		[356666] = Defaults(6), -- Biting Cold 2
-		[355732] = Defaults(6), -- Melt Soul
-		[356925] = Defaults(6), -- Carnage
-		[358777] = Defaults(6), -- Bindings of Misery
 	-- Shadowlands Season 3
 		[368241] = Defaults(3), -- Decrypted Urh Cypher
 		[368244] = Defaults(4), -- Urh Cloaking Field
