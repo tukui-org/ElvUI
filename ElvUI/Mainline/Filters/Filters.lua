@@ -1242,6 +1242,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Grimrail Depot
+		[161091] = Defaults(), -- New Plan!
+		[166378] = Defaults(), -- Reckless Slash
+		[163550] = Defaults(), -- Blackrock Mortar
+		[163947] = Defaults(), -- Recovering
+		[162572] = Defaults(), -- Missile Smoke
+		[166335] = Defaults(), -- Storm Shield
+		[176023] = Defaults(), -- Getting Angry
+		[166561] = Defaults(), -- Locking On!
 	-- Iron Docks
 		[164426] = Defaults(), -- Reckless Provocation
 		[173091] = Defaults(), -- Champion's Presence
