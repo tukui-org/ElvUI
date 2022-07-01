@@ -729,6 +729,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Grimrail Depot
+		[162057] = Defaults(), -- Spinning Spear
+		[156357] = Defaults(), -- Blackrock Shrapnel
+		[160702] = Defaults(), -- Blackrock Mortar Shells
+		[160681] = Defaults(), -- Suppressive Fire
+		[166570] = Defaults(), -- Slag Blast (Stacking)
+		[164218] = Defaults(), -- Double Slash
+		[162491] = Defaults(), -- Acquiring Targets 1
+		[162507] = Defaults(), -- Acquiring Targets 2
+		[161588] = Defaults(), -- Diffused Energy
+		[162065] = Defaults(), -- Freezing Snare
 	-- Iron Docks
 		[163276] = Defaults(), -- Shredded Tendons
 		[162415] = Defaults(), -- Time to Feed
