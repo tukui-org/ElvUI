@@ -1248,6 +1248,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[368104] = Defaults(), -- Acceleration Field
 		[368079] = Defaults(), -- Defense Matrix
 	-- Shadowlands Season 4
+		[373108] = Defaults(), -- Bounty: Critical Strike (Stacking)
+		[373113] = Defaults(), -- Bounty: Haste (Stacking)
+		[373121] = Defaults(), -- Bounty: Versatility (Stacking)
+		[373116] = Defaults(), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
