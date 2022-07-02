@@ -711,12 +711,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-	-- Shadowlands Season 2
-		[356667] = Defaults(6), -- Biting Cold 1
-		[356666] = Defaults(6), -- Biting Cold 2
-		[355732] = Defaults(6), -- Melt Soul
-		[356925] = Defaults(6), -- Carnage
-		[358777] = Defaults(6), -- Bindings of Misery
 	-- Shadowlands Season 3
 		[368241] = Defaults(3), -- Decrypted Urh Cypher
 		[368244] = Defaults(4), -- Urh Cloaking Field
@@ -725,25 +719,37 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[366297] = Defaults(6), -- Deconstruct (Tank Debuff)
 		[366288] = Defaults(6), -- Force Slam (Stun)
 	-- Shadowlands Season 4
+		[373364] = Defaults(), -- Vampiric Claws
+		[373429] = Defaults(), -- Carrion Swarm
+		[373370] = Defaults(), -- Nightmare Cloud
+		[373391] = Defaults(), -- Nightmare
+		[373570] = Defaults(), -- Hypnosis
+		[373607] = Defaults(), -- Shadowy Barrier (Hypnosis)
+		[373509] = Defaults(), -- Shadow Claws (Stacking)
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Grimrail Depot
+		[162057] = Defaults(), -- Spinning Spear
+		[156357] = Defaults(), -- Blackrock Shrapnel
+		[160702] = Defaults(), -- Blackrock Mortar Shells
+		[160681] = Defaults(), -- Suppressive Fire
+		[166570] = Defaults(), -- Slag Blast (Stacking)
+		[164218] = Defaults(), -- Double Slash
+		[162491] = Defaults(), -- Acquiring Targets 1
+		[162507] = Defaults(), -- Acquiring Targets 2
+		[161588] = Defaults(), -- Diffused Energy
+		[162065] = Defaults(), -- Freezing Snare
 	-- Iron Docks
 		[163276] = Defaults(), -- Shredded Tendons
 		[162415] = Defaults(), -- Time to Feed
 		[168398] = Defaults(), -- Rapid Fire Targeting
-		[373570] = Defaults(), -- Hypnosis
-		[373607] = Defaults(), -- Shadowy Barrier (Hypnosis)
 		[172889] = Defaults(), -- Charging Slash
-		[374300] = Defaults(), -- Restoration (6% HP/MP)
-		[374295] = Defaults(), -- Restoration (20% HP/MP)
 		[164504] = Defaults(), -- Intimidated
 		[172631] = Defaults(), -- Knocked Down
 		[172636] = Defaults(), -- Slippery Grease
 		[158341] = Defaults(), -- Gushing Wounds
 		[167240] = Defaults(), -- Leg Shot
-		[373509] = Defaults(), -- Shadow Claws (Stacking)
 		[173105] = Defaults(), -- Whirling Chains
 		[173324] = Defaults(), -- Jagged Caltrops
 		[172771] = Defaults(), -- Incendiary Slug
@@ -1238,10 +1244,23 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[368104] = Defaults(), -- Acceleration Field
 		[368079] = Defaults(), -- Defense Matrix
 	-- Shadowlands Season 4
+		[373011] = Defaults(6), -- Disguised
+		[373108] = Defaults(2), -- Bounty: Critical Strike (Stacking)
+		[373113] = Defaults(2), -- Bounty: Haste (Stacking)
+		[373121] = Defaults(2), -- Bounty: Versatility (Stacking)
+		[373116] = Defaults(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Grimrail Depot
+		[161091] = Defaults(), -- New Plan!
+		[166378] = Defaults(), -- Reckless Slash
+		[163550] = Defaults(), -- Blackrock Mortar
+		[163947] = Defaults(), -- Recovering
+		[162572] = Defaults(), -- Missile Smoke
+		[166335] = Defaults(), -- Storm Shield
+		[176023] = Defaults(), -- Getting Angry
+		[166561] = Defaults(), -- Locking On!
 	-- Iron Docks
 		[164426] = Defaults(), -- Reckless Provocation
 		[173091] = Defaults(), -- Champion's Presence
