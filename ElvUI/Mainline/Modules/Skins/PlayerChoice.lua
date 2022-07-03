@@ -33,8 +33,8 @@ function S:PlayerChoice_SetupRewards(rewards)
 end
 
 S.PlayerChoice_TextureKits = {
-	jailerstower = true,
-	cypherchoice = true
+	jailerstower = 0,	-- 0 = dont force icon, use Artwork check
+	cypherchoice = 1	-- 1 = force icon fix
 }
 
 function S:PlayerChoice_SetupOptions()
@@ -77,7 +77,7 @@ function S:PlayerChoice_SetupOptions()
 				if header and header.Ribbon then header.Ribbon:SetAlpha(0) end -- Normal only
 			end
 
-			if option.Artwork and kit then option.Artwork:Size(64) end -- fix size from icon replacements in tower
+			if kit and (kit == 1 or option.Artwork) then option.Artwork:Size(64) end -- fix size from icon replacements in tower
 
 			S:PlayerChoice_SetupRewards(option.rewards)
 			S:PlayerChoice_SetupButtons(option.buttons)
