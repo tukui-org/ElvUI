@@ -32,7 +32,7 @@ local function SetupRewards(rewards)
 	end
 end
 
-local useTextureKit = {
+S.PlayerChoice_TextureKits = {
 	jailerstower = true,
 	cypherchoice = true
 }
@@ -55,7 +55,7 @@ function S:PlayerChoice_SetupOptions()
 		self.CloseButton.Border:SetAlpha(0)
 	end
 
-	local kit = useTextureKit[self.uiTextureKit]
+	local kit = S.PlayerChoice_TextureKits[self.uiTextureKit]
 	self:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
 	if self.optionselfTemplate and self.optionPools then
