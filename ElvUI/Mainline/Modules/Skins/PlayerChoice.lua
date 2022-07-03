@@ -37,32 +37,32 @@ local useTextureKit = {
 	cypherchoice = true
 }
 
-local function SetupOptions(frame)
-	if not frame.IsSkinned then
-		frame.BlackBackground:SetAlpha(0)
-		frame.Background:SetAlpha(0)
-		frame.NineSlice:SetAlpha(0)
+function S:PlayerChoice_SetupOptions()
+	if not self.IsSkinned then
+		self.BlackBackground:SetAlpha(0)
+		self.Background:SetAlpha(0)
+		self.NineSlice:SetAlpha(0)
 
-		frame.Title:DisableDrawLayer('BACKGROUND')
-		frame.Title.Text:SetTextColor(1, .8, 0)
+		self.Title:DisableDrawLayer('BACKGROUND')
+		self.Title.Text:SetTextColor(1, .8, 0)
 
-		S:HandleCloseButton(frame.CloseButton)
+		S:HandleCloseButton(self.CloseButton)
 
-		frame.IsSkinned = true
+		self.IsSkinned = true
 	end
 
-	if frame.CloseButton.Border then -- dont exist in jailer
-		frame.CloseButton.Border:SetAlpha(0)
+	if self.CloseButton.Border then -- dont exist in jailer
+		self.CloseButton.Border:SetAlpha(0)
 	end
 
-	local kit = useTextureKit[frame.uiTextureKit]
-	frame:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
+	local kit = useTextureKit[self.uiTextureKit]
+	self:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
-	if frame.optionFrameTemplate and frame.optionPools then
+	if self.optionselfTemplate and self.optionPools then
 		local parchmentRemover = E.private.skins.parchmentRemoverEnable
 		local noParchment = not kit and parchmentRemover
 
-		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
+		for option in self.optionPools:EnumerateActiveByTemplate(self.optionFrameTemplate) do
 			local header = option.Header
 			local contents = header and header.Contents
 
@@ -85,6 +85,15 @@ local function SetupOptions(frame)
 	end
 end
 
+function S:TorghastButton_StartEffect(effectID)
+	local controller = self.effectController
+	if not controller then return end
+
+	if effectID == 98 then -- anima orb
+		controller:SetDynamicOffsets(-5, -10, -1.33)
+	end
+end
+
 local function SetupTorghastMover()
 	B:BuildWidgetHolder('TorghastChoiceToggleHolder', 'TorghastChoiceToggle', 'CENTER', L["Torghast Choice Toggle"], _G.TorghastPlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
 
@@ -92,14 +101,7 @@ local function SetupTorghastMover()
 	_G.TorghastPlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
 
 	-- this fixes the trajectory of the anima orb to stay in correct place
-	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
-		local controller = button.effectController
-		if not controller then return end
-
-		if effectID == 98 then -- anima orb
-			controller:SetDynamicOffsets(-5, -10, -1.33)
-		end
-	end)
+	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', S.TorghastButton_StartEffect)
 end
 
 function S:Blizzard_PlayerChoice()
@@ -107,7 +109,7 @@ function S:Blizzard_PlayerChoice()
 
 	SetupTorghastMover()
 
-	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', SetupOptions)
+	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', S.PlayerChoice_SetupOptions)
 end
 
 S:AddCallbackForAddon('Blizzard_PlayerChoice')
