@@ -5,7 +5,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local function SetupButtons(buttons)
+function S:PlayerChoice_SetupButtons(buttons)
 	if buttons and buttons.buttonPool then
 		for button in buttons.buttonPool:EnumerateActive() do
 			if not button.isSkinned then
@@ -15,7 +15,7 @@ local function SetupButtons(buttons)
 	end
 end
 
-local function SetupRewards(rewards)
+function S:PlayerChoice_SetupRewards(rewards)
 	if rewards and rewards.rewardsPool then
 		local parchmentRemover = E.private.skins.parchmentRemoverEnable
 		for reward in rewards.rewardsPool:EnumerateActive() do
@@ -79,8 +79,8 @@ function S:PlayerChoice_SetupOptions()
 
 			if option.Artwork and kit then option.Artwork:Size(64) end -- fix size from icon replacements in tower
 
-			SetupRewards(option.rewards)
-			SetupButtons(option.buttons)
+			S:PlayerChoice_SetupRewards(option.rewards)
+			S:PlayerChoice_SetupButtons(option.buttons)
 		end
 	end
 end
