@@ -58,7 +58,7 @@ function S:PlayerChoice_SetupOptions()
 	local kit = S.PlayerChoice_TextureKits[self.uiTextureKit]
 	self:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
-	if self.optionselfTemplate and self.optionPools then
+	if self.optionFrameTemplate and self.optionPools then
 		local parchmentRemover = E.private.skins.parchmentRemoverEnable
 		local noParchment = not kit and parchmentRemover
 
