@@ -1,9 +1,17 @@
-### Version 12.81 [ ETA: 🍨 ]
+### Version 12.82 [ ETA: 🍨 ]
+
+___
+### Version 12.81 [ July 7th 2022 ]
+
+Optimizations: Fixed an issue when using ElvUI and WeakAuras together, which caused  
+increased loading screens and some auras to disappear. (Script ran too long error)  
 
 ActionBars: Fixed bar backdrop multiplier (ticket #245)  
 DataTexts: Added Diablo Immortal and Warcraft Arclight Rumble support for Friends  
 DataTexts: Added NoLabel option for Intellect  
 DataTexts: Removed faction restriction from Friends invite  
+Filters: Added support for season 4 Affix and Dungeons  
+Filters: Updated for Castle Nathria and Sanctum of Domination  
 
 ___
 ### Version 12.80 [ May 31th 2022 ]

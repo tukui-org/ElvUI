@@ -323,16 +323,17 @@ do --this can save some main file locals
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
-		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter 1
+		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter
 		z['Luckyfear-Shazzrah']		= ElvBlue -- Warlock
 		z['Luckydruid-Shazzrah']	= ElvBlue -- Druid
 		z['Luckypriest-Shazzrah']	= ElvBlue -- Priest
 		z['Luckyshaman-Shazzrah']	= ElvBlue -- Shaman
-		z['Luckyone-Gehennas']		= ElvBlue -- Hunter 2
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
 		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
 		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
 		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
-		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter 3
+		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
+		z['Luckywl-Gehennas']		= ElvBlue -- Warlock
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv

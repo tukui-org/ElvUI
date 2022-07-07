@@ -1009,7 +1009,7 @@ do -- Event Pooler by Simpy
 	pooler.times = {}
 
 	pooler.delay = 0.1 -- update check rate
-	pooler.instant = 3 -- seconds since last event
+	pooler.instant = 1 -- seconds since last event
 
 	pooler.run = function(funcs, frame, event, ...)
 		for _, func in pairs(funcs) do
