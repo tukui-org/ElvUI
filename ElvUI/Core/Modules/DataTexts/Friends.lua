@@ -137,18 +137,20 @@ local clientList = {
 	Pro =	{ index = 4, tag = 'OW',	name = 'Overwatch'},
 	OSI =	{ index = 5, tag = 'D2',	name = 'Diablo 2: Resurrected'},
 	D3 =	{ index = 6, tag = 'D3',	name = 'Diablo 3'},
-	S1 =	{ index = 7, tag = 'SC',	name = 'Starcraft'},
-	S2 =	{ index = 8, tag = 'SC2',	name = 'Starcraft 2'},
-	W3 =	{ index = 9, tag = 'WC3',	name = 'Warcraft 3: Reforged'},
-	RTRO =	{ index = 10, tag = 'AC',	name = 'Arcade Collection'},
-	WLBY =	{ index = 11, tag = 'CB4',	name = 'Crash Bandicoot 4'},
-	VIPR =	{ index = 12, tag = 'BO4',	name = 'COD: Black Ops 4'},
-	ODIN =	{ index = 13, tag = 'MW',	name = 'COD: Modern Warfare'},
-	LAZR =	{ index = 14, tag = 'MW2',	name = 'COD: Modern Warfare 2'},
-	ZEUS =	{ index = 15, tag = 'CW',	name = 'COD: Cold War'},
-	FORE =	{ index = 16, tag = 'VG',	name = 'COD: Vanguard'},
-	App =	{ index = 17, tag = 'App',	name = 'App'},
-	BSAp =	{ index = 18, tag = L["Mobile"], name = L["Mobile"]}
+	ANBS =	{ index = 7, tag = 'DI',	name = 'Diablo Immortal'},
+	S1 =	{ index = 8, tag = 'SC',	name = 'Starcraft'},
+	S2 =	{ index = 9, tag = 'SC2',	name = 'Starcraft 2'},
+	W3 =	{ index = 10, tag = 'WC3',	name = 'Warcraft 3: Reforged'},
+	RTRO =	{ index = 11, tag = 'AC',	name = 'Arcade Collection'},
+	WLBY =	{ index = 12, tag = 'CB4',	name = 'Crash Bandicoot 4'},
+	VIPR =	{ index = 13, tag = 'BO4',	name = 'COD: Black Ops 4'},
+	ODIN =	{ index = 14, tag = 'MW',	name = 'COD: Modern Warfare'},
+	LAZR =	{ index = 15, tag = 'MW2',	name = 'COD: Modern Warfare 2'},
+	ZEUS =	{ index = 16, tag = 'CW',	name = 'COD: Cold War'},
+	FORE =	{ index = 17, tag = 'VG',	name = 'COD: Vanguard'},
+	GRY = 	{ index = 18, tag = 'AR',	name = 'Warcraft Arclight Rumble'},
+	App =	{ index = 19, tag = 'App',	name = 'App'},
+	BSAp =	{ index = 20, tag = L["Mobile"], name = L["Mobile"]}
 }
 
 DT.clientFullName = {}
@@ -409,7 +411,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 					end
 
-					if (info.client and info.client == wowString) and (E.myfaction == info.faction) and inGroup(info.characterName, info.realmName) == '' then
+					if (info.client and info.client == wowString) and inGroup(info.characterName, info.realmName) == '' then
 						local classc, levelc = E:ClassColor(info.className), GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 

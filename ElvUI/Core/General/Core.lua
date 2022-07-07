@@ -288,17 +288,22 @@ function E:GetColorTable(data)
 	end
 end
 
-function E:UpdateMedia()
-	if not E.db.general or not E.private.general then return end --Prevent rare nil value errors
+function E:UpdateMedia(mediaType)
+	if not E.db.general or not E.private.general then return end
 
-	-- Fonts
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
 	E.media.combatFont = LSM:Fetch('font', E.private.general.dmgfont)
-
-	-- Textures
 	E.media.blankTex = LSM:Fetch('background', 'ElvUI Blank')
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
+
+	if mediaType then -- callback from SharedMedia: LSM.Register
+		if mediaType == 'font' then
+			E:UpdateBlizzardFonts()
+		end
+
+		return
+	end
 
 	-- Colors
 	E.media.bordercolor = E:SetColorTable(E.media.bordercolor, E:UpdateClassColor(E.db.general.bordercolor))
@@ -379,13 +384,6 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.unitframe.units.raid40.rdebuffs.font = font
 
 	E:StaggeredUpdateAll()
-end
-
-do	--Update font/texture paths when they are registered by the addon providing them
-	--This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
-	--We use a wrapper to avoid errors in :UpdateMedia because 'self' is passed to the function with a value other than ElvUI.
-	local function LSMCallback() E:UpdateMedia() end
-	LSM.RegisterCallback(E, 'LibSharedMedia_Registered', LSMCallback)
 end
 
 function E:ValueFuncCall()

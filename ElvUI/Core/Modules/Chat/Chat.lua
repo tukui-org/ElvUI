@@ -323,16 +323,17 @@ do --this can save some main file locals
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
-		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter 1
+		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter
 		z['Luckyfear-Shazzrah']		= ElvBlue -- Warlock
 		z['Luckydruid-Shazzrah']	= ElvBlue -- Druid
 		z['Luckypriest-Shazzrah']	= ElvBlue -- Priest
 		z['Luckyshaman-Shazzrah']	= ElvBlue -- Shaman
-		z['Luckyone-Gehennas']		= ElvBlue -- Hunter 2
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
 		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
 		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
 		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
-		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter 3
+		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
+		z['Luckywl-Gehennas']		= ElvBlue -- Warlock
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
@@ -440,12 +441,10 @@ do --this can save some main file locals
 		z['Teepac-Area52']		= TyroneBiggums
 		z['Teekettle-Area52']	= TyroneBiggums
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		z['Twunkie-Area52']			= itsMis
+		z['Misoracle-Area52']		= itsMis
+		z['Mismayhem-Area52']		= itsMis
 		z['Misdîrect-Spirestone']	= itsMis
-		z['Misoracle-Spirestone']	= itsMis
-		z['MisLight-Spirestone']	= itsMis
-		z['MisDivine-Spirestone']	= itsMis
-		z['MisMayhem-Spirestone']	= itsMis
-		z['Mismonk-Spirestone']		= itsMis
 		z['Misillidan-Spirestone']	= itsMis
 		z['Mispel-Spirestone']		= itsMis
 		z['Misdecay-Spirestone']	= itsMis

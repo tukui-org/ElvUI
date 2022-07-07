@@ -5,7 +5,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local function SetupButtons(buttons)
+function S:PlayerChoice_SetupButtons(buttons)
 	if buttons and buttons.buttonPool then
 		for button in buttons.buttonPool:EnumerateActive() do
 			if not button.isSkinned then
@@ -15,7 +15,7 @@ local function SetupButtons(buttons)
 	end
 end
 
-local function SetupRewards(rewards)
+function S:PlayerChoice_SetupRewards(rewards)
 	if rewards and rewards.rewardsPool then
 		local parchmentRemover = E.private.skins.parchmentRemoverEnable
 		for reward in rewards.rewardsPool:EnumerateActive() do
@@ -32,37 +32,37 @@ local function SetupRewards(rewards)
 	end
 end
 
-local useTextureKit = {
+S.PlayerChoice_TextureKits = {
 	jailerstower = true,
 	cypherchoice = true
 }
 
-local function SetupOptions(frame)
-	if not frame.IsSkinned then
-		frame.BlackBackground:SetAlpha(0)
-		frame.Background:SetAlpha(0)
-		frame.NineSlice:SetAlpha(0)
+function S:PlayerChoice_SetupOptions()
+	if not self.IsSkinned then
+		self.BlackBackground:SetAlpha(0)
+		self.Background:SetAlpha(0)
+		self.NineSlice:SetAlpha(0)
 
-		frame.Title:DisableDrawLayer('BACKGROUND')
-		frame.Title.Text:SetTextColor(1, .8, 0)
+		self.Title:DisableDrawLayer('BACKGROUND')
+		self.Title.Text:SetTextColor(1, .8, 0)
 
-		S:HandleCloseButton(frame.CloseButton)
+		S:HandleCloseButton(self.CloseButton)
 
-		frame.IsSkinned = true
+		self.IsSkinned = true
 	end
 
-	if frame.CloseButton.Border then -- dont exist in jailer
-		frame.CloseButton.Border:SetAlpha(0)
+	if self.CloseButton.Border then -- dont exist in jailer
+		self.CloseButton.Border:SetAlpha(0)
 	end
 
-	local kit = useTextureKit[frame.uiTextureKit]
-	frame:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
+	local kit = S.PlayerChoice_TextureKits[self.uiTextureKit]
+	self:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
-	if frame.optionFrameTemplate and frame.optionPools then
+	if self.optionFrameTemplate and self.optionPools then
 		local parchmentRemover = E.private.skins.parchmentRemoverEnable
 		local noParchment = not kit and parchmentRemover
 
-		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
+		for option in self.optionPools:EnumerateActiveByTemplate(self.optionFrameTemplate) do
 			local header = option.Header
 			local contents = header and header.Contents
 
@@ -79,9 +79,18 @@ local function SetupOptions(frame)
 
 			if option.Artwork and kit then option.Artwork:Size(64) end -- fix size from icon replacements in tower
 
-			SetupRewards(option.rewards)
-			SetupButtons(option.buttons)
+			S:PlayerChoice_SetupRewards(option.rewards)
+			S:PlayerChoice_SetupButtons(option.buttons)
 		end
+	end
+end
+
+function S:TorghastButton_StartEffect(effectID)
+	local controller = self.effectController
+	if not controller then return end
+
+	if effectID == 98 then -- anima orb
+		controller:SetDynamicOffsets(-5, -10, -1.33)
 	end
 end
 
@@ -92,14 +101,7 @@ local function SetupTorghastMover()
 	_G.TorghastPlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
 
 	-- this fixes the trajectory of the anima orb to stay in correct place
-	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', function(button, effectID)
-		local controller = button.effectController
-		if not controller then return end
-
-		if effectID == 98 then -- anima orb
-			controller:SetDynamicOffsets(-5, -10, -1.33)
-		end
-	end)
+	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', S.TorghastButton_StartEffect)
 end
 
 function S:Blizzard_PlayerChoice()
@@ -107,7 +109,7 @@ function S:Blizzard_PlayerChoice()
 
 	SetupTorghastMover()
 
-	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', SetupOptions)
+	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', S.PlayerChoice_SetupOptions)
 end
 
 S:AddCallbackForAddon('Blizzard_PlayerChoice')
