@@ -1,4 +1,7 @@
-### Version 12.81 [ ETA: 🍨 ]
+### Version 12.82 [ ETA: 🍨 ]
+
+___
+### Version 12.81 [ July 7th 2022 ]
 
 Optimizations: Fixed an issue when using ElvUI and WeakAuras together, which caused  
 increased loading screens and some auras to disappear. (Script ran too long error)  

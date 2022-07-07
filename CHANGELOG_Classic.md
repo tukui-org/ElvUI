@@ -1,3 +1,6 @@
+### Version 1.74 [ ETA: 🍨 ]
+
+___
 ### Version 1.73 [ July 7th 2022 ]
 
 Optimizations: Fixed an issue when using ElvUI and WeakAuras together, which caused  
