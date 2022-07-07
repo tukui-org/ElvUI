@@ -1,0 +1,4 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Include file='Modules\Load_Modules.xml'/>
+	<Include file='Filters\Load_Filters.xml'/>
+</Ui>
