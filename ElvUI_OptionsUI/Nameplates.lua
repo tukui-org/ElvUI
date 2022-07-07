@@ -379,7 +379,7 @@ E.Options.args.nameplates.args.generalGroup.args.spacer1 = ACH:Spacer(6, 'full')
 E.Options.args.nameplates.args.generalGroup.args.overlapV = ACH:Range(L["Overlap Vertical"], L["Percentage amount for vertical overlap of Nameplates."], 10, { min = 0, max = 3, step = .1 })
 E.Options.args.nameplates.args.generalGroup.args.overlapH = ACH:Range(L["Overlap Horizontal"], L["Percentage amount for horizontal overlap of Nameplates."], 10, { min = 0, max = 3, step = .1 })
 E.Options.args.nameplates.args.generalGroup.args.lowHealthThreshold = ACH:Range(L["Low Health Threshold"], L["Make the unitframe glow when it is below this percent of health."], 11, { min = 0, softMax = .5, max = .8, step = .01, isPercent = true })
-E.Options.args.nameplates.args.generalGroup.args.loadDistance = ACH:Range(L["Load Distance"], L["Only load nameplates for units within this range."], 12, { min = 0, max = 41, step = 1 }, nil, nil, nil, nil, not E.TBC)
+E.Options.args.nameplates.args.generalGroup.args.loadDistance = ACH:Range(L["Load Distance"], L["Only load nameplates for units within this range."], 12, { min = 0, max = 41, step = 1 }, nil, nil, nil, nil, E.Classic or E.Retail)
 E.Options.args.nameplates.args.generalGroup.args.highlight = ACH:Toggle(L["Hover Highlight"], nil, 13, nil, nil, 125)
 E.Options.args.nameplates.args.generalGroup.args.fadeIn = ACH:Toggle(L["Alpha Fading"], nil, 14, nil, nil, 125)
 
