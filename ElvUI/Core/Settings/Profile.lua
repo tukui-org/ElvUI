@@ -2433,7 +2433,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = '',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2453,7 +2452,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = '',
 	},
 	microbar = {
 		enabled = false,
@@ -2526,7 +2524,6 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = '',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
