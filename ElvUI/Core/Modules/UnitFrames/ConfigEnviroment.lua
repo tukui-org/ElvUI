@@ -170,8 +170,17 @@ function UF:UnforceShow(frame)
 	end
 end
 
+local isPlayerHidden = false -- needed for raid frames
+
 function UF:ShowChildUnits(header, ...)
 	header.isForced = true
+	local length = select('#', ...);
+
+	-- Limit number of players shown if 'display player' option is disabled
+	if type(header.groupName) == 'string' and (header.groupName == 'party' or header.groupName:match("^raid")) and not header.db.showPlayer and not isPlayerHidden then
+		length = 4
+		isPlayerHidden = true
+	end
 
 	for i=1, select('#', ...) do
 		local frame = select(i, ...)
@@ -182,6 +191,7 @@ end
 
 function UF:UnshowChildUnits(header, ...)
 	header.isForced = nil
+	isPlayerHidden = false
 
 	for i=1, select('#', ...) do
 		local frame = select(i, ...)
