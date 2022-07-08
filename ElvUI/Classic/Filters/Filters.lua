@@ -366,7 +366,76 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	----------------------------------------------------------
+	------------------------ Dungeons ------------------------
+	----------------------------------------------------------
+	--Multiple Dungeons
+		[744]	= Defaults(2), -- Poison
+		[18267] = Defaults(2), -- Curse of Weakness
+		[20800] = Defaults(2), -- Immolate
+		[246]	= Defaults(2), -- Slow
+		[6533]	= Defaults(2), -- Net
+		[8399]	= Defaults(2), -- Sleep
+	-- Blackrock Depths
+		[13704] = Defaults(2), -- Psychic Scream
+	-- Deadmines
+		[6304]	= Defaults(2), -- Rhahk'Zor Slam
+		[12097] = Defaults(2), -- Pierce Armor
+		[7399]	= Defaults(2), -- Terrify
+		[6713]	= Defaults(2), -- Disarm
+		[5213]	= Defaults(2), -- Molten Metal
+		[5208]	= Defaults(2), -- Poisoned Harpoon
+	-- Maraudon
+		[7964]	= Defaults(2), -- Smoke Bomb
+		[21869] = Defaults(2), -- Repulsive Gaze
+	-- Razorfen Downs
+		[12255]	= Defaults(2), -- Curse of Tuten'kash
+		[12252]	= Defaults(2), -- Web Spray
+		[7645]	= Defaults(2), -- Dominate Mind
+		[12946]	= Defaults(2), -- Putrid Stench
+	-- Razorfen Kraul
+		[14515]	= Defaults(2), -- Dominate Mind
+	-- Scarlet Monastry
+		[9034]	= Defaults(2), -- Immolate
+		[8814]	= Defaults(2), -- Flame Spike
+		[8988]	= Defaults(2), -- Silence
+		[9256]	= Defaults(2), -- Deep Sleep
+		[8282]	= Defaults(2), -- Curse of Blood
+	-- Shadowfang Keep
+		[7068]	= Defaults(2), -- Veil of Shadow
+		[7125]	= Defaults(2), -- Toxic Saliva
+		[7621]	= Defaults(2), -- Arugal's Curse
+	--Stratholme
+		[16798] = Defaults(2), -- Enchanting Lullaby
+		[12734] = Defaults(2), -- Ground Smash
+		[17293] = Defaults(2), -- Burning Winds
+		[17405] = Defaults(2), -- Domination
+		[16867] = Defaults(2), -- Banshee Curse
+		[6016]	= Defaults(2), -- Pierce Armor
+		[16869] = Defaults(2), -- Ice Tomb
+		[17307] = Defaults(2), -- Knockout
+	-- Sunken Temple
+		[12889] = Defaults(2), -- Curse of Tongues
+		[12888] = Defaults(2), -- Cause Insanity
+		[12479] = Defaults(2), -- Hex of Jammal'an
+		[12493] = Defaults(2), -- Curse of Weakness
+		[12890] = Defaults(2), -- Deep Slumber
+		[24375] = Defaults(2), -- War Stomp
+	-- Uldaman
+		[3356]	= Defaults(2), -- Flame Lash
+		[6524]	= Defaults(2), -- Ground Tremor
+	-- Wailing Caverns
+		[8040]	= Defaults(2), -- Druid's Slumber
+		[8142]	= Defaults(2), -- Grasping Vines
+		[7967]	= Defaults(2), -- Naralex's Nightmare
+		[8150]	= Defaults(2), -- Thundercrack
+	-- Zul'Farrak
+		[11836] = Defaults(2), -- Freeze Solid
+	-- World Bosses
+		[21056] = Defaults(2), -- Mark of Kazzak
+		[24814] = Defaults(2), -- Seeping Fog
+	----------------------------------------------------------
 	-------------------------- PvP ---------------------------
+	----------------------------------------------------------
 	[43680] = Defaults(6), -- Idle (Reported for AFK)
 	----------------------------------------------------------
 	----------------------------------------------------------
@@ -437,77 +506,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	[27808]	= Defaults(2), -- Frost Blast
 	[28410]	= Defaults(2), -- Chains of Kel'Thuzad
 	[27819]	= Defaults(2), -- Detonate Mana
-	},
-}
-
-G.unitframe.aurafilters.DungeonDebuffs = {
-	type = 'Whitelist',
-	spells = {
-	--Multiple Dungeons
-		[744]	= Defaults(2), -- Poison
-		[18267]	= Defaults(2), -- Curse of Weakness
-		[20800]	= Defaults(2), -- Immolate
-		[246]	= Defaults(2), -- Slow
-		[6533]	= Defaults(2), -- Net
-		[8399]	= Defaults(2), -- Sleep
-	-- Blackrock Depths
-		[13704]	= Defaults(2), -- Psychic Scream
-	-- Deadmines
-		[6304]	= Defaults(2), -- Rhahk'Zor Slam
-		[12097]	= Defaults(2), -- Pierce Armor
-		[7399]	= Defaults(2), -- Terrify
-		[6713]	= Defaults(2), -- Disarm
-		[5213]	= Defaults(2), -- Molten Metal
-		[5208]	= Defaults(2), -- Poisoned Harpoon
-	-- Maraudon
-		[7964]	= Defaults(2), -- Smoke Bomb
-		[21869]	= Defaults(2), -- Repulsive Gaze
-	-- Razorfen Downs
-		[12255]	= Defaults(2), -- Curse of Tuten'kash
-		[12252]	= Defaults(2), -- Web Spray
-		[7645]	= Defaults(2), -- Dominate Mind
-		[12946]	= Defaults(2), -- Putrid Stench
-	-- Razorfen Kraul
-		[14515]	= Defaults(2), -- Dominate Mind
-	-- Scarlet Monastry
-		[9034]	= Defaults(2), -- Immolate
-		[8814]	= Defaults(2), -- Flame Spike
-		[8988]	= Defaults(2), -- Silence
-		[9256]	= Defaults(2), -- Deep Sleep
-		[8282]	= Defaults(2), -- Curse of Blood
-	-- Shadowfang Keep
-		[7068]	= Defaults(2), -- Veil of Shadow
-		[7125]	= Defaults(2), -- Toxic Saliva
-		[7621]	= Defaults(2), -- Arugal's Curse
-	--Stratholme
-		[16798]	= Defaults(2), -- Enchanting Lullaby
-		[12734]	= Defaults(2), -- Ground Smash
-		[17293]	= Defaults(2), -- Burning Winds
-		[17405]	= Defaults(2), -- Domination
-		[16867]	= Defaults(2), -- Banshee Curse
-		[6016]	= Defaults(2), -- Pierce Armor
-		[16869]	= Defaults(2), -- Ice Tomb
-		[17307]	= Defaults(2), -- Knockout
-	-- Sunken Temple
-		[12889]	= Defaults(2), -- Curse of Tongues
-		[12888]	= Defaults(2), -- Cause Insanity
-		[12479]	= Defaults(2), -- Hex of Jammal'an
-		[12493]	= Defaults(2), -- Curse of Weakness
-		[12890]	= Defaults(2), -- Deep Slumber
-		[24375]	= Defaults(2), -- War Stomp
-	-- Uldaman
-		[3356]	= Defaults(2), -- Flame Lash
-		[6524]	= Defaults(2), -- Ground Tremor
-	-- Wailing Caverns
-		[8040]	= Defaults(2), -- Druid's Slumber
-		[8142]	= Defaults(2), -- Grasping Vines
-		[7967]	= Defaults(2), -- Naralex's Nightmare
-		[8150]	= Defaults(2), -- Thundercrack
-	-- Zul'Farrak
-		[11836]	= Defaults(2), -- Freeze Solid
-	-- World Bosses
-		[21056]	= Defaults(2), -- Mark of Kazzak
-		[24814]	= Defaults(2), -- Seeping Fog
 	},
 }
 
