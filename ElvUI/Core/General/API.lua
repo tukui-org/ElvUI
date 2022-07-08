@@ -180,7 +180,7 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local role = E.Retail and UnitGroupRolesAssigned('player') or 'NONE'
+	local role = E.Retail or E.Wrath and UnitGroupRolesAssigned('player') or 'NONE'
 	return (role == 'NONE' and E.myspec and GetSpecializationRole(E.myspec)) or role
 end
 
@@ -435,7 +435,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if E.Retail and UnitHasVehicleUI('player') then
+	if E.Retail or E.Wrath and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 

@@ -2433,7 +2433,7 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = (E.Retail and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
+		visibility = (E.Retail or E.Wrath and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2453,7 +2453,7 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = E.Retail and '[vehicleui] hide; [petbattle] hide;show' or 'show',
+		visibility = E.Retail or E.Wrath and '[vehicleui] hide; [petbattle] hide;show' or 'show',
 	},
 	microbar = {
 		enabled = false,
@@ -2514,7 +2514,7 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = (E.Retail and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
+		visibility = (E.Retail or E.Wrath and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
