@@ -509,12 +509,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
-G.unitframe.aurafilters.DungeonDebuffs = {
-	type = 'Whitelist',
-	spells = {
-	},
-}
-
 --[[
 	RAID BUFFS:
 	Buffs that are provided by NPCs in raid or other PvE content.

@@ -635,28 +635,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
-G.unitframe.aurafilters.DungeonDebuffs = {
-	type = 'Whitelist',
-	spells = {
-	-- Hellfire Ramparts
-	-- The Blood Furnace
-	-- The Shattered Halls
-	-- The Slave Pens
-	-- The Underbog
-	-- The Steamvault
-	-- Mana-Tombs
-	-- Auchenai Crypts
-	-- Sethekk Halls
-	-- Shadow Labyrinth
-	-- Old Hillsbrad Foothills
-	-- The Black Morass
-	-- Magisters Terrace
-	-- The Arcatraz
-	-- The Mechanar
-	-- The Botanica
-	},
-}
-
 --[[
 	RAID BUFFS:
 	Buffs that are provided by NPCs in raid or other PvE content.
