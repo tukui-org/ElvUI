@@ -400,37 +400,77 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------- Phase 1 --------------------
 	-------------------------------------------------
 	-- Naxxramas
-		-- Boss
-		-- Boss
+		-- Anub'Rekhan
+		-- Grand Widow Faerlina
+		-- Maexxna
+		-- Noth the Plaguebringer
+		-- Heigan the Unclean
+		-- Loatheb
+		-- Instructor Razuvious
+		-- Gothik the Harvester
+		-- The Four Horsemen
+		-- Patchwerk
+		-- Grobbulus
+		-- Gluth
+		-- Thaddius
+		-- Sapphiron
+		-- Kel'Thuzad
 	-- The Eye of Eternity
-		-- Boss
+		-- Malygos
 	-- The Obsidian Sanctum
-		-- Boss
+		-- Sartharion
 	-------------------------------------------------
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
 	-- Ulduar
-		-- Boss
-		-- Boss
+		-- Flame Leviathan
+		-- Ignis the Furnace Master
+		-- Razorscale
+		-- XT-002 Deconstructor
+		-- The Assembly of Iron
+		-- Kologarn
+		-- Auriaya
+		-- Hodir
+		-- Thorim
+		-- Freya
+		-- Mimiron
+		-- General Vezax
+		-- Yogg-Saron
+		-- Algalon the Observer
 	-------------------------------------------------
 	-------------------- Phase 3 --------------------
 	-------------------------------------------------
 	-- Trial of the Crusader
-		-- Boss
-		-- Boss
+		-- The Northrend Beasts
+		-- Lord Jaraxxus
+		-- Champions of the Horde
+		-- Champions of the Alliance
+		-- Twin Val'kyr
+		-- Anub'arak
 	-- Onyxia’s Lair
-		-- Boss
+		-- Onyxia
 	-------------------------------------------------
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
 	-- Icecrown Citadel
-		-- Boss
-		-- Boss
+		-- Lord Marrowgar
+		-- Lady Deathwhisper
+		-- Gunship Battle Alliance
+		-- Gunship Battle Horde
+		-- Deathbringer Saurfang
+		-- Festergut
+		-- Rotface
+		-- Professor Putricide
+		-- Blood Prince Council
+		-- Blood-Queen Lana'thel
+		-- Valithria Dreamwalker
+		-- Sindragosa
+		-- The Lich King
 	-------------------------------------------------
 	-------------------- Phase 5 --------------------
 	-------------------------------------------------
 	-- The Ruby Sanctum
-		-- Boss
+		-- Halion
 	},
 }
 
@@ -443,40 +483,99 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
 	-------------------------------------------------
+	-------------------- Dungeons -------------------
+	-------------------------------------------------
+	-- Ahn'kahet: The Old Kingdom
+	-- Azjol-Nerub
+	-- Drak'Tharon Keep
+	-- Gundrak
+	-- Halls of Lightning
+	-- Halls of Reflection
+	-- Halls of Stone
+	-- Pit of Saron
+	-- The Culling of Stratholme
+	-- The Forge of Souls
+	-- The Nexus
+	-- The Oculus
+	-- The Violet Hold
+	-- Trial of the Champion
+	-- Utgarde Keep
+	-- Utgarde Pinnacle
+	-------------------------------------------------
 	-------------------- Phase 1 --------------------
 	-------------------------------------------------
 	-- Naxxramas
-		-- Boss
-		-- Boss
+		-- Anub'Rekhan
+		-- Grand Widow Faerlina
+		-- Maexxna
+		-- Noth the Plaguebringer
+		-- Heigan the Unclean
+		-- Loatheb
+		-- Instructor Razuvious
+		-- Gothik the Harvester
+		-- The Four Horsemen
+		-- Patchwerk
+		-- Grobbulus
+		-- Gluth
+		-- Thaddius
+		-- Sapphiron
+		-- Kel'Thuzad
 	-- The Eye of Eternity
-		-- Boss
+		-- Malygos
 	-- The Obsidian Sanctum
-		-- Boss
+		-- Sartharion
 	-------------------------------------------------
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
 	-- Ulduar
-		-- Boss
-		-- Boss
+		-- Flame Leviathan
+		-- Ignis the Furnace Master
+		-- Razorscale
+		-- XT-002 Deconstructor
+		-- The Assembly of Iron
+		-- Kologarn
+		-- Auriaya
+		-- Hodir
+		-- Thorim
+		-- Freya
+		-- Mimiron
+		-- General Vezax
+		-- Yogg-Saron
+		-- Algalon the Observer
 	-------------------------------------------------
 	-------------------- Phase 3 --------------------
 	-------------------------------------------------
 	-- Trial of the Crusader
-		-- Boss
-		-- Boss
+		-- The Northrend Beasts
+		-- Lord Jaraxxus
+		-- Champions of the Horde
+		-- Champions of the Alliance
+		-- Twin Val'kyr
+		-- Anub'arak
 	-- Onyxia’s Lair
-		-- Boss
+		-- Onyxia
 	-------------------------------------------------
 	-------------------- Phase 4 --------------------
 	-------------------------------------------------
 	-- Icecrown Citadel
-		-- Boss
-		-- Boss
+		-- Lord Marrowgar
+		-- Lady Deathwhisper
+		-- Gunship Battle Alliance
+		-- Gunship Battle Horde
+		-- Deathbringer Saurfang
+		-- Festergut
+		-- Rotface
+		-- Professor Putricide
+		-- Blood Prince Council
+		-- Blood-Queen Lana'thel
+		-- Valithria Dreamwalker
+		-- Sindragosa
+		-- The Lich King
 	-------------------------------------------------
 	-------------------- Phase 5 --------------------
 	-------------------------------------------------
 	-- The Ruby Sanctum
-		-- Boss
+		-- Halion
 	},
 }
 
