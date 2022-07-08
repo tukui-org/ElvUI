@@ -378,6 +378,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	-------------------------------------------------
+	-------------------- Dungeons -------------------
+	-------------------------------------------------
+	-- Ahn'kahet: The Old Kingdom
+	-- Azjol-Nerub
+	-- Drak'Tharon Keep
+	-- Gundrak
+	-- Halls of Lightning
+	-- Halls of Reflection
+	-- Halls of Stone
+	-- Pit of Saron
+	-- The Culling of Stratholme
+	-- The Forge of Souls
+	-- The Nexus
+	-- The Oculus
+	-- The Violet Hold
+	-- Trial of the Champion
+	-- Utgarde Keep
+	-- Utgarde Pinnacle
+	-------------------------------------------------
 	-------------------- Phase 1 --------------------
 	-------------------------------------------------
 	-- Naxxramas
@@ -412,28 +431,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- The Ruby Sanctum
 		-- Boss
-	},
-}
-
-G.unitframe.aurafilters.DungeonDebuffs = {
-	type = 'Whitelist',
-	spells = {
-		-- Ahn'kahet: The Old Kingdom
-		-- Azjol-Nerub
-		-- Drak'Tharon Keep
-		-- Gundrak
-		-- Halls of Lightning
-		-- Halls of Reflection
-		-- Halls of Stone
-		-- Pit of Saron
-		-- The Culling of Stratholme
-		-- The Forge of Souls
-		-- The Nexus
-		-- The Oculus
-		-- The Violet Hold
-		-- Trial of the Champion
-		-- Utgarde Keep
-		-- Utgarde Pinnacle
 	},
 }
 
