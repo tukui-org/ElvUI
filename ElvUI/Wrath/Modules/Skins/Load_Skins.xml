@@ -4,6 +4,7 @@
 	<Script file='ArenaRegistrar.lua'/>
 	<Script file='AuctionHouse.lua'/>
 	<Script file='Bags.lua'/>
+	<Script file='Barber.lua'/>
 	<Script file='Battlefield.lua'/>
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
