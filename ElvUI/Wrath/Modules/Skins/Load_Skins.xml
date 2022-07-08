@@ -1,4 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='Achievement.lua'/>
 	<Script file='AddonManager.lua'/>
 	<Script file='Arena.lua'/>
 	<Script file='ArenaRegistrar.lua'/>
