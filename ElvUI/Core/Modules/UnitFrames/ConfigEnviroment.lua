@@ -173,7 +173,13 @@ end
 function UF:ShowChildUnits(header, ...)
 	header.isForced = true
 
-	for i=1, select('#', ...) do
+	local length = select('#', ...) -- Limit number of players shown, if Display Player option is disabled
+	if not UF.isForcedHidePlayer and not header.db.showPlayer and (header.groupName == 'party' or header.groupName == 'raid') then
+		UF.isForcedHidePlayer = true
+		length = length - 1
+	end
+
+	for i=1, length do
 		local frame = select(i, ...)
 		frame:SetID(i)
 		self:ForceShow(frame)
@@ -182,6 +188,7 @@ end
 
 function UF:UnshowChildUnits(header, ...)
 	header.isForced = nil
+	UF.isForcedHidePlayer = nil
 
 	for i=1, select('#', ...) do
 		local frame = select(i, ...)
@@ -277,17 +284,17 @@ function UF:PLAYER_REGEN_DISABLED()
 		end
 	end
 
-	for i=1, 5 do
-		local arena = self['arena'..i]
-		if arena and arena.isForced then
-			self:UnforceShow(arena)
+	for i=1, 8 do
+		if i < 6 then
+			local arena = self['arena'..i]
+			if arena and arena.isForced then
+				self:UnforceShow(arena)
+			end
 		end
 
-		if i < 5 then
-			local boss = self['boss'..i]
-			if boss and boss.isForced then
-				self:UnforceShow(boss)
-			end
+		local boss = self['boss'..i]
+		if boss and boss.isForced then
+			self:UnforceShow(boss)
 		end
 	end
 end
