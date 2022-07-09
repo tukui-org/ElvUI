@@ -126,7 +126,7 @@ Maps.args.minimap.args.icons.args.queueStatus.args.font = ACH:SharedMediaFont(L[
 Maps.args.minimap.args.icons.args.queueStatus.args.fontSize = ACH:Range(L["Font Size"], nil, 7, textFontSize, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
 Maps.args.minimap.args.icons.args.queueStatus.args.fontOutline = ACH:Select(L["Font Outline"], nil, 8, C.Values.FontFlags, nil, nil, nil, nil, function() return not E.db.general.minimap.icons.queueStatus.enable end)
 
-Maps.args.minimap.args.icons.args.difficulty = ACH:Group(L["Instance Difficulty"], nil, 7, nil, nil, nil, nil, not E.Retail)
+Maps.args.minimap.args.icons.args.difficulty = ACH:Group(L["Instance Difficulty"], nil, 7, nil, nil, nil, nil, E.Classic or E.TBC)
 Maps.args.minimap.args.icons.args.difficulty.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
 Maps.args.minimap.args.icons.args.difficulty.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
 Maps.args.minimap.args.icons.args.difficulty.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
