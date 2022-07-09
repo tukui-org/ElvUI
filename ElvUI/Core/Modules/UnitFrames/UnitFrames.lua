@@ -991,7 +991,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 
 	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil,
 		'oUF-initialConfigFunction', format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height),
-		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= 'party', 'showSolo', true,
+		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= 'party', 'showSolo', false,
 		template and 'template', template
 	)
 
