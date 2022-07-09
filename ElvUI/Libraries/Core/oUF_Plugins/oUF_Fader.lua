@@ -88,7 +88,7 @@ local function Update(self, _, unit)
 		(element.Focus and not oUF.isClassic and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
-		(element.Vehicle and oUF.isRetail and UnitHasVehicleUI(unit)) or
+		(element.Vehicle and oUF.isRetail or oUF.isWotLK and UnitHasVehicleUI(unit)) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)

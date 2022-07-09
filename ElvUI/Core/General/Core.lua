@@ -1484,7 +1484,7 @@ function E:UpdateMisc(skipCallback)
 	if E.Retail then
 		Blizzard:SetObjectiveFrameHeight()
 		Totems:PositionAndSize()
-	elseif E.TBC then
+	elseif E.TBC or E.Wrath then
 		Totems:PositionAndSize()
 	end
 
@@ -1907,9 +1907,10 @@ function E:Initialize()
 	E:UpdateCooldownSettings('all')
 	E:Contruct_StaticPopups()
 
-	if E.Retail then
+	if E.Retail then E:Tutorials() end
+
+	if E.Retail or E.Wrath then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
-		E:Tutorials()
 	end
 
 	E.initialized = true

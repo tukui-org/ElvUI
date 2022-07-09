@@ -2433,7 +2433,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = (E.Retail and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2453,7 +2452,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = E.Retail and '[vehicleui] hide; [petbattle] hide;show' or 'show',
 	},
 	microbar = {
 		enabled = false,
@@ -2493,6 +2491,18 @@ P.actionbar = {
 	}
 }
 
+-- Visibility
+if E.Retail then
+	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; [petbattle] hide; show'
+elseif E.Wrath then
+	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
+else
+	P.actionbar.barPet.visibility = '[pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = 'show'
+end
+
 for i = 1, 10 do
 	P.actionbar['bar'..i] = {
 		enabled = false,
@@ -2514,7 +2524,6 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = (E.Retail and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
@@ -2545,6 +2554,15 @@ for i = 1, 10 do
 		frameStrata = 'LOW',
 		frameLevel = 1,
 	}
+
+	-- Visibility
+	if E.Retail then
+		P.actionbar['bar'..i].visibility = '[vehicleui] hide; [petbattle] hide; [overridebar] hide; show'
+	elseif E.Wrath then
+		P.actionbar['bar'..i].visibility = '[vehicleui] hide; [overridebar] hide; show'
+	else
+		P.actionbar['bar'..i].visibility = '[overridebar] hide; show'
+	end
 end
 
 for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
