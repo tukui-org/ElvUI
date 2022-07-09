@@ -284,17 +284,17 @@ function UF:PLAYER_REGEN_DISABLED()
 		end
 	end
 
-	for i=1, 5 do
-		local arena = self['arena'..i]
-		if arena and arena.isForced then
-			self:UnforceShow(arena)
+	for i=1, 8 do
+		if i < 6 then
+			local arena = self['arena'..i]
+			if arena and arena.isForced then
+				self:UnforceShow(arena)
+			end
 		end
 
-		if i < 5 then
-			local boss = self['boss'..i]
-			if boss and boss.isForced then
-				self:UnforceShow(boss)
-			end
+		local boss = self['boss'..i]
+		if boss and boss.isForced then
+			self:UnforceShow(boss)
 		end
 	end
 end
