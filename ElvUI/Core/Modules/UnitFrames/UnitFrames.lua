@@ -1023,7 +1023,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local db = UF.db.units[group]
 	local Header = UF[group]
 
-	local numGroups = group == 'party' and 1 or UF:GetSmartVisibilitySetting('numGroups', group, smart, db)
+	local numGroups = (group == 'party' and 1) or UF:GetSmartVisibilitySetting('numGroups', group, smart, db)
 	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smart, db)
 	local enable = UF:GetSmartVisibilitySetting('enable', group, smart, db)
 	local name = E:StringTitle(group)
