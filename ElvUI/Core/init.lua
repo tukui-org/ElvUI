@@ -75,7 +75,8 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
-E.Wrath = false
+-- Checking for WOW_PROJECT_ID later
+E.Wrath = select(4, GetBuildInfo()) >= 30400 and select(4, GetBuildInfo()) < 40000 -- Temp
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = {}
@@ -263,7 +264,7 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	if not E.Retail then -- temp cause blizz broke it?
+	if E.Classic or E.TBC then -- Temp
 		RegisterCVar('fstack_showhighlight', '1')
 	end
 
