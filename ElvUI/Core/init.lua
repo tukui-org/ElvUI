@@ -74,7 +74,8 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+-- Temp, back to WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC later
+E.TBC = select(4, GetBuildInfo()) >= 20504 and select(4, GetBuildInfo()) < 30000
 -- Checking for WOW_PROJECT_ID later
 E.Wrath = select(4, GetBuildInfo()) >= 30400 and select(4, GetBuildInfo()) < 40000 -- Temp
 
