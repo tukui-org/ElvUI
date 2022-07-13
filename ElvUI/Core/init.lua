@@ -71,13 +71,13 @@ E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
+E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo() -- move back to Core.lua after WOW_PROJECT_ID is updated for wrath
+
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
--- Temp, back to WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC later
-E.TBC = select(4, GetBuildInfo()) >= 20504 and select(4, GetBuildInfo()) < 30000
--- Checking for WOW_PROJECT_ID later
-E.Wrath = select(4, GetBuildInfo()) >= 30400 and select(4, GetBuildInfo()) < 40000 -- Temp
+E.TBC = E.wowtoc >= 20504 and E.wowtoc < 30000 -- Temp, back to WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC later
+E.Wrath = E.wowtoc >= 30400 and E.wowtoc < 40000 -- Checking for WOW_PROJECT_ID later
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = {}
@@ -265,7 +265,7 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	if E.Classic or E.TBC then -- Temp
+	if E.Classic or E.TBC then
 		RegisterCVar('fstack_showhighlight', '1')
 	end
 
