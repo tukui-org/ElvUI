@@ -575,7 +575,7 @@ function M:Initialize()
 	if _G.QueueStatusMinimapButton then
 		_G.QueueStatusMinimapButtonBorder:Hide()
 		M:CreateQueueStatusText()
-	elseif _G.MiniMapLFGFrame then
+	elseif _G.MiniMapLFGFrame and not E.Wrath then
 		_G.MiniMapLFGBorder:Hide()
 	end
 

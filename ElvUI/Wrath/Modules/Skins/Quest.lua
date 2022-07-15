@@ -56,7 +56,6 @@ function S:BlizzardQuestFrames()
 		'QuestFrameCompleteButton',
 		'QuestFrameCompleteQuestButton',
 		'QuestFrameDeclineButton',
-		'QuestFrameExitButton',
 		'QuestFrameGoodbyeButton',
 		'QuestFrameGreetingGoodbyeButton',
 		'QuestFramePushQuestButton',
@@ -399,8 +398,6 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
-	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
-
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
 	S:HandleFrame(_G.QuestLogCount, true)
 	S:HandleFrame(_G.QuestLogFrame, true, nil, 11, -12, -32, 45)
@@ -470,7 +467,7 @@ function S:BlizzardQuestFrames()
 		index = index + 1
 	end
 
-	local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
+	--[[local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
 	QuestLogCollapseAllButton:StripTextures()
 	QuestLogCollapseAllButton:Point('TOPLEFT', -45, 7)
 
@@ -496,6 +493,7 @@ function S:BlizzardQuestFrames()
 			tex:SetTexture(E.Media.Textures.PlusButton)
 		end
 	end)
+	]]
 end
 
 S:AddCallback('BlizzardQuestFrames')

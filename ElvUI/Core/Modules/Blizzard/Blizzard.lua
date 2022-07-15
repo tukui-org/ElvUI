@@ -90,7 +90,9 @@ function B:Initialize()
 	elseif E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
 
-		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
+		if not E.Wrath then
+			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick) 
+		end
 	end
 
 	-- Battle.Net Frame
