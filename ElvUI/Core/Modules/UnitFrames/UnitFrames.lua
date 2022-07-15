@@ -991,7 +991,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 
 	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil,
 		'oUF-initialConfigFunction', format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height),
-		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= 'party', 'showSolo', false,
+		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= 'party', 'showSolo', true,
 		template and 'template', template
 	)
 
@@ -1344,7 +1344,7 @@ do
 			if id then
 				HandleFrame('PartyMemberFrame' .. id)
 			else
-				for i=1, 4 do
+				for i=1, _G.MAX_PARTY_MEMBERS do
 					HandleFrame(format('PartyMemberFrame%d', i))
 				end
 			end
