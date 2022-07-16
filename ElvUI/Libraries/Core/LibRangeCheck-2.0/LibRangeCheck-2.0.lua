@@ -48,7 +48,8 @@ if not lib then return end
 
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+local isTBC = select(4, GetBuildInfo()) >= 20500 and select(4, GetBuildInfo()) < 30000 -- Temp, back to WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC later
+local isWrath = select(4, GetBuildInfo()) >= 30400 and select(4, GetBuildInfo()) < 40000 -- Checking for WOW_PROJECT_ID later
 
 -- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
 local _G = _G
@@ -1176,7 +1177,7 @@ function lib:activate()
 		frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 		frame:RegisterEvent("SPELLS_CHANGED")
 
-		if isRetail then
+		if isRetail or isWrath then
 			frame:RegisterEvent("PLAYER_TALENT_UPDATE")
 		end
 

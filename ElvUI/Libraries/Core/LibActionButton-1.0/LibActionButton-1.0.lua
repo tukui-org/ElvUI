@@ -41,7 +41,8 @@ local setmetatable, wipe, unpack, pairs, next = setmetatable, wipe, unpack, pair
 local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
 
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+local WoWBCC = (select(4, GetBuildInfo()) >= 20500 and select(4, GetBuildInfo()) < 30000) -- Temp, back to WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC later
+local WoWWrath = (select(4, GetBuildInfo()) >= 30400 and select(4, GetBuildInfo()) < 40000) -- Checking for WOW_PROJECT_ID later
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
@@ -707,15 +708,18 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if not WoWClassic and not WoWBCC then
-		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
+	if WoWRetail then
 		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
-		lib.eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
-		lib.eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
 		lib.eventFrame:RegisterEvent("COMPANION_UPDATE")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
+	end
+
+	if WoWRetail or WoWWrath then
+		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
+		lib.eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
+		lib.eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
 	end
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?

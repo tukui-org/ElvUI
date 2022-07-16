@@ -1074,7 +1074,7 @@ function AB:DisableBlizzard()
 
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		if _G.PlayerTalentFrame then
 			_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 		else
@@ -1462,9 +1462,12 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	end
 
-	if E.Retail or E.Wrath then
+	if E.Retail then
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+	end
+
+	if E.Retail or E.Wrath then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
