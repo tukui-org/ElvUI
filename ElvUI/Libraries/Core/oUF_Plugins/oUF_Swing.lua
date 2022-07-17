@@ -48,7 +48,7 @@ local MainhandID = GetInventoryItemID("player", 16)
 local OffhandID = GetInventoryItemID("player", 17)
 local RangedID = GetInventoryItemID("player", 18)
 
-local toc = select(4, GetBuildInfo())
+local _, _, _, toc = GetBuildInfo()
 
 local SwingStopped = function(element)
 	local bar = element.__owner

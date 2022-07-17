@@ -2,7 +2,9 @@ local _, ns = ...
 ns.oUF = {}
 ns.oUF.Private = {}
 
+local _, _, _, toc = GetBuildInfo()
+
 ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 ns.oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-ns.oUF.isTBC = select(4, GetBuildInfo()) >= 20500 and select(4, GetBuildInfo()) < 30000 -- TODO: Check back later
-ns.oUF.isWotLK = select(4, GetBuildInfo()) >= 30400 and select(4, GetBuildInfo()) < 40000 -- TODO: Check back later
+ns.oUF.isTBC = toc >= 20500 and toc < 30000 -- TODO: Check back later
+ns.oUF.isWotLK = toc >= 30400 and toc < 40000 -- TODO: Check back later
