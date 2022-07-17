@@ -7,4 +7,7 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHaste.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellPower.lua'/>
+	<!-- <Script file='Currencies.lua'/> --> <!-- TODO: WotLK -->
+	<!-- <Script file='Difficulty.lua'/> --> <!-- TODO: WotLK -->
+	<!-- <Script file='SpecSwitch.lua'/> --> <!-- TODO: WotLK -->
 </Ui>

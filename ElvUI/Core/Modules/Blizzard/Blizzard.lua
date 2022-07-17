@@ -87,12 +87,16 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
+	elseif E.Wrath then
+		B:PositionVehicleFrame()
+
+		if E.db.general.objectiveTracker then -- TODO: WotLK
+			B:QuestWatch_MoveFrames()
+		end
 	elseif E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
 
-		if not E.Wrath then
-			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick) 
-		end
+		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
 	-- Battle.Net Frame

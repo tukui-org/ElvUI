@@ -49,18 +49,25 @@ local menuList = {
 
 if E.Retail then
 	tinsert(menuList, { text = _G.LFG_TITLE, func = _G.ToggleLFDParentFrame })
-elseif not E.Classic then
+elseif E.Wrath then
+	-- TODO: WotLK
+elseif E.TBC then
 	tinsert(menuList, { text = _G.LFG_TITLE, func = function() if not IsAddOnLoaded('Blizzard_LookingForGroupUI') then UIParentLoadAddOn('Blizzard_LookingForGroupUI') end _G.ToggleLFGParentFrame() end })
 end
 
 if E.Retail then
 	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
-	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
-	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
 	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() GarrisonLandingPageMinimapButton_OnClick(_G.GarrisonLandingPageMinimapButton) end })
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
-else
+end
+
+if E.Retail or E.Wrath then
+	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
+	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
+end
+
+if not E.Retail then
 	tinsert(menuList, { text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end})
 end
 
@@ -125,6 +132,10 @@ function M:HandleTrackingButton()
 		tracking:ClearAllPoints()
 		tracking:Point(position, Minimap, xOffset, yOffset)
 		M:SetScale(tracking, scale)
+
+		if _G.MiniMapTrackingButtonBorder then
+			_G.MiniMapTrackingButtonBorder:Hide()
+		end
 
 		if _G.MiniMapTrackingBorder then
 			_G.MiniMapTrackingBorder:Hide()
@@ -377,12 +388,16 @@ function M:UpdateSettings()
 	end
 
 	local MiniMapInstanceDifficulty = _G.MiniMapInstanceDifficulty
-	local GuildInstanceDifficulty = _G.GuildInstanceDifficulty
-	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
+	if MiniMapInstanceDifficulty then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		MiniMapInstanceDifficulty:ClearAllPoints()
 		MiniMapInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
 		M:SetScale(MiniMapInstanceDifficulty, scale)
+	end
+
+	local GuildInstanceDifficulty = _G.GuildInstanceDifficulty
+	if GuildInstanceDifficulty then
+		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		GuildInstanceDifficulty:ClearAllPoints()
 		GuildInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
 		M:SetScale(GuildInstanceDifficulty, scale)
@@ -575,8 +590,12 @@ function M:Initialize()
 	if _G.QueueStatusMinimapButton then
 		_G.QueueStatusMinimapButtonBorder:Hide()
 		M:CreateQueueStatusText()
-	elseif _G.MiniMapLFGFrame and not E.Wrath then
-		_G.MiniMapLFGBorder:Hide()
+	elseif _G.MiniMapLFGFrame then
+		if E.Wrath then
+			_G.MiniMapLFGFrameBorder:Hide()
+		else
+			_G.MiniMapLFGBorder:Hide()
+		end
 	end
 
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
