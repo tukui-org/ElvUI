@@ -327,7 +327,7 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		if()(oUF.isRetail or oUF.isWotLK) and (RequireSpec or RequireSpell)) then
+		if(oUF.isRetail or oUF.isWotLK) and (RequireSpec or RequireSpell) then
 			self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
