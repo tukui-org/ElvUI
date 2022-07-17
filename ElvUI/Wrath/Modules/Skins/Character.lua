@@ -238,11 +238,11 @@ function S:CharacterFrame()
 		local factionBar = _G['ReputationBar'..i]
 		local factionHeader = _G['ReputationHeader'..i]
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		local factionWar = _G['ReputationBar'..i..'AtWarCheck']
+		--local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
 		factionBar:CreateBackdrop('Default')
-		factionBar:SetStatusBarTexture(E.media.normTex)
+		--factionBar:SetStatusBarTexture(E.media.normTex)
 		factionBar:Size(108, 13)
 		E:RegisterStatusBar(factionBar)
 
@@ -258,16 +258,16 @@ function S:CharacterFrame()
 		factionHeader:SetHighlightTexture(nil)
 		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
 
-		factionWar:StripTextures()
-		factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
+		--factionWar:StripTextures()
+		--factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
 
-		factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-		factionWar.Icon:Point('LEFT', 6, -8)
-		factionWar.Icon:Size(32)
-		factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
+		--factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
+		--factionWar.Icon:Point('LEFT', 6, -8)
+		--factionWar.Icon:Size(32)
+		--factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
-	hooksecurefunc('ReputationFrame_Update', function()
+	--[[hooksecurefunc('ReputationFrame_Update', function()
 		local numFactions = GetNumFactions()
 		local factionIndex, factionHeader
 		local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
@@ -283,7 +283,7 @@ function S:CharacterFrame()
 				end
 			end
 		end
-	end)
+	end)]]
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)

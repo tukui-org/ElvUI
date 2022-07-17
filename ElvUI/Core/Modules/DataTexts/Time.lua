@@ -167,7 +167,7 @@ local function OnEnter()
 		RequestRaidInfo()
 	end
 
-	if E.Retail then
+	if E.Retail then -- TODO: WotLK
 		if not collectedInstanceImages then
 			local numTiers = (EJ_GetNumTiers() or 0)
 			if numTiers > 0 then

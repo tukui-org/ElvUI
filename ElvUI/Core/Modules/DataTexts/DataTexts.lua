@@ -805,7 +805,7 @@ function DT:Initialize()
 	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
 	DT:RegisterLDB() -- LibDataBroker
 
-	if E.Retail then
+	if E.Retail then -- TODO: WotLK
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 		hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
 		DT:PopulateData()

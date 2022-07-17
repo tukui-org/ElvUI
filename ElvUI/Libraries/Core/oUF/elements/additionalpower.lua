@@ -205,7 +205,7 @@ local function Visibility(self, event, unit)
 	local element = self.AdditionalPower
 	local shouldEnable
 
-	if not oUF.isRetail or not UnitHasVehicleUI('player') then
+	if (oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player') then
 		local allowed = element.displayPairs[playerClass]
 		if allowed and UnitPowerMax(unit, POWER_INDEX) ~= 0 then
 			shouldEnable = allowed[UnitPowerType(unit)]

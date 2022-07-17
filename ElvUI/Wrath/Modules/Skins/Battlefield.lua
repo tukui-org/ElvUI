@@ -6,7 +6,7 @@ local _G = _G
 function S:SkinBattlefield()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.battlefield) then return end
 
-	local BattlefieldFrame = _G.BattlefieldFrame
+	--[[local BattlefieldFrame = _G.BattlefieldFrame
 
 	BattlefieldFrame:StripTextures(true)
 	BattlefieldFrame:CreateBackdrop('Transparent')
@@ -25,6 +25,7 @@ function S:SkinBattlefield()
 	_G.BattlefieldFrameGroupJoinButton:Point('RIGHT', _G.BattlefieldFrameJoinButton, 'LEFT', -2, 0)
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
+	]]
 end
 
 S:AddCallback('SkinBattlefield')
