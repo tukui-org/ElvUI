@@ -101,7 +101,7 @@ local function Update(self, event, unit)
 	* hasStateChanged - indicates whether the state has changed since the last update (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(event, unit, hasStateChanged) -- ElvUI changed
+		return element:PostUpdate(unit, hasStateChanged)
 	end
 end
 
