@@ -119,8 +119,8 @@ function UF:Configure_Portrait(frame)
 	end
 end
 
-function UF:PortraitUpdate(unit, event)
-	if self.stateChanged or event == 'ElvUI_UpdateAllElements' then
+function UF:PortraitUpdate(event, unit, hasStateChanged)
+	if hasStateChanged or event == 'ElvUI_UpdateAllElements' then
 		local db = self.db
 		if not db then return end
 
