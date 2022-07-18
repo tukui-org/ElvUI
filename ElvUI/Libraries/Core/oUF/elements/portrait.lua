@@ -83,7 +83,7 @@ local function Update(self, event, unit)
 				element:ClearModel()
 				element:SetUnit(unit)
 			end
-		else
+		elseif not element.customTexture then -- ElvUI changed
 			local class = element.showClass and UnitClassBase(unit)
 			if class then
 				element:SetAtlas('classicon-' .. class)
