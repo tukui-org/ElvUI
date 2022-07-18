@@ -12,6 +12,9 @@ Portrait - A `PlayerModel` or a `Texture` used to represent the unit's portrait.
 A question mark model will be used if the widget is a PlayerModel and the client doesn't have the model information for
 the unit.
 
+## Options
+.showClass - Displays the unit's class in the portrait (boolean)
+
 ## Examples
 
     -- 3D Portrait
@@ -36,6 +39,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- ElvUI block
+local UnitClassBase = UnitClassBase
 local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
 local UnitIsConnected = UnitIsConnected
@@ -58,13 +62,9 @@ local function Update(self, event, unit)
 
 	local guid = UnitGUID(unit)
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	element.stateChanged = event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable
-	if element.stateChanged then -- ElvUI changed
-		element.playerModel = element:IsObjectType('PlayerModel')
-		element.state = isAvailable
-		element.guid = guid
-
-		if element.playerModel then
+	local hasStateChanged = event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable
+	if(hasStateChanged) then
+		if(element:IsObjectType('PlayerModel')) then
 			if not isAvailable then
 				element:SetCamDistanceScale(0.25)
 				element:SetPortraitZoom(0)
@@ -78,9 +78,17 @@ local function Update(self, event, unit)
 				element:ClearModel()
 				element:SetUnit(unit)
 			end
-		elseif not element.customTexture then -- ElvUI changed
-			SetPortraitTexture(element, unit)
+		else
+			local class = element.showClass and UnitClassBase(unit)
+			if(class) then
+				element:SetAtlas('classicon-' .. class)
+			else
+				SetPortraitTexture(element, unit)
+			end
 		end
+
+		element.guid = guid
+		element.state = isAvailable
 	end
 
 	--[[ Callback: Portrait:PostUpdate(unit)
@@ -88,9 +96,10 @@ local function Update(self, event, unit)
 
 	* self - the Portrait element
 	* unit - the unit for which the update has been triggered (string)
+	* hasStateChanged - indicates whether the state has changed since the last update (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, event)
+		return element:PostUpdate(unit, hasStateChanged)
 	end
 end
 
