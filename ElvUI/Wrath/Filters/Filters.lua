@@ -988,7 +988,7 @@ G.unitframe.aurawatch = {
 		[19746]	= UF:AuraWatch_AddSpell(19746, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
 		[32223]	= UF:AuraWatch_AddSpell(32223, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
 		[53563]	= UF:AuraWatch_AddSpell(53563, 'TOPRIGHT', {0.7, 0.3, 0.7}, true),			-- Beacon of Light
-		[53601]	= UF:AuraWatch_AddSpell(53601, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true),			-- Sacred Shield
+		[53601]	= UF:AuraWatch_AddSpell(53601, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true),		-- Sacred Shield
 	},
 	PRIEST = {
 		[1243]	= UF:AuraWatch_AddSpell(1243, 'TOPLEFT', {1, 1, 0.66}, true),			-- Power Word: Fortitude (Rank 1)
@@ -1109,7 +1109,7 @@ G.unitframe.aurawatch = {
 		-- TODO: Riptide / Earthliving
 	},
 	WARLOCK = {
-		[5697]	= UF:AuraWatch_AddSpell(5697, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Unending Breath
+		[5697]	= UF:AuraWatch_AddSpell(5697, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
 		[6512]	= UF:AuraWatch_AddSpell(6512, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
 		-- TODO: Soulstone
 	},
@@ -1312,7 +1312,7 @@ G.unitframe.AuraBarColors = {
 }
 
 G.unitframe.AuraHighlightColors = {
-	[25771]	= {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+	[25771]	= {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}}, -- Forbearance
 }
 
 G.unitframe.specialFilters = {
