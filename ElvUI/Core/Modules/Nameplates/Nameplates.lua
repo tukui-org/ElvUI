@@ -136,7 +136,6 @@ function NP:CVarReset()
 end
 
 function NP:SetCVars()
-
 	if NP.db.clampToScreen then
 		NP:SetCVar('nameplateOtherTopInset', 0.08)
 		NP:SetCVar('nameplateOtherBottomInset', 0.1)
