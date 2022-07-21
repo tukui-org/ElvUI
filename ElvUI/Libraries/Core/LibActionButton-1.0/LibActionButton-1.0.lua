@@ -1737,7 +1737,7 @@ Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
 
 --- WoW Classic overrides
-if WoWClassic or WoWBCC then
+if WoWClassic or WoWBCC or WoWWrath then
 	UpdateOverlayGlow = function() end
 end
 
