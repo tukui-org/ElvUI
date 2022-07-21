@@ -22,8 +22,8 @@ local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
-local GetNumSpecializationsForClassID = (E.Classic or E.TBC and LCS.GetNumSpecializationsForClassID) or GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = (E.Classic or E.TBC and LCS.GetSpecializationInfoForClassID) or GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = (E.Classic or E.TBC or E.Wrath and LCS.GetNumSpecializationsForClassID) or GetNumSpecializationsForClassID
+local GetSpecializationInfoForClassID = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecializationInfoForClassID) or GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}
