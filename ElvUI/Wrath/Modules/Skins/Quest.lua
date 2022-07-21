@@ -400,6 +400,8 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
+	S:HandlePortraitFrame(_G.QuestLogDetailFrame)
+
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
 	S:HandleFrame(_G.QuestLogCount, true)
 	S:HandleFrame(_G.QuestLogFrame, true)
@@ -435,6 +437,7 @@ function S:BlizzardQuestFrames()
 
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
+	S:HandleCloseButton(_G.QuestLogDetailFrameCloseButton, _G.QuestLogDetailFrame.backdrop)
 
 	local index = 1
 	while _G['QuestLogTitle'..index] do
