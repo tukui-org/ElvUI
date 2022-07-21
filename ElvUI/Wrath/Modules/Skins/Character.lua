@@ -152,6 +152,7 @@ function S:CharacterFrame()
 
 	HandleResistanceFrame('MagicResFrame')
 
+	--[[
 	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
 		if slot:IsObjectType('Button') then
 			local icon = _G[slot:GetName()..'IconTexture']
@@ -169,6 +170,7 @@ function S:CharacterFrame()
 			end
 		end
 	end
+	]]
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
 		if frame.SetBackdropBorderColor then
@@ -254,9 +256,9 @@ function S:CharacterFrame()
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
 
-		factionHeader:GetNormalTexture():Size(14)
-		factionHeader:SetHighlightTexture(nil)
-		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
+		--factionHeader:GetNormalTexture():Size(14)
+		--factionHeader:SetHighlightTexture(nil)
+		--factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
 
 		--factionWar:StripTextures()
 		--factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)

@@ -410,7 +410,7 @@ function S:BlizzardQuestFrames()
 
 	S:HandlePointXY(_G.QuestLogFrameAbandonButton, 15, 49)
 	S:HandlePointXY(_G.QuestFramePushQuestButton, -2)
-	S:HandlePointXY(_G.QuestFrameExitButton, -36, 49)
+	--S:HandlePointXY(_G.QuestFrameExitButton, -36, 49)
 	S:HandlePointXY(_G.QuestFrameAcceptButton, 15, 70)
 	S:HandlePointXY(_G.QuestFrameDeclineButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameCompleteQuestButton, 15, 70)
