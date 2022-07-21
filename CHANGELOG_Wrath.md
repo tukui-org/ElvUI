@@ -1,3 +1,9 @@
+### Version 0.04 [ July 21th 2022 ]
+
+More oUF & Vehicle checks  
+Filter updates  
+
+___
 ### Version 0.03 [ July 17th 2022 ]
 
 Even more untested fixes (PR #265), we still don't have beta access  
