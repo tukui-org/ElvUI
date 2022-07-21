@@ -1,3 +1,9 @@
+### Version 0.05 [ July 21th 2022 ]
+
+First loading wrath version  
+Tons of broken skins  
+
+___
 ### Version 0.04 [ July 21th 2022 ]
 
 More oUF & Vehicle checks  
