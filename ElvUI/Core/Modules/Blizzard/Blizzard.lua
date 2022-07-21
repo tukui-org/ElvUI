@@ -87,12 +87,14 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-	elseif E.Wrath then
-		B:PositionVehicleFrame()
 
+		B:PositionVehicleFrame()
+	elseif E.Wrath then
+		--[[
 		if E.db.general.objectiveTracker then -- TODO: WotLK
 			B:QuestWatch_MoveFrames()
 		end
+		]]
 	elseif E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
 

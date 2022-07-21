@@ -14,8 +14,8 @@ local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetSpecialization = not E.Retail and LCS.GetSpecialization or GetSpecialization
-local GetSpecializationRole = not E.Retail and LCS.GetSpecializationRole or GetSpecializationRole
+local GetSpecialization = (E.Classic or E.TBC and LCS.GetSpecialization) or GetSpecialization
+local GetSpecializationRole = (E.Classic or E.TBC and LCS.GetSpecializationRole) or GetSpecializationRole
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
@@ -185,7 +185,7 @@ function E:GetPlayerRole()
 end
 
 function E:CheckRole()
-	E.myspec = GetSpecialization()
+	E.myspec = E.Retail and GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 
 	if E.Retail or E.Wrath then
@@ -637,10 +637,10 @@ function E:LoadAPI()
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
+		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 	end
 
 	if E.Retail or E.Wrath then
-		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
 		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')

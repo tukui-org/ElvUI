@@ -212,7 +212,7 @@ local frame = CreateFrame('Frame')
 frame:SetScript('OnEvent', CheckDispel)
 frame:RegisterEvent('UNIT_PET', CheckDispel)
 
-if oUF.isRetail or oUF.isWotLK then
+if oUF.isRetail then
 	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
 	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')

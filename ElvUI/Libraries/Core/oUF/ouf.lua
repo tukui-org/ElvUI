@@ -926,7 +926,7 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 	eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 	eventFrame:RegisterEvent('PLAYER_LEAVING_WORLD')
 
-	if oUF.isRetail or oUF.isWotLK then
+	if oUF.isRetail then
 		eventFrame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 	end
 

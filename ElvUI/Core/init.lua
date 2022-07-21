@@ -128,7 +128,7 @@ do
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
 
-	if E.Retail or E.Wrath then
+	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	else
 		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')

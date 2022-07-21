@@ -1213,7 +1213,7 @@ end
 
 function UpdateUsable(self)
 	local isLevelLinkLocked
-	if not WoWClassic and not WoWBCC and self._state_type == "action" then
+	if not WoWClassic and not WoWBCC and not WoWWrath and self._state_type == "action" then
 		isLevelLinkLocked = C_LevelLink.IsActionLocked(self._state_action)
 		if not self.icon:IsDesaturated() then
 			self.icon:SetDesaturated(isLevelLinkLocked)
