@@ -42,5 +42,11 @@ function S:Blizzard_TalentUI()
 
 	_G.PlayerTalentFramePointsBar:StripTextures()
 end
-
 S:AddCallbackForAddon('Blizzard_TalentUI')
+
+function S:Blizzard_GlyphUI()
+	-- TODO: WotLK  This is a wip and to show lucky how to start the glyph frame
+	_G.GlyphFrame:StripTextures()
+
+end
+S:AddCallbackForAddon('Blizzard_GlyphUI')
