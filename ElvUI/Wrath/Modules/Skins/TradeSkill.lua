@@ -19,6 +19,9 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleFrame(TradeSkillFrame, true, nil, 11, -12, -32, 76)
 
 	_G.TradeSkillRankFrameBorder:StripTextures()
+	_G.TradeSkillDetailScrollFrame:StripTextures()
+	_G.TradeSkillListScrollFrame:StripTextures()
+	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
 	TradeSkillRankFrame:Size(322, 14)
@@ -28,11 +31,11 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
 	E:RegisterStatusBar(TradeSkillRankFrame)
 
-	local TradeSearchInputBox = _G.TradeSearchInputBox
-	S:HandleEditBox(TradeSearchInputBox)
-	TradeSearchInputBox:ClearAllPoints()
-	TradeSearchInputBox:Point('TOPRIGHT', -39, -54)
-	TradeSearchInputBox:Size(120, 14)
+	local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
+	S:HandleEditBox(TradeSkillFrameEditBox)
+	TradeSkillFrameEditBox:ClearAllPoints()
+	TradeSkillFrameEditBox:Point('TOPRIGHT', -39, -54)
+	TradeSkillFrameEditBox:Size(120, 14)
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 
@@ -94,10 +97,6 @@ function S:Blizzard_TradeSkillUI()
 			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
 	end)
-
-	_G.TradeSkillDetailScrollFrame:StripTextures()
-	_G.TradeSkillListScrollFrame:StripTextures()
-	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
 	S:HandleScrollBar(_G.TradeSkillListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TradeSkillDetailScrollFrameScrollBar)
