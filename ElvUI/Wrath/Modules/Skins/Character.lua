@@ -82,6 +82,7 @@ local function UpdateCurrencySkins()
 							region:Point('LEFT', 25, 0)
 						end
 					end
+
 					if button.isExpanded then
 						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
 						button.expandIcon:SetTexCoord(0,1,0,1)
