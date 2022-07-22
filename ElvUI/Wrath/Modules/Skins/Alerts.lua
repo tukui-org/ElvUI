@@ -634,74 +634,6 @@ local function SkinMoneyWonAlert(frame)
 	end
 end
 
-local function SkinEntitlementDeliveredAlert(frame)
-	frame:SetAlpha(1)
-
-	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-		frame.hooked = true
-	end
-
-	if not frame.backdrop then
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 10, -6)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
-	end
-
-	-- Background
-	frame.Background:Kill()
-	frame.glow:Kill()
-	frame.shine:Kill()
-
-	-- Icon
-	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.Icon:ClearAllPoints()
-	frame.Icon:Point('LEFT', frame.backdrop, 9, 0)
-
-	-- Icon border
-	if not frame.Icon.b then
-		frame.Icon.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.b:SetTemplate()
-		frame.Icon.b:Point('TOPLEFT', frame.Icon, 'TOPLEFT', -2, 2)
-		frame.Icon.b:Point('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 2, -2)
-		frame.Icon:SetParent(frame.Icon.b)
-	end
-end
-
-local function SkinRafRewardDeliveredAlert(frame)
-	frame:SetAlpha(1)
-
-	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-		frame.hooked = true
-	end
-
-	if not frame.backdrop then
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 10, -6)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
-	end
-
-	-- Background
-	frame.StandardBackground:Kill()
-	frame.glow:Kill()
-	frame.shine:Kill()
-
-	-- Icon
-	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.Icon:ClearAllPoints()
-	frame.Icon:Point('LEFT', frame.backdrop, 9, 0)
-
-	-- Icon border
-	if not frame.Icon.b then
-		frame.Icon.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.b:SetTemplate()
-		frame.Icon.b:Point('TOPLEFT', frame.Icon, 'TOPLEFT', -2, 2)
-		frame.Icon.b:Point('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 2, -2)
-		frame.Icon:SetParent(frame.Icon.b)
-	end
-end
-
 local function SkinDigsiteCompleteAlert(frame)
 	frame:SetAlpha(1)
 
@@ -818,8 +750,6 @@ function S:AlertSystem()
 	hooksecurefunc(_G.LootAlertSystem, 'setUpFunction', SkinLootWonAlert)
 	hooksecurefunc(_G.LootUpgradeAlertSystem, 'setUpFunction', SkinLootUpgradeAlert)
 	hooksecurefunc(_G.MoneyWonAlertSystem, 'setUpFunction', SkinMoneyWonAlert)
-	hooksecurefunc(_G.EntitlementDeliveredAlertSystem, 'setUpFunction', SkinEntitlementDeliveredAlert) -- 8.2.5 New
-	hooksecurefunc(_G.RafRewardDeliveredAlertSystem, 'setUpFunction', SkinRafRewardDeliveredAlert) -- 8.2.5 New
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
@@ -827,49 +757,6 @@ function S:AlertSystem()
 	-- Pets/Mounts
 	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinNewPetAlert)
 	hooksecurefunc(_G.NewMountAlertSystem, 'setUpFunction', SkinNewPetAlert)
-	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinNewPetAlert)
-
-	--Bonus Roll Money
-	local frame = _G.BonusRollMoneyWonFrame
-	frame:SetAlpha(1)
-	hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-	frame.Background:Kill()
-	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.IconBorder:Kill()
-
-	-- Icon border
-	frame.Icon.b = CreateFrame('Frame', nil, frame)
-	frame.Icon.b:SetTemplate()
-	frame.Icon.b:SetOutside(frame.Icon)
-	frame.Icon:SetParent(frame.Icon.b)
-
-	--Create Backdrop
-	frame:CreateBackdrop('Transparent')
-	frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-	frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-
-	--Bonus Roll Loot
-	frame = _G.BonusRollLootWonFrame
-	frame:SetAlpha(1)
-	hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-	frame.Background:Kill()
-	frame.glow:Kill()
-	frame.shine:Kill()
-
-	local lootItem = frame.lootItem or frame
-	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	lootItem.IconBorder:Kill()
-
-	-- Icon border
-	lootItem.Icon.b = CreateFrame('Frame', nil, frame)
-	lootItem.Icon.b:SetTemplate()
-	lootItem.Icon.b:SetOutside(lootItem.Icon)
-	lootItem.Icon:SetParent(lootItem.Icon.b)
-
-	--Create Backdrop
-	frame:CreateBackdrop('Transparent')
-	frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)
-	frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
 end
 
 S:AddCallback('AlertSystem')
