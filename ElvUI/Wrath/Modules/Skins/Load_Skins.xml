@@ -6,7 +6,7 @@
 	<Script file='ArenaRegistrar.lua'/>
 	<Script file='AuctionHouse.lua'/>
 	<Script file='Bags.lua'/>
-	<Script file='Barber.lua'/> <!-- TODO: WotLK -->
+	<Script file='Barber.lua'/>
 	<Script file='Battlefield.lua'/> <!-- TODO: WotLK -->
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
@@ -37,7 +37,6 @@
 	<Script file='Misc.lua'/>
 	<Script file='Petition.lua'/>
 	<Script file='Quest.lua'/>
-	<Script file='QuestTimers.lua'/>
 	<Script file='Raid.lua'/>
 	<Script file='Socket.lua'/>
 	<Script file='SpellBook.lua'/>
