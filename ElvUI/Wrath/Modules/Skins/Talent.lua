@@ -66,11 +66,12 @@ end
 S:AddCallbackForAddon('Blizzard_TalentUI')
 
 function S:Blizzard_GlyphUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	_G.GlyphFrame:StripTextures()
 
-	_G.GlyphFrameBackground:Size(318, 352)
-	_G.GlyphFrameBackground:Point('TOPLEFT', 22, -62)
+	_G.GlyphFrameBackground:Size(334, 380)
+	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -52)
 
 	-- Maybe parchment remover support?
 	_G.GlyphFrameBackground:SetTexture('Interface\\Spellbook\\UI-GlyphFrame')
@@ -86,7 +87,6 @@ function S:Blizzard_GlyphUI()
 		_G.PlayerTalentFramePointsBar:Hide()
 		_G.PlayerTalentFrameScrollFrame:Hide()
 		_G.PlayerTalentFrameStatusFrame:Hide()
-		_G.PlayerTalentFrameActivateButton:Hide()
 	end)
 
 	_G.GlyphFrame:HookScript('OnHide', function()
