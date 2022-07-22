@@ -1,3 +1,8 @@
+### Version 0.06 [ July 22nd 2022 ]
+
+More fixes, mostly skins broken + microbar  
+
+___
 ### Version 0.05 [ July 21th 2022 ]
 
 First loading wrath version  
