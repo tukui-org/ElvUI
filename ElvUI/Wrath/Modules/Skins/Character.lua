@@ -66,6 +66,7 @@ local function UpdateCurrencySkins()
 
 					-- these two only need to be called once
 					-- adding them here will prevent additional calls
+					button.expandIcon:ClearAllPoints()
 					button.expandIcon:Point('LEFT', 4, 0)
 					button.expandIcon:Size(15, 15)
 				end
@@ -73,6 +74,14 @@ local function UpdateCurrencySkins()
 				if button.isHeader then
 					button.backdrop:Hide()
 
+					-- TODO: WotLK Fix some quirks for the header point keeps changing after you click the expandIcon button.
+					for x = 1, button:GetNumRegions() do
+						local region = select(x, button:GetRegions())
+						if region and region:IsObjectType('FontString') and region:GetText() then
+							region:ClearAllPoints()
+							region:Point('LEFT', 25, 0)
+						end
+					end
 					if button.isExpanded then
 						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
 						button.expandIcon:SetTexCoord(0,1,0,1)
@@ -320,6 +329,8 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
