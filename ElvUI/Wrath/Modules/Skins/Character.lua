@@ -107,7 +107,7 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
-	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
+	S:HandleCloseButton(_G.CharacterFrameCloseButton)
 
 	S:HandleDropDownBox(_G.PlayerStatFrameRightDropDown, 145)
 	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropDown, 147)
@@ -118,6 +118,10 @@ function S:CharacterFrame()
 
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
 		S:HandleTab(_G['CharacterFrameTab'..i])
+	end
+
+	for i = 1, 3 do
+		S:HandleTab(_G['PetPaperDollFrameTab'..i], true)
 	end
 
 	_G.PaperDollFrame:StripTextures()
@@ -214,6 +218,56 @@ function S:CharacterFrame()
 		end
 	end)
 
+	--PetPaperDollCompanionFrame
+	_G.PetPaperDollFrameCompanionFrame:StripTextures()
+
+	S:HandleButton(_G.CompanionSummonButton)
+
+	S:HandleNextPrevButton(_G.CompanionPrevPageButton)
+	S:HandleNextPrevButton(_G.CompanionNextPageButton)
+
+	_G.CompanionNextPageButton:ClearAllPoints()
+	_G.CompanionNextPageButton:Point('TOPLEFT', _G.CompanionPrevPageButton, 'TOPRIGHT', 100, 0)
+
+	S:HandleRotateButton(_G.CompanionModelFrameRotateLeftButton)
+	_G.CompanionModelFrameRotateLeftButton:ClearAllPoints()
+	_G.CompanionModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
+	S:HandleRotateButton(_G.CompanionModelFrameRotateRightButton)
+	_G.CompanionModelFrameRotateRightButton:ClearAllPoints()
+	_G.CompanionModelFrameRotateRightButton:Point('TOPLEFT', _G.CompanionModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
+
+	hooksecurefunc('PetPaperDollFrame_UpdateCompanions', function()
+		for i = 1, NUM_COMPANIONS_PER_PAGE do
+			local button = _G['CompanionButton'..i]
+
+			if button.creatureID then
+				local iconNormal = button:GetNormalTexture()
+				iconNormal:SetTexCoord(unpack(E.TexCoords))
+				iconNormal:SetInside()
+			end
+		end
+	end)
+
+	for i = 1, NUM_COMPANIONS_PER_PAGE do
+		local button = _G['CompanionButton'..i]
+		local iconDisabled = button:GetDisabledTexture()
+		local activeTexture = _G['CompanionButton'..i..'ActiveTexture']
+
+		button:StyleButton(nil, true)
+		button:SetTemplate(nil, true)
+
+		iconDisabled:SetAlpha(0)
+
+		activeTexture:SetInside(button)
+		activeTexture:SetTexture(1, 1, 1, .15)
+
+		if i == 7 then
+			button:Point('TOP', CompanionButton1, 'BOTTOM', 0, -5)
+		elseif i ~= 1 then
+			button:Point('LEFT', _G['CompanionButton'..i-1], 'RIGHT', 5, 0)
+		end
+	end
+
 	-- PetPaperDollFrame
 	_G.PetPaperDollFrame:StripTextures()
 
@@ -270,9 +324,7 @@ function S:CharacterFrame()
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
 		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
-		-- local factionHeader = _G['ReputationHeader'..i]
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		-- local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
 		factionStatusBar:StripTextures()
@@ -285,18 +337,6 @@ function S:CharacterFrame()
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
-
-		--factionHeader:GetNormalTexture():Size(14)
-		-- factionHeader:SetHighlightTexture(nil)
-		--factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
-
-		--factionWar:StripTextures()
-		--factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
-
-		--factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-		--factionWar.Icon:Point('LEFT', 6, -8)
-		--factionWar.Icon:Size(32)
-		--factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
 	hooksecurefunc('ReputationFrame_Update', function()
