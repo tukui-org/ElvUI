@@ -19,7 +19,6 @@ function S:MerchantFrame()
 
 	_G.MerchantFrameCloseButton:Point('TOPRIGHT', 2, 2)
 
-	-- skin icons / merchant slots
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		local item = _G['MerchantItem'..i]
 		local button = _G['MerchantItem'..i..'ItemButton']
