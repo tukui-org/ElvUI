@@ -405,7 +405,7 @@ function S:BlizzardQuestFrames()
 
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
 	S:HandleFrame(_G.QuestLogCount, true)
-	S:HandleFrame(_G.QuestLogFrame, true)
+	S:HandleFrame(_G.QuestLogFrame, true, nil, 10, 6, 1, 8)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, -6, 2)
