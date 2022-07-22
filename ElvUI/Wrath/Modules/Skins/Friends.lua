@@ -285,6 +285,17 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:Point('LEFT', _G.GuildFrameColumnHeader1, 'RIGHT', -2, -0)
 	_G.GuildFrameColumnHeader2:Width(127)
 
+	if _G.GuildInfoGuildEventButton then
+		S:HandleButton(_G.GuildInfoGuildEventButton)
+	end
+
+	S:HandleFrame(_G.GuildEventLogFrame)
+	S:HandleCloseButton(_G.GuildEventLogCloseButton)
+	_G.GuildEventFrame.NineSlice:SetTemplate('Transparent')
+
+	-- This one taints GuildControl if you skin it
+	-- S:HandleButton(_G.GuildEventLogCancelButton)
+
 	for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
 		local button = _G['GuildFrameButton'..i]
 		local level = _G['GuildFrameButton'..i..'Level']
