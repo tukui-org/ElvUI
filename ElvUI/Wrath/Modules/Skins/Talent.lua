@@ -70,8 +70,8 @@ function S:Blizzard_GlyphUI()
 
 	_G.GlyphFrame:StripTextures()
 
-	_G.GlyphFrameBackground:Size(334, 380)
-	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -52)
+	_G.GlyphFrameBackground:Size(334, 385)
+	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -47)
 
 	-- Maybe parchment remover support?
 	_G.GlyphFrameBackground:SetTexture('Interface\\Spellbook\\UI-GlyphFrame')
