@@ -399,6 +399,9 @@ function S:CharacterFrame()
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
 	PVPFrame:StripTextures(true)
+	PVPFrame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleCloseButton(_G.PVPParentFrameCloseButton)
+	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', 2, 2)
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local pvpTeam = _G['PVPTeam'..i]
