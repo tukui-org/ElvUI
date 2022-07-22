@@ -89,7 +89,7 @@ function S:Blizzard_GlyphUI()
 		_G.PlayerTalentFrameActivateButton:Hide()
 	end)
 
-	_G.GlyphFrame:SetScript('OnHide', function()
+	_G.GlyphFrame:HookScript('OnHide', function()
 		_G.PlayerTalentFrameTitleText:Show()
 		_G.PlayerTalentFramePointsBar:Show()
 		_G.PlayerTalentFrameScrollFrame:Show()
