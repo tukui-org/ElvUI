@@ -71,6 +71,8 @@ local UnitPlayerControlled = UnitPlayerControlled
 local CheckInteractDistance = CheckInteractDistance
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local UnitHasVehicleUI = UnitHasVehicleUI or function() end
+local GetGlyphSocketInfo = GetGlyphSocketInfo or function() end
+local GetNumGlyphSockets = GetNumGlyphSockets or function() return 0 end
 
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
