@@ -66,12 +66,22 @@ local function UpdateCurrencySkins()
 
 					-- these two only need to be called once
 					-- adding them here will prevent additional calls
+					button.expandIcon:ClearAllPoints()
 					button.expandIcon:Point('LEFT', 4, 0)
 					button.expandIcon:Size(15, 15)
 				end
 
 				if button.isHeader then
 					button.backdrop:Hide()
+
+					-- TODO: WotLK Fix some quirks for the header point keeps changing after you click the expandIcon button.
+					for x = 1, button:GetNumRegions() do
+						local region = select(x, button:GetRegions())
+						if region and region:IsObjectType('FontString') and region:GetText() then
+							region:ClearAllPoints()
+							region:Point('LEFT', 25, 0)
+						end
+					end
 
 					if button.isExpanded then
 						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
@@ -152,7 +162,30 @@ function S:CharacterFrame()
 
 	HandleResistanceFrame('MagicResFrame')
 
-	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
+	local slots = {
+		[1] = CharacterHeadSlot,
+		[2] = CharacterNeckSlot,
+		[3] = CharacterShoulderSlot,
+		[4] = CharacterShirtSlot,
+		[5] = CharacterChestSlot,
+		[6] = CharacterWaistSlot,
+		[7] = CharacterLegsSlot,
+		[8] = CharacterFeetSlot,
+		[9] = CharacterWristSlot,
+		[10] = CharacterHandsSlot,
+		[11] = CharacterFinger0Slot,
+		[12] = CharacterFinger1Slot,
+		[13] = CharacterTrinket0Slot,
+		[14] = CharacterTrinket1Slot,
+		[15] = CharacterBackSlot,
+		[16] = CharacterMainHandSlot,
+		[17] = CharacterSecondaryHandSlot,
+		[18] = CharacterRangedSlot,
+		[19] = CharacterTabardSlot,
+		[20] = CharacterAmmoSlot,
+	}
+
+	for _, slot in pairs(slots) do
 		if slot:IsObjectType('Button') then
 			local icon = _G[slot:GetName()..'IconTexture']
 			local cooldown = _G[slot:GetName()..'Cooldown']
@@ -236,27 +269,26 @@ function S:CharacterFrame()
 
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
-		local factionHeader = _G['ReputationHeader'..i]
+		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
+		-- local factionHeader = _G['ReputationHeader'..i]
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		--local factionWar = _G['ReputationBar'..i..'AtWarCheck']
+		-- local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
-		factionBar:CreateBackdrop('Default')
-		--factionBar:SetStatusBarTexture(E.media.normTex)
-		factionBar:Size(108, 13)
-		E:RegisterStatusBar(factionBar)
+		factionStatusBar:StripTextures()
+		factionStatusBar:CreateBackdrop('Default')
+		factionStatusBar:SetStatusBarTexture(E.media.normTex)
+		factionStatusBar:Size(108, 13)
 
-		if i == 1 then
-			factionBar:Point('TOPLEFT', 190, -86)
-		end
+		E:RegisterStatusBar(factionStatusBar)
 
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
 
-		factionHeader:GetNormalTexture():Size(14)
-		factionHeader:SetHighlightTexture(nil)
-		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
+		--factionHeader:GetNormalTexture():Size(14)
+		-- factionHeader:SetHighlightTexture(nil)
+		--factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
 
 		--factionWar:StripTextures()
 		--factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
@@ -267,23 +299,23 @@ function S:CharacterFrame()
 		--factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
-	--[[hooksecurefunc('ReputationFrame_Update', function()
+	hooksecurefunc('ReputationFrame_Update', function()
 		local numFactions = GetNumFactions()
-		local factionIndex, factionHeader
+		local factionIndex, factionBarButton
 		local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
 
 		for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
-			factionHeader = _G['ReputationHeader'..i]
+			factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 			factionIndex = factionOffset + i
 			if factionIndex <= numFactions then
-				if factionHeader.isCollapsed then
-					factionHeader:SetNormalTexture(E.Media.Textures.PlusButton)
+				if factionBarButton.isCollapsed then
+					factionBarButton:SetNormalTexture(E.Media.Textures.PlusButton)
 				else
-					factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
+					factionBarButton:SetNormalTexture(E.Media.Textures.MinusButton)
 				end
 			end
 		end
-	end)]]
+	end)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
@@ -298,6 +330,8 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
@@ -365,6 +399,9 @@ function S:CharacterFrame()
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
 	PVPFrame:StripTextures(true)
+	PVPFrame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleCloseButton(_G.PVPParentFrameCloseButton)
+	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', 2, 2)
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local pvpTeam = _G['PVPTeam'..i]
@@ -407,6 +444,9 @@ function S:CharacterFrame()
 	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 
 	--Currency
+	_G.TokenFrame:StripTextures()
+	S:HandleButton(_G.TokenFrameCancelButton)
+
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
 end

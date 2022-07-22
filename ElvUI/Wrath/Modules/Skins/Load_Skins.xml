@@ -1,7 +1,7 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='Achievement.lua'/> <!-- TODO: WotLK -->
 	<Script file='AddonManager.lua'/>
-	<Script file='Alerts.lua'/> <!-- TODO: WotLK -->
+	<!--Script file='Alerts.lua'/--> <!-- TODO: WotLK -->
 	<Script file='Arena.lua'/>
 	<Script file='ArenaRegistrar.lua'/>
 	<Script file='AuctionHouse.lua'/>

@@ -59,7 +59,9 @@ function S:BlizzardQuestFrames()
 		'QuestFrameGoodbyeButton',
 		'QuestFrameGreetingGoodbyeButton',
 		'QuestFramePushQuestButton',
-		'QuestLogFrameAbandonButton'
+		'QuestLogFrameAbandonButton',
+		'QuestLogFrameTrackButton',
+		'QuestLogFrameCancelButton'
 	}
 	for _, button in pairs(QuestButtons) do
 		_G[button]:StripTextures()
@@ -256,6 +258,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestLogObjectivesText:SetTextColor(unpack(textColor))
 		_G.QuestLogQuestDescription:SetTextColor(unpack(textColor))
 		_G.QuestLogSpellLearnText:SetTextColor(unpack(textColor))
+		_G.QuestInfoQuestType:SetTextColor(unpack(textColor))
 
 		local requiredMoney = GetQuestLogRequiredMoney()
 
@@ -316,7 +319,6 @@ function S:BlizzardQuestFrames()
 		-- Reward frame text
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(unpack(textColor))
-		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(unpack(textColor))
 
 		_G.QuestInfoRewardsFrame.spellHeaderPool.textR, _G.QuestInfoRewardsFrame.spellHeaderPool.textG, _G.QuestInfoRewardsFrame.spellHeaderPool.textB = unpack(textColor)
@@ -398,9 +400,11 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
+	S:HandlePortraitFrame(_G.QuestLogDetailFrame)
+
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
 	S:HandleFrame(_G.QuestLogCount, true)
-	S:HandleFrame(_G.QuestLogFrame, true, nil, 11, -12, -32, 45)
+	S:HandleFrame(_G.QuestLogFrame, true)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, -6, 2)
@@ -408,9 +412,8 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, -6, 2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, -6, 2)
 
-	S:HandlePointXY(_G.QuestLogFrameAbandonButton, 15, 49)
-	S:HandlePointXY(_G.QuestFramePushQuestButton, -2)
-	S:HandlePointXY(_G.QuestFrameExitButton, -36, 49)
+	S:HandlePointXY(_G.QuestLogFrameAbandonButton)
+	S:HandlePointXY(_G.QuestFramePushQuestButton)
 	S:HandlePointXY(_G.QuestFrameAcceptButton, 15, 70)
 	S:HandlePointXY(_G.QuestFrameDeclineButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameCompleteQuestButton, 15, 70)
@@ -434,6 +437,7 @@ function S:BlizzardQuestFrames()
 
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
+	S:HandleCloseButton(_G.QuestLogDetailFrameCloseButton, _G.QuestLogDetailFrame.backdrop)
 
 	local index = 1
 	while _G['QuestLogTitle'..index] do
@@ -466,34 +470,6 @@ function S:BlizzardQuestFrames()
 
 		index = index + 1
 	end
-
-	--[[local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
-	QuestLogCollapseAllButton:StripTextures()
-	QuestLogCollapseAllButton:Point('TOPLEFT', -45, 7)
-
-	QuestLogCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton.SetNormalTexture = E.noop
-	QuestLogCollapseAllButton:GetNormalTexture():Size(16)
-
-	QuestLogCollapseAllButton:SetHighlightTexture('')
-	QuestLogCollapseAllButton.SetHighlightTexture = E.noop
-
-	QuestLogCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton.SetDisabledTexture = E.noop
-	QuestLogCollapseAllButton:GetDisabledTexture():Size(16)
-	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
-
-	hooksecurefunc(_G.QuestLogCollapseAllButton, 'SetNormalTexture', function(button, texture)
-		local tex = button:GetNormalTexture()
-
-		if strfind(texture, 'MinusButton') then
-			tex:SetTexture(E.Media.Textures.MinusButton)
-		else
-			tex:SetTexture(E.Media.Textures.PlusButton)
-		end
-	end)
-	]]
 end
 
 S:AddCallback('BlizzardQuestFrames')

@@ -183,7 +183,6 @@ function S:Blizzard_AchievementUI()
 	end
 
 	_G.AchievementFrameHeaderRightDDLInset:SetAlpha(0)
-	_G.AchievementFrameHeaderLeftDDLInset:SetAlpha(0)
 	select(2, _G.AchievementFrameAchievements:GetChildren()):Hide()
 	_G.AchievementFrameAchievementsBackground:Hide()
 	select(3, _G.AchievementFrameAchievements:GetRegions()):Hide()
@@ -197,7 +196,6 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonHeader:Point('BOTTOMRIGHT', _G.AchievementFrameComparison, 'TOPRIGHT', 35, -15)
 	_G.AchievementFrameComparisonHeaderBG:Hide()
 	_G.AchievementFrameComparisonHeaderPortrait:Hide()
-	_G.AchievementFrameComparisonHeaderPortraitBg:Hide()
 	_G.AchievementFrameComparisonHeaderName:Width(90)
 	_G.AchievementFrameComparisonBackground:Hide()
 	_G.AchievementFrameComparisonWatermark:SetAlpha(0)
@@ -210,11 +208,6 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
 	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:Point('CENTER')
 
-	for _, frame in next, { _G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend } do
-		frame.NineSlice:SetAlpha(0)
-		frame:SetBackdrop()
-	end
-
 	_G.AchievementFrameMetalBorderTopLeft:Hide()
 	_G.AchievementFrameWoodBorderTopLeft:Hide()
 	_G.AchievementFrameMetalBorderTopRight:Hide()
@@ -223,23 +216,6 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameWoodBorderBottomRight:Hide()
 	_G.AchievementFrameMetalBorderBottomLeft:Hide()
 	_G.AchievementFrameWoodBorderBottomLeft:Hide()
-
-	local noname_frames = {
-		_G.AchievementFrameStats,
-		_G.AchievementFrameSummary,
-		_G.AchievementFrameAchievements,
-		_G.AchievementFrameComparison
-	}
-	for _, frame in pairs(noname_frames) do
-		if frame and frame.GetNumChildren then
-			for i=1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
-				if child and not child:GetName() then
-					child:SetBackdrop()
-				end
-			end
-		end
-	end
 
 	local AchievementFrame = _G.AchievementFrame
 	AchievementFrame:StripTextures()
@@ -266,21 +242,11 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameAchievementsContainer.backdrop:Point('TOPLEFT', -2, 2)
 	_G.AchievementFrameAchievementsContainer.backdrop:Point('BOTTOMRIGHT', -2, -3)
 
-	_G.AchievementFrameGuildEmblemRight:Kill()
-	_G.AchievementFrameGuildEmblemLeft:Kill()
-
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
 
 	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
 	_G.AchievementFrameFilterDropDown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
-
-	S:HandleEditBox(AchievementFrame.searchBox)
-	AchievementFrame.searchBox.backdrop:Point('TOPLEFT', AchievementFrame.searchBox, 'TOPLEFT', -3, -3)
-	AchievementFrame.searchBox.backdrop:Point('BOTTOMRIGHT', AchievementFrame.searchBox, 'BOTTOMRIGHT', 0, 3)
-	AchievementFrame.searchBox:ClearAllPoints()
-	AchievementFrame.searchBox:Point('TOPRIGHT', _G.AchievementFrameHeaderRightDDLInset, 25, -5)
-	AchievementFrame.searchBox:Size(170, 25)
 
 	local scrollBars = {
 		_G.AchievementFrameCategoriesContainerScrollBar,
@@ -296,68 +262,19 @@ function S:Blizzard_AchievementUI()
 		end
 	end
 
-	-- Search
-	AchievementFrame.searchResults:StripTextures()
-	AchievementFrame.searchResults:SetTemplate('Transparent')
-	AchievementFrame.searchPreviewContainer:StripTextures()
-	AchievementFrame.searchPreviewContainer:ClearAllPoints()
-	AchievementFrame.searchPreviewContainer:Point('TOPLEFT', AchievementFrame, 'TOPRIGHT', 2, 6)
-
-	for i = 1, 5 do
-		SkinSearchButton(AchievementFrame.searchPreviewContainer['searchPreview'..i])
-	end
-	SkinSearchButton(AchievementFrame.searchPreviewContainer.showAllSearchResults)
-
-	hooksecurefunc('AchievementFrame_UpdateFullSearchResults', function()
-		local numResults = GetNumFilteredAchievements()
-
-		local scrollFrame = AchievementFrame.searchResults.scrollFrame
-		local offset = _G.HybridScrollFrame_GetOffset(scrollFrame)
-
-		for i, result in ipairs(scrollFrame.buttons) do
-			local index = offset + i
-			if index <= numResults then
-				if not result.styled then
-					result:SetNormalTexture('')
-					result:SetPushedTexture('')
-					result:GetRegions():Hide()
-
-					result.resultType:SetTextColor(1, 1, 1)
-					result.path:SetTextColor(1, 1, 1)
-
-					result.styled = true
-				end
-
-				if result.icon:GetTexCoord() == 0 then
-					result.icon:SetTexCoord(unpack(E.TexCoords))
-				end
-			end
-		end
-	end)
-
-	hooksecurefunc(AchievementFrame.searchResults.scrollFrame, 'update', function(frame)
-		for _, result in ipairs(frame.buttons) do
-			if result.icon:GetTexCoord() == 0 then
-				result.icon:SetTexCoord(unpack(E.TexCoords))
-			end
-		end
-	end)
-
-	S:HandleCloseButton(AchievementFrame.searchResults.closeButton)
-	S:HandleScrollBar(_G.AchievementFrameScrollFrameScrollBar)
-
 	--Tabs
-	for i = 1, 3 do
+	for i = 1, 2 do
 		S:HandleTab(_G['AchievementFrameTab'..i])
 		_G['AchievementFrameTab'..i]:SetFrameLevel(_G['AchievementFrameTab'..i]:GetFrameLevel() + 2)
 	end
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 
-	for i=1, 12 do
+	for i = 1, 8 do
 		local frame = _G['AchievementFrameSummaryCategoriesCategory'..i]
 		local button = _G['AchievementFrameSummaryCategoriesCategory'..i..'Button']
 		local highlight = _G['AchievementFrameSummaryCategoriesCategory'..i..'ButtonHighlight']
+
 		SkinStatusBar(frame)
 		button:StripTextures()
 		highlight:StripTextures()
