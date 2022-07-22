@@ -152,8 +152,30 @@ function S:CharacterFrame()
 
 	HandleResistanceFrame('MagicResFrame')
 
-	--[[
-	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
+	local slots = {
+		[1] = CharacterHeadSlot,
+		[2] = CharacterNeckSlot,
+		[3] = CharacterShoulderSlot,
+		[4] = CharacterShirtSlot,
+		[5] = CharacterChestSlot,
+		[6] = CharacterWaistSlot,
+		[7] = CharacterLegsSlot,
+		[8] = CharacterFeetSlot,
+		[9] = CharacterWristSlot,
+		[10] = CharacterHandsSlot,
+		[11] = CharacterFinger0Slot,
+		[12] = CharacterFinger1Slot,
+		[13] = CharacterTrinket0Slot,
+		[14] = CharacterTrinket1Slot,
+		[15] = CharacterBackSlot,
+		[16] = CharacterMainHandSlot,
+		[17] = CharacterSecondaryHandSlot,
+		[18] = CharacterRangedSlot,
+		[19] = CharacterTabardSlot,
+		[20] = CharacterAmmoSlot,
+	}
+
+	for _, slot in pairs(slots) do
 		if slot:IsObjectType('Button') then
 			local icon = _G[slot:GetName()..'IconTexture']
 			local cooldown = _G[slot:GetName()..'Cooldown']
@@ -170,7 +192,6 @@ function S:CharacterFrame()
 			end
 		end
 	end
-	]]
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
 		if frame.SetBackdropBorderColor then
@@ -240,7 +261,7 @@ function S:CharacterFrame()
 		local factionBar = _G['ReputationBar'..i]
 		local factionHeader = _G['ReputationHeader'..i]
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		--local factionWar = _G['ReputationBar'..i..'AtWarCheck']
+		local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
 		factionBar:CreateBackdrop('Default')
@@ -269,7 +290,7 @@ function S:CharacterFrame()
 		--factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
-	--[[hooksecurefunc('ReputationFrame_Update', function()
+	hooksecurefunc('ReputationFrame_Update', function()
 		local numFactions = GetNumFactions()
 		local factionIndex, factionHeader
 		local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
@@ -285,7 +306,7 @@ function S:CharacterFrame()
 				end
 			end
 		end
-	end)]]
+	end)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
@@ -409,6 +430,9 @@ function S:CharacterFrame()
 	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 
 	--Currency
+	_G.TokenFrame:StripTextures()
+	S:HandleButton(_G.TokenFrameCancelButton)
+
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
 end
