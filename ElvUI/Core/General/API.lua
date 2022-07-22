@@ -21,6 +21,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
+local IsRestrictedAccount = IsRestrictedAccount
 local IsSpellKnown = IsSpellKnown
 local IsTrialAccount = IsTrialAccount
 local IsVeteranTrialAccount = IsVeteranTrialAccount
@@ -553,7 +554,7 @@ function E:XPIsUserDisabled()
 end
 
 function E:XPIsTrialMax()
-	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+	return E.Retail and (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
 function E:XPIsLevelMax()
