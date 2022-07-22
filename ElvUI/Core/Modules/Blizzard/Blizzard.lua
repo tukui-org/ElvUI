@@ -90,14 +90,12 @@ function B:Initialize()
 
 		B:PositionVehicleFrame()
 	elseif E.Wrath then
-		--[[
-		if E.db.general.objectiveTracker then -- TODO: WotLK
+		if E.db.general.objectiveTracker then
 			B:QuestWatch_MoveFrames()
+			hooksecurefunc('WatchFrame_Update', B.QuestWatch_AddQuestClick)
 		end
-		]]
 	elseif E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
-
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
