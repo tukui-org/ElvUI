@@ -63,6 +63,29 @@ local function onUpdate(self, elapsed)
 	self:SetValue(duration)
 end
 
+-- Legacy stuff
+local function UpdateType(self, event, runeID, alt)
+	local element = self.Runes
+	local rune = element[runemap[runeID]]
+	local runeType = GetRuneType(runeID) or alt
+
+	if not runeType then return end
+
+	local color = self.colors.runes[runeType]
+	local r, g, b = color[1], color[2], color[3]
+
+	rune:SetStatusBarColor(r, g, b)
+
+	if(rune.bg) then
+		local mu = rune.bg.multiplier or 1
+		rune.bg:SetVertexColor(r * mu, g * mu, b * mu)
+	end
+
+	if(element.PostUpdateType) then
+		return element:PostUpdateType(rune, runeID, alt)
+	end
+end
+
 local function ascSort(runeAID, runeBID)
 	local runeAStart, _, runeARuneReady = GetRuneCooldown(runeAID)
 	local runeBStart, _, runeBRuneReady = GetRuneCooldown(runeBID)
@@ -232,7 +255,12 @@ local function Enable(self, unit)
 		end
 		-- end block
 
-		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		if oUF.isRetail then
+			self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		elseif oUF.isWotLK then
+			self:RegisterEvent('RUNE_TYPE_UPDATE', UpdateType, true)
+		end
+
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
 		return true
@@ -252,7 +280,12 @@ local function Disable(self)
 		end
 		-- end block
 
-		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		if oUF.isRetail then
+			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		elseif oUF.isWotLK then
+			self:UnregisterEvent('RUNE_TYPE_UPDATE', UpdateType, true)
+		end
+
 		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
 	end
 end
