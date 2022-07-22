@@ -400,7 +400,8 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
-	S:HandlePortraitFrame(_G.QuestLogDetailFrame)
+	local QuestLogDetailFrame = _G.QuestLogDetailFrame
+	S:HandleFrame(QuestLogDetailFrame, true, nil, 10, -10, 4, 4)
 
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
 	S:HandleFrame(_G.QuestLogCount, true)
