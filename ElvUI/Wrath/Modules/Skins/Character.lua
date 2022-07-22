@@ -380,10 +380,8 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
 
-	_G.SkillFrameCollapseAllButton:SetHighlightTexture(nil)
-
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		if strfind(_G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture(), 'MinusButton') then
+		if SkillFrameCollapseAllButton.isExpanded then
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		else
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
@@ -409,9 +407,12 @@ function S:CharacterFrame()
 		label:SetHighlightTexture(nil)
 	end
 
-	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID)
+	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)
+		local _, isHeader, isExpanded = GetSkillLineInfo(skillIndex)
+		if not isHeader then return end
+
 		local skillLine = _G['SkillTypeLabel'..statusBarID]
-		if strfind(skillLine:GetNormalTexture():GetTexture(), 'MinusButton') then
+		if isExpanded then
 			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
 		else
 			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
