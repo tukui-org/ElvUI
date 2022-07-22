@@ -87,8 +87,6 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-
-		B:PositionVehicleFrame()
 	elseif E.Wrath then
 		if E.db.general.objectiveTracker then
 			B:QuestWatch_MoveFrames()

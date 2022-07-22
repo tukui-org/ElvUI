@@ -438,38 +438,6 @@ function S:BlizzardQuestFrames()
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogDetailFrameCloseButton, _G.QuestLogDetailFrame.backdrop)
-
-	local index = 1
-	while _G['QuestLogTitle'..index] do
-		local questLogTitle = _G['QuestLogTitle'..index]
-
-		questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
-		questLogTitle.SetNormalTexture = E.noop
-
-		questLogTitle:GetNormalTexture():Size(16)
-		questLogTitle:GetNormalTexture():Point('LEFT', 5, 0)
-
-		questLogTitle:SetHighlightTexture('')
-		questLogTitle.SetHighlightTexture = E.noop
-
-		questLogTitle:Width(300)
-
-		_G['QuestLogTitle'..index..'Highlight']:SetAlpha(0)
-
-		hooksecurefunc(questLogTitle, 'SetNormalTexture', function(title, texture)
-			local tex = title:GetNormalTexture()
-
-			if strfind(texture, 'MinusButton') then
-				tex:SetTexture(E.Media.Textures.MinusButton)
-			elseif strfind(texture, 'PlusButton') then
-				tex:SetTexture(E.Media.Textures.PlusButton)
-			else
-				tex:SetTexture()
-			end
-		end)
-
-		index = index + 1
-	end
 end
 
 S:AddCallback('BlizzardQuestFrames')
