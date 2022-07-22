@@ -23,6 +23,9 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillListScrollFrame:StripTextures()
 	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
+	_G.TradeSkillFrameBottomLeftTexture:Kill()
+	_G.TradeSkillFrameBottomRightTexture:Kill()
+
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
 	TradeSkillRankFrame:Size(322, 14)
 	TradeSkillRankFrame:Point('TOPLEFT', 23, -37)
