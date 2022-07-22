@@ -56,8 +56,13 @@ function S:Blizzard_LookingForGroupUI()
 		S:HandleCheckBox(checkbox, true) -- no backdrop
 	end
 
+	if _G.LFGListingFrameGroupRoleButtonsInitiateRolePoll then
+		S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
+	end
+
 	S:HandleEditBox(_G.LFGListingComment)
 
+	S:HandleDropDownBox(_G.LFGListingFrameGroupRoleButtonsRoleDropDown, 180)
 	S:HandleDropDownBox(_G.LFGBrowseFrameActivityDropDown, 220)
 	S:HandleDropDownBox(_G.LFGBrowseFrameCategoryDropDown, 160)
 
@@ -72,6 +77,15 @@ function S:Blizzard_LookingForGroupUI()
 
 	S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar)
 	S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
+
+	-- Role check popup
+	S:HandleFrame(_G.RolePollPopup)
+	S:HandleButton(_G.RolePollPopupAcceptButton)
+	S:HandleCloseButton(_G.RolePollPopupCloseButton)
+
+	S:HandleCheckBox(_G.RolePollPopupRoleButtonTank.checkButton)
+	S:HandleCheckBox(_G.RolePollPopupRoleButtonHealer.checkButton)
+	S:HandleCheckBox(_G.RolePollPopupRoleButtonDPS.checkButton)
 
 	do
 		local i = 1
