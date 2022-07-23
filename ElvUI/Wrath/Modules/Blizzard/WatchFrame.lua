@@ -21,6 +21,13 @@ function B:QuestWatch_MoveFrames()
 	WatchFrameHolder:SetAllPoints(_G.WatchFrameMover)
 	WatchFrame:ClearAllPoints()
 	WatchFrame:SetAllPoints(WatchFrameHolder)
+
+	hooksecurefunc(WatchFrame, 'SetPoint', function(_, _, parent)
+		if parent ~= WatchFrameHolder then
+			WatchFrame:ClearAllPoints()
+			WatchFrame:SetAllPoints(WatchFrameHolder)
+		end
+	end)
 end
 
 function B:QuestWatch_OnClick()
