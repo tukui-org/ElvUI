@@ -43,9 +43,6 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameSendMessageButton:ClearAllPoints()
 	_G.LFGBrowseFrameSendMessageButton:Point('TOPLEFT', LFGParentFrameTab1, 'TOPLEFT', 14, 24)
 
-	S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
-	S:HandleDropDownBox(_G.LFGListingFrameGroupRoleButtonsRoleDropDown)
-
 	_G.LFGListingFramePostButton:Point('BOTTOMRIGHT', LFGListingFrame, 'BOTTOMRIGHT', -40, 76)
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
