@@ -41,7 +41,6 @@ function B:MoveObjectiveFrame()
 
 	hooksecurefunc(tracker, 'SetPoint', function(_, _, parent)
 		if parent ~= holder then
-			print(WatchFrame:IsProtected())
 			tracker:ClearAllPoints()
 			tracker:SetPoint('TOP', holder, 'TOP')
 		end
