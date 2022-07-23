@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local unpack = unpack
+local select, unpack = select, unpack
 local CreateFrame = CreateFrame
 
 function S:Blizzard_GuildBankUI()
@@ -25,7 +24,7 @@ function S:Blizzard_GuildBankUI()
 		end
 	end
 
-	for i=1, _G.MAX_GUILDBANK_TABS do
+	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local tab = _G['GuildBankTab'..i]
 		tab:StripTextures()
 
@@ -52,8 +51,6 @@ function S:Blizzard_GuildBankUI()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
-
-			--S:HandleIconBorder(button.IconBorder) tbc doesnt have vertex color on iconborder rn?
 		end
 	end
 

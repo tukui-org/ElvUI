@@ -2,9 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs = pairs
-local strfind = strfind
+local pairs, strfind, unpack = pairs, strfind, unpack
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -34,7 +32,7 @@ local function UpdateCurrencySkins()
 	local buttons = TokenFrameContainer.buttons
 	local numButtons = #buttons
 
-	for i=1, numButtons do
+	for i = 1, numButtons do
 		local button = buttons[i]
 
 		if button then
@@ -134,11 +132,11 @@ function S:CharacterFrame()
 	_G.CharacterAttributesFrame:StripTextures()
 
 	local ResistanceCoords = {
-		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 }, --Arcane
+		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 }, --Fire
+		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 }, --Nature
+		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375}, --Frost
+		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125}, --Shadow
 	}
 
 	local function HandleResistanceFrame(frameName)
@@ -218,7 +216,7 @@ function S:CharacterFrame()
 		end
 	end)
 
-	--PetPaperDollCompanionFrame
+	-- PetPaperDollCompanionFrame (Pets and Mounts in WotLK)
 	_G.PetPaperDollFrameCompanionFrame:StripTextures()
 
 	S:HandleButton(_G.CompanionSummonButton)

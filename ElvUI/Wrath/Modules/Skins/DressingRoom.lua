@@ -18,11 +18,13 @@ function S:DressUpFrame()
 
 	S:HandleCloseButton(_G.DressUpFrameCloseButton, DressUpFrame.backdrop)
 
+	-- Rotate Buttons
 	S:HandleRotateButton(_G.DressUpModelFrameRotateLeftButton)
 	_G.DressUpModelFrameRotateLeftButton:Point('TOPLEFT', DressUpFrame, 25, -79)
 	S:HandleRotateButton(_G.DressUpModelFrameRotateRightButton)
 	_G.DressUpModelFrameRotateRightButton:Point('TOPLEFT', _G.DressUpModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
+	-- Cancel and Reset
 	S:HandleButton(_G.DressUpFrameCancelButton)
 	_G.DressUpFrameCancelButton:Point('BOTTOMRIGHT', -35, 80)
 	S:HandleButton(_G.DressUpFrameResetButton)

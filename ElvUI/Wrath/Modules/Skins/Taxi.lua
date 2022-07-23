@@ -8,7 +8,7 @@ function S:TaxiFrame()
 
 	local TaxiFrame = _G.TaxiFrame
 	S:HandleFrame(TaxiFrame, true, nil, 11, -12, -32, 76)
-	_G.TaxiPortrait:Kill() -- Blizz didnt name this TaxiFramePortrait
+	_G.TaxiPortrait:Kill()
 
 	S:HandlePointXY(_G.TaxiMap, -11, -71)
 	S:HandlePointXY(_G.TaxiRouteMap, -11, -71)

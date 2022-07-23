@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local format = format
+local format, unpack = format, unpack
 
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end

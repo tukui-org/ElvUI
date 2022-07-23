@@ -4,8 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
--- TODO: WotLK
-
 function S:Blizzard_RuneforgeUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.runeforge) then return end
 

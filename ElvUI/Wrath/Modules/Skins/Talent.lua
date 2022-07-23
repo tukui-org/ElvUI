@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
+local MAX_TALENT_TABS = MAX_TALENT_TABS
+
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -73,7 +75,6 @@ function S:Blizzard_GlyphUI()
 	_G.GlyphFrameBackground:Size(334, 385)
 	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -47)
 
-	-- Maybe parchment remover support?
 	_G.GlyphFrameBackground:SetTexture('Interface\\Spellbook\\UI-GlyphFrame')
 	_G.GlyphFrameGlow:SetTexture('Interface\\Spellbook\\UI-GlyphFrame-Glow')
 	_G.GlyphFrameGlow:SetAllPoints(_G.GlyphFrameBackground)

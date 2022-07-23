@@ -5,10 +5,9 @@ local _G = _G
 local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
--- credit: Aftermathh
+-- Credits: Aftermathh
 function S:Blizzard_CombatLog()
-	if E.private.chat.enable ~= true then return end
-	-- this is always on with the chat module, it's only handle the top bar in combat log chat frame
+	if E.private.chat.enable ~= true then return end -- This is always on with the chat module, it's only handle the top bar in combat log chat frame
 
 	local Button = _G.CombatLogQuickButtonFrame_Custom
 	Button:StripTextures()

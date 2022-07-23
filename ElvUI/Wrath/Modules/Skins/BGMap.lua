@@ -20,7 +20,7 @@ local function setBackdropAlpha()
 	end
 end
 
--- alpha stuff
+-- Alpha stuff
 local oldAlpha = 0
 local function setOldAlpha()
 	if oldAlpha then
@@ -46,7 +46,7 @@ function S:Blizzard_BattlefieldMap()
 
 	S:HandleFrame(BattlefieldMapFrame, true)
 
-	refreshAlpha() -- will need this soon
+	refreshAlpha() -- Will need this soon
 	BattlefieldMapFrame:SetClampedToScreen(true)
 	BattlefieldMapFrame:SetFrameStrata('LOW')
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)

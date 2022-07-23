@@ -104,7 +104,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarContextMenu.NineSlice:SetTemplate('Transparent')
 	_G.CalendarInviteStatusContextMenu.NineSlice:SetTemplate('Transparent')
 
-	--Boost frame levels
+	-- Boost frame levels
 	for i = 1, 42 do
 		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(.5)
 		local bu = _G['CalendarDayButton'..i]
@@ -140,7 +140,7 @@ function S:Blizzard_Calendar()
 		_G.CalendarTodayFrame:SetAllPoints()
 	end)
 
-	--CreateEventFrame
+	-- CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
 	_G.CalendarCreateEventFrame:SetTemplate('Transparent')
 	_G.CalendarCreateEventFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
@@ -199,12 +199,12 @@ function S:Blizzard_Calendar()
 	_G.CalendarClassTotalsButton:SetTemplate()
 	_G.CalendarClassTotalsButton:Size(28, 18)
 
-	--Texture Picker Frame
+	-- Texture Picker Frame
 	_G.CalendarTexturePickerFrame:StripTextures()
 	_G.CalendarTexturePickerFrame.Header:StripTextures()
 	_G.CalendarTexturePickerFrame:SetTemplate('Transparent')
 
-	--Mass Invite Frame
+	-- Mass Invite Frame
 	_G.CalendarMassInviteFrame:StripTextures()
 	_G.CalendarMassInviteFrame:SetTemplate('Transparent')
 	_G.CalendarMassInviteFrame.Header:StripTextures()
@@ -214,14 +214,14 @@ function S:Blizzard_Calendar()
 	S:HandleEditBox(_G.CalendarMassInviteMaxLevelEdit)
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
 
-	--Raid View
+	-- Raid View
 	_G.CalendarViewRaidFrame:StripTextures()
 	_G.CalendarViewRaidFrame:SetTemplate('Transparent')
 	_G.CalendarViewRaidFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarViewRaidFrame.Header:StripTextures()
 	S:HandleCloseButton(_G.CalendarViewRaidCloseButton)
 
-	--Holiday View
+	-- Holiday View
 	_G.CalendarViewHolidayFrame:StripTextures(true)
 	_G.CalendarViewHolidayFrame:SetTemplate('Transparent')
 	_G.CalendarViewHolidayFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)

@@ -117,7 +117,7 @@ function S:MerchantFrame()
 		end
 	end
 
-	-- skin tabs
+	-- Skin Tabs
 	for i = 1, 2 do
 		S:HandleTab(_G['MerchantFrameTab'..i])
 	end

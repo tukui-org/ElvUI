@@ -176,7 +176,7 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
-	-- [[ ROSTER TAB ]]
+	-- Roster Tab
 	local MemberList = CommunitiesFrame.MemberList
 	local ColumnDisplay = MemberList.ColumnDisplay
 	ColumnDisplay:StripTextures()
@@ -278,7 +278,8 @@ function S:Blizzard_Communities()
 	TicketManager.InviteManager.ColumnDisplay:StripTextures()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderLeft:Hide()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderBottomLeft:Hide()
-	-- TO DO: Fix the Tabs
+
+	-- ToDo: Fix the Tabs
 	TicketManager.InviteManager.ListScrollFrame:StripTextures()
 
 	TicketManager:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)

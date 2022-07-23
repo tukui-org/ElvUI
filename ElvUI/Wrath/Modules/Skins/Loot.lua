@@ -76,7 +76,7 @@ function S:LootFrame()
 
 	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
-	-- Master Loot
+	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame:SetTemplate('Transparent')
 	MasterLooterFrame.NineSlice:SetTemplate('Transparent')

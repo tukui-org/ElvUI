@@ -289,7 +289,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 		-- Background
 		frame.ToastBackground:Kill()
 
-		--Icon
+		-- Icon
 		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.QuestTexture:SetDrawLayer('ARTWORK')
 		frame.QuestTexture.b = CreateFrame('Frame', nil, frame)
@@ -298,208 +298,6 @@ local function SkinWorldQuestCompleteAlert(frame)
 		frame.QuestTexture:SetParent(frame.QuestTexture.b)
 
 		frame.isSkinned = true
-	end
-end
-
-local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
-	if not frame.isSkinned then
-		frame.glow:Kill()
-		frame.shine:Kill()
-		frame.FollowerBG:SetAlpha(0)
-		frame.DieIcon:SetAlpha(0)
-
-		--Background
-		if frame.GetNumRegions then
-			for i = 1, frame:GetNumRegions() do
-				local region = select(i, frame:GetRegions())
-				if region:IsObjectType('Texture') then
-					if region:GetAtlas() == 'Garr_MissionToast' then
-						region:Kill()
-					end
-				end
-			end
-		end
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
-
-		frame.PortraitFrame.PortraitRing:Hide()
-		frame.PortraitFrame.PortraitRingQuality:SetTexture()
-		frame.PortraitFrame.LevelBorder:SetAlpha(0)
-
-		local level = frame.PortraitFrame.Level
-		level:ClearAllPoints()
-		level:Point('BOTTOM', frame.PortraitFrame, 0, 12)
-
-		local squareBG = CreateFrame('Frame', nil, frame.PortraitFrame)
-		squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
-		squareBG:Point('TOPLEFT', 3, -3)
-		squareBG:Point('BOTTOMRIGHT', -3, 11)
-		squareBG:SetTemplate()
-		frame.PortraitFrame.squareBG = squareBG
-
-		local cover = frame.PortraitFrame.PortraitRingCover
-		if cover then
-			cover:SetColorTexture(0, 0, 0)
-			cover:SetAllPoints(squareBG)
-		end
-
-		frame.isSkinned = true
-	end
-
-	local color = ITEM_QUALITY_COLORS[quality]
-	if color then
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
-	end
-end
-
-local function SkinGarrisonShipFollowerAlert(frame)
-	if not frame.isSkinned then
-		frame.glow:Kill()
-		frame.shine:Kill()
-		frame.FollowerBG:SetAlpha(0)
-		frame.DieIcon:SetAlpha(0)
-
-		--Background
-		frame.Background:Kill()
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
-
-		frame.isSkinned = true
-	end
-end
-
-local function SkinGarrisonTalentAlert(frame)
-	if not frame.isSkinned then
-		frame:GetRegions():Hide()
-		frame.glow:Kill()
-		frame.shine:Kill()
-
-		--Icon
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
-		frame.Icon:SetDrawLayer('ARTWORK')
-		frame.Icon.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.b:SetTemplate()
-		frame.Icon.b:SetOutside(frame.Icon)
-		frame.Icon:SetParent(frame.Icon.b)
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-
-		frame.isSkinned = true
-	end
-end
-
-local function SkinGarrisonBuildingAlert(frame)
-	if not frame.isSkinned then
-		frame.glow:Kill()
-		frame.shine:Kill()
-		frame:GetRegions():Hide()
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
-
-		--Icon
-		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		frame.Icon:SetDrawLayer('ARTWORK')
-		frame.Icon.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.b:SetTemplate()
-		frame.Icon.b:SetOutside(frame.Icon)
-		frame.Icon:SetParent(frame.Icon.b)
-
-		frame.isSkinned = true
-	end
-end
-
-local function SkinGarrisonMissionAlert(frame)
-	if not frame.isSkinned then
-		frame.glow:Kill()
-		frame.shine:Kill()
-		frame.IconBG:Hide()
-		frame.Background:Kill()
-
-		--Icon
-		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
-		frame.MissionType:SetDrawLayer('ARTWORK')
-		frame.MissionType.b = CreateFrame('Frame', nil, frame)
-		frame.MissionType.b:SetTemplate()
-		frame.MissionType.b:SetOutside(frame.MissionType)
-		frame.MissionType:SetParent(frame.MissionType.b)
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-
-		frame.isSkinned = true
-	end
-end
-
-local function SkinGarrisonShipMissionAlert(frame)
-	if not frame.isSkinned then
-		frame.Background:Kill()
-		frame.glow:Kill()
-		frame.shine:Kill()
-
-		--Icon
-		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
-		frame.MissionType:SetDrawLayer('ARTWORK')
-		frame.MissionType.b = CreateFrame('Frame', nil, frame)
-		frame.MissionType.b:SetTemplate()
-		frame.MissionType.b:SetOutside(frame.MissionType)
-		frame.MissionType:SetParent(frame.MissionType.b)
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-
-		frame.isSkinned = true
-	end
-end
-
-local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
-	if not frame.isSkinned then
-		frame.Background:Kill()
-		frame.Blank:Kill()
-		frame.IconBG:Kill()
-		frame.glow:Kill()
-		frame.shine:Kill()
-
-		--Icon
-		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
-		frame.MissionType:SetDrawLayer('ARTWORK')
-		frame.MissionType.b = CreateFrame('Frame', nil, frame)
-		frame.MissionType.b:SetTemplate()
-		frame.MissionType.b:SetOutside(frame.MissionType)
-		frame.MissionType:SetParent(frame.MissionType.b)
-
-		--Create Backdrop
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-
-		frame.isSkinned = true
-	end
-
-	if frame.PortraitFrame and frame.PortraitFrame.squareBG then
-		local color = quality and ITEM_QUALITY_COLORS[quality]
-		if color then
-			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
-		end
 	end
 end
 
@@ -516,7 +314,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.glow:Kill()
 		frame.shine:Kill()
 
-		--Icon
+		-- Icon
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame.Icon:SetDrawLayer('ARTWORK')
 		frame.Icon.b = CreateFrame('Frame', nil, frame)
@@ -524,7 +322,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 
-		--Create Backdrop
+		-- Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
@@ -733,15 +531,6 @@ function S:AlertSystem()
 	hooksecurefunc(_G.ScenarioAlertSystem, 'setUpFunction', SkinScenarioAlert)
 	hooksecurefunc(_G.WorldQuestCompleteAlertSystem, 'setUpFunction', SkinWorldQuestCompleteAlert)
 
-	-- Garrisons
-	hooksecurefunc(_G.GarrisonFollowerAlertSystem, 'setUpFunction', SkinGarrisonFollowerAlert)
-	hooksecurefunc(_G.GarrisonShipFollowerAlertSystem, 'setUpFunction', SkinGarrisonShipFollowerAlert)
-	hooksecurefunc(_G.GarrisonTalentAlertSystem, 'setUpFunction', SkinGarrisonTalentAlert)
-	hooksecurefunc(_G.GarrisonBuildingAlertSystem, 'setUpFunction', SkinGarrisonBuildingAlert)
-	hooksecurefunc(_G.GarrisonMissionAlertSystem, 'setUpFunction', SkinGarrisonMissionAlert)
-	hooksecurefunc(_G.GarrisonShipMissionAlertSystem, 'setUpFunction', SkinGarrisonShipMissionAlert)
-	hooksecurefunc(_G.GarrisonRandomMissionAlertSystem, 'setUpFunction', SkinGarrisonRandomMissionAlert)
-
 	-- Honor
 	hooksecurefunc(_G.HonorAwardedAlertSystem, 'setUpFunction', SkinHonorAwardedAlert)
 
@@ -750,6 +539,7 @@ function S:AlertSystem()
 	hooksecurefunc(_G.LootAlertSystem, 'setUpFunction', SkinLootWonAlert)
 	hooksecurefunc(_G.LootUpgradeAlertSystem, 'setUpFunction', SkinLootUpgradeAlert)
 	hooksecurefunc(_G.MoneyWonAlertSystem, 'setUpFunction', SkinMoneyWonAlert)
+
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)

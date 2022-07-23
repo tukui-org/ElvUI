@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
-local unpack = unpack
+local pairs, unpack = pairs, unpack
 
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -49,7 +48,7 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		-- reskin all esc/menu buttons
+		-- Reskin all esc/menu buttons
 		for _, Button in pairs({_G.GameMenuFrame:GetChildren()}) do
 			if Button.IsObjectType and Button:IsObjectType("Button") then
 				S:HandleButton(Button)
@@ -112,7 +111,7 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
-	-- reskin popup buttons
+	-- Reskin popup buttons
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]
 		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
@@ -173,7 +172,7 @@ function S:BlizzardMiscFrames()
 	_G.OpacityFrame:StripTextures()
 	_G.OpacityFrame:SetTemplate('Transparent')
 
-	--DropDownMenu
+	-- DropDownMenu
 	hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
 		local listFrame = _G['DropDownList'..level]
 		local listFrameName = listFrame:GetName()

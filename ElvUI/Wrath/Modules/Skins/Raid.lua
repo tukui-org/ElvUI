@@ -2,12 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs, ipairs = pairs, ipairs
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
+
+	-- This is just the Raid Pullout Frames
+	-- Raid Controls skin moved to Friends.lua
 
 	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do

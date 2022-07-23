@@ -2,9 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local ipairs = ipairs
-local pairs = pairs
+local ipairs, pairs, select = ipairs, pairs, select
 
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
@@ -36,7 +34,7 @@ end
 function S:BlizzardOptions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
-	-- here we reskin all 'normal' buttons
+	-- Here we reskin all 'normal' buttons
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
@@ -53,7 +51,7 @@ function S:BlizzardOptions()
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript('OnShow', function(frame)
-		-- bug fix, don't show it if player is initiator
+		-- Bug fix, don't show it if player is initiator
 		if frame.initiator and UnitIsUnit('player', frame.initiator) then
 			frame:Hide()
 		end
@@ -306,7 +304,7 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
-	do -- plus minus buttons in addons category
+	do -- Plus minus buttons in addons category
 		local function skinButtons()
 			for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
 				local button = _G['InterfaceOptionsFrameAddOnsButton'..i..'Toggle']
@@ -321,7 +319,7 @@ function S:BlizzardOptions()
 		skinButtons()
 	end
 
-	--Create New Raid Profle
+	-- Create New Raid Profle
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
 	if newProfileDialog then
 		newProfileDialog:StripTextures()
@@ -337,7 +335,7 @@ function S:BlizzardOptions()
 		end
 	end
 
-	--Delete Raid Profile
+	-- Delete Raid Profile
 	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
 	if deleteProfileDialog then
 		deleteProfileDialog:StripTextures()
@@ -347,7 +345,7 @@ function S:BlizzardOptions()
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
 
-	-- Toggle Test Audio Button - Wow 8.0
+	-- Toggle Test Audio Button
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
 
 	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
@@ -356,7 +354,7 @@ function S:BlizzardOptions()
 	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(VUMeter.Status)
 
-	-- PushToTalk KeybindButton - Wow 8.0
+	-- PushToTalk KeybindButton
 	hooksecurefunc('AudioOptionsVoicePanel_InitializeCommunicationModeUI', S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
 	-- New Voice Sliders

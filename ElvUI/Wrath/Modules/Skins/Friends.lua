@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs = pairs
+local pairs, unpack = pairs, unpack
 
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
@@ -267,7 +266,7 @@ function S:FriendsFrame()
 		end
 	end)
 
-	-- Guild Frame
+	-- Guild Frame (/groster)
 	_G.GuildFrame:StripTextures()
 
 	_G.GuildFrameColumnHeader3:ClearAllPoints()
@@ -292,9 +291,6 @@ function S:FriendsFrame()
 	S:HandleFrame(_G.GuildEventLogFrame)
 	S:HandleCloseButton(_G.GuildEventLogCloseButton)
 	_G.GuildEventFrame.NineSlice:SetTemplate('Transparent')
-
-	-- This one taints GuildControl if you skin it
-	-- S:HandleButton(_G.GuildEventLogCancelButton)
 
 	for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
 		local button = _G['GuildFrameButton'..i]
@@ -452,7 +448,7 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildInfoCancelButton)
 	_G.GuildInfoCancelButton:Point('LEFT', _G.GuildInfoSaveButton, 'RIGHT', 4, 0)
 
-	-- Guild Control Frame
+	-- Guild Control Frame (Guild Master Only)
 	for i = 1, _G.MAX_GUILDBANK_TABS do
 		_G['GuildBankTabPermissionsTab'..i]:StripTextures()
 	end
@@ -514,7 +510,7 @@ function S:FriendsFrame()
 
 	_G.GuildControlPopupFrameTabPermissions:StripTextures()
 
-	-- Raid Frame
+	-- Raid Frame Tab
 	S:HandleButton(_G.RaidFrameConvertToRaidButton)
 	S:HandleButton(_G.RaidFrameReadyCheckButton)
 	S:HandleButton(_G.RaidFrameRaidInfoButton)
@@ -556,6 +552,7 @@ function S:FriendsFrame()
 	_G.RaidClassButton1:ClearAllPoints()
 	_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
 
+	-- Classes on the right side of the Raid Control
 	do
 		local prevButton
 		local button, icon, count, coords

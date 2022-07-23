@@ -14,6 +14,7 @@ end
 function S:Blizzard_LookingForGroupUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
+	-- Main Frame and both Tabs
 	_G.LFGParentFramePortrait:Kill()
 	_G.LFGListingFrameActivityViewBarLeft:StripTextures()
 	_G.LFGListingFrameActivityViewBarMiddle:StripTextures()
@@ -27,6 +28,7 @@ function S:Blizzard_LookingForGroupUI()
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
+	-- Buttons
 	local buttons = {
 		_G.LFGListingFrameBackButton,
 		_G.LFGListingFramePostButton,
@@ -46,6 +48,7 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGListingFramePostButton:Point('BOTTOMRIGHT', LFGListingFrame, 'BOTTOMRIGHT', -40, 76)
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
+	-- CheckBoxes
 	local checkBoxes = {
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonTank.CheckButton,
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonHealer.CheckButton,
@@ -60,6 +63,7 @@ function S:Blizzard_LookingForGroupUI()
 
 	S:HandleEditBox(_G.LFGListingComment)
 
+	-- DropDowns
 	S:HandleDropDownBox(_G.LFGListingFrameGroupRoleButtonsRoleDropDown, 180)
 	S:HandleDropDownBox(_G.LFGBrowseFrameActivityDropDown, 220)
 	S:HandleDropDownBox(_G.LFGBrowseFrameCategoryDropDown, 160)
@@ -73,6 +77,7 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
 	_G.LFGBrowseFrameRefreshButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropDown, 'TOPRIGHT', -8, 32)
 
+	-- ScrollBars
 	S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar)
 	S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
 

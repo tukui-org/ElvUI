@@ -165,7 +165,7 @@ function S:Blizzard_AuctionUI()
 	_G.BidScrollFrameScrollBar:Point('TOPRIGHT', _G.BidScrollFrame, 'TOPRIGHT', 23, -18)
 	_G.BidScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.BidScrollFrame, 'BOTTOMRIGHT', 0, 16)
 
-	--Auctions Frame
+	-- Auctions Frame
 	_G.AuctionsTitle:ClearAllPoints()
 	_G.AuctionsTitle:Point('TOP', AuctionFrame, 'TOP', 0, -5)
 
