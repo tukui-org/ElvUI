@@ -88,10 +88,7 @@ function B:Initialize()
 			B:SkinAltPowerBar()
 		end
 	elseif E.Wrath then
-		if E.db.general.objectiveTracker then
-			B:QuestWatch_MoveFrames()
-			hooksecurefunc('WatchFrame_Update', B.QuestWatch_AddQuestClick)
-		end
+		B:QuestWatch_MoveFrames()
 	elseif E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
