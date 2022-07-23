@@ -56,9 +56,7 @@ function S:Blizzard_LookingForGroupUI()
 		S:HandleCheckBox(checkbox, true) -- no backdrop
 	end
 
-	if _G.LFGListingFrameGroupRoleButtonsInitiateRolePoll then
-		S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
-	end
+	S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
 
 	S:HandleEditBox(_G.LFGListingComment)
 
