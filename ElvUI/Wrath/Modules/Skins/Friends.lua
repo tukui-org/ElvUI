@@ -452,7 +452,18 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildInfoCancelButton)
 	_G.GuildInfoCancelButton:Point('LEFT', _G.GuildInfoSaveButton, 'RIGHT', 4, 0)
 
-	-- Control Frame
+	-- Guild Control Frame
+	for i = 1, _G.MAX_GUILDBANK_TABS do
+		_G['GuildBankTabPermissionsTab'..i]:StripTextures()
+	end
+
+	S:HandleEditBox(_G.GuildControlWithdrawGoldEditBox)
+	S:HandleEditBox(_G.GuildControlWithdrawItemsEditBox)
+	_G.GuildControlWithdrawGoldEditBox:Height(20)
+	_G.GuildControlWithdrawItemsEditBox:Height(20)
+	S:HandleCheckBox(_G.GuildControlTabPermissionsViewTab)
+	S:HandleCheckBox(_G.GuildControlTabPermissionsDepositItems)
+	S:HandleCheckBox(_G.GuildControlTabPermissionsUpdateText)
 	_G.GuildControlPopupFrame:StripTextures()
 	_G.GuildControlPopupFrame:CreateBackdrop('Transparent')
 	_G.GuildControlPopupFrame.backdrop:Point('TOPLEFT', 3, 0)
@@ -493,7 +504,7 @@ function S:FriendsFrame()
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
 	for _, CheckBox in pairs({ _G.GuildControlPopupFrameCheckboxes:GetChildren()}) do
-		if CheckBox:IsObjectType("CheckButton") then
+		if CheckBox:IsObjectType('CheckButton') then
 			S:HandleCheckBox(CheckBox)
 		end
 	end
@@ -505,22 +516,89 @@ function S:FriendsFrame()
 
 	-- Raid Frame
 	S:HandleButton(_G.RaidFrameConvertToRaidButton)
-	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
+	S:HandleButton(_G.RaidFrameReadyCheckButton)
 	S:HandleButton(_G.RaidFrameRaidInfoButton)
+
+	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
 
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 
-	for i = 1, _G.MAX_GUILDBANK_TABS do
-		_G['GuildBankTabPermissionsTab'..i]:StripTextures()
+	local StripAllTextures = {
+		'RaidGroup1',
+		'RaidGroup2',
+		'RaidGroup3',
+		'RaidGroup4',
+		'RaidGroup5',
+		'RaidGroup6',
+		'RaidGroup7',
+		'RaidGroup8',
+	}
+
+	for _, object in ipairs(StripAllTextures) do
+		local obj = _G[object]
+		if obj then
+			obj:StripTextures()
+		end
 	end
 
-	S:HandleEditBox(_G.GuildControlWithdrawGoldEditBox)
-	S:HandleEditBox(_G.GuildControlWithdrawItemsEditBox)
-	_G.GuildControlWithdrawGoldEditBox:Height(20)
-	_G.GuildControlWithdrawItemsEditBox:Height(20)
-	S:HandleCheckBox(_G.GuildControlTabPermissionsViewTab)
-	S:HandleCheckBox(_G.GuildControlTabPermissionsDepositItems)
-	S:HandleCheckBox(_G.GuildControlTabPermissionsUpdateText)
+	for i = 1, _G.MAX_RAID_GROUPS * 5 do
+		S:HandleButton(_G['RaidGroupButton'..i], true)
+	end
+
+	for i = 1, 8 do
+		for j = 1, 5 do
+			local slot = _G['RaidGroup'..i..'Slot'..j]
+			slot:StripTextures()
+			slot:SetTemplate('Transparent')
+		end
+	end
+
+	_G.RaidClassButton1:ClearAllPoints()
+	_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
+
+	do
+		local prevButton
+		local button, icon, count, coords
+
+		for index = 1, 13 do
+			button = _G['RaidClassButton'..index]
+			icon = _G['RaidClassButton'..index..'IconTexture']
+			count = _G['RaidClassButton'..index..'Count']
+
+			button:StripTextures()
+			button:SetTemplate('Default')
+			button:Size(22)
+
+			button:ClearAllPoints()
+			if index == 1 then
+				button:Point('TOPLEFT', RaidFrame, 'TOPRIGHT', -3, -48)
+			elseif index == 11 then
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
+			else
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
+			end
+			prevButton = button
+
+			icon:SetInside()
+
+			if index == 11 then
+				icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-Pets')
+				icon:SetTexCoord(unpack(E.TexCoords))
+			elseif index == 12 then
+				icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-MainTank')
+				icon:SetTexCoord(unpack(E.TexCoords))
+			elseif index == 13 then
+				icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-MainAssist')
+				icon:SetTexCoord(unpack(E.TexCoords))
+			else
+				coords = CLASS_ICON_TCOORDS[CLASS_SORT_ORDER[index]]
+				icon:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
+				icon:SetTexCoord(coords[1] + 0.02, coords[2] - 0.02, coords[3] + 0.02, coords[4] - 0.02)
+			end
+
+			count:FontTemplate(nil, 12, 'OUTLINE')
+		end
+	end
 
 	-- Raid Info Frame
 	_G.RaidInfoFrame:StripTextures(true)
