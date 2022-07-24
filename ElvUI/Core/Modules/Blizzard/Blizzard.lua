@@ -72,6 +72,7 @@ function B:Initialize()
 		B:DisableNPE()
 		B:SkinBlizzTimers()
 		B:PositionTalkingHead()
+		B:PositionVehicleFrame()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
@@ -88,7 +89,6 @@ function B:Initialize()
 	end
 
 	if E.Retail or E.Wrath then
-		B:PositionVehicleFrame()
 		if not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
 			B:MoveObjectiveFrame()
 		end
