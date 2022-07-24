@@ -54,7 +54,7 @@ local function group(order, db, label)
 
 	local iColors = ACH:Group(L["Time Indicator Colors"], nil, 4, nil, nil, nil, function() return not (profile(db)).useIndicatorColor end)
 	iColors.args.useIndicatorColor = ACH:Toggle(L["Use Indicator Color"], nil, 0, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, false)
-	iColors.args.modRateIndicator = ACH:Color(E.NewSign..L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1)
+	iColors.args.modRateIndicator = ACH:Color(E.NewSign..L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1, nil, nil, nil, nil, nil, not E.Retail)
 	iColors.args.expireIndicator = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 2)
 	iColors.args.secondsIndicator = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 3)
 	iColors.args.minutesIndicator = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 4)
