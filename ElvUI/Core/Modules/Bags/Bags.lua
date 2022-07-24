@@ -1237,26 +1237,50 @@ function B:UpdateTokens()
 		button:Hide()
 	end
 
-	for i = 1, MAX_WATCHED_TOKENS do
-		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-		if not info then break end
+	if E.Retail then
+		for i = 1, MAX_WATCHED_TOKENS do
+			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+			if not info then break end
 
-		local button = f.currencyButton[i]
-		button:ClearAllPoints()
-		button.icon:SetTexture(info.iconFileID)
+			local button = f.currencyButton[i]
+			button:ClearAllPoints()
+			button.icon:SetTexture(info.iconFileID)
 
-		if B.db.currencyFormat == 'ICON_TEXT' then
-			button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
-		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-			button.text:SetText(E:AbbreviateString(info.name)..': '..BreakUpLargeNumbers(info.quantity))
-		elseif B.db.currencyFormat == 'ICON' then
-			button.text:SetText(BreakUpLargeNumbers(info.quantity))
+			if B.db.currencyFormat == 'ICON_TEXT' then
+				button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
+			elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
+				button.text:SetText(E:AbbreviateString(info.name)..': '..BreakUpLargeNumbers(info.quantity))
+			elseif B.db.currencyFormat == 'ICON' then
+				button.text:SetText(BreakUpLargeNumbers(info.quantity))
+			end
+
+			button.currencyID = info.currencyTypesID
+			button:Show()
+
+			numTokens = numTokens + 1
 		end
+	elseif E.Wrath then
+		for i = 1, MAX_WATCHED_TOKENS do
+			local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
+			if not name then break end
 
-		button.currencyID = info.currencyTypesID
-		button:Show()
+			local button = f.currencyButton[i]
+			button:ClearAllPoints()
+			button.icon:SetTexture(icon)
 
-		numTokens = numTokens + 1
+			if B.db.currencyFormat == 'ICON_TEXT' then
+				button.text:SetText(name..': '..BreakUpLargeNumbers(count))
+			elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
+				button.text:SetText(E:AbbreviateString(name)..': '..BreakUpLargeNumbers(count))
+			elseif B.db.currencyFormat == 'ICON' then
+				button.text:SetText(BreakUpLargeNumbers(count))
+			end
+
+			button.currencyID = currencyID
+			button:Show()
+
+			numTokens = numTokens + 1
+		end
 	end
 
 	if numTokens == 0 then
@@ -1837,7 +1861,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
-		if E.Retail then
+		if E.Retail or E.Wrath then
 			--Currency
 			f.currencyButton = CreateFrame('Frame', nil, f)
 			f.currencyButton:Point('BOTTOM', 0, 4)
@@ -2587,8 +2611,11 @@ function B:Initialize()
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+	end
+
+	if E.Retail then
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
