@@ -1243,7 +1243,7 @@ function B:UpdateTokens()
 		if E.Wrath then
 			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i)
 		end
-		if not info then break end
+		if not (info and info.name) then break end
 
 		local button = f.currencyButton[i]
 		button:ClearAllPoints()
