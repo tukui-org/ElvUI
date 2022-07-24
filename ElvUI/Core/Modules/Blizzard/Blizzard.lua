@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
+-- _G.VehicleSeatIndicator doesn't exist (yet?)
+if E.Wrath then return end
+
 local _G = _G
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
@@ -71,7 +74,6 @@ function B:Initialize()
 		B:DisableHelpTip()
 		B:DisableNPE()
 		B:SkinBlizzTimers()
-		B:PositionVehicleFrame()
 		B:PositionTalkingHead()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
@@ -79,19 +81,20 @@ function B:Initialize()
 		--Add (+X%) to quest rewards experience text
 		B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
 
-		if not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
-			B:MoveObjectiveFrame()
-		end
-
 		if not E:IsAddOnEnabled('SimplePowerBar') then
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-	elseif E.Wrath then
-		B:MoveObjectiveFrame()
-	elseif E.db.general.objectiveTracker then
+	elseif (E.TBC or E.Classic) and E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
+	end
+
+	if E.Retail or E.Wrath then
+		B:PositionVehicleFrame()
+		if not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
+			B:MoveObjectiveFrame()
+		end
 	end
 
 	-- Battle.Net Frame
