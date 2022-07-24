@@ -2526,7 +2526,7 @@ function CH:UpdateChatKeywords()
 
 	for stringValue in gmatch(keywords, '[^,]+') do
 		if stringValue ~= '' then
-			CH.Keywords[stringValue] = true
+			CH.Keywords[stringValue == "%MYNAME%" and E.myname or stringValue] = true
 		end
 	end
 end
