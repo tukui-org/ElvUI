@@ -183,6 +183,7 @@ P.general = {
 		buttonSize = 32,
 		enable = true,
 		flyoutDirection = 'UP',
+		flyoutSize = 28,
 		flyoutSpacing = 2,
 		font = 'PT Sans Narrow',
 		fontColor = { r = 1, g = 1, b = 1 },
