@@ -1513,6 +1513,10 @@ function AB:Initialize()
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
+	if (E.Wrath and E.myclass == "SHAMAN") and E.private.general.totemBar then
+		AB:CreateTotemBar()
+	end
+
 	if _G.MacroFrame then
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
