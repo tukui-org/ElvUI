@@ -186,7 +186,6 @@ P.general = {
 		flyoutSize = 28,
 		flyoutSpacing = 2,
 		font = 'PT Sans Narrow',
-		fontColor = { r = 1, g = 1, b = 1 },
 		fontOutline = 'OUTLINE',
 		fontSize = 12,
 		growthDirection = 'VERTICAL',

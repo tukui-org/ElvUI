@@ -49,12 +49,7 @@ function AB:MultiCastFlyoutFrameOpenButton_Show(button, type, parent)
 	end
 end
 
-function AB:MultiCastActionButton_Update(button, _, _, slot)
-	local color = SLOT_BORDER_COLORS[slot]
-	if color then
-		button:SetBackdropBorderColor(color.r, color.g, color.b)
-	end
-
+function AB:MultiCastActionButton_Update(button)
 	if InCombatLockdown() then bar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED') return end
 	button:ClearAllPoints()
 	button:SetAllPoints(button.slotButton)
@@ -230,20 +225,19 @@ function AB:PositionAndSizeBarTotem()
 end
 
 function AB:UpdateTotemBindings()
-	local color = E.db.general.totems.fontColor
 
-	MultiCastSummonSpellButtonHotKey:SetTextColor(color.r, color.g, color.b)
+	MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
 	MultiCastSummonSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 	AB:FixKeybindText(MultiCastSummonSpellButton)
 
-	MultiCastRecallSpellButtonHotKey:SetTextColor(color.r, color.g, color.b)
+	MultiCastRecallSpellButtonHotKey:SetTextColor(1, 1, 1)
 	MultiCastRecallSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 	AB:FixKeybindText(MultiCastRecallSpellButton)
 
 	for i = 1, 12 do
 		local hotKey = _G['MultiCastActionButton'..i..'HotKey']
 
-		hotKey:SetTextColor(color.r, color.g, color.b)
+		hotKey:SetTextColor(1, 1, 1)
 		hotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 		AB:FixKeybindText(_G['MultiCastActionButton'..i])
 	end

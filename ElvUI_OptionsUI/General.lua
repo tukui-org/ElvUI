@@ -87,7 +87,6 @@ GenGen.totems.args.fontGroup.inline = true
 GenGen.totems.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 GenGen.totems.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 GenGen.totems.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-GenGen.totems.args.fontGroup.args.fontColor = ACH:Color(L["COLOR"], nil, 4)
 GenGen.totems.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 20, nil, 'full', nil, function(_, value) E.db.general.totems.visibility = value AB:PositionAndSizeBarTotem() end, nil, not E.Wrath)
 
 General.media = ACH:Group(L["Media"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
