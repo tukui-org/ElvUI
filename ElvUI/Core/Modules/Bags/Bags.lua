@@ -1238,50 +1238,29 @@ function B:UpdateTokens()
 		button:Hide()
 	end
 
-	if E.Retail then
-		for i = 1, MAX_WATCHED_TOKENS do
-			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-			if not info then break end
-
-			local button = f.currencyButton[i]
-			button:ClearAllPoints()
-			button.icon:SetTexture(info.iconFileID)
-
-			if B.db.currencyFormat == 'ICON_TEXT' then
-				button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
-			elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-				button.text:SetText(E:AbbreviateString(info.name)..': '..BreakUpLargeNumbers(info.quantity))
-			elseif B.db.currencyFormat == 'ICON' then
-				button.text:SetText(BreakUpLargeNumbers(info.quantity))
-			end
-
-			button.currencyID = info.currencyTypesID
-			button:Show()
-
-			numTokens = numTokens + 1
+	for i = 1, MAX_WATCHED_TOKENS do
+		local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or E.Wrath and {}
+		if E.Wrath then
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i)
 		end
-	elseif E.Wrath then
-		for i = 1, MAX_WATCHED_TOKENS do
-			local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
-			if not name then break end
+		if not info then break end
 
-			local button = f.currencyButton[i]
-			button:ClearAllPoints()
-			button.icon:SetTexture(icon)
+		local button = f.currencyButton[i]
+		button:ClearAllPoints()
+		button.icon:SetTexture(info.iconFileID)
 
-			if B.db.currencyFormat == 'ICON_TEXT' then
-				button.text:SetText(name..': '..BreakUpLargeNumbers(count))
-			elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-				button.text:SetText(E:AbbreviateString(name)..': '..BreakUpLargeNumbers(count))
-			elseif B.db.currencyFormat == 'ICON' then
-				button.text:SetText(BreakUpLargeNumbers(count))
-			end
-
-			button.currencyID = currencyID
-			button:Show()
-
-			numTokens = numTokens + 1
+		if B.db.currencyFormat == 'ICON_TEXT' then
+			button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
+		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
+			button.text:SetText(E:AbbreviateString(info.name)..': '..BreakUpLargeNumbers(info.quantity))
+		elseif B.db.currencyFormat == 'ICON' then
+			button.text:SetText(BreakUpLargeNumbers(info.quantity))
 		end
+
+		button.currencyID = info.currencyTypesID
+		button:Show()
+
+		numTokens = numTokens + 1
 	end
 
 	if numTokens == 0 then
