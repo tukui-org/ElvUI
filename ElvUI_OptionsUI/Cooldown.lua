@@ -42,7 +42,7 @@ local function group(order, db, label)
 	mainArgs.colorGroup = colors
 
 	local tColors = ACH:Group(L["Threshold Colors"], nil, 3)
-	tColors.args.modRateColor = ACH:Color(E.NewSign..L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1)
+	tColors.args.modRateColor = ACH:Color(E.NewSign..L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1, nil, nil, nil, nil, nil, not E.Retail)
 	tColors.args.expiringColor = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 2)
 	tColors.args.secondsColor = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 3)
 	tColors.args.minutesColor = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 4)
