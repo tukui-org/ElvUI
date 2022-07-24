@@ -109,7 +109,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 
 		if button:IsShown() then
 			numButtons = numButtons + 1
-			button:Size(E.db.general.totems.size)
+			button:Size(E.db.general.totems.flyoutSize)
 			button:ClearAllPoints()
 
 			if E.db.general.totems.flyoutDirection == 'UP' then
@@ -154,7 +154,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 		MultiCastFlyoutFrameCloseButton.icon:SetRotation(0)
 	end
 
-	frame:Height(((E.db.general.totems.buttonsize + E.db.general.totems.flyoutSpacing) * numButtons) + MultiCastFlyoutFrameCloseButton:GetHeight())
+	frame:Height(((E.db.general.totems.buttonSize + E.db.general.totems.flyoutSpacing) * numButtons) + MultiCastFlyoutFrameCloseButton:GetHeight())
 end
 
 function AB:TotemOnEnter()
@@ -180,8 +180,8 @@ function AB:PositionAndSizeBarTotem()
 		return
 	end
 
-	local buttonSpacing = E.db.general.totems.buttonspacing
-	local size = E.db.general.totems.buttonsize
+	local buttonSpacing = E.db.general.totems.spacing
+	local size = E.db.general.totems.buttonSize
 	local numActiveSlots = MultiCastActionBarFrame.numActiveSlots
 
 	-- TODO: WotLK
@@ -231,20 +231,19 @@ end
 
 function AB:UpdateTotemBindings()
 	local color = E.db.general.totems.fontColor
-	local alpha = E.db.general.totems.hotkeytext and 1 or 0
 
-	MultiCastSummonSpellButtonHotKey:SetTextColor(color.r, color.g, color.b, alpha)
+	MultiCastSummonSpellButtonHotKey:SetTextColor(color.r, color.g, color.b)
 	MultiCastSummonSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 	AB:FixKeybindText(MultiCastSummonSpellButton)
 
-	MultiCastRecallSpellButtonHotKey:SetTextColor(color.r, color.g, color.b, alpha)
+	MultiCastRecallSpellButtonHotKey:SetTextColor(color.r, color.g, color.b)
 	MultiCastRecallSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 	AB:FixKeybindText(MultiCastRecallSpellButton)
 
 	for i = 1, 12 do
 		local hotKey = _G['MultiCastActionButton'..i..'HotKey']
 
-		hotKey:SetTextColor(color.r, color.g, color.b, alpha)
+		hotKey:SetTextColor(color.r, color.g, color.b)
 		hotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 		AB:FixKeybindText(_G['MultiCastActionButton'..i])
 	end
@@ -308,10 +307,10 @@ function AB:CreateTotemBar()
 	bar.buttons[MultiCastSummonSpellButton] = true
 
 	hooksecurefunc(MultiCastRecallSpellButton, 'SetPoint', function(self, point, attachTo, anchorPoint, xOffset, yOffset)
-		if xOffset ~= E.db.general.totems.buttonspacing then
+		if xOffset ~= E.db.general.totems.spacing then
 			if InCombatLockdown() then AB.NeedRecallButtonUpdate = true AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
 
-			self:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.buttonspacing, yOffset)
+			self:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
 		end
 	end)
 

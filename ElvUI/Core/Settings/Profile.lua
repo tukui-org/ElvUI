@@ -179,11 +179,21 @@ P.general = {
 	},
 	objectiveTracker = true,
 	totems = {
+		alpha = 1,
+		buttonSize = 32,
 		enable = true,
+		flyoutDirection = 'UP',
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontColor = { r = 1, g = 1, b = 1 },
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
 		growthDirection = 'VERTICAL',
-		sortDirection = 'ASCENDING',
+		mouseover = false,
 		size = 40,
+		sortDirection = 'ASCENDING',
 		spacing = 4,
+		visibility = '[vehicleui] hide;show'
 	},
 	kittys = false
 }
