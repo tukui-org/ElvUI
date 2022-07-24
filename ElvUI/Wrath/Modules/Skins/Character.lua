@@ -16,6 +16,88 @@ local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
+local function UpdateCurrencySkins()
+	local TokenFramePopup = _G.TokenFramePopup
+
+	if TokenFramePopup then
+		TokenFramePopup:ClearAllPoints()
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
+		TokenFramePopup:StripTextures()
+		TokenFramePopup:SetTemplate('Transparent')
+	end
+
+	local TokenFrameContainer = _G.TokenFrameContainer
+	if not TokenFrameContainer.buttons then return end
+
+	local buttons = TokenFrameContainer.buttons
+	local numButtons = #buttons
+
+	for i = 1, numButtons do
+		local button = buttons[i]
+
+		if button then
+			if button.highlight then button.highlight:Kill() end
+			if button.categoryLeft then button.categoryLeft:Kill() end
+			if button.categoryRight then button.categoryRight:Kill() end
+			if button.categoryMiddle then button.categoryMiddle:Kill() end
+
+			if not button.backdrop then
+				button:CreateBackdrop(nil, nil, nil, true)
+			end
+
+			if button.icon then
+				button.icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:Size(17, 17)
+
+				button.backdrop:SetOutside(button.icon, 1, 1)
+				button.backdrop:Show()
+			else
+				button.backdrop:Hide()
+			end
+
+			if button.expandIcon then
+				if not button.highlightTexture then
+					button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
+					button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
+					button.highlightTexture:SetBlendMode('ADD')
+					button.highlightTexture:SetInside(button.expandIcon)
+
+					-- these two only need to be called once
+					-- adding them here will prevent additional calls
+					button.expandIcon:ClearAllPoints()
+					button.expandIcon:Point('LEFT', 4, 0)
+					button.expandIcon:Size(15, 15)
+				end
+
+				if button.isHeader then
+					button.backdrop:Hide()
+
+					-- TODO: WotLK Fix some quirks for the header point keeps changing after you click the expandIcon button.
+					for x = 1, button:GetNumRegions() do
+						local region = select(x, button:GetRegions())
+						if region and region:IsObjectType('FontString') and region:GetText() then
+							region:ClearAllPoints()
+							region:Point('LEFT', 25, 0)
+						end
+					end
+
+					if button.isExpanded then
+						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
+						button.expandIcon:SetTexCoord(0,1,0,1)
+					else
+						button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
+						button.expandIcon:SetTexCoord(0,1,0,1)
+					end
+
+					button.highlightTexture:Show()
+				else
+					button.highlightTexture:Hide()
+				end
+			end
+		end
+	end
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -396,95 +478,8 @@ function S:CharacterFrame()
 	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
 	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
 	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
-end
 
-S:AddCallback('CharacterFrame')
-
-local function UpdateCurrencySkins()
-	local TokenFramePopup = _G.TokenFramePopup
-
-	if TokenFramePopup then
-		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 4, -28)
-		TokenFramePopup:StripTextures()
-		TokenFramePopup:SetTemplate('Transparent')
-	end
-
-	local TokenFrameContainer = _G.TokenFrameContainer
-	if not TokenFrameContainer.buttons then return end
-
-	local buttons = TokenFrameContainer.buttons
-	local numButtons = #buttons
-
-	for i = 1, numButtons do
-		local button = buttons[i]
-
-		if button then
-			if button.highlight then button.highlight:Kill() end
-			if button.categoryLeft then button.categoryLeft:Kill() end
-			if button.categoryRight then button.categoryRight:Kill() end
-			if button.categoryMiddle then button.categoryMiddle:Kill() end
-
-			if not button.backdrop then
-				button:CreateBackdrop(nil, nil, nil, true)
-			end
-
-			if button.icon then
-				button.icon:SetTexCoord(unpack(E.TexCoords))
-				button.icon:Size(17, 17)
-
-				button.backdrop:SetOutside(button.icon, 1, 1)
-				button.backdrop:Show()
-			else
-				button.backdrop:Hide()
-			end
-
-			if button.expandIcon then
-				if not button.highlightTexture then
-					button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
-					button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
-					button.highlightTexture:SetBlendMode('ADD')
-					button.highlightTexture:SetInside(button.expandIcon)
-
-					-- these two only need to be called once
-					-- adding them here will prevent additional calls
-					button.expandIcon:ClearAllPoints()
-					button.expandIcon:Point('LEFT', 4, 0)
-					button.expandIcon:Size(15, 15)
-				end
-
-				if button.isHeader then
-					button.backdrop:Hide()
-
-					-- TODO: WotLK Fix some quirks for the header point keeps changing after you click the expandIcon button.
-					for x = 1, button:GetNumRegions() do
-						local region = select(x, button:GetRegions())
-						if region and region:IsObjectType('FontString') and region:GetText() then
-							region:ClearAllPoints()
-							region:Point('LEFT', 25, 0)
-						end
-					end
-
-					if button.isExpanded then
-						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
-						button.expandIcon:SetTexCoord(0,1,0,1)
-					else
-						button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
-						button.expandIcon:SetTexCoord(0,1,0,1)
-					end
-
-					button.highlightTexture:Show()
-				else
-					button.highlightTexture:Hide()
-				end
-			end
-		end
-	end
-end
-
-function S:Blizzard_TokenUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
-
+	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
 
 	S:HandleButton(_G.TokenFrameCancelButton)
@@ -492,8 +487,10 @@ function S:Blizzard_TokenUI()
 	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
+	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
+
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
 end
 
-S:AddCallbackForAddon('Blizzard_TokenUI')
+S:AddCallback('CharacterFrame')
