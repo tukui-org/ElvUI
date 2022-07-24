@@ -19,6 +19,7 @@ local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetBagSlotFlag = GetBagSlotFlag
 local GetBankAutosortDisabled = GetBankAutosortDisabled
 local GetBankBagSlotFlag = GetBankBagSlotFlag
