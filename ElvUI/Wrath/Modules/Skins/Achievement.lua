@@ -229,7 +229,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameHeaderPoints:ClearAllPoints()
 	_G.AchievementFrameHeaderPoints:Point('CENTER', _G.AchievementFrameHeaderTitle, 'CENTER', 0, 0)
 
-	--Backdrops
+	-- Backdrops
 	_G.AchievementFrameCategories:StripTextures()
 	_G.AchievementFrameCategoriesContainerScrollBarBG:SetAlpha(0)
 	_G.AchievementFrameCategoriesContainer:CreateBackdrop('Transparent')
@@ -248,6 +248,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
 	_G.AchievementFrameFilterDropDown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
 
+	-- ScrollBars
 	local scrollBars = {
 		_G.AchievementFrameCategoriesContainerScrollBar,
 		_G.AchievementFrameAchievementsContainerScrollBar,
@@ -262,7 +263,7 @@ function S:Blizzard_AchievementUI()
 		end
 	end
 
-	--Tabs
+	-- Tabs
 	for i = 1, 2 do
 		S:HandleTab(_G['AchievementFrameTab'..i])
 		_G['AchievementFrameTab'..i]:SetFrameLevel(_G['AchievementFrameTab'..i]:GetFrameLevel() + 2)
@@ -305,7 +306,7 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	for i=1, 20 do
+	for i = 1, 20 do
 		local frame = _G['AchievementFrameStatsContainerButton'..i]
 		frame:StyleButton()
 
@@ -383,8 +384,8 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	--The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
-	--- Categories
+	-- The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
+	-- Categories
 	for i = 1, 20 do
 		local button = _G['AchievementFrameCategoriesContainerButton'..i]
 		if not button then return end -- stop if no button

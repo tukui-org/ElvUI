@@ -2,89 +2,94 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs, ipairs = pairs, ipairs
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 local hooksecurefunc = hooksecurefunc
-
-local StripAllTextures = {
-	'RaidGroup1',
-	'RaidGroup2',
-	'RaidGroup3',
-	'RaidGroup4',
-	'RaidGroup5',
-	'RaidGroup6',
-	'RaidGroup7',
-	'RaidGroup8',
-}
 
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
-	for _, object in ipairs(StripAllTextures) do
-		local obj = _G[object]
-		if obj then
-			obj:StripTextures()
+		-- Raid Frame Tab
+		S:HandleButton(_G.RaidFrameReadyCheckButton)
+
+		_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
+
+		local StripAllTextures = {
+			'RaidGroup1',
+			'RaidGroup2',
+			'RaidGroup3',
+			'RaidGroup4',
+			'RaidGroup5',
+			'RaidGroup6',
+			'RaidGroup7',
+			'RaidGroup8',
+		}
+	
+		for _, object in ipairs(StripAllTextures) do
+			local obj = _G[object]
+			if obj then
+				obj:StripTextures()
+			end
 		end
-	end
-
-	S:HandleButton(_G.RaidFrameReadyCheckButton)
-	S:HandleButton(_G.RaidFrameRaidInfoButton)
-
-	for i = 1, _G.MAX_RAID_GROUPS * 5 do
-		S:HandleButton(_G['RaidGroupButton'..i], true)
-	end
-
-	for i = 1, 8 do
-		for j = 1, 5 do
-			local slot = _G['RaidGroup'..i..'Slot'..j]
-			slot:StripTextures()
-			slot:SetTemplate('Transparent')
+	
+		for i = 1, _G.MAX_RAID_GROUPS * 5 do
+			S:HandleButton(_G['RaidGroupButton'..i], true)
 		end
-	end
-
-	do
-		local prevButton
-		for key, data in pairs(_G.RAID_CLASS_BUTTONS) do
-			local index = data.button
-			if index then
-				local button = _G['RaidClassButton'..index]
-				local icon = _G['RaidClassButton'..index..'IconTexture']
-				local count = _G['RaidClassButton'..index..'Count']
+	
+		for i = 1, 8 do
+			for j = 1, 5 do
+				local slot = _G['RaidGroup'..i..'Slot'..j]
+				slot:StripTextures()
+				slot:SetTemplate('Transparent')
+			end
+		end
+	
+		_G.RaidClassButton1:ClearAllPoints()
+		_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
+	
+		-- Classes on the right side of the Raid Control
+		do
+			local prevButton
+			local button, icon, count, coords
+	
+			for index = 1, 13 do
+				button = _G['RaidClassButton'..index]
+				icon = _G['RaidClassButton'..index..'IconTexture']
+				count = _G['RaidClassButton'..index..'Count']
+	
 				button:StripTextures()
 				button:SetTemplate('Default')
 				button:Size(22)
-
+	
 				button:ClearAllPoints()
 				if index == 1 then
-					button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -34, -37)
+					button:Point('TOPLEFT', RaidFrame, 'TOPRIGHT', -3, -48)
 				elseif index == 11 then
-					button:Point('TOP', prevButton, 'BOTTOM', 0, -20)
+					button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
 				else
-					button:Point('TOP', prevButton, 'BOTTOM', 0, -6)
+					button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
 				end
 				prevButton = button
-
-				count:FontTemplate(nil, 12, 'OUTLINE')
-
+	
 				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
-
-				if key == 'PETS' then
-					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				elseif key == 'MAINTANK' then
-					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				elseif key == 'MAINASSIST' then
-					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
+	
+				if index == 11 then
+					icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-Pets')
+					icon:SetTexCoord(unpack(E.TexCoords))
+				elseif index == 12 then
+					icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-MainTank')
+					icon:SetTexCoord(unpack(E.TexCoords))
+				elseif index == 13 then
+					icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-MainAssist')
+					icon:SetTexCoord(unpack(E.TexCoords))
 				else
-					local coords = _G.CLASS_ICON_TCOORDS[_G.CLASS_SORT_ORDER[index]]
-					if coords then
-						icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-						icon:SetTexCoord(coords[1] + 0.015, coords[2] - 0.02, coords[3] + 0.018, coords[4] - 0.02)
-					end
+					coords = CLASS_ICON_TCOORDS[CLASS_SORT_ORDER[index]]
+					icon:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
+					icon:SetTexCoord(coords[1] + 0.02, coords[2] - 0.02, coords[3] + 0.02, coords[4] - 0.02)
 				end
+	
+				count:FontTemplate(nil, 12, 'OUTLINE')
 			end
 		end
-	end
 
 	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do

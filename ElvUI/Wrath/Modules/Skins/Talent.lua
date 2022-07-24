@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
+local MAX_TALENT_TABS = MAX_TALENT_TABS
+
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -12,6 +14,27 @@ function S:Blizzard_TalentUI()
 
 	for i = 1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
+	end
+
+	_G.PlayerTalentFrameRoleButton:Kill()
+
+	for i = 1, MAX_TALENT_TABS do
+		local tab = _G['PlayerSpecTab'..i]
+		tab:GetRegions():Hide()
+
+		tab:SetTemplate('Default')
+		tab:StyleButton(nil, true)
+
+		tab:GetNormalTexture():SetInside()
+		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+	end
+
+	if _G.PlayerTalentFrameActivateButton then
+		S:HandleButton(_G.PlayerTalentFrameActivateButton)
+	end
+
+	if _G.PlayerTalentFrameStatusFrame then
+		_G.PlayerTalentFrameStatusFrame:StripTextures()
 	end
 
 	_G.PlayerTalentFrameScrollFrame:StripTextures()
@@ -45,8 +68,32 @@ end
 S:AddCallbackForAddon('Blizzard_TalentUI')
 
 function S:Blizzard_GlyphUI()
-	-- TODO: WotLK  This is a wip and to show lucky how to start the glyph frame
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
+
 	_G.GlyphFrame:StripTextures()
 
+	_G.GlyphFrameBackground:Size(334, 385)
+	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -47)
+
+	_G.GlyphFrameBackground:SetTexture('Interface\\Spellbook\\UI-GlyphFrame')
+	_G.GlyphFrameGlow:SetTexture('Interface\\Spellbook\\UI-GlyphFrame-Glow')
+	_G.GlyphFrameGlow:SetAllPoints(_G.GlyphFrameBackground)
+
+	_G.GlyphFrameBackground:SetTexCoord(0.041015625, 0.65625, 0.140625, 0.8046875)
+	_G.GlyphFrameGlow:SetTexCoord(0.05859375, 0.673828125, 0.06640625, 0.73046875)
+
+	-- Otherwise TalenFrame texts/elements will overlap with Glyph texts/elements
+	_G.GlyphFrame:HookScript('OnShow', function()
+		_G.PlayerTalentFrameTitleText:Hide()
+		_G.PlayerTalentFramePointsBar:Hide()
+		_G.PlayerTalentFrameScrollFrame:Hide()
+		_G.PlayerTalentFrameStatusFrame:Hide()
+	end)
+
+	_G.GlyphFrame:HookScript('OnHide', function()
+		_G.PlayerTalentFrameTitleText:Show()
+		_G.PlayerTalentFramePointsBar:Show()
+		_G.PlayerTalentFrameScrollFrame:Show()
+	end)
 end
 S:AddCallbackForAddon('Blizzard_GlyphUI')

@@ -70,6 +70,7 @@ function S:Blizzard_TrainerUI()
 		end)
 	end
 
+	-- Buttons
 	_G.ClassTrainerCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
 	_G.ClassTrainerCollapseAllButton.SetNormalTexture = E.noop
 	_G.ClassTrainerCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)

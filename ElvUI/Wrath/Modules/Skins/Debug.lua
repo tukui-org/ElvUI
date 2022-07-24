@@ -95,7 +95,7 @@ function S:Blizzard_DebugTools()
 		TT:SetStyle(_G.FrameStackTooltip)
 	end
 
-	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
+	-- New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
 	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(s)
 		if s and s.ScrollFrameArt and not s.skinned then

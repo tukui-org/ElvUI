@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+-- TODO: WotLK
+
 local function GetOpacity()
 	return 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
 end
@@ -18,7 +20,7 @@ local function setBackdropAlpha()
 	end
 end
 
--- alpha stuff
+-- Alpha stuff
 local oldAlpha = 0
 local function setOldAlpha()
 	if oldAlpha then
@@ -44,7 +46,7 @@ function S:Blizzard_BattlefieldMap()
 
 	S:HandleFrame(BattlefieldMapFrame, true)
 
-	refreshAlpha() -- will need this soon
+	refreshAlpha() -- Will need this soon
 	BattlefieldMapFrame:SetClampedToScreen(true)
 	BattlefieldMapFrame:SetFrameStrata('LOW')
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)

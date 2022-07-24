@@ -31,6 +31,7 @@
 	<Script file="elements\readycheckindicator.lua"/>
 	<Script file="elements\restingindicator.lua"/>
 	<Script file="elements\resurrectindicator.lua"/>
+	<Script file="elements\runes.lua"/>
 	<Script file="elements\tags.lua"/>
 	<Script file="elements\threatindicator.lua"/>
 	<Script file="elements\totems.lua"/>

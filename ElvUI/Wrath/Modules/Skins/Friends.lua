@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs = pairs
+local pairs, unpack = pairs, unpack
 
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
@@ -267,7 +266,7 @@ function S:FriendsFrame()
 		end
 	end)
 
-	-- Guild Frame
+	-- Guild Frame (/groster)
 	_G.GuildFrame:StripTextures()
 
 	_G.GuildFrameColumnHeader3:ClearAllPoints()
@@ -284,6 +283,14 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:ClearAllPoints()
 	_G.GuildFrameColumnHeader2:Point('LEFT', _G.GuildFrameColumnHeader1, 'RIGHT', -2, -0)
 	_G.GuildFrameColumnHeader2:Width(127)
+
+	if _G.GuildInfoGuildEventButton then
+		S:HandleButton(_G.GuildInfoGuildEventButton)
+	end
+
+	S:HandleFrame(_G.GuildEventLogFrame)
+	S:HandleCloseButton(_G.GuildEventLogCloseButton)
+	_G.GuildEventFrame.NineSlice:SetTemplate('Transparent')
 
 	for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
 		local button = _G['GuildFrameButton'..i]
@@ -441,7 +448,18 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildInfoCancelButton)
 	_G.GuildInfoCancelButton:Point('LEFT', _G.GuildInfoSaveButton, 'RIGHT', 4, 0)
 
-	-- Control Frame
+	-- Guild Control Frame (Guild Master Only)
+	for i = 1, _G.MAX_GUILDBANK_TABS do
+		_G['GuildBankTabPermissionsTab'..i]:StripTextures()
+	end
+
+	S:HandleEditBox(_G.GuildControlWithdrawGoldEditBox)
+	S:HandleEditBox(_G.GuildControlWithdrawItemsEditBox)
+	_G.GuildControlWithdrawGoldEditBox:Height(20)
+	_G.GuildControlWithdrawItemsEditBox:Height(20)
+	S:HandleCheckBox(_G.GuildControlTabPermissionsViewTab)
+	S:HandleCheckBox(_G.GuildControlTabPermissionsDepositItems)
+	S:HandleCheckBox(_G.GuildControlTabPermissionsUpdateText)
 	_G.GuildControlPopupFrame:StripTextures()
 	_G.GuildControlPopupFrame:CreateBackdrop('Transparent')
 	_G.GuildControlPopupFrame.backdrop:Point('TOPLEFT', 3, 0)
@@ -482,7 +500,7 @@ function S:FriendsFrame()
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
 	for _, CheckBox in pairs({ _G.GuildControlPopupFrameCheckboxes:GetChildren()}) do
-		if CheckBox:IsObjectType("CheckButton") then
+		if CheckBox:IsObjectType('CheckButton') then
 			S:HandleCheckBox(CheckBox)
 		end
 	end
@@ -492,24 +510,10 @@ function S:FriendsFrame()
 
 	_G.GuildControlPopupFrameTabPermissions:StripTextures()
 
-	-- Raid Frame
-	S:HandleButton(_G.RaidFrameConvertToRaidButton)
-	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
+	-- Raid Tab
 	S:HandleButton(_G.RaidFrameRaidInfoButton)
-
+	S:HandleButton(_G.RaidFrameConvertToRaidButton)
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
-
-	for i = 1, _G.MAX_GUILDBANK_TABS do
-		_G['GuildBankTabPermissionsTab'..i]:StripTextures()
-	end
-
-	S:HandleEditBox(_G.GuildControlWithdrawGoldEditBox)
-	S:HandleEditBox(_G.GuildControlWithdrawItemsEditBox)
-	_G.GuildControlWithdrawGoldEditBox:Height(20)
-	_G.GuildControlWithdrawItemsEditBox:Height(20)
-	S:HandleCheckBox(_G.GuildControlTabPermissionsViewTab)
-	S:HandleCheckBox(_G.GuildControlTabPermissionsDepositItems)
-	S:HandleCheckBox(_G.GuildControlTabPermissionsUpdateText)
 
 	-- Raid Info Frame
 	_G.RaidInfoFrame:StripTextures(true)

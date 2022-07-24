@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
-local ipairs = ipairs
+local ipairs, unpack, select = ipairs, unpack, select
 
 local GetInventoryItemID = GetInventoryItemID
 local GetItemQualityColor = GetItemQualityColor
@@ -79,11 +78,11 @@ function S:Blizzard_InspectUI()
 	S:HandleFrame(_G.InspectTalentFrame, true, nil, 11, -12, -32, 76)
 	S:HandleCloseButton(_G.InspectTalentFrameCloseButton, _G.InspectTalentFrame.backdrop)
 
-	_G.InspectTalentFrameCancelButton:Kill()
-
 	for i = 1, 3 do
 		S:HandleTab(_G['InspectTalentFrameTab'..i], true)
 	end
+
+	_G.InspectTalentFramePointsBar:StripTextures()
 
 	_G.InspectTalentFrameScrollFrame:StripTextures()
 	_G.InspectTalentFrameScrollFrame:CreateBackdrop('Default')

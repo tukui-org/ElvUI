@@ -76,10 +76,14 @@ function S:LootFrame()
 
 	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
-	-- Master Loot
+	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
-	MasterLooterFrame:StripTextures()
-	MasterLooterFrame:SetTemplate()
+	MasterLooterFrame:SetTemplate('Transparent')
+	MasterLooterFrame.NineSlice:SetTemplate('Transparent')
+
+	MasterLooterFrame.Item.NameBorderMid:StripTextures()
+	MasterLooterFrame.Item.NameBorderLeft:StripTextures()
+	MasterLooterFrame.Item.NameBorderRight:StripTextures()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
 		local b = MasterLooterFrame.Item

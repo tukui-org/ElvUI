@@ -2,9 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs = pairs
-local strfind = strfind
+local pairs, strfind, unpack = pairs, strfind, unpack
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -34,7 +32,7 @@ local function UpdateCurrencySkins()
 	local buttons = TokenFrameContainer.buttons
 	local numButtons = #buttons
 
-	for i=1, numButtons do
+	for i = 1, numButtons do
 		local button = buttons[i]
 
 		if button then
@@ -107,7 +105,7 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
-	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
+	S:HandleCloseButton(_G.CharacterFrameCloseButton)
 
 	S:HandleDropDownBox(_G.PlayerStatFrameRightDropDown, 145)
 	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropDown, 147)
@@ -120,6 +118,10 @@ function S:CharacterFrame()
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
+	for i = 1, 3 do
+		S:HandleTab(_G['PetPaperDollFrameTab'..i], true)
+	end
+
 	_G.PaperDollFrame:StripTextures()
 
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
@@ -130,11 +132,11 @@ function S:CharacterFrame()
 	_G.CharacterAttributesFrame:StripTextures()
 
 	local ResistanceCoords = {
-		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 }, --Arcane
+		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 }, --Fire
+		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 }, --Nature
+		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375}, --Frost
+		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125}, --Shadow
 	}
 
 	local function HandleResistanceFrame(frameName)
@@ -214,6 +216,56 @@ function S:CharacterFrame()
 		end
 	end)
 
+	-- PetPaperDollCompanionFrame (Pets and Mounts in WotLK)
+	_G.PetPaperDollFrameCompanionFrame:StripTextures()
+
+	S:HandleButton(_G.CompanionSummonButton)
+
+	S:HandleNextPrevButton(_G.CompanionPrevPageButton)
+	S:HandleNextPrevButton(_G.CompanionNextPageButton)
+
+	_G.CompanionNextPageButton:ClearAllPoints()
+	_G.CompanionNextPageButton:Point('TOPLEFT', _G.CompanionPrevPageButton, 'TOPRIGHT', 100, 0)
+
+	S:HandleRotateButton(_G.CompanionModelFrameRotateLeftButton)
+	_G.CompanionModelFrameRotateLeftButton:ClearAllPoints()
+	_G.CompanionModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
+	S:HandleRotateButton(_G.CompanionModelFrameRotateRightButton)
+	_G.CompanionModelFrameRotateRightButton:ClearAllPoints()
+	_G.CompanionModelFrameRotateRightButton:Point('TOPLEFT', _G.CompanionModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
+
+	hooksecurefunc('PetPaperDollFrame_UpdateCompanions', function()
+		for i = 1, NUM_COMPANIONS_PER_PAGE do
+			local button = _G['CompanionButton'..i]
+
+			if button.creatureID then
+				local iconNormal = button:GetNormalTexture()
+				iconNormal:SetTexCoord(unpack(E.TexCoords))
+				iconNormal:SetInside()
+			end
+		end
+	end)
+
+	for i = 1, NUM_COMPANIONS_PER_PAGE do
+		local button = _G['CompanionButton'..i]
+		local iconDisabled = button:GetDisabledTexture()
+		local activeTexture = _G['CompanionButton'..i..'ActiveTexture']
+
+		button:StyleButton(nil, true)
+		button:SetTemplate(nil, true)
+
+		iconDisabled:SetAlpha(0)
+
+		activeTexture:SetInside(button)
+		activeTexture:SetTexture(1, 1, 1, .15)
+
+		if i == 7 then
+			button:Point('TOP', CompanionButton1, 'BOTTOM', 0, -5)
+		elseif i ~= 1 then
+			button:Point('LEFT', _G['CompanionButton'..i-1], 'RIGHT', 5, 0)
+		end
+	end
+
 	-- PetPaperDollFrame
 	_G.PetPaperDollFrame:StripTextures()
 
@@ -270,9 +322,7 @@ function S:CharacterFrame()
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
 		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
-		-- local factionHeader = _G['ReputationHeader'..i]
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		-- local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
 		factionStatusBar:StripTextures()
@@ -285,18 +335,6 @@ function S:CharacterFrame()
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
-
-		--factionHeader:GetNormalTexture():Size(14)
-		-- factionHeader:SetHighlightTexture(nil)
-		--factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
-
-		--factionWar:StripTextures()
-		--factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
-
-		--factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-		--factionWar.Icon:Point('LEFT', 6, -8)
-		--factionWar.Icon:Size(32)
-		--factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
 	hooksecurefunc('ReputationFrame_Update', function()
@@ -340,10 +378,8 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
 
-	_G.SkillFrameCollapseAllButton:SetHighlightTexture(nil)
-
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		if strfind(_G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture(), 'MinusButton') then
+		if SkillFrameCollapseAllButton.isExpanded then
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		else
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
@@ -369,9 +405,12 @@ function S:CharacterFrame()
 		label:SetHighlightTexture(nil)
 	end
 
-	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID)
+	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)
+		local _, isHeader, isExpanded = GetSkillLineInfo(skillIndex)
+		if not isHeader then return end
+
 		local skillLine = _G['SkillTypeLabel'..statusBarID]
-		if strfind(skillLine:GetNormalTexture():GetTexture(), 'MinusButton') then
+		if isExpanded then
 			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
 		else
 			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
@@ -398,10 +437,9 @@ function S:CharacterFrame()
 
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
-	PVPFrame:StripTextures(true)
-	PVPFrame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleFrame(PVPFrame, true, nil, 11, -12, -32, 76)
 	S:HandleCloseButton(_G.PVPParentFrameCloseButton)
-	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', 2, 2)
+	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', -26, -5)
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local pvpTeam = _G['PVPTeam'..i]

@@ -9,6 +9,7 @@ function S:Blizzard_BindingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
 
 	local KB = _G.KeyBindingFrame
+
 	for _, v in next, { 'defaultsButton', 'unbindButton', 'okayButton', 'cancelButton' } do
 		S:HandleButton(KB[v])
 	end
