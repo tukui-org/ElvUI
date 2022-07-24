@@ -827,10 +827,6 @@ function CH:StyleChat(frame)
 	editbox:HookScript('OnEditFocusGained', CH.EditBoxFocusGained)
 	editbox:HookScript('OnEditFocusLost', CH.EditBoxFocusLost)
 
-	for _, text in pairs(editbox.historyLines) do
-		editbox:AddHistoryLine(text)
-	end
-
 	--copy chat button
 	local copyButton = CreateFrame('Frame', format('ElvUI_CopyChatButton%d', id), frame)
 	copyButton:EnableMouse(true)
