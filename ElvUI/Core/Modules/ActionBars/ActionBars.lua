@@ -442,6 +442,17 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsReparentExtraButtons = nil
 	end
 
+	if E.Wrath then
+		if AB.NeedsPositionAndSizeBarTotem then
+			AB:PositionAndSizeBarTotem()
+			AB.NeedsPositionAndSizeBarTotem = nil
+		end
+		if AB.NeedRecallButtonUpdate then
+			AB:MultiCastRecallSpellButton_Update(AB.MultiCastRecallSpellButton)
+			AB.NeedRecallButtonUpdate = nil
+		end
+	end
+
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
@@ -500,6 +511,10 @@ function AB:ReassignBindings(event)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
+		end
+
+		if E.Wrath and E.myclass == 'SHAMAN' then
+			AB:UpdateTotemBindings()
 		end
 	end
 
@@ -1074,6 +1089,14 @@ function AB:DisableBlizzard()
 
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
+	if E.Wrath and E.myclass ~= 'SHAMAN' then
+		for i = 1, 12 do
+			_G['MultiCastActionButton'..i]:Hide()
+			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
+			_G['MultiCastActionButton'..i]:SetAttribute('statehidden', true)
+		end
+	end
+
 	if E.Retail or E.Wrath then
 		if _G.PlayerTalentFrame then
 			_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
@@ -1513,7 +1536,7 @@ function AB:Initialize()
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
-	if (E.Wrath and E.myclass == "SHAMAN") and E.private.general.totemBar then
+	if (E.Wrath and E.myclass == 'SHAMAN') and E.private.general.totemBar then
 		AB:CreateTotemBar()
 	end
 
