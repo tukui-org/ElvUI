@@ -72,6 +72,21 @@ GenGen.totems.args.spacing = ACH:Range(L["Button Spacing"], nil, 3, { min = 1, m
 GenGen.totems.args.sortDirection = ACH:Select(L["Sort Direction"], nil, 4, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 GenGen.totems.args.growthDirection = ACH:Select(L["Bar Direction"], nil, 5, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
 
+-- TODO: WotLK
+-- GenGen.totems.args.flyoutDirection
+-- GenGen.totems.args.flyoutSpacing
+-- GenGen.totems.args.buttonsize
+-- GenGen.totems.args.buttonspacing
+-- GenGen.totems.args.size
+-- GenGen.totems.args.alpha
+-- GenGen.totems.args.mouseover
+-- GenGen.totems.args.visibility
+-- GenGen.totems.args.fontColor
+-- GenGen.totems.args.font
+-- GenGen.totems.args.fontSize
+-- GenGen.totems.args.fontOutline
+-- GenGen.totems.args.hotkeytext
+
 General.media = ACH:Group(L["Media"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
 local Media = General.media.args
 
