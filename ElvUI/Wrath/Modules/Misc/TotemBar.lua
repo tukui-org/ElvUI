@@ -314,8 +314,8 @@ function AB:CreateTotemBar()
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
 
-		button:StyleButton()
 		button:SetTemplate('Default')
+		button:StyleButton()
 
 		button.background:SetTexCoord(unpack(E.TexCoords))
 		button.background:SetDrawLayer('ARTWORK')
@@ -329,6 +329,7 @@ function AB:CreateTotemBar()
 		local icon = _G['MultiCastActionButton'..i..'Icon']
 		local normal = _G['MultiCastActionButton'..i..'NormalTexture']
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
+		local overlay = _G['MultiCastActionButton'..i]['overlayTex']
 
 		button:StyleButton()
 
@@ -339,6 +340,10 @@ function AB:CreateTotemBar()
 		normal:SetTexture(nil)
 		normal:Hide()
 		normal:SetAlpha(0)
+
+		overlay:SetTexture(nil)
+		overlay:Hide()
+		overlay:SetAlpha(0)
 
 		_G['MultiCastActionButton'..i..'HotKey'].SetVertexColor = E.noop
 
