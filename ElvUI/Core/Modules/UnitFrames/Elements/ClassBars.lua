@@ -406,7 +406,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 		end
 	end
 
-	if hasMaxChanged then
+	if maxBars and maxBars > 0 and hasMaxChanged then
 		frame.MAX_CLASS_BAR = maxBars
 		UF:Configure_ClassBar(frame, current)
 	elseif stateChanged then
