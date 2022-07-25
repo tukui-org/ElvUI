@@ -165,7 +165,7 @@ local function Update(self, event, unit, powerType)
 	* chargedTable  - current chargedPoints table
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(cur, max, oldMax ~= max, powerType, chargedPoints)  -- ElvUI uses chargedPoints as table
+		return element:PostUpdate(cur, max, oldMax ~= max and max ~= 0, powerType, chargedPoints)  -- ElvUI uses chargedPoints as table
 	end
 end
 
