@@ -225,7 +225,6 @@ function AB:PositionAndSizeBarTotem()
 end
 
 function AB:UpdateTotemBindings()
-
 	MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
 	MultiCastSummonSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
 	AB:FixKeybindText(MultiCastSummonSpellButton)
