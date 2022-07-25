@@ -827,7 +827,7 @@ function CH:StyleChat(frame)
 	editbox:HookScript('OnEditFocusGained', CH.EditBoxFocusGained)
 	editbox:HookScript('OnEditFocusLost', CH.EditBoxFocusLost)
 
-	for _, text in pairs(editbox.historyLines) do
+	for _, text in ipairs(editbox.historyLines) do
 		editbox:AddHistoryLine(text)
 	end
 
