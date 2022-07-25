@@ -76,8 +76,8 @@ E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo() -- TODO: Move back 
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-E.TBC = E.wowtoc >= 20504 and E.wowtoc < 30000 -- TODO: Check back later
-E.Wrath = E.wowtoc >= 30400 and E.wowtoc < 40000 -- TODO: Check back later
+E.TBC = E.wowtoc >= 20504 and E.wowtoc < 30000 -- TODO: Wrath
+E.Wrath = E.wowtoc >= 30400 and E.wowtoc < 40000 -- TODO: Wrath
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = {}
@@ -128,6 +128,7 @@ do
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
 
+	-- TODO: Wrath (Check for an updated version of DualSpec)
 	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	else

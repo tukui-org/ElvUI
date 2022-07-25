@@ -50,8 +50,8 @@ local _, _, _, toc = GetBuildInfo()
 
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local isTBC = toc >= 20500 and toc < 30000 -- TODO: Check back later
-local isWrath = toc >= 30400 and toc < 40000 -- TODO: Check back later
+local isTBC = toc >= 20500 and toc < 30000 -- TODO: Wrath
+local isWrath = toc >= 30400 and toc < 40000 -- TODO: Wrath
 
 -- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
 local _G = _G

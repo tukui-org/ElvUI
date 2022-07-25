@@ -179,7 +179,7 @@ function AB:PositionAndSizeBarTotem()
 	local size = E.db.general.totems.buttonSize
 	local numActiveSlots = MultiCastActionBarFrame.numActiveSlots
 
-	-- TODO: WotLK
+	-- TODO: Wrath
 	bar:Width((size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1)))
 	MultiCastActionBarFrame:Width((size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1)))
 	bar:Height(size + 2)
@@ -201,7 +201,7 @@ function AB:PositionAndSizeBarTotem()
 
 	MultiCastSummonSpellButton:ClearAllPoints()
 	MultiCastSummonSpellButton:Size(size)
-	MultiCastSummonSpellButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2) -- TODO: WotLK
+	MultiCastSummonSpellButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2) -- TODO: Wrath
 
 	for i = 1, numActiveSlots do
 		local button = _G['MultiCastSlotButton'..i]
@@ -311,6 +311,7 @@ function AB:CreateTotemBar()
 	AB:SkinSummonButton(MultiCastRecallSpellButton)
 	bar.buttons[MultiCastRecallSpellButton] = true
 
+	-- TODO: Wrath (Check for a better skinning method)
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
 		local overlay = _G['MultiCastSlotButton'..i]['overlayTex']
@@ -327,6 +328,7 @@ function AB:CreateTotemBar()
 		bar.buttons[button] = true
 	end
 
+	-- TODO: Wrath (Check for a better skinning method)
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
 		local icon = _G['MultiCastActionButton'..i..'Icon']

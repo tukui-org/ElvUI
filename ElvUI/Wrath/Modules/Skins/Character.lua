@@ -72,7 +72,7 @@ local function UpdateCurrencySkins()
 				if button.isHeader then
 					button.backdrop:Hide()
 
-					-- TODO: WotLK Fix some quirks for the header point keeps changing after you click the expandIcon button.
+					-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
 					for x = 1, button:GetNumRegions() do
 						local region = select(x, button:GetRegions())
 						if region and region:IsObjectType('FontString') and region:GetText() then

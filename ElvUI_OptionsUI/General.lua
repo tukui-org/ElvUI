@@ -82,6 +82,7 @@ GenGen.totems.args.flyoutGroup.inline = true
 GenGen.totems.args.flyoutGroup.args.flyoutSize = ACH:Range("Flyout Size", nil, 1, { min = 24, max = 60, step = 1 })
 GenGen.totems.args.flyoutGroup.args.flyoutSpacing = ACH:Range("Flyout Spacing", nil, 2, { min = 1, max = 10, step = 1 })
 GenGen.totems.args.flyoutGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"] })
+-- TODO: Wrath (Add keybind text position + x/y offset)
 GenGen.totems.args.fontGroup = ACH:Group(L["Font Group"], nil, 5, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value AB:UpdateTotemBindings(info[#info], value, true) end, nil, not E.Wrath)
 GenGen.totems.args.fontGroup.inline = true
 GenGen.totems.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
