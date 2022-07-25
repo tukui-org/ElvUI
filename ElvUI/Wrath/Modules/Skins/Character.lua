@@ -21,7 +21,7 @@ local function UpdateCurrencySkins()
 
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 4, -28)
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
 		TokenFramePopup:StripTextures()
 		TokenFramePopup:SetTemplate('Transparent')
 	end
@@ -72,7 +72,7 @@ local function UpdateCurrencySkins()
 				if button.isHeader then
 					button.backdrop:Hide()
 
-					-- TODO: WotLK Fix some quirks for the header point keeps changing after you click the expandIcon button.
+					-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
 					for x = 1, button:GetNumRegions() do
 						local region = select(x, button:GetRegions())
 						if region and region:IsObjectType('FontString') and region:GetText() then
@@ -368,8 +368,6 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
@@ -481,9 +479,15 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
 	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 
-	--Currency
+	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
+
 	S:HandleButton(_G.TokenFrameCancelButton)
+
+	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
+
+	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)

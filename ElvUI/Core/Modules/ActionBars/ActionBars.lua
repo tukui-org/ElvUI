@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, select, strmatch, unpack = ipairs, pairs, select, strmatch, unpack
-local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
+local format, gsub, strsplit, strfind, strupper, tremove = format, gsub, strsplit, strfind, strupper, tremove
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -442,6 +442,17 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsReparentExtraButtons = nil
 	end
 
+	if E.Wrath then
+		if AB.NeedsPositionAndSizeBarTotem then
+			AB:PositionAndSizeBarTotem()
+			AB.NeedsPositionAndSizeBarTotem = nil
+		end
+		if AB.NeedRecallButtonUpdate then
+			AB:MultiCastRecallSpellButton_Update(AB.MultiCastRecallSpellButton)
+			AB.NeedRecallButtonUpdate = nil
+		end
+	end
+
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
@@ -500,6 +511,10 @@ function AB:ReassignBindings(event)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
+		end
+
+		if E.Wrath and E.myclass == 'SHAMAN' then
+			AB:UpdateTotemBindings()
 		end
 	end
 
@@ -983,12 +998,18 @@ end
 
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
-	for i, name in ipairs({'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MultiCastActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}) do
+	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
+	if E.Wrath then -- need to check if MultiCastActionBarFrame taints on wrath (it's the totem bar lol)
+		tremove(tbl, 1)
+		count = 5
+	end
+
+	for i, name in ipairs(tbl) do
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
 
 		local frame = _G[name]
 		if frame then
-			if i < 6 then frame:UnregisterAllEvents() end
+			if i < count then frame:UnregisterAllEvents() end
 			frame:SetParent(hiddenParent)
 			AB:SetNoopsi(frame)
 		end
@@ -1073,6 +1094,14 @@ function AB:DisableBlizzard()
 	end
 
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
+
+	if E.Wrath and E.myclass ~= 'SHAMAN' then
+		for i = 1, 12 do
+			_G['MultiCastActionButton'..i]:Hide()
+			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
+			_G['MultiCastActionButton'..i]:SetAttribute('statehidden', true)
+		end
+	end
 
 	if E.Retail or E.Wrath then
 		if _G.PlayerTalentFrame then
@@ -1511,6 +1540,10 @@ function AB:Initialize()
 
 		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
+	end
+
+	if (E.Wrath and E.myclass == 'SHAMAN') and E.private.general.totemBar then
+		AB:CreateTotemBar()
 	end
 
 	if _G.MacroFrame then

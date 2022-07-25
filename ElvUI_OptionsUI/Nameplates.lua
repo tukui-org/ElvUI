@@ -329,7 +329,7 @@ local function GetUnitSettings(unit, name)
 
 		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 15)
 
-		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 14, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end)
+		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 14, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
 		group.args.questIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.questIcon.args.hideIcon = ACH:Toggle(L["Hide Icon"], nil, 2)
 		group.args.questIcon.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
@@ -526,28 +526,28 @@ E.Options.args.nameplates.args.colorsGroup.args.healPrediction.args.healAbsorbs 
 
 E.Options.args.nameplates.args.colorsGroup.args.power = ACH:Group(L["Power Color"], nil, 7, nil, function(info) local t, d = E.db.nameplates.colors.power[info[#info]], P.nameplates.colors.power[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.power[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 E.Options.args.nameplates.args.colorsGroup.args.power.inline = true
-E.Options.args.nameplates.args.colorsGroup.args.power.args.ENERGY = ACH:Color(L["ENERGY"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.FOCUS = ACH:Color(L["FOCUS"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.FURY = ACH:Color(L["FURY"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.INSANITY = ACH:Color(L["INSANITY"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.LUNAR_POWER = ACH:Color(L["LUNAR_POWER"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.MAELSTROM = ACH:Color(L["MAELSTROM"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.MANA = ACH:Color(L["MANA"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.PAIN = ACH:Color(L["PAIN"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.RAGE = ACH:Color(L["RAGE"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.RUNIC_POWER = ACH:Color(L["RUNIC_POWER"])
-E.Options.args.nameplates.args.colorsGroup.args.power.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"])
+E.Options.args.nameplates.args.colorsGroup.args.power.args.MANA = ACH:Color(L["MANA"], nil, 1)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.RAGE = ACH:Color(L["RAGE"], nil, 2)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.FOCUS = ACH:Color(L["FOCUS"], nil, 3)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.ENERGY = ACH:Color(L["ENERGY"], nil, 4)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.RUNIC_POWER = ACH:Color(L["RUNIC_POWER"], nil, 5)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.PAIN = ACH:Color(L["PAIN"], nil, 6, nil, nil, nil, nil, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.FURY = ACH:Color(L["FURY"], nil, 7, nil, nil, nil, nil, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.LUNAR_POWER = ACH:Color(L["LUNAR_POWER"], nil, 8, nil, nil, nil, nil, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.INSANITY = ACH:Color(L["INSANITY"], nil, 9, nil, nil, nil, nil, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.MAELSTROM = ACH:Color(L["MAELSTROM"], nil, 10, nil, nil, nil, nil, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.power.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 11)
 
 E.Options.args.nameplates.args.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil, 8, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 E.Options.args.nameplates.args.colorsGroup.args.classResources.inline = true
-E.Options.args.nameplates.args.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1)
-E.Options.args.nameplates.args.colorsGroup.args.classResources.args.MAGE = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2)
+E.Options.args.nameplates.args.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.classResources.args.MAGE = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, nil, nil, nil, not E.Retail)
 E.Options.args.nameplates.args.colorsGroup.args.classResources.args.WARLOCK = ACH:Color(L["SOUL_SHARDS"], nil, 3)
 E.Options.args.nameplates.args.colorsGroup.args.classResources.args.DEATHKNIGHT = ACH:Color(L["RUNES"], nil, 4)
 E.Options.args.nameplates.args.colorsGroup.args.classResources.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 10, nil, function(info) local t, d = E.db.nameplates.colors.classResources.comboPoints[tonumber(info[#info])], P.nameplates.colors.classResources.comboPoints[tonumber(info[#info])] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
-E.Options.args.nameplates.args.colorsGroup.args.classResources.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])], P.nameplates.colors.classResources.MONK[tonumber(info[#info])] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+E.Options.args.nameplates.args.colorsGroup.args.classResources.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])], P.nameplates.colors.classResources.MONK[tonumber(info[#info])] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 
-E.Options.args.nameplates.args.colorsGroup.args.classResources.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+E.Options.args.nameplates.args.colorsGroup.args.classResources.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 
 for i = 1, 6 do
 	E.Options.args.nameplates.args.colorsGroup.args.classResources.args.CHI_POWER.args[''..i] = ACH:Color(L["CHI_POWER"]..' #'..i)

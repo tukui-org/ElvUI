@@ -1406,6 +1406,10 @@ function E:UpdateActionBars(skipCallback)
 		ActionBars:UpdateExtraButtons()
 	end
 
+	if E.Wrath and E.myclass == "SHAMAN" then
+		ActionBars:UpdateTotemBindings()
+	end
+
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
 	end
@@ -1483,7 +1487,9 @@ function E:UpdateMisc(skipCallback)
 	if E.Retail then
 		Blizzard:SetObjectiveFrameHeight()
 		Totems:PositionAndSize()
-	elseif E.TBC or E.Wrath then
+	elseif E.Wrath then
+		ActionBars:PositionAndSizeBarTotem()
+	elseif E.TBC then
 		Totems:PositionAndSize()
 	end
 
@@ -1908,6 +1914,7 @@ function E:Initialize()
 
 	if E.Retail then E:Tutorials() end
 
+	-- TODO: Wrath
 	if E.Retail then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end

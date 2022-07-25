@@ -54,6 +54,7 @@ local GetRuneCooldown = GetRuneCooldown
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
+-- TODO: Wrath (Runemap, Rune types, Rune colors + options)
 local runemap = {1, 2, 3, 4, 5, 6}
 local hasSortOrder = false
 

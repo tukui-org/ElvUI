@@ -6,7 +6,7 @@ local _G = _G
 function S:SkinBattlefield()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.battlefield) then return end
 
-	-- TODO: WotLK
+	-- TODO: Wrath
 end
 
 S:AddCallback('SkinBattlefield')

@@ -43,8 +43,8 @@ local str_match, format, tinsert, tremove = string.match, format, tinsert, tremo
 local _, _, _, toc = GetBuildInfo()
 
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-local WoWBCC = toc >= 20500 and toc < 30000 -- TODO: Check back later
-local WoWWrath = toc >= 30400 and toc < 40000 -- TODO: Check back later
+local WoWBCC = toc >= 20500 and toc < 30000 -- TODO: Wrath
+local WoWWrath = toc >= 30400 and toc < 40000 -- TODO: Wrath
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
