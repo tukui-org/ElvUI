@@ -8,6 +8,6 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHaste.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellPower.lua'/>
 	<!-- <Script file='Currencies.lua'/> --> <!-- TODO: Wrath -->
-	<!-- <Script file='Difficulty.lua'/> --> <!-- TODO: Wrath -->
+	<Script file='Difficulty.lua'/> <!-- TODO: Wrath -->
 	<!-- <Script file='SpecSwitch.lua'/> --> <!-- TODO: Wrath -->
 </Ui>
