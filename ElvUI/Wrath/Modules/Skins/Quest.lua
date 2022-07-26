@@ -313,6 +313,7 @@ function S:BlizzardQuestFrames()
 		-- Other text
 		_G.QuestInfoDescriptionText:SetTextColor(unpack(textColor))
 		_G.QuestInfoObjectivesText:SetTextColor(unpack(textColor))
+		_G.QuestInfoObjective1:SetTextColor(unpack(textColor))
 		_G.QuestInfoGroupSize:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardText:SetTextColor(unpack(textColor))
 
@@ -320,6 +321,8 @@ function S:BlizzardQuestFrames()
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(unpack(textColor))
+		_G.QuestInfoRewardsFrameHonorReceiveText:SetTextColor(unpack(textColor))
+		_G.QuestInfoRewardsFrameReceiveText:SetTextColor(unpack(textColor))
 
 		_G.QuestInfoRewardsFrame.spellHeaderPool.textR, _G.QuestInfoRewardsFrame.spellHeaderPool.textG, _G.QuestInfoRewardsFrame.spellHeaderPool.textB = unpack(textColor)
 
