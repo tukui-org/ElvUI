@@ -43,9 +43,13 @@ function AB:MultiCastFlyoutFrameOpenButton_Show(button, type, parent)
 end
 
 function AB:MultiCastActionButton_Update(button)
-	if InCombatLockdown() then bar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-	button:ClearAllPoints()
-	button:SetAllPoints(button.slotButton)
+	if InCombatLockdown() then
+		AB.NeedsPositionAndSizeBarTotem = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+	else
+		button:ClearAllPoints()
+		button:SetAllPoints(button.slotButton)
+	end
 end
 
 function AB:StyleTotemSlotButton(button, slot)
@@ -241,7 +245,7 @@ end
 
 function AB:MultiCastRecallSpellButton_Update(button)
 	if InCombatLockdown() then
-		AB.NeedRecallButtonUpdate = true
+		AB.NeedsRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	else
 		if not button then button = MultiCastRecallSpellButton end -- if we call it with no button, assume it's this one
@@ -258,13 +262,6 @@ end
 function AB:CreateTotemBar()
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
-
-	bar.eventFrame = CreateFrame('Frame')
-	bar.eventFrame:Hide()
-	bar.eventFrame:SetScript('OnEvent', function()
-		AB:PositionAndSizeBarTotem()
-		AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	end)
 
 	MultiCastActionBarFrame:SetParent(bar)
 	MultiCastActionBarFrame:ClearAllPoints()
@@ -316,10 +313,13 @@ function AB:CreateTotemBar()
 
 	hooksecurefunc(MultiCastRecallSpellButton, 'SetPoint', function(self, point, attachTo, anchorPoint, xOffset, yOffset)
 		if xOffset ~= E.db.general.totems.spacing then
-			if InCombatLockdown() then AB.NeedRecallButtonUpdate = true AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-
-			self:ClearAllPoints()
-			self:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
+			if InCombatLockdown() then
+				AB.NeedsRecallButtonUpdate = true
+				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+			else
+				self:ClearAllPoints()
+				self:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
+			end
 		end
 	end)
 

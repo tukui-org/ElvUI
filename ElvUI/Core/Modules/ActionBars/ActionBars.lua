@@ -447,9 +447,9 @@ function AB:PLAYER_REGEN_ENABLED()
 			AB:PositionAndSizeBarTotem()
 			AB.NeedsPositionAndSizeBarTotem = nil
 		end
-		if AB.NeedRecallButtonUpdate then
+		if AB.NeedsRecallButtonUpdate then
 			AB:MultiCastRecallSpellButton_Update()
-			AB.NeedRecallButtonUpdate = nil
+			AB.NeedsRecallButtonUpdate = nil
 		end
 	end
 
