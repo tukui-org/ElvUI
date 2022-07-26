@@ -151,6 +151,7 @@ function S:Blizzard_Communities()
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
+	CommunitiesFrame.AddToChatButton:Point('TOPRIGHT', CommunitiesFrame.ChatEditBox, 'BOTTOMRIGHT', 6, -12)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
