@@ -239,16 +239,15 @@ function AB:UpdateTotemBindings()
 	end
 end
 
--- TODO: Wrath prob want to rawhook this (per simpy)
-local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
-function MultiCastRecallSpellButton_Update(self)
-	if not E.private.actionbar.enable then return end
-	if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-
-	oldMultiCastRecallSpellButton_Update(self)
-end
-
 function AB:CreateTotemBar()
+	-- TODO: Wrath prob want to rawhook this (per simpy)
+	local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
+	function MultiCastRecallSpellButton_Update(button)
+		if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
+
+		oldMultiCastRecallSpellButton_Update(button)
+	end
+
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
