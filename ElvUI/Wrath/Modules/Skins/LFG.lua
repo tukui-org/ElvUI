@@ -48,6 +48,9 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGListingFramePostButton:Point('BOTTOMRIGHT', LFGListingFrame, 'BOTTOMRIGHT', -40, 76)
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
+	_G.LFGBrowseFrameActivityDropDown.ResetButton:ClearAllPoints()
+	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPLEFT', LFGBrowseFrameActivityDropDown, 'TOPLEFT', 22, 14)
+
 	-- CheckBoxes
 	local checkBoxes = {
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonTank.CheckButton,
