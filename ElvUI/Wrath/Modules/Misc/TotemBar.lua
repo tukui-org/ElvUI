@@ -88,7 +88,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 
 			AB:HookScript(button, 'OnEnter', 'TotemOnEnter')
 			AB:HookScript(button, 'OnLeave', 'TotemOnLeave')
-			
+
 			button:SetFrameStrata('MEDIUM')
 			button.icon:SetDrawLayer('ARTWORK')
 			button.icon:SetInside(button)
@@ -239,15 +239,16 @@ function AB:UpdateTotemBindings()
 	end
 end
 
+-- TODO: Wrath prob want to rawhook this (per simpy)
+local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
+function MultiCastRecallSpellButton_Update(self)
+	if not E.private.actionbar.enable then return end
+	if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
+
+	oldMultiCastRecallSpellButton_Update(self)
+end
+
 function AB:CreateTotemBar()
-	-- TODO: Wrath prob want to rawhook this (per simpy)
-	local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
-	function MultiCastRecallSpellButton_Update(self)
-		if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-
-		oldMultiCastRecallSpellButton_Update(self)
-	end
-
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
