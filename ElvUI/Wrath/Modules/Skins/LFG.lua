@@ -65,7 +65,7 @@ function S:Blizzard_LookingForGroupUI()
 	}
 
 	for _, checkbox in pairs(checkBoxes) do
-		S:HandleCheckBox(checkbox, true) -- no backdrop
+		S:HandleCheckBox(checkbox, nil, nil, true)
 	end
 
 	S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
