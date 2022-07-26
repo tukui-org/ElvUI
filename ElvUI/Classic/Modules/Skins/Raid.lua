@@ -51,7 +51,7 @@ function S:Blizzard_RaidUI()
 				local icon = _G['RaidClassButton'..index..'IconTexture']
 				local count = _G['RaidClassButton'..index..'Count']
 				button:StripTextures()
-				button:SetTemplate('Default')
+				button:SetTemplate()
 				button:Size(22)
 
 				button:ClearAllPoints()

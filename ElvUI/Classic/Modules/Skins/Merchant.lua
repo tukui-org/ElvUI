@@ -58,7 +58,7 @@ function S:MerchantFrame()
 			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
 
 			currencyIcon.backdrop = CreateFrame('Frame', nil, currencyItem)
-			currencyIcon.backdrop:SetTemplate('Default')
+			currencyIcon.backdrop:SetTemplate()
 			currencyIcon.backdrop:SetFrameLevel(currencyItem:GetFrameLevel())
 			currencyIcon.backdrop:SetOutside(currencyIcon)
 

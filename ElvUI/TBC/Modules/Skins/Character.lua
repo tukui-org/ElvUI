@@ -59,7 +59,7 @@ function S:CharacterFrame()
 		for i = 1, 5 do
 			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
 			frame:Size(24)
-			frame:SetTemplate('Default')
+			frame:SetTemplate()
 
 			if i ~= 1 then
 				frame:ClearAllPoints()

@@ -167,13 +167,13 @@ function S:ContainerFrame()
 	end
 
 	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate('Default')
+	BankFrame.itemBackdrop:SetTemplate()
 	BankFrame.itemBackdrop:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
 	BankFrame.itemBackdrop:Point('BOTTOMRIGHT', _G.BankFrameItem24, 'BOTTOMRIGHT', 6, -6)
 	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate('Default')
+	BankFrame.bagBackdrop:SetTemplate()
 	BankFrame.bagBackdrop:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
 	BankFrame.bagBackdrop:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag6, 'BOTTOMRIGHT', 6, -6)
 	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
