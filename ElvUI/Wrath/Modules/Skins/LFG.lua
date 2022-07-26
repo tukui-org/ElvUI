@@ -28,6 +28,9 @@ function S:Blizzard_LookingForGroupUI()
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
+	_G.LFGBrowseSearchEntryTooltip:StripTextures()
+	_G.LFGBrowseSearchEntryTooltip:SetTemplate('Transparent')
+
 	-- Buttons
 	local buttons = {
 		_G.LFGListingFrameBackButton,
