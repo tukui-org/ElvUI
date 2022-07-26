@@ -11,7 +11,7 @@ local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local hooksecurefunc = hooksecurefunc
 
-local bar = CreateFrame('Frame', 'ElvUI_BarTotem', E.UIParent, 'SecureHandlerStateTemplate')
+local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerStateTemplate')
 bar:SetFrameStrata('LOW')
 
 local SLOT_BORDER_COLORS = {
@@ -45,7 +45,7 @@ end
 
 function AB:MultiCastActionButton_Update(button)
 	if InCombatLockdown() then
-		AB.NeedsPositionAndSizeBarTotem = true
+		AB.NeedsPositionAndSizeTotemBar = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	else
 		button:ClearAllPoints()
@@ -168,12 +168,12 @@ function AB:TotemOnLeave()
 end
 
 function AB:ShowMultiCastActionBar()
-	AB:PositionAndSizeBarTotem()
+	AB:PositionAndSizeTotemBar()
 end
 
-function AB:PositionAndSizeBarTotem()
+function AB:PositionAndSizeTotemBar()
 	if InCombatLockdown() then
-		AB.NeedsPositionAndSizeBarTotem = true
+		AB.NeedsPositionAndSizeTotemBar = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
 	end
@@ -266,6 +266,8 @@ function AB:MultiCastRecallSpellButton_Update(button)
 end
 
 function AB:CreateTotemBar()
+	AB.TotemBar = bar -- Initialized
+
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
