@@ -246,7 +246,9 @@ function AB:MultiCastRecallSpellButton_Update(button)
 		return
 	end
 
-	self.hooks.MultiCastRecallSpellButton_Update(button)
+	if self.hooks and self.hooks.MultiCastRecallSpellButton_Update then
+		self.hooks.MultiCastRecallSpellButton_Update(button)
+	end
 end
 
 function AB:CreateTotemBar()
@@ -269,7 +271,7 @@ function AB:CreateTotemBar()
 	MultiCastActionBarFrame.SetParent = E.noop
 	MultiCastActionBarFrame.SetPoint = E.noop
 
-	AB:RawHook('MultiCastRecallSpellButton_Update', 'MultiCastRecallSpellButton_Update')
+	AB:RawHook('MultiCastRecallSpellButton_Update', 'MultiCastRecallSpellButton_Update', true)
 
 	AB:HookScript(MultiCastActionBarFrame, 'OnEnter', 'TotemOnEnter')
 	AB:HookScript(MultiCastActionBarFrame, 'OnLeave', 'TotemOnLeave')
