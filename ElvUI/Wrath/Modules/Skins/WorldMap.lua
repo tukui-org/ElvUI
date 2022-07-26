@@ -32,6 +32,10 @@ function S:WorldMapFrame()
 	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
 	S:HandleButton(_G.WorldMapZoomOutButton)
 
+	if E:IsAddOnEnabled('Questie') and _G.Questie_Toggle then
+		S:HandleButton(_G.Questie_Toggle)
+	end
+
 	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
 	_G.WorldMapFrameCloseButton:SetFrameLevel(_G.WorldMapFrameCloseButton:GetFrameLevel() + 2)
 end
