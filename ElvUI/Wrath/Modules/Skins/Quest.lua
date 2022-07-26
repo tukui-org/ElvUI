@@ -313,9 +313,13 @@ function S:BlizzardQuestFrames()
 		-- Other text
 		_G.QuestInfoDescriptionText:SetTextColor(unpack(textColor))
 		_G.QuestInfoObjectivesText:SetTextColor(unpack(textColor))
-		_G.QuestInfoObjective1:SetTextColor(unpack(textColor))
 		_G.QuestInfoGroupSize:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardText:SetTextColor(unpack(textColor))
+
+		local numObjectives = GetNumQuestLeaderBoards()
+		for i = 1, numObjectives do
+			_G['QuestInfoObjective'..i]:SetTextColor(unpack(textColor))
+		end
 
 		-- Reward frame text
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(unpack(textColor))
