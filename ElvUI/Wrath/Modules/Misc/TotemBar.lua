@@ -28,13 +28,6 @@ local SLOT_EMPTY_TCOORDS = {
 	[AIR_TOTEM_SLOT]	= {left = 66/128, right = 96/128, top = 36/256,  bottom = 66/256}
 }
 
-local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
-function MultiCastRecallSpellButton_Update(self)
-	if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-
-	oldMultiCastRecallSpellButton_Update(self)
-end
-
 function AB:MultiCastFlyoutFrameOpenButton_Show(button, type, parent)
 	local color = type == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -243,6 +236,14 @@ function AB:UpdateTotemBindings()
 end
 
 function AB:CreateTotemBar()
+	-- TODO: Wrath prob want to rawhook this (per simpy)
+	local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
+	function MultiCastRecallSpellButton_Update(self)
+		if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
+
+		oldMultiCastRecallSpellButton_Update(self)
+	end
+
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
