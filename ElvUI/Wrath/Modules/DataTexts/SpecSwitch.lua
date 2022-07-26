@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local ipairs, wipe = ipairs, wipe
-local format, next, strjoin = format, next, strjoin
+local ipairs, format, next, strjoin = ipairs, format, next, strjoin
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
@@ -15,6 +14,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
+
 local LOOT = LOOT
 local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
