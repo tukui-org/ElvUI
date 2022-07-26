@@ -239,12 +239,12 @@ function AB:UpdateTotemBindings()
 	end
 end
 
-function AB:MultiCastRecallSpellButton_Update()
+function AB:MultiCastRecallSpellButton_Update(button)
 	if InCombatLockdown() then
 		AB.NeedRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	else
-		local button = MultiCastRecallSpellButton
+		if not button then button = MultiCastRecallSpellButton end -- if we call it with no button, assume it's this one
 		if button and button:GetID() then
 			if self.hooks.MultiCastRecallSpellButton_Update then
 				self.hooks:MultiCastRecallSpellButton_Update(button)
