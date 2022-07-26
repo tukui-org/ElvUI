@@ -28,13 +28,6 @@ local SLOT_EMPTY_TCOORDS = {
 	[AIR_TOTEM_SLOT]	= {left = 66/128, right = 96/128, top = 36/256,  bottom = 66/256}
 }
 
-local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
-function MultiCastRecallSpellButton_Update(self)
-	if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-
-	oldMultiCastRecallSpellButton_Update(self)
-end
-
 function AB:MultiCastFlyoutFrameOpenButton_Show(button, type, parent)
 	local color = type == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -86,6 +79,8 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 
 	local color = type == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local numButtons = 0
+	local totalHeight = 0
+
 	for i, button in ipairs(frame.buttons) do
 		if not button.isSkinned then
 			button:SetTemplate('Default')
@@ -124,6 +119,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 			button.icon:SetTexCoord(unpack(E.TexCoords))
+			totalHeight = totalHeight + button:GetHeight() + E.db.general.totems.flyoutSpacing
 		end
 	end
 
@@ -149,7 +145,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 		MultiCastFlyoutFrameCloseButton.icon:SetRotation(0)
 	end
 
-	frame:Height(((E.db.general.totems.buttonSize + E.db.general.totems.flyoutSpacing) * numButtons) + MultiCastFlyoutFrameCloseButton:GetHeight())
+	frame:Height(totalHeight + MultiCastFlyoutFrameCloseButton:GetHeight())
 end
 
 function AB:TotemOnEnter()
@@ -243,6 +239,14 @@ function AB:UpdateTotemBindings()
 end
 
 function AB:CreateTotemBar()
+	-- TODO: Wrath prob want to rawhook this (per simpy)
+	local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
+	function MultiCastRecallSpellButton_Update(self)
+		if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
+
+		oldMultiCastRecallSpellButton_Update(self)
+	end
+
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
@@ -303,6 +307,7 @@ function AB:CreateTotemBar()
 		if xOffset ~= E.db.general.totems.spacing then
 			if InCombatLockdown() then AB.NeedRecallButtonUpdate = true AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
 
+			self:ClearAllPoints()
 			self:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
 		end
 	end)
@@ -341,7 +346,7 @@ function AB:CreateTotemBar()
 		icon:SetDrawLayer('ARTWORK')
 		icon:SetInside()
 
-		normal:Hide()
+		normal:SetTexture('')
 
 		overlay:Hide()
 
