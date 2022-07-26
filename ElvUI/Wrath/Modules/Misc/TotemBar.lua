@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, ipairs, pairs = unpack, ipairs, pairs
-local gsub, match = gsub, match
+local gsub, strmatch = gsub, strmatch
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -198,7 +198,7 @@ function AB:PositionAndSizeBarTotem()
 	end
 
 	local visibility = E.db.general.totems.visibility
-	if visibility and match(visibility, '[\n\r]') then
+	if visibility and strmatch(visibility, '[\n\r]') then
 		visibility = gsub(visibility, '[\n\r]','')
 	end
 
