@@ -29,6 +29,7 @@ function S:Blizzard_LookingForGroupUI()
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
+	-- Mouseover Tooltip
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
 	end
@@ -81,9 +82,11 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameActivityDropDown:ClearAllPoints()
 	_G.LFGBrowseFrameActivityDropDown:Point('LEFT', _G.LFGBrowseFrameCategoryDropDown, 'RIGHT', -20, 0)
 
+	-- Refresh
 	S:HandleButton(_G.LFGBrowseFrameRefreshButton)
+	_G.LFGBrowseFrameRefreshButton:Size(22, 22)
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
-	_G.LFGBrowseFrameRefreshButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropDown, 'TOPRIGHT', -8, 32)
+	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 
 	-- ScrollBars
 	S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar)
