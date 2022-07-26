@@ -215,7 +215,7 @@ function AB:PositionAndSizeBarTotem()
 	end
 
 	MultiCastRecallSpellButton:Size(size)
-	AB:MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
+	AB:MultiCastRecallSpellButton_Update()
 
 	MultiCastFlyoutFrameCloseButton:Width(size)
 	MultiCastFlyoutFrameOpenButton:Width(size)
@@ -239,14 +239,14 @@ function AB:UpdateTotemBindings()
 	end
 end
 
-function AB:MultiCastRecallSpellButton_Update(button)
+function AB:MultiCastRecallSpellButton_Update()
 	if InCombatLockdown() then
 		AB.NeedRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	elseif self.hooks.MultiCastRecallSpellButton_Update then
-		self.hooks:MultiCastRecallSpellButton_Update(button)
+		self.hooks:MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
 	else -- not hooked yet, call it straight (can taint)
-		MultiCastRecallSpellButton_Update(button)
+		MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
 	end
 end
 
