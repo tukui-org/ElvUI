@@ -303,6 +303,7 @@ function AB:CreateTotemBar()
 		if xOffset ~= E.db.general.totems.spacing then
 			if InCombatLockdown() then AB.NeedRecallButtonUpdate = true AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
 
+			self:ClearAllPoints()
 			self:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
 		end
 	end)
