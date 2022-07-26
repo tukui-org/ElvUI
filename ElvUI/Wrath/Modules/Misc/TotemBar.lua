@@ -227,16 +227,17 @@ function AB:PositionAndSizeTotemBar()
 end
 
 function AB:UpdateTotemBindings()
+	local font = LSM:Fetch('font', E.db.general.totems.font)
+	local size, outline = E.db.general.totems.fontSize, E.db.general.totems.fontOutline
+
 	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
-	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
+	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)
 	AB:FixKeybindText(_G.MultiCastSummonSpellButton)
 
 	_G.MultiCastRecallSpellButtonHotKey:SetTextColor(1, 1, 1)
-	_G.MultiCastRecallSpellButtonHotKey:FontTemplate(LSM:Fetch('font', E.db.general.totems.font), E.db.general.totems.fontSize, E.db.general.totems.fontOutline)
+	_G.MultiCastRecallSpellButtonHotKey:FontTemplate(font, size, outline)
 	AB:FixKeybindText(_G.MultiCastRecallSpellButton)
 
-	local font = LSM:Fetch('font', E.db.general.totems.font)
-	local size, outline = E.db.general.totems.fontSize, E.db.general.totems.fontOutline
 	for i = 1, 12 do
 		local hotkey = _G['MultiCastActionButton'..i..'HotKey']
 		hotkey:SetTextColor(1, 1, 1)
