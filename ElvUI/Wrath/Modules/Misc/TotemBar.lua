@@ -93,7 +93,8 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 
 			AB:HookScript(button, 'OnEnter', 'TotemOnEnter')
 			AB:HookScript(button, 'OnLeave', 'TotemOnLeave')
-
+			
+			button.icon:SetFrameStrata('MEDIUM')
 			button.icon:SetDrawLayer('ARTWORK')
 			button.icon:SetInside(button)
 
