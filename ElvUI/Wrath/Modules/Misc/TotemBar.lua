@@ -246,8 +246,10 @@ function AB:MultiCastRecallSpellButton_Update(button)
 		return
 	end
 
-	if self.hooks and self.hooks.MultiCastRecallSpellButton_Update then
-		self.hooks.MultiCastRecallSpellButton_Update(button)
+	if self.hooks and self.hooks[AB] then
+		self.hooks[AB]:MultiCastRecallSpellButton_Update(button)
+	else -- on init, this wont be hooked yet, use raw
+		MultiCastRecallSpellButton_Update(button)
 	end
 end
 
