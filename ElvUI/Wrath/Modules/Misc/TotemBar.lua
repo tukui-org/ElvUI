@@ -29,8 +29,8 @@ local SLOT_EMPTY_TCOORDS = {
 	[_G.AIR_TOTEM_SLOT]		= {left = 66/128, right = 96/128, top = 36/256,  bottom = 66/256}
 }
 
-function AB:MultiCastFlyoutFrameOpenButton_Show(button, type, parent)
-	local color = type == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
+function AB:MultiCastFlyoutFrameOpenButton_Show(button, which, parent)
+	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	button:ClearAllPoints()
@@ -78,11 +78,11 @@ function AB:SkinSummonButton(button)
 	normal:SetTexture(nil)
 end
 
-function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
+function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	frame.top:SetTexture(nil)
 	frame.middle:SetTexture(nil)
 
-	local color = type == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
+	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local numButtons = 0
 	local totalHeight = 0
 
@@ -129,7 +129,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 		end
 	end
 
-	if type == 'slot' then
+	if which == 'slot' then
 		local tCoords = SLOT_EMPTY_TCOORDS[parent:GetID()]
 		frame.buttons[1].icon:SetTexCoord(tCoords.left, tCoords.right, tCoords.top, tCoords.bottom)
 	end
