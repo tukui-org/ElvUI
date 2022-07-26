@@ -123,6 +123,14 @@ function S:Blizzard_LookingForGroupUI()
 			child.IsSkinned = true
 		end
 	end
+
+	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
+		if (isCollapsed) then
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
+		else
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton);
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_LookingForGroupUI')
