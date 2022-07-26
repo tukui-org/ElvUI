@@ -245,7 +245,7 @@ function AB:MultiCastRecallSpellButton_Update()
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	elseif self.hooks.MultiCastRecallSpellButton_Update then
 		self.hooks:MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
-	else -- not hooked yet, call it straight (can taint)
+	elseif MultiCastRecallSpellButton:GetID() then -- not hooked yet, call it straight (can taint)
 		MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
 	end
 end
