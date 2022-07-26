@@ -37,7 +37,7 @@ function S:ContainerFrame()
 			local cooldown = _G['ContainerFrame'..i..'Item'..j..'Cooldown']
 
 			item:SetNormalTexture('')
-			item:SetTemplate('Default', true)
+			item:SetTemplate(nil, true)
 			item:StyleButton()
 
 			icon:SetInside()
@@ -148,7 +148,7 @@ function S:ContainerFrame()
 		local cooldown = _G['BankFrameItem'..i..'Cooldown']
 
 		button:SetNormalTexture('')
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:StyleButton()
 		button.IconBorder:StripTextures()
 		button.IconOverlay:StripTextures()
@@ -182,7 +182,7 @@ function S:ContainerFrame()
 			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
 
 			button:SetNormalTexture('')
-			button:SetTemplate('Default', true)
+			button:SetTemplate(nil, true)
 			button:StyleButton()
 
 			button.icon:SetInside()

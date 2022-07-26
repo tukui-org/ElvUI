@@ -112,7 +112,7 @@ function S:SpellBookFrame()
 		tab:StripTextures()
 		tab:SetTemplate()
 		tab:StyleButton(nil, true)
-		tab:SetTemplate('Default', true)
+		tab:SetTemplate(nil, true)
 		tab.pushed = true
 
 		tab:GetNormalTexture():SetInside()
