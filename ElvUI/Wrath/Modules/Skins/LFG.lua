@@ -125,10 +125,10 @@ function S:Blizzard_LookingForGroupUI()
 	end
 
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
-		if (isCollapsed) then
+		if isCollapsed then
 			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		else
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton);
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
 	end)
 end
