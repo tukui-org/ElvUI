@@ -28,8 +28,10 @@ function S:Blizzard_LookingForGroupUI()
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
-	_G.LFGBrowseSearchEntryTooltip:StripTextures()
-	_G.LFGBrowseSearchEntryTooltip:SetTemplate('Transparent')
+	if E.private.skins.blizzard.tooltip then
+		_G.LFGBrowseSearchEntryTooltip:StripTextures()
+		_G.LFGBrowseSearchEntryTooltip:SetTemplate('Transparent')
+	end
 
 	-- Buttons
 	local buttons = {
