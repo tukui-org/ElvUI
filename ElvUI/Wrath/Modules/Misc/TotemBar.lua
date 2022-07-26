@@ -79,6 +79,8 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 
 	local color = type == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local numButtons = 0
+	local totalHeight = 0
+
 	for i, button in ipairs(frame.buttons) do
 		if not button.isSkinned then
 			button:SetTemplate('Default')
@@ -117,6 +119,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 			button.icon:SetTexCoord(unpack(E.TexCoords))
+			totalHeight = totalHeight + button:GetHeight() + E.db.general.totems.flyoutSpacing
 		end
 	end
 
@@ -142,7 +145,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 		MultiCastFlyoutFrameCloseButton.icon:SetRotation(0)
 	end
 
-	frame:Height(((E.db.general.totems.buttonSize + E.db.general.totems.flyoutSpacing) * numButtons) + MultiCastFlyoutFrameCloseButton:GetHeight())
+	frame:Height(totalHeight + MultiCastFlyoutFrameCloseButton:GetHeight())
 end
 
 function AB:TotemOnEnter()
