@@ -404,10 +404,10 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
 	local QuestLogDetailFrame = _G.QuestLogDetailFrame
-	S:HandleFrame(QuestLogDetailFrame, true, nil, 10, -10, 4, 4)
+	S:HandleFrame(QuestLogDetailFrame, true, nil, 8, -8, 8)
 
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
-	S:HandleFrame(_G.QuestLogCount, true)
+	S:HandleFrame(_G.QuestLogCount)
 	S:HandleFrame(_G.QuestLogFrame, true, nil, 10, 6, 1, 8)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
@@ -416,8 +416,9 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, -6, 2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, -6, 2)
 
-	S:HandlePointXY(_G.QuestLogFrameAbandonButton)
-	S:HandlePointXY(_G.QuestFramePushQuestButton)
+	S:HandlePointXY(_G.QuestLogFrameAbandonButton, 0, -2)
+	S:HandlePointXY(_G.QuestLogFrameTrackButton, 0, -2)
+	S:HandlePointXY(_G.QuestFramePushQuestButton, 0)
 	S:HandlePointXY(_G.QuestFrameAcceptButton, 15, 70)
 	S:HandlePointXY(_G.QuestFrameDeclineButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameCompleteQuestButton, 15, 70)
@@ -426,6 +427,8 @@ function S:BlizzardQuestFrames()
 	S:HandlePointXY(_G.QuestFrameGoodbyeButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameGreetingGoodbyeButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameNpcNameText, -1, 0)
+
+	_G.QuestLogFrameCancelButton:Point('BOTTOMRIGHT', _G.QuestLogFrame, 'BOTTOMRIGHT', -7, 12)
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
