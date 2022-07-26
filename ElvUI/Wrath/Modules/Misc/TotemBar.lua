@@ -167,10 +167,6 @@ function AB:TotemOnLeave()
 	end
 end
 
-function AB:ShowMultiCastActionBar()
-	AB:PositionAndSizeTotemBar()
-end
-
 function AB:PositionAndSizeTotemBar()
 	if InCombatLockdown() then
 		AB.NeedsPositionAndSizeTotemBar = true
@@ -382,9 +378,9 @@ function AB:CreateTotemBar()
 
 	AB:SecureHook('MultiCastFlyoutFrameOpenButton_Show')
 	AB:SecureHook('MultiCastActionButton_Update')
-	AB:SecureHook('MultiCastSlotButton_Update', 'StyleTotemSlotButton')
 	AB:SecureHook('MultiCastFlyoutFrame_ToggleFlyout')
-	AB:SecureHook('ShowMultiCastActionBar')
+	AB:SecureHook('MultiCastSlotButton_Update', 'StyleTotemSlotButton')
+	AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 
 	AB:HookScript(_G.MultiCastActionBarFrame, 'OnEnter', 'TotemOnEnter')
 	AB:HookScript(_G.MultiCastActionBarFrame, 'OnLeave', 'TotemOnLeave')
