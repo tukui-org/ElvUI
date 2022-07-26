@@ -342,7 +342,7 @@ function AB:CreateTotemBar()
 		icon:SetDrawLayer('ARTWORK')
 		icon:SetInside()
 
-		normal:Hide()
+		normal:SetTexture('')
 
 		overlay:Hide()
 
