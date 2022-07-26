@@ -35,7 +35,7 @@ function S:MerchantFrame()
 
 		button:StripTextures()
 		button:StyleButton()
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:Size(40)
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -2)
 
@@ -90,7 +90,7 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
-	_G.MerchantBuyBackItemItemButton:SetTemplate('Default', true)
+	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 	_G.MerchantBuyBackItemItemButton:Size(40)
 	_G.MerchantBuyBackItemItemButton:Point('TOPLEFT', 4, -2)
 

@@ -86,7 +86,7 @@ function S:CharacterFrame()
 			local cooldown = _G[slot:GetName()..'Cooldown']
 
 			slot:StripTextures()
-			slot:SetTemplate('Default', true, true)
+			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
 
 			S:HandleIcon(icon)

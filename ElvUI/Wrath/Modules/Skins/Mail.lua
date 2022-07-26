@@ -110,7 +110,7 @@ function S:MailFrame()
 			local button = _G['SendMailAttachment'..i]
 			if not button.template then
 				button:StripTextures()
-				button:SetTemplate('Default', true)
+				button:SetTemplate(nil, true)
 				button:StyleButton(nil, true)
 			end
 
@@ -180,7 +180,7 @@ function S:MailFrame()
 		local count = _G['OpenMailAttachmentButton'..i..'Count']
 
 		button:StripTextures()
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:StyleButton()
 
 		if icon then
@@ -233,7 +233,7 @@ function S:MailFrame()
 	_G.OpenMailArithmeticLine:Kill()
 
 	_G.OpenMailLetterButton:StripTextures()
-	_G.OpenMailLetterButton:SetTemplate('Default', true)
+	_G.OpenMailLetterButton:SetTemplate(nil, true)
 	_G.OpenMailLetterButton:StyleButton()
 
 	_G.OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
@@ -243,7 +243,7 @@ function S:MailFrame()
 	_G.OpenMailLetterButtonCount:SetDrawLayer('OVERLAY')
 
 	_G.OpenMailMoneyButton:StripTextures()
-	_G.OpenMailMoneyButton:SetTemplate('Default', true)
+	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
 
 	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
