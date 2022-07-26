@@ -243,10 +243,15 @@ function AB:MultiCastRecallSpellButton_Update()
 	if InCombatLockdown() then
 		AB.NeedRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-	elseif self.hooks.MultiCastRecallSpellButton_Update then
-		self.hooks:MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
-	elseif MultiCastRecallSpellButton:GetID() then -- not hooked yet, call it straight (can taint)
-		MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
+	else
+		local button = MultiCastRecallSpellButton
+		if button and button:GetID() then
+			if self.hooks.MultiCastRecallSpellButton_Update then
+				self.hooks:MultiCastRecallSpellButton_Update(button)
+			else -- not hooked yet, call it straight (can taint)
+				MultiCastRecallSpellButton_Update(button)
+			end
+		end
 	end
 end
 
