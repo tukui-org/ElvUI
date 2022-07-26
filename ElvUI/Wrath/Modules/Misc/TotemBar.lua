@@ -278,7 +278,7 @@ function AB:CreateTotemBar()
 	barFrame.SetPoint = E.noop
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
-	closeButton:CreateBackdrop('Default', true, true)
+	closeButton:CreateBackdrop(nil, true, true)
 	closeButton.backdrop:SetPoint('TOPLEFT', 0, -(E.Border + E.Spacing))
 	closeButton.backdrop:SetPoint('BOTTOMRIGHT', 0, E.Border + E.Spacing)
 	closeButton.icon = closeButton:CreateTexture(nil, 'ARTWORK')
@@ -292,7 +292,7 @@ function AB:CreateTotemBar()
 	bar.buttons[closeButton] = true
 
 	local openButton = _G.MultiCastFlyoutFrameOpenButton
-	openButton:CreateBackdrop('Default', true, true)
+	openButton:CreateBackdrop(nil, true, true)
 	openButton.backdrop:SetPoint('TOPLEFT', 0, -(E.Border + E.Spacing))
 	openButton.backdrop:SetPoint('BOTTOMRIGHT', 0, E.Border + E.Spacing)
 	openButton.icon = openButton:CreateTexture(nil, 'ARTWORK')

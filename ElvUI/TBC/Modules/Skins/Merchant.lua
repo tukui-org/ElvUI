@@ -30,7 +30,7 @@ function S:MerchantFrame()
 		local slot = _G['MerchantItem'..i..'SlotTexture']
 
 		item:StripTextures(true)
-		item:CreateBackdrop('Default')
+		item:CreateBackdrop()
 		item.backdrop:Point('TOPLEFT', -1, 3)
 		item.backdrop:Point('BOTTOMRIGHT', 2, -3)
 

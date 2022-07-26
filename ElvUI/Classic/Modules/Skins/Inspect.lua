@@ -28,7 +28,7 @@ function S:Blizzard_InspectUI()
 		local cooldown = _G[slot:GetName()..'Cooldown']
 
 		slot:StripTextures()
-		slot:CreateBackdrop('Default')
+		slot:CreateBackdrop()
 		slot.backdrop:SetAllPoints()
 		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
 		slot:StyleButton()

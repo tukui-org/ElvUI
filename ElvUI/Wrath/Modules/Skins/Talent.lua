@@ -38,7 +38,7 @@ function S:Blizzard_TalentUI()
 	end
 
 	_G.PlayerTalentFrameScrollFrame:StripTextures()
-	_G.PlayerTalentFrameScrollFrame:CreateBackdrop('Default')
+	_G.PlayerTalentFrameScrollFrame:CreateBackdrop()
 
 	S:HandleScrollBar(_G.PlayerTalentFrameScrollFrameScrollBar)
 	_G.PlayerTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)

@@ -280,7 +280,7 @@ function S:CharacterFrame()
 
 	_G.PetAttributesFrame:StripTextures()
 
-	_G.PetResistanceFrame:CreateBackdrop('Default')
+	_G.PetResistanceFrame:CreateBackdrop()
 	_G.PetResistanceFrame.backdrop:SetOutside(_G.PetMagicResFrame1, nil, nil, _G.PetMagicResFrame5)
 
 	HandleResistanceFrame('PetMagicResFrame')
@@ -288,7 +288,7 @@ function S:CharacterFrame()
 	_G.PetPaperDollFrameExpBar:StripTextures()
 	_G.PetPaperDollFrameExpBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
-	_G.PetPaperDollFrameExpBar:CreateBackdrop('Default')
+	_G.PetPaperDollFrameExpBar:CreateBackdrop()
 
 	local function updHappiness(frame)
 		local happiness = GetPetHappiness()
@@ -309,7 +309,7 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
 	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	PetPaperDollPetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
-	PetPaperDollPetInfo:CreateBackdrop('Default')
+	PetPaperDollPetInfo:CreateBackdrop()
 	PetPaperDollPetInfo:Size(24)
 
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
@@ -326,7 +326,7 @@ function S:CharacterFrame()
 
 		factionBar:StripTextures()
 		factionStatusBar:StripTextures()
-		factionStatusBar:CreateBackdrop('Default')
+		factionStatusBar:CreateBackdrop()
 		factionStatusBar:SetStatusBarTexture(E.media.normTex)
 		factionStatusBar:Size(108, 13)
 
@@ -392,7 +392,7 @@ function S:CharacterFrame()
 		local border = _G['SkillRankFrame'..i..'Border']
 		local background = _G['SkillRankFrame'..i..'Background']
 
-		bar:CreateBackdrop('Default')
+		bar:CreateBackdrop()
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
@@ -423,7 +423,7 @@ function S:CharacterFrame()
 
 	_G.SkillDetailStatusBar:StripTextures()
 	_G.SkillDetailStatusBar:SetParent(_G.SkillDetailScrollFrame)
-	_G.SkillDetailStatusBar:CreateBackdrop('Default')
+	_G.SkillDetailStatusBar:CreateBackdrop()
 	_G.SkillDetailStatusBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 
@@ -443,7 +443,7 @@ function S:CharacterFrame()
 		local pvpTeam = _G['PVPTeam'..i]
 
 		pvpTeam:StripTextures()
-		pvpTeam:CreateBackdrop('Default')
+		pvpTeam:CreateBackdrop()
 		pvpTeam.backdrop:Point('TOPLEFT', 9, -4)
 		pvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
 

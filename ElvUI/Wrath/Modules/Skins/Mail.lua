@@ -32,7 +32,7 @@ function S:MailFrame()
 		local icon = _G['MailItem'..i..'ButtonIcon']
 
 		mail:StripTextures()
-		mail:CreateBackdrop('Default')
+		mail:CreateBackdrop()
 		mail.backdrop:Point('TOPLEFT', 42, -3)
 		mail.backdrop:Point('BOTTOMRIGHT', -2, 5)
 

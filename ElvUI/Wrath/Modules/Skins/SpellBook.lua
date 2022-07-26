@@ -63,7 +63,7 @@ function S:SpellBookFrame()
 			end
 		end
 
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
 
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
