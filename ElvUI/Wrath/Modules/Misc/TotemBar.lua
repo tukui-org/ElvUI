@@ -215,7 +215,7 @@ function AB:PositionAndSizeBarTotem()
 	end
 
 	MultiCastRecallSpellButton:Size(size)
-	MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
+	AB:MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
 
 	MultiCastFlyoutFrameCloseButton:Width(size)
 	MultiCastFlyoutFrameOpenButton:Width(size)
@@ -239,15 +239,17 @@ function AB:UpdateTotemBindings()
 	end
 end
 
-function AB:CreateTotemBar()
-	-- TODO: Wrath prob want to rawhook this (per simpy)
-	local oldMultiCastRecallSpellButton_Update = MultiCastRecallSpellButton_Update
-	function MultiCastRecallSpellButton_Update(button)
-		if InCombatLockdown() then AB.NeedRecallButtonUpdate = true; AB:RegisterEvent('PLAYER_REGEN_ENABLED') return end
-
-		oldMultiCastRecallSpellButton_Update(button)
+function AB:MultiCastRecallSpellButton_Update(button)
+	if InCombatLockdown() then
+		AB.NeedRecallButtonUpdate = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
 	end
 
+	self.hooks.MultiCastRecallSpellButton_Update(button)
+end
+
+function AB:CreateTotemBar()
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
@@ -266,6 +268,8 @@ function AB:CreateTotemBar()
 	MultiCastActionBarFrame:SetScript('OnHide', nil)
 	MultiCastActionBarFrame.SetParent = E.noop
 	MultiCastActionBarFrame.SetPoint = E.noop
+
+	AB:RawHook('MultiCastRecallSpellButton_Update', 'MultiCastRecallSpellButton_Update')
 
 	AB:HookScript(MultiCastActionBarFrame, 'OnEnter', 'TotemOnEnter')
 	AB:HookScript(MultiCastActionBarFrame, 'OnLeave', 'TotemOnLeave')
