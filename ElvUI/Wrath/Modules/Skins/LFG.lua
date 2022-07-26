@@ -125,10 +125,7 @@ function S:Blizzard_LookingForGroupUI()
 	end
 
 	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button)
-		if not button.CheckButton.IsSkinned then
-			S:HandleCheckBox(button.CheckButton)
-			button.CheckButton.IsSkinned = true
-		end
+		S:HandleCheckBox(button.CheckButton)
 	end)
 
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
@@ -137,10 +134,7 @@ function S:Blizzard_LookingForGroupUI()
 		else
 			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
-		if not button.CheckButton.IsSkinned then
-			S:HandleCheckBox(button.CheckButton)
-			button.CheckButton.IsSkinned = true
-		end
+		S:HandleCheckBox(button.CheckButton)
 	end)
 end
 
