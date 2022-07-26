@@ -98,7 +98,7 @@ function S:Blizzard_InspectUI()
 
 		if talent then
 			talent:StripTextures()
-			talent:SetTemplate('Default')
+			talent:SetTemplate()
 			talent:StyleButton()
 
 			icon:SetInside()

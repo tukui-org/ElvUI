@@ -166,11 +166,11 @@ function S:ContainerFrame()
 	end
 
 	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate('Default')
+	BankFrame.itemBackdrop:SetTemplate()
 	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate('Default')
+	BankFrame.bagBackdrop:SetTemplate()
 	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	S:HandleButton(_G.BankFramePurchaseButton)

@@ -84,7 +84,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankTransactionsScrollFrameScrollBar:Point('BOTTOMRIGHT', GuildBankTransactionsScrollFrame, 'BOTTOMRIGHT', 0, 16)
 
 	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame)
-	GuildBankFrame.inset:SetTemplate('Default')
+	GuildBankFrame.inset:SetTemplate()
 	GuildBankFrame.inset:Point('TOPLEFT', 24, -64)
 	GuildBankFrame.inset:Point('BOTTOMRIGHT', -18, 62)
 

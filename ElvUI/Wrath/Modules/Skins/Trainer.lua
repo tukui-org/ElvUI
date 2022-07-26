@@ -40,7 +40,7 @@ function S:Blizzard_TrainerUI()
 			skillIcon:SetInside()
 			skillIcon:SetTexCoord(unpack(E.TexCoords))
 
-			_G.ClassTrainerSkillIcon:SetTemplate('Default')
+			_G.ClassTrainerSkillIcon:SetTemplate()
 		end
 	end)
 

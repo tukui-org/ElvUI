@@ -67,7 +67,7 @@ function AB:SkinSummonButton(button)
 	local highlight = _G[name..'Highlight']
 	local normal = _G[name..'NormalTexture']
 
-	button:SetTemplate('Default')
+	button:SetTemplate()
 	button:StyleButton()
 
 	icon:SetTexCoord(unpack(E.TexCoords))
@@ -88,7 +88,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, type, parent)
 
 	for i, button in ipairs(frame.buttons) do
 		if not button.isSkinned then
-			button:SetTemplate('Default')
+			button:SetTemplate()
 			button:StyleButton()
 
 			AB:HookScript(button, 'OnEnter', 'TotemOnEnter')
@@ -330,7 +330,7 @@ function AB:CreateTotemBar()
 		local button = _G['MultiCastSlotButton'..i]
 		local overlay = _G['MultiCastSlotButton'..i].overlayTex
 
-		button:SetTemplate('Default')
+		button:SetTemplate()
 		button:StyleButton()
 
 		button.background:SetTexCoord(unpack(E.TexCoords))
@@ -346,6 +346,7 @@ function AB:CreateTotemBar()
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
 		local icon = _G['MultiCastActionButton'..i..'Icon']
+		local hotkey = _G['MultiCastActionButton'..i..'HotKey']
 		local normal = _G['MultiCastActionButton'..i..'NormalTexture']
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
@@ -360,7 +361,7 @@ function AB:CreateTotemBar()
 
 		overlay:Hide()
 
-		_G['MultiCastActionButton'..i..'HotKey'].SetVertexColor = E.noop
+		hotkey.SetVertexColor = E.noop
 
 		E:RegisterCooldown(cooldown)
 

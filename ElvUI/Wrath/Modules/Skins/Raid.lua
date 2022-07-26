@@ -23,18 +23,18 @@ function S:Blizzard_RaidUI()
 			'RaidGroup7',
 			'RaidGroup8',
 		}
-	
+
 		for _, object in ipairs(StripAllTextures) do
 			local obj = _G[object]
 			if obj then
 				obj:StripTextures()
 			end
 		end
-	
+
 		for i = 1, _G.MAX_RAID_GROUPS * 5 do
 			S:HandleButton(_G['RaidGroupButton'..i], true)
 		end
-	
+
 		for i = 1, 8 do
 			for j = 1, 5 do
 				local slot = _G['RaidGroup'..i..'Slot'..j]
@@ -42,24 +42,24 @@ function S:Blizzard_RaidUI()
 				slot:SetTemplate('Transparent')
 			end
 		end
-	
+
 		_G.RaidClassButton1:ClearAllPoints()
 		_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
-	
+
 		-- Classes on the right side of the Raid Control
 		do
 			local prevButton
 			local button, icon, count, coords
-	
+
 			for index = 1, 13 do
 				button = _G['RaidClassButton'..index]
 				icon = _G['RaidClassButton'..index..'IconTexture']
 				count = _G['RaidClassButton'..index..'Count']
-	
+
 				button:StripTextures()
-				button:SetTemplate('Default')
+				button:SetTemplate()
 				button:Size(22)
-	
+
 				button:ClearAllPoints()
 				if index == 1 then
 					button:Point('TOPLEFT', RaidFrame, 'TOPRIGHT', -3, -48)
@@ -69,9 +69,9 @@ function S:Blizzard_RaidUI()
 					button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
 				end
 				prevButton = button
-	
+
 				icon:SetInside()
-	
+
 				if index == 11 then
 					icon:SetTexture('Interface\\RaidFrame\\UI-RaidFrame-Pets')
 					icon:SetTexCoord(unpack(E.TexCoords))
@@ -86,7 +86,7 @@ function S:Blizzard_RaidUI()
 					icon:SetTexture('Interface\\WorldStateFrame\\Icons-Classes')
 					icon:SetTexCoord(coords[1] + 0.02, coords[2] - 0.02, coords[3] + 0.02, coords[4] - 0.02)
 				end
-	
+
 				count:FontTemplate(nil, 12, 'OUTLINE')
 			end
 		end

@@ -20,7 +20,7 @@ function S:Blizzard_TimeManager()
 
 	_G.TimeManagerStopwatchFrame:Point('TOPRIGHT', 10, -12)
 
-	_G.TimeManagerStopwatchCheck:SetTemplate('Default')
+	_G.TimeManagerStopwatchCheck:SetTemplate()
 	_G.TimeManagerStopwatchCheck:StyleButton(nil, true)
 
 	_G.TimeManagerStopwatchCheck:GetNormalTexture():SetInside()

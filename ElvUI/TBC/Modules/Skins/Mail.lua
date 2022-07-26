@@ -100,7 +100,7 @@ function S:MailFrame()
 	_G.SendStationeryBackgroundLeft:Hide()
 	_G.SendStationeryBackgroundRight:Hide()
 	_G.MailEditBox.ScrollBox:StripTextures(true)
-	_G.MailEditBox.ScrollBox:SetTemplate('Default')
+	_G.MailEditBox.ScrollBox:SetTemplate()
 	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 
 	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
@@ -221,7 +221,7 @@ function S:MailFrame()
 	S:HandleButton(_G.OpenMailCancelButton)
 
 	_G.OpenMailScrollFrame:StripTextures(true)
-	_G.OpenMailScrollFrame:SetTemplate('Default')
+	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
