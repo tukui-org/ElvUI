@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local pairs, select = pairs, select
@@ -29,8 +30,7 @@ function S:Blizzard_LookingForGroupUI()
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
 	if E.private.skins.blizzard.tooltip then
-		_G.LFGBrowseSearchEntryTooltip:StripTextures()
-		_G.LFGBrowseSearchEntryTooltip:SetTemplate('Transparent')
+		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
 	end
 
 	-- Buttons
