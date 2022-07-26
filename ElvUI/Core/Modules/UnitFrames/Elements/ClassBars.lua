@@ -163,7 +163,7 @@ function UF:Configure_ClassBar(frame)
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 							button:Point('BOTTOM', prevButton, 'TOP', 0, (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2))
 						else
-							button:Point('LEFT', prevButton, 'RIGHT', (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
+							button:Point('LEFT', prevButton, 'RIGHT', (frame.CLASSBAR_DETACHED and db.classbar.spacing or 5 + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option if detached)
 						end
 					elseif i == MAX_CLASS_BAR then
 						button:Point('LEFT', prevButton, 'RIGHT', UF.BORDER-UF.SPACING, 0)
