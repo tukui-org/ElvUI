@@ -1213,7 +1213,7 @@ end
 
 function UpdateUsable(self)
 	local isLevelLinkLocked
-	if not WoWClassic and not WoWBCC and not WoWWrath and self._state_type == "action" then
+	if WoWRetail and self._state_type == "action" then
 		isLevelLinkLocked = C_LevelLink.IsActionLocked(self._state_action)
 		if not self.icon:IsDesaturated() then
 			self.icon:SetDesaturated(isLevelLinkLocked)
@@ -1737,7 +1737,7 @@ Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
 
 --- WoW Classic overrides
-if WoWClassic or WoWBCC or WoWWrath then
+if not WoWRetail then
 	UpdateOverlayGlow = function() end
 end
 

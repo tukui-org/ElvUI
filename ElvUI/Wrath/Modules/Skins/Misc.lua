@@ -2,13 +2,17 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local ipairs = ipairs
 local pairs, unpack = pairs, unpack
 
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
 local function SkinNavBarButtons(self)
-	if (self:GetParent():GetName() == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == 'WorldMapFrame' and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == 'HelpFrameKnowledgebase' and not E.private.skins.blizzard.help) then
+	local parentName = self:GetParent():GetName()
+	if (parentName == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal)
+	or (parentName == 'WorldMapFrame' and not E.private.skins.blizzard.worldmap)
+	or (parentName == 'HelpFrameKnowledgebase' and not E.private.skins.blizzard.help) then
 		return
 	end
 
@@ -16,6 +20,7 @@ local function SkinNavBarButtons(self)
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		navButton:GetFontString():SetTextColor(1, 1, 1)
+
 		if navButton.MenuArrowButton then
 			navButton.MenuArrowButton:StripTextures()
 			if navButton.MenuArrowButton.Art then
@@ -26,7 +31,6 @@ local function SkinNavBarButtons(self)
 		end
 
 		navButton.xoffset = 1
-
 		navButton.isSkinned = true
 	end
 end
@@ -36,13 +40,13 @@ function S:BlizzardMiscFrames()
 
 	-- Blizzard frame we want to reskin
 	local skins = {
-		'AutoCompleteBox',
-		'ReadyCheckFrame'
+		_G.AutoCompleteBox,
+		_G.ReadyCheckFrame
 	}
 
-	for i = 1, #skins do
-		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:SetTemplate('Transparent')
+	for _, frame in ipairs(skins) do
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
 	end
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
@@ -97,17 +101,17 @@ function S:BlizzardMiscFrames()
 	end)
 
 	local ChatMenus = {
-		'ChatMenu',
-		'EmoteMenu',
-		'LanguageMenu',
-		'VoiceMacroMenu',
+		_G.ChatMenu,
+		_G.EmoteMenu,
+		_G.LanguageMenu,
+		_G.VoiceMacroMenu,
 	}
 
-	for i = 1, #ChatMenus do
-		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
+	for _, frame in ipairs(ChatMenus) do
+		if frame == _G.ChatMenu then
+			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else
-			_G[ChatMenus[i]]:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
 
@@ -120,6 +124,7 @@ function S:BlizzardMiscFrames()
 				hooksecurefunc(_G['StaticPopup'..i], 'UpdateRecapButton', S.UpdateRecapButton)
 			end
 		end)
+
 		StaticPopup:StripTextures()
 		StaticPopup:SetTemplate('Transparent')
 

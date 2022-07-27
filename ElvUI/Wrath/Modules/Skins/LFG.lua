@@ -4,12 +4,13 @@ local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local pairs, select = pairs, select
+local hooksecurefunc = hooksecurefunc
 
 local function LFGTabs()
-	LFGParentFrameTab1:ClearAllPoints()
-	LFGParentFrameTab1:Point('TOPLEFT', LFGParentFrame, 'BOTTOMLEFT', 4, 74)
-	LFGParentFrameTab2:ClearAllPoints()
-	LFGParentFrameTab2:Point('LEFT', LFGParentFrameTab1, 'RIGHT', -14, 0)
+	_G.LFGParentFrameTab1:ClearAllPoints()
+	_G.LFGParentFrameTab1:Point('TOPLEFT', _G.LFGParentFrame, 'BOTTOMLEFT', 4, 74)
+	_G.LFGParentFrameTab2:ClearAllPoints()
+	_G.LFGParentFrameTab2:Point('LEFT', _G.LFGParentFrameTab1, 'RIGHT', -14, 0)
 end
 
 function S:Blizzard_LookingForGroupUI()
@@ -47,15 +48,15 @@ function S:Blizzard_LookingForGroupUI()
 	end
 
 	_G.LFGListingFrameBackButton:ClearAllPoints()
-	_G.LFGListingFrameBackButton:Point('TOPLEFT', LFGParentFrameTab1, 'TOPLEFT', 14, 24)
+	_G.LFGListingFrameBackButton:Point('TOPLEFT', _G.LFGParentFrameTab1, 'TOPLEFT', 14, 24)
 	_G.LFGBrowseFrameSendMessageButton:ClearAllPoints()
-	_G.LFGBrowseFrameSendMessageButton:Point('TOPLEFT', LFGParentFrameTab1, 'TOPLEFT', 14, 24)
+	_G.LFGBrowseFrameSendMessageButton:Point('TOPLEFT', _G.LFGParentFrameTab1, 'TOPLEFT', 14, 24)
 
 	_G.LFGListingFramePostButton:Point('BOTTOMRIGHT', LFGListingFrame, 'BOTTOMRIGHT', -40, 76)
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
 	_G.LFGBrowseFrameActivityDropDown.ResetButton:ClearAllPoints()
-	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPLEFT', LFGBrowseFrameActivityDropDown, 'TOPLEFT', 22, 14)
+	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPLEFT', _G.LFGBrowseFrameActivityDropDown, 'TOPLEFT', 22, 14)
 
 	-- CheckBoxes
 	local checkBoxes = {
@@ -78,7 +79,7 @@ function S:Blizzard_LookingForGroupUI()
 	S:HandleDropDownBox(_G.LFGBrowseFrameCategoryDropDown, 160)
 
 	_G.LFGBrowseFrameCategoryDropDown:ClearAllPoints()
-	_G.LFGBrowseFrameCategoryDropDown:Point('TOPLEFT', LFGParentFrame, 'TOPLEFT', -4, -90)
+	_G.LFGBrowseFrameCategoryDropDown:Point('TOPLEFT', _G.LFGParentFrame, 'TOPLEFT', -4, -90)
 	_G.LFGBrowseFrameActivityDropDown:ClearAllPoints()
 	_G.LFGBrowseFrameActivityDropDown:Point('LEFT', _G.LFGBrowseFrameCategoryDropDown, 'RIGHT', -20, 0)
 
@@ -113,8 +114,8 @@ function S:Blizzard_LookingForGroupUI()
 		end
 	end
 
-	for i = 1, LFGParentFrame:GetNumChildren() do
-		local child = select(i, LFGParentFrame:GetChildren())
+	for i = 1, _G.LFGParentFrame:GetNumChildren() do
+		local child = select(i, _G.LFGParentFrame:GetChildren())
 		if not child.IsSkinned and child:GetObjectType() == 'Button' then
 			child:ClearAllPoints()
 			child:Point('TOPRIGHT', -26, -6)

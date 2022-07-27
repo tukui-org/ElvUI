@@ -15,56 +15,56 @@ local hooksecurefunc = hooksecurefunc
 local ClubTypeGuild = Enum.ClubType.Guild
 local ClubTypeBattleNet = Enum.ClubType.BattleNet
 
-local function UpdateNames(self)
-	if not self.expanded then return end
+local function UpdateNames(button)
+	if not button.expanded then return end
 
-	local memberInfo = self:GetMemberInfo()
+	local memberInfo = button:GetMemberInfo()
 	if memberInfo and memberInfo.classID then
 		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
 		if classInfo then
 			local tcoords = _G.CLASS_ICON_TCOORDS[classInfo.classFile]
-			self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			button.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 		end
 	end
 end
 
-local function HandleCommunitiesButtons(self, color)
-	self.Background:Hide()
-	self.CircleMask:Hide()
-	self:SetFrameLevel(self:GetFrameLevel() + 5)
+local function HandleCommunitiesButtons(button, color)
+	button.Background:Hide()
+	button.CircleMask:Hide()
+	button:SetFrameLevel(button:GetFrameLevel() + 5)
 
-	S:HandleIcon(self.Icon)
-	self.Icon:ClearAllPoints()
-	self.Icon:Point('TOPLEFT', 15, -18)
-	self.IconRing:Hide()
+	S:HandleIcon(button.Icon)
+	button.Icon:ClearAllPoints()
+	button.Icon:Point('TOPLEFT', 15, -18)
+	button.IconRing:Hide()
 
-	if not self.bg then
-		self.bg = CreateFrame('Frame', nil, self)
-		self.bg:CreateBackdrop('Transparent')
-		self.bg:Point('TOPLEFT', 7, -16)
-		self.bg:Point('BOTTOMRIGHT', -10, 12)
+	if not button.bg then
+		button.bg = CreateFrame('Frame', nil, button)
+		button.bg:CreateBackdrop('Transparent')
+		button.bg:Point('TOPLEFT', 7, -16)
+		button.bg:Point('BOTTOMRIGHT', -10, 12)
 	end
 
-	if self.IconBorder then
-		self.IconBorder:Hide()
+	if button.IconBorder then
+		button.IconBorder:Hide()
 	end
 
 	if color then
-		self.Selection:ClearAllPoints()
-		self.Selection:SetAllPoints(self.bg)
+		button.Selection:ClearAllPoints()
+		button.Selection:SetAllPoints(button.bg)
 
 		if color == 1 then
-			self.Selection:SetAtlas(nil)
-			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
+			button.Selection:SetAtlas(nil)
+			button.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
 		else
-			self.Selection:SetAtlas(nil)
-			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
+			button.Selection:SetAtlas(nil)
+			button.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
 		end
 	end
 
-	local highlight = self:GetHighlightTexture()
+	local highlight = button:GetHighlightTexture()
 	highlight:SetColorTexture(1, 1, 1, 0.3)
-	highlight:SetInside(self.bg)
+	highlight:SetInside(button.bg)
 end
 
 function S:Blizzard_Communities()

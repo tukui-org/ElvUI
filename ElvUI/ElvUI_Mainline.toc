@@ -4,9 +4,9 @@
 ## Version: 12.81
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
-## Interface: 90207
-## X-Interface: 90207
+## OptionalDeps: SharedMedia, Tukui, Masque, Blizzard_PetJournal
+## Interface: 90205
+## X-Interface: 90205
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 ## X-oUF: ElvUF

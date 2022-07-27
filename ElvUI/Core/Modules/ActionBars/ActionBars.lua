@@ -1097,9 +1097,10 @@ function AB:DisableBlizzard()
 
 	if E.Wrath and E.myclass ~= 'SHAMAN' then
 		for i = 1, 12 do
-			_G['MultiCastActionButton'..i]:Hide()
-			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
-			_G['MultiCastActionButton'..i]:SetAttribute('statehidden', true)
+			local button = _G['MultiCastActionButton'..i]
+			button:Hide()
+			button:UnregisterAllEvents()
+			button:SetAttribute('statehidden', true)
 		end
 	end
 

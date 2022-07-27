@@ -249,7 +249,6 @@ function AB:SetupMicroBar()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
 	_G.MainMenuBarPerformanceBar:SetScale(0.00001)
 
-	-- Weird wrath shit
 	if E.Wrath then
 		_G.PVPMicroButtonTexture:ClearAllPoints()
 		_G.PVPMicroButtonTexture:Point('TOP', _G.PVPMicroButton, 'TOP', 6, -1)

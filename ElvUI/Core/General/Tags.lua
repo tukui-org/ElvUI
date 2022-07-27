@@ -339,7 +339,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	if tagFormat ~= 'percent' then
 		E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
-			if (status) then
+			if status then
 				return status
 			else
 				local min, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -572,7 +572,7 @@ end)
 
 E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	if (unitReaction) then
+	if unitReaction then
 		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else

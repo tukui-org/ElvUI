@@ -2,16 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, strfind, unpack = ipairs, pairs, strfind, unpack
+local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
+local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
+local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
@@ -168,26 +170,26 @@ function S:CharacterFrame()
 	HandleResistanceFrame('MagicResFrame')
 
 	local slots = {
-		[1] = CharacterHeadSlot,
-		[2] = CharacterNeckSlot,
-		[3] = CharacterShoulderSlot,
-		[4] = CharacterShirtSlot,
-		[5] = CharacterChestSlot,
-		[6] = CharacterWaistSlot,
-		[7] = CharacterLegsSlot,
-		[8] = CharacterFeetSlot,
-		[9] = CharacterWristSlot,
-		[10] = CharacterHandsSlot,
-		[11] = CharacterFinger0Slot,
-		[12] = CharacterFinger1Slot,
-		[13] = CharacterTrinket0Slot,
-		[14] = CharacterTrinket1Slot,
-		[15] = CharacterBackSlot,
-		[16] = CharacterMainHandSlot,
-		[17] = CharacterSecondaryHandSlot,
-		[18] = CharacterRangedSlot,
-		[19] = CharacterTabardSlot,
-		[20] = CharacterAmmoSlot,
+		_G.CharacterHeadSlot,
+		_G.CharacterNeckSlot,
+		_G.CharacterShoulderSlot,
+		_G.CharacterShirtSlot,
+		_G.CharacterChestSlot,
+		_G.CharacterWaistSlot,
+		_G.CharacterLegsSlot,
+		_G.CharacterFeetSlot,
+		_G.CharacterWristSlot,
+		_G.CharacterHandsSlot,
+		_G.CharacterFinger0Slot,
+		_G.CharacterFinger1Slot,
+		_G.CharacterTrinket0Slot,
+		_G.CharacterTrinket1Slot,
+		_G.CharacterBackSlot,
+		_G.CharacterMainHandSlot,
+		_G.CharacterSecondaryHandSlot,
+		_G.CharacterRangedSlot,
+		_G.CharacterTabardSlot,
+		_G.CharacterAmmoSlot,
 	}
 
 	for _, slot in pairs(slots) do
@@ -263,7 +265,7 @@ function S:CharacterFrame()
 		activeTexture:SetTexture(1, 1, 1, .15)
 
 		if i == 7 then
-			button:Point('TOP', CompanionButton1, 'BOTTOM', 0, -5)
+			button:Point('TOP', _G.CompanionButton1, 'BOTTOM', 0, -5)
 		elseif i ~= 1 then
 			button:Point('LEFT', _G['CompanionButton'..i-1], 'RIGHT', 5, 0)
 		end
@@ -323,7 +325,7 @@ function S:CharacterFrame()
 	local GearManager = _G.GearManagerDialog
 	GearManager:StripTextures()
 	GearManager:SetTemplate('Transparent')
-	GearManager:Point('TOPLEFT', PaperDollFrame, 'TOPRIGHT', -30, -12)
+	GearManager:Point('TOPLEFT', _G.PaperDollFrame, 'TOPRIGHT', -30, -12)
 
 	local GearManagerToggleButton = _G.GearManagerToggleButton
 	GearManagerToggleButton:Size(25, 29)
@@ -337,13 +339,13 @@ function S:CharacterFrame()
 	S:HandleCloseButton(_G.GearManagerDialogClose, GearManager)
 
 	local buttons = {
-		'GearManagerDialogDeleteSet',
-		'GearManagerDialogEquipSet',
-		'GearManagerDialogSaveSet',
+		_G.GearManagerDialogDeleteSet,
+		_G.GearManagerDialogEquipSet,
+		_G.GearManagerDialogSaveSet,
 	}
 
 	for _, button in pairs(buttons) do
-		S:HandleButton(_G[button])
+		S:HandleButton(button)
 	end
 
 	_G.GearManagerDialogDeleteSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 11, 8)
@@ -422,7 +424,7 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
 
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		if SkillFrameCollapseAllButton.isExpanded then
+		if _G.SkillFrameCollapseAllButton.isExpanded then
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		else
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)

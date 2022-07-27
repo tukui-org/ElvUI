@@ -22,18 +22,20 @@ function S:SkinArena()
 	_G.ArenaFrameGroupJoinButton:Point('RIGHT', _G.ArenaFrameJoinButton, 'LEFT', -2, 0)
 
 	-- Custom Backdrop 1
-	ArenaTopBackdrop = CreateFrame('Frame', nil, ArenaFrame)
-	ArenaTopBackdrop:CreateBackdrop('Transparent')
-	ArenaTopBackdrop:Height(112)
-	ArenaTopBackdrop:Width(330)
-	ArenaTopBackdrop:Point('TOP', ArenaFrame, 'TOP', -12, -48)
+	local topBackdrop = CreateFrame('Frame', nil, ArenaFrame)
+	topBackdrop:CreateBackdrop('Transparent')
+	topBackdrop:Height(112)
+	topBackdrop:Width(330)
+	topBackdrop:Point('TOP', ArenaFrame, 'TOP', -12, -48)
+	ArenaFrame.TopBackdrop = topBackdrop
 
 	-- Custom Backdrop 2
-	ArenaBottomBackdrop = CreateFrame('Frame', nil, ArenaFrame)
-	ArenaBottomBackdrop:CreateBackdrop('Transparent')
-	ArenaBottomBackdrop:Height(240)
-	ArenaBottomBackdrop:Width(330)
-	ArenaBottomBackdrop:Point('BOTTOM', ArenaFrame, 'BOTTOM', -12, 108)
+	local bottomBackdrop = CreateFrame('Frame', nil, ArenaFrame)
+	bottomBackdrop:CreateBackdrop('Transparent')
+	bottomBackdrop:Height(240)
+	bottomBackdrop:Width(330)
+	bottomBackdrop:Point('BOTTOM', ArenaFrame, 'BOTTOM', -12, 108)
+	ArenaFrame.BottomBackdrop = bottomBackdrop
 
 	S:HandleCloseButton(_G.ArenaFrameCloseButton)
 end

@@ -1240,9 +1240,7 @@ function B:UpdateTokens()
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or E.Wrath and {}
-		if E.Wrath then
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i)
-		end
+		if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i) end
 		if not (info and info.name) then break end
 
 		local button = f.currencyButton[i]

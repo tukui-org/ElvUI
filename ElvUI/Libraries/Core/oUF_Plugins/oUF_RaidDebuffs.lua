@@ -155,10 +155,8 @@ local function CheckDispel(_, event, arg1)
 		elseif playerClass == 'MONK' then
 			DispelFilter.Magic = CheckTalentTree(2)
 		end
-	else
-		if playerClass == 'SHAMAN' then
-			DispelFilter.Curse = CheckTalentTree(3) -- TODO: Maybe instead check specifically for Cleanse Spirit instead?
-		end
+	elseif playerClass == 'SHAMAN' then
+		DispelFilter.Curse = CheckTalentTree(3) -- TODO: Maybe instead check specifically for Cleanse Spirit instead?
 	end
 end
 

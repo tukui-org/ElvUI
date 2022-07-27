@@ -2514,7 +2514,7 @@ else
 end
 
 for i = 1, 10 do
-	P.actionbar['bar'..i] = {
+	local bar = {
 		enabled = false,
 		mouseover = false,
 		clickThrough = false,
@@ -2565,14 +2565,15 @@ for i = 1, 10 do
 		frameLevel = 1,
 	}
 
-	-- Visibility
 	if E.Retail then
-		P.actionbar['bar'..i].visibility = '[vehicleui] hide; [petbattle] hide; [overridebar] hide; show'
+		bar.visibility = '[vehicleui] hide; [petbattle] hide; [overridebar] hide; show'
 	elseif E.Wrath then
-		P.actionbar['bar'..i].visibility = '[vehicleui] hide; [overridebar] hide; show'
+		bar.visibility = '[vehicleui] hide; [overridebar] hide; show'
 	else
-		P.actionbar['bar'..i].visibility = '[overridebar] hide; show'
+		bar.visibility = '[overridebar] hide; show'
 	end
+
+	P.actionbar['bar'..i] = bar
 end
 
 for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
