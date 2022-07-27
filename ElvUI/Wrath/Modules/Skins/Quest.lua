@@ -435,6 +435,10 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
+	QuestFramePushQuestButton:ClearAllPoints()
+	QuestFramePushQuestButton:Point('LEFT', QuestLogFrameAbandonButton, 'RIGHT', 1, 0)
+	QuestFramePushQuestButton:Point('RIGHT', QuestLogFrameTrackButton, 'LEFT', -1, 0)
+
 	local QuestLogDetailFrame = _G.QuestLogDetailFrame
 	S:HandleFrame(QuestLogDetailFrame, true, nil, 8, -8, 8)
 
@@ -450,7 +454,7 @@ function S:BlizzardQuestFrames()
 
 	S:HandlePointXY(_G.QuestLogFrameAbandonButton, 0, -2)
 	S:HandlePointXY(_G.QuestLogFrameTrackButton, 0, -2)
-	S:HandlePointXY(_G.QuestFramePushQuestButton, 0)
+	S:HandlePointXY(_G.QuestFramePushQuestButton, 1)
 	S:HandlePointXY(_G.QuestFrameAcceptButton, 15, 70)
 	S:HandlePointXY(_G.QuestFrameDeclineButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameCompleteQuestButton, 15, 70)
