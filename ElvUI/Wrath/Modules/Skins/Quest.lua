@@ -255,6 +255,11 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
+	hooksecurefunc('QuestLogUpdateQuestCount', function()
+		QuestLogCount:ClearAllPoints()
+		QuestLogCount:Point('BOTTOMLEFT', QuestLogListScrollFrame.backdrop, 'TOPLEFT', 0, 5)
+	end)
+
 	hooksecurefunc('QuestLog_UpdateQuestDetails', function()
 		local requiredMoney = GetQuestLogRequiredMoney()
 
