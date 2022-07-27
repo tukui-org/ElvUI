@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
+local pairs = pairs
 
 function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end

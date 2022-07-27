@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
-local ipairs, pairs, select = ipairs, pairs, select
+local unpack = unpack
+local pairs, select = pairs, select
 
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
-local GetNumFilteredAchievements = GetNumFilteredAchievements
 local CreateFrame = CreateFrame
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
@@ -84,22 +83,6 @@ local function SkinStatusBar(bar)
 
 	local text = _G[StatusBarName..'Text']
 	if text then text:Point('RIGHT', -4, 0) end
-end
-
-local function SkinSearchButton(self)
-	self:StripTextures()
-
-	if self.icon then
-		S:HandleIcon(self.icon)
-	end
-
-	self:SetTemplate('Transparent')
-	self:SetHighlightTexture(E.media.normTex)
-
-	local hl = self:GetHighlightTexture()
-	hl:SetVertexColor(1, 1, 1, 0.3)
-	hl:Point('TOPLEFT', 1, -1)
-	hl:Point('BOTTOMRIGHT', -1, 1)
 end
 
 local function playerSaturate(self) -- self is Achievement.player

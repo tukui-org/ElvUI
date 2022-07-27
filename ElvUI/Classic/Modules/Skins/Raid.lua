@@ -95,6 +95,7 @@ function S:Blizzard_RaidUI()
 		end
 	end)
 
+	local bars = { 'HealthBar', 'ManaBar', 'Target', 'TargetTarget' }
 	hooksecurefunc('RaidPullout_Update', function(pullOutFrame)
 		local pfName = pullOutFrame:GetName()
 		local pfBName, pfBObj, pfTot
@@ -107,7 +108,7 @@ function S:Blizzard_RaidUI()
 			if not pfBObj.backdrop then
 				local sBar
 
-				for _, v in ipairs({'HealthBar', 'ManaBar', 'Target', 'TargetTarget'}) do
+				for _, v in ipairs(bars) do
 					sBar = _G[pfBName..v]
 					sBar:StripTextures()
 					sBar:SetStatusBarTexture(E.media.normTex)
