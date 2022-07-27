@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
+local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
-local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local hooksecurefunc = hooksecurefunc
 
