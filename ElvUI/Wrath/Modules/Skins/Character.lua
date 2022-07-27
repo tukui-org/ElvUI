@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, strfind, unpack = pairs, strfind, unpack
+local ipairs, pairs, strfind, unpack = ipairs, pairs, strfind, unpack
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -318,6 +318,48 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
 	PetPaperDollPetInfo:SetScript('OnEvent', updHappiness)
 	PetPaperDollPetInfo:SetScript('OnShow', updHappiness)
+
+	-- GearManager / EquipmentManager
+	local GearManager = _G.GearManagerDialog
+	GearManager:StripTextures()
+	GearManager:SetTemplate('Transparent')
+	GearManager:Point('TOPLEFT', PaperDollFrame, 'TOPRIGHT', -30, -12)
+
+	local GearManagerToggleButton = _G.GearManagerToggleButton
+	GearManagerToggleButton:Size(25, 29)
+	GearManagerToggleButton:Point('TOPRIGHT', -42, -40)
+	GearManagerToggleButton:CreateBackdrop()
+	GearManagerToggleButton:GetNormalTexture():SetTexCoord(0.203125, 0.828125, 0.15625, 0.875)
+	GearManagerToggleButton:GetPushedTexture():SetTexCoord(0.1875, 0.8125, 0.1875, 0.90625)
+	GearManagerToggleButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	GearManagerToggleButton:GetHighlightTexture():SetAllPoints()
+
+	S:HandleCloseButton(_G.GearManagerDialogClose, GearManager)
+
+	local buttons = {
+		'GearManagerDialogDeleteSet',
+		'GearManagerDialogEquipSet',
+		'GearManagerDialogSaveSet',
+	}
+
+	for _, button in pairs(buttons) do
+		S:HandleButton(_G[button])
+	end
+
+	_G.GearManagerDialogDeleteSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 11, 8)
+	_G.GearManagerDialogEquipSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 93, 8)
+	_G.GearManagerDialogSaveSet:Point('BOTTOMRIGHT', GearManager, 'BOTTOMRIGHT', -8, 8)
+
+	for i, button in ipairs(GearManager.buttons) do
+		button:StripTextures()
+		button:CreateBackdrop()
+		button.backdrop:SetAllPoints()
+
+		button:StyleButton(nil, true)
+
+		button.icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+	end
 
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
