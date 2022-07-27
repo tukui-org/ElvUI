@@ -525,10 +525,7 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 
 	S:HandleCloseButton(_G.SkillDetailStatusBarUnlearnButton)
-	S:HandleButton(_G.SkillDetailStatusBarUnlearnButton)
-	_G.SkillDetailStatusBarUnlearnButton:Size(24)
-	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
-	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
+	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', -6, 1)
 
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
