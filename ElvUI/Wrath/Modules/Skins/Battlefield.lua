@@ -40,6 +40,10 @@ function S:SkinBattlefield()
 	BattlefieldBottomBackdrop:Point('BOTTOM', BattlefieldFrame, 'BOTTOM', -12, 110)
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
+
+	if _G.WintergraspTimer then
+		_G.WintergraspTimer.texture:SetTexCoord(0.2, 0.8, 0.1, 0.4)
+	end
 end
 
 S:AddCallback('SkinBattlefield')
