@@ -22,6 +22,9 @@ function S:SkinBattlefield()
 
 	_G.BattlefieldFrameGroupJoinButton:Point('RIGHT', _G.BattlefieldFrameJoinButton, 'LEFT', -2, 0)
 
+	-- TODO: Wrath (Wintergrasp Queue Button)
+	-- local WintergraspTimer = _G.WintergraspTimer
+
 	-- Custom Backdrop 1
 	BattlefieldTopBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
 	BattlefieldTopBackdrop:CreateBackdrop('Transparent')
