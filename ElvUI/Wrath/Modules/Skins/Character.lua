@@ -381,15 +381,15 @@ function S:CharacterFrame()
 	S:HandleButton(dialogPopup.OkayButton)
 	S:HandleButton(dialogPopup.CancelButton)
 
-	local GearManagerDialogPopupScrollFrameScrollBar = _G.GearManagerDialogPopupScrollFrameScrollBar
-	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
+	local dialogPopupScrollBar = _G.GearManagerDialogPopupScrollFrameScrollBar
+	S:HandleScrollBar(dialogPopupScrollBar)
 
-	local GearManagerDialogPopupScrollFrame = _G.GearManagerDialogPopupScrollFrame
-	GearManagerDialogPopupScrollFrame:StripTextures()
-	GearManagerDialogPopupScrollFrame:Height(340)
-	GearManagerDialogPopupScrollFrame:Point('TOPRIGHT', -68, -79)
-	GearManagerDialogPopupScrollFrameScrollBar:Point('TOPLEFT', GearManagerDialogPopupScrollFrame, 'TOPRIGHT', 3, -19)
-	GearManagerDialogPopupScrollFrameScrollBar:Point('BOTTOMLEFT', GearManagerDialogPopupScrollFrame, 'BOTTOMRIGHT', 3, 19)
+	local dialogPopupScrollFrame = _G.GearManagerDialogPopupScrollFrame
+	dialogPopupScrollFrame:StripTextures()
+	dialogPopupScrollFrame:Height(340)
+	dialogPopupScrollFrame:Point('TOPRIGHT', -68, -79)
+	dialogPopupScrollBar:Point('TOPLEFT', dialogPopupScrollFrame, 'TOPRIGHT', 3, -19)
+	dialogPopupScrollBar:Point('BOTTOMLEFT', dialogPopupScrollFrame, 'BOTTOMRIGHT', 3, 19)
 
 	-- They set points for buttons and frame on _Update
 	hooksecurefunc('GearManagerDialogPopup_Update', function()
