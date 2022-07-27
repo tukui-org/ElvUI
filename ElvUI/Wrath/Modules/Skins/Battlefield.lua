@@ -22,12 +22,19 @@ function S:SkinBattlefield()
 
 	_G.BattlefieldFrameGroupJoinButton:Point('RIGHT', _G.BattlefieldFrameJoinButton, 'LEFT', -2, 0)
 
-	-- Custom Backdrop
-	BottomBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
-	BottomBackdrop:CreateBackdrop('Transparent')
-	BottomBackdrop:Height(210)
-	BottomBackdrop:Width(330)
-	BottomBackdrop:Point('BOTTOM', BattlefieldFrame, 'BOTTOM', -12, 120)
+	-- Custom Backdrop 1
+	BattlefieldTopBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
+	BattlefieldTopBackdrop:CreateBackdrop('Transparent')
+	BattlefieldTopBackdrop:Height(130)
+	BattlefieldTopBackdrop:Width(330)
+	BattlefieldTopBackdrop:Point('TOP', BattlefieldFrame, 'TOP', -12, -38)
+
+	-- Custom Backdrop 2
+	BattlefieldBottomBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
+	BattlefieldBottomBackdrop:CreateBackdrop('Transparent')
+	BattlefieldBottomBackdrop:Height(230)
+	BattlefieldBottomBackdrop:Width(330)
+	BattlefieldBottomBackdrop:Point('BOTTOM', BattlefieldFrame, 'BOTTOM', -12, 110)
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
 end
