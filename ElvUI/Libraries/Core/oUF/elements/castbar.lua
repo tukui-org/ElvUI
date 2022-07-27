@@ -166,12 +166,12 @@ local function CastStart(self, real, unit, castGUID)
 	end
 
 	-- ElvUI block
-	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
-		element.duration = element.duration + (element.max * tradeskillCurrent);
-		element.max = element.max * tradeskillTotal;
+	if mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player") then
+		element.duration = element.duration + (element.max * tradeskillCurrent)
+		element.max = element.max * tradeskillTotal
 		element.holdTime = 1
 
-		if(unit == "player") then
+		if unit == 'player' then
 			tradeskillCurrent = tradeskillCurrent + 1;
 		end
 	end
