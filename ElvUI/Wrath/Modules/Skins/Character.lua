@@ -363,6 +363,61 @@ function S:CharacterFrame()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
+	GearManagerDialogPopup:EnableMouse(true)
+	GearManagerDialogPopup:StripTextures()
+	GearManagerDialogPopup:CreateBackdrop('Transparent')
+	GearManagerDialogPopup.backdrop:Point('TOPLEFT', 5, -10)
+	GearManagerDialogPopup.backdrop:Point('BOTTOMRIGHT', -39, 8)
+
+	S:HandleButton(GearManagerDialogPopup.OkayButton)
+	S:HandleButton(GearManagerDialogPopup.CancelButton)
+
+	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
+
+	GearManagerDialogPopupScrollFrame:StripTextures()
+	GearManagerDialogPopupScrollFrame:Height(340)
+	GearManagerDialogPopupScrollFrame:Point('TOPRIGHT', -68, -79)
+	GearManagerDialogPopupScrollFrameScrollBar:Point('TOPLEFT', GearManagerDialogPopupScrollFrame, 'TOPRIGHT', 3, -19)
+	GearManagerDialogPopupScrollFrameScrollBar:Point('BOTTOMLEFT', GearManagerDialogPopupScrollFrame, 'BOTTOMRIGHT', 3, 19)
+
+	-- They set points for buttons and frame on _Update
+	hooksecurefunc('GearManagerDialogPopup_Update', function()
+		GearManagerDialogPopup:ClearAllPoints()
+		GearManagerDialogPopup:Point('TOPLEFT', GearManagerDialog, 'RIGHT', -3, 87)
+		GearManagerDialogPopup.CancelButton:Point('BOTTOMRIGHT', GearManagerDialogPopup, 'BOTTOMRIGHT', -44, 13)
+	end)
+
+	S:HandleEditBox(GearManagerDialogPopupEditBox)
+
+	for i, button in ipairs(GearManagerDialogPopup.buttons) do
+		button:StripTextures()
+		button:SetFrameLevel(button:GetFrameLevel() + 2)
+		button:CreateBackdrop()
+		button.backdrop:SetAllPoints()
+
+		button:StyleButton(true, true)
+
+		button.icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+
+		if i > 1 then
+			local lastPos = (i - 1) / NUM_GEARSET_ICONS_PER_ROW
+
+			if lastPos == math.floor(lastPos) then
+				button:SetPoint('TOPLEFT', GearManagerDialogPopup.buttons[i-NUM_GEARSET_ICONS_PER_ROW], 'BOTTOMLEFT', 0, -7)
+			else
+				button:SetPoint('TOPLEFT', GearManagerDialogPopup.buttons[i-1], 'TOPRIGHT', 7, 0)
+			end
+		end
+	end
+
+	local text1, text2 = select(5, GearManagerDialogPopup:GetRegions())
+	text1:Point('TOPLEFT', 24, -19)
+	text2:Point('TOPLEFT', 24, -63)
+
+	GearManagerDialogPopupEditBox:Point('TOPLEFT', 24, -36)
+	GearManagerDialogPopupButton1:Point('TOPLEFT', 17, -83)
+
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
 
