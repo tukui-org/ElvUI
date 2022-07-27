@@ -232,6 +232,29 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
+	hooksecurefunc('QuestLog_Update', function()
+		if not QuestLogFrame:IsShown() then return end
+		local numEntries = GetNumQuestLogEntries()
+		local scrollOffset = HybridScrollFrame_GetOffset(QuestLogListScrollFrame)
+		local buttons = QuestLogListScrollFrame.buttons
+		local questIndex
+
+		for i = 1, 22 do
+			questIndex = i + scrollOffset
+
+			if questIndex <= numEntries then
+				local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
+				if isHeader then
+					if isCollapsed then
+						buttons[i]:SetNormalTexture(E.Media.Textures.PlusButton)
+					else
+						buttons[i]:SetNormalTexture(E.Media.Textures.MinusButton)
+					end
+				end
+			end
+		end
+	end)
+
 	hooksecurefunc('QuestLog_UpdateQuestDetails', function()
 		local requiredMoney = GetQuestLogRequiredMoney()
 
