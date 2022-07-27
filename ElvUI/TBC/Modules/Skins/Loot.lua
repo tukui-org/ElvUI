@@ -37,10 +37,10 @@ local function UpdateLoots()
 			if itemLink then
 				local _, _, itemRarity = GetItemInfo(itemLink)
 
-				if (itemRarity) then
+				if itemRarity then
 					local color = ITEM_QUALITY_COLORS[itemRarity]
 
-					if (color) then
+					if color then
 						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 					end
 				end

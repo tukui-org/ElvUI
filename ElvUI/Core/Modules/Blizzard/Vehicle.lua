@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
+-- _G.VehicleSeatIndicator doesn't exist (yet?)
+if E.Wrath then return end
+
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator

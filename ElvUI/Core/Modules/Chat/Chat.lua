@@ -334,6 +334,10 @@ do --this can save some main file locals
 		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
 		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
 		z['Luckywl-Gehennas']		= ElvBlue -- Warlock
+	elseif E.Wrath then
+		-- Luckyone
+		z['Luckyone-ClassicBetaPvE']		= ElvBlue -- Hunter
+		z['Luckydk-ClassicBetaPvE']			= ElvBlue -- DK
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv

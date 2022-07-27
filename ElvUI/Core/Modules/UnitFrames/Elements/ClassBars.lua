@@ -31,12 +31,12 @@ function UF:GetClassPower_Construct(frame)
 	elseif E.Retail then
 		if E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' then
 			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
-		elseif E.myclass == 'DEATHKNIGHT' then
-			frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
-			frame.ClassBar = 'Runes'
 		elseif E.myclass == 'MONK' then
 			frame.Stagger = UF:Construct_Stagger(frame)
 		end
+	elseif (E.Retail or E.Wrath) and E.myclass == 'DEATHKNIGHT' then
+		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
+		frame.ClassBar = 'Runes'
 	elseif E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
 	end
@@ -406,7 +406,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 		end
 	end
 
-	if hasMaxChanged then
+	if maxBars and maxBars > 0 and hasMaxChanged then
 		frame.MAX_CLASS_BAR = maxBars
 		UF:Configure_ClassBar(frame, current)
 	elseif stateChanged then

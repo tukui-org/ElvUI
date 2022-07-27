@@ -146,7 +146,7 @@ function NP:SetCVars()
 
 	NP:SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
-	if E.TBC then
+	if E.TBC or E.Wrath then
 		NP:SetCVar('nameplateMaxDistance', NP.db.loadDistance)
 	end
 
@@ -816,7 +816,7 @@ local optionsTable = {
 	'ShowAll'
 }
 
-if E.TBC then
+if E.TBC or E.Wrath then
 	tinsert(optionsTable, 'NameplateMaxDistanceSlider')
 end
 

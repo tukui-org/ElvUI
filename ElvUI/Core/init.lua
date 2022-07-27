@@ -71,11 +71,13 @@ E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
+E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo() -- TODO: Move back to Core.lua
+
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-E.TBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
-E.Wrath = false
+E.TBC = E.wowtoc >= 20504 and E.wowtoc < 30000 -- TODO: Wrath
+E.Wrath = E.wowtoc >= 30400 and E.wowtoc < 40000 -- TODO: Wrath
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = {}
@@ -126,6 +128,7 @@ do
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
 
+	-- TODO: Wrath (Check for an updated version of DualSpec)
 	if E.Retail then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	else
@@ -263,7 +266,7 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	if not E.Retail then -- temp cause blizz broke it?
+	if E.Classic or E.TBC then
 		RegisterCVar('fstack_showhighlight', '1')
 	end
 

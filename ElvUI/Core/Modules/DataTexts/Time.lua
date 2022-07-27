@@ -107,7 +107,7 @@ local function OnClick(_, btn)
 
 	if btn == 'RightButton' then
 		ToggleFrame(_G.TimeManagerFrame)
-	elseif E.Retail then
+	elseif E.Retail or E.Wrath then
 		_G.GameTimeFrame:Click()
 	end
 end
@@ -167,6 +167,7 @@ local function OnEnter()
 		RequestRaidInfo()
 	end
 
+	-- TODO: Wrath
 	if E.Retail then
 		if not collectedInstanceImages then
 			local numTiers = (EJ_GetNumTiers() or 0)

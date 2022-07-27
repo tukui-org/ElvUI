@@ -326,7 +326,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
-	end, not E.Retail)
+	end, E.Classic or E.TBC)
 
 	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
 		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
@@ -339,7 +339,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	if tagFormat ~= 'percent' then
 		E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
-			if (status) then
+			if status then
 				return status
 			else
 				local min, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -379,7 +379,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
 			end
-		end, not E.Retail)
+		end, E.Classic or E.TBC)
 	end
 end
 
@@ -572,7 +572,7 @@ end)
 
 E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	if (unitReaction) then
+	if unitReaction then
 		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
@@ -1381,19 +1381,19 @@ E.TagInfo = {
 		['cpoints'] = { category = 'Classpower', description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" },
 		['arcanecharges'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the arcane charges (Mage)" },
 		['chi'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the chi points (Monk)" },
-		['classpower:current-max-percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
-		['classpower:current-max'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
-		['classpower:current-percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
-		['classpower:current'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current amount of special power" },
-		['classpower:deficit'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
-		['classpower:percent'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
-		['classpower:current-max-percent:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
-		['classpower:current-max:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
-		['classpower:current-percent:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
-		['classpower:current:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
-		['classpower:deficit:shortvalue'] = { hidden = not E.Retail, category = 'Classpower', description = "" },
+		['classpower:current-max-percent'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" },
+		['classpower:current-max'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the unit's current and max amount of special power, separated by a dash" },
+		['classpower:current-percent'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the unit's current and percentage amount of special power, separated by a dash" },
+		['classpower:current'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the unit's current amount of special power" },
+		['classpower:deficit'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" },
+		['classpower:percent'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the unit's current amount of special power as a percentage" },
+		['classpower:current-max-percent:shortvalue'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "" },
+		['classpower:current-max:shortvalue'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "" },
+		['classpower:current-percent:shortvalue'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "" },
+		['classpower:current:shortvalue'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "" },
+		['classpower:deficit:shortvalue'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "" },
 		['holypower'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the holy power (Paladin)" },
-		['runes'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the runes (Death Knight)" },
+		['runes'] = { hidden = E.Classic or E.TBC, category = 'Classpower', description = "Displays the runes (Death Knight)" },
 		['soulshards'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the soulshards (Warlock)" },
 	-- Colors
 		['altpowercolor'] = { hidden = not E.Retail, category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },

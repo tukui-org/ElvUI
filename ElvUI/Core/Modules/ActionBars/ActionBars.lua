@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, select, strmatch, unpack = ipairs, pairs, select, strmatch, unpack
-local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
+local format, gsub, strsplit, strfind, strupper, tremove = format, gsub, strsplit, strfind, strupper, tremove
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -110,7 +110,7 @@ AB.barDefaults = {
 	},
 }
 
-if E.Retail then
+if E.Retail or E.Wrath then
 	AB.barDefaults.bar1.conditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
 else
 	AB.barDefaults.bar1.conditions = '[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
@@ -442,6 +442,17 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsReparentExtraButtons = nil
 	end
 
+	if E.Wrath then
+		if AB.NeedsPositionAndSizeTotemBar then
+			AB:PositionAndSizeTotemBar()
+			AB.NeedsPositionAndSizeTotemBar = nil
+		end
+		if AB.NeedsRecallButtonUpdate then
+			AB:MultiCastRecallSpellButton_Update()
+			AB.NeedsRecallButtonUpdate = nil
+		end
+	end
+
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
@@ -500,6 +511,10 @@ function AB:ReassignBindings(event)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
+		end
+
+		if E.Wrath and E.myclass == 'SHAMAN' then
+			AB:UpdateTotemBindings()
 		end
 	end
 
@@ -983,12 +998,18 @@ end
 
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
-	for i, name in ipairs({'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MultiCastActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}) do
+	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
+	if E.Wrath then -- need to check if MultiCastActionBarFrame taints on wrath (it's the totem bar lol)
+		tremove(tbl, 1)
+		count = 5
+	end
+
+	for i, name in ipairs(tbl) do
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
 
 		local frame = _G[name]
 		if frame then
-			if i < 6 then frame:UnregisterAllEvents() end
+			if i < count then frame:UnregisterAllEvents() end
 			frame:SetParent(hiddenParent)
 			AB:SetNoopsi(frame)
 		end
@@ -1074,7 +1095,15 @@ function AB:DisableBlizzard()
 
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
-	if E.Retail then
+	if E.Wrath and E.myclass ~= 'SHAMAN' then
+		for i = 1, 12 do
+			_G['MultiCastActionButton'..i]:Hide()
+			_G['MultiCastActionButton'..i]:UnregisterAllEvents()
+			_G['MultiCastActionButton'..i]:SetAttribute('statehidden', true)
+		end
+	end
+
+	if E.Retail or E.Wrath then
 		if _G.PlayerTalentFrame then
 			_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 		else
@@ -1462,9 +1491,12 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	end
 
-	if E.Retail or E.Wrath then
+	if E.Retail then
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+	end
+
+	if E.Retail or E.Wrath then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
@@ -1508,6 +1540,10 @@ function AB:Initialize()
 
 		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
+	end
+
+	if (E.Wrath and E.myclass == 'SHAMAN') and E.private.general.totemBar then
+		AB:CreateTotemBar()
 	end
 
 	if _G.MacroFrame then

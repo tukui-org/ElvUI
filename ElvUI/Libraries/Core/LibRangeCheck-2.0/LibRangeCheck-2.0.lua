@@ -46,9 +46,12 @@ local MINOR_VERSION = tonumber(("$Revision: 214 $"):match("%d+")) + 100000
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
+local _, _, _, toc = GetBuildInfo()
+
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+local isTBC = toc >= 20500 and toc < 30000 -- TODO: Wrath
+local isWrath = toc >= 30400 and toc < 40000 -- TODO: Wrath
 
 -- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
 local _G = _G
@@ -340,8 +343,8 @@ local FriendItems  = {
 		21991, -- Heavy Netherweave Bandage
 		34721, -- Frostweave Bandage
 		34722, -- Heavy Frostweave Bandage
-		--38643, -- Thick Frostweave Bandage (uncomment for Wotlk)
-		--38640, -- Dense Frostweave Bandage (uncomment for Wotlk)
+		38643, -- Thick Frostweave Bandage
+		38640, -- Dense Frostweave Bandage
 	},
 	[20] = {
 		21519, -- Mistletoe
@@ -1176,7 +1179,7 @@ function lib:activate()
 		frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 		frame:RegisterEvent("SPELLS_CHANGED")
 
-		if isRetail then
+		if isRetail or isWrath then
 			frame:RegisterEvent("PLAYER_TALENT_UPDATE")
 		end
 

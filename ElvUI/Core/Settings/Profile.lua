@@ -179,11 +179,21 @@ P.general = {
 	},
 	objectiveTracker = true,
 	totems = {
+		alpha = 1,
+		buttonSize = 32,
 		enable = true,
+		flyoutDirection = 'UP',
+		flyoutSize = 28,
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
 		growthDirection = 'VERTICAL',
-		sortDirection = 'ASCENDING',
+		mouseover = false,
 		size = 40,
+		sortDirection = 'ASCENDING',
 		spacing = 4,
+		visibility = '[vehicleui] hide;show'
 	},
 	kittys = false
 }
@@ -2433,7 +2443,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = (E.Retail and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2453,7 +2462,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = E.Retail and '[vehicleui] hide; [petbattle] hide;show' or 'show',
 	},
 	microbar = {
 		enabled = false,
@@ -2493,6 +2501,18 @@ P.actionbar = {
 	}
 }
 
+-- Visibility
+if E.Retail then
+	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; [petbattle] hide; show'
+elseif E.Wrath then
+	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
+else
+	P.actionbar.barPet.visibility = '[pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = 'show'
+end
+
 for i = 1, 10 do
 	P.actionbar['bar'..i] = {
 		enabled = false,
@@ -2514,7 +2534,6 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = (E.Retail and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
@@ -2545,6 +2564,15 @@ for i = 1, 10 do
 		frameStrata = 'LOW',
 		frameLevel = 1,
 	}
+
+	-- Visibility
+	if E.Retail then
+		P.actionbar['bar'..i].visibility = '[vehicleui] hide; [petbattle] hide; [overridebar] hide; show'
+	elseif E.Wrath then
+		P.actionbar['bar'..i].visibility = '[vehicleui] hide; [overridebar] hide; show'
+	else
+		P.actionbar['bar'..i].visibility = '[overridebar] hide; show'
+	end
 end
 
 for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
@@ -2579,16 +2607,19 @@ end
 
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
-P.actionbar.bar1.paging = {
-	ROGUE = '[bonusbar:1] 7;',
-}
+
+if E.Wrath then
+	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7; [bonusbar:2] 8;'
+else
+	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'
+end
 
 if E.Retail then
 	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
 else
 	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 10;'
 	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
-	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3]9;'
+	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 end
 
 P.actionbar.bar3.enabled = true

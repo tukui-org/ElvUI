@@ -15,49 +15,49 @@ local CreateFrame = CreateFrame
 local ClubTypeGuild = Enum.ClubType.Guild
 local ClubTypeBattleNet = Enum.ClubType.BattleNet
 
-local function UpdateNames(self)
-	if not self.expanded then return end
+local function UpdateNames(button)
+	if not button.expanded then return end
 
-	local memberInfo = self:GetMemberInfo()
+	local memberInfo = button:GetMemberInfo()
 	if memberInfo and memberInfo.classID then
 		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
 		if classInfo then
 			local tcoords = _G.CLASS_ICON_TCOORDS[classInfo.classFile]
-			self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			button.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 		end
 	end
 end
 
-local function HandleCommunitiesButtons(self, color)
-	self.Background:Hide()
-	self.CircleMask:Hide()
-	self:SetFrameLevel(self:GetFrameLevel() + 5)
+local function HandleCommunitiesButtons(button, color)
+	button.Background:Hide()
+	button.CircleMask:Hide()
+	button:SetFrameLevel(button:GetFrameLevel() + 5)
 
-	S:HandleIcon(self.Icon)
-	self.Icon:Point('TOPLEFT', 8, -20)
-	self.IconRing:Hide()
+	S:HandleIcon(button.Icon)
+	button.Icon:Point('TOPLEFT', 8, -20)
+	button.IconRing:Hide()
 
-	if not self.bg then
-		self.bg = CreateFrame('Frame', nil, self)
-		self.bg:CreateBackdrop('Transparent')
-		self.bg:SetPoint('TOPLEFT', 7, -16)
-		self.bg:SetPoint('BOTTOMRIGHT', -10, 12)
+	if not button.bg then
+		button.bg = CreateFrame('Frame', nil, button)
+		button.bg:CreateBackdrop('Transparent')
+		button.bg:SetPoint('TOPLEFT', 7, -16)
+		button.bg:SetPoint('BOTTOMRIGHT', -10, 12)
 	end
 
 	if color then
-		self.Selection:ClearAllPoints()
-		self.Selection:SetAllPoints(self.bg)
+		button.Selection:ClearAllPoints()
+		button.Selection:SetAllPoints(button.bg)
 
 		if color == 1 then
-			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
+			button.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
 		else
-			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
+			button.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
 		end
 	end
 
-	local highlight = self:GetHighlightTexture()
+	local highlight = button:GetHighlightTexture()
 	highlight:SetColorTexture(1, 1, 1, 0.3)
-	highlight:SetInside(self.bg)
+	highlight:SetInside(button.bg)
 end
 
 function S:Blizzard_Communities()
@@ -83,59 +83,59 @@ function S:Blizzard_Communities()
 		S:HandleTab(_G['CommunitiesFrameTab'..i])
 	end
 
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetClubInfo', function(self, clubInfo, isInvitation, isTicket)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetClubInfo', function(list, clubInfo, isInvitation, isTicket)
 		if clubInfo then
-			self.Background:Hide()
-			self.CircleMask:Hide()
+			list.Background:Hide()
+			list.CircleMask:Hide()
 
-			self.Icon:ClearAllPoints()
-			self.Icon:Point('TOPLEFT', 8, -17)
-			S:HandleIcon(self.Icon)
-			self.IconRing:Hide()
+			list.Icon:ClearAllPoints()
+			list.Icon:Point('TOPLEFT', 8, -17)
+			S:HandleIcon(list.Icon)
+			list.IconRing:Hide()
 
-			if not self.IconBorder then
-				self.IconBorder = self:CreateTexture(nil, 'BORDER')
-				self.IconBorder:SetOutside(self.Icon)
-				self.IconBorder:Hide()
+			if not list.IconBorder then
+				list.IconBorder = list:CreateTexture(nil, 'BORDER')
+				list.IconBorder:SetOutside(list.Icon)
+				list.IconBorder:Hide()
 			end
 
-			if not self.bg then
-				self.bg = CreateFrame('Frame', nil, self)
-				self.bg:CreateBackdrop('Transparent')
-				self.bg:Point('TOPLEFT', 7, -16)
-				self.bg:Point('BOTTOMRIGHT', -10, 12)
+			if not list.bg then
+				list.bg = CreateFrame('Frame', nil, list)
+				list.bg:CreateBackdrop('Transparent')
+				list.bg:Point('TOPLEFT', 7, -16)
+				list.bg:Point('BOTTOMRIGHT', -10, 12)
 			end
 
-			self.Selection:ClearAllPoints()
-			self.Selection:SetAllPoints(self.bg)
+			list.Selection:ClearAllPoints()
+			list.Selection:SetAllPoints(list.bg)
 
 			local isGuild = clubInfo.clubType == ClubTypeGuild
 			if isGuild then
-				self.Selection:SetColorTexture(0, 1, 0, 0.2)
+				list.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
-				self.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
+				list.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
 
 			if not isInvitation and not isGuild and not isTicket then
 				if clubInfo.clubType == ClubTypeBattleNet then
-					self.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
+					list.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
 				else
-					self.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)
+					list.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)
 				end
-				self.IconBorder:Show()
+				list.IconBorder:Show()
 			else
-				self.IconBorder:Hide()
+				list.IconBorder:Hide()
 			end
 
-			local highlight = self:GetHighlightTexture()
+			local highlight = list:GetHighlightTexture()
 			highlight:SetColorTexture(1, 1, 1, 0.3)
-			highlight:SetAllPoints(self.bg)
+			highlight:SetAllPoints(list.bg)
 		end
 	end)
 
 	-- Add Community Button
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(self) HandleCommunitiesButtons(self, 1) end)
-	--hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', function(self) HandleCommunitiesButtons(self, 2) end) -- Not on classic.. huh!?
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(list) HandleCommunitiesButtons(list, 1) end)
+	--hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', function(list) HandleCommunitiesButtons(list, 2) end) -- Not on classic.. huh!?
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
@@ -156,11 +156,11 @@ function S:Blizzard_Communities()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu, nil, true) -- use an override here to adjust the damn text position >.>
 
-	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(self)
-		self.ShowNotificationsButton:SetSize(20, 20)
-		self.HideNotificationsButton:SetSize(20, 20)
-		S:HandleCheckBox(self.ShowNotificationsButton)
-		S:HandleCheckBox(self.HideNotificationsButton)
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(entry)
+		entry.ShowNotificationsButton:SetSize(20, 20)
+		entry.HideNotificationsButton:SetSize(20, 20)
+		S:HandleCheckBox(entry.ShowNotificationsButton)
+		S:HandleCheckBox(entry.HideNotificationsButton)
 	end)
 
 	-- [[ CHAT TAB ]]
@@ -191,9 +191,9 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 
-	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(self)
-		for i = 1, self.ColumnDisplay:GetNumChildren() do
-			local child = select(i, self.ColumnDisplay:GetChildren())
+	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(members)
+		for i = 1, members.ColumnDisplay:GetNumChildren() do
+			local child = select(i, members.ColumnDisplay:GetChildren())
 			if not child.IsSkinned then
 				child:StripTextures()
 				child:SetTemplate('Transparent')
@@ -202,7 +202,7 @@ function S:Blizzard_Communities()
 			end
 		end
 
-		for _, button in ipairs(self.ListScrollFrame.buttons or {}) do
+		for _, button in ipairs(members.ListScrollFrame.buttons or {}) do
 			if button and not button.hooked then
 				hooksecurefunc(button, 'RefreshExpandedColumns', UpdateNames)
 				if button.ProfessionHeader then
