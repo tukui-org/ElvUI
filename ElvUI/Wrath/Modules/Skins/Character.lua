@@ -262,15 +262,11 @@ function S:CharacterFrame()
 	for i = 1, NUM_COMPANIONS_PER_PAGE do
 		local button = _G['CompanionButton'..i]
 		local iconDisabled = button:GetDisabledTexture()
-		local activeTexture = _G['CompanionButton'..i..'ActiveTexture']
 
 		button:StyleButton(nil, true)
 		button:SetTemplate(nil, true)
 
 		iconDisabled:SetAlpha(0)
-
-		activeTexture:SetInside(button)
-		activeTexture:SetTexture(1, 1, 1, .15)
 
 		if i == 7 then
 			button:Point('TOP', _G.CompanionButton1, 'BOTTOM', 0, -5)
