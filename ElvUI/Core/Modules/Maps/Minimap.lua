@@ -44,7 +44,7 @@ local menuList = {
 	{ text = _G.CHAT_CHANNELS, func = _G.ToggleChannelFrame },
 	{ text = _G.SOCIAL_BUTTON, func = _G.ToggleFriendsFrame },
 	{ text = _G.TALENTS_BUTTON, func = _G.ToggleTalentFrame },
-	{ text = _G.GUILD, func = function() if E.Retail then ToggleGuildFrame() else ToggleFriendsFrame(3) end end },
+	{ text = _G.GUILD, func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
 }
 
 if E.Retail then

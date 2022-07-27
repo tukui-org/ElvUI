@@ -4,7 +4,7 @@
 ## Version: 1.73
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
+## OptionalDeps: SharedMedia, Tukui, Masque
 ## Interface: 11403
 ## X-Interface: 11403
 ## X-Tukui-ProjectID: 2

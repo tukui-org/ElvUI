@@ -51,6 +51,7 @@ local sort, next = sort, next
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetSpecialization = GetSpecialization
 local GetRuneCooldown = GetRuneCooldown
+local GetRuneType = GetRuneType
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
@@ -77,12 +78,12 @@ local function UpdateType(self, event, runeID, alt)
 
 	rune:SetStatusBarColor(r, g, b)
 
-	if(rune.bg) then
+	if rune.bg then
 		local mu = rune.bg.multiplier or 1
 		rune.bg:SetVertexColor(r * mu, g * mu, b * mu)
 	end
 
-	if(element.PostUpdateType) then
+	if element.PostUpdateType then
 		return element:PostUpdateType(rune, runeID, alt)
 	end
 end

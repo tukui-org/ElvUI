@@ -1406,7 +1406,7 @@ function E:UpdateActionBars(skipCallback)
 		ActionBars:UpdateExtraButtons()
 	end
 
-	if E.Wrath and E.myclass == "SHAMAN" then
+	if E.Wrath and E.myclass == 'SHAMAN' then
 		ActionBars:UpdateTotemBindings()
 	end
 
@@ -1912,7 +1912,9 @@ function E:Initialize()
 	E:UpdateCooldownSettings('all')
 	E:Contruct_StaticPopups()
 
-	if E.Retail then E:Tutorials() end
+	if E.Retail then
+		E:Tutorials()
+	end
 
 	-- TODO: Wrath
 	if E.Retail then

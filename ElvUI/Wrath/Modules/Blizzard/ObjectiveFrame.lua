@@ -5,6 +5,8 @@ local _G = _G
 local min = min
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.WatchFrame:GetTop() or 0
