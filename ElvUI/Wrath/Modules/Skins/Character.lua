@@ -19,7 +19,6 @@ local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local function UpdateCurrencySkins()
-
 	local TokenFramePopup = _G.TokenFramePopup
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
@@ -122,9 +121,10 @@ function S:CharacterFrame()
 
 	-- HandleTab looks weird
 	for i = 1, 3 do
-		_G['PetPaperDollFrameTab'..i]:StripTextures()
-		_G['PetPaperDollFrameTab'..i]:Height(24)
-		S:HandleButton(_G['PetPaperDollFrameTab'..i])
+		local tab = _G['PetPaperDollFrameTab'..i]
+		tab:StripTextures()
+		tab:Height(24)
+		S:HandleButton(tab)
 	end
 
 	hooksecurefunc('PetPaperDollFrame_UpdateTabs', function()
@@ -142,16 +142,17 @@ function S:CharacterFrame()
 	_G.CharacterAttributesFrame:StripTextures()
 
 	local ResistanceCoords = {
-		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 }, --Arcane
-		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 }, --Fire
-		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 }, --Nature
-		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375}, --Frost
-		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125}, --Shadow
+		{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
+		{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
+		{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
+		{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
+		{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 	}
 
 	local function HandleResistanceFrame(frameName)
 		for i = 1, 5 do
-			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
+			local frame = _G[frameName..i]
+			local icon, text = frame:GetRegions()
 			frame:Size(24)
 			frame:SetTemplate()
 
