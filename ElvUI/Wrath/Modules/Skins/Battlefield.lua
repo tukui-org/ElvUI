@@ -10,8 +10,8 @@ function S:SkinBattlefield()
 	local BattlefieldFrame = _G.BattlefieldFrame
 	BattlefieldFrame:StripTextures(true)
 	BattlefieldFrame:CreateBackdrop('Transparent')
-	BattlefieldFrame.backdrop:Point('TOPLEFT', 10, -12)
-	BattlefieldFrame.backdrop:Point('BOTTOMRIGHT', -32, 73)
+	BattlefieldFrame.backdrop:Point('TOPLEFT', 9, -12)
+	BattlefieldFrame.backdrop:Point('BOTTOMRIGHT', -32, 75)
 
 	_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoDescription:SetTextColor(1, 1, 1)
 	_G.BattlefieldFrameInfoScrollFrameChildFrameDescription:SetTextColor(1, 1, 1)
