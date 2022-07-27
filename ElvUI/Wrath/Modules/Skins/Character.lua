@@ -273,8 +273,7 @@ function S:CharacterFrame()
 
 	-- PetPaperDollFrame
 	_G.PetPaperDollFrame:StripTextures()
-
-	S:HandleButton(_G.PetPaperDollCloseButton)
+	_G.PetPaperDollCloseButton:Kill()
 
 	S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
 	_G.PetModelFrameRotateLeftButton:ClearAllPoints()
@@ -468,6 +467,7 @@ function S:CharacterFrame()
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
+	_G.SkillFrameCancelButton:Kill()
 
 	_G.SkillFrameExpandButtonFrame:DisableDrawLayer('BACKGROUND')
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
@@ -480,8 +480,6 @@ function S:CharacterFrame()
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		end
 	end)
-
-	S:HandleButton(_G.SkillFrameCancelButton)
 
 	for i = 1, _G.SKILLS_TO_DISPLAY do
 		local bar = _G['SkillRankFrame'..i]
