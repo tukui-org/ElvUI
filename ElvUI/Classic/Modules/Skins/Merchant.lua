@@ -33,13 +33,13 @@ function S:MerchantFrame()
 		local slot = _G['MerchantItem'..i..'SlotTexture']
 
 		item:StripTextures(true)
-		item:CreateBackdrop('Default')
+		item:CreateBackdrop()
 		item.backdrop:Point('TOPLEFT', -1, 3)
 		item.backdrop:Point('BOTTOMRIGHT', 2, -3)
 
 		button:StripTextures()
 		button:StyleButton()
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:Size(40)
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -2)
 
@@ -58,7 +58,7 @@ function S:MerchantFrame()
 			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
 
 			currencyIcon.backdrop = CreateFrame('Frame', nil, currencyItem)
-			currencyIcon.backdrop:SetTemplate('Default')
+			currencyIcon.backdrop:SetTemplate()
 			currencyIcon.backdrop:SetFrameLevel(currencyItem:GetFrameLevel())
 			currencyIcon.backdrop:SetOutside(currencyIcon)
 
@@ -105,7 +105,7 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
-	_G.MerchantBuyBackItemItemButton:SetTemplate('Default', true)
+	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 	_G.MerchantBuyBackItemItemButton:Size(40)
 	_G.MerchantBuyBackItemItemButton:Point('TOPLEFT', 4, -2)
 
