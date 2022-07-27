@@ -118,8 +118,11 @@ function S:CharacterFrame()
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
+	-- HandleTab looks weird
 	for i = 1, 3 do
-		S:HandleTab(_G['PetPaperDollFrameTab'..i], true)
+		_G['PetPaperDollFrameTab'..i]:StripTextures()
+		_G['PetPaperDollFrameTab'..i]:Height(24)
+		S:HandleButton(_G['PetPaperDollFrameTab'..i])
 	end
 
 	_G.PaperDollFrame:StripTextures()
