@@ -127,6 +127,11 @@ function S:CharacterFrame()
 		S:HandleButton(_G['PetPaperDollFrameTab'..i])
 	end
 
+	hooksecurefunc('PetPaperDollFrame_UpdateTabs', function()
+		_G.PetPaperDollFrameTab1:ClearAllPoints()
+		_G.PetPaperDollFrameTab1:Point('TOPLEFT', _G.PetPaperDollFrameCompanionFrame, 'TOPLEFT', 88, -40)
+	end)
+
 	_G.PaperDollFrame:StripTextures()
 
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
