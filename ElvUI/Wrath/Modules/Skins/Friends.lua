@@ -214,7 +214,7 @@ function S:FriendsFrame()
 		button.icon:Size(15)
 		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetAllPoints(button.icon)
 		S:HandleButtonHighlight(button)
 
@@ -305,7 +305,7 @@ function S:FriendsFrame()
 		button.icon:Size(15)
 		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetAllPoints(button.icon)
 
 		S:HandleButtonHighlight(button)
@@ -408,7 +408,7 @@ function S:FriendsFrame()
 	_G.GuildFrameDemoteButton:Point('LEFT', _G.GuildFramePromoteButton, 'RIGHT', 2, 0)
 
 	_G.GuildMemberNoteBackground:StripTextures()
-	_G.GuildMemberNoteBackground:CreateBackdrop('Default')
+	_G.GuildMemberNoteBackground:CreateBackdrop()
 	_G.GuildMemberNoteBackground.backdrop:Point('TOPLEFT', 0, -2)
 	_G.GuildMemberNoteBackground.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
@@ -416,7 +416,7 @@ function S:FriendsFrame()
 	_G.PersonalNoteText:Width(197)
 
 	_G.GuildMemberOfficerNoteBackground:StripTextures()
-	_G.GuildMemberOfficerNoteBackground:CreateBackdrop('Default')
+	_G.GuildMemberOfficerNoteBackground:CreateBackdrop()
 	_G.GuildMemberOfficerNoteBackground.backdrop:Point('TOPLEFT', 0, -2)
 	_G.GuildMemberOfficerNoteBackground.backdrop:Point('BOTTOMRIGHT', 0, -1)
 
@@ -425,7 +425,7 @@ function S:FriendsFrame()
 
 	_G.GuildFrameBarLeft:StripTextures()
 
-	_G.GuildMOTDEditButton:CreateBackdrop('Default')
+	_G.GuildMOTDEditButton:CreateBackdrop()
 	_G.GuildMOTDEditButton.backdrop:Point('TOPLEFT', -7, 3)
 	_G.GuildMOTDEditButton.backdrop:Point('BOTTOMRIGHT', 7, -2)
 	_G.GuildMOTDEditButton:SetHitRectInsets(-7, -7, -3, -2)

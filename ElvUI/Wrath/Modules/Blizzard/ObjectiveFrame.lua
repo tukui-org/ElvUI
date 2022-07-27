@@ -45,5 +45,6 @@ function B:MoveObjectiveFrame()
 			tracker:SetPoint('TOP', holder, 'TOP')
 		end
 	end)
+
 	B:SetObjectiveFrameHeight()
 end

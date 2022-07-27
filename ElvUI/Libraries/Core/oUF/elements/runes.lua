@@ -54,8 +54,8 @@ local GetRuneCooldown = GetRuneCooldown
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
--- TODO: Wrath (Runemap, Rune types, Rune colors + options)
-local runemap = {1, 2, 3, 4, 5, 6}
+-- TODO: Wrath (Rune types, Rune colors + options)
+local runemap = oUF.isWotLK and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
 local hasSortOrder = false
 
 local function onUpdate(self, elapsed)

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local pairs, select = pairs, select
@@ -28,6 +29,11 @@ function S:Blizzard_LookingForGroupUI()
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
+	-- Mouseover Tooltip
+	if E.private.skins.blizzard.tooltip then
+		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
+	end
+
 	-- Buttons
 	local buttons = {
 		_G.LFGListingFrameBackButton,
@@ -48,6 +54,9 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGListingFramePostButton:Point('BOTTOMRIGHT', LFGListingFrame, 'BOTTOMRIGHT', -40, 76)
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
+	_G.LFGBrowseFrameActivityDropDown.ResetButton:ClearAllPoints()
+	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPLEFT', LFGBrowseFrameActivityDropDown, 'TOPLEFT', 22, 14)
+
 	-- CheckBoxes
 	local checkBoxes = {
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonTank.CheckButton,
@@ -56,7 +65,7 @@ function S:Blizzard_LookingForGroupUI()
 	}
 
 	for _, checkbox in pairs(checkBoxes) do
-		S:HandleCheckBox(checkbox, true) -- no backdrop
+		S:HandleCheckBox(checkbox, nil, nil, true)
 	end
 
 	S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
@@ -73,9 +82,11 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameActivityDropDown:ClearAllPoints()
 	_G.LFGBrowseFrameActivityDropDown:Point('LEFT', _G.LFGBrowseFrameCategoryDropDown, 'RIGHT', -20, 0)
 
+	-- Refresh
 	S:HandleButton(_G.LFGBrowseFrameRefreshButton)
+	_G.LFGBrowseFrameRefreshButton:Size(22, 22)
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
-	_G.LFGBrowseFrameRefreshButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropDown, 'TOPRIGHT', -8, 32)
+	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 
 	-- ScrollBars
 	S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar)
@@ -112,6 +123,23 @@ function S:Blizzard_LookingForGroupUI()
 			child.IsSkinned = true
 		end
 	end
+
+	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button)
+		if not button.CheckButton.isSkinned then
+			S:HandleCheckBox(button.CheckButton)
+		end
+	end)
+
+	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
+		if isCollapsed then
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
+		else
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
+		end
+		if not button.CheckButton.isSkinned then
+			S:HandleCheckBox(button.CheckButton)
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_LookingForGroupUI')

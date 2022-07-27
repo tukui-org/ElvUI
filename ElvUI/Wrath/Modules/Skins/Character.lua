@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, strfind, unpack = pairs, strfind, unpack
+local ipairs, pairs, strfind, unpack = ipairs, pairs, strfind, unpack
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -118,8 +118,11 @@ function S:CharacterFrame()
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
+	-- HandleTab looks weird
 	for i = 1, 3 do
-		S:HandleTab(_G['PetPaperDollFrameTab'..i], true)
+		_G['PetPaperDollFrameTab'..i]:StripTextures()
+		_G['PetPaperDollFrameTab'..i]:Height(24)
+		S:HandleButton(_G['PetPaperDollFrameTab'..i])
 	end
 
 	_G.PaperDollFrame:StripTextures()
@@ -143,7 +146,7 @@ function S:CharacterFrame()
 		for i = 1, 5 do
 			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
 			frame:Size(24)
-			frame:SetTemplate('Default')
+			frame:SetTemplate()
 
 			if i ~= 1 then
 				frame:ClearAllPoints()
@@ -193,7 +196,7 @@ function S:CharacterFrame()
 			local cooldown = _G[slot:GetName()..'Cooldown']
 
 			slot:StripTextures()
-			slot:SetTemplate('Default', true, true)
+			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
 
 			S:HandleIcon(icon)
@@ -280,7 +283,7 @@ function S:CharacterFrame()
 
 	_G.PetAttributesFrame:StripTextures()
 
-	_G.PetResistanceFrame:CreateBackdrop('Default')
+	_G.PetResistanceFrame:CreateBackdrop()
 	_G.PetResistanceFrame.backdrop:SetOutside(_G.PetMagicResFrame1, nil, nil, _G.PetMagicResFrame5)
 
 	HandleResistanceFrame('PetMagicResFrame')
@@ -288,7 +291,7 @@ function S:CharacterFrame()
 	_G.PetPaperDollFrameExpBar:StripTextures()
 	_G.PetPaperDollFrameExpBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
-	_G.PetPaperDollFrameExpBar:CreateBackdrop('Default')
+	_G.PetPaperDollFrameExpBar:CreateBackdrop()
 
 	local function updHappiness(frame)
 		local happiness = GetPetHappiness()
@@ -309,12 +312,54 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
 	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	PetPaperDollPetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
-	PetPaperDollPetInfo:CreateBackdrop('Default')
+	PetPaperDollPetInfo:CreateBackdrop()
 	PetPaperDollPetInfo:Size(24)
 
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
 	PetPaperDollPetInfo:SetScript('OnEvent', updHappiness)
 	PetPaperDollPetInfo:SetScript('OnShow', updHappiness)
+
+	-- GearManager / EquipmentManager
+	local GearManager = _G.GearManagerDialog
+	GearManager:StripTextures()
+	GearManager:SetTemplate('Transparent')
+	GearManager:Point('TOPLEFT', PaperDollFrame, 'TOPRIGHT', -30, -12)
+
+	local GearManagerToggleButton = _G.GearManagerToggleButton
+	GearManagerToggleButton:Size(25, 29)
+	GearManagerToggleButton:Point('TOPRIGHT', -42, -40)
+	GearManagerToggleButton:CreateBackdrop()
+	GearManagerToggleButton:GetNormalTexture():SetTexCoord(0.203125, 0.828125, 0.15625, 0.875)
+	GearManagerToggleButton:GetPushedTexture():SetTexCoord(0.1875, 0.8125, 0.1875, 0.90625)
+	GearManagerToggleButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
+	GearManagerToggleButton:GetHighlightTexture():SetAllPoints()
+
+	S:HandleCloseButton(_G.GearManagerDialogClose, GearManager)
+
+	local buttons = {
+		'GearManagerDialogDeleteSet',
+		'GearManagerDialogEquipSet',
+		'GearManagerDialogSaveSet',
+	}
+
+	for _, button in pairs(buttons) do
+		S:HandleButton(_G[button])
+	end
+
+	_G.GearManagerDialogDeleteSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 11, 8)
+	_G.GearManagerDialogEquipSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 93, 8)
+	_G.GearManagerDialogSaveSet:Point('BOTTOMRIGHT', GearManager, 'BOTTOMRIGHT', -8, 8)
+
+	for i, button in ipairs(GearManager.buttons) do
+		button:StripTextures()
+		button:CreateBackdrop()
+		button.backdrop:SetAllPoints()
+
+		button:StyleButton(nil, true)
+
+		button.icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+	end
 
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
@@ -326,7 +371,7 @@ function S:CharacterFrame()
 
 		factionBar:StripTextures()
 		factionStatusBar:StripTextures()
-		factionStatusBar:CreateBackdrop('Default')
+		factionStatusBar:CreateBackdrop()
 		factionStatusBar:SetStatusBarTexture(E.media.normTex)
 		factionStatusBar:Size(108, 13)
 
@@ -392,7 +437,7 @@ function S:CharacterFrame()
 		local border = _G['SkillRankFrame'..i..'Border']
 		local background = _G['SkillRankFrame'..i..'Background']
 
-		bar:CreateBackdrop('Default')
+		bar:CreateBackdrop()
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
@@ -423,7 +468,7 @@ function S:CharacterFrame()
 
 	_G.SkillDetailStatusBar:StripTextures()
 	_G.SkillDetailStatusBar:SetParent(_G.SkillDetailScrollFrame)
-	_G.SkillDetailStatusBar:CreateBackdrop('Default')
+	_G.SkillDetailStatusBar:CreateBackdrop()
 	_G.SkillDetailStatusBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 
@@ -443,7 +488,7 @@ function S:CharacterFrame()
 		local pvpTeam = _G['PVPTeam'..i]
 
 		pvpTeam:StripTextures()
-		pvpTeam:CreateBackdrop('Default')
+		pvpTeam:CreateBackdrop()
 		pvpTeam.backdrop:Point('TOPLEFT', 9, -4)
 		pvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
 

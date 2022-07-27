@@ -232,6 +232,34 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
+	hooksecurefunc('QuestLog_Update', function()
+		if not QuestLogFrame:IsShown() then return end
+		local numEntries = GetNumQuestLogEntries()
+		local scrollOffset = HybridScrollFrame_GetOffset(QuestLogListScrollFrame)
+		local buttons = QuestLogListScrollFrame.buttons
+		local questIndex
+
+		for i = 1, 22 do
+			questIndex = i + scrollOffset
+
+			if questIndex <= numEntries then
+				local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
+				if isHeader then
+					if isCollapsed then
+						buttons[i]:SetNormalTexture(E.Media.Textures.PlusButton)
+					else
+						buttons[i]:SetNormalTexture(E.Media.Textures.MinusButton)
+					end
+				end
+			end
+		end
+	end)
+
+	hooksecurefunc('QuestLogUpdateQuestCount', function()
+		QuestLogCount:ClearAllPoints()
+		QuestLogCount:Point('BOTTOMLEFT', QuestLogListScrollFrame.backdrop, 'TOPLEFT', 0, 5)
+	end)
+
 	hooksecurefunc('QuestLog_UpdateQuestDetails', function()
 		local requiredMoney = GetQuestLogRequiredMoney()
 
@@ -316,10 +344,17 @@ function S:BlizzardQuestFrames()
 		_G.QuestInfoGroupSize:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardText:SetTextColor(unpack(textColor))
 
+		local numObjectives = GetNumQuestLeaderBoards()
+		for i = 1, numObjectives do
+			_G['QuestInfoObjective'..i]:SetTextColor(unpack(textColor))
+		end
+
 		-- Reward frame text
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(unpack(textColor))
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(unpack(textColor))
+		_G.QuestInfoRewardsFrameHonorReceiveText:SetTextColor(unpack(textColor))
+		_G.QuestInfoRewardsFrameReceiveText:SetTextColor(unpack(textColor))
 
 		_G.QuestInfoRewardsFrame.spellHeaderPool.textR, _G.QuestInfoRewardsFrame.spellHeaderPool.textG, _G.QuestInfoRewardsFrame.spellHeaderPool.textB = unpack(textColor)
 
@@ -400,12 +435,16 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
+	QuestFramePushQuestButton:ClearAllPoints()
+	QuestFramePushQuestButton:Point('LEFT', QuestLogFrameAbandonButton, 'RIGHT', 1, 0)
+	QuestFramePushQuestButton:Point('RIGHT', QuestLogFrameTrackButton, 'LEFT', -1, 0)
+
 	local QuestLogDetailFrame = _G.QuestLogDetailFrame
-	S:HandleFrame(QuestLogDetailFrame, true, nil, 10, -10, 4, 4)
+	S:HandleFrame(QuestLogDetailFrame, true, nil, 8, -8, 8)
 
 	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
-	S:HandleFrame(_G.QuestLogCount, true)
-	S:HandleFrame(_G.QuestLogFrame, true, nil, 10, 6, 1, 8)
+	S:HandleFrame(_G.QuestLogCount)
+	S:HandleFrame(_G.QuestLogFrame, true, nil, 10, -10, 1, 8)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, -6, 2)
@@ -413,8 +452,9 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, -6, 2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, -6, 2)
 
-	S:HandlePointXY(_G.QuestLogFrameAbandonButton)
-	S:HandlePointXY(_G.QuestFramePushQuestButton)
+	S:HandlePointXY(_G.QuestLogFrameAbandonButton, 0, -2)
+	S:HandlePointXY(_G.QuestLogFrameTrackButton, 0, -2)
+	S:HandlePointXY(_G.QuestFramePushQuestButton, 1)
 	S:HandlePointXY(_G.QuestFrameAcceptButton, 15, 70)
 	S:HandlePointXY(_G.QuestFrameDeclineButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameCompleteQuestButton, 15, 70)
@@ -423,6 +463,8 @@ function S:BlizzardQuestFrames()
 	S:HandlePointXY(_G.QuestFrameGoodbyeButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameGreetingGoodbyeButton, -36, 70)
 	S:HandlePointXY(_G.QuestFrameNpcNameText, -1, 0)
+
+	_G.QuestLogFrameCancelButton:Point('BOTTOMRIGHT', _G.QuestLogFrame, 'BOTTOMRIGHT', -7, 12)
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
 

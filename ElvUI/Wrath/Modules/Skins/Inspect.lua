@@ -29,7 +29,7 @@ function S:Blizzard_InspectUI()
 		local cooldown = _G[slot:GetName()..'Cooldown']
 
 		slot:StripTextures()
-		slot:CreateBackdrop('Default')
+		slot:CreateBackdrop()
 		slot.backdrop:SetAllPoints()
 		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
 		slot:StyleButton()
@@ -85,7 +85,7 @@ function S:Blizzard_InspectUI()
 	_G.InspectTalentFramePointsBar:StripTextures()
 
 	_G.InspectTalentFrameScrollFrame:StripTextures()
-	_G.InspectTalentFrameScrollFrame:CreateBackdrop('Default')
+	_G.InspectTalentFrameScrollFrame:CreateBackdrop()
 
 	S:HandleScrollBar(_G.InspectTalentFrameScrollFrameScrollBar)
 	_G.InspectTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.InspectTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
@@ -97,7 +97,7 @@ function S:Blizzard_InspectUI()
 
 		if talent then
 			talent:StripTextures()
-			talent:SetTemplate('Default')
+			talent:SetTemplate()
 			talent:StyleButton()
 
 			icon:SetInside()
@@ -116,7 +116,7 @@ function S:Blizzard_InspectUI()
 		local inspectpvpTeam = _G['InspectPVPTeam'..i]
 
 		inspectpvpTeam:StripTextures()
-		inspectpvpTeam:CreateBackdrop('Default')
+		inspectpvpTeam:CreateBackdrop()
 		inspectpvpTeam.backdrop:Point('TOPLEFT', 9, -4)
 		inspectpvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
 

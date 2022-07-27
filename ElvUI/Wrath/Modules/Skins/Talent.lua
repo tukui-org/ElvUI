@@ -22,7 +22,7 @@ function S:Blizzard_TalentUI()
 		local tab = _G['PlayerSpecTab'..i]
 		tab:GetRegions():Hide()
 
-		tab:SetTemplate('Default')
+		tab:SetTemplate()
 		tab:StyleButton(nil, true)
 
 		tab:GetNormalTexture():SetInside()
@@ -38,7 +38,7 @@ function S:Blizzard_TalentUI()
 	end
 
 	_G.PlayerTalentFrameScrollFrame:StripTextures()
-	_G.PlayerTalentFrameScrollFrame:CreateBackdrop('Default')
+	_G.PlayerTalentFrameScrollFrame:CreateBackdrop()
 
 	S:HandleScrollBar(_G.PlayerTalentFrameScrollFrameScrollBar)
 	_G.PlayerTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
@@ -52,7 +52,7 @@ function S:Blizzard_TalentUI()
 
 		if talent then
 			talent:StripTextures()
-			talent:SetTemplate('Default')
+			talent:SetTemplate()
 			talent:StyleButton()
 
 			icon:SetInside()

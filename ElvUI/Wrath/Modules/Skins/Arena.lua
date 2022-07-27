@@ -21,6 +21,20 @@ function S:SkinArena()
 	_G.ArenaFrameNameHeader:Point('TOPLEFT', _G.ArenaZone1, 'TOPLEFT', 8, 24)
 	_G.ArenaFrameGroupJoinButton:Point('RIGHT', _G.ArenaFrameJoinButton, 'LEFT', -2, 0)
 
+	-- Custom Backdrop 1
+	ArenaTopBackdrop = CreateFrame('Frame', nil, ArenaFrame)
+	ArenaTopBackdrop:CreateBackdrop('Transparent')
+	ArenaTopBackdrop:Height(112)
+	ArenaTopBackdrop:Width(330)
+	ArenaTopBackdrop:Point('TOP', ArenaFrame, 'TOP', -12, -48)
+
+	-- Custom Backdrop 2
+	ArenaBottomBackdrop = CreateFrame('Frame', nil, ArenaFrame)
+	ArenaBottomBackdrop:CreateBackdrop('Transparent')
+	ArenaBottomBackdrop:Height(240)
+	ArenaBottomBackdrop:Width(330)
+	ArenaBottomBackdrop:Point('BOTTOM', ArenaFrame, 'BOTTOM', -12, 108)
+
 	S:HandleCloseButton(_G.ArenaFrameCloseButton)
 end
 

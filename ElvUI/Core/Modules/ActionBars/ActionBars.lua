@@ -443,13 +443,13 @@ function AB:PLAYER_REGEN_ENABLED()
 	end
 
 	if E.Wrath then
-		if AB.NeedsPositionAndSizeBarTotem then
-			AB:PositionAndSizeBarTotem()
-			AB.NeedsPositionAndSizeBarTotem = nil
+		if AB.NeedsPositionAndSizeTotemBar then
+			AB:PositionAndSizeTotemBar()
+			AB.NeedsPositionAndSizeTotemBar = nil
 		end
-		if AB.NeedRecallButtonUpdate then
-			MultiCastRecallSpellButton_Update(MultiCastRecallSpellButton)
-			AB.NeedRecallButtonUpdate = nil
+		if AB.NeedsRecallButtonUpdate then
+			AB:MultiCastRecallSpellButton_Update()
+			AB.NeedsRecallButtonUpdate = nil
 		end
 	end
 

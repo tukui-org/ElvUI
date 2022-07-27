@@ -37,7 +37,7 @@ function S:ContainerFrame()
 			local cooldown = _G['ContainerFrame'..i..'Item'..j..'Cooldown']
 
 			item:SetNormalTexture('')
-			item:SetTemplate('Default', true)
+			item:SetTemplate(nil, true)
 			item:StyleButton()
 
 			icon:SetInside()
@@ -148,7 +148,7 @@ function S:ContainerFrame()
 		local cooldown = _G['BankFrameItem'..i..'Cooldown']
 
 		button:SetNormalTexture('')
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:StyleButton()
 		button.IconBorder:StripTextures()
 		button.IconOverlay:StripTextures()
@@ -166,11 +166,11 @@ function S:ContainerFrame()
 	end
 
 	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate('Default')
+	BankFrame.itemBackdrop:SetTemplate()
 	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate('Default')
+	BankFrame.bagBackdrop:SetTemplate()
 	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	S:HandleButton(_G.BankFramePurchaseButton)
@@ -182,7 +182,7 @@ function S:ContainerFrame()
 			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
 
 			button:SetNormalTexture('')
-			button:SetTemplate('Default', true)
+			button:SetTemplate(nil, true)
 			button:StyleButton()
 
 			button.icon:SetInside()

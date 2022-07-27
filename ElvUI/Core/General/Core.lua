@@ -1488,7 +1488,7 @@ function E:UpdateMisc(skipCallback)
 		Blizzard:SetObjectiveFrameHeight()
 		Totems:PositionAndSize()
 	elseif E.Wrath then
-		ActionBars:PositionAndSizeBarTotem()
+		ActionBars:PositionAndSizeTotemBar()
 	elseif E.TBC then
 		Totems:PositionAndSize()
 	end

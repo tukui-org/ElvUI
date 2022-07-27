@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local pairs, format = pairs, format
+local StaticPopup_Show = StaticPopup_Show
 local GetDungeonDifficultyID, GetRaidDifficultyID = GetDungeonDifficultyID, GetRaidDifficultyID
 local SetDungeonDifficultyID, SetRaidDifficultyID = SetDungeonDifficultyID, SetRaidDifficultyID
 local GetInstanceInfo, GetDifficultyInfo = GetInstanceInfo, GetDifficultyInfo
@@ -73,7 +74,6 @@ local function OnEvent(self)
 	local name, instanceType, difficultyID = GetInstanceInfo()
 
 	if instanceType ~= 'none' and difficultyID then
-		print(instanceType, GetDiffIDLabel(difficultyID), difficultyID)
 		self.text:SetFormattedText('%s %s %s', GetLabelTexture(difficultyID), name, GetDiffIDLabel(difficultyID))
 	else
 		DungeonDifficultyID, RaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID()

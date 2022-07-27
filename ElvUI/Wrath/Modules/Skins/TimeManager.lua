@@ -19,7 +19,7 @@ function S:Blizzard_TimeManager()
 
 	_G.TimeManagerStopwatchFrame:Point('TOPRIGHT', 10, -12)
 
-	_G.TimeManagerStopwatchCheck:SetTemplate('Default')
+	_G.TimeManagerStopwatchCheck:SetTemplate()
 	_G.TimeManagerStopwatchCheck:StyleButton(nil, true)
 
 	_G.TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
@@ -54,7 +54,7 @@ function S:Blizzard_TimeManager()
 
 	S:HandleCloseButton(_G.StopwatchCloseButton)
 
-	_G.StopwatchPlayPauseButton:CreateBackdrop('Default', true)
+	_G.StopwatchPlayPauseButton:CreateBackdrop(nil, true)
 	_G.StopwatchPlayPauseButton:SetSize(12, 12)
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	_G.StopwatchPlayPauseButton:SetHighlightTexture('')
