@@ -136,45 +136,6 @@ local function SkinDungeonCompletionAlert(frame)
 	end
 end
 
-local function SkinGuildChallengeAlert(frame)
-	frame:SetAlpha(1)
-
-	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-		frame.hooked = true
-	end
-
-	if not frame.backdrop then
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
-	end
-
-	-- Background
-	local region = select(2, frame:GetRegions())
-	if region:IsObjectType('Texture') then
-		if region:GetTexture() == [[Interface\GuildFrame\GuildChallenges]] then
-			region:Kill()
-		end
-	end
-
-	frame.glow:Kill()
-	frame.shine:Kill()
-	frame.EmblemBorder:Kill()
-
-	-- Icon border
-	local EmblemIcon = frame.EmblemIcon
-	if not EmblemIcon.b then
-		EmblemIcon.b = CreateFrame('Frame', nil, frame)
-		EmblemIcon.b:SetTemplate()
-		EmblemIcon.b:Point('TOPLEFT', EmblemIcon, 'TOPLEFT', -3, 3)
-		EmblemIcon.b:Point('BOTTOMRIGHT', EmblemIcon, 'BOTTOMRIGHT', 3, -2)
-		EmblemIcon:SetParent(EmblemIcon.b)
-	end
-
-	SetLargeGuildTabardTextures('player', EmblemIcon)
-end
-
 local function SkinHonorAwardedAlert(frame)
 	frame:SetAlpha(1)
 	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', forceAlpha); frame.hooked = true end
@@ -194,110 +155,6 @@ local function SkinHonorAwardedAlert(frame)
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
 		frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-	end
-end
-
-local function SkinInvasionAlert(frame)
-	if not frame.isSkinned then
-		frame:SetAlpha(1)
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 4, 4)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -7, 6)
-
-		--Background contains the item border too, so have to remove it
-		if frame.GetRegions then
-			local region, icon = frame:GetRegions()
-			if region and region:IsObjectType('Texture') then
-				if region:GetAtlas() == 'legioninvasion-Toast-Frame' then
-					region:Kill()
-				end
-			end
-
-			-- Icon border
-			if icon and icon:IsObjectType('Texture') then
-				if icon:GetTexture() == [[Interface\Icons\Ability_Warlock_DemonicPower]] then
-					icon.b = CreateFrame('Frame', nil, frame)
-					icon.b:SetTemplate()
-					icon.b:SetOutside(icon)
-					icon:SetParent(icon.b)
-					icon:SetDrawLayer('OVERLAY')
-					icon:SetTexCoord(unpack(E.TexCoords))
-				end
-			end
-		end
-
-		frame.isSkinned = true
-	end
-end
-
-local function SkinScenarioAlert(frame)
-	frame:SetAlpha(1)
-
-	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-		frame.hooked = true
-	end
-
-	if not frame.backdrop then
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 4, 4)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -7, 6)
-	end
-
-	-- Background
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
-		if region:IsObjectType('Texture') then
-			if region:GetAtlas() == 'Toast-IconBG' or region:GetAtlas() == 'Toast-Frame' then
-				region:Kill()
-			end
-		end
-	end
-
-	frame.shine:Kill()
-	frame.glowFrame:Kill()
-	frame.glowFrame.glow:Kill()
-
-	-- Icon
-	frame.dungeonTexture:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.dungeonTexture:ClearAllPoints()
-	frame.dungeonTexture:Point('LEFT', frame.backdrop, 9, 0)
-	frame.dungeonTexture:SetDrawLayer('OVERLAY')
-
-	-- Icon border
-	if not frame.dungeonTexture.b then
-		frame.dungeonTexture.b = CreateFrame('Frame', nil, frame)
-		frame.dungeonTexture.b:SetTemplate()
-		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
-		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
-	end
-end
-
-local function SkinWorldQuestCompleteAlert(frame)
-	if not frame.isSkinned then
-		frame:SetAlpha(1)
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 10, -6)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
-
-		frame.shine:Kill()
-
-		-- Background
-		frame.ToastBackground:Kill()
-
-		-- Icon
-		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
-		frame.QuestTexture:SetDrawLayer('ARTWORK')
-		frame.QuestTexture.b = CreateFrame('Frame', nil, frame)
-		frame.QuestTexture.b:SetTemplate()
-		frame.QuestTexture.b:SetOutside(frame.QuestTexture)
-		frame.QuestTexture:SetParent(frame.QuestTexture.b)
-
-		frame.isSkinned = true
 	end
 end
 
@@ -432,26 +289,6 @@ local function SkinMoneyWonAlert(frame)
 	end
 end
 
-local function SkinDigsiteCompleteAlert(frame)
-	frame:SetAlpha(1)
-
-	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
-		frame.hooked = true
-	end
-
-	if not frame.backdrop then
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -16, -6)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 13, 6)
-	end
-
-	frame.glow:Kill()
-	frame.shine:Kill()
-	frame:GetRegions():Hide()
-	frame.DigsiteTypeTexture:Point('LEFT', -10, -14)
-end
-
 local function SkinNewRecipeLearnedAlert(frame)
 	frame:SetAlpha(1)
 
@@ -526,10 +363,6 @@ function S:AlertSystem()
 
 	-- Encounters
 	hooksecurefunc(_G.DungeonCompletionAlertSystem, 'setUpFunction', SkinDungeonCompletionAlert)
-	hooksecurefunc(_G.GuildChallengeAlertSystem, 'setUpFunction', SkinGuildChallengeAlert)
-	hooksecurefunc(_G.InvasionAlertSystem, 'setUpFunction', SkinInvasionAlert)
-	hooksecurefunc(_G.ScenarioAlertSystem, 'setUpFunction', SkinScenarioAlert)
-	hooksecurefunc(_G.WorldQuestCompleteAlertSystem, 'setUpFunction', SkinWorldQuestCompleteAlert)
 
 	-- Honor
 	hooksecurefunc(_G.HonorAwardedAlertSystem, 'setUpFunction', SkinHonorAwardedAlert)
@@ -541,7 +374,6 @@ function S:AlertSystem()
 	hooksecurefunc(_G.MoneyWonAlertSystem, 'setUpFunction', SkinMoneyWonAlert)
 
 	-- Professions
-	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
 
 	-- Pets/Mounts
