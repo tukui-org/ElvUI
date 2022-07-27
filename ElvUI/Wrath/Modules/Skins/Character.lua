@@ -19,8 +19,8 @@ local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local function UpdateCurrencySkins()
-	local TokenFramePopup = _G.TokenFramePopup
 
+	local TokenFramePopup = _G.TokenFramePopup
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
 		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
@@ -579,7 +579,8 @@ function S:CharacterFrame()
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
 
-	S:HandleButton(_G.TokenFrameCancelButton)
+	_G.TokenFrameCancelButton:Kill()
+	_G.TokenFrameMoneyFrame:Kill()
 
 	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
