@@ -327,14 +327,9 @@ function S:CharacterFrame()
 	GearManager:SetTemplate('Transparent')
 	GearManager:Point('TOPLEFT', _G.PaperDollFrame, 'TOPRIGHT', -30, -12)
 
+	-- TODO: Wrath (Skin the ToggleButton properly)
 	local GearManagerToggleButton = _G.GearManagerToggleButton
-	GearManagerToggleButton:Size(25, 29)
-	GearManagerToggleButton:Point('TOPRIGHT', -42, -40)
-	GearManagerToggleButton:CreateBackdrop()
-	GearManagerToggleButton:GetNormalTexture():SetTexCoord(0.203125, 0.828125, 0.15625, 0.875)
-	GearManagerToggleButton:GetPushedTexture():SetTexCoord(0.1875, 0.8125, 0.1875, 0.90625)
-	GearManagerToggleButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
-	GearManagerToggleButton:GetHighlightTexture():SetAllPoints()
+	GearManagerToggleButton:Point('TOPRIGHT', PaperDollItemsFrame, 'TOPRIGHT', -37, -40)
 
 	S:HandleCloseButton(_G.GearManagerDialogClose, GearManager)
 
@@ -363,7 +358,7 @@ function S:CharacterFrame()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	GearManagerDialogPopup:EnableMouse(true)
+	GearManagerDialogPopup:EnableMouse(true) -- Fixes the frame, might have to remove it later
 	GearManagerDialogPopup:StripTextures()
 	GearManagerDialogPopup:CreateBackdrop('Transparent')
 	GearManagerDialogPopup.backdrop:Point('TOPLEFT', 5, -10)
