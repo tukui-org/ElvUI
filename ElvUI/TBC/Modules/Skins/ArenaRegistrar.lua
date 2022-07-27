@@ -55,21 +55,20 @@ function S:SkinArenaRegistrar()
 	_G.PVPBannerFramePortrait:Kill()
 	_G.PVPBannerFrameCustomizationFrame:StripTextures()
 
-	local customization, customizationLeft, customizationRight
 	for i = 1, 2 do
-		customization = _G['PVPBannerFrameCustomization'..i]
-		customizationLeft = _G['PVPBannerFrameCustomization'..i..'LeftButton']
-		customizationRight = _G['PVPBannerFrameCustomization'..i..'RightButton']
+		local customization = _G['PVPBannerFrameCustomization'..i]
+		local customizationLeft = _G['PVPBannerFrameCustomization'..i..'LeftButton']
+		local customizationRight = _G['PVPBannerFrameCustomization'..i..'RightButton']
 
 		customization:StripTextures()
 		S:HandleNextPrevButton(customizationLeft)
 		S:HandleNextPrevButton(customizationRight)
 	end
 
-	local pickerButton
 	for i = 1, 3 do
-		pickerButton = _G['PVPColorPickerButton'..i]
+		local pickerButton = _G['PVPColorPickerButton'..i]
 		S:HandleButton(pickerButton)
+
 		if i == 2 then
 			pickerButton:Point('TOP', _G.PVPBannerFrameCustomization2, 'BOTTOM', 0, -33)
 		elseif i == 3 then
