@@ -26,18 +26,20 @@ function S:SkinBattlefield()
 	-- local WintergraspTimer = _G.WintergraspTimer
 
 	-- Custom Backdrop 1
-	BattlefieldTopBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
-	BattlefieldTopBackdrop:CreateBackdrop('Transparent')
-	BattlefieldTopBackdrop:Height(130)
-	BattlefieldTopBackdrop:Width(330)
-	BattlefieldTopBackdrop:Point('TOP', BattlefieldFrame, 'TOP', -12, -38)
+	local topBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
+	topBackdrop:CreateBackdrop('Transparent')
+	topBackdrop:Height(130)
+	topBackdrop:Width(330)
+	topBackdrop:Point('TOP', BattlefieldFrame, 'TOP', -12, -38)
+	BattlefieldFrame.TopBackdrop = topBackdrop
 
 	-- Custom Backdrop 2
-	BattlefieldBottomBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
-	BattlefieldBottomBackdrop:CreateBackdrop('Transparent')
-	BattlefieldBottomBackdrop:Height(230)
-	BattlefieldBottomBackdrop:Width(330)
-	BattlefieldBottomBackdrop:Point('BOTTOM', BattlefieldFrame, 'BOTTOM', -12, 110)
+	local bottomBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
+	bottomBackdrop:CreateBackdrop('Transparent')
+	bottomBackdrop:Height(230)
+	bottomBackdrop:Width(330)
+	bottomBackdrop:Point('BOTTOM', BattlefieldFrame, 'BOTTOM', -12, 110)
+	BattlefieldFrame.BottomBackdrop = bottomBackdrop
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
 
