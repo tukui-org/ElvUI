@@ -39,8 +39,8 @@ function S:Blizzard_TradeSkillUI()
 	local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
 	S:HandleEditBox(TradeSkillFrameEditBox)
 	TradeSkillFrameEditBox:ClearAllPoints()
-	TradeSkillFrameEditBox:Point('TOPRIGHT', -39, -54)
-	TradeSkillFrameEditBox:Size(120, 14)
+	TradeSkillFrameEditBox:Point('TOPLEFT', TradeSkillFrame, 'TOPLEFT', 23, -16)
+	TradeSkillFrameEditBox:Size(122, 18)
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 
