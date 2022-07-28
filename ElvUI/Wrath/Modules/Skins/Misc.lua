@@ -5,8 +5,8 @@ local _G = _G
 local ipairs = ipairs
 local pairs, unpack = pairs, unpack
 
-local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 local function SkinNavBarButtons(self)
 	local parentName = self:GetParent():GetName()
@@ -70,9 +70,9 @@ function S:BlizzardMiscFrames()
 		S:HandleButton(_G.GameMenuButtonOptionHouse)
 	end
 
-	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
-	-- we can just hook onto this function so that we can get the correct `self`
-	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
+	-- Since we cant hook 'CinematicFrame_OnShow' or 'CinematicFrame_OnEvent' directly
+	-- We can just hook onto this function so that we can get the correct `self`
+	-- This is called through 'CinematicFrame_OnShow' so the result would still happen where we want
 	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
@@ -87,9 +87,9 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
-	-- cant be hooked directly so we can just use this
-	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
+	-- Same as above except 'MovieFrame_OnEvent' and 'MovieFrame_OnShow'
+	-- Cant be hooked directly so we can just use this
+	-- This is called through 'MovieFrame_OnEvent' on the event 'PLAY_MOVIE'
 	hooksecurefunc('MovieFrame_PlayMovie', function(s)
 		if s and s.CloseDialog and not s.CloseDialog.template then
 			s:SetScale(E.uiscale)
@@ -120,7 +120,7 @@ function S:BlizzardMiscFrames()
 		local StaticPopup = _G['StaticPopup'..i]
 		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
 			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
-				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
+				StaticPopup.UpdateRecapButtonHooked = true -- We should only hook this once
 				hooksecurefunc(_G['StaticPopup'..i], 'UpdateRecapButton', S.UpdateRecapButton)
 			end
 		end)
@@ -156,6 +156,7 @@ function S:BlizzardMiscFrames()
 		_G['StaticPopup'..i..'ItemFrame'].IconBorder:SetAlpha(0)
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
+
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()

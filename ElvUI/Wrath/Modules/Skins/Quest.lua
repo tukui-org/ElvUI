@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strmatch = strmatch
-local unpack, gsub = unpack, gsub
-local select, pairs = select, pairs
+local gsub, strmatch, unpack = gsub, strmatch, unpack
+local pairs, select = pairs, select
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor

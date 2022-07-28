@@ -12,6 +12,8 @@ local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 local hooksecurefunc = hooksecurefunc
 
+local MAX_TRADE_SKILL_REAGENTS = MAX_TRADE_SKILL_REAGENTS
+
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
