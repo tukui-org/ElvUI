@@ -11,8 +11,8 @@ function S:TradeFrame()
 	local TradeFrame = _G.TradeFrame
 	S:HandlePortraitFrame(TradeFrame)
 
-	TradeFramePlayerPortrait:SetAlpha(0)
-	TradeFrameRecipientPortrait:SetAlpha(0)
+	_G.TradeFramePlayerPortrait:SetAlpha(0)
+	_G.TradeFrameRecipientPortrait:SetAlpha(0)
 
 	S:HandleButton(_G.TradeFrameTradeButton, true)
 	S:HandleButton(_G.TradeFrameCancelButton, true)

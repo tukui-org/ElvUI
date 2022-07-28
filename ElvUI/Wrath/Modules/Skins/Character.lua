@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local floor, unpack = floor, unpack
+local floor, unpack, strfind = floor, unpack, strfind
 local ipairs, pairs, select = ipairs, pairs, select
 
 local HasPetUI = HasPetUI
@@ -595,6 +595,7 @@ function S:CharacterFrame()
 		local child = select(i, _G.TokenFrame:GetChildren())
 		if child and not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
 			child:Hide()
+			break
 		end
 	end
 

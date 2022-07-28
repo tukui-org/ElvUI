@@ -83,11 +83,11 @@ function S:Blizzard_TalentUI()
 
 	S:HandleButton(_G.PlayerTalentFrameLearnButton)
 	_G.PlayerTalentFrameLearnButton:ClearAllPoints()
-	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', PlayerTalentFrame, 'BOTTOMLEFT', 18, 80)
+	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', 18, 80)
 
 	S:HandleButton(_G.PlayerTalentFrameResetButton)
 	_G.PlayerTalentFrameResetButton:ClearAllPoints()
-	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', -38, 80)
+	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', _G.PlayerTalentFrame, 'BOTTOMRIGHT', -38, 80)
 
 	_G.PlayerTalentFramePointsBar:StripTextures()
 end
