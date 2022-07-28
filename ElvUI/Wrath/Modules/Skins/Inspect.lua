@@ -78,11 +78,18 @@ function S:Blizzard_InspectUI()
 	S:HandleFrame(_G.InspectTalentFrame, true, nil, 11, -12, -32, 76)
 	S:HandleCloseButton(_G.InspectTalentFrameCloseButton, _G.InspectTalentFrame.backdrop)
 
+	-- HandleTab looks weird
 	for i = 1, 3 do
-		S:HandleTab(_G['InspectTalentFrameTab'..i], true)
+		local tab = _G['InspectTalentFrameTab'..i]
+		tab:StripTextures()
+		tab:Height(24)
+		S:HandleButton(tab)
 	end
 
 	_G.InspectTalentFramePointsBar:StripTextures()
+
+	_G.InspectTalentFrameSpentPointsText:Point('LEFT', _G.InspectTalentFramePointsBar, 'LEFT', 12, -1)
+	_G.InspectTalentFrameTalentPointsText:Point('RIGHT', _G.InspectTalentFramePointsBar, 'RIGHT', -12, -1)
 
 	_G.InspectTalentFrameScrollFrame:StripTextures()
 	_G.InspectTalentFrameScrollFrame:CreateBackdrop()

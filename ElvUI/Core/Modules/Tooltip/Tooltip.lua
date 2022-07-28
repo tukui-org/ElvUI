@@ -928,7 +928,7 @@ function TT:SetTooltipFonts()
 	_G.GameTooltipTextSmall:FontTemplate(font, smallSize, fontOutline)
 
 	for _, tt in ipairs(GameTooltip.shoppingTooltips) do
-		for i=1, tt:GetNumRegions() do
+		for i = 1, tt:GetNumRegions() do
 			local region = select(i, tt:GetRegions())
 			if region:IsObjectType('FontString') then
 				region:FontTemplate(font, smallSize, fontOutline)

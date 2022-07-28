@@ -38,7 +38,7 @@ local function BagButtonOnEnter(self)
 end
 
 local function StripBlizzard(button)
-	for i=1, button:GetNumRegions() do
+	for i = 1, button:GetNumRegions() do
 		local region = select(i, button:GetRegions())
 		if region and region:IsObjectType('Texture') and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
 			region:SetTexture()

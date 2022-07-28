@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local floor, unpack = floor, unpack
+local ipairs, pairs, select = ipairs, pairs, select
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -15,12 +16,12 @@ local hooksecurefunc = hooksecurefunc
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
+local NUM_GEARSET_ICONS_PER_ROW = NUM_GEARSET_ICONS_PER_ROW
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
-
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
 		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
@@ -122,10 +123,16 @@ function S:CharacterFrame()
 
 	-- HandleTab looks weird
 	for i = 1, 3 do
-		_G['PetPaperDollFrameTab'..i]:StripTextures()
-		_G['PetPaperDollFrameTab'..i]:Height(24)
-		S:HandleButton(_G['PetPaperDollFrameTab'..i])
+		local tab = _G['PetPaperDollFrameTab'..i]
+		tab:StripTextures()
+		tab:Height(24)
+		S:HandleButton(tab)
 	end
+
+	hooksecurefunc('PetPaperDollFrame_UpdateTabs', function()
+		_G.PetPaperDollFrameTab1:ClearAllPoints()
+		_G.PetPaperDollFrameTab1:Point('TOPLEFT', _G.PetPaperDollFrameCompanionFrame, 'TOPLEFT', 88, -40)
+	end)
 
 	_G.PaperDollFrame:StripTextures()
 
@@ -137,16 +144,17 @@ function S:CharacterFrame()
 	_G.CharacterAttributesFrame:StripTextures()
 
 	local ResistanceCoords = {
-		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 }, --Arcane
-		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 }, --Fire
-		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 }, --Nature
-		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375}, --Frost
-		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125}, --Shadow
+		{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
+		{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
+		{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
+		{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
+		{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 	}
 
 	local function HandleResistanceFrame(frameName)
 		for i = 1, 5 do
-			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
+			local frame = _G[frameName..i]
+			local icon, text = frame:GetRegions()
 			frame:Size(24)
 			frame:SetTemplate()
 
@@ -254,15 +262,11 @@ function S:CharacterFrame()
 	for i = 1, NUM_COMPANIONS_PER_PAGE do
 		local button = _G['CompanionButton'..i]
 		local iconDisabled = button:GetDisabledTexture()
-		local activeTexture = _G['CompanionButton'..i..'ActiveTexture']
 
 		button:StyleButton(nil, true)
 		button:SetTemplate(nil, true)
 
 		iconDisabled:SetAlpha(0)
-
-		activeTexture:SetInside(button)
-		activeTexture:SetTexture(1, 1, 1, .15)
 
 		if i == 7 then
 			button:Point('TOP', _G.CompanionButton1, 'BOTTOM', 0, -5)
@@ -273,8 +277,7 @@ function S:CharacterFrame()
 
 	-- PetPaperDollFrame
 	_G.PetPaperDollFrame:StripTextures()
-
-	S:HandleButton(_G.PetPaperDollCloseButton)
+	_G.PetPaperDollCloseButton:Kill()
 
 	S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
 	_G.PetModelFrameRotateLeftButton:ClearAllPoints()
@@ -327,14 +330,9 @@ function S:CharacterFrame()
 	GearManager:SetTemplate('Transparent')
 	GearManager:Point('TOPLEFT', _G.PaperDollFrame, 'TOPRIGHT', -30, -12)
 
+	-- TODO: Wrath (Skin the ToggleButton properly)
 	local GearManagerToggleButton = _G.GearManagerToggleButton
-	GearManagerToggleButton:Size(25, 29)
-	GearManagerToggleButton:Point('TOPRIGHT', -42, -40)
-	GearManagerToggleButton:CreateBackdrop()
-	GearManagerToggleButton:GetNormalTexture():SetTexCoord(0.203125, 0.828125, 0.15625, 0.875)
-	GearManagerToggleButton:GetPushedTexture():SetTexCoord(0.1875, 0.8125, 0.1875, 0.90625)
-	GearManagerToggleButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
-	GearManagerToggleButton:GetHighlightTexture():SetAllPoints()
+	GearManagerToggleButton:Point('TOPRIGHT', _G.PaperDollItemsFrame, 'TOPRIGHT', -37, -40)
 
 	S:HandleCloseButton(_G.GearManagerDialogClose, GearManager)
 
@@ -352,15 +350,72 @@ function S:CharacterFrame()
 	_G.GearManagerDialogEquipSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 93, 8)
 	_G.GearManagerDialogSaveSet:Point('BOTTOMRIGHT', GearManager, 'BOTTOMRIGHT', -8, 8)
 
-	for i, button in ipairs(GearManager.buttons) do
+	for _, button in ipairs(GearManager.buttons) do
 		button:StripTextures()
 		button:CreateBackdrop()
-		button.backdrop:SetAllPoints()
-
 		button:StyleButton(nil, true)
 
 		button.icon:SetInside()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.backdrop:SetAllPoints()
+	end
+
+	local dialogPopup = _G.GearManagerDialogPopup
+	dialogPopup:EnableMouse(true) -- Fixes the frame, might have to remove it later
+	dialogPopup:StripTextures()
+	dialogPopup:CreateBackdrop('Transparent')
+	dialogPopup.backdrop:Point('TOPLEFT', 5, -10)
+	dialogPopup.backdrop:Point('BOTTOMRIGHT', -39, 8)
+
+	local dialogPopupText1, dialogPopupText2 = select(5, dialogPopup:GetRegions())
+	dialogPopupText1:Point('TOPLEFT', 24, -19)
+	dialogPopupText2:Point('TOPLEFT', 24, -63)
+
+	_G.GearManagerDialogPopupEditBox:Point('TOPLEFT', 24, -36)
+	_G.GearManagerDialogPopupButton1:Point('TOPLEFT', 17, -83)
+
+	S:HandleButton(dialogPopup.OkayButton)
+	S:HandleButton(dialogPopup.CancelButton)
+
+	local dialogPopupScrollBar = _G.GearManagerDialogPopupScrollFrameScrollBar
+	S:HandleScrollBar(dialogPopupScrollBar)
+
+	local dialogPopupScrollFrame = _G.GearManagerDialogPopupScrollFrame
+	dialogPopupScrollFrame:StripTextures()
+	dialogPopupScrollFrame:Height(340)
+	dialogPopupScrollFrame:Point('TOPRIGHT', -68, -79)
+	dialogPopupScrollBar:Point('TOPLEFT', dialogPopupScrollFrame, 'TOPRIGHT', 3, -19)
+	dialogPopupScrollBar:Point('BOTTOMLEFT', dialogPopupScrollFrame, 'BOTTOMRIGHT', 3, 19)
+
+	-- They set points for buttons and frame on _Update
+	hooksecurefunc('GearManagerDialogPopup_Update', function()
+		dialogPopup:ClearAllPoints()
+		dialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'RIGHT', -3, 87)
+		dialogPopup.CancelButton:Point('BOTTOMRIGHT', dialogPopup, 'BOTTOMRIGHT', -44, 13)
+	end)
+
+	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
+
+	-- TODO: wrath, swap this to S:HandleIconSelectionFrame
+	for i, button in ipairs(dialogPopup.buttons) do
+		button:StripTextures()
+		button:SetFrameLevel(button:GetFrameLevel() + 2)
+		button:CreateBackdrop()
+		button:StyleButton(true, true)
+
+		button.icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.backdrop:SetAllPoints()
+
+		if i > 1 then
+			local lastPos = (i - 1) / NUM_GEARSET_ICONS_PER_ROW
+
+			if lastPos == floor(lastPos) then
+				button:SetPoint('TOPLEFT', dialogPopup.buttons[i-NUM_GEARSET_ICONS_PER_ROW], 'BOTTOMLEFT', 0, -7)
+			else
+				button:SetPoint('TOPLEFT', dialogPopup.buttons[i-1], 'TOPRIGHT', 7, 0)
+			end
+		end
 	end
 
 	-- Reputation Frame
@@ -418,6 +473,7 @@ function S:CharacterFrame()
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
+	_G.SkillFrameCancelButton:Kill()
 
 	_G.SkillFrameExpandButtonFrame:DisableDrawLayer('BACKGROUND')
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
@@ -430,8 +486,6 @@ function S:CharacterFrame()
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		end
 	end)
-
-	S:HandleButton(_G.SkillFrameCancelButton)
 
 	for i = 1, _G.SKILLS_TO_DISPLAY do
 		local bar = _G['SkillRankFrame'..i]
@@ -475,10 +529,7 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 
 	S:HandleCloseButton(_G.SkillDetailStatusBarUnlearnButton)
-	S:HandleButton(_G.SkillDetailStatusBarUnlearnButton)
-	_G.SkillDetailStatusBarUnlearnButton:Size(24)
-	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
-	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
+	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', -6, 1)
 
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
@@ -528,8 +579,15 @@ function S:CharacterFrame()
 
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
+	_G.TokenFrameCancelButton:Kill()
+	_G.TokenFrameMoneyFrame:Kill()
 
-	S:HandleButton(_G.TokenFrameCancelButton)
+	for i = 1, _G.TokenFrame:GetNumChildren() do
+		local child = select(i, _G.TokenFrame:GetChildren())
+		if child and not child:GetName() then
+			child:Hide()
+		end
+	end
 
 	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
