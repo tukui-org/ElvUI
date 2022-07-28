@@ -349,6 +349,10 @@ function S:BlizzardOptions()
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
 
+	-- Colorblind Submenu
+	S:HandleDropDownBox(_G.InterfaceOptionsColorblindPanelColorFilterDropDown, 260)
+	S:HandleSliderFrame(_G.InterfaceOptionsColorblindPanelColorblindStrengthSlider)
+
 	-- Toggle Test Audio Button
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
 
