@@ -186,6 +186,9 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonSummaryPlayerBackground:Hide()
 	_G.AchievementFrameComparisonSummaryFriendBackground:Hide()
 
+	_G.AchievementFrameComparisonSummaryPlayer.NineSlice:SetTemplate('Transparent')
+	_G.AchievementFrameComparisonSummaryFriend.NineSlice:SetTemplate('Transparent')
+
 	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
 	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
 	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
