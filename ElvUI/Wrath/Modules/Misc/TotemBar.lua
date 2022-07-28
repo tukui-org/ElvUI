@@ -91,9 +91,6 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:SetTemplate()
 			button:StyleButton()
 
-			AB:HookScript(button, 'OnEnter', 'TotemOnEnter')
-			AB:HookScript(button, 'OnLeave', 'TotemOnLeave')
-
 			button:SetFrameStrata('MEDIUM')
 			button.icon:SetDrawLayer('ARTWORK')
 			button.icon:SetInside(button)
@@ -155,13 +152,26 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	frame:Height(totalHeight + closeButton:GetHeight())
 end
 
-function AB:TotemOnEnter()
+function AB:TotemButton_OnEnter()
+	-- totem keybind support from actionbar module
+	if E.private.actionbar.enable then
+		AB:BindUpdate(self)
+	end
+
+	AB:TotemBar_OnLeave()
+end
+
+function AB:TotemButton_OnLeave()
+	AB:TotemBar_OnEnter()
+end
+
+function AB:TotemBar_OnEnter()
 	if bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), E.db.general.totems.alpha)
 	end
 end
 
-function AB:TotemOnLeave()
+function AB:TotemBar_OnLeave()
 	if bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 	end
@@ -350,11 +360,6 @@ function AB:CreateTotemBar()
 		bar.buttons[button] = true
 	end
 
-	for button in pairs(bar.buttons) do
-		button:HookScript('OnEnter', AB.TotemOnEnter)
-		button:HookScript('OnLeave', AB.TotemOnLeave)
-	end
-
 	local summonButton = _G.MultiCastSummonSpellButton
 	AB:SkinSummonButton(summonButton)
 	summonButton.commandName = summonButton.buttonType -- hotkey support
@@ -364,6 +369,11 @@ function AB:CreateTotemBar()
 	AB:SkinSummonButton(spellButton)
 	spellButton.commandName = spellButton.buttonType -- hotkey support
 	bar.buttons[spellButton] = true
+
+	for button in pairs(bar.buttons) do
+		button:HookScript('OnEnter', AB.TotemButton_OnEnter)
+		button:HookScript('OnLeave', AB.TotemButton_OnLeave)
+	end
 
 	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
 		if xOffset ~= E.db.general.totems.spacing then
@@ -387,11 +397,11 @@ function AB:CreateTotemBar()
 	AB:SecureHook('MultiCastSlotButton_Update', 'StyleTotemSlotButton')
 	AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 
-	AB:HookScript(_G.MultiCastActionBarFrame, 'OnEnter', 'TotemOnEnter')
-	AB:HookScript(_G.MultiCastActionBarFrame, 'OnLeave', 'TotemOnLeave')
+	AB:HookScript(_G.MultiCastActionBarFrame, 'OnEnter', 'TotemBar_OnEnter')
+	AB:HookScript(_G.MultiCastActionBarFrame, 'OnLeave', 'TotemBar_OnLeave')
 
-	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnEnter', 'TotemOnEnter')
-	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnLeave', 'TotemOnLeave')
+	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnEnter', 'TotemBar_OnEnter')
+	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnLeave', 'TotemBar_OnLeave')
 
 	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"], nil, nil, nil, nil, nil, 'general,totems')
 end
