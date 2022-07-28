@@ -28,7 +28,7 @@ local function SkinOnShow()
 	ScriptErrorsFrame.ScrollFrame:CreateBackdrop()
 	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 
-	for i=1, #FrameTexs do
+	for i = 1, #FrameTexs do
 		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
 	end
 

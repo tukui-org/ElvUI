@@ -14,6 +14,7 @@ local hooksecurefunc = hooksecurefunc
 local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
+local MAX_GUILDBANK_TABS = MAX_GUILDBANK_TABS
 
 local function skinFriendRequest(frame)
 	if frame.isSkinned then return end
@@ -132,6 +133,7 @@ function S:FriendsFrame()
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetRotation(S.ArrowRotation['down'])
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.RightArrow:SetPoint('LEFT', 11, 0)
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetPoint('TOPLEFT', 8, -10)
+
 	hooksecurefunc(_G.FriendsFrameFriendsScrollFrame.invitePool, 'Acquire', function()
 		for object in pairs(_G.FriendsFrameFriendsScrollFrame.invitePool.activeObjects) do
 			skinFriendRequest(object)

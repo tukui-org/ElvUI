@@ -238,52 +238,6 @@ function S:CharacterFrame()
 		end
 	end)
 
-	-- PetPaperDollCompanionFrame (Pets and Mounts in WotLK)
-	_G.PetPaperDollFrameCompanionFrame:StripTextures()
-
-	S:HandleButton(_G.CompanionSummonButton)
-
-	S:HandleNextPrevButton(_G.CompanionPrevPageButton)
-	S:HandleNextPrevButton(_G.CompanionNextPageButton)
-
-	_G.CompanionNextPageButton:ClearAllPoints()
-	_G.CompanionNextPageButton:Point('TOPLEFT', _G.CompanionPrevPageButton, 'TOPRIGHT', 100, 0)
-
-	S:HandleRotateButton(_G.CompanionModelFrameRotateLeftButton)
-	_G.CompanionModelFrameRotateLeftButton:ClearAllPoints()
-	_G.CompanionModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	S:HandleRotateButton(_G.CompanionModelFrameRotateRightButton)
-	_G.CompanionModelFrameRotateRightButton:ClearAllPoints()
-	_G.CompanionModelFrameRotateRightButton:Point('TOPLEFT', _G.CompanionModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-
-	hooksecurefunc('PetPaperDollFrame_UpdateCompanions', function()
-		for i = 1, NUM_COMPANIONS_PER_PAGE do
-			local button = _G['CompanionButton'..i]
-
-			if button.creatureID then
-				local iconNormal = button:GetNormalTexture()
-				iconNormal:SetTexCoord(unpack(E.TexCoords))
-				iconNormal:SetInside()
-			end
-		end
-	end)
-
-	for i = 1, NUM_COMPANIONS_PER_PAGE do
-		local button = _G['CompanionButton'..i]
-		local iconDisabled = button:GetDisabledTexture()
-
-		button:StyleButton(nil, true)
-		button:SetTemplate(nil, true)
-
-		iconDisabled:SetAlpha(0)
-
-		if i == 7 then
-			button:Point('TOP', _G.CompanionButton1, 'BOTTOM', 0, -5)
-		elseif i ~= 1 then
-			button:Point('LEFT', _G['CompanionButton'..i-1], 'RIGHT', 5, 0)
-		end
-	end
-
 	-- PetPaperDollFrame
 	_G.PetPaperDollFrame:StripTextures()
 	_G.PetPaperDollCloseButton:Kill()
@@ -332,6 +286,52 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
 	PetPaperDollPetInfo:SetScript('OnEvent', updHappiness)
 	PetPaperDollPetInfo:SetScript('OnShow', updHappiness)
+
+	-- PetPaperDollCompanionFrame (Pets and Mounts in WotLK)
+	_G.PetPaperDollFrameCompanionFrame:StripTextures()
+
+	S:HandleButton(_G.CompanionSummonButton)
+
+	S:HandleNextPrevButton(_G.CompanionPrevPageButton)
+	S:HandleNextPrevButton(_G.CompanionNextPageButton)
+
+	_G.CompanionNextPageButton:ClearAllPoints()
+	_G.CompanionNextPageButton:Point('TOPLEFT', _G.CompanionPrevPageButton, 'TOPRIGHT', 100, 0)
+
+	S:HandleRotateButton(_G.CompanionModelFrameRotateLeftButton)
+	_G.CompanionModelFrameRotateLeftButton:ClearAllPoints()
+	_G.CompanionModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
+	S:HandleRotateButton(_G.CompanionModelFrameRotateRightButton)
+	_G.CompanionModelFrameRotateRightButton:ClearAllPoints()
+	_G.CompanionModelFrameRotateRightButton:Point('TOPLEFT', _G.CompanionModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
+
+	hooksecurefunc('PetPaperDollFrame_UpdateCompanions', function()
+		for i = 1, NUM_COMPANIONS_PER_PAGE do
+			local button = _G['CompanionButton'..i]
+
+			if button.creatureID then
+				local iconNormal = button:GetNormalTexture()
+				iconNormal:SetTexCoord(unpack(E.TexCoords))
+				iconNormal:SetInside()
+			end
+		end
+	end)
+
+	for i = 1, NUM_COMPANIONS_PER_PAGE do
+		local button = _G['CompanionButton'..i]
+		local iconDisabled = button:GetDisabledTexture()
+
+		button:StyleButton(nil, true)
+		button:SetTemplate(nil, true)
+
+		iconDisabled:SetAlpha(0)
+
+		if i == 7 then
+			button:Point('TOP', _G.CompanionButton1, 'BOTTOM', 0, -5)
+		elseif i ~= 1 then
+			button:Point('LEFT', _G['CompanionButton'..i-1], 'RIGHT', 5, 0)
+		end
+	end
 
 	-- GearManager / EquipmentManager
 	local GearManager = _G.GearManagerDialog

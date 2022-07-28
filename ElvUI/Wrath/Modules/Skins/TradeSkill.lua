@@ -12,6 +12,8 @@ local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 local hooksecurefunc = hooksecurefunc
 
+local MAX_TRADE_SKILL_REAGENTS = MAX_TRADE_SKILL_REAGENTS
+
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
@@ -37,8 +39,8 @@ function S:Blizzard_TradeSkillUI()
 	local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
 	S:HandleEditBox(TradeSkillFrameEditBox)
 	TradeSkillFrameEditBox:ClearAllPoints()
-	TradeSkillFrameEditBox:Point('TOPRIGHT', -39, -54)
-	TradeSkillFrameEditBox:Size(120, 14)
+	TradeSkillFrameEditBox:Point('TOPLEFT', TradeSkillFrame, 'TOPLEFT', 23, -16)
+	TradeSkillFrameEditBox:Size(122, 18)
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 

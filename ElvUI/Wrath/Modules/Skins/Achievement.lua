@@ -5,10 +5,10 @@ local _G = _G
 local unpack = unpack
 local pairs, select = pairs, select
 
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
-local CreateFrame = CreateFrame
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
 local function blueBackdrop(self)
@@ -186,6 +186,9 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonSummaryPlayerBackground:Hide()
 	_G.AchievementFrameComparisonSummaryFriendBackground:Hide()
 
+	_G.AchievementFrameComparisonSummaryPlayer.NineSlice:SetTemplate('Transparent')
+	_G.AchievementFrameComparisonSummaryFriend.NineSlice:SetTemplate('Transparent')
+
 	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
 	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
 	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
@@ -270,7 +273,7 @@ function S:Blizzard_AchievementUI()
 	hooksecurefunc('AchievementButton_DisplayAchievement', setAchievementColor)
 
 	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
-		for i=1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
+		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 			local frame = _G['AchievementFrameSummaryAchievement'..i]
 			if not frame.isSkinned then
 				skinAch(frame)

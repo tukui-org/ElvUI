@@ -15,7 +15,7 @@ local StripAllTextures = {
 	'RaidGroup5',
 	'RaidGroup6',
 	'RaidGroup7',
-	'RaidGroup8',
+	'RaidGroup8'
 }
 
 function S:Blizzard_RaidUI()

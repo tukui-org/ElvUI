@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local MAX_TUTORIAL_ALERTS = MAX_TUTORIAL_ALERTS
+
 function S:SkinTutorial()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tutorial) then return end
 

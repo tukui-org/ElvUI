@@ -28,7 +28,7 @@ local function UpdateLoots()
 			frame.Icon:SetTexture(Icon)
 			frame.Icon:SetTexCoord(unpack(E.TexCoords))
 
-			-- create a backdrop around the icon
+			-- Create a backdrop around the icon
 			frame:CreateBackdrop()
 			frame.backdrop:SetOutside(frame.Icon)
 			frame.Icon:SetParent(frame.backdrop)
@@ -161,7 +161,7 @@ function S:LootFrame()
 			numLootItems = #LootFrame.AutoLootTable
 		end
 		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
-			numLootToShow = numLootToShow - 1 -- make space for the page buttons
+			numLootToShow = numLootToShow - 1 -- Make space for the page buttons
 		end
 
 		local button = _G['LootButton'..index]
