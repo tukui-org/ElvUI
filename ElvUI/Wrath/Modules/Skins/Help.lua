@@ -29,6 +29,12 @@ function S:HelpFrame()
 	for _, inset in pairs(insets) do
 		inset:StripTextures()
 	end
+
+	-- Report Frame
+	local ReportFrame = _G.ReportFrame
+	S:HandleFrame(ReportFrame)
+	S:HandleButton(ReportFrame.ReportButton)
+	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 end
 
 S:AddCallback('HelpFrame')
