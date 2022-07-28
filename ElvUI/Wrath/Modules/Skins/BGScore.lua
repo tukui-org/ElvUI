@@ -24,19 +24,19 @@ function S:SkinWorldStateScore()
 	S:HandleScrollBar(_G.WorldStateScoreScrollFrameScrollBar)
 
 	local buttons = {
-		_G.WorldStateScoreFrameKB,
-		_G.WorldStateScoreFrameDeaths,
-		_G.WorldStateScoreFrameHK,
-		_G.WorldStateScoreFrameDamageDone,
-		_G.WorldStateScoreFrameHealingDone,
-		_G.WorldStateScoreFrameHonorGained,
-		_G.WorldStateScoreFrameName,
-		_G.WorldStateScoreFrameClass,
-		_G.WorldStateScoreFrameTeam
+		'WorldStateScoreFrameKB',
+		'WorldStateScoreFrameDeaths',
+		'WorldStateScoreFrameHK',
+		'WorldStateScoreFrameDamageDone',
+		'WorldStateScoreFrameHealingDone',
+		'WorldStateScoreFrameHonorGained',
+		'WorldStateScoreFrameName',
+		'WorldStateScoreFrameClass',
+		'WorldStateScoreFrameTeam'
 	}
 
 	for _, button in pairs(buttons) do
-		button:StyleButton()
+		_G[button]:StyleButton()
 	end
 
 	S:HandleButton(_G.WorldStateScoreFrameLeaveButton)
