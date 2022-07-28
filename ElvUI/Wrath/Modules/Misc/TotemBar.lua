@@ -95,6 +95,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button.icon:SetDrawLayer('ARTWORK')
 			button.icon:SetInside(button)
 
+			-- these only need mouseover script, dont need the bind key script
 			AB:HookScript(button, 'OnEnter', 'TotemBar_OnEnter')
 			AB:HookScript(button, 'OnLeave', 'TotemBar_OnLeave')
 
