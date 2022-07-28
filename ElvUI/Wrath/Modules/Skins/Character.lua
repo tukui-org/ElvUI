@@ -579,9 +579,15 @@ function S:CharacterFrame()
 
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
-
 	_G.TokenFrameCancelButton:Kill()
 	_G.TokenFrameMoneyFrame:Kill()
+
+	for i = 1, _G.TokenFrame:GetNumChildren() do
+		local child = select(i, _G.TokenFrame:GetChildren())
+		if child and not child:GetName() then
+			child:Hide()
+		end
+	end
 
 	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
