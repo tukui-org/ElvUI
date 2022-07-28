@@ -304,6 +304,10 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
+	-- Features tab
+	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelEquipmentManager)
+	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelPreviewTalentChanges)
+
 	do -- Plus minus buttons in addons category
 		local function skinButtons()
 			for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
