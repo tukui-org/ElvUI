@@ -162,11 +162,11 @@ function AB:TotemButton_OnEnter()
 		AB:BindUpdate(self)
 	end
 
-	AB:TotemBar_OnLeave()
+	AB:TotemBar_OnEnter()
 end
 
 function AB:TotemButton_OnLeave()
-	AB:TotemBar_OnEnter()
+	AB:TotemBar_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
