@@ -43,7 +43,8 @@ function S:Blizzard_TalentUI()
 	S:HandleScrollBar(_G.PlayerTalentFrameScrollFrameScrollBar)
 	_G.PlayerTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
 
-	_G.PlayerTalentFrameTalentPointsText:Point('BOTTOMRIGHT', _G.PlayerTalentFrame, 'BOTTOMLEFT', 220, 84)
+	_G.PlayerTalentFrameSpentPointsText:Point('LEFT', _G.PlayerTalentFramePointsBar, 'LEFT', 12, -1)
+	_G.PlayerTalentFrameTalentPointsText:Point('RIGHT', _G.PlayerTalentFramePointsBar, 'RIGHT', -12, -1)
 
 	for i = 1, _G.MAX_NUM_TALENTS do
 		local talent = _G['PlayerTalentFrameTalent'..i]

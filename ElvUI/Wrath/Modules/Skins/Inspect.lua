@@ -88,6 +88,9 @@ function S:Blizzard_InspectUI()
 
 	_G.InspectTalentFramePointsBar:StripTextures()
 
+	_G.InspectTalentFrameSpentPointsText:Point('LEFT', _G.InspectTalentFramePointsBar, 'LEFT', 12, -1)
+	_G.InspectTalentFrameTalentPointsText:Point('RIGHT', _G.InspectTalentFramePointsBar, 'RIGHT', -12, -1)
+
 	_G.InspectTalentFrameScrollFrame:StripTextures()
 	_G.InspectTalentFrameScrollFrame:CreateBackdrop()
 
