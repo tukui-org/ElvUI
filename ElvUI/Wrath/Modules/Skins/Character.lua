@@ -141,6 +141,15 @@ function S:CharacterFrame()
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
+	_G.CharacterModelFrameRotateLeftButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateLeftButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
+	_G.CharacterModelFrameRotateLeftButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateLeftButton:GetPushedTexture():SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)
+	_G.CharacterModelFrameRotateRightButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateRightButton:GetNormalTexture():SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
+	_G.CharacterModelFrameRotateRightButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
+
 	_G.CharacterAttributesFrame:StripTextures()
 
 	local ResistanceCoords = {
