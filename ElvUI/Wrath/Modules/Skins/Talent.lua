@@ -77,6 +77,18 @@ function S:Blizzard_TalentUI()
 		end
 	end
 
+	-- Talent preview section / SetCVar('previewTalents', 1)
+	_G.PlayerTalentFramePreviewBar:StripTextures()
+	_G.PlayerTalentFramePreviewBarFiller:StripTextures()
+
+	S:HandleButton(_G.PlayerTalentFrameLearnButton)
+	_G.PlayerTalentFrameLearnButton:ClearAllPoints()
+	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', PlayerTalentFrame, 'BOTTOMLEFT', 18, 80)
+
+	S:HandleButton(_G.PlayerTalentFrameResetButton)
+	_G.PlayerTalentFrameResetButton:ClearAllPoints()
+	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', -38, 80)
+
 	_G.PlayerTalentFramePointsBar:StripTextures()
 end
 S:AddCallbackForAddon('Blizzard_TalentUI')
