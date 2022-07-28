@@ -344,6 +344,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestInfoObjectivesText:SetTextColor(textR, textG, textB)
 		_G.QuestInfoGroupSize:SetTextColor(textR, textG, textB)
 		_G.QuestInfoRewardText:SetTextColor(textR, textG, textB)
+		_G.QuestInfoQuestType:SetTextColor(textR, textG, textB)
 
 		local numObjectives = GetNumQuestLeaderBoards()
 		for i = 1, numObjectives do
