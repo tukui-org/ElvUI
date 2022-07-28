@@ -366,12 +366,12 @@ function AB:CreateTotemBar()
 
 	local summonButton = _G.MultiCastSummonSpellButton
 	AB:SkinSummonButton(summonButton)
-	summonButton.commandName = summonButton.buttonType -- hotkey support
+	summonButton.commandName = summonButton.buttonType..'1' -- hotkey support
 	bar.buttons[summonButton] = true
 
 	local spellButton = _G.MultiCastRecallSpellButton
 	AB:SkinSummonButton(spellButton)
-	spellButton.commandName = spellButton.buttonType -- hotkey support
+	spellButton.commandName = spellButton.buttonType..'1' -- hotkey support
 	bar.buttons[spellButton] = true
 
 	for button in pairs(bar.buttons) do
