@@ -64,7 +64,7 @@ function S:SkinWorldStateScore()
 
 		local _, name, faction, classToken, realm, classTextColor, nameText
 
-		for i = 1, SCORE_BUTTONS_MAX do
+		for i = 1, 20 do
 			name, _, _, _, _, faction, _, _, _, classToken = GetBattlefieldScore(offset + i)
 
 			if name then
