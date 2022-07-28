@@ -65,7 +65,7 @@ GenGen.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Aut
 GenGen.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
 
-GenGen.totems = ACH:Group(L["Class Totems"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value if E.Wrath then AB:PositionAndSizeBarTotem() else Totems:PositionAndSize() end end, function() return not E.private.general.totemBar end)
+GenGen.totems = ACH:Group(L["Class Totems"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value if E.Wrath then AB:PositionAndSizeTotemBar() else Totems:PositionAndSize() end end, function() return not E.private.general.totemBar end)
 GenGen.totems.inline = true
 GenGen.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemBar end, function(_, value) E.private.general.totemBar = value; E.ShowPopup = true end, false)
 GenGen.totems.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Wrath)
@@ -88,7 +88,7 @@ GenGen.totems.args.fontGroup.inline = true
 GenGen.totems.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 GenGen.totems.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 GenGen.totems.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-GenGen.totems.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 20, nil, 'full', nil, function(_, value) E.db.general.totems.visibility = value AB:PositionAndSizeBarTotem() end, nil, not E.Wrath)
+GenGen.totems.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 20, nil, 'full', nil, function(_, value) E.db.general.totems.visibility = value AB:PositionAndSizeTotemBar() end, nil, not E.Wrath)
 
 General.media = ACH:Group(L["Media"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
 local Media = General.media.args
