@@ -343,7 +343,7 @@ function RU:Initialize()
 	end
 
 	RU:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Retail and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', E.Retail and _G.RoleCheckButton or _G.ReadyCheckButton, 'BOTTOMLEFT', 0, -5, L["Raid Menu"])
-	_G.RaidControlButton:SetScript('OnMouseUp', function() ToggleFriendsFrame(3) end)
+	_G.RaidControlButton:SetScript('OnMouseUp', function() if E.Retail then ToggleFriendsFrame(3) else ToggleFriendsFrame(4) end end)
 
 	if E.Retail then
 		RU:CreateUtilButton('RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', _G.RaidControlButton, 'TOPRIGHT', 3, 0, _G.PLAYER_COUNTDOWN_BUTTON)

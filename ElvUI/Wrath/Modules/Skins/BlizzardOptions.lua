@@ -299,10 +299,14 @@ function S:BlizzardOptions()
 	end
 
 	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab1:StripTextures()
+	S:HandleButton(_G.InterfaceOptionsFrameTab1)
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
-	_G.InterfaceOptionsFrameTab2:StripTextures()
+	S:HandleButton(_G.InterfaceOptionsFrameTab2)
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
+
+	-- Features tab
+	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelEquipmentManager)
+	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelPreviewTalentChanges)
 
 	do -- Plus minus buttons in addons category
 		local function skinButtons()
@@ -344,6 +348,10 @@ function S:BlizzardOptions()
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
+
+	-- Colorblind Submenu
+	S:HandleDropDownBox(_G.InterfaceOptionsColorblindPanelColorFilterDropDown, 260)
+	S:HandleSliderFrame(_G.InterfaceOptionsColorblindPanelColorblindStrengthSlider)
 
 	-- Toggle Test Audio Button
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
