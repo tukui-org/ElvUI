@@ -175,7 +175,7 @@ function S:LootFrame()
 	LootFrame:Height(LootFrame:GetHeight() - 30)
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
-	for i=1, LootFrame:GetNumRegions() do
+	for i = 1, LootFrame:GetNumRegions() do
 		local region = select(i, LootFrame:GetRegions())
 		if region:IsObjectType('FontString') then
 			if region:GetText() == ITEMS then

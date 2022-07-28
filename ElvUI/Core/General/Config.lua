@@ -1142,7 +1142,7 @@ function E:ToggleOptionsUI(msg)
 
 			local unskinned = not E.private.skins.ace3Enable
 			if unskinned then
-				for i=1, frame:GetNumRegions() do
+				for i = 1, frame:GetNumRegions() do
 					local region = select(i, frame:GetRegions())
 					if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
 						region:SetAlpha(0)
