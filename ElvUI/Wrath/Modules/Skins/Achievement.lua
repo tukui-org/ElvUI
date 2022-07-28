@@ -166,12 +166,9 @@ function S:Blizzard_AchievementUI()
 	end
 
 	_G.AchievementFrameHeaderRightDDLInset:SetAlpha(0)
+	select(2, _G.AchievementFrameAchievements:GetChildren()):Hide()
 	_G.AchievementFrameAchievementsBackground:Hide()
-
-	local _, achRegion2, achRegion3 = _G.AchievementFrameAchievements:GetChildren()
-	achRegion2:Hide()
-	achRegion3:Hide()
-
+	select(3, _G.AchievementFrameAchievements:GetRegions()):Hide()
 	_G.AchievementFrameStatsBG:Hide()
 	_G.AchievementFrameStatsContainer:CreateBackdrop('Transparent')
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:Hide()
