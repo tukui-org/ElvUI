@@ -306,26 +306,6 @@ function AB:CreateTotemBar()
 	openButton.pushed:SetInside(openButton.backdrop)
 	bar.buttons[openButton] = true
 
-	local summonButton = _G.MultiCastSummonSpellButton
-	AB:SkinSummonButton(summonButton)
-	bar.buttons[summonButton] = true
-
-	local spellButton = _G.MultiCastRecallSpellButton
-	AB:SkinSummonButton(spellButton)
-	bar.buttons[spellButton] = true
-
-	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
-		if xOffset ~= E.db.general.totems.spacing then
-			if InCombatLockdown() then
-				AB.NeedsRecallButtonUpdate = true
-				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-			else
-				button:ClearAllPoints()
-				button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
-			end
-		end
-	end)
-
 	-- TODO: Wrath (Check for a better skinning method)
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
@@ -363,6 +343,7 @@ function AB:CreateTotemBar()
 		overlay:Hide()
 
 		hotkey.SetVertexColor = E.noop
+		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
 
 		E:RegisterCooldown(cooldown)
 
@@ -373,6 +354,28 @@ function AB:CreateTotemBar()
 		button:HookScript('OnEnter', AB.TotemOnEnter)
 		button:HookScript('OnLeave', AB.TotemOnLeave)
 	end
+
+	local summonButton = _G.MultiCastSummonSpellButton
+	AB:SkinSummonButton(summonButton)
+	summonButton.commandName = summonButton.buttonType -- hotkey support
+	bar.buttons[summonButton] = true
+
+	local spellButton = _G.MultiCastRecallSpellButton
+	AB:SkinSummonButton(spellButton)
+	spellButton.commandName = spellButton.buttonType -- hotkey support
+	bar.buttons[spellButton] = true
+
+	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
+		if xOffset ~= E.db.general.totems.spacing then
+			if InCombatLockdown() then
+				AB.NeedsRecallButtonUpdate = true
+				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+			else
+				button:ClearAllPoints()
+				button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
+			end
+		end
+	end)
 
 	AB:UpdateTotemBindings()
 
