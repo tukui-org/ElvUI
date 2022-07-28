@@ -593,7 +593,7 @@ function S:CharacterFrame()
 
 	for i = 1, _G.TokenFrame:GetNumChildren() do
 		local child = select(i, _G.TokenFrame:GetChildren())
-		if child and not child:GetName() then
+		if child and not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
 			child:Hide()
 		end
 	end
