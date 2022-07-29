@@ -266,9 +266,9 @@ function S:BlizzardQuestFrames()
 
 		if requiredMoney > 0 then
 			if requiredMoney > GetMoney() then
-				_G.QuestLogRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+				_G.QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
 			else
-				_G.QuestLogRequiredMoneyText:SetTextColor(1, 0.80, 0.10)
+				_G.QuestInfoRequiredMoneyText:SetTextColor(1, 0.80, 0.10)
 			end
 		end
 	end)
