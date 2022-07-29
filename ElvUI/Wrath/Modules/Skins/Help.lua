@@ -30,7 +30,6 @@ function S:HelpFrame()
 		inset:StripTextures()
 	end
 
-	-- Report Frame
 	local ReportFrame = _G.ReportFrame
 	S:HandleFrame(ReportFrame)
 	S:HandleButton(ReportFrame.ReportButton)
