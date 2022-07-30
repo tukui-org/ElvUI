@@ -838,7 +838,7 @@ function CH:StyleChat(frame)
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 
-	--[[ Don't need to do this since SetAltArrowKeyMode is broken
+	--[[ Don't need to do this since SetAltArrowKeyMode is broken, keep before AddHistory hook
 	for _, text in ipairs(editbox.historyLines) do
 			editbox:AddHistoryLine(text)
 	end]]
