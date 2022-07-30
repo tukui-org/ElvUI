@@ -310,7 +310,7 @@ function M:UpdateSettings()
 	local mmOffset = E.PixelMode and 1 or 3
 	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
-	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
+	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
 	Minimap:SetScale(mmScale)
 
