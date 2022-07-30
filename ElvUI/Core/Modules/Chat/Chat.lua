@@ -833,7 +833,6 @@ function CH:StyleChat(frame)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
 	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)
-	CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
 
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
@@ -844,9 +843,11 @@ function CH:StyleChat(frame)
 	editbox:HookScript('OnEditFocusGained', CH.EditBoxFocusGained)
 	editbox:HookScript('OnEditFocusLost', CH.EditBoxFocusLost)
 
-	for _, text in ipairs(editbox.historyLines) do
-		editbox:AddHistoryLine(text)
-	end
+	-- Don't need to do this since SetAltArrowKeyMode is broken
+	-- for _, text in ipairs(editbox.historyLines) do
+	-- 	editbox:AddHistoryLine(text)
+	-- end
+	CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
 
 	--copy chat button
 	local copyButton = CreateFrame('Frame', format('ElvUI_CopyChatButton%d', id), frame)
