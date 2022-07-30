@@ -1172,6 +1172,35 @@ Colors.classResourceGroup.args.class.args.MAGE = ACH:Color(L["POWER_TYPE_ARCANE_
 Colors.classResourceGroup.args.class.args.WARLOCK = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, nil, nil, nil, not E.Retail)
 Colors.classResourceGroup.args.class.args.DEATHKNIGHT = ACH:Color(L["RUNES"], nil, 4)
 
+--[[
+	TODO: Wrath (Rune types / Rune colors)
+
+	local names = {
+		[1] = L["COMBAT_TEXT_RUNE_BLOOD"],
+		[2] = L["COMBAT_TEXT_RUNE_UNHOLY"],
+		[3] = L["COMBAT_TEXT_RUNE_FROST"],
+		[4] = L["COMBAT_TEXT_RUNE_DEATH"]
+	}
+	for i = 1, 4 do
+		E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args["resource"..i] = {
+			order = ORDER + i,
+			type = "color",
+			name = names[i],
+			get = function(info)
+				local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
+				local d = P.unitframe.colors.classResources.DEATHKNIGHT[i]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+			end,
+			set = function(info, r, g, b)
+				local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
+				t.r, t.g, t.b = r, g, b
+				UF:Update_AllFrames()
+			end
+		}
+	end
+
+]]
+
 Colors.classResourceGroup.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 2, nil, function(info) local t, d = E.db.unitframe.colors.classResources.comboPoints[tonumber(info[#info])], P.unitframe.colors.classResources.comboPoints[tonumber(info[#info])] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 Colors.classResourceGroup.args.COMBO_POINTS.inline = true
 

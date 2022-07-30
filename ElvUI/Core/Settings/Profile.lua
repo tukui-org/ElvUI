@@ -731,6 +731,14 @@ P.nameplates = {
 				[6] = {r = .33, g = .63, b = .33},
 			},
 			DEATHKNIGHT = { r = .31, g = .45, b = .63},
+			--[[ TODO: Wrath (Rune types / Rune colors)
+			DEATHKNIGHT = {
+				[1] = {r = 1, g = 0, b = 0},
+				[2] = {r = 0, g = 1, b = 0},
+				[3] = {r = 0, g = 1, b = 1},
+				[4] = {r = 0.9, g = 0.1, b = 1}
+			}
+			]]
 			PALADIN = { r = 228/255, g = 225/255, b = 16/255},
 			MAGE = { r = 0, g = 157/255, b = 1},
 			MONK = {
@@ -1698,6 +1706,14 @@ P.unitframe = {
 				[6] = {r = .33, g = .63, b = .33},
 			},
 			DEATHKNIGHT = {r = 0, g = 1, b = 1},
+			--[[ TODO: Wrath (Rune types / Rune colors)
+			DEATHKNIGHT = {
+				[1] = {r = 1, g = 0, b = 0},
+				[2] = {r = 0, g = 1, b = 0},
+				[3] = {r = 0, g = 1, b = 1},
+				[4] = {r = 0.9, g = 0.1, b = 1}
+			}
+			]]
 			PALADIN = {r = 228/255, g = 225/255, b = 16/255},
 			MAGE = {r = 0, g = 157/255, b = 255/255},
 			MONK = {

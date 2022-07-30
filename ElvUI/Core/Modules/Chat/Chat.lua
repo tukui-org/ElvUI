@@ -323,21 +323,34 @@ do --this can save some main file locals
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
-		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter
-		z['Luckyfear-Shazzrah']		= ElvBlue -- Warlock
-		z['Luckydruid-Shazzrah']	= ElvBlue -- Druid
-		z['Luckypriest-Shazzrah']	= ElvBlue -- Priest
-		z['Luckyshaman-Shazzrah']	= ElvBlue -- Shaman
 		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
 		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
 		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
 		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
 		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
-		z['Luckywl-Gehennas']		= ElvBlue -- Warlock
+		z['Luckyd-Golemagg']		= ElvBlue -- Druid
+		z['Luckyp-Golemagg']		= ElvBlue -- Priest
+		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
+		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
 	elseif E.Wrath then
+		-- Simpy
+		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
+		-- Luckyone Beta testing TODO: Wrath (Remove later)
+		z['Luckyone-ClassicBetaPvE']	= ElvBlue -- Beta
+		z['Luckydruid-ClassicBetaPvE']	= ElvBlue -- Beta
+		z['Luckyshaman-ClassicBetaPvE'] = ElvBlue -- Beta
+		z['Luckyhunter-ClassicBetaPvE'] = ElvBlue -- Beta
+		z['Luckydk-ClassicBetaPvE']		= ElvBlue -- Beta
 		-- Luckyone
-		z['Luckyone-ClassicBetaPvE']	= ElvBlue -- Hunter
-		z['Luckydk-ClassicBetaPvE']		= ElvBlue -- DK
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
+		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
+		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
+		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
+		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
+		z['Luckyd-Golemagg']		= ElvBlue -- Druid
+		z['Luckyp-Golemagg']		= ElvBlue -- Priest
+		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
+		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
