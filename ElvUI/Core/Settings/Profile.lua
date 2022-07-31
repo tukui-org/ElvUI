@@ -181,7 +181,6 @@ P.general = {
 	totems = {
 		alpha = 1,
 		buttonSize = 32,
-		enable = true,
 		flyoutDirection = 'UP',
 		flyoutSize = 28,
 		flyoutSpacing = 2,
