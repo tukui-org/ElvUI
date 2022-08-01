@@ -28,6 +28,9 @@ function UF:GetClassPower_Construct(frame)
 
 	if E.myclass == 'DRUID' then
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+	elseif E.myclass == 'DEATHKNIGHT' then
+		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
+		frame.ClassBar = 'Runes'
 	elseif E.Retail then
 		if E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' then
 			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
@@ -36,10 +39,6 @@ function UF:GetClassPower_Construct(frame)
 		end
 	elseif E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
-	end
-	if (E.Retail or E.Wrath) and E.myclass == 'DEATHKNIGHT' then
-		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
-		frame.ClassBar = 'Runes'
 	end
 end
 
