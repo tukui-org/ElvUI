@@ -28,15 +28,13 @@ function UF:GetClassPower_Construct(frame)
 
 	if E.myclass == 'DRUID' then
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+	elseif E.myclass == 'MONK' then
+		frame.Stagger = UF:Construct_Stagger(frame)
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
-	elseif E.Retail then
-		if E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' then
-			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
-		elseif E.myclass == 'MONK' then
-			frame.Stagger = UF:Construct_Stagger(frame)
-		end
+	elseif E.Retail and (E.myclass == 'SHAMAN' or E.myclass == 'PRIEST') then
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
 	end
