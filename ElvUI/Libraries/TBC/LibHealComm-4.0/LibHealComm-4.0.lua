@@ -1,5 +1,5 @@
 local major = "LibHealComm-4.0"
-local minor = 104
+local minor = 105
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -94,8 +94,8 @@ local spellRankTableData = {
 	[10] = { 9841, 9889, 25315, 25357, 18610, 23567, 24414, 26980, 27135, 48070, 48990 },
 	[11] = { 25299, 25297, 30020, 27136, 25221, 25391, 27030, 48442, 48071 },
 	[12] = { 26981, 26978, 25222, 25396, 27031, 48781, 48443 },
-	[13] = { 26982, 26979, 48782, 49272, 48067 },
-	[14] = { 49273, 48377, 48440, 48068 },
+	[13] = { 26982, 26979, 48782, 49272, 48067, 45543 },
+	[14] = { 49273, 48377, 48440, 48068, 45544 },
 	[15] = { 48378, 48441 },
 }
 
@@ -2355,7 +2355,6 @@ local function parseChannelHeal(casterGUID, spellID, amount, totalTicks, ...)
 	local ticksLeft = ceil((endTime - GetTime()) / pending.tickInterval)
 
 	loadHealList(pending, amount, 1, endTime, ticksLeft, ...)
-
 	HealComm.callbacks:Fire("HealComm_HealStarted", casterGUID, spellID, pending.bitType, pending.endTime, unpack(tempPlayerList))
 end
 
@@ -2869,7 +2868,7 @@ function HealComm:UNIT_SPELLCAST_START(unit, cast, spellID)
 		sendMessage(format("D:%.3f:%d:%d:%s", (endTime - startTime) / 1000, spellID or 0, amount or "", targets))
 	elseif( bitType == CHANNEL_HEALS ) then
 		parseChannelHeal(playerGUID, spellID, amount, ticks, string.split(",", targets))
-		if spellName == GetSpellInfo(740) then
+		if spellName == GetSpellInfo(740) or spellName == GetSpellInfo(746) then
 			sendMessage(string.format("C::%d:%d:%s:%s", spellID, amount, ticks, targets))
 		else
 			-- Penance has its first tick already done by the time this arrives
@@ -3236,22 +3235,23 @@ function HealComm:OnInitialize()
 		local FirstAid = GetSpellInfo(746)
 
 		spellData[FirstAid] = {
-			ticks = {6, 6, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8},
+			_isChanneled = true,
+			ticks = {6, 6, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8},
 			interval = 1,
-			averages = {66, 114, 161, 301, 400, 640, 800, 1104, 1360, 2000, 2800, 3400}
+			averages = {66, 114, 161, 301, 400, 640, 800, 1104, 1360, 2000, 2800, 3400, 4800, 5800}
 		}
 
 		local _GetHealTargets = GetHealTargets
 
-		GetHealTargets = function(bitType, guid, spellID, data)
+		GetHealTargets = function(bitType, guid, spellID)
 			local spellName = GetSpellInfo(spellID)
 
 			if spellName == FirstAid then
-				return compressGUID[guid], healAmount
+				return compressGUID[guid]
 			end
 
 			if _GetHealTargets then
-				return _GetHealTargets(bitType, guid, spellID, data)
+				return _GetHealTargets(bitType, guid, spellID)
 			end
 		end
 
