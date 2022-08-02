@@ -178,6 +178,7 @@ end
 
 function TT:RemoveTrashLines(tt)
 	if tt:IsForbidden() then return end
+
 	for i = 3, tt:NumLines() do
 		local tiptext = _G['GameTooltipTextLeft'..i]
 		local linetext = tiptext:GetText()
