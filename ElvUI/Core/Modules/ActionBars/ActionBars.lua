@@ -1529,7 +1529,6 @@ function AB:Initialize()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
-	--AB:ActionBarEffects()
 
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
