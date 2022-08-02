@@ -118,19 +118,20 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	local statusBar = tt.StatusBar
 	if statusBar then
+		local spacing = E.Spacing * 3
 		local position = TT.db.healthBar.statusPosition
 		statusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
 
 		if position == 'BOTTOM' and statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
-			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
-			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
+			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
+			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
 			statusBar.text:Point('CENTER', statusBar, 0, 0)
 			statusBar.anchoredToTop = nil
 		elseif position == 'TOP' and not statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
-			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))
-			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, (E.Spacing * 3))
+			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
+			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
 			statusBar.text:Point('CENTER', statusBar, 0, 0)
 			statusBar.anchoredToTop = true
 		end
