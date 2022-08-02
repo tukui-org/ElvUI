@@ -16,75 +16,76 @@ local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 local UIMAPTYPE_CONTINENT = Enum.UIMapType.Continent
 local MapUtil_GetMapParentInfo = MapUtil.GetMapParentInfo
 
-E.MapInfo = {}
+local MapInfo = {}
+E.MapInfo = MapInfo
 
 function E:MapInfo_Update()
 	local mapID = C_Map_GetBestMapForUnit('player')
 
 	local mapInfo = mapID and C_Map_GetMapInfo(mapID)
-	E.MapInfo.name = (mapInfo and mapInfo.name) or nil
-	E.MapInfo.mapType = (mapInfo and mapInfo.mapType) or nil
-	E.MapInfo.parentMapID = (mapInfo and mapInfo.parentMapID) or nil
+	MapInfo.name = (mapInfo and mapInfo.name) or nil
+	MapInfo.mapType = (mapInfo and mapInfo.mapType) or nil
+	MapInfo.parentMapID = (mapInfo and mapInfo.parentMapID) or nil
 
-	E.MapInfo.mapID = mapID or nil
-	E.MapInfo.zoneText = (mapID and E:GetZoneText(mapID)) or nil
-	E.MapInfo.subZoneText = GetMinimapZoneText() or nil
-	E.MapInfo.realZoneText = GetRealZoneText() or nil
+	MapInfo.mapID = mapID or nil
+	MapInfo.zoneText = (mapID and E:GetZoneText(mapID)) or nil
+	MapInfo.subZoneText = GetMinimapZoneText() or nil
+	MapInfo.realZoneText = GetRealZoneText() or nil
 
 	local continent = mapID and MapUtil_GetMapParentInfo(mapID, UIMAPTYPE_CONTINENT, true)
-	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
-	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
-	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
-	E.MapInfo.continentName = (continent and continent.name) or nil
+	MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
+	MapInfo.continentMapType = (continent and continent.mapType) or nil
+	MapInfo.continentMapID = (continent and continent.mapID) or nil
+	MapInfo.continentName = (continent and continent.name) or nil
 
 	E:MapInfo_CoordsUpdate()
 end
 
 local coordsWatcher = CreateFrame('Frame')
 function E:MapInfo_CoordsStart()
-	E.MapInfo.coordsWatching = true
-	E.MapInfo.coordsFalling = nil
+	MapInfo.coordsWatching = true
+	MapInfo.coordsFalling = nil
 	coordsWatcher:SetScript('OnUpdate', E.MapInfo_OnUpdate)
 
-	if E.MapInfo.coordsStopTimer then
-		E:CancelTimer(E.MapInfo.coordsStopTimer)
-		E.MapInfo.coordsStopTimer = nil
+	if MapInfo.coordsStopTimer then
+		E:CancelTimer(MapInfo.coordsStopTimer)
+		MapInfo.coordsStopTimer = nil
 	end
 end
 
 function E:MapInfo_CoordsStopWatching()
-	E.MapInfo.coordsWatching = nil
-	E.MapInfo.coordsStopTimer = nil
+	MapInfo.coordsWatching = nil
+	MapInfo.coordsStopTimer = nil
 	coordsWatcher:SetScript('OnUpdate', nil)
 end
 
 function E:MapInfo_CoordsStop(event)
 	if event == 'CRITERIA_UPDATE' then
-		if not E.MapInfo.coordsFalling then return end -- stop if we weren't falling
+		if not MapInfo.coordsFalling then return end -- stop if we weren't falling
 		if (GetUnitSpeed('player') or 0) > 0 then return end -- we are still moving!
-		E.MapInfo.coordsFalling = nil -- we were falling!
+		MapInfo.coordsFalling = nil -- we were falling!
 	elseif (event == 'PLAYER_STOPPED_MOVING' or event == 'PLAYER_CONTROL_GAINED') and IsFalling() then
-		E.MapInfo.coordsFalling = true
+		MapInfo.coordsFalling = true
 		return
 	end
 
-	if not E.MapInfo.coordsStopTimer then
-		E.MapInfo.coordsStopTimer = E:ScheduleTimer('MapInfo_CoordsStopWatching', 0.5)
+	if not MapInfo.coordsStopTimer then
+		MapInfo.coordsStopTimer = E:ScheduleTimer('MapInfo_CoordsStopWatching', 0.5)
 	end
 end
 
 function E:MapInfo_CoordsUpdate()
-	if E.MapInfo.mapID then
-		E.MapInfo.x, E.MapInfo.y = E:GetPlayerMapPos(E.MapInfo.mapID)
+	if MapInfo.mapID then
+		MapInfo.x, MapInfo.y = E:GetPlayerMapPos(MapInfo.mapID)
 	else
-		E.MapInfo.x, E.MapInfo.y = nil, nil
+		MapInfo.x, MapInfo.y = nil, nil
 	end
 
-	if E.MapInfo.x and E.MapInfo.y then
-		E.MapInfo.xText = E:Round(100 * E.MapInfo.x, 2)
-		E.MapInfo.yText = E:Round(100 * E.MapInfo.y, 2)
+	if MapInfo.x and MapInfo.y then
+		MapInfo.xText = E:Round(100 * MapInfo.x, 2)
+		MapInfo.yText = E:Round(100 * MapInfo.y, 2)
 	else
-		E.MapInfo.xText, E.MapInfo.yText = nil, nil
+		MapInfo.xText, MapInfo.yText = nil, nil
 	end
 end
 
@@ -145,18 +146,18 @@ LocalizeZoneNames()
 --We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
 --which adds the ' (Outland)' part unlike the GetRealZoneText() API.
 function E:GetZoneText(mapID)
-	if not (mapID and E.MapInfo.name) then return end
+	if not (mapID and MapInfo.name) then return end
 
 	local continent, zoneName = ZoneIDToContinentName[mapID]
 	if continent and continent == 'Outland' then
-		if E.MapInfo.name == localizedMapNames.Nagrand or E.MapInfo.name == 'Nagrand' then
+		if MapInfo.name == localizedMapNames.Nagrand or MapInfo.name == 'Nagrand' then
 			zoneName = localizedMapNames.Nagrand..' ('..localizedMapNames.Outland..')'
-		elseif E.MapInfo.name == localizedMapNames['Shadowmoon Valley'] or E.MapInfo.name == 'Shadowmoon Valley' then
+		elseif MapInfo.name == localizedMapNames['Shadowmoon Valley'] or MapInfo.name == 'Shadowmoon Valley' then
 			zoneName = localizedMapNames['Shadowmoon Valley']..' ('..localizedMapNames.Outland..')'
 		end
 	end
 
-	return zoneName or E.MapInfo.name
+	return zoneName or MapInfo.name
 end
 
 E:RegisterEvent('CRITERIA_UPDATE', 'MapInfo_CoordsStop') -- when the player goes into an animation (landing)
