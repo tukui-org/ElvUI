@@ -33,7 +33,7 @@ local function UpdateAlpha(tbox)
 		num = 100
 	end
 
-	_G.OpacitySliderFrame:SetValue(1 - (num / 100))
+	_G.OpacitySliderFrame:SetValue(1 - (num * 0.01))
 end
 
 local function expandFromThree(r, g, b)
@@ -211,7 +211,7 @@ function B:EnhanceColorPicker()
 	originalColor:SetColorTexture(0,0,0)
 	-- OldColorSwatch to appear beneath ColorSwatch
 	originalColor:SetDrawLayer('BORDER')
-	originalColor:Point('BOTTOMLEFT', 'ColorSwatch', 'TOPRIGHT', -(swatchWidth/2), -(swatchHeight/3))
+	originalColor:Point('BOTTOMLEFT', 'ColorSwatch', 'TOPRIGHT', -(swatchWidth*0.5), -(swatchHeight/3))
 
 	-- add Color Swatch for the copied color
 	local copiedColor = Picker:CreateTexture('ColorPPCopyColorSwatch')

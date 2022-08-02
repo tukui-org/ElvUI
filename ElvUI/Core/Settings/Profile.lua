@@ -22,7 +22,7 @@ P.general = {
 	topPanel = false,
 	customGlow = {
 		style = 'Pixel Glow',
-		color = { r = 23/255, g = 132/255, b = 209/255, a = 0.9 },
+		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
 		useColor = false,
 		speed = 0.3,
 		lines = 8,
@@ -85,7 +85,7 @@ P.general = {
 	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
 	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
-	valuecolor = { r = 23/255, g = 132/255, b = 209/255 },
+	valuecolor = { r = 0.09, g = 0.52, b = 0.82 },
 	cropIcon = 2,
 	minimap = {
 		size = 175,
@@ -686,38 +686,38 @@ P.nameplates = {
 			--overhealabsorbs = {r = 1, g = 0, b = 0, a = 0.25},
 		},
 		threat = {
-			goodColor = {r = 050/255, g = 180/255, b = 000/255},
-			badColor = {r = 254/255, g = 045/255, b = 045/255},
-			goodTransition = {r = 255/255, g = 217/255, b = 050/255},
-			badTransition ={r = 255/255, g = 129/255, b = 050/255},
-			offTankColor = {r = 187/255, g = 050/255, b = 255/255},
+			goodColor = {r = 0.20, g = 0.71, b = 0.00},
+			badColor = {r = 1.00, g = 0.18, b = 0.18},
+			goodTransition = {r = 1.00, g = 0.85, b = 0.20},
+			badTransition ={r = 1.00, g = 0.51, b = 0.20},
+			offTankColor = {r = 0.73, g = 0.20, b = 1.00},
 			offTankColorGoodTransition = {r = .31, g = .45, b = .63},
 			offTankColorBadTransition = {r = 0.71, g = 0.43, b = 0.27},
 		},
 		power = {
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
-			FURY = {r = 227/255, g = 126/255, b = 39/255, atlas = '_DemonHunter-DemonicFuryBar'},
+			FURY = {r = 0.89, g = 0.49, b = 0.15, atlas = '_DemonHunter-DemonicFuryBar'},
 			INSANITY = {r = 0.55, g = 0.14, b = 0.69, atlas = '_Priest-InsanityBar'},
 			LUNAR_POWER = {r = .9, g = .86, b = .12, atlas = '_Druid-LunarBar'},
 			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
-			PAIN = {r = 225/255, g = 225/255, b = 225/255, atlas = '_DemonHunter-DemonicPainBar'},
+			PAIN = {r = 0.88, g = 0.88, b = 0.88, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
 			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
 		},
 		selection = {
-			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE
-			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
-			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
-			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
-			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
-			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
-			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
-			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
+			[ 0] = {r = 1.00, g = 0.18, b = 0.18}, -- HOSTILE
+			[ 1] = {r = 1.00, g = 0.51, b = 0.20}, -- UNFRIENDLY
+			[ 2] = {r = 1.00, g = 0.85, b = 0.20}, -- NEUTRAL
+			[ 3] = {r = 0.20, g = 0.71, b = 0.00}, -- FRIENDLY
+			[ 5] = {r = 0.40, g = 0.53, b = 1.00}, -- PLAYER_EXTENDED
+			[ 6] = {r = 0.40, g = 0.20, b = 1.00}, -- PARTY
+			[ 7] = {r = 0.73, g = 0.20, b = 1.00}, -- PARTY_PVP
+			[ 8] = {r = 0.20, g = 1.00, b = 0.42}, -- FRIEND
+			[ 9] = {r = 0.60, g = 0.60, b = 0.60}, -- DEAD
+			[13] = {r = 0.10, g = 0.58, b = 0.28}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		classResources = {
 			chargedComboPoint = { r = 0.1647, g = 0.6353, b = 1.0 },
@@ -738,17 +738,17 @@ P.nameplates = {
 				[4] = {r = 0.9, g = 0.1, b = 1}
 			}
 			]]
-			PALADIN = { r = 228/255, g = 225/255, b = 16/255},
-			MAGE = { r = 0, g = 157/255, b = 1},
+			PALADIN = { r = 0.89, g = 0.88, b = 0.06},
+			MAGE = { r = 0, g = 0.62, b = 1},
 			MONK = {
 				[1] = {r = .57, g = .63, b = .35},
 				[2] = {r = .47, g = .63, b = .35},
 				[3] = {r = .37, g = .63, b = .35},
 				[4] = {r = .27, g = .63, b = .33},
 				[5] = {r = .17, g = .63, b = .33},
-				[6] = {r = 12/255, g = 145/255, b = 58/255}
+				[6] = {r = 0.05, g = 0.57, b = 0.23}
 			},
-			WARLOCK = {r = 148/255, g = 130/255, b = 201/255}
+			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
 	},
 	visibility = {
@@ -1613,7 +1613,7 @@ P.unitframe = {
 		auraByType = true,
 		auraByDispels = true,
 		auraBarTurtle = true,
-		auraBarTurtleColor = {r = 143/255, g = 101/255, b = 158/255},
+		auraBarTurtleColor = {r = 0.56, g = 0.40, b = 0.62},
 		transparentHealth = false,
 		transparentPower = false,
 		transparentCastbar = false,
@@ -1645,8 +1645,8 @@ P.unitframe = {
 			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
-			PAIN = {r = 225/255, g = 225/255, b = 225/255},
-			FURY = {r = 227/255, g = 126/255, b = 39/255},
+			PAIN = {r = 0.88, g = 0.88, b = 0.88},
+			FURY = {r = 0.89, g = 0.49, b = 0.15},
 			LUNAR_POWER = {r = .9, g = .86, b = .12},
 			INSANITY = {r = 0.55, g = 0.14, b = 0.69},
 			MAELSTROM = {r = 0, g = 0.5, b = 1},
@@ -1658,9 +1658,9 @@ P.unitframe = {
 			[3] = {r = .33, g = .59, b = .33},
 		},
 		reaction = {
-			BAD = { r = 199/255, g = 64/255, b = 64/255 },
-			NEUTRAL = { r = 218/255, g = 197/255, b = 92/255 },
-			GOOD = { r = 75/255, g = 175/255, b = 76/255 },
+			BAD = { r = 0.78, g = 0.25, b = 0.25 },
+			NEUTRAL = { r = 0.85, g = 0.77, b = 0.36 },
+			GOOD = { r = 0.29, g = 10.29, b = 0.30 },
 		},
 		threat = {
 			[ 0] = {r = 0.5, g = 0.5, b = 0.5}, -- low
@@ -1669,16 +1669,16 @@ P.unitframe = {
 			[ 3] = {r = 1.0, g = 0.2, b = 0.2}, -- tanking securely
 		},
 		selection = {
-			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE
-			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
-			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
-			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
-			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
-			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
-			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
-			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
+			[ 0] = {r = 1.00, g = 0.18, b = 0.18}, -- HOSTILE
+			[ 1] = {r = 1.00, g = 0.51, b = 0.20}, -- UNFRIENDLY
+			[ 2] = {r = 1.00, g = 0.85, b = 0.20}, -- NEUTRAL
+			[ 3] = {r = 0.20, g = 0.71, b = 0.00}, -- FRIENDLY
+			[ 5] = {r = 0.40, g = 0.53, b = 1.00}, -- PLAYER_EXTENDED
+			[ 6] = {r = 0.40, g = 0.20, b = 1.00}, -- PARTY
+			[ 7] = {r = 0.73, g = 0.20, b = 1.00}, -- PARTY_PVP
+			[ 8] = {r = 0.20, g = 1.00, b = 0.42}, -- FRIEND
+			[ 9] = {r = 0.60, g = 0.60, b = 0.60}, -- DEAD
+			[13] = {r = 0.10, g = 0.58, b = 0.28}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		healPrediction = {
 			personal = {r = 0, g = 1, b = 0.5, a = 0.25},
@@ -1713,17 +1713,17 @@ P.unitframe = {
 				[4] = {r = 0.9, g = 0.1, b = 1}
 			}
 			]]
-			PALADIN = {r = 228/255, g = 225/255, b = 16/255},
-			MAGE = {r = 0, g = 157/255, b = 255/255},
+			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
+			MAGE = {r = 0, g = 0.62, b = 1.00},
 			MONK = {
 				[1] = {r = .57, g = .63, b = .35},
 				[2] = {r = .47, g = .63, b = .35},
 				[3] = {r = .37, g = .63, b = .35},
 				[4] = {r = .27, g = .63, b = .33},
 				[5] = {r = .17, g = .63, b = .33},
-				[6] = {r = 12/255, g = 145/255, b = 58/255}
+				[6] = {r = 0.05, g = 0.57, b = 0.23}
 			},
-			WARLOCK = {r = 148/255, g = 130/255, b = 201/255}
+			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
 		frameGlow = {
 			mainGlow = {

@@ -23,7 +23,7 @@ local function VehicleSetUp(vehicleID)
 
 	local _, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
 	if numSeatIndicators then
-		local fourth = size / 4
+		local fourth = size * 0.25
 
 		for i = 1, numSeatIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]

@@ -168,13 +168,13 @@ function UF:Configure_Power(frame)
 
 			if frame.ORIENTATION == 'LEFT' then
 				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
-				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
 			elseif frame.ORIENTATION == 'RIGHT' then
 				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
-				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
 			else
-				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
-				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
 			end
 
 			power:SetFrameLevel(50)

@@ -295,7 +295,7 @@ function A:UpdateTempEnchant(button, index, expiration)
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
 
-		local remaining = (expiration / 1000) or 0
+		local remaining = (expiration * 0.001) or 0
 		A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
 	else
 		A:ClearAuraTime(button)

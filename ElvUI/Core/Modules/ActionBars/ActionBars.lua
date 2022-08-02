@@ -228,11 +228,11 @@ function AB:TrimIcon(button, masque)
 		local width, height = button:GetSize()
 		local ratio = width / height
 		if ratio > 1 then
-			local trimAmount = (1 - (1 / ratio)) / 2
+			local trimAmount = (1 - (1 / ratio)) * 0.5
 			top = top + trimAmount
 			bottom = bottom - trimAmount
 		else
-			local trimAmount = (1 - ratio) / 2
+			local trimAmount = (1 - ratio) * 0.5
 			left = left + trimAmount
 			right = right - trimAmount
 		end
@@ -343,7 +343,7 @@ function AB:PositionAndSizeBar(barName)
 		bar:Hide()
 	end
 
-	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing / 2)
+	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		MasqueGroup:ReSkin()

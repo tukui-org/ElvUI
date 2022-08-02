@@ -432,7 +432,7 @@ function UF:PostCastStart(unit)
 		if hasteTicks then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01
-			local firstTickInc = tickIncRate / 2
+			local firstTickInc = tickIncRate * 0.5
 			local bonusTicks = 0
 			if curHaste >= firstTickInc then
 				bonusTicks = bonusTicks + 1

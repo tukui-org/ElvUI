@@ -23,10 +23,10 @@ local SLOT_BORDER_COLORS = {
 }
 
 local SLOT_EMPTY_TCOORDS = {
-	[_G.EARTH_TOTEM_SLOT]	= {left = 66/128, right = 96/128, top = 3/256,   bottom = 33/256},
-	[_G.FIRE_TOTEM_SLOT]	= {left = 67/128, right = 97/128, top = 100/256, bottom = 130/256},
-	[_G.WATER_TOTEM_SLOT]	= {left = 39/128, right = 69/128, top = 209/256, bottom = 239/256},
-	[_G.AIR_TOTEM_SLOT]		= {left = 66/128, right = 96/128, top = 36/256,  bottom = 66/256}
+	[_G.EARTH_TOTEM_SLOT]	= {left = 0.52, right = 0.75, top = 0.01,   bottom = 30.01},
+	[_G.FIRE_TOTEM_SLOT]	= {left = 0.52, right = 0.76, top = 0.39, bottom = 0.51},
+	[_G.WATER_TOTEM_SLOT]	= {left = 0.30, right = 0.54, top = 0.82, bottom = 0.93},
+	[_G.AIR_TOTEM_SLOT]		= {left = 0.52, right = 0.75, top = 0.14,  bottom = 0.26}
 }
 
 function AB:MultiCastFlyoutFrameOpenButton_Show(button, which, parent)

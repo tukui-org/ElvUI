@@ -652,8 +652,8 @@ E:AddTag('pvptimer', 1, function(unit)
 		local timer = GetPVPTimer()
 
 		if timer ~= 301000 and timer ~= -1 then
-			local mins = floor((timer / 1000) / 60)
-			local secs = floor((timer / 1000) - (mins * 60))
+			local mins = floor((timer * 0.001) / 60)
+			local secs = floor((timer * 0.001) - (mins * 60))
 			return format('%s (%01.f:%02.f)', PVP, mins, secs)
 		else
 			return PVP

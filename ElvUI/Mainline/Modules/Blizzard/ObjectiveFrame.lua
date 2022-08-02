@@ -15,7 +15,7 @@ local function IsFramePositionedLeft(frame)
 	local screenWidth = E.screenWidth
 	local positionedLeft = false
 
-	if x and x < (screenWidth / 2) then
+	if x and x < (screenWidth * 0.5) then
 		positionedLeft = true
 	end
 

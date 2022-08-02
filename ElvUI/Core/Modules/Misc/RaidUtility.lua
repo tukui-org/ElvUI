@@ -272,7 +272,7 @@ function RU:Initialize()
 		sb:StopMovingOrSizing()
 		local point = sb:GetPoint()
 		local xOffset = sb:GetCenter()
-		local screenWidth = E.UIParent:GetWidth() / 2
+		local screenWidth = E.UIParent:GetWidth() * 0.5
 		xOffset = xOffset - screenWidth
 		sb:ClearAllPoints()
 		if strfind(point, 'BOTTOM') then

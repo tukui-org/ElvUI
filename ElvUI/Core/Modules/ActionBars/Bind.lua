@@ -180,7 +180,7 @@ function AB:BindUpdate(button, spellmacro)
 		button.id = button:GetID()
 
 		-- no clue what this is, leaving it alone tho lol
-		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)/10==.8 then
+		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)*0.1==.8 then
 			button.id = button.id + MAX_ACCOUNT_MACROS
 		end
 

@@ -1003,7 +1003,7 @@ function B:Layout(isBank)
 					slot.filterIcon.FilterBackdrop:SetSize(buttonSize, buttonSize)
 				end
 
-				slot.JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
+				slot.JunkIcon:SetSize(buttonSize * 0.5, buttonSize * 0.5)
 
 				if slot:GetPoint() then
 					slot:ClearAllPoints()
@@ -1273,14 +1273,14 @@ function B:UpdateTokens()
 		end
 
 		if numTokens == 1 then
-			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() / 2), 3)
+			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() * 0.5), 3)
 		elseif numTokens == 2 then
-			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() / 2), 3)
-			f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() / 2, 3)
+			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() * 0.5), 3)
+			f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() * 0.5, 3)
 		else
 			f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3)
 			f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
-			f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3)
+			f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() * 0.5), 3)
 		end
 	end
 end
@@ -2318,12 +2318,12 @@ function B:PostBagMove()
 	local screenHeight = E.UIParent:GetTop()
 	local screenWidth = E.UIParent:GetRight()
 
-	if y > (screenHeight / 2) then
+	if y > (screenHeight * 0.5) then
 		self:SetText(self.textGrowDown)
-		self.POINT = ((x > (screenWidth/2)) and 'TOPRIGHT' or 'TOPLEFT')
+		self.POINT = ((x > (screenWidth*0.5)) and 'TOPRIGHT' or 'TOPLEFT')
 	else
 		self:SetText(self.textGrowUp)
-		self.POINT = ((x > (screenWidth/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT')
+		self.POINT = ((x > (screenWidth*0.5)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT')
 	end
 
 	local bagFrame = (self.name == 'ElvUIBankMover' and B.BankFrame) or B.BagFrame

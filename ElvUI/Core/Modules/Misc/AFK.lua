@@ -314,7 +314,7 @@ function AFK:Initialize()
 	bottom:SetTemplate('Transparent')
 	bottom:Point('BOTTOM', afk, 'BOTTOM', 0, -E.Border)
 	bottom:Width(E.screenWidth + (E.Border*2))
-	bottom:Height(E.screenHeight * (1 / 10))
+	bottom:Height(E.screenHeight * 0.10)
 
 	local logoTop = afk:CreateTexture(nil, 'OVERLAY')
 	logoTop:Size(320, 150)

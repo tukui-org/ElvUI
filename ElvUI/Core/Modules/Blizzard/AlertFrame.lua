@@ -15,7 +15,7 @@ function E:PostAlertMove()
 
 	local _, y = AlertFrameMover:GetCenter()
 	local screenHeight = E.UIParent:GetTop()
-	if y > (screenHeight / 2) then
+	if y > (screenHeight * 0.5) then
 		POSITION = 'TOP'
 		ANCHOR_POINT = 'BOTTOM'
 		YOFFSET = -10

@@ -436,8 +436,8 @@ function E:FormatMoney(amount, style, textonly)
 	local goldname = textonly and L["goldabbrev"] or ICON_GOLD
 
 	local value = abs(amount)
-	local gold = floor(value / 10000)
-	local silver = floor(mod(value / 100, 100))
+	local gold = floor(value * 0.0001)
+	local silver = floor(mod(value * 0.01, 100))
 	local copper = floor(mod(value, 100))
 
 	if not style or style == 'SMART' then
@@ -458,9 +458,9 @@ function E:FormatMoney(amount, style, textonly)
 		end
 	elseif style == 'SHORT' then
 		if gold > 0 then
-			return format('%.1f%s', amount / 10000, goldname)
+			return format('%.1f%s', amount * 0.0001, goldname)
 		elseif silver > 0 then
-			return format('%.1f%s', amount / 100, silvername)
+			return format('%.1f%s', amount * 0.01, silvername)
 		else
 			return format('%d%s', amount, coppername)
 		end

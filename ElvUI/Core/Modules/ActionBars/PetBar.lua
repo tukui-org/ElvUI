@@ -98,8 +98,8 @@ function AB:PositionAndSizeBarPet()
 	local point = db.point
 	local visibility = db.visibility
 
-	local autoCastWidth = (buttonWidth / 2) - (buttonWidth / 7.5)
-	local autoCastHeight = (buttonHeight / 2) - (buttonHeight / 7.5)
+	local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
+	local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
 
 	bar.db = db
 	bar.mouseover = db.mouseover

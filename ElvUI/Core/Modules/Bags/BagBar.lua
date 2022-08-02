@@ -111,7 +111,7 @@ function B:SizeAndPositionBagBar()
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
 		if E.Retail then
-			button.filterIcon.FilterBackdrop:Size(bagBarSize / 2)
+			button.filterIcon.FilterBackdrop:Size(bagBarSize * 0.5)
 		end
 
 		button:Size(bagBarSize)

@@ -573,7 +573,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if Alpha then
 		c.Alpha = true
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha * 0.01)
 	end
 	if Portrait then
 		c.Portrait = true

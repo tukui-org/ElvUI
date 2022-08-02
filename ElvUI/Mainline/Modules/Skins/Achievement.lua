@@ -70,7 +70,7 @@ end
 local function SkinStatusBar(bar)
 	bar:StripTextures()
 	bar:SetStatusBarTexture(E.media.normTex)
-	bar:SetStatusBarColor(4/255, 179/255, 30/255)
+	bar:SetStatusBarColor(0.02, 0.70, 0.12)
 	bar:CreateBackdrop()
 	E:RegisterStatusBar(bar)
 
@@ -414,7 +414,7 @@ function S:Blizzard_AchievementUI()
 			frame:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(frame)
 
-			frame:SetStatusBarColor(4/255, 179/255, 30/255)
+			frame:SetStatusBarColor(0.02, 0.70, 0.12)
 			frame:CreateBackdrop('Transparent')
 			frame:SetFrameLevel(frame:GetFrameLevel() + 3)
 			frame:Height(frame:GetHeight() - 2)
