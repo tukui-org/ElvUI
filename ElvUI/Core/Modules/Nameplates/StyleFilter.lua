@@ -349,7 +349,7 @@ function mod:StyleFilterDispelCheck(frame, filter)
 end
 
 function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
-	local total, matches = 0, 0
+	local now, total, matches = 0, 0, GetTime()
 	for key, value in pairs(names) do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
@@ -364,7 +364,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 					if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
 						local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 						local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-						local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - GetTime()) / (modRate or 1))
+						local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - now) / (modRate or 1))
 						local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 						local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
