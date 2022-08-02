@@ -700,12 +700,12 @@ end
 
 local actionDefaults = {
 	color = {
-		healthColor = { r = 136 / 255, g = 255 / 255, b = 102 / 255, a = 1 },
-		powerColor = { r = 102 / 255, g = 136 / 255, b = 255 / 255, a = 1 },
+		healthColor = { r = 0.53, g = 1.00, b = 0.40, a = 1 },
+		powerColor = { r = 0.40, g = 0.53, b = 1.00, a = 1 },
 		borderColor = { r = 0, g = 0, b = 0, a = 1}
 	},
 	flash = {
-		color = { r = 104 / 255, g = 138 / 255, b = 217 / 255, a = 1 },
+		color = { r = 0.41, g = 0.54, b = 0.85, a = 1 },
 		speed = 4
 	},
 }
