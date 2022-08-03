@@ -161,7 +161,7 @@ do
 
 		self.Hide = Hide
 		self.Show = Show
-		self.SetTitle =  SetTitle
+		self.SetTitle = SetTitle
 		self.OnRelease = OnRelease
 		self.OnAcquire = OnAcquire
 		self.SetStatusText = SetStatusText

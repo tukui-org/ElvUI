@@ -303,10 +303,10 @@ local escapes = {
 	["|r"] = "", -- color end
 }
 local function CleanString(str)
-    for k, v in pairs(escapes) do
-        str = str:gsub(k, v)
-    end
-    return str
+	for k, v in pairs(escapes) do
+		str = str:gsub(k, v)
+	end
+	return str
 end
 
 Lib.Filters.tipPhrases = {
