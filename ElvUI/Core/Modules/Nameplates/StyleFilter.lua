@@ -349,7 +349,7 @@ function mod:StyleFilterDispelCheck(frame, filter)
 end
 
 function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
-	local now, total, matches = 0, 0, GetTime()
+	local total, matches, now = 0, 0, GetTime()
 	for key, value in pairs(names) do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
