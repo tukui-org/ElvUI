@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 
 local rad = rad
 local unpack = unpack
-local select = select
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
@@ -133,7 +132,8 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetDesaturation(db.desaturation)
 		self:SetPaused(db.paused)
 	elseif db.style == 'Class' then
-		local Class = select(2, UnitClass(unit))
-		self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[Class]))
+		local _, className = UnitClass(unit)
+		local crop = CLASS_ICON_TCOORDS[className]
+		if crop then self:SetTexCoord(unpack(crop)) end
 	end
 end
