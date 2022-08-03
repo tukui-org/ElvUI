@@ -1660,7 +1660,7 @@ P.unitframe = {
 		reaction = {
 			BAD = { r = 0.78, g = 0.25, b = 0.25 },
 			NEUTRAL = { r = 0.85, g = 0.77, b = 0.36 },
-			GOOD = { r = 0.29, g = 10.29, b = 0.30 },
+			GOOD = { r = 0.29, g = 0.69, b = 0.30 },
 		},
 		threat = {
 			[ 0] = {r = 0.5, g = 0.5, b = 0.5}, -- low
