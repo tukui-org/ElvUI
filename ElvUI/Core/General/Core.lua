@@ -1810,17 +1810,12 @@ function E:DBConversions()
 	end
 
 	-- development converts
-	if E.db.unitframe.colors.classResources.DEATHKNIGHT.r then
-		local runeColor = E.db.unitframe.colors.classResources.DEATHKNIGHT
-		E.db.unitframe.colors.classResources.DEATHKNIGHT = E:CopyTable({}, P.unitframe.colors.classResources.DEATHKNIGHT)
-		E.db.unitframe.colors.classResources.DEATHKNIGHT[0] = runeColor
-	end
-
-	if E.db.nameplates.colors.classResources.DEATHKNIGHT.r then
-		local runeColor = E.db.nameplates.colors.classResources.DEATHKNIGHT
-		E.db.nameplates.colors.classResources.DEATHKNIGHT = E:CopyTable({}, P.nameplates.colors.classResources.DEATHKNIGHT)
-		E.db.nameplates.colors.classResources.DEATHKNIGHT[0] = runeColor
-	end
+	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
+		if data.r then
+			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
+	end -- rune convert
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
