@@ -56,7 +56,7 @@ local GetRuneType = GetRuneType
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
-local runemap = oUF.isWotLK and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
+local runemap = oUF.isWrath and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
 local hasSortOrder = false
 
 local function onUpdate(self, elapsed)
@@ -113,7 +113,7 @@ local function UpdateColor(self, event, runeID, alt)
 	local element = self.Runes
 
 	local rune, specType
-	if oUF.isWotLK then -- runeID, alt
+	if oUF.isWrath then -- runeID, alt
 		if runeID and event == 'RUNE_TYPE_UPDATE' then
 			rune = UpdateRuneType(element[runemap[runeID]], runeID, alt)
 		end
@@ -130,7 +130,7 @@ local function UpdateColor(self, event, runeID, alt)
 	else
 		for i = 1, #element do
 			local bar = element[i]
-			if oUF.isWotLK and not bar.runeType then
+			if oUF.isWrath and not bar.runeType then
 				bar.runeType = GetRuneType(runemap[i])
 			end
 
@@ -165,7 +165,7 @@ end
 local function Update(self, event)
 	local element = self.Runes
 
-	if not oUF.isWotLK then
+	if not oUF.isWrath then
 		if element.sortOrder == 'asc' then
 			sort(runemap, ascSort)
 			hasSortOrder = true
@@ -263,7 +263,7 @@ local function Enable(self, unit)
 
 		if oUF.isRetail then
 			self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
-		elseif oUF.isWotLK then
+		elseif oUF.isWrath then
 			self:RegisterEvent('RUNE_TYPE_UPDATE', ColorPath, true)
 		end
 
@@ -288,7 +288,7 @@ local function Disable(self)
 
 		if oUF.isRetail then
 			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
-		elseif oUF.isWotLK then
+		elseif oUF.isWrath then
 			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
 		end
 
