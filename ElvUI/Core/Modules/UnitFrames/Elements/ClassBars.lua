@@ -48,29 +48,41 @@ function UF:PostVisibility_ClassBars(frame)
 	UF:Configure_InfoPanel(frame)
 end
 
-function UF:ClassPower_UpdateColor(powerType)
+function UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
+	bar:SetStatusBarColor(r, g, b)
+
+	if bar.bg then
+		if custom_backdrop then
+			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		else
+			bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
+		end
+	end
+end
+
+function UF:ClassPower_UpdateColor(powerType, rune)
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 	local color, r, g, b = UF.db.colors.classResources[E.myclass] or UF.db.colors.power[powerType]
 	if color then
 		r, g, b = color.r, color.g, color.b
 	else
-		color = ElvUF.colors.power[powerType]
-		r, g, b = unpack(color)
+		r, g, b = unpack(ElvUF.colors.power[powerType])
 	end
 
-	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+	local isRunes = powerType == 'RUNES'
+	if isRunes and E.Retail and UF.db.colors.chargingRunes then
+		UF:Runes_UpdateCharged(self, custom_backdrop)
+	elseif isRunes and rune then
+		UF:ClassPower_SetBarColor(rune, r, g, b, custom_backdrop)
+	else
+		for i, bar in ipairs(self) do
+			local classCombo = (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints[i])
+			or (powerType == 'CHI' and UF.db.colors.classResources.MONK[i])
+			or (isRunes and UF.db.colors.classResources.DEATHKNIGHT[bar.runeType or 0])
 
-	for i, bar in ipairs(self) do
-		local classCombo = (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and UF.db.colors.classResources.MONK[i])
-		if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
+			if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
 
-		bar:SetStatusBarColor(r, g, b)
-
-		if bar.bg then
-			if custom_backdrop then
-				bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-			else
-				bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
-			end
+			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
 		end
 	end
 end
@@ -110,7 +122,7 @@ function UF:Configure_ClassBar(frame)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 0.67
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR
 		end
@@ -122,7 +134,7 @@ function UF:Configure_ClassBar(frame)
 	bars:Height(frame.CLASSBAR_HEIGHT - SPACING)
 
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
-		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
+		if frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 		end
 
@@ -438,16 +450,28 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
-local function PostUpdateRunes(self, _, hasVehicle, allReady)
+function UF:Runes_UpdateCharged(runes, custom_backdrop)
+	local colors = UF.db.colors.classResources.DEATHKNIGHT
+	for _, bar in ipairs(runes) do
+		local value = bar:GetValue()
+		local color = colors[(value and value ~= 1 and -1) or bar.runeType or 0]
+		UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+	end
+end
+
+function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if hasVehicle or (allReady and db.classbar.autoHide) then
-		self:Hide()
-	else
-		self:Show()
-		UF.ClassPower_UpdateColor(self, 'RUNES')
+	self:SetShown(not hasVehicle and not db.classbar.autoHide or not allReady)
+
+	if E.Retail and UF.db.colors.chargingRunes then
+		UF:Runes_UpdateCharged(self)
 	end
+end
+
+function UF:Runes_PostUpdateColor(r, g, b, color, rune)
+	UF.ClassPower_UpdateColor(self, 'RUNES', rune)
 end
 
 function UF:Construct_DeathKnightResourceBar(frame)
@@ -472,8 +496,9 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i] = rune
 	end
 
-	runes.PostUpdate = PostUpdateRunes
-	runes.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
+	runes.PostUpdate = UF.Runes_PostUpdate
+	runes.PostUpdateColor = UF.Runes_PostUpdateColor
+
 	runes:SetScript('OnShow', ToggleResourceBar)
 	runes:SetScript('OnHide', ToggleResourceBar)
 

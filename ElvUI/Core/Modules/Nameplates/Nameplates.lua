@@ -225,6 +225,26 @@ function NP:Construct_RaisedELement(nameplate)
 	return RaisedElement
 end
 
+function NP:Construct_ClassPowerTwo(nameplate)
+	if nameplate ~= _G.ElvNP_Test then
+		if E.myclass == 'DEATHKNIGHT' then
+			nameplate.Runes = NP:Construct_Runes(nameplate)
+		elseif E.myclass == 'MONK' then
+			nameplate.Stagger = NP:Construct_Stagger(nameplate)
+		end
+	end
+end
+
+function NP:Update_ClassPowerTwo(nameplate)
+	if nameplate ~= _G.ElvNP_Test then
+		if E.myclass == 'DEATHKNIGHT' then
+			NP:Update_Runes(nameplate)
+		elseif E.myclass == 'MONK' then
+			NP:Update_Stagger(nameplate)
+		end
+	end
+end
+
 function NP:StyleTargetPlate(nameplate)
 	nameplate:SetScale(E.uiscale)
 	nameplate:ClearAllPoints()
@@ -234,21 +254,12 @@ function NP:StyleTargetPlate(nameplate)
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
-	if E.myclass == 'DEATHKNIGHT' then
-		nameplate.Runes = NP:Construct_Runes(nameplate)
-	elseif E.myclass == 'MONK' then
-		nameplate.Stagger = NP:Construct_Stagger(nameplate)
-	end
+	NP:Construct_ClassPowerTwo(nameplate)
 end
 
 function NP:UpdateTargetPlate(nameplate)
 	NP:Update_ClassPower(nameplate)
-
-	if E.myclass == 'DEATHKNIGHT' then
-		NP:Update_Runes(nameplate)
-	elseif E.myclass == 'MONK' then
-		NP:Update_Stagger(nameplate)
-	end
+	NP:Update_ClassPowerTwo(nameplate)
 
 	nameplate:UpdateAllElements('OnShow')
 end
@@ -314,11 +325,7 @@ function NP:StylePlate(nameplate)
 	NP:Construct_Auras(nameplate)
 	NP:StyleFilterEvents(nameplate) -- prepare the watcher
 
-	if E.myclass == 'DEATHKNIGHT' then
-		nameplate.Runes = NP:Construct_Runes(nameplate)
-	elseif E.myclass == 'MONK' then
-		nameplate.Stagger = NP:Construct_Stagger(nameplate)
-	end
+	NP:Construct_ClassPowerTwo(nameplate)
 
 	NP.Plates[nameplate] = nameplate:GetName()
 
@@ -360,11 +367,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_Cutaway(nameplate)
 
-		if E.myclass == 'DEATHKNIGHT' then
-			NP:Update_Runes(nameplate)
-		elseif E.myclass == 'MONK' then
-			NP:Update_Stagger(nameplate)
-		end
+		NP:Update_ClassPowerTwo(nameplate)
 
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
