@@ -64,22 +64,20 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 	local isRunes = powerType == 'RUNES'
 
+	local colors = UF.db.colors.classResources
+	local fallback = UF.db.colors.power[powerType]
+
 	if isRunes and E.Retail and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, custom_backdrop)
 	elseif isRunes and rune then
-		local color = UF.db.colors.classResources.DEATHKNIGHT[rune.runeType or 0]
+		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
-		local classColor = (isRunes and UF.db.colors.classResources.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints) or (powerType == 'CHI' and UF.db.colors.classResources.MONK)
-		for i, bar in ipairs(self) do
-			local color, r, g, b = isRunes and classColor[bar.runeType or 0] or classColor[i] or UF.db.colors.classResources[E.myclass] or UF.db.colors.power[powerType]
-			if color then
-				r, g, b = color.r, color.g, color.b
-			else
-				r, g, b = unpack(ElvUF.colors.power[powerType])
-			end
+		local classColor = (isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'CHI' and colors.MONK)
 
-			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
+		for i, bar in ipairs(self) do
+			local color = isRunes and classColor[bar.runeType or 0] or classColor[i] or colors[E.myclass] or fallback
+			UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
 		end
 	end
 end
