@@ -1696,7 +1696,7 @@ P.unitframe = {
 			color = {r = 1, g = 1, b = 1, a = 1},
 		},
 		classResources = {
-			chargedComboPoint = { r = 0.1647, g = 0.6353, b = 1.0 },
+			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
 			comboPoints = {
 				{r = .69, g = .31, b = .31},
 				{r = .65, g = .42, b = .31},
