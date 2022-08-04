@@ -134,7 +134,7 @@ function NP:Update_ClassPower(nameplate)
 		nameplate.ClassPower:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
-		nameplate.ClassPower.classColor = db.classpower and db.classpower.enable and db.classpower.classColor and E:ClassColor(E.myclass)
+		nameplate.ClassPower.classColor = db.classpower.classColor and E:ClassColor(E.myclass)
 
 		for i = 1, #nameplate.ClassPower do
 			nameplate.ClassPower[i]:Hide()
@@ -174,10 +174,11 @@ function NP:Update_ClassPower(nameplate)
 end
 
 function NP:Runes_UpdateCharged(runes)
+	local classPower = runes.classColor
 	local colors = NP.db.colors.classResources.DEATHKNIGHT
 	for _, bar in ipairs(runes) do
 		local value = bar:GetValue()
-		local color = colors[(value and value ~= 1 and -1) or bar.runeType or 0]
+		local color = (value == 1 and classPower) or colors[(value and value ~= 1 and -1) or bar.runeType or 0]
 		NP:ClassPower_SetBarColor(bar, color.r, color.g, color.b)
 	end
 end
@@ -235,13 +236,12 @@ function NP:Update_Runes(nameplate)
 			nameplate:EnableElement('Runes')
 		end
 
-		nameplate.Runes:Show()
-
 		local anchor = target and NP:GetClassAnchor()
 		nameplate.Runes:ClearAllPoints()
 		nameplate.Runes:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		nameplate.Runes:Show()
 
-		nameplate.Runes.classColor = E.Retail and db.classpower and db.classpower.enable and db.classpower.classColor and E:ClassColor(E.myclass)
+		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E:ClassColor(E.myclass)
 		nameplate.Runes.sortOrder = db.classpower.sortDirection
 
 		local width = db.classpower.width / 6
