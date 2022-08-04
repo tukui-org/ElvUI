@@ -185,7 +185,8 @@ local function GetClassPower(Class)
 	local min, max, r, g, b
 
 	-- try stagger
-	if Class == 'MONK' then
+	local monk = Class == 'MONK'
+	if monk then
 		local spec = GetSpecialization()
 		if spec == SPEC_MONK_BREWMASTER then
 			min = UnitStagger('player')
@@ -206,12 +207,11 @@ local function GetClassPower(Class)
 	if not r then
 		local barType = ClassPowers[Class]
 		if barType then
-			min = UnitPower('player', barType)
-			max = UnitPowerMax('player', barType)
+			local dk = Class == 'DEATHKNIGHT'
+			min = (dk and 0) or UnitPower('player', barType)
+			max = (dk and 6) or UnitPowerMax('player', barType)
 
-			if Class == 'DEATHKNIGHT' then
-				min = 0 -- only count full runes
-
+			if dk then
 				for i = 1, max do
 					local _, _, runeReady = GetRuneCooldown(i)
 					if runeReady then
@@ -222,8 +222,10 @@ local function GetClassPower(Class)
 
 			if min > 0 then
 				local powerColor = ElvUF.colors.ClassBars[Class]
-				if Class == 'MONK' then -- chi is a table
+				if monk then -- chi is a table
 					r, g, b = unpack(powerColor[min])
+				elseif dk then
+					r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[GetSpecialization() or 1])
 				else
 					r, g, b = unpack(powerColor)
 				end
@@ -242,7 +244,7 @@ local function GetClassPower(Class)
 	end
 
 	-- try additional mana
-	if not r then
+	if not r and E.Retail then
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
 		if barIndex and barIndex[UnitPowerType('player')] then
 			min = UnitPower('player', POWERTYPE_MANA)
@@ -311,7 +313,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 			end
 		end
-	end)
+	end, not E.Retail)
 
 	E:AddTag(format('mana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local min = UnitPower(unit, POWERTYPE_MANA)
@@ -371,7 +373,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 				end
 			end
-		end)
+		end, not E.Retail)
 
 		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 			local min, max = GetClassPower(E.myclass)
@@ -660,7 +662,7 @@ E:AddTag('pvptimer', 1, function(unit)
 	end
 end)
 
-E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
+E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and (E.myclass == 'DEATHKNIGHT' or E.myclass == 'MONK') and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function()
 	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
 end)
