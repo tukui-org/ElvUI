@@ -721,7 +721,7 @@ P.nameplates = {
 			[13] = {r = 0.10, g = 0.58, b = 0.28}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		classResources = {
-			chargedComboPoint = { r = 0.1647, g = 0.6353, b = 1.0 },
+			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
 			comboPoints = {
 				{r = .69, g = .31, b = .31},
 				{r = .65, g = .42, b = .31},
@@ -732,7 +732,7 @@ P.nameplates = {
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
-				[0] = {r = .3, g = .45, b = .6},
+				[0] = {r = 0.68, g = 0.89, b = 0.28},
 				{r = 1, g = 0.25, b = 0.25},
 				{r = 0.25, g = 1, b = 1},
 				{r = 0.25, g = 1, b = 0.25},
@@ -1707,7 +1707,7 @@ P.unitframe = {
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
-				[0] = {r = .3, g = .45, b = .6},
+				[0] = {r = 0.68, g = 0.89, b = 0.28},
 				{r = 1, g = 0.25, b = 0.25},
 				{r = 0.25, g = 1, b = 1},
 				{r = 0.25, g = 1, b = 0.25},
