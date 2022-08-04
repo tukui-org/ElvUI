@@ -786,7 +786,7 @@ end
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Raid Role Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.scale = ACH:Range(E.NewSign..L["Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true })
+	config.args.scale = ACH:Range(L["Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true })
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
@@ -844,7 +844,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 5)
 		config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		config.args.altManaGroup = ACH:Group(E.NewSign..L["Display Mana"], nil, 20, nil, function(info) return E.db.unitframe.altManaPowers[E.myclass][info[#info]] end, function(info, value) E.db.unitframe.altManaPowers[E.myclass][info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() if E.Retail then return not E.db.unitframe.altManaPowers[E.myclass] else return E.myclass ~= 'DRUID' end end)
+		config.args.altManaGroup = ACH:Group(L["Display Mana"], nil, 20, nil, function(info) return E.db.unitframe.altManaPowers[E.myclass][info[#info]] end, function(info, value) E.db.unitframe.altManaPowers[E.myclass][info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() if E.Retail then return not E.db.unitframe.altManaPowers[E.myclass] else return E.myclass ~= 'DRUID' end end)
 		config.args.altManaGroup.args.info = ACH:Description(L["Will display mana when main power is:"], 0)
 		config.args.altManaGroup.inline = true
 		if E.myclass == 'DRUID' then
@@ -918,7 +918,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.inline = true
 		config.args.sortingGroup.args.raidWideSorting = ACH:Toggle(L["Raid-Wide Sorting"], L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."], 1, nil, nil, nil, nil, nil, nil, groupName == 'party')
 		config.args.sortingGroup.args.invertGroupingOrder = ACH:Toggle(L["Invert Grouping Order"], L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].raidWideSorting end)
-		config.args.sortingGroup.args.startFromCenter = ACH:Toggle(E.NewSign..L["Start Near Center"], L["The initial group will start near the center and grow out."], 3, nil, nil, nil, nil, nil, nil, function() return groupName ~= 'party' and not E.db.unitframe.units[groupName].raidWideSorting end)
+		config.args.sortingGroup.args.startFromCenter = ACH:Toggle(L["Start Near Center"], L["The initial group will start near the center and grow out."], 3, nil, nil, nil, nil, nil, nil, function() return groupName ~= 'party' and not E.db.unitframe.units[groupName].raidWideSorting end)
 		config.args.sortingGroup.args.groupBy = ACH:Select(L["Group By"], L["Set the order that the group will sort."], 4, { CLASS = L["CLASS"], ROLE = L["ROLE"], NAME = L["Name"], GROUP = L["GROUP"], INDEX = L["Index"] })
 		config.args.sortingGroup.args.sortDir = ACH:Select(L["Sort Direction"], nil, 5, { ASC = L["Ascending"], DESC = L["Descending"] })
 		config.args.sortingGroup.args.sortMethod = ACH:Select(L["Sort Method"], nil, 6, { NAME = L["Name"], INDEX = L["Index"] }, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy == 'INDEX' or E.db.unitframe.units[groupName].groupBy == 'NAME' end)
@@ -1189,13 +1189,13 @@ Colors.classResourceGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, functi
 Colors.classResourceGroup.args.RUNES.inline = true
 
 do
-	local runeText = { [-1] = L["RUNE_CHARGE"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
+	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
-		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(i == 0 and L["RUNES"] or runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, (E.Wrath and i < 1) or (E.Retail and i > 0))
+		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, (E.Wrath and i < 1) or (E.Retail and i > 0))
 	end
 end
 
-Colors.classResourceGroup.args.RUNES.args.chargingRunes = ACH:Toggle(L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.classResourceGroup.args.RUNES.args.chargingRunes = ACH:Toggle(E.NewSign..L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, nil, not E.Retail)
 
 Colors.classResourceGroup.args.classpower_backdrop = ACH:Color(L["Custom Backdrop"], nil, 30, nil, nil, function(info) local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, function() return not E.db.unitframe.colors.customclasspowerbackdrop end)
 Colors.classResourceGroup.args.customclasspowerbackdrop = ACH:Toggle(L["Use Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 31, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end)
@@ -1264,7 +1264,7 @@ Player.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'play
 
 Player.RestIcon = ACH:Group(L["Rest Icon"], nil, nil, nil, function(info) return E.db.unitframe.units.player.RestIcon[info[#info]] end, function(info, value) E.db.unitframe.units.player.RestIcon[info[#info]] = value UF:CreateAndUpdateUF('player') UF:TestingDisplay_RestingIndicator(UF.player) end)
 Player.RestIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Player.RestIcon.args.hideAtMaxLevel = ACH:Toggle(E.NewSign..L["Hide At Max Level"], nil, 2)
+Player.RestIcon.args.hideAtMaxLevel = ACH:Toggle(L["Hide At Max Level"], nil, 2)
 Player.RestIcon.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
 Player.RestIcon.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
 Player.RestIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })

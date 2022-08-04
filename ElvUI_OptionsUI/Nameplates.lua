@@ -469,15 +469,15 @@ E.Options.args.nameplates.args.colorsGroup.args.general.inline = true
 do
 	local function GetToggle(info) return E.db.nameplates.colors[info[#info]] end
 	local function SetToggle(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end
-	E.Options.args.nameplates.args.colorsGroup.args.general.args.preferGlowColor = ACH:Toggle(E.NewSign..L["Prefer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
+	E.Options.args.nameplates.args.colorsGroup.args.general.args.preferGlowColor = ACH:Toggle(L["Prefer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
 	E.Options.args.nameplates.args.colorsGroup.args.general.args.auraByDispels = ACH:Toggle(L["Borders By Dispel"], nil, 2, nil, nil, nil, GetToggle, SetToggle)
 	E.Options.args.nameplates.args.colorsGroup.args.general.args.auraByType = ACH:Toggle(L["Borders By Type"], nil, 3, nil, nil, nil, GetToggle, SetToggle)
 end
 
 E.Options.args.nameplates.args.colorsGroup.args.general.args.spacer1 = ACH:Spacer(5, 'full')
 E.Options.args.nameplates.args.colorsGroup.args.general.args.glowColor = ACH:Color(L["Target Indicator Color"], nil, 6, true)
-E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthColor = ACH:Color(E.NewSign..L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true)
-E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(E.NewSign..L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true)
+E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthColor = ACH:Color(L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true)
+E.Options.args.nameplates.args.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true)
 
 E.Options.args.nameplates.args.colorsGroup.args.threat = ACH:Group(L["Threat"], nil, 2, nil, function(info) local t, d = E.db.nameplates.colors.threat[info[#info]], P.nameplates.colors.threat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.threat[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, function() return not E.db.nameplates.threat.useThreatColor end)
 E.Options.args.nameplates.args.colorsGroup.args.threat.inline = true
@@ -564,13 +564,13 @@ E.Options.args.nameplates.args.colorsGroup.args.RUNES = ACH:Group(L["RUNES"], ni
 E.Options.args.nameplates.args.colorsGroup.args.RUNES.inline = true
 
 do
-	local runeText = { [-1] = L["RUNE_CHARGE"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
+	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
-		E.Options.args.nameplates.args.colorsGroup.args.RUNES.args[''..i] = ACH:Color(i == 0 and L["RUNES"] or runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.nameplates.colors.chargingRunes end, (E.Wrath and i < 1) or (E.Retail and i > 0))
+		E.Options.args.nameplates.args.colorsGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.nameplates.colors.chargingRunes end, (E.Wrath and i < 1) or (E.Retail and i > 0))
 	end
 end
 
-E.Options.args.nameplates.args.colorsGroup.args.RUNES.args.chargingRunes = ACH:Toggle(L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.RUNES.args.chargingRunes = ACH:Toggle(E.NewSign..L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
 
 E.Options.args.nameplates.args.playerGroup = GetUnitSettings('PLAYER', L["Player"])
 E.Options.args.nameplates.args.friendlyPlayerGroup = GetUnitSettings('FRIENDLY_PLAYER', L["FRIENDLY_PLAYER"])
