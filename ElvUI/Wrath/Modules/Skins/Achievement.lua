@@ -157,6 +157,8 @@ end
 function S:Blizzard_AchievementUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
+	E:Delay(0, hookHybridScrollButtons)
+
 	_G.AchievementFrameSummary:StripTextures()
 	_G.AchievementFrameSummaryBackground:Hide()
 	_G.AchievementFrameSummary:GetChildren():Hide()
@@ -391,13 +393,5 @@ function S:Blizzard_AchievementUI()
 		skinAchievementButton(Achievement)
 	end
 end
-
-local f = CreateFrame('Frame')
-f:RegisterEvent('PLAYER_ENTERING_WORLD')
-f:SetScript('OnEvent', function(self, event)
-	self:UnregisterEvent(event)
-
-	hookHybridScrollButtons()
-end)
 
 S:AddCallbackForAddon('Blizzard_AchievementUI')
