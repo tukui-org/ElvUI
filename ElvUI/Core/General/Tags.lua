@@ -23,7 +23,6 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetRuneCooldown = GetRuneCooldown
 local GetTime = GetTime
@@ -187,8 +186,7 @@ local function GetClassPower(Class)
 	-- try stagger
 	local monk = Class == 'MONK'
 	if monk then
-		local spec = GetSpecialization()
-		if spec == SPEC_MONK_BREWMASTER then
+		if E.myspec == SPEC_MONK_BREWMASTER then
 			min = UnitStagger('player')
 			max = UnitHealthMax('player')
 
@@ -225,7 +223,7 @@ local function GetClassPower(Class)
 				if monk then -- chi is a table
 					r, g, b = unpack(powerColor[min])
 				elseif dk then
-					r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[GetSpecialization() or 1])
+					r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[E.myspec or 1])
 				else
 					r, g, b = unpack(powerColor)
 				end
@@ -790,13 +788,10 @@ E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('specialization', 'PLAYER_TALENT_UPDATE', function(unit)
-	if UnitIsPlayer(unit) then
-		local currentSpec = GetSpecialization()
-		if currentSpec then
-			local _, currentSpecName = GetSpecializationInfo(currentSpec)
-			if currentSpecName then
-				return currentSpecName
-			end
+	if UnitIsPlayer(unit) and E.myspec then
+		local _, currentSpecName = GetSpecializationInfo(E.myspec)
+		if currentSpecName then
+			return currentSpecName
 		end
 	end
 end)
