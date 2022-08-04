@@ -267,7 +267,7 @@ local function Enable(self, unit)
 
 		if oUF.isRetail then
 			self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
-		elseif oUF.isWrath then
+		else
 			self:RegisterEvent('RUNE_TYPE_UPDATE', ColorPath, true)
 		end
 
@@ -292,7 +292,7 @@ local function Disable(self)
 
 		if oUF.isRetail then
 			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
-		elseif oUF.isWrath then
+		else
 			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
 		end
 
