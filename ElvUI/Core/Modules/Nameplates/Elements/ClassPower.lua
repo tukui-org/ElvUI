@@ -34,7 +34,7 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 
 	if isRunes and E.Retail and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
-	elseif isRunes and rune and not classPower then -- dont really need to check classPower here, its retail only
+	elseif isRunes and rune and not classPower then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
