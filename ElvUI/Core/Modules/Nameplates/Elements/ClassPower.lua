@@ -40,7 +40,7 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 	else
 		local classColor = not classPower and ((isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'CHI' and colors.MONK))
 		for i, bar in ipairs(self) do
-			local color = classPower or isRunes and classColor[bar.runeType or 0] or (classColor and classColor[i]) or colors[E.myclass] or fallback
+			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or (classColor and classColor[i]) or colors[E.myclass] or fallback
 			NP:ClassPower_SetBarColor(bar, color.r, color.g, color.b)
 		end
 	end
