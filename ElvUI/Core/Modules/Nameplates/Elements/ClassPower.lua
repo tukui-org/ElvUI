@@ -134,6 +134,8 @@ function NP:Update_ClassPower(nameplate)
 		nameplate.ClassPower:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
+		nameplate.ClassPower.classColor = db.classpower and db.classpower.enable and db.classpower.classColor and E:ClassColor(E.myclass)
+
 		for i = 1, #nameplate.ClassPower do
 			nameplate.ClassPower[i]:Hide()
 			nameplate.ClassPower[i].bg:Hide()
