@@ -40,9 +40,10 @@ local function HandleCommunitiesButtons(button, color)
 
 	if not button.bg then
 		button.bg = CreateFrame('Frame', nil, button)
-		button.bg:CreateBackdrop('Transparent')
+		button.bg:SetTemplate('Transparent')
 		button.bg:Point('TOPLEFT', 7, -16)
 		button.bg:Point('BOTTOMRIGHT', -10, 12)
+		button.bg:SetFrameLevel(button:GetFrameLevel())
 	end
 
 	if button.IconBorder then
@@ -102,9 +103,10 @@ function S:Blizzard_Communities()
 
 			if not s.bg then
 				s.bg = CreateFrame('Frame', nil, s)
-				s.bg:CreateBackdrop('Transparent')
+				s.bg:SetTemplate('Transparent')
 				s.bg:Point('TOPLEFT', 7, -16)
 				s.bg:Point('BOTTOMRIGHT', -10, 12)
+				s.bg:SetFrameLevel(s:GetFrameLevel())
 			end
 
 			local isGuild = clubInfo.clubType == ClubTypeGuild

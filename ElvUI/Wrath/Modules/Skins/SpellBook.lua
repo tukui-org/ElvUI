@@ -63,16 +63,16 @@ function S:SpellBookFrame()
 		end
 
 		button:CreateBackdrop(nil, true)
-		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
+		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel())
 
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
 
 		button.bg = CreateFrame('Frame', nil, button)
-		button.bg:CreateBackdrop('Transparent', true)
+		button.bg:SetTemplate('Transparent', true)
 		button.bg:Point('TOPLEFT', -6, 6)
 		button.bg:Point('BOTTOMRIGHT', 112, -6)
 		button.bg:Height(46)
-		button.bg:SetFrameLevel(button.bg:GetFrameLevel() - 2)
+		button.bg:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 
