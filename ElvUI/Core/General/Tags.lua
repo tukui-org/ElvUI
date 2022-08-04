@@ -186,71 +186,65 @@ local function GetClassPower(Class)
 
 	-- try stagger
 	local monk = Class == 'MONK'
-	if monk then
-		if GetSpecialization() == SPEC_MONK_BREWMASTER then
-			min = UnitStagger('player')
-			max = UnitHealthMax('player')
+	if monk and GetSpecialization() == SPEC_MONK_BREWMASTER then
+		min = UnitStagger('player')
+		max = UnitHealthMax('player')
 
-			local staggerRatio = min / max
-			if staggerRatio >= STAGGER_RED_TRANSITION then
-				r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_RED_INDEX])
-			elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
-				r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_YELLOW_INDEX])
-			else
-				r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_GREEN_INDEX])
-			end
+		local staggerRatio = min / max
+		if staggerRatio >= STAGGER_RED_TRANSITION then
+			r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_RED_INDEX])
+		elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
+			r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_YELLOW_INDEX])
+		else
+			r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_GREEN_INDEX])
 		end
 	end
 
 	-- try special powers or combo points
-	if not r then
-		local barType = ClassPowers[Class]
-		if barType then
-			local dk = Class == 'DEATHKNIGHT'
-			min = (dk and 0) or UnitPower('player', barType)
-			max = (dk and 6) or UnitPowerMax('player', barType)
+	local barType = not r and ClassPowers[Class]
+	if barType then
+		local dk = Class == 'DEATHKNIGHT'
+		min = (dk and 0) or UnitPower('player', barType)
+		max = (dk and 6) or UnitPowerMax('player', barType)
 
-			if dk then
-				for i = 1, max do
-					local _, _, runeReady = GetRuneCooldown(i)
-					if runeReady then
-						min = min + 1
-					end
+		if dk then
+			for i = 1, max do
+				local _, _, runeReady = GetRuneCooldown(i)
+				if runeReady then
+					min = min + 1
 				end
 			end
+		end
 
-			if min > 0 then
-				local powerColor = ElvUF.colors.ClassBars[Class]
-				if monk then -- chi is a table
-					r, g, b = unpack(powerColor[min])
-				elseif dk then
-					r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[GetSpecialization() or 1])
-				else
-					r, g, b = unpack(powerColor)
-				end
+		if min > 0 then
+			local powerColor = ElvUF.colors.ClassBars[Class]
+			if monk then -- chi is a table
+				r, g, b = unpack(powerColor[min])
+			elseif dk then
+				r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[GetSpecialization() or 1])
+			else
+				r, g, b = unpack(powerColor)
 			end
-		else
-			min = UnitPower('player', POWERTYPE_COMBOPOINTS)
-			max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
+		end
+	else
+		min = UnitPower('player', POWERTYPE_COMBOPOINTS)
+		max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
 
-			if min > 0 then
-				local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
-				local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
-				local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-				r, g, b = ElvUF:ColorGradient(min, max, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-			end
+		if min > 0 then
+			local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+			local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+			local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+			r, g, b = ElvUF:ColorGradient(min, max, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 		end
 	end
 
 	-- try additional mana
-	if not r and E.Retail then
-		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
-		if barIndex and barIndex[UnitPowerType('player')] then
-			min = UnitPower('player', POWERTYPE_MANA)
-			max = UnitPowerMax('player', POWERTYPE_MANA)
+	local barIndex = not r and E.Retail and _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
+	if barIndex and barIndex[UnitPowerType('player')] then
+		min = UnitPower('player', POWERTYPE_MANA)
+		max = UnitPowerMax('player', POWERTYPE_MANA)
 
-			r, g, b = unpack(ElvUF.colors.power.MANA)
-		end
+		r, g, b = unpack(ElvUF.colors.power.MANA)
 	end
 
 	return min or 0, max or 0, r or 1, g or 1, b or 1
