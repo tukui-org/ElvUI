@@ -1818,7 +1818,7 @@ function E:DBConversions()
 
 	if E.db.nameplates.colors.classResources.DEATHKNIGHT.r then
 		local runeColor = E.db.nameplates.colors.classResources.DEATHKNIGHT
-		E.db.nameplates.colors.classResources.DEATHKNIGHT = E:CopyTable({}, E.private.nameplates.colors.classResources.DEATHKNIGHT)
+		E.db.nameplates.colors.classResources.DEATHKNIGHT = E:CopyTable({}, P.nameplates.colors.classResources.DEATHKNIGHT)
 		E.db.nameplates.colors.classResources.DEATHKNIGHT[0] = runeColor
 	end
 
