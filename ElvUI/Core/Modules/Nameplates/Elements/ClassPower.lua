@@ -28,28 +28,25 @@ function NP:ClassPower_SetBarColor(bar, r, g, b)
 end
 
 function NP:ClassPower_UpdateColor(powerType, rune)
-	local color, r, g, b = NP.db.colors.classResources[E.myclass] or NP.db.colors.power[powerType]
-	if color then
-		r, g, b = color.r, color.g, color.b
-	else
-		r, g, b = unpack(oUF.colors.power[powerType])
-	end
-
 	local isRunes = powerType == 'RUNES'
+
 	if isRunes and E.Retail and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
 	elseif isRunes and rune then
-		NP:ClassPower_SetBarColor(rune, r, g, b)
+		local color = NP.db.colors.classResources.DEATHKNIGHT[rune.runeType or 0]
+		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
 		local db = NP:PlateDB(self.__owner)
-		local classColor = db.classpower and db.classpower.classColor and E:ClassColor(E.myclass)
-		for i, bar in ipairs(self) do
-			local classCombo = classColor
-			or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i])
-			or (powerType == 'CHI' and NP.db.colors.classResources.MONK[i])
-			or (isRunes and NP.db.colors.classResources.DEATHKNIGHT[bar.runeType or 0])
+		local classPower = db.classpower and db.classpower.classColor and E:ClassColor(E.myclass)
+		local classColor = classPower or (isRunes and NP.db.colors.classResources.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints) or (powerType == 'CHI' and NP.db.colors.classResources.MONK)
 
-			if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
+		for i, bar in ipairs(self) do
+			local color, r, g, b = isRunes and classColor[bar.runeType or 0] or classColor[i] or NP.db.colors.classResources[E.myclass] or NP.db.colors.power[powerType]
+			if color then
+				r, g, b = color.r, color.g, color.b
+			else
+				r, g, b = unpack(oUF.colors.power[powerType])
+			end
 
 			NP:ClassPower_SetBarColor(bar, r, g, b)
 		end

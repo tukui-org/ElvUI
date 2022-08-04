@@ -62,25 +62,22 @@ end
 
 function UF:ClassPower_UpdateColor(powerType, rune)
 	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	local color, r, g, b = UF.db.colors.classResources[E.myclass] or UF.db.colors.power[powerType]
-	if color then
-		r, g, b = color.r, color.g, color.b
-	else
-		r, g, b = unpack(ElvUF.colors.power[powerType])
-	end
-
 	local isRunes = powerType == 'RUNES'
+
 	if isRunes and E.Retail and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, custom_backdrop)
 	elseif isRunes and rune then
-		UF:ClassPower_SetBarColor(rune, r, g, b, custom_backdrop)
+		local color = UF.db.colors.classResources.DEATHKNIGHT[rune.runeType or 0]
+		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
+		local classColor = (isRunes and UF.db.colors.classResources.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints) or (powerType == 'CHI' and UF.db.colors.classResources.MONK)
 		for i, bar in ipairs(self) do
-			local classCombo = (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints[i])
-			or (powerType == 'CHI' and UF.db.colors.classResources.MONK[i])
-			or (isRunes and UF.db.colors.classResources.DEATHKNIGHT[bar.runeType or 0])
-
-			if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
+			local color, r, g, b = isRunes and classColor[bar.runeType or 0] or classColor[i] or UF.db.colors.classResources[E.myclass] or UF.db.colors.power[powerType]
+			if color then
+				r, g, b = color.r, color.g, color.b
+			else
+				r, g, b = unpack(ElvUF.colors.power[powerType])
+			end
 
 			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
 		end
