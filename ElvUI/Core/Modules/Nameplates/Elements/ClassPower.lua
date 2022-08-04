@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
-local oUF = E.oUF
 
 local _G = _G
-local next, ipairs = next, ipairs
-local unpack, max = unpack, max
-local CreateFrame = CreateFrame
+local max, next, ipairs = max, next, ipairs
 local UnitHasVehicleUI = UnitHasVehicleUI
+local CreateFrame = CreateFrame
 
 local MAX_POINTS = {
 	DRUID = 5,
@@ -30,21 +28,19 @@ end
 function NP:ClassPower_UpdateColor(powerType, rune)
 	local isRunes = powerType == 'RUNES'
 
+	local classPower = self.classColor
 	local colors = NP.db.colors.classResources
 	local fallback = NP.db.colors.power[powerType]
 
 	if isRunes and E.Retail and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
-	elseif isRunes and rune then
+	elseif isRunes and rune and not classPower then -- dont really need to check classPower here, its retail only
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
-		local db = NP:PlateDB(self.__owner)
-		local classPower = db.classpower and db.classpower.classColor and E:ClassColor(E.myclass)
-		local classColor = classPower or (isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'CHI' and colors.MONK)
-
+		local classColor = not classPower and ((isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'CHI' and colors.MONK))
 		for i, bar in ipairs(self) do
-			local color = isRunes and classColor[bar.runeType or 0] or classColor[i] or colors[E.myclass] or fallback
+			local color = classPower or isRunes and classColor[bar.runeType or 0] or classColor[i] or colors[E.myclass] or fallback
 			NP:ClassPower_SetBarColor(bar, color.r, color.g, color.b)
 		end
 	end
@@ -243,18 +239,14 @@ function NP:Update_Runes(nameplate)
 		nameplate.Runes:ClearAllPoints()
 		nameplate.Runes:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 
+		nameplate.Runes.classColor = E.Retail and db.classpower and db.classpower.enable and db.classpower.classColor and E:ClassColor(E.myclass)
 		nameplate.Runes.sortOrder = db.classpower.sortDirection
 
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
 
-		local classColor = db.classpower.classColor and E:ClassColor(E.myclass)
-
 		for i = 1, 6 do
 			local rune = nameplate.Runes[i]
-			local color = classColor or NP.db.colors.classResources.DEATHKNIGHT[rune.runeType or 0]
-			rune:SetStatusBarColor(color.r, color.g, color.b)
-
 			if i == 1 then
 				rune:Size(width, db.classpower.height)
 				rune:ClearAllPoints()
