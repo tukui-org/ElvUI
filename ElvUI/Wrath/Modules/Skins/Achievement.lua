@@ -5,7 +5,6 @@ local _G = _G
 local unpack = unpack
 local pairs, select = pairs, select
 
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria

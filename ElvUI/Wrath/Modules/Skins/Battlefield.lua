@@ -41,20 +41,24 @@ function S:SkinBattlefield()
 		end
 	end)
 
+	local backdrop_level = BattlefieldFrame.backdrop:GetFrameLevel()
+
 	-- Custom Backdrop 1
 	local topBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
-	topBackdrop:CreateBackdrop('Transparent')
+	topBackdrop:SetTemplate('Transparent')
 	topBackdrop:Height(130)
 	topBackdrop:Width(330)
 	topBackdrop:Point('TOP', BattlefieldFrame, 'TOP', -12, -38)
+	topBackdrop:SetFrameLevel(backdrop_level)
 	BattlefieldFrame.TopBackdrop = topBackdrop
 
 	-- Custom Backdrop 2
 	local bottomBackdrop = CreateFrame('Frame', nil, BattlefieldFrame)
-	bottomBackdrop:CreateBackdrop('Transparent')
+	bottomBackdrop:SetTemplate('Transparent')
 	bottomBackdrop:Height(230)
 	bottomBackdrop:Width(330)
 	bottomBackdrop:Point('BOTTOM', BattlefieldFrame, 'BOTTOM', -12, 110)
+	bottomBackdrop:SetFrameLevel(backdrop_level)
 	BattlefieldFrame.BottomBackdrop = bottomBackdrop
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
