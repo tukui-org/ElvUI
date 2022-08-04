@@ -157,8 +157,6 @@ end
 function S:Blizzard_AchievementUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
-	E:Delay(0, hookHybridScrollButtons)
-
 	_G.AchievementFrameSummary:StripTextures()
 	_G.AchievementFrameSummaryBackground:Hide()
 	_G.AchievementFrameSummary:GetChildren():Hide()
@@ -393,5 +391,7 @@ function S:Blizzard_AchievementUI()
 		skinAchievementButton(Achievement)
 	end
 end
+
+E:Delay(0.1, hookHybridScrollButtons)
 
 S:AddCallbackForAddon('Blizzard_AchievementUI')
