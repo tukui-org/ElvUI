@@ -673,6 +673,7 @@ P.nameplates = {
 		castInterruptedColor = {r = 0.30, g = 0.30, b = 0.30},
 		castbarDesaturate = true,
 		chargingRunes = true,
+		runeBySpec = true,
 		reactions = {
 			good = {r = .29, g = .68, b = .30},
 			neutral = {r = .85, g = .77, b = .36},
@@ -732,7 +733,7 @@ P.nameplates = {
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
-				[0] = {r = 0.68, g = 0.89, b = 0.28},
+				[0] = {r = 0.8, g = 0.1, b = 0.28},
 				{r = 1, g = 0.25, b = 0.25},
 				{r = 0.25, g = 1, b = 1},
 				{r = 0.25, g = 1, b = 0.25},
@@ -1620,6 +1621,7 @@ P.unitframe = {
 		transparentAurabars = false,
 		transparentClasspower = false,
 		chargingRunes = true,
+		runeBySpec = true,
 		invertCastBar = false,
 		invertAurabars = false,
 		invertPower = false,
@@ -1707,7 +1709,7 @@ P.unitframe = {
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
-				[0] = {r = 0.68, g = 0.89, b = 0.28},
+				[0] = {r = 0.8, g = 0.1, b = 0.28},
 				{r = 1, g = 0.25, b = 0.25},
 				{r = 0.25, g = 1, b = 1},
 				{r = 0.25, g = 1, b = 0.25},

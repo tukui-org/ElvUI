@@ -130,11 +130,15 @@ local function UpdateColor(self, event, runeID, alt)
 	else
 		for i = 1, #element do
 			local bar = element[i]
-			if oUF.isWrath and not bar.runeType then
-				bar.runeType = GetRuneType(runemap[i])
+			if oUF.isWrath then
+				if not bar.runeType then
+					bar.runeType = GetRuneType(runemap[i])
+				end
+			else
+				bar.runeType = specType
 			end
 
-			color, r, g, b = ColorRune(self, bar, specType or bar.runeType)
+			color, r, g, b = ColorRune(self, bar, bar.runeType)
 		end
 	end
 

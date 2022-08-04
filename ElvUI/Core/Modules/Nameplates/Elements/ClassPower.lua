@@ -242,7 +242,8 @@ function NP:Update_Runes(nameplate)
 		nameplate.Runes:Show()
 
 		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E:ClassColor(E.myclass)
-		nameplate.Runes.sortOrder = db.classpower.sortDirection
+		nameplate.Runes.sortOrder = (db.classpower.sortDirection ~= 'NONE') and db.classpower.sortDirection
+		nameplate.Runes.colorSpec = E.Retail and NP.db.colors.runeBySpec
 
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
