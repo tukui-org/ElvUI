@@ -461,7 +461,7 @@ function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 	self:SetShown(not hasVehicle and not db.classbar.autoHide or not allReady)
 
 	if E.Retail and UF.db.colors.chargingRunes then
-		UF:Runes_UpdateCharged(self)
+		UF:Runes_UpdateCharged(self, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
 	end
 end
 
