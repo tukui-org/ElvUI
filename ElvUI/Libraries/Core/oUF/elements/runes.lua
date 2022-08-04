@@ -138,7 +138,7 @@ local function UpdateColor(self, event, runeID, alt)
 				bar.runeType = specType
 			end
 
-			color, r, g, b = ColorRune(self, bar, bar.runeType)
+			color, r, g, b = ColorRune(self, bar, specType or bar.runeType)
 		end
 	end
 
