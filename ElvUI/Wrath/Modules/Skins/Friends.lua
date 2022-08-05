@@ -415,7 +415,6 @@ function S:FriendsFrame()
 	_G.GuildMemberNoteBackground.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
 	_G.PersonalNoteText:Point('TOPLEFT', 4, -4)
-	_G.PersonalNoteText:Width(197)
 
 	_G.GuildMemberOfficerNoteBackground:StripTextures()
 	_G.GuildMemberOfficerNoteBackground:CreateBackdrop()

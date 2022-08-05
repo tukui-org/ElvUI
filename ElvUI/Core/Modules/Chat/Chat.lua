@@ -351,6 +351,9 @@ do --this can save some main file locals
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
 		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
+		--Merathilis
+		z['Merathilis-ClassicBetaPvE']	= ElvOrange	-- [Alliance] Druid
+		z['Merathîlis-ClassicBetaPvE']	= ElvOrange	-- [Horde] Druid
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
