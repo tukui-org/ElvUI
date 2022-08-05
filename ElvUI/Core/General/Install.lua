@@ -345,8 +345,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.position = "LEFT"
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.xOffset = 0
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.yOffset = 0
-
-
 		--UnitFrames
 			E.db.unitframe.smoothbars = true
 			E.db.unitframe.thinBorders = true

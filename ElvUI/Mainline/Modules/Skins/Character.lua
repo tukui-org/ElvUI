@@ -288,7 +288,6 @@ function S:CharacterFrame()
 
 	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
 
-
 	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)

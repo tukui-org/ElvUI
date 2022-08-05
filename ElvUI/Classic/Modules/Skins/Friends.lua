@@ -223,7 +223,6 @@ function S:FriendsFrame()
 	_G.WhoListScrollFrameScrollBar:Point('TOPRIGHT', _G.WhoListScrollFrame, 'TOPRIGHT', 26, -13)
 	_G.WhoListScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.WhoListScrollFrame, 'BOTTOMRIGHT', 0, 18)
 
-
 	for i = 1, _G.WHOS_TO_DISPLAY do
 		local button = _G['WhoFrameButton'..i]
 		local level = _G['WhoFrameButton'..i..'Level']
