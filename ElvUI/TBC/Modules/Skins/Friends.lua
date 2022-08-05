@@ -23,6 +23,26 @@ local function skinFriendRequest(frame)
 	frame.isSkinned = true
 end
 
+local function SkinPlusMinus(button, minus)
+	local texture = E.Media.Textures.PlusButton
+	if minus then
+		texture = E.Media.Textures.MinusButton
+	end
+
+	button:SetNormalTexture(texture)
+	button.SetNormalTexture = E.noop
+
+	button:SetPushedTexture(texture)
+	button.SetPushedTexture = E.noop
+
+	button:SetHighlightTexture('')
+	button.SetHighlightTexture = E.noop
+
+	button:SetDisabledTexture(texture)
+	button.SetDisabledTexture = E.noop
+	button:GetDisabledTexture():SetDesaturated(true)
+end
+
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
@@ -448,26 +468,6 @@ function S:FriendsFrame()
 
 	S:HandleDropDownBox(_G.GuildControlPopupFrameDropDown, 185)
 	_G.GuildControlPopupFrameDropDownButton:Size(18)
-
-	local function SkinPlusMinus(button, minus)
-		local texture = E.Media.Textures.PlusButton
-		if minus then
-			texture = E.Media.Textures.MinusButton
-		end
-
-		button:SetNormalTexture(texture)
-		button.SetNormalTexture = E.noop
-
-		button:SetPushedTexture(texture)
-		button.SetPushedTexture = E.noop
-
-		button:SetHighlightTexture('')
-		button.SetHighlightTexture = E.noop
-
-		button:SetDisabledTexture(texture)
-		button.SetDisabledTexture = E.noop
-		button:GetDisabledTexture():SetDesaturated(true)
-	end
 
 	SkinPlusMinus(_G.GuildControlPopupFrameAddRankButton)
 	_G.GuildControlPopupFrameAddRankButton:Point('LEFT', _G.GuildControlPopupFrameDropDown, 'RIGHT', -8, 3)

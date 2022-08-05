@@ -24,6 +24,46 @@ local MAX_NUM_QUESTS = MAX_NUM_QUESTS
 local MAX_REQUIRED_ITEMS = MAX_REQUIRED_ITEMS
 local hooksecurefunc = hooksecurefunc
 
+local function UpdateGreetingFrame()
+	local i = 1
+	while _G['QuestTitleButton'..i]:IsVisible() do
+		local title = _G['QuestTitleButton'..i]
+		local icon = _G['QuestTitleButton'..i..'QuestIcon']
+		local text = title:GetFontString()
+		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
+
+		_G.GreetingText:SetTextColor(1, 1, 1)
+		_G.CurrentQuestsText:SetTextColor(1, 0.80, 0.10)
+		_G.AvailableQuestsText:SetTextColor(1, 0.80, 0.10)
+
+		title:SetText(textString)
+
+		if title.isActive == 1 then
+			icon:SetTexture(132048)
+			icon:SetDesaturation(1)
+			text:SetTextColor(.6, .6, .6)
+		else
+			icon:SetTexture(132049)
+			icon:SetDesaturation(0)
+			text:SetTextColor(1, .8, .1)
+		end
+
+		local numEntries = GetNumQuestLogEntries()
+		for y = 1, numEntries do
+			local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
+			if strmatch(questLogTitleText, textString) then
+				if (isComplete == 1 or IsQuestComplete(questId)) then
+					icon:SetDesaturation(0)
+					text:SetTextColor(1, .8, .1)
+					break
+				end
+			end
+		end
+
+		i = i + 1
+	end
+end
+
 local function handleItemButton(item)
 	if not item then return end
 
@@ -390,46 +430,6 @@ function S:BlizzardQuestFrames()
 	for i = 1, MAX_NUM_QUESTS do
 		_G['QuestTitleButton'..i..'QuestIcon']:SetPoint('TOPLEFT', 4, 2)
 		_G['QuestTitleButton'..i..'QuestIcon']:SetSize(16, 16)
-	end
-
-	local function UpdateGreetingFrame()
-		local i = 1
-		while _G['QuestTitleButton'..i]:IsVisible() do
-			local title = _G['QuestTitleButton'..i]
-			local icon = _G['QuestTitleButton'..i..'QuestIcon']
-			local text = title:GetFontString()
-			local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
-
-			_G.GreetingText:SetTextColor(1, 1, 1)
-			_G.CurrentQuestsText:SetTextColor(1, 0.80, 0.10)
-			_G.AvailableQuestsText:SetTextColor(1, 0.80, 0.10)
-
-			title:SetText(textString)
-
-			if title.isActive == 1 then
-				icon:SetTexture(132048)
-				icon:SetDesaturation(1)
-				text:SetTextColor(.6, .6, .6)
-			else
-				icon:SetTexture(132049)
-				icon:SetDesaturation(0)
-				text:SetTextColor(1, .8, .1)
-			end
-
-			local numEntries = GetNumQuestLogEntries()
-			for y = 1, numEntries do
-				local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
-				if strmatch(questLogTitleText, textString) then
-					if (isComplete == 1 or IsQuestComplete(questId)) then
-						icon:SetDesaturation(0)
-						text:SetTextColor(1, .8, .1)
-						break
-					end
-				end
-			end
-
-			i = i + 1
-		end
 	end
 
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)

@@ -5,6 +5,13 @@ local _G = _G
 local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
+local function SkinPvpTalents(slot)
+	local icon = slot.Texture
+	slot:StripTextures()
+	S:HandleIcon(icon, true)
+	slot.Border:Hide()
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -35,14 +42,6 @@ function S:Blizzard_InspectUI()
 			button:StripTextures()
 			S:HandleIcon(button.icon, true)
 		end
-	end
-
-	-- PVP Talents
-	local function SkinPvpTalents(slot)
-		local icon = slot.Texture
-		slot:StripTextures()
-		S:HandleIcon(icon, true)
-		slot.Border:Hide()
 	end
 
 	for i = 1, 3 do

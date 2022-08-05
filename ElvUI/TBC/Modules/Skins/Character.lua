@@ -18,6 +18,37 @@ local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
+local ResistanceCoords = {
+	[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
+	[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
+	[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
+	[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
+	[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+}
+
+local function HandleResistanceFrame(frameName)
+	for i = 1, 5 do
+		local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
+		frame:Size(24)
+		frame:SetTemplate()
+
+		if i ~= 1 then
+			frame:ClearAllPoints()
+			frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
+		end
+
+		if icon then
+			icon:SetInside()
+			icon:SetTexCoord(unpack(ResistanceCoords[i]))
+			icon:SetDrawLayer('ARTWORK')
+		end
+
+		if text then
+			text:SetDrawLayer('OVERLAY')
+		end
+	end
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -46,37 +77,6 @@ function S:CharacterFrame()
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
 	_G.CharacterAttributesFrame:StripTextures()
-
-	local ResistanceCoords = {
-		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
-	}
-
-	local function HandleResistanceFrame(frameName)
-		for i = 1, 5 do
-			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
-			frame:Size(24)
-			frame:SetTemplate()
-
-			if i ~= 1 then
-				frame:ClearAllPoints()
-				frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
-			end
-
-			if icon then
-				icon:SetInside()
-				icon:SetTexCoord(unpack(ResistanceCoords[i]))
-				icon:SetDrawLayer('ARTWORK')
-			end
-
-			if text then
-				text:SetDrawLayer('OVERLAY')
-			end
-		end
-	end
 
 	HandleResistanceFrame('MagicResFrame')
 

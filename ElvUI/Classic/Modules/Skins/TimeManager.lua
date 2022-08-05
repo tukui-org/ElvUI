@@ -6,6 +6,14 @@ local select, unpack = select, unpack
 
 local hooksecurefunc = hooksecurefunc
 
+local function SetPlayTexture()
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
+end
+
+local function SetPauseTexture()
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
+end
+
 function S:Blizzard_TimeManager()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.timemanager) then return end
 
@@ -67,13 +75,6 @@ function S:Blizzard_TimeManager()
 	_G.StopwatchResetButton:SetSize(16,16)
 	_G.StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
 	_G.StopwatchResetButton:Point('BOTTOMRIGHT', _G.StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
-
-	local function SetPlayTexture()
-		_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
-	end
-	local function SetPauseTexture()
-		_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
-	end
 
 	hooksecurefunc('Stopwatch_Play', SetPauseTexture)
 	hooksecurefunc('Stopwatch_Pause', SetPlayTexture)

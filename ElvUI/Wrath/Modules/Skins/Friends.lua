@@ -14,13 +14,32 @@ local hooksecurefunc = hooksecurefunc
 local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
-local MAX_GUILDBANK_TABS = MAX_GUILDBANK_TABS
 
 local function skinFriendRequest(frame)
 	if frame.isSkinned then return end
 	S:HandleButton(frame.DeclineButton, nil, true)
 	S:HandleButton(frame.AcceptButton)
 	frame.isSkinned = true
+end
+
+local function SkinPlusMinus(button, minus)
+	local texture = E.Media.Textures.PlusButton
+	if minus then
+		texture = E.Media.Textures.MinusButton
+	end
+
+	button:SetNormalTexture(texture)
+	button.SetNormalTexture = E.noop
+
+	button:SetPushedTexture(texture)
+	button.SetPushedTexture = E.noop
+
+	button:SetHighlightTexture('')
+	button.SetHighlightTexture = E.noop
+
+	button:SetDisabledTexture(texture)
+	button.SetDisabledTexture = E.noop
+	button:GetDisabledTexture():SetDesaturated(true)
 end
 
 function S:FriendsFrame()
@@ -467,26 +486,6 @@ function S:FriendsFrame()
 
 	S:HandleDropDownBox(_G.GuildControlPopupFrameDropDown, 185)
 	_G.GuildControlPopupFrameDropDownButton:Size(18)
-
-	local function SkinPlusMinus(button, minus)
-		local texture = E.Media.Textures.PlusButton
-		if minus then
-			texture = E.Media.Textures.MinusButton
-		end
-
-		button:SetNormalTexture(texture)
-		button.SetNormalTexture = E.noop
-
-		button:SetPushedTexture(texture)
-		button.SetPushedTexture = E.noop
-
-		button:SetHighlightTexture('')
-		button.SetHighlightTexture = E.noop
-
-		button:SetDisabledTexture(texture)
-		button.SetDisabledTexture = E.noop
-		button:GetDisabledTexture():SetDesaturated(true)
-	end
 
 	SkinPlusMinus(_G.GuildControlPopupFrameAddRankButton)
 	_G.GuildControlPopupFrameAddRankButton:Point('LEFT', _G.GuildControlPopupFrameDropDown, 'RIGHT', -8, 3)

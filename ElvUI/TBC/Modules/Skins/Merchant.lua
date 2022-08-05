@@ -11,6 +11,18 @@ local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
 local hooksecurefunc = hooksecurefunc
 
+local function merchantItemPoint()
+	S:HandlePointXY(_G.MerchantItem1, 6, -40)
+
+	for i = 2, _G.BUYBACK_ITEMS_PER_PAGE do
+		if E:IsEvenNumber(i) then
+			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
+		else
+			S:HandlePointXY(_G['MerchantItem'..i], 12, 0)
+		end
+	end
+end
+
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
@@ -104,19 +116,6 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemMoneyFrame:ClearAllPoints()
 	_G.MerchantBuyBackItemMoneyFrame:Point('BOTTOMLEFT', _G.MerchantBuyBackItemItemButton, 'BOTTOMRIGHT', 3, 0)
-
-	local function merchantItemPoint()
-		S:HandlePointXY(_G.MerchantItem1, 6, -40)
-
-		-- evens
-		for i = 3, _G.BUYBACK_ITEMS_PER_PAGE, 2 do
-			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
-		end
-		-- odds
-		for i = 2, _G.BUYBACK_ITEMS_PER_PAGE, 2 do
-			S:HandlePointXY(_G['MerchantItem'..i], 12, 0)
-		end
-	end
 
 	-- skin tabs
 	for i = 1, 2 do

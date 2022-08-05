@@ -20,6 +20,29 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
+local bagIconCache = {
+	[-2] = [[Interface\ICONS\INV_Misc_Key_03]],
+	[0] = E.Media.Textures.Backpack
+}
+
+local function setBagIcon(frame, texture)
+	if not frame.BagIcon then
+		local portraitButton = _G[frame:GetName()..'PortraitButton']
+
+		portraitButton:CreateBackdrop()
+		portraitButton:Size(32)
+		portraitButton:Point('TOPLEFT', 12, -7)
+		portraitButton:StyleButton(nil, true)
+		portraitButton.hover:SetAllPoints()
+
+		frame.BagIcon = portraitButton:CreateTexture()
+		frame.BagIcon:SetTexCoord(unpack(E.TexCoords))
+		frame.BagIcon:SetAllPoints()
+	end
+
+	frame.BagIcon:SetTexture(texture)
+end
+
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
@@ -55,29 +78,6 @@ function S:ContainerFrame()
 			E:RegisterCooldown(cooldown)
 		end
 	end
-
-	local function setBagIcon(frame, texture)
-		if not frame.BagIcon then
-			local portraitButton = _G[frame:GetName()..'PortraitButton']
-
-			portraitButton:CreateBackdrop()
-			portraitButton:Size(32)
-			portraitButton:Point('TOPLEFT', 12, -7)
-			portraitButton:StyleButton(nil, true)
-			portraitButton.hover:SetAllPoints()
-
-			frame.BagIcon = portraitButton:CreateTexture()
-			frame.BagIcon:SetTexCoord(unpack(E.TexCoords))
-			frame.BagIcon:SetAllPoints()
-		end
-
-		frame.BagIcon:SetTexture(texture)
-	end
-
-	local bagIconCache = {
-		[-2] = [[Interface\ICONS\INV_Misc_Key_03]],
-		[0] = E.Media.Textures.Backpack
-	}
 
 	hooksecurefunc('ContainerFrame_GenerateFrame', function(frame)
 		local id = frame:GetID()
