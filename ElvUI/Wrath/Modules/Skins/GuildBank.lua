@@ -83,10 +83,11 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankTransactionsScrollFrameScrollBar:Point('TOPRIGHT', GuildBankTransactionsScrollFrame, 'TOPRIGHT', 29, -8)
 	_G.GuildBankTransactionsScrollFrameScrollBar:Point('BOTTOMRIGHT', GuildBankTransactionsScrollFrame, 'BOTTOMRIGHT', 0, 16)
 
-	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame)
-	GuildBankFrame.inset:SetTemplate()
-	GuildBankFrame.inset:Point('TOPLEFT', 24, -64)
-	GuildBankFrame.inset:Point('BOTTOMRIGHT', -18, 62)
+	GuildBankFrame.bg = CreateFrame('Frame', nil, GuildBankFrame)
+	GuildBankFrame.bg:SetTemplate()
+	GuildBankFrame.bg:Point('TOPLEFT', 24, -64)
+	GuildBankFrame.bg:Point('BOTTOMRIGHT', -18, 62)
+	GuildBankFrame.bg:SetFrameLevel(GuildBankFrame:GetFrameLevel())
 
 	_G.GuildBankLimitLabel:Point('CENTER', _G.GuildBankTabLimitBackground, 'CENTER', -40, 1)
 
