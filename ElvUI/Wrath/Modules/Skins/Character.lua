@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local floor, unpack, strfind = floor, unpack, strfind
+local unpack, strfind = unpack, strfind
 local ipairs, pairs, select = ipairs, pairs, select
 
 local HasPetUI = HasPetUI
@@ -16,9 +16,60 @@ local hooksecurefunc = hooksecurefunc
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
-local NUM_GEARSET_ICONS_PER_ROW = NUM_GEARSET_ICONS_PER_ROW
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+
+local ResistanceCoords = {
+	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
+	{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
+	{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
+	{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
+	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+}
+
+local function Update_GearManagerDialogPopup()
+	_G.GearManagerDialogPopup:ClearAllPoints()
+	_G.GearManagerDialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'RIGHT', 4, 80)
+end
+
+local function Update_Happiness(frame)
+	local happiness = GetPetHappiness()
+	local _, isHunterPet = HasPetUI()
+	if not (happiness and isHunterPet) then return end
+
+	local texture = frame:GetRegions()
+	if happiness == 1 then
+		texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
+	elseif happiness == 2 then
+		texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
+	elseif happiness == 3 then
+		texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
+	end
+end
+
+local function HandleResistanceFrame(frameName)
+	for i = 1, 5 do
+		local frame = _G[frameName..i]
+		local icon, text = frame:GetRegions()
+		frame:Size(24)
+		frame:SetTemplate()
+
+		if i ~= 1 then
+			frame:ClearAllPoints()
+			frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
+		end
+
+		if icon then
+			icon:SetInside()
+			icon:SetTexCoord(unpack(ResistanceCoords[i]))
+			icon:SetDrawLayer('ARTWORK')
+		end
+
+		if text then
+			text:SetDrawLayer('OVERLAY')
+		end
+	end
+end
 
 local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
@@ -152,38 +203,6 @@ function S:CharacterFrame()
 
 	_G.CharacterAttributesFrame:StripTextures()
 
-	local ResistanceCoords = {
-		{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-		{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-		{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-		{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-		{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
-	}
-
-	local function HandleResistanceFrame(frameName)
-		for i = 1, 5 do
-			local frame = _G[frameName..i]
-			local icon, text = frame:GetRegions()
-			frame:Size(24)
-			frame:SetTemplate()
-
-			if i ~= 1 then
-				frame:ClearAllPoints()
-				frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
-			end
-
-			if icon then
-				icon:SetInside()
-				icon:SetTexCoord(unpack(ResistanceCoords[i]))
-				icon:SetDrawLayer('ARTWORK')
-			end
-
-			if text then
-				text:SetDrawLayer('OVERLAY')
-			end
-		end
-	end
-
 	HandleResistanceFrame('MagicResFrame')
 
 	local slots = {
@@ -261,21 +280,6 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
 	_G.PetPaperDollFrameExpBar:CreateBackdrop()
 
-	local function updHappiness(frame)
-		local happiness = GetPetHappiness()
-		local _, isHunterPet = HasPetUI()
-		if not (happiness and isHunterPet) then return end
-
-		local texture = frame:GetRegions()
-		if happiness == 1 then
-			texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
-		elseif happiness == 2 then
-			texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
-		elseif happiness == 3 then
-			texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
-		end
-	end
-
 	local PetPaperDollPetInfo = _G.PetPaperDollPetInfo
 	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
 	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
@@ -284,8 +288,8 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:Size(24)
 
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
-	PetPaperDollPetInfo:SetScript('OnEvent', updHappiness)
-	PetPaperDollPetInfo:SetScript('OnShow', updHappiness)
+	PetPaperDollPetInfo:SetScript('OnEvent', Update_Happiness)
+	PetPaperDollPetInfo:SetScript('OnShow', Update_Happiness)
 
 	-- PetPaperDollCompanionFrame (Pets and Mounts in WotLK)
 	_G.PetPaperDollFrameCompanionFrame:StripTextures()
@@ -369,63 +373,9 @@ function S:CharacterFrame()
 		button.backdrop:SetAllPoints()
 	end
 
-	local dialogPopup = _G.GearManagerDialogPopup
-	dialogPopup:EnableMouse(true) -- Fixes the frame, might have to remove it later
-	dialogPopup:StripTextures()
-	dialogPopup:CreateBackdrop('Transparent')
-	dialogPopup.backdrop:Point('TOPLEFT', 5, -10)
-	dialogPopup.backdrop:Point('BOTTOMRIGHT', -39, 8)
-
-	local dialogPopupText1, dialogPopupText2 = select(5, dialogPopup:GetRegions())
-	dialogPopupText1:Point('TOPLEFT', 24, -19)
-	dialogPopupText2:Point('TOPLEFT', 24, -63)
-
-	_G.GearManagerDialogPopupEditBox:Point('TOPLEFT', 24, -36)
-	_G.GearManagerDialogPopupButton1:Point('TOPLEFT', 17, -83)
-
-	S:HandleButton(dialogPopup.OkayButton)
-	S:HandleButton(dialogPopup.CancelButton)
-
-	local dialogPopupScrollBar = _G.GearManagerDialogPopupScrollFrameScrollBar
-	S:HandleScrollBar(dialogPopupScrollBar)
-
-	local dialogPopupScrollFrame = _G.GearManagerDialogPopupScrollFrame
-	dialogPopupScrollFrame:StripTextures()
-	dialogPopupScrollFrame:Height(340)
-	dialogPopupScrollFrame:Point('TOPRIGHT', -68, -79)
-	dialogPopupScrollBar:Point('TOPLEFT', dialogPopupScrollFrame, 'TOPRIGHT', 3, -19)
-	dialogPopupScrollBar:Point('BOTTOMLEFT', dialogPopupScrollFrame, 'BOTTOMRIGHT', 3, 19)
-
-	-- They set points for buttons and frame on _Update
-	hooksecurefunc('GearManagerDialogPopup_Update', function()
-		dialogPopup:ClearAllPoints()
-		dialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'RIGHT', -3, 87)
-		dialogPopup.CancelButton:Point('BOTTOMRIGHT', dialogPopup, 'BOTTOMRIGHT', -44, 13)
-	end)
-
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
-
-	-- TODO: wrath, swap this to S:HandleIconSelectionFrame
-	for i, button in ipairs(dialogPopup.buttons) do
-		button:StripTextures()
-		button:SetFrameLevel(button:GetFrameLevel() + 2)
-		button:CreateBackdrop()
-		button:StyleButton(true, true)
-
-		button.icon:SetInside()
-		button.icon:SetTexCoord(unpack(E.TexCoords))
-		button.backdrop:SetAllPoints()
-
-		if i > 1 then
-			local lastPos = (i - 1) / NUM_GEARSET_ICONS_PER_ROW
-
-			if lastPos == floor(lastPos) then
-				button:SetPoint('TOPLEFT', dialogPopup.buttons[i-NUM_GEARSET_ICONS_PER_ROW], 'BOTTOMLEFT', 0, -7)
-			else
-				button:SetPoint('TOPLEFT', dialogPopup.buttons[i-1], 'TOPRIGHT', 7, 0)
-			end
-		end
-	end
+	S:HandleIconSelectionFrame(_G.GearManagerDialogPopup, _G.NUM_GEARSET_ICONS_SHOWN, 'GearManagerDialogPopupButton', nil, true)
+	hooksecurefunc('GearManagerDialogPopup_Update', Update_GearManagerDialogPopup) -- they set points for frame on _Update, so send (dontOffset: true) to HandleIconSelectionFrame
 
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()

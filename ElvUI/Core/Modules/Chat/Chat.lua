@@ -334,7 +334,8 @@ do --this can save some main file locals
 		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
 	elseif E.Wrath then
 		-- Simpy
-		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
+		z['Cutepally-Myzrael']			= itsSimpy -- Paladin
+		z['Mondoldrice-ClassicBetaPvE']	= itsSimpy -- Beta (delete for me later, if i dont)
 		-- Luckyone Beta testing TODO: Wrath (Remove later)
 		z['Luckyone-ClassicBetaPvE']	= ElvBlue -- Beta
 		z['Luckydruid-ClassicBetaPvE']	= ElvBlue -- Beta
