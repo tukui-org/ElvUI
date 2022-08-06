@@ -452,14 +452,16 @@ function S:FriendsFrame()
 
 	_G.GuildInfoTextBackground.NineSlice:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.GuildInfoFrameScrollFrameScrollBar)
-
 	S:HandleCloseButton(_G.GuildInfoCloseButton, _G.GuildInfoFrame.backdrop)
 
 	S:HandleButton(_G.GuildInfoSaveButton)
-	_G.GuildInfoSaveButton:Point('BOTTOMLEFT', 8, 8)
-
 	S:HandleButton(_G.GuildInfoCancelButton)
-	_G.GuildInfoCancelButton:Point('LEFT', _G.GuildInfoSaveButton, 'RIGHT', 4, 0)
+
+	_G.GuildInfoCancelButton:ClearAllPoints()
+	_G.GuildInfoCancelButton:Point('BOTTOMRIGHT', _G.GuildInfoFrame, -10, 8)
+
+	_G.GuildInfoSaveButton:ClearAllPoints()
+	_G.GuildInfoSaveButton:Point('RIGHT', _G.GuildInfoCancelButton, 'LEFT', -4, 0)
 
 	-- Control Frame
 	_G.GuildControlPopupFrame:StripTextures()

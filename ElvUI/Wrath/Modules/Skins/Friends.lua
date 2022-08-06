@@ -305,10 +305,6 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:Point('LEFT', _G.GuildFrameColumnHeader1, 'RIGHT', -2, -0)
 	_G.GuildFrameColumnHeader2:Width(127)
 
-	if _G.GuildInfoGuildEventButton then
-		S:HandleButton(_G.GuildInfoGuildEventButton)
-	end
-
 	S:HandleFrame(_G.GuildEventLogFrame)
 	S:HandleCloseButton(_G.GuildEventLogCloseButton)
 	_G.GuildEventFrame.NineSlice:SetTemplate('Transparent')
@@ -459,14 +455,24 @@ function S:FriendsFrame()
 
 	_G.GuildInfoTextBackground.NineSlice:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.GuildInfoFrameScrollFrameScrollBar)
-
 	S:HandleCloseButton(_G.GuildInfoCloseButton, _G.GuildInfoFrame.backdrop)
 
 	S:HandleButton(_G.GuildInfoSaveButton)
-	_G.GuildInfoSaveButton:Point('BOTTOMLEFT', 8, 8)
-
 	S:HandleButton(_G.GuildInfoCancelButton)
-	_G.GuildInfoCancelButton:Point('LEFT', _G.GuildInfoSaveButton, 'RIGHT', 4, 0)
+
+	_G.GuildInfoCancelButton:ClearAllPoints()
+	_G.GuildInfoCancelButton:Point('BOTTOMRIGHT', _G.GuildInfoFrame, -10, 8)
+
+	_G.GuildInfoSaveButton:ClearAllPoints()
+	_G.GuildInfoSaveButton:Point('RIGHT', _G.GuildInfoCancelButton, 'LEFT', -4, 0)
+
+	local InfoEventButton = _G.GuildInfoGuildEventButton
+	if InfoEventButton then
+		S:HandleButton(InfoEventButton)
+
+		InfoEventButton:ClearAllPoints()
+		InfoEventButton:Point('BOTTOMLEFT', _G.GuildInfoFrame, 10, 8)
+	end
 
 	-- Guild Control Frame (Guild Master Only)
 	for i = 1, _G.MAX_GUILDBANK_TABS do
