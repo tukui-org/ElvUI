@@ -19,9 +19,9 @@ local function merchantItemPoint()
 
 	for i = 2, _G.BUYBACK_ITEMS_PER_PAGE do
 		if E:IsEvenNumber(i) then
-			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
-		else
 			S:HandlePointXY(_G['MerchantItem'..i], 12, 0)
+		else
+			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
 		end
 	end
 end
