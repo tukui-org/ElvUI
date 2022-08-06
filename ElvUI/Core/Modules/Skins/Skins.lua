@@ -1333,8 +1333,11 @@ do
 	local function selectionOffset(frame)
 		local point, anchor, relativePoint, xOffset = frame:GetPoint()
 		if xOffset <= 0 then
+			local x = frame.BorderBox and 4 or 38 -- adjust values for wrath
+			local y = frame.BorderBox and 0 or -10
+
 			frame:ClearAllPoints()
-			frame:Point(point, (frame == _G.MacroPopupFrame and _G.MacroFrame) or anchor, relativePoint, strfind(point, 'LEFT') and 4 or -4, 0)
+			frame:Point(point, (frame == _G.MacroPopupFrame and _G.MacroFrame) or anchor, relativePoint, strfind(point, 'LEFT') and x or -x, y)
 		end
 	end
 
@@ -1355,7 +1358,7 @@ do
 			frame:HookScript('OnShow', selectionOffset)
 		end
 
-		local borderBox = frame.BorderBox or _G.BorderBox
+		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
 		local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
 		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
 		local editBox = frame.EditBox or _G[frameName..'EditBox']

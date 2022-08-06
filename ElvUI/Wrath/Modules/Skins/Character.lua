@@ -29,7 +29,7 @@ local ResistanceCoords = {
 
 local function Update_GearManagerDialogPopup()
 	_G.GearManagerDialogPopup:ClearAllPoints()
-	_G.GearManagerDialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'RIGHT', 4, 80)
+	_G.GearManagerDialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'TOPRIGHT', 4, 0)
 end
 
 local function Update_Happiness(frame)
