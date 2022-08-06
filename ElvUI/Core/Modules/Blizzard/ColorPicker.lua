@@ -111,7 +111,7 @@ local function delayCall()
 	end
 end
 
-local last = {r = 0, g = 0, b = 0}
+local last = {r = 0, g = 0, b = 0, a = 0}
 local function onColorSelect(frame, r, g, b)
 	if frame.noColorCallback then
 		return -- prevent error from E:GrabColorPickerValues, better note in that function
@@ -132,10 +132,10 @@ local function onColorSelect(frame, r, g, b)
 	end
 end
 
-local function onValueChanged(frame, value)
+local function onValueChanged(_, value)
 	local alpha = alphaValue(value)
-	if frame.lastAlpha ~= alpha then
-		frame.lastAlpha = alpha
+	if last.a ~= alpha then
+		last.a = alpha
 	else -- alpha matched so we don't need to update
 		return
 	end
