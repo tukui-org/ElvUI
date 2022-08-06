@@ -110,15 +110,19 @@ local function delayCall()
 		delayFunc = nil
 	end
 end
+
+local last = {r = 0, g = 0, b = 0}
 local function onColorSelect(frame, r, g, b)
-	if frame.noColorCallback then return end
+	if frame.noColorCallback then
+		return -- prevent error from E:GrabColorPickerValues, better note in that function
+	elseif r ~= last.r or g ~= last.g or b ~= last.b then
+		last.r, last.g, last.b = r, g, b
+	else -- colors match so we don't need to update, most likely mouse is held down
+		return
+	end
 
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
-
-	if r == 0 and g == 0 and b == 0 then
-		return
-	end
 
 	if not frame:IsVisible() then
 		delayCall()
@@ -132,19 +136,21 @@ local function onValueChanged(frame, value)
 	local alpha = alphaValue(value)
 	if frame.lastAlpha ~= alpha then
 		frame.lastAlpha = alpha
+	else -- alpha matched so we don't need to update
+		return
+	end
 
-		UpdateAlphaText(alpha)
+	UpdateAlphaText(alpha)
 
-		if not _G.ColorPickerFrame:IsVisible() then
-			delayCall()
-		else
-			local opacityFunc = _G.ColorPickerFrame.opacityFunc
-			if delayFunc and (delayFunc ~= opacityFunc) then
-				delayFunc = opacityFunc
-			elseif not delayFunc then
-				delayFunc = opacityFunc
-				E:Delay(delayWait, delayCall)
-			end
+	if not _G.ColorPickerFrame:IsVisible() then
+		delayCall()
+	else
+		local opacityFunc = _G.ColorPickerFrame.opacityFunc
+		if delayFunc and (delayFunc ~= opacityFunc) then
+			delayFunc = opacityFunc
+		elseif not delayFunc then
+			delayFunc = opacityFunc
+			E:Delay(delayWait, delayCall)
 		end
 	end
 end
