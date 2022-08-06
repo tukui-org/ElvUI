@@ -16,6 +16,15 @@ local GetItemQualityColor = GetItemQualityColor
 
 local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
+local lootQuality = {
+	['loottab-set-itemborder-white'] = nil, -- dont show white
+	['loottab-set-itemborder-green'] = 2,
+	['loottab-set-itemborder-blue'] = 3,
+	['loottab-set-itemborder-purple'] = 4,
+	['loottab-set-itemborder-orange'] = 5,
+	['loottab-set-itemborder-artifact'] = 6,
+}
+
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)
 
@@ -158,15 +167,6 @@ local function HandleTopTabs(tab)
 	S:HandleTab(tab)
 	tab:SetHitRectInsets(0, 0, 0, 0)
 end
-
-local lootQuality = {
-	['loottab-set-itemborder-white'] = nil, -- dont show white
-	['loottab-set-itemborder-green'] = 2,
-	['loottab-set-itemborder-blue'] = 3,
-	['loottab-set-itemborder-purple'] = 4,
-	['loottab-set-itemborder-orange'] = 5,
-	['loottab-set-itemborder-artifact'] = 6,
-}
 
 local function ItemSetsItemBorder(border, atlas)
 	local parent = border:GetParent()
