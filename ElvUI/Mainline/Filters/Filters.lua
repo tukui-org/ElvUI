@@ -660,10 +660,11 @@ G.unitframe.aurafilters.Blacklist = {
 		[206662]	= Defaults(), -- Experience Eliminated (in range)
 		[287825]	= Defaults(), -- Lethargy debuff (fight or flight)
 		[306600]	= Defaults(), -- Experience Eliminated (oor - 5m)
-		[313015]	= Defaults(), -- Recently Failed (mechagnome racial)
+		[313015]	= Defaults(), -- Recently Failed (Mechagnome racial)
 		[322695]	= Defaults(), -- Drained
 		[328891]	= Defaults(), -- A Gilded Perspective
 		[348443]	= Defaults(), -- Experience Eliminated
+		[234143]	= Defaults(), -- Temptation (Upper Karazhan Ring Debuff)
 	},
 }
 
