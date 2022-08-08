@@ -199,6 +199,8 @@ function UF:Aura_OnClick()
 end
 
 function UF:Construct_AuraIcon(button)
+	button.auraInfo = {}
+
 	button:SetTemplate(nil, nil, nil, nil, true)
 
 	button.cd:SetReverse(true)
@@ -552,19 +554,44 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 	end
 end
 
-function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, _, isBossDebuff, castByPlayer, nameplateShowAll)
+function UF:AuraUnchanged(a, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
+	if a.name ~= name or a.icon ~= icon or a.count ~= count or a.debuffType ~= debuffType or a.duration ~= duration or a.expiration ~= expiration or a.source ~= source or a.isStealable ~= isStealable or a.nameplateShowPersonal ~= nameplateShowPersonal or a.spellID ~= spellID or a.canApplyAura ~= canApplyAura or a.isBossDebuff ~= isBossDebuff or a.castByPlayer ~= castByPlayer or a.nameplateShowAll ~= nameplateShowAll then
+		a.name, a.icon, a.count, a.debuffType, a.duration, a.expiration, a.source, a.isStealable, a.nameplateShowPersonal, a.spellID, a.canApplyAura, a.isBossDebuff, a.castByPlayer, a.nameplateShowAll = name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll
+	else
+		return true
+	end
+end
+
+function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = button.db or self.db
 	if not db then return true end
 
-	local dispel = self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType)
+	if db.stackAuras and not UF.ExcludeStacks[spellID] then
+		local matching = source and castByPlayer and format('%s:%s', source, name) or name
+		local stack = self.stacks[matching]
+		if not stack then
+			self.stacks[matching] = button
+		elseif stack.texture == icon then
+			stack.matches = (stack.matches or 1) + ((count and count > 0 and count) or 1)
+			stack.count:SetText(stack.matches)
+
+			return false
+		end
+	end
+
+	if UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
+		return button.filterPass
+	end
 
 	-- already set by oUF:
 	--- button.caster = source
 	--- button.filter = filter
 	--- button.isDebuff = isDebuff
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
+
+	local dispel = self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType)
 
 	button.canDesaturate = db.desaturate
 	button.myPet = source == 'pet'
@@ -583,27 +610,16 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	button.name = name
 	button.priority = 0
 
-	if db.stackAuras and not UF.ExcludeStacks[spellID] then
-		local matching = source and castByPlayer and format('%s:%s', source, name) or name
-		local stack = self.stacks[matching]
-		if not stack then
-			self.stacks[matching] = button
-		elseif stack.texture == icon then
-			stack.matches = (stack.matches or 1) + ((count and count > 0 and count) or 1)
-			stack.count:SetText(stack.matches)
-
-			return false
-		end
-	end
-
 	local noDuration = (not duration or duration == 0)
 	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
 
 	if self.filterList then
 		local filterCheck, spellPriority = UF:CheckFilter(source, name, spellID, button.canDispel, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, castByPlayer, nameplateShowPersonal, nameplateShowAll, self.filterList)
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
+		button.filterPass = filterCheck
 		return filterCheck
 	else
+		button.filterPass = allowDuration
 		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	end
 end

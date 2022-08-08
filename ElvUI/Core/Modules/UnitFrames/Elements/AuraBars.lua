@@ -9,6 +9,8 @@ local strfind = strfind
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(bar)
+	bar.auraInfo = {}
+
 	bar:CreateBackdrop(nil, nil, nil, nil, true)
 	bar:SetScript('OnMouseDown', UF.Aura_OnClick)
 	bar:Point('LEFT')
