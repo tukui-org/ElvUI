@@ -964,8 +964,8 @@ do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simp
 		return (not hasCustom) or alwaysShowMine or showForMySpec
 	end
 
-	local AlwaysAllow = {
-		[335904] = true -- Doom Winds | Unable to gain effects of Doom Winds
+	local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
+		[335904] = true -- Doom Winds: Unable to gain effects of Doom Winds
 	}
 
 	local function AuraIsPriority(spellId)
