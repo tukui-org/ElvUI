@@ -26,12 +26,18 @@ function E:Grid(msg)
 	end
 end
 
+local AddOns = {
+	ElvUI = true,
+	ElvUI_OptionsUI = true,
+	ElvUI_CPU = true -- CPU debug tool
+}
+
 function E:LuaError(msg)
 	local switch = lower(msg)
 	if switch == 'on' or switch == '1' then
 		for i=1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
-			if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and name ~= 'ElvUI_CPU' and E:IsAddOnEnabled(name) then
+			if not AddOns[name] and E:IsAddOnEnabled(name) then
 				DisableAddOn(name, E.myname)
 				ElvDB.DisabledAddOns[name] = i
 			end
