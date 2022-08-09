@@ -1,5 +1,5 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bTBC|r
-## Notes: User Interface replacement AddOn for World of Warcraft.
+## Notes: User Interface Replacement
 ## Author: Elv, Simpy
 ## Version: 2.48
 ## SavedVariables: ElvDB, ElvPrivateDB
