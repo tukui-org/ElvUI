@@ -117,6 +117,21 @@ local function HandleAffixIcons(self)
 	end
 end
 
+local function DungeonReadyStatus_UpdateIcon(button, role)
+	if not role then role = select(2, GetLFGProposalMember(button:GetID())) end
+
+	button.texture:SetTexture(E.Media.Textures.RolesHQ)
+	button.texture:SetAlpha(0.6)
+
+	if role == 'DAMAGER' then
+		button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	elseif role == 'TANK' then
+		button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	elseif role == 'HEALER' then
+		button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	end
+end
+
 function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -178,20 +193,8 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	hooksecurefunc('LFGDungeonReadyStatusIndividual_UpdateIcon', function(button)
-		local _, role = GetLFGProposalMember(button:GetID())
-
-		button.texture:SetTexture(E.Media.Textures.RolesHQ)
-		button.texture:SetAlpha(0.6)
-
-		if role == 'DAMAGER' then
-			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-		elseif role == 'TANK' then
-			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-		elseif role == 'HEALER' then
-			button.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-		end
-	end)
+	hooksecurefunc('LFGDungeonReadyStatusIndividual_UpdateIcon', DungeonReadyStatus_UpdateIcon)
+	hooksecurefunc('LFGDungeonReadyStatusGrouped_UpdateIcon', DungeonReadyStatus_UpdateIcon)
 
 	_G.LFDQueueFrame:StripTextures(true)
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
