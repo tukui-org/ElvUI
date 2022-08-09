@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
-
-local _, ns = ...
-local oUF = ns.oUF
+local ElvUF = E.oUF
 
 local UnitHealth = UnitHealth
 local UnitIsUnit = UnitIsUnit
@@ -159,4 +157,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('TargetIndicator', Path, Enable, Disable)
+ElvUF:AddElement('TargetIndicator', Path, Enable, Disable)

@@ -1,9 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
+local ElvUF = E.oUF
 
 function UF:Construct_Raid40Frames()
 	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)

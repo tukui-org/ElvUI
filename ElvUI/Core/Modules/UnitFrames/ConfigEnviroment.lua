@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
-local _, ns = ...
-local ElvUF = ns.oUF
+local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv

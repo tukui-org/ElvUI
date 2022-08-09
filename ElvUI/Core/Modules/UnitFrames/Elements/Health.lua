@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local ElvUF = E.oUF
 
 local random = random
 local strmatch = strmatch
@@ -12,10 +13,6 @@ local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsCharmed = UnitIsCharmed
 local UnitIsEnemy = UnitIsEnemy
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 function UF.HealthClipFrame_OnUpdate(clipFrame)
 	UF.HealthClipFrame_HealComm(clipFrame.__frame)

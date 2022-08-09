@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local unpack, tonumber, abs = unpack, tonumber, abs
 
@@ -12,10 +13,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local ticks = {}
 

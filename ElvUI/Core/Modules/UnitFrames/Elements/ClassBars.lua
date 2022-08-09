@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local ElvUF = E.oUF
 
 local max = max
 local wipe = wipe
@@ -10,10 +11,6 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local AltManaTypes = { Rage = 1 }
 if E.Retail then
