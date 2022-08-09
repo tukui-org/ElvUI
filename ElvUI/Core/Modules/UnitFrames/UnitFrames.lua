@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
-
 local ElvUF = E.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring

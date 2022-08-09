@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
-
 local ElvUF = E.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local ipairs, next, pairs, select = ipairs, next, pairs, select
