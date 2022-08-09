@@ -29,7 +29,7 @@ end
 local AddOns = {
 	ElvUI = true,
 	ElvUI_OptionsUI = true,
-	ElvUI_CPU = true -- CPU debug tool
+	ElvUI_CPU = true -- debug tool located at https://github.com/Resike/ElvUI_CPU
 }
 
 function E:LuaError(msg)
