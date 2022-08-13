@@ -1139,7 +1139,7 @@ Colors.debuffHighlight.args.Curse = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG8
 Colors.debuffHighlight.args.Disease = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG10"], nil, 6, true)
 Colors.debuffHighlight.args.Poison = ACH:Color(L["ENCOUNTER_JOURNAL_SECTION_FLAG9"], nil, 7, true)
 
-Colors.threatGroup = ACH:Group(L["Threat"], nil, 11, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.threat[n], P.unitframe.colors.threat[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.threat[n] t.r, t.g, t.b, t.a = r, g, b UF:Update_AllFrames() end)
+Colors.threatGroup = ACH:Group(L["Threat"], nil, 11, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.threat[n], P.unitframe.colors.threat[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.threat[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 Colors.threatGroup.args['0'] = ACH:Color(L["Low Threat"], nil, 1)
 Colors.threatGroup.args['1'] = ACH:Color(L["Gaining Threat"], nil, 2)
 Colors.threatGroup.args['2'] = ACH:Color(L["Losing Threat"], nil, 3)
@@ -1197,6 +1197,16 @@ end
 
 Colors.classResourceGroup.args.RUNES.args.runeBySpec = ACH:Toggle(E.NewSign..L["Color By Spec"], nil, 11, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.RUNES.args.chargingRunes = ACH:Toggle(E.NewSign..L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, nil, not E.Retail)
+
+Colors.classResourceGroup.args.TOTEMS = ACH:Group(L["TOTEMS"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.SHAMAN[i], P.unitframe.colors.classResources.SHAMAN[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.SHAMAN[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Wrath))
+Colors.classResourceGroup.args.TOTEMS.inline = true
+
+do
+	local totemText = { L["TOTEM_FIRE"], L["TOTEM_EARTH"], L["TOTEM_WATER"], L["TOTEM_AIR"] }
+	for i = 1, 4 do
+		Colors.classResourceGroup.args.TOTEMS.args[''..i] = ACH:Color(totemText[i], nil, i)
+	end
+end
 
 Colors.classResourceGroup.args.classpower_backdrop = ACH:Color(L["Custom Backdrop"], nil, 30, nil, nil, function(info) local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, function() return not E.db.unitframe.colors.customclasspowerbackdrop end)
 Colors.classResourceGroup.args.customclasspowerbackdrop = ACH:Toggle(L["Use Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 31, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end)
