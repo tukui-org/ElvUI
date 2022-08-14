@@ -9,8 +9,9 @@ local pairs, ipairs, unpack, tostring = pairs, ipairs, unpack, tostring
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetMoney = GetMoney
 
-local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_CurrencyInfo_GetBackpackCurrencyInfo = E.Retail and C_CurrencyInfo.GetBackpackCurrencyInfo
+local C_CurrencyInfo_GetCurrencyInfo = E.Retail and C_CurrencyInfo.GetCurrencyInfo
+
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -21,7 +22,10 @@ local function OnClick()
 end
 
 local function GetInfo(id)
-	local info = C_CurrencyInfo_GetCurrencyInfo(id)
+	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
+	if E.Wrath then
+		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
+	end
 	if info then
 		return info.name, info.quantity, info.maxQuantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
 	end
@@ -59,7 +63,10 @@ local function OnEvent(self)
 	if displayed == 'BACKPACK' then
 		local displayString
 		for i = 1, 3 do
-			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or {}
+			if E.Wrath then
+				info.name, info.quantity, info.extracurrency, info.iconFileID = GetBackpackCurrencyInfo(i)
+			end
 			if info and info.quantity then
 				displayString = (i > 1 and displayString..' ' or '')..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
 			end
