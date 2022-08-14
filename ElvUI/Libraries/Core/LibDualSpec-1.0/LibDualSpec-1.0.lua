@@ -86,7 +86,7 @@ local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
 local L_ENABLED = "Enable spec profiles"
 local L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
 local L_CURRENT = "%s (Current)"
-local L_DUALSPEC_DESC = "When enabled, this feature allow you to select a different ".."profile for each talent spec. The dual profile will be swapped with the ".."current profile each time you switch from a talent spec to the other."
+local L_DUALSPEC_DESC = "When enabled, this feature allow you to select a different profile for each talent spec. The dual profile will be swapped with the current profile each time you switch from a talent spec to the other."
 
 do
 	local locale = GetLocale()
@@ -94,9 +94,7 @@ do
 		L_ENABLED = "Spezialisierungsprofile aktivieren"
 		L_ENABLED_DESC = "Falls diese Option aktiviert ist, wird dein Profil auf das angegebene Profil gesetzt, wenn du die Spezialisierung wechselst."
 		L_CURRENT = "%s (Momentan)"
-		L_DUALSPEC_DESC = "Wenn aktiv, wechselt dieses Feature bei jedem Wechsel "..
-			"der dualen Talentspezialisierung das Profil. Das duale Profil wird beim "..
-			"Wechsel automatisch mit dem derzeit aktiven Profil getauscht."
+		L_DUALSPEC_DESC = "Wenn aktiv, wechselt dieses Feature bei jedem Wechsel der dualen Talentspezialisierung das Profil. Das duale Profil wird beim Wechsel automatisch mit dem derzeit aktiven Profil getauscht."
 	elseif locale == "esES" then
 		-- L_ENABLED = "Enable spec profiles"
 		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
@@ -109,10 +107,7 @@ do
 		-- L_ENABLED = "Enable spec profiles"
 		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
 		-- L_CURRENT = "%s (Current)"
-		L_DUALSPEC_DESC = "Lorsqu'elle est activée, cette fonctionnalité vous permet "..
-			"de choisir un profil différent pour chaque spécialisation de talents. "..
-			"Le second profil sera échangé avec le profil courant chaque fois que vous "..
-			"passerez d'une spécialisation à l'autre."
+		L_DUALSPEC_DESC = "Lorsqu'elle est activée, cette fonctionnalité vous permet de choisir un profil différent pour chaque spécialisation de talents. Le second profil sera échangé avec le profil courant chaque fois que vous passerez d'une spécialisation à l'autre."
 	elseif locale == "itIT" then
 		L_ENABLED = "Abilita i profili per la specializzazione"
 		L_ENABLED_DESC = "Quando abilitato, il tuo profilo verrà impostato in base alla specializzazione usata."
