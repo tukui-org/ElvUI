@@ -187,7 +187,7 @@ local function GetClassPower(Class)
 	-- try stagger
 	local monk = Class == 'MONK'
 	if monk and GetSpecialization() == SPEC_MONK_BREWMASTER then
-		min = UnitStagger('player')
+		min = UnitStagger('player') or 0
 		max = UnitHealthMax('player')
 
 		local staggerRatio = min / max
