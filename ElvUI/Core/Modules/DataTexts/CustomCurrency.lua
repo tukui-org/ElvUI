@@ -21,7 +21,7 @@ local function OnEvent(self)
 
 		if not info.name then return end
 		local style = currency.DISPLAY_STYLE
-		local displayString = currency.ICON
+		local displayString = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID)
 
 		if style ~= 'ICON' then
 			displayString = strjoin(' ', displayString, style == 'ICON_TEXT' and currency.NAME or E:AbbreviateString(currency.NAME))
