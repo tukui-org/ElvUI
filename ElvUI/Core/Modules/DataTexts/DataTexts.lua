@@ -708,7 +708,7 @@ function DT:PopulateData(currencyOnly)
 
 	local headerIndex
 	while listSize >= i do
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(i)
+		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(i) or {}
 		if E.Wrath then
 			info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(i)
 		end
