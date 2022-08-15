@@ -23,10 +23,9 @@ local function GetInfo(id)
 	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
 	if E.Wrath then
 		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
-		print(info.iconFileID, id)
 	end
 	if info then
-		return info.name, info.quantity, info.maxQuantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
+		return info.name, info.quantity, info.maxQuantity, format(iconString, (info.iconFileID and info.iconFileID or '136012'))
 	end
 end
 
