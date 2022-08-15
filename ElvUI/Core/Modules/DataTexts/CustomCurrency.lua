@@ -14,8 +14,12 @@ local CurrencyListNameToIndex = {}
 local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
-		local info = C_CurrencyInfo_GetCurrencyInfo(currency.ID)
-		if not info then return end
+		local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(currency.ID) or {}
+		if E.Wrath then
+			info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currency.ID)
+		end
+
+		if not info.name then return end
 		local style = currency.DISPLAY_STYLE
 		local displayString = currency.ICON
 
@@ -46,8 +50,12 @@ local function OnEnter(self)
 end
 
 local function AddCurrencyNameToIndex(name)
-	for index = 1, C_CurrencyInfo_GetCurrencyListSize() do
-		local info = C_CurrencyInfo_GetCurrencyListInfo(index)
+	for index = 1, E.Retail and C_CurrencyInfo_GetCurrencyListSize() or GetCurrencyListSize() do
+		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index)
+		if E.Wrath then
+			info.name = GetCurrencyListInfo(index)
+		end
+
 		if info.name == name then
 			CurrencyListNameToIndex[name] = index
 			break
@@ -56,8 +64,12 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
-	if info then
+	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID) or {}
+	if E.Wrath then
+		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currencyID)
+	end
+
+	if info and info.name ~= "" then
 		local name = info.name
 
 		--Add to internal storage, stored with name as key

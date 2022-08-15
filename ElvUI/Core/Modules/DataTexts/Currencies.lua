@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
--- TODO: Wrath
-
 local _G = _G
 local format, tonumber, wipe = format, tonumber, wipe
 local pairs, ipairs, unpack, tostring = pairs, ipairs, unpack, tostring
