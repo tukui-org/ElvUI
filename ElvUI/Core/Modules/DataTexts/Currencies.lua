@@ -25,7 +25,8 @@ local function GetInfo(id)
 		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
 	end
 	if info then
-		return info.name, info.quantity, info.maxQuantity, format(iconString, (info.iconFileID and info.iconFileID or '136012'))
+		print(info.iconFileID)
+		return info.name, info.quantity, info.maxQuantity, format(iconString, info.iconFileID or '136012')
 	end
 end
 
