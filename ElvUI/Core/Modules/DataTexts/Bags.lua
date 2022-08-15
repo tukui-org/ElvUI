@@ -5,6 +5,7 @@ local format = format
 local strjoin = strjoin
 local GetBagName = GetBagName
 local ToggleAllBags = ToggleAllBags
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetInventoryItemQuality = GetInventoryItemQuality

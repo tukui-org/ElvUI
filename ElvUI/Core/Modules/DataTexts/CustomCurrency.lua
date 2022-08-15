@@ -4,9 +4,16 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local tinsert, tremove, next = tinsert, tremove, next
 local ipairs, pairs, format, strjoin = ipairs, pairs, format, strjoin
+
+--Retail
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
+
+--Wrath
+local GetCurrencyInfo = GetCurrencyInfo
+local GetCurrencyListSize = GetCurrencyListSize
+local GetCurrencyListInfo = GetCurrencyListInfo
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
@@ -51,7 +58,7 @@ end
 
 local function AddCurrencyNameToIndex(name)
 	for index = 1, E.Retail and C_CurrencyInfo_GetCurrencyListSize() or GetCurrencyListSize() do
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index)
+		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
 		if E.Wrath then
 			info.name = GetCurrencyListInfo(index)
 		end

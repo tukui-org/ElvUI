@@ -10,19 +10,24 @@ local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 -- GLOBALS: ElvDB
 
 local Profit, Spent, Ticker = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Character Data: Hold Shift + Right Click"], '|r')
 
-local CURRENCY = CURRENCY
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local CURRENCY = CURRENCY
+
+--Retail
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
+
+--Wrath
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 

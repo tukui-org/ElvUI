@@ -4,7 +4,9 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local format, tonumber, wipe = format, tonumber, wipe
 local pairs, ipairs, unpack, tostring = pairs, ipairs, unpack, tostring
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
 
 local C_CurrencyInfo_GetBackpackCurrencyInfo = E.Retail and C_CurrencyInfo.GetBackpackCurrencyInfo

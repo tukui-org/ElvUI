@@ -18,15 +18,22 @@ local MouseIsOver = MouseIsOver
 local RegisterStateDriver = RegisterStateDriver
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
+local GetNumSpecializations = GetNumSpecializations
+local GetSpecializationInfo = GetSpecializationInfo
+local MISCELLANEOUS = MISCELLANEOUS
+
+--Retail
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
 local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
-local GetNumSpecializations = GetNumSpecializations
-local GetSpecializationInfo = GetSpecializationInfo
-local MISCELLANEOUS = MISCELLANEOUS
+
+--Wrath
+local GetCurrencyInfo = GetCurrencyInfo
+local GetCurrencyListInfo = GetCurrencyListInfo
+local GetCurrencyListSize = GetCurrencyListSize
 
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
