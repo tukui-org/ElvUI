@@ -190,17 +190,18 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		for i = 1, _G.MAX_WATCHED_TOKENS do
-			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-			if info then
-				if i == 1 then
-					DT.tooltip:AddLine(' ')
-					DT.tooltip:AddLine(CURRENCY)
-				end
-				if info.quantity then
-					DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
-				end
+			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or E.Wrath and {}
+			if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i) end
+			if not (info and info.name) then break end
+
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+			end
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
 		end
 	end
