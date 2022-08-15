@@ -73,7 +73,7 @@ local function RegisterNewDT(currencyID)
 		local name = info.name
 
 		--Add to internal storage, stored with name as key
-		CustomCurrencies[name] = { NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', (E.Wrath and '/Interface/Icons/' or '')..info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true }
+		CustomCurrencies[name] = { NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true }
 		--Register datatext
 		DT:RegisterDatatext(name, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, name)
 		--Save info to persistent storage, stored with ID as key
