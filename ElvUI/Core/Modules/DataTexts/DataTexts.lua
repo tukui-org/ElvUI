@@ -814,7 +814,6 @@ function DT:Initialize()
 	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
 	DT:RegisterLDB() -- LibDataBroker
 
-	-- TODO: Wrath
 	if E.Retail or E.Wrath then
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 

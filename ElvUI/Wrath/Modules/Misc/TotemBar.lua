@@ -320,7 +320,6 @@ function AB:CreateTotemBar()
 	openButton.pushed:SetInside(openButton.backdrop)
 	bar.buttons[openButton] = true
 
-	-- TODO: Wrath (Check for a better skinning method)
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
 		local overlay = _G['MultiCastSlotButton'..i].overlayTex
@@ -337,7 +336,6 @@ function AB:CreateTotemBar()
 		bar.buttons[button] = true
 	end
 
-	-- TODO: Wrath (Check for a better skinning method)
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
 		local icon = _G['MultiCastActionButton'..i..'Icon']

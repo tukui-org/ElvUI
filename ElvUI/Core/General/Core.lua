@@ -1922,7 +1922,6 @@ function E:Initialize()
 		E:Tutorials()
 	end
 
-	-- TODO: Wrath
 	if E.Retail or E.Wrath then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end

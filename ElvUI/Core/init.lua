@@ -130,7 +130,6 @@ do
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
 
-	-- TODO: Wrath (Check for an updated version of DualSpec)
 	if E.Retail or E.Wrath then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
