@@ -25,7 +25,6 @@ local function GetInfo(id)
 		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
 	end
 	if info then
-		print(info.iconFileID)
 		return info.name, info.quantity, info.maxQuantity, format(iconString, info.iconFileID or '136012')
 	end
 end
@@ -64,7 +63,7 @@ local function OnEvent(self)
 		for i = 1, 3 do
 			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or {}
 			if E.Wrath then
-				info.name, info.quantity, info.extracurrency, info.iconFileID = GetBackpackCurrencyInfo(i)
+				info.name, info.quantity, info.iconFileID = GetBackpackCurrencyInfo(i)
 			end
 			if info and info.quantity then
 				displayString = (i > 1 and displayString..' ' or '')..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
