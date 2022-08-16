@@ -1331,14 +1331,17 @@ end
 
 do
 	local function selectionOffset(frame)
-		local point, _, relativePoint, xOffset = frame:GetPoint()
+		local point, anchor, relativePoint, xOffset = frame:GetPoint()
 		if xOffset <= 0 then
+			local x = frame.BorderBox and 4 or 38 -- adjust values for wrath
+			local y = frame.BorderBox and 0 or -10
+
 			frame:ClearAllPoints()
-			frame:Point(point, frame == _G.MacroPopupFrame and _G.MacroFrame, relativePoint, strfind(point, 'LEFT') and 4 or -4, 0)
+			frame:Point(point, (frame == _G.MacroPopupFrame and _G.MacroFrame) or anchor, relativePoint, strfind(point, 'LEFT') and x or -x, y)
 		end
 	end
 
-	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
+	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride, dontOffset)
 		assert(frame, 'HandleIconSelectionFrame: frame argument missing')
 		assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
 		assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
@@ -1351,18 +1354,24 @@ do
 			frame:Hide() -- can hide it right away
 		end
 
-		frame:HookScript('OnShow', selectionOffset) -- place it off to the side of parent with correct offsets
+		if not dontOffset then -- place it off to the side of parent with correct offsets
+			frame:HookScript('OnShow', selectionOffset)
+		end
 
+		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
 		local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
 		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
 		local editBox = frame.EditBox or _G[frameName..'EditBox']
-		local cancel = frame.CancelButton or frame.BorderBox.CancelButton or _G[frameName..'Cancel']
-		local okay = frame.OkayButton or frame.BorderBox.OkayButton or _G[frameName..'Okay']
+		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or _G[frameName..'Cancel']
+		local okay = frame.OkayButton or (borderBox and borderBox.OkayButton) or _G[frameName..'Okay']
 
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 		frame:Height(frame:GetHeight() + 10)
-		frame.BorderBox:StripTextures()
+
+		if borderBox then
+			borderBox:StripTextures()
+		end
 
 		cancel:ClearAllPoints()
 		cancel:SetPoint('BOTTOMRIGHT', frame, -4, 4)
@@ -1382,16 +1391,16 @@ do
 		for i = 1, numIcons do
 			local button = _G[buttonNameTemplate..i]
 			if button then
-				local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
-				if icon then
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetInside(button.backdrop)
-					texture = icon:GetTexture()
-				end
-
 				button:StripTextures()
 				button:SetTemplate()
 				button:StyleButton(nil, true)
+
+				local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
+				if icon then
+					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetInside(button)
+					texture = icon:GetTexture()
+				end
 
 				if texture then
 					icon:SetTexture(texture)

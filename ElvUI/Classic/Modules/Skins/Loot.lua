@@ -36,10 +36,10 @@ local function UpdateLoots()
 			if itemLink then
 				local _, _, itemRarity = GetItemInfo(itemLink)
 
-				if (itemRarity) then
+				if itemRarity then
 					local color = ITEM_QUALITY_COLORS[itemRarity]
 
-					if (color) then
+					if color then
 						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 					end
 				end
@@ -116,7 +116,7 @@ function S:LootFrame()
 	LootFrame:Height(LootFrame:GetHeight() - 30)
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
-	for i=1, LootFrame:GetNumRegions() do
+	for i = 1, LootFrame:GetNumRegions() do
 		local region = select(i, LootFrame:GetRegions())
 		if(region:IsObjectType('FontString')) then
 			if(region:GetText() == ITEMS) then

@@ -102,39 +102,38 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
-	if not E.private.tooltip.enable or not TT.db.visibility then return end
-	if tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then return end
-
-	if InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
+	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
+		return
+	elseif InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
 		tt:Hide()
 		return
+	elseif not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
+		local owner = tt:GetOwner()
+		local ownerName = owner and owner.GetName and owner:GetName()
+		if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) then
+			tt:Hide()
+			return
+		end
 	end
 
-	local owner = tt:GetOwner()
-	local ownerName = owner and owner.GetName and owner:GetName()
-	if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) and not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
-		tt:Hide()
-		return
-	end
+	local statusBar = tt.StatusBar
+	if statusBar then
+		local spacing = E.Spacing * 3
+		local position = TT.db.healthBar.statusPosition
+		statusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
 
-	if tt.StatusBar then
-		tt.StatusBar:SetAlpha(TT.db.healthBar.statusPosition == 'DISABLED' and 0 or 1)
-		if TT.db.healthBar.statusPosition == 'BOTTOM' then
-			if tt.StatusBar.anchoredToTop then
-				tt.StatusBar:ClearAllPoints()
-				tt.StatusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
-				tt.StatusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
-				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
-				tt.StatusBar.anchoredToTop = nil
-			end
-		elseif TT.db.healthBar.statusPosition == 'TOP' then
-			if not tt.StatusBar.anchoredToTop then
-				tt.StatusBar:ClearAllPoints()
-				tt.StatusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))
-				tt.StatusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, (E.Spacing * 3))
-				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
-				tt.StatusBar.anchoredToTop = true
-			end
+		if position == 'BOTTOM' and statusBar.anchoredToTop then
+			statusBar:ClearAllPoints()
+			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
+			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
+			statusBar.text:Point('CENTER', statusBar, 0, 0)
+			statusBar.anchoredToTop = nil
+		elseif position == 'TOP' and not statusBar.anchoredToTop then
+			statusBar:ClearAllPoints()
+			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
+			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
+			statusBar.text:Point('CENTER', statusBar, 0, 0)
+			statusBar.anchoredToTop = true
 		end
 	end
 
@@ -153,6 +152,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
+
 		if not E:HasMoverBeenMoved('TooltipMover') then
 			if B.BagFrame and B.BagFrame:IsShown() then
 				tt:Point('BOTTOMRIGHT', B.BagFrame, 'TOPRIGHT', 0, 18)
@@ -178,6 +178,7 @@ end
 
 function TT:RemoveTrashLines(tt)
 	if tt:IsForbidden() then return end
+
 	for i = 3, tt:NumLines() do
 		local tiptext = _G['GameTooltipTextLeft'..i]
 		local linetext = tiptext:GetText()
@@ -928,7 +929,7 @@ function TT:SetTooltipFonts()
 	_G.GameTooltipTextSmall:FontTemplate(font, smallSize, fontOutline)
 
 	for _, tt in ipairs(GameTooltip.shoppingTooltips) do
-		for i=1, tt:GetNumRegions() do
+		for i = 1, tt:GetNumRegions() do
 			local region = select(i, tt:GetRegions())
 			if region:IsObjectType('FontString') then
 				region:FontTemplate(font, smallSize, fontOutline)

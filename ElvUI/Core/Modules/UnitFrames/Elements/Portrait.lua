@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 
 local rad = rad
 local unpack = unpack
-local select = select
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
@@ -119,23 +118,22 @@ function UF:Configure_Portrait(frame)
 	end
 end
 
-function UF:PortraitUpdate(unit, event)
-	if self.stateChanged or event == 'ElvUI_UpdateAllElements' then
-		local db = self.db
-		if not db then return end
+function UF:PortraitUpdate(unit, hasStateChanged)
+	local db = hasStateChanged and self.db
+	if not db then return end
 
-		if self.playerModel then
-			if self.state then
-				self:SetCamDistanceScale(db.camDistanceScale)
-				self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
-				self:SetRotation(rad(db.rotation))
-			end
-
-			self:SetDesaturation(db.desaturation)
-			self:SetPaused(db.paused)
-		elseif db.style == 'Class' then
-			local Class = select(2, UnitClass(unit))
-			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[Class]))
+	if self.playerModel then
+		if self.state then
+			self:SetCamDistanceScale(db.camDistanceScale)
+			self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
+			self:SetRotation(rad(db.rotation))
 		end
+
+		self:SetDesaturation(db.desaturation)
+		self:SetPaused(db.paused)
+	elseif db.style == 'Class' then
+		local _, className = UnitClass(unit)
+		local crop = CLASS_ICON_TCOORDS[className]
+		if crop then self:SetTexCoord(unpack(crop)) end
 	end
 end

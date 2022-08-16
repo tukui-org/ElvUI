@@ -1,4 +1,4 @@
-local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(ElvUI)
 local D = E:GetModule('Distributor')
 local S = E:GetModule('Skins')
 
@@ -196,7 +196,7 @@ local DEVELOPERS = {
 	'|cffff2020Nihilistzsche|r',
 	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
 	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t |cff4beb2cLuckyone|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.27,0.72,0.86, 0.51,0.36,0.80, 0.69,0.28,0.94, 0.94,0.28,0.63, 1.00,0.51,0.00, 0.27,0.96,0.43)
+	E:TextGradient('Simpy but my name needs to be longer.', 0.99,0.24,0.26, 0.99,0.59,0.28, 1,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98)
 }
 
 local TESTERS = {
@@ -250,15 +250,14 @@ E.Options.args.info.args.spacer = ACH:Spacer(2)
 
 E.Options.args.info.args.support = ACH:Group(L["Support"], nil, 3)
 E.Options.args.info.args.support.inline = true
-E.Options.args.info.args.support.args.homepage = ACH:Execute(L["Support Forum"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/forum/viewforum.php?f=4') end, nil, nil, 140)
-E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 140)
-E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end, nil, nil, 140)
+E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 140)
+E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end, nil, nil, 140)
 
 E.Options.args.info.args.download = ACH:Group(L["Download"], nil, 4)
 E.Options.args.info.args.download.inline = true
 E.Options.args.info.args.download.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end, nil, nil, 140)
 E.Options.args.info.args.download.args.ptr = ACH:Execute(L["PTR Version"], L["Link to the latest PTR version."], 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip') end, nil, nil, 140)
-E.Options.args.info.args.download.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, E.Retail and 'https://www.tukui.org/download.php?ui=elvui&changelog' or E.TBC and 'https://www.tukui.org/classic-tbc-addons.php?id=2&changelog' or E.Classic and 'https://www.tukui.org/classic-addons.php?id=2&changelog') end, nil, nil, 140)
+E.Options.args.info.args.download.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, E.Retail and 'https://www.tukui.org/download.php?ui=elvui&changelog' or E.TBC and 'https://www.tukui.org/classic-tbc-addons.php?id=2&changelog' or E.Classic and 'https://www.tukui.org/classic-addons.php?id=2&changelog' or E.Wrath and '') end, nil, nil, 140)
 
 E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 5)
 E.Options.args.info.args.credits.inline = true
@@ -497,7 +496,7 @@ E.Options.args.profiles.args.private.order = 2
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 
-if E.Retail then
+if E.Retail or E.Wrath then
 	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 end
 

@@ -323,17 +323,38 @@ do --this can save some main file locals
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
-		z['Luckyone-Shazzrah']		= ElvBlue -- Hunter
-		z['Luckyfear-Shazzrah']		= ElvBlue -- Warlock
-		z['Luckydruid-Shazzrah']	= ElvBlue -- Druid
-		z['Luckypriest-Shazzrah']	= ElvBlue -- Priest
-		z['Luckyshaman-Shazzrah']	= ElvBlue -- Shaman
 		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
 		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
 		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
 		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
 		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
-		z['Luckywl-Gehennas']		= ElvBlue -- Warlock
+		z['Luckyd-Golemagg']		= ElvBlue -- Druid
+		z['Luckyp-Golemagg']		= ElvBlue -- Priest
+		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
+		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
+	elseif E.Wrath then
+		-- Simpy
+		z['Cutepally-Myzrael']			= itsSimpy -- Paladin
+		z['Mondoldrice-ClassicBetaPvE']	= itsSimpy -- Beta (delete for me later, if i dont)
+		-- Luckyone Beta testing TODO: Wrath (Remove later)
+		z['Luckyone-ClassicBetaPvE']	= ElvBlue -- Beta
+		z['Luckydruid-ClassicBetaPvE']	= ElvBlue -- Beta
+		z['Luckyshaman-ClassicBetaPvE'] = ElvBlue -- Beta
+		z['Luckyhunter-ClassicBetaPvE'] = ElvBlue -- Beta
+		z['Luckydk-ClassicBetaPvE']		= ElvBlue -- Beta
+		-- Luckyone
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
+		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
+		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
+		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
+		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
+		z['Luckyd-Golemagg']		= ElvBlue -- Druid
+		z['Luckyp-Golemagg']		= ElvBlue -- Priest
+		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
+		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
+		--Merathilis
+		z['Merathilis-ClassicBetaPvE']	= ElvOrange	-- [Alliance] Druid
+		z['Merathîlis-ClassicBetaPvE']	= ElvOrange	-- [Horde] Druid
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
@@ -816,20 +837,21 @@ function CH:StyleChat(frame)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
 	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)
-	CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
+	editbox:HookScript('OnEditFocusGained', CH.EditBoxFocusGained)
+	editbox:HookScript('OnEditFocusLost', CH.EditBoxFocusLost)
+	editbox:HookScript('OnKeyDown', CH.EditBoxOnKeyDown)
+	editbox:Hide()
 
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
-	editbox:HookScript('OnKeyDown', CH.EditBoxOnKeyDown)
-	editbox:Hide()
 
-	editbox:HookScript('OnEditFocusGained', CH.EditBoxFocusGained)
-	editbox:HookScript('OnEditFocusLost', CH.EditBoxFocusLost)
+	--[[ Don't need to do this since SetAltArrowKeyMode is broken, keep before AddHistory hook
+	for _, text in ipairs(editbox.historyLines) do
+			editbox:AddHistoryLine(text)
+	end]]
 
-	for _, text in pairs(editbox.historyLines) do
-		editbox:AddHistoryLine(text)
-	end
+	CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
 
 	--copy chat button
 	local copyButton = CreateFrame('Frame', format('ElvUI_CopyChatButton%d', id), frame)
@@ -2530,7 +2552,7 @@ function CH:UpdateChatKeywords()
 
 	for stringValue in gmatch(keywords, '[^,]+') do
 		if stringValue ~= '' then
-			CH.Keywords[stringValue] = true
+			CH.Keywords[stringValue == "%MYNAME%" and E.myname or stringValue] = true
 		end
 	end
 end

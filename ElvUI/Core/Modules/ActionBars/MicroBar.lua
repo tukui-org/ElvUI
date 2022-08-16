@@ -249,5 +249,10 @@ function AB:SetupMicroBar()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
 	_G.MainMenuBarPerformanceBar:SetScale(0.00001)
 
+	if E.Wrath then
+		_G.PVPMicroButtonTexture:ClearAllPoints()
+		_G.PVPMicroButtonTexture:Point('TOP', _G.PVPMicroButton, 'TOP', 6, -1)
+	end
+
 	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
 end

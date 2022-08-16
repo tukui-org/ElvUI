@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
@@ -24,7 +24,7 @@ General.playerTitles = ACH:Toggle(L["Player Titles"], L["Display player titles."
 General.guildRanks = ACH:Toggle(L["Guild Ranks"], L["Display guild ranks if a unit is guilded."], 3)
 General.alwaysShowRealm = ACH:Toggle(L["Always Show Realm"], nil, 4)
 General.role = ACH:Toggle(L["ROLE"], L["Display the unit role in the tooltip."], 5, nil, nil, nil, nil, nil, nil, not E.Retail)
-General.showMount = ACH:Toggle(L["Current Mount"], L["Display current mount the unit is riding."], 6)
+General.showMount = ACH:Toggle(L["Current Mount"], L["Display current mount the unit is riding."], 6, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.gender = ACH:Toggle(L["Gender"], L["Displays the gender of players."], 7)
 General.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users and their version of ElvUI."], 8)
 General.itemQuality = ACH:Toggle(L["Item Quality"], L["Color tooltip border based on Item Quality."], 9)
@@ -62,7 +62,7 @@ General.fontGroup = ACH:Group(L["Font"], nil, 70, nil, function(info) return E.d
 General.fontGroup.args.smallTextFontSize = ACH:Range(L["Comparison Font Size"], L["This setting controls the size of text in item comparison tooltips."], 1, C.Values.FontSize)
 General.fontGroup.args.spacer = ACH:Spacer(2)
 
-General.fontGroup.args.header = ACH:Group(E.NewSign..L["Tooltip Header"], nil, 3)
+General.fontGroup.args.header = ACH:Group(L["Tooltip Header"], nil, 3)
 General.fontGroup.args.header.args.headerFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 General.fontGroup.args.header.args.headerFontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
 General.fontGroup.args.header.args.headerFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)

@@ -21,15 +21,15 @@ local GetItemInfo = GetItemInfo
 local CLUBTYPE_GUILD = Enum.ClubType.Guild
 local CLUBTYPE_BATTLENET = Enum.ClubType.BattleNet
 
-local function UpdateNames(self)
-	if not self.expanded then return end
+local function UpdateNames(button)
+	if not button.expanded then return end
 
-	local memberInfo = self:GetMemberInfo()
+	local memberInfo = button:GetMemberInfo()
 	if memberInfo and memberInfo.classID then
 		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
 		if classInfo then
 			local tcoords = _G.CLASS_ICON_TCOORDS[classInfo.classFile]
-			self.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			button.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 		end
 	end
 end
@@ -54,45 +54,45 @@ local function SideClubButton_CreateBackdrop(frame)
 	frame.backdrop:Point('BOTTOMRIGHT', -8, 8)
 end
 
-local function HandleCommunitiesButtons(self, color)
-	self.Background:Hide()
-	self.CircleMask:Hide()
-	self:SetFrameLevel(self:GetFrameLevel() + 5)
+local function HandleCommunitiesButtons(button, color)
+	button.Background:Hide()
+	button.CircleMask:Hide()
+	button:SetFrameLevel(button:GetFrameLevel() + 5)
 
-	S:HandleIcon(self.Icon)
-	self.Icon:ClearAllPoints()
-	self.Icon:Point('TOPLEFT', 15, -18)
-	self.IconRing:Hide()
+	S:HandleIcon(button.Icon)
+	button.Icon:ClearAllPoints()
+	button.Icon:Point('TOPLEFT', 15, -18)
+	button.IconRing:Hide()
 
-	if not self.backdrop then
-		SideClubButton_CreateBackdrop(self)
+	if not button.backdrop then
+		SideClubButton_CreateBackdrop(button)
 	end
 
-	local highlight = self:GetHighlightTexture()
+	local highlight = button:GetHighlightTexture()
 	highlight:SetColorTexture(1, 1, 1, 0.3)
-	highlight:SetInside(self.backdrop)
+	highlight:SetInside(button.backdrop)
 
-	if self.IconBorder then
-		self.IconBorder:Hide()
+	if button.IconBorder then
+		button.IconBorder:Hide()
 	end
 
 	if color then
-		self.Selection:SetInside(self.backdrop)
+		button.Selection:SetInside(button.backdrop)
 
 		if color == 1 then
-			self.Selection:SetAtlas(nil)
-			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
+			button.Selection:SetAtlas(nil)
+			button.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
 		else
-			self.Selection:SetAtlas(nil)
-			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
+			button.Selection:SetAtlas(nil)
+			button.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
 		end
 	end
 end
 
-local function ColorMemberName(self, info)
+local function ColorMemberName(button, info)
 	if not info then return end
 
-	local class = self.Class
+	local class = button.Class
 	local _, classTag = GetClassInfo(info.classID)
 	if classTag then
 		local tcoords = CLASS_ICON_TCOORDS[classTag]

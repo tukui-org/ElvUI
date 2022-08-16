@@ -133,10 +133,10 @@ function E:Grid_Create()
 	end
 
 	local width, height = E.UIParent:GetSize()
-	local size, half = E.mult / 2, height / 2
+	local size, half = E.mult * 0.5, height * 0.5
 
 	local gSize = E.db.gridSize
-	local gHalf = gSize / 2
+	local gHalf = gSize * 0.5
 
 	local ratio = width / height
 	local hHeight = height * ratio
@@ -173,7 +173,7 @@ function E:Grid_Create()
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half + size))
 	end
 
-	local hSteps = floor((height/2)/hStep)
+	local hSteps = floor((height*0.5)/hStep)
 	for i = 1, hSteps do
 		local ihStep = i*hStep
 
@@ -1142,7 +1142,7 @@ function E:ToggleOptionsUI(msg)
 
 			local unskinned = not E.private.skins.ace3Enable
 			if unskinned then
-				for i=1, frame:GetNumRegions() do
+				for i = 1, frame:GetNumRegions() do
 					local region = select(i, frame:GetRegions())
 					if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
 						region:SetAlpha(0)

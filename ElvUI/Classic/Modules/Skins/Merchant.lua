@@ -14,6 +14,18 @@ local hooksecurefunc = hooksecurefunc
 
 local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 
+local function merchantItemPoint()
+	S:HandlePointXY(_G.MerchantItem1, 6, -40)
+
+	for i = 2, _G.BUYBACK_ITEMS_PER_PAGE do
+		if E:IsEvenNumber(i) then
+			S:HandlePointXY(_G['MerchantItem'..i], 12, 0)
+		else
+			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
+		end
+	end
+end
+
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
@@ -33,13 +45,13 @@ function S:MerchantFrame()
 		local slot = _G['MerchantItem'..i..'SlotTexture']
 
 		item:StripTextures(true)
-		item:CreateBackdrop('Default')
+		item:CreateBackdrop()
 		item.backdrop:Point('TOPLEFT', -1, 3)
 		item.backdrop:Point('BOTTOMRIGHT', 2, -3)
 
 		button:StripTextures()
 		button:StyleButton()
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:Size(40)
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -2)
 
@@ -58,7 +70,7 @@ function S:MerchantFrame()
 			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
 
 			currencyIcon.backdrop = CreateFrame('Frame', nil, currencyItem)
-			currencyIcon.backdrop:SetTemplate('Default')
+			currencyIcon.backdrop:SetTemplate()
 			currencyIcon.backdrop:SetFrameLevel(currencyItem:GetFrameLevel())
 			currencyIcon.backdrop:SetOutside(currencyIcon)
 
@@ -105,7 +117,7 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
-	_G.MerchantBuyBackItemItemButton:SetTemplate('Default', true)
+	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 	_G.MerchantBuyBackItemItemButton:Size(40)
 	_G.MerchantBuyBackItemItemButton:Point('TOPLEFT', 4, -2)
 
@@ -118,19 +130,6 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemMoneyFrame:ClearAllPoints()
 	_G.MerchantBuyBackItemMoneyFrame:Point('BOTTOMLEFT', _G.MerchantBuyBackItemItemButton, 'BOTTOMRIGHT', 3, 0)
-
-	local function merchantItemPoint()
-		S:HandlePointXY(_G.MerchantItem1, 6, -40)
-
-		-- evens
-		for i = 3, _G.BUYBACK_ITEMS_PER_PAGE, 2 do
-			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
-		end
-		-- odds
-		for i = 2, _G.BUYBACK_ITEMS_PER_PAGE, 2 do
-			S:HandlePointXY(_G['MerchantItem'..i], 12, 0)
-		end
-	end
 
 	-- skin tabs
 	for i = 1, 2 do

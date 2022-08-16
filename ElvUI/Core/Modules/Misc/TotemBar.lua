@@ -9,7 +9,7 @@ local GetTotemInfo = GetTotemInfo
 local MAX_TOTEMS = MAX_TOTEMS
 
 function TOTEMS:Update()
-	for i=1, MAX_TOTEMS do
+	for i = 1, MAX_TOTEMS do
 		local totem = _G['TotemFrameTotem'..i]
 		local button = self.bar[i]
 
@@ -32,7 +32,7 @@ end
 function TOTEMS:PositionAndSize()
 	if not E.private.general.totemBar then return end
 
-	for i=1, MAX_TOTEMS do
+	for i = 1, MAX_TOTEMS do
 		local button = self.bar[i]
 		local prevButton = self.bar[i-1]
 		button:Size(self.db.size)
@@ -87,7 +87,7 @@ function TOTEMS:Initialize()
 	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 	self.bar = bar
 
-	for i=1, MAX_TOTEMS do
+	for i = 1, MAX_TOTEMS do
 		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
 		frame:SetID(i)
 		frame:SetTemplate()

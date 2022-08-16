@@ -386,7 +386,6 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
 
-
 		frame:SetTemplate('Transparent')
 
 		if TYPE == 'InlineGroup' then -- 'Window' is another type

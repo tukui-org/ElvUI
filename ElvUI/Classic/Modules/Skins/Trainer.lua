@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local strfind, unpack = strfind, unpack
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TrainerUI()
@@ -41,7 +40,7 @@ function S:Blizzard_TrainerUI()
 			skillIcon:SetInside()
 			skillIcon:SetTexCoord(unpack(E.TexCoords))
 
-			_G.ClassTrainerSkillIcon:SetTemplate('Default')
+			_G.ClassTrainerSkillIcon:SetTemplate()
 		end
 	end)
 

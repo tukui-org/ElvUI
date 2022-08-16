@@ -84,7 +84,7 @@ function S:PetBattleFrame()
 			f.Ally2.iconPoint = infoBar.Icon.backdrop
 			f.Ally3.iconPoint = infoBar.Icon.backdrop
 
-			infoBar.ActualHealthBar:SetVertexColor(171/255, 214/255, 116/255)
+			infoBar.ActualHealthBar:SetVertexColor(0.67, 0.84, 0.45)
 			infoBar.ActualHealthBar:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMRIGHT', 10, 0)
 			infoBar.ActualHealthBar.backdrop:Point('TOPLEFT', infoBar.ActualHealthBar, -E.Border, E.Border)
 			infoBar.ActualHealthBar.backdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, -E.Border, -E.Border)
@@ -101,7 +101,7 @@ function S:PetBattleFrame()
 			f.Enemy2.iconPoint = infoBar.Icon.backdrop
 			f.Enemy3.iconPoint = infoBar.Icon.backdrop
 
-			infoBar.ActualHealthBar:SetVertexColor(196/255, 30/255, 60/255)
+			infoBar.ActualHealthBar:SetVertexColor(0.77, 0.12, 0.24)
 			infoBar.ActualHealthBar:Point('BOTTOMRIGHT', infoBar.Icon, 'BOTTOMLEFT', -10, 0)
 			infoBar.ActualHealthBar.backdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, E.Border, E.Border)
 			infoBar.ActualHealthBar.backdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, E.Border, -E.Border)

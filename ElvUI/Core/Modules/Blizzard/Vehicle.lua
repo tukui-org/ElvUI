@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
+-- _G.VehicleSeatIndicator doesn't exist (yet?)
+if E.Wrath then return end
+
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
@@ -20,7 +23,7 @@ local function VehicleSetUp(vehicleID)
 
 	local _, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
 	if numSeatIndicators then
-		local fourth = size / 4
+		local fourth = size * 0.25
 
 		for i = 1, numSeatIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]

@@ -27,7 +27,7 @@ local GetBindingKey = GetBindingKey
 local SetBinding = SetBinding
 local SaveBindings = SaveBindings
 local GetCurrentBindingSet = GetCurrentBindingSet
-local GetSpecialization = not E.Retail and LCS.GetSpecialization or GetSpecialization
+local GetSpecialization = (E.Classic or E.TBC and LCS.GetSpecialization) or GetSpecialization
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -64,8 +64,7 @@ E.myLocalizedRace, E.myrace = UnitRace('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
-E.myspec = GetSpecialization()
-E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
+E.myspec = E.Retail and GetSpecialization()
 E.wowbuild = tonumber(E.wowbuild)
 E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
@@ -1407,6 +1406,10 @@ function E:UpdateActionBars(skipCallback)
 		ActionBars:UpdateExtraButtons()
 	end
 
+	if E.Wrath and E.myclass == 'SHAMAN' then
+		ActionBars:UpdateTotemBindings()
+	end
+
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
 	end
@@ -1484,6 +1487,8 @@ function E:UpdateMisc(skipCallback)
 	if E.Retail then
 		Blizzard:SetObjectiveFrameHeight()
 		Totems:PositionAndSize()
+	elseif E.Wrath then
+		ActionBars:PositionAndSizeTotemBar()
 	elseif E.TBC then
 		Totems:PositionAndSize()
 	end
@@ -1805,6 +1810,12 @@ function E:DBConversions()
 	end
 
 	-- development converts
+	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
+		if data.r then
+			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
+	end -- rune convert
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
@@ -1908,8 +1919,11 @@ function E:Initialize()
 	E:Contruct_StaticPopups()
 
 	if E.Retail then
-		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 		E:Tutorials()
+	end
+
+	if E.Retail or E.Wrath then
+		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end
 
 	E.initialized = true

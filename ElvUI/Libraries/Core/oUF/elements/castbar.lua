@@ -129,11 +129,11 @@ local function CastStart(self, real, unit, castGUID)
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
-	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
 	local event = 'UNIT_SPELLCAST_START'
 	if not name then
-		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
+		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
 
 		event = 'UNIT_SPELLCAST_CHANNEL_START'
 	end
@@ -166,12 +166,12 @@ local function CastStart(self, real, unit, castGUID)
 	end
 
 	-- ElvUI block
-	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
-		element.duration = element.duration + (element.max * tradeskillCurrent);
-		element.max = element.max * tradeskillTotal;
+	if mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player") then
+		element.duration = element.duration + (element.max * tradeskillCurrent)
+		element.max = element.max * tradeskillTotal
 		element.holdTime = 1
 
-		if(unit == "player") then
+		if unit == 'player' then
 			tradeskillCurrent = tradeskillCurrent + 1;
 		end
 	end
@@ -183,7 +183,7 @@ local function CastStart(self, real, unit, castGUID)
 	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Shield) then element.Shield:SetShown(notInterruptible) end
 	if(element.Spark) then element.Spark:Show() end
-	if(element.Text) then element.Text:SetText(name) end
+	if(element.Text) then element.Text:SetText(text) end
 	if(element.Time) then element.Time:SetText() end
 
 	local safeZone = element.SafeZone

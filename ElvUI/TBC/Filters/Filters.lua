@@ -25,14 +25,21 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[9852]	= Defaults(1), -- Entangling Roots (Rank 5)
 		[9853]	= Defaults(1), -- Entangling Roots (Rank 6)
 		[26989]	= Defaults(1), -- Entangling Roots (Rank 7)
+		[19975]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 1)
+		[19974]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 2)
+		[19973]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 3)
+		[19972]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 4)
+		[19971]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 5)
+		[19970]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 6)
+		[27010]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 7)
 		[2637]	= Defaults(1), -- Hibernate (Rank 1)
 		[18657]	= Defaults(1), -- Hibernate (Rank 2)
 		[18658]	= Defaults(1), -- Hibernate (Rank 3)
-		[19675]	= Defaults(2), -- Feral Charge Effect
+		[45334]	= Defaults(2), -- Feral Charge Effect
 		[5211]	= Defaults(4), -- Bash (Rank 1)
 		[6798]	= Defaults(4), -- Bash (Rank 2)
 		[8983]	= Defaults(4), -- Bash (Rank 3)
-		[16922]	= Defaults(2), -- Starfire Stun
+		[16922]	= Defaults(2), -- Celestial Focus (Starfire Stun)
 		[9005]	= Defaults(2), -- Pounce (Rank 1)
 		[9823]	= Defaults(2), -- Pounce (Rank 2)
 		[9827]	= Defaults(2), -- Pounce (Rank 3)
@@ -45,16 +52,16 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[17390]	= Defaults(5), -- Faerie Fire (Feral) (Rank 2)
 		[17391]	= Defaults(5), -- Faerie Fire (Feral) (Rank 3)
 		[17392]	= Defaults(5), -- Faerie Fire (Feral) (Rank 4)
+		[22570] = Defaults(4), -- Maim
+		[33786]	= Defaults(5), -- Cyclone
 	-- Hunter
-		[1499]	= Defaults(3), -- Freezing Trap (Rank 1)
-		[14310]	= Defaults(3), -- Freezing Trap (Rank 2)
-		[14311]	= Defaults(3), -- Freezing Trap (Rank 3)
+		[3355]	= Defaults(3), -- Freezing Trap Effect (Rank 1)
 		[14308]	= Defaults(3), -- Freezing Trap Effect (Rank 2)
 		[14309]	= Defaults(3), -- Freezing Trap Effect (Rank 3)
-		[13809]	= Defaults(1), -- Frost Trap
+		[13810]	= Defaults(1), -- Frost Trap Aura
 		[19503]	= Defaults(4), -- Scatter Shot
 		[5116]	= Defaults(2), -- Concussive Shot
-		[297]	= Defaults(2), -- Wing Clip (Rank 1)
+		[2974]	= Defaults(2), -- Wing Clip (Rank 1)
 		[14267]	= Defaults(2), -- Wing Clip (Rank 2)
 		[14268]	= Defaults(2), -- Wing Clip (Rank 3)
 		[1513]	= Defaults(2), -- Scare Beast (Rank 1)
@@ -64,15 +71,28 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[19386]	= Defaults(2), -- Wyvern Sting (Rank 1)
 		[24132]	= Defaults(2), -- Wyvern Sting (Rank 2)
 		[24133]	= Defaults(2), -- Wyvern Sting (Rank 3)
+		[27068]	= Defaults(2), -- Wyvern Sting (Rank 4)
 		[19229]	= Defaults(2), -- Improved Wing Clip
 		[19306]	= Defaults(2), -- Counterattack (Rank 1)
 		[20909]	= Defaults(2), -- Counterattack (Rank 2)
 		[20910]	= Defaults(2), -- Counterattack (Rank 3)
+		[27067]	= Defaults(2), -- Counterattack (Rank 4)
+		[19410]	= Defaults(2), -- Improved Concussive Shot
+		[34490]	= Defaults(2), -- Silencing Shot
+		[25999]	= Defaults(2), -- Charge (Boar)
+		[19185]	= Defaults(1), -- Entrapment
+		[35101]	= Defaults(2), -- Concussive Barrage
 	-- Mage
 		[118]	= Defaults(3), -- Polymorph (Rank 1)
 		[12824]	= Defaults(3), -- Polymorph (Rank 2)
 		[12825]	= Defaults(3), -- Polymorph (Rank 3)
 		[12826]	= Defaults(3), -- Polymorph (Rank 4)
+		[28271]	= Defaults(3), -- Polymorph (Turtle)
+		[28272]	= Defaults(3), -- Polymorph (Pig)
+		[31661]	= Defaults(3), -- Dragon's Breath (Rank 1)
+		[33041]	= Defaults(3), -- Dragon's Breath (Rank 2)
+		[33042]	= Defaults(3), -- Dragon's Breath (Rank 3)
+		[33043]	= Defaults(3), -- Dragon's Breath (Rank 4)
 		[122]	= Defaults(1), -- Frost Nova (Rank 1)
 		[865]	= Defaults(1), -- Frost Nova (Rank 2)
 		[6131]	= Defaults(1), -- Frost Nova (Rank 3)
@@ -92,22 +112,41 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[25304]	= Defaults(2), -- Frostbolt (Rank 11)
 		[27071]	= Defaults(2), -- Frostbolt (Rank 12)
 		[27072]	= Defaults(2), -- Frostbolt (Rank 13)
+		[38697]	= Defaults(2), -- Frostbolt (Rank 14)
 		[12355]	= Defaults(2), -- Impact
+		[18469]	= Defaults(2), -- Counterspell - Silencedl
+		[33395]	= Defaults(1), -- Freeze (Water Elemental)
+		[11113]	= Defaults(2), -- Blast Wave
+		[12484]	= Defaults(2), -- Chilled (Blizzard) (Rank 1)
+		[12485]	= Defaults(2), -- Chilled (Blizzard) (Rank 2)
+		[12486]	= Defaults(2), -- Chilled (Blizzard) (Rank 3)
+		[6136]	= Defaults(2), -- Chilled (Frost Armor)
+		[7321]	= Defaults(2), -- Chilled (Ice Armor)
+		[120]	= Defaults(2), -- Cone of Cold
+		[31589]	= Defaults(2), -- Slow
 	-- Paladin
 		[853]	= Defaults(3), -- Hammer of Justice (Rank 1)
 		[5588]	= Defaults(3), -- Hammer of Justice (Rank 2)
 		[5589]	= Defaults(3), -- Hammer of Justice (Rank 3)
 		[10308]	= Defaults(3), -- Hammer of Justice (Rank 4)
 		[20066]	= Defaults(3), -- Repentance
+		[20170]	= Defaults(2), -- Stun (Seal of Justice Proc)
+		[10326]	= Defaults(3), -- Turn Evil
+		[2878]	= Defaults(3), -- Turn Undead (Rank 1)
+		[5627]	= Defaults(3), -- Turn Undead (Rank 2)
+		[31935]	= Defaults(2), -- Avenger's Shield
+		[2812]	= Defaults(2), -- Holy Wrath (Rank 1)
+		[10318]	= Defaults(2), -- Holy Wrath (Rank 2)
+		[27139]	= Defaults(2), -- Holy Wrath (Rank 3)
+		[48816]	= Defaults(2), -- Holy Wrath (Rank 4)
+		[48817]	= Defaults(2), -- Holy Wrath (Rank 5)
+		[63529]	= Defaults(2), -- Silenced - Shield of the Templar
 	-- Priest
 		[8122]	= Defaults(3), -- Psychic Scream (Rank 1)
 		[8124]	= Defaults(3), -- Psychic Scream (Rank 2)
 		[10888]	= Defaults(3), -- Psychic Scream (Rank 3)
 		[10890]	= Defaults(3), -- Psychic Scream (Rank 4)
-		[605]	= Defaults(5), -- Mind Control (Rank 1)
-		[10911]	= Defaults(5), -- Mind Control (Rank 2)
-		[10912]	= Defaults(5), -- Mind Control (Rank 3)
-		[15269]	= Defaults(2), -- Blackout
+		[605]	= Defaults(5), -- Mind Control
 		[15407]	= Defaults(2), -- Mind Flay (Rank 1)
 		[17311]	= Defaults(2), -- Mind Flay (Rank 2)
 		[17312]	= Defaults(2), -- Mind Flay (Rank 3)
@@ -115,6 +154,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[17314]	= Defaults(2), -- Mind Flay (Rank 5)
 		[18807]	= Defaults(2), -- Mind Flay (Rank 6)
 		[25387]	= Defaults(2), -- Mind Flay (Rank 7)
+		[15487]	= Defaults(2), -- Silence
 	-- Rogue
 		[6770]	= Defaults(4), -- Sap (Rank 1)
 		[2070]	= Defaults(4), -- Sap (Rank 2)
@@ -129,7 +169,14 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[11285]	= Defaults(2), -- Gouge (Rank 4)
 		[11286]	= Defaults(2), -- Gouge (Rank 5)
 		[38764]	= Defaults(2), -- Gouge (Rank 6)
-		[5530]	= Defaults(2), -- Mace Stun Effect
+		[1330]	= Defaults(2), -- Garrote - Silence
+		[18425]	= Defaults(2), -- Kick - Silenced
+		[14251]	= Defaults(2), -- Riposte
+		[31125]	= Defaults(2), -- Blade Twisting
+		[3409]	= Defaults(2), -- Crippling Poison (Rank 1)
+		[11201]	= Defaults(2), -- Crippling Poison (Rank 2)
+		[26679]	= Defaults(2), -- Deadly Throw
+		[32747]	= Defaults(2), -- Deadly Interrupt Effect
 	-- Shaman
 		[2484]	= Defaults(1), -- Earthbind Totem
 		[8056]	= Defaults(2), -- Frost Shock (Rank 1)
@@ -137,35 +184,69 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[10472]	= Defaults(2), -- Frost Shock (Rank 3)
 		[10473]	= Defaults(2), -- Frost Shock (Rank 4)
 		[25464]	= Defaults(2), -- Frost Shock (Rank 5)
+		[39796]	= Defaults(2), -- Stoneclaw Totem
+		[8034]	= Defaults(2), -- Frostbrand Attack (Rank 1)
+		[8037]	= Defaults(2), -- Frostbrand Attack (Rank 2)
+		[10458]	= Defaults(2), -- Frostbrand Attack (Rank 3)
+		[16352]	= Defaults(2), -- Frostbrand Attack (Rank 4)
+		[16353]	= Defaults(2), -- Frostbrand Attack (Rank 5)
+		[25501]	= Defaults(2), -- Frostbrand Attack (Rank 6)
 	-- Warlock
 		[5782]	= Defaults(3), -- Fear (Rank 1)
 		[6213]	= Defaults(3), -- Fear (Rank 2)
 		[6215]	= Defaults(3), -- Fear (Rank 3)
-		[6358]	= Defaults(3), -- Seduction (Succub)
+		[6358]	= Defaults(3), -- Seduction (Succubus)
 		[18223]	= Defaults(2), -- Curse of Exhaustion
 		[18093]	= Defaults(2), -- Pyroclasm
 		[710]	= Defaults(2), -- Banish (Rank 1)
 		[18647]	= Defaults(2), -- Banish (Rank 2)
 		[30413]	= Defaults(2), -- Shadowfury
+		[6789]	= Defaults(3), -- Death Coil (Rank 1)
+		[17925]	= Defaults(3), -- Death Coil (Rank 2)
+		[17926]	= Defaults(3), -- Death Coil (Rank 3)
+		[27223]	= Defaults(3), -- Death Coil (Rank 4)
+		[5484]	= Defaults(3), -- Howl of Terror (Rank 1)
+		[17928]	= Defaults(3), -- Howl of Terror (Rank 2)
+		[24259]	= Defaults(2), -- Spell Lock (Felhunter)
+		[18118]	= Defaults(2), -- Aftermath
+		[20812]	= Defaults(2), -- Cripple (Doomguard)
+		[1098]	= Defaults(5), -- Enslave Demon (Rank 1)
+		[11725]	= Defaults(5), -- Enslave Demon (Rank 2)
+		[11726]	= Defaults(5), -- Enslave Demon (Rank 3)
+		[30153]	= Defaults(2), -- Intercept Stun (Felguard)
+		[31117]	= Defaults(2), -- Unstable Affliction (Silence)
 	-- Warrior
-		[5246]	= Defaults(4), -- Intimidating Shout
+		[20511]	= Defaults(4), -- Intimidating Shout (Cower)
+		[5246]	= Defaults(4), -- Intimidating Shout (Fear)
 		[1715]	= Defaults(2), -- Hamstring (Rank 1)
 		[7372]	= Defaults(2), -- Hamstring (Rank 2)
 		[7373]	= Defaults(2), -- Hamstring (Rank 3)
 		[25212]	= Defaults(2), -- Hamstring (Rank 4)
 		[12809]	= Defaults(2), -- Concussion Blow
-		[20252]	= Defaults(2), -- Intercept (Rank 1)
-		[20616]	= Defaults(2), -- Intercept (Rank 2)
-		[20617]	= Defaults(2), -- Intercept (Rank 3)
-		[25272]	= Defaults(2), -- Intercept (Rank 4)
-		[25275]	= Defaults(2), -- Intercept (Rank 5)
+		[20253]	= Defaults(2), -- Intercept Stun (Rank 1)
+		[20614]	= Defaults(2), -- Intercept Stun (Rank 2)
+		[20615]	= Defaults(2), -- Intercept Stun (Rank 3)
+		[25273]	= Defaults(2), -- Intercept Stun (Rank 4)
+		[25274]	= Defaults(2), -- Intercept Stun (Rank 5)
 		[7386]	= Defaults(6), -- Sunder Armor (Rank 1)
 		[7405]	= Defaults(6), -- Sunder Armor (Rank 2)
 		[8380]	= Defaults(6), -- Sunder Armor (Rank 3)
 		[11596]	= Defaults(6), -- Sunder Armor (Rank 4)
 		[11597]	= Defaults(6), -- Sunder Armor (Rank 5)
+		[25225]	= Defaults(6), -- Sunder Armor (Rank 6)
+		[7922]	= Defaults(2), -- Charge Stun
+		[12798]	= Defaults(2), -- Revenge Stun
+		[18498]	= Defaults(2), -- Shield Bash - Silenced
+		[23694]	= Defaults(2), -- Improved Hamstring
+		[676]	= Defaults(2), -- Disarm
+		[12323]	= Defaults(2), -- Piercing Howl
+	--Mace Specialization
+		[5530]	= Defaults(2), -- Mace Stun Effect
 	-- Racial
 		[20549]	= Defaults(2), -- War Stomp
+		[44041]	= Defaults(2), -- Chastise
+		[28730]	= Defaults(2), -- Arcane Torrent (Mana)
+		[25046]	= Defaults(2), -- Arcane Torrent (Energy)
 	},
 }
 
@@ -173,10 +254,15 @@ G.unitframe.aurafilters.CCDebuffs = {
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Druid
+		[22812]	= Defaults(2), -- Barkskin
+	-- Hunter
+		[19263]	= Defaults(2), -- Deterrence
+	-- Hunter
+		[34471]	= Defaults(2), -- The Beast Within
 	-- Mage
-		[11958]	= Defaults(2), -- Ice Block A
-		[27619]	= Defaults(2), -- Ice Block B
-		[45438]	= Defaults(2), -- Ice Block C
+		[45438]	= Defaults(2), -- Ice Block
+		[66]	= Defaults(2), -- Invisibility
 	-- Paladin
 		[498]	= Defaults(2), -- Divine Protection (Rank 1)
 		[5573]	= Defaults(2), -- Divine Protection (Rank 2)
@@ -185,8 +271,25 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[1022]	= Defaults(2), -- Blessing of Protection (Rank 1)
 		[5599]	= Defaults(2), -- Blessing of Protection (Rank 2)
 		[10278]	= Defaults(2), -- Blessing of Protection (Rank 3)
+	-- Rogue
+		[31224]	= Defaults(2), -- Cloak of Shadows
+		[5277]	= Defaults(2), -- Evasion (Rank 1)
+		[26669]	= Defaults(2), -- Evasion (Rank 2)
+		[1856]	= Defaults(2), -- Vanish (Rank 1)
+		[1857]	= Defaults(2), -- Vanish (Rank 2)
+		[26889]	= Defaults(2), -- Vanish (Rank 3)
+	-- Shaman
+		[974]	= Defaults(2), -- Earth Shield (Rank 1)
+		[32593]	= Defaults(2), -- Earth Shield (Rank 2)
+		[32594]	= Defaults(2), -- Earth Shield (Rank 3)
+		[49283]	= Defaults(2), -- Earth Shield (Rank 4)
+		[49284]	= Defaults(2), -- Earth Shield (Rank 5)
+		[30823]	= Defaults(2), -- Shamanistic Rage
 	-- Warrior
+		[12975]	= Defaults(2), -- Last Stand
+		[871]	= Defaults(2), -- Shield Wall
 		[20230]	= Defaults(2), -- Retaliation
+		[23920]	= Defaults(2), -- Spell Reflection
 	-- Consumables
 		[3169]	= Defaults(2), -- Limited Invulnerability Potion
 		[6615]	= Defaults(2), -- Free Action Potion
@@ -222,7 +325,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[5229]	= Defaults(), -- Enrage
 		[1850]	= Defaults(), -- Dash (Rank 1)
 		[9821]	= Defaults(), -- Dash (Rank 2)
-		[23110]	= Defaults(), -- Dash (Rank 3)
+		[33357]	= Defaults(), -- Dash (Rank 3)
 	-- Hunter
 		[13161]	= Defaults(), -- Aspect of the Beast
 		[5118]	= Defaults(), -- Aspect of the Cheetah
@@ -241,11 +344,12 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[14322]	= Defaults(), -- Aspect of the Hawk (Rank 6)
 		[25296]	= Defaults(), -- Aspect of the Hawk (Rank 7)
 		[27044]	= Defaults(), -- Aspect of the Hawk (Rank 8)
+		[19574]	= Defaults(), -- Bestial Wrath
+		[34471]	= Defaults(), -- The Beast Within
 	-- Mage
-		[11958]	= Defaults(), -- Ice Block A
-		[27619]	= Defaults(), -- Ice Block B
+		[45438]	= Defaults(), -- Ice Block
 		[12043]	= Defaults(), -- Presence of Mind
-		[11129]	= Defaults(), -- Combustion
+		[28682]	= Defaults(), -- Combustion
 		[12042]	= Defaults(), -- Arcane Power
 		[11426]	= Defaults(), -- Ice Barrier (Rank 1)
 		[13031]	= Defaults(), -- Ice Barrier (Rank 2)
@@ -253,9 +357,10 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[13033]	= Defaults(), -- Ice Barrier (Rank 4)
 		[27134]	= Defaults(), -- Ice Barrier (Rank 5)
 		[33405]	= Defaults(), -- Ice Barrier (Rank 6)
+		[12472]	= Defaults(), -- Icy Veins
+		[66]	= Defaults(), -- Invisibility
 	-- Paladin
 		[1044]	= Defaults(), -- Blessing of Freedom
-		[1038]	= Defaults(), -- Blessing of Salvation
 		[465]	= Defaults(), -- Devotion Aura (Rank 1)
 		[10290]	= Defaults(), -- Devotion Aura (Rank 2)
 		[643]	= Defaults(), -- Devotion Aura (Rank 3)
@@ -283,6 +388,21 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[19899]	= Defaults(), -- Fire Resistance Aura (Rank 2)
 		[19900]	= Defaults(), -- Fire Resistance Aura (Rank 3)
 		[27153]	= Defaults(), -- Fire Resistance Aura (Rank 4)
+		[498]	= Defaults(), -- Divine Protection (Rank 1)
+		[5573]	= Defaults(), -- Divine Protection (Rank 2)
+		[642]	= Defaults(), -- Divine Shield (Rank 1)
+		[1020]	= Defaults(), -- Divine Shield (Rank 2)
+		[1022]	= Defaults(), -- Blessing of Protection (Rank 1)
+		[5599]	= Defaults(), -- Blessing of Protection (Rank 2)
+		[10278]	= Defaults(), -- Blessing of Protection (Rank 3)
+		[6940]	= Defaults(), -- Blessing of Sacrifice (Rank 1)
+		[20729]	= Defaults(), -- Blessing of Sacrifice (Rank 2)
+		[27147]	= Defaults(), -- Blessing of Sacrifice (Rank 3)
+		[27148]	= Defaults(), -- Blessing of Sacrifice (Rank 4)
+		[20218]	= Defaults(), -- Sanctity Aura
+		[31884]	= Defaults(), -- Avenging Wrath
+		[20216]	= Defaults(), -- Divine Favor
+		[31842]	= Defaults(), -- Divine Illumination
 	-- Priest
 		[15473]	= Defaults(), -- Shadowform
 		[10060]	= Defaults(), -- Power Infusion
@@ -295,6 +415,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[10941]	= Defaults(), -- Fade (Rank 5)
 		[10942]	= Defaults(), -- Fade (Rank 6)
 		[25429]	= Defaults(), -- Fade (Rank 7)
+		[32548]	= Defaults(), -- Symbol of Hope
 	-- Rogue
 		[14177]	= Defaults(), -- Cold Blood
 		[13877]	= Defaults(), -- Blade Flurry
@@ -304,6 +425,12 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[11305]	= Defaults(), -- Sprint (Rank 3)
 		[5171]	= Defaults(), -- Slice and Dice (Rank 1)
 		[6774]	= Defaults(), -- Slice and Dice (Rank 2)
+		[31224]	= Defaults(), -- Cloak of Shadows
+		[5277]	= Defaults(), -- Evasion (Rank 1)
+		[26669]	= Defaults(), -- Evasion (Rank 2)
+		[1856]	= Defaults(), -- Vanish (Rank 1)
+		[1857]	= Defaults(), -- Vanish (Rank 2)
+		[26889]	= Defaults(), -- Vanish (Rank 3)
 	-- Shaman
 		[2645]	= Defaults(), -- Ghost Wolf
 		[324]	= Defaults(), -- Lightning Shield (Rank 1)
@@ -319,11 +446,24 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[16166]	= Defaults(), -- Elemental Mastery
 		[24398]	= Defaults(), -- Water Shield (Rank 1)
 		[33736]	= Defaults(), -- Water Shield (Rank 2)
+		[974]	= Defaults(), -- Earth Shield (Rank 1)
+		[32593]	= Defaults(), -- Earth Shield (Rank 2)
+		[32594]	= Defaults(), -- Earth Shield (Rank 3)
+		[49283]	= Defaults(), -- Earth Shield (Rank 4)
+		[49284]	= Defaults(), -- Earth Shield (Rank 5)
+		[30823]	= Defaults(), -- Shamanistic Rage
+		[8178]	= Defaults(), -- Grounding Totem Effect
+		[16191]	= Defaults(), -- Mana Tide
 	-- Warlock
-		[18788]	= Defaults(), -- Demonic Sacrifice
+		[18789]	= Defaults(), -- Demonic Sacrifice (Burning Wish)
+		[18790]	= Defaults(), -- Demonic Sacrifice (Fel Stamina)
+		[18791]	= Defaults(), -- Demonic Sacrifice (Touch of Shadow)
+		[18792]	= Defaults(), -- Demonic Sacrifice (Fel Energy)
+		[35701]	= Defaults(), -- Demonic Sacrifice (Touch of Shadow)
 		[5697]	= Defaults(), -- Unending Breath
-		[19028]	= Defaults(), -- Soul Link A
-		[25228]	= Defaults(), -- Soul Link B
+		[6512]	= Defaults(), -- Detect Lesser Invisibility
+		[25228]	= Defaults(), -- Soul Link
+		[18708]	= Defaults(), -- Fel Domination
 	-- Warrior
 		[12975]	= Defaults(), -- Last Stand
 		[871]	= Defaults(), -- Shield Wall
@@ -331,23 +471,35 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[1719]	= Defaults(), -- Recklessness
 		[18499]	= Defaults(), -- Berserker Rage
 		[2687]	= Defaults(), -- Bloodrage
-		[12328]	= Defaults(), -- Death Wish
+		[12292]	= Defaults(), -- Death Wish
+		[12328]	= Defaults(), -- Sweeping Strikes
 		[2565]	= Defaults(), -- Shield Block
 		[12880]	= Defaults(), -- Enrage (Rank 1)
 		[14201]	= Defaults(), -- Enrage (Rank 2)
 		[14202]	= Defaults(), -- Enrage (Rank 3)
 		[14203]	= Defaults(), -- Enrage (Rank 4)
 		[14204]	= Defaults(), -- Enrage (Rank 5)
+		[23920]	= Defaults(), -- Spell Reflection
+	-- Consumables
+		[3169]	= Defaults(), -- Limited Invulnerability Potion
+		[6615]	= Defaults(), -- Free Action Potion
 	-- Racial
-		[20554]	= Defaults(), -- Berserking
+		[20554]	= Defaults(), -- Berserking (Mana)
+		[26296]	= Defaults(), -- Berserking (Rage)
+		[26297]	= Defaults(), -- Berserking (Energy)
 		[7744]	= Defaults(), -- Will of the Forsaken
-		[20572]	= Defaults(), -- Blood Fury
+		[20572]	= Defaults(), -- Blood Fury (Physical)
+		[33697]	= Defaults(), -- Blood Fury (Both)
+		[33702]	= Defaults(), -- Blood Fury (Spell)
 		[6346]	= Defaults(), -- Fear Ward
 		[20594]	= Defaults(), -- Stoneform
+		[28880]	= Defaults(), -- Gift of the Naaru
+	-- All Classes
+		[19753]	= Defaults(), -- Divine Intervention
 	},
 }
 
--- Buffs that really we dont need to see
+-- Buffs that we don't really need to see
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
@@ -635,28 +787,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
-G.unitframe.aurafilters.DungeonDebuffs = {
-	type = 'Whitelist',
-	spells = {
-	-- Hellfire Ramparts
-	-- The Blood Furnace
-	-- The Shattered Halls
-	-- The Slave Pens
-	-- The Underbog
-	-- The Steamvault
-	-- Mana-Tombs
-	-- Auchenai Crypts
-	-- Sethekk Halls
-	-- Shadow Labyrinth
-	-- Old Hillsbrad Foothills
-	-- The Black Morass
-	-- Magisters Terrace
-	-- The Arcatraz
-	-- The Mechanar
-	-- The Botanica
-	},
-}
-
 --[[
 	RAID BUFFS:
 	Buffs that are provided by NPCs in raid or other PvE content.
@@ -834,17 +964,129 @@ end
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
-	ROGUE = {}, -- No buffs
-	WARRIOR = {
-		[6673]	= UF:AuraWatch_AddSpell(6673, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 1)
-		[5242]	= UF:AuraWatch_AddSpell(5242, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 2)
-		[6192]	= UF:AuraWatch_AddSpell(6192, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 3)
-		[11549]	= UF:AuraWatch_AddSpell(11549, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 4)
-		[11550]	= UF:AuraWatch_AddSpell(11550, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 5)
-		[11551]	= UF:AuraWatch_AddSpell(11551, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 6)
-		[25289]	= UF:AuraWatch_AddSpell(25289, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 7)
-		[2048]	= UF:AuraWatch_AddSpell(2048, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 8)
-		[469]	= UF:AuraWatch_AddSpell(469, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Commanding Shout
+	DRUID = {
+		[1126]	= UF:AuraWatch_AddSpell(1126, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 1)
+		[5232]	= UF:AuraWatch_AddSpell(5232, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 2)
+		[6756]	= UF:AuraWatch_AddSpell(6756, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 3)
+		[5234]	= UF:AuraWatch_AddSpell(5234, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 4)
+		[8907]	= UF:AuraWatch_AddSpell(8907, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 5)
+		[9884]	= UF:AuraWatch_AddSpell(9884, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 6)
+		[9885]	= UF:AuraWatch_AddSpell(9885, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 7)
+		[26990]	= UF:AuraWatch_AddSpell(26990, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 8)
+		[21849]	= UF:AuraWatch_AddSpell(21849, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Gift of the Wild (Rank 1)
+		[21850]	= UF:AuraWatch_AddSpell(21850, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Gift of the Wild (Rank 2)
+		[26991]	= UF:AuraWatch_AddSpell(26991, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Gift of the Wild (Rank 3)
+		[467]	= UF:AuraWatch_AddSpell(467, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 1)
+		[782]	= UF:AuraWatch_AddSpell(782, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 2)
+		[1075]	= UF:AuraWatch_AddSpell(1075, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 3)
+		[8914]	= UF:AuraWatch_AddSpell(8914, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 4)
+		[9756]	= UF:AuraWatch_AddSpell(9756, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 5)
+		[9910]	= UF:AuraWatch_AddSpell(9910, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 6)
+		[26992]	= UF:AuraWatch_AddSpell(26992, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 7)
+		[774]	= UF:AuraWatch_AddSpell(774, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),		-- Rejuvenation (Rank 1)
+		[1058]	= UF:AuraWatch_AddSpell(1058, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 2)
+		[1430]	= UF:AuraWatch_AddSpell(1430, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 3)
+		[2090]	= UF:AuraWatch_AddSpell(2090, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 4)
+		[2091]	= UF:AuraWatch_AddSpell(2091, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 5)
+		[3627]	= UF:AuraWatch_AddSpell(3627, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 6)
+		[8910]	= UF:AuraWatch_AddSpell(8910, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 7)
+		[9839]	= UF:AuraWatch_AddSpell(9839, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 8)
+		[9840]	= UF:AuraWatch_AddSpell(9840, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 9)
+		[9841]	= UF:AuraWatch_AddSpell(9841, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 10)
+		[25299]	= UF:AuraWatch_AddSpell(25299, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 11)
+		[26981]	= UF:AuraWatch_AddSpell(26981, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 12)
+		[26982]	= UF:AuraWatch_AddSpell(26982, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 13)
+		[8936]	= UF:AuraWatch_AddSpell(8936, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 1)
+		[8938]	= UF:AuraWatch_AddSpell(8938, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 2)
+		[8939]	= UF:AuraWatch_AddSpell(8939, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 3)
+		[8940]	= UF:AuraWatch_AddSpell(8940, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 4)
+		[8941]	= UF:AuraWatch_AddSpell(8941, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 5)
+		[9750]	= UF:AuraWatch_AddSpell(9750, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 6)
+		[9856]	= UF:AuraWatch_AddSpell(9856, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 7)
+		[9857]	= UF:AuraWatch_AddSpell(9857, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 8)
+		[9858]	= UF:AuraWatch_AddSpell(9858, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 9)
+		[26980]	= UF:AuraWatch_AddSpell(26980, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 10)
+		[29166]	= UF:AuraWatch_AddSpell(29166, 'CENTER', {0.49, 0.60, 0.55}, true),	-- Innervate
+		[33763]	= UF:AuraWatch_AddSpell(33763, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom
+	},
+	HUNTER = {
+		[19506]	= UF:AuraWatch_AddSpell(19506, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 1)
+		[20905]	= UF:AuraWatch_AddSpell(20905, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 2)
+		[20906]	= UF:AuraWatch_AddSpell(20906, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 3)
+		[27066]	= UF:AuraWatch_AddSpell(27066, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 4)
+		[13159]	= UF:AuraWatch_AddSpell(13159, 'TOP', {0.00, 0.00, 0.85}, true),	-- Aspect of the Pack
+		[20043]	= UF:AuraWatch_AddSpell(20043, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild (Rank 1)
+		[20190]	= UF:AuraWatch_AddSpell(20190, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild (Rank 2)
+		[27045]	= UF:AuraWatch_AddSpell(27045, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild (Rank 3)
+	},
+	MAGE = {
+		[1459]	= UF:AuraWatch_AddSpell(1459, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect (Rank 1)
+		[1460]	= UF:AuraWatch_AddSpell(1460, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect (Rank 2)
+		[1461]	= UF:AuraWatch_AddSpell(1461, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect (Rank 3)
+		[10156]	= UF:AuraWatch_AddSpell(10156, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Intellect (Rank 4)
+		[10157]	= UF:AuraWatch_AddSpell(10157, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Intellect (Rank 5)
+		[27126]	= UF:AuraWatch_AddSpell(27126, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Intellect (Rank 6)
+		[23028]	= UF:AuraWatch_AddSpell(23028, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Brilliance (Rank 1)
+		[27127]	= UF:AuraWatch_AddSpell(27127, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Brilliance (Rank 2)
+		[604]	= UF:AuraWatch_AddSpell(604, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 1)
+		[8450]	= UF:AuraWatch_AddSpell(8450, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 2)
+		[8451]	= UF:AuraWatch_AddSpell(8451, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 3)
+		[10173]	= UF:AuraWatch_AddSpell(10173, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 4)
+		[10174]	= UF:AuraWatch_AddSpell(10174, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 5)
+		[33944]	= UF:AuraWatch_AddSpell(33944, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 6)
+		[1008]	= UF:AuraWatch_AddSpell(1008, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 1)
+		[8455]	= UF:AuraWatch_AddSpell(8455, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 2)
+		[10169]	= UF:AuraWatch_AddSpell(10169, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 3)
+		[10170]	= UF:AuraWatch_AddSpell(10170, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 4)
+		[27130]	= UF:AuraWatch_AddSpell(27130, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 5)
+		[33946]	= UF:AuraWatch_AddSpell(33946, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 6)
+		[130]	= UF:AuraWatch_AddSpell(130, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
+	},
+	PALADIN = {
+		[1044]	= UF:AuraWatch_AddSpell(1044, 'CENTER', {0.89, 0.45, 0}),					-- Blessing of Freedom
+		[1038]	= UF:AuraWatch_AddSpell(1038, 'TOPLEFT', {0.11, 1.00, 0.45}, true),			-- Blessing of Salvation
+		[6940]	= UF:AuraWatch_AddSpell(6940, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing of Sacrifice (Rank 1)
+		[20729]	= UF:AuraWatch_AddSpell(20729, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing of Sacrifice (Rank 2)
+		[27147]	= UF:AuraWatch_AddSpell(27147, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing of Sacrifice (Rank 3)
+		[27148]	= UF:AuraWatch_AddSpell(27148, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing of Sacrifice (Rank 4)
+		[19740]	= UF:AuraWatch_AddSpell(19740, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 1)
+		[19834]	= UF:AuraWatch_AddSpell(19834, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 2)
+		[19835]	= UF:AuraWatch_AddSpell(19835, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 3)
+		[19836]	= UF:AuraWatch_AddSpell(19836, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 4)
+		[19837]	= UF:AuraWatch_AddSpell(19837, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 5)
+		[19838]	= UF:AuraWatch_AddSpell(19838, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 6)
+		[25291]	= UF:AuraWatch_AddSpell(25291, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 7)
+		[27140]	= UF:AuraWatch_AddSpell(27140, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 8)
+		[19742]	= UF:AuraWatch_AddSpell(19742, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 1)
+		[19850]	= UF:AuraWatch_AddSpell(19850, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 2)
+		[19852]	= UF:AuraWatch_AddSpell(19852, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 3)
+		[19853]	= UF:AuraWatch_AddSpell(19853, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 4)
+		[19854]	= UF:AuraWatch_AddSpell(19854, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 5)
+		[25290]	= UF:AuraWatch_AddSpell(25290, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 6)
+		[27142]	= UF:AuraWatch_AddSpell(27142, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 7)
+		[25782]	= UF:AuraWatch_AddSpell(25782, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might (Rank 1)
+		[25916]	= UF:AuraWatch_AddSpell(25916, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might (Rank 2)
+		[27141]	= UF:AuraWatch_AddSpell(27141, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might (Rank 3)
+		[25894]	= UF:AuraWatch_AddSpell(25894, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom (Rank 1)
+		[25918]	= UF:AuraWatch_AddSpell(25918, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom (Rank 2)
+		[27143]	= UF:AuraWatch_AddSpell(27143, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom (Rank 3)
+		[465]	= UF:AuraWatch_AddSpell(465, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura (Rank 1)
+		[10290]	= UF:AuraWatch_AddSpell(10290, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 2)
+		[643]	= UF:AuraWatch_AddSpell(643, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura (Rank 3)
+		[10291]	= UF:AuraWatch_AddSpell(10291, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 4)
+		[1032]	= UF:AuraWatch_AddSpell(1032, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 5)
+		[10292]	= UF:AuraWatch_AddSpell(10292, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 6)
+		[10293]	= UF:AuraWatch_AddSpell(10293, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 7)
+		[27149]	= UF:AuraWatch_AddSpell(27149, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 8)
+		[19977]	= UF:AuraWatch_AddSpell(19977, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 1)
+		[19978]	= UF:AuraWatch_AddSpell(19978, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 2)
+		[19979]	= UF:AuraWatch_AddSpell(19979, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 3)
+		[27144]	= UF:AuraWatch_AddSpell(27144, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 4)
+		[1022]	= UF:AuraWatch_AddSpell(1022, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection (Rank 1)
+		[5599]	= UF:AuraWatch_AddSpell(5599, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection (Rank 2)
+		[10278]	= UF:AuraWatch_AddSpell(10278, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection (Rank 3)
+		[19746]	= UF:AuraWatch_AddSpell(19746, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
+		[32223]	= UF:AuraWatch_AddSpell(32223, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
 	},
 	PRIEST = {
 		[1243]	= UF:AuraWatch_AddSpell(1243, 'TOPLEFT', {1, 1, 0.66}, true),			-- Power Word: Fortitude (Rank 1)
@@ -895,97 +1137,7 @@ G.unitframe.aurawatch = {
 		[25221]	= UF:AuraWatch_AddSpell(25221, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew (Rank 11)
 		[25222]	= UF:AuraWatch_AddSpell(25222, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew (Rank 12)
 	},
-	DRUID = {
-		[1126]	= UF:AuraWatch_AddSpell(1126, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 1)
-		[5232]	= UF:AuraWatch_AddSpell(5232, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 2)
-		[6756]	= UF:AuraWatch_AddSpell(6756, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 3)
-		[5234]	= UF:AuraWatch_AddSpell(5234, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 4)
-		[8907]	= UF:AuraWatch_AddSpell(8907, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 5)
-		[9884]	= UF:AuraWatch_AddSpell(9884, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 6)
-		[9885]	= UF:AuraWatch_AddSpell(9885, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 7)
-		[26990]	= UF:AuraWatch_AddSpell(26990, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Mark of the Wild (Rank 8)
-		[21849]	= UF:AuraWatch_AddSpell(21849, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Gift of the Wild (Rank 1)
-		[21850]	= UF:AuraWatch_AddSpell(21850, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Gift of the Wild (Rank 2)
-		[26991]	= UF:AuraWatch_AddSpell(26991, 'TOPLEFT', {0.2, 0.8, 0.8}, true),	-- Gift of the Wild (Rank 3)
-		[467]	= UF:AuraWatch_AddSpell(467, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 1)
-		[782]	= UF:AuraWatch_AddSpell(782, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 2)
-		[1075]	= UF:AuraWatch_AddSpell(1075, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 3)
-		[8914]	= UF:AuraWatch_AddSpell(8914, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 4)
-		[9756]	= UF:AuraWatch_AddSpell(9756, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 5)
-		[9910]	= UF:AuraWatch_AddSpell(9910, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 6)
-		[26992]	= UF:AuraWatch_AddSpell(26992, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns (Rank 7)
-		[774]	= UF:AuraWatch_AddSpell(774, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),		-- Rejuvenation (Rank 1)
-		[1058]	= UF:AuraWatch_AddSpell(1058, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 2)
-		[1430]	= UF:AuraWatch_AddSpell(1430, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 3)
-		[2090]	= UF:AuraWatch_AddSpell(2090, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 4)
-		[2091]	= UF:AuraWatch_AddSpell(2091, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 5)
-		[3627]	= UF:AuraWatch_AddSpell(3627, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 6)
-		[8910]	= UF:AuraWatch_AddSpell(8910, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 7)
-		[9839]	= UF:AuraWatch_AddSpell(9839, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 8)
-		[9840]	= UF:AuraWatch_AddSpell(9840, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 9)
-		[9841]	= UF:AuraWatch_AddSpell(9841, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 10)
-		[25299]	= UF:AuraWatch_AddSpell(25299, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 11)
-		[26981]	= UF:AuraWatch_AddSpell(26981, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 12)
-		[26982]	= UF:AuraWatch_AddSpell(26982, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),	-- Rejuvenation (Rank 13)
-		[8936]	= UF:AuraWatch_AddSpell(8936, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 1)
-		[8938]	= UF:AuraWatch_AddSpell(8938, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 2)
-		[8939]	= UF:AuraWatch_AddSpell(8939, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 3)
-		[8940]	= UF:AuraWatch_AddSpell(8940, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 4)
-		[8941]	= UF:AuraWatch_AddSpell(8941, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 5)
-		[9750]	= UF:AuraWatch_AddSpell(9750, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 6)
-		[9856]	= UF:AuraWatch_AddSpell(9856, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 7)
-		[9857]	= UF:AuraWatch_AddSpell(9857, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 8)
-		[9858]	= UF:AuraWatch_AddSpell(9858, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 9)
-		[26980]	= UF:AuraWatch_AddSpell(26980, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth (Rank 10)
-		[29166]	= UF:AuraWatch_AddSpell(29166, 'CENTER', {0.49, 0.60, 0.55}, true),	-- Innervate
-		[33763]	= UF:AuraWatch_AddSpell(33763, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom
-	},
-	PALADIN = {
-		[1044]	= UF:AuraWatch_AddSpell(1044, 'CENTER', {0.89, 0.45, 0}),					-- Blessing of Freedom
-		[1038]	= UF:AuraWatch_AddSpell(1038, 'TOPLEFT', {0.11, 1.00, 0.45}, true),			-- Blessing of Salvation
-		[6940]	= UF:AuraWatch_AddSpell(6940, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing Sacrifice (Rank 1)
-		[20729]	= UF:AuraWatch_AddSpell(20729, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing Sacrifice (Rank 2)
-		[27147]	= UF:AuraWatch_AddSpell(27147, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing Sacrifice (Rank 3)
-		[27148]	= UF:AuraWatch_AddSpell(27148, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing Sacrifice (Rank 4)
-		[19740]	= UF:AuraWatch_AddSpell(19740, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 1)
-		[19834]	= UF:AuraWatch_AddSpell(19834, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 2)
-		[19835]	= UF:AuraWatch_AddSpell(19835, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 3)
-		[19836]	= UF:AuraWatch_AddSpell(19836, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 4)
-		[19837]	= UF:AuraWatch_AddSpell(19837, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 5)
-		[19838]	= UF:AuraWatch_AddSpell(19838, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 6)
-		[25291]	= UF:AuraWatch_AddSpell(25291, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 7)
-		[27140]	= UF:AuraWatch_AddSpell(27140, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might (Rank 8)
-		[19742]	= UF:AuraWatch_AddSpell(19742, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 1)
-		[19850]	= UF:AuraWatch_AddSpell(19850, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 2)
-		[19852]	= UF:AuraWatch_AddSpell(19852, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 3)
-		[19853]	= UF:AuraWatch_AddSpell(19853, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 4)
-		[19854]	= UF:AuraWatch_AddSpell(19854, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 5)
-		[25290]	= UF:AuraWatch_AddSpell(25290, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 6)
-		[27142]	= UF:AuraWatch_AddSpell(27142, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom (Rank 7)
-		[25782]	= UF:AuraWatch_AddSpell(25782, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might (Rank 1)
-		[25916]	= UF:AuraWatch_AddSpell(25916, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might (Rank 2)
-		[27141]	= UF:AuraWatch_AddSpell(27141, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might (Rank 3)
-		[25894]	= UF:AuraWatch_AddSpell(25894, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom (Rank 1)
-		[25918]	= UF:AuraWatch_AddSpell(25918, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom (Rank 2)
-		[27143]	= UF:AuraWatch_AddSpell(27143, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom (Rank 3)
-		[465]	= UF:AuraWatch_AddSpell(465, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura (Rank 1)
-		[10290]	= UF:AuraWatch_AddSpell(10290, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 2)
-		[643]	= UF:AuraWatch_AddSpell(643, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura (Rank 3)
-		[10291]	= UF:AuraWatch_AddSpell(10291, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 4)
-		[1032]	= UF:AuraWatch_AddSpell(1032, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 5)
-		[10292]	= UF:AuraWatch_AddSpell(10292, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 6)
-		[10293]	= UF:AuraWatch_AddSpell(10293, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 7)
-		[27149]	= UF:AuraWatch_AddSpell(27149, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),			-- Devotion Aura (Rank 8)
-		[19977]	= UF:AuraWatch_AddSpell(19977, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 1)
-		[19978]	= UF:AuraWatch_AddSpell(19978, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 2)
-		[19979]	= UF:AuraWatch_AddSpell(19979, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 3)
-		[27144]	= UF:AuraWatch_AddSpell(27144, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light (Rank 4)
-		[1022]	= UF:AuraWatch_AddSpell(1022, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection (Rank 1)
-		[5599]	= UF:AuraWatch_AddSpell(5599, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection (Rank 2)
-		[10278]	= UF:AuraWatch_AddSpell(10278, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection (Rank 3)
-		[19746]	= UF:AuraWatch_AddSpell(19746, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
-		[32223]	= UF:AuraWatch_AddSpell(32223, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
-	},
+	ROGUE = {}, -- No buffs
 	SHAMAN = {
 		[29203]	= UF:AuraWatch_AddSpell(29203, 'TOPRIGHT', {0.7, 0.3, 0.7}),		-- Healing Way
 		[16237]	= UF:AuraWatch_AddSpell(16237, 'RIGHT', {0.2, 0.2, 1}),				-- Ancestral Fortitude
@@ -1007,64 +1159,38 @@ G.unitframe.aurawatch = {
 		[10460]	= UF:AuraWatch_AddSpell(10460, 'BOTTOM', {0.67, 1.00, 0.50}),		-- Healing Stream Totem (Rank 4)
 		[10461]	= UF:AuraWatch_AddSpell(10461, 'BOTTOM', {0.67, 1.00, 0.50}),		-- Healing Stream Totem (Rank 5)
 		[25567]	= UF:AuraWatch_AddSpell(25567, 'BOTTOM', {0.67, 1.00, 0.50}),		-- Healing Stream Totem (Rank 6)
-		[16191]	= UF:AuraWatch_AddSpell(16191, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem (Rank 1)
-		[17355]	= UF:AuraWatch_AddSpell(17355, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem (Rank 2)
-		[17360]	= UF:AuraWatch_AddSpell(17360, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem (Rank 3)
+		[16191]	= UF:AuraWatch_AddSpell(16191, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem
 		[5677]	= UF:AuraWatch_AddSpell(5677, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem (Rank 1)
 		[10491]	= UF:AuraWatch_AddSpell(10491, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem (Rank 2)
 		[10493]	= UF:AuraWatch_AddSpell(10493, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem (Rank 3)
 		[10494]	= UF:AuraWatch_AddSpell(10494, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem (Rank 4)
-		[25570]	= UF:AuraWatch_AddSpell(25570, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem (Rank 5)
+		[25569]	= UF:AuraWatch_AddSpell(25569, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem (Rank 5)
 		[8072]	= UF:AuraWatch_AddSpell(8072, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 1)
 		[8156]	= UF:AuraWatch_AddSpell(8156, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 2)
 		[8157]	= UF:AuraWatch_AddSpell(8157, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 3)
 		[10403]	= UF:AuraWatch_AddSpell(10403, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 4)
 		[10404]	= UF:AuraWatch_AddSpell(10404, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 5)
 		[10405]	= UF:AuraWatch_AddSpell(10405, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 6)
-		[25508]	= UF:AuraWatch_AddSpell(25508, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 7)
-		[25509]	= UF:AuraWatch_AddSpell(25509, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 8)
+		[25506]	= UF:AuraWatch_AddSpell(25506, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 7)
+		[25507]	= UF:AuraWatch_AddSpell(25507, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem (Rank 8)
 		[974]	= UF:AuraWatch_AddSpell(974, 'TOP', {0.08, 0.21, 0.43}, true),		-- Earth Shield (Rank 1)
 		[32593]	= UF:AuraWatch_AddSpell(32593, 'TOP', {0.08, 0.21, 0.43}, true),	-- Earth Shield (Rank 2)
 		[32594]	= UF:AuraWatch_AddSpell(32594, 'TOP', {0.08, 0.21, 0.43}, true),	-- Earth Shield (Rank 3)
 	},
-	MAGE = {
-		[1459]	= UF:AuraWatch_AddSpell(1459, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect (Rank 1)
-		[1460]	= UF:AuraWatch_AddSpell(1460, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect (Rank 2)
-		[1461]	= UF:AuraWatch_AddSpell(1461, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect (Rank 3)
-		[10156]	= UF:AuraWatch_AddSpell(10156, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Intellect (Rank 4)
-		[10157]	= UF:AuraWatch_AddSpell(10157, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Intellect (Rank 5)
-		[27126]	= UF:AuraWatch_AddSpell(27126, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Intellect (Rank 6)
-		[23028]	= UF:AuraWatch_AddSpell(23028, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Brilliance (Rank 1)
-		[27127]	= UF:AuraWatch_AddSpell(27127, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Brilliance (Rank 2)
-		[604]	= UF:AuraWatch_AddSpell(604, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 1)
-		[8450]	= UF:AuraWatch_AddSpell(8450, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 2)
-		[8451]	= UF:AuraWatch_AddSpell(8451, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 3)
-		[10173]	= UF:AuraWatch_AddSpell(10173, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 4)
-		[10174]	= UF:AuraWatch_AddSpell(10174, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 5)
-		[33944]	= UF:AuraWatch_AddSpell(33944, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic (Rank 6)
-		[1008]	= UF:AuraWatch_AddSpell(1008, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 1)
-		[8455]	= UF:AuraWatch_AddSpell(8455, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 2)
-		[10169]	= UF:AuraWatch_AddSpell(10169, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 3)
-		[10170]	= UF:AuraWatch_AddSpell(10170, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 4)
-		[27130]	= UF:AuraWatch_AddSpell(27130, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 5)
-		[33946]	= UF:AuraWatch_AddSpell(33946, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic (Rank 6)
-		[130]	= UF:AuraWatch_AddSpell(130, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
-	},
-	HUNTER = {
-		[19506]	= UF:AuraWatch_AddSpell(19506, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 1)
-		[20905]	= UF:AuraWatch_AddSpell(20905, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 2)
-		[20906]	= UF:AuraWatch_AddSpell(20906, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 3)
-		[27066]	= UF:AuraWatch_AddSpell(27066, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura (Rank 4)
-		[13159]	= UF:AuraWatch_AddSpell(13159, 'TOP', {0.00, 0.00, 0.85}, true),	-- Aspect of the Pack
-		[20043]	= UF:AuraWatch_AddSpell(20043, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild (Rank 1)
-		[20190]	= UF:AuraWatch_AddSpell(20190, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild (Rank 2)
-		[27045]	= UF:AuraWatch_AddSpell(27045, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild (Rank 3)
-	},
 	WARLOCK = {
-		[5597]	= UF:AuraWatch_AddSpell(5597, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Unending Breath
+		[5697]	= UF:AuraWatch_AddSpell(5697, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Unending Breath
 		[6512]	= UF:AuraWatch_AddSpell(6512, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
-		[2970]	= UF:AuraWatch_AddSpell(2970, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Invisibility
-		[11743]	= UF:AuraWatch_AddSpell(11743, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Greater Invisibility
+	},
+	WARRIOR = {
+		[6673]	= UF:AuraWatch_AddSpell(6673, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 1)
+		[5242]	= UF:AuraWatch_AddSpell(5242, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 2)
+		[6192]	= UF:AuraWatch_AddSpell(6192, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 3)
+		[11549]	= UF:AuraWatch_AddSpell(11549, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 4)
+		[11550]	= UF:AuraWatch_AddSpell(11550, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 5)
+		[11551]	= UF:AuraWatch_AddSpell(11551, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 6)
+		[25289]	= UF:AuraWatch_AddSpell(25289, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 7)
+		[2048]	= UF:AuraWatch_AddSpell(2048, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout (Rank 8)
+		[469]	= UF:AuraWatch_AddSpell(469, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Commanding Shout
 	},
 	PET = {
 	-- Warlock Imp
@@ -1073,6 +1199,7 @@ G.unitframe.aurawatch = {
 		[7805]	= UF:AuraWatch_AddSpell(7805, 'BOTTOMLEFT', {0.89, 0.09, 0.05}),	-- Blood Pact (Rank 3)
 		[11766]	= UF:AuraWatch_AddSpell(11766, 'BOTTOMLEFT', {0.89, 0.09, 0.05}),	-- Blood Pact (Rank 4)
 		[11767]	= UF:AuraWatch_AddSpell(11767, 'BOTTOMLEFT', {0.89, 0.09, 0.05}),	-- Blood Pact (Rank 5)
+		[27268]	= UF:AuraWatch_AddSpell(27268, 'BOTTOMLEFT', {0.89, 0.09, 0.05}),	-- Blood Pact (Rank 6)
 	-- Warlock Felhunter
 		[19480]	= UF:AuraWatch_AddSpell(19480, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),	-- Paranoia
 	-- Hunter Pets
@@ -1090,22 +1217,49 @@ P.unitframe.filters = {
 
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
-	-- First Aid
-	[27031]	= 8, -- Heavy Netherweave Bandage
-	[27030]	= 8, -- Netherweave Bandage
-	[23567]	= 8, -- Warsong Gulch Runecloth Bandage
-	[23696]	= 8, -- Alterac Heavy Runecloth Bandage
-	[24414]	= 8, -- Arathi Basin Runecloth Bandage
-	[18610]	= 8, -- Heavy Runecloth Bandage
-	[18608]	= 8, -- Runecloth Bandage
-	[10839]	= 8, -- Heavy Mageweave Bandage
-	[10838]	= 8, -- Mageweave Bandage
-	[7927]	= 8, -- Heavy Silk Bandage
-	[7926]	= 8, -- Silk Bandage
-	[3268]	= 7, -- Heavy Wool Bandage
-	[3267]	= 7, -- Wool Bandage
-	[1159]	= 6, -- Heavy Linen Bandage
-	[746]	= 6, -- Linen Bandage
+	--Druid
+	[740]	= 4, -- Tranquility (Rank 1)
+	[8918]	= 4, -- Tranquility (Rank 2)
+	[9862]	= 4, -- Tranquility (Rank 3)
+	[9863]	= 4, -- Tranquility (Rank 4)
+	[26983]	= 4, -- Tranquility (Rank 5)
+	[16914]	= 10, -- Hurricane (Rank 1)
+	[17401]	= 10, -- Hurricane (Rank 2)
+	[17402]	= 10, -- Hurricane (Rank 3)
+	[27012]	= 10, -- Hurricane (Rank 4)
+	--Hunter
+	[1510]	= 6, -- Volley (Rank 1)
+	[14294]	= 6, -- Volley (Rank 2)
+	[14295]	= 6, -- Volley (Rank 3)
+	[27022]	= 6, -- Volley (Rank 4)
+	-- Mage
+	[10]	= 8, -- Blizzard (Rank 1)
+	[6141]	= 8, -- Blizzard (Rank 2)
+	[8427]	= 8, -- Blizzard (Rank 3)
+	[10185]	= 8, -- Blizzard (Rank 4)
+	[10186]	= 8, -- Blizzard (Rank 5)
+	[10187]	= 8, -- Blizzard (Rank 6)
+	[27085]	= 8, -- Blizzard (Rank 7)
+	[5143]	= 3, -- Arcane Missiles (Rank 1)
+	[5144]	= 4, -- Arcane Missiles (Rank 2)
+	[5145]	= 5, -- Arcane Missiles (Rank 3)
+	[8416]	= 5, -- Arcane Missiles (Rank 4)
+	[8417]	= 5, -- Arcane Missiles (Rank 5)
+	[10211]	= 5, -- Arcane Missiles (Rank 6)
+	[10212]	= 5, -- Arcane Missiles (Rank 7)
+	[25345]	= 5, -- Arcane Missiles (Rank 8)
+	[27075]	= 5, -- Arcane Missiles (Rank 9)
+	[38699]	= 5, -- Arcane Missiles (Rank 10)
+	[38704]	= 5, -- Arcane Missiles (Rank 11)
+	[12051]	= 4, -- Evocation
+	-- Priest
+	[15407]	= 3, -- Mind Flay (Rank 1)
+	[17311]	= 3, -- Mind Flay (Rank 2)
+	[17312]	= 3, -- Mind Flay (Rank 3)
+	[17313]	= 3, -- Mind Flay (Rank 4)
+	[17314]	= 3, -- Mind Flay (Rank 5)
+	[18807]	= 3, -- Mind Flay (Rank 6)
+	[25387]	= 3, -- Mind Flay (Rank 7)
 	-- Warlock
 	[1120]	= 5, -- Drain Soul (Rank 1)
 	[8288]	= 5, -- Drain Soul (Rank 2)
@@ -1143,76 +1297,41 @@ G.unitframe.ChannelTicks = {
 	[11704]	= 5, -- Drain Mana (Rank 4)
 	[27221]	= 5, -- Drain Mana (Rank 5)
 	[30908]	= 5, -- Drain Mana (Rank 6)
-	-- Priest
-	[15407]	= 3, -- Mind Flay (Rank 1)
-	[17311]	= 3, -- Mind Flay (Rank 2)
-	[17312]	= 3, -- Mind Flay (Rank 3)
-	[17313]	= 3, -- Mind Flay (Rank 4)
-	[17314]	= 3, -- Mind Flay (Rank 5)
-	[18807]	= 3, -- Mind Flay (Rank 6)
-	[25387]	= 3, -- Mind Flay (Rank 7)
-	-- Mage
-	[10]	= 8, -- Blizzard (Rank 1)
-	[6141]	= 8, -- Blizzard (Rank 2)
-	[8427]	= 8, -- Blizzard (Rank 3)
-	[10185]	= 8, -- Blizzard (Rank 4)
-	[10186]	= 8, -- Blizzard (Rank 5)
-	[10187]	= 8, -- Blizzard (Rank 6)
-	[27085]	= 8, -- Blizzard (Rank 7)
-	[5143]	= 3, -- Arcane Missiles (Rank 1)
-	[5144]	= 4, -- Arcane Missiles (Rank 2)
-	[5145]	= 5, -- Arcane Missiles (Rank 3)
-	[8416]	= 5, -- Arcane Missiles (Rank 4)
-	[8417]	= 5, -- Arcane Missiles (Rank 5)
-	[10211]	= 5, -- Arcane Missiles (Rank 6)
-	[10212]	= 5, -- Arcane Missiles (Rank 7)
-	[25345]	= 5, -- Arcane Missiles (Rank 8)
-	[27075]	= 5, -- Arcane Missiles (Rank 9)
-	[38699]	= 5, -- Arcane Missiles (Rank 10)
-	[12051]	= 4, -- Evocation
-	--Druid
-	[740]	= 5, -- Tranquility (Rank 1)
-	[8918]	= 5, -- Tranquility (Rank 2)
-	[9862]	= 5, -- Tranquility (Rank 3)
-	[9863]	= 5, -- Tranquility (Rank 4)
-	[26983]	= 5, -- Tranquility (Rank 5)
-	[16914]	= 10, -- Hurricane (Rank 1)
-	[17401]	= 10, -- Hurricane (Rank 2)
-	[17402]	= 10, -- Hurricane (Rank 3)
-	[27012]	= 10, -- Hurricane (Rank 4)
-	--Hunter
-	[1510]	= 6, -- Volley (Rank 1)
-	[14294]	= 6, -- Volley (Rank 2)
-	[14295]	= 6, -- Volley (Rank 3)
-	[27022]	= 6, -- Volley (Rank 4)
+	-- First Aid
+	[27031]	= 8, -- Heavy Netherweave Bandage
+	[27030]	= 8, -- Netherweave Bandage
+	[23567]	= 8, -- Warsong Gulch Runecloth Bandage
+	[23696]	= 8, -- Alterac Heavy Runecloth Bandage
+	[24414]	= 8, -- Arathi Basin Runecloth Bandage
+	[18610]	= 8, -- Heavy Runecloth Bandage
+	[18608]	= 8, -- Runecloth Bandage
+	[10839]	= 8, -- Heavy Mageweave Bandage
+	[10838]	= 8, -- Mageweave Bandage
+	[7927]	= 8, -- Heavy Silk Bandage
+	[7926]	= 8, -- Silk Bandage
+	[3268]	= 7, -- Heavy Wool Bandage
+	[3267]	= 7, -- Wool Bandage
+	[1159]	= 6, -- Heavy Linen Bandage
+	[746]	= 6, -- Linen Bandage
 }
 
 -- Spells Effected By Talents
-G.unitframe.TalentChannelTicks = {
-	-- Priest
-	[47757]	= {tier = 1, column = 1, ticks = 4}, -- Penance (heal)
-	[47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (dps)
-}
+G.unitframe.TalentChannelTicks = {}
 
-G.unitframe.ChannelTicksSize = {
-	-- Warlock
-	[198590]	= 1, -- Drain Soul
-}
+G.unitframe.ChannelTicksSize = {}
 
 -- Spells Effected By Haste
-G.unitframe.HastedChannelTicks = {
-	[205021]	= true, -- Ray of Frost
-}
+G.unitframe.HastedChannelTicks = {}
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
 	[2825]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
 	[32182]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
-	[80353]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
-	[90355]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
 }
 
-G.unitframe.AuraHighlightColors = {}
+G.unitframe.AuraHighlightColors = {
+	[25771]	= {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+}
 
 G.unitframe.specialFilters = {
 	-- Whitelists

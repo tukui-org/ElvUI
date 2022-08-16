@@ -16,6 +16,15 @@ local GetItemQualityColor = GetItemQualityColor
 
 local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
+local lootQuality = {
+	['loottab-set-itemborder-white'] = nil, -- dont show white
+	['loottab-set-itemborder-green'] = 2,
+	['loottab-set-itemborder-blue'] = 3,
+	['loottab-set-itemborder-purple'] = 4,
+	['loottab-set-itemborder-orange'] = 5,
+	['loottab-set-itemborder-artifact'] = 6,
+}
+
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)
 
@@ -157,6 +166,19 @@ end
 local function HandleTopTabs(tab)
 	S:HandleTab(tab)
 	tab:SetHitRectInsets(0, 0, 0, 0)
+end
+
+local function ItemSetsItemBorder(border, atlas)
+	local parent = border:GetParent()
+	local backdrop = parent and parent.Icon and parent.Icon.backdrop
+	if backdrop then
+		local color = E.QualityColors[lootQuality[atlas]]
+		if color then
+			backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end
 end
 
 function S:Blizzard_EncounterJournal()
@@ -552,28 +574,6 @@ function S:Blizzard_EncounterJournal()
 					end
 				end
 			end)
-		end
-
-		local lootQuality = {
-			['loottab-set-itemborder-white'] = nil, -- dont show white
-			['loottab-set-itemborder-green'] = 2,
-			['loottab-set-itemborder-blue'] = 3,
-			['loottab-set-itemborder-purple'] = 4,
-			['loottab-set-itemborder-orange'] = 5,
-			['loottab-set-itemborder-artifact'] = 6,
-		}
-
-		local function ItemSetsItemBorder(border, atlas)
-			local parent = border:GetParent()
-			local backdrop = parent and parent.Icon and parent.Icon.backdrop
-			if backdrop then
-				local color = E.QualityColors[lootQuality[atlas]]
-				if color then
-					backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-				else
-					backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-			end
 		end
 
 		hooksecurefunc(ItemSetsFrame, 'ConfigureItemButton', function(_, button)

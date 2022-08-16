@@ -509,7 +509,7 @@ function PI:RunInstall()
 		end
 
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
-			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
+			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)*0.5), 0)
 			f.side:Width(db.StepTitleWidth or 140)
 			f.side:Show()
 

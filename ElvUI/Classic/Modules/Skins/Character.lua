@@ -14,6 +14,37 @@ local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local hooksecurefunc = hooksecurefunc
 
+local ResistanceCoords = {
+	[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
+	[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
+	[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
+	[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
+	[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+}
+
+local function HandleResistanceFrame(frameName)
+	for i = 1, 5 do
+		local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
+		frame:Size(24)
+		frame:SetTemplate()
+
+		if i ~= 1 then
+			frame:ClearAllPoints()
+			frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
+		end
+
+		if icon then
+			icon:SetInside()
+			icon:SetTexCoord(unpack(ResistanceCoords[i]))
+			icon:SetDrawLayer('ARTWORK')
+		end
+
+		if text then
+			text:SetDrawLayer('OVERLAY')
+		end
+	end
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -36,37 +67,6 @@ function S:CharacterFrame()
 
 	_G.CharacterAttributesFrame:StripTextures()
 
-	local ResistanceCoords = {
-		[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-		[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-		[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-		[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-		[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
-	}
-
-	local function HandleResistanceFrame(frameName)
-		for i = 1, 5 do
-			local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
-			frame:Size(24)
-			frame:SetTemplate('Default')
-
-			if i ~= 1 then
-				frame:ClearAllPoints()
-				frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
-			end
-
-			if icon then
-				icon:SetInside()
-				icon:SetTexCoord(unpack(ResistanceCoords[i]))
-				icon:SetDrawLayer('ARTWORK')
-			end
-
-			if text then
-				text:SetDrawLayer('OVERLAY')
-			end
-		end
-	end
-
 	HandleResistanceFrame('MagicResFrame')
 
 	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
@@ -75,7 +75,7 @@ function S:CharacterFrame()
 			local cooldown = _G[slot:GetName()..'Cooldown']
 
 			slot:StripTextures()
-			slot:SetTemplate('Default', true, true)
+			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
 
 			S:HandleIcon(icon)
@@ -112,7 +112,7 @@ function S:CharacterFrame()
 
 	_G.PetAttributesFrame:StripTextures()
 
-	_G.PetResistanceFrame:CreateBackdrop('Default')
+	_G.PetResistanceFrame:CreateBackdrop()
 	_G.PetResistanceFrame.backdrop:SetOutside(_G.PetMagicResFrame1, nil, nil, _G.PetMagicResFrame5)
 
 	HandleResistanceFrame('PetMagicResFrame')
@@ -120,7 +120,7 @@ function S:CharacterFrame()
 	_G.PetPaperDollFrameExpBar:StripTextures()
 	_G.PetPaperDollFrameExpBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
-	_G.PetPaperDollFrameExpBar:CreateBackdrop('Default')
+	_G.PetPaperDollFrameExpBar:CreateBackdrop()
 
 	local function updHappiness(self)
 		local happiness = GetPetHappiness()
@@ -141,7 +141,7 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
 	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	PetPaperDollPetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
-	PetPaperDollPetInfo:CreateBackdrop('Default')
+	PetPaperDollPetInfo:CreateBackdrop()
 	PetPaperDollPetInfo:Size(24)
 
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
@@ -158,7 +158,7 @@ function S:CharacterFrame()
 		local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
-		factionBar:CreateBackdrop('Default')
+		factionBar:CreateBackdrop()
 		factionBar:SetStatusBarTexture(E.media.normTex)
 		factionBar:Size(108, 13)
 		E:RegisterStatusBar(factionBar)
@@ -241,7 +241,7 @@ function S:CharacterFrame()
 		local border = _G['SkillRankFrame'..i..'Border']
 		local background = _G['SkillRankFrame'..i..'Background']
 
-		bar:CreateBackdrop('Default')
+		bar:CreateBackdrop()
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
@@ -269,7 +269,7 @@ function S:CharacterFrame()
 
 	_G.SkillDetailStatusBar:StripTextures()
 	_G.SkillDetailStatusBar:SetParent(_G.SkillDetailScrollFrame)
-	_G.SkillDetailStatusBar:CreateBackdrop('Default')
+	_G.SkillDetailStatusBar:CreateBackdrop()
 	_G.SkillDetailStatusBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 

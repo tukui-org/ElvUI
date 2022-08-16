@@ -26,12 +26,18 @@ function E:Grid(msg)
 	end
 end
 
+local AddOns = {
+	ElvUI = true,
+	ElvUI_OptionsUI = true,
+	ElvUI_CPU = true -- debug tool located at https://github.com/Resike/ElvUI_CPU
+}
+
 function E:LuaError(msg)
 	local switch = lower(msg)
 	if switch == 'on' or switch == '1' then
 		for i=1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
-			if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and name ~= 'ElvUI_CPU' and E:IsAddOnEnabled(name) then
+			if not AddOns[name] and E:IsAddOnEnabled(name) then
 				DisableAddOn(name, E.myname)
 				ElvDB.DisabledAddOns[name] = i
 			end
@@ -99,6 +105,7 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_AzeriteUI',
 	'Blizzard_BarbershopUI',
 	'Blizzard_BattlefieldMap',
+	'Blizzard_BehavioralMessaging',
 	'Blizzard_BindingUI',
 	'Blizzard_BlackMarketUI',
 	'Blizzard_BoostTutorial',
@@ -110,6 +117,7 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_CharacterCustomize',
 	'Blizzard_ChromieTimeUI',
 	'Blizzard_ClassTrial',
+	'Blizzard_ClickBindingUI',
 	'Blizzard_ClientSavedVariables',
 	'Blizzard_Collections',
 	'Blizzard_CombatLog',
@@ -136,7 +144,6 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_GarrisonUI',
 	'Blizzard_GuildBankUI',
 	'Blizzard_GuildControlUI',
-	'Blizzard_GuildRecruitmentUI',
 	'Blizzard_GuildUI',
 	'Blizzard_HybridMinimap',
 	'Blizzard_InspectUI',
@@ -147,7 +154,6 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_ItemUpgradeUI',
 	'Blizzard_Kiosk',
 	'Blizzard_LandingSoulbinds',
-	'Blizzard_LookingForGuildUI',
 	'Blizzard_MacroUI',
 	'Blizzard_MapCanvas',
 	'Blizzard_MawBuffs',

@@ -185,7 +185,7 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	if oUF.isRetail and (UnitHasVehicleUI('player')) then
+	if oUF.isRetail and UnitHasVehicleUI('player') then
 		shouldEnable = PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
@@ -269,7 +269,7 @@ do
 
 		self.ClassPower.__isEnabled = true
 
-		if oUF.isRetail and UnitHasVehicleUI('player') then
+		if (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI('player') then
 			Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 		else
 			Path(self, 'ClassPowerEnable', 'player', ClassPowerType)
@@ -327,7 +327,7 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		if oUF.isRetail and (RequireSpec or RequireSpell) then
+		if(oUF.isRetail or oUF.isWrath) and (RequireSpec or RequireSpell) then
 			self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
@@ -357,7 +357,7 @@ local function Disable(self)
 	if(self.ClassPower) then
 		ClassPowerDisable(self)
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isWrath then
 			self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 		end
 

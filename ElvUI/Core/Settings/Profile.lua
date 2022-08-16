@@ -22,7 +22,7 @@ P.general = {
 	topPanel = false,
 	customGlow = {
 		style = 'Pixel Glow',
-		color = { r = 23/255, g = 132/255, b = 209/255, a = 0.9 },
+		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
 		useColor = false,
 		speed = 0.3,
 		lines = 8,
@@ -85,7 +85,7 @@ P.general = {
 	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
 	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
-	valuecolor = { r = 23/255, g = 132/255, b = 209/255 },
+	valuecolor = { r = 0.09, g = 0.52, b = 0.82 },
 	cropIcon = 2,
 	minimap = {
 		size = 175,
@@ -179,11 +179,20 @@ P.general = {
 	},
 	objectiveTracker = true,
 	totems = {
-		enable = true,
+		alpha = 1,
+		buttonSize = 32,
+		flyoutDirection = 'UP',
+		flyoutSize = 28,
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
 		growthDirection = 'VERTICAL',
-		sortDirection = 'ASCENDING',
+		mouseover = false,
 		size = 40,
+		sortDirection = 'ASCENDING',
 		spacing = 4,
+		visibility = '[vehicleui] hide;show'
 	},
 	kittys = false
 }
@@ -205,12 +214,12 @@ P.databars = {
 			{ r = .8, g = .3, b = .22 }, -- 1
 			{ r = .8, g = .3, b = .22 }, -- 2
 			{ r = .75, g = .27, b = 0 }, -- 3
-			{ r = .9, g = .7, b = 0 },   -- 4
-			{ r = 0, g = .6, b = .1 },   -- 5
-			{ r = 0, g = .6, b = .1 },   -- 6
-			{ r = 0, g = .6, b = .1 },   -- 7
-			{ r = 0, g = .6, b = .1 },   -- 8
-			{ r = 0, g = .6, b = .1 },   -- 9
+			{ r = .9, g = .7, b = 0 },	 -- 4
+			{ r = 0, g = .6, b = .1 },	 -- 5
+			{ r = 0, g = .6, b = .1 },	 -- 6
+			{ r = 0, g = .6, b = .1 },	 -- 7
+			{ r = 0, g = .6, b = .1 },	 -- 8
+			{ r = 0, g = .6, b = .1 },	 -- 9
 		}
 	}
 }
@@ -663,6 +672,8 @@ P.nameplates = {
 		castNoInterruptColor = {r = 0.78, g = 0.25, b = 0.25},
 		castInterruptedColor = {r = 0.30, g = 0.30, b = 0.30},
 		castbarDesaturate = true,
+		chargingRunes = true,
+		runeBySpec = true,
 		reactions = {
 			good = {r = .29, g = .68, b = .30},
 			neutral = {r = .85, g = .77, b = .36},
@@ -677,61 +688,68 @@ P.nameplates = {
 			--overhealabsorbs = {r = 1, g = 0, b = 0, a = 0.25},
 		},
 		threat = {
-			goodColor = {r = 050/255, g = 180/255, b = 000/255},
-			badColor = {r = 254/255, g = 045/255, b = 045/255},
-			goodTransition = {r = 255/255, g = 217/255, b = 050/255},
-			badTransition ={r = 255/255, g = 129/255, b = 050/255},
-			offTankColor = {r = 187/255, g = 050/255, b = 255/255},
+			goodColor = {r = 0.20, g = 0.71, b = 0.00},
+			badColor = {r = 1.00, g = 0.18, b = 0.18},
+			goodTransition = {r = 1.00, g = 0.85, b = 0.20},
+			badTransition ={r = 1.00, g = 0.51, b = 0.20},
+			offTankColor = {r = 0.73, g = 0.20, b = 1.00},
 			offTankColorGoodTransition = {r = .31, g = .45, b = .63},
 			offTankColorBadTransition = {r = 0.71, g = 0.43, b = 0.27},
 		},
 		power = {
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
-			FURY = {r = 227/255, g = 126/255, b = 39/255, atlas = '_DemonHunter-DemonicFuryBar'},
+			FURY = {r = 0.89, g = 0.49, b = 0.15, atlas = '_DemonHunter-DemonicFuryBar'},
 			INSANITY = {r = 0.55, g = 0.14, b = 0.69, atlas = '_Priest-InsanityBar'},
-			LUNAR_POWER = {r = .9, g = .86, b = .12, atlas = '_Druid-LunarBar'},
+			LUNAR_POWER = {r = 0.90, g = 0.90, b = 0.30, atlas = '_Druid-LunarBar'},
 			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
-			PAIN = {r = 225/255, g = 225/255, b = 225/255, atlas = '_DemonHunter-DemonicPainBar'},
+			PAIN = {r = 0.88, g = 0.88, b = 0.88, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
 			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
 		},
 		selection = {
-			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE
-			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
-			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
-			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
-			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
-			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
-			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
-			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
+			[ 0] = {r = 1.00, g = 0.18, b = 0.18}, -- HOSTILE
+			[ 1] = {r = 1.00, g = 0.51, b = 0.20}, -- UNFRIENDLY
+			[ 2] = {r = 1.00, g = 0.85, b = 0.20}, -- NEUTRAL
+			[ 3] = {r = 0.20, g = 0.71, b = 0.00}, -- FRIENDLY
+			[ 5] = {r = 0.40, g = 0.53, b = 1.00}, -- PLAYER_EXTENDED
+			[ 6] = {r = 0.40, g = 0.20, b = 1.00}, -- PARTY
+			[ 7] = {r = 0.73, g = 0.20, b = 1.00}, -- PARTY_PVP
+			[ 8] = {r = 0.20, g = 1.00, b = 0.42}, -- FRIEND
+			[ 9] = {r = 0.60, g = 0.60, b = 0.60}, -- DEAD
+			[13] = {r = 0.10, g = 0.58, b = 0.28}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		classResources = {
-			chargedComboPoint = { r = 0.1647, g = 0.6353, b = 1.0 },
+			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
 			comboPoints = {
-				[1] = {r = .69, g = .31, b = .31},
-				[2] = {r = .65, g = .42, b = .31},
-				[3] = {r = .65, g = .63, b = .35},
-				[4] = {r = .46, g = .63, b = .35},
-				[5] = {r = .33, g = .63, b = .33},
-				[6] = {r = .33, g = .63, b = .33},
+				{r = .69, g = .31, b = .31},
+				{r = .65, g = .42, b = .31},
+				{r = .65, g = .63, b = .35},
+				{r = .46, g = .63, b = .35},
+				{r = .33, g = .63, b = .33},
+				{r = .33, g = .63, b = .33},
 			},
-			DEATHKNIGHT = { r = .31, g = .45, b = .63},
-			PALADIN = { r = 228/255, g = 225/255, b = 16/255},
-			MAGE = { r = 0, g = 157/255, b = 1},
+			DEATHKNIGHT = {
+				[-1] = {r = 0.5, g = 0.5, b = 0.5},
+				[0] = {r = 0.8, g = 0.1, b = 0.28},
+				{r = 1, g = 0.25, b = 0.25},
+				{r = 0.25, g = 1, b = 1},
+				{r = 0.25, g = 1, b = 0.25},
+				{r = 0.8, g = 0.4, b = 1}
+			},
+			PALADIN = { r = 0.89, g = 0.88, b = 0.06},
+			MAGE = { r = 0, g = 0.62, b = 1},
 			MONK = {
-				[1] = {r = .57, g = .63, b = .35},
-				[2] = {r = .47, g = .63, b = .35},
-				[3] = {r = .37, g = .63, b = .35},
-				[4] = {r = .27, g = .63, b = .33},
-				[5] = {r = .17, g = .63, b = .33},
-				[6] = {r = 12/255, g = 145/255, b = 58/255}
+				{r = .57, g = .63, b = .35},
+				{r = .47, g = .63, b = .35},
+				{r = .37, g = .63, b = .35},
+				{r = .27, g = .63, b = .33},
+				{r = .17, g = .63, b = .33},
+				{r = 0.05, g = 0.57, b = 0.23}
 			},
-			WARLOCK = {r = 148/255, g = 130/255, b = 201/255}
+			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
 	},
 	visibility = {
@@ -1166,14 +1184,14 @@ P.tooltip = {
 	},
 	useCustomFactionColors = false,
 	factionColors = {
-		[1] = {r = 0.8, g = 0.3, b = 0.22},
-		[2] = {r = 0.8, g = 0.3, b = 0.22},
-		[3] = {r = 0.75, g = 0.27, b = 0},
-		[4] = {r = 0.9, g = 0.7, b = 0},
-		[5] = {r = 0, g = 0.6, b = 0.1},
-		[6] = {r = 0, g = 0.6, b = 0.1},
-		[7] = {r = 0, g = 0.6, b = 0.1},
-		[8] = {r = 0, g = 0.6, b = 0.1},
+		{r = 0.8, g = 0.3, b = 0.22},
+		{r = 0.8, g = 0.3, b = 0.22},
+		{r = 0.75, g = 0.27, b = 0},
+		{r = 0.9, g = 0.7, b = 0},
+		{r = 0, g = 0.6, b = 0.1},
+		{r = 0, g = 0.6, b = 0.1},
+		{r = 0, g = 0.6, b = 0.1},
+		{r = 0, g = 0.6, b = 0.1},
 	}
 }
 
@@ -1596,12 +1614,14 @@ P.unitframe = {
 		auraByType = true,
 		auraByDispels = true,
 		auraBarTurtle = true,
-		auraBarTurtleColor = {r = 143/255, g = 101/255, b = 158/255},
+		auraBarTurtleColor = {r = 0.56, g = 0.40, b = 0.62},
 		transparentHealth = false,
 		transparentPower = false,
 		transparentCastbar = false,
 		transparentAurabars = false,
 		transparentClasspower = false,
+		chargingRunes = true,
+		runeBySpec = true,
 		invertCastBar = false,
 		invertAurabars = false,
 		invertPower = false,
@@ -1628,22 +1648,22 @@ P.unitframe = {
 			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
-			PAIN = {r = 225/255, g = 225/255, b = 225/255},
-			FURY = {r = 227/255, g = 126/255, b = 39/255},
-			LUNAR_POWER = {r = .9, g = .86, b = .12},
+			PAIN = {r = 0.88, g = 0.88, b = 0.88},
+			FURY = {r = 0.89, g = 0.49, b = 0.15},
+			LUNAR_POWER = {r = 0.90, g = 0.90, b = 0.30},
 			INSANITY = {r = 0.55, g = 0.14, b = 0.69},
 			MAELSTROM = {r = 0, g = 0.5, b = 1},
 			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
 		},
 		happiness = {
-			[1] = {r = .69, g = .31, b = .31},
-			[2] = {r = .65, g = .63, b = .35},
-			[3] = {r = .33, g = .59, b = .33},
+			{r = .69, g = .31, b = .31},
+			{r = .65, g = .63, b = .35},
+			{r = .33, g = .59, b = .33},
 		},
 		reaction = {
-			BAD = { r = 199/255, g = 64/255, b = 64/255 },
-			NEUTRAL = { r = 218/255, g = 197/255, b = 92/255 },
-			GOOD = { r = 75/255, g = 175/255, b = 76/255 },
+			BAD = { r = 0.78, g = 0.25, b = 0.25 },
+			NEUTRAL = { r = 0.85, g = 0.77, b = 0.36 },
+			GOOD = { r = 0.29, g = 0.69, b = 0.30 },
 		},
 		threat = {
 			[ 0] = {r = 0.5, g = 0.5, b = 0.5}, -- low
@@ -1652,16 +1672,16 @@ P.unitframe = {
 			[ 3] = {r = 1.0, g = 0.2, b = 0.2}, -- tanking securely
 		},
 		selection = {
-			[ 0] = {r = 254/255, g = 045/255, b = 045/255}, -- HOSTILE
-			[ 1] = {r = 255/255, g = 129/255, b = 050/255}, -- UNFRIENDLY
-			[ 2] = {r = 255/255, g = 217/255, b = 050/255}, -- NEUTRAL
-			[ 3] = {r = 050/255, g = 180/255, b = 000/255}, -- FRIENDLY
-			[ 5] = {r = 102/255, g = 136/255, b = 255/255}, -- PLAYER_EXTENDED
-			[ 6] = {r = 102/255, g = 050/255, b = 255/255}, -- PARTY
-			[ 7] = {r = 187/255, g = 050/255, b = 255/255}, -- PARTY_PVP
-			[ 8] = {r = 050/255, g = 255/255, b = 108/255}, -- FRIEND
-			[ 9] = {r = 153/255, g = 153/255, b = 153/255}, -- DEAD
-			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
+			[ 0] = {r = 1.00, g = 0.18, b = 0.18}, -- HOSTILE
+			[ 1] = {r = 1.00, g = 0.51, b = 0.20}, -- UNFRIENDLY
+			[ 2] = {r = 1.00, g = 0.85, b = 0.20}, -- NEUTRAL
+			[ 3] = {r = 0.20, g = 0.71, b = 0.00}, -- FRIENDLY
+			[ 5] = {r = 0.40, g = 0.53, b = 1.00}, -- PLAYER_EXTENDED
+			[ 6] = {r = 0.40, g = 0.20, b = 1.00}, -- PARTY
+			[ 7] = {r = 0.73, g = 0.20, b = 1.00}, -- PARTY_PVP
+			[ 8] = {r = 0.20, g = 1.00, b = 0.42}, -- FRIEND
+			[ 9] = {r = 0.60, g = 0.60, b = 0.60}, -- DEAD
+			[13] = {r = 0.10, g = 0.58, b = 0.28}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		healPrediction = {
 			personal = {r = 0, g = 1, b = 0.5, a = 0.25},
@@ -1678,27 +1698,40 @@ P.unitframe = {
 			color = {r = 1, g = 1, b = 1, a = 1},
 		},
 		classResources = {
-			chargedComboPoint = { r = 0.1647, g = 0.6353, b = 1.0 },
+			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
 			comboPoints = {
-				[1] = {r = .69, g = .31, b = .31},
-				[2] = {r = .65, g = .42, b = .31},
-				[3] = {r = .65, g = .63, b = .35},
-				[4] = {r = .46, g = .63, b = .35},
-				[5] = {r = .33, g = .63, b = .33},
-				[6] = {r = .33, g = .63, b = .33},
+				{r = .69, g = .31, b = .31},
+				{r = .65, g = .42, b = .31},
+				{r = .65, g = .63, b = .35},
+				{r = .46, g = .63, b = .35},
+				{r = .33, g = .63, b = .33},
+				{r = .33, g = .63, b = .33},
 			},
-			DEATHKNIGHT = {r = 0, g = 1, b = 1},
-			PALADIN = {r = 228/255, g = 225/255, b = 16/255},
-			MAGE = {r = 0, g = 157/255, b = 255/255},
+			DEATHKNIGHT = {
+				[-1] = {r = 0.5, g = 0.5, b = 0.5},
+				[0] = {r = 0.8, g = 0.1, b = 0.28},
+				{r = 1, g = 0.25, b = 0.25},
+				{r = 0.25, g = 1, b = 1},
+				{r = 0.25, g = 1, b = 0.25},
+				{r = 0.8, g = 0.4, b = 1}
+			},
+			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
+			MAGE = {r = 0, g = 0.62, b = 1.00},
 			MONK = {
-				[1] = {r = .57, g = .63, b = .35},
-				[2] = {r = .47, g = .63, b = .35},
-				[3] = {r = .37, g = .63, b = .35},
-				[4] = {r = .27, g = .63, b = .33},
-				[5] = {r = .17, g = .63, b = .33},
-				[6] = {r = 12/255, g = 145/255, b = 58/255}
+				{r = .57, g = .63, b = .35},
+				{r = .47, g = .63, b = .35},
+				{r = .37, g = .63, b = .35},
+				{r = .27, g = .63, b = .33},
+				{r = .17, g = .63, b = .33},
+				{r = 0.05, g = 0.57, b = 0.23}
 			},
-			WARLOCK = {r = 148/255, g = 130/255, b = 201/255}
+			SHAMAN = {
+				{r = .58, g = .23, b = .10},
+				{r = .23, g = .45, b = .13},
+				{r = .19, g = .48, b = .60},
+				{r = .42, g = .18, b = .74},
+			},
+			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
 		frameGlow = {
 			mainGlow = {
@@ -2433,7 +2466,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = (E.Retail and '[petbattle] hide;[novehicleui,' or '[')..'pet,nooverridebar,nopossessbar] show;hide',
 	},
 	stanceBar = {
 		enabled = true,
@@ -2453,7 +2485,6 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
-		visibility = E.Retail and '[vehicleui] hide; [petbattle] hide;show' or 'show',
 	},
 	microbar = {
 		enabled = false,
@@ -2493,8 +2524,20 @@ P.actionbar = {
 	}
 }
 
+-- Visibility
+if E.Retail then
+	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; [petbattle] hide; show'
+elseif E.Wrath then
+	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
+else
+	P.actionbar.barPet.visibility = '[pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = 'show'
+end
+
 for i = 1, 10 do
-	P.actionbar['bar'..i] = {
+	local bar = {
 		enabled = false,
 		mouseover = false,
 		clickThrough = false,
@@ -2514,7 +2557,6 @@ for i = 1, 10 do
 		showGrid = true,
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
-		visibility = (E.Retail and '[vehicleui] hide; [petbattle] hide; ' or '')..'[overridebar] hide; show',
 		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
@@ -2545,6 +2587,16 @@ for i = 1, 10 do
 		frameStrata = 'LOW',
 		frameLevel = 1,
 	}
+
+	if E.Retail then
+		bar.visibility = '[vehicleui] hide; [petbattle] hide; [overridebar] hide; show'
+	elseif E.Wrath then
+		bar.visibility = '[vehicleui] hide; [overridebar] hide; show'
+	else
+		bar.visibility = '[overridebar] hide; show'
+	end
+
+	P.actionbar['bar'..i] = bar
 end
 
 for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
@@ -2579,16 +2631,19 @@ end
 
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
-P.actionbar.bar1.paging = {
-	ROGUE = '[bonusbar:1] 7;',
-}
+
+if E.Wrath then
+	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7; [bonusbar:2] 8;'
+else
+	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'
+end
 
 if E.Retail then
 	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
 else
 	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 10;'
 	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
-	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3]9;'
+	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 end
 
 P.actionbar.bar3.enabled = true

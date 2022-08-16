@@ -14,13 +14,14 @@ local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetSpecialization = not E.Retail and LCS.GetSpecialization or GetSpecialization
-local GetSpecializationRole = not E.Retail and LCS.GetSpecializationRole or GetSpecializationRole
+local GetSpecialization = (E.Classic or E.TBC and LCS.GetSpecialization) or GetSpecialization
+local GetSpecializationRole = (E.Classic or E.TBC and LCS.GetSpecializationRole) or GetSpecializationRole
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
+local IsRestrictedAccount = IsRestrictedAccount
 local IsSpellKnown = IsSpellKnown
 local IsTrialAccount = IsTrialAccount
 local IsVeteranTrialAccount = IsVeteranTrialAccount
@@ -180,15 +181,15 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local role = E.Retail and UnitGroupRolesAssigned('player') or 'NONE'
+	local role = (E.Retail or E.Wrath) and UnitGroupRolesAssigned('player') or 'NONE'
 	return (role == 'NONE' and E.myspec and GetSpecializationRole(E.myspec)) or role
 end
 
 function E:CheckRole()
-	E.myspec = GetSpecialization()
+	E.myspec = E.Retail and GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		E:UpdateDispelClasses()
 	end
 end
@@ -435,7 +436,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if E.Retail and UnitHasVehicleUI('player') then
+	if (E.Retail or E.Wrath) and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -553,7 +554,7 @@ function E:XPIsUserDisabled()
 end
 
 function E:XPIsTrialMax()
-	return E.Retail and (IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+	return E.Retail and (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
 function E:XPIsLevelMax()
@@ -638,15 +639,15 @@ function E:LoadAPI()
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
-		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
-		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
-	else
-		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
 	end
 
 	if E.Retail or E.Wrath then
+		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
+		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
+	else
+		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
 	end
 
 	do -- setup cropIcon texCoords

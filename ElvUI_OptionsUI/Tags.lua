@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local ACH = E.Libs.ACH
 
@@ -13,7 +13,7 @@ TagGroup.args.description = ACH:Description(L["|cffFF3333This is for information
 TagGroup.args.spacer = ACH:Spacer(5)
 
 TagGroup.args.Colors = ACH:Group(L["Colors"])
-TagGroup.args.Colors.args.customTagColorInfo  = ACH:Input('Color your tag or text by replacing the XXXXXX with a hex color code. (Name tag as red text. Ex: ||cffFF0000[name]||r)', nil, 1, nil, 'full', function() return '||cffXXXXXX [tag] or text here ||r' end)
+TagGroup.args.Colors.args.customTagColorInfo = ACH:Input('Color your tag or text by replacing the XXXXXX with a hex color code. (Name tag as red text. Ex: ||cffFF0000[name]||r)', nil, 1, nil, 'full', function() return '||cffXXXXXX [tag] or text here ||r' end)
 
 TagGroup.args.Names = ACH:Group(L["Names"])
 TagGroup.args.Names.args.nameHealthInfo1 = ACH:Input('|cFF666666[1/5]|r White name text, missing hp red', nil, 1, nil, 'full', function() return '[name:health]' end)

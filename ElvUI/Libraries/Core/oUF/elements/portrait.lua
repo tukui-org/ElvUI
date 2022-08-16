@@ -12,6 +12,10 @@ Portrait - A `PlayerModel` or a `Texture` used to represent the unit's portrait.
 A question mark model will be used if the widget is a PlayerModel and the client doesn't have the model information for
 the unit.
 
+## Options
+
+.showClass - Displays the unit's class in the portrait (boolean)
+
 ## Examples
 
     -- 3D Portrait
@@ -40,11 +44,14 @@ local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
 local UnitIsConnected = UnitIsConnected
 local UnitIsVisible = UnitIsVisible
+local UnitClassBase = UnitClassBase
 local SetPortraitTexture = SetPortraitTexture
 -- end block
 
 local function Update(self, event, unit)
 	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
+
+	local element = self.Portrait
 
 	--[[ Callback: Portrait:PreUpdate(unit)
 	Called before the element has been updated.
@@ -52,14 +59,12 @@ local function Update(self, event, unit)
 	* self - the Portrait element
 	* unit - the unit for which the update has been triggered (string)
 	--]]
-
-	local element = self.Portrait
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local guid = UnitGUID(unit)
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	element.stateChanged = event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable
-	if element.stateChanged then -- ElvUI changed
+	local hasStateChanged = event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable
+	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
 		element.state = isAvailable
 		element.guid = guid
@@ -79,18 +84,24 @@ local function Update(self, event, unit)
 				element:SetUnit(unit)
 			end
 		elseif not element.customTexture then -- ElvUI changed
-			SetPortraitTexture(element, unit)
+			local class = element.showClass and UnitClassBase(unit)
+			if class then
+				element:SetAtlas('classicon-' .. class)
+			else
+				SetPortraitTexture(element, unit)
+			end
 		end
 	end
 
 	--[[ Callback: Portrait:PostUpdate(unit)
 	Called after the element has been updated.
 
-	* self - the Portrait element
-	* unit - the unit for which the update has been triggered (string)
+	* self            - the Portrait element
+	* unit            - the unit for which the update has been triggered (string)
+	* hasStateChanged - indicates whether the state has changed since the last update (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, event)
+		return element:PostUpdate(unit, hasStateChanged)
 	end
 end
 

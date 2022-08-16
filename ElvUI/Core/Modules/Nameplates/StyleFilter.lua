@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
-
 local ElvUF = E.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local ipairs, next, pairs, select = ipairs, next, pairs, select
@@ -349,7 +347,7 @@ function mod:StyleFilterDispelCheck(frame, filter)
 end
 
 function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
-	local total, matches = 0, 0
+	local total, matches, now = 0, 0, GetTime()
 	for key, value in pairs(names) do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
@@ -364,7 +362,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 					if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
 						local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 						local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-						local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - GetTime()) / (modRate or 1))
+						local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - now) / (modRate or 1))
 						local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 						local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
@@ -573,7 +571,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if Alpha then
 		c.Alpha = true
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha / 100)
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha * 0.01)
 	end
 	if Portrait then
 		c.Portrait = true
@@ -893,13 +891,13 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Player Vehicle
-	if E.Retail and (trigger.inVehicle or trigger.outOfVehicle) then
+	if (E.Retail or E.Wrath) and (trigger.inVehicle or trigger.outOfVehicle) then
 		local inVehicle = UnitInVehicle('player')
 		if (trigger.inVehicle and inVehicle) or (trigger.outOfVehicle and not inVehicle) then passed = true else return end
 	end
 
 	-- Unit Vehicle
-	if E.Retail and (trigger.inVehicleUnit or trigger.outOfVehicleUnit) then
+	if (E.Retail or E.Wrath) and (trigger.inVehicleUnit or trigger.outOfVehicleUnit) then
 		if (trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle) then passed = true else return end
 	end
 
@@ -1226,7 +1224,7 @@ end
 
 function mod:StyleFilterVehicleFunction(_, unit)
 	unit = unit or self.unit
-	self.inVehicle = E.Retail and UnitInVehicle(unit) or nil
+	self.inVehicle = (E.Retail or E.Wrath) and UnitInVehicle(unit) or nil
 end
 
 mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch

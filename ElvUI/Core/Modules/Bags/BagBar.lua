@@ -26,9 +26,9 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local commandNames = {
 	[-1] = 'TOGGLEBACKPACK',
 	[0] = 'TOGGLEBAG4',
-	'TOGGLEBAG3', -- 1
-	'TOGGLEBAG2', -- 2
-	'TOGGLEBAG1'  -- 3
+	'TOGGLEBAG3',	-- 1
+	'TOGGLEBAG2',	-- 2
+	'TOGGLEBAG1'	-- 3
 }
 
 function B:BagBar_OnEnter()
@@ -111,7 +111,7 @@ function B:SizeAndPositionBagBar()
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
 		if E.Retail then
-			button.filterIcon.FilterBackdrop:Size(bagBarSize / 2)
+			button.filterIcon.FilterBackdrop:Size(bagBarSize * 0.5)
 		end
 
 		button:Size(bagBarSize)

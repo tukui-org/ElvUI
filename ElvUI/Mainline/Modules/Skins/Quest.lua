@@ -384,7 +384,6 @@ function S:BlizzardQuestFrames()
 	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
-
 	_G.QuestRewardScrollFrame:SetTemplate()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 

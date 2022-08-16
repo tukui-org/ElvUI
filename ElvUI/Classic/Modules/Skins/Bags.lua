@@ -20,6 +20,29 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
+local bagIconCache = {
+	[-2] = [[Interface\ICONS\INV_Misc_Key_03]],
+	[0] = E.Media.Textures.Backpack
+}
+
+local function setBagIcon(frame, texture)
+	if not frame.BagIcon then
+		local portraitButton = _G[frame:GetName()..'PortraitButton']
+
+		portraitButton:CreateBackdrop()
+		portraitButton:Size(32)
+		portraitButton:Point('TOPLEFT', 12, -7)
+		portraitButton:StyleButton(nil, true)
+		portraitButton.hover:SetAllPoints()
+
+		frame.BagIcon = portraitButton:CreateTexture()
+		frame.BagIcon:SetTexCoord(unpack(E.TexCoords))
+		frame.BagIcon:SetAllPoints()
+	end
+
+	frame.BagIcon:SetTexture(texture)
+end
+
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
@@ -40,7 +63,7 @@ function S:ContainerFrame()
 			local cooldown = _G['ContainerFrame'..i..'Item'..j..'Cooldown']
 
 			item:SetNormalTexture('')
-			item:SetTemplate('Default', true)
+			item:SetTemplate(nil, true)
 			item:StyleButton()
 
 			icon:SetInside()
@@ -55,29 +78,6 @@ function S:ContainerFrame()
 			E:RegisterCooldown(cooldown)
 		end
 	end
-
-	local function setBagIcon(frame, texture)
-		if not frame.BagIcon then
-			local portraitButton = _G[frame:GetName()..'PortraitButton']
-
-			portraitButton:CreateBackdrop()
-			portraitButton:Size(32)
-			portraitButton:Point('TOPLEFT', 12, -7)
-			portraitButton:StyleButton(nil, true)
-			portraitButton.hover:SetAllPoints()
-
-			frame.BagIcon = portraitButton:CreateTexture()
-			frame.BagIcon:SetTexCoord(unpack(E.TexCoords))
-			frame.BagIcon:SetAllPoints()
-		end
-
-		frame.BagIcon:SetTexture(texture)
-	end
-
-	local bagIconCache = {
-		[-2] = [[Interface\ICONS\INV_Misc_Key_03]],
-		[0] = E.Media.Textures.Backpack
-	}
 
 	hooksecurefunc('ContainerFrame_GenerateFrame', function(frame)
 		local id = frame:GetID()
@@ -149,7 +149,7 @@ function S:ContainerFrame()
 		local cooldown = _G['BankFrameItem'..i..'Cooldown']
 
 		button:SetNormalTexture('')
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:StyleButton()
 		button.IconBorder:StripTextures()
 		button.IconOverlay:StripTextures()
@@ -167,13 +167,13 @@ function S:ContainerFrame()
 	end
 
 	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate('Default')
+	BankFrame.itemBackdrop:SetTemplate()
 	BankFrame.itemBackdrop:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
 	BankFrame.itemBackdrop:Point('BOTTOMRIGHT', _G.BankFrameItem24, 'BOTTOMRIGHT', 6, -6)
 	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate('Default')
+	BankFrame.bagBackdrop:SetTemplate()
 	BankFrame.bagBackdrop:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
 	BankFrame.bagBackdrop:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag6, 'BOTTOMRIGHT', 6, -6)
 	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
@@ -187,7 +187,7 @@ function S:ContainerFrame()
 			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
 
 			button:SetNormalTexture('')
-			button:SetTemplate('Default', true)
+			button:SetTemplate(nil, true)
 			button:StyleButton()
 
 			button.icon:SetInside()

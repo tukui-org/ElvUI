@@ -92,7 +92,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[33395]		= Defaults(1), -- Freeze
 		[157997]	= Defaults(1), -- Ice Nova
 		[228600]	= Defaults(1), -- Glacial Spike
-		[198121]	= Defaults(1), -- Forstbite
+		[198121]	= Defaults(1), -- Frostbite
 	-- Monk
 		[119381]	= Defaults(4), -- Leg Sweep
 		[202346]	= Defaults(4), -- Double Barrel
@@ -621,7 +621,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 	},
 }
 
--- Buffs that really we dont need to see
+-- Buffs that we don't really need to see
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
@@ -660,10 +660,11 @@ G.unitframe.aurafilters.Blacklist = {
 		[206662]	= Defaults(), -- Experience Eliminated (in range)
 		[287825]	= Defaults(), -- Lethargy debuff (fight or flight)
 		[306600]	= Defaults(), -- Experience Eliminated (oor - 5m)
-		[313015]	= Defaults(), -- Recently Failed (mechagnome racial)
+		[313015]	= Defaults(), -- Recently Failed (Mechagnome racial)
 		[322695]	= Defaults(), -- Drained
 		[328891]	= Defaults(), -- A Gilded Perspective
 		[348443]	= Defaults(), -- Experience Eliminated
+		[234143]	= Defaults(), -- Temptation (Upper Karazhan Ring Debuff)
 	},
 }
 

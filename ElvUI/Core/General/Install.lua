@@ -117,9 +117,9 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	-- Adjust Chat Colors
-	ChangeChatColor('CHANNEL1', 195/255, 230/255, 232/255) -- General
-	ChangeChatColor('CHANNEL2', 232/255, 158/255, 121/255) -- Trade
-	ChangeChatColor('CHANNEL3', 232/255, 228/255, 121/255) -- Local Defense
+	ChangeChatColor('CHANNEL1', 0.76, 0.90, 0.91) -- General
+	ChangeChatColor('CHANNEL2', 0.91, 0.62, 0.47) -- Trade
+	ChangeChatColor('CHANNEL3', 0.91, 0.89, 0.47) -- Local Defense
 
 	if E.private.chat.enable then
 		CH:PositionChats()
@@ -229,7 +229,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	if theme == 'class' then
 		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b)
 	else
-		E.db.general.valuecolor = E:GetColor(23/255, 132/255, 209/255)
+		E.db.general.valuecolor = E:GetColor(0.09, 0.52, 0.82)
 	end
 
 	E:UpdateStart(true, true)
@@ -345,8 +345,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.position = "LEFT"
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.xOffset = 0
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.yOffset = 0
-
-
 		--UnitFrames
 			E.db.unitframe.smoothbars = true
 			E.db.unitframe.thinBorders = true

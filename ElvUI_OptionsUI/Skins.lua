@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local B = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
@@ -80,19 +80,15 @@ Skins.args.blizzard.values = {
 
 local blizzard = Skins.args.blizzard.values
 if E.Retail then
-	blizzard.achievement = L["ACHIEVEMENTS"]
 	blizzard.adventureMap = L["ADVENTURE_MAP_TITLE"]
-	blizzard.alertframes = L["Alert Frames"]
 	blizzard.alliedRaces = L["Allied Races"]
 	blizzard.animaDiversion = L["Anima Diversion"]
-	blizzard.artifact = L["ITEM_QUALITY6_DESC"]
 	blizzard.archaeology = L["Archaeology Frame"]
+	blizzard.artifact = L["ITEM_QUALITY6_DESC"]
+	blizzard.azerite = L["Azerite"]
 	blizzard.azeriteEssence = L["Azerite Essence"]
 	blizzard.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
-	blizzard.azerite = L["Azerite"]
-	blizzard.barber = L["BARBERSHOP"]
 	blizzard.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
-	blizzard.calendar = L["Calendar Frame"]
 	blizzard.chromieTime = L["Chromie Time Frame"]
 	blizzard.collections = L["COLLECTIONS"]
 	blizzard.contribution = L["Contribution"]
@@ -131,6 +127,16 @@ else
 		blizzard.arenaRegistrar = L["Arena Registrar"]
 	end
 
+	if not E.Wrath then
+		blizzard.craft = L["Craft"]
+	end
+
 	blizzard.battlefield = L["Battlefield"]
-	blizzard.craft = L["Craft"]
+end
+
+if E.Retail or E.Wrath then
+	blizzard.achievement = L["ACHIEVEMENTS"]
+	blizzard.alertframes = L["Alert Frames"]
+	blizzard.barber = L["BARBERSHOP"]
+	blizzard.calendar = L["Calendar Frame"]
 end

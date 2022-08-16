@@ -12,7 +12,7 @@ function S:Blizzard_IslandsQueueUI()
 
 	local selectorFrame = IslandsFrame.DifficultySelectorFrame
 	local queueButton = selectorFrame and selectorFrame.QueueButton
-	if queueButton  then
+	if queueButton then
 		S:HandleButton(queueButton)
 		queueButton.Flash:Kill()
 	end

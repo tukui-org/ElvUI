@@ -2,9 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local unpack = unpack
+local select, unpack = select, unpack
 local CreateFrame = CreateFrame
+
+local NUM_GUILDBANK_ICONS_PER_ROW = 10
+local NUM_GUILDBANK_ICON_ROWS = 9
+local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS
 
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
@@ -86,12 +89,13 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankTransactionsScrollFrameScrollBar:Point('TOPRIGHT', GuildBankTransactionsScrollFrame, 'TOPRIGHT', 29, -8)
 	_G.GuildBankTransactionsScrollFrameScrollBar:Point('BOTTOMRIGHT', GuildBankTransactionsScrollFrame, 'BOTTOMRIGHT', 0, 16)
 
-	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame)
-	GuildBankFrame.inset:SetTemplate('Default')
-	GuildBankFrame.inset:Point('TOPLEFT', 24, -64)
-	GuildBankFrame.inset:Point('BOTTOMRIGHT', -18, 62)
+	GuildBankFrame.bg = CreateFrame('Frame', nil, GuildBankFrame)
+	GuildBankFrame.bg:SetTemplate()
+	GuildBankFrame.bg:Point('TOPLEFT', 24, -64)
+	GuildBankFrame.bg:Point('BOTTOMRIGHT', -18, 62)
+	GuildBankFrame.bg:SetFrameLevel(GuildBankFrame:GetFrameLevel())
 
-	_G.GuildBankLimitLabel:Point('CENTER', _G.GuildBankTabLimitBackground, 'CENTER', -40, 1)
+	_G.GuildBankLimitLabel:Point('CENTER', GuildBankFrame.TabLimitBG, 'CENTER', -40, -5)
 
 	for i = 1, 4 do
 		local tab = _G['GuildBankFrameTab'..i]
@@ -104,12 +108,16 @@ function S:Blizzard_GuildBankUI()
 		end
 	end
 
-	_G.GuildBankTab1:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -3 or -1, -36)
+	_G.GuildBankTab1:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -1 or 2, -36)
 	_G.GuildBankTab2:Point('TOPLEFT', _G.GuildBankTab1, 'BOTTOMLEFT', 0, 7)
 	_G.GuildBankTab3:Point('TOPLEFT', _G.GuildBankTab2, 'BOTTOMLEFT', 0, 7)
 	_G.GuildBankTab4:Point('TOPLEFT', _G.GuildBankTab3, 'BOTTOMLEFT', 0, 7)
 	_G.GuildBankTab5:Point('TOPLEFT', _G.GuildBankTab4, 'BOTTOMLEFT', 0, 7)
 	_G.GuildBankTab6:Point('TOPLEFT', _G.GuildBankTab5, 'BOTTOMLEFT', 0, 7)
+
+	if not E:IsAddOnEnabled('ArkInventory') then
+		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_GuildBankUI')

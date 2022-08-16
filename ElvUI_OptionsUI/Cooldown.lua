@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local ACH = E.Libs.ACH
 
@@ -42,7 +42,7 @@ local function group(order, db, label)
 	mainArgs.colorGroup = colors
 
 	local tColors = ACH:Group(L["Threshold Colors"], nil, 3)
-	tColors.args.modRateColor = ACH:Color(E.NewSign..L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1)
+	tColors.args.modRateColor = ACH:Color(L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1, nil, nil, nil, nil, nil, not E.Retail)
 	tColors.args.expiringColor = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 2)
 	tColors.args.secondsColor = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 3)
 	tColors.args.minutesColor = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 4)
@@ -54,7 +54,7 @@ local function group(order, db, label)
 
 	local iColors = ACH:Group(L["Time Indicator Colors"], nil, 4, nil, nil, nil, function() return not (profile(db)).useIndicatorColor end)
 	iColors.args.useIndicatorColor = ACH:Toggle(L["Use Indicator Color"], nil, 0, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, false)
-	iColors.args.modRateIndicator = ACH:Color(E.NewSign..L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1)
+	iColors.args.modRateIndicator = ACH:Color(L["Modified Rate"], L["Color when the text is using a modified timer rate."], 1, nil, nil, nil, nil, nil, not E.Retail)
 	iColors.args.expireIndicator = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 2)
 	iColors.args.secondsIndicator = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 3)
 	iColors.args.minutesIndicator = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 4)
@@ -86,9 +86,9 @@ E.Options.args.cooldown = ACH:Group(L["Cooldown Text"], nil, 2, 'tab', function(
 E.Options.args.cooldown.args.intro = ACH:Description(L["COOLDOWN_DESC"], 0)
 E.Options.args.cooldown.args.enable = ACH:Toggle(L["Enable"], L["Display cooldown text on anything with the cooldown spiral."], 1)
 
-group(5,  'global',     L["Global"])
-group(6,  'auras',      L["BUFFOPTIONS_LABEL"])
-group(7,  'actionbar',  L["ActionBars"])
-group(8,  'bags',       L["Bags"])
-group(9,  'nameplates', L["Nameplates"])
-group(10, 'unitframe',  L["UnitFrames"])
+group( 5, 'global',		L["Global"])
+group( 6, 'auras',		L["BUFFOPTIONS_LABEL"])
+group( 7, 'actionbar',	L["ActionBars"])
+group( 8, 'bags',		L["Bags"])
+group( 9, 'nameplates',	L["Nameplates"])
+group(10, 'unitframe',	L["UnitFrames"])

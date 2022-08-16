@@ -18,15 +18,22 @@ local MouseIsOver = MouseIsOver
 local RegisterStateDriver = RegisterStateDriver
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
+local GetNumSpecializations = GetNumSpecializations
+local GetSpecializationInfo = GetSpecializationInfo
+local MISCELLANEOUS = MISCELLANEOUS
+
+--Retail
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
 local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
-local GetNumSpecializations = GetNumSpecializations
-local GetSpecializationInfo = GetSpecializationInfo
-local MISCELLANEOUS = MISCELLANEOUS
+
+--Wrath
+local GetCurrencyInfo = GetCurrencyInfo
+local GetCurrencyListInfo = GetCurrencyListInfo
+local GetCurrencyListSize = GetCurrencyListSize
 
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
@@ -704,12 +711,16 @@ end
 
 function DT:PopulateData(currencyOnly)
 	local Collapsed = {}
-	local listSize, i = C_CurrencyInfo_GetCurrencyListSize(), 1
+	local listSize, i = E.Retail and C_CurrencyInfo_GetCurrencyListSize() or GetCurrencyListSize(), 1
 
 	local headerIndex
 	while listSize >= i do
-		local info = C_CurrencyInfo_GetCurrencyListInfo(i)
-		if info.isHeader and not info.isHeaderExpanded then
+		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(i) or {}
+		if E.Wrath then
+			info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(i)
+		end
+
+		if E.Retail and info.isHeader and not info.isHeaderExpanded then
 			C_CurrencyInfo_ExpandCurrencyList(i, true)
 			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
@@ -721,7 +732,7 @@ function DT:PopulateData(currencyOnly)
 			headerIndex = i
 		end
 		if not info.isHeader then
-			local currencyLink = C_CurrencyInfo_GetCurrencyListLink(i)
+			local currencyLink = E.Retail and C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
 				DT.CurrencyList[tostring(currencyID)] = info.name
@@ -734,18 +745,20 @@ function DT:PopulateData(currencyOnly)
 		i = i + 1
 	end
 
-	for k = 1, listSize do
-		local info = C_CurrencyInfo_GetCurrencyListInfo(k)
-		if not info then
-			break
-		elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
-			C_CurrencyInfo_ExpandCurrencyList(k, false)
+	if E.Retail then
+		for k = 1, listSize do
+			local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(k)
+			if not info then
+				break
+			elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
+				C_CurrencyInfo_ExpandCurrencyList(k, false)
+			end
 		end
 	end
 
 	wipe(Collapsed)
 
-	if not currencyOnly then
+	if E.Retail and not currencyOnly then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon, _, statID = GetSpecializationInfo(index)
 
@@ -759,7 +772,10 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 	if currencyID and not DT.CurrencyList[tostring(currencyID)] then
-		local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
+		local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(currencyID) or {}
+		if E.Wrath then
+			info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currencyID)
+		end
 		if info then
 			DT:PopulateData(true)
 		end
@@ -805,9 +821,15 @@ function DT:Initialize()
 	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
 	DT:RegisterLDB() -- LibDataBroker
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
-		hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+
+		if E.Retail then
+			hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+		else
+			hooksecurefunc('SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+		end
+
 		DT:PopulateData()
 		DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
 	end
@@ -839,6 +861,7 @@ end
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent
 	colorUpdate - function that fires when called from the config when you change the dt options.
 ]]
+
 function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
 	if not name then return end
 	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end

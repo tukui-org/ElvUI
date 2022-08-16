@@ -61,7 +61,7 @@ function S:SpellBookFrame()
 			end
 		end
 
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
 
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
@@ -112,7 +112,7 @@ function S:SpellBookFrame()
 		tab:StripTextures()
 		tab:SetTemplate()
 		tab:StyleButton(nil, true)
-		tab:SetTemplate('Default', true)
+		tab:SetTemplate(nil, true)
 		tab.pushed = true
 
 		tab:GetNormalTexture():SetInside()
