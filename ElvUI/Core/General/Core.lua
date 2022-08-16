@@ -1334,6 +1334,14 @@ function E:DBConvertSL()
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
 	end
+
+	-- rune convert
+	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
+		if data.r then
+			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
+	end
 end
 
 function E:UpdateDB()
@@ -1810,12 +1818,6 @@ function E:DBConversions()
 	end
 
 	-- development converts
-	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
-		if data.r then
-			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
-			data.r, data.g, data.b = nil, nil, nil
-		end
-	end -- rune convert
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
