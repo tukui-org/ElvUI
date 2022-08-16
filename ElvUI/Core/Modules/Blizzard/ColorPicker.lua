@@ -9,6 +9,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local strlen, strjoin, gsub, next = strlen, strjoin, gsub, next
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
+
 local CreateFrame = CreateFrame
 local IsControlKeyDown = IsControlKeyDown
 local IsModifierKeyDown = IsModifierKeyDown

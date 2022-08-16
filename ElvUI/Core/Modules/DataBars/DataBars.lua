@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs = pairs, ipairs
+
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat

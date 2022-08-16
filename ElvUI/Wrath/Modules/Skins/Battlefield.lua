@@ -3,9 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
-
 local CanQueueForWintergrasp = CanQueueForWintergrasp
+local hooksecurefunc = hooksecurefunc
 
 function S:SkinBattlefield()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.battlefield) then return end
