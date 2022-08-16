@@ -370,7 +370,7 @@ function RU:Initialize()
 		'RaidUtility_CloseButton'
 	}
 
-	if E.Wrath then
+	if E.Retail or E.Wrath then
 		tinsert(buttons, 'RoleCheckButton')
 	end
 
