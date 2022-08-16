@@ -178,15 +178,15 @@ function RU:Role_OnEnter()
 end
 
 function RU:PositionRoleIcons()
-	if not (E.Retail or E.Wrath) then return end
+	if E.Retail or E.Wrath then
+		_G.RaidUtilityRoleIcons:ClearAllPoints()
 
-	_G.RaidUtilityRoleIcons:ClearAllPoints()
-
-	local point = E:GetScreenQuadrant(ShowButton)
-	if point and strfind(point, 'LEFT') then
-		_G.RaidUtilityRoleIcons:Point('LEFT', _G.RaidUtilityPanel, 'RIGHT', -1, 0)
-	else
-		_G.RaidUtilityRoleIcons:Point('RIGHT', _G.RaidUtilityPanel, 'LEFT', 1, 0)
+		local point = E:GetScreenQuadrant(ShowButton)
+		if point and strfind(point, 'LEFT') then
+			_G.RaidUtilityRoleIcons:Point('LEFT', _G.RaidUtilityPanel, 'RIGHT', -1, 0)
+		else
+			_G.RaidUtilityRoleIcons:Point('RIGHT', _G.RaidUtilityPanel, 'LEFT', 1, 0)
+		end
 	end
 end
 
@@ -342,7 +342,7 @@ function RU:Initialize()
 		_G.RoleCheckButton:SetScript('OnMouseUp', function() if RU:CheckRaidStatus() then InitiateRolePoll() end end)
 	end
 
-	RU:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Retail or E.Wrath and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', (E.Retail or E.Wrath and _G.RoleCheckButton) or _G.ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
+	RU:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * ((E.Retail or E.Wrath) and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', ((E.Retail or E.Wrath) and _G.RoleCheckButton) or _G.ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
 	_G.RaidControlButton:SetScript('OnMouseUp', function() if E.Retail then ToggleFriendsFrame(3) else ToggleFriendsFrame(4) end end)
 
 	if E.Retail then
