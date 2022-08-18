@@ -221,7 +221,7 @@ local function GetClassPower(Class)
 			if monk then -- chi is a table
 				r, g, b = unpack(powerColor[min])
 			elseif dk then
-				r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[GetSpecialization() or 1])
+				r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[(GetSpecialization() and GetSpecialization() ~= 5) and GetSpecialization() or 1])
 			else
 				r, g, b = unpack(powerColor)
 			end
