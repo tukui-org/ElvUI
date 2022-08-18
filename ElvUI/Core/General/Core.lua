@@ -1337,7 +1337,7 @@ function E:DBConvertSL()
 
 	-- rune convert
 	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
-		if data.r then
+		if data.r or data.g or data.b then
 			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
 		end
