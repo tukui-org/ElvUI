@@ -1225,10 +1225,10 @@ function AB:FixKeybindText(button)
 			text = gsub(text, 'INSERT', L["KEY_INSERT"])
 			text = gsub(text, 'HOME', L["KEY_HOME"])
 			text = gsub(text, 'DELETE', L["KEY_DELETE"])
-			text = gsub(text, 'NMULTIPLY', '*')
-			text = gsub(text, 'NMINUS', 'N-')
-			text = gsub(text, 'NPLUS', 'N+')
-			text = gsub(text, 'NEQUALS', 'N=')
+			text = gsub(text, 'NMULTIPLY', L["KEY_NMULTIPLY"])
+			text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
+			text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
+			text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
 			hotkey.SetVertexColor = E.noop
 		end
 

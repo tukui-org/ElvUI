@@ -200,6 +200,10 @@ L["KEY_PAGEDOWN"] = "P▼"
 L["KEY_PAGEUP"] = "P▲"
 L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "Spc"
+L["KEY_NMULTIPLY"] = '*'
+L["KEY_NMINUS"] = 'N-'
+L["KEY_NPLUS"] = 'N+'
+L["KEY_NEQUALS"] = 'N='
 L["Key"] = "단축키"
 L["Layout Set"] = "레이아웃 설정"
 L["Layout"] = "레이아웃"
