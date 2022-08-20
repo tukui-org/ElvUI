@@ -970,7 +970,7 @@ end
 function CH:CopyChat(frame)
 	if not _G.CopyChatFrame:IsShown() then
 		local _, fontSize = _G.FCF_GetChatWindowInfo(frame:GetID())
-		if fontSize < 10 then fontSize = 12 end
+
 		_G.FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		_G.CopyChatFrame:Show()
 		local lineCt = CH:GetLines(frame)
