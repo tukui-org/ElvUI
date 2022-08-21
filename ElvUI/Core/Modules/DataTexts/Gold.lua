@@ -47,6 +47,22 @@ local function deleteCharacter(self, realm, name)
 	DT:ForceUpdate_DataText('Gold')
 end
 
+local function updateGoldTotals()
+	totalAlliance, totalHorde, totalGold = 0, 0, 0
+
+	for realm in pairs(ElvDB.serverID[E.serverID]) do
+		for name in pairs(ElvDB.gold[realm]) do
+			if ElvDB.faction[E.myrealm][name] == 'Alliance' then
+				totalAlliance = totalAlliance+ElvDB.gold[realm][name]
+			elseif ElvDB.faction[realm][name] == 'Horde' then
+				totalHorde = totalHorde+ElvDB.gold[realm][name]
+			end
+
+			totalGold = totalGold+ElvDB.gold[realm][name]
+		end
+	end
+end
+
 local function updateGold(self, updateAll)
 	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
@@ -77,20 +93,17 @@ local function updateGold(self, updateAll)
 					})
 				end
 
-				if ElvDB.faction[realm][k] == 'Alliance' then
-					totalAlliance = totalAlliance+ElvDB.gold[realm][name]
-				elseif ElvDB.faction[realm][k] == 'Horde' then
-					totalHorde = totalHorde+ElvDB.gold[realm][name]
-				end
-
-				totalGold = totalGold+ElvDB.gold[realm][name]
+				updateGoldTotals()
 			end
 		end
 	else
 		for _, info in ipairs(myGold) do
-			if info.name == E.myname then
+			if info.name == E.myname and info.realm == E.myrealm then
 				info.amount = ElvDB.gold[E.myrealm][E.myname]
 				info.amountText = E:FormatMoney(ElvDB.gold[E.myrealm][E.myname], style, textOnly)
+				updateGoldTotals()
+
+				break
 			end
 		end
 	end
