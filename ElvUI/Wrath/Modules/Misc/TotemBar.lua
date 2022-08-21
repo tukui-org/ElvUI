@@ -31,15 +31,13 @@ local SLOT_EMPTY_TCOORDS = {
 
 function AB:MultiCastFlyoutFrameOpenButton_Show(button, which, parent)
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
-	button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	button:ClearAllPoints()
 	if E.db.general.totems.flyoutDirection == 'UP' then
 		button:Point('BOTTOM', parent, 'TOP')
-		button.icon:SetRotation(0)
-	elseif E.db.general.totems.flyoutDirection == 'DOWN' then
+	else
 		button:Point('TOP', parent, 'BOTTOM')
-		button.icon:SetRotation(3.14)
 	end
 end
 
@@ -110,17 +108,9 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:ClearAllPoints()
 
 			if E.db.general.totems.flyoutDirection == 'UP' then
-				if i == 1 then
-					button:Point('BOTTOM', parent, 'TOP', 0, E.db.general.totems.flyoutSpacing)
-				else
-					button:Point('BOTTOM', frame.buttons[i - 1], 'TOP', 0, E.db.general.totems.flyoutSpacing)
-				end
-			elseif E.db.general.totems.flyoutDirection == 'DOWN' then
-				if i == 1 then
-					button:Point('TOP', parent, 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
-				else
-					button:Point('TOP', frame.buttons[i - 1], 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
-				end
+				button:Point('BOTTOM', i == 1 and parent or frame.buttons[i - 1], 'TOP', 0, E.db.general.totems.flyoutSpacing)
+			else
+				button:Point('TOP', i == 1 and parent or frame.buttons[i - 1], 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
 			end
 
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -144,7 +134,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	if E.db.general.totems.flyoutDirection == 'UP' then
 		frame:Point('BOTTOM', parent, 'TOP')
 		closeButton:Point('TOP', frame, 'TOP')
-	elseif E.db.general.totems.flyoutDirection == 'DOWN' then
+	else
 		frame:Point('TOP', parent, 'BOTTOM')
 		closeButton:Point('BOTTOM', frame, 'BOTTOM')
 	end
@@ -166,15 +156,11 @@ function AB:TotemButton_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
-	if bar.mouseover then
-		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), E.db.general.totems.alpha)
-	end
+	return bar.mouseover and E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), E.db.general.totems.alpha)
 end
 
 function AB:TotemBar_OnLeave()
-	if bar.mouseover then
-		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	end
+	return bar.mouseover and E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 end
 
 function AB:PositionAndSizeTotemBar()
