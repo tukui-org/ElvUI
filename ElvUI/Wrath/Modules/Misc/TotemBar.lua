@@ -89,7 +89,6 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:SetTemplate()
 			button:StyleButton()
 
-			button:SetFrameStrata('MEDIUM')
 			button.icon:SetDrawLayer('ARTWORK')
 			button.icon:SetInside(button)
 
@@ -190,9 +189,7 @@ function AB:PositionAndSizeTotemBar()
 	end
 
 	local visibility = E.db.general.totems.visibility
-	if visibility and strmatch(visibility, '[\n\r]') then
-		visibility = gsub(visibility, '[\n\r]','')
-	end
+	visibility = gsub(visibility, '[\n\r]','')
 
 	RegisterStateDriver(bar, 'visibility', visibility)
 
