@@ -31,13 +31,60 @@ local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
-local menuList = {}
-local myGold = {}
+local menuList, myGold = {}, {}
 
 local totalGold, totalHorde, totalAlliance = 0, 0, 0
 
 local function sortFunction(a, b)
 	return a.amount > b.amount
+end
+
+local function deleteCharacter(self, realm, name)
+	ElvDB.gold[realm][name] = nil
+	ElvDB.class[realm][name] = nil
+	ElvDB.faction[realm][name] = nil
+
+	DT:ForceUpdate_DataText('Gold')
+end
+
+local function updateGold(self)
+	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
+	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
+
+	wipe(myGold)
+	wipe(menuList)
+	tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
+
+	for realm in pairs(ElvDB.serverID[E.serverID]) do
+		for name in pairs(ElvDB.gold[realm]) do
+			if ElvDB.gold[realm][name] then
+				local color = E:ClassColor(ElvDB.class[realm][name]) or PRIEST_COLOR
+				tinsert(myGold, {
+						name = name,
+						realm = realm,
+						amount = ElvDB.gold[realm][name],
+						amountText = E:FormatMoney(ElvDB.gold[realm][name], style, textOnly),
+						faction = ElvDB.faction[realm][name] or '',
+						r = color.r, g = color.g, b = color.b,
+				})
+				tinsert(menuList, {
+					text = format('%s - %s', name, realm),
+					notCheckable = true,
+					func = function()
+						deleteCharacter(self, realm, name)
+					end
+				})
+			end
+
+			if ElvDB.faction[realm][k] == 'Alliance' then
+				totalAlliance = totalAlliance+ElvDB.gold[realm][name]
+			elseif ElvDB.faction[realm][k] == 'Horde' then
+				totalHorde = totalHorde+ElvDB.gold[realm][name]
+			end
+
+			totalGold = totalGold+ElvDB.gold[realm][name]
+		end
+	end
 end
 
 local function OnEvent(self, event)
@@ -70,41 +117,13 @@ local function OnEvent(self, event)
 		local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 		if oldMoney and type(oldMoney) ~= 'number' then
 			ElvDB.gold[E.myrealm][E.myname] = nil
-			oldMoney = nil
-		end
-
-		wipe(myGold)
-		for realm in pairs(ElvDB.serverID[E.serverID]) do
-			for k, _ in pairs(ElvDB.gold[realm]) do
-				if ElvDB.gold[realm][k] then
-					local color = E:ClassColor(ElvDB.class[realm][k]) or PRIEST_COLOR
-					tinsert(myGold,
-						{
-							name = k,
-							realm = realm,
-							amount = ElvDB.gold[realm][k],
-							amountText = E:FormatMoney(ElvDB.gold[realm][k], style, textOnly),
-							faction = ElvDB.faction[realm][k] or '',
-							r = color.r, g = color.g, b = color.b,
-						}
-					)
-				end
-
-				if ElvDB.faction[realm][k] == 'Alliance' then
-					totalAlliance = totalAlliance+ElvDB.gold[realm][k]
-				elseif ElvDB.faction[realm][k] == 'Horde' then
-					totalHorde = totalHorde+ElvDB.gold[realm][k]
-				end
-
-				totalGold = totalGold+ElvDB.gold[realm][k]
-			end
 		end
 	end
 
 	local NewMoney = GetMoney()
 	ElvDB.gold[E.myrealm][E.myname] = NewMoney
 
-	local OldMoney = oldMoney or NewMoney
+	local OldMoney = NewMoney
 	local Change = NewMoney-OldMoney -- Positive if we gain money
 	if OldMoney>NewMoney then		-- Lost Money
 		Spent = Spent - Change
@@ -112,37 +131,14 @@ local function OnEvent(self, event)
 		Profit = Profit + Change
 	end
 
+	if event == 'ELVUI_FORCE_UPDATE' then updateGold(self) end
+
 	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
-end
-
-local function deleteCharacter(self, realm, name)
-	ElvDB.gold[realm][name] = nil
-	ElvDB.class[realm][name] = nil
-	ElvDB.faction[realm][name] = nil
-
-	if name == E.myname and realm == E.myrealm then
-		OnEvent(self, 'ELVUI_FORCE_UPDATE')
-	end
 end
 
 local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
-			wipe(menuList)
-			tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
-
-			for realm in pairs(ElvDB.serverID[E.serverID]) do
-				for name in pairs(ElvDB.gold[realm]) do
-					tinsert(menuList, {
-						text = format('%s - %s', name, realm),
-						notCheckable = true,
-						func = function()
-							deleteCharacter(self, realm, name)
-						end
-					})
-				end
-			end
-
 			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 		elseif IsControlKeyDown() then
