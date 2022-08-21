@@ -29,11 +29,10 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 --Wrath
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
-local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 local menuList, myGold = {}, {}
-
 local totalGold, totalHorde, totalAlliance = 0, 0, 0
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 local function sortFunction(a, b)
 	return a.amount > b.amount
@@ -64,6 +63,7 @@ local function updateGold(self, updateAll, goldChange)
 	if updateAll then
 		wipe(myGold)
 		wipe(menuList)
+
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		for realm in pairs(ElvDB.serverID[E.serverID]) do
@@ -73,6 +73,7 @@ local function updateGold(self, updateAll, goldChange)
 
 				if gold then
 					local color = E:ClassColor(ElvDB.class[realm][name]) or PRIEST_COLOR
+
 					tinsert(myGold, {
 							name = name,
 							realm = realm,
@@ -81,12 +82,11 @@ local function updateGold(self, updateAll, goldChange)
 							faction = faction or '',
 							r = color.r, g = color.g, b = color.b,
 					})
+
 					tinsert(menuList, {
 						text = format('%s - %s', name, realm),
 						notCheckable = true,
-						func = function()
-							deleteCharacter(self, realm, name)
-						end
+						func = function() deleteCharacter(self, realm, name) end
 					})
 
 					updateTotal(faction, gold)
@@ -95,7 +95,7 @@ local function updateGold(self, updateAll, goldChange)
 		end
 	else
 		for _, info in ipairs(myGold) do
-			if info.name == E.myname then
+			if info.name == E.myname and info.realm == E.myrealm then
 				info.amount = ElvDB.gold[E.myrealm][E.myname]
 				info.amountText = E:FormatMoney(ElvDB.gold[E.myrealm][E.myname], style, textOnly)
 
