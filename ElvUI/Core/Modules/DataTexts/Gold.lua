@@ -73,6 +73,7 @@ local function OnEvent(self, event)
 			oldMoney = nil
 		end
 
+		wipe(myGold)
 		for realm in pairs(ElvDB.serverID[E.serverID]) do
 			for k, _ in pairs(ElvDB.gold[realm]) do
 				if ElvDB.gold[realm][k] then
