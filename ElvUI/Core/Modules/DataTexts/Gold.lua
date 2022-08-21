@@ -112,18 +112,18 @@ local function OnEvent(self, event)
 		ElvDB.serverID = ElvDB.serverID or {}
 		ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
 		ElvDB.serverID[E.serverID][E.myrealm] = true
+	end
 
-		--prevent an error possibly from really old profiles
-		local oldMoney = ElvDB.gold[E.myrealm][E.myname]
-		if oldMoney and type(oldMoney) ~= 'number' then
-			ElvDB.gold[E.myrealm][E.myname] = nil
-		end
+	--prevent an error possibly from really old profiles
+	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
+	if oldMoney and type(oldMoney) ~= 'number' then
+		ElvDB.gold[E.myrealm][E.myname] = nil
 	end
 
 	local NewMoney = GetMoney()
 	ElvDB.gold[E.myrealm][E.myname] = NewMoney
 
-	local OldMoney = NewMoney
+	local OldMoney = oldMoney or NewMoney
 	local Change = NewMoney-OldMoney -- Positive if we gain money
 	if OldMoney>NewMoney then		-- Lost Money
 		Spent = Spent - Change
