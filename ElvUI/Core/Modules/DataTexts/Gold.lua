@@ -118,6 +118,7 @@ local function OnEvent(self, event)
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
 		ElvDB.gold[E.myrealm][E.myname] = nil
+		oldMoney = nil
 	end
 
 	local NewMoney = GetMoney()
