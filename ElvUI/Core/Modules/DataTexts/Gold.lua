@@ -47,23 +47,17 @@ local function deleteCharacter(self, realm, name)
 	DT:ForceUpdate_DataText('Gold')
 end
 
-local function updateGoldTotals()
-	totalAlliance, totalHorde, totalGold = 0, 0, 0
-
-	for realm in pairs(ElvDB.serverID[E.serverID]) do
-		for name in pairs(ElvDB.gold[realm]) do
-			if ElvDB.faction[realm][name] == 'Alliance' then
-				totalAlliance = totalAlliance+ElvDB.gold[realm][name]
-			elseif ElvDB.faction[realm][name] == 'Horde' then
-				totalHorde = totalHorde+ElvDB.gold[realm][name]
-			end
-
-			totalGold = totalGold+ElvDB.gold[realm][name]
-		end
+local function updateTotal(faction, change)
+	if faction == 'Alliance' then
+		totalAlliance = totalAlliance + change
+	elseif faction == 'Horde' then
+		totalHorde = totalHorde + change
 	end
+
+	totalGold = totalGold + change
 end
 
-local function updateGold(self, updateAll)
+local function updateGold(self, updateAll, goldChange)
 	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
 
@@ -74,14 +68,17 @@ local function updateGold(self, updateAll)
 
 		for realm in pairs(ElvDB.serverID[E.serverID]) do
 			for name in pairs(ElvDB.gold[realm]) do
-				if ElvDB.gold[realm][name] then
+				local faction = ElvDB.faction[realm][name]
+				local gold = ElvDB.gold[realm][name]
+
+				if gold then
 					local color = E:ClassColor(ElvDB.class[realm][name]) or PRIEST_COLOR
 					tinsert(myGold, {
 							name = name,
 							realm = realm,
-							amount = ElvDB.gold[realm][name],
-							amountText = E:FormatMoney(ElvDB.gold[realm][name], style, textOnly),
-							faction = ElvDB.faction[realm][name] or '',
+							amount = gold,
+							amountText = E:FormatMoney(gold, style, textOnly),
+							faction = faction or '',
 							r = color.r, g = color.g, b = color.b,
 					})
 					tinsert(menuList, {
@@ -91,20 +88,23 @@ local function updateGold(self, updateAll)
 							deleteCharacter(self, realm, name)
 						end
 					})
-				end
 
-				updateGoldTotals()
+					updateTotal(faction, gold)
+				end
 			end
 		end
 	else
 		for _, info in ipairs(myGold) do
-			if info.name == E.myname and info.realm == E.myrealm then
+			if info.name == E.myname then
 				info.amount = ElvDB.gold[E.myrealm][E.myname]
 				info.amountText = E:FormatMoney(ElvDB.gold[E.myrealm][E.myname], style, textOnly)
-				updateGoldTotals()
 
 				break
 			end
+		end
+
+		if goldChange then
+			updateTotal(E.myfaction, goldChange)
 		end
 	end
 end
@@ -154,7 +154,7 @@ local function OnEvent(self, event)
 		Profit = Profit + Change
 	end
 
-	updateGold(self, event == 'ELVUI_FORCE_UPDATE')
+	updateGold(self, event == 'ELVUI_FORCE_UPDATE', Change)
 
 	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
 end
