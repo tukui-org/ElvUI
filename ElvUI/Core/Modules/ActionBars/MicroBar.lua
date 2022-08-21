@@ -19,9 +19,7 @@ local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)
 
 local function onLeaveBar()
-	if AB.db.microbar.mouseover then
-		E:UIFrameFadeOut(microBar, 0.2, microBar:GetAlpha(), 0)
-	end
+	return AB.db.microbar.mouseover and E:UIFrameFadeOut(microBar, 0.2, microBar:GetAlpha(), 0)
 end
 
 local watcher = 0

@@ -182,11 +182,7 @@ function AB:PositionAndSizeTotemBar()
 	barFrame:Height(size + 2)
 
 	bar.mouseover = E.db.general.totems.mouseover
-	if bar.mouseover then
-		bar:SetAlpha(0)
-	else
-		bar:SetAlpha(E.db.general.totems.alpha)
-	end
+	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
 
 	local visibility = E.db.general.totems.visibility
 	visibility = gsub(visibility, '[\n\r]','')
