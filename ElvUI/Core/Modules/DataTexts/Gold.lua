@@ -32,12 +32,15 @@ local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 local menuList = {}
+local myGold = {}
+
+local totalGold, totalHorde, totalAlliance = 0, 0, 0
 
 local function sortFunction(a, b)
 	return a.amount > b.amount
 end
 
-local function OnEvent(self)
+local function OnEvent(self, event)
 	if not IsLoggedIn() then return end
 
 	if E.Retail and not Ticker then
@@ -45,28 +48,56 @@ local function OnEvent(self)
 		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic_UpdateMarketPrice)
 	end
 
-	ElvDB = ElvDB or {}
+	if event == 'ELVUI_FORCE_UPDATE' then
+		ElvDB = ElvDB or {}
 
-	ElvDB.gold = ElvDB.gold or {}
-	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
+		ElvDB.gold = ElvDB.gold or {}
+		ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
 
-	ElvDB.class = ElvDB.class or {}
-	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
-	ElvDB.class[E.myrealm][E.myname] = E.myclass
+		ElvDB.class = ElvDB.class or {}
+		ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
+		ElvDB.class[E.myrealm][E.myname] = E.myclass
 
-	ElvDB.faction = ElvDB.faction or {}
-	ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
-	ElvDB.faction[E.myrealm][E.myname] = E.myfaction
+		ElvDB.faction = ElvDB.faction or {}
+		ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
+		ElvDB.faction[E.myrealm][E.myname] = E.myfaction
 
-	ElvDB.serverID = ElvDB.serverID or {}
-	ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
-	ElvDB.serverID[E.serverID][E.myrealm] = true
+		ElvDB.serverID = ElvDB.serverID or {}
+		ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
+		ElvDB.serverID[E.serverID][E.myrealm] = true
 
-	--prevent an error possibly from really old profiles
-	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
-	if oldMoney and type(oldMoney) ~= 'number' then
-		ElvDB.gold[E.myrealm][E.myname] = nil
-		oldMoney = nil
+		--prevent an error possibly from really old profiles
+		local oldMoney = ElvDB.gold[E.myrealm][E.myname]
+		if oldMoney and type(oldMoney) ~= 'number' then
+			ElvDB.gold[E.myrealm][E.myname] = nil
+			oldMoney = nil
+		end
+
+		for realm in pairs(ElvDB.serverID[E.serverID]) do
+			for k, _ in pairs(ElvDB.gold[realm]) do
+				if ElvDB.gold[realm][k] then
+					local color = E:ClassColor(ElvDB.class[realm][k]) or PRIEST_COLOR
+					tinsert(myGold,
+						{
+							name = k,
+							realm = realm,
+							amount = ElvDB.gold[realm][k],
+							amountText = E:FormatMoney(ElvDB.gold[realm][k], style, textOnly),
+							faction = ElvDB.faction[realm][k] or '',
+							r = color.r, g = color.g, b = color.b,
+						}
+					)
+				end
+
+				if ElvDB.faction[realm][k] == 'Alliance' then
+					totalAlliance = totalAlliance+ElvDB.gold[realm][k]
+				elseif ElvDB.faction[realm][k] == 'Horde' then
+					totalHorde = totalHorde+ElvDB.gold[realm][k]
+				end
+
+				totalGold = totalGold+ElvDB.gold[realm][k]
+			end
+		end
 	end
 
 	local NewMoney = GetMoney()
@@ -89,7 +120,7 @@ local function deleteCharacter(self, realm, name)
 	ElvDB.faction[realm][name] = nil
 
 	if name == E.myname and realm == E.myrealm then
-		OnEvent(self)
+		OnEvent(self, 'ELVUI_FORCE_UPDATE')
 	end
 end
 
@@ -122,7 +153,6 @@ local function Click(self, btn)
 	end
 end
 
-local myGold = {}
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
@@ -130,6 +160,7 @@ local function OnEnter()
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
+
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
 	if Profit < Spent then
@@ -137,37 +168,9 @@ local function OnEnter()
 	elseif (Profit-Spent)>0 then
 		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
 	end
+
 	DT.tooltip:AddLine(' ')
-
-	local totalGold, totalHorde, totalAlliance = 0, 0, 0
 	DT.tooltip:AddLine(L["Character: "])
-
-	wipe(myGold)
-	for realm in pairs(ElvDB.serverID[E.serverID]) do
-		for k, _ in pairs(ElvDB.gold[realm]) do
-			if ElvDB.gold[realm][k] then
-				local color = E:ClassColor(ElvDB.class[realm][k]) or PRIEST_COLOR
-				tinsert(myGold,
-					{
-						name = k,
-						realm = realm,
-						amount = ElvDB.gold[realm][k],
-						amountText = E:FormatMoney(ElvDB.gold[realm][k], style, textOnly),
-						faction = ElvDB.faction[realm][k] or '',
-						r = color.r, g = color.g, b = color.b,
-					}
-				)
-			end
-
-			if ElvDB.faction[realm][k] == 'Alliance' then
-				totalAlliance = totalAlliance+ElvDB.gold[realm][k]
-			elseif ElvDB.faction[realm][k] == 'Horde' then
-				totalHorde = totalHorde+ElvDB.gold[realm][k]
-			end
-
-			totalGold = totalGold+ElvDB.gold[realm][k]
-		end
-	end
 
 	sort(myGold, sortFunction)
 
