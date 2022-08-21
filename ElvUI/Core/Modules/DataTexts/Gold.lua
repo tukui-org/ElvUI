@@ -156,7 +156,7 @@ local function OnEvent(self, event)
 
 	updateGold(self, event == 'ELVUI_FORCE_UPDATE', Change)
 
-	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
+	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD', not E.global.datatexts.settings.Gold.goldCoins))
 end
 
 local function Click(self, btn)

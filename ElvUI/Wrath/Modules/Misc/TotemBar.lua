@@ -314,8 +314,8 @@ function AB:CreateTotemBar()
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
-		button:SetAttribute("type2", "destroytotem")
-		button:SetAttribute("*totem-slot*", i == 1 and 2 or i == 2 and 1 or i) -- because blizzard doesn't know their own order
+		button:SetAttribute('type2', 'destroytotem')
+		button:SetAttribute('*totem-slot*', i == 1 and 2 or i == 2 and 1 or i) -- because blizzard doesn't know their own order
 		button:StyleButton()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
