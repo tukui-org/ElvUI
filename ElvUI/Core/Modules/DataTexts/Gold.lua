@@ -52,7 +52,7 @@ local function updateGoldTotals()
 
 	for realm in pairs(ElvDB.serverID[E.serverID]) do
 		for name in pairs(ElvDB.gold[realm]) do
-			if ElvDB.faction[E.myrealm][name] == 'Alliance' then
+			if ElvDB.faction[realm][name] == 'Alliance' then
 				totalAlliance = totalAlliance+ElvDB.gold[realm][name]
 			elseif ElvDB.faction[realm][name] == 'Horde' then
 				totalHorde = totalHorde+ElvDB.gold[realm][name]
