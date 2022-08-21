@@ -137,20 +137,16 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	frame.buttons[1]:SetBackdropBorderColor(color.r, color.g, color.b)
-	closeButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	closeButton:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	frame:ClearAllPoints()
 	closeButton:ClearAllPoints()
 	if E.db.general.totems.flyoutDirection == 'UP' then
 		frame:Point('BOTTOM', parent, 'TOP')
-
 		closeButton:Point('TOP', frame, 'TOP')
-		closeButton.icon:SetRotation(3.14)
 	elseif E.db.general.totems.flyoutDirection == 'DOWN' then
 		frame:Point('TOP', parent, 'BOTTOM')
-
 		closeButton:Point('BOTTOM', frame, 'BOTTOM')
-		closeButton.icon:SetRotation(0)
 	end
 
 	frame:Height(totalHeight + closeButton:GetHeight())
@@ -293,31 +289,26 @@ function AB:CreateTotemBar()
 	barFrame.SetPoint = E.noop
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
-	closeButton:CreateBackdrop(nil, true, true)
-	closeButton.backdrop:SetPoint('TOPLEFT', 0, -(E.Border + E.Spacing))
-	closeButton.backdrop:SetPoint('BOTTOMRIGHT', 0, E.Border + E.Spacing)
-	closeButton.icon = closeButton:CreateTexture(nil, 'ARTWORK')
-	closeButton.icon:Size(16)
-	closeButton.icon:SetPoint('CENTER')
-	closeButton.icon:SetTexture(E.Media.Textures.ArrowUp)
-	closeButton.normalTexture:SetTexture('')
+	closeButton:SetTemplate()
+	closeButton.normalTexture:ClearAllPoints()
+	closeButton.normalTexture:SetPoint('CENTER')
+	closeButton.normalTexture:SetSize(16, 16)
+	closeButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
+	closeButton.normalTexture:SetTexCoord(0, 1, 0, 1)
+	closeButton.normalTexture:SetRotation(3.14)
+	closeButton.normalTexture.SetTexCoord = E.noop
 	closeButton:StyleButton()
-	closeButton.hover:SetInside(closeButton.backdrop)
-	closeButton.pushed:SetInside(closeButton.backdrop)
 	bar.buttons[closeButton] = true
 
 	local openButton = _G.MultiCastFlyoutFrameOpenButton
-	openButton:CreateBackdrop(nil, true, true)
-	openButton.backdrop:SetPoint('TOPLEFT', 0, -(E.Border + E.Spacing))
-	openButton.backdrop:SetPoint('BOTTOMRIGHT', 0, E.Border + E.Spacing)
-	openButton.icon = openButton:CreateTexture(nil, 'ARTWORK')
-	openButton.icon:Size(16)
-	openButton.icon:SetPoint('CENTER')
-	openButton.icon:SetTexture(E.Media.Textures.ArrowUp)
-	openButton.normalTexture:SetTexture('')
+	openButton:SetTemplate()
+	openButton.normalTexture:ClearAllPoints()
+	openButton.normalTexture:SetPoint('CENTER')
+	openButton.normalTexture:SetSize(16, 16)
+	openButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
+	openButton.normalTexture:SetTexCoord(0, 1, 0, 1)
+	openButton.normalTexture.SetTexCoord = E.noop
 	openButton:StyleButton()
-	openButton.hover:SetInside(openButton.backdrop)
-	openButton.pushed:SetInside(openButton.backdrop)
 	bar.buttons[openButton] = true
 
 	for i = 1, 4 do
@@ -344,6 +335,8 @@ function AB:CreateTotemBar()
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
+		button:SetAttribute("type2", "destroytotem")
+		button:SetAttribute("*totem-slot*", i == 1 and 2 or i == 2 and 1 or i) -- because blizzard doesn't know their own order
 		button:StyleButton()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
