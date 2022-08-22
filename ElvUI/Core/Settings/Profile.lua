@@ -2192,6 +2192,7 @@ P.unitframe.units.pet.debuffs.numrows = 1
 P.unitframe.units.pet.debuffs.perrow = 5
 P.unitframe.units.pet.debuffs.priority = 'Blacklist,Personal,Boss,RaidDebuffs'
 P.unitframe.units.pet.healPrediction.enable = true
+P.unitframe.units.pet.health.colorHappiness = true
 P.unitframe.units.pet.infoPanel.height = 12
 P.unitframe.units.pet.name.text_format = '[classcolor][name:medium]'
 
