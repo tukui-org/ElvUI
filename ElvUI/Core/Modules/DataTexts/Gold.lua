@@ -64,6 +64,8 @@ local function updateGold(self, updateAll, goldChange)
 		wipe(myGold)
 		wipe(menuList)
 
+		totalGold, totalHorde, totalAlliance = 0, 0, 0
+
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		for realm in pairs(ElvDB.serverID[E.serverID]) do
