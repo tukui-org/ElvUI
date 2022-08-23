@@ -4,6 +4,7 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local wipe = wipe
 local unpack = unpack
 local CreateFrame = CreateFrame
 
@@ -178,6 +179,12 @@ function NP:UpdateAuraSettings(button)
 		button.count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
 		button.count:Point(point, db.countXOffset, db.countYOffset)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	end
+
+	if button.auraInfo then
+		wipe(button.auraInfo)
+	else
+		button.auraInfo = {}
 	end
 
 	button.needsIconTrim = true
