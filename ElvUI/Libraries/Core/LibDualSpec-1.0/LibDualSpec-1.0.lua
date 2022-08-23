@@ -196,6 +196,7 @@ function mixin:CheckDualSpecState()
 
 	local profileName = self:GetDualSpecProfile()
 	if profileName ~= self:GetCurrentProfile() then
+		registry[self].db.char[lib.currentSpec] = profileName
 		self:SetProfile(profileName)
 	end
 end
