@@ -123,8 +123,7 @@ function DB:UpdateAll()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
 
-		for i = 1, bar.holder:GetNumChildren() do
-			local child = select(i, bar.holder:GetChildren())
+		for _, child in ipairs({bar.holder:GetChildren()}) do
 			if child:IsObjectType('StatusBar') then
 				child:SetStatusBarTexture(texture)
 				child:SetOrientation(orientation)
