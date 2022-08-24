@@ -227,7 +227,7 @@ local function GetClassPower(Class)
 				r, g, b = unpack(powerColor)
 			end
 		end
-	else
+	elseif not r then
 		min = UnitPower('player', POWERTYPE_COMBOPOINTS)
 		max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
 
