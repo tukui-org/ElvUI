@@ -45,10 +45,10 @@ function UF:AuraBars_UpdateBar(bar)
 	local bars = bar:GetParent()
 	bar.db = bars.db
 
-	if bars.auraInfo then
-		wipe(bars.auraInfo)
+	if bar.auraInfo then
+		wipe(bar.auraInfo)
 	else
-		bars.auraInfo = {}
+		bar.auraInfo = {}
 	end
 
 	bar:SetReverseFill(bars.reverseFill)
