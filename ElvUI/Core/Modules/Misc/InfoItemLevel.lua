@@ -305,7 +305,7 @@ function M:CreateSlotStrings(frame, which)
 				slot.enchantText:Point(justify, slot, x + (justify == 'BOTTOMLEFT' and 5 or -5), z)
 			end
 
-			for u=1, 10 do
+			for u = 1, 10 do
 				local offset = 8+(u*16)
 				local newX = ((justify == 'BOTTOMLEFT' or i == 17) and x+offset) or x-offset
 				slot['textureSlot'..u], slot['textureSlotBackdrop'..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
