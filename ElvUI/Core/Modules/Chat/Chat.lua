@@ -383,7 +383,7 @@ do --this can save some main file locals
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid
+		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid H
 		z['Luckypriest-LaughingSkull']	= ElvBlue -- Priest
 		z['Luckymonkas-LaughingSkull']	= ElvBlue -- Monk
 		z['Luckydk-LaughingSkull']		= ElvBlue -- DK
@@ -395,6 +395,7 @@ do --this can save some main file locals
 		z['Luckywl-LaughingSkull']		= ElvBlue -- Warlock
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
+		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
