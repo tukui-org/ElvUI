@@ -638,20 +638,58 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- Naxxramas
 		-- Anub'Rekhan
+		[54022] = Defaults(), -- Locust Swarm
+		[56098] = Defaults(), -- Acid Spit
 		-- Grand Widow Faerlina
+		[54099] = Defaults(), -- Rain of Fire
+		[54098] = Defaults(), -- Poison Bolt Volley
 		-- Maexxna
+		[54121] = Defaults(), -- Necrotic Poison 1
+		[28776] = Defaults(), -- Necrotic Poison 2
+		[28622] = Defaults(), -- Web Wrap
+		[54125] = Defaults(), -- Web Spray
 		-- Noth the Plaguebringer
+		[54835] = Defaults(), -- Curse of the Plaguebringer
+		[54814] = Defaults(), -- Cripple 1
+		[29212] = Defaults(), -- Cripple 2
 		-- Heigan the Unclean
+		[55011] = Defaults(), -- Decrepit Fever
 		-- Loatheb
+		[55052] = Defaults(), -- Inevitable Doom
+		[55053] = Defaults(), -- Deathbloom
 		-- Instructor Razuvious
+		[55550] = Defaults(), -- Jagged Knife
+		[55470] = Defaults(), -- Unbalancing Strike
 		-- Gothik the Harvester
+		[55646] = Defaults(), -- Drain Life
+		[55645] = Defaults(), -- Death Plague
+		[28679] = Defaults(), -- Harvest Soul
 		-- The Four Horsemen
+		[57369] = Defaults(), -- Unholy Shadow
+		[28832] = Defaults(), -- Mark of Korth'azz
+		[28835] = Defaults(), -- Mark of Zeliek
+		[28833] = Defaults(), -- Mark of Blaumeux
+		[28834] = Defaults(), -- Mark of Rivendare
 		-- Patchwerk
+		[28801] = Defaults(), -- Slime / Not really Encounter related
 		-- Grobbulus
+		[28169] = Defaults(), -- Mutating Injection
 		-- Gluth
+		[54378] = Defaults(), -- Mortal Wound
+		[29306] = Defaults(), -- Infected Wound
 		-- Thaddius
+		[28084] = Defaults(), -- Negative Charge (-)
+		[28059] = Defaults(), -- Positive Charge (+)
 		-- Sapphiron
+		[28522] = Defaults(), -- Icebolt
+		[55665] = Defaults(), -- Life Drain
+		[28547] = Defaults(), -- Chill 1
+		[55699] = Defaults(), -- Chill 2
 		-- Kel'Thuzad
+		[55807] = Defaults(), -- Frostbolt 1
+		[55802] = Defaults(), -- Frostbolt 2
+		[27808] = Defaults(), -- Frost Blast
+		[28410] = Defaults(), -- Chains of Kel'Thuzad
 	-- The Eye of Eternity
 		-- Malygos
 		[56272] = Defaults(), -- Arcane Breath
