@@ -654,6 +654,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Kel'Thuzad
 	-- The Eye of Eternity
 		-- Malygos
+		[56272] = Defaults(), -- Arcane Breath
+		[55853] = Defaults(), -- Vortex 1
+		[56263] = Defaults(), -- Vortex 2
+		[57407] = Defaults(), -- Surge of Power
+		[57429] = Defaults(), -- Static Field
 	-- The Obsidian Sanctum
 		-- Sartharion
 		[60708] = Defaults(4), -- Fade Armor
