@@ -792,18 +792,26 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------------------------------------
 	-- Naxxramas
 		-- Anub'Rekhan
+		[8269] = Defaults(), -- Frenzy
+		[54021] = Defaults(), -- Locust Swarm
 		-- Grand Widow Faerlina
+		[54100] = Defaults(), -- Frenzy
 		-- Maexxna
+		[54124] = Defaults(), -- Frenzy
 		-- Noth the Plaguebringer
 		-- Heigan the Unclean
 		-- Loatheb
 		-- Instructor Razuvious
+		[29061] = Defaults(), -- Bone Barrier
 		-- Gothik the Harvester
 		-- The Four Horsemen
 		-- Patchwerk
+		[28131] = Defaults(), -- Frenzy
 		-- Grobbulus
 		-- Gluth
+		[54427] = Defaults(), -- Enrage
 		-- Thaddius
+		[28134] = Defaults(), -- Power Surge
 		-- Sapphiron
 		-- Kel'Thuzad
 	-- The Eye of Eternity
