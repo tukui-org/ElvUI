@@ -770,6 +770,9 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		-- Kel'Thuzad
 	-- The Eye of Eternity
 		-- Malygos
+		[56505] = Defaults(), -- Surge of Power
+		[57060] = Defaults(), -- Haste
+		[57428] = Defaults(), -- Static Field
 	-- The Obsidian Sanctum
 		-- Sartharion
 		[58766] = Defaults(), -- Gift of Twilight
