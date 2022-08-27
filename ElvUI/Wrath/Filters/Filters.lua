@@ -656,6 +656,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Malygos
 	-- The Obsidian Sanctum
 		-- Sartharion
+		[60708] = Defaults(4), -- Fade Armor
+		[58105] = Defaults(2), -- Power of Shadron
+		[61248] = Defaults(2), -- Power of Tenebron
+		[56910] = Defaults(6), -- Tail Lash
+		[57874] = Defaults(5), -- Twilight Shift
+		[57632] = Defaults(4), -- Magma
 	-------------------------------------------------
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
