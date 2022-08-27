@@ -767,6 +767,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		-- Malygos
 	-- The Obsidian Sanctum
 		-- Sartharion
+		[58766] = Defaults(), -- Gift of Twilight
+		[60639] = Defaults(), -- Twilight Revenge
+		[61254] = Defaults(), -- Will of Sartharion
+		[60430] = Defaults(), -- Molten Fury
 	-------------------------------------------------
 	-------------------- Phase 2 --------------------
 	-------------------------------------------------
