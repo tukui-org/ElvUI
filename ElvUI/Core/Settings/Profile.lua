@@ -1645,8 +1645,8 @@ P.unitframe = {
 		auraBarDebuff = {r = 0.8, g = 0.1, b = 0.1},
 		power = {
 			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
-			FOCUS = {r = 0.71, g = 0.43, b = 0.27, atlas = '_DemonHunter-DemonicFuryBar'},
-			FURY = {r = 0.89, g = 0.49, b = 0.15},
+			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
+			FURY = {r = 0.89, g = 0.49, b = 0.15, atlas = '_DemonHunter-DemonicFuryBar'},
 			INSANITY = {r = 0.55, g = 0.14, b = 0.69, atlas = '_Priest-InsanityBar'},
 			LUNAR_POWER = {r = 0.90, g = 0.90, b = 0.30, atlas = '_Druid-LunarBar'},
 			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
