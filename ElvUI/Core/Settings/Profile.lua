@@ -1725,6 +1725,12 @@ P.unitframe = {
 				{r = .17, g = .63, b = .33},
 				{r = 0.05, g = 0.57, b = 0.23}
 			},
+			SHAMAN = {
+				{r = .58, g = .23, b = .10},
+				{r = .23, g = .45, b = .13},
+				{r = .19, g = .48, b = .60},
+				{r = .42, g = .18, b = .74},
+			},
 			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
 		frameGlow = {
@@ -2186,6 +2192,7 @@ P.unitframe.units.pet.debuffs.numrows = 1
 P.unitframe.units.pet.debuffs.perrow = 5
 P.unitframe.units.pet.debuffs.priority = 'Blacklist,Personal,Boss,RaidDebuffs'
 P.unitframe.units.pet.healPrediction.enable = true
+P.unitframe.units.pet.health.colorHappiness = true
 P.unitframe.units.pet.infoPanel.height = 12
 P.unitframe.units.pet.name.text_format = '[classcolor][name:medium]'
 

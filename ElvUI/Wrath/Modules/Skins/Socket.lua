@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local format, unpack = format, unpack
+local unpack = unpack
 
 local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes

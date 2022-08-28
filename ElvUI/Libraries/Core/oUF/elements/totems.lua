@@ -74,7 +74,7 @@ end
 local function TotemOnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 
-	if self.elapsed >= .01 then
+	if (self.elapsed >= .01) then
 		self.elapsed = 0
 
 		local _, _, startTime, expiration = GetTotemInfo(self:GetID())
@@ -149,13 +149,19 @@ local function Path(self, ...)
 end
 
 local function Update(self, event)
-	for i = 1, #self.Totems do
+	local element = self.Totems
+
+	for i = 1, #element do
 		Path(self, event, i)
+	end
+
+	if(element.PostUpdateColor) then
+		element:PostUpdateColor()
 	end
 end
 
 local function ForceUpdate(element)
-	return Update(element.__owner, 'ForceUpdate')
+	Update(element.__owner, 'ForceUpdate')
 end
 
 local function Enable(self)

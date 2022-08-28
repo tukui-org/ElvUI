@@ -10,29 +10,108 @@ local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 -- GLOBALS: ElvDB
 
 local Profit, Spent, Ticker = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Character Data: Hold Shift + Right Click"], '|r')
 
-local CURRENCY = CURRENCY
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local CURRENCY = CURRENCY
+
+--Retail
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
-local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+--Wrath
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
-local menuList = {}
+
+local menuList, myGold = {}, {}
+local totalGold, totalHorde, totalAlliance = 0, 0, 0
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 local function sortFunction(a, b)
 	return a.amount > b.amount
 end
 
-local function OnEvent(self)
+local function deleteCharacter(self, realm, name)
+	ElvDB.gold[realm][name] = nil
+	ElvDB.class[realm][name] = nil
+	ElvDB.faction[realm][name] = nil
+
+	DT:ForceUpdate_DataText('Gold')
+end
+
+local function updateTotal(faction, change)
+	if faction == 'Alliance' then
+		totalAlliance = totalAlliance + change
+	elseif faction == 'Horde' then
+		totalHorde = totalHorde + change
+	end
+
+	totalGold = totalGold + change
+end
+
+local function updateGold(self, updateAll, goldChange)
+	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
+	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
+
+	if updateAll then
+		wipe(myGold)
+		wipe(menuList)
+
+		totalGold, totalHorde, totalAlliance = 0, 0, 0
+
+		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
+
+		for realm in pairs(ElvDB.serverID[E.serverID]) do
+			for name in pairs(ElvDB.gold[realm]) do
+				local faction = ElvDB.faction[realm][name]
+				local gold = ElvDB.gold[realm][name]
+
+				if gold then
+					local color = E:ClassColor(ElvDB.class[realm][name]) or PRIEST_COLOR
+
+					tinsert(myGold, {
+							name = name,
+							realm = realm,
+							amount = gold,
+							amountText = E:FormatMoney(gold, style, textOnly),
+							faction = faction or '',
+							r = color.r, g = color.g, b = color.b,
+					})
+
+					tinsert(menuList, {
+						text = format('%s - %s', name, realm),
+						notCheckable = true,
+						func = function() deleteCharacter(self, realm, name) end
+					})
+
+					updateTotal(faction, gold)
+				end
+			end
+		end
+	else
+		for _, info in ipairs(myGold) do
+			if info.name == E.myname and info.realm == E.myrealm then
+				info.amount = ElvDB.gold[E.myrealm][E.myname]
+				info.amountText = E:FormatMoney(ElvDB.gold[E.myrealm][E.myname], style, textOnly)
+
+				break
+			end
+		end
+
+		if goldChange then
+			updateTotal(E.myfaction, goldChange)
+		end
+	end
+end
+
+local function OnEvent(self, event)
 	if not IsLoggedIn() then return end
 
 	if E.Retail and not Ticker then
@@ -40,22 +119,24 @@ local function OnEvent(self)
 		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic_UpdateMarketPrice)
 	end
 
-	ElvDB = ElvDB or {}
+	if event == 'ELVUI_FORCE_UPDATE' then
+		ElvDB = ElvDB or {}
 
-	ElvDB.gold = ElvDB.gold or {}
-	ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
+		ElvDB.gold = ElvDB.gold or {}
+		ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
 
-	ElvDB.class = ElvDB.class or {}
-	ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
-	ElvDB.class[E.myrealm][E.myname] = E.myclass
+		ElvDB.class = ElvDB.class or {}
+		ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
+		ElvDB.class[E.myrealm][E.myname] = E.myclass
 
-	ElvDB.faction = ElvDB.faction or {}
-	ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
-	ElvDB.faction[E.myrealm][E.myname] = E.myfaction
+		ElvDB.faction = ElvDB.faction or {}
+		ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
+		ElvDB.faction[E.myrealm][E.myname] = E.myfaction
 
-	ElvDB.serverID = ElvDB.serverID or {}
-	ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
-	ElvDB.serverID[E.serverID][E.myrealm] = true
+		ElvDB.serverID = ElvDB.serverID or {}
+		ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
+		ElvDB.serverID[E.serverID][E.myrealm] = true
+	end
 
 	--prevent an error possibly from really old profiles
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
@@ -75,37 +156,14 @@ local function OnEvent(self)
 		Profit = Profit + Change
 	end
 
-	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
-end
+	updateGold(self, event == 'ELVUI_FORCE_UPDATE', Change)
 
-local function deleteCharacter(self, realm, name)
-	ElvDB.gold[realm][name] = nil
-	ElvDB.class[realm][name] = nil
-	ElvDB.faction[realm][name] = nil
-
-	if name == E.myname and realm == E.myrealm then
-		OnEvent(self)
-	end
+	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD', not E.global.datatexts.settings.Gold.goldCoins))
 end
 
 local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
-			wipe(menuList)
-			tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
-
-			for realm in pairs(ElvDB.serverID[E.serverID]) do
-				for name in pairs(ElvDB.gold[realm]) do
-					tinsert(menuList, {
-						text = format('%s - %s', name, realm),
-						notCheckable = true,
-						func = function()
-							deleteCharacter(self, realm, name)
-						end
-					})
-				end
-			end
-
 			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 		elseif IsControlKeyDown() then
@@ -117,7 +175,6 @@ local function Click(self, btn)
 	end
 end
 
-local myGold = {}
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
@@ -125,6 +182,7 @@ local function OnEnter()
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
+
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
 	if Profit < Spent then
@@ -132,37 +190,9 @@ local function OnEnter()
 	elseif (Profit-Spent)>0 then
 		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
 	end
+
 	DT.tooltip:AddLine(' ')
-
-	local totalGold, totalHorde, totalAlliance = 0, 0, 0
 	DT.tooltip:AddLine(L["Character: "])
-
-	wipe(myGold)
-	for realm in pairs(ElvDB.serverID[E.serverID]) do
-		for k, _ in pairs(ElvDB.gold[realm]) do
-			if ElvDB.gold[realm][k] then
-				local color = E:ClassColor(ElvDB.class[realm][k]) or PRIEST_COLOR
-				tinsert(myGold,
-					{
-						name = k,
-						realm = realm,
-						amount = ElvDB.gold[realm][k],
-						amountText = E:FormatMoney(ElvDB.gold[realm][k], style, textOnly),
-						faction = ElvDB.faction[realm][k] or '',
-						r = color.r, g = color.g, b = color.b,
-					}
-				)
-			end
-
-			if ElvDB.faction[realm][k] == 'Alliance' then
-				totalAlliance = totalAlliance+ElvDB.gold[realm][k]
-			elseif ElvDB.faction[realm][k] == 'Horde' then
-				totalHorde = totalHorde+ElvDB.gold[realm][k]
-			end
-
-			totalGold = totalGold+ElvDB.gold[realm][k]
-		end
-	end
 
 	sort(myGold, sortFunction)
 
@@ -190,17 +220,18 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		for i = 1, _G.MAX_WATCHED_TOKENS do
-			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-			if info then
-				if i == 1 then
-					DT.tooltip:AddLine(' ')
-					DT.tooltip:AddLine(CURRENCY)
-				end
-				if info.quantity then
-					DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
-				end
+			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or E.Wrath and {}
+			if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i) end
+			if not (info and info.name) then break end
+
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+			end
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
 		end
 	end

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local CreateFrame = CreateFrame
 
 function S:SkinArena()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.arena) then return end

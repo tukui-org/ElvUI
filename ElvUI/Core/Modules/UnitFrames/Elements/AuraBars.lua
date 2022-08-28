@@ -3,14 +3,13 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local wipe = wipe
 local ipairs = ipairs
 local unpack = unpack
 local strfind = strfind
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(bar)
-	bar.auraInfo = {}
-
 	bar:CreateBackdrop(nil, nil, nil, nil, true)
 	bar:SetScript('OnMouseDown', UF.Aura_OnClick)
 	bar:Point('LEFT')
@@ -45,6 +44,12 @@ end
 function UF:AuraBars_UpdateBar(bar)
 	local bars = bar:GetParent()
 	bar.db = bars.db
+
+	if bar.auraInfo then
+		wipe(bar.auraInfo)
+	else
+		bar.auraInfo = {}
+	end
 
 	bar:SetReverseFill(bars.reverseFill)
 	bar.spark:ClearAllPoints()

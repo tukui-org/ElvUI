@@ -1,6 +1,6 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='Currencies.lua'/>
-	<Script file='Difficulty.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Ammo.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Avoidance.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\HealPower.lua'/>

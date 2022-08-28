@@ -63,6 +63,7 @@ function S:Blizzard_LookingForGroupUI()
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonTank.CheckButton,
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonHealer.CheckButton,
 		_G.LFGListingFrameSoloRoleButtonsRoleButtonDPS.CheckButton,
+		_G.LFGListingFrameNewPlayerFriendlyButton.CheckButton,
 	}
 
 	for _, checkbox in pairs(checkBoxes) do

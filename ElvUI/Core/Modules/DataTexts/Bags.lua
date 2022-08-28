@@ -5,6 +5,7 @@ local format = format
 local strjoin = strjoin
 local GetBagName = GetBagName
 local ToggleAllBags = ToggleAllBags
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -76,18 +77,19 @@ local function OnEnter()
 		end
 	end
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		for i = 1, MAX_WATCHED_TOKENS do
-			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-			if info then
-				if i == 1 then
-					DT.tooltip:AddLine(' ')
-					DT.tooltip:AddLine(CURRENCY)
-					DT.tooltip:AddLine(' ')
-				end
-				if info.quantity then
-					DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, info.name), info.quantity, 1, 1, 1, 1, 1, 1)
-				end
+			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or E.Wrath and {}
+			if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i) end
+			if not (info and info.name) then break end
+
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+				DT.tooltip:AddLine(' ')
+			end
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, info.name), info.quantity, 1, 1, 1, 1, 1, 1)
 			end
 		end
 	end

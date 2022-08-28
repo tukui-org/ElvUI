@@ -70,7 +70,7 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
-		local classColor = (isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'CHI' and colors.MONK)
+		local classColor = (isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'CHI' and colors.MONK) or (powerType == 'Totems' and colors.SHAMAN)
 		for i, bar in ipairs(self) do
 			local color = (isRunes and classColor[bar.runeType or 0]) or (classColor and classColor[i]) or colors[E.myclass] or fallback
 			UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
@@ -595,26 +595,21 @@ end
 -----------------------------------------------------------
 -- Totems
 -----------------------------------------------------------
-local TotemColors = {
-	[1] = {.58,.23,.10},
-	[2] = {.23,.45,.13},
-	[3] = {.19,.48,.60},
-	[4] = {.42,.18,.74},
-}
+
+function UF:Totems_PostUpdateColor()
+	UF.ClassPower_UpdateColor(self, 'Totems')
+end
 
 function UF:Construct_Totems(frame)
 	local totems = CreateFrame('Frame', nil, frame)
 	totems:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
-	totems.Destroy = {}
 
 	for i = 1, 4 do
-		local r, g, b = unpack(TotemColors[i])
 		local totem = CreateFrame('StatusBar', frame:GetName()..'Totem'..i, totems)
 		totem:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 		totem.backdrop:SetParent(totems)
 
 		totem:SetStatusBarTexture(E.media.blankTex)
-		totem:SetStatusBarColor(r, g, b)
 
 		UF.statusbars[totem] = true
 
@@ -624,12 +619,13 @@ function UF:Construct_Totems(frame)
 		totem.bg = totem:CreateTexture(nil, 'BORDER')
 		totem.bg:SetTexture(E.media.blankTex)
 		totem.bg:SetInside(totem, 0, 0)
-		totem.bg.multiplier = 0.3
-
-		totem.bg:SetVertexColor(r * .3, g * .3, b * .3)
 
 		totems[i] = totem
 	end
+
+	totems.PostUpdateColor = UF.Totems_PostUpdateColor
+
+	UF.Totems_PostUpdateColor(totems)
 
 	frame.MAX_CLASS_BAR = 4
 	frame.ClassBar = 'Totems'

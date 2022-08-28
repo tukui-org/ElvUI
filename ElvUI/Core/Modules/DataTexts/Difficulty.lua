@@ -18,17 +18,17 @@ local RightClickMenu, DiffLabel = {
 	{ text = _G.DUNGEON_DIFFICULTY, isTitle = true, notCheckable = true },
 	{ text = _G.PLAYER_DIFFICULTY1, checked = function() return GetDungeonDifficultyID() == 1 end, func = function() SetDungeonDifficultyID(1) end },
 	{ text = _G.PLAYER_DIFFICULTY2, checked = function() return GetDungeonDifficultyID() == 2 end, func = function() SetDungeonDifficultyID(2) end },
-	{ text = _G.PLAYER_DIFFICULTY6, checked = function() return GetDungeonDifficultyID() == 23 end, func = function() SetDungeonDifficultyID(23) end },
 	{ text = '', isTitle = true, notCheckable = true },
 	{ text = _G.RAID_DIFFICULTY, isTitle = true, notCheckable = true},
 	{ text = _G.PLAYER_DIFFICULTY1, checked = function() return GetRaidDifficultyID() == 14 end, func = function() SetRaidDifficultyID(14) end },
 	{ text = _G.PLAYER_DIFFICULTY2, checked = function() return GetRaidDifficultyID() == 15 end, func = function() SetRaidDifficultyID(15) end },
-	{ text = _G.PLAYER_DIFFICULTY6, checked = function() return GetRaidDifficultyID() == 16 end, func = function() SetRaidDifficultyID(16) end },
 	{ text = '', isTitle = true, notCheckable = true },
 	{ text = _G.RESET_INSTANCES, notCheckable = true, func = function() ResetInstances() end},
 }, {}
 
 if E.Retail then
+	tinsert(RightClickMenu, 4, { text = _G.PLAYER_DIFFICULTY6, checked = function() return GetDungeonDifficultyID() == 23 end, func = function() SetDungeonDifficultyID(23) end })
+	tinsert(RightClickMenu, 9, { text = _G.PLAYER_DIFFICULTY6, checked = function() return GetRaidDifficultyID() == 16 end, func = function() SetRaidDifficultyID(16) end })
 	tinsert(RightClickMenu, 10, { text = '', isTitle = true, notCheckable = true })
 	tinsert(RightClickMenu, 11, { text = _G.UNIT_FRAME_DROPDOWN_SUBSECTION_TITLE_LEGACY_RAID, isTitle = true, notCheckable = true })
 	tinsert(RightClickMenu, 12, { text = _G.RAID_DIFFICULTY1, checked = function() return GetLegacyRaidDifficultyID() == 3 end, func = function() SetLegacyRaidDifficultyID(3) end })

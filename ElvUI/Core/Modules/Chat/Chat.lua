@@ -383,7 +383,7 @@ do --this can save some main file locals
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid
+		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid H
 		z['Luckypriest-LaughingSkull']	= ElvBlue -- Priest
 		z['Luckymonkas-LaughingSkull']	= ElvBlue -- Monk
 		z['Luckydk-LaughingSkull']		= ElvBlue -- DK
@@ -395,6 +395,7 @@ do --this can save some main file locals
 		z['Luckywl-LaughingSkull']		= ElvBlue -- Warlock
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
+		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
@@ -970,7 +971,7 @@ end
 function CH:CopyChat(frame)
 	if not _G.CopyChatFrame:IsShown() then
 		local _, fontSize = _G.FCF_GetChatWindowInfo(frame:GetID())
-		if fontSize < 10 then fontSize = 12 end
+
 		_G.FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		_G.CopyChatFrame:Show()
 		local lineCt = CH:GetLines(frame)
@@ -2041,7 +2042,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				showLink = nil
 
 				-- fix blizzard formatting errors from localization strings
-				arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?) [broken since BFA?]
+				-- arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?) [broken since BFA?]
 				arg1 = gsub(arg1, '(%d%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
 				arg1 = gsub(arg1, '(%d%%)$', '%1%%') -- escape percentages on the end
 			else

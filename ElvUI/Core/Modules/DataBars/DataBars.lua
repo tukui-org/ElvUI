@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs = pairs, ipairs
+
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat
@@ -122,8 +123,7 @@ function DB:UpdateAll()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
 
-		for i = 1, bar.holder:GetNumChildren() do
-			local child = select(i, bar.holder:GetChildren())
+		for _, child in ipairs({bar.holder:GetChildren()}) do
 			if child:IsObjectType('StatusBar') then
 				child:SetStatusBarTexture(texture)
 				child:SetOrientation(orientation)

@@ -199,8 +199,6 @@ function UF:Aura_OnClick()
 end
 
 function UF:Construct_AuraIcon(button)
-	button.auraInfo = {}
-
 	button:SetTemplate(nil, nil, nil, nil, true)
 
 	button.cd:SetReverse(true)
@@ -238,6 +236,12 @@ function UF:UpdateAuraSettings(button)
 		button.count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
 		button.count:Point(point, db.countXOffset, db.countYOffset)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	end
+
+	if button.auraInfo then
+		wipe(button.auraInfo)
+	else
+		button.auraInfo = {}
 	end
 
 	button.needsIconTrim = true
