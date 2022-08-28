@@ -1439,6 +1439,7 @@ local UF_Power = {
 	yOffset = 0,
 	displayAltPower = false,
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	useAtlas = false,
 }
 
 local UF_PvPClassificationIndicator = {
