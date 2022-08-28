@@ -56,15 +56,6 @@ lib.mixin = lib.mixin or {}
 lib.upgrades = lib.upgrades or {}
 lib.currentSpec = lib.currentSpec or 0
 
-local _, _, classId = UnitClass("player")
-local numSpecs = 2
-
-if Wrath then
-	lib.talentGroup = lib.talentGroup or GetActiveTalentGroup()
-else
-	numSpecs = GetNumSpecializationsForClassID(classId)
-end
-
 -- ----------------------------------------------------------------------------
 -- Locals
 -- ----------------------------------------------------------------------------
@@ -78,6 +69,15 @@ local upgrades = lib.upgrades
 local AceDB3 = LibStub('AceDB-3.0', true)
 local AceDBOptions3 = LibStub('AceDBOptions-3.0', true)
 local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
+
+local _, _, classId = UnitClass("player")
+local numSpecs = 2
+
+if Wrath then
+	lib.talentGroup = lib.talentGroup or GetActiveTalentGroup()
+else
+	numSpecs = GetNumSpecializationsForClassID(classId)
+end
 
 -- ----------------------------------------------------------------------------
 -- Localization
