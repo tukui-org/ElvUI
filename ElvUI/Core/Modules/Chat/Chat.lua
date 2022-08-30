@@ -314,9 +314,6 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy
 		z['Simpy-Myzrael']			= itsSimpy -- Warlock
-		-- Luckyone Classic Era
-		z['Luckyone-Shazzrah']		= ElvGreen -- Hunter
-		z['Luckydruid-Shazzrah']	= ElvGreen -- Druid
 		-- Luckyone Season of Mastery
 		z['Luckyone-Dreadnaught']	= ElvGreen -- Hunter
 	elseif E.Wrath then
@@ -332,6 +329,8 @@ do --this can save some main file locals
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
 		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
+		z['Luckyone-Giantstalker']	= ElvBlue -- Druid
+		z['Luckyone-Thekal']		= ElvBlue -- Druid
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
