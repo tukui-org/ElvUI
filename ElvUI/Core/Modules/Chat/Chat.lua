@@ -319,7 +319,7 @@ do --this can save some main file locals
 		z['Luckydruid-Shazzrah']	= ElvGreen -- Druid
 		-- Luckyone Season of Mastery
 		z['Luckyone-Dreadnaught']	= ElvGreen -- Hunter
-	elseif E.TBC then
+	elseif E.Wrath then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
@@ -332,7 +332,6 @@ do --this can save some main file locals
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
 		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
-	elseif E.Wrath then
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
