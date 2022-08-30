@@ -282,7 +282,6 @@ function S:Blizzard_Communities()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderLeft:Hide()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderBottomLeft:Hide()
 
-	-- ToDo: Fix the Tabs
 	TicketManager.InviteManager.ListScrollFrame:StripTextures()
 
 	TicketManager:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)

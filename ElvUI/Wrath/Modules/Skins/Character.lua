@@ -343,10 +343,9 @@ function S:CharacterFrame()
 	GearManager:SetTemplate('Transparent')
 	GearManager:Point('TOPLEFT', _G.PaperDollFrame, 'TOPRIGHT', -30, -12)
 
-	-- TODO: Wrath (Skin the ToggleButton properly)
 	local GearManagerToggleButton = _G.GearManagerToggleButton
 	local region, texture
-	for i=1, GearManagerToggleButton:GetNumRegions() do
+	for i = 1, GearManagerToggleButton:GetNumRegions() do
 		region = select(i, GearManagerToggleButton:GetRegions())
 		if region and region:IsObjectType('Texture') then
 			texture = region:GetTexture()
