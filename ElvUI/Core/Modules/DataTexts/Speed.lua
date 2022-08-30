@@ -18,8 +18,6 @@ local STAT_SPEED = STAT_SPEED
 local displayString, lastPanel = ''
 
 local function OnEnter()
-	if not E.Retail then return end
-
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddDoubleLine(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_SPEED)..' '..format('%.2F%%', GetSpeed())..FONT_COLOR_CODE_CLOSE, nil, 1, 1, 1)
 	DT.tooltip:AddLine(format(CR_SPEED_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_SPEED)), GetCombatRatingBonus(CR_SPEED)), nil, nil, nil, true)
@@ -27,15 +25,11 @@ local function OnEnter()
 end
 
 local function OnEvent(self)
-	if E.Retail then
-		local speed = GetSpeed()
-		if E.global.datatexts.settings.Speed.NoLabel then
-			self.text:SetFormattedText(displayString, speed)
-		else
-			self.text:SetFormattedText(displayString, E.global.datatexts.settings.Speed.Label ~= '' and E.global.datatexts.settings.Speed.Label or STAT_SPEED, speed)
-		end
+	local speed = GetSpeed()
+	if E.global.datatexts.settings.Speed.NoLabel then
+		self.text:SetFormattedText(displayString, speed)
 	else
-		self.text:SetText('N/A')
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Speed.Label ~= '' and E.global.datatexts.settings.Speed.Label or STAT_SPEED, speed)
 	end
 
 	lastPanel = self
