@@ -27,7 +27,6 @@
 	<Script file='MovementSpeed.lua'/>
 	<Script file='PrimaryStat.lua'/>
 	<Script file='Reputation.lua'/>
-	<Script file='Speed.lua'/>
 	<Script file='Spirit.lua'/>
 	<Script file='Stamina.lua'/>
 	<Script file='Strength.lua'/>
