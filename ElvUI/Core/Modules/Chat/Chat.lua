@@ -333,28 +333,6 @@ do --this can save some main file locals
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
 		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
 	elseif E.Wrath then
-		-- Simpy
-		z['Cutepally-Myzrael']			= itsSimpy -- Paladin
-		z['Mondoldrice-ClassicBetaPvE']	= itsSimpy -- Beta (delete for me later, if i dont)
-		-- Luckyone Beta testing TODO: Wrath (Remove later)
-		z['Luckyone-ClassicBetaPvE']	= ElvBlue -- Beta
-		z['Luckydruid-ClassicBetaPvE']	= ElvBlue -- Beta
-		z['Luckyshaman-ClassicBetaPvE'] = ElvBlue -- Beta
-		z['Luckyhunter-ClassicBetaPvE'] = ElvBlue -- Beta
-		z['Luckydk-ClassicBetaPvE']		= ElvBlue -- Beta
-		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
-		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
-		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
-		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
-		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
-		z['Luckyd-Golemagg']		= ElvBlue -- Druid
-		z['Luckyp-Golemagg']		= ElvBlue -- Priest
-		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
-		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
-		--Merathilis
-		z['Merathilis-ClassicBetaPvE']	= ElvOrange	-- [Alliance] Druid
-		z['Merathîlis-ClassicBetaPvE']	= ElvOrange	-- [Horde] Druid
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
