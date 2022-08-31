@@ -134,15 +134,14 @@ function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthM
 	local useWidthMult = widthMult > 1
 	local useHeightMult = heightMult > 1
 	if useWidthMult or useHeightMult then
-		local dblBtnSpacing = buttonSpacing * 2
 		local oldWidth, oldHeight = bar.backdrop:GetSize()
 		if useHeightMult then
-			local offset = ((oldHeight - backdropSpacing) * (heightMult - 1)) + dblBtnSpacing
+			local offset = ((oldHeight - backdropSpacing + buttonSpacing) * (heightMult - 1)) - (backdropSpacing * (heightMult - 2))
 			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
 			bar.backdrop:Point(anchorPoint, lastShownButton, anchorPoint, 0, anchorUp and offset or -offset)
 		end
 		if useWidthMult then
-			local offset = ((oldWidth - backdropSpacing) * (widthMult - 1)) + dblBtnSpacing
+			local offset = ((oldWidth - backdropSpacing + buttonSpacing) * (widthMult - 1)) - (backdropSpacing * (widthMult - 2))
 			bar.backdrop:Point(horizontal, anchorRowButton, horizontal, anchorLeft and -offset or offset, 0)
 		end
 	end
@@ -1225,10 +1224,10 @@ function AB:FixKeybindText(button)
 			text = gsub(text, 'INSERT', L["KEY_INSERT"])
 			text = gsub(text, 'HOME', L["KEY_HOME"])
 			text = gsub(text, 'DELETE', L["KEY_DELETE"])
-			text = gsub(text, 'NMULTIPLY', '*')
-			text = gsub(text, 'NMINUS', 'N-')
-			text = gsub(text, 'NPLUS', 'N+')
-			text = gsub(text, 'NEQUALS', 'N=')
+			text = gsub(text, 'NMULTIPLY', L["KEY_NMULTIPLY"])
+			text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
+			text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
+			text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
 			hotkey.SetVertexColor = E.noop
 		end
 

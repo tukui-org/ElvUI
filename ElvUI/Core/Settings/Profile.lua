@@ -697,14 +697,14 @@ P.nameplates = {
 			offTankColorBadTransition = {r = 0.71, g = 0.43, b = 0.27},
 		},
 		power = {
-			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
-			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
-			FURY = {r = 0.89, g = 0.49, b = 0.15, atlas = '_DemonHunter-DemonicFuryBar'},
-			INSANITY = {r = 0.55, g = 0.14, b = 0.69, atlas = '_Priest-InsanityBar'},
-			LUNAR_POWER = {r = 0.90, g = 0.90, b = 0.30, atlas = '_Druid-LunarBar'},
+			ENERGY = {r = 1, g = 0.96, b = 0.41},
+			FOCUS = {r = 1, g = 0.50, b = 0.25},
+			FURY = {r = 0.788, g = 0.259, b = 0.992, atlas = '_DemonHunter-DemonicFuryBar'},
+			INSANITY = {r = 0.4, g = 0, b = 0.8, atlas = '_Priest-InsanityBar'},
+			LUNAR_POWER = {r = 0.3, g = 0.52, b = 0.9, atlas = '_Druid-LunarBar'},
 			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
-			PAIN = {r = 0.88, g = 0.88, b = 0.88, atlas = '_DemonHunter-DemonicPainBar'},
+			PAIN = {r = 1, g = 0.61, b = 0, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
 			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
@@ -1439,6 +1439,7 @@ local UF_Power = {
 	yOffset = 0,
 	displayAltPower = false,
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	useAtlas = false,
 }
 
 local UF_PvPClassificationIndicator = {
@@ -1643,16 +1644,16 @@ P.unitframe = {
 		auraBarBuff = { r = .31, g = .31, b = .31 },
 		auraBarDebuff = {r = 0.8, g = 0.1, b = 0.1},
 		power = {
+			ENERGY = {r = 1, g = 0.96, b = 0.41},
+			FOCUS = {r = 1, g = 0.50, b = 0.25},
+			FURY = {r = 0.788, g = 0.259, b = 0.992, atlas = '_DemonHunter-DemonicFuryBar'},
+			INSANITY = {r = 0.4, g = 0, b = 0.8, atlas = '_Priest-InsanityBar'},
+			LUNAR_POWER = {r = 0.3, g = 0.52, b = 0.9, atlas = '_Druid-LunarBar'},
+			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
+			PAIN = {r = 1, g = 0.61, b = 0, atlas = '_DemonHunter-DemonicPainBar'},
 			RAGE = {r = 0.78, g = 0.25, b = 0.25},
-			FOCUS = {r = 0.71, g = 0.43, b = 0.27},
-			ENERGY = {r = 0.65, g = 0.63, b = 0.35},
 			RUNIC_POWER = {r = 0, g = 0.82, b = 1},
-			PAIN = {r = 0.88, g = 0.88, b = 0.88},
-			FURY = {r = 0.89, g = 0.49, b = 0.15},
-			LUNAR_POWER = {r = 0.90, g = 0.90, b = 0.30},
-			INSANITY = {r = 0.55, g = 0.14, b = 0.69},
-			MAELSTROM = {r = 0, g = 0.5, b = 1},
 			ALT_POWER = {r = 0.2, g = 0.4, b = 0.8},
 		},
 		happiness = {
@@ -2192,6 +2193,7 @@ P.unitframe.units.pet.debuffs.numrows = 1
 P.unitframe.units.pet.debuffs.perrow = 5
 P.unitframe.units.pet.debuffs.priority = 'Blacklist,Personal,Boss,RaidDebuffs'
 P.unitframe.units.pet.healPrediction.enable = true
+P.unitframe.units.pet.health.colorHappiness = true
 P.unitframe.units.pet.infoPanel.height = 12
 P.unitframe.units.pet.name.text_format = '[classcolor][name:medium]'
 
@@ -2634,6 +2636,7 @@ P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 
 if E.Wrath then
 	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7; [bonusbar:2] 8;'
+	P.actionbar.bar1.paging.WARLOCK = '[form:1] 7;'
 else
 	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'
 end

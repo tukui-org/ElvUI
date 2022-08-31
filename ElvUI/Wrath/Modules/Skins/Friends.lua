@@ -416,6 +416,8 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildMemberGroupInviteButton)
 	_G.GuildMemberGroupInviteButton:Point('BOTTOMRIGHT', -3, 3)
 
+	-- Temp unskinned due to Taints
+	--[[
 	S:HandleNextPrevButton(_G.GuildFramePromoteButton, 'up')
 	_G.GuildFramePromoteButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.GuildFramePromoteButton:SetPoint('TOPLEFT', _G.GuildMemberDetailFrame, 'TOPLEFT', 155, -68)
@@ -423,6 +425,7 @@ function S:FriendsFrame()
 	S:HandleNextPrevButton(_G.GuildFrameDemoteButton)
 	_G.GuildFrameDemoteButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.GuildFrameDemoteButton:Point('LEFT', _G.GuildFramePromoteButton, 'RIGHT', 2, 0)
+	]]
 
 	_G.GuildMemberNoteBackground:StripTextures()
 	_G.GuildMemberNoteBackground:CreateBackdrop()

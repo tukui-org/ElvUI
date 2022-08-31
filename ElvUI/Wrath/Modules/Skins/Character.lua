@@ -343,7 +343,6 @@ function S:CharacterFrame()
 	GearManager:SetTemplate('Transparent')
 	GearManager:Point('TOPLEFT', _G.PaperDollFrame, 'TOPRIGHT', -30, -12)
 
-	-- TODO: Wrath (Skin the ToggleButton properly)
 	local GearManagerToggleButton = _G.GearManagerToggleButton
 	GearManagerToggleButton:Point('TOPRIGHT', _G.PaperDollItemsFrame, 'TOPRIGHT', -37, -40)
 

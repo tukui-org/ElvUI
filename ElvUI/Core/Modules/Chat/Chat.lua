@@ -314,12 +314,9 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy
 		z['Simpy-Myzrael']			= itsSimpy -- Warlock
-		-- Luckyone Classic Era
-		z['Luckyone-Shazzrah']		= ElvGreen -- Hunter
-		z['Luckydruid-Shazzrah']	= ElvGreen -- Druid
 		-- Luckyone Season of Mastery
 		z['Luckyone-Dreadnaught']	= ElvGreen -- Hunter
-	elseif E.TBC then
+	elseif E.Wrath then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		-- Luckyone
@@ -332,29 +329,8 @@ do --this can save some main file locals
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
 		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
-	elseif E.Wrath then
-		-- Simpy
-		z['Cutepally-Myzrael']			= itsSimpy -- Paladin
-		z['Mondoldrice-ClassicBetaPvE']	= itsSimpy -- Beta (delete for me later, if i dont)
-		-- Luckyone Beta testing TODO: Wrath (Remove later)
-		z['Luckyone-ClassicBetaPvE']	= ElvBlue -- Beta
-		z['Luckydruid-ClassicBetaPvE']	= ElvBlue -- Beta
-		z['Luckyshaman-ClassicBetaPvE'] = ElvBlue -- Beta
-		z['Luckyhunter-ClassicBetaPvE'] = ElvBlue -- Beta
-		z['Luckydk-ClassicBetaPvE']		= ElvBlue -- Beta
-		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
-		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
-		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
-		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
-		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
-		z['Luckyd-Golemagg']		= ElvBlue -- Druid
-		z['Luckyp-Golemagg']		= ElvBlue -- Priest
-		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
-		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
-		--Merathilis
-		z['Merathilis-ClassicBetaPvE']	= ElvOrange	-- [Alliance] Druid
-		z['Merathîlis-ClassicBetaPvE']	= ElvOrange	-- [Horde] Druid
+		z['Luckyone-Giantstalker']	= ElvBlue -- Druid
+		z['Luckyone-Thekal']		= ElvBlue -- Druid
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
@@ -383,7 +359,7 @@ do --this can save some main file locals
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid
+		z['Luckyone-LaughingSkull']		= ElvBlue -- Druid H
 		z['Luckypriest-LaughingSkull']	= ElvBlue -- Priest
 		z['Luckymonkas-LaughingSkull']	= ElvBlue -- Monk
 		z['Luckydk-LaughingSkull']		= ElvBlue -- DK
@@ -395,6 +371,7 @@ do --this can save some main file locals
 		z['Luckywl-LaughingSkull']		= ElvBlue -- Warlock
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
+		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
@@ -970,7 +947,7 @@ end
 function CH:CopyChat(frame)
 	if not _G.CopyChatFrame:IsShown() then
 		local _, fontSize = _G.FCF_GetChatWindowInfo(frame:GetID())
-		if fontSize < 10 then fontSize = 12 end
+
 		_G.FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		_G.CopyChatFrame:Show()
 		local lineCt = CH:GetLines(frame)
@@ -2041,7 +2018,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				showLink = nil
 
 				-- fix blizzard formatting errors from localization strings
-				arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?) [broken since BFA?]
+				-- arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?) [broken since BFA?]
 				arg1 = gsub(arg1, '(%d%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
 				arg1 = gsub(arg1, '(%d%%)$', '%1%%') -- escape percentages on the end
 			else

@@ -31,15 +31,13 @@ local SLOT_EMPTY_TCOORDS = {
 
 function AB:MultiCastFlyoutFrameOpenButton_Show(button, which, parent)
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
-	button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	button:ClearAllPoints()
 	if E.db.general.totems.flyoutDirection == 'UP' then
 		button:Point('BOTTOM', parent, 'TOP')
-		button.icon:SetRotation(0)
-	elseif E.db.general.totems.flyoutDirection == 'DOWN' then
+	else
 		button:Point('TOP', parent, 'BOTTOM')
-		button.icon:SetRotation(3.14)
 	end
 end
 
@@ -91,7 +89,6 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:SetTemplate()
 			button:StyleButton()
 
-			button:SetFrameStrata('MEDIUM')
 			button.icon:SetDrawLayer('ARTWORK')
 			button.icon:SetInside(button)
 
@@ -110,17 +107,9 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:ClearAllPoints()
 
 			if E.db.general.totems.flyoutDirection == 'UP' then
-				if i == 1 then
-					button:Point('BOTTOM', parent, 'TOP', 0, E.db.general.totems.flyoutSpacing)
-				else
-					button:Point('BOTTOM', frame.buttons[i - 1], 'TOP', 0, E.db.general.totems.flyoutSpacing)
-				end
-			elseif E.db.general.totems.flyoutDirection == 'DOWN' then
-				if i == 1 then
-					button:Point('TOP', parent, 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
-				else
-					button:Point('TOP', frame.buttons[i - 1], 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
-				end
+				button:Point('BOTTOM', i == 1 and parent or frame.buttons[i - 1], 'TOP', 0, E.db.general.totems.flyoutSpacing)
+			else
+				button:Point('TOP', i == 1 and parent or frame.buttons[i - 1], 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
 			end
 
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -137,20 +126,16 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	frame.buttons[1]:SetBackdropBorderColor(color.r, color.g, color.b)
-	closeButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	closeButton:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	frame:ClearAllPoints()
 	closeButton:ClearAllPoints()
 	if E.db.general.totems.flyoutDirection == 'UP' then
 		frame:Point('BOTTOM', parent, 'TOP')
-
 		closeButton:Point('TOP', frame, 'TOP')
-		closeButton.icon:SetRotation(3.14)
-	elseif E.db.general.totems.flyoutDirection == 'DOWN' then
+	else
 		frame:Point('TOP', parent, 'BOTTOM')
-
 		closeButton:Point('BOTTOM', frame, 'BOTTOM')
-		closeButton.icon:SetRotation(0)
 	end
 
 	frame:Height(totalHeight + closeButton:GetHeight())
@@ -170,15 +155,11 @@ function AB:TotemButton_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
-	if bar.mouseover then
-		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), E.db.general.totems.alpha)
-	end
+	return bar.mouseover and E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), E.db.general.totems.alpha)
 end
 
 function AB:TotemBar_OnLeave()
-	if bar.mouseover then
-		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	end
+	return bar.mouseover and E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 end
 
 function AB:PositionAndSizeTotemBar()
@@ -193,7 +174,6 @@ function AB:PositionAndSizeTotemBar()
 	local buttonSpacing = E.db.general.totems.spacing
 	local size = E.db.general.totems.buttonSize
 
-	-- TODO: Wrath fix pixels
 	local mainSize = (size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
 	bar:Width(mainSize)
 	barFrame:Width(mainSize)
@@ -201,23 +181,17 @@ function AB:PositionAndSizeTotemBar()
 	barFrame:Height(size + 2)
 
 	bar.mouseover = E.db.general.totems.mouseover
-	if bar.mouseover then
-		bar:SetAlpha(0)
-	else
-		bar:SetAlpha(E.db.general.totems.alpha)
-	end
+	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
 
 	local visibility = E.db.general.totems.visibility
-	if visibility and strmatch(visibility, '[\n\r]') then
-		visibility = gsub(visibility, '[\n\r]','')
-	end
+	visibility = gsub(visibility, '[\n\r]','')
 
 	RegisterStateDriver(bar, 'visibility', visibility)
 
 	local summonButton = _G.MultiCastSummonSpellButton
 	summonButton:ClearAllPoints()
 	summonButton:Size(size)
-	summonButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2) -- TODO: Wrath
+	summonButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2)
 
 	for i = 1, numActiveSlots do
 		local button = _G['MultiCastSlotButton'..i]
@@ -293,31 +267,26 @@ function AB:CreateTotemBar()
 	barFrame.SetPoint = E.noop
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
-	closeButton:CreateBackdrop(nil, true, true)
-	closeButton.backdrop:SetPoint('TOPLEFT', 0, -(E.Border + E.Spacing))
-	closeButton.backdrop:SetPoint('BOTTOMRIGHT', 0, E.Border + E.Spacing)
-	closeButton.icon = closeButton:CreateTexture(nil, 'ARTWORK')
-	closeButton.icon:Size(16)
-	closeButton.icon:SetPoint('CENTER')
-	closeButton.icon:SetTexture(E.Media.Textures.ArrowUp)
-	closeButton.normalTexture:SetTexture('')
+	closeButton:SetTemplate()
+	closeButton.normalTexture:ClearAllPoints()
+	closeButton.normalTexture:SetPoint('CENTER')
+	closeButton.normalTexture:SetSize(16, 16)
+	closeButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
+	closeButton.normalTexture:SetTexCoord(0, 1, 0, 1)
+	closeButton.normalTexture:SetRotation(3.14)
+	closeButton.normalTexture.SetTexCoord = E.noop
 	closeButton:StyleButton()
-	closeButton.hover:SetInside(closeButton.backdrop)
-	closeButton.pushed:SetInside(closeButton.backdrop)
 	bar.buttons[closeButton] = true
 
 	local openButton = _G.MultiCastFlyoutFrameOpenButton
-	openButton:CreateBackdrop(nil, true, true)
-	openButton.backdrop:SetPoint('TOPLEFT', 0, -(E.Border + E.Spacing))
-	openButton.backdrop:SetPoint('BOTTOMRIGHT', 0, E.Border + E.Spacing)
-	openButton.icon = openButton:CreateTexture(nil, 'ARTWORK')
-	openButton.icon:Size(16)
-	openButton.icon:SetPoint('CENTER')
-	openButton.icon:SetTexture(E.Media.Textures.ArrowUp)
-	openButton.normalTexture:SetTexture('')
+	openButton:SetTemplate()
+	openButton.normalTexture:ClearAllPoints()
+	openButton.normalTexture:SetPoint('CENTER')
+	openButton.normalTexture:SetSize(16, 16)
+	openButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
+	openButton.normalTexture:SetTexCoord(0, 1, 0, 1)
+	openButton.normalTexture.SetTexCoord = E.noop
 	openButton:StyleButton()
-	openButton.hover:SetInside(openButton.backdrop)
-	openButton.pushed:SetInside(openButton.backdrop)
 	bar.buttons[openButton] = true
 
 	for i = 1, 4 do
@@ -344,6 +313,8 @@ function AB:CreateTotemBar()
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
+		button:SetAttribute('type2', 'destroytotem')
+		button:SetAttribute('*totem-slot*', i == 1 and 2 or i == 2 and 1 or i) -- because blizzard doesn't know their own order
 		button:StyleButton()
 
 		icon:SetTexCoord(unpack(E.TexCoords))

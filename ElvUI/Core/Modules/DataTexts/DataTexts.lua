@@ -154,16 +154,12 @@ end
 
 function DT:MouseEnter()
 	local frame = self.parent or self
-	if frame.db and frame.db.mouseover then
-		E:UIFrameFadeIn(frame, 0.2, frame:GetAlpha(), 1)
-	end
+	return frame.db and frame.db.mouseover and E:UIFrameFadeIn(frame, 0.2, frame:GetAlpha(), 1)
 end
 
 function DT:MouseLeave()
 	local frame = self.parent or self
-	if frame.db and frame.db.mouseover then
-		E:UIFrameFadeOut(frame, 0.2, frame:GetAlpha(), 0)
-	end
+	return frame.db and frame.db.mouseover and E:UIFrameFadeOut(frame, 0.2, frame:GetAlpha(), 0)
 end
 
 function DT:FetchFrame(givenName)

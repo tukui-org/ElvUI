@@ -200,6 +200,10 @@ L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
 L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
+L["KEY_NMULTIPLY"] = '*'
+L["KEY_NMINUS"] = 'N-'
+L["KEY_NPLUS"] = 'N+'
+L["KEY_NEQUALS"] = 'N='
 L["Key"] = "键"
 L["Layout Set"] = "界面布局设置"
 L["Layout"] = "界面布局"

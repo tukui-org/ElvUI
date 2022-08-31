@@ -3,6 +3,7 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 local Tags = ElvUF.Tags
 
+local LCS = E.Libs.LCS
 local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
@@ -23,7 +24,7 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetSpecialization = GetSpecialization
+local GetSpecialization = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecialization) or GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetRuneCooldown = GetRuneCooldown
 local GetTime = GetTime
@@ -182,11 +183,12 @@ local ClassPowers = {
 }
 
 local function GetClassPower(Class)
+	local spec = GetSpecialization()
 	local min, max, r, g, b
 
 	-- try stagger
 	local monk = Class == 'MONK'
-	if monk and GetSpecialization() == SPEC_MONK_BREWMASTER then
+	if monk and spec == SPEC_MONK_BREWMASTER then
 		min = UnitStagger('player') or 0
 		max = UnitHealthMax('player')
 
@@ -221,12 +223,12 @@ local function GetClassPower(Class)
 			if monk then -- chi is a table
 				r, g, b = unpack(powerColor[min])
 			elseif dk then
-				r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[GetSpecialization() or 1])
+				r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[spec ~= 5 and spec or 1])
 			else
 				r, g, b = unpack(powerColor)
 			end
 		end
-	else
+	elseif not r then
 		min = UnitPower('player', POWERTYPE_COMBOPOINTS)
 		max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
 
