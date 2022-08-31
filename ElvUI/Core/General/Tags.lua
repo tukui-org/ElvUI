@@ -3,6 +3,7 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 local Tags = ElvUF.Tags
 
+local LCS = E.Libs.LCS
 local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
@@ -23,7 +24,7 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetSpecialization = GetSpecialization
+local GetSpecialization = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecialization) or GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetRuneCooldown = GetRuneCooldown
 local GetTime = GetTime
