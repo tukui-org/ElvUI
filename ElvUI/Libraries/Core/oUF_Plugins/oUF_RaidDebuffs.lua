@@ -97,6 +97,8 @@ local DispelList = {
 
 if oUF.isRetail then
 	DispelList.SHAMAN.Curse = true
+elseif oUF.isWrath then
+	DispelList.SHAMAN.Curse = IsSpellKnown(51886)
 else
 	DispelList.SHAMAN.Poison = true
 	DispelList.SHAMAN.Disease = true
