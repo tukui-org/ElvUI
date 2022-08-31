@@ -127,7 +127,7 @@ E.DispelClasses = {
 	SHAMAN = {}
 }
 
-if E.Retail then
+if E.Retail or E.Wrath then
 	E.DispelClasses.SHAMAN.Curse = true
 else
 	E.DispelClasses.SHAMAN.Poison = true
