@@ -2636,6 +2636,7 @@ P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 
 if E.Wrath then
 	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7; [bonusbar:2] 8;'
+	P.actionbar.bar1.paging.WARLOCK = '[form:1] 7;'
 else
 	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'
 end
