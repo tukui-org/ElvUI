@@ -20,6 +20,7 @@ local UnitFactionGroup = UnitFactionGroup
 local DisableAddOn = DisableAddOn
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
+local IsSpellKnown = IsSpellKnown
 local IsInRaid = IsInRaid
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
@@ -127,8 +128,10 @@ E.DispelClasses = {
 	SHAMAN = {}
 }
 
-if E.Retail or E.Wrath then
+if E.Retail then
 	E.DispelClasses.SHAMAN.Curse = true
+elseif E.Wrath then
+	E.DispelClasses.SHAMAN.Curse = IsSpellKnown(51886)
 else
 	E.DispelClasses.SHAMAN.Poison = true
 	E.DispelClasses.SHAMAN.Disease = true
