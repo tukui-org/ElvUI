@@ -1,5 +1,5 @@
 local major = "LibHealComm-4.0"
-local minor = 105
+local minor = 106
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -78,8 +78,9 @@ local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local COMBATLOG_OBJECT_AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 
-local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
-local isWrath = WOW_PROJECT_ID > WOW_PROJECT_BURNING_CRUSADE_CLASSIC or GetBuildInfo() == "3.4.0"
+local build = floor(select(4,GetBuildInfo())/10000)
+local isTBC = build == 2
+local isWrath = build == 3
 
 local spellRankTableData = {
 	[1] = { 774, 8936, 5185, 740, 635, 19750, 139, 2060, 596, 2061, 2054, 2050, 1064, 331, 8004, 136, 755, 689, 746, 33763, 32546, 37563, 48438, 61295, 51945, 50464, 47757 },
@@ -2630,7 +2631,7 @@ HealComm.bucketFrame:SetScript("OnUpdate", function(self, elapsed)
 							if( not hasVariableTicks ) then
 								sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, data.spellID, amount, tickInterval, targets))
 							else
-								sendMessage(format("VH::%d:%s::%d:%s", data.spellID, table.concat(amount, "@"), totalTicks, targets))
+								sendMessage(format("VH:%d:%d:%s::%d:%s", tickInterval, data.spellID, table.concat(amount, "@"), totalTicks, targets))
 							end
 						end
 
@@ -2714,7 +2715,7 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 						parseHotBomb(sourceGUID, false, spellID, bombAmount, strsplit(",", bombTargets))
 						sendMessage(format("B:%d:%d:%d:%s:%d::%d:%s", totalTicks, spellID, bombAmount, bombTargets, amount, tickInterval, targets))
 					elseif( hasVariableTicks ) then
-						sendMessage(format("VH::%d:%s::%d:%s", spellID, table.concat(amount, "@"), totalTicks, targets))
+						sendMessage(format("VH:%d:%d:%s::%d:%s", tickInterval, spellID, table.concat(amount, "@"), totalTicks, targets))
 					else
 						sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, spellID, amount, tickInterval, targets))
 					end
@@ -2742,7 +2743,7 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 				end
 
 				if( pending.hasVariableTicks ) then
-					sendMessage(format("VU::%d:%s:%d:%s", spellID, amount, pending.totalTicks, compressGUID[destGUID]))
+					sendMessage(format("VU:%d:%d:%s:%d:%s", pending.tickInterval, spellID, amount, pending.totalTicks, compressGUID[destGUID]))
 				else
 					sendMessage(format("U:%s:%d:%d:%d:%s", spellID, amount, pending.totalTicks, pending.tickInterval, compressGUID[destGUID]))
 				end
