@@ -49,13 +49,13 @@ local function UpdateGreetingFrame()
 
 		local numEntries = GetNumQuestLogEntries()
 		for y = 1, numEntries do
-			local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
-			if strmatch(questLogTitleText, textString) then
-				if (isComplete == 1 or IsQuestComplete(questId)) then
-					icon:SetDesaturation(0)
-					text:SetTextColor(1, .8, .1)
-					break
-				end
+			local titleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
+			if not titleText then
+				break
+			elseif strmatch(titleText, textString) and (isComplete == 1 or IsQuestComplete(questId)) then
+				icon:SetDesaturation(0)
+				text:SetTextColor(1, .8, .1)
+				break
 			end
 		end
 
