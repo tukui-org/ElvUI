@@ -26,18 +26,17 @@ local hooksecurefunc = hooksecurefunc
 
 local function UpdateGreetingFrame()
 	local i = 1
-	while _G['QuestTitleButton'..i]:IsVisible() do
-		local title = _G['QuestTitleButton'..i]
-		local icon = _G['QuestTitleButton'..i..'QuestIcon']
-		local text = title:GetFontString()
-		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
-
+	local title = _G['QuestTitleButton'..i]
+	while (title and title:IsVisible()) do
 		_G.GreetingText:SetTextColor(1, 1, 1)
 		_G.CurrentQuestsText:SetTextColor(1, 0.80, 0.10)
 		_G.AvailableQuestsText:SetTextColor(1, 0.80, 0.10)
 
+		local text = title:GetFontString()
+		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
 		title:SetText(textString)
 
+		local icon = _G['QuestTitleButton'..i..'QuestIcon']
 		if title.isActive == 1 then
 			icon:SetTexture(132048)
 			icon:SetDesaturation(1)
@@ -61,6 +60,7 @@ local function UpdateGreetingFrame()
 		end
 
 		i = i + 1
+		title = _G['QuestTitleButton'..i]
 	end
 end
 
