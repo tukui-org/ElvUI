@@ -1,5 +1,5 @@
 local major = "LibHealComm-4.0"
-local minor = 105
+local minor = 106
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -2630,7 +2630,7 @@ HealComm.bucketFrame:SetScript("OnUpdate", function(self, elapsed)
 							if( not hasVariableTicks ) then
 								sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, data.spellID, amount, tickInterval, targets))
 							else
-								sendMessage(format("VH::%d:%s::%d:%s", data.spellID, table.concat(amount, "@"), totalTicks, targets))
+								sendMessage(format("VH:%d:%d:%s::%d:%s", tickInterval, data.spellID, table.concat(amount, "@"), totalTicks, targets))
 							end
 						end
 
@@ -2714,7 +2714,7 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 						parseHotBomb(sourceGUID, false, spellID, bombAmount, strsplit(",", bombTargets))
 						sendMessage(format("B:%d:%d:%d:%s:%d::%d:%s", totalTicks, spellID, bombAmount, bombTargets, amount, tickInterval, targets))
 					elseif( hasVariableTicks ) then
-						sendMessage(format("VH::%d:%s::%d:%s", spellID, table.concat(amount, "@"), totalTicks, targets))
+						sendMessage(format("VH:%d:%d:%s::%d:%s", tickInterval, spellID, table.concat(amount, "@"), totalTicks, targets))
 					else
 						sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, spellID, amount, tickInterval, targets))
 					end
@@ -2742,7 +2742,7 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 				end
 
 				if( pending.hasVariableTicks ) then
-					sendMessage(format("VU::%d:%s:%d:%s", spellID, amount, pending.totalTicks, compressGUID[destGUID]))
+					sendMessage(format("VU:%d:%d:%s:%d:%s", pending.tickInterval, spellID, amount, pending.totalTicks, compressGUID[destGUID]))
 				else
 					sendMessage(format("U:%s:%d:%d:%d:%s", spellID, amount, pending.totalTicks, pending.tickInterval, compressGUID[destGUID]))
 				end
