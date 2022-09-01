@@ -2395,7 +2395,7 @@ local function parseHotHeal(casterGUID, wasUpdated, spellID, tickAmount, totalTi
 
 	if not ( tickAmount == -1 or tickAmount == "-1" ) then
 		inc = 1
-		duration = totalTicks * tickInterval
+		duration = totalTicks * (tickInterval or 1)
 		endTime = GetTime() + duration
 	end
 
