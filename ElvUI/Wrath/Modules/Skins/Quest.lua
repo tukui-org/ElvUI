@@ -388,7 +388,10 @@ function S:BlizzardQuestFrames()
 
 		local numObjectives = GetNumQuestLeaderBoards()
 		for i = 1, numObjectives do
-			_G['QuestInfoObjective'..i]:SetTextColor(textR, textG, textB)
+			local text = _G['QuestInfoObjective'..i]
+			if not text then break end
+
+			text:SetTextColor(textR, textG, textB)
 		end
 
 		-- Reward frame text
