@@ -535,10 +535,10 @@ function A:Initialize()
 	local xoffset = -(6 + E.Border)
 	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
-		if E.Wrath then
-			A.BuffFrame:SetAttribute("consolidateTo", 1)
-			A.BuffFrame:SetAttribute('consolidateDuration', -1)
-		end
+		--if E.Wrath then
+		--	A.BuffFrame:SetAttribute("consolidateTo", 1)
+		--	A.BuffFrame:SetAttribute('consolidateDuration', -1)
+		--end
 
 		A.BuffFrame:ClearAllPoints()
 		A.BuffFrame:SetPoint('TOPRIGHT', _G.MMHolder or _G.MinimapCluster, 'TOPLEFT', xoffset, -E.Spacing)
