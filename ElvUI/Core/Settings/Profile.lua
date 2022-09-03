@@ -2534,7 +2534,7 @@ P.actionbar = {
 -- Visibility
 if E.Retail then
 	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
-	P.actionbar.stanceBar.visibility = '[vehicleui] hide; [petbattle] hide; show'
+	P.actionbar.stanceBar.visibility = '[vehicleui][petbattle] hide; show'
 elseif E.Wrath then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
@@ -2596,9 +2596,9 @@ for i = 1, 10 do
 	}
 
 	if E.Retail then
-		bar.visibility = '[vehicleui] hide; [petbattle] hide; [overridebar] hide; show'
+		bar.visibility = '[vehicleui][petbattle][overridebar] hide; show'
 	elseif E.Wrath then
-		bar.visibility = '[vehicleui] hide; [overridebar] hide; show'
+		bar.visibility = '[vehicleui][overridebar] hide; show'
 	else
 		bar.visibility = '[overridebar] hide; show'
 	end
