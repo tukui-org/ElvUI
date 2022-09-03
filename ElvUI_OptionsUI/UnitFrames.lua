@@ -1590,7 +1590,6 @@ for i = 1, 3 do
 	Raid.enable = ACH:Toggle(L["Enable"], nil, 1)
 	Raid.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF['raid'..i], UF['raid'..i].forceShow ~= true or nil) end)
 	Raid.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L[format("Raid %s Frames", i)], nil, {unit = 'raid', mover=format('Raid %s Frames', i)}) end)
-	Raid.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid40 = L["Raid40 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid'..i) E:RefreshGUI() end)
 
 	Raid.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
 	Raid.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
@@ -1616,6 +1615,10 @@ for i = 1, 3 do
 	Raid.summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
 	Raid.pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
 end
+
+GroupUnits.raid1.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid2 = L["Raid 2 Frames"], raid3 = L["Raid 3 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid') E:RefreshGUI() end)
+GroupUnits.raid2.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid1 = L["Raid 1 Frames"], raid3 = L["Raid 3 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid2') E:RefreshGUI() end)
+GroupUnits.raid3.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid1 = L["Raid 1 Frames"], raid2 = L["Raid 2 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid3') E:RefreshGUI() end)
 
 GroupUnits.raidpet = ACH:Group(L["Raid Pet"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
 local RaidPet = GroupUnits.raidpet.args
