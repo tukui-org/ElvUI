@@ -945,7 +945,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			Header.groupName = group
 			Header.template = Header.template or template
 			Header.headerTemplate = Header.headerTemplate or headerTemplate
-			Header.isRaidFrame = true
+			Header.isRaidFrame = isRaidFrames
 			if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 			for k, v in pairs(self.groupPrototype) do
 				UF.headerFunctions[group][k] = v
@@ -954,7 +954,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			Header = self:CreateHeader(ElvUF_Parent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
 		end
 
-		Header.isRaidFrame = isRaidFrames
 		Header:Show()
 
 		self[group] = Header
