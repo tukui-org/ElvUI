@@ -496,7 +496,7 @@ E.Options.args.profiles.args.private.order = 2
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 
-if E.Retail then
+if E.Retail or E.Wrath then
 	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 end
 
