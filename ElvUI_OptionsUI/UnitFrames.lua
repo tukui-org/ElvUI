@@ -1238,13 +1238,25 @@ UnitFrame.frameGlowGroup.args.mouseoverGlow.args.color = ACH:Color(L["COLOR"], n
 UnitFrame.individualUnits = ACH:Group(L["Individual Units"], nil, 15, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
 local IndividualUnits = UnitFrame.individualUnits.args
 
+local function CopyFromSingle(info)
+	local tbl = {}
+
+	for name in pairs(UF.units) do
+		if name ~= info[#info - 1] then
+			tbl[name] = gsub(E:StringTitle(name), 't(arget)', 'T%1')
+		end
+	end
+
+	return tbl
+end
+
 IndividualUnits.player = ACH:Group(L["Player"], nil, 1, nil, function(info) return E.db.unitframe.units.player[info[#info]] end, function(info, value) E.db.unitframe.units.player[info[#info]] = value UF:CreateAndUpdateUF('player') end)
 local Player = IndividualUnits.player.args
 
 Player.enable = ACH:Toggle(L["Enable"], nil, 1)
 Player.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.player.forceShowAuras = not UF.player.forceShowAuras UF:CreateAndUpdateUF('player') end)
 Player.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, { unit = 'player', mover = 'Player Frame' }) end)
-Player.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'player') E:RefreshGUI() end)
+Player.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'player') E:RefreshGUI() end)
 Player.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'player')
 Player.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'player')
 Player.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player')
@@ -1301,7 +1313,7 @@ local Pet = IndividualUnits.pet.args
 Pet.enable = ACH:Toggle(L["Enable"], nil, 1)
 Pet.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.pet.forceShowAuras = not UF.pet.forceShowAuras UF:CreateAndUpdateUF('pet') end)
 Pet.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, { unit = 'pet', mover = 'Pet Frame' }) end)
-Pet.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pet') E:RefreshGUI() end)
+Pet.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pet') E:RefreshGUI() end)
 Pet.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet')
 Pet.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pet')
 Pet.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'pet')
@@ -1326,7 +1338,7 @@ local Target = IndividualUnits.target.args
 Target.enable = ACH:Toggle(L["Enable"], nil, 1)
 Target.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.target.forceShowAuras = not UF.target.forceShowAuras UF:CreateAndUpdateUF('target') end)
 Target.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, { unit = 'target', mover = 'Target Frame' }) end)
-Target.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'target') E:RefreshGUI() end)
+Target.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'target') E:RefreshGUI() end)
 Target.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'target')
 Target.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'target')
 Target.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'target')
@@ -1355,7 +1367,7 @@ local TargetTarget = IndividualUnits.targettarget.args
 TargetTarget.enable = ACH:Toggle(L["Enable"], nil, 1)
 TargetTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.targettarget.forceShowAuras = not UF.targettarget.forceShowAuras UF:CreateAndUpdateUF('targettarget') end)
 TargetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, { unit = 'targettarget', mover = 'TargetTarget Frame' }) end)
-TargetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettarget') E:RefreshGUI() end)
+TargetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettarget') E:RefreshGUI() end)
 TargetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettarget')
 TargetTarget.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettarget')
 TargetTarget.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'targettarget')
@@ -1377,7 +1389,7 @@ local TargetTargetTarget = IndividualUnits.targettargettarget.args
 TargetTargetTarget.enable = ACH:Toggle(L["Enable"], nil, 1)
 TargetTargetTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.targettargettarget.forceShowAuras = not UF.targettargettarget.forceShowAuras UF:CreateAndUpdateUF('targettargettarget') end)
 TargetTargetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, { unit = 'targettargettarget', mover = 'TargetTargetTarget Frame' }) end)
-TargetTargetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettargettarget') E:RefreshGUI() end)
+TargetTargetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettargettarget') E:RefreshGUI() end)
 TargetTargetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettargettarget')
 TargetTargetTarget.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettargettarget')
 TargetTargetTarget.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUF, 'targettargettarget')
@@ -1399,7 +1411,7 @@ local Focus = IndividualUnits.focus.args
 Focus.enable = ACH:Toggle(L["Enable"], nil, 1)
 Focus.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.focus.forceShowAuras = not UF.focus.forceShowAuras UF:CreateAndUpdateUF('focus') end)
 Focus.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, { unit = 'focus', mover = 'Focus Frame' }) end)
-Focus.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focus') E:RefreshGUI() end)
+Focus.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focus') E:RefreshGUI() end)
 Focus.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focus')
 Focus.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focus')
 Focus.aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'focus')
@@ -1425,7 +1437,7 @@ local FocusTarget = IndividualUnits.focustarget.args
 FocusTarget.enable = ACH:Toggle(L["Enable"], nil, 1)
 FocusTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.focustarget.forceShowAuras = not UF.focustarget.forceShowAuras UF:CreateAndUpdateUF('focustarget') end)
 FocusTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, { unit = 'focustarget', mover = 'FocusTarget Frame' }) end)
-FocusTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focustarget') E:RefreshGUI() end)
+FocusTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focustarget') E:RefreshGUI() end)
 FocusTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focustarget')
 FocusTarget.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focustarget')
 FocusTarget.customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget')
@@ -1447,7 +1459,7 @@ local PetTarget = IndividualUnits.pettarget.args
 PetTarget.enable = ACH:Toggle(L["Enable"], nil, 1)
 PetTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.pettarget.forceShowAuras = not UF.pettarget.forceShowAuras UF:CreateAndUpdateUF('pettarget') end)
 PetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["PetTarget Frame"], nil, { unit = 'pettarget', mover = 'PetTarget Frame' }) end)
-PetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, UF.units, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pettarget') E:RefreshGUI() end)
+PetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromSingle, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pettarget') E:RefreshGUI() end)
 
 PetTarget.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pettarget')
 PetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pettarget')
@@ -1523,10 +1535,27 @@ Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, m
 GroupUnits.party = ACH:Group(L["Party"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
 local Party = GroupUnits.party.args
 
+local HeaderCopyFrom = { party = L["Party Frames"] }
+for i = 1, 3 do
+	HeaderCopyFrom['raid'..i] = L[format("Raid %s Frames", i)]
+end
+
+local function CopyFromHeader(info)
+	local tbl = {}
+
+	for name, locale in pairs(HeaderCopyFrom) do
+		if name ~= info[#info - 1] then
+			tbl[name] = locale
+		end
+	end
+
+	return tbl
+end
+
 Party.enable = ACH:Toggle(L["Enable"], nil, 1)
 Party.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.party, UF.party.forceShow ~= true or nil) end)
 Party.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, { unit = 'party', mover = 'Party Frames' }) end)
-Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { raid1 = L["Raid 1 Frames"], raid2 = L["Raid 2 Frames"], raid3 = L["Raid 3 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'party') E:RefreshGUI() end)
+Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromHeader, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'party') E:RefreshGUI() end)
 
 Party.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'party')
 Party.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party')
@@ -1584,6 +1613,7 @@ for i = 1, 3 do
 	Raid.enable = ACH:Toggle(L["Enable"], nil, 1)
 	Raid.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF['raid'..i], UF['raid'..i].forceShow ~= true or nil) end)
 	Raid.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L[format("Raid %s Frames", i)], nil, {unit = 'raid', mover=format('Raid %s Frames', i)}) end)
+	Raid.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromHeader, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid'..i) E:RefreshGUI() end)
 
 	Raid.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
 	Raid.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
@@ -1609,10 +1639,6 @@ for i = 1, 3 do
 	Raid.summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
 	Raid.pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
 end
-
-GroupUnits.raid1.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid2 = L["Raid 2 Frames"], raid3 = L["Raid 3 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid1') E:RefreshGUI() end)
-GroupUnits.raid2.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid1 = L["Raid 1 Frames"], raid3 = L["Raid 3 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid2') E:RefreshGUI() end)
-GroupUnits.raid3.args.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { party = L["Party Frames"], raid1 = L["Raid 1 Frames"], raid2 = L["Raid 2 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid3') E:RefreshGUI() end)
 
 GroupUnits.raidpet = ACH:Group(L["Raid Pet"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
 local RaidPet = GroupUnits.raidpet.args
