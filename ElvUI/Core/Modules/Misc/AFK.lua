@@ -139,7 +139,10 @@ function AFK:OnEvent(event, ...)
 		return
 	end
 
-	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
+	local unit = ...
+	if unit == 'player' then
+		AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
+	end
 end
 
 function AFK:Chat_OnMouseWheel(delta)
