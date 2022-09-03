@@ -146,9 +146,6 @@ do
 				E.Libs.LCD:Register('ElvUI')
 			end
 		end
-		if E.Wrath then
-			E:AddLib('DualSpec', 'LibDualSpec-1.0')
-		end
 	end
 
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
