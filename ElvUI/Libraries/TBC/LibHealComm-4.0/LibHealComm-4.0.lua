@@ -3148,11 +3148,11 @@ function HealComm:UNIT_PET(unit)
 
 	-- We have an active pet guid from this user and it's different, kill it
 	local activeGUID = activePets[unit]
-	if activeGUID and activeGUID ~= petGUID then
+	if activeGUID and petGUID and activeGUID ~= petGUID then
 		removeAllRecords(activeGUID)
 
 		rawset(self.compressGUID, activeGUID, nil)
-		rawset(self.decompressGUID, "p-"..strsub(UnitGUID(unit),8), nil)
+		rawset(self.decompressGUID, "p-"..strsub(petGUID,8), nil)
 		guidToUnit[activeGUID] = nil
 		guidToGroup[activeGUID] = nil
 		activePets[unit] = nil
