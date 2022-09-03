@@ -120,6 +120,4 @@ function UF:Update_BossFrames(frame, db)
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
-if E.Retail or E.Wrath then
-	UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}
-end
+UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}
