@@ -3152,7 +3152,7 @@ function HealComm:UNIT_PET(unit)
 		removeAllRecords(activeGUID)
 
 		rawset(self.compressGUID, activeGUID, nil)
-		rawset(self.decompressGUID, "p-"..strsub(petGUID,8), nil)
+		rawset(self.decompressGUID, "p-"..strsub(guid,8), nil)
 		guidToUnit[activeGUID] = nil
 		guidToGroup[activeGUID] = nil
 		activePets[unit] = nil
