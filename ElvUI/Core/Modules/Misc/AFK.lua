@@ -115,7 +115,7 @@ function AFK:SetAFK(status)
 	end
 end
 
-function AFK:OnEvent(event, ...)
+function AFK:OnEvent(event, unit, ...)
 	if event == 'PLAYER_REGEN_DISABLED' or event == 'LFG_PROPOSAL_SHOW' or event == 'UPDATE_BATTLEFIELD_STATUS' then
 		if event ~= 'UPDATE_BATTLEFIELD_STATUS' or (GetBattlefieldStatus(...) == 'confirm') then
 			AFK:SetAFK(false)
@@ -139,7 +139,9 @@ function AFK:OnEvent(event, ...)
 		return
 	end
 
-	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
+	if unit == 'player' then
+		AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
+	end
 end
 
 function AFK:Chat_OnMouseWheel(delta)
