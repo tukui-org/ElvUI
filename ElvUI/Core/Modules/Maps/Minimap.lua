@@ -28,7 +28,7 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 
 local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
+local ExpansionLandingPageMinimapButton_OnClick = ExpansionLandingPageMinimapButton_OnClick
 
 local WorldMapFrame = _G.WorldMapFrame
 local Minimap = _G.Minimap
@@ -56,7 +56,7 @@ end
 if E.Retail then
 	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
-	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() GarrisonLandingPageMinimapButton_OnClick(_G.GarrisonLandingPageMinimapButton) end })
+	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() ExpansionLandingPageMinimapButton_OnClick(_G.ExpansionLandingPageMinimapButton) end })
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
@@ -103,7 +103,7 @@ function M:SetScale(frame, scale)
 end
 
 function M:HandleGarrisonButton()
-	local garrison = _G.GarrisonLandingPageMinimapButton
+	local garrison = _G.ExpansionLandingPageMinimapButton
 	if not garrison then return end
 
 	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
@@ -111,7 +111,7 @@ function M:HandleGarrisonButton()
 	garrison:Point(position, Minimap, xOffset, yOffset)
 	M:SetScale(garrison, scale)
 
-	local box = _G.GarrisonLandingPageTutorialBox
+	local box = _G.ExpansionLandingPageTutorialBox
 	if box then
 		box:SetScale(1 / scale)
 		box:SetClampedToScreen(true)
@@ -326,7 +326,7 @@ function M:UpdateSettings()
 		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
 	end
 
-	M.HandleGarrisonButton()
+	--M.HandleGarrisonButton()
 	M.HandleTrackingButton()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
@@ -560,7 +560,7 @@ function M:Initialize()
 
 	if E.Retail then
 		-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-		hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
+		--hooksecurefunc('ExpansionLandingPageMinimapButtonMixin:UpdateIcon', M.HandleGarrisonButton) -- TODO
 
 		--Hide the BlopRing on Minimap
 		Minimap:SetArchBlobRingAlpha(0)

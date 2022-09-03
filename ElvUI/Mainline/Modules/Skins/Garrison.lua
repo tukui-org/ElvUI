@@ -360,10 +360,10 @@ function S:Blizzard_GarrisonUI()
 		hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
 			local unselectedTab = Report.unselectedTab
 			unselectedTab:Height(36)
-			unselectedTab:SetNormalTexture('')
+			unselectedTab:SetNormalTexture(E.media.emptyTex)
 			unselectedTab.selectedTex:Hide()
 
-			s:SetNormalTexture('')
+			s:SetNormalTexture(E.media.emptyTex)
 			s.selectedTex:Show()
 		end)
 	end
