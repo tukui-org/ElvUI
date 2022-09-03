@@ -1579,7 +1579,6 @@ P.unitframe = {
 	fontSize = 10,
 	fontOutline = 'MONOCHROMEOUTLINE',
 	debuffHighlighting = 'FILL',
-	smartRaidFilter = true,
 	targetOnMouseDown = false,
 	modifiers = {
 		SHIFT = 'NONE',
@@ -2289,46 +2288,50 @@ P.unitframe.units.party.targetsGroup.enable = false
 P.unitframe.units.party.targetsGroup.buffIndicator = nil
 P.unitframe.units.party.targetsGroup.healPrediction = nil
 
-P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
-P.unitframe.units.raid.groupsPerRowCol = 1
-P.unitframe.units.raid.groupBy = 'GROUP'
-P.unitframe.units.raid.buffs.numrows = 1
-P.unitframe.units.raid.buffs.perrow = 3
-P.unitframe.units.raid.buffIndicator.enable = true
-P.unitframe.units.raid.castbar = nil
-P.unitframe.units.raid.debuffs.enable = false
-P.unitframe.units.raid.debuffs.numrows = 1
-P.unitframe.units.raid.debuffs.perrow = 3
-P.unitframe.units.raid.debuffs.sizeOverride = 0
-P.unitframe.units.raid.growthDirection = 'RIGHT_DOWN'
-P.unitframe.units.raid.health.position = 'BOTTOM'
-P.unitframe.units.raid.health.text_format = '[healthcolor][health:deficit:shortvalue]'
-P.unitframe.units.raid.health.yOffset = 2
-P.unitframe.units.raid.height = 44
-P.unitframe.units.raid.horizontalSpacing = 3
-P.unitframe.units.raid.infoPanel.height = 12
-P.unitframe.units.raid.name.text_format = '[classcolor][name:short]'
-P.unitframe.units.raid.numGroups = 5
-P.unitframe.units.raid.orientation = 'MIDDLE'
-P.unitframe.units.raid.petsGroup = nil
-P.unitframe.units.raid.power.position = 'BOTTOMRIGHT'
-P.unitframe.units.raid.power.text_format = ''
-P.unitframe.units.raid.power.xOffset = -2
-P.unitframe.units.raid.power.yOffset = 2
-P.unitframe.units.raid.targetsGroup = nil
-P.unitframe.units.raid.visibility = '[@raid6,noexists][@raid26,exists] hide;show'
-P.unitframe.units.raid.width = 80
+P.unitframe.units.raid1 = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid1.groupsPerRowCol = 1
+P.unitframe.units.raid1.groupBy = 'GROUP'
+P.unitframe.units.raid1.buffs.numrows = 1
+P.unitframe.units.raid1.buffs.perrow = 3
+P.unitframe.units.raid1.buffIndicator.enable = true
+P.unitframe.units.raid1.castbar = nil
+P.unitframe.units.raid1.debuffs.enable = false
+P.unitframe.units.raid1.debuffs.numrows = 1
+P.unitframe.units.raid1.debuffs.perrow = 3
+P.unitframe.units.raid1.debuffs.sizeOverride = 0
+P.unitframe.units.raid1.growthDirection = 'RIGHT_DOWN'
+P.unitframe.units.raid1.health.position = 'BOTTOM'
+P.unitframe.units.raid1.health.text_format = '[healthcolor][health:deficit:shortvalue]'
+P.unitframe.units.raid1.health.yOffset = 2
+P.unitframe.units.raid1.height = 44
+P.unitframe.units.raid1.horizontalSpacing = 3
+P.unitframe.units.raid1.infoPanel.height = 12
+P.unitframe.units.raid1.name.text_format = '[classcolor][name:short]'
+P.unitframe.units.raid1.numGroups = 5
+P.unitframe.units.raid1.orientation = 'MIDDLE'
+P.unitframe.units.raid1.petsGroup = nil
+P.unitframe.units.raid1.power.position = 'BOTTOMRIGHT'
+P.unitframe.units.raid1.power.text_format = ''
+P.unitframe.units.raid1.power.xOffset = -2
+P.unitframe.units.raid1.power.yOffset = 2
+P.unitframe.units.raid1.targetsGroup = nil
+P.unitframe.units.raid1.visibility = '[@raid6,noexists][@raid11,exists] hide;show'
+P.unitframe.units.raid1.width = 80
 
-P.unitframe.units.raid40 = CopyTable(P.unitframe.units.raid)
-P.unitframe.units.raid40.debuffs.anchorPoint = 'RIGHT'
-P.unitframe.units.raid40.height = 27
-P.unitframe.units.raid40.numGroups = 8
-P.unitframe.units.raid40.visibility = '[@raid26,noexists] hide;show'
-P.unitframe.units.raid40.rdebuffs.enable = false
-P.unitframe.units.raid40.power.enable = false
-P.unitframe.units.raid40.roleIcon.enable = false
+P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
+P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
+P.unitframe.units.raid2.height = 27
+P.unitframe.units.raid2.numGroups = 5
+P.unitframe.units.raid2.visibility = '[@raid11,exists][@raid26,noexists] hide;show'
+P.unitframe.units.raid2.rdebuffs.enable = false
+P.unitframe.units.raid2.power.enable = false
+P.unitframe.units.raid2.roleIcon.enable = false
 
-P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid)
+P.unitframe.units.raid3 = CopyTable(P.unitframe.units.raid2)
+P.unitframe.units.raid3.numGroups = 8
+P.unitframe.units.raid3.visibility = '[@raid26,noexists] hide;show'
+
+P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raidpet.pvpclassificationindicator = nil
 P.unitframe.units.raidpet.buffIndicator.enable = false
 P.unitframe.units.raidpet.enable = false
@@ -2367,15 +2370,17 @@ P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
 for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'} do
 	P.unitframe.units.party['CLASS'..i] = classTag
-	P.unitframe.units.raid['CLASS'..i] = classTag
-	P.unitframe.units.raid40['CLASS'..i] = classTag
+	for k = 1, 3 do
+		P.unitframe.units['raid'..k]['CLASS'..i] = classTag
+	end
 	P.unitframe.units.raidpet['CLASS'..i] = classTag
 end
 
 for i, role in next, {'TANK', 'HEALER', 'DAMAGER'} do
 	P.unitframe.units.party['ROLE'..i] = role
-	P.unitframe.units.raid['ROLE'..i] = role
-	P.unitframe.units.raid40['ROLE'..i] = role
+	for k = 1, 3 do
+		P.unitframe.units['raid'..k]['ROLE'..i] = role
+	end
 	P.unitframe.units.raidpet['ROLE'..i] = role
 end
 

@@ -207,8 +207,11 @@ local function CreateUnitframesConfig()
 	config.args.units.args.boss.name = L["Boss"]
 	config.args.units.args.arena.name = L["Arena"]
 	config.args.units.args.party.name = L["Party"]
-	config.args.units.args.raid.name = L["Raid"]
-	config.args.units.args.raid40.name = L["Raid-40"]
+
+	for i = 1, 3 do
+		config.args.units.args['raid'..i].name = L[format("Raid %s", i)]
+	end
+
 	config.args.units.args.raidpet.name = L["Raid Pet"]
 	config.args.units.args.tank.name = L["Tank"]
 	config.args.units.args.assist.name = L["Assist"]
