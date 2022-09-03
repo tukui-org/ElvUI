@@ -117,12 +117,12 @@ function S:Blizzard_LookingForGroupUI()
 
 	for i = 1, _G.LFGParentFrame:GetNumChildren() do
 		local child = select(i, _G.LFGParentFrame:GetChildren())
-		if not child.isSkinned and child:GetObjectType() == 'Button' then
+		if not child.IsSkinned and child:GetObjectType() == 'Button' then
 			child:ClearAllPoints()
 			child:Point('TOPRIGHT', -26, -6)
 
 			S:HandleCloseButton(child)
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 	end
 
