@@ -29,7 +29,6 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 --Wrath
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
-
 local menuList, myGold = {}, {}
 local totalGold, totalHorde, totalAlliance = 0, 0, 0
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -66,9 +65,11 @@ local function updateGold(self, updateAll, goldChange)
 
 		totalGold, totalHorde, totalAlliance = 0, 0, 0
 
+		tinsert(menuList, { text = '', isTitle = true, notCheckable = true })
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		for realm in pairs(ElvDB.serverID[E.serverID]) do
+			tinsert(menuList, 1, { text = 'Delete All', notCheckable = true, func = function() ElvDB.gold[realm] = {} DT:ForceUpdate_DataText('Gold') end })
 			for name in pairs(ElvDB.gold[realm]) do
 				local faction = ElvDB.faction[realm][name]
 				local gold = ElvDB.gold[realm][name]
