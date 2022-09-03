@@ -688,7 +688,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'power')
 	end
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
+	if groupName == 'party' or groupName == 'raid1' or groupName == 'raid2' or groupName == 'raid3' then
 		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 9)
 	end
 
@@ -836,7 +836,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	config.args.height = ACH:Range(L["Height"], nil, 1, { min = 2, max = 30, step = 1 })
 	config.args.fill = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], spaced = L["Spaced"] })
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
+	if groupName == 'party' or groupName == 'raid1' or groupName == 'raid2' or groupName == 'raid3' then
 		config.args.altPowerColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t, d = E.db.unitframe.units[groupName].classbar[info[#info]], P.unitframe.units[groupName].classbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.units[groupName].classbar[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 		config.args.altPowerTextFormat = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 6, nil, 'full')
 	elseif groupName == 'player' then
@@ -885,7 +885,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.hideonnpc = ACH:Toggle(L["Text Toggle On NPC"], L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."], 5, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.hideonnpc end, function(_, value) E.db.unitframe.units[groupName].power.hideonnpc = value updateFunc(UF, groupName, numUnits) end)
 	end
 
-	if groupName ~= 'party' and groupName ~= 'raid' and groupName ~= 'raid40' and groupName ~= 'raidpet' and groupName ~= 'assist' and groupName ~= 'tank' then
+	if groupName ~= 'party' and groupName ~= 'raid1' and groupName ~= 'raid2' and groupName ~= 'raid3' and groupName ~= 'raidpet' and groupName ~= 'assist' and groupName ~= 'tank' then
 		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, C.Values.SmartAuraPositions)
 	end
 
@@ -900,7 +900,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 40, max = 1000, step = 1 })
 	config.args.positionsGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
+	if groupName == 'party' or groupName == 'raid1' or groupName == 'raid2' or groupName == 'raid3' or groupName == 'raidpet' then
 		config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], L["Growth direction from the first unitframe."], 4, C.Values.GrowthDirection)
 		config.args.positionsGroup.args.numGroups = ACH:Range(L["Number of Groups"], nil, 7, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end, nil, groupName == 'party')
 		config.args.positionsGroup.args.groupsPerRowCol = ACH:Range(L["Groups Per Row/Column"], nil, 8, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end, nil, groupName == 'party')
@@ -948,7 +948,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		end
 	end
 
-	if groupName == 'raid' or groupName == 'raid40' then
+	if groupName == 'raid1' or groupName == 'raid2' or groupName == 'raid3' then
 		config.args.positionsGroup.args.numGroups.disabled = function() return E.db.unitframe.smartRaidFilter end
 		config.args.visibilityGroup.args.visibility.disabled = function() return E.db.unitframe.smartRaidFilter end
 	end
@@ -1532,7 +1532,7 @@ local Party = GroupUnits.party.args
 Party.enable = ACH:Toggle(L["Enable"], nil, 1)
 Party.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.party, UF.party.forceShow ~= true or nil) end)
 Party.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, { unit = 'party', mover = 'Party Frames' }) end)
-Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { raid = L["Raid Frames"], raid40 = L["Raid40 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'party') E:RefreshGUI() end)
+Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { raid1 = L["Raid 1 Frames"], raid2 = L["Raid 2 Frames"], raid3 = L["Raid 3 Frames"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'party') E:RefreshGUI() end)
 
 Party.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'party')
 Party.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party')
