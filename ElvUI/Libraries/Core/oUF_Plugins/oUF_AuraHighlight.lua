@@ -23,8 +23,10 @@ local DispelList = {
 	SHAMAN = {}
 }
 
-if oUF.isRetail then
+if oUF.isRetail or oUF.isWrath then
 	DispelList.SHAMAN.Curse = true
+elseif oUF.isWrath then
+	DispelList.SHAMAN.Curse = IsSpellKnown(51886)
 else
 	DispelList.SHAMAN.Poison = true
 	DispelList.SHAMAN.Disease = true

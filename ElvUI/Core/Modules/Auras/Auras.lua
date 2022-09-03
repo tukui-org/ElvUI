@@ -522,6 +522,9 @@ function A:Initialize()
 	if E.private.auras.disableBlizzard then
 		_G.BuffFrame:Kill()
 		_G.TemporaryEnchantFrame:Kill()
+		if E.Wrath then
+			_G.ConsolidatedBuffs:Kill()
+		end
 	end
 
 	if not E.private.auras.enable then return end
@@ -532,6 +535,11 @@ function A:Initialize()
 	local xoffset = -(6 + E.Border)
 	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
+		--if E.Wrath then
+		--	A.BuffFrame:SetAttribute("consolidateTo", 1)
+		--	A.BuffFrame:SetAttribute('consolidateDuration', -1)
+		--end
+
 		A.BuffFrame:ClearAllPoints()
 		A.BuffFrame:SetPoint('TOPRIGHT', _G.MMHolder or _G.MinimapCluster, 'TOPLEFT', xoffset, -E.Spacing)
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')

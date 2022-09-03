@@ -1,5 +1,5 @@
 local major = "LibHealComm-4.0"
-local minor = 105
+local minor = 106
 assert(LibStub, format("%s requires LibStub.", major))
 
 local HealComm = LibStub:NewLibrary(major, minor)
@@ -78,8 +78,9 @@ local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local COMBATLOG_OBJECT_AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 
-local isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
-local isWrath = WOW_PROJECT_ID > WOW_PROJECT_BURNING_CRUSADE_CLASSIC or GetBuildInfo() == "3.4.0"
+local build = floor(select(4,GetBuildInfo())/10000)
+local isTBC = build == 2
+local isWrath = build == 3
 
 local spellRankTableData = {
 	[1] = { 774, 8936, 5185, 740, 635, 19750, 139, 2060, 596, 2061, 2054, 2050, 1064, 331, 8004, 136, 755, 689, 746, 33763, 32546, 37563, 48438, 61295, 51945, 50464, 47757 },
@@ -2395,7 +2396,7 @@ local function parseHotHeal(casterGUID, wasUpdated, spellID, tickAmount, totalTi
 
 	if not ( tickAmount == -1 or tickAmount == "-1" ) then
 		inc = 1
-		duration = totalTicks * tickInterval
+		duration = totalTicks * (tickInterval or 1)
 		endTime = GetTime() + duration
 	end
 
@@ -2568,10 +2569,10 @@ function HealComm:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		parseHotHeal(casterGUID, true, spellID, tonumber(arg1), tonumber(extraArg), tonumber(arg2), strsplit(",", arg3))
 		-- New variable tick hot - VH::<spellID>:<amount>:<isMulti>:<tickInterval>:target1,target2...
 	elseif( commType == "VH" and arg1 and arg4 ) then
-		parseHotHeal(casterGUID, false, spellID, arg1, tonumber(arg3), nil, string.split(",", arg4))
+		parseHotHeal(casterGUID, false, spellID, arg1, tonumber(arg3), tonumber(extraArg), string.split(",", arg4))
 		-- New updated variable tick hot - U::<spellID>:amount1@amount2@amount3:<tickTotal>:target1,target2...
-	elseif( commtype == "VU" and arg1 and arg3 ) then
-		parseHotHeal(casterGUID, true, spellID, arg1, tonumber(arg2), nil, string.split(",", arg3))
+	elseif( commType == "VU" and arg1 and arg3 ) then
+		parseHotHeal(casterGUID, true, spellID, arg1, tonumber(arg2), tonumber(extraArg), string.split(",", arg3))
 		-- New updated bomb hot - UB:<totalTicks>:<spellID>:<bombAmount>:target1,target2:<amount>:<tickInterval>:target1,target2...
 	elseif( commType == "UB" and arg1 and arg5 ) then
 		parseHotHeal(casterGUID, true, spellID, tonumber(arg3), tonumber(extraArg), tonumber(arg4), strsplit(",", arg5))
@@ -2630,7 +2631,7 @@ HealComm.bucketFrame:SetScript("OnUpdate", function(self, elapsed)
 							if( not hasVariableTicks ) then
 								sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, data.spellID, amount, tickInterval, targets))
 							else
-								sendMessage(format("VH::%d:%s::%d:%s", data.spellID, table.concat(amount, "@"), totalTicks, targets))
+								sendMessage(format("VH:%d:%d:%s::%d:%s", tickInterval, data.spellID, table.concat(amount, "@"), totalTicks, targets))
 							end
 						end
 
@@ -2714,7 +2715,7 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 						parseHotBomb(sourceGUID, false, spellID, bombAmount, strsplit(",", bombTargets))
 						sendMessage(format("B:%d:%d:%d:%s:%d::%d:%s", totalTicks, spellID, bombAmount, bombTargets, amount, tickInterval, targets))
 					elseif( hasVariableTicks ) then
-						sendMessage(format("VH::%d:%s::%d:%s", spellID, table.concat(amount, "@"), totalTicks, targets))
+						sendMessage(format("VH:%d:%d:%s::%d:%s", tickInterval, spellID, table.concat(amount, "@"), totalTicks, targets))
 					else
 						sendMessage(format("H:%d:%d:%d::%d:%s", totalTicks, spellID, amount, tickInterval, targets))
 					end
@@ -2742,7 +2743,7 @@ function HealComm:COMBAT_LOG_EVENT_UNFILTERED(...)
 				end
 
 				if( pending.hasVariableTicks ) then
-					sendMessage(format("VU::%d:%s:%d:%s", spellID, amount, pending.totalTicks, compressGUID[destGUID]))
+					sendMessage(format("VU:%d:%d:%s:%d:%s", pending.tickInterval, spellID, amount, pending.totalTicks, compressGUID[destGUID]))
 				else
 					sendMessage(format("U:%s:%d:%d:%d:%s", spellID, amount, pending.totalTicks, pending.tickInterval, compressGUID[destGUID]))
 				end
@@ -3147,11 +3148,11 @@ function HealComm:UNIT_PET(unit)
 
 	-- We have an active pet guid from this user and it's different, kill it
 	local activeGUID = activePets[unit]
-	if activeGUID and activeGUID ~= petGUID then
+	if activeGUID and petGUID and activeGUID ~= petGUID then
 		removeAllRecords(activeGUID)
 
 		rawset(self.compressGUID, activeGUID, nil)
-		rawset(self.decompressGUID, "p-"..strsub(UnitGUID(unit),8), nil)
+		rawset(self.decompressGUID, "p-"..strsub(guid,8), nil)
 		guidToUnit[activeGUID] = nil
 		guidToGroup[activeGUID] = nil
 		activePets[unit] = nil

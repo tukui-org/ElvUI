@@ -20,6 +20,7 @@ local UnitFactionGroup = UnitFactionGroup
 local DisableAddOn = DisableAddOn
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
+local IsSpellKnown = IsSpellKnown
 local IsInRaid = IsInRaid
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
@@ -27,7 +28,7 @@ local GetBindingKey = GetBindingKey
 local SetBinding = SetBinding
 local SaveBindings = SaveBindings
 local GetCurrentBindingSet = GetCurrentBindingSet
-local GetSpecialization = (E.Classic or E.TBC and LCS.GetSpecialization) or GetSpecialization
+local GetSpecialization = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecialization) or GetSpecialization
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -129,6 +130,8 @@ E.DispelClasses = {
 
 if E.Retail then
 	E.DispelClasses.SHAMAN.Curse = true
+elseif E.Wrath then
+	E.DispelClasses.SHAMAN.Curse = IsSpellKnown(51886)
 else
 	E.DispelClasses.SHAMAN.Poison = true
 	E.DispelClasses.SHAMAN.Disease = true
@@ -379,8 +382,9 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.tooltip.healthBar.font = font
 	E.db.unitframe.font = font
 	E.db.unitframe.units.party.rdebuffs.font = font
-	E.db.unitframe.units.raid.rdebuffs.font = font
-	E.db.unitframe.units.raid40.rdebuffs.font = font
+	E.db.unitframe.units.raid1.rdebuffs.font = font
+	E.db.unitframe.units.raid2.rdebuffs.font = font
+	E.db.unitframe.units.raid3.rdebuffs.font = font
 
 	E:StaggeredUpdateAll()
 end
@@ -1016,7 +1020,7 @@ do -- BFA Convert, deprecated..
 				E.db.unitframe.OORAlpha = nil
 			end
 
-			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid','raid40','raidpet','tank','assist'}) do
+			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid1','raid2','raid3','raidpet','tank','assist'}) do
 				if E.db.unitframe.units[unit].rangeCheck ~= nil then
 					local enabled = E.db.unitframe.units[unit].rangeCheck
 					E.db.unitframe.units[unit].fader.enable = enabled
@@ -1092,7 +1096,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		--Heal Prediction is now a table instead of a bool
-		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid','raid40','raidpet'}) do
+		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid1','raid2','raid3','raidpet'}) do
 			if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
 				local enabled = E.db.unitframe.units[unit].healPrediction
 				E.db.unitframe.units[unit].healPrediction = {}
@@ -1818,6 +1822,27 @@ function E:DBConversions()
 	end
 
 	-- development converts
+
+	if E.db.unitframe.units.raid then
+		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
+		E.db.unitframe.units.raid = nil
+	end
+
+	if E.db.unitframe.units.raid40 then
+		E:CopyTable(E.db.unitframe.units.raid3, E.db.unitframe.units.raid40)
+		E.db.unitframe.units.raid40 = nil
+	end
+
+	E.db.unitframe.smartRaidFilter = nil
+
+	if E.db.movers and E.db.movers.ElvUF_RaidMover then
+		E.db.movers.ElvUF_Raid1Mover = E.db.movers.ElvUF_RaidMover
+		E.db.movers.ElvUF_RaidMover = nil
+	end
+	if E.db.movers and E.db.movers.ElvUF_Raid40Mover then
+		E.db.movers.ElvUF_Raid3Mover = E.db.movers.ElvUF_Raid40Mover
+		E.db.movers.ElvUF_Raid40Mover = nil
+	end
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then

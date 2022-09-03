@@ -1,7 +1,7 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bWrath|r
 ## Notes: User Interface Replacement
 ## Author: Elv, Simpy
-## Version: 0.22
+## Version: 3.00
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque

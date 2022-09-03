@@ -124,7 +124,7 @@ local function SkinProgressBars(_, _, line)
 		if label then
 			label:ClearAllPoints()
 			label:Point('CENTER', bar)
-			label:FontTemplate(nil, 14, 'OUTLINE')
+			label:FontTemplate(nil, E.db.general.fontSize, E.db.general.fontStyle)
 		end
 
 		if icon then

@@ -67,29 +67,6 @@ UF.classMaxResourceBar = {
 	DRUID = 5
 }
 
-UF.instanceMapIDs = {
-	[30]	= 40, -- Alterac Valley
-	[489]	= 10, -- Classic Warsong Gulch
-	[529]	= 15, -- Classic Arathi Basin
-	[566]	= 15, -- Eye of the Storm
-	[607]	= 15, -- Strand of the Ancients
-	[628]	= 40, -- Isle of Conquest
-	[726]	= 10, -- Twin Peaks
-	[727]	= 10, -- Silvershard Mines
-	[761]	= 10, -- The Battle for Gilneas
-	[968]	= 10, -- Rated Eye of the Storm
-	[998]	= 10, -- Temple of Kotmogu
-	[1191]	= 40, -- Ashran
-	[1280]	= 40, -- Southshore vs Tarren Mill
-	[1681]	= 15, -- Arathi Basin Winter
-	[1803]	= 10, -- Seething Shore
-	[2106]	= 10, -- Warsong Gulch
-	[2107]	= 15, -- Arathi Basin
-	[2118]	= 40, -- Battle for Wintergrasp
-	[2245]	= 15, -- Deepwind Gorge
-	[3358]	= 15, -- Arathi Basin (NEW - Only Brawl?)
-}
-
 UF.SortAuraFuncs = {
 	TIME_REMAINING = function(a, b, dir)
 		local A = a.noTime and huge or a.expiration or -huge
@@ -631,11 +608,7 @@ function UF:Update_AllFrames()
 		end
 	end
 
-	if UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility()
-	else
-		UF:UpdateAllHeaders()
-	end
+	UF:UpdateAllHeaders()
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -842,8 +815,7 @@ end
 function UF.groupPrototype:AdjustVisibility(Header)
 	if not Header.isForced then
 		local numGroups = Header.numGroups
-		for i=1, #Header.groups do
-			local group = Header.groups[i]
+		for i, group in ipairs(Header.groups) do
 			if i <= numGroups and ((Header.db.raidWideSorting and i <= 1) or not Header.db.raidWideSorting) then
 				group:Show()
 			else
@@ -860,8 +832,8 @@ function UF.groupPrototype:AdjustVisibility(Header)
 end
 
 function UF.headerPrototype:ClearChildPoints()
-	for i=1, self:GetNumChildren() do
-		select(i, self:GetChildren()):ClearAllPoints()
+	for _, child in pairs({ self:GetChildren() }) do
+		child:ClearAllPoints()
 	end
 end
 
@@ -880,13 +852,12 @@ end
 function UF.headerPrototype:Update(isForced)
 	local group = self.groupName
 	local db = UF.db.units[group]
-	local groupName = E:StringTitle(group)
 
-	UF['Update_'..groupName..'Header'](UF, self, db, isForced)
+	UF[self.UpdateHeader](UF, self, db, isForced)
 
 	local i = 1
 	local child = self:GetAttribute('child' .. i)
-	local func = UF['Update_'..groupName..'Frames']
+	local func = UF[self.UpdateFrames]
 
 	while child do
 		self:UpdateChild(func, child, db)
@@ -919,51 +890,6 @@ function UF.headerPrototype:Reset()
 	self:Hide()
 end
 
-UF.SmartSettings = {
-	raid = {},
-	raid40 = { numGroups = 8 },
-}
-
-function UF:HandleSmartVisibility(skip)
-	local sv = UF.SmartSettings
-	sv.raid.numGroups = E.Retail and 6 or 5
-
-	local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
-	if instanceType == 'raid' or instanceType == 'pvp' then
-		local maxInstancePlayers = UF.instanceMapIDs[instanceID]
-		if maxInstancePlayers then
-			maxPlayers = maxInstancePlayers
-		elseif not maxPlayers or maxPlayers == 0 then
-			maxPlayers = 40
-		end
-
-		sv.raid.visibility = '[@raid6,noexists] hide;show'
-		sv.raid40.visibility = '[@raid6,noexists] hide;show'
-		sv.raid.enable = maxPlayers < 40
-		sv.raid40.enable = maxPlayers == 40
-
-		if sv.raid.enable then
-			local maxGroups = E:Round(maxPlayers/5)
-			if sv.raid.numGroups ~= maxGroups and maxGroups > 0 then
-				sv.raid.numGroups = maxGroups
-			end
-		end
-	else
-		sv.raid.visibility = E.Retail and '[@raid6,noexists][@raid31,exists] hide;show' or '[@raid6,noexists][@raid26,exists] hide;show'
-		sv.raid40.visibility = E.Retail and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
-		sv.raid.enable = true
-		sv.raid40.enable = true
-	end
-
-	UF:UpdateAllHeaders(true, skip)
-end
-
-function UF:ZONE_CHANGED_NEW_AREA()
-	if UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility(true)
-	end
-end
-
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
 
@@ -971,8 +897,6 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		UF:Update_AllFrames()
 	elseif isReload then
 		UF:Update_AllFrames()
-	elseif UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility(true)
 	end
 end
 
@@ -988,6 +912,10 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	)
 
 	header.groupName = group
+
+	header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
+	header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
+
 	header:SetParent(parent)
 	header:Show()
 
@@ -998,30 +926,17 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-function UF:GetSmartVisibilitySetting(setting, group, smart, db)
-	if smart then
-		local options = UF.SmartSettings[group]
-		local value = options and options[setting]
-
-		if value ~= nil then
-			return value
-		end
-	end
-
-	return db[setting]
-end
-
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smart, skip)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, skip)
 	local db = UF.db.units[group]
 	local Header = UF[group]
 
-	local numGroups = (group == 'party' and 1) or UF:GetSmartVisibilitySetting('numGroups', group, smart, db)
-	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smart, db)
-	local enable = UF:GetSmartVisibilitySetting('enable', group, smart, db)
-	local name = E:StringTitle(group)
+	local numGroups = (group == 'party' and 1) or db.numGroups
+	local visibility = db.visibility
+	local enable = db.enable
+	local name, isRaidFrames = E:StringTitle(group), strmatch(group, '^raid(%d)') and true
 
 	if not Header then
-		ElvUF:RegisterStyle('ElvUF_'..name, UF['Construct_'..name..'Frames'])
+		ElvUF:RegisterStyle('ElvUF_'..name, UF[format('Construct_%sFrames', isRaidFrames and 'Raid' or name)])
 		ElvUF:SetActiveStyle('ElvUF_'..name)
 
 		if numGroups then
@@ -1030,6 +945,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			Header.groupName = group
 			Header.template = Header.template or template
 			Header.headerTemplate = Header.headerTemplate or headerTemplate
+			Header.isRaidFrame = isRaidFrames
 			if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 			for k, v in pairs(self.groupPrototype) do
 				UF.headerFunctions[group][k] = v
@@ -1070,11 +986,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 		if not UF.headerFunctions[group].Update then
 			UF.headerFunctions[group].Update = function()
-				local func = UF['Update_'..name..'Frames']
-				UF['Update_'..name..'Header'](UF, Header, Header.db)
+				UF[Header.UpdateHeader](UF, Header, Header.db)
 
-				for i = 1, Header:GetNumChildren() do
-					Header:UpdateChild(func, select(i, Header:GetChildren()), Header.db)
+				for _, child in ipairs({ Header:GetChildren() }) do
+					Header:UpdateChild(UF[Header.UpdateFrames], child, Header.db)
 				end
 			end
 		end
@@ -1172,13 +1087,13 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:UpdateAllHeaders(smart, skip)
+function UF:UpdateAllHeaders(skip)
 	if E.private.unitframe.disabledBlizzardFrames.party then
 		ElvUF:DisableBlizzard('party')
 	end
 
 	for group in pairs(UF.headers) do
-		UF:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, skip)
+		UF:CreateAndUpdateHeaderGroup(group, nil, nil, nil, skip)
 	end
 end
 
@@ -1440,10 +1355,12 @@ local Blacklist = {
 	targettarget = { enable = true, fader = true },
 	targettargettarget = { enable = true, fader = true },
 	party = { enable = true, fader = true, visibility = true },
-	raid = { enable = true, fader = true, visibility = true },
-	raid40 = { enable = true, fader = true, visibility = true },
 	raidpet = { enable = true, fader = true, visibility = true },
 }
+
+for i = 1, 3 do
+	Blacklist['raid'..i] = { enable = true, fader = true, visibility = true }
+end
 
 function UF:MergeUnitSettings(from, to)
 	if from == to then
@@ -1663,7 +1580,6 @@ function UF:Initialize()
 
 	UF:UpdateColors()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
-	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 

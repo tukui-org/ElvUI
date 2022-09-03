@@ -26,18 +26,17 @@ local hooksecurefunc = hooksecurefunc
 
 local function UpdateGreetingFrame()
 	local i = 1
-	while _G['QuestTitleButton'..i]:IsVisible() do
-		local title = _G['QuestTitleButton'..i]
-		local icon = _G['QuestTitleButton'..i..'QuestIcon']
-		local text = title:GetFontString()
-		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
-
+	local title = _G['QuestTitleButton'..i]
+	while (title and title:IsVisible()) do
 		_G.GreetingText:SetTextColor(1, 1, 1)
 		_G.CurrentQuestsText:SetTextColor(1, 0.80, 0.10)
 		_G.AvailableQuestsText:SetTextColor(1, 0.80, 0.10)
 
+		local text = title:GetFontString()
+		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
 		title:SetText(textString)
 
+		local icon = _G['QuestTitleButton'..i..'QuestIcon']
 		if title.isActive == 1 then
 			icon:SetTexture(132048)
 			icon:SetDesaturation(1)
@@ -50,17 +49,18 @@ local function UpdateGreetingFrame()
 
 		local numEntries = GetNumQuestLogEntries()
 		for y = 1, numEntries do
-			local questLogTitleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
-			if strmatch(questLogTitleText, textString) then
-				if (isComplete == 1 or IsQuestComplete(questId)) then
-					icon:SetDesaturation(0)
-					text:SetTextColor(1, .8, .1)
-					break
-				end
+			local titleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
+			if not titleText then
+				break
+			elseif strmatch(titleText, textString) and (isComplete == 1 or IsQuestComplete(questId)) then
+				icon:SetDesaturation(0)
+				text:SetTextColor(1, .8, .1)
+				break
 			end
 		end
 
 		i = i + 1
+		title = _G['QuestTitleButton'..i]
 	end
 end
 
@@ -208,14 +208,12 @@ function S:BlizzardQuestFrames()
 			frame:SetBackdropBorderColor(1, 0.80, 0.10)
 			_G[frame:GetName()..'Name']:SetTextColor(1, 0.80, 0.10)
 
-			local item, name, link
-
 			for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
-				item = _G['QuestInfoRewardsFrameQuestInfoItem'..i]
+				local item = _G['QuestInfoRewardsFrameQuestInfoItem'..i]
 
 				if item ~= frame then
-					name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
-					link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
+					local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
+					local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
 					questQualityColors(item, name, link)
 				end
@@ -224,12 +222,10 @@ function S:BlizzardQuestFrames()
 	end)
 
 	hooksecurefunc('QuestInfo_ShowRewards', function()
-		local item, name, link
-
 		for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
-			item = _G['QuestInfoRewardsFrameQuestInfoItem'..i]
-			name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
-			link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
+			local item = _G['QuestInfoRewardsFrameQuestInfoItem'..i]
+			local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
+			local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
 			questQualityColors(item, name, link)
 		end
@@ -237,7 +233,6 @@ function S:BlizzardQuestFrames()
 
 	hooksecurefunc('QuestInfo_ShowRequiredMoney', function()
 		local requiredMoney = GetQuestLogRequiredMoney()
-
 		if requiredMoney > 0 then
 			if requiredMoney > GetMoney() then
 				_G.QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
@@ -253,7 +248,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, 0.1)
 
 		local moneyToGet = GetQuestMoneyToGet()
-
 		if moneyToGet > 0 then
 			if moneyToGet > GetMoney() then
 				_G.QuestProgressRequiredMoneyText:SetTextColor(.6, .6, .6)
@@ -262,12 +256,10 @@ function S:BlizzardQuestFrames()
 			end
 		end
 
-		local item, name, link
-
 		for i = 1, _G.MAX_REQUIRED_ITEMS do
-			item = _G['QuestProgressItem'..i]
-			name = _G['QuestProgressItem'..i..'Name']
-			link = item.type and GetQuestItemLink(item.type, item:GetID())
+			local item = _G['QuestProgressItem'..i]
+			local name = _G['QuestProgressItem'..i..'Name']
+			local link = item.type and GetQuestItemLink(item.type, item:GetID())
 
 			questQualityColors(item, name, link)
 		end
@@ -278,11 +270,9 @@ function S:BlizzardQuestFrames()
 		local numEntries = GetNumQuestLogEntries()
 		local scrollOffset = HybridScrollFrame_GetOffset(_G.QuestLogListScrollFrame)
 		local buttons = _G.QuestLogListScrollFrame.buttons
-		local questIndex
 
 		for i = 1, 22 do
-			questIndex = i + scrollOffset
-
+			local questIndex = i + scrollOffset
 			if questIndex <= numEntries then
 				local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
 				if isHeader then
@@ -303,7 +293,6 @@ function S:BlizzardQuestFrames()
 
 	hooksecurefunc('QuestLog_UpdateQuestDetails', function()
 		local requiredMoney = GetQuestLogRequiredMoney()
-
 		if requiredMoney > 0 then
 			if requiredMoney > GetMoney() then
 				_G.QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
@@ -330,7 +319,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestInfoQuestType:SetTextColor(textR, textG, textB)
 
 		local requiredMoney = GetQuestLogRequiredMoney()
-
 		if requiredMoney > 0 then
 			if requiredMoney > GetMoney() then
 				_G.QuestInfoRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
@@ -341,12 +329,10 @@ function S:BlizzardQuestFrames()
 
 		_G.QuestLogItem1:Point('TOPLEFT', _G.QuestLogItemChooseText, 'BOTTOMLEFT', 1, -3)
 
-		local numObjectives = GetNumQuestLeaderBoards()
-		local _, objType, finished
 		local numVisibleObjectives = 0
-
+		local numObjectives = GetNumQuestLeaderBoards()
 		for i = 1, numObjectives do
-			_, objType, finished = GetQuestLogLeaderBoard(i)
+			local _, objType, finished = GetQuestLogLeaderBoard(i)
 			if objType ~= 'spell' then
 				numVisibleObjectives = numVisibleObjectives + 1
 				local objective = _G['QuestLogObjective'..numVisibleObjectives]
@@ -361,12 +347,10 @@ function S:BlizzardQuestFrames()
 			end
 		end
 
-		local item, name, link
-
 		for i = 1, _G.MAX_NUM_ITEMS do
-			item = _G['QuestLogItem'..i]
-			name = _G['QuestLogItem'..i..'Name']
-			link = item.type and (GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
+			local item = _G['QuestLogItem'..i]
+			local name = _G['QuestLogItem'..i..'Name']
+			local link = item.type and (GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
 			questQualityColors(item, name, link)
 		end
@@ -388,7 +372,10 @@ function S:BlizzardQuestFrames()
 
 		local numObjectives = GetNumQuestLeaderBoards()
 		for i = 1, numObjectives do
-			_G['QuestInfoObjective'..i]:SetTextColor(textR, textG, textB)
+			local text = _G['QuestInfoObjective'..i]
+			if not text then break end
+
+			text:SetTextColor(textR, textG, textB)
 		end
 
 		-- Reward frame text

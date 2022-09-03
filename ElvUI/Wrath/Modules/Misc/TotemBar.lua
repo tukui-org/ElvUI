@@ -174,7 +174,6 @@ function AB:PositionAndSizeTotemBar()
 	local buttonSpacing = E.db.general.totems.spacing
 	local size = E.db.general.totems.buttonSize
 
-	-- TODO: Wrath fix pixels
 	local mainSize = (size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
 	bar:Width(mainSize)
 	barFrame:Width(mainSize)
@@ -192,7 +191,7 @@ function AB:PositionAndSizeTotemBar()
 	local summonButton = _G.MultiCastSummonSpellButton
 	summonButton:ClearAllPoints()
 	summonButton:Size(size)
-	summonButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2) -- TODO: Wrath
+	summonButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2)
 
 	for i = 1, numActiveSlots do
 		local button = _G['MultiCastSlotButton'..i]

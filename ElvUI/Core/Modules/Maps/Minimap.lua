@@ -339,6 +339,7 @@ function M:UpdateSettings()
 			local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
 			GameTimeFrame:ClearAllPoints()
 			GameTimeFrame:Point(position, Minimap, xOffset, yOffset)
+			GameTimeFrame:SetFrameLevel(MMHolder:GetFrameLevel()+1)
 			M:SetScale(GameTimeFrame, scale)
 			GameTimeFrame:Show()
 		end
