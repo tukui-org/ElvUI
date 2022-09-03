@@ -1587,7 +1587,7 @@ Party.resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateHeaderGrou
 Party.summonIcon = GetOptionsTable_SummonIcon(UF.CreateAndUpdateHeaderGroup, 'party')
 Party.pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateHeaderGroup, 'party')
 
-Party.petsGroup = ACH:Group(L["Party Pets"], nil, nil, nil, function(info) return E.db.unitframe.units.party.petsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.party.petsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
+Party.petsGroup = ACH:Group(L["Pet Group"], nil, -2, nil, function(info) return E.db.unitframe.units.party.petsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.party.petsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
 Party.petsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Party.petsGroup.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 Party.petsGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = 1000, step = 1 })
@@ -1600,7 +1600,7 @@ Party.petsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 
 Party.petsGroup.args.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup')
 Party.petsGroup.args.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup')
 
-Party.targetsGroup = ACH:Group(L["Party Targets"], nil, nil, nil, function(info) return E.db.unitframe.units.party.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.party.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
+Party.targetsGroup = ACH:Group(L["Target Group"], nil, -1, nil, function(info) return E.db.unitframe.units.party.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.party.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
 Party.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Party.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
 Party.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
@@ -1667,64 +1667,37 @@ RaidPet.portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid
 RaidPet.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 RaidPet.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 
-GroupUnits.tank = ACH:Group(L["Tank"], nil, nil, nil, function(info) return E.db.unitframe.units.tank[info[#info]] end, function(info, value) E.db.unitframe.units.tank[info[#info]] = value UF:CreateAndUpdateHeaderGroup('tank') end)
-local Tank = GroupUnits.tank.args
+for unit, locale in pairs({ tank = 'Tank', assist = 'Assist' }) do
+	GroupUnits[unit] = ACH:Group(L[locale], nil, nil, nil, function(info) return E.db.unitframe.units[unit][info[#info]] end, function(info, value) E.db.unitframe.units[unit][info[#info]] = value UF:CreateAndUpdateHeaderGroup(unit) end)
 
-Tank.enable = ACH:Toggle(L["Enable"], nil, 1)
-Tank.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Tank Frames"], nil, { unit = 'tank' }) end)
-Tank.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank')
-Tank.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'tank')
+	GroupUnits[unit].args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	GroupUnits[unit].args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, unit)
+	GroupUnits[unit].args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, unit)
 
-Tank.targetsGroup = ACH:Group(L["Tank Target"], nil, nil, nil, function(info) return E.db.unitframe.units.tank.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.tank.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('tank') end)
-Tank.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Tank.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
-Tank.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
-Tank.targetsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
-Tank.targetsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 })
-Tank.targetsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
-Tank.targetsGroup.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
-Tank.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank', nil, 'targetsGroup')
-Tank.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'tank', nil, 'targetsGroup')
+	GroupUnits[unit].args.targetsGroup = ACH:Group(L["Target Group"], nil, -1, nil, function(info) return E.db.unitframe.units[unit].targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units[unit].targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup(unit) end)
+	GroupUnits[unit].args.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	GroupUnits[unit].args.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
+	GroupUnits[unit].args.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
+	GroupUnits[unit].args.targetsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
+	GroupUnits[unit].args.targetsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 })
+	GroupUnits[unit].args.targetsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
+	GroupUnits[unit].args.targetsGroup.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
+	GroupUnits[unit].args.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, unit, nil, 'targetsGroup')
+	GroupUnits[unit].args.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, unit, nil, 'targetsGroup')
 
-Tank.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
-Tank.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+	GroupUnits[unit].args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+	GroupUnits[unit].args.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+end
 
-GroupUnits.assist = ACH:Group(L["Assist"], nil, nil, nil, function(info) return E.db.unitframe.units.assist[info[#info]] end, function(info, value) E.db.unitframe.units.assist[info[#info]] = value UF:CreateAndUpdateHeaderGroup('assist') end)
-local Assist = GroupUnits.assist.args
-
-Assist.enable = ACH:Toggle(L["Enable"], nil, 1)
-Assist.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Assist Frames"], nil, { unit = 'assist' }) end)
-Assist.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.fader = GetOptionsTable_Fader(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist')
-Assist.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'assist')
-
-Assist.targetsGroup = ACH:Group(L["Assist Target"], nil, nil, nil, function(info) return E.db.unitframe.units.assist.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.assist.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('assist') end)
-Assist.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Assist.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
-Assist.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
-Assist.targetsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
-Assist.targetsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 })
-Assist.targetsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
-Assist.targetsGroup.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
-Assist.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist', nil, 'targetsGroup')
-Assist.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'assist', nil, 'targetsGroup')
-
-Assist.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
-Assist.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+GroupUnits.tank.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Tank Frames"], nil, { unit = 'tank' }) end)
+GroupUnits.assist.args.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Assist Frames"], nil, { unit = 'assist' }) end)
 
 C:RefreshCustomTexts() -- Fire the current profile for custom texts
