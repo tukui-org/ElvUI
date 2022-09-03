@@ -1238,12 +1238,17 @@ UnitFrame.frameGlowGroup.args.mouseoverGlow.args.color = ACH:Color(L["COLOR"], n
 UnitFrame.individualUnits = ACH:Group(L["Individual Units"], nil, 15, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
 local IndividualUnits = UnitFrame.individualUnits.args
 
+local SingleCopyFrom = {}
+for name in pairs(UF.units) do
+	SingleCopyFrom[name] = gsub(E:StringTitle(name), 't(arget)', 'T%1')
+end
+
 local function CopyFromSingle(info)
 	local tbl = {}
 
-	for name in pairs(UF.units) do
+	for name, locale in pairs(SingleCopyFrom) do
 		if name ~= info[#info - 1] then
-			tbl[name] = gsub(E:StringTitle(name), 't(arget)', 'T%1')
+			tbl[name] = locale
 		end
 	end
 
