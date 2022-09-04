@@ -132,16 +132,14 @@ function AFK:OnEvent(event, arg1, ...)
 		AFK:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 
-	if not E.db.general.afk or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
+	if not E.db.general.afk or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
 
 	if UnitCastingInfo('player') then -- Don't activate afk if player is crafting stuff, check back in 30 seconds
 		AFK:ScheduleTimer('OnEvent', 30)
 		return
 	end
 
-	if arg1 == 'player' then
-		AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
-	end
+	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
 end
 
 function AFK:Chat_OnMouseWheel(delta)
