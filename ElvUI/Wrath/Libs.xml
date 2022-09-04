@@ -18,7 +18,6 @@
 	<Include file='..\Libraries\Core\Taintless\Taintless.xml'/>
 	<Include file='..\Libraries\Core\UTF8\UTF8.xml'/>
 
-	<Include file='..\Libraries\TBC\LibQuestXP\LibQuestXP.xml'/>
 	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
 	<Script file='..\Libraries\TBC\LibClassicSpecs\LibClassicSpecs.lua'/>
 
