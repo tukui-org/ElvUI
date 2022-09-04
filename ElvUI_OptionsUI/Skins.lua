@@ -112,7 +112,6 @@ if E.Retail then
 	blizzard.orderhall = L["Orderhall"]
 	blizzard.petbattleui = L["Pet Battle"]
 	blizzard.playerChoice = L["Player Choice Frame"]
-	blizzard.pvp = L["PvP Frames"]
 	blizzard.runeforge = L["Runeforge"]
 	blizzard.scrapping = L["SCRAP_BUTTON"]
 	blizzard.soulbinds = L["Soulbinds"]
@@ -139,4 +138,5 @@ if E.Retail or E.Wrath then
 	blizzard.alertframes = L["Alert Frames"]
 	blizzard.barber = L["BARBERSHOP"]
 	blizzard.calendar = L["Calendar Frame"]
+	blizzard.pvp = L["PvP Frames"]
 end
