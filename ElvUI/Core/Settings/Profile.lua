@@ -2289,6 +2289,7 @@ P.unitframe.units.party.targetsGroup.buffIndicator = nil
 P.unitframe.units.party.targetsGroup.healPrediction = nil
 
 P.unitframe.units.raid1 = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid1.customName = ''
 P.unitframe.units.raid1.groupsPerRowCol = 1
 P.unitframe.units.raid1.groupBy = 'GROUP'
 P.unitframe.units.raid1.buffs.numrows = 1
@@ -2322,7 +2323,7 @@ P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.raid2.height = 27
 P.unitframe.units.raid2.numGroups = 5
-P.unitframe.units.raid2.visibility = '[@raid11,exists][@raid26,noexists] hide;show'
+P.unitframe.units.raid2.visibility = '[@raid11,noexists][@raid26,exists] hide;show'
 P.unitframe.units.raid2.rdebuffs.enable = false
 P.unitframe.units.raid2.power.enable = false
 P.unitframe.units.raid2.roleIcon.enable = false

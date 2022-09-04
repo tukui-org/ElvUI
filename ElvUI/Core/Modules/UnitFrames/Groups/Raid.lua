@@ -55,8 +55,14 @@ function UF:Update_RaidHeader(header, db)
 	if not parent.positioned then
 		parent:ClearAllPoints()
 		parent:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
-		E:CreateMover(parent, parent:GetName()..'Mover', L[format("Raid %d Frames", gsub(parent.groupName, '.-(%d)', '%1'))], nil, nil, nil, 'ALL,RAID', nil, format('unitframe,groupUnits,%s,generalGroup', parent.groupName))
+		E:CreateMover(parent, parent:GetName()..'Mover', format(L["Raid Frames %d"], parent.raidFrameN), nil, nil, nil, 'ALL,RAID', nil, format('unitframe,groupUnits,%s,generalGroup', parent.groupName))
 		parent.positioned = true
+	end
+
+	if db.customName ~= '' then
+		parent.mover:SetFormattedText('%s - %s', format(L["Raid Frames %d"], parent.raidFrameN), db.customName)
+	else
+		parent.mover:SetFormattedText(L["Raid Frames %d"], parent.raidFrameN)
 	end
 end
 

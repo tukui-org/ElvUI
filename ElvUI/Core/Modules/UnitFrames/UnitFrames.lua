@@ -946,6 +946,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			Header.template = Header.template or template
 			Header.headerTemplate = Header.headerTemplate or headerTemplate
 			Header.isRaidFrame = isRaidFrames
+			Header.raidFrameN = isRaidFrames and gsub(group, '.-(%d)', '%1')
 			if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 			for k, v in pairs(self.groupPrototype) do
 				UF.headerFunctions[group][k] = v
