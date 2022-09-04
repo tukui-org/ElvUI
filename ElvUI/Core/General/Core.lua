@@ -1324,10 +1324,10 @@ function E:DBConvertSL()
 	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
 		E.db.unitframe.units.party.groupBy = 'ROLE'
 	end
-	if E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE' then
+	if E.db.unitframe.units.raid and (E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE') then
 		E.db.unitframe.units.raid.groupBy = 'ROLE'
 	end
-	if E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE' then
+	if E.db.unitframe.units.raid40 and (E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE') then
 		E.db.unitframe.units.raid40.groupBy = 'ROLE'
 	end
 	if E.db.unitframe.units.raidpet.groupBy == 'ROLE2' or E.db.unitframe.units.raidpet.groupBy == 'CLASSROLE' then
@@ -1836,11 +1836,11 @@ function E:DBConversions()
 
 	E.db.unitframe.smartRaidFilter = nil
 
-	if E.db.movers.ElvUF_RaidMover then
+	if E.db.movers and E.db.movers.ElvUF_RaidMover then
 		E.db.movers.ElvUF_Raid1Mover = E.db.movers.ElvUF_RaidMover
 		E.db.movers.ElvUF_RaidMover = nil
 	end
-	if E.db.movers.ElvUF_Raid40Mover then
+	if E.db.movers and E.db.movers.ElvUF_Raid40Mover then
 		E.db.movers.ElvUF_Raid3Mover = E.db.movers.ElvUF_Raid40Mover
 		E.db.movers.ElvUF_Raid40Mover = nil
 	end
