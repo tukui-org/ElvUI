@@ -936,9 +936,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local db = UF.db.units[group]
 	local Header = UF[group]
 
-	local numGroups = (group == 'party' and 1) or (db.numGroups and min(UF.maxAllowedGroups or 8, db.numGroups))
-	local visibility = db.visibility
 	local enable = db.enable
+	local visibility = db.visibility
+	local numGroups = (group == 'party' and 1) or (db.numGroups and min(UF.maxAllowedGroups or 8, db.numGroups))
 	local name, isRaidFrames = E:StringTitle(group), strmatch(group, '^raid(%d)') and true
 
 	if not Header then
