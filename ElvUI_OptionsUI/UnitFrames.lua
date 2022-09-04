@@ -428,9 +428,12 @@ local function UpdateCustomTextGroup(unit)
 			end
 		end
 	elseif unit == 'boss' or unit == 'arena' then
-		for i = 1, 5 do
-			UF:Configure_CustomTexts(UF[unit..i])
-			UF[unit..i]:UpdateTags()
+		for i = 1, 10 do
+			local unitframe = UF[unit..i]
+			if unitframe then
+				UF:Configure_CustomTexts(unitframe)
+				unitframe:UpdateTags()
+			end
 		end
 	else
 		UF:Configure_CustomTexts(UF[unit])
