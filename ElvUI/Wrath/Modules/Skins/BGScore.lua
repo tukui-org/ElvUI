@@ -14,10 +14,8 @@ function S:SkinWorldStateScore()
 
 	local WorldStateScoreFrame = _G.WorldStateScoreFrame
 	WorldStateScoreFrame:EnableMouse(true)
-	WorldStateScoreFrame:StripTextures()
-	WorldStateScoreFrame:CreateBackdrop('Transparent')
-	WorldStateScoreFrame.backdrop:Point('TOPLEFT', 10, -15)
-	WorldStateScoreFrame.backdrop:Point('BOTTOMRIGHT', -113, 67)
+
+	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -14, -70, 73)
 
 	S:HandleCloseButton(_G.WorldStateScoreFrameCloseButton, WorldStateScoreFrame.backdrop)
 
