@@ -890,8 +890,14 @@ function UF.headerPrototype:Reset()
 	self:Hide()
 end
 
+function UF:SetMaxAllowedGroups()
+	local _, instanceType, difficultyID = GetInstanceInfo()
+	UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+end
+
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
+	UF:SetMaxAllowedGroups()
 
 	if initLogin then
 		UF:Update_AllFrames()
@@ -930,7 +936,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local db = UF.db.units[group]
 	local Header = UF[group]
 
-	local numGroups = (group == 'party' and 1) or db.numGroups
+	local numGroups = (group == 'party' and 1) or min(UF.maxAllowedGroups or 1, db.numGroups)
 	local visibility = db.visibility
 	local enable = db.enable
 	local name, isRaidFrames = E:StringTitle(group), strmatch(group, '^raid(%d)') and true
@@ -1581,6 +1587,7 @@ function UF:Initialize()
 
 	UF:UpdateColors()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
+	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'SetMaxAllowedGroups')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
