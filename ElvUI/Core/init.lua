@@ -73,9 +73,6 @@ E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
--- TODO: Move back to Core.lua
-E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
-
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
