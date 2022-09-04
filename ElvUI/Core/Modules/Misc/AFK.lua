@@ -115,9 +115,9 @@ function AFK:SetAFK(status)
 	end
 end
 
-function AFK:OnEvent(event, ...)
+function AFK:OnEvent(event, arg1, ...)
 	if event == 'PLAYER_REGEN_DISABLED' or event == 'LFG_PROPOSAL_SHOW' or event == 'UPDATE_BATTLEFIELD_STATUS' then
-		if event ~= 'UPDATE_BATTLEFIELD_STATUS' or (GetBattlefieldStatus(...) == 'confirm') then
+		if event ~= 'UPDATE_BATTLEFIELD_STATUS' or (GetBattlefieldStatus(arg1, ...) == 'confirm') then
 			AFK:SetAFK(false)
 		end
 
@@ -139,8 +139,7 @@ function AFK:OnEvent(event, ...)
 		return
 	end
 
-	local unit = ...
-	if unit == 'player' then
+	if arg1 == 'player' then
 		AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
 	end
 end
