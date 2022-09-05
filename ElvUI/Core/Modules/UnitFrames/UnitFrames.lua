@@ -582,12 +582,11 @@ function UF:Update_AllFrames()
 	UF:Update_StatusBars()
 
 	for unit in pairs(UF.units) do
+		UF[unit]:Update()
 		if UF.db.units[unit].enable then
-			UF[unit]:Update()
 			UF[unit]:Enable()
 			E:EnableMover(UF[unit].mover:GetName())
 		else
-			UF[unit]:Update()
 			UF[unit]:Disable()
 			E:DisableMover(UF[unit].mover:GetName())
 		end
