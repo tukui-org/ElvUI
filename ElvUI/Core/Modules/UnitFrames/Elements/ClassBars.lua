@@ -13,6 +13,8 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player
 
 local AltManaTypes = { Rage = 1 }
+local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower' }
+
 if E.Retail then
 	AltManaTypes.LunarPower = 8
 	AltManaTypes.Maelstrom = 11
@@ -212,17 +214,8 @@ function UF:Configure_ClassBar(frame)
 			E:EnableMover(bars.Holder.mover:GetName())
 		end
 
-		if not db.classbar.strataAndLevel.useCustomStrata then
-			bars:SetFrameStrata('LOW')
-		else
-			bars:SetFrameStrata(db.classbar.strataAndLevel.frameStrata)
-		end
-
-		if not db.classbar.strataAndLevel.useCustomLevel then
-			bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
-		else
-			bars:SetFrameLevel(db.classbar.strataAndLevel.frameLevel)
-		end
+		bars:SetFrameStrata(db.classbar.strataAndLevel.useCustomStrata and db.classbar.strataAndLevel.frameStrata or 'LOW')
+		bars:SetFrameLevel(db.classbar.strataAndLevel.useCustomLevel and db.classbar.strataAndLevel.frameLevel or frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 	else
 		bars:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
@@ -248,60 +241,36 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	if frame.USE_CLASSBAR then
-		if frame.ClassPower and not frame:IsElementEnabled('ClassPower') then
-			frame:EnableElement('ClassPower')
-		end
-		if frame.AdditionalPower then
-			local altMana, displayMana = E.db.unitframe.altManaPowers[E.myclass], frame.AdditionalPower.displayPairs[E.myclass]
-			wipe(displayMana)
+		for _, powerType in pairs(ClassPowerTypes) do
+			if frame[powerType] and powerType == 'AdditionalPower' then
+				local altMana, displayMana = E.db.unitframe.altManaPowers[E.myclass], frame.AdditionalPower.displayPairs[E.myclass]
+				wipe(displayMana)
 
-			if altMana then
-				for name, value in pairs(altMana) do
-					local powerType = AltManaTypes[name]
-					if powerType and value then
-						displayMana[powerType] = value
+				if altMana then
+					for name, value in pairs(altMana) do
+						local pType = AltManaTypes[name]
+						if pType and value then
+							displayMana[pType] = value
+						end
 					end
 				end
-			end
 
-			local display = next(displayMana)
-			local enabled = frame:IsElementEnabled('AdditionalPower')
-			if display and not enabled then
-				frame:EnableElement('AdditionalPower')
-			elseif enabled and not display then
-				frame:DisableElement('AdditionalPower')
+				local display = next(displayMana)
+				local enabled = frame:IsElementEnabled(powerType)
+				if display and not enabled then
+					frame:EnableElement(powerType)
+				elseif enabled and not display then
+					frame:DisableElement(powerType)
+				end
+			elseif frame[powerType] and not frame:IsElementEnabled(powerType) then
+				frame:EnableElement(powerType)
 			end
-		end
-		if frame.Runes and not frame:IsElementEnabled('Runes') then
-			frame:EnableElement('Runes')
-		end
-		if frame.Stagger and not frame:IsElementEnabled('Stagger') then
-			frame:EnableElement('Stagger')
-		end
-		if frame.Totems and not frame:IsElementEnabled('Totems') then
-			frame:EnableElement('Totems')
-		end
-		if frame.AlternativePower and not frame:IsElementEnabled('AlternativePower') then
-			frame:EnableElement('AlternativePower')
 		end
 	else
-		if frame.ClassPower and frame:IsElementEnabled('ClassPower') then
-			frame:DisableElement('ClassPower')
-		end
-		if frame.AdditionalPower and frame:IsElementEnabled('AdditionalPower') then
-			frame:DisableElement('AdditionalPower')
-		end
-		if frame.Runes and frame:IsElementEnabled('Runes') then
-			frame:DisableElement('Runes')
-		end
-		if frame.Stagger and frame:IsElementEnabled('Stagger') then
-			frame:DisableElement('Stagger')
-		end
-		if frame.Totems and frame:IsElementEnabled('Totems') then
-			frame:DisableElement('Totems')
-		end
-		if frame.AlternativePower and frame:IsElementEnabled('AlternativePower') then
-			frame:DisableElement('AlternativePower')
+		for _, powerType in pairs(ClassPowerTypes) do
+			if frame[powerType] and frame:IsElementEnabled(powerType) then
+				frame:DisableElement(powerType)
+			end
 		end
 	end
 
