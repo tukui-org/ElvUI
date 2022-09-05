@@ -9,6 +9,7 @@ local gsub, strmatch = gsub, strmatch
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
+local HasMultiCastActionBar = HasMultiCastActionBar
 local hooksecurefunc = hooksecurefunc
 
 local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerStateTemplate')
@@ -258,16 +259,26 @@ function AB:CreateTotemBar()
 	bar.buttons = {}
 
 	local barFrame = _G.MultiCastActionBarFrame
-	barFrame:ClearAllPoints()
-	barFrame:Point('BOTTOMLEFT', bar)
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
+
+	if HasMultiCastActionBar() then
+		barFrame:SetParent(bar)
+		barFrame:ClearAllPoints()
+		barFrame:Point('BOTTOMLEFT', bar)
+	end
 
 	hooksecurefunc(barFrame, 'SetPoint', function(_, _, attachTo)
 		if attachTo ~= bar then
 			barFrame:ClearAllPoints()
 			barFrame:Point('BOTTOMLEFT', bar)
+		end
+	end)
+
+	hooksecurefunc(barFrame, 'SetParent', function(frame, parent)
+		if parent ~= bar then
+			frame:SetParent(bar)
 		end
 	end)
 
