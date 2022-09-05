@@ -3,13 +3,12 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack, ipairs, pairs = unpack, ipairs, pairs
-local gsub, strmatch = gsub, strmatch
+local ipairs, pairs = ipairs, pairs
+local unpack, gsub = unpack, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local HasMultiCastActionBar = HasMultiCastActionBar
 local hooksecurefunc = hooksecurefunc
 
 local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerStateTemplate')
