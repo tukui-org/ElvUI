@@ -180,8 +180,11 @@ function AB:PositionAndSizeTotemBar()
 	bar:Height(size + 2)
 	barFrame:Height(size + 2)
 
-	barFrame:ClearAllPoints()
-	barFrame:Point('BOTTOMLEFT', bar)
+	local _, barFrameAnchor = barFrame:GetPoint()
+	if barFrameAnchor ~= bar then
+		barFrame:ClearAllPoints()
+		barFrame:Point('BOTTOMLEFT', bar)
+	end
 
 	bar.mouseover = E.db.general.totems.mouseover
 	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
