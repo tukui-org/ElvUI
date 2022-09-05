@@ -305,6 +305,7 @@ function AB:CreateTotemBar()
 		bar.buttons[button] = true
 	end
 
+	local isShaman = E.myclass == 'SHAMAN'
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
 		local icon = _G['MultiCastActionButton'..i..'Icon']
@@ -313,19 +314,18 @@ function AB:CreateTotemBar()
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
-		if E.myclass == 'SHAMAN' then
+		if isShaman then
 			button:SetAttribute('type2', 'destroytotem')
 			button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
 		end
+
 		button:StyleButton()
+		normal:SetTexture('')
+		overlay:Hide()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetDrawLayer('ARTWORK')
 		icon:SetInside()
-
-		normal:SetTexture('')
-
-		overlay:Hide()
 
 		hotkey.SetVertexColor = E.noop
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
