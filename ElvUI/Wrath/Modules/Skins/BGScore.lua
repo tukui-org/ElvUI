@@ -14,15 +14,15 @@ function S:SkinWorldStateScore()
 
 	local WorldStateScoreFrame = _G.WorldStateScoreFrame
 	WorldStateScoreFrame:EnableMouse(true)
-	WorldStateScoreFrame:StripTextures()
-	WorldStateScoreFrame:CreateBackdrop('Transparent')
-	WorldStateScoreFrame.backdrop:Point('TOPLEFT', 10, -15)
-	WorldStateScoreFrame.backdrop:Point('BOTTOMRIGHT', -113, 67)
+
+	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -12, -78, 71)
 
 	S:HandleCloseButton(_G.WorldStateScoreFrameCloseButton, WorldStateScoreFrame.backdrop)
 
 	_G.WorldStateScoreScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.WorldStateScoreScrollFrameScrollBar)
+
+	_G.WorldStateScoreScrollFrameScrollBar:Point('RIGHT', _G.WorldStateScoreFrame, 'RIGHT', -44, 38)
 
 	local buttons = {
 		_G.WorldStateScoreFrameKB,
@@ -49,9 +49,6 @@ function S:SkinWorldStateScore()
 
 	_G.WorldStateScoreFrameTab2:Point('LEFT', _G.WorldStateScoreFrameTab1, 'RIGHT', -15, 0)
 	_G.WorldStateScoreFrameTab3:Point('LEFT', _G.WorldStateScoreFrameTab2, 'RIGHT', -15, 0)
-
-	_G.WorldStateScoreScrollFrameScrollBar:Point('TOPLEFT', _G.WorldStateScoreScrollFrame, 'TOPRIGHT', 8, -21)
-	_G.WorldStateScoreScrollFrameScrollBar:Point('BOTTOMLEFT', _G.WorldStateScoreScrollFrame, 'BOTTOMRIGHT', 8, 38)
 
 	for i = 1, 5 do
 		_G['WorldStateScoreColumn'..i]:StyleButton()

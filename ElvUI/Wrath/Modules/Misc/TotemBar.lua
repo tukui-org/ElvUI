@@ -3,8 +3,8 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack, ipairs, pairs = unpack, ipairs, pairs
-local gsub, strmatch = gsub, strmatch
+local ipairs, pairs = ipairs, pairs
+local unpack, gsub = unpack, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -180,6 +180,9 @@ function AB:PositionAndSizeTotemBar()
 	bar:Height(size + 2)
 	barFrame:Height(size + 2)
 
+	barFrame:ClearAllPoints()
+	barFrame:Point('BOTTOMLEFT', bar)
+
 	bar.mouseover = E.db.general.totems.mouseover
 	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
 
@@ -253,18 +256,15 @@ end
 function AB:CreateTotemBar()
 	AB.TotemBar = bar -- Initialized
 
+	bar:SetSize(200, 30)
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
 	local barFrame = _G.MultiCastActionBarFrame
-	barFrame:SetParent(bar)
-	barFrame:ClearAllPoints()
-	barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
-	barFrame.SetParent = E.noop
-	barFrame.SetPoint = E.noop
+	barFrame:SetParent(bar)
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	closeButton:SetTemplate()
@@ -305,6 +305,7 @@ function AB:CreateTotemBar()
 		bar.buttons[button] = true
 	end
 
+	local isShaman = E.myclass == 'SHAMAN'
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
 		local icon = _G['MultiCastActionButton'..i..'Icon']
@@ -313,17 +314,18 @@ function AB:CreateTotemBar()
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
-		button:SetAttribute('type2', 'destroytotem')
-		button:SetAttribute('*totem-slot*', i == 1 and 2 or i == 2 and 1 or i) -- because blizzard doesn't know their own order
+		if isShaman then
+			button:SetAttribute('type2', 'destroytotem')
+			button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
+		end
+
 		button:StyleButton()
+		normal:SetTexture('')
+		overlay:Hide()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetDrawLayer('ARTWORK')
 		icon:SetInside()
-
-		normal:SetTexture('')
-
-		overlay:Hide()
 
 		hotkey.SetVertexColor = E.noop
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support

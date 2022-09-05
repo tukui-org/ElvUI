@@ -998,7 +998,8 @@ end
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
-	if E.Wrath then -- need to check if MultiCastActionBarFrame taints on wrath (it's the totem bar lol)
+	if E.Wrath then -- TotemBar: this still might taint
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 		tremove(tbl, 1)
 		count = 5
 	end

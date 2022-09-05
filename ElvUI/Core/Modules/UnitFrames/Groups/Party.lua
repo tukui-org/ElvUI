@@ -142,6 +142,7 @@ function UF:Update_PartyFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 
 		frame.db = frame.childType == 'target' and db.targetsGroup or db.petsGroup
+
 		-- these are just coming in from the main group and will not export
 		frame.db.disableMouseoverGlow = db.disableMouseoverGlow
 		frame.db.disableTargetGlow = db.disableMouseoverGlow

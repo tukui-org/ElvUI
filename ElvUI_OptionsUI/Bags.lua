@@ -3,7 +3,6 @@ local C, L = unpack(E.OptionsUI)
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
 
-local _G = _G
 local gsub = gsub
 local next = next
 local strmatch = strmatch

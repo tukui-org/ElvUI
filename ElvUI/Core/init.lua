@@ -73,20 +73,14 @@ E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
--- TODO: Move back to Core.lua
-E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
-
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-E.TBC = E.wowtoc >= 20504 and E.wowtoc < 30000 -- TODO: Wrath
-E.Wrath = E.wowtoc >= 30400 and E.wowtoc < 40000 -- TODO: Wrath
+E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 -- Item Qualitiy stuff, also used by MerathilisUI
-E.QualityColors = {}
-for index, value in pairs(_G.BAG_ITEM_QUALITY_COLORS) do
-	E.QualityColors[index] = {r = value.r, g = value.g, b = value.b}
-end
+E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
