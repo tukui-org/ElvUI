@@ -248,9 +248,9 @@ function UF:Configure_ClassBar(frame)
 
 				if altMana then
 					for name, value in pairs(altMana) do
-						local pType = AltManaTypes[name]
-						if pType and value then
-							displayMana[pType] = value
+						local altType = AltManaTypes[name]
+						if altType and value then
+							displayMana[altType] = value
 						end
 					end
 				end
