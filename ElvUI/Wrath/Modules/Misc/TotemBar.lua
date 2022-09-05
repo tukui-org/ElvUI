@@ -260,7 +260,7 @@ function AB:CreateTotemBar()
 	local barFrame = _G.MultiCastActionBarFrame
 	barFrame:SetParent(bar)
 	barFrame:ClearAllPoints()
-	barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
+	barFrame:Point('BOTTOMLEFT', bar)
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
@@ -268,7 +268,7 @@ function AB:CreateTotemBar()
 	hooksecurefunc(barFrame, 'SetPoint', function(_, _, attachTo)
 		if attachTo ~= bar then
 			barFrame:ClearAllPoints()
-			barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
+			barFrame:Point('BOTTOMLEFT', bar)
 		end
 	end)
 
