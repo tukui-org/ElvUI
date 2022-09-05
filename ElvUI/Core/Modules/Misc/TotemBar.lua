@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local TOTEMS = E:GetModule('Totems')
+local T = E:GetModule('Totems')
 
 local _G = _G
 local unpack = unpack
@@ -8,7 +8,7 @@ local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local MAX_TOTEMS = MAX_TOTEMS
 
-function TOTEMS:Update()
+function T:Update()
 	for i = 1, MAX_TOTEMS do
 		local totem = _G['TotemFrameTotem'..i]
 		local button = self.bar[i]
@@ -29,7 +29,7 @@ function TOTEMS:Update()
 	end
 end
 
-function TOTEMS:PositionAndSize()
+function T:PositionAndSize()
 	if not E.private.general.totemBar then return end
 
 	for i = 1, MAX_TOTEMS do
@@ -76,7 +76,7 @@ function TOTEMS:PositionAndSize()
 	self:Update()
 end
 
-function TOTEMS:Initialize()
+function T:Initialize()
 	self.Initialized = true
 
 	if not E.private.general.totemBar then return end
@@ -118,4 +118,4 @@ function TOTEMS:Initialize()
 	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"], nil, nil, nil, nil, nil, 'general,totems')
 end
 
-E:RegisterModule(TOTEMS:GetName())
+E:RegisterModule(T:GetName())
