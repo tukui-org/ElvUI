@@ -2316,21 +2316,21 @@ P.unitframe.units.raid1.power.text_format = ''
 P.unitframe.units.raid1.power.xOffset = -2
 P.unitframe.units.raid1.power.yOffset = 2
 P.unitframe.units.raid1.targetsGroup = nil
-P.unitframe.units.raid1.visibility = '[@raid6,noexists][@raid11,exists] hide;show'
+P.unitframe.units.raid1.visibility = E.Retail and '[@raid6,noexists][@raid21,exists] hide;show' or '[@raid6,noexists][@raid11,exists] hide;show'
 P.unitframe.units.raid1.width = 80
 
 P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.raid2.height = 27
 P.unitframe.units.raid2.numGroups = 5
-P.unitframe.units.raid2.visibility = '[@raid11,noexists][@raid26,exists] hide;show'
+P.unitframe.units.raid2.visibility = E.Retail and '[@raid21,noexists][@raid31,exists] hide;show' or '[@raid11,noexists][@raid26,exists] hide;show'
 P.unitframe.units.raid2.rdebuffs.enable = false
 P.unitframe.units.raid2.power.enable = false
 P.unitframe.units.raid2.roleIcon.enable = false
 
 P.unitframe.units.raid3 = CopyTable(P.unitframe.units.raid2)
 P.unitframe.units.raid3.numGroups = 8
-P.unitframe.units.raid3.visibility = '[@raid26,noexists] hide;show'
+P.unitframe.units.raid3.visibility = E.Retail and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raidpet.pvpclassificationindicator = nil
