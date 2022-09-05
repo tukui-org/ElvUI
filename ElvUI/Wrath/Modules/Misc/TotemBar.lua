@@ -258,7 +258,6 @@ function AB:CreateTotemBar()
 	bar.buttons = {}
 
 	local barFrame = _G.MultiCastActionBarFrame
-	barFrame:SetParent(bar)
 	barFrame:ClearAllPoints()
 	barFrame:Point('BOTTOMLEFT', bar)
 	barFrame:SetScript('OnUpdate', nil)
@@ -269,12 +268,6 @@ function AB:CreateTotemBar()
 		if attachTo ~= bar then
 			barFrame:ClearAllPoints()
 			barFrame:Point('BOTTOMLEFT', bar)
-		end
-	end)
-
-	hooksecurefunc(barFrame, 'SetParent', function(frame, parent)
-		if parent ~= bar then
-			frame:SetParent(bar)
 		end
 	end)
 
