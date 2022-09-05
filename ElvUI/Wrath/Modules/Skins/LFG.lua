@@ -91,7 +91,6 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 
 	-- ScrollBars
-	S:HandleTrimScrollBar(_G.LFGListingFrameActivityViewScrollBar)
 	S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
 
 	-- Role check popup
