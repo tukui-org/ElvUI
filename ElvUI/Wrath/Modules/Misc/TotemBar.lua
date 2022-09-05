@@ -262,9 +262,9 @@ function AB:CreateTotemBar()
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
+	barFrame:SetParent(bar)
 
 	if HasMultiCastActionBar() then
-		barFrame:SetParent(bar)
 		barFrame:ClearAllPoints()
 		barFrame:Point('BOTTOMLEFT', bar)
 	end
