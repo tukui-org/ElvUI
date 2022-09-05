@@ -904,9 +904,8 @@ do
 		if event == 'CHAT_MSG_ADDON' then
 			if sender == PLAYER_NAME then return end
 			if prefix == 'ELVUI_VERSIONCHK' then
-				local msg, ver = tonumber(message), E.version
-				local inCombat = InCombatLockdown()
-				local versionInRange = E.Retail and (floor(E.version) == 12) or E.Classic and (floor(E.version) == 1) or E.Wrath and (floor(E.version) == 3)
+				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
+				local versionInRange = (E.Classic and floor(ver) == 1) or (E.Wrath and floor(ver) == 3) or (floor(ver) == 12)
 				local validRange = msg and versionInRange and (msg > ver)
 
 				E.UserList[E:StripMyRealm(sender)] = msg
