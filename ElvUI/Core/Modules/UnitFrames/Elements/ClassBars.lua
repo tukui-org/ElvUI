@@ -105,6 +105,7 @@ function UF:Configure_ClassBar(frame)
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = E:Scale(frame.CLASSBAR_WIDTH)
 	local SPACING = E:Scale((UF.BORDER + UF.SPACING)*2)
+	local isVertical = frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation
 
 	local color = E.db.unitframe.colors.borderColor
 	if not bars.backdrop.forcedBorderColors then
@@ -175,17 +176,9 @@ function UF:Configure_ClassBar(frame)
 					end
 				end
 
-				if not frame.USE_MINI_CLASSBAR then
-					button.backdrop:Hide()
-				else
-					button.backdrop:Show()
-				end
+				button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
 
-				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
-					button:SetOrientation('VERTICAL')
-				else
-					button:SetOrientation('HORIZONTAL')
-				end
+				button:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 
 				if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Totems' then
 					button.bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
@@ -193,17 +186,9 @@ function UF:Configure_ClassBar(frame)
 			end
 		end
 
-		if (not frame.USE_MINI_CLASSBAR) and frame.USE_CLASSBAR then
-			bars.backdrop:Show()
-		else
-			bars.backdrop:Hide()
-		end
+		bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
 	elseif frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
-		if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
-			bars:SetOrientation('VERTICAL')
-		else
-			bars:SetOrientation('HORIZONTAL')
-		end
+		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
