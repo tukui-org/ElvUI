@@ -253,18 +253,28 @@ end
 function AB:CreateTotemBar()
 	AB.TotemBar = bar -- Initialized
 
+	bar:SetSize(200, 30)
 	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
 	bar.buttons = {}
 
 	local barFrame = _G.MultiCastActionBarFrame
-	barFrame:SetParent(bar)
 	barFrame:ClearAllPoints()
-	barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
-	barFrame.SetParent = E.noop
-	barFrame.SetPoint = E.noop
+
+	hooksecurefunc(barFrame, 'SetPoint', function(_, _, attachTo)
+		if attachTo ~= bar then
+			barFrame:ClearAllPoints()
+			barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
+		end
+	end)
+
+	hooksecurefunc(barFrame, 'SetParent', function(frame, parent)
+		if parent ~= bar then
+			frame:SetParent(bar)
+		end
+	end)
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	closeButton:SetTemplate()
