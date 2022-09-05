@@ -258,7 +258,9 @@ function AB:CreateTotemBar()
 	bar.buttons = {}
 
 	local barFrame = _G.MultiCastActionBarFrame
+	barFrame:SetParent(bar)
 	barFrame:ClearAllPoints()
+	barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
