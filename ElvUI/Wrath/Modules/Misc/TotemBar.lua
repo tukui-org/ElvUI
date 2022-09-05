@@ -181,6 +181,9 @@ function AB:PositionAndSizeTotemBar()
 	bar:Height(size + 2)
 	barFrame:Height(size + 2)
 
+	barFrame:ClearAllPoints()
+	barFrame:Point('BOTTOMLEFT', bar)
+
 	bar.mouseover = E.db.general.totems.mouseover
 	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
 
@@ -264,21 +267,10 @@ function AB:CreateTotemBar()
 	barFrame:SetScript('OnHide', nil)
 	barFrame:SetParent(bar)
 
-	if HasMultiCastActionBar() then
-		barFrame:ClearAllPoints()
-		barFrame:Point('BOTTOMLEFT', bar)
-	end
-
 	hooksecurefunc(barFrame, 'SetPoint', function(_, _, attachTo)
 		if attachTo ~= bar then
 			barFrame:ClearAllPoints()
 			barFrame:Point('BOTTOMLEFT', bar)
-		end
-	end)
-
-	hooksecurefunc(barFrame, 'SetParent', function(frame, parent)
-		if parent ~= bar then
-			frame:SetParent(bar)
 		end
 	end)
 
