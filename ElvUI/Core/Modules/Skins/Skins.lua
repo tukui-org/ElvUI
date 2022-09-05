@@ -569,8 +569,8 @@ do
 	end
 
 	function S:HandleTrimScrollBar(frame)
-		frame.Background:Hide()
 		frame:StripTextures()
+		frame.Background:Hide()
 
 		local track = frame.Track
 		track:SetTemplate('Transparent')
@@ -578,13 +578,12 @@ do
 		track:Point('TOPLEFT', 4, -21)
 		track:Point('BOTTOMRIGHT', -3, 21)
 
-		local thumb = track.Thumb
-		thumb.Middle:Hide()
-		thumb.Begin:Hide()
-		thumb.End:Hide()
-
-		thumb:SetTemplate(nil, true, true)
-		thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+		local thumb = frame:GetThumb()
+		if thumb then
+			thumb:StripTextures()
+			thumb:SetTemplate(nil, true, true)
+			thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+		end
 
 		ReskinScrollBarArrow(frame.Back, 'up')
 		ReskinScrollBarArrow(frame.Forward, 'down')
