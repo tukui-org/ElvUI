@@ -1580,6 +1580,7 @@ P.unitframe = {
 	fontOutline = 'MONOCHROMEOUTLINE',
 	debuffHighlighting = 'FILL',
 	targetOnMouseDown = false,
+	maxAllowedGroups = true,
 	modifiers = {
 		SHIFT = 'NONE',
 		CTRL = 'NONE',

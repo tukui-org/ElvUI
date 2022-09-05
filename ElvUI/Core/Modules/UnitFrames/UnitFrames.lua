@@ -891,8 +891,12 @@ function UF.headerPrototype:Reset()
 end
 
 function UF:SetMaxAllowedGroups()
-	local _, instanceType, difficultyID = GetInstanceInfo()
-	UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+	if UF.db.maxAllowedGroups then
+		local _, instanceType, difficultyID = GetInstanceInfo()
+		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+	else
+		UF.maxAllowedGroups = 8
+	end
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
