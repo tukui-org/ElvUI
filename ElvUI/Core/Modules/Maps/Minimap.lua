@@ -548,11 +548,7 @@ function M:Initialize()
 		_G.MiniMapMailBorder
 	}
 
-	if E.Retail then
-		tinsert(frames, _G.MiniMapTracking)
-	else
-		tinsert(frames, _G.MinimapToggleButton)
-	end
+	tinsert(frames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
 
 	for _, frame in pairs(frames) do
 		frame:Kill()
@@ -590,11 +586,7 @@ function M:Initialize()
 		_G.QueueStatusMinimapButtonBorder:Hide()
 		M:CreateQueueStatusText()
 	elseif _G.MiniMapLFGFrame then
-		if E.Wrath then
-			_G.MiniMapLFGFrameBorder:Hide()
-		else
-			_G.MiniMapLFGBorder:Hide()
-		end
+		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
