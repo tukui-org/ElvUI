@@ -783,11 +783,11 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "UPDATE_BINDINGS" then
 		ForAllButtons(UpdateHotkeys)
 	elseif event == "PLAYER_TARGET_CHANGED" then
-		UpdateAuraCooldowns(event, arg1, ...)
+		UpdateAuraCooldowns()
 		UpdateRangeTimer()
 	elseif event == "UNIT_AURA" then
 		if arg1 == "target" then
-			UpdateAuraCooldowns(event, arg1, ...)
+			UpdateAuraCooldowns()
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE") or
 		((event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") and (arg1 == "player")) or
