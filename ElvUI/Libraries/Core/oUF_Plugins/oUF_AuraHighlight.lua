@@ -140,7 +140,7 @@ local function CheckDispel(_, event, arg1)
 			DispelFilter.Magic = CheckTalentTree(2)
 		end
 	elseif playerClass == 'SHAMAN' then
-		DispelFilter.Curse = CheckTalentTree(3) -- TODO: Maybe instead check specifically for Cleanse Spirit instead?
+		DispelFilter.Curse = IsSpellKnown(51886)
 	end
 end
 
@@ -212,10 +212,13 @@ local frame = CreateFrame('Frame')
 frame:SetScript('OnEvent', CheckDispel)
 frame:RegisterEvent('UNIT_PET', CheckDispel)
 
-if oUF.isRetail then
+if oUF.isRetail or oUF.isWrath then
 	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
+end
+
+if oUF.isRetail then
+	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end
 
 oUF:AddElement('AuraHighlight', Update, Enable, Disable)
