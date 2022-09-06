@@ -1466,6 +1466,10 @@ end
 
 function AB:LAB_CooldownDone(button)
 	AB:SetButtonDesaturation(button, 0)
+
+	if button._state_type == 'action' then
+		AB:UpdateAuraCooldown(button)
+	end
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
