@@ -1825,11 +1825,13 @@ function E:DBConversions()
 
 	-- development converts
 	if E.db.unitframe.units.raid then
+		E.db.unitframe.units.raid1.visibility = nil
 		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
 		E.db.unitframe.units.raid = nil
 	end
 
 	if E.db.unitframe.units.raid40 then
+		E.db.unitframe.units.raid3.visibility = nil
 		E:CopyTable(E.db.unitframe.units.raid3, E.db.unitframe.units.raid40)
 		E.db.unitframe.units.raid40 = nil
 	end
