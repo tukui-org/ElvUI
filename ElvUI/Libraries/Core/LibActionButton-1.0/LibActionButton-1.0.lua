@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 29 -- the real minor version is 83
+local MINOR_VERSION = 30 -- the real minor version is 83
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -59,6 +59,8 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
+
+lib.AuraCooldowns = lib.AuraCooldowns or {}
 
 lib.ChargeCooldowns = lib.ChargeCooldowns or {}
 lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
@@ -102,14 +104,15 @@ local type_meta_map = {
 	custom = Custom_MT
 }
 
-local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons
+local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons, AuraCooldowns = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons, lib.AuraCooldowns
 
 local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
-local UpdateRange -- Sezz: new method
+local UpdateAuraCooldowns -- Simpy
+local UpdateRange -- Sezz
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
@@ -166,6 +169,11 @@ function lib:CreateButton(id, name, header, config)
 	button:RegisterForClicks("AnyUp")
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
+
+	local AuraCooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+	AuraCooldown:SetDrawBling(false)
+	AuraCooldown:SetDrawSwipe(false)
+	button.AuraCooldown = AuraCooldown
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -697,6 +705,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_SHOW")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
+	lib.eventFrame:RegisterEvent("UNIT_AURA")
 
 	lib.eventFrame:RegisterEvent("PLAYER_ENTER_COMBAT")
 	lib.eventFrame:RegisterEvent("PLAYER_LEAVE_COMBAT")
@@ -774,7 +783,10 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "UPDATE_BINDINGS" then
 		ForAllButtons(UpdateHotkeys)
 	elseif event == "PLAYER_TARGET_CHANGED" then
+		UpdateAuraCooldowns(event, arg1, ...)
 		UpdateRangeTimer()
+	elseif event == "UNIT_AURA" then
+		UpdateAuraCooldowns(event, arg1, ...)
 	elseif (event == "ACTIONBAR_UPDATE_STATE") or
 		((event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") and (arg1 == "player")) or
 		((event == "COMPANION_UPDATE") and (arg1 == "MOUNT")) then
@@ -1005,6 +1017,35 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 end
 
 -----------------------------------------------------------
+--- Active Aura Counters for Target ~ By Simpy
+
+function UpdateAuraCooldowns(event, arg1, ...)
+	wipe(AuraCooldowns)
+
+	local filter = UnitIsFriend("player", "target") and "HELPFUL" or "PLAYER"
+
+	local index = 1
+	local name, _, _, _, duration, expiration, source = UnitAura("target", index, filter)
+	while name do
+		if source == 'player' and duration and duration > 0 then
+			AuraCooldowns[name] = { duration = duration, expiration = expiration }
+		end
+
+		index = index + 1
+		name, _, _, _, duration, expiration = UnitAura("target", index, filter)
+	end
+
+	for button in next, ActionButtons do
+		local aura = AuraCooldowns[button.abilityName]
+		if aura then
+			CooldownFrame_Set(button.AuraCooldown, aura.expiration - aura.duration, aura.duration, true)
+		else
+			CooldownFrame_Clear(button.AuraCooldown)
+		end
+	end
+end
+
+-----------------------------------------------------------
 --- KeyBound integration
 
 function Generic:GetBindingAction()
@@ -1147,9 +1188,11 @@ function Update(self, fromUpdateConfig)
 	end
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
+		local abilityName = GetSpellInfo(id)
+		self.abilityName = abilityName
+
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
 			local name = GetSpellInfo(ZoneAbilityFrame.baseName)
-			local abilityName = GetSpellInfo(id)
 			if name == abilityName then
 				texture = GetLastZoneAbilitySpellTexture()
 				self.zoneAbilityDisabled = true
@@ -1372,6 +1415,7 @@ function UpdateCooldown(self)
 
 		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
+
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
 end
 

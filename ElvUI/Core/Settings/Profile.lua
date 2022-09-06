@@ -2390,16 +2390,16 @@ end
 P.cooldown = {
 	threshold = 3,
 	roundTime = true,
+	targetAura = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
-	modRateColor = { r = 0.6, g = 1, b = 0.4 },
+
 	expiringColor = { r = 1, g = 0.2, b = 0.2 },
 	secondsColor = { r = 1, g = 1, b = 0.2 },
 	minutesColor = { r = 1, g = 1, b = 1 },
 	hoursColor = { r = 0.4, g = 1, b = 1 },
 	daysColor = { r = 0.4, g = 0.4, b = 1 },
 
-	modRateIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	expireIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	secondsIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	minutesIndicator = { r = 0.8, g = 0.8, b = 0.8 },
@@ -2409,6 +2409,7 @@ P.cooldown = {
 	mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 	checkSeconds = false,
+	modRateColor = { r = 0.6, g = 1, b = 0.4 },
 	hhmmColor = { r = 0.43, g = 0.43, b = 0.43 },
 	mmssColor = { r = 0.56, g = 0.56, b = 0.56 },
 	hhmmThreshold = -1,
@@ -2675,6 +2676,12 @@ do -- cooldown stuff
 	P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
 	P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
 	P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
+
+	P.actionbar.cooldown.targetAuraColor = { r = 1, g = 0.6, b = 0.1 }
+	P.actionbar.cooldown.expiringAuraColor = { r = 1, g = 0.4, b = 0.1 }
+
+	P.actionbar.cooldown.targetAuraIndicator = { r = 0.6, g = 0.6, b = 0.6 }
+	P.actionbar.cooldown.expiringAuraIndicator = { r = 0.6, g = 0.6, b = 0.6 }
 
 	P.auras.cooldown = CopyTable(P.actionbar.cooldown)
 	P.bags.cooldown = CopyTable(P.actionbar.cooldown)
