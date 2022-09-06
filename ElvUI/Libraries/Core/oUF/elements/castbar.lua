@@ -524,7 +524,7 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 		end
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isWrath then
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
