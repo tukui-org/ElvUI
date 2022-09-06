@@ -99,7 +99,7 @@ if oUF.isRetail then
 	DispelClasses.SHAMAN.Curse = true
 else
 	local cleanse = not oUF.isWrath or IsSpellKnown(51886)
-	DispelClasses.SHAMAN.Curse = oUF.Wrath and cleanse or nil
+	DispelClasses.SHAMAN.Curse = oUF.isWrath and cleanse
 	DispelClasses.SHAMAN.Poison = cleanse
 	DispelClasses.SHAMAN.Disease = cleanse
 
