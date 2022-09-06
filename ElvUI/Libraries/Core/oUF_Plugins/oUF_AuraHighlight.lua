@@ -13,7 +13,7 @@ local BlackList = {}
 --local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
 --local FilterList = {}
 
-local DispelList = {
+local DispelClasses = {
 	PALADIN = { Poison = true, Disease = true },
 	PRIEST = { Magic = true, Disease = true },
 	MONK = { Disease = true, Poison = true },
@@ -24,18 +24,18 @@ local DispelList = {
 }
 
 if oUF.isRetail or oUF.isWrath then
-	DispelList.SHAMAN.Curse = true
+	DispelClasses.SHAMAN.Curse = true
 else
 	local cleanse = not oUF.isWrath or IsSpellKnown(51886)
-	DispelList.SHAMAN.Curse = oUF.Wrath and cleanse or nil
-	DispelList.SHAMAN.Poison = cleanse
-	DispelList.SHAMAN.Disease = cleanse
+	DispelClasses.SHAMAN.Curse = oUF.Wrath and cleanse or nil
+	DispelClasses.SHAMAN.Poison = cleanse
+	DispelClasses.SHAMAN.Disease = cleanse
 
-	DispelList.PALADIN.Magic = true
+	DispelClasses.PALADIN.Magic = true
 end
 
 local playerClass = select(2, UnitClass('player'))
-local DispelFilter = DispelList[playerClass] or {}
+local DispelFilter = DispelClasses[playerClass] or {}
 
 if oUF.isRetail then
 	BlackList[140546] = true -- Fully Mutated
