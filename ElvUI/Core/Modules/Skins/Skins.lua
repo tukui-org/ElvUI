@@ -578,12 +578,13 @@ do
 		track:Point('TOPLEFT', 4, -21)
 		track:Point('BOTTOMRIGHT', -3, 21)
 
-		local thumb = frame:GetThumb()
-		if thumb then
-			thumb:StripTextures()
-			thumb:SetTemplate(nil, true, true)
-			thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
-		end
+		local thumb = track.Thumb
+		thumb.Middle:Hide()
+		thumb.Begin:Hide()
+		thumb.End:Hide()
+
+		thumb:SetTemplate(nil, true, true)
+		thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
 
 		ReskinScrollBarArrow(frame.Back, 'up')
 		ReskinScrollBarArrow(frame.Forward, 'down')

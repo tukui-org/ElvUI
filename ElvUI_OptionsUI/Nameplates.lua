@@ -571,8 +571,8 @@ do
 	end
 end
 
-E.Options.args.nameplates.args.colorsGroup.args.RUNES.args.runeBySpec = ACH:Toggle(E.NewSign..L["Color By Spec"], nil, 11, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
-E.Options.args.nameplates.args.colorsGroup.args.RUNES.args.chargingRunes = ACH:Toggle(E.NewSign..L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.RUNES.args.runeBySpec = ACH:Toggle(L["Color By Spec"], nil, 11, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.RUNES.args.chargingRunes = ACH:Toggle(L["Charging Rune Color"], nil, 11, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
 
 E.Options.args.nameplates.args.playerGroup = GetUnitSettings('PLAYER', L["Player"])
 E.Options.args.nameplates.args.friendlyPlayerGroup = GetUnitSettings('FRIENDLY_PLAYER', L["FRIENDLY_PLAYER"])

@@ -61,18 +61,18 @@ function E:Cooldown_OnUpdate(elapsed)
 				local value, id, nextUpdate, remainder = E:GetTimeInfo(timeLeft, self.threshold, self.hhmmThreshold, self.mmssThreshold, self.modRate ~= 1 and self.modRate)
 				if not forced then self.nextUpdate = nextUpdate end
 
-				local style = E.TimeFormats[id]
+				local style, targetAura = E.TimeFormats[id], self.targetAura and 10 or 0
 				if style then
 					local opt = (id < 3 and self.roundTime) or ((id == 3 or id == 4 or id == 7) and self.showSeconds)
 					local which = (self.textColors and 2 or 1) + (opt and 2 or 0)
 					if self.textColors then
-						self.text:SetFormattedText(style[which], value, self.textColors[id], remainder)
+						self.text:SetFormattedText(style[which], value, self.textColors[id + targetAura], remainder)
 					else
 						self.text:SetFormattedText(style[which], value, remainder)
 					end
 				end
 
-				local color = not self.skipTextColor and self.timeColors[id]
+				local color = not self.skipTextColor and self.timeColors[id + targetAura]
 				if color then self.text:SetTextColor(color.r, color.g, color.b) end
 			end
 		end
@@ -138,6 +138,7 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.textColors = icolors or (E.db.cooldown.useIndicatorColor and E.TimeIndicatorColors)
 	timer.hhmmThreshold = hhmm or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
 	timer.mmssThreshold = mmss or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
+	timer.targetAura = E.db.cooldown.targetAura and parent.targetAura
 	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
 	timer.roundTime = E.db.cooldown.roundTime
 
@@ -254,14 +255,20 @@ end
 function E:GetCooldownColors(db)
 	if not db then db = E.db.cooldown end -- just incase someone calls this without a first arg use the global
 
-	local c15 = E:RGBToHex(db.modRateIndicator.r, db.modRateIndicator.g, db.modRateIndicator.b) -- color for timers with mod rate applied
-	local c14 = E:RGBToHex(db.hhmmColorIndicator.r, db.hhmmColorIndicator.g, db.hhmmColorIndicator.b) -- color for timers that are soon to expire
-	local c13 = E:RGBToHex(db.mmssColorIndicator.r, db.mmssColorIndicator.g, db.mmssColorIndicator.b) -- color for timers that are soon to expire
-	local c12 = E:RGBToHex(db.expireIndicator.r, db.expireIndicator.g, db.expireIndicator.b) -- color for timers that are soon to expire
-	local c11 = E:RGBToHex(db.secondsIndicator.r, db.secondsIndicator.g, db.secondsIndicator.b) -- color for timers that have seconds remaining
-	local c10 = E:RGBToHex(db.minutesIndicator.r, db.minutesIndicator.g, db.minutesIndicator.b) -- color for timers that have minutes remaining
-	local c9 = E:RGBToHex(db.hoursIndicator.r, db.hoursIndicator.g, db.hoursIndicator.b) -- color for timers that have hours remaining
-	local c8 = E:RGBToHex(db.daysIndicator.r, db.daysIndicator.g, db.daysIndicator.b) -- color for timers that have days remaining
+	local ab = E.db.actionbar.cooldown
+	local i8 = E:RGBToHex(ab.expiringAuraIndicator.r, ab.expiringAuraIndicator.g, ab.expiringAuraIndicator.b) -- color for timers with Target Aura
+	local i7 = E:RGBToHex(ab.targetAuraIndicator.r, ab.targetAuraIndicator.g, ab.targetAuraIndicator.b) -- color for timers with Target Aura
+
+	local i6 = E:RGBToHex(db.hhmmColorIndicator.r, db.hhmmColorIndicator.g, db.hhmmColorIndicator.b) -- color for timers that are soon to expire
+	local i5 = E:RGBToHex(db.mmssColorIndicator.r, db.mmssColorIndicator.g, db.mmssColorIndicator.b) -- color for timers that are soon to expire
+	local i4 = E:RGBToHex(db.expireIndicator.r, db.expireIndicator.g, db.expireIndicator.b) -- color for timers that are soon to expire
+	local i3 = E:RGBToHex(db.secondsIndicator.r, db.secondsIndicator.g, db.secondsIndicator.b) -- color for timers that have seconds remaining
+	local i2 = E:RGBToHex(db.minutesIndicator.r, db.minutesIndicator.g, db.minutesIndicator.b) -- color for timers that have minutes remaining
+	local i1 = E:RGBToHex(db.hoursIndicator.r, db.hoursIndicator.g, db.hoursIndicator.b) -- color for timers that have hours remaining
+	local i0 = E:RGBToHex(db.daysIndicator.r, db.daysIndicator.g, db.daysIndicator.b) -- color for timers that have days remaining
+
+	local c9 = ab.expiringAuraColor -- color for timers with Target Aura
+	local c8 = ab.targetAuraColor -- color for timers with Target Aura
 
 	local c7 = db.modRateColor -- color for timers with mod rate applied
 	local c6 = db.hhmmColor -- HH:MM color
@@ -272,7 +279,7 @@ function E:GetCooldownColors(db)
 	local c1 = db.hoursColor -- color for timers that have hours remaining
 	local c0 = db.daysColor -- color for timers that have days remaining
 
-	return c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15
+	return c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, i0, i1, i2, i3, i4, i5, i6, i7, i8
 end
 
 function E:UpdateCooldownOverride(module)
@@ -337,7 +344,20 @@ function E:UpdateCooldownSettings(module)
 		db, timeColors, textColors = E.db[module].cooldown, E.TimeColors[module], E.TimeIndicatorColors[module]
 	end
 
-	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4], timeColors[5], timeColors[6], timeColors[7], textColors[0], textColors[1], textColors[2], textColors[3], textColors[4], textColors[5], textColors[6], textColors[7] = E:GetCooldownColors(db)
+	timeColors[0], timeColors[1], timeColors[2], timeColors[3], timeColors[4], timeColors[5], timeColors[6], timeColors[7], timeColors[8], timeColors[9],
+	textColors[0], textColors[1], textColors[2], textColors[3], textColors[4], textColors[5], textColors[6], textColors[7], textColors[8] = E:GetCooldownColors(db)
+
+	if module == 'actionbar' then
+		for i = 0, 4 do
+			local textc = textColors[i == 4 and 8 or 7]
+			local timec = E:CopyTable({}, timeColors[i == 4 and 9 or 8])
+			timeColors[i+10] = timec
+			textColors[i+10] = textc
+
+			E.TimeColors[i+10] = timec
+			E.TimeIndicatorColors[i+10] = textc
+		end
+	end
 
 	if isModule then
 		E:UpdateCooldownOverride(module)

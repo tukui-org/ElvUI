@@ -1824,7 +1824,6 @@ function E:DBConversions()
 	end
 
 	-- development converts
-
 	if E.db.unitframe.units.raid then
 		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
 		E.db.unitframe.units.raid = nil
