@@ -349,8 +349,13 @@ function E:UpdateCooldownSettings(module)
 
 	if module == 'actionbar' then
 		for i = 0, 4 do
-			E.TimeColors[i+10] = E:CopyTable({}, timeColors[i == 4 and 9 or 8])
-			E.TimeIndicatorColors[i+10] = textColors[i == 4 and 8 or 7]
+			local textc = textColors[i == 4 and 8 or 7]
+			local timec = E:CopyTable({}, timeColors[i == 4 and 9 or 8])
+			timeColors[i+10] = timec
+			textColors[i+10] = textc
+
+			E.TimeColors[i+10] = timec
+			E.TimeIndicatorColors[i+10] = textc
 		end
 	end
 
