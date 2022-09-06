@@ -365,6 +365,7 @@ end
 
 local function onUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
+
 	if(self.casting or self.channeling) then
 		local isCasting = self.casting
 		if(isCasting) then
@@ -411,6 +412,7 @@ local function onUpdate(self, elapsed)
 					self.Time:SetFormattedText('%.1f', self.duration)
 				end
 			end
+
 			self.elapsed = 0
 		end
 
