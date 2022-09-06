@@ -328,9 +328,8 @@ do --this can save some main file locals
 		z['Luckyd-Golemagg']		= ElvBlue -- Druid
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
-		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
-		z['Luckyone-Giantstalker']	= ElvBlue -- Druid
 		z['Luckyone-Thekal']		= ElvBlue -- Druid
+		z['Unluckyone-Thekal']		= ElvBlue -- DK
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
