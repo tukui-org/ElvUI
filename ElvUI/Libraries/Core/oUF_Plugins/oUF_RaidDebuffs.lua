@@ -97,11 +97,11 @@ local DispelList = {
 
 if oUF.isRetail then
 	DispelList.SHAMAN.Curse = true
-elseif oUF.isWrath then
-	DispelList.SHAMAN.Curse = IsSpellKnown(51886)
 else
-	DispelList.SHAMAN.Poison = true
-	DispelList.SHAMAN.Disease = true
+	local cleanse = not oUF.isWrath or IsSpellKnown(51886)
+	DispelList.SHAMAN.Curse = oUF.Wrath and cleanse or nil
+	DispelList.SHAMAN.Poison = cleanse
+	DispelList.SHAMAN.Disease = cleanse
 
 	DispelList.PALADIN.Magic = true
 end
