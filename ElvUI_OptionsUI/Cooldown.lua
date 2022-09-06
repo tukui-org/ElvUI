@@ -80,11 +80,11 @@ local function group(order, db, label)
 		mainArgs.fontGroup = nil
 	elseif db == 'actionbar' then
 		mainArgs.targetAura = ACH:Toggle(E.NewSign..L["Target Aura"], L["Display Target's Aura Duration, when there is no CD displaying."], 3, nil, nil, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:UpdateCooldownSettings(db); end)
-		mainArgs.targetAuraColor = ACH:Color(L["Time Color"], L["Color of the Targets Aura time."], 4)
-		mainArgs.expiringAuraColor = ACH:Color(L["Expiring Color"], L["Color of the Targets Aura time."], 5)
+		mainArgs.targetAuraColor = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 4)
+		mainArgs.expiringAuraColor = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 5)
 
-		iColors.args.targetAuraIndicator = ACH:Color(L["Target Aura Time"], L["Color of the Targets Aura time."], 15, nil, nil, nil, nil, false)
-		iColors.args.expiringAuraIndicator = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time."], 16, nil, nil, nil, nil, false)
+		iColors.args.targetAuraIndicator = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 15, nil, nil, nil, nil, false)
+		iColors.args.expiringAuraIndicator = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 16, nil, nil, nil, nil, false)
 
 	end
 end
