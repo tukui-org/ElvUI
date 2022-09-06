@@ -1380,7 +1380,7 @@ function AB:UpdateAuraCooldown(button, duration)
 	if not cd then return end
 
 	local oldstate = cd.hideText
-	cd.hideText = (duration and duration > 1.5) or (E.db.cooldown.targetAura == false) or nil
+	cd.hideText = (duration and duration > 1.5) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (E.db.cooldown.targetAura == false) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
 		E:Cooldown_ForceUpdate(cd.timer)
@@ -1403,9 +1403,9 @@ function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == 'action' then
 			local _, duration = button:GetCooldown()
-			AB:UpdateAuraCooldown(button, duration)
-			AB:UpdateChargeCooldown(button, duration)
 			AB:SetButtonDesaturation(button, duration)
+			AB:UpdateChargeCooldown(button, duration)
+			AB:UpdateAuraCooldown(button, duration)
 		end
 	end
 end
@@ -1474,9 +1474,9 @@ end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type == 'action' then
-		AB:UpdateAuraCooldown(button, duration)
-		AB:UpdateChargeCooldown(button, duration)
 		AB:SetButtonDesaturation(button, duration)
+		AB:UpdateChargeCooldown(button, duration)
+		AB:UpdateAuraCooldown(button, duration)
 	end
 
 	if button.cooldown then
