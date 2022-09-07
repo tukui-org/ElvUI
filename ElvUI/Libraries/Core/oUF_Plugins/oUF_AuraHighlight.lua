@@ -13,7 +13,7 @@ local BlackList = {}
 --local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
 --local FilterList = {}
 
-local DispelList = {
+local DispelClasses = {
 	PALADIN = { Poison = true, Disease = true },
 	PRIEST = { Magic = true, Disease = true },
 	MONK = { Disease = true, Poison = true },
@@ -24,18 +24,18 @@ local DispelList = {
 }
 
 if oUF.isRetail or oUF.isWrath then
-	DispelList.SHAMAN.Curse = true
-elseif oUF.isWrath then
-	DispelList.SHAMAN.Curse = IsSpellKnown(51886)
+	DispelClasses.SHAMAN.Curse = true
 else
-	DispelList.SHAMAN.Poison = true
-	DispelList.SHAMAN.Disease = true
+	local cleanse = not oUF.isWrath or IsSpellKnown(51886)
+	DispelClasses.SHAMAN.Curse = oUF.isWrath and cleanse
+	DispelClasses.SHAMAN.Poison = cleanse
+	DispelClasses.SHAMAN.Disease = cleanse
 
-	DispelList.PALADIN.Magic = true
+	DispelClasses.PALADIN.Magic = true
 end
 
 local playerClass = select(2, UnitClass('player'))
-local DispelFilter = DispelList[playerClass] or {}
+local DispelFilter = DispelClasses[playerClass] or {}
 
 if oUF.isRetail then
 	BlackList[140546] = true -- Fully Mutated
@@ -140,7 +140,7 @@ local function CheckDispel(_, event, arg1)
 			DispelFilter.Magic = CheckTalentTree(2)
 		end
 	elseif playerClass == 'SHAMAN' then
-		DispelFilter.Curse = CheckTalentTree(3) -- TODO: Maybe instead check specifically for Cleanse Spirit instead?
+		DispelFilter.Curse = IsSpellKnown(51886)
 	end
 end
 
@@ -212,10 +212,13 @@ local frame = CreateFrame('Frame')
 frame:SetScript('OnEvent', CheckDispel)
 frame:RegisterEvent('UNIT_PET', CheckDispel)
 
-if oUF.isRetail then
+if oUF.isRetail or oUF.isWrath then
 	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
+end
+
+if oUF.isRetail then
+	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end
 
 oUF:AddElement('AuraHighlight', Update, Enable, Disable)

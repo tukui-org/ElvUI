@@ -110,10 +110,9 @@ AB.barDefaults = {
 	},
 }
 
-if E.Retail or E.Wrath then
-	AB.barDefaults.bar1.conditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-else
-	AB.barDefaults.bar1.conditions = '[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
+do
+	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui] %d; [possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()) or ''
+	AB.barDefaults.bar1.conditions = fullConditions..'[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
 end
 
 AB.customExitButton = {
@@ -1235,6 +1234,7 @@ function AB:FixKeybindText(button)
 			text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
 			text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
 			text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
+
 			hotkey.SetVertexColor = E.noop
 		end
 
@@ -1399,6 +1399,14 @@ function AB:UpdateChargeCooldown(button, duration)
 	end
 end
 
+function AB:SetAuraCooldownDuration(value)
+	LAB:SetAuraCooldownDuration(value)
+end
+
+function AB:SetAuraCooldowns(enabled)
+	LAB:SetAuraCooldowns(enabled)
+end
+
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == 'action' then
@@ -1558,6 +1566,9 @@ function AB:Initialize()
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
+
+	AB:SetAuraCooldowns(E.db.cooldown.targetAura)
+	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
 	if E.Retail then
 		AB:SetupExtraButton()

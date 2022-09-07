@@ -232,8 +232,10 @@ do -- keep this synced with oUF_AuraHighlight and oUF_RaidDebuffs
 			end
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
-		elseif E.myrole and not ExcludeClass[E.myclass] then
+		elseif E.Retail and (E.myrole and not ExcludeClass[E.myclass]) then
 			dispel.Magic = (E.myrole == 'HEALER')
+		elseif E.Wrath and (E.myclass == 'SHAMAN') then
+			dispel.Curse = IsSpellKnown(51886)
 		end
 	end
 end

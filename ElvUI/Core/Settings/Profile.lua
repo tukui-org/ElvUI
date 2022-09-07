@@ -2409,6 +2409,7 @@ P.cooldown = {
 	mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 	checkSeconds = false,
+	targetAuraDuration = 3600,
 	modRateColor = { r = 0.6, g = 1, b = 0.4 },
 	hhmmColor = { r = 0.43, g = 0.43, b = 0.43 },
 	mmssColor = { r = 0.56, g = 0.56, b = 0.56 },
@@ -2652,7 +2653,7 @@ end
 if E.Retail then
 	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
 else
-	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 10;'
+	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
 	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 end
