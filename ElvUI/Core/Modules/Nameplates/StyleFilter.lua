@@ -610,18 +610,24 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearVisibility(frame, which)
+	local visibility = which == 2
+
+	mod:StyleFilterBaseUpdate(frame, visibility)
+
+	if visibility then
+		frame:ClearAllPoints() -- pull the frame back in
+		frame:Point('CENTER')
+	end
+end
+
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly)
 	local db = mod:PlateDB(frame)
 
 	if frame.StyleFilterChanges then
 		wipe(frame.StyleFilterChanges)
 	end
 
-	if Visibility then
-		mod:StyleFilterBaseUpdate(frame, true)
-		frame:ClearAllPoints() -- pull the frame back in
-		frame:Point('CENTER')
-	end
 	if HealthColor then
 		local h = frame.Health
 		if h.r and h.g and h.b then
@@ -659,9 +665,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		mod:Update_Portrait(frame)
 		frame.Portrait:ForceUpdate()
 	end
-	if NameOnly then
-		mod:StyleFilterBaseUpdate(frame)
-	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
+	if not NameOnly then -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
 		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
 		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
 		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
@@ -1504,6 +1508,12 @@ end
 function mod:StyleFilterUpdate(frame, event)
 	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
+	local c = frame.StyleFilterChanges
+	local hidden = c and (c.NameOnly and 1) or (c.Visibility and 2)
+	if hidden then -- clear them both first
+		c.NameOnly, c.Visibility = nil, nil
+	end
+
 	mod:StyleFilterClear(frame)
 
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
@@ -1511,6 +1521,10 @@ function mod:StyleFilterUpdate(frame, event)
 		if filter then
 			mod:StyleFilterConditionCheck(frame, filter, filter.triggers)
 		end
+	end
+
+	if hidden and c and not (c.NameOnly or c.Visibility) then
+		mod:StyleFilterClearVisibility(frame, hidden)
 	end
 end
 
