@@ -80,13 +80,23 @@ local function group(order, db, label)
 		mainArgs.hideBlizzard = nil
 		mainArgs.fontGroup = nil
 	elseif db == 'actionbar' then
-		mainArgs.targetAura = ACH:Toggle(E.NewSign..L["Target Aura"], L["Display Target's Aura Duration, when there is no CD displaying."], 3, nil, nil, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; AB:SetAuraCooldowns(value); E:UpdateCooldownSettings(db); end)
-		mainArgs.targetAuraColor = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 4)
-		mainArgs.expiringAuraColor = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 5)
+		local auraGroup = ACH:Group(E.NewSign..L["Target Aura"], nil, 5)
+		auraGroup.args.targetAura = ACH:Toggle(L["Enable"], L["Display Target's Aura Duration, when there is no CD displaying."], 1, nil, nil, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; AB:SetAuraCooldowns(value); E:UpdateCooldownSettings(db); end)
+		auraGroup.args.targetAuraDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 }, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; AB:SetAuraCooldownDuration(value); end)
 
-		iColors.args.targetAuraIndicator = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 15, nil, nil, nil, nil, false)
-		iColors.args.expiringAuraIndicator = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 16, nil, nil, nil, nil, false)
+		auraGroup.args.spacer = ACH:Spacer(5)
+		auraGroup.args.targetAuraColor = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 6)
+		auraGroup.args.targetAuraColor.customWidth = 125
+		auraGroup.args.expiringAuraColor = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 7)
+		auraGroup.args.expiringAuraColor.customWidth = 175
 
+		auraGroup.args.targetAuraIndicator = ACH:Color(L["Indicator"], L["Color of the Targets Aura time."], 10, nil, nil, nil, nil, false)
+		auraGroup.args.targetAuraIndicator.customWidth = 125
+		auraGroup.args.expiringAuraIndicator = ACH:Color(L["Indicator Expiring"], L["Color of the Targets Aura time when expiring."], 11, nil, nil, nil, nil, false)
+		auraGroup.args.expiringAuraIndicator.customWidth = 175
+		auraGroup.inline = true
+
+		mainArgs.auraGroup = auraGroup
 	end
 end
 

@@ -116,6 +116,7 @@ local UpdateRange -- Sezz
 
 local UpdateAuraCooldowns -- Simpy
 local AURA_COOLDOWNS_ENABLED = true
+local AURA_COOLDOWNS_DURATION = 0
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
@@ -1038,7 +1039,7 @@ function UpdateAuraCooldowns()
 	local index = 1
 	local name, _, _, _, duration, expiration, source = UnitAura("target", index, filter)
 	while name do
-		if source == 'player' and duration and duration > 0 then
+		if source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
 			AuraCooldowns[name] = { duration = duration, expiration = expiration }
 		end
 
@@ -1057,6 +1058,12 @@ function UpdateAuraCooldowns()
 			end
 		end
 	end
+end
+
+function lib:SetAuraCooldownDuration(value)
+	AURA_COOLDOWNS_DURATION = value
+
+	UpdateAuraCooldowns()
 end
 
 function lib:SetAuraCooldowns(enabled)

@@ -1399,6 +1399,10 @@ function AB:UpdateChargeCooldown(button, duration)
 	end
 end
 
+function AB:SetAuraCooldownDuration(value)
+	LAB:SetAuraCooldownDuration(value)
+end
+
 function AB:SetAuraCooldowns(enabled)
 	LAB:SetAuraCooldowns(enabled)
 end
@@ -1562,6 +1566,9 @@ function AB:Initialize()
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
+
+	AB:SetAuraCooldowns(E.db.cooldown.targetAura)
+	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
 	if E.Retail then
 		AB:SetupExtraButton()

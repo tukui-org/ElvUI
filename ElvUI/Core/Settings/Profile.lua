@@ -2409,6 +2409,7 @@ P.cooldown = {
 	mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 	checkSeconds = false,
+	targetAuraDuration = 3600,
 	modRateColor = { r = 0.6, g = 1, b = 0.4 },
 	hhmmColor = { r = 0.43, g = 0.43, b = 0.43 },
 	mmssColor = { r = 0.56, g = 0.56, b = 0.56 },
