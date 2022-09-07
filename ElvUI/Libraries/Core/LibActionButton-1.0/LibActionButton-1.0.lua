@@ -60,7 +60,7 @@ lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
 
-lib.AuraButtons = lib.AuraButtons or {}
+lib.AuraButtons = lib.AuraButtons or { auras = {}, buttons = {} }
 local AuraButtons = lib.AuraButtons
 
 lib.ChargeCooldowns = lib.ChargeCooldowns or {}
@@ -756,7 +756,6 @@ function OnEvent(frame, event, arg1, ...)
 			tooltipOwner:SetTooltip()
 		end
 	elseif event == "ACTIONBAR_SLOT_CHANGED" then
-		wipe(AuraButtons)
 		for button in next, ButtonRegistry do
 			if button._state_type == "action" and (arg1 == 0 or arg1 == tonumber(button._state_action)) then
 				ClearNewActionHighlight(button._state_action, true, false)
@@ -1038,7 +1037,7 @@ function UpdateAuraCooldowns()
 	local index = 1
 	local name, _, _, _, duration, expiration, source = UnitAura("target", index, filter)
 	while name do
-		local button = AuraButtons[name]
+		local button = AuraButtons.auras[name]
 		if button and source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
 			CooldownFrame_Set(button.AuraCooldown, expiration - duration, duration, true)
 			currentAuras[name] = button
@@ -1208,13 +1207,19 @@ function Update(self, fromUpdateConfig)
 		self.icon:SetDesaturated(false)
 	end
 
+	local previousAbility = AuraButtons.buttons[self]
+	if previousAbility then
+		AuraButtons.auras[previousAbility] = nil
+	end
+
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
 		local abilityName = GetSpellInfo(id)
 		self.abilityName = abilityName
 
+		AuraButtons.buttons[self] = abilityName
 		if abilityName then
-			AuraButtons[abilityName] = self
+			AuraButtons.auras[abilityName] = self
 		end
 
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
