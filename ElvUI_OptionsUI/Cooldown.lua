@@ -1,5 +1,6 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
+local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
 -- GLOBALS: AceGUIWidgetLSMlists
@@ -79,7 +80,7 @@ local function group(order, db, label)
 		mainArgs.hideBlizzard = nil
 		mainArgs.fontGroup = nil
 	elseif db == 'actionbar' then
-		mainArgs.targetAura = ACH:Toggle(E.NewSign..L["Target Aura"], L["Display Target's Aura Duration, when there is no CD displaying."], 3, nil, nil, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:UpdateCooldownSettings(db); end)
+		mainArgs.targetAura = ACH:Toggle(E.NewSign..L["Target Aura"], L["Display Target's Aura Duration, when there is no CD displaying."], 3, nil, nil, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; AB:SetAuraCooldowns(value); E:UpdateCooldownSettings(db); end)
 		mainArgs.targetAuraColor = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 4)
 		mainArgs.expiringAuraColor = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 5)
 

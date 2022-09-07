@@ -1234,6 +1234,7 @@ function AB:FixKeybindText(button)
 			text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
 			text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
 			text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
+
 			hotkey.SetVertexColor = E.noop
 		end
 
@@ -1396,6 +1397,10 @@ function AB:UpdateChargeCooldown(button, duration)
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
 		E:Cooldown_ForceUpdate(cd.timer)
 	end
+end
+
+function AB:SetAuraCooldowns(enabled)
+	LAB:SetAuraCooldowns(enabled)
 end
 
 function AB:ToggleCooldownOptions()

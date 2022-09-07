@@ -111,8 +111,10 @@ local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, Updat
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
-local UpdateAuraCooldowns -- Simpy
 local UpdateRange -- Sezz
+
+local UpdateAuraCooldowns -- Simpy
+local AURA_COOLDOWNS_ENABLED = true
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
@@ -783,10 +785,12 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "UPDATE_BINDINGS" then
 		ForAllButtons(UpdateHotkeys)
 	elseif event == "PLAYER_TARGET_CHANGED" then
-		UpdateAuraCooldowns()
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 		UpdateRangeTimer()
 	elseif event == "UNIT_AURA" then
-		if arg1 == "target" then
+		if AURA_COOLDOWNS_ENABLED and arg1 == "target" then
 			UpdateAuraCooldowns()
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE") or
@@ -1045,6 +1049,12 @@ function UpdateAuraCooldowns()
 			CooldownFrame_Clear(button.AuraCooldown)
 		end
 	end
+end
+
+function lib:SetAuraCooldowns(enabled)
+	AURA_COOLDOWNS_ENABLED = enabled
+
+	UpdateAuraCooldowns()
 end
 
 -----------------------------------------------------------
