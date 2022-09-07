@@ -889,22 +889,38 @@ function UF.headerPrototype:Reset()
 	self:Hide()
 end
 
-function UF:SetMaxAllowedGroups()
+function UF:ZONE_CHANGED_NEW_AREA(event)
+	local previous = UF.maxAllowedGroups
+
 	if UF.db.maxAllowedGroups then
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else
 		UF.maxAllowedGroups = 8
 	end
+
+	if previous ~= UF.maxAllowedGroups then
+		UF:Update_AllFrames()
+	end
+
+	if event then
+		UF:UnregisterEvent(event)
+	end
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
-	UF:SetMaxAllowedGroups()
 
-	if initLogin then
-		UF:Update_AllFrames()
-	elseif isReload then
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'raid' then
+		if initLogin or isReload then
+			UF:ZONE_CHANGED_NEW_AREA()
+		else
+			UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+		end
+	elseif UF.maxAllowedGroups ~= 8 then
+		UF.maxAllowedGroups = 8
+
 		UF:Update_AllFrames()
 	end
 end
@@ -941,7 +957,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 
 	local enable = db.enable
 	local visibility = db.visibility
-	local numGroups = (group == 'party' and 1) or (db.numGroups and min(UF.maxAllowedGroups or 8, db.numGroups))
+	local numGroups = (group == 'party' and 1) or (db.numGroups and min(UF.maxAllowedGroups, db.numGroups))
 	local name, isRaidFrames = E:StringTitle(group), strmatch(group, '^raid(%d)') and true
 
 	if not Header then
@@ -1575,6 +1591,7 @@ end
 function UF:Initialize()
 	UF.db = E.db.unitframe
 	UF.thinBorders = UF.db.thinBorders
+	UF.maxAllowedGroups = 8
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
@@ -1590,7 +1607,6 @@ function UF:Initialize()
 
 	UF:UpdateColors()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
-	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'SetMaxAllowedGroups')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
