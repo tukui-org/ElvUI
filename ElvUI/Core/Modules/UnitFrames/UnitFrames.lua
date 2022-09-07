@@ -909,12 +909,16 @@ function UF:ZONE_CHANGED_NEW_AREA()
 	UF:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
 end
 
-function UF:PLAYER_ENTERING_WORLD()
+function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
 
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'raid' then
-		UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+		if initLogin or isReload then
+			UF:ZONE_CHANGED_NEW_AREA() -- call it directly
+		else
+			UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+		end
 	elseif UF.maxAllowedGroups ~= 8 then
 		UF.maxAllowedGroups = 8
 
