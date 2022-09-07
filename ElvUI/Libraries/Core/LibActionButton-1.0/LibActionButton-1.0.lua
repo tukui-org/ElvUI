@@ -60,8 +60,8 @@ lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
 
-lib.AuraButtons = lib.AuraButtons or {}
-local AuraButtons = lib.AuraButtons
+local AuraButtons = lib.AuraButtons or {}
+lib.AuraButtons = AuraButtons
 
 lib.ChargeCooldowns = lib.ChargeCooldowns or {}
 lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
