@@ -61,6 +61,7 @@ lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
 
 lib.AuraCooldowns = lib.AuraCooldowns or {}
+lib.NumAuraCooldowns = lib.NumAuraCooldowns or 0
 
 lib.ChargeCooldowns = lib.ChargeCooldowns or {}
 lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
@@ -104,7 +105,7 @@ local type_meta_map = {
 	custom = Custom_MT
 }
 
-local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons, AuraCooldowns = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons, lib.AuraCooldowns
+local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons
 
 local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
@@ -1023,10 +1024,14 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 end
 
 -----------------------------------------------------------
---- Active Aura Counters for Target ~ By Simpy
+--- Active Aura Cooldowns for Target ~ By Simpy
 
+local AuraCooldowns = lib.AuraCooldowns
 function UpdateAuraCooldowns()
+	local had_cooldowns = lib.NumAuraCooldowns > 0
+
 	wipe(AuraCooldowns)
+	lib.NumAuraCooldowns = 0
 
 	local filter = UnitIsFriend("player", "target") and "HELPFUL" or "PLAYER"
 
@@ -1041,12 +1046,15 @@ function UpdateAuraCooldowns()
 		name, _, _, _, duration, expiration = UnitAura("target", index, filter)
 	end
 
-	for button in next, ActionButtons do
-		local aura = AuraCooldowns[button.abilityName]
-		if aura then
-			CooldownFrame_Set(button.AuraCooldown, aura.expiration - aura.duration, aura.duration, true)
-		else
-			CooldownFrame_Clear(button.AuraCooldown)
+	if had_cooldowns or next(AuraCooldowns) then
+		for button in next, ActionButtons do
+			local aura = AuraCooldowns[button.abilityName]
+			if aura then
+				lib.NumAuraCooldowns = lib.NumAuraCooldowns + 1
+				CooldownFrame_Set(button.AuraCooldown, aura.expiration - aura.duration, aura.duration, true)
+			else
+				CooldownFrame_Clear(button.AuraCooldown)
+			end
 		end
 	end
 end
