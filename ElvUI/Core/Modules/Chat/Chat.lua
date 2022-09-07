@@ -1357,6 +1357,11 @@ function CH:PrintURL(url)
 	return '|cFFFFFFFF[|Hurl:'..url..'|h'..url..'|h]|r '
 end
 
+function CH:ReplaceProtocol(arg1, arg2)
+	local start = self..'://'..arg1
+	return (self == 'Houtfit') and start..arg2 or CH:PrintURL(start)
+end
+
 function CH:FindURL(event, msg, author, ...)
 	if not CH.db.url then
 		msg = CH:CheckKeyword(msg, author)
@@ -1370,8 +1375,9 @@ function CH:FindURL(event, msg, author, ...)
 	end
 
 	text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
+
 	-- http://example.com
-	local newMsg, found = gsub(text, '(%a+)://(%S+)%s?', CH:PrintURL('%1://%2'))
+	local newMsg, found = gsub(text, '(%a+)://(%S+)(%s?)', CH.ReplaceProtocol)
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- www.example.com
 	newMsg, found = gsub(text, 'www%.([_A-Za-z0-9-]+)%.(%S+)%s?', CH:PrintURL('www.%1.%2'))
