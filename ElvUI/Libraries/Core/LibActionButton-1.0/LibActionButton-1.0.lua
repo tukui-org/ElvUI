@@ -1209,6 +1209,7 @@ function Update(self, fromUpdateConfig)
 
 	local previousAbility = AuraButtons.buttons[self]
 	if previousAbility then
+		AuraButtons.buttons[self] = nil
 		AuraButtons.auras[previousAbility] = nil
 	end
 
