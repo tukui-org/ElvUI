@@ -898,13 +898,26 @@ function UF:SetMaxAllowedGroups()
 	end
 end
 
-function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	UF:RegisterRaidDebuffIndicator()
+function UF:ZONE_CHANGED_NEW_AREA()
+	local previous = UF.maxAllowedGroups
 	UF:SetMaxAllowedGroups()
 
-	if initLogin then
+	if previous ~= UF.maxAllowedGroups then
 		UF:Update_AllFrames()
-	elseif isReload then
+	end
+
+	UF:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
+end
+
+function UF:PLAYER_ENTERING_WORLD()
+	UF:RegisterRaidDebuffIndicator()
+
+	local _, instanceType = GetInstanceInfo()
+	if instanceType == 'raid' then
+		UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+	elseif UF.maxAllowedGroups ~= 8 then
+		UF.maxAllowedGroups = 8
+
 		UF:Update_AllFrames()
 	end
 end
@@ -941,7 +954,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 
 	local enable = db.enable
 	local visibility = db.visibility
-	local numGroups = (group == 'party' and 1) or (db.numGroups and min(UF.maxAllowedGroups or 8, db.numGroups))
+	local numGroups = (group == 'party' and 1) or (db.numGroups and min(UF.maxAllowedGroups, db.numGroups))
 	local name, isRaidFrames = E:StringTitle(group), strmatch(group, '^raid(%d)') and true
 
 	if not Header then
@@ -1575,6 +1588,7 @@ end
 function UF:Initialize()
 	UF.db = E.db.unitframe
 	UF.thinBorders = UF.db.thinBorders
+	UF.maxAllowedGroups = 8
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
@@ -1590,7 +1604,6 @@ function UF:Initialize()
 
 	UF:UpdateColors()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
-	UF:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'SetMaxAllowedGroups')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
