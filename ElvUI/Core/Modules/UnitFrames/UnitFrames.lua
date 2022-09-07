@@ -889,18 +889,15 @@ function UF.headerPrototype:Reset()
 	self:Hide()
 end
 
-function UF:SetMaxAllowedGroups()
+function UF:ZONE_CHANGED_NEW_AREA(event)
+	local previous = UF.maxAllowedGroups
+
 	if UF.db.maxAllowedGroups then
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else
 		UF.maxAllowedGroups = 8
 	end
-end
-
-function UF:ZONE_CHANGED_NEW_AREA(event)
-	local previous = UF.maxAllowedGroups
-	UF:SetMaxAllowedGroups()
 
 	if previous ~= UF.maxAllowedGroups then
 		UF:Update_AllFrames()
