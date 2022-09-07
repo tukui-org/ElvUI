@@ -898,7 +898,7 @@ function UF:SetMaxAllowedGroups()
 	end
 end
 
-function UF:ZONE_CHANGED_NEW_AREA()
+function UF:ZONE_CHANGED_NEW_AREA(event)
 	local previous = UF.maxAllowedGroups
 	UF:SetMaxAllowedGroups()
 
@@ -906,7 +906,9 @@ function UF:ZONE_CHANGED_NEW_AREA()
 		UF:Update_AllFrames()
 	end
 
-	UF:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
+	if event then
+		UF:UnregisterEvent(event)
+	end
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
@@ -915,7 +917,7 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'raid' then
 		if initLogin or isReload then
-			UF:ZONE_CHANGED_NEW_AREA() -- call it directly
+			UF:ZONE_CHANGED_NEW_AREA()
 		else
 			UF:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 		end
