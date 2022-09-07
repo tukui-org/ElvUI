@@ -1358,8 +1358,8 @@ function CH:PrintURL(url)
 end
 
 function CH:ReplaceProtocol(arg1, arg2)
-	local start = self..'://'..arg1
-	return (self == 'Houtfit') and start..arg2 or CH:PrintURL(start)
+	local str = self..'://'..arg1
+	return (self == 'Houtfit') and str..arg2 or CH:PrintURL(str)
 end
 
 function CH:FindURL(event, msg, author, ...)
