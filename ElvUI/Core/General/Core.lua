@@ -133,7 +133,7 @@ if E.Retail then
 	E.DispelClasses.SHAMAN.Curse = true
 else
 	local cleanse = not E.Wrath or IsSpellKnown(51886)
-	E.DispelClasses.SHAMAN.Curse = E.Wrath and cleanse or nil
+	E.DispelClasses.SHAMAN.Curse = E.Wrath and cleanse
 	E.DispelClasses.SHAMAN.Poison = cleanse
 	E.DispelClasses.SHAMAN.Disease = cleanse
 
