@@ -1,18 +1,19 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local B = E:GetModule('Bags')
 
 local _G = _G
-local unpack, select = unpack, select
+local select, unpack = select, unpack
+local hooksecurefunc = hooksecurefunc
 
 local ContainerIDToInventoryID = ContainerIDToInventoryID
-local CreateFrame = CreateFrame
 local GetContainerItemLink = GetContainerItemLink
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetInventoryItemID = GetInventoryItemID
 local GetInventoryItemLink = GetInventoryItemLink
-local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
-local hooksecurefunc = hooksecurefunc
+local GetInventoryItemID = GetInventoryItemID
+local GetItemInfo = GetItemInfo
+local CreateFrame = CreateFrame
 
 local BANK_CONTAINER = BANK_CONTAINER
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
@@ -96,24 +97,24 @@ function S:ContainerFrame()
 		local frameName = frame:GetName()
 		local id = frame:GetID()
 		local _, bagType = GetContainerNumFreeSlots(id)
-		local item, questIcon, link
 
 		for i = 1, frame.size do
-			item = _G[frameName..'Item'..i]
-			questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
-			link = GetContainerItemLink(id, item:GetID())
+			local item = _G[frameName..'Item'..i]
+			local questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
+			local link = GetContainerItemLink(id, item:GetID())
 
 			questIcon:Hide()
 
-			if E.Bags.ProfessionColors[bagType] then
-				item:SetBackdropBorderColor(unpack(E.Bags.ProfessionColors[bagType]))
+			if B.ProfessionColors[bagType] then
+				item:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 				item.ignoreBorderColors = true
 			elseif link then
 				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(link)
 
 				if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-					item:SetBackdropBorderColor(unpack(E.Bags.QuestColors.questItem))
+					item:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 					item.ignoreBorderColors = true
+
 					if questIcon then
 						questIcon:Show()
 					end
@@ -179,8 +180,6 @@ function S:ContainerFrame()
 		local id = button:GetID()
 
 		if button.isBag then
-			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
-
 			button:SetNormalTexture('')
 			button:SetTemplate(nil, true)
 			button:StyleButton()
@@ -191,9 +190,9 @@ function S:ContainerFrame()
 			button.HighlightFrame.HighlightTexture:SetInside()
 			button.HighlightFrame.HighlightTexture:SetTexture(unpack(E.media.rgbvaluecolor), 0.3)
 
+			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
 			if link then
-				local quality = select(3, GetItemInfo(link))
-
+				local _, _, quality = GetItemInfo(link)
 				if quality and quality > 1 then
 					button:SetBackdropBorderColor(GetItemQualityColor(quality))
 					button.ignoreBorderColors = true
@@ -207,29 +206,27 @@ function S:ContainerFrame()
 			end
 		else
 			local questIcon = button.IconQuestTexture
-			local link = GetContainerItemLink(BANK_CONTAINER, id)
-
 			if questIcon then
 				questIcon:Hide()
 			end
 
+			local link = GetContainerItemLink(BANK_CONTAINER, id)
 			if link then
 				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(link)
 
 				if itemClassID == LE_ITEM_CLASS_QUESTITEM then
-					button:SetBackdropBorderColor(unpack(E.Bags.QuestColors.questItem))
+					button:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 					button.ignoreBorderColors = true
+
 					if questIcon then
 						questIcon:Show()
 					end
+				elseif quality and quality > 1 then
+					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					button.ignoreBorderColors = true
 				else
-					if quality and quality > 1 then
-						button:SetBackdropBorderColor(GetItemQualityColor(quality))
-						button.ignoreBorderColors = true
-					else
-						button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						button.ignoreBorderColors = nil
-					end
+					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					button.ignoreBorderColors = nil
 				end
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
