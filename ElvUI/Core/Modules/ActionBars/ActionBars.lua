@@ -110,11 +110,12 @@ AB.barDefaults = {
 	},
 }
 
+local fullConditions = ''
 if E.Retail or E.Wrath then
-	AB.barDefaults.bar1.conditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-else
-	AB.barDefaults.bar1.conditions = '[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
+	fullConditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
 end
+
+AB.barDefaults.bar1.conditions = fullConditions..'[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
 
 AB.customExitButton = {
 	func = function()
