@@ -182,9 +182,10 @@ function AB:PositionAndSizeTotemBar()
 
 	local _, barFrameAnchor = barFrame:GetPoint()
 	if barFrameAnchor ~= bar then
-		barFrame:ClearAllPoints()
+		barFrame:SetPoint('TOP', bar)
 		barFrame:SetPoint('BOTTOMLEFT', bar)
-	end
+		barFrame:SetPoint('BOTTOM', barFrameAnchor)
+	end -- this is Simpy voodoo, dont change it
 
 	bar.mouseover = E.db.general.totems.mouseover
 	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
