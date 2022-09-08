@@ -1492,8 +1492,8 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	end
 end
 
-function AB:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
+function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
+	AB:AdjustMaxStanceButtons(event)
 
 	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and E.private.general.totemBar then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
