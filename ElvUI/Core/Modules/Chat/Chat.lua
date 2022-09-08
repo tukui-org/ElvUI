@@ -319,6 +319,7 @@ do --this can save some main file locals
 	elseif E.Wrath then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
+		z['Kalline-Myzrael']		= itsSimpy -- Shaman
 		-- Luckyone
 		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
 		z['Luckyd-Golemagg']		= ElvBlue -- Druid H
