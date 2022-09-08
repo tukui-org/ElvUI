@@ -372,7 +372,6 @@ function AB:CreateTotemBar()
 	AB:SecureHook('MultiCastActionButton_Update')
 	AB:SecureHook('MultiCastFlyoutFrame_ToggleFlyout')
 	AB:SecureHook('MultiCastSlotButton_Update', 'StyleTotemSlotButton')
-	AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 
 	AB:HookScript(_G.MultiCastActionBarFrame, 'OnEnter', 'TotemBar_OnEnter')
 	AB:HookScript(_G.MultiCastActionBarFrame, 'OnLeave', 'TotemBar_OnLeave')
