@@ -11,7 +11,7 @@ local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local hooksecurefunc = hooksecurefunc
 
-local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
+local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerStateTemplate')
 bar:SetFrameStrata('LOW')
 
 local SLOT_BORDER_COLORS = {
@@ -192,7 +192,7 @@ function AB:PositionAndSizeTotemBar()
 	local visibility = E.db.general.totems.visibility
 	visibility = gsub(visibility, '[\n\r]','')
 
-	RegisterStateDriver(bar.visibility, 'visibility', visibility)
+	RegisterStateDriver(bar, 'visibility', visibility)
 
 	local summonButton = _G.MultiCastSummonSpellButton
 	summonButton:ClearAllPoints()
@@ -262,10 +262,6 @@ function AB:CreateTotemBar()
 	bar:SetSize(200, 30)
 	bar:Point('BOTTOM', E.UIParent, 0, 250)
 	bar.buttons = {}
-
-	bar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
-	bar.visibility:SetScript('OnShow', function() bar:Show() end)
-	bar.visibility:SetScript('OnHide', function() bar:Hide() end)
 
 	local barFrame = _G.MultiCastActionBarFrame
 	barFrame:SetScript('OnUpdate', nil)
