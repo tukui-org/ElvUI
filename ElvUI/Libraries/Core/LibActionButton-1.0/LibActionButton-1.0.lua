@@ -762,6 +762,10 @@ function OnEvent(frame, event, arg1, ...)
 				Update(button)
 			end
 		end
+
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
 	elseif event == "UPDATE_SHAPESHIFT_FORM" then
@@ -1037,18 +1041,23 @@ function UpdateAuraCooldowns()
 	local index = 1
 	local name, _, _, _, duration, expiration, source = UnitAura("target", index, filter)
 	while name do
-		local button = AuraButtons.auras[name]
-		if button and source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
-			CooldownFrame_Set(button.AuraCooldown, expiration - duration, duration, true)
-			currentAuras[name] = button
-			previousAuras[name] = nil
+		local buttons = AuraButtons.auras[name]
+		if buttons then
+			for _, button in next, buttons do
+				if button and source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
+					CooldownFrame_Set(button.AuraCooldown, expiration - duration, duration, true)
+
+					currentAuras[button] = true
+					previousAuras[button] = nil
+				end
+			end
 		end
 
 		index = index + 1
 		name, _, _, _, duration, expiration = UnitAura("target", index, filter)
 	end
 
-	for _, button in next, previousAuras do
+	for button in next, previousAuras do
 		CooldownFrame_Clear(button.AuraCooldown)
 	end
 end
@@ -1210,7 +1219,19 @@ function Update(self, fromUpdateConfig)
 	local previousAbility = AuraButtons.buttons[self]
 	if previousAbility then
 		AuraButtons.buttons[self] = nil
-		AuraButtons.auras[previousAbility] = nil
+
+		local auras = AuraButtons.auras[previousAbility]
+
+		for i, button in next, auras do
+			if button == self then
+				tremove(auras, i)
+				break
+			end
+		end
+
+		if not next(auras) then
+			AuraButtons.auras[previousAbility] = nil
+		end
 	end
 
 	if self._state_type == "action" then
@@ -1220,7 +1241,11 @@ function Update(self, fromUpdateConfig)
 
 		AuraButtons.buttons[self] = abilityName
 		if abilityName then
-			AuraButtons.auras[abilityName] = self
+			if not AuraButtons.auras[abilityName] then
+				AuraButtons.auras[abilityName] = {}
+			end
+
+			tinsert(AuraButtons.auras[abilityName], self)
 		end
 
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
