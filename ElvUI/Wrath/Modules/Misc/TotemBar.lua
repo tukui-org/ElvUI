@@ -355,14 +355,12 @@ function AB:CreateTotemBar()
 	end
 
 	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
-		if xOffset ~= E.db.general.totems.spacing then
-			if InCombatLockdown() then
-				AB.NeedsRecallButtonUpdate = true
-				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-			else
-				button:ClearAllPoints()
-				button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
-			end
+		if InCombatLockdown() then
+			AB.NeedsRecallButtonUpdate = true
+			AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		elseif xOffset ~= E.db.general.totems.spacing or button:GetPoint(2) then
+			button:ClearAllPoints()
+			button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
 		end
 	end)
 
