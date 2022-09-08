@@ -611,11 +611,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 end
 
 function mod:StyleFilterClearVisibility(frame, which)
-	local visibility = which == 2
+	local visibility = which == 1
 
 	mod:StyleFilterBaseUpdate(frame, visibility)
 
-	if visibility then
+	if visibility or which == 3 then
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
@@ -1505,13 +1505,20 @@ function mod:StyleFilterConfigure()
 	end
 end
 
+function mod:StyleFilterHiddenState(c)
+	return c and (c.NameOnly and c.Visibility and 3) or (c.NameOnly and 2) or (c.Visibility and 1), c
+end
+
 function mod:StyleFilterUpdate(frame, event)
 	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
-	local c = frame.StyleFilterChanges
-	local hidden = c and (c.NameOnly and 1) or (c.Visibility and 2)
+	local hidden, c = mod:StyleFilterHiddenState(frame.StyleFilterChanges)
 	if hidden then -- clear them both first
 		c.NameOnly, c.Visibility = nil, nil
+
+		if hidden == 3 then -- reset, it's toggling between two hidden states
+			mod:StyleFilterClearVisibility(frame, hidden)
+		end
 	end
 
 	mod:StyleFilterClear(frame)
@@ -1523,7 +1530,7 @@ function mod:StyleFilterUpdate(frame, event)
 		end
 	end
 
-	if hidden and c and not (c.NameOnly or c.Visibility) then
+	if hidden and not mod:StyleFilterHiddenState(c) then
 		mod:StyleFilterClearVisibility(frame, hidden)
 	end
 end
