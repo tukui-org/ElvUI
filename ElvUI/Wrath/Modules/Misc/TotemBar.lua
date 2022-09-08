@@ -197,7 +197,7 @@ function AB:PositionAndSizeTotemBar()
 
 	local summonButton = _G.MultiCastSummonSpellButton
 	summonButton:ClearAllPoints()
-	summonButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2)
+	summonButton:Point('BOTTOMLEFT')
 	summonButton:Size(size)
 
 	for i = 1, numActiveSlots do
