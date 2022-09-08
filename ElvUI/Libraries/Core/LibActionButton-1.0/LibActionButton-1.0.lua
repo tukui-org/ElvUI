@@ -1043,9 +1043,10 @@ function UpdateAuraCooldowns()
 	while name do
 		local buttons = AuraButtons.auras[name]
 		if buttons then
+			local start = (source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
 			for _, button in next, buttons do
-				if button and source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
-					CooldownFrame_Set(button.AuraCooldown, expiration - duration, duration, true)
+				if start then
+					CooldownFrame_Set(button.AuraCooldown, start, duration, true)
 
 					currentAuras[button] = true
 					previousAuras[button] = nil
