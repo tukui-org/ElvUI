@@ -60,8 +60,8 @@ lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
 
-lib.AuraCooldowns = lib.AuraCooldowns or {}
-lib.NumAuraCooldowns = lib.NumAuraCooldowns or 0
+local AuraButtons = lib.AuraButtons or { auras = {}, buttons = {} }
+lib.AuraButtons = AuraButtons
 
 lib.ChargeCooldowns = lib.ChargeCooldowns or {}
 lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
@@ -1027,36 +1027,29 @@ end
 -----------------------------------------------------------
 --- Active Aura Cooldowns for Target ~ By Simpy
 
-local AuraCooldowns = lib.AuraCooldowns
+local currentAuras = {}
 function UpdateAuraCooldowns()
-	local had_cooldowns = lib.NumAuraCooldowns > 0
-
-	wipe(AuraCooldowns)
-	lib.NumAuraCooldowns = 0
-
 	local filter = UnitIsFriend("player", "target") and "HELPFUL" or "PLAYER"
+
+	local previousAuras = CopyTable(currentAuras, true)
+	wipe(currentAuras)
 
 	local index = 1
 	local name, _, _, _, duration, expiration, source = UnitAura("target", index, filter)
 	while name do
-		if source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
-			AuraCooldowns[name] = { duration = duration, expiration = expiration }
+		local button = AuraButtons.auras[name]
+		if button and source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION then
+			CooldownFrame_Set(button.AuraCooldown, expiration - duration, duration, true)
+			currentAuras[name] = button
+			previousAuras[name] = nil
 		end
 
 		index = index + 1
 		name, _, _, _, duration, expiration = UnitAura("target", index, filter)
 	end
 
-	if had_cooldowns or next(AuraCooldowns) then
-		for button in next, ActionButtons do
-			local aura = AuraCooldowns[button.abilityName]
-			if aura then
-				lib.NumAuraCooldowns = lib.NumAuraCooldowns + 1
-				CooldownFrame_Set(button.AuraCooldown, aura.expiration - aura.duration, aura.duration, true)
-			else
-				CooldownFrame_Clear(button.AuraCooldown)
-			end
-		end
+	for _, button in next, previousAuras do
+		CooldownFrame_Clear(button.AuraCooldown)
 	end
 end
 
@@ -1213,10 +1206,22 @@ function Update(self, fromUpdateConfig)
 	if allowSaturation then
 		self.icon:SetDesaturated(false)
 	end
+
+	local previousAbility = AuraButtons.buttons[self]
+	if previousAbility then
+		AuraButtons.buttons[self] = nil
+		AuraButtons.auras[previousAbility] = nil
+	end
+
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
 		local abilityName = GetSpellInfo(id)
 		self.abilityName = abilityName
+
+		AuraButtons.buttons[self] = abilityName
+		if abilityName then
+			AuraButtons.auras[abilityName] = self
+		end
 
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
 			local name = GetSpellInfo(ZoneAbilityFrame.baseName)
