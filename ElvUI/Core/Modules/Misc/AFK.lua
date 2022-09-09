@@ -160,7 +160,7 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 
 	local coloredName
 	if event == 'CHAT_MSG_BN_WHISPER' then
-		coloredName = CH:GetAccountInfo(arg13) or arg2
+		coloredName = CH:GetBNFriendColor(arg2, arg13)
 	else
 		coloredName = CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	end
