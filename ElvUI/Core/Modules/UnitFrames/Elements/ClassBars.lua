@@ -276,8 +276,9 @@ function UF:Configure_ClassBar(frame)
 		end
 	end
 
-	-- keep after classbar height update
-	UF.ToggleResourceBar(bars)
+	UF:Update_StatusBars(UF.classbars)
+
+	UF.ToggleResourceBar(bars) -- keep after classbar height update
 end
 
 local function ToggleResourceBar(bars)
@@ -317,7 +318,9 @@ function UF:Construct_ClassBar(frame)
 		local bar = CreateFrame('StatusBar', frame:GetName()..'ClassIconButton'..i, bars)
 		bar:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
 		bar:GetStatusBarTexture():SetHorizTile(false)
+
 		UF.statusbars[bar] = true
+		UF.classbars[bar] = true
 
 		bar:CreateBackdrop(nil, nil, nil, nil, true)
 		bar.backdrop:SetParent(bars)
@@ -431,7 +434,9 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		local rune = CreateFrame('StatusBar', frame:GetName()..'RuneButton'..i, runes)
 		rune:SetStatusBarTexture(E.media.blankTex)
 		rune:GetStatusBarTexture():SetHorizTile(false)
+
 		UF.statusbars[rune] = true
+		UF.classbars[rune] = true
 
 		rune:CreateBackdrop(nil, nil, nil, nil, true)
 		rune.backdrop:SetParent(runes)
@@ -465,7 +470,9 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.PostVisibility = UF.PostVisibilityAdditionalPower
 	additionalPower:CreateBackdrop(nil, nil, nil, nil, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
+
 	UF.statusbars[additionalPower] = true
+	UF.classbars[additionalPower] = true
 
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower, true)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
@@ -521,7 +528,9 @@ function UF:Construct_Stagger(frame)
 	stagger:CreateBackdrop(nil,nil, nil, nil, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostVisibility = UF.PostUpdateVisibilityStagger
+
 	UF.statusbars[stagger] = true
+	UF.classbars[stagger] = true
 
 	stagger:SetScript('OnShow', ToggleResourceBar)
 	stagger:SetScript('OnHide', ToggleResourceBar)
@@ -565,10 +574,10 @@ function UF:Construct_Totems(frame)
 		totem:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 		totem.backdrop:SetParent(totems)
 
-		totem:SetStatusBarTexture(E.media.blankTex)
-
 		UF.statusbars[totem] = true
+		UF.classbars[totem] = true
 
+		totem:SetStatusBarTexture(E.media.blankTex)
 		totem:SetMinMaxValues(0, 1)
 		totem:SetValue(0)
 

@@ -47,6 +47,7 @@ UF.headers = {}
 UF.groupunits = {}
 UF.units = {}
 
+UF.classbars = {}
 UF.statusbars = {}
 UF.fontstrings = {}
 UF.badHeaderPoints = {
@@ -478,9 +479,9 @@ function UF:UpdateColors()
 	ElvUF.colors.DebuffHighlight.Poison = E:SetColorTable(ElvUF.colors.DebuffHighlight.Poison, db.debuffHighlight.Poison)
 end
 
-function UF:Update_StatusBars()
+function UF:Update_StatusBars(classbars)
 	local statusBarTexture = LSM:Fetch('statusbar', self.db.statusbar)
-	for statusbar in pairs(UF.statusbars) do
+	for statusbar in pairs(classbars or UF.statusbars) do
 		if statusbar then
 			local useBlank = statusbar.isTransparent
 			if statusbar.parent then
