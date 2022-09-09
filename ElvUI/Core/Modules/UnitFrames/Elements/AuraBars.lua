@@ -192,7 +192,6 @@ local GOTAK = GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
 	local spellID = bar.spellID
 	local spellName = bar.name
-
 	bar.db = self.db
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
@@ -213,6 +212,13 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 		else
 			colors = UF.db.colors.auraBarBuff
 		end
+	end
+
+	local text = bar.db.abbrevName and E.TagFunctions.Abbrev(bar.spell) or bar.spell
+	if bar.count > 1 then
+		bar.nameText:SetFormattedText('[%d] %s', bar.count, text)
+	else
+		bar.nameText:SetText(text)
 	end
 
 	bar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
