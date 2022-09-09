@@ -455,7 +455,7 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	return anim
 end
 
-function mod:StyleFilterBaseUpdate(frame, show)
+function mod:StyleFilterBaseUpdate(frame, state)
 	if not frame.StyleFilterBaseAlreadyUpdated then -- skip updates from UpdatePlateBase
 		mod:UpdatePlate(frame, true) -- enable elements back
 	end
@@ -479,7 +479,7 @@ function mod:StyleFilterBaseUpdate(frame, show)
 		mod:SetupTarget(frame, db.nameOnly) -- so the classbar will show up
 	end
 
-	if show and not mod.SkipFading then
+	if state and not mod.SkipFading then
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
@@ -507,13 +507,65 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 
 	local db = mod:PlateDB(frame)
 
-	if Visibility then
-		c.Visibility = true
-		mod:DisablePlate(frame) -- disable the plate elements
-		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
-		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
-		return -- We hide it. Lets not do other things (no point)
+	if Visibility or NameOnly then
+		c.NameOnly, c.Visibility = NameOnly, Visibility
+
+		mod:DisablePlate(frame, NameOnly, NameOnly)
+
+		if Visibility then
+			frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
+			frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+			return -- We hide it. Lets not do other things (no point)
+		end
 	end
+
+	-- Keeps Tag changes after NameOnly
+	if NameTag then
+		c.NameTag = true
+		frame:Tag(frame.Name, actions.tags.name)
+		frame.Name:UpdateTag()
+	end
+	if PowerTag then
+		c.PowerTag = true
+		frame:Tag(frame.Power.Text, actions.tags.power)
+		frame.Power.Text:UpdateTag()
+	end
+	if HealthTag then
+		c.HealthTag = true
+		frame:Tag(frame.Health.Text, actions.tags.health)
+		frame.Health.Text:UpdateTag()
+	end
+	if TitleTag then
+		c.TitleTag = true
+		frame:Tag(frame.Title, actions.tags.title)
+		frame.Title:UpdateTag()
+	end
+	if LevelTag then
+		c.LevelTag = true
+		frame:Tag(frame.Level, actions.tags.level)
+		frame.Level:UpdateTag()
+	end
+
+	-- generic stuff
+	if Scale then
+		c.Scale = true
+		mod:ScalePlate(frame, actions.scale)
+	end
+	if Alpha then
+		c.Alpha = true
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha * 0.01)
+	end
+	if Portrait then
+		c.Portrait = true
+		mod:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
+	end
+
+	if NameOnly then
+		return -- skip the other stuff now
+	end
+
+	-- bar stuff
 	if HealthColor then
 		local hc = (actions.color.healthClass and frame.classColor) or actions.color.healthColor
 		c.HealthColor = hc -- used by Health_UpdateColor
@@ -565,69 +617,48 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 			frame.HealthFlashTexture:SetTexture(tx)
 		end
 	end
-	if Scale then
-		c.Scale = true
-		mod:ScalePlate(frame, actions.scale)
-	end
-	if Alpha then
-		c.Alpha = true
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha * 0.01)
-	end
-	if Portrait then
-		c.Portrait = true
-		mod:Update_Portrait(frame)
-		frame.Portrait:ForceUpdate()
-	end
-	if NameOnly then
-		c.NameOnly = true
-		mod:DisablePlate(frame, true, true)
-	end
-	-- Keeps Tag changes after NameOnly
-	if NameTag then
-		c.NameTag = true
-		frame:Tag(frame.Name, actions.tags.name)
-		frame.Name:UpdateTag()
-	end
-	if PowerTag then
-		c.PowerTag = true
-		frame:Tag(frame.Power.Text, actions.tags.power)
-		frame.Power.Text:UpdateTag()
-	end
-	if HealthTag then
-		c.HealthTag = true
-		frame:Tag(frame.Health.Text, actions.tags.health)
-		frame.Health.Text:UpdateTag()
-	end
-	if TitleTag then
-		c.TitleTag = true
-		frame:Tag(frame.Title, actions.tags.title)
-		frame.Title:UpdateTag()
-	end
-	if LevelTag then
-		c.LevelTag = true
-		frame:Tag(frame.Level, actions.tags.level)
-		frame.Level:UpdateTag()
-	end
 end
 
-function mod:StyleFilterClearVisibility(frame, which)
-	local visibility = which == 1
+function mod:StyleFilterClearVisibility(frame, previous)
+	local state = mod:StyleFilterHiddenState(frame.StyleFilterChanges)
 
-	mod:StyleFilterBaseUpdate(frame, visibility)
-
-	if visibility or which == 3 then
+	if (previous == 1 or previous == 3) and (state ~= 1 and state ~= 3) then
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
+
+	if previous and not state then
+		mod:StyleFilterBaseUpdate(frame, state == 1)
+	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
 
-	if frame.StyleFilterChanges then
-		wipe(frame.StyleFilterChanges)
+	local c = frame.StyleFilterChanges
+	if c then wipe(c) end
+
+	if not NameOnly then -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
+		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
+		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
+		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
+		if TitleTag then frame:Tag(frame.Title, db.title.format) frame.Title:UpdateTag() end
+		if LevelTag then frame:Tag(frame.Level, db.level.format) frame.Level:UpdateTag() end
 	end
 
+	-- generic stuff
+	if Scale then
+		mod:ScalePlate(frame, frame.ThreatScale or 1)
+	end
+	if Alpha then
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
+	end
+	if Portrait then
+		mod:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
+	end
+
+	-- bar stuff
 	if HealthColor then
 		local h = frame.Health
 		if h.r and h.g and h.b then
@@ -654,23 +685,6 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if HealthTexture then
 		local tx = LSM:Fetch('statusbar', mod.db.statusbar)
 		frame.Health:SetStatusBarTexture(tx)
-	end
-	if Scale then
-		mod:ScalePlate(frame, frame.ThreatScale or 1)
-	end
-	if Alpha then
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
-	end
-	if Portrait then
-		mod:Update_Portrait(frame)
-		frame.Portrait:ForceUpdate()
-	end
-	if not NameOnly then -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
-		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
-		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
-		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
-		if TitleTag then frame:Tag(frame.Title, db.title.format) frame.Title:UpdateTag() end
-		if LevelTag then frame:Tag(frame.Level, db.level.format) frame.Level:UpdateTag() end
 	end
 end
 
@@ -1506,20 +1520,13 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterHiddenState(c)
-	return c and (c.NameOnly and c.Visibility and 3) or (c.NameOnly and 2) or (c.Visibility and 1), c
+	return c and ((c.NameOnly and c.Visibility and 3) or (c.NameOnly and 2) or (c.Visibility and 1))
 end
 
 function mod:StyleFilterUpdate(frame, event)
 	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
-	local hidden, c = mod:StyleFilterHiddenState(frame.StyleFilterChanges)
-	if hidden then -- clear them both first
-		c.NameOnly, c.Visibility = nil, nil
-
-		if hidden == 3 then -- reset, it's toggling between two hidden states
-			mod:StyleFilterClearVisibility(frame, hidden)
-		end
-	end
+	local state = mod:StyleFilterHiddenState(frame.StyleFilterChanges)
 
 	mod:StyleFilterClear(frame)
 
@@ -1530,9 +1537,7 @@ function mod:StyleFilterUpdate(frame, event)
 		end
 	end
 
-	if hidden and not mod:StyleFilterHiddenState(c) then
-		mod:StyleFilterClearVisibility(frame, hidden)
-	end
+	mod:StyleFilterClearVisibility(frame, state)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events

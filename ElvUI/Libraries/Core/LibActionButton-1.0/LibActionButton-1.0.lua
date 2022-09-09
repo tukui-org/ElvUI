@@ -699,7 +699,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
-	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	--lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
