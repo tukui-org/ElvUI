@@ -116,7 +116,9 @@ function AFK:SetAFK(status)
 end
 
 function AFK:OnEvent(event, arg1)
-	if event == 'PLAYER_REGEN_DISABLED' or event == 'LFG_PROPOSAL_SHOW' or event == 'UPDATE_BATTLEFIELD_STATUS' then
+	if event == 'PLAYER_REGEN_ENABLED' then
+		AFK:UnregisterEvent(event)
+	elseif event == 'UPDATE_BATTLEFIELD_STATUS' or event == 'PLAYER_REGEN_DISABLED' or event == 'LFG_PROPOSAL_SHOW' then
 		if event ~= 'UPDATE_BATTLEFIELD_STATUS' or (GetBattlefieldStatus(arg1) == 'confirm') then
 			AFK:SetAFK(false)
 		end
@@ -126,17 +128,11 @@ function AFK:OnEvent(event, arg1)
 		end
 
 		return
-	end
-
-	if event == 'PLAYER_REGEN_ENABLED' then
-		AFK:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	end
-
-	if not E.db.general.afk or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
-
-	if UnitCastingInfo('player') then -- Don't activate afk if player is crafting stuff, check back in 30 seconds
-		AFK:ScheduleTimer('OnEvent', 30)
+	elseif (not E.db.general.afk) or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then
 		return
+	elseif UnitCastingInfo('player') then
+		AFK:ScheduleTimer('OnEvent', 30)
+		return -- Don't activate afk if player is crafting stuff, check back in 30 seconds
 	end
 
 	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
@@ -164,7 +160,7 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 
 	local coloredName
 	if event == 'CHAT_MSG_BN_WHISPER' then
-		coloredName = CH:GetBNFriendColor(arg2, arg13)
+		coloredName = CH:GetAccountInfo(arg13) or arg2
 	else
 		coloredName = CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	end
