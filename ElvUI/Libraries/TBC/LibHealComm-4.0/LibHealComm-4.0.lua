@@ -3314,7 +3314,7 @@ function HealComm:OnInitialize()
 	self.eventFrame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self.eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 	self.eventFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
-	self.eventFrame:RegisterEvent("UNIT_AURA")
+	self.eventFrame:RegisterUnitEvent("UNIT_AURA", 'player')
 	if isWrath then
 		self.eventFrame:RegisterEvent("GLYPH_ADDED")
 		self.eventFrame:RegisterEvent("GLYPH_REMOVED")
