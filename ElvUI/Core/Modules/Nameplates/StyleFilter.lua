@@ -1245,6 +1245,11 @@ function mod:StyleFilterVehicleFunction(_, unit)
 	self.inVehicle = (E.Retail or E.Wrath) and UnitInVehicle(unit) or nil
 end
 
+function mod:StyleFilterTargetFunction(_, unit)
+	unit = unit or self.unit
+	self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
+end
+
 mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	PLAYER_TARGET_CHANGED = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
@@ -1255,20 +1260,24 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	RAID_TARGET_UPDATE = function(self)
 		self.RaidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
 	end,
-	UNIT_TARGET = function(self, _, unit)
-		unit = unit or self.unit
-		self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
-	end,
+	UNIT_TARGET = mod.StyleFilterTargetFunction,
+	UNIT_THREAT_LIST_UPDATE = mod.StyleFilterTargetFunction,
 	UNIT_ENTERED_VEHICLE = mod.StyleFilterVehicleFunction,
 	UNIT_EXITED_VEHICLE = mod.StyleFilterVehicleFunction,
 	VEHICLE_UPDATE = mod.StyleFilterVehicleFunction
+}
+
+mod.StyleFilterSetVariablesIgnored = {
+	UNIT_THREAT_LIST_UPDATE = true,
+	UNIT_ENTERED_VEHICLE = true,
+	UNIT_EXITED_VEHICLE = true
 }
 
 function mod:StyleFilterSetVariables(nameplate)
 	if nameplate == _G.ElvNP_Test then return end
 
 	for event, func in pairs(mod.StyleFilterEventFunctions) do
-		if event ~= 'UNIT_ENTERED_VEHICLE' and event ~= 'UNIT_EXITED_VEHICLE' then -- just need one call to StyleFilterVehicleFunction
+		if not mod.StyleFilterSetVariablesIgnored[event] then -- ignore extras as we just need one call to Vehicle and Target
 			func(nameplate)
 		end
 	end
@@ -1381,12 +1390,16 @@ function mod:StyleFilterConfigure()
 					end
 				end
 
-				if t.isTapDenied or t.isNotTapDenied then	events.UNIT_FLAGS = 1 end
-				if t.targetMe or t.notTargetMe then			events.UNIT_TARGET = 1 end
 				if t.keyMod and t.keyMod.enable then		events.MODIFIER_STATE_CHANGED = 1 end
 				if t.isFocus or t.notFocus then				events.PLAYER_FOCUS_CHANGED = 1 end
 				if t.isResting then							events.PLAYER_UPDATE_RESTING = 1 end
+				if t.isTapDenied or t.isNotTapDenied then	events.UNIT_FLAGS = 1 end
 				if t.isPet then								events.UNIT_PET = 1 end
+
+				if t.targetMe or t.notTargetMe then
+					events.UNIT_THREAT_LIST_UPDATE = 1
+					events.UNIT_TARGET = 1
+				end
 
 				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					events.RAID_TARGET_UPDATE = 1
