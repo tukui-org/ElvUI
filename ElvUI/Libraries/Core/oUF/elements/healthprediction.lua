@@ -335,12 +335,14 @@ local function Disable(self)
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
-			HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
-			HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
-			HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
-			HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
-			HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
-			HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
+			if HealComm then
+				HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
+				HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
+				HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
+				HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
+				HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
+				HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
+			end
 
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
