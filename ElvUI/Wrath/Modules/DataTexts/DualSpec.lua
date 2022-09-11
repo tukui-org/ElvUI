@@ -35,6 +35,10 @@ local function BuildTalentString(talentGroup)
 	return str
 end
 
+local function ColorText(str, hex)
+	return format('|cff%s%s|r',hex,str)
+end
+
 local displayString, lastPanel = ''
 local function OnEvent(self, event)
 	lastPanel = self
@@ -42,30 +46,23 @@ local function OnEvent(self, event)
 	local activeGroup = GetActiveTalentGroup()
 	local str = BuildTalentString(activeGroup)
 
-	if E.global.datatexts.settings.DualSpec.NoLabel then
-		self.text:SetFormattedText('%s', str)
+	if E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel then
+		self.text:SetFormattedText(displayString, str)
 	else
-		self.text:SetFormattedText('%s: %s', activeGroup == 1 and PRIMARY or SECONDARY, str)
+		self.text:SetFormattedText(displayString, activeGroup == 1 and PRIMARY or SECONDARY, str)
 	end
 end
 
 local function OnEnter()
 	local activeGroup = GetActiveTalentGroup()
 
-	if activeGroup == 1 then
-		DT.tooltip:AddLine(SPECIALIZATION_PRIMARY_ACTIVE)
-		DT.tooltip:AddLine(SPECIALIZATION_SECONDARY)
-	else
-		DT.tooltip:AddLine(SPECIALIZATION_PRIMARY)
-		DT.tooltip:AddLine(SPECIALIZATION_SECONDARY_ACTIVE)
+	local primaryStr = BuildTalentString(1)
+	DT.tooltip:AddDoubleLine(activeGroup == 1 and ColorText(SPECIALIZATION_PRIMARY, '0CD809') or ColorText(SPECIALIZATION_PRIMARY, 'FFFFFF'), activeGroup == 1 and ColorText(primaryStr, '0CD809') or ColorText(primaryStr, 'FFFFFF'))
+
+	if GetNumTalentGroups() == 2 then
+		local secondaryStr = BuildTalentString(2)
+		DT.tooltip:AddDoubleLine(activeGroup == 2 and ColorText(SPECIALIZATION_SECONDARY, '0CD809') or ColorText(SPECIALIZATION_SECONDARY, 'FFFFFF'), activeGroup == 2 and ColorText(secondaryStr, '0CD809') or ColorText(secondaryStr, 'FFFFFF'))
 	end
-	-- thinking something like (active highlighted in green)
-	--[[
-		Primary: 56/3/12
-		Secondary: 18/0/53
-	]]
-
-
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
@@ -93,7 +90,7 @@ local function OnClick(self, button)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.DualSpec.NoLabel and '' or '%s', hex, '%d|r')
+	displayString = strjoin('', E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel and '' or '%s: ', hex, '%s|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
