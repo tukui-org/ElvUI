@@ -62,9 +62,7 @@ do
 		local dispel = DispelClasses[myClass]
 
 		if event == 'UNIT_PET' then
-			if arg1 == 'player' and myClass == 'WARLOCK' then
-				dispel.Magic = CheckPetSpells()
-			end
+			dispel.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
 		else
@@ -121,7 +119,10 @@ do
 
 	local frame = CreateFrame('Frame')
 	frame:SetScript('OnEvent', UpdateDispelClasses)
-	frame:RegisterEvent('UNIT_PET', UpdateDispelClasses)
+
+	if myClass == 'WARLOCK' then
+		frame:RegisterUnitEvent('UNIT_PET', 'player')
+	end
 
 	if Retail or Wrath then
 		frame:RegisterEvent('PLAYER_TALENT_UPDATE')
