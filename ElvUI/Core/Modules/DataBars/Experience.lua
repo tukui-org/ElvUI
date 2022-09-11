@@ -13,6 +13,7 @@ local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 local GetNumQuestLogEntries = GetNumQuestLogEntries
+local SelectQuestLogEntry = SelectQuestLogEntry
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GameTooltip = GameTooltip
@@ -34,11 +35,11 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 		local bar = DB.StatusBars.Experience
 		local currentZoneCheck, isHeader, isComplete, name, _
 		for i = 1, GetNumQuestLogEntries() do
-			SelectQuestLogEntry(i)
 			name, _, _, isHeader, _, isComplete, _, questID = GetQuestLogTitle(i)
 			if isHeader then
 				currentZoneCheck = bar.db.questCurrentZoneOnly and currentZone == name or not bar.db.questCurrentZoneOnly
 			elseif currentZoneCheck and (not completedOnly or isComplete == 1) then
+				SelectQuestLogEntry(i)
 				QuestLogXP = QuestLogXP + GetQuestLogRewardXP(questID)
 			end
 		end
@@ -198,10 +199,7 @@ function DB:ExperienceBar_OnClick() end
 
 function DB:ExperienceBar_XPGain()
 	DB:ExperienceBar_Update()
-
-	if E.Retail then
-		DB:ExperienceBar_QuestXP()
-	end
+	DB:ExperienceBar_QuestXP()
 end
 
 function DB:ExperienceBar_Toggle()
