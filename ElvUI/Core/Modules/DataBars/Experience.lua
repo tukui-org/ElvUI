@@ -10,7 +10,6 @@ local GetXPExhaustion = GetXPExhaustion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local SelectQuestLogEntry = SelectQuestLogEntry
 local GetNumQuestLogEntries = GetNumQuestLogEntries
-local SelectQuestLogEntry = SelectQuestLogEntry
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GameTooltip = GameTooltip
