@@ -51,7 +51,7 @@ local function OnEvent(self, event)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	self.text:SetFormattedText(displayString, activeGroup == 1 and PRIMARY or SECONDARY, str)
+	self.text:SetFormattedText(displayString, E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
