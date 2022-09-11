@@ -89,7 +89,7 @@ local function OnClick(self, button)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel and '' or '%s: ', hex, '%s|r')
+	displayString = strjoin('', E.global.datatexts.settings.DualSpec.NoLabel and '' or '%s: ', hex, '%s|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
