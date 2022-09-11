@@ -19,14 +19,14 @@ end
 
 function UF:TestingDisplay_CombatIndicator(frame)
 	local Icon = frame.CombatIndicator
-	local db = frame.db.CombatIcon
 	if not Icon then return end
 
 	if TestingTimer then
 		TestingTimer:Cancel()
 	end
 
-	if not db.enable then
+	local db = frame.db and frame.db.CombatIcon
+	if not db or not db.enable then
 		Icon:Hide()
 		return
 	end

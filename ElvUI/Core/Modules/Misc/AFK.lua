@@ -8,10 +8,6 @@ local unpack = unpack
 local tostring, pcall = tostring, pcall
 local format, strsub, gsub = format, strsub, gsub
 
-local Chat_GetChatCategory = Chat_GetChatCategory
-local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
-local ChatHistory_GetAccessID = ChatHistory_GetAccessID
-local CinematicFrame = CinematicFrame
 local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
 local GetBattlefieldStatus = GetBattlefieldStatus
@@ -28,8 +24,14 @@ local Screenshot = Screenshot
 local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
-local MovieFrame = MovieFrame
+
+local Chat_GetChatCategory = Chat_GetChatCategory
+local ChatHistory_GetAccessID = ChatHistory_GetAccessID
+local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+
+local CinematicFrame = _G.CinematicFrame
+local MovieFrame = _G.MovieFrame
 local DNDstr = _G.DND
 local AFKstr = _G.AFK
 

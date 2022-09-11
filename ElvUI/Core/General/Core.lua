@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local tonumber, floor, pairs, ipairs, error, unpack, select, tostring = tonumber, floor, pairs, ipairs, error, unpack, select, tostring
+local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
@@ -20,7 +20,6 @@ local UnitFactionGroup = UnitFactionGroup
 local DisableAddOn = DisableAddOn
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
-local IsSpellKnown = IsSpellKnown
 local IsInRaid = IsInRaid
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local format, gsub = format, gsub
+local format = format
 
 function UF:Construct_RaidFrames()
 	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
