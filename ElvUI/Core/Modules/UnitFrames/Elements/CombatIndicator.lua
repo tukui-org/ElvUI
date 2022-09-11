@@ -20,6 +20,7 @@ end
 function UF:TestingDisplay_CombatIndicator(frame)
 	local Icon = frame.CombatIndicator
 	local db = frame.db.CombatIcon
+	if not Icon then return end
 
 	if TestingTimer then
 		TestingTimer:Cancel()
