@@ -23,7 +23,7 @@ local DispelClasses = {
 	SHAMAN = {}
 }
 
-if oUF.isRetail or oUF.isWrath then
+if oUF.isRetail then
 	DispelClasses.SHAMAN.Curse = true
 else
 	local cleanse = not oUF.isWrath or IsSpellKnown(51886)
