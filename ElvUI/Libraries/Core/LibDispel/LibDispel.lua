@@ -84,10 +84,8 @@ do
 				dispel.Disease = toxins
 			elseif myClass == 'PRIEST' then
 				local purify = CheckSpell(527) -- Purify
-				local disease = purify or CheckSpell(213634) -- Purify Disease
-				dispel.Magic = purify
-				dispel.Disease = disease
-				dispel.Magic = CheckSpell(528) -- Dispel Magic
+				dispel.Disease = purify or CheckSpell(213634) -- Purify Disease
+				dispel.Magic = purify or CheckSpell(528) -- Dispel Magic
 			elseif myClass == 'SHAMAN' then
 				local purify = CheckSpell(77130) -- Purify Spirit
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
