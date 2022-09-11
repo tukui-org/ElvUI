@@ -6,12 +6,7 @@ local UnitCanAssist = UnitCanAssist
 local BlackList = {}
 -- GLOBALS: DebuffTypeColor
 
---local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
---local FilterList = {}
 local LibDispel = _G.LibStub('LibDispel-1.0')
-
-local _, playerClass = UnitClass('player')
-local DispelFilter = LibDispel:GetMyDispelTypes()
 
 if oUF.isRetail then
 	BlackList[140546] = true -- Fully Mutated
@@ -31,8 +26,16 @@ local function DebuffLoop(check, list, name, icon, _, debuffType, _, _, _, _, _,
 		if spell.enable then
 			return debuffType, icon, true, spell.style, spell.color
 		end
-	elseif debuffType and (not check or DispelFilter[debuffType]) and not (BlackList[spellID] or BlackList[name]) then
-		return debuffType, icon
+	elseif debuffType then
+		local allow = not check
+		if not allow then
+			local filter = LibDispel:GetMyDispelTypes()
+			allow = filter and filter[debuffType]
+		end
+
+		if allow and not (BlackList[spellID] or BlackList[name]) then
+			return debuffType, icon
+		end
 	end
 end
 
@@ -65,19 +68,6 @@ local function GetAuraType(unit, check, list)
 
 	debuffType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
 	if icon then return debuffType, icon, filtered, style, color end
-end
-
--- Check for certain talents to see if we can dispel magic or not
-local function CheckDispel(_, event, arg1)
-	if event == 'UNIT_PET' then
-		if arg1 == 'player' and playerClass == 'WARLOCK' then
-			DispelFilter = LibDispel:GetMyDispelTypes()
-		end
-	elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
-		return -- Not interested in gained points from leveling
-	else
-		DispelFilter = LibDispel:GetMyDispelTypes()
-	end
 end
 
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
@@ -142,19 +132,6 @@ local function Disable(self)
 			element:SetVertexColor(0, 0, 0, 0)
 		end
 	end
-end
-
-local frame = CreateFrame('Frame')
-frame:SetScript('OnEvent', CheckDispel)
-frame:RegisterEvent('UNIT_PET', CheckDispel)
-
-if oUF.isRetail or oUF.isWrath then
-	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
-end
-
-if oUF.isRetail then
-	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end
 
 oUF:AddElement('AuraHighlight', Update, Enable, Disable)

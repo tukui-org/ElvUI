@@ -64,7 +64,7 @@ local function add(spell, priority, stackThreshold)
 end
 
 function addon:RegisterDebuffs(t)
-	for spell, value in pairs(t) do
+	for spell in pairs(t) do
 		if type(t[spell]) == 'boolean' then
 			local oldValue = t[spell]
 			t[spell] = { enable = oldValue, priority = 0, stackThreshold = 0 }
@@ -82,22 +82,6 @@ end
 
 function addon:GetDispelColor()
 	return DispelColor
-end
-
-local _, playerClass = UnitClass('player')
-local DispelFilter = LibDispel:GetMyDispelTypes()
-
--- Check for certain talents to see if we can dispel magic or not
-local function CheckDispel(_, event, arg1)
-	if event == 'UNIT_PET' then
-		if arg1 == 'player' and playerClass == 'WARLOCK' then
-			DispelFilter = LibDispel:GetMyDispelTypes()
-		end
-	elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
-		return -- Not interested in gained points from leveling
-	else
-		DispelFilter = LibDispel:GetMyDispelTypes()
-	end
 end
 
 local function formatTime(s)
@@ -202,7 +186,8 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 			if addon.FilterDispellableDebuff then
 				DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority --Make Dispel buffs on top of Boss Debuffs
 
-				priority = DispelFilter[debuffType] and DispelPriority[debuffType] or 0
+				local filter = LibDispel:GetMyDispelTypes()
+				priority = filter and filter[debuffType] and DispelPriority[debuffType] or 0
 				if priority == 0 then
 					debuffType = nil
 				end
@@ -268,19 +253,6 @@ local function Disable(self)
 
 		self.RaidDebuffs:Hide()
 	end
-end
-
-local frame = CreateFrame('Frame')
-frame:SetScript('OnEvent', CheckDispel)
-frame:RegisterEvent('UNIT_PET', CheckDispel)
-
-if oUF.isRetail or oUF.isWrath then
-	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
-end
-
-if oUF.isRetail then
-	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end
 
 oUF:AddElement('RaidDebuffs', Update, Enable, Disable)

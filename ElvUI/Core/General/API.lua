@@ -188,28 +188,11 @@ end
 function E:CheckRole()
 	E.myspec = E.Retail and GetSpecialization()
 	E.myrole = E:GetPlayerRole()
-
-	if E.Retail or E.Wrath then
-		E:UpdateDispelClasses()
-	end
-end
-
-do
-	function E:UpdateDispelClasses(event, arg1)
-		if event == 'UNIT_PET' then
-			if arg1 == 'player' and E.myclass == 'WARLOCK' then
-				E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
-			end
-		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
-			return -- Not interested in gained points from leveling
-		else
-			E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
-		end
-	end
 end
 
 function E:IsDispellableByMe(debuffType)
-	return E.DispelFilter[debuffType]
+	local filter = E.Libs.Dispel:GetMyDispelTypes()
+	return filter and filter[debuffType]
 end
 
 do
@@ -601,7 +584,6 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
-	E:RegisterEvent('UNIT_PET', 'UpdateDispelClasses')
 
 	if E.Retail then
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
@@ -611,8 +593,6 @@ function E:LoadAPI()
 	end
 
 	if E.Retail or E.Wrath then
-		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateDispelClasses')
-		E:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateDispelClasses')
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else
