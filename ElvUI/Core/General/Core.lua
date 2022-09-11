@@ -119,26 +119,7 @@ E.InverseAnchors = {
 	TOPRIGHT = 'BOTTOMLEFT'
 }
 
-E.DispelClasses = {
-	PALADIN = { Poison = true, Disease = true },
-	PRIEST = { Magic = true, Disease = true },
-	MONK = { Disease = true, Poison = true },
-	DRUID = { Curse = true, Poison = true },
-	MAGE = { Curse = true },
-	WARLOCK = {},
-	SHAMAN = {}
-}
-
-if E.Retail then
-	E.DispelClasses.SHAMAN.Curse = true
-else
-	local cleanse = not E.Wrath or IsSpellKnown(51886)
-	E.DispelClasses.SHAMAN.Curse = E.Wrath and cleanse
-	E.DispelClasses.SHAMAN.Poison = cleanse
-	E.DispelClasses.SHAMAN.Disease = cleanse
-
-	E.DispelClasses.PALADIN.Magic = true
-end
+E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
 
 E.BadDispels = {
 	[34914]		= 'Vampiric Touch',		-- horrifies

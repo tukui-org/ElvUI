@@ -10,16 +10,15 @@ if not _G.oUF_RaidDebuffs then
 	_G.oUF_RaidDebuffs = addon
 end
 
+local LibDispel = _G.LibStub('LibDispel-1.0')
+
 local abs = math.abs
-local format, floor, next = format, floor, next
+local format, floor = format, floor
 local type, pairs, wipe = type, pairs, wipe
 
-local GetActiveSpecGroup = GetActiveSpecGroup
-local GetSpecialization = GetSpecialization
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
 local GetSpellInfo = GetSpellInfo
-local IsSpellKnown = IsSpellKnown
 local UnitAura = UnitAura
 local GetTime = GetTime
 
@@ -85,80 +84,19 @@ function addon:GetDispelColor()
 	return DispelColor
 end
 
-local DispelClasses = {
-	PALADIN = { Poison = true, Disease = true },
-	PRIEST = { Magic = true, Disease = true },
-	MONK = { Disease = true, Poison = true },
-	DRUID = { Curse = true, Poison = true },
-	MAGE = { Curse = true },
-	WARLOCK = {},
-	SHAMAN = {}
-}
-
-if oUF.isRetail then
-	DispelClasses.SHAMAN.Curse = true
-else
-	local cleanse = not oUF.isWrath or IsSpellKnown(51886)
-	DispelClasses.SHAMAN.Curse = oUF.isWrath and cleanse
-	DispelClasses.SHAMAN.Poison = cleanse
-	DispelClasses.SHAMAN.Disease = cleanse
-
-	DispelClasses.PALADIN.Magic = true
-end
-
-local playerClass = select(2, UnitClass('player'))
-local DispelFilter = DispelClasses[playerClass] or {}
-
-local function CheckTalentTree(tree)
-	local activeGroup = GetActiveSpecGroup()
-	local activeSpec = activeGroup and GetSpecialization(false, false, activeGroup)
-	if activeSpec then
-		return tree == activeSpec
-	end
-end
-
-local SingeMagic = 89808
-local DevourMagic = {
-	[19505] = 'Rank 1',
-	[19731] = 'Rank 2',
-	[19734] = 'Rank 3',
-	[19736] = 'Rank 4',
-	[27276] = 'Rank 5',
-	[27277] = 'Rank 6'
-}
-
-local function CheckPetSpells()
-	if oUF.isRetail then
-		return IsSpellKnown(SingeMagic, true)
-	else
-		for spellID in next, DevourMagic do
-			if IsSpellKnown(spellID, true) then
-				return true
-			end
-		end
-	end
-end
+local _, playerClass = UnitClass('player')
+local DispelFilter = LibDispel:GetMyDispelTypes()
 
 -- Check for certain talents to see if we can dispel magic or not
 local function CheckDispel(_, event, arg1)
 	if event == 'UNIT_PET' then
 		if arg1 == 'player' and playerClass == 'WARLOCK' then
-			DispelFilter.Magic = CheckPetSpells()
+			DispelFilter = LibDispel:GetMyDispelTypes()
 		end
 	elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 		return -- Not interested in gained points from leveling
-	elseif oUF.isRetail then
-		if playerClass == 'PALADIN' then
-			DispelFilter.Magic = CheckTalentTree(1)
-		elseif playerClass == 'SHAMAN' then
-			DispelFilter.Magic = CheckTalentTree(3)
-		elseif playerClass == 'DRUID' then
-			DispelFilter.Magic = CheckTalentTree(4)
-		elseif playerClass == 'MONK' then
-			DispelFilter.Magic = CheckTalentTree(2)
-		end
-	elseif playerClass == 'SHAMAN' then
-		DispelFilter.Curse = IsSpellKnown(51886)
+	else
+		DispelFilter = LibDispel:GetMyDispelTypes()
 	end
 end
 

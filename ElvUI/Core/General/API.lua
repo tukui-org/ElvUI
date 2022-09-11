@@ -194,55 +194,22 @@ function E:CheckRole()
 	end
 end
 
-do -- keep this synced with oUF_AuraHighlight and oUF_RaidDebuffs
-	local SingeMagic = 89808
-	local DevourMagic = {
-		[19505] = 'Rank 1',
-		[19731] = 'Rank 2',
-		[19734] = 'Rank 3',
-		[19736] = 'Rank 4',
-		[27276] = 'Rank 5',
-		[27277] = 'Rank 6'
-	}
-
-	local ExcludeClass = {
-		PRIEST = true, -- has Mass Dispel on Shadow
-		WARLOCK = true, -- uses PET check only
-	}
-
-	local function CheckPetSpells()
-		if E.Retail then
-			return IsSpellKnown(SingeMagic, true)
-		else
-			for spellID in next, DevourMagic do
-				if IsSpellKnown(spellID, true) then
-					return true
-				end
-			end
-		end
-	end
-
+do
 	function E:UpdateDispelClasses(event, arg1)
-		local dispel = E.DispelClasses[E.myclass]
-		if dispel == nil then return end
-
 		if event == 'UNIT_PET' then
 			if arg1 == 'player' and E.myclass == 'WARLOCK' then
-				dispel.Magic = CheckPetSpells()
+				E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
 			end
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
-		elseif E.Retail and (E.myrole and not ExcludeClass[E.myclass]) then
-			dispel.Magic = (E.myrole == 'HEALER')
-		elseif E.Wrath and (E.myclass == 'SHAMAN') then
-			dispel.Curse = IsSpellKnown(51886)
+		else
+			E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
 		end
 	end
 end
 
 function E:IsDispellableByMe(debuffType)
-	local dispel = E.DispelClasses[E.myclass]
-	return dispel and dispel[debuffType]
+	return E.DispelFilter[debuffType]
 end
 
 do
