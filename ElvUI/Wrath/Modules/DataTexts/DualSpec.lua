@@ -2,13 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local ipairs, wipe = ipairs, wipe
-local format, next, strjoin = format, next, strjoin
+local format, strjoin = format, strjoin
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
 local ShowUIPanel = ShowUIPanel
 
-local TALENTS = TALENTS
 local LEVEL_UP_DUALSPEC = LEVEL_UP_DUALSPEC
 local MAX_TALENT_TABS = MAX_TALENT_TABS
 local PRIMARY = PRIMARY
@@ -19,12 +17,13 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
+local primaryStr, secondaryStr, activeGroup, hasDualSpec
 
 local function BuildTalentString(talentGroup)
 	local str = ''
 
 	for i = 1, MAX_TALENT_TABS do
-		local pointsSpent = select(3, GetTalentTabInfo(i, false, false, talentGroup));
+		local _, _, pointsSpent = GetTalentTabInfo(i, false, false, talentGroup)
 		if (str == '') then
 			str = pointsSpent
 		else
@@ -43,8 +42,14 @@ local displayString, lastPanel = ''
 local function OnEvent(self, event)
 	lastPanel = self
 
-	local activeGroup = GetActiveTalentGroup()
-	local str = BuildTalentString(activeGroup)
+	primaryStr, secondaryStr = BuildTalentString(1), BuildTalentString(2)
+
+	activeGroup = GetActiveTalentGroup()
+	local str = activeGroup == 1 and primaryStr or secondaryStr
+
+	if not hasDualSpec then
+		hasDualSpec = GetNumTalentGroups() == 2
+	end
 
 	if E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel then
 		self.text:SetFormattedText(displayString, str)
@@ -54,14 +59,12 @@ local function OnEvent(self, event)
 end
 
 local function OnEnter()
-	local activeGroup = GetActiveTalentGroup()
+	DT.tooltip:ClearLines()
 
-	local primaryStr = BuildTalentString(1)
-	DT.tooltip:AddDoubleLine(activeGroup == 1 and ColorText(SPECIALIZATION_PRIMARY, '0CD809') or ColorText(SPECIALIZATION_PRIMARY, 'FFFFFF'), activeGroup == 1 and ColorText(primaryStr, '0CD809') or ColorText(primaryStr, 'FFFFFF'))
+	DT.tooltip:AddDoubleLine(format('%s: %s', ColorText(PRIMARY, activeGroup == 1 and '0CD809' or 'FFFFFF'), primaryStr))
 
-	if GetNumTalentGroups() == 2 then
-		local secondaryStr = BuildTalentString(2)
-		DT.tooltip:AddDoubleLine(activeGroup == 2 and ColorText(SPECIALIZATION_SECONDARY, '0CD809') or ColorText(SPECIALIZATION_SECONDARY, 'FFFFFF'), activeGroup == 2 and ColorText(secondaryStr, '0CD809') or ColorText(secondaryStr, 'FFFFFF'))
+	if hasDualSpec then
+		DT.tooltip:AddDoubleLine(format('%s: %s', ColorText(SECONDARY, activeGroup == 2 and '0CD809' or 'FFFFFF'), secondaryStr))
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -82,8 +85,8 @@ local function OnClick(self, button)
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
 		else
-			if GetNumTalentGroups() == 2 then
-				SetActiveTalentGroup(GetActiveTalentGroup() == 1 and 2 or 1)
+			if hasDualSpec then
+				SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
 			end
 		end
 	end

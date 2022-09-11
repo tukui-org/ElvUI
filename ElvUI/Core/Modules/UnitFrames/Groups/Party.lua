@@ -191,6 +191,7 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_ReadyCheckIcon(frame)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_CustomTexts(frame)
+		UF:Configure_CombatIndicator(frame)
 
 		if E.Retail then
 			UF:Configure_AltPowerBar(frame)
