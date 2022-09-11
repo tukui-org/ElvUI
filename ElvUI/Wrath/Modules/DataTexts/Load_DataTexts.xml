@@ -9,4 +9,5 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHaste.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellPower.lua'/>
+	<Script file='DualSpec.lua'/>
 </Ui>
