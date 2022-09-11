@@ -5,7 +5,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local pairs = pairs
 local select = select
-local assert = assert
 local tinsert = tinsert
 local strsub = strsub
 local CreateFrame = CreateFrame

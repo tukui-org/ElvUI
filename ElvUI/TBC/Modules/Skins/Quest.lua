@@ -6,9 +6,9 @@ local unpack, gsub = unpack, gsub
 local select, pairs = select, pairs
 local strfind, strmatch = strfind, strmatch
 
+local GetMoney = GetMoney
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
-local GetMoney = GetMoney
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestItemLink = GetQuestItemLink

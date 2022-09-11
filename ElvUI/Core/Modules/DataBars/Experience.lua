@@ -8,15 +8,17 @@ local min, format = min, format
 local CreateFrame = CreateFrame
 local GetXPExhaustion = GetXPExhaustion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
-local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
-local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
-local C_QuestLog_GetInfo = C_QuestLog.GetInfo
-local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
+local SelectQuestLogEntry = SelectQuestLogEntry
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local SelectQuestLogEntry = SelectQuestLogEntry
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GameTooltip = GameTooltip
+
+local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
+local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
+local C_QuestLog_GetInfo = C_QuestLog.GetInfo
+local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars

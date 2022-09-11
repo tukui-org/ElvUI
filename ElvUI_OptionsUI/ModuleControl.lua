@@ -4,6 +4,7 @@ local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
 local ACH = E.Libs.ACH
 
+local format = format
 local type, pairs = type, pairs
 
 function MC:AddConfigOptions(settings, config)

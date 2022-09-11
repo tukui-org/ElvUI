@@ -22,7 +22,6 @@ local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsRestrictedAccount = IsRestrictedAccount
-local IsSpellKnown = IsSpellKnown
 local IsTrialAccount = IsTrialAccount
 local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
