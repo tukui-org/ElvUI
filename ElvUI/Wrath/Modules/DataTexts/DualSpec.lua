@@ -51,11 +51,7 @@ local function OnEvent(self, event)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	if E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel then
-		self.text:SetFormattedText(displayString, str)
-	else
-		self.text:SetFormattedText(displayString, activeGroup == 1 and PRIMARY or SECONDARY, str)
-	end
+	self.text:SetFormattedText(displayString, activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -99,4 +95,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC)
+DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC, nil, ValueColorUpdate)
