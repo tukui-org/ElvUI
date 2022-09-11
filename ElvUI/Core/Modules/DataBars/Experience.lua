@@ -34,6 +34,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 		local bar = DB.StatusBars.Experience
 		local currentZoneCheck, isHeader, isComplete, name, _
 		for i = 1, GetNumQuestLogEntries() do
+			SelectQuestLogEntry(i)
 			name, _, _, isHeader, _, isComplete, _, questID = GetQuestLogTitle(i)
 			if isHeader then
 				currentZoneCheck = bar.db.questCurrentZoneOnly and currentZone == name or not bar.db.questCurrentZoneOnly

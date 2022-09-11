@@ -2018,6 +2018,7 @@ P.unitframe = {
 			disableTargetGlow = false,
 			disableFocusGlow = false,
 			buffIndicator = CopyTable(UF_AuraWatch),
+			CombatIcon = CopyTable(UF_CombatIcon),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			classbar = CopyTable(UF_ClassBar),
