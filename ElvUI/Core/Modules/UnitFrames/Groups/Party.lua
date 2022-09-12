@@ -54,6 +54,7 @@ function UF:Construct_PartyFrames()
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
 		self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 		self.SummonIndicator = UF:Construct_SummonIcon(self)
+		self.CombatIndicator = UF:Construct_CombatIndicator(self)
 		self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 		self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 		self.MouseGlow = UF:Construct_MouseGlow(self)
@@ -142,6 +143,12 @@ function UF:Update_PartyFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 
 		frame.db = frame.childType == 'target' and db.targetsGroup or db.petsGroup
+
+		-- these are just coming in from the main group and will not export
+		frame.db.disableMouseoverGlow = db.disableMouseoverGlow
+		frame.db.disableTargetGlow = db.disableMouseoverGlow
+		frame.db.disableFocusGlow = db.disableMouseoverGlow
+
 		db = frame.db
 
 		frame:Size(db.width, db.height)
@@ -184,6 +191,7 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_ReadyCheckIcon(frame)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_CustomTexts(frame)
+		UF:Configure_CombatIndicator(frame)
 
 		if E.Retail then
 			UF:Configure_AltPowerBar(frame)

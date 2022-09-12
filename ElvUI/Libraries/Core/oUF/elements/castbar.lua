@@ -129,11 +129,11 @@ local function CastStart(self, real, unit, castGUID)
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
-	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
 	local event = 'UNIT_SPELLCAST_START'
 	if not name then
-		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
+		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
 
 		event = 'UNIT_SPELLCAST_CHANNEL_START'
 	end
@@ -183,7 +183,7 @@ local function CastStart(self, real, unit, castGUID)
 	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Shield) then element.Shield:SetShown(notInterruptible) end
 	if(element.Spark) then element.Spark:Show() end
-	if(element.Text) then element.Text:SetText(text) end
+	if(element.Text) then element.Text:SetText(name) end
 	if(element.Time) then element.Time:SetText() end
 
 	local safeZone = element.SafeZone
@@ -364,6 +364,8 @@ local function CastInterruptible(self, event, unit)
 end
 
 local function onUpdate(self, elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+
 	if(self.casting or self.channeling) then
 		local isCasting = self.casting
 		if(isCasting) then
@@ -396,7 +398,7 @@ local function onUpdate(self, elapsed)
 			end
 		end
 
-		if(self.Time) then
+		if(self.Time) and (self.elapsed >= .01) then
 			if(self.delay ~= 0) then
 				if(self.CustomDelayText) then
 					self:CustomDelayText(self.duration)
@@ -410,6 +412,8 @@ local function onUpdate(self, elapsed)
 					self.Time:SetFormattedText('%.1f', self.duration)
 				end
 			end
+
+			self.elapsed = 0
 		end
 
 		self:SetValue(self.duration)
@@ -524,7 +528,7 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 		end
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isWrath then
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end

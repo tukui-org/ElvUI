@@ -238,16 +238,18 @@ local function Enable(self)
 			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
-			if not self.HealComm_Update then
-				self.HealComm_Update, self.HealComm_Modified = HealComm_Create(self, element)
-			end
+			if HealComm then
+				if not self.HealComm_Update then
+					self.HealComm_Update, self.HealComm_Modified = HealComm_Create(self, element)
+				end
 
-			HealComm.RegisterCallback(element, 'HealComm_HealStarted', self.HealComm_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealUpdated', self.HealComm_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealDelayed', self.HealComm_Update)
-			HealComm.RegisterCallback(element, 'HealComm_HealStopped', self.HealComm_Update)
-			HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', self.HealComm_Modified)
-			HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', self.HealComm_Modified)
+				HealComm.RegisterCallback(element, 'HealComm_HealStarted', self.HealComm_Update)
+				HealComm.RegisterCallback(element, 'HealComm_HealUpdated', self.HealComm_Update)
+				HealComm.RegisterCallback(element, 'HealComm_HealDelayed', self.HealComm_Update)
+				HealComm.RegisterCallback(element, 'HealComm_HealStopped', self.HealComm_Update)
+				HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', self.HealComm_Modified)
+				HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', self.HealComm_Modified)
+			end
 
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
@@ -333,12 +335,14 @@ local function Disable(self)
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
-			HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
-			HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
-			HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
-			HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
-			HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
-			HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
+			if HealComm then
+				HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
+				HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
+				HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
+				HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
+				HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
+				HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
+			end
 
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end

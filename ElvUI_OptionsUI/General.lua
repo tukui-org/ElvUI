@@ -69,7 +69,7 @@ GenGen.totems = ACH:Group(L["Class Totems"], nil, 70, nil, function(info) return
 GenGen.totems.inline = true
 GenGen.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemBar end, function(_, value) E.private.general.totemBar = value; E.ShowPopup = true end, false)
 GenGen.totems.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Wrath)
-GenGen.totems.args.buttonGroup = ACH:Group("Button Options", nil, 3)
+GenGen.totems.args.buttonGroup = ACH:Group(L["Button Options"], nil, 3)
 GenGen.totems.args.buttonGroup.inline = true
 GenGen.totems.args.buttonGroup.args.size = ACH:Range(L["Button Size"], nil, 1, { min = 24, max = 60, step = 1 }, nil, nil, nil, nil, E.Wrath)
 GenGen.totems.args.buttonGroup.args.buttonSize = ACH:Range(L["Button Size"], nil, 1, { min = 24, max = 60, step = 1 }, nil, nil, nil, nil, not E.Wrath)

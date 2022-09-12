@@ -135,7 +135,6 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[12355]	= Defaults(2), -- Impact
 		[18469]	= Defaults(2), -- Silenced - Improved Counterspell
 		[33395]	= Defaults(1), -- Freeze (Water Elemental)
-		[64346]	= Defaults(2), -- Fiery Payback
 		[11113]	= Defaults(2), -- Blast Wave
 		[12484]	= Defaults(2), -- Chilled (Blizzard) (Rank 1)
 		[12485]	= Defaults(2), -- Chilled (Blizzard) (Rank 2)
@@ -962,7 +961,8 @@ G.unitframe.aurawatch = {
 		[33763]	= UF:AuraWatch_AddSpell(33763, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom (Rank 1)
 		[48450]	= UF:AuraWatch_AddSpell(48450, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom (Rank 2)
 		[48451]	= UF:AuraWatch_AddSpell(48451, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom (Rank 3)
-		-- TODO: Abolish Poison / Wild Growth
+		[48438]	= UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth
+		-- TODO: Abolish Poison
 	},
 	HUNTER = {
 		[19506]	= UF:AuraWatch_AddSpell(19506, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura

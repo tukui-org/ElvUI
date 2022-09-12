@@ -1,17 +1,17 @@
-## Title: |cff1784d1ElvUI|r
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bClassic|r
 ## Notes: User Interface Replacement
 ## Author: Elv, Simpy
 ## Version: 12.85
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: SharedMedia, Tukui, Masque, Blizzard_PetJournal
-## Interface: 90207
-## X-Interface: 90207
-## X-Tukui-ProjectID: -2
+## OptionalDeps: SharedMedia, Tukui, Masque
+## Interface: 11403
+## X-Interface: 11403
+## X-Tukui-ProjectID: 2
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 ## X-oUF: ElvUF
 
-Mainline\Libs.xml
+Classic\Libs.xml
 
 Core\init.lua
 Core\Developer\Load_Developer.xml
@@ -22,4 +22,4 @@ Core\General\Load_General.xml
 Core\Layout\Load_Layout.xml
 Core\Modules\Load_Modules.xml
 
-Mainline\Load.xml
+Classic\Load.xml

@@ -1,7 +1,6 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='Party.lua'/>
 	<Script file='Raid.lua'/>
-	<Script file='Raid40.lua'/>
 	<Script file='Arena.lua'/>
 	<Script file='Boss.lua'/>
 	<Script file='Tank.lua'/>

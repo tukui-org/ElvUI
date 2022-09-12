@@ -3,7 +3,6 @@ local C, L = unpack(E.OptionsUI)
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
 
-local _G = _G
 local gsub = gsub
 local next = next
 local strmatch = strmatch
@@ -11,6 +10,7 @@ local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
 local GameTooltip = GameTooltip
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
+
 local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
 local Bags = ACH:Group(L["Bags"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
@@ -29,7 +29,7 @@ Bags.args.general.args.moneyCoins = ACH:Toggle(L["Show Coins"], L["Use coin icon
 Bags.args.general.args.generalGroup = ACH:MultiSelect(L["General"], nil, 5, nil, nil, nil, function(_, key) return E.db.bags[key] end)
 Bags.args.general.args.generalGroup.values = {
 	transparent = L["Transparent"],
-	questIcon = L["Quest Icon"],
+	questIcon = L["Quest Starter Icon"],
 	junkIcon = L["Junk Icon"],
 	junkDesaturate = L["Desaturate Junk"],
 	newItemGlow = L["New Item Glow"],

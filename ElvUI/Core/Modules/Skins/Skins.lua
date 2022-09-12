@@ -569,8 +569,8 @@ do
 	end
 
 	function S:HandleTrimScrollBar(frame)
-		frame.Background:Hide()
 		frame:StripTextures()
+		frame.Background:Hide()
 
 		local track = frame.Track
 		track:SetTemplate('Transparent')

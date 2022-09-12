@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
+local format = format
+
 function UF:Construct_RaidFrames()
 	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
@@ -41,7 +43,7 @@ function UF:Construct_RaidFrames()
 		self.ClassBar = 'AlternativePower'
 	end
 
-	self.unitframeType = 'raid'
+	self.unitframeType = self:GetParent().groupName
 
 	return self
 end
@@ -53,8 +55,14 @@ function UF:Update_RaidHeader(header, db)
 	if not parent.positioned then
 		parent:ClearAllPoints()
 		parent:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
-		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid,generalGroup')
+		E:CreateMover(parent, parent:GetName()..'Mover', format(L["Raid Frames %d"], parent.raidFrameN), nil, nil, nil, 'ALL,RAID', nil, format('unitframe,groupUnits,%s,generalGroup', parent.groupName))
 		parent.positioned = true
+	end
+
+	if db.customName ~= '' then
+		parent.mover:SetFormattedText('%s - %s', format(L["Raid Frames %d"], parent.raidFrameN), db.customName)
+	else
+		parent.mover:SetFormattedText(L["Raid Frames %d"], parent.raidFrameN)
 	end
 end
 
@@ -135,4 +143,6 @@ function UF:Update_RaidFrames(frame, db)
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
-UF.headerstoload.raid = true
+for i = 1, 3 do
+	UF.headerstoload['raid'..i] = true
+end

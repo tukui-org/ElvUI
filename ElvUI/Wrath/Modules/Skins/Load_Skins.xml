@@ -35,6 +35,7 @@
 	<Script file='MirrorTimers.lua'/>
 	<Script file='Misc.lua'/>
 	<Script file='Petition.lua'/>
+	<Script file='PVP.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='Raid.lua'/>
 	<Script file='Socket.lua'/>

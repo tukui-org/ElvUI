@@ -7,7 +7,7 @@ local ipairs = ipairs
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local POSITION, ANCHOR_POINT, YOFFSET = 'TOP', 'BOTTOM', -10
+local POSITION, ANCHOR_POINT, YOFFSET = 'TOP', 'BOTTOM', -5
 
 function E:PostAlertMove()
 	local AlertFrameMover = _G.AlertFrameMover
@@ -18,12 +18,12 @@ function E:PostAlertMove()
 	if y > (screenHeight * 0.5) then
 		POSITION = 'TOP'
 		ANCHOR_POINT = 'BOTTOM'
-		YOFFSET = -10
+		YOFFSET = -5
 		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Down)')
 	else
 		POSITION = 'BOTTOM'
 		ANCHOR_POINT = 'TOP'
-		YOFFSET = 10
+		YOFFSET = 5
 		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Up)')
 	end
 

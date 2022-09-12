@@ -3,8 +3,8 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack, ipairs, pairs = unpack, ipairs, pairs
-local gsub, strmatch = gsub, strmatch
+local ipairs, pairs = ipairs, pairs
+local unpack, gsub = unpack, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -180,6 +180,13 @@ function AB:PositionAndSizeTotemBar()
 	bar:Height(size + 2)
 	barFrame:Height(size + 2)
 
+	local _, barFrameAnchor = barFrame:GetPoint()
+	if barFrameAnchor ~= bar then
+		barFrame:SetPoint('TOP', bar)
+		barFrame:SetPoint('BOTTOMLEFT', bar)
+		barFrame:SetPoint('BOTTOM', barFrameAnchor)
+	end -- this is Simpy voodoo, dont change it
+
 	bar.mouseover = E.db.general.totems.mouseover
 	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
 
@@ -190,15 +197,15 @@ function AB:PositionAndSizeTotemBar()
 
 	local summonButton = _G.MultiCastSummonSpellButton
 	summonButton:ClearAllPoints()
+	summonButton:Point('BOTTOMLEFT')
 	summonButton:Size(size)
-	summonButton:Point('BOTTOMLEFT', E.Border*2, E.Border*2)
 
 	for i = 1, numActiveSlots do
 		local button = _G['MultiCastSlotButton'..i]
 		local lastButton = _G['MultiCastSlotButton'..i - 1]
 
-		button:ClearAllPoints()
 		button:Size(size)
+		button:ClearAllPoints()
 
 		if i == 1 then
 			button:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
@@ -253,18 +260,15 @@ end
 function AB:CreateTotemBar()
 	AB.TotemBar = bar -- Initialized
 
-	bar:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 250)
+	bar:Size(200, 30)
+	bar:Point('BOTTOM', E.UIParent, 0, 250)
 	bar.buttons = {}
 
 	local barFrame = _G.MultiCastActionBarFrame
-	barFrame:SetParent(bar)
-	barFrame:ClearAllPoints()
-	barFrame:SetPoint('BOTTOMLEFT', bar, 'BOTTOMLEFT', -E.Border, -E.Border)
 	barFrame:SetScript('OnUpdate', nil)
 	barFrame:SetScript('OnShow', nil)
 	barFrame:SetScript('OnHide', nil)
-	barFrame.SetParent = E.noop
-	barFrame.SetPoint = E.noop
+	barFrame:SetParent(bar)
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	closeButton:SetTemplate()
@@ -305,6 +309,7 @@ function AB:CreateTotemBar()
 		bar.buttons[button] = true
 	end
 
+	local isShaman = E.myclass == 'SHAMAN'
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
 		local icon = _G['MultiCastActionButton'..i..'Icon']
@@ -313,17 +318,18 @@ function AB:CreateTotemBar()
 		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
 		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
-		button:SetAttribute('type2', 'destroytotem')
-		button:SetAttribute('*totem-slot*', i == 1 and 2 or i == 2 and 1 or i) -- because blizzard doesn't know their own order
+		if isShaman then
+			button:SetAttribute('type2', 'destroytotem')
+			button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
+		end
+
 		button:StyleButton()
+		normal:SetTexture('')
+		overlay:Hide()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetDrawLayer('ARTWORK')
 		icon:SetInside()
-
-		normal:SetTexture('')
-
-		overlay:Hide()
 
 		hotkey.SetVertexColor = E.noop
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
@@ -349,14 +355,12 @@ function AB:CreateTotemBar()
 	end
 
 	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
-		if xOffset ~= E.db.general.totems.spacing then
-			if InCombatLockdown() then
-				AB.NeedsRecallButtonUpdate = true
-				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-			else
-				button:ClearAllPoints()
-				button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
-			end
+		if InCombatLockdown() then
+			AB.NeedsRecallButtonUpdate = true
+			AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		elseif xOffset ~= E.db.general.totems.spacing or button:GetPoint(2) then
+			button:ClearAllPoints()
+			button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
 		end
 	end)
 
@@ -368,7 +372,6 @@ function AB:CreateTotemBar()
 	AB:SecureHook('MultiCastActionButton_Update')
 	AB:SecureHook('MultiCastFlyoutFrame_ToggleFlyout')
 	AB:SecureHook('MultiCastSlotButton_Update', 'StyleTotemSlotButton')
-	AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 
 	AB:HookScript(_G.MultiCastActionBarFrame, 'OnEnter', 'TotemBar_OnEnter')
 	AB:HookScript(_G.MultiCastActionBarFrame, 'OnLeave', 'TotemBar_OnLeave')

@@ -5,7 +5,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local pairs = pairs
 local select = select
-local assert = assert
 local tinsert = tinsert
 local strsub = strsub
 local CreateFrame = CreateFrame
@@ -431,7 +430,7 @@ function UF:FrameGlow_UpdateFrames()
 		UF:FrameGlow_ConfigureGlow(UF[unit], unit, dbTexture)
 	end
 
-	-- assist, tank, party, raid, raid40, raidpet
+	-- assist, tank, party, raid1, raid2, raid3, raidpet
 	for groupName in pairs(UF.headers) do
 		local group = UF[groupName]
 		if group and group.GetNumChildren then

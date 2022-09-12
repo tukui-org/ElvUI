@@ -20,7 +20,6 @@ local UnitFactionGroup = UnitFactionGroup
 local DisableAddOn = DisableAddOn
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
-local IsSpellKnown = IsSpellKnown
 local IsInRaid = IsInRaid
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
@@ -66,6 +65,7 @@ E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
 E.myspec = E.Retail and GetSpecialization()
+E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
@@ -118,26 +118,7 @@ E.InverseAnchors = {
 	TOPRIGHT = 'BOTTOMLEFT'
 }
 
-E.DispelClasses = {
-	PALADIN = { Poison = true, Disease = true },
-	PRIEST = { Magic = true, Disease = true },
-	MONK = { Disease = true, Poison = true },
-	DRUID = { Curse = true, Poison = true },
-	MAGE = { Curse = true },
-	WARLOCK = {},
-	SHAMAN = {}
-}
-
-if E.Retail then
-	E.DispelClasses.SHAMAN.Curse = true
-elseif E.Wrath then
-	E.DispelClasses.SHAMAN.Curse = IsSpellKnown(51886)
-else
-	E.DispelClasses.SHAMAN.Poison = true
-	E.DispelClasses.SHAMAN.Disease = true
-
-	E.DispelClasses.PALADIN.Magic = true
-end
+E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
 
 E.BadDispels = {
 	[34914]		= 'Vampiric Touch',		-- horrifies
@@ -382,8 +363,9 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.tooltip.healthBar.font = font
 	E.db.unitframe.font = font
 	E.db.unitframe.units.party.rdebuffs.font = font
-	E.db.unitframe.units.raid.rdebuffs.font = font
-	E.db.unitframe.units.raid40.rdebuffs.font = font
+	E.db.unitframe.units.raid1.rdebuffs.font = font
+	E.db.unitframe.units.raid2.rdebuffs.font = font
+	E.db.unitframe.units.raid3.rdebuffs.font = font
 
 	E:StaggeredUpdateAll()
 end
@@ -902,8 +884,7 @@ do
 		if event == 'CHAT_MSG_ADDON' then
 			if sender == PLAYER_NAME then return end
 			if prefix == 'ELVUI_VERSIONCHK' then
-				local msg, ver = tonumber(message), E.version
-				local inCombat = InCombatLockdown()
+				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
 
 				E.UserList[E:StripMyRealm(sender)] = msg
 
@@ -1019,7 +1000,7 @@ do -- BFA Convert, deprecated..
 				E.db.unitframe.OORAlpha = nil
 			end
 
-			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid','raid40','raidpet','tank','assist'}) do
+			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid1','raid2','raid3','raidpet','tank','assist'}) do
 				if E.db.unitframe.units[unit].rangeCheck ~= nil then
 					local enabled = E.db.unitframe.units[unit].rangeCheck
 					E.db.unitframe.units[unit].fader.enable = enabled
@@ -1095,7 +1076,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		--Heal Prediction is now a table instead of a bool
-		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid','raid40','raidpet'}) do
+		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid1','raid2','raid3','raidpet'}) do
 			if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
 				local enabled = E.db.unitframe.units[unit].healPrediction
 				E.db.unitframe.units[unit].healPrediction = {}
@@ -1322,10 +1303,10 @@ function E:DBConvertSL()
 	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
 		E.db.unitframe.units.party.groupBy = 'ROLE'
 	end
-	if E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE' then
+	if E.db.unitframe.units.raid and (E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE') then
 		E.db.unitframe.units.raid.groupBy = 'ROLE'
 	end
-	if E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE' then
+	if E.db.unitframe.units.raid40 and (E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE') then
 		E.db.unitframe.units.raid40.groupBy = 'ROLE'
 	end
 	if E.db.unitframe.units.raidpet.groupBy == 'ROLE2' or E.db.unitframe.units.raidpet.groupBy == 'CLASSROLE' then
@@ -1344,6 +1325,30 @@ function E:DBConvertSL()
 			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
 		end
+	end
+
+	-- raid 1-3 converts
+	E.db.unitframe.smartRaidFilter = nil
+
+	if E.db.unitframe.units.raid then
+		E.db.unitframe.units.raid.visibility = nil
+		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
+		E.db.unitframe.units.raid = nil
+	end
+
+	if E.db.unitframe.units.raid40 then
+		E.db.unitframe.units.raid40.visibility = nil
+		E:CopyTable(E.db.unitframe.units.raid3, E.db.unitframe.units.raid40)
+		E.db.unitframe.units.raid40 = nil
+	end
+
+	if E.db.movers and E.db.movers.ElvUF_RaidMover then
+		E.db.movers.ElvUF_Raid1Mover = E.db.movers.ElvUF_RaidMover
+		E.db.movers.ElvUF_RaidMover = nil
+	end
+	if E.db.movers and E.db.movers.ElvUF_Raid40Mover then
+		E.db.movers.ElvUF_Raid3Mover = E.db.movers.ElvUF_Raid40Mover
+		E.db.movers.ElvUF_Raid40Mover = nil
 	end
 end
 
