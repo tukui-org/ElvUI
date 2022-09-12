@@ -31,7 +31,6 @@ end
 do
 	local WarlockPetSpells = {
 		[89808] = 'Singe',
-		[171021] = 'Torch Magic (Infernal)',
 		[212623] = 'Singe (PvP)',
 		[19505] = 'Devour Magic Rank 1',
 		[19731] = 'Devour Magic Rank 2',
@@ -72,8 +71,6 @@ do
 				dispel.Magic = cure
 				dispel.Curse = corruption
 				dispel.Poison = corruption
-			elseif myClass == 'MAGE' then
-				dispel.Magic = CheckSpell(30449) -- Spellsteal
 			elseif myClass == 'PALADIN' then
 				local cleanse = CheckSpell(4987) -- Cleanse
 				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
@@ -82,8 +79,8 @@ do
 				dispel.Disease = toxins
 			elseif myClass == 'PRIEST' then
 				local purify = CheckSpell(527) -- Purify
+				dispel.Magic = purify
 				dispel.Disease = purify or CheckSpell(213634) -- Purify Disease
-				dispel.Magic = purify or CheckSpell(528) -- Dispel Magic
 			elseif myClass == 'SHAMAN' then
 				local purify = CheckSpell(77130) -- Purify Spirit
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
