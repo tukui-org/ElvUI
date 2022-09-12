@@ -91,7 +91,6 @@ do
 				dispel.Curse = cleanse
 				dispel.Poison = not Retail and cleanse
 				dispel.Disease = not Retail and cleanse
-				dispel.Magic = CheckSpell(370) -- Purge
 			end
 
 			if Retail then
