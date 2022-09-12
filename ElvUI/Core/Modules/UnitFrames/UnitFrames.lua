@@ -1587,6 +1587,8 @@ function UF:Setup()
 	ElvUF:RegisterStyle('ElvUF', UF.Style)
 	ElvUF:SetActiveStyle('ElvUF')
 	UF:LoadUnits()
+
+	UF:Update_FontStrings()
 end
 
 function UF:Initialize()
