@@ -11,8 +11,6 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local IsSpellKnown = IsSpellKnown
 
-local _, myClass = UnitClass("player")
-
 local DispelList = {}
 lib.DispelList = DispelList
 
@@ -25,6 +23,8 @@ function lib:GetMyDispelTypes()
 end
 
 do
+	local _, myClass = UnitClass("player")
+
 	local WarlockPetSpells = {
 		[89808] = 'Singe',
 		[212623] = 'Singe (PvP)',
@@ -109,13 +109,12 @@ do
 
 	local frame = CreateFrame('Frame')
 	frame:SetScript('OnEvent', UpdateDispels)
+	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
+	frame:RegisterEvent('PLAYER_LOGIN')
 
 	if myClass == 'WARLOCK' then
 		frame:RegisterUnitEvent('UNIT_PET', 'player')
 	end
-
-	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
-	frame:RegisterEvent('PLAYER_LOGIN')
 
 	if Retail or Wrath then
 		frame:RegisterEvent('PLAYER_TALENT_UPDATE')
