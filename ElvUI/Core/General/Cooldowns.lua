@@ -365,17 +365,16 @@ function E:UpdateCooldownSettings(module)
 	textColors[8], -- expiringAuraIndicator
 	_ = E:GetCooldownColors(db)
 
-	if module == 'actionbar' then
-		for i = 0, 4 do
-			local textc = textColors[i == 4 and 8 or 7]
-			local timec = E:CopyTable({}, timeColors[i == 4 and 9 or 8])
-			local index = i + 10
+	if module == 'actionbar' then	-- special population for target aura as they only have 2 colors (expiring or not)
+		for i = 10, 14 do			-- but have other states like days, mins, etc. so we need to move the colors properly
+			local timec = E:CopyTable({}, timeColors[i == 14 and 9 or 8]) -- 14 is expiring otherwise use target aura color for all
+			local textc = textColors[i == 14 and 8 or 7] -- same deal
 
-			timeColors[index] = timec
-			textColors[index] = textc
+			timeColors[i] = timec
+			textColors[i] = textc
 
-			E.TimeColors[index] = timec
-			E.TimeIndicatorColors[index] = textc
+			E.TimeColors[i] = timec
+			E.TimeIndicatorColors[i] = textc
 		end
 	end
 
