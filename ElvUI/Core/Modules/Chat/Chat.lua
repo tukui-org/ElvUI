@@ -320,6 +320,7 @@ do --this can save some main file locals
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
 		z['Kalline-Myzrael']		= itsSimpy -- Shaman
+		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
 		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
 		z['Luckyd-Golemagg']		= ElvBlue -- Druid H
@@ -370,9 +371,9 @@ do --this can save some main file locals
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
 		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
 		-- Repooc
-		z['Sifpooc-Stormrage']			= ElvBlue 	-- DH
-		z['Fragmented-Stormrage']		= ElvBlue 	-- Warlock
-		z['Dapooc-Stormrage']			= ElvOrange -- Druid
+		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
+		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
+		z['Dapooc-Stormrage']			= ElvOrange	-- Druid
 		z['Sifupooc-Spirestone']		= ElvBlue	-- Monk
 		z['Repooc-Spirestone']			= ElvBlue	-- Paladin
 		-- Simpy

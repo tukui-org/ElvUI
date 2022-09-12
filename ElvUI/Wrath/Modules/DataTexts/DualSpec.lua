@@ -51,11 +51,7 @@ local function OnEvent(self, event)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	if E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel then
-		self.text:SetFormattedText(displayString, str)
-	else
-		self.text:SetFormattedText(displayString, activeGroup == 1 and PRIMARY or SECONDARY, str)
-	end
+	self.text:SetFormattedText(displayString, E.global.datatexts.settings.DualSpecialization.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -68,7 +64,11 @@ local function OnEnter()
 	end
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+
+	if hasDualSpec then
+		DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	end
+
 	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:Show()
 end
@@ -93,10 +93,10 @@ local function OnClick(self, button)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.DualSpec and E.global.datatexts.settings.DualSpec.NoLabel and '' or '%s: ', hex, '%s|r')
+	displayString = strjoin('', E.global.datatexts.settings.DualSpecialization.NoLabel and '' or '%s: ', hex, '%s|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Dual Specialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC)
+DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC, nil, ValueColorUpdate)

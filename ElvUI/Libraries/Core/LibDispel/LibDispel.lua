@@ -11,27 +11,22 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationRole = GetSpecializationRole
 local IsSpellKnown = IsSpellKnown
 
-local _, myClass = UnitClass("player")
-
-local DispelClasses = {}
-lib.DispelClasses = DispelClasses
-
-for _, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'} do
-	DispelClasses[classTag] = {}
-end
+local DispelList = {}
+lib.DispelList = DispelList
 
 local function CheckSpell(spellID, pet)
 	return IsSpellKnown(spellID, pet) and true or nil
 end
 
 function lib:GetMyDispelTypes()
-	return DispelClasses[myClass]
+	return DispelList
 end
 
 do
+	local _, myClass = UnitClass("player")
+
 	local WarlockPetSpells = {
 		[89808] = 'Singe',
-		[171021] = 'Torch Magic (Infernal)',
 		[212623] = 'Singe (PvP)',
 		[19505] = 'Devour Magic Rank 1',
 		[19731] = 'Devour Magic Rank 2',
@@ -58,67 +53,64 @@ do
 		end
 	end
 
-	local function UpdateDispelClasses(event, arg1)
-		local dispel = DispelClasses[myClass]
-
+	local function UpdateDispels(event, arg1)
 		if event == 'UNIT_PET' then
-			dispel.Magic = CheckPetSpells()
+			DispelList.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
 		else
 			if myClass == 'DRUID' then
 				local cure = CheckSpell(88423) -- Nature's Cure
 				local corruption = cure or CheckSpell(2782) -- Remove Corruption
-				dispel.Magic = cure
-				dispel.Curse = corruption
-				dispel.Poison = corruption
-			elseif myClass == 'MAGE' then
-				dispel.Magic = CheckSpell(30449) -- Spellsteal
+				DispelList.Magic = cure
+				DispelList.Curse = corruption
+				DispelList.Poison = corruption
 			elseif myClass == 'PALADIN' then
 				local cleanse = CheckSpell(4987) -- Cleanse
 				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
-				dispel.Magic = cleanse
-				dispel.Poison = toxins
-				dispel.Disease = toxins
+				DispelList.Magic = cleanse
+				DispelList.Poison = toxins
+				DispelList.Disease = toxins
 			elseif myClass == 'PRIEST' then
 				local purify = CheckSpell(527) -- Purify
-				dispel.Disease = purify or CheckSpell(213634) -- Purify Disease
-				dispel.Magic = purify or CheckSpell(528) -- Dispel Magic
+				DispelList.Magic = purify
+				DispelList.Disease = purify or CheckSpell(213634) -- Purify Disease
 			elseif myClass == 'SHAMAN' then
 				local purify = CheckSpell(77130) -- Purify Spirit
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
-				dispel.Curse = cleanse
-				dispel.Poison = not Retail and cleanse
-				dispel.Disease = not Retail and cleanse
-				dispel.Magic = CheckSpell(370) -- Purge
+				DispelList.Curse = cleanse
+				DispelList.Poison = not Retail and cleanse
+				DispelList.Disease = not Retail and cleanse
 			end
 
 			if Retail then
 				if myClass == 'DEMONHUNTER' then
-					dispel.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
+					DispelList.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
 				elseif myClass == 'HUNTER' then
 					local mendingBandage = CheckSpell(212640) -- Mending Bandage (PvP)
-					dispel.Disease = mendingBandage
-					dispel.Poison = mendingBandage
+					DispelList.Disease = mendingBandage
+					DispelList.Poison = mendingBandage
 				elseif myClass == 'MONK' then
 					local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
 					local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
-					dispel.Magic = mwDetox
-					dispel.Disease = detox
-					dispel.Poison = detox
+					DispelList.Magic = mwDetox
+					DispelList.Disease = detox
+					DispelList.Poison = detox
 				end
 
 				local role = GetSpecializationRole(GetSpecialization())
 				if role and not ExcludeClass[myClass] then
-					dispel.Magic = (role == 'HEALER')
+					DispelList.Magic = (role == 'HEALER')
 				end
 			end
 		end
 	end
 
 	local frame = CreateFrame('Frame')
-	frame:SetScript('OnEvent', UpdateDispelClasses)
+	frame:SetScript('OnEvent', UpdateDispels)
+	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
+	frame:RegisterEvent('PLAYER_LOGIN')
 
 	if myClass == 'WARLOCK' then
 		frame:RegisterUnitEvent('UNIT_PET', 'player')
@@ -126,7 +118,6 @@ do
 
 	if Retail or Wrath then
 		frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-		frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
 	end
 
 	if Retail then
