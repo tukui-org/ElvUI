@@ -7,8 +7,6 @@
 ## OptionalDeps: SharedMedia, Tukui, Masque
 ## Interface: 20504
 ## X-Interface: 20504
-## X-Tukui-ProjectID: -2
-## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 ## X-oUF: ElvUF
 
 TBC\Libs.xml

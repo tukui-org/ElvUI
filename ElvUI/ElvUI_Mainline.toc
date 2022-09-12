@@ -7,8 +7,6 @@
 ## OptionalDeps: SharedMedia, Tukui, Masque, Blizzard_PetJournal
 ## Interface: 90207
 ## X-Interface: 90207
-## X-Tukui-ProjectID: -2
-## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 ## X-oUF: ElvUF
 
 Mainline\Libs.xml

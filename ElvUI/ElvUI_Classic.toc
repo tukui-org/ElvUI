@@ -7,8 +7,6 @@
 ## OptionalDeps: SharedMedia, Tukui, Masque
 ## Interface: 11403
 ## X-Interface: 11403
-## X-Tukui-ProjectID: -2
-## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI
 ## X-oUF: ElvUF
 
 Classic\Libs.xml
