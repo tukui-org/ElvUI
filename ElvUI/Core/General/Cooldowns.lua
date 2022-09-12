@@ -353,7 +353,7 @@ function E:UpdateCooldownSettings(module)
 	timeColors[7], -- modRateColor
 	timeColors[8], -- targetAuraColor
 	timeColors[9], -- expiringAuraColor
-	--> text colors <--
+	--> color for timers that have X remaining <--
 	textColors[0], -- daysIndicator
 	textColors[1], -- hoursIndicator
 	textColors[2], -- minutesIndicator
