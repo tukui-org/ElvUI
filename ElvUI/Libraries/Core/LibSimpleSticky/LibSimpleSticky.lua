@@ -23,7 +23,7 @@ local MAJOR, MINOR = "LibSimpleSticky-1.0", 3
 local StickyFrames, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not StickyFrames then return end
 
--- GLOBALS: UIParent, WorldFrame, ElvUIParent
+-- GLOBALS: WorldFrame, UIParent, ElvUIParent
 local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local GetCursorPosition = GetCursorPosition
 local IsShiftKeyDown = IsShiftKeyDown
