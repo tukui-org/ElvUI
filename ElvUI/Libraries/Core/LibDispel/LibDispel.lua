@@ -53,64 +53,62 @@ do
 		end
 	end
 
-	local function UpdateDispelClasses(event, arg1)
-		local dispel = DispelList
-
+	local function UpdateDispels(event, arg1)
 		if event == 'UNIT_PET' then
-			dispel.Magic = CheckPetSpells()
+			DispelList.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
 		else
 			if myClass == 'DRUID' then
 				local cure = CheckSpell(88423) -- Nature's Cure
 				local corruption = cure or CheckSpell(2782) -- Remove Corruption
-				dispel.Magic = cure
-				dispel.Curse = corruption
-				dispel.Poison = corruption
+				DispelList.Magic = cure
+				DispelList.Curse = corruption
+				DispelList.Poison = corruption
 			elseif myClass == 'PALADIN' then
 				local cleanse = CheckSpell(4987) -- Cleanse
 				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
-				dispel.Magic = cleanse
-				dispel.Poison = toxins
-				dispel.Disease = toxins
+				DispelList.Magic = cleanse
+				DispelList.Poison = toxins
+				DispelList.Disease = toxins
 			elseif myClass == 'PRIEST' then
 				local purify = CheckSpell(527) -- Purify
-				dispel.Magic = purify
-				dispel.Disease = purify or CheckSpell(213634) -- Purify Disease
+				DispelList.Magic = purify
+				DispelList.Disease = purify or CheckSpell(213634) -- Purify Disease
 			elseif myClass == 'SHAMAN' then
 				local purify = CheckSpell(77130) -- Purify Spirit
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
-				dispel.Curse = cleanse
-				dispel.Poison = not Retail and cleanse
-				dispel.Disease = not Retail and cleanse
+				DispelList.Curse = cleanse
+				DispelList.Poison = not Retail and cleanse
+				DispelList.Disease = not Retail and cleanse
 			end
 
 			if Retail then
 				if myClass == 'DEMONHUNTER' then
-					dispel.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
+					DispelList.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
 				elseif myClass == 'HUNTER' then
 					local mendingBandage = CheckSpell(212640) -- Mending Bandage (PvP)
-					dispel.Disease = mendingBandage
-					dispel.Poison = mendingBandage
+					DispelList.Disease = mendingBandage
+					DispelList.Poison = mendingBandage
 				elseif myClass == 'MONK' then
 					local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
 					local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
-					dispel.Magic = mwDetox
-					dispel.Disease = detox
-					dispel.Poison = detox
+					DispelList.Magic = mwDetox
+					DispelList.Disease = detox
+					DispelList.Poison = detox
 				end
 
 				local role = GetSpecializationRole(GetSpecialization())
 				if role and not ExcludeClass[myClass] then
-					dispel.Magic = (role == 'HEALER')
+					DispelList.Magic = (role == 'HEALER')
 				end
 			end
 		end
 	end
 
 	local frame = CreateFrame('Frame')
-	frame:SetScript('OnEvent', UpdateDispelClasses)
+	frame:SetScript('OnEvent', UpdateDispels)
 
 	if myClass == 'WARLOCK' then
 		frame:RegisterUnitEvent('UNIT_PET', 'player')
