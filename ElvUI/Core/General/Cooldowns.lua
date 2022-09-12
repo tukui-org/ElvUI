@@ -304,7 +304,7 @@ end
 
 function E:GetCooldownColors(db)
 	if not db then db = E.db.cooldown end -- just incase someone calls this without a first arg use the global
-	local ab = E.db.actionbar.cooldown
+	local ab = E.db.actionbar.cooldown -- used only for target aura colors, they get pushed into the main table
 
 	return
 	--> time colors (0 - 9) <-- 7 is mod rate, which is different from text colors (as mod rate has no indicator)
