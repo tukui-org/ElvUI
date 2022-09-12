@@ -270,6 +270,14 @@ function AB:CreateTotemBar()
 	barFrame:SetScript('OnHide', nil)
 	barFrame:SetParent(bar)
 
+	-- This hook is needed for the Sticky Frames
+	hooksecurefunc(barFrame, 'SetPoint', function(_, _, attachTo)
+		if attachTo ~= bar then
+			barFrame:ClearAllPoints()
+			barFrame:Point('BOTTOMLEFT', bar)
+		end
+	end)
+
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	closeButton:SetTemplate()
 	closeButton.normalTexture:ClearAllPoints()
