@@ -351,11 +351,13 @@ function E:UpdateCooldownSettings(module)
 		for i = 0, 4 do
 			local textc = textColors[i == 4 and 8 or 7]
 			local timec = E:CopyTable({}, timeColors[i == 4 and 9 or 8])
-			timeColors[i+10] = timec
-			textColors[i+10] = textc
+			local val = i + 10
 
-			E.TimeColors[i+10] = timec
-			E.TimeIndicatorColors[i+10] = textc
+			timeColors[val] = timec
+			textColors[val] = textc
+
+			E.TimeColors[val] = timec
+			E.TimeIndicatorColors[val] = textc
 		end
 	end
 
