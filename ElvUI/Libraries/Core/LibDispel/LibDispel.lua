@@ -124,9 +124,11 @@ do
 		frame:RegisterUnitEvent('UNIT_PET', 'player')
 	end
 
+	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
+	frame:RegisterEvent('PLAYER_LOGIN')
+
 	if Retail or Wrath then
 		frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-		frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
 	end
 
 	if Retail then
