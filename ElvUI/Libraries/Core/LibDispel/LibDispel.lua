@@ -13,19 +13,15 @@ local IsSpellKnown = IsSpellKnown
 
 local _, myClass = UnitClass("player")
 
-local DispelClasses = {}
-lib.DispelClasses = DispelClasses
-
-for _, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'} do
-	DispelClasses[classTag] = {}
-end
+local DispelList = {}
+lib.DispelList = DispelList
 
 local function CheckSpell(spellID, pet)
 	return IsSpellKnown(spellID, pet) and true or nil
 end
 
 function lib:GetMyDispelTypes()
-	return DispelClasses[myClass]
+	return DispelList
 end
 
 do
@@ -58,7 +54,7 @@ do
 	end
 
 	local function UpdateDispelClasses(event, arg1)
-		local dispel = DispelClasses[myClass]
+		local dispel = DispelList
 
 		if event == 'UNIT_PET' then
 			dispel.Magic = CheckPetSpells()
