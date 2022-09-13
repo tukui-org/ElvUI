@@ -1112,7 +1112,8 @@ G.unitframe.aurawatch = {
 		[25222]	= UF:AuraWatch_AddSpell(25222, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew (Rank 12)
 		[48067]	= UF:AuraWatch_AddSpell(48067, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew (Rank 13)
 		[48068]	= UF:AuraWatch_AddSpell(48068, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew (Rank 14)
-		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Prayer of Mending / Pain Suppression / Weakened Soul / Power Infusion
+		[6788]	= UF:AuraWatch_AddSpell(6788, 'TOP', {0.89, 0.1, 0.1}),					-- Weakened Soul
+		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Prayer of Mending / Pain Suppression / Power Infusion
 	},
 	ROGUE = {
 		-- TODO: Tricks of the Trade
