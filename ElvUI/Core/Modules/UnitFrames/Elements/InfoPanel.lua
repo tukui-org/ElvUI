@@ -7,7 +7,7 @@ function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame('Frame', '$parent_InfoPanel', frame)
 	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
 	infoPanel:Hide()
-	infoPanel:SetSize(1,1)
+	infoPanel:SetSize(100,10)
 	infoPanel:CreateBackdrop(nil, true, nil, nil, true)
 
 	return infoPanel
