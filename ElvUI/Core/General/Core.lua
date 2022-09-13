@@ -1332,12 +1332,14 @@ function E:DBConvertSL()
 
 	if E.db.unitframe.units.raid then
 		E.db.unitframe.units.raid.visibility = nil
+		E.db.unitframe.units.raid.enable = nil
 		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
 		E.db.unitframe.units.raid = nil
 	end
 
 	if E.db.unitframe.units.raid40 then
 		E.db.unitframe.units.raid40.visibility = nil
+		E.db.unitframe.units.raid40.enable = nil
 		E:CopyTable(E.db.unitframe.units.raid3, E.db.unitframe.units.raid40)
 		E.db.unitframe.units.raid40 = nil
 	end

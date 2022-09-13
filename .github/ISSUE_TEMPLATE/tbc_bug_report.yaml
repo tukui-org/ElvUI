@@ -47,13 +47,13 @@ body:
       label: ElvUI Changelog & Troubleshooting
       description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://www.tukui.org/forum/viewtopic.php?p=28#p28)
       options:
-        - label: I have confirmed that I have read the [TBC Changelog](https://www.tukui.org/classic-tbc-addons.php?id=2&changelog).
+        - label: I have confirmed that I have read the [Changelog](https://www.tukui.org/download.php?ui=elvui&changelog).
           required: true
         - label: I have verfied ElvUI is up to date by checking /estatus.
           required: true
         - label: I have verfied my issue doesn't exist in the ElvUI Issue Tracker.
           required: true
-        - label: I have not read step five and I am just clicking all boxes.
+        - label: I have not read step six and I am just clicking all boxes.
         - label: I have verfied my issue doesn't exist in the default UI.
           required: true
         - label: I have disabled all addons except the two called 'ElvUI' and 'ElvUI OptionsUI' by using `/edebug on`? This is important in order to rule out that any of your other addons are causing the issue. If you manage to pinpoint a conflict between ElvUI and another addon, make sure you include that information.
