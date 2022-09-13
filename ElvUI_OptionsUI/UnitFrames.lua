@@ -1624,9 +1624,9 @@ Party.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGrou
 Party.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'targetsGroup')
 
 for i = 1, 3 do
-	GroupUnits['raid'..i] = ACH:Group(E.NewSign..L[format("Raid %s", i)], nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
-	local Raid = GroupUnits['raid'..i].args
+	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L[format('Raid %s', i)], E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s%s - %s', E.NewSign, raid, name) or format('%s%s', E.NewSign, raid) end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
 
+	local Raid = GroupUnits['raid'..i].args
 	Raid.enable = ACH:Toggle(L["Enable"], nil, 1)
 	Raid.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF['raid'..i], UF['raid'..i].forceShow ~= true or nil) end)
 	Raid.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L[format("Raid %s Frames", i)], nil, {unit = 'raid', mover=format('Raid %s Frames', i)}) end)
