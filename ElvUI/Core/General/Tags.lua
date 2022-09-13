@@ -1253,6 +1253,7 @@ do
 	end)
 end
 
+local GetPetLoyalty = GetPetLoyalty
 E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	local hasPetUI, isHunterPet = HasPetUI()
 	if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
@@ -1262,7 +1263,6 @@ end, not E.Classic)
 
 if not E.Retail then
 	local HasPetUI = HasPetUI
-	local GetPetLoyalty = GetPetLoyalty
 	local GetPetHappiness = GetPetHappiness
 	local GetPetFoodTypes = GetPetFoodTypes
 
