@@ -1253,6 +1253,13 @@ do
 	end)
 end
 
+E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+	local hasPetUI, isHunterPet = HasPetUI()
+	if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
+	end
+end, not E.Classic)
+
 if not E.Retail then
 	local HasPetUI = HasPetUI
 	local GetPetLoyalty = GetPetLoyalty
@@ -1296,13 +1303,6 @@ if not E.Retail then
 		local hasPetUI, isHunterPet = HasPetUI()
 		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 			return Hex(_COLORS.happiness[GetPetHappiness()])
-		end
-	end)
-
-	E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
-		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
-			return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 		end
 	end)
 
