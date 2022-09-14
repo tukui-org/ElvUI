@@ -961,7 +961,10 @@ G.unitframe.aurawatch = {
 		[33763]	= UF:AuraWatch_AddSpell(33763, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom (Rank 1)
 		[48450]	= UF:AuraWatch_AddSpell(48450, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom (Rank 2)
 		[48451]	= UF:AuraWatch_AddSpell(48451, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom (Rank 3)
-		[48438]	= UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth
+		[48438]	= UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth (Rank 1)
+		[53248]	= UF:AuraWatch_AddSpell(53248, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth (Rank 2)
+		[53249]	= UF:AuraWatch_AddSpell(53249, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth (Rank 3)
+		[53251]	= UF:AuraWatch_AddSpell(53251, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth (Rank 4)
 		-- TODO: Abolish Poison
 	},
 	HUNTER = {
