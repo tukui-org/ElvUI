@@ -1042,6 +1042,54 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	end
 end
 
+function UF:ForceShow(unit) -- this is from OptionsUI needs reworked
+	local frameName = gsub('ElvUF_'..E:StringTitle(unit), 't(arget)', 'T%1')
+	if unit == 'party' then
+		local header = UF.headers[groupName]
+		for i = 1, header:GetNumChildren() do
+			local group = select(i, header:GetChildren())
+			for j = 1, group:GetNumChildren() do
+				--Party unitbutton
+				local unitbutton = select(j, group:GetChildren())
+				local castbar = unitbutton.Castbar
+				if not castbar.oldHide then
+					castbar.oldHide = castbar.Hide
+					castbar.Hide = castbar.Show
+					castbar:Show()
+				else
+					castbar.Hide = castbar.oldHide
+					castbar.oldHide = nil
+					castbar:Hide()
+				end
+			end
+		end
+	elseif numUnits then
+		for i = 1, numUnits do
+			local castbar = _G[frameName..i].Castbar
+			if not castbar.oldHide then
+				castbar.oldHide = castbar.Hide
+				castbar.Hide = castbar.Show
+				castbar:Show()
+			else
+				castbar.Hide = castbar.oldHide
+				castbar.oldHide = nil
+				castbar:Hide()
+			end
+		end
+	else
+		local castbar = _G[frameName].Castbar
+		if not castbar.oldHide then
+			castbar.oldHide = castbar.Hide
+			castbar.Hide = castbar.Show
+			castbar:Show()
+		else
+			castbar.Hide = castbar.oldHide
+			castbar.oldHide = nil
+			castbar:Hide()
+		end
+	end
+end
+
 function UF:CreateAndUpdateUF(unit)
 	assert(unit, 'No unit provided to create or update.')
 

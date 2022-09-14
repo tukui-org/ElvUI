@@ -79,6 +79,7 @@ end
 AddMedia('font','ActionMan.ttf',			'Action Man')
 AddMedia('font','ContinuumMedium.ttf',		'Continuum Medium')
 AddMedia('font','DieDieDie.ttf',			'Die Die Die!')
+AddMedia('font','ReggaeOne.ttf',			'Reggae One')
 AddMedia('font','PTSansNarrow.ttf',			'PT Sans Narrow', nil, westAndRU)
 AddMedia('font','Expressway.ttf',			true, nil, westAndRU)
 AddMedia('font','Homespun.ttf',				true, nil, westAndRU)

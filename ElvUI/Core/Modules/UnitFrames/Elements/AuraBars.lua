@@ -136,8 +136,8 @@ function UF:Configure_AuraBars(frame)
 			attachTo = frame.Buffs
 		elseif debuffs then
 			attachTo = frame.Debuffs
-		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
-			attachTo = _G.ElvUF_Player.AuraBars
+		elseif db.attachTo == 'PLAYER_AURABARS' then
+			attachTo = UF.units.player.AuraBars
 			xOffset = 0
 		end
 
