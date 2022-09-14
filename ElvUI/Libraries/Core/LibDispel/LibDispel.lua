@@ -7,16 +7,10 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
-local GetSpecialization = GetSpecialization
-local GetSpecializationRole = GetSpecializationRole
 local IsSpellKnown = IsSpellKnown
 
 local DispelList = {}
 lib.DispelList = DispelList
-
-local function CheckSpell(spellID, pet)
-	return IsSpellKnown(spellID, pet) and true or nil
-end
 
 function lib:GetMyDispelTypes()
 	return DispelList
@@ -24,10 +18,8 @@ end
 
 do
 	local _, myClass = UnitClass("player")
-
 	local WarlockPetSpells = {
 		[89808] = 'Singe',
-		[212623] = 'Singe (PvP)',
 		[19505] = 'Devour Magic Rank 1',
 		[19731] = 'Devour Magic Rank 2',
 		[19734] = 'Devour Magic Rank 3',
@@ -36,10 +28,9 @@ do
 		[27277] = 'Devour Magic Rank 6'
 	}
 
-	local ExcludeClass = {
-		PRIEST = true, -- has Mass Dispel on Shadow
-		WARLOCK = true, -- uses PET check only
-	}
+	local function CheckSpell(spellID, pet)
+		return IsSpellKnown(spellID, pet) and true or nil
+	end
 
 	local function CheckPetSpells()
 		if Retail then
@@ -58,52 +49,37 @@ do
 			DispelList.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
-		else
-			if myClass == 'DRUID' then
-				local cure = CheckSpell(88423) -- Nature's Cure
-				local corruption = cure or CheckSpell(2782) -- Remove Corruption
-				DispelList.Magic = cure
-				DispelList.Curse = corruption
-				DispelList.Poison = corruption
-			elseif myClass == 'PALADIN' then
-				local cleanse = CheckSpell(4987) -- Cleanse
-				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
-				DispelList.Magic = cleanse
-				DispelList.Poison = toxins
-				DispelList.Disease = toxins
-			elseif myClass == 'PRIEST' then
-				local purify = CheckSpell(527) -- Purify
-				DispelList.Magic = purify
-				DispelList.Disease = purify or CheckSpell(213634) -- Purify Disease
-			elseif myClass == 'SHAMAN' then
-				local purify = CheckSpell(77130) -- Purify Spirit
-				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
+		elseif myClass == 'DRUID' then
+			local cure = Retail and CheckSpell(88423) -- Nature's Cure
+			DispelList.Magic = cure
+			DispelList.Curse = cure or CheckSpell(2782) -- Remove Curse
+			DispelList.Poison = cure or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
+		elseif myClass == 'MAGE' then
+			DispelList.Curse = CheckSpell(475) -- Remove Curse
+		elseif myClass == 'MONK' then
+			local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
+			local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
+			DispelList.Magic = mwDetox
+			DispelList.Disease = detox
+			DispelList.Poison = detox
+		elseif myClass == 'PALADIN' then
+			local cleanse = CheckSpell(4987) -- Cleanse
+			local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
+			DispelList.Magic = cleanse
+			DispelList.Poison = toxins
+			DispelList.Disease = toxins
+		elseif myClass == 'PRIEST' then
+			local dispel = CheckSpell(527) -- Dispel Magic
+			DispelList.Magic = dispel
+			DispelList.Disease = Retail and (dispel or CheckSpell(213634)) or not Retail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
+		elseif myClass == 'SHAMAN' then
+			local purify = Retail and CheckSpell(77130) -- Purify Spirit
+			local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
-				DispelList.Curse = cleanse
-				DispelList.Poison = not Retail and cleanse
-				DispelList.Disease = not Retail and cleanse
-			end
-
-			if Retail then
-				if myClass == 'DEMONHUNTER' then
-					DispelList.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
-				elseif myClass == 'HUNTER' then
-					local mendingBandage = CheckSpell(212640) -- Mending Bandage (PvP)
-					DispelList.Disease = mendingBandage
-					DispelList.Poison = mendingBandage
-				elseif myClass == 'MONK' then
-					local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
-					local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
-					DispelList.Magic = mwDetox
-					DispelList.Disease = detox
-					DispelList.Poison = detox
-				end
-
-				local role = GetSpecializationRole(GetSpecialization())
-				if role and not ExcludeClass[myClass] then
-					DispelList.Magic = (role == 'HEALER')
-				end
-			end
+			DispelList.Magic = purify
+			DispelList.Curse = cleanse
+			DispelList.Poison = not Retail and cleanse
+			DispelList.Disease = not Retail and cleanse
 		end
 	end
 

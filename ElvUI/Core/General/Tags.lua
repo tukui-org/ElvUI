@@ -14,59 +14,61 @@ local unpack, ipairs, pairs, wipe, floor, ceil = unpack, ipairs, pairs, wipe, fl
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
-local UnitFactionGroup = UnitFactionGroup
+local GetCreatureDifficultyColor = GetCreatureDifficultyColor
+local GetCurrentTitle = GetCurrentTitle
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetPetLoyalty = GetPetLoyalty
+local GetPVPRankInfo = GetPVPRankInfo
 local GetPVPTimer = GetPVPTimer
-local GetRaidRosterInfo = GetRaidRosterInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
+local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
+local GetRuneCooldown = GetRuneCooldown
 local GetSpecialization = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecialization) or GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
-local GetRuneCooldown = GetRuneCooldown
 local GetTime = GetTime
+local GetTitleName = GetTitleName
 local GetUnitSpeed = GetUnitSpeed
+local HasPetUI = HasPetUI
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
-local UnitSex = UnitSex
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists = UnitExists
+local UnitFactionGroup = UnitFactionGroup
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsConnected = UnitIsConnected
 local UnitIsDead = UnitIsDead
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsDND = UnitIsDND
+local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsGhost = UnitIsGhost
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitPVPName = UnitPVPName
-local UnitReaction = UnitReaction
-local UnitStagger = UnitStagger
-local GetCurrentTitle = GetCurrentTitle
-local GetTitleName = GetTitleName
-local UnitLevel = UnitLevel
 local UnitPVPRank = UnitPVPRank
-local GetPVPRankInfo = GetPVPRankInfo
+local UnitReaction = UnitReaction
+local UnitSex = UnitSex
+local UnitStagger = UnitStagger
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
@@ -1253,9 +1255,14 @@ do
 	end)
 end
 
+E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
+	local hasPetUI, isHunterPet = HasPetUI()
+	if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
+	end
+end, not E.Classic)
+
 if not E.Retail then
-	local HasPetUI = HasPetUI
-	local GetPetLoyalty = GetPetLoyalty
 	local GetPetHappiness = GetPetHappiness
 	local GetPetFoodTypes = GetPetFoodTypes
 
@@ -1296,13 +1303,6 @@ if not E.Retail then
 		local hasPetUI, isHunterPet = HasPetUI()
 		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 			return Hex(_COLORS.happiness[GetPetHappiness()])
-		end
-	end)
-
-	E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
-		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
-			return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 		end
 	end)
 
