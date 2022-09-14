@@ -60,11 +60,10 @@ do
 			return -- Not interested in gained points from leveling
 		else
 			if myClass == 'DRUID' then
-				local cure = CheckSpell(88423) -- Nature's Cure
-				local corruption = cure or CheckSpell(2782) -- Remove Corruption
+				local cure = Retail and CheckSpell(88423) -- Nature's Cure
 				DispelList.Magic = cure
-				DispelList.Curse = corruption
-				DispelList.Poison = corruption
+				DispelList.Curse = cure or CheckSpell(2782) -- Remove Curse
+				DispelList.Poison = cure or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
 			elseif myClass == 'PALADIN' then
 				local cleanse = CheckSpell(4987) -- Cleanse
 				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
@@ -72,16 +71,16 @@ do
 				DispelList.Poison = toxins
 				DispelList.Disease = toxins
 			elseif myClass == 'PRIEST' then
-				local purify = CheckSpell(527) -- Purify
-				DispelList.Magic = purify
-				DispelList.Disease = purify or CheckSpell(213634) -- Purify Disease
+				local dispel = CheckSpell(527) -- Dispel Magic
+				DispelList.Magic = dispel
+				DispelList.Disease = Retail and CheckSpell(213634) or not Retail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
 			elseif myClass == 'SHAMAN' then
-				local purify = CheckSpell(77130) -- Purify Spirit
+				local purify = Retail and CheckSpell(77130) -- Purify Spirit
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
 				DispelList.Curse = cleanse
-				DispelList.Poison = not Retail and cleanse
-				DispelList.Disease = not Retail and cleanse
+				DispelList.Poison = cleanse
+				DispelList.Disease = cleanse
 			end
 
 			if Retail then
