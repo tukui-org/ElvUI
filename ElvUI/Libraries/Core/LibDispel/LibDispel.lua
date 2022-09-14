@@ -86,13 +86,7 @@ do
 			end
 
 			if Retail then
-				if myClass == 'DEMONHUNTER' then
-					DispelList.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
-				elseif myClass == 'HUNTER' then
-					local mendingBandage = CheckSpell(212640) -- Mending Bandage (PvP)
-					DispelList.Disease = mendingBandage
-					DispelList.Poison = mendingBandage
-				elseif myClass == 'MONK' then
+				if myClass == 'MONK' then
 					local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
 					local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
 					DispelList.Magic = mwDetox
