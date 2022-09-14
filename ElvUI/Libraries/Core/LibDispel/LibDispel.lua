@@ -7,7 +7,7 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
-local IsSpellKnown = IsSpellKnown
+local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 
 local DispelList = {}
 lib.DispelList = DispelList
@@ -33,7 +33,7 @@ do
 	}
 
 	local function CheckSpell(spellID, pet)
-		return IsSpellKnown(spellID, pet) and true or nil
+		return IsSpellKnownOrOverridesKnown(spellID, pet) and true or nil
 	end
 
 	local function CheckPetSpells()
@@ -61,7 +61,7 @@ do
 		elseif myClass == 'MAGE' then
 			DispelList.Curse = CheckSpell(475) -- Remove Curse
 		elseif myClass == 'MONK' then
-			local mwDetox = CheckSpell(115450) or CheckSpell(218164) -- Detox (Mistweaver)
+			local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
 			local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
 			DispelList.Magic = mwDetox
 			DispelList.Disease = detox
