@@ -7,8 +7,6 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
-local GetSpecialization = GetSpecialization
-local GetSpecializationRole = GetSpecializationRole
 local IsSpellKnown = IsSpellKnown
 
 local DispelList = {}
@@ -34,11 +32,6 @@ do
 		[19736] = 'Devour Magic Rank 4',
 		[27276] = 'Devour Magic Rank 5',
 		[27277] = 'Devour Magic Rank 6'
-	}
-
-	local ExcludeClass = {
-		PRIEST = true, -- has Mass Dispel on Shadow
-		WARLOCK = true, -- uses PET check only
 	}
 
 	local function CheckPetSpells()
