@@ -81,8 +81,8 @@ do
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
 				DispelList.Curse = cleanse
-				DispelList.Poison = cleanse
-				DispelList.Disease = cleanse
+				DispelList.Poison = not Retail and cleanse
+				DispelList.Disease = not Retail and cleanse
 			end
 
 			if Retail then
