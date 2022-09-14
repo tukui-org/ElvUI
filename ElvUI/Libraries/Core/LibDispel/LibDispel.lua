@@ -80,6 +80,7 @@ do
 				local purify = Retail and CheckSpell(77130) -- Purify Spirit
 				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
+				DispelList.Magic = purify
 				DispelList.Curse = cleanse
 				DispelList.Poison = not Retail and cleanse
 				DispelList.Disease = not Retail and cleanse
@@ -92,11 +93,6 @@ do
 					DispelList.Magic = mwDetox
 					DispelList.Disease = detox
 					DispelList.Poison = detox
-				end
-
-				local role = GetSpecializationRole(GetSpecialization())
-				if role and not ExcludeClass[myClass] then
-					DispelList.Magic = (role == 'HEALER')
 				end
 			end
 		end
