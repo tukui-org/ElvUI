@@ -25,7 +25,6 @@ do
 
 	local WarlockPetSpells = {
 		[89808] = 'Singe',
-		[212623] = 'Singe (PvP)',
 		[19505] = 'Devour Magic Rank 1',
 		[19731] = 'Devour Magic Rank 2',
 		[19734] = 'Devour Magic Rank 3',
@@ -59,6 +58,12 @@ do
 				DispelList.Poison = cure or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
 			elseif myClass == 'MAGE' then
 				DispelList.Curse = CheckSpell(475) -- Remove Curse
+			elseif myClass == 'MONK' then
+				local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
+				local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
+				DispelList.Magic = mwDetox
+				DispelList.Disease = detox
+				DispelList.Poison = detox
 			elseif myClass == 'PALADIN' then
 				local cleanse = CheckSpell(4987) -- Cleanse
 				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
@@ -77,16 +82,6 @@ do
 				DispelList.Curse = cleanse
 				DispelList.Poison = not Retail and cleanse
 				DispelList.Disease = not Retail and cleanse
-			end
-
-			if Retail then
-				if myClass == 'MONK' then
-					local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
-					local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
-					DispelList.Magic = mwDetox
-					DispelList.Disease = detox
-					DispelList.Poison = detox
-				end
 			end
 		end
 	end
