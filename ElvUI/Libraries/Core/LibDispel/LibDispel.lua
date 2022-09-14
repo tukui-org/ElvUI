@@ -86,6 +86,8 @@ do
 			if Retail then
 				if myClass == 'DEMONHUNTER' then
 					DispelList.Magic = CheckSpell(205604) -- Reverse Magic (PvP)
+				elseif myClass == 'MAGE' then
+					DispelList.Curse = CheckSpell(475) -- Remove Curse
 				elseif myClass == 'HUNTER' then
 					local mendingBandage = CheckSpell(212640) -- Mending Bandage (PvP)
 					DispelList.Disease = mendingBandage
