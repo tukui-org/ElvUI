@@ -12,17 +12,12 @@ local IsSpellKnown = IsSpellKnown
 local DispelList = {}
 lib.DispelList = DispelList
 
-local function CheckSpell(spellID, pet)
-	return IsSpellKnown(spellID, pet) and true or nil
-end
-
 function lib:GetMyDispelTypes()
 	return DispelList
 end
 
 do
 	local _, myClass = UnitClass("player")
-
 	local WarlockPetSpells = {
 		[89808] = 'Singe',
 		[19505] = 'Devour Magic Rank 1',
@@ -32,6 +27,10 @@ do
 		[27276] = 'Devour Magic Rank 5',
 		[27277] = 'Devour Magic Rank 6'
 	}
+
+	local function CheckSpell(spellID, pet)
+		return IsSpellKnown(spellID, pet) and true or nil
+	end
 
 	local function CheckPetSpells()
 		if Retail then
@@ -50,39 +49,37 @@ do
 			DispelList.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
 			return -- Not interested in gained points from leveling
-		else
-			if myClass == 'DRUID' then
-				local cure = Retail and CheckSpell(88423) -- Nature's Cure
-				DispelList.Magic = cure
-				DispelList.Curse = cure or CheckSpell(2782) -- Remove Curse
-				DispelList.Poison = cure or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
-			elseif myClass == 'MAGE' then
-				DispelList.Curse = CheckSpell(475) -- Remove Curse
-			elseif myClass == 'MONK' then
-				local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
-				local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
-				DispelList.Magic = mwDetox
-				DispelList.Disease = detox
-				DispelList.Poison = detox
-			elseif myClass == 'PALADIN' then
-				local cleanse = CheckSpell(4987) -- Cleanse
-				local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
-				DispelList.Magic = cleanse
-				DispelList.Poison = toxins
-				DispelList.Disease = toxins
-			elseif myClass == 'PRIEST' then
-				local dispel = CheckSpell(527) -- Dispel Magic
-				DispelList.Magic = dispel
-				DispelList.Disease = Retail and (dispel or CheckSpell(213634)) or not Retail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
-			elseif myClass == 'SHAMAN' then
-				local purify = Retail and CheckSpell(77130) -- Purify Spirit
-				local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
+		elseif myClass == 'DRUID' then
+			local cure = Retail and CheckSpell(88423) -- Nature's Cure
+			DispelList.Magic = cure
+			DispelList.Curse = cure or CheckSpell(2782) -- Remove Curse
+			DispelList.Poison = cure or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
+		elseif myClass == 'MAGE' then
+			DispelList.Curse = CheckSpell(475) -- Remove Curse
+		elseif myClass == 'MONK' then
+			local mwDetox = CheckSpell(115450) -- Detox (Mistweaver)
+			local detox = mwDetox or CheckSpell(218164) -- Detox (Brewmaster or Windwalker)
+			DispelList.Magic = mwDetox
+			DispelList.Disease = detox
+			DispelList.Poison = detox
+		elseif myClass == 'PALADIN' then
+			local cleanse = CheckSpell(4987) -- Cleanse
+			local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
+			DispelList.Magic = cleanse
+			DispelList.Poison = toxins
+			DispelList.Disease = toxins
+		elseif myClass == 'PRIEST' then
+			local dispel = CheckSpell(527) -- Dispel Magic
+			DispelList.Magic = dispel
+			DispelList.Disease = Retail and (dispel or CheckSpell(213634)) or not Retail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
+		elseif myClass == 'SHAMAN' then
+			local purify = Retail and CheckSpell(77130) -- Purify Spirit
+			local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
 
-				DispelList.Magic = purify
-				DispelList.Curse = cleanse
-				DispelList.Poison = not Retail and cleanse
-				DispelList.Disease = not Retail and cleanse
-			end
+			DispelList.Magic = purify
+			DispelList.Curse = cleanse
+			DispelList.Poison = not Retail and cleanse
+			DispelList.Disease = not Retail and cleanse
 		end
 	end
 
