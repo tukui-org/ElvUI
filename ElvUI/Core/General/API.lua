@@ -190,8 +190,7 @@ function E:CheckRole()
 end
 
 function E:IsDispellableByMe(debuffType)
-	local filter = E.Libs.Dispel:GetMyDispelTypes()
-	return filter and filter[debuffType]
+	return E.Libs.Dispel:IsDispellableByMe(debuffType)
 end
 
 do

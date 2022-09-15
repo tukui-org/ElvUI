@@ -72,13 +72,14 @@ General.args.fontGroup.args.tabFontSize = ACH:Range(L["Tab Font Size"], nil, 3, 
 
 General.args.alerts = ACH:Group(L["Alerts"], nil, 85, nil, nil, nil, function() return not E.Chat.Initialized end)
 General.args.alerts.args.noAlertInCombat = ACH:Toggle(L["No Alert In Combat"], nil, 1)
+General.args.alerts.args.flashClientIcon = ACH:Toggle(L["Flash Client Icon"], nil, 2)
 
-General.args.alerts.args.keywordAlerts = ACH:Group(L["Keyword Alerts"], nil, 2)
+General.args.alerts.args.keywordAlerts = ACH:Group(L["Keyword Alerts"], nil, 5)
 General.args.alerts.args.keywordAlerts.inline = true
 General.args.alerts.args.keywordAlerts.args.keywordSound = ACH:SharedMediaSound(L["Keyword Alert"], nil, 1, 'double')
 General.args.alerts.args.keywordAlerts.args.keywords = ACH:Input(L["Keywords"], L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"], 2, 4, 'double', nil, function(info, value) E.db.chat[info[#info]] = value CH:UpdateChatKeywords() end)
 
-General.args.alerts.args.channelAlerts = ACH:Group(L["Channel Alerts"], nil, 3, nil, function(info) return E.db.chat.channelAlerts[info[#info]] end, function(info, value) E.db.chat.channelAlerts[info[#info]] = value end)
+General.args.alerts.args.channelAlerts = ACH:Group(L["Channel Alerts"], nil, 10, nil, function(info) return E.db.chat.channelAlerts[info[#info]] end, function(info, value) E.db.chat.channelAlerts[info[#info]] = value end)
 General.args.alerts.args.channelAlerts.inline = true
 General.args.alerts.args.channelAlerts.args.GUILD = ACH:SharedMediaSound(L["Guild"], nil, nil, 'double')
 General.args.alerts.args.channelAlerts.args.OFFICER = ACH:SharedMediaSound(L["Officer"], nil, nil, 'double')

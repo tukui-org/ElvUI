@@ -2187,7 +2187,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
 			_G.ChatEdit_SetLastTellTarget(arg2, chatType)
-			FlashClientIcon()
+			if CH.db.flashClientIcon then FlashClientIcon() end
 		end
 
 		if notChatHistory and not frame:IsShown() then

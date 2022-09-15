@@ -1026,6 +1026,7 @@ P.chat = {
 	emotionIcons = true,
 	keywordSound = 'None',
 	noAlertInCombat = false,
+	flashClientIcon = true,
 	chatHistory = true,
 	lfgIcons = true,
 	maxLines = 100,

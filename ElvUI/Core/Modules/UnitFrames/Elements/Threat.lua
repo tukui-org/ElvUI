@@ -102,18 +102,11 @@ end
 
 function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 	if threatStyle == 'GLOW' then
-		if status then
-			threat.MainGlow:Show()
-			threat.MainGlow:SetBackdropBorderColor(r, g, b)
+		threat.MainGlow:SetShown(status)
+		threat.MainGlow:SetBackdropBorderColor(r, g, b)
 
-			if parent.USE_POWERBAR_OFFSET then
-				threat.PowerGlow:Show()
-				threat.PowerGlow:SetBackdropBorderColor(r, g, b)
-			end
-		else
-			threat.MainGlow:Hide()
-			threat.PowerGlow:Hide()
-		end
+		threat.PowerGlow:SetShown(parent.USE_POWERBAR_OFFSET and status)
+		threat.PowerGlow:SetBackdropBorderColor(r, g, b)
 	elseif threatStyle == 'BORDERS' then
 		local cb = parent.Castbar
 		if cb and parent.db.castbar.overlayOnFrame ~= 'None' then
@@ -150,12 +143,8 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 			UF:ThreatBorderColor(parent.InfoPanel.backdrop, status, r, g, b)
 		end
 	elseif threatStyle ~= 'NONE' and threat.TextureIcon then
-		if status then
-			threat.TextureIcon:Show()
-			threat.TextureIcon:SetVertexColor(r, g, b)
-		else
-			threat.TextureIcon:Hide()
-		end
+		threat.TextureIcon:SetShown(status)
+		threat.TextureIcon:SetVertexColor(r, g, b)
 	end
 end
 

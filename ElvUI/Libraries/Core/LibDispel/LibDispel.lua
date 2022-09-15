@@ -7,13 +7,17 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
-local IsSpellKnown = IsSpellKnown
+local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 
 local DispelList = {}
 lib.DispelList = DispelList
 
 function lib:GetMyDispelTypes()
 	return DispelList
+end
+
+function lib:IsDispellableByMe(debuffType)
+	return DispelList[debuffType]
 end
 
 do
@@ -29,7 +33,7 @@ do
 	}
 
 	local function CheckSpell(spellID, pet)
-		return IsSpellKnown(spellID, pet) and true or nil
+		return IsSpellKnownOrOverridesKnown(spellID, pet) and true or nil
 	end
 
 	local function CheckPetSpells()
@@ -44,7 +48,7 @@ do
 		end
 	end
 
-	local function UpdateDispels(event, arg1)
+	local function UpdateDispels(_, event, arg1)
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
@@ -70,16 +74,17 @@ do
 			DispelList.Disease = toxins
 		elseif myClass == 'PRIEST' then
 			local dispel = CheckSpell(527) -- Dispel Magic
-			DispelList.Magic = dispel
+			DispelList.Magic = dispel or CheckSpell(32375)
 			DispelList.Disease = Retail and (dispel or CheckSpell(213634)) or not Retail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
 		elseif myClass == 'SHAMAN' then
 			local purify = Retail and CheckSpell(77130) -- Purify Spirit
 			local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
+			local toxins = CheckSpell(526)
 
 			DispelList.Magic = purify
 			DispelList.Curse = cleanse
-			DispelList.Poison = not Retail and cleanse
-			DispelList.Disease = not Retail and cleanse
+			DispelList.Poison = not Retail and (cleanse or toxins)
+			DispelList.Disease = not Retail and (cleanse or toxins)
 		end
 	end
 
