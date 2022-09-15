@@ -11,7 +11,7 @@ local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local hooksecurefunc = hooksecurefunc
 
-local bar = CreateFrame('Frame', 'ElvUI_ShamanTotemBar', UIParent, 'SecureHandlerStateTemplate')
+local bar = CreateFrame('Frame', 'ElvUI_ShamanTotemBar', E.UIParent, 'SecureHandlerStateTemplate')
 bar:SetFrameStrata('LOW')
 
 local SLOT_BORDER_COLORS = {
