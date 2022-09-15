@@ -105,10 +105,8 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 		threat.MainGlow:SetShown(status)
 		threat.MainGlow:SetBackdropBorderColor(r, g, b)
 
-		if parent.USE_POWERBAR_OFFSET then
-			threat.PowerGlow:SetShown(status)
-			threat.PowerGlow:SetBackdropBorderColor(r, g, b)
-		end
+		threat.PowerGlow:SetShown(parent.USE_POWERBAR_OFFSET and status)
+		threat.PowerGlow:SetBackdropBorderColor(r, g, b)
 	elseif threatStyle == 'BORDERS' then
 		local cb = parent.Castbar
 		if cb and parent.db.castbar.overlayOnFrame ~= 'None' then
