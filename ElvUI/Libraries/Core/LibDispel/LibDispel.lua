@@ -48,7 +48,7 @@ do
 		end
 	end
 
-	local function UpdateDispels(event, arg1)
+	local function UpdateDispels(_, event, arg1)
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()
 		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
