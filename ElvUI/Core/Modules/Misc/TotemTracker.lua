@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local T = E:GetModule('Totems')
+local T = E:GetModule('TotemTracker')
 
 local _G = _G
 local unpack = unpack
@@ -83,7 +83,7 @@ function T:Initialize()
 
 	self.db = E.db.general.totems
 
-	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
+	local bar = CreateFrame('Frame', 'ElvUI_TotemTracker', E.UIParent)
 	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 	self.bar = bar
 
@@ -115,7 +115,7 @@ function T:Initialize()
 	self:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
 
-	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"], nil, nil, nil, nil, nil, 'general,totems')
+	E:CreateMover(bar, 'TotemTrackerMover', L["Totem Tracker"], nil, nil, nil, nil, nil, 'general,totems')
 end
 
 E:RegisterModule(T:GetName())
