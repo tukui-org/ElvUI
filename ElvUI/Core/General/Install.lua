@@ -425,7 +425,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			--Party
 				E.db.unitframe.units.party.height = 74
 				E.db.unitframe.units.party.power.height = 13
-				E.db.unitframe.units.party.rdebuffs.font = 'PT Sans Narrow'
 				E.db.unitframe.units.party.width = 231
 			--Raid
 				E.db.unitframe.units.raid1.growthDirection = 'RIGHT_UP'
@@ -434,7 +433,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.raid1.name.position = 'BOTTOMLEFT'
 				E.db.unitframe.units.raid1.name.xOffset = 2
 				E.db.unitframe.units.raid1.numGroups = 8
-				E.db.unitframe.units.raid1.rdebuffs.font = 'PT Sans Narrow'
 				E.db.unitframe.units.raid1.rdebuffs.size = 30
 				E.db.unitframe.units.raid1.rdebuffs.xOffset = 30
 				E.db.unitframe.units.raid1.rdebuffs.yOffset = 25
