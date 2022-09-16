@@ -1690,7 +1690,7 @@ function S:Initialize()
 			end
 		end
 		for _, n in next, S.EarlyAceTooltips do
-			S:Ace3_SkinTooltip(_G.LibStub(n, true))
+			S:Ace3_SkinTooltip(LibStub(n, true))
 		end
 	end
 	if S.EarlyDropdowns then
