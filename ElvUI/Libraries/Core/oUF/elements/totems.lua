@@ -104,7 +104,7 @@ local function UpdateTotem(self, event, slot)
 	if(element.PreUpdate) then element:PreUpdate(slot) end
 
 	local totem = element[priority[slot]]
-	local haveTotem, name, start, duration, icon = GetTotemInfo(totem:GetID())
+	local haveTotem, name, start, duration, icon = GetTotemInfo(slot) -- slot is the same as totem:GetID()
 
 	if haveTotem and duration > 0 then
 		if totem.Icon then
