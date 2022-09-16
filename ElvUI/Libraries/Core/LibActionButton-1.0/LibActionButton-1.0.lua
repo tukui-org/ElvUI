@@ -1039,7 +1039,7 @@ function UpdateAuraCooldowns()
 	wipe(currentAuras)
 
 	local index = 1
-	local name, _, _, _, duration, expiration, source = UnitAura("target", index, filter)
+	local name, _, _, _, duration, expiration = UnitAura("target", index, filter)
 	while name do
 		local buttons = AuraButtons.auras[name]
 		if buttons then
