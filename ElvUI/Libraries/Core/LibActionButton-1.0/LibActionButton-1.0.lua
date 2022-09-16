@@ -1033,7 +1033,7 @@ end
 
 local currentAuras = {}
 function UpdateAuraCooldowns()
-	local filter = UnitIsFriend("player", "target") and "HELPFUL" or "PLAYER"
+	local filter = UnitIsFriend("player", "target") and "PLAYER|HELPFUL" or "PLAYER|HARMFUL"
 
 	local previousAuras = CopyTable(currentAuras, true)
 	wipe(currentAuras)
@@ -1043,7 +1043,7 @@ function UpdateAuraCooldowns()
 	while name do
 		local buttons = AuraButtons.auras[name]
 		if buttons then
-			local start = (source == 'player' and duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
+			local start = (duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
 			for _, button in next, buttons do
 				if start then
 					CooldownFrame_Set(button.AuraCooldown, start, duration, true)
