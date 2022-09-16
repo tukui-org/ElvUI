@@ -88,6 +88,7 @@ L["Chat Set"] = "Чат настроен"
 L["Chat"] = "Чат"
 L["Choose a theme layout you wish to use for your initial setup."] = "Выберите тему, которую Вы хотите использовать."
 L["Class Totems"] = "Классовые тотемы"
+L["Totem Tracker"] = true
 L["Classbar"] = "Полоса класса"
 L["Classic"] = "Классическая"
 L["Combat"] = "Бой"

@@ -3,7 +3,7 @@ local C, L = unpack(E.OptionsUI)
 local AB = E:GetModule('ActionBars')
 local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
-local Totems = E:GetModule('Totems')
+local TotemTracker = E:GetModule('TotemTracker')
 local Blizzard = E:GetModule('Blizzard')
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
@@ -65,7 +65,7 @@ GenGen.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Aut
 GenGen.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
 
-GenGen.totems = ACH:Group(L["Class Totems"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value if E.Wrath then AB:PositionAndSizeTotemBar() else Totems:PositionAndSize() end end, function() return not E.private.general.totemBar end)
+GenGen.totems = ACH:Group(L["Class Totems"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value if E.Wrath then AB:PositionAndSizeTotemBar() else TotemTracker:PositionAndSize() end end, function() return not E.private.general.totemBar end)
 GenGen.totems.inline = true
 GenGen.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemBar end, function(_, value) E.private.general.totemBar = value; E.ShowPopup = true end, false)
 GenGen.totems.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Wrath)
