@@ -577,6 +577,7 @@ function UF:Construct_Totems(frame)
 		UF.statusbars[totem] = true
 		UF.classbars[totem] = true
 
+		totem:EnableMouse(true)
 		totem:SetStatusBarTexture(E.media.blankTex)
 		totem:SetMinMaxValues(0, 1)
 		totem:SetValue(0)

@@ -103,8 +103,8 @@ local function UpdateTotem(self, event, slot)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(slot) end
 
-	local totem = element[slot]
-	local haveTotem, name, start, duration, icon = GetTotemInfo(priority[slot])
+	local totem = element[priority[slot]]
+	local haveTotem, name, start, duration, icon = GetTotemInfo(totem:GetID())
 
 	if haveTotem and duration > 0 then
 		if totem.Icon then
@@ -174,9 +174,9 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		for i = 1, #element do
-			local totem = element[i]
+			local totem = element[priority[i]]
 
-			totem:SetID(priority[i])
+			totem:SetID(i)
 
 			if totem:IsObjectType('StatusBar') then
 				totem:SetScript('OnUpdate', TotemOnUpdate)
