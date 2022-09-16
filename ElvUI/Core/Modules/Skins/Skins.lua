@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local LibStub = _G.LibStub
 
 local _G = _G
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
@@ -330,14 +331,17 @@ end
 
 -- DropDownMenu library support
 function S:SkinLibDropDownMenu(prefix)
-	if _G[prefix..'_UIDropDownMenu_CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
+	local lib = prefix == 'L' and LibStub:GetLibrary('LibUIDropDownMenu-4.0', true)
+	local creator = (lib and lib.UIDropDownMenu_CreateFrames) or _G[prefix..'_UIDropDownMenu_CreateFrames']
+
+	if creator and not S[prefix..'_UIDropDownMenuSkinned'] then
 		local bd = _G[prefix..'_DropDownList1Backdrop']
 		local mbd = _G[prefix..'_DropDownList1MenuBackdrop']
 		if bd and not bd.template then bd:SetTemplate('Transparent') end
 		if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
-		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
+		hooksecurefunc(lib or _G, (lib and '' or prefix..'_') .. 'UIDropDownMenu_CreateFrames', function()
 			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS']
 			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop']
 			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop']
