@@ -89,6 +89,7 @@ L["Chat"] = true
 L["Choose a theme layout you wish to use for your initial setup."] = true
 L["Class Totems"] = "Totem di Classe"
 L["Totem Tracker"] = true
+L["Totem Bar"] = true
 L["Classbar"] = true
 L["Classic"] = true
 L["Combat"] = true

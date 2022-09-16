@@ -89,6 +89,7 @@ L["Chat"] = "Chat"
 L["Choose a theme layout you wish to use for your initial setup."] = "Wähle ein Layout, welches du bei deinem ersten Setup verwenden möchtest."
 L["Class Totems"] = "Klassen Totems"
 L["Totem Tracker"] = true
+L["Totem Bar"] = true
 L["Classbar"] = "Klassenleiste"
 L["Classic"] = "Klassisch"
 L["Combat"] = "Kampf"

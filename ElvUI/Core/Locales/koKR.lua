@@ -89,6 +89,7 @@ L["Chat"] = "대화창"
 L["Choose a theme layout you wish to use for your initial setup."] = "UI의 전체적인 분위기를 선택하세요."
 L["Class Totems"] = "직업 토템"
 L["Totem Tracker"] = true
+L["Totem Bar"] = true
 L["Classbar"] = "직업바"
 L["Classic"] = "클래식"
 L["Combat"] = "전투"
