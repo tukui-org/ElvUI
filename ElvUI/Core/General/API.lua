@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local wipe, max, next = wipe, max, next
+local wipe, max = wipe, max
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
