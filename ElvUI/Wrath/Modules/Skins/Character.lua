@@ -531,6 +531,10 @@ function S:CharacterFrame()
 		S:HandleButtonHighlight(button)
 	end
 
+	-- BG Queue Tabs
+	S:HandleTab(_G.PVPParentFrameTab1)
+	S:HandleTab(_G.PVPParentFrameTab2)
+
 	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
 	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
 	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)

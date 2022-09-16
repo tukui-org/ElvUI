@@ -1190,7 +1190,7 @@ Colors.classResourceGroup.args.RUNES.inline = true
 do
 	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
-		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, function() return (E.Wrath and i < 1) or (not E.Wrath and i == 4) or (E.db.unitframe.colors.runeBySpec and i == 0) or (not E.db.unitframe.colors.runeBySpec and i > 0) end)
+		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, function() return (E.Wrath and i < 1) or (not E.Wrath and i == 4) or (E.Retail and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Retail and not E.db.unitframe.colors.runeBySpec and i > 0) end)
 	end
 end
 
@@ -1201,7 +1201,7 @@ Colors.classResourceGroup.args.TOTEMS = ACH:Group(L["Totems"], nil, 4, nil, func
 Colors.classResourceGroup.args.TOTEMS.inline = true
 
 do
-	local totemText = { L["TOTEM_FIRE"], L["TOTEM_EARTH"], L["TOTEM_WATER"], L["TOTEM_AIR"] }
+	local totemText = { L["TOTEM_EARTH"], L["TOTEM_FIRE"], L["TOTEM_WATER"], L["TOTEM_AIR"] }
 	for i = 1, 4 do
 		Colors.classResourceGroup.args.TOTEMS.args[''..i] = ACH:Color(totemText[i], nil, i)
 	end
