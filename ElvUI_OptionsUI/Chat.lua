@@ -72,7 +72,7 @@ General.args.fontGroup.args.tabFontSize = ACH:Range(L["Tab Font Size"], nil, 3, 
 
 General.args.alerts = ACH:Group(L["Alerts"], nil, 85, nil, nil, nil, function() return not E.Chat.Initialized end)
 General.args.alerts.args.noAlertInCombat = ACH:Toggle(L["No Alert In Combat"], nil, 1)
-General.args.alerts.args.flashClientIcon = ACH:Toggle(L["Flash Client Icon"], nil, 2)
+General.args.alerts.args.flashClientIcon = ACH:Toggle(E.NewSign..L["Flash Client Icon"], nil, 2)
 
 General.args.alerts.args.keywordAlerts = ACH:Group(L["Keyword Alerts"], nil, 5)
 General.args.alerts.args.keywordAlerts.inline = true
