@@ -379,5 +379,5 @@ function AB:CreateTotemBar()
 	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnEnter', 'TotemBar_OnEnter')
 	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnLeave', 'TotemBar_OnLeave')
 
-	E:CreateMover(bar, 'TotemBarMover', L["Class Totems"], nil, nil, nil, nil, nil, 'general,totems')
+	E:CreateMover(bar, 'TotemBarMover', L["Totem Bar"], nil, nil, nil, nil, nil, 'general,totems')
 end

@@ -48,7 +48,7 @@ local Layout = E:GetModule('Layout')
 local Minimap = E:GetModule('Minimap')
 local NamePlates = E:GetModule('NamePlates')
 local Tooltip = E:GetModule('Tooltip')
-local Totems = E:GetModule('Totems')
+local TotemTracker = E:GetModule('TotemTracker')
 local UnitFrames = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
@@ -1370,7 +1370,7 @@ function E:UpdateDB()
 	NamePlates.db = E.db.nameplates
 	Tooltip.db = E.db.tooltip
 	UnitFrames.db = E.db.unitframe
-	Totems.db = E.db.general.totems
+	TotemTracker.db = E.db.general.totems
 
 	--Not part of staggered update
 end
@@ -1504,11 +1504,11 @@ function E:UpdateMisc(skipCallback)
 
 	if E.Retail then
 		Blizzard:SetObjectiveFrameHeight()
-		Totems:PositionAndSize()
+		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
 	elseif E.TBC then
-		Totems:PositionAndSize()
+		TotemTracker:PositionAndSize()
 	end
 
 	if not skipCallback then

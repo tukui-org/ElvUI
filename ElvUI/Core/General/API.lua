@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local wipe, max, next = wipe, max, next
+local wipe, max = wipe, max
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
@@ -190,8 +190,7 @@ function E:CheckRole()
 end
 
 function E:IsDispellableByMe(debuffType)
-	local filter = E.Libs.Dispel:GetMyDispelTypes()
-	return filter and filter[debuffType]
+	return E.Libs.Dispel:IsDispellableByMe(debuffType)
 end
 
 do
