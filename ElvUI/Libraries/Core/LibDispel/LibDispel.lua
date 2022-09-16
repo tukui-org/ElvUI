@@ -7,6 +7,7 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
+local GetCVar, SetCVar = GetCVar, SetCVar
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 
 local DispelList = {}
@@ -49,10 +50,15 @@ do
 	end
 
 	local function UpdateDispels(_, event, arg1)
+		if event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
+			return -- Not interested in gained points from leveling
+		end
+
+		-- this will fix a problem where spells dont show as existing because they are 'hidden'
+		local undoRanks = Wrath and GetCVar('ShowAllSpellRanks') ~= '1' and SetCVar('ShowAllSpellRanks', 1)
+
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()
-		elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
-			return -- Not interested in gained points from leveling
 		elseif myClass == 'DRUID' then
 			local cure = Retail and CheckSpell(88423) -- Nature's Cure
 			DispelList.Magic = cure
@@ -85,6 +91,10 @@ do
 			DispelList.Curse = cleanse
 			DispelList.Poison = not Retail and (cleanse or toxins)
 			DispelList.Disease = not Retail and (cleanse or toxins)
+		end
+
+		if undoRanks then
+			SetCVar('ShowAllSpellRanks', 0)
 		end
 	end
 
