@@ -443,14 +443,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.raid1.roleIcon.position = 'BOTTOMRIGHT'
 				E.db.unitframe.units.raid1.roleIcon.size = 12
 				E.db.unitframe.units.raid1.roleIcon.xOffset = 0
-				E.db.unitframe.units.raid1.visibility = '[@raid6,noexists] hide;show'
 				E.db.unitframe.units.raid1.width = 92
-			--Raid2
-				E.db.unitframe.units.raid2.enable = false
-				E.db.unitframe.units.raid2.rdebuffs.font = 'PT Sans Narrow'
-			--Raid3
-				E.db.unitframe.units.raid3.enable = false
-				E.db.unitframe.units.raid3.rdebuffs.font = 'PT Sans Narrow'
 
 			--[[
 				Layout Tweaks will be handled below,
