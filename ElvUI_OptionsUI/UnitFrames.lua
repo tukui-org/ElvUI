@@ -1201,7 +1201,7 @@ Colors.classResourceGroup.args.TOTEMS = ACH:Group(L["Totems"], nil, 4, nil, func
 Colors.classResourceGroup.args.TOTEMS.inline = true
 
 do
-	local totemText = { L["TOTEM_FIRE"], L["TOTEM_EARTH"], L["TOTEM_WATER"], L["TOTEM_AIR"] }
+	local totemText = { L["TOTEM_EARTH"], L["TOTEM_FIRE"], L["TOTEM_WATER"], L["TOTEM_AIR"] }
 	for i = 1, 4 do
 		Colors.classResourceGroup.args.TOTEMS.args[''..i] = ACH:Color(totemText[i], nil, i)
 	end

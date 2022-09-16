@@ -52,6 +52,9 @@ local GameTooltip = GameTooltip
 local GetTotemInfo = GetTotemInfo
 local GetTime = GetTime
 
+local _, playerClass = UnitClass('player')
+local priority = playerClass == 'SHAMAN' and SHAMAN_TOTEM_PRIORITIES or STANDARD_TOTEM_PRIORITIES
+
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
 
@@ -101,7 +104,7 @@ local function UpdateTotem(self, event, slot)
 	if(element.PreUpdate) then element:PreUpdate(slot) end
 
 	local totem = element[slot]
-	local haveTotem, name, start, duration, icon = GetTotemInfo(slot)
+	local haveTotem, name, start, duration, icon = GetTotemInfo(priority[slot])
 
 	if haveTotem and duration > 0 then
 		if totem.Icon then
@@ -173,7 +176,7 @@ local function Enable(self)
 		for i = 1, #element do
 			local totem = element[i]
 
-			totem:SetID(i)
+			totem:SetID(priority[i])
 
 			if totem:IsObjectType('StatusBar') then
 				totem:SetScript('OnUpdate', TotemOnUpdate)
