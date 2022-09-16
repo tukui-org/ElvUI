@@ -588,6 +588,7 @@ G.unitframe.aurafilters.Blacklist = {
 	spells = {
 	-- General
 		[186403] = Defaults(), -- Sign of Battle
+		[377749] = Defaults(), -- Joyous Journeys (50% exp buff)
 	},
 }
 
