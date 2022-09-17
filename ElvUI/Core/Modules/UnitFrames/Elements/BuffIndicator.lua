@@ -1,11 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local strfind, unpack = strfind, unpack
-
-local GetSpellSubtext = GetSpellSubtext
-local GetSpellInfo = GetSpellInfo
-
+local strsplit, unpack = strsplit, unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
@@ -36,10 +32,10 @@ function UF:Configure_AuraWatch(frame, isPet)
 		else
 			local auraTable
 			if db.profileSpecific then
-				auraTable = E.db.unitframe.filters.aurawatch
+				auraTable = UF.AuraWatch_ExpandTable({}, E.db.unitframe.filters.aurawatch)
 			else
-				auraTable = E:CopyTable({}, E.global.unitframe.aurawatch[E.myclass])
-				E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
+				auraTable = UF.AuraWatch_ExpandTable({}, E.global.unitframe.aurawatch[E.myclass])
+				UF.AuraWatch_ExpandTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 			end
 			frame.AuraWatch:SetNewTable(auraTable)
 		end
@@ -48,21 +44,32 @@ function UF:Configure_AuraWatch(frame, isPet)
 	end
 end
 
-function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
+function UF.AuraWatch_ExpandTable(output, source)
+	output = output or {}
+
+	for auraID, auraInfo in next, source do
+		if auraInfo.includeIDs then
+			for _, spellID in next, auraInfo.includeIDs do
+				output[spellID] = source[auraID]
+			end
+		end
+		output[auraID] = source[auraID]
+	end
+
+	return output
+end
+
+function UF.AuraWatch_AddSpell(auraID, includeIDs, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
 	local r, g, b = 1, 1, 1
 	if color then r, g, b = unpack(color) end
 
-	local spellRank
-	local spellName = GetSpellInfo(id)
-	local rankText = E.Classic and GetSpellSubtext(id)
-	if rankText and strfind(rankText, '%d') then
-		spellRank = rankText
+	if type(includeIDs) == 'string' then
+		includeIDs = { strsplit('[, ]', includeIDs) }
 	end
 
 	return {
-		id = id,
-		name = spellName,
-		rank = spellRank,
+		id = auraID,
+		includeIDs = includeIDs,
 		enabled = true,
 		point = point or 'TOPLEFT',
 		color = { r = r, g = g, b = b },
