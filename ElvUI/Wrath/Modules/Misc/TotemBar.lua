@@ -181,8 +181,6 @@ function AB:PositionAndSizeTotemBar()
 	barFrame:Height(size + 2)
 
 	local _, barFrameAnchor = barFrame:GetPoint()
-	print(barFrameAnchor == bar)
-
 	if barFrameAnchor ~= bar then
 		barFrame:SetPoint('TOP', bar)
 		barFrame:SetPoint('BOTTOMLEFT', bar)
