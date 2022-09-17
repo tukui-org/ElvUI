@@ -902,23 +902,23 @@ G.unitframe.aurawatch = {
 		[61316]	= UF:AuraWatch_AddSpell(61316, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Dalaran Brilliance
 		[604]	= UF:AuraWatch_AddSpell(604, {8450,8451,10173,10174,33944,43015}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic
 		[1008]	= UF:AuraWatch_AddSpell(1008, {8455,10169,10170,27130,33946,43017}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic
-		[130] = UF:AuraWatch_AddSpell(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
+		[130]	= UF:AuraWatch_AddSpell(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
 		-- TODO: Focus Magic
 	},
 	PALADIN = {
-		[1044] = UF:AuraWatch_AddSpell(1044, nil, 'CENTER', {0.89, 0.45, 0}, true),				-- Hand of Freedom
-		[1038] = UF:AuraWatch_AddSpell(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true),			-- Hand of Salvation
-		[6940] = UF:AuraWatch_AddSpell(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true),			-- Hand of Sacrifice
+		[1044]	= UF:AuraWatch_AddSpell(1044, nil, 'CENTER', {0.89, 0.45, 0}, true),				-- Hand of Freedom
+		[1038]	= UF:AuraWatch_AddSpell(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true),			-- Hand of Salvation
+		[6940]	= UF:AuraWatch_AddSpell(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true),			-- Hand of Sacrifice
 		[1022]	= UF:AuraWatch_AddSpell(1022, {5599,10278}, 'CENTER', {0.17, 1.00, 0.75}, true),			-- Hand of Protection
 		[19740]	= UF:AuraWatch_AddSpell(19740, {19834,19835,19836,19837,19838,25291,27140,48931,48932}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might
 		[19742]	= UF:AuraWatch_AddSpell(19742, {19850,19852,19853,19854,25290,27142,48935,48936}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom
 		[25782]	= UF:AuraWatch_AddSpell(25782, {25916,27141,48933,48934}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might
 		[25894]	= UF:AuraWatch_AddSpell(25894, {25918,27143,48937,48938}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom
 		[465]	= UF:AuraWatch_AddSpell(465, {10290,643,10291,1032,10292,10293,27149,48941,48942}, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura
-		[19746] = UF:AuraWatch_AddSpell(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
-		[32223] = UF:AuraWatch_AddSpell(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
-		[53563] = UF:AuraWatch_AddSpell(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}, true),			-- Beacon of Light
-		[53601] = UF:AuraWatch_AddSpell(53601, nil, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true),		-- Sacred Shield
+		[19746]	= UF:AuraWatch_AddSpell(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
+		[32223]	= UF:AuraWatch_AddSpell(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
+		[53563]	= UF:AuraWatch_AddSpell(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}, true),			-- Beacon of Light
+		[53601]	= UF:AuraWatch_AddSpell(53601, nil, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true),		-- Sacred Shield
 	},
 	PRIEST = {
 		[1243]	= UF:AuraWatch_AddSpell(1243, {1244,1245,2791,10937,10938,25389,48161}, 'TOPLEFT', {1, 1, 0.66}, true),			-- Power Word: Fortitude
@@ -929,19 +929,19 @@ G.unitframe.aurawatch = {
 		[27683]	= UF:AuraWatch_AddSpell(27683, {39374,48170}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true),	-- Prayer of Shadow Protection
 		[17]	= UF:AuraWatch_AddSpell(17, {592,600,3747,6065,6066,10898,10899,10900,10901,25217,25218,48065,48066}, 'BOTTOM', {0.00, 0.00, 1.00}),				-- Power Word: Shield
 		[139]	= UF:AuraWatch_AddSpell(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,25221,25222,48067,48068}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew
-		[6788] = UF:AuraWatch_AddSpell(6788, nil, 'TOP', {0.89, 0.1, 0.1}),					-- Weakened Soul
+		[6788]	= UF:AuraWatch_AddSpell(6788, nil, 'TOP', {0.89, 0.1, 0.1}),					-- Weakened Soul
 		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Prayer of Mending / Pain Suppression / Power Infusion
 	},
 	ROGUE = {
 		-- TODO: Tricks of the Trade
 	},
 	SHAMAN = {
-		[16237] = UF:AuraWatch_AddSpell(16237, nil, 'RIGHT', {0.2, 0.2, 1}),				-- Ancestral Fortitude
+		[16237]	= UF:AuraWatch_AddSpell(16237, nil, 'RIGHT', {0.2, 0.2, 1}),				-- Ancestral Fortitude
 		[8185]	= UF:AuraWatch_AddSpell(8185, {10534,10535,25563,58737,58739}, 'TOPLEFT', {0.05, 1.00, 0.50}),		-- Fire Resistance Totem
 		[8182]	= UF:AuraWatch_AddSpell(8182, {10476,10477,25560,58741,58745}, 'TOPLEFT', {0.54, 0.53, 0.79}),		-- Frost Resistance Totem
 		[10596]	= UF:AuraWatch_AddSpell(10596, {10598,10599,25574,58746,58749}, 'TOPLEFT', {0.33, 1.00, 0.20}),		-- Nature Resistance Totem
 		[5672]	= UF:AuraWatch_AddSpell(5672, {6371,6372,10460,10461,25567,58755,58756,58757}, 'BOTTOM', {0.67, 1.00, 0.50}),		-- Healing Stream Totem
-		[16191] = UF:AuraWatch_AddSpell(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem
+		[16191]	= UF:AuraWatch_AddSpell(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem
 		[5677]	= UF:AuraWatch_AddSpell(5677, {10491,10493,10494,25569,58775,58776,58777}, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem
 		[8072]	= UF:AuraWatch_AddSpell(8072, {8156,8157,10403,10404,10405,25506,25507,58752,58754}, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem
 		[974]	= UF:AuraWatch_AddSpell(974, {32593,32594,49283,49284}, 'TOP', {0.08, 0.21, 0.43}, true),		-- Earth Shield
@@ -949,8 +949,8 @@ G.unitframe.aurawatch = {
 		-- TODO: Riptide / Earthliving
 	},
 	WARLOCK = {
-		[5697] = UF:AuraWatch_AddSpell(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
-		[6512] = UF:AuraWatch_AddSpell(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
+		[5697]	= UF:AuraWatch_AddSpell(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
+		[6512]	= UF:AuraWatch_AddSpell(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
 		-- TODO: Soulstone
 	},
 	WARRIOR = {

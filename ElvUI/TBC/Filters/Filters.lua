@@ -938,12 +938,12 @@ G.unitframe.aurawatch = {
 		[467]	= UF:AuraWatch_AddSpell(467, {782,1075,8914,9756,9910,26992}, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Thorns
 		[774]	= UF:AuraWatch_AddSpell(774, {1058,1430,2090,2091,3627,8910,9839,9840,9841,25299,26981,26982}, 'BOTTOMLEFT', {0.83, 1.00, 0.25}),		-- Rejuvenation
 		[8936]	= UF:AuraWatch_AddSpell(8936, {8938,8939,8940,8941,9750,9856,9857,9858,26980}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),	-- Regrowth
-		[29166] = UF:AuraWatch_AddSpell(29166, nil, 'CENTER', {0.49, 0.60, 0.55}, true),	-- Innervate
-		[33763] = UF:AuraWatch_AddSpell(33763, nil, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom
+		[29166]	= UF:AuraWatch_AddSpell(29166, nil, 'CENTER', {0.49, 0.60, 0.55}, true),	-- Innervate
+		[33763]	= UF:AuraWatch_AddSpell(33763, nil, 'BOTTOM', {0.33, 0.37, 0.47}),		-- Lifebloom
 	},
 	HUNTER = {
 		[19506]	= UF:AuraWatch_AddSpell(19506, {20905,20906,27066}, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura
-		[13159] = UF:AuraWatch_AddSpell(13159, nil, 'TOP', {0.00, 0.00, 0.85}, true),	-- Aspect of the Pack
+		[13159]	= UF:AuraWatch_AddSpell(13159, nil, 'TOP', {0.00, 0.00, 0.85}, true),	-- Aspect of the Pack
 		[20043]	= UF:AuraWatch_AddSpell(20043, {20190,27045}, 'TOP', {0.33, 0.93, 0.79}),			-- Aspect of the Wild
 	},
 	MAGE = {
@@ -951,11 +951,11 @@ G.unitframe.aurawatch = {
 		[23028]	= UF:AuraWatch_AddSpell(23028, {27127}, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Brilliance
 		[604]	= UF:AuraWatch_AddSpell(604, {8450,8451,10173,10174,33944}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic
 		[1008]	= UF:AuraWatch_AddSpell(1008, {8455,10169,10170,27130,33946}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic
-		[130] = UF:AuraWatch_AddSpell(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
+		[130]	= UF:AuraWatch_AddSpell(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
 	},
 	PALADIN = {
-		[1044] = UF:AuraWatch_AddSpell(1044, nil, 'CENTER', {0.89, 0.45, 0}),					-- Blessing of Freedom
-		[1038] = UF:AuraWatch_AddSpell(1038, nil, 'TOPLEFT', {0.11, 1.00, 0.45}, true),			-- Blessing of Salvation
+		[1044]	= UF:AuraWatch_AddSpell(1044, nil, 'CENTER', {0.89, 0.45, 0}),					-- Blessing of Freedom
+		[1038]	= UF:AuraWatch_AddSpell(1038, nil, 'TOPLEFT', {0.11, 1.00, 0.45}, true),			-- Blessing of Salvation
 		[6940]	= UF:AuraWatch_AddSpell(6940, {20729,27147,27148}, 'CENTER', {0.89, 0.1, 0.1}),					-- Blessing of Sacrifice
 		[19740]	= UF:AuraWatch_AddSpell(19740, {19834,19835,19836,19837,19838,25291,27140}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might
 		[19742]	= UF:AuraWatch_AddSpell(19742, {19850,19852,19853,19854,25290,27142}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom
@@ -964,8 +964,8 @@ G.unitframe.aurawatch = {
 		[465]	= UF:AuraWatch_AddSpell(465, {10290,643,10291,1032,10292,10293,27149}, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura
 		[19977]	= UF:AuraWatch_AddSpell(19977, {19978,19979,27144}, 'BOTTOMRIGHT', {0.17, 1.00, 0.75}, true),	-- Blessing of Light
 		[1022]	= UF:AuraWatch_AddSpell(1022, {5599,10278}, 'TOPRIGHT', {0.17, 1.00, 0.75}, true),		-- Blessing of Protection
-		[19746] = UF:AuraWatch_AddSpell(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
-		[32223] = UF:AuraWatch_AddSpell(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
+		[19746]	= UF:AuraWatch_AddSpell(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
+		[32223]	= UF:AuraWatch_AddSpell(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
 	},
 	PRIEST = {
 		[1243]	= UF:AuraWatch_AddSpell(1243, {1244,1245,2791,10937,10938,25389}, 'TOPLEFT', {1, 1, 0.66}, true),			-- Power Word: Fortitude
@@ -979,30 +979,30 @@ G.unitframe.aurawatch = {
 	},
 	ROGUE = {}, -- No buffs
 	SHAMAN = {
-		[29203] = UF:AuraWatch_AddSpell(29203, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}),		-- Healing Way
-		[16237] = UF:AuraWatch_AddSpell(16237, nil, 'RIGHT', {0.2, 0.2, 1}),				-- Ancestral Fortitude
+		[29203]	= UF:AuraWatch_AddSpell(29203, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}),		-- Healing Way
+		[16237]	= UF:AuraWatch_AddSpell(16237, nil, 'RIGHT', {0.2, 0.2, 1}),				-- Ancestral Fortitude
 		[8185]	= UF:AuraWatch_AddSpell(8185, {10534,10535,25563}, 'TOPLEFT', {0.05, 1.00, 0.50}),		-- Fire Resistance Totem
 		[8182]	= UF:AuraWatch_AddSpell(8182, {10476,10477,25560}, 'TOPLEFT', {0.54, 0.53, 0.79}),		-- Frost Resistance Totem
 		[10596]	= UF:AuraWatch_AddSpell(10596, {10598,10599,25574}, 'TOPLEFT', {0.33, 1.00, 0.20}),		-- Nature Resistance Totem
 		[5672]	= UF:AuraWatch_AddSpell(5672, {6371,6372,10460,10461,25567}, 'BOTTOM', {0.67, 1.00, 0.50}),		-- Healing Stream Totem
-		[16191] = UF:AuraWatch_AddSpell(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem
+		[16191]	= UF:AuraWatch_AddSpell(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem
 		[5677]	= UF:AuraWatch_AddSpell(5677, {10491,10493,10494,25569}, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem
 		[8072]	= UF:AuraWatch_AddSpell(8072, {8156,8157,10403,10404,10405,25506,25507}, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem
 		[974]	= UF:AuraWatch_AddSpell(974, {32593,32594}, 'TOP', {0.08, 0.21, 0.43}, true),		-- Earth Shield
 	},
 	WARLOCK = {
-		[5697] = UF:AuraWatch_AddSpell(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Unending Breath
-		[6512] = UF:AuraWatch_AddSpell(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
+		[5697]	= UF:AuraWatch_AddSpell(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Unending Breath
+		[6512]	= UF:AuraWatch_AddSpell(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
 	},
 	WARRIOR = {
 		[6673]	= UF:AuraWatch_AddSpell(6673, {5242,6192,11549,11550,11551,25289,2048}, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout
-		[469] = UF:AuraWatch_AddSpell(469, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Commanding Shout
+		[469]	= UF:AuraWatch_AddSpell(469, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Commanding Shout
 	},
 	PET = {
 	-- Warlock Imp
 		[6307]	= UF:AuraWatch_AddSpell(6307, {7804,7805,11766,11767,27268}, 'BOTTOMLEFT', {0.89, 0.09, 0.05}),	-- Blood Pact
 	-- Warlock Felhunter
-		[19480] = UF:AuraWatch_AddSpell(19480, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),	-- Paranoia
+		[19480]	= UF:AuraWatch_AddSpell(19480, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),	-- Paranoia
 	-- Hunter Pets
 		[24604]	= UF:AuraWatch_AddSpell(24604, {24605,24603,24597}, 'TOPRIGHT', {0.08, 0.59, 0.41}),	-- Furious Howl
 	},
