@@ -74,7 +74,7 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displ
 		yOffset = yOffset or 0,
 		style = 'coloredIcon',
 		sizeOffset = 0,
-		stack = { 'BOTTOMRIGHT', 1, 1 }
+		stack = { anchor = 'BOTTOMRIGHT', xOffset = 1, yOffset = 1 }
 	}
 end
 
