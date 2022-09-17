@@ -8,11 +8,13 @@ local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local MAX_TOTEMS = MAX_TOTEMS
 
+-- SHAMAN_TOTEM_PRIORITIES does not work here because we need to swap 3/4 instead of 1/2
+local priority = E.myclass == 'SHAMAN' and { [1]=1, [2]=2, [3]=4, [4]=3 } or STANDARD_TOTEM_PRIORITIES
+
 function T:Update()
 	for i = 1, MAX_TOTEMS do
+		local button = self.bar[priority[i]]
 		local totem = _G['TotemFrameTotem'..i]
-		local button = self.bar[i]
-
 		if totem:IsShown() then
 			local _, _, startTime, duration, icon = GetTotemInfo(totem.slot)
 

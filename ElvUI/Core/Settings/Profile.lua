@@ -180,7 +180,7 @@ P.general = {
 	objectiveTracker = true,
 	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		sortDirection = 'ASCENDING',
+		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
 		size = 40,
 		spacing = 4,
 	},
