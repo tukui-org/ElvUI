@@ -111,7 +111,7 @@ AB.barDefaults = {
 }
 
 do
-	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui] %d; [possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..'[bonusbar:5] 11; [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
 end
 
