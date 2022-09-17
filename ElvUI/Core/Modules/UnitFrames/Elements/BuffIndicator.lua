@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local strsplit, unpack = strsplit, unpack
+local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
@@ -32,57 +32,16 @@ function UF:Configure_AuraWatch(frame, isPet)
 		else
 			local auraTable
 			if db.profileSpecific then
-				auraTable = UF.AuraWatch_ExpandTable({}, E.db.unitframe.filters.aurawatch)
+				auraTable = E.Filters_Expand({}, E.db.unitframe.filters.aurawatch)
 			else
-				auraTable = UF.AuraWatch_ExpandTable({}, E.global.unitframe.aurawatch[E.myclass])
-				UF.AuraWatch_ExpandTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
+				auraTable = E.Filters_Expand({}, E.global.unitframe.aurawatch[E.myclass])
+				E.Filters_Expand(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 			end
 			frame.AuraWatch:SetNewTable(auraTable)
 		end
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
 	end
-end
-
-function UF.AuraWatch_ExpandTable(output, source)
-	output = output or {}
-
-	for auraID, auraInfo in next, source do
-		if auraInfo.includeIDs then
-			for _, spellID in next, auraInfo.includeIDs do
-				output[spellID] = source[auraID]
-			end
-		end
-		output[auraID] = source[auraID]
-	end
-
-	return output
-end
-
-function UF.AuraWatch_AddSpell(auraID, includeIDs, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
-	local r, g, b = 1, 1, 1
-	if color then r, g, b = unpack(color) end
-
-	if type(includeIDs) == 'string' then
-		includeIDs = { strsplit('[, ]', includeIDs) }
-	end
-
-	return {
-		id = auraID,
-		includeIDs = includeIDs,
-		enabled = true,
-		point = point or 'TOPLEFT',
-		color = { r = r, g = g, b = b },
-		anyUnit = anyUnit or false,
-		onlyShowMissing = onlyShowMissing or false,
-		displayText = displayText or false,
-		textThreshold = textThreshold or -1,
-		xOffset = xOffset or 0,
-		yOffset = yOffset or 0,
-		style = 'coloredIcon',
-		sizeOffset = 0,
-		stack = { anchor = 'BOTTOMRIGHT', xOffset = 1, yOffset = 1 }
-	}
 end
 
 function UF:BuffIndicator_PostCreateIcon(button)

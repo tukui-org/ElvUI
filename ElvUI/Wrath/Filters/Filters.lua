@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
-local UF = E:GetModule('UnitFrames')
 
-local List = UF.FilterList_Defaults
-local Aura = UF.AuraWatch_AddSpell
+local List = E.Filters_List
+local Aura = E.Filters_Aura
 
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
