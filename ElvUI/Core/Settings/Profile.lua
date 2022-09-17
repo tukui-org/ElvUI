@@ -178,21 +178,11 @@ P.general = {
 		nameFontOutline = 'OUTLINE',
 	},
 	objectiveTracker = true,
-	totems = {
-		alpha = 1,
-		buttonSize = 32,
-		flyoutDirection = 'UP',
-		flyoutSize = 28,
-		flyoutSpacing = 2,
-		font = 'PT Sans Narrow',
-		fontOutline = 'OUTLINE',
-		fontSize = 12,
+	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		mouseover = false,
-		size = 40,
 		sortDirection = 'ASCENDING',
+		size = 40,
 		spacing = 4,
-		visibility = '[vehicleui] hide;show'
 	},
 	kittys = false
 }
@@ -2499,6 +2489,20 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
+	},
+	totemBar = {
+		enable = true,
+		alpha = 1,
+		spacing = 4,
+		buttonSize = 32,
+		flyoutDirection = 'UP',
+		flyoutSize = 28,
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
+		mouseover = false,
+		visibility = '[vehicleui] hide;show'
 	},
 	microbar = {
 		enabled = false,

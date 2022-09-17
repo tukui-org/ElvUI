@@ -30,7 +30,7 @@ function T:Update()
 end
 
 function T:PositionAndSize()
-	if not E.private.general.totemBar then return end
+	if not E.private.general.totemTracker then return end
 
 	for i = 1, MAX_TOTEMS do
 		local button = self.bar[i]
@@ -79,7 +79,7 @@ end
 function T:Initialize()
 	self.Initialized = true
 
-	if not E.private.general.totemBar then return end
+	if not E.private.general.totemTracker then return end
 
 	self.db = E.db.general.totems
 
@@ -93,6 +93,7 @@ function T:Initialize()
 		frame:SetTemplate()
 		frame:StyleButton()
 		frame:Hide()
+
 		frame.holder = CreateFrame('Frame', nil, frame)
 		frame.holder:SetAlpha(0)
 		frame.holder:SetAllPoints()
