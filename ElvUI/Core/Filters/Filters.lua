@@ -1,20 +1,20 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-function UF:FilterList_Defaults(priorityOverride)
+function UF.FilterList_Defaults(priority)
 	return {
 		enable = true,
-		priority = priorityOverride or 0,
+		priority = priority or 0,
 		stackThreshold = 0
 	}
 end
-
-G.unitframe.aurafilters = {}
 
 -- Profile specific BuffIndicator
 P.unitframe.filters = {
 	aurawatch = {},
 }
+
+G.unitframe.aurafilters = {}
 
 G.unitframe.specialFilters = {
 	-- Whitelists
