@@ -1,7 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local unpack = unpack
+local strfind, unpack = strfind, unpack
+
+local GetSpellSubtext = GetSpellSubtext
+local GetSpellInfo = GetSpellInfo
+
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
@@ -42,6 +46,36 @@ function UF:Configure_AuraWatch(frame, isPet)
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
 	end
+end
+
+function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
+	local r, g, b = 1, 1, 1
+	if color then r, g, b = unpack(color) end
+
+	local spellRank
+	local spellName = GetSpellInfo(id)
+	local rankText = E.Classic and GetSpellSubtext(id)
+	if rankText and strfind(rankText, '%d') then
+		spellRank = rankText
+	end
+
+	return {
+		id = id,
+		name = spellName,
+		rank = spellRank,
+		enabled = true,
+		point = point or 'TOPLEFT',
+		color = { r = r, g = g, b = b },
+		anyUnit = anyUnit or false,
+		onlyShowMissing = onlyShowMissing or false,
+		displayText = displayText or false,
+		textThreshold = textThreshold or -1,
+		xOffset = xOffset or 0,
+		yOffset = yOffset or 0,
+		style = 'coloredIcon',
+		sizeOffset = 0,
+		stack = { anchor = 'BOTTOMRIGHT', xOffset = 1, yOffset = 1 }
+	}
 end
 
 function UF:BuffIndicator_PostCreateIcon(button)
@@ -117,6 +151,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 		end
 
 		button.count:FontTemplate(nil, self.countFontSize or 12, 'OUTLINE')
+		button.count:Point(settings.stack.anchor, settings.stack.xOffset, settings.stack.yOffset)
 
 		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)

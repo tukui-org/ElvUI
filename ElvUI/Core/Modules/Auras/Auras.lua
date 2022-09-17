@@ -428,7 +428,6 @@ function A:UpdateHeader(header)
 	E:UpdateClassColor(db.barColor)
 
 	if header.filter == 'HELPFUL' then
-		header:SetAttribute('consolidateTo', 0)
 		header:SetAttribute('weaponTemplate', template)
 	end
 

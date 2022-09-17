@@ -7,208 +7,198 @@ local IsPlayerSpell = IsPlayerSpell
 local GetSpellSubtext = GetSpellSubtext
 local GetSpellInfo = GetSpellInfo
 
-local function Defaults(priorityOverride)
-	return {
-		enable = true,
-		priority = priorityOverride or 0,
-		stackThreshold = 0
-	}
-end
-
-G.unitframe.aurafilters = {}
-
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	--Druid
-		[339]	= Defaults(1), -- Entangling Roots (Rank 1)
-		[1062]	= Defaults(1), -- Entangling Roots (Rank 2)
-		[5195]	= Defaults(1), -- Entangling Roots (Rank 3)
-		[5196]	= Defaults(1), -- Entangling Roots (Rank 4)
-		[9852]	= Defaults(1), -- Entangling Roots (Rank 5)
-		[9853]	= Defaults(1), -- Entangling Roots (Rank 6)
-		[19975]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 1)
-		[19974]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 2)
-		[19973]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 3)
-		[19972]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 4)
-		[19971]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 5)
-		[19970]	= Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 6)
-		[2637]	= Defaults(1), -- Hibernate (Rank 1)
-		[18657]	= Defaults(1), -- Hibernate (Rank 2)
-		[18658]	= Defaults(1), -- Hibernate (Rank 3)
-		[19675]	= Defaults(2), -- Feral Charge Effect
-		[5211]	= Defaults(4), -- Bash (Rank 1)
-		[6798]	= Defaults(4), -- Bash (Rank 2)
-		[8983]	= Defaults(4), -- Bash (Rank 3)
-		[16922]	= Defaults(2), -- Celestial Focus (Starfire Stun)
-		[9005]	= Defaults(2), -- Pounce (Rank 1)
-		[9823]	= Defaults(2), -- Pounce (Rank 2)
-		[9827]	= Defaults(2), -- Pounce (Rank 3)
+		[339]	= UF:FilterList_Defaults(1), -- Entangling Roots (Rank 1)
+		[1062]	= UF:FilterList_Defaults(1), -- Entangling Roots (Rank 2)
+		[5195]	= UF:FilterList_Defaults(1), -- Entangling Roots (Rank 3)
+		[5196]	= UF:FilterList_Defaults(1), -- Entangling Roots (Rank 4)
+		[9852]	= UF:FilterList_Defaults(1), -- Entangling Roots (Rank 5)
+		[9853]	= UF:FilterList_Defaults(1), -- Entangling Roots (Rank 6)
+		[19975]	= UF:FilterList_Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 1)
+		[19974]	= UF:FilterList_Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 2)
+		[19973]	= UF:FilterList_Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 3)
+		[19972]	= UF:FilterList_Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 4)
+		[19971]	= UF:FilterList_Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 5)
+		[19970]	= UF:FilterList_Defaults(1), -- Entangling Roots (Nature's Grasp) (Rank 6)
+		[2637]	= UF:FilterList_Defaults(1), -- Hibernate (Rank 1)
+		[18657]	= UF:FilterList_Defaults(1), -- Hibernate (Rank 2)
+		[18658]	= UF:FilterList_Defaults(1), -- Hibernate (Rank 3)
+		[19675]	= UF:FilterList_Defaults(2), -- Feral Charge Effect
+		[5211]	= UF:FilterList_Defaults(4), -- Bash (Rank 1)
+		[6798]	= UF:FilterList_Defaults(4), -- Bash (Rank 2)
+		[8983]	= UF:FilterList_Defaults(4), -- Bash (Rank 3)
+		[16922]	= UF:FilterList_Defaults(2), -- Celestial Focus (Starfire Stun)
+		[9005]	= UF:FilterList_Defaults(2), -- Pounce (Rank 1)
+		[9823]	= UF:FilterList_Defaults(2), -- Pounce (Rank 2)
+		[9827]	= UF:FilterList_Defaults(2), -- Pounce (Rank 3)
 	--Hunter
-		[3355]	= Defaults(3), -- Freezing Trap Effect (Rank 1)
-		[14308]	= Defaults(3), -- Freezing Trap Effect (Rank 2)
-		[14309]	= Defaults(3), -- Freezing Trap Effect (Rank 3)
-		[13810]	= Defaults(1), -- Frost Trap Aura
-		[19503]	= Defaults(4), -- Scatter Shot
-		[5116]	= Defaults(2), -- Concussive Shot
-		[2974]	= Defaults(2), -- Wing Clip (Rank 1)
-		[14267]	= Defaults(2), -- Wing Clip (Rank 2)
-		[14268]	= Defaults(2), -- Wing Clip (Rank 3)
-		[1513]	= Defaults(2), -- Scare Beast (Rank 1)
-		[14326]	= Defaults(2), -- Scare Beast (Rank 2)
-		[14327]	= Defaults(2), -- Scare Beast (Rank 3)
-		[24394]	= Defaults(6), -- Intimidation
-		[19386]	= Defaults(2), -- Wyvern Sting (Rank 1)
-		[24132]	= Defaults(2), -- Wyvern Sting (Rank 2)
-		[24133]	= Defaults(2), -- Wyvern Sting (Rank 3)
-		[19229]	= Defaults(2), -- Improved Wing Clip
-		[19306]	= Defaults(2), -- Counterattack (Rank 1)
-		[20909]	= Defaults(2), -- Counterattack (Rank 2)
-		[20910]	= Defaults(2), -- Counterattack (Rank 3)
-		[19410]	= Defaults(2), -- Improved Concussive Shot
-		[25999]	= Defaults(2), -- Charge (Boar)
-		[19185]	= Defaults(1), -- Entrapment
+		[3355]	= UF:FilterList_Defaults(3), -- Freezing Trap Effect (Rank 1)
+		[14308]	= UF:FilterList_Defaults(3), -- Freezing Trap Effect (Rank 2)
+		[14309]	= UF:FilterList_Defaults(3), -- Freezing Trap Effect (Rank 3)
+		[13810]	= UF:FilterList_Defaults(1), -- Frost Trap Aura
+		[19503]	= UF:FilterList_Defaults(4), -- Scatter Shot
+		[5116]	= UF:FilterList_Defaults(2), -- Concussive Shot
+		[2974]	= UF:FilterList_Defaults(2), -- Wing Clip (Rank 1)
+		[14267]	= UF:FilterList_Defaults(2), -- Wing Clip (Rank 2)
+		[14268]	= UF:FilterList_Defaults(2), -- Wing Clip (Rank 3)
+		[1513]	= UF:FilterList_Defaults(2), -- Scare Beast (Rank 1)
+		[14326]	= UF:FilterList_Defaults(2), -- Scare Beast (Rank 2)
+		[14327]	= UF:FilterList_Defaults(2), -- Scare Beast (Rank 3)
+		[24394]	= UF:FilterList_Defaults(6), -- Intimidation
+		[19386]	= UF:FilterList_Defaults(2), -- Wyvern Sting (Rank 1)
+		[24132]	= UF:FilterList_Defaults(2), -- Wyvern Sting (Rank 2)
+		[24133]	= UF:FilterList_Defaults(2), -- Wyvern Sting (Rank 3)
+		[19229]	= UF:FilterList_Defaults(2), -- Improved Wing Clip
+		[19306]	= UF:FilterList_Defaults(2), -- Counterattack (Rank 1)
+		[20909]	= UF:FilterList_Defaults(2), -- Counterattack (Rank 2)
+		[20910]	= UF:FilterList_Defaults(2), -- Counterattack (Rank 3)
+		[19410]	= UF:FilterList_Defaults(2), -- Improved Concussive Shot
+		[25999]	= UF:FilterList_Defaults(2), -- Charge (Boar)
+		[19185]	= UF:FilterList_Defaults(1), -- Entrapment
 	--Mage
-		[118]	= Defaults(3), -- Polymorph (Rank 1)
-		[12824]	= Defaults(3), -- Polymorph (Rank 2)
-		[12825]	= Defaults(3), -- Polymorph (Rank 3)
-		[12826]	= Defaults(3), -- Polymorph (Rank 4)
-		[28271]	= Defaults(3), -- Polymorph (Turtle)
-		[28272]	= Defaults(3), -- Polymorph (Pig)
-		[122]	= Defaults(1), -- Frost Nova (Rank 1)
-		[865]	= Defaults(1), -- Frost Nova (Rank 2)
-		[6131]	= Defaults(1), -- Frost Nova (Rank 3)
-		[10230]	= Defaults(1), -- Frost Nova (Rank 4)
-		[12494]	= Defaults(2), -- Frostbite
-		[116]	= Defaults(2), -- Frostbolt (Rank 1)
-		[205]	= Defaults(2), -- Frostbolt (Rank 2)
-		[837]	= Defaults(2), -- Frostbolt (Rank 3)
-		[7322]	= Defaults(2), -- Frostbolt (Rank 4)
-		[8406]	= Defaults(2), -- Frostbolt (Rank 5)
-		[8407]	= Defaults(2), -- Frostbolt (Rank 6)
-		[8408]	= Defaults(2), -- Frostbolt (Rank 7)
-		[10179]	= Defaults(2), -- Frostbolt (Rank 8)
-		[10180]	= Defaults(2), -- Frostbolt (Rank 9)
-		[10181]	= Defaults(2), -- Frostbolt (Rank 10)
-		[25304]	= Defaults(2), -- Frostbolt (Rank 11)
-		[12355]	= Defaults(2), -- Impact
-		[18469]	= Defaults(2), -- Counterspell - Silenced
-		[11113]	= Defaults(2), -- Blast Wave
-		[12484]	= Defaults(2), -- Chilled (Blizzard) (Rank 1)
-		[12485]	= Defaults(2), -- Chilled (Blizzard) (Rank 2)
-		[12486]	= Defaults(2), -- Chilled (Blizzard) (Rank 3)
-		[6136]	= Defaults(2), -- Chilled (Frost Armor)
-		[7321]	= Defaults(2), -- Chilled (Ice Armor)
-		[120]	= Defaults(2), -- Cone of Cold
+		[118]	= UF:FilterList_Defaults(3), -- Polymorph (Rank 1)
+		[12824]	= UF:FilterList_Defaults(3), -- Polymorph (Rank 2)
+		[12825]	= UF:FilterList_Defaults(3), -- Polymorph (Rank 3)
+		[12826]	= UF:FilterList_Defaults(3), -- Polymorph (Rank 4)
+		[28271]	= UF:FilterList_Defaults(3), -- Polymorph (Turtle)
+		[28272]	= UF:FilterList_Defaults(3), -- Polymorph (Pig)
+		[122]	= UF:FilterList_Defaults(1), -- Frost Nova (Rank 1)
+		[865]	= UF:FilterList_Defaults(1), -- Frost Nova (Rank 2)
+		[6131]	= UF:FilterList_Defaults(1), -- Frost Nova (Rank 3)
+		[10230]	= UF:FilterList_Defaults(1), -- Frost Nova (Rank 4)
+		[12494]	= UF:FilterList_Defaults(2), -- Frostbite
+		[116]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 1)
+		[205]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 2)
+		[837]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 3)
+		[7322]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 4)
+		[8406]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 5)
+		[8407]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 6)
+		[8408]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 7)
+		[10179]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 8)
+		[10180]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 9)
+		[10181]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 10)
+		[25304]	= UF:FilterList_Defaults(2), -- Frostbolt (Rank 11)
+		[12355]	= UF:FilterList_Defaults(2), -- Impact
+		[18469]	= UF:FilterList_Defaults(2), -- Counterspell - Silenced
+		[11113]	= UF:FilterList_Defaults(2), -- Blast Wave
+		[12484]	= UF:FilterList_Defaults(2), -- Chilled (Blizzard) (Rank 1)
+		[12485]	= UF:FilterList_Defaults(2), -- Chilled (Blizzard) (Rank 2)
+		[12486]	= UF:FilterList_Defaults(2), -- Chilled (Blizzard) (Rank 3)
+		[6136]	= UF:FilterList_Defaults(2), -- Chilled (Frost Armor)
+		[7321]	= UF:FilterList_Defaults(2), -- Chilled (Ice Armor)
+		[120]	= UF:FilterList_Defaults(2), -- Cone of Cold
 	--Paladin
-		[853]	= Defaults(3), -- Hammer of Justice (Rank 1)
-		[5588]	= Defaults(3), -- Hammer of Justice (Rank 2)
-		[5589]	= Defaults(3), -- Hammer of Justice (Rank 3)
-		[10308]	= Defaults(3), -- Hammer of Justice (Rank 4)
-		[20066]	= Defaults(3), -- Repentance
-		[20170]	= Defaults(2), -- Stun (Seal of Justice Proc)
-		[2878]	= Defaults(3), -- Turn Undead (Rank 1)
-		[5627]	= Defaults(3), -- Turn Undead (Rank 2)
-		[10326]	= Defaults(3), -- Turn Undead (Rank 3)
+		[853]	= UF:FilterList_Defaults(3), -- Hammer of Justice (Rank 1)
+		[5588]	= UF:FilterList_Defaults(3), -- Hammer of Justice (Rank 2)
+		[5589]	= UF:FilterList_Defaults(3), -- Hammer of Justice (Rank 3)
+		[10308]	= UF:FilterList_Defaults(3), -- Hammer of Justice (Rank 4)
+		[20066]	= UF:FilterList_Defaults(3), -- Repentance
+		[20170]	= UF:FilterList_Defaults(2), -- Stun (Seal of Justice Proc)
+		[2878]	= UF:FilterList_Defaults(3), -- Turn Undead (Rank 1)
+		[5627]	= UF:FilterList_Defaults(3), -- Turn Undead (Rank 2)
+		[10326]	= UF:FilterList_Defaults(3), -- Turn Undead (Rank 3)
 	--Priest
-		[8122]	= Defaults(3), -- Psychic Scream (Rank 1)
-		[8124]	= Defaults(3), -- Psychic Scream (Rank 2)
-		[10888]	= Defaults(3), -- Psychic Scream (Rank 3)
-		[10890]	= Defaults(3), -- Psychic Scream (Rank 4)
-		[605]	= Defaults(5), -- Mind Control (Rank 1)
-		[10911]	= Defaults(5), -- Mind Control (Rank 2)
-		[10912]	= Defaults(5), -- Mind Control (Rank 3)
-		[15269]	= Defaults(2), -- Blackout
-		[15407]	= Defaults(2), -- Mind Flay (Rank 1)
-		[17311]	= Defaults(2), -- Mind Flay (Rank 2)
-		[17312]	= Defaults(2), -- Mind Flay (Rank 3)
-		[17313]	= Defaults(2), -- Mind Flay (Rank 4)
-		[17314]	= Defaults(2), -- Mind Flay (Rank 5)
-		[18807]	= Defaults(2), -- Mind Flay (Rank 6)
-		[15487]	= Defaults(2), -- Silence
+		[8122]	= UF:FilterList_Defaults(3), -- Psychic Scream (Rank 1)
+		[8124]	= UF:FilterList_Defaults(3), -- Psychic Scream (Rank 2)
+		[10888]	= UF:FilterList_Defaults(3), -- Psychic Scream (Rank 3)
+		[10890]	= UF:FilterList_Defaults(3), -- Psychic Scream (Rank 4)
+		[605]	= UF:FilterList_Defaults(5), -- Mind Control (Rank 1)
+		[10911]	= UF:FilterList_Defaults(5), -- Mind Control (Rank 2)
+		[10912]	= UF:FilterList_Defaults(5), -- Mind Control (Rank 3)
+		[15269]	= UF:FilterList_Defaults(2), -- Blackout
+		[15407]	= UF:FilterList_Defaults(2), -- Mind Flay (Rank 1)
+		[17311]	= UF:FilterList_Defaults(2), -- Mind Flay (Rank 2)
+		[17312]	= UF:FilterList_Defaults(2), -- Mind Flay (Rank 3)
+		[17313]	= UF:FilterList_Defaults(2), -- Mind Flay (Rank 4)
+		[17314]	= UF:FilterList_Defaults(2), -- Mind Flay (Rank 5)
+		[18807]	= UF:FilterList_Defaults(2), -- Mind Flay (Rank 6)
+		[15487]	= UF:FilterList_Defaults(2), -- Silence
 	--Rogue
-		[6770]	= Defaults(4), -- Sap (Rank 1)
-		[2070]	= Defaults(4), -- Sap (Rank 2)
-		[11297]	= Defaults(4), -- Sap (Rank 3)
-		[2094]	= Defaults(5), -- Blind
-		[408]	= Defaults(4), -- Kidney Shot (Rank 1)
-		[8643]	= Defaults(4), -- Kidney Shot (Rank 2)
-		[1833]	= Defaults(2), -- Cheap Shot
-		[1776]	= Defaults(2), -- Gouge (Rank 1)
-		[1777]	= Defaults(2), -- Gouge (Rank 2)
-		[8629]	= Defaults(2), -- Gouge (Rank 3)
-		[11285]	= Defaults(2), -- Gouge (Rank 4)
-		[11286]	= Defaults(2), -- Gouge (Rank 5)
-		[18425]	= Defaults(2), -- Kick - Silenced
-		[14251]	= Defaults(2), -- Riposte
+		[6770]	= UF:FilterList_Defaults(4), -- Sap (Rank 1)
+		[2070]	= UF:FilterList_Defaults(4), -- Sap (Rank 2)
+		[11297]	= UF:FilterList_Defaults(4), -- Sap (Rank 3)
+		[2094]	= UF:FilterList_Defaults(5), -- Blind
+		[408]	= UF:FilterList_Defaults(4), -- Kidney Shot (Rank 1)
+		[8643]	= UF:FilterList_Defaults(4), -- Kidney Shot (Rank 2)
+		[1833]	= UF:FilterList_Defaults(2), -- Cheap Shot
+		[1776]	= UF:FilterList_Defaults(2), -- Gouge (Rank 1)
+		[1777]	= UF:FilterList_Defaults(2), -- Gouge (Rank 2)
+		[8629]	= UF:FilterList_Defaults(2), -- Gouge (Rank 3)
+		[11285]	= UF:FilterList_Defaults(2), -- Gouge (Rank 4)
+		[11286]	= UF:FilterList_Defaults(2), -- Gouge (Rank 5)
+		[18425]	= UF:FilterList_Defaults(2), -- Kick - Silenced
+		[14251]	= UF:FilterList_Defaults(2), -- Riposte
 	--Shaman
-		[2484]	= Defaults(1), -- Earthbind Totem
-		[8056]	= Defaults(2), -- Frost Shock (Rank 1)
-		[8058]	= Defaults(2), -- Frost Shock (Rank 2)
-		[10472]	= Defaults(2), -- Frost Shock (Rank 3)
-		[10473]	= Defaults(2), -- Frost Shock (Rank 4)
-		[8034]	= Defaults(2), -- Frostbrand Attack (Rank 1)
-		[8037]	= Defaults(2), -- Frostbrand Attack (Rank 2)
-		[10458]	= Defaults(2), -- Frostbrand Attack (Rank 3)
-		[16352]	= Defaults(2), -- Frostbrand Attack (Rank 4)
-		[16353]	= Defaults(2), -- Frostbrand Attack (Rank 5)
+		[2484]	= UF:FilterList_Defaults(1), -- Earthbind Totem
+		[8056]	= UF:FilterList_Defaults(2), -- Frost Shock (Rank 1)
+		[8058]	= UF:FilterList_Defaults(2), -- Frost Shock (Rank 2)
+		[10472]	= UF:FilterList_Defaults(2), -- Frost Shock (Rank 3)
+		[10473]	= UF:FilterList_Defaults(2), -- Frost Shock (Rank 4)
+		[8034]	= UF:FilterList_Defaults(2), -- Frostbrand Attack (Rank 1)
+		[8037]	= UF:FilterList_Defaults(2), -- Frostbrand Attack (Rank 2)
+		[10458]	= UF:FilterList_Defaults(2), -- Frostbrand Attack (Rank 3)
+		[16352]	= UF:FilterList_Defaults(2), -- Frostbrand Attack (Rank 4)
+		[16353]	= UF:FilterList_Defaults(2), -- Frostbrand Attack (Rank 5)
 	--Warlock
-		[5782]	= Defaults(3), -- Fear (Rank 1)
-		[6213]	= Defaults(3), -- Fear (Rank 2)
-		[6215]	= Defaults(3), -- Fear (Rank 3)
-		[6358]	= Defaults(3), -- Seduction (Succubus)
-		[18223]	= Defaults(2), -- Curse of Exhaustion
-		[18093]	= Defaults(2), -- Pyroclasm
-		[710]	= Defaults(2), -- Banish (Rank 1)
-		[18647]	= Defaults(2), -- Banish (Rank 2)
-		[6789]	= Defaults(3), -- Death Coil (Rank 1)
-		[17925]	= Defaults(3), -- Death Coil (Rank 2)
-		[17926]	= Defaults(3), -- Death Coil (Rank 3)
-		[5484]	= Defaults(3), -- Howl of Terror (Rank 1)
-		[17928]	= Defaults(3), -- Howl of Terror (Rank 2)
-		[24259]	= Defaults(2), -- Spell Lock (Felhunter)
-		[18118]	= Defaults(2), -- Aftermath
-		[20812]	= Defaults(2), -- Cripple (Doomguard)
-		[1098]	= Defaults(5), -- Enslave Demon (Rank 1)
-		[11725]	= Defaults(5), -- Enslave Demon (Rank 2)
-		[11726]	= Defaults(5), -- Enslave Demon (Rank 3)
+		[5782]	= UF:FilterList_Defaults(3), -- Fear (Rank 1)
+		[6213]	= UF:FilterList_Defaults(3), -- Fear (Rank 2)
+		[6215]	= UF:FilterList_Defaults(3), -- Fear (Rank 3)
+		[6358]	= UF:FilterList_Defaults(3), -- Seduction (Succubus)
+		[18223]	= UF:FilterList_Defaults(2), -- Curse of Exhaustion
+		[18093]	= UF:FilterList_Defaults(2), -- Pyroclasm
+		[710]	= UF:FilterList_Defaults(2), -- Banish (Rank 1)
+		[18647]	= UF:FilterList_Defaults(2), -- Banish (Rank 2)
+		[6789]	= UF:FilterList_Defaults(3), -- Death Coil (Rank 1)
+		[17925]	= UF:FilterList_Defaults(3), -- Death Coil (Rank 2)
+		[17926]	= UF:FilterList_Defaults(3), -- Death Coil (Rank 3)
+		[5484]	= UF:FilterList_Defaults(3), -- Howl of Terror (Rank 1)
+		[17928]	= UF:FilterList_Defaults(3), -- Howl of Terror (Rank 2)
+		[24259]	= UF:FilterList_Defaults(2), -- Spell Lock (Felhunter)
+		[18118]	= UF:FilterList_Defaults(2), -- Aftermath
+		[20812]	= UF:FilterList_Defaults(2), -- Cripple (Doomguard)
+		[1098]	= UF:FilterList_Defaults(5), -- Enslave Demon (Rank 1)
+		[11725]	= UF:FilterList_Defaults(5), -- Enslave Demon (Rank 2)
+		[11726]	= UF:FilterList_Defaults(5), -- Enslave Demon (Rank 3)
 	--Warrior
-		[20511]	= Defaults(4), -- Intimidating Shout (Cower)
-		[5246]	= Defaults(4), -- Intimidating Shout (Fear)
-		[1715]	= Defaults(2), -- Hamstring (Rank 1)
-		[7372]	= Defaults(2), -- Hamstring (Rank 2)
-		[7373]	= Defaults(2), -- Hamstring (Rank 3)
-		[12809]	= Defaults(2), -- Concussion Blow
-		[20253]	= Defaults(2), -- Intercept Stun (Rank 1)
-		[20614]	= Defaults(2), -- Intercept Stun (Rank 2)
-		[20615]	= Defaults(2), -- Intercept Stun (Rank 3)
-		[7922]	= Defaults(2), -- Charge Stun
-		[12798]	= Defaults(2), -- Revenge Stun
-		[18498]	= Defaults(2), -- Shield Bash - Silenced
-		[23694]	= Defaults(2), -- Improved Hamstring
-		[676]	= Defaults(2), -- Disarm
-		[12323]	= Defaults(2), -- Piercing Howl
+		[20511]	= UF:FilterList_Defaults(4), -- Intimidating Shout (Cower)
+		[5246]	= UF:FilterList_Defaults(4), -- Intimidating Shout (Fear)
+		[1715]	= UF:FilterList_Defaults(2), -- Hamstring (Rank 1)
+		[7372]	= UF:FilterList_Defaults(2), -- Hamstring (Rank 2)
+		[7373]	= UF:FilterList_Defaults(2), -- Hamstring (Rank 3)
+		[12809]	= UF:FilterList_Defaults(2), -- Concussion Blow
+		[20253]	= UF:FilterList_Defaults(2), -- Intercept Stun (Rank 1)
+		[20614]	= UF:FilterList_Defaults(2), -- Intercept Stun (Rank 2)
+		[20615]	= UF:FilterList_Defaults(2), -- Intercept Stun (Rank 3)
+		[7922]	= UF:FilterList_Defaults(2), -- Charge Stun
+		[12798]	= UF:FilterList_Defaults(2), -- Revenge Stun
+		[18498]	= UF:FilterList_Defaults(2), -- Shield Bash - Silenced
+		[23694]	= UF:FilterList_Defaults(2), -- Improved Hamstring
+		[676]	= UF:FilterList_Defaults(2), -- Disarm
+		[12323]	= UF:FilterList_Defaults(2), -- Piercing Howl
 	--Mace Specialization
-		[5530]	= Defaults(2), -- Mace Stun Effect
+		[5530]	= UF:FilterList_Defaults(2), -- Mace Stun Effect
 	--Racial
-		[20549]	= Defaults(2), -- War Stomp
+		[20549]	= UF:FilterList_Defaults(2), -- War Stomp
 	--Sunder Armor, Faerie Fire, Faerie Fire (Feral)
-		[7386]	= Defaults(6), -- Sunder Armor (Rank 1)
-		[7405]	= Defaults(6), -- Sunder Armor (Rank 2)
-		[8380]	= Defaults(6), -- Sunder Armor (Rank 3)
-		[11596]	= Defaults(6), -- Sunder Armor (Rank 4)
-		[11597]	= Defaults(6), -- Sunder Armor (Rank 5)
-		[770]	= Defaults(5), -- Faerie Fire (Rank 1)
-		[778]	= Defaults(5), -- Faerie Fire (Rank 2)
-		[9749]	= Defaults(5), -- Faerie Fire (Rank 3)
-		[9907]	= Defaults(5), -- Faerie Fire (Rank 4)
-		[16857]	= Defaults(5), -- Faerie Fire (Feral) (Rank 1)
-		[17390]	= Defaults(5), -- Faerie Fire (Feral) (Rank 2)
-		[17391]	= Defaults(5), -- Faerie Fire (Feral) (Rank 3)
-		[17392]	= Defaults(5), -- Faerie Fire (Feral) (Rank 4)
+		[7386]	= UF:FilterList_Defaults(6), -- Sunder Armor (Rank 1)
+		[7405]	= UF:FilterList_Defaults(6), -- Sunder Armor (Rank 2)
+		[8380]	= UF:FilterList_Defaults(6), -- Sunder Armor (Rank 3)
+		[11596]	= UF:FilterList_Defaults(6), -- Sunder Armor (Rank 4)
+		[11597]	= UF:FilterList_Defaults(6), -- Sunder Armor (Rank 5)
+		[770]	= UF:FilterList_Defaults(5), -- Faerie Fire (Rank 1)
+		[778]	= UF:FilterList_Defaults(5), -- Faerie Fire (Rank 2)
+		[9749]	= UF:FilterList_Defaults(5), -- Faerie Fire (Rank 3)
+		[9907]	= UF:FilterList_Defaults(5), -- Faerie Fire (Rank 4)
+		[16857]	= UF:FilterList_Defaults(5), -- Faerie Fire (Feral) (Rank 1)
+		[17390]	= UF:FilterList_Defaults(5), -- Faerie Fire (Feral) (Rank 2)
+		[17391]	= UF:FilterList_Defaults(5), -- Faerie Fire (Feral) (Rank 3)
+		[17392]	= UF:FilterList_Defaults(5), -- Faerie Fire (Feral) (Rank 4)
 	--Winter's Chill Debuff
-		[12579]	= Defaults(5), -- Winter's Chill
+		[12579]	= UF:FilterList_Defaults(5), -- Winter's Chill
 	},
 }
 
@@ -217,36 +207,36 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Druid
-		[22812]	= Defaults(2), -- Barkskin
+		[22812]	= UF:FilterList_Defaults(2), -- Barkskin
 	-- Hunter
-		[19263]	= Defaults(2), -- Deterrence
+		[19263]	= UF:FilterList_Defaults(2), -- Deterrence
 	--Mage
-		[11958]	= Defaults(2), -- Ice Block
+		[11958]	= UF:FilterList_Defaults(2), -- Ice Block
 	--Paladin
-		[498]	= Defaults(2), -- Divine Protection (Rank 1)
-		[5573]	= Defaults(2), -- Divine Protection (Rank 2)
-		[642]	= Defaults(2), -- Divine Shield (Rank 1)
-		[1020]	= Defaults(2), -- Divine Shield (Rank 2)
-		[1022]	= Defaults(2), -- Blessing of Protection (Rank 1)
-		[5599]	= Defaults(2), -- Blessing of Protection (Rank 2)
-		[10278]	= Defaults(2), -- Blessing of Protection (Rank 3)
+		[498]	= UF:FilterList_Defaults(2), -- Divine Protection (Rank 1)
+		[5573]	= UF:FilterList_Defaults(2), -- Divine Protection (Rank 2)
+		[642]	= UF:FilterList_Defaults(2), -- Divine Shield (Rank 1)
+		[1020]	= UF:FilterList_Defaults(2), -- Divine Shield (Rank 2)
+		[1022]	= UF:FilterList_Defaults(2), -- Blessing of Protection (Rank 1)
+		[5599]	= UF:FilterList_Defaults(2), -- Blessing of Protection (Rank 2)
+		[10278]	= UF:FilterList_Defaults(2), -- Blessing of Protection (Rank 3)
 	-- Rogue
-		[5277]	= Defaults(2), -- Evasion
-		[1856]	= Defaults(2), -- Vanish (Rank 1)
-		[1857]	= Defaults(2), -- Vanish (Rank 2)
+		[5277]	= UF:FilterList_Defaults(2), -- Evasion
+		[1856]	= UF:FilterList_Defaults(2), -- Vanish (Rank 1)
+		[1857]	= UF:FilterList_Defaults(2), -- Vanish (Rank 2)
 	-- Warrior
-		[12975]	= Defaults(2), -- Last Stand
-		[871]	= Defaults(2), -- Shield Wall
-		[20230]	= Defaults(2), -- Retaliation
+		[12975]	= UF:FilterList_Defaults(2), -- Last Stand
+		[871]	= UF:FilterList_Defaults(2), -- Shield Wall
+		[20230]	= UF:FilterList_Defaults(2), -- Retaliation
 	--Consumables
-		[3169]	= Defaults(2), -- Limited Invulnerability Potion
-		[6615]	= Defaults(2), -- Free Action Potion
+		[3169]	= UF:FilterList_Defaults(2), -- Limited Invulnerability Potion
+		[6615]	= UF:FilterList_Defaults(2), -- Free Action Potion
 	--Racial
-		[7744]	= Defaults(2), -- Will of the Forsaken
-		[6346]	= Defaults(2), -- Fear Ward
-		[20594]	= Defaults(2), -- Stoneform
+		[7744]	= UF:FilterList_Defaults(2), -- Will of the Forsaken
+		[6346]	= UF:FilterList_Defaults(2), -- Fear Ward
+		[20594]	= UF:FilterList_Defaults(2), -- Stoneform
 	--All Classes
-		[19753]	= Defaults(2), -- Divine Intervention
+		[19753]	= UF:FilterList_Defaults(2), -- Divine Intervention
 	},
 }
 
@@ -255,164 +245,164 @@ G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
 	--Druid
-		[29166]	= Defaults(), -- Innervate
-		[22812]	= Defaults(), -- Barkskin
-		[17116]	= Defaults(), -- Nature's Swiftness
-		[16689]	= Defaults(), -- Nature's Grasp (Rank 1)
-		[16810]	= Defaults(), -- Nature's Grasp (Rank 2)
-		[16811]	= Defaults(), -- Nature's Grasp (Rank 3)
-		[16812]	= Defaults(), -- Nature's Grasp (Rank 4)
-		[16813]	= Defaults(), -- Nature's Grasp (Rank 5)
-		[17329]	= Defaults(), -- Nature's Grasp (Rank 6)
-		[16864]	= Defaults(), -- Omen of Clarity
-		[5217]	= Defaults(), -- Tiger's Fury (Rank 1)
-		[6793]	= Defaults(), -- Tiger's Fury (Rank 2)
-		[9845]	= Defaults(), -- Tiger's Fury (Rank 3)
-		[9846]	= Defaults(), -- Tiger's Fury (Rank 4)
-		[2893]	= Defaults(), -- Abolish Poison
-		[5229]	= Defaults(), -- Enrage
-		[1850]	= Defaults(), -- Dash (Rank 1)
-		[9821]	= Defaults(), -- Dash (Rank 2)
-		[33357]	= Defaults(), -- Dash (Rank 3)
+		[29166]	= UF:FilterList_Defaults(), -- Innervate
+		[22812]	= UF:FilterList_Defaults(), -- Barkskin
+		[17116]	= UF:FilterList_Defaults(), -- Nature's Swiftness
+		[16689]	= UF:FilterList_Defaults(), -- Nature's Grasp (Rank 1)
+		[16810]	= UF:FilterList_Defaults(), -- Nature's Grasp (Rank 2)
+		[16811]	= UF:FilterList_Defaults(), -- Nature's Grasp (Rank 3)
+		[16812]	= UF:FilterList_Defaults(), -- Nature's Grasp (Rank 4)
+		[16813]	= UF:FilterList_Defaults(), -- Nature's Grasp (Rank 5)
+		[17329]	= UF:FilterList_Defaults(), -- Nature's Grasp (Rank 6)
+		[16864]	= UF:FilterList_Defaults(), -- Omen of Clarity
+		[5217]	= UF:FilterList_Defaults(), -- Tiger's Fury (Rank 1)
+		[6793]	= UF:FilterList_Defaults(), -- Tiger's Fury (Rank 2)
+		[9845]	= UF:FilterList_Defaults(), -- Tiger's Fury (Rank 3)
+		[9846]	= UF:FilterList_Defaults(), -- Tiger's Fury (Rank 4)
+		[2893]	= UF:FilterList_Defaults(), -- Abolish Poison
+		[5229]	= UF:FilterList_Defaults(), -- Enrage
+		[1850]	= UF:FilterList_Defaults(), -- Dash (Rank 1)
+		[9821]	= UF:FilterList_Defaults(), -- Dash (Rank 2)
+		[33357]	= UF:FilterList_Defaults(), -- Dash (Rank 3)
 	--Hunter
-		[13161]	= Defaults(), -- Aspect of the Beast
-		[5118]	= Defaults(), -- Aspect of the Cheetah
-		[13163]	= Defaults(), -- Aspect of the Monkey
-		[13159]	= Defaults(), -- Aspect of the Pack
-		[20043]	= Defaults(), -- Aspect of the Wild (Rank 1)
-		[20190]	= Defaults(), -- Aspect of the Wild (Rank 2)
-		[3045]	= Defaults(), -- Rapid Fire
-		[19263]	= Defaults(), -- Deterrence
-		[13165]	= Defaults(), -- Aspect of the Hawk (Rank 1)
-		[14318]	= Defaults(), -- Aspect of the Hawk (Rank 2)
-		[14319]	= Defaults(), -- Aspect of the Hawk (Rank 3)
-		[14320]	= Defaults(), -- Aspect of the Hawk (Rank 4)
-		[14321]	= Defaults(), -- Aspect of the Hawk (Rank 5)
-		[14322]	= Defaults(), -- Aspect of the Hawk (Rank 6)
-		[25296]	= Defaults(), -- Aspect of the Hawk (Rank 7)
-		[19574]	= Defaults(), -- Bestial Wrath
+		[13161]	= UF:FilterList_Defaults(), -- Aspect of the Beast
+		[5118]	= UF:FilterList_Defaults(), -- Aspect of the Cheetah
+		[13163]	= UF:FilterList_Defaults(), -- Aspect of the Monkey
+		[13159]	= UF:FilterList_Defaults(), -- Aspect of the Pack
+		[20043]	= UF:FilterList_Defaults(), -- Aspect of the Wild (Rank 1)
+		[20190]	= UF:FilterList_Defaults(), -- Aspect of the Wild (Rank 2)
+		[3045]	= UF:FilterList_Defaults(), -- Rapid Fire
+		[19263]	= UF:FilterList_Defaults(), -- Deterrence
+		[13165]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 1)
+		[14318]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 2)
+		[14319]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 3)
+		[14320]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 4)
+		[14321]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 5)
+		[14322]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 6)
+		[25296]	= UF:FilterList_Defaults(), -- Aspect of the Hawk (Rank 7)
+		[19574]	= UF:FilterList_Defaults(), -- Bestial Wrath
 	--Mage
-		[11958]	= Defaults(), -- Ice Block
-		[12043]	= Defaults(), -- Presence of Mind
-		[28682]	= Defaults(), -- Combustion
-		[12042]	= Defaults(), -- Arcane Power
-		[11426]	= Defaults(), -- Ice Barrier (Rank 1)
-		[13031]	= Defaults(), -- Ice Barrier (Rank 2)
-		[13032]	= Defaults(), -- Ice Barrier (Rank 3)
-		[13033]	= Defaults(), -- Ice Barrier (Rank 4)
+		[11958]	= UF:FilterList_Defaults(), -- Ice Block
+		[12043]	= UF:FilterList_Defaults(), -- Presence of Mind
+		[28682]	= UF:FilterList_Defaults(), -- Combustion
+		[12042]	= UF:FilterList_Defaults(), -- Arcane Power
+		[11426]	= UF:FilterList_Defaults(), -- Ice Barrier (Rank 1)
+		[13031]	= UF:FilterList_Defaults(), -- Ice Barrier (Rank 2)
+		[13032]	= UF:FilterList_Defaults(), -- Ice Barrier (Rank 3)
+		[13033]	= UF:FilterList_Defaults(), -- Ice Barrier (Rank 4)
 	--Paladin
-		[1044]	= Defaults(), -- Blessing of Freedom
-		[465]	= Defaults(), -- Devotion Aura (Rank 1)
-		[10290]	= Defaults(), -- Devotion Aura (Rank 2)
-		[643]	= Defaults(), -- Devotion Aura (Rank 3)
-		[10291]	= Defaults(), -- Devotion Aura (Rank 4)
-		[1032]	= Defaults(), -- Devotion Aura (Rank 5)
-		[10292]	= Defaults(), -- Devotion Aura (Rank 6)
-		[10293]	= Defaults(), -- Devotion Aura (Rank 7)
-		[19746]	= Defaults(), -- Concentration Aura
-		[7294]	= Defaults(), -- Retribution Aura (Rank 1)
-		[10298]	= Defaults(), -- Retribution Aura (Rank 2)
-		[10299]	= Defaults(), -- Retribution Aura (Rank 3)
-		[10300]	= Defaults(), -- Retribution Aura (Rank 4)
-		[10301]	= Defaults(), -- Retribution Aura (Rank 5)
-		[19876]	= Defaults(), -- Shadow Resistance Aura (Rank 1)
-		[19895]	= Defaults(), -- Shadow Resistance Aura (Rank 2)
-		[19896]	= Defaults(), -- Shadow Resistance Aura (Rank 3)
-		[19888]	= Defaults(), -- Frost Resistance Aura (Rank 1)
-		[19897]	= Defaults(), -- Frost Resistance Aura (Rank 2)
-		[19898]	= Defaults(), -- Frost Resistance Aura (Rank 3)
-		[19891]	= Defaults(), -- Fire Resistance Aura (Rank 1)
-		[19899]	= Defaults(), -- Fire Resistance Aura (Rank 2)
-		[19900]	= Defaults(), -- Fire Resistance Aura (Rank 3)
-		[498]	= Defaults(), -- Divine Protection (Rank 1)
-		[5573]	= Defaults(), -- Divine Protection (Rank 2)
-		[642]	= Defaults(), -- Divine Shield (Rank 1)
-		[1020]	= Defaults(), -- Divine Shield (Rank 2)
-		[1022]	= Defaults(), -- Blessing of Protection (Rank 1)
-		[5599]	= Defaults(), -- Blessing of Protection (Rank 2)
-		[10278]	= Defaults(), -- Blessing of Protection (Rank 3)
-		[6940]	= Defaults(), -- Blessing of Sacrifice (Rank 1)
-		[20729]	= Defaults(), -- Blessing of Sacrifice (Rank 2)
-		[20216]	= Defaults(), -- Divine Favor
+		[1044]	= UF:FilterList_Defaults(), -- Blessing of Freedom
+		[465]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 1)
+		[10290]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 2)
+		[643]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 3)
+		[10291]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 4)
+		[1032]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 5)
+		[10292]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 6)
+		[10293]	= UF:FilterList_Defaults(), -- Devotion Aura (Rank 7)
+		[19746]	= UF:FilterList_Defaults(), -- Concentration Aura
+		[7294]	= UF:FilterList_Defaults(), -- Retribution Aura (Rank 1)
+		[10298]	= UF:FilterList_Defaults(), -- Retribution Aura (Rank 2)
+		[10299]	= UF:FilterList_Defaults(), -- Retribution Aura (Rank 3)
+		[10300]	= UF:FilterList_Defaults(), -- Retribution Aura (Rank 4)
+		[10301]	= UF:FilterList_Defaults(), -- Retribution Aura (Rank 5)
+		[19876]	= UF:FilterList_Defaults(), -- Shadow Resistance Aura (Rank 1)
+		[19895]	= UF:FilterList_Defaults(), -- Shadow Resistance Aura (Rank 2)
+		[19896]	= UF:FilterList_Defaults(), -- Shadow Resistance Aura (Rank 3)
+		[19888]	= UF:FilterList_Defaults(), -- Frost Resistance Aura (Rank 1)
+		[19897]	= UF:FilterList_Defaults(), -- Frost Resistance Aura (Rank 2)
+		[19898]	= UF:FilterList_Defaults(), -- Frost Resistance Aura (Rank 3)
+		[19891]	= UF:FilterList_Defaults(), -- Fire Resistance Aura (Rank 1)
+		[19899]	= UF:FilterList_Defaults(), -- Fire Resistance Aura (Rank 2)
+		[19900]	= UF:FilterList_Defaults(), -- Fire Resistance Aura (Rank 3)
+		[498]	= UF:FilterList_Defaults(), -- Divine Protection (Rank 1)
+		[5573]	= UF:FilterList_Defaults(), -- Divine Protection (Rank 2)
+		[642]	= UF:FilterList_Defaults(), -- Divine Shield (Rank 1)
+		[1020]	= UF:FilterList_Defaults(), -- Divine Shield (Rank 2)
+		[1022]	= UF:FilterList_Defaults(), -- Blessing of Protection (Rank 1)
+		[5599]	= UF:FilterList_Defaults(), -- Blessing of Protection (Rank 2)
+		[10278]	= UF:FilterList_Defaults(), -- Blessing of Protection (Rank 3)
+		[6940]	= UF:FilterList_Defaults(), -- Blessing of Sacrifice (Rank 1)
+		[20729]	= UF:FilterList_Defaults(), -- Blessing of Sacrifice (Rank 2)
+		[20216]	= UF:FilterList_Defaults(), -- Divine Favor
 	--Priest
-		[15473]	= Defaults(), -- Shadowform
-		[10060]	= Defaults(), -- Power Infusion
-		[14751]	= Defaults(), -- Inner Focus
-		[1706]	= Defaults(), -- Levitate
-		[586]	= Defaults(), -- Fade (Rank 1)
-		[9578]	= Defaults(), -- Fade (Rank 2)
-		[9579]	= Defaults(), -- Fade (Rank 3)
-		[9592]	= Defaults(), -- Fade (Rank 4)
-		[10941]	= Defaults(), -- Fade (Rank 5)
-		[10942]	= Defaults(), -- Fade (Rank 6)
+		[15473]	= UF:FilterList_Defaults(), -- Shadowform
+		[10060]	= UF:FilterList_Defaults(), -- Power Infusion
+		[14751]	= UF:FilterList_Defaults(), -- Inner Focus
+		[1706]	= UF:FilterList_Defaults(), -- Levitate
+		[586]	= UF:FilterList_Defaults(), -- Fade (Rank 1)
+		[9578]	= UF:FilterList_Defaults(), -- Fade (Rank 2)
+		[9579]	= UF:FilterList_Defaults(), -- Fade (Rank 3)
+		[9592]	= UF:FilterList_Defaults(), -- Fade (Rank 4)
+		[10941]	= UF:FilterList_Defaults(), -- Fade (Rank 5)
+		[10942]	= UF:FilterList_Defaults(), -- Fade (Rank 6)
 	--Rogue
-		[14177]	= Defaults(), -- Cold Blood
-		[13877]	= Defaults(), -- Blade Flurry
-		[13750]	= Defaults(), -- Adrenaline Rush
-		[2983]	= Defaults(), -- Sprint (Rank 1)
-		[8696]	= Defaults(), -- Sprint (Rank 2)
-		[11305]	= Defaults(), -- Sprint (Rank 3)
-		[5171]	= Defaults(), -- Slice and Dice (Rank 1)
-		[6774]	= Defaults(), -- Slice and Dice (Rank 2)
-		[5277]	= Defaults(), -- Evasion
-		[1856]	= Defaults(), -- Vanish (Rank 1)
-		[1857]	= Defaults(), -- Vanish (Rank 2)
+		[14177]	= UF:FilterList_Defaults(), -- Cold Blood
+		[13877]	= UF:FilterList_Defaults(), -- Blade Flurry
+		[13750]	= UF:FilterList_Defaults(), -- Adrenaline Rush
+		[2983]	= UF:FilterList_Defaults(), -- Sprint (Rank 1)
+		[8696]	= UF:FilterList_Defaults(), -- Sprint (Rank 2)
+		[11305]	= UF:FilterList_Defaults(), -- Sprint (Rank 3)
+		[5171]	= UF:FilterList_Defaults(), -- Slice and Dice (Rank 1)
+		[6774]	= UF:FilterList_Defaults(), -- Slice and Dice (Rank 2)
+		[5277]	= UF:FilterList_Defaults(), -- Evasion
+		[1856]	= UF:FilterList_Defaults(), -- Vanish (Rank 1)
+		[1857]	= UF:FilterList_Defaults(), -- Vanish (Rank 2)
 	--Shaman
-		[2645]	= Defaults(), -- Ghost Wolf
-		[324]	= Defaults(), -- Lightning Shield (Rank 1)
-		[325]	= Defaults(), -- Lightning Shield (Rank 2)
-		[905]	= Defaults(), -- Lightning Shield (Rank 3)
-		[945]	= Defaults(), -- Lightning Shield (Rank 4)
-		[8134]	= Defaults(), -- Lightning Shield (Rank 5)
-		[10431]	= Defaults(), -- Lightning Shield (Rank 6)
-		[10432]	= Defaults(), -- Lightning Shield (Rank 7)
-		[16188]	= Defaults(), -- Nature's Swiftness
-		[16166]	= Defaults(), -- Elemental Mastery
-		[8178]	= Defaults(), -- Grounding Totem Effect
-		[16191]	= Defaults(), -- Mana Tide (Rank 1)
-		[17355]	= Defaults(), -- Mana Tide (Rank 2)
-		[17360]	= Defaults(), -- Mana Tide (Rank 3)
+		[2645]	= UF:FilterList_Defaults(), -- Ghost Wolf
+		[324]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 1)
+		[325]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 2)
+		[905]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 3)
+		[945]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 4)
+		[8134]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 5)
+		[10431]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 6)
+		[10432]	= UF:FilterList_Defaults(), -- Lightning Shield (Rank 7)
+		[16188]	= UF:FilterList_Defaults(), -- Nature's Swiftness
+		[16166]	= UF:FilterList_Defaults(), -- Elemental Mastery
+		[8178]	= UF:FilterList_Defaults(), -- Grounding Totem Effect
+		[16191]	= UF:FilterList_Defaults(), -- Mana Tide (Rank 1)
+		[17355]	= UF:FilterList_Defaults(), -- Mana Tide (Rank 2)
+		[17360]	= UF:FilterList_Defaults(), -- Mana Tide (Rank 3)
 	--Warlock
-		[18789]	= Defaults(), -- Demonic Sacrifice (Burning Wish)
-		[18790]	= Defaults(), -- Demonic Sacrifice (Fel Stamina)
-		[18791]	= Defaults(), -- Demonic Sacrifice (Touch of Shadow)
-		[18792]	= Defaults(), -- Demonic Sacrifice (Fel Energy)
-		[5697]	= Defaults(), -- Unending Breath
-		[6512]	= Defaults(), -- Detect Lesser Invisibility
-		[2970]	= Defaults(), -- Detect Invisibility
-		[11743]	= Defaults(), -- Detect Greater Invisibility
-		[25228]	= Defaults(), -- Soul Link
-		[18708]	= Defaults(), -- Fel Domination
+		[18789]	= UF:FilterList_Defaults(), -- Demonic Sacrifice (Burning Wish)
+		[18790]	= UF:FilterList_Defaults(), -- Demonic Sacrifice (Fel Stamina)
+		[18791]	= UF:FilterList_Defaults(), -- Demonic Sacrifice (Touch of Shadow)
+		[18792]	= UF:FilterList_Defaults(), -- Demonic Sacrifice (Fel Energy)
+		[5697]	= UF:FilterList_Defaults(), -- Unending Breath
+		[6512]	= UF:FilterList_Defaults(), -- Detect Lesser Invisibility
+		[2970]	= UF:FilterList_Defaults(), -- Detect Invisibility
+		[11743]	= UF:FilterList_Defaults(), -- Detect Greater Invisibility
+		[25228]	= UF:FilterList_Defaults(), -- Soul Link
+		[18708]	= UF:FilterList_Defaults(), -- Fel Domination
 	--Warrior
-		[12975]	= Defaults(), -- Last Stand
-		[871]	= Defaults(), -- Shield Wall
-		[20230]	= Defaults(), -- Retaliation
-		[1719]	= Defaults(), -- Recklessness
-		[18499]	= Defaults(), -- Berserker Rage
-		[2687]	= Defaults(), -- Bloodrage
-		[12328]	= Defaults(), -- Death Wish
-		[12292]	= Defaults(), -- Sweeping Strikes
-		[2565]	= Defaults(), -- Shield Block
-		[12880]	= Defaults(), -- Enrage (Rank 1)
-		[14201]	= Defaults(), -- Enrage (Rank 2)
-		[14202]	= Defaults(), -- Enrage (Rank 3)
-		[14203]	= Defaults(), -- Enrage (Rank 4)
-		[14204]	= Defaults(), -- Enrage (Rank 5)
+		[12975]	= UF:FilterList_Defaults(), -- Last Stand
+		[871]	= UF:FilterList_Defaults(), -- Shield Wall
+		[20230]	= UF:FilterList_Defaults(), -- Retaliation
+		[1719]	= UF:FilterList_Defaults(), -- Recklessness
+		[18499]	= UF:FilterList_Defaults(), -- Berserker Rage
+		[2687]	= UF:FilterList_Defaults(), -- Bloodrage
+		[12328]	= UF:FilterList_Defaults(), -- Death Wish
+		[12292]	= UF:FilterList_Defaults(), -- Sweeping Strikes
+		[2565]	= UF:FilterList_Defaults(), -- Shield Block
+		[12880]	= UF:FilterList_Defaults(), -- Enrage (Rank 1)
+		[14201]	= UF:FilterList_Defaults(), -- Enrage (Rank 2)
+		[14202]	= UF:FilterList_Defaults(), -- Enrage (Rank 3)
+		[14203]	= UF:FilterList_Defaults(), -- Enrage (Rank 4)
+		[14204]	= UF:FilterList_Defaults(), -- Enrage (Rank 5)
 	-- Consumables
-		[3169]	= Defaults(), -- Limited Invulnerability Potion
-		[6615]	= Defaults(), -- Free Action Potion
+		[3169]	= UF:FilterList_Defaults(), -- Limited Invulnerability Potion
+		[6615]	= UF:FilterList_Defaults(), -- Free Action Potion
 	-- Racial
-		[20554]	= Defaults(), -- Berserking (Mana)
-		[26296]	= Defaults(), -- Berserking (Rage)
-		[26297]	= Defaults(), -- Berserking (Energy)
-		[7744]	= Defaults(), -- Will of the Forsaken
-		[20572]	= Defaults(), -- Blood Fury (Physical)
-		[33697]	= Defaults(), -- Blood Fury (Both)
-		[33702]	= Defaults(), -- Blood Fury (Spell)
-		[6346]	= Defaults(), -- Fear Ward
-		[20594]	= Defaults(), -- Stoneform
+		[20554]	= UF:FilterList_Defaults(), -- Berserking (Mana)
+		[26296]	= UF:FilterList_Defaults(), -- Berserking (Rage)
+		[26297]	= UF:FilterList_Defaults(), -- Berserking (Energy)
+		[7744]	= UF:FilterList_Defaults(), -- Will of the Forsaken
+		[20572]	= UF:FilterList_Defaults(), -- Blood Fury (Physical)
+		[33697]	= UF:FilterList_Defaults(), -- Blood Fury (Both)
+		[33702]	= UF:FilterList_Defaults(), -- Blood Fury (Spell)
+		[6346]	= UF:FilterList_Defaults(), -- Fear Ward
+		[20594]	= UF:FilterList_Defaults(), -- Stoneform
 	-- All Classes
-		[19753]	= Defaults(), -- Divine Intervention
+		[19753]	= UF:FilterList_Defaults(), -- Divine Intervention
 	},
 }
 
@@ -421,7 +411,7 @@ G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
 	--Seasonal
-		[362859] = Defaults(), -- Adventure Awaits "Quest experience increased by 100%."
+		[362859] = UF:FilterList_Defaults(), -- Adventure Awaits "Quest experience increased by 100%."
 	--Druid
 	--Hunter
 	--Mage
@@ -463,143 +453,143 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	------------------------ Dungeons ------------------------
 	----------------------------------------------------------
 	--Multiple Dungeons
-		[744]	= Defaults(2), -- Poison
-		[18267] = Defaults(2), -- Curse of Weakness
-		[20800] = Defaults(2), -- Immolate
-		[246]	= Defaults(2), -- Slow
-		[6533]	= Defaults(2), -- Net
-		[8399]	= Defaults(2), -- Sleep
+		[744]	= UF:FilterList_Defaults(2), -- Poison
+		[18267] = UF:FilterList_Defaults(2), -- Curse of Weakness
+		[20800] = UF:FilterList_Defaults(2), -- Immolate
+		[246]	= UF:FilterList_Defaults(2), -- Slow
+		[6533]	= UF:FilterList_Defaults(2), -- Net
+		[8399]	= UF:FilterList_Defaults(2), -- Sleep
 	-- Blackrock Depths
-		[13704] = Defaults(2), -- Psychic Scream
+		[13704] = UF:FilterList_Defaults(2), -- Psychic Scream
 	-- Deadmines
-		[6304]	= Defaults(2), -- Rhahk'Zor Slam
-		[12097] = Defaults(2), -- Pierce Armor
-		[7399]	= Defaults(2), -- Terrify
-		[6713]	= Defaults(2), -- Disarm
-		[5213]	= Defaults(2), -- Molten Metal
-		[5208]	= Defaults(2), -- Poisoned Harpoon
+		[6304]	= UF:FilterList_Defaults(2), -- Rhahk'Zor Slam
+		[12097] = UF:FilterList_Defaults(2), -- Pierce Armor
+		[7399]	= UF:FilterList_Defaults(2), -- Terrify
+		[6713]	= UF:FilterList_Defaults(2), -- Disarm
+		[5213]	= UF:FilterList_Defaults(2), -- Molten Metal
+		[5208]	= UF:FilterList_Defaults(2), -- Poisoned Harpoon
 	-- Maraudon
-		[7964]	= Defaults(2), -- Smoke Bomb
-		[21869] = Defaults(2), -- Repulsive Gaze
+		[7964]	= UF:FilterList_Defaults(2), -- Smoke Bomb
+		[21869] = UF:FilterList_Defaults(2), -- Repulsive Gaze
 	-- Razorfen Downs
-		[12255]	= Defaults(2), -- Curse of Tuten'kash
-		[12252]	= Defaults(2), -- Web Spray
-		[7645]	= Defaults(2), -- Dominate Mind
-		[12946]	= Defaults(2), -- Putrid Stench
+		[12255]	= UF:FilterList_Defaults(2), -- Curse of Tuten'kash
+		[12252]	= UF:FilterList_Defaults(2), -- Web Spray
+		[7645]	= UF:FilterList_Defaults(2), -- Dominate Mind
+		[12946]	= UF:FilterList_Defaults(2), -- Putrid Stench
 	-- Razorfen Kraul
-		[14515]	= Defaults(2), -- Dominate Mind
+		[14515]	= UF:FilterList_Defaults(2), -- Dominate Mind
 	-- Scarlet Monastry
-		[9034]	= Defaults(2), -- Immolate
-		[8814]	= Defaults(2), -- Flame Spike
-		[8988]	= Defaults(2), -- Silence
-		[9256]	= Defaults(2), -- Deep Sleep
-		[8282]	= Defaults(2), -- Curse of Blood
+		[9034]	= UF:FilterList_Defaults(2), -- Immolate
+		[8814]	= UF:FilterList_Defaults(2), -- Flame Spike
+		[8988]	= UF:FilterList_Defaults(2), -- Silence
+		[9256]	= UF:FilterList_Defaults(2), -- Deep Sleep
+		[8282]	= UF:FilterList_Defaults(2), -- Curse of Blood
 	-- Shadowfang Keep
-		[7068]	= Defaults(2), -- Veil of Shadow
-		[7125]	= Defaults(2), -- Toxic Saliva
-		[7621]	= Defaults(2), -- Arugal's Curse
+		[7068]	= UF:FilterList_Defaults(2), -- Veil of Shadow
+		[7125]	= UF:FilterList_Defaults(2), -- Toxic Saliva
+		[7621]	= UF:FilterList_Defaults(2), -- Arugal's Curse
 	--Stratholme
-		[16798] = Defaults(2), -- Enchanting Lullaby
-		[12734] = Defaults(2), -- Ground Smash
-		[17293] = Defaults(2), -- Burning Winds
-		[17405] = Defaults(2), -- Domination
-		[16867] = Defaults(2), -- Banshee Curse
-		[6016]	= Defaults(2), -- Pierce Armor
-		[16869] = Defaults(2), -- Ice Tomb
-		[17307] = Defaults(2), -- Knockout
+		[16798] = UF:FilterList_Defaults(2), -- Enchanting Lullaby
+		[12734] = UF:FilterList_Defaults(2), -- Ground Smash
+		[17293] = UF:FilterList_Defaults(2), -- Burning Winds
+		[17405] = UF:FilterList_Defaults(2), -- Domination
+		[16867] = UF:FilterList_Defaults(2), -- Banshee Curse
+		[6016]	= UF:FilterList_Defaults(2), -- Pierce Armor
+		[16869] = UF:FilterList_Defaults(2), -- Ice Tomb
+		[17307] = UF:FilterList_Defaults(2), -- Knockout
 	-- Sunken Temple
-		[12889] = Defaults(2), -- Curse of Tongues
-		[12888] = Defaults(2), -- Cause Insanity
-		[12479] = Defaults(2), -- Hex of Jammal'an
-		[12493] = Defaults(2), -- Curse of Weakness
-		[12890] = Defaults(2), -- Deep Slumber
-		[24375] = Defaults(2), -- War Stomp
+		[12889] = UF:FilterList_Defaults(2), -- Curse of Tongues
+		[12888] = UF:FilterList_Defaults(2), -- Cause Insanity
+		[12479] = UF:FilterList_Defaults(2), -- Hex of Jammal'an
+		[12493] = UF:FilterList_Defaults(2), -- Curse of Weakness
+		[12890] = UF:FilterList_Defaults(2), -- Deep Slumber
+		[24375] = UF:FilterList_Defaults(2), -- War Stomp
 	-- Uldaman
-		[3356]	= Defaults(2), -- Flame Lash
-		[6524]	= Defaults(2), -- Ground Tremor
+		[3356]	= UF:FilterList_Defaults(2), -- Flame Lash
+		[6524]	= UF:FilterList_Defaults(2), -- Ground Tremor
 	-- Wailing Caverns
-		[8040]	= Defaults(2), -- Druid's Slumber
-		[8142]	= Defaults(2), -- Grasping Vines
-		[7967]	= Defaults(2), -- Naralex's Nightmare
-		[8150]	= Defaults(2), -- Thundercrack
+		[8040]	= UF:FilterList_Defaults(2), -- Druid's Slumber
+		[8142]	= UF:FilterList_Defaults(2), -- Grasping Vines
+		[7967]	= UF:FilterList_Defaults(2), -- Naralex's Nightmare
+		[8150]	= UF:FilterList_Defaults(2), -- Thundercrack
 	-- Zul'Farrak
-		[11836] = Defaults(2), -- Freeze Solid
+		[11836] = UF:FilterList_Defaults(2), -- Freeze Solid
 	-- World Bosses
-		[21056] = Defaults(2), -- Mark of Kazzak
-		[24814] = Defaults(2), -- Seeping Fog
+		[21056] = UF:FilterList_Defaults(2), -- Mark of Kazzak
+		[24814] = UF:FilterList_Defaults(2), -- Seeping Fog
 	----------------------------------------------------------
 	-------------------------- PvP ---------------------------
 	----------------------------------------------------------
-	[43680] = Defaults(6), -- Idle (Reported for AFK)
+	[43680] = UF:FilterList_Defaults(6), -- Idle (Reported for AFK)
 	----------------------------------------------------------
 	----------------------------------------------------------
 	--------------------- Onyxia's Lair ----------------------
 	----------------------------------------------------------
-	[18431] = Defaults(2), -- Bellowing Roar
+	[18431] = UF:FilterList_Defaults(2), -- Bellowing Roar
 	----------------------------------------------------------
 	---------------------- Molten Core -----------------------
 	----------------------------------------------------------
-	[19703] = Defaults(5), -- Lucifron's Curse
-	[19408] = Defaults(2), -- Panic
-	[19716] = Defaults(3), -- Gehennas' Curse
-	[20475] = Defaults(6), -- Living Bomb
-	[19695] = Defaults(3), -- Inferno
-	[19713] = Defaults(5), -- Shazzrah's Curse
-	[20277] = Defaults(2), -- Fist of Ragnaros
-	[19659] = Defaults(2), -- Ignite Mana
-	[19714] = Defaults(2), -- Deaden Magic
+	[19703] = UF:FilterList_Defaults(5), -- Lucifron's Curse
+	[19408] = UF:FilterList_Defaults(2), -- Panic
+	[19716] = UF:FilterList_Defaults(3), -- Gehennas' Curse
+	[20475] = UF:FilterList_Defaults(6), -- Living Bomb
+	[19695] = UF:FilterList_Defaults(3), -- Inferno
+	[19713] = UF:FilterList_Defaults(5), -- Shazzrah's Curse
+	[20277] = UF:FilterList_Defaults(2), -- Fist of Ragnaros
+	[19659] = UF:FilterList_Defaults(2), -- Ignite Mana
+	[19714] = UF:FilterList_Defaults(2), -- Deaden Magic
 	----------------------------------------------------------
 	--------------------- Blackwing Lair ---------------------
 	----------------------------------------------------------
-	[23023]	= Defaults(2), -- Conflagration
-	[18173]	= Defaults(2), -- Burning Adrenaline
-	[24573]	= Defaults(2), -- Mortal Strike
-	[23340]	= Defaults(2), -- Shadow of Ebonroc
-	[23170]	= Defaults(2), -- Brood Affliction: Bronze
-	[22687]	= Defaults(2), -- Veil of Shadow
+	[23023]	= UF:FilterList_Defaults(2), -- Conflagration
+	[18173]	= UF:FilterList_Defaults(2), -- Burning Adrenaline
+	[24573]	= UF:FilterList_Defaults(2), -- Mortal Strike
+	[23340]	= UF:FilterList_Defaults(2), -- Shadow of Ebonroc
+	[23170]	= UF:FilterList_Defaults(2), -- Brood Affliction: Bronze
+	[22687]	= UF:FilterList_Defaults(2), -- Veil of Shadow
 	----------------------------------------------------------
 	------------------------ Zul'Gurub -----------------------
 	----------------------------------------------------------
-	[23860]	= Defaults(2), -- Holy Fire
-	[22884]	= Defaults(2), -- Psychic Scream
-	[23918]	= Defaults(2), -- Sonic Burst
-	[24111]	= Defaults(2), -- Corrosive Poison
-	[21060]	= Defaults(2), -- Blind
-	[24328]	= Defaults(2), -- Corrupted Blood
-	[16856]	= Defaults(2), -- Mortal Strike
-	[24664]	= Defaults(2), -- Sleep
-	[17172]	= Defaults(2), -- Hex
-	[24306]	= Defaults(2), -- Delusions of Jin'do
-	[24099]	= Defaults(2), -- Poison Bolt Volley
+	[23860]	= UF:FilterList_Defaults(2), -- Holy Fire
+	[22884]	= UF:FilterList_Defaults(2), -- Psychic Scream
+	[23918]	= UF:FilterList_Defaults(2), -- Sonic Burst
+	[24111]	= UF:FilterList_Defaults(2), -- Corrosive Poison
+	[21060]	= UF:FilterList_Defaults(2), -- Blind
+	[24328]	= UF:FilterList_Defaults(2), -- Corrupted Blood
+	[16856]	= UF:FilterList_Defaults(2), -- Mortal Strike
+	[24664]	= UF:FilterList_Defaults(2), -- Sleep
+	[17172]	= UF:FilterList_Defaults(2), -- Hex
+	[24306]	= UF:FilterList_Defaults(2), -- Delusions of Jin'do
+	[24099]	= UF:FilterList_Defaults(2), -- Poison Bolt Volley
 	----------------------------------------------------------
 	--------------------- Ahn'Qiraj Ruins --------------------
 	----------------------------------------------------------
-	[25646]	= Defaults(2), -- Mortal Wound
-	[25471]	= Defaults(2), -- Attack Order
-	[96]	= Defaults(2), -- Dismember
-	[25725]	= Defaults(2), -- Paralyze
-	[25189]	= Defaults(2), -- Enveloping Winds
+	[25646]	= UF:FilterList_Defaults(2), -- Mortal Wound
+	[25471]	= UF:FilterList_Defaults(2), -- Attack Order
+	[96]	= UF:FilterList_Defaults(2), -- Dismember
+	[25725]	= UF:FilterList_Defaults(2), -- Paralyze
+	[25189]	= UF:FilterList_Defaults(2), -- Enveloping Winds
 	----------------------------------------------------------
 	--------------------- Ahn'Qiraj Temple -------------------
 	----------------------------------------------------------
-	[785]	= Defaults(2), -- True Fulfillment
-	[26580]	= Defaults(2), -- Fear
-	[26050]	= Defaults(2), -- Acid Spit
-	[26180]	= Defaults(2), -- Wyvern Sting
-	[26053]	= Defaults(2), -- Noxious Poison
-	[26613]	= Defaults(2), -- Unbalancing Strike
-	[26029]	= Defaults(2), -- Dark Glare
+	[785]	= UF:FilterList_Defaults(2), -- True Fulfillment
+	[26580]	= UF:FilterList_Defaults(2), -- Fear
+	[26050]	= UF:FilterList_Defaults(2), -- Acid Spit
+	[26180]	= UF:FilterList_Defaults(2), -- Wyvern Sting
+	[26053]	= UF:FilterList_Defaults(2), -- Noxious Poison
+	[26613]	= UF:FilterList_Defaults(2), -- Unbalancing Strike
+	[26029]	= UF:FilterList_Defaults(2), -- Dark Glare
 	----------------------------------------------------------
 	------------------------ Naxxramas -----------------------
 	----------------------------------------------------------
-	[28732]	= Defaults(2), -- Widow's Embrace
-	[28622]	= Defaults(2), -- Web Wrap
-	[28169]	= Defaults(2), -- Mutating Injection
-	[29213]	= Defaults(2), -- Curse of the Plaguebringer
-	[28835]	= Defaults(2), -- Mark of Zeliek
-	[27808]	= Defaults(2), -- Frost Blast
-	[28410]	= Defaults(2), -- Chains of Kel'Thuzad
-	[27819]	= Defaults(2), -- Detonate Mana
+	[28732]	= UF:FilterList_Defaults(2), -- Widow's Embrace
+	[28622]	= UF:FilterList_Defaults(2), -- Web Wrap
+	[28169]	= UF:FilterList_Defaults(2), -- Mutating Injection
+	[29213]	= UF:FilterList_Defaults(2), -- Curse of the Plaguebringer
+	[28835]	= UF:FilterList_Defaults(2), -- Mark of Zeliek
+	[27808]	= UF:FilterList_Defaults(2), -- Frost Blast
+	[28410]	= UF:FilterList_Defaults(2), -- Chains of Kel'Thuzad
+	[27819]	= UF:FilterList_Defaults(2), -- Detonate Mana
 	},
 }
 
@@ -614,52 +604,21 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------------- Molten Core -----------------------
 	----------------------------------------------------------
-	[19451] = Defaults(), -- Frenzy
-	[19714] = Defaults(), -- Deaden Magic
-	[19516] = Defaults(), -- Enrage
-	[19695] = Defaults(), -- Inferno
-	[20478] = Defaults(), -- Armageddon
-	[19779] = Defaults(), -- Inspire
-	[20620] = Defaults(), -- Aegis of Ragnaros
-	[21075] = Defaults(), -- Damage Shield
-	[20619] = Defaults(), -- Magic Reflection
+	[19451] = UF:FilterList_Defaults(), -- Frenzy
+	[19714] = UF:FilterList_Defaults(), -- Deaden Magic
+	[19516] = UF:FilterList_Defaults(), -- Enrage
+	[19695] = UF:FilterList_Defaults(), -- Inferno
+	[20478] = UF:FilterList_Defaults(), -- Armageddon
+	[19779] = UF:FilterList_Defaults(), -- Inspire
+	[20620] = UF:FilterList_Defaults(), -- Aegis of Ragnaros
+	[21075] = UF:FilterList_Defaults(), -- Damage Shield
+	[20619] = UF:FilterList_Defaults(), -- Magic Reflection
 	----------------------------------------------------------
 	------------------------ Zul'Gurub -----------------------
 	----------------------------------------------------------
-	[23895] = Defaults(), -- Renew
+	[23895] = UF:FilterList_Defaults(), -- Renew
 	},
 }
-
--- AuraWatch: List of personal spells to show on unitframes as icon
-function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
-
-	local r, g, b = 1, 1, 1
-	if color then r, g, b = unpack(color) end
-
-	local spellRank
-	local spellName = GetSpellInfo(id)
-	local rankText = GetSpellSubtext(id)
-	if rankText and strfind(rankText, '%d') then
-		spellRank = rankText
-	end
-
-	return {
-		id = id,
-		enabled = true,
-		name = spellName,
-		rank = spellRank,
-		point = point or 'TOPLEFT',
-		color = { r = r, g = g, b = b },
-		anyUnit = anyUnit or false,
-		onlyShowMissing = onlyShowMissing or false,
-		displayText = displayText or false,
-		textThreshold = textThreshold or -1,
-		xOffset = xOffset or 0,
-		yOffset = yOffset or 0,
-		style = 'coloredIcon',
-		sizeOffset = 0,
-	}
-end
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
@@ -868,11 +827,6 @@ G.unitframe.aurawatch = {
 	},
 }
 
--- Profile specific BuffIndicator
-P.unitframe.filters = {
-	aurawatch = {},
-}
-
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Druid
@@ -981,27 +935,4 @@ G.unitframe.AuraBarColors = {}
 
 G.unitframe.AuraHighlightColors = {
 	[25771]	= {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}},
-}
-
-G.unitframe.specialFilters = {
-	-- Whitelists
-	Boss = true,
-	MyPet = true,
-	OtherPet = true,
-	Personal = true,
-	nonPersonal = true,
-	CastByUnit = true,
-	notCastByUnit = true,
-	Dispellable = true,
-	notDispellable = true,
-	CastByNPC = true,
-	CastByPlayers = true,
-	BlizzardNameplate = true,
-
-	-- Blacklists
-	blockNonPersonal = true,
-	blockCastByPlayers = true,
-	blockNoDuration = true,
-	blockDispellable = true,
-	blockNotDispellable = true,
 }

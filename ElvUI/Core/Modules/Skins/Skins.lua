@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local LibStub = _G.LibStub
 
 local _G = _G
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
@@ -330,17 +331,23 @@ end
 
 -- DropDownMenu library support
 function S:SkinLibDropDownMenu(prefix)
-	if _G[prefix..'_UIDropDownMenu_CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
-		local bd = _G[prefix..'_DropDownList1Backdrop']
-		local mbd = _G[prefix..'_DropDownList1MenuBackdrop']
-		if bd and not bd.template then bd:SetTemplate('Transparent') end
-		if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
+	if S[prefix..'_UIDropDownMenuSkinned'] then return end
 
-		S[prefix..'_UIDropDownMenuSkinned'] = true
-		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
-			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS']
-			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop']
-			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop']
+	local key = (prefix == 'L4' or prefix == 'L3') and 'L' or prefix
+
+	local bd = _G[key..'_DropDownList1Backdrop']
+	local mbd = _G[key..'_DropDownList1MenuBackdrop']
+	if bd and not bd.template then bd:SetTemplate('Transparent') end
+	if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
+
+	S[prefix..'_UIDropDownMenuSkinned'] = true
+
+	local lib = prefix == 'L4' and LibStub.libs['LibUIDropDownMenu-4.0']
+	if (lib and lib.UIDropDownMenu_CreateFrames) or _G[key..'_UIDropDownMenu_CreateFrames'] then
+		hooksecurefunc(lib or _G, (lib and '' or key..'_') .. 'UIDropDownMenu_CreateFrames', function()
+			local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS']
+			local ddbd = lvls and _G[key..'_DropDownList'..lvls..'Backdrop']
+			local ddmbd = lvls and _G[key..'_DropDownList'..lvls..'MenuBackdrop']
 			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
 			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
 		end)
@@ -1683,7 +1690,7 @@ function S:Initialize()
 			end
 		end
 		for _, n in next, S.EarlyAceTooltips do
-			S:Ace3_SkinTooltip(_G.LibStub(n, true))
+			S:Ace3_SkinTooltip(LibStub(n, true))
 		end
 	end
 	if S.EarlyDropdowns then
