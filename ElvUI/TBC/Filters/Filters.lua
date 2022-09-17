@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local List = E.Filters_List
-local Aura = E.Filters_Aura
+local List = E.Filters.List
+local Aura = E.Filters.Aura
 
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
