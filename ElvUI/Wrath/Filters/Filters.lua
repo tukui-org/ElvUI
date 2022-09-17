@@ -886,87 +886,82 @@ G.unitframe.aurawatch = {
 		[29166]	= Aura(29166, nil, 'CENTER', {0.49, 0.60, 0.55}, true), -- Innervate
 		[33763]	= Aura(33763, {48450,48451}, 'BOTTOM', {0.33, 0.37, 0.47}), -- Lifebloom
 		[48438]	= Aura(48438, {53248,53249,53251}, 'BOTTOMRIGHT', {0.8, 0.4, 0}), -- Wild Growth
-
 		-- TODO: Abolish Poison
 	},
 	HUNTER = {
-		[19506]	= Aura(19506, nil, 'TOPLEFT', {0.89, 0.09, 0.05}),		-- Trueshot Aura
-		[13159]	= Aura(13159, nil, 'TOP', {0.00, 0.00, 0.85}, true),	-- Aspect of the Pack
-		[20043]	= Aura(20043, {20190,27045,49071}, 'TOP', {0.33, 0.93, 0.79}),	-- Aspect of the Wild
-
+		[19506]	= Aura(19506, nil, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura
+		[13159]	= Aura(13159, nil, 'TOP', {0.00, 0.00, 0.85}, true), -- Aspect of the Pack
+		[20043]	= Aura(20043, {20190,27045,49071}, 'TOP', {0.33, 0.93, 0.79}), -- Aspect of the Wild
 		-- TODO: Misdirection
 	},
 	MAGE = {
-		[1459]	= Aura(1459, {1460,1461,10156,10157,27126,42995}, 'TOPLEFT', {0.89, 0.09, 0.05}, true),		-- Arcane Intellect
-		[23028]	= Aura(23028, {27127,43002}, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Arcane Brilliance
-		[61024]	= Aura(61024, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Dalaran Intellect
-		[61316]	= Aura(61316, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Dalaran Brilliance
-		[604]	= Aura(604, {8450,8451,10173,10174,33944,43015}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Dampen Magic
-		[1008]	= Aura(1008, {8455,10169,10170,27130,33946,43017}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Amplify Magic
-		[130]	= Aura(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true),		-- Slow Fall
+		[1459]	= Aura(1459, {1460,1461,10156,10157,27126,42995}, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect
+		[23028]	= Aura(23028, {27127,43002}, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Brilliance
+		[61024]	= Aura(61024, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Dalaran Intellect
+		[61316]	= Aura(61316, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Dalaran Brilliance
+		[604]	= Aura(604, {8450,8451,10173,10174,33944,43015}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic
+		[1008]	= Aura(1008, {8455,10169,10170,27130,33946,43017}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic
+		[130]	= Aura(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
 		-- TODO: Focus Magic
 	},
 	PALADIN = {
-		[1044]	= Aura(1044, nil, 'CENTER', {0.89, 0.45, 0}, true),				-- Hand of Freedom
-		[1038]	= Aura(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true),			-- Hand of Salvation
-		[6940]	= Aura(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true),			-- Hand of Sacrifice
-		[1022]	= Aura(1022, {5599,10278}, 'CENTER', {0.17, 1.00, 0.75}, true),			-- Hand of Protection
-		[19740]	= Aura(19740, {19834,19835,19836,19837,19838,25291,27140,48931,48932}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Might
-		[19742]	= Aura(19742, {19850,19852,19853,19854,25290,27142,48935,48936}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Blessing of Wisdom
-		[25782]	= Aura(25782, {25916,27141,48933,48934}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Might
-		[25894]	= Aura(25894, {25918,27143,48937,48938}, 'TOPLEFT', {0.2, 0.8, 0.2}, true),			-- Greater Blessing of Wisdom
-		[465]	= Aura(465, {10290,643,10291,1032,10292,10293,27149,48941,48942}, 'BOTTOMLEFT', {0.58, 1.00, 0.50}),				-- Devotion Aura
-		[19746]	= Aura(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Concentration Aura
-		[32223]	= Aura(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}),			-- Crusader Aura
-		[53563]	= Aura(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}, true),			-- Beacon of Light
-		[53601]	= Aura(53601, nil, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true),		-- Sacred Shield
+		[1044]	= Aura(1044, nil, 'CENTER', {0.89, 0.45, 0}, true), -- Hand of Freedom
+		[1038]	= Aura(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true), -- Hand of Salvation
+		[6940]	= Aura(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
+		[1022]	= Aura(1022, {5599,10278}, 'CENTER', {0.17, 1.00, 0.75}, true), -- Hand of Protection
+		[19740]	= Aura(19740, {19834,19835,19836,19837,19838,25291,27140,48931,48932}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might
+		[19742]	= Aura(19742, {19850,19852,19853,19854,25290,27142,48935,48936}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom
+		[25782]	= Aura(25782, {25916,27141,48933,48934}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Might
+		[25894]	= Aura(25894, {25918,27143,48937,48938}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Wisdom
+		[465]	= Aura(465, {10290,643,10291,1032,10292,10293,27149,48941,48942}, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura
+		[19746]	= Aura(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Concentration Aura
+		[32223]	= Aura(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Crusader Aura
+		[53563]	= Aura(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}, true), -- Beacon of Light
+		[53601]	= Aura(53601, nil, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true), -- Sacred Shield
 	},
 	PRIEST = {
-		[1243]	= Aura(1243, {1244,1245,2791,10937,10938,25389,48161}, 'TOPLEFT', {1, 1, 0.66}, true),			-- Power Word: Fortitude
-		[21562]	= Aura(21562, {21564,25392,48162}, 'TOPLEFT', {1, 1, 0.66}, true),			-- Prayer of Fortitude
-		[14752]	= Aura(14752, {14818,14819,27841,25312,48073}, 'TOPRIGHT', {0.2, 0.7, 0.2}, true),		-- Divine Spirit
-		[27681]	= Aura(27681, {32999,48074}, 'TOPRIGHT', {0.2, 0.7, 0.2}, true),		-- Prayer of Spirit
-		[976]	= Aura(976, {10957,10958,25433,48169}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true),		-- Shadow Protection
-		[27683]	= Aura(27683, {39374,48170}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true),	-- Prayer of Shadow Protection
-		[17]	= Aura(17, {592,600,3747,6065,6066,10898,10899,10900,10901,25217,25218,48065,48066}, 'BOTTOM', {0.00, 0.00, 1.00}),				-- Power Word: Shield
-		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,25221,25222,48067,48068}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}),		-- Renew
-		[6788]	= Aura(6788, nil, 'TOP', {0.89, 0.1, 0.1}),					-- Weakened Soul
+		[1243]	= Aura(1243, {1244,1245,2791,10937,10938,25389,48161}, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude
+		[21562]	= Aura(21562, {21564,25392,48162}, 'TOPLEFT', {1, 1, 0.66}, true), -- Prayer of Fortitude
+		[14752]	= Aura(14752, {14818,14819,27841,25312,48073}, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit
+		[27681]	= Aura(27681, {32999,48074}, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Prayer of Spirit
+		[976]	= Aura(976, {10957,10958,25433,48169}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection
+		[27683]	= Aura(27683, {39374,48170}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Prayer of Shadow Protection
+		[17]	= Aura(17, {592,600,3747,6065,6066,10898,10899,10900,10901,25217,25218,48065,48066}, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
+		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,25221,25222,48067,48068}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
+		[6788]	= Aura(6788, nil, 'TOP', {0.89, 0.1, 0.1}), -- Weakened Soul
 		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Prayer of Mending / Pain Suppression / Power Infusion
 	},
 	ROGUE = {
 		-- TODO: Tricks of the Trade
 	},
 	SHAMAN = {
-		[16237]	= Aura(16237, nil, 'RIGHT', {0.2, 0.2, 1}),				-- Ancestral Fortitude
-		[8185]	= Aura(8185, {10534,10535,25563,58737,58739}, 'TOPLEFT', {0.05, 1.00, 0.50}),		-- Fire Resistance Totem
-		[8182]	= Aura(8182, {10476,10477,25560,58741,58745}, 'TOPLEFT', {0.54, 0.53, 0.79}),		-- Frost Resistance Totem
-		[10596]	= Aura(10596, {10598,10599,25574,58746,58749}, 'TOPLEFT', {0.33, 1.00, 0.20}),		-- Nature Resistance Totem
-		[5672]	= Aura(5672, {6371,6372,10460,10461,25567,58755,58756,58757}, 'BOTTOM', {0.67, 1.00, 0.50}),		-- Healing Stream Totem
-		[16191]	= Aura(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}),	-- Mana Tide Totem
-		[5677]	= Aura(5677, {10491,10493,10494,25569,58775,58776,58777}, 'LEFT', {0.67, 1.00, 0.80}),			-- Mana Spring Totem
-		[8072]	= Aura(8072, {8156,8157,10403,10404,10405,25506,25507,58752,58754}, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}),	-- Stoneskin Totem
-		[974]	= Aura(974, {32593,32594,49283,49284}, 'TOP', {0.08, 0.21, 0.43}, true),		-- Earth Shield
-
+		[16237]	= Aura(16237, nil, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
+		[8185]	= Aura(8185, {10534,10535,25563,58737,58739}, 'TOPLEFT', {0.05, 1.00, 0.50}), -- Fire Resistance Totem
+		[8182]	= Aura(8182, {10476,10477,25560,58741,58745}, 'TOPLEFT', {0.54, 0.53, 0.79}), -- Frost Resistance Totem
+		[10596]	= Aura(10596, {10598,10599,25574,58746,58749}, 'TOPLEFT', {0.33, 1.00, 0.20}), -- Nature Resistance Totem
+		[5672]	= Aura(5672, {6371,6372,10460,10461,25567,58755,58756,58757}, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem
+		[16191]	= Aura(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), -- Mana Tide Totem
+		[5677]	= Aura(5677, {10491,10493,10494,25569,58775,58776,58777}, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem
+		[8072]	= Aura(8072, {8156,8157,10403,10404,10405,25506,25507,58752,58754}, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem
+		[974]	= Aura(974, {32593,32594,49283,49284}, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
 		-- TODO: Riptide / Earthliving
 	},
 	WARLOCK = {
 		[5697]	= Aura(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
-		[6512]	= Aura(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Detect Lesser Invisibility
+		[6512]	= Aura(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Lesser Invisibility
 		-- TODO: Soulstone
 	},
 	WARRIOR = {
-		[6673]	= Aura(6673, {5242,6192,11549,11550,11551,25289,2048,47436}, 'TOPLEFT', {0.2, 0.2, 1}, true),		-- Battle Shout
-		[469]	= Aura(469, {47439,47440}, 'TOPRIGHT', {0.4, 0.2, 0.8}, true),	-- Commanding Shout
+		[6673]	= Aura(6673, {5242,6192,11549,11550,11551,25289,2048,47436}, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout
+		[469]	= Aura(469, {47439,47440}, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Commanding Shout
 	},
 	PET = {
 	-- Warlock Imp
-		[6307]	= Aura(6307, {7804,7805,11766,11767,27268,47982}, 'BOTTOMLEFT', {0.89, 0.09, 0.05}),	-- Blood Pact
-
+		[6307]	= Aura(6307, {7804,7805,11766,11767,27268,47982}, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact
 	-- Warlock Felhunter
-		[54424]	= Aura(54424, {57564,57565,57566,57567}, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),	-- Fel Intelligence
-
+		[54424]	= Aura(54424, {57564,57565,57566,57567}, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Fel Intelligence
 	-- Hunter Pets
-		[24604]	= Aura(24604, {64491,64492,64493,64494,64495}, 'TOPRIGHT', {0.08, 0.59, 0.41}),	-- Furious Howl
+		[24604]	= Aura(24604, {64491,64492,64493,64494,64495}, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl
 	},
 }
 
