@@ -16,8 +16,6 @@ local tostring = tostring
 local GetSpellInfo = GetSpellInfo
 local GetSpellSubtext = GetSpellSubtext
 
--- GLOBALS: MAX_PLAYER_LEVEL
-
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 local defaultFilterList = { ['Aura Indicator (Global)'] = 'Aura Indicator (Global)', ['Aura Indicator (Class)'] = 'Aura Indicator (Class)', ['Aura Indicator (Pet)'] = 'Aura Indicator (Pet)', ['Aura Indicator (Profile)'] = 'Aura Indicator (Profile)', ['AuraBar Colors'] = 'AuraBar Colors', ['Aura Highlight'] = 'Aura Highlight' }
 local auraBarDefaults = { enable = true, color = { r = 1, g = 1, b = 1 } }

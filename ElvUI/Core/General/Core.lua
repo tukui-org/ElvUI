@@ -1352,6 +1352,16 @@ function E:DBConvertSL()
 		E.db.movers.ElvUF_Raid3Mover = E.db.movers.ElvUF_Raid40Mover
 		E.db.movers.ElvUF_Raid40Mover = nil
 	end
+
+	-- new multiple ranks aura indicator
+	local auraConvert = E.global.unitframe.aurawatch[E.myclass]
+	if auraConvert then
+		for auraID in next, auraConvert do
+			if E.Filters.Included[auraID] then
+				auraConvert[auraID] = nil
+			end
+		end
+	end
 end
 
 function E:UpdateDB()
@@ -1828,14 +1838,6 @@ function E:DBConversions()
 	end
 
 	-- development converts
-	local auraConvert = E.global.unitframe.aurawatch[E.myclass]
-	if auraConvert then
-		for auraID in next, auraConvert do
-			if E.Filters.Included[auraID] then
-				auraConvert[auraID] = nil
-			end
-		end
-	end
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
