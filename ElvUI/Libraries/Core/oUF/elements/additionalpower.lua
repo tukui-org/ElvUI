@@ -78,17 +78,17 @@ local function UpdateColor(self, event, unit, powerType)
 	if(not (unit and UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
 	local element = self.AdditionalPower
 
-	local r, g, b, t
+	local r, g, b, color
 	if(element.colorPower) then
-		t = self.colors.power[POWER_INDEX]
+		color = self.colors.power[POWER_INDEX]
 	elseif(element.colorClass) then
-		t = self.colors.class[playerClass]
+		color = self.colors.class[playerClass]
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then
