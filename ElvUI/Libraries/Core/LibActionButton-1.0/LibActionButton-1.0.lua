@@ -1540,8 +1540,6 @@ function HideOverlayGlow(self)
 end
 
 function UpdateOverlayGlow(self)
-	if not IsSpellOverlayed then return end
-
 	local spellId = self.config.handleOverlay and self:GetSpellId()
 	if spellId and IsSpellOverlayed(spellId) then
 		ShowOverlayGlow(self)
@@ -1855,6 +1853,11 @@ Custom.IsUnitInRange           = function(self, unit) return nil end
 Custom.SetTooltip              = function(self) return GameTooltip:SetText(self._state_action.tooltip) end
 Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
+
+--- WoW Classic overrides
+if not WoWRetail then
+	UpdateOverlayGlow = function() end
+end
 
 -----------------------------------------------------------
 --- Update old Buttons
