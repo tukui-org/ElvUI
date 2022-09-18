@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local type = type
 local next = next
 local unpack = unpack
-local strsplit = strsplit
 
 E.Filters = {}
 E.Filters.Included = {}
@@ -21,10 +19,6 @@ E.Filters.Aura = function(auraID, includeIDs, point, color, anyUnit, onlyShowMis
 	if color then r, g, b = unpack(color) end
 
 	if includeIDs then
-		if type(includeIDs) == 'string' then
-			includeIDs = { strsplit('[, ]', includeIDs) }
-		end
-
 		local included = E.Filters.Included
 		for _, spellID in next, includeIDs do
 			included[spellID] = auraID
