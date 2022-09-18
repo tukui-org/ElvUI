@@ -1039,6 +1039,7 @@ L["Mouseover"] = "Mouseover"
 L["Movers"] = "Ankerpunkte"
 L["Multi-Monitor Support"] = "Multi-Monitor Unterstützung"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multipliziere die Höhe und die Breite des Hintergrundes. Das ist nützlich, wenn du mehr als eine Leiste hinter einem Hintergrund haben möchtest."
+L["Multiple Ranks"] = true
 L["Must be in group with the player if he isn't on the same server as you."] = "Du musst mit dem Spieler in einer Gruppe sein wenn dieser nicht auf deinem Server ist wie du."
 L["Mythic+ Best Run"] = "Mythisch+ Bester Versuch"
 L["Mythic+ Data"] = "Mythisch+ Daten"

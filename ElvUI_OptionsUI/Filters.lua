@@ -154,7 +154,7 @@ local function GetSpellNameRank(id)
 	local info = selectedTable[id]
 
 	if info and info.includeIDs then
-		return format('%s %s[%s]|r', name, E.media.hexvaluecolor, info and info.includeIDs and 'Multiple Ranks' or rank)
+		return format('%s %s[%s]|r', name, E.media.hexvaluecolor, info and info.includeIDs and L["Multiple Ranks"] or rank)
 	end
 
 	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, rank, id)
