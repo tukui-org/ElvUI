@@ -117,7 +117,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 		end
 
 		button.count:FontTemplate(nil, self.countFontSize or 12, 'OUTLINE')
-		button.count:Point(settings.stack.anchor, settings.stack.xOffset, settings.stack.yOffset)
+		button.count:Point(settings.stackAnchor, settings.stackX, settings.stackY)
 
 		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)

@@ -396,6 +396,11 @@ Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura Fr
 Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 10)
 Filters.mainOptions.args.auraIndicator.args.displayText = ACH:Toggle(L["Display Text"], nil, 11, nil, nil, nil, function(info) local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]] end, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'timerOnly' end)
 
+Filters.mainOptions.args.auraIndicator.args.stackGroup = ACH:Group(L['Stacks'], nil, 12)
+Filters.mainOptions.args.auraIndicator.args.stackGroup.args.stackAnchor = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
+Filters.mainOptions.args.auraIndicator.args.stackGroup.args.stackX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
+Filters.mainOptions.args.auraIndicator.args.stackGroup.args.stackY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
+
 Filters.mainOptions.args.spellGroup = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -15, nil, FilterSettings, FilterSettings, nil, function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
 Filters.mainOptions.args.spellGroup.inline = true
 Filters.mainOptions.args.spellGroup.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, function() return (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
