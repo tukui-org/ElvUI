@@ -186,13 +186,12 @@ local function UpdateColor(self, event, unit)
 	--[[ Callback: Power:PostUpdateColor(unit, r, g, b)
 	Called after the element color has been updated.
 
-	local bg = element.bg
-	if(bg and b) then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
+	* self - the Power element
+	* unit - the unit for which the update has been triggered (string)
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
 	--]]
-
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(unit, r, g, b)
 	end
