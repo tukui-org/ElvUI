@@ -226,17 +226,19 @@ end
 
 local function SetUseHealComm(element, state)
 	if not HealComm then return end
-	if(state) then
-		if not element.__owner.HealComm_Update then
-			element.__owner.HealComm_Update, element.__owner.HealComm_Modified = HealComm_Create(element.__owner, element)
+
+	if state then
+		local frame = element.__owner
+		if not frame.HealComm_Update then
+			frame.HealComm_Update, frame.HealComm_Modified = HealComm_Create(frame, element)
 		end
 
-		HealComm.RegisterCallback(element, 'HealComm_HealStarted', element.__owner.HealComm_Update)
-		HealComm.RegisterCallback(element, 'HealComm_HealUpdated', element.__owner.HealComm_Update)
-		HealComm.RegisterCallback(element, 'HealComm_HealDelayed', element.__owner.HealComm_Update)
-		HealComm.RegisterCallback(element, 'HealComm_HealStopped', element.__owner.HealComm_Update)
-		HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', element.__owner.HealComm_Modified)
-		HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', element.__owner.HealComm_Modified)
+		HealComm.RegisterCallback(element, 'HealComm_HealStarted', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_HealUpdated', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_HealDelayed', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_HealStopped', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', frame.HealComm_Modified)
+		HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', frame.HealComm_Modified)
 	else
 		HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
 		HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
