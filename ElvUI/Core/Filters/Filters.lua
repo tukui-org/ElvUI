@@ -39,9 +39,9 @@ E.Filters.Aura = function(auraID, includeIDs, point, color, anyUnit, onlyShowMis
 		yOffset = yOffset or 0,
 		style = 'coloredIcon',
 		sizeOffset = 0,
-		stackAnchor = 'BOTTOMRIGHT',
-		stackX = 1,
-		stackY = 1
+		countAnchor = 'BOTTOMRIGHT',
+		countX = 1,
+		countY = 1
 	}
 end
 
