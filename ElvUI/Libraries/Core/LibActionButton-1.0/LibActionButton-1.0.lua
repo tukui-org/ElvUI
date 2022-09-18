@@ -1540,6 +1540,8 @@ function HideOverlayGlow(self)
 end
 
 function UpdateOverlayGlow(self)
+	if not IsSpellOverlayed then return end
+
 	local spellId = self.config.handleOverlay and self:GetSpellId()
 	if spellId and IsSpellOverlayed(spellId) then
 		ShowOverlayGlow(self)
