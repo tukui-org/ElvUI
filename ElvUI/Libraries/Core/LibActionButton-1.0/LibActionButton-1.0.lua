@@ -1854,11 +1854,6 @@ Custom.SetTooltip              = function(self) return GameTooltip:SetText(self.
 Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
 
------ WoW Classic overrides
---if not WoWRetail then
---	UpdateOverlayGlow = function() end
---end
-
 -----------------------------------------------------------
 --- Update old Buttons
 if oldversion and next(lib.buttonRegistry) then
