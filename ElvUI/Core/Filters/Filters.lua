@@ -23,11 +23,11 @@ E.Filters.Aura = function(auraID, includeIDs, point, color, anyUnit, onlyShowMis
 	if includeIDs then
 		if type(includeIDs) == 'string' then
 			includeIDs = { strsplit('[, ]', includeIDs) }
-		else
-			local included = E.Filters.Included
-			for _, spellID in next, includeIDs do
-				included[spellID] = auraID
-			end
+		end
+
+		local included = E.Filters.Included
+		for _, spellID in next, includeIDs do
+			included[spellID] = auraID
 		end
 	end
 
