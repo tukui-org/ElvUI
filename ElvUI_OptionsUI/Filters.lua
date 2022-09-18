@@ -26,9 +26,9 @@ local function GetSelectedFilters()
 	local class = selectedFilter == 'Aura Indicator (Class)'
 	local pet = selectedFilter == 'Aura Indicator (Pet)'
 	local profile = selectedFilter == 'Aura Indicator (Profile)'
-	local selected = (profile and E.db.unitframe.filters.aurawatch) or (pet and (E.global.unitframe.aurawatch.PET or {})) or class and (E.global.unitframe.aurawatch[E.myclass] or {}) or E.global.unitframe.aurawatch.GLOBAL
+	local selected = (profile and E.db.unitframe.filters.aurawatch) or (pet and E.global.unitframe.aurawatch.PET) or (class and E.global.unitframe.aurawatch[E.myclass]) or E.global.unitframe.aurawatch.GLOBAL
 	local default = (profile and P.unitframe.filters.aurawatch) or (pet and G.unitframe.aurawatch.PET) or class and G.unitframe.aurawatch[E.myclass] or G.unitframe.aurawatch.GLOBAL
-	return selected, default
+	return selected or {}, default
 end
 
 local function GetSelectedSpell()
@@ -120,8 +120,6 @@ local function DeleteFilterList()
 end
 
 local function DeleteFilterListDisable()
-	wipe(filterList)
-
 	local list = E.global.unitframe.aurafilters
 	local defaultList = G.unitframe.aurafilters
 	if list then
