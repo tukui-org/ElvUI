@@ -266,7 +266,12 @@ local function AddOrRemoveSpellID(info, value)
 				selectedTable[value] = nil
 			end
 		elseif not selectedTable[value] then
-			selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+			local mainID = E.Filters.Included[value]
+			if mainID then
+				selectedSpell = mainID
+			else
+				selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+			end
 		end
 	elseif G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
 		if info.type == 'select' then
