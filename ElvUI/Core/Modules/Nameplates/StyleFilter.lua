@@ -1585,7 +1585,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end
 
 		local auraEvent = event == 'UNIT_AURA'
-		if auraEvent and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
+		if auraEvent and E.Retail and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
 			return
 		end
 
