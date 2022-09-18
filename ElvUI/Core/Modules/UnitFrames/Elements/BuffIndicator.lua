@@ -32,10 +32,10 @@ function UF:Configure_AuraWatch(frame, isPet)
 		else
 			local auraTable
 			if db.profileSpecific then
-				auraTable = E.db.unitframe.filters.aurawatch
+				auraTable = E.Filters.Expand({}, E.db.unitframe.filters.aurawatch)
 			else
-				auraTable = E:CopyTable({}, E.global.unitframe.aurawatch[E.myclass])
-				E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
+				auraTable = E.Filters.Expand({}, E.global.unitframe.aurawatch[E.myclass])
+				E.Filters.Expand(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 			end
 			frame.AuraWatch:SetNewTable(auraTable)
 		end
@@ -116,6 +116,8 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
+		button.count:ClearAllPoints()
+		button.count:Point(settings.countAnchor or 'BOTTOMRIGHT', settings.countX or 1, settings.countY or 1)
 		button.count:FontTemplate(nil, self.countFontSize or 12, 'OUTLINE')
 
 		if textureIcon and button.filter == 'HARMFUL' then

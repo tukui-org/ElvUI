@@ -224,11 +224,37 @@ local function HealComm_Create(self, element)
 	return update, modified
 end
 
+local function SetUseHealComm(element, state)
+	if not HealComm then return end
+
+	if state then
+		local frame = element.__owner
+		if not frame.HealComm_Update then
+			frame.HealComm_Update, frame.HealComm_Modified = HealComm_Create(frame, element)
+		end
+
+		HealComm.RegisterCallback(element, 'HealComm_HealStarted', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_HealUpdated', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_HealDelayed', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_HealStopped', frame.HealComm_Update)
+		HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', frame.HealComm_Modified)
+		HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', frame.HealComm_Modified)
+	else
+		HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
+		HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
+		HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
+		HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
+		HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
+		HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
+	end
+end
+
 local function Enable(self)
 	local element = self.HealthPrediction
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.SetUseHealComm = SetUseHealComm
 
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:RegisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
@@ -238,18 +264,7 @@ local function Enable(self)
 			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
-			if HealComm then
-				if not self.HealComm_Update then
-					self.HealComm_Update, self.HealComm_Modified = HealComm_Create(self, element)
-				end
-
-				HealComm.RegisterCallback(element, 'HealComm_HealStarted', self.HealComm_Update)
-				HealComm.RegisterCallback(element, 'HealComm_HealUpdated', self.HealComm_Update)
-				HealComm.RegisterCallback(element, 'HealComm_HealDelayed', self.HealComm_Update)
-				HealComm.RegisterCallback(element, 'HealComm_HealStopped', self.HealComm_Update)
-				HealComm.RegisterCallback(element, 'HealComm_ModifierChanged', self.HealComm_Modified)
-				HealComm.RegisterCallback(element, 'HealComm_GUIDDisappeared', self.HealComm_Modified)
-			end
+			element:SetUseHealComm(true)
 
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
@@ -335,14 +350,7 @@ local function Disable(self)
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
-			if HealComm then
-				HealComm.UnregisterCallback(element, 'HealComm_HealStarted')
-				HealComm.UnregisterCallback(element, 'HealComm_HealUpdated')
-				HealComm.UnregisterCallback(element, 'HealComm_HealDelayed')
-				HealComm.UnregisterCallback(element, 'HealComm_HealStopped')
-				HealComm.UnregisterCallback(element, 'HealComm_ModifierChanged')
-				HealComm.UnregisterCallback(element, 'HealComm_GUIDDisappeared')
-			end
+			element:SetUseHealComm(false)
 
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end

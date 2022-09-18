@@ -34,7 +34,7 @@ function AB:MultiCastFlyoutFrameOpenButton_Show(button, which, parent)
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	button:ClearAllPoints()
-	if E.db.general.totems.flyoutDirection == 'UP' then
+	if AB.db.totemBar.flyoutDirection == 'UP' then
 		button:Point('BOTTOM', parent, 'TOP')
 	else
 		button:Point('TOP', parent, 'BOTTOM')
@@ -103,19 +103,19 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 		if button:IsShown() then
 			numButtons = numButtons + 1
-			button:Size(E.db.general.totems.flyoutSize)
+			button:Size(AB.db.totemBar.flyoutSize)
 			button:ClearAllPoints()
 
-			if E.db.general.totems.flyoutDirection == 'UP' then
-				button:Point('BOTTOM', i == 1 and parent or frame.buttons[i - 1], 'TOP', 0, E.db.general.totems.flyoutSpacing)
+			if AB.db.totemBar.flyoutDirection == 'UP' then
+				button:Point('BOTTOM', i == 1 and parent or frame.buttons[i - 1], 'TOP', 0, AB.db.totemBar.flyoutSpacing)
 			else
-				button:Point('TOP', i == 1 and parent or frame.buttons[i - 1], 'BOTTOM', 0, -E.db.general.totems.flyoutSpacing)
+				button:Point('TOP', i == 1 and parent or frame.buttons[i - 1], 'BOTTOM', 0, -AB.db.totemBar.flyoutSpacing)
 			end
 
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 			button.icon:SetTexCoord(unpack(E.TexCoords))
-			totalHeight = totalHeight + button:GetHeight() + E.db.general.totems.flyoutSpacing
+			totalHeight = totalHeight + button:GetHeight() + AB.db.totemBar.flyoutSpacing
 		end
 	end
 
@@ -130,7 +130,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 	frame:ClearAllPoints()
 	closeButton:ClearAllPoints()
-	if E.db.general.totems.flyoutDirection == 'UP' then
+	if AB.db.totemBar.flyoutDirection == 'UP' then
 		frame:Point('BOTTOM', parent, 'TOP')
 		closeButton:Point('TOP', frame, 'TOP')
 	else
@@ -155,7 +155,7 @@ function AB:TotemButton_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
-	return bar.mouseover and E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), E.db.general.totems.alpha)
+	return bar.mouseover and E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), AB.db.totemBar.alpha)
 end
 
 function AB:TotemBar_OnLeave()
@@ -171,8 +171,8 @@ function AB:PositionAndSizeTotemBar()
 
 	local barFrame = _G.MultiCastActionBarFrame
 	local numActiveSlots = barFrame.numActiveSlots
-	local buttonSpacing = E.db.general.totems.spacing
-	local size = E.db.general.totems.buttonSize
+	local buttonSpacing = AB.db.totemBar.spacing
+	local size = AB.db.totemBar.buttonSize
 
 	local mainSize = (size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
 	bar:Width(mainSize)
@@ -187,10 +187,10 @@ function AB:PositionAndSizeTotemBar()
 		barFrame:SetPoint('BOTTOM', barFrameAnchor)
 	end -- this is Simpy voodoo, dont change it
 
-	bar.mouseover = E.db.general.totems.mouseover
-	bar:SetAlpha(bar.mouseover and 0 or E.db.general.totems.alpha)
+	bar.mouseover = AB.db.totemBar.mouseover
+	bar:SetAlpha(bar.mouseover and 0 or AB.db.totemBar.alpha)
 
-	local visibility = E.db.general.totems.visibility
+	local visibility = AB.db.totemBar.visibility
 	visibility = gsub(visibility, '[\n\r]','')
 
 	RegisterStateDriver(bar, 'visibility', visibility)
@@ -222,8 +222,8 @@ function AB:PositionAndSizeTotemBar()
 end
 
 function AB:UpdateTotemBindings()
-	local font = LSM:Fetch('font', E.db.general.totems.font)
-	local size, outline = E.db.general.totems.fontSize, E.db.general.totems.fontOutline
+	local font = LSM:Fetch('font', AB.db.totemBar.font)
+	local size, outline = AB.db.totemBar.fontSize, AB.db.totemBar.fontOutline
 
 	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)
@@ -358,9 +358,9 @@ function AB:CreateTotemBar()
 		if InCombatLockdown() then
 			AB.NeedsRecallButtonUpdate = true
 			AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-		elseif xOffset ~= E.db.general.totems.spacing or button:GetPoint(2) then
+		elseif xOffset ~= AB.db.totemBar.spacing or button:GetPoint(2) then
 			button:ClearAllPoints()
-			button:SetPoint(point, attachTo, anchorPoint, E.db.general.totems.spacing, yOffset)
+			button:SetPoint(point, attachTo, anchorPoint, AB.db.totemBar.spacing, yOffset)
 		end
 	end)
 
@@ -379,5 +379,5 @@ function AB:CreateTotemBar()
 	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnEnter', 'TotemBar_OnEnter')
 	AB:HookScript(_G.MultiCastFlyoutFrame, 'OnLeave', 'TotemBar_OnLeave')
 
-	E:CreateMover(bar, 'TotemBarMover', L["Totem Bar"], nil, nil, nil, nil, nil, 'general,totems')
+	E:CreateMover(bar, 'TotemBarMover', L["Totem Bar"], nil, nil, nil, nil, nil, 'actionbar,totemBar')
 end

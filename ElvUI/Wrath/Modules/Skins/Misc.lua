@@ -115,6 +115,9 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
+	-- Emotes NineSlice
+	_G.ChatMenu.NineSlice:SetTemplate()
+
 	-- Reskin popup buttons
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]

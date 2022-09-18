@@ -1,4 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Include file='ActionBars\Load_ActionBars.xml'/>
 	<Include file='Blizzard\Load_Blizzard.xml'/>
 	<Include file='DataTexts\Load_DataTexts.xml'/>
 	<Include file='DataBars\Load_DataBars.xml'/>

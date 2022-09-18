@@ -8,11 +8,13 @@ local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local MAX_TOTEMS = MAX_TOTEMS
 
+-- SHAMAN_TOTEM_PRIORITIES does not work here because we need to swap 3/4 instead of 1/2
+local priority = E.myclass == 'SHAMAN' and { [1]=1, [2]=2, [3]=4, [4]=3 } or STANDARD_TOTEM_PRIORITIES
+
 function T:Update()
 	for i = 1, MAX_TOTEMS do
+		local button = T.bar[priority[i]]
 		local totem = _G['TotemFrameTotem'..i]
-		local button = self.bar[i]
-
 		if totem:IsShown() then
 			local _, _, startTime, duration, icon = GetTotemInfo(totem.slot)
 
@@ -30,62 +32,62 @@ function T:Update()
 end
 
 function T:PositionAndSize()
-	if not E.private.general.totemBar then return end
+	if not E.private.general.totemTracker then return end
 
 	for i = 1, MAX_TOTEMS do
-		local button = self.bar[i]
-		local prevButton = self.bar[i-1]
-		button:Size(self.db.size)
+		local button = T.bar[i]
+		local prevButton = T.bar[i-1]
+		button:Size(T.db.size)
 		button:ClearAllPoints()
 
-		if self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'ASCENDING' then
+		if T.db.growthDirection == 'HORIZONTAL' and T.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', self.bar, 'LEFT', self.db.spacing, 0)
+				button:Point('LEFT', T.bar, 'LEFT', T.db.spacing, 0)
 			elseif prevButton then
-				button:Point('LEFT', prevButton, 'RIGHT', self.db.spacing, 0)
+				button:Point('LEFT', prevButton, 'RIGHT', T.db.spacing, 0)
 			end
-		elseif self.db.growthDirection == 'VERTICAL' and self.db.sortDirection == 'ASCENDING' then
+		elseif T.db.growthDirection == 'VERTICAL' and T.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', self.bar, 'TOP', 0, -self.db.spacing)
+				button:Point('TOP', T.bar, 'TOP', 0, -T.db.spacing)
 			elseif prevButton then
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -self.db.spacing)
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -T.db.spacing)
 			end
-		elseif self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'DESCENDING' then
+		elseif T.db.growthDirection == 'HORIZONTAL' and T.db.sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', self.bar, 'RIGHT', -self.db.spacing, 0)
+				button:Point('RIGHT', T.bar, 'RIGHT', -T.db.spacing, 0)
 			elseif prevButton then
-				button:Point('RIGHT', prevButton, 'LEFT', -self.db.spacing, 0)
+				button:Point('RIGHT', prevButton, 'LEFT', -T.db.spacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', self.bar, 'BOTTOM', 0, self.db.spacing)
+				button:Point('BOTTOM', T.bar, 'BOTTOM', 0, T.db.spacing)
 			elseif prevButton then
-				button:Point('BOTTOM', prevButton, 'TOP', 0, self.db.spacing)
+				button:Point('BOTTOM', prevButton, 'TOP', 0, T.db.spacing)
 			end
 		end
 	end
 
-	if self.db.growthDirection == 'HORIZONTAL' then
-		self.bar:Width(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Height(self.db.size + self.db.spacing*2)
+	if T.db.growthDirection == 'HORIZONTAL' then
+		T.bar:Width(T.db.size * MAX_TOTEMS + T.db.spacing * MAX_TOTEMS + T.db.spacing)
+		T.bar:Height(T.db.size + T.db.spacing * 2)
 	else
-		self.bar:Height(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Width(self.db.size + self.db.spacing*2)
+		T.bar:Height(T.db.size * MAX_TOTEMS + T.db.spacing * MAX_TOTEMS + T.db.spacing)
+		T.bar:Width(T.db.size + T.db.spacing * 2)
 	end
 
-	self:Update()
+	T:Update()
 end
 
 function T:Initialize()
-	self.Initialized = true
+	T.Initialized = true
 
-	if not E.private.general.totemBar then return end
-
-	self.db = E.db.general.totems
+	if not E.private.general.totemTracker then return end
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemTracker', E.UIParent)
 	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
-	self.bar = bar
+
+	T.bar = bar
+	T.db = E.db.general.totems
 
 	for i = 1, MAX_TOTEMS do
 		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
@@ -93,6 +95,7 @@ function T:Initialize()
 		frame:SetTemplate()
 		frame:StyleButton()
 		frame:Hide()
+
 		frame.holder = CreateFrame('Frame', nil, frame)
 		frame.holder:SetAlpha(0)
 		frame.holder:SetAllPoints()
@@ -107,13 +110,13 @@ function T:Initialize()
 
 		E:RegisterCooldown(frame.cooldown)
 
-		self.bar[i] = frame
+		T.bar[i] = frame
 	end
 
-	self:PositionAndSize()
+	T:PositionAndSize()
 
-	self:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
-	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
+	T:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
+	T:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
 
 	E:CreateMover(bar, 'TotemTrackerMover', L["Totem Tracker"], nil, nil, nil, nil, nil, 'general,totems')
 end

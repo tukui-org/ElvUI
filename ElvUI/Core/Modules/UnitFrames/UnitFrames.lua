@@ -1386,7 +1386,7 @@ local Blacklist = {
 }
 
 for i = 1, 3 do
-	Blacklist['raid'..i] = { enable = true, fader = true, visibility = true }
+	Blacklist['raid'..i] = { customName = true, enable = true, fader = true, visibility = true }
 end
 
 function UF:MergeUnitSettings(from, to)
