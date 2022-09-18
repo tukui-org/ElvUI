@@ -140,7 +140,7 @@ local function GetSpellNameRank(id)
 
 	local name = tonumber(id) and GetSpellInfo(id)
 	if not name then
-		return
+		return tostring(id)
 	end
 
 	local rank = not E.Retail and GetSpellSubtext(id)
@@ -180,7 +180,7 @@ local function SetSpellList()
 		end
 
 		local name = GetSpellNameRank(filter)
-		if name and strfind(strlower(name), searchText) then
+		if strfind(strlower(name), searchText) then
 			spellList[filter] = name
 		end
 	end
