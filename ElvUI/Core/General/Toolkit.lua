@@ -402,7 +402,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 	local name = button.GetName and button:GetName()
 	local cooldown = name and _G[name..'Cooldown']
 	if cooldown then
-		cooldown:SetInside(button, 1, 1, nil, true)
+		cooldown:SetInside(button, 1, 1)
 		cooldown:SetDrawEdge(false)
 		cooldown:SetSwipeColor(0, 0, 0, 1)
 	end
