@@ -157,7 +157,7 @@ local function GetSpellNameRank(id)
 		return format('%s %s[%s]|r', name, E.media.hexvaluecolor, info and info.includeIDs and 'Multiple Ranks' or rank)
 	end
 
-	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, info and info.includeIDs and 'Multiple Ranks' or rank, id)
+	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, rank, id)
 end
 
 local function SetSpellList()
