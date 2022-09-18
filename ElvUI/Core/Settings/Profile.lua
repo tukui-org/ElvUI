@@ -178,21 +178,11 @@ P.general = {
 		nameFontOutline = 'OUTLINE',
 	},
 	objectiveTracker = true,
-	totems = {
-		alpha = 1,
-		buttonSize = 32,
-		flyoutDirection = 'UP',
-		flyoutSize = 28,
-		flyoutSpacing = 2,
-		font = 'PT Sans Narrow',
-		fontOutline = 'OUTLINE',
-		fontSize = 12,
+	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		mouseover = false,
+		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
 		size = 40,
-		sortDirection = 'ASCENDING',
 		spacing = 4,
-		visibility = '[vehicleui] hide;show'
 	},
 	kittys = false
 }
@@ -2271,6 +2261,7 @@ P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = { anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
+P.unitframe.units.party.CombatIcon.enable = false
 P.unitframe.units.party.debuffs.enable = true
 P.unitframe.units.party.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.party.debuffs.maxDuration = 300
@@ -2300,6 +2291,7 @@ P.unitframe.units.raid1.buffs.numrows = 1
 P.unitframe.units.raid1.buffs.perrow = 3
 P.unitframe.units.raid1.buffIndicator.enable = true
 P.unitframe.units.raid1.castbar = nil
+P.unitframe.units.raid1.CombatIcon = nil
 P.unitframe.units.raid1.debuffs.enable = false
 P.unitframe.units.raid1.debuffs.numrows = 1
 P.unitframe.units.raid1.debuffs.perrow = 3
@@ -2499,6 +2491,20 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
+	},
+	totemBar = {
+		enable = true,
+		alpha = 1,
+		spacing = 4,
+		buttonSize = 32,
+		flyoutDirection = 'UP',
+		flyoutSize = 28,
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
+		mouseover = false,
+		visibility = '[vehicleui] hide;show'
 	},
 	microbar = {
 		enabled = false,

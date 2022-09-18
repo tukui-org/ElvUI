@@ -61,6 +61,7 @@ function S:SkinBattlefield()
 	BattlefieldFrame.BottomBackdrop = bottomBackdrop
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
+	_G.BattlefieldFrameCloseButton:Point('TOPRIGHT', -26, -5)
 end
 
 S:AddCallback('SkinBattlefield')
