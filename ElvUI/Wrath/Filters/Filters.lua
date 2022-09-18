@@ -878,7 +878,7 @@ G.unitframe.aurawatch = {
 		-- TODO: Hysteria / Unholy Frenzy
 	},
 	DRUID = {
-		[1126]	= Aura(1126, {5232,6756,5234,8907,9884,9885,26990,48469,21849,21850,26991,48470}, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark of the Wild
+		[1126]	= Aura(1126, {5232,6756,5234,8907,9884,9885,26990,48469,21849,21850,26991,48470}, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark/Gift of the Wild
 		[467]	= Aura(467, {782,1075,8914,9756,9910,26992,53307}, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns
 		[774]	= Aura(774, {1058,1430,2090,2091,3627,8910,9839,9840,9841,25299,26981,26982,48440,48441}, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
 		[8936]	= Aura(8936, {8938,8939,8940,8941,9750,9856,9857,9858,26980,48442,48443}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
@@ -894,10 +894,7 @@ G.unitframe.aurawatch = {
 		-- TODO: Misdirection
 	},
 	MAGE = {
-		[1459]	= Aura(1459, {1460,1461,10156,10157,27126,42995}, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Intellect
-		[23028]	= Aura(23028, {27127,43002}, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Brilliance
-		[61024]	= Aura(61024, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Dalaran Intellect
-		[61316]	= Aura(61316, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Dalaran Brilliance
+		[1459]	= Aura(1459, {1460,1461,10156,10157,27126,42995,61024,61316,23028,27127,43002}, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane/Dalaran Intellect/Brilliance
 		[604]	= Aura(604, {8450,8451,10173,10174,33944,43015}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Dampen Magic
 		[1008]	= Aura(1008, {8455,10169,10170,27130,33946,43017}, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Amplify Magic
 		[130]	= Aura(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
@@ -908,10 +905,8 @@ G.unitframe.aurawatch = {
 		[1038]	= Aura(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true), -- Hand of Salvation
 		[6940]	= Aura(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
 		[1022]	= Aura(1022, {5599,10278}, 'CENTER', {0.17, 1.00, 0.75}, true), -- Hand of Protection
-		[19740]	= Aura(19740, {19834,19835,19836,19837,19838,25291,27140,48931,48932}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might
-		[19742]	= Aura(19742, {19850,19852,19853,19854,25290,27142,48935,48936}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom
-		[25782]	= Aura(25782, {25916,27141,48933,48934}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Might
-		[25894]	= Aura(25894, {25918,27143,48937,48938}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Wisdom
+		[19740]	= Aura(19740, {19834,19835,19836,19837,19838,25291,27140,48931,48932,25782,25916,27141,48933,48934}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- (Greater) Blessing of Might
+		[19742]	= Aura(19742, {19850,19852,19853,19854,25290,27142,48935,48936,25894,25918,27143,48937,48938}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- (Greater) Blessing of Wisdom
 		[465]	= Aura(465, {10290,643,10291,1032,10292,10293,27149,48941,48942}, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura
 		[19746]	= Aura(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Concentration Aura
 		[32223]	= Aura(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Crusader Aura
@@ -934,7 +929,7 @@ G.unitframe.aurawatch = {
 		-- TODO: Tricks of the Trade
 	},
 	SHAMAN = {
-		[16237]	= Aura(16237, nil, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
+		[16177]	= Aura(16177, {16236,16237}, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
 		[8185]	= Aura(8185, {10534,10535,25563,58737,58739}, 'TOPLEFT', {0.05, 1.00, 0.50}), -- Fire Resistance Totem
 		[8182]	= Aura(8182, {10476,10477,25560,58741,58745}, 'TOPLEFT', {0.54, 0.53, 0.79}), -- Frost Resistance Totem
 		[10596]	= Aura(10596, {10598,10599,25574,58746,58749}, 'TOPLEFT', {0.33, 1.00, 0.20}), -- Nature Resistance Totem
