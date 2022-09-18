@@ -1828,6 +1828,14 @@ function E:DBConversions()
 	end
 
 	-- development converts
+	local auraConvert = E.global.unitframe.aurawatch[E.myclass]
+	if auraConvert then
+		for auraID in next, auraConvert do
+			if E.Filters.Included[auraID] then
+				auraConvert[auraID] = nil
+			end
+		end
+	end
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
