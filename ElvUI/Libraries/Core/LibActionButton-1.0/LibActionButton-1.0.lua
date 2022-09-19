@@ -700,6 +700,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
 	--lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_COOLDOWN")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
@@ -768,6 +769,10 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
+	elseif event == "UPDATE_SHAPESHIFT_COOLDOWN" then
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 	elseif event == "UPDATE_SHAPESHIFT_FORM" then
 		-- XXX: throttle these updates since Blizzard broke the event and its now extremely spammy in some clients
 		local _time = GetTime()
