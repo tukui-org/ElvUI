@@ -699,7 +699,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
-	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_COOLDOWN")
+	lib.eventFrame:RegisterEvent("UNIT_MODEL_CHANGED")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
@@ -768,17 +768,23 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
-	elseif event == "UPDATE_SHAPESHIFT_COOLDOWN" then
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
-		end
+	elseif event == "UNIT_MODEL_CHANGED" then
+		if arg1 == "player" then -- we can't use UPDATE_SHAPESHIFT_FORM cause of issues, this one has less issues
+			local _time = GetTime()
+			if (_time - _lastFormUpdate) < 1 then return end -- but even this event fires multiple times on retail
+			_lastFormUpdate = _time
 
-		-- the attack icon can change when shapeshift form changes, so need to do a quick update here
-		-- for performance reasons don't run full updates here, though
-		for button in next, ButtonRegistry do
-			local texture = button:GetTexture()
-			if texture then
-				button.icon:SetTexture(texture)
+			if AURA_COOLDOWNS_ENABLED then
+				UpdateAuraCooldowns()
+			end
+
+			-- the attack icon can change when shapeshift form changes, so need to do a quick update here
+			-- for performance reasons don't run full updates here, though
+			for button in next, ButtonRegistry do
+				local texture = button:GetTexture()
+				if texture then
+					button.icon:SetTexture(texture) -- for auto attack icon
+				end
 			end
 		end
 	elseif event == "ACTIONBAR_SHOWGRID" or event == "PET_BAR_SHOWGRID" then
