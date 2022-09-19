@@ -699,7 +699,6 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
-	--lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_COOLDOWN")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 
@@ -773,13 +772,6 @@ function OnEvent(frame, event, arg1, ...)
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
 		end
-	elseif event == "UPDATE_SHAPESHIFT_FORM" then
-		-- XXX: throttle these updates since Blizzard broke the event and its now extremely spammy in some clients
-		local _time = GetTime()
-		if (_time - _lastFormUpdate) < 1 then
-			return
-		end
-		_lastFormUpdate = _time
 
 		-- the attack icon can change when shapeshift form changes, so need to do a quick update here
 		-- for performance reasons don't run full updates here, though
