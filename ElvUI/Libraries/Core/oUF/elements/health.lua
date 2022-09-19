@@ -87,33 +87,33 @@ local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
 
-	local r, g, b, t
+	local r, g, b, color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
-		t = self.colors.disconnected
+		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = self.colors.tapped
+		color = self.colors.tapped
 	elseif(element.colorHappiness and not oUF.isRetail and PlayerClass == "HUNTER" and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
-		t = self.colors.happiness[GetPetHappiness()]
+		color = self.colors.happiness[GetPetHappiness()]
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit))
 		or (element.colorClassNPC and not UnitIsPlayer(unit))
 		or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		if element.colorPetByUnitClass then unit = unit == 'pet' and 'player' or gsub(unit, 'pet', '') end
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = self.colors.reaction[UnitReaction(unit, 'player')]
+		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	elseif(element.colorHealth) then
-		t = self.colors.health
+		color = self.colors.health
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then
