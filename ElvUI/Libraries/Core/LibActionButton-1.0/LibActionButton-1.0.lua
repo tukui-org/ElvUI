@@ -699,7 +699,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
-	lib.eventFrame:RegisterEvent("UNIT_MODEL_CHANGED")
+	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
@@ -709,13 +709,13 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_SHOW")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
-	lib.eventFrame:RegisterEvent("UNIT_AURA")
+	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
 
 	lib.eventFrame:RegisterEvent("PLAYER_ENTER_COMBAT")
 	lib.eventFrame:RegisterEvent("PLAYER_LEAVE_COMBAT")
 	lib.eventFrame:RegisterEvent("START_AUTOREPEAT_SPELL")
 	lib.eventFrame:RegisterEvent("STOP_AUTOREPEAT_SPELL")
-	lib.eventFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	lib.eventFrame:RegisterEvent("PET_STABLE_UPDATE")
 	lib.eventFrame:RegisterEvent("PET_STABLE_SHOW")
@@ -732,8 +732,8 @@ function InitializeEventHandler()
 
 	if WoWRetail or WoWWrath then
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
-		lib.eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
-		lib.eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
+		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 	end
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
@@ -750,7 +750,7 @@ end
 
 local _lastFormUpdate = GetTime()
 function OnEvent(frame, event, arg1, ...)
-	if (event == "UNIT_INVENTORY_CHANGED" and arg1 == "player") or event == "LEARNED_SPELL_IN_TAB" then
+	if event == "UNIT_INVENTORY_CHANGED" or event == "LEARNED_SPELL_IN_TAB" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
 		if tooltipOwner and ButtonRegistry[tooltipOwner] then
 			tooltipOwner:SetTooltip()
@@ -769,22 +769,20 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
 	elseif event == "UNIT_MODEL_CHANGED" then
-		if arg1 == "player" then -- we can't use UPDATE_SHAPESHIFT_FORM cause of issues, this one has less issues
-			local _time = GetTime()
-			if (_time - _lastFormUpdate) < 1 then return end -- but even this event fires multiple times on retail
-			_lastFormUpdate = _time
+		local _time = GetTime() -- we can't use UPDATE_SHAPESHIFT_FORM cause of issues, this one has less issues
+		if (_time - _lastFormUpdate) < 1 then return end -- but even this event fires multiple times on retail
+		_lastFormUpdate = _time
 
-			if AURA_COOLDOWNS_ENABLED then
-				UpdateAuraCooldowns()
-			end
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 
-			-- the attack icon can change when shapeshift form changes, so need to do a quick update here
-			-- for performance reasons don't run full updates here, though
-			for button in next, ButtonRegistry do
-				local texture = button:GetTexture()
-				if texture then
-					button.icon:SetTexture(texture) -- for auto attack icon
-				end
+		-- the attack icon can change when shapeshift form changes, so need to do a quick update here
+		-- for performance reasons don't run full updates here, though
+		for button in next, ButtonRegistry do
+			local texture = button:GetTexture()
+			if texture then
+				button.icon:SetTexture(texture) -- for auto attack icon
 			end
 		end
 	elseif event == "ACTIONBAR_SHOWGRID" or event == "PET_BAR_SHOWGRID" then
@@ -799,12 +797,10 @@ function OnEvent(frame, event, arg1, ...)
 		end
 		UpdateRangeTimer()
 	elseif event == "UNIT_AURA" then
-		if AURA_COOLDOWNS_ENABLED and arg1 == "target" then
+		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
 		end
-	elseif (event == "ACTIONBAR_UPDATE_STATE") or
-		((event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") and (arg1 == "player")) or
-		((event == "COMPANION_UPDATE") and (arg1 == "MOUNT")) then
+	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") or (event == "COMPANION_UPDATE" and arg1 == "MOUNT") then
 		ForAllButtons(UpdateButtonState, true)
 	elseif event == "ACTIONBAR_UPDATE_USABLE" then
 		for button in next, ActionButtons do
