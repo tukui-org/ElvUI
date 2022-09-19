@@ -724,7 +724,6 @@ function InitializeEventHandler()
 
 	if WoWRetail then
 		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
-		lib.eventFrame:RegisterEvent("COMPANION_UPDATE")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
@@ -800,7 +799,7 @@ function OnEvent(frame, event, arg1, ...)
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
 		end
-	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") or (event == "COMPANION_UPDATE" and arg1 == "MOUNT") then
+	elseif event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" then
 		ForAllButtons(UpdateButtonState, true)
 	elseif event == "ACTIONBAR_UPDATE_USABLE" then
 		for button in next, ActionButtons do
