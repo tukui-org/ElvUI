@@ -202,6 +202,7 @@ function UF:Construct_AuraIcon(button)
 	button:SetTemplate(nil, nil, nil, nil, true)
 
 	button.cd:SetReverse(true)
+	button.cd:SetDrawEdge(false)
 	button.cd:SetInside(button, UF.BORDER, UF.BORDER)
 
 	button.icon:SetInside(button, UF.BORDER, UF.BORDER)

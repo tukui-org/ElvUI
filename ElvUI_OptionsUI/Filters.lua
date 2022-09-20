@@ -266,7 +266,7 @@ local function AddOrRemoveSpellID(info, value)
 			if mainID then
 				selectedSpell = mainID
 			else
-				selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+				selectedTable[value] = E.Filters.Aura(value, nil, 'TOPRIGHT')
 			end
 		end
 	elseif G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
