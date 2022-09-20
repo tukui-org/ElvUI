@@ -87,9 +87,8 @@ function UF:SetSize_HealComm(frame)
 end
 
 function UF:Configure_HealComm(frame)
-	local db = frame.db.healPrediction
+	local db = frame.db and frame.db.healPrediction
 	if db and db.enable then
-
 		local pred = frame.HealthPrediction
 		local parent = pred.parent
 		local myBar = pred.myBar

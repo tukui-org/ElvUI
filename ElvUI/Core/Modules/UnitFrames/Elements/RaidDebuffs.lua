@@ -29,14 +29,13 @@ function UF:Construct_RaidDebuffs(frame)
 end
 
 function UF:Configure_RaidDebuffs(frame)
-	local debuff = frame.RaidDebuffs
-	local db = frame.db.rdebuffs
-
-	if db.enable then
+	local db = frame.db and frame.db.rdebuffs
+	if db and db.enable then
 		if not frame:IsElementEnabled('RaidDebuffs') then
 			frame:EnableElement('RaidDebuffs')
 		end
 
+		local debuff = frame.RaidDebuffs
 		debuff.showDispellableDebuff = db.showDispellableDebuff
 		debuff.onlyMatchSpellID = db.onlyMatchSpellID
 		debuff.forceShow = frame.forceShowAuras
