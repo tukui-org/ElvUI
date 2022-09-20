@@ -61,9 +61,10 @@ do
 			DispelList.Magic = CheckPetSpells()
 		elseif myClass == 'DRUID' then
 			local cure = Retail and CheckSpell(88423) -- Nature's Cure
+			local corruption = CheckSpell(2782) -- Remove Corruption (retail), Curse (classic)
 			DispelList.Magic = cure
-			DispelList.Curse = cure or CheckSpell(2782) -- Remove Curse
-			DispelList.Poison = cure or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
+			DispelList.Curse = cure or corruption
+			DispelList.Poison = cure or (Retail and corruption) or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
 		elseif myClass == 'MAGE' then
 			DispelList.Curse = CheckSpell(475) -- Remove Curse
 		elseif myClass == 'MONK' then

@@ -305,9 +305,9 @@ local tagStrings = {
 
 	['powercolor'] = [[function(u)
 		local pType, pToken, altR, altG, altB = UnitPowerType(u)
-		local t = _COLORS.power[pToken]
+		local color = _COLORS.power[pToken]
 
-		if(not t) then
+		if(not color) then
 			if(altR) then
 				if(altR > 1 or altG > 1 or altB > 1) then
 					return Hex(altR / 255, altG / 255, altB / 255)
@@ -319,7 +319,7 @@ local tagStrings = {
 			end
 		end
 
-		return Hex(t)
+		return Hex(color)
 	end]],
 
 	['pvp'] = [[function(u)

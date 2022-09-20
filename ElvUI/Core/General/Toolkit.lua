@@ -398,6 +398,11 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		button:SetCheckedTexture(checked)
 		button.checked = checked
 	end
+
+	if button.cooldown then
+		button.cooldown:SetDrawEdge(false)
+		button.cooldown:SetInside(button, 0, 0)
+	end
 end
 
 local CreateCloseButton

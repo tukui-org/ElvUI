@@ -23,6 +23,7 @@ local function createAuraIcon(element, index)
 	cd:SetAllPoints()
 	cd:SetReverse(true)
 	cd:SetDrawBling(false)
+	cd:SetDrawEdge(false)
 
 	local icon = button:CreateTexture(nil, 'ARTWORK')
 	icon:SetAllPoints()
