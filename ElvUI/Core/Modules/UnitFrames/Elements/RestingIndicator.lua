@@ -46,14 +46,13 @@ function UF:TestingDisplay_RestingIndicator(frame)
 end
 
 function UF:Configure_RestingIndicator(frame)
-	local icon = frame.RestingIndicator
-	local db = frame.db.RestIcon
-
-	if db.enable then
+	local db = frame.db and frame.db.RestIcon
+	if db and db.enable then
 		if not frame:IsElementEnabled('RestingIndicator') then
 			frame:EnableElement('RestingIndicator')
 		end
 
+		local icon = frame.RestingIndicator
 		if db.defaultColor then
 			icon:SetVertexColor(1, 1, 1, 1)
 			icon:SetDesaturated(false)
