@@ -75,7 +75,8 @@ do
 			DispelList.Poison = detox
 		elseif myClass == 'PALADIN' then
 			local cleanse = CheckSpell(4987) -- Cleanse
-			local toxins = cleanse or CheckSpell(213644) -- Cleanse Toxins
+			local purify = CheckSpell(1152) -- Purify
+			local toxins = cleanse or purify or CheckSpell(213644) -- Cleanse Toxins
 			DispelList.Magic = cleanse
 			DispelList.Poison = toxins
 			DispelList.Disease = toxins
