@@ -97,7 +97,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 
 	local channel = E.db.general.interruptAnnounce
-	local msg = E.Retail and format(INTERRUPT_MSG, destName or UNKNOWN, spellID, spellName) or format(INTERRUPT_MSG, destName or UNKNOWN, spellName)
+	local msg = (E.Retail or E.Wrath) and format(INTERRUPT_MSG, destName or UNKNOWN, spellID, spellName) or format(INTERRUPT_MSG, destName or UNKNOWN, spellName)
 	if channel == 'PARTY' then
 		SendChatMessage(msg, inPartyLFG and 'INSTANCE_CHAT' or 'PARTY')
 	elseif channel == 'RAID' then
