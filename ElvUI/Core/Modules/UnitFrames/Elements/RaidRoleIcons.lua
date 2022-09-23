@@ -51,15 +51,14 @@ end
 
 function UF:RaidRoleUpdate()
 	local anchor = self:GetParent()
-	local frame = anchor:GetParent():GetParent()
+	local frame = anchor and anchor:GetParent():GetParent()
+	if not frame then return end
+
 	local leader = frame.LeaderIndicator
 	local assistant = frame.AssistantIndicator
 	local masterlooter = frame.MasterLooterIndicator
 	local mamt = frame.RaidRoleIndicator
 
-	if not anchor then return end
-
-	local db = frame.db
 	local isLeader = leader:IsShown()
 	local isAssist = assistant:IsShown()
 	local isMAMT = mamt:IsShown()
@@ -70,13 +69,14 @@ function UF:RaidRoleUpdate()
 	masterlooter:ClearAllPoints()
 	mamt:ClearAllPoints()
 
-	if db and db.raidRoleIcons then
-		local pos, x, y = db.raidRoleIcons.position, db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset
+	local db = frame.db and frame.db.raidRoleIcons
+	if db then
+		local pos, x, y = db.position or 'TOPLEFT', db.xOffset or 0, db.yOffset or 4
+		local size = 12 * (db.scale or 1)
 
 		local right = strfind(pos, 'RIGHT')
 		local pos1 = right and 'RIGHT' or 'LEFT'
 		local pos2 = right and 'LEFT' or 'RIGHT'
-		local size = 12 * (db.raidRoleIcons.scale or 1)
 
 		leader:Size(size)
 		assistant:Size(size)
