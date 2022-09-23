@@ -32,7 +32,7 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 	local colors = NP.db.colors.classResources
 	local fallback = NP.db.colors.power[powerType]
 
-	if isRunes and E.Retail and NP.db.colors.chargingRunes then
+	if isRunes and (E.Retail or E.Wrath) and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
 	elseif isRunes and rune and not classPower then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
@@ -186,7 +186,7 @@ end
 function NP:Runes_PostUpdate()
 	self:SetShown(not UnitHasVehicleUI('player'))
 
-	if E.Retail and NP.db.colors.chargingRunes then
+	if (E.Retail or E.Wrath) and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
 	end
 end

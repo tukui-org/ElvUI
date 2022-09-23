@@ -66,7 +66,7 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	local colors = UF.db.colors.classResources
 	local fallback = UF.db.colors.power[powerType]
 
-	if isRunes and E.Retail and UF.db.colors.chargingRunes then
+	if isRunes and (E.Retail or E.Wrath) and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, custom_backdrop)
 	elseif isRunes and rune then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
@@ -416,7 +416,7 @@ function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 
 	self:SetShown(not hasVehicle and not db.classbar.autoHide or not allReady)
 
-	if E.Retail and UF.db.colors.chargingRunes then
+	if (E.Retail or E.Wrath) and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
 	end
 end
