@@ -1404,7 +1404,8 @@ function AB:SetAuraCooldownDuration(value)
 end
 
 function AB:SetAuraCooldowns(enabled)
-	LAB:SetAuraCooldowns(enabled)
+	local enable, reverse = E.db.cooldown.enable, E.db.actionbar.cooldown.reverse
+	LAB:SetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
 end
 
 function AB:ToggleCooldownOptions()
@@ -1572,7 +1573,6 @@ function AB:Initialize()
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
-	AB:SetAuraCooldowns(E.db.cooldown.targetAura)
 	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
 	if E.Retail then
