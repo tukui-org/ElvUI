@@ -32,7 +32,7 @@ local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 local MAX_BOSS_FRAMES = 8
 
--- GLOBALS: ElvUF_Parent, Arena_LoadUI
+-- GLOBALS: Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
@@ -614,7 +614,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			self.groupunits[unit] = group
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			frame.index = i
-			frame:SetParent(ElvUF_Parent)
+			frame:SetParent(E.ElvUF_Parent)
 			frame:SetID(i)
 			self[unit] = frame
 		end
@@ -960,7 +960,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 
 		if numGroups then
-			Header = CreateFrame('Frame', 'ElvUF_'..name, ElvUF_Parent, 'SecureHandlerStateTemplate')
+			Header = CreateFrame('Frame', 'ElvUF_'..name, E.ElvUF_Parent, 'SecureHandlerStateTemplate')
 			Header.groups = {}
 			Header.groupName = group
 			Header.template = Header.template or template
@@ -971,7 +971,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 				UF.headerFunctions[group][k] = v
 			end
 		else
-			Header = self:CreateHeader(ElvUF_Parent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
+			Header = self:CreateHeader(E.ElvUF_Parent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
 		end
 
 		Header:Show()
@@ -1378,11 +1378,6 @@ for i = 1, 3 do
 end
 
 function UF:MergeUnitSettings(from, to)
-	if from == to then
-		E:Print(L["You cannot copy settings from the same unit."])
-		return
-	end
-
 	E:CopyTable(UF.db.units[to], E:FilterTableFromBlacklist(UF.db.units[from], Blacklist[to]))
 
 	UF:Update_AllFrames()
