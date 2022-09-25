@@ -57,7 +57,7 @@ function UF:Update_TankHeader(header, db)
 		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
 
 		local width, height = header:GetSize()
-		local minHeight = max(height, 2*db.height + db.verticalSpacing)
+		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
 
