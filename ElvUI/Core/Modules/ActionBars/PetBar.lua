@@ -108,11 +108,11 @@ function AB:PositionAndSizeBarPet()
 	if db.enabled then
 		bar:SetScale(1)
 		bar:SetAlpha(bar.db.alpha)
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.mover.name)
 	else
 		bar:SetScale(0.0001)
 		bar:SetAlpha(0)
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.mover.name)
 	end
 
 	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)

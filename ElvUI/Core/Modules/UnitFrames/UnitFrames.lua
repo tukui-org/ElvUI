@@ -579,10 +579,10 @@ function UF:Update_AllFrames()
 		UF[unit]:Update()
 		if UF.db.units[unit].enable then
 			UF[unit]:Enable()
-			E:EnableMover(UF[unit].mover:GetName())
+			E:EnableMover(UF[unit].mover.name)
 		else
 			UF[unit]:Disable()
-			E:DisableMover(UF[unit].mover:GetName())
+			E:DisableMover(UF[unit].mover.name)
 		end
 	end
 
@@ -590,10 +590,10 @@ function UF:Update_AllFrames()
 		if UF.db.units[group].enable then
 			UF[unit]:Enable()
 			UF[unit]:Update()
-			E:EnableMover(UF[unit].mover:GetName())
+			E:EnableMover(UF[unit].mover.name)
 		else
 			UF[unit]:Disable()
-			E:DisableMover(UF[unit].mover:GetName())
+			E:DisableMover(UF[unit].mover.name)
 		end
 
 		if UF[unit].isForced then
@@ -633,7 +633,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 
 			frame.Update()
 
-			E:EnableMover(frame.mover:GetName())
+			E:EnableMover(frame.mover.name)
 		else
 			frame:Disable()
 
@@ -646,7 +646,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 				UF:Configure_Fader(frame)
 			end
 
-			E:DisableMover(frame.mover:GetName())
+			E:DisableMover(frame.mover.name)
 		end
 
 		if frame.isForced then
@@ -957,6 +957,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	if not Header then
 		ElvUF:RegisterStyle('ElvUF_'..name, UF[format('Construct_%sFrames', isRaidFrames and 'Raid' or name)])
 		ElvUF:SetActiveStyle('ElvUF_'..name)
+		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 
 		if numGroups then
 			Header = CreateFrame('Frame', 'ElvUF_'..name, ElvUF_Parent, 'SecureHandlerStateTemplate')
@@ -966,8 +967,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			Header.headerTemplate = Header.headerTemplate or headerTemplate
 			Header.isRaidFrame = isRaidFrames
 			Header.raidFrameN = isRaidFrames and gsub(group, '.-(%d)', '%1')
-			if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
-			for k, v in pairs(self.groupPrototype) do
+			for k, v in pairs(UF.groupPrototype) do
 				UF.headerFunctions[group][k] = v
 			end
 		else
@@ -1003,13 +1003,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			UF.headerFunctions[group]:Configure_Groups(Header)
 		end
 	else
-		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 		if not UF.headerFunctions[group].Update then
-			UF.headerFunctions[group].Update = function()
-				UF[Header.UpdateHeader](UF, Header, Header.db)
+			UF.headerFunctions[group].Update = function(header)
+				UF[header.UpdateHeader](UF, header, header.db)
 
-				for _, child in ipairs({ Header:GetChildren() }) do
-					Header:UpdateChild(UF[Header.UpdateFrames], child, Header.db)
+				for _, child in ipairs({ header:GetChildren() }) do
+					header:UpdateChild(UF[header.UpdateFrames], child, header.db)
 				end
 			end
 		end
@@ -1024,13 +1023,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			RegisterStateDriver(Header, 'visibility', visibility)
 		end
 		if Header.mover then
-			E:EnableMover(Header.mover:GetName())
+			E:EnableMover(Header.mover.name)
 		end
 	else
 		UnregisterStateDriver(Header, 'visibility')
 		Header:Hide()
 		if Header.mover then
-			E:DisableMover(Header.mover:GetName())
+			E:DisableMover(Header.mover.name)
 		end
 	end
 end
@@ -1039,27 +1038,23 @@ function UF:CreateAndUpdateUF(unit)
 	assert(unit, 'No unit provided to create or update.')
 
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-	if not self[unit] then
-		self[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-		self.units[unit] = unit
+	if not UF[unit] then
+		UF[unit] = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+		UF.units[unit] = unit
 	end
 
-	self[unit].Update = function()
-		UF['Update_'..frameName..'Frame'](self, self[unit], self.db.units[unit])
+	UF[unit].Update = function()
+		UF['Update_'..frameName..'Frame'](UF, UF[unit], UF.db.units[unit])
 	end
 
-	if self[unit]:GetParent() ~= ElvUF_Parent then
-		self[unit]:SetParent(ElvUF_Parent)
-	end
-
-	if self.db.units[unit].enable then
-		self[unit]:Enable()
-		self[unit].Update()
-		E:EnableMover(self[unit].mover:GetName())
+	if UF.db.units[unit].enable then
+		UF[unit]:Enable()
+		UF[unit].Update()
+		E:EnableMover(UF[unit].mover.name)
 	else
-		self[unit].Update()
-		self[unit]:Disable()
-		E:DisableMover(self[unit].mover:GetName())
+		UF[unit].Update()
+		UF[unit]:Disable()
+		E:DisableMover(UF[unit].mover.name)
 	end
 end
 

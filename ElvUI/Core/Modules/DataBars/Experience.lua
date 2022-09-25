@@ -208,9 +208,9 @@ function DB:ExperienceBar_Toggle()
 	bar.db = DB.db.experience
 
 	if bar.db.enable then
-		E:EnableMover(bar.holder.mover:GetName())
+		E:EnableMover(bar.holder.mover.name)
 	else
-		E:DisableMover(bar.holder.mover:GetName())
+		E:DisableMover(bar.holder.mover.name)
 	end
 
 	if bar.db.enable and not bar:ShouldHide() then

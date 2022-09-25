@@ -194,9 +194,9 @@ function AB:UpdateMicroButtons()
 
 	if microBar.mover then
 		if AB.db.microbar.enabled then
-			E:EnableMover(microBar.mover:GetName())
+			E:EnableMover(microBar.mover.name)
 		else
-			E:DisableMover(microBar.mover:GetName())
+			E:DisableMover(microBar.mover.name)
 		end
 	end
 

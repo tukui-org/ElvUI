@@ -161,9 +161,9 @@ function AB:PositionAndSizeBarShapeShift()
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if db.enabled then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.mover.name)
 	else
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.mover.name)
 	end
 
 	local visibility = gsub(db.visibility, '[\n\r]', '')

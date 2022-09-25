@@ -329,13 +329,13 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetAttribute('page', page)
 
 	if db.enabled then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.mover.name)
 		bar:Show()
 
 		local visibility = gsub(db.visibility, '[\n\r]', '')
 		RegisterStateDriver(bar, 'visibility', visibility)
 	else
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.mover.name)
 		bar:Hide()
 
 		UnregisterStateDriver(bar, 'visibility')

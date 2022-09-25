@@ -200,7 +200,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
 
 		if bars.Holder and bars.Holder.mover then
-			E:DisableMover(bars.Holder.mover:GetName())
+			E:DisableMover(bars.Holder.mover.name)
 		end
 	elseif frame.CLASSBAR_DETACHED then
 		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
@@ -211,7 +211,7 @@ function UF:Configure_ClassBar(frame)
 		if not bars.Holder.mover then
 			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
 		else
-			E:EnableMover(bars.Holder.mover:GetName())
+			E:EnableMover(bars.Holder.mover.name)
 		end
 
 		bars:SetFrameStrata(db.classbar.strataAndLevel.useCustomStrata and db.classbar.strataAndLevel.frameStrata or 'LOW')
@@ -228,7 +228,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 
 		if bars.Holder and bars.Holder.mover then
-			E:DisableMover(bars.Holder.mover:GetName())
+			E:DisableMover(bars.Holder.mover.name)
 		end
 	end
 
