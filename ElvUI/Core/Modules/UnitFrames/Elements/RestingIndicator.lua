@@ -17,11 +17,9 @@ local function ShouldHide(frame)
 	return frame.db.RestIcon.hideAtMaxLevel and E:XPIsLevelMax()
 end
 
-local TestingTimer
-local TestingFrame
+local TestingTimer, TestingFrame
 local function TestingFunc()
-	local isResting = IsResting()
-	if TestingFrame and not isResting then
+	if TestingFrame and not IsResting() then
 		TestingFrame:Hide()
 	end
 end

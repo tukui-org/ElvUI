@@ -84,7 +84,7 @@ function E:DelayScriptCall(msg)
 	end
 end
 
-function E:EHelp()
+function E:DisplayCommands()
 	print(L["EHELP_COMMANDS"])
 end
 
@@ -235,8 +235,8 @@ function E:LoadCommands()
 	self:RegisterChatCommand('ereset', 'ResetUI')
 	self:RegisterChatCommand('edebug', 'LuaError')
 
-	self:RegisterChatCommand('ehelp', 'EHelp')
-	self:RegisterChatCommand('ecommands', 'EHelp')
+	self:RegisterChatCommand('ehelp', 'DisplayCommands')
+	self:RegisterChatCommand('ecommands', 'DisplayCommands')
 	self:RegisterChatCommand('eblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
 	self:RegisterChatCommand('efixdb', 'DBConvertProfile')

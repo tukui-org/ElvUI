@@ -272,7 +272,6 @@ function AB:PositionAndSizeBar(barName)
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
 	local point = db.point
-	local visibility = db.visibility
 
 	bar.db = db
 	bar.mouseover = db.mouseover
@@ -330,15 +329,16 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetAttribute('page', page)
 
 	if db.enabled then
-		visibility = gsub(visibility, '[\n\r]', '')
-
 		E:EnableMover(bar.mover:GetName())
-		RegisterStateDriver(bar, 'visibility', visibility)
 		bar:Show()
+
+		local visibility = gsub(db.visibility, '[\n\r]', '')
+		RegisterStateDriver(bar, 'visibility', visibility)
 	else
 		E:DisableMover(bar.mover:GetName())
-		UnregisterStateDriver(bar, 'visibility')
 		bar:Hide()
+
+		UnregisterStateDriver(bar, 'visibility')
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
@@ -629,18 +629,12 @@ function AB:UpdateButtonSettings(specific)
 end
 
 function AB:GetPage(bar, defaultPage, condition)
-	local page = AB.db[bar].paging[E.myclass]
 	if not condition then condition = '' end
 
-	if page then
-		page = gsub(page, '[\n\r]', '')
+	local page = AB.db[bar].paging[E.myclass]
+	if page then condition = condition..' '..gsub(page, '[\n\r]', '') end
 
-		condition = condition..' '..page
-	end
-
-	condition = condition..' '..defaultPage
-
-	return condition
+	return condition..' '..defaultPage
 end
 
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)

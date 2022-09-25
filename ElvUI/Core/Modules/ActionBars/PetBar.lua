@@ -96,7 +96,6 @@ function AB:PositionAndSizeBarPet()
 	local buttonWidth = db.buttonSize
 	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
 	local point = db.point
-	local visibility = db.visibility
 
 	local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
 	local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
@@ -167,7 +166,7 @@ function AB:PositionAndSizeBarPet()
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	visibility = gsub(visibility, '[\n\r]','')
+	local visibility = gsub(db.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'show', visibility)
 
 	if useMasque then

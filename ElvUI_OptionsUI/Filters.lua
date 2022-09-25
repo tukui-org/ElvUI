@@ -262,7 +262,7 @@ local function AddOrRemoveSpellID(info, value)
 				selectedTable[value] = nil
 			end
 		elseif not selectedTable[value] then
-			local mainID = E.Filters.Included[value]
+			local mainID = selectedFilter == 'Aura Indicator (Class)' and E.Filters.Included[value]
 			if mainID then
 				selectedSpell = mainID
 			else
