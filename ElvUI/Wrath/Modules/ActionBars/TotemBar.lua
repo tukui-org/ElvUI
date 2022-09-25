@@ -61,22 +61,21 @@ end
 
 function AB:SkinSummonButton(button)
 	local name = button:GetName()
-	local icon = _G[name..'Icon']
 	local highlight = _G[name..'Highlight']
-	local normal = _G[name..'NormalTexture']
-	local cooldown = _G[name..'Cooldown']
+	if highlight then
+		highlight:SetTexture(nil)
+	end
 
 	button:SetTemplate()
 	button:StyleButton()
 
-	AB:ColorSwipeTexture(cooldown)
+	AB:ColorSwipeTexture(button.cooldown)
 
-	icon:SetTexCoord(unpack(E.TexCoords))
-	icon:SetDrawLayer('ARTWORK')
-	icon:SetInside(button)
+	button.icon:SetTexCoord(unpack(E.TexCoords))
+	button.icon:SetDrawLayer('ARTWORK')
+	button.icon:SetInside(button)
 
-	highlight:SetTexture(nil)
-	normal:SetTexture(nil)
+	button.NormalTexture:SetTexture(nil)
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
@@ -106,6 +105,8 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 		if button:IsShown() then
 			numButtons = numButtons + 1
+
+			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button:Size(AB.db.totemBar.flyoutSize)
 			button:ClearAllPoints()
 
@@ -115,9 +116,8 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 				button:Point('TOP', i == 1 and parent or frame.buttons[i - 1], 'BOTTOM', 0, -AB.db.totemBar.flyoutSpacing)
 			end
 
-			button:SetBackdropBorderColor(color.r, color.g, color.b)
-
 			button.icon:SetTexCoord(unpack(E.TexCoords))
+
 			totalHeight = totalHeight + button:GetHeight() + AB.db.totemBar.flyoutSpacing
 		end
 	end
@@ -237,10 +237,10 @@ function AB:UpdateTotemBindings()
 	AB:FixKeybindText(_G.MultiCastRecallSpellButton)
 
 	for i = 1, 12 do
-		local hotkey = _G['MultiCastActionButton'..i..'HotKey']
-		hotkey:SetTextColor(1, 1, 1)
-		hotkey:FontTemplate(font, size, outline)
-		AB:FixKeybindText(_G['MultiCastActionButton'..i])
+		local button = _G['MultiCastActionButton'..i]
+		button.HotKey:FontTemplate(font, size, outline)
+		button.HotKey:SetTextColor(1, 1, 1)
+		AB:FixKeybindText(button)
 	end
 end
 
@@ -298,7 +298,6 @@ function AB:CreateTotemBar()
 
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
-		local overlay = _G['MultiCastSlotButton'..i].overlayTex
 
 		button:SetTemplate()
 		button:StyleButton()
@@ -307,7 +306,7 @@ function AB:CreateTotemBar()
 		button.background:SetDrawLayer('ARTWORK')
 		button.background:SetInside(button)
 
-		overlay:Hide()
+		button.overlayTex:Hide()
 
 		bar.buttons[button] = true
 	end
@@ -315,11 +314,6 @@ function AB:CreateTotemBar()
 	local isShaman = E.myclass == 'SHAMAN'
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
-		local icon = _G['MultiCastActionButton'..i..'Icon']
-		local hotkey = _G['MultiCastActionButton'..i..'HotKey']
-		local normal = _G['MultiCastActionButton'..i..'NormalTexture']
-		local cooldown = _G['MultiCastActionButton'..i..'Cooldown']
-		local overlay = _G['MultiCastActionButton'..i].overlayTex
 
 		if isShaman then
 			button:SetAttribute('type2', 'destroytotem')
@@ -327,17 +321,18 @@ function AB:CreateTotemBar()
 		end
 
 		button:StyleButton()
-		normal:SetTexture('')
-		overlay:Hide()
+		button.NormalTexture:SetTexture('')
+		button.overlayTex:Hide()
 
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetDrawLayer('ARTWORK')
-		icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetDrawLayer('ARTWORK')
+		button.icon:SetInside()
 
-		hotkey.SetVertexColor = E.noop
+		button.HotKey.SetVertexColor = E.noop
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
 
-		E:RegisterCooldown(cooldown)
+		AB:ColorSwipeTexture(button.cooldown)
+		E:RegisterCooldown(button.cooldown)
 
 		bar.buttons[button] = true
 	end
