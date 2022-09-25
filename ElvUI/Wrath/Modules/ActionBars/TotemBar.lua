@@ -59,7 +59,7 @@ function AB:StyleTotemSlotButton(button, slot)
 	end
 end
 
-function AB:SkinSummonButton(button)
+function AB:SkinMultiCastButton(button)
 	local name = button:GetName()
 	local highlight = _G[name..'Highlight']
 	if highlight then
@@ -338,12 +338,12 @@ function AB:CreateTotemBar()
 	end
 
 	local summonButton = _G.MultiCastSummonSpellButton
-	AB:SkinSummonButton(summonButton)
+	AB:SkinMultiCastButton(summonButton)
 	summonButton.commandName = summonButton.buttonType..'1' -- hotkey support
 	bar.buttons[summonButton] = true
 
 	local spellButton = _G.MultiCastRecallSpellButton
-	AB:SkinSummonButton(spellButton)
+	AB:SkinMultiCastButton(spellButton)
 	spellButton.commandName = spellButton.buttonType..'1' -- hotkey support
 	bar.buttons[spellButton] = true
 
