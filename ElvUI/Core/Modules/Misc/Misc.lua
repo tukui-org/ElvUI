@@ -61,7 +61,7 @@ local UNKNOWN = UNKNOWN
 
 local BOOST_THANKSFORPLAYING_SMALLER = SOUNDKIT.UI_70_BOOST_THANKSFORPLAYING_SMALLER
 local INTERRUPT_MSG = L["Interrupted %s's |cff71d5ff|Hspell:%d:0|h[%s]|h|r!"]
-if not E.Retail then
+if not (E.Retail or E.Wrath) then
 	INTERRUPT_MSG = INTERRUPT_MSG:gsub('|cff71d5ff|Hspell:%%d:0|h(%[%%s])|h|r','%1')
 end
 
@@ -97,7 +97,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 
 	local channel = E.db.general.interruptAnnounce
-	local msg = E.Retail and format(INTERRUPT_MSG, destName or UNKNOWN, spellID, spellName) or format(INTERRUPT_MSG, destName or UNKNOWN, spellName)
+	local msg = (E.Retail or E.Wrath) and format(INTERRUPT_MSG, destName or UNKNOWN, spellID, spellName) or format(INTERRUPT_MSG, destName or UNKNOWN, spellName)
 	if channel == 'PARTY' then
 		SendChatMessage(msg, inPartyLFG and 'INSTANCE_CHAT' or 'PARTY')
 	elseif channel == 'RAID' then

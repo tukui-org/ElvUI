@@ -108,9 +108,7 @@ function AB:UpdateMicroBarVisibility()
 		return
 	end
 
-	local visibility = AB.db.microbar.visibility
-	visibility = gsub(visibility, '[\n\r]','')
-
+	local visibility = gsub(AB.db.microbar.visibility, '[\n\r]', '')
 	RegisterStateDriver(microBar.visibility, 'visibility', (AB.db.microbar.enabled and visibility) or 'hide')
 end
 

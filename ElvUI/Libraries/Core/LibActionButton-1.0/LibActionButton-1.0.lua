@@ -1029,8 +1029,8 @@ end
 --- Active Aura Cooldowns for Target ~ By Simpy
 
 local currentAuras = {}
-function UpdateAuraCooldowns()
-	local filter = UnitIsFriend("player", "target") and "PLAYER|HELPFUL" or "PLAYER|HARMFUL"
+function UpdateAuraCooldowns(disable)
+	local filter = disable and "" or UnitIsFriend("player", "target") and "PLAYER|HELPFUL" or "PLAYER|HARMFUL"
 
 	local previousAuras = CopyTable(currentAuras, true)
 	wipe(currentAuras)
@@ -1069,7 +1069,7 @@ end
 function lib:SetAuraCooldowns(enabled)
 	AURA_COOLDOWNS_ENABLED = enabled
 
-	UpdateAuraCooldowns()
+	UpdateAuraCooldowns(not enabled)
 end
 
 -----------------------------------------------------------

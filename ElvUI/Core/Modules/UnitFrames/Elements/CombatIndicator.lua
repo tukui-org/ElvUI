@@ -9,10 +9,8 @@ function UF:Construct_CombatIndicator(frame)
 end
 
 local TestingTimer, TestingFrame
-
 local function TestingFunc()
-	local inCombat = UnitAffectingCombat('player')
-	if TestingFrame and not inCombat then
+	if TestingFrame and not UnitAffectingCombat('player') then
 		TestingFrame:Hide()
 	end
 end
@@ -32,6 +30,7 @@ function UF:TestingDisplay_CombatIndicator(frame)
 	end
 
 	Icon:Show()
+
 	TestingFrame = Icon
 	TestingTimer = C_Timer_NewTimer(10, TestingFunc)
 end

@@ -369,6 +369,10 @@ function E:UpdateCooldownSettings(module)
 		end
 	end
 
+	if AB.Initialized and (module == 'global' or module == 'actionbar') then
+		AB:SetAuraCooldowns(E.db.cooldown.targetAura)
+	end
+
 	if isModule then
 		E:UpdateCooldownOverride(module)
 	elseif module == 'global' then -- this is only a call from the config change

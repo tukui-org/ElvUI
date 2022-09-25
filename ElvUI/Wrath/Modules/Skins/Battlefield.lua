@@ -3,8 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local CreateFrame = CreateFrame
-local CanQueueForWintergrasp = CanQueueForWintergrasp
-local hooksecurefunc = hooksecurefunc
 
 function S:SkinBattlefield()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.battlefield) then return end
@@ -24,21 +22,6 @@ function S:SkinBattlefield()
 	S:HandleButton(_G.BattlefieldFrameGroupJoinButton)
 
 	_G.BattlefieldFrameGroupJoinButton:Point('RIGHT', _G.BattlefieldFrameJoinButton, 'LEFT', -2, 0)
-
-	-- Wintergrasp Queue Button
-	local WintergraspTimer = _G.WintergraspTimer
-	WintergraspTimer:Size(30)
-	WintergraspTimer:SetTemplate()
-	WintergraspTimer.texture:SetInside()
-	WintergraspTimer.texture:SetDrawLayer('ARTWORK')
-	WintergraspTimer.texture:SetTexCoord(0.1875, 0.8125, 0.59375, 0.90625)
-
-	hooksecurefunc('WintergraspTimer_OnUpdate', function()
-		local canQueue = CanQueueForWintergrasp()
-		if canQueue then
-			_G.WintergraspTimer.texture:SetTexCoord(0.1875, 0.8125, 0.59375, 0.90625)
-		end
-	end)
 
 	local backdrop_level = BattlefieldFrame.backdrop:GetFrameLevel()
 

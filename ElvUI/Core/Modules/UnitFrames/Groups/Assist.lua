@@ -43,8 +43,6 @@ function UF:Update_AssistHeader(header, db)
 	header:Hide()
 	header.db = db
 
-	UF:ClearChildPoints(header:GetChildren())
-
 	if not header.isForced and db.enable then
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
@@ -55,6 +53,7 @@ function UF:Update_AssistHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
+		header:ClearChildPoints()
 		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -248)
 
 		local width, height = header:GetSize()

@@ -43,8 +43,6 @@ function UF:Update_TankHeader(header, db)
 	header:Hide()
 	header.db = db
 
-	UF:ClearChildPoints(header:GetChildren())
-
 	if not header.isForced and db.enable then
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
@@ -55,10 +53,11 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
+		header:ClearChildPoints()
 		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
 
 		local width, height = header:GetSize()
-		local minHeight = max(height, 2*db.height + db.verticalSpacing)
+		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
 
