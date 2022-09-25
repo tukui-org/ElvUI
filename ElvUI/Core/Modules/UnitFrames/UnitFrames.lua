@@ -570,9 +570,9 @@ function UF:Update_AllFrames()
 	UF:Update_StatusBars()
 
 	for unit in pairs(UF.units) do
-		UF[unit]:Update()
 		if UF.db.units[unit].enable then
 			UF[unit]:Enable()
+			UF[unit]:Update()
 			E:EnableMover(UF[unit].mover.name)
 		else
 			UF[unit]:Disable()
@@ -599,47 +599,38 @@ function UF:Update_AllFrames()
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
-	for i=1, numGroup do
+	for i = 1, numGroup do
 		local unit = group..i
 		local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-		local frame = self[unit]
+		local frame = UF[unit]
 
 		if not frame then
-			self.groupunits[unit] = group
+			UF.groupunits[unit] = group
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			frame.index = i
 			frame:SetParent(E.ElvUF_Parent)
 			frame:SetID(i)
-			self[unit] = frame
+			UF[unit] = frame
 		end
 
-		frameName = gsub(E:StringTitle(group), 't(arget)', 'T%1')
-		frame.Update = function()
-			UF['Update_'..E:StringTitle(frameName)..'Frames'](self, frame, self.db.units[group])
-		end
-
-		if self.db.units[group].enable then
-			frame:Enable()
-
-			if group == 'arena' then
-				frame:SetAttribute('oUF-enableArenaPrep', true)
+		if not frame.Update then
+			frameName = gsub(E:StringTitle(group), 't(arget)', 'T%1')
+			frame.Update = function()
+				UF['Update_'..E:StringTitle(frameName)..'Frames'](UF, frame, UF.db.units[group])
 			end
+		end
 
-			frame.Update()
+		frame.Update()
 
+		if group == 'arena' then
+			frame:SetAttribute('oUF-enableArenaPrep', UF.db.units[group].enable)
+		end
+
+		if UF.db.units[group].enable then
+			frame:Enable()
 			E:EnableMover(frame.mover.name)
 		else
 			frame:Disable()
-
-			if group == 'arena' then
-				frame:SetAttribute('oUF-enableArenaPrep', false)
-			end
-
-			-- for some reason the boss/arena 'uncheck disable' doesnt fire this, we need to so putting it here.
-			if group == 'boss' or group == 'arena' then
-				UF:Configure_Fader(frame)
-			end
-
 			E:DisableMover(frame.mover.name)
 		end
 
@@ -1305,7 +1296,7 @@ function UF:ADDON_LOADED(_, addon)
 	if addon ~= 'Blizzard_ArenaUI' then return end
 
 	ElvUF:DisableBlizzard('arena')
-	self:UnregisterEvent('ADDON_LOADED')
+	UF:UnregisterEvent('ADDON_LOADED')
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -1313,17 +1304,17 @@ function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 end
 
 function UF:ResetUnitSettings(unit)
-	E:CopyTable(self.db.units[unit], P.unitframe.units[unit])
+	E:CopyTable(UF.db.units[unit], P.unitframe.units[unit])
 
-	if self.db.units[unit].buffs and self.db.units[unit].buffs.sizeOverride then
-		self.db.units[unit].buffs.sizeOverride = P.unitframe.units[unit].buffs.sizeOverride or 0
+	if UF.db.units[unit].buffs and UF.db.units[unit].buffs.sizeOverride then
+		UF.db.units[unit].buffs.sizeOverride = P.unitframe.units[unit].buffs.sizeOverride or 0
 	end
 
-	if self.db.units[unit].debuffs and self.db.units[unit].debuffs.sizeOverride then
-		self.db.units[unit].debuffs.sizeOverride = P.unitframe.units[unit].debuffs.sizeOverride or 0
+	if UF.db.units[unit].debuffs and UF.db.units[unit].debuffs.sizeOverride then
+		UF.db.units[unit].debuffs.sizeOverride = P.unitframe.units[unit].debuffs.sizeOverride or 0
 	end
 
-	self:Update_AllFrames()
+	UF:Update_AllFrames()
 end
 
 function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
