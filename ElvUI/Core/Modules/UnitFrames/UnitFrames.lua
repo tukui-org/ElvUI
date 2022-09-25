@@ -1004,11 +1004,11 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	else
 		if not UF.headerFunctions[group].Update then
-			UF.headerFunctions[group].Update = function()
-				UF[Header.UpdateHeader](UF, Header, Header.db)
+			UF.headerFunctions[group].Update = function(_, header)
+				UF[header.UpdateHeader](UF, header, header.db)
 
-				for _, child in ipairs({ Header:GetChildren() }) do
-					Header:UpdateChild(UF[Header.UpdateFrames], child, Header.db)
+				for _, child in ipairs({ header:GetChildren() }) do
+					header:UpdateChild(UF[header.UpdateFrames], child, header.db)
 				end
 			end
 		end
