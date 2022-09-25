@@ -69,7 +69,7 @@ function AB:SkinSummonButton(button)
 	button:SetTemplate()
 	button:StyleButton()
 
-	cooldown:SetSwipeColor(0, 0, 0, .8)
+	AB:ColorSwipeTexture(cooldown)
 
 	icon:SetTexCoord(unpack(E.TexCoords))
 	icon:SetDrawLayer('ARTWORK')
