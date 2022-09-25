@@ -110,10 +110,11 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:Size(AB.db.totemBar.flyoutSize)
 			button:ClearAllPoints()
 
+			local anchor = i == 1 and parent or frame.buttons[i - 1]
 			if AB.db.totemBar.flyoutDirection == 'UP' then
-				button:Point('BOTTOM', i == 1 and parent or frame.buttons[i - 1], 'TOP', 0, AB.db.totemBar.flyoutSpacing)
+				button:Point('BOTTOM', anchor, 'TOP', 0, AB.db.totemBar.flyoutSpacing)
 			else
-				button:Point('TOP', i == 1 and parent or frame.buttons[i - 1], 'BOTTOM', 0, -AB.db.totemBar.flyoutSpacing)
+				button:Point('TOP', anchor, 'BOTTOM', 0, -AB.db.totemBar.flyoutSpacing)
 			end
 
 			button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -193,9 +194,7 @@ function AB:PositionAndSizeTotemBar()
 	bar.mouseover = AB.db.totemBar.mouseover
 	bar:SetAlpha(bar.mouseover and 0 or AB.db.totemBar.alpha)
 
-	local visibility = AB.db.totemBar.visibility
-	visibility = gsub(visibility, '[\n\r]','')
-
+	local visibility = gsub(AB.db.totemBar.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
 
 	local summonButton = _G.MultiCastSummonSpellButton
