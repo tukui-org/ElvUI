@@ -64,9 +64,12 @@ function AB:SkinSummonButton(button)
 	local icon = _G[name..'Icon']
 	local highlight = _G[name..'Highlight']
 	local normal = _G[name..'NormalTexture']
+	local cooldown = _G[name..'Cooldown']
 
 	button:SetTemplate()
 	button:StyleButton()
+
+	cooldown:SetSwipeColor(0, 0, 0, .8)
 
 	icon:SetTexCoord(unpack(E.TexCoords))
 	icon:SetDrawLayer('ARTWORK')
