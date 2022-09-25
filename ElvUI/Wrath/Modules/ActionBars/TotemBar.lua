@@ -228,12 +228,12 @@ function AB:UpdateTotemBindings()
 	local font = LSM:Fetch('font', AB.db.totemBar.font)
 	local size, outline = AB.db.totemBar.fontSize, AB.db.totemBar.fontOutline
 
-	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)
+	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
 	AB:FixKeybindText(_G.MultiCastSummonSpellButton)
 
-	_G.MultiCastRecallSpellButtonHotKey:SetTextColor(1, 1, 1)
 	_G.MultiCastRecallSpellButtonHotKey:FontTemplate(font, size, outline)
+	_G.MultiCastRecallSpellButtonHotKey:SetTextColor(1, 1, 1)
 	AB:FixKeybindText(_G.MultiCastRecallSpellButton)
 
 	for i = 1, 12 do
