@@ -275,6 +275,7 @@ function AB:CreateTotemBar()
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
 	closeButton:SetTemplate()
+	closeButton:StyleButton()
 	closeButton.normalTexture:ClearAllPoints()
 	closeButton.normalTexture:SetPoint('CENTER')
 	closeButton.normalTexture:SetSize(16, 16)
@@ -282,18 +283,17 @@ function AB:CreateTotemBar()
 	closeButton.normalTexture:SetTexCoord(0, 1, 0, 1)
 	closeButton.normalTexture:SetRotation(3.14)
 	closeButton.normalTexture.SetTexCoord = E.noop
-	closeButton:StyleButton()
 	bar.buttons[closeButton] = true
 
 	local openButton = _G.MultiCastFlyoutFrameOpenButton
 	openButton:SetTemplate()
+	openButton:StyleButton()
 	openButton.normalTexture:ClearAllPoints()
 	openButton.normalTexture:SetPoint('CENTER')
 	openButton.normalTexture:SetSize(16, 16)
 	openButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
 	openButton.normalTexture:SetTexCoord(0, 1, 0, 1)
 	openButton.normalTexture.SetTexCoord = E.noop
-	openButton:StyleButton()
 	bar.buttons[openButton] = true
 
 	for i = 1, 4 do
@@ -321,7 +321,7 @@ function AB:CreateTotemBar()
 		end
 
 		button:StyleButton()
-		button.NormalTexture:SetTexture('')
+		button.NormalTexture:SetTexture(nil)
 		button.overlayTex:Hide()
 
 		button.icon:SetTexCoord(unpack(E.TexCoords))
