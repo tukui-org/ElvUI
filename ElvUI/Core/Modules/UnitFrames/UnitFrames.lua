@@ -101,12 +101,6 @@ UF.headerGroupBy = {
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'CLASS')
 	end,
-	MTMA = function(header)
-		local sortMethod = header.db and header.db.sortMethod
-		header:SetAttribute('groupingOrder', 'MAINTANK,MAINASSIST,NONE')
-		header:SetAttribute('sortMethod', sortMethod or 'NAME')
-		header:SetAttribute('groupBy', 'ROLE')
-	end,
 	ROLE = function(header)
 		local groupingOrder = header.db and strjoin(',', header.db.ROLE1, header.db.ROLE2, header.db.ROLE3, 'NONE')
 		local sortMethod = header.db and header.db.sortMethod
