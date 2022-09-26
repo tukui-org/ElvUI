@@ -917,7 +917,6 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	)
 
 	header.groupName = group
-
 	header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 	header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 
@@ -953,6 +952,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			Header.headerTemplate = Header.headerTemplate or headerTemplate
 			Header.isRaidFrame = isRaidFrames
 			Header.raidFrameN = isRaidFrames and gsub(group, '.-(%d)', '%1')
+
 			for k, v in pairs(UF.groupPrototype) do
 				UF.headerFunctions[group][k] = v
 			end
@@ -966,6 +966,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		self.headers[group] = Header
 	end
 
+	local groupFunctions = UF.headerFunctions[group]
 	local groupsChanged = (Header.numGroups ~= numGroups)
 	local stateChanged = (Header.enableState ~= enable)
 	Header.enableState = enable
@@ -985,12 +986,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 
 		if groupsChanged or not skip then
-			UF.headerFunctions[group]:AdjustVisibility(Header)
-			UF.headerFunctions[group]:Configure_Groups(Header)
+			groupFunctions:AdjustVisibility(Header)
+			groupFunctions:Configure_Groups(Header)
 		end
 	else
-		if not UF.headerFunctions[group].Update then
-			UF.headerFunctions[group].Update = function(_, header)
+		if not groupFunctions.Update then
+			groupFunctions.Update = function(_, header)
 				UF[header.UpdateHeader](UF, header, header.db)
 
 				for _, child in ipairs({ header:GetChildren() }) do
@@ -1001,7 +1002,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	end
 
 	if stateChanged or not skip then
-		UF.headerFunctions[group]:Update(Header)
+		groupFunctions:Update(Header)
 	end
 
 	if enable then
