@@ -605,13 +605,13 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local frame = UF[unit]
 
 		if not frame then
-			UF.groupunits[unit] = group
-
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-			frame.index = i
 			frame:SetParent(E.UFParent)
 			frame:SetID(i)
+			frame.index = i
+
+			UF.groupunits[unit] = group
 			UF[unit] = frame
 		end
 
