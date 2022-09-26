@@ -377,17 +377,19 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 
 			if not temp then temp = mod:StyleFilterAuraData(frame, filter) end
 
-			local spell, stacks = strmatch(key, mod.StyleFilterStackPattern)
+			local spell, count = strmatch(key, mod.StyleFilterStackPattern)
 			local info = temp[spell] or temp[tonumber(spell)]
 
 			if info then
+				local stacks = tonumber(count) -- send stacks to nil or int
+				local hasMinTime = minTimeLeft and minTimeLeft ~= 0
+				local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+
 				for _, data in pairs(info) do -- need to loop for the sources, not all the spells though
-					if stacks == '' or (data.count and data.count >= tonumber(stacks)) then
+					if not stacks or (data.count and data.count >= stacks) then
 						local source, expiration, modRate = data.source, data.expiration, data.modRate
 						local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
 						if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
-							local hasMinTime = minTimeLeft and minTimeLeft ~= 0
-							local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
 							local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - now) / (modRate or 1))
 							local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 							local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
