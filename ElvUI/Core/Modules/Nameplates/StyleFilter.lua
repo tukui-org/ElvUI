@@ -382,7 +382,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 
 			if info then
 				for _, data in pairs(info) do -- need to loop for the sources, not all the spells though
-					if stacks == '' or not data.count or data.count < tonumber(stacks) then
+					if stacks == '' or not data.count or data.count >= tonumber(stacks) then
 						local source, expiration, modRate = data.source, data.expiration, data.modRate
 						local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
 						if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
