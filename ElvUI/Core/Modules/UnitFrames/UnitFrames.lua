@@ -608,7 +608,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			frame.index = i
-			frame:SetParent(E.ElvUF_Parent)
+			frame:SetParent(E.UFParent)
 			frame:SetID(i)
 			UF[unit] = frame
 		end
@@ -945,7 +945,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 
 		if numGroups then
-			Header = CreateFrame('Frame', 'ElvUF_'..name, E.ElvUF_Parent, 'SecureHandlerStateTemplate')
+			Header = CreateFrame('Frame', 'ElvUF_'..name, E.UFParent, 'SecureHandlerStateTemplate')
 			Header.groups = {}
 			Header.groupName = group
 			Header.template = Header.template or template
@@ -956,7 +956,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 				UF.headerFunctions[group][k] = v
 			end
 		else
-			Header = self:CreateHeader(E.ElvUF_Parent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
+			Header = self:CreateHeader(E.UFParent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
 		end
 
 		Header:Show()
@@ -1570,9 +1570,9 @@ function UF:Initialize()
 	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
-	E.ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
-	E.ElvUF_Parent:SetFrameStrata('LOW')
-	RegisterStateDriver(E.ElvUF_Parent, 'visibility', '[petbattle] hide;show')
+	E.UFParent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
+	E.UFParent:SetFrameStrata('LOW')
+	RegisterStateDriver(E.UFParent, 'visibility', '[petbattle] hide;show')
 
 	ElvUF:Factory(UF.Setup)
 
