@@ -605,7 +605,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local frame = UF[unit]
 
 		if not frame then
-			UF.groupunits[unit] = group -- keep above spawn, it requires it
+			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
