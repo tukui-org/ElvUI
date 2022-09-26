@@ -1026,12 +1026,10 @@ function UF:CreateAndUpdateUF(unit)
 	local frame = UF[unit]
 	if not frame then
 		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+		frame:SetParent(E.UFParent)
+
 		UF.units[unit] = frame
 		UF[unit] = frame
-	end
-
-	if frame:GetParent() ~= E.UFParent then
-		frame:SetParent(E.UFParent)
 	end
 
 	if not frame.Update then
