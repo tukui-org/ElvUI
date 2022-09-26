@@ -356,7 +356,7 @@ function mod:StyleFilterAuraData(frame, filter)
 		if not info then info = {} end
 
 		temp[name] = info
-		temp[spellID] = info -- always keep this one updated
+		temp[spellID] = info
 
 		info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
 
