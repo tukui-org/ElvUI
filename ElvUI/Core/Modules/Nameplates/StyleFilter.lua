@@ -352,10 +352,13 @@ function mod:StyleFilterAuraData(frame, filter)
 	local index = 1
 	local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
 	while name do
-		local data = { count = count, expiration = expiration, source = source, modRate = modRate }
+		local info = temp[name] or temp[spellID]
+		if not info then info = {} end
 
-		if not temp[name] then temp[name] = data end
-		temp[spellID] = data
+		temp[name] = info
+		temp[spellID] = info -- always keep this one updated
+
+		info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
 
 		index = index + 1
 		name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
@@ -374,31 +377,30 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 
 			if not temp then temp = mod:StyleFilterAuraData(frame, filter) end
 
-			local spell, stacks, failed = strmatch(key, mod.StyleFilterStackPattern)
-			local data = temp[spell] or temp[tonumber(spell)]
+			local spell, stacks = strmatch(key, mod.StyleFilterStackPattern)
+			local info = temp[spell] or temp[tonumber(spell)]
 
-			if stacks ~= '' then failed = not (data and data.count and data.count >= tonumber(stacks)) end
-			if not failed and data then
-				local source, expiration, modRate = data.source, data.expiration, data.modRate
-				local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
-				if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
-					local hasMinTime = minTimeLeft and minTimeLeft ~= 0
-					local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
-					local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - now) / (modRate or 1))
-					local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
-					local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
+			if info then
+				for _, data in pairs(info) do -- need to loop for the sources, not all the spells though
+					if stacks == '' or not data.count or data.count < tonumber(stacks) then
+						local source, expiration, modRate = data.source, data.expiration, data.modRate
+						local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
+						if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
+							local hasMinTime = minTimeLeft and minTimeLeft ~= 0
+							local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
+							local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - now) / (modRate or 1))
+							local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
+							local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
-					if minTimeAllow and maxTimeAllow then
-						matches = matches + 1 -- keep track of how many matches we have
-					end
+							if minTimeAllow and maxTimeAllow then
+								matches = matches + 1 -- keep track of how many matches we have
+							end
 
-					if timeLeft then -- if we use a min/max time setting; we must create a delay timer
-						if not tickers[matches] then tickers[matches] = {} end
-						if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMinTimer', timeLeft, minTimeLeft) end
-						if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMaxTimer', timeLeft, maxTimeLeft) end
-					end
-				end
-			end
+							if timeLeft then -- if we use a min/max time setting; we must create a delay timer
+								if not tickers[matches] then tickers[matches] = {} end
+								if hasMinTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMinTimer', timeLeft, minTimeLeft) end
+								if hasMaxTime then mod:StyleFilterAuraWait(frame, tickers[matches], 'hasMaxTimer', timeLeft, maxTimeLeft) end
+			end end end end end
 
 			local stale = matches + 1
 			local ticker = tickers[stale]
@@ -408,9 +410,7 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 
 				stale = stale + 1
 				ticker = tickers[stale]
-			end
-		end
-	end
+	end end end
 
 	if temp then
 		wipe(temp) -- dont need it anymore
