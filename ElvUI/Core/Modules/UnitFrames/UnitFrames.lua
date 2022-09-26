@@ -781,12 +781,12 @@ function UF.groupPrototype:Configure_Groups(Header)
 end
 
 function UF.groupPrototype:Update(Header)
-	local group = Header.groupName
+	local db = UF.db.units[Header.groupName]
 
-	UF[group].db = UF.db.units[group]
+	UF[Header.groupName].db = db
 
 	for _, Group in ipairs(Header.groups) do
-		Group.db = UF.db.units[group]
+		Group.db = db
 		Group:Update()
 	end
 end
@@ -829,8 +829,7 @@ function UF.headerPrototype:UpdateChild(func, child, db)
 end
 
 function UF.headerPrototype:Update(isForced)
-	local group = self.groupName
-	local db = UF.db.units[group]
+	local db = UF.db.units[self.groupName]
 
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
