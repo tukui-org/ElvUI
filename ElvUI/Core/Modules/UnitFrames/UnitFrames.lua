@@ -989,14 +989,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			groupFunctions:AdjustVisibility(Header)
 			groupFunctions:Configure_Groups(Header)
 		end
-	else
-		if not groupFunctions.Update then
-			groupFunctions.Update = function(_, header)
-				UF[header.UpdateHeader](UF, header, header.db)
+	elseif not groupFunctions.Update then
+		groupFunctions.Update = function(_, header)
+			UF[header.UpdateHeader](UF, header, header.db)
 
-				for _, child in ipairs({ header:GetChildren() }) do
-					header:UpdateChild(UF[header.UpdateFrames], child, header.db)
-				end
+			for _, child in ipairs({ header:GetChildren() }) do
+				header:UpdateChild(UF[header.UpdateFrames], child, header.db)
 			end
 		end
 	end
