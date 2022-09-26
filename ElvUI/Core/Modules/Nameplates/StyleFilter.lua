@@ -387,10 +387,9 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 
 				for _, data in pairs(info) do -- need to loop for the sources, not all the spells though
 					if not stacks or (data.count and data.count >= stacks) then
-						local source, expiration, modRate = data.source, data.expiration, data.modRate
-						local isMe, isPet = source == 'player' or source == 'vehicle', source == 'pet'
+						local isMe, isPet = data.source == 'player' or data.source == 'vehicle', data.source == 'pet'
 						if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
-							local timeLeft = (hasMinTime or hasMaxTime) and expiration and ((expiration - now) / (modRate or 1))
+							local timeLeft = (hasMinTime or hasMaxTime) and data.expiration and ((data.expiration - now) / (data.modRate or 1))
 							local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 							local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
