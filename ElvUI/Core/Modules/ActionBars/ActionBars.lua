@@ -50,10 +50,6 @@ local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
 local defaultFont, defaultFontSize, defaultFontOutline
 
-local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
-hiddenParent:SetAllPoints()
-hiddenParent:Hide()
-
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -329,13 +325,13 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetAttribute('page', page)
 
 	if db.enabled then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.mover.name)
 		bar:Show()
 
 		local visibility = gsub(db.visibility, '[\n\r]', '')
 		RegisterStateDriver(bar, 'visibility', visibility)
 	else
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.mover.name)
 		bar:Hide()
 
 		UnregisterStateDriver(bar, 'visibility')
@@ -1009,7 +1005,7 @@ function AB:DisableBlizzard()
 		local frame = _G[name]
 		if frame then
 			if i < count then frame:UnregisterAllEvents() end
-			frame:SetParent(hiddenParent)
+			frame:SetParent(E.HiddenFrame)
 			AB:SetNoopsi(frame)
 		end
 	end

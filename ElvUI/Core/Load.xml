@@ -3,7 +3,7 @@
 	<Include file ='Developer\Load_Developer.xml'/>
 	<Include file ='Locales\Load_Locales.xml'/>
 	<Include file ='Media\Load_Media.xml'/>
-	<Include file ='Settings\Load_Settings.xml'/>
+	<Include file ='Defaults\Load_Defaults.xml'/>
 	<Include file ='General\Load_General.xml'/>
 	<Include file ='Layout\Load_Layout.xml'/>
 	<Include file ='Modules\Load_Modules.xml'/>

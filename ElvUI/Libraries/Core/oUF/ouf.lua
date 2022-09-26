@@ -341,8 +341,6 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 		end
 
-		activeElements[object] = {} -- ElvUI: styleFunc on headers break before this is set when they try to enable elements before it's set.
-
 		Private.UpdateUnits(object, objectUnit)
 
 		styleFunc(object, objectUnit, not header)
@@ -353,20 +351,19 @@ local function initObject(unit, style, styleFunc, header, ...)
 		-- need to call UAE multiple times
 		if(not object.isNamePlate) then
 			object:SetScript('OnShow', onShow)
+
+			-- Make Clique kinda happy
+			_G.ClickCastFrames = _G.ClickCastFrames or {}
+			_G.ClickCastFrames[object] = true
 		end
 
+		activeElements[object] = {}
 		for element in next, elements do
 			object:EnableElement(element, objectUnit)
 		end
 
 		for _, func in next, callback do
 			func(object)
-		end
-
-		-- Make Clique kinda happy
-		if(not object.isNamePlate) then
-			_G.ClickCastFrames = _G.ClickCastFrames or {}
-			_G.ClickCastFrames[object] = true
 		end
 	end
 end

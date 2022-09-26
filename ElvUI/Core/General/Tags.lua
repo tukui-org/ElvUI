@@ -794,7 +794,7 @@ E:AddTag('specialization', 'PLAYER_TALENT_UPDATE', function(unit)
 			return currentSpecName
 		end
 	end
-end)
+end, not E.Retail)
 
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return UnitIsPlayer(unit) and UnitPVPName(unit) or UnitName(unit)
