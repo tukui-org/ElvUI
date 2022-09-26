@@ -606,7 +606,6 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-			frame:SetParent(E.UFParent)
 			frame:SetID(i)
 			frame.index = i
 
@@ -917,7 +916,10 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 	header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 
-	header:SetParent(parent)
+	if parent ~= E.UFParent then
+		header:SetParent(parent)
+	end
+
 	header:Show()
 
 	for k, v in pairs(UF.headerPrototype) do
@@ -1023,7 +1025,6 @@ function UF:CreateAndUpdateUF(unit)
 	local frame = UF[unit]
 	if not frame then
 		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
-		frame:SetParent(E.UFParent)
 
 		UF.units[unit] = frame
 		UF[unit] = frame
