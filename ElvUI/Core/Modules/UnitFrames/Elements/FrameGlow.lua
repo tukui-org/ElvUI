@@ -421,8 +421,8 @@ function UF:FrameGlow_UpdateFrames()
 	local dbTexture = LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 
 	-- focus, focustarget, pet, pettarget, player, target, targettarget, targettargettarget
-	for unit in pairs(UF.units) do
-		UF:FrameGlow_ConfigureGlow(UF[unit], unit, dbTexture)
+	for unit, frame in pairs(UF.units) do
+		UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	-- arena{1-5}, boss{1-5}
