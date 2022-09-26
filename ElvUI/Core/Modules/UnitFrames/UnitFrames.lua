@@ -569,8 +569,7 @@ function UF:Update_AllFrames()
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
 
-	for unit in pairs(UF.units) do
-		local frame = UF[unit]
+	for unit, frame in pairs(UF.units) do
 		if UF.db.units[unit].enable then
 			frame:Enable()
 			frame:Update()
