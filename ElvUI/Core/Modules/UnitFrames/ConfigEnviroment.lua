@@ -276,9 +276,8 @@ function UF:PLAYER_REGEN_DISABLED()
 		end
 	end
 
-	for _, unit in pairs(UF.units) do
-		local frame = self[unit]
-		if frame and frame.forceShow then
+	for _, frame in pairs(UF.units) do
+		if frame.forceShow then
 			self:UnforceShow(frame)
 		end
 	end

@@ -1244,8 +1244,8 @@ UnitFrame.individualUnits = ACH:Group(L["Individual Units"], nil, 15, 'tab', nil
 local IndividualUnits = UnitFrame.individualUnits.args
 
 local SingleCopyFrom = {}
-for name in pairs(UF.units) do
-	SingleCopyFrom[name] = gsub(E:StringTitle(name), 't(arget)', 'T%1')
+for unit in pairs(UF.units) do
+	SingleCopyFrom[unit] = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 end
 
 local function CopyFromSingle(info)
