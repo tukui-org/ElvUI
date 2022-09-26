@@ -37,6 +37,9 @@ local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
+E.UFParent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
+E.UFParent:SetFrameStrata('LOW')
+
 UF.headerstoload = {}
 UF.unitgroupstoload = {}
 UF.unitstoload = {}
@@ -1570,8 +1573,6 @@ function UF:Initialize()
 	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
-	E.UFParent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
-	E.UFParent:SetFrameStrata('LOW')
 	RegisterStateDriver(E.UFParent, 'visibility', '[petbattle] hide;show')
 
 	ElvUF:Factory(UF.Setup)
