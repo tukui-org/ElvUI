@@ -28,7 +28,7 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetRuneCooldown = GetRuneCooldown
 local GetSpecialization = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecialization) or GetSpecialization
-local GetSpecializationInfo = (E.Classic or E.TBC or E.Wrath and LCS.GetSpecializationInfo) or GetSpecializationInfo
+local GetSpecializationInfo = GetSpecializationInfo
 local GetTime = GetTime
 local GetTitleName = GetTitleName
 local GetUnitSpeed = GetUnitSpeed
@@ -794,7 +794,7 @@ E:AddTag('specialization', 'PLAYER_TALENT_UPDATE', function(unit)
 			return currentSpecName
 		end
 	end
-end)
+end, not E.Retail)
 
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return UnitIsPlayer(unit) and UnitPVPName(unit) or UnitName(unit)
