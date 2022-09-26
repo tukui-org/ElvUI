@@ -33,9 +33,6 @@ local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 local MAX_BOSS_FRAMES = 8
 
 -- GLOBALS: Arena_LoadUI
-local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
-hiddenParent:SetAllPoints()
-hiddenParent:Hide()
 
 E.UFParent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
 E.UFParent:SetFrameStrata('LOW')
@@ -1108,7 +1105,7 @@ function UF:DisableBlizzard()
 		CompactRaidFrameManager_SetSetting('IsShown', '0')
 		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 		_G.CompactRaidFrameManager:UnregisterAllEvents()
-		_G.CompactRaidFrameManager:SetParent(hiddenParent)
+		_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
 	end
 end
 
@@ -1182,7 +1179,7 @@ do
 			frame:Hide()
 
 			if not doNotReparent then
-				frame:SetParent(hiddenParent)
+				frame:SetParent(E.HiddenFrame)
 			end
 
 			local health = frame.healthBar or frame.healthbar
