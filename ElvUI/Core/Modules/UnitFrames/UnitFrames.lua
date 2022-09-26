@@ -34,9 +34,6 @@ local MAX_BOSS_FRAMES = 8
 
 -- GLOBALS: Arena_LoadUI
 
-E.UFParent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
-E.UFParent:SetFrameStrata('LOW')
-
 UF.headerstoload = {}
 UF.unitgroupstoload = {}
 UF.unitstoload = {}
@@ -1574,8 +1571,6 @@ function UF:Initialize()
 
 	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
-
-	RegisterStateDriver(E.UFParent, 'visibility', '[petbattle] hide;show')
 
 	ElvUF:Factory(UF.Setup)
 

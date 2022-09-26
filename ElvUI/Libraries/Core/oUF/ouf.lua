@@ -27,17 +27,23 @@ local next, time, wipe, type = next, time, wipe, type
 local select, pairs, ipairs = select, pairs, ipairs
 local strupper, strsplit = strupper, strsplit
 
+local SecureButton_GetUnit = SecureButton_GetUnit
+local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
+local RegisterAttributeDriver = RegisterAttributeDriver
+local UnregisterUnitWatch = UnregisterUnitWatch
+local RegisterUnitWatch = RegisterUnitWatch
 local CreateFrame = CreateFrame
 local IsLoggedIn = IsLoggedIn
 local UnitGUID = UnitGUID
 local SetCVar = SetCVar
 -- end
 
-local PetBattleFrameHider = CreateFrame('Frame', (global or parent) .. '_PetBattleFrameHider', UIParent, 'SecureHandlerStateTemplate')
-PetBattleFrameHider:SetAllPoints()
-PetBattleFrameHider:SetFrameStrata('LOW')
-RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
+local UFParent = CreateFrame('Frame', (global or parent) .. 'Parent', UIParent, 'SecureHandlerStateTemplate')
+UFParent:SetFrameStrata('LOW')
+RegisterStateDriver(UFParent, 'visibility', '[petbattle] hide; show')
 
 local function updateActiveUnit(self, event)
 	-- Calculate units to work with
@@ -651,7 +657,7 @@ do
 
 		local isPetHeader = template:match('PetHeader')
 		local name = overrideName or generateName(nil, ...)
-		local header = CreateFrame('Frame', name, PetBattleFrameHider, template)
+		local header = CreateFrame('Frame', name, UFParent, template)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
 		for i = 1, select('#', ...), 2 do
@@ -709,8 +715,8 @@ do
 		end
 
 		if(visibility) then
-			local type, list = strsplit(' ', visibility, 2)
-			if(list and type == 'custom') then
+			local which, list = strsplit(' ', visibility, 2)
+			if(list and which == 'custom') then
 				RegisterAttributeDriver(header, 'state-visibility', list)
 				header.visibility = list
 			else
@@ -743,7 +749,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, PetBattleFrameHider, overrideTemplate or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UFParent, overrideTemplate or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -778,7 +784,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	-- and because forbidden nameplates exist, we have to allow default nameplate
 	-- driver to create, update, and remove Blizz nameplates.
 	-- Disable only not forbidden nameplates.
-	NamePlateDriverFrame:HookScript('OnEvent', function(_, event, unit)
+	_G.NamePlateDriverFrame:HookScript('OnEvent', function(_, event, unit)
 		if(event == 'NAME_PLATE_UNIT_ADDED' and unit) then
 			self:DisableBlizzard(unit)
 		end
