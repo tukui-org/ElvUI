@@ -348,7 +348,7 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
-	if event == 'LOADING_SCREEN_ENABLED' then
+	if event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
 		OnLeave()
 	elseif event == 'UPDATE_INSTANCE_INFO' and enteredFrame then
 		OnEnter(self)
