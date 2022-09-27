@@ -223,7 +223,7 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 }
 
 function UF:ConvertGroupDB(group)
-	local db = self.db.units[group.groupName]
+	local db = UF.db.units[group.groupName]
 	if db.point and db.columnAnchorPoint then
 		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint]
 		db.point = nil
@@ -373,7 +373,7 @@ function UF:GetAuraAnchorFrame(frame, attachTo)
 end
 
 function UF:UpdateColors()
-	local db = self.db.colors
+	local db = UF.db.colors
 
 	ElvUF.colors.tapped = E:SetColorTable(ElvUF.colors.tapped, db.tapped)
 	ElvUF.colors.disconnected = E:SetColorTable(ElvUF.colors.disconnected, db.disconnected)
@@ -464,7 +464,7 @@ function UF:UpdateColors()
 end
 
 function UF:Update_StatusBars(statusbars)
-	local statusBarTexture = LSM:Fetch('statusbar', self.db.statusbar)
+	local statusBarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 	for statusbar in pairs(statusbars or UF.statusbars) do
 		if statusbar then
 			local useBlank = statusbar.isTransparent
@@ -486,7 +486,7 @@ end
 
 function UF:Update_StatusBar(statusbar, texture)
 	if not statusbar then return end
-	if not texture then texture = LSM:Fetch('statusbar', self.db.statusbar) end
+	if not texture then texture = LSM:Fetch('statusbar', UF.db.statusbar) end
 
 	if statusbar:IsObjectType('StatusBar') then
 		statusbar:SetStatusBarTexture(texture)
@@ -496,11 +496,11 @@ function UF:Update_StatusBar(statusbar, texture)
 end
 
 function UF:Update_FontString(object)
-	object:FontTemplate(LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline)
+	object:FontTemplate(LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline)
 end
 
 function UF:Update_FontStrings()
-	local font, size, outline = LSM:Fetch('font', self.db.font), self.db.fontSize, self.db.fontOutline
+	local font, size, outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
 	for obj in pairs(UF.fontstrings) do
 		obj:FontTemplate(font, size, outline)
 	end
@@ -633,19 +633,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		end
 
 		if frame.isForced then
-			self:ForceShow(frame)
-		end
-	end
-end
-
-function UF:HeaderUpdateSpecificElement(group, elementName)
-	local Header = self[group]
-	assert(Header, 'Invalid group specified.')
-
-	for i=1, Header:GetNumChildren() do
-		local frame = select(i, Header:GetChildren())
-		if frame and frame.Health then
-			frame:UpdateElement(elementName)
+			UF:ForceShow(frame)
 		end
 	end
 end
@@ -956,13 +944,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 				UF.headerFunctions[group][k] = v
 			end
 		else
-			Header = self:CreateHeader(E.UFParent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
+			Header = UF:CreateHeader(E.UFParent, groupFilter, 'ElvUF_'..name, template, group, headerTemplate)
 		end
 
 		Header:Show()
 
-		self[group] = Header
-		self.headers[group] = Header
+		UF[group] = Header
+		UF.headers[group] = Header
 	end
 
 	local groupFunctions = UF.headerFunctions[group]
@@ -975,12 +963,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	if numGroups then
 		if db.raidWideSorting then
 			if not Header.groups[1] then
-				Header.groups[1] = self:CreateHeader(Header, nil, 'ElvUF_'..name..'Group1', template or Header.template, nil, headerTemplate or Header.headerTemplate)
+				Header.groups[1] = UF:CreateHeader(Header, nil, 'ElvUF_'..name..'Group1', template or Header.template, nil, headerTemplate or Header.headerTemplate)
 			end
 		else
 			while numGroups > #Header.groups do
 				local index = tostring(#Header.groups + 1)
-				tinsert(Header.groups, self:CreateHeader(Header, index, 'ElvUF_'..name..'Group'..index, template or Header.template, nil, headerTemplate or Header.headerTemplate))
+				tinsert(Header.groups, UF:CreateHeader(Header, index, 'ElvUF_'..name..'Group'..index, template or Header.template, nil, headerTemplate or Header.headerTemplate))
 			end
 		end
 
@@ -1321,11 +1309,12 @@ function UF:ResetUnitSettings(unit)
 end
 
 function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
-	for i=1, numGroup do
-		if self[unitGroup..i] and not self[unitGroup..i].isForced then
-			UF:ForceShow(self[unitGroup..i])
-		elseif self[unitGroup..i] then
-			UF:UnforceShow(self[unitGroup..i])
+	for i = 1, numGroup do
+		local unit = unitGroup..i
+		if UF[unit] and not UF[unit].isForced then
+			UF:ForceShow(UF[unit])
+		elseif UF[unit] then
+			UF:UnforceShow(UF[unit])
 		end
 	end
 end
@@ -1455,7 +1444,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
-		local texture = LSM:Fetch('statusbar', self.db.statusbar)
+		local texture = LSM:Fetch('statusbar', UF.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
 
