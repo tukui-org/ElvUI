@@ -19,8 +19,7 @@ local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 
-local CurrentXP, XPToLevel, RestedXP, PercentRested
-local PercentXP, RemainXP, RemainTotal, RemainBars
+local CurrentXP, XPToLevel, RestedXP, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars
 local QuestLogXP = 0
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
@@ -180,15 +179,17 @@ function DB:ExperienceBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 
 	GameTooltip:AddDoubleLine(L["Experience"], format('%s %d', L["Level"], E.mylevel))
-	GameTooltip:AddLine(' ')
 
-	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
-
+	if CurrentXP then
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
+	end
+	if RemainXP then
+		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
+	end
 	if QuestLogXP and QuestLogXP > 0 then
 		GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
 	end
-
 	if RestedXP and RestedXP > 0 then
 		GameTooltip:AddDoubleLine(L["Rested:"], format('%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
 	end
