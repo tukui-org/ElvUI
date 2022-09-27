@@ -1745,11 +1745,13 @@ Action.IsConsumableOrStackable = function(self) return IsConsumableAction(self._
 Action.IsUnitInRange           = function(self, unit) return IsActionInRange(self._state_action, unit) end
 Action.SetTooltip              = function(self) return GameTooltip:SetAction(self._state_action) end
 Action.GetSpellId              = function(self)
-	local actionType, id, subType = GetActionInfo(self._state_action)
-	if actionType == "spell" then
-		return id
-	elseif actionType == "macro" then
-		return (GetMacroSpell(id))
+	if self._state_type == "action" then
+		local actionType, id, subType = GetActionInfo(self._state_action)
+		if actionType == "spell" then
+			return id
+		elseif actionType == "macro" then
+			return (GetMacroSpell(id))
+		end
 	end
 end
 Action.GetLossOfControlCooldown = function(self) return GetActionLossOfControlCooldown(self._state_action) end
