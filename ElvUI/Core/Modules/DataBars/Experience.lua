@@ -19,9 +19,7 @@ local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 
-local CurrentXP, XPToLevel, RestedXP, PercentRested
-local PercentXP, RemainXP, RemainTotal, RemainBars
-local QuestLogXP = 0
+local CurrentXP, XPToLevel, RestedXP, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars, QuestLogXP = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if E.Retail and questID then
