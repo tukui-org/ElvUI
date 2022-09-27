@@ -378,7 +378,7 @@ function AB:CreateBar(id)
 			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
-		if i == 12 then
+		if i == 8 then
 			button:SetState(12, 'custom', AB.customExitButton)
 		end
 
