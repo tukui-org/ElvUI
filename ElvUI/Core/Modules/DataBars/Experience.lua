@@ -47,7 +47,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 end
 
 local function RestedQuestLayering()
-	if not QuestLogXP or not RestedXP then return end
+	if not RestedXP then return end
 	local bar = DB.StatusBars.Experience
 
 	bar.Quest.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP > RestedXP) and 2 or 3)
@@ -187,7 +187,7 @@ function DB:ExperienceBar_OnEnter()
 	if RemainXP then
 		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 	end
-	if QuestLogXP and QuestLogXP > 0 then
+	if QuestLogXP > 0 then
 		GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
 	end
 	if RestedXP and RestedXP > 0 then
