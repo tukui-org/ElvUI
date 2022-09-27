@@ -19,7 +19,8 @@ local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 
-local CurrentXP, XPToLevel, RestedXP, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars, QuestLogXP = 0, 0, 0, 0, 0, 0, 0, 0, 0
+local CurrentXP, XPToLevel, RestedXP, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars
+local QuestLogXP = 0
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if E.Retail and questID then
@@ -183,7 +184,7 @@ function DB:ExperienceBar_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
 	end
-	if RemainXP and RemainXP > 0 then
+	if RemainXP then
 		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 	end
 	if QuestLogXP and QuestLogXP > 0 then
