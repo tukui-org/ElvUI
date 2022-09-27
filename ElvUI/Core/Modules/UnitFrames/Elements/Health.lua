@@ -25,8 +25,8 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	UF.statusbars[health] = true
 
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
-	health.PostUpdate = self.PostUpdateHealth
-	health.PostUpdateColor = self.PostUpdateHealthColor
+	health.PostUpdate = UF.PostUpdateHealth
+	health.PostUpdateColor = UF.PostUpdateHealthColor
 
 	if bg then
 		health.bg = health:CreateTexture(nil, 'BORDER')
@@ -54,11 +54,11 @@ function UF:Configure_HealthBar(frame)
 
 	health:SetColorTapping(true)
 	health:SetColorDisconnected(true)
-	E:SetSmoothing(health, self.db.smoothbars)
+	E:SetSmoothing(health, UF.db.smoothbars)
 
 	--Text
 	if db.health and health.value then
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.health.attachTextTo)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.health.attachTextTo)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, attachPoint, db.health.position, db.health.xOffset, db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
@@ -75,22 +75,22 @@ function UF:Configure_HealthBar(frame)
 		health.colorClass = true
 		health.colorReaction = true
 	elseif db.colorOverride and db.colorOverride == 'FORCE_OFF' then
-		if self.db.colors.colorhealthbyvalue then
+		if UF.db.colors.colorhealthbyvalue then
 			health.colorSmooth = true
 		else
 			health.colorHealth = true
 		end
 	else
-		if E.Retail and self.db.colors.healthselection then
+		if E.Retail and UF.db.colors.healthselection then
 			colorSelection = true
-		elseif self.db.colors.healthclass ~= true then
-			if self.db.colors.colorhealthbyvalue then
+		elseif UF.db.colors.healthclass ~= true then
+			if UF.db.colors.colorhealthbyvalue then
 				health.colorSmooth = true
 			else
 				health.colorHealth = true
 			end
 		else
-			health.colorClass = (not self.db.colors.forcehealthreaction)
+			health.colorClass = (not UF.db.colors.forcehealthreaction)
 			health.colorReaction = true
 		end
 	end
