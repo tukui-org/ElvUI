@@ -72,7 +72,6 @@ function UF:Construct_ArenaFrames(frame)
 
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
-		frame:SetAttribute('type2', 'focus')
 
 		frame.customTexts = {}
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
