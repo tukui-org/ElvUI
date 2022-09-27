@@ -58,7 +58,7 @@ function DB:ExperienceBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
+	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), (GetXPExhaustion() or 0)
 	if XPToLevel <= 0 then XPToLevel = 1 end
 
 	local remainXP = XPToLevel - CurrentXP
