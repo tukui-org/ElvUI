@@ -378,8 +378,8 @@ function AB:CreateBar(id)
 			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
-		if i == 8 then
-			button:SetState(12, 'custom', AB.customExitButton)
+		if i == 12 then
+			button:SetState(i, 'custom', AB.customExitButton)
 		end
 
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
