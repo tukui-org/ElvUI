@@ -30,7 +30,6 @@ function UF:Construct_BossFrames(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
-	frame:SetAttribute('type2', 'focus')
 	frame.customTexts = {}
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)

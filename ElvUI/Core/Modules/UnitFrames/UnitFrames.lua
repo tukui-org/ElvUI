@@ -1310,11 +1310,11 @@ end
 
 function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
 	for i = 1, numGroup do
-		local unit = unitGroup..i
-		if UF[unit] and not UF[unit].isForced then
-			UF:ForceShow(UF[unit])
-		elseif UF[unit] then
-			UF:UnforceShow(UF[unit])
+		local frame = UF[unitGroup..i]
+		if frame and not frame.isForced then
+			UF:ForceShow(frame)
+		elseif frame then
+			UF:UnforceShow(frame)
 		end
 	end
 end

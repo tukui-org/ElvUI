@@ -29,7 +29,7 @@ function UF:Configure_CustomTexts(frame)
 				tagFont = LSM:Fetch('font', db.font)
 			end
 
-			local attachPoint = self:GetObjectAnchorPoint(frame, db.attachTextTo)
+			local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTextTo, db.attachTextTo == 'Power')
 			object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
 			object:SetJustifyH(db.justifyH or 'CENTER')
 			object:ClearAllPoints()
@@ -39,6 +39,8 @@ function UF:Configure_CustomTexts(frame)
 				object:SetParent(frame.Power.RaisedElementParent)
 			elseif db.attachTextTo == 'AdditionalPower' and frame.AdditionalPower then
 				object:SetParent(frame.AdditionalPower.RaisedElementParent)
+			elseif db.attachTextTo == 'InfoPanel' and frame.InfoPanel then
+				object:SetParent(frame.InfoPanel)
 			else
 				object:SetParent(frame.RaisedElementParent)
 			end
@@ -50,11 +52,11 @@ function UF:Configure_CustomTexts(frame)
 
 			if db.enable then
 				frame:Tag(object, db.text_format or '')
-				object:Show()
 			else
 				frame:Untag(object)
-				object:Hide()
 			end
+
+			object:SetShown(db.enable)
 
 			if not frame.customTexts[name] then
 				frame.customTexts[name] = object
@@ -71,11 +73,7 @@ function UF:ToggleVisibility_CustomTexts(frame, show)
 			local object = frame.customTexts[name]
 			local db = frameDB.customTexts[name]
 
-			if show and db.enable then
-				object:Show()
-			else
-				object:Hide()
-			end
+			object:SetShown(show and db.enable)
 		end
 	end
 end
