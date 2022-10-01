@@ -1,30 +1,39 @@
 local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule("DataTexts")
 
---Lua functions
 local min = min
 local join = strjoin
---WoW API / Variables
-local GetCombatRating = GetCombatRating
-local CR_CRIT_TAKEN_MELEE = CR_CRIT_TAKEN_MELEE
-local CR_CRIT_TAKEN_RANGED = CR_CRIT_TAKEN_RANGED
-local CR_CRIT_TAKEN_SPELL = CR_CRIT_TAKEN_SPELL
-local STAT_RESILIENCE = STAT_RESILIENCE
+local format = format
 
-local displayNumberString = ''
-local lastPanel
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetMaxCombatRatingBonus = GetMaxCombatRatingBonus
+
+local STAT_RESILIENCE = STAT_RESILIENCE
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local CR_RESILIENCE_CRIT_TAKEN = CR_RESILIENCE_CRIT_TAKEN
+local RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER
+local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER
+
+local RESILIENCE_TOOLTIP = RESILIENCE_TOOLTIP
+
+local displayNumberString, lastPanel = ''
+local resilience, bonus, maxBonus
 
 local function OnEvent(self)
+	resilience = GetCombatRating(CR_RESILIENCE_CRIT_TAKEN)
+	bonus = GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)
+	maxBonus = GetMaxCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)
+
+	self.text:SetFormattedText(displayNumberString, resilience)
+
 	lastPanel = self
+end
 
-	local melee = GetCombatRating(CR_CRIT_TAKEN_MELEE)
-	local ranged = GetCombatRating(CR_CRIT_TAKEN_RANGED)
-	local spell = GetCombatRating(CR_CRIT_TAKEN_SPELL)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
-	local minResilience = min(melee, ranged)
-	minResilience = min(minResilience, spell)
-
-	self.text:SetFormattedText(displayNumberString, minResilience)
+	DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))
 end
 
 local function ValueColorUpdate(hex)
@@ -36,4 +45,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Resilience', {'COMBAT_RATING_UPDATE'}, OnEvent, nil, nil, nil, nil, STAT_RESILIENCE)
+DT:RegisterDatatext('Resilience', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, STAT_RESILIENCE, nil, ValueColorUpdate)
