@@ -1120,11 +1120,11 @@ do
 
 	E:AddTag('npctitle', 'UNIT_NAME_UPDATE', function(unit)
 		return GetTitleNPC(unit)
-	end)
+	end, E.Wrath)
 
 	E:AddTag('npctitle:brackets', 'UNIT_NAME_UPDATE', function(unit)
 		return GetTitleNPC(unit, '<%s>')
-	end)
+	end, E.Wrath)
 end
 
 do
@@ -1185,27 +1185,27 @@ do
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, nil, Hex)
-	end)
+	end, E.Wrath)
 
 	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'full', Hex)
-	end)
+	end, E.Wrath)
 
 	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'info', Hex)
-	end)
+	end, E.Wrath)
 
 	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'title', Hex)
-	end)
+	end, E.Wrath)
 
 	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'count', Hex)
-	end)
+	end, E.Wrath)
 end
 
 do
