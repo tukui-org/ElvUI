@@ -930,7 +930,8 @@ G.unitframe.aurawatch = {
 		[17]	= Aura(17, {592,600,3747,6065,6066,10898,10899,10900,10901,25217,25218,48065,48066}, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
 		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,25221,25222,48067,48068}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
 		[6788]	= Aura(6788, nil, 'TOP', {0.89, 0.1, 0.1}), -- Weakened Soul
-		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Prayer of Mending / Pain Suppression / Power Infusion
+		[41635]	= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
+		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Pain Suppression / Power Infusion
 	},
 	ROGUE = {
 		-- TODO: Tricks of the Trade
