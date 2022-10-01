@@ -38,6 +38,7 @@ local IsInRaid = IsInRaid
 local IsInInstance = IsInInstance
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
@@ -1103,7 +1104,7 @@ end
 
 do
 	local function GetTitleNPC(unit, custom)
-		if UnitIsPlayer(unit) or IsInInstance() then return end
+		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
 
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
@@ -1130,7 +1131,7 @@ end
 
 do
 	local function GetQuestData(unit, which, Hex)
-		if UnitIsPlayer(unit) then return end
+		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
 
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
