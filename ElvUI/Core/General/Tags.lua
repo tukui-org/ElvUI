@@ -35,6 +35,7 @@ local GetUnitSpeed = GetUnitSpeed
 local HasPetUI = HasPetUI
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
+local IsInInstance = IsInInstance
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
@@ -1102,7 +1103,7 @@ end
 
 do
 	local function GetTitleNPC(unit, custom)
-		if UnitIsPlayer(unit) then return end
+		if UnitIsPlayer(unit) or IsInInstance() then return end
 
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
@@ -1120,15 +1121,17 @@ do
 
 	E:AddTag('npctitle', 'UNIT_NAME_UPDATE', function(unit)
 		return GetTitleNPC(unit)
-	end, E.Wrath)
+	end)
 
 	E:AddTag('npctitle:brackets', 'UNIT_NAME_UPDATE', function(unit)
 		return GetTitleNPC(unit, '<%s>')
-	end, E.Wrath)
+	end)
 end
 
 do
 	local function GetQuestData(unit, which, Hex)
+		if UnitIsPlayer(unit) then return end
+
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
 		E.ScanTooltip:Show()
@@ -1183,29 +1186,24 @@ do
 	E.TagFunctions.GetQuestData = GetQuestData
 
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, nil, Hex)
-	end, E.Wrath)
+	end)
 
 	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'full', Hex)
-	end, E.Wrath)
+	end)
 
 	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'info', Hex)
-	end, E.Wrath)
+	end)
 
 	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'title', Hex)
-	end, E.Wrath)
+	end)
 
 	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'count', Hex)
-	end, E.Wrath)
+	end)
 end
 
 do
