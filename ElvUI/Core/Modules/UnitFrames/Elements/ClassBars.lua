@@ -414,7 +414,11 @@ function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	self:SetShown(not hasVehicle and not db.classbar.autoHide or not allReady)
+	if hasVehicle then
+		self:SetShown(false)
+	else
+		self:SetShown(not db.classbar.autoHide or not allReady)
+	end
 
 	if E.Retail and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
