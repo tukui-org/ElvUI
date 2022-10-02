@@ -382,6 +382,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(textR, textG, textB)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(textR, textG, textB)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(textR, textG, textB)
+		_G.QuestInfoTalentFrame.ReceiveText:SetTextColor(textR, textG, textB)
 		_G.QuestInfoRewardsFrameHonorReceiveText:SetTextColor(textR, textG, textB)
 		_G.QuestInfoRewardsFrameReceiveText:SetTextColor(textR, textG, textB)
 
