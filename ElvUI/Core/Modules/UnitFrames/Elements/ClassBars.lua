@@ -436,7 +436,7 @@ function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 end
 
 function UF:Runes_PostUpdateColor(r, g, b, color, rune)
-	UF:ClassPower_UpdateColor('RUNES', rune)
+	UF.ClassPower_UpdateColor(self, 'RUNES', rune)
 end
 
 function UF:Construct_DeathKnightResourceBar(frame)
