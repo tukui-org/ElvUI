@@ -63,6 +63,10 @@ local function onUpdate(self, elapsed)
 	local duration = self.duration + elapsed
 	self.duration = duration
 	self:SetValue(duration)
+
+	if self.PostUpdateColor then
+		self:PostUpdateColor()
+	end
 end
 
 local function ascSort(runeAID, runeBID)
@@ -155,7 +159,7 @@ local function UpdateColor(self, event, runeID, alt)
 	end
 end
 
-local function ColorPath(self, ...)
+local function ColorPath(self, event, ...)
 	--[[ Override: Runes.UpdateColor(self, event, ...)
 	Used to completely override the internal function for updating the widgets' colors.
 
@@ -163,7 +167,7 @@ local function ColorPath(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	(self.Runes.UpdateColor or UpdateColor) (self, ...)
+	(self.Runes.UpdateColor or UpdateColor) (self, event, ...)
 end
 
 local function Update(self, event)
@@ -252,8 +256,7 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		for i = 1, #element do
-			local rune = element[i]
+		for _, rune in ipairs(element) do
 			if(rune:IsObjectType('StatusBar') and not (rune:GetStatusBarTexture() or rune:GetStatusBarAtlas())) then
 				rune:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
@@ -280,8 +283,8 @@ end
 local function Disable(self)
 	local element = self.Runes
 	if(element) then
-		for i = 1, #element do
-			element[i]:Hide()
+		for _, rune in ipairs(element) do
+			rune:Hide()
 		end
 
 		-- ElvUI block
