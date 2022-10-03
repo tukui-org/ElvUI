@@ -155,7 +155,7 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
-if not E.Retail then
+if not (E.Retail or E.Wrath) then
 	CH.BNGetFriendInfo = _G.BNGetFriendInfo
 	CH.BNGetFriendInfoByID = _G.BNGetFriendInfoByID
 	CH.BNGetFriendGameAccountInfo = _G.BNGetFriendGameAccountInfo
@@ -319,18 +319,18 @@ do --this can save some main file locals
 	elseif E.Wrath then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
+		z['Kalline-Myzrael']		= itsSimpy -- Shaman
+		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
 		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
-		z['Luckydruid-Gehennas']	= ElvBlue -- Druid
-		z['Luckypriest-Gehennas']	= ElvBlue -- Priest
-		z['Luckyshaman-Gehennas']	= ElvBlue -- Shaman
-		z['Luckyhunter-Gehennas']	= ElvBlue -- Hunter
-		z['Luckyd-Golemagg']		= ElvBlue -- Druid
-		z['Luckyp-Golemagg']		= ElvBlue -- Priest
+		z['Luckyd-Golemagg']		= ElvBlue -- Druid H
+		z['Luckyp-Golemagg']		= ElvBlue -- Priest H
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
-		z['Unluckyone-Golemagg']	= ElvBlue -- Hunter
-		z['Luckyone-Giantstalker']	= ElvBlue -- Druid
-		z['Luckyone-Thekal']		= ElvBlue -- Druid
+		z["Luckyone-Jin'do"]		= ElvBlue -- Shaman
+		z['Luckyone-Everlook']		= ElvBlue -- Druid A
+		z['Luckypriest-Everlook']	= ElvBlue -- Priest A
+		z['Luckydk-Everlook']		= ElvBlue -- DK
+		z['Luckyone-Giantstalker']	= ElvBlue -- Paladin
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
@@ -372,6 +372,12 @@ do --this can save some main file locals
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
 		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
+		-- Repooc
+		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
+		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
+		z['Dapooc-Stormrage']			= ElvOrange	-- Druid
+		z['Sifupooc-Spirestone']		= ElvBlue	-- Monk
+		z['Repooc-Spirestone']			= ElvBlue	-- Paladin
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
@@ -1362,6 +1368,11 @@ function CH:PrintURL(url)
 	return '|cFFFFFFFF[|Hurl:'..url..'|h'..url..'|h]|r '
 end
 
+function CH:ReplaceProtocol(arg1, arg2)
+	local str = self..'://'..arg1
+	return (self == 'Houtfit') and str..arg2 or CH:PrintURL(str)
+end
+
 function CH:FindURL(event, msg, author, ...)
 	if not CH.db.url then
 		msg = CH:CheckKeyword(msg, author)
@@ -1375,8 +1386,9 @@ function CH:FindURL(event, msg, author, ...)
 	end
 
 	text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
+
 	-- http://example.com
-	local newMsg, found = gsub(text, '(%a+)://(%S+)%s?', CH:PrintURL('%1://%2'))
+	local newMsg, found = gsub(text, '(%a+)://(%S+)(%s?)', CH.ReplaceProtocol)
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- www.example.com
 	newMsg, found = gsub(text, 'www%.([_A-Za-z0-9-]+)%.(%S+)%s?', CH:PrintURL('www.%1.%2'))
@@ -2177,7 +2189,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
 			_G.ChatEdit_SetLastTellTarget(arg2, chatType)
-			FlashClientIcon()
+			if CH.db.flashClientIcon then FlashClientIcon() end
 		end
 
 		if notChatHistory and not frame:IsShown() then

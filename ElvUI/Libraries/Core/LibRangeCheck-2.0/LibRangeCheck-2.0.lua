@@ -291,6 +291,7 @@ tinsert(HarmSpells.WARLOCK, 5782)		-- Fear (30 yards)
 if not isRetail then
 	tinsert(HarmSpells.WARLOCK, 172)	-- Corruption (30 yards, level 4, rank 1)
 	tinsert(HarmSpells.WARLOCK, 348)	-- Immolate (30 yards, level 1, rank 1)
+	tinsert(HarmSpells.WARLOCK, 17877)	-- Shadowburn (Destruction) (20 yards)
 end
 
 tinsert(ResSpells.WARLOCK, 20707)	-- Soulstone (40 yards)

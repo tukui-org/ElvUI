@@ -254,9 +254,9 @@ function UF:Configure_Castbar(frame)
 
 	if castbar.Holder.mover then
 		if db.overlayOnFrame ~= 'None' or not db.enable then
-			E:DisableMover(castbar.Holder.mover:GetName())
+			E:DisableMover(castbar.Holder.mover.name)
 		else
-			E:EnableMover(castbar.Holder.mover:GetName())
+			E:EnableMover(castbar.Holder.mover.name)
 		end
 	end
 

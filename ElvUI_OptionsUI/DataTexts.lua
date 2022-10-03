@@ -178,23 +178,23 @@ local function CreateDTOptions(name, data)
 
 	for key in pairs(settings) do
 		if key == 'Label' then
-			optionTable.args.Label = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return gsub(settings[info[#info]], '|', '||') end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
+			optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return gsub(settings[info[#info]], '|', '||') end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
 		elseif key == 'NoLabel' then
-			optionTable.args.NoLabel = ACH:Toggle(L["No Label"], nil, 3)
+			optionTable.args[key] = ACH:Toggle(L["No Label"], nil, 3)
 		elseif key == 'ShowOthers' then
-			optionTable.args.ShowOthers = ACH:Toggle(L["Other AddOns"], nil, 4)
+			optionTable.args[key] = ACH:Toggle(L["Other AddOns"], nil, 4)
 		elseif key == 'decimalLength' then
-			optionTable.args.decimalLength = ACH:Range(L["Decimal Length"], nil, 20, { min = 0, max = 5, step = 1 })
+			optionTable.args[key] = ACH:Range(L["Decimal Length"], nil, 20, { min = 0, max = 5, step = 1 })
 		elseif key == 'goldFormat' then
-			optionTable.args.goldFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], 10, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
+			optionTable.args[key] = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], 10, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
 		elseif key == 'goldCoins' then
-			optionTable.args.goldCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 5)
+			optionTable.args[key] = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 5)
 		elseif key == 'textFormat' then
-			optionTable.args.textFormat = ACH:Select(L["Text Format"], nil, 20, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
+			optionTable.args[key] = ACH:Select(L["Text Format"], nil, 20, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
 		elseif key == 'latency' then
-			optionTable.args.latency = ACH:Select(L["Latency"], nil, 20, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
+			optionTable.args[key] = ACH:Select(L["Latency"], nil, 20, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
 		elseif key == 'school' then
-			optionTable.args.school = ACH:Select(L["School"], nil, 20, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
+			optionTable.args[key] = ACH:Select(L["School"], nil, 20, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
 		end
 	end
 

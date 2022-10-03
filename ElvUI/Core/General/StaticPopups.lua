@@ -29,7 +29,7 @@ local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
-local DOWNLOAD_URL = (E.Retail and 'https://www.tukui.org/download.php?ui=elvui') or (E.TBC and 'https://www.tukui.org/classic-tbc-addons.php?id=2') or (E.Classic and 'https://www.tukui.org/classic-addons.php?id=2') or (E.Wrath and 'https://www.tukui.org/classic-wotlk-addons.php?id=2')
+local DOWNLOAD_URL = 'https://www.tukui.org/download.php?ui=elvui'
 
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}

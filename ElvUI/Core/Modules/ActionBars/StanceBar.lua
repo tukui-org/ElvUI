@@ -93,7 +93,6 @@ function AB:PositionAndSizeBarShapeShift()
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
 	local point = db.point
-	local visibility = db.visibility
 
 	bar.db = db
 	bar.mouseover = db.mouseover
@@ -162,14 +161,13 @@ function AB:PositionAndSizeBarShapeShift()
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if db.enabled then
-		visibility = gsub(visibility,'[\n\r]','')
-
-		RegisterStateDriver(bar, 'visibility', (GetNumShapeshiftForms() == 0 and 'hide') or visibility)
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.mover.name)
 	else
-		RegisterStateDriver(bar, 'visibility', 'hide')
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.mover.name)
 	end
+
+	local visibility = gsub(db.visibility, '[\n\r]', '')
+	RegisterStateDriver(bar, 'visibility', (not db.enabled or GetNumShapeshiftForms() == 0) and 'hide' or visibility)
 
 	if useMasque then
 		MasqueGroup:ReSkin()

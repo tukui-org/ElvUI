@@ -348,7 +348,9 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
-	if event == 'UPDATE_INSTANCE_INFO' and enteredFrame then
+	if event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
+		OnLeave()
+	elseif event == 'UPDATE_INSTANCE_INFO' and enteredFrame then
 		OnEnter(self)
 	end
 end
@@ -381,4 +383,4 @@ function OnUpdate(self, t)
 	lastPanel = self
 end
 
-DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

@@ -1,6 +1,6 @@
 <Ui><Script><![CDATA[--[[
 
-TaintLess [20-10-19]
+TaintLess [22-09-15]
 https://www.townlong-yak.com/addons/taintless
 
 All rights reserved.
@@ -19,14 +19,11 @@ local function purgeKey(t, k)
 	until issecurevariable(t, k)
 end
 
--- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
+-- https://www.townlong-yak.com/addons/taintless/fixes/RefreshOverread
 if (tonumber(UIDD_REFRESH_OVERREAD_PATCH_VERSION) or 0) < 3 then
 	UIDD_REFRESH_OVERREAD_PATCH_VERSION = 3
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
-		if UIDD_REFRESH_OVERREAD_PATCH_VERSION ~= 3 then
-			return
-		end
-		for i=1, UIDROPDOWNMENU_MAXLEVELS do
+		for i=1, UIDD_REFRESH_OVERREAD_PATCH_VERSION == 3 and UIDROPDOWNMENU_MAXLEVELS or 0 do
 			for j=1+_G["DropDownList" .. i].numButtons, UIDROPDOWNMENU_MAXBUTTONS do
 				local b, _ = _G["DropDownList" .. i .. "Button" .. j]
 				_ = issecurevariable(b, "checked")      or purgeKey(b, "checked")
@@ -36,28 +33,28 @@ if (tonumber(UIDD_REFRESH_OVERREAD_PATCH_VERSION) or 0) < 3 then
 	end)
 end
 
--- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
+-- https://www.townlong-yak.com/addons/taintless/fixes/DisplayModeTaint
 if (tonumber(UIDROPDOWNMENU_OPEN_PATCH_VERSION) or 0) < 1 then
 	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
-		if UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
-			return
-		end
-		if UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
+		if UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1
+		   and UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
 		   and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
-				purgeKey(_G, "UIDROPDOWNMENU_OPEN_MENU")
+			purgeKey(_G, "UIDROPDOWNMENU_OPEN_MENU")
 		end
 	end)
 end
 
--- https://www.townlong-yak.com/bugs/gXwH4P-IOFrameSelection
-if (tonumber(IOFRAME_SELECTION_PATCH_VERSION) or 0) < 1 then
-	IOFRAME_SELECTION_PATCH_VERSION = 1
-	InterfaceOptionsFrame:HookScript("OnHide", function()
-		if IOFRAME_SELECTION_PATCH_VERSION == 1 then
-			InterfaceOptionsFrameCategories.selection = nil
-		end
-	end)
+-- https://www.townlong-yak.com/addons/taintless/fixes/IOFrameSelection
+if (tonumber(IOFRAME_SELECTION_PATCH_VERSION) or 0) < 3 then
+	IOFRAME_SELECTION_PATCH_VERSION = 3
+	if InterfaceOptionsFrame then
+		InterfaceOptionsFrame:HookScript("OnHide", function()
+			if IOFRAME_SELECTION_PATCH_VERSION == 3 then
+				InterfaceOptionsFrameCategories.selection = nil
+			end
+		end)
+	end
 end
 
 ]]></Script></Ui>

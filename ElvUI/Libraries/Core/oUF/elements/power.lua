@@ -122,17 +122,17 @@ local function UpdateColor(self, event, unit)
 
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 
-	local r, g, b, t, atlas
+	local r, g, b, color, atlas
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
-		t = self.colors.disconnected
+		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = self.colors.tapped
+		color = self.colors.tapped
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorPower) then
 		if(element.displayType ~= ALTERNATE_POWER_INDEX) then
-			t = self.colors.power[pToken]
-			if(not t) then
+			color = self.colors.power[pToken]
+			if(not color) then
 				if(element.GetAlternativeColor) then
 					r, g, b = element:GetAlternativeColor(unit, pType, pToken, altR, altG, altB)
 				elseif(altR) then
@@ -142,32 +142,32 @@ local function UpdateColor(self, event, unit)
 						r, g, b = r / 255, g / 255, b / 255
 					end
 				else
-					t = self.colors.power[pType] or self.colors.power.MANA
+					color = self.colors.power[pType] or self.colors.power.MANA
 				end
 			end
 		else
-			t = self.colors.power[ALTERNATE_POWER_INDEX]
+			color = self.colors.power[ALTERNATE_POWER_INDEX]
 		end
 
-		if(element.useAtlas and t and t.atlas) then
-			atlas = t.atlas
+		if(element.useAtlas and color and color.atlas) then
+			atlas = color.atlas
 		end
 	elseif(element.colorClass and UnitIsPlayer(unit))
 		or (element.colorClassNPC and not UnitIsPlayer(unit))
 		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = self.colors.reaction[UnitReaction(unit, 'player')]
+		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
 		local adjust = 0 - (element.min or 0)
 		r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(atlas) then
@@ -186,13 +186,12 @@ local function UpdateColor(self, event, unit)
 	--[[ Callback: Power:PostUpdateColor(unit, r, g, b)
 	Called after the element color has been updated.
 
-	local bg = element.bg
-	if(bg and b) then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
+	* self - the Power element
+	* unit - the unit for which the update has been triggered (string)
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
 	--]]
-
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(unit, r, g, b)
 	end

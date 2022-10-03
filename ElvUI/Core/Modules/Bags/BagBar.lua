@@ -3,6 +3,7 @@ local B = E:GetModule('Bags')
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local gsub = gsub
 local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
@@ -96,12 +97,9 @@ function B:SizeAndPositionBagBar()
 	local justBackpack = db.justBackpack
 	local backdropSpacing = not showBackdrop and 0 or db.backdropSpacing
 
-	local visibility = db.visibility
-	if visibility and visibility:match('[\n\r]') then
-		visibility = visibility:gsub('[\n\r]','')
-	end
-
+	local visibility = gsub(db.visibility, '[\n\r]', '')
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
+
 	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
 
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)

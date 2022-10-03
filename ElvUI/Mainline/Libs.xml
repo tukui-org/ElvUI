@@ -30,6 +30,7 @@
 	<Script file='..\Libraries\Core\LibTranslit-1.0\LibTranslit-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibAnim\LibAnim.lua'/>
 
+	<Script file='..\Libraries\Core\LibDispel\LibDispel.lua'/> <!-- keep over oUF -->
 	<Include file='..\Libraries\Core\oUF\oUF.xml'/>
 	<Include file='..\Libraries\Core\oUF_Plugins\oUF_Plugins.xml'/>
 </Ui>

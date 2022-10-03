@@ -1,22 +1,22 @@
 --[[
 LibDualSpec-1.0 - Adds dual spec support to individual AceDB-3.0 databases
-Copyright (C) 2009-2012 Adirelle
+Copyright (C) 2009-2022 Adirelle
 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice,
-	  this list of conditions and the following disclaimer.
-	* Redistributions in binary form must reproduce the above copyright notice,
-	  this list of conditions and the following disclaimer in the documentation
-	  and/or other materials provided with the distribution.
-	* Redistribution of a stand alone version is strictly prohibited without
-	  prior written authorization from the LibDualSpec project manager.
-	* Neither the name of the LibDualSpec authors nor the names of its contributors
-	  may be used to endorse or promote products derived from this software without
-	  specific prior written permission.
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+    * Redistribution of a stand alone version is strictly prohibited without
+      prior written authorization from the LibDualSpec project manager.
+    * Neither the name of the LibDualSpec authors nor the names of its contributors
+      may be used to endorse or promote products derived from this software without
+      specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,13 +31,8 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
-local _, _, _, toc = GetBuildInfo()
-
--- Expansions
-local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local Wrath = toc >= 30400 and toc < 40000
-
-if not (Retail or Wrath) then return end
+-- Don't load unless we are Retail or Wrath Classic
+if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_WRATH_CLASSIC then return end
 
 local MAJOR, MINOR = "LibDualSpec-1.0", 21
 assert(LibStub, MAJOR.." requires LibStub")
@@ -56,6 +51,13 @@ lib.mixin = lib.mixin or {}
 lib.upgrades = lib.upgrades or {}
 lib.currentSpec = lib.currentSpec or 0
 
+if minor and minor < 15 then
+	lib.talentsLoaded, lib.talentGroup = nil, nil
+	lib.specLoaded, lib.specGroup = nil, nil
+	lib.eventFrame:UnregisterAllEvents()
+	wipe(lib.options)
+end
+
 -- ----------------------------------------------------------------------------
 -- Locals
 -- ----------------------------------------------------------------------------
@@ -70,13 +72,22 @@ local AceDB3 = LibStub('AceDB-3.0', true)
 local AceDBOptions3 = LibStub('AceDBOptions-3.0', true)
 local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
 
-local _, _, classId = UnitClass("player")
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local numSpecs = 2
-
-if Wrath then
-	lib.talentGroup = lib.talentGroup or GetActiveTalentGroup()
-else
+local specNames = {TALENT_SPEC_PRIMARY, TALENT_SPEC_SECONDARY}
+if isRetail then
+	-- class id specialization functions don't require player data to be loaded
+	local _, classId = UnitClassBase("player")
 	numSpecs = GetNumSpecializationsForClassID(classId)
+	for i = 1, numSpecs do
+		local _, name = GetSpecializationInfoForClassID(classId, i)
+		specNames[i] = name
+	end
+end
+
+local GetSpecialization = GetSpecialization or GetActiveTalentGroup
+local CanPlayerUseTalentSpecUI = isRetail and C_SpecializationInfo.CanPlayerUseTalentSpecUI or function()
+	return true, HELPFRAME_CHARACTER_BULLET5
 end
 
 -- ----------------------------------------------------------------------------
@@ -85,55 +96,46 @@ end
 
 local L_ENABLED = "Enable spec profiles"
 local L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-local L_CURRENT = "%s (Current)"
-local L_DUALSPEC_DESC = "When enabled, this feature allow you to select a different profile for each talent spec. The dual profile will be swapped with the current profile each time you switch from a talent spec to the other."
+local L_CURRENT = "%s - Active"
 
 do
 	local locale = GetLocale()
 	if locale == "deDE" then
 		L_ENABLED = "Spezialisierungsprofile aktivieren"
 		L_ENABLED_DESC = "Falls diese Option aktiviert ist, wird dein Profil auf das angegebene Profil gesetzt, wenn du die Spezialisierung wechselst."
-		L_CURRENT = "%s (Momentan)"
-		L_DUALSPEC_DESC = "Wenn aktiv, wechselt dieses Feature bei jedem Wechsel der dualen Talentspezialisierung das Profil. Das duale Profil wird beim Wechsel automatisch mit dem derzeit aktiven Profil getauscht."
-	elseif locale == "esES" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
-	elseif locale == "esMX" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_CURRENT = "%s - Aktiv"
+	elseif locale == "esES" or locale == "esMX" then
+		L_ENABLED = "Activar perfiles de especialización"
+		L_ENABLED_DESC = "Cuando está habilitado, su perfil se establecerá en el perfil especificado cuando cambie de especialización."
+		L_CURRENT = "%s - Activo"
 	elseif locale == "frFR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
-		L_DUALSPEC_DESC = "Lorsqu'elle est activée, cette fonctionnalité vous permet de choisir un profil différent pour chaque spécialisation de talents. Le second profil sera échangé avec le profil courant chaque fois que vous passerez d'une spécialisation à l'autre."
+		L_ENABLED = "Activer les profils de spécialisation"
+		L_ENABLED_DESC = "Lorsque cette option est activée, votre profil sera défini sur le profil spécifié lorsque vous changerez de spécialisation."
+		L_CURRENT = "%s - Actifs"
 	elseif locale == "itIT" then
 		L_ENABLED = "Abilita i profili per la specializzazione"
 		L_ENABLED_DESC = "Quando abilitato, il tuo profilo verrà impostato in base alla specializzazione usata."
-		L_CURRENT = "%s (Attuale)"
+		L_CURRENT = "%s - Attivi"
 	elseif locale == "koKR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "전문화 프로필 활성화"
+		L_ENABLED_DESC = "활성화하면 전문화를 변경할 때 프로필이 지정된 프로필로 설정됩니다."
+		L_CURRENT = "%s - 활성화"
 	elseif locale == "ptBR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "Ativar perfis de especialização"
+		L_ENABLED_DESC = "Quando ativado, seu perfil será definido para o perfil especificado quando você alterar a especialização."
+		L_CURRENT = "%s – ativo"
 	elseif locale == "ruRU" then
 		L_ENABLED = "Включить профили специализации"
 		L_ENABLED_DESC = "Если включено, ваш профиль будет зависеть от выбранной специализации."
-		L_CURRENT = "%s (Текущий)"
+		L_CURRENT = "%s - активен"
 	elseif locale == "zhCN" then
 		L_ENABLED = "启用专精配置文件"
 		L_ENABLED_DESC = "当启用后，当切换专精时配置文件将设置为专精配置文件。"
-		L_CURRENT = "%s（当前）"
-		L_DUALSPEC_DESC = "启时，你可以为你的双天赋设定另一组配置文件，你的双重配置文件将在你转换天赋时自动与目前使用配置文件交换。"
+		L_CURRENT = "%s - 开启"
 	elseif locale == "zhTW" then
 		L_ENABLED = "啟用專精設定檔"
 		L_ENABLED_DESC = "當啟用後，當你切換專精時設定檔會設定為專精設定檔。"
-		L_CURRENT = "%s (目前) "
-		L_DUALSPEC_DESC = "啟用時，你可以為你的雙天賦設定另一組設定檔。你的雙設定檔將在你轉換天賦時自動與目前使用設定檔交換。"
+		L_CURRENT = "%s - 啟動"
 	end
 end
 
@@ -196,7 +198,6 @@ function mixin:CheckDualSpecState()
 
 	local profileName = self:GetDualSpecProfile()
 	if profileName ~= self:GetCurrentProfile() then
-		registry[self].db.char[lib.currentSpec] = profileName
 		self:SetProfile(profileName)
 	end
 end
@@ -282,9 +283,6 @@ end
 -- ----------------------------------------------------------------------------
 -- AceDBOptions-3.0 support
 -- ----------------------------------------------------------------------------
-local function NoDualSpec()
-	return GetNumTalentGroups() == 1
-end
 
 options.new = {
 	name = "New",
@@ -315,11 +313,12 @@ options.choose = {
 }
 
 options.enabled = {
+	type = "toggle",
 	name = "|cffffd200"..L_ENABLED.."|r",
 	desc = function()
 		local desc = L_ENABLED_DESC
-		if Retail and lib.currentSpec == 0 then
-			local _, reason = C_SpecializationInfo.CanPlayerUseTalentSpecUI()
+		if lib.currentSpec == 0 then
+			local _, reason = CanPlayerUseTalentSpecUI()
 			if not reason or reason == "" then
 				reason = TALENT_MICRO_BUTTON_NO_SPEC
 			end
@@ -328,7 +327,6 @@ options.enabled = {
 		return desc
 	end,
 	descStyle = "inline",
-	type = "toggle",
 	order = 41,
 	width = "full",
 	get = function(info) return info.handler.db:IsDualSpecEnabled() end,
@@ -336,39 +334,47 @@ options.enabled = {
 	disabled = function() return lib.currentSpec == 0 end,
 }
 
-if Wrath then
-	options.enabled.hidden = NoDualSpec
-	options.enabled.desc = L_ENABLED_DESC
-
-	options.dualSpecDesc = {
-		name = L_DUALSPEC_DESC,
-		type = 'description',
-		order = 41,
-		hidden = NoDualSpec,
-	}
-end
-
+local points = {}
 for i = 1, numSpecs do
-	local _, specName
-	if Retail then
-		_, specName = GetSpecializationInfoForClassID(classId, i)
-	else
-		specName = i == 1 and 'Primary' or 'Secondary'
-	end
-
 	options["specProfile" .. i] = {
 		type = "select",
-		name = function() return lib.currentSpec == i and L_CURRENT:format(specName) or specName end,
+		name = function(info)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			return lib.currentSpec == specIndex and L_CURRENT:format(specNames[specIndex]) or specNames[specIndex]
+		end,
+		desc = not isRetail and function(info)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			local highPointsSpentIndex = nil
+			for treeIndex = 1, 3 do
+				local name, _, pointsSpent, _, previewPointsSpent = GetTalentTabInfo(treeIndex, false, false, specIndex)
+				if name then
+					local displayPointsSpent = pointsSpent + previewPointsSpent
+					points[treeIndex] = displayPointsSpent
+					if displayPointsSpent > 0 and (not highPointsSpentIndex or displayPointsSpent > points[highPointsSpentIndex]) then
+						highPointsSpentIndex = treeIndex
+					end
+				else
+					points[treeIndex] = 0
+				end
+			end
+			if highPointsSpentIndex then
+				points[highPointsSpentIndex] = GREEN_FONT_COLOR:WrapTextInColorCode(points[highPointsSpentIndex])
+			end
+			return ("|cffffffff%s / %s / %s|r"):format(unpack(points))
+		end or nil,
 		order = 42 + i,
-		get = function(info) return info.handler.db:GetDualSpecProfile(i) end,
-		set = function(info, value) info.handler.db:SetDualSpecProfile(value, i) end,
+		get = function(info)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			return info.handler.db:GetDualSpecProfile(specIndex)
+		end,
+		set = function(info, value)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			info.handler.db:SetDualSpecProfile(value, specIndex)
+		end,
 		values = "ListProfiles",
 		arg = "common",
 		disabled = function(info) return not info.handler.db:IsDualSpecEnabled() end,
 	}
-	if Wrath then
-		options["specProfile" .. i].hidden = NoDualSpec
-	end
 end
 
 --- Embed dual spec options into an existing AceDBOptions-3.0 option table.
@@ -443,20 +449,21 @@ end
 -- ----------------------------------------------------------------------------
 
 local function eventHandler(self, event)
-	local spec = Wrath and GetActiveTalentGroup() or Retail and GetSpecialization() or 0
+	local spec = GetSpecialization() or 0
 	-- Newly created characters start at 5 instead of 1 in 9.0.1.
-	if Retail and (spec == 5 or not C_SpecializationInfo.CanPlayerUseTalentSpecUI()) then
+	if spec == 5 or not CanPlayerUseTalentSpecUI() then
 		spec = 0
 	end
 	lib.currentSpec = spec
 
 	if event == "PLAYER_LOGIN" then
 		self:UnregisterEvent(event)
-		if Retail then
+		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		if isRetail then
 			self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
 			self:RegisterEvent("PLAYER_LEVEL_CHANGED")
 		else
-			self:RegisterEvent('PLAYER_TALENT_UPDATE')
+			self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 		end
 	end
 

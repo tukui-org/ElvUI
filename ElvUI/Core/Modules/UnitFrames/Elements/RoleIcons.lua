@@ -57,7 +57,7 @@ function UF:Configure_RoleIcon(frame)
 
 	if db.roleIcon.enable then
 		frame:EnableElement('GroupRoleIndicator')
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.roleIcon.attachTo)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.roleIcon.attachTo)
 
 		role:ClearAllPoints()
 		role:Point(db.roleIcon.position, attachPoint, db.roleIcon.position, db.roleIcon.xOffset, db.roleIcon.yOffset)

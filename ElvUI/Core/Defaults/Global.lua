@@ -49,6 +49,7 @@ G.datatexts = {
 		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {}, idEnable = {}, headers = true, maxCurrency = false },
 		Durability = { Label = '', NoLabel = false, percThreshold = 30 },
+		DualSpecialization = { NoLabel = false },
 		ElvUI = { Label = '' },
 		Experience = { textFormat = 'CUR' },
 		Friends = {

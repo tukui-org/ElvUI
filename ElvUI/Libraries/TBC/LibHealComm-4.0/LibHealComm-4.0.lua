@@ -1509,6 +1509,8 @@ if( playerClass == "PRIEST" ) then
 
 		CalculateHotHealing = function(guid, spellID)
 			local spellName, spellRank = GetSpellInfo(spellID), SpellIDToRank[spellID]
+			if not spellRank then return end
+
 			local healAmount = getBaseHealAmount(hotData, spellName, spellID, spellRank)
 			local spellPower = GetSpellBonusHealing()
 			local healModifier, spModifier = playerHealModifier, 1
@@ -1567,6 +1569,8 @@ if( playerClass == "PRIEST" ) then
 
 		CalculateHealing = function(guid, spellID)
 			local spellName, spellRank = GetSpellInfo(spellID), SpellIDToRank[spellID]
+			if not spellRank then return end
+
 			local healAmount = getBaseHealAmount(spellData, spellName, spellID, spellRank)
 			local spellPower = GetSpellBonusHealing()
 			local healModifier, spModifier = playerHealModifier, 1
@@ -3314,7 +3318,7 @@ function HealComm:OnInitialize()
 	self.eventFrame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self.eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 	self.eventFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
-	self.eventFrame:RegisterEvent("UNIT_AURA")
+	self.eventFrame:RegisterUnitEvent("UNIT_AURA", 'player')
 	if isWrath then
 		self.eventFrame:RegisterEvent("GLYPH_ADDED")
 		self.eventFrame:RegisterEvent("GLYPH_REMOVED")

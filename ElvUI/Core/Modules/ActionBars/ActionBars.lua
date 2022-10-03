@@ -50,10 +50,6 @@ local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
 local defaultFont, defaultFontSize, defaultFontOutline
 
-local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
-hiddenParent:SetAllPoints()
-hiddenParent:Hide()
-
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -110,10 +106,9 @@ AB.barDefaults = {
 	},
 }
 
-if E.Retail or E.Wrath then
-	AB.barDefaults.bar1.conditions = format('[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex())
-else
-	AB.barDefaults.bar1.conditions = '[bonusbar:5] 11; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
+do
+	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	AB.barDefaults.bar1.conditions = fullConditions..'[bonusbar:5] 11; [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;'
 end
 
 AB.customExitButton = {
@@ -273,7 +268,6 @@ function AB:PositionAndSizeBar(barName)
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
 	local point = db.point
-	local visibility = db.visibility
 
 	bar.db = db
 	bar.mouseover = db.mouseover
@@ -331,15 +325,16 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetAttribute('page', page)
 
 	if db.enabled then
-		visibility = gsub(visibility, '[\n\r]', '')
-
-		E:EnableMover(bar.mover:GetName())
-		RegisterStateDriver(bar, 'visibility', visibility)
+		E:EnableMover(bar.mover.name)
 		bar:Show()
+
+		local visibility = gsub(db.visibility, '[\n\r]', '')
+		RegisterStateDriver(bar, 'visibility', visibility)
 	else
-		E:DisableMover(bar.mover:GetName())
-		UnregisterStateDriver(bar, 'visibility')
+		E:DisableMover(bar.mover.name)
 		bar:Hide()
+
+		UnregisterStateDriver(bar, 'visibility')
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
@@ -372,23 +367,29 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i = 1, 12 do
-		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
-		bar.buttons[i]:SetState(0, 'action', i)
+		local button = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
+		button:SetState(0, 'action', i)
+
+		button.AuraCooldown.targetAura = true
+		button.AuraCooldown.CooldownOverride = 'actionbar'
+		E:RegisterCooldown(button.AuraCooldown)
 
 		for k = 1, 14 do
-			bar.buttons[i]:SetState(k, 'action', (k - 1) * 12 + i)
+			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
 		if i == 12 then
-			bar.buttons[i]:SetState(12, 'custom', AB.customExitButton)
+			button:SetState(12, 'custom', AB.customExitButton)
 		end
 
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
-			bar.buttons[i]:AddToMasque(MasqueGroup)
+			button:AddToMasque(MasqueGroup)
 		end
 
-		AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
-		AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
+		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
+		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
+
+		bar.buttons[i] = button
 	end
 
 	if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
@@ -624,18 +625,12 @@ function AB:UpdateButtonSettings(specific)
 end
 
 function AB:GetPage(bar, defaultPage, condition)
-	local page = AB.db[bar].paging[E.myclass]
 	if not condition then condition = '' end
 
-	if page then
-		page = gsub(page, '[\n\r]', '')
+	local page = AB.db[bar].paging[E.myclass]
+	if page then condition = condition..' '..gsub(page, '[\n\r]', '') end
 
-		condition = condition..' '..page
-	end
-
-	condition = condition..' '..defaultPage
-
-	return condition
+	return condition..' '..defaultPage
 end
 
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
@@ -1010,7 +1005,7 @@ function AB:DisableBlizzard()
 		local frame = _G[name]
 		if frame then
 			if i < count then frame:UnregisterAllEvents() end
-			frame:SetParent(hiddenParent)
+			frame:SetParent(E.HiddenFrame)
 			AB:SetNoopsi(frame)
 		end
 	end
@@ -1229,6 +1224,7 @@ function AB:FixKeybindText(button)
 			text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
 			text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
 			text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
+
 			hotkey.SetVertexColor = E.noop
 		end
 
@@ -1369,24 +1365,46 @@ function AB:StyleFlyout(button)
 	end
 end
 
-function AB:UpdateChargeCooldown(button, duration)
-	local cd = button and button.chargeCooldown
+function AB:UpdateAuraCooldown(button, duration)
+	local cd = button and button.AuraCooldown
 	if not cd then return end
 
 	local oldstate = cd.hideText
-	cd.hideText = (duration and duration > 1.5) or (AB.db.chargeCooldown == false) or nil
+	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
 		E:Cooldown_ForceUpdate(cd.timer)
 	end
 end
 
+function AB:UpdateChargeCooldown(button, duration)
+	local cd = button and button.chargeCooldown
+	if not cd then return end
+
+	local oldstate = cd.hideText
+	cd.hideText = (not AB.db.chargeCooldown) or (duration and duration > 1.5) or nil
+	if cd.timer and (oldstate ~= cd.hideText) then
+		E:ToggleBlizzardCooldownText(cd, cd.timer)
+		E:Cooldown_ForceUpdate(cd.timer)
+	end
+end
+
+function AB:SetAuraCooldownDuration(value)
+	LAB:SetAuraCooldownDuration(value)
+end
+
+function AB:SetAuraCooldowns(enabled)
+	local enable, reverse = E.db.cooldown.enable, E.db.actionbar.cooldown.reverse
+	LAB:SetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
+end
+
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == 'action' then
 			local _, duration = button:GetCooldown()
-			AB:UpdateChargeCooldown(button, duration)
 			AB:SetButtonDesaturation(button, duration)
+			AB:UpdateChargeCooldown(button, duration)
+			AB:UpdateAuraCooldown(button, duration)
 		end
 	end
 end
@@ -1447,12 +1465,17 @@ end
 
 function AB:LAB_CooldownDone(button)
 	AB:SetButtonDesaturation(button, 0)
+
+	if button._state_type == 'action' then
+		AB:UpdateAuraCooldown(button)
+	end
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type == 'action' then
-		AB:UpdateChargeCooldown(button, duration)
 		AB:SetButtonDesaturation(button, duration)
+		AB:UpdateChargeCooldown(button, duration)
+		AB:UpdateAuraCooldown(button, duration)
 	end
 
 	if button.cooldown then
@@ -1460,8 +1483,13 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	end
 end
 
-function AB:PLAYER_ENTERING_WORLD()
-	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
+function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
+	AB:AdjustMaxStanceButtons(event)
+
+	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
+		AB:PositionAndSizeTotemBar()
+	end
 end
 
 function AB:Initialize()
@@ -1535,6 +1563,8 @@ function AB:Initialize()
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
+	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
+
 	if E.Retail then
 		AB:SetupExtraButton()
 
@@ -1542,7 +1572,7 @@ function AB:Initialize()
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
-	if (E.Wrath and E.myclass == 'SHAMAN') and E.private.general.totemBar then
+	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
 	end
 

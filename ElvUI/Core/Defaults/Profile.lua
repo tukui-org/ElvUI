@@ -178,21 +178,11 @@ P.general = {
 		nameFontOutline = 'OUTLINE',
 	},
 	objectiveTracker = true,
-	totems = {
-		alpha = 1,
-		buttonSize = 32,
-		flyoutDirection = 'UP',
-		flyoutSize = 28,
-		flyoutSpacing = 2,
-		font = 'PT Sans Narrow',
-		fontOutline = 'OUTLINE',
-		fontSize = 12,
+	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		mouseover = false,
+		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
 		size = 40,
-		sortDirection = 'ASCENDING',
 		spacing = 4,
-		visibility = '[vehicleui] hide;show'
 	},
 	kittys = false
 }
@@ -1026,6 +1016,7 @@ P.chat = {
 	emotionIcons = true,
 	keywordSound = 'None',
 	noAlertInCombat = false,
+	flashClientIcon = true,
 	chatHistory = true,
 	lfgIcons = true,
 	maxLines = 100,
@@ -1251,6 +1242,7 @@ local UF_AuraBars = {
 	yOffset = 0,
 	clickThrough = false,
 	reverseFill = false,
+	abbrevName = false,
 }
 
 local UF_AuraWatch = {
@@ -1489,8 +1481,8 @@ local UF_RaidDebuffs = {
 	showDispellableDebuff = true,
 	onlyMatchSpellID = true,
 	fontSize = 10,
-	font = 'Homespun',
-	fontOutline = 'MONOCHROMEOUTLINE',
+	font = 'PT Sans Narrow',
+	fontOutline = 'OUTLINE',
 	size = 26,
 	xOffset = 0,
 	yOffset = 0,
@@ -1580,6 +1572,7 @@ P.unitframe = {
 	fontOutline = 'MONOCHROMEOUTLINE',
 	debuffHighlighting = 'FILL',
 	targetOnMouseDown = false,
+	maxAllowedGroups = true,
 	modifiers = {
 		SHIFT = 'NONE',
 		CTRL = 'NONE',
@@ -1726,10 +1719,10 @@ P.unitframe = {
 				{r = 0.05, g = 0.57, b = 0.23}
 			},
 			SHAMAN = {
-				{r = .58, g = .23, b = .10},
-				{r = .23, g = .45, b = .13},
-				{r = .19, g = .48, b = .60},
-				{r = .42, g = .18, b = .74},
+				{r = .23, g = .45, b = .13}, -- earth
+				{r = .58, g = .23, b = .10}, -- fire
+				{r = .19, g = .48, b = .60}, -- water
+				{r = .42, g = .18, b = .74}, -- air
 			},
 			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
@@ -2016,6 +2009,7 @@ P.unitframe = {
 			disableTargetGlow = false,
 			disableFocusGlow = false,
 			buffIndicator = CopyTable(UF_AuraWatch),
+			CombatIcon = CopyTable(UF_CombatIcon),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			classbar = CopyTable(UF_ClassBar),
@@ -2059,6 +2053,7 @@ P.unitframe = {
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
+			health = CopyTable(UF_Health),
 			name = CopyTable(UF_Name),
 			raidicon = CopyTable(UF_RaidIcon),
 			rdebuffs = CopyTable(UF_RaidDebuffs),
@@ -2267,6 +2262,7 @@ P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = { anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
+P.unitframe.units.party.CombatIcon.enable = false
 P.unitframe.units.party.debuffs.enable = true
 P.unitframe.units.party.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.party.debuffs.maxDuration = 300
@@ -2296,6 +2292,7 @@ P.unitframe.units.raid1.buffs.numrows = 1
 P.unitframe.units.raid1.buffs.perrow = 3
 P.unitframe.units.raid1.buffIndicator.enable = true
 P.unitframe.units.raid1.castbar = nil
+P.unitframe.units.raid1.CombatIcon = nil
 P.unitframe.units.raid1.debuffs.enable = false
 P.unitframe.units.raid1.debuffs.numrows = 1
 P.unitframe.units.raid1.debuffs.perrow = 3
@@ -2316,21 +2313,21 @@ P.unitframe.units.raid1.power.text_format = ''
 P.unitframe.units.raid1.power.xOffset = -2
 P.unitframe.units.raid1.power.yOffset = 2
 P.unitframe.units.raid1.targetsGroup = nil
-P.unitframe.units.raid1.visibility = '[@raid6,noexists][@raid11,exists] hide;show'
+P.unitframe.units.raid1.visibility = E.Retail and '[@raid6,noexists][@raid21,exists] hide;show' or '[@raid6,noexists][@raid11,exists] hide;show'
 P.unitframe.units.raid1.width = 80
 
 P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.raid2.height = 27
 P.unitframe.units.raid2.numGroups = 5
-P.unitframe.units.raid2.visibility = '[@raid11,noexists][@raid26,exists] hide;show'
+P.unitframe.units.raid2.visibility = E.Retail and '[@raid21,noexists][@raid31,exists] hide;show' or '[@raid11,noexists][@raid26,exists] hide;show'
 P.unitframe.units.raid2.rdebuffs.enable = false
 P.unitframe.units.raid2.power.enable = false
 P.unitframe.units.raid2.roleIcon.enable = false
 
 P.unitframe.units.raid3 = CopyTable(P.unitframe.units.raid2)
 P.unitframe.units.raid3.numGroups = 8
-P.unitframe.units.raid3.visibility = '[@raid26,noexists] hide;show'
+P.unitframe.units.raid3.visibility = E.Retail and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raidpet.pvpclassificationindicator = nil
@@ -2389,16 +2386,16 @@ end
 P.cooldown = {
 	threshold = 3,
 	roundTime = true,
+	targetAura = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
-	modRateColor = { r = 0.6, g = 1, b = 0.4 },
+
 	expiringColor = { r = 1, g = 0.2, b = 0.2 },
 	secondsColor = { r = 1, g = 1, b = 0.2 },
 	minutesColor = { r = 1, g = 1, b = 1 },
 	hoursColor = { r = 0.4, g = 1, b = 1 },
 	daysColor = { r = 0.4, g = 0.4, b = 1 },
 
-	modRateIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	expireIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	secondsIndicator = { r = 0.8, g = 0.8, b = 0.8 },
 	minutesIndicator = { r = 0.8, g = 0.8, b = 0.8 },
@@ -2408,6 +2405,8 @@ P.cooldown = {
 	mmssColorIndicator = { r = 1, g = 1, b = 1 },
 
 	checkSeconds = false,
+	targetAuraDuration = 3600,
+	modRateColor = { r = 0.6, g = 1, b = 0.4 },
 	hhmmColor = { r = 0.43, g = 0.43, b = 0.43 },
 	mmssColor = { r = 0.56, g = 0.56, b = 0.56 },
 	hhmmThreshold = -1,
@@ -2493,6 +2492,20 @@ P.actionbar = {
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
+	},
+	totemBar = {
+		enable = true,
+		alpha = 1,
+		spacing = 4,
+		buttonSize = 32,
+		flyoutDirection = 'UP',
+		flyoutSize = 28,
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
+		mouseover = false,
+		visibility = '[vehicleui] hide;show'
 	},
 	microbar = {
 		enabled = false,
@@ -2650,7 +2663,7 @@ end
 if E.Retail then
 	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
 else
-	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 10;'
+	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
 	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 end
@@ -2674,6 +2687,12 @@ do -- cooldown stuff
 	P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
 	P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
 	P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
+
+	P.actionbar.cooldown.targetAuraColor = { r = 1, g = 0.6, b = 0.1 }
+	P.actionbar.cooldown.expiringAuraColor = { r = 1, g = 0.4, b = 0.1 }
+
+	P.actionbar.cooldown.targetAuraIndicator = { r = 0.6, g = 0.6, b = 0.6 }
+	P.actionbar.cooldown.expiringAuraIndicator = { r = 0.6, g = 0.6, b = 0.6 }
 
 	P.auras.cooldown = CopyTable(P.actionbar.cooldown)
 	P.bags.cooldown = CopyTable(P.actionbar.cooldown)

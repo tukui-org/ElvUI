@@ -185,8 +185,8 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	if oUF.isRetail and UnitHasVehicleUI('player') then
-		shouldEnable = PlayerVehicleHasComboPoints()
+	if (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI('player') then
+		shouldEnable = oUF.isWrath and UnitPowerType('vehicle') == SPELL_POWER_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
 		if(not RequireSpec or oUF.isRetail and (RequireSpec == GetSpecialization())) then

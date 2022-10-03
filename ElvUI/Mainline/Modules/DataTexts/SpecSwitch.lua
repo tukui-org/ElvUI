@@ -157,4 +157,4 @@ local function ValueColorUpdate()
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'CHARACTER_POINTS_CHANGED', 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])

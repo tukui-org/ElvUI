@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 29 -- the real minor version is 83
+local MINOR_VERSION = 30 -- the real minor version is 83
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -59,6 +59,9 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
+
+local AuraButtons = lib.AuraButtons or { auras = {}, buttons = {} }
+lib.AuraButtons = AuraButtons
 
 lib.ChargeCooldowns = lib.ChargeCooldowns or {}
 lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
@@ -109,7 +112,11 @@ local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, Updat
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
-local UpdateRange -- Sezz: new method
+local UpdateRange -- Sezz
+
+local UpdateAuraCooldowns -- Simpy
+local AURA_COOLDOWNS_ENABLED = true
+local AURA_COOLDOWNS_DURATION = 0
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
@@ -166,6 +173,11 @@ function lib:CreateButton(id, name, header, config)
 	button:RegisterForClicks("AnyUp")
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
+
+	local AuraCooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+	AuraCooldown:SetDrawBling(false)
+	AuraCooldown:SetDrawSwipe(false)
+	button.AuraCooldown = AuraCooldown
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -687,7 +699,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
-	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
@@ -697,12 +709,13 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_SHOW")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
+	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
 
 	lib.eventFrame:RegisterEvent("PLAYER_ENTER_COMBAT")
 	lib.eventFrame:RegisterEvent("PLAYER_LEAVE_COMBAT")
 	lib.eventFrame:RegisterEvent("START_AUTOREPEAT_SPELL")
 	lib.eventFrame:RegisterEvent("STOP_AUTOREPEAT_SPELL")
-	lib.eventFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	lib.eventFrame:RegisterEvent("PET_STABLE_UPDATE")
 	lib.eventFrame:RegisterEvent("PET_STABLE_SHOW")
@@ -711,7 +724,6 @@ function InitializeEventHandler()
 
 	if WoWRetail then
 		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
-		lib.eventFrame:RegisterEvent("COMPANION_UPDATE")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
 		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
@@ -719,8 +731,8 @@ function InitializeEventHandler()
 
 	if WoWRetail or WoWWrath then
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
-		lib.eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
-		lib.eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
+		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 	end
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
@@ -737,7 +749,7 @@ end
 
 local _lastFormUpdate = GetTime()
 function OnEvent(frame, event, arg1, ...)
-	if (event == "UNIT_INVENTORY_CHANGED" and arg1 == "player") or event == "LEARNED_SPELL_IN_TAB" then
+	if event == "UNIT_INVENTORY_CHANGED" or event == "LEARNED_SPELL_IN_TAB" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
 		if tooltipOwner and ButtonRegistry[tooltipOwner] then
 			tooltipOwner:SetTooltip()
@@ -749,22 +761,27 @@ function OnEvent(frame, event, arg1, ...)
 				Update(button)
 			end
 		end
+
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
-	elseif event == "UPDATE_SHAPESHIFT_FORM" then
-		-- XXX: throttle these updates since Blizzard broke the event and its now extremely spammy in some clients
-		local _time = GetTime()
-		if (_time - _lastFormUpdate) < 1 then
-			return
-		end
+	elseif event == "UNIT_MODEL_CHANGED" then
+		local _time = GetTime() -- we can't use UPDATE_SHAPESHIFT_FORM cause of issues, this one has less issues
+		if (_time - _lastFormUpdate) < 1 then return end -- but even this event fires multiple times on retail
 		_lastFormUpdate = _time
+
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 
 		-- the attack icon can change when shapeshift form changes, so need to do a quick update here
 		-- for performance reasons don't run full updates here, though
 		for button in next, ButtonRegistry do
 			local texture = button:GetTexture()
 			if texture then
-				button.icon:SetTexture(texture)
+				button.icon:SetTexture(texture) -- for auto attack icon
 			end
 		end
 	elseif event == "ACTIONBAR_SHOWGRID" or event == "PET_BAR_SHOWGRID" then
@@ -774,10 +791,16 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "UPDATE_BINDINGS" then
 		ForAllButtons(UpdateHotkeys)
 	elseif event == "PLAYER_TARGET_CHANGED" then
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
 		UpdateRangeTimer()
-	elseif (event == "ACTIONBAR_UPDATE_STATE") or
-		((event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") and (arg1 == "player")) or
-		((event == "COMPANION_UPDATE") and (arg1 == "MOUNT")) then
+	elseif event == "UNIT_AURA" then
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
+	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
+		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
 		ForAllButtons(UpdateButtonState, true)
 	elseif event == "ACTIONBAR_UPDATE_USABLE" then
 		for button in next, ActionButtons do
@@ -816,8 +839,6 @@ function OnEvent(frame, event, arg1, ...)
 		for button in next, ActiveButtons do
 			UpdateCooldown(button)
 		end
-	elseif event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED" then
-		ForAllButtons(UpdateButtonState, true)
 	elseif event == "PLAYER_ENTER_COMBAT" then
 		for button in next, ActiveButtons do
 			if button:IsAttack() then
@@ -1005,6 +1026,53 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 end
 
 -----------------------------------------------------------
+--- Active Aura Cooldowns for Target ~ By Simpy
+
+local currentAuras = {}
+function UpdateAuraCooldowns(disable)
+	local filter = disable and "" or UnitIsFriend("player", "target") and "PLAYER|HELPFUL" or "PLAYER|HARMFUL"
+
+	local previousAuras = CopyTable(currentAuras, true)
+	wipe(currentAuras)
+
+	local index = 1
+	local name, _, _, _, duration, expiration = UnitAura("target", index, filter)
+	while name do
+		local buttons = AuraButtons.auras[name]
+		if buttons then
+			local start = (duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
+			for _, button in next, buttons do
+				if start then
+					CooldownFrame_Set(button.AuraCooldown, start, duration, true)
+
+					currentAuras[button] = true
+					previousAuras[button] = nil
+				end
+			end
+		end
+
+		index = index + 1
+		name, _, _, _, duration, expiration = UnitAura("target", index, filter)
+	end
+
+	for button in next, previousAuras do
+		CooldownFrame_Clear(button.AuraCooldown)
+	end
+end
+
+function lib:SetAuraCooldownDuration(value)
+	AURA_COOLDOWNS_DURATION = value
+
+	UpdateAuraCooldowns()
+end
+
+function lib:SetAuraCooldowns(enabled)
+	AURA_COOLDOWNS_ENABLED = enabled
+
+	UpdateAuraCooldowns(not enabled)
+end
+
+-----------------------------------------------------------
 --- KeyBound integration
 
 function Generic:GetBindingAction()
@@ -1145,11 +1213,41 @@ function Update(self, fromUpdateConfig)
 	if allowSaturation then
 		self.icon:SetDesaturated(false)
 	end
+
+	local previousAbility = AuraButtons.buttons[self]
+	if previousAbility then
+		AuraButtons.buttons[self] = nil
+
+		local auras = AuraButtons.auras[previousAbility]
+
+		for i, button in next, auras do
+			if button == self then
+				tremove(auras, i)
+				break
+			end
+		end
+
+		if not next(auras) then
+			AuraButtons.auras[previousAbility] = nil
+		end
+	end
+
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
+		local abilityName = GetSpellInfo(id)
+		self.abilityName = abilityName
+
+		AuraButtons.buttons[self] = abilityName
+		if abilityName then
+			if not AuraButtons.auras[abilityName] then
+				AuraButtons.auras[abilityName] = {}
+			end
+
+			tinsert(AuraButtons.auras[abilityName], self)
+		end
+
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
 			local name = GetSpellInfo(ZoneAbilityFrame.baseName)
-			local abilityName = GetSpellInfo(id)
 			if name == abilityName then
 				texture = GetLastZoneAbilitySpellTexture()
 				self.zoneAbilityDisabled = true
@@ -1372,6 +1470,7 @@ function UpdateCooldown(self)
 
 		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
+
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
 end
 
@@ -1646,11 +1745,13 @@ Action.IsConsumableOrStackable = function(self) return IsConsumableAction(self._
 Action.IsUnitInRange           = function(self, unit) return IsActionInRange(self._state_action, unit) end
 Action.SetTooltip              = function(self) return GameTooltip:SetAction(self._state_action) end
 Action.GetSpellId              = function(self)
-	local actionType, id, subType = GetActionInfo(self._state_action)
-	if actionType == "spell" then
-		return id
-	elseif actionType == "macro" then
-		return (GetMacroSpell(id))
+	if self._state_type == "action" then
+		local actionType, id, subType = GetActionInfo(self._state_action)
+		if actionType == "spell" then
+			return id
+		elseif actionType == "macro" then
+			return (GetMacroSpell(id))
+		end
 	end
 end
 Action.GetLossOfControlCooldown = function(self) return GetActionLossOfControlCooldown(self._state_action) end

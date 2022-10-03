@@ -75,13 +75,13 @@ function DB:PetExperienceBar_Toggle()
 	bar.db = DB.db.petExperience
 
 	if bar.db.enable then
-		E:EnableMover(bar.holder.mover:GetName())
+		E:EnableMover(bar.holder.mover.name)
 
 		DB:PetExperienceBar_Update()
 	else
 		bar:Hide()
 
-		E:DisableMover(bar.holder.mover:GetName())
+		E:DisableMover(bar.holder.mover.name)
 	end
 end
 

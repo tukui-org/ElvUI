@@ -350,11 +350,11 @@ function E:StringTitle(str)
 	return gsub(str, '(.)', strupper, 1)
 end
 
-E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7:modRate
+E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7:modRate 8:targetAura 9:expiringAura 10-14:targetAura
 E.TimeIndicatorColors = {} -- same color indexes
 E.TimeThreshold = 3
 
-for i = 0, 7 do
+for i = 0, 14 do
 	E.TimeColors[i] = '|cFFffffff'
 	E.TimeIndicatorColors[i] = '|cFFffffff'
 end

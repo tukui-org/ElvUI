@@ -108,9 +108,7 @@ function AB:UpdateMicroBarVisibility()
 		return
 	end
 
-	local visibility = AB.db.microbar.visibility
-	visibility = gsub(visibility, '[\n\r]','')
-
+	local visibility = gsub(AB.db.microbar.visibility, '[\n\r]', '')
 	RegisterStateDriver(microBar.visibility, 'visibility', (AB.db.microbar.enabled and visibility) or 'hide')
 end
 
@@ -196,9 +194,9 @@ function AB:UpdateMicroButtons()
 
 	if microBar.mover then
 		if AB.db.microbar.enabled then
-			E:EnableMover(microBar.mover:GetName())
+			E:EnableMover(microBar.mover.name)
 		else
-			E:DisableMover(microBar.mover:GetName())
+			E:DisableMover(microBar.mover.name)
 		end
 	end
 

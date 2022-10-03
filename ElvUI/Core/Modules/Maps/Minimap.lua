@@ -97,6 +97,9 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 
 tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = ToggleHelpFrame })
 
+M.RightClickMenu = menuFrame
+M.RightClickMenuList = menuList
+
 function M:SetScale(frame, scale)
 	frame:SetIgnoreParentScale(true)
 	frame:SetScale(scale * E.uiscale)

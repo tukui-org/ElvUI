@@ -46,22 +46,22 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			element:UpdateColorArenaPreparation(specID)
 		else
 			-- this section just replicates the color options available to the Health and Power elements
-			local r, g, b, t, _
+			local r, g, b, color, _
 			-- if(element.colorPower and elementName == 'Power') then
 				-- FIXME: no idea if we can get power type here without the unit
 			if(element.colorClass) then
 				local _, _, _, _, _, class = GetSpecializationInfoByID(specID)
-				t = self.colors.class[class]
+				color = self.colors.class[class]
 			elseif(element.colorReaction) then
-				t = self.colors.reaction[2]
+				color = self.colors.reaction[2]
 			elseif(element.colorSmooth) then
 				_, _, _, _, _, _, r, g, b = unpack(element.smoothGradient or self.colors.smooth)
 			elseif(element.colorHealth and elementName == 'Health') then
-				t = self.colors.health
+				color = self.colors.health
 			end
 
-			if(t) then
-				r, g, b = t[1], t[2], t[3]
+			if(color) then
+				r, g, b = color[1], color[2], color[3]
 			end
 
 			if(r or g or b) then
@@ -225,6 +225,10 @@ end
 function oUF:HandleEventlessUnit(object)
 	object.__eventless = true
 
+	-- It's impossible to set onUpdateFrequency before the frame is created, so
+	-- by default all eventless frames are created with the 0.5s timer.
+	-- To change it you'll need to call oUF:HandleEventlessUnit(frame) one more
+	-- time from the layout code after oUF:Spawn(unit) returns the frame.
 	local timer = object.onUpdateFrequency or 0.5
 
 	-- Remove it, in case it's registered with another timer previously

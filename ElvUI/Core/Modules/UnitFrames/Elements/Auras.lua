@@ -17,6 +17,8 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
+UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
+UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' }
 UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
 UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
 UF.ExcludeStacks = {
@@ -89,7 +91,7 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
-function UF:GetAuraRow(element, row, col, growthY, width, height, spacing, anchor, inversed, middle)
+function UF:GetAuraRow(element, row, col, width, height, spacing, anchor, inversed, middle)
 	local holder = element.rows[row]
 	if not holder then
 		holder = CreateFrame('Frame', '$parentRow'..row, element)
@@ -109,10 +111,8 @@ function UF:GetAuraRow(element, row, col, growthY, width, height, spacing, ancho
 		if last and holder ~= last then
 			if middle then
 				holder:SetPoint(middle..anchor, last, E.InversePoints[middle]..anchor)
-			elseif growthY == 1 then
-				holder:SetPoint(anchor, last, inversed)
 			else
-				holder:SetPoint(inversed, last, anchor)
+				holder:SetPoint(anchor, last, inversed)
 			end
 		elseif middle then
 			holder:SetPoint(middle..anchor, element)
@@ -156,7 +156,7 @@ function UF:SetAuraPosition(element, button, index, anchor, inversed, growthX, g
 	local z, col, row = index - 1, 0, 0
 	if cols > 0 then col, row = z % cols, floor(z / cols) end
 
-	local holder = UF:GetAuraRow(element, row, col + 1, growthY, width, height, spacing, anchor, inversed, middle)
+	local holder = UF:GetAuraRow(element, row, col + 1, width, height, spacing, anchor, inversed, middle)
 	button:ClearAllPoints()
 	button:SetPoint(point, holder, point, col * width * growthX, growthY)
 end
@@ -359,7 +359,7 @@ function UF:Configure_Auras(frame, which)
 	auras.anchorPoint = settings.anchorPoint
 	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
-	auras.initialAnchor = E.InversePoints[settings.anchorPoint]
+	auras.initialAnchor = UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint] or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows

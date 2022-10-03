@@ -65,7 +65,7 @@ E.PluginInstaller = E:NewModule('PluginInstaller')
 E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
 E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
 E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
+E.TotemTracker = E:NewModule('TotemTracker','AceEvent-3.0')
 E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
@@ -124,6 +124,7 @@ do
 	E:AddLib('Base64', 'LibBase64-1.0-ElvUI')
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
+	E:AddLib('Dispel', 'LibDispel-1.0')
 
 	if E.Retail or E.Wrath then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')

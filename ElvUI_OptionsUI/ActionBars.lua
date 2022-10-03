@@ -212,6 +212,28 @@ ActionBar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() retur
 ActionBar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
 ActionBar.args.microbar.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value; AB:UpdateMicroButtons() end
 
+ActionBar.args.totemBar = ACH:Group(E.NewSign..L["Totem Bar"], nil, 16, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value; AB:PositionAndSizeTotemBar() end, function() return not E.ActionBars.Initialized end, not E.Wrath)
+ActionBar.args.totemBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.actionbar.totemBar[info[#info]] = value; E.ShowPopup = true end)
+ActionBar.args.totemBar.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2)
+ActionBar.args.totemBar.args.spacer1 = ACH:Spacer(3, 'full')
+ActionBar.args.totemBar.args.spacing = ACH:Range(L["Button Spacing"], nil, 5, { min = 1, max = 10, step = 1 })
+ActionBar.args.totemBar.args.buttonSize = ACH:Range(L["Button Size"], nil, 6, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 7, { min = 0, max = 1, step = 0.01, isPercent = true })
+
+ActionBar.args.totemBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 10, nil, 'full')
+
+ActionBar.args.totemBar.args.fontGroup = ACH:Group(L["Font Group"], nil, 15, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value AB:UpdateTotemBindings(info[#info], value, true) end)
+ActionBar.args.totemBar.args.fontGroup.inline = true
+ActionBar.args.totemBar.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+ActionBar.args.totemBar.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+ActionBar.args.totemBar.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+
+ActionBar.args.totemBar.args.flyoutGroup = ACH:Group("Flyout Options", nil, 20)
+ActionBar.args.totemBar.args.flyoutGroup.inline = true
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize = ACH:Range("Flyout Size", nil, 1, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSpacing = ACH:Range("Flyout Spacing", nil, 2, { min = 1, max = 10, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"] })
+
 --Remove options on bars that don't have those settings.
 for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 	local options = E.Options.args.actionbar.args[name].args.barGroup.args

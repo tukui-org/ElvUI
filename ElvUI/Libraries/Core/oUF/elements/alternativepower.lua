@@ -88,26 +88,26 @@ local function UpdateColor(self, event, unit, powerType)
 	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
-	local r, g, b, t
+	local r, g, b, color
 	if(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorPower) then
-		t = self.colors.power[ALTERNATE_POWER_INDEX]
+		color = self.colors.power[ALTERNATE_POWER_INDEX]
 	elseif(element.colorClass and UnitIsPlayer(unit))
 		or (element.colorClassNPC and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = self.colors.reaction[UnitReaction(unit, 'player')]
+		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
 		local adjust = 0 - (element.min or 0)
 		r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then

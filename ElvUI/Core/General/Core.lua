@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local tonumber, floor, pairs, ipairs, error, unpack, select, tostring = tonumber, floor, pairs, ipairs, error, unpack, select, tostring
+local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
@@ -20,7 +20,6 @@ local UnitFactionGroup = UnitFactionGroup
 local DisableAddOn = DisableAddOn
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
-local IsSpellKnown = IsSpellKnown
 local IsInRaid = IsInRaid
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
@@ -49,7 +48,7 @@ local Layout = E:GetModule('Layout')
 local Minimap = E:GetModule('Minimap')
 local NamePlates = E:GetModule('NamePlates')
 local Tooltip = E:GetModule('Tooltip')
-local Totems = E:GetModule('Totems')
+local TotemTracker = E:GetModule('TotemTracker')
 local UnitFrames = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
@@ -66,8 +65,8 @@ E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
 E.myspec = E.Retail and GetSpecialization()
-E.wowbuild = tonumber(E.wowbuild)
 E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
+E.wowbuild = tonumber(E.wowbuild)
 E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
@@ -119,26 +118,7 @@ E.InverseAnchors = {
 	TOPRIGHT = 'BOTTOMLEFT'
 }
 
-E.DispelClasses = {
-	PALADIN = { Poison = true, Disease = true },
-	PRIEST = { Magic = true, Disease = true },
-	MONK = { Disease = true, Poison = true },
-	DRUID = { Curse = true, Poison = true },
-	MAGE = { Curse = true },
-	WARLOCK = {},
-	SHAMAN = {}
-}
-
-if E.Retail then
-	E.DispelClasses.SHAMAN.Curse = true
-elseif E.Wrath then
-	E.DispelClasses.SHAMAN.Curse = IsSpellKnown(51886)
-else
-	E.DispelClasses.SHAMAN.Poison = true
-	E.DispelClasses.SHAMAN.Disease = true
-
-	E.DispelClasses.PALADIN.Magic = true
-end
+E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
 
 E.BadDispels = {
 	[34914]		= 'Vampiric Touch',		-- horrifies
@@ -169,6 +149,10 @@ E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
+
+E.UFParent = _G.ElvUFParent -- created in oUF
+E.UFParent:SetParent(E.UIParent)
+E.UFParent:SetFrameStrata('LOW')
 
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
@@ -906,15 +890,15 @@ do
 			if sender == PLAYER_NAME then return end
 			if prefix == 'ELVUI_VERSIONCHK' then
 				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
-				local versionInRange = (E.Classic and floor(ver) == 1) or (E.Wrath and floor(ver) == 3) or (floor(ver) == 12)
-				local validRange = msg and versionInRange and (msg > ver)
 
 				E.UserList[E:StripMyRealm(sender)] = msg
 
-				if validRange and not E.recievedOutOfDateMessage then -- you're outdated D:
+				if msg and (msg > ver) and not E.recievedOutOfDateMessage then -- you're outdated D:
 					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
 					if msg and ((msg - ver) >= 0.05) and not inCombat then
+						E.PopupDialogs.ELVUI_UPDATE_AVAILABLE.text = L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]..'|n|n'..format('Sender %s : Version %s', sender, msg)
+
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
 					end
 
@@ -1349,6 +1333,42 @@ function E:DBConvertSL()
 			data.r, data.g, data.b = nil, nil, nil
 		end
 	end
+
+	-- raid 1-3 converts
+	E.db.unitframe.smartRaidFilter = nil
+
+	if E.db.unitframe.units.raid then
+		E.db.unitframe.units.raid.visibility = nil
+		E.db.unitframe.units.raid.enable = nil
+		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
+		E.db.unitframe.units.raid = nil
+	end
+
+	if E.db.unitframe.units.raid40 then
+		E.db.unitframe.units.raid40.visibility = nil
+		E.db.unitframe.units.raid40.enable = nil
+		E:CopyTable(E.db.unitframe.units.raid3, E.db.unitframe.units.raid40)
+		E.db.unitframe.units.raid40 = nil
+	end
+
+	if E.db.movers and E.db.movers.ElvUF_RaidMover then
+		E.db.movers.ElvUF_Raid1Mover = E.db.movers.ElvUF_RaidMover
+		E.db.movers.ElvUF_RaidMover = nil
+	end
+	if E.db.movers and E.db.movers.ElvUF_Raid40Mover then
+		E.db.movers.ElvUF_Raid3Mover = E.db.movers.ElvUF_Raid40Mover
+		E.db.movers.ElvUF_Raid40Mover = nil
+	end
+
+	-- new multiple ranks aura indicator
+	local auraConvert = E.global.unitframe.aurawatch[E.myclass]
+	if auraConvert then
+		for auraID in next, auraConvert do
+			if E.Filters.Included[auraID] then
+				auraConvert[auraID] = nil
+			end
+		end
+	end
 end
 
 function E:UpdateDB()
@@ -1367,7 +1387,7 @@ function E:UpdateDB()
 	NamePlates.db = E.db.nameplates
 	Tooltip.db = E.db.tooltip
 	UnitFrames.db = E.db.unitframe
-	Totems.db = E.db.general.totems
+	TotemTracker.db = E.db.general.totems
 
 	--Not part of staggered update
 end
@@ -1501,11 +1521,11 @@ function E:UpdateMisc(skipCallback)
 
 	if E.Retail then
 		Blizzard:SetObjectiveFrameHeight()
-		Totems:PositionAndSize()
+		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
 	elseif E.TBC then
-		Totems:PositionAndSize()
+		TotemTracker:PositionAndSize()
 	end
 
 	if not skipCallback then
@@ -1825,27 +1845,6 @@ function E:DBConversions()
 	end
 
 	-- development converts
-
-	if E.db.unitframe.units.raid then
-		E:CopyTable(E.db.unitframe.units.raid1, E.db.unitframe.units.raid)
-		E.db.unitframe.units.raid = nil
-	end
-
-	if E.db.unitframe.units.raid40 then
-		E:CopyTable(E.db.unitframe.units.raid3, E.db.unitframe.units.raid40)
-		E.db.unitframe.units.raid40 = nil
-	end
-
-	E.db.unitframe.smartRaidFilter = nil
-
-	if E.db.movers and E.db.movers.ElvUF_RaidMover then
-		E.db.movers.ElvUF_Raid1Mover = E.db.movers.ElvUF_RaidMover
-		E.db.movers.ElvUF_RaidMover = nil
-	end
-	if E.db.movers and E.db.movers.ElvUF_Raid40Mover then
-		E.db.movers.ElvUF_Raid3Mover = E.db.movers.ElvUF_Raid40Mover
-		E.db.movers.ElvUF_Raid40Mover = nil
-	end
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then

@@ -7,7 +7,7 @@ function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame('Frame', '$parent_InfoPanel', frame)
 	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
 	infoPanel:Hide()
-	infoPanel:SetSize(1,1)
+	infoPanel:SetSize(100,10)
 	infoPanel:CreateBackdrop(nil, true, nil, nil, true)
 
 	return infoPanel
@@ -15,9 +15,11 @@ end
 
 function UF:Configure_InfoPanel(frame)
 	local db = frame.db
+	local isShown = frame.USE_INFO_PANEL
 
-	if frame.USE_INFO_PANEL then
-		frame.InfoPanel:Show()
+	frame.InfoPanel:SetShown(isShown)
+
+	if isShown then
 		frame.InfoPanel:ClearAllPoints()
 
 		if frame.ORIENTATION == 'RIGHT' and not (frame.unitframeType == 'arena') then
@@ -41,7 +43,5 @@ function UF:Configure_InfoPanel(frame)
 		else
 			frame.InfoPanel.backdrop:SetTemplate(nil, true, nil, nil, true)
 		end
-	else
-		frame.InfoPanel:Hide()
 	end
 end
