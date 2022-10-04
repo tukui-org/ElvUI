@@ -16,4 +16,4 @@ local function OnEvent(self, event)
 	self.text:SetFormattedText(E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, label..'|r'))
 end
 
-DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"], nil, ValueColorUpdate)
+DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"])
