@@ -592,6 +592,10 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		config.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the health bar moves when gaining/losing health."], 9, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
 	end
 
+	if isGroupFrame and strmatch(groupName, '^raid(%d)') then
+		config.args.frequentUpdates = ACH:Toggle(L["Frequent Updates"], nil, 7)
+	end
+
 	if groupName == 'pet' or groupName == 'raidpet' then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 
