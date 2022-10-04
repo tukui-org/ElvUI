@@ -200,6 +200,16 @@ local function CreateDTOptions(name, data)
 
 	if name == 'Combat' then
 		optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
+	elseif name == "CombatIndicator" then
+		local oocGroup = ACH:Group(L["Out of Combat"], nil, 1)
+		oocGroup.inline = true
+		oocGroup.args.Label = ACH:Input(L["Label"], nil, 1, nil, nil, function(info) return gsub(settings.OutOfCombat[info[#info]], '|', '||') end, function(info, value) settings.OutOfCombat[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
+		optionTable.args.outOfCombat = oocGroup
+
+		local combatGroup = ACH:Group(L["In Combat"], nil, 2)
+		combatGroup.inline = true
+		combatGroup.args.Label = ACH:Input(L["Label"], nil, 1, nil, nil, function(info) return gsub(settings.InCombat[info[#info]], '|', '||') end, function(info, value) settings.InCombat[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
+		optionTable.args.inCombat = combatGroup
 	elseif name == 'Currencies' then
 		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, 10, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
 		optionTable.args.displayedCurrency.sortByValue = true
