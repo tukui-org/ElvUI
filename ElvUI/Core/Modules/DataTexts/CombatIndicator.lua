@@ -3,17 +3,28 @@ local DT = E:GetModule('DataTexts')
 
 local format, strjoin = format, strjoin
 
-local function OnEvent(self, event)
-	local label, labelColor
-	if event == 'PLAYER_REGEN_ENABLED' or event == "ELVUI_FORCE_UPDATE" then
-		label = E.global.datatexts.settings.CombatIndicator.OutOfCombat.Label ~= '' and E.global.datatexts.settings.CombatIndicator.OutOfCombat.Label or L["Out of Combat"]
-		labelColor = {r = 0, g = 0.8, b = 0}
-	elseif event == 'PLAYER_REGEN_DISABLED' then
-		label = E.global.datatexts.settings.CombatIndicator.InCombat.Label ~= '' and E.global.datatexts.settings.CombatIndicator.InCombat.Label or L["In Combat"]
-		labelColor = {r = 0.8, g = 0, b = 0}
-	end
+local inCombat, outOfCombat = '', ''
 
-	self.text:SetFormattedText(E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, label..'|r'))
+local function OnEvent(self, event)
+	if event == 'PLAYER_REGEN_ENABLED' or event == "ELVUI_FORCE_UPDATE" then
+		self.text:SetFormattedText(outOfCombat)
+	elseif event == 'PLAYER_REGEN_DISABLED' then
+		self.text:SetFormattedText(inCombat)
+	end
 end
 
-DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"])
+local function ValueColorUpdate()
+	-- Setup string
+	inCombat = E.global.datatexts.settings.CombatIndicator.InCombat ~= '' and E.global.datatexts.settings.CombatIndicator.InCombat or L["In Combat"]
+	outOfCombat = E.global.datatexts.settings.CombatIndicator.OutOfCombat ~= '' and E.global.datatexts.settings.CombatIndicator.OutOfCombat or L["Out of Combat"]
+
+	-- Color it
+	local labelColor = E.global.datatexts.settings.CombatIndicator.InCombatColor
+	inCombat = E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, inCombat..'|r')
+
+	labelColor = E.global.datatexts.settings.CombatIndicator.OutOfCombatColor
+	outOfCombat = E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, outOfCombat..'|r')
+end
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
+
+DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"], nil, ValueColorUpdate)
