@@ -946,7 +946,8 @@ G.unitframe.aurawatch = {
 		[5677]	= Aura(5677, {10491,10493,10494,25569,58775,58776,58777}, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem
 		[8072]	= Aura(8072, {8156,8157,10403,10404,10405,25506,25507,58752,58754}, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem
 		[974]	= Aura(974, {32593,32594,49283,49284}, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
-		-- TODO: Riptide / Earthliving
+		[61295] = Aura(61295, {61299,61300,61301}, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
+		[51945] = Aura(51945, {51990,51997,51998,51999,52000}, 'LEFT', {0.7, 0.3, 0.7}), -- Earthliving
 	},
 	WARLOCK = {
 		[5697]	= Aura(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
