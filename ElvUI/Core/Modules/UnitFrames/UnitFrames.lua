@@ -1241,9 +1241,11 @@ do
 			local id = strmatch(unit, 'party(%d)')
 			if id then
 				HandleFrame('PartyMemberFrame' .. id)
+				HandleFrame('CompactPartyMemberFrame' .. id)
 			else
-				for i=1, _G.MAX_PARTY_MEMBERS do
+				for i = 1, _G.MAX_PARTY_MEMBERS do
 					HandleFrame(format('PartyMemberFrame%d', i))
+					HandleFrame(format('CompactPartyMemberFrame%d', i))
 				end
 			end
 			HandleFrame(_G.PartyMemberBackground)
