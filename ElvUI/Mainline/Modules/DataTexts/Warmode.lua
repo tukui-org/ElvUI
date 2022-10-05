@@ -85,4 +85,4 @@ local function OnEvent(self)
 end
 
 
-DT:RegisterDatatext('WarMode', nil, {'WAR_MODE_STATUS_UPDATE', 'PLAYER_FLAGS_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, PVP_LABEL_WAR_MODE, nil, ValueColorUpdate)
+DT:RegisterDatatext('WarMode', nil, {'WAR_MODE_STATUS_UPDATE', 'PLAYER_FLAGS_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, PVP_LABEL_WAR_MODE)
