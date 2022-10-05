@@ -46,6 +46,7 @@ G.datatexts = {
 		Bags = { textFormat = 'USED_TOTAL', Label = '', NoLabel = false },
 		CallToArms = { Label = '', NoLabel = false },
 		Combat = { TimeFull = true, NoLabel = false },
+		CombatIndicator = { OutOfCombat = '', InCombat = '', OutOfCombatColor = {r = 0, g = 0.8, b = 0}, InCombatColor = {r = 0.8, g = 0, b = 0} },
 		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {}, idEnable = {}, headers = true, maxCurrency = false },
 		Durability = { Label = '', NoLabel = false, percThreshold = 30 },
