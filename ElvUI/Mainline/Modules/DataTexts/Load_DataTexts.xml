@@ -10,4 +10,5 @@
 	<Script file='Quickjoin.lua'/>
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Versatility.lua'/>
+	<Script file='Warmode.lua'/>
 </Ui>
