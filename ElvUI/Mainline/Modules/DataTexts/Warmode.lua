@@ -36,7 +36,7 @@ local function OnEnter(self)
     end
 
     local warModeRewardBonus = C_PvP_GetWarModeRewardBonus()
-    DT.tooltip:AddLine(format(PVP_WAR_MODE_DESCRIPTION_FORMAT, warModeRewardBonus), nil, nil, nil, true)
+    DT.tooltip:AddLine(format(PVP_WAR_MODE_DESCRIPTION_FORMAT, warModeRewardBonus))
 
     local canToggleWarmode = C_PvP_CanToggleWarMode(true)
     local canToggleWarmodeOFF = C_PvP_CanToggleWarMode(false)
