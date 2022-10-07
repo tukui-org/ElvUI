@@ -100,7 +100,15 @@ local function UpdateCurrencySkins()
 			end
 
 			if button.icon then
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+				if button.name then
+					if button.name:GetText() ~= HONOR_POINTS then
+						button.icon:SetTexCoord(unpack(E.TexCoords))
+					else
+						button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+					end
+				else
+					button.icon:SetTexCoord(unpack(E.TexCoords))
+				end
 				button.icon:Size(17, 17)
 
 				button.backdrop:SetOutside(button.icon, 1, 1)
