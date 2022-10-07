@@ -100,7 +100,11 @@ local function UpdateCurrencySkins()
 			end
 
 			if button.icon then
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+				if (button.itemID == Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID and UnitFactionGroup("player")) then
+					button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+				else
+					button.icon:SetTexCoord(unpack(E.TexCoords))
+				end
 				button.icon:Size(17, 17)
 
 				button.backdrop:SetOutside(button.icon, 1, 1)
