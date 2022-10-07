@@ -40,6 +40,7 @@ local threatValues = {
 local attachToValues = {
 	Health = L["Health"],
 	Power = L["Power"],
+	ClassPower = L["Class Power"],
 	InfoPanel = L["Information Panel"],
 	Frame = L["Frame"],
 }
