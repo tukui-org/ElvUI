@@ -132,7 +132,7 @@ function S:Blizzard_LookingForGroupUI()
 		button.CheckButton:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check");
 	end)
 
-	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, elementData, isCollapsed)
+	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
 		if isCollapsed then
 			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		else
