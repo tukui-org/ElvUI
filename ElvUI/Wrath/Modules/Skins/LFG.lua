@@ -128,8 +128,8 @@ function S:Blizzard_LookingForGroupUI()
 
 	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button, elementData)
 		S:HandleCheckBox(button.CheckButton, nil, true)
-		button.CheckButton:SetChecked(LFGListingFrame:IsActivitySelected(elementData.activityID));
-		button.CheckButton:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check");
+		button.CheckButton:SetChecked(LFGListingFrame:IsActivitySelected(elementData.activityID))
+		button.CheckButton:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
 	end)
 
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
