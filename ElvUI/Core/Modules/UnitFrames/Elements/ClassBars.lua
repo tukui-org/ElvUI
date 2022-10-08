@@ -415,6 +415,7 @@ function UF:Runes_UpdateCharged(runes, custom_backdrop)
 		local _, maxDuration = self:GetMinMaxValues()
 		local color = colors[self.runeType or 0]
 		local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
+		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 
 		UF:ClassPower_SetBarColor(self, color.r * duration, color.g * duration, color.b * duration, custom_backdrop)
 	end

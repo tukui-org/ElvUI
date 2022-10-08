@@ -126,10 +126,10 @@ function S:Blizzard_LookingForGroupUI()
 		end
 	end
 
-	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button)
-		if not button.CheckButton.isSkinned then
-			S:HandleCheckBox(button.CheckButton)
-		end
+	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button, elementData)
+		S:HandleCheckBox(button.CheckButton, nil, true)
+		button.CheckButton:SetChecked(LFGListingFrame:IsActivitySelected(elementData.activityID))
+		button.CheckButton:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
 	end)
 
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
@@ -138,9 +138,8 @@ function S:Blizzard_LookingForGroupUI()
 		else
 			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
-		if not button.CheckButton.isSkinned then
-			S:HandleCheckBox(button.CheckButton)
-		end
+
+		S:HandleCheckBox(button.CheckButton, nil, true)
 	end)
 end
 

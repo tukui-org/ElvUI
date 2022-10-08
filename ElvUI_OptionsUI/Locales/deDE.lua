@@ -1809,13 +1809,7 @@ L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an.
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster."
-L["VISIBILITY_DESC"] = [=[Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist.
-
-|cffff8000Standard:|r
-    Gruppe: [@raid6,exists][nogroup] hide;show
-    Schlachtzug: [@raid6,noexists][@raid26,exists] hide;show
-    40er Schlachtzung: [@raid26,noexists] hide;show
-    Schlachtzugsbegleiter: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist."
 L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Spezifische Suche:
