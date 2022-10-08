@@ -1808,13 +1808,7 @@ L["SKINS_DESC"] = "调整外观设定"
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
-L["VISIBILITY_DESC"] = [=[为了显示设定过的过滤器下面的宏必须启用.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "为了显示设定过的过滤器下面的宏必须启用."
 L["SEARCH_SYNTAX_DESC"] = [=[因为新增了LibItemSearch，你现在可以使用更高级的物品检索. 下面是一份检索语法的文档. 查看完整说明: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 特性检索:
