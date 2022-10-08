@@ -204,7 +204,8 @@ do
 		'ElvUI_CustomTweaks',
 		'ElvUI_DTBars2',
 		'ElvUI_QuestXP',
-		'ElvUI_CustomTags'
+		'ElvUI_CustomTags',
+		'ElvUI_UnitFramePlugin'
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
