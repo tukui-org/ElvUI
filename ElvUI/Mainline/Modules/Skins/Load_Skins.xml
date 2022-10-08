@@ -95,4 +95,6 @@
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WeeklyRewards.lua'/>
 	<Script file='WorldMap.lua'/>
+
+	<Script file='ClassTalents.lua'/>
 </Ui>
