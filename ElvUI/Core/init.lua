@@ -73,11 +73,15 @@ E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
+-- Just leave it here
+E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
+
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+E.WoW10 = E.wowtoc >= 100000
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
@@ -252,7 +256,7 @@ function E:OnInitialize()
 		end
 	end
 
-	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'SharedTooltipTemplate')
+	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1

@@ -117,7 +117,6 @@ function B:AlertMovers()
 	AlertFrameHolder:Point('TOP', E.UIParent, 'TOP', 0, -20)
 
 	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
 	E:CreateMover(AlertFrameHolder, 'AlertFrameMover', L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,blizzUIImprovements')
 
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.

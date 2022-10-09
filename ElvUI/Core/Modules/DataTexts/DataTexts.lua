@@ -40,7 +40,7 @@ local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local ActivateHyperMode
 local HyperList = {}
 
-DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'SharedTooltipTemplate')
+DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
 
 DT.SelectedDatatext = nil

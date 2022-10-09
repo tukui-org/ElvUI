@@ -6,7 +6,7 @@ local strmatch = strmatch
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	if not obj then return end
-	obj:SetFont(font, size, style)
+	obj:SetFont(font, size, '')
 
 	if sr and sg and sb then
 		obj:SetShadowColor(sr, sg, sb, sa)

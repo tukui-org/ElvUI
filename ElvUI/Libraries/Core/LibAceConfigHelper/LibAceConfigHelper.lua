@@ -153,7 +153,7 @@ function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hid
 end
 
 local FontFlagValues = {
-	NONE = 'None',
+	[''] = 'None',
 	OUTLINE = 'Outline',
 	THICKOUTLINE = 'Thick',
 	MONOCHROME = '|cffaaaaaaMono|r',

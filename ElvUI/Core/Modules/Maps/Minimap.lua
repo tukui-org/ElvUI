@@ -559,7 +559,7 @@ function M:Initialize()
 
 	if E.Retail then
 		-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-		hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
+		-- hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
 
 		--Hide the BlopRing on Minimap
 		Minimap:SetArchBlobRingAlpha(0)

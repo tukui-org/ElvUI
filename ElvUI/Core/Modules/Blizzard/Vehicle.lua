@@ -13,7 +13,7 @@ local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 local function SetPosition(_,_,anchor)
 	if anchor == 'MinimapCluster' or anchor == _G.MinimapCluster then
 		_G.VehicleSeatIndicator:ClearAllPoints()
-		_G.VehicleSeatIndicator:Point('TOPLEFT', _G.VehicleSeatMover, 'TOPLEFT', 0, 0)
+		_G.VehicleSeatIndicator:Point('TOPLEFT', _G.VehicleSeatIndicator.mover, 'TOPLEFT', 0, 0)
 	end
 end
 
@@ -47,6 +47,9 @@ function B:PositionVehicleFrame()
 	if not VehicleSeatIndicator.PositionVehicleFrameHooked then
 		hooksecurefunc(VehicleSeatIndicator, 'SetPoint', SetPosition)
 		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+		VehicleSeatIndicator:ClearAllPoints()
+		VehicleSeatIndicator:SetPoint("TOPRIGHT", _G.MinimapCluster, "BOTTOMRIGHT", 0, 0)
+
 		E:CreateMover(VehicleSeatIndicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 		VehicleSeatIndicator.PositionVehicleFrameHooked = true
 	end

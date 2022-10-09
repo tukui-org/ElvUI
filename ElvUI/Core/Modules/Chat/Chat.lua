@@ -131,6 +131,7 @@ local hyperlinkTypes = {
 local tabTexs = {
 	'',
 	'Selected',
+	'Active',
 	'Highlight'
 }
 
@@ -559,7 +560,7 @@ end
 
 function CH:CopyButtonOnLeave()
 	local chat = self:GetParent()
-	if _G[chat:GetName()..'TabText']:IsShown() then
+	if (_G[chat:GetName()..'TabText'] or _G[chat:GetName()..'Tab'].Text):IsShown() then
 		self:SetAlpha(0.35)
 	else
 		self:SetAlpha(0)
@@ -730,11 +731,11 @@ function CH:UpdateEditboxFont(chatFrame)
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
-	editbox:FontTemplate(font, fontSize, 'NONE')
-	editbox.header:FontTemplate(font, fontSize, 'NONE')
+	editbox:FontTemplate(font, fontSize, '')
+	editbox.header:FontTemplate(font, fontSize, '')
 
 	if editbox.characterCount then
-		editbox.characterCount:FontTemplate(font, fontSize, 'NONE')
+		editbox.characterCount:FontTemplate(font, fontSize, '')
 	end
 
 	-- the header and text will not update the placement without focus
@@ -788,17 +789,29 @@ function CH:StyleChat(frame)
 	charCount:Width(40)
 	editbox.characterCount = charCount
 
-	for _, texName in pairs(tabTexs) do
-		_G[name..'Tab'..texName..'Left']:SetTexture()
-		_G[name..'Tab'..texName..'Middle']:SetTexture()
-		_G[name..'Tab'..texName..'Right']:SetTexture()
+	if E.Retail and E.WoW10 then
+		for _, texName in pairs(tabTexs) do
+			if _G[name..'Tab'][texName..'Left'] then
+				_G[name..'Tab'][texName..'Left']:SetTexture()
+				_G[name..'Tab'][texName..'Middle']:SetTexture()
+				_G[name..'Tab'][texName..'Right']:SetTexture()
+			end
+		end
+	else
+		for _, texName in pairs(tabTexs) do
+			if _G[name..'Tab'..texName..'Left'] then
+				_G[name..'Tab'..texName..'Left']:SetTexture()
+				_G[name..'Tab'..texName..'Middle']:SetTexture()
+				_G[name..'Tab'..texName..'Right']:SetTexture()
+			end
+		end
 	end
 
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.left then tab.left = _G[name..'TabLeft'] end
+	if not tab.Left then tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left end
 	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab.Text:Point('LEFT', tab, 'LEFT', tab.Left:GetWidth(), 0)
 	tab:Height(22)
 
 	if tab.conversationIcon then
@@ -3148,7 +3161,6 @@ function CH:BuildCopyChatFrame()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	frame:SetMinResize(350, 100)
 	frame:SetScript('OnMouseDown', function(copyChat, button)
 		if button == 'LeftButton' and not copyChat.isMoving then
 			copyChat:StartMoving()

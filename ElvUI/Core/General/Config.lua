@@ -23,7 +23,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'SharedTooltipTemplate')
+local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
 
 local grid
 E.ConfigModeLayouts = {
@@ -288,14 +288,14 @@ function E:CreateMoverPopup()
 	f.desc = desc
 
 	local snapName = f:GetName()..'CheckButton'
-	local snapping = CreateFrame('CheckButton', snapName, f, 'OptionsCheckButtonTemplate')
+	local snapping = CreateFrame('CheckButton', snapName, f, 'UICheckButtonTemplate')
 	snapping:SetScript('OnShow', function(cb) cb:SetChecked(E.db.general.stickyFrames) end)
 	snapping:SetScript('OnClick', function(cb) E.db.general.stickyFrames = cb:GetChecked() end)
 	snapping.text = _G[snapName..'Text']
 	snapping.text:SetText(L["Sticky Frames"])
 	f.snapping = snapping
 
-	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate')
+	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'UIPanelButtonTemplate')
 	lock.Text:SetText(L["Lock"])
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode()
@@ -553,8 +553,12 @@ function E:Config_UpdateSize(reset)
 	if not frame then return end
 
 	local maxWidth, maxHeight = self.UIParent:GetSize()
-	frame:SetMinResize(800, 600)
-	frame:SetMaxResize(maxWidth-50, maxHeight-50)
+	if frame.SetResizeBounds then
+		frame:SetResizeBounds(800, 600, maxWidth-50, maxHeight-50)
+	else
+		frame:SetMinResize(800, 600)
+		frame:SetMaxResize(maxWidth-50, maxHeight-50)
+	end
 
 	self.Libs.AceConfigDialog:SetDefaultSize(E.name, E:Config_GetDefaultSize())
 

@@ -190,7 +190,13 @@ local function Constructor()
 	frame:SetFrameLevel(100) -- Lots of room to draw under it
 	frame:SetBackdrop(FrameBackdrop)
 	frame:SetBackdropColor(0, 0, 0, 1)
-	frame:SetMinResize(400, 200)
+
+	if frame.SetResizeBounds then
+		frame:SetResizeBounds(400, 200)
+	else
+		frame:SetMinResize(400, 200)
+	end
+
 	frame:SetToplevel(true)
 	frame:SetScript("OnShow", Frame_OnShow)
 	frame:SetScript("OnHide", Frame_OnClose)

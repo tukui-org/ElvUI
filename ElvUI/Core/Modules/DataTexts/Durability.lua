@@ -41,14 +41,22 @@ local function OnEvent(self)
 	for index in pairs(slots) do
 		local currentDura, maxDura = GetInventoryItemDurability(index)
 		if currentDura and maxDura > 0 then
-			local perc = (currentDura/maxDura)*100
+			local perc, repairCost = (currentDura/maxDura)*100
 			invDurability[index] = perc
 
 			if perc < totalDurability then
 				totalDurability = perc
 			end
 
-			totalRepairCost = totalRepairCost + select(3, E.ScanTooltip:SetInventoryItem('player', index))
+			if E.Retail and E.ScanTooltip.GetTooltipData then
+				E.ScanTooltip:SetInventoryItem('player', index)
+				E.ScanTooltip:Show()
+				repairCost = E.ScanTooltip:GetTooltipData().repairCost
+			else
+				repairCost = select(3, E.ScanTooltip:SetInventoryItem('player', index))
+			end
+
+			totalRepairCost = totalRepairCost + repairCost
 		end
 	end
 

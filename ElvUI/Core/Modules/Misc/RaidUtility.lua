@@ -381,7 +381,7 @@ function RU:Initialize()
 			--Reposition/Resize and Reuse the World Marker Button
 			tinsert(buttons, 'CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton')
 			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-			marker:SetParent('RaidUtilityPanel')
+			marker:SetParent(RaidUtilityPanel)
 			marker:ClearAllPoints()
 			marker:Point('TOPLEFT', _G.RoleCheckButton, 'TOPRIGHT', 3, 0)
 			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)

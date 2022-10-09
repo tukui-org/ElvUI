@@ -74,7 +74,7 @@ function E:SetMoverPoints(name, parent)
 
 	if parent then
 		parent:ClearAllPoints()
-		parent:SetPoint(point1, parent.mover, 0, 0)
+		parent:SetPoint(point1, parent.mover, nil, 0, 0)
 	end
 end
 

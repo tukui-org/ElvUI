@@ -13,7 +13,7 @@ local GetShapeshiftFormInfo = GetShapeshiftFormInfo
 local GetSpellTexture = GetSpellTexture
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
+local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS or 10
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Stance Bar')

@@ -119,7 +119,7 @@ local function OnEvent(self, event)
 
 	if E.Retail and not Ticker then
 		C_WowTokenPublic_UpdateMarketPrice()
-		Ticker = C_Timer_NewTicker(60, C_WowTokenPublic_UpdateMarketPrice)
+		Ticker = C_Timer_NewTicker(60, function() return C_WowTokenPublic_UpdateMarketPrice() end)
 	end
 
 	if event == 'ELVUI_FORCE_UPDATE' then

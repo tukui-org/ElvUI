@@ -408,7 +408,7 @@ local function Enable(self)
 		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_HIDE', Path)
 		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_SHOW', Path)
 
-		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
+		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 

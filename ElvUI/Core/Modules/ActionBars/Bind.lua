@@ -269,7 +269,7 @@ do
 				parent.quickKeybindButton:Hide()
 			end
 
-			local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate')
+			local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'UIPanelButtonTemplate')
 			frame:Width(150)
 			frame:Point('LEFT', parent.bindingsContainer)
 			frame:Point('BOTTOM', parent.cancelButton)
@@ -332,7 +332,7 @@ function AB:LoadKeyBinder()
 
 	bind.Popup = Popup
 
-	Popup.header = CreateFrame('Button', 'ElvUIBindPopupWindowHeader', Popup, 'OptionsButtonTemplate')
+	Popup.header = CreateFrame('Button', 'ElvUIBindPopupWindowHeader', Popup, 'UIPanelButtonTemplate')
 	Popup.header:Size(100, 25)
 	Popup.header:Point('CENTER', Popup, 'TOP')
 	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -348,17 +348,17 @@ function AB:LoadKeyBinder()
 	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
 	Popup.desc:SetText(L["BINDINGS_HELP"])
 
-	Popup.save = CreateFrame('Button', 'ElvUIBindPopupWindowSaveButton', Popup, 'OptionsButtonTemplate')
+	Popup.save = CreateFrame('Button', 'ElvUIBindPopupWindowSaveButton', Popup, 'UIPanelButtonTemplate')
 	Popup.save:SetText(L["Save"])
 	Popup.save:Width(150)
 	Popup.save:SetScript('OnClick', function() AB:DeactivateBindMode(true) end)
 
-	Popup.discard = CreateFrame('Button', 'ElvUIBindPopupWindowDiscardButton', Popup, 'OptionsButtonTemplate')
+	Popup.discard = CreateFrame('Button', 'ElvUIBindPopupWindowDiscardButton', Popup, 'UIPanelButtonTemplate')
 	Popup.discard:Width(150)
 	Popup.discard:SetText(L["Discard"])
 	Popup.discard:SetScript('OnClick', function() AB:DeactivateBindMode(false) end)
 
-	Popup.perCharCheck = CreateFrame('CheckButton', 'ElvUIBindPopupWindowCheckButton', Popup, 'OptionsCheckButtonTemplate')
+	Popup.perCharCheck = CreateFrame('CheckButton', 'ElvUIBindPopupWindowCheckButton', Popup, 'UICheckButtonTemplate')
 	_G[Popup.perCharCheck:GetName()..'Text']:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 	Popup.perCharCheck:SetScript('OnLeave', GameTooltip_Hide)
 	Popup.perCharCheck:SetScript('OnShow', function(checkBtn) checkBtn:SetChecked(GetCurrentBindingSet() == 2) end)

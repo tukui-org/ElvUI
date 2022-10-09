@@ -258,7 +258,7 @@ function A:UpdateAura(button, index)
 
 	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
-	button.count:SetText(count > 1 and count)
+	button.count:SetText(count > 1 and count or '')
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 	button.texture:SetTexture(icon)
 
@@ -520,7 +520,10 @@ end
 function A:Initialize()
 	if E.private.auras.disableBlizzard then
 		_G.BuffFrame:Kill()
-		_G.TemporaryEnchantFrame:Kill()
+
+		if not E.Retail then
+			_G.TemporaryEnchantFrame:Kill()
+		end
 
 		if E.Wrath then
 			_G.ConsolidatedBuffs:Kill()

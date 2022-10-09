@@ -112,7 +112,7 @@ local function Update(self, event, unit, powerType)
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
-		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, true)
+		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
 
@@ -341,7 +341,7 @@ local function Enable(self, unit)
 		for i = 1, #element do
 			local bar = element[i]
 			if(bar:IsObjectType('StatusBar')) then
-				if(not (bar:GetStatusBarTexture() or bar:GetStatusBarAtlas())) then
+				if not bar:GetStatusBarTexture() then
 					bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 				end
 

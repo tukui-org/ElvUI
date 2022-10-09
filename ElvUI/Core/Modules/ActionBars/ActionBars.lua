@@ -351,7 +351,9 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
-	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
+	if not E.Retail then
+		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
+	end
 	AB.handledBars['bar'..id] = bar
 
 	local defaults = AB.barDefaults['bar'..id]
@@ -399,24 +401,22 @@ function AB:CreateBar(id)
 		bar:SetAttribute('hasTempBar', false)
 	end
 
-	bar:SetAttribute('_onstate-page', [[
-		if HasTempShapeshiftActionBar() and self:GetAttribute('hasTempBar') then
-			newstate = GetTempShapeshiftBarIndex() or newstate
-		end
-
-		if newstate ~= 0 then
-			self:SetAttribute('state', newstate)
-			control:ChildUpdate('state', newstate)
-			self:GetFrameRef('MainMenuBarArtFrame'):SetAttribute('actionpage', newstate) --Update MainMenuBarArtFrame too. See issue #1848
-		else
-			local newCondition = self:GetAttribute('newCondition')
-			if newCondition then
-				newstate = SecureCmdOptionParse(newCondition)
-				self:SetAttribute('state', newstate)
-				control:ChildUpdate('state', newstate)
-				self:GetFrameRef('MainMenuBarArtFrame'):SetAttribute('actionpage', newstate)
+	bar:SetAttribute("_onstate-page", [[
+		if newstate == "possess" or newstate == "11" then
+			if HasVehicleActionBar() then
+				newstate = GetVehicleBarIndex()
+			elseif HasOverrideActionBar() then
+				newstate = GetOverrideBarIndex()
+			elseif HasTempShapeshiftActionBar() then
+				newstate = GetTempShapeshiftBarIndex()
+			elseif HasBonusActionBar() then
+				newstate = GetBonusBarIndex()
+			else
+				newstate = 12
 			end
 		end
+		self:SetAttribute("state", newstate)
+		control:ChildUpdate("state", newstate)
 	]])
 
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,playerBars,bar'..id)
@@ -883,7 +883,7 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'SharedTooltipTemplate')
+local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end
@@ -1000,7 +1000,9 @@ function AB:DisableBlizzard()
 	end
 
 	for i, name in ipairs(tbl) do
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+		if not E.Retail then
+			_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+		end
 
 		local frame = _G[name]
 		if frame then
@@ -1018,13 +1020,13 @@ function AB:DisableBlizzard()
 	end
 
 	if E.Retail then -- same deal with profession buttons, this will fix the tainting
-		for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-			for i = 1, 2 do
-				local button = frame['button'..i]
-				button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-				button:SetScript('OnLeave', AB.SpellButtonOnLeave)
-			end
-		end
+		--for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
+		--	for i = 1, 2 do
+		--		local button = frame['button'..i]
+		--		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+		--		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+		--	end
+		--end
 	end
 
 	-- MainMenuBar:ClearAllPoints taint during combat
@@ -1035,9 +1037,6 @@ function AB:DisableBlizzard()
 	_G.MultiActionBar_ShowAllGrids = E.noop
 
 	-- shut down some events for things we dont use
-	AB:SetNoopsi(_G.MainMenuBarArtFrame)
-	AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
-	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
@@ -1052,43 +1051,41 @@ function AB:DisableBlizzard()
 		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
 		AB.ButtonEventsRegisterFrame()
 
+		AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
+		_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
+	else
+		AB:SetNoopsi(_G.MainMenuBarArtFrame)
+		AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
+		_G.MainMenuBarArtFrame:UnregisterAllEvents()
+
 		-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 		_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
 		AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
-		AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
-		_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
+		-- hide some interface options we dont use
+		_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
+		_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
+		_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
+		_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
+		_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
+		_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
+		_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
+		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
+		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
+		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
+		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
+		_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+		_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
+
+		_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
+		_G.InterfaceOptionsCombatPanelSelfCastKeyDropDown:Hide()
+
+		if not E.Classic then
+			_G.InterfaceOptionsCombatPanelFocusCastKeyDropDown:Hide()
+		end
+
+		AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 	end
-
-	-- hide some interface options we dont use
-	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
-	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
-	_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
-	_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
-	_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
-	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
-	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
-	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
-	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
-
-	_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
-	_G.InterfaceOptionsCombatPanelSelfCastKeyDropDown:Hide()
-
-	if not E.Classic then
-		_G.InterfaceOptionsCombatPanelFocusCastKeyDropDown:Hide()
-	end
-
-	if E.Retail then
-		_G.InterfaceOptionsCombatPanelEnableMouseoverCast:Hide()
-		_G.InterfaceOptionsCombatPanelMouseoverCastKeyDropDown:Hide()
-		_G.InterfaceOptionsCombatPanel.clickCastingButton:SetPoint(_G.InterfaceOptionsCombatPanelEnableMouseoverCast:GetPoint())
-	end
-
-	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 
 	if E.Wrath and E.myclass ~= 'SHAMAN' then
 		for i = 1, 12 do

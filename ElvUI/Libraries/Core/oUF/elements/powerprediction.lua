@@ -159,15 +159,13 @@ local function Enable(self)
 		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
 
 		if(element.mainBar) then
-			if(element.mainBar:IsObjectType('StatusBar')
-				and not (element.mainBar:GetStatusBarTexture() or element.mainBar:GetStatusBarAtlas())) then
+			if(element.mainBar:IsObjectType('StatusBar') and not element.mainBar:GetStatusBarTexture()) then
 				element.mainBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
 		end
 
 		if(element.altBar) then
-			if(element.altBar:IsObjectType('StatusBar')
-				and not (element.altBar:GetStatusBarTexture() or element.altBar:GetStatusBarAtlas())) then
+			if(element.altBar:IsObjectType('StatusBar') and not element.altBar:GetStatusBarTexture()) then
 				element.altBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
 		end

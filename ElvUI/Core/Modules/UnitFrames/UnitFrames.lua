@@ -61,7 +61,7 @@ UF.classMaxResourceBar = {
 	WARLOCK = 5,
 	MONK = 6,
 	MAGE = 4,
-	ROGUE = 6,
+	ROGUE = 7,
 	DRUID = 5
 }
 

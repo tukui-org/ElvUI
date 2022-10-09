@@ -14,8 +14,7 @@ local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
 local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
 local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
-local PetActionBar_ShowGrid = PetActionBar_ShowGrid
-local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
+local PetActionBar_UpdateCooldowns = PetActionBar and PetActionBar.UpdateCooldowns or PetActionBar_UpdateCooldowns
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 local Masque = E.Masque
@@ -31,8 +30,8 @@ function AB:UpdatePet(event, unit)
 	for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = _G[buttonName..'AutoCastable']
 		local button = _G[buttonName]
+		local autoCast = button.AutoCastable or _G[buttonName..'AutoCastable']
 
 		button:SetAlpha(1)
 		button.isToken = isToken
@@ -132,7 +131,7 @@ function AB:PositionAndSizeBarPet()
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		button = _G['PetActionButton'..i]
 		lastButton = _G['PetActionButton'..i-1]
-		autoCast = _G['PetActionButton'..i..'AutoCastable']
+		autoCast = _G['PetActionButton'..i].AutoCastable
 		lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
 
 		if not E.Retail then
@@ -225,9 +224,6 @@ function AB:CreateBarPet()
 			end
 		end
 	end)
-
-	_G.PetActionBarFrame.showgrid = 1
-	PetActionBar_ShowGrid()
 
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')

@@ -358,9 +358,10 @@ local function FontTemplate(fs, font, size, style, skip)
 	end
 
 	local outline = style or E.db.general.fontStyle
+	if outline == 'NONE' then outline = '' end
 	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, outline)
 
-	if outline == 'NONE' then
+	if outline == '' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else

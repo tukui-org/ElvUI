@@ -66,7 +66,6 @@ function B:PositionAltPowerBar()
 	_G.PlayerPowerBarAlt:SetParent(holder)
 	_G.PlayerPowerBarAlt:SetMovable(true)
 	_G.PlayerPowerBarAlt:SetUserPlaced(true)
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.PlayerPowerBarAlt = nil
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end

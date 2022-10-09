@@ -13,7 +13,7 @@ local MAX_POINTS = {
 	MAGE = 4,
 	MONK = 6,
 	PALADIN = 5,
-	ROGUE = 6,
+	ROGUE = 7,
 	WARLOCK = 5
 }
 
