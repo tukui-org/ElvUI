@@ -103,8 +103,8 @@ function S:Blizzard_PVPUI()
 		bu.Bg:Hide()
 		bu.Border:Hide()
 
-		bu:SetNormalTexture(E.media.emptyTex)
-		bu:SetHighlightTexture(E.media.emptyTex)
+		bu:SetNormalTexture('')
+		bu:SetHighlightTexture('')
 
 		bu:StripTextures()
 		bu:CreateBackdrop()

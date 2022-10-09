@@ -76,10 +76,10 @@ do
 	function S:HandleCategoriesButtons(button, strip)
 		if button.isSkinned then return end
 
-		if button.SetNormalTexture then button:SetNormalTexture(E.media.emptyTex) end
-		if button.SetHighlightTexture then button:SetHighlightTexture(E.media.emptyTex) end
-		if button.SetPushedTexture then button:SetPushedTexture(E.media.emptyTex) end
-		if button.SetDisabledTexture then button:SetDisabledTexture(E.media.emptyTex) end
+		if button.SetNormalTexture then button:SetNormalTexture('') end
+		if button.SetHighlightTexture then button:SetHighlightTexture('') end
+		if button.SetPushedTexture then button:SetPushedTexture('') end
+		if button.SetDisabledTexture then button:SetDisabledTexture('') end
 
 		if strip then button:StripTextures() end
 		S:HandleBlizzardRegions(button)
@@ -431,10 +431,10 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(E.media.emptyTex) end
-	if button.SetHighlightTexture then button:SetHighlightTexture(E.media.emptyTex) end
-	if button.SetPushedTexture then button:SetPushedTexture(E.media.emptyTex) end
-	if button.SetDisabledTexture then button:SetDisabledTexture(E.media.emptyTex) end
+	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture('') end
+	if button.SetHighlightTexture then button:SetHighlightTexture('') end
+	if button.SetPushedTexture then button:SetPushedTexture('') end
+	if button.SetDisabledTexture then button:SetDisabledTexture('') end
 
 	if strip then button:StripTextures() end
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
@@ -784,16 +784,16 @@ do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
 
-	local function checkNormalTexture(checkbox, texture) if texture ~= '' then checkbox:SetNormalTexture(E.media.emptyTex) end end
-	local function checkPushedTexture(checkbox, texture) if texture ~= '' then checkbox:SetPushedTexture(E.media.emptyTex) end end
-	local function checkHighlightTexture(checkbox, texture) if texture ~= '' then checkbox:SetHighlightTexture(E.media.emptyTex) end end
+	local function checkNormalTexture(checkbox, texture) if texture ~= '' then checkbox:SetNormalTexture('') end end
+	local function checkPushedTexture(checkbox, texture) if texture ~= '' then checkbox:SetPushedTexture('') end end
+	local function checkHighlightTexture(checkbox, texture) if texture ~= '' then checkbox:SetHighlightTexture('') end end
 	local function checkCheckedTexture(checkbox, texture)
 		if texture == E.Media.Textures.Melli or texture == check then return end
 		checkbox:SetCheckedTexture(E.private.skins.checkBoxSkin and E.Media.Textures.Melli or check)
 	end
 	local function checkOnDisable(checkbox)
 		if not checkbox.SetDisabledTexture then return end
-		checkbox:SetDisabledTexture(checkbox:GetChecked() and (E.private.skins.checkBoxSkin and E.Media.Textures.Melli or disabled) or E.media.emptyTex)
+		checkbox:SetDisabledTexture(checkbox:GetChecked() and (E.private.skins.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
 	end
 
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)

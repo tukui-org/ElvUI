@@ -318,8 +318,8 @@ function S:Blizzard_AchievementUI()
 			local index = offset + i
 			if index <= numResults then
 				if not result.styled then
-					result:SetNormalTexture(E.media.emptyTex)
-					result:SetPushedTexture(E.media.emptyTex)
+					result:SetNormalTexture('')
+					result:SetPushedTexture('')
 					result:GetRegions():Hide()
 
 					result.resultType:SetTextColor(1, 1, 1)

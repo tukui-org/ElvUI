@@ -283,7 +283,6 @@ function E:UpdateMedia(mediaType)
 	E.media.blankTex = LSM:Fetch('background', 'ElvUI Blank')
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
-	E.media.emptyTex = LSM:Fetch('statusbar', E.private.general.emptyTex)
 
 	if mediaType then -- callback from SharedMedia: LSM.Register
 		if mediaType == 'font' then

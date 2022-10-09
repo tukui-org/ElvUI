@@ -8,7 +8,6 @@ V.general = {
 	lootRoll = true,
 	normTex = 'ElvUI Norm',
 	glossTex = 'ElvUI Norm',
-	emptyTex = 'ElvUI Empty',
 	dmgfont = 'Expressway',
 	namefont = 'Expressway', -- (PT Sans) some dont render for mail room quest
 	chatBubbles = 'backdrop',

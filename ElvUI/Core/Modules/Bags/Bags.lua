@@ -118,9 +118,9 @@ B.SearchSlots = {}
 B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {
-	--[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
-	--[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
-	--[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
+	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
+	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
+	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
 
 local itemSpellID = {
@@ -1508,8 +1508,8 @@ function B:ConstructContainerFrame(name, isBank)
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
 		holder:StyleButton()
-		holder:SetNormalTexture(E.media.emptyTex)
-		holder:SetPushedTexture(E.media.emptyTex)
+		holder:SetNormalTexture('')
+		holder:SetPushedTexture('')
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 		holder:SetScript('OnEnter', B.Holder_OnEnter)
 		holder:SetScript('OnLeave', B.Holder_OnLeave)
