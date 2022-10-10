@@ -2776,6 +2776,8 @@ function B:Initialize()
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
 		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
 		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
+
+		if E.WoW10 then SetCVar("combinedBags", 0) end
 	end
 
 	B:SecureHook('OpenAllBags')

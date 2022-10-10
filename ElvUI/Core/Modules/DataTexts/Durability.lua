@@ -56,7 +56,7 @@ local function OnEvent(self)
 				repairCost = select(3, E.ScanTooltip:SetInventoryItem('player', index))
 			end
 
-			totalRepairCost = totalRepairCost + repairCost
+			totalRepairCost = totalRepairCost + (repairCost or 0)
 		end
 	end
 

@@ -224,18 +224,20 @@ local function OnEnter()
 	end
 
 	if E.Retail or E.Wrath then
-		for i = 1, _G.MAX_WATCHED_TOKENS do
-			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or E.Wrath and {}
-			if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(i) end
+		local index = 1
+		while true do
+			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(index) or E.Wrath and {}
+			if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index) end
 			if not (info and info.name) then break end
 
-			if i == 1 then
+			if index == 1 then
 				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(CURRENCY)
 			end
 			if info.quantity then
 				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
+			index = index + 1
 		end
 	end
 
