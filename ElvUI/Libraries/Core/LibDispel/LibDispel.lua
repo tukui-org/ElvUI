@@ -30,7 +30,8 @@ do
 		[19734] = 'Devour Magic Rank 3',
 		[19736] = 'Devour Magic Rank 4',
 		[27276] = 'Devour Magic Rank 5',
-		[27277] = 'Devour Magic Rank 6'
+		[27277] = 'Devour Magic Rank 6',
+		[48011] = 'Devour Magic Rank 7'
 	}
 
 	local function CheckSpell(spellID, pet)
