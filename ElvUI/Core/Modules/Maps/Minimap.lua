@@ -548,7 +548,8 @@ function M:Initialize()
 		_G.MinimapNorthTag,
 		_G.MinimapZoneTextButton,
 		_G.MiniMapWorldMapButton,
-		_G.MiniMapMailBorder
+		_G.MiniMapMailBorder,
+		_G.MinimapCompassTexture, --WoW10
 	}
 
 	tinsert(frames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
