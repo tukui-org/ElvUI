@@ -121,6 +121,17 @@ function M:HandleGarrisonButton()
 	end
 end
 
+-- ToDo: WoW10
+function M:HandleExpansionButton()
+	local expansion = _G.ExpansionLandingPageMinimapButton
+	if not expansion then return end
+
+	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
+	expansion:ClearAllPoints()
+	expansion:Point(position, Minimap, xOffset, yOffset)
+	M:SetScale(expansion, scale)
+end
+
 function M:HandleTrackingButton()
 	local tracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
@@ -331,6 +342,7 @@ function M:UpdateSettings()
 
 	M.HandleGarrisonButton()
 	M.HandleTrackingButton()
+	M.HandleExpansionButton()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
