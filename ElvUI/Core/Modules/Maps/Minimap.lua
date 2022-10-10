@@ -298,7 +298,7 @@ function M:GetIconSettings(button)
 end
 
 function M:GetQueueStatusButton()
-	return _G.QueueStatusMinimapButton or _G.MiniMapLFGFrame
+	return _G.QueueStatusButton or _G.MiniMapLFGFrame
 end
 
 function M:UpdateSettings()
@@ -368,11 +368,13 @@ function M:UpdateSettings()
 		if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
 	end
 
+	-- ToDO: WoW 10 (check position size)
 	local queueStatusButton = M:GetQueueStatusButton()
 	if queueStatusButton then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
 		queueStatusButton:ClearAllPoints()
 		queueStatusButton:Point(position, Minimap, xOffset, yOffset)
+		queueStatusButton:SetParent(Minimap)
 		M:SetScale(queueStatusButton, scale)
 	end
 
