@@ -17,7 +17,6 @@
 	<Script file='BGMap.lua'/>
 	<Script file='Binding.lua'/>
 	<Script file='BlackMarket.lua'/>
-	<Script file='BlizzardOptions.lua'/>
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>
@@ -98,4 +97,5 @@
 
 	<Script file='ClassTalents.lua'/>
 	<Script file='ExpansionLandingPage.lua'/>
+	<Script file='SettingsPanel.lua'/>
 </Ui>

@@ -10,6 +10,8 @@ function S:Blizzard_ClassTalentUI()
 
 	local ClassTalentFrame = _G.ClassTalentFrame
 	S:HandlePortraitFrame(ClassTalentFrame)
+	ClassTalentFrame.TalentsTab.BlackBG:SetAlpha(0)
+	ClassTalentFrame.TalentsTab.BottomBar:SetAlpha(0)
 
 	S:HandleButton(ClassTalentFrame.TalentsTab.ApplyButton)
 	S:HandleDropDownBox(ClassTalentFrame.TalentsTab.LoadoutDropDown.DropDownControl.DropDownMenu)
