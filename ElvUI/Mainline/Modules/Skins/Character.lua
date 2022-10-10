@@ -5,6 +5,7 @@ local _G = _G
 local pairs, ipairs = pairs, ipairs
 local unpack, select = unpack, select
 local hooksecurefunc = hooksecurefunc
+local CreateColor = CreateColor
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
@@ -42,17 +43,19 @@ local function ColorizeStatPane(frame)
 	frame.Background:SetAlpha(0)
 
 	local r, g, b = 0.8, 0.8, 0.8
+	local gradientFrom, gradientTo = CreateColor(r, g, b, 0.25), CreateColor(r, g, b, 0)
+
 	frame.leftGrad = frame:CreateTexture(nil, 'BORDER')
 	frame.leftGrad:Size(80, frame:GetHeight())
 	frame.leftGrad:Point('LEFT', frame, 'CENTER')
 	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.leftGrad:SetGradientAlpha('Horizontal', r, g, b, 0.25, r, g, b, 0)
+	frame.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo) -- ToDo: WoW10
 
 	frame.rightGrad = frame:CreateTexture(nil, 'BORDER')
 	frame.rightGrad:Size(80, frame:GetHeight())
 	frame.rightGrad:Point('RIGHT', frame, 'CENTER')
 	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradientAlpha('Horizontal', r, g, b, 0, r, g, b, 0.25)
+	frame.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom) -- ToDo: WoW10
 end
 
 local function StatsPane(which)
@@ -135,7 +138,7 @@ local function FixSidebarTabCoords()
 end
 
 local function UpdateFactionSkins()
-	_G.ReputationListScrollFrame:StripTextures()
+	--_G.ReputationListScrollFrame:StripTextures()
 	_G.ReputationFrame:StripTextures(true)
 
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED, 1 do
@@ -157,84 +160,6 @@ local function UpdateFactionSkins()
 			_G['ReputationBar'..i..'ReputationBarRightTexture']:SetTexture()
 		end
 	end
-
-	local ReputationDetailFrame = _G.ReputationDetailFrame
-	ReputationDetailFrame:ClearAllPoints()
-	ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 4, -28)
-	ReputationDetailFrame:StripTextures()
-	ReputationDetailFrame:SetTemplate('Transparent')
-end
-
-local function UpdateCurrencySkins()
-	local TokenFramePopup = _G.TokenFramePopup
-
-	if TokenFramePopup then
-		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 4, -28)
-		TokenFramePopup:StripTextures()
-		TokenFramePopup:SetTemplate('Transparent')
-	end
-
-	local TokenFrameContainer = _G.TokenFrameContainer
-	if not TokenFrameContainer.buttons then return end
-
-	local buttons = TokenFrameContainer.buttons
-	local numButtons = #buttons
-
-	for i=1, numButtons do
-		local button = buttons[i]
-
-		if button then
-			if button.highlight then button.highlight:Kill() end
-			if button.categoryLeft then button.categoryLeft:Kill() end
-			if button.categoryRight then button.categoryRight:Kill() end
-			if button.categoryMiddle then button.categoryMiddle:Kill() end
-
-			if not button.backdrop then
-				button:CreateBackdrop(nil, nil, nil, true)
-			end
-
-			if button.icon then
-				button.icon:SetTexCoord(unpack(E.TexCoords))
-				button.icon:Size(17, 17)
-
-				button.backdrop:SetOutside(button.icon, 1, 1)
-				button.backdrop:Show()
-			else
-				button.backdrop:Hide()
-			end
-
-			if button.expandIcon then
-				if not button.highlightTexture then
-					button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
-					button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
-					button.highlightTexture:SetBlendMode('ADD')
-					button.highlightTexture:SetInside(button.expandIcon)
-
-					-- these two only need to be called once
-					-- adding them here will prevent additional calls
-					button.expandIcon:Point('LEFT', 4, 0)
-					button.expandIcon:Size(15, 15)
-				end
-
-				if button.isHeader then
-					button.backdrop:Hide()
-
-					if button.isExpanded then
-						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
-						button.expandIcon:SetTexCoord(0,1,0,1)
-					else
-						button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
-						button.expandIcon:SetTexCoord(0,1,0,1)
-					end
-
-					button.highlightTexture:Show()
-				else
-					button.highlightTexture:Hide()
-				end
-			end
-		end
-	end
 end
 
 local function PaperDollUpdateStats()
@@ -252,25 +177,6 @@ local function PaperDollUpdateStats()
 	end
 end
 
-local function PaperDollTitlesPaneOnShow()
-	for _, object in pairs(_G.PaperDollTitlesPane.buttons) do
-		object.BgTop:SetTexture()
-		object.BgBottom:SetTexture()
-		object.BgMiddle:SetTexture()
-		object.text:FontTemplate()
-
-		if not object.text.hooked then
-			object.text.hooked = true
-
-			hooksecurefunc(object.text, 'SetFont', function(txt, font)
-				if font ~= E.media.normFont then
-					txt:FontTemplate()
-				end
-			end)
-		end
-	end
-end
-
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -278,15 +184,8 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandlePortraitFrame(CharacterFrame)
 
-	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
-	_G.ReputationListScrollFrameScrollBar:Point('TOPLEFT', _G.ReputationListScrollFrame, 'TOPRIGHT', 11, -13)
-	_G.ReputationListScrollFrameScrollBar:Point('BOTTOMLEFT', _G.ReputationListScrollFrame, 'BOTTOMRIGHT', 11, 15)
-
-	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
-	_G.TokenFrameContainerScrollBar:Point('TOPLEFT', _G.TokenFrameContainer, 'TOPRIGHT', 5, -11)
-	_G.TokenFrameContainerScrollBar:Point('BOTTOMLEFT', _G.TokenFrameContainer, 'BOTTOMRIGHT', 5, 11)
-
-	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar)
 
 	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
@@ -346,23 +245,12 @@ function S:CharacterFrame()
 
 	--Strip Textures
 	local charframe = {
-		'CharacterModelFrame',
+		'CharacterModelScene',
 		'CharacterStatsPane',
 		'CharacterFrameInset',
 		'CharacterFrameInsetRight',
 		'PaperDollSidebarTabs',
-		'PaperDollEquipmentManagerPane',
 	}
-
-	S:HandleCloseButton(_G.ReputationDetailCloseButton)
-	S:HandleCloseButton(_G.TokenFramePopupCloseButton)
-
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	--S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
 	_G.EquipmentFlyoutFrameHighlight:StripTextures()
 	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
@@ -374,14 +262,14 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
-	--Swap item flyout frame (shown when holding alt over a slot)
+	-- Swap item flyout frame (shown when holding alt over a slot)
 	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
 
-	--Icon in upper right corner of character frame
+	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
 
-	for _, scrollbar in pairs({ _G.PaperDollTitlesPaneScrollBar, _G.PaperDollEquipmentManagerPaneScrollBar }) do
-		S:HandleScrollBar(scrollbar)
+	for _, scrollbar in pairs({ _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar }) do
+		S:HandleTrimScrollBar(scrollbar)
 	end
 
 	for _, object in pairs(charframe) do
@@ -390,19 +278,19 @@ function S:CharacterFrame()
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0, 0, 0)
-	_G.CharacterModelFrame:CreateBackdrop()
-	_G.CharacterModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-	_G.CharacterModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+	_G.CharacterModelScene:CreateBackdrop()
+	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	local controlButtons = {
-		'CharacterModelFrameControlFrameZoomInButton',
-		'CharacterModelFrameControlFrameZoomOutButton',
-		'CharacterModelFrameControlFrameRotateLeftButton',
-		'CharacterModelFrameControlFrameRotateRightButton',
-		'CharacterModelFrameControlFrameRotateResetButton',
+		'CharacterModelSceneZoomInButton',
+		'CharacterModelSceneZoomOutButton',
+		'CharacterModelSceneRotateLeftButton',
+		'CharacterModelSceneRotateRightButton',
+		'CharacterModelSceneRotateResetButton',
 	}
 
-	_G.CharacterModelFrameControlFrame:StripTextures()
+	--_G.CharacterModelFrameControlFrame:StripTextures()
 	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 
 	for _, button in pairs(controlButtons) do
@@ -410,56 +298,43 @@ function S:CharacterFrame()
 	end
 
 	--Titles
-	_G.PaperDollTitlesPane:HookScript('OnShow', PaperDollTitlesPaneOnShow)
+	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', function(self)
+		for i = 1, self.ScrollTarget:GetNumChildren() do
+			local child = select(i, self.ScrollTarget:GetChildren())
+			if not child.isSkinned then
+				child:DisableDrawLayer('BACKGROUND')
+				child.isSkinned = true
+			end
+		end
+	end)
 
 	--Equipement Manager
-	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
-	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet)
-	_G.PaperDollEquipmentManagerPaneEquipSet:Width(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
-	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
-	_G.PaperDollEquipmentManagerPaneEquipSet:Point('TOPLEFT', _G.PaperDollEquipmentManagerPane, 'TOPLEFT', 8, 0)
-	_G.PaperDollEquipmentManagerPaneSaveSet:Point('LEFT', _G.PaperDollEquipmentManagerPaneEquipSet, 'RIGHT', 4, 0)
+	S:HandleButton(_G.PaperDollFrameEquipSet)
+	S:HandleButton(_G.PaperDollFrameSaveSet)
 
-	--Itemset buttons
-	for _, object in pairs(_G.PaperDollEquipmentManagerPane.buttons) do
-		object.BgTop:SetTexture()
-		object.BgBottom:SetTexture()
-		object.BgMiddle:SetTexture()
-		object.HighlightBar:Kill()
-		object.Stripe:Kill()
+	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', function(self)
+		for i = 1, self.ScrollTarget:GetNumChildren() do
+			local child = select(i, self.ScrollTarget:GetChildren())
+			if child.icon and not child.isSkinned then
+				child.BgTop:SetTexture('')
+				child.BgMiddle:SetTexture('')
+				child.BgBottom:SetTexture('')
+				S:HandleIcon(child.icon)
+				child.HighlightBar:SetColorTexture(1, 1, 1, .25)
+				child.HighlightBar:SetDrawLayer('BACKGROUND')
+				child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
+				child.SelectedBar:SetDrawLayer("BACKGROUND")
 
-		object:StyleButton(nil, true)
-		object:CreateBackdrop('Transparent')
-		object.backdrop:SetInside(object, 2, 1)
-		object.hover:SetInside(object.backdrop)
-		object.SelectedBar:SetInside(object.backdrop)
-		object.SelectedBar:SetTexture(E.media.normTex)
-		object.SelectedBar:SetVertexColor(1, 1, 1, 0.20)
-
-		object.icon:Point('LEFT', object, 6, 0)
-		object.icon:SetTexCoord(unpack(E.TexCoords))
-		object.icon:CreateBackdrop(nil, nil, nil, true)
-
-		hooksecurefunc(object.icon, 'SetPoint', function(icn, _, _, _, _, _, forced)
-			if forced ~= true then
-				icn:Point('LEFT', object, 'LEFT', 6, 0, true)
+				child.isSkinned = true
 			end
-		end)
+		end
+	end)
 
-		hooksecurefunc(object.icon, 'SetSize', function(icn, width, height)
-			if width == 36 or height == 36 then -- items
-				icn:Size(32, 32)
-			elseif width == 30 or height == 30 then -- new set
-				icn:Size(32, 32)
-			end
-		end)
-	end
-
-	--Icon selection frame
-	S:HandleIconSelectionFrame(_G.GearManagerDialogPopup, _G.NUM_GEARSET_ICONS_SHOWN, 'GearManagerDialogPopupButton')
-	S:HandleButton(_G.GearManagerDialogPopupOkay)
-	S:HandleButton(_G.GearManagerDialogPopupCancel)
-	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
+	--Icon selection frame.. ToDo: WoW10
+	--S:HandleIconSelectionFrame(_G.GearManagerPopupFrame, _G.NUM_GEARSET_ICONS_SHOWN, 'GearManagerDialogPopupButton')
+	--S:HandleButton(_G.GearManagerPopupFrame.BorderBox.OkayButton)
+	--S:HandleButton(_G.GearManagerPopupFrame.BorderBox.CancelButton)
+	--S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		local bu = _G['ReputationBar'..i..'ExpandOrCollapseButton']
@@ -477,16 +352,30 @@ function S:CharacterFrame()
 		end
 	end
 
+	-- Reputation Frame
+	_G.ReputationDetailFrame:StripTextures()
+	_G.ReputationDetailFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(_G.ReputationDetailCloseButton)
+	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
+	--S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
+	S:HandleButton(_G.ReputationDetailViewRenownButton) --WoW10
+
 	hooksecurefunc('ExpandFactionHeader', UpdateFactionSkins)
 	hooksecurefunc('CollapseFactionHeader', UpdateFactionSkins)
 	hooksecurefunc('ReputationFrame_Update', UpdateFactionSkins)
 
+	-- Currency Frame
+	_G.TokenFramePopup:StripTextures()
+	_G.TokenFramePopup:SetTemplate('Transparent')
+	--S:HandleCloseButton(TokenFramePopupCloseButton)
+	_G.TokenFramePopup:SetPoint("TOPLEFT", _G.TokenFrame, "TOPRIGHT", 3, -28)
+	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
+
 	--Buttons used to toggle between equipment manager, titles, and character stats
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
-
-	--Currency
-	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
-	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
 
 	hooksecurefunc('CharacterFrame_ShowSubFrame', UpdateCharacterInset)
 end

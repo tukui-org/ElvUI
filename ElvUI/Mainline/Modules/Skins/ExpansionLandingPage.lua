@@ -9,7 +9,7 @@ function S:Blizzard_ExpansionLandingPage()
 
 	local ExpansionLandingPage = _G.ExpansionLandingPage
 	ExpansionLandingPage:SetTemplate('Transparent')
-	S:HandleCloseButton(ExpansionLandingPage.Overlay.CloseButton, ExpansionLandingPage.backdrop)
+	--S:HandleCloseButton(ExpansionLandingPage.Overlay.CloseButton, ExpansionLandingPage.backdrop)
 end
 
 S:AddCallbackForAddon('Blizzard_ExpansionLandingPage')
