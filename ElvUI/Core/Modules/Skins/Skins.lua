@@ -1116,7 +1116,7 @@ function S:HandleStepSlider(frame, minimal)
 	frame.Slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
 
 	local bar = CreateFrame('StatusBar', nil, frame.Slider.backdrop)
-	bar:SetStatusBarTexture(E.media.normTex)
+	bar:SetStatusBarTexture(E.Media.Textures.Melli)
 	bar:SetStatusBarColor(1, .8, 0, .5)
 	bar:SetPoint('TOPLEFT', frame.Slider.backdrop, E.mult, -E.mult)
 	bar:SetPoint('BOTTOMLEFT', frame.Slider.backdrop, E.mult, E.mult)
