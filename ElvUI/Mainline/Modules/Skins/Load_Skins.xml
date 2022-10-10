@@ -97,5 +97,6 @@
 
 	<Script file='ClassTalents.lua'/>
 	<Script file='ExpansionLandingPage.lua'/>
+	<Script file='MajorFaction.lua'/>
 	<Script file='SettingsPanel.lua'/>
 </Ui>

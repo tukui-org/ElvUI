@@ -120,6 +120,10 @@ if E.Retail then
 	blizzard.transmogrify = L["TRANSMOGRIFY"]
 	blizzard.voidstorage = L["VOID_STORAGE"]
 	blizzard.weeklyRewards = L["Weekly Rewards"]
+
+	--WoW10
+	blizzard.majorFactions = L["Major Factions"] -- Temp
+	blizzard.expansionLanding = L["Expansion Landing Page"] -- Temp
 else
 	if not E.Classic then
 		blizzard.arena = L["Arena"]
