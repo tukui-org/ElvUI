@@ -97,4 +97,5 @@
 	<Script file='WorldMap.lua'/>
 
 	<Script file='ClassTalents.lua'/>
+	<Script file='ExpansionLandingPage.lua'/>
 </Ui>
