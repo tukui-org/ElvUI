@@ -571,27 +571,32 @@ do
 	-- WoWTrimScrollBar
 	local function ReskinScrollBarArrow(frame, direction)
 		S:HandleNextPrevButton(frame, direction)
-		frame.Overlay:SetAlpha(0)
-		frame.Texture:Hide()
+		if frame.Overlay then frame.Overlay:SetAlpha(0) end
+		if frame.Texture then frame.Texture:Hide() end
 	end
 
 	function S:HandleTrimScrollBar(frame)
 		frame:StripTextures()
-		frame.Background:Hide()
+		if frame.Background then
+			frame.Background:Hide()
+		end
 
 		local track = frame.Track
-		track:SetTemplate('Transparent')
-		track:ClearAllPoints()
-		track:Point('TOPLEFT', 4, -21)
-		track:Point('BOTTOMRIGHT', -3, 21)
+		if track then
+			track:DisableDrawLayer('ARTWORK')
+			track:SetTemplate('Transparent')
+			track:ClearAllPoints()
+			track:Point('TOPLEFT', 4, -21)
+			track:Point('BOTTOMRIGHT', -3, 21)
+		end
 
-		local thumb = track.Thumb
-		thumb.Middle:Hide()
-		thumb.Begin:Hide()
-		thumb.End:Hide()
-
-		thumb:SetTemplate(nil, true, true)
-		thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+		local thumb = frame:GetThumb()
+		if thumb then
+			thumb:DisableDrawLayer('BACKGROUND')
+			thumb:CreateBackdrop()
+			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel()+1)
+			thumb.backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
+		end
 
 		ReskinScrollBarArrow(frame.Back, 'up')
 		ReskinScrollBarArrow(frame.Forward, 'down')
@@ -1088,6 +1093,34 @@ function S:HandleSliderFrame(frame, template, frameLevel)
 			end
 		end
 	end
+end
+
+local sparkTexture = "Interface\\CastingBar\\UI-CastingBar-Spark"
+-- ToDO: WoW10 => UpdateME => Credits: NDUI
+function S:HandleStepSlider(frame, minimal)
+	assert(frame, 'doesnt exist!')
+
+	frame:StripTextures()
+	if frame.Slider then frame.Slider:DisableDrawLayer('ARTWORK') end
+
+	local thumb = frame.Slider.Thumb
+	if thumb then
+		thumb:SetTexture(sparkTexture)
+		thumb:SetBlendMode('ADD')
+		thumb:SetSize(20, 30)
+	end
+
+	frame.Slider:CreateBackdrop()
+	local offset = minimal and 10 or 13
+	frame.Slider.backdrop:SetPoint('TOPLEFT', 10, - offset)
+	frame.Slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
+
+	local bar = CreateFrame('StatusBar', nil, frame.Slider.backdrop)
+	bar:SetStatusBarTexture(E.media.normTex)
+	bar:SetStatusBarColor(1, .8, 0, .5)
+	bar:SetPoint('TOPLEFT', frame.Slider.backdrop, E.mult, -E.mult)
+	bar:SetPoint('BOTTOMLEFT', frame.Slider.backdrop, E.mult, E.mult)
+	bar:SetPoint('RIGHT', thumb, 'CENTER')
 end
 
 -- TODO: Update the function for BFA/Shadowlands
