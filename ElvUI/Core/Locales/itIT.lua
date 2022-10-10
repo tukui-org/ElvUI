@@ -51,6 +51,7 @@ L["Auto Scale"] = true
 L["AVD: "] = true
 L["Avoidance Breakdown"] = true
 L["Azerite Bar"] = true
+L["Bag Bar"] = true
 L["Bag Mover (Grow Down)"] = true
 L["Bag Mover (Grow Up)"] = true
 L["Bag Mover"] = true
