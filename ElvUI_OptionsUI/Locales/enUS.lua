@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = true
 L["Cast Time Format"] = true
-L["Castbar"] = true
 L["Casted by Player Only"] = true
 L["Casting"] = true
 L["Center"] = true

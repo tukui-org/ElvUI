@@ -209,7 +209,7 @@ function UF:Configure_ClassBar(frame)
 		bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
 
 		if not bars.Holder.mover then
-			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
+			E:CreateMover(bars.Holder, 'ClassBarMover', L["Class Bar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
 		else
 			E:EnableMover(bars.Holder.mover.name)
 		end

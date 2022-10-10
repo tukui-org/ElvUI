@@ -238,7 +238,6 @@ L["Can Not Attack"] = "Kann nicht angreifen"
 L["Cart / Flag / Orb / Assassin Bounty"] = "Wagen / Flagge / Kugel / Attentäter Kopfgeld"
 L["Cast Bar"] = "Zauberleiste"
 L["Cast Time Format"] = "Zauber Zeitformat"
-L["Castbar"] = "Zauberleiste"
 L["Casted by Player Only"] = "Nur vom Spieler gezaubert"
 L["Casting"] = "Zaubernd"
 L["Center"] = true --No need to translate

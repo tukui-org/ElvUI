@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = true
 L["Cast Time Format"] = true
-L["Castbar"] = "Barra de Lanzamiento"
 L["Casted by Player Only"] = "Lanzado sólo por el jugador"
 L["Casting"] = "Lanzando"
 L["Center"] = "Centro"

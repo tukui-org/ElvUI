@@ -238,7 +238,6 @@ L["Can Not Attack"] = "Ne peut pas attaquer"
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = "Barre d'incantation"
 L["Cast Time Format"] = true
-L["Castbar"] = "Barre d'incantation"
 L["Casted by Player Only"] = "Seulement lancé par le joueur"
 L["Casting"] = "Incantation"
 L["Center"] = "Centrer"

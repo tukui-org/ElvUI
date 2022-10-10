@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = "시전바"
 L["Cast Time Format"] = "시전 시간 형식"
-L["Castbar"] = "시전바"
 L["Casted by Player Only"] = true
 L["Casting"] = "시전중"
 L["Center"] = "정 중앙"
