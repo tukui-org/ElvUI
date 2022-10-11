@@ -96,6 +96,7 @@
 
 	<Script file='ClassTalents.lua'/>
 	<Script file='ExpansionLandingPage.lua'/>
+	<Script file='GenericTrait.lua'/>
 	<Script file='MajorFaction.lua'/>
 	<Script file='Professions.lua'/>
 	<Script file='SettingsPanel.lua'/>
