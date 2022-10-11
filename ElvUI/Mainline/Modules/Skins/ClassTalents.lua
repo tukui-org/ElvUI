@@ -17,6 +17,8 @@ function S:Blizzard_ClassTalentUI()
 	S:HandleDropDownBox(ClassTalentFrame.TalentsTab.LoadoutDropDown.DropDownControl.DropDownMenu)
 
 	S:HandleEditBox(ClassTalentFrame.TalentsTab.SearchBox)
+	ClassTalentFrame.TalentsTab.SearchBox.backdrop:SetPoint('TOPLEFT', -4, -5)
+	ClassTalentFrame.TalentsTab.SearchBox.backdrop:SetPoint('BOTTOMRIGHT', 0, 5)
 	ClassTalentFrame.TalentsTab.SearchPreviewContainer:StripTextures()
 	ClassTalentFrame.TalentsTab.SearchPreviewContainer:CreateBackdrop('Transparent')
 
