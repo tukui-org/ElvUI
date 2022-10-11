@@ -219,7 +219,7 @@ end
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
-	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
+	B.BagBar = CreateFrame('Frame', 'ElvUIBagBar', E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, true)
 	B.BagBar:SetScript('OnEnter', B.BagBar_OnEnter)
@@ -283,7 +283,7 @@ function B:LoadBagBar()
 		end
 	end
 
-	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
+	E:CreateMover(B.BagBar, 'BagsMover', L["Bag Bar"], nil, nil, nil, nil, nil, 'bags,general')
 	B.BagBar:SetPoint('BOTTOMLEFT', B.BagBar.mover)
 	B:RegisterEvent('BAG_SLOT_FLAGS_UPDATED', 'SizeAndPositionBagBar')
 	B:RegisterEvent('BAG_UPDATE_DELAYED', 'UpdateMainButtonCount')
