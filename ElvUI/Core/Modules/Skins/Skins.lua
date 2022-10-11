@@ -571,12 +571,56 @@ do
 	-- WoWTrimScrollBar
 	local function ReskinScrollBarArrow(frame, direction)
 		S:HandleNextPrevButton(frame, direction)
-		if frame.Overlay then frame.Overlay:SetAlpha(0) end
-		if frame.Texture then frame.Texture:Hide() end
+
+		if frame.Texture then
+			frame.Texture:SetAlpha(0)
+			if frame.Overlay then frame.Overlay:SetAlpha(0) end
+		else
+			frame:StripTextures()
+		end
 	end
 
-	function S:HandleTrimScrollBar(frame)
+	local function ThumbOnEnter(frame)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		local thumb = frame.thumb or frame
+		if thumb.backdrop then
+			thumb.backdrop:SetBackdropColor(r, g, b, .75)
+		end
+	end
+
+	local function ThumbOnLeave(frame)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		local thumb = frame.thumb or frame
+		if thumb.__isActive then return end
+		if thumb.backdrop then
+			thumb.backdrop:SetBackdropColor(r, g, b, .25)
+		end
+	end
+
+	local function ThumbOnMouseDown(frame)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		local thumb = frame.thumb or frame
+		thumb.__isActive = true
+		if thumb.backdrop then
+			thumb.backdrop:SetBackdropColor(r, g, b, .75)
+		end
+	end
+
+	local function ThumbOnMouseUp(frame)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		local thumb = frame.thumb or frame
+		thumb.__isActive = nil
+		if thumb.backdrop then
+			thumb.backdrop:SetBackdropColor(r, g, b, .25)
+		end
+	end
+
+	function S:HandleTrimScrollBar(frame, small)
 		frame:StripTextures()
+
+		ReskinScrollBarArrow(frame.Back, 'up')
+		ReskinScrollBarArrow(frame.Forward, 'down')
+
 		if frame.Background then
 			frame.Background:Hide()
 		end
@@ -584,22 +628,26 @@ do
 		local track = frame.Track
 		if track then
 			track:DisableDrawLayer('ARTWORK')
-			track:SetTemplate('Transparent')
-			track:ClearAllPoints()
-			track:Point('TOPLEFT', 4, -21)
-			track:Point('BOTTOMRIGHT', -3, 21)
 		end
 
 		local thumb = frame:GetThumb()
 		if thumb then
 			thumb:DisableDrawLayer('BACKGROUND')
-			thumb:CreateBackdrop()
+			thumb:CreateBackdrop('Transparent')
 			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel()+1)
-			thumb.backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
-		end
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			thumb.backdrop:SetBackdropColor(r, g, b, .25)
 
-		ReskinScrollBarArrow(frame.Back, 'up')
-		ReskinScrollBarArrow(frame.Forward, 'down')
+			if not small then
+				thumb.backdrop:Point('TOPLEFT', 4, -1)
+				thumb.backdrop:Point('BOTTOMRIGHT', -4, 1)
+			end
+
+			thumb:HookScript('OnEnter', ThumbOnEnter)
+			thumb:HookScript('OnLeave', ThumbOnLeave)
+			thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
+			thumb:HookScript('OnMouseUp', ThumbOnMouseUp)
+		end
 	end
 end
 
@@ -1005,7 +1053,7 @@ do
 		end
 
 		if not noBackdrop then
-			S:HandleButton(btn, nil, nil, nil, nil, nil, nil, nil, frameLevel)
+			S:HandleButton(btn, nil, nil, true, nil, nil, nil, nil, frameLevel)
 		end
 
 		if stripTexts then
