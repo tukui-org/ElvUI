@@ -776,6 +776,8 @@ function S:HandleEditBox(frame, template)
 	if frame.backdrop then return end
 
 	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
+	frame.backdrop:SetPoint('TOPLEFT', -2, 0)
+	frame.backdrop:SetPoint('BOTTOMRIGHT')
 	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
