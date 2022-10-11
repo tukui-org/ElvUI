@@ -87,7 +87,6 @@
 	<Script file='Tooltip.lua'/>
 	<Script file='TorghastLevelPicker.lua'/>
 	<Script file='Trade.lua'/>
-	<Script file='TradeSkill.lua'/>
 	<Script file='Trainer.lua'/>
 	<Script file='TutorialFrame.lua'/>
 	<Script file='VoidStorage.lua'/>
@@ -98,5 +97,6 @@
 	<Script file='ClassTalents.lua'/>
 	<Script file='ExpansionLandingPage.lua'/>
 	<Script file='MajorFaction.lua'/>
+	<Script file='Professions.lua'/>
 	<Script file='SettingsPanel.lua'/>
 </Ui>
