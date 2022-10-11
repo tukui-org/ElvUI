@@ -67,7 +67,7 @@ local function CreateBagsConfig()
 
 	config.args.ignoredItems = nil
 	config.args.colors.name = L["Colors"]
-	config.args.bagBar.name = L["Bag-Bar"]
+	config.args.bagBar.name = L["Bag Bar"]
 	config.args.split.name = L["Split"]
 	config.args.vendorGrays.name = L["Vendor Grays"]
 

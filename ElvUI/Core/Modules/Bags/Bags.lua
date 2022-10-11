@@ -2560,7 +2560,7 @@ function B:Initialize()
 	if not E.private.bags.enable then
 		-- Set a different default anchor
 		BagFrameHolder:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMRIGHT', -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
-		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
+		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bags"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 		CONTAINER_SPACING = E.private.skins.blizzard.enable and E.private.skins.blizzard.bags and (E.Border*2) or 0
 		B:SecureHook('UpdateContainerFrameAnchors')
 		return
@@ -2572,7 +2572,7 @@ function B:Initialize()
 
 	--Bag Mover: Set default anchor point and create mover
 	BagFrameHolder:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMRIGHT', 0, 22 + E.Border*4 - E.Spacing*2)
-	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
+	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bags (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Bank Mover
 	local BankFrameHolder = CreateFrame('Frame', nil, E.UIParent)
@@ -2580,14 +2580,14 @@ function B:Initialize()
 	BankFrameHolder:Height(22)
 	BankFrameHolder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 0, 22 + E.Border*4 - E.Spacing*2)
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
-	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
+	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Set some variables on movers
-	_G.ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
-	_G.ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
+	_G.ElvUIBagMover.textGrowUp = L["Bags (Grow Up)"]
+	_G.ElvUIBagMover.textGrowDown = L["Bags (Grow Down)"]
 	_G.ElvUIBagMover.POINT = 'BOTTOM'
-	_G.ElvUIBankMover.textGrowUp = L["Bank Mover (Grow Up)"]
-	_G.ElvUIBankMover.textGrowDown = L["Bank Mover (Grow Down)"]
+	_G.ElvUIBankMover.textGrowUp = L["Bank (Grow Up)"]
+	_G.ElvUIBankMover.textGrowDown = L["Bank (Grow Down)"]
 	_G.ElvUIBankMover.POINT = 'BOTTOM'
 
 	--Create Containers
