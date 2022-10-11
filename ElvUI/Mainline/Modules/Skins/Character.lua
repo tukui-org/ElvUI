@@ -137,27 +137,27 @@ local function FixSidebarTabCoords()
 	end
 end
 
-local function UpdateFactionSkins()
-	--_G.ReputationListScrollFrame:StripTextures()
-	_G.ReputationFrame:StripTextures(true)
+local function UpdateFactionSkins(frame)
+	for i = 1, frame.ScrollTarget:GetNumChildren() do
+		local child = select(i, frame.ScrollTarget:GetChildren())
+		local container = child and child.Container
+		if container and not container.IsSkinned then
+			container:StripTextures()
 
-	for i = 1, _G.NUM_FACTIONS_DISPLAYED, 1 do
-		local statusbar = _G['ReputationBar'..i..'ReputationBar']
-		if statusbar then
-			statusbar:SetStatusBarTexture(E.media.normTex)
-
-			if not statusbar.backdrop then
-				statusbar:CreateBackdrop()
-				E:RegisterStatusBar(statusbar)
+			if container.ExpandOrCollapseButton then
+				S:HandleCollapseTexture(container.ExpandOrCollapseButton)
+				--container.ExpandOrCollapseButton    :DoCollapse(child.isCollapsed) -- ToDO: WoW10
+			end
+			if container.ReputationBar then
+				container.ReputationBar:StripTextures()
+				container.ReputationBar:SetStatusBarTexture(E.media.normTex)
+				if not container.ReputationBar.backdrop then
+					container.ReputationBar:CreateBackdrop()
+					E:RegisterStatusBar(container.ReputationBar)
+				end
 			end
 
-			_G['ReputationBar'..i..'Background']:SetTexture()
-			_G['ReputationBar'..i..'ReputationBarHighlight1']:SetTexture()
-			_G['ReputationBar'..i..'ReputationBarHighlight2']:SetTexture()
-			_G['ReputationBar'..i..'ReputationBarAtWarHighlight1']:SetTexture()
-			_G['ReputationBar'..i..'ReputationBarAtWarHighlight2']:SetTexture()
-			_G['ReputationBar'..i..'ReputationBarLeftTexture']:SetTexture()
-			_G['ReputationBar'..i..'ReputationBarRightTexture']:SetTexture()
+			container.IsSkinned = true
 		end
 	end
 end
@@ -263,7 +263,7 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	-- Swap item flyout frame (shown when holding alt over a slot)
-	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- ToDO: WoW10
 
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
@@ -336,11 +336,6 @@ function S:CharacterFrame()
 	--S:HandleButton(_G.GearManagerPopupFrame.BorderBox.CancelButton)
 	--S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
-	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-		local bu = _G['ReputationBar'..i..'ExpandOrCollapseButton']
-		if bu then S:HandleCollapseTexture(bu) end
-	end
-
 	do --Handle Tabs at bottom of character frame
 		local i = 1
 		local tab = _G['CharacterFrameTab'..i]
@@ -362,17 +357,52 @@ function S:CharacterFrame()
 	--S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
 	S:HandleButton(_G.ReputationDetailViewRenownButton) --WoW10
 
-	hooksecurefunc('ExpandFactionHeader', UpdateFactionSkins)
-	hooksecurefunc('CollapseFactionHeader', UpdateFactionSkins)
-	hooksecurefunc('ReputationFrame_Update', UpdateFactionSkins)
+	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
-	--S:HandleCloseButton(TokenFramePopupCloseButton)
-	_G.TokenFramePopup:SetPoint("TOPLEFT", _G.TokenFrame, "TOPRIGHT", 3, -28)
+	if _G.TokenFramePopup.CloseButton then  -- Probably Blizzard Typo
+		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
+	end
+	_G.TokenFramePopup:SetPoint('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
+
+		hooksecurefunc(_G.TokenFrame.ScrollBox, "Update", function(self)
+			for i = 1, self.ScrollTarget:GetNumChildren() do
+				local child = select(i, self.ScrollTarget:GetChildren())
+				if child.Highlight and not child.styled then
+					if not child.styled then
+						child.CategoryLeft:SetAlpha(0)
+						child.CategoryRight:SetAlpha(0)
+						child.CategoryMiddle:SetAlpha(0)
+
+						child.Highlight:SetInside()
+						child.Highlight.SetPoint = E.noop
+						child.Highlight:SetColorTexture(1, 1, 1, .25)
+						child.Highlight.SetTexture = E.noop
+
+						S:HandleIcon(child.Icon)
+
+						if child.ExpandIcon then
+							child.ExpandIcon:CreateBackdrop('Transparent')
+							child.ExpandIcon.backdrop:SetInside(3, 3)
+						end
+
+						child.styled = true
+					end
+
+					child.styled = true
+				end
+
+				if child.isHeader then
+					child.ExpandIcon.backdrop:Show()
+				else
+					child.ExpandIcon.backdrop:Hide()
+				end
+			end
+		end)
 
 	--Buttons used to toggle between equipment manager, titles, and character stats
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
