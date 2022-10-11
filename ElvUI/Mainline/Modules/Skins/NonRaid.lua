@@ -35,13 +35,11 @@ function S:RaidInfoFrame()
 		S:HandleButton(buttons[i])
 	end
 
-	_G.RaidInfoScrollFrame:StripTextures()
-
 	local RaidInfoFrame = _G.RaidInfoFrame
 	RaidInfoFrame:SetTemplate('Transparent')
 	RaidInfoFrame.Header:StripTextures()
 	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
-	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
+	S:HandleTrimScrollBar(RaidInfoFrame.ScrollBar)
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
 
