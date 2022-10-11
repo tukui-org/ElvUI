@@ -174,6 +174,7 @@ V.skins = {
 		--WoW10
 		expansionLanding = true,
 		majorFactions = true,
+		genericTrait = true,
 	}
 }
 

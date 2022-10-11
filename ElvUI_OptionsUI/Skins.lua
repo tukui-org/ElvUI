@@ -124,6 +124,7 @@ if E.Retail then
 	--WoW10
 	blizzard.majorFactions = L["Major Factions"] -- Temp
 	blizzard.expansionLanding = L["Expansion Landing Page"] -- Temp
+	blizzard.genericTrait = L["Generic Trait"] -- Temp
 else
 	if not E.Classic then
 		blizzard.arena = L["Arena"]
