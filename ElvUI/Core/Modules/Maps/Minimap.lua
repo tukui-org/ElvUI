@@ -248,11 +248,19 @@ function M:MapCanvas_OnMouseDown(btn)
 	end
 end
 
-function M:Minimap_OnMouseWheel(d)
+function M:Minimap_OnMouseWheel(d) -- ToDO: WoW10
 	if d > 0 then
-		_G.MinimapZoomIn:Click()
+		if E.Retail then
+			_G.Minimap.ZoomIn:Click()
+		else
+			_G.MinimapZoomIn:Click()
+		end
 	elseif d < 0 then
-		_G.MinimapZoomOut:Click()
+		if E.Retail then
+			_G.Minimap.ZoomOut:Click()
+		else
+			_G.MinimapZoomOut:Click()
+		end
 	end
 end
 
@@ -558,7 +566,9 @@ function M:Initialize()
 		_G.MinimapBorder,
 		_G.MinimapBorderTop,
 		_G.MinimapZoomIn,
+		_G.Minimap.ZoomIn, --WoW10
 		_G.MinimapZoomOut,
+		_G.Minimap.ZoomOut, --WoW10
 		_G.MinimapNorthTag,
 		_G.MinimapZoneTextButton,
 		_G.MiniMapWorldMapButton,
