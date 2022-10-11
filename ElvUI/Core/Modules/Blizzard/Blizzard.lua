@@ -88,7 +88,7 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	if (E.Retail or E.Wrath) and not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
+	if (E.Retail or E.Wrath) and not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') and not E.WoW10 then
 		B:MoveObjectiveFrame()
 	end
 

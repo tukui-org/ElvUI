@@ -1518,7 +1518,6 @@ function E:UpdateMisc(skipCallback)
 	AFK:Toggle()
 
 	if E.Retail then
-		Blizzard:SetObjectiveFrameHeight()
 		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
