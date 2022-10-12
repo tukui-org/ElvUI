@@ -60,6 +60,10 @@ if E.Retail then
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
+if E.Wrath and E.mylevel >= SHOW_PVP_LEVEL then
+	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, func = _G.TogglePVPFrame })
+end
+
 if E.Retail or E.Wrath then
 	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
 	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
