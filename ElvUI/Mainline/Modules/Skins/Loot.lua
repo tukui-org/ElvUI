@@ -59,15 +59,6 @@ function S:LootFrame()
 
 				button.IsSkinned = true
 			end
-
-			local itemBG = button.Item and button.Item.bg
-			if itemBG then
-				if questTexture:IsShown() then
-					itemBG:SetBackdropBorderColor(1, .8, 0)
-				else
-					itemBG:SetBackdropBorderColor(0, 0, 0)
-				end
-			end
 		end
 	end)
 
