@@ -204,7 +204,7 @@ local function CreateDTOptions(name, data)
 
 	if name == 'Combat' then
 		optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
-	elseif name == "CombatIndicator" then
+	elseif name == 'CombatIndicator' then
 		optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
 		optionTable.args.OutOfCombatColor = ACH:Color('', nil, 2, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
 		optionTable.args.Spacer = ACH:Spacer(3, 'full')

@@ -10,6 +10,7 @@ local GetPetHappiness = GetPetHappiness
 local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
+local UnitFactionGroup = UnitFactionGroup
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 
@@ -18,6 +19,8 @@ local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+
+local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
 local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
@@ -100,11 +103,12 @@ local function UpdateCurrencySkins()
 			end
 
 			if button.icon then
-				if (button.itemID == Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID and UnitFactionGroup("player")) then
+				if button.itemID == HONOR_CURRENCY and UnitFactionGroup('player') then
 					button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 				else
 					button.icon:SetTexCoord(unpack(E.TexCoords))
 				end
+
 				button.icon:Size(17, 17)
 
 				button.backdrop:SetOutside(button.icon, 1, 1)

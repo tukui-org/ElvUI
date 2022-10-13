@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local format, strjoin = format, strjoin
-
 local inCombat, outOfCombat = '', ''
 
 local function OnEvent(self, event)
-	if event == 'PLAYER_REGEN_ENABLED' or event == "ELVUI_FORCE_UPDATE" then
+	if event == 'PLAYER_REGEN_ENABLED' or event == 'ELVUI_FORCE_UPDATE' then
 		self.text:SetFormattedText(outOfCombat)
 	elseif event == 'PLAYER_REGEN_DISABLED' then
 		self.text:SetFormattedText(inCombat)

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local DT = E:GetModule("DataTexts")
+local DT = E:GetModule('DataTexts')
 
 local min = min
 local join = strjoin
@@ -10,12 +10,11 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local GetMaxCombatRatingBonus = GetMaxCombatRatingBonus
 
 local STAT_RESILIENCE = STAT_RESILIENCE
+local RESILIENCE_TOOLTIP = RESILIENCE_TOOLTIP
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_RESILIENCE_CRIT_TAKEN = CR_RESILIENCE_CRIT_TAKEN
 local RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER
 local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER
-
-local RESILIENCE_TOOLTIP = RESILIENCE_TOOLTIP
 
 local displayNumberString, lastPanel = ''
 local resilience, bonus, maxBonus
@@ -32,7 +31,6 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))
 end
 
