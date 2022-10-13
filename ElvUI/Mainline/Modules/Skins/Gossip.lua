@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 local gsub = gsub
+local select = select
 local strmatch = strmatch
-
 local hooksecurefunc = hooksecurefunc
 
 local function ReplaceGossipFormat(button, textFormat, text)
@@ -19,6 +18,7 @@ local ReplacedGossipColor = {
 	['000000'] = 'ffffff',
 	['414141'] = '7b8489',
 }
+
 local function ReplaceGossipText(button, text)
 	if text and text ~= '' then
 		local newText, count = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
@@ -48,15 +48,15 @@ function S:GossipFrame()
 	_G.GossipFrameInset:Hide()
 	if GossipFrame.Background then GossipFrame.Background:Hide() end
 
-	hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, "Update", function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local button = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local button = select(i, frame.ScrollTarget:GetChildren())
 			if not button.IsSkinned then
 				local buttonText = select(3, button:GetRegions())
-				if buttonText and buttonText:IsObjectType("FontString") then
+				if buttonText and buttonText:IsObjectType('FontString') then
 					ReplaceGossipText(button, button:GetText())
-					hooksecurefunc(button, "SetText", ReplaceGossipText)
-					hooksecurefunc(button, "SetFormattedText", ReplaceGossipFormat)
+					hooksecurefunc(button, 'SetText', ReplaceGossipText)
+					hooksecurefunc(button, 'SetFormattedText', ReplaceGossipFormat)
 				end
 
 				button.IsSkinned = true

@@ -27,8 +27,8 @@ function S:Blizzard_ClassTalentUI()
 		S:HandleTab(tab)
 	end
 
-	hooksecurefunc(ClassTalentFrame.SpecTab, 'UpdateSpecFrame', function(self)
-		for specContentFrame in self.SpecContentFramePool:EnumerateActive() do
+	hooksecurefunc(ClassTalentFrame.SpecTab, 'UpdateSpecFrame', function(frame)
+		for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
 			if not specContentFrame.isSkinned then
 				S:HandleButton(specContentFrame.ActivateButton)
 
@@ -37,48 +37,48 @@ function S:Blizzard_ClassTalentUI()
 		end
 	end)
 
-	local dialog = _G.ClassTalentLoadoutImportDialog
-	if dialog then
-		dialog:StripTextures()
-		dialog:CreateBackdrop('Transparent')
-		S:HandleButton(dialog.AcceptButton)
-		S:HandleButton(dialog.CancelButton)
+	local ImportDialog = _G.ClassTalentLoadoutImportDialog
+	if ImportDialog then
+		ImportDialog:StripTextures()
+		ImportDialog:CreateBackdrop('Transparent')
+		S:HandleButton(ImportDialog.AcceptButton)
+		S:HandleButton(ImportDialog.CancelButton)
 
-		dialog.ImportControl.InputContainer:StripTextures()
-		dialog.ImportControl.InputContainer:CreateBackdrop('Transparent')
-		S:HandleEditBox(dialog.NameControl.EditBox)
-		dialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
-		dialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
+		ImportDialog.ImportControl.InputContainer:StripTextures()
+		ImportDialog.ImportControl.InputContainer:CreateBackdrop('Transparent')
+		S:HandleEditBox(ImportDialog.NameControl.EditBox)
+		ImportDialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
+		ImportDialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
 	end
 
-	local dialog = _G.ClassTalentLoadoutCreateDialog
-	if dialog then
-		dialog:StripTextures()
-		dialog:CreateBackdrop('Transparent')
-		S:HandleButton(dialog.AcceptButton)
-		S:HandleButton(dialog.CancelButton)
+	local CreateDialog = _G.ClassTalentLoadoutCreateDialog
+	if CreateDialog then
+		CreateDialog:StripTextures()
+		CreateDialog:CreateBackdrop('Transparent')
+		S:HandleButton(CreateDialog.AcceptButton)
+		S:HandleButton(CreateDialog.CancelButton)
 
-		S:HandleEditBox(dialog.NameControl.EditBox)
-		dialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
-		dialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
+		S:HandleEditBox(CreateDialog.NameControl.EditBox)
+		CreateDialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
+		CreateDialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
 	end
 
-	local dialog = _G.ClassTalentLoadoutEditDialog
-	if dialog then
-		dialog:StripTextures()
-		dialog:CreateBackdrop('Transparent')
-		S:HandleButton(dialog.AcceptButton)
-		S:HandleButton(dialog.DeleteButton)
-		S:HandleButton(dialog.CancelButton)
+	local EditDialog = _G.ClassTalentLoadoutEditDialog
+	if EditDialog then
+		EditDialog:StripTextures()
+		EditDialog:CreateBackdrop('Transparent')
+		S:HandleButton(EditDialog.AcceptButton)
+		S:HandleButton(EditDialog.DeleteButton)
+		S:HandleButton(EditDialog.CancelButton)
 
-		local editbox = dialog.LoadoutName
+		local editbox = EditDialog.LoadoutName
 		if editbox then
 			S:HandleEditBox(editbox)
 			editbox.backdrop:SetPoint('TOPLEFT', -5, -5)
 			editbox.backdrop:SetPoint('BOTTOMRIGHT', 5, 5)
 		end
 
-		local check = dialog.UsesSharedActionBars
+		local check = EditDialog.UsesSharedActionBars
 		if check then
 			S:HandleCheckBox(check.CheckButton)
 			check.CheckButton.backdrop:SetInside(6, 6)

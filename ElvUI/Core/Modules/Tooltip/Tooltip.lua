@@ -996,7 +996,7 @@ function TT:Initialize()
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
-		--TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
+		--TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID') -- WoW10
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')

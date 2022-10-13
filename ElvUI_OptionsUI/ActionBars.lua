@@ -15,6 +15,8 @@ local SetModifiedClick = SetModifiedClick
 local GetCurrentBindingSet = GetCurrentBindingSet
 local SaveBindings = SaveBindings
 
+local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
+local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 -- GLOBALS: LOCK_ACTIONBAR
 
 local SharedBarOptions = {
@@ -185,8 +187,8 @@ ActionBar.args.barPet.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdr
 ActionBar.args.barPet.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.barPet.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.barPet.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.barPet.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.barPet.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.barPet.keepSizeRatio end
-ActionBar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = _G.NUM_PET_ACTION_SLOTS or 10
-ActionBar.args.barPet.args.buttonGroup.args.buttons.max = _G.NUM_PET_ACTION_SLOTS or 10
+ActionBar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = ACTION_SLOTS
+ActionBar.args.barPet.args.buttonGroup.args.buttons.max = ACTION_SLOTS
 ActionBar.args.barPet.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value; AB:PositionAndSizeBarPet() end
 
 ActionBar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
@@ -196,8 +198,8 @@ ActionBar.args.stanceBar.args.generalOptions = ACH:MultiSelect('', nil, 3, { bac
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.stanceBar.keepSizeRatio end
-ActionBar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = _G.NUM_STANCE_SLOTS or 10
-ActionBar.args.stanceBar.args.buttonGroup.args.buttons.max = _G.NUM_STANCE_SLOTS or 10
+ActionBar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = STANCE_SLOTS
+ActionBar.args.stanceBar.args.buttonGroup.args.buttons.max = STANCE_SLOTS
 ActionBar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] }, nil, nil, nil, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift(); AB:StyleShapeShift() end)
 ActionBar.args.stanceBar.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value; AB:PositionAndSizeBarShapeShift() end
 

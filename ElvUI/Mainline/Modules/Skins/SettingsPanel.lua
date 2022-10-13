@@ -3,13 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, select = pairs, select
-
 local hooksecurefunc = hooksecurefunc
 
 local function HandleTabs(tab)
-	if not tab then return end
-
-	tab:StripTextures(true)
+	if tab then tab:StripTextures(true) end
 end
 
 local function ReskinDropDownArrow(button, direction)
@@ -52,8 +49,7 @@ local function UpdateKeybindButtons(self)
 end
 
 local function UpdateHeaderExpand(self, expanded)
-	local atlas = expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand'
-	self.__texture:SetAtlas(atlas, true)
+	self.__texture:SetAtlas(expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand', true)
 
 	UpdateKeybindButtons(self)
 end
@@ -77,20 +73,19 @@ function S:SettingsPanel()
 	SettingsPanel.CategoryList:CreateBackdrop('Transparent')
 	SettingsPanel.CategoryList.backdrop:SetInside()
 
-	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local child = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local child = select(i, frame.ScrollTarget:GetChildren())
 			if not child.isSkinned then
 				if child.Background then
 					child.Background:SetAlpha(0)
 					child.Background:CreateBackdrop('Transparent')
-					child.Background.backdrop:SetPoint("TOPLEFT", 5, -5)
-					child.Background.backdrop:SetPoint("BOTTOMRIGHT", -5, 0)
+					child.Background.backdrop:SetPoint('TOPLEFT', 5, -5)
+					child.Background.backdrop:SetPoint('BOTTOMRIGHT', -5, 0)
 				end
 
 				local toggle = child.Toggle
-				if toggle then
-					-- ToDo Handle the toggle. WoW10
+				if toggle then -- ToDo Handle the toggle. WoW10
 					toggle:GetPushedTexture():SetAlpha(0)
 				end
 
@@ -104,27 +99,30 @@ function S:SettingsPanel()
 	S:HandleButton(SettingsPanel.Container.SettingsList.Header.DefaultsButton)
 	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar)
 
-	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, "Update", function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local child = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local child = select(i, frame.ScrollTarget:GetChildren())
 			if not child.isSkinned then
 				if child.CheckBox then
 					S:HandleCheckBox(child.CheckBox)
 				end
-				if child.DropDown then
-					--ReskinOptionDropDown(child.DropDown)
+
+				--[[if child.DropDown then
+					ReskinOptionDropDown(child.DropDown)
 				end
 				if child.ColorBlindFilterDropDown then
-					--ReskinOptionDropDown(child.ColorBlindFilterDropDown)
-				end
+					ReskinOptionDropDown(child.ColorBlindFilterDropDown)
+				end]]
+
 				for j = 1, 13 do
-					local control = child["Control"..j]
+					local control = child['Control'..j]
 					if control then
 						if control.DropDown then
 							ReskinOptionDropDown(control.DropDown)
 						end
 					end
 				end
+
 				if child.Button then
 					if child.Button:GetWidth() < 250 then
 						S:HandleButton(child.Button)
@@ -144,7 +142,7 @@ function S:SettingsPanel()
 						child.__texture:SetPoint('RIGHT', -10, 0)
 
 						UpdateHeaderExpand(child, false)
-						hooksecurefunc(child, "EvaluateVisibility", UpdateHeaderExpand)
+						hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
 					end
 				end
 				if child.ToggleTest then
@@ -173,28 +171,23 @@ function S:SettingsPanel()
 		end
 	end)
 
-	local CUFPanels = {
-		'CompactUnitFrameProfiles',
-		'CompactUnitFrameProfilesGeneralOptionsFrame',
-	}
-	for _, name in pairs(CUFPanels) do
-		local frame = _G[name]
-		if frame then
-			for i = 1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
-				if child:IsObjectType('CheckButton') then
-					S:HandleCheckBox(child)
-				elseif child:IsObjectType('Button') then
-					S:HandleButton(child)
-				elseif child:IsObjectType('Frame') and child.Left and child.Middle and child.Right then
-					S:HandleDropdownBox(child)
-				end
+	for _, frame in pairs({_G.CompactUnitFrameProfiles, _G.CompactUnitFrameProfilesGeneralOptionsFrame}) do
+		for i = 1, frame:GetNumChildren() do
+			local child = select(i, frame:GetChildren())
+			if child:IsObjectType('CheckButton') then
+				S:HandleCheckBox(child)
+			elseif child:IsObjectType('Button') then
+				S:HandleButton(child)
+			elseif child.Left and child.Middle and child.Right and child:IsObjectType('Frame') then
+				S:HandleDropdownBox(child)
 			end
 		end
 	end
+
 	if _G.CompactUnitFrameProfilesSeparator then
-		_G.CompactUnitFrameProfilesSeparator:SetAtlas("Options_HorizontalDivider")
+		_G.CompactUnitFrameProfilesSeparator:SetAtlas('Options_HorizontalDivider')
 	end
+
 	if _G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG then
 		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:Hide()
 		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:CreateBackdrop('Transparent')

@@ -15,6 +15,7 @@ local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 local GetLocale = GetLocale
+local GetBuildInfo = GetBuildInfo
 local GetTime = GetTime
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
@@ -34,6 +35,7 @@ local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTim
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
+E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
 
 Engine[1] = E
@@ -72,9 +74,6 @@ E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
-
--- Just leave it here
-E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE

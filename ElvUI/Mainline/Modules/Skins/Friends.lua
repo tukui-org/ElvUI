@@ -9,23 +9,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
-
---Tab Regions
-local tabs = {
-	'LeftDisabled',
-	'MiddleDisabled',
-	'RightDisabled',
-	'Left',
-	'Middle',
-	'Right',
-}
-
-local function SkinFriendRequest(frame)
-	if frame.isSkinned then return end
-	S:HandleButton(frame.DeclineButton, nil, true)
-	S:HandleButton(frame.AcceptButton)
-	frame.isSkinned = true
-end
+local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 
 --Social Frame
 local function SkinSocialHeaderTab(tab)
@@ -59,10 +43,11 @@ local function RAFRewards()
 end
 
 local atlasToTex = {
-	['friendslist-invitebutton-horde-normal'] = 'Interface\\FriendsFrame\\PlusManz-Horde',
-	['friendslist-invitebutton-alliance-normal'] = 'Interface\\FriendsFrame\\PlusManz-Alliance',
-	['friendslist-invitebutton-default-normal'] = 'Interface\\FriendsFrame\\PlusManz-PlusManz',
+	['friendslist-invitebutton-horde-normal'] = [[Interface\FriendsFrame\PlusManz-Horde]],
+	['friendslist-invitebutton-alliance-normal'] = [[Interface\FriendsFrame\PlusManz-Alliance]],
+	['friendslist-invitebutton-default-normal'] = [[Interface\FriendsFrame\PlusManz-PlusManz]],
 }
+
 local function HandleInviteTex(self, atlas)
 	local tex = atlasToTex[atlas]
 	if tex then
@@ -97,7 +82,7 @@ local function ReskinFriendButton(button)
 		icon:SetAllPoints()
 		button.newIcon = icon
 		travelPass.NormalTexture.ownerIcon = icon
-		hooksecurefunc(travelPass.NormalTexture, "SetAtlas", HandleInviteTex)
+		hooksecurefunc(travelPass.NormalTexture, 'SetAtlas', HandleInviteTex)
 
 		button.IsSkinned = true
 	end
@@ -170,17 +155,17 @@ function S:FriendsFrame()
 	FriendsFrameBattlenetFrame:SetTemplate('Transparent')
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
-	local button = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
-	button:Point('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
-	button:Point('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
-	button:Size(FriendsFrameBattlenetFrame:GetSize())
-	button:SetTemplate()
-	button:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	local BattlenetFrame = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
+	BattlenetFrame:Point('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
+	BattlenetFrame:Point('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
+	BattlenetFrame:Size(FriendsFrameBattlenetFrame:GetSize())
+	BattlenetFrame:SetTemplate()
+	BattlenetFrame:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
+	BattlenetFrame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
-	button:SetScript('OnClick', function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
-	button:SetScript('OnEnter', BattleNetFrame_OnEnter)
-	button:SetScript('OnLeave', BattleNetFrame_OnLeave)
+	BattlenetFrame:SetScript('OnClick', function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
+	BattlenetFrame:SetScript('OnEnter', BattleNetFrame_OnEnter)
+	BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
@@ -222,7 +207,7 @@ function S:FriendsFrame()
 			ReskinFriendButton(button)
 		end
 
-		if button.newIcon and button.buttonType == FRIENDS_BUTTON_TYPE_BNET then
+		if button.newIcon and button.buttonType == _G.FRIENDS_BUTTON_TYPE_BNET then
 			if FriendsFrame_GetInviteRestriction(button.id) == INVITE_RESTRICTION_NONE then
 				button.newIcon:SetVertexColor(1, 1, 1)
 			else
@@ -231,7 +216,7 @@ function S:FriendsFrame()
 		end
 	end)
 
-	hooksecurefunc("FriendsFrame_UpdateFriendInviteButton", function(button)
+	hooksecurefunc('FriendsFrame_UpdateFriendInviteButton', function(button)
 		if not button.IsSkinned then
 			S:HandleButton(button.AcceptButton)
 			S:HandleButton(button.DeclineButton)
@@ -240,9 +225,9 @@ function S:FriendsFrame()
 		end
 	end)
 
-	hooksecurefunc("FriendsFrame_UpdateFriendInviteHeaderButton", function(button)
+	hooksecurefunc('FriendsFrame_UpdateFriendInviteHeaderButton', function(button)
 		if not button.IsSkinned then
-			button:DisableDrawLayer("BACKGROUND")
+			button:DisableDrawLayer('BACKGROUND')
 			button:CreateBackdrop('Transparent')
 			button.backdrop:SetInside(button, 2, 2)
 			local hl = button:GetHighlightTexture()
@@ -262,6 +247,7 @@ function S:FriendsFrame()
 	_G.WhoFrameEditBox:CreateBackdrop('Transparent')
 	_G.WhoFrameEditBox.backdrop:SetPoint('TOPLEFT', _G.WhoFrameEditBoxInset)
 	_G.WhoFrameEditBox.backdrop:SetPoint('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
+
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
 	for i = 1, 17 do

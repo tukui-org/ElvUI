@@ -169,7 +169,7 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 	-- try to shutdown the container movement and taints
-	--_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
+	--_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil -- WoW10
 	ExtraAbilityContainer.SetSize = E.noop
 
 	AB:ExtraButtons_Reparent()

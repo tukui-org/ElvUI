@@ -562,12 +562,9 @@ function CH:CopyButtonOnEnter()
 end
 
 function CH:CopyButtonOnLeave()
-	local chat = self:GetParent()
-	if (_G[chat:GetName()..'TabText'] or _G[chat:GetName()..'Tab'].Text):IsShown() then
-		self:SetAlpha(0.35)
-	else
-		self:SetAlpha(0)
-	end
+	local chatName = self:GetParent():GetName()
+	local tabText = _G[chatName..'TabText'] or _G[chatName..'Tab'].Text
+	self:SetAlpha(tabText:IsShown() and 0.35 or 0)
 end
 
 function CH:ChatFrameTab_SetAlpha(_, skip)

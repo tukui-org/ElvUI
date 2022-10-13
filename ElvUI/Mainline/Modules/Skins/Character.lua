@@ -298,9 +298,9 @@ function S:CharacterFrame()
 	end
 
 	--Titles
-	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local child = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local child = select(i, frame.ScrollTarget:GetChildren())
 			if not child.isSkinned then
 				child:DisableDrawLayer('BACKGROUND')
 				child.isSkinned = true
@@ -312,9 +312,9 @@ function S:CharacterFrame()
 	S:HandleButton(_G.PaperDollFrameEquipSet)
 	S:HandleButton(_G.PaperDollFrameSaveSet)
 
-	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local child = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local child = select(i, frame.ScrollTarget:GetChildren())
 			if child.icon and not child.isSkinned then
 				child.BgTop:SetTexture('')
 				child.BgMiddle:SetTexture('')
@@ -323,7 +323,7 @@ function S:CharacterFrame()
 				child.HighlightBar:SetColorTexture(1, 1, 1, .25)
 				child.HighlightBar:SetDrawLayer('BACKGROUND')
 				child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
-				child.SelectedBar:SetDrawLayer("BACKGROUND")
+				child.SelectedBar:SetDrawLayer('BACKGROUND')
 
 				child.isSkinned = true
 			end
@@ -369,9 +369,9 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
 
-		hooksecurefunc(_G.TokenFrame.ScrollBox, "Update", function(self)
-			for i = 1, self.ScrollTarget:GetNumChildren() do
-				local child = select(i, self.ScrollTarget:GetChildren())
+		hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
+			for i = 1, frame.ScrollTarget:GetNumChildren() do
+				local child = select(i, frame.ScrollTarget:GetChildren())
 				if child.Highlight and not child.styled then
 					if not child.styled then
 						child.CategoryLeft:SetAlpha(0)

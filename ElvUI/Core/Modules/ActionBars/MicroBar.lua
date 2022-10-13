@@ -15,23 +15,20 @@ local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
-local MICRO_BUTTONS = _G.MICRO_BUTTONS
-if not MICRO_BUTTONS then
-	MICRO_BUTTONS = {
-		'CharacterMicroButton',
-		'SpellbookMicroButton',
-		'TalentMicroButton',
-		'AchievementMicroButton',
-		'QuestLogMicroButton',
-		'GuildMicroButton',
-		'LFDMicroButton',
-		'EJMicroButton',
-		'CollectionsMicroButton',
-		'MainMenuMicroButton',
-		'HelpMicroButton',
-		'StoreMicroButton',
-	}
-end
+local MICRO_BUTTONS = _G.MICRO_BUTTONS or {
+	'CharacterMicroButton',
+	'SpellbookMicroButton',
+	'TalentMicroButton',
+	'AchievementMicroButton',
+	'QuestLogMicroButton',
+	'GuildMicroButton',
+	'LFDMicroButton',
+	'EJMicroButton',
+	'CollectionsMicroButton',
+	'MainMenuMicroButton',
+	'HelpMicroButton',
+	'StoreMicroButton',
+}
 
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)

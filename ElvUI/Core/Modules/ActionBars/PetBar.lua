@@ -124,23 +124,22 @@ function AB:PositionAndSizeBarPet()
 
 	AB:MoverMagic(bar)
 
-	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
-	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton, autoCast
+	local anchorRowButton, lastShownButton
+	local horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local useMasque = MasqueGroup and E.private.actionbar.masque.petBar
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
-		button = _G['PetActionButton'..i]
-		lastButton = _G['PetActionButton'..i-1]
-		autoCast = _G['PetActionButton'..i].AutoCastable
-		lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
+		local button = _G['PetActionButton'..i]
+		local lastButton = _G['PetActionButton'..i-1]
+		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
+		local autoCast = button.AutoCastable
 
 		if not E.Retail then
 			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
 		end
 
-		button.db = db
-
 		bar.buttons[i] = button
+		button.db = db
 
 		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button

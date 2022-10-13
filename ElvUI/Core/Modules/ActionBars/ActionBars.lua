@@ -401,8 +401,8 @@ function AB:CreateBar(id)
 		bar:SetAttribute('hasTempBar', false)
 	end
 
-	bar:SetAttribute("_onstate-page", [[
-		if newstate == "possess" or newstate == "11" then
+	bar:SetAttribute('_onstate-page', [[
+		if newstate == 'possess' or newstate == '11' then
 			if HasVehicleActionBar() then
 				newstate = GetVehicleBarIndex()
 			elseif HasOverrideActionBar() then
@@ -415,8 +415,9 @@ function AB:CreateBar(id)
 				newstate = 12
 			end
 		end
-		self:SetAttribute("state", newstate)
-		control:ChildUpdate("state", newstate)
+
+		self:SetAttribute('state', newstate)
+		control:ChildUpdate('state', newstate)
 	]])
 
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,playerBars,bar'..id)
@@ -1019,15 +1020,15 @@ function AB:DisableBlizzard()
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
 	end
 
-	if E.Retail then -- same deal with profession buttons, this will fix the tainting
-		--for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-		--	for i = 1, 2 do
-		--		local button = frame['button'..i]
-		--		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-		--		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
-		--	end
-		--end
-	end
+	--[[if E.Retail then -- same deal with profession buttons, this will fix the tainting
+		for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
+			for i = 1, 2 do
+				local button = frame['button'..i]
+				button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+				button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+			end
+		end
+	end]]
 
 	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop

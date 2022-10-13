@@ -574,7 +574,10 @@ do
 
 		if frame.Texture then
 			frame.Texture:SetAlpha(0)
-			if frame.Overlay then frame.Overlay:SetAlpha(0) end
+
+			if frame.Overlay then
+				frame.Overlay:SetAlpha(0)
+			end
 		else
 			frame:StripTextures()
 		end
@@ -1145,7 +1148,7 @@ function S:HandleSliderFrame(frame, template, frameLevel)
 	end
 end
 
-local sparkTexture = "Interface\\CastingBar\\UI-CastingBar-Spark"
+local sparkTexture = [[Interface\CastingBar\UI-CastingBar-Spark]]
 -- ToDO: WoW10 => UpdateME => Credits: NDUI
 function S:HandleStepSlider(frame, minimal)
 	assert(frame, 'doesnt exist!')

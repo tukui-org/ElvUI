@@ -2423,6 +2423,9 @@ P.cooldown = {
 }
 
 --Actionbar
+local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
+local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
+
 P.actionbar = {
 	addNewSpells = false,
 	chargeCooldown = false,
@@ -2462,7 +2465,7 @@ P.actionbar = {
 		enabled = true,
 		mouseover = false,
 		clickThrough = false,
-		buttons = _G.NUM_PET_ACTION_SLOTS or 10,
+		buttons = ACTION_SLOTS,
 		buttonsPerRow = 1,
 		point = 'TOPRIGHT',
 		backdrop = true,
@@ -2481,8 +2484,8 @@ P.actionbar = {
 		style = 'darkenInactive',
 		mouseover = false,
 		clickThrough = false,
-		buttonsPerRow = _G.NUM_STANCE_SLOTS or 10,
-		buttons = _G.NUM_STANCE_SLOTS or 10,
+		buttonsPerRow = STANCE_SLOTS,
+		buttons = STANCE_SLOTS,
 		point = 'TOPLEFT',
 		backdrop = false,
 		heightMult = 1,

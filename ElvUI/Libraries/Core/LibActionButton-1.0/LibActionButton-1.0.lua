@@ -40,14 +40,15 @@ local type, error, tostring, tonumber, assert, select = type, error, tostring, t
 local setmetatable, wipe, unpack, pairs, next = setmetatable, wipe, unpack, pairs, next
 local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
 
+local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoW10 = select(4, GetBuildInfo()) >= 100000
 
-local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
 local LCG = LibStub("LibCustomGlow-1.0", true)
+local KeyBound = LibStub("LibKeyBound-1.0", true)
 local Masque = LibStub("Masque", true)
 
 lib.eventFrame = lib.eventFrame or CreateFrame("Frame")
@@ -436,7 +437,6 @@ function Generic:NewHeader(header)
 	WrapOnClick(self)
 end
 
-
 -----------------------------------------------------------
 --- state management
 
@@ -694,6 +694,7 @@ function Generic:UpdateConfig(config)
 	if config and type(config) ~= "table" then
 		error("LibActionButton-1.0: UpdateConfig requires a valid configuration!", 2)
 	end
+
 	local oldconfig = self.config
 	self.config = {}
 	-- merge the two configs
@@ -718,7 +719,8 @@ function Generic:UpdateConfig(config)
 
 	UpdateHotkeys(self)
 	UpdateGrid(self)
-	Update(self)
+	Update(self, true)
+
 	if not WoW10 then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	end
@@ -763,6 +765,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_STABLE_SHOW")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
+
 	if not WoWClassic and not WoWBCC then
 		if not WoWWrath then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
@@ -770,9 +773,9 @@ function InitializeEventHandler()
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 		end
+
 		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
-		lib.eventFrame:RegisterEvent("COMPANION_UPDATE")
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 	end
 
@@ -1181,7 +1184,7 @@ function Generic:UpdateAction(force)
 	end
 end
 
-function Update(self)
+function Update(self, fromUpdateConfig)
 	if self:HasAction() then
 		ActiveButtons[self] = true
 		if self._state_type == "action" then
@@ -1235,6 +1238,7 @@ function Update(self)
 
 	-- Cooldown desaturate can control saturation, we don't want to override it here
 	local allowSaturation = not self.saturationLocked and (WoWRetail and not self.LevelLinkLockIcon:IsShown())
+
 	-- Zone ability button handling
 	self.zoneAbilityDisabled = false
 	if allowSaturation then
@@ -2011,7 +2015,7 @@ Custom.RunCustom               = function(self, unit, button) return self._state
 Custom.GetPassiveCooldownSpellID = function(self) return nil end
 
 --- WoW Classic overrides
-if WoWClassic or WoWBCC or WoWWrath then
+if not WoWRetail then
 	UpdateOverlayGlow = function() end
 end
 

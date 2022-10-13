@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, select = pairs, select
+local hooksecurefunc = hooksecurefunc
 
 local function HandleInputBox(box)
 	box:DisableDrawLayer('BACKGROUND')
@@ -45,7 +46,6 @@ end
 function S:Blizzard_Professions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
-	-- MainFrame
 	local ProfessionsFrame = _G.ProfessionsFrame
 	S:HandlePortraitFrame(ProfessionsFrame)
 
@@ -79,9 +79,7 @@ function S:Blizzard_Professions()
 		S:HandleTab(tab)
 	end
 
-	-- Tools
-	local slots = {'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', "Prof1ToolSlot", 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot', 'FishingGear0Slot', 'FishingGear1Slot'}
-	for _, name in pairs(slots) do
+	for _, name in pairs({'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot', 'FishingGear0Slot', 'FishingGear1Slot'}) do
 		local button = CraftingPage[name]
 		if button then
 			button:StripTextures()
@@ -132,8 +130,8 @@ function S:Blizzard_Professions()
 		ReskinQualityContainer(QualityDialog.Container3)
 	end
 
-	hooksecurefunc(SchematicForm, "Init", function(self)
-		for slot in self.reagentSlotPool:EnumerateActive() do
+	hooksecurefunc(SchematicForm, 'Init', function(frame)
+		for slot in frame.reagentSlotPool:EnumerateActive() do
 			ReskinSlotButton(slot.Button)
 		end
 
@@ -151,8 +149,8 @@ function S:Blizzard_Professions()
 	SpecPage.TreeView:CreateBackdrop('Transparent')
 	SpecPage.TreeView.backdrop:SetInside()
 
-	hooksecurefunc(SpecPage, 'UpdateTabs', function(self)
-		for tab in self.tabsPool:EnumerateActive() do
+	hooksecurefunc(SpecPage, 'UpdateTabs', function(frame)
+		for tab in frame.tabsPool:EnumerateActive() do
 			if not tab.isSkinned then
 				S:HandleTab(tab)
 				tab.isSkinned = true
@@ -174,9 +172,9 @@ function S:Blizzard_Professions()
 	S:HandleCloseButton(OutputLog.ClosePanelButton)
 	S:HandleTrimScrollBar(OutputLog.ScrollBar, true)
 
-	hooksecurefunc(OutputLog.ScrollBox, "Update", function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local child = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(OutputLog.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local child = select(i, frame.ScrollTarget:GetChildren())
 			if not child.isSkinned then
 				local itemContainer = child.ItemContainer
 				if itemContainer then

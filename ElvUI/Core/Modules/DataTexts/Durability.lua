@@ -51,6 +51,7 @@ local function OnEvent(self)
 			if E.Retail and E.ScanTooltip.GetTooltipData then
 				E.ScanTooltip:SetInventoryItem('player', index)
 				E.ScanTooltip:Show()
+
 				repairCost = E.ScanTooltip:GetTooltipData().repairCost
 			else
 				repairCost = select(3, E.ScanTooltip:SetInventoryItem('player', index))

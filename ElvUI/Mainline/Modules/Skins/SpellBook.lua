@@ -30,11 +30,13 @@ local function UpdateButton()
 			button.backdrop:SetShown(button.SpellName:IsShown())
 		end
 
-		local ht = button.SpellHighlightTexture
-		if ht and ht:IsShown() then
-			E:Flash(ht, 1, true)
-		elseif ht then
-			E:StopFlash(ht)
+		local highlight = button.SpellHighlightTexture
+		if highlight then
+			if highlight:IsShown() then
+				E:Flash(highlight, 1, true)
+			else
+				E:StopFlash(highlight)
+			end
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
@@ -60,7 +62,7 @@ local function HandleSkillButton(button)
 	S:HandleIcon(button.IconTexture)
 	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
-	local nameFrame = _G[button:GetName().."NameFrame"]
+	local nameFrame = _G[button:GetName()..'NameFrame']
 	if nameFrame then nameFrame:Hide() end
 end
 
@@ -70,8 +72,8 @@ function S:SpellBookFrame()
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame)
 
-	for _, object in pairs({ 'SpellBookSpellIconsFrame', 'SpellBookSideTabsFrame', 'SpellBookPageNavigationFrame' }) do
-		_G[object]:StripTextures()
+	for _, frame in pairs({_G.SpellBookSpellIconsFrame, _G.SpellBookSideTabsFrame, _G.SpellBookPageNavigationFrame}) do
+		frame:StripTextures()
 	end
 
 	if E.global.general.disableTutorialButtons then
@@ -90,8 +92,9 @@ function S:SpellBookFrame()
 		SpellBookFrame.pagebackdrop = pagebackdrop
 
 		for i = 1, 2 do
-			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
-			_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)
+			local page = _G['SpellBookPage'..i]
+			page:SetParent(pagebackdrop)
+			page:SetDrawLayer('BACKGROUND', 3)
 		end
 	end
 
@@ -147,10 +150,10 @@ function S:SpellBookFrame()
 	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 
 	for i = 1, 8 do
-		local Tab = _G['SpellBookSkillLineTab'..i]
-		Tab:StripTextures()
-		Tab:SetTemplate()
-		Tab:StyleButton(nil, true)
+		local tab = _G['SpellBookSkillLineTab'..i]
+		tab:StripTextures()
+		tab:SetTemplate()
+		tab:StyleButton(nil, true)
 	end
 
 	hooksecurefunc('SpellBookFrame_UpdateSkillLineTabs', function()
@@ -164,50 +167,48 @@ function S:SpellBookFrame()
 	end)
 
 	--Profession Tab
-	local professions = {"PrimaryProfession1", "PrimaryProfession2", "SecondaryProfession1", "SecondaryProfession2", "SecondaryProfession3"}
-	for i, button in pairs(professions) do
-		local bu = _G[button]
-		bu.missingHeader:SetTextColor(1, 1, 0)
+	for _, button in pairs({_G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3}) do
+		button.missingHeader:SetTextColor(1, 1, 0)
 
 		if E.private.skins.parchmentRemoverEnable then
-			bu.missingText:SetTextColor(1, 1, 1)
+			button.missingText:SetTextColor(1, 1, 1)
 		else
-			bu.missingText:SetTextColor(0, 0, 0)
+			button.missingText:SetTextColor(0, 0, 0)
 		end
 
-		local a, b, c, _, e = bu.statusBar:GetPoint()
-		bu.statusBar:Point(a, b, c, 0, e)
-		bu.statusBar.rankText:Point('CENTER')
-		S:HandleStatusBar(bu.statusBar, {0, .86, 0})
+		local a, b, c, _, e = button.statusBar:GetPoint()
+		button.statusBar:Point(a, b, c, 0, e)
+		button.statusBar.rankText:Point('CENTER')
+		S:HandleStatusBar(button.statusBar, {0, .86, 0})
 
 		if a == 'BOTTOMLEFT' then
-			bu.rank:Point('BOTTOMLEFT', bu.statusBar, 'TOPLEFT', 0, 4)
+			button.rank:Point('BOTTOMLEFT', button.statusBar, 'TOPLEFT', 0, 4)
 		elseif a == 'TOPLEFT' then
-			bu.rank:Point('TOPLEFT', bu.professionName, 'BOTTOMLEFT', 0, -20)
+			button.rank:Point('TOPLEFT', button.professionName, 'BOTTOMLEFT', 0, -20)
 		end
 
-		if bu.unlearn then
-			bu.unlearn:Point('RIGHT', bu.statusBar, 'LEFT', -18, -5)
+		if button.unlearn then
+			button.unlearn:Point('RIGHT', button.statusBar, 'LEFT', -18, -5)
 		end
 
-		if bu.icon then
-			S:HandleIcon(bu.icon)
+		if button.icon then
+			S:HandleIcon(button.icon)
 
-			bu:StripTextures()
-			bu.professionName:Point('TOPLEFT', 100, -4)
+			button:StripTextures()
+			button.professionName:Point('TOPLEFT', 100, -4)
 
-			bu:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-			bu.backdrop.Center:SetDrawLayer('BORDER', -1)
-			bu.backdrop:SetOutside(bu.icon)
-			bu.backdrop:SetBackdropColor(0, 0, 0, 1)
-			bu.backdrop.callbackBackdropColor = clearBackdrop
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+			button.backdrop.Center:SetDrawLayer('BORDER', -1)
+			button.backdrop:SetOutside(button.icon)
+			button.backdrop:SetBackdropColor(0, 0, 0, 1)
+			button.backdrop.callbackBackdropColor = clearBackdrop
 
-			bu.icon:SetDesaturated(false)
-			bu.icon:SetAlpha(1)
+			button.icon:SetDesaturated(false)
+			button.icon:SetAlpha(1)
 		end
 
-		HandleSkillButton(bu.SpellButton1)
-		HandleSkillButton(bu.SpellButton2)
+		HandleSkillButton(button.SpellButton1)
+		HandleSkillButton(button.SpellButton2)
 	end
 
 	for i = 1, 2 do
@@ -228,27 +229,27 @@ function S:SpellBookFrame()
 	end)
 
 
-	hooksecurefunc('UpdateProfessionButton', function(self)
-		local spellIndex = self:GetID() + self:GetParent().spellOffset
+	hooksecurefunc('UpdateProfessionButton', function(button)
+		local spellIndex = button:GetID() + button:GetParent().spellOffset
 		local isPassive = IsPassiveSpell(spellIndex, SpellBookFrame.bookType)
 		if isPassive then
-			self.highlightTexture:SetColorTexture(1, 1, 1, 0)
+			button.highlightTexture:SetColorTexture(1, 1, 1, 0)
 		else
-			self.highlightTexture:SetColorTexture(1, 1, 1, .25)
+			button.highlightTexture:SetColorTexture(1, 1, 1, .25)
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
-			if self.spellString then
-				self.spellString:SetTextColor(1, 1, 1)
+			if button.spellString then
+				button.spellString:SetTextColor(1, 1, 1)
 			end
-			if self.subSpellString then
-				self.subSpellString:SetTextColor(1, 1, 1)
+			if button.subSpellString then
+				button.subSpellString:SetTextColor(1, 1, 1)
 			end
-			if self.SpellName then
-				self.SpellName:SetTextColor(1, 1, 1)
+			if button.SpellName then
+				button.SpellName:SetTextColor(1, 1, 1)
 			end
-			if self.SpellSubName then
-				self.SpellSubName:SetTextColor(1, 1, 1)
+			if button.SpellSubName then
+				button.SpellSubName:SetTextColor(1, 1, 1)
 			end
 		end
 	end)

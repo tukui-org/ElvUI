@@ -9,7 +9,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local type, ipairs, unpack, select, pcall = type, ipairs, unpack, select, pcall
 local strmatch, tinsert, tremove, wipe = strmatch, tinsert, tremove, wipe
-local next, floor, format, sub = next, floor, format, strsub
+local next, max, floor, format, sub = next, max, floor, format, strsubb
 
 local GameTooltip = GameTooltip
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -43,6 +43,7 @@ local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonQuality = SetItemButtonQuality
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
+local SetCVar = SetCVar
 local SortBags = SortBags
 local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
@@ -105,10 +106,11 @@ local GetContainerNumSlots
 local SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight
 
-if E.Retail and C_Container then
+local C_Container = E.Retail and _G.C_Container
+if C_Container then
+	GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 	ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
 	GetBackpackAutosortDisabled = C_Container.GetBackpackAutosortDisabled
-	GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 	GetBagSlotFlag = C_Container.GetBagSlotFlag
 	GetBankAutosortDisabled = C_Container.GetBankAutosortDisabled
 	GetBankBagSlotFlag = C_Container.GetBankBagSlotFlag
@@ -949,12 +951,11 @@ function B:GetBagAssignedInfo(holder)
 	-- clear tempflag from AssignBagFlagMenu
 	if holder.tempflag then holder.tempflag = nil end
 
-	local active, color, icon
-
+	local active, color
 	if E.Retail and E.WoW10 then
-		local activeBagFilter = ContainerFrameSettingsManager:GetFilterFlag(holder.bagID)
+		local activeBagFilter = _G.ContainerFrameSettingsManager:GetFilterFlag(holder.bagID)
 
-		for i, flag in ContainerFrameUtil_EnumerateBagGearFilters() do
+		for i, flag in _G.ContainerFrameUtil_EnumerateBagGearFilters() do
 			active = activeBagFilter == flag
 			if active then
 				color = B.AssignmentColors[i]
@@ -2318,23 +2319,23 @@ function B:CloseBank()
 	B:CloseBags()
 end
 
-if E.Retail and C_Container then
+if C_Container then
 	local function GetInitialContainerFrameOffsetX()
-		return EditModeUtil:GetRightActionBarWidth() + 10;
+		return _G.EditModeUtil:GetRightActionBarWidth() + 10;
 	end
 
 	local function GetContainerScale()
 		local containerFrameOffsetX = GetInitialContainerFrameOffsetX();
 		local xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
-		local screenWidth = GetScreenWidth();
+		local screenWidth = E.screenWidth
 		local containerScale = 1;
 		local leftLimit = 0;
-		if ( BankFrame:IsShown() ) then
-			leftLimit = BankFrame:GetRight() - 25;
+		if _G.BankFrame:IsShown() then
+			leftLimit = _G.BankFrame:GetRight() - 25;
 		end
 
 		while ( containerScale > CONTAINER_SCALE ) do
-			screenHeight = GetScreenHeight() / containerScale;
+			screenHeight = E.screenHeight / containerScale;
 			-- Adjust the start anchor for bags depending on the multibars
 			xOffset = containerFrameOffsetX / containerScale;
 			yOffset = CONTAINER_OFFSET_Y / containerScale;
@@ -2345,7 +2346,7 @@ if E.Retail and C_Container then
 			local frameHeight;
 			local framesInColumn = 0;
 			local forceScaleDecrease = false;
-			for index, frame in ipairs(ContainerFrameSettingsManager:GetBagsShown()) do
+			for _, frame in ipairs(_G.ContainerFrameSettingsManager:GetBagsShown()) do
 				framesInColumn = framesInColumn + 1;
 				frameHeight = frame:GetHeight(true);
 				if ( freeScreenHeight < frameHeight ) then
@@ -2372,20 +2373,20 @@ if E.Retail and C_Container then
 			end
 		end
 
-		return math.max(containerScale, CONTAINER_SCALE);
+		return max(containerScale, CONTAINER_SCALE);
 	end
 
 	function B:UpdateContainerFrameAnchors()
 		local containerScale = GetContainerScale();
-		local screenHeight = GetScreenHeight() / containerScale;
+		local screenHeight = E.screenHeight / containerScale;
 		-- Adjust the start anchor for bags depending on the multibars
-		local xOffset = GetInitialContainerFrameOffsetX() / containerScale;
+		--local xOffset = GetInitialContainerFrameOffsetX() / containerScale;
 		local yOffset = CONTAINER_OFFSET_Y / containerScale;
 		-- freeScreenHeight determines when to start a new column of bags
 		local freeScreenHeight = screenHeight - yOffset;
 		local previousBag;
 		local firstBagInMostRecentColumn;
-		for index, frame in ipairs(ContainerFrameSettingsManager:GetBagsShown()) do
+		for index, frame in ipairs(_G.ContainerFrameSettingsManager:GetBagsShown()) do
 			frame:SetScale(containerScale);
 			if index == 1 then
 				-- First bag
