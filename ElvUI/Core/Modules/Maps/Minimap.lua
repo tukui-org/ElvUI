@@ -228,7 +228,11 @@ function M:Minimap_OnMouseDown(btn)
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	else
-		_G.Minimap_OnClick(self)
+		if E.WoW10 then
+			_G.Minimap.OnClick(self)
+		else
+			_G.Minimap_OnClick(self)
+		end
 	end
 end
 
@@ -415,15 +419,15 @@ function M:UpdateSettings()
 		end
 	end
 
-	local MiniMapInstanceDifficulty = _G.MiniMapInstanceDifficulty
-	if MiniMapInstanceDifficulty then
+	local InstanceDifficulty = _G.MinimapCluster.InstanceDifficulty.Instance
+	if InstanceDifficulty then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-		MiniMapInstanceDifficulty:ClearAllPoints()
-		MiniMapInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(MiniMapInstanceDifficulty, scale)
+		InstanceDifficulty:ClearAllPoints()
+		InstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
+		M:SetScale(InstanceDifficulty, scale)
 	end
 
-	local GuildInstanceDifficulty = _G.GuildInstanceDifficulty
+	local GuildInstanceDifficulty = _G.MinimapCluster.InstanceDifficulty.Guild
 	if GuildInstanceDifficulty then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		GuildInstanceDifficulty:ClearAllPoints()
@@ -431,12 +435,12 @@ function M:UpdateSettings()
 		M:SetScale(GuildInstanceDifficulty, scale)
 	end
 
-	local MiniMapChallengeMode = _G.MiniMapChallengeMode
-	if MiniMapChallengeMode then
+	local ChallengeModeInstanceDifficulty = _G.MinimapCluster.InstanceDifficulty.ChallengeMode
+	if ChallengeModeInstanceDifficulty then
 		local scale, position, xOffset, yOffset = M:GetIconSettings('challengeMode')
-		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(MiniMapChallengeMode, scale)
+		ChallengeModeInstanceDifficulty:ClearAllPoints()
+		ChallengeModeInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
+		M:SetScale(ChallengeModeInstanceDifficulty, scale)
 	end
 end
 
@@ -602,9 +606,9 @@ function M:Initialize()
 		end
 
 		_G.QueueStatusFrame:SetClampedToScreen(true)
-		_G.MiniMapInstanceDifficulty:SetParent(Minimap)
-		_G.GuildInstanceDifficulty:SetParent(Minimap)
-		_G.MiniMapChallengeMode:SetParent(Minimap)
+		_G.MinimapCluster.InstanceDifficulty.Instance:SetParent(Minimap)
+		_G.MinimapCluster.InstanceDifficulty.Guild:SetParent(Minimap)
+		_G.MinimapCluster.InstanceDifficulty.ChallengeMode:SetParent(Minimap)
 	elseif E.Classic then
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end
