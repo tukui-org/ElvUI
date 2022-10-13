@@ -181,9 +181,9 @@ function S:Blizzard_Professions()
 				local itemContainer = child.ItemContainer
 				if itemContainer then
 					local item = itemContainer.Item
-					item:SetNormalTexture(DB.blankTex)
-					item:SetPushedTexture(DB.blankTex)
-					item:SetHighlightTexture(DB.blankTex)
+					item:SetNormalTexture('')
+					item:SetPushedTexture('')
+					item:SetHighlightTexture('')
 
 					local icon = item:GetRegions()
 					S:HandleIcon(icon, true)
