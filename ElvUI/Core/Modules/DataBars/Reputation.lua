@@ -6,7 +6,7 @@ local format = format
 local GameTooltip = GameTooltip
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
-local GetFriendshipReputation = GetFriendshipReputation
+local C_GossipInfo_GetFriendshipReputation = C_GossipInfo.GetFriendshipReputation
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
 local REPUTATION = REPUTATION
@@ -37,7 +37,7 @@ function DB:ReputationBar_Update()
 	local friendshipID, standingText, nextThreshold, _
 
 	if E.Retail then
-		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
+		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = C_GossipInfo_GetFriendshipReputation(factionID)
 	end
 
 	if friendshipID then
