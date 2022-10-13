@@ -5,7 +5,7 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
 local _G = _G
-local tostring, format, type, pcall = tostring, format, type, pcall
+local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
 local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
 local hooksecurefunc = hooksecurefunc
