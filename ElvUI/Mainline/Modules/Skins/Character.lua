@@ -70,7 +70,7 @@ end
 local function EquipmentDisplayButton(button)
 	if not button.isHooked then
 		button:ClearNormalTexture()
-		button:ClearPushedTexture('')
+		button:ClearPushedTexture()
 		button:SetTemplate()
 		button:StyleButton()
 
