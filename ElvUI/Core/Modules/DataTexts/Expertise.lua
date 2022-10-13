@@ -12,6 +12,7 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_EXPERTISE = STAT_EXPERTISE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
+local CR_EXPERTISE = CR_EXPERTISE
 
 local displayString, lastPanel = ''
 
@@ -24,7 +25,8 @@ local function OnEvent(self)
 	expertiseRating, expertiseBonusRating = GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)
 
 	expertisePercentDisplay = expertisePercent
-	if (IsDualWielding()) then
+
+	if IsDualWielding() then
 		expertisePercentDisplay = format('%s / %s', expertisePercent, offhandExpertisePercent)
 	end
 
@@ -35,7 +37,6 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	DT.tooltip:AddLine(format(CR_EXPERTISE_TOOLTIP, expertisePercentDisplay, expertiseRating, expertiseBonusRating), nil, nil, nil, true)
 	DT.tooltip:Show()
 end
