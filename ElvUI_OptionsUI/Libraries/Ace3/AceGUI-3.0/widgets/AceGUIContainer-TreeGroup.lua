@@ -8,7 +8,7 @@ if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 -- Lua APIs
 local next, pairs, ipairs, assert, type = next, pairs, ipairs, assert, type
-local math_min, math_max, floor = math.min, math.max, math.floor
+local math_min, math_max, floor, format = math.min, math.max, math.floor, string.format
 local select, tremove, unpack, tconcat = select, table.remove, unpack, table.concat
 
 -- WoW APIs
@@ -317,7 +317,7 @@ local methods = {
 
 	["CreateButton"] = function(self)
 		local num = AceGUI:GetNextWidgetNum("TreeGroupButton")
-		local name = ("AceGUI30TreeButton%d"):format(num)
+		local name = format("AceGUI30TreeButton%d", num)
 		local button = CreateFrame("Button", name, self.treeframe, "OptionsListButtonTemplate")
 		button.obj = self
 		button.text = _G[name.."Text"] -- tell nev for this
