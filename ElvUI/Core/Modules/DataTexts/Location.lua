@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 
 --WoW API caching
-local WrapTextInColorCode = WrapTextInColorCode
 local InCombatLockdown = InCombatLockdown
 local GetZonePVPInfo = GetZonePVPInfo
 local IsInInstance = IsInInstance
