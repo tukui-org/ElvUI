@@ -40,6 +40,7 @@ P.general = {
 		width = 0
 	},
 	hideErrorFrame = true,
+	hideZoneText = false,
 	enhancedPvpMessages = true,
 	objectiveFrameHeight = 480,
 	objectiveFrameAutoHide = true,
