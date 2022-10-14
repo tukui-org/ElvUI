@@ -130,7 +130,7 @@ local function JournalScrollButtons(frame)
 			else
 				bu:Point(point, relativeTo, relativePoint, xOffset, -2)
 			end
---
+
 			local icon = bu.icon or bu.Icon
 			icon:Size(40)
 			icon:Point('LEFT', -43, 0)
@@ -573,11 +573,11 @@ local function SkinTransmogFrames()
 				S:HandleIcon(child.Icon)
 				child.IconCover:SetOutside(child.Icon)
 
-				child.SelectedTexture:SetDrawLayer("BACKGROUND")
+				child.SelectedTexture:SetDrawLayer('BACKGROUND')
 				child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
 				child.SelectedTexture:ClearAllPoints()
-				child.SelectedTexture:SetPoint("TOPLEFT", 4, -2)
-				child.SelectedTexture:SetPoint("BOTTOMRIGHT", -1, 2)
+				child.SelectedTexture:SetPoint('TOPLEFT', 4, -2)
+				child.SelectedTexture:SetPoint('BOTTOMRIGHT', -1, 2)
 				child.SelectedTexture:CreateBackdrop('Transparent')
 
 				child.IsSkinned = true
