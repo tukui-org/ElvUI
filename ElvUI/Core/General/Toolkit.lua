@@ -457,9 +457,9 @@ local function addapi(object)
 
 	if not object._SetNormalTexture then -- bullshit WoW10
 		CheckTextureAPI(mk, SetNormalTexture, 'SetNormalTexture')
-		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
-		CheckTextureAPI(mk, SetCheckedTexture, 'SetCheckedTexture')
 		CheckTextureAPI(mk, SetPushedTexture, 'SetPushedTexture')
+		CheckTextureAPI(mk, SetCheckedTexture, 'SetCheckedTexture')
+		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
 		CheckTextureAPI(mk, SetHighlightTexture, 'SetHighlightTexture')
 	end
 
