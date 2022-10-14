@@ -431,12 +431,7 @@ function S:HandleButton(button, noStrip, isDecline, noStyle, createBackdrop, tem
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture('') end
-	if button.SetHighlightTexture then button:SetHighlightTexture('') end
-	if button.SetPushedTexture then button:SetPushedTexture('') end
-	if button.SetDisabledTexture then button:SetDisabledTexture('') end
-
-	if not noStrip then button:StripTextures() end -- Fliped because of DF WoW10
+	if not noStrip then button:StripTextures() end -- Fliped because needed now
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
 	if button.Icon then
