@@ -431,11 +431,10 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 	if button.isSkinned then return end
 
-	local empty = E.Media.Textures.Invisible -- WoW10 using ClearHighlightTexture, etc here seems to not work
-	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(empty) end
-	if button.SetHighlightTexture then button:SetHighlightTexture(empty) end
-	if button.SetPushedTexture then button:SetPushedTexture(empty) end
-	if button.SetDisabledTexture then button:SetDisabledTexture(empty) end
+	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture() end
+	if button.SetHighlightTexture then button:SetHighlightTexture() end
+	if button.SetPushedTexture then button:SetPushedTexture() end
+	if button.SetDisabledTexture then button:SetDisabledTexture() end
 
 	if strip then button:StripTextures() end
 
