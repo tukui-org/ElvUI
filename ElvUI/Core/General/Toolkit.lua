@@ -436,6 +436,7 @@ end
 local function GetTextureOrFallback(t) return (not t or (type(t) == 'string' and strmatch(t, '^%s+$'))) and E.Media.Textures.Invisible or t end
 local function SetNormalTexture(frame, texture) frame:_SetNormalTexture(GetTextureOrFallback(texture)) end
 local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(GetTextureOrFallback(texture)) end
+local function SetCheckedTexture(frame, texture) frame:_SetCheckedTexture(GetTextureOrFallback(texture)) end
 local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(GetTextureOrFallback(texture)) end
 local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(GetTextureOrFallback(texture)) end
 local function CheckTextureAPI(meta, api, key)
@@ -457,8 +458,9 @@ local function addapi(object)
 
 	if not object._SetNormalTexture then -- bullshit WoW10
 		CheckTextureAPI(mk, SetNormalTexture, 'SetNormalTexture')
-		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
 		CheckTextureAPI(mk, SetPushedTexture, 'SetPushedTexture')
+		CheckTextureAPI(mk, SetCheckedTexture, 'SetCheckedTexture')
+		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
 		CheckTextureAPI(mk, SetHighlightTexture, 'SetHighlightTexture')
 	end
 
