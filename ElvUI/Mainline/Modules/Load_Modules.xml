@@ -4,6 +4,6 @@
 	<Include file='DataBars\Load_DataBars.xml'/>
 	<Include file='ActionBars\Load_ActionBars.xml'/>
 	<Include file='Misc\Load_Misc.xml'/>
-	<!-- <Include file='Skins\Load_Skins.xml'/> -->
+	<Include file='Skins\Load_Skins.xml'/>
 	<Include file='Blizzard\Load_Blizzard.xml'/>
 </Ui>

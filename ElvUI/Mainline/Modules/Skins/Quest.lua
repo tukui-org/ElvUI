@@ -101,7 +101,7 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride
 	end
 
 	if not scrollFrame.spellTex then
-		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
+		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', nil, 1)
 	end
 
 	local material = GetQuestBackgroundMaterial()

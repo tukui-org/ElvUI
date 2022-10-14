@@ -81,7 +81,7 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	hooksecurefunc('QueueStatusFrame_Update', function()
+	--[[hooksecurefunc('QueueStatusFrame_Update', function()
 		for frame in _G.QueueStatusFrame.statusEntriesPool:EnumerateActive() do
 			frame.HealersFound.Texture:SetTexture(E.Media.Textures.RolesHQ)
 			frame.TanksFound.Texture:SetTexture(E.Media.Textures.RolesHQ)
@@ -90,7 +90,7 @@ function S:BlizzardMiscFrames()
 			frame.TanksFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 			frame.DamagersFound.Texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 		end
-	end)
+	end)]] -- WoW10
 
 	-- reskin all esc/menu buttons
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then

@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque, Blizzard_PetJournal
 ## Interface: 100000
-## X-Interface: 90207
+## X-Interface: 100000
 ## X-oUF: ElvUF
 
 Mainline\Libs.xml
