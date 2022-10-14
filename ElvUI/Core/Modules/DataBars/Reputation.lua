@@ -114,7 +114,7 @@ function DB:ReputationBar_OnEnter()
 		GameTooltip:AddLine(' ')
 
 		local friendID, friendTextLevel, _
-		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
+		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = E.WoW10 and C_GossipInfo_GetFriendshipReputation(factionID) or GetFriendshipReputation(factionID) end
 
 		GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 
