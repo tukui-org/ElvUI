@@ -100,7 +100,7 @@ local function ColorMemberName(button, info)
 	end
 end
 
-local card = {"First", "Second", "Third"}
+local card = {'First', 'Second', 'Third'}
 local function HandleGuildCards(cards)
 	for _, name in pairs(card) do
 		local guildCard = cards[name..'Card']
@@ -113,6 +113,8 @@ local function HandleGuildCards(cards)
 end
 
 local function HandleCommunityCards(frame)
+	if not frame.ListScrollFrame then return end -- WoW10
+
 	for _, button in next, frame.ListScrollFrame.buttons do
 		button.CircleMask:Hide()
 		button.LogoBorder:Hide()
@@ -139,9 +141,9 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
-	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
+	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
 
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetClubInfo', function(s, clubInfo, isInvitation, isTicket)
+	--[[hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetClubInfo', function(s, clubInfo, isInvitation, isTicket)
 		if clubInfo then
 			s.Background:Hide()
 			s.CircleMask:Hide()
@@ -194,7 +196,7 @@ function S:Blizzard_Communities()
 				s.IconBorder:Hide()
 			end
 		end
-	end)
+	end)]] -- WoW10 this dont exist now
 
 	-- Add Community Button
 	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(s) HandleCommunitiesButtons(s, 1) end)
@@ -215,11 +217,6 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
 
-	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
-	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
-
-	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(s)
@@ -246,7 +243,7 @@ function S:Blizzard_Communities()
 
 	S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
 
-	for _, name in next, {"GuildFinderFrame", "InvitationFrame", "TicketFrame", "CommunityFinderFrame", "ClubFinderInvitationFrame"} do
+	for _, name in next, {'GuildFinderFrame', 'InvitationFrame', 'TicketFrame', 'CommunityFinderFrame', 'ClubFinderInvitationFrame'} do
 		local frame = CommunitiesFrame[name]
 		if frame then
 			frame:StripTextures()
@@ -327,9 +324,6 @@ function S:Blizzard_Communities()
 	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-
-	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.scrollBar)
-	S:HandleScrollBar(ClubFinderCommunityAndGuildFinderFrame.PendingCommunityCards.ListScrollFrame.scrollBar)
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
@@ -414,20 +408,10 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Perks:StripTextures()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
 
-	for i = 1, 5 do
-		local button = _G['CommunitiesFrameContainerButton'..i]
-		button:StripTextures()
-		button:SetTemplate('Transparent')
-
-		button.Icon:SetTexCoord(unpack(E.TexCoords))
-		button.Icon:Point('LEFT', 3, 0)
-	end
-
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
 	GuildBenefitsFrame.Rewards.Bg:Hide()
-	S:HandleScrollBar(_G.CommunitiesFrameRewards.scrollBar)
 
-	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
+	--[[for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		button:SetTemplate('Transparent')
 		button:SetNormalTexture()
 		button:SetHighlightTexture()
@@ -448,7 +432,7 @@ function S:Blizzard_Communities()
 			button.Icon:SetTexCoord(unpack(E.TexCoords))
 			button.Icon:CreateBackdrop()
 		end
-	end
+	end]] -- WoW10
 
 	hooksecurefunc('CommunitiesGuildRewards_Update', function()
 		for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
@@ -546,7 +530,6 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
-	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNewsContainer.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
@@ -655,23 +638,17 @@ function S:Blizzard_Communities()
 	Avatar:StripTextures()
 	Avatar:SetTemplate('Transparent')
 
-	Avatar.ScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.CommunitiesAvatarPickerDialogScrollBar)
-
 	S:HandleButton(Avatar.OkayButton)
 	S:HandleButton(Avatar.CancelButton)
 
 	-- Invite Frame
 	local TicketManager = _G.CommunitiesTicketManagerDialog
 	TicketManager:StripTextures()
+	TicketManager:SetTemplate('Transparent')
 	TicketManager.InviteManager.ArtOverlay:Hide()
 	TicketManager.InviteManager.ColumnDisplay:StripTextures()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderLeft:Hide()
 	TicketManager.InviteManager.ColumnDisplay.InsetBorderBottomLeft:Hide()
-	-- TO DO: Fix the Tabs
-	TicketManager.InviteManager.ListScrollFrame:StripTextures()
-
-	TicketManager:SetTemplate('Transparent')
 
 	S:HandleButton(TicketManager.LinkToChat)
 	S:HandleButton(TicketManager.Copy)
@@ -681,7 +658,6 @@ function S:Blizzard_Communities()
 	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
 	S:HandleDropDownBox(TicketManager.UsesDropDownMenu)
 
-	S:HandleScrollBar(TicketManager.InviteManager.ListScrollFrame.scrollBar)
 	S:HandleButton(TicketManager.MaximizeButton)
 
 	-- InvitationsFrames
@@ -707,7 +683,6 @@ function S:Blizzard_Communities()
 	local ApplicantList = CommunitiesFrame.ApplicantList
 	ApplicantList:StripTextures()
 	ApplicantList.ColumnDisplay:StripTextures()
-	S:HandleScrollBar(ApplicantList.ListScrollFrame.scrollBar)
 
 	ApplicantList:CreateBackdrop('Transparent')
 	ApplicantList.backdrop:Point('TOPLEFT', 0, 0)
