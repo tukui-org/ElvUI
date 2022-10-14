@@ -439,10 +439,10 @@ local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(GetT
 local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(GetTexture(texture)) end
 local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(GetTexture(texture)) end
 local function CheckTextureAPI(meta, api, key)
-	local func = meta[key]
-	if meta['_'..key] ~= func then
-		meta['_'..key] = func
-		meta[key] = api
+	local orig, func = '_'..key, meta[key]
+	if meta[orig] ~= func then
+		meta[orig] = func -- keep a copy of the original
+		meta[key] = api -- use our neew one
 	end
 end
 
