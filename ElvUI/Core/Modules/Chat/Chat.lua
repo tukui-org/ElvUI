@@ -322,7 +322,7 @@ do --this can save some main file locals
 		z['Kalline-Myzrael']		= itsSimpy -- Shaman
 		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter H
 		z['Luckyd-Golemagg']		= ElvBlue -- Druid H
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest H
 		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
@@ -330,6 +330,8 @@ do --this can save some main file locals
 		z['Luckyone-Everlook']		= ElvBlue -- Druid A
 		z['Luckypriest-Everlook']	= ElvBlue -- Priest A
 		z['Luckydk-Everlook']		= ElvBlue -- DK
+		z['Luckyrogue-Everlook']	= ElvBlue -- Rogue
+		z['Luckyhunter-Everlook']	= ElvBlue -- Hunter A
 		z['Luckyone-Giantstalker']	= ElvBlue -- Paladin
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
