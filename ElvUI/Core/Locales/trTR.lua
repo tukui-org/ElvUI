@@ -1,6 +1,6 @@
--- Turkish localization file for enUS and enGB.
+-- Turkish localization file for trTR.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "trTR", true, true)
+local L = E.Libs.ACL:NewLocale("ElvUI", "trTR")
 
 L[" |cff00ff00bound to |r"] = true
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "CPU Monitorunu Aktiflestirmek icin Ctrl & Shift Click'e Basin'"
