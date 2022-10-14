@@ -7,16 +7,16 @@
 local _G, format, next = _G, format, next
 local gsub, pairs, tinsert, type = gsub, pairs, tinsert, type
 
-local CreateFrame = CreateFrame
 local RegisterCVar = C_CVar.RegisterCVar
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
+local GetBuildInfo = GetBuildInfo
+local GetLocale = GetLocale
+local GetTime = GetTime
+local CreateFrame = CreateFrame
 local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
-local GetLocale = GetLocale
-local GetBuildInfo = GetBuildInfo
-local GetTime = GetTime
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
