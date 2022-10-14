@@ -199,20 +199,24 @@ end
 
 function E:SlideIn(obj, customName)
 	if not customName then customName = 'anim' end
-	if not obj[customName] then return end
 
-	obj[customName].out1:Stop()
-	obj[customName]:Play()
+	local anim = obj[customName]
+	if not anim then return end
+
+	anim.out1:Stop()
+	anim:Play()
 	obj:Show()
 end
 
 function E:SlideOut(obj, customName)
 	if not customName then customName = 'anim' end
-	if not obj[customName] then return end
 
-	obj[customName]:Finish()
-	obj[customName]:Stop()
-	obj[customName].out1:Play()
+	local anim = obj[customName]
+	if not anim then return end
+
+	anim:Finish()
+	anim:Stop()
+	anim.out1:Play()
 end
 
 local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
