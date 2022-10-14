@@ -66,7 +66,7 @@ function S:SkinCraftFrame()
 	CraftCollapseAllButton:GetNormalTexture():Point('LEFT', 3, 2)
 	CraftCollapseAllButton:GetNormalTexture():Size(15)
 
-	CraftCollapseAllButton:SetHighlightTexture('')
+	CraftCollapseAllButton:SetHighlightTexture()
 	CraftCollapseAllButton.SetHighlightTexture = E.noop
 
 	CraftCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)

@@ -76,10 +76,10 @@ do
 	function S:HandleCategoriesButtons(button, strip)
 		if button.isSkinned then return end
 
-		if button.SetNormalTexture then button:SetNormalTexture('') end
-		if button.SetHighlightTexture then button:SetHighlightTexture('') end
-		if button.SetPushedTexture then button:SetPushedTexture('') end
-		if button.SetDisabledTexture then button:SetDisabledTexture('') end
+		if button.SetNormalTexture then button:SetNormalTexture() end
+		if button.SetHighlightTexture then button:SetHighlightTexture() end
+		if button.SetPushedTexture then button:SetPushedTexture() end
+		if button.SetDisabledTexture then button:SetDisabledTexture() end
 
 		if strip then button:StripTextures() end
 		S:HandleBlizzardRegions(button)
@@ -101,7 +101,7 @@ end
 
 function S:HandleButtonHighlight(frame, r, g, b)
 	if frame.SetHighlightTexture then
-		frame:SetHighlightTexture('')
+		frame:SetHighlightTexture()
 	end
 
 	if not r then r = 0.9 end
@@ -1444,7 +1444,7 @@ do -- Handle collapse
 			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
 			syncPushTexture(button)
 		else
-			button:SetPushedTexture('')
+			button:SetPushedTexture()
 		end
 
 		hooksecurefunc(button, 'SetNormalTexture', UpdateCollapseTexture)

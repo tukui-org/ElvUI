@@ -1508,15 +1508,15 @@ function B:ConstructContainerFrame(name, isBank)
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
 		holder:StyleButton()
-		holder:SetNormalTexture('')
-		holder:SetPushedTexture('')
+		holder:SetNormalTexture()
+		holder:SetPushedTexture()
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 		holder:SetScript('OnEnter', B.Holder_OnEnter)
 		holder:SetScript('OnLeave', B.Holder_OnLeave)
 		holder:SetScript('OnClick', B.Holder_OnClick)
 
 		if not E.Retail then
-			holder:SetCheckedTexture('')
+			holder:SetCheckedTexture()
 		end
 
 		if holder.animIcon then
@@ -1888,11 +1888,11 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
 	slot:HookScript('OnEnter', B.Slot_OnEnter)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
-	slot:SetNormalTexture(nil)
+	slot:SetNormalTexture()
 	slot:SetID(slotID)
 
 	if not E.Retail then
-		slot:SetCheckedTexture(nil)
+		slot:SetCheckedTexture()
 	end
 
 	slot.bagFrame = f

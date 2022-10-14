@@ -240,8 +240,8 @@ function S:Blizzard_EncounterJournal()
 
 	S:HandleIcon(EncounterInfo.instanceButton.icon, true)
 	EncounterInfo.instanceButton.icon:SetTexCoord(0, 1, 0, 1)
-	EncounterInfo.instanceButton:SetNormalTexture('')
-	EncounterInfo.instanceButton:SetHighlightTexture('')
+	EncounterInfo.instanceButton:SetNormalTexture()
+	EncounterInfo.instanceButton:SetHighlightTexture()
 
 	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
 	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
