@@ -914,7 +914,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
 	ClearOnBarHighlightMarks()
-	ClearPetActionHighlightMarks()
+	PetActionBar.ClearPetActionHighlightMarks() -- ToDO: WoW10
 
 	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
 	if slotType == 'SPELL' then
@@ -947,7 +947,7 @@ end
 
 function AB:SpellButtonOnLeave()
 	ClearOnBarHighlightMarks()
-	ClearPetActionHighlightMarks()
+	PetActionBar.ClearPetActionHighlightMarks() -- ToDO: WoW10
 
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
