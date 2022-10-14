@@ -58,7 +58,7 @@ local function OnEnter(self)
 end
 
 local function OnClick(_, button)
-	if button == 'LeftButton' and not UnitAffectingCombat("player") and C_PvP_CanToggleWarMode(not C_PvP_IsWarModeActive()) then
+	if button == 'LeftButton' and not UnitAffectingCombat('player') and C_PvP_CanToggleWarMode(not C_PvP_IsWarModeActive()) then
 		C_PvP_ToggleWarMode()
 	end
 end
