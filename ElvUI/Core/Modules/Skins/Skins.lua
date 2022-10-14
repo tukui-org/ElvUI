@@ -426,12 +426,19 @@ do
 	end
 end
 
-function S:HandleButton(button, noStrip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
+function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
 
-	if not noStrip then button:StripTextures() end -- Fliped because needed now
+	local empty = E.Media.Textures.EmptyTex -- WoW10 using ClearHighlightTexture, etc here seems to not work
+	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(empty) end
+	if button.SetHighlightTexture then button:SetHighlightTexture(empty) end
+	if button.SetPushedTexture then button:SetPushedTexture(empty) end
+	if button.SetDisabledTexture then button:SetDisabledTexture(empty) end
+
+	if strip then button:StripTextures() end
+
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
 	if button.Icon then
@@ -910,6 +917,7 @@ end
 
 do
 	local background = [[Interface\Minimap\UI-Minimap-Background]]
+
 	local function buttonNormalTexture(frame, texture) if texture ~= '' then frame:SetNormalTexture('') end end
 	local function buttonPushedTexture(frame, texture) if texture ~= '' then frame:SetPushedTexture('') end end
 	local function buttonDisabledTexture(frame, texture) if texture ~= '' then frame:SetDisabledTexture('') end end

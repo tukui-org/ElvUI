@@ -93,6 +93,7 @@ AddMedia('sound','StopRunningSlimeBall.ogg',	'Stop Running')
 AddMedia('sound','Whisper.ogg',					'Whisper Alert')
 AddMedia('sound','YankieBangBang.ogg',			'Big Yankie Devil')
 
+AddMedia('texture','EmptyTex')
 AddMedia('texture','GlowTex',		'ElvUI GlowBorder', 'border')
 AddMedia('texture','NormTex',		'ElvUI Gloss',	'statusbar')
 AddMedia('texture','NormTex2',		'ElvUI Norm',	'statusbar')
