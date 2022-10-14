@@ -212,7 +212,7 @@ local function OnEnter(_, slow)
 			local data = addonIndex > 0 and infoDisplay[addonIndex]
 			if data then
 				local mem = memoryUsage > 0 and memoryUsage
-				local cpu = cpuProfiling and cpuUsage > 0 and cpuUsage
+				local cpu = cpuUsage > 0 and cpuUsage
 
 				if mem then data.mem = mem end
 				if cpu then data.cpu = cpu end
