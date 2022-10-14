@@ -431,10 +431,10 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture('') end
-	if button.SetHighlightTexture then button:SetHighlightTexture('') end
-	if button.SetPushedTexture then button:SetPushedTexture('') end
-	if button.SetDisabledTexture then button:SetDisabledTexture('') end
+	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture() end
+	if button.SetHighlightTexture then button:SetHighlightTexture() end
+	if button.SetPushedTexture then button:SetPushedTexture() end
+	if button.SetDisabledTexture then button:SetDisabledTexture() end
 
 	if strip then button:StripTextures() end
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
@@ -783,10 +783,11 @@ end
 do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
+	local empty = E.Media.Textures.Invisible
 
-	local function checkNormalTexture(checkbox, texture) if texture ~= '' then checkbox:SetNormalTexture('') end end
-	local function checkPushedTexture(checkbox, texture) if texture ~= '' then checkbox:SetPushedTexture('') end end
-	local function checkHighlightTexture(checkbox, texture) if texture ~= '' then checkbox:SetHighlightTexture('') end end
+	local function checkNormalTexture(checkbox, texture) if texture ~= empty then checkbox:SetNormalTexture(empty) end end
+	local function checkPushedTexture(checkbox, texture) if texture ~= empty then checkbox:SetPushedTexture(empty) end end
+	local function checkHighlightTexture(checkbox, texture) if texture ~= empty then checkbox:SetHighlightTexture(empty) end end
 	local function checkCheckedTexture(checkbox, texture)
 		if texture == E.Media.Textures.Melli or texture == check then return end
 		checkbox:SetCheckedTexture(E.private.skins.checkBoxSkin and E.Media.Textures.Melli or check)
@@ -857,10 +858,12 @@ end
 
 do
 	local background = [[Interface\Minimap\UI-Minimap-Background]]
-	local function buttonNormalTexture(frame, texture) if texture ~= '' then frame:SetNormalTexture('') end end
-	local function buttonPushedTexture(frame, texture) if texture ~= '' then frame:SetPushedTexture('') end end
-	local function buttonDisabledTexture(frame, texture) if texture ~= '' then frame:SetDisabledTexture('') end end
-	local function buttonHighlightTexture(frame, texture) if texture ~= '' then frame:SetHighlightTexture('') end end
+	local empty = E.Media.Textures.Invisible
+
+	local function buttonNormalTexture(frame, texture) if texture ~= empty then frame:SetNormalTexture(empty) end end
+	local function buttonPushedTexture(frame, texture) if texture ~= empty then frame:SetPushedTexture(empty) end end
+	local function buttonDisabledTexture(frame, texture) if texture ~= empty then frame:SetDisabledTexture(empty) end end
+	local function buttonHighlightTexture(frame, texture) if texture ~= empty then frame:SetHighlightTexture(empty) end end
 
 	function S:HandleRadioButton(Button)
 		if Button.isSkinned then return end

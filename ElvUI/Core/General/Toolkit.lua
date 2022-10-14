@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
-local pairs, pcall = pairs, pcall
+local pairs, pcall, strmatch = pairs, pcall, strmatch
 local unpack, type, select, getmetatable = unpack, type, select, getmetatable
 local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
@@ -372,7 +372,7 @@ local function FontTemplate(fs, font, size, style, skip)
 end
 
 local function StyleButton(button, noHover, noPushed, noChecked)
-	if button.SetHighlightTexture and not button.hover and not noHover then
+	if button.SetHighlightTexture and button.CreateTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture()
 		hover:SetInside()
 		hover:SetBlendMode('ADD')
@@ -381,7 +381,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		button.hover = hover
 	end
 
-	if button.SetPushedTexture and not button.pushed and not noPushed then
+	if button.SetPushedTexture and button.CreateTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture()
 		pushed:SetInside()
 		pushed:SetBlendMode('ADD')
@@ -390,7 +390,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		button.pushed = pushed
 	end
 
-	if button.SetCheckedTexture and not button.checked and not noChecked then
+	if button.SetCheckedTexture and button.CreateTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture()
 		checked:SetInside()
 		checked:SetBlendMode('ADD')
@@ -432,6 +432,19 @@ do
 	end
 end
 
+local function GetTexture(t) return (not t or (type(t) == 'string' and not strmatch(t, '%s*'))) and E.Media.Textures.Invisible or t end
+local function SetNormalTexture(frame, texture) frame:_SetNormalTexture(GetTexture(texture)) end
+local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(GetTexture(texture)) end
+local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(GetTexture(texture)) end
+local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(GetTexture(texture)) end
+local function CheckTextureAPI(meta, api, key)
+	local orig, func = '_'..key, meta[key]
+	if meta[orig] ~= func then
+		meta[orig] = func -- keep a copy of the original
+		meta[key] = api -- use our neew one
+	end
+end
+
 local function GetNamedChild(frame, childName, index)
 	local name = frame and frame.GetName and frame:GetName()
 	if not name or not childName then return nil end
@@ -439,32 +452,40 @@ local function GetNamedChild(frame, childName, index)
 end
 
 local function addapi(object)
-	local mt = getmetatable(object).__index
-	if not object.Size then mt.Size = Size end
-	if not object.Point then mt.Point = Point end
-	if not object.SetOutside then mt.SetOutside = SetOutside end
-	if not object.SetInside then mt.SetInside = SetInside end
-	if not object.SetTemplate then mt.SetTemplate = SetTemplate end
-	if not object.CreateBackdrop then mt.CreateBackdrop = CreateBackdrop end
-	if not object.CreateShadow then mt.CreateShadow = CreateShadow end
-	if not object.Kill then mt.Kill = Kill end
-	if not object.Width then mt.Width = Width end
-	if not object.Height then mt.Height = Height end
-	if not object.FontTemplate then mt.FontTemplate = FontTemplate end
-	if not object.StripTextures then mt.StripTextures = StripTextures end
-	if not object.StripTexts then mt.StripTexts = StripTexts end
-	if not object.StyleButton then mt.StyleButton = StyleButton end
-	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
-	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
-	if not object.DisabledPixelSnap and (mt.SetSnapToPixelGrid or mt.SetStatusBarTexture or mt.SetColorTexture or mt.SetVertexColor or mt.CreateTexture or mt.SetTexCoord or mt.SetTexture) then
-		if mt.SetSnapToPixelGrid then hooksecurefunc(mt, 'SetSnapToPixelGrid', WatchPixelSnap) end
-		if mt.SetStatusBarTexture then hooksecurefunc(mt, 'SetStatusBarTexture', DisablePixelSnap) end
-		if mt.SetColorTexture then hooksecurefunc(mt, 'SetColorTexture', DisablePixelSnap) end
-		if mt.SetVertexColor then hooksecurefunc(mt, 'SetVertexColor', DisablePixelSnap) end
-		if mt.CreateTexture then hooksecurefunc(mt, 'CreateTexture', DisablePixelSnap) end
-		if mt.SetTexCoord then hooksecurefunc(mt, 'SetTexCoord', DisablePixelSnap) end
-		if mt.SetTexture then hooksecurefunc(mt, 'SetTexture', DisablePixelSnap) end
-		mt.DisabledPixelSnap = true
+	local mk = getmetatable(object).__index
+
+	if not object._SetNormalTexture then -- bullshit WoW10
+		CheckTextureAPI(mk, SetNormalTexture, 'SetNormalTexture')
+		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
+		CheckTextureAPI(mk, SetPushedTexture, 'SetPushedTexture')
+		CheckTextureAPI(mk, SetHighlightTexture, 'SetHighlightTexture')
+	end
+
+	if not object.Size then mk.Size = Size end
+	if not object.Point then mk.Point = Point end
+	if not object.SetOutside then mk.SetOutside = SetOutside end
+	if not object.SetInside then mk.SetInside = SetInside end
+	if not object.SetTemplate then mk.SetTemplate = SetTemplate end
+	if not object.CreateBackdrop then mk.CreateBackdrop = CreateBackdrop end
+	if not object.CreateShadow then mk.CreateShadow = CreateShadow end
+	if not object.Kill then mk.Kill = Kill end
+	if not object.Width then mk.Width = Width end
+	if not object.Height then mk.Height = Height end
+	if not object.FontTemplate then mk.FontTemplate = FontTemplate end
+	if not object.StripTextures then mk.StripTextures = StripTextures end
+	if not object.StripTexts then mk.StripTexts = StripTexts end
+	if not object.StyleButton then mk.StyleButton = StyleButton end
+	if not object.CreateCloseButton then mk.CreateCloseButton = CreateCloseButton end
+	if not object.GetNamedChild then mk.GetNamedChild = GetNamedChild end
+	if not object.DisabledPixelSnap and (mk.SetSnapToPixelGrid or mk.SetStatusBarTexture or mk.SetColorTexture or mk.SetVertexColor or mk.CreateTexture or mk.SetTexCoord or mk.SetTexture) then
+		if mk.SetSnapToPixelGrid then hooksecurefunc(mk, 'SetSnapToPixelGrid', WatchPixelSnap) end
+		if mk.SetStatusBarTexture then hooksecurefunc(mk, 'SetStatusBarTexture', DisablePixelSnap) end
+		if mk.SetColorTexture then hooksecurefunc(mk, 'SetColorTexture', DisablePixelSnap) end
+		if mk.SetVertexColor then hooksecurefunc(mk, 'SetVertexColor', DisablePixelSnap) end
+		if mk.CreateTexture then hooksecurefunc(mk, 'CreateTexture', DisablePixelSnap) end
+		if mk.SetTexCoord then hooksecurefunc(mk, 'SetTexCoord', DisablePixelSnap) end
+		if mk.SetTexture then hooksecurefunc(mk, 'SetTexture', DisablePixelSnap) end
+		mk.DisabledPixelSnap = true
 	end
 end
 
@@ -477,9 +498,10 @@ addapi(object:CreateMaskTexture())
 
 object = EnumerateFrames()
 while object do
-	if not object:IsForbidden() and not handled[object:GetObjectType()] then
+	local objType = object:GetObjectType()
+	if not object:IsForbidden() and not handled[objType] then
 		addapi(object)
-		handled[object:GetObjectType()] = true
+		handled[objType] = true
 	end
 
 	object = EnumerateFrames(object)
