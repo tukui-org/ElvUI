@@ -1580,15 +1580,10 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
 		holder:StyleButton()
 
-		if E.Retail and E.WoW10 then
-			holder:ClearNormalTexture()
-			holder:ClearPushedTexture()
-		else
-			holder:SetNormalTexture('')
-			holder:SetPushedTexture('')
-			if holder.SetCheckedTexture then
-				holder:SetCheckedTexture('')
-			end
+		holder:SetNormalTexture()
+		holder:SetPushedTexture()
+		if holder.SetCheckedTexture then
+			holder:SetCheckedTexture()
 		end
 
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
@@ -1970,13 +1965,9 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
 	slot:SetID(slotID)
 
-	if E.Retail and E.WoW10 then
-		slot:ClearNormalTexture()
-	else
-		slot:SetNormalTexture('')
-		if slot.SetCheckedTexture then
-			slot:SetCheckedTexture('')
-		end
+	slot:SetNormalTexture()
+	if slot.SetCheckedTexture then
+		slot:SetCheckedTexture()
 	end
 
 	slot.bagFrame = f

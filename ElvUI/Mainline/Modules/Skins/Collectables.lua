@@ -637,7 +637,7 @@ local function SkinTransmogFrames()
 		slotButton.Icon:SetInside(slotButton.backdrop)
 
 		local undo = slotButton.UndoButton
-		if undo then undo:ClearHighlightTexture() end
+		if undo then undo:SetHighlightTexture() end
 
 		local pending = slotButton.PendingFrame
 		if pending then

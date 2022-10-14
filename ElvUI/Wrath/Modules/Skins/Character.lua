@@ -467,7 +467,7 @@ function S:CharacterFrame()
 		background:SetTexture(nil)
 
 		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture(nil)
+		label:SetHighlightTexture()
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)

@@ -333,7 +333,7 @@ function S:Blizzard_GarrisonUI()
 		end
 
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
-			tab:ClearHighlightTexture()
+			tab:SetHighlightTexture()
 			tab.Text:ClearAllPoints()
 			tab.Text:Point('CENTER')
 
@@ -360,10 +360,10 @@ function S:Blizzard_GarrisonUI()
 		hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
 			local unselectedTab = Report.unselectedTab
 			unselectedTab:Height(36)
-			unselectedTab:ClearNormalTexture()
+			unselectedTab:SetNormalTexture()
 			unselectedTab.selectedTex:Hide()
 
-			s:ClearNormalTexture()
+			s:SetNormalTexture()
 			s.selectedTex:Show()
 		end)
 	end

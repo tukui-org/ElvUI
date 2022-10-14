@@ -89,7 +89,7 @@ function S:Blizzard_TalentUI()
 				Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
 				Button.specIcon.backdrop.callbackBackdropColor = clearBackdrop
 			end
-			Button:ClearHighlightTexture()
+			Button:SetHighlightTexture()
 
 			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')
 			Button.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
