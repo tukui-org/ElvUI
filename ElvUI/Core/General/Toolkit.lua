@@ -433,11 +433,11 @@ do
 	end
 end
 
-local function FallbackTexture(t) return (not t or (type(t) == 'string' and strmatch(t, '%s*'))) and E.Media.Textures.Invisible or t end
-local function SetNormalTexture(frame, texture) frame:_SetNormalTexture(FallbackTexture(texture)) end
-local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(FallbackTexture(texture)) end
-local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(FallbackTexture(texture)) end
-local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(FallbackTexture(texture)) end
+local function GetTextureOrFallback(t) return (not t or (type(t) == 'string' and strmatch(t, '%s*'))) and E.Media.Textures.Invisible or t end
+local function SetNormalTexture(frame, texture) frame:_SetNormalTexture(GetTextureOrFallback(texture)) end
+local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(GetTextureOrFallback(texture)) end
+local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(GetTextureOrFallback(texture)) end
+local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(GetTextureOrFallback(texture)) end
 local function CheckTextureAPI(meta, api, key)
 	local orig, func = '_'..key, meta[key]
 	if meta[orig] ~= func then
