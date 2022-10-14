@@ -67,6 +67,7 @@ end
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
+
 	if event == 'PLAYER_REGEN_DISABLED' then
 		_G.UIErrorsFrame:UnregisterEvent('UI_ERROR_MESSAGE')
 	else
@@ -74,23 +75,12 @@ function M:ErrorFrameToggle(event)
 	end
 end
 
-local didZoneTextToggle = false
 function M:ZoneTextToggle()
-	if not E.db.general.hideZoneText then didZoneTextToggle = true return end
-	if InCombatLockdown() then return end
+	if not E.db.general.hideZoneText then return end
 
 	_G.ZoneTextFrame:UnregisterAllEvents()
 	_G.SubZoneTextFrame:UnregisterAllEvents()
-	didZoneTextToggle = true
 end
-
-function M:PLAYER_REGEN_ENABLED(event)
-	M:ErrorFrameToggle(event)
-	if not didZoneTextToggle then
-		ZoneTextToggle()
-	end
-end
-
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
 	local inGroup = IsInGroup()
@@ -324,16 +314,18 @@ end
 
 function M:Initialize()
 	M.Initialized = true
+
 	M:LoadRaidMarker()
 	M:LoadLootRoll()
 	M:LoadChatBubbles()
 	M:LoadLoot()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
+
 	M:RegisterEvent('MERCHANT_SHOW')
 	M:RegisterEvent('RESURRECT_REQUEST')
 	M:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
-	M:RegisterEvent('PLAYER_REGEN_ENABLED')
+	M:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_HORDE', 'PVPMessageEnhancement')
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_ALLIANCE', 'PVPMessageEnhancement')
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
