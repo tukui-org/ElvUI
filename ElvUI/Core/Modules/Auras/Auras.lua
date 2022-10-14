@@ -258,7 +258,7 @@ function A:UpdateAura(button, index)
 
 	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
-	button.count:SetText(count > 1 and count)
+	button.count:SetText(not count or count <= 1 and '' or count)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 	button.texture:SetTexture(icon)
 

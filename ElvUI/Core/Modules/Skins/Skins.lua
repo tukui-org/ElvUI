@@ -437,6 +437,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 	if button.SetDisabledTexture then button:SetDisabledTexture() end
 
 	if strip then button:StripTextures() end
+
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
 	if button.Icon then

@@ -270,15 +270,12 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		end
 
 		if(button.stealable) then
-			if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit)) then
-				button.stealable:Show()
-			else
-				button.stealable:Hide()
-			end
+			button.stealable:SetShown(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit))
 		end
 
 		if(button.icon) then button.icon:SetTexture(icon) end
-		if(button.count) then button.count:SetText(count > 1 and count) end
+
+		button.count:SetText(not count or count <= 1 and '' or count)
 
 		local width = element.width or element.size or 16
 		local height = element.height or element.size or 16
