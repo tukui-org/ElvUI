@@ -426,7 +426,7 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
+function S:HandleButton(button, noStrip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
@@ -436,7 +436,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 	if button.SetPushedTexture then button:SetPushedTexture('') end
 	if button.SetDisabledTexture then button:SetDisabledTexture('') end
 
-	if strip then button:StripTextures() end
+	if not noStrip then button:StripTextures() end -- Fliped because of DF WoW10
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
 	if button.Icon then
