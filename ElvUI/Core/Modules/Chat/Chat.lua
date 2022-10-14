@@ -2007,7 +2007,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
-					local characterNameText = _G.BNet_GetClientEmbeddedTexture(clientProgram, 14)..name
+					local characterNameText = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedAtlas(characterName, battleTag, clientProgram, 14)..name
 					local linkDisplayText = format('[%s] (%s)', arg2, characterNameText)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
