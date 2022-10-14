@@ -508,11 +508,5 @@ while object do
 	object = EnumerateFrames(object)
 end
 
-print('test')
-
-addapi(_G.PrimaryProfession1)
-
-print(PrimaryProfession1, PrimaryProfession1.SetNormalTexture, PrimaryProfession1._SetNormalTexture)
-
 addapi(_G.GameFontNormal) --Add API to `CreateFont` objects without actually creating one
 addapi(CreateFrame('ScrollFrame')) --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget
