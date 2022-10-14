@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
+local ipairs, pairs, unpack, next, select = ipairs, pairs, unpack, next, select
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -66,7 +66,7 @@ function S:Blizzard_PVPUI()
 	local HonorFrame = _G.HonorFrame
 	HonorFrame:StripTextures()
 
-	S:HandleScrollBar(_G.HonorFrameSpecificFrameScrollBar)
+	S:HandleTrimScrollBar(_G.HonorFrame.SpecificScrollBar)
 	S:HandleDropDownBox(_G.HonorFrameTypeDropDown, 230)
 	S:HandleButton(_G.HonorFrameQueueButton)
 
@@ -99,25 +99,29 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- Honor Frame Specific Buttons
-	for _, bu in pairs(HonorFrame.SpecificFrame.buttons) do
-		bu.Bg:Hide()
-		bu.Border:Hide()
+	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', function (self)
+		for i = 1, self.ScrollTarget:GetNumChildren() do
+			local bu = select(i, self.ScrollTarget:GetChildren())
+			if not bu.IsSkinned then
+				bu.Bg:Hide()
+				bu.Border:Hide()
 
-		bu:ClearNormalTexture()
-		bu:ClearHighlightTexture()
+				bu:StripTextures()
+				bu:CreateBackdrop()
+				bu.backdrop:Point('TOPLEFT', 2, 0)
+				bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
+				bu:StyleButton(nil, true)
 
-		bu:StripTextures()
-		bu:CreateBackdrop()
-		bu.backdrop:Point('TOPLEFT', 2, 0)
-		bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
-		bu:StyleButton(nil, true)
+				bu.SelectedTexture:SetInside(bu.backdrop)
+				bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		bu.SelectedTexture:SetInside(bu.backdrop)
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+				bu.Icon:SetTexCoord(unpack(E.TexCoords))
+				bu.Icon:Point('TOPLEFT', 5, -3)
 
-		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:Point('TOPLEFT', 5, -3)
-	end
+				bu.IsSkinned = true
+			end
+		end
+	end)
 
 	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
 		if s.bg then s.bg:SetDesaturated(true) end

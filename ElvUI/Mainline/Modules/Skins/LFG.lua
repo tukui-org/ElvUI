@@ -352,7 +352,7 @@ function S:LookingForGroupFrames()
 		local bu = _G.GroupFinderFrame['groupButton'..i]
 		bu.ring:Kill()
 		bu.bg:Kill()
-		S:HandleButton(bu)
+		S:HandleButton(bu, true)
 
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
@@ -374,9 +374,10 @@ function S:LookingForGroupFrames()
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
-	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
-	end
+	-- ToDO: Wow10
+	--for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
+		--S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
+	--end
 
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
@@ -388,10 +389,11 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
-		S:HandleCheckBox(bu, nil, true)
-	end
+	-- ToDO: Wow10
+	--for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
+		--local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
+		--S:HandleCheckBox(bu, nil, true)
+	--end
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
 
@@ -403,13 +405,13 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
 	_G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
-	S:HandleScrollBar(_G.RaidFinderQueueFrameScrollFrameScrollBar)
+	--S:HandleScrollBar(_G.RaidFinderQueueFrameScrollFrameScrollBar)
 
 	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
 
 	-- Looking for raid
-	_G.LFRBrowseFrameListScrollFrame:StripTextures()
+	--_G.LFRBrowseFrameListScrollFrame:StripTextures()
 
 	_G.LFRBrowseFrame:HookScript('OnShow', function()
 		if not _G.LFRBrowseFrameListScrollFrameScrollBar.skinned then
@@ -420,19 +422,16 @@ function S:LookingForGroupFrames()
 
 	_G.LFRBrowseFrameRoleInset:DisableDrawLayer('BORDER')
 	_G.RaidBrowserFrameBg:Hide()
-	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
-	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
-	_G.LFRQueueFrameCommentScrollFrame:SetTemplate()
+
 	_G.LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
 	_G.LFRBrowseFrameColumnHeader2:Width(38)
-	_G.LFDQueueFrameSpecificListScrollFrame:StripTextures()
 
 	_G.RaidBrowserFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
 	S:HandleButton(_G.LFRQueueFrameFindGroupButton)
 	S:HandleButton(_G.LFRQueueFrameAcceptCommentButton)
-	S:HandleScrollBar(_G.LFRQueueFrameCommentScrollFrameScrollBar)
-	S:HandleScrollBar(_G.LFDQueueFrameSpecificListScrollFrameScrollBar)
+	--S:HandleScrollBar(_G.LFRQueueFrameCommentScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
 	local RoleButtons2 = {
 		_G.LFRQueueFrameRoleButtonHealer,
@@ -481,7 +480,7 @@ function S:LookingForGroupFrames()
 			end
 
 			S:HandleDropDownBox(_G.LFRBrowseFrameRaidDropDown)
-			S:HandleButton(_G.LFRBrowseFrameRefreshButton)
+			S:HandleButton(_G.LFRBrowseFrameRefreshButton, true)
 			S:HandleButton(_G.LFRBrowseFrameInviteButton)
 			S:HandleButton(_G.LFRBrowseFrameSendMessageButton)
 
@@ -552,8 +551,8 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
-	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
-	S:HandleScrollBar(_G.LFGListCreationDescriptionScrollBar)
+	--S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
+	--S:HandleScrollBar(_G.LFGListCreationDescriptionScrollBar)
 
 	_G.LFGListApplicationDialog:StripTextures()
 	_G.LFGListApplicationDialog:SetTemplate('Transparent')
@@ -573,17 +572,17 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
-	S:HandleButton(_G.LFGListSearchPanelScrollFrameScrollChild.StartGroupButton)
+	S:HandleButton(_G.LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
-	S:HandleScrollBar(_G.LFGListSearchPanelScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
-	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
+	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton, true) -- ToDO: WoW10
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
@@ -647,10 +646,10 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.Inset:StripTextures()
 	LFGListFrame.ApplicationViewer.Inset:SetTemplate('Transparent')
 
-	S:HandleButton(LFGListFrame.ApplicationViewer.NameColumnHeader, true)
-	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
-	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
-	S:HandleButton(LFGListFrame.ApplicationViewer.RatingColumnHeader, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.NameColumnHeader)
+	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader)
+	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader)
+	S:HandleButton(LFGListFrame.ApplicationViewer.RatingColumnHeader)
 	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.NameColumnHeader:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPLEFT', 0, 1)
 	LFGListFrame.ApplicationViewer.NameColumnHeader.Label:FontTemplate()
@@ -665,14 +664,14 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.RatingColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
-	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
+	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton, true) -- ToDo: WoW10
 	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
 
-	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
-	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
-	S:HandleButton(LFGListFrame.ApplicationViewer.BrowseGroupsButton, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton)
+	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton)
+	S:HandleButton(LFGListFrame.ApplicationViewer.BrowseGroupsButton)
 	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.EditButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:ClearAllPoints()
@@ -680,10 +679,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Size(120, 22)
 
 	local LFGListApplicationViewerScrollFrameScrollBar = _G.LFGListApplicationViewerScrollFrameScrollBar
-	S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
-	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
-	LFGListApplicationViewerScrollFrameScrollBar:Point('TOPLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 0, -16)
-	LFGListApplicationViewerScrollFrameScrollBar:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'BOTTOMRIGHT', 0, 16)
+	--S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
 		frame.RemoveEntryButton:ClearAllPoints()
