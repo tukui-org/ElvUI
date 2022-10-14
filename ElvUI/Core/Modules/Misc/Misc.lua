@@ -76,10 +76,13 @@ function M:ErrorFrameToggle(event)
 end
 
 function M:ZoneTextToggle()
-	if not E.db.general.hideZoneText then return end
-
-	_G.ZoneTextFrame:UnregisterAllEvents()
-	_G.SubZoneTextFrame:UnregisterAllEvents()
+	if E.db.general.hideZoneText then
+		_G.ZoneTextFrame:UnregisterAllEvents()
+	else
+		_G.ZoneTextFrame:RegisterEvent('ZONE_CHANGED')
+		_G.ZoneTextFrame:RegisterEvent('ZONE_CHANGED_INDOORS')
+		_G.ZoneTextFrame:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+	end
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
