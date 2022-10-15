@@ -211,7 +211,7 @@ function S:LookingForGroupFrames()
 	_G.LFDQueueFrameRoleButtonHealer.shortageBorder:Kill()
 	S:HandleCloseButton(_G.LFGDungeonReadyStatusCloseButton)
 
-	local RoleButtons1 = {
+	for _, roleButton in pairs({
 		_G.LFDQueueFrameRoleButtonHealer,
 		_G.LFDQueueFrameRoleButtonDPS,
 		_G.LFDQueueFrameRoleButtonLeader,
@@ -229,9 +229,7 @@ function S:LookingForGroupFrames()
 		_G.RolePollPopupRoleButtonTank,
 		_G.RolePollPopupRoleButtonHealer,
 		_G.RolePollPopupRoleButtonDPS,
-	}
-
-	for _, roleButton in pairs(RoleButtons1) do
+	}) do
 		local checkButton = roleButton.checkButton or roleButton.CheckButton
 
 		S:HandleCheckBox(checkButton, nil, nil, true)
@@ -262,14 +260,11 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	--Fix issue with role buttons overlapping each other (Blizzard bug)
-	local repositionCheckButtons = {
+	for _, checkButton in pairs({ --Fix issue with role buttons overlapping each other (Blizzard bug)
 		_G.LFGListApplicationDialog.TankButton.CheckButton,
 		_G.LFGListApplicationDialog.HealerButton.CheckButton,
 		_G.LFGListApplicationDialog.DamagerButton.CheckButton,
-	}
-
-	for _, checkButton in pairs(repositionCheckButtons) do
+	}) do
 		checkButton:ClearAllPoints()
 		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
@@ -326,11 +321,7 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderQueueFrameRoleButtonDPSBackground:SetTexture(E.Media.Textures.RolesHQ)
 
 	hooksecurefunc('LFG_DisableRoleButton', function(button)
-		if button.checkButton:GetChecked() then
-			button.checkButton:SetAlpha(1)
-		else
-			button.checkButton:SetAlpha(0)
-		end
+		button.checkButton:SetAlpha(button.checkButton:GetChecked() and 1 or 0)
 
 		if button.background then
 			button.background:Show()
@@ -374,10 +365,10 @@ function S:LookingForGroupFrames()
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
-	-- ToDO: Wow10
-	--for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-		--S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
-	--end
+	--[[ ToDO: Wow10
+	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
+		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
+	end]]
 
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
@@ -389,11 +380,11 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	-- ToDO: Wow10
-	--for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-		--local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
-		--S:HandleCheckBox(bu, nil, true)
-	--end
+	--[[ ToDO: Wow10
+	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
+		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
+		S:HandleCheckBox(bu, nil, true)
+	end]]
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
 
@@ -405,7 +396,6 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
 	_G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
-	--S:HandleScrollBar(_G.RaidFinderQueueFrameScrollFrameScrollBar)
 
 	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
@@ -427,7 +417,6 @@ function S:LookingForGroupFrames()
 	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
 	S:HandleButton(_G.LFRQueueFrameFindGroupButton)
 	S:HandleButton(_G.LFRQueueFrameAcceptCommentButton)
-	--S:HandleScrollBar(_G.LFRQueueFrameCommentScrollFrameScrollBar)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
 	local RoleButtons2 = {
@@ -437,8 +426,9 @@ function S:LookingForGroupFrames()
 	}
 
 	_G.RaidBrowserFrame:HookScript('OnShow', function()
-		if not _G.LFRQueueFrameSpecificListScrollFrameScrollBar.skinned then
-			S:HandleScrollBar(_G.LFRQueueFrameSpecificListScrollFrameScrollBar)
+		local scrollBar = _G.LFRQueueFrameSpecificListScrollFrameScrollBar
+		if not scrollBar.skinned then
+			S:HandleScrollBar(scrollBar)
 			_G.LFRBrowseFrame:StripTextures()
 
 			for _, roleButton in pairs(RoleButtons2) do
@@ -481,7 +471,7 @@ function S:LookingForGroupFrames()
 			S:HandleButton(_G.LFRBrowseFrameInviteButton)
 			S:HandleButton(_G.LFRBrowseFrameSendMessageButton)
 
-			_G.LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
+			scrollBar.skinned = true
 		end
 	end)
 
@@ -548,8 +538,6 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
-	--S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
-	--S:HandleScrollBar(_G.LFGListCreationDescriptionScrollBar)
 
 	_G.LFGListApplicationDialog:StripTextures()
 	_G.LFGListApplicationDialog:SetTemplate('Transparent')
@@ -623,6 +611,7 @@ function S:LookingForGroupFrames()
 				button.moved = true
 			end
 		end
+
 		panel.AutoCompleteFrame:Height(numResults * (panel.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
 	end)
 
@@ -674,9 +663,6 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Size(120, 22)
-
-	local LFGListApplicationViewerScrollFrameScrollBar = _G.LFGListApplicationViewerScrollFrameScrollBar
-	--S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
 		frame.RemoveEntryButton:ClearAllPoints()

@@ -17,10 +17,12 @@ local function ReskinPickerOptions(self)
 				child.Highlight:SetColorTexture(1, .82, 0, 0.4)
 
 				local check = child.Check
-				check:SetColorTexture(1, .82, 0, 0.8)
-				check:SetSize(10, 10)
-				check:SetPoint('LEFT', 2, 0)
-				check:CreateBackdrop('Transparent')
+				if check then
+					check:SetColorTexture(1, .82, 0, 0.8)
+					check:SetSize(10, 10)
+					check:SetPoint('LEFT', 2, 0)
+					check:CreateBackdrop('Transparent')
+				end
 
 				child.IsSkinned = true
 			end
@@ -41,7 +43,6 @@ function S:ChatConfig()
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame:StripTextures()
 	ChatConfigFrame:SetTemplate('Transparent')
-
 	ChatConfigFrame.Header:StripTextures()
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
@@ -78,8 +79,8 @@ function S:ChatConfig()
 		frame.IsSkinned = true
 	end)
 
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(self)
-		for tab in self.tabPool:EnumerateActive() do
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(frame)
+		for tab in frame.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
 				tab:StripTextures()
 
@@ -93,13 +94,14 @@ function S:ChatConfig()
 		if tab then
 			tab:StripTextures()
 
-			if tab.Text then
-				tab.Text:SetWidth(tab.Text:GetWidth() + 10)
+			local text = tab.Text
+			if text then
+				text:SetWidth(text:GetWidth() + 10)
 			end
 		end
 	end
 
-	local backdrops = {
+	for _, frame in pairs({ -- backdrops
 		_G.ChatConfigCategoryFrame,
 		_G.ChatConfigBackgroundFrame,
 		_G.ChatConfigCombatSettingsFilters,
@@ -118,8 +120,7 @@ function S:ChatConfig()
 		_G.CombatConfigMessageSourcesDoneBy,
 		_G.CombatConfigColorsUnitColors,
 		_G.CombatConfigMessageSourcesDoneTo,
-	}
-	for _, frame in pairs(backdrops) do
+	}) do
 		frame:StripTextures()
 	end
 
@@ -132,7 +133,7 @@ function S:ChatConfig()
 	_G.ChatConfigCombatSettingsFilters:CreateBackdrop('Transparent')
 	_G.ChatConfigCombatSettingsFilters.backdrop:SetInside()
 
-	local combatBoxes = {
+	for _, box in pairs({ -- combat boxes
 		_G.CombatConfigColorsHighlightingLine,
 		_G.CombatConfigColorsHighlightingAbility,
 		_G.CombatConfigColorsHighlightingDamage,
@@ -154,8 +155,7 @@ function S:ChatConfig()
 		_G.CombatConfigSettingsSolo,
 		_G.CombatConfigSettingsParty,
 		_G.CombatConfigSettingsRaid
-	}
-	for _, box in pairs(combatBoxes) do
+	}) do
 		S:HandleCheckBox(box)
 	end
 
@@ -163,16 +163,14 @@ function S:ChatConfig()
 		if not frame.swatchTable then return end
 
 		local nameString = frame:GetName()..'Swatch'
-		local baseName, colorSwatch
 		for index in ipairs(frame.swatchTable) do
-			baseName = nameString..index
-			local bu = _G[baseName]
-			if not bu.IsSkinned then
+			local bu = _G[nameString..index]
+			if bu and not bu.backdrop then
 				bu:StripTextures()
 				bu:CreateBackdrop('Transparent')
 				bu.backdrop:SetInside()
 
-				bu.IsSkinned = true
+				bu.backdrop = true
 			end
 		end
 	end)
@@ -213,31 +211,26 @@ function S:ChatConfig()
 	S:HandleSliderFrame(_G.TextToSpeechFrameAdjustRateSlider)
 	S:HandleSliderFrame(_G.TextToSpeechFrameAdjustVolumeSlider)
 
-	local checkboxes = {
+	for _, checkbox in pairs({ -- check boxes
 		'PlayActivitySoundWhenNotFocusedCheckButton',
 		'PlaySoundSeparatingChatLinesCheckButton',
 		'AddCharacterNameToSpeechCheckButton',
 		'NarrateMyMessagesCheckButton',
 		'UseAlternateVoiceForSystemMessagesCheckButton',
-	}
-	for _, checkbox in pairs(checkboxes) do
-		local check = _G.TextToSpeechFramePanelContainer[checkbox]
-		S:HandleCheckBox(check)
+	}) do
+		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
 	end
 
 	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', function(frame)
-		local checkBoxTable = frame.checkBoxTable
-		if checkBoxTable then
-			local checkBoxNameString = frame:GetName()..'CheckBox'
-			local checkBoxName, checkBox
-			for index in ipairs(checkBoxTable) do
-				checkBoxName = checkBoxNameString..index
-				checkBox = _G[checkBoxName]
-				if checkBox and not checkBox.IsSkinned then
-					S:HandleCheckBox(checkBox)
+		if not frame.checkBoxTable then return end
 
-					checkBox.IsSkinned = true
-				end
+		local nameString = frame:GetName()..'CheckBox'
+		for index in ipairs(frame.checkBoxTable) do
+			local checkBox = _G[nameString..index]
+			if checkBox and not checkBox.IsSkinned then
+				S:HandleCheckBox(checkBox)
+
+				checkBox.IsSkinned = true
 			end
 		end
 	end)

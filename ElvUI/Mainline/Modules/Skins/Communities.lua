@@ -2,14 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, next, pairs, select, unpack = ipairs, next, pairs, select, unpack
+local next, pairs, select = next, pairs, select
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
-local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
-local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
 local GetClassInfo = GetClassInfo
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local CreateFrame = CreateFrame
@@ -17,9 +15,6 @@ local hooksecurefunc = hooksecurefunc
 local GetGuildRewardInfo = GetGuildRewardInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
-
-local CLUBTYPE_GUILD = Enum.ClubType.Guild
-local CLUBTYPE_BATTLENET = Enum.ClubType.BattleNet
 
 local function UpdateNames(button)
 	if not button.expanded then return end
@@ -113,7 +108,7 @@ local function HandleGuildCards(cards)
 end
 
 local function HandleCommunityCards(frame)
-	if not frame.ListScrollFrame then return end -- ToDO: Currently doing nothing
+	if not frame.ListScrollFrame then return end -- ToDO: Wow10 Currently doing nothing
 
 	for _, button in next, frame.ListScrollFrame.buttons do
 		button.CircleMask:Hide()
@@ -122,6 +117,7 @@ local function HandleCommunityCards(frame)
 		S:HandleIcon(button.CommunityLogo)
 		S:HandleButton(button)
 	end
+
 	S:HandleScrollBar(frame.ListScrollFrame.scrollBar)
 end
 
@@ -146,9 +142,9 @@ function S:Blizzard_Communities()
 	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 
-	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local child = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', function(frame)
+		for i = 1, frame.ScrollTarget:GetNumChildren() do
+			local child = select(i, frame.ScrollTarget:GetChildren())
 			if not child.backdrop then
 				child:CreateBackdrop('Transparent')
 				child.backdrop:Point('TOPLEFT', 5, -5)
@@ -247,7 +243,6 @@ function S:Blizzard_Communities()
 				requestFrame.MessageFrame.MessageScroll:StripTextures(true)
 
 				S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
-				--S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
 				S:HandleButton(requestFrame.Apply)
 				S:HandleButton(requestFrame.Cancel)
 			end
@@ -256,11 +251,11 @@ function S:Blizzard_Communities()
 			if frame.PendingGuildCards then HandleGuildCards(frame.PendingGuildCards) end
 			if frame.CommunityCards then
 				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar)
-				hooksecurefunc(frame.CommunityCards.ScrollBox, "Update", HandleCommunityCards)
+				hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 			end
 			if frame.PendingCommunityCards then
 				S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar)
-				hooksecurefunc(frame.PendingCommunityCards.ScrollBox, "Update", HandleCommunityCards)
+				hooksecurefunc(frame.PendingCommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 			end
 		end
 	end
@@ -453,17 +448,13 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderBottomLeft2:Hide()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
-	local striptextures = {
-		'CommunitiesFrameGuildDetailsFrameInfo',
-		'CommunitiesFrameGuildDetailsFrameNews',
-		'CommunitiesGuildNewsFiltersFrame',
-	}
-
-	for _, frame in pairs(striptextures) do
-		_G[frame]:StripTextures()
+	for _, frame in pairs({
+		_G.CommunitiesFrameGuildDetailsFrameInfo,
+		_G.CommunitiesFrameGuildDetailsFrameNews,
+		_G.CommunitiesGuildNewsFiltersFrame,
+	}) do
+		frame:StripTextures()
 	end
-
-	--S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar) -- ToDO: WoW10
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)

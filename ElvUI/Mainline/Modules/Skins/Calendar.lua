@@ -18,8 +18,8 @@ local function SkinContainer(frame, container)
 end
 
 local function StripClassTextures(button)
-	for y = 1, button:GetNumRegions() do
-		local region = select(y, button:GetRegions())
+	for i = 1, button:GetNumRegions() do
+		local region = select(i, button:GetRegions())
 		if region:GetObjectType() == 'Texture' then
 			local texture = region:GetTexture()
 			if texture == [[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]] then
@@ -70,7 +70,6 @@ function S:Blizzard_Calendar()
 	_G.CalendarMonthBackground:SetAlpha(0)
 	_G.CalendarYearBackground:SetAlpha(0)
 	_G.CalendarFrameModalOverlay:SetAlpha(.25)
-	--_G.CalendarViewHolidayInfoTexture:SetAlpha(0)
 	_G.CalendarTexturePickerFrameButtonBackground:Hide()
 	_G.CalendarTexturePickerAcceptButtonBorder:Hide()
 	_G.CalendarTexturePickerCancelButtonBorder:Hide()
@@ -205,7 +204,6 @@ function S:Blizzard_Calendar()
 	_G.CalendarTexturePickerFrame.Header:StripTextures()
 	_G.CalendarTexturePickerFrame:SetTemplate('Transparent')
 
-	--S:HandleScrollBar(_G.CalendarTexturePickerScrollBar)
 	S:HandleButton(_G.CalendarTexturePickerAcceptButton, true)
 	S:HandleButton(_G.CalendarTexturePickerCancelButton, true)
 	S:HandleButton(_G.CalendarCreateEventInviteButton, true)
@@ -244,7 +242,6 @@ function S:Blizzard_Calendar()
 	_G.CalendarViewEventInviteListSection:StripTextures()
 
 	S:HandleCloseButton(_G.CalendarViewEventCloseButton)
-	--S:HandleScrollBar(_G.CalendarViewEventInviteListScrollFrameScrollBar)
 	S:HandleButton(_G.CalendarViewEventAcceptButton)
 	S:HandleButton(_G.CalendarViewEventTentativeButton)
 	S:HandleButton(_G.CalendarViewEventRemoveButton)
@@ -257,10 +254,6 @@ function S:Blizzard_Calendar()
 
 	S:HandleTrimScrollBar(_G.CalendarEventPickerFrame.ScrollBar)
 	S:HandleButton(_G.CalendarEventPickerCloseButton, true)
-
-	--S:HandleScrollBar(_G.CalendarCreateEventDescriptionScrollFrameScrollBar)
-	--S:HandleScrollBar(_G.CalendarCreateEventInviteListScrollFrameScrollBar)
-	--S:HandleScrollBar(_G.CalendarViewEventDescriptionScrollFrameScrollBar)
 end
 
 S:AddCallbackForAddon('Blizzard_Calendar')

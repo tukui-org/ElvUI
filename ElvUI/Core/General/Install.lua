@@ -160,9 +160,6 @@ function E:SetupCVars(noDisplayMsg)
 		SetCVar('chatClassColorOverride', 0)
 	end
 
-	--_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
-	--_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
-
 	if E.private.nameplates.enable then
 		NP:CVarReset()
 	end

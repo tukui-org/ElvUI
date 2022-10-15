@@ -231,7 +231,6 @@ function S:Blizzard_GarrisonUI()
 	local FollowerList = GarrisonBuildingFrame.FollowerList
 	FollowerList:ClearAllPoints()
 	FollowerList:Point('BOTTOMLEFT', 24, 34)
-	--S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	-- Capacitive display frame
 	local GarrisonCapacitiveDisplayFrame = _G.GarrisonCapacitiveDisplayFrame
@@ -369,10 +368,10 @@ function S:Blizzard_GarrisonUI()
 	-- Landing page: Report
 	Report = GarrisonLandingPage.Report -- reassigned
 	Report.List:StripTextures(true)
-	local reportScroll = Report.List.listScroll
-	--S:HandleScrollBar(reportScroll.scrollBar)
 
-	--[[
+	--[[local reportScroll = Report.List.listScroll
+	S:HandleScrollBar(reportScroll.scrollBar)
+
 	local buttons = reportScroll.buttons
 	for i = 1, #buttons do
 		local button = buttons[i]

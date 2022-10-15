@@ -162,7 +162,7 @@ end
 
 local function SkinAllBags()
 	for bagID = 1, NUM_CONTAINER_FRAMES do
-		--SkinBag(bagID)
+		SkinBag(bagID)
 	end
 end
 
@@ -296,10 +296,11 @@ function S:ContainerFrame()
 		icon.Icon:SetInside()
 	end
 
+	-- WoW10
 	--hooksecurefunc('ContainerFrame_Update', UpdateContainerButton)
 	hooksecurefunc('BankFrameItemButton_Update', UpdateBankItem)
 
-	SkinAllBags()
+	--SkinAllBags()
 end
 
 S:AddCallback('ContainerFrame')
