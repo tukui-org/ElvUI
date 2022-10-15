@@ -61,11 +61,11 @@ local function new(self, loop, func, delay, ...)
 				-- Compensate delay to get a perfect average delay, even if individual times don't match up perfectly
 				-- due to fps differences
 				local time = GetTime()
-				local delay = timer.delay - (time - timer.ends)
+				local ndelay = timer.delay - (time - timer.ends)
 				-- Ensure the delay doesn't go below the threshold
-				if delay < 0.01 then delay = 0.01 end
-				C_TimerAfter(delay, timer.callback)
-				timer.ends = time + delay
+				if ndelay < 0.01 then ndelay = 0.01 end
+				C_TimerAfter(ndelay, timer.callback)
+				timer.ends = time + ndelay
 			else
 				activeTimers[timer.handle or timer] = nil
 			end

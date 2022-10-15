@@ -35,10 +35,6 @@ local error, assert = error, assert
 -- WoW APIs
 local Ambiguate = Ambiguate
 
--- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
--- List them here for Mikk's FindGlobals script
--- GLOBALS: LibStub, DEFAULT_CHAT_FRAME, geterrorhandler, RegisterAddonMessagePrefix
-
 AceComm.embeds = AceComm.embeds or {}
 
 -- for my sanity and yours, let's give the message type bytes some names

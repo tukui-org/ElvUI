@@ -67,10 +67,21 @@ end
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
+
 	if event == 'PLAYER_REGEN_DISABLED' then
 		_G.UIErrorsFrame:UnregisterEvent('UI_ERROR_MESSAGE')
 	else
 		_G.UIErrorsFrame:RegisterEvent('UI_ERROR_MESSAGE')
+	end
+end
+
+function M:ZoneTextToggle()
+	if E.db.general.hideZoneText then
+		_G.ZoneTextFrame:UnregisterAllEvents()
+	else
+		_G.ZoneTextFrame:RegisterEvent('ZONE_CHANGED')
+		_G.ZoneTextFrame:RegisterEvent('ZONE_CHANGED_INDOORS')
+		_G.ZoneTextFrame:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 	end
 end
 
@@ -306,11 +317,14 @@ end
 
 function M:Initialize()
 	M.Initialized = true
+
 	M:LoadRaidMarker()
 	M:LoadLootRoll()
 	M:LoadChatBubbles()
 	M:LoadLoot()
 	M:ToggleItemLevelInfo(true)
+	M:ZoneTextToggle()
+
 	M:RegisterEvent('MERCHANT_SHOW')
 	M:RegisterEvent('RESURRECT_REQUEST')
 	M:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')

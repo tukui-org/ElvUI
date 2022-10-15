@@ -139,9 +139,8 @@ function AB:PositionAndSizeBarPet()
 			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
 		end
 
-		button.db = db
-
 		bar.buttons[i] = button
+		button.db = db
 
 		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button

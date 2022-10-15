@@ -76,7 +76,7 @@ function S:Blizzard_TrainerUI()
 	_G.ClassTrainerCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)
 	_G.ClassTrainerCollapseAllButton:GetNormalTexture():Size(15)
 
-	_G.ClassTrainerCollapseAllButton:SetHighlightTexture('')
+	_G.ClassTrainerCollapseAllButton:SetHighlightTexture()
 	_G.ClassTrainerCollapseAllButton.SetHighlightTexture = E.noop
 
 	_G.ClassTrainerCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)

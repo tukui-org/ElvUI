@@ -1,5 +1,5 @@
--- English localization file for enUS and enGB.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
+-- Turkish localization file for trTR.
+local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "trTR")
 
 L["Display Mana"] = true
 L["Will display mana when main power is:"] = true

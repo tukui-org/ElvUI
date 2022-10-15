@@ -195,7 +195,6 @@ function hook(self, obj, method, handler, script, secure, raw, forceSecure, usag
 			registry[self][method] = nil
 		end
 		handlers[uid], actives[uid], scripts[uid] = nil, nil, nil
-		uid = nil
 	end
 
 	local orig
