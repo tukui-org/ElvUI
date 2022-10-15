@@ -85,9 +85,7 @@ if isRetail then
 	end
 end
 
-local LCS = LibStub('LibClassicSpecs-ElvUI', true)
-
-local GetSpecialization = (LCS and LCS.GetSpecialization) or GetSpecialization or GetActiveTalentGroup
+local GetSpecialization = GetSpecialization or GetActiveTalentGroup
 local CanPlayerUseTalentSpecUI = isRetail and C_SpecializationInfo.CanPlayerUseTalentSpecUI or function()
 	return true, HELPFRAME_CHARACTER_BULLET5
 end
