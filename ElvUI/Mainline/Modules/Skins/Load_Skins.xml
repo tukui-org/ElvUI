@@ -100,4 +100,5 @@
 	<Script file='MajorFaction.lua'/>
 	<Script file='Professions.lua'/>
 	<Script file='SettingsPanel.lua'/>
+	<Script file='ChatConfig.lua'/>
 </Ui>
