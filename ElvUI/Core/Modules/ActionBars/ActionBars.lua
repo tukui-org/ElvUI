@@ -1309,6 +1309,10 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:RemoveButton(button) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
 		MasqueGroup:AddButton(button)
 	end
+
+	if E.WoW10 then
+		_G.SpellFlyout.Background:Hide() -- ToDO: WoW10
+	end
 end
 
 function AB:StyleFlyout(button)

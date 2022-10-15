@@ -113,7 +113,7 @@ local function HandleGuildCards(cards)
 end
 
 local function HandleCommunityCards(frame)
-	if not frame.ListScrollFrame then return end -- WoW10
+	if not frame.ListScrollFrame then return end -- ToDO: Currently doing nothing
 
 	for _, button in next, frame.ListScrollFrame.buttons do
 		button.CircleMask:Hide()
@@ -141,62 +141,30 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
+	CommunitiesFrameCommunitiesList.ScrollBar:GetChildren():Hide()
+	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
 	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
+	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 
-	--[[hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetClubInfo', function(s, clubInfo, isInvitation, isTicket)
-		if clubInfo then
-			s.Background:Hide()
-			s.CircleMask:Hide()
+	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', function(self)
+		for i = 1, self.ScrollTarget:GetNumChildren() do
+			local child = select(i, self.ScrollTarget:GetChildren())
+			if not child.backdrop then
+				child:CreateBackdrop('Transparent')
+				child.backdrop:Point('TOPLEFT', 5, -5)
+				child.backdrop:Point('BOTTOMRIGHT', -10, 5)
 
-			s.Icon:ClearAllPoints()
-			s.Icon:Point('TOPLEFT', 8, -17)
-			S:HandleIcon(s.Icon)
-			s.IconRing:Hide()
+				child:SetHighlightTexture('') -- ToDO: WoW10
+				child.IconRing:SetAlpha(0)
+				child.Background:Hide()
+				child.Selection:Hide()
 
-			s.GuildTabardBackground:Point('TOPLEFT', 6, -17)
-			s.GuildTabardEmblem:Point('TOPLEFT', 13, -17)
-			s.GuildTabardBorder:Point('TOPLEFT', 6, -17)
-
-			if not s.IconBorder then
-				s.IconBorder = s:CreateTexture(nil, 'BORDER')
-				s.IconBorder:SetOutside(s.Icon)
-				s.IconBorder:Hide()
+				S:HandleIcon(child.Icon)
 			end
 
-			if not s.backdrop then
-				SideClubButton_CreateBackdrop(s)
-			end
-
-			local highlight = s:GetHighlightTexture()
-			highlight:SetColorTexture(1, 1, 1, 0.3)
-			highlight:SetInside(s.backdrop)
-
-			local isGuild = clubInfo.clubType == CLUBTYPE_GUILD
-			if isGuild then
-				s.Background:SetAtlas(nil)
-				s.Selection:SetAtlas(nil)
-				s.Selection:SetInside(s.backdrop)
-				s.Selection:SetColorTexture(0, 1, 0, 0.2)
-			else
-				s.Background:SetAtlas(nil)
-				s.Selection:SetAtlas(nil)
-				s.Selection:SetInside(s.backdrop)
-				s.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
-			end
-
-			if not isInvitation and not isGuild and not isTicket then
-				if clubInfo.clubType == CLUBTYPE_BATTLENET then
-					s.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
-				else
-					s.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)
-				end
-
-				s.IconBorder:Show()
-			else
-				s.IconBorder:Hide()
-			end
+			child.CircleMask:Hide()
 		end
-	end)]] -- WoW10 this dont exist now
+	end)
 
 	-- Add Community Button
 	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(s) HandleCommunitiesButtons(s, 1) end)
@@ -215,7 +183,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MaximizeMinimizeFrame:Point('RIGHT', CommunitiesFrame.CloseButton, 'LEFT', 12, 0)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
-	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
+	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton) -- ToDo: WoW10
 
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
@@ -233,6 +201,7 @@ function S:Blizzard_Communities()
 
 	CommunitiesFrame.Chat:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate('Transparent')
+	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
@@ -278,15 +247,21 @@ function S:Blizzard_Communities()
 				requestFrame.MessageFrame.MessageScroll:StripTextures(true)
 
 				S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
-				S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
+				--S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
 				S:HandleButton(requestFrame.Apply)
 				S:HandleButton(requestFrame.Cancel)
 			end
 
 			if frame.GuildCards then HandleGuildCards(frame.GuildCards) end
 			if frame.PendingGuildCards then HandleGuildCards(frame.PendingGuildCards) end
-			if frame.CommunityCards then HandleCommunityCards(frame.CommunityCards) end
-			if frame.PendingCommunityCards then HandleCommunityCards(frame.PendingCommunityCards) end
+			if frame.CommunityCards then
+				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar)
+				hooksecurefunc(frame.CommunityCards.ScrollBox, "Update", HandleCommunityCards)
+			end
+			if frame.PendingCommunityCards then
+				S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar)
+				hooksecurefunc(frame.PendingCommunityCards.ScrollBox, "Update", HandleCommunityCards)
+			end
 		end
 	end
 
@@ -355,7 +330,7 @@ function S:Blizzard_Communities()
 	ColumnDisplay.InsetBorderTopLeft:Hide()
 	ColumnDisplay.InsetBorderTop:Hide()
 
-	S:HandleInsetFrame(CommunitiesFrame.MemberList.InsetFrame)
+	S:HandleInsetFrame(MemberList.InsetFrame)
 	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
@@ -363,8 +338,10 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:Size(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
+	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
+	S:HandleScrollBar(MemberList.ScrollBar)
 
-	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
+	--[[hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
 		for i = 1, s.ColumnDisplay:GetNumChildren() do
 			local child = select(i, s.ColumnDisplay:GetChildren())
 			child:StripTextures()
@@ -391,7 +368,7 @@ function S:Blizzard_Communities()
 				button.bg:SetShown(button.Class:IsShown())
 			end
 		end
-	end)
+	end)]]
 
 	-- [[ PERKS TAB ]]
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
@@ -486,7 +463,7 @@ function S:Blizzard_Communities()
 		_G[frame]:StripTextures()
 	end
 
-	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar)
+	--S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar) -- ToDO: WoW10
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
@@ -601,7 +578,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
+	--S:HandleTrimScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar) -- Adjust me
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
