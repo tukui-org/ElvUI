@@ -18,7 +18,7 @@ local function SkinContainer(frame, container)
 end
 
 local function StripClassTextures(button)
-	for _, region in pairs({ button:GetRegions() }) do
+	for _, region in next, { button:GetRegions() } do
 		if region:IsObjectType('Texture') then
 			local texture = region:GetTexture()
 			if texture == [[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]] then
