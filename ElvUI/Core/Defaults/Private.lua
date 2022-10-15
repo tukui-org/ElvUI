@@ -175,6 +175,7 @@ V.skins = {
 		expansionLanding = true,
 		majorFactions = true,
 		genericTrait = true,
+		editor = true,
 	}
 }
 

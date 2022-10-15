@@ -95,6 +95,7 @@
 	<Script file='WorldMap.lua'/>
 
 	<Script file='ClassTalents.lua'/>
+	<Script file='EditorManager.lua'/>
 	<Script file='ExpansionLandingPage.lua'/>
 	<Script file='GenericTrait.lua'/>
 	<Script file='MajorFaction.lua'/>
