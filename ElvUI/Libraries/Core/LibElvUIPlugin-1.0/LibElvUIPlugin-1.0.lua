@@ -31,9 +31,10 @@ LibElvUIPlugin API:
 ----------------------------]]--
 
 local tonumber, strmatch, strsub, tinsert, strtrim = tonumber, strmatch, strsub, tinsert, strtrim
-local unpack, assert, pairs, ipairs, strlen, pcall = unpack, assert, pairs, ipairs, strlen, pcall
+local unpack, assert, pairs, ipairs, strlen, pcall, xpcall = unpack, assert, pairs, ipairs, strlen, pcall, xpcall
 local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
 
+local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
 local GetAddOnMetadata = GetAddOnMetadata
 local GetNumGroupMembers = GetNumGroupMembers
