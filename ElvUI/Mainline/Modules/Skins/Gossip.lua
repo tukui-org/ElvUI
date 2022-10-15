@@ -42,6 +42,10 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame)
 
+	if E.private.skins.parchmentRemoverEnable then
+		_G.QuestFont:SetTextColor(1, 1, 1)
+	end
+
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 
