@@ -3,12 +3,12 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:LookingForGroupFrames()
+function S:EditorManagerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.editor) then return end
 
 	local EditModeManagerFrame = _G.EditModeManagerFrame
 	EditModeManagerFrame:StripTextures()
-	EditModeManagerFrame:SetTemplate('Transparent')
+	EditModeManagerFrame:CreateBackdrop('Transparent') -- Adjust the backdrop FrameStrata
 	S:HandleCloseButton(EditModeManagerFrame.CloseButton)
 	S:HandleButton(EditModeManagerFrame.RevertAllChangesButton)
 	S:HandleButton(EditModeManagerFrame.SaveChangesButton)
