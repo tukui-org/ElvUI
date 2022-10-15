@@ -160,13 +160,17 @@ function lib:DelayedSendVersionCheck(delay)
 	end
 end
 
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 function lib:OptionsUILoaded(_, addon)
 	if addon == 'ElvUI_OptionsUI' then
 		lib:GetPluginOptions()
 
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
-				pcall(plugin.callback)
+				xpcall(plugin.callback, errorhandler)
 			end
 		end
 
