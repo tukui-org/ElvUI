@@ -352,7 +352,7 @@ function S:LookingForGroupFrames()
 		local bu = _G.GroupFinderFrame['groupButton'..i]
 		bu.ring:Kill()
 		bu.bg:Kill()
-		S:HandleButton(bu, true)
+		S:HandleButton(bu)
 
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
@@ -409,9 +409,6 @@ function S:LookingForGroupFrames()
 
 	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
-
-	-- Looking for raid
-	--_G.LFRBrowseFrameListScrollFrame:StripTextures()
 
 	_G.LFRBrowseFrame:HookScript('OnShow', function()
 		if not _G.LFRBrowseFrameListScrollFrameScrollBar.skinned then
@@ -480,7 +477,7 @@ function S:LookingForGroupFrames()
 			end
 
 			S:HandleDropDownBox(_G.LFRBrowseFrameRaidDropDown)
-			S:HandleButton(_G.LFRBrowseFrameRefreshButton, true)
+			S:HandleButton(_G.LFRBrowseFrameRefreshButton)
 			S:HandleButton(_G.LFRBrowseFrameInviteButton)
 			S:HandleButton(_G.LFRBrowseFrameSendMessageButton)
 
@@ -582,7 +579,7 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
-	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton, true) -- ToDO: WoW10
+	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
@@ -664,7 +661,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.RatingColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
-	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton, true) -- ToDo: WoW10
+	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
 	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
