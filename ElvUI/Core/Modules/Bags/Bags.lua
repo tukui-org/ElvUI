@@ -106,7 +106,7 @@ local GetContainerNumSlots
 local SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight
 
-local C_Container = E.wowtoc > 100002 and _G.C_Container -- WoW 10.0.2
+local C_Container = E.wowtoc >= 100002 and _G.C_Container -- WoW 10.0.2
 if C_Container then
 	GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 	ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
