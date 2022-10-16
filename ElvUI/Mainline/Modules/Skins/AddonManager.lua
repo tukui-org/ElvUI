@@ -30,9 +30,6 @@ function S:AddonList()
 	hooksecurefunc('AddonList_Update', function()
 		for _, entry in next, { AddonList.ScrollBox.ScrollTarget:GetChildren() } do
 			local id = entry:GetID()
-			local text = entry.Title
-			local checkbox = entry.Enabled
-			local checktex = checkbox:GetCheckedTexture()
 
 			local checkall -- Get the character from the current list (nil is all characters)
 			local character = UIDropDownMenu_GetSelectedValue(AddonCharacterDropDown)
@@ -42,7 +39,7 @@ function S:AddonList()
 				checkall = GetAddOnEnableState(nil, id)
 			end
 
-			text:SetFontObject('ElvUIFontNormal')
+			entry.Title:SetFontObject('ElvUIFontNormal')
 			entry.Status:SetFontObject('ElvUIFontSmall')
 			entry.Reload:SetFontObject('ElvUIFontSmall')
 			entry.Reload:SetTextColor(1.0, 0.3, 0.3)
@@ -61,19 +58,20 @@ function S:AddonList()
 
 			local name, title, _, loadable, reason = GetAddOnInfo(id)
 			if disabled or reason == 'DEP_DISABLED' then
-				text:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
+				entry.Title:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
 			end
 
 			if enabledForSome then
-				text:SetTextColor(0.5, 0.5, 0.5)
+				entry.Title:SetTextColor(0.5, 0.5, 0.5)
 			elseif enabled and (loadable or reason == 'DEP_DEMAND_LOADED' or reason == 'DEMAND_LOADED') then
-				text:SetTextColor(0.9, 0.9, 0.9)
+				entry.Title:SetTextColor(0.9, 0.9, 0.9)
 			elseif enabled and reason ~= 'DEP_DISABLED' then
-				text:SetTextColor(1.0, 0.2, 0.2)
+				entry.Title:SetTextColor(1.0, 0.2, 0.2)
 			else
-				text:SetTextColor(0.3, 0.3, 0.3)
+				entry.Title:SetTextColor(0.3, 0.3, 0.3)
 			end
 
+			local checktex = entry.Enabled:GetCheckedTexture()
 			if not enabled and checkall == 1 then
 				checktex:SetVertexColor(0.3, 0.3, 0.3)
 				checktex:SetDesaturated(true)
