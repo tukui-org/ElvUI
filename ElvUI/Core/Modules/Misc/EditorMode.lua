@@ -4,6 +4,14 @@ local EM = E:GetModule('EditorMode')
 local tremove = tremove
 local strmatch = strmatch
 
+local CheckCastFrame = function() return E.private.unitframe.disabledBlizzardFrames.castbar end
+local CheckRaidFrame = function() return E.private.unitframe.disabledBlizzardFrames.raid end
+local CheckBossFrame = function() return E.private.unitframe.disabledBlizzardFrames.boss end
+local CheckArenaFrame = function() return E.private.unitframe.disabledBlizzardFrames.arena end
+local CheckTargetFrame = function() return E.private.unitframe.disabledBlizzardFrames.target end
+local CheckPartyFrame = function() return E.private.unitframe.disabledBlizzardFrames.party end
+local CheckFocusFrame = function() return E.private.unitframe.disabledBlizzardFrames.focus end
+local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
 local IgnoreFrames = {
@@ -12,14 +20,14 @@ local IgnoreFrames = {
 	GameTooltipDefaultContainer = function() return E.private.tooltip.enable end,
 
 	-- UnitFrames
-	PlayerCastingBarFrame = function() return E.private.unitframe.disabledBlizzardFrames.castbar end,
+	PlayerCastingBarFrame = CheckCastFrame,
 	PlayerFrame = function() return E.private.unitframe.disabledBlizzardFrames.player end,
-	PartyFrame = function() return E.private.unitframe.disabledBlizzardFrames.party end,
-	TargetFrame = function() return E.private.unitframe.disabledBlizzardFrames.target end,
-	FocusFrame = function() return E.private.unitframe.disabledBlizzardFrames.focus end,
-	BossTargetFrameContainer = function() return E.private.unitframe.disabledBlizzardFrames.boss end,
-	ArenaEnemyFramesContainer = function() return E.private.unitframe.disabledBlizzardFrames.arena end,
-	CompactRaidFrameContainer = function() return E.private.unitframe.disabledBlizzardFrames.raid end,
+	PartyFrame = CheckPartyFrame,
+	TargetFrame = CheckTargetFrame,
+	FocusFrame = CheckFocusFrame,
+	ArenaEnemyFramesContainer = CheckArenaFrame,
+	CompactRaidFrameContainer = CheckRaidFrame,
+	BossTargetFrameContainer = CheckBossFrame,
 
 	-- Auras
 	BuffFrame = function() return E.private.auras.disableBlizzard and E.private.auras.enable and E.private.auras.buffsHeader end,
@@ -28,7 +36,7 @@ local IgnoreFrames = {
 	-- ActionBars
 	StanceBar = CheckActionBar,
 	EncounterBar = CheckActionBar,
-	PetActionBar = CheckActionBar, -- ??
+	PetActionBar = CheckActionBar,
 	PossessActionBar = CheckActionBar,
 	MainMenuBarVehicleLeaveButton = CheckActionBar,
 	MultiBarBottomLeft = CheckActionBar,
@@ -47,10 +55,22 @@ local PatternFrames = {
 function EM:Initialize()
 	local editMode = _G.EditModeManagerFrame
 
-	if E.private.auras.disableBlizzard then
-		editMode.AccountSettings.RefreshAuraFrame = E.noop
+	-- account settings will be tainted
+	local mixin = editMode.AccountSettings
+	if CheckBossFrame then mixin.RefreshBossFrames = E.noop end
+	if CheckRaidFrame then mixin.RefreshRaidFrames = E.noop end
+	if CheckArenaFrame then mixin.RefreshArenaFrames = E.noop end
+	if CheckCastFrame then mixin.RefreshCastBar = E.noop end
+	if CheckAuraFrame then mixin.RefreshAuraFrame = E.noop end
+	if CheckPartyFrame then mixin.RefreshPartyFrames = E.noop end
+	if CheckTargetFrame or CheckFocusFrame then mixin.RefreshTargetAndFocus = E.noop end
+	if CheckActionBar then
+		mixin.RefreshVehicleLeaveButton = E.noop
+		mixin.RefreshActionBarShown = E.noop
+		mixin.RefreshEncounterBar = E.noop
 	end
 
+	-- remove the initial registers
 	local frames = editMode.registeredSystemFrames
 	for index, frame in next, frames do
 		local frameName = frame:GetName()
