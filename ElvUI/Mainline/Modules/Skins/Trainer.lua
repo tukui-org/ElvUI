@@ -42,19 +42,19 @@ function S:Blizzard_TrainerUI()
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
-		local button = _G['ClassTrainerScrollFrameButton'..i]
-		button:StripTextures()
-		button:StyleButton()
-		button.icon:SetTexCoord(unpack(E.TexCoords))
-		button:CreateBackdrop()
-		button.backdrop:SetOutside(button.icon)
-		button.icon:SetParent(button.backdrop)
-		button.selectedTex:SetColorTexture(1, 1, 1, 0.3)
-		button.selectedTex:SetInside()
-	end
+	--for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
+		--local button = _G['ClassTrainerScrollFrameButton'..i]
+		--button:StripTextures()
+		--button:StyleButton()
+		--button.icon:SetTexCoord(unpack(E.TexCoords))
+		--button:CreateBackdrop()
+		--button.backdrop:SetOutside(button.icon)
+		--button.icon:SetParent(button.backdrop)
+		--button.selectedTex:SetColorTexture(1, 1, 1, 0.3)
+		--button.selectedTex:SetInside()
+	--end
 
-	S:HandleScrollBar(_G.ClassTrainerScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
