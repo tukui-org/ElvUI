@@ -52,11 +52,7 @@ local function GetStreamString(stream, tooltip)
 	local color = GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333'
 	local level = GetCVar(stream.Volume) * 100
 
-	if tooltip then
-		return format('|cFF%s%.f%%|r', color, level)
-	else
-		return format('%s: |cFF%s%.f%%|r', stream.Name, color, level)
-	end
+	return (tooltip and format('|cFF%s%.f%%|r', color, level)) or format('%s: |cFF%s%.f%%|r', stream.Name, color, level)
 end
 
 local function SelectStream(_, ...)
@@ -84,8 +80,7 @@ local function SelectSoundOutput(_, ...)
 	Sound_GameSystem_RestartSoundSystem()
 end
 
-local numDevices = Sound_GameSystem_GetNumOutputDrivers()
-for i = 0, numDevices - 1 do
+for i = 0, Sound_GameSystem_GetNumOutputDrivers() - 1 do
 	tinsert(deviceMenu, { text = Sound_GameSystem_GetOutputDriverNameByIndex(i), checked = function() return i == tonumber(GetCVar('Sound_OutputDriverIndex')) end, func = SelectSoundOutput, arg1 = i })
 end
 
