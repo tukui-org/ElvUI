@@ -87,7 +87,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox:SetTemplate()
 
 	if not E:IsAddOnEnabled('ArkInventory') then
-		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, nil, nil, 'GuildBankPopup')
 	end
 end
 

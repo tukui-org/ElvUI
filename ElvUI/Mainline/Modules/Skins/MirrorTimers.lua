@@ -9,14 +9,13 @@ function S:MirrorTimers()
 	--Mirror Timers (Underwater Breath etc.) -- To do, make it pretty WoW10
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		local bar = _G['MirrorTimer'..i]
-		local text = bar.Text
 		local statusbar = bar.StatusBar or _G[bar:GetName()..'StatusBar']
-		--bar:StripTextures()
-		bar.Border:Hide()
+
 		bar:SetTemplate()
 		bar:SetSize(200, 15)
 
-		text:FontTemplate()
+		bar.Text:FontTemplate()
+		bar.Border:Hide()
 
 		statusbar:SetStatusBarTexture(E.media.normTex)
 		statusbar:SetAllPoints()

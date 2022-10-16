@@ -3,8 +3,9 @@ local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local tonumber, format = tonumber, format
-local select, pairs, floor = select, pairs, floor
+local tonumber = tonumber
+local next, format = next, format
+
 local CreateFrame = CreateFrame
 local HideUIPanel = HideUIPanel
 local GameTooltip_Hide = GameTooltip_Hide
@@ -177,10 +178,9 @@ function AB:BindUpdate(button, spellmacro)
 		bind.name = GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType)
 		button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'MACRO' then
-		button.id = button:GetID()
+		button.id = button.selectionIndex or button:GetID()
 
-		-- no clue what this is, leaving it alone tho lol
-		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)*0.1==.8 then
+		if _G.MacroFrame.selectedTab == 2 then -- WoW10 check on retail
 			button.id = button.id + MAX_ACCOUNT_MACROS
 		end
 
@@ -254,12 +254,18 @@ do
 		AB:BindUpdate(button, 'MACRO')
 	end
 
+	local function MacroFrame_FirstUpdate(frame)
+		for _, button in next, { _G.MacroFrame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
+			button:HookScript('OnEnter', OnEnter)
+		end
+
+		AB:Unhook(frame, 'Update')
+	end
+
 	local macro, binding = false, false
 	function AB:ADDON_LOADED(_, addon)
 		if addon == 'Blizzard_MacroUI' then
-			for i = 1, MAX_ACCOUNT_MACROS do
-				_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)
-			end
+			AB:SecureHook(_G.MacroFrame, 'Update', MacroFrame_FirstUpdate)
 
 			macro = true
 		elseif addon == 'Blizzard_BindingUI' then
@@ -310,7 +316,7 @@ function AB:LoadKeyBinder()
 	end
 
 	local function buttonOnEnter(b) AB:BindUpdate(b) end
-	for b in pairs(self.handledbuttons) do
+	for b in next, self.handledbuttons do
 		if b:IsProtected() and b:IsObjectType('CheckButton') and not b.isFlyout then
 			b:HookScript('OnEnter', buttonOnEnter)
 		end

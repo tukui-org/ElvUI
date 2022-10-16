@@ -1438,14 +1438,29 @@ do
 		end
 	end
 
+	local function handleButton(button, i, buttonNameTemplate)
+		local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetInside(button)
+			texture = icon:GetTexture() -- keep this before strip textures
+		end
+
+		button:StripTextures()
+		button:SetTemplate()
+		button:StyleButton(nil, true)
+
+		if texture then
+			icon:SetTexture(texture)
+		end
+	end
+
 	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride, dontOffset)
 		assert(frame, 'HandleIconSelectionFrame: frame argument missing')
-		assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
-		assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
 
 		if frame.isSkinned then
 			return
-		elseif frameNameOverride ~= 'MacroPopup' then -- skip macros because it skins on show
+		elseif frameNameOverride and frameNameOverride ~= 'MacroPopup' then -- skip macros because it skins on show
 			frame:Show() -- spawn the info so we can skin the buttons
 			if frame.Update then frame:Update() end -- guild bank popup has update function
 			frame:Hide() -- can hide it right away
@@ -1456,9 +1471,9 @@ do
 		end
 
 		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
-		local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
+		local frameName = frameNameOverride or frame:GetName() -- we need override in case Blizzard fucks up the naming (guild bank)
 		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
-		local editBox = frame.EditBox or _G[frameName..'EditBox']
+		local editBox = (borderBox and borderBox.IconSelectorEditBox) or frame.EditBox or _G[frameName..'EditBox']
 		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or _G[frameName..'Cancel']
 		local okay = frame.OkayButton or (borderBox and borderBox.OkayButton) or _G[frameName..'Okay']
 
@@ -1468,6 +1483,11 @@ do
 
 		if borderBox then
 			borderBox:StripTextures()
+
+			if borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton then
+				borderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer('BACKGROUND')
+				S:HandleIcon(borderBox.SelectedIconArea.SelectedIconButton.Icon, true)
+			end
 		end
 
 		cancel:ClearAllPoints()
@@ -1478,30 +1498,27 @@ do
 		okay:SetPoint('RIGHT', cancel, 'LEFT', -10, 0)
 		S:HandleButton(okay)
 
-		editBox:DisableDrawLayer('BACKGROUND') -- Removes textures around it
-		S:HandleEditBox(editBox)
+		if editBox then
+			editBox:DisableDrawLayer('BACKGROUND')
+			S:HandleEditBox(editBox)
+		end
 
-		scrollFrame:StripTextures()
-		scrollFrame:Height(scrollFrame:GetHeight() + 10)
-		S:HandleScrollBar(scrollFrame.ScrollBar)
+		if numIcons then
+			scrollFrame:StripTextures()
+			scrollFrame:Height(scrollFrame:GetHeight() + 10)
+			S:HandleScrollBar(scrollFrame.ScrollBar)
 
-		for i = 1, numIcons do
-			local button = _G[buttonNameTemplate..i]
-			if button then
-				button:StripTextures()
-				button:SetTemplate()
-				button:StyleButton(nil, true)
-
-				local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
-				if icon then
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetInside(button)
-					texture = icon:GetTexture()
+			for i = 1, numIcons do
+				local button = _G[buttonNameTemplate..i]
+				if button then
+					handleButton(button, i, buttonNameTemplate)
 				end
+			end
+		else -- WoW10
+			S:HandleTrimScrollBar(frame.IconSelector.ScrollBar)
 
-				if texture then
-					icon:SetTexture(texture)
-				end
+			for _, button in next, { frame.IconSelector.ScrollBox.ScrollTarget:GetChildren() } do
+				handleButton(button)
 			end
 		end
 

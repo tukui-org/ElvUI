@@ -5,10 +5,6 @@ local _G = _G
 local unpack = unpack
 local format = format
 
-local NUM_ICONS_PER_ROW = 10
-local NUM_ICON_ROWS = 9
-local NUM_MACRO_ICONS_SHOWN = NUM_ICONS_PER_ROW * NUM_ICON_ROWS
-
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
@@ -16,8 +12,8 @@ function S:Blizzard_MacroUI()
 	S:HandlePortraitFrame(MacroFrame)
 	MacroFrame:Width(360)
 
-	--_G.MacroButtonScrollFrame:StripTextures()
-	--_G.MacroButtonScrollFrame:SetTemplate('Transparent')
+	_G.MacroFrame.MacroSelector.ScrollBox:StripTextures()
+	_G.MacroFrame.MacroSelector.ScrollBox:SetTemplate('Transparent')
 	_G.MacroFrameTextBackground.NineSlice:SetTemplate('Transparent')
 
 	S:HandleTrimScrollBar(MacroFrame.MacroSelector.ScrollBar)
@@ -78,10 +74,9 @@ function S:Blizzard_MacroUI()
 		end
 	end
 
-	-- ToDo: WoW10
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
 		if frame.isSkinned then return end
-		--S:HandleIconSelectionFrame(frame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+		S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
 	end)
 end
 

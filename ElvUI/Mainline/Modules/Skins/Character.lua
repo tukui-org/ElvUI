@@ -330,11 +330,11 @@ function S:CharacterFrame()
 		end
 	end)
 
-	--Icon selection frame.. ToDo: WoW10
-	--S:HandleIconSelectionFrame(_G.GearManagerPopupFrame, _G.NUM_GEARSET_ICONS_SHOWN, 'GearManagerDialogPopupButton')
-	--S:HandleButton(_G.GearManagerPopupFrame.BorderBox.OkayButton)
-	--S:HandleButton(_G.GearManagerPopupFrame.BorderBox.CancelButton)
-	--S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
+	-- Icon selection frame
+	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
+		if frame.isSkinned then return end
+		S:HandleIconSelectionFrame(frame)
+	end)
 
 	do --Handle Tabs at bottom of character frame
 		local i = 1
