@@ -18,7 +18,7 @@ local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDr
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
 local Sound_GameSystem_RestartSoundSystem = Sound_GameSystem_RestartSoundSystem
 
-local AudioCVars = {
+local Sound_CVars = {
 	Sound_EnableAllSound = true,
 	Sound_EnableSFX = true,
 	Sound_EnableAmbience = true,
@@ -136,7 +136,7 @@ function OnEvent(self, event, arg1)
 	panel = self
 
 	local force = event == 'ELVUI_FORCE_UPDATE'
-	if force or (event == 'CVAR_UPDATE' and (E.WoW10 and AudioCVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
+	if force or (event == 'CVAR_UPDATE' and (E.WoW10 and Sound_CVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
 		if force then
 			self:EnableMouseWheel(true)
 			self:SetScript('OnMouseWheel', onMouseWheel)
