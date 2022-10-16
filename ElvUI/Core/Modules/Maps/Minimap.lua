@@ -302,8 +302,13 @@ do
 	local isResetting
 	local function ResetZoom()
 		Minimap:SetZoom(0)
-		_G.MinimapZoomIn:Enable() --Reset enabled state of buttons
-		_G.MinimapZoomOut:Disable()
+		if E.WoW10 then
+			_G.Minimap.ZoomIn:Enable() --Reset enabled state of buttons
+			_G.Minimap.ZoomOut:Disable()
+		else
+			_G.MinimapZoomIn:Enable() --Reset enabled state of buttons
+			_G.MinimapZoomOut:Disable()
+		end
 		isResetting = false
 	end
 
