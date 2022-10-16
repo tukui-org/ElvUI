@@ -216,7 +216,7 @@ AddMedia('logo','SuperBear')
 
 E.Media.CombatIcons.COMBAT = E.Media.Textures.Combat
 
-do -- LSM Font Preloader ~Simpy
+if E.Retail then -- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
 	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500)
 	preloader:SetSize(100, 100)
