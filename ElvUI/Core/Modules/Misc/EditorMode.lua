@@ -5,11 +5,11 @@ local tremove = tremove
 local strmatch = strmatch
 
 local IgnoreFrames = {
-	['^ChatFrame%d+'] = function() return E.private.chat.enable end,
-
-	-- for now just going to use our mover, will need to add the setting
-	-- header underneath and rotate minimap settings
-	['MinimapCluster'] = function() return E.private.general.minimap.enable end
+	-- will need to add the setting
+	--- MinimapCluster: header underneath and rotate minimap settings
+	MinimapCluster = function() return E.private.general.minimap.enable end,
+	GameTooltipDefaultContainer = function() return E.private.tooltip.enable end,
+	['^ChatFrame%d+'] = function() return E.private.chat.enable end
 }
 
 function EM:Initialize()

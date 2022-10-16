@@ -25,21 +25,10 @@ function B:ScaleTalkingHeadFrame()
 end
 
 local function InitializeTalkingHead()
-	local TalkingHeadFrame = _G.TalkingHeadFrame
-
-	--Prevent WoW from moving the frame around
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
-
-	--Set default position
-	TalkingHeadFrame:ClearAllPoints()
-	TalkingHeadFrame:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
-
-	E:CreateMover(TalkingHeadFrame, 'TalkingHeadFrameMover', L["Talking Head Frame"], nil, nil, nil, nil, nil, 'skins')
-
 	--Iterate through all alert subsystems in order to find the one created for TalkingHeadFrame, and then remove it.
 	--We do this to prevent alerts from anchoring to this frame when it is shown.
 	for index, alertFrameSubSystem in ipairs(_G.AlertFrame.alertFrameSubSystems) do
-		if alertFrameSubSystem.anchorFrame and alertFrameSubSystem.anchorFrame == TalkingHeadFrame then
+		if alertFrameSubSystem.anchorFrame and alertFrameSubSystem.anchorFrame == _G.TalkingHeadFrame then
 			tremove(_G.AlertFrame.alertFrameSubSystems, index)
 		end
 	end
