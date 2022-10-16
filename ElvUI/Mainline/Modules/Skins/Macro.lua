@@ -16,11 +16,11 @@ function S:Blizzard_MacroUI()
 	S:HandlePortraitFrame(MacroFrame)
 	MacroFrame:Width(360)
 
-	_G.MacroButtonScrollFrame:StripTextures()
-	_G.MacroButtonScrollFrame:SetTemplate('Transparent')
+	--_G.MacroButtonScrollFrame:StripTextures()
+	--_G.MacroButtonScrollFrame:SetTemplate('Transparent')
 	_G.MacroFrameTextBackground.NineSlice:SetTemplate('Transparent')
 
-	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
+	S:HandleTrimScrollBar(MacroFrame.MacroSelector.ScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
 
 	local buttons = {
@@ -59,9 +59,6 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
 	_G.MacroFrameSelectedMacroButton:SetTemplate()
-	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	_G.MacroFrameSelectedMacroButtonIcon:Point('TOPLEFT', 1, -1)
-	_G.MacroFrameSelectedMacroButtonIcon:Point('BOTTOMRIGHT', -1, 1)
 
 	-- Skin all buttons
 	for i = 1, _G.MAX_ACCOUNT_MACROS do
@@ -81,9 +78,10 @@ function S:Blizzard_MacroUI()
 		end
 	end
 
+	-- ToDo: WoW10
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
 		if frame.isSkinned then return end
-		S:HandleIconSelectionFrame(frame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
+		--S:HandleIconSelectionFrame(frame, NUM_MACRO_ICONS_SHOWN, 'MacroPopupButton', 'MacroPopup')
 	end)
 end
 
