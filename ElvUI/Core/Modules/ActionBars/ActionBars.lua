@@ -646,6 +646,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local normal = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 	local nat = button.NewActionTexture
+	local mask = button.IconMask
 
 	local db = button:GetParent().db
 	local color = AB.db.fontColor
@@ -658,10 +659,11 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	icon:SetDrawLayer('ARTWORK', -1)
 	hotKey:SetDrawLayer('OVERLAY')
 
-	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
-	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
+	if normal and not ignoreNormal then normal:SetTexture() normal:Hide() normal:SetAlpha(0) end
+	if normal2 then normal2:SetTexture() normal2:Hide() normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
 	if nat then nat:SetAlpha(0) end
+	if mask then mask:Hide() end
 
 	if count then
 		local position, xOffset, yOffset = db and db.countTextPosition or 'BOTTOMRIGHT', db and db.countTextXOffset or 0, db and db.countTextYOffset or 2
