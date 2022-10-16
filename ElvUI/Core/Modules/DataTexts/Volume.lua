@@ -18,6 +18,19 @@ local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDr
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
 local Sound_GameSystem_RestartSoundSystem = Sound_GameSystem_RestartSoundSystem
 
+local AudioCVars = {
+	Sound_EnableAllSound = true,
+	Sound_EnableSFX = true,
+	Sound_EnableAmbience = true,
+	Sound_EnableDialog = true,
+	Sound_EnableMusic = true,
+	Sound_MasterVolume = true,
+	Sound_SFXVolume = true,
+	Sound_AmbienceVolume = true,
+	Sound_DialogVolume = true,
+	Sound_MusicVolume = true
+}
+
 local AudioStreams = {
 	{ Name = _G.MASTER, Volume = 'Sound_MasterVolume', Enabled = 'Sound_EnableAllSound' },
 	{ Name = _G.SOUND_VOLUME, Volume = 'Sound_SFXVolume', Enabled = 'Sound_EnableSFX' },
@@ -122,12 +135,13 @@ function OnEvent(self, event, arg1)
 	activeStream = AudioStreams[activeIndex]
 	panel = self
 
-	if event == 'ELVUI_FORCE_UPDATE' then
-		self:EnableMouseWheel(true)
-		self:SetScript('OnMouseWheel', onMouseWheel)
-	end
+	local force = event == 'ELVUI_FORCE_UPDATE'
+	if force or (event == 'CVAR_UPDATE' and (E.WoW10 and AudioCVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
+		if force then
+			self:EnableMouseWheel(true)
+			self:SetScript('OnMouseWheel', onMouseWheel)
+		end
 
-	if event == 'CVAR_UPDATE' and arg1 == 'ELVUI_VOLUME' or event == 'ELVUI_FORCE_UPDATE' then
 		self.text:SetText(GetStreamString(activeStream))
 	end
 end
