@@ -631,7 +631,7 @@ function M:Initialize()
 		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 
-	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
+	if not E.WoW10 then if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
 	if _G.HybridMinimap then M:SetupHybridMinimap() end
 
