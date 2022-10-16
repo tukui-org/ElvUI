@@ -7,52 +7,46 @@ local pairs, unpack = pairs, unpack
 function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
-	--Class Trainer Frame
-	local StripAllTextures = {
+	for _, object in pairs({
 		_G.ClassTrainerScrollFrameScrollChild,
 		_G.ClassTrainerFrameSkillStepButton,
 		_G.ClassTrainerFrameBottomInset,
-	}
+	}) do
+		object:StripTextures()
+	end
 
-	local buttons = {
-		_G.ClassTrainerTrainButton,
-	}
-
-	local KillTextures = {
+	for _, texture in pairs({
 		_G.ClassTrainerFramePortrait,
 		_G.ClassTrainerScrollFrameScrollBarBG,
 		_G.ClassTrainerScrollFrameScrollBarTop,
 		_G.ClassTrainerScrollFrameScrollBarBottom,
 		_G.ClassTrainerScrollFrameScrollBarMiddle,
-	}
-
-	for _, object in pairs(StripAllTextures) do
-		object:StripTextures()
-	end
-
-	for _, texture in pairs(KillTextures) do
+	}) do
 		texture:Kill()
 	end
 
-	for i = 1, #buttons do
-		buttons[i]:StripTextures()
-		S:HandleButton(buttons[i])
+	do
+		local buttons = { _G.ClassTrainerTrainButton }
+		for i = 1, #buttons do
+			buttons[i]:StripTextures()
+			S:HandleButton(buttons[i])
+		end
 	end
 
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	--for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
-		--local button = _G['ClassTrainerScrollFrameButton'..i]
-		--button:StripTextures()
-		--button:StyleButton()
-		--button.icon:SetTexCoord(unpack(E.TexCoords))
-		--button:CreateBackdrop()
-		--button.backdrop:SetOutside(button.icon)
-		--button.icon:SetParent(button.backdrop)
-		--button.selectedTex:SetColorTexture(1, 1, 1, 0.3)
-		--button.selectedTex:SetInside()
-	--end
+	--[[for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
+		local button = _G['ClassTrainerScrollFrameButton'..i]
+		button:StripTextures()
+		button:StyleButton()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button:CreateBackdrop()
+		button.backdrop:SetOutside(button.icon)
+		button.icon:SetParent(button.backdrop)
+		button.selectedTex:SetColorTexture(1, 1, 1, 0.3)
+		button.selectedTex:SetInside()
+	end]]
 
 	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)

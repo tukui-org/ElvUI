@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, ipairs, select, unpack = pairs, ipairs, select, unpack
+local next, pairs, select, unpack = next, pairs, select, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
@@ -53,10 +53,8 @@ local function HandleListIcon(frame)
 end
 
 local function HandleSummaryIcons(frame)
-	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local child = select(i, frame.ScrollTarget:GetChildren())
-
-		if child and child.Icon then
+	for _, child in next, {frame.ScrollTarget:GetChildren()} do
+		if child.Icon then
 			if not child.IsSkinned then
 				S:HandleIcon(child.Icon)
 
