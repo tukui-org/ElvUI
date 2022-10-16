@@ -18,6 +18,19 @@ local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDr
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
 local Sound_GameSystem_RestartSoundSystem = Sound_GameSystem_RestartSoundSystem
 
+local AudioCVars = {
+	Sound_EnableAllSound = true,
+	Sound_EnableSFX = true,
+	Sound_EnableAmbience = true,
+	Sound_EnableDialog = true,
+	Sound_EnableMusic = true,
+	Sound_MasterVolume = true,
+	Sound_SFXVolume = true,
+	Sound_AmbienceVolume = true,
+	Sound_DialogVolume = true,
+	Sound_MusicVolume = true
+}
+
 local AudioStreams = {
 	{ Name = _G.MASTER, Volume = 'Sound_MasterVolume', Enabled = 'Sound_EnableAllSound' },
 	{ Name = _G.SOUND_VOLUME, Volume = 'Sound_SFXVolume', Enabled = 'Sound_EnableSFX' },
@@ -56,7 +69,7 @@ end
 local function ToggleStream(_, ...)
 	local Stream = AudioStreams[...]
 
-	SetCVar(Stream.Enabled, GetCVarBool(Stream.Enabled) and 0 or 1, 'ELVUI_VOLUME')
+	SetCVar(Stream.Enabled, GetCVarBool(Stream.Enabled) and 0 or 1)
 
 	panel.text:SetText(GetStreamString(activeStream))
 end
@@ -67,7 +80,7 @@ for Index, Stream in ipairs(AudioStreams) do
 end
 
 local function SelectSoundOutput(_, ...)
-	SetCVar('Sound_OutputDriverIndex', ..., 'ELVUI_VOLUME')
+	SetCVar('Sound_OutputDriverIndex', ...)
 	Sound_GameSystem_RestartSoundSystem()
 end
 
@@ -115,19 +128,20 @@ local function onMouseWheel(_, delta)
 		vol = 0
 	end
 
-	SetCVar(activeStream.Volume, vol, 'ELVUI_VOLUME')
+	SetCVar(activeStream.Volume, vol)
 end
 
 function OnEvent(self, event, arg1)
 	activeStream = AudioStreams[activeIndex]
 	panel = self
 
-	if event == 'ELVUI_FORCE_UPDATE' then
-		self:EnableMouseWheel(true)
-		self:SetScript('OnMouseWheel', onMouseWheel)
-	end
+	local force = event == 'ELVUI_FORCE_UPDATE'
+	if force or (event == 'CVAR_UPDATE' and AudioCVars[arg1]) then
+		if force then
+			self:EnableMouseWheel(true)
+			self:SetScript('OnMouseWheel', onMouseWheel)
+		end
 
-	if event == 'CVAR_UPDATE' and arg1 == 'ELVUI_VOLUME' or event == 'ELVUI_FORCE_UPDATE' then
 		self.text:SetText(GetStreamString(activeStream))
 	end
 end
@@ -142,7 +156,7 @@ local function OnClick(self, button)
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 		_G.EasyMenu(menu, DT.EasyMenu, nil, nil, nil, 'MENU')
 	elseif button == 'MiddleButton' then
-		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1, 'ELVUI_VOLUME')
+		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1)
 	elseif button == 'RightButton' then
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, DT.EasyMenu, nil, nil, nil, 'MENU')
