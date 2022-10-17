@@ -175,8 +175,6 @@ function S:Blizzard_Communities()
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
-	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	CommunitiesFrame.MaximizeMinimizeFrame:Point('RIGHT', CommunitiesFrame.CloseButton, 'LEFT', 12, 0)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton) -- ToDo: WoW10
