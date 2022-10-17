@@ -2205,6 +2205,7 @@ function B:OpenBank()
 	_G.BankFrame:Show()
 
 	if B.BankFrame.firstOpen then
+		B:UpdateLayout(B.BankFrame)
 		B:UpdateAllSlots(B.BankFrame)
 		B.BankFrame.firstOpen = nil
 	elseif next(B.BankFrame.staleBags) then
