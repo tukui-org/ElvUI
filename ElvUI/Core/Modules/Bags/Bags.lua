@@ -293,11 +293,11 @@ end
 function B:DisableBlizzard()
 	_G.BankFrame:UnregisterAllEvents()
 
-	for i = 1, NUM_CONTAINER_FRAMES do
+	--[[for i = 1, NUM_CONTAINER_FRAMES do
 		local frame = _G['ContainerFrame'..i]
 		frame:UnregisterAllEvents()
 		frame:Kill()
-	end
+	end]]
 end
 
 function B:SearchReset(skip)
@@ -1496,8 +1496,9 @@ function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
 	local f = CreateFrame('Button', name, E.UIParent)
-	f:SetTemplate('Transparent')
+	f:SetTemplate('NoBackdrop')
 	f:SetFrameStrata(strata)
+	f:EnableMouse(false)
 	B:SetupItemGlow(f)
 
 	f.events = (isBank and bankEvents) or bagEvents
@@ -1949,11 +1950,14 @@ end
 function B:ConstructContainerButton(f, bagID, slotID)
 	local bag = f.Bags[bagID]
 	local isReagent = bagID == REAGENTBANK_CONTAINER
-	local slotName = isReagent and ('ElvUIReagentBankFrameItem'..slotID) or (bag.name..'Slot'..slotID)
+	local realName = format('ContainerFrame%dItem%d', bagID + 1, slotID)
+	local realSlot = _G[realName]
+	local slotName = (realSlot and realName) or isReagent and ('ElvUIReagentBankFrameItem'..slotID) or (bag.name..'Slot'..slotID)
 	local parent = isReagent and f.reagentFrame or bag
 	local inherit = (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
 
-	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
+	local slot = realSlot or --[[ bank and reagents ]] CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
+
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
@@ -2764,7 +2768,7 @@ function B:Initialize()
 		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
 		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
 
-		if E.WoW10 then SetCVar("combinedBags", 0) end
+		if E.WoW10 then SetCVar('combinedBags', 1) end
 	end
 
 	B:SecureHook('OpenAllBags')
