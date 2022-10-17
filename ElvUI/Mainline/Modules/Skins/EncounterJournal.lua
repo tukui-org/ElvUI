@@ -434,7 +434,8 @@ function S:Blizzard_EncounterJournal()
 			end
 		end)
 
-		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
+		-- Comment back in WoW10 Beta, not on Pre Patch
+		--[[hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
 			for i = 1, frame.ScrollTarget:GetNumChildren() do
 				local child = select(i, frame.ScrollTarget:GetChildren())
 				if not child.isSkinned then
@@ -468,7 +469,7 @@ function S:Blizzard_EncounterJournal()
 					child.isSkinned = true
 				end
 			end
-		end)
+		end)]]
 
 		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
 		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)
@@ -477,8 +478,7 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInfoBG:Kill()
 		EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 		EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
-		--_G.EncounterJournal.encounter.instance.LoreScrollingFont:SetTextColor(1, 1, 1)
-		--_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChild.overviewDescription.Text:SetTextColor(1, 1, 1)
+
 		_G.EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollChildDescription:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:Hide()
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetFontObject("GameFontNormalLarge")
