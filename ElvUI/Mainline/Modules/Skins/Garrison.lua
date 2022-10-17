@@ -353,25 +353,29 @@ function S:Blizzard_GarrisonUI()
 				bg:Point('BOTTOMRIGHT', -7, 0)
 			end
 		end
-
-		hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
-			local unselectedTab = Report.unselectedTab
-			unselectedTab:Height(36)
-			unselectedTab:SetNormalTexture()
-			unselectedTab.selectedTex:Hide()
-
-			s:SetNormalTexture()
-			s.selectedTex:Show()
-		end)
 	end
 
+	hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
+		local unselectedTab = Report.unselectedTab
+		unselectedTab:Height(36)
+		unselectedTab:SetNormalTexture()
+		unselectedTab.selectedTex:Hide()
+
+		s:SetNormalTexture()
+		s.selectedTex:Show()
+	end)
+
 	-- Landing page: Report
-	Report = GarrisonLandingPage.Report -- reassigned
-	Report.List:StripTextures(true)
+	Report = _G.GarrisonLandingPage.Report -- reassigned
+	Report:StripTextures(true)
+	S:HandleTab(Report.InProgress)
+	S:HandleTab(Report.Available)
+
+	local List = Report.List
+	List:StripTextures()
+	S:HandleTrimScrollBar(List.ScrollBar)
 
 	--[[local reportScroll = Report.List.listScroll
-	S:HandleScrollBar(reportScroll.scrollBar)
-
 	local buttons = reportScroll.buttons
 	for i = 1, #buttons do
 		local button = buttons[i]
@@ -406,7 +410,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.FollowerHeaderBar:Hide()
 	FollowerList.FollowerScrollFrame:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
-	--S:HandleScrollBar(FollowerList.listScroll.scrollBar)
+	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
 
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
