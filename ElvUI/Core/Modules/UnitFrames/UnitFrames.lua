@@ -1203,21 +1203,27 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if unit == 'player' and E.private.unitframe.disabledBlizzardFrames.player then
-			local PlayerFrame = _G.PlayerFrame
-			HandleFrame(PlayerFrame)
+		if unit == 'player' then
+			if E.private.unitframe.disabledBlizzardFrames.player then
+				local PlayerFrame = _G.PlayerFrame
+				HandleFrame(PlayerFrame)
 
-			-- For the damn vehicle support:
-			PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-			PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-			PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-			PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
-			PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
+				-- For the damn vehicle support:
+				PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+				PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+				PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+				PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
+				PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
-			-- User placed frames don't animate
-			PlayerFrame:SetMovable(true)
-			PlayerFrame:SetUserPlaced(true)
-			PlayerFrame:SetDontSavePosition(true)
+				-- User placed frames don't animate
+				PlayerFrame:SetMovable(true)
+				PlayerFrame:SetUserPlaced(true)
+				PlayerFrame:SetDontSavePosition(true)
+			end
+
+			if E.private.unitframe.disabledBlizzardFrames.castbar then
+				HandleFrame(_G.PlayerCastingBarFrame)
+			end
 		elseif unit == 'pet' and E.private.unitframe.disabledBlizzardFrames.player then
 			HandleFrame(_G.PetFrame)
 		elseif unit == 'target' and E.private.unitframe.disabledBlizzardFrames.target then
