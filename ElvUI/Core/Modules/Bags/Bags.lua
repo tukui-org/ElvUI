@@ -952,7 +952,7 @@ function B:GetBagAssignedInfo(holder)
 	if holder.tempflag then holder.tempflag = nil end
 
 	local active, color
-	if E.Retail and E.WoW10 then
+	if E.WoW10 then
 		local activeBagFilter = _G.ContainerFrameSettingsManager:GetFilterFlag(holder.bagID)
 
 		for i, flag in _G.ContainerFrameUtil_EnumerateBagGearFilters() do
@@ -1563,11 +1563,7 @@ function B:ConstructContainerFrame(name, isBank)
 	for i, bagID in next, f.BagIDs do
 		local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - 4)) or (bagID - (E.Retail and 0 or 1))
 		local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
-		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
-
-		if E.WoW10 and not isBank then
-			inherit = isBank and 'BankItemButtonBagTemplate' or ''
-		end
+		local inherit = (E.WoW10 and not isBank and '') or isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
@@ -1598,7 +1594,7 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
 		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack) -- Interface\ICONS\INV_Misc_Key_03
 		holder.icon:SetInside()
-		holder.IconBorder:Kill()
+		holder.IconBorder:SetAlpha(0)
 
 		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
 		holder.shownIcon:Size(16)
@@ -2031,7 +2027,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 
-	slot.IconBorder:Kill()
+	slot.IconBorder:SetAlpha(0)
 	slot.IconOverlay:SetInside()
 
 	if slot.IconOverlay2 then
@@ -2477,7 +2473,6 @@ else
 		end
 	end
 end
-
 
 function B:PostBagMove()
 	if not E.private.bags.enable then return end
