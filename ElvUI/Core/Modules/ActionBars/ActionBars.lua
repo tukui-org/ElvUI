@@ -104,6 +104,22 @@ AB.barDefaults = {
 		bindButtons = 'ELVUIBAR10BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
+
+	--[[barX = {
+		page = 13,
+		bindButtons = 'MULTIACTIONBAR5BUTTON',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
+	},
+	barX = {
+		page = 14,
+		bindButtons = 'MULTIACTIONBAR6BUTTON',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
+	},
+	barX = {
+		page = 15,
+		bindButtons = 'MULTIACTIONBAR7BUTTON',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
+	},]]
 }
 
 do
@@ -374,7 +390,7 @@ function AB:CreateBar(id)
 		button.AuraCooldown.CooldownOverride = 'actionbar'
 		E:RegisterCooldown(button.AuraCooldown)
 
-		for k = 1, 14 do
+		for k = 1, 18 do
 			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
