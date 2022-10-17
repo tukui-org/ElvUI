@@ -226,29 +226,51 @@ function S:Blizzard_EncounterJournal()
 		EncounterInfo.modelTab
 	}
 
-	for i=1, #tabs do --not beautiful but eh
-		tabs[i]:ClearAllPoints()
-	end
+	if E.WoW10 then
+		local tabs = {'overviewTab', 'modelTab', 'bossTab', 'lootTab'}
+		for _, name in pairs(tabs) do
+			local tab = _G.EncounterJournal.encounter.info[name]
+			tab:CreateBackdrop('Transparent')
+			tab.backdrop:SetInside(2, 2)
 
-	for i=1, #tabs do
-		local tab = tabs[i]
+			tab:SetNormalTexture()
+			tab:SetPushedTexture()
+			tab:SetDisabledTexture()
 
-		if i == 4 then
-			tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
-		else
-			tab:Point('RIGHT', tabs[i+1], 'LEFT', -4, 0)
+			local hl = tab:GetHighlightTexture()
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			hl:SetColorTexture(r, g, b, .2)
+			hl:SetInside(tab.backdrop)
+
+			if name == 'overviewTab' then
+				tab:SetPoint('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, -35)
+			end
+		end
+	else
+		for i = 1, #tabs do --not beautiful but eh
+			tabs[i]:ClearAllPoints()
 		end
 
-		HandleTabs(tab)
-	end
+		for i = 1, #tabs do
+			local tab = tabs[i]
 
-	hooksecurefunc('EncounterJournal_SetTabEnabled', function(tab, enabled)
-		if enabled then
-			tab:GetFontString():SetTextColor(1, 1, 1)
-		else
-			tab:GetFontString():SetTextColor(0.6, 0.6, 0.6)
+			if i == 4 then
+				tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
+			else
+				tab:Point('RIGHT', tabs[i+1], 'LEFT', -4, 0)
+			end
+
+			HandleTabs(tab)
 		end
-	end)
+
+		hooksecurefunc('EncounterJournal_SetTabEnabled', function(tab, enabled)
+			if enabled then
+				tab:GetFontString():SetTextColor(1, 1, 1)
+			else
+				tab:GetFontString():SetTextColor(0.6, 0.6, 0.6)
+			end
+		end)
+	end
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
@@ -455,8 +477,8 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInfoBG:Kill()
 		EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 		EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
-		_G.EncounterJournal.encounter.instance.LoreScrollingFont:SetTextColor(1, 1, 1)
-		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChild.overviewDescription.Text:SetTextColor(1, 1, 1)
+		--_G.EncounterJournal.encounter.instance.LoreScrollingFont:SetTextColor(1, 1, 1)
+		--_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChild.overviewDescription.Text:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollChildDescription:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:Hide()
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetFontObject("GameFontNormalLarge")
