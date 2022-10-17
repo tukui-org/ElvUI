@@ -1221,8 +1221,9 @@ do
 				PlayerFrame:SetDontSavePosition(true)
 			end
 
-			if E.private.unitframe.disabledBlizzardFrames.castbar then
-				HandleFrame(_G.PlayerCastingBarFrame)
+			local castbar = _G.PlayerCastingBarFrame
+			if castbar and E.private.unitframe.disabledBlizzardFrames.castbar then
+				HandleFrame(castbar)
 			end
 		elseif unit == 'pet' and E.private.unitframe.disabledBlizzardFrames.player then
 			HandleFrame(_G.PetFrame)
