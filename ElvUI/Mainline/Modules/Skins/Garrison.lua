@@ -325,10 +325,6 @@ function S:Blizzard_GarrisonUI()
 	_G.GarrisonLandingPageTab1:Point('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
 
 	if E.private.skins.parchmentRemoverEnable then
-		for i = 1, 10 do
-			select(i, GarrisonLandingPage:GetRegions()):Hide()
-		end
-
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
 			tab:SetHighlightTexture()
 			tab.Text:ClearAllPoints()
@@ -368,8 +364,6 @@ function S:Blizzard_GarrisonUI()
 	-- Landing page: Report
 	Report = _G.GarrisonLandingPage.Report -- reassigned
 	Report:StripTextures(true)
-	S:HandleTab(Report.InProgress)
-	S:HandleTab(Report.Available)
 
 	local List = Report.List
 	List:StripTextures()
