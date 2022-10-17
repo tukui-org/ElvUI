@@ -592,8 +592,8 @@ function M:Initialize()
 		_G.MinimapZoomOut,
 		_G.Minimap.ZoomOut, --WoW10
 		_G.MinimapNorthTag,
-		--_G.MinimapZoneTextButton,
-		--_G.MiniMapWorldMapButton,
+		_G.MinimapZoneTextButton,
+		_G.MiniMapWorldMapButton,
 		_G.MiniMapMailBorder,
 		_G.MinimapCompassTexture, --WoW10
 	}
