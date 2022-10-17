@@ -577,7 +577,7 @@ local function PickupAny(kind, target, detail, ...)
 end
 
 function Generic:OnEvent(event, key, down)
-	if not GetCVarBool('lockActionBars') then return end
+	if WoW10 or not GetCVarBool('lockActionBars') then return end
 
 	if event == 'OnLeave' then
 		self:RegisterForClicks('AnyDown')
