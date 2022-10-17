@@ -53,12 +53,14 @@ local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
 local UseContainerItem = UseContainerItem
 
+local IsCosmeticItem = IsCosmeticItem
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
 
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
+local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection.PlayerHasTransmogByItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
@@ -1387,7 +1389,9 @@ function B:GetGrays(vendor)
 			if itemLink and not noValue and not B.ExcludeGrays[itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 
-				if rarity and rarity == 0 and (classID ~= 12 or bindType ~= 4) then -- Quest can be classID:12 or bindType:4
+				if rarity and rarity == 0 -- grays :o
+				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
+				and (not IsCosmeticItem(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
 					local stackCount = count or 1
 					local stackPrice = itemPrice * stackCount
 
