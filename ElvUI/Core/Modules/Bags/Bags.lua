@@ -2204,7 +2204,8 @@ function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
 
-	--Allow opening reagent tab directly by holding Shift
+	-- allow opening reagent tab directly by holding Shift
+	-- keep this over update slots for bank slot assignments
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
 	if B.BankFrame.firstOpen then
