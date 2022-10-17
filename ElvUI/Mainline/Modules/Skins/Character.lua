@@ -138,16 +138,15 @@ local function FixSidebarTabCoords()
 end
 
 local function UpdateFactionSkins(frame)
-	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local child = select(i, frame.ScrollTarget:GetChildren())
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		local container = child and child.Container
 		if container and not container.IsSkinned then
 			container:StripTextures()
 
 			if container.ExpandOrCollapseButton then
 				S:HandleCollapseTexture(container.ExpandOrCollapseButton)
-				--container.ExpandOrCollapseButton    :DoCollapse(child.isCollapsed) -- ToDO: WoW10
 			end
+
 			if container.ReputationBar then
 				container.ReputationBar:StripTextures()
 				container.ReputationBar:SetStatusBarTexture(E.media.normTex)

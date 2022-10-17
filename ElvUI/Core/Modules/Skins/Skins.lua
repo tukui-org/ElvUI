@@ -1529,7 +1529,10 @@ end
 do -- Handle collapse
 	local function UpdateCollapseTexture(button, texture)
 		local tex = button:GetNormalTexture()
-		if strfind(texture, 'Plus') or strfind(texture, 'Closed') then
+
+		if type(texture) == 'number' then -- 130821 minus, 130838 plus
+			tex:SetTexture(texture == 130838 and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
+		elseif strfind(texture, 'Plus') or strfind(texture, 'Closed') then
 			tex:SetTexture(E.Media.Textures.PlusButton)
 		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
 			tex:SetTexture(E.Media.Textures.MinusButton)
