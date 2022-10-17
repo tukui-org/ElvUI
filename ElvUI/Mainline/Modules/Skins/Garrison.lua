@@ -375,35 +375,25 @@ function S:Blizzard_GarrisonUI()
 	List:StripTextures()
 	S:HandleTrimScrollBar(List.ScrollBar)
 
-	--[[local reportScroll = Report.List.listScroll
-	local buttons = reportScroll.buttons
-	for i = 1, #buttons do
-		local button = buttons[i]
-		for _, reward in pairs(button.Rewards) do
-			reward.Icon:SetTexCoord(unpack(E.TexCoords))
+	hooksecurefunc(Report.List.ScrollBox, "Update", function(self)
+		for i = 1, self.ScrollTarget:GetNumChildren() do
+			local button = select(i, self.ScrollTarget:GetChildren())
+			if not button.IsSkinned then
+				button.BG:Hide()
+				button:CreateBackdrop('Transparent')
+				button.backdrop:SetPoint('TOPLEFT')
+				button.backdrop:SetPoint('BOTTOMRIGHT', 0, 1)
 
-			if not reward.border then
-				reward.border = CreateFrame('Frame', nil, reward)
-				S:HandleIcon(reward.Icon, reward.border)
-				S:HandleIconBorder(reward.IconBorder, reward.Icon.backdrop)
-
-				hooksecurefunc(reward.Icon, "SetTexture", FixLandingPageRewardBorder)
-				reward.Quantity:SetParent(reward.border)
-				reward:ClearAllPoints()
-				reward:Point('TOPRIGHT', -5, -5)
-
-				if E.private.skins.parchmentRemoverEnable then
-					button.BG:Hide()
-
-					local bg = CreateFrame('Frame', nil, button)
-					bg:Point('TOPLEFT')
-					bg:Point('BOTTOMRIGHT', 0, 1)
-					bg:SetFrameLevel(button:GetFrameLevel() - 1)
-					bg:SetTemplate('Transparent')
+				for _, reward in pairs(button.Rewards) do
+					reward:GetRegions():Hide()
+					S:HandleIcon(reward.Icon, true)
+					S:HandleIconBorder(reward.IconBorder, reward.Icon.backdrop)
 				end
+
+				button.IsSkinned = true
 			end
 		end
-	end]]
+	end)
 
 	-- Landing page: Follower list
 	FollowerList = GarrisonLandingPage.FollowerList
