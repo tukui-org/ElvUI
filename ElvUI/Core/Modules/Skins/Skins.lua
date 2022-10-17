@@ -1527,23 +1527,23 @@ do
 end
 
 do -- Handle collapse
-	local function UpdateCollapseTexture(button, texture)
-		local tex = button:GetNormalTexture()
+	local function UpdateCollapseTexture(button, texture, skip)
+		if skip then return end
 
 		if type(texture) == 'number' then -- 130821 minus, 130838 plus
-			tex:SetTexture(texture == 130838 and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
+			button:SetNormalTexture(texture == 130838 and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton, true)
 		elseif strfind(texture, 'Plus') or strfind(texture, 'Closed') then
-			tex:SetTexture(E.Media.Textures.PlusButton)
+			button:SetNormalTexture(E.Media.Textures.PlusButton, true)
 		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
-			tex:SetTexture(E.Media.Textures.MinusButton)
+			button:SetNormalTexture(E.Media.Textures.MinusButton, true)
 		end
 	end
 
 	local function syncPushTexture(button, _, skip)
-		if not skip then
-			local normal = button:GetNormalTexture():GetTexture()
-			button:SetPushedTexture(normal, true)
-		end
+		if skip then return end
+
+		local normal = button:GetNormalTexture():GetTexture()
+		button:SetPushedTexture(normal, true)
 	end
 
 	function S:HandleCollapseTexture(button, syncPushed)
