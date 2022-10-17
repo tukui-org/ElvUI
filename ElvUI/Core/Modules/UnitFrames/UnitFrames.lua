@@ -1221,9 +1221,17 @@ do
 				PlayerFrame:SetDontSavePosition(true)
 			end
 
-			local castbar = _G.PlayerCastingBarFrame
-			if castbar and E.private.unitframe.disabledBlizzardFrames.castbar then
-				HandleFrame(castbar)
+			if E.WoW10 then
+				if E.private.unitframe.disabledBlizzardFrames.castbar then
+					HandleFrame(_G.PlayerCastingBarFrame)
+					HandleFrame(_G.PetCastingBarFrame)
+				end
+			elseif E.private.unitframe.disabledBlizzardFrames.castbar or (UF.db.units.player.enable and UF.db.units.player.castbar.enable) then
+				CastingBarFrame_SetUnit(_G.CastingBarFrame)
+				CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
+			else
+				CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+				PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
 			end
 		elseif unit == 'pet' and E.private.unitframe.disabledBlizzardFrames.player then
 			HandleFrame(_G.PetFrame)
@@ -1478,13 +1486,13 @@ function UF:TargetSound(unit)
 end
 
 function UF:PLAYER_FOCUS_CHANGED()
-	if E.db.unitframe.targetSound then
+	if UF.db.targetSound then
 		UF:TargetSound('focus')
 	end
 end
 
 function UF:PLAYER_TARGET_CHANGED()
-	if E.db.unitframe.targetSound then
+	if UF.db.targetSound then
 		UF:TargetSound('target')
 	end
 end
@@ -1539,10 +1547,10 @@ function UF:AfterStyleCallback()
 	-- that would cause the auras to be shown when a new frame is spawned (tank2, assist2)
 	-- even when they are disabled. this makes sure the update happens after so its proper.
 	if self.unitframeType == 'tank' or self.unitframeType == 'tanktarget' then
-		UF:Update_TankFrames(self, E.db.unitframe.units.tank)
+		UF:Update_TankFrames(self, UF.db.units.tank)
 		UF:Update_FontStrings()
 	elseif self.unitframeType == 'assist' or self.unitframeType == 'assisttarget' then
-		UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
+		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
 	end
 end

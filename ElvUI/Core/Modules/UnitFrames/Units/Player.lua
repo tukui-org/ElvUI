@@ -138,14 +138,6 @@ function UF:Update_PlayerFrame(frame, db)
 		UF:Configure_EnergyManaRegen(frame)
 	end
 
-	--[[if (UF.db.units.player.enable and UF.db.units.player.castbar.enable) or E.private.unitframe.disabledBlizzardFrames.castbar then
-		CastingBarFrame_SetUnit(_G.CastingBarFrame)
-		CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
-	else
-		CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-		PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
-	end]]
-
 	--We need to update Target AuraBars if attached to Player AuraBars
 	--mainly because of issues when using power offset on player and switching to/from middle orientation
 	if UF.db.units.target.aurabar.attachTo == 'PLAYER_AURABARS' and UF.target then
