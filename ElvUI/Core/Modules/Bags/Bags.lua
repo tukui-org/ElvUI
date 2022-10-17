@@ -2204,6 +2204,10 @@ function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
 
+	-- allow opening reagent tab directly by holding Shift
+	-- keep this over update slots for bank slot assignments
+	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
+
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame)
 		B.BankFrame.firstOpen = nil
@@ -2221,9 +2225,6 @@ function B:OpenBank()
 			B.BankFrame.staleBags[bagID] = nil
 		end
 	end
-
-	--Allow opening reagent tab directly by holding Shift
-	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
 	if B.db.autoToggle.bank then
 		B:OpenBags()
