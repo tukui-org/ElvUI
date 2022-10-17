@@ -15,6 +15,8 @@ local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
+local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
+
 local function clearBackdrop(self)
 	self:SetBackdropColor(0, 0, 0, 0)
 end
@@ -386,7 +388,8 @@ local function SkinToyFrame()
 		if button.itemID and PlayerHasToy(button.itemID) then
 			local _, _, quality = GetItemInfo(button.itemID)
 			if quality then
-				--button.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+				local r, g, b = GetItemQualityColor(quality)
+				button.backdrop:SetBackdropBorderColor(r, g, b)
 			else
 				button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
 			end
@@ -445,7 +448,7 @@ local function SkinHeirloomFrame()
 			button.name:SetTextColor(0.9, 0.9, 0.9)
 			button.level:SetTextColor(0.9, 0.9, 0.9)
 			button.special:SetTextColor(1, .82, 0)
-			--button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
+			button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
 		else
 			button.name:SetTextColor(0.4, 0.4, 0.4)
 			button.level:SetTextColor(0.4, 0.4, 0.4)
