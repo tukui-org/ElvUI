@@ -120,8 +120,6 @@ function S:WorldMapFrame()
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
-	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:Point('RIGHT', WorldMapFrame.BorderFrame.CloseButton, 'LEFT', 12, 0)
 
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
