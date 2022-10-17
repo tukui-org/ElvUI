@@ -292,7 +292,7 @@ function M:GetLocTextColor()
 end
 
 function M:Update_ZoneText()
-	if E.db.general.minimap.locationText == 'HIDE' then return end
+	if E.WoW10 or E.db.general.minimap.locationText == 'HIDE' then return end
 
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
@@ -369,7 +369,7 @@ function M:UpdateSettings()
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
 	local GameTimeFrame = _G.GameTimeFrame
-	if GameTimeFrame then
+	if not E.WoW10 and GameTimeFrame then
 		if E.private.general.minimap.hideCalendar then
 			GameTimeFrame:Hide()
 		else
@@ -560,8 +560,10 @@ function M:Initialize()
 
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
-	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
-	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
+	if not E.WoW10 then
+		Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
+		Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
+	end
 
 	if Minimap.backdrop then -- level to hybrid maps fixed values
 		Minimap.backdrop:SetFrameLevel(99)
@@ -569,12 +571,14 @@ function M:Initialize()
 		M:SetScale(Minimap.backdrop, 1)
 	end
 
-	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
-	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
-	Minimap.location:SetJustifyH('CENTER')
-	Minimap.location:SetJustifyV('MIDDLE')
-	M:SetScale(Minimap.location, 1)
-	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
+	if not E.WoW10 then
+		Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
+		Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
+		Minimap.location:SetJustifyH('CENTER')
+		Minimap.location:SetJustifyV('MIDDLE')
+		M:SetScale(Minimap.location, 1)
+		Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
+	end
 
 	local frames = {
 		_G.MinimapBorder,
