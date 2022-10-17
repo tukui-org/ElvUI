@@ -628,7 +628,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (info.iconFileID and 1) or nil -- used for ShowInspectCursor
 
-	SetItemButtonTexture(slot, info.iconFileID)
+	SetItemButtonTexture(slot, (info.iconFileID ~= 4701874 and info.iconFileID) or E.Media.Textures.Invisible)
 	SetItemButtonCount(slot, info.stackCount)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
 	SetItemButtonQuality(slot, slot.rarity, slot.itemLink)
