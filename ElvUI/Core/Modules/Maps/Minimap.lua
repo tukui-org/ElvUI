@@ -558,6 +558,10 @@ function M:Initialize()
 	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 	mmholder:Size(Minimap:GetSize())
 
+	--ToDO: WoW10 make a mover for this @Simpy
+	local clusterHolder = CreateFrame('Frame', 'ClusterHolder', _G.MinimapCluster)
+	clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
+
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	if not E.WoW10 then
@@ -588,8 +592,8 @@ function M:Initialize()
 		_G.MinimapZoomOut,
 		_G.Minimap.ZoomOut, --WoW10
 		_G.MinimapNorthTag,
-		_G.MinimapZoneTextButton,
-		_G.MiniMapWorldMapButton,
+		--_G.MinimapZoneTextButton,
+		--_G.MiniMapWorldMapButton,
 		_G.MiniMapMailBorder,
 		_G.MinimapCompassTexture, --WoW10
 	}
@@ -626,6 +630,12 @@ function M:Initialize()
 	if not E.Classic then
 		--Create the new minimap tracking dropdown frame and initialize it
 		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
+	end
+
+	if E.WoW10 then
+		-- We probably want options for it?
+		_G.MinimapZoneText:FontTemplate()
+		_G.TimeManagerClockTicker:FontTemplate()
 	end
 
 	if _G.QueueStatusMinimapButton then
