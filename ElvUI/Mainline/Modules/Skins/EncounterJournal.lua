@@ -278,6 +278,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
+	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar)
 
 	--Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
