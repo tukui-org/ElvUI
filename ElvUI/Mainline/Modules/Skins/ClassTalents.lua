@@ -16,6 +16,12 @@ function S:Blizzard_ClassTalentUI()
 	S:HandleButton(ClassTalentFrame.TalentsTab.ApplyButton)
 	S:HandleDropDownBox(ClassTalentFrame.TalentsTab.LoadoutDropDown.DropDownControl.DropDownMenu)
 
+	ClassTalentFrame.TalentsTab.ClassCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
+	ClassTalentFrame.TalentsTab.ClassCurrencyDisplay.CurrencyAmount:FontTemplate(nil, 26)
+
+	ClassTalentFrame.TalentsTab.SpecCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
+	ClassTalentFrame.TalentsTab.SpecCurrencyDisplay.CurrencyAmount:FontTemplate(nil, 26)
+
 	S:HandleEditBox(ClassTalentFrame.TalentsTab.SearchBox)
 	ClassTalentFrame.TalentsTab.SearchBox.backdrop:SetPoint('TOPLEFT', -4, -5)
 	ClassTalentFrame.TalentsTab.SearchBox.backdrop:SetPoint('BOTTOMRIGHT', 0, 5)
