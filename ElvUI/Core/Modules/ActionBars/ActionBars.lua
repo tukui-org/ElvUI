@@ -104,8 +104,16 @@ AB.barDefaults = {
 		bindButtons = 'ELVUIBAR10BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
-
 	--[[barX = {
+		page = 11,
+		bindButtons = 'MULTIACTIONBAR5BUTTON',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
+	},barX = {
+		page = 12,
+		bindButtons = 'MULTIACTIONBAR5BUTTON',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
+	},
+	barX = {
 		page = 13,
 		bindButtons = 'MULTIACTIONBAR5BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
@@ -119,7 +127,7 @@ AB.barDefaults = {
 		page = 15,
 		bindButtons = 'MULTIACTIONBAR7BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},]]
+	}]]
 }
 
 do

@@ -28,7 +28,6 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 
 local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
 local WorldMapFrame = _G.WorldMapFrame
 local Minimap = _G.Minimap
@@ -99,7 +98,7 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 	end
 })
 
-tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = ToggleHelpFrame })
+tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = _G.ToggleHelpFrame })
 
 M.RightClickMenu = menuFrame
 M.RightClickMenuList = menuList
@@ -584,23 +583,23 @@ function M:Initialize()
 		Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
 	end
 
-	local frames = {
+	local mmFrames = {
 		_G.MinimapBorder,
 		_G.MinimapBorderTop,
 		_G.MinimapZoomIn,
-		_G.Minimap.ZoomIn, --WoW10
+		_G.Minimap.ZoomIn, -- WoW10
 		_G.MinimapZoomOut,
-		_G.Minimap.ZoomOut, --WoW10
+		_G.Minimap.ZoomOut, -- WoW10
 		_G.MinimapNorthTag,
 		_G.MinimapZoneTextButton,
 		_G.MiniMapWorldMapButton,
 		_G.MiniMapMailBorder,
-		_G.MinimapCompassTexture, --WoW10
+		_G.MinimapCompassTexture, -- WoW10
 	}
 
-	tinsert(frames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
+	tinsert(mmFrames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
 
-	for _, frame in pairs(frames) do
+	for _, frame in pairs(mmFrames) do
 		frame:Kill()
 	end
 

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 
 local CreateFrame = CreateFrame
@@ -150,14 +151,6 @@ local function SkinMissionFrame(frame, strip)
 	SkinMissionItems(frame.FollowerTab)
 
 	hooksecurefunc(frame.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
-end
-
--- Blizzard didn't set color for currency reward, incorrect color presents after scroll (Credits: siweia - NDui)
-local function FixLandingPageRewardBorder(icon)
-	local reward = icon:GetParent()
-	if reward and not reward.itemID then
-		reward.Icon.backdrop:SetBackdropBorderColor(0, 0, 0)
-	end
 end
 
 function S:Blizzard_GarrisonUI()
@@ -369,9 +362,8 @@ function S:Blizzard_GarrisonUI()
 	List:StripTextures()
 	S:HandleTrimScrollBar(List.ScrollBar)
 
-	hooksecurefunc(Report.List.ScrollBox, "Update", function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local button = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(Report.List.ScrollBox, 'Update', function(frame)
+		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			if not button.IsSkinned then
 				button.BG:Hide()
 				button:CreateBackdrop('Transparent')

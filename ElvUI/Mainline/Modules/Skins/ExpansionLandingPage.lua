@@ -7,7 +7,7 @@ local _G = _G
 function S:Blizzard_ExpansionLandingPage()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.expansionLanding) then return end
 
-	local ExpansionLandingPage = _G.ExpansionLandingPage
+	-- local ExpansionLandingPage = _G.ExpansionLandingPage
 	-- .self.Overlay = DragohFlightLandingPage
 
 	--S:HandleCloseButton(ExpansionLandingPage.Overlay.CloseButton, ExpansionLandingPage.backdrop)

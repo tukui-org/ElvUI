@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local select = select
-local pairs = pairs
 local ipairs = ipairs
 local next = next
 local rad = rad
@@ -57,7 +56,7 @@ local function SkinOverviewInfoBullets(object)
 	local parent = object:GetParent()
 
 	if parent.Bullets then
-		for _, bullet in pairs(parent.Bullets) do
+		for _, bullet in next, parent.Bullets do
 			if not bullet.styled then
 				bullet.Text:SetTextColor('P', 1, 1, 1)
 				bullet.styled = true
@@ -219,16 +218,8 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.overviewScroll:Height(360)
 
 	--Tabs
-	local tabs = {
-		EncounterInfo.overviewTab,
-		EncounterInfo.lootTab,
-		EncounterInfo.bossTab,
-		EncounterInfo.modelTab
-	}
-
 	if E.WoW10 then
-		local tabs = {'overviewTab', 'modelTab', 'bossTab', 'lootTab'}
-		for _, name in pairs(tabs) do
+		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
 			local tab = _G.EncounterJournal.encounter.info[name]
 			tab:CreateBackdrop('Transparent')
 			tab.backdrop:SetInside(2, 2)
@@ -247,17 +238,19 @@ function S:Blizzard_EncounterJournal()
 			end
 		end
 	else
-		for i = 1, #tabs do --not beautiful but eh
-			tabs[i]:ClearAllPoints()
-		end
+		local tabs = {
+			EncounterInfo.overviewTab,
+			EncounterInfo.lootTab,
+			EncounterInfo.bossTab,
+			EncounterInfo.modelTab
+		}
 
-		for i = 1, #tabs do
-			local tab = tabs[i]
-
-			if i == 4 then
+		for index, tab in next, tabs do
+			tab:ClearAllPoints()
+			if index == 4 then
 				tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 			else
-				tab:Point('RIGHT', tabs[i+1], 'LEFT', -4, 0)
+				tab:Point('RIGHT', tabs[index+1], 'LEFT', -4, 0)
 			end
 
 			HandleTabs(tab)
@@ -386,7 +379,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	for _, button in pairs({ _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle }) do
+	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
 		HandleButton(button, true)
 	end
 
