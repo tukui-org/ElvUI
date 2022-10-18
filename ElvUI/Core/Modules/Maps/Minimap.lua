@@ -4,9 +4,9 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local mod = mod
+local next = next
 local sort = sort
 local floor = floor
-local pairs = pairs
 local tinsert = tinsert
 local unpack = unpack
 local utf8sub = string.utf8sub
@@ -30,6 +30,7 @@ local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 
 local WorldMapFrame = _G.WorldMapFrame
+local MinimapCluster = _G.MinimapCluster
 local Minimap = _G.Minimap
 
 -- GLOBALS: GetMinimapShape
@@ -108,8 +109,8 @@ function M:SetScale(frame, scale)
 	frame:SetScale(scale * E.uiscale)
 end
 
-function M:HandleGarrisonButton()
-	local garrison = _G.GarrisonLandingPageMinimapButton
+function M:HandleExpansionButton()
+	local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
 	if not garrison then return end
 
 	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
@@ -124,19 +125,8 @@ function M:HandleGarrisonButton()
 	end
 end
 
--- ToDo: WoW10
-function M:HandleExpansionButton()
-	local expansion = _G.ExpansionLandingPageMinimapButton
-	if not expansion then return end
-
-	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
-	expansion:ClearAllPoints()
-	expansion:Point(position, Minimap, xOffset, yOffset)
-	M:SetScale(expansion, scale)
-end
-
 function M:HandleTrackingButton()
-	local tracking = _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	if E.private.general.minimap.hideTracking then
@@ -226,12 +216,10 @@ function M:Minimap_OnMouseDown(btn)
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
+	elseif E.WoW10 then
+		Minimap.OnClick(self)
 	else
-		if E.WoW10 then
-			_G.Minimap.OnClick(self)
-		else
-			_G.Minimap_OnClick(self)
-		end
+		_G.Minimap_OnClick(self)
 	end
 end
 
@@ -257,14 +245,14 @@ end
 
 function M:Minimap_OnMouseWheel(d) -- ToDO: WoW10
 	if d > 0 then
-		if E.Retail then
-			_G.Minimap.ZoomIn:Click()
+		if E.WoW10 then
+			Minimap.ZoomIn:Click()
 		else
 			_G.MinimapZoomIn:Click()
 		end
 	elseif d < 0 then
-		if E.Retail then
-			_G.Minimap.ZoomOut:Click()
+		if E.WoW10 then
+			Minimap.ZoomOut:Click()
 		else
 			_G.MinimapZoomOut:Click()
 		end
@@ -291,7 +279,7 @@ function M:GetLocTextColor()
 end
 
 function M:Update_ZoneText()
-	if E.WoW10 or E.db.general.minimap.locationText == 'HIDE' then return end
+	if E.db.general.minimap.locationText == 'HIDE' then return end
 
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
@@ -302,8 +290,8 @@ do
 	local function ResetZoom()
 		Minimap:SetZoom(0)
 
-		local zoomIn = E.WoW10 and _G.Minimap.ZoomIn or _G.MinimapZoomIn
-		local zoomOut = E.WoW10 and _G.Minimap.ZoomOut or _G.MinimapZoomOut
+		local zoomIn = E.WoW10 and Minimap.ZoomIn or _G.MinimapZoomIn
+		local zoomOut = E.WoW10 and Minimap.ZoomOut or _G.MinimapZoomOut
 
 		zoomIn:Enable() -- Reset enabled state of buttons
 		zoomOut:Disable()
@@ -338,120 +326,175 @@ function M:UpdateSettings()
 
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
-	local MinimapPanel, MMHolder = _G.MinimapPanel, _G.MMHolder
-	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
-	M:SetScale(MinimapPanel, 1)
+	local panel, holder = _G.MinimapPanel, M.holder
+	panel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
+	M:SetScale(panel, 1)
 
 	local mmOffset = E.PixelMode and 1 or 3
 	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
-	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
+	Minimap:Point('TOPRIGHT', holder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
-	Minimap:SetScale(mmScale)
+
+	if E.WoW10 then
+		local offset = 1
+		MinimapCluster:ClearAllPoints()
+
+		if E.db.general.minimap.clusterDisable then
+			MinimapCluster:SetScale(1)
+			MinimapCluster:Point('TOPRIGHT', _G.UIParent)
+		else
+			MinimapCluster:SetScale(mmScale)
+			MinimapCluster:Point('TOPRIGHT', M.ClusterHolder, 0, offset)
+		end
+
+		local mcWidth = MinimapCluster:GetWidth()
+		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
+		M.ClusterBackdrop:ClearAllPoints()
+		M.ClusterBackdrop:Point('TOPRIGHT', 0, -offset)
+		M.ClusterBackdrop:SetSize(width, height)
+		M.ClusterHolder:SetSize(width, height)
+
+		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not E.db.general.minimap.clusterDisable)
+	else
+		Minimap:SetScale(mmScale)
+	end
 
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
-	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
+	local panelSize, joinPanel = (panel:IsShown() and panel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
 	local HEIGHT, WIDTH = (mHeight * mmScale) + (panelSize - joinPanel), mWidth * mmScale
-	MMHolder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
+	holder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
+	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
-		Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
-		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW')
+		Minimap.location:FontTemplate(locationFont, locaitonSize, locationOutline)
+		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW' and E.db.general.minimap.clusterDisable)
 	end
-
-	M.HandleGarrisonButton()
-	M.HandleTrackingButton()
-	M.HandleExpansionButton()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
-	local GameTimeFrame = _G.GameTimeFrame
-	if not E.WoW10 and GameTimeFrame then
-		if E.private.general.minimap.hideCalendar then
-			GameTimeFrame:Hide()
+	if E.WoW10 then
+		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
+		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
+
+		if E.db.general.minimap.clusterDisable then
+			MinimapCluster.ZoneTextButton:Kill()
+			_G.TimeManagerClockButton:Kill()
 		else
-			local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
-			GameTimeFrame:ClearAllPoints()
-			GameTimeFrame:Point(position, Minimap, xOffset, yOffset)
-			GameTimeFrame:SetFrameLevel(MMHolder:GetFrameLevel()+1)
-			M:SetScale(GameTimeFrame, scale)
-			GameTimeFrame:Show()
+			MinimapCluster.ZoneTextButton.Show = nil
+			MinimapCluster.ZoneTextButton:SetParent(MinimapCluster)
+			MinimapCluster.ZoneTextButton:RegisterEvent('UPDATE_BINDINGS')
+			MinimapCluster.ZoneTextButton:Show()
+
+			_G.TimeManagerClockButton.Show = nil
+			_G.TimeManagerClockButton:SetParent(MinimapCluster)
+			_G.TimeManagerClockButton:Show()
 		end
 	end
 
-	local MiniMapMailFrame = _G.MiniMapMailFrame
-	if MiniMapMailFrame then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
-		MiniMapMailFrame:ClearAllPoints()
-		MiniMapMailFrame:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(MiniMapMailFrame, scale)
-	end
+	local difficulty = MinimapCluster.InstanceDifficulty
+	local instance = difficulty.Instance
+	local guild = difficulty.Guild
+	local challenge = difficulty.ChallengeMode
+	if not E.db.general.minimap.clusterDisable then
+		E:EnableMover(M.ClusterHolder.mover.name)
+		challenge:SetParent(difficulty)
+		instance:SetParent(difficulty)
+		guild:SetParent(difficulty)
+	else
+		E:DisableMover(M.ClusterHolder.mover.name)
+		challenge:SetParent(Minimap)
+		instance:SetParent(Minimap)
+		guild:SetParent(Minimap)
 
-	local MiniMapBattlefieldFrame = _G.MiniMapBattlefieldFrame
-	if MiniMapBattlefieldFrame then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
-		MiniMapBattlefieldFrame:ClearAllPoints()
-		MiniMapBattlefieldFrame:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(MiniMapBattlefieldFrame, scale)
+		M.HandleTrackingButton()
+		M.HandleExpansionButton()
 
-		if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
-		if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
-		if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
-	end
-
-	-- ToDO: WoW 10 (check position size)
-	local queueStatusButton = M:GetQueueStatusButton()
-	if queueStatusButton then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-		queueStatusButton:ClearAllPoints()
-		queueStatusButton:Point(position, Minimap, xOffset, yOffset)
-		queueStatusButton:SetParent(Minimap)
-		M:SetScale(queueStatusButton, scale)
-	end
-
-	local queueStatusDisplay = M.QueueStatusDisplay
-	if queueStatusDisplay then
-		local db = E.db.general.minimap.icons.queueStatus
-		local _, position, xOffset, yOffset = M:GetIconSettings('queueStatus')
-		queueStatusDisplay.text:ClearAllPoints()
-		queueStatusDisplay.text:Point(position, Minimap, xOffset, yOffset)
-		queueStatusDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-
-		if not db.enable and queueStatusDisplay.title then
-			M:ClearQueueStatus()
+		local gameTime = _G.GameTimeFrame
+		if gameTime then
+			if E.private.general.minimap.hideCalendar then
+				gameTime:Hide()
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
+				gameTime:ClearAllPoints()
+				gameTime:Point(position, Minimap, xOffset, yOffset)
+				gameTime:SetFrameLevel(holder:GetFrameLevel()+1)
+				M:SetScale(gameTime, scale)
+				gameTime:Show()
+			end
 		end
-	end
 
-	local InstanceDifficulty = _G.MinimapCluster.InstanceDifficulty.Instance
-	if InstanceDifficulty then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-		InstanceDifficulty:ClearAllPoints()
-		InstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(InstanceDifficulty, scale)
-	end
+		local mailFrame = MinimapCluster.MailFrame or _G.MiniMapMailFrame
+		if mailFrame then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
+			mailFrame:ClearAllPoints()
+			mailFrame:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(mailFrame, scale)
+		end
 
-	local GuildInstanceDifficulty = _G.MinimapCluster.InstanceDifficulty.Guild
-	if GuildInstanceDifficulty then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(GuildInstanceDifficulty, scale)
-	end
+		local battlefieldFrame = _G.MiniMapBattlefieldFrame
+		if battlefieldFrame then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
+			battlefieldFrame:ClearAllPoints()
+			battlefieldFrame:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(battlefieldFrame, scale)
 
-	local ChallengeModeInstanceDifficulty = _G.MinimapCluster.InstanceDifficulty.ChallengeMode
-	if ChallengeModeInstanceDifficulty then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('challengeMode')
-		ChallengeModeInstanceDifficulty:ClearAllPoints()
-		ChallengeModeInstanceDifficulty:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(ChallengeModeInstanceDifficulty, scale)
+			if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
+			if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
+			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
+		end
+
+		-- ToDO: WoW 10 (check position size)
+		local queueButton = M:GetQueueStatusButton()
+		if queueButton then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+			queueButton:ClearAllPoints()
+			queueButton:Point(position, Minimap, xOffset, yOffset)
+			queueButton:SetParent(Minimap)
+			M:SetScale(queueButton, scale)
+		end
+
+		local queueDisplay = M.QueueStatusDisplay
+		if queueDisplay then
+			local db = E.db.general.minimap.icons.queueStatus
+			local _, position, xOffset, yOffset = M:GetIconSettings('queueStatus')
+			queueDisplay.text:ClearAllPoints()
+			queueDisplay.text:Point(position, Minimap, xOffset, yOffset)
+			queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+
+			if not db.enable and queueDisplay.title then
+				M:ClearQueueStatus()
+			end
+		end
+
+		if instance then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
+			instance:ClearAllPoints()
+			instance:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(instance, scale)
+		end
+
+		if guild then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
+			guild:ClearAllPoints()
+			guild:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(guild, scale)
+		end
+
+		if challenge then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('challengeMode')
+			challenge:ClearAllPoints()
+			challenge:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(challenge, scale)
+		end
 	end
 end
 
 local function MinimapPostDrag()
 	_G.MinimapBackdrop:ClearAllPoints()
-	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
+	_G.MinimapBackdrop:SetAllPoints(Minimap)
 end
 
 function M:GetMinimapShape()
@@ -543,9 +586,9 @@ end
 
 function M:Initialize()
 	if E.private.general.minimap.enable then
-		_G.Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
 	else
-		_G.Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
 		return
 	end
 
@@ -553,19 +596,21 @@ function M:Initialize()
 
 	menuFrame:SetTemplate('Transparent')
 
-	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
-	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
-	mmholder:Size(Minimap:GetSize())
-
-	--ToDO: WoW10 make a mover for this @Simpy
-	local clusterHolder = CreateFrame('Frame', 'ClusterHolder', _G.MinimapCluster)
-	clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
+	local holder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
+	holder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
+	holder:Size(Minimap:GetSize())
+	M.holder = holder
+	E:CreateMover(holder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
 	Minimap:CreateBackdrop()
-	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
-	if not E.WoW10 then
-		Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
-		Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
+
+	local minimapLevel = Minimap:GetFrameLevel() + 2
+	Minimap:SetFrameLevel(minimapLevel)
+
+	if E.WoW10 then
+		MinimapCluster:SetFrameLevel(minimapLevel)
+		MinimapCluster:SetFrameStrata('MEDIUM')
+		Minimap:SetFrameStrata('LOW')
 	end
 
 	if Minimap.backdrop then -- level to hybrid maps fixed values
@@ -574,38 +619,67 @@ function M:Initialize()
 		M:SetScale(Minimap.backdrop, 1)
 	end
 
-	if not E.WoW10 then
-		Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
-		Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
-		Minimap.location:SetJustifyH('CENTER')
-		Minimap.location:SetJustifyV('MIDDLE')
-		M:SetScale(Minimap.location, 1)
-		Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
+	if E.WoW10 then
+		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
+		clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
+
+		M.ClusterHolder = clusterHolder
+		E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
+
+		local clusterBackdrop = CreateFrame('Frame', 'ElvUI_MinimapClusterBackdrop', MinimapCluster)
+		clusterBackdrop:SetTemplate()
+		M:SetScale(clusterBackdrop, 1)
+		M.ClusterBackdrop = clusterBackdrop
 	end
 
-	local mmFrames = {
+	MinimapCluster:EnableMouse(false)
+
+	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and E.db.general.minimap.clusterDisable then mm.location:Show() end end)
+	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and E.db.general.minimap.clusterDisable then mm.location:Hide() end end)
+
+	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
+	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
+	Minimap.location:SetJustifyH('CENTER')
+	Minimap.location:SetJustifyV('MIDDLE')
+	M:SetScale(Minimap.location, 1)
+	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
+
+	M:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_ZoneText')
+	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
+	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
+	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
+
+	local killFrames = {
 		_G.MinimapBorder,
 		_G.MinimapBorderTop,
 		_G.MinimapZoomIn,
-		_G.Minimap.ZoomIn, -- WoW10
 		_G.MinimapZoomOut,
-		_G.Minimap.ZoomOut, -- WoW10
 		_G.MinimapNorthTag,
 		_G.MinimapZoneTextButton,
 		_G.MiniMapWorldMapButton,
 		_G.MiniMapMailBorder,
-		_G.MinimapCompassTexture, -- WoW10
+		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
 	}
 
-	tinsert(mmFrames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
+	if E.WoW10 then
+		tinsert(killFrames, Minimap.ZoomIn)
+		tinsert(killFrames, Minimap.ZoomOut)
+		tinsert(killFrames, _G.MinimapCompassTexture)
 
-	for _, frame in pairs(mmFrames) do
+		MinimapCluster.BorderTop:StripTextures()
+		MinimapCluster.Tracking.Background:StripTextures()
+	end
+
+	for _, frame in next, killFrames do
 		frame:Kill()
 	end
 
 	if E.Retail then
-		-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-		-- hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
+		if _G.ExpansionLandingPageMinimapButton.UpdateIcon then
+			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
+		else
+			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
+		end
 
 		--Hide the BlopRing on Minimap
 		Minimap:SetArchBlobRingAlpha(0)
@@ -619,9 +693,6 @@ function M:Initialize()
 		end
 
 		_G.QueueStatusFrame:SetClampedToScreen(true)
-		_G.MinimapCluster.InstanceDifficulty.Instance:SetParent(Minimap)
-		_G.MinimapCluster.InstanceDifficulty.Guild:SetParent(Minimap)
-		_G.MinimapCluster.InstanceDifficulty.ChallengeMode:SetParent(Minimap)
 	elseif E.Classic then
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end
@@ -631,12 +702,6 @@ function M:Initialize()
 		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
 	end
 
-	if E.WoW10 then
-		-- We probably want options for it?
-		_G.MinimapZoneText:FontTemplate()
-		_G.TimeManagerClockTicker:FontTemplate()
-	end
-
 	if _G.QueueStatusMinimapButton then
 		_G.QueueStatusMinimapButtonBorder:Hide()
 		M:CreateQueueStatusText()
@@ -644,22 +709,14 @@ function M:Initialize()
 		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 
-	if not E.WoW10 and _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
 	if _G.HybridMinimap then M:SetupHybridMinimap() end
 
-	E:CreateMover(_G.MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
-
-	_G.MinimapCluster:EnableMouse(false)
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 	Minimap:SetScript('OnMouseUp', E.noop)
 
-	M:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_ZoneText')
-	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
-	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
-	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 	M:RegisterEvent('ADDON_LOADED')
 	M:UpdateSettings()
 end
