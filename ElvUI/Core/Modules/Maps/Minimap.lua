@@ -28,6 +28,7 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 
 local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
@@ -56,7 +57,7 @@ end
 if E.Retail then
 	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
-	--tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() GarrisonLandingPageMinimapButton_OnClick(_G.GarrisonLandingPageMinimapButton) end }) -- ToDO: WoW10
+	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() if Garrison_OnClick then Garrison_OnClick(_G.GarrisonLandingPageMinimapButton) else _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end end})
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
@@ -243,7 +244,7 @@ function M:MapCanvas_OnMouseDown(btn)
 	end
 end
 
-function M:Minimap_OnMouseWheel(d) -- ToDO: WoW10
+function M:Minimap_OnMouseWheel(d)
 	if d > 0 then
 		if E.WoW10 then
 			Minimap.ZoomIn:Click()
