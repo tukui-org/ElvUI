@@ -1047,6 +1047,9 @@ function AB:DisableBlizzard()
 		local button = _G['SpellButton'..i]
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+		button.OnEnter = AB.SpellButtonOnEnter
+		button.OnLeave = AB.SpellButtonOnLeave
 	end
 
 	if E.Retail and not E.WoW10 then -- same deal with profession buttons, this will fix the tainting
@@ -1055,6 +1058,9 @@ function AB:DisableBlizzard()
 				local button = frame['button'..i]
 				button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 				button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+				button.OnEnter = AB.SpellButtonOnEnter
+				button.OnLeave = AB.SpellButtonOnLeave
 			end
 		end
 	end
