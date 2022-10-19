@@ -1035,7 +1035,10 @@ function AB:DisableBlizzard()
 		if frame then
 			if i < count then frame:UnregisterAllEvents() end
 			frame:SetParent(E.HiddenFrame)
-			--AB:SetNoopsi(frame) WoW10 this breaks the UseContainerItem
+
+			if not E.WoW10 then -- WoW10 this breaks the UseContainerItem
+				AB:SetNoopsi(frame)
+			end
 		end
 	end
 
