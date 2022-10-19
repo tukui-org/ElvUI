@@ -1871,8 +1871,10 @@ end
 function E:RefreshModulesDB()
 	-- this function is specifically used to reference the new database
 	-- onto the unitframe module, its useful dont delete! D:
-	wipe(UnitFrames.db) --old ref, dont need so clear it
-	UnitFrames.db = E.db.unitframe --new ref
+	if UnitFrames.db then
+		wipe(UnitFrames.db) --old ref, dont need so clear it
+		UnitFrames.db = E.db.unitframe --new ref
+	end
 end
 
 do

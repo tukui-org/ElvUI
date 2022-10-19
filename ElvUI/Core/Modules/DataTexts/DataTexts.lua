@@ -732,7 +732,10 @@ function DT:PopulateData(currencyOnly)
 			local currencyLink = E.Retail and C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
-				DT.CurrencyList[tostring(currencyID)] = info.name
+				if DT.CurrencyList then
+					DT.CurrencyList[tostring(currencyID)] = info.name
+				end
+
 				G.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
 				G.datatexts.settings.Currencies.idEnable[currencyID] = G.datatexts.settings.Currencies.tooltipData[headerIndex][4]
 				E.global.datatexts.settings.Currencies.idEnable[currencyID] = E.global.datatexts.settings.Currencies.idEnable[currencyID] == nil and G.datatexts.settings.Currencies.idEnable[currencyID] or E.global.datatexts.settings.Currencies.idEnable[currencyID]
