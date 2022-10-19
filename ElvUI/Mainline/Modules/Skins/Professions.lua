@@ -98,6 +98,7 @@ function S:Blizzard_Professions()
 	RecipeList.backdrop:SetInside()
 	S:HandleEditBox(RecipeList.SearchBox)
 	S:HandleButton(RecipeList.FilterButton)
+	S:HandleCloseButton(RecipeList.FilterButton.ResetButton)
 
 	local SchematicForm = CraftingPage.SchematicForm
 	SchematicForm:StripTextures()
