@@ -940,7 +940,12 @@ function AB:SpellButtonOnEnter(_, tt)
 	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
 	ClearOnBarHighlightMarks()
-	ClearPetActionHighlightMarks() -- ToDO: WoW10
+
+	if ClearPetActionHighlightMarks then
+		ClearPetActionHighlightMarks()
+	else
+		_G.PetActionBar:ClearPetActionHighlightMarks()
+	end
 
 	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
 	if slotType == 'SPELL' then
@@ -949,7 +954,12 @@ function AB:SpellButtonOnEnter(_, tt)
 		UpdateOnBarHighlightMarksByFlyout(actionID)
 	elseif slotType == 'PETACTION' then
 		UpdateOnBarHighlightMarksByPetAction(actionID)
-		UpdatePetActionHighlightMarks(actionID)
+
+		if UpdatePetActionHighlightMarks then
+			UpdatePetActionHighlightMarks(actionID)
+		else
+			_G.PetActionBar:UpdatePetActionHighlightMarks(actionID)
+		end
 	end
 
 	local highlight = self.SpellHighlightTexture

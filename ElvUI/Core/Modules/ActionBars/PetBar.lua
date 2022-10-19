@@ -5,18 +5,20 @@ local _G = _G
 local gsub = gsub
 local ipairs = ipairs
 local CreateFrame = CreateFrame
-local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
 local GetPetActionInfo = GetPetActionInfo
 local IsPetAttackAction = IsPetAttackAction
+local GetPetActionCooldown = GetPetActionCooldown
+local RegisterStateDriver = RegisterStateDriver
+local GameTooltip = GameTooltip
 
 local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
 local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
 local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
 
-local PetActionBar_UpdateCooldowns = PetActionBar and PetActionBar.UpdateCooldowns or PetActionBar_UpdateCooldowns
+local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 local Masque = E.Masque
@@ -38,6 +40,7 @@ function AB:UpdatePet(event, unit)
 		button:SetAlpha(1)
 		button.isToken = isToken
 		button.icon:Show()
+
 		if not isToken then
 			button.icon:SetTexture(texture)
 			button.tooltipName = name
@@ -205,6 +208,21 @@ function AB:UpdatePetBindings()
 	end
 end
 
+function AB:UpdatePetCooldowns()
+	if PetActionBar_UpdateCooldowns then
+		PetActionBar_UpdateCooldowns()
+	else
+		for i, button in ipairs(bar.buttons) do
+			local start, duration = GetPetActionCooldown(i)
+			button.cooldown:SetCooldown(start, duration)
+
+			if not GameTooltip:IsForbidden() and GameTooltip:GetOwner() == button then
+				button:OnEnter(button)
+			end
+		end
+	end
+end
+
 function AB:CreateBarPet()
 	bar.backdrop = CreateFrame('Frame', nil, bar)
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
@@ -242,7 +260,7 @@ function AB:CreateBarPet()
 	AB:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	AB:RegisterEvent('UNIT_FLAGS', 'UpdatePet')
 	AB:RegisterEvent('UNIT_PET', 'UpdatePet')
-	AB:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', PetActionBar_UpdateCooldowns)
+	AB:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', 'UpdatePetCooldowns')
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet')
 
@@ -254,6 +272,7 @@ function AB:CreateBarPet()
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		local button = _G['PetActionButton'..i]
+		button:Show() -- for some reason they start hidden on WoW10 ?
 
 		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
 		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
