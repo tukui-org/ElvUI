@@ -4,17 +4,22 @@ local DB = E:GetModule('DataBars')
 local _G = _G
 local format = format
 local GameTooltip = GameTooltip
+local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
-local C_GossipInfo_GetFriendshipReputation = C_GossipInfo.GetFriendshipReputation
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
 local C_MajorFactions_GetMajorFactionData = C_MajorFactions.GetMajorFactionData
 local C_MajorFactions_HasMaximumRenown = C_MajorFactions.HasMaximumRenown
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
+
+local BLUE_FONT_COLOR = BLUE_FONT_COLOR
+local RENOWN_LEVEL_LABEL = RENOWN_LEVEL_LABEL
 local REPUTATION = REPUTATION
 local STANDING = STANDING
 local UNKNOWN = UNKNOWN
+
+local BLUE_COLOR_HEX = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
 
 local function GetValues(curValue, minValue, maxValue)
 	local maximum = maxValue - minValue
@@ -37,16 +42,13 @@ function DB:ReputationBar_Update()
 
 	local displayString, textFormat, label, rewardPending = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local friendshipID, standingText, nextThreshold, _
-	local factionStandingtext
-
-	if E.Retail then
-		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = C_GossipInfo_GetFriendshipReputation(factionID)
-	end
+	local standingText, friendshipID, nextThreshold, _
 
 	if E.WoW10 then
-		local reputationInfo = C_GossipInfo_GetFriendshipReputation(factionID)
+		local reputationInfo = GetFriendshipReputation(factionID)
 		friendshipID = reputationInfo.friendshipFactionID
+	elseif E.Retail then
+		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
 	end
 
 	if friendshipID and not E.WoW10 then
@@ -57,24 +59,16 @@ function DB:ReputationBar_Update()
 		end
 	elseif E.WoW10 then
 		local isMajorFaction = factionID and C_Reputation_IsMajorFaction(factionID)
-		local repInfo = factionID and C_GossipInfo_GetFriendshipReputation(factionID)
-		local isCapped
-		if (repInfo and repInfo.friendshipFactionID > 0) then
-			factionStandingtext = repInfo.reaction
-			if ( repInfo.nextThreshold ) then
-				minValue, maxValue, curValue = repInfo.reactionThreshold, repInfo.nextThreshold, repInfo.standing;
-			else
-				minValue, maxValue, curValue = 0, 1, 1
-				isCapped = true
-			end
-		elseif ( isMajorFaction ) then
+		local repInfo = factionID and GetFriendshipReputation(factionID)
+
+		if repInfo and repInfo.friendshipFactionID > 0 then
+			label, minValue, maxValue, curValue = repInfo.reaction, repInfo.reactionThreshold or 0, repInfo.nextThreshold or 1, repInfo.standing or 1
+		elseif isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-	
+
 			minValue, maxValue = 0, majorFactionData.renownLevelThreshold
-			isCapped = C_MajorFactions_HasMaximumRenown(factionID) -- this may be needed
-			curValue = isCapped and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
-			--barColor = BLUE_FONT_COLOR -- Blizz makes this blue
-			factionStandingtext = RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel;
+			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+			label = format('%s%s|r %s', BLUE_COLOR_HEX, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
 		end
 	elseif C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
@@ -87,7 +81,9 @@ function DB:ReputationBar_Update()
 		bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	end
 
-	if not label then label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN end
+	if not label then
+		label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
+	end
 
 	local customColors = DB.db.colors.useCustomFactionColors
 	local color = (customColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
@@ -99,7 +95,6 @@ function DB:ReputationBar_Update()
 
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
-	--Note: utilize the factionStandingtext
 	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
 	if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
 		displayString = format('%s: [%s]', name, label)
@@ -145,17 +140,17 @@ function DB:ReputationBar_OnEnter()
 		GameTooltip:AddLine(' ')
 
 		local friendID, friendTextLevel, _
-		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = E.WoW10 and C_GossipInfo_GetFriendshipReputation(factionID) or GetFriendshipReputation(factionID) end
+		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
-		if not (E.WoW10 and C_Reputation_IsMajorFaction(factionID)) then
+		local isMajorFaction = E.WoW10 and factionID and C_Reputation_IsMajorFaction(factionID)
+		if not isMajorFaction then
 			GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 		end
 
-		if E.WoW10 and factionID and C_Reputation_IsMajorFaction(factionID) and not C_MajorFactions_HasMaximumRenown(factionID) then
+		if isMajorFaction and not C_MajorFactions_HasMaximumRenown(factionID) then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-			GameTooltip_AddColoredLine(GameTooltip, RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, BLUE_FONT_COLOR)
-			--GameTooltip:AddLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, BLUE_FONT_COLOR)
-		elseif reaction ~= _G.MAX_REPUTATION_REACTION or isParagon and not (E.WoW10 and C_Reputation_IsMajorFaction(factionID)) then
+			GameTooltip:AddLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
+		elseif not isMajorFaction and (reaction ~= _G.MAX_REPUTATION_REACTION or isParagon) then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
 		end
