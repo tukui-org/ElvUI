@@ -56,10 +56,12 @@ end
 local function HandleSkillButton(button)
 	if not button then return end
 	button:SetCheckedTexture(E.media.normTex)
+	button:GetCheckedTexture():SetColorTexture(1, 1, 1, .25)
 	button:SetPushedTexture(E.media.normTex)
+	button:GetPushedTexture():SetColorTexture(1, 1, 1, .5)
 	button.IconTexture:SetInside()
 
-	S:HandleIcon(button.IconTexture)
+	S:HandleIcon(button.IconTexture, true)
 	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
 	local nameFrame = _G[button:GetName()..'NameFrame']
