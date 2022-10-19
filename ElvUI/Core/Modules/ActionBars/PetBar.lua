@@ -13,9 +13,9 @@ local IsPetAttackAction = IsPetAttackAction
 
 local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
 local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
+local PetActionButton_StartFlash = PetActionButton_StartFlash
+local PetActionButton_StopFlash = PetActionButton_StopFlash
 
-local PetActionButton_StartFlash = PetActionBar and PetActionBar.StartFlash or PetActionButton_StartFlash
-local PetActionButton_StopFlash = PetActionBar and PetActionBar.StopFlash or PetActionButton_StopFlash
 local PetActionBar_UpdateCooldowns = PetActionBar and PetActionBar.UpdateCooldowns or PetActionBar_UpdateCooldowns
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
@@ -57,13 +57,21 @@ function AB:UpdatePet(event, unit)
 			button:SetChecked(true)
 
 			if IsPetAttackAction(i) then
-				PetActionButton_StartFlash(button)
+				if PetActionButton_StartFlash then
+					PetActionButton_StartFlash(button)
+				else
+					button:StartFlash()
+				end
 			end
 		else
 			button:SetChecked(false)
 
 			if IsPetAttackAction(i) then
-				PetActionButton_StopFlash(button)
+				if PetActionButton_StopFlash then
+					PetActionButton_StopFlash(button)
+				else
+					button:StopFlash()
+				end
 			end
 		end
 
