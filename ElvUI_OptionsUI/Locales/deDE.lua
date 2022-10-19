@@ -1,6 +1,8 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = "Mana Anzeige"
 L["Will display mana when main power is:"] = "Mana wird anzeigt, wenn die Hauptkraft ist:"
 L["%s and then %s"] = "%s und dann %s"

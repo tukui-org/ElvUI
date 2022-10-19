@@ -1,6 +1,8 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "trTR")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = "Manayi Goster"
 L["Will display mana when main power is:"] = "Ana guc, secili olan dolduktan sonra manayı gosterecek:"
 L["%s and then %s"] = "%s ve ardından %s"
