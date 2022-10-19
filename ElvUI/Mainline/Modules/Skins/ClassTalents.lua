@@ -5,6 +5,20 @@ local _G = _G
 local select = select
 local hooksecurefunc = hooksecurefunc
 
+local function HandleTalentFrameDialog(dialog)
+	if not dialog then return end
+
+	dialog:StripTextures()
+	dialog:CreateBackdrop('Transparent')
+	if dialog.AcceptButton then S:HandleButton(dialog.AcceptButton) end
+	if dialog.CancelButton then S:HandleButton(dialog.CancelButton) end
+	if dialog.DeleteButton then S:HandleButton(dialog.DeleteButton) end
+
+	S:HandleEditBox(dialog.NameControl.EditBox)
+	dialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
+	dialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
+end
+
 function S:Blizzard_ClassTalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -45,37 +59,19 @@ function S:Blizzard_ClassTalentUI()
 
 	local ImportDialog = _G.ClassTalentLoadoutImportDialog
 	if ImportDialog then
-		ImportDialog:StripTextures()
-		ImportDialog:CreateBackdrop('Transparent')
-		S:HandleButton(ImportDialog.AcceptButton)
-		S:HandleButton(ImportDialog.CancelButton)
-
+		HandleTalentFrameDialog(ImportDialog)
 		ImportDialog.ImportControl.InputContainer:StripTextures()
 		ImportDialog.ImportControl.InputContainer:CreateBackdrop('Transparent')
-		S:HandleEditBox(ImportDialog.NameControl.EditBox)
-		ImportDialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
-		ImportDialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
 	end
 
 	local CreateDialog = _G.ClassTalentLoadoutCreateDialog
 	if CreateDialog then
-		CreateDialog:StripTextures()
-		CreateDialog:CreateBackdrop('Transparent')
-		S:HandleButton(CreateDialog.AcceptButton)
-		S:HandleButton(CreateDialog.CancelButton)
-
-		S:HandleEditBox(CreateDialog.NameControl.EditBox)
-		CreateDialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
-		CreateDialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
+		HandleTalentFrameDialog(CreateDialog)
 	end
 
 	local EditDialog = _G.ClassTalentLoadoutEditDialog
 	if EditDialog then
-		EditDialog:StripTextures()
-		EditDialog:CreateBackdrop('Transparent')
-		S:HandleButton(EditDialog.AcceptButton)
-		S:HandleButton(EditDialog.DeleteButton)
-		S:HandleButton(EditDialog.CancelButton)
+		HandleTalentFrameDialog(EditDialog)
 
 		local editbox = EditDialog.LoadoutName
 		if editbox then
