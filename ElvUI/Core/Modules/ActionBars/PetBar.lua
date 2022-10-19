@@ -210,7 +210,11 @@ function AB:UpdatePetCooldowns()
 	end
 end
 
-function AB:PetBarOnHide()
+function AB:PetBar_OnShow()
+	-- holder
+end
+
+function AB:PetBar_OnHide()
 	for _, button in ipairs(bar.buttons) do
 		if button.spellDataLoadedCancelFunc then
 			button.spellDataLoadedCancelFunc()
@@ -260,7 +264,8 @@ function AB:CreateBarPet()
 		end
 	]])
 
-	bar:SetScript('OnHide', AB.PetBarOnHide)
+	bar:SetScript('OnHide', AB.PetBar_OnHide)
+	bar:SetScript('OnShow', AB.PetBar_OnShow)
 
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')
