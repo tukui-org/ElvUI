@@ -1070,6 +1070,11 @@ function AB:DisableBlizzard()
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 
+	if E.WoW10 then -- ToDO: ?
+		_G.StanceBar:SetScale(0.0001)
+		_G.StanceBar:SetAlpha(0)
+	end
+
 	if E.Retail then
 		_G.StatusTrackingBarManager:UnregisterAllEvents()
 		_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
