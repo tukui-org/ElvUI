@@ -1051,7 +1051,7 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 				hotkey:SetVertexColor(unpack(self.config.colors.usable))
 			end
 		end
-		--lib.callbacks:Fire("OnUpdateRange", self)
+		lib.callbacks:Fire("OnUpdateRange", self)
 	end
 end
 
@@ -1073,7 +1073,7 @@ function UpdateAuraCooldowns(disable)
 			local start = (duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
 			for _, button in next, buttons do
 				if start then
-					button.AuraCooldown:SetCooldown(start, duration, true)
+					button.AuraCooldown:SetCooldown(start, duration, 1)
 
 					currentAuras[button] = true
 					previousAuras[button] = nil
@@ -1462,7 +1462,7 @@ local function OnCooldownDone(self)
 	self:SetScript("OnCooldownDone", nil)
 	UpdateCooldown(button)
 
-	--lib.callbacks:Fire("OnCooldownDone", button, self)
+	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
 function UpdateCooldown(self)
@@ -1530,7 +1530,7 @@ function UpdateCooldown(self)
 		self.cooldown:SetCooldown(start, duration, modRate)
 	end
 
-	--lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, enable, modRate)
+	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, modRate)
 end
 
 function StartFlash(self)
