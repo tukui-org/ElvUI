@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ElvUI",
+    "\\ElvUI\\Core",
+    "\\ElvUI\\Core\\Locales",
+    "\\ElvUI\\Libraries\\Core",
+    "\\ElvUI_OptionsUI",
+    "\\ElvUI_OptionsUI\\Libraries",
+    "\\ElvUI_OptionsUI\\Libraries\\Ace3",
+    "\\ElvUI_OptionsUI\\Libraries\\Ace3\\AceConfig-3.0",
+    "\\ElvUI_OptionsUI\\Locales"
+  ],
+  "SelectedNode": "\\ElvUI\\Core\\Locales\\trTR.lua",
+  "PreviewInSolutionExplorer": false
+}
