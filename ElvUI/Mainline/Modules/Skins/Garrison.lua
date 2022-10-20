@@ -348,10 +348,16 @@ function S:Blizzard_GarrisonUI()
 		local unselectedTab = Report.unselectedTab
 		unselectedTab:Height(36)
 		unselectedTab:SetNormalTexture()
-		unselectedTab.selectedTex:Hide()
 
 		s:SetNormalTexture()
-		s.selectedTex:Show()
+
+		if unselectedTab.selectedTex then
+			unselectedTab.selectedTex:Hide()
+		end
+
+		if s.selectedTex then
+			s.selectedTex:Show()
+		end
 	end)
 
 	-- Landing page: Report
