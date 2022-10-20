@@ -1,6 +1,8 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Abbreviate Name"] = "Abreviar el Nombre"
+L["Max Allowed Groups"] = "Grupos Maximos Permitidos"
 L["Display Mana"] = "Mostrar mana"
 L["Will display mana when main power is:"] = "Mostrar mana cuando la poder principal es:"
 L["%s and then %s"] = "%s y entonces %s"

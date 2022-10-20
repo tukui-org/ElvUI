@@ -1,6 +1,8 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = "显示法力"
 L["Will display mana when main power is:"] = "显示法力值当主能量是:"
 L["%s and then %s"] = "%s 于 %s"
