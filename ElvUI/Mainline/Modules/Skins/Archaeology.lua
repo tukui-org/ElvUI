@@ -54,10 +54,10 @@ function S:Blizzard_ArchaeologyUI()
 		_G.ArchaeologyFrameBgRight:SetDrawLayer('BACKGROUND', 2)
 	end
 
-	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton)
-	S:HandleButton(ArchaeologyFrame.summaryPage.nextPageButton)
-	S:HandleButton(ArchaeologyFrame.completedPage.prevPageButton)
-	S:HandleButton(ArchaeologyFrame.completedPage.nextPageButton)
+	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton, nil, nil, true)
+	S:HandleButton(ArchaeologyFrame.summaryPage.nextPageButton, nil, nil, true)
+	S:HandleButton(ArchaeologyFrame.completedPage.prevPageButton, nil, nil, true)
+	S:HandleButton(ArchaeologyFrame.completedPage.nextPageButton, nil, nil, true)
 
 	ArchaeologyFrame.rankBar:StripTextures()
 	ArchaeologyFrame.rankBar:CreateBackdrop()
