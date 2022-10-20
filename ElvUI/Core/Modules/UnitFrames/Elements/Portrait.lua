@@ -129,7 +129,7 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 			self:SetRotation(rad(db.rotation))
 		end
 
-		self:SetDesaturation(db.desaturation)
+		self:SetDesaturation(db.desaturation and 1 or 0)
 		self:SetPaused(db.paused)
 	elseif db.style == 'Class' then
 		local _, className = UnitClass(unit)

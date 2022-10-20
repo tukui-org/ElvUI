@@ -95,7 +95,7 @@ function AB:UpdatePet(event, unit)
 				button:StopFlash()
 			end
 
-			button.icon:SetDesaturation(true)
+			button.icon:SetDesaturation(1)
 			button:SetChecked(false)
 		end
 	end
