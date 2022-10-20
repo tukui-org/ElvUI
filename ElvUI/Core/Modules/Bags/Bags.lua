@@ -461,7 +461,7 @@ function B:UpdateItemUpgradeIcon(slot)
 		return
 	end
 
-	local itemIsUpgrade, containerID, slotID = nil, slot.bagID, slot.slotID
+	local itemIsUpgrade, containerID, slotID = nil, slot.BagID, slot.SlotID
 
 	-- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
 	if _G.PawnIsContainerItemAnUpgrade then itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(containerID, slotID) end
@@ -499,7 +499,7 @@ function B:NewItemGlowSlotSwitch(slot, show)
 			slot.newItemGlow:Hide()
 
 			-- also clear them on blizzard's side
-			C_NewItems_RemoveNewItem(slot.bagID, slot.slotID)
+			C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
 		end
 	end
 end
@@ -552,7 +552,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 	elseif B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
 		r, g, b = qR, qG, qB
 	else
-		local bag = slot.bagFrame.Bags[slot.bagID]
+		local bag = slot.bagFrame.Bags[slot.BagID]
 		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
 			r, g, b, a = unpack(colors)
@@ -754,9 +754,9 @@ end
 function B:Slot_OnLeave() end
 
 function B:Holder_OnClick(button)
-	if self.bagID == BACKPACK_CONTAINER then
+	if self.BagID == BACKPACK_CONTAINER then
 		B:BagItemAction(button, self, PutItemInBackpack)
-	elseif self.bagID == KEYRING_CONTAINER then
+	elseif self.BagID == KEYRING_CONTAINER then
 		B:BagItemAction(button, self, PutKeyInKeyRing)
 	elseif self.isBank then
 		B:BagItemAction(button, self, PutItemInBag, self:GetInventorySlot())
@@ -768,17 +768,17 @@ end
 function B:Holder_OnEnter()
 	if not self.bagFrame then return end
 
-	B:SetSlotAlphaForBag(self.bagFrame, self.bagID)
+	B:SetSlotAlphaForBag(self.bagFrame, self.BagID)
 
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 
-		if self.bagID == BACKPACK_CONTAINER then
+		if self.BagID == BACKPACK_CONTAINER then
 			local kb = GetBindingKey('TOGGLEBACKPACK')
 			GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-		elseif self.bagID == BANK_CONTAINER then
+		elseif self.BagID == BANK_CONTAINER then
 			GameTooltip:AddLine(_G.BANK, 1, 1, 1)
-		elseif self.bagID == KEYRING_CONTAINER then
+		elseif self.BagID == KEYRING_CONTAINER then
 			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
 		elseif self.bag.numSlots == 0 then
 			GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1, 1, 1)
@@ -815,7 +815,7 @@ function B:Cooldown_OnHide()
 end
 
 function B:UpdateCooldown(slot)
-	local start, duration, enabled = GetContainerItemCooldown(slot.bagID, slot.slotID)
+	local start, duration, enabled = GetContainerItemCooldown(slot.BagID, slot.SlotID)
 	if duration > 0 and enabled == 0 then
 		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 	else
@@ -857,10 +857,10 @@ function B:AssignBagFlagMenu()
 	local holder = B.AssignBagDropdown.holder
 	B.AssignBagDropdown.holder = nil
 
-	if not (holder and holder.bagID) then return end
+	if not (holder and holder.BagID) then return end
 
 	local info = _G.UIDropDownMenu_CreateInfo()
-	if holder.bagID > 0 and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(holder.bagID)) then -- The actual bank has ID -1, backpack has ID 0, we want to make sure we're looking at a regular or bank bag
+	if holder.BagID > 0 and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(holder.BagID)) then -- The actual bank has ID -1, backpack has ID 0, we want to make sure we're looking at a regular or bank bag
 		info.text = BAG_FILTER_ASSIGN_TO
 		info.isTitle = 1
 		info.notCheckable = 1
@@ -877,10 +877,10 @@ function B:AssignBagFlagMenu()
 				info.func = function(_, _, _, value)
 					value = not value
 
-					if holder.bagID > NUM_BAG_SLOTS then
-						SetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, i, value)
+					if holder.BagID > NUM_BAG_SLOTS then
+						SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, i, value)
 					else
-						SetBagSlotFlag(holder.bagID, i, value)
+						SetBagSlotFlag(holder.BagID, i, value)
 					end
 
 					holder.tempflag = (value and i) or -1
@@ -889,10 +889,10 @@ function B:AssignBagFlagMenu()
 				if holder.tempflag then
 					info.checked = holder.tempflag == i
 				else
-					if holder.bagID > NUM_BAG_SLOTS then
-						info.checked = GetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, i)
+					if holder.BagID > NUM_BAG_SLOTS then
+						info.checked = GetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, i)
 					else
-						info.checked = GetBagSlotFlag(holder.bagID, i)
+						info.checked = GetBagSlotFlag(holder.BagID, i)
 					end
 				end
 
@@ -915,17 +915,17 @@ function B:AssignBagFlagMenu()
 	info.disabled = nil
 
 	info.text = BAG_FILTER_IGNORE
-	info.checked = B:IsSortIgnored(holder.bagID)
+	info.checked = B:IsSortIgnored(holder.BagID)
 
 	info.func = function(_, _, _, value)
-		if holder.bagID == BANK_CONTAINER then
+		if holder.BagID == BANK_CONTAINER then
 			SetBankAutosortDisabled(not value)
-		elseif holder.bagID == BACKPACK_CONTAINER then
+		elseif holder.BagID == BACKPACK_CONTAINER then
 			SetBackpackAutosortDisabled(not value)
-		elseif holder.bagID > NUM_BAG_SLOTS then
-			SetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
+		elseif holder.BagID > NUM_BAG_SLOTS then
+			SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		else
-			SetBagSlotFlag(holder.bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
+			SetBagSlotFlag(holder.BagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		end
 	end
 
@@ -945,9 +945,9 @@ function B:IsSortIgnored(bagID)
 end
 
 function B:GetBagAssignedInfo(holder)
-	if not (holder and holder.bagID and holder.bagID > 0) then return end
+	if not (holder and holder.BagID and holder.BagID > 0) then return end
 
-	local inventoryID = ContainerIDToInventoryID(holder.bagID)
+	local inventoryID = ContainerIDToInventoryID(holder.BagID)
 	if IsInventoryItemProfessionBag('player', inventoryID) then return end
 
 	-- clear tempflag from AssignBagFlagMenu
@@ -955,7 +955,7 @@ function B:GetBagAssignedInfo(holder)
 
 	local active, color
 	if E.WoW10 then
-		local activeBagFilter = _G.ContainerFrameSettingsManager:GetFilterFlag(holder.bagID)
+		local activeBagFilter = _G.ContainerFrameSettingsManager:GetFilterFlag(holder.BagID)
 
 		for i, flag in _G.ContainerFrameUtil_EnumerateBagGearFilters() do
 			active = activeBagFilter == flag
@@ -966,10 +966,10 @@ function B:GetBagAssignedInfo(holder)
 	else
 		for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
 			if i ~= LE_BAG_FILTER_FLAG_JUNK then --ignore this one
-				if holder.bagID > NUM_BAG_SLOTS then
-					active = GetBankBagSlotFlag(holder.bagID - NUM_BAG_SLOTS, i)
+				if holder.BagID > NUM_BAG_SLOTS then
+					active = GetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, i)
 				else
-					active = GetBagSlotFlag(holder.bagID, i)
+					active = GetBagSlotFlag(holder.BagID, i)
 				end
 				if active then
 					holder.filterIcon:SetTexture(B.BAG_FILTER_ICONS[i])
@@ -1194,9 +1194,9 @@ function B:SetBagAssignments(holder, skip)
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
-	bag.type = select(2, GetContainerNumFreeSlots(holder.bagID))
+	bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
 
-	if holder.bagID == KEYRING_CONTAINER then
+	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
 	end
 
@@ -1207,7 +1207,7 @@ function B:SetBagAssignments(holder, skip)
 	end
 
 	if frame.isBank and frame:IsShown() then
-		if holder.bagID ~= BANK_CONTAINER then
+		if holder.BagID ~= BANK_CONTAINER then
 			BankFrameItemButton_Update(holder)
 		end
 
@@ -1297,7 +1297,7 @@ function B:OnEvent(event, ...)
 		end
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
 		for slot in next, B.QuestSlots do
-			B:UpdateSlot(self, slot.bagID, slot.slotID)
+			B:UpdateSlot(self, slot.BagID, slot.SlotID)
 		end
 	elseif event == 'ITEM_LOCK_CHANGED' then
 		B:UpdateSlot(self, ...)
@@ -1475,7 +1475,7 @@ function B:SetButtonTexture(button, texture)
 end
 
 function B:BagItemAction(button, holder, func, id)
-	if E.Retail and button == 'RightButton' and holder.bagID then
+	if E.Retail and button == 'RightButton' and holder.BagID then
 		B.AssignBagDropdown.holder = holder
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif CursorHasItem() then
@@ -1488,7 +1488,7 @@ end
 function B:ToggleBag(holder)
 	if not holder then return end
 
-	local slotID = 'bag'..holder.bagID
+	local slotID = 'bag'..holder.BagID
 	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
 
 	holder.shownIcon:SetTexture(B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
@@ -1635,7 +1635,7 @@ function B:ConstructContainerFrame(name, isBank)
 		bag.name = bagName
 		bag:SetID(bagID)
 
-		holder.bagID = bagID
+		holder.BagID = bagID
 		holder.bag = bag
 		holder.frame = f
 		holder.index = i
@@ -1971,8 +1971,8 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	end
 
 	slot.bagFrame = f
-	slot.bagID = bagID
-	slot.slotID = slotID
+	slot.BagID = bagID
+	slot.SlotID = slotID -- dont use `slotID` it taints since WoW10 in ContainerFrameItemButtonMixin:GetBagID()
 	slot.name = slotName
 
 	local newItemTexture = _G[slotName..'NewItemTexture']
@@ -2079,7 +2079,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 end
 
 function B:ReagentSplitStack(split)
-	SplitContainerItem(REAGENTBANK_CONTAINER, self.slotID, split)
+	SplitContainerItem(REAGENTBANK_CONTAINER, self.SlotID, split)
 end
 
 function B:ToggleBags(bagID)
