@@ -52,6 +52,13 @@ function S:Blizzard_ClassTalentUI()
 			if not specContentFrame.isSkinned then
 				S:HandleButton(specContentFrame.ActivateButton)
 
+				if specContentFrame.SpellButtonPool then
+					for button in specContentFrame.SpellButtonPool:EnumerateActive() do
+						button.Ring:Hide()
+						S:HandleIcon(button.Icon, true) -- Hide Mask
+					end
+				end
+
 				specContentFrame.isSkinned = true
 			end
 		end
