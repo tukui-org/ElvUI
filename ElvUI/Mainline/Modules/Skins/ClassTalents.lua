@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 local hooksecurefunc = hooksecurefunc
+local GetSpellTexture = GetSpellTexture
 
 local function HandleTalentFrameDialog(dialog)
 	if not dialog then return end
@@ -54,8 +55,18 @@ function S:Blizzard_ClassTalentUI()
 
 				if specContentFrame.SpellButtonPool then
 					for button in specContentFrame.SpellButtonPool:EnumerateActive() do
-						button.Ring:Hide()
-						S:HandleIcon(button.Icon, true) -- Hide Mask
+						if button.Ring then
+							button.Ring:Hide()
+						end
+
+						if button.spellID then
+							local texture = GetSpellTexture(button.spellID)
+							if texture then
+								button.Icon:SetTexture(texture)
+							end
+						end
+
+						S:HandleIcon(button.Icon, true)
 					end
 				end
 
