@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 
 --ToDo: WoW10
 function S:Blizzard_MajorFactions()
@@ -12,7 +13,13 @@ function S:Blizzard_MajorFactions()
 	S:HandleCloseButton(MajorFactionRenownFrame.CloseButton)
 
 	if E.private.skins.parchmentRemoverEnable then
-		MajorFactionRenownFrame.NineSlice:Hide()
+		hooksecurefunc(MajorFactionRenownFrame, 'SetUpMajorFactionData', function(self)
+			self.NineSlice:Hide()
+			self.Background:Hide()
+			self.BackgroundShadow:Hide()
+			self.Divider:Hide()
+			self.CloseButton.Border:Hide()
+		end)
 	end
 end
 
