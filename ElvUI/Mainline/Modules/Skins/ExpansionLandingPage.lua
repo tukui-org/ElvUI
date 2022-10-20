@@ -16,8 +16,11 @@ function S:Blizzard_ExpansionLandingPage()
 	if frame.Overlay then
 		for i = 1, frame.Overlay:GetNumChildren() do
 			local child = select(i, frame.Overlay:GetChildren())
-			child:StripTextures()
-			child:SetTemplate('Transparent')
+
+			if E.private.skins.parchmentRemoverEnable then
+				child:StripTextures()
+				child:SetTemplate('Transparent')
+			end
 
 			if child.DragonridingPanel then
 				panel = child
