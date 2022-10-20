@@ -1263,17 +1263,6 @@ end
 
 do
 	S.FollowerListUpdateDataFrames = {}
-	local function UpdateData(dataFrame)
-		if not dataFrame or not S.FollowerListUpdateDataFrames[dataFrame:GetName()] then return end
-
-		if dataFrame.ScrollBox then
-			S:HandleFollowerListOnUpdateDataFunc(dataFrame.ScrollBox.ScrollTarget, {dataFrame.ScrollBox.ScrollTarget:GetChildren()})
-		elseif dataFrame.listScroll then
-			local buttons = dataFrame.listScroll.buttons
-			local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
-			S:HandleFollowerListOnUpdateDataFunc(buttons, buttons and #buttons, offset, dataFrame.listScroll and #dataFrame.listScroll)
-		end
-	end
 
 	local function UpdateFollower(button)
 		if not E.WoW10 then
@@ -1321,20 +1310,20 @@ do
 
 			local portrait = follower.PortraitFrame
 			if portrait then
-				if not follower.PortraitFrameStyled then
-					S:HandleGarrisonPortrait(portrait)
-					portrait:ClearAllPoints()
-					portrait:Point('TOPLEFT', 3, -3)
+				S:HandleGarrisonPortrait(portrait, true)
 
+				portrait:ClearAllPoints()
+				portrait:Point('TOPLEFT', 3, -3)
+
+				if not follower.PortraitFrameStyled then
 					hooksecurefunc(portrait, 'SetupPortrait', UpdateFollowerQuality)
 					follower.PortraitFrameStyled = true
 				end
 
-				if portrait.quality then
-					local color = ITEM_QUALITY_COLORS[portrait.quality]
-					if color and portrait.backdrop then
-						portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-					end
+				local quality = portrait.quality or (follower.info and follower.info.quality)
+				local color = portrait.backdrop and ITEM_QUALITY_COLORS[quality]
+				if color then -- sometimes it doesn't have this data since WoW10
+					portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 			end
 
@@ -1349,23 +1338,25 @@ do
 	end
 
 	function S:HandleFollowerListOnUpdateDataFunc(buttons, numButtons, offset, numFollowers)
-		if not buttons or (not numButtons or numButtons == 0) then return end
+		if not buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
 
-		if type(numButtons) == 'table' then
-			for _, button in ipairs(numButtons) do
-				UpdateFollower(button)
-			end
-		elseif offset and numFollowers then
-			for i = 1, numButtons do
-				local button = buttons[i]
-				if button then
-					local index = offset + i -- adjust index
-					if index <= numFollowers then
-						UpdateFollower(button)
-					end
+		for i = 1, numButtons do
+			local button = buttons[i]
+			if button then
+				local index = offset + i -- adjust index
+				if index <= numFollowers then
+					UpdateFollower(button)
 				end
 			end
 		end
+	end
+
+	local function UpdateListScroll(dataFrame)
+		if not (dataFrame and dataFrame.listScroll) or not S.FollowerListUpdateDataFrames[dataFrame:GetName()] then return end
+
+		local buttons = dataFrame.listScroll.buttons
+		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
+		S:HandleFollowerListOnUpdateDataFunc(buttons, buttons and #buttons, offset, dataFrame.listScroll and #dataFrame.listScroll)
 	end
 
 	function S:HandleFollowerListOnUpdateData(frame)
@@ -1376,7 +1367,11 @@ do
 		if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
 		S.FollowerListUpdateDataFrames[frame] = true
 
-		hooksecurefunc(_G[frame], 'UpdateData', UpdateData)
+		if _G.GarrisonFollowerList_InitButton then
+			hooksecurefunc(_G, 'GarrisonFollowerList_InitButton', UpdateFollower)
+		else
+			hooksecurefunc(_G[frame], 'UpdateData', UpdateListScroll) -- pre WoW10
+		end
 	end
 end
 
@@ -1395,8 +1390,13 @@ local function HandleFollowerRole(roleIcon, atlas)
 	end
 end
 
-function S:HandleGarrisonPortrait(portrait)
-	if not portrait.Portrait then return end
+function S:HandleGarrisonPortrait(portrait, updateAtlas)
+	local main = portrait.Portrait
+	if not main then return end
+
+	if not main.backdrop then
+		main:CreateBackdrop('Transparent')
+	end
 
 	local level = portrait.Level or portrait.LevelText
 	if level then
@@ -1408,18 +1408,16 @@ function S:HandleGarrisonPortrait(portrait)
 		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
 	end
 
-	portrait.Portrait:CreateBackdrop('Transparent')
-
 	if portrait.PortraitRing then
 		portrait.PortraitRing:Hide()
 		portrait.PortraitRingQuality:SetTexture('')
 		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
-		portrait.PortraitRingCover:SetAllPoints(portrait.Portrait.backdrop)
+		portrait.PortraitRingCover:SetAllPoints(main.backdrop)
 	end
 
 	if portrait.Empty then
 		portrait.Empty:SetColorTexture(0, 0, 0)
-		portrait.Empty:SetAllPoints(portrait.Portrait)
+		portrait.Empty:SetAllPoints(main)
 	end
 
 	if portrait.Highlight then portrait.Highlight:Hide() end
@@ -1432,13 +1430,18 @@ function S:HandleGarrisonPortrait(portrait)
 
 		local roleIcon = portrait.HealthBar.RoleIcon
 		roleIcon:ClearAllPoints()
-		roleIcon:Point('CENTER', portrait.Portrait.backdrop, 'TOPRIGHT')
-		hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
+		roleIcon:Point('CENTER', main.backdrop, 'TOPRIGHT')
+
+		if updateAtlas then
+			HandleFollowerRole(roleIcon, roleIcon:GetAtlas())
+		else
+			hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
+		end
 
 		local background = portrait.HealthBar.Background
 		background:SetAlpha(0)
-		background:SetInside(portrait.Portrait.backdrop, 2, 1) -- unsnap it
-		background:Point('TOPLEFT', portrait.Portrait.backdrop, 'BOTTOMLEFT', 2, 7)
+		background:SetInside(main.backdrop, 2, 1) -- unsnap it
+		background:Point('TOPLEFT', main.backdrop, 'BOTTOMLEFT', 2, 7)
 		portrait.HealthBar.Health:SetTexture(E.media.normTex)
 	end
 end
