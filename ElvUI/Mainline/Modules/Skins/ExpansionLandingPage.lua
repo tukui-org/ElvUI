@@ -2,35 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 
-local hooksecurefunc = hooksecurefunc
-
---ToDo: WoW10
-function S:Blizzard_ExpansionLandingPage()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.expansionLanding) then return end
-
-	local frame = _G.ExpansionLandingPage
-	local panel
-
-	if frame.Overlay then
-		for i = 1, frame.Overlay:GetNumChildren() do
-			local child = select(i, frame.Overlay:GetChildren())
-
-			if E.private.skins.parchmentRemoverEnable then
-				child:StripTextures()
-				child:SetTemplate('Transparent')
-			end
-
-			if child.DragonridingPanel then
-				panel = child
-				break
-			end
-		end
-	end
-
-	if not panel then return end
-
+local function HandlePanel(panel)
 	if panel.DragonridingPanel then
 		S:HandleButton(panel.DragonridingPanel.SkillsButton)
 	end
@@ -40,7 +14,25 @@ function S:Blizzard_ExpansionLandingPage()
 	end
 
 	if panel.MajorFactionList then
-		-- ...
+		-- 🧁
+	end
+end
+
+function S:Blizzard_ExpansionLandingPage()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.expansionLanding) then return end
+
+	local frame = _G.ExpansionLandingPage
+	if frame.Overlay then
+		for _, child in next, { frame.Overlay:GetChildren() } do
+			if E.private.skins.parchmentRemoverEnable then
+				child:StripTextures()
+				child:SetTemplate('Transparent')
+			end
+
+			if child.DragonridingPanel then
+				HandlePanel(child)
+			end
+		end
 	end
 end
 
