@@ -6,14 +6,14 @@ local _G = _G
 function S:Blizzard_GenericTraitUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.genericTrait) then return end
 
-	local GenericTraitFrame = _G.GenericTraitFrame
+	local GenericTrait = _G.GenericTraitFrame
 
 	if E.private.skins.parchmentRemoverEnable then
-		GenericTraitFrame:StripTextures()
+		GenericTrait:StripTextures()
 	end
 
-	GenericTraitFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(GenericTraitFrame.CloseButton)
+	GenericTrait:SetTemplate('Transparent')
+	S:HandleCloseButton(GenericTrait.CloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_GenericTraitUI')

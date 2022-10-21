@@ -49,7 +49,7 @@ local function UpdateKeybindButtons(self)
 end
 
 local function UpdateHeaderExpand(self, expanded)
-	self.__texture:SetAtlas(expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand', true)
+	self.collapseTex:SetAtlas(expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand', true)
 
 	UpdateKeybindButtons(self)
 end
@@ -138,8 +138,8 @@ function S:SettingsPanel()
 						child.Button.hl:SetInside(child.Button.backdrop)
 						child.Button.hl:SetBlendMode('ADD')
 
-						child.__texture = child.Button.backdrop:CreateTexture(nil, 'OVERLAY')
-						child.__texture:SetPoint('RIGHT', -10, 0)
+						child.collapseTex = child.Button.backdrop:CreateTexture(nil, 'OVERLAY')
+						child.collapseTex:SetPoint('RIGHT', -10, 0)
 
 						UpdateHeaderExpand(child, false)
 						hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)

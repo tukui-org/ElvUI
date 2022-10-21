@@ -11,6 +11,7 @@ local function HandleTalentFrameDialog(dialog)
 
 	dialog:StripTextures()
 	dialog:CreateBackdrop('Transparent')
+
 	if dialog.AcceptButton then S:HandleButton(dialog.AcceptButton) end
 	if dialog.CancelButton then S:HandleButton(dialog.CancelButton) end
 	if dialog.DeleteButton then S:HandleButton(dialog.DeleteButton) end

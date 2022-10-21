@@ -6,13 +6,13 @@ local _G = _G
 function S:EditorManagerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.editor) then return end
 
-	local EditModeManagerFrame = _G.EditModeManagerFrame
-	EditModeManagerFrame:StripTextures()
-	EditModeManagerFrame:CreateBackdrop('Transparent') -- Adjust the backdrop FrameStrata
-	S:HandleCloseButton(EditModeManagerFrame.CloseButton)
-	S:HandleButton(EditModeManagerFrame.RevertAllChangesButton)
-	S:HandleButton(EditModeManagerFrame.SaveChangesButton)
-	S:HandleDropDownBox(EditModeManagerFrame.LayoutDropdown.DropDownMenu)
+	local EditManager = _G.EditModeManagerFrame
+	EditManager:StripTextures()
+	EditManager:CreateBackdrop('Transparent') -- Adjust the backdrop FrameStrata
+	S:HandleCloseButton(EditManager.CloseButton)
+	S:HandleButton(EditManager.RevertAllChangesButton)
+	S:HandleButton(EditManager.SaveChangesButton)
+	S:HandleDropDownBox(EditManager.LayoutDropdown.DropDownMenu)
 
 	-- ToDO: Wait if it not taints anymore xD
 end

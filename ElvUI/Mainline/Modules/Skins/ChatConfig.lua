@@ -186,6 +186,7 @@ function S:ChatConfig()
 	S:HandleButton(_G.ChatConfigFrame.ToggleChatButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton, 'up')
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton, 'down')
+
 	_G.ChatConfigMoveFilterUpButton:SetSize(22, 22)
 	_G.ChatConfigMoveFilterDownButton:SetSize(22, 22)
 	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint('RIGHT', _G.ChatConfigCombatSettingsFiltersDeleteButton, 'LEFT', -1, 0)
