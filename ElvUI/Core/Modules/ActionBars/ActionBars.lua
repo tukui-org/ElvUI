@@ -104,30 +104,21 @@ AB.barDefaults = {
 		bindButtons = 'ELVUIBAR10BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
-	--[[barX = {
-		page = 11,
-		bindButtons = 'MULTIACTIONBAR5BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},barX = {
-		page = 12,
-		bindButtons = 'MULTIACTIONBAR5BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	barX = {
+	bar13 = {
 		page = 13,
 		bindButtons = 'MULTIACTIONBAR5BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
-	barX = {
+	bar14 = {
 		page = 14,
 		bindButtons = 'MULTIACTIONBAR6BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
-	barX = {
+	bar15 = {
 		page = 15,
 		bindButtons = 'MULTIACTIONBAR7BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	}]]
+	}
 }
 
 do
@@ -1596,6 +1587,12 @@ function AB:Initialize()
 
 	for i = 1, 10 do
 		AB:CreateBar(i)
+	end
+
+	if E.WoW10 then
+		for i = 13, 15 do
+			AB:CreateBar(i)
+		end
 	end
 
 	AB:CreateBarPet()

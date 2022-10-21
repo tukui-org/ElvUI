@@ -2632,6 +2632,12 @@ for i = 1, 10 do
 	P.actionbar['bar'..i] = bar
 end
 
+if E.WoW10 then
+	P.actionbar['bar13'] = CopyTable(P.actionbar.bar1)
+	P.actionbar['bar14'] = CopyTable(P.actionbar.bar1)
+	P.actionbar['bar15'] = CopyTable(P.actionbar.bar1)
+end
+
 for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
 	local db = P.actionbar[bar]
 	db.frameStrata = 'LOW'
