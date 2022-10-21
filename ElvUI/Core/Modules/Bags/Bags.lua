@@ -979,13 +979,13 @@ function B:GetBagAssignedInfo(holder, isBank)
 	holder.filterIcon:SetTexture(icon)
 	holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 
-	if not active then
-		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		holder.forcedBorderColors = nil
-	else
+	if active then
 		local r, g, b, a = unpack(color or B.AssignmentColors[0])
 		holder:SetBackdropBorderColor(r, g, b, a)
 		holder.forcedBorderColors = {r, g, b, a}
+	else
+		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		holder.forcedBorderColors = nil
 		return active
 	end
 end
