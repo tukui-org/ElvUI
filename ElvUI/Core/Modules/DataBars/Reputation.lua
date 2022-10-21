@@ -38,7 +38,6 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local renownColor = DB.db.colors.factionColors[10]
 	local displayString, textFormat, label, rewardPending = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local standingText, friendshipID, nextThreshold, _
@@ -65,6 +64,7 @@ function DB:ReputationBar_Update()
 			label, minValue, maxValue, curValue = repInfo.reaction, repInfo.reactionThreshold or 0, repInfo.nextThreshold or 1, repInfo.standing or 1
 		elseif isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+			local renownColor = DB.db.colors.factionColors[10]
 			local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
 
 			reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
