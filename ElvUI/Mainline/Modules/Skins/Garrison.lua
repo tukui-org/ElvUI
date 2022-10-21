@@ -319,7 +319,7 @@ function S:Blizzard_GarrisonUI()
 
 	if E.private.skins.parchmentRemoverEnable then
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
-			tab:SetHighlightTexture()
+			tab:SetHighlightTex()
 			tab.Text:ClearAllPoints()
 			tab.Text:Point('CENTER')
 
@@ -347,9 +347,9 @@ function S:Blizzard_GarrisonUI()
 	hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
 		local unselectedTab = Report.unselectedTab
 		unselectedTab:Height(36)
-		unselectedTab:SetNormalTexture()
+		unselectedTab:SetNormalTex()
 
-		s:SetNormalTexture()
+		s:SetNormalTex()
 
 		if unselectedTab.selectedTex then
 			unselectedTab.selectedTex:Hide()

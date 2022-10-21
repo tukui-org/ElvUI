@@ -129,14 +129,14 @@ function S:Blizzard_LookingForGroupUI()
 	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button, elementData)
 		S:HandleCheckBox(button.CheckButton, nil, true)
 		button.CheckButton:SetChecked(LFGListingFrame:IsActivitySelected(elementData.activityID))
-		button.CheckButton:SetCheckedTexture([[Interface\Buttons\UI-CheckBox-Check]])
+		button.CheckButton:SetCheckedTex([[Interface\Buttons\UI-CheckBox-Check]])
 	end)
 
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
 		if isCollapsed then
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
+			button.ExpandOrCollapseButton:SetNormalTex(E.Media.Textures.PlusButton)
 		else
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
+			button.ExpandOrCollapseButton:SetNormalTex(E.Media.Textures.MinusButton)
 		end
 
 		S:HandleCheckBox(button.CheckButton, nil, true)

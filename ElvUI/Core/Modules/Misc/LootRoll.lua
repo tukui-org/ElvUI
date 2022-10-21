@@ -109,10 +109,10 @@ local function RollTexCoords(f, icon, rolltype, minX, maxX, minY, maxY)
 end
 
 local function RollButtonTextures(f, texture, rolltype)
-	f:SetNormalTexture(texture)
-	f:SetPushedTexture(texture)
-	f:SetDisabledTexture(texture)
-	f:SetHighlightTexture(texture)
+	f:SetNormalTex(texture)
+	f:SetPushedTex(texture)
+	f:SetDisabledTex(texture)
+	f:SetHighlightTex(texture)
 
 	f.normalTex = f:GetNormalTexture()
 	f.disabledTex = f:GetDisabledTexture()

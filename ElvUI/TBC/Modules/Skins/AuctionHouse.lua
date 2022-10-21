@@ -102,7 +102,7 @@ function S:Blizzard_AuctionUI()
 
 	for _, Tab in pairs(SortTabs) do
 		Tab:StripTextures()
-		Tab:SetNormalTexture([[Interface\Buttons\UI-SortArrow]])
+		Tab:SetNormalTex([[Interface\Buttons\UI-SortArrow]])
 		Tab:StyleButton()
 	end
 
@@ -234,7 +234,7 @@ function S:Blizzard_AuctionUI()
 			ItemButton.IconBorder:SetAlpha(0)
 
 			Button:StripTextures()
-			Button:SetHighlightTexture(E.media.blankTex)
+			Button:SetHighlightTex(E.media.blankTex)
 			Button:GetHighlightTexture():SetVertexColor(1, 1, 1, .2)
 
 			ItemButton:GetNormalTexture():SetTexture()

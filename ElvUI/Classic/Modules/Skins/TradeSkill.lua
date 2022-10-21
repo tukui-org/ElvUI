@@ -37,10 +37,10 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)
 	TradeSkillCollapseAllButton:GetNormalTexture():Size(15)
 
-	TradeSkillCollapseAllButton:SetHighlightTexture()
+	TradeSkillCollapseAllButton:SetHighlightTex()
 	TradeSkillCollapseAllButton.SetHighlightTexture = E.noop
 
-	TradeSkillCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)
+	TradeSkillCollapseAllButton:SetDisabledTex(E.Media.Textures.MinusButton)
 	TradeSkillCollapseAllButton.SetDisabledTexture = E.noop
 	TradeSkillCollapseAllButton:GetDisabledTexture():SetPoint('LEFT', 3, 2)
 	TradeSkillCollapseAllButton:GetDisabledTexture():Size(15)
@@ -74,17 +74,17 @@ function S:Blizzard_TradeSkillUI()
 			local texture = button:GetNormalTexture():GetTexture()
 			if texture then
 				if strfind(texture, 'MinusButton') then
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
+					button:SetNormalTex(E.Media.Textures.MinusButton)
 				elseif strfind(texture, 'PlusButton') then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
+					button:SetNormalTex(E.Media.Textures.PlusButton)
 				end
 			end
 		end
 
 		if TradeSkillCollapseAllButton.collapsed then
-			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
+			TradeSkillCollapseAllButton:SetNormalTex(E.Media.Textures.PlusButton)
 		else
-			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
+			TradeSkillCollapseAllButton:SetNormalTex(E.Media.Textures.MinusButton)
 		end
 	end)
 

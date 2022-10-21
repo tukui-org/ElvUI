@@ -183,7 +183,7 @@ function S:CharacterFrame()
 		factionName.SetWidth = E.noop
 
 		factionHeader:GetNormalTexture():Size(14)
-		factionHeader:SetHighlightTexture()
+		factionHeader:SetHighlightTex()
 		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
 
 		factionWar:StripTextures()
@@ -205,9 +205,9 @@ function S:CharacterFrame()
 			factionIndex = factionOffset + i
 			if factionIndex <= numFactions then
 				if factionHeader.isCollapsed then
-					factionHeader:SetNormalTexture(E.Media.Textures.PlusButton)
+					factionHeader:SetNormalTex(E.Media.Textures.PlusButton)
 				else
-					factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
+					factionHeader:SetNormalTex(E.Media.Textures.MinusButton)
 				end
 			end
 		end
@@ -234,13 +234,13 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
 
-	_G.SkillFrameCollapseAllButton:SetHighlightTexture()
+	_G.SkillFrameCollapseAllButton:SetHighlightTex()
 
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
 		if strfind(_G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture(), 'MinusButton') then
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
+			_G.SkillFrameCollapseAllButton:SetNormalTex(E.Media.Textures.MinusButton)
 		else
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
+			_G.SkillFrameCollapseAllButton:SetNormalTex(E.Media.Textures.PlusButton)
 		end
 	end)
 
@@ -260,15 +260,15 @@ function S:CharacterFrame()
 		background:SetTexture(nil)
 
 		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture()
+		label:SetHighlightTex()
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID)
 		local skillLine = _G['SkillTypeLabel'..statusBarID]
 		if strfind(skillLine:GetNormalTexture():GetTexture(), 'MinusButton') then
-			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
+			skillLine:SetNormalTex(E.Media.Textures.MinusButton)
 		else
-			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
+			skillLine:SetNormalTex(E.Media.Textures.PlusButton)
 		end
 	end)
 

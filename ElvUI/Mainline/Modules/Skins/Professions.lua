@@ -15,9 +15,9 @@ end
 local function ReskinQualityContainer(container)
 	local button = container.Button
 	button:StripTextures()
-	button:SetNormalTexture()
-	button:SetPushedTexture()
-	button:SetHighlightTexture()
+	button:SetNormalTex()
+	button:SetPushedTex()
+	button:SetHighlightTex()
 	S:HandleIcon(button.Icon, true)
 	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop) -- ToDO: WoW10
 	HandleInputBox(container.EditBox)
@@ -26,8 +26,8 @@ end
 local function ReskinSlotButton(button)
 	if button and not button.isSkinned then
 		button:StripTextures()
-		button:SetNormalTexture()
-		button:SetPushedTexture()
+		button:SetNormalTex()
+		button:SetPushedTex()
 
 		S:HandleIcon(button.Icon, true)
 		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
@@ -85,8 +85,8 @@ function S:Blizzard_Professions()
 			button:StripTextures()
 			S:HandleIcon(button.icon, true)
 			S:HandleIconBorder(button.IconBorder, button.icon.backdrop) -- ToDO: WoW10 Fix Icon Border
-			button:SetNormalTexture()
-			button:SetPushedTexture()
+			button:SetNormalTex()
+			button:SetPushedTex()
 		end
 	end
 
@@ -180,9 +180,9 @@ function S:Blizzard_Professions()
 				local itemContainer = child.ItemContainer
 				if itemContainer then
 					local item = itemContainer.Item
-					item:SetNormalTexture()
-					item:SetPushedTexture()
-					item:SetHighlightTexture()
+					item:SetNormalTex()
+					item:SetPushedTex()
+					item:SetHighlightTex()
 
 					local icon = item:GetRegions()
 					S:HandleIcon(icon, true)

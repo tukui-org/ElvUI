@@ -10,7 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local function SetupButtonHighlight(button, backdrop)
 	if not button then return end
 
-	button:SetHighlightTexture(E.media.normTex)
+	button:SetHighlightTex(E.media.normTex)
 	local hl = button:GetHighlightTexture()
 	hl:SetVertexColor(0.8, 0.8, 0.8, .25)
 	hl:SetInside(backdrop)
@@ -26,7 +26,7 @@ local function StyleSearchButton(button)
 		S:HandleIcon(icon)
 	end
 
-	button:SetHighlightTexture(E.media.normTex)
+	button:SetHighlightTex(E.media.normTex)
 	local hl = button:GetHighlightTexture()
 	hl:SetVertexColor(0.8, 0.8, 0.8, .25)
 	hl:SetInside()

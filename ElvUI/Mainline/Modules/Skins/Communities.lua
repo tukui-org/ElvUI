@@ -150,7 +150,7 @@ function S:Blizzard_Communities()
 				child.backdrop:Point('TOPLEFT', 5, -5)
 				child.backdrop:Point('BOTTOMRIGHT', -10, 5)
 
-				child:SetHighlightTexture('') -- ToDO: WoW10
+				child:SetHighlightTex('') -- ToDO: WoW10
 				child.IconRing:SetAlpha(0)
 				child.Background:Hide()
 				child.Selection:Hide()
@@ -383,14 +383,14 @@ function S:Blizzard_Communities()
 
 	--[[for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 		button:SetTemplate('Transparent')
-		button:SetNormalTexture()
-		button:SetHighlightTexture()
+		button:SetNormalTex()
+		button:SetHighlightTex()
 
 		if not button.hover then
 			local hover = button:CreateTexture()
 			hover:SetColorTexture(1, 1, 1, 0.3)
 			hover:SetInside(button.backdrop)
-			button:SetHighlightTexture(hover)
+			button:SetHighlightTex(hover)
 			button.hover = hover
 		end
 
@@ -665,7 +665,7 @@ function S:Blizzard_Communities()
 				child.backdrop:Point('TOPLEFT', 4, -2)
 				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
-				child:SetHighlightTexture(E.media.normTex)
+				child:SetHighlightTex(E.media.normTex)
 				local hl = child:GetHighlightTexture()
 				hl:SetVertexColor(1, 1, 1, .25)
 				hl:SetInside(child.backdrop)
@@ -681,7 +681,7 @@ function S:Blizzard_Communities()
 				button:Point('LEFT', ApplicantList.backdrop, 1, 0)
 				button:Point('RIGHT', ApplicantList.backdrop, -1, 0)
 
-				button:SetHighlightTexture(E.media.normTex)
+				button:SetHighlightTex(E.media.normTex)
 				button:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)
 
 				button.InviteButton:Size(66, 18)

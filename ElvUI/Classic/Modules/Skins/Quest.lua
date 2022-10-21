@@ -420,10 +420,10 @@ function S:BlizzardQuestFrames()
 	local questLogIndex = 1
 	local questLogTitle = _G['QuestLogTitle'..questLogIndex]
 	while questLogTitle do
-		questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
+		questLogTitle:SetNormalTex(E.Media.Textures.PlusButton)
 		questLogTitle.SetNormalTexture = E.noop
 
-		questLogTitle:SetHighlightTexture()
+		questLogTitle:SetHighlightTex()
 		questLogTitle.SetHighlightTexture = E.noop
 
 		local normalTex = questLogTitle:GetNormalTexture()
@@ -454,14 +454,14 @@ function S:BlizzardQuestFrames()
 	QuestLogCollapseAllButton:StripTextures()
 	QuestLogCollapseAllButton:Point('TOPLEFT', -45, 7)
 
-	QuestLogCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
+	QuestLogCollapseAllButton:SetNormalTex(E.Media.Textures.PlusButton)
 	QuestLogCollapseAllButton.SetNormalTexture = E.noop
 	QuestLogCollapseAllButton:GetNormalTexture():Size(16)
 
-	QuestLogCollapseAllButton:SetHighlightTexture()
+	QuestLogCollapseAllButton:SetHighlightTex()
 	QuestLogCollapseAllButton.SetHighlightTexture = E.noop
 
-	QuestLogCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
+	QuestLogCollapseAllButton:SetDisabledTex(E.Media.Textures.PlusButton)
 	QuestLogCollapseAllButton.SetDisabledTexture = E.noop
 	QuestLogCollapseAllButton:GetDisabledTexture():Size(16)
 	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)

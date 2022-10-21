@@ -200,13 +200,13 @@ function S:CharacterFrame()
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
-	_G.CharacterModelFrameRotateLeftButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateLeftButton:SetNormalTex([[Interface\Buttons\UI-RefreshButton]])
 	_G.CharacterModelFrameRotateLeftButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
-	_G.CharacterModelFrameRotateLeftButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateLeftButton:SetPushedTex([[Interface\Buttons\UI-RefreshButton]])
 	_G.CharacterModelFrameRotateLeftButton:GetPushedTexture():SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)
-	_G.CharacterModelFrameRotateRightButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateRightButton:SetNormalTex([[Interface\Buttons\UI-RefreshButton]])
 	_G.CharacterModelFrameRotateRightButton:GetNormalTexture():SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
-	_G.CharacterModelFrameRotateRightButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
+	_G.CharacterModelFrameRotateRightButton:SetPushedTex([[Interface\Buttons\UI-RefreshButton]])
 	_G.CharacterModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
 
 	_G.CharacterAttributesFrame:StripTextures()
@@ -415,9 +415,9 @@ function S:CharacterFrame()
 			factionIndex = factionOffset + i
 			if factionIndex <= numFactions then
 				if factionBarButton.isCollapsed then
-					factionBarButton:SetNormalTexture(E.Media.Textures.PlusButton)
+					factionBarButton:SetNormalTex(E.Media.Textures.PlusButton)
 				else
-					factionBarButton:SetNormalTexture(E.Media.Textures.MinusButton)
+					factionBarButton:SetNormalTex(E.Media.Textures.MinusButton)
 				end
 			end
 		end
@@ -447,9 +447,9 @@ function S:CharacterFrame()
 
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
 		if _G.SkillFrameCollapseAllButton.isExpanded then
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
+			_G.SkillFrameCollapseAllButton:SetNormalTex(E.Media.Textures.MinusButton)
 		else
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
+			_G.SkillFrameCollapseAllButton:SetNormalTex(E.Media.Textures.PlusButton)
 		end
 	end)
 
@@ -467,7 +467,7 @@ function S:CharacterFrame()
 		background:SetTexture(nil)
 
 		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture()
+		label:SetHighlightTex()
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)
@@ -476,9 +476,9 @@ function S:CharacterFrame()
 
 		local skillLine = _G['SkillTypeLabel'..statusBarID]
 		if isExpanded then
-			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
+			skillLine:SetNormalTex(E.Media.Textures.MinusButton)
 		else
-			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
+			skillLine:SetNormalTex(E.Media.Textures.PlusButton)
 		end
 	end)
 

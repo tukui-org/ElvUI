@@ -61,7 +61,7 @@ local function ReskinFriendButton(button)
 		gameIcon:SetSize(22, 22)
 		gameIcon:SetTexCoord(.17, .83, .17, .83)
 		button.background:Hide()
-		button:SetHighlightTexture(E.media.normTex)
+		button:SetHighlightTex(E.media.normTex)
 		button:GetHighlightTexture():SetVertexColor(.24, .56, 1, .2)
 		gameIcon:CreateBackdrop('Transparent')
 		button.bg = gameIcon.backdrop

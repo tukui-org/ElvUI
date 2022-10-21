@@ -321,11 +321,11 @@ end
 
 function S:CampaignCollapseButton_UpdateState(isCollapsed) -- self is button, not S
 	if isCollapsed then
-		self:SetNormalTexture(E.Media.Textures.PlusButton)
-		self:SetPushedTexture(E.Media.Textures.PlusButton)
+		self:SetNormalTex(E.Media.Textures.PlusButton)
+		self:SetPushedTex(E.Media.Textures.PlusButton)
 	else
-		self:SetNormalTexture(E.Media.Textures.MinusButton)
-		self:SetPushedTexture(E.Media.Textures.MinusButton)
+		self:SetNormalTex(E.Media.Textures.MinusButton)
+		self:SetPushedTex(E.Media.Textures.MinusButton)
 	end
 
 	self:Size(16, 16)
@@ -471,7 +471,7 @@ function S:BlizzardQuestFrames()
 		local hover = button:CreateTexture()
 		hover:SetColorTexture(1, 1, 1, 0.3)
 		hover:SetAllPoints(icon)
-		button:SetHighlightTexture(hover)
+		button:SetHighlightTex(hover)
 		button.hover = hover
 	end
 

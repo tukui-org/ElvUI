@@ -26,8 +26,8 @@ function S:Blizzard_TalentUI()
 		highlightTexture:Point('TOPLEFT', button, 'TOPLEFT', 5, -5)
 		highlightTexture:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -5, 5)
 
-		button:SetHighlightTexture(E.media.normTex)
-		button:SetNormalTexture(E.Media.Textures.RoleIcons)
+		button:SetHighlightTex(E.media.normTex)
+		button:SetNormalTex(E.Media.Textures.RoleIcons)
 	end)
 
 	for i = 1, MAX_TALENT_TABS do

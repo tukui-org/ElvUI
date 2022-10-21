@@ -277,9 +277,9 @@ function S:BlizzardQuestFrames()
 				local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
 				if isHeader then
 					if isCollapsed then
-						buttons[i]:SetNormalTexture(E.Media.Textures.PlusButton)
+						buttons[i]:SetNormalTex(E.Media.Textures.PlusButton)
 					else
-						buttons[i]:SetNormalTexture(E.Media.Textures.MinusButton)
+						buttons[i]:SetNormalTex(E.Media.Textures.MinusButton)
 					end
 				end
 			end

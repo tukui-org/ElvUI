@@ -857,11 +857,11 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	if info.closeButton then
 		local closeButton = _G[dialogName..'CloseButton']
 		if info.closeButtonIsHide then
-			closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-HideButton-Up]])
-			closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-HideButton-Down]])
+			closeButton:SetNormalTex([[Interface\Buttons\UI-Panel-HideButton-Up]])
+			closeButton:SetPushedTex([[Interface\Buttons\UI-Panel-HideButton-Down]])
 		else
-			closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
-			closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
+			closeButton:SetNormalTex([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
+			closeButton:SetPushedTex([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
 		end
 		closeButton:Show()
 	else

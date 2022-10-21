@@ -181,7 +181,7 @@ function S:BlizzardMiscFrames()
 		local expandArrow = _G[listFrameName..'Button'..index..'ExpandArrow']
 		if expandArrow then
 			local normTex = expandArrow:GetNormalTexture()
-			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
+			expandArrow:SetNormalTex(E.Media.Textures.ArrowUp)
 			normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			normTex:SetRotation(S.ArrowRotation.right)
 			expandArrow:Size(12, 12)
