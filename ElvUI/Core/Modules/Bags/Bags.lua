@@ -301,9 +301,7 @@ do
 		DisableFrame(_G.ContainerFrameCombinedBags)
 
 		for i = 1, NUM_CONTAINER_FRAMES do
-			local slot = _G['ContainerFrame'..i]
-			slot:UnregisterAllEvents()
-			slot:Kill()
+			_G['ContainerFrame'..i]:Kill()
 		end
 	end
 end
