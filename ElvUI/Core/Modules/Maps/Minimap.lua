@@ -689,8 +689,8 @@ function M:Initialize()
 		Minimap:SetQuestBlobRingScalar(0)
 
 		if E.private.general.minimap.hideClassHallReport then
-			_G.GarrisonLandingPageMinimapButton:Kill()
-			_G.GarrisonLandingPageMinimapButton.IsShown = function() return true end
+			_G.ExpansionLandingPageMinimapButton:Kill()
+			_G.ExpansionLandingPageMinimapButton.IsShown = function() return true end
 		end
 
 		_G.QueueStatusFrame:SetClampedToScreen(true)
