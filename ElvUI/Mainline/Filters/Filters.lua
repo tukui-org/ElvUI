@@ -1531,11 +1531,6 @@ G.unitframe.aurawatch = {
 		[272790]	= Aura(272790, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
 		[136]		= Aura(136, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Mend Pet
 	},
-	-- Keep those for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
-	WARLOCK = {},
-	MAGE = {},
-	DEATHKNIGHT = {},
-	DEMONHUNTER = {},
 }
 
 -- List of spells to display ticks

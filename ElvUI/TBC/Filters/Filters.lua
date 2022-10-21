@@ -977,7 +977,6 @@ G.unitframe.aurawatch = {
 		[17]	= Aura(17, {592,600,3747,6065,6066,10898,10899,10900,10901,25217,25218}, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
 		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,25221,25222}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
 	},
-	ROGUE = {}, -- No buffs
 	SHAMAN = {
 		[29203]	= Aura(29203, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Healing Way
 		[16237]	= Aura(16237, nil, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
