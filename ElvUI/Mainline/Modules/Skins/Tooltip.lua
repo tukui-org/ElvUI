@@ -27,7 +27,8 @@ function S:StyleTooltips()
 		_G.ElvUIConfigTooltip,
 		_G.ElvUISpellBookTooltip,
 		-- libs
-		_G.LibDBIconTooltip
+		_G.LibDBIconTooltip,
+		_G.SettingsTooltip,
 	}) do
 		TT:SetStyle(tt)
 	end
