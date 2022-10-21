@@ -378,7 +378,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		hover:SetInside()
 		hover:SetBlendMode('ADD')
 		hover:SetColorTexture(1, 1, 1, 0.3)
-		button:SetHighlightTexture(hover)
+		button:SetHighlightTex(hover)
 		button.hover = hover
 	end
 
@@ -387,7 +387,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		pushed:SetInside()
 		pushed:SetBlendMode('ADD')
 		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-		button:SetPushedTexture(pushed)
+		button:SetPushedTex(pushed)
 		button.pushed = pushed
 	end
 
@@ -396,7 +396,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		checked:SetInside()
 		checked:SetBlendMode('ADD')
 		checked:SetColorTexture(1, 1, 1, 0.3)
-		button:SetCheckedTexture(checked)
+		button:SetCheckedTex(checked)
 		button.checked = checked
 	end
 
@@ -434,18 +434,11 @@ do
 end
 
 local function GetTextureOrFallback(t) return (not t or (type(t) == 'string' and strmatch(t, '^%s+$'))) and E.Media.Textures.Invisible or t end
-local function SetNormalTexture(frame, texture) frame:_SetNormalTexture(GetTextureOrFallback(texture)) end
-local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(GetTextureOrFallback(texture)) end
-local function SetCheckedTexture(frame, texture) frame:_SetCheckedTexture(GetTextureOrFallback(texture)) end
-local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(GetTextureOrFallback(texture)) end
-local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(GetTextureOrFallback(texture)) end
-local function CheckTextureAPI(meta, api, key)
-	local orig, func = '_'..key, meta[key]
-	if meta[orig] ~= func then
-		meta[orig] = func -- keep a copy of the original
-		meta[key] = api -- use our neew one
-	end
-end
+local function SetNormalTexture(frame, texture) frame:SetNormalTexture(GetTextureOrFallback(texture)) end
+local function SetDisabledTexture(frame, texture) frame:SetDisabledTexture(GetTextureOrFallback(texture)) end
+local function SetCheckedTexture(frame, texture) frame:SetCheckedTexture(GetTextureOrFallback(texture)) end
+local function SetPushedTexture(frame, texture) frame:SetPushedTexture(GetTextureOrFallback(texture)) end
+local function SetHighlightTexture(frame, texture) frame:SetHighlightTexture(GetTextureOrFallback(texture)) end
 
 local function GetNamedChild(frame, childName, index)
 	local name = frame and frame.GetName and frame:GetName()
@@ -455,14 +448,6 @@ end
 
 local function addapi(object)
 	local mk = getmetatable(object).__index
-
-	if not object._SetNormalTexture then -- bullshit WoW10
-		CheckTextureAPI(mk, SetNormalTexture, 'SetNormalTexture')
-		CheckTextureAPI(mk, SetPushedTexture, 'SetPushedTexture')
-		CheckTextureAPI(mk, SetCheckedTexture, 'SetCheckedTexture')
-		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
-		CheckTextureAPI(mk, SetHighlightTexture, 'SetHighlightTexture')
-	end
 
 	if not object.Size then mk.Size = Size end
 	if not object.Point then mk.Point = Point end
@@ -480,6 +465,14 @@ local function addapi(object)
 	if not object.StyleButton then mk.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mk.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mk.GetNamedChild = GetNamedChild end
+	if not object.SetNormalTex then -- bullshit WoW10 wont accept nil or ''
+		mk.SetNormalTex = SetNormalTexture
+		mk.SetPushedTex = SetPushedTexture
+		mk.SetCheckedTex = SetCheckedTexture
+		mk.SetDisabledTex = SetDisabledTexture
+		mk.SetHighlightTex = SetHighlightTexture
+	end
+
 	if not object.DisabledPixelSnap and (mk.SetSnapToPixelGrid or mk.SetStatusBarTexture or mk.SetColorTexture or mk.SetVertexColor or mk.CreateTexture or mk.SetTexCoord or mk.SetTexture) then
 		if mk.SetSnapToPixelGrid then hooksecurefunc(mk, 'SetSnapToPixelGrid', WatchPixelSnap) end
 		if mk.SetStatusBarTexture then hooksecurefunc(mk, 'SetStatusBarTexture', DisablePixelSnap) end
