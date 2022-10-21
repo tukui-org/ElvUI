@@ -676,10 +676,10 @@ function M:Initialize()
 	end
 
 	if E.Retail then
-		if _G.ExpansionLandingPageMinimapButton.UpdateIcon then
-			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
-		else
+		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
 			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
+		else
+			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
 		end
 
 		--Hide the BlopRing on Minimap
@@ -689,8 +689,9 @@ function M:Initialize()
 		Minimap:SetQuestBlobRingScalar(0)
 
 		if E.private.general.minimap.hideClassHallReport then
-			_G.ExpansionLandingPageMinimapButton:Kill()
-			_G.ExpansionLandingPageMinimapButton.IsShown = function() return true end
+			local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
+			garrison:Kill()
+			garrison.IsShown = function() return true end
 		end
 
 		_G.QueueStatusFrame:SetClampedToScreen(true)
