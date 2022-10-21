@@ -92,7 +92,7 @@ function S:Blizzard_LookingForGroupUI()
 
 	-- ScrollBars
 	-- S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar) --Breaks the Group Finder for some reason
-	S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
+	--S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
 
 	-- Role check popup
 	S:HandleFrame(_G.RolePollPopup)
