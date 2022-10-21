@@ -6,11 +6,11 @@ local unpack, select = unpack, select
 local hooksecurefunc = hooksecurefunc
 
 local function SetPlayTexture()
-	_G.StopwatchPlayPauseButton:SetNormalTex(E.Media.Textures.Play)
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 end
 
 local function SetPauseTexture()
-	_G.StopwatchPlayPauseButton:SetNormalTex(E.Media.Textures.Pause)
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
 end
 
 function S:Blizzard_TimeManager()
@@ -42,9 +42,9 @@ function S:Blizzard_TimeManager()
 	S:HandleEditBox(_G.TimeManagerAlarmMessageEditBox)
 
 	_G.TimeManagerAlarmEnabledButton:Point('LEFT', 16, -45)
-	_G.TimeManagerAlarmEnabledButton:SetNormalTex()
+	_G.TimeManagerAlarmEnabledButton:SetNormalTexture(0)
 	_G.TimeManagerAlarmEnabledButton.SetNormalTexture = E.noop
-	_G.TimeManagerAlarmEnabledButton:SetPushedTex()
+	_G.TimeManagerAlarmEnabledButton:SetPushedTexture(0)
 	_G.TimeManagerAlarmEnabledButton.SetPushedTexture = E.noop
 	S:HandleButton(_G.TimeManagerAlarmEnabledButton)
 
@@ -64,15 +64,15 @@ function S:Blizzard_TimeManager()
 
 	_G.StopwatchPlayPauseButton:CreateBackdrop(nil, true)
 	_G.StopwatchPlayPauseButton:SetSize(12, 12)
-	_G.StopwatchPlayPauseButton:SetNormalTex(E.Media.Textures.Play)
-	_G.StopwatchPlayPauseButton:SetHighlightTex()
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
+	_G.StopwatchPlayPauseButton:SetHighlightTexture(0)
 	_G.StopwatchPlayPauseButton.backdrop:SetOutside(_G.StopwatchPlayPauseButton, 2, 2)
 	_G.StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
 	_G.StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
 	_G.StopwatchPlayPauseButton:Point('RIGHT', _G.StopwatchResetButton, 'LEFT', -4, 0)
 	S:HandleButton(_G.StopwatchResetButton)
 	_G.StopwatchResetButton:SetSize(16,16)
-	_G.StopwatchResetButton:SetNormalTex(E.Media.Textures.Reset)
+	_G.StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
 	_G.StopwatchResetButton:Point('BOTTOMRIGHT', _G.StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
 
 	hooksecurefunc('Stopwatch_Play', SetPauseTexture)

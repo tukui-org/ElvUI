@@ -62,16 +62,16 @@ function S:Blizzard_InspectUI()
 
 	S:HandleRotateButton(_G.InspectModelFrameRotateLeftButton)
 	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	_G.InspectModelFrameRotateLeftButton:SetNormalTex([[Interface\Buttons\UI-RefreshButton]])
+	_G.InspectModelFrameRotateLeftButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
 	_G.InspectModelFrameRotateLeftButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
-	_G.InspectModelFrameRotateLeftButton:SetPushedTex([[Interface\Buttons\UI-RefreshButton]])
+	_G.InspectModelFrameRotateLeftButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
 	_G.InspectModelFrameRotateLeftButton:GetPushedTexture():SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)
 
 	S:HandleRotateButton(_G.InspectModelFrameRotateRightButton)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-	_G.InspectModelFrameRotateRightButton:SetNormalTex([[Interface\Buttons\UI-RefreshButton]])
+	_G.InspectModelFrameRotateRightButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
 	_G.InspectModelFrameRotateRightButton:GetNormalTexture():SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
-	_G.InspectModelFrameRotateRightButton:SetPushedTex([[Interface\Buttons\UI-RefreshButton]])
+	_G.InspectModelFrameRotateRightButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
 	_G.InspectModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
 
 	-- Talents

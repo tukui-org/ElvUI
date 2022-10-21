@@ -353,14 +353,14 @@ function S:Ace3_RefreshTree(scrollToSelection)
 			end
 
 			if groupstatus[lines[i].uniquevalue] then
-				button.toggle:SetNormalTex(E.Media.Textures.Minus)
-				button.toggle:SetPushedTex(E.Media.Textures.Minus)
+				button.toggle:SetNormalTexture(E.Media.Textures.Minus)
+				button.toggle:SetPushedTexture(E.Media.Textures.Minus)
 			else
-				button.toggle:SetNormalTex(E.Media.Textures.Plus)
-				button.toggle:SetPushedTex(E.Media.Textures.Plus)
+				button.toggle:SetNormalTexture(E.Media.Textures.Plus)
+				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
 			end
 
-			button.toggle:SetHighlightTex()
+			button.toggle:SetHighlightTexture(0)
 		end
 	end
 end

@@ -133,7 +133,7 @@ function S:WorldMapFrame()
 
 	WorldMapFrame.overlayFrames[2]:StripTextures()
 	WorldMapFrame.overlayFrames[2].Icon:SetTexture([[Interface\Minimap\Tracking\None]])
-	WorldMapFrame.overlayFrames[2]:SetHighlightTex([[Interface\Minimap\Tracking\None]], 'ADD')
+	WorldMapFrame.overlayFrames[2]:SetHighlightTexture([[Interface\Minimap\Tracking\None]], 'ADD')
 	WorldMapFrame.overlayFrames[2]:GetHighlightTexture():SetAllPoints(WorldMapFrame.overlayFrames[2].Icon)
 
 	-- 8.2.5 Party Sync | Credits Aurora/Shestak
@@ -154,9 +154,9 @@ function S:WorldMapFrame()
 	}
 
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)
-		s.ExecuteSessionCommand:SetNormalTex()
-		s.ExecuteSessionCommand:SetPushedTex()
-		s.ExecuteSessionCommand:SetDisabledTex()
+		s.ExecuteSessionCommand:SetNormalTexture(0)
+		s.ExecuteSessionCommand:SetPushedTexture(0)
+		s.ExecuteSessionCommand:SetDisabledTexture(0)
 
 		local atlas = sessionCommandToButtonAtlas[command]
 		if atlas then
@@ -179,7 +179,7 @@ function S:WorldMapFrame()
 				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, 'OVERLAY')
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
 				dialog.MinimizeButton.tex:SetInside()
-				dialog.MinimizeButton:SetHighlightTex([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
+				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 			end
 
 			dialog.isSkinned = true

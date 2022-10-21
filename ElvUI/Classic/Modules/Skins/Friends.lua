@@ -28,16 +28,16 @@ local function SkinPlusMinus(button, minus)
 		texture = E.Media.Textures.MinusButton
 	end
 
-	button:SetNormalTex(texture)
+	button:SetNormalTexture(texture)
 	button.SetNormalTexture = E.noop
 
-	button:SetPushedTex(texture)
+	button:SetPushedTexture(texture)
 	button.SetPushedTexture = E.noop
 
-	button:SetHighlightTex()
+	button:SetHighlightTexture(0)
 	button.SetHighlightTexture = E.noop
 
-	button:SetDisabledTex(texture)
+	button:SetDisabledTexture(texture)
 	button.SetDisabledTexture = E.noop
 	button:GetDisabledTexture():SetDesaturated(true)
 end

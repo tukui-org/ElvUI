@@ -55,9 +55,9 @@ end
 
 local function HandleSkillButton(button)
 	if not button then return end
-	button:SetCheckedTex(E.media.normTex)
+	button:SetCheckedTexture(E.media.normTex)
 	button:GetCheckedTexture():SetColorTexture(1, 1, 1, .25)
-	button:SetPushedTex(E.media.normTex)
+	button:SetPushedTexture(E.media.normTex)
 	button:GetPushedTexture():SetColorTexture(1, 1, 1, .5)
 	button.IconTexture:SetInside()
 
@@ -140,7 +140,7 @@ function S:SpellBookFrame()
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
-			button:SetHighlightTex()
+			button:SetHighlightTexture(0)
 		end
 
 		highlight:SetAllPoints(icon)

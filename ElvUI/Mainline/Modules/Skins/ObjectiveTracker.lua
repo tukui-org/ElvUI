@@ -55,7 +55,7 @@ end
 local function SkinItemButton(item)
 	item:SetTemplate('Transparent')
 	item:StyleButton()
-	item:SetNormalTex()
+	item:SetNormalTexture(0)
 
 	item.icon:SetTexCoord(unpack(E.TexCoords))
 	item.icon:SetInside()
@@ -216,7 +216,7 @@ function S:ObjectiveTrackerFrame()
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimize:StripTextures(nil, true)
 	minimize:Size(16, 16)
-	minimize:SetHighlightTex([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
+	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 	minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimize.tex:SetInside()

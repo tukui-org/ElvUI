@@ -2295,7 +2295,7 @@ do
 		local btn = _G.GeneralDockManagerOverflowButton
 		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
 		Skins:HandleNextPrevButton(btn, 'down', overflowColor, true)
-		btn:SetHighlightTex(E.Media.Textures.ArrowUpGlow)
+		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
 		if not wasSkinned then
 			overflow_SetAlpha = btn.SetAlpha

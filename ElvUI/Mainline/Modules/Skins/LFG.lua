@@ -373,9 +373,9 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
 			if button.isCollapsed then
-				button.expandOrCollapseButton:SetNormalTex(E.Media.Textures.PlusButton)
+				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
 			else
-				button.expandOrCollapseButton:SetNormalTex(E.Media.Textures.MinusButton)
+				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
 			end
 		end
 	end)
@@ -432,7 +432,7 @@ function S:LookingForGroupFrames()
 			_G.LFRBrowseFrame:StripTextures()
 
 			for _, roleButton in pairs(RoleButtons2) do
-				roleButton:SetNormalTex()
+				roleButton:SetNormalTexture(0)
 				S:HandleCheckBox(roleButton.checkButton, nil, true)
 				roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
 			end

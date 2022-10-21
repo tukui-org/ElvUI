@@ -514,7 +514,7 @@ function AB:CreateVehicleLeave()
 
 	hooksecurefunc(Button, 'SetHighlightTexture', function(btn, tex)
 		if tex ~= btn.hover then
-			Button:SetHighlightTex(btn.hover)
+			Button:SetHighlightTexture(btn.hover)
 		end
 	end)
 

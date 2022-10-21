@@ -114,7 +114,7 @@ function S:Blizzard_Calendar()
 
 		bu:SetTemplate(nil, nil, nil, true)
 		bu:SetBackdropColor(0,0,0,0)
-		bu:SetHighlightTex(E.media.glossTex)
+		bu:SetHighlightTexture(E.media.glossTex)
 		bu:SetFrameLevel(bu:GetFrameLevel() + 1)
 
 		local hl = bu:GetHighlightTexture()

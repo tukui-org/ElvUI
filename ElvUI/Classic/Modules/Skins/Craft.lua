@@ -54,10 +54,10 @@ function S:SkinCraft()
 	CraftCollapseAllButton:GetNormalTexture():Point('LEFT', 3, 2)
 	CraftCollapseAllButton:GetNormalTexture():Size(15)
 
-	CraftCollapseAllButton:SetHighlightTex()
+	CraftCollapseAllButton:SetHighlightTexture(0)
 	CraftCollapseAllButton.SetHighlightTexture = E.noop
 
-	CraftCollapseAllButton:SetDisabledTex(E.Media.Textures.MinusButton)
+	CraftCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)
 	CraftCollapseAllButton.SetDisabledTexture = E.noop
 	CraftCollapseAllButton:GetDisabledTexture():Point('LEFT', 3, 2)
 	CraftCollapseAllButton:GetDisabledTexture():Size(15)
@@ -98,17 +98,17 @@ function S:SkinCraft()
 			local texture = button:GetNormalTexture():GetTexture()
 			if texture then
 				if strfind(texture, 'MinusButton') then
-					button:SetNormalTex(E.Media.Textures.MinusButton)
+					button:SetNormalTexture(E.Media.Textures.MinusButton)
 				elseif strfind(texture, 'PlusButton') then
-					button:SetNormalTex(E.Media.Textures.PlusButton)
+					button:SetNormalTexture(E.Media.Textures.PlusButton)
 				end
 			end
 		end
 
 		if CraftCollapseAllButton.collapsed then
-			CraftCollapseAllButton:SetNormalTex(E.Media.Textures.PlusButton)
+			CraftCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		else
-			CraftCollapseAllButton:SetNormalTex(E.Media.Textures.MinusButton)
+			CraftCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
 	end)
 

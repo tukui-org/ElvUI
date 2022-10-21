@@ -413,8 +413,8 @@ function RU:Initialize()
 		f.MiddleRight:SetAlpha(0)
 		f.MiddleMiddle:SetAlpha(0)
 
-		f:SetHighlightTex()
-		f:SetDisabledTex()
+		f:SetHighlightTexture(0)
+		f:SetDisabledTexture(0)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer

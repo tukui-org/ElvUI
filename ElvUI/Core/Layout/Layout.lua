@@ -326,7 +326,7 @@ function LO:CreateChatPanels()
 
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
-	lchattb:SetNormalTex(E.Media.Textures.ArrowUp)
+	lchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
 	lchattb:SetFrameStrata('BACKGROUND')
 	lchattb:SetFrameLevel(301)
 	lchattb:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
@@ -375,7 +375,7 @@ function LO:CreateChatPanels()
 
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
-	rchattb:SetNormalTex(E.Media.Textures.ArrowUp)
+	rchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetFrameStrata('BACKGROUND')
 	rchattb:SetFrameLevel(301)

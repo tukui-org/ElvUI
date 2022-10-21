@@ -1454,9 +1454,9 @@ function B:VendorGrayCheck()
 end
 
 function B:SetButtonTexture(button, texture)
-	button:SetNormalTex(texture)
-	button:SetPushedTex(texture)
-	button:SetDisabledTex(texture)
+	button:SetNormalTexture(texture)
+	button:SetPushedTexture(texture)
+	button:SetDisabledTexture(texture)
 
 	local Normal, Pushed, Disabled = button:GetNormalTexture(), button:GetPushedTexture(), button:GetDisabledTexture()
 
@@ -1578,10 +1578,10 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
 		holder:StyleButton()
 
-		holder:SetNormalTex()
-		holder:SetPushedTex()
+		holder:SetNormalTexture(0)
+		holder:SetPushedTexture(0)
 		if holder.SetCheckedTexture then
-			holder:SetCheckedTex()
+			holder:SetCheckedTexture(0)
 		end
 
 		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
@@ -1963,9 +1963,9 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
 	slot:SetID(slotID)
 
-	slot:SetNormalTex()
+	slot:SetNormalTexture(0)
 	if slot.SetCheckedTexture then
-		slot:SetCheckedTex()
+		slot:SetCheckedTexture(0)
 	end
 
 	slot.bagFrame = f
