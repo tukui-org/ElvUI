@@ -434,17 +434,7 @@ function S:BlizzardQuestFrames()
 
 		_G['QuestLogTitle'..questLogIndex..'Highlight']:SetAlpha(0)
 
-		hooksecurefunc(questLogTitle, 'SetNormalTexture', function(title, texture)
-			local tex = title:GetNormalTexture()
-
-			if strfind(texture, 'MinusButton') then
-				tex:SetTexture(E.Media.Textures.MinusButton)
-			elseif strfind(texture, 'PlusButton') then
-				tex:SetTexture(E.Media.Textures.PlusButton)
-			else
-				tex:SetTexture()
-			end
-		end)
+		S:HandleCollapseTexture(questLogTitle)
 
 		questLogIndex = questLogIndex + 1
 		questLogTitle = _G['QuestLogTitle'..questLogIndex]
@@ -467,15 +457,7 @@ function S:BlizzardQuestFrames()
 	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)
 	QuestLogCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	hooksecurefunc(_G.QuestLogCollapseAllButton, 'SetNormalTexture', function(button, texture)
-		local tex = button:GetNormalTexture()
-
-		if strfind(texture, 'MinusButton') then
-			tex:SetTexture(E.Media.Textures.MinusButton)
-		else
-			tex:SetTexture(E.Media.Textures.PlusButton)
-		end
-	end)
+	S:HandleCollapseTexture(_G.QuestLogCollapseAllButton)
 end
 
 S:AddCallback('BlizzardQuestFrames')
