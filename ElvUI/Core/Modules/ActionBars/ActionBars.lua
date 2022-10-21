@@ -910,6 +910,34 @@ function AB:SetNoopsi(frame)
 	end
 end
 
+do
+	local function FixButton(button)
+		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+		button.OnEnter = AB.SpellButtonOnEnter
+		button.OnLeave = AB.SpellButtonOnLeave
+	end
+
+	function AB:FixSpellBookTaint() -- let spell book buttons work without tainting by replacing this function
+		for i = 1, SPELLS_PER_PAGE do
+			FixButton(_G['SpellButton'..i])
+		end
+
+		if E.Retail then -- same deal with profession buttons, this will fix the tainting
+			for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
+				if E.WoW10 then
+					FixButton(frame)
+				else
+					for i = 1, 2 do
+						FixButton(frame['button'..i])
+					end
+				end
+			end
+		end
+	end
+end
+
 local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
@@ -1052,28 +1080,7 @@ function AB:DisableBlizzard()
 		end
 	end
 
-	-- let spell book buttons work without tainting by replacing this function
-	for i = 1, SPELLS_PER_PAGE do
-		local button = _G['SpellButton'..i]
-		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
-
-		button.OnEnter = AB.SpellButtonOnEnter
-		button.OnLeave = AB.SpellButtonOnLeave
-	end
-
-	if E.Retail and not E.WoW10 then -- same deal with profession buttons, this will fix the tainting
-		for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-			for i = 1, 2 do
-				local button = frame['button'..i]
-				button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-				button:SetScript('OnLeave', AB.SpellButtonOnLeave)
-
-				button.OnEnter = AB.SpellButtonOnEnter
-				button.OnLeave = AB.SpellButtonOnLeave
-			end
-		end
-	end
+	AB:FixSpellBookTaint()
 
 	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
