@@ -214,6 +214,19 @@ AddMedia('logo','PalmTree')
 AddMedia('logo','TyroneBiggums')
 AddMedia('logo','SuperBear')
 
+AddMedia('logo', 'FoxDeathKnight')
+AddMedia('logo', 'FoxDemonHunter')
+AddMedia('logo', 'FoxDruid')
+AddMedia('logo', 'FoxHunter')
+AddMedia('logo', 'FoxMage')
+AddMedia('logo', 'FoxMonk')
+AddMedia('logo', 'FoxPaladin')
+AddMedia('logo', 'FoxPriest')
+AddMedia('logo', 'FoxRogue')
+AddMedia('logo', 'FoxShaman')
+AddMedia('logo', 'FoxWarlock')
+AddMedia('logo', 'FoxWarrior')
+
 E.Media.CombatIcons.COMBAT = E.Media.Textures.Combat
 
 do -- LSM Font Preloader ~Simpy
