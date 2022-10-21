@@ -14,11 +14,11 @@ function S:Blizzard_MajorFactions()
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc(MajorFactionRenownFrame, 'SetUpMajorFactionData', function(self)
-			self.NineSlice:Hide()
-			self.Background:Hide()
-			self.BackgroundShadow:Hide()
-			self.Divider:Hide()
-			self.CloseButton.Border:Hide()
+			if self.NineSlice then self.NineSlice:Hide() end
+			if self.Background then self.Background:Hide() end
+			if self.BackgroundShadow then self.BackgroundShadow:Hide() end
+			if self.Divider then self.Divider:Hide() end
+			if self.CloseButton.Border then self.CloseButton.Border:Hide() end
 		end)
 	end
 end
