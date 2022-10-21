@@ -127,7 +127,7 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleTrackingButton()
-	local tracking = MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	if E.private.general.minimap.hideTracking then
@@ -395,20 +395,26 @@ function M:UpdateSettings()
 		end
 	end
 
-	local difficulty = MinimapCluster.InstanceDifficulty
-	local instance = difficulty.Instance
-	local guild = difficulty.Guild
-	local challenge = difficulty.ChallengeMode
+    local difficulty = E.WoW10 and MinimapCluster.InstanceDifficulty
+    local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
+    local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
+    local challenge = difficulty and difficulty.ChallengeMode or _G.MiniMapChallengeMode
 	if not E.db.general.minimap.clusterDisable then
-		E:EnableMover(M.ClusterHolder.mover.name)
-		challenge:SetParent(difficulty)
-		instance:SetParent(difficulty)
-		guild:SetParent(difficulty)
+		if M.ClusterHolder then
+			E:EnableMover(M.ClusterHolder.mover.name)
+		end
+
+		if challenge then challenge:SetParent(difficulty) end
+		if instance then instance:SetParent(difficulty) end
+		if guild then guild:SetParent(difficulty) end
 	else
-		E:DisableMover(M.ClusterHolder.mover.name)
-		challenge:SetParent(Minimap)
-		instance:SetParent(Minimap)
-		guild:SetParent(Minimap)
+		if M.ClusterHolder then
+			E:DisableMover(M.ClusterHolder.mover.name)
+		end
+
+		if challenge then challenge:SetParent(Minimap) end
+		if instance then instance:SetParent(Minimap) end
+		if guild then guild:SetParent(Minimap) end
 
 		M.HandleTrackingButton()
 		M.HandleExpansionButton()

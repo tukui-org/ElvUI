@@ -520,7 +520,10 @@ end
 function A:Initialize()
 	if E.private.auras.disableBlizzard then
 		_G.BuffFrame:Kill()
-		_G.DebuffFrame:Kill()
+
+		if _G.DebuffFrame then
+			_G.DebuffFrame:Kill()
+		end
 
 		if not E.Retail then
 			_G.TemporaryEnchantFrame:Kill()

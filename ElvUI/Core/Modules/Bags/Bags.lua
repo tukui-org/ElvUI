@@ -59,7 +59,7 @@ local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBa
 
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
-local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection.PlayerHasTransmogByItemInfo
+local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel

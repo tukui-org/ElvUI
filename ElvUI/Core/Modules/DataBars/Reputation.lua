@@ -8,8 +8,8 @@ local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFrien
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
-local C_MajorFactions_GetMajorFactionData = C_MajorFactions.GetMajorFactionData
-local C_MajorFactions_HasMaximumRenown = C_MajorFactions.HasMaximumRenown
+local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
+local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
 
