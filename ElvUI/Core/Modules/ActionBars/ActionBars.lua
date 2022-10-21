@@ -7,7 +7,7 @@ local format, gsub, strsplit, strfind, strupper, tremove = format, gsub, strspli
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
-local ClearPetActionHighlightMarks = E.Retail and PetActionBar.ClearPetActionHighlightMarks or ClearPetActionHighlightMarks
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool
 local GetBindingKey = GetBindingKey
@@ -967,12 +967,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
 	ClearOnBarHighlightMarks()
-
-	if ClearPetActionHighlightMarks then
-		ClearPetActionHighlightMarks()
-	else
-		_G.PetActionBar:ClearPetActionHighlightMarks()
-	end
+	ClearPetActionHighlightMarks()
 
 	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
 	if slotType == 'SPELL' then
@@ -1010,7 +1005,7 @@ end
 
 function AB:SpellButtonOnLeave()
 	ClearOnBarHighlightMarks()
-	ClearPetActionHighlightMarks() -- ToDO: WoW10
+	ClearPetActionHighlightMarks()
 
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
