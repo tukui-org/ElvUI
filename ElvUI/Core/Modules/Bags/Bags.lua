@@ -287,13 +287,24 @@ function B:Tooltip_Show()
 	GameTooltip:Show()
 end
 
-function B:DisableBlizzard()
-	_G.BankFrame:UnregisterAllEvents()
-
-	for i = 1, NUM_CONTAINER_FRAMES do
-		local frame = _G['ContainerFrame'..i]
+do
+	local function DisableFrame(frame)
 		frame:UnregisterAllEvents()
-		frame:Kill()
+		frame:SetScript('OnShow', nil)
+		frame:SetScript('OnHide', nil)
+		frame:SetScale(0.0001)
+		frame:SetAlpha(0)
+	end
+
+	function B:DisableBlizzard()
+		DisableFrame(_G.BankFrame)
+		DisableFrame(_G.ContainerFrameCombinedBags)
+
+		for i = 1, NUM_CONTAINER_FRAMES do
+			local slot = _G['ContainerFrame'..i]
+			slot:UnregisterAllEvents()
+			slot:Kill()
+		end
 	end
 end
 
@@ -2762,8 +2773,6 @@ function B:Initialize()
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
 		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
 		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
-
-		if E.WoW10 then SetCVar("combinedBags", 0) end
 	end
 
 	B:SecureHook('OpenAllBags')
@@ -2786,12 +2795,6 @@ function B:Initialize()
 	B:RegisterEvent('CVAR_UPDATE', 'UpdateBindLines')
 
 	B:AutoToggle()
-
-	_G.BankFrame:SetScale(0.0001)
-	_G.BankFrame:SetAlpha(0)
-	_G.BankFrame:SetScript('OnShow', nil)
-	_G.BankFrame:ClearAllPoints()
-	_G.BankFrame:Point('TOPLEFT')
 
 	--Enable/Disable 'Loot to Leftmost Bag'
 	SetInsertItemsLeftToRight(B.db.reverseLoot)
