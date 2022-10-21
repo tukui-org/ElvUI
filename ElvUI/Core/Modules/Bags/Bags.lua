@@ -43,7 +43,6 @@ local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonQuality = SetItemButtonQuality
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
-local SetCVar = SetCVar
 local SortBags = SortBags
 local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
@@ -97,6 +96,14 @@ local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or Enum.BagSlotFl
 local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or Enum.BagSlotFlags.PriorityEquipment
 local FILTER_FLAG_IGNORE = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP or Enum.BagSlotFlags.DisableAutoSort
 local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or Enum.BagSlotFlags.PriorityJunk
+
+B.GearFilters = {
+	FILTER_FLAG_IGNORE,
+	FILTER_FLAG_EQUIPMENT,
+	FILTER_FLAG_CONSUMABLES,
+	FILTER_FLAG_TRADE_GOODS,
+	FILTER_FLAG_JUNK,
+}
 
 local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
 local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
@@ -289,11 +296,13 @@ end
 
 do
 	local function DisableFrame(frame)
-		frame:UnregisterAllEvents()
-		frame:SetScript('OnShow', nil)
-		frame:SetScript('OnHide', nil)
-		frame:SetScale(0.0001)
-		frame:SetAlpha(0)
+		if frame then
+			frame:UnregisterAllEvents()
+			frame:SetScript('OnShow', nil)
+			frame:SetScript('OnHide', nil)
+			frame:SetScale(0.0001)
+			frame:SetAlpha(0)
+		end
 	end
 
 	function B:DisableBlizzard()
@@ -948,7 +957,15 @@ function B:IsSortIgnored(bagID)
 	end
 end
 
-function B:GetBagAssignedInfo(holder)
+function B:GetFilterFlagInfo(bagID, isBank)
+	for i, flag in next, B.GearFilters do
+		if isBank and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag) or GetBagSlotFlag(bagID, flag) then
+			return flag, B.BAG_FILTER_ICONS[i], B.AssignmentColors[i]
+		end
+	end
+end
+
+function B:GetBagAssignedInfo(holder, isBank)
 	if not (holder and holder.BagID and holder.BagID > 0) then return end
 
 	local inventoryID = ContainerIDToInventoryID(holder.BagID)
@@ -957,32 +974,9 @@ function B:GetBagAssignedInfo(holder)
 	-- clear tempflag from AssignBagFlagMenu
 	if holder.tempflag then holder.tempflag = nil end
 
-	local active, color
-	if E.WoW10 then
-		local activeBagFilter = _G.ContainerFrameSettingsManager:GetFilterFlag(holder.BagID)
+	local active, icon, color = B:GetFilterFlagInfo(holder.BagID, isBank)
 
-		for i, flag in _G.ContainerFrameUtil_EnumerateBagGearFilters() do
-			active = activeBagFilter == flag
-			if active then
-				color = B.AssignmentColors[i]
-			end
-		end
-	else
-		for i = FILTER_FLAG_EQUIPMENT, NUM_FILTER_FLAGS do
-			if i ~= FILTER_FLAG_JUNK then --ignore this one
-				if holder.BagID > NUM_BAG_SLOTS then
-					active = GetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, i)
-				else
-					active = GetBagSlotFlag(holder.BagID, i)
-				end
-				if active then
-					holder.filterIcon:SetTexture(B.BAG_FILTER_ICONS[i])
-					break
-				end
-			end
-		end
-	end
-
+	holder.filterIcon:SetTexture(icon)
 	holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 
 	if not active then
@@ -1204,7 +1198,7 @@ function B:SetBagAssignments(holder, skip)
 		bag.type = B.BagIndice.keyring
 	end
 
-	bag.assigned = B:GetBagAssignedInfo(holder)
+	bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
 
 	if not skip and B:TotalSlotsChanged(frame) then
 		B:Layout(frame.isBank)

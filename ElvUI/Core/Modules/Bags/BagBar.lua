@@ -11,7 +11,6 @@ local tinsert = tinsert
 local LSM = E.Libs.LSM
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local GetBagSlotFlag = GetBagSlotFlag
 local GetCVarBool = GetCVarBool
 local IsModifiedClick = IsModifiedClick
 local RegisterStateDriver = RegisterStateDriver
@@ -21,8 +20,6 @@ local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
 local BackpackButton_OnClick = BackpackButton_OnClick
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
-local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
-local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 
 local commandNames = {
 	[-1] = 'TOGGLEBACKPACK',
@@ -147,27 +144,7 @@ function B:SizeAndPositionBagBar()
 			end
 		end
 
-		for j = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			if GetBagSlotFlag(i - 1, j) then -- active
-				if E.Retail then
-					button.filterIcon:SetTexture(B.BAG_FILTER_ICONS[j])
-					button.filterIcon:SetShown(E.db.bags.showAssignedIcon)
-				end
-
-				local r, g, b, a = unpack(B.AssignmentColors[j])
-
-				button.forcedBorderColors = {r, g, b, a}
-				button:SetBackdropBorderColor(r, g, b, a)
-				break -- this loop
-			else
-				if E.Retail then
-					button.filterIcon:SetShown(false)
-				end
-
-				button.forcedBorderColors = nil
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
+		B:GetBagAssignedInfo(button)
 	end
 
 	local btnSize = bagBarSize * (NUM_BAG_FRAMES + 1)
