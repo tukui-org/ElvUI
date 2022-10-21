@@ -926,16 +926,10 @@ do
 
 		if E.Retail then -- same deal with profession buttons, this will fix the tainting
 			for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-				if E.WoW10 then
-					for i = 1, 2 do
-						local button = frame['SpellButton'..i]
-						if button then
-							FixButton(button)
-						end
-					end
-				else
-					for i = 1, 2 do
-						FixButton(frame['button'..i])
+				for i = 1, 2 do
+					local button = E.WoW10 and frame['SpellButton'..i] or frame['button'..i]
+					if button then
+						FixButton(button)
 					end
 				end
 			end
