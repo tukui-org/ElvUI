@@ -68,24 +68,16 @@ local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
 
-local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
-local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
-local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
-local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
 local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
-local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
-local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
-local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
-local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local BANK_CONTAINER = BANK_CONTAINER
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
@@ -94,12 +86,26 @@ local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 
+local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
+local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
+local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
+local BAG_FILTER_LABELS = BAG_FILTER_LABELS
+
+local NUM_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
+
+local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or Enum.BagSlotFlags.PriorityTradeGoods
+local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or Enum.BagSlotFlags.PriorityConsumables
+local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or Enum.BagSlotFlags.PriorityEquipment
+local FILTER_FLAG_IGNORE = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP or Enum.BagSlotFlags.DisableAutoSort
+local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or Enum.BagSlotFlags.PriorityJunk
+
+local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
+local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
+
 local ContainerIDToInventoryID
 local GetBackpackAutosortDisabled
 local GetBackpackCurrencyInfo
-local GetBagSlotFlag
 local GetBankAutosortDisabled
-local GetBankBagSlotFlag
 local GetContainerItemCooldown
 local GetContainerItemInfo
 local GetContainerItemQuestInfo
@@ -108,51 +114,49 @@ local GetContainerNumSlots
 local SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight
 
-local C_Container = E.wowtoc >= 100002 and _G.C_Container -- WoW 10.0.2
-if C_Container then
-	GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-	ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
-	GetBackpackAutosortDisabled = C_Container.GetBackpackAutosortDisabled
-	GetBagSlotFlag = C_Container.GetBagSlotFlag
-	GetBankAutosortDisabled = C_Container.GetBankAutosortDisabled
-	GetBankBagSlotFlag = C_Container.GetBankBagSlotFlag
-	GetContainerItemCooldown = C_Container.GetContainerItemCooldown
-	GetContainerItemInfo = C_Container.GetContainerItemInfo
-	GetContainerItemQuestInfo = C_Container.GetContainerItemQuestInfo
-	GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
-	GetContainerNumSlots = C_Container.GetContainerNumSlots
-	SetBackpackAutosortDisabled = C_Container.SetBackpackAutosortDisabled
-	SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
-else
-	-- doesn't need converted
-	ContainerIDToInventoryID = _G.ContainerIDToInventoryID
-	GetBackpackAutosortDisabled = _G.GetBackpackAutosortDisabled
-	GetBankAutosortDisabled = _G.GetBankAutosortDisabled
-	SetBackpackAutosortDisabled = _G.SetBackpackAutosortDisabled
-	GetContainerNumFreeSlots = _G.GetContainerNumFreeSlots
-	GetBagSlotFlag = _G.GetBagSlotFlag
-	GetBankBagSlotFlag = _G.GetBankBagSlotFlag
-	GetContainerItemCooldown = _G.GetContainerItemCooldown
-	SetInsertItemsLeftToRight = _G.SetInsertItemsLeftToRight
-	GetContainerNumSlots = _G.GetContainerNumSlots
+do
+	local container = E.wowtoc >= 100002 and _G.C_Container -- WoW 10.0.2
+	if container then
+		GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
+		ContainerIDToInventoryID = container.ContainerIDToInventoryID
+		GetBackpackAutosortDisabled = container.GetBackpackAutosortDisabled
+		GetBankAutosortDisabled = container.GetBankAutosortDisabled
+		GetContainerItemCooldown = container.GetContainerItemCooldown
+		GetContainerItemInfo = container.GetContainerItemInfo
+		GetContainerItemQuestInfo = container.GetContainerItemQuestInfo
+		GetContainerNumFreeSlots = container.GetContainerNumFreeSlots
+		GetContainerNumSlots = container.GetContainerNumSlots
+		SetBackpackAutosortDisabled = container.SetBackpackAutosortDisabled
+		SetInsertItemsLeftToRight = container.SetInsertItemsLeftToRight
+	else
+		-- doesn't need converted
+		ContainerIDToInventoryID = _G.ContainerIDToInventoryID
+		GetBackpackAutosortDisabled = _G.GetBackpackAutosortDisabled
+		GetBankAutosortDisabled = _G.GetBankAutosortDisabled
+		SetBackpackAutosortDisabled = _G.SetBackpackAutosortDisabled
+		GetContainerNumFreeSlots = _G.GetContainerNumFreeSlots
+		GetContainerItemCooldown = _G.GetContainerItemCooldown
+		SetInsertItemsLeftToRight = _G.SetInsertItemsLeftToRight
+		GetContainerNumSlots = _G.GetContainerNumSlots
 
-	-- converted
-	GetBackpackCurrencyInfo = function(index)
-		local info = {}
-		info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
-		return info
-	end
+		-- converted
+		GetBackpackCurrencyInfo = function(index)
+			local info = {}
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
+			return info
+		end
 
-	GetContainerItemInfo = function(containerIndex, slotIndex)
-		local info = {}
-		info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
-		return info
-	end
+		GetContainerItemInfo = function(containerIndex, slotIndex)
+			local info = {}
+			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
+			return info
+		end
 
-	GetContainerItemQuestInfo = function(containerIndex, slotIndex)
-		local info = {}
-		info.isQuestItem, info.questID, info.isActive = _G.GetContainerItemQuestInfo(containerIndex, slotIndex)
-		return info
+		GetContainerItemQuestInfo = function(containerIndex, slotIndex)
+			local info = {}
+			info.isQuestItem, info.questID, info.isActive = _G.GetContainerItemQuestInfo(containerIndex, slotIndex)
+			return info
+		end
 	end
 end
 
@@ -171,17 +175,9 @@ B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {}
 
-if E.Retail and E.WoW10 then
-	B.BAG_FILTER_ICONS[Enum.BagSlotFlags.PriorityEquipment] = 132745	-- Interface/ICONS/INV_Chest_Plate10
-	B.BAG_FILTER_ICONS[Enum.BagSlotFlags.PriorityConsumables] = 134873	-- Interface/ICONS/INV_Potion_93
-	B.BAG_FILTER_ICONS[Enum.BagSlotFlags.PriorityTradeGoods] = 132906	-- Interface/ICONS/INV_Fabric_Silk_02
-	--[Enum.BagSlotFlags.PriorityJunk] = BAG_FILTER_JUNK,
-	--[Enum.BagSlotFlags.PriorityQuestItems] = BAG_FILTER_QUEST_ITEMS,
-else
-	B.BAG_FILTER_ICONS[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745	-- Interface/ICONS/INV_Chest_Plate10
-	B.BAG_FILTER_ICONS[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873	-- Interface/ICONS/INV_Potion_93
-	B.BAG_FILTER_ICONS[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906	-- Interface/ICONS/INV_Fabric_Silk_02
-end
+B.BAG_FILTER_ICONS[FILTER_FLAG_EQUIPMENT] = 132745		-- Interface/ICONS/INV_Chest_Plate10
+B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 134873	-- Interface/ICONS/INV_Potion_93
+B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 132906	-- Interface/ICONS/INV_Fabric_Silk_02
 
 local itemSpellID = {
 	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
@@ -871,8 +867,8 @@ function B:AssignBagFlagMenu()
 		info.tooltipWhileDisabled = 1
 		info.tooltipOnButton = 1
 
-		for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			if i ~= LE_BAG_FILTER_FLAG_JUNK then
+		for i = FILTER_FLAG_EQUIPMENT, NUM_FILTER_FLAGS do
+			if i ~= FILTER_FLAG_JUNK then
 				info.text = BAG_FILTER_LABELS[i]
 				info.func = function(_, _, _, value)
 					value = not value
@@ -923,9 +919,9 @@ function B:AssignBagFlagMenu()
 		elseif holder.BagID == BACKPACK_CONTAINER then
 			SetBackpackAutosortDisabled(not value)
 		elseif holder.BagID > NUM_BAG_SLOTS then
-			SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
+			SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE, not value)
 		else
-			SetBagSlotFlag(holder.BagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
+			SetBagSlotFlag(holder.BagID, FILTER_FLAG_IGNORE, not value)
 		end
 	end
 
@@ -938,9 +934,9 @@ function B:IsSortIgnored(bagID)
 	elseif bagID == BACKPACK_CONTAINER then
 		return GetBackpackAutosortDisabled()
 	elseif bagID > NUM_BAG_SLOTS then
-		return GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+		return GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE)
 	else
-		return GetBagSlotFlag(bagID, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
+		return GetBagSlotFlag(bagID, FILTER_FLAG_IGNORE)
 	end
 end
 
@@ -964,8 +960,8 @@ function B:GetBagAssignedInfo(holder)
 			end
 		end
 	else
-		for i = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
-			if i ~= LE_BAG_FILTER_FLAG_JUNK then --ignore this one
+		for i = FILTER_FLAG_EQUIPMENT, NUM_FILTER_FLAGS do
+			if i ~= FILTER_FLAG_JUNK then --ignore this one
 				if holder.BagID > NUM_BAG_SLOTS then
 					active = GetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, i)
 				else
