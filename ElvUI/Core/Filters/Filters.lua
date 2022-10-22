@@ -70,6 +70,7 @@ G.unitframe.aurafilters = {}
 G.unitframe.specialFilters = {
 	-- Whitelists
 	Boss = true,
+	Mount = true,
 	MyPet = true,
 	OtherPet = true,
 	Personal = true,
@@ -83,6 +84,7 @@ G.unitframe.specialFilters = {
 	BlizzardNameplate = true,
 
 	-- Blacklists
+	blockMount = true,
 	blockNonPersonal = true,
 	blockCastByPlayers = true,
 	blockNoDuration = true,
