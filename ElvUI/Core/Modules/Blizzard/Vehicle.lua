@@ -7,8 +7,8 @@ local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 
-local function SetPosition(_,_,anchor)
-	if anchor == 'MinimapCluster' or anchor == _G.MinimapCluster then
+local function SetPosition(_, _, relativeTo)
+	if relativeTo ~= _G.VehicleSeatIndicator.mover then
 		_G.VehicleSeatIndicator:ClearAllPoints()
 		_G.VehicleSeatIndicator:Point('TOPLEFT', _G.VehicleSeatIndicator.mover, 'TOPLEFT', 0, 0)
 	end
@@ -40,20 +40,21 @@ function B:UpdateVehicleFrame()
 end
 
 function B:PositionVehicleFrame()
-	local VehicleSeatIndicator = _G.VehicleSeatIndicator
-	if not VehicleSeatIndicator.PositionVehicleFrameHooked then
-		hooksecurefunc(VehicleSeatIndicator, 'SetPoint', SetPosition)
-		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
-		VehicleSeatIndicator:ClearAllPoints()
-		VehicleSeatIndicator:SetPoint("TOPRIGHT", _G.MinimapCluster, "BOTTOMRIGHT", 0, 0)
+	local seatIndicator = _G.VehicleSeatIndicator
+	if not seatIndicator.PositionVehicleFrameHooked then
+		seatIndicator:ClearAllPoints()
+		seatIndicator:SetPoint('TOPRIGHT', nil, 'BOTTOMRIGHT', 0, 0)
 
-		E:CreateMover(VehicleSeatIndicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
-		VehicleSeatIndicator.PositionVehicleFrameHooked = true
+		hooksecurefunc(seatIndicator, 'SetPoint', SetPosition)
+		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+
+		E:CreateMover(seatIndicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+		seatIndicator.PositionVehicleFrameHooked = true
 	end
 
-	VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize)
+	seatIndicator:Size(E.db.general.vehicleSeatIndicatorSize)
 
-	if VehicleSeatIndicator.currSkin then
-		VehicleSetUp(VehicleSeatIndicator.currSkin)
+	if seatIndicator.currSkin then
+		VehicleSetUp(seatIndicator.currSkin)
 	end
 end
