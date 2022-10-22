@@ -395,10 +395,10 @@ function M:UpdateSettings()
 		end
 	end
 
-    local difficulty = E.WoW10 and MinimapCluster.InstanceDifficulty
-    local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
-    local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
-    local challenge = difficulty and difficulty.ChallengeMode or _G.MiniMapChallengeMode
+	local difficulty = E.WoW10 and MinimapCluster.InstanceDifficulty
+	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
+	local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
+	local challenge = difficulty and difficulty.ChallengeMode or _G.MiniMapChallengeMode
 	if not E.db.general.minimap.clusterDisable then
 		if M.ClusterHolder then
 			E:EnableMover(M.ClusterHolder.mover.name)
