@@ -86,7 +86,7 @@ function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, di
 end
 
 function ACH:Toggle(name, desc, order, tristate, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate  = tristate, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate = tristate, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	if width then insertWidth(optionTable, width) end
 	if confirm then insertConfirm(optionTable, confirm) end
