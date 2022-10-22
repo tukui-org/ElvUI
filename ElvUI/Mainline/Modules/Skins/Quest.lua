@@ -274,6 +274,11 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		end
 	end
 
+	-- WoW 10 new MajorFaction Rewards thing
+	for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do
+		HandleReward(spellIcon)
+	end
+
 	if E.private.skins.parchmentRemoverEnable then
 		_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 		_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
