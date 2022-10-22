@@ -1625,10 +1625,6 @@ function AB:Initialize()
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
 
-	if _G.KeyBindingFrame then
-		AB:ADDON_LOADED(nil, 'Blizzard_BindingUI')
-	end
-
 	if E.Retail and C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()
 	else
