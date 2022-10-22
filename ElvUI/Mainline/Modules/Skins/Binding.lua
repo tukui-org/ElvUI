@@ -54,8 +54,13 @@ function S:Blizzard_ClickBindingUI()
 	-- Tutorial Frame ugly af WIP
 	local tutorial = frame.TutorialFrame
 	tutorial.NineSlice:StripTextures()
-	tutorial.TitleBg:Hide()
 	tutorial:SetTemplate('Transparent')
+
+	local titleBG = tutorial.TitleBg or tutorial.Bg
+	if titleBG then
+		titleBG:Hide()
+	end
+
 	S:HandleCloseButton(tutorial.CloseButton)
 end
 
