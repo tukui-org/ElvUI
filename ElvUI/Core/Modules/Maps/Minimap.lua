@@ -178,8 +178,8 @@ end
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_TimeManager' then
 		_G.TimeManagerClockButton:Kill()
-	elseif addon == 'Blizzard_FeedbackUI' then
-		_G.FeedbackUIButton:Kill()
+	elseif addon == 'Blizzard_PTRFeedback' then
+		_G.PTR_IssueReporter:Kill()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
 	elseif addon == 'Blizzard_EncounterJournal' then
