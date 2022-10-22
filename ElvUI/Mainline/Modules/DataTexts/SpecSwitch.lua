@@ -138,14 +138,14 @@ local function OnClick(self, button)
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
 		else
-			DT:SetEasyMenuAnchor(E.EasyMenu, self)
+			E:SetEasyMenuAnchor(E.EasyMenu, self)
 			_G.EasyMenu(specList, E.EasyMenu, nil, nil, nil, 'MENU')
 		end
 	else
 		local _, specName = GetSpecializationInfo(specIndex)
 		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
 
-		DT:SetEasyMenuAnchor(E.EasyMenu, self)
+		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
