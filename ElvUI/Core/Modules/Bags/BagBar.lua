@@ -69,16 +69,25 @@ function B:KeyRing_OnLeave()
 end
 
 function B:SkinBag(bag)
-	local icon = _G[bag:GetName()..'IconTexture']
-	bag.oldTex = icon:GetTexture()
+	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
 
-	bag:StripTextures()
+	bag:StripTextures(E.WoW10)
 	bag:SetTemplate()
 	bag:StyleButton(true)
-	bag.IconBorder:Kill()
+
+	if E.WoW10 then
+		bag:GetNormalTexture():SetAlpha(0)
+		bag:GetPushedTexture():SetAlpha(0)
+		bag:GetHighlightTexture():SetAlpha(0)
+		bag.SlotHighlightTexture:Kill()
+		bag.CircleMask:Hide()
+
+		icon.Show = nil
+		icon:Show()
+	end
 
 	icon:SetInside()
-	icon:SetTexture(bag.oldTex == 1721259 and E.Media.Textures.Backpack or bag.oldTex)
+	icon:SetTexture(E.Media.Textures.Backpack)
 	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
@@ -175,7 +184,9 @@ end
 function B:MainMenuBarBackpackButton_OnClick(button)
 	if E.Retail and (E.private.actionbar.enable and AB.KeyBinder.active or KeybindFrames_InQuickKeybindMode()) then return end
 
-	if IsModifiedClick() then
+	if E.WoW10 then
+		return self:BagSlotOnClick()
+	elseif IsModifiedClick() then
 		BackpackButton_OnModifiedClick(self, button)
 	else
 		BackpackButton_OnClick(self, button)
@@ -189,7 +200,11 @@ function B:BagButton_OnClick(key)
 	elseif self.BagID == 0 then
 		B.MainMenuBarBackpackButton_OnClick(self, key)
 	else
-		_G.BagSlotButton_OnClick(self)
+		if E.WoW10 then
+			self:BagSlotOnClick()
+		else
+			_G.BagSlotButton_OnClick(self)
+		end
 	end
 end
 
@@ -233,11 +248,25 @@ function B:LoadBagBar()
 		tinsert(B.BagBar.buttons, b)
 	end
 
+	local ReagentSlot = _G.CharacterReagentBag0Slot
+	if ReagentSlot then
+		ReagentSlot:SetParent(B.BagBar)
+		ReagentSlot:HookScript('OnEnter', B.BagButton_OnEnter)
+		ReagentSlot:HookScript('OnLeave', B.BagButton_OnLeave)
+
+		B:SkinBag(ReagentSlot)
+
+		tinsert(B.BagBar.buttons, ReagentSlot)
+
+		hooksecurefunc(ReagentSlot, "SetBarExpanded", B.SizeAndPositionBagBar)
+	end
+
 	local KeyRing = _G.KeyRingButton
 	if KeyRing then
 		KeyRing:SetParent(B.BagBar)
 		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
 		KeyRing:SetScript('OnLeave', B.KeyRing_OnLeave)
+
 
 		KeyRing:StripTextures()
 		KeyRing:SetTemplate(nil, true)
