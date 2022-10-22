@@ -334,8 +334,7 @@ local function StripType(which, object, kill, zero)
 		end
 
 		if object.GetNumRegions then
-			for i = 1, object:GetNumRegions() do
-				local region = select(i, object:GetRegions())
+			for _, region in next, { object:GetRegions() } do
 				if region and region.IsObjectType and region:IsObjectType(which) then
 					StripRegion(which, region, kill, zero)
 				end
