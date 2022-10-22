@@ -102,7 +102,7 @@ local function GetLabelTexture(ID)
 end
 
 local function OnClick(self)
-	DT:SetEasyMenuAnchor(E.EasyMenu, self)
+	E:SetEasyMenuAnchor(E.EasyMenu, self)
 	_G.EasyMenu(RightClickMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 

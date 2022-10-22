@@ -424,7 +424,7 @@ local function Click(self, btn)
 			end
 		end
 
-		DT:SetEasyMenuAnchor(E.EasyMenu, self)
+		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)

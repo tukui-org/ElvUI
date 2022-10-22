@@ -68,17 +68,6 @@ DT.UnitEvents = {
 
 DT.SPECIALIZATION_CACHE = {}
 
-function DT:SetEasyMenuAnchor(menu, dt)
-	local point = E:GetScreenQuadrant(dt)
-	local bottom = point and strfind(point, 'BOTTOM')
-	local left = point and strfind(point, 'LEFT')
-
-	local anchor1 = (bottom and left and 'BOTTOMLEFT') or (bottom and 'BOTTOMRIGHT') or (left and 'TOPLEFT') or 'TOPRIGHT'
-	local anchor2 = (bottom and left and 'TOPLEFT') or (bottom and 'TOPRIGHT') or (left and 'BOTTOMLEFT') or 'BOTTOMRIGHT'
-
-	UIDropDownMenu_SetAnchor(menu, 0, 0, anchor1, dt, anchor2)
-end
-
 --> [HyperDT Credits] <--
 --> Original Work: Nihilistzsche
 --> Modified by Azilroka! :)
@@ -87,7 +76,7 @@ function DT:SingleHyperMode(_, key, active)
 	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
 			DT:OnLeave()
-			DT:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
+			E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
 			EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
@@ -97,7 +86,7 @@ end
 
 function DT:HyperClick()
 	DT.SelectedDatatext = self
-	DT:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
+	E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
 	EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
