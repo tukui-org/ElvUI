@@ -273,21 +273,26 @@ do
 	end
 end
 
-function AB:SettingsDisplayCategory(category)
-	if category.name ~= 'Keybindings' then return end
-
-	local settingsList = self:GetSettingsList()
-	local scrollBox = settingsList.ScrollBox
-
-	for _, element in next, { scrollBox.ScrollTarget:GetChildren() } do
-		local data = element and element.data
-		if data and data.buttonText == QUICK_KEYBIND_MODE then
-			local button = element.Button
-			if button and button:GetScript('OnClick') ~= keybindButtonClick then
-				button:SetScript('OnClick', keybindButtonClick)
-				button:SetFormattedText('%s Keybind', E.title)
+do
+	local function UpdateScrollBox(scrollBox)
+		for _, element in next, { scrollBox.ScrollTarget:GetChildren() } do
+			local data = element and element.data
+			if data and data.buttonText == QUICK_KEYBIND_MODE then
+				local button = element.Button
+				if button and button:GetScript('OnClick') ~= keybindButtonClick then
+					button:SetScript('OnClick', keybindButtonClick)
+					button:SetFormattedText('%s Keybind', E.title)
+				end
 			end
 		end
+	end
+
+	function AB:SettingsDisplayCategory(category)
+		local list = category.name ~= 'Keybindings' and self:GetSettingsList()
+		if not list or not list.ScrollBox then return end
+
+		UpdateScrollBox(list.ScrollBox)
+		hooksecurefunc(list.ScrollBox, 'Update', UpdateScrollBox)
 	end
 end
 
