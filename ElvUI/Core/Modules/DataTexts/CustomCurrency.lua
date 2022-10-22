@@ -96,8 +96,8 @@ local function RegisterNewDT(currencyID)
 
 			tinsert(menuList, {
 				text = name,
-				checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-				func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+				checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+				func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 			})
 
 			DT:SortMenuList(menuList)

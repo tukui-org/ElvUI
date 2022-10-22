@@ -148,13 +148,13 @@ local function OnClick(self, button)
 			return
 		end
 
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menu, DT.EasyMenu, nil, nil, nil, 'MENU')
+		DT:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif button == 'MiddleButton' then
 		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1, 'ELVUI_VOLUME')
 	elseif button == 'RightButton' then
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, DT.EasyMenu, nil, nil, nil, 'MENU')
+		DT:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 

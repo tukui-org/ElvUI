@@ -167,8 +167,8 @@ end
 local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
-			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+			DT:SetEasyMenuAnchor(E.EasyMenu, self)
+			_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif IsControlKeyDown() then
 			Profit = 0
 			Spent = 0

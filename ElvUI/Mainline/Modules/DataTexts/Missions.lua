@@ -322,8 +322,8 @@ local function OnClick(self, btn)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
 	if btn == 'RightButton' then
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+		DT:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	else
 		if _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsShown() then
 			HideUIPanel(_G.GarrisonLandingPage)

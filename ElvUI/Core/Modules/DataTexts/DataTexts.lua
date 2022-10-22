@@ -41,7 +41,6 @@ local ActivateHyperMode
 local HyperList = {}
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
-DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
 
 DT.SelectedDatatext = nil
 DT.HyperList = HyperList
@@ -88,8 +87,8 @@ function DT:SingleHyperMode(_, key, active)
 	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
 			DT:OnLeave()
-			DT:SetEasyMenuAnchor(DT.EasyMenu, DT.SelectedDatatext)
-			EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
+			DT:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
+			EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
 		end
@@ -98,8 +97,8 @@ end
 
 function DT:HyperClick()
 	DT.SelectedDatatext = self
-	DT:SetEasyMenuAnchor(DT.EasyMenu, DT.SelectedDatatext)
-	EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
+	DT:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
+	EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 function DT:EnableHyperMode(Panel)
@@ -661,15 +660,15 @@ function DT:RegisterHyperDT()
 
 		tinsert(HyperList[category].menuList, {
 			text = info.localizedName or name,
-			checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-			func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+			func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 		})
 	end
 
 	tinsert(HyperList, {
 		order = 100, text = L["None"],
-		checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
-		func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
+		checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
+		func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
 	})
 
 	DT:SortMenuList(HyperList)
@@ -696,8 +695,8 @@ do
 			if not hasName(HyperList[category].menuList, info.localizedName or name) then
 				tinsert(HyperList[category].menuList, {
 					text = info.localizedName or name,
-					checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-					func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 				})
 			end
 		end
@@ -790,9 +789,9 @@ function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
 
-	DT.EasyMenu:SetClampedToScreen(true)
-	DT.EasyMenu:EnableMouse(true)
-	DT.EasyMenu.MenuSetItem = function(dt, value)
+	E.EasyMenu:SetClampedToScreen(true)
+	E.EasyMenu:EnableMouse(true)
+	E.EasyMenu.MenuSetItem = function(dt, value)
 		DT.db.panels[dt.parentName][dt.pointIndex] = value
 		DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
@@ -803,7 +802,7 @@ function DT:Initialize()
 		DT.SelectedDatatext = nil
 		CloseDropDownMenus()
 	end
-	DT.EasyMenu.MenuGetItem = function(dt, value)
+	E.EasyMenu.MenuGetItem = function(dt, value)
 		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
 	end
 
