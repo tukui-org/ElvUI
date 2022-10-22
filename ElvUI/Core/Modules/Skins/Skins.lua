@@ -620,6 +620,8 @@ do
 	end
 
 	function S:HandleTrimScrollBar(frame, small)
+		assert(frame, 'does not exist.')
+
 		frame:StripTextures()
 
 		ReskinScrollBarArrow(frame.Back, 'up')
