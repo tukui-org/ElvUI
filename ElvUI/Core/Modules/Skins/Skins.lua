@@ -686,8 +686,11 @@ do --Tab Regions
 
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
-			tab.backdrop:Point('TOPLEFT', 10, E.PixelMode and -1 or -3)
-			tab.backdrop:Point('BOTTOMRIGHT', -10, 3)
+
+			if not E.WoW10 then
+				tab.backdrop:Point('TOPLEFT', 10, E.PixelMode and -1 or -3)
+				tab.backdrop:Point('BOTTOMRIGHT', -10, 3)
+			end
 		end
 	end
 end
