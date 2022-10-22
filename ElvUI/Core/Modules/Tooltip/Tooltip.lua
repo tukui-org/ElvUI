@@ -147,7 +147,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
 
-	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.UIParent or anchor == E.UIParent then
+	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.GameTooltipDefaultContainer or anchor == _G.UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
 
 		if not E:HasMoverBeenMoved('TooltipMover') then
