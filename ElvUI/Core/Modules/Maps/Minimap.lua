@@ -677,6 +677,10 @@ function M:Initialize()
 		MinimapCluster.Tracking.Background:StripTextures()
 	end
 
+	if E.Wrath then
+		tinsert(killFrames, _G.TimeManagerClockButton)
+	end
+
 	for _, frame in next, killFrames do
 		frame:Kill()
 	end
