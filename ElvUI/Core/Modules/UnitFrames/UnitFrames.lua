@@ -1609,7 +1609,7 @@ function UF:Initialize()
 		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
 		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
 
-		if IsAddOnLoaded('Blizzard_ArenaUI') then
+		if E.WoW10 or IsAddOnLoaded('Blizzard_ArenaUI') then
 			ElvUF:DisableBlizzard('arena')
 		else
 			UF:RegisterEvent('ADDON_LOADED')
