@@ -93,11 +93,21 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(TALENTS, 0.69, 0.31, 0.31)
 
-	for i = 1, _G.MAX_TALENT_TIERS do
-		for j = 1, 3 do
-			local _, name, icon, selected = GetTalentInfo(i, j, 1)
-			if selected then
-				DT.tooltip:AddLine(AddTexture(icon)..' '..name)
+	local specID = DT.SPECIALIZATION_CACHE[GetSpecialization()].id
+	local builds = C_ClassTalents.GetConfigIDsBySpecID(specID)
+
+	if C_ClassTalents.GetHasStarterBuild() then
+		tinsert(builds, 'STARTER')
+	end
+
+	if next(builds) then
+		local activeConfigID = C_ClassTalents.GetLastSelectedSavedConfigID(specID)
+		for _, configID in next, builds do
+			if configID == 'STARTER' then
+				DT.tooltip:AddLine(strjoin(' - ', TALENT_FRAME_DROP_DOWN_STARTER_BUILD, (C_ClassTalents.GetStarterBuildActive() and activeString or inactiveString)), 1, 1, 1)
+			else
+				local configInfo = C_Traits.GetConfigInfo(configID)
+				DT.tooltip:AddLine(strjoin(' - ', configInfo.name, (configID == activeConfigID and activeString or inactiveString)), 1, 1, 1)
 			end
 		end
 	end
@@ -118,6 +128,7 @@ local function OnEnter()
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	--DT.tooltip:AddLine(L["|cffFFFFFFControl + Left Click:|r Change Loadout"]) -- TODO
 	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 	DT.tooltip:Show()
@@ -128,15 +139,18 @@ local function OnClick(self, button)
 	if not specIndex then return end
 
 	if button == 'LeftButton' then
-		if not _G.PlayerTalentFrame then
-			_G.LoadAddOn('Blizzard_TalentUI')
+		if not _G.ClassTalentFrame then
+			_G.LoadAddOn('Blizzard_ClassTalentUI')
 		end
 		if IsShiftKeyDown() then
-			if not _G.PlayerTalentFrame:IsShown() then
-				ShowUIPanel(_G.PlayerTalentFrame)
+			if not _G.ClassTalentFrame:IsShown() then
+				ShowUIPanel(_G.ClassTalentFrame)
 			else
-				HideUIPanel(_G.PlayerTalentFrame)
+				HideUIPanel(_G.ClassTalentFrame)
 			end
+		--[[elseif IsControlKeyDown() then -- TODO
+			E:SetEasyMenuAnchor(E.EasyMenu, self)
+			_G.EasyMenu(loadoutList, E.EasyMenu, nil, nil, nil, 'MENU')]]
 		else
 			E:SetEasyMenuAnchor(E.EasyMenu, self)
 			_G.EasyMenu(specList, E.EasyMenu, nil, nil, nil, 'MENU')
@@ -157,4 +171,4 @@ local function ValueColorUpdate()
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
