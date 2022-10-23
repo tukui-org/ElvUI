@@ -20,7 +20,13 @@ local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+local TALENT_FRAME_DROP_DOWN_STARTER_BUILD = TALENT_FRAME_DROP_DOWN_STARTER_BUILD
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
+local C_ClassTalents_GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
+local C_ClassTalents_GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
+local C_ClassTalents_GetHasStarterBuild = C_ClassTalents.GetHasStarterBuild
+local C_ClassTalents_GetStarterBuildActive = C_ClassTalents.GetStarterBuildActive
+local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
 
 local displayString, lastPanel, active = ''
 local activeString = strjoin('', '|cff00FF00' , _G.ACTIVE_PETS, '|r')
@@ -94,19 +100,19 @@ local function OnEnter()
 	DT.tooltip:AddLine(TALENTS, 0.69, 0.31, 0.31)
 
 	local specID = DT.SPECIALIZATION_CACHE[GetSpecialization()].id
-	local builds = C_ClassTalents.GetConfigIDsBySpecID(specID)
+	local builds = C_ClassTalents_GetConfigIDsBySpecID(specID)
 
-	if C_ClassTalents.GetHasStarterBuild() then
+	if C_ClassTalents_GetHasStarterBuild() then
 		tinsert(builds, 'STARTER')
 	end
 
 	if next(builds) then
-		local activeConfigID = C_ClassTalents.GetLastSelectedSavedConfigID(specID)
+		local activeConfigID = C_ClassTalents_GetLastSelectedSavedConfigID(specID)
 		for _, configID in next, builds do
 			if configID == 'STARTER' then
-				DT.tooltip:AddLine(strjoin(' - ', TALENT_FRAME_DROP_DOWN_STARTER_BUILD, (C_ClassTalents.GetStarterBuildActive() and activeString or inactiveString)), 1, 1, 1)
+				DT.tooltip:AddLine(strjoin(' - ', TALENT_FRAME_DROP_DOWN_STARTER_BUILD, (C_ClassTalents_GetStarterBuildActive() and activeString or inactiveString)), 1, 1, 1)
 			else
-				local configInfo = C_Traits.GetConfigInfo(configID)
+				local configInfo = C_Traits_GetConfigInfo(configID)
 				DT.tooltip:AddLine(strjoin(' - ', configInfo.name, (configID == activeConfigID and activeString or inactiveString)), 1, 1, 1)
 			end
 		end
