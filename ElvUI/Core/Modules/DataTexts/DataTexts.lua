@@ -763,7 +763,7 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 	if currencyID and not DT.CurrencyList[tostring(currencyID)] then
-		local info = DT:GetCurrencyInfo(currencyID)
+		local info = DT:CurrencyInfo(currencyID)
 		if info and info.name then
 			DT:PopulateData(true)
 		end

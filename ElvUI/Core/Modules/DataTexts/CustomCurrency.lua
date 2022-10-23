@@ -19,7 +19,7 @@ local CurrencyListNameToIndex = {}
 local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
-		local info = DT:GetCurrencyInfo(currency.ID)
+		local info = DT:CurrencyInfo(currency.ID)
 		if info and info.name then
 			local style = currency.DISPLAY_STYLE
 			local displayString = currency.ICON
@@ -66,7 +66,7 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local info = DT:GetCurrencyInfo(currencyID)
+	local info = DT:CurrencyInfo(currencyID)
 	if info and info.name then
 		local name = info.name
 
