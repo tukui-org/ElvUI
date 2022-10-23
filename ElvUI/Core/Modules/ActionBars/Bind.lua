@@ -258,7 +258,7 @@ do
 	end
 
 	local function MacroFrame_FirstUpdate(frame)
-		for _, button in next, { _G.MacroFrame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
+		for _, button in next, { frame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
 			button:HookScript('OnEnter', OnEnter)
 		end
 
