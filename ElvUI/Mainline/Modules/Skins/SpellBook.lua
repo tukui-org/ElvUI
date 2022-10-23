@@ -112,13 +112,11 @@ function S:SpellBookFrame()
 		local icon = _G['SpellButton'..i..'IconTexture']
 		local highlight =_G['SpellButton'..i..'Highlight']
 
-		for j = 1, button:GetNumRegions() do
-			local region = select(j, button:GetRegions())
-			if region:IsObjectType('Texture') then
-				if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
-					and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
-					region:SetTexture()
-				end
+		for _, region in next, { button:GetRegions() } do
+			if region:IsObjectType('Texture') and (region ~= button.FlyoutArrow
+			and region ~= button.GlyphIcon and region ~= button.GlyphActivate
+			and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture) then
+				region:SetTexture()
 			end
 		end
 

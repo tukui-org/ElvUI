@@ -20,12 +20,9 @@ function S:GuildRegistrarFrame()
 	S:HandleButton(_G.GuildRegistrarFramePurchaseButton)
 	S:HandleEditBox(_G.GuildRegistrarFrameEditBox)
 
-	for i = 1, _G.GuildRegistrarFrameEditBox:GetNumRegions() do
-		local region = select(i, _G.GuildRegistrarFrameEditBox:GetRegions())
-		if region and region:IsObjectType('Texture') then
-			if region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Left]] or region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Right]] then
-				region:Kill()
-			end
+	for _, region in next, { _G.GuildRegistrarFrameEditBox:GetRegions() } do
+		if region:IsObjectType('Texture') and region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Left]] or region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Right]] then
+			region:Kill()
 		end
 	end
 

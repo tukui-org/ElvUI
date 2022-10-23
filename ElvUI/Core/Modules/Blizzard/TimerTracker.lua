@@ -6,8 +6,7 @@ local select, unpack, pairs = select, unpack, pairs
 local CreateFrame = CreateFrame
 
 local function SkinIt(bar)
-	for i = 1, bar:GetNumRegions() do
-		local region = select(i, bar:GetRegions())
+	for _, region in next, { bar:GetRegions() } do
 		if region:IsObjectType('Texture') then
 			region:SetTexture()
 		elseif region:IsObjectType('FontString') then

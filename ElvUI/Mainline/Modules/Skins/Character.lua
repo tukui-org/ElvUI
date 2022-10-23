@@ -124,9 +124,9 @@ local function FixSidebarTabCoords()
 			tab.TabBg:Kill()
 
 			if i == 1 then
-				for x = 1, tab:GetNumRegions() do
-					local region = select(x, tab:GetRegions())
+				for _, region in next, { tab:GetRegions() } do
 					region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
+
 					hooksecurefunc(region, 'SetTexCoord', function(self, x1)
 						if x1 ~= 0.16001 then
 							self:SetTexCoord(0.16001, 0.86, 0.16, 0.86)

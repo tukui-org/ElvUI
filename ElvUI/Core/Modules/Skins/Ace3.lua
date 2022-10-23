@@ -427,9 +427,8 @@ function S:Ace3_RegisterAsContainer(widget)
 	end
 
 	if widget.sizer_se then
-		for i = 1, widget.sizer_se:GetNumRegions() do
-			local Region = select(i, widget.sizer_se:GetRegions())
-			if Region and Region:IsObjectType('Texture') then
+		for _, Region in next, { widget.sizer_se:GetRegions() } do
+			if Region:IsObjectType('Texture') then
 				Region:SetTexture(137057) -- Interface\Tooltips\UI-Tooltip-Border
 			end
 		end

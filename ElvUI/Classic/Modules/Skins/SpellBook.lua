@@ -51,12 +51,9 @@ function S:SpellBookFrame()
 		local cooldown = _G['SpellButton'..i..'Cooldown']
 		local highlight = _G['SpellButton'..i..'Highlight']
 
-		for y = 1, button:GetNumRegions() do
-			local region = select(y, button:GetRegions())
-			if region:GetObjectType() == 'Texture' then
-				if region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
-					region:SetTexture(nil)
-				end
+		for _, region in next, { button:GetRegions() } do
+			if region:GetObjectType() == 'Texture' and region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
+				region:SetTexture(nil)
 			end
 		end
 

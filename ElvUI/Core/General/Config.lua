@@ -122,10 +122,8 @@ function E:Grid_Create()
 		grid:SetFrameStrata('BACKGROUND')
 	else
 		grid.regionCount = 0
-		local numRegions = grid:GetNumRegions()
-		for i = 1, numRegions do
-			local region = select(i, grid:GetRegions())
-			if region and region.IsObjectType and region:IsObjectType('Texture') then
+		for _, region in next, { grid:GetRegions() } do
+			if region.IsObjectType and region:IsObjectType('Texture') then
 				grid.regionCount = grid.regionCount + 1
 				region:SetAlpha(0)
 			end
@@ -1146,8 +1144,7 @@ function E:ToggleOptionsUI(msg)
 
 			local unskinned = not E.private.skins.ace3Enable
 			if unskinned then
-				for i = 1, frame:GetNumRegions() do
-					local region = select(i, frame:GetRegions())
+				for _, region in next, { frame:GetRegions() } do
 					if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
 						region:SetAlpha(0)
 					end

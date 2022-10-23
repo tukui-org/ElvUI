@@ -502,8 +502,7 @@ local function SkinTransmogFrames()
 				if Model.NewGlow then Model.NewGlow:SetParent(border) end
 				if Model.NewString then Model.NewString:SetParent(border) end
 
-				for i = 1, Model:GetNumRegions() do
-					local region = select(i, Model:GetRegions())
+				for _, region in next, { Model:GetRegions() } do
 					if region:IsObjectType('Texture') then -- check for hover glow
 						local texture = region:GetTexture()
 						if texture == 1116940 or texture == 1569530 then -- transmogrify.blp (items:1116940 or sets:1569530)

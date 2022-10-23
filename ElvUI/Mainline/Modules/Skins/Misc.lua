@@ -175,12 +175,9 @@ function S:BlizzardMiscFrames()
 		roleButton:DisableDrawLayer('OVERLAY')
 
 		--[=[ these use the ready check icons, which are more square
-		for i=1, roleButton:GetNumRegions() do
-			local region = select(i, roleButton:GetRegions())
-			if region and region:IsObjectType('Texture') then
-				if region:GetTexture() == [[Interface\LFGFrame\UI-LFG-ICON-ROLES]] then
-					region:SetTexture(E.Media.Textures.RoleIcons)
-				end
+		for _, region in next, { roleButton:GetRegions() } do
+			if region:IsObjectType('Texture') and region:GetTexture() == [[Interface\LFGFrame\UI-LFG-ICON-ROLES]] then
+				region:SetTexture(E.Media.Textures.RoleIcons)
 			end
 		end
 		]=]

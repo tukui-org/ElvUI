@@ -42,8 +42,7 @@ function S:Blizzard_ArchaeologyUI()
 		end
 
 		for _, Frame in pairs({ ArchaeologyFrame.completedPage, ArchaeologyFrame.summaryPage }) do
-			for i = 1, Frame:GetNumRegions() do
-				local Region = select(i, Frame:GetRegions())
+			for _, Region in next, { Frame:GetRegions() } do
 				if Region:IsObjectType('FontString') then
 					Region:SetTextColor(1, .8, .1)
 				end
