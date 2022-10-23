@@ -102,7 +102,7 @@ function AB:UpdatePet(event, unit)
 end
 
 function AB:PositionAndSizeBarPet()
-	local db = bar.db
+	local db = AB.db.barPet
 	if not db then return end
 
 	local buttonSpacing = db.buttonSpacing
@@ -116,13 +116,14 @@ function AB:PositionAndSizeBarPet()
 	local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
 	local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
 
+	bar.db = db
 	bar.mouseover = db.mouseover
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
 
 	if db.enabled then
 		bar:SetScale(1)
-		bar:SetAlpha(bar.db.alpha)
+		bar:SetAlpha(db.alpha)
 		E:EnableMover(bar.mover.name)
 	else
 		bar:SetScale(0.0001)
@@ -149,6 +150,8 @@ function AB:PositionAndSizeBarPet()
 		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
 		local autoCast = button.AutoCastable
 
+		button.db = db
+
 		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button
 		end
@@ -159,7 +162,7 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = nil
 		else
 			button:SetScale(1)
-			button:SetAlpha(bar.db.alpha)
+			button:SetAlpha(db.alpha)
 			lastShownButton = button
 			button.handleBackdrop = true -- keep over HandleButton
 		end
@@ -234,9 +237,6 @@ function AB:CreateBarPet()
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
 
-	local db = AB.db.barPet
-	bar.db = db
-
 	for i = 1, _G.NUM_PET_ACTION_SLOTS do
 		local button = _G['PetActionButton'..i]
 		button:Show() -- for some reason they start hidden on WoW10 ?
@@ -245,8 +245,6 @@ function AB:CreateBarPet()
 		if not E.Retail then
 			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
 		end
-
-		button.db = db
 
 		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
 		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
