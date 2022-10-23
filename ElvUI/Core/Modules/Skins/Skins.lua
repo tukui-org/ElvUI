@@ -417,7 +417,7 @@ do
 			border.customFunc = customFunc
 			local br, bg, bb = unpack(E.media.bordercolor)
 			customFunc(border, r, g, b, a, br, bg, bb)
-		elseif r then
+		elseif r and (r ~= 1 and g ~= 1 and b ~= 1) then
 			backdrop:SetBackdropBorderColor(r, g, b, a)
 		else
 			local br, bg, bb = unpack(E.media.bordercolor)
