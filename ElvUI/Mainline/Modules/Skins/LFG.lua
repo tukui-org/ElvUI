@@ -730,7 +730,7 @@ function S:Blizzard_ChallengesUI()
 
 	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
 
-	hooksecurefunc(_G.ChallengesFrameMixin, 'Update', function(frame)
+	hooksecurefunc(ChallengesFrame, 'Update', function(frame)
 		for _, child in ipairs(frame.DungeonIcons) do
 			if not child.template then
 				child:GetRegions():SetAlpha(0)
