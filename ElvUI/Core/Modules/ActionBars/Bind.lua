@@ -267,7 +267,14 @@ do
 
 	function AB:ADDON_LOADED(event, addon)
 		if addon == 'Blizzard_MacroUI' then
-			AB:SecureHook(_G.MacroFrame, 'Update', MacroFrame_FirstUpdate)
+			if _G.MacroFrame.Update then
+				AB:SecureHook(_G.MacroFrame, 'Update', MacroFrame_FirstUpdate)
+			else
+				for i = 1, MAX_ACCOUNT_MACROS do
+					_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)
+				end
+			end
+
 			AB:UnregisterEvent(event)
 		end
 	end
