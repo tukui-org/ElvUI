@@ -228,7 +228,6 @@ function S:SpellBookFrame()
 		if texture then frame.icon:SetTexture(texture) end
 	end)
 
-
 	hooksecurefunc('UpdateProfessionButton', function(button)
 		local spellIndex = button:GetID() + button:GetParent().spellOffset
 		local isPassive = IsPassiveSpell(spellIndex, SpellBookFrame.bookType)

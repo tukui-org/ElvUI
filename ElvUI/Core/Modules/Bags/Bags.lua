@@ -189,8 +189,6 @@ else
 	B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 132906	-- Interface/ICONS/INV_Fabric_Silk_02
 end
 
-
-
 local itemSpellID = {
 	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
 	[347555] = 3,

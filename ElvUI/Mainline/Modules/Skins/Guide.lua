@@ -17,7 +17,6 @@ function S:Blizzard_NewPlayerExperience()
 	end
 end
 
-
 function S:Blizzard_NewPlayerExperienceGuide()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guide) then return end
 
