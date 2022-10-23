@@ -69,7 +69,8 @@ function S:Blizzard_BlackMarketUI()
 		local hotDeal = s.HotDeal
 		if hotDeal:IsShown() and hotDeal.itemLink then
 			local _, _, quality = GetItemInfo(hotDeal.itemLink)
-			hotDeal.Name:SetTextColor(GetItemQualityColor(quality))
+			local r, g, b = GetItemQualityColor(quality)
+			hotDeal.Name:SetTextColor(r, g, b)
 		end
 	end)
 end

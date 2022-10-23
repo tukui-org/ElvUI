@@ -177,8 +177,9 @@ function S:Blizzard_PVPUI()
 		end
 
 		if rewardTexture then
+			local r, g, b = GetItemQualityColor(rewardQuaility)
 			rewardFrame.Icon:SetTexture(rewardTexture)
-			rewardFrame.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(rewardQuaility))
+			rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 

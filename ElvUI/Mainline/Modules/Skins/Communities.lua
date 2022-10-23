@@ -411,7 +411,8 @@ function S:Blizzard_Communities()
 				if itemID then
 					local _, _, quality = GetItemInfo(itemID)
 					if quality and quality > 1 then
-						button.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+						local r, g, b = GetItemQualityColor(quality)
+						button.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 					end
 				end
 			end
