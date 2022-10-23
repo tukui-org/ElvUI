@@ -103,6 +103,7 @@ end
 
 function AB:PositionAndSizeBarPet()
 	local db = bar.db
+	if not db then return end
 
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
