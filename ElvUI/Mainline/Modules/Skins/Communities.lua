@@ -333,13 +333,13 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
 	S:HandleScrollBar(MemberList.ScrollBar)
 
-	--[[hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
-		for _, child in next, { s.ColumnDisplay:GetChildren() } do
+	--[[hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
+		for _, child in next, { frame.ColumnDisplay:GetChildren() } do
 			child:StripTextures()
 			child:SetTemplate('Transparent')
 		end
 
-		for _, button in ipairs(s.ListScrollFrame.buttons or {}) do
+		for _, button in ipairs(frame.ListScrollFrame.buttons or {}) do
 			if button and not button.hooked then
 				hooksecurefunc(button, 'RefreshExpandedColumns', UpdateNames)
 

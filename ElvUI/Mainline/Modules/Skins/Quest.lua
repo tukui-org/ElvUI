@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local gsub, next, strmatch, strfind = gsub, next, strmatch, strfind
-local pairs, ipairs, select, unpack = pairs, ipairs, select, unpack
+local pairs, ipairs, unpack = pairs, ipairs, unpack
 
 local GetMoney = GetMoney
 local GetQuestID = GetQuestID
@@ -184,7 +184,7 @@ end
 
 function S:QuestLogQuests_Update() -- self is not S
 	for _, child in next, { _G.QuestMapFrame.QuestsFrame.Contents:GetChildren() } do
-		if child and child.ButtonText and not child.questID then
+		if child.ButtonText and not child.questID then
 			child:Size(16, 16)
 
 			for _, tex in next, { child:GetRegions() } do

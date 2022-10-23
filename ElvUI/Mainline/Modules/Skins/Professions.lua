@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select = pairs, select
+local pairs, next = pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local function HandleInputBox(box)

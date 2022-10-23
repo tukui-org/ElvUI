@@ -5,7 +5,7 @@ local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
-local next, select, format, strmatch, strsplit = next, select, format, strmatch, strsplit
+local next, format, strmatch, strsplit = next, format, strmatch, strsplit
 local tinsert, tonumber, gsub, pairs, wipe, ceil = tinsert, tonumber, gsub, pairs, wipe, ceil
 
 local GetNumClasses = GetNumClasses
@@ -264,18 +264,16 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		if groupName == 'party' then
 			local header = UF.headers[groupName]
 			for _, group in next, { header:GetChildren() } do
-				for j = 1, group:GetNumChildren() do
-					--Party unitbutton
-					local unitbutton = select(j, group:GetChildren())
+				for _, unitbutton in next { group:GetChildren() } do
 					local castbar = unitbutton.Castbar
-					if not castbar.oldHide then
-						castbar.oldHide = castbar.Hide
-						castbar.Hide = castbar.Show
-						castbar:Show()
-					else
+					if castbar.oldHide then
 						castbar.Hide = castbar.oldHide
 						castbar.oldHide = nil
 						castbar:Hide()
+					else
+						castbar.oldHide = castbar.Hide
+						castbar.Hide = castbar.Show
+						castbar:Show()
 					end
 				end
 			end

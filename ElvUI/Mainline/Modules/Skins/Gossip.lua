@@ -36,7 +36,6 @@ local function ReplaceGossipText(button, text)
 	end
 end
 
-
 function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 

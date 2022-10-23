@@ -59,7 +59,6 @@ function DB:ReputationBar_Update()
 		local isMajorFaction = factionID and C_Reputation_IsMajorFaction(factionID)
 		local repInfo = factionID and GetFriendshipReputation(factionID)
 
-
 		if repInfo and repInfo.friendshipFactionID > 0 then
 			label, minValue, maxValue, curValue = repInfo.reaction, repInfo.reactionThreshold or 0, repInfo.nextThreshold or 1, repInfo.standing or 1
 		elseif isMajorFaction then

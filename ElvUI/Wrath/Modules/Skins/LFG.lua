@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local pairs, select = pairs, select
+local pairs, next = pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local function LFGTabs()

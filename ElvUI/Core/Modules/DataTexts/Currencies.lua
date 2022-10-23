@@ -17,14 +17,14 @@ local function OnClick()
 end
 
 local function AddInfo(id)
-	local name, num, max, icon = DT:CurrencyInfo(id)
+	local info, name, icon = DT:CurrencyInfo(id)
 	if name then
 		local textRight = '%s'
-		if E.global.datatexts.settings.Currencies.maxCurrency and max and max > 0 then
-			textRight = '%s / '..BreakUpLargeNumbers(max)
+		if E.global.datatexts.settings.Currencies.maxCurrency and info.maxQuantity and info.maxQuantity > 0 then
+			textRight = '%s / '..BreakUpLargeNumbers(info.maxQuantity)
 		end
 
-		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), format(textRight, BreakUpLargeNumbers(num)), 1, 1, 1, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), format(textRight, BreakUpLargeNumbers(info.quantity)), 1, 1, 1, 1, 1, 1)
 	end
 end
 

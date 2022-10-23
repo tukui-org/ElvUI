@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
-local select, unpack = select, unpack
+local next, unpack = next, unpack
 
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -104,16 +103,14 @@ function S:LootFrame()
 		end
 
 		for _, child in next, { MasterLooterFrame:GetChildren() } do
-			if child and not child.isSkinned and not child:GetName() then
-				if child:IsObjectType('Button') then
-					if child:GetPushedTexture() then
-						S:HandleCloseButton(child)
-					else
-						child:SetTemplate()
-						child:StyleButton()
-					end
-					child.isSkinned = true
+			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
+				if child:GetPushedTexture() then
+					S:HandleCloseButton(child)
+				else
+					child:SetTemplate()
+					child:StyleButton()
 				end
+				child.isSkinned = true
 			end
 		end
 	end)

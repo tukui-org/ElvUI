@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local pairs, select = pairs, select
 local hooksecurefunc = hooksecurefunc
 
 local function HandleTabs(tab)
@@ -35,7 +34,6 @@ local function ReskinOptionDropDown(option)
 	ReskinDropDownArrow(option.DecrementButton, 'left')
 	ReskinDropDownArrow(option.IncrementButton, 'right')
 end
-
 
 local function UpdateKeybindButtons(self)
 	if not self.bindingsPool then return end

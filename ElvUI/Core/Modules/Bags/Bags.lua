@@ -9,7 +9,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local type, ipairs, unpack, select, pcall = type, ipairs, unpack, select, pcall
 local strmatch, tinsert, tremove, wipe = strmatch, tinsert, tremove, wipe
-local next, max, floor, format, sub = next, max, floor, format, strsubb
+local next, max, floor, format, sub = next, max, floor, format, strsub
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
@@ -60,6 +60,7 @@ local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
 
+local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
@@ -187,8 +188,6 @@ else
 	B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 134873	-- Interface/ICONS/INV_Potion_93
 	B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 132906	-- Interface/ICONS/INV_Fabric_Silk_02
 end
-
-
 
 local itemSpellID = {
 	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
@@ -1648,9 +1647,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:CreateBackdrop()
 	f.editBox:Height(16)
 	f.editBox:SetAutoFocus(false)
-	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
-	f.editBox:SetScript('OnEditFocusGained', f.editBox.HighlightText)
 	f.editBox:HookScript('OnTextChanged', B.UpdateSearch)
+	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
+	f.editBox:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
 	f.editBox.skipUpdate = true -- we need to skip the first set of '' from bank
 
