@@ -262,6 +262,13 @@ function AB:SetupMicroBar()
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
 
+	-- With this method we might don't taint anything. Instead of using :Kill()
+	local MenuPerformanceBar = _G.MainMenuBarPerformanceBar
+	if MenuPerformanceBar then
+		MenuPerformanceBar:SetAlpha(0)
+		MenuPerformanceBar:SetScale(0.00001)
+	end
+
 	if E.Wrath then
 		_G.PVPMicroButtonTexture:ClearAllPoints()
 		_G.PVPMicroButtonTexture:Point('TOP', _G.PVPMicroButton, 'TOP', 6, -1)

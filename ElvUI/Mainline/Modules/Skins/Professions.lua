@@ -174,8 +174,7 @@ function S:Blizzard_Professions()
 	S:HandleTrimScrollBar(OutputLog.ScrollBar, true)
 
 	hooksecurefunc(OutputLog.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				local itemContainer = child.ItemContainer
 				if itemContainer then

@@ -4,13 +4,8 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local format, tonumber, wipe = format, tonumber, wipe
 local pairs, ipairs, unpack, tostring = pairs, ipairs, unpack, tostring
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local BreakUpLargeNumbers = BreakUpLargeNumbers
-local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
-
-local C_CurrencyInfo_GetBackpackCurrencyInfo = E.Retail and C_CurrencyInfo.GetBackpackCurrencyInfo
-local C_CurrencyInfo_GetCurrencyInfo = E.Retail and C_CurrencyInfo.GetCurrencyInfo
 
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 
@@ -21,18 +16,8 @@ local function OnClick()
 	_G.ToggleCharacter('TokenFrame')
 end
 
-local function GetInfo(id)
-	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
-	if E.Wrath then
-		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
-	end
-	if info then
-		return info.name, info.quantity, info.maxQuantity, format(iconString, info.iconFileID or '136012')
-	end
-end
-
 local function AddInfo(id)
-	local name, num, max, icon = GetInfo(id)
+	local name, num, max, icon = DT:CurrencyInfo(id)
 	if name then
 		local textRight = '%s'
 		if E.global.datatexts.settings.Currencies.maxCurrency and max and max > 0 then
@@ -63,10 +48,7 @@ local function OnEvent(self)
 	if displayed == 'BACKPACK' then
 		local displayString
 		for i = 1, 3 do
-			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(i) or {}
-			if E.Wrath then
-				info.name, info.quantity, info.iconFileID = GetBackpackCurrencyInfo(i)
-			end
+			local info = DT:BackpackCurrencyInfo(i)
 			if info and info.quantity then
 				displayString = (i > 1 and displayString..' ' or '')..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
 			end
@@ -79,7 +61,7 @@ local function OnEvent(self)
 		local id = tonumber(displayed)
 		if not id then return end
 
-		local name, num, _, icon = GetInfo(id)
+		local name, num, _, icon = DT:CurrencyInfo(id)
 		if not name then return end
 
 		local style = E.global.datatexts.settings.Currencies.displayStyle

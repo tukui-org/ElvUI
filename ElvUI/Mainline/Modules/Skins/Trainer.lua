@@ -2,42 +2,38 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next, unpack = next, unpack
 
 function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
-	for _, object in pairs({
+	for _, object in next, {
 		_G.ClassTrainerScrollFrameScrollChild,
 		_G.ClassTrainerFrameSkillStepButton,
 		_G.ClassTrainerFrameBottomInset,
-	}) do
+	} do
 		object:StripTextures()
 	end
 
-	for _, texture in pairs({
+	for _, texture in next, {
 		_G.ClassTrainerFramePortrait,
 		_G.ClassTrainerScrollFrameScrollBarBG,
 		_G.ClassTrainerScrollFrameScrollBarTop,
 		_G.ClassTrainerScrollFrameScrollBarBottom,
 		_G.ClassTrainerScrollFrameScrollBarMiddle,
-	}) do
+	} do
 		texture:Kill()
 	end
 
-	do
-		local buttons = { _G.ClassTrainerTrainButton }
-		for i = 1, #buttons do
-			buttons[i]:StripTextures()
-			S:HandleButton(buttons[i])
-		end
+	for _, button in next, { _G.ClassTrainerTrainButton } do
+		button:StripTextures()
+		S:HandleButton(button)
 	end
 
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	--[[for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
-		local button = _G['ClassTrainerScrollFrameButton'..i]
+	--[[for _, button in next, ClassTrainerFrame.scrollFrame.buttons do
 		button:StripTextures()
 		button:StyleButton()
 		button.icon:SetTexCoord(unpack(E.TexCoords))

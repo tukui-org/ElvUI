@@ -639,8 +639,6 @@ function M:Initialize()
 		M.ClusterBackdrop = clusterBackdrop
 	end
 
-	MinimapCluster:EnableMouse(false)
-
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and E.db.general.minimap.clusterDisable then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and E.db.general.minimap.clusterDisable then mm.location:Hide() end end)
 
@@ -677,12 +675,20 @@ function M:Initialize()
 		MinimapCluster.Tracking.Background:StripTextures()
 	end
 
-	if E.Wrath then
+	if _G.PTR_IssueReporter then
+		tinsert(killFrames, _G.PTR_IssueReporter)
+	end
+
+	if _G.TimeManagerClockButton then
 		tinsert(killFrames, _G.TimeManagerClockButton)
 	end
 
 	for _, frame in next, killFrames do
 		frame:Kill()
+	end
+
+	if _G.HybridMinimap then
+		M:SetupHybridMinimap()
 	end
 
 	if E.Retail then
@@ -721,9 +727,7 @@ function M:Initialize()
 		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 
-	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
-	if _G.HybridMinimap then M:SetupHybridMinimap() end
-
+	MinimapCluster:EnableMouse(false)
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)

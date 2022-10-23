@@ -56,7 +56,9 @@ function AB:StyleShapeShift()
 				button.cooldown:SetAlpha(texture and 1 or 0)
 
 				if isActive then
-					--_G.StanceBarFrame.lastSelected = button:GetID() -- WoW10
+					if not E.WoW10 then
+						_G.StanceBarFrame.lastSelected = button:GetID()
+					end
 
 					button:SetChecked(numForms == 1 and darken)
 					button.checked:SetColorTexture(1, 1, 1, 0.3)

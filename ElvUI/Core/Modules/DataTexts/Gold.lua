@@ -23,12 +23,6 @@ local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Character Data: Ho
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local CURRENCY = CURRENCY
 
---Retail
-local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-
---Wrath
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
-
 local menuList, myGold = {}, {}
 local totalGold, totalHorde, totalAlliance = 0, 0, 0
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -114,12 +108,16 @@ local function updateGold(self, updateAll, goldChange)
 	end
 end
 
+local function UpdateMarketPrice()
+	return C_WowTokenPublic_UpdateMarketPrice()
+end
+
 local function OnEvent(self, event)
 	if not IsLoggedIn() then return end
 
 	if E.Retail and not Ticker then
 		C_WowTokenPublic_UpdateMarketPrice()
-		Ticker = C_Timer_NewTicker(60, function() return C_WowTokenPublic_UpdateMarketPrice() end)
+		Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
 	end
 
 	if event == 'ELVUI_FORCE_UPDATE' then
@@ -225,19 +223,20 @@ local function OnEnter()
 
 	if E.Retail or E.Wrath then
 		local index = 1
-		while true do
-			local info = E.Retail and C_CurrencyInfo_GetBackpackCurrencyInfo(index) or E.Wrath and {}
-			if E.Wrath then info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index) end
-			if not (info and info.name) then break end
+		local info, name = DT:BackpackCurrencyInfo(index)
 
+		while name do
 			if index == 1 then
 				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(CURRENCY)
 			end
+
 			if info.quantity then
-				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
+
 			index = index + 1
+			info, name = DT:BackpackCurrencyInfo(index)
 		end
 	end
 

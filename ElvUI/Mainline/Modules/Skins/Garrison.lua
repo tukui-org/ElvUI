@@ -472,7 +472,6 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 
 	S:HandleEditBox(FollowerList.SearchBox)
-	--S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 
 	FollowerTab.Class:Size(50, 43)
@@ -493,12 +492,10 @@ function S:Blizzard_GarrisonUI()
 	MissionList = MissionTab.MissionList -- swap
 	MissionPage = MissionTab.MissionPage -- swap
 	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
-	--S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	MissionList.CompleteDialog:StripTextures()
 	MissionList.CompleteDialog:SetTemplate('Transparent')
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	MissionList:StripTextures()
-	--MissionList.listScroll:StripTextures()
 	S:HandleCloseButton(MissionPage.CloseButton)
 	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
 	S:HandleButton(MissionComplete.NextMissionButton)
@@ -537,7 +534,6 @@ function S:Blizzard_GarrisonUI()
 	-- Mission Tab
 	MissionTab = MissionFrame.MissionTab -- swap
 	S:HandleCloseButton(MissionTab.MissionPage.CloseButton)
-	--S:HandleScrollBar(_G.BFAMissionFrameMissionsListScrollFrameScrollBar)
 	S:HandleButton(MissionTab.MissionPage.StartMissionButton)
 	MissionTab.MissionPage.StartMissionButton.Flash:Kill()
 
@@ -553,7 +549,6 @@ function S:Blizzard_GarrisonUI()
 	Follower.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(Follower.SearchBox)
 	hooksecurefunc(Follower, 'ShowFollower', showFollower)
-	--S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
 
 	local XPBar = FollowerTab.XPBar

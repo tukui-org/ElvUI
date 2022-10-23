@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local LCG = E.Libs.CustomGlow
 
 local _G = _G
+local next = next
 local select, unpack = select, unpack
 
 local hooksecurefunc = hooksecurefunc
@@ -39,9 +39,8 @@ function S:LootFrame()
 	LootFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(LootFrame.ClosePanelButton)
 
-	hooksecurefunc(LootFrame.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local button = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(LootFrame.ScrollBox, 'Update', function(frame)
+		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			local questTexture = button.IconQuestTexture
 			if not button.IsSkinned then
 				--button:StripTextures()

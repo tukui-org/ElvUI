@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, select = next, select
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function updateNewGlow(self)
@@ -10,9 +10,8 @@ local function updateNewGlow(self)
 end
 
 local function HandleScrollChild(self)
-	for i = 1, self.ScrollTarget:GetNumChildren() do
-		local child = select(i, self.ScrollTarget:GetChildren())
-		local icon = child and child.Icon
+	for _, child in next, { self.ScrollTarget:GetChildren() } do
+		local icon = child.Icon
 		if icon and not icon.IsSkinned then
 			S:HandleIcon(icon)
 			icon:SetPoint('LEFT', 3, 0)

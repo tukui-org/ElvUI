@@ -53,7 +53,7 @@ local function HandleListIcon(frame)
 end
 
 local function HandleSummaryIcons(frame)
-	for _, child in next, {frame.ScrollTarget:GetChildren()} do
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		if child.Icon then
 			if not child.IsSkinned then
 				S:HandleIcon(child.Icon)
@@ -191,9 +191,10 @@ local function HandleSellList(frame, hasHeader, fitScrollBar)
 
 	if hasHeader then
 		frame.ScrollBox:SetTemplate('Transparent')
+
 		hooksecurefunc(frame, 'RefreshScrollFrame', HandleHeaders)
 	else
-		hooksecurefunc(frame.ScrollBox, "Update", HandleSummaryIcons)
+		hooksecurefunc(frame.ScrollBox, 'Update', HandleSummaryIcons)
 	end
 end
 

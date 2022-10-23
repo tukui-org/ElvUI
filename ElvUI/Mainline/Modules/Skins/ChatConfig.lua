@@ -10,8 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local function ReskinPickerOptions(self)
 	local scrollTarget = self.ScrollBox.ScrollTarget
 	if scrollTarget then
-		for i = 1, scrollTarget:GetNumChildren() do
-			local child = select(i, scrollTarget:GetChildren())
+		for _, child in next, { scrollTarget:GetChildren() } do
 			if not child.IsSkinned then
 				child.UnCheck:SetTexture(nil)
 				child.Highlight:SetColorTexture(1, .82, 0, 0.4)

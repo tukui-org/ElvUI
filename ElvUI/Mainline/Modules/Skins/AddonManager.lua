@@ -91,8 +91,7 @@ function S:AddonList()
 	end)
 
 	hooksecurefunc(AddonList.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.IsSkinned then
 				S:HandleCheckBox(child.Enabled)
 				S:HandleButton(child.LoadAddonButton)

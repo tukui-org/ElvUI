@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local select = select
 
 local CreateColor = CreateColor
@@ -11,6 +12,7 @@ local function SetupButtonHighlight(button, backdrop)
 	if not button then return end
 
 	button:SetHighlightTexture(E.media.normTex)
+
 	local hl = button:GetHighlightTexture()
 	hl:SetVertexColor(0.8, 0.8, 0.8, .25)
 	hl:SetInside(backdrop)
@@ -39,12 +41,10 @@ local function UpdateAccountString(button)
 		else
 			button.Label:SetTextColor(.9, .9, .9)
 		end
+	elseif button.accountWide then
+		button.Label:SetTextColor(0, .3, .5)
 	else
-		if button.accountWide then
-			button.Label:SetTextColor(0, .3, .5)
-		else
-			button.Label:SetTextColor(.65, .65, .65)
-		end
+		button.Label:SetTextColor(.65, .65, .65)
 	end
 end
 
@@ -150,8 +150,7 @@ function S:Blizzard_AchievementUI()
 	S:HandleTrimScrollBar(Result.ScrollBar)
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				child:StripTextures()
 				S:HandleIcon(child.Icon)
@@ -167,8 +166,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameCategories:StripTextures()
 	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar)
 	hooksecurefunc(_G.AchievementFrameCategories.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			local button = child.Button
 			if button and not button.styled then
 				button:StripTextures()
@@ -188,9 +186,8 @@ function S:Blizzard_AchievementUI()
 	select(3, _G.AchievementFrameAchievements:GetChildren()):Hide()
 
 	hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
-			if child and not child.isSkinned then
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
+			if not child.isSkinned then
 				child:StripTextures(true)
 				child.Background:SetAlpha(0)
 				child.Highlight:SetAlpha(0)
@@ -255,7 +252,9 @@ function S:Blizzard_AchievementUI()
 	end)
 
 	for i = 1, 12 do
-		local bu = _G['AchievementFrameSummaryCategoriesCategory'..i]
+		local name = 'AchievementFrameSummaryCategoriesCategory'..i
+
+		local bu = _G[name]
 		bu:StripTextures()
 		bu:SetStatusBarTexture(E.media.normTex)
 		bu:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
@@ -264,7 +263,8 @@ function S:Blizzard_AchievementUI()
 		bu.Label:SetTextColor(1, 1, 1)
 		bu.Label:SetPoint('LEFT', bu, 'LEFT', 6, 0)
 		bu.Text:SetPoint('RIGHT', bu, 'RIGHT', -5, 0)
-		_G[bu:GetName()..'ButtonHighlight']:SetAlpha(0)
+
+		_G[name..'ButtonHighlight']:SetAlpha(0)
 	end
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
@@ -277,8 +277,7 @@ function S:Blizzard_AchievementUI()
 	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar)
 
 	hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.IsSkinned then
 				child:StripTextures()
 				child:CreateBackdrop('Transparent')
@@ -309,8 +308,7 @@ function S:Blizzard_AchievementUI()
 	HandleSummaryBar(Comparison.Summary.Friend)
 
 	hooksecurefunc(Comparison.AchievementContainer.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				HandleCompareCategory(child.Player)
 				child.Player.Description:SetTextColor(.9, .9, .9)
@@ -323,8 +321,7 @@ function S:Blizzard_AchievementUI()
 	end)
 
 	hooksecurefunc(Comparison.StatContainer.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				child:StripTextures()
 				child:CreateBackdrop('Transparent')

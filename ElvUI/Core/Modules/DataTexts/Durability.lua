@@ -52,7 +52,8 @@ local function OnEvent(self)
 				E.ScanTooltip:SetInventoryItem('player', index)
 				E.ScanTooltip:Show()
 
-				repairCost = E.ScanTooltip:GetTooltipData().repairCost
+				local data = E.ScanTooltip:GetTooltipData()
+				repairCost = data and data.repairCost
 			else
 				repairCost = select(3, E.ScanTooltip:SetInventoryItem('player', index))
 			end

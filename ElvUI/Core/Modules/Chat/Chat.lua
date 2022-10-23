@@ -764,11 +764,11 @@ function CH:UpdateEditboxFont(chatFrame)
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
-	editbox:FontTemplate(font, fontSize, '')
-	editbox.header:FontTemplate(font, fontSize, '')
+	editbox:FontTemplate(font, fontSize, 'NONE')
+	editbox.header:FontTemplate(font, fontSize, 'NONE')
 
 	if editbox.characterCount then
-		editbox.characterCount:FontTemplate(font, fontSize, '')
+		editbox.characterCount:FontTemplate(font, fontSize, 'NONE')
 	end
 
 	-- the header and text will not update the placement without focus
@@ -822,27 +822,24 @@ function CH:StyleChat(frame)
 	charCount:Width(40)
 	editbox.characterCount = charCount
 
-	if E.Retail and E.WoW10 then
-		for _, texName in pairs(tabTexs) do
-			if _G[name..'Tab'][texName..'Left'] then
-				_G[name..'Tab'][texName..'Left']:SetTexture()
-				_G[name..'Tab'][texName..'Middle']:SetTexture()
-				_G[name..'Tab'][texName..'Right']:SetTexture()
-			end
-		end
-	else
-		for _, texName in pairs(tabTexs) do
-			if _G[name..'Tab'..texName..'Left'] then
-				_G[name..'Tab'..texName..'Left']:SetTexture()
-				_G[name..'Tab'..texName..'Middle']:SetTexture()
-				_G[name..'Tab'..texName..'Right']:SetTexture()
-			end
-		end
+	for _, texName in pairs(tabTexs) do
+		local t, l, m, r = name..'Tab', texName..'Left', texName..'Middle', texName..'Right'
+		local main = _G[t]
+		local left = _G[t..l] or (main and main[l])
+		local middle = _G[t..m] or (main and main[m])
+		local right = _G[t..r] or (main and main[r])
+
+		if left then left:SetTexture() end
+		if middle then middle:SetTexture() end
+		if right then right:SetTexture() end
 	end
 
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.Left then tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left end
+	if not tab.Left then
+		tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left
+	end
+
 	tab.Text:ClearAllPoints()
 	tab.Text:Point('LEFT', tab, 'LEFT', tab.Left:GetWidth(), 0)
 	tab:Height(22)

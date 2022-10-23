@@ -356,17 +356,23 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs.font, fs.fontSize, fs.fontStyle = font, size, style
 	end
 
-	local outline = style or E.db.general.fontStyle
-	if outline == 'NONE' then outline = '' end
-	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, outline)
-
-	if outline == '' then
+	-- shadow mode when using ''
+	if style == '' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
 		fs:SetShadowOffset(0, 0)
 		fs:SetShadowColor(0, 0, 0, 0)
 	end
+
+	-- convert because of bad values between versions
+	if style == 'NONE' and E.WoW10 then
+		style = ''
+	elseif style == '' and not E.WoW10 then
+		style = 'NONE'
+	end
+
+	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle)
 
 	E.texts[fs] = true
 end

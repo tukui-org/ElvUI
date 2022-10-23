@@ -9,6 +9,7 @@ function S:EditorManagerFrame()
 	local EditManager = _G.EditModeManagerFrame
 	EditManager:StripTextures()
 	EditManager:CreateBackdrop('Transparent') -- Adjust the backdrop FrameStrata
+
 	S:HandleCloseButton(EditManager.CloseButton)
 	S:HandleButton(EditManager.RevertAllChangesButton)
 	S:HandleButton(EditManager.SaveChangesButton)

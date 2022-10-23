@@ -9,18 +9,19 @@ local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unp
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
 local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
 local hooksecurefunc = hooksecurefunc
+
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
-local InCombatLockdown = InCombatLockdown
-local IsInInstance = IsInInstance
-local MouseIsOver = MouseIsOver
-local RegisterStateDriver = RegisterStateDriver
-local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
-local UnregisterStateDriver = UnregisterStateDriver
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
+local InCombatLockdown = InCombatLockdown
+local IsInInstance = IsInInstance
 local MISCELLANEOUS = MISCELLANEOUS
+local MouseIsOver = MouseIsOver
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
 
 --Retail
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
@@ -39,6 +40,8 @@ local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local ActivateHyperMode
 local HyperList = {}
+
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
@@ -760,14 +763,33 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 	if currencyID and not DT.CurrencyList[tostring(currencyID)] then
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(currencyID) or {}
-		if E.Wrath then
-			info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currencyID)
-		end
-		if info then
+		local info = DT:GetCurrencyInfo(currencyID)
+		if info and info.name then
 			DT:PopulateData(true)
 		end
 	end
+end
+
+function DT:CurrencyInfo(id)
+	local info = E.Retail and GetCurrencyInfo(id) or {}
+
+	if E.Wrath then
+		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
+	end
+
+	if info then
+		return info.name, info.quantity, info.maxQuantity, format(iconString, info.iconFileID or '136012')
+	end
+end
+
+function DT:BackpackCurrencyInfo(index)
+	local info = E.Retail and GetBackpackCurrencyInfo(index) or E.Wrath and {}
+
+	if E.Wrath then
+		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
+	end
+
+	return info, info and info.name
 end
 
 function DT:PLAYER_ENTERING_WORLD()

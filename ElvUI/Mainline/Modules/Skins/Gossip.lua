@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local gsub = gsub
 local select = select
 local strmatch = strmatch
@@ -53,8 +54,7 @@ function S:GossipFrame()
 	if GossipFrame.Background then GossipFrame.Background:Hide() end
 
 	hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local button = select(i, frame.ScrollTarget:GetChildren())
+		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			if not button.IsSkinned then
 				local buttonText = select(3, button:GetRegions())
 				if buttonText and buttonText:IsObjectType('FontString') then

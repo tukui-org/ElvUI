@@ -75,7 +75,7 @@ local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
 local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
-local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
@@ -1258,7 +1258,7 @@ function B:UpdateTokens()
 		button:Hide()
 	end
 
-	for i = 1, (MAX_WATCHED_TOKENS or 3) do
+	for i = 1, MAX_WATCHED_TOKENS do
 		local info = GetBackpackCurrencyInfo(i)
 		if not (info and info.name) then break end
 
@@ -1876,7 +1876,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
 			f.currencyButton:Height(22)
 
-			for i = 1, (MAX_WATCHED_TOKENS or 3) do
+			for i = 1, MAX_WATCHED_TOKENS do
 				local currency = CreateFrame('Button', format('%sCurrencyButton%d', name, i), f.currencyButton, 'BackpackTokenTemplate')
 				currency:Size(18)
 				currency:SetTemplate()

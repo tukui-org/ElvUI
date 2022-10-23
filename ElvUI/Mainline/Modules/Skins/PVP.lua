@@ -99,9 +99,8 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- Honor Frame Specific Buttons
-	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', function (self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local bu = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', function (box)
+		for _, bu in next, { box.ScrollTarget:GetChildren() } do
 			if not bu.IsSkinned then
 				bu.Bg:Hide()
 				bu.Border:Hide()

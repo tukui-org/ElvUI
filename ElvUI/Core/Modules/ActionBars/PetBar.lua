@@ -208,11 +208,14 @@ function AB:UpdatePetCooldowns()
 	if PetActionBar_UpdateCooldowns then
 		PetActionBar_UpdateCooldowns()
 	else
+		local forbidden = GameTooltip:IsForbidden()
+		local owner = GameTooltip:GetOwner()
+
 		for i, button in ipairs(bar.buttons) do
 			local start, duration = GetPetActionCooldown(i)
 			button.cooldown:SetCooldown(start, duration)
 
-			if not GameTooltip:IsForbidden() and GameTooltip:GetOwner() == button then
+			if not forbidden and owner == button then
 				button:OnEnter(button)
 			end
 		end

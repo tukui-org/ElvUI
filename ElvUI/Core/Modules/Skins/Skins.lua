@@ -417,7 +417,7 @@ do
 			border.customFunc = customFunc
 			local br, bg, bb = unpack(E.media.bordercolor)
 			customFunc(border, r, g, b, a, br, bg, bb)
-		elseif r and (r ~= 1 and g ~= 1 and b ~= 1) then
+		elseif r and (r ~= 1 and g ~= 1 and b ~= 1) then -- might need to account for the actual common, uncommon colors
 			backdrop:SetBackdropBorderColor(r, g, b, a)
 		else
 			local br, bg, bb = unpack(E.media.bordercolor)
@@ -595,8 +595,8 @@ do
 	local function ThumbOnLeave(frame)
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 		local thumb = frame.thumb or frame
-		if thumb.__isActive then return end
-		if thumb.backdrop then
+
+		if thumb.backdrop and not thumb.__isActive then
 			thumb.backdrop:SetBackdropColor(r, g, b, .25)
 		end
 	end
@@ -605,6 +605,7 @@ do
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 		local thumb = frame.thumb or frame
 		thumb.__isActive = true
+
 		if thumb.backdrop then
 			thumb.backdrop:SetBackdropColor(r, g, b, .75)
 		end
@@ -614,6 +615,7 @@ do
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 		local thumb = frame.thumb or frame
 		thumb.__isActive = nil
+
 		if thumb.backdrop then
 			thumb.backdrop:SetBackdropColor(r, g, b, .25)
 		end
@@ -641,6 +643,7 @@ do
 			thumb:DisableDrawLayer('BACKGROUND')
 			thumb:CreateBackdrop('Transparent')
 			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel()+1)
+
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			thumb.backdrop:SetBackdropColor(r, g, b, .25)
 
@@ -651,8 +654,8 @@ do
 
 			thumb:HookScript('OnEnter', ThumbOnEnter)
 			thumb:HookScript('OnLeave', ThumbOnLeave)
-			thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
 			thumb:HookScript('OnMouseUp', ThumbOnMouseUp)
+			thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
 		end
 	end
 end
@@ -1154,32 +1157,40 @@ function S:HandleSliderFrame(frame, template, frameLevel)
 	end
 end
 
-local sparkTexture = [[Interface\CastingBar\UI-CastingBar-Spark]]
 -- ToDO: WoW10 => UpdateME => Credits: NDUI
+local sparkTexture = [[Interface\CastingBar\UI-CastingBar-Spark]]
 function S:HandleStepSlider(frame, minimal)
 	assert(frame, 'doesnt exist!')
 
 	frame:StripTextures()
-	if frame.Slider then frame.Slider:DisableDrawLayer('ARTWORK') end
 
-	local thumb = frame.Slider.Thumb
+	local slider = frame.Slider
+	if not slider then return end
+
+	slider:DisableDrawLayer('ARTWORK')
+
+	local thumb = slider.Thumb
 	if thumb then
 		thumb:SetTexture(sparkTexture)
 		thumb:SetBlendMode('ADD')
 		thumb:SetSize(20, 30)
 	end
 
-	frame.Slider:CreateBackdrop()
 	local offset = minimal and 10 or 13
-	frame.Slider.backdrop:SetPoint('TOPLEFT', 10, - offset)
-	frame.Slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
+	slider:CreateBackdrop()
+	slider.backdrop:SetPoint('TOPLEFT', 10, -offset)
+	slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
 
-	local bar = CreateFrame('StatusBar', nil, frame.Slider.backdrop)
-	bar:SetStatusBarTexture(E.Media.Textures.Melli)
-	bar:SetStatusBarColor(1, .8, 0, .5)
-	bar:SetPoint('TOPLEFT', frame.Slider.backdrop, E.mult, -E.mult)
-	bar:SetPoint('BOTTOMLEFT', frame.Slider.backdrop, E.mult, E.mult)
-	bar:SetPoint('RIGHT', thumb, 'CENTER')
+	if not slider.barStep then
+		local step = CreateFrame('StatusBar', nil, slider.backdrop)
+		step:SetStatusBarTexture(E.Media.Textures.Melli)
+		step:SetStatusBarColor(1, .8, 0, .5)
+		step:SetPoint('TOPLEFT', slider.backdrop, E.mult, -E.mult)
+		step:SetPoint('BOTTOMLEFT', slider.backdrop, E.mult, E.mult)
+		step:SetPoint('RIGHT', thumb, 'CENTER')
+
+		slider.barStep = step
+	end
 end
 
 -- TODO: Update the function for BFA/Shadowlands

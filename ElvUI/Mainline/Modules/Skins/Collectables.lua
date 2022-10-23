@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local select = select
+local next, select = next, select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 
 local CreateFrame = CreateFrame
@@ -117,8 +117,7 @@ end
 local function JournalScrollButtons(frame)
 	if not frame then return end
 
-	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local bu = select(i, frame.ScrollTarget:GetChildren())
+	for i, bu in next, { frame.ScrollTarget:GetChildren() } do
 		if not bu.IsSkinned then
 			bu:StripTextures()
 			bu:SetTemplate('Transparent', nil, nil, true)
@@ -383,7 +382,6 @@ local function SkinToyFrame()
 		E:RegisterCooldown(button.cooldown)
 	end
 
-	-- ToDO: WoW10
 	hooksecurefunc('ToySpellButton_UpdateButton', function(button)
 		if button.itemID and PlayerHasToy(button.itemID) then
 			local _, _, quality = GetItemInfo(button.itemID)
@@ -443,7 +441,6 @@ local function SkinHeirloomFrame()
 		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
 		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
-		--ToDo: WoW10
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(0.9, 0.9, 0.9)
 			button.level:SetTextColor(0.9, 0.9, 0.9)
@@ -567,8 +564,7 @@ local function SkinTransmogFrames()
 	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
 
 	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', function(button)
-		for i = 1, button.ScrollTarget:GetNumChildren() do
-			local child = select(i, button.ScrollTarget:GetChildren())
+		for _, child in next, { button.ScrollTarget:GetChildren() } do
 			if not child.IsSkinned then
 				child.Background:Hide()
 				child.HighlightTexture:SetTexture('')

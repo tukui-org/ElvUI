@@ -58,7 +58,7 @@ local function SkinOverviewInfoBullets(object)
 	if parent.Bullets then
 		for _, bullet in next, parent.Bullets do
 			if not bullet.styled then
-				bullet.Text:SetTextColor('P', 1, 1, 1)
+				bullet.Text:SetTextColor(1, 1, 1)
 				bullet.styled = true
 			end
 		end
@@ -389,8 +389,7 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				child:SetNormalTexture(E.ClearTexture)
 				child:SetHighlightTexture(E.ClearTexture)
@@ -410,8 +409,7 @@ function S:Blizzard_EncounterJournal()
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', function(frame)
-			for i = 1, frame.ScrollTarget:GetNumChildren() do
-				local child = select(i, frame.ScrollTarget:GetChildren())
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
 					S:HandleButton(child)
 
@@ -430,8 +428,7 @@ function S:Blizzard_EncounterJournal()
 
 		-- Comment back in WoW10 Beta, not on Pre Patch
 		--[[hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
-			for i = 1, frame.ScrollTarget:GetNumChildren() do
-				local child = select(i, frame.ScrollTarget:GetChildren())
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
 					child.bossTexture:SetAlpha(0)
 					child.bosslessTexture:SetAlpha(0)

@@ -6,12 +6,10 @@ local tinsert, tremove, next = tinsert, tremove, next
 local ipairs, pairs, format, strjoin = ipairs, pairs, format, strjoin
 
 --Retail
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 
 --Wrath
-local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListSize = GetCurrencyListSize
 local GetCurrencyListInfo = GetCurrencyListInfo
 
@@ -21,26 +19,23 @@ local CurrencyListNameToIndex = {}
 local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(currency.ID) or {}
-		if E.Wrath then
-			info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currency.ID)
+		local info = DT:GetCurrencyInfo(currency.ID)
+		if info and info.name then
+			local style = currency.DISPLAY_STYLE
+			local displayString = currency.ICON
+
+			if style ~= 'ICON' then
+				displayString = strjoin(' ', displayString, style == 'ICON_TEXT' and currency.NAME or E:AbbreviateString(currency.NAME))
+			end
+
+			displayString = strjoin(' ', displayString, '%d')
+
+			if currency.SHOW_MAX and info.maxQuantity > 0 then
+				displayString = strjoin(' ', displayString, '/', info.maxQuantity)
+			end
+
+			self.text:SetFormattedText(displayString, info.quantity)
 		end
-
-		if not info.name then return end
-		local style = currency.DISPLAY_STYLE
-		local displayString = currency.ICON
-
-		if style ~= 'ICON' then
-			displayString = strjoin(' ', displayString, style == 'ICON_TEXT' and currency.NAME or E:AbbreviateString(currency.NAME))
-		end
-
-		displayString = strjoin(' ', displayString, '%d')
-
-		if currency.SHOW_MAX and info.maxQuantity > 0 then
-			displayString = strjoin(' ', displayString, '/', info.maxQuantity)
-		end
-
-		self.text:SetFormattedText(displayString, info.quantity)
 	end
 end
 
@@ -71,12 +66,8 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID) or {}
-	if E.Wrath then
-		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currencyID)
-	end
-
-	if info and info.name ~= "" then
+	local info = DT:GetCurrencyInfo(currencyID)
+	if info and info.name then
 		local name = info.name
 
 		--Add to internal storage, stored with name as key

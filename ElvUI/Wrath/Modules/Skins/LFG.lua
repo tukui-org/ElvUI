@@ -90,10 +90,6 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
 	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 
-	-- ScrollBars
-	-- S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar) --Breaks the Group Finder for some reason
-	--S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
-
 	-- Role check popup
 	S:HandleFrame(_G.RolePollPopup)
 	S:HandleButton(_G.RolePollPopupAcceptButton)

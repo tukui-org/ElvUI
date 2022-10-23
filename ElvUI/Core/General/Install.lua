@@ -160,6 +160,12 @@ function E:SetupCVars(noDisplayMsg)
 		SetCVar('chatClassColorOverride', 0)
 	end
 
+	local ActionButtonPickUp = _G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
+	if ActionButtonPickUp then
+		ActionButtonPickUp:SetValue('SHIFT')
+		ActionButtonPickUp:RefreshValue()
+	end
+
 	if E.private.nameplates.enable then
 		NP:CVarReset()
 	end
@@ -323,7 +329,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.tooltip.healthBar.height = 12
 			E.db.movers.TooltipMover = nil --ensure that this mover gets completely reset.. yes E:ResetMover call above doesn't work.
 			E.db.tooltip.healthBar.font = "PT Sans Narrow"
-			E.db.tooltip.healthBar.fontOutline = ""
+			E.db.tooltip.healthBar.fontOutline = "NONE"
 			E.db.tooltip.healthBar.fontSize = 12
 		--Nameplates
 			E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}

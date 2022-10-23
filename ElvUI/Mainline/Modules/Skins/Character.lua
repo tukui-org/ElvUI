@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local pairs, ipairs = pairs, ipairs
 local unpack, select = unpack, select
 local hooksecurefunc = hooksecurefunc
@@ -139,7 +140,7 @@ end
 
 local function UpdateFactionSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		local container = child and child.Container
+		local container = child.Container
 		if container and not container.IsSkinned then
 			container:StripTextures()
 
@@ -262,7 +263,7 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	-- Swap item flyout frame (shown when holding alt over a slot)
-	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- ToDO: WoW10
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
 
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
@@ -281,25 +282,21 @@ function S:CharacterFrame()
 	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
-	local controlButtons = {
+	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+
+	for _, button in pairs({
 		'CharacterModelSceneZoomInButton',
 		'CharacterModelSceneZoomOutButton',
 		'CharacterModelSceneRotateLeftButton',
 		'CharacterModelSceneRotateRightButton',
 		'CharacterModelSceneRotateResetButton',
-	}
-
-	--_G.CharacterModelFrameControlFrame:StripTextures()
-	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
-
-	for _, button in pairs(controlButtons) do
+	}) do
 		S:HandleButton(_G[button])
 	end
 
 	--Titles
 	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				child:DisableDrawLayer('BACKGROUND')
 				child.isSkinned = true
@@ -312,8 +309,7 @@ function S:CharacterFrame()
 	S:HandleButton(_G.PaperDollFrameSaveSet)
 
 	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', function(frame)
-		for i = 1, frame.ScrollTarget:GetNumChildren() do
-			local child = select(i, frame.ScrollTarget:GetChildren())
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if child.icon and not child.isSkinned then
 				child.BgTop:SetTexture('')
 				child.BgMiddle:SetTexture('')
@@ -368,40 +364,39 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
 
-		hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
-			for i = 1, frame.ScrollTarget:GetNumChildren() do
-				local child = select(i, frame.ScrollTarget:GetChildren())
-				if child.Highlight and not child.styled then
-					if not child.styled then
-						child.CategoryLeft:SetAlpha(0)
-						child.CategoryRight:SetAlpha(0)
-						child.CategoryMiddle:SetAlpha(0)
+	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
+			if child.Highlight and not child.styled then
+				if not child.styled then
+					child.CategoryLeft:SetAlpha(0)
+					child.CategoryRight:SetAlpha(0)
+					child.CategoryMiddle:SetAlpha(0)
 
-						child.Highlight:SetInside()
-						child.Highlight.SetPoint = E.noop
-						child.Highlight:SetColorTexture(1, 1, 1, .25)
-						child.Highlight.SetTexture = E.noop
+					child.Highlight:SetInside()
+					child.Highlight.SetPoint = E.noop
+					child.Highlight:SetColorTexture(1, 1, 1, .25)
+					child.Highlight.SetTexture = E.noop
 
-						S:HandleIcon(child.Icon)
+					S:HandleIcon(child.Icon)
 
-						if child.ExpandIcon then
-							child.ExpandIcon:CreateBackdrop('Transparent')
-							child.ExpandIcon.backdrop:SetInside(3, 3)
-						end
-
-						child.styled = true
+					if child.ExpandIcon then
+						child.ExpandIcon:CreateBackdrop('Transparent')
+						child.ExpandIcon.backdrop:SetInside(3, 3)
 					end
 
 					child.styled = true
 				end
 
-				if child.isHeader then
-					child.ExpandIcon.backdrop:Show()
-				else
-					child.ExpandIcon.backdrop:Hide()
-				end
+				child.styled = true
 			end
-		end)
+
+			if child.isHeader then
+				child.ExpandIcon.backdrop:Show()
+			else
+				child.ExpandIcon.backdrop:Hide()
+			end
+		end
+	end)
 
 	--Buttons used to toggle between equipment manager, titles, and character stats
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
