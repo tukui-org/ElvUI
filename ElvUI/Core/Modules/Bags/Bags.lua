@@ -996,7 +996,7 @@ function B:Layout(isBank)
 
 	for _, bagID in next, f.BagIDs do
 		if isSplit then
-			newBag = false --(bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and B.db.split['bag'..bagID] or false
+			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and B.db.split['bag'..bagID] or false
 		end
 
 		--Bag Slots
