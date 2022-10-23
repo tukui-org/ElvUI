@@ -354,12 +354,9 @@ E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7
 E.TimeIndicatorColors = {} -- same color indexes
 E.TimeThreshold = 3
 
-do
-	local fallback = { r = 1, g = 1, b = 1 }
-	for i = 0, 14 do
-		E.TimeColors[i] = fallback
-		E.TimeIndicatorColors[i] = '|cFFffffff'
-	end
+for i = 0, 14 do
+	E.TimeColors[i] = {r = 1, g = 1, b = 1}
+	E.TimeIndicatorColors[i] = '|cFFffffff'
 end
 
 E.TimeFormats = { -- short / indicator color

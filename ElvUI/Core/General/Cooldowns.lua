@@ -302,23 +302,37 @@ function E:UpdateCooldownOverride(module)
 	end
 end
 
-function E:GetCooldownColors(db)
-	if not db then db = E.db.cooldown end -- just incase someone calls this without a first arg use the global
-	local ab = E.db.actionbar.cooldown -- used only for target aura colors, they get pushed into the main table
+do
+	local function RGB(db) return E:CopyTable({r = 1, g = 1, b = 1}, db) end
+	local function HEX(db) return E:RGBToHex(db.r, db.g, db.b) end
 
-	return
-	--> time colors (0 - 9) <-- 7 is mod rate, which is different from text colors (as mod rate has no indicator)
-	db.daysColor, db.hoursColor, db.minutesColor, db.secondsColor, db.expiringColor, db.mmssColor, db.hhmmColor, db.modRateColor, ab.targetAuraColor, ab.expiringAuraColor,
-	--> text colors (0 - 8) <--
-	E:RGBToHex(db.daysIndicator.r, db.daysIndicator.g, db.daysIndicator.b),
-	E:RGBToHex(db.hoursIndicator.r, db.hoursIndicator.g, db.hoursIndicator.b),
-	E:RGBToHex(db.minutesIndicator.r, db.minutesIndicator.g, db.minutesIndicator.b),
-	E:RGBToHex(db.secondsIndicator.r, db.secondsIndicator.g, db.secondsIndicator.b),
-	E:RGBToHex(db.expireIndicator.r, db.expireIndicator.g, db.expireIndicator.b),
-	E:RGBToHex(db.mmssColorIndicator.r, db.mmssColorIndicator.g, db.mmssColorIndicator.b),
-	E:RGBToHex(db.hhmmColorIndicator.r, db.hhmmColorIndicator.g, db.hhmmColorIndicator.b),
-	E:RGBToHex(ab.targetAuraIndicator.r, ab.targetAuraIndicator.g, ab.targetAuraIndicator.b),
-	E:RGBToHex(ab.expiringAuraIndicator.r, ab.expiringAuraIndicator.g, ab.expiringAuraIndicator.b)
+	function E:GetCooldownColors(db)
+		if not db then db = E.db.cooldown end -- just incase someone calls this without a first arg use the global
+		local ab = E.db.actionbar.cooldown -- used only for target aura colors, they get pushed into the main table
+
+		return
+		--> time colors (0 - 9) <-- 7 is mod rate, which is different from text colors (as mod rate has no indicator)
+		RGB(db.daysColor),
+		RGB(db.hoursColor),
+		RGB(db.minutesColor),
+		RGB(db.secondsColor),
+		RGB(db.expiringColor),
+		RGB(db.mmssColor),
+		RGB(db.hhmmColor),
+		RGB(db.modRateColor),
+		RGB(ab.targetAuraColor),
+		RGB(ab.expiringAuraColor),
+		--> text colors (0 - 8) <--
+		HEX(db.daysIndicator),
+		HEX(db.hoursIndicator),
+		HEX(db.minutesIndicator),
+		HEX(db.secondsIndicator),
+		HEX(db.expireIndicator),
+		HEX(db.mmssColorIndicator),
+		HEX(db.hhmmColorIndicator),
+		HEX(ab.targetAuraIndicator),
+		HEX(ab.expiringAuraIndicator)
+	end
 end
 
 function E:UpdateCooldownSettings(module)
