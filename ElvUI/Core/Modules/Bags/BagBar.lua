@@ -89,7 +89,7 @@ function B:SkinBag(bag)
 	end
 
 	icon:SetInside()
-	icon:SetTexture(bag.oldTex == 1721259 and E.Media.Textures.Backpack or bag.oldTex)
+	icon:SetTexture((not bag.oldTex or bag.oldTex == 1721259) and E.Media.Textures.Backpack or bag.oldTex)
 	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
