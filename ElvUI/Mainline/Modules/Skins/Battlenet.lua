@@ -39,8 +39,7 @@ function S:BattleNetFrames()
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:SetTemplate('Transparent')
 
-	for i = 1, BattleTagInviteFrame:GetNumChildren() do
-		local child = select(i, BattleTagInviteFrame:GetChildren())
+	for _, child in next, { BattleTagInviteFrame:GetChildren() } do
 		if child:IsObjectType('Button') then
 			S:HandleButton(child)
 		end

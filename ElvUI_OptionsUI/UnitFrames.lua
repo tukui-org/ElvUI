@@ -263,8 +263,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		local frameName = gsub('ElvUF_'..E:StringTitle(groupName), 't(arget)', 'T%1')
 		if groupName == 'party' then
 			local header = UF.headers[groupName]
-			for i = 1, header:GetNumChildren() do
-				local group = select(i, header:GetChildren())
+			for _, group in next, { header:GetChildren() } do
 				for j = 1, group:GetNumChildren() do
 					--Party unitbutton
 					local unitbutton = select(j, group:GetChildren())
@@ -420,11 +419,9 @@ local individual = {
 
 local function UpdateCustomTextGroup(unit)
 	if unit == 'party' or unit:find('raid') then
-		for i = 1, UF[unit]:GetNumChildren() do
-			local child = select(i, UF[unit]:GetChildren())
+		for _, child in next, { UF[unit]:GetChildren() } do
 
-			for x = 1, child:GetNumChildren() do
-				local subchild = select(x, child:GetChildren())
+			for _, subchild in next, { child:GetChildren() } do
 				UF:Configure_CustomTexts(subchild)
 				subchild:UpdateTags()
 			end

@@ -38,8 +38,7 @@ function S:BattleNetFrames()
 	local BattleTagInviteFrame = _G.BattleTagInviteFrame
 	S:HandleFrame(BattleTagInviteFrame, true)
 
-	for i = 1, BattleTagInviteFrame:GetNumChildren() do
-		local child = select(i, BattleTagInviteFrame:GetChildren())
+	for _, child in next, { BattleTagInviteFrame:GetChildren() } do
 		if child:IsObjectType('Button') then
 			S:HandleButton(child)
 		end

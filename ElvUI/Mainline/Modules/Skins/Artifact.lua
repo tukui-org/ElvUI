@@ -28,8 +28,7 @@ function S:Blizzard_ArtifactUI()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:Point('TOPLEFT', ArtifactFrame)
 
 	ArtifactFrame.AppearancesTab:HookScript('OnShow', function(s)
-		for i=1, s:GetNumChildren() do
-			local child = select(i, s:GetChildren())
+		for _, child in next, { s:GetChildren() } do
 			if child and child.appearanceID and not child.backdrop then
 				child:CreateBackdrop('Transparent')
 				child.SwatchTexture:SetTexCoord(.20,.80,.20,.80)

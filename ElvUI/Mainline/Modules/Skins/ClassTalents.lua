@@ -44,8 +44,7 @@ function S:Blizzard_ClassTalentUI()
 	ClassTalentFrame.TalentsTab.SearchPreviewContainer:StripTextures()
 	ClassTalentFrame.TalentsTab.SearchPreviewContainer:CreateBackdrop('Transparent')
 
-	for i = 1, 2 do
-		local tab = select(i, ClassTalentFrame.TabSystem:GetChildren())
+	for _, tab in next, { ClassTalentFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
 	end
 

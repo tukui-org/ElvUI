@@ -1130,8 +1130,7 @@ function E:ToggleOptionsUI(msg)
 		if not frame.bottomHolder then -- window was released or never opened
 			frame:HookScript('OnHide', E.Config_WindowClosed)
 
-			for i=1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+			for _, child in next, { frame:GetChildren() } do
 				if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
 					frame.originalClose = child
 					child:Hide()

@@ -183,8 +183,7 @@ function S:QuestInfoItem_OnClick() -- self is not S
 end
 
 function S:QuestLogQuests_Update() -- self is not S
-	for i = 1, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
-		local child = select(i, _G.QuestMapFrame.QuestsFrame.Contents:GetChildren())
+	for _, child in next, { _G.QuestMapFrame.QuestsFrame.Contents:GetChildren() } do
 		if child and child.ButtonText and not child.questID then
 			child:Size(16, 16)
 

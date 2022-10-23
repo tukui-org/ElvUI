@@ -192,8 +192,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(members)
-		for i = 1, members.ColumnDisplay:GetNumChildren() do
-			local child = select(i, members.ColumnDisplay:GetChildren())
+		for _, child in next, { members.ColumnDisplay:GetChildren() } do
 			if not child.IsSkinned then
 				child:StripTextures()
 				child:SetTemplate('Transparent')

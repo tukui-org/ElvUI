@@ -162,8 +162,7 @@ function S:Blizzard_GuildUI()
 	_G.GuildTextEditContainer.NineSlice:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar)
 
-	for i = 1, _G.GuildTextEditFrame:GetNumChildren() do
-		local child = select(i, _G.GuildTextEditFrame:GetChildren())
+	for _, child in next, { _G.GuildTextEditFrame:GetChildren() } do
 		if child:GetName() == 'GuildTextEditFrameCloseButton' and child:GetWidth() < 33 then
 			S:HandleCloseButton(child)
 		elseif child:GetName() == 'GuildTextEditFrameCloseButton' then
@@ -177,8 +176,7 @@ function S:Blizzard_GuildUI()
 	GuildLogFrame:SetTemplate('Transparent')
 
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
-	for i = 1, GuildLogFrame:GetNumChildren() do
-		local child = select(i, GuildLogFrame:GetChildren())
+	for _, child in next, { GuildLogFrame:GetChildren() } do
 		if child:GetName() == 'GuildLogFrameCloseButton' and child:GetWidth() < 33 then
 			S:HandleCloseButton(child)
 		elseif child:GetName() == 'GuildLogFrameCloseButton' then

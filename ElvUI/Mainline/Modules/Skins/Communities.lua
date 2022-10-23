@@ -334,8 +334,7 @@ function S:Blizzard_Communities()
 	S:HandleScrollBar(MemberList.ScrollBar)
 
 	--[[hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
-		for i = 1, s.ColumnDisplay:GetNumChildren() do
-			local child = select(i, s.ColumnDisplay:GetChildren())
+		for _, child in next, { s.ColumnDisplay:GetChildren() } do
 			child:StripTextures()
 			child:SetTemplate('Transparent')
 		end
@@ -655,8 +654,7 @@ function S:Blizzard_Communities()
 
 	hooksecurefunc(ApplicantList, 'BuildList', function(list)
 		local columnDisplay = list.ColumnDisplay
-		for i = 1, columnDisplay:GetNumChildren() do
-			local child = select(i, columnDisplay:GetChildren())
+		for _, child in next, { columnDisplay:GetChildren() } do
 			if not child.IsSkinned then
 				child:StripTextures()
 

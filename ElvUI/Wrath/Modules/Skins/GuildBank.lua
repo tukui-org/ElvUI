@@ -21,8 +21,7 @@ function S:Blizzard_GuildBankUI()
 	GuildBankFrame:Height(450)
 	GuildBankFrame.Emblem:Kill()
 
-	for i = 1, GuildBankFrame:GetNumChildren() do
-		local child = select(i, GuildBankFrame:GetChildren())
+	for _, child in next, { GuildBankFrame:GetChildren() } do
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
 		end

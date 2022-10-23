@@ -77,8 +77,7 @@ function S:Blizzard_LookingForGroupUI()
 		S:HandleTab(tab)
 	end
 
-	for i = 1, LFGParentFrame:GetNumChildren() do
-		local child = select(i, LFGParentFrame:GetChildren())
+	for _, child in next, { LFGParentFrame:GetChildren() } do
 
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)

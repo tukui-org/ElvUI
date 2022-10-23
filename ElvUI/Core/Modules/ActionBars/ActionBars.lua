@@ -783,8 +783,7 @@ end
 function AB:FadeBlings(alpha)
 	if AB.db.hideCooldownBling then return end
 
-	for i = 1, AB.fadeParent:GetNumChildren() do
-		local bar = select(i, AB.fadeParent:GetChildren())
+	for _, bar in next, { AB.fadeParent:GetChildren() } do
 		if bar.buttons then
 			for _, button in ipairs(bar.buttons) do
 				AB:FadeBlingTexture(button.cooldown, alpha)

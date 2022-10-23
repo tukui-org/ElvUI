@@ -373,8 +373,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		local frame = widget.content:GetParent()
 		if TYPE == 'Frame' then
 			frame:StripTextures()
-			for i=1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+			for _, child in next, { frame:GetChildren() } do
 				if child:IsObjectType('Button') and child:GetText() then
 					S:HandleButton(child)
 				else

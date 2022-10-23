@@ -74,8 +74,7 @@ function S:Blizzard_Professions()
 	GuildFrame.Container:StripTextures()
 	GuildFrame.Container:CreateBackdrop('Transparent')
 
-	for i = 1, 2 do
-		local tab = select(i, ProfessionsFrame.TabSystem:GetChildren())
+	for _, tab in next, { ProfessionsFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
 	end
 

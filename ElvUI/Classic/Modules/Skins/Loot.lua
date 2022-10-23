@@ -96,8 +96,7 @@ function S:LootFrame()
 			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
-		for i=1, MasterLooterFrame:GetNumChildren() do
-			local child = select(i, MasterLooterFrame:GetChildren())
+		for _, child in next, { MasterLooterFrame:GetChildren() } do
 			if child and not child.isSkinned and not child:GetName() then
 				if child:IsObjectType('Button') then
 					if child:GetPushedTexture() then

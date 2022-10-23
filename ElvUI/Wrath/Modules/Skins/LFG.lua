@@ -111,8 +111,7 @@ function S:Blizzard_LookingForGroupUI()
 		end
 	end
 
-	for i = 1, _G.LFGParentFrame:GetNumChildren() do
-		local child = select(i, _G.LFGParentFrame:GetChildren())
+	for _, child in next, { _G.LFGParentFrame:GetChildren() } do
 		if not child.IsSkinned and child:GetObjectType() == 'Button' then
 			child:ClearAllPoints()
 			child:Point('TOPRIGHT', -26, -6)

@@ -552,8 +552,7 @@ function S:CharacterFrame()
 	_G.TokenFrameCancelButton:Kill()
 	_G.TokenFrameMoneyFrame:Kill()
 
-	for i = 1, _G.TokenFrame:GetNumChildren() do
-		local child = select(i, _G.TokenFrame:GetChildren())
+	for _, child in next, { _G.TokenFrame:GetChildren() } do
 		if child and not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
 			child:Hide()
 			break

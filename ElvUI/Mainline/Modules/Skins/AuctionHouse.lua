@@ -86,8 +86,7 @@ end
 
 local function HandleHeaders(frame)
 	local maxHeaders = frame.HeaderContainer:GetNumChildren()
-	for i = 1, maxHeaders do
-		local header = select(i, frame.HeaderContainer:GetChildren())
+	for _, header in next, { frame.HeaderContainer:GetChildren() } do
 		if header and not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 
