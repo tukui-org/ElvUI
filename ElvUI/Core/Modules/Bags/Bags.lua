@@ -51,6 +51,11 @@ local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
 local UseContainerItem = UseContainerItem
 
+local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
+local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
+local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
+local SetBankBagSlotFlag = SetBankBagSlotFlag or (C_Container and C_Container.SetBankBagSlotFlag)
+
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
@@ -107,22 +112,19 @@ if E.WoW10 then
 	tinsert(B.GearFilters, BagSlotFlags.PriorityQuestItems)
 end
 
-local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
-local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
+local ContainerIDToInventoryID = ContainerIDToInventoryID
+local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
+local GetBankAutosortDisabled = GetBankAutosortDisabled
+local GetContainerItemCooldown = GetContainerItemCooldown
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots
+local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 
-local ContainerIDToInventoryID
-local GetBackpackAutosortDisabled
-local GetBackpackCurrencyInfo
-local GetBankAutosortDisabled
-local GetContainerItemCooldown
-local GetContainerItemInfo
-local GetContainerItemQuestInfo
-local GetContainerNumFreeSlots
-local GetContainerNumSlots
-local SetBackpackAutosortDisabled
-local SetInsertItemsLeftToRight
-local SetBankBagSlotFlag = SetBankBagSlotFlag or (C_Container and C_Container.SetBankBagSlotFlag)
-local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
+-- converted below
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 
 do
 	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
@@ -138,33 +140,22 @@ do
 		GetContainerNumSlots = container.GetContainerNumSlots
 		SetBackpackAutosortDisabled = container.SetBackpackAutosortDisabled
 		SetInsertItemsLeftToRight = container.SetInsertItemsLeftToRight
-	else
-		-- doesn't need converted
-		ContainerIDToInventoryID = _G.ContainerIDToInventoryID
-		GetBackpackAutosortDisabled = _G.GetBackpackAutosortDisabled
-		GetBankAutosortDisabled = _G.GetBankAutosortDisabled
-		SetBackpackAutosortDisabled = _G.SetBackpackAutosortDisabled
-		GetContainerNumFreeSlots = _G.GetContainerNumFreeSlots
-		GetContainerItemCooldown = _G.GetContainerItemCooldown
-		SetInsertItemsLeftToRight = _G.SetInsertItemsLeftToRight
-		GetContainerNumSlots = _G.GetContainerNumSlots
-
-		-- converted
+	else -- localised above
 		GetBackpackCurrencyInfo = function(index)
 			local info = {}
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
 			return info
 		end
 
 		GetContainerItemInfo = function(containerIndex, slotIndex)
 			local info = {}
-			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
+			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
 			return info
 		end
 
 		GetContainerItemQuestInfo = function(containerIndex, slotIndex)
 			local info = {}
-			info.isQuestItem, info.questID, info.isActive = _G.GetContainerItemQuestInfo(containerIndex, slotIndex)
+			info.isQuestItem, info.questID, info.isActive = GetContainerItemQuestInfo(containerIndex, slotIndex)
 			return info
 		end
 	end
