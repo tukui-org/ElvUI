@@ -4,12 +4,17 @@ local LSM = E.Libs.LSM
 local _G = _G
 local strmatch = strmatch
 
-local NONE = E.WoW10 and '' or 'NONE'
-
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	if not obj then return end
 
-	obj:SetFont(font, size, style or NONE)
+	-- convert because of bad values between versions
+	if (style == 'NONE' or not style) and E.WoW10 then
+		style = ''
+	elseif (style == '' or not style) and not E.WoW10 then
+		style = 'NONE'
+	end
+
+	obj:SetFont(font, size, style)
 
 	if sr and sg and sb then
 		obj:SetShadowColor(sr, sg, sb, sa)
