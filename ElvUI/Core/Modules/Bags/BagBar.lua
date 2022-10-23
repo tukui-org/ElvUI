@@ -1,14 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local AB = E:GetModule('ActionBars')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub = gsub
 local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
+local hooksecurefunc = hooksecurefunc
 
-local LSM = E.Libs.LSM
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetCVarBool = GetCVarBool
@@ -70,6 +71,7 @@ end
 
 function B:SkinBag(bag)
 	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
+	bag.oldTex = icon:GetTexture()
 
 	bag:StripTextures(E.WoW10)
 	bag:SetTemplate()
@@ -87,7 +89,7 @@ function B:SkinBag(bag)
 	end
 
 	icon:SetInside()
-	icon:SetTexture(E.Media.Textures.Backpack)
+	icon:SetTexture(bag.oldTex == 1721259 and E.Media.Textures.Backpack or bag.oldTex)
 	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
@@ -199,12 +201,10 @@ function B:BagButton_OnClick(key)
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif self.BagID == 0 then
 		B.MainMenuBarBackpackButton_OnClick(self, key)
+	elseif E.WoW10 then
+		self:BagSlotOnClick()
 	else
-		if E.WoW10 then
-			self:BagSlotOnClick()
-		else
-			_G.BagSlotButton_OnClick(self)
-		end
+		_G.BagSlotButton_OnClick(self)
 	end
 end
 
@@ -258,7 +258,7 @@ function B:LoadBagBar()
 
 		tinsert(B.BagBar.buttons, ReagentSlot)
 
-		hooksecurefunc(ReagentSlot, "SetBarExpanded", B.SizeAndPositionBagBar)
+		hooksecurefunc(ReagentSlot, 'SetBarExpanded', B.SizeAndPositionBagBar)
 	end
 
 	local KeyRing = _G.KeyRingButton
@@ -266,7 +266,6 @@ function B:LoadBagBar()
 		KeyRing:SetParent(B.BagBar)
 		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
 		KeyRing:SetScript('OnLeave', B.KeyRing_OnLeave)
-
 
 		KeyRing:StripTextures()
 		KeyRing:SetTemplate(nil, true)
