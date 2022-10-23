@@ -76,6 +76,8 @@ local C_ChatInfo_GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChan
 local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
 local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
+local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
+
 local RecruitLinkType = E.Retail and Enum.RafLinkType.Recruit
 local CHATCHANNELRULESET_MENTOR = E.Retail and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = E.Retail and Enum.PlayerMentorshipStatus.Newcomer
@@ -2036,7 +2038,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
-					local characterNameText = _G.BNet_GetClientEmbeddedAtlas(clientProgram, 14)..name
+					local characterNameText = GetClientTexture(clientProgram, 14)..name
 					local linkDisplayText = format('[%s] (%s)', arg2, characterNameText)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
