@@ -1,8 +1,8 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["Abbreviate Name"] = true
-L["Max Allowed Groups"] = true
+L["Abbreviate Name"] = "Name abkürzen"
+L["Max Allowed Groups"] = "Max. zulässige Gruppen"
 L["Display Mana"] = "Mana Anzeige"
 L["Will display mana when main power is:"] = "Mana wird anzeigt, wenn die Hauptkraft ist:"
 L["%s and then %s"] = "%s und dann %s"
@@ -52,7 +52,7 @@ L["Additional Power Prediction Color"] = "Zusätzliche Kraft Verbrauchsfarbe"
 L["Additional Power"] = "Zusätzliche Kraft"
 L["Additional spacing between each individual group."] = "Zusätzlicher Abstand zwischen jeder Gruppe."
 L["Additive Blend"] = "Additive Überblendung"
-L["AddOn Manager"] = true --No need to translate
+L["AddOn Manager"] = "Addonmanager"
 L["Adds an arrow infront of the chat lines to copy the entire line."] = "Fügt einen Pfeil vor der Chatzeile hinzu um die gesamte Zeile zu kopieren."
 L["Adjust the height of your left chat panel."] = "Passe die Höhe deines linken Chatfensters an."
 L["Adjust the height of your right chat panel."] = "Passe die Höhe deines rechten Chatfensters an."
@@ -998,7 +998,7 @@ L["Maximum Duration"] = "Maximale Dauer"
 L["Maximum Level"] = "Maximales Level"
 L["Maximum Time Left"] = "Max. Zeit verbleibend"
 L["Media"] = "Medien"
-L["Medium"] = true
+L["Medium"] = "Mittel"
 L["Merchant Frame"] = "Handelsfenster"
 L["Method to sort by."] = "Methode nach dem sortiert werden soll."
 L["Middle Click - Set Focus"] = "Mittelklick - Setze Fokus"
@@ -1038,7 +1038,7 @@ L["Mouseover"] = "Mouseover"
 L["Movers"] = "Ankerpunkte"
 L["Multi-Monitor Support"] = "Multi-Monitor Unterstützung"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multipliziere die Höhe und die Breite des Hintergrundes. Das ist nützlich, wenn du mehr als eine Leiste hinter einem Hintergrund haben möchtest."
-L["Multiple Ranks"] = true
+L["Multiple Ranks"] = "Mehrere Ränge"
 L["Must be in group with the player if he isn't on the same server as you."] = "Du musst mit dem Spieler in einer Gruppe sein wenn dieser nicht auf deinem Server ist wie du."
 L["Mythic+ Best Run"] = "Mythisch+ Bester Versuch"
 L["Mythic+ Data"] = "Mythisch+ Daten"
