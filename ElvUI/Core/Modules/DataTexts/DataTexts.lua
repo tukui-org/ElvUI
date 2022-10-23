@@ -774,12 +774,10 @@ function DT:CurrencyInfo(id)
 	local info = E.Retail and GetCurrencyInfo(id) or {}
 
 	if E.Wrath then
-		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.totalMax, info.isDiscovered = GetCurrencyInfo(id)
+		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(id)
 	end
 
-	if info then
-		return info.name, info.quantity, info.iconFileID, info.maxQuantity or info.totalMax, format(iconString, info.iconFileID or '136012')
-	end
+	return info, info and info.name, format(iconString, info and info.iconFileID or '136012')
 end
 
 function DT:BackpackCurrencyInfo(index)

@@ -19,7 +19,7 @@ local CurrencyListNameToIndex = {}
 local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
-		local name, quantity, _, maxQuantity = DT:CurrencyInfo(currency.ID)
+		local info, name = DT:CurrencyInfo(currency.ID)
 		if not name then return end
 
 		local style = currency.DISPLAY_STYLE
@@ -31,11 +31,11 @@ local function OnEvent(self)
 
 		displayString = strjoin(' ', displayString, '%d')
 
-		if currency.SHOW_MAX and maxQuantity > 0 then
-			displayString = strjoin(' ', displayString, '/', maxQuantity)
+		if currency.SHOW_MAX and info.maxQuantity and info.maxQuantity > 0 then
+			displayString = strjoin(' ', displayString, '/', info.maxQuantity)
 		end
 
-		self.text:SetFormattedText(displayString, quantity)
+		self.text:SetFormattedText(displayString, info.quantity)
 	end
 end
 
@@ -66,11 +66,11 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local name, _, iconFileID = DT:CurrencyInfo(currencyID)
+	local info, name = DT:CurrencyInfo(currencyID)
 	if not name then return end
 
 	--Add to internal storage, stored with name as key
-	CustomCurrencies[name] = { NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true }
+	CustomCurrencies[name] = { NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true }
 	--Register datatext
 	DT:RegisterDatatext(name, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, name)
 	--Save info to persistent storage, stored with ID as key
