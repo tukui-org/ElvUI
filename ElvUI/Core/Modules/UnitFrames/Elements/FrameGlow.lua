@@ -3,8 +3,8 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local next = next
 local pairs = pairs
-local select = select
 local tinsert = tinsert
 local strsub = strsub
 local CreateFrame = CreateFrame
@@ -435,12 +435,12 @@ function UF:FrameGlow_UpdateFrames()
 		local group = UF[groupName]
 		if group and group.GetNumChildren then
 			for _, frame in next, { group:GetChildren() } do
-				if frame and frame.Health then
+				if frame.Health then
 					UF:FrameGlow_ConfigureGlow(frame, frame.unit, dbTexture)
 					UF:FrameGlow_CheckChildren(frame, dbTexture)
-				elseif frame then
+				else
 					for _, child in next, { frame:GetChildren() } do
-						if child and child.Health then
+						if child.Health then
 							UF:FrameGlow_ConfigureGlow(child, child.unit, dbTexture)
 							UF:FrameGlow_CheckChildren(child, dbTexture)
 						end

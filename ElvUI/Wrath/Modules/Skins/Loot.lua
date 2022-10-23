@@ -4,7 +4,7 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
-local unpack, select = unpack, select
+local unpack = unpack
 
 local GetItemInfo = GetItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
@@ -102,16 +102,14 @@ function S:LootFrame()
 		end
 
 		for _, child in next, { MasterLooterFrame:GetChildren() } do
-			if child and not child.isSkinned and not child:GetName() then
-				if child:IsObjectType('Button') then
-					if child:GetPushedTexture() then
-						S:HandleCloseButton(child)
-					else
-						child:SetTemplate()
-						child:StyleButton()
-					end
-					child.isSkinned = true
+			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
+				if child:GetPushedTexture() then
+					S:HandleCloseButton(child)
+				else
+					child:SetTemplate()
+					child:StyleButton()
 				end
+				child.isSkinned = true
 			end
 		end
 	end)

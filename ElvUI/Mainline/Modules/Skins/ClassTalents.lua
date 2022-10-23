@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 local hooksecurefunc = hooksecurefunc
 local GetSpellTexture = GetSpellTexture
 

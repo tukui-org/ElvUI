@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local next = next
 local gsub = gsub
 local ipairs = ipairs
-local select = select
 local format = format
 local unpack = unpack
 local tinsert = tinsert

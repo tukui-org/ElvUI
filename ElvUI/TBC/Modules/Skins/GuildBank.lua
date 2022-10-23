@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, unpack = select, unpack
+local next, unpack = next, unpack
 local CreateFrame = CreateFrame
 
 local NUM_GUILDBANK_ICONS_PER_ROW = 10

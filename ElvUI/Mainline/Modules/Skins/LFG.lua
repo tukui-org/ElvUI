@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
+local next = next
 local unpack, ipairs, pairs = unpack, ipairs, pairs
 local min, strlower, select = min, strlower, select
 
@@ -592,7 +593,7 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', function(panel)
 		for _, child in next, { LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren() } do
-			if child and not child.isSkinned and child:IsObjectType('Button') then
+			if not child.isSkinned and child:IsObjectType('Button') then
 				S:HandleButton(child)
 				child.isSkinned = true
 			end

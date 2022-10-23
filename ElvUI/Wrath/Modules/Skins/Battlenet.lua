@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 
 function S:BattleNetFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end

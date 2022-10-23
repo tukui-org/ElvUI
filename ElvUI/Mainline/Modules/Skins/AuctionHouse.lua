@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, pairs, select, unpack = next, pairs, select, unpack
+local next, pairs, unpack = next, pairs, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
@@ -86,8 +86,8 @@ end
 
 local function HandleHeaders(frame)
 	local maxHeaders = frame.HeaderContainer:GetNumChildren()
-	for _, header in next, { frame.HeaderContainer:GetChildren() } do
-		if header and not header.IsSkinned then
+	for i, header in next, { frame.HeaderContainer:GetChildren() } do
+		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 
 			if not header.backdrop then

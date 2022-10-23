@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, select = next, select
+local next = next
 local unpack, strfind = unpack, strfind
 local ipairs, pairs = ipairs, pairs
 
@@ -553,7 +553,7 @@ function S:CharacterFrame()
 	_G.TokenFrameMoneyFrame:Kill()
 
 	for _, child in next, { _G.TokenFrame:GetChildren() } do
-		if child and not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
+		if not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
 			child:Hide()
 			break
 		end

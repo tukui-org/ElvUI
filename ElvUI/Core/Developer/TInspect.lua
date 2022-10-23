@@ -1,5 +1,5 @@
 local _G = _G
-local select = select
+local next = next
 
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded

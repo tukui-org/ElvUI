@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, select, unpack = ipairs, select, unpack
+local next, unpack = next, unpack
+local ipairs, select = ipairs, select
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
