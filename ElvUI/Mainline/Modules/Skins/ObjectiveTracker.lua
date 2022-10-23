@@ -55,7 +55,7 @@ end
 local function SkinItemButton(item)
 	item:SetTemplate('Transparent')
 	item:StyleButton()
-	item:SetNormalTexture(0)
+	item:SetNormalTexture(E.ClearTexture)
 
 	item.icon:SetTexCoord(unpack(E.TexCoords))
 	item.icon:SetInside()

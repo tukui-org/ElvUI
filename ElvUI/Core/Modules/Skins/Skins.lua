@@ -76,10 +76,10 @@ do
 	function S:HandleCategoriesButtons(button, strip)
 		if button.isSkinned then return end
 
-		if button.SetNormalTexture then button:SetNormalTexture(0) end
-		if button.SetHighlightTexture then button:SetHighlightTexture(0) end
-		if button.SetPushedTexture then button:SetPushedTexture(0) end
-		if button.SetDisabledTexture then button:SetDisabledTexture(0) end
+		if button.SetNormalTexture then button:SetNormalTexture(E.ClearTexture) end
+		if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end
+		if button.SetPushedTexture then button:SetPushedTexture(E.ClearTexture) end
+		if button.SetDisabledTexture then button:SetDisabledTexture(E.ClearTexture) end
 
 		if strip then button:StripTextures() end
 		S:HandleBlizzardRegions(button)
@@ -101,7 +101,7 @@ end
 
 function S:HandleButtonHighlight(frame, r, g, b)
 	if frame.SetHighlightTexture then
-		frame:SetHighlightTexture(0)
+		frame:SetHighlightTexture(E.ClearTexture)
 	end
 
 	if not r then r = 0.9 end
@@ -431,10 +431,10 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(0) end
-	if button.SetHighlightTexture then button:SetHighlightTexture(0) end
-	if button.SetPushedTexture then button:SetPushedTexture(0) end
-	if button.SetDisabledTexture then button:SetDisabledTexture(0) end
+	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(E.ClearTexture) end
+	if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end
+	if button.SetPushedTexture then button:SetPushedTexture(E.ClearTexture) end
+	if button.SetDisabledTexture then button:SetDisabledTexture(E.ClearTexture) end
 
 	if strip then button:StripTextures() end
 
@@ -1575,7 +1575,7 @@ do -- Handle collapse
 			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
 			syncPushTexture(button)
 		else
-			button:SetPushedTexture(0)
+			button:SetPushedTexture(E.ClearTexture)
 		end
 
 		hooksecurefunc(button, 'SetNormalTexture', UpdateCollapseTexture)

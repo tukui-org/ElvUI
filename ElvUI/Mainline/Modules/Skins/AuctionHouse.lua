@@ -123,7 +123,7 @@ local function HandleSellFrame(frame)
 	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
-	ItemButton:SetPushedTexture(0)
+	ItemButton:SetPushedTexture(E.ClearTexture)
 	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
@@ -159,7 +159,7 @@ local function HandleTokenSellFrame(frame)
 	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
-	ItemButton:SetPushedTexture(0)
+	ItemButton:SetPushedTexture(E.ClearTexture)
 	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 

@@ -124,13 +124,13 @@ function S:SpellBookFrame()
 
 		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(texture, tex)
 			if tex ~= nil then
-				texture:SetPushedTexture(0)
+				texture:SetPushedTexture(E.ClearTexture)
 			end
 		end)
 
 		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(texture, tex)
 			if tex ~= nil then
-				texture:SetHighlightTexture(0)
+				texture:SetHighlightTexture(E.ClearTexture)
 			end
 		end)
 

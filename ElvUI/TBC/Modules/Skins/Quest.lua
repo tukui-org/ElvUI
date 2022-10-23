@@ -428,7 +428,7 @@ function S:BlizzardQuestFrames()
 		questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
 		questLogTitle.SetNormalTexture = E.noop
 
-		questLogTitle:SetHighlightTexture(0)
+		questLogTitle:SetHighlightTexture(E.ClearTexture)
 		questLogTitle.SetHighlightTexture = E.noop
 
 		local normalTex = questLogTitle:GetNormalTexture()
@@ -453,7 +453,7 @@ function S:BlizzardQuestFrames()
 	QuestLogCollapseAllButton.SetNormalTexture = E.noop
 	QuestLogCollapseAllButton:GetNormalTexture():Size(16)
 
-	QuestLogCollapseAllButton:SetHighlightTexture(0)
+	QuestLogCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 	QuestLogCollapseAllButton.SetHighlightTexture = E.noop
 
 	QuestLogCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)

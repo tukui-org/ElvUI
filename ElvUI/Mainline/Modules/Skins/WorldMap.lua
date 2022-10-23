@@ -154,9 +154,9 @@ function S:WorldMapFrame()
 	}
 
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)
-		s.ExecuteSessionCommand:SetNormalTexture(0)
-		s.ExecuteSessionCommand:SetPushedTexture(0)
-		s.ExecuteSessionCommand:SetDisabledTexture(0)
+		s.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
+		s.ExecuteSessionCommand:SetPushedTexture(E.ClearTexture)
+		s.ExecuteSessionCommand:SetDisabledTexture(E.ClearTexture)
 
 		local atlas = sessionCommandToButtonAtlas[command]
 		if atlas then

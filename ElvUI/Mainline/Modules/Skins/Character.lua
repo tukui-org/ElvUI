@@ -69,8 +69,8 @@ end
 
 local function EquipmentDisplayButton(button)
 	if not button.isHooked then
-		button:SetNormalTexture(0)
-		button:SetPushedTexture(0)
+		button:SetNormalTexture(E.ClearTexture)
+		button:SetPushedTexture(E.ClearTexture)
 		button:SetTemplate()
 		button:StyleButton()
 

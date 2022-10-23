@@ -169,8 +169,8 @@ function S:Blizzard_EncounterJournal()
 
 	S:HandleIcon(EncounterInfo.instanceButton.icon, true)
 	EncounterInfo.instanceButton.icon:SetTexCoord(0, 1, 0, 1)
-	EncounterInfo.instanceButton:SetNormalTexture(0)
-	EncounterInfo.instanceButton:SetHighlightTexture(0)
+	EncounterInfo.instanceButton:SetNormalTexture(E.ClearTexture)
+	EncounterInfo.instanceButton:SetHighlightTexture(E.ClearTexture)
 
 	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
 	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
@@ -224,9 +224,9 @@ function S:Blizzard_EncounterJournal()
 			tab:CreateBackdrop('Transparent')
 			tab.backdrop:SetInside(2, 2)
 
-			tab:SetNormalTexture(0)
-			tab:SetPushedTexture(0)
-			tab:SetDisabledTexture(0)
+			tab:SetNormalTexture(E.ClearTexture)
+			tab:SetPushedTexture(E.ClearTexture)
+			tab:SetDisabledTexture(E.ClearTexture)
 
 			local hl = tab:GetHighlightTexture()
 			local r, g, b = unpack(E.media.rgbvaluecolor)
@@ -392,9 +392,9 @@ function S:Blizzard_EncounterJournal()
 		for i = 1, frame.ScrollTarget:GetNumChildren() do
 			local child = select(i, frame.ScrollTarget:GetChildren())
 			if not child.isSkinned then
-				child:SetNormalTexture(0)
-				child:SetHighlightTexture(0)
-				child:SetPushedTexture(0)
+				child:SetNormalTexture(E.ClearTexture)
+				child:SetHighlightTexture(E.ClearTexture)
+				child:SetPushedTexture(E.ClearTexture)
 
 				local bgImage = child.bgImage
 				if bgImage then

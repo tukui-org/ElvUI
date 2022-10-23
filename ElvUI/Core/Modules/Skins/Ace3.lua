@@ -360,7 +360,7 @@ function S:Ace3_RefreshTree(scrollToSelection)
 				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
 			end
 
-			button.toggle:SetHighlightTexture(0)
+			button.toggle:SetHighlightTexture(E.ClearTexture)
 		end
 	end
 end
