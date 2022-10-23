@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
-local pairs, select = pairs, select
+local next, select = next, select
 local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local IsPassiveSpell = IsPassiveSpell

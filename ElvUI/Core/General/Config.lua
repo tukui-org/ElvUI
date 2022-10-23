@@ -6,7 +6,7 @@ local unpack, sort, gsub, wipe = unpack, sort, gsub, wipe
 local strupper, ipairs, tonumber = strupper, ipairs, tonumber
 local floor, select, type, min = floor, select, type, min
 local pairs, tinsert, tContains = pairs, tinsert, tContains
-local strsplit = strsplit
+local next, strsplit = next, strsplit
 
 local hooksecurefunc = hooksecurefunc
 local EnableAddOn = EnableAddOn

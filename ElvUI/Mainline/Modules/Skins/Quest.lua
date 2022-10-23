@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, pairs, ipairs, select, unpack, strmatch, strfind = gsub, pairs, ipairs, select, unpack, strmatch, strfind
+local gsub, next, strmatch, strfind = gsub, next, strmatch, strfind
+local pairs, ipairs, select, unpack = pairs, ipairs, select, unpack
 
 local GetMoney = GetMoney
 local GetQuestID = GetQuestID

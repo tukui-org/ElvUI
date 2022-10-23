@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local next, select = next, select
-local ipairs, pairs, unpack = ipairs, pairs, unpack
+local next, unpack = next, unpack
+local ipairs, pairs = ipairs, pairs
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo

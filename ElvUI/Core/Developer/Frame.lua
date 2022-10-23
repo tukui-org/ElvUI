@@ -1,4 +1,4 @@
-local print, select, strmatch, strlower = print, select, strmatch, strlower
+local print, strmatch, strlower = print, strmatch, strlower
 local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
 
 local LoadAddOn = LoadAddOn

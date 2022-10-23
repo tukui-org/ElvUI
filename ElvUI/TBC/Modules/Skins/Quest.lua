@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, gsub = unpack, gsub
 local select, pairs = select, pairs
-local strfind, strmatch = strfind, strmatch
+local next, strmatch = next, strmatch
 
 local GetMoney = GetMoney
 local GetItemInfo = GetItemInfo

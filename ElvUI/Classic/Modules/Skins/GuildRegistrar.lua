@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 
 function S:GuildRegistrarFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
@@ -21,7 +21,7 @@ function S:GuildRegistrarFrame()
 	S:HandleEditBox(_G.GuildRegistrarFrameEditBox)
 
 	for _, region in next, { _G.GuildRegistrarFrameEditBox:GetRegions() } do
-		if region:IsObjectType('Texture') and region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Left]] or region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Right]] then
+		if region:IsObjectType('Texture') and (region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Left]] or region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Right]]) then
 			region:Kill()
 		end
 	end

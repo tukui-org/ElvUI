@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next, select = next, select
 local unpack, strfind = unpack, strfind
-local ipairs, pairs, select = ipairs, pairs, select
+local ipairs, pairs = ipairs, pairs
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness

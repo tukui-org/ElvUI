@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
+local next = next
 local unpack, select = unpack, select
 
 local hooksecurefunc = hooksecurefunc

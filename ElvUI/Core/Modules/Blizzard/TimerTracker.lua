@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
-local select, unpack, pairs = select, unpack, pairs
+local next = next
+local unpack, pairs = unpack, pairs
 local CreateFrame = CreateFrame
 
 local function SkinIt(bar)

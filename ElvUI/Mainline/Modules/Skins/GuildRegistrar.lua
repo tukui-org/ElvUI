@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 
 function S:GuildRegistrarFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
@@ -25,7 +25,7 @@ function S:GuildRegistrarFrame()
 
 	_G.GuildRegistrarFrameEditBox:Height(20)
 
-	for i=1, 2 do
+	for i = 1, 2 do
 		_G['GuildRegistrarButton'..i]:GetFontString():SetTextColor(1, 1, 1)
 	end
 
