@@ -58,7 +58,7 @@ local function SkinOverviewInfoBullets(object)
 	if parent.Bullets then
 		for _, bullet in next, parent.Bullets do
 			if not bullet.styled then
-				bullet.Text:SetTextColor(1, 1, 1)
+				bullet.Text:SetTextColor('P', 1, 1, 1)
 				bullet.styled = true
 			end
 		end
