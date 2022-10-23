@@ -5,23 +5,21 @@ local _G = _G
 local ipairs, tremove = ipairs, tremove
 
 function B:ScaleTalkingHeadFrame()
-	local scale = E.db.general.talkingHeadFrameScale or 1
-	local TalkingHeadFrame = _G.TalkingHeadFrame
-	local width, height = TalkingHeadFrame:GetSize()
-	TalkingHeadFrame.mover:Size(width * scale, height * scale)
-	TalkingHeadFrame:SetScale(scale)
+	local frame = _G.TalkingHeadFrame
+	frame:SetScale(E.db.general.talkingHeadFrameScale or 1)
 
 	--Reset Model Camera
-	local model = TalkingHeadFrame.MainFrame.Model
+	local model = frame.MainFrame.Model
 	if model.uiCameraID then
 		model:RefreshCamera()
+
 		_G.Model_ApplyUICamera(model, model.uiCameraID)
 	end
 
 	--Use this to prevent the frame from auto closing, so you have time to test things.
-	-- TalkingHeadFrame:UnregisterEvent('SOUNDKIT_FINISHED')
-	-- TalkingHeadFrame:UnregisterEvent('TALKINGHEAD_CLOSE')
-	-- TalkingHeadFrame:UnregisterEvent('LOADING_SCREEN_ENABLED')
+	-- frame:UnregisterEvent('SOUNDKIT_FINISHED')
+	-- frame:UnregisterEvent('TALKINGHEAD_CLOSE')
+	-- frame:UnregisterEvent('LOADING_SCREEN_ENABLED')
 end
 
 local function InitializeTalkingHead()
@@ -45,6 +43,7 @@ local function LoadTalkingHead()
 	end
 
 	InitializeTalkingHead()
+
 	B:ScaleTalkingHeadFrame()
 end
 
