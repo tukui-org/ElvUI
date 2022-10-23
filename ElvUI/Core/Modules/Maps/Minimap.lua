@@ -4,7 +4,6 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local mod = mod
-local wipe = wipe
 local next = next
 local sort = sort
 local floor = floor
@@ -36,12 +35,6 @@ local MinimapCluster = _G.MinimapCluster
 local Minimap = _G.Minimap
 
 -- GLOBALS: GetMinimapShape
-
-local function killFeedback(frame)
-	frame:Kill()
-	frame.TriggerEvent = E.noop
-	wipe(frame.Data.RegisteredEvents)
-end
 
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
@@ -185,8 +178,6 @@ end
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_TimeManager' then
 		_G.TimeManagerClockButton:Kill()
-	elseif addon == 'Blizzard_PTRFeedback' then
-		killFeedback(_G.PTR_IssueReporter)
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
 	elseif addon == 'Blizzard_EncounterJournal' then
@@ -680,10 +671,6 @@ function M:Initialize()
 
 		MinimapCluster.BorderTop:StripTextures()
 		MinimapCluster.Tracking.Background:StripTextures()
-	end
-
-	if _G.PTR_IssueReporter then
-		killFeedback(_G.PTR_IssueReporter)
 	end
 
 	if _G.TimeManagerClockButton then
