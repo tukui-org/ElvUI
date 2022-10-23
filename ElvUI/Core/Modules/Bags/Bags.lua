@@ -122,8 +122,8 @@ local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 
 -- converted below
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetContainerItemInfo = GetContainerItemInfo
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 
 do
