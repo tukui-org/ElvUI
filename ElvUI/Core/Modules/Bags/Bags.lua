@@ -122,9 +122,9 @@ local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 
 -- converted below
-local GetContainerItemInfo = GetContainerItemInfo
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
-local GetContainerItemQuestInfo = GetContainerItemQuestInfo
+local GetContainerItemInfo
+local GetBackpackCurrencyInfo
+local GetContainerItemQuestInfo
 
 do
 	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
@@ -143,19 +143,19 @@ do
 	else -- localised above
 		GetBackpackCurrencyInfo = function(index)
 			local info = {}
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
 			return info
 		end
 
 		GetContainerItemInfo = function(containerIndex, slotIndex)
 			local info = {}
-			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
+			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
 			return info
 		end
 
 		GetContainerItemQuestInfo = function(containerIndex, slotIndex)
 			local info = {}
-			info.isQuestItem, info.questID, info.isActive = GetContainerItemQuestInfo(containerIndex, slotIndex)
+			info.isQuestItem, info.questID, info.isActive = _G.GetContainerItemQuestInfo(containerIndex, slotIndex)
 			return info
 		end
 	end
