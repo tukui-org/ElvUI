@@ -1331,17 +1331,18 @@ function B:GetGrays(vendor)
 	for bagID = 0, 4 do
 		for slotID = 1, B:GetContainerNumSlots(bagID) do
 			local info = GetContainerItemInfo(bagID, slotID)
-			if info and info.hyperlink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
-				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(info.hyperlink)
+			local itemLink = info and info.hyperlink
+			if itemLink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
+				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 
 				if rarity and rarity == 0 -- grays :o
 				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
-				and (not E.WoW10 or not IsCosmeticItem(info.hyperlink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(info.hyperlink)) then -- skip transmogable items
+				and (not E.WoW10 or not IsCosmeticItem(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
 
 					if vendor then
-						tinsert(B.SellFrame.Info.itemList, {bagID, slotID, info.hyperlink, stackCount, stackPrice})
+						tinsert(B.SellFrame.Info.itemList, {bagID, slotID, itemLink, stackCount, stackPrice})
 					elseif stackPrice > 0 then
 						value = value + stackPrice
 					end
