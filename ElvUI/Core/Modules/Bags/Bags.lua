@@ -2354,6 +2354,7 @@ else
 	function B:UpdateContainerFrameAnchors()
 		local xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column
 		local screenWidth = E.screenWidth
+		local bags = _G.ContainerFrame1.bags
 		local containerScale = 1
 		local leftLimit = 0
 
@@ -2371,7 +2372,7 @@ else
 			leftMostPoint = screenWidth - xOffset
 			column = 1
 
-			for _, frame in ipairs(_G.ContainerFrame1.bags) do
+			for _, frame in ipairs(bags) do
 				local frameHeight = frame:GetHeight()
 				if freeScreenHeight < frameHeight then
 					column = column + 1 -- Start a new column
@@ -2402,7 +2403,7 @@ else
 		column = 0
 
 		local bagsPerColumn = 0
-		for index, frame in ipairs(_G.ContainerFrame1.bags) do
+		for index, frame in ipairs(bags) do
 			frame:SetScale(1)
 
 			if index == 1 then
@@ -2414,14 +2415,14 @@ else
 				column = column + 1
 				freeScreenHeight = screenHeight - yOffset
 				if column > 1 then
-					frame:Point('BOTTOMRIGHT', _G.ContainerFrame1.bags[(index - bagsPerColumn) - 1], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
+					frame:Point('BOTTOMRIGHT', bags[(index - bagsPerColumn) - 1], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
 				else
-					frame:Point('BOTTOMRIGHT', _G.ContainerFrame1.bags[index - bagsPerColumn], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
+					frame:Point('BOTTOMRIGHT', bags[index - bagsPerColumn], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
 				end
 				bagsPerColumn = 0
 			else
 				-- Anchor to the previous bag
-				frame:Point('BOTTOMRIGHT', _G.ContainerFrame1.bags[index - 1], 'TOPRIGHT', 0, CONTAINER_SPACING)
+				frame:Point('BOTTOMRIGHT', bags[index - 1], 'TOPRIGHT', 0, CONTAINER_SPACING)
 				bagsPerColumn = bagsPerColumn + 1
 			end
 
