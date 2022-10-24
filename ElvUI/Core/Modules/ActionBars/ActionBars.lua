@@ -661,6 +661,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local normal = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 	local nat = button.NewActionTexture
+	local slotbg = button.SlotBackground
 	local mask = button.IconMask
 
 	local db = button:GetParent().db
@@ -678,6 +679,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if normal2 then normal2:SetTexture() normal2:Hide() normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
 	if nat then nat:SetAlpha(0) end
+	if slotbg then slotbg:Hide() end
 	if mask then mask:Hide() end
 
 	if count then
