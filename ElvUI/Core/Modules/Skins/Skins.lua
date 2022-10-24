@@ -1516,9 +1516,10 @@ do
 		if borderBox then
 			borderBox:StripTextures()
 
-			if borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton then
-				borderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer('BACKGROUND')
-				S:HandleIcon(borderBox.SelectedIconArea.SelectedIconButton.Icon, true)
+			local button = borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton
+			if button then
+				button:DisableDrawLayer('BACKGROUND')
+				S:HandleItemButton(button, true)
 			end
 		end
 
