@@ -1336,7 +1336,7 @@ function B:GetGrays(vendor)
 
 				if rarity and rarity == 0 -- grays :o
 				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
-				and (not IsCosmeticItem(info.hyperlink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(info.hyperlink)) then -- skip transmogable items
+				and (not E.WoW10 or not IsCosmeticItem(info.hyperlink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(info.hyperlink)) then -- skip transmogable items
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
 
