@@ -286,7 +286,6 @@ function AB:CreateBarPet()
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet')
 
-	AB:PositionAndSizeBarPet()
 	AB:UpdatePetBindings()
 
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
