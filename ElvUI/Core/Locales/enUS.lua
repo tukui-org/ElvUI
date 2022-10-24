@@ -12,6 +12,7 @@ L["%s is attempting to share the profile %s with you. Would you like to accept t
 L["%s: %s tried to call the protected function '%s'."] = true
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = true
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = true
+L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true
 L["|cFFffffffLeft Click:|r Select Volume Stream"] = true
 L["|cFFffffffMiddle Click:|r Toggle Mute Master Stream"] = true
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = true
@@ -216,6 +217,7 @@ L["Left Click:"] = true
 L["Level %d"] = true
 L["Level"] = true
 L["List of installations in queue:"] = true
+L["Loadouts"] = true
 L["Lock"] = true
 L["LOGIN_PTR"] = ("|cffff3333You are currently not running the PTR version of *ElvUI|r which may cause issues.|r ^Please download the PTR version from the following link.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)

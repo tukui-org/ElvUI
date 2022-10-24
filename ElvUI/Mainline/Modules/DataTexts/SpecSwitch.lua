@@ -16,7 +16,6 @@ local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
-local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
