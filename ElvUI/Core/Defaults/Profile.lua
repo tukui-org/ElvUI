@@ -2376,7 +2376,7 @@ P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
-for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'} do
+for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE', 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER', 'EVOKER'} do
 	P.unitframe.units.party['CLASS'..i] = classTag
 	for k = 1, 3 do
 		P.unitframe.units['raid'..k]['CLASS'..i] = classTag
