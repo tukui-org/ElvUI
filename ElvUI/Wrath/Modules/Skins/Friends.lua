@@ -540,6 +540,9 @@ function S:FriendsFrame()
 
 	_G.RaidInfoScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
+
+	_G.RaidInfoInstanceLabel:SetTemplate()
+	_G.RaidInfoIDLabel:SetTemplate()
 end
 
 S:AddCallback('FriendsFrame')
