@@ -836,14 +836,14 @@ end
 
 function B:UpdateCooldown(slot)
 	local start, duration, enabled = GetContainerItemCooldown(slot.BagID, slot.SlotID)
-	if duration > 0 and enabled == 0 then
+	if duration and duration > 0 and enabled == 0 then
 		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 	else
 		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 	end
 
 	local cd = slot.Cooldown
-	if duration > 0 and enabled == 1 then
+	if duration and duration > 0 and enabled == 1 then
 		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
 		if newStart or newDuration then
 			cd:SetCooldown(start, duration)
