@@ -651,17 +651,17 @@ end
 
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName()
-	local macroText = _G[name..'Name']
-	local hotKey = _G[name..'HotKey']
-	local icon = _G[name..'Icon']
-	local shine = _G[name..'Shine']
-	local count = _G[name..'Count']
-	local flash = _G[name..'Flash']
-	local border = _G[name..'Border']
-	local normal = _G[name..'NormalTexture']
+	local macro = button.Name or _G[name..'Name']
+	local hotkey = button.HotKey or _G[name..'HotKey']
+	local icon = button.icon or _G[name..'Icon']
+	local shine = button.AutoCastShine or _G[name..'Shine']
+	local count = button.Count or _G[name..'Count']
+	local flash = button.Flash or _G[name..'Flash']
+	local border = button.Border or _G[name..'Border']
+	local normal = button.NormalTexture or _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
-	local nat = button.NewActionTexture
 	local slotbg = button.SlotBackground
+	local action = button.NewActionTexture
 	local mask = button.IconMask
 
 	local db = button:GetParent().db
@@ -673,12 +673,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.ignoreNormal = ignoreNormal
 
 	icon:SetDrawLayer('ARTWORK', -1)
-	hotKey:SetDrawLayer('OVERLAY')
+	hotkey:SetDrawLayer('OVERLAY')
 
 	if normal and not ignoreNormal then normal:SetTexture() normal:Hide() normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture() normal2:Hide() normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
-	if nat then nat:SetAlpha(0) end
+	if action then action:SetAlpha(0) end
 	if slotbg then slotbg:Hide() end
 	if mask then mask:Hide() end
 
@@ -697,15 +697,15 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		count:SetTextColor(c.r, c.g, c.b)
 	end
 
-	if macroText then
+	if macro then
 		local position, xOffset, yOffset = db and db.macroTextPosition or 'BOTTOM', db and db.macroTextXOffset or 0, db and db.macroTextYOffset or 1
 
-		macroText:ClearAllPoints()
-		macroText:Point(position, xOffset, yOffset)
-		macroText:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
+		macro:ClearAllPoints()
+		macro:Point(position, xOffset, yOffset)
+		macro:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
 
 		local c = db and db.useMacroColor and db.macroColor or color
-		macroText:SetTextColor(c.r, c.g, c.b)
+		macro:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if not button.noBackdrop and not button.useMasque then
