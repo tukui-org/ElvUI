@@ -150,12 +150,10 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Loadouts"], 0.69, 0.31, 0.31)
 
-	if #loadoutList > 1 then
-		for index = 2, #loadoutList do
-			local loadout = loadoutList[index]
-			if loadout then
-				DT.tooltip:AddLine(strjoin(' - ', loadout.text, (loadout:checked(loadout.arg1, loadout.arg2) and activeString or inactiveString)), 1, 1, 1)
-			end
+	for index, loadout in next, loadoutList do
+		if index > 1 then
+			local text = loadout:checked(loadout.arg1, loadout.arg2) and activeString or inactiveString
+			DT.tooltip:AddLine(strjoin(' - ', loadout.text, text), 1, 1, 1)
 		end
 	end
 
