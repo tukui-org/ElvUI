@@ -1,26 +1,24 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+-- TODO: show active loadout in datatext
+
 local _G = _G
-local ipairs, wipe = ipairs, wipe
+local ipairs, tinsert = ipairs, tinsert
 local format, next, strjoin = format, next, strjoin
+
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
-local GetTalentInfo = GetTalentInfo
 local HideUIPanel = HideUIPanel
+local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
-local LOOT = LOOT
-local PVP_TALENTS = PVP_TALENTS
-local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
-local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
-local TALENT_FRAME_DROP_DOWN_STARTER_BUILD = TALENT_FRAME_DROP_DOWN_STARTER_BUILD
-local STARTER_BUILD_TRAIT_CONFIG_ID = Constants.TraitConsts.STARTER_BUILD_TRAIT_CONFIG_ID
+
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 local C_ClassTalents_GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
 local C_ClassTalents_GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
@@ -31,23 +29,53 @@ local C_ClassTalents_LoadConfig = C_ClassTalents.LoadConfig
 local C_ClassTalents_UpdateLastSelectedSavedConfigID = C_ClassTalents.UpdateLastSelectedSavedConfigID
 local C_ClassTalents_SetStarterBuildActive = C_ClassTalents.SetStarterBuildActive
 
-local displayString, lastPanel, active, activeLoadout = '' -- todo show active loadout in datatext
+local LOOT = LOOT
+local PVP_TALENTS = PVP_TALENTS
+local BLUE_FONT_COLOR = BLUE_FONT_COLOR
+local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
+local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+local TALENT_FRAME_DROP_DOWN_STARTER_BUILD = TALENT_FRAME_DROP_DOWN_STARTER_BUILD
+local STARTER_BUILD_TRAIT_CONFIG_ID = Constants.TraitConsts.STARTER_BUILD_TRAIT_CONFIG_ID
+
+local displayString, lastPanel, active = ''
 local activeString = strjoin('', '|cff00FF00' , _G.ACTIVE_PETS, '|r')
 local inactiveString = strjoin('', '|cffFF0000', _G.FACTION_INACTIVE, '|r')
+
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
 	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) end },
 }
 
-local specList = {
-	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
-}
+local specList = { { text = _G.SPECIALIZATION, isTitle = true, notCheckable = true } }
+local loadoutList = { { text = L["Loadouts"], isTitle = true, notCheckable = true } }
 
-local loadoutList = {
-	{ text = L["Loadouts"], isTitle = true, notCheckable = true },
-}
+local STARTER_TEXT = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, nil, TALENT_FRAME_DROP_DOWN_STARTER_BUILD)
 
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
+local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
+
+local function starter_checked()
+	return C_ClassTalents_GetStarterBuildActive()
+end
+local function starter_func(_, arg1)
+	C_ClassTalents_SetStarterBuildActive(true)
+	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, STARTER_BUILD_TRAIT_CONFIG_ID)
+end
+local function loadout_checked(data)
+	return data and data.arg1 and data.arg2 == C_ClassTalents_GetLastSelectedSavedConfigID(data.arg1)
+end
+
+local function loadout_func(_, arg1, arg2)
+	C_ClassTalents_LoadConfig(arg2, true)
+
+	if C_ClassTalents_GetLastSelectedSavedConfigID(arg1) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
+		C_ClassTalents_SetStarterBuildActive(false)
+	end
+
+	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, arg2)
+end
+
 local function OnEvent(self, event)
 	lastPanel = self
 
@@ -56,7 +84,7 @@ local function OnEvent(self, event)
 			local id, name, _, icon = GetSpecializationInfo(index)
 			if id then
 				menuList[index + 2] = { text = name, checked = function() return GetLootSpecialization() == id end, func = function() SetLootSpecialization(id) end }
-				specList[index + 1] = { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', icon, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
+				specList[index + 1] = { text = format(specText, icon, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
 			end
 		end
 	end
@@ -72,39 +100,18 @@ local function OnEvent(self, event)
 
 	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' then
 		local builds = C_ClassTalents_GetConfigIDsBySpecID(info.id)
-
-		if C_ClassTalents_GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
+		if builds and C_ClassTalents_GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
 			tinsert(builds, STARTER_BUILD_TRAIT_CONFIG_ID)
 		end
 
-		-- todo refactor funcs?
 		for index, configID in next, builds do
 			if configID == STARTER_BUILD_TRAIT_CONFIG_ID then
-				loadoutList[index + 1] = {
-					text = BLUE_FONT_COLOR:WrapTextInColorCode(TALENT_FRAME_DROP_DOWN_STARTER_BUILD),
-					checked = function()
-						return C_ClassTalents_GetStarterBuildActive()
-					end,
-					func = function()
-						C_ClassTalents_SetStarterBuildActive(true)
-						C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, STARTER_BUILD_TRAIT_CONFIG_ID)
-					end
-				}
+				loadoutList[index + 1] = { text = STARTER_TEXT, checked = starter_checked, func = starter_func, arg1 = info.id }
 			else
 				local configInfo = C_Traits_GetConfigInfo(configID)
-				loadoutList[index + 1] = {
-					text = configInfo.name,
-					checked = function()
-						return configID == C_ClassTalents_GetLastSelectedSavedConfigID(info.id)
-					end,
-					func = function()
-						C_ClassTalents_LoadConfig(configID, true)
-						if C_ClassTalents_GetLastSelectedSavedConfigID(info.id) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
-							C_ClassTalents_SetStarterBuildActive(false)
-						end
-						C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, configID)
-					end
-				}
+				if configInfo then
+					loadoutList[index + 1] = { text = configInfo.name, checked = loadout_checked, func = loadout_func, arg1 = info.id, arg2 = configID }
+				end
 			end
 		end
 	end
@@ -112,7 +119,6 @@ local function OnEvent(self, event)
 	active = specIndex
 
 	local spec = format(mainIcon, info.icon)
-
 	if specialization == 0 or info.id == specialization then
 		self.text:SetFormattedText('%s %s', spec, info.name)
 	else
@@ -121,7 +127,6 @@ local function OnEvent(self, event)
 	end
 end
 
-local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local function AddTexture(texture)
 	return texture and format(listIcon, texture) or ''
 end
@@ -148,7 +153,9 @@ local function OnEnter()
 	if #loadoutList > 1 then
 		for index = 2, #loadoutList do
 			local loadout = loadoutList[index]
-			DT.tooltip:AddLine(strjoin(' - ', loadout.text, (loadout.checked() and activeString or inactiveString)), 1, 1, 1)
+			if loadout then
+				DT.tooltip:AddLine(strjoin(' - ', loadout.text, (loadout.checked() and activeString or inactiveString)), 1, 1, 1)
+			end
 		end
 	end
 
@@ -159,6 +166,7 @@ local function OnEnter()
 
 		for i, talentID in next, pvpTalents do
 			if i > 4 then break end
+
 			local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
 			if name and unlocked then
 				DT.tooltip:AddLine(AddTexture(icon)..' '..name)
@@ -178,29 +186,34 @@ local function OnClick(self, button)
 	local specIndex = GetSpecialization()
 	if not specIndex then return end
 
+	local menu
 	if button == 'LeftButton' then
-		if not _G.ClassTalentFrame then
+		local frame = _G.ClassTalentFrame
+		if not frame then
 			_G.LoadAddOn('Blizzard_ClassTalentUI')
 		end
+
 		if IsShiftKeyDown() then
-			if not _G.ClassTalentFrame:IsShown() then
-				ShowUIPanel(_G.ClassTalentFrame)
+			if frame:IsShown() then
+				HideUIPanel(frame)
 			else
-				HideUIPanel(_G.ClassTalentFrame)
+				ShowUIPanel(frame)
 			end
-		elseif IsControlKeyDown() then
-			E:SetEasyMenuAnchor(E.EasyMenu, self)
-			_G.EasyMenu(loadoutList, E.EasyMenu, nil, nil, nil, 'MENU')
 		else
-			E:SetEasyMenuAnchor(E.EasyMenu, self)
-			_G.EasyMenu(specList, E.EasyMenu, nil, nil, nil, 'MENU')
+			menu = IsControlKeyDown() and loadoutList or specList
 		end
 	else
 		local _, specName = GetSpecializationInfo(specIndex)
-		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
+		if specName then
+			menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
 
+			menu = menuList
+		end
+	end
+
+	if menu then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		_G.EasyMenu(loadoutList, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 
