@@ -55,6 +55,7 @@ local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
 local savedConfigID
+local changingLoadout = false
 
 local function starter_checked()
 	return C_ClassTalents_GetStarterBuildActive()
@@ -75,6 +76,7 @@ local function loadout_func(_, arg1, arg2)
 	end
 
 	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, arg2)
+	changingLoadout = true
 end
 
 local function OnEvent(self, event)
@@ -101,12 +103,13 @@ local function OnEvent(self, event)
 
 	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' or event == 'CONFIG_COMMIT_FAILED' then
 		if event == 'CONFIG_COMMIT_FAILED'then
-			if savedConfigID then
-				C_ClassTalents_LoadConfig(savedConfigID, true)
+			if changingLoadout and savedConfigID then
+				if savedConfigID == STARTER_BUILD_TRAIT_CONFIG_ID then
+					C_ClassTalents_SetStarterBuildActive(true)
+				else
+					C_ClassTalents_LoadConfig(savedConfigID, true)
+				end
 				C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, savedConfigID)
-			else
-				C_ClassTalents_SetStarterBuildActive(true)
-				C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, STARTER_BUILD_TRAIT_CONFIG_ID)
 			end
 		end
 
@@ -126,7 +129,8 @@ local function OnEvent(self, event)
 			end
 		end
 
-		savedConfigID = C_ClassTalents_GetLastSelectedSavedConfigID(info.id)
+		savedConfigID = C_ClassTalents_GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or C_ClassTalents_GetLastSelectedSavedConfigID(info.id)
+		changingLoadout = false
 	end
 
 	active = specIndex
