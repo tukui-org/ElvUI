@@ -2,9 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack, gsub = unpack, gsub
 local select, pairs = select, pairs
-local strfind, strmatch = strfind, strmatch
+local strmatch = strmatch
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -67,9 +68,8 @@ local function handleItemButton(item)
 		item.CircleBackgroundGlow:SetAlpha(0)
 	end
 
-	for i = 1, item:GetNumRegions() do
-		local Region = select(i, item:GetRegions())
-		if Region and Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
+	for _, Region in next, { item:GetRegions() } do
+		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
 			Region:SetTexture('')
 		end
 	end
@@ -423,7 +423,7 @@ function S:BlizzardQuestFrames()
 		questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
 		questLogTitle.SetNormalTexture = E.noop
 
-		questLogTitle:SetHighlightTexture('')
+		questLogTitle:SetHighlightTexture(E.ClearTexture)
 		questLogTitle.SetHighlightTexture = E.noop
 
 		local normalTex = questLogTitle:GetNormalTexture()
@@ -434,17 +434,7 @@ function S:BlizzardQuestFrames()
 
 		_G['QuestLogTitle'..questLogIndex..'Highlight']:SetAlpha(0)
 
-		hooksecurefunc(questLogTitle, 'SetNormalTexture', function(title, texture)
-			local tex = title:GetNormalTexture()
-
-			if strfind(texture, 'MinusButton') then
-				tex:SetTexture(E.Media.Textures.MinusButton)
-			elseif strfind(texture, 'PlusButton') then
-				tex:SetTexture(E.Media.Textures.PlusButton)
-			else
-				tex:SetTexture()
-			end
-		end)
+		S:HandleCollapseTexture(questLogTitle)
 
 		questLogIndex = questLogIndex + 1
 		questLogTitle = _G['QuestLogTitle'..questLogIndex]
@@ -458,7 +448,7 @@ function S:BlizzardQuestFrames()
 	QuestLogCollapseAllButton.SetNormalTexture = E.noop
 	QuestLogCollapseAllButton:GetNormalTexture():Size(16)
 
-	QuestLogCollapseAllButton:SetHighlightTexture('')
+	QuestLogCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 	QuestLogCollapseAllButton.SetHighlightTexture = E.noop
 
 	QuestLogCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
@@ -467,15 +457,7 @@ function S:BlizzardQuestFrames()
 	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)
 	QuestLogCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	hooksecurefunc(_G.QuestLogCollapseAllButton, 'SetNormalTexture', function(button, texture)
-		local tex = button:GetNormalTexture()
-
-		if strfind(texture, 'MinusButton') then
-			tex:SetTexture(E.Media.Textures.MinusButton)
-		else
-			tex:SetTexture(E.Media.Textures.PlusButton)
-		end
-	end)
+	S:HandleCollapseTexture(_G.QuestLogCollapseAllButton)
 end
 
 S:AddCallback('BlizzardQuestFrames')

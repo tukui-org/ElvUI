@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
-local min = min
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local RegisterStateDriver = RegisterStateDriver
@@ -59,16 +58,6 @@ local function AutoHider_OnShow()
 	end
 end
 
-function B:SetObjectiveFrameHeight()
-	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
-	local screenHeight = E.screenHeight
-	local gapFromTop = screenHeight - top
-	local maxHeight = screenHeight - gapFromTop
-	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
-
-	_G.ObjectiveTrackerFrame:Height(objectiveFrameHeight)
-end
-
 function B:SetObjectiveFrameAutoHide()
 	if not _G.ObjectiveTrackerFrame.AutoHider then return end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
 
@@ -99,17 +88,7 @@ function B:MoveObjectiveFrame()
 	holder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	holder:Size(130, 22)
 
-	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, B.HandleMawBuffsFrame, nil, nil, 'general,blizzUIImprovements')
-	holder:SetAllPoints(_G.ObjectiveFrameMover)
-
 	local tracker = _G.ObjectiveTrackerFrame
-	tracker:SetClampedToScreen(false)
-	tracker:ClearAllPoints()
-	tracker:Point('TOP', holder, 'TOP')
-	tracker:SetMovable(true)
-	tracker:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
-	B:SetObjectiveFrameHeight()
-
 	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
 
 	tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')

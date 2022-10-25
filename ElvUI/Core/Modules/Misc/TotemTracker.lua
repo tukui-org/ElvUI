@@ -15,7 +15,7 @@ function T:Update()
 	for i = 1, MAX_TOTEMS do
 		local button = T.bar[priority[i]]
 		local totem = _G['TotemFrameTotem'..i]
-		if totem:IsShown() then
+		if totem and totem:IsShown() then
 			local _, _, startTime, duration, icon = GetTotemInfo(totem.slot)
 
 			button:Show()

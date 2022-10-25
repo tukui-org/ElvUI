@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -- Don't load unless we are Retail or Wrath Classic
 if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_WRATH_CLASSIC then return end
 
-local MAJOR, MINOR = "LibDualSpec-1.0", 21
+local MAJOR, MINOR = "LibDualSpec-1.0", 22
 assert(LibStub, MAJOR.." requires LibStub")
 local lib, minor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -85,7 +85,7 @@ if isRetail then
 	end
 end
 
-local GetSpecialization = GetSpecialization or GetActiveTalentGroup
+local GetSpecialization = isRetail and GetSpecialization or GetActiveTalentGroup
 local CanPlayerUseTalentSpecUI = isRetail and C_SpecializationInfo.CanPlayerUseTalentSpecUI or function()
 	return true, HELPFRAME_CHARACTER_BULLET5
 end
@@ -449,7 +449,7 @@ end
 -- ----------------------------------------------------------------------------
 
 local function eventHandler(self, event)
-	local spec = GetSpecialization() or 0
+	local spec = tonumber(GetSpecialization() or 0)
 	-- Newly created characters start at 5 instead of 1 in 9.0.1.
 	if spec == 5 or not CanPlayerUseTalentSpecUI() then
 		spec = 0

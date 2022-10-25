@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select = pairs, select
+local pairs, next = pairs, next
 
 function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
@@ -42,8 +42,7 @@ function S:Blizzard_ArchaeologyUI()
 		end
 
 		for _, Frame in pairs({ ArchaeologyFrame.completedPage, ArchaeologyFrame.summaryPage }) do
-			for i = 1, Frame:GetNumRegions() do
-				local Region = select(i, Frame:GetRegions())
+			for _, Region in next, { Frame:GetRegions() } do
 				if Region:IsObjectType('FontString') then
 					Region:SetTextColor(1, .8, .1)
 				end
@@ -54,10 +53,10 @@ function S:Blizzard_ArchaeologyUI()
 		_G.ArchaeologyFrameBgRight:SetDrawLayer('BACKGROUND', 2)
 	end
 
-	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton)
-	S:HandleButton(ArchaeologyFrame.summaryPage.nextPageButton)
-	S:HandleButton(ArchaeologyFrame.completedPage.prevPageButton)
-	S:HandleButton(ArchaeologyFrame.completedPage.nextPageButton)
+	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton, nil, nil, true)
+	S:HandleButton(ArchaeologyFrame.summaryPage.nextPageButton, nil, nil, true)
+	S:HandleButton(ArchaeologyFrame.completedPage.prevPageButton, nil, nil, true)
+	S:HandleButton(ArchaeologyFrame.completedPage.nextPageButton, nil, nil, true)
 
 	ArchaeologyFrame.rankBar:StripTextures()
 	ArchaeologyFrame.rankBar:CreateBackdrop()
@@ -74,8 +73,7 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ArcheologyDigsiteProgressBar = nil
-	E:CreateMover(_G.ArcheologyDigsiteProgressBar, 'DigSiteProgressBarMover', L["Archeology Progress Bar"])
+	--E:CreateMover(_G.ArcheologyDigsiteProgressBar, 'DigSiteProgressBarMover', L["Archeology Progress Bar"])
 end
 
 S:AddCallbackForAddon('Blizzard_ArchaeologyUI')

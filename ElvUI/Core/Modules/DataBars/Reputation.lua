@@ -4,11 +4,17 @@ local DB = E:GetModule('DataBars')
 local _G = _G
 local format = format
 local GameTooltip = GameTooltip
+local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
-local GetFriendshipReputation = GetFriendshipReputation
+local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
+local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
+local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
+
+local BLUE_FONT_COLOR = BLUE_FONT_COLOR
+local RENOWN_LEVEL_LABEL = RENOWN_LEVEL_LABEL
 local REPUTATION = REPUTATION
 local STANDING = STANDING
 local UNKNOWN = UNKNOWN
@@ -32,19 +38,23 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local displayString, textFormat, label, rewardPending = '', DB.db.reputation.textFormat
+	local displayString, textFormat, label, rewardPending, _ = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local friendshipID, standingText, nextThreshold, _
 
-	if E.Retail then
-		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
-	end
+	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+	if info and info.friendshipFactionID then
+		local isMajorFaction = factionID and C_Reputation_IsMajorFaction(factionID)
 
-	if friendshipID then
-		reaction, label = 5, standingText
+		if info and info.friendshipFactionID > 0 then
+			label, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
+		elseif isMajorFaction then
+			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+			local renownColor = DB.db.colors.factionColors[10]
+			local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
 
-		if not nextThreshold then
-			minValue, maxValue, curValue = 0, 1, 1
+			reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
+			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+			label = format('%s%s|r %s', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
 		end
 	elseif C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
@@ -57,10 +67,13 @@ function DB:ReputationBar_Update()
 		bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	end
 
-	if not label then label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN end
+	if not label then
+		label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
+	end
 
 	local customColors = DB.db.colors.useCustomFactionColors
-	local color = (customColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
+	local customReaction = reaction == 9 or reaction == 10 -- 9 is paragon, 10 is renown
+	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	local alpha = not customColors and DB.db.colors.reputationAlpha
 
 	bar:SetStatusBarColor(color.r, color.g, color.b, alpha or color.a or 1)
@@ -116,9 +129,15 @@ function DB:ReputationBar_OnEnter()
 		local friendID, friendTextLevel, _
 		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
-		GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
+		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
+		if not isMajorFaction then
+			GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
+		end
 
-		if reaction ~= _G.MAX_REPUTATION_REACTION or isParagon then
+		if isMajorFaction and not C_MajorFactions_HasMaximumRenown(factionID) then
+			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+			GameTooltip:AddLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
+		elseif not isMajorFaction and (reaction ~= _G.MAX_REPUTATION_REACTION or isParagon) then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
 		end
@@ -136,19 +155,29 @@ function DB:ReputationBar_Toggle()
 	bar.db = DB.db.reputation
 
 	if bar.db.enable then
-		E:EnableMover(bar.holder.mover:GetName())
+		E:EnableMover(bar.holder.mover.name)
 
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		DB:RegisterEvent('QUEST_FINISHED', 'ReputationBar_Update')
 
+		if E.Retail then
+			DB:RegisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
+			DB:RegisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
+		end
+
 		DB:ReputationBar_Update()
 	else
-		E:DisableMover(bar.holder.mover:GetName())
+		E:DisableMover(bar.holder.mover.name)
 
 		DB:UnregisterEvent('UPDATE_FACTION')
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
 		DB:UnregisterEvent('QUEST_FINISHED')
+
+		if E.Retail then
+			DB:UnregisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
+			DB:UnregisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
+		end
 	end
 end
 

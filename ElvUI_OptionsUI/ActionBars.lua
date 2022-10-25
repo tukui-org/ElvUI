@@ -4,6 +4,7 @@ local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
 local _G = _G
+local pairs = pairs
 local ipairs = ipairs
 local format = format
 local SetCVar = SetCVar
@@ -15,6 +16,9 @@ local SetModifiedClick = SetModifiedClick
 local GetCurrentBindingSet = GetCurrentBindingSet
 local SaveBindings = SaveBindings
 
+local NUM_MICRO_BUTTONS = 12
+local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
+local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 -- GLOBALS: LOCK_ACTIONBAR
 
 local SharedBarOptions = {
@@ -185,8 +189,8 @@ ActionBar.args.barPet.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdr
 ActionBar.args.barPet.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.barPet.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.barPet.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.barPet.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.barPet.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.barPet.keepSizeRatio end
-ActionBar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = _G.NUM_PET_ACTION_SLOTS
-ActionBar.args.barPet.args.buttonGroup.args.buttons.max = _G.NUM_PET_ACTION_SLOTS
+ActionBar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = ACTION_SLOTS
+ActionBar.args.barPet.args.buttonGroup.args.buttons.max = ACTION_SLOTS
 ActionBar.args.barPet.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value; AB:PositionAndSizeBarPet() end
 
 ActionBar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
@@ -196,8 +200,8 @@ ActionBar.args.stanceBar.args.generalOptions = ACH:MultiSelect('', nil, 3, { bac
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.stanceBar.keepSizeRatio end
-ActionBar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = _G.NUM_STANCE_SLOTS
-ActionBar.args.stanceBar.args.buttonGroup.args.buttons.max = _G.NUM_STANCE_SLOTS
+ActionBar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = STANCE_SLOTS
+ActionBar.args.stanceBar.args.buttonGroup.args.buttons.max = STANCE_SLOTS
 ActionBar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] }, nil, nil, nil, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift(); AB:StyleShapeShift() end)
 ActionBar.args.stanceBar.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value; AB:PositionAndSizeBarShapeShift() end
 
@@ -206,7 +210,7 @@ ActionBar.args.microbar.args = CopyTable(SharedBarOptions)
 ActionBar.args.microbar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.microbar, P.actionbar.microbar); E:ResetMovers('Micro Bar'); AB:UpdateMicroButtons() end
 ActionBar.args.microbar.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouseover"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.microbar[key] end, function(_, key, value) E.db.actionbar.microbar[key] = value; AB:UpdateMicroButtons() end)
 ActionBar.args.microbar.args.buttonGroup.args.buttons = nil
-ActionBar.args.microbar.args.buttonGroup.args.buttonsPerRow.max = #_G.MICRO_BUTTONS - (E.Retail and 1 or 0)
+ActionBar.args.microbar.args.buttonGroup.args.buttonsPerRow.max = NUM_MICRO_BUTTONS - (E.Retail and 1 or 0)
 ActionBar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
@@ -297,33 +301,33 @@ ActionBar.args.extraButtons.args.vehicleExitButton.args.level = ACH:Range(L["Fra
 
 ActionBar.args.playerBars = ACH:Group(L["Player Bars"], nil, 4, 'tree', nil, nil, function() return not E.ActionBars.Initialized end)
 
-for i = 1, 10 do
-	local bar = ACH:Group(L["Bar "]..i, nil, i, 'group', function(info) return E.db.actionbar['bar'..i][info[#info]] end, function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i) end)
-	ActionBar.args.playerBars.args['bar'..i] = bar
+local function CreateBarOptions(barNumber)
+	local bar = ACH:Group(L["Bar "]..barNumber, nil, barNumber, 'group', function(info) return E.db.actionbar['bar'..barNumber][info[#info]] end, function(info, value) E.db.actionbar['bar'..barNumber][info[#info]] = value; AB:PositionAndSizeBar('bar'..barNumber) end)
+	ActionBar.args.playerBars.args['bar'..barNumber] = bar
 
 	bar.args = CopyTable(SharedBarOptions)
 
-	bar.args.enabled.set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value AB:PositionAndSizeBar('bar'..i) end
-	bar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]) E:ResetMovers('Bar '..i) AB:PositionAndSizeBar('bar'..i) end
+	bar.args.enabled.set = function(info, value) E.db.actionbar['bar'..barNumber][info[#info]] = value AB:PositionAndSizeBar('bar'..barNumber) end
+	bar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar['bar'..barNumber], P.actionbar['bar'..barNumber]) E:ResetMovers('Bar '..barNumber) AB:PositionAndSizeBar('bar'..barNumber) end
 
-	bar.args.generalOptions.get = function(_, key) return E.db.actionbar['bar'..i][key] end
-	bar.args.generalOptions.set = function(_, key, value) E.db.actionbar['bar'..i][key] = value AB:UpdateButtonSettings('bar'..i) end
+	bar.args.generalOptions.get = function(_, key) return E.db.actionbar['bar'..barNumber][key] end
+	bar.args.generalOptions.set = function(_, key, value) E.db.actionbar['bar'..barNumber][key] = value AB:UpdateButtonSettings('bar'..barNumber) end
 	bar.args.generalOptions.values.showGrid = L["Show Empty Buttons"]
 	bar.args.generalOptions.values.keepSizeRatio = L["Keep Size Ratio"]
 
-	bar.args.barGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"], AUTOMATIC = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.actionbar['bar'..i][info[#info]] = value AB:UpdateButtonSettings('bar'..i) end)
+	bar.args.barGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"], AUTOMATIC = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.actionbar['bar'..barNumber][info[#info]] = value AB:UpdateButtonSettings('bar'..barNumber) end)
 
-	bar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar['bar'..i].keepSizeRatio and L["Button Size"] or L["Button Width"] end
-	bar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar['bar'..i].keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
-	bar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar['bar'..i].keepSizeRatio end
+	bar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar['bar'..barNumber].keepSizeRatio and L["Button Size"] or L["Button Width"] end
+	bar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar['bar'..barNumber].keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
+	bar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar['bar'..barNumber].keepSizeRatio end
 
-	bar.args.backdropGroup.hidden = function() return not E.db.actionbar['bar'..i].backdrop end
+	bar.args.backdropGroup.hidden = function() return not E.db.actionbar['bar'..barNumber].backdrop end
 
-	bar.args.paging = ACH:Input(L["Action Paging"], L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"], 7, 4, 'full', function() return E.db.actionbar['bar'..i].paging[E.myclass] end, function(_, value) E.db.actionbar['bar'..i].paging[E.myclass] = value AB:UpdateButtonSettings('bar'..i) end)
+	bar.args.paging = ACH:Input(L["Action Paging"], L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"], 7, 4, 'full', function() return E.db.actionbar['bar'..barNumber].paging[E.myclass] end, function(_, value) E.db.actionbar['bar'..barNumber].paging[E.myclass] = value AB:UpdateButtonSettings('bar'..barNumber) end)
 
-	bar.args.visibility.set = function(_, value) E.db.actionbar['bar'..i].visibility = value AB:UpdateButtonSettings('bar'..i) end
+	bar.args.visibility.set = function(_, value) E.db.actionbar['bar'..barNumber].visibility = value AB:UpdateButtonSettings('bar'..barNumber) end
 
-	for group, func in pairs({ countTextGroup = function() return not E.db.actionbar['bar'..i].counttext end, hotkeyTextGroup = function() return not E.db.actionbar['bar'..i].hotkeytext end, macroTextGroup = function() return not E.db.actionbar['bar'..i].macrotext end}) do
+	for group, func in pairs({ countTextGroup = function() return not E.db.actionbar['bar'..barNumber].counttext end, hotkeyTextGroup = function() return not E.db.actionbar['bar'..barNumber].hotkeytext end, macroTextGroup = function() return not E.db.actionbar['bar'..barNumber].macrotext end}) do
 		for _, optionTable in pairs(bar.args.barGroup.args[group].args) do
 			if optionTable.hidden == nil then -- This needs to be nil.
 				optionTable.hidden = func
@@ -331,8 +335,18 @@ for i = 1, 10 do
 		end
 	end
 
-	if E.myclass == 'DRUID' and i >= 7 or E.myclass == 'ROGUE' and i == 7 then
-		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], i) end
+	if E.myclass == 'DRUID' and barNumber >= 7 or E.myclass == 'ROGUE' and barNumber == 7 then
+		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], barNumber) end
+	end
+end
+
+for i = 1, 10 do
+	CreateBarOptions(i)
+end
+
+if E.Retail then
+	for i = 13, 15 do
+		CreateBarOptions(i)
 	end
 end
 

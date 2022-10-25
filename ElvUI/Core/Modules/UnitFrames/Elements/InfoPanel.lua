@@ -15,9 +15,11 @@ end
 
 function UF:Configure_InfoPanel(frame)
 	local db = frame.db
+	local isShown = frame.USE_INFO_PANEL
 
-	if frame.USE_INFO_PANEL then
-		frame.InfoPanel:Show()
+	frame.InfoPanel:SetShown(isShown)
+
+	if isShown then
 		frame.InfoPanel:ClearAllPoints()
 
 		if frame.ORIENTATION == 'RIGHT' and not (frame.unitframeType == 'arena') then
@@ -41,7 +43,5 @@ function UF:Configure_InfoPanel(frame)
 		else
 			frame.InfoPanel.backdrop:SetTemplate(nil, true, nil, nil, true)
 		end
-	else
-		frame.InfoPanel:Hide()
 	end
 end

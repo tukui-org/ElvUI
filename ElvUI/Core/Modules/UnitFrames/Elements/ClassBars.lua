@@ -200,7 +200,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
 
 		if bars.Holder and bars.Holder.mover then
-			E:DisableMover(bars.Holder.mover:GetName())
+			E:DisableMover(bars.Holder.mover.name)
 		end
 	elseif frame.CLASSBAR_DETACHED then
 		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
@@ -209,9 +209,9 @@ function UF:Configure_ClassBar(frame)
 		bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
 
 		if not bars.Holder.mover then
-			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
+			E:CreateMover(bars.Holder, 'ClassBarMover', L["Class Bar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
 		else
-			E:EnableMover(bars.Holder.mover:GetName())
+			E:EnableMover(bars.Holder.mover.name)
 		end
 
 		bars:SetFrameStrata(db.classbar.strataAndLevel.useCustomStrata and db.classbar.strataAndLevel.frameStrata or 'LOW')
@@ -228,7 +228,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 
 		if bars.Holder and bars.Holder.mover then
-			E:DisableMover(bars.Holder.mover:GetName())
+			E:DisableMover(bars.Holder.mover.name)
 		end
 	end
 
@@ -403,10 +403,21 @@ end
 -------------------------------------------------------------
 function UF:Runes_UpdateCharged(runes, custom_backdrop)
 	local colors = UF.db.colors.classResources.DEATHKNIGHT
-	for _, bar in ipairs(runes) do
-		local value = bar:GetValue()
-		local color = colors[(value and value ~= 1 and -1) or bar.runeType or 0]
-		UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+
+	if E.Retail then
+		for _, bar in ipairs(runes) do
+			local value = bar:GetValue()
+			local color = colors[(value and value ~= 1 and -1) or bar.runeType or 0]
+			UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+		end
+	elseif E.Wrath then
+		local value = self:GetValue()
+		local _, maxDuration = self:GetMinMaxValues()
+		local color = colors[self.runeType or 0]
+		local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
+		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+
+		UF:ClassPower_SetBarColor(self, color.r * duration, color.g * duration, color.b * duration, custom_backdrop)
 	end
 end
 
@@ -414,7 +425,11 @@ function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	self:SetShown(not hasVehicle and not db.classbar.autoHide or not allReady)
+	if hasVehicle then
+		self:SetShown(false)
+	else
+		self:SetShown(not db.classbar.autoHide or not allReady)
+	end
 
 	if E.Retail and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
@@ -439,6 +454,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		UF.classbars[rune] = true
 
 		rune:CreateBackdrop(nil, nil, nil, nil, true)
+		rune.PostUpdateColor = E.Wrath and UF.Runes_UpdateCharged
 		rune.backdrop:SetParent(runes)
 
 		rune.bg = rune:CreateTexture(nil, 'BORDER')

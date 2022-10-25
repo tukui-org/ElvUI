@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -73,7 +72,6 @@ function UF:Construct_ArenaFrames(frame)
 
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
-		frame:SetAttribute('type2', 'focus')
 
 		frame.customTexts = {}
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
@@ -94,7 +92,7 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,groupUnits,arena,generalGroup')
+	E:CreateMover(ArenaHeader, 'ArenaHeaderMover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,groupUnits,arena,generalGroup')
 	frame.mover = ArenaHeader.mover
 end
 
@@ -147,26 +145,26 @@ function UF:Update_ArenaFrames(frame, db)
 	end
 
 	frame:ClearAllPoints()
+
 	if frame.index == 1 then
-		local ArenaHeaderMover = _G.ArenaHeaderMover
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
+			frame:Point('BOTTOMRIGHT', ArenaHeader.mover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:Point('LEFT', ArenaHeaderMover, 'LEFT')
+			frame:Point('LEFT', ArenaHeader.mover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:Point('RIGHT', ArenaHeaderMover, 'RIGHT')
+			frame:Point('RIGHT', ArenaHeader.mover, 'RIGHT')
 		else --Down
-			frame:Point('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT')
+			frame:Point('TOPRIGHT', ArenaHeader.mover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
+			frame:Point('BOTTOMRIGHT', UF['arena'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:Point('LEFT', _G['ElvUF_Arena'..frame.index-1], 'RIGHT', db.spacing, 0)
+			frame:Point('LEFT', UF['arena'..frame.index-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:Point('RIGHT', _G['ElvUF_Arena'..frame.index-1], 'LEFT', -db.spacing, 0)
+			frame:Point('RIGHT', UF['arena'..frame.index-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:Point('TOPRIGHT', _G['ElvUF_Arena'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:Point('TOPRIGHT', UF['arena'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 

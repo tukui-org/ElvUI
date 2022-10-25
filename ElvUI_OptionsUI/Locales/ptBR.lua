@@ -1,6 +1,8 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = true
 L["Will display mana when main power is:"] = true
 L["%s and then %s"] = "%s e depois %s"
@@ -154,12 +156,10 @@ L["Bag 2"] = "Bolsa 2"
 L["Bag 3"] = "Bolsa 3"
 L["Bag 4"] = "Bolsa 4"
 L["Bag Assignment"] = "Atribuição da Bolsa"
-L["Bag Bar"] = true
 L["Bag Spacing"] = "Espaçamentos da Bolsas"
 L["BAG_FILTER_CONSUMABLES"] = "Consumíveis"
 L["BAG_FILTER_EQUIPMENT"] = "Equipamento"
 L["BAG_FILTER_TRADE_GOODS"] = "Mercadorias"
-L["Bag-Bar"] = "Barra das Bolsas"
 L["Bags Only"] = "Apenas Bolsas"
 L["Bags/Bank"] = "Bolsas/Banco"
 L["Bank 1"] = "Banco 1"
@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = "Cart / Bandeira / Orbe / Recompensa de Assassino"
 L["Cast Bar"] = "Barra de Lançamento"
 L["Cast Time Format"] = "Formato do Tempo de Lançamento"
-L["Castbar"] = "Barra de cast"
 L["Casted by Player Only"] = true
 L["Casting"] = "Lançando"
 L["Center"] = "Centro"
@@ -1783,6 +1782,8 @@ L["blockDispellable"] = "[Bloquear] Dissipável"
 L["blockNoDuration"] = "[Bloquear] Sem Duração"
 L["blockNonPersonal"] = "[Bloquear] Não Pessoal"
 L["blockNotDispellable"] = "[Bloquear] Não Dissipável"
+L["blockMount"] = "[Bloquear] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "Castado por NPC"
 L["CastByPlayers"] = "Castado por Jogador"
 L["CastByUnit"] = "Castado por Unidade"
@@ -1808,13 +1809,7 @@ L["SKINS_DESC"] = "Ajustar definições de Aparências."
 L["TOGGLESKIN_DESC"] = "Ativa/Desativa a aparência deste quadro."
 L["TOOLTIP_DESC"] = "Opções de configuração para a Tooltip."
 L["UNITFRAME_DESC"] = "Modificar as configurações de Quadros de Unidade."
-L["VISIBILITY_DESC"] = [=[O macro seguinte tem de ser verdadeira para que o grupo seja mostrado, em adição a qualquer outro filtro que possa já estar definido.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "O macro seguinte tem de ser verdadeira para que o grupo seja mostrado, em adição a qualquer outro filtro que possa já estar definido."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

@@ -1,6 +1,8 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = true
 L["Will display mana when main power is:"] = true
 L["%s and then %s"] = "%s 이후 %s"
@@ -154,12 +156,10 @@ L["Bag 2"] = true
 L["Bag 3"] = true
 L["Bag 4"] = true
 L["Bag Assignment"] = true
-L["Bag Bar"] = true
 L["Bag Spacing"] = true
 L["BAG_FILTER_CONSUMABLES"] = "소비용품"
 L["BAG_FILTER_EQUIPMENT"] = "장비"
 L["BAG_FILTER_TRADE_GOODS"] = "직업용품"
-L["Bag-Bar"] = "가방바"
 L["Bags Only"] = "가방 안에만"
 L["Bags/Bank"] = "가방/은행"
 L["Bank 1"] = true
@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = "시전바"
 L["Cast Time Format"] = "시전 시간 형식"
-L["Castbar"] = "시전바"
 L["Casted by Player Only"] = true
 L["Casting"] = "시전중"
 L["Center"] = "정 중앙"
@@ -1784,6 +1783,8 @@ L["blockDispellable"] = "[차단] Dispellable"
 L["blockNoDuration"] = "[차단] No Duration"
 L["blockNonPersonal"] = "[차단] Non Personal"
 L["blockNotDispellable"] = "[차단] Not Dispellable"
+L["blockMount"] = "[차단] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"
@@ -1809,13 +1810,7 @@ L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
-L["VISIBILITY_DESC"] = [=[체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다."
 L["SEARCH_SYNTAX_DESC"] = [=[
 
   각종 가방에서 검색기능을 사용할 때, 다음의 명령어들을 활용하면

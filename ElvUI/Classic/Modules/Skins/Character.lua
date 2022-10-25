@@ -172,7 +172,7 @@ function S:CharacterFrame()
 		factionName.SetWidth = E.noop
 
 		factionHeader:GetNormalTexture():Size(14)
-		factionHeader:SetHighlightTexture(nil)
+		factionHeader:SetHighlightTexture(E.ClearTexture)
 		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
 
 		factionWar:StripTextures()
@@ -223,7 +223,7 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
 
-	_G.SkillFrameCollapseAllButton:SetHighlightTexture(nil)
+	_G.SkillFrameCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
 		if strfind(_G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture(), 'MinusButton') then
@@ -249,7 +249,7 @@ function S:CharacterFrame()
 		background:SetTexture(nil)
 
 		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture(nil)
+		label:SetHighlightTexture(E.ClearTexture)
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex, numSkills)

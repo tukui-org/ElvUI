@@ -1,6 +1,8 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = true
 L["Will display mana when main power is:"] = true
 L["%s and then %s"] = "%s et alors %s"
@@ -154,12 +156,10 @@ L["Bag 2"] = "Sac 2"
 L["Bag 3"] = "Sac 3"
 L["Bag 4"] = "Sac 4"
 L["Bag Assignment"] = "Affectation de sac"
-L["Bag Bar"] = true
 L["Bag Spacing"] = "Mauvais espacement"
 L["BAG_FILTER_CONSUMABLES"] = "Consommables"
 L["BAG_FILTER_EQUIPMENT"] = "Équipement"
 L["BAG_FILTER_TRADE_GOODS"] = "Fournitures d’artisanat"
-L["Bag-Bar"] = "Barre des sacs"
 L["Bags Only"] = "Sacs seulement"
 L["Bags/Bank"] = "Sacs / banque"
 L["Bank 1"] = "Banque 1"
@@ -238,7 +238,6 @@ L["Can Not Attack"] = "Ne peut pas attaquer"
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = "Barre d'incantation"
 L["Cast Time Format"] = true
-L["Castbar"] = "Barre d'incantation"
 L["Casted by Player Only"] = "Seulement lancé par le joueur"
 L["Casting"] = "Incantation"
 L["Center"] = "Centrer"
@@ -1783,6 +1782,8 @@ L["blockDispellable"] = "[Block] Dispellable"
 L["blockNoDuration"] = "[Block] No Duration"
 L["blockNonPersonal"] = "[Block] Non Personal"
 L["blockNotDispellable"] = "[Block] Not Dispellable"
+L["blockMount"] = "[Block] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"
@@ -1808,13 +1809,7 @@ L["SKINS_DESC"] = "Ajuste les paramètres d'habillage."
 L["TOGGLESKIN_DESC"] = "Active ou désactive l'habillage ElvUI des éléments ci-dessous."
 L["TOOLTIP_DESC"] = "Configuration des infobulles."
 L["UNITFRAME_DESC"] = "Modifier les options des cadres d'unités."
-L["VISIBILITY_DESC"] = [=[La macro suivante doit être cochée pour que le groupe soit affiché, en plus de la configuration des filtres.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "La macro suivante doit être cochée pour que le groupe soit affiché, en plus de la configuration des filtres."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

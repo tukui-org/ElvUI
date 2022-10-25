@@ -168,6 +168,10 @@ local function SetupCustomCurrencies()
 	end
 end
 
+local function escapeString(str, get)
+	return get == gsub(str, '|', '||') or gsub(str, '||', '|')
+end
+
 local function CreateDTOptions(name, data)
 	local settings = E.global.datatexts.settings[name]
 	if not settings then return end
@@ -178,7 +182,7 @@ local function CreateDTOptions(name, data)
 
 	for key in pairs(settings) do
 		if key == 'Label' then
-			optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return gsub(settings[info[#info]], '|', '||') end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
+			optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
 		elseif key == 'NoLabel' then
 			optionTable.args[key] = ACH:Toggle(L["No Label"], nil, 3)
 		elseif key == 'ShowOthers' then
@@ -200,6 +204,12 @@ local function CreateDTOptions(name, data)
 
 	if name == 'Combat' then
 		optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
+	elseif name == 'CombatIndicator' then
+		optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+		optionTable.args.OutOfCombatColor = ACH:Color('', nil, 2, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
+		optionTable.args.Spacer = ACH:Spacer(3, 'full')
+		optionTable.args.InCombat = ACH:Input(L["In Combat Label"], nil, 4, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+		optionTable.args.InCombatColor = ACH:Color('', nil, 5, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
 	elseif name == 'Currencies' then
 		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, 10, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
 		optionTable.args.displayedCurrency.sortByValue = true
@@ -220,6 +230,13 @@ local function CreateDTOptions(name, data)
 				optionTable.args.tooltipLines.args[tostring(info[3])].args[tostring(i)] = ACH:Toggle(info[1], nil, i, nil, nil, nil, function() return settings.idEnable[info[2]] end, function(_, value) settings.idEnable[info[2]] = value end)
 			end
 		end
+	elseif name == "Location" then
+		optionTable.args.showContinent = ACH:Toggle(L["Show Continent"], nil, 1)
+		optionTable.args.showZone = ACH:Toggle(L["Show Zone"], nil, 2)
+		optionTable.args.showSubZone = ACH:Toggle(L["Show Subzone"], nil, 3)
+		optionTable.args.spacer1 = ACH:Spacer(5)
+		optionTable.args.color = ACH:Select(L["Text Color"], nil, 10, { REACTION = L["Reaction"], CLASS = L["CLASS"], CUSTOM = L["CUSTOM"] })
+		optionTable.args.customColor = ACH:Color('', nil, 11, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end, function() return settings.color ~= 'CUSTOM' end, function() return settings.color ~= 'CUSTOM' end)
 	elseif name == 'Time' then
 		optionTable.args.time24 = ACH:Toggle(L["24-Hour Time"], L["Toggle 24-hour mode for the time datatext."], 5)
 		optionTable.args.localTime = ACH:Toggle(L["Local Time"], L["If not set to true then the server time will be displayed instead."], 6)

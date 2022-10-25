@@ -5,26 +5,27 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
 local _G = _G
-local tostring, format, type, pcall = tostring, format, type, pcall
+local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
 local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
 local hooksecurefunc = hooksecurefunc
+
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
-local InCombatLockdown = InCombatLockdown
-local IsInInstance = IsInInstance
-local MouseIsOver = MouseIsOver
-local RegisterStateDriver = RegisterStateDriver
-local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
-local UnregisterStateDriver = UnregisterStateDriver
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
+local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
+local InCombatLockdown = InCombatLockdown
+local IsInInstance = IsInInstance
 local MISCELLANEOUS = MISCELLANEOUS
+local MouseIsOver = MouseIsOver
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
 
 --Retail
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
-local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
@@ -33,15 +34,15 @@ local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
 --Wrath
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListSize = GetCurrencyListSize
 
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local ActivateHyperMode
 local HyperList = {}
 
-DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'SharedTooltipTemplate')
-DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+
+DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
 DT.SelectedDatatext = nil
 DT.HyperList = HyperList
@@ -69,17 +70,6 @@ DT.UnitEvents = {
 
 DT.SPECIALIZATION_CACHE = {}
 
-function DT:SetEasyMenuAnchor(menu, dt)
-	local point = E:GetScreenQuadrant(dt)
-	local bottom = point and strfind(point, 'BOTTOM')
-	local left = point and strfind(point, 'LEFT')
-
-	local anchor1 = (bottom and left and 'BOTTOMLEFT') or (bottom and 'BOTTOMRIGHT') or (left and 'TOPLEFT') or 'TOPRIGHT'
-	local anchor2 = (bottom and left and 'TOPLEFT') or (bottom and 'TOPRIGHT') or (left and 'BOTTOMLEFT') or 'BOTTOMRIGHT'
-
-	UIDropDownMenu_SetAnchor(menu, 0, 0, anchor1, dt, anchor2)
-end
-
 --> [HyperDT Credits] <--
 --> Original Work: Nihilistzsche
 --> Modified by Azilroka! :)
@@ -88,8 +78,8 @@ function DT:SingleHyperMode(_, key, active)
 	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
 			DT:OnLeave()
-			DT:SetEasyMenuAnchor(DT.EasyMenu, DT.SelectedDatatext)
-			EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
+			E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
+			EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
 		end
@@ -98,8 +88,8 @@ end
 
 function DT:HyperClick()
 	DT.SelectedDatatext = self
-	DT:SetEasyMenuAnchor(DT.EasyMenu, DT.SelectedDatatext)
-	EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
+	E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
+	EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 function DT:EnableHyperMode(Panel)
@@ -413,13 +403,14 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 end
 
 function DT:ForceUpdate_DataText(name)
-	for dtSlot, dtName in pairs(DT.AssignedDatatexts) do
-		if dtName.name == name then
-			if dtName.colorUpdate then
-				dtName.colorUpdate(E.media.hexvaluecolor)
+	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
+	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
+		if dtInfo.name == name then
+			if dtInfo.colorUpdate then
+				dtInfo.colorUpdate(hex, r, g, b)
 			end
-			if dtName.eventFunc then
-				dtName.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
+			if dtInfo.eventFunc then
+				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
 			end
 		end
 	end
@@ -660,15 +651,15 @@ function DT:RegisterHyperDT()
 
 		tinsert(HyperList[category].menuList, {
 			text = info.localizedName or name,
-			checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-			func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+			func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 		})
 	end
 
 	tinsert(HyperList, {
 		order = 100, text = L["None"],
-		checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
-		func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
+		checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
+		func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
 	})
 
 	DT:SortMenuList(HyperList)
@@ -695,8 +686,8 @@ do
 			if not hasName(HyperList[category].menuList, info.localizedName or name) then
 				tinsert(HyperList[category].menuList, {
 					text = info.localizedName or name,
-					checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-					func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 				})
 			end
 		end
@@ -707,18 +698,13 @@ end
 
 function DT:PopulateData(currencyOnly)
 	local Collapsed = {}
-	local listSize, i = E.Retail and C_CurrencyInfo_GetCurrencyListSize() or GetCurrencyListSize(), 1
+	local listSize, i = GetCurrencyListSize(), 1
 
 	local headerIndex
 	while listSize >= i do
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(i) or {}
-		if E.Wrath then
-			info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(i)
-		end
-
+		local info = DT:CurrencyListInfo(i)
 		if E.Retail and info.isHeader and not info.isHeaderExpanded then
 			C_CurrencyInfo_ExpandCurrencyList(i, true)
-			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
 		end
 		if info.isHeader then
@@ -727,24 +713,28 @@ function DT:PopulateData(currencyOnly)
 
 			headerIndex = i
 		end
-		if not info.isHeader then
+		if info.name and not info.isHeader then
 			local currencyLink = E.Retail and C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
-				DT.CurrencyList[tostring(currencyID)] = info.name
+				if DT.CurrencyList then
+					DT.CurrencyList[tostring(currencyID)] = info.name
+				end
+
 				G.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
 				G.datatexts.settings.Currencies.idEnable[currencyID] = G.datatexts.settings.Currencies.tooltipData[headerIndex][4]
 				E.global.datatexts.settings.Currencies.idEnable[currencyID] = E.global.datatexts.settings.Currencies.idEnable[currencyID] == nil and G.datatexts.settings.Currencies.idEnable[currencyID] or E.global.datatexts.settings.Currencies.idEnable[currencyID]
 				E.global.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, E.global.datatexts.settings.Currencies.idEnable[currencyID] }
 			end
 		end
+
 		i = i + 1
 	end
 
 	if E.Retail then
 		for k = 1, listSize do
-			local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(k)
-			if not info then
+			local info = DT:CurrencyListInfo(k)
+			if not info.name then
 				break
 			elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
 				C_CurrencyInfo_ExpandCurrencyList(k, false)
@@ -768,14 +758,41 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 	if currencyID and not DT.CurrencyList[tostring(currencyID)] then
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(currencyID) or {}
-		if E.Wrath then
-			info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(currencyID)
-		end
-		if info then
+		local name = DT:CurrencyInfo(currencyID)
+		if name then
 			DT:PopulateData(true)
 		end
 	end
+end
+
+function DT:CurrencyListInfo(index)
+	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
+
+	if E.Wrath then
+		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(index)
+	end
+
+	return info
+end
+
+function DT:CurrencyInfo(id)
+	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
+
+	if E.Wrath then
+		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(id)
+	end
+
+	return info, info and info.name, format(iconString, info and info.iconFileID or '136012')
+end
+
+function DT:BackpackCurrencyInfo(index)
+	local info = E.Retail and GetBackpackCurrencyInfo(index) or {}
+
+	if E.Wrath then
+		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
+	end
+
+	return info, info and info.name
 end
 
 function DT:PLAYER_ENTERING_WORLD()
@@ -786,9 +803,9 @@ function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
 
-	DT.EasyMenu:SetClampedToScreen(true)
-	DT.EasyMenu:EnableMouse(true)
-	DT.EasyMenu.MenuSetItem = function(dt, value)
+	E.EasyMenu:SetClampedToScreen(true)
+	E.EasyMenu:EnableMouse(true)
+	E.EasyMenu.MenuSetItem = function(dt, value)
 		DT.db.panels[dt.parentName][dt.pointIndex] = value
 		DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
@@ -799,7 +816,7 @@ function DT:Initialize()
 		DT.SelectedDatatext = nil
 		CloseDropDownMenus()
 	end
-	DT.EasyMenu.MenuGetItem = function(dt, value)
+	E.EasyMenu.MenuGetItem = function(dt, value)
 		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
 	end
 

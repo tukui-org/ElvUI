@@ -144,14 +144,14 @@ function UF:Configure_AuraBars(frame)
 		local px = UF.thinBorders and 0 or 2
 		local POWER_OFFSET, BAR_WIDTH = 0
 		if detached then
-			E:EnableMover(bars.Holder.mover:GetName())
+			E:EnableMover(bars.Holder.mover.name)
 			BAR_WIDTH = db.detachedWidth
 
 			yOffset = below and BORDER or -(db.height + px)
 
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
 		else
-			E:DisableMover(bars.Holder.mover:GetName())
+			E:DisableMover(bars.Holder.mover.name)
 			BAR_WIDTH = frame.UNIT_WIDTH
 
 			local offset = db.yOffset + px

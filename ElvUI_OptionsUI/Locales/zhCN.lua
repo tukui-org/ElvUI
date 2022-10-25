@@ -1,6 +1,8 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = "显示法力"
 L["Will display mana when main power is:"] = "显示法力值当主能量是:"
 L["%s and then %s"] = "%s 于 %s"
@@ -154,12 +156,10 @@ L["Bag 2"] = "背包2"
 L["Bag 3"] = "背包3"
 L["Bag 4"] = "背包4"
 L["Bag Assignment"] = "背包分类"
-L["Bag Bar"] = "背包条"
 L["Bag Spacing"] = "背包间距"
 L["BAG_FILTER_CONSUMABLES"] = "消耗品"
 L["BAG_FILTER_EQUIPMENT"] = "装备"
 L["BAG_FILTER_TRADE_GOODS"] = "商品"
-L["Bag-Bar"] = "背包条"
 L["Bags Only"] = "仅背包"
 L["Bags/Bank"] = "背包/银行"
 L["Bank 1"] = "银行1"
@@ -238,7 +238,6 @@ L["Can Not Attack"] = "不可攻击"
 L["Cart / Flag / Orb / Assassin Bounty"] = "推车 / 旗 / 球 / 刺客赏金"
 L["Cast Bar"] = "施法条"
 L["Cast Time Format"] = "施法时间格式"
-L["Castbar"] = "施法条"
 L["Casted by Player Only"] = "仅玩家施放"
 L["Casting"] = "施法"
 L["Center"] = "居中"
@@ -1783,6 +1782,8 @@ L["blockDispellable"] = "[屏蔽]可驱散的"
 L["blockNoDuration"] = "[屏蔽]永久的"
 L["blockNonPersonal"] = "[屏蔽]他人的"
 L["blockNotDispellable"] = "[屏蔽]不可驱散的"
+L["blockMount"] = "[屏蔽]Mount"
+L["Mount"] = true
 L["CastByNPC"] = "NPC施放的"
 L["CastByPlayers"] = "玩家施放的"
 L["CastByUnit"] = "该单位施放的"
@@ -1808,13 +1809,7 @@ L["SKINS_DESC"] = "调整外观设定"
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
-L["VISIBILITY_DESC"] = [=[为了显示设定过的过滤器下面的宏必须启用.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "为了显示设定过的过滤器下面的宏必须启用."
 L["SEARCH_SYNTAX_DESC"] = [=[因为新增了LibItemSearch，你现在可以使用更高级的物品检索. 下面是一份检索语法的文档. 查看完整说明: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 特性检索:

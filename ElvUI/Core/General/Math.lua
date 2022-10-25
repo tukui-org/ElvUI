@@ -355,7 +355,7 @@ E.TimeIndicatorColors = {} -- same color indexes
 E.TimeThreshold = 3
 
 for i = 0, 14 do
-	E.TimeColors[i] = '|cFFffffff'
+	E.TimeColors[i] = {r = 1, g = 1, b = 1}
 	E.TimeIndicatorColors[i] = '|cFFffffff'
 end
 

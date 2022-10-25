@@ -2,14 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack, strfind = unpack, strfind
-local ipairs, pairs, select = ipairs, pairs, select
+local ipairs, pairs = ipairs, pairs
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
 local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
+local UnitFactionGroup = UnitFactionGroup
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 
@@ -18,6 +20,8 @@ local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+
+local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
 local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
@@ -100,7 +104,12 @@ local function UpdateCurrencySkins()
 			end
 
 			if button.icon then
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+				if button.itemID == HONOR_CURRENCY and UnitFactionGroup('player') then
+					button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+				else
+					button.icon:SetTexCoord(unpack(E.TexCoords))
+				end
+
 				button.icon:Size(17, 17)
 
 				button.backdrop:SetOutside(button.icon, 1, 1)
@@ -127,9 +136,8 @@ local function UpdateCurrencySkins()
 					button.backdrop:Hide()
 
 					-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
-					for x = 1, button:GetNumRegions() do
-						local region = select(x, button:GetRegions())
-						if region and region:IsObjectType('FontString') and region:GetText() then
+					for _, region in next, { button:GetRegions() } do
+						if region:IsObjectType('FontString') and region:GetText() then
 							region:ClearAllPoints()
 							region:Point('LEFT', 25, 0)
 						end
@@ -459,7 +467,7 @@ function S:CharacterFrame()
 		background:SetTexture(nil)
 
 		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture(nil)
+		label:SetHighlightTexture(E.ClearTexture)
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)
@@ -544,9 +552,8 @@ function S:CharacterFrame()
 	_G.TokenFrameCancelButton:Kill()
 	_G.TokenFrameMoneyFrame:Kill()
 
-	for i = 1, _G.TokenFrame:GetNumChildren() do
-		local child = select(i, _G.TokenFrame:GetChildren())
-		if child and not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
+	for _, child in next, { _G.TokenFrame:GetChildren() } do
+		if not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
 			child:Hide()
 			break
 		end

@@ -1,6 +1,8 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Abbreviate Name"] = "Abreviar el Nombre"
+L["Max Allowed Groups"] = "Grupos Maximos Permitidos"
 L["Display Mana"] = "Mostrar mana"
 L["Will display mana when main power is:"] = "Mostrar mana cuando la poder principal es:"
 L["%s and then %s"] = "%s y entonces %s"
@@ -154,12 +156,10 @@ L["Bag 2"] = "Bolsa 2"
 L["Bag 3"] = "Bolsa 3"
 L["Bag 4"] = "Bolsa 4"
 L["Bag Assignment"] = "Asignación de Bolsas"
-L["Bag Bar"] = true
 L["Bag Spacing"] = "Espacio entre Bolsas"
 L["BAG_FILTER_CONSUMABLES"] = "Consumibles"
 L["BAG_FILTER_EQUIPMENT"] = "Equipo"
 L["BAG_FILTER_TRADE_GOODS"] = "Objetos comerciables"
-L["Bag-Bar"] = "Barra de las Bolsas"
 L["Bags Only"] = "Sólo bolsas"
 L["Bags/Bank"] = "Bolsas y Bancos"
 L["Bank 1"] = "Banco 1"
@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = true
 L["Cast Time Format"] = true
-L["Castbar"] = "Barra de Lanzamiento"
 L["Casted by Player Only"] = "Lanzado sólo por el jugador"
 L["Casting"] = "Lanzando"
 L["Center"] = "Centro"
@@ -1778,11 +1777,13 @@ L["Zone Name"] = "Nombre de Zona"
 
 ----------------------------------
 L["BlizzardNameplate"] = true
-L["blockCastByPlayers"] = "[Block] Cast By Players"
-L["blockDispellable"] = "[Block] Dispellable"
-L["blockNoDuration"] = "[Block] No Duration"
-L["blockNonPersonal"] = "[Block] Non Personal"
-L["blockNotDispellable"] = "[Block] Not Dispellable"
+L["blockCastByPlayers"] = "[Bloquear] Cast By Players"
+L["blockDispellable"] = "[Bloquear] Dispellable"
+L["blockNoDuration"] = "[Bloquear] No Duration"
+L["blockNonPersonal"] = "[Bloquear] Non Personal"
+L["blockNotDispellable"] = "[Bloquear] Not Dispellable"
+L["blockMount"] = "[Bloquear] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"
@@ -1808,13 +1809,7 @@ L["SKINS_DESC"] = "Configura los Ajustes de Cubiertas."
 L["TOGGLESKIN_DESC"] = "Activa/Desactiva esta cubierta."
 L["TOOLTIP_DESC"] = "Configuración para las Descripciones Emergentes."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
-L["VISIBILITY_DESC"] = [=[La siguiente macro debe ser verdadera para que el grupo se muestre, además de cualquier filtro que ya exista.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "La siguiente macro debe ser verdadera para que el grupo se muestre, además de cualquier filtro que ya exista."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

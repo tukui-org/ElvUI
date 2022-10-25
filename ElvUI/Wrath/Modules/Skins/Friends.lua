@@ -34,7 +34,7 @@ local function SkinPlusMinus(button, minus)
 	button:SetPushedTexture(texture)
 	button.SetPushedTexture = E.noop
 
-	button:SetHighlightTexture('')
+	button:SetHighlightTexture(E.ClearTexture)
 	button.SetHighlightTexture = E.noop
 
 	button:SetDisabledTexture(texture)
@@ -540,6 +540,10 @@ function S:FriendsFrame()
 
 	_G.RaidInfoScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
+
+	_G.RaidInfoInstanceLabel:SetTemplate()
+	_G.RaidInfoIDLabel:SetTemplate()
+	S:HandleButton(_G.RaidInfoCancelButton)
 end
 
 S:AddCallback('FriendsFrame')

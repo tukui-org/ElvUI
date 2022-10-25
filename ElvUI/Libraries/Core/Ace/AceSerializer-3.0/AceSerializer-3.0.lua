@@ -83,9 +83,9 @@ local function SerializeValue(v, res, nres)
 	elseif t=="table" then	-- ^T...^t = table (list of key,value pairs)
 		nres=nres+1
 		res[nres] = "^T"
-		for k,v in pairs(v) do
-			nres = SerializeValue(k, res, nres)
-			nres = SerializeValue(v, res, nres)
+		for key,value in pairs(v) do
+			nres = SerializeValue(key, res, nres)
+			nres = SerializeValue(value, res, nres)
 		end
 		nres=nres+1
 		res[nres] = "^t"

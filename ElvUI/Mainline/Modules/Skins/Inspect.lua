@@ -18,6 +18,7 @@ function S:Blizzard_InspectUI()
 	local InspectFrame = _G.InspectFrame
 	S:HandlePortraitFrame(InspectFrame)
 	S:HandleButton(_G.InspectPaperDollFrame.ViewButton)
+	S:HandleButton(_G.InspectPaperDollItemsFrame.InspectTalents)
 
 	_G.SpecializationRing:Hide()
 	S:HandleIcon(_G.SpecializationSpecIcon, true)
@@ -27,10 +28,6 @@ function S:Blizzard_InspectUI()
 	local InspectPVPFrame = _G.InspectPVPFrame
 	local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
 	portrait:Size(55, 55)
-	portrait:Point('CENTER', InspectPVPFrame.PortraitBackground)
-	InspectPVPFrame.PortraitBackground:Kill()
-	InspectPVPFrame.PortraitBackground:ClearAllPoints()
-	InspectPVPFrame.PortraitBackground:Point('TOPLEFT', 5, -5)
 	InspectPVPFrame.SmallWreath:ClearAllPoints()
 	InspectPVPFrame.SmallWreath:Point('TOPLEFT', -2, -25)
 
@@ -87,6 +84,8 @@ function S:Blizzard_InspectUI()
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
+			if not Slot.icon then return end
+
 			S:HandleIcon(Slot.icon, true)
 			Slot.icon.backdrop:SetFrameLevel(Slot:GetFrameLevel())
 			Slot.icon:SetInside()

@@ -2,11 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, select, unpack = next, select, unpack
+local next, unpack = next, unpack
+local hooksecurefunc = hooksecurefunc
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
-local hooksecurefunc = hooksecurefunc
 
 local function SkinContainer(frame, container)
 	frame.NineSlice:Kill()
@@ -18,9 +18,8 @@ local function SkinContainer(frame, container)
 end
 
 local function StripClassTextures(button)
-	for y = 1, button:GetNumRegions() do
-		local region = select(y, button:GetRegions())
-		if region:GetObjectType() == 'Texture' then
+	for _, region in next, { button:GetRegions() } do
+		if region:IsObjectType('Texture') then
 			local texture = region:GetTexture()
 			if texture == [[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]] then
 				local c = CLASS_ICON_TCOORDS[button.class]

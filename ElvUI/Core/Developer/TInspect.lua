@@ -1,5 +1,5 @@
 local _G = _G
-local select = select
+local next = next
 
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
@@ -27,8 +27,7 @@ end
 local function UpdateLines(self)
 	local scrollFrame = self.LinesScrollFrame or _G.TableAttributeDisplay.LinesScrollFrame -- tinspect, or fstack ctrl
 	if not scrollFrame then return end
-	for i = 1, scrollFrame.LinesContainer:GetNumChildren() do
-		local child = select(i, scrollFrame.LinesContainer:GetChildren())
+	for _, child in next, { scrollFrame.LinesContainer:GetChildren() } do
 		if child.ValueButton and child.ValueButton:GetScript('OnMouseDown') ~= OnMouseDown then
 			child.ValueButton:SetScript('OnMouseDown', OnMouseDown)
 		end

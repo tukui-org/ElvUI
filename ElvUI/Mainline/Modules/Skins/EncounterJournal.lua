@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local select = select
-local pairs = pairs
 local ipairs = ipairs
 local next = next
 local rad = rad
@@ -13,8 +12,6 @@ local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local GetItemQualityColor = GetItemQualityColor
-
-local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
@@ -25,55 +22,12 @@ local lootQuality = {
 	['loottab-set-itemborder-artifact'] = 6,
 }
 
-local function HandleButton(btn, ...)
-	S:HandleButton(btn, ...)
+local function HandleButton(btn, strip, ...)
+	S:HandleButton(btn, strip, ...)
 
-	if btn:GetFontString() then
-		btn:GetFontString():SetTextColor(1, 1, 1)
-	end
-end
-
-local function SkinDungeons()
-	local b1 = _G.EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
-	if b1 and not b1.isSkinned then
-		HandleButton(b1)
-		b1.bgImage:SetInside()
-		b1.bgImage:SetTexCoord(.08, .6, .08, .6)
-		b1.bgImage:SetDrawLayer('ARTWORK')
-		b1.isSkinned = true
-	end
-
-	for i = 1, 100 do
-		local b = _G['EncounterJournalInstanceSelectScrollFrameinstance'..i]
-		if b and not b.isSkinned then
-			HandleButton(b)
-			b.bgImage:SetInside()
-			b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
-			b.bgImage:SetDrawLayer('ARTWORK')
-			b.isSkinned = true
-		end
-	end
-end
-
-local function SkinBosses()
-	local bossIndex = 1
-	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex)
-	local bossButton
-
-	local encounter = _G.EncounterJournal.encounter
-	encounter.info.instanceButton.icon:SetMask("")
-
-	while bossID do
-		bossButton = _G['EncounterJournalBossButton'..bossIndex]
-		if bossButton and not bossButton.isSkinned then
-			HandleButton(bossButton)
-			bossButton.creature:ClearAllPoints()
-			bossButton.creature:Point('TOPLEFT', 1, -4)
-			bossButton.isSkinned = true
-		end
-
-		bossIndex = bossIndex + 1
-		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex)
+	local str = btn:GetFontString()
+	if str then
+		str:SetTextColor(1, 1, 1)
 	end
 end
 
@@ -102,9 +56,9 @@ local function SkinOverviewInfoBullets(object)
 	local parent = object:GetParent()
 
 	if parent.Bullets then
-		for _, bullet in pairs(parent.Bullets) do
+		for _, bullet in next, parent.Bullets do
 			if not bullet.styled then
-				bullet.Text:SetTextColor(1, 1, 1)
+				bullet.Text:SetTextColor('P', 1, 1, 1)
 				bullet.styled = true
 			end
 		end
@@ -112,13 +66,14 @@ local function SkinOverviewInfoBullets(object)
 end
 
 local function HandleTabs(tab)
+	local str = tab:GetFontString()
 	tab:StripTextures()
 	tab:SetText(tab.tooltip)
-	tab:GetFontString():FontTemplate(nil, nil, '')
+	str:FontTemplate(nil, nil, '')
 	tab:SetTemplate()
 	tab:SetScript('OnEnter', E.noop)
 	tab:SetScript('OnLeave', E.noop)
-	tab:Size(tab:GetFontString():GetStringWidth()*1.5, 20)
+	tab:Size(str:GetStringWidth() * 1.5, 20)
 	tab.SetPoint = E.noop
 end
 
@@ -163,11 +118,6 @@ local function SkinAbilitiesInfo()
 	end
 end
 
-local function HandleTopTabs(tab)
-	S:HandleTab(tab)
-	tab:SetHitRectInsets(0, 0, 0, 0)
-end
-
 local function ItemSetsItemBorder(border, atlas)
 	local parent = border:GetParent()
 	local backdrop = parent and parent.Icon and parent.Icon.backdrop
@@ -204,33 +154,12 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.bg:Kill()
 
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
-	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar)
-	HandleTopTabs(InstanceSelect.suggestTab)
-	HandleTopTabs(InstanceSelect.dungeonsTab)
-	HandleTopTabs(InstanceSelect.raidsTab)
-	HandleTopTabs(InstanceSelect.LootJournalTab)
+	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	InstanceSelect.suggestTab:ClearAllPoints()
-	InstanceSelect.suggestTab:Width(175)
-	InstanceSelect.suggestTab:Point('BOTTOMLEFT', InstanceSelect, 'TOPLEFT', 2, -43)
-	InstanceSelect.dungeonsTab:ClearAllPoints()
-	InstanceSelect.dungeonsTab:Width(125)
-	InstanceSelect.dungeonsTab:Point('BOTTOMLEFT', InstanceSelect.suggestTab, 'BOTTOMRIGHT', 2, 0)
-	InstanceSelect.raidsTab:ClearAllPoints()
-	InstanceSelect.raidsTab:Width(125)
-	InstanceSelect.raidsTab:Point('BOTTOMLEFT', InstanceSelect.dungeonsTab, 'BOTTOMRIGHT', 2, 0)
-	InstanceSelect.LootJournalTab:ClearAllPoints()
-	InstanceSelect.LootJournalTab:Width(125)
-	InstanceSelect.LootJournalTab:Point('BOTTOMLEFT', InstanceSelect.raidsTab, 'BOTTOMRIGHT', 2, 0)
-
-	--Skin the tab text
-	for i = 1, #InstanceSelect.Tabs do
-		local tab = InstanceSelect.Tabs[i]
-		local text = tab:GetFontString()
-
-		text:FontTemplate()
-		text:Point('CENTER')
-	end
+	S:HandleTab(_G.EncounterJournalSuggestTab)
+	S:HandleTab(_G.EncounterJournalDungeonTab)
+	S:HandleTab(_G.EncounterJournalRaidTab)
+	S:HandleTab(_G.EncounterJournalLootJournalTab)
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -240,8 +169,8 @@ function S:Blizzard_EncounterJournal()
 
 	S:HandleIcon(EncounterInfo.instanceButton.icon, true)
 	EncounterInfo.instanceButton.icon:SetTexCoord(0, 1, 0, 1)
-	EncounterInfo.instanceButton:SetNormalTexture('')
-	EncounterInfo.instanceButton:SetHighlightTexture('')
+	EncounterInfo.instanceButton:SetNormalTexture(E.ClearTexture)
+	EncounterInfo.instanceButton:SetHighlightTexture(E.ClearTexture)
 
 	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
 	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
@@ -256,8 +185,6 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
 
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameClassFilterClearFrame:GetRegions():SetAlpha(0)
-
 	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 
@@ -266,21 +193,14 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
 	HandleButton(EncounterInfo.reset)
 	HandleButton(EncounterInfo.difficulty)
-	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
-	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle, true)
-
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:Point('TOPLEFT', EncounterInfo, 'TOP', 0, -8)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:Point('LEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, 'RIGHT', 4, 0)
 
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
-	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar)
-	S:HandleScrollBar(_G.EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar)
+	S:HandleTrimScrollBar(EncounterInfo.BossesScrollBar)
+	S:HandleTrimScrollBar(_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollBar)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:Point('CENTER', 0, 40)
@@ -291,90 +211,58 @@ function S:Blizzard_EncounterJournal()
 
 	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar)
 	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar)
-	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar)
+	S:HandleTrimScrollBar(EncounterInfo.LootContainer.ScrollBar)
 
 	EncounterInfo.detailsScroll:Height(360)
-	EncounterInfo.lootScroll:Height(360)
+	EncounterInfo.LootContainer:Height(360)
 	EncounterInfo.overviewScroll:Height(360)
-	EncounterInfo.bossesScroll:Height(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Height(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'TOP', 20, -70)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'BOTTOMRIGHT', -10, 5)
 
 	--Tabs
-	local tabs = {
-		EncounterInfo.overviewTab,
-		EncounterInfo.lootTab,
-		EncounterInfo.bossTab,
-		EncounterInfo.modelTab
-	}
+	if E.Retail then
+		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
+			local tab = _G.EncounterJournal.encounter.info[name]
+			tab:CreateBackdrop('Transparent')
+			tab.backdrop:SetInside(2, 2)
 
-	for i=1, #tabs do --not beautiful but eh
-		tabs[i]:ClearAllPoints()
-	end
+			tab:SetNormalTexture(E.ClearTexture)
+			tab:SetPushedTexture(E.ClearTexture)
+			tab:SetDisabledTexture(E.ClearTexture)
 
-	for i=1, #tabs do
-		local tab = tabs[i]
+			local hl = tab:GetHighlightTexture()
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			hl:SetColorTexture(r, g, b, .2)
+			hl:SetInside(tab.backdrop)
 
-		if i == 4 then
-			tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
-		else
-			tab:Point('RIGHT', tabs[i+1], 'LEFT', -4, 0)
+			if name == 'overviewTab' then
+				tab:SetPoint('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, -35)
+			end
+		end
+	else
+		local tabs = {
+			EncounterInfo.overviewTab,
+			EncounterInfo.lootTab,
+			EncounterInfo.bossTab,
+			EncounterInfo.modelTab
+		}
+
+		for index, tab in next, tabs do
+			tab:ClearAllPoints()
+			if index == 4 then
+				tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
+			else
+				tab:Point('RIGHT', tabs[index+1], 'LEFT', -4, 0)
+			end
+
+			HandleTabs(tab)
 		end
 
-		HandleTabs(tab)
-	end
-
-	hooksecurefunc('EncounterJournal_SetTabEnabled', function(tab, enabled)
-		if enabled then
-			tab:GetFontString():SetTextColor(1, 1, 1)
-		else
-			tab:GetFontString():SetTextColor(0.6, 0.6, 0.6)
-		end
-	end)
-
-	-- Loot buttons
-	for i, items in next, EJ.encounter.info.lootScroll.buttons do
-		local item = items.lootFrame
-
-		item.bossTexture:SetAlpha(0)
-		item.bosslessTexture:SetAlpha(0)
-
-		item.icon:Size(32, 32)
-		item.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
-		item.icon:SetDrawLayer('ARTWORK')
-		item.icon:SetTexCoord(unpack(E.TexCoords))
-
-		item.IconBackdrop = CreateFrame('Frame', nil, item)
-		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
-		item.IconBackdrop:Point('TOPLEFT', item.icon, -1, 1)
-		item.IconBackdrop:Point('BOTTOMRIGHT', item.icon, 1, -1)
-		item.IconBackdrop:SetTemplate()
-
-		item.name:ClearAllPoints()
-		item.name:Point('TOPLEFT', item.icon, 'TOPRIGHT', 6, -2)
-
-		item.boss:ClearAllPoints()
-		item.boss:Point('BOTTOMLEFT', 4, 6)
-
-		item.slot:ClearAllPoints()
-		item.slot:Point('TOPLEFT', item.name, 'BOTTOMLEFT', 0, -3)
-
-		item.armorType:ClearAllPoints()
-		item.armorType:Point('RIGHT', item, 'RIGHT', -10, 0)
-
-		S:HandleIconBorder(item.IconBorder, item.IconBackdrop)
-
-		if E.private.skins.parchmentRemoverEnable then
-			item.boss:SetTextColor(1, 1, 1)
-			item.slot:SetTextColor(1, 1, 1)
-			item.armorType:SetTextColor(1, 1, 1)
-		end
-
-		if i == 1 then
-			items:ClearAllPoints()
-			items:Point('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 10, 0)
-		end
+		hooksecurefunc('EncounterJournal_SetTabEnabled', function(tab, enabled)
+			if enabled then
+				tab:GetFontString():SetTextColor(1, 1, 1)
+			else
+				tab:GetFontString():SetTextColor(0.6, 0.6, 0.6)
+			end
+		end)
 	end
 
 	-- Search
@@ -383,7 +271,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
-	S:HandleScrollBar(_G.EncounterJournalSearchResultsScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar)
 
 	--Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
@@ -491,57 +379,108 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
+	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
+		HandleButton(button, true)
+	end
+
 	if E.private.skins.parchmentRemoverEnable then
 		LJ:StripTextures()
 		LJ:SetTemplate('Transparent')
 	end
 
-	S:HandleScrollBar(LJ.PowersFrame.ScrollBar)
+	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', function(frame)
+		for _, child in next, { frame.ScrollTarget:GetChildren() } do
+			if not child.isSkinned then
+				child:SetNormalTexture(E.ClearTexture)
+				child:SetHighlightTexture(E.ClearTexture)
+				child:SetPushedTexture(E.ClearTexture)
 
-	local IconColor = E.QualityColors[ITEMQUALITY_LEGENDARY]
-	hooksecurefunc(LJ.PowersFrame, 'RefreshListDisplay', function(buttons)
-		if not buttons.elements then return end
+				local bgImage = child.bgImage
+				if bgImage then
+					bgImage:CreateBackdrop()
+					bgImage.backdrop:SetPoint('TOPLEFT', 3, -3)
+					bgImage.backdrop:SetPoint('BOTTOMRIGHT', -4, 2)
+				end
 
-		for i = 1, buttons:GetNumElementFrames() do
-			local btn = buttons.elements[i]
-			if btn and not btn.IsSkinned then
-				btn.Background:SetAlpha(0)
-				btn.BackgroundOverlay:SetAlpha(0)
-				btn.CircleMask:Hide()
-				S:HandleIcon(btn.Icon, true)
-				btn.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
-
-				btn:CreateBackdrop('Transparent')
-				btn.backdrop:Point('TOPLEFT', 5, -1)
-				btn.backdrop:Point('BOTTOMRIGHT', 5, 1)
-
-				btn.IsSkinned = true
+				child.isSkinned = true
 			end
 		end
 	end)
 
-	--Dungeon/raid selection buttons (From AddOnSkins)
-	hooksecurefunc('EncounterJournal_ListInstances', SkinDungeons)
-	_G.EncounterJournal_ListInstances()
-
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc('EncounterJournal_DisplayInstance', SkinBosses) --Boss selection buttons
-		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo) --Overview Info (From Aurora)
-		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets) --Overview Info Bullets (From Aurora)
-		hooksecurefunc('EncounterJournal_ToggleHeaders', SkinAbilitiesInfo) --Abilities Info (From Aurora)
+		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', function(frame)
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
+				if not child.isSkinned then
+					S:HandleButton(child)
+
+					local hl = child:GetHighlightTexture()
+					hl:SetColorTexture(1, 1, 1, .25)
+					hl:SetInside()
+
+					child.text:SetTextColor(1, 1, 1)
+					child.text.SetTextColor = E.noop
+					child.creature:SetPoint('TOPLEFT', 0, -4)
+
+					child.isSkinned = true
+				end
+			end
+		end)
+
+		-- Comment back in WoW10 Beta, not on Pre Patch
+		--[[hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
+				if not child.isSkinned then
+					child.bossTexture:SetAlpha(0)
+					child.bosslessTexture:SetAlpha(0)
+
+					child.name:ClearAllPoints()
+					child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
+
+					child.boss:ClearAllPoints()
+					child.boss:Point('BOTTOMLEFT', 4, 6)
+					child.boss:SetTextColor(1, 1, 1)
+
+					child.slot:ClearAllPoints()
+					child.slot:Point('TOPLEFT', child.name, 'BOTTOMLEFT', 0, -3)
+					child.slot:SetTextColor(1, 1, 1)
+
+					child.armorType:ClearAllPoints()
+					child.armorType:Point('RIGHT', child, 'RIGHT', -10, 0)
+					child.armorType:SetTextColor(1, 1, 1)
+
+					child.icon:SetSize(32, 32)
+					child.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
+					S:HandleIcon(child.icon, true)
+					S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
+
+					child:CreateBackdrop('Transparent')
+					child.backdrop:SetPoint('TOPLEFT')
+					child.backdrop:SetPoint('BOTTOMRIGHT', 0, 1)
+
+					child.isSkinned = true
+				end
+			end
+		end)]]
+
+		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
+		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)
+		hooksecurefunc('EncounterJournal_ToggleHeaders', SkinAbilitiesInfo)
 
 		_G.EncounterJournalEncounterFrameInfoBG:Kill()
 		EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 		EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
-		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
-		EncounterInfo.overviewScroll.child.overviewDescription.Text:SetTextColor(1, 1, 1)
-		EJ.encounter.instance.loreScroll.child.lore:SetTextColor(1, 1, 1)
+
+		_G.EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollChildDescription:SetTextColor(1, 1, 1)
+		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:Hide()
+		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetFontObject("GameFontNormalLarge")
+		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildLoreDescription:SetTextColor(1, 1, 1)
+		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, .8, 0)
+
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetTexCoord(0.71, 0.06, 0.582, 0.08)
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetRotation(rad(180))
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.7)
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:CreateBackdrop()
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
-		_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
 
@@ -551,9 +490,7 @@ function S:Blizzard_EncounterJournal()
 
 	local LootDropdown = _G.EncounterJournalLootJournalViewDropDown
 	S:HandleDropDownBox(LootDropdown)
-	LootDropdown:SetScript('OnShow', function(dd)
-		dd:SetFrameLevel(5) -- might be able to hook a function later; hotfix builds didn't export Blizzard_LootJournalItems.xml
-	end)
+	LootDropdown:SetScript('OnShow', function(dd) dd:SetFrameLevel(5) end) -- might be able to hook a function later; hotfix builds didn't export Blizzard_LootJournalItems.xml
 
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame

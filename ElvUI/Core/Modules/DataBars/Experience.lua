@@ -19,9 +19,8 @@ local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 
-local CurrentXP, XPToLevel, RestedXP, PercentRested
-local PercentXP, RemainXP, RemainTotal, RemainBars
-local QuestLogXP = 0
+local CurrentXP, XPToLevel, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars
+local RestedXP, QuestLogXP = 0, 0
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if E.Retail and questID then
@@ -48,9 +47,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 end
 
 local function RestedQuestLayering()
-	if not QuestLogXP or not RestedXP then return end
 	local bar = DB.StatusBars.Experience
-
 	bar.Quest.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP > RestedXP) and 2 or 3)
 	bar.Rested.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP <= RestedXP) and 2 or 3)
 end
@@ -61,7 +58,7 @@ function DB:ExperienceBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
+	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), (GetXPExhaustion() or 0)
 	if XPToLevel <= 0 then XPToLevel = 1 end
 
 	local remainXP = XPToLevel - CurrentXP
@@ -102,7 +99,7 @@ function DB:ExperienceBar_Update()
 			displayString = format('%s - %.2f%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
 		end
 
-		local isRested = RestedXP and RestedXP > 0
+		local isRested = RestedXP > 0
 		if isRested then
 			bar.Rested:SetMinMaxValues(0, XPToLevel)
 			bar.Rested:SetValue(min(CurrentXP + RestedXP, XPToLevel))
@@ -180,16 +177,18 @@ function DB:ExperienceBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 
 	GameTooltip:AddDoubleLine(L["Experience"], format('%s %d', L["Level"], E.mylevel))
-	GameTooltip:AddLine(' ')
 
-	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
-
-	if QuestLogXP and QuestLogXP > 0 then
+	if CurrentXP then
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
+	end
+	if RemainXP then
+		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
+	end
+	if QuestLogXP > 0 then
 		GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
 	end
-
-	if RestedXP and RestedXP > 0 then
+	if RestedXP > 0 then
 		GameTooltip:AddDoubleLine(L["Rested:"], format('%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
 	end
 
@@ -208,9 +207,9 @@ function DB:ExperienceBar_Toggle()
 	bar.db = DB.db.experience
 
 	if bar.db.enable then
-		E:EnableMover(bar.holder.mover:GetName())
+		E:EnableMover(bar.holder.mover.name)
 	else
-		E:DisableMover(bar.holder.mover:GetName())
+		E:DisableMover(bar.holder.mover.name)
 	end
 
 	if bar.db.enable and not bar:ShouldHide() then

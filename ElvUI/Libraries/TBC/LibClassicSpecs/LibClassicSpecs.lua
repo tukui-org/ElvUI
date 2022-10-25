@@ -42,7 +42,7 @@ for _, classInfo in pairs(ClassByID) do classInfo.displayName = LOCALIZED_CLASS_
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local isTBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
-local isWrath = false
+local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local Stat = { Strength = 1, Agility = 2, Stamina = 3, Intellect = 4, Spirit = 5 }
 local Role = { Damager = 'DAMAGER', Tank = 'TANK', Healer = 'HEALER' }

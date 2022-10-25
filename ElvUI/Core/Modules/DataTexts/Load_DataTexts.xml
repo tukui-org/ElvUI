@@ -7,6 +7,7 @@
 	<Script file='Bags.lua'/>
 	<Script file='BattleStats.lua'/>
 	<Script file='CombatTime.lua'/>
+	<Script file='CombatIndicator.lua'/>
 	<Script file='ConfigElvUI.lua'/>
 	<Script file='Coordinates.lua'/>
 	<Script file='Crit.lua'/>
@@ -22,6 +23,7 @@
 	<Script file='HPS.lua'/>
 	<Script file='Intellect.lua'/>
 	<Script file='ItemLevel.lua'/>
+	<Script file='Location.lua'/>
 	<Script file='Mail.lua'/>
 	<Script file='ManaRegen.lua'/>
 	<Script file='MovementSpeed.lua'/>

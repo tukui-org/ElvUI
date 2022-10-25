@@ -1,6 +1,8 @@
 -- Italian localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "itIT")
 
+L["Abbreviate Name"] = true
+L["Max Allowed Groups"] = true
 L["Display Mana"] = true
 L["Will display mana when main power is:"] = true
 L["%s and then %s"] = true
@@ -154,12 +156,10 @@ L["Bag 2"] = true
 L["Bag 3"] = true
 L["Bag 4"] = true
 L["Bag Assignment"] = true
-L["Bag Bar"] = true
 L["Bag Spacing"] = true
 L["BAG_FILTER_CONSUMABLES"] = "Consumables"
 L["BAG_FILTER_EQUIPMENT"] = "Equipment"
 L["BAG_FILTER_TRADE_GOODS"] = "Trade Goods"
-L["Bag-Bar"] = true
 L["Bags Only"] = true
 L["Bags/Bank"] = true
 L["Bank 1"] = true
@@ -238,7 +238,6 @@ L["Can Not Attack"] = true
 L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = true
 L["Cast Time Format"] = true
-L["Castbar"] = true
 L["Casted by Player Only"] = true
 L["Casting"] = true
 L["Center"] = true
@@ -1782,6 +1781,8 @@ L["blockDispellable"] = "[Block] Dispellable"
 L["blockNoDuration"] = "[Block] No Duration"
 L["blockNonPersonal"] = "[Block] Non Personal"
 L["blockNotDispellable"] = "[Block] Not Dispellable"
+L["blockMount"] = "[Block] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"
@@ -1807,13 +1808,7 @@ L["SKINS_DESC"] = "Adjust Skin settings."
 L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["TOOLTIP_DESC"] = "Setup options for the Tooltip."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
-L["VISIBILITY_DESC"] = [=[The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.
-
-|cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show]
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:

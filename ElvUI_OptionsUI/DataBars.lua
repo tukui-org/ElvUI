@@ -63,6 +63,7 @@ for i = 1, 8 do
 	DataBars.args.colorGroup.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true)
 end
 DataBars.args.colorGroup.args.factionColors.args["9"] = ACH:Color(L["Paragon"], nil, 9, true)
+DataBars.args.colorGroup.args.factionColors.args["10"] = ACH:Color(L["Renown"], nil, 10, true)
 
 DataBars.args.experience = ACH:Group(L["Experience"], nil, 1, nil, function(info) return DB.db.experience[info[#info]] end, function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() DB:UpdateAll() end)
 DataBars.args.experience.args = CopyTable(SharedOptions)

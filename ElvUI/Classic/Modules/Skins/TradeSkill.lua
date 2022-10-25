@@ -37,7 +37,7 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)
 	TradeSkillCollapseAllButton:GetNormalTexture():Size(15)
 
-	TradeSkillCollapseAllButton:SetHighlightTexture('')
+	TradeSkillCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 	TradeSkillCollapseAllButton.SetHighlightTexture = E.noop
 
 	TradeSkillCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)

@@ -1,13 +1,15 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
-	<Script file='..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Ammo.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Avoidance.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Expertise.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\HealPower.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Hit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellCrit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHaste.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellPower.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Resilience.lua'/>
 	<Script file='DualSpec.lua'/>
 </Ui>

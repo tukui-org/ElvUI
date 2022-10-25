@@ -35,8 +35,10 @@ local GetUnitSpeed = GetUnitSpeed
 local HasPetUI = HasPetUI
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
+local IsInInstance = IsInInstance
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
@@ -794,7 +796,7 @@ E:AddTag('specialization', 'PLAYER_TALENT_UPDATE', function(unit)
 			return currentSpecName
 		end
 	end
-end)
+end, not E.Retail)
 
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return UnitIsPlayer(unit) and UnitPVPName(unit) or UnitName(unit)
@@ -1102,7 +1104,7 @@ end
 
 do
 	local function GetTitleNPC(unit, custom)
-		if UnitIsPlayer(unit) then return end
+		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
 
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
@@ -1129,6 +1131,8 @@ end
 
 do
 	local function GetQuestData(unit, which, Hex)
+		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
+
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
 		E.ScanTooltip:Show()
@@ -1183,27 +1187,22 @@ do
 	E.TagFunctions.GetQuestData = GetQuestData
 
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, nil, Hex)
 	end)
 
 	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'full', Hex)
 	end)
 
 	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'info', Hex)
 	end)
 
 	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'title', Hex)
 	end)
 
 	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'count', Hex)
 	end)
 end

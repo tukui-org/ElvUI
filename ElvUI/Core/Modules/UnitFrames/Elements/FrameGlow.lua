@@ -3,8 +3,8 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local next = next
 local pairs = pairs
-local select = select
 local tinsert = tinsert
 local strsub = strsub
 local CreateFrame = CreateFrame
@@ -421,8 +421,8 @@ function UF:FrameGlow_UpdateFrames()
 	local dbTexture = LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 
 	-- focus, focustarget, pet, pettarget, player, target, targettarget, targettargettarget
-	for unit in pairs(UF.units) do
-		UF:FrameGlow_ConfigureGlow(UF[unit], unit, dbTexture)
+	for unit, frame in pairs(UF.units) do
+		UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 
 	-- arena{1-5}, boss{1-5}
@@ -434,15 +434,13 @@ function UF:FrameGlow_UpdateFrames()
 	for groupName in pairs(UF.headers) do
 		local group = UF[groupName]
 		if group and group.GetNumChildren then
-			for i=1, group:GetNumChildren() do
-				local frame = select(i, group:GetChildren())
-				if frame and frame.Health then
+			for _, frame in next, { group:GetChildren() } do
+				if frame.Health then
 					UF:FrameGlow_ConfigureGlow(frame, frame.unit, dbTexture)
 					UF:FrameGlow_CheckChildren(frame, dbTexture)
-				elseif frame then
-					for n = 1, frame:GetNumChildren() do
-						local child = select(n, frame:GetChildren())
-						if child and child.Health then
+				else
+					for _, child in next, { frame:GetChildren() } do
+						if child.Health then
 							UF:FrameGlow_ConfigureGlow(child, child.unit, dbTexture)
 							UF:FrameGlow_CheckChildren(child, dbTexture)
 						end

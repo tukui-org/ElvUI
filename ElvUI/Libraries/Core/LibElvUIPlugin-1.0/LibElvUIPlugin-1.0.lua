@@ -31,9 +31,10 @@ LibElvUIPlugin API:
 ----------------------------]]--
 
 local tonumber, strmatch, strsub, tinsert, strtrim = tonumber, strmatch, strsub, tinsert, strtrim
-local unpack, assert, pairs, ipairs, strlen, pcall = unpack, assert, pairs, ipairs, strlen, pcall
+local unpack, assert, pairs, ipairs, strlen, pcall, xpcall = unpack, assert, pairs, ipairs, strlen, pcall, xpcall
 local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
 
+local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
 local GetAddOnMetadata = GetAddOnMetadata
 local GetNumGroupMembers = GetNumGroupMembers
@@ -160,13 +161,17 @@ function lib:DelayedSendVersionCheck(delay)
 	end
 end
 
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 function lib:OptionsUILoaded(_, addon)
 	if addon == 'ElvUI_OptionsUI' then
 		lib:GetPluginOptions()
 
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
-				pcall(plugin.callback)
+				xpcall(plugin.callback, errorhandler)
 			end
 		end
 

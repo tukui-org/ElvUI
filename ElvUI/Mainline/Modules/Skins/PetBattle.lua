@@ -20,7 +20,7 @@ local function SkinPetButton(self, bf)
 		self.backdrop:SetFrameStrata('LOW')
 	end
 
-	self:SetNormalTexture('')
+	self:SetNormalTexture(E.ClearTexture)
 	self.Icon:SetTexCoord(unpack(E.TexCoords))
 	self.Icon:SetParent(self.backdrop)
 	self.Icon:SetDrawLayer('BORDER')

@@ -112,23 +112,20 @@ local function Update(self, event, unit, powerType)
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
-		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints('player', 'target') or UnitPower(unit, powerID, true)
+
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
+		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
-		-- mod should never be 0, but according to Blizz code it can actually happen
-		cur = mod == 0 and 0 or cur / mod
+		-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
+		powerType = powerType or ClassPowerType
 
-		-- BUG: Destruction is supposed to show partial soulshards, but Affliction and Demonology should only show full ones
-		if oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
-			cur = cur - cur % 1
-		end
-
-		if oUF.isRetail and (PlayerClass == 'ROGUE') then
-			chargedPoints = GetUnitChargedPowerPoints(unit)
-
-			-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
-			powerType = powerType or ClassPowerType
+		if mod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
+			cur = 0
+		elseif oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+			cur = UnitPower(unit, powerID, true) / mod
+		else
+			cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		end
 
 		local numActive = cur + 0.9
@@ -185,8 +182,8 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	if oUF.isRetail and UnitHasVehicleUI('player') then
-		shouldEnable = PlayerVehicleHasComboPoints()
+	if (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI('player') then
+		shouldEnable = oUF.isWrath and UnitPowerType('vehicle') == SPELL_POWER_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
 		if(not RequireSpec or oUF.isRetail and (RequireSpec == GetSpecialization())) then
@@ -256,14 +253,14 @@ end
 
 do
 	function ClassPowerEnable(self)
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		if not oUF.isRetail then
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isRetail and (PlayerClass == 'ROGUE') then
+		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
 
@@ -341,7 +338,7 @@ local function Enable(self, unit)
 		for i = 1, #element do
 			local bar = element[i]
 			if(bar:IsObjectType('StatusBar')) then
-				if(not (bar:GetStatusBarTexture() or bar:GetStatusBarAtlas())) then
+				if not bar:GetStatusBarTexture() then
 					bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 				end
 

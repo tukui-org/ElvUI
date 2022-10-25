@@ -2,9 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select = ipairs, pairs, select
-
+local ipairs, pairs, next = ipairs, pairs, next
 local hooksecurefunc = hooksecurefunc
+
 local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 
@@ -20,7 +20,7 @@ local function HandlePushToTalkButton(button)
 	button.MiddleRight:Hide()
 	button.BottomMiddle:Hide()
 	button.MiddleMiddle:Hide()
-	button:SetHighlightTexture('')
+	button:SetHighlightTexture(E.ClearTexture)
 
 	button:SetTemplate(nil, true)
 	button:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -179,6 +179,9 @@ function S:BlizzardOptions()
 	_G.CombatConfigTab1:ClearAllPoints()
 	_G.CombatConfigTab1:Point('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
 
+	_G.ChatConfigChatSettingsClassColorLegend.NineSlice:SetTemplate()
+	_G.ChatConfigChannelSettingsClassColorLegend.NineSlice:SetTemplate()
+
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
@@ -291,8 +294,7 @@ function S:BlizzardOptions()
 
 	for _, Panel in pairs(InterfaceOptions) do
 		if Panel then
-			for i = 1, Panel:GetNumChildren() do
-				local Child = select(i, Panel:GetChildren())
+			for _, Child in next, { Panel:GetChildren() } do
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child)
 				elseif Child:IsObjectType('Button') then

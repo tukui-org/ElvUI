@@ -29,10 +29,6 @@ local max = math.max
 -- WoW APIs
 local _G = _G
 
--- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
--- List them here for Mikk's FindGlobals script
--- GLOBALS: DEFAULT_CHAT_FRAME, SlashCmdList, hash_SlashCmdList
-
 local tmp={}
 local function Print(self,frame,...)
 	local n=0
@@ -174,7 +170,7 @@ function AceConsole:GetArgs(str, numargs, startpos)
 
 	while true do
 		-- find delimiter or hyperlink
-		local ch,_
+		local _
 		pos,_,ch = strfind(str, delim_or_pipe, pos)
 
 		if not pos then break end

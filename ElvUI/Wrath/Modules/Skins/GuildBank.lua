@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, unpack = select, unpack
+local next, unpack = next, unpack
 local CreateFrame = CreateFrame
 
 local NUM_GUILDBANK_ICONS_PER_ROW = 10
@@ -21,8 +21,7 @@ function S:Blizzard_GuildBankUI()
 	GuildBankFrame:Height(450)
 	GuildBankFrame.Emblem:Kill()
 
-	for i = 1, GuildBankFrame:GetNumChildren() do
-		local child = select(i, GuildBankFrame:GetChildren())
+	for _, child in next, { GuildBankFrame:GetChildren() } do
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
 		end

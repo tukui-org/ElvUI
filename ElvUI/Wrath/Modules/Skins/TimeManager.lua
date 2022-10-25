@@ -42,9 +42,9 @@ function S:Blizzard_TimeManager()
 	S:HandleEditBox(_G.TimeManagerAlarmMessageEditBox)
 
 	_G.TimeManagerAlarmEnabledButton:Point('LEFT', 16, -45)
-	_G.TimeManagerAlarmEnabledButton:SetNormalTexture(nil)
+	_G.TimeManagerAlarmEnabledButton:SetNormalTexture(E.ClearTexture)
 	_G.TimeManagerAlarmEnabledButton.SetNormalTexture = E.noop
-	_G.TimeManagerAlarmEnabledButton:SetPushedTexture(nil)
+	_G.TimeManagerAlarmEnabledButton:SetPushedTexture(E.ClearTexture)
 	_G.TimeManagerAlarmEnabledButton.SetPushedTexture = E.noop
 	S:HandleButton(_G.TimeManagerAlarmEnabledButton)
 
@@ -65,7 +65,7 @@ function S:Blizzard_TimeManager()
 	_G.StopwatchPlayPauseButton:CreateBackdrop(nil, true)
 	_G.StopwatchPlayPauseButton:SetSize(12, 12)
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
-	_G.StopwatchPlayPauseButton:SetHighlightTexture('')
+	_G.StopwatchPlayPauseButton:SetHighlightTexture(E.ClearTexture)
 	_G.StopwatchPlayPauseButton.backdrop:SetOutside(_G.StopwatchPlayPauseButton, 2, 2)
 	_G.StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
 	_G.StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)

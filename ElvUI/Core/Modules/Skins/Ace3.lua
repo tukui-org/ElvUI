@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local next = next
 local gsub = gsub
 local ipairs = ipairs
-local select = select
 local format = format
 local unpack = unpack
 local tinsert = tinsert
@@ -360,7 +359,7 @@ function S:Ace3_RefreshTree(scrollToSelection)
 				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
 			end
 
-			button.toggle:SetHighlightTexture('')
+			button.toggle:SetHighlightTexture(E.ClearTexture)
 		end
 	end
 end
@@ -373,8 +372,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		local frame = widget.content:GetParent()
 		if TYPE == 'Frame' then
 			frame:StripTextures()
-			for i=1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+			for _, child in next, { frame:GetChildren() } do
 				if child:IsObjectType('Button') and child:GetText() then
 					S:HandleButton(child)
 				else
@@ -427,9 +425,8 @@ function S:Ace3_RegisterAsContainer(widget)
 	end
 
 	if widget.sizer_se then
-		for i = 1, widget.sizer_se:GetNumRegions() do
-			local Region = select(i, widget.sizer_se:GetRegions())
-			if Region and Region:IsObjectType('Texture') then
+		for _, Region in next, { widget.sizer_se:GetRegions() } do
+			if Region:IsObjectType('Texture') then
 				Region:SetTexture(137057) -- Interface\Tooltips\UI-Tooltip-Border
 			end
 		end

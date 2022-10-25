@@ -76,6 +76,8 @@ local C_ChatInfo_GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChan
 local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
 local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
+local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
+
 local RecruitLinkType = E.Retail and Enum.RafLinkType.Recruit
 local CHATCHANNELRULESET_MENTOR = E.Retail and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = E.Retail and Enum.PlayerMentorshipStatus.Newcomer
@@ -131,6 +133,7 @@ local hyperlinkTypes = {
 local tabTexs = {
 	'',
 	'Selected',
+	'Active',
 	'Highlight'
 }
 
@@ -155,7 +158,7 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
-if not E.Retail then
+if not (E.Retail or E.Wrath) then
 	CH.BNGetFriendInfo = _G.BNGetFriendInfo
 	CH.BNGetFriendInfoByID = _G.BNGetFriendInfoByID
 	CH.BNGetFriendGameAccountInfo = _G.BNGetFriendGameAccountInfo
@@ -281,7 +284,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsMis, itsSimpy, itsMel, itsThradex
+	local itsElv, itsMis, itsSimpy, itsMel, itsThradex, itsNihilistzsche
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
@@ -300,12 +303,15 @@ do --this can save some main file locals
 		local MelColors = function(t) return specialText(t, 0.98,0.31,0.43, 0.97,0.78,0.13, 0.31,0.76,0.43, 0.49,0.48,0.97, 0.07,0.69,0.92) end
 		--Thradex: summer without you
 		local ThradexColors = function(t) return specialText(t, 0.00,0.60,0.09, 0.22,0.65,0.90, 0.22,0.65,0.90, 1.00,0.74,0.27, 1.00,0.66,0.00, 1.00,0.50,0.20, 0.92,0.31,0.23) end
+		--Nihilistzsche: Class Normal to Negative (Orange->Blue, Red->Cyan, etc)
+		local NihiColors = function(class) local c = E:ClassColor(class, true); local n = E:InverseClassColor(class, true, true); local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, n.r,n.g,n.b; return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsThradex = function() return PalmTree, ThradexColors end
+		itsNihilistzsche = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos['Fox'..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
 	end
 
 	local z = {}
@@ -322,15 +328,21 @@ do --this can save some main file locals
 		z['Kalline-Myzrael']		= itsSimpy -- Shaman
 		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvBlue -- Hunter
+		z['Luckyone-Gehennas']		= ElvBlue -- Hunter H
 		z['Luckyd-Golemagg']		= ElvBlue -- Druid H
 		z['Luckyp-Golemagg']		= ElvBlue -- Priest H
-		z['Luckysh-Golemagg']		= ElvBlue -- Shaman
-		z["Luckyone-Jin'do"]		= ElvBlue -- Shaman
+		z['Luckysh-Golemagg']		= ElvBlue -- Shaman H
+		z["Luckyone-Jin'do"]		= ElvBlue -- Shaman H
 		z['Luckyone-Everlook']		= ElvBlue -- Druid A
 		z['Luckypriest-Everlook']	= ElvBlue -- Priest A
 		z['Luckydk-Everlook']		= ElvBlue -- DK
+		z['Luckyrogue-Everlook']	= ElvBlue -- Rogue
+		z['Luckyhunter-Everlook']	= ElvBlue -- Hunter A
+		z['Luckykek-Everlook']		= ElvBlue -- Shaman A
 		z['Luckyone-Giantstalker']	= ElvBlue -- Paladin
+		-- Repooc
+		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
+		z['Repooc-Mankrik']			= ElvBlue
 	elseif E.Retail then
 		-- Elv
 		z['Elv-Spirestone']			= itsElv
@@ -372,6 +384,7 @@ do --this can save some main file locals
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
 		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
+		z['Luckyevoker-LaughingSkull']	= ElvBlue -- Evoker
 		-- Repooc
 		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
 		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
@@ -445,6 +458,7 @@ do --this can save some main file locals
 		z['Teepac-Area52']		= TyroneBiggums
 		z['Teekettle-Area52']	= TyroneBiggums
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		z['Twunk-Area52']			= itsMis
 		z['Twunkie-Area52']			= itsMis
 		z['Misoracle-Area52']		= itsMis
 		z['Mismayhem-Area52']		= itsMis
@@ -461,6 +475,30 @@ do --this can save some main file locals
 		z['Rollerblade-Spirestone']	= SuperBear
 		--Bozaum
 		z['Bozaum-Spirestone']	= Beer
+		-- Nihilistzsche
+		z['Dirishia-WyrmrestAccord']	= itsNihilistzsche('Warlock')
+		z['Xanikani-WyrmrestAccord']	= itsNihilistzsche('Mage')
+		z['Rikanza-WyrmrestAccord']		= itsNihilistzsche('Monk')
+		z['Onaguda-WyrmrestAccord']		= itsNihilistzsche('Druid')
+		z['Cerishia-WyrmrestAccord']	= itsNihilistzsche('Priest')
+		z['Vellilara-WyrmrestAccord']	= itsNihilistzsche('DemonHunter')
+		z['Sayalia-WyrmrestAccord']		= itsNihilistzsche('DeathKnight')
+		z['Alledarisa-WyrmrestAccord']	= itsNihilistzsche('Paladin')
+		z['Orlyrala-WyrmrestAccord']	= itsNihilistzsche('Shaman')
+		z['Scerila-WyrmrestAccord']		= itsNihilistzsche('Rogue')
+		z['Ralaniki-WyrmrestAccord']	= itsNihilistzsche('Hunter')
+		z['Moyanza-WyrmrestAccord']		= itsNihilistzsche('Warrior')
+		z['Erasaya-WyrmrestAccord']		= itsNihilistzsche('DeathKnight')
+		z['Linabla-WyrmrestAccord']		= itsNihilistzsche('Druid')
+		z['Dirikoa-WyrmrestAccord']		= itsNihilistzsche('Hunter')
+		z['Elaedarel-WyrmrestAccord']	= itsNihilistzsche('Warlock')
+		z['Alydrer-WyrmrestAccord']		= itsNihilistzsche('Warlock')
+		z['Issia-WyrmrestAccord']		= itsNihilistzsche('Priest')
+		z['Leitara-WyrmrestAccord']		= itsNihilistzsche('Warrior')
+		z['Cherlyth-WyrmrestAccord']	= itsNihilistzsche('Druid')
+		z['Tokashami-WyrmrestAccord']	= itsNihilistzsche('Shaman')
+		z['Millop-WyrmrestAccord']		= itsNihilistzsche('Hunter')
+		z['Aeondalew-WyrmrestAccord']	= itsNihilistzsche('DeathKnight')
 	end
 end
 
@@ -558,12 +596,9 @@ function CH:CopyButtonOnEnter()
 end
 
 function CH:CopyButtonOnLeave()
-	local chat = self:GetParent()
-	if _G[chat:GetName()..'TabText']:IsShown() then
-		self:SetAlpha(0.35)
-	else
-		self:SetAlpha(0)
-	end
+	local chatName = self:GetParent():GetName()
+	local tabText = _G[chatName..'TabText'] or _G[chatName..'Tab'].Text
+	self:SetAlpha(tabText:IsShown() and 0.35 or 0)
 end
 
 function CH:ChatFrameTab_SetAlpha(_, skip)
@@ -789,16 +824,25 @@ function CH:StyleChat(frame)
 	editbox.characterCount = charCount
 
 	for _, texName in pairs(tabTexs) do
-		_G[name..'Tab'..texName..'Left']:SetTexture()
-		_G[name..'Tab'..texName..'Middle']:SetTexture()
-		_G[name..'Tab'..texName..'Right']:SetTexture()
+		local t, l, m, r = name..'Tab', texName..'Left', texName..'Middle', texName..'Right'
+		local main = _G[t]
+		local left = _G[t..l] or (main and main[l])
+		local middle = _G[t..m] or (main and main[m])
+		local right = _G[t..r] or (main and main[r])
+
+		if left then left:SetTexture() end
+		if middle then middle:SetTexture() end
+		if right then right:SetTexture() end
 	end
 
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.left then tab.left = _G[name..'TabLeft'] end
+	if not tab.Left then
+		tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left
+	end
+
 	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab.Text:Point('LEFT', tab, 'LEFT', tab.Left:GetWidth(), 0)
 	tab:Height(22)
 
 	if tab.conversationIcon then
@@ -1992,7 +2036,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
-					local characterNameText = _G.BNet_GetClientEmbeddedTexture(clientProgram, 14)..name
+					local characterNameText = GetClientTexture(clientProgram, 14)..name
 					local linkDisplayText = format('[%s] (%s)', arg2, characterNameText)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
@@ -3148,7 +3192,6 @@ function CH:BuildCopyChatFrame()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	frame:SetMinResize(350, 100)
 	frame:SetScript('OnMouseDown', function(copyChat, button)
 		if button == 'LeftButton' and not copyChat.isMoving then
 			copyChat:StartMoving()

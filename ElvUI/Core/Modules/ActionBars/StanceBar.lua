@@ -13,7 +13,7 @@ local GetShapeshiftFormInfo = GetShapeshiftFormInfo
 local GetSpellTexture = GetSpellTexture
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
+local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS or 10
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Stance Bar')
@@ -56,7 +56,9 @@ function AB:StyleShapeShift()
 				button.cooldown:SetAlpha(texture and 1 or 0)
 
 				if isActive then
-					_G.StanceBarFrame.lastSelected = button:GetID()
+					if not E.Retail then
+						_G.StanceBarFrame.lastSelected = button:GetID()
+					end
 
 					button:SetChecked(numForms == 1 and darken)
 					button.checked:SetColorTexture(1, 1, 1, 0.3)
@@ -161,9 +163,9 @@ function AB:PositionAndSizeBarShapeShift()
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if db.enabled then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.mover.name)
 	else
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.mover.name)
 	end
 
 	local visibility = gsub(db.visibility, '[\n\r]', '')

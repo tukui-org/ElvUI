@@ -43,6 +43,7 @@ local EnglishClassName = {
 	SHAMAN = 'Shaman',
 	WARLOCK = 'Warlock',
 	WARRIOR = 'Warrior',
+	EVOKER = 'Evoker'
 }
 
 local EnglishSpecName = {
@@ -82,6 +83,8 @@ local EnglishSpecName = {
 	[73] = 'Protection',
 	[577] = 'Havoc',
 	[581] = 'Vengeance',
+	[1467] = 'Devastation',
+	[1468] = 'Preservation',
 }
 
 local function GetSpecName()
