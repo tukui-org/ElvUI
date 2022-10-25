@@ -2429,15 +2429,15 @@ end
 function B:PostBagMove()
 	if not E.private.bags.enable then return end
 
-	-- self refers to the mover (bag or bank)
-	local x, y = self:GetCenter()
+	local x, y = self:GetCenter() -- self refers to the mover (bag or bank)
+	if not x or not y then return end
 
 	if y > (E.screenHeight * 0.5) then
 		self:SetText(self.textGrowDown)
-		self.POINT = x > (E.screenWidth*0.5) and 'TOPRIGHT' or 'TOPLEFT'
+		self.POINT = x > (E.screenWidth * 0.5) and 'TOPRIGHT' or 'TOPLEFT'
 	else
 		self:SetText(self.textGrowUp)
-		self.POINT = x > (E.screenWidth*0.5) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
+		self.POINT = x > (E.screenWidth * 0.5) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
 	end
 
 	local bagFrame = (self.name == 'ElvUIBankMover' and B.BankFrame) or B.BagFrame
