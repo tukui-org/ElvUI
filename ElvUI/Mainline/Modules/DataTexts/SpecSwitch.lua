@@ -56,14 +56,10 @@ local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
-local changingID, savedID = false
-
 local function starter_checked()
 	return GetStarterBuildActive()
 end
 local function starter_func(_, arg1)
-	changingID, savedID = true, GetLastSelectedSavedConfigID(arg1)
-
 	SetStarterBuildActive(true)
 	UpdateLastSelectedSavedConfigID(arg1, STARTER_ID)
 end
@@ -72,11 +68,9 @@ local function loadout_checked(data)
 	return data and data.arg1 and data.arg2 == GetLastSelectedSavedConfigID(data.arg1)
 end
 local function loadout_func(_, arg1, arg2)
-	changingID, savedID = true, GetStarterBuildActive() and STARTER_ID or GetLastSelectedSavedConfigID(arg1)
-
 	LoadConfig(arg2, true)
 
-	if GetLastSelectedSavedConfigID(arg1) ~= STARTER_ID then -- saved needs to be recalled here
+	if GetLastSelectedSavedConfigID(arg1) ~= STARTER_ID then
 		SetStarterBuildActive(false)
 	end
 
@@ -112,18 +106,7 @@ local function OnEvent(self, event)
 		return
 	end
 
-	local failed = event == 'CONFIG_COMMIT_FAILED'
-	if failed or (event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED') then
-		if failed and changingID and savedID then
-			if savedID == STARTER_ID then
-				SetStarterBuildActive(true)
-			else
-				LoadConfig(savedID, true)
-			end
-
-			UpdateLastSelectedSavedConfigID(ID, savedID)
-		end
-
+	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED' then
 		local builds = GetConfigIDsBySpecID(ID)
 		if builds and not builds[STARTER_ID] and GetHasStarterBuild() then
 			tinsert(builds, STARTER_ID)
@@ -137,8 +120,6 @@ local function OnEvent(self, event)
 				loadoutList[index + 1] = { text = configInfo and configInfo.name or UNKNOWN, checked = loadout_checked, func = loadout_func, arg1 = ID, arg2 = configID }
 			end
 		end
-
-		changingID, savedID = false, GetStarterBuildActive() and STARTER_ID or GetLastSelectedSavedConfigID(ID)
 	end
 
 	active = specIndex
