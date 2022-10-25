@@ -115,6 +115,10 @@ local function Update(self, event, unit, powerType)
 		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
+		chargedPoints = GetUnitChargedPowerPoints(unit)
+
+		-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
+		powerType = powerType or ClassPowerType
 
 		-- mod should never be 0, but according to Blizz code it can actually happen
 		cur = mod == 0 and 0 or cur / mod
@@ -122,13 +126,6 @@ local function Update(self, event, unit, powerType)
 		-- BUG: Destruction is supposed to show partial soulshards, but Affliction and Demonology should only show full ones
 		if oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
 			cur = cur - cur % 1
-		end
-
-		if oUF.isRetail and (PlayerClass == 'ROGUE') then
-			chargedPoints = GetUnitChargedPowerPoints(unit)
-
-			-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
-			powerType = powerType or ClassPowerType
 		end
 
 		local numActive = cur + 0.9
@@ -256,14 +253,14 @@ end
 
 do
 	function ClassPowerEnable(self)
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		if not oUF.isRetail then
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isRetail and (PlayerClass == 'ROGUE') then
+		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		end
 
