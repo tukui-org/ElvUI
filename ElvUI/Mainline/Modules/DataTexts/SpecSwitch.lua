@@ -97,7 +97,7 @@ local function OnEvent(self, event)
 		return
 	end
 
-	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' then
+	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' or event == 'CONFIG_COMMIT_FAILED' then
 		local builds = C_ClassTalents_GetConfigIDsBySpecID(info.id)
 		if builds and C_ClassTalents_GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
 			tinsert(builds, STARTER_BUILD_TRAIT_CONFIG_ID)
