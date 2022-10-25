@@ -112,16 +112,14 @@ local function Update(self, event, unit, powerType)
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
-		cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
+
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
 
-		-- mod should never be 0, but according to Blizz code it can actually happen
-		cur = mod == 0 and 0 or cur / mod
-
-		-- BUG: Destruction is supposed to show partial soulshards, but Affliction and Demonology should only show full ones
-		if oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
-			cur = cur - cur % 1
+		if oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+			cur = UnitPower(unit, powerID, true) / mod
+		else
+			cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		end
 
 		if oUF.isRetail and (PlayerClass == 'ROGUE') then
