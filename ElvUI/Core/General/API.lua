@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local wipe, max = wipe, max
+local wipe, max, next = wipe, max, next
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
@@ -43,6 +43,9 @@ local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
 
+local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
+local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
+local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
 
@@ -583,7 +586,17 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
+	E.MountIDs = {}
+	E.MountText = {}
+
 	if E.Retail then
+		for _, mountID in next, C_MountJournal_GetMountIDs() do
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+			E.MountIDs[spellID] = mountID
+			E.MountText[mountID] = sourceText
+		end
+
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')

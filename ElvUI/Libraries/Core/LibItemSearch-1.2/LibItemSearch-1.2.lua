@@ -8,7 +8,7 @@ local Unfit = LibStub('Unfit-1.0')
 local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 13) -- based off v23
 if Lib then
 	Lib.Filters = {}
-	Lib.Scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'SharedTooltipTemplate')
+	Lib.Scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'GameTooltipTemplate, GameTooltipTemplate')
 	Lib.Scanner:RegisterEvent('GET_ITEM_INFO_RECEIVED')
 	Lib.Scanner:SetScript('OnEvent', function()
 		Lib.Filters.tipPhrases.keywords[FOLLOWERLIST_LABEL_CHAMPIONS:lower()] = Lib:TooltipLine('item:147556', 2)

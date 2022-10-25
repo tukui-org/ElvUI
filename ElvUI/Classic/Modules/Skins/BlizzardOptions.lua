@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, ipairs, pairs = select, ipairs, pairs
+local next, ipairs, pairs = next, ipairs, pairs
 
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -21,7 +21,7 @@ local function HandlePushToTalkButton(button)
 	button.MiddleRight:Hide()
 	button.BottomMiddle:Hide()
 	button.MiddleMiddle:Hide()
-	button:SetHighlightTexture()
+	button:SetHighlightTexture(E.ClearTexture)
 
 	button:SetTemplate(nil, true)
 	button:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -291,8 +291,7 @@ function S:BlizzardOptions()
 
 	for _, Panel in pairs(InterfaceOptions) do
 		if Panel then
-			for i = 1, Panel:GetNumChildren() do
-				local Child = select(i, Panel:GetChildren())
+			for _, Child in next, { Panel:GetChildren() } do
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child)
 				elseif Child:IsObjectType('Button') then

@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack = unpack
-local select = select
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -52,12 +52,9 @@ function S:SpellBookFrame()
 		local cooldown = _G['SpellButton'..i..'Cooldown']
 		local highlight = _G['SpellButton'..i..'Highlight']
 
-		for y = 1, button:GetNumRegions() do
-			local region = select(y, button:GetRegions())
-			if region:GetObjectType() == 'Texture' then
-				if region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
-					region:SetTexture(nil)
-				end
+		for _, region in next, { button:GetRegions() } do
+			if region:GetObjectType() == 'Texture' and region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
+				region:SetTexture(nil)
 			end
 		end
 
@@ -124,13 +121,13 @@ function S:SpellBookFrame()
 
 		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(texture, tex)
 			if tex ~= nil then
-				texture:SetPushedTexture()
+				texture:SetPushedTexture(E.ClearTexture)
 			end
 		end)
 
 		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(texture, tex)
 			if tex ~= nil then
-				texture:SetHighlightTexture()
+				texture:SetHighlightTexture(E.ClearTexture)
 			end
 		end)
 

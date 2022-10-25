@@ -25,7 +25,6 @@ local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassI
 local C_Garrison_GetTalentTreeInfo = C_Garrison.GetTalentTreeInfo
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_Covenants_GetActiveCovenantID = C_Covenants.GetActiveCovenantID
 local C_CovenantCallings_AreCallingsUnlocked = C_CovenantCallings.AreCallingsUnlocked
 local CovenantCalling_Create = CovenantCalling_Create
@@ -61,9 +60,8 @@ local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
 local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
 local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
-local MAIN_CURRENCY = 1813
-local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local numMissions = 0
+local MAIN_CURRENCY = 1813
 local callingsData = {}
 local covenantTreeIDs = {
 	[1] = {308, 312, 316, 320, 327},
@@ -185,14 +183,9 @@ local function AddTalentInfo(garrisonType, currentCovenant)
 	end
 end
 
-local function GetInfo(id)
-	local info = C_CurrencyInfo_GetCurrencyInfo(id)
-	return info.quantity, info.name, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
-end
-
 local function AddInfo(id)
-	local quantity, _, icon = GetInfo(id)
-	return format('%s %s', icon, BreakUpLargeNumbers(quantity))
+	local info, _, icon = DT:CurrencyInfo(id)
+	return format('%s %s', icon, BreakUpLargeNumbers(info.quantity or 0))
 end
 
 local function OnEnter()
@@ -322,8 +315,8 @@ local function OnClick(self, btn)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
 	if btn == 'RightButton' then
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	else
 		if _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsShown() then
 			HideUIPanel(_G.GarrisonLandingPage)

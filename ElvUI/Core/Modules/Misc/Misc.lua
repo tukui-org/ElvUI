@@ -5,6 +5,8 @@ local CH = E:GetModule('Chat')
 local MM = E:GetModule('Minimap')
 
 local _G = _G
+local next = next
+local wipe = wipe
 local select = select
 local format = format
 local strmatch = strmatch
@@ -58,6 +60,15 @@ local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local UNKNOWN = UNKNOWN
+
+local function KillFeedback(frame)
+	local debug = true
+	if not debug then
+		frame:Kill()
+		frame.TriggerEvent = E.noop
+		wipe(frame.Data.RegisteredEvents)
+	end
+end
 
 local BOOST_THANKSFORPLAYING_SMALLER = SOUNDKIT.UI_70_BOOST_THANKSFORPLAYING_SMALLER
 local INTERRUPT_MSG = L["Interrupted %s's |cff71d5ff|Hspell:%d:0|h[%s]|h|r!"]
@@ -266,6 +277,8 @@ end
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_InspectUI' then
 		M:SetupInspectPageInfo()
+	elseif addon == 'Blizzard_PTRFeedback' then
+		KillFeedback(_G.PTR_IssueReporter)
 	end
 end
 
@@ -336,6 +349,13 @@ function M:Initialize()
 	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	M:RegisterEvent('COMBAT_TEXT_UPDATE')
 	M:RegisterEvent('QUEST_COMPLETE')
+	M:RegisterEvent('ADDON_LOADED')
+
+	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback' } do
+		if IsAddOnLoaded(addon) then
+			M:ADDON_LOADED(nil, addon)
+		end
+	end
 
 	do	-- questRewardMostValueIcon
 		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.QuestInfoRewardsFrame)
@@ -359,12 +379,6 @@ function M:Initialize()
 
 	if E.db.general.interruptAnnounce ~= 'NONE' then
 		M:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	end
-
-	if IsAddOnLoaded('Blizzard_InspectUI') then
-		M:SetupInspectPageInfo()
-	else
-		M:RegisterEvent('ADDON_LOADED')
 	end
 
 	if E.Retail then

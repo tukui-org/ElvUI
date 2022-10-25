@@ -2,48 +2,38 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next, unpack = next, unpack
 
 function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
-	--Class Trainer Frame
-	local StripAllTextures = {
+	for _, object in next, {
 		_G.ClassTrainerScrollFrameScrollChild,
 		_G.ClassTrainerFrameSkillStepButton,
 		_G.ClassTrainerFrameBottomInset,
-	}
+	} do
+		object:StripTextures()
+	end
 
-	local buttons = {
-		_G.ClassTrainerTrainButton,
-	}
-
-	local KillTextures = {
+	for _, texture in next, {
 		_G.ClassTrainerFramePortrait,
 		_G.ClassTrainerScrollFrameScrollBarBG,
 		_G.ClassTrainerScrollFrameScrollBarTop,
 		_G.ClassTrainerScrollFrameScrollBarBottom,
 		_G.ClassTrainerScrollFrameScrollBarMiddle,
-	}
-
-	for _, object in pairs(StripAllTextures) do
-		object:StripTextures()
-	end
-
-	for _, texture in pairs(KillTextures) do
+	} do
 		texture:Kill()
 	end
 
-	for i = 1, #buttons do
-		buttons[i]:StripTextures()
-		S:HandleButton(buttons[i])
+	for _, button in next, { _G.ClassTrainerTrainButton } do
+		button:StripTextures()
+		S:HandleButton(button)
 	end
 
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
-		local button = _G['ClassTrainerScrollFrameButton'..i]
+	--[[for _, button in next, ClassTrainerFrame.scrollFrame.buttons do
 		button:StripTextures()
 		button:StyleButton()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -52,9 +42,9 @@ function S:Blizzard_TrainerUI()
 		button.icon:SetParent(button.backdrop)
 		button.selectedTex:SetColorTexture(1, 1, 1, 0.3)
 		button.selectedTex:SetInside()
-	end
+	end]]
 
-	S:HandleScrollBar(_G.ClassTrainerScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)

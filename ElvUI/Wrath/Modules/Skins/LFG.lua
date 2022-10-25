@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local pairs, select = pairs, select
+local pairs, next = pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local function LFGTabs()
@@ -90,10 +90,6 @@ function S:Blizzard_LookingForGroupUI()
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
 	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 
-	-- ScrollBars
-	-- S:HandleScrollBar(_G.LFGListingFrameActivityViewScrollBar) --Breaks the Group Finder for some reason
-	--S:HandleScrollBar(_G.LFGBrowseFrameScrollBar)
-
 	-- Role check popup
 	S:HandleFrame(_G.RolePollPopup)
 	S:HandleButton(_G.RolePollPopupAcceptButton)
@@ -115,8 +111,7 @@ function S:Blizzard_LookingForGroupUI()
 		end
 	end
 
-	for i = 1, _G.LFGParentFrame:GetNumChildren() do
-		local child = select(i, _G.LFGParentFrame:GetChildren())
+	for _, child in next, { _G.LFGParentFrame:GetChildren() } do
 		if not child.IsSkinned and child:GetObjectType() == 'Button' then
 			child:ClearAllPoints()
 			child:Point('TOPRIGHT', -26, -6)

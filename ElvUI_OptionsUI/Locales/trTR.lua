@@ -1778,11 +1778,13 @@ L["Zone Name"] = "Bolge Ismi"
 
 ----------------------------------
 L["BlizzardNameplate"] = "Blizzard Isim Levhasi"
-L["blockCastByPlayers"] = "[Engelle] Oyuncular Tarafindan Kullanilan Yetenek"
-L["blockDispellable"] = "[Block] Arindirilabilir"
+L["blockCastByPlayers"] = "[Blok] Oyuncular Tarafindan Kullanilan Yetenek"
+L["blockDispellable"] = "[Blok] Arindirilabilir"
 L["blockNoDuration"] = "[Blok] Sure Yok"
-L["blockNonPersonal"] = "[Engelle] Kisisel Olmayan"
+L["blockNonPersonal"] = "[Blok] Kisisel Olmayan"
 L["blockNotDispellable"] = "[Blok] Arindirilamaz"
+L["blockMount"] = "[Blok] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "NPC Tarafindan Kullanilan Yetenek"
 L["CastByPlayers"] = "Oyuncular Tarafindan Kullanilan Yetenek"
 L["CastByUnit"] = "Birime Gore Kullanilan Yetenek"

@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local pairs = pairs
 local select = select
 local unpack = unpack
@@ -38,9 +39,8 @@ local function BagButtonOnEnter(self)
 end
 
 local function StripBlizzard(button)
-	for i = 1, button:GetNumRegions() do
-		local region = select(i, button:GetRegions())
-		if region and region:IsObjectType('Texture') and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
+	for _, region in next, { button:GetRegions() } do
+		if region:IsObjectType('Texture') and (region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay) then
 			region:SetTexture()
 		end
 	end
@@ -296,10 +296,11 @@ function S:ContainerFrame()
 		icon.Icon:SetInside()
 	end
 
-	hooksecurefunc('ContainerFrame_Update', UpdateContainerButton)
+	-- WoW10
+	--hooksecurefunc('ContainerFrame_Update', UpdateContainerButton)
 	hooksecurefunc('BankFrameItemButton_Update', UpdateBankItem)
 
-	SkinAllBags()
+	--SkinAllBags()
 end
 
 S:AddCallback('ContainerFrame')

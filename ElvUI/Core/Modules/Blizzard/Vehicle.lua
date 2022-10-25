@@ -7,10 +7,11 @@ local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 
-local function SetPosition(_,_,anchor)
-	if anchor == 'MinimapCluster' or anchor == _G.MinimapCluster then
+local function SetPosition(_, _, relativeTo)
+	local mover = _G.VehicleSeatIndicator.mover
+	if mover and relativeTo ~= mover then
 		_G.VehicleSeatIndicator:ClearAllPoints()
-		_G.VehicleSeatIndicator:Point('TOPLEFT', _G.VehicleSeatMover, 'TOPLEFT', 0, 0)
+		_G.VehicleSeatIndicator:Point('TOPLEFT', mover, 'TOPLEFT', 0, 0)
 	end
 end
 
@@ -18,11 +19,11 @@ local function VehicleSetUp(vehicleID)
 	local size = E.db.general.vehicleSeatIndicatorSize
 	_G.VehicleSeatIndicator:Size(size)
 
-	local _, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
-	if numSeatIndicators then
+	local _, numIndicators = GetVehicleUIIndicator(vehicleID)
+	if numIndicators then
 		local fourth = size * 0.25
 
-		for i = 1, numSeatIndicators do
+		for i = 1, numIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]
 			button:Size(fourth)
 
@@ -33,24 +34,31 @@ local function VehicleSetUp(vehicleID)
 	end
 end
 
-function B:UpdateVehicleFrame()
-	if _G.VehicleSeatIndicator.currSkin then
-		VehicleSeatIndicator_SetUpVehicle(_G.VehicleSeatIndicator.currSkin)
+function B:UpdateVehicleFrame(direct)
+	local current = _G.VehicleSeatIndicator.currSkin
+	if not current then return end
+
+	if direct then
+		VehicleSetUp(current)
+	else
+		VehicleSeatIndicator_SetUpVehicle(current)
 	end
 end
 
 function B:PositionVehicleFrame()
-	local VehicleSeatIndicator = _G.VehicleSeatIndicator
-	if not VehicleSeatIndicator.PositionVehicleFrameHooked then
-		hooksecurefunc(VehicleSeatIndicator, 'SetPoint', SetPosition)
+	local indicator = _G.VehicleSeatIndicator
+	if not indicator.PositionVehicleFrameHooked then
+		indicator:ClearAllPoints()
+		indicator:SetPoint('TOPRIGHT', nil, 'BOTTOMRIGHT', 0, 0) -- keep before the hooks
+
+		hooksecurefunc(indicator, 'SetPoint', SetPosition)
 		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
-		E:CreateMover(VehicleSeatIndicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
-		VehicleSeatIndicator.PositionVehicleFrameHooked = true
+
+		E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+		indicator.PositionVehicleFrameHooked = true
 	end
 
-	VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize)
+	indicator:Size(E.db.general.vehicleSeatIndicatorSize)
 
-	if VehicleSeatIndicator.currSkin then
-		VehicleSetUp(VehicleSeatIndicator.currSkin)
-	end
+	B:UpdateVehicleFrame(true)
 end

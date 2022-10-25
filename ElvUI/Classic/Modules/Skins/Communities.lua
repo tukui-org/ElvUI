@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, select, unpack = ipairs, select, unpack
+local next, unpack = next, unpack
+local ipairs, select = ipairs, select
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
@@ -192,8 +193,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(members)
-		for i = 1, members.ColumnDisplay:GetNumChildren() do
-			local child = select(i, members.ColumnDisplay:GetChildren())
+		for _, child in next, { members.ColumnDisplay:GetChildren() } do
 			if not child.IsSkinned then
 				child:StripTextures()
 				child:SetTemplate('Transparent')

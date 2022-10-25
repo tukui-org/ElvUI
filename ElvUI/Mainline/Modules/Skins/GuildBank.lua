@@ -5,10 +5,7 @@ local _G = _G
 local unpack = unpack
 
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
-local NUM_GUILDBANK_ICONS_PER_ROW = 10
-local NUM_GUILDBANK_ICON_ROWS = 9
 local NUM_GUILDBANK_COLUMNS = 7
-local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS
 
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
@@ -87,7 +84,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox:SetTemplate()
 
 	if not E:IsAddOnEnabled('ArkInventory') then
-		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, nil, nil, 'GuildBankPopup')
 	end
 end
 

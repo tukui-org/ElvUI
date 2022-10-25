@@ -420,11 +420,12 @@ local COLOR1 = format('|c%s', COLOR.colorStr)
 local COLOR2 = '|cFFFFFFFF'
 
 local FilterHelp = {
-	'*Whitelists:|r ^Personal, nonPersonal, Boss, CastByUnit, notCastByUnit, Dispellable (includes steal-able), CastByNPC, CastByPlayers|r',
-	'*Blacklists:|r ^blockNonPersonal, blockNoDuration, blockCastByPlayers | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r',
+	'*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r',
+	'*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r',
 	'^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.',
 	' ',
 	'*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r',
+	'*Mount:|r ^Auras which are classified as mounts.|r',
 	'*Personal:|r ^Auras cast by yourself.|r',
 	'*nonPersonal:|r ^Auras cast by anyone other than yourself.|r',
 	'*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r',

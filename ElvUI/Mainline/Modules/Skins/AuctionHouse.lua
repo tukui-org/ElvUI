@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, ipairs, select = pairs, ipairs, select
+local next, pairs, unpack = next, pairs, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
@@ -53,10 +53,8 @@ local function HandleListIcon(frame)
 end
 
 local function HandleSummaryIcons(frame)
-	for i = 1, 23 do
-		local child = select(i, frame.ScrollFrame.scrollChild:GetChildren())
-
-		if child and child.Icon then
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if child.Icon then
 			if not child.IsSkinned then
 				S:HandleIcon(child.Icon)
 
@@ -88,9 +86,8 @@ end
 
 local function HandleHeaders(frame)
 	local maxHeaders = frame.HeaderContainer:GetNumChildren()
-	for i = 1, maxHeaders do
-		local header = select(i, frame.HeaderContainer:GetChildren())
-		if header and not header.IsSkinned then
+	for i, header in next, { frame.HeaderContainer:GetChildren() } do
+		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 
 			if not header.backdrop then
@@ -125,7 +122,7 @@ local function HandleSellFrame(frame)
 	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
-	ItemButton:SetPushedTexture()
+	ItemButton:SetPushedTexture(E.ClearTexture)
 	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
@@ -161,7 +158,7 @@ local function HandleTokenSellFrame(frame)
 	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
-	ItemButton:SetPushedTexture()
+	ItemButton:SetPushedTexture(E.ClearTexture)
 	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
@@ -183,19 +180,20 @@ local function HandleSellList(frame, hasHeader, fitScrollBar)
 		HandleAuctionButtons(frame.RefreshFrame.RefreshButton)
 	end
 
-	S:HandleScrollBar(frame.ScrollFrame.scrollBar)
+	S:HandleTrimScrollBar(frame.ScrollBar)
 
 	if fitScrollBar then
-		frame.ScrollFrame.scrollBar:ClearAllPoints()
-		frame.ScrollFrame.scrollBar:Point('TOPLEFT', frame.ScrollFrame, 'TOPRIGHT', 1, -16)
-		frame.ScrollFrame.scrollBar:Point('BOTTOMLEFT', frame.ScrollFrame, 'BOTTOMRIGHT', 1, 16)
+		frame.ScrollBar:ClearAllPoints()
+		frame.ScrollBar:Point('TOPLEFT', frame, 'TOPRIGHT', 1, -16)
+		frame.ScrollBar:Point('BOTTOMLEFT', frame, 'BOTTOMRIGHT', 1, 16)
 	end
 
 	if hasHeader then
-		frame.ScrollFrame:SetTemplate('Transparent')
+		frame.ScrollBox:SetTemplate('Transparent')
+
 		hooksecurefunc(frame, 'RefreshScrollFrame', HandleHeaders)
 	else
-		hooksecurefunc(frame, 'RefreshListDisplay', HandleSummaryIcons)
+		hooksecurefunc(frame.ScrollBox, 'Update', HandleSummaryIcons)
 	end
 end
 
@@ -228,30 +226,15 @@ local function LoadSkin()
 
 	--[[ Categorie List ]]--
 	local Categories = Frame.CategoriesList
-	Categories.ScrollFrame:StripTextures()
-	Categories.Background:Hide()
-	Categories.NineSlice:Hide()
+	Categories:StripTextures()
 	Categories:SetTemplate('Transparent')
+	S:HandleTrimScrollBar(Categories.ScrollBar)
 
-	S:HandleScrollBar(_G.AuctionHouseFrameScrollBar)
-	_G.AuctionHouseFrameScrollBar:ClearAllPoints()
-	_G.AuctionHouseFrameScrollBar:Point('TOPRIGHT', Categories, -5, -22)
-	_G.AuctionHouseFrameScrollBar:Point('BOTTOMRIGHT', Categories, -5, 22)
-
-	for i = 1, _G.NUM_FILTERS_TO_DISPLAY do
-		local button = Categories.FilterButtons[i]
-
-		button:StripTextures(true)
-		button:StyleButton()
-
-		button.SelectedTexture:SetInside(button)
-	end
-
-	hooksecurefunc('AuctionFrameFilters_UpdateCategories', function(categoriesList, _)
-		for _, button in ipairs(categoriesList.FilterButtons) do
-			button.SelectedTexture:SetAtlas(nil)
-			button.SelectedTexture:SetColorTexture(0.7, 0.7, 0.7, 0.4)
-		end
+	hooksecurefunc('AuctionHouseFilterButton_SetUp', function(button)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		button.NormalTexture:SetAlpha(0)
+		button.SelectedTexture:SetColorTexture(r, g, b, .25)
+		button.HighlightTexture:SetColorTexture(1, 1, 1, .1)
 	end)
 
 	--[[ Browse Frame ]]--
@@ -260,12 +243,11 @@ local function LoadSkin()
 	local BrowseList = Browse.ItemList
 	BrowseList:StripTextures()
 	hooksecurefunc(BrowseList, 'RefreshScrollFrame', HandleHeaders)
-	BrowseList.ResultsText:SetParent(BrowseList.ScrollFrame)
-	S:HandleScrollBar(BrowseList.ScrollFrame.scrollBar)
-	BrowseList.ScrollFrame:SetTemplate('Transparent')
-	BrowseList.ScrollFrame.scrollBar:ClearAllPoints()
-	BrowseList.ScrollFrame.scrollBar:Point('TOPLEFT', BrowseList.ScrollFrame, 'TOPRIGHT', 1, -16)
-	BrowseList.ScrollFrame.scrollBar:Point('BOTTOMLEFT', BrowseList.ScrollFrame, 'BOTTOMRIGHT', 1, 16)
+	S:HandleTrimScrollBar(BrowseList.ScrollBar)
+	BrowseList:SetTemplate('Transparent')
+	BrowseList.ScrollBar:ClearAllPoints()
+	BrowseList.ScrollBar:Point('TOPLEFT', BrowseList, 'TOPRIGHT', 1, -16)
+	BrowseList.ScrollBar:Point('BOTTOMLEFT', BrowseList, 'BOTTOMRIGHT', 1, 16)
 
 	--[[ BuyOut Frame]]
 	local CommoditiesBuyFrame = Frame.CommoditiesBuyFrame
@@ -276,7 +258,7 @@ local function LoadSkin()
 	CommoditiesBuyList:StripTextures()
 	CommoditiesBuyList:SetTemplate('Transparent')
 	S:HandleButton(CommoditiesBuyList.RefreshFrame.RefreshButton)
-	S:HandleScrollBar(CommoditiesBuyList.ScrollFrame.scrollBar)
+	S:HandleTrimScrollBar(CommoditiesBuyList.ScrollBar)
 
 	local BuyDisplay = Frame.CommoditiesBuyFrame.BuyDisplay
 	S:HandleEditBox(BuyDisplay.QuantityInput.InputBox)
@@ -294,7 +276,7 @@ local function LoadSkin()
 	local ItemBuyList = ItemBuyFrame.ItemList
 	ItemBuyList:StripTextures()
 	ItemBuyList:SetTemplate('Transparent')
-	S:HandleScrollBar(ItemBuyList.ScrollFrame.scrollBar)
+	S:HandleTrimScrollBar(ItemBuyList.ScrollBar)
 	S:HandleButton(ItemBuyList.RefreshFrame.RefreshButton)
 	hooksecurefunc(ItemBuyList, 'RefreshScrollFrame', HandleHeaders)
 
@@ -305,7 +287,6 @@ local function LoadSkin()
 
 	for _, EditBox in pairs(EditBoxes) do
 		S:HandleEditBox(EditBox)
-		--EditBox:SetTextInsets(1, 1, -1, 1)
 	end
 
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
@@ -360,9 +341,9 @@ local function LoadSkin()
 	SummaryList:SetTemplate('Transparent')
 	S:HandleButton(AuctionsFrame.CancelAuctionButton)
 
-	SummaryList.ScrollFrame.scrollBar:ClearAllPoints()
-	SummaryList.ScrollFrame.scrollBar:Point('TOPRIGHT', SummaryList, -3, -20)
-	SummaryList.ScrollFrame.scrollBar:Point('BOTTOMRIGHT', SummaryList, -3, 20)
+	SummaryList.ScrollBar:ClearAllPoints()
+	SummaryList.ScrollBar:Point('TOPRIGHT', SummaryList, -3, -20)
+	SummaryList.ScrollBar:Point('BOTTOMRIGHT', SummaryList, -3, 20)
 
 	local AllAuctionsList = AuctionsFrame.AllAuctionsList
 	HandleSellList(AllAuctionsList, true, true)
@@ -401,7 +382,6 @@ local function LoadSkin()
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = Frame.WoWTokenResults.GameTimeTutorial
 	WowTokenGameTimeTutorial.NineSlice:Hide()
-	WowTokenGameTimeTutorial.TitleBg:SetAlpha(0)
 	WowTokenGameTimeTutorial:SetTemplate('Transparent')
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)
 	S:HandleButton(WowTokenGameTimeTutorial.RightDisplay.StoreButton)

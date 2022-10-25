@@ -113,12 +113,9 @@ function StickyFrames:AnchorFrame(frame)
 	frame:SetPoint("CENTER", parent, "CENTER", xo, yo)
 end
 
-
 --[[---------------------------------------------------------------------------------
   Internal Functions -- Do not call these.
 ------------------------------------------------------------------------------------]]
-
-
 
 --[[---------------------------------------------------------------------------------
   Returns an anonymous OnUpdate function for the frame in question.  Need
@@ -152,7 +149,6 @@ function StickyFrames:GetUpdateFunc(frame, frameList, xoffset, yoffset, left, to
 		end
 	end
 end
-
 
 --[[---------------------------------------------------------------------------------
   Internal debug function.

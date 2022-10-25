@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "trTR")
 
+L["Loadouts"] = true
+L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true
 L[" |cff00ff00bound to |r"] = true
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "CPU Monitorunu Aktiflestirmek icin Ctrl & Shift Click'e Basin'"
 L["(Hold Shift) Memory Usage"] = "RAM Monitorunu Aktiflestirmek Icin Shift'e Basili Tutun.'"

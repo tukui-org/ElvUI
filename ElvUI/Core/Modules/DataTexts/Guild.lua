@@ -164,7 +164,7 @@ local menuList = {
 }
 
 local function inviteClick(_, name, guid)
-	DT.EasyMenu:Hide()
+	E.EasyMenu:Hide()
 
 	if not (name and name ~= '') then return end
 
@@ -183,7 +183,7 @@ local function inviteClick(_, name, guid)
 end
 
 local function whisperClick(_, playerName)
-	DT.EasyMenu:Hide()
+	E.EasyMenu:Hide()
 	SetItemRef( 'player:'..playerName, format('|Hplayer:%1$s|h[%1$s]|h',playerName), 'LeftButton' )
 end
 
@@ -213,8 +213,8 @@ local function Click(self, btn)
 			end
 		end
 
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	elseif E.Retail then

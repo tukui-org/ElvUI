@@ -9,40 +9,14 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
-
---Tab Regions
-local tabs = {
-	'LeftDisabled',
-	'MiddleDisabled',
-	'RightDisabled',
-	'Left',
-	'Middle',
-	'Right',
-}
-
-local function SkinFriendRequest(frame)
-	if frame.isSkinned then return end
-	S:HandleButton(frame.DeclineButton, nil, true)
-	S:HandleButton(frame.AcceptButton)
-	frame.isSkinned = true
-end
-
-local function UpdateWhoSkins()
-	_G.WhoListScrollFrame:StripTextures()
-end
+local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 
 --Social Frame
 local function SkinSocialHeaderTab(tab)
 	if not tab then return end
-	for _, object in pairs(tabs) do
-		local tex = _G[tab:GetName()..object]
-		tex:SetTexture()
-	end
-
-	tab:GetHighlightTexture():SetTexture()
 
 	tab.backdrop = CreateFrame('Frame', nil, tab)
-	tab.backdrop:SetTemplate()
+	tab.backdrop:SetTemplate('Transparent')
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point('TOPLEFT', 3, -8)
 	tab.backdrop:Point('BOTTOMRIGHT', -6, 0)
@@ -68,11 +42,62 @@ local function RAFRewards()
 	end
 end
 
+local atlasToTex = {
+	['friendslist-invitebutton-horde-normal'] = [[Interface\FriendsFrame\PlusManz-Horde]],
+	['friendslist-invitebutton-alliance-normal'] = [[Interface\FriendsFrame\PlusManz-Alliance]],
+	['friendslist-invitebutton-default-normal'] = [[Interface\FriendsFrame\PlusManz-PlusManz]],
+}
+
+local function HandleInviteTex(self, atlas)
+	local tex = atlasToTex[atlas]
+	if tex then
+		self.ownerIcon:SetTexture(tex)
+	end
+end
+
+local function ReskinFriendButton(button)
+	if not button.IsSkinned then
+		local gameIcon = button.gameIcon
+		gameIcon:SetSize(22, 22)
+		gameIcon:SetTexCoord(.17, .83, .17, .83)
+		button.background:Hide()
+		button:SetHighlightTexture(E.media.normTex)
+		button:GetHighlightTexture():SetVertexColor(.24, .56, 1, .2)
+		gameIcon:CreateBackdrop('Transparent')
+		button.bg = gameIcon.backdrop
+
+		local travelPass = button.travelPassButton
+		travelPass:SetSize(22, 22)
+		travelPass:SetPoint('TOPRIGHT', -3, -6)
+		travelPass:CreateBackdrop()
+		travelPass.NormalTexture:SetAlpha(0)
+		travelPass.PushedTexture:SetAlpha(0)
+		travelPass.DisabledTexture:SetAlpha(0)
+		travelPass.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+		travelPass.HighlightTexture:SetAllPoints()
+		gameIcon:SetPoint('TOPRIGHT', travelPass, 'TOPLEFT', -4, 0)
+
+		local icon = travelPass:CreateTexture(nil, 'ARTWORK')
+		icon:SetTexCoord(.1, .9, .1, .9)
+		icon:SetAllPoints()
+		button.newIcon = icon
+		travelPass.NormalTexture.ownerIcon = icon
+		hooksecurefunc(travelPass.NormalTexture, 'SetAtlas', HandleInviteTex)
+
+		button.IsSkinned = true
+	end
+
+	button.bg:SetShown(button.gameIcon:IsShown())
+end
+
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
-	S:HandleScrollBar(_G.FriendsListFrameScrollFrame.scrollBar)
-	S:HandleScrollBar(_G.WhoListScrollFrame.scrollBar)
+	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.IgnoreListFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar)
 
 	local StripAllTextures = {
 		'FriendsTabHeaderTab1',
@@ -118,13 +143,8 @@ function S:FriendsFrame()
 	S:HandlePortraitFrame(FriendsFrame)
 
 	_G.FriendsFrameIcon:Hide()
-	_G.WhoFrameListInset:StripTextures()
-	_G.WhoFrameListInset.NineSlice:Hide()
-	_G.WhoFrameEditBoxInset:StripTextures()
-	_G.WhoFrameEditBoxInset.NineSlice:Hide()
 	_G.IgnoreListFrame:StripTextures()
 
-	S:HandleScrollBar(_G.IgnoreListFrameScrollFrame.scrollBar)
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
@@ -135,17 +155,17 @@ function S:FriendsFrame()
 	FriendsFrameBattlenetFrame:SetTemplate('Transparent')
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
-	local button = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
-	button:Point('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
-	button:Point('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
-	button:Size(FriendsFrameBattlenetFrame:GetSize())
-	button:SetTemplate()
-	button:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	local BattlenetFrame = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
+	BattlenetFrame:Point('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
+	BattlenetFrame:Point('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
+	BattlenetFrame:Size(FriendsFrameBattlenetFrame:GetSize())
+	BattlenetFrame:SetTemplate()
+	BattlenetFrame:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
+	BattlenetFrame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
-	button:SetScript('OnClick', function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
-	button:SetScript('OnEnter', BattleNetFrame_OnEnter)
-	button:SetScript('OnLeave', BattleNetFrame_OnLeave)
+	BattlenetFrame:SetScript('OnClick', function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
+	BattlenetFrame:SetScript('OnEnter', BattleNetFrame_OnEnter)
+	BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
@@ -181,19 +201,52 @@ function S:FriendsFrame()
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
 
-	--Pending invites
-	local PendingHeader = _G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton
-	S:HandleButton(PendingHeader)
-	if PendingHeader.backdrop then PendingHeader.backdrop:SetInside() end
-	hooksecurefunc(_G.FriendsListFrameScrollFrame.invitePool, 'Acquire', function()
-		for object in pairs(_G.FriendsListFrameScrollFrame.invitePool.activeObjects) do
-			SkinFriendRequest(object)
+	local INVITE_RESTRICTION_NONE = 9
+	hooksecurefunc('FriendsFrame_UpdateFriendButton', function(button)
+		if button.gameIcon then
+			ReskinFriendButton(button)
+		end
+
+		if button.newIcon and button.buttonType == _G.FRIENDS_BUTTON_TYPE_BNET then
+			if FriendsFrame_GetInviteRestriction(button.id) == INVITE_RESTRICTION_NONE then
+				button.newIcon:SetVertexColor(1, 1, 1)
+			else
+				button.newIcon:SetVertexColor(.5, .5, .5)
+			end
+		end
+	end)
+
+	hooksecurefunc('FriendsFrame_UpdateFriendInviteButton', function(button)
+		if not button.IsSkinned then
+			S:HandleButton(button.AcceptButton)
+			S:HandleButton(button.DeclineButton)
+
+			button.IsSkinned = true
+		end
+	end)
+
+	hooksecurefunc('FriendsFrame_UpdateFriendInviteHeaderButton', function(button)
+		if not button.IsSkinned then
+			button:DisableDrawLayer('BACKGROUND')
+			button:CreateBackdrop('Transparent')
+			button.backdrop:SetInside(button, 2, 2)
+			local hl = button:GetHighlightTexture()
+			hl:SetColorTexture(.24, .56, 1, .2)
+			hl:SetInside(button.backdrop)
+
+			button.IsSkinned = true
 		end
 	end)
 
 	--Who Frame
-	_G.WhoFrame:HookScript('OnShow', UpdateWhoSkins)
-	hooksecurefunc('FriendsFrame_OnEvent', UpdateWhoSkins)
+	_G.WhoFrameListInset:StripTextures()
+	_G.WhoFrameListInset.NineSlice:Hide()
+	_G.WhoFrameEditBoxInset:StripTextures()
+	_G.WhoFrameEditBoxInset.NineSlice:Hide()
+
+	_G.WhoFrameEditBox:CreateBackdrop('Transparent')
+	_G.WhoFrameEditBox.backdrop:SetPoint('TOPLEFT', _G.WhoFrameEditBoxInset)
+	_G.WhoFrameEditBox.backdrop:SetPoint('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
 
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
@@ -208,11 +261,17 @@ function S:FriendsFrame()
 
 	--Bottom Tabs
 	for i = 1, 4 do
-		S:HandleTab(_G['FriendsFrameTab'..i])
+		local tab = _G['FriendsFrameTab'..i]
+		if tab then
+			S:HandleTab(tab)
+		end
 	end
 
 	for i = 1, 3 do
-		SkinSocialHeaderTab(_G['FriendsTabHeaderTab'..i])
+		local tab = _G['FriendsTabHeaderTab'..i]
+		if tab then
+			SkinSocialHeaderTab(tab)
+		end
 	end
 
 	--View Friends BN Frame
@@ -223,19 +282,14 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown, 150)
 	S:HandleButton(FriendsFriendsFrame.SendRequestButton)
 	S:HandleButton(FriendsFriendsFrame.CloseButton)
-	S:HandleScrollBar(_G.FriendsFriendsScrollFrame.scrollBar)
 
 	--Quick join
 	local QuickJoinFrame = _G.QuickJoinFrame
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
-	S:HandleScrollBar(_G.QuickJoinScrollFrame.scrollBar)
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
 	QuickJoinFrame.JoinQueueButton:Size(131, 21) --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:Point('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
-	_G.QuickJoinScrollFrameTop:SetTexture()
-	_G.QuickJoinScrollFrameBottom:SetTexture()
-	_G.QuickJoinScrollFrameMiddle:SetTexture()
 	QuickJoinRoleSelectionFrame:StripTextures()
 	QuickJoinRoleSelectionFrame:SetTemplate('Transparent')
 	S:HandleButton(QuickJoinRoleSelectionFrame.AcceptButton)
@@ -245,20 +299,6 @@ function S:FriendsFrame()
 	S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonHealer.CheckButton)
 	S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonDPS.CheckButton)
 
-	-- GameIcons
-	for i = 1, _G.FRIENDS_TO_DISPLAY do
-		local btn = _G['FriendsListFrameScrollFrameButton'..i]
-		local icon = _G['FriendsListFrameScrollFrameButton'..i..'GameIcon']
-
-		icon:Size(22, 22)
-		icon:SetTexCoord(.15, .85, .15, .85)
-
-		icon:ClearAllPoints()
-		icon:Point('RIGHT', btn, 'RIGHT', -24, 0)
-		icon.SetPoint = E.noop
-	end
-
-	-- RecruitAFriend 8.2.5
 	local RAF = _G.RecruitAFriendFrame
 	S:HandleButton(RAF.RecruitmentButton)
 
@@ -292,7 +332,7 @@ function S:FriendsFrame()
 	RecruitList.Header:StripTextures()
 	RecruitList.ScrollFrameInset:StripTextures()
 	RecruitList.ScrollFrameInset:SetTemplate('Transparent')
-	S:HandleScrollBar(RecruitList.ScrollFrame.Slider)
+	S:HandleTrimScrollBar(RecruitList.ScrollBar)
 
 	-- Recruitment
 	local Recruitment = _G.RecruitAFriendRecruitmentFrame

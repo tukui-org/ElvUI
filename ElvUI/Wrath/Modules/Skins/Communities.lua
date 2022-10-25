@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local ipairs, select = ipairs, select
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
@@ -195,8 +196,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
-		for i = 1, s.ColumnDisplay:GetNumChildren() do
-			local child = select(i, s.ColumnDisplay:GetChildren())
+		for _, child in next, { s.ColumnDisplay:GetChildren() } do
 			child:StripTextures()
 			child:CreateBackdrop('Transparent')
 		end

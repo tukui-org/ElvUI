@@ -1,4 +1,4 @@
-local print, select, strmatch, strlower = print, select, strmatch, strlower
+local print, strmatch, strlower = print, strmatch, strlower
 local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
 
 local LoadAddOn = LoadAddOn
@@ -77,8 +77,7 @@ AddCommand('TEXLIST', '/texlist', function(arg)
 	local frame = _G[arg] or _G.FRAME
 	if not frame then return end
 
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
+	for _, region in next, { frame:GetRegions() } do
 		if region.IsObjectType and region:IsObjectType('Texture') then
 			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
 		end

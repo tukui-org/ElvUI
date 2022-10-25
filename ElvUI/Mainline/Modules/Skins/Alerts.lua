@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack, select = unpack, select
 
 local CreateFrame = CreateFrame
@@ -247,12 +248,9 @@ local function SkinScenarioAlert(frame)
 	end
 
 	-- Background
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
-		if region:IsObjectType('Texture') then
-			if region:GetAtlas() == 'Toast-IconBG' or region:GetAtlas() == 'Toast-Frame' then
-				region:Kill()
-			end
+	for _, region in next, { frame:GetRegions() } do
+		if region:IsObjectType('Texture') and (region:GetAtlas() == 'Toast-IconBG' or region:GetAtlas() == 'Toast-Frame') then
+			region:Kill()
 		end
 	end
 
@@ -310,8 +308,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 
 		--Background
 		if frame.GetNumRegions then
-			for i = 1, frame:GetNumRegions() do
-				local region = select(i, frame:GetRegions())
+			for _, region in next, { frame:GetRegions() } do
 				if region:IsObjectType('Texture') then
 					if region:GetAtlas() == 'Garr_MissionToast' then
 						region:Kill()

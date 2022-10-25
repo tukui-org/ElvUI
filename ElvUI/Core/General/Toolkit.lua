@@ -3,10 +3,11 @@ local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
-local pairs, pcall, strmatch = pairs, pcall, strmatch
-local unpack, type, select, getmetatable = unpack, type, select, getmetatable
-local EnumerateFrames = EnumerateFrames
+local pairs, pcall, unpack, type, next = pairs, pcall, unpack, type, next
 local hooksecurefunc = hooksecurefunc
+local getmetatable = getmetatable
+
+local EnumerateFrames = EnumerateFrames
 local CreateFrame = CreateFrame
 
 local backdropr, backdropg, backdropb, backdropa = 0, 0, 0, 1
@@ -334,8 +335,7 @@ local function StripType(which, object, kill, zero)
 		end
 
 		if object.GetNumRegions then
-			for i = 1, object:GetNumRegions() do
-				local region = select(i, object:GetRegions())
+			for _, region in next, { object:GetRegions() } do
 				if region and region.IsObjectType and region:IsObjectType(which) then
 					StripRegion(which, region, kill, zero)
 				end
@@ -357,16 +357,23 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs.font, fs.fontSize, fs.fontStyle = font, size, style
 	end
 
-	local outline = style or E.db.general.fontStyle
-	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, outline)
-
-	if outline == 'NONE' then
+	-- shadow mode when using ''
+	if style == '' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
 		fs:SetShadowOffset(0, 0)
 		fs:SetShadowColor(0, 0, 0, 0)
 	end
+
+	-- convert because of bad values between versions
+	if style == 'NONE' and E.Retail then
+		style = ''
+	elseif style == '' and not E.Retail then
+		style = 'NONE'
+	end
+
+	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle)
 
 	E.texts[fs] = true
 end
@@ -432,20 +439,6 @@ do
 	end
 end
 
-local function GetTextureOrFallback(t) return (not t or (type(t) == 'string' and strmatch(t, '^%s+$'))) and E.Media.Textures.Invisible or t end
-local function SetNormalTexture(frame, texture) frame:_SetNormalTexture(GetTextureOrFallback(texture)) end
-local function SetDisabledTexture(frame, texture) frame:_SetDisabledTexture(GetTextureOrFallback(texture)) end
-local function SetCheckedTexture(frame, texture) frame:_SetCheckedTexture(GetTextureOrFallback(texture)) end
-local function SetPushedTexture(frame, texture) frame:_SetPushedTexture(GetTextureOrFallback(texture)) end
-local function SetHighlightTexture(frame, texture) frame:_SetHighlightTexture(GetTextureOrFallback(texture)) end
-local function CheckTextureAPI(meta, api, key)
-	local orig, func = '_'..key, meta[key]
-	if meta[orig] ~= func then
-		meta[orig] = func -- keep a copy of the original
-		meta[key] = api -- use our neew one
-	end
-end
-
 local function GetNamedChild(frame, childName, index)
 	local name = frame and frame.GetName and frame:GetName()
 	if not name or not childName then return nil end
@@ -454,14 +447,6 @@ end
 
 local function addapi(object)
 	local mk = getmetatable(object).__index
-
-	if not object._SetNormalTexture then -- bullshit WoW10
-		CheckTextureAPI(mk, SetNormalTexture, 'SetNormalTexture')
-		CheckTextureAPI(mk, SetPushedTexture, 'SetPushedTexture')
-		CheckTextureAPI(mk, SetCheckedTexture, 'SetCheckedTexture')
-		CheckTextureAPI(mk, SetDisabledTexture, 'SetDisabledTexture')
-		CheckTextureAPI(mk, SetHighlightTexture, 'SetHighlightTexture')
-	end
 
 	if not object.Size then mk.Size = Size end
 	if not object.Point then mk.Point = Point end
@@ -479,6 +464,7 @@ local function addapi(object)
 	if not object.StyleButton then mk.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mk.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mk.GetNamedChild = GetNamedChild end
+
 	if not object.DisabledPixelSnap and (mk.SetSnapToPixelGrid or mk.SetStatusBarTexture or mk.SetColorTexture or mk.SetVertexColor or mk.CreateTexture or mk.SetTexCoord or mk.SetTexture) then
 		if mk.SetSnapToPixelGrid then hooksecurefunc(mk, 'SetSnapToPixelGrid', WatchPixelSnap) end
 		if mk.SetStatusBarTexture then hooksecurefunc(mk, 'SetStatusBarTexture', DisablePixelSnap) end

@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack, strfind = unpack, strfind
-local ipairs, pairs, select = ipairs, pairs, select
+local ipairs, pairs = ipairs, pairs
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -135,9 +136,8 @@ local function UpdateCurrencySkins()
 					button.backdrop:Hide()
 
 					-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
-					for x = 1, button:GetNumRegions() do
-						local region = select(x, button:GetRegions())
-						if region and region:IsObjectType('FontString') and region:GetText() then
+					for _, region in next, { button:GetRegions() } do
+						if region:IsObjectType('FontString') and region:GetText() then
 							region:ClearAllPoints()
 							region:Point('LEFT', 25, 0)
 						end
@@ -467,7 +467,7 @@ function S:CharacterFrame()
 		background:SetTexture(nil)
 
 		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture()
+		label:SetHighlightTexture(E.ClearTexture)
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)
@@ -552,9 +552,8 @@ function S:CharacterFrame()
 	_G.TokenFrameCancelButton:Kill()
 	_G.TokenFrameMoneyFrame:Kill()
 
-	for i = 1, _G.TokenFrame:GetNumChildren() do
-		local child = select(i, _G.TokenFrame:GetChildren())
-		if child and not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
+	for _, child in next, { _G.TokenFrame:GetChildren() } do
+		if not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
 			child:Hide()
 			break
 		end

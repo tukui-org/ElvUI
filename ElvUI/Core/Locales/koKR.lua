@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
 
+L["Loadouts"] = true
+L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true
 L[" |cff00ff00bound to |r"] = " |cff00ff00키로 다음의 행동을 실행합니다 |r"
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = true
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"

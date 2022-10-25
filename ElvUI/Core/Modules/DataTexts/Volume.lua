@@ -131,7 +131,7 @@ function OnEvent(self, event, arg1)
 	panel = self
 
 	local force = event == 'ELVUI_FORCE_UPDATE'
-	if force or (event == 'CVAR_UPDATE' and (E.WoW10 and Sound_CVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
+	if force or (event == 'CVAR_UPDATE' and (E.Retail and Sound_CVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
 		if force then
 			self:EnableMouseWheel(true)
 			self:SetScript('OnMouseWheel', onMouseWheel)
@@ -148,13 +148,13 @@ local function OnClick(self, button)
 			return
 		end
 
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menu, DT.EasyMenu, nil, nil, nil, 'MENU')
+		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif button == 'MiddleButton' then
 		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1, 'ELVUI_VOLUME')
 	elseif button == 'RightButton' then
-		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, DT.EasyMenu, nil, nil, nil, 'MENU')
+		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 
