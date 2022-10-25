@@ -183,7 +183,7 @@ function AB:BindUpdate(button, spellmacro)
 	elseif spellmacro == 'MACRO' then
 		button.id = button.selectionIndex or button:GetID()
 
-		if _G.MacroFrame.selectedTab == 2 then -- WoW10 check on retail
+		if _G.MacroFrame.selectedTab == 2 then
 			button.id = button.id + MAX_ACCOUNT_MACROS
 		end
 

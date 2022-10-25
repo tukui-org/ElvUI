@@ -272,7 +272,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		end
 	end
 
-	-- WoW10 new MajorFaction Rewards thing
+	-- MajorFaction Rewards thing
 	for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do
 		HandleReward(spellIcon)
 	end

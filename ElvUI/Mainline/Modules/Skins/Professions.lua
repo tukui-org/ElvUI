@@ -19,7 +19,7 @@ local function ReskinQualityContainer(container)
 	button:SetPushedTexture(E.ClearTexture)
 	button:SetHighlightTexture(E.ClearTexture)
 	S:HandleIcon(button.Icon, true)
-	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop) -- ToDO: WoW10
+	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
 	HandleInputBox(container.EditBox)
 end
 
@@ -83,7 +83,7 @@ function S:Blizzard_Professions()
 		if button then
 			button:StripTextures()
 			S:HandleIcon(button.icon, true)
-			S:HandleIconBorder(button.IconBorder, button.icon.backdrop) -- ToDO: WoW10 Fix Icon Border
+			S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 			button:SetNormalTexture(E.ClearTexture)
 			button:SetPushedTexture(E.ClearTexture)
 		end

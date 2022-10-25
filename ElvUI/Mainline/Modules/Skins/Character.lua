@@ -49,13 +49,13 @@ local function ColorizeStatPane(frame)
 	frame.leftGrad:Size(80, frame:GetHeight())
 	frame.leftGrad:Point('LEFT', frame, 'CENTER')
 	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo) -- ToDo: WoW10
+	frame.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo)
 
 	frame.rightGrad = frame:CreateTexture(nil, 'BORDER')
 	frame.rightGrad:Size(80, frame:GetHeight())
 	frame.rightGrad:Point('RIGHT', frame, 'CENTER')
 	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom) -- ToDo: WoW10
+	frame.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom)
 end
 
 local function StatsPane(which)
@@ -348,8 +348,7 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	--S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
-	S:HandleButton(_G.ReputationDetailViewRenownButton) --WoW10
+	S:HandleButton(_G.ReputationDetailViewRenownButton)
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 

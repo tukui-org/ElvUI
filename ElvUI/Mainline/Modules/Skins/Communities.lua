@@ -149,7 +149,7 @@ function S:Blizzard_Communities()
 				child.backdrop:Point('TOPLEFT', 5, -5)
 				child.backdrop:Point('BOTTOMRIGHT', -10, 5)
 
-				child:SetHighlightTexture('') -- ToDO: WoW10
+				child:SetHighlightTexture(E.ClearTexture)
 				child.IconRing:SetAlpha(0)
 				child.Background:Hide()
 				child.Selection:Hide()
@@ -176,7 +176,7 @@ function S:Blizzard_Communities()
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
-	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton) -- ToDo: WoW10
+	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
 
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 

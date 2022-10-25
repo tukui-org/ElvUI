@@ -129,7 +129,7 @@ function DB:ReputationBar_OnEnter()
 		local friendID, friendTextLevel, _
 		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
-		local isMajorFaction = E.WoW10 and factionID and C_Reputation_IsMajorFaction(factionID)
+		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
 		if not isMajorFaction then
 			GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 		end
@@ -160,7 +160,7 @@ function DB:ReputationBar_Toggle()
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		DB:RegisterEvent('QUEST_FINISHED', 'ReputationBar_Update')
-		if E.WoW10 then
+		if E.Retail then
 			DB:RegisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:RegisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
 		end
@@ -171,7 +171,7 @@ function DB:ReputationBar_Toggle()
 		DB:UnregisterEvent('UPDATE_FACTION')
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
 		DB:UnregisterEvent('QUEST_FINISHED')
-		if E.WoW10 then
+		if E.Retail then
 			DB:UnregisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:UnregisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
 		end

@@ -170,8 +170,6 @@ V.skins = {
 		voidstorage = true,
 		weeklyRewards = true,
 		worldmap = true,
-
-		--WoW10
 		expansionLanding = true,
 		majorFactions = true,
 		genericTrait = true,

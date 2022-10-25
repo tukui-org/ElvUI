@@ -1293,7 +1293,7 @@ function AB:SetupFlyoutButton(button)
 	end
 
 	if E.Retail then
-		_G.SpellFlyout.Background:Hide() -- ToDO: WoW10
+		_G.SpellFlyout.Background:Hide()
 	end
 end
 
