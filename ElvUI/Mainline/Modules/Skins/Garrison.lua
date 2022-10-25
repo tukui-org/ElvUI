@@ -318,6 +318,9 @@ function S:Blizzard_GarrisonUI()
 	_G.GarrisonLandingPageTab1:Point('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
 
 	if E.private.skins.parchmentRemoverEnable then
+		GarrisonLandingPage:StripTextures()
+		GarrisonLandingPage:SetTemplate('Transparent') -- Need to do it again
+
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
 			tab:SetHighlightTexture(E.ClearTexture)
 			tab.Text:ClearAllPoints()
