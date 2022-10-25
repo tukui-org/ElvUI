@@ -384,6 +384,7 @@ do --this can save some main file locals
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
 		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
+		z['Luckyevoker-LaughingSkull']	= ElvBlue -- Evoker
 		-- Repooc
 		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
 		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
