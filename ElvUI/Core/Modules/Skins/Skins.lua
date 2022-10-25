@@ -395,6 +395,12 @@ do
 		end
 	end
 
+	local function iconBorderSetShown(border, show)
+		if not show then
+			iconBorderHide(border)
+		end
+	end
+
 	function S:HandleIconBorder(border, backdrop, customFunc)
 		if not backdrop then
 			local parent = border:GetParent()
@@ -407,6 +413,7 @@ do
 			border:StripTextures()
 
 			hooksecurefunc(border, 'SetVertexColor', iconBorderColor)
+			hooksecurefunc(border, 'SetShown', iconBorderSetShown)
 			hooksecurefunc(border, 'Hide', iconBorderHide)
 
 			border.IconBorderHooked = true
