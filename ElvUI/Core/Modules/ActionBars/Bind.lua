@@ -228,7 +228,7 @@ function AB:BindUpdate(button, spellmacro)
 	end
 
 	if button.bindstring then
-		button.bindings = {GetBindingKey(button.bindstring)}
+		button.bindings = { GetBindingKey(button.bindstring) }
 		AB:BindTooltip(triggerTooltip)
 	end
 end
