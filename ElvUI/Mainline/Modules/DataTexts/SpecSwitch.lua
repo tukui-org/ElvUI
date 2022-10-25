@@ -128,15 +128,11 @@ local function OnClick(self, button)
 	if not specIndex then return end
 
 	if button == 'LeftButton' then
-		if not _G.PlayerTalentFrame then
-			_G.LoadAddOn('Blizzard_TalentUI')
+		if not _G.ClassTalentFrame then
+			_G.LoadAddOn('Blizzard_ClassTalentUI')
 		end
 		if IsShiftKeyDown() then
-			if not _G.PlayerTalentFrame:IsShown() then
-				ShowUIPanel(_G.PlayerTalentFrame)
-			else
-				HideUIPanel(_G.PlayerTalentFrame)
-			end
+			_G.ToggleTalentFrame()
 		else
 			E:SetEasyMenuAnchor(E.EasyMenu, self)
 			_G.EasyMenu(specList, E.EasyMenu, nil, nil, nil, 'MENU')
