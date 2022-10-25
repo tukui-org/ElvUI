@@ -31,11 +31,12 @@ local GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
 local UpdateLastSelectedSavedConfigID = C_ClassTalents.UpdateLastSelectedSavedConfigID
 
 local LOOT = LOOT
+local UNKNOWN = UNKNOWN
 local PVP_TALENTS = PVP_TALENTS
 local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
-local STARTER_BUILD_TRAIT_CONFIG_ID = Constants.TraitConsts.STARTER_BUILD_TRAIT_CONFIG_ID
+local STARTER_ID = Constants.TraitConsts.STARTER_BUILD_TRAIT_CONFIG_ID
 
 local displayString, lastPanel, active = ''
 local activeString = strjoin('', '|cff00FF00' , _G.ACTIVE_PETS, '|r')
@@ -49,39 +50,46 @@ local menuList = {
 local specList = { { text = _G.SPECIALIZATION, isTitle = true, notCheckable = true } }
 local loadoutList = { { text = L["Loadouts"], isTitle = true, notCheckable = true } }
 
-local STARTER_TEXT = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, nil, TALENT_FRAME_DROP_DOWN_STARTER_BUILD)
+local STARTER_TEXT = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, nil, _G.TALENT_FRAME_DROP_DOWN_STARTER_BUILD)
 
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
-local savedConfigID
-local changingLoadout = false
+local changingID, savedID = false
 
 local function starter_checked()
 	return GetStarterBuildActive()
 end
 local function starter_func(_, arg1)
-	savedConfigID = GetLastSelectedSavedConfigID(arg1)
+	changingID, savedID = true, GetLastSelectedSavedConfigID(arg1)
+
 	SetStarterBuildActive(true)
-	UpdateLastSelectedSavedConfigID(arg1, STARTER_BUILD_TRAIT_CONFIG_ID)
-	changingLoadout = true
+	UpdateLastSelectedSavedConfigID(arg1, STARTER_ID)
 end
 
 local function loadout_checked(data)
 	return data and data.arg1 and data.arg2 == GetLastSelectedSavedConfigID(data.arg1)
 end
 local function loadout_func(_, arg1, arg2)
-	savedConfigID = GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or GetLastSelectedSavedConfigID(arg1)
+	local lastID = GetLastSelectedSavedConfigID(arg1)
+
+	changingID, savedID = true, GetStarterBuildActive() and STARTER_ID or lastID
+
 	LoadConfig(arg2, true)
 
-	if GetLastSelectedSavedConfigID(arg1) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
+	if lastID ~= STARTER_ID then
 		SetStarterBuildActive(false)
 	end
 
 	UpdateLastSelectedSavedConfigID(arg1, arg2)
-	changingLoadout = true
 end
+
+local function menu_checked(_, arg1) return GetLootSpecialization() == arg1 end
+local function menu_func(_, arg1) SetLootSpecialization(arg1) end
+
+local function spec_checked(_, arg1) return GetSpecialization() == arg1 end
+local function spec_func(_, arg1) SetSpecialization(arg1) end
 
 local function OnEvent(self, event)
 	lastPanel = self
@@ -90,8 +98,8 @@ local function OnEvent(self, event)
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
 			if id then
-				menuList[index + 2] = { text = name, checked = function() return GetLootSpecialization() == id end, func = function() SetLootSpecialization(id) end }
-				specList[index + 1] = { text = format(specText, icon, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
+				menuList[index + 2] = { arg1 = id, text = name, checked = menu_checked, func = menu_func }
+				specList[index + 1] = { arg1 = index, text = format(specText, icon, name), checked = spec_checked, func = spec_func }
 			end
 		end
 	end
@@ -99,48 +107,46 @@ local function OnEvent(self, event)
 	local specIndex = GetSpecialization()
 	local specialization = GetLootSpecialization()
 	local info = DT.SPECIALIZATION_CACHE[specIndex]
+	local ID = info and info.id
 
-	if not info then
+	if not ID then
 		self.text:SetText('N/A')
 		return
 	end
 
 	local failed = event == 'CONFIG_COMMIT_FAILED'
-	if failed or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' then
-		if failed and changingLoadout and savedConfigID then
-			if savedConfigID == STARTER_BUILD_TRAIT_CONFIG_ID then
+	if failed or (event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE') then
+		if failed and changingID and savedID then
+			if savedID == STARTER_ID then
 				SetStarterBuildActive(true)
 			else
-				LoadConfig(savedConfigID, true)
+				LoadConfig(savedID, true)
 			end
 
-			UpdateLastSelectedSavedConfigID(info.id, savedConfigID)
+			UpdateLastSelectedSavedConfigID(ID, savedID)
 		end
 
-		local builds = GetConfigIDsBySpecID(info.id)
-		if builds and GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
-			tinsert(builds, STARTER_BUILD_TRAIT_CONFIG_ID)
+		local builds = GetConfigIDsBySpecID(ID)
+		if builds and not builds[STARTER_ID] and GetHasStarterBuild() then
+			tinsert(builds, STARTER_ID)
 		end
 
 		for index, configID in next, builds do
-			if configID == STARTER_BUILD_TRAIT_CONFIG_ID then
-				loadoutList[index + 1] = { text = STARTER_TEXT, checked = starter_checked, func = starter_func, arg1 = info.id }
+			if configID == STARTER_ID then
+				loadoutList[index + 1] = { text = STARTER_TEXT, checked = starter_checked, func = starter_func, arg1 = ID }
 			else
 				local configInfo = C_Traits_GetConfigInfo(configID)
-				if configInfo then
-					loadoutList[index + 1] = { text = configInfo.name, checked = loadout_checked, func = loadout_func, arg1 = info.id, arg2 = configID }
-				end
+				loadoutList[index + 1] = { text = configInfo and configInfo.name or UNKNOWN, checked = loadout_checked, func = loadout_func, arg1 = ID, arg2 = configID }
 			end
 		end
 
-		savedConfigID = GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or GetLastSelectedSavedConfigID(info.id)
-		changingLoadout = false
+		changingID, savedID = true, GetStarterBuildActive() and STARTER_ID or GetLastSelectedSavedConfigID(ID)
 	end
 
 	active = specIndex
 
 	local spec = format(mainIcon, info.icon)
-	if specialization == 0 or info.id == specialization then
+	if specialization == 0 or ID == specialization then
 		self.text:SetFormattedText('%s %s', spec, info.name)
 	else
 		info = DT.SPECIALIZATION_CACHE[specialization]
