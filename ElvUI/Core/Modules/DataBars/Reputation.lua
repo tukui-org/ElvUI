@@ -160,10 +160,12 @@ function DB:ReputationBar_Toggle()
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		DB:RegisterEvent('QUEST_FINISHED', 'ReputationBar_Update')
+
 		if E.Retail then
 			DB:RegisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:RegisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
 		end
+
 		DB:ReputationBar_Update()
 	else
 		E:DisableMover(bar.holder.mover.name)
@@ -171,6 +173,7 @@ function DB:ReputationBar_Toggle()
 		DB:UnregisterEvent('UPDATE_FACTION')
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
 		DB:UnregisterEvent('QUEST_FINISHED')
+
 		if E.Retail then
 			DB:UnregisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:UnregisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
