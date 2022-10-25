@@ -16,13 +16,22 @@ local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
-local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+local TALENT_FRAME_DROP_DOWN_STARTER_BUILD = TALENT_FRAME_DROP_DOWN_STARTER_BUILD
+local STARTER_BUILD_TRAIT_CONFIG_ID = Constants.TraitConsts.STARTER_BUILD_TRAIT_CONFIG_ID
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
+local C_ClassTalents_GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
+local C_ClassTalents_GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
+local C_ClassTalents_GetHasStarterBuild = C_ClassTalents.GetHasStarterBuild
+local C_ClassTalents_GetStarterBuildActive = C_ClassTalents.GetStarterBuildActive
+local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
+local C_ClassTalents_LoadConfig = C_ClassTalents.LoadConfig
+local C_ClassTalents_UpdateLastSelectedSavedConfigID = C_ClassTalents.UpdateLastSelectedSavedConfigID
+local C_ClassTalents_SetStarterBuildActive = C_ClassTalents.SetStarterBuildActive
 
-local displayString, lastPanel, active = ''
+local displayString, lastPanel, active, activeLoadout = '' -- todo show active loadout in datatext
 local activeString = strjoin('', '|cff00FF00' , _G.ACTIVE_PETS, '|r')
 local inactiveString = strjoin('', '|cffFF0000', _G.FACTION_INACTIVE, '|r')
 local menuList = {
@@ -34,8 +43,12 @@ local specList = {
 	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
 }
 
+local loadoutList = {
+	{ text = L["Loadouts"], isTitle = true, notCheckable = true },
+}
+
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
-local function OnEvent(self)
+local function OnEvent(self, event)
 	lastPanel = self
 
 	if #menuList == 2 then
@@ -55,6 +68,45 @@ local function OnEvent(self)
 	if not info then
 		self.text:SetText('N/A')
 		return
+	end
+
+	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' then
+		local builds = C_ClassTalents_GetConfigIDsBySpecID(info.id)
+
+		if C_ClassTalents_GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
+			tinsert(builds, STARTER_BUILD_TRAIT_CONFIG_ID)
+		end
+
+		-- todo refactor funcs?
+		for index, configID in next, builds do
+			if configID == STARTER_BUILD_TRAIT_CONFIG_ID then
+				loadoutList[index + 1] = {
+					text = BLUE_FONT_COLOR:WrapTextInColorCode(TALENT_FRAME_DROP_DOWN_STARTER_BUILD),
+					checked = function()
+						return C_ClassTalents_GetStarterBuildActive()
+					end,
+					func = function()
+						C_ClassTalents_SetStarterBuildActive(true)
+						C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, STARTER_BUILD_TRAIT_CONFIG_ID)
+					end
+				}
+			else
+				local configInfo = C_Traits_GetConfigInfo(configID)
+				loadoutList[index + 1] = {
+					text = configInfo.name,
+					checked = function()
+						return configID == C_ClassTalents_GetLastSelectedSavedConfigID(info.id)
+					end,
+					func = function()
+						C_ClassTalents_LoadConfig(configID, true)
+						if C_ClassTalents_GetLastSelectedSavedConfigID(info.id) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
+							C_ClassTalents_SetStarterBuildActive(false)
+						end
+						C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, configID)
+					end
+				}
+			end
+		end
 	end
 
 	active = specIndex
@@ -91,14 +143,12 @@ local function OnEnter()
 	end
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(TALENTS, 0.69, 0.31, 0.31)
+	DT.tooltip:AddLine(L["Loadouts"], 0.69, 0.31, 0.31)
 
-	for i = 1, _G.MAX_TALENT_TIERS do
-		for j = 1, 3 do
-			local _, name, icon, selected = GetTalentInfo(i, j, 1)
-			if selected then
-				DT.tooltip:AddLine(AddTexture(icon)..' '..name)
-			end
+	if #loadoutList > 1 then
+		for index = 2, #loadoutList do
+			local loadout = loadoutList[index]
+			DT.tooltip:AddLine(strjoin(' - ', loadout.text, (loadout.checked() and activeString or inactiveString)), 1, 1, 1)
 		end
 	end
 
@@ -118,6 +168,7 @@ local function OnEnter()
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	DT.tooltip:AddLine(L["|cffFFFFFFControl + Left Click:|r Change Loadout"])
 	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 	DT.tooltip:Show()
@@ -132,7 +183,14 @@ local function OnClick(self, button)
 			_G.LoadAddOn('Blizzard_ClassTalentUI')
 		end
 		if IsShiftKeyDown() then
-			_G.ToggleTalentFrame()
+			if not _G.ClassTalentFrame:IsShown() then
+				ShowUIPanel(_G.ClassTalentFrame)
+			else
+				HideUIPanel(_G.ClassTalentFrame)
+			end
+		elseif IsControlKeyDown() then
+			E:SetEasyMenuAnchor(E.EasyMenu, self)
+			_G.EasyMenu(loadoutList, E.EasyMenu, nil, nil, nil, 'MENU')
 		else
 			E:SetEasyMenuAnchor(E.EasyMenu, self)
 			_G.EasyMenu(specList, E.EasyMenu, nil, nil, nil, 'MENU')
@@ -153,4 +211,4 @@ local function ValueColorUpdate()
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_UPDATED', 'TRAIT_CONFIG_DELETED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
