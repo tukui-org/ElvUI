@@ -435,7 +435,8 @@ function B:UpdateItemDisplay()
 				if B.db.itemLevelCustomColorEnable then
 					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
 				else
-					slot.itemLevel:SetTextColor(B:GetItemQualityColor(slot.rarity))
+					local r, g, b = B:GetItemQualityColor(slot.rarity)
+					slot.itemLevel:SetTextColor(r, g, b)
 				end
 
 				slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
