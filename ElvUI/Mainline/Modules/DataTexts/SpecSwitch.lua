@@ -72,13 +72,11 @@ local function loadout_checked(data)
 	return data and data.arg1 and data.arg2 == GetLastSelectedSavedConfigID(data.arg1)
 end
 local function loadout_func(_, arg1, arg2)
-	local lastID = GetLastSelectedSavedConfigID(arg1)
-
-	changingID, savedID = true, GetStarterBuildActive() and STARTER_ID or lastID
+	changingID, savedID = true, GetStarterBuildActive() and STARTER_ID or GetLastSelectedSavedConfigID(arg1)
 
 	LoadConfig(arg2, true)
 
-	if lastID ~= STARTER_ID then
+	if GetLastSelectedSavedConfigID(arg1) ~= STARTER_ID then -- saved needs to be recalled here
 		SetStarterBuildActive(false)
 	end
 
