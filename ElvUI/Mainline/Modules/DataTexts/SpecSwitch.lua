@@ -113,7 +113,7 @@ local function OnEvent(self, event)
 	end
 
 	local failed = event == 'CONFIG_COMMIT_FAILED'
-	if failed or (event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE') then
+	if failed or (event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED') then
 		if failed and changingID and savedID then
 			if savedID == STARTER_ID then
 				SetStarterBuildActive(true)
