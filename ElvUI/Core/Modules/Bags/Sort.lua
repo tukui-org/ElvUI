@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local Search = E.Libs.ItemSearch
 
+local _G = _G
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
 local strmatch, gmatch, strfind = strmatch, gmatch, strfind
 local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
