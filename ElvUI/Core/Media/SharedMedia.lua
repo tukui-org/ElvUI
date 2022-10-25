@@ -111,7 +111,7 @@ end
 
 -- nameplate target arrows
 AddMedia('arrow', 'ArrowRed')
-for i = 0, 72 do
+for i = 0, 73 do
 	AddMedia('arrow', 'Arrow'..i)
 end
 

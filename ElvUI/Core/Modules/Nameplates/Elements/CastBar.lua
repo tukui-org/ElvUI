@@ -93,12 +93,12 @@ function NP:Castbar_PostCastStart(unit)
 		local frameType = plate.frameType
 		if frameType == 'PLAYER' then
 			if self.curTarget then
-				self.Text:SetText(self.spellName..' > '..self.curTarget)
+				self.Text:SetText(self.spellName..' ('..self.curTarget..')')
 			end
 		elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
 			local target = self.curTarget or UnitName(unit..'target')
 			if target and target ~= '' and target ~= plate.unitName then
-				self.Text:SetText(self.spellName..' > '..target)
+				self.Text:SetText(self.spellName..' ('..target..')')
 			end
 		end
 	end

@@ -170,7 +170,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			elseif point == 'BOTTOMLEFT' or point == 'LEFT' then
 				tt:Point('BOTTOMLEFT', TooltipMover, 'TOPLEFT', 1, 18)
 			else
-				tt:Point('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', -1, 18)
+				tt:Point('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', 0, 0)
 			end
 		end
 	end

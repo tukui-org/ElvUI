@@ -237,6 +237,7 @@ local function Update(self, event, arg1)
 					element.Item:SetTexture(quest.itemTexture)
 				end
 			end
+			icon.Text:SetText('')
 		end
 	end
 
@@ -262,8 +263,10 @@ local function Enable(self)
 		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
 			element.Default:SetAtlas('SmallQuestBang')
 		end
-		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
-			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
+		if element.Skull:IsObjectType('Texture') and not element.Skull:GetAtlas() then
+		-- if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
+			element.Skull:SetAtlas('QuestLegendary')
+			-- element.Skull:SetTexture(646980)
 		end
 		if element.Chat:IsObjectType('StatusBar') and not element.Chat:GetTexture() then
 			element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])

@@ -45,7 +45,7 @@ function S:TooltipFrames()
 	S:HandleIcon(ItemTT.Icon, true)
 	S:HandleIconBorder(ItemTT.IconBorder, ItemTT.Icon.backdrop)
 	ItemTT.Count:ClearAllPoints()
-	ItemTT.Count:Point('BOTTOMRIGHT', ItemTT.Icon, 'BOTTOMRIGHT', 1, 0)
+	ItemTT.Count:Point('BOTTOMRIGHT', ItemTT.Icon, 'BOTTOMRIGHT', 0, 0)
 
 	-- EmbeddedItemTooltip (also Paragon Reputation)
 	local EmbeddedTT = _G.EmbeddedItemTooltip.ItemTooltip
