@@ -48,7 +48,7 @@ end
 local function AddCurrencyNameToIndex(name)
 	for index = 1, GetCurrencyListSize() do
 		local info = DT:CurrencyListInfo(index)
-		if info and info.name == name then
+		if info.name == name then
 			CurrencyListNameToIndex[name] = index
 			break
 		end
