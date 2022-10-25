@@ -1854,8 +1854,9 @@ end
 function E:ConvertActionBarKeybinds()
 	for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
 		for i = 1, 12 do
-			for _, key in next, { GetBindingKey(format('%s%d', oldKeybind, i)) } do
-				SetBinding(key, format('%s%d', newKeybind, i))
+			local old, new = format('%s%d', oldKeybind, i), format('%s%d', newKeybind, i)
+			for _, key in next, { GetBindingKey(old) } do
+				SetBinding(key, new)
 			end
 		end
 	end
