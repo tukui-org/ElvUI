@@ -64,6 +64,7 @@ local function starter_func(_, arg1)
 	savedConfigID = C_ClassTalents_GetLastSelectedSavedConfigID(arg1)
 	C_ClassTalents_SetStarterBuildActive(true)
 	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, STARTER_BUILD_TRAIT_CONFIG_ID)
+	changingLoadout = true
 end
 
 local function loadout_checked(data)
