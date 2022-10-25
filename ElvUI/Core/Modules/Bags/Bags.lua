@@ -2296,12 +2296,10 @@ if C_Container then
 				framesInColumn = framesInColumn + 1
 				frameHeight = frame:GetHeight(true)
 				if freeScreenHeight < frameHeight then
-					if framesInColumn == 1 then
-						-- If this is the only frame in the column and it doesn't fit, then scale must be reduced and the iteration restarted
+					if framesInColumn == 1 then -- If this is the only frame in the column and it doesn't fit, then scale must be reduced and the iteration restarted
 						forceScaleDecrease = true
 						break
-					else
-						-- Start a new column
+					else -- Start a new column
 						column = column + 1
 						framesInColumn = 0 -- kind of a lie, at this point there's actually a single frame in the new column, but this simplifies where to increment.
 						leftMostPoint = screenWidth - ( column * frame:GetWidth(true) * containerScale ) - xOffset
@@ -2336,17 +2334,14 @@ if C_Container then
 		for index, frame in ipairs(_G.ContainerFrameSettingsManager:GetBagsShown()) do
 			frame:SetScale(containerScale)
 
-			if index == 1 then
-				-- First bag
+			if index == 1 then -- First bag
 				frame:SetPoint("BOTTOMRIGHT", _G.ElvUIBagMover, "BOTTOMRIGHT", E.Spacing, -E.Border)
 				recentBagColumn = frame
-			elseif (freeScreenHeight < frame:GetHeight()) or previousBag:IsCombinedBagContainer() then
-				-- Start a new column
+			elseif (freeScreenHeight < frame:GetHeight()) or previousBag:IsCombinedBagContainer() then -- Start a new column
 				freeScreenHeight = screenHeight - yOffset
 				frame:SetPoint("BOTTOMRIGHT", recentBagColumn, "BOTTOMLEFT", -11, 0)
 				recentBagColumn = frame
-			else
-				-- Anchor to the previous bag
+			else -- Anchor to the previous bag
 				frame:SetPoint("BOTTOMRIGHT", previousBag, "TOPRIGHT", 0, CONTAINER_SPACING)
 			end
 
@@ -2376,11 +2371,12 @@ else
 			leftMostPoint = screenWidth - xOffset
 			column = 1
 
-			for _, frame in ipairs(bags) do
+			for _, name in ipairs(bags) do
+				local frame = _G[name]
 				local frameHeight = frame:GetHeight()
 				if freeScreenHeight < frameHeight then
 					column = column + 1 -- Start a new column
-					leftMostPoint = screenWidth - ( column * CONTAINER_WIDTH * containerScale ) - xOffset
+					leftMostPoint = screenWidth - (column * CONTAINER_WIDTH * containerScale) - xOffset
 					freeScreenHeight = screenHeight - yOffset
 				end
 
@@ -2400,37 +2396,32 @@ else
 
 		screenHeight = E.screenHeight / containerScale
 		-- Adjust the start anchor for bags depending on the multibars
-		-- xOffset = CONTAINER_OFFSET_X / containerScale
 		yOffset = CONTAINER_OFFSET_Y / containerScale
 		-- freeScreenHeight determines when to start a new column of bags
 		freeScreenHeight = screenHeight - yOffset
 		column = 0
 
 		local bagsPerColumn = 0
-		for index, frame in ipairs(bags) do
+		for index, name in ipairs(bags) do
+			local frame = _G[name]
+			local frameHeight = frame:GetHeight()
+
 			frame:SetScale(1)
 
-			if index == 1 then
-				-- First bag
+			if index == 1 then -- First bag
 				frame:Point('BOTTOMRIGHT', _G.ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
 				bagsPerColumn = bagsPerColumn + 1
-			elseif freeScreenHeight < frame:GetHeight() then
-				-- Start a new column
+			elseif freeScreenHeight < frameHeight then -- Start a new column
 				column = column + 1
 				freeScreenHeight = screenHeight - yOffset
-				if column > 1 then
-					frame:Point('BOTTOMRIGHT', bags[(index - bagsPerColumn) - 1], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
-				else
-					frame:Point('BOTTOMRIGHT', bags[index - bagsPerColumn], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
-				end
+				frame:Point('BOTTOMRIGHT', bags[(index - bagsPerColumn) - (column > 1 and 1 or 0)], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
 				bagsPerColumn = 0
-			else
-				-- Anchor to the previous bag
+			else -- Anchor to the previous bag
 				frame:Point('BOTTOMRIGHT', bags[index - 1], 'TOPRIGHT', 0, CONTAINER_SPACING)
 				bagsPerColumn = bagsPerColumn + 1
 			end
 
-			freeScreenHeight = freeScreenHeight - frame:GetHeight() - VISIBLE_CONTAINER_SPACING
+			freeScreenHeight = freeScreenHeight - frameHeight - VISIBLE_CONTAINER_SPACING
 		end
 	end
 end
@@ -2440,15 +2431,13 @@ function B:PostBagMove()
 
 	-- self refers to the mover (bag or bank)
 	local x, y = self:GetCenter()
-	local screenHeight = E.UIParent:GetTop()
-	local screenWidth = E.UIParent:GetRight()
 
-	if y > (screenHeight * 0.5) then
+	if y > (E.screenHeight * 0.5) then
 		self:SetText(self.textGrowDown)
-		self.POINT = ((x > (screenWidth*0.5)) and 'TOPRIGHT' or 'TOPLEFT')
+		self.POINT = x > (E.screenWidth*0.5) and 'TOPRIGHT' or 'TOPLEFT'
 	else
 		self:SetText(self.textGrowUp)
-		self.POINT = ((x > (screenWidth*0.5)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT')
+		self.POINT = x > (E.screenWidth*0.5) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
 	end
 
 	local bagFrame = (self.name == 'ElvUIBankMover' and B.BankFrame) or B.BagFrame
