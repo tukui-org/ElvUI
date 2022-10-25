@@ -73,11 +73,11 @@ function B:SkinBag(bag)
 	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
 	bag.oldTex = icon:GetTexture()
 
-	bag:StripTextures(E.WoW10)
+	bag:StripTextures(E.Retail)
 	bag:SetTemplate()
 	bag:StyleButton(true)
 
-	if E.WoW10 then
+	if E.Retail then
 		bag:GetNormalTexture():SetAlpha(0)
 		bag:GetPushedTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
@@ -186,7 +186,7 @@ end
 function B:MainMenuBarBackpackButton_OnClick(button)
 	if E.Retail and (E.private.actionbar.enable and AB.KeyBinder.active or KeybindFrames_InQuickKeybindMode()) then return end
 
-	if E.WoW10 then
+	if E.Retail then
 		return self:BagSlotOnClick()
 	elseif IsModifiedClick() then
 		BackpackButton_OnModifiedClick(self, button)
@@ -201,7 +201,7 @@ function B:BagButton_OnClick(key)
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif self.BagID == 0 then
 		B.MainMenuBarBackpackButton_OnClick(self, key)
-	elseif E.WoW10 then
+	elseif E.Retail then
 		self:BagSlotOnClick()
 	else
 		_G.BagSlotButton_OnClick(self)

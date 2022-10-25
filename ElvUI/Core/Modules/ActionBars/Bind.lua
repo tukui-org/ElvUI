@@ -314,7 +314,7 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25)
 	bind:Hide()
 
-	if E.WoW10 then
+	if E.Retail then
 		hooksecurefunc(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)
 	end
 

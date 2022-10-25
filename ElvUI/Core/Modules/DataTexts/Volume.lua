@@ -131,7 +131,7 @@ function OnEvent(self, event, arg1)
 	panel = self
 
 	local force = event == 'ELVUI_FORCE_UPDATE'
-	if force or (event == 'CVAR_UPDATE' and (E.WoW10 and Sound_CVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
+	if force or (event == 'CVAR_UPDATE' and (E.Retail and Sound_CVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
 		if force then
 			self:EnableMouseWheel(true)
 			self:SetScript('OnMouseWheel', onMouseWheel)

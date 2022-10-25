@@ -274,7 +274,7 @@ function AB:CreateBarPet()
 	bar:SetScript('OnHide', AB.PetBar_OnHide)
 	bar:SetScript('OnShow', AB.PetBar_OnShow)
 
-	if E.WoW10 then
+	if E.Retail then
 		AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
 	end
 

@@ -1221,7 +1221,7 @@ do
 				PlayerFrame:SetDontSavePosition(true)
 			end
 
-			if E.WoW10 then
+			if E.Retail then
 				if E.private.unitframe.disabledBlizzardFrames.castbar then
 					HandleFrame(_G.PlayerCastingBarFrame)
 					HandleFrame(_G.PetCastingBarFrame)
@@ -1605,7 +1605,7 @@ function UF:Initialize()
 		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
 		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
 
-		if E.WoW10 or IsAddOnLoaded('Blizzard_ArenaUI') then
+		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
 			ElvUF:DisableBlizzard('arena')
 		else
 			UF:RegisterEvent('ADDON_LOADED')

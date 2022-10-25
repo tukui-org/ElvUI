@@ -866,7 +866,7 @@ do
 		if E.Retail then -- same deal with profession buttons, this will fix the tainting
 			for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
 				for i = 1, 2 do
-					local button = E.WoW10 and frame['SpellButton'..i] or frame['button'..i]
+					local button = E.Retail and frame['SpellButton'..i] or frame['button'..i]
 					if button then
 						FixButton(button)
 					end
@@ -990,7 +990,7 @@ end
 
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
-	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', E.WoW10 and 'StanceBar' or 'StanceBarFrame', E.WoW10 and 'PetActionBar' or 'PetActionBarFrame', E.WoW10 and 'PossessActionBar' or 'PossessBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
+	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', E.Retail and 'StanceBar' or 'StanceBarFrame', E.Retail and 'PetActionBar' or 'PetActionBarFrame', E.Retail and 'PossessActionBar' or 'PossessBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
 	if E.Wrath then -- TotemBar: this still might taint
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 		tremove(tbl, 1)
@@ -1007,7 +1007,7 @@ function AB:DisableBlizzard()
 			if i < count then frame:UnregisterAllEvents() end
 			frame:SetParent(E.HiddenFrame)
 
-			if not E.WoW10 then -- WoW10 this breaks the UseContainerItem
+			if not E.Retail then -- WoW10 this breaks the UseContainerItem
 				AB:SetNoopsi(frame)
 			end
 		end
@@ -1295,7 +1295,7 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:AddButton(button)
 	end
 
-	if E.WoW10 then
+	if E.Retail then
 		_G.SpellFlyout.Background:Hide() -- ToDO: WoW10
 	end
 end
@@ -1539,7 +1539,7 @@ function AB:Initialize()
 		AB:CreateBar(i)
 	end
 
-	if E.WoW10 then
+	if E.Retail then
 		for i = 13, 15 do
 			AB:CreateBar(i)
 		end

@@ -215,7 +215,7 @@ function AB:UpdateMicroButtons()
 		end
 	end
 
-	if E.Retail and not E.WoW10 then
+	if E.Retail then
 		AB:UpdateGuildMicroButton()
 	end
 

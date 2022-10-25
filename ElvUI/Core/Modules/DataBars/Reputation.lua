@@ -38,29 +38,15 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local displayString, textFormat, label, rewardPending = '', DB.db.reputation.textFormat
+	local displayString, textFormat, label, rewardPending, _ = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local standingText, friendshipID, nextThreshold, _
 
-	if E.WoW10 then
-		local reputationInfo = GetFriendshipReputation(factionID)
-		friendshipID = reputationInfo.friendshipFactionID
-	elseif E.Retail then
-		friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
-	end
-
-	if friendshipID and not E.WoW10 then
-		reaction, label = 5, standingText
-
-		if not nextThreshold then
-			minValue, maxValue, curValue = 0, 1, 1
-		end
-	elseif E.WoW10 then
+	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+	if info and info.friendshipFactionID then
 		local isMajorFaction = factionID and C_Reputation_IsMajorFaction(factionID)
-		local repInfo = factionID and GetFriendshipReputation(factionID)
 
-		if repInfo and repInfo.friendshipFactionID > 0 then
-			label, minValue, maxValue, curValue = repInfo.reaction, repInfo.reactionThreshold or 0, repInfo.nextThreshold or 1, repInfo.standing or 1
+		if info and info.friendshipFactionID > 0 then
+			label, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
 		elseif isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 			local renownColor = DB.db.colors.factionColors[10]

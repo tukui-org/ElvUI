@@ -114,13 +114,13 @@ P.general = {
 				hide = false,
 			},
 			tracking = {
-				scale = E.WoW10 and 1.2 or 0.65,
+				scale = E.Retail and 1.2 or 0.65,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
 			},
 			calendar = {
-				scale = E.WoW10 and 1.2 or 1,
+				scale = E.Retail and 1.2 or 1,
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = 0,
@@ -2634,7 +2634,7 @@ for i = 1, 10 do
 	P.actionbar['bar'..i] = bar
 end
 
-if E.WoW10 then
+if E.Retail then
 	P.actionbar.bar13 = CopyTable(P.actionbar.bar1)
 	P.actionbar.bar14 = CopyTable(P.actionbar.bar1)
 	P.actionbar.bar15 = CopyTable(P.actionbar.bar1)

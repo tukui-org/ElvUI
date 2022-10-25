@@ -119,7 +119,7 @@ function B:AlertMovers()
 	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
 	E:CreateMover(AlertFrameHolder, 'AlertFrameMover', L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,blizzUIImprovements')
 
-	if not E.WoW10 then
+	if not E.Retail then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
 	end
 

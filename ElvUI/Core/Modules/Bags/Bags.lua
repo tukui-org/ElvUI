@@ -109,7 +109,7 @@ B.GearFilters = {
 	FILTER_FLAG_JUNK,
 }
 
-if E.WoW10 then
+if E.Retail then
 	tinsert(B.GearFilters, BagSlotFlags.PriorityQuestItems)
 end
 
@@ -177,7 +177,7 @@ B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {}
 
-if E.WoW10 then
+if E.Retail then
 	B.BAG_FILTER_ICONS[FILTER_FLAG_EQUIPMENT] = 'bags-icon-equipment'
 	B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 'bags-icon-consumables'
 	B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 'bags-icon-tradegoods'
@@ -889,7 +889,7 @@ function B:IsSortIgnored(bagID)
 		return GetBankAutosortDisabled()
 	elseif bagID == BACKPACK_CONTAINER then
 		return GetBackpackAutosortDisabled()
-	elseif bagID > NUM_BAG_SLOTS and not E.WoW10 then
+	elseif bagID > NUM_BAG_SLOTS and not E.Retail then
 		return GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE)
 	else
 		return GetBagSlotFlag(bagID, FILTER_FLAG_IGNORE)
@@ -899,7 +899,7 @@ end
 function B:GetFilterFlagInfo(bagID, isBank)
 	for _, flag in next, B.GearFilters do
 		if flag ~= FILTER_FLAG_IGNORE then
-			if isBank and not E.WoW10 and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag) or GetBagSlotFlag(bagID, flag) then
+			if isBank and not E.Retail and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag) or GetBagSlotFlag(bagID, flag) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
 		end
@@ -910,7 +910,7 @@ function B:SetFilterFlag(bagID, flag, value)
 	B.AssignBagDropdown.holder = nil
 
 	local isBank = bagID > NUM_BAG_SLOTS
-	return isBank and not E.WoW10 and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value) or SetBagSlotFlag(bagID, flag, value)
+	return isBank and not E.Retail and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value) or SetBagSlotFlag(bagID, flag, value)
 end
 
 function B:GetBagAssignedInfo(holder, isBank)
@@ -1338,7 +1338,7 @@ function B:GetGrays(vendor)
 
 				if rarity and rarity == 0 -- grays :o
 				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
-				and (not E.WoW10 or not IsCosmeticItem(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
+				and (not E.Retail or not IsCosmeticItem(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
 
@@ -1514,7 +1514,7 @@ function B:ConstructContainerFrame(name, isBank)
 	for i, bagID in next, f.BagIDs do
 		local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Retail and 0 or 1))
 		local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
-		local inherit = (E.WoW10 and not isBank and '') or isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+		local inherit = (E.Retail and not isBank and '') or isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
@@ -2636,7 +2636,7 @@ function B:Initialize()
 		[FILTER_FLAG_JUNK] = E:GetColorTable(B.db.colors.assignment.junk),
 	}
 
-	if E.WoW10 then
+	if E.Retail then
 		B.AssignmentColors[BagSlotFlags.PriorityQuestItems] = E:GetColorTable(B.db.colors.items.questItem)
 	end
 
