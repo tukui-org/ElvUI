@@ -54,71 +54,19 @@ AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
-	bar1 = {
-		page = 1,
-		bindButtons = 'ACTIONBUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
-	},
-	bar2 = {
-		page = 2,
-		bindButtons = 'ELVUIBAR2BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
-	},
-	bar3 = {
-		page = 3,
-		bindButtons = 'MULTIACTIONBAR3BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
-	},
-	bar4 = {
-		page = 4,
-		bindButtons = 'MULTIACTIONBAR4BUTTON',
-		position = 'RIGHT,ElvUIParent,RIGHT,-4,0',
-	},
-	bar5 = {
-		page = 5,
-		bindButtons = 'MULTIACTIONBAR2BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-279,4',
-	},
-	bar6 = {
-		page = 6,
-		bindButtons = 'MULTIACTIONBAR1BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264',
-	},
-	bar7 = {
-		page = 7,
-		bindButtons = 'ELVUIBAR7BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
-	},
-	bar8 = {
-		page = 8,
-		bindButtons = 'ELVUIBAR8BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
-	},
-	bar9 = {
-		page = 9,
-		bindButtons = 'ELVUIBAR9BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
-	},
-	bar10 = {
-		page = 10,
-		bindButtons = 'ELVUIBAR10BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	bar13 = {
-		page = 13,
-		bindButtons = 'MULTIACTIONBAR5BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	bar14 = {
-		page = 14,
-		bindButtons = 'MULTIACTIONBAR6BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	bar15 = {
-		page = 15,
-		bindButtons = 'MULTIACTIONBAR7BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	}
+	bar1 = { page = 1, bindButtons = 'ACTIONBUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191' },
+	bar2 = { page = 2, bindButtons = 'ELVUIBAR2BUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,0,4' },
+	bar3 = { page = 3, bindButtons = 'MULTIACTIONBAR3BUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139' },
+	bar4 = { page = 4, bindButtons = 'MULTIACTIONBAR4BUTTON', position = 'RIGHT,ElvUIParent,RIGHT,-4,0' },
+	bar5 = { page = 5, bindButtons = 'MULTIACTIONBAR2BUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,-279,4' },
+	bar6 = { page = 6, bindButtons = 'MULTIACTIONBAR1BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264' },
+	bar7 = { page = 7, bindButtons = 'ELVUIBAR7BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298' },
+	bar8 = { page = 8, bindButtons = 'ELVUIBAR8BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332' },
+	bar9 = { page = 9, bindButtons = 'ELVUIBAR9BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366' },
+	bar10 = { page = 10, bindButtons = 'ELVUIBAR10BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' },
+	bar13 = { page = 13, bindButtons = 'MULTIACTIONBAR5BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' },
+	bar14 = { page = 14, bindButtons = 'MULTIACTIONBAR6BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' },
+	bar15 = { page = 15, bindButtons = 'MULTIACTIONBAR7BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' }
 }
 
 do
@@ -544,9 +492,8 @@ function AB:ReassignBindings(event)
 
 			for _, button in ipairs(bar.buttons) do
 				if button.keyBoundTarget then
-					for k=1, select('#', GetBindingKey(button.keyBoundTarget)) do
-						local key = select(k, GetBindingKey(button.keyBoundTarget))
-						if key and key ~= '' then
+					for _, key in next, { GetBindingKey(button.keyBoundTarget) } do
+						if key ~= '' then
 							SetOverrideBindingClick(bar, false, key, button:GetName())
 						end
 					end
