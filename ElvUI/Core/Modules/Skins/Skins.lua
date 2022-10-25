@@ -374,7 +374,7 @@ function S:SkinTalentListButtons(frame)
 end
 
 do
-	local function iconBorderColor(border, r, g, b, a)
+	local function borderVertex(border, r, g, b, a)
 		border:StripTextures()
 
 		if border.customFunc then
@@ -385,7 +385,7 @@ do
 		end
 	end
 
-	local function iconBorderHide(border)
+	local function borderHide(border)
 		local br, bg, bb = unpack(E.media.bordercolor)
 		if border.customFunc then
 			local r, g, b, a = border:GetVertexColor()
@@ -395,9 +395,9 @@ do
 		end
 	end
 
-	local function iconBorderSetShown(border, show)
+	local function borderShown(border, show)
 		if not show then
-			iconBorderHide(border)
+			borderHide(border)
 		end
 	end
 
@@ -412,9 +412,9 @@ do
 		if not border.IconBorderHooked then
 			border:StripTextures()
 
-			hooksecurefunc(border, 'SetVertexColor', iconBorderColor)
-			hooksecurefunc(border, 'SetShown', iconBorderSetShown)
-			hooksecurefunc(border, 'Hide', iconBorderHide)
+			hooksecurefunc(border, 'SetVertexColor', borderVertex)
+			hooksecurefunc(border, 'SetShown', borderShown)
+			hooksecurefunc(border, 'Hide', borderHide)
 
 			border.IconBorderHooked = true
 		end
