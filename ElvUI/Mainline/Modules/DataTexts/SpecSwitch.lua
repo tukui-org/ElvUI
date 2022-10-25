@@ -85,10 +85,10 @@ local function loadout_func(_, arg1, arg2)
 	UpdateLastSelectedSavedConfigID(arg1, arg2)
 end
 
-local function menu_checked(_, arg1) return GetLootSpecialization() == arg1 end
+local function menu_checked(data) return data and data.arg1 == GetLootSpecialization() end
 local function menu_func(_, arg1) SetLootSpecialization(arg1) end
 
-local function spec_checked(_, arg1) return GetSpecialization() == arg1 end
+local function spec_checked(data) return data and data.arg1 == GetSpecialization() end
 local function spec_func(_, arg1) SetSpecialization(arg1) end
 
 local function OnEvent(self, event)
