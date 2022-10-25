@@ -357,8 +357,8 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs.font, fs.fontSize, fs.fontStyle = font, size, style
 	end
 
-	-- shadow mode when using ''
-	if style == '' then
+	-- shadow mode when using 'NONE'
+	if style == 'NONE' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
