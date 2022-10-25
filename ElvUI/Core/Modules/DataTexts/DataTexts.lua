@@ -771,7 +771,7 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 end
 
 function DT:CurrencyInfo(id)
-	local info = E.Retail and GetCurrencyInfo(id) or {}
+	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
 
 	if E.Wrath then
 		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(id)
@@ -781,7 +781,7 @@ function DT:CurrencyInfo(id)
 end
 
 function DT:BackpackCurrencyInfo(index)
-	local info = E.Retail and GetBackpackCurrencyInfo(index) or E.Wrath and {}
+	local info = E.Retail and GetBackpackCurrencyInfo(index) or {}
 
 	if E.Wrath then
 		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
