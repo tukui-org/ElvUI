@@ -78,17 +78,17 @@ local function UpdateColor(self, event, unit, powerType)
 	if(not (unit and UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
 	local element = self.AdditionalPower
 
-	local r, g, b, t
+	local r, g, b, color
 	if(element.colorPower) then
-		t = self.colors.power[POWER_INDEX]
+		color = self.colors.power[POWER_INDEX]
 	elseif(element.colorClass) then
-		t = self.colors.class[playerClass]
+		color = self.colors.class[playerClass]
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then
@@ -205,7 +205,7 @@ local function Visibility(self, event, unit)
 	local element = self.AdditionalPower
 	local shouldEnable
 
-	if not oUF.isRetail or not UnitHasVehicleUI('player') then
+	if (oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player') then
 		local allowed = element.displayPairs[playerClass]
 		if allowed and UnitPowerMax(unit, POWER_INDEX) ~= 0 then
 			shouldEnable = allowed[UnitPowerType(unit)]
@@ -285,7 +285,7 @@ local function Enable(self, unit)
 			element.displayPairs = CopyTable(ALT_MANA_INFO)
 		end
 
-		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
+		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 

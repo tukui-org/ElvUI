@@ -1,9 +1,10 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
 local ACH = E.Libs.ACH
 
+local format = format
 local type, pairs = type, pairs
 
 function MC:AddConfigOptions(settings, config)
@@ -66,7 +67,7 @@ local function CreateBagsConfig()
 
 	config.args.ignoredItems = nil
 	config.args.colors.name = L["Colors"]
-	config.args.bagBar.name = L["Bag-Bar"]
+	config.args.bagBar.name = L["Bag Bar"]
 	config.args.split.name = L["Split"]
 	config.args.vendorGrays.name = L["Vendor Grays"]
 
@@ -207,8 +208,11 @@ local function CreateUnitframesConfig()
 	config.args.units.args.boss.name = L["Boss"]
 	config.args.units.args.arena.name = L["Arena"]
 	config.args.units.args.party.name = L["Party"]
-	config.args.units.args.raid.name = L["Raid"]
-	config.args.units.args.raid40.name = L["Raid-40"]
+
+	for i = 1, 3 do
+		config.args.units.args['raid'..i].name = L[format("Raid %s", i)]
+	end
+
 	config.args.units.args.raidpet.name = L["Raid Pet"]
 	config.args.units.args.tank.name = L["Tank"]
 	config.args.units.args.assist.name = L["Assist"]

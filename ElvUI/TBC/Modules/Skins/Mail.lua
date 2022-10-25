@@ -32,7 +32,7 @@ function S:MailFrame()
 		local icon = _G['MailItem'..i..'ButtonIcon']
 
 		mail:StripTextures()
-		mail:CreateBackdrop('Default')
+		mail:CreateBackdrop()
 		mail.backdrop:Point('TOPLEFT', 42, -3)
 		mail.backdrop:Point('BOTTOMRIGHT', -2, 5)
 
@@ -100,7 +100,7 @@ function S:MailFrame()
 	_G.SendStationeryBackgroundLeft:Hide()
 	_G.SendStationeryBackgroundRight:Hide()
 	_G.MailEditBox.ScrollBox:StripTextures(true)
-	_G.MailEditBox.ScrollBox:SetTemplate('Default')
+	_G.MailEditBox.ScrollBox:SetTemplate()
 	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 
 	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
@@ -110,7 +110,7 @@ function S:MailFrame()
 			local button = _G['SendMailAttachment'..i]
 			if not button.template then
 				button:StripTextures()
-				button:SetTemplate('Default', true)
+				button:SetTemplate(nil, true)
 				button:StyleButton(nil, true)
 			end
 
@@ -180,7 +180,7 @@ function S:MailFrame()
 		local count = _G['OpenMailAttachmentButton'..i..'Count']
 
 		button:StripTextures()
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:StyleButton()
 
 		if icon then
@@ -221,7 +221,7 @@ function S:MailFrame()
 	S:HandleButton(_G.OpenMailCancelButton)
 
 	_G.OpenMailScrollFrame:StripTextures(true)
-	_G.OpenMailScrollFrame:SetTemplate('Default')
+	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
@@ -233,7 +233,7 @@ function S:MailFrame()
 	_G.OpenMailArithmeticLine:Kill()
 
 	_G.OpenMailLetterButton:StripTextures()
-	_G.OpenMailLetterButton:SetTemplate('Default', true)
+	_G.OpenMailLetterButton:SetTemplate(nil, true)
 	_G.OpenMailLetterButton:StyleButton()
 
 	_G.OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
@@ -243,7 +243,7 @@ function S:MailFrame()
 	_G.OpenMailLetterButtonCount:SetDrawLayer('OVERLAY')
 
 	_G.OpenMailMoneyButton:StripTextures()
-	_G.OpenMailMoneyButton:SetTemplate('Default', true)
+	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
 
 	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))

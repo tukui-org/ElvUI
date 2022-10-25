@@ -2,9 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local ipairs = ipairs
+local next = next
 local pairs = pairs
+local ipairs = ipairs
 
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
@@ -22,11 +22,21 @@ local function HandlePushToTalkButton(button)
 	button.MiddleRight:Hide()
 	button.BottomMiddle:Hide()
 	button.MiddleMiddle:Hide()
-	button:SetHighlightTexture('')
+	button:SetHighlightTexture(E.ClearTexture)
 
 	button:SetTemplate(nil, true)
 	button:HookScript('OnEnter', S.SetModifiedBackdrop)
 	button:HookScript('OnLeave', S.SetOriginalBackdrop)
+end
+
+local function Skin_InterfaceOptions_Buttons()
+	for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
+		local button = _G['InterfaceOptionsFrameAddOnsButton'..i..'Toggle']
+		if button and not button.IsSkinned then
+			S:HandleCollapseTexture(button, true)
+			button.IsSkinned = true
+		end
+	end
 end
 
 function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
@@ -283,8 +293,7 @@ function S:BlizzardOptions()
 
 	for _, Panel in pairs(InterfaceOptions) do
 		if Panel then
-			for i = 1, Panel:GetNumChildren() do
-				local Child = select(i, Panel:GetChildren())
+			for _, Child in next, { Panel:GetChildren() } do
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child)
 				elseif Child:IsObjectType('Button') then
@@ -306,20 +315,9 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
-	do -- plus minus buttons in addons category
-		local function skinButtons()
-			for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
-				local button = _G['InterfaceOptionsFrameAddOnsButton'..i..'Toggle']
-				if button and not button.IsSkinned then
-					S:HandleCollapseTexture(button, true)
-					button.IsSkinned = true
-				end
-			end
-		end
-
-		hooksecurefunc('InterfaceOptions_AddCategory', skinButtons)
-		skinButtons()
-	end
+	-- Plus minus buttons in addons category
+	hooksecurefunc('InterfaceOptions_AddCategory', Skin_InterfaceOptions_Buttons)
+	Skin_InterfaceOptions_Buttons()
 
 	--Create New Raid Profle
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog

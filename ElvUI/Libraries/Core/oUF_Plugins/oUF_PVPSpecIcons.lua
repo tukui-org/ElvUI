@@ -22,7 +22,7 @@ local Update = function(self, event, unit)
 		end
 	else
 		local unitFactionGroup = UnitFactionGroup(self.unit)
-		if unitFactionGroup == "Horde" then
+		if unitFactionGroup == 'Horde' then
 			specIcon.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_01]])
 		elseif unitFactionGroup == 'Alliance' then
 			specIcon.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_02]])

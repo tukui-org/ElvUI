@@ -10,8 +10,7 @@ local GetContainerNumSlots = GetContainerNumSlots
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
-local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local CURRENCY = CURRENCY
 
@@ -76,18 +75,19 @@ local function OnEnter()
 		end
 	end
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		for i = 1, MAX_WATCHED_TOKENS do
-			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-			if info then
-				if i == 1 then
-					DT.tooltip:AddLine(' ')
-					DT.tooltip:AddLine(CURRENCY)
-					DT.tooltip:AddLine(' ')
-				end
-				if info.quantity then
-					DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, info.name), info.quantity, 1, 1, 1, 1, 1, 1)
-				end
+			local info, name = DT:BackpackCurrencyInfo(i)
+			if not name then break end
+
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+				DT.tooltip:AddLine(' ')
+			end
+
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, name), info.quantity, 1, 1, 1, 1, 1, 1)
 			end
 		end
 	end

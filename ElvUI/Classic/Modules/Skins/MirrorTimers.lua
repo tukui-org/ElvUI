@@ -3,26 +3,26 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local function MirrorTimer_OnUpdate(frame, elapsed)
+	if frame.paused then return end
+
+	if frame.timeSinceUpdate >= 0.3 then
+		local text = frame.label:GetText()
+
+		if frame.value > 0 then
+			frame.TimerText:SetFormattedText('%s (%d:%02d)', text, frame.value / 60, frame.value % 60)
+		else
+			frame.TimerText:SetFormattedText('%s (0:00)', text)
+		end
+
+		frame.timeSinceUpdate = 0
+	else
+		frame.timeSinceUpdate = frame.timeSinceUpdate + elapsed
+	end
+end
+
 function S:MirrorTimers()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
-
-	local function MirrorTimer_OnUpdate(frame, elapsed)
-		if frame.paused then return end
-
-		if frame.timeSinceUpdate >= 0.3 then
-			local text = frame.label:GetText()
-
-			if frame.value > 0 then
-				frame.TimerText:SetFormattedText('%s (%d:%02d)', text, frame.value / 60, frame.value % 60)
-			else
-				frame.TimerText:SetFormattedText('%s (0:00)', text)
-			end
-
-			frame.timeSinceUpdate = 0
-		else
-			frame.timeSinceUpdate = frame.timeSinceUpdate + elapsed
-		end
-	end
 
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		local mirrorTimer = _G['MirrorTimer'..i]

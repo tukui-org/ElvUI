@@ -30,7 +30,7 @@ function S:PetStableFrame()
 	local PetStablePetInfo = _G.PetStablePetInfo
 	PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	PetStablePetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
-	PetStablePetInfo:CreateBackdrop('Default')
+	PetStablePetInfo:CreateBackdrop()
 	PetStablePetInfo:Size(24)
 
 	hooksecurefunc('PetStable_Update', function()

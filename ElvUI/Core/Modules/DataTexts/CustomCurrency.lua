@@ -4,9 +4,8 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local tinsert, tremove, next = tinsert, tremove, next
 local ipairs, pairs, format, strjoin = ipairs, pairs, format, strjoin
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
-local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
-local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
+
+local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
@@ -14,8 +13,9 @@ local CurrencyListNameToIndex = {}
 local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
-		local info = C_CurrencyInfo_GetCurrencyInfo(currency.ID)
-		if not info then return end
+		local info, name = DT:CurrencyInfo(currency.ID)
+		if not name then return end
+
 		local style = currency.DISPLAY_STYLE
 		local displayString = currency.ICON
 
@@ -25,7 +25,7 @@ local function OnEvent(self)
 
 		displayString = strjoin(' ', displayString, '%d')
 
-		if currency.SHOW_MAX and info.maxQuantity > 0 then
+		if currency.SHOW_MAX and info.maxQuantity and info.maxQuantity > 0 then
 			displayString = strjoin(' ', displayString, '/', info.maxQuantity)
 		end
 
@@ -46,8 +46,8 @@ local function OnEnter(self)
 end
 
 local function AddCurrencyNameToIndex(name)
-	for index = 1, C_CurrencyInfo_GetCurrencyListSize() do
-		local info = C_CurrencyInfo_GetCurrencyListInfo(index)
+	for index = 1, GetCurrencyListSize() do
+		local info = DT:CurrencyListInfo(index)
 		if info.name == name then
 			CurrencyListNameToIndex[name] = index
 			break
@@ -56,33 +56,31 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
-	if info then
-		local name = info.name
+	local info, name = DT:CurrencyInfo(currencyID)
+	if not name then return end
 
-		--Add to internal storage, stored with name as key
-		CustomCurrencies[name] = { NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true }
-		--Register datatext
-		DT:RegisterDatatext(name, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, name)
-		--Save info to persistent storage, stored with ID as key
-		E.global.datatexts.customCurrencies[currencyID] = CustomCurrencies[name]
-		--Get the currency index for this currency, so we can use it for a tooltip
-		AddCurrencyNameToIndex(name)
+	--Add to internal storage, stored with name as key
+	CustomCurrencies[name] = { NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true }
+	--Register datatext
+	DT:RegisterDatatext(name, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, name)
+	--Save info to persistent storage, stored with ID as key
+	E.global.datatexts.customCurrencies[currencyID] = CustomCurrencies[name]
+	--Get the currency index for this currency, so we can use it for a tooltip
+	AddCurrencyNameToIndex(name)
 
-		--Set the HyperDT
-		local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
-		local hyperList = DT.HyperList[menuIndex]
-		if hyperList then
-			local menuList = hyperList.menuList
+	--Set the HyperDT
+	local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
+	local hyperList = DT.HyperList[menuIndex]
+	if hyperList then
+		local menuList = hyperList.menuList
 
-			tinsert(menuList, {
-				text = name,
-				checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-				func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
-			})
+		tinsert(menuList, {
+			text = name,
+			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+			func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+		})
 
-			DT:SortMenuList(menuList)
-		end
+		DT:SortMenuList(menuList)
 	end
 end
 

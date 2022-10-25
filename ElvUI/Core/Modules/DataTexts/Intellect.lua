@@ -21,7 +21,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.Intellect.NoLabel and '' or '%s: ', hex, '%.f|r')
+	displayString = strjoin('', E.global.datatexts.settings.Intellect.NoLabel and '' or '%s', hex, '%.f|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end

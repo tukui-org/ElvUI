@@ -185,10 +185,13 @@ local function OnEnter(_, slow)
 			local addonIndex, memoryUsage, cpuUsage = 0, 0, 0
 			for i, data in pairs(infoDisplay) do
 				if data and data.name == addon then
+					cpuUsage = data.cpu or 0
+					memoryUsage = data.mem
 					addonIndex = i
 					break
 				end
 			end
+
 			for k, data in pairs(infoDisplay) do
 				if type(data) == 'table' then
 					local name, mem, cpu = data.title, data.mem, data.cpu
@@ -199,14 +202,23 @@ local function OnEnter(_, slow)
 							if showByCPU and cpuProfiling then
 								cpuUsage = cpuUsage + cpu
 							end
+
 							infoDisplay[k] = false
 						end
 					end
 				end
 			end
-			if addonIndex > 0 and infoDisplay[addonIndex] then
-				if memoryUsage > 0 then infoDisplay[addonIndex].mem = memoryUsage end
-				if cpuProfiling and cpuUsage > 0 then infoDisplay[addonIndex].cpu = cpuUsage end
+
+			local data = addonIndex > 0 and infoDisplay[addonIndex]
+			if data then
+				local mem = memoryUsage > 0 and memoryUsage
+				local cpu = cpuUsage > 0 and cpuUsage
+
+				if mem then data.mem = mem end
+				if cpu then data.cpu = cpu end
+				if mem or cpu then
+					data.sort = (showByCPU and cpu) or mem
+				end
 			end
 		end
 

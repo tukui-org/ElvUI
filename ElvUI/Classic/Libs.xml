@@ -30,12 +30,13 @@
 	<Script file='..\Libraries\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibDataBroker\LibDataBroker-1.1.lua'/>
-	<Script file='..\Libraries\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/>
+	<Script file='..\Libraries\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/> <!-- keep under LibClassicSpecs -->
 	<Script file='..\Libraries\Core\LibElvUIPlugin-1.0\LibElvUIPlugin-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibSimpleSticky\LibSimpleSticky.lua'/>
 	<Script file='..\Libraries\Core\LibTranslit-1.0\LibTranslit-1.0.lua'/>
 	<Script file='..\Libraries\Core\LibAnim\LibAnim.lua'/>
 
+	<Script file='..\Libraries\Core\LibDispel\LibDispel.lua'/> <!-- keep over oUF -->
 	<Include file='..\Libraries\Core\oUF\oUF_Classic.xml'/>
 	<Include file='..\Libraries\Core\oUF_Plugins\oUF_Plugins.xml'/>
 </Ui>

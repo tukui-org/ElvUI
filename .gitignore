@@ -19,3 +19,7 @@ $RECYCLE.BIN/
 
 # Vscode local config
 .vscode
+.vs
+
+# Jetbrains local config
+.idea

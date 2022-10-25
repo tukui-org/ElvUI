@@ -1,39 +1,12 @@
 local _, ns = ...
 local oUF = ns.oUF
 
-local next = next
 local UnitAura = UnitAura
-local IsSpellKnown = IsSpellKnown
 local UnitCanAssist = UnitCanAssist
-local GetSpecialization = GetSpecialization
-local GetActiveSpecGroup = GetActiveSpecGroup
 local BlackList = {}
 -- GLOBALS: DebuffTypeColor
 
---local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
---local FilterList = {}
-
-local DispelList = {
-	PALADIN = { Poison = true, Disease = true },
-	PRIEST = { Magic = true, Disease = true },
-	MONK = { Disease = true, Poison = true },
-	DRUID = { Curse = true, Poison = true },
-	MAGE = { Curse = true },
-	WARLOCK = {},
-	SHAMAN = {}
-}
-
-if oUF.isRetail then
-	DispelList.SHAMAN.Curse = true
-else
-	DispelList.SHAMAN.Poison = true
-	DispelList.SHAMAN.Disease = true
-
-	DispelList.PALADIN.Magic = true
-end
-
-local playerClass = select(2, UnitClass('player'))
-local DispelFilter = DispelList[playerClass] or {}
+local LibDispel = _G.LibStub('LibDispel-1.0')
 
 if oUF.isRetail then
 	BlackList[140546] = true -- Fully Mutated
@@ -53,8 +26,16 @@ local function DebuffLoop(check, list, name, icon, _, debuffType, _, _, _, _, _,
 		if spell.enable then
 			return debuffType, icon, true, spell.style, spell.color
 		end
-	elseif debuffType and (not check or DispelFilter[debuffType]) and not (BlackList[spellID] or BlackList[name]) then
-		return debuffType, icon
+	elseif debuffType then
+		local allow = not check
+		if not allow then
+			local filter = LibDispel:GetMyDispelTypes()
+			allow = filter and filter[debuffType]
+		end
+
+		if allow and not (BlackList[spellID] or BlackList[name]) then
+			return debuffType, icon
+		end
 	end
 end
 
@@ -87,57 +68,6 @@ local function GetAuraType(unit, check, list)
 
 	debuffType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
 	if icon then return debuffType, icon, filtered, style, color end
-end
-
-local function CheckTalentTree(tree)
-	local activeGroup = GetActiveSpecGroup()
-	local activeSpec = activeGroup and GetSpecialization(false, false, activeGroup)
-	if activeSpec then
-		return tree == activeSpec
-	end
-end
-
-local SingeMagic = 89808
-local DevourMagic = {
-	[19505] = 'Rank 1',
-	[19731] = 'Rank 2',
-	[19734] = 'Rank 3',
-	[19736] = 'Rank 4',
-	[27276] = 'Rank 5',
-	[27277] = 'Rank 6'
-}
-
-local function CheckPetSpells()
-	if oUF.isRetail then
-		return IsSpellKnown(SingeMagic, true)
-	else
-		for spellID in next, DevourMagic do
-			if IsSpellKnown(spellID, true) then
-				return true
-			end
-		end
-	end
-end
-
--- Check for certain talents to see if we can dispel magic or not
-local function CheckDispel(_, event, arg1)
-	if event == 'UNIT_PET' then
-		if arg1 == 'player' and playerClass == 'WARLOCK' then
-			DispelFilter.Magic = CheckPetSpells()
-		end
-	elseif event == 'CHARACTER_POINTS_CHANGED' and arg1 > 0 then
-		return -- Not interested in gained points from leveling
-	else
-		if playerClass == 'PALADIN' then
-			DispelFilter.Magic = CheckTalentTree(1)
-		elseif playerClass == 'SHAMAN' then
-			DispelFilter.Magic = CheckTalentTree(3)
-		elseif playerClass == 'DRUID' then
-			DispelFilter.Magic = CheckTalentTree(4)
-		elseif playerClass == 'MONK' then
-			DispelFilter.Magic = CheckTalentTree(2)
-		end
-	end
 end
 
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
@@ -202,16 +132,6 @@ local function Disable(self)
 			element:SetVertexColor(0, 0, 0, 0)
 		end
 	end
-end
-
-local frame = CreateFrame('Frame')
-frame:SetScript('OnEvent', CheckDispel)
-frame:RegisterEvent('UNIT_PET', CheckDispel)
-
-if oUF.isRetail then
-	frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
-	frame:RegisterEvent('CHARACTER_POINTS_CHANGED')
 end
 
 oUF:AddElement('AuraHighlight', Update, Enable, Disable)

@@ -89,8 +89,8 @@ local function OnEvent(self)
 	end
 
 	unhittableMax = unhittableMax + ((AVD_DECAY_RATE * leveldifference) * numAvoidances);
-    baseDef, armorDef = UnitDefense('player');
-    misschance = (basemisschance + (armorDef + baseDef - (5*playerlv))*0.04);
+	baseDef, armorDef = UnitDefense('player');
+	misschance = (basemisschance + (armorDef + baseDef - (5*playerlv))*0.04);
 
 	local avoided = (dodge+parry+misschance) --First roll on hit table determining if the hit missed
 	local blocked = block

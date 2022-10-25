@@ -8,10 +8,6 @@ local unpack = unpack
 local tostring, pcall = tostring, pcall
 local format, strsub, gsub = format, strsub, gsub
 
-local Chat_GetChatCategory = Chat_GetChatCategory
-local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
-local ChatHistory_GetAccessID = ChatHistory_GetAccessID
-local CinematicFrame = CinematicFrame
 local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
 local GetBattlefieldStatus = GetBattlefieldStatus
@@ -28,8 +24,14 @@ local Screenshot = Screenshot
 local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
-local MovieFrame = MovieFrame
+
+local Chat_GetChatCategory = Chat_GetChatCategory
+local ChatHistory_GetAccessID = ChatHistory_GetAccessID
+local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+
+local CinematicFrame = _G.CinematicFrame
+local MovieFrame = _G.MovieFrame
 local DNDstr = _G.DND
 local AFKstr = _G.AFK
 
@@ -115,9 +117,11 @@ function AFK:SetAFK(status)
 	end
 end
 
-function AFK:OnEvent(event, ...)
-	if event == 'PLAYER_REGEN_DISABLED' or event == 'LFG_PROPOSAL_SHOW' or event == 'UPDATE_BATTLEFIELD_STATUS' then
-		if event ~= 'UPDATE_BATTLEFIELD_STATUS' or (GetBattlefieldStatus(...) == 'confirm') then
+function AFK:OnEvent(event, arg1)
+	if event == 'PLAYER_REGEN_ENABLED' then
+		AFK:UnregisterEvent(event)
+	elseif event == 'UPDATE_BATTLEFIELD_STATUS' or event == 'PLAYER_REGEN_DISABLED' or event == 'LFG_PROPOSAL_SHOW' then
+		if event ~= 'UPDATE_BATTLEFIELD_STATUS' or (GetBattlefieldStatus(arg1) == 'confirm') then
 			AFK:SetAFK(false)
 		end
 
@@ -126,17 +130,11 @@ function AFK:OnEvent(event, ...)
 		end
 
 		return
-	end
-
-	if event == 'PLAYER_REGEN_ENABLED' then
-		AFK:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	end
-
-	if not E.db.general.afk or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
-
-	if UnitCastingInfo('player') then -- Don't activate afk if player is crafting stuff, check back in 30 seconds
-		AFK:ScheduleTimer('OnEvent', 30)
+	elseif (not E.db.general.afk) or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then
 		return
+	elseif UnitCastingInfo('player') then
+		AFK:ScheduleTimer('OnEvent', 30)
+		return -- Don't activate afk if player is crafting stuff, check back in 30 seconds
 	end
 
 	AFK:SetAFK(UnitIsAFK('player') and not (E.Retail and C_PetBattles_IsInBattle()))
@@ -314,7 +312,7 @@ function AFK:Initialize()
 	bottom:SetTemplate('Transparent')
 	bottom:Point('BOTTOM', afk, 'BOTTOM', 0, -E.Border)
 	bottom:Width(E.screenWidth + (E.Border*2))
-	bottom:Height(E.screenHeight * (1 / 10))
+	bottom:Height(E.screenHeight * 0.10)
 
 	local logoTop = afk:CreateTexture(nil, 'OVERLAY')
 	logoTop:Size(320, 150)

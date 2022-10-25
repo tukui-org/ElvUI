@@ -87,8 +87,8 @@ function S:MailFrame()
 
 	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
 
-	S:HandleButton(_G.SendMailMailButton)
-	S:HandleButton(_G.SendMailCancelButton)
+	S:HandleButton(_G.SendMailMailButton, true)
+	S:HandleButton(_G.SendMailCancelButton, true)
 
 	S:HandleRadioButton(_G.SendMailSendMoneyButton)
 	S:HandleRadioButton(_G.SendMailCODButton)
@@ -99,11 +99,11 @@ function S:MailFrame()
 	_G.OpenMailFrameInset:Kill()
 
 	S:HandleCloseButton(_G.OpenMailFrameCloseButton)
-	S:HandleButton(_G.OpenMailReportSpamButton)
-	S:HandleButton(_G.OpenMailReplyButton)
-	S:HandleButton(_G.OpenMailDeleteButton)
-	S:HandleButton(_G.OpenMailCancelButton)
-	S:HandleButton(_G.OpenAllMail)
+	S:HandleButton(_G.OpenMailReportSpamButton, true)
+	S:HandleButton(_G.OpenMailReplyButton, true)
+	S:HandleButton(_G.OpenMailDeleteButton, true)
+	S:HandleButton(_G.OpenMailCancelButton, true)
+	S:HandleButton(_G.OpenAllMail, true)
 
 	_G.InboxFrame:StripTextures()
 	_G.MailFrameInset:Kill()

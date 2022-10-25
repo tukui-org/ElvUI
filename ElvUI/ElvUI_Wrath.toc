@@ -1,0 +1,16 @@
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bWrath|r
+## Notes: User Interface Replacement
+## Author: Elv, Simpy
+## Version: 12.92
+## SavedVariables: ElvDB, ElvPrivateDB
+## SavedVariablesPerCharacter: ElvCharacterDB
+## OptionalDeps: SharedMedia, Tukui, Masque
+## Interface: 30400
+## X-Interface: 30400
+## X-oUF: ElvUF
+
+Wrath\Libs.xml
+
+Core\Load.xml
+
+Wrath\Load.xml

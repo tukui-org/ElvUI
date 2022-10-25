@@ -19,7 +19,7 @@ function UF:Configure_SummonIcon(frame)
 		SI:Show()
 		SI:Size(db.summonIcon.size)
 
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.summonIcon.attachToObject)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.summonIcon.attachToObject)
 		SI:ClearAllPoints()
 		SI:Point(db.summonIcon.attachTo, attachPoint, db.summonIcon.attachTo, db.summonIcon.xOffset, db.summonIcon.yOffset)
 	else

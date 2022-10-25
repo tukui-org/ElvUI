@@ -33,15 +33,15 @@ function S:TradeFrame()
 	_G.TradePlayerInputMoneyInset:StripTextures()
 
 	local tradeFrames = {
-		'TradeFramePlayerPortrait',
-		'TradeFrameRecipientPortrait',
-		'TradePlayerInputMoneyInset',
-		'TradeRecipientPortraitFrame',
-		'TradeRecipientMoneyBg'
+		_G.TradeFramePlayerPortrait,
+		_G.TradeFrameRecipientPortrait,
+		_G.TradePlayerInputMoneyInset,
+		_G.TradeRecipientPortraitFrame,
+		_G.TradeRecipientMoneyBg
 	}
 
 	for _, frame in ipairs(tradeFrames) do
-		_G[frame]:Kill()
+		frame:Kill()
 	end
 
 	for _, Frame in pairs({'TradePlayerItem', 'TradeRecipientItem'}) do
@@ -76,14 +76,14 @@ function S:TradeFrame()
 	end)
 
 	hooksecurefunc('TradeFrame_SetAcceptState', function(playerState, targetState)
-		if ( playerState == 1 ) then
+		if playerState == 1 then
 			_G.TradePlayerItemsInset:SetBackdropBorderColor(0, 1, 0)
 			_G.TradePlayerEnchantInset:SetBackdropBorderColor(0, 1, 0)
 		else
 			_G.TradePlayerItemsInset:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			_G.TradePlayerEnchantInset:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
-		if ( targetState == 1 ) then
+		if targetState == 1 then
 			_G.TradeRecipientItemsInset:SetBackdropBorderColor(0, 1, 0)
 			_G.TradeRecipientEnchantInset:SetBackdropBorderColor(0, 1, 0)
 			_G.TradeRecipientMoneyInset:SetBackdropBorderColor(0, 1, 0)

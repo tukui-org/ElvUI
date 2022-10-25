@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local pairs = pairs
-local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -14,14 +14,13 @@ local function ReskinEventTraceButton(button)
 end
 
 local function reskinScrollChild(self)
-	for i = 1, self.ScrollTarget:GetNumChildren() do
-		local child = select(i, self.ScrollTarget:GetChildren())
-		local hideButton = child and child.HideButton
-		if hideButton and not hideButton.IsSkinned then
-			S:HandleCloseButton(hideButton)
+	for _, child in next, { self.ScrollTarget:GetChildren() } do
+		local button = child.HideButton
+		if button and not button.IsSkinned then
+			S:HandleCloseButton(button)
 
-			hideButton:ClearAllPoints()
-			hideButton:SetPoint('LEFT', 3, 0)
+			button:ClearAllPoints()
+			button:SetPoint('LEFT', 3, 0)
 
 			local checkButton = child.CheckButton
 			if checkButton then
@@ -29,7 +28,7 @@ local function reskinScrollChild(self)
 				checkButton:SetSize(22, 22)
 			end
 
-			hideButton.IsSkinned = true
+			button.IsSkinned = true
 		end
 	end
 end

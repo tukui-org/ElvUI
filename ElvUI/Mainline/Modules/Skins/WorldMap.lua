@@ -120,8 +120,6 @@ function S:WorldMapFrame()
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
-	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:Point('RIGHT', WorldMapFrame.BorderFrame.CloseButton, 'LEFT', 12, 0)
 
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
@@ -156,9 +154,9 @@ function S:WorldMapFrame()
 	}
 
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)
-		s.ExecuteSessionCommand:SetNormalTexture('')
-		s.ExecuteSessionCommand:SetPushedTexture('')
-		s.ExecuteSessionCommand:SetDisabledTexture('')
+		s.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
+		s.ExecuteSessionCommand:SetPushedTexture(E.ClearTexture)
+		s.ExecuteSessionCommand:SetDisabledTexture(E.ClearTexture)
 
 		local atlas = sessionCommandToButtonAtlas[command]
 		if atlas then

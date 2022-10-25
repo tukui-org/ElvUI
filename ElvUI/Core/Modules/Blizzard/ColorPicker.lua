@@ -9,6 +9,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local strlen, strjoin, gsub, next = strlen, strjoin, gsub, next
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
+
 local CreateFrame = CreateFrame
 local IsControlKeyDown = IsControlKeyDown
 local IsModifierKeyDown = IsModifierKeyDown
@@ -33,7 +34,7 @@ local function UpdateAlpha(tbox)
 		num = 100
 	end
 
-	_G.OpacitySliderFrame:SetValue(1 - (num / 100))
+	_G.OpacitySliderFrame:SetValue(1 - (num * 0.01))
 end
 
 local function expandFromThree(r, g, b)
@@ -110,15 +111,19 @@ local function delayCall()
 		delayFunc = nil
 	end
 end
+
+local last = {r = 0, g = 0, b = 0, a = 0}
 local function onColorSelect(frame, r, g, b)
-	if frame.noColorCallback then return end
+	if frame.noColorCallback then
+		return -- prevent error from E:GrabColorPickerValues, better note in that function
+	elseif r ~= last.r or g ~= last.g or b ~= last.b then
+		last.r, last.g, last.b = r, g, b
+	else -- colors match so we don't need to update, most likely mouse is held down
+		return
+	end
 
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
-
-	if r == 0 and g == 0 and b == 0 then
-		return
-	end
 
 	if not frame:IsVisible() then
 		delayCall()
@@ -128,23 +133,25 @@ local function onColorSelect(frame, r, g, b)
 	end
 end
 
-local function onValueChanged(frame, value)
+local function onValueChanged(_, value)
 	local alpha = alphaValue(value)
-	if frame.lastAlpha ~= alpha then
-		frame.lastAlpha = alpha
+	if last.a ~= alpha then
+		last.a = alpha
+	else -- alpha matched so we don't need to update
+		return
+	end
 
-		UpdateAlphaText(alpha)
+	UpdateAlphaText(alpha)
 
-		if not _G.ColorPickerFrame:IsVisible() then
-			delayCall()
-		else
-			local opacityFunc = _G.ColorPickerFrame.opacityFunc
-			if delayFunc and (delayFunc ~= opacityFunc) then
-				delayFunc = opacityFunc
-			elseif not delayFunc then
-				delayFunc = opacityFunc
-				E:Delay(delayWait, delayCall)
-			end
+	if not _G.ColorPickerFrame:IsVisible() then
+		delayCall()
+	else
+		local opacityFunc = _G.ColorPickerFrame.opacityFunc
+		if delayFunc and (delayFunc ~= opacityFunc) then
+			delayFunc = opacityFunc
+		elseif not delayFunc then
+			delayFunc = opacityFunc
+			E:Delay(delayWait, delayCall)
 		end
 	end
 end
@@ -211,7 +218,7 @@ function B:EnhanceColorPicker()
 	originalColor:SetColorTexture(0,0,0)
 	-- OldColorSwatch to appear beneath ColorSwatch
 	originalColor:SetDrawLayer('BORDER')
-	originalColor:Point('BOTTOMLEFT', 'ColorSwatch', 'TOPRIGHT', -(swatchWidth/2), -(swatchHeight/3))
+	originalColor:Point('BOTTOMLEFT', 'ColorSwatch', 'TOPRIGHT', -(swatchWidth*0.5), -(swatchHeight/3))
 
 	-- add Color Swatch for the copied color
 	local copiedColor = Picker:CreateTexture('ColorPPCopyColorSwatch')

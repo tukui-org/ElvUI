@@ -55,7 +55,7 @@ end
 local function SkinItemButton(item)
 	item:SetTemplate('Transparent')
 	item:StyleButton()
-	item:SetNormalTexture(nil)
+	item:SetNormalTexture(E.ClearTexture)
 
 	item.icon:SetTexCoord(unpack(E.TexCoords))
 	item.icon:SetInside()
@@ -124,7 +124,7 @@ local function SkinProgressBars(_, _, line)
 		if label then
 			label:ClearAllPoints()
 			label:Point('CENTER', bar)
-			label:FontTemplate(nil, 14, 'OUTLINE')
+			label:FontTemplate(nil, E.db.general.fontSize, E.db.general.fontStyle)
 		end
 
 		if icon then

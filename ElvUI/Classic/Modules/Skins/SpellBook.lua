@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, unpack = select, unpack
+local next, unpack = next, unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -51,16 +51,13 @@ function S:SpellBookFrame()
 		local cooldown = _G['SpellButton'..i..'Cooldown']
 		local highlight = _G['SpellButton'..i..'Highlight']
 
-		for y = 1, button:GetNumRegions() do
-			local region = select(y, button:GetRegions())
-			if region:GetObjectType() == 'Texture' then
-				if region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
-					region:SetTexture(nil)
-				end
+		for _, region in next, { button:GetRegions() } do
+			if region:GetObjectType() == 'Texture' and region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
+				region:SetTexture(nil)
 			end
 		end
 
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop(nil, true)
 		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
 
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
@@ -111,7 +108,7 @@ function S:SpellBookFrame()
 		tab:StripTextures()
 		tab:SetTemplate()
 		tab:StyleButton(nil, true)
-		tab:SetTemplate('Default', true)
+		tab:SetTemplate(nil, true)
 		tab.pushed = true
 
 		tab:GetNormalTexture():SetInside()
@@ -123,13 +120,13 @@ function S:SpellBookFrame()
 
 		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(texture, tex)
 			if tex ~= nil then
-				texture:SetPushedTexture(nil)
+				texture:SetPushedTexture(E.ClearTexture)
 			end
 		end)
 
 		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(texture, tex)
 			if tex ~= nil then
-				texture:SetHighlightTexture(nil)
+				texture:SetHighlightTexture(E.ClearTexture)
 			end
 		end)
 

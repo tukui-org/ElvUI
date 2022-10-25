@@ -178,15 +178,15 @@ function RU:Role_OnEnter()
 end
 
 function RU:PositionRoleIcons()
-	if not E.Retail then return end
+	if E.Retail or E.Wrath then
+		_G.RaidUtilityRoleIcons:ClearAllPoints()
 
-	local point = E:GetScreenQuadrant(ShowButton)
-	local left = point and strfind(point, 'LEFT')
-	_G.RaidUtilityRoleIcons:ClearAllPoints()
-	if left then
-		_G.RaidUtilityRoleIcons:Point('LEFT', _G.RaidUtilityPanel, 'RIGHT', -1, 0)
-	else
-		_G.RaidUtilityRoleIcons:Point('RIGHT', _G.RaidUtilityPanel, 'LEFT', 1, 0)
+		local point = E:GetScreenQuadrant(ShowButton)
+		if point and strfind(point, 'LEFT') then
+			_G.RaidUtilityRoleIcons:Point('LEFT', _G.RaidUtilityPanel, 'RIGHT', -1, 0)
+		else
+			_G.RaidUtilityRoleIcons:Point('RIGHT', _G.RaidUtilityPanel, 'LEFT', 1, 0)
+		end
 	end
 end
 
@@ -272,7 +272,7 @@ function RU:Initialize()
 		sb:StopMovingOrSizing()
 		local point = sb:GetPoint()
 		local xOffset = sb:GetCenter()
-		local screenWidth = E.UIParent:GetWidth() / 2
+		local screenWidth = E.UIParent:GetWidth() * 0.5
 		xOffset = xOffset - screenWidth
 		sb:ClearAllPoints()
 		if strfind(point, 'BOTTOM') then
@@ -289,7 +289,7 @@ function RU:Initialize()
 	CloseButton:SetScript('OnMouseUp', function() RaidUtilityPanel.toggled = false end)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
 		RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
 		RoleIcons:Size(36, PANEL_HEIGHT)
@@ -337,20 +337,20 @@ function RU:Initialize()
 	RU:CreateUtilButton('ReadyCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOPLEFT', _G.DisbandRaidButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK)
 	_G.ReadyCheckButton:SetScript('OnMouseUp', function() if RU:CheckRaidStatus() then DoReadyCheck() end end)
 
-	if E.Retail then
-		RU:CreateUtilButton('RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.78, BUTTON_HEIGHT, 'TOPLEFT', _G.ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.ROLE_POLL)
+	if E.Retail or E.Wrath then
+		RU:CreateUtilButton('RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Wrath and 0.49 or 0.78), BUTTON_HEIGHT, 'TOPLEFT', _G.ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.ROLE_POLL)
 		_G.RoleCheckButton:SetScript('OnMouseUp', function() if RU:CheckRaidStatus() then InitiateRolePoll() end end)
 	end
 
-	RU:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Retail and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', E.Retail and _G.RoleCheckButton or _G.ReadyCheckButton, 'BOTTOMLEFT', 0, -5, L["Raid Menu"])
-	_G.RaidControlButton:SetScript('OnMouseUp', function() ToggleFriendsFrame(3) end)
+	RU:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * ((E.Retail or E.Wrath) and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', ((E.Retail or E.Wrath) and _G.RoleCheckButton) or _G.ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
+	_G.RaidControlButton:SetScript('OnMouseUp', function() if E.Retail then ToggleFriendsFrame(3) else ToggleFriendsFrame(4) end end)
 
 	if E.Retail then
 		RU:CreateUtilButton('RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', _G.RaidControlButton, 'TOPRIGHT', 3, 0, _G.PLAYER_COUNTDOWN_BUTTON)
 		_G.RaidCountdownButton:SetScript('OnMouseUp', function() C_PartyInfo_DoCountdown(10) end)
 	end
 
-	RU:CreateUtilButton('MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', _G.RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK)
+	RU:CreateUtilButton('MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', E.Wrath and _G.RoleCheckButton or _G.RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK)
 	_G.MainTankButton:SetAttribute('type', 'maintank')
 	_G.MainTankButton:SetAttribute('unit', 'target')
 	_G.MainTankButton:SetAttribute('action', 'toggle')
@@ -370,15 +370,18 @@ function RU:Initialize()
 		'RaidUtility_CloseButton'
 	}
 
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		tinsert(buttons, 'RoleCheckButton')
+	end
+
+	if E.Retail then
 		tinsert(buttons, 'RaidCountdownButton')
 
 		if _G.CompactRaidFrameManager then
 			--Reposition/Resize and Reuse the World Marker Button
 			tinsert(buttons, 'CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton')
 			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-			marker:SetParent('RaidUtilityPanel')
+			marker:SetParent(RaidUtilityPanel)
 			marker:ClearAllPoints()
 			marker:Point('TOPLEFT', _G.RoleCheckButton, 'TOPRIGHT', 3, 0)
 			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
@@ -410,8 +413,8 @@ function RU:Initialize()
 		f.MiddleRight:SetAlpha(0)
 		f.MiddleMiddle:SetAlpha(0)
 
-		f:SetHighlightTexture('')
-		f:SetDisabledTexture('')
+		f:SetHighlightTexture(E.ClearTexture)
+		f:SetDisabledTexture(E.ClearTexture)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer

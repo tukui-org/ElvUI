@@ -9,6 +9,22 @@ local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 
+local function Update_InspectPaperDollItemSlotButton(button)
+	local unit = button.hasItem and _G.InspectFrame.unit
+	if not unit then return end
+
+	local itemID = GetInventoryItemID(unit, button:GetID())
+	if itemID then
+		local quality = select(3, GetItemInfo(itemID))
+		if quality and quality > 1 then
+			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+			return
+		end
+	end
+
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -28,7 +44,7 @@ function S:Blizzard_InspectUI()
 		local cooldown = _G[slot:GetName()..'Cooldown']
 
 		slot:StripTextures()
-		slot:CreateBackdrop('Default')
+		slot:CreateBackdrop()
 		slot.backdrop:SetAllPoints()
 		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
 		slot:StyleButton()
@@ -41,31 +57,7 @@ function S:Blizzard_InspectUI()
 		end
 	end
 
-	local function styleButton(button)
-		if button.hasItem then
-			local itemID = GetInventoryItemID(InspectFrame.unit, button:GetID())
-			if itemID then
-				local quality = select(3, GetItemInfo(itemID))
-
-				if not quality then
-					E:Delay(0.1, function()
-						if InspectFrame.unit then
-							styleButton(button)
-						end
-					end)
-
-					return
-				elseif quality and quality > 1 then
-					button.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
-					return
-				end
-			end
-		end
-
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
-
-	hooksecurefunc('InspectPaperDollItemSlotButton_Update', styleButton)
+	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
 
 	S:HandleRotateButton(_G.InspectModelFrameRotateLeftButton)
 	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)

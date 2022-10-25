@@ -49,15 +49,17 @@ end
 
 --Return short value of a number
 function E:ShortValue(value, dec)
-	local abs_value = value<0 and -value or value
 	local decimal = dec and format('%%.%df', tonumber(dec) or 0)
+	local abs_value = value<0 and -value or value
+	local values = E.ShortPrefixValues
 
-	for i = 1, #E.ShortPrefixValues do
-		if abs_value >= E.ShortPrefixValues[i][1] then
+	for i = 1, #values do
+		local arg1, arg2, arg3 = unpack(values[i])
+		if abs_value >= arg1 then
 			if decimal then
-				return format(decimal..E.ShortPrefixValues[i][2], value / E.ShortPrefixValues[i][1])
+				return format(decimal..arg2, value / arg1)
 			else
-				return format(E.ShortPrefixValues[i][3], value / E.ShortPrefixValues[i][1])
+				return format(arg3, value / arg1)
 			end
 		end
 	end
@@ -71,13 +73,14 @@ end
 
 -- http://www.wowwiki.com/ColorGradient
 function E:ColorGradient(perc, ...)
+	local value = select('#', ...)
 	if perc >= 1 then
-		return select(select('#', ...) - 2, ...)
+		return select(value - 2, ...)
 	elseif perc <= 0 then
 		return ...
 	end
 
-	local num = select('#', ...) / 3
+	local num = value / 3
 	local segment, relperc = modf(perc*(num-1))
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
@@ -86,16 +89,16 @@ end
 
 -- Text Gradient by Simpy
 function E:TextGradient(text, ...)
-	local msg, len, idx = '', utf8len(text), 0
+	local msg, total = '', utf8len(text)
+	local idx, num = 0, select('#', ...) / 3
 
-	for i = 1, len do
+	for i = 1, total do
 		local x = utf8sub(text, i, i)
 		if strmatch(x, '%s') then
 			msg = msg .. x
 			idx = idx + 1
 		else
-			local num = select('#', ...) / 3
-			local segment, relperc = modf((idx/len)*num)
+			local segment, relperc = modf((idx/total)*num)
 			local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 			if not r2 then
@@ -347,12 +350,12 @@ function E:StringTitle(str)
 	return gsub(str, '(.)', strupper, 1)
 end
 
-E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7:modRate
+E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7:modRate 8:targetAura 9:expiringAura 10-14:targetAura
 E.TimeIndicatorColors = {} -- same color indexes
 E.TimeThreshold = 3
 
-for i = 0, 7 do
-	E.TimeColors[i] = '|cFFffffff'
+for i = 0, 14 do
+	E.TimeColors[i] = {r = 1, g = 1, b = 1}
 	E.TimeIndicatorColors[i] = '|cFFffffff'
 end
 
@@ -436,8 +439,8 @@ function E:FormatMoney(amount, style, textonly)
 	local goldname = textonly and L["goldabbrev"] or ICON_GOLD
 
 	local value = abs(amount)
-	local gold = floor(value / 10000)
-	local silver = floor(mod(value / 100, 100))
+	local gold = floor(value * 0.0001)
+	local silver = floor(mod(value * 0.01, 100))
 	local copper = floor(mod(value, 100))
 
 	if not style or style == 'SMART' then
@@ -458,9 +461,9 @@ function E:FormatMoney(amount, style, textonly)
 		end
 	elseif style == 'SHORT' then
 		if gold > 0 then
-			return format('%.1f%s', amount / 10000, goldname)
+			return format('%.1f%s', amount * 0.0001, goldname)
 		elseif silver > 0 then
-			return format('%.1f%s', amount / 100, silvername)
+			return format('%.1f%s', amount * 0.01, silvername)
 		else
 			return format('%d%s', amount, coppername)
 		end

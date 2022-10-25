@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local unpack, tonumber, abs = unpack, tonumber, abs
 
@@ -12,10 +13,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local ticks = {}
 
@@ -257,9 +254,9 @@ function UF:Configure_Castbar(frame)
 
 	if castbar.Holder.mover then
 		if db.overlayOnFrame ~= 'None' or not db.enable then
-			E:DisableMover(castbar.Holder.mover:GetName())
+			E:DisableMover(castbar.Holder.mover.name)
 		else
-			E:EnableMover(castbar.Holder.mover:GetName())
+			E:EnableMover(castbar.Holder.mover.name)
 		end
 	end
 
@@ -432,7 +429,7 @@ function UF:PostCastStart(unit)
 		if hasteTicks then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01
-			local firstTickInc = tickIncRate / 2
+			local firstTickInc = tickIncRate * 0.5
 			local bonusTicks = 0
 			if curHaste >= firstTickInc then
 				bonusTicks = bonusTicks + 1

@@ -66,7 +66,7 @@ function S:Blizzard_PVPUI()
 	local HonorFrame = _G.HonorFrame
 	HonorFrame:StripTextures()
 
-	S:HandleScrollBar(_G.HonorFrameSpecificFrameScrollBar)
+	S:HandleTrimScrollBar(_G.HonorFrame.SpecificScrollBar)
 	S:HandleDropDownBox(_G.HonorFrameTypeDropDown, 230)
 	S:HandleButton(_G.HonorFrameQueueButton)
 
@@ -99,25 +99,28 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- Honor Frame Specific Buttons
-	for _, bu in pairs(HonorFrame.SpecificFrame.buttons) do
-		bu.Bg:Hide()
-		bu.Border:Hide()
+	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', function (box)
+		for _, bu in next, { box.ScrollTarget:GetChildren() } do
+			if not bu.IsSkinned then
+				bu.Bg:Hide()
+				bu.Border:Hide()
 
-		bu:SetNormalTexture('')
-		bu:SetHighlightTexture('')
+				bu:StripTextures()
+				bu:CreateBackdrop()
+				bu.backdrop:Point('TOPLEFT', 2, 0)
+				bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
+				bu:StyleButton(nil, true)
 
-		bu:StripTextures()
-		bu:CreateBackdrop()
-		bu.backdrop:Point('TOPLEFT', 2, 0)
-		bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
-		bu:StyleButton(nil, true)
+				bu.SelectedTexture:SetInside(bu.backdrop)
+				bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		bu.SelectedTexture:SetInside(bu.backdrop)
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+				bu.Icon:SetTexCoord(unpack(E.TexCoords))
+				bu.Icon:Point('TOPLEFT', 5, -3)
 
-		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:Point('TOPLEFT', 5, -3)
-	end
+				bu.IsSkinned = true
+			end
+		end
+	end)
 
 	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
 		if s.bg then s.bg:SetDesaturated(true) end
@@ -139,7 +142,7 @@ function S:Blizzard_PVPUI()
 	HandleRoleChecks(ConquestFrame.HealerIcon, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 	HandleRoleChecks(ConquestFrame.DPSIcon, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 
-	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
+	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
@@ -173,8 +176,9 @@ function S:Blizzard_PVPUI()
 		end
 
 		if rewardTexture then
+			local r, g, b = GetItemQualityColor(rewardQuaility)
 			rewardFrame.Icon:SetTexture(rewardTexture)
-			rewardFrame.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(rewardQuaility))
+			rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 

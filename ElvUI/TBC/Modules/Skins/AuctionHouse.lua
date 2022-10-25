@@ -183,7 +183,7 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsNumStacksEntry.backdrop:SetAllPoints()
 
 	_G.AuctionsItemButton:StripTextures()
-	_G.AuctionsItemButton:SetTemplate('Default', true)
+	_G.AuctionsItemButton:SetTemplate(nil, true)
 	_G.AuctionsItemButton:StyleButton()
 
 	_G.AuctionsItemButton:HookScript('OnEvent', function(button, event)

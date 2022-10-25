@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local next = next
 local gsub = gsub
 local ipairs = ipairs
-local select = select
 local format = format
 local unpack = unpack
 local tinsert = tinsert
@@ -360,7 +359,7 @@ function S:Ace3_RefreshTree(scrollToSelection)
 				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
 			end
 
-			button.toggle:SetHighlightTexture('')
+			button.toggle:SetHighlightTexture(E.ClearTexture)
 		end
 	end
 end
@@ -373,8 +372,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		local frame = widget.content:GetParent()
 		if TYPE == 'Frame' then
 			frame:StripTextures()
-			for i=1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+			for _, child in next, { frame:GetChildren() } do
 				if child:IsObjectType('Button') and child:GetText() then
 					S:HandleButton(child)
 				else
@@ -385,7 +383,6 @@ function S:Ace3_RegisterAsContainer(widget)
 			frame:StripTextures()
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
-
 
 		frame:SetTemplate('Transparent')
 
@@ -428,9 +425,8 @@ function S:Ace3_RegisterAsContainer(widget)
 	end
 
 	if widget.sizer_se then
-		for i = 1, widget.sizer_se:GetNumRegions() do
-			local Region = select(i, widget.sizer_se:GetRegions())
-			if Region and Region:IsObjectType('Texture') then
+		for _, Region in next, { widget.sizer_se:GetRegions() } do
+			if Region:IsObjectType('Texture') then
 				Region:SetTexture(137057) -- Interface\Tooltips\UI-Tooltip-Border
 			end
 		end
@@ -523,7 +519,7 @@ function S:Ace3_ColorizeEnable(L)
 end
 
 local lastMinor = 0
-function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
+function S:HookAce3(lib, minor, early) -- lib: AceGUI
 	if not lib or (not minor or minor < minorGUI) then return end
 
 	local earlyContainer, earlyWidget
@@ -531,11 +527,11 @@ function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 	if lastMinor < minor then
 		lastMinor = minor
 	end
-	if earlyLoad then
+	if early then
 		earlyContainer = lib.RegisterAsContainer
 		earlyWidget = lib.RegisterAsWidget
 	end
-	if earlyLoad or oldMinor ~= minor then
+	if early or oldMinor ~= minor then
 		lib.RegisterAsContainer = nil
 		lib.RegisterAsWidget = nil
 	end
@@ -564,29 +560,27 @@ do -- Early Skin Loading
 
 	local LibStub = _G.LibStub
 	local numEnding = '%-[%d%.]+$'
-	function S:LibStub_NewLib(major, minor)
-		local earlyLoad = major == 'ElvUI'
-		if earlyLoad then major = minor end
-
+	function S:LibStub_NewLib(major)
+		local early = not E.initialized
 		local n = gsub(major, numEnding, '')
 		if Libraries[n] then
 			if n == 'AceGUI' then
-				S:HookAce3(LibStub.libs[major], LibStub.minors[major], earlyLoad)
-				if earlyLoad then
+				S:HookAce3(LibStub.libs[major], LibStub.minors[major], early)
+				if early then
 					tinsert(S.EarlyAceTooltips, major)
 				else
 					S:Ace3_SkinTooltip(LibStub.libs[major])
 				end
 			elseif n == 'AceConfigDialog' or n == 'AceConfigDialog-3.0-ElvUI' then
-				if earlyLoad then
+				if early then
 					tinsert(S.EarlyAceTooltips, major)
 				else
 					S:Ace3_SkinTooltip(LibStub.libs[major], LibStub.minors[major])
 				end
 			else
-				local prefix = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (n == 'LibUIDropDownMenu' and 'L')
+				local prefix = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (major == 'LibUIDropDownMenu-4.0' and 'L4' or major == 'LibUIDropDownMenu-3.0' and 'L3')
 				if prefix and not S[prefix..'_UIDropDownMenuSkinned'] then
-					if earlyLoad then
+					if early then
 						tinsert(S.EarlyDropdowns, prefix)
 					else
 						S:SkinLibDropDownMenu(prefix)
@@ -617,7 +611,7 @@ do -- Early Skin Loading
 			end
 		end
 		if Libraries[gsub(n, numEnding, '')] then
-			S:LibStub_NewLib('ElvUI', n)
+			S:LibStub_NewLib(n)
 		end
 	end
 

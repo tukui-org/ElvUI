@@ -17,7 +17,6 @@
 	<Script file='BGMap.lua'/>
 	<Script file='Binding.lua'/>
 	<Script file='BlackMarket.lua'/>
-	<Script file='BlizzardOptions.lua'/>
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>
@@ -88,11 +87,19 @@
 	<Script file='Tooltip.lua'/>
 	<Script file='TorghastLevelPicker.lua'/>
 	<Script file='Trade.lua'/>
-	<Script file='TradeSkill.lua'/>
 	<Script file='Trainer.lua'/>
 	<Script file='TutorialFrame.lua'/>
 	<Script file='VoidStorage.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WeeklyRewards.lua'/>
 	<Script file='WorldMap.lua'/>
+
+	<Script file='ClassTalents.lua'/>
+	<Script file='EditorManager.lua'/>
+	<Script file='ExpansionLandingPage.lua'/>
+	<Script file='GenericTrait.lua'/>
+	<Script file='MajorFaction.lua'/>
+	<Script file='Professions.lua'/>
+	<Script file='SettingsPanel.lua'/>
+	<Script file='ChatConfig.lua'/>
 </Ui>

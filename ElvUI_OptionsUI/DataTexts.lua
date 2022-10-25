@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local DT = E:GetModule('DataTexts')
 local Layout = E:GetModule('Layout')
@@ -168,6 +168,10 @@ local function SetupCustomCurrencies()
 	end
 end
 
+local function escapeString(str, get)
+	return get == gsub(str, '|', '||') or gsub(str, '||', '|')
+end
+
 local function CreateDTOptions(name, data)
 	local settings = E.global.datatexts.settings[name]
 	if not settings then return end
@@ -178,28 +182,34 @@ local function CreateDTOptions(name, data)
 
 	for key in pairs(settings) do
 		if key == 'Label' then
-			optionTable.args.Label = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return gsub(settings[info[#info]], '|', '||') end, function(info, value) settings[info[#info]] = gsub(value, '||', '|') DT:ForceUpdate_DataText(name) end)
+			optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
 		elseif key == 'NoLabel' then
-			optionTable.args.NoLabel = ACH:Toggle(L["No Label"], nil, 3)
+			optionTable.args[key] = ACH:Toggle(L["No Label"], nil, 3)
 		elseif key == 'ShowOthers' then
-			optionTable.args.ShowOthers = ACH:Toggle(L["Other AddOns"], nil, 4)
+			optionTable.args[key] = ACH:Toggle(L["Other AddOns"], nil, 4)
 		elseif key == 'decimalLength' then
-			optionTable.args.decimalLength = ACH:Range(L["Decimal Length"], nil, 20, { min = 0, max = 5, step = 1 })
+			optionTable.args[key] = ACH:Range(L["Decimal Length"], nil, 20, { min = 0, max = 5, step = 1 })
 		elseif key == 'goldFormat' then
-			optionTable.args.goldFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], 10, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
+			optionTable.args[key] = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], 10, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
 		elseif key == 'goldCoins' then
-			optionTable.args.goldCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 5)
+			optionTable.args[key] = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 5)
 		elseif key == 'textFormat' then
-			optionTable.args.textFormat = ACH:Select(L["Text Format"], nil, 20, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
+			optionTable.args[key] = ACH:Select(L["Text Format"], nil, 20, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
 		elseif key == 'latency' then
-			optionTable.args.latency = ACH:Select(L["Latency"], nil, 20, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
+			optionTable.args[key] = ACH:Select(L["Latency"], nil, 20, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
 		elseif key == 'school' then
-			optionTable.args.school = ACH:Select(L["School"], nil, 20, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
+			optionTable.args[key] = ACH:Select(L["School"], nil, 20, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
 		end
 	end
 
 	if name == 'Combat' then
 		optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
+	elseif name == 'CombatIndicator' then
+		optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+		optionTable.args.OutOfCombatColor = ACH:Color('', nil, 2, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
+		optionTable.args.Spacer = ACH:Spacer(3, 'full')
+		optionTable.args.InCombat = ACH:Input(L["In Combat Label"], nil, 4, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+		optionTable.args.InCombatColor = ACH:Color('', nil, 5, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
 	elseif name == 'Currencies' then
 		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, 10, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
 		optionTable.args.displayedCurrency.sortByValue = true
@@ -220,10 +230,17 @@ local function CreateDTOptions(name, data)
 				optionTable.args.tooltipLines.args[tostring(info[3])].args[tostring(i)] = ACH:Toggle(info[1], nil, i, nil, nil, nil, function() return settings.idEnable[info[2]] end, function(_, value) settings.idEnable[info[2]] = value end)
 			end
 		end
+	elseif name == "Location" then
+		optionTable.args.showContinent = ACH:Toggle(L["Show Continent"], nil, 1)
+		optionTable.args.showZone = ACH:Toggle(L["Show Zone"], nil, 2)
+		optionTable.args.showSubZone = ACH:Toggle(L["Show Subzone"], nil, 3)
+		optionTable.args.spacer1 = ACH:Spacer(5)
+		optionTable.args.color = ACH:Select(L["Text Color"], nil, 10, { REACTION = L["Reaction"], CLASS = L["CLASS"], CUSTOM = L["CUSTOM"] })
+		optionTable.args.customColor = ACH:Color('', nil, 11, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end, function() return settings.color ~= 'CUSTOM' end, function() return settings.color ~= 'CUSTOM' end)
 	elseif name == 'Time' then
 		optionTable.args.time24 = ACH:Toggle(L["24-Hour Time"], L["Toggle 24-hour mode for the time datatext."], 5)
 		optionTable.args.localTime = ACH:Toggle(L["Local Time"], L["If not set to true then the server time will be displayed instead."], 6)
-		optionTable.args.flashInvite = ACH:Toggle(E.NewSign..L["Flash Invites"], L["This will allow you to toggle flashing of the time datatext when there are calendar invites."], 7, nil, nil, nil, nil, nil, nil, not E.Retail)
+		optionTable.args.flashInvite = ACH:Toggle(L["Flash Invites"], L["This will allow you to toggle flashing of the time datatext when there are calendar invites."], 7, nil, nil, nil, nil, nil, nil, E.Classic or E.TBC)
 	elseif name == 'Durability' then
 		optionTable.args.percThreshold = ACH:Range(L["Flash Threshold"], L["The durability percent that the datatext will start flashing.  Set to -1 to disable"], 5, { min = -1, max = 99, step = 1 }, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
 	elseif name == 'Friends' then
@@ -306,7 +323,7 @@ DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], ni
 DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 1, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
 DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
-DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not E.Retail)
+DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
 DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, function() local list = E:CopyTable({}, DT.CurrencyList) list.GOLD = nil list.BACKPACK = nil return list end, nil, 'double', nil, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end DT:RegisterCustomCurrencyDT(currencyID) CreateCustomCurrencyOptions(currencyID) DT:LoadDataTexts() end)
 DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end DT:RegisterCustomCurrencyDT(currencyID) CreateCustomCurrencyOptions(currencyID) DT:LoadDataTexts() end)
@@ -320,7 +337,7 @@ E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.get = func
 E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.set = function(_, key, value) E.global.datatexts.newPanelInfo[key] = value end
 
 DT:PanelLayoutOptions()
-if E.Retail then
+if E.Retail or E.Wrath then
 	SetupCustomCurrencies()
 end
 SetupDTCustomization()

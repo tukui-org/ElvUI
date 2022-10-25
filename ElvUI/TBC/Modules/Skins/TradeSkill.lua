@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local strfind, unpack, select = strfind, unpack, select
+local hooksecurefunc = hooksecurefunc
+
 local GetItemInfo = GetItemInfo
 local GetTradeSkillNumReagents = GetTradeSkillNumReagents
 local GetTradeSkillInfo = GetTradeSkillInfo
@@ -10,7 +12,6 @@ local GetItemQualityColor = GetItemQualityColor
 local GetTradeSkillItemLink = GetTradeSkillItemLink
 local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
-local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
@@ -40,7 +41,7 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)
 	TradeSkillCollapseAllButton:GetNormalTexture():Size(15)
 
-	TradeSkillCollapseAllButton:SetHighlightTexture('')
+	TradeSkillCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 	TradeSkillCollapseAllButton.SetHighlightTexture = E.noop
 
 	TradeSkillCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)

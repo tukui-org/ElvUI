@@ -26,12 +26,18 @@ function E:Grid(msg)
 	end
 end
 
+local AddOns = {
+	ElvUI = true,
+	ElvUI_OptionsUI = true,
+	ElvUI_CPU = true -- debug tool located at https://github.com/Resike/ElvUI_CPU
+}
+
 function E:LuaError(msg)
 	local switch = lower(msg)
 	if switch == 'on' or switch == '1' then
 		for i=1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
-			if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and name ~= 'ElvUI_CPU' and E:IsAddOnEnabled(name) then
+			if not AddOns[name] and E:IsAddOnEnabled(name) then
 				DisableAddOn(name, E.myname)
 				ElvDB.DisabledAddOns[name] = i
 			end
@@ -78,20 +84,21 @@ function E:DelayScriptCall(msg)
 	end
 end
 
-function E:EHelp()
+function E:DisplayCommands()
 	print(L["EHELP_COMMANDS"])
 end
 
 local BLIZZARD_ADDONS = {
-	'Blizzard_APIDocumentation',
 	'Blizzard_AchievementUI',
 	'Blizzard_AdventureMap',
 	'Blizzard_AlliedRacesUI',
 	'Blizzard_AnimaDiversionUI',
+	'Blizzard_APIDocumentation',
+	'Blizzard_APIDocumentationGenerated',
 	'Blizzard_ArchaeologyUI',
 	'Blizzard_ArdenwealdGardening',
-	'Blizzard_ArenaUI',
 	'Blizzard_ArtifactUI',
+	'Blizzard_AuctionHouseShared',
 	'Blizzard_AuctionHouseUI',
 	'Blizzard_AuthChallengeUI',
 	'Blizzard_AzeriteEssenceUI',
@@ -99,17 +106,18 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_AzeriteUI',
 	'Blizzard_BarbershopUI',
 	'Blizzard_BattlefieldMap',
-	'Blizzard_BindingUI',
+	'Blizzard_BehavioralMessaging',
 	'Blizzard_BlackMarketUI',
 	'Blizzard_BoostTutorial',
-	'Blizzard_CUFProfiles',
 	'Blizzard_Calendar',
 	'Blizzard_ChallengesUI',
 	'Blizzard_Channels',
 	'Blizzard_CharacterCreate',
 	'Blizzard_CharacterCustomize',
 	'Blizzard_ChromieTimeUI',
+	'Blizzard_ClassTalentUI',
 	'Blizzard_ClassTrial',
+	'Blizzard_ClickBindingUI',
 	'Blizzard_ClientSavedVariables',
 	'Blizzard_Collections',
 	'Blizzard_CombatLog',
@@ -124,19 +132,21 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_CovenantRenown',
 	'Blizzard_CovenantSanctum',
 	'Blizzard_CovenantToasts',
+	'Blizzard_CUFProfiles',
 	'Blizzard_DeathRecap',
 	'Blizzard_DebugTools',
 	'Blizzard_Deprecated',
 	'Blizzard_EncounterJournal',
 	'Blizzard_EventTrace',
+	'Blizzard_ExpansionLandingPage',
 	'Blizzard_FlightMap',
 	'Blizzard_FrameEffects',
-	'Blizzard_GMChatUI',
 	'Blizzard_GarrisonTemplates',
 	'Blizzard_GarrisonUI',
+	'Blizzard_GenericTraitUI',
+	'Blizzard_GMChatUI',
 	'Blizzard_GuildBankUI',
 	'Blizzard_GuildControlUI',
-	'Blizzard_GuildRecruitmentUI',
 	'Blizzard_GuildUI',
 	'Blizzard_HybridMinimap',
 	'Blizzard_InspectUI',
@@ -147,8 +157,8 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_ItemUpgradeUI',
 	'Blizzard_Kiosk',
 	'Blizzard_LandingSoulbinds',
-	'Blizzard_LookingForGuildUI',
 	'Blizzard_MacroUI',
+	'Blizzard_MajorFactions',
 	'Blizzard_MapCanvas',
 	'Blizzard_MawBuffs',
 	'Blizzard_MoneyReceipt',
@@ -159,32 +169,35 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_ObjectiveTracker',
 	'Blizzard_ObliterumUI',
 	'Blizzard_OrderHallUI',
+	'Blizzard_PartyPoseUI',
+	'Blizzard_PetBattleUI',
+	'Blizzard_PlayerChoice',
+	'Blizzard_Professions',
+	'Blizzard_ProfessionsCrafterOrders',
+	'Blizzard_ProfessionsCustomerOrders',
+	'Blizzard_ProfessionsTemplates',
 	'Blizzard_PTRFeedback',
 	'Blizzard_PTRFeedbackGlue',
 	'Blizzard_PVPMatch',
 	'Blizzard_PVPUI',
-	'Blizzard_PartyPoseUI',
-	'Blizzard_PetBattleUI',
-	'Blizzard_PlayerChoice',
 	'Blizzard_QuestNavigation',
 	'Blizzard_RaidUI',
 	'Blizzard_RuneforgeUI',
 	'Blizzard_ScrappingMachineUI',
 	'Blizzard_SecureTransferUI',
 	'Blizzard_SharedMapDataProviders',
+	'Blizzard_SharedTalentUI',
 	'Blizzard_SocialUI',
 	'Blizzard_Soulbinds',
 	'Blizzard_StoreUI',
 	'Blizzard_SubscriptionInterstitialUI',
 	'Blizzard_TalentUI',
-	'Blizzard_TalkingHeadUI',
 	'Blizzard_TimeManager',
 	'Blizzard_TokenUI',
 	'Blizzard_TorghastLevelPicker',
-	'Blizzard_TradeSkillUI',
 	'Blizzard_TrainerUI',
-	'Blizzard_Tutorial',
-	'Blizzard_TutorialTemplates',
+	'Blizzard_TutorialManager',
+	'Blizzard_Tutorials',
 	'Blizzard_UIFrameManager',
 	'Blizzard_UIWidgets',
 	'Blizzard_VoidStorageUI',
@@ -229,8 +242,8 @@ function E:LoadCommands()
 	self:RegisterChatCommand('ereset', 'ResetUI')
 	self:RegisterChatCommand('edebug', 'LuaError')
 
-	self:RegisterChatCommand('ehelp', 'EHelp')
-	self:RegisterChatCommand('ecommands', 'EHelp')
+	self:RegisterChatCommand('ehelp', 'DisplayCommands')
+	self:RegisterChatCommand('ecommands', 'DisplayCommands')
 	self:RegisterChatCommand('eblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
 	self:RegisterChatCommand('efixdb', 'DBConvertProfile')

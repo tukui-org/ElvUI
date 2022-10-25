@@ -19,7 +19,7 @@ function UF:Configure_ResurrectionIcon(frame)
 		RI:Show()
 		RI:Size(db.resurrectIcon.size)
 
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.resurrectIcon.attachToObject)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.resurrectIcon.attachToObject)
 		RI:ClearAllPoints()
 		RI:Point(db.resurrectIcon.attachTo, attachPoint, db.resurrectIcon.attachTo, db.resurrectIcon.xOffset, db.resurrectIcon.yOffset)
 	else

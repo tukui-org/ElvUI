@@ -1,6 +1,6 @@
 --[[
 LibDualSpec-1.0 - Adds dual spec support to individual AceDB-3.0 databases
-Copyright (C) 2009-2012 Adirelle
+Copyright (C) 2009-2022 Adirelle
 
 All rights reserved.
 
@@ -31,10 +31,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
--- just bail out on classic, there is no DualSpec there
-if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then return end
+-- Don't load unless we are Retail or Wrath Classic
+if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and WOW_PROJECT_ID ~= WOW_PROJECT_WRATH_CLASSIC then return end
 
-local MAJOR, MINOR = "LibDualSpec-1.0", 20
+local MAJOR, MINOR = "LibDualSpec-1.0", 22
 assert(LibStub, MAJOR.." requires LibStub")
 local lib, minor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -72,9 +72,23 @@ local AceDB3 = LibStub('AceDB-3.0', true)
 local AceDBOptions3 = LibStub('AceDBOptions-3.0', true)
 local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
 
--- class id specialization functions don't require player data to be loaded
-local _, _, classId = UnitClass("player")
-local numSpecs = GetNumSpecializationsForClassID(classId)
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local numSpecs = 2
+local specNames = {TALENT_SPEC_PRIMARY, TALENT_SPEC_SECONDARY}
+if isRetail then
+	-- class id specialization functions don't require player data to be loaded
+	local _, classId = UnitClassBase("player")
+	numSpecs = GetNumSpecializationsForClassID(classId)
+	for i = 1, numSpecs do
+		local _, name = GetSpecializationInfoForClassID(classId, i)
+		specNames[i] = name
+	end
+end
+
+local GetSpecialization = isRetail and GetSpecialization or GetActiveTalentGroup
+local CanPlayerUseTalentSpecUI = isRetail and C_SpecializationInfo.CanPlayerUseTalentSpecUI or function()
+	return true, HELPFRAME_CHARACTER_BULLET5
+end
 
 -- ----------------------------------------------------------------------------
 -- Localization
@@ -82,50 +96,46 @@ local numSpecs = GetNumSpecializationsForClassID(classId)
 
 local L_ENABLED = "Enable spec profiles"
 local L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-local L_CURRENT = "%s (Current)"
+local L_CURRENT = "%s - Active"
 
 do
 	local locale = GetLocale()
 	if locale == "deDE" then
 		L_ENABLED = "Spezialisierungsprofile aktivieren"
 		L_ENABLED_DESC = "Falls diese Option aktiviert ist, wird dein Profil auf das angegebene Profil gesetzt, wenn du die Spezialisierung wechselst."
-		L_CURRENT = "%s (Momentan)"
-	elseif locale == "esES" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
-	elseif locale == "esMX" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_CURRENT = "%s - Aktiv"
+	elseif locale == "esES" or locale == "esMX" then
+		L_ENABLED = "Activar perfiles de especialización"
+		L_ENABLED_DESC = "Cuando está habilitado, su perfil se establecerá en el perfil especificado cuando cambie de especialización."
+		L_CURRENT = "%s - Activo"
 	elseif locale == "frFR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "Activer les profils de spécialisation"
+		L_ENABLED_DESC = "Lorsque cette option est activée, votre profil sera défini sur le profil spécifié lorsque vous changerez de spécialisation."
+		L_CURRENT = "%s - Actifs"
 	elseif locale == "itIT" then
 		L_ENABLED = "Abilita i profili per la specializzazione"
 		L_ENABLED_DESC = "Quando abilitato, il tuo profilo verrà impostato in base alla specializzazione usata."
-		L_CURRENT = "%s (Attuale)"
+		L_CURRENT = "%s - Attivi"
 	elseif locale == "koKR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "전문화 프로필 활성화"
+		L_ENABLED_DESC = "활성화하면 전문화를 변경할 때 프로필이 지정된 프로필로 설정됩니다."
+		L_CURRENT = "%s - 활성화"
 	elseif locale == "ptBR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "Ativar perfis de especialização"
+		L_ENABLED_DESC = "Quando ativado, seu perfil será definido para o perfil especificado quando você alterar a especialização."
+		L_CURRENT = "%s – ativo"
 	elseif locale == "ruRU" then
 		L_ENABLED = "Включить профили специализации"
 		L_ENABLED_DESC = "Если включено, ваш профиль будет зависеть от выбранной специализации."
-		L_CURRENT = "%s (Текущий)"
+		L_CURRENT = "%s - активен"
 	elseif locale == "zhCN" then
 		L_ENABLED = "启用专精配置文件"
 		L_ENABLED_DESC = "当启用后，当切换专精时配置文件将设置为专精配置文件。"
-		L_CURRENT = "%s（当前）"
+		L_CURRENT = "%s - 开启"
 	elseif locale == "zhTW" then
 		L_ENABLED = "啟用專精設定檔"
 		L_ENABLED_DESC = "當啟用後，當你切換專精時設定檔會設定為專精設定檔。"
-		L_CURRENT = "%s (目前) "
+		L_CURRENT = "%s - 啟動"
 	end
 end
 
@@ -303,11 +313,12 @@ options.choose = {
 }
 
 options.enabled = {
+	type = "toggle",
 	name = "|cffffd200"..L_ENABLED.."|r",
 	desc = function()
 		local desc = L_ENABLED_DESC
 		if lib.currentSpec == 0 then
-			local _, reason = C_SpecializationInfo.CanPlayerUseTalentSpecUI()
+			local _, reason = CanPlayerUseTalentSpecUI()
 			if not reason or reason == "" then
 				reason = TALENT_MICRO_BUTTON_NO_SPEC
 			end
@@ -316,7 +327,6 @@ options.enabled = {
 		return desc
 	end,
 	descStyle = "inline",
-	type = "toggle",
 	order = 41,
 	width = "full",
 	get = function(info) return info.handler.db:IsDualSpecEnabled() end,
@@ -324,14 +334,43 @@ options.enabled = {
 	disabled = function() return lib.currentSpec == 0 end,
 }
 
+local points = {}
 for i = 1, numSpecs do
-	local _, specName = GetSpecializationInfoForClassID(classId, i)
 	options["specProfile" .. i] = {
 		type = "select",
-		name = function() return lib.currentSpec == i and L_CURRENT:format(specName) or specName end,
+		name = function(info)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			return lib.currentSpec == specIndex and L_CURRENT:format(specNames[specIndex]) or specNames[specIndex]
+		end,
+		desc = not isRetail and function(info)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			local highPointsSpentIndex = nil
+			for treeIndex = 1, 3 do
+				local name, _, pointsSpent, _, previewPointsSpent = GetTalentTabInfo(treeIndex, false, false, specIndex)
+				if name then
+					local displayPointsSpent = pointsSpent + previewPointsSpent
+					points[treeIndex] = displayPointsSpent
+					if displayPointsSpent > 0 and (not highPointsSpentIndex or displayPointsSpent > points[highPointsSpentIndex]) then
+						highPointsSpentIndex = treeIndex
+					end
+				else
+					points[treeIndex] = 0
+				end
+			end
+			if highPointsSpentIndex then
+				points[highPointsSpentIndex] = GREEN_FONT_COLOR:WrapTextInColorCode(points[highPointsSpentIndex])
+			end
+			return ("|cffffffff%s / %s / %s|r"):format(unpack(points))
+		end or nil,
 		order = 42 + i,
-		get = function(info) return info.handler.db:GetDualSpecProfile(i) end,
-		set = function(info, value) info.handler.db:SetDualSpecProfile(value, i) end,
+		get = function(info)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			return info.handler.db:GetDualSpecProfile(specIndex)
+		end,
+		set = function(info, value)
+			local specIndex = tonumber(info[#info]:sub(-1))
+			info.handler.db:SetDualSpecProfile(value, specIndex)
+		end,
 		values = "ListProfiles",
 		arg = "common",
 		disabled = function(info) return not info.handler.db:IsDualSpecEnabled() end,
@@ -410,17 +449,22 @@ end
 -- ----------------------------------------------------------------------------
 
 local function eventHandler(self, event)
-	local spec = GetSpecialization() or 0
+	local spec = tonumber(GetSpecialization() or 0)
 	-- Newly created characters start at 5 instead of 1 in 9.0.1.
-	if spec == 5 or not C_SpecializationInfo.CanPlayerUseTalentSpecUI() then
+	if spec == 5 or not CanPlayerUseTalentSpecUI() then
 		spec = 0
 	end
 	lib.currentSpec = spec
 
 	if event == "PLAYER_LOGIN" then
 		self:UnregisterEvent(event)
-		self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
-		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
+		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		if isRetail then
+			self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
+			self:RegisterEvent("PLAYER_LEVEL_CHANGED")
+		else
+			self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+		end
 	end
 
 	if spec > 0 and next(upgrades) then

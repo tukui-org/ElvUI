@@ -31,7 +31,7 @@ function UF:UpdateRoleIcon(event)
 		return
 	end
 
-	local role = E.Retail and UnitGroupRolesAssigned(self.unit)
+	local role = (E.Retail or E.Wrath) and UnitGroupRolesAssigned(self.unit)
 	if self.isForced and role == 'NONE' then
 		local rnd = random(1, 3)
 		role = rnd == 1 and 'TANK' or (rnd == 2 and 'HEALER' or (rnd == 3 and 'DAMAGER'))
@@ -57,7 +57,7 @@ function UF:Configure_RoleIcon(frame)
 
 	if db.roleIcon.enable then
 		frame:EnableElement('GroupRoleIndicator')
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.roleIcon.attachTo)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.roleIcon.attachTo)
 
 		role:ClearAllPoints()
 		role:Point(db.roleIcon.position, attachPoint, db.roleIcon.position, db.roleIcon.xOffset, db.roleIcon.yOffset)

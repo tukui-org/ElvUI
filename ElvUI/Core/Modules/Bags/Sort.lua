@@ -2,17 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local Search = E.Libs.ItemSearch
 
+local _G = _G
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
 local strmatch, gmatch, strfind = strmatch, gmatch, strfind
 local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
 local tonumber, floor, band = tonumber, floor, bit.band
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local GetContainerItemID = GetContainerItemID
-local GetContainerItemInfo = GetContainerItemInfo
-local GetContainerItemLink = GetContainerItemLink
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetCursorInfo = GetCursorInfo
 local GetGuildBankItemInfo = GetGuildBankItemInfo
@@ -23,10 +18,8 @@ local GetItemFamily = GetItemFamily
 local GetItemInfo = GetItemInfo
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
-local PickupContainerItem = PickupContainerItem
 local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
-local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
 
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
@@ -36,6 +29,37 @@ local BANK_CONTAINER = BANK_CONTAINER
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
+
+local ContainerIDToInventoryID = ContainerIDToInventoryID
+local GetContainerItemID = GetContainerItemID
+local GetContainerItemLink = GetContainerItemLink
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots
+local PickupContainerItem = PickupContainerItem
+local SplitContainerItem = SplitContainerItem
+
+-- converted below
+local GetContainerItemInfo
+
+do
+	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
+	if container then
+		ContainerIDToInventoryID = container.ContainerIDToInventoryID
+		GetContainerItemID = container.GetContainerItemID
+		GetContainerItemInfo = container.GetContainerItemInfo
+		GetContainerItemLink = container.GetContainerItemLink
+		GetContainerNumFreeSlots = container.GetContainerNumFreeSlots
+		GetContainerNumSlots = container.GetContainerNumSlots
+		PickupContainerItem = container.PickupContainerItem
+		SplitContainerItem = container.SplitContainerItem
+	else -- localised above
+		GetContainerItemInfo = function(containerIndex, slotIndex)
+			local info = {}
+			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
+			return info
+		end
+	end
+end
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
@@ -421,7 +445,10 @@ function B:GetItemInfo(bag, slot)
 	if IsGuildBankBag(bag) then
 		return GetGuildBankItemInfo(bag - 50, slot)
 	else
-		return GetContainerItemInfo(bag, slot)
+		local info = GetContainerItemInfo(bag, slot)
+		if info then
+			return info.iconFileID, info.stackCount, info.isLocked
+		end
 	end
 end
 
@@ -476,7 +503,7 @@ function B:Encode_BagSlot(bag, slot)
 end
 
 function B:Decode_BagSlot(int)
-	return floor(int/100), int % 100
+	return floor(int*0.01), int % 100
 end
 
 function B:IsPartial(bag, slot)
@@ -489,7 +516,7 @@ function B:EncodeMove(source, target)
 end
 
 function B:DecodeMove(move)
-	local s = floor(move/10000)
+	local s = floor(move*0.0001)
 	local t = move%10000
 	s = (t>9000) and (s+1) or s
 	t = (t>9000) and (t-10000) or t

@@ -2,11 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next, strsplit = next, strsplit
 local unpack, sort, gsub, wipe = unpack, sort, gsub, wipe
 local strupper, ipairs, tonumber = strupper, ipairs, tonumber
 local floor, select, type, min = floor, select, type, min
 local pairs, tinsert, tContains = pairs, tinsert, tContains
-local strsplit = strsplit
 
 local hooksecurefunc = hooksecurefunc
 local EnableAddOn = EnableAddOn
@@ -23,7 +23,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'SharedTooltipTemplate')
+local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
 
 local grid
 E.ConfigModeLayouts = {
@@ -122,10 +122,8 @@ function E:Grid_Create()
 		grid:SetFrameStrata('BACKGROUND')
 	else
 		grid.regionCount = 0
-		local numRegions = grid:GetNumRegions()
-		for i = 1, numRegions do
-			local region = select(i, grid:GetRegions())
-			if region and region.IsObjectType and region:IsObjectType('Texture') then
+		for _, region in next, { grid:GetRegions() } do
+			if region.IsObjectType and region:IsObjectType('Texture') then
 				grid.regionCount = grid.regionCount + 1
 				region:SetAlpha(0)
 			end
@@ -133,10 +131,10 @@ function E:Grid_Create()
 	end
 
 	local width, height = E.UIParent:GetSize()
-	local size, half = E.mult / 2, height / 2
+	local size, half = E.mult * 0.5, height * 0.5
 
 	local gSize = E.db.gridSize
-	local gHalf = gSize / 2
+	local gHalf = gSize * 0.5
 
 	local ratio = width / height
 	local hHeight = height * ratio
@@ -173,7 +171,7 @@ function E:Grid_Create()
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half + size))
 	end
 
-	local hSteps = floor((height/2)/hStep)
+	local hSteps = floor((height*0.5)/hStep)
 	for i = 1, hSteps do
 		local ihStep = i*hStep
 
@@ -288,14 +286,14 @@ function E:CreateMoverPopup()
 	f.desc = desc
 
 	local snapName = f:GetName()..'CheckButton'
-	local snapping = CreateFrame('CheckButton', snapName, f, 'OptionsCheckButtonTemplate')
+	local snapping = CreateFrame('CheckButton', snapName, f, 'UICheckButtonTemplate')
 	snapping:SetScript('OnShow', function(cb) cb:SetChecked(E.db.general.stickyFrames) end)
 	snapping:SetScript('OnClick', function(cb) E.db.general.stickyFrames = cb:GetChecked() end)
 	snapping.text = _G[snapName..'Text']
 	snapping.text:SetText(L["Sticky Frames"])
 	f.snapping = snapping
 
-	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate')
+	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'UIPanelButtonTemplate')
 	lock.Text:SetText(L["Lock"])
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode()
@@ -553,8 +551,12 @@ function E:Config_UpdateSize(reset)
 	if not frame then return end
 
 	local maxWidth, maxHeight = self.UIParent:GetSize()
-	frame:SetMinResize(800, 600)
-	frame:SetMaxResize(maxWidth-50, maxHeight-50)
+	if frame.SetResizeBounds then
+		frame:SetResizeBounds(800, 600, maxWidth-50, maxHeight-50)
+	else
+		frame:SetMinResize(800, 600)
+		frame:SetMaxResize(maxWidth-50, maxHeight-50)
+	end
 
 	self.Libs.AceConfigDialog:SetDefaultSize(E.name, E:Config_GetDefaultSize())
 
@@ -1087,7 +1089,7 @@ function E:ToggleOptionsUI(msg)
 			LoadAddOn('ElvUI_OptionsUI')
 
 			-- version check elvui options if it's actually enabled
-			if GetAddOnMetadata('ElvUI_OptionsUI', 'Version') ~= '1.07' then
+			if GetAddOnMetadata('ElvUI_OptionsUI', 'Version') ~= '1.08' then
 				self:StaticPopup_Show('CLIENT_UPDATE_REQUEST')
 			end
 		else
@@ -1128,8 +1130,7 @@ function E:ToggleOptionsUI(msg)
 		if not frame.bottomHolder then -- window was released or never opened
 			frame:HookScript('OnHide', E.Config_WindowClosed)
 
-			for i=1, frame:GetNumChildren() do
-				local child = select(i, frame:GetChildren())
+			for _, child in next, { frame:GetChildren() } do
 				if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
 					frame.originalClose = child
 					child:Hide()
@@ -1142,8 +1143,7 @@ function E:ToggleOptionsUI(msg)
 
 			local unskinned = not E.private.skins.ace3Enable
 			if unskinned then
-				for i=1, frame:GetNumRegions() do
-					local region = select(i, frame:GetRegions())
+				for _, region in next, { frame:GetRegions() } do
 					if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
 						region:SetAlpha(0)
 					end

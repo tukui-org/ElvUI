@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.OptionsUI)
 local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
@@ -22,8 +22,8 @@ local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
-local GetNumSpecializationsForClassID = not E.Retail and LCS.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = not E.Retail and LCS.GetSpecializationInfoForClassID or GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = (not E.Retail and LCS.GetNumSpecializationsForClassID) or GetNumSpecializationsForClassID
+local GetSpecializationInfoForClassID = (not E.Retail and LCS.GetSpecializationInfoForClassID) or GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local filters = {}
@@ -700,12 +700,12 @@ end
 
 local actionDefaults = {
 	color = {
-		healthColor = { r = 136 / 255, g = 255 / 255, b = 102 / 255, a = 1 },
-		powerColor = { r = 102 / 255, g = 136 / 255, b = 255 / 255, a = 1 },
+		healthColor = { r = 0.53, g = 1.00, b = 0.40, a = 1 },
+		powerColor = { r = 0.40, g = 0.53, b = 1.00, a = 1 },
 		borderColor = { r = 0, g = 0, b = 0, a = 1}
 	},
 	flash = {
-		color = { r = 104 / 255, g = 138 / 255, b = 217 / 255, a = 1 },
+		color = { r = 0.41, g = 0.54, b = 0.85, a = 1 },
 		speed = 4
 	},
 }
@@ -819,7 +819,7 @@ do
 		label.name = (D:Decode(importText) == 'styleFilters' and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
 	end
 
-	StyleFilters.import = ACH:Group(E.NewSign..L["Import"], nil, 15)
+	StyleFilters.import = ACH:Group(L["Import"], nil, 15)
 	StyleFilters.import.args.label = label
 	StyleFilters.import.args.text = ACH:Input('', nil, 1, 10, 'full', Import_Get, Import_Set)
 	StyleFilters.import.args.text.disableButton = true
@@ -858,7 +858,7 @@ do
 		StyleFilters.export.args.text.hidden = not exportText
 	end
 
-	StyleFilters.export = ACH:Group(E.NewSign..L["Export"], nil, 20)
+	StyleFilters.export = ACH:Group(L["Export"], nil, 20)
 	StyleFilters.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
 	StyleFilters.export.args.filters.sortByValue = true
 	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)

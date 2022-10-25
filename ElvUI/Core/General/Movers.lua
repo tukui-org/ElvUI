@@ -74,7 +74,7 @@ function E:SetMoverPoints(name, parent)
 
 	if parent then
 		parent:ClearAllPoints()
-		parent:SetPoint(point1, parent.mover, 0, 0)
+		parent:SetPoint(point1, parent.mover, nil, 0, 0)
 	end
 end
 
@@ -100,11 +100,7 @@ local function OnDragStart(self)
 		E:UIFrameFadeIn(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 1)
 	end
 
-	if E.db.general.stickyFrames then
-		Sticky:StartMoving(self, E.snapBars, self.snapOffset, self.snapOffset, self.snapOffset, self.snapOffset)
-	else
-		self:StartMoving()
-	end
+	Sticky:StartMoving(self, E.db.general.stickyFrames and E.snapBars, self.snapOffset, self.snapOffset, self.snapOffset, self.snapOffset)
 
 	coordFrame.child = self
 	coordFrame:Show()
@@ -118,11 +114,7 @@ local function OnDragStop(self)
 		E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4)
 	end
 
-	if E.db.general.stickyFrames then
-		Sticky:StopMoving(self)
-	else
-		self:StopMovingOrSizing()
-	end
+	Sticky:StopMoving(self)
 
 	local x2, y2, p2 = E:CalculateMoverPoints(self)
 	self:ClearAllPoints()

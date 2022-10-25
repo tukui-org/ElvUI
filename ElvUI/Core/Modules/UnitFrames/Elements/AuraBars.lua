@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local wipe = wipe
 local ipairs = ipairs
 local unpack = unpack
 local strfind = strfind
@@ -43,6 +44,12 @@ end
 function UF:AuraBars_UpdateBar(bar)
 	local bars = bar:GetParent()
 	bar.db = bars.db
+
+	if bar.auraInfo then
+		wipe(bar.auraInfo)
+	else
+		bar.auraInfo = {}
+	end
 
 	bar:SetReverseFill(bars.reverseFill)
 	bar.spark:ClearAllPoints()
@@ -129,22 +136,22 @@ function UF:Configure_AuraBars(frame)
 			attachTo = frame.Buffs
 		elseif debuffs then
 			attachTo = frame.Debuffs
-		elseif db.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
-			attachTo = _G.ElvUF_Player.AuraBars
+		elseif db.attachTo == 'PLAYER_AURABARS' then
+			attachTo = UF.units.player.AuraBars
 			xOffset = 0
 		end
 
 		local px = UF.thinBorders and 0 or 2
 		local POWER_OFFSET, BAR_WIDTH = 0
 		if detached then
-			E:EnableMover(bars.Holder.mover:GetName())
+			E:EnableMover(bars.Holder.mover.name)
 			BAR_WIDTH = db.detachedWidth
 
 			yOffset = below and BORDER or -(db.height + px)
 
 			bars.Holder:Size(db.detachedWidth, db.height + (BORDER * 2))
 		else
-			E:DisableMover(bars.Holder.mover:GetName())
+			E:DisableMover(bars.Holder.mover.name)
 			BAR_WIDTH = frame.UNIT_WIDTH
 
 			local offset = db.yOffset + px
@@ -167,7 +174,7 @@ function UF:Configure_AuraBars(frame)
 		local p2 = detached and p1 or (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
 		if p2 == 'TOP' or p2 == 'BOTTOM' then
 			bars.initialAnchor = 'BOTTOM'
-			bars:Point(p2, attachTo, p2, (bars.height / 2) + -(detached and px or UF.BORDER), yOffset)
+			bars:Point(p2, attachTo, p2, (bars.height * 0.5) + -(detached and px or UF.BORDER), yOffset)
 		else
 			local right = strfind(p2, 'RIGHT')
 			local p3, p4 = below and 'TOP' or 'BOTTOM', right and 'RIGHT' or 'LEFT'
@@ -185,7 +192,6 @@ local GOTAK = GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
 	local spellID = bar.spellID
 	local spellName = bar.name
-
 	bar.db = self.db
 
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
@@ -206,6 +212,13 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 		else
 			colors = UF.db.colors.auraBarBuff
 		end
+	end
+
+	local text = bar.db.abbrevName and E.TagFunctions.Abbrev(bar.spell) or bar.spell
+	if bar.count > 1 then
+		bar.nameText:SetFormattedText('[%d] %s', bar.count, text)
+	else
+		bar.nameText:SetText(text)
 	end
 
 	bar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop

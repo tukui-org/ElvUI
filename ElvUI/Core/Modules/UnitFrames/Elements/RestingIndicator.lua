@@ -17,11 +17,9 @@ local function ShouldHide(frame)
 	return frame.db.RestIcon.hideAtMaxLevel and E:XPIsLevelMax()
 end
 
-local TestingTimer
-local TestingFrame
+local TestingTimer, TestingFrame
 local function TestingFunc()
-	local isResting = IsResting()
-	if TestingFrame and not isResting then
+	if TestingFrame and not IsResting() then
 		TestingFrame:Hide()
 	end
 end
@@ -46,14 +44,13 @@ function UF:TestingDisplay_RestingIndicator(frame)
 end
 
 function UF:Configure_RestingIndicator(frame)
-	local icon = frame.RestingIndicator
-	local db = frame.db.RestIcon
-
-	if db.enable then
+	local db = frame.db and frame.db.RestIcon
+	if db and db.enable then
 		if not frame:IsElementEnabled('RestingIndicator') then
 			frame:EnableElement('RestingIndicator')
 		end
 
+		local icon = frame.RestingIndicator
 		if db.defaultColor then
 			icon:SetVertexColor(1, 1, 1, 1)
 			icon:SetDesaturated(false)

@@ -13,7 +13,7 @@ function S:SkinTutorial()
 		local icon = button:GetNormalTexture()
 
 		button:Size(35, 45)
-		button:SetTemplate('Default', true)
+		button:SetTemplate(nil, true)
 		button:StyleButton(nil, true)
 
 		icon:SetInside()

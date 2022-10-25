@@ -3,8 +3,15 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local select, unpack = select, unpack
-
 local hooksecurefunc = hooksecurefunc
+
+local function SetPlayTexture()
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
+end
+
+local function SetPauseTexture()
+	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
+end
 
 function S:Blizzard_TimeManager()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.timemanager) then return end
@@ -20,7 +27,7 @@ function S:Blizzard_TimeManager()
 
 	_G.TimeManagerStopwatchFrame:Point('TOPRIGHT', 10, -12)
 
-	_G.TimeManagerStopwatchCheck:SetTemplate('Default')
+	_G.TimeManagerStopwatchCheck:SetTemplate()
 	_G.TimeManagerStopwatchCheck:StyleButton(nil, true)
 
 	_G.TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
@@ -35,9 +42,9 @@ function S:Blizzard_TimeManager()
 	S:HandleEditBox(_G.TimeManagerAlarmMessageEditBox)
 
 	_G.TimeManagerAlarmEnabledButton:Point('LEFT', 16, -45)
-	_G.TimeManagerAlarmEnabledButton:SetNormalTexture(nil)
+	_G.TimeManagerAlarmEnabledButton:SetNormalTexture(E.ClearTexture)
 	_G.TimeManagerAlarmEnabledButton.SetNormalTexture = E.noop
-	_G.TimeManagerAlarmEnabledButton:SetPushedTexture(nil)
+	_G.TimeManagerAlarmEnabledButton:SetPushedTexture(E.ClearTexture)
 	_G.TimeManagerAlarmEnabledButton.SetPushedTexture = E.noop
 	S:HandleButton(_G.TimeManagerAlarmEnabledButton)
 
@@ -55,10 +62,10 @@ function S:Blizzard_TimeManager()
 
 	S:HandleCloseButton(_G.StopwatchCloseButton)
 
-	_G.StopwatchPlayPauseButton:CreateBackdrop('Default', true)
+	_G.StopwatchPlayPauseButton:CreateBackdrop(nil, true)
 	_G.StopwatchPlayPauseButton:SetSize(12, 12)
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
-	_G.StopwatchPlayPauseButton:SetHighlightTexture('')
+	_G.StopwatchPlayPauseButton:SetHighlightTexture(E.ClearTexture)
 	_G.StopwatchPlayPauseButton.backdrop:SetOutside(_G.StopwatchPlayPauseButton, 2, 2)
 	_G.StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
 	_G.StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
@@ -67,13 +74,6 @@ function S:Blizzard_TimeManager()
 	_G.StopwatchResetButton:SetSize(16,16)
 	_G.StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
 	_G.StopwatchResetButton:Point('BOTTOMRIGHT', _G.StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
-
-	local function SetPlayTexture()
-		_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
-	end
-	local function SetPauseTexture()
-		_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
-	end
 
 	hooksecurefunc('Stopwatch_Play', SetPauseTexture)
 	hooksecurefunc('Stopwatch_Pause', SetPlayTexture)

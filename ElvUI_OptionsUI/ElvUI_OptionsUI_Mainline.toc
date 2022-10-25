@@ -1,8 +1,8 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptionsUI|r
-## Notes: Options for ElvUI.
+## Notes: Powers the configuration window.|n|cffff3333Does not store any profile data.|r
 ## Author: Elv, Simpy
-## Version: 1.07
-## Interface: 90207
+## Version: 1.08
+## Interface: 100000
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
