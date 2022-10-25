@@ -179,6 +179,9 @@ function S:BlizzardOptions()
 	_G.CombatConfigTab1:ClearAllPoints()
 	_G.CombatConfigTab1:Point('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
 
+	_G.ChatConfigChatSettingsClassColorLegend.NineSlice:SetTemplate()
+	_G.ChatConfigChannelSettingsClassColorLegend.NineSlice:SetTemplate()
+
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
