@@ -14,6 +14,7 @@ local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
+local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 local InCombatLockdown = InCombatLockdown
@@ -25,7 +26,6 @@ local UnregisterStateDriver = UnregisterStateDriver
 
 --Retail
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
-local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
@@ -34,7 +34,6 @@ local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
 --Wrath
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListSize = GetCurrencyListSize
 
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
@@ -699,18 +698,13 @@ end
 
 function DT:PopulateData(currencyOnly)
 	local Collapsed = {}
-	local listSize, i = E.Retail and C_CurrencyInfo_GetCurrencyListSize() or GetCurrencyListSize(), 1
+	local listSize, i = GetCurrencyListSize(), 1
 
 	local headerIndex
 	while listSize >= i do
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(i) or {}
-		if E.Wrath then
-			info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(i)
-		end
-
+		local info = DT:CurrencyListInfo(i)
 		if E.Retail and info.isHeader and not info.isHeaderExpanded then
 			C_CurrencyInfo_ExpandCurrencyList(i, true)
-			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
 		end
 		if info.isHeader then
@@ -719,7 +713,7 @@ function DT:PopulateData(currencyOnly)
 
 			headerIndex = i
 		end
-		if not info.isHeader then
+		if info.name and not info.isHeader then
 			local currencyLink = E.Retail and C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
@@ -733,13 +727,14 @@ function DT:PopulateData(currencyOnly)
 				E.global.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, E.global.datatexts.settings.Currencies.idEnable[currencyID] }
 			end
 		end
+
 		i = i + 1
 	end
 
 	if E.Retail then
 		for k = 1, listSize do
-			local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(k)
-			if not info then
+			local info = DT:CurrencyListInfo(k)
+			if not info.name then
 				break
 			elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
 				C_CurrencyInfo_ExpandCurrencyList(k, false)
@@ -768,6 +763,16 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 			DT:PopulateData(true)
 		end
 	end
+end
+
+function DT:CurrencyListInfo(index)
+	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
+
+	if E.Wrath then
+		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(index)
+	end
+
+	return info
 end
 
 function DT:CurrencyInfo(id)

@@ -25,7 +25,6 @@ local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassI
 local C_Garrison_GetTalentTreeInfo = C_Garrison.GetTalentTreeInfo
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_Covenants_GetActiveCovenantID = C_Covenants.GetActiveCovenantID
 local C_CovenantCallings_AreCallingsUnlocked = C_CovenantCallings.AreCallingsUnlocked
 local CovenantCalling_Create = CovenantCalling_Create
@@ -185,14 +184,9 @@ local function AddTalentInfo(garrisonType, currentCovenant)
 	end
 end
 
-local function GetInfo(id)
-	local info = C_CurrencyInfo_GetCurrencyInfo(id)
-	return info.quantity, info.name, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
-end
-
 local function AddInfo(id)
-	local quantity, _, icon = GetInfo(id)
-	return format('%s %s', icon, BreakUpLargeNumbers(quantity))
+	local info, _, icon = DT:CurrencyInfo(id)
+	return format('%s %s', icon, BreakUpLargeNumbers(info.quantity or 0))
 end
 
 local function OnEnter()

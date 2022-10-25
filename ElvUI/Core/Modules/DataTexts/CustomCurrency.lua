@@ -5,13 +5,7 @@ local _G = _G
 local tinsert, tremove, next = tinsert, tremove, next
 local ipairs, pairs, format, strjoin = ipairs, pairs, format, strjoin
 
---Retail
-local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
-local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
-
---Wrath
-local GetCurrencyListSize = GetCurrencyListSize
-local GetCurrencyListInfo = GetCurrencyListInfo
+local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
@@ -52,13 +46,9 @@ local function OnEnter(self)
 end
 
 local function AddCurrencyNameToIndex(name)
-	for index = 1, E.Retail and C_CurrencyInfo_GetCurrencyListSize() or GetCurrencyListSize() do
-		local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
-		if E.Wrath then
-			info.name = GetCurrencyListInfo(index)
-		end
-
-		if info.name == name then
+	for index = 1, GetCurrencyListSize() do
+		local info = DT:CurrencyListInfo(index)
+		if info and info.name == name then
 			CurrencyListNameToIndex[name] = index
 			break
 		end
