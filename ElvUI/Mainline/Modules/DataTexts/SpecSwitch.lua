@@ -140,7 +140,7 @@ local function OnEvent(self, event)
 			end
 		end
 
-		changingID, savedID = true, GetStarterBuildActive() and STARTER_ID or GetLastSelectedSavedConfigID(ID)
+		changingID, savedID = false, GetStarterBuildActive() and STARTER_ID or GetLastSelectedSavedConfigID(ID)
 	end
 
 	active = specIndex
