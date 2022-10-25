@@ -3,10 +3,11 @@ local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
-local pairs, pcall, strmatch = pairs, pcall, strmatch
-local unpack, type, select, getmetatable = unpack, type, select, getmetatable
-local EnumerateFrames = EnumerateFrames
+local pairs, pcall, unpack, type, next = pairs, pcall, unpack, type, next
 local hooksecurefunc = hooksecurefunc
+local getmetatable = getmetatable
+
+local EnumerateFrames = EnumerateFrames
 local CreateFrame = CreateFrame
 
 local backdropr, backdropg, backdropb, backdropa = 0, 0, 0, 1

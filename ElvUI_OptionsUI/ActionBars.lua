@@ -4,6 +4,7 @@ local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
 local _G = _G
+local pairs = pairs
 local ipairs = ipairs
 local format = format
 local SetCVar = SetCVar

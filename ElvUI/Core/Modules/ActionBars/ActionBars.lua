@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ipairs, pairs, select, strmatch, next, unpack = ipairs, pairs, select, strmatch, next, unpack
+local ipairs, pairs, strmatch, next, unpack = ipairs, pairs, strmatch, next, unpack
 local format, gsub, strsplit, strfind, strupper, tremove = format, gsub, strsplit, strfind, strupper, tremove
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks

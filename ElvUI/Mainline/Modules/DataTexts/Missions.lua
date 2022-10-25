@@ -60,9 +60,8 @@ local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
 local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
 local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
-local MAIN_CURRENCY = 1813
-local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local numMissions = 0
+local MAIN_CURRENCY = 1813
 local callingsData = {}
 local covenantTreeIDs = {
 	[1] = {308, 312, 316, 320, 327},

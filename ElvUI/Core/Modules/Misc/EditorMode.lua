@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local EM = E:GetModule('EditorMode')
 
 local _G = _G
+local pairs = pairs
 local tremove = tremove
 local strmatch = strmatch
 

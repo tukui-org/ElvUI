@@ -120,8 +120,6 @@ if E.Retail then
 	blizzard.transmogrify = L["TRANSMOGRIFY"]
 	blizzard.voidstorage = L["VOID_STORAGE"]
 	blizzard.weeklyRewards = L["Weekly Rewards"]
-
-	-- WoW10 (temp locales)
 	blizzard.majorFactions = L["Major Factions"]
 	blizzard.expansionLanding = L["Expansion Landing Page"]
 	blizzard.genericTrait = L["Generic Trait"]

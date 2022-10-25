@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select = ipairs, pairs, select
+local ipairs, pairs, next = ipairs, pairs, next
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
 local hooksecurefunc = hooksecurefunc

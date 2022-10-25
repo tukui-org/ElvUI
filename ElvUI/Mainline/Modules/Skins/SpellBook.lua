@@ -3,10 +3,12 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next, select = next, select
+local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local IsPassiveSpell = IsPassiveSpell
-local hooksecurefunc = hooksecurefunc
+
 local BOOKTYPE_PROFESSION = BOOKTYPE_PROFESSION
 
 local function clearBackdrop(self)

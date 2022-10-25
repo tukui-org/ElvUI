@@ -5,7 +5,6 @@ local _G = _G
 local next = next
 local gsub = gsub
 local unpack = unpack
-local select = select
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnEnableState = GetAddOnEnableState
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue

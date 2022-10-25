@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local ipairs, pairs, unpack, next, select = ipairs, pairs, unpack, next, select
+local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor

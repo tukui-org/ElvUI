@@ -4,7 +4,7 @@
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
-local _G, format, next = _G, format, next
+local _G, format, next, strfind = _G, format, next, strfind
 local gsub, pairs, tinsert, type = gsub, pairs, tinsert, type
 
 local RegisterCVar = C_CVar.RegisterCVar
@@ -17,6 +17,8 @@ local CreateFrame = CreateFrame
 local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
+
+local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
