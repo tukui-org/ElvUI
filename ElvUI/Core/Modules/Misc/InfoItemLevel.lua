@@ -317,7 +317,7 @@ end
 function M:SetupInspectPageInfo()
 	local frame = _G.InspectFrame
 	if frame and not frame.ItemLevelText then
-		M:CreateSlotStrings(_G.InspectFrame, 'Inspect')
+		M:CreateSlotStrings(frame, 'Inspect')
 	end
 end
 
