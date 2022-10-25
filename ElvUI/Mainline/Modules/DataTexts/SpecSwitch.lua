@@ -61,6 +61,7 @@ local function starter_checked()
 	return C_ClassTalents_GetStarterBuildActive()
 end
 local function starter_func(_, arg1)
+	savedConfigID = C_ClassTalents_GetLastSelectedSavedConfigID(arg1)
 	C_ClassTalents_SetStarterBuildActive(true)
 	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, STARTER_BUILD_TRAIT_CONFIG_ID)
 end
@@ -69,6 +70,7 @@ local function loadout_checked(data)
 	return data and data.arg1 and data.arg2 == C_ClassTalents_GetLastSelectedSavedConfigID(data.arg1)
 end
 local function loadout_func(_, arg1, arg2)
+	savedConfigID = C_ClassTalents_GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or C_ClassTalents_GetLastSelectedSavedConfigID(arg1)
 	C_ClassTalents_LoadConfig(arg2, true)
 
 	if C_ClassTalents_GetLastSelectedSavedConfigID(arg1) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
