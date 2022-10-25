@@ -54,6 +54,8 @@ local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
+local savedConfigID
+
 local function starter_checked()
 	return C_ClassTalents_GetStarterBuildActive()
 end
@@ -98,6 +100,16 @@ local function OnEvent(self, event)
 	end
 
 	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' or event == 'CONFIG_COMMIT_FAILED' then
+		if event == 'CONFIG_COMMIT_FAILED'then
+			if savedConfigID then
+				C_ClassTalents_LoadConfig(savedConfigID, true)
+				C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, savedConfigID)
+			else
+				C_ClassTalents_SetStarterBuildActive(true)
+				C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, STARTER_BUILD_TRAIT_CONFIG_ID)
+			end
+		end
+
 		local builds = C_ClassTalents_GetConfigIDsBySpecID(info.id)
 		if builds and C_ClassTalents_GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
 			tinsert(builds, STARTER_BUILD_TRAIT_CONFIG_ID)
@@ -113,6 +125,8 @@ local function OnEvent(self, event)
 				end
 			end
 		end
+
+		savedConfigID = C_ClassTalents_GetLastSelectedSavedConfigID(info.id)
 	end
 
 	active = specIndex
