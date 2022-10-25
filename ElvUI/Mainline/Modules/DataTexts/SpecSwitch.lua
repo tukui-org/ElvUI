@@ -20,14 +20,15 @@ local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
 
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
-local C_ClassTalents_GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
-local C_ClassTalents_GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
-local C_ClassTalents_GetHasStarterBuild = C_ClassTalents.GetHasStarterBuild
-local C_ClassTalents_GetStarterBuildActive = C_ClassTalents.GetStarterBuildActive
 local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
-local C_ClassTalents_LoadConfig = C_ClassTalents.LoadConfig
-local C_ClassTalents_UpdateLastSelectedSavedConfigID = C_ClassTalents.UpdateLastSelectedSavedConfigID
-local C_ClassTalents_SetStarterBuildActive = C_ClassTalents.SetStarterBuildActive
+
+local LoadConfig = C_ClassTalents.LoadConfig
+local GetHasStarterBuild = C_ClassTalents.GetHasStarterBuild
+local GetStarterBuildActive = C_ClassTalents.GetStarterBuildActive
+local SetStarterBuildActive = C_ClassTalents.SetStarterBuildActive
+local GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
+local GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
+local UpdateLastSelectedSavedConfigID = C_ClassTalents.UpdateLastSelectedSavedConfigID
 
 local LOOT = LOOT
 local PVP_TALENTS = PVP_TALENTS
@@ -58,27 +59,27 @@ local savedConfigID
 local changingLoadout = false
 
 local function starter_checked()
-	return C_ClassTalents_GetStarterBuildActive()
+	return GetStarterBuildActive()
 end
 local function starter_func(_, arg1)
-	savedConfigID = C_ClassTalents_GetLastSelectedSavedConfigID(arg1)
-	C_ClassTalents_SetStarterBuildActive(true)
-	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, STARTER_BUILD_TRAIT_CONFIG_ID)
+	savedConfigID = GetLastSelectedSavedConfigID(arg1)
+	SetStarterBuildActive(true)
+	UpdateLastSelectedSavedConfigID(arg1, STARTER_BUILD_TRAIT_CONFIG_ID)
 	changingLoadout = true
 end
 
 local function loadout_checked(data)
-	return data and data.arg1 and data.arg2 == C_ClassTalents_GetLastSelectedSavedConfigID(data.arg1)
+	return data and data.arg1 and data.arg2 == GetLastSelectedSavedConfigID(data.arg1)
 end
 local function loadout_func(_, arg1, arg2)
-	savedConfigID = C_ClassTalents_GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or C_ClassTalents_GetLastSelectedSavedConfigID(arg1)
-	C_ClassTalents_LoadConfig(arg2, true)
+	savedConfigID = GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or GetLastSelectedSavedConfigID(arg1)
+	LoadConfig(arg2, true)
 
-	if C_ClassTalents_GetLastSelectedSavedConfigID(arg1) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
-		C_ClassTalents_SetStarterBuildActive(false)
+	if GetLastSelectedSavedConfigID(arg1) ~= STARTER_BUILD_TRAIT_CONFIG_ID then
+		SetStarterBuildActive(false)
 	end
 
-	C_ClassTalents_UpdateLastSelectedSavedConfigID(arg1, arg2)
+	UpdateLastSelectedSavedConfigID(arg1, arg2)
 	changingLoadout = true
 end
 
@@ -104,20 +105,20 @@ local function OnEvent(self, event)
 		return
 	end
 
-	if event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' or event == 'CONFIG_COMMIT_FAILED' then
-		if event == 'CONFIG_COMMIT_FAILED'then
-			if changingLoadout and savedConfigID then
-				if savedConfigID == STARTER_BUILD_TRAIT_CONFIG_ID then
-					C_ClassTalents_SetStarterBuildActive(true)
-				else
-					C_ClassTalents_LoadConfig(savedConfigID, true)
-				end
-				C_ClassTalents_UpdateLastSelectedSavedConfigID(info.id, savedConfigID)
+	local failed = event == 'CONFIG_COMMIT_FAILED'
+	if failed or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETE' then
+		if failed and changingLoadout and savedConfigID then
+			if savedConfigID == STARTER_BUILD_TRAIT_CONFIG_ID then
+				SetStarterBuildActive(true)
+			else
+				LoadConfig(savedConfigID, true)
 			end
+
+			UpdateLastSelectedSavedConfigID(info.id, savedConfigID)
 		end
 
-		local builds = C_ClassTalents_GetConfigIDsBySpecID(info.id)
-		if builds and C_ClassTalents_GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
+		local builds = GetConfigIDsBySpecID(info.id)
+		if builds and GetHasStarterBuild() and not builds[STARTER_BUILD_TRAIT_CONFIG_ID] then
 			tinsert(builds, STARTER_BUILD_TRAIT_CONFIG_ID)
 		end
 
@@ -132,7 +133,7 @@ local function OnEvent(self, event)
 			end
 		end
 
-		savedConfigID = C_ClassTalents_GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or C_ClassTalents_GetLastSelectedSavedConfigID(info.id)
+		savedConfigID = GetStarterBuildActive() and STARTER_BUILD_TRAIT_CONFIG_ID or GetLastSelectedSavedConfigID(info.id)
 		changingLoadout = false
 	end
 
