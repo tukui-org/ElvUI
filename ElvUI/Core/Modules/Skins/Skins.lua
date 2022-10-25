@@ -692,7 +692,7 @@ do --Tab Regions
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
 
-			local spacing = E.WoW10 and 3 or 10
+			local spacing = E.Retail and 3 or 10
 			tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -spacing, 3)
 		end
@@ -1277,7 +1277,7 @@ do
 	S.FollowerListUpdateDataFrames = {}
 
 	local function UpdateFollower(button)
-		if not E.WoW10 then
+		if not E.Retail then
 			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
 		end
 
@@ -1516,9 +1516,10 @@ do
 		if borderBox then
 			borderBox:StripTextures()
 
-			if borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton then
-				borderBox.SelectedIconArea.SelectedIconButton:DisableDrawLayer('BACKGROUND')
-				S:HandleIcon(borderBox.SelectedIconArea.SelectedIconButton.Icon, true)
+			local button = borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton
+			if button then
+				button:DisableDrawLayer('BACKGROUND')
+				S:HandleItemButton(button, true)
 			end
 		end
 

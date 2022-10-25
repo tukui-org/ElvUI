@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack = unpack
-local format = format
+local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
@@ -19,7 +20,7 @@ function S:Blizzard_MacroUI()
 	S:HandleTrimScrollBar(MacroFrame.MacroSelector.ScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
 
-	local buttons = {
+	for _, button in next, {
 		_G.MacroSaveButton,
 		_G.MacroCancelButton,
 		_G.MacroDeleteButton,
@@ -28,19 +29,16 @@ function S:Blizzard_MacroUI()
 		_G.MacroEditButton,
 		_G.MacroFrameTab1,
 		_G.MacroFrameTab2,
-	}
-
-	for i = 1, #buttons do
-		buttons[i]:StripTextures()
-		S:HandleButton(buttons[i])
+	} do
+		button:StripTextures()
+		S:HandleButton(button)
 	end
 
 	_G.MacroNewButton:ClearAllPoints()
 	_G.MacroNewButton:Point('RIGHT', _G.MacroExitButton, 'LEFT', -2 , 0)
 
 	for i = 1, 2 do
-		local tab = _G[format('MacroFrameTab%s', i)]
-		tab:Height(22)
+		_G['MacroFrameTab'..i]:Height(22)
 	end
 
 	_G.MacroFrameTab1:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 12, -39)
@@ -52,31 +50,26 @@ function S:Blizzard_MacroUI()
 
 	-- Big icon
 	_G.MacroFrameSelectedMacroButton:StripTextures()
-	_G.MacroFrameSelectedMacroButton:StyleButton(true)
+	_G.MacroFrameSelectedMacroButton:StyleButton()
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
 	_G.MacroFrameSelectedMacroButton:SetTemplate()
+	_G.MacroFrameSelectedMacroButton.Icon:SetInside()
+	_G.MacroFrameSelectedMacroButton.Icon:SetTexCoord(unpack(E.TexCoords))
 
-	-- Skin all buttons
-	for i = 1, _G.MAX_ACCOUNT_MACROS do
-		local b = _G['MacroButton'..i]
-		local t = _G['MacroButton'..i..'Icon']
-
-		if b then
-			b:StripTextures()
-			b:StyleButton(true)
-			b:SetTemplate('Transparent')
+	-- handle the macro buttons
+	hooksecurefunc(MacroFrame.MacroSelector.ScrollBox, 'Update', function()
+		for _, button in next, { MacroFrame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
+			if button.Icon and not button.isSkinned then
+				S:HandleItemButton(button, true)
+			end
 		end
+	end)
 
-		if t then
-			t:SetTexCoord(unpack(E.TexCoords))
-			t:Point('TOPLEFT', 1, -1)
-			t:Point('BOTTOMRIGHT', -1, 1)
-		end
-	end
-
+	-- New icon selection
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
-		if frame.isSkinned then return end
-		S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
+		if not frame.isSkinned then
+			S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
+		end
 	end)
 end
 

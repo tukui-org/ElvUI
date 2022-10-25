@@ -218,7 +218,7 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.overviewScroll:Height(360)
 
 	--Tabs
-	if E.WoW10 then
+	if E.Retail then
 		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
 			local tab = _G.EncounterJournal.encounter.info[name]
 			tab:CreateBackdrop('Transparent')

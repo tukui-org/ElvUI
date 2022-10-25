@@ -72,7 +72,7 @@ E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
-E.ClearTexture = E.WoW10 and 0 or '' -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
+E.ClearTexture = E.Retail and 0 or '' -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
 E.UserList = {}
 
 -- oUF Defines
@@ -1852,13 +1852,11 @@ function E:DBConversions()
 end
 
 function E:ConvertActionBarKeybinds()
-	for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
+	for oldcmd, newcmd in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
 		for i = 1, 12 do
-			local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
-			if next(keys) then
-				for _, key in pairs(keys) do
-					SetBinding(key, format('%s%d', newKeybind, i))
-				end
+			local oldkey, newkey = format('%s%d', oldcmd, i), format('%s%d', newcmd, i)
+			for _, key in next, { GetBindingKey(oldkey) } do
+				SetBinding(key, newkey)
 			end
 		end
 	end

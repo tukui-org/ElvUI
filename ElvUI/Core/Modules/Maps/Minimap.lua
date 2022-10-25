@@ -215,7 +215,7 @@ function M:Minimap_OnMouseDown(btn)
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
-	elseif E.WoW10 then
+	elseif E.Retail then
 		Minimap.OnClick(self)
 	else
 		_G.Minimap_OnClick(self)
@@ -243,18 +243,13 @@ function M:MapCanvas_OnMouseDown(btn)
 end
 
 function M:Minimap_OnMouseWheel(d)
+	local zoomIn = E.Retail and Minimap.ZoomIn or _G.MinimapZoomIn
+	local zoomOut = E.Retail and Minimap.ZoomOut or _G.MinimapZoomOut
+
 	if d > 0 then
-		if E.WoW10 then
-			Minimap.ZoomIn:Click()
-		else
-			_G.MinimapZoomIn:Click()
-		end
+		zoomIn:Click()
 	elseif d < 0 then
-		if E.WoW10 then
-			Minimap.ZoomOut:Click()
-		else
-			_G.MinimapZoomOut:Click()
-		end
+		zoomOut:Click()
 	end
 end
 
@@ -289,8 +284,8 @@ do
 	local function ResetZoom()
 		Minimap:SetZoom(0)
 
-		local zoomIn = E.WoW10 and Minimap.ZoomIn or _G.MinimapZoomIn
-		local zoomOut = E.WoW10 and Minimap.ZoomOut or _G.MinimapZoomOut
+		local zoomIn = E.Retail and Minimap.ZoomIn or _G.MinimapZoomIn
+		local zoomOut = E.Retail and Minimap.ZoomOut or _G.MinimapZoomOut
 
 		zoomIn:Enable() -- Reset enabled state of buttons
 		zoomOut:Disable()
@@ -335,7 +330,7 @@ function M:UpdateSettings()
 	Minimap:Point('TOPRIGHT', holder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
 
-	if E.WoW10 then
+	if E.Retail then
 		local offset = 1
 		MinimapCluster:ClearAllPoints()
 
@@ -374,7 +369,7 @@ function M:UpdateSettings()
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 
-	if E.WoW10 then
+	if E.Retail then
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
 		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
 
@@ -393,7 +388,7 @@ function M:UpdateSettings()
 		end
 	end
 
-	local difficulty = E.WoW10 and MinimapCluster.InstanceDifficulty
+	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
 	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
 	local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
 	local challenge = difficulty and difficulty.ChallengeMode or _G.MiniMapChallengeMode
@@ -612,7 +607,7 @@ function M:Initialize()
 	local minimapLevel = Minimap:GetFrameLevel() + 2
 	Minimap:SetFrameLevel(minimapLevel)
 
-	if E.WoW10 then
+	if E.Retail then
 		MinimapCluster:SetFrameLevel(minimapLevel)
 		MinimapCluster:SetFrameStrata('MEDIUM')
 		Minimap:SetFrameStrata('LOW')
@@ -624,7 +619,7 @@ function M:Initialize()
 		M:SetScale(Minimap.backdrop, 1)
 	end
 
-	if E.WoW10 then
+	if E.Retail then
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 
@@ -664,7 +659,7 @@ function M:Initialize()
 		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
 	}
 
-	if E.WoW10 then
+	if E.Retail then
 		tinsert(killFrames, Minimap.ZoomIn)
 		tinsert(killFrames, Minimap.ZoomOut)
 		tinsert(killFrames, _G.MinimapCompassTexture)

@@ -24,7 +24,7 @@ end
 
 local function InitializeTalkingHead()
 	--Prevent WoW from moving the frame around
-	if not E.WoW10 then
+	if not E.Retail then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
 	end
 

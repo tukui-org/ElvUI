@@ -308,8 +308,6 @@ function S:Blizzard_GarrisonUI()
 	-- Landing page
 	local GarrisonLandingPage = _G.GarrisonLandingPage
 	local Report = GarrisonLandingPage.Report
-	GarrisonLandingPage:SetTemplate('Transparent')
-	GarrisonLandingPage.Center:SetDrawLayer('BACKGROUND', -2) -- art piece is background -1
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(_G.GarrisonLandingPageTab1)
 	S:HandleTab(_G.GarrisonLandingPageTab2)
@@ -318,6 +316,8 @@ function S:Blizzard_GarrisonUI()
 	_G.GarrisonLandingPageTab1:Point('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
 
 	if E.private.skins.parchmentRemoverEnable then
+		GarrisonLandingPage:StripTextures()
+
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
 			tab:SetHighlightTexture(E.ClearTexture)
 			tab.Text:ClearAllPoints()
@@ -343,6 +343,9 @@ function S:Blizzard_GarrisonUI()
 			end
 		end
 	end
+
+	GarrisonLandingPage:SetTemplate('Transparent') -- keep below parchmentRemover
+	GarrisonLandingPage.Center:SetDrawLayer('BACKGROUND', -2)
 
 	hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
 		local unselectedTab = Report.unselectedTab

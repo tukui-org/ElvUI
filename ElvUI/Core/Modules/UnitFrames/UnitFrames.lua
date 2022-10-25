@@ -94,11 +94,11 @@ UF.headerGroupBy = {
 	CLASS = function(header)
 		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
 		if E.Retail and groupingOrder then
-			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12)
+			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
 		end
 
 		local sortMethod = header.db and header.db.sortMethod
-		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
+		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'CLASS')
 	end,
@@ -234,12 +234,8 @@ function UF:ConvertGroupDB(group)
 		db.columnAnchorPoint = nil
 	end
 
-	if db.growthDirection == 'UP' then
-		db.growthDirection = 'UP_RIGHT'
-	end
-
-	if db.growthDirection == 'DOWN' then
-		db.growthDirection = 'DOWN_RIGHT'
+	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
+		db.growthDirection = db.growthDirection..'_RIGHT'
 	end
 end
 
@@ -1225,7 +1221,7 @@ do
 				PlayerFrame:SetDontSavePosition(true)
 			end
 
-			if E.WoW10 then
+			if E.Retail then
 				if E.private.unitframe.disabledBlizzardFrames.castbar then
 					HandleFrame(_G.PlayerCastingBarFrame)
 					HandleFrame(_G.PetCastingBarFrame)
@@ -1609,7 +1605,7 @@ function UF:Initialize()
 		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
 		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
 
-		if E.WoW10 or IsAddOnLoaded('Blizzard_ArenaUI') then
+		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
 			ElvUF:DisableBlizzard('arena')
 		else
 			UF:RegisterEvent('ADDON_LOADED')

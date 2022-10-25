@@ -228,7 +228,7 @@ function AB:BindUpdate(button, spellmacro)
 	end
 
 	if button.bindstring then
-		button.bindings = {GetBindingKey(button.bindstring)}
+		button.bindings = { GetBindingKey(button.bindstring) }
 		AB:BindTooltip(triggerTooltip)
 	end
 end
@@ -314,7 +314,7 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25)
 	bind:Hide()
 
-	if E.WoW10 then
+	if E.Retail then
 		hooksecurefunc(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)
 	end
 

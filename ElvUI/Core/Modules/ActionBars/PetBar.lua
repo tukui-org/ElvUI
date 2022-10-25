@@ -28,7 +28,7 @@ bar:SetFrameStrata('LOW')
 bar.buttons = {}
 
 function AB:UpdatePet(event, unit)
-	if (event == 'UNIT_FLAGS' or event == 'UNIT_PET') and unit ~= 'pet' then return end
+	if (event == 'UNIT_FLAGS' and unit ~= 'pet') or (event == 'UNIT_PET' and unit ~= 'player') then return end
 
 	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
@@ -274,6 +274,10 @@ function AB:CreateBarPet()
 	bar:SetScript('OnHide', AB.PetBar_OnHide)
 	bar:SetScript('OnShow', AB.PetBar_OnShow)
 
+	if E.Retail then
+		AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
+	end
+
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet')
@@ -286,7 +290,6 @@ function AB:CreateBarPet()
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet')
 
-	AB:PositionAndSizeBarPet()
 	AB:UpdatePetBindings()
 
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')

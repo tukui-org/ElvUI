@@ -366,9 +366,9 @@ local function FontTemplate(fs, font, size, style, skip)
 	end
 
 	-- convert because of bad values between versions
-	if style == 'NONE' and E.WoW10 then
+	if style == 'NONE' and E.Retail then
 		style = ''
-	elseif style == '' and not E.WoW10 then
+	elseif style == '' and not E.Retail then
 		style = 'NONE'
 	end
 

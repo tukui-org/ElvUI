@@ -54,71 +54,19 @@ AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
-	bar1 = {
-		page = 1,
-		bindButtons = 'ACTIONBUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
-	},
-	bar2 = {
-		page = 2,
-		bindButtons = 'ELVUIBAR2BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
-	},
-	bar3 = {
-		page = 3,
-		bindButtons = 'MULTIACTIONBAR3BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
-	},
-	bar4 = {
-		page = 4,
-		bindButtons = 'MULTIACTIONBAR4BUTTON',
-		position = 'RIGHT,ElvUIParent,RIGHT,-4,0',
-	},
-	bar5 = {
-		page = 5,
-		bindButtons = 'MULTIACTIONBAR2BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-279,4',
-	},
-	bar6 = {
-		page = 6,
-		bindButtons = 'MULTIACTIONBAR1BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264',
-	},
-	bar7 = {
-		page = 7,
-		bindButtons = 'ELVUIBAR7BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
-	},
-	bar8 = {
-		page = 8,
-		bindButtons = 'ELVUIBAR8BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
-	},
-	bar9 = {
-		page = 9,
-		bindButtons = 'ELVUIBAR9BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
-	},
-	bar10 = {
-		page = 10,
-		bindButtons = 'ELVUIBAR10BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	bar13 = {
-		page = 13,
-		bindButtons = 'MULTIACTIONBAR5BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	bar14 = {
-		page = 14,
-		bindButtons = 'MULTIACTIONBAR6BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	},
-	bar15 = {
-		page = 15,
-		bindButtons = 'MULTIACTIONBAR7BUTTON',
-		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
-	}
+	bar1 = { page = 1, bindButtons = 'ACTIONBUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191' },
+	bar2 = { page = 2, bindButtons = 'ELVUIBAR2BUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,0,4' },
+	bar3 = { page = 3, bindButtons = 'MULTIACTIONBAR3BUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139' },
+	bar4 = { page = 4, bindButtons = 'MULTIACTIONBAR4BUTTON', position = 'RIGHT,ElvUIParent,RIGHT,-4,0' },
+	bar5 = { page = 5, bindButtons = 'MULTIACTIONBAR2BUTTON', position = 'BOTTOM,ElvUIParent,BOTTOM,-279,4' },
+	bar6 = { page = 6, bindButtons = 'MULTIACTIONBAR1BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264' },
+	bar7 = { page = 7, bindButtons = 'ELVUIBAR7BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298' },
+	bar8 = { page = 8, bindButtons = 'ELVUIBAR8BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332' },
+	bar9 = { page = 9, bindButtons = 'ELVUIBAR9BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366' },
+	bar10 = { page = 10, bindButtons = 'ELVUIBAR10BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' },
+	bar13 = { page = 13, bindButtons = 'MULTIACTIONBAR5BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' },
+	bar14 = { page = 14, bindButtons = 'MULTIACTIONBAR6BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' },
+	bar15 = { page = 15, bindButtons = 'MULTIACTIONBAR7BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' }
 }
 
 do
@@ -544,9 +492,8 @@ function AB:ReassignBindings(event)
 
 			for _, button in ipairs(bar.buttons) do
 				if button.keyBoundTarget then
-					for k=1, select('#', GetBindingKey(button.keyBoundTarget)) do
-						local key = select(k, GetBindingKey(button.keyBoundTarget))
-						if key and key ~= '' then
+					for _, key in next, { GetBindingKey(button.keyBoundTarget) } do
+						if key ~= '' then
 							SetOverrideBindingClick(bar, false, key, button:GetName())
 						end
 					end
@@ -651,16 +598,17 @@ end
 
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName()
-	local macroText = _G[name..'Name']
-	local hotKey = _G[name..'HotKey']
-	local icon = _G[name..'Icon']
-	local shine = _G[name..'Shine']
-	local count = _G[name..'Count']
-	local flash = _G[name..'Flash']
-	local border = _G[name..'Border']
-	local normal = _G[name..'NormalTexture']
+	local macro = button.Name or _G[name..'Name']
+	local hotkey = button.HotKey or _G[name..'HotKey']
+	local icon = button.icon or _G[name..'Icon']
+	local shine = button.AutoCastShine or _G[name..'Shine']
+	local count = button.Count or _G[name..'Count']
+	local flash = button.Flash or _G[name..'Flash']
+	local border = button.Border or _G[name..'Border']
+	local normal = button.NormalTexture or _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
-	local nat = button.NewActionTexture
+	local slotbg = button.SlotBackground
+	local action = button.NewActionTexture
 	local mask = button.IconMask
 
 	local db = button:GetParent().db
@@ -672,12 +620,13 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.ignoreNormal = ignoreNormal
 
 	icon:SetDrawLayer('ARTWORK', -1)
-	hotKey:SetDrawLayer('OVERLAY')
+	hotkey:SetDrawLayer('OVERLAY')
 
 	if normal and not ignoreNormal then normal:SetTexture() normal:Hide() normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture() normal2:Hide() normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
-	if nat then nat:SetAlpha(0) end
+	if action then action:SetAlpha(0) end
+	if slotbg then slotbg:Hide() end
 	if mask then mask:Hide() end
 
 	if count then
@@ -695,15 +644,15 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		count:SetTextColor(c.r, c.g, c.b)
 	end
 
-	if macroText then
+	if macro then
 		local position, xOffset, yOffset = db and db.macroTextPosition or 'BOTTOM', db and db.macroTextXOffset or 0, db and db.macroTextYOffset or 1
 
-		macroText:ClearAllPoints()
-		macroText:Point(position, xOffset, yOffset)
-		macroText:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
+		macro:ClearAllPoints()
+		macro:Point(position, xOffset, yOffset)
+		macro:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
 
 		local c = db and db.useMacroColor and db.macroColor or color
-		macroText:SetTextColor(c.r, c.g, c.b)
+		macro:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if not button.noBackdrop and not button.useMasque then
@@ -917,7 +866,7 @@ do
 		if E.Retail then -- same deal with profession buttons, this will fix the tainting
 			for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
 				for i = 1, 2 do
-					local button = E.WoW10 and frame['SpellButton'..i] or frame['button'..i]
+					local button = E.Retail and frame['SpellButton'..i] or frame['button'..i]
 					if button then
 						FixButton(button)
 					end
@@ -1041,7 +990,7 @@ end
 
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
-	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', E.WoW10 and 'StanceBar' or 'StanceBarFrame', E.WoW10 and 'PetActionBar' or 'PetActionBarFrame', E.WoW10 and 'PossessActionBar' or 'PossessBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
+	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', E.Retail and 'StanceBar' or 'StanceBarFrame', E.Retail and 'PetActionBar' or 'PetActionBarFrame', E.Retail and 'PossessActionBar' or 'PossessBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
 	if E.Wrath then -- TotemBar: this still might taint
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 		tremove(tbl, 1)
@@ -1058,7 +1007,7 @@ function AB:DisableBlizzard()
 			if i < count then frame:UnregisterAllEvents() end
 			frame:SetParent(E.HiddenFrame)
 
-			if not E.WoW10 then -- WoW10 this breaks the UseContainerItem
+			if not E.Retail then -- WoW10 this breaks the UseContainerItem
 				AB:SetNoopsi(frame)
 			end
 		end
@@ -1346,7 +1295,7 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:AddButton(button)
 	end
 
-	if E.WoW10 then
+	if E.Retail then
 		_G.SpellFlyout.Background:Hide() -- ToDO: WoW10
 	end
 end
@@ -1524,7 +1473,9 @@ end
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
-	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if not initLogin and not isReload then
+		AB:PositionAndSizeBarPet() -- for some reason on WoW10 when you portal your pet bar placement is reset
+	elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
@@ -1588,7 +1539,7 @@ function AB:Initialize()
 		AB:CreateBar(i)
 	end
 
-	if E.WoW10 then
+	if E.Retail then
 		for i = 13, 15 do
 			AB:CreateBar(i)
 		end
