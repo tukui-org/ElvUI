@@ -154,7 +154,7 @@ local function OnEnter()
 		for index = 2, #loadoutList do
 			local loadout = loadoutList[index]
 			if loadout then
-				DT.tooltip:AddLine(strjoin(' - ', loadout.text, (loadout.checked() and activeString or inactiveString)), 1, 1, 1)
+				DT.tooltip:AddLine(strjoin(' - ', loadout.text, (loadout:checked(loadout.arg1, loadout.arg2) and activeString or inactiveString)), 1, 1, 1)
 			end
 		end
 	end
