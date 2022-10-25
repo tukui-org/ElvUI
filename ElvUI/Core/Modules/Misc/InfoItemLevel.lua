@@ -315,7 +315,10 @@ function M:CreateSlotStrings(frame, which)
 end
 
 function M:SetupInspectPageInfo()
-	M:CreateSlotStrings(_G.InspectFrame, 'Inspect')
+	local frame = _G.InspectFrame
+	if frame and not frame.ItemLevelText then
+		M:CreateSlotStrings(_G.InspectFrame, 'Inspect')
+	end
 end
 
 function M:UpdateInspectPageFonts(which)
