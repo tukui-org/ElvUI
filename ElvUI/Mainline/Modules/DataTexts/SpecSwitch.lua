@@ -213,7 +213,7 @@ local function OnClick(self, button)
 
 	if menu then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		_G.EasyMenu(loadoutList, E.EasyMenu, nil, nil, nil, 'MENU')
+		_G.EasyMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 
