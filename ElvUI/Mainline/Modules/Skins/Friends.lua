@@ -15,6 +15,7 @@ local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 local function SkinSocialHeaderTab(tab)
 	if not tab then return end
 
+	tab:StripTextures()
 	tab.backdrop = CreateFrame('Frame', nil, tab)
 	tab.backdrop:SetTemplate('Transparent')
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
