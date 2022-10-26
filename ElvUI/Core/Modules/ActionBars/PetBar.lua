@@ -5,18 +5,20 @@ local _G = _G
 local gsub = gsub
 local ipairs = ipairs
 local CreateFrame = CreateFrame
-local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
 local GetPetActionInfo = GetPetActionInfo
 local IsPetAttackAction = IsPetAttackAction
-local PetActionButton_StartFlash = PetActionButton_StartFlash
-local PetActionButton_StopFlash = PetActionButton_StopFlash
+local GetPetActionCooldown = GetPetActionCooldown
+local RegisterStateDriver = RegisterStateDriver
+local GameTooltip = GameTooltip
+
 local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
 local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
-local PetActionBar_ShowGrid = PetActionBar_ShowGrid
+local PetActionButton_StartFlash = PetActionButton_StartFlash
+local PetActionButton_StopFlash = PetActionButton_StopFlash
+
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
-local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Pet Bar')
@@ -26,17 +28,17 @@ bar:SetFrameStrata('LOW')
 bar.buttons = {}
 
 function AB:UpdatePet(event, unit)
-	if (event == 'UNIT_FLAGS' or event == 'UNIT_PET') and unit ~= 'pet' then return end
+	if (event == 'UNIT_FLAGS' and unit ~= 'pet') or (event == 'UNIT_PET' and unit ~= 'player') then return end
 
-	for i = 1, NUM_PET_ACTION_SLOTS, 1 do
+	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = _G[buttonName..'AutoCastable']
-		local button = _G[buttonName]
+		local autoCast = button.AutoCastable or _G[buttonName..'AutoCastable']
 
 		button:SetAlpha(1)
 		button.isToken = isToken
 		button.icon:Show()
+
 		if not isToken then
 			button.icon:SetTexture(texture)
 			button.tooltipName = name
@@ -56,13 +58,21 @@ function AB:UpdatePet(event, unit)
 			button:SetChecked(true)
 
 			if IsPetAttackAction(i) then
-				PetActionButton_StartFlash(button)
+				if PetActionButton_StartFlash then
+					PetActionButton_StartFlash(button)
+				else
+					button:StartFlash()
+				end
 			end
 		else
 			button:SetChecked(false)
 
 			if IsPetAttackAction(i) then
-				PetActionButton_StopFlash(button)
+				if PetActionButton_StopFlash then
+					PetActionButton_StopFlash(button)
+				else
+					button:StopFlash()
+				end
 			end
 		end
 
@@ -79,8 +89,13 @@ function AB:UpdatePet(event, unit)
 		end
 
 		if not PetHasActionBar() and texture and name ~= 'PET_ACTION_FOLLOW' then
-			PetActionButton_StopFlash(button)
-			button.icon:SetDesaturation(true)
+			if PetActionButton_StopFlash then
+				PetActionButton_StopFlash(button)
+			else
+				button:StopFlash()
+			end
+
+			button.icon:SetDesaturation(1)
 			button:SetChecked(false)
 		end
 	end
@@ -88,6 +103,7 @@ end
 
 function AB:PositionAndSizeBarPet()
 	local db = AB.db.barPet
+	if not db then return end
 
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
@@ -107,7 +123,7 @@ function AB:PositionAndSizeBarPet()
 
 	if db.enabled then
 		bar:SetScale(1)
-		bar:SetAlpha(bar.db.alpha)
+		bar:SetAlpha(db.alpha)
 		E:EnableMover(bar.mover.name)
 	else
 		bar:SetScale(0.0001)
@@ -125,21 +141,15 @@ function AB:PositionAndSizeBarPet()
 
 	AB:MoverMagic(bar)
 
-	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
-	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton, autoCast
+	local anchorRowButton, lastShownButton
+	local horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local useMasque = MasqueGroup and E.private.actionbar.masque.petBar
 
-	for i = 1, NUM_PET_ACTION_SLOTS do
-		button = _G['PetActionButton'..i]
-		lastButton = _G['PetActionButton'..i-1]
-		autoCast = _G['PetActionButton'..i..'AutoCastable']
-		lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
+	for i, button in ipairs(bar.buttons) do
+		local lastButton = _G['PetActionButton'..i-1]
+		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
+		local autoCast = button.AutoCastable
 
-		if not E.Retail then
-			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
-		end
-
-		bar.buttons[i] = button
 		button.db = db
 
 		if i == 1 or i == buttonsPerRow then
@@ -152,7 +162,7 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = nil
 		else
 			button:SetScale(1)
-			button:SetAlpha(bar.db.alpha)
+			button:SetAlpha(db.alpha)
 			lastShownButton = button
 			button.handleBackdrop = true -- keep over HandleButton
 		end
@@ -171,28 +181,57 @@ function AB:PositionAndSizeBarPet()
 	if useMasque then
 		MasqueGroup:ReSkin()
 
-		for _, btn in ipairs(bar.buttons) do
-			AB:TrimIcon(btn, true)
+		for _, button in ipairs(bar.buttons) do
+			AB:TrimIcon(button, true)
 		end
 	end
 end
 
 function AB:UpdatePetCooldownSettings()
-	for i = 1, NUM_PET_ACTION_SLOTS do
-		local button = _G['PetActionButton'..i]
-		if button and button.cooldown then
+	for _, button in ipairs(bar.buttons) do
+		if button.cooldown then
 			button.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
 		end
 	end
 end
 
 function AB:UpdatePetBindings()
-	for i = 1, NUM_PET_ACTION_SLOTS do
-		local button = _G['PetActionButton'..i]
-		if not button then break end
+	for i, button in ipairs(bar.buttons) do
+		if button.HotKey then
+			button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
+			AB:FixKeybindText(button)
+		end
+	end
+end
 
-		button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
-		AB:FixKeybindText(button)
+function AB:UpdatePetCooldowns()
+	if PetActionBar_UpdateCooldowns then
+		PetActionBar_UpdateCooldowns()
+	else
+		local forbidden = GameTooltip:IsForbidden()
+		local owner = GameTooltip:GetOwner()
+
+		for i, button in ipairs(bar.buttons) do
+			local start, duration = GetPetActionCooldown(i)
+			button.cooldown:SetCooldown(start, duration)
+
+			if not forbidden and owner == button then
+				button:OnEnter(button)
+			end
+		end
+	end
+end
+
+function AB:PetBar_OnShow()
+	-- holder
+end
+
+function AB:PetBar_OnHide()
+	for _, button in ipairs(bar.buttons) do
+		if button.spellDataLoadedCancelFunc then
+			button.spellDataLoadedCancelFunc()
+			button.spellDataLoadedCancelFunc = nil
+		end
 	end
 end
 
@@ -200,6 +239,23 @@ function AB:CreateBarPet()
 	bar.backdrop = CreateFrame('Frame', nil, bar)
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
+
+	for i = 1, _G.NUM_PET_ACTION_SLOTS do
+		local button = _G['PetActionButton'..i]
+		button:Show() -- for some reason they start hidden on WoW10 ?
+		bar.buttons[i] = button
+
+		if not E.Retail then
+			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
+		end
+
+		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
+		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
+
+		if MasqueGroup and E.private.actionbar.masque.petBar then
+			MasqueGroup:AddButton(button)
+		end
+	end
 
 	if AB.db.bar4.enabled then
 		bar:Point('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)
@@ -215,18 +271,12 @@ function AB:CreateBarPet()
 		end
 	]])
 
-	bar:SetScript('OnHide', function()
-		for i = 1, NUM_PET_ACTION_SLOTS, 1 do
-			local button = _G['PetActionButton'..i]
-			if button.spellDataLoadedCancelFunc then
-				button.spellDataLoadedCancelFunc()
-				button.spellDataLoadedCancelFunc = nil
-			end
-		end
-	end)
+	bar:SetScript('OnHide', AB.PetBar_OnHide)
+	bar:SetScript('OnShow', AB.PetBar_OnShow)
 
-	_G.PetActionBarFrame.showgrid = 1
-	PetActionBar_ShowGrid()
+	if E.Retail then
+		AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
+	end
 
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')
@@ -236,24 +286,12 @@ function AB:CreateBarPet()
 	AB:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	AB:RegisterEvent('UNIT_FLAGS', 'UpdatePet')
 	AB:RegisterEvent('UNIT_PET', 'UpdatePet')
-	AB:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', PetActionBar_UpdateCooldowns)
+	AB:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', 'UpdatePetCooldowns')
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet')
 
-	AB:PositionAndSizeBarPet()
 	AB:UpdatePetBindings()
 
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
-
-	for i = 1, NUM_PET_ACTION_SLOTS do
-		local button = _G['PetActionButton'..i]
-
-		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
-		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
-
-		if MasqueGroup and E.private.actionbar.masque.petBar then
-			MasqueGroup:AddButton(button)
-		end
-	end
 end

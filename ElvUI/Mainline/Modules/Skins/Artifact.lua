@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -27,10 +27,9 @@ function S:Blizzard_ArtifactUI()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:Point('TOPLEFT', ArtifactFrame)
 
-	ArtifactFrame.AppearancesTab:HookScript('OnShow', function(s)
-		for i=1, s:GetNumChildren() do
-			local child = select(i, s:GetChildren())
-			if child and child.appearanceID and not child.backdrop then
+	ArtifactFrame.AppearancesTab:HookScript('OnShow', function(frame)
+		for _, child in next, { frame:GetChildren() } do
+			if child.appearanceID and not child.backdrop then
 				child:CreateBackdrop('Transparent')
 				child.SwatchTexture:SetTexCoord(.20,.80,.20,.80)
 				child.SwatchTexture:SetInside(child.backdrop)

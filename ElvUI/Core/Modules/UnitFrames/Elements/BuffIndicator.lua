@@ -34,7 +34,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 			if db.profileSpecific then
 				auraTable = E.db.unitframe.filters.aurawatch
 			else
-				auraTable = E.Filters.Expand({}, E.global.unitframe.aurawatch[E.myclass])
+				auraTable = E.Filters.Expand({}, E.global.unitframe.aurawatch[E.myclass] or {})
 				E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 			end
 			frame.AuraWatch:SetNewTable(auraTable)

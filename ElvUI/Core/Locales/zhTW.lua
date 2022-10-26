@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["Loadouts"] = true
+L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(按住 Ctrl 和 Shift 點擊) 開啟/關閉CPU分析"
 L["(Hold Shift) Memory Usage"] = "(按住 Shift) 記憶體使用量"

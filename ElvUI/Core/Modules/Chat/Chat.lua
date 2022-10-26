@@ -76,6 +76,8 @@ local C_ChatInfo_GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChan
 local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
 local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
+local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
+
 local RecruitLinkType = E.Retail and Enum.RafLinkType.Recruit
 local CHATCHANNELRULESET_MENTOR = E.Retail and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = E.Retail and Enum.PlayerMentorshipStatus.Newcomer
@@ -131,6 +133,7 @@ local hyperlinkTypes = {
 local tabTexs = {
 	'',
 	'Selected',
+	'Active',
 	'Highlight'
 }
 
@@ -381,6 +384,7 @@ do --this can save some main file locals
 		z['Luckyrogue-LaughingSkull']	= ElvBlue -- Rogue
 		z['Luckypala-LaughingSkull']	= ElvBlue -- Paladin
 		z['Luckydruid-LaughingSkull']	= ElvBlue -- Druid A
+		z['Luckyevoker-LaughingSkull']	= ElvBlue -- Evoker
 		-- Repooc
 		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
 		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
@@ -820,16 +824,25 @@ function CH:StyleChat(frame)
 	editbox.characterCount = charCount
 
 	for _, texName in pairs(tabTexs) do
-		_G[name..'Tab'..texName..'Left']:SetTexture()
-		_G[name..'Tab'..texName..'Middle']:SetTexture()
-		_G[name..'Tab'..texName..'Right']:SetTexture()
+		local t, l, m, r = name..'Tab', texName..'Left', texName..'Middle', texName..'Right'
+		local main = _G[t]
+		local left = _G[t..l] or (main and main[l])
+		local middle = _G[t..m] or (main and main[m])
+		local right = _G[t..r] or (main and main[r])
+
+		if left then left:SetTexture() end
+		if middle then middle:SetTexture() end
+		if right then right:SetTexture() end
 	end
 
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.left then tab.left = _G[name..'TabLeft'] end
+	if not tab.Left then
+		tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left
+	end
+
 	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab.Text:Point('LEFT', tab, 'LEFT', tab.Left:GetWidth(), 0)
 	tab:Height(22)
 
 	if tab.conversationIcon then
@@ -2023,7 +2036,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 				if clientProgram and clientProgram ~= '' then
 					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
-					local characterNameText = _G.BNet_GetClientEmbeddedTexture(clientProgram, 14)..name
+					local characterNameText = GetClientTexture(clientProgram, 14)..name
 					local linkDisplayText = format('[%s] (%s)', arg2, characterNameText)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
@@ -3179,7 +3192,6 @@ function CH:BuildCopyChatFrame()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	frame:SetMinResize(350, 100)
 	frame:SetScript('OnMouseDown', function(copyChat, button)
 		if button == 'LeftButton' and not copyChat.isMoving then
 			copyChat:StartMoving()

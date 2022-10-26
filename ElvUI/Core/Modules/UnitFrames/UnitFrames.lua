@@ -4,15 +4,19 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
+local type, unpack, assert, tostring = type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
+local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
+local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
+local PetCastingBarFrame_OnLoad = PetCastingBarFrame_OnLoad
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
+
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
-local IsReplacingUnit = IsReplacingUnit
+local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
 local UnitExists = UnitExists
@@ -55,13 +59,13 @@ UF.badHeaderPoints = {
 }
 
 UF.headerFunctions = {}
-UF.classMaxResourceBar = {
+UF.classMaxResourceBar = { -- match to NP ClassPower MAX_POINTS
 	DEATHKNIGHT = 6,
 	PALADIN = 5,
 	WARLOCK = 5,
 	MONK = 6,
 	MAGE = 4,
-	ROGUE = 6,
+	ROGUE = 7,
 	DRUID = 5
 }
 
@@ -90,11 +94,11 @@ UF.headerGroupBy = {
 	CLASS = function(header)
 		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
 		if E.Retail and groupingOrder then
-			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12)
+			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
 		end
 
 		local sortMethod = header.db and header.db.sortMethod
-		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
+		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'CLASS')
 	end,
@@ -230,12 +234,8 @@ function UF:ConvertGroupDB(group)
 		db.columnAnchorPoint = nil
 	end
 
-	if db.growthDirection == 'UP' then
-		db.growthDirection = 'UP_RIGHT'
-	end
-
-	if db.growthDirection == 'DOWN' then
-		db.growthDirection = 'DOWN_RIGHT'
+	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
+		db.growthDirection = db.growthDirection..'_RIGHT'
 	end
 end
 
@@ -638,6 +638,11 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	end
 end
 
+function UF:SetHeaderSortGroup(group, groupBy)
+	local func = UF.headerGroupBy[groupBy] or UF.headerGroupBy.INDEX
+	func(group)
+end
+
 --Keep an eye on this one, it may need to be changed too
 --Reference: http://www.tukui.org/forums/topic.php?id=35332
 function UF.groupPrototype:GetAttribute(name)
@@ -715,7 +720,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
 				group:SetAttribute('sortDir', sortDir)
 				group:SetAttribute('showPlayer', showPlayer)
-				UF.headerGroupBy[groupBy](group)
+				UF:SetHeaderSortGroup(group, groupBy)
 			end
 
 			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
@@ -1203,21 +1208,36 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if unit == 'player' and E.private.unitframe.disabledBlizzardFrames.player then
-			local PlayerFrame = _G.PlayerFrame
-			HandleFrame(PlayerFrame)
+		if unit == 'player' then
+			if E.private.unitframe.disabledBlizzardFrames.player then
+				local PlayerFrame = _G.PlayerFrame
+				HandleFrame(PlayerFrame)
 
-			-- For the damn vehicle support:
-			PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-			PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-			PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-			PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
-			PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
+				-- For the damn vehicle support:
+				PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+				PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+				PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+				PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
+				PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
-			-- User placed frames don't animate
-			PlayerFrame:SetMovable(true)
-			PlayerFrame:SetUserPlaced(true)
-			PlayerFrame:SetDontSavePosition(true)
+				-- User placed frames don't animate
+				PlayerFrame:SetMovable(true)
+				PlayerFrame:SetUserPlaced(true)
+				PlayerFrame:SetDontSavePosition(true)
+			end
+
+			if E.Retail then
+				if E.private.unitframe.disabledBlizzardFrames.castbar then
+					HandleFrame(_G.PlayerCastingBarFrame)
+					HandleFrame(_G.PetCastingBarFrame)
+				end
+			elseif E.private.unitframe.disabledBlizzardFrames.castbar or (UF.db.units.player.enable and UF.db.units.player.castbar.enable) then
+				CastingBarFrame_SetUnit(_G.CastingBarFrame)
+				CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
+			else
+				CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+				PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+			end
 		elseif unit == 'pet' and E.private.unitframe.disabledBlizzardFrames.player then
 			HandleFrame(_G.PetFrame)
 		elseif unit == 'target' and E.private.unitframe.disabledBlizzardFrames.target then
@@ -1590,7 +1610,7 @@ function UF:Initialize()
 		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
 		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
 
-		if IsAddOnLoaded('Blizzard_ArenaUI') then
+		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
 			ElvUF:DisableBlizzard('arena')
 		else
 			UF:RegisterEvent('ADDON_LOADED')

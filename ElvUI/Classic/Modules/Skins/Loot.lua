@@ -3,7 +3,8 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local unpack, select = unpack, select
+local next = next
+local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 local GetLootSlotInfo = GetLootSlotInfo
@@ -95,18 +96,16 @@ function S:LootFrame()
 			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
-		for i=1, MasterLooterFrame:GetNumChildren() do
-			local child = select(i, MasterLooterFrame:GetChildren())
-			if child and not child.isSkinned and not child:GetName() then
-				if child:IsObjectType('Button') then
-					if child:GetPushedTexture() then
-						S:HandleCloseButton(child)
-					else
-						child:SetTemplate()
-						child:StyleButton()
-					end
-					child.isSkinned = true
+		for _, child in next, { MasterLooterFrame:GetChildren() } do
+			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
+				if child:GetPushedTexture() then
+					S:HandleCloseButton(child)
+				else
+					child:SetTemplate()
+					child:StyleButton()
 				end
+
+				child.isSkinned = true
 			end
 		end
 	end)
@@ -116,12 +115,9 @@ function S:LootFrame()
 	LootFrame:Height(LootFrame:GetHeight() - 30)
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
-	for i = 1, LootFrame:GetNumRegions() do
-		local region = select(i, LootFrame:GetRegions())
-		if(region:IsObjectType('FontString')) then
-			if(region:GetText() == ITEMS) then
-				LootFrame.Title = region
-			end
+	for _, region in next, { LootFrame:GetRegions() } do
+		if region:IsObjectType('FontString') and region:GetText() == ITEMS then
+			LootFrame.Title = region
 		end
 	end
 

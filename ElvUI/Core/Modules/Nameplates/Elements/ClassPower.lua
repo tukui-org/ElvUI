@@ -4,17 +4,19 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local max, next, ipairs = max, next, ipairs
-local UnitHasVehicleUI = UnitHasVehicleUI
-local CreateFrame = CreateFrame
 
-local MAX_POINTS = {
-	DRUID = 5,
-	DEATHKNIGHT = 6,
-	MAGE = 4,
-	MONK = 6,
-	PALADIN = 5,
-	ROGUE = 6,
-	WARLOCK = 5
+local CreateFrame = CreateFrame
+local UnitHasVehicleUI = UnitHasVehicleUI
+local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+
+local MAX_POINTS = { -- match to UF.classMaxResourceBar
+	DEATHKNIGHT	= max(6, MAX_COMBO_POINTS),
+	PALADIN		= max(5, MAX_COMBO_POINTS),
+	WARLOCK		= max(5, MAX_COMBO_POINTS),
+	MONK		= max(6, MAX_COMBO_POINTS),
+	MAGE		= max(4, MAX_COMBO_POINTS),
+	ROGUE		= max(7, MAX_COMBO_POINTS),
+	DRUID		= max(5, MAX_COMBO_POINTS)
 }
 
 function NP:ClassPower_SetBarColor(bar, r, g, b)
@@ -78,10 +80,10 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
 
-	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
 	local texture = LSM:Fetch('statusbar', NP.db.statusbar)
+	local total = MAX_POINTS[E.myclass] or 0
 
-	for i = 1, Max do
+	for i = 1, total do
 		local bar = CreateFrame('StatusBar', frameName..'ClassPower'..i, ClassPower)
 		bar:SetStatusBarTexture(texture)
 		bar:SetFrameStrata(nameplate:GetFrameStrata())

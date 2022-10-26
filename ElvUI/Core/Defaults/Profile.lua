@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
+local format = format
 local next = next
 
 P.gridSize = 64
@@ -91,10 +92,15 @@ P.general = {
 	minimap = {
 		size = 175,
 		scale = 1,
+		clusterDisable = true,
+		clusterBackdrop = true,
 		locationText = 'MOUSEOVER',
-		locationFontSize = 12,
+		locationFontSize = 14,
 		locationFontOutline = 'OUTLINE',
-		locationFont = 'PT Sans Narrow',
+		locationFont = 'Expressway',
+		timeFontSize = 14,
+		timeFontOutline = 'OUTLINE',
+		timeFont = 'Expressway',
 		resetZoom = {
 			enable = false,
 			time = 3,
@@ -108,13 +114,13 @@ P.general = {
 				hide = false,
 			},
 			tracking = {
-				scale = 0.65,
+				scale = E.Retail and 1.2 or 0.65,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
 			},
 			calendar = {
-				scale = 1,
+				scale = E.Retail and 1.2 or 1,
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = 0,
@@ -202,15 +208,16 @@ P.databars = {
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		factionColors = {
-			{ r = .8, g = .3, b = .22 }, -- 1
-			{ r = .8, g = .3, b = .22 }, -- 2
-			{ r = .75, g = .27, b = 0 }, -- 3
-			{ r = .9, g = .7, b = 0 },	 -- 4
-			{ r = 0, g = .6, b = .1 },	 -- 5
-			{ r = 0, g = .6, b = .1 },	 -- 6
-			{ r = 0, g = .6, b = .1 },	 -- 7
-			{ r = 0, g = .6, b = .1 },	 -- 8
-			{ r = 0, g = .6, b = .1 },	 -- 9
+			{ r = .8, g = .3, b = .22 },	-- 1
+			{ r = .8, g = .3, b = .22 },	-- 2
+			{ r = .75, g = .27, b = 0 },	-- 3
+			{ r = .9, g = .7, b = 0 },		-- 4
+			{ r = 0, g = .6, b = .1 },		-- 5
+			{ r = 0, g = .6, b = .1 },		-- 6
+			{ r = 0, g = .6, b = .1 },		-- 7
+			{ r = 0, g = .6, b = .1 },		-- 8
+			{ r = 0, g = .6, b = .1 },		-- 9 (Paragon)
+			{ r = 0, g = 0.74, b = 0.95 },	-- 10 (Renown)
 		}
 	}
 }
@@ -335,6 +342,7 @@ P.bags = {
 			equipment = { r = 0, g = .50, b = .47 },
 			consumables = { r = .57, g = .95, b = .66 },
 			tradegoods = { r = 1, g = .32, b = .66 },
+			junk = { r = .99, g = .23, b = .21 },
 		},
 		items = {
 			questStarter = { r = 1, g = .96, b = .41 },
@@ -719,6 +727,7 @@ P.nameplates = {
 				{r = .65, g = .42, b = .31},
 				{r = .65, g = .63, b = .35},
 				{r = .46, g = .63, b = .35},
+				{r = .33, g = .63, b = .33},
 				{r = .33, g = .63, b = .33},
 				{r = .33, g = .63, b = .33},
 			},
@@ -1700,6 +1709,7 @@ P.unitframe = {
 				{r = .46, g = .63, b = .35},
 				{r = .33, g = .63, b = .33},
 				{r = .33, g = .63, b = .33},
+				{r = .33, g = .63, b = .33},
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
@@ -2367,7 +2377,7 @@ P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
-for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE' , 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER'} do
+for i, classTag in next, {'DRUID', 'HUNTER', 'MAGE', 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER', 'EVOKER'} do
 	P.unitframe.units.party['CLASS'..i] = classTag
 	for k = 1, 3 do
 		P.unitframe.units['raid'..k]['CLASS'..i] = classTag
@@ -2422,6 +2432,9 @@ P.cooldown = {
 }
 
 --Actionbar
+local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
+local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
+
 P.actionbar = {
 	addNewSpells = false,
 	chargeCooldown = false,
@@ -2461,7 +2474,7 @@ P.actionbar = {
 		enabled = true,
 		mouseover = false,
 		clickThrough = false,
-		buttons = _G.NUM_PET_ACTION_SLOTS,
+		buttons = ACTION_SLOTS,
 		buttonsPerRow = 1,
 		point = 'TOPRIGHT',
 		backdrop = true,
@@ -2480,8 +2493,8 @@ P.actionbar = {
 		style = 'darkenInactive',
 		mouseover = false,
 		clickThrough = false,
-		buttonsPerRow = _G.NUM_STANCE_SLOTS,
-		buttons = _G.NUM_STANCE_SLOTS,
+		buttonsPerRow = STANCE_SLOTS,
+		buttons = STANCE_SLOTS,
 		point = 'TOPLEFT',
 		backdrop = false,
 		heightMult = 1,
@@ -2621,6 +2634,12 @@ for i = 1, 10 do
 	P.actionbar['bar'..i] = bar
 end
 
+if E.Retail then
+	P.actionbar.bar13 = CopyTable(P.actionbar.bar1)
+	P.actionbar.bar14 = CopyTable(P.actionbar.bar1)
+	P.actionbar.bar15 = CopyTable(P.actionbar.bar1)
+end
+
 for _, bar in next, {'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton'} do
 	local db = P.actionbar[bar]
 	db.frameStrata = 'LOW'
@@ -2654,20 +2673,12 @@ end
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 
-if E.Wrath then
-	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7; [bonusbar:2] 8;'
-	P.actionbar.bar1.paging.WARLOCK = '[form:1] 7;'
-else
-	P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'
-end
-
-if E.Retail then
-	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;'
-else
-	P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
-	P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
-	P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
-end
+P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Wrath and ' [bonusbar:2] 8;' or '')
+P.actionbar.bar1.paging.WARLOCK = E.Wrath and '[form:1] 7;' or nil
+P.actionbar.bar1.paging.DRUID = format('[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] %d; [bonusbar:3] 9; [bonusbar:4] 10;', E.Retail and 10 or 8) -- No idea why tho
+P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 
 P.actionbar.bar3.enabled = true
 P.actionbar.bar3.buttons = 6

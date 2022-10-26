@@ -67,12 +67,15 @@ function B:Initialize()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
 
+	if not E.Classic then
+		B:PositionVehicleFrame()
+	end
+
 	if E.Retail then
 		B:DisableHelpTip()
 		B:DisableNPE()
 		B:SkinBlizzTimers()
 		B:PositionTalkingHead()
-		B:PositionVehicleFrame()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
@@ -88,7 +91,7 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	if (E.Retail or E.Wrath) and not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
+	if E.Wrath and not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
 		B:MoveObjectiveFrame()
 	end
 

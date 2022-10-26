@@ -1777,11 +1777,13 @@ L["Zone Name"] = "Nombre de Zona"
 
 ----------------------------------
 L["BlizzardNameplate"] = true
-L["blockCastByPlayers"] = "[Block] Cast By Players"
-L["blockDispellable"] = "[Block] Dispellable"
-L["blockNoDuration"] = "[Block] No Duration"
-L["blockNonPersonal"] = "[Block] Non Personal"
-L["blockNotDispellable"] = "[Block] Not Dispellable"
+L["blockCastByPlayers"] = "[Bloquear] Cast By Players"
+L["blockDispellable"] = "[Bloquear] Dispellable"
+L["blockNoDuration"] = "[Bloquear] No Duration"
+L["blockNonPersonal"] = "[Bloquear] Non Personal"
+L["blockNotDispellable"] = "[Bloquear] Not Dispellable"
+L["blockMount"] = "[Bloquear] Mount"
+L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"

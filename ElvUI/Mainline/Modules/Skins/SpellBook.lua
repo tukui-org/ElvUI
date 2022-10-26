@@ -2,10 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select = pairs, select
+local next, select = next, select
+local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
-local hooksecurefunc = hooksecurefunc
+local IsPassiveSpell = IsPassiveSpell
+
 local BOOKTYPE_PROFESSION = BOOKTYPE_PROFESSION
 
 local function clearBackdrop(self)
@@ -18,19 +21,63 @@ local function spellButtonHighlight(button, texture)
 	end
 end
 
+local function UpdateButton()
+	if _G.SpellBookFrame.bookType == BOOKTYPE_PROFESSION then
+		return
+	end
+
+	for i = 1, _G.SPELLS_PER_PAGE do
+		local button = _G['SpellButton'..i]
+		if button.backdrop then
+			button.backdrop:SetShown(button.SpellName:IsShown())
+		end
+
+		local highlight = button.SpellHighlightTexture
+		if highlight then
+			if highlight:IsShown() then
+				E:Flash(highlight, 1, true)
+			else
+				E:StopFlash(highlight)
+			end
+		end
+
+		if E.private.skins.parchmentRemoverEnable then
+			button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
+			button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
+
+			local r = button.SpellName:GetTextColor()
+			if r < 0.8 then
+				button.SpellName:SetTextColor(0.6, 0.6, 0.6)
+			elseif r ~= 1 then
+				button.SpellName:SetTextColor(1, 1, 1)
+			end
+		end
+	end
+end
+
+local function HandleSkillButton(button)
+	if not button then return end
+	button:SetCheckedTexture(E.media.normTex)
+	button:GetCheckedTexture():SetColorTexture(1, 1, 1, .25)
+	button:SetPushedTexture(E.media.normTex)
+	button:GetPushedTexture():SetColorTexture(1, 1, 1, .5)
+	button.IconTexture:SetInside()
+
+	S:HandleIcon(button.IconTexture, true)
+	button.highlightTexture:SetInside(button.IconTexture.backdrop)
+
+	local nameFrame = _G[button:GetName()..'NameFrame']
+	if nameFrame then nameFrame:Hide() end
+end
+
 function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame)
 
-	-- hide flyout backgrounds
-	_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
-	_G.SpellFlyoutVerticalBackground:SetAlpha(0)
-	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
-
-	for _, object in pairs({ 'SpellBookSpellIconsFrame', 'SpellBookSideTabsFrame', 'SpellBookPageNavigationFrame' }) do
-		_G[object]:StripTextures()
+	for _, frame in next, { _G.SpellBookSpellIconsFrame, _G.SpellBookSideTabsFrame, _G.SpellBookPageNavigationFrame } do
+		frame:StripTextures()
 	end
 
 	if E.global.general.disableTutorialButtons then
@@ -49,8 +96,9 @@ function S:SpellBookFrame()
 		SpellBookFrame.pagebackdrop = pagebackdrop
 
 		for i = 1, 2 do
-			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
-			_G['SpellBookPage'..i]:SetDrawLayer('BACKGROUND', 3)
+			local page = _G['SpellBookPage'..i]
+			page:SetParent(pagebackdrop)
+			page:SetDrawLayer('BACKGROUND', 3)
 		end
 	end
 
@@ -65,13 +113,11 @@ function S:SpellBookFrame()
 		local icon = _G['SpellButton'..i..'IconTexture']
 		local highlight =_G['SpellButton'..i..'Highlight']
 
-		for j = 1, button:GetNumRegions() do
-			local region = select(j, button:GetRegions())
-			if region:IsObjectType('Texture') then
-				if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
-					and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
-					region:SetTexture()
-				end
+		for _, region in next, { button:GetRegions() } do
+			if region:IsObjectType('Texture') and (region ~= button.FlyoutArrow
+			and region ~= button.GlyphIcon and region ~= button.GlyphActivate
+			and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture) then
+				region:SetTexture()
 			end
 		end
 
@@ -94,52 +140,22 @@ function S:SpellBookFrame()
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
-			button:SetHighlightTexture()
+			button:SetHighlightTexture(E.ClearTexture)
 		end
 
 		highlight:SetAllPoints(icon)
 		hooksecurefunc(highlight, 'SetTexture', spellButtonHighlight)
+
+		hooksecurefunc(button, 'UpdateButton', UpdateButton)
 	end
-
-	hooksecurefunc('SpellButton_UpdateButton', function()
-		if SpellBookFrame.bookType == BOOKTYPE_PROFESSION then
-			return
-		end
-
-		for i = 1, _G.SPELLS_PER_PAGE do
-			local button = _G['SpellButton'..i]
-			if button.backdrop then
-				button.backdrop:SetShown(button.SpellName:IsShown())
-			end
-
-			local ht = button.SpellHighlightTexture
-			if ht and ht:IsShown() then
-				E:Flash(ht, 1, true)
-			elseif ht then
-				E:StopFlash(ht)
-			end
-
-			if E.private.skins.parchmentRemoverEnable then
-				button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
-				button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
-
-				local r = button.SpellName:GetTextColor()
-				if r < 0.8 then
-					button.SpellName:SetTextColor(0.6, 0.6, 0.6)
-				elseif r ~= 1 then
-					button.SpellName:SetTextColor(1, 1, 1)
-				end
-			end
-		end
-	end)
 
 	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 
 	for i = 1, 8 do
-		local Tab = _G['SpellBookSkillLineTab'..i]
-		Tab:StripTextures()
-		Tab:SetTemplate()
-		Tab:StyleButton(nil, true)
+		local tab = _G['SpellBookSkillLineTab'..i]
+		tab:StripTextures()
+		tab:SetTemplate()
+		tab:StyleButton(nil, true)
 	end
 
 	hooksecurefunc('SpellBookFrame_UpdateSkillLineTabs', function()
@@ -153,61 +169,91 @@ function S:SpellBookFrame()
 	end)
 
 	--Profession Tab
-	for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-		frame.missingHeader:SetTextColor(1, 1, 0)
+	for _, button in next, { _G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3 } do
+		button.missingHeader:SetTextColor(1, 1, 0)
 
 		if E.private.skins.parchmentRemoverEnable then
-			frame.missingText:SetTextColor(1, 1, 1)
+			button.missingText:SetTextColor(1, 1, 1)
 		else
-			frame.missingText:SetTextColor(0, 0, 0)
+			button.missingText:SetTextColor(0, 0, 0)
 		end
 
-		local a, b, c, _, e = frame.statusBar:GetPoint()
-		frame.statusBar:Point(a, b, c, 0, e)
-		frame.statusBar.rankText:Point('CENTER')
-		S:HandleStatusBar(frame.statusBar, {0, .86, 0})
+		local a, b, c, _, e = button.statusBar:GetPoint()
+		button.statusBar:Point(a, b, c, 0, e)
+		button.statusBar.rankText:Point('CENTER')
+		S:HandleStatusBar(button.statusBar, {0, .86, 0})
 
 		if a == 'BOTTOMLEFT' then
-			frame.rank:Point('BOTTOMLEFT', frame.statusBar, 'TOPLEFT', 0, 4)
+			button.rank:Point('BOTTOMLEFT', button.statusBar, 'TOPLEFT', 0, 4)
 		elseif a == 'TOPLEFT' then
-			frame.rank:Point('TOPLEFT', frame.professionName, 'BOTTOMLEFT', 0, -20)
+			button.rank:Point('TOPLEFT', button.professionName, 'BOTTOMLEFT', 0, -20)
 		end
 
-		if frame.unlearn then
-			frame.unlearn:Point('RIGHT', frame.statusBar, 'LEFT', -18, -5)
+		if button.unlearn then
+			button.unlearn:Point('RIGHT', button.statusBar, 'LEFT', -18, -5)
 		end
 
-		if frame.icon then
-			S:HandleIcon(frame.icon)
+		if button.icon then
+			S:HandleIcon(button.icon)
 
-			frame:StripTextures()
-			frame.professionName:Point('TOPLEFT', 100, -4)
+			button:StripTextures()
+			button.professionName:Point('TOPLEFT', 100, -4)
 
-			frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-			frame.backdrop.Center:SetDrawLayer('BORDER', -1)
-			frame.backdrop:SetOutside(frame.icon)
-			frame.backdrop:SetBackdropColor(0, 0, 0, 1)
-			frame.backdrop.callbackBackdropColor = clearBackdrop
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+			button.backdrop.Center:SetDrawLayer('BORDER', -1)
+			button.backdrop:SetOutside(button.icon)
+			button.backdrop:SetBackdropColor(0, 0, 0, 1)
+			button.backdrop.callbackBackdropColor = clearBackdrop
 
-			frame.icon:SetDesaturated(false)
-			frame.icon:SetAlpha(1)
+			button.icon:SetDesaturated(false)
+			button.icon:SetAlpha(1)
 		end
 
-		for i = 1, 2 do
-			local button = frame['button'..i]
-			S:HandleButton(button, true, nil, true)
+		HandleSkillButton(button.SpellButton1)
+		HandleSkillButton(button.SpellButton2)
+	end
 
-			if i == 1 and button:GetPoint() == 'TOPLEFT' then
-				button:Point('TOPLEFT', frame.button2, 'BOTTOMLEFT', 0, -3)
-			end
+	for i = 1, 2 do
+		local button = _G['PrimaryProfession'..i]
+		S:HandleButton(button, true, nil, true)
 
-			if button.iconTexture then
-				S:HandleIcon(button.iconTexture, true)
-			end
-
-			hooksecurefunc(button.highlightTexture, 'SetTexture', spellButtonHighlight)
+		if button.iconTexture then
+			S:HandleIcon(button.iconTexture, true)
 		end
 	end
+
+	-- Some Texture Magic
+	hooksecurefunc('FormatProfession', function(frame, id)
+		if not (id and frame and frame.icon) then return end
+
+		local texture = select(2, GetProfessionInfo(id))
+		if texture then frame.icon:SetTexture(texture) end
+	end)
+
+	hooksecurefunc('UpdateProfessionButton', function(button)
+		local spellIndex = button:GetID() + button:GetParent().spellOffset
+		local isPassive = IsPassiveSpell(spellIndex, SpellBookFrame.bookType)
+		if isPassive then
+			button.highlightTexture:SetColorTexture(1, 1, 1, 0)
+		else
+			button.highlightTexture:SetColorTexture(1, 1, 1, .25)
+		end
+
+		if E.private.skins.parchmentRemoverEnable then
+			if button.spellString then
+				button.spellString:SetTextColor(1, 1, 1)
+			end
+			if button.subSpellString then
+				button.subSpellString:SetTextColor(1, 1, 1)
+			end
+			if button.SpellName then
+				button.SpellName:SetTextColor(1, 1, 1)
+			end
+			if button.SpellSubName then
+				button.SpellSubName:SetTextColor(1, 1, 1)
+			end
+		end
+	end)
 
 	--Bottom Tabs
 	for i = 1, 5 do
@@ -217,13 +263,6 @@ function S:SpellBookFrame()
 	_G.SpellBookFrameTabButton1:ClearAllPoints()
 	_G.SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 
-	-- Some Texture Magic
-	hooksecurefunc('FormatProfession', function(frame, id)
-		if not (id and frame and frame.icon) then return end
-
-		local texture = select(2, GetProfessionInfo(id))
-		if texture then frame.icon:SetTexture(texture) end
-	end)
 end
 
 S:AddCallback('SpellBookFrame')

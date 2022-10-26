@@ -170,6 +170,10 @@ V.skins = {
 		voidstorage = true,
 		weeklyRewards = true,
 		worldmap = true,
+		expansionLanding = true,
+		majorFactions = true,
+		genericTrait = true,
+		editor = true,
 	}
 }
 

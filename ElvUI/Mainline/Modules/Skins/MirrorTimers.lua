@@ -3,52 +3,24 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function MirrorTimer_OnUpdate(frame, elapsed)
-	if frame.paused then return end
-	if frame.timeSinceUpdate >= 0.3 then
-		local minutes = frame.value/60
-		local seconds = frame.value%60
-		local text = frame.label:GetText()
-
-		if frame.value > 0 then
-			frame.TimerText:SetFormattedText('%s (%d:%02d)', text, minutes, seconds)
-		else
-			frame.TimerText:SetFormattedText('%s (0:00)', text)
-		end
-
-		frame.timeSinceUpdate = 0
-	else
-		frame.timeSinceUpdate = frame.timeSinceUpdate + elapsed
-	end
-end
-
 function S:MirrorTimers()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
 
-	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
+	--Mirror Timers (Underwater Breath etc.) -- To do, make it pretty WoW10
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
-		local mirrorTimer = _G['MirrorTimer'..i]
-		local statusBar = _G['MirrorTimer'..i..'StatusBar']
-		local text = _G['MirrorTimer'..i..'Text']
+		local bar = _G['MirrorTimer'..i]
+		local statusbar = bar.StatusBar or _G[bar:GetName()..'StatusBar']
 
-		mirrorTimer:StripTextures()
-		mirrorTimer:Size(222, 18)
-		mirrorTimer.label = text
-		statusBar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(statusBar)
-		statusBar:CreateBackdrop()
-		statusBar:Size(222, 18)
-		text:Hide()
+		bar:SetTemplate()
+		bar:SetSize(200, 15)
 
-		local TimerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
-		TimerText:FontTemplate(nil, nil, 'OUTLINE')
-		TimerText:Point('CENTER', statusBar, 'CENTER', 0, 0)
-		mirrorTimer.TimerText = TimerText
+		bar.Text:FontTemplate()
+		bar.Border:Hide()
 
-		mirrorTimer.timeSinceUpdate = 0.3 --Make sure timer value updates right away on first show
-		mirrorTimer:HookScript('OnUpdate', MirrorTimer_OnUpdate)
+		statusbar:SetStatusBarTexture(E.media.normTex)
+		statusbar:SetAllPoints()
 
-		E:CreateMover(mirrorTimer, 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
+		E:CreateMover(bar, 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
 	end
 end
 
