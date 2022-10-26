@@ -2241,7 +2241,10 @@ function B:OpenBank()
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame)
-		B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
+
+		if E.Retail then
+			B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
+		end
 
 		B.BankFrame.firstOpen = nil
 	elseif next(B.BankFrame.staleBags) then
