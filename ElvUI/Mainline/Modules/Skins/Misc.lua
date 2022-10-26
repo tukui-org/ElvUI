@@ -395,17 +395,11 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameNoButton:ClearAllPoints()
 	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
 	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
-	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 
-	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', function(self)
-		-- bug fix, don't show it if player is initiator
-		if self.initiator and UnitIsUnit('player', self.initiator) then
-			self:Hide()
-		end
-	end)
+	S:HandleFrame(_G.ReadyCheckListenerFrame)
+	_G.ReadyCheckPortrait:Kill()
 end
 
 S:AddCallback('BlizzardMiscFrames')
