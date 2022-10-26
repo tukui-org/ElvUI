@@ -48,11 +48,11 @@ end
 function B:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
 	if not indicator.PositionVehicleFrameHooked then
-		indicator:ClearAllPoints()
-		indicator:SetPoint('TOPRIGHT', nil, 'BOTTOMRIGHT', 0, 0) -- keep before the hooks
-
 		hooksecurefunc(indicator, 'SetPoint', SetPosition)
 		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+
+		indicator:ClearAllPoints()
+		indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
 
 		E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 		indicator.PositionVehicleFrameHooked = true
