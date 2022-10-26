@@ -336,8 +336,7 @@ function AB:CreateBar(id)
 		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
-		button.AuraCooldown.CooldownOverride = 'actionbar'
-		E:RegisterCooldown(button.AuraCooldown)
+		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
 		for k = 1, 18 do
 			button:SetState(k, 'action', (k - 1) * 12 + i)
@@ -689,8 +688,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		button.cooldown.CooldownOverride = 'actionbar'
-		E:RegisterCooldown(button.cooldown)
+		E:RegisterCooldown(button.cooldown, 'actionbar')
 		AB.handledbuttons[button] = true
 	end
 
@@ -1409,8 +1407,7 @@ function AB:SetButtonDesaturation(button, duration)
 end
 
 function AB:LAB_ChargeCreated(_, cd)
-	cd.CooldownOverride = 'actionbar'
-	E:RegisterCooldown(cd)
+	E:RegisterCooldown(cd, 'actionbar')
 end
 
 function AB:LAB_MouseUp()

@@ -100,6 +100,10 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	end
 end
 
+function E:Cooldown_EnableState()
+	return E.db.cooldown.enable
+end
+
 function E:Cooldown_IsEnabled(cd)
 	if cd.forceEnabled then
 		return true
@@ -108,7 +112,7 @@ function E:Cooldown_IsEnabled(cd)
 	elseif cd.reverseToggle ~= nil then
 		return cd.reverseToggle
 	else
-		return E.db.cooldown.enable
+		return E:Cooldown_EnableState()
 	end
 end
 
@@ -143,7 +147,8 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.roundTime = E.db.cooldown.roundTime
 
 	if db.reverse ~= nil then
-		timer.reverseToggle = (E.db.cooldown.enable and not db.reverse) or (db.reverse and not E.db.cooldown.enable)
+		local state = E:Cooldown_EnableState()
+		timer.reverseToggle = (state and not db.reverse) or (db.reverse and not state)
 	else
 		timer.reverseToggle = nil
 	end
@@ -211,6 +216,8 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration, modRate)
+	if self.isHooked ~= 1 then return end
+
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
@@ -225,15 +232,33 @@ function E:OnSetCooldown(start, duration, modRate)
 	end
 end
 
-function E:RegisterCooldown(cooldown)
+function E:TogggleCooldown(cooldown, switch)
+	cooldown.isHooked = switch and 1 or 0
+
+	if self.isHooked ~= 1 then
+		return
+	elseif cooldown.timer then
+		E:Cooldown_StopTimer(cooldown.timer)
+	end
+end
+
+function E:RegisterCooldown(cooldown, module)
 	if not cooldown.isHooked then
 		hooksecurefunc(cooldown, 'SetCooldown', E.OnSetCooldown)
-		cooldown.isHooked = true
 	end
 
+	E:TogggleCooldown(cooldown, true)
+
 	if not cooldown.isRegisteredCooldown then
-		local module = (cooldown.CooldownOverride or 'global')
-		if not E.RegisteredCooldowns[module] then E.RegisteredCooldowns[module] = {} end
+		if module then
+			cooldown.CooldownOverride = module
+		else
+			module = cooldown.CooldownOverride or 'global'
+		end
+
+		if not E.RegisteredCooldowns[module] then
+			E.RegisteredCooldowns[module] = {}
+		end
 
 		tinsert(E.RegisteredCooldowns[module], cooldown)
 		cooldown.isRegisteredCooldown = true

@@ -218,8 +218,7 @@ function UF:Construct_AuraIcon(button)
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', UF.Aura_OnClick)
 
-	button.cd.CooldownOverride = 'unitframe'
-	E:RegisterCooldown(button.cd)
+	E:RegisterCooldown(button.cd, 'unitframe')
 
 	local auras = button:GetParent()
 	local frame = auras:GetParent()

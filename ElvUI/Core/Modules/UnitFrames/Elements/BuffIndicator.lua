@@ -45,10 +45,9 @@ function UF:Configure_AuraWatch(frame, isPet)
 end
 
 function UF:BuffIndicator_PostCreateIcon(button)
-	button.cd.CooldownOverride = 'unitframe'
 	button.cd.skipScale = true
 
-	E:RegisterCooldown(button.cd)
+	E:RegisterCooldown(button.cd, 'unitframe')
 
 	local blizzCooldownText = button.cd:GetRegions()
 	if blizzCooldownText:IsObjectType('FontString') then

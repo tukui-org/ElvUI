@@ -26,8 +26,7 @@ function NP:BossMods_CreateIcon(element)
 	local cooldown = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cooldown:SetReverse(true)
 	cooldown:SetInside(button)
-	cooldown.CooldownOverride = 'nameplates'
-	E:RegisterCooldown(cooldown)
+	E:RegisterCooldown(cooldown, 'nameplates')
 
 	local icon = button:CreateTexture(nil, 'ARTWORK')
 	icon:SetTexCoord(unpack(E.TexCoords))
