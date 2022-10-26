@@ -18,6 +18,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
 local IsAltKeyDown = IsAltKeyDown
+local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
