@@ -16,9 +16,7 @@ local function SkinSocialHeaderTab(tab)
 	if not tab then return end
 
 	tab:StripTextures()
-	tab.backdrop = CreateFrame('Frame', nil, tab)
-	tab.backdrop:SetTemplate('Transparent')
-	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
+	tab:CreateBackdrop('Transparent')
 	tab.backdrop:Point('TOPLEFT', 3, -8)
 	tab.backdrop:Point('BOTTOMRIGHT', -6, 0)
 end
