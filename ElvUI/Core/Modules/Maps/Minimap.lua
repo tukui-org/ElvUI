@@ -388,6 +388,16 @@ function M:UpdateSettings()
 		end
 	end
 
+	-- ToDO: WoW 10 (check position size)
+	local queueButton = M:GetQueueStatusButton()
+	if queueButton then
+		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+		queueButton:ClearAllPoints()
+		queueButton:Point(position, Minimap, xOffset, yOffset)
+		queueButton:SetParent(MinimapCluster)
+		M:SetScale(queueButton, scale)
+	end
+
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
 	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
 	local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
@@ -444,16 +454,6 @@ function M:UpdateSettings()
 			if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
 			if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
 			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
-		end
-
-		-- ToDO: WoW 10 (check position size)
-		local queueButton = M:GetQueueStatusButton()
-		if queueButton then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-			queueButton:ClearAllPoints()
-			queueButton:Point(position, Minimap, xOffset, yOffset)
-			queueButton:SetParent(Minimap)
-			M:SetScale(queueButton, scale)
 		end
 
 		local queueDisplay = M.QueueStatusDisplay

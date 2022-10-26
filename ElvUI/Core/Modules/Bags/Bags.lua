@@ -2241,6 +2241,8 @@ function B:OpenBank()
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame)
+		B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
+
 		B.BankFrame.firstOpen = nil
 	elseif next(B.BankFrame.staleBags) then
 		for bagID, bag in next, B.BankFrame.staleBags do
@@ -2760,10 +2762,7 @@ function B:Initialize()
 
 	if E.Retail then
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
-
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
-		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
-		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
 	end
 
 	B:SecureHook('OpenAllBags')
