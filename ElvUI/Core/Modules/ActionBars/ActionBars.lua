@@ -336,8 +336,7 @@ function AB:CreateBar(id)
 		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
-		button.AuraCooldown.CooldownOverride = 'actionbar'
-		E:RegisterCooldown(button.AuraCooldown)
+		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
 		for k = 1, 18 do
 			button:SetState(k, 'action', (k - 1) * 12 + i)
@@ -689,8 +688,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		button.cooldown.CooldownOverride = 'actionbar'
-		E:RegisterCooldown(button.cooldown)
+		E:RegisterCooldown(button.cooldown, 'actionbar')
 		AB.handledbuttons[button] = true
 	end
 
@@ -1135,7 +1133,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.hideElements.macro = not barDB.macrotext
 	bar.buttonConfig.hideElements.hotkey = not barDB.hotkeytext
 	bar.buttonConfig.showGrid = barDB.showGrid
-	bar.buttonConfig.clickOnDown = AB.db.keyDown
+	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
 	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, AB.db.noPowerColor)
@@ -1357,7 +1355,7 @@ function AB:UpdateAuraCooldown(button, duration)
 	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_ForceUpdate(cd.timer)
+		E:Cooldown_TimerUpdate(cd.timer)
 	end
 end
 
@@ -1369,7 +1367,7 @@ function AB:UpdateChargeCooldown(button, duration)
 	cd.hideText = (not AB.db.chargeCooldown) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_ForceUpdate(cd.timer)
+		E:Cooldown_TimerUpdate(cd.timer)
 	end
 end
 
@@ -1409,8 +1407,7 @@ function AB:SetButtonDesaturation(button, duration)
 end
 
 function AB:LAB_ChargeCreated(_, cd)
-	cd.CooldownOverride = 'actionbar'
-	E:RegisterCooldown(cd)
+	E:RegisterCooldown(cd, 'actionbar')
 end
 
 function AB:LAB_MouseUp()

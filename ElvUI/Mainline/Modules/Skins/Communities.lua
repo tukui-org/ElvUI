@@ -121,6 +121,24 @@ local function HandleCommunityCards(frame)
 	S:HandleScrollBar(frame.ListScrollFrame.scrollBar)
 end
 
+local function HandleRewardButton(self)
+	for i = 1, self.ScrollTarget:GetNumChildren() do
+		local child = select(i, self.ScrollTarget:GetChildren())
+		if not child.IsSkinned then
+			S:HandleIcon(child.Icon, true)
+			child:StripTextures()
+
+			child:CreateBackdrop('Transparent')
+			child.backdrop:ClearAllPoints()
+			child.backdrop:SetPoint('TOPLEFT', child.Icon.backdrop)
+			child.backdrop:SetPoint('BOTTOMLEFT', child.Icon.backdrop)
+			child.backdrop:SetWidth(child:GetWidth() - 5)
+
+			child.IsSkinned = true
+		end
+	end
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -379,43 +397,10 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
 	GuildBenefitsFrame.Rewards.Bg:Hide()
 
-	--[[for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
-		button:SetTemplate('Transparent')
-		button:SetNormalTexture(E.ClearTexture)
-		button:SetHighlightTexture(E.ClearTexture)
+	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar)
 
-		if not button.hover then
-			local hover = button:CreateTexture()
-			hover:SetColorTexture(1, 1, 1, 0.3)
-			hover:SetInside(button.backdrop)
-			button:SetHighlightTexture(hover)
-			button.hover = hover
-		end
-
-		if button.DisabledBG then
-			button.DisabledBG:SetInside(button)
-		end
-
-		if button.Icon and not button.Icon.backdrop then
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
-			button.Icon:CreateBackdrop()
-		end
-	end
-
-	hooksecurefunc('CommunitiesGuildRewards_Update', function()
-		for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
-			if button.index then
-				local _, itemID = GetGuildRewardInfo(button.index)
-				if itemID then
-					local _, _, quality = GetItemInfo(itemID)
-					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
-						button.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-					end
-				end
-			end
-		end
-	end)]] -- WoW10
+	hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBox, 'Update', HandleRewardButton)
+	hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBox, 'Update', HandleRewardButton)
 
 	-- Guild Reputation Bar TO DO: Adjust me!
 	local StatusBar = CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar
@@ -494,7 +479,8 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
-	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
+	_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel

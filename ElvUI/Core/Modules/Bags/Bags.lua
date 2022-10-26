@@ -1996,9 +1996,8 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	end
 
 	slot.Cooldown = _G[slotName..'Cooldown']
-	slot.Cooldown.CooldownOverride = 'bags'
 	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
-	E:RegisterCooldown(slot.Cooldown)
+	E:RegisterCooldown(slot.Cooldown, 'bags')
 
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))

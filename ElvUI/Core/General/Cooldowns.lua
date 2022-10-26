@@ -30,6 +30,8 @@ function E:Cooldown_BelowScale(cd)
 end
 
 function E:Cooldown_OnUpdate(elapsed)
+	if self.paused then return end
+
 	local forced = elapsed == -1
 	if forced then
 		self.nextUpdate = 0
@@ -38,13 +40,13 @@ function E:Cooldown_OnUpdate(elapsed)
 		return
 	end
 
-	if not E:Cooldown_IsEnabled(self) then
-		E:Cooldown_StopTimer(self)
+	if not E:Cooldown_TimerEnabled(self) then
+		E:Cooldown_TimerStop(self)
 	else
 		local now = GetTime()
 
 		if self.endCooldown and now >= self.endCooldown then
-			E:Cooldown_StopTimer(self)
+			E:Cooldown_TimerStop(self)
 		elseif E:Cooldown_BelowScale(self) then
 			self.text:SetText('')
 			if not forced then
@@ -100,25 +102,25 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	end
 end
 
-function E:Cooldown_IsEnabled(cd)
-	if cd.forceEnabled then
+function E:Cooldown_TimerEnabled(timer)
+	if timer.forceEnabled then
 		return true
-	elseif cd.forceDisabled then
+	elseif timer.forceDisabled then
 		return false
-	elseif cd.reverseToggle ~= nil then
-		return cd.reverseToggle
+	elseif timer.reverseToggle ~= nil then
+		return timer.reverseToggle
 	else
-		return E.db.cooldown.enable
+		return E:CooldownEnabled()
 	end
 end
 
-function E:Cooldown_ForceUpdate(cd)
-	E.Cooldown_OnUpdate(cd, -1)
-	cd:Show()
+function E:Cooldown_TimerUpdate(timer)
+	E.Cooldown_OnUpdate(timer, -1)
+	timer:Show()
 end
 
-function E:Cooldown_StopTimer(cd)
-	cd:Hide()
+function E:Cooldown_TimerStop(timer)
+	timer:Hide()
 end
 
 function E:Cooldown_Options(timer, db, parent)
@@ -143,7 +145,8 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.roundTime = E.db.cooldown.roundTime
 
 	if db.reverse ~= nil then
-		timer.reverseToggle = (E.db.cooldown.enable and not db.reverse) or (db.reverse and not E.db.cooldown.enable)
+		local enabled = E:CooldownEnabled()
+		timer.reverseToggle = (enabled and not db.reverse) or (db.reverse and not enabled)
 	else
 		timer.reverseToggle = nil
 	end
@@ -211,6 +214,8 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration, modRate)
+	if self.isHooked ~= 1 then return end
+
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
@@ -218,22 +223,71 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.modRate = modRate
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
+		timer.paused = nil -- a new cooldown was called
 
-		E:Cooldown_ForceUpdate(timer)
+		E:Cooldown_TimerUpdate(timer)
 	elseif self.timer then
-		E:Cooldown_StopTimer(self.timer)
+		E:Cooldown_TimerStop(self.timer)
 	end
 end
 
-function E:RegisterCooldown(cooldown)
+function E:OnPauseCooldown()
+	local timer = self.timer
+	if timer then
+		timer.paused = GetTime()
+	end
+end
+
+function E:OnResumeCooldown()
+	local timer = self.timer
+	if timer and timer.paused then
+		timer.endTime = timer.start + timer.duration + (GetTime() - timer.paused) -- calcuate time since paused
+		timer.endCooldown = timer.endTime - 0.05
+
+		timer.paused = nil
+
+		E:Cooldown_TimerUpdate(self.timer)
+	end
+end
+
+function E:CooldownEnabled()
+	return E.db.cooldown.enable
+end
+
+function E:ToggleCooldown(cooldown, switch)
+	cooldown.isHooked = switch and 1 or 0
+
+	if cooldown.timer then
+		if switch then
+			E:Cooldown_TimerUpdate(cooldown.timer)
+		else
+			E:Cooldown_TimerStop(cooldown.timer)
+		end
+	end
+end
+
+function E:RegisterCooldown(cooldown, module)
 	if not cooldown.isHooked then
 		hooksecurefunc(cooldown, 'SetCooldown', E.OnSetCooldown)
-		cooldown.isHooked = true
+
+		if cooldown.Pause then
+			hooksecurefunc(cooldown, 'Pause', E.OnPauseCooldown)
+			hooksecurefunc(cooldown, 'Resume', E.OnResumeCooldown)
+		end
 	end
 
+	E:ToggleCooldown(cooldown, true)
+
 	if not cooldown.isRegisteredCooldown then
-		local module = (cooldown.CooldownOverride or 'global')
-		if not E.RegisteredCooldowns[module] then E.RegisteredCooldowns[module] = {} end
+		if module then
+			cooldown.CooldownOverride = module
+		else
+			module = cooldown.CooldownOverride or 'global'
+		end
+
+		if not E.RegisteredCooldowns[module] then
+			E.RegisteredCooldowns[module] = {}
+		end
 
 		tinsert(E.RegisteredCooldowns[module], cooldown)
 		cooldown.isRegisteredCooldown = true
@@ -245,9 +299,9 @@ function E:ToggleBlizzardCooldownText(cd, timer, request)
 	if timer and cd and cd.SetHideCountdownNumbers then
 		local forceHide = cd.hideText or timer.hideBlizzard
 		if request then
-			return forceHide or E:Cooldown_IsEnabled(timer)
+			return forceHide or E:Cooldown_TimerEnabled(timer)
 		else
-			cd:SetHideCountdownNumbers(forceHide or E:Cooldown_IsEnabled(timer))
+			cd:SetHideCountdownNumbers(forceHide or E:Cooldown_TimerEnabled(timer))
 		end
 	end
 end
