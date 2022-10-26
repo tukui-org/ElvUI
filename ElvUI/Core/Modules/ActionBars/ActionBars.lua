@@ -316,7 +316,10 @@ function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
+	else
+		_G.Mixin(bar, _G.ActionBarMixin) -- not adding the inherit template because it will need a bunch of stuff I don't want to code but mixin the functions.
 	end
+
 	AB.handledBars['bar'..id] = bar
 
 	local defaults = AB.barDefaults['bar'..id]
@@ -327,6 +330,7 @@ function AB:CreateBar(id)
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
+	bar.actionButtons = bar.buttons -- this is needed for the mixin.. see about renaming buttons to actionButtons in the AB code.
 	bar.bindButtons = defaults.bindButtons
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
