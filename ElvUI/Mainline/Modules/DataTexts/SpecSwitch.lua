@@ -15,6 +15,7 @@ local GetSpecializationInfo = GetSpecializationInfo
 local HideUIPanel = HideUIPanel
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
+local LoadAddOn = LoadAddOn
 local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
@@ -194,7 +195,8 @@ local function OnClick(self, button)
 	if button == 'LeftButton' then
 		local frame = _G.ClassTalentFrame
 		if not frame then
-			_G.LoadAddOn('Blizzard_ClassTalentUI')
+			LoadAddOn('Blizzard_ClassTalentUI')
+			frame = _G.ClassTalentFrame
 		end
 
 		if IsShiftKeyDown() then
