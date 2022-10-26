@@ -1497,12 +1497,12 @@ do
 		end
 	end
 
-	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride, dontOffset)
+	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, nameOverride, dontOffset)
 		assert(frame, 'HandleIconSelectionFrame: frame argument missing')
 
 		if frame.isSkinned then
 			return
-		elseif frameNameOverride and frameNameOverride ~= 'MacroPopup' then -- skip macros because it skins on show
+		elseif not E.Retail and (nameOverride and nameOverride ~= 'MacroPopup') then -- skip macros because it skins on show
 			frame:Show() -- spawn the info so we can skin the buttons
 			if frame.Update then frame:Update() end -- guild bank popup has update function
 			frame:Hide() -- can hide it right away
@@ -1513,7 +1513,7 @@ do
 		end
 
 		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
-		local frameName = frameNameOverride or frame:GetName() -- we need override in case Blizzard fucks up the naming (guild bank)
+		local frameName = nameOverride or frame:GetName() -- we need override in case Blizzard fucks up the naming (guild bank)
 		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
 		local editBox = (borderBox and borderBox.IconSelectorEditBox) or frame.EditBox or _G[frameName..'EditBox']
 		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or _G[frameName..'Cancel']
