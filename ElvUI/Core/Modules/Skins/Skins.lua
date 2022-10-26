@@ -179,23 +179,26 @@ function S:HandleInsetFrame(frame)
 end
 
 -- All frames that have a Portrait
-function S:HandlePortraitFrame(frame, createBackdrop)
+function S:HandlePortraitFrame(frame, createBackdrop, noStrip)
 	assert(frame, 'doesnt exist!')
 
 	local name = frame and frame.GetName and frame:GetName()
+
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
 	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
 
-	frame:StripTextures()
+	if not noStrip then
+		frame:StripTextures()
 
-	if portraitFrame then portraitFrame:SetAlpha(0) end
-	if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
-	if artFrameOverlay then artFrameOverlay:SetAlpha(0) end
+		if portraitFrame then portraitFrame:SetAlpha(0) end
+		if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
+		if artFrameOverlay then artFrameOverlay:SetAlpha(0) end
 
-	if insetFrame then
-		S:HandleInsetFrame(insetFrame)
+		if insetFrame then
+			S:HandleInsetFrame(insetFrame)
+		end
 	end
 
 	if frame.CloseButton then
