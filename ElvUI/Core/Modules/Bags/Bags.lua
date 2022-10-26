@@ -124,14 +124,11 @@ local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 
 -- converted below
 local GetContainerItemInfo
-local GetBackpackCurrencyInfo
+local GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local GetContainerItemQuestInfo
 
 do
 	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
-
-	GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-
 	if container then
 		ContainerIDToInventoryID = container.ContainerIDToInventoryID
 		GetBackpackAutosortDisabled = container.GetBackpackAutosortDisabled
