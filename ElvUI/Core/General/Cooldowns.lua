@@ -39,12 +39,12 @@ function E:Cooldown_OnUpdate(elapsed)
 	end
 
 	if not E:Cooldown_TimerEnabled(self) then
-		E:Cooldown_StopTimer(self)
+		E:Cooldown_TimerStop(self)
 	else
 		local now = GetTime()
 
 		if self.endCooldown and now >= self.endCooldown then
-			E:Cooldown_StopTimer(self)
+			E:Cooldown_TimerStop(self)
 		elseif E:Cooldown_BelowScale(self) then
 			self.text:SetText('')
 			if not forced then
@@ -112,12 +112,12 @@ function E:Cooldown_TimerEnabled(cd)
 	end
 end
 
-function E:Cooldown_ForceUpdate(cd)
+function E:Cooldown_TimerUpdate(cd)
 	E.Cooldown_OnUpdate(cd, -1)
 	cd:Show()
 end
 
-function E:Cooldown_StopTimer(cd)
+function E:Cooldown_TimerStop(cd)
 	cd:Hide()
 end
 
@@ -222,9 +222,9 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
 
-		E:Cooldown_ForceUpdate(timer)
+		E:Cooldown_TimerUpdate(timer)
 	elseif self.timer then
-		E:Cooldown_StopTimer(self.timer)
+		E:Cooldown_TimerStop(self.timer)
 	end
 end
 
@@ -239,9 +239,9 @@ function E:ToggleCooldown(cooldown, switch)
 	if not cooldown.timer then return end
 
 	if enabled then
-		E:Cooldown_ForceUpdate(cooldown.timer)
+		E:Cooldown_TimerUpdate(cooldown.timer)
 	else
-		E:Cooldown_StopTimer(cooldown.timer)
+		E:Cooldown_TimerStop(cooldown.timer)
 	end
 end
 

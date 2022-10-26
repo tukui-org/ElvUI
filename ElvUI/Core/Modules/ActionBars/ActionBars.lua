@@ -1355,7 +1355,7 @@ function AB:UpdateAuraCooldown(button, duration)
 	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_ForceUpdate(cd.timer)
+		E:Cooldown_TimerUpdate(cd.timer)
 	end
 end
 
@@ -1367,7 +1367,7 @@ function AB:UpdateChargeCooldown(button, duration)
 	cd.hideText = (not AB.db.chargeCooldown) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_ForceUpdate(cd.timer)
+		E:Cooldown_TimerUpdate(cd.timer)
 	end
 end
 
