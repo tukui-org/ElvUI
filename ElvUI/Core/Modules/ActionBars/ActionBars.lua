@@ -1135,7 +1135,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.hideElements.macro = not barDB.macrotext
 	bar.buttonConfig.hideElements.hotkey = not barDB.hotkeytext
 	bar.buttonConfig.showGrid = barDB.showGrid
-	bar.buttonConfig.clickOnDown = AB.db.keyDown
+	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
 	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, AB.db.noPowerColor)
