@@ -129,8 +129,10 @@ local GetContainerItemQuestInfo
 
 do
 	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
+
+	GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
+
 	if container then
-		GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 		ContainerIDToInventoryID = container.ContainerIDToInventoryID
 		GetBackpackAutosortDisabled = container.GetBackpackAutosortDisabled
 		GetBankAutosortDisabled = container.GetBankAutosortDisabled
@@ -142,10 +144,12 @@ do
 		SetBackpackAutosortDisabled = container.SetBackpackAutosortDisabled
 		SetInsertItemsLeftToRight = container.SetInsertItemsLeftToRight
 	else -- localised above
-		GetBackpackCurrencyInfo = function(index)
-			local info = {}
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
-			return info
+		if not GetBackpackCurrencyInfo then
+			GetBackpackCurrencyInfo = function(index)
+				local info = {}
+				info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
+				return info
+			end
 		end
 
 		GetContainerItemInfo = function(containerIndex, slotIndex)
@@ -1267,7 +1271,9 @@ function B:UpdateTokens()
 
 		local button = f.currencyButton[i]
 		button:ClearAllPoints()
-		button.icon:SetTexture(info.iconFileID)
+
+		local icon = button.icon or button.Icon
+		icon:SetTexture(info.iconFileID)
 
 		if B.db.currencyFormat == 'ICON_TEXT' then
 			button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
@@ -2141,6 +2147,11 @@ function B:OpenBags()
 	end
 
 	B.BagFrame:Show()
+
+	if E.Retail then
+		B:UpdateTokens()
+	end
+
 	PlaySound(IG_BACKPACK_OPEN)
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
