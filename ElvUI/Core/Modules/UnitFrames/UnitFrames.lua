@@ -638,6 +638,11 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	end
 end
 
+function UF:SetHeaderSortGroup(group, groupBy)
+	local func = UF.headerGroupBy[groupBy] or UF.headerGroupBy.INDEX
+	func(group)
+end
+
 --Keep an eye on this one, it may need to be changed too
 --Reference: http://www.tukui.org/forums/topic.php?id=35332
 function UF.groupPrototype:GetAttribute(name)
@@ -715,7 +720,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
 				group:SetAttribute('sortDir', sortDir)
 				group:SetAttribute('showPlayer', showPlayer)
-				UF.headerGroupBy[groupBy](group)
+				UF:SetHeaderSortGroup(group, groupBy)
 			end
 
 			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
@@ -1157,6 +1162,8 @@ end
 
 do
 	local disabledPlates = {}
+	local isPartyHooked = false
+
 	local function HandleFrame(baseName, doNotReparent)
 		local frame
 		if type(baseName) == 'string' then
@@ -1173,12 +1180,12 @@ do
 				frame:SetParent(E.HiddenFrame)
 			end
 
-			local health = frame.healthBar or frame.healthbar
+			local health = frame.healthBar or frame.healthbar or frame.HealthBar
 			if health then
 				health:UnregisterAllEvents()
 			end
 
-			local power = frame.manabar
+			local power = frame.manabar or frame.ManaBar
 			if power then
 				power:UnregisterAllEvents()
 			end
@@ -1188,7 +1195,7 @@ do
 				spell:UnregisterAllEvents()
 			end
 
-			local altpowerbar = frame.powerBarAlt
+			local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
 			if altpowerbar then
 				altpowerbar:UnregisterAllEvents()
 			end
@@ -1197,6 +1204,17 @@ do
 			if buffFrame then
 				buffFrame:UnregisterAllEvents()
 			end
+
+			local petFrame = frame.PetFrame
+			if petFrame then
+				petFrame:UnregisterAllEvents()
+			end
+		end
+	end
+
+	local function initPartyMemberFrames(partyFrame)
+		for frame in partyFrame.PartyMemberFramePool:EnumerateActive() do
+			HandleFrame(frame)
 		end
 	end
 
@@ -1253,17 +1271,26 @@ do
 				end
 			end
 		elseif strmatch(unit, 'party%d?$') and E.private.unitframe.disabledBlizzardFrames.party then
-			local id = strmatch(unit, 'party(%d)')
-			if id then
-				HandleFrame('PartyMemberFrame' .. id)
-				HandleFrame('CompactPartyMemberFrame' .. id)
+			if E.Retail then
+				if isPartyHooked then return end
+				isPartyHooked = true
+
+				initPartyMemberFrames(_G.PartyFrame)
+				hooksecurefunc(_G.PartyFrame, 'InitializePartyMemberFrames', initPartyMemberFrames)
 			else
-				for i = 1, _G.MAX_PARTY_MEMBERS do
-					HandleFrame(format('PartyMemberFrame%d', i))
-					HandleFrame(format('CompactPartyMemberFrame%d', i))
+				local id = strmatch(unit, 'party(%d)')
+				if id then
+					HandleFrame('PartyMemberFrame' .. id)
+					HandleFrame('CompactPartyMemberFrame' .. id)
+				else
+					for i = 1, _G.MAX_PARTY_MEMBERS do
+						HandleFrame(format('PartyMemberFrame%d', i))
+						HandleFrame(format('CompactPartyMemberFrame%d', i))
+					end
 				end
+
+				HandleFrame(_G.PartyMemberBackground)
 			end
-			HandleFrame(_G.PartyMemberBackground)
 		elseif strmatch(unit, 'arena%d?$') and E.private.unitframe.disabledBlizzardFrames.arena then
 			local id = strmatch(unit, 'arena(%d)')
 			if id then
