@@ -38,7 +38,7 @@ function E:Cooldown_OnUpdate(elapsed)
 		return
 	end
 
-	if not E:Cooldown_IsEnabled(self) then
+	if not E:Cooldown_TimerEnabled(self) then
 		E:Cooldown_StopTimer(self)
 	else
 		local now = GetTime()
@@ -100,11 +100,7 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	end
 end
 
-function E:Cooldown_EnableState()
-	return E.db.cooldown.enable
-end
-
-function E:Cooldown_IsEnabled(cd)
+function E:Cooldown_TimerEnabled(cd)
 	if cd.forceEnabled then
 		return true
 	elseif cd.forceDisabled then
@@ -112,7 +108,7 @@ function E:Cooldown_IsEnabled(cd)
 	elseif cd.reverseToggle ~= nil then
 		return cd.reverseToggle
 	else
-		return E:Cooldown_EnableState()
+		return E:CooldownEnabled()
 	end
 end
 
@@ -147,8 +143,8 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.roundTime = E.db.cooldown.roundTime
 
 	if db.reverse ~= nil then
-		local state = E:Cooldown_EnableState()
-		timer.reverseToggle = (state and not db.reverse) or (db.reverse and not state)
+		local enabled = E:CooldownEnabled()
+		timer.reverseToggle = (enabled and not db.reverse) or (db.reverse and not enabled)
 	else
 		timer.reverseToggle = nil
 	end
@@ -232,7 +228,11 @@ function E:OnSetCooldown(start, duration, modRate)
 	end
 end
 
-function E:TogggleCooldown(cooldown, switch)
+function E:CooldownEnabled()
+	return E.db.cooldown.enable
+end
+
+function E:ToggleCooldown(cooldown, switch)
 	cooldown.isHooked = switch and 1 or 0
 
 	if self.isHooked ~= 1 then
@@ -247,7 +247,7 @@ function E:RegisterCooldown(cooldown, module)
 		hooksecurefunc(cooldown, 'SetCooldown', E.OnSetCooldown)
 	end
 
-	E:TogggleCooldown(cooldown, true)
+	E:ToggleCooldown(cooldown, true)
 
 	if not cooldown.isRegisteredCooldown then
 		if module then
@@ -270,9 +270,9 @@ function E:ToggleBlizzardCooldownText(cd, timer, request)
 	if timer and cd and cd.SetHideCountdownNumbers then
 		local forceHide = cd.hideText or timer.hideBlizzard
 		if request then
-			return forceHide or E:Cooldown_IsEnabled(timer)
+			return forceHide or E:Cooldown_TimerEnabled(timer)
 		else
-			cd:SetHideCountdownNumbers(forceHide or E:Cooldown_IsEnabled(timer))
+			cd:SetHideCountdownNumbers(forceHide or E:Cooldown_TimerEnabled(timer))
 		end
 	end
 end
