@@ -18,6 +18,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
 local IsAltKeyDown = IsAltKeyDown
+local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
@@ -332,7 +333,7 @@ function E:CreateMoverPopup()
 	align:SetScript('OnEditFocusLost', function(eb)
 		eb:SetText(E.db.gridSize)
 	end)
-	align:SetScript('OnEditFocusGained', align.HighlightText)
+	align:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	align:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
 		eb:SetText(E.db.gridSize)
@@ -440,7 +441,7 @@ function E:CreateMoverPopup()
 	xOffset:SetScript('OnEditFocusLost', function(eb)
 		eb:SetText(E:Round(xOffset.currentValue))
 	end)
-	xOffset:SetScript('OnEditFocusGained', xOffset.HighlightText)
+	xOffset:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	xOffset:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
 		eb:SetText(E:Round(xOffset.currentValue))
@@ -475,7 +476,7 @@ function E:CreateMoverPopup()
 	yOffset:SetScript('OnEditFocusLost', function(eb)
 		eb:SetText(E:Round(yOffset.currentValue))
 	end)
-	yOffset:SetScript('OnEditFocusGained', yOffset.HighlightText)
+	yOffset:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	yOffset:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
 		eb:SetText(E:Round(yOffset.currentValue))

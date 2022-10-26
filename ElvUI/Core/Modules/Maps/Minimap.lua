@@ -394,7 +394,7 @@ function M:UpdateSettings()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
 		queueButton:ClearAllPoints()
 		queueButton:Point(position, Minimap, xOffset, yOffset)
-		queueButton:SetParent(MinimapCluster)
+		queueButton:SetParent(E.Retail and MinimapCluster or Minimap)
 		M:SetScale(queueButton, scale)
 	end
 
