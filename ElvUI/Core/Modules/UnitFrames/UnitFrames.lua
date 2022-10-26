@@ -638,6 +638,11 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	end
 end
 
+function UF:SetHeaderSortGroup(group, groupBy)
+	local func = UF.headerGroupBy[groupBy] or UF.headerGroupBy.INDEX
+	func(group)
+end
+
 --Keep an eye on this one, it may need to be changed too
 --Reference: http://www.tukui.org/forums/topic.php?id=35332
 function UF.groupPrototype:GetAttribute(name)
@@ -715,7 +720,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
 				group:SetAttribute('sortDir', sortDir)
 				group:SetAttribute('showPlayer', showPlayer)
-				UF.headerGroupBy[groupBy](group)
+				UF:SetHeaderSortGroup(group, groupBy)
 			end
 
 			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
