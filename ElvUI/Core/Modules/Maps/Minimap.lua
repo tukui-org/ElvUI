@@ -332,13 +332,13 @@ function M:UpdateSettings()
 
 	if E.Retail then
 		local offset = 1
+
+		MinimapCluster:SetScale(mmScale)
 		MinimapCluster:ClearAllPoints()
 
 		if E.db.general.minimap.clusterDisable then
-			MinimapCluster:SetScale(1)
 			MinimapCluster:Point('TOPRIGHT', _G.UIParent)
 		else
-			MinimapCluster:SetScale(mmScale)
 			MinimapCluster:Point('TOPRIGHT', M.ClusterHolder, 0, offset)
 		end
 
