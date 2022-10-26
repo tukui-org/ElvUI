@@ -358,8 +358,8 @@ local function FontTemplate(fs, font, size, style, skip)
 	end
 
 	-- grab values from profile before conversion
-	if not style then style = E.db.general.fontStyle or 'NONE' end
-	if not size then size = E.db.general.fontSize end
+	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
+	if not size then size = E.db.general.fontSize or P.general.fontSize end
 
 	-- shadow mode when using 'NONE'
 	if style == 'NONE' then
