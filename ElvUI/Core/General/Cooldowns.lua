@@ -223,6 +223,7 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.modRate = modRate
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
+		timer.paused = nil -- a new cooldown was called
 
 		E:Cooldown_TimerUpdate(timer)
 	elseif self.timer then
@@ -231,14 +232,20 @@ function E:OnSetCooldown(start, duration, modRate)
 end
 
 function E:OnPauseCooldown()
-	if self.timer then
-		self.timer.paused = true
+	local timer = self.timer
+	if timer then
+		timer.paused = GetTime()
 	end
 end
 
 function E:OnResumeCooldown()
-	if self.timer then
-		self.timer.paused = nil
+	local timer = self.timer
+	if timer and timer.paused then
+		timer.endTime = timer.start + timer.duration + (GetTime() - timer.paused) -- calcuate time since paused
+		timer.endCooldown = timer.endTime - 0.05
+
+		timer.paused = nil
+
 		E:Cooldown_TimerUpdate(self.timer)
 	end
 end
