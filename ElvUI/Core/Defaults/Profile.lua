@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
+local IsAddOnLoaded = IsAddOnLoaded
 local format = format
 local next = next
 
@@ -2709,6 +2710,10 @@ do -- cooldown stuff
 	P.bags.cooldown = CopyTable(P.actionbar.cooldown)
 	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
 	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
+
+	P.WeakAura = {} -- native cooldown support with our module
+	P.WeakAura.cooldown = CopyTable(P.actionbar.cooldown)
+	P.WeakAura.cooldown.override = false
 
 	-- color override
 	P.auras.cooldown.override = false
