@@ -1162,6 +1162,8 @@ end
 
 do
 	local disabledPlates = {}
+	local isPartyHooked = false
+
 	local function HandleFrame(baseName, doNotReparent)
 		local frame
 		if type(baseName) == 'string' then
@@ -1178,12 +1180,12 @@ do
 				frame:SetParent(E.HiddenFrame)
 			end
 
-			local health = frame.healthBar or frame.healthbar
+			local health = frame.healthBar or frame.healthbar or frame.HealthBar
 			if health then
 				health:UnregisterAllEvents()
 			end
 
-			local power = frame.manabar
+			local power = frame.manabar or frame.ManaBar
 			if power then
 				power:UnregisterAllEvents()
 			end
@@ -1193,7 +1195,7 @@ do
 				spell:UnregisterAllEvents()
 			end
 
-			local altpowerbar = frame.powerBarAlt
+			local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
 			if altpowerbar then
 				altpowerbar:UnregisterAllEvents()
 			end
@@ -1202,6 +1204,17 @@ do
 			if buffFrame then
 				buffFrame:UnregisterAllEvents()
 			end
+
+			local petFrame = frame.PetFrame
+			if petFrame then
+				petFrame:UnregisterAllEvents()
+			end
+		end
+	end
+
+	local function initPartyMemberFrames(partyFrame)
+		for frame in partyFrame.PartyMemberFramePool:EnumerateActive() do
+			HandleFrame(frame)
 		end
 	end
 
@@ -1258,17 +1271,26 @@ do
 				end
 			end
 		elseif strmatch(unit, 'party%d?$') and E.private.unitframe.disabledBlizzardFrames.party then
-			local id = strmatch(unit, 'party(%d)')
-			if id then
-				HandleFrame('PartyMemberFrame' .. id)
-				HandleFrame('CompactPartyMemberFrame' .. id)
+			if E.Retail then
+				if isPartyHooked then return end
+				isPartyHooked = true
+
+				initPartyMemberFrames(_G.PartyFrame)
+				hooksecurefunc(_G.PartyFrame, 'InitializePartyMemberFrames', initPartyMemberFrames)
 			else
-				for i = 1, _G.MAX_PARTY_MEMBERS do
-					HandleFrame(format('PartyMemberFrame%d', i))
-					HandleFrame(format('CompactPartyMemberFrame%d', i))
+				local id = strmatch(unit, 'party(%d)')
+				if id then
+					HandleFrame('PartyMemberFrame' .. id)
+					HandleFrame('CompactPartyMemberFrame' .. id)
+				else
+					for i = 1, _G.MAX_PARTY_MEMBERS do
+						HandleFrame(format('PartyMemberFrame%d', i))
+						HandleFrame(format('CompactPartyMemberFrame%d', i))
+					end
 				end
+
+				HandleFrame(_G.PartyMemberBackground)
 			end
-			HandleFrame(_G.PartyMemberBackground)
 		elseif strmatch(unit, 'arena%d?$') and E.private.unitframe.disabledBlizzardFrames.arena then
 			local id = strmatch(unit, 'arena(%d)')
 			if id then
