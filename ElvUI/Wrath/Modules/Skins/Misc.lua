@@ -6,6 +6,7 @@ local ipairs = ipairs
 local pairs, unpack = pairs, unpack
 
 local CreateFrame = CreateFrame
+local UnitIsUnit = UnitIsUnit
 local hooksecurefunc = hooksecurefunc
 
 local function SkinNavBarButtons(self)
@@ -48,6 +49,30 @@ function S:BlizzardMiscFrames()
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
+
+	-- ReadyCheckFrame
+	-- Here we reskin all 'normal' buttons
+	S:HandleButton(_G.ReadyCheckFrameYesButton)
+	S:HandleButton(_G.ReadyCheckFrameNoButton)
+
+	local ReadyCheckFrame = _G.ReadyCheckFrame
+	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameYesButton:ClearAllPoints()
+	_G.ReadyCheckFrameNoButton:ClearAllPoints()
+	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
+	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameText:ClearAllPoints()
+	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+
+	_G.ReadyCheckListenerFrame:SetAlpha(0)
+	ReadyCheckFrame:HookScript('OnShow', function(frame)
+		-- Bug fix, don't show it if player is initiator
+		if frame.initiator and UnitIsUnit('player', frame.initiator) then
+			frame:Hide()
+		end
+	end)
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 

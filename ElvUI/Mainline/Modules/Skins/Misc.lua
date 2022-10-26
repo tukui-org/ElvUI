@@ -47,10 +47,31 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame } do
+	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame, _G.ReadyCheckFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
+
+	-- ReadyCheck thing
+	S:HandleButton(_G.ReadyCheckFrameYesButton)
+	S:HandleButton(_G.ReadyCheckFrameNoButton)
+
+	local ReadyCheckFrame = _G.ReadyCheckFrame
+	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
+	_G.ReadyCheckFrameYesButton:ClearAllPoints()
+	_G.ReadyCheckFrameNoButton:ClearAllPoints()
+	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
+	_G.ReadyCheckFrameText:ClearAllPoints()
+	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+
+	-- Bug fix, don't show it if player is initiator
+	ReadyCheckFrame:HookScript('OnShow', function(self)
+		if self.initiator and UnitIsUnit('player', self.initiator) then
+			self:Hide()
+		end
+	end)
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
@@ -383,30 +404,6 @@ function S:BlizzardMiscFrames()
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
-
-	-- ReadyCheck thing
-	S:HandleButton(_G.ReadyCheckFrameYesButton)
-	S:HandleButton(_G.ReadyCheckFrameNoButton)
-
-	local ReadyCheckFrame = _G.ReadyCheckFrame
-	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameYesButton:ClearAllPoints()
-	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
-	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
-	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
-
-	S:HandleFrame(_G.ReadyCheckListenerFrame)
-	_G.ReadyCheckPortrait:Kill()
-
-	-- Bug fix, don't show it if player is initiator
-	ReadyCheckFrame:HookScript('OnShow', function(self)
-		if self.initiator and UnitIsUnit('player', self.initiator) then
-			self:Hide()
-		end
-	end)
 end
 
 S:AddCallback('BlizzardMiscFrames')
