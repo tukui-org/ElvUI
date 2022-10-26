@@ -2711,9 +2711,9 @@ do -- cooldown stuff
 	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
 	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
-	P.WeakAura = {} -- native cooldown support with our module
-	P.WeakAura.cooldown = CopyTable(P.actionbar.cooldown)
-	P.WeakAura.cooldown.override = false
+	P.WeakAuras = {} -- native cooldown support with our module
+	P.WeakAuras.cooldown = CopyTable(P.actionbar.cooldown)
+	P.WeakAuras.cooldown.override = false
 
 	-- color override
 	P.auras.cooldown.override = false
