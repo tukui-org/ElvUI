@@ -130,8 +130,8 @@ local function HandleRewardButton(self)
 
 			child:CreateBackdrop('Transparent')
 			child.backdrop:ClearAllPoints()
-			child.backdrop:SetPoint("TOPLEFT", child.Icon.backdrop)
-			child.backdrop:SetPoint("BOTTOMLEFT", child.Icon.backdrop)
+			child.backdrop:SetPoint('TOPLEFT', child.Icon.backdrop)
+			child.backdrop:SetPoint('BOTTOMLEFT', child.Icon.backdrop)
 			child.backdrop:SetWidth(child:GetWidth() - 5)
 
 			child.IsSkinned = true
