@@ -400,6 +400,13 @@ function S:BlizzardMiscFrames()
 
 	S:HandleFrame(_G.ReadyCheckListenerFrame)
 	_G.ReadyCheckPortrait:Kill()
+
+	-- Bug fix, don't show it if player is initiator
+	ReadyCheckFrame:HookScript('OnShow', function(self)
+		if self.initiator and UnitIsUnit('player', self.initiator) then
+			self:Hide()
+		end
+	end)
 end
 
 S:AddCallback('BlizzardMiscFrames')
