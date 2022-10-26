@@ -1210,6 +1210,11 @@ function AB:FixKeybindText(button)
 		hotkey:SetJustifyH(justify)
 	end
 
+	-- no clue, doing `color.r or 1` etc dont work
+	if not color.r then color.r = 1 end
+	if not color.g then color.g = 1 end
+	if not color.b then color.b = 1 end
+
 	hotkey:SetTextColor(color.r, color.g, color.b)
 
 	if not button.__LAB_Version then
