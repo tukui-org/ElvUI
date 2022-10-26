@@ -47,7 +47,7 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame, _G.ReadyCheckFrame } do
+	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
@@ -57,6 +57,8 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame
+	S:HandleFrame(ReadyCheckFrame)
+	_G.ReadyCheckPortrait:Kill()
 	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameYesButton:ClearAllPoints()
