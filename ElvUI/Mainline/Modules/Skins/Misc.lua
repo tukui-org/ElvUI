@@ -57,7 +57,7 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	S:HandleFrame(ReadyCheckFrame)
+	S:HandleFrame(_G.ReadyCheckListenerFrame)
 	_G.ReadyCheckPortrait:Kill()
 	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
