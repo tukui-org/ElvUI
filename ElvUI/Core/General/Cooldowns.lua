@@ -236,7 +236,11 @@ function E:ToggleCooldown(cooldown, switch)
 	local enabled = switch and 1 or 0
 	cooldown.isHooked = enabled
 
-	if not enabled and cooldown.timer then
+	if not cooldown.timer then return end
+
+	if enabled then
+		E:Cooldown_ForceUpdate(cooldown.timer)
+	else
 		E:Cooldown_StopTimer(cooldown.timer)
 	end
 end
