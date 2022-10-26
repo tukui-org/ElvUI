@@ -373,7 +373,7 @@ local function FontTemplate(fs, font, size, style, skip)
 		style = 'NONE'
 	end
 
-	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize or P.general.fontSize, style or E.db.general.fontStyle or P.general.fontStyle)
+	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle)
 
 	E.texts[fs] = true
 end
