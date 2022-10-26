@@ -452,7 +452,7 @@ function M:UpdateSettings()
 			local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
 			queueButton:ClearAllPoints()
 			queueButton:Point(position, Minimap, xOffset, yOffset)
-			queueButton:SetParent(Minimap)
+			queueButton:SetParent(_G.ElvUI_MinimapHolder)
 			M:SetScale(queueButton, scale)
 		end
 
