@@ -30,6 +30,8 @@ function E:Cooldown_BelowScale(cd)
 end
 
 function E:Cooldown_OnUpdate(elapsed)
+	if self.paused then return end
+
 	local forced = elapsed == -1
 	if forced then
 		self.nextUpdate = 0
@@ -100,25 +102,25 @@ function E:Cooldown_OnSizeChanged(cd, width, force)
 	end
 end
 
-function E:Cooldown_TimerEnabled(cd)
-	if cd.forceEnabled then
+function E:Cooldown_TimerEnabled(timer)
+	if timer.forceEnabled then
 		return true
-	elseif cd.forceDisabled then
+	elseif timer.forceDisabled then
 		return false
-	elseif cd.reverseToggle ~= nil then
-		return cd.reverseToggle
+	elseif timer.reverseToggle ~= nil then
+		return timer.reverseToggle
 	else
 		return E:CooldownEnabled()
 	end
 end
 
-function E:Cooldown_TimerUpdate(cd)
-	E.Cooldown_OnUpdate(cd, -1)
-	cd:Show()
+function E:Cooldown_TimerUpdate(timer)
+	E.Cooldown_OnUpdate(timer, -1)
+	timer:Show()
 end
 
-function E:Cooldown_TimerStop(cd)
-	cd:Hide()
+function E:Cooldown_TimerStop(timer)
+	timer:Hide()
 end
 
 function E:Cooldown_Options(timer, db, parent)
@@ -228,6 +230,19 @@ function E:OnSetCooldown(start, duration, modRate)
 	end
 end
 
+function E:OnPauseCooldown()
+	if self.timer then
+		self.timer.paused = true
+	end
+end
+
+function E:OnResumeCooldown()
+	if self.timer then
+		self.timer.paused = nil
+		E:Cooldown_TimerUpdate(self.timer)
+	end
+end
+
 function E:CooldownEnabled()
 	return E.db.cooldown.enable
 end
@@ -247,6 +262,11 @@ end
 function E:RegisterCooldown(cooldown, module)
 	if not cooldown.isHooked then
 		hooksecurefunc(cooldown, 'SetCooldown', E.OnSetCooldown)
+
+		if cooldown.Pause then
+			hooksecurefunc(cooldown, 'Pause', E.OnPauseCooldown)
+			hooksecurefunc(cooldown, 'Resume', E.OnResumeCooldown)
+		end
 	end
 
 	E:ToggleCooldown(cooldown, true)
