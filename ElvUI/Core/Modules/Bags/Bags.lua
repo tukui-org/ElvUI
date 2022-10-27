@@ -49,7 +49,7 @@ local SplitContainerItem = SplitContainerItem
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
-local UseContainerItem = UseContainerItem
+local C_Container_UseContainerItem = C_Container.UseContainerItem
 
 local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
 local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
@@ -2483,7 +2483,7 @@ function B:ProgressQuickVendor()
 		E:Print(format('%s|cFF00DDDDx%d|r %s', itemLink, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
 	end
 
-	UseContainerItem(bagID, slotID)
+	C_Container_UseContainerItem(bagID, slotID)
 	tremove(B.SellFrame.Info.itemList, 1)
 
 	return stackPrice
