@@ -523,7 +523,7 @@ function TT:AddMythicInfo(tt, unit)
 	end
 end
 
-function TT:GameTooltip_OnTooltipSetUnit(tt)
+function TT:GameTooltip_OnTooltipSetUnit(tt, data)
 	if tt:IsForbidden() or not TT.db.visibility then return end
 
 	local _, unit = tt:GetUnit()
@@ -573,7 +573,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	if unit and not isPlayerUnit and TT:IsModKeyDown() and not (E.Retail and C_PetBattles_IsInBattle()) then
-		local guid = UnitGUID(unit) or ''
+		local guid = data.guid or ''
 		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 		if id then -- NPC ID's
 			tt:AddLine(format(IDLine, _G.ID, id))
@@ -585,10 +585,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	else
 		tt.StatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
-
-	local textWidth = tt.StatusBar.text:GetStringWidth()
-	if textWidth then
-		tt:SetMinimumWidth(textWidth)
+	if tt.StatusBar.text then
+		local textWidth = tt.StatusBar.text:GetStringWidth()
+		if textWidth then
+			tt:SetMinimumWidth(textWidth)
+		end
 	end
 end
 
@@ -659,7 +660,7 @@ function TT:EmbeddedItemTooltip_QuestReward(tt)
 	end
 end
 
-function TT:GameTooltip_OnTooltipSetItem(tt)
+function TT:GameTooltip_OnTooltipSetItem(tt, data)
 	if tt:IsForbidden() or not TT.db.visibility then return end
 
 	local owner = tt:GetOwner()
@@ -669,45 +670,51 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		return
 	end
 
-	local name, link = tt:GetItem()
-
-	if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
-		local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
-		if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
-	end
-
-	if not link then return end
-
-	local modKey = TT:IsModKeyDown()
 	local itemID, bagCount, bankCount
-	if TT.db.itemQuality then
-		local _, _, quality = GetItemInfo(link)
-		if quality and quality > 1 then
-			local r, g, b = GetItemQualityColor(quality)
-			if tt.NineSlice then
-				tt.NineSlice:SetBorderColor(r, g, b)
-			else
-				tt:SetBackdropBorderColor(r, g, b)
-			end
+	if tt.GetItem then --Some tooltips don't have this func. Example - compare tooltip
+		local name, link = tt:GetItem()
 
-			tt.qualityChanged = true
+		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
+			if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
 		end
-	end
 
-	if modKey then
-		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
-	end
+		if not link then return end
 
-	if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
-		local count = GetItemCount(link)
-		local total = GetItemCount(link, true)
-		if TT.db.itemCount == 'BAGS_ONLY' then
-			bagCount = format(IDLine, L["Count"], count)
-		elseif TT.db.itemCount == 'BANK_ONLY' then
-			bankCount = format(IDLine, L["Bank"], total - count)
-		elseif TT.db.itemCount == 'BOTH' then
-			bagCount = format(IDLine, L["Count"], count)
-			bankCount = format(IDLine, L["Bank"], total - count)
+		local modKey = TT:IsModKeyDown()
+		if TT.db.itemQuality then
+			local _, _, quality = GetItemInfo(link)
+			if quality and quality > 1 then
+				local r, g, b = GetItemQualityColor(quality)
+				if tt.NineSlice then
+					tt.NineSlice:SetBorderColor(r, g, b)
+				else
+					tt:SetBackdropBorderColor(r, g, b)
+				end
+
+				tt.qualityChanged = true
+			end
+		end
+
+		if modKey then
+			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, data.id)
+		end
+
+		if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
+			local count = GetItemCount(link)
+			local total = GetItemCount(link, true)
+			if TT.db.itemCount == 'BAGS_ONLY' then
+				bagCount = format(IDLine, L["Count"], count)
+			elseif TT.db.itemCount == 'BANK_ONLY' then
+				bankCount = format(IDLine, L["Bank"], total - count)
+			elseif TT.db.itemCount == 'BOTH' then
+				bagCount = format(IDLine, L["Count"], count)
+				bankCount = format(IDLine, L["Bank"], total - count)
+			end
+		end
+	else
+		if modKey then
+			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, data.id)
 		end
 	end
 
@@ -812,10 +819,10 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	tt:Show()
 end
 
-function TT:GameTooltip_OnTooltipSetSpell(tt)
+function TT:GameTooltip_OnTooltipSetSpell(tt, data)
 	if tt:IsForbidden() or not TT:IsModKeyDown() then return end
 
-	local _, id = tt:GetSpell()
+	local id = data.id
 	if not id then return end
 
 	local ID = format(IDLine, _G.ID, id)
@@ -972,12 +979,12 @@ function TT:Initialize()
 	TT:SecureHook(GameTooltip, 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
-	TT:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
-	TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
-	TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tt, data) TT:GameTooltip_OnTooltipSetSpell(tt, data) end)
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tt, data) TT:GameTooltip_OnTooltipSetItem(tt, data) end)
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tt, data) TT:GameTooltip_OnTooltipSetUnit(tt, data) end)
+	-- TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	if E.Retail then
