@@ -18,15 +18,15 @@ local function OnEnter()
 	if primaryTalentTree then
 		local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
 		if masterySpell then
-			local tooltipInfo = CreateBaseTooltipInfo("GetSpellByID", masterySpell);
-			tooltipInfo.append = true;
-			DT.tooltip:ProcessInfo(tooltipInfo);
+			local tooltipInfo = CreateBaseTooltipInfo("GetSpellByID", masterySpell)
+			tooltipInfo.append = true
+			DT.tooltip:ProcessInfo(tooltipInfo)
 		end
 		if masterySpell2 then
 			DT.tooltip:AddLine(' ')
-			local tooltipInfo = CreateBaseTooltipInfo("GetSpellByID", masterySpell2);
-			tooltipInfo.append = true;
-			DT.tooltip:ProcessInfo(tooltipInfo);
+			local tooltipInfo = CreateBaseTooltipInfo("GetSpellByID", masterySpell2)
+			tooltipInfo.append = true
+			DT.tooltip:ProcessInfo(tooltipInfo)
 		end
 
 		DT.tooltip:Show()
