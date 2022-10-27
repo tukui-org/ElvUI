@@ -7,6 +7,7 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_MASTERY = STAT_MASTERY
+local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 
 local displayString, lastPanel = ''
 
