@@ -17,7 +17,6 @@ local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
 local IsPossessBarVisible = IsPossessBarVisible
-local Mixin = Mixin
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -317,8 +316,6 @@ function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
-	else -- Azil: not adding the inherit template because it will need a bunch of stuff I don't want to code but mixin the functions.
-		Mixin(bar, _G.ActionBarMixin) -- Simpy: lets the flyout show but it's still tainted because of the buttons spellID and spellName (happens in SpellFlyout_Toggle)
 	end
 
 	AB.handledBars['bar'..id] = bar
@@ -331,7 +328,6 @@ function AB:CreateBar(id)
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
-	bar.actionButtons = bar.buttons -- this is needed for the mixin.. see about renaming buttons to actionButtons in the AB code.
 	bar.bindButtons = defaults.bindButtons
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
