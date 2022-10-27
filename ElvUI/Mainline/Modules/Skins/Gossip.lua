@@ -46,25 +46,25 @@ function S:GossipFrame()
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.GossipFrameInset:Hide()
 		if GossipFrame.Background then GossipFrame.Background:Hide() end
+
+		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
+			for _, button in next, { frame.ScrollTarget:GetChildren() } do
+				if not button.IsSkinned then
+					local buttonText = select(3, button:GetRegions())
+					if buttonText and buttonText:IsObjectType('FontString') then
+						ReplaceGossipText(button, button:GetText())
+						hooksecurefunc(button, 'SetText', ReplaceGossipText)
+						hooksecurefunc(button, 'SetFormattedText', ReplaceGossipFormat)
+					end
+
+					button.IsSkinned = true
+				end
+			end
+		end)
 	end
 
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
-
-	hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
-		for _, button in next, { frame.ScrollTarget:GetChildren() } do
-			if not button.IsSkinned then
-				local buttonText = select(3, button:GetRegions())
-				if buttonText and buttonText:IsObjectType('FontString') then
-					ReplaceGossipText(button, button:GetText())
-					hooksecurefunc(button, 'SetText', ReplaceGossipText)
-					hooksecurefunc(button, 'SetFormattedText', ReplaceGossipFormat)
-				end
-
-				button.IsSkinned = true
-			end
-		end
-	end)
 
 	for i = 1, 4 do
 		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
