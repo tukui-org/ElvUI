@@ -9,13 +9,13 @@ local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 local GetBindingKey = GetBindingKey
+local GetCVarBool = GetCVarBool
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
 local InClickBindingMode = InClickBindingMode
+local InCombatLockdown = InCombatLockdown
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
@@ -317,6 +317,7 @@ function AB:CreateBar(id)
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 	end
+
 	AB.handledBars['bar'..id] = bar
 
 	local defaults = AB.barDefaults['bar'..id]
@@ -1209,6 +1210,11 @@ function AB:FixKeybindText(button)
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
 	end
+
+	-- no clue, doing `color.r or 1` etc dont work
+	if not color.r then color.r = 1 end
+	if not color.g then color.g = 1 end
+	if not color.b then color.b = 1 end
 
 	hotkey:SetTextColor(color.r, color.g, color.b)
 

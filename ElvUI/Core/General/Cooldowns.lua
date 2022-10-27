@@ -250,10 +250,12 @@ function E:OnResumeCooldown()
 	end
 end
 
+-- USED BY WEAKAURAS
 function E:CooldownEnabled()
 	return E.db.cooldown.enable
 end
 
+-- USED BY WEAKAURAS
 function E:ToggleCooldown(cooldown, switch)
 	cooldown.isHooked = switch and 1 or 0
 
@@ -266,6 +268,7 @@ function E:ToggleCooldown(cooldown, switch)
 	end
 end
 
+-- USED BY WEAKAURAS
 function E:RegisterCooldown(cooldown, module)
 	if not cooldown.isHooked then
 		hooksecurefunc(cooldown, 'SetCooldown', E.OnSetCooldown)

@@ -357,6 +357,10 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs.font, fs.fontSize, fs.fontStyle = font, size, style
 	end
 
+	-- grab values from profile before conversion
+	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
+	if not size then size = E.db.general.fontSize or P.general.fontSize end
+
 	-- shadow mode when using 'NONE'
 	if style == 'NONE' then
 		fs:SetShadowOffset(1, -0.5)
@@ -373,7 +377,7 @@ local function FontTemplate(fs, font, size, style, skip)
 		style = 'NONE'
 	end
 
-	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle)
+	fs:SetFont(font or E.media.normFont, size, style)
 
 	E.texts[fs] = true
 end

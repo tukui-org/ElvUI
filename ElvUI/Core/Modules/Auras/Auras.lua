@@ -18,6 +18,7 @@ local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local UIParent = UIParent
 local UnitAura = UnitAura
+local SetCVar = SetCVar
 local GetTime = GetTime
 
 local Masque = E.Masque
@@ -538,6 +539,10 @@ function A:Initialize()
 
 	A.Initialized = true
 	A.db = E.db.auras
+
+	if E.Retail then -- set for now to get Auras right click to work
+		SetCVar('ActionButtonUseKeyDown', 0)
+	end
 
 	local xoffset = -(6 + E.Border)
 	if E.private.auras.buffsHeader then
