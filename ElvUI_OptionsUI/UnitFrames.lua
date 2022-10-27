@@ -374,7 +374,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 13)
 	end
 
-	if groupName == 'party' then
+	if groupName == 'party' or groupName == 'arena' then
 		config.args.positionsGroup = ACH:Group(L["Position"], nil, 19, nil, function(info) return E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 		config.args.positionsGroup.inline = true
 		config.args.positionsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
