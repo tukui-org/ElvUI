@@ -34,6 +34,7 @@ V.general = {
 		enable = true,
 		hideClassHallReport = false,
 		hideCalendar = true,
+		hideTracking = false,
 	},
 	classColorMentionsSpeech = true,
 	raidUtility = true,
