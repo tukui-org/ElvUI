@@ -1212,12 +1212,6 @@ do
 		end
 	end
 
-	local function initPartyMemberFrames(partyFrame)
-		for frame in partyFrame.PartyMemberFramePool:EnumerateActive() do
-			HandleFrame(frame)
-		end
-	end
-
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
@@ -1275,8 +1269,11 @@ do
 				if isPartyHooked then return end
 				isPartyHooked = true
 
-				initPartyMemberFrames(_G.PartyFrame)
-				hooksecurefunc(_G.PartyFrame, 'InitializePartyMemberFrames', initPartyMemberFrames)
+				_G.PartyFrame:UnregisterAllEvents()
+
+				for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
+					HandleFrame(frame)
+				end
 			else
 				local id = strmatch(unit, 'party(%d)')
 				if id then

@@ -7,38 +7,45 @@ local unpack = unpack
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
 local NUM_GUILDBANK_COLUMNS = 7
 
+local function GuildBankOnShow(frame)
+	if not frame.isSkinned then
+		S:HandleIconSelectionFrame(frame, nil, nil, 'GuildBankPopup')
+	end
+end
+
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
-	_G.GuildBankFrame:StripTextures()
-	_G.GuildBankFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(_G.GuildBankFrame.CloseButton)
-	_G.GuildBankFrame.Emblem:Kill()
-	_G.GuildBankFrame.MoneyFrameBG:StripTextures()
+	local frame = _G.GuildBankFrame
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
+	S:HandleCloseButton(frame.CloseButton)
+	frame.Emblem:Kill()
+	frame.MoneyFrameBG:StripTextures()
 
-	S:HandleButton(_G.GuildBankFrame.DepositButton, true)
-	S:HandleButton(_G.GuildBankFrame.WithdrawButton, true)
+	S:HandleButton(frame.DepositButton, true)
+	S:HandleButton(frame.WithdrawButton, true)
 	S:HandleButton(_G.GuildBankInfoSaveButton, true)
-	S:HandleButton(_G._G.GuildBankFrame.BuyInfo.PurchaseButton, true)
+	S:HandleButton(frame.BuyInfo.PurchaseButton, true)
 
-	_G.GuildBankFrame.WithdrawButton:Point('RIGHT', _G.GuildBankFrame.DepositButton, 'LEFT', -2, 0)
+	frame.WithdrawButton:Point('RIGHT', frame.DepositButton, 'LEFT', -2, 0)
 	_G.GuildBankInfoScrollFrame:Point('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
 	_G.GuildBankInfoScrollFrame:StripTextures()
 	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
-	_G.GuildBankFrame.BlackBG:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, 1)
-	_G.GuildBankFrame.BlackBG.backdrop:Point('TOPLEFT', _G.GuildBankFrame.BlackBG, 'TOPLEFT', 4, 0)
-	_G.GuildBankFrame.BlackBG.backdrop:Point('BOTTOMRIGHT', _G.GuildBankFrame.BlackBG, 'BOTTOMRIGHT', -3, 3)
+	frame.BlackBG:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, 1)
+	frame.BlackBG.backdrop:Point('TOPLEFT', frame.BlackBG, 'TOPLEFT', 4, 0)
+	frame.BlackBG.backdrop:Point('BOTTOMRIGHT', frame.BlackBG, 'BOTTOMRIGHT', -3, 3)
 
 	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)
 	_G.GuildBankTransactionsScrollFrameScrollBar:ClearAllPoints()
-	_G.GuildBankTransactionsScrollFrameScrollBar:Point('TOPRIGHT', _G.GuildBankFrame.BlackBG.backdrop, 'TOPRIGHT', -4, -21)
-	_G.GuildBankTransactionsScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.GuildBankFrame.BlackBG.backdrop, 'BOTTOMRIGHT', -4, 21)
+	_G.GuildBankTransactionsScrollFrameScrollBar:Point('TOPRIGHT', frame.BlackBG.backdrop, 'TOPRIGHT', -4, -21)
+	_G.GuildBankTransactionsScrollFrameScrollBar:Point('BOTTOMRIGHT', frame.BlackBG.backdrop, 'BOTTOMRIGHT', -4, 21)
 	_G.GuildBankInfoScrollFrameScrollBar:ClearAllPoints()
-	_G.GuildBankInfoScrollFrameScrollBar:Point('TOPRIGHT', _G.GuildBankFrame.BlackBG.backdrop, 'TOPRIGHT', -4, -21)
-	_G.GuildBankInfoScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.GuildBankFrame.BlackBG.backdrop, 'BOTTOMRIGHT', -4, 21)
+	_G.GuildBankInfoScrollFrameScrollBar:Point('TOPRIGHT', frame.BlackBG.backdrop, 'TOPRIGHT', -4, -21)
+	_G.GuildBankInfoScrollFrameScrollBar:Point('BOTTOMRIGHT', frame.BlackBG.backdrop, 'BOTTOMRIGHT', -4, 21)
 
 	for i=1, _G.MAX_GUILDBANK_TABS do
 		local tab = _G['GuildBankTab'..i]
@@ -56,7 +63,7 @@ function S:Blizzard_GuildBankUI()
 	end
 
 	for i = 1, NUM_GUILDBANK_COLUMNS do
-		local column = _G.GuildBankFrame['Column'..i]
+		local column = frame['Column'..i]
 		column:StripTextures()
 
 		for x = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
@@ -84,7 +91,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox:SetTemplate()
 
 	if not E:IsAddOnEnabled('ArkInventory') then
-		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, nil, nil, 'GuildBankPopup')
+		_G.GuildBankPopupFrame:HookScript('OnShow', GuildBankOnShow)
 	end
 end
 

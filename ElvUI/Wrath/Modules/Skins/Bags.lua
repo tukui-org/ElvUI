@@ -72,8 +72,7 @@ function S:ContainerFrame()
 			questIcon:SetTexCoord(0, 1, 0, 1)
 			questIcon:SetInside()
 
-			cooldown.CooldownOverride = 'bags'
-			E:RegisterCooldown(cooldown)
+			E:RegisterCooldown(cooldown, 'bags')
 		end
 	end
 
@@ -163,8 +162,7 @@ function S:ContainerFrame()
 		button.IconQuestTexture:SetTexCoord(0, 1, 0, 1)
 		button.IconQuestTexture:SetInside()
 
-		cooldown.CooldownOverride = 'bags'
-		E:RegisterCooldown(cooldown)
+		E:RegisterCooldown(cooldown, 'bags')
 	end
 
 	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)

@@ -40,7 +40,10 @@ function B:UIWidgetTemplateStatusBar()
 		return -- we don't want to handle these widgets
 	end
 
-	UpdateBarTexture(bar, bar:GetStatusBarAtlas())
+	if bar.GetStatusBarAtlas then
+		UpdateBarTexture(bar, bar:GetStatusBarAtlas())
+		hooksecurefunc(bar, 'SetStatusBarAtlas', UpdateBarTexture)
+	end
 
 	if not bar.backdrop then
 		bar:CreateBackdrop('Transparent')

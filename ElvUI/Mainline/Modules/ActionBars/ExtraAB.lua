@@ -58,8 +58,7 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 				if spellButton.Cooldown then
-					spellButton.Cooldown.CooldownOverride = 'actionbar'
-					E:RegisterCooldown(spellButton.Cooldown)
+					E:RegisterCooldown(spellButton.Cooldown, 'actionbar')
 					spellButton.Cooldown:SetInside(spellButton)
 				end
 

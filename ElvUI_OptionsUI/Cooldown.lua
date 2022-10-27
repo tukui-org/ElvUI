@@ -3,6 +3,8 @@ local C, L = unpack(E.OptionsUI)
 local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
+local IsAddOnLoaded = IsAddOnLoaded
+
 -- GLOBALS: AceGUIWidgetLSMlists
 
 local function profile(db)
@@ -14,7 +16,7 @@ local function private(db)
 end
 
 local function group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) local t = (profile(db))[info[#info]] local d = (private(db))[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b; end, function(info, r, g, b) local t = (profile(db))[info[#info]] t.r, t.g, t.b = r, g, b; E:UpdateCooldownSettings(db); end)
+	local main = ACH:Group(label, nil, order, nil, function(info) local t = (profile(db))[info[#info]] local d = (private(db))[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b; end, function(info, r, g, b) local t = (profile(db))[info[#info]] t.r, t.g, t.b = r, g, b; E:UpdateCooldownSettings(db); end, nil, function() return db == 'WeakAuras' and not IsAddOnLoaded(db) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local mainArgs = main.args
@@ -110,3 +112,4 @@ group( 7, 'actionbar',	L["ActionBars"])
 group( 8, 'bags',		L["Bags"])
 group( 9, 'nameplates',	L["Nameplates"])
 group(10, 'unitframe',	L["UnitFrames"])
+group(20, 'WeakAuras',	L["WeakAuras"])
