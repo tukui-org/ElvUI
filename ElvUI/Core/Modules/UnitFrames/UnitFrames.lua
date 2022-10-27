@@ -1209,6 +1209,11 @@ do
 			if petFrame then
 				petFrame:UnregisterAllEvents()
 			end
+
+			local totFrame = frame.totFrame
+			if totFrame then
+				totFrame:UnregisterAllEvents()
+			end
 		end
 	end
 
