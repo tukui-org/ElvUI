@@ -9,14 +9,15 @@ local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 local GetBindingKey = GetBindingKey
+local GetCVarBool = GetCVarBool
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local HasOverrideActionBar = HasOverrideActionBar
-local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
+local hooksecurefunc = hoMixinoksecurefunc
 local InClickBindingMode = InClickBindingMode
+local InCombatLockdown = InCombatLockdown
 local IsPossessBarVisible = IsPossessBarVisible
+local Mixin = Mixin
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -316,8 +317,8 @@ function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
-	else
-		_G.Mixin(bar, _G.ActionBarMixin) -- not adding the inherit template because it will need a bunch of stuff I don't want to code but mixin the functions.
+	else -- Azil: not adding the inherit template because it will need a bunch of stuff I don't want to code but mixin the functions.
+		Mixin(bar, _G.ActionBarMixin) -- Simpy: lets the flyout show but it's still tainted because of the buttons spellID and spellName (happens in SpellFlyout_Toggle)
 	end
 
 	AB.handledBars['bar'..id] = bar
