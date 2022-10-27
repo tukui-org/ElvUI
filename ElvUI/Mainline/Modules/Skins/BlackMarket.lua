@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack, pairs = next, unpack, pairs
+local next = next
 
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
