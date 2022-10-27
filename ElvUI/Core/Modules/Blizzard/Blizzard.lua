@@ -67,12 +67,15 @@ function B:Initialize()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
 
+	if not E.Classic then
+		B:PositionVehicleFrame()
+	end
+
 	if E.Retail then
 		B:DisableHelpTip()
 		B:DisableNPE()
 		B:SkinBlizzTimers()
 		B:PositionTalkingHead()
-		B:PositionVehicleFrame()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 

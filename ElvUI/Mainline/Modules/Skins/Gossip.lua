@@ -40,17 +40,16 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	local GossipFrame = _G.GossipFrame
-	S:HandlePortraitFrame(GossipFrame)
+	S:HandlePortraitFrame(GossipFrame, true)
 
 	if E.private.skins.parchmentRemoverEnable then
 		_G.QuestFont:SetTextColor(1, 1, 1)
+		_G.GossipFrameInset:Hide()
+		if GossipFrame.Background then GossipFrame.Background:Hide() end
 	end
 
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
-
-	_G.GossipFrameInset:Hide()
-	if GossipFrame.Background then GossipFrame.Background:Hide() end
 
 	hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do

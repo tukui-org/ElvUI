@@ -78,7 +78,7 @@ local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local BANK_CONTAINER = BANK_CONTAINER
@@ -124,13 +124,12 @@ local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 
 -- converted below
 local GetContainerItemInfo
-local GetBackpackCurrencyInfo
+local GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local GetContainerItemQuestInfo
 
 do
 	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
 	if container then
-		GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 		ContainerIDToInventoryID = container.ContainerIDToInventoryID
 		GetBackpackAutosortDisabled = container.GetBackpackAutosortDisabled
 		GetBankAutosortDisabled = container.GetBankAutosortDisabled
@@ -142,10 +141,12 @@ do
 		SetBackpackAutosortDisabled = container.SetBackpackAutosortDisabled
 		SetInsertItemsLeftToRight = container.SetInsertItemsLeftToRight
 	else -- localised above
-		GetBackpackCurrencyInfo = function(index)
-			local info = {}
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
-			return info
+		if not GetBackpackCurrencyInfo then
+			GetBackpackCurrencyInfo = function(index)
+				local info = {}
+				info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
+				return info
+			end
 		end
 
 		GetContainerItemInfo = function(containerIndex, slotIndex)
@@ -875,10 +876,11 @@ end
 -- Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
 function B:AssignBagFlagMenu()
 	local holder = B.AssignBagDropdown.holder
-	if not (holder and holder.BagID) then return end
+	local bagID = holder and holder.BagID
+	if not bagID then return end
 
-	local canAssign = holder.BagID ~= -1 or holder.BagID ~= 5 -- The actual bank has ID -1, backpack has ID 0, we want to make sure we're looking at a regular or bank bag
-	if canAssign or not (holder.BagID == 0 and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(holder.BagID))) then
+	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+	if canAssign and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(bagID)) then
 		E:SetEasyMenuAnchor(E.EasyMenu, B.AssignBagDropdown.holder)
 		_G.EasyMenu(B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
@@ -899,7 +901,8 @@ end
 function B:GetFilterFlagInfo(bagID, isBank)
 	for _, flag in next, B.GearFilters do
 		if flag ~= FILTER_FLAG_IGNORE then
-			if isBank and not E.Retail and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag) or GetBagSlotFlag(bagID, flag) then
+			local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+			if canAssign and ((isBank and not E.Retail and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag)) or GetBagSlotFlag(bagID, flag)) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
 		end
@@ -910,7 +913,8 @@ function B:SetFilterFlag(bagID, flag, value)
 	B.AssignBagDropdown.holder = nil
 
 	local isBank = bagID > NUM_BAG_SLOTS
-	return isBank and not E.Retail and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value) or SetBagSlotFlag(bagID, flag, value)
+	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+	return canAssign and ((isBank and not E.Retail and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value)) or SetBagSlotFlag(bagID, flag, value))
 end
 
 function B:GetBagAssignedInfo(holder, isBank)
@@ -930,11 +934,11 @@ function B:GetBagAssignedInfo(holder, isBank)
 		local r, g, b, a = unpack(color)
 		holder:SetBackdropBorderColor(r, g, b, a)
 		holder.forcedBorderColors = {r, g, b, a}
+
+		return active
 	else
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		holder.forcedBorderColors = nil
-
-		return active
 	end
 end
 
@@ -1264,7 +1268,9 @@ function B:UpdateTokens()
 
 		local button = f.currencyButton[i]
 		button:ClearAllPoints()
-		button.icon:SetTexture(info.iconFileID)
+
+		local icon = button.icon or button.Icon
+		icon:SetTexture(info.iconFileID)
 
 		if B.db.currencyFormat == 'ICON_TEXT' then
 			button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
@@ -1993,9 +1999,8 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	end
 
 	slot.Cooldown = _G[slotName..'Cooldown']
-	slot.Cooldown.CooldownOverride = 'bags'
 	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
-	E:RegisterCooldown(slot.Cooldown)
+	E:RegisterCooldown(slot.Cooldown, 'bags')
 
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
@@ -2139,6 +2144,11 @@ function B:OpenBags()
 	end
 
 	B.BagFrame:Show()
+
+	if E.Retail then
+		B:UpdateTokens()
+	end
+
 	PlaySound(IG_BACKPACK_OPEN)
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
@@ -2238,6 +2248,11 @@ function B:OpenBank()
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame)
+
+		if E.Retail then
+			B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
+		end
+
 		B.BankFrame.firstOpen = nil
 	elseif next(B.BankFrame.staleBags) then
 		for bagID, bag in next, B.BankFrame.staleBags do
@@ -2757,10 +2772,7 @@ function B:Initialize()
 
 	if E.Retail then
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
-
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
-		-- Delay because we need to wait for Quality to exist, it doesnt seem to on login at PEW
-		E:Delay(1, B.UpdateBagSlots, B, B.BankFrame, REAGENTBANK_CONTAINER)
 	end
 
 	B:SecureHook('OpenAllBags')

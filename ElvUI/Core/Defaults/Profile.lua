@@ -134,7 +134,7 @@ P.general = {
 				yOffset = 4,
 			},
 			lfgEye = {
-				scale = 1,
+				scale = E.Retail and 0.6 or 1,
 				position = 'BOTTOMRIGHT',
 				xOffset = 3,
 				yOffset = -3
@@ -2457,7 +2457,6 @@ P.actionbar = {
 	globalFadeAlpha = 0,
 	handleOverlay = true,
 	hideCooldownBling = false,
-	keyDown = true,
 	lockActionBars = true,
 	movementModifier = 'SHIFT',
 	noPowerColor = { r = 0.5, g = 0.5, b = 1 },
@@ -2710,6 +2709,10 @@ do -- cooldown stuff
 	P.bags.cooldown = CopyTable(P.actionbar.cooldown)
 	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
 	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
+
+	P.WeakAuras = {} -- native cooldown support with our module
+	P.WeakAuras.cooldown = CopyTable(P.actionbar.cooldown)
+	P.WeakAuras.cooldown.override = false
 
 	-- color override
 	P.auras.cooldown.override = false

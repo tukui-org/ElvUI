@@ -9,13 +9,13 @@ local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 local GetBindingKey = GetBindingKey
+local GetCVarBool = GetCVarBool
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
 local InClickBindingMode = InClickBindingMode
+local InCombatLockdown = InCombatLockdown
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
@@ -317,6 +317,7 @@ function AB:CreateBar(id)
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 	end
+
 	AB.handledBars['bar'..id] = bar
 
 	local defaults = AB.barDefaults['bar'..id]
@@ -336,8 +337,7 @@ function AB:CreateBar(id)
 		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
-		button.AuraCooldown.CooldownOverride = 'actionbar'
-		E:RegisterCooldown(button.AuraCooldown)
+		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
 		for k = 1, 18 do
 			button:SetState(k, 'action', (k - 1) * 12 + i)
@@ -689,8 +689,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		button.cooldown.CooldownOverride = 'actionbar'
-		E:RegisterCooldown(button.cooldown)
+		E:RegisterCooldown(button.cooldown, 'actionbar')
 		AB.handledbuttons[button] = true
 	end
 
@@ -1135,7 +1134,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.hideElements.macro = not barDB.macrotext
 	bar.buttonConfig.hideElements.hotkey = not barDB.hotkeytext
 	bar.buttonConfig.showGrid = barDB.showGrid
-	bar.buttonConfig.clickOnDown = AB.db.keyDown
+	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
 	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, AB.db.noPowerColor)
@@ -1211,6 +1210,11 @@ function AB:FixKeybindText(button)
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
 	end
+
+	-- no clue, doing `color.r or 1` etc dont work
+	if not color.r then color.r = 1 end
+	if not color.g then color.g = 1 end
+	if not color.b then color.b = 1 end
 
 	hotkey:SetTextColor(color.r, color.g, color.b)
 
@@ -1357,7 +1361,7 @@ function AB:UpdateAuraCooldown(button, duration)
 	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_ForceUpdate(cd.timer)
+		E:Cooldown_TimerUpdate(cd.timer)
 	end
 end
 
@@ -1369,7 +1373,7 @@ function AB:UpdateChargeCooldown(button, duration)
 	cd.hideText = (not AB.db.chargeCooldown) or (duration and duration > 1.5) or nil
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_ForceUpdate(cd.timer)
+		E:Cooldown_TimerUpdate(cd.timer)
 	end
 end
 
@@ -1409,8 +1413,7 @@ function AB:SetButtonDesaturation(button, duration)
 end
 
 function AB:LAB_ChargeCreated(_, cd)
-	cd.CooldownOverride = 'actionbar'
-	E:RegisterCooldown(cd)
+	E:RegisterCooldown(cd, 'actionbar')
 end
 
 function AB:LAB_MouseUp()

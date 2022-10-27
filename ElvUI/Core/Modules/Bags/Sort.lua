@@ -22,7 +22,7 @@ local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
 local SplitGuildBankItem = SplitGuildBankItem
 
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
 local BANK_CONTAINER = BANK_CONTAINER
 

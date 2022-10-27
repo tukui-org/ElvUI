@@ -157,6 +157,7 @@ function E:SetupCVars(noDisplayMsg)
 	if E.Retail then
 		SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 	else
+		SetCVar('ActionButtonUseKeyDown', 1) -- dont set this for retail because of aura right click issue
 		SetCVar('chatClassColorOverride', 0)
 	end
 

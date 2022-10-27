@@ -332,13 +332,13 @@ function M:UpdateSettings()
 
 	if E.Retail then
 		local offset = 1
+
+		MinimapCluster:SetScale(mmScale)
 		MinimapCluster:ClearAllPoints()
 
 		if E.db.general.minimap.clusterDisable then
-			MinimapCluster:SetScale(1)
 			MinimapCluster:Point('TOPRIGHT', _G.UIParent)
 		else
-			MinimapCluster:SetScale(mmScale)
 			MinimapCluster:Point('TOPRIGHT', M.ClusterHolder, 0, offset)
 		end
 
@@ -386,6 +386,16 @@ function M:UpdateSettings()
 			_G.TimeManagerClockButton:SetParent(MinimapCluster)
 			_G.TimeManagerClockButton:Show()
 		end
+	end
+
+	-- ToDO: WoW 10 (check position size)
+	local queueButton = M:GetQueueStatusButton()
+	if queueButton then
+		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+		queueButton:ClearAllPoints()
+		queueButton:Point(position, Minimap, xOffset, yOffset)
+		queueButton:SetParent(E.Retail and MinimapCluster or Minimap)
+		M:SetScale(queueButton, scale)
 	end
 
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
@@ -444,16 +454,6 @@ function M:UpdateSettings()
 			if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
 			if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
 			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
-		end
-
-		-- ToDO: WoW 10 (check position size)
-		local queueButton = M:GetQueueStatusButton()
-		if queueButton then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-			queueButton:ClearAllPoints()
-			queueButton:Point(position, Minimap, xOffset, yOffset)
-			queueButton:SetParent(Minimap)
-			M:SetScale(queueButton, scale)
 		end
 
 		local queueDisplay = M.QueueStatusDisplay

@@ -50,7 +50,9 @@ local IgnoreFrames = {
 }
 
 local PatternFrames = {
-	['^ChatFrame%d+'] = function() return E.private.chat.enable end,
+	['^ChatFrame%d+'] = function()
+		return E.private.chat.enable and E.db.chat.panelBackdrop ~= 'HIDEBOTH'
+	end,
 }
 
 local function PatternIgnore(frameName)

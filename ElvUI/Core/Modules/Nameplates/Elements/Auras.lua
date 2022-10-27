@@ -85,8 +85,7 @@ function NP:Construct_AuraIcon(button)
 	button.overlay:SetTexture()
 	button.stealable:SetTexture()
 
-	button.cd.CooldownOverride = 'nameplates'
-	E:RegisterCooldown(button.cd)
+	E:RegisterCooldown(button.cd, 'nameplates')
 
 	local auras = button:GetParent()
 	if auras and auras.type then

@@ -93,7 +93,7 @@ function AB:HandleMicroButton(button)
 		button.Flash:SetTexture()
 	end
 
-	local l, r, t, b = 0.22, 0.81, 0.26, 0.82
+	local l, r, t, b = 0.1, 0.85, 0.12, 0.78
 	if not E.Retail then
 		l, r, t, b = 0.17, 0.87, 0.5, 0.908
 	end
@@ -233,10 +233,13 @@ function AB:SetupMicroBar()
 
 	if not E.Retail then
 		_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
+	end
 
-		-- With this method we might don't taint anything. Instead of using :Kill()
-		_G.MainMenuBarPerformanceBar:SetAlpha(0)
-		_G.MainMenuBarPerformanceBar:SetScale(0.00001)
+	-- With this method we might don't taint anything. Instead of using :Kill()
+	local MenuPerformanceBar = _G.MainMenuBarPerformanceBar or _G.MainMenuMicroButton.MainMenuBarPerformanceBar
+	if MenuPerformanceBar then
+		MenuPerformanceBar:SetAlpha(0)
+		MenuPerformanceBar:SetScale(0.00001)
 	end
 
 	AB:SecureHook('UpdateMicroButtons')
@@ -245,13 +248,6 @@ function AB:SetupMicroBar()
 
 	if not E.Retail then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
-	end
-
-	-- With this method we might don't taint anything. Instead of using :Kill()
-	local MenuPerformanceBar = _G.MainMenuBarPerformanceBar
-	if MenuPerformanceBar then
-		MenuPerformanceBar:SetAlpha(0)
-		MenuPerformanceBar:SetScale(0.00001)
 	end
 
 	if E.Wrath then
