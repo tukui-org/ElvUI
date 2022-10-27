@@ -344,7 +344,7 @@ function AB:CreateBar(id)
 		end
 
 		if i == 12 then
-			button:SetState(12, 'custom', AB.customExitButton)
+			button:SetState(16, 'custom', AB.customExitButton)
 		end
 
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
