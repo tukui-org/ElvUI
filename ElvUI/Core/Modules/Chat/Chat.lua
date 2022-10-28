@@ -3594,7 +3594,6 @@ function CH:Initialize()
 	CH:SecureHook('GetPlayerInfoByGUID')
 
 	CH:RegisterEvent('PLAYER_ENTERING_WORLD', 'ResnapDock')
-	CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
@@ -3603,6 +3602,7 @@ function CH:Initialize()
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.Retail then
+		CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 
 		CH:SecureHook(_G.GeneralDockManager.primary, 'OnEditModeExit', 'ResnapDock')
