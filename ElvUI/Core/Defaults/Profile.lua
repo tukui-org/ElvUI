@@ -2245,7 +2245,7 @@ P.unitframe.units.arena.buffs.priority = 'Blacklist,TurtleBuffs,PlayerBuffs,Disp
 P.unitframe.units.arena.buffs.sizeOverride = 27
 P.unitframe.units.arena.buffs.yOffset = 16
 P.unitframe.units.arena.castbar.width = 256
-P.unitframe.units.arena.castbar.positionsGroup = { anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
+P.unitframe.units.arena.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
 P.unitframe.units.arena.debuffs.enable = true
 P.unitframe.units.arena.debuffs.anchorPoint = 'LEFT'
 P.unitframe.units.arena.debuffs.maxDuration = 300
@@ -2273,7 +2273,7 @@ P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
 P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
-P.unitframe.units.party.castbar.positionsGroup = { anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
+P.unitframe.units.party.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
 P.unitframe.units.party.CombatIcon.enable = false
 P.unitframe.units.party.debuffs.enable = true
 P.unitframe.units.party.debuffs.anchorPoint = 'RIGHT'
