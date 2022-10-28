@@ -10,7 +10,6 @@ local unpack = unpack
 local tinsert = tinsert
 local hooksecurefunc = hooksecurefunc
 
-local ToggleBag = ToggleBag
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetCVarBool = GetCVarBool
@@ -190,8 +189,10 @@ function B:BagButton_UpdateTextures()
 	pushed:SetInside()
 	pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
-	self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-	self.SlotHighlightTexture:SetInside()
+	if self.SlotHighlightTexture then
+		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+		self.SlotHighlightTexture:SetInside()
+	end
 end
 
 function B:LoadBagBar()
@@ -228,7 +229,9 @@ function B:LoadBagBar()
 		b:SetParent(B.BagBar)
 		B:SkinBag(b)
 
-		hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
+		if E.Retail then
+			hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
+		end
 
 		if not E.Retail then
 			b.commandName = commandNames[i]

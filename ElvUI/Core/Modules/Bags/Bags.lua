@@ -51,11 +51,6 @@ local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
 local UseContainerItem = UseContainerItem
 
-local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
-local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
-local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
-local SetBankBagSlotFlag = SetBankBagSlotFlag or (C_Container and C_Container.SetBankBagSlotFlag)
-
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
@@ -70,6 +65,19 @@ local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
+
+local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
+local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
+local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
+local SetBankBagSlotFlag = SetBankBagSlotFlag or (C_Container and C_Container.SetBankBagSlotFlag)
+local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
+local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled or (C_Container and C_Container.GetBackpackAutosortDisabled)
+local GetBankAutosortDisabled = GetBankAutosortDisabled or (C_Container and C_Container.GetBankAutosortDisabled)
+local GetContainerItemCooldown = GetContainerItemCooldown or (C_Container and C_Container.GetContainerItemCooldown)
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled or (C_Container and C_Container.SetBackpackAutosortDisabled)
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
@@ -113,19 +121,10 @@ if E.Retail then
 	tinsert(B.GearFilters, BagSlotFlags.PriorityQuestItems)
 end
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID or C_Container.ContainerIDToInventoryID
-local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled or C_Container.GetBackpackAutosortDisabled
-local GetBankAutosortDisabled = GetBankAutosortDisabled or C_Container.GetBankAutosortDisabled
-local GetContainerItemCooldown = GetContainerItemCooldown or C_Container.GetContainerItemCooldown
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots or C_Container.GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots or C_Container.GetContainerNumSlots
-local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled or C_Container.SetBackpackAutosortDisabled
-local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or C_Container.SetInsertItemsLeftToRight
-
 do
-	local GetContainerItemInfo = GetContainerItemInfo or C_Container.GetContainerItemInfo
-	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or C_Container.GetContainerItemQuestInfo
-	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
+	local GetContainerItemInfo = GetContainerItemInfo or (C_Container and C_Container.GetContainerItemInfo)
+	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or (C_Container and C_Container.GetContainerItemQuestInfo)
+	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or (C_CurrencyInfo and C_CurrencyInfo.GetBackpackCurrencyInfo)
 
 	function B:GetBackpackCurrencyInfo(index)
 		if _G.GetBackpackCurrencyInfo then

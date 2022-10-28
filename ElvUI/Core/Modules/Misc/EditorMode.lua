@@ -6,13 +6,13 @@ local pairs = pairs
 local tremove = tremove
 local strmatch = strmatch
 
-local CheckTargetFrame = function() return E.private.unitframe.disabledBlizzardFrames.target end
-local CheckCastFrame = function() return E.private.unitframe.disabledBlizzardFrames.castbar end
-local CheckArenaFrame = function() return E.private.unitframe.disabledBlizzardFrames.arena end
-local CheckPartyFrame = function() return E.private.unitframe.disabledBlizzardFrames.party end
-local CheckFocusFrame = function() return E.private.unitframe.disabledBlizzardFrames.focus end
-local CheckRaidFrame = function() return E.private.unitframe.disabledBlizzardFrames.raid end
-local CheckBossFrame = function() return E.private.unitframe.disabledBlizzardFrames.boss end
+local CheckTargetFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
+local CheckCastFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
+local CheckArenaFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.arena end
+local CheckPartyFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.party end
+local CheckFocusFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.focus end
+local CheckRaidFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid end
+local CheckBossFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.boss end
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
@@ -49,20 +49,6 @@ local IgnoreFrames = {
 	MultiBar7 = CheckActionBar
 }
 
-local PatternFrames = {
-	['^ChatFrame%d+'] = function()
-		return E.private.chat.enable and E.db.chat.panelBackdrop ~= 'HIDEBOTH'
-	end,
-}
-
-local function PatternIgnore(frameName)
-	for pattern, patternFunc in pairs(PatternFrames) do
-		if strmatch(frameName, pattern) then
-			return patternFunc()
-		end
-	end
-end
-
 function EM:Initialize()
 	local editMode = _G.EditModeManagerFrame
 
@@ -72,7 +58,7 @@ function EM:Initialize()
 		local name = registered[i]:GetName()
 		local ignore = IgnoreFrames[name]
 
-		if ignore and ignore() or PatternIgnore(name) then
+		if ignore and ignore() then
 			tremove(editMode.registeredSystemFrames, i)
 		end
 	end

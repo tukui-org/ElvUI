@@ -1303,6 +1303,12 @@ function CH:SnappingChanged(chat)
 	end
 end
 
+function CH:ResnapDock(event, initLogin, isReload)
+	if event ~= 'PLAYER_ENTERING_WORLD' or (not initLogin and not isReload) then
+		CH:SnappingChanged(_G.GeneralDockManager.primary)
+	end
+end
+
 function CH:ShowBackground(background, show)
 	if not background then return end
 
@@ -3587,6 +3593,8 @@ function CH:Initialize()
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
 
+	CH:RegisterEvent('PLAYER_ENTERING_WORLD', 'ResnapDock')
+	CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
@@ -3596,6 +3604,8 @@ function CH:Initialize()
 
 	if E.Retail then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
+
+		CH:SecureHook(_G.GeneralDockManager.primary, 'OnEditModeExit', 'ResnapDock')
 
 		if E.private.general.voiceOverlay then
 			CH:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay')
