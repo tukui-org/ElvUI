@@ -1444,7 +1444,6 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 	end
 
 	-- set cooldown
-	parent.chargeCooldown:SetDrawBling(parent.chargeCooldown:GetEffectiveAlpha() > 0.5)
 	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration, chargeModRate)
 
 	-- update charge cooldown skin when masque is used
