@@ -1248,8 +1248,9 @@ function B:OnEvent(event, ...)
 end
 
 function B:UpdateTokens()
-	local f = B.BagFrame
-	for _, button in ipairs(f.currencyButton) do
+	local bagFrame = B.BagFrame
+	local currencies = bagFrame.currencyButton
+	for _, button in ipairs(currencies) do
 		button:Hide()
 	end
 
@@ -1258,7 +1259,7 @@ function B:UpdateTokens()
 		local info = B:GetBackpackCurrencyInfo(i)
 		if not (info and info.name) then break end
 
-		local button = f.currencyButton[i]
+		local button = currencies[i]
 		button:ClearAllPoints()
 
 		local icon = button.icon or button.Icon
@@ -1279,26 +1280,26 @@ function B:UpdateTokens()
 	end
 
 	if numTokens == 0 then
-		if f.bottomOffset > 8 then
-			f.bottomOffset = 8
+		if bagFrame.bottomOffset > 8 then
+			bagFrame.bottomOffset = 8
 			B:Layout()
 		end
 	else
-		if f.bottomOffset < 28 then
-			f.bottomOffset = 28
+		if bagFrame.bottomOffset < 28 then
+			bagFrame.bottomOffset = 28
 			B:Layout()
 		end
 
-		local c1, c2, c3 = unpack(f.currencyButton)
+		local c1, c2, c3 = unpack(currencies)
 		if numTokens == 1 then
-			c1:Point('BOTTOM', f.currencyButton, -c1.text:GetWidth() * 0.5, 3)
+			c1:Point('BOTTOM', currencies, -c1.text:GetWidth() * 0.5, 3)
 		elseif numTokens == 2 then
-			c1:Point('BOTTOM', f.currencyButton, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
-			c2:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', c2:GetWidth() * 3, 3)
+			c1:Point('BOTTOM', currencies, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
+			c2:Point('BOTTOMLEFT', currencies, 'BOTTOM', c2:GetWidth() * 3, 3)
 		else
-			c1:Point('BOTTOMLEFT', f.currencyButton, 3, 3)
-			c2:Point('BOTTOM', f.currencyButton, -c2.text:GetWidth() / 3, 3)
-			c3:Point('BOTTOMRIGHT', f.currencyButton, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
+			c1:Point('BOTTOMLEFT', currencies, 3, 3)
+			c2:Point('BOTTOM', currencies, -c2.text:GetWidth() / 3, 3)
+			c3:Point('BOTTOMRIGHT', currencies, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
 		end
 	end
 end
