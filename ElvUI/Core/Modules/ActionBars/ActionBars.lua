@@ -1225,11 +1225,7 @@ function AB:FixKeybindText(button)
 	hotkey:SetTextColor(color.r, color.g, color.b)
 
 	if not button.__LAB_Version then
-		if db and not db.hotkeytext then
-			hotkey:Hide()
-		else
-			hotkey:Show()
-		end
+		hotkey:SetShown(not (db and not db.hotkeytext))
 	end
 
 	if not button.useMasque then
