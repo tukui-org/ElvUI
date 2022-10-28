@@ -51,7 +51,7 @@ function UF:AuraBars_UpdateBar(bar)
 		bar.auraInfo = {}
 	end
 
-	bar:SetReverseFill(bars.reverseFill)
+	bar:SetReverseFill(not not bars.reverseFill)
 	bar.spark:ClearAllPoints()
 	bar.spark:Point(bars.reverseFill and 'LEFT' or 'RIGHT', bar:GetStatusBarTexture())
 	bar.spark:Point('BOTTOM')
