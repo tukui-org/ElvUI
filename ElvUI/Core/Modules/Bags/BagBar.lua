@@ -79,10 +79,18 @@ function B:SkinBag(bag)
 
 	if E.Retail then
 		bag:GetNormalTexture():SetAlpha(0)
-		bag:GetPushedTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
-		bag.SlotHighlightTexture:Kill()
 		bag.CircleMask:Hide()
+
+		local pushed = bag:GetPushedTexture()
+		pushed:SetInside()
+		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+		pushed.SetAllPoints = E.noop
+		pushed.SetAtlas = E.noop
+
+		bag.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+		bag.SlotHighlightTexture:SetInside()
+		bag.SlotHighlightTexture.SetAtlas = E.noop
 
 		icon.Show = nil
 		icon:Show()
