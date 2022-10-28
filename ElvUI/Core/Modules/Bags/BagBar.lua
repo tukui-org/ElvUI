@@ -13,12 +13,8 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetCVarBool = GetCVarBool
-local IsModifiedClick = IsModifiedClick
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
-local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
-local BackpackButton_OnModifiedClick = BackpackButton_OnModifiedClick
-local BackpackButton_OnClick = BackpackButton_OnClick
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 
@@ -79,9 +75,7 @@ function B:SkinBag(bag)
 
 	if E.Retail then
 		bag:GetNormalTexture():SetAlpha(0)
-		bag:GetPushedTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
-		bag.SlotHighlightTexture:Kill()
 		bag.CircleMask:Hide()
 
 		icon.Show = nil
@@ -183,28 +177,21 @@ function B:UpdateMainButtonCount()
 	mainCount:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
-function B:MainMenuBarBackpackButton_OnClick(button)
-	if E.Retail and (E.private.actionbar.enable and AB.KeyBinder.active or KeybindFrames_InQuickKeybindMode()) then return end
-
-	if E.Retail then
-		return self:BagSlotOnClick()
-	elseif IsModifiedClick() then
-		BackpackButton_OnModifiedClick(self, button)
-	else
-		BackpackButton_OnClick(self, button)
-	end
-end
-
 function B:BagButton_OnClick(key)
 	if E.Retail and key == 'RightButton' then
 		B.AssignBagDropdown.holder = self
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-	elseif self.BagID == 0 then
-		B.MainMenuBarBackpackButton_OnClick(self, key)
-	elseif E.Retail then
-		self:BagSlotOnClick()
-	else
-		_G.BagSlotButton_OnClick(self)
+	end
+end
+
+function B:BagButton_UpdateTextures()
+	local pushed = self:GetPushedTexture()
+	pushed:SetInside()
+	pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+
+	if self.SlotHighlightTexture then
+		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+		self.SlotHighlightTexture:SetInside()
 	end
 end
 
@@ -233,6 +220,7 @@ function B:LoadBagBar()
 
 	tinsert(B.BagBar.buttons, _G.MainMenuBarBackpackButton)
 	B:SkinBag(_G.MainMenuBarBackpackButton)
+	B.BagButton_UpdateTextures(_G.MainMenuBarBackpackButton)
 
 	for i = 0, NUM_BAG_FRAMES-1 do
 		local b = _G['CharacterBag'..i..'Slot']
@@ -240,6 +228,10 @@ function B:LoadBagBar()
 		b:HookScript('OnLeave', B.BagButton_OnLeave)
 		b:SetParent(B.BagBar)
 		B:SkinBag(b)
+
+		if E.Retail then
+			hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
+		end
 
 		if not E.Retail then
 			b.commandName = commandNames[i]
@@ -258,6 +250,7 @@ function B:LoadBagBar()
 
 		tinsert(B.BagBar.buttons, ReagentSlot)
 
+		hooksecurefunc(ReagentSlot, 'UpdateTextures', B.BagButton_UpdateTextures)
 		hooksecurefunc(ReagentSlot, 'SetBarExpanded', B.SizeAndPositionBagBar)
 	end
 
@@ -284,7 +277,7 @@ function B:LoadBagBar()
 		end
 
 		if button ~= KeyRing then
-			button:SetScript('OnClick', B.BagButton_OnClick)
+			button:HookScript('OnClick', B.BagButton_OnClick)
 		end
 	end
 

@@ -6,6 +6,7 @@ local next = next
 local select = select
 
 local CreateColor = CreateColor
+local GetAchievementNumCriteria = GetAchievementNumCriteria
 local hooksecurefunc = hooksecurefunc
 
 local function SetupButtonHighlight(button, backdrop)
@@ -103,9 +104,8 @@ function S:Blizzard_AchievementUI()
 	local AchievementFrame = _G.AchievementFrame
 	AchievementFrame:StripTextures()
 	AchievementFrame:SetTemplate('Transparent')
-	_G.AchievementFrameWaterMark:SetAlpha(0)
-	S:HandleCloseButton(_G.AchievementFrameCloseButton)
 
+	S:HandleCloseButton(_G.AchievementFrameCloseButton)
 	AchievementFrame.Header:StripTextures()
 	AchievementFrame.Header.Title:Hide()
 	AchievementFrame.Header.Points:SetPoint('TOP', AchievementFrame, 0, -3)
@@ -163,132 +163,167 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	_G.AchievementFrameCategories:StripTextures()
 	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar)
-	hooksecurefunc(_G.AchievementFrameCategories.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			local button = child.Button
-			if button and not button.styled then
-				button:StripTextures()
-				button.Background:Hide()
-				button:CreateBackdrop('Transparent')
-				button.backdrop:SetPoint('TOPLEFT', 0, -1)
-				button.backdrop:SetPoint('BOTTOMRIGHT')
-				SetupButtonHighlight(button, button.backdrop)
-
-				button.styled = true
-			end
-		end
-	end)
-
-	_G.AchievementFrameAchievements:StripTextures()
 	S:HandleTrimScrollBar(_G.AchievementFrameAchievements.ScrollBar)
-	select(3, _G.AchievementFrameAchievements:GetChildren()):Hide()
 
-	hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
-				child:StripTextures(true)
-				child.Background:SetAlpha(0)
-				child.Highlight:SetAlpha(0)
-				child.Icon.frame:Hide()
-				child.Description:SetTextColor(.9, .9, .9)
-				child.Description.SetTextColor = E.noop
+	if E.private.skins.parchmentRemoverEnable then
+		_G.AchievementFrameWaterMark:SetAlpha(0)
 
-				child:CreateBackdrop('Transparent')
-				child.backdrop:SetPoint('TOPLEFT', 1, -1)
-				child.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
-				S:HandleIcon(child.Icon.texture)
+		hooksecurefunc(_G.AchievementFrameCategories.ScrollBox, 'Update', function(frame)
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
+				local button = child.Button
+				if button and not button.styled then
+					button:StripTextures()
+					button.Background:Hide()
+					button:CreateBackdrop('Transparent')
+					button.backdrop:SetPoint('TOPLEFT', 0, -1)
+					button.backdrop:SetPoint('BOTTOMRIGHT')
+					SetupButtonHighlight(button, button.backdrop)
 
-				S:HandleCheckBox(child.Tracked)
-				child.Tracked:SetSize(20, 20)
-				child.Check:SetAlpha(0)
-
-				hooksecurefunc(child, 'UpdatePlusMinusTexture', UpdateAccountString)
-
-				child.isSkinned = true
+					button.styled = true
+				end
 			end
+		end)
+
+		_G.AchievementFrameAchievements:StripTextures()
+		select(3, _G.AchievementFrameAchievements:GetChildren()):Hide()
+
+		_G.AchievementFrameCategories:StripTextures()
+
+		hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', function(frame)
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
+				if not child.isSkinned then
+					child:StripTextures(true)
+					child.Background:SetAlpha(0)
+					child.Highlight:SetAlpha(0)
+					child.Icon.frame:Hide()
+					child.Description:SetTextColor(.9, .9, .9)
+					child.Description.SetTextColor = E.noop
+
+					child:CreateBackdrop('Transparent')
+					child.backdrop:SetPoint('TOPLEFT', 1, -1)
+					child.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
+					S:HandleIcon(child.Icon.texture)
+
+					S:HandleCheckBox(child.Tracked)
+					child.Tracked:SetSize(20, 20)
+					child.Check:SetAlpha(0)
+
+					hooksecurefunc(child, 'UpdatePlusMinusTexture', UpdateAccountString)
+
+					child.isSkinned = true
+				end
+			end
+		end)
+
+		_G.AchievementFrameSummary:StripTextures()
+		_G.AchievementFrameSummary:GetChildren():Hide()
+		_G.AchievementFrameSummaryAchievementsHeaderHeader:SetVertexColor(1, 1, 1, .25)
+		_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
+
+		hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
+			for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
+				local bu = _G['AchievementFrameSummaryAchievement'..i]
+				if bu.accountWide then
+					bu.Label:SetTextColor(0, .6, 1)
+				else
+					bu.Label:SetTextColor(.9, .9, .9)
+				end
+
+				if not bu.isSkinned then
+					bu:StripTextures(true)
+					bu:DisableDrawLayer('BORDER')
+					HideBackdrop(bu)
+
+					local bd = bu.Background
+					bd:SetTexture(E.media.normTex)
+					bd:SetVertexColor(0, 0, 0, .25)
+
+					bu.TitleBar:Hide()
+					bu.Glow:Hide()
+					bu.Highlight:SetAlpha(0)
+					bu.Icon.frame:Hide()
+					S:HandleIcon(bu.Icon.texture)
+
+					bu:CreateBackdrop('Transparent')
+					bu.backdrop:SetPoint('TOPLEFT', 2, -2)
+					bu.backdrop:SetPoint('BOTTOMRIGHT', -2, 2)
+
+					bu.isSkinned = true
+				end
+
+				bu.Description:SetTextColor(.9, .9, .9)
+			end
+		end)
+
+		for i = 1, 12 do
+			local name = 'AchievementFrameSummaryCategoriesCategory'..i
+
+			local bu = _G[name]
+			bu:StripTextures()
+			bu:SetStatusBarTexture(E.media.normTex)
+			bu:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
+			bu:CreateBackdrop('Transparent')
+
+			bu.Label:SetTextColor(1, 1, 1)
+			bu.Label:SetPoint('LEFT', bu, 'LEFT', 6, 0)
+			bu.Text:SetPoint('RIGHT', bu, 'RIGHT', -5, 0)
+
+			_G[name..'ButtonHighlight']:SetAlpha(0)
 		end
-	end)
 
-	_G.AchievementFrameSummary:StripTextures()
-	_G.AchievementFrameSummary:GetChildren():Hide()
-	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetVertexColor(1, 1, 1, .25)
-	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
+		select(4, _G.AchievementFrameStats:GetChildren()):Hide()
+		hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', function(frame)
+			for _, child in next, { frame.ScrollTarget:GetChildren() } do
+				if not child.IsSkinned then
+					child:StripTextures()
+					child:CreateBackdrop('Transparent')
+					child.backdrop:SetPoint('TOPLEFT', 2, -E.mult)
+					child.backdrop:SetPoint('BOTTOMRIGHT', 4, E.mult)
+					SetupButtonHighlight(child, child.backdrop)
 
-	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
-		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
-			local bu = _G['AchievementFrameSummaryAchievement'..i]
-			if bu.accountWide then
-				bu.Label:SetTextColor(0, .6, 1)
-			else
-				bu.Label:SetTextColor(.9, .9, .9)
+					child.IsSkinned = true
+				end
 			end
+		end)
 
-			if not bu.isSkinned then
-				bu:StripTextures(true)
-				bu:DisableDrawLayer('BORDER')
-				HideBackdrop(bu)
+		--[[hooksecurefunc('AchievementObjectives_DisplayCriteria', function(objectivesFrame, id)
+			local numCriteria = GetAchievementNumCriteria(id)
+			local textStrings, metas, criteria, object = 0, 0
+			for i = 1, numCriteria do
+				local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
+				if assetID and criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT then
+					metas = metas + 1
+					criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
+				elseif criteriaType ~= 1 then
+					textStrings = textStrings + 1
+					criteria, object = _G.AchievementButton_GetCriteria(textStrings), 'name'
+				end
 
-				local bd = bu.Background
-				bd:SetTexture(E.media.normTex)
-				bd:SetVertexColor(0, 0, 0, .25)
+				local text = criteria and criteria[object]
+				if text then
+					local r, g, b, x, y
+					if completed then
+						if objectivesFrame.completed then
+							r, g, b, x, y = 1, 1, 1, 0, 0
+						else
+							r, g, b, x, y = 0, 1, 0, 1, -1
+						end
+					else
+						r, g, b, x, y = .6, .6, .6, 1, -1
+					end
 
-				bu.TitleBar:Hide()
-				bu.Glow:Hide()
-				bu.Highlight:SetAlpha(0)
-				bu.Icon.frame:Hide()
-				S:HandleIcon(bu.Icon.texture)
-
-				bu:CreateBackdrop('Transparent')
-				bu.backdrop:SetPoint('TOPLEFT', 2, -2)
-				bu.backdrop:SetPoint('BOTTOMRIGHT', -2, 2)
-
-				bu.isSkinned = true
+					text:SetTextColor(r, g, b)
+					text:SetShadowOffset(x, y)
+				end
 			end
-
-			bu.Description:SetTextColor(.9, .9, .9)
-		end
-	end)
-
-	for i = 1, 12 do
-		local name = 'AchievementFrameSummaryCategoriesCategory'..i
-
-		local bu = _G[name]
-		bu:StripTextures()
-		bu:SetStatusBarTexture(E.media.normTex)
-		bu:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
-		bu:CreateBackdrop('Transparent')
-
-		bu.Label:SetTextColor(1, 1, 1)
-		bu.Label:SetPoint('LEFT', bu, 'LEFT', 6, 0)
-		bu.Text:SetPoint('RIGHT', bu, 'RIGHT', -5, 0)
-
-		_G[name..'ButtonHighlight']:SetAlpha(0)
+		end)]]
 	end
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
-
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')
-
-	-- Summary
 	_G.AchievementFrameStatsBG:Hide()
-	select(4, _G.AchievementFrameStats:GetChildren()):Hide()
 	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar)
-
-	hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				child:StripTextures()
-				child:CreateBackdrop('Transparent')
-				child.backdrop:SetPoint('TOPLEFT', 2, -E.mult)
-				child.backdrop:SetPoint('BOTTOMRIGHT', 4, E.mult)
-				SetupButtonHighlight(child, child.backdrop)
-
-				child.IsSkinned = true
-			end
-		end
-	end)
 
 	-- Comparison
 	local Comparison = _G.AchievementFrameComparison
