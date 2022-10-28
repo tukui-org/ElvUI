@@ -134,7 +134,8 @@ function M:HandleQueueButton(actionbarMode)
 	queueButton:ClearAllPoints()
 
 	if actionbarMode then
-		queueButton:Point('BOTTOMRIGHT', Minimap, -10, 10)
+		queueButton:Point('BOTTOMLEFT', Minimap, 50, -15)
+		queueButton:SetFrameStrata('MEDIUM')
 		M:SetScale(queueButton, 0.8)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
