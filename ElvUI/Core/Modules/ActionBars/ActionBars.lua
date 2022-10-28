@@ -343,8 +343,8 @@ function AB:CreateBar(id)
 			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
-		if i == 12 then
-			button:SetState(16, 'custom', AB.customExitButton)
+		if (E.Retail or E.Wrath) and i == 12 then
+			button:SetState(GetVehicleBarIndex(), 'custom', AB.customExitButton)
 		end
 
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
@@ -524,6 +524,11 @@ do
 			E.db.actionbar['bar'..i][option] = value
 		end
 
+		if E.Retail then
+			for i = 13, 15 do
+				E.db.actionbar['bar'..i][option] = value
+			end
+		end
 		for _, bar in pairs(bars) do
 			E.db.actionbar[bar][option] = value
 		end
