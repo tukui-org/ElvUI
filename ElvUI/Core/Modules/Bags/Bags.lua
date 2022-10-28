@@ -1290,15 +1290,19 @@ function B:UpdateTokens()
 			B:Layout()
 		end
 
+		local first = f.currencyButton[1]
+		local second = f.currencyButton[2]
+		local third = f.currencyButton[3]
+
 		if numTokens == 1 then
-			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth() * 0.5), 3)
+			first:Point('BOTTOM', f.currencyButton, -first.text:GetWidth() * 0.5, 3)
 		elseif numTokens == 2 then
-			f.currencyButton[1]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[1].text:GetWidth()) - (f.currencyButton[1]:GetWidth() * 0.5), 3)
-			f.currencyButton[2]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', f.currencyButton[2]:GetWidth() * 0.5, 3)
+			first:Point('BOTTOM', f.currencyButton, -first.text:GetWidth() - (first:GetWidth() * 3), 3)
+			second:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', second:GetWidth() * 3, 3)
 		else
-			f.currencyButton[1]:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOMLEFT', 3, 3)
-			f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
-			f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() * 0.5), 3)
+			first:Point('BOTTOMLEFT', f.currencyButton, 3, 3)
+			second:Point('BOTTOM', f.currencyButton, -second.text:GetWidth() / 3, 3)
+			third:Point('BOTTOMRIGHT', f.currencyButton, -third.text:GetWidth() - (third:GetWidth() * 0.5), 3)
 		end
 	end
 end
@@ -2138,10 +2142,6 @@ function B:OpenBags()
 
 	B.BagFrame:Show()
 
-	if E.Retail then
-		B:UpdateTokens()
-	end
-
 	PlaySound(IG_BACKPACK_OPEN)
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
@@ -2761,6 +2761,8 @@ function B:Initialize()
 
 	if E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+	else
+		B:SecureHook(_G.BackpackTokenFrame, 'Update', 'UpdateTokens')
 	end
 
 	if E.Retail then
