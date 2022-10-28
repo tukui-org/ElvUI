@@ -23,15 +23,18 @@ function S:Blizzard_ItemInteractionUI()
 	itemSlot.Icon:Point('BOTTOMRIGHT', -1, 1)
 	S:HandleIcon(itemSlot.Icon)
 
-	local ButtonFrame = mainFrame.ButtonFrame
-	ButtonFrame:StripTextures()
-	ButtonFrame.ButtonBorder:Hide()
-	ButtonFrame.ButtonBottomBorder:Hide()
-	ButtonFrame.MoneyFrameEdge:SetAlpha(0)
-	ButtonFrame.BlackBorder:SetAlpha(0)
+	local buttonFrame = mainFrame.ButtonFrame
+	buttonFrame:StripTextures()
+	buttonFrame.ButtonBorder:Hide()
+	buttonFrame.ButtonBottomBorder:Hide()
+	buttonFrame.MoneyFrameEdge:SetAlpha(0)
+	buttonFrame.BlackBorder:SetAlpha(0)
 
-	S:HandleIcon(ButtonFrame.Currency.icon)
-	S:HandleButton(ButtonFrame.ActionButton)
+	if buttonFrame.Currency then
+		S:HandleIcon(buttonFrame.Currency.Icon)
+	end
+
+	S:HandleButton(buttonFrame.ActionButton)
 end
 
 S:AddCallbackForAddon('Blizzard_ItemInteractionUI')
