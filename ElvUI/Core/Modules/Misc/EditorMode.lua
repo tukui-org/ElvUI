@@ -49,20 +49,6 @@ local IgnoreFrames = {
 	MultiBar7 = CheckActionBar
 }
 
-local PatternFrames = {
-	['^ChatFrame%d+'] = function()
-		return E.private.chat.enable and E.db.chat.panelBackdrop ~= 'HIDEBOTH'
-	end,
-}
-
-local function PatternIgnore(frameName)
-	for pattern, patternFunc in pairs(PatternFrames) do
-		if strmatch(frameName, pattern) then
-			return patternFunc()
-		end
-	end
-end
-
 function EM:Initialize()
 	local editMode = _G.EditModeManagerFrame
 
@@ -72,7 +58,7 @@ function EM:Initialize()
 		local name = registered[i]:GetName()
 		local ignore = IgnoreFrames[name]
 
-		if ignore and ignore() or PatternIgnore(name) then
+		if ignore and ignore() then
 			tremove(editMode.registeredSystemFrames, i)
 		end
 	end
