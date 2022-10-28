@@ -529,6 +529,7 @@ do
 				E.db.actionbar['bar'..i][option] = value
 			end
 		end
+
 		for _, bar in pairs(bars) do
 			E.db.actionbar[bar][option] = value
 		end
