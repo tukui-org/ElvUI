@@ -9,6 +9,7 @@ local sort = sort
 local floor = floor
 local tinsert = tinsert
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 local utf8sub = string.utf8sub
 
 local CloseAllWindows = CloseAllWindows
@@ -26,7 +27,6 @@ local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
 
-local hooksecurefunc = hooksecurefunc
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
@@ -126,8 +126,25 @@ function M:HandleExpansionButton()
 	end
 end
 
+function M:HandleQueueButton(actionbarMode)
+	local queueButton = M:GetQueueStatusButton()
+	if not queueButton then return end
+
+	queueButton:SetParent(E.Retail and MinimapCluster or Minimap)
+	queueButton:ClearAllPoints()
+
+	if actionbarMode then
+		queueButton:Point('BOTTOMRIGHT', Minimap, -10, 10)
+		M:SetScale(queueButton, 0.8)
+	else
+		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+		queueButton:Point(position, Minimap, xOffset, yOffset)
+		M:SetScale(queueButton, scale)
+	end
+end
+
 function M:HandleTrackingButton()
-local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	if E.private.general.minimap.hideTracking then
@@ -388,15 +405,7 @@ function M:UpdateSettings()
 		end
 	end
 
-	-- ToDO: WoW 10 (check position size)
-	local queueButton = M:GetQueueStatusButton()
-	if queueButton then
-		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-		queueButton:ClearAllPoints()
-		queueButton:Point(position, Minimap, xOffset, yOffset)
-		queueButton:SetParent(E.Retail and MinimapCluster or Minimap)
-		M:SetScale(queueButton, scale)
-	end
+	M:HandleQueueButton()
 
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
 	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
@@ -589,6 +598,11 @@ function M:Initialize()
 		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
 	else
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+
+		if E.private.actionbar.enable then
+			M:HandleQueueButton(true)
+		end
+
 		return
 	end
 
