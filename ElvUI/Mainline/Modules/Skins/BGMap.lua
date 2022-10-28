@@ -21,6 +21,8 @@ end
 -- alpha stuff
 local oldAlpha = 0
 local function setOldAlpha()
+	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
+
 	if oldAlpha then
 		_G.BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
 		oldAlpha = nil
@@ -28,6 +30,8 @@ local function setOldAlpha()
 end
 
 local function setRealAlpha()
+	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(1)
+
 	oldAlpha = GetOpacity()
 	_G.BattlefieldMapFrame:SetGlobalAlpha(1)
 end
@@ -48,6 +52,7 @@ function S:Blizzard_BattlefieldMap()
 	refreshAlpha() -- will need this soon
 	BattlefieldMapFrame:CreateBackdrop()
 	BattlefieldMapFrame:SetFrameStrata('LOW')
+	BattlefieldMapFrame:SetScript('OnUpdate', nil) -- shut off the tab fading in
 	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
 	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
 
@@ -55,14 +60,16 @@ function S:Blizzard_BattlefieldMap()
 	BattlefieldMapFrame:SetMovable(true)
 
 	BattlefieldMapFrame.BorderFrame:StripTextures()
+	BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
+	BattlefieldMapFrame.BorderFrame.CloseButton:SetIgnoreParentAlpha(1)
 	BattlefieldMapFrame.BorderFrame.CloseButton:SetFrameLevel(BattlefieldMapFrame.BorderFrame.CloseButton:GetFrameLevel()+1)
+	BattlefieldMapFrame.BorderFrame.CloseButton:ClearAllPoints()
+	BattlefieldMapFrame.BorderFrame.CloseButton:Point('TOPRIGHT', 3, 8)
 	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
-	BattlefieldMapTab:Kill()
 
 	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseUp', function(_, btn)
 		if btn == 'LeftButton' then
 			BattlefieldMapTab:StopMovingOrSizing()
-			if not _G.BattlefieldMapOptions.position then _G.BattlefieldMapOptions.position = {} end
 			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = BattlefieldMapTab:GetCenter()
 		elseif btn == 'RightButton' then
 			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
@@ -76,6 +83,7 @@ function S:Blizzard_BattlefieldMap()
 
 	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseDown', function(_, btn)
 		if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
+			_G.BattlefieldMapOptions.position = {}
 			BattlefieldMapTab:StartMoving()
 		end
 	end)
