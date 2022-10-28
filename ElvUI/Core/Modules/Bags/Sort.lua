@@ -29,13 +29,13 @@ local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetIn
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID or C_Container.ContainerIDToInventoryID
-local GetContainerItemID = GetContainerItemID or C_Container.GetContainerItemID
-local GetContainerItemLink = GetContainerItemLink or C_Container.GetContainerItemLink
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots or C_Container.GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots or C_Container.GetContainerNumSlots
-local PickupContainerItem = PickupContainerItem or C_Container.PickupContainerItem
-local SplitContainerItem = SplitContainerItem or C_Container.SplitContainerItem
+local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
+local GetContainerItemID = GetContainerItemID or (C_Container and C_Container.GetContainerItemID)
+local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+local PickupContainerItem = PickupContainerItem or (C_Container and C_Container.PickupContainerItem)
+local SplitContainerItem = SplitContainerItem or (C_Container and C_Container.SplitContainerItem)
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
