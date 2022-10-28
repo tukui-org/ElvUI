@@ -10,7 +10,6 @@ local unpack = unpack
 local tinsert = tinsert
 local hooksecurefunc = hooksecurefunc
 
-local ToggleBag = ToggleBag
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetCVarBool = GetCVarBool
