@@ -3594,6 +3594,7 @@ function CH:Initialize()
 	CH:SecureHook('GetPlayerInfoByGUID')
 
 	CH:RegisterEvent('PLAYER_ENTERING_WORLD', 'ResnapDock')
+	CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
