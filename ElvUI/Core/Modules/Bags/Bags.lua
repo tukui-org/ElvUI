@@ -113,52 +113,47 @@ if E.Retail then
 	tinsert(B.GearFilters, BagSlotFlags.PriorityQuestItems)
 end
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
-local GetBankAutosortDisabled = GetBankAutosortDisabled
-local GetContainerItemCooldown = GetContainerItemCooldown
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots
-local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled
-local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
-
--- converted below
-local GetContainerItemInfo
-local GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-local GetContainerItemQuestInfo
+local ContainerIDToInventoryID = ContainerIDToInventoryID or C_Container.ContainerIDToInventoryID
+local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled or C_Container.GetBackpackAutosortDisabled
+local GetBankAutosortDisabled = GetBankAutosortDisabled or C_Container.GetBankAutosortDisabled
+local GetContainerItemCooldown = GetContainerItemCooldown or C_Container.GetContainerItemCooldown
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or C_Container.GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots or C_Container.GetContainerNumSlots
+local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled or C_Container.SetBackpackAutosortDisabled
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or C_Container.SetInsertItemsLeftToRight
 
 do
-	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
-	if container then
-		ContainerIDToInventoryID = container.ContainerIDToInventoryID
-		GetBackpackAutosortDisabled = container.GetBackpackAutosortDisabled
-		GetBankAutosortDisabled = container.GetBankAutosortDisabled
-		GetContainerItemCooldown = container.GetContainerItemCooldown
-		GetContainerItemInfo = container.GetContainerItemInfo
-		GetContainerItemQuestInfo = container.GetContainerItemQuestInfo
-		GetContainerNumFreeSlots = container.GetContainerNumFreeSlots
-		GetContainerNumSlots = container.GetContainerNumSlots
-		SetBackpackAutosortDisabled = container.SetBackpackAutosortDisabled
-		SetInsertItemsLeftToRight = container.SetInsertItemsLeftToRight
-	else -- localised above
-		if not GetBackpackCurrencyInfo then
-			GetBackpackCurrencyInfo = function(index)
-				local info = {}
-				info.name, info.quantity, info.iconFileID, info.currencyTypesID = _G.GetBackpackCurrencyInfo(index)
-				return info
-			end
-		end
+	local GetContainerItemInfo = GetContainerItemInfo or C_Container.GetContainerItemInfo
+	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or C_Container.GetContainerItemQuestInfo
+	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 
-		GetContainerItemInfo = function(containerIndex, slotIndex)
+	function B:GetBackpackCurrencyInfo(index)
+		if _G.GetBackpackCurrencyInfo then
 			local info = {}
-			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
 			return info
+		else
+			return GetBackpackCurrencyInfo(index)
 		end
+	end
 
-		GetContainerItemQuestInfo = function(containerIndex, slotIndex)
+	function B:GetContainerItemInfo(containerIndex, slotIndex)
+		if _G.GetContainerItemInfo then
 			local info = {}
-			info.isQuestItem, info.questID, info.isActive = _G.GetContainerItemQuestInfo(containerIndex, slotIndex)
+			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
 			return info
+		else
+			return GetContainerItemInfo(containerIndex, slotIndex)
+		end
+	end
+
+	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
+		if _G.GetContainerItemQuestInfo then
+			local info = {}
+			info.isQuestItem, info.questID, info.isActive = GetContainerItemQuestInfo(containerIndex, slotIndex)
+			return info
+		else
+			return GetContainerItemQuestInfo(containerIndex, slotIndex)
 		end
 	end
 end
@@ -640,9 +635,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if not slot then return end
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
-	local info = GetContainerItemInfo(bagID, slotID) or {}
-
---	info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound
+	local info = B:GetContainerItemInfo(bagID, slotID) or {}
 
 	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
@@ -672,7 +665,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.name, slot.spellID, slot.isEquipment, slot.itemEquipLoc, slot.itemClassID, slot.itemSubClassID = name, spellID, B.IsEquipmentSlot[itemEquipLoc], itemEquipLoc, itemClassID, itemSubClassID
 
 		if E.Retail then
-			local questInfo = GetContainerItemQuestInfo(bagID, slotID)
+			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
 			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		else
 			slot.isBound = C_Item_IsBound(slot.itemLocation)
@@ -1263,7 +1256,7 @@ function B:UpdateTokens()
 	end
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local info = GetBackpackCurrencyInfo(i)
+		local info = B:GetBackpackCurrencyInfo(i)
 		if not (info and info.name) then break end
 
 		local button = f.currencyButton[i]
@@ -1337,7 +1330,7 @@ function B:GetGrays(vendor)
 
 	for bagID = 0, 4 do
 		for slotID = 1, B:GetContainerNumSlots(bagID) do
-			local info = GetContainerItemInfo(bagID, slotID)
+			local info = B:GetContainerItemInfo(bagID, slotID)
 			local itemLink = info and info.hyperlink
 			if itemLink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
