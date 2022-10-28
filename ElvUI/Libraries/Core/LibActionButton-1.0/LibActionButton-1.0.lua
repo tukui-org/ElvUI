@@ -1430,6 +1430,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
 			cooldown:SetDrawSwipe(false)
+			cooldown:SetEdgeScale(0)
 
 			lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
 		end
@@ -1515,7 +1516,7 @@ function UpdateCooldown(self)
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
-			self.cooldown:SetSwipeColor(0.17, 0, 0)
+			self.cooldown:SetSwipeColor(0.2, 0, 0)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
