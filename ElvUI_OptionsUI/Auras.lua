@@ -9,7 +9,7 @@ local SharedOptions = {
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 1, C.Values.GrowthDirection),
 	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 2, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
 	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 3, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
-	seperateOwn = ACH:Select(L["Seperate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 4, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
+	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 4, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
 
 	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 5, { min = 16, max = 60, step = 2 }),
 	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 6, { min = 1, max = 32, step = 1 }),
