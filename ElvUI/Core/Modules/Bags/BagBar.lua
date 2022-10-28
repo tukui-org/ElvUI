@@ -180,8 +180,6 @@ end
 
 function B:BagButton_OnClick(key)
 	if E.Retail and key == 'RightButton' then
-		ToggleBag(self.BagID)
-
 		B.AssignBagDropdown.holder = self
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	end
