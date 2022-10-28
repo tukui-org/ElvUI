@@ -80,12 +80,14 @@ sort(menuList, function(a, b) if a and b and a.text and b.text then return a.tex
 tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
-			if _G.VideoOptionsFrame:IsShown() then
-				_G.VideoOptionsFrameCancel:Click()
-			elseif _G.AudioOptionsFrame:IsShown() then
-				_G.AudioOptionsFrameCancel:Click()
-			elseif _G.InterfaceOptionsFrame:IsShown() then
-				_G.InterfaceOptionsFrameCancel:Click()
+			if not E.Retail then
+				if _G.VideoOptionsFrame:IsShown() then
+					_G.VideoOptionsFrameCancel:Click()
+				elseif _G.AudioOptionsFrame:IsShown() then
+					_G.AudioOptionsFrameCancel:Click()
+				elseif _G.InterfaceOptionsFrame:IsShown() then
+					_G.InterfaceOptionsFrameCancel:Click()
+				end
 			end
 
 			CloseMenus()
