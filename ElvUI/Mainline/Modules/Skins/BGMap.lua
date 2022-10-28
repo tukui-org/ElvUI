@@ -43,37 +43,40 @@ end
 function S:Blizzard_BattlefieldMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgmap) then return end
 
-	local BattlefieldMapFrame = _G.BattlefieldMapFrame
-	local BattlefieldMapTab = _G.BattlefieldMapTab
-
-	BattlefieldMapFrame:SetClampedToScreen(true)
-	BattlefieldMapFrame:StripTextures()
-
 	refreshAlpha() -- will need this soon
-	BattlefieldMapFrame:CreateBackdrop()
-	BattlefieldMapFrame:SetFrameStrata('LOW')
-	BattlefieldMapFrame:SetScript('OnUpdate', nil) -- shut off the tab fading in
-	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
-	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
 
-	BattlefieldMapFrame:EnableMouse(true)
-	BattlefieldMapFrame:SetMovable(true)
+	local frame = _G.BattlefieldMapFrame
+	frame:StripTextures()
+	frame:CreateBackdrop()
+	frame:EnableMouse(true)
+	frame:SetMovable(true)
+	frame:SetClampedToScreen(true)
+	frame:SetFrameStrata('LOW')
+	frame:SetScript('OnUpdate', nil) -- shut off the tab fading in
 
-	BattlefieldMapFrame.BorderFrame:StripTextures()
-	BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
-	BattlefieldMapFrame.BorderFrame.CloseButton:SetIgnoreParentAlpha(1)
-	BattlefieldMapFrame.BorderFrame.CloseButton:SetFrameLevel(BattlefieldMapFrame.BorderFrame.CloseButton:GetFrameLevel()+1)
-	BattlefieldMapFrame.BorderFrame.CloseButton:ClearAllPoints()
-	BattlefieldMapFrame.BorderFrame.CloseButton:Point('TOPRIGHT', 3, 8)
-	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
+	local border = frame.BorderFrame
+	border:StripTextures()
 
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseUp', function(_, btn)
+	local close = border.CloseButton
+	close:SetAlpha(0.1)
+	close:SetIgnoreParentAlpha(1)
+	close:SetFrameLevel(close:GetFrameLevel()+1)
+	close:ClearAllPoints()
+	close:Point('TOPRIGHT', 3, 8)
+	S:HandleCloseButton(close)
+
+	local scroll = frame.ScrollContainer
+	frame.backdrop:SetOutside(scroll)
+	frame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
+
+	local tab = _G.BattlefieldMapTab
+	scroll:HookScript('OnMouseUp', function(_, btn)
 		if btn == 'LeftButton' then
-			BattlefieldMapTab:StopMovingOrSizing()
-			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = BattlefieldMapTab:GetCenter()
+			tab:StopMovingOrSizing()
+			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = tab:GetCenter()
 		elseif btn == 'RightButton' then
-			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
-			_G.ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
+			_G.UIDropDownMenu_Initialize(tab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
+			_G.ToggleDropDownMenu(1, nil, tab.OptionsDropDown, frame:GetName(), 0, -4)
 		end
 
 		if _G.OpacityFrame:IsShown() then
@@ -81,21 +84,21 @@ function S:Blizzard_BattlefieldMap()
 		end
 	end)
 
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseDown', function(_, btn)
+	scroll:HookScript('OnMouseDown', function(_, btn)
 		if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
 			_G.BattlefieldMapOptions.position = {}
-			BattlefieldMapTab:StartMoving()
+			tab:StartMoving()
 		end
 	end)
 
-	hooksecurefunc(BattlefieldMapFrame, 'SetGlobalAlpha', setBackdropAlpha)
-	hooksecurefunc(BattlefieldMapFrame, 'RefreshAlpha', refreshAlpha)
+	hooksecurefunc(frame, 'SetGlobalAlpha', setBackdropAlpha)
+	hooksecurefunc(frame, 'RefreshAlpha', refreshAlpha)
 
-	BattlefieldMapFrame:HookScript('OnShow', setBackdropAlpha)
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnLeave', setOldAlpha)
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnEnter', setRealAlpha)
-	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnLeave', setOldAlpha)
-	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnEnter', setRealAlpha)
+	scroll:HookScript('OnLeave', setOldAlpha)
+	scroll:HookScript('OnEnter', setRealAlpha)
+	frame:HookScript('OnShow', setBackdropAlpha)
+	close:HookScript('OnLeave', setOldAlpha)
+	close:HookScript('OnEnter', setRealAlpha)
 end
 
 S:AddCallbackForAddon('Blizzard_BattlefieldMap')
