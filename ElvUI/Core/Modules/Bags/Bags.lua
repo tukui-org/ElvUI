@@ -1249,12 +1249,11 @@ end
 
 function B:UpdateTokens()
 	local f = B.BagFrame
-	local numTokens = 0
-
 	for _, button in ipairs(f.currencyButton) do
 		button:Hide()
 	end
 
+	local numTokens = 0
 	for i = 1, MAX_WATCHED_TOKENS do
 		local info = B:GetBackpackCurrencyInfo(i)
 		if not (info and info.name) then break end
@@ -1290,19 +1289,16 @@ function B:UpdateTokens()
 			B:Layout()
 		end
 
-		local first = f.currencyButton[1]
-		local second = f.currencyButton[2]
-		local third = f.currencyButton[3]
-
+		local c1, c2, c3 = unpack(f.currencyButton)
 		if numTokens == 1 then
-			first:Point('BOTTOM', f.currencyButton, -first.text:GetWidth() * 0.5, 3)
+			c1:Point('BOTTOM', f.currencyButton, -c1.text:GetWidth() * 0.5, 3)
 		elseif numTokens == 2 then
-			first:Point('BOTTOM', f.currencyButton, -first.text:GetWidth() - (first:GetWidth() * 3), 3)
-			second:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', second:GetWidth() * 3, 3)
+			c1:Point('BOTTOM', f.currencyButton, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
+			c2:Point('BOTTOMLEFT', f.currencyButton, 'BOTTOM', c2:GetWidth() * 3, 3)
 		else
-			first:Point('BOTTOMLEFT', f.currencyButton, 3, 3)
-			second:Point('BOTTOM', f.currencyButton, -second.text:GetWidth() / 3, 3)
-			third:Point('BOTTOMRIGHT', f.currencyButton, -third.text:GetWidth() - (third:GetWidth() * 0.5), 3)
+			c1:Point('BOTTOMLEFT', f.currencyButton, 3, 3)
+			c2:Point('BOTTOM', f.currencyButton, -c2.text:GetWidth() / 3, 3)
+			c3:Point('BOTTOMRIGHT', f.currencyButton, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
 		end
 	end
 end
