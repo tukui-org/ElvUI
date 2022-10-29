@@ -58,6 +58,15 @@ local function BackpackToken_Update(container)
 	end
 end
 
+local function GetSlotAndBagID(button)
+	if button.GetSlotAndBagID then -- bags
+		return button:GetSlotAndBagID()
+	elseif button.GetBagID then -- bank
+		local slotID, bagID = button:GetID(), button:GetBagID()
+		return slotID, bagID
+	end
+end
+
 local function SkinButton(button)
 	if button.template then return end
 
@@ -79,10 +88,11 @@ local function SkinButton(button)
 	if button.Cooldown then
 		E:RegisterCooldown(button.Cooldown, 'bags')
 
-		-- initialize any cooldown
-		local slotID, bagID = button:GetSlotAndBagID()
-		local start, duration = GetContainerItemCooldown(bagID, slotID)
-		button.Cooldown:SetCooldown(start, duration)
+		local slotID, bagID = GetSlotAndBagID(button)
+		if slotID and bagID then -- initialize any cooldown
+			local start, duration = GetContainerItemCooldown(bagID, slotID)
+			button.Cooldown:SetCooldown(start, duration)
+		end
 	end
 
 	-- bag keybind support from actionbar module
