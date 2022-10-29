@@ -1069,18 +1069,32 @@ function B:Layout(isBank)
 		else
 			local rowSize = B:TokenFrameWidth()
 			local currentRow = 1
-			local tokenSpacing = floor(currencies:GetWidth() / rowSize)
-			for i = 1, B.numTrackedTokens do
-				local token = currencies[i]
-				if not token then return end
-				
-				if i == 1 then
-					token:Point('TOPLEFT', currencies, 3, -3)
-				elseif i == ((rowSize * currentRow) + 1) then
-					currentRow = currentRow + 1
-					token:Point('TOPLEFT', currencies, 3 , -3 -(24 * (currentRow - 1)))
-				elseif i <= (rowSize * currentRow) then
-					token:Point('TOPLEFT', currencies, (tokenSpacing * ( i - 1 - (rowSize * (currentRow - 1)))) , -3 - (24 * (currentRow - 1)))
+			if E.Retail then
+				local tokenSpacing = floor(currencies:GetWidth() / rowSize)
+				for i = 1, B.numTrackedTokens do
+					local token = currencies[i]
+					if not token then return end
+
+					if i == 1 then
+						token:Point('TOPLEFT', currencies, 3, -3)
+					elseif i == ((rowSize * currentRow) + 1) then
+						currentRow = currentRow + 1
+						token:Point('TOPLEFT', currencies, 3 , -3 -(24 * (currentRow - 1)))
+					elseif i <= (rowSize * currentRow) then
+						token:Point('TOPLEFT', currencies, (tokenSpacing * ( i - 1 - (rowSize * (currentRow - 1)))) , -3 - (24 * (currentRow - 1)))
+					end
+				end
+			else
+				local c1, c2, c3 = unpack(currencies)
+				if numTokens == 1 then
+					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() * 0.5, 3)
+				elseif numTokens == 2 then
+					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
+					c2:Point('BOTTOMLEFT', currencies, 'BOTTOM', c2:GetWidth() * 3, 3)
+				else
+					c1:Point('BOTTOMLEFT', currencies, 3, 3)
+					c2:Point('BOTTOM', currencies, -c2.text:GetWidth() / 3, 3)
+					c3:Point('BOTTOMRIGHT', currencies, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
 				end
 			end
 			local curHeight = 24 * currentRow
