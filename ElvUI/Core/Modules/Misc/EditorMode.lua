@@ -28,7 +28,7 @@ local IgnoreFrames = {
 	ArenaEnemyFramesContainer = CheckArenaFrame,
 	CompactRaidFrameContainer = CheckRaidFrame,
 	BossTargetFrameContainer = CheckBossFrame,
-	PlayerFrame = function() return E.private.unitframe.disabledBlizzardFrames.player end,
+	PlayerFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.player end,
 
 	-- Auras
 	BuffFrame = function() return E.private.auras.disableBlizzard and E.private.auras.enable and E.private.auras.buffsHeader end,
