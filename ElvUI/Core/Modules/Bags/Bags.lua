@@ -2166,7 +2166,7 @@ function B:OpenBags()
 	end
 
 	B.BagFrame:Show()
-	B:UpdateTokensIfVisible()
+	if E.Retail then B:UpdateTokensIfVisible() end
 
 	PlaySound(IG_BACKPACK_OPEN)
 
