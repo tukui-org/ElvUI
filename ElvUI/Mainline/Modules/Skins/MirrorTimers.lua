@@ -5,7 +5,7 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function SkinMirrorTimer()
+function S:HandleMirrorTimer()
 	local i = 1
 	local frame = _G.MirrorTimer1
 	while frame do
@@ -47,7 +47,7 @@ function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
 		frame = _G['MirrorTimer'..i]
 	end
 
-	hooksecurefunc('MirrorTimer_Show', SkinMirrorTimer)
+	hooksecurefunc('MirrorTimer_Show', S.HandleMirrorTimer)
 end
 
 S:AddCallback('MirrorTimers')
