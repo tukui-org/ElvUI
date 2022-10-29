@@ -1059,7 +1059,7 @@ function B:Layout(isBank)
 			end
 		end
 	end
-	
+
 	if not isBank then
 		local currencies = f.currencyButton
 		if B.numTrackedTokens == 0 then
@@ -1067,8 +1067,9 @@ function B:Layout(isBank)
 				f.bottomOffset = 8
 			end
 		else
-			local rowSize = B:TokenFrameWidth()
 			local currentRow = 1
+			local rowSize = B:TokenFrameWidth()
+
 			if E.Retail then
 				local tokenSpacing = floor(currencies:GetWidth() / rowSize)
 				for i = 1, B.numTrackedTokens do
@@ -1086,9 +1087,9 @@ function B:Layout(isBank)
 				end
 			else
 				local c1, c2, c3 = unpack(currencies)
-				if numTokens == 1 then
+				if B.numTrackedTokens == 1 then
 					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() * 0.5, 3)
-				elseif numTokens == 2 then
+				elseif B.numTrackedTokens == 2 then
 					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
 					c2:Point('BOTTOMLEFT', currencies, 'BOTTOM', c2:GetWidth() * 3, 3)
 				else
@@ -1097,9 +1098,10 @@ function B:Layout(isBank)
 					c3:Point('BOTTOMRIGHT', currencies, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
 				end
 			end
+
 			local curHeight = 24 * currentRow
 			currencies:Height(curHeight)
-			
+
 			if f.bottomOffset ~= (curHeight + 8) then
 				f.bottomOffset = (curHeight + 8)
 			end
@@ -2801,7 +2803,7 @@ function B:Initialize()
 
 	if E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
-	else
+	elseif E.Retail then
 		B:SecureHook(_G.BackpackTokenFrame, 'Update', 'UpdateTokensIfVisible')
 		B:SecureHook(_G.BackpackTokenFrame, 'UpdateIfVisible', 'UpdateTokensIfVisible')
 		B:SecureHook(_G.TokenFramePopup.BackpackCheckBox, 'OnClick', 'UpdateTokensIfVisible')
