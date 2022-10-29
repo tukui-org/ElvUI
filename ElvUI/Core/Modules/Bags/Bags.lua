@@ -84,7 +84,7 @@ local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
 local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
-local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 20
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
@@ -171,6 +171,7 @@ B.SearchSlots = {}
 B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {}
+B.numTrackedTokens = 0
 
 if E.Retail then
 	B.BAG_FILTER_ICONS[FILTER_FLAG_EQUIPMENT] = 'bags-icon-equipment'
@@ -1058,6 +1059,38 @@ function B:Layout(isBank)
 			end
 		end
 	end
+	
+	if not isBank then
+		local currencies = f.currencyButton
+		if B.numTrackedTokens == 0 then
+			if f.bottomOffset > 8 then
+				f.bottomOffset = 8
+			end
+		else
+			local rowSize = B:TokenFrameWidth()
+			local currentRow = 1
+			local tokenSpacing = floor(currencies:GetWidth() / rowSize)
+			for i = 1, B.numTrackedTokens do
+				local token = currencies[i]
+				if not token then return end
+				
+				if i == 1 then
+					token:Point('TOPLEFT', currencies, 3, -3)
+				elseif i == ((rowSize * currentRow) + 1) then
+					currentRow = currentRow + 1
+					token:Point('TOPLEFT', currencies, 3 , -3 -(24 * (currentRow - 1)))
+				elseif i <= (rowSize * currentRow) then
+					token:Point('TOPLEFT', currencies, (tokenSpacing * ( i - 1 - (rowSize * (currentRow - 1)))) , -3 - (24 * (currentRow - 1)))
+				end
+			end
+			local curHeight = 24 * currentRow
+			currencies:Height(curHeight)
+			
+			if f.bottomOffset ~= (curHeight + 8) then
+				f.bottomOffset = (curHeight + 8)
+			end
+		end
+	end
 
 	if E.Retail and isBank and f.reagentFrame:IsShown() then
 		if not IsReagentBankUnlocked() then
@@ -1247,6 +1280,14 @@ function B:OnEvent(event, ...)
 	end
 end
 
+function B:TokenFrameWidth()
+	local bagFrame = B.BagFrame
+	local tokenWidth = 70
+
+	-- You can always track at least one token
+	return math.max(math.floor((B.db.bagWidth - (B.db.bagButtonSpacing * 2)) / tokenWidth), 1);
+end
+
 function B:UpdateTokensIfVisible()
 	if B.BagFrame:IsVisible() then
 		B:UpdateTokens()
@@ -1285,28 +1326,9 @@ function B:UpdateTokens()
 		numTokens = numTokens + 1
 	end
 
-	if numTokens == 0 then
-		if bagFrame.bottomOffset > 8 then
-			bagFrame.bottomOffset = 8
-			B:Layout()
-		end
-	else
-		if bagFrame.bottomOffset < 28 then
-			bagFrame.bottomOffset = 28
-			B:Layout()
-		end
-
-		local c1, c2, c3 = unpack(currencies)
-		if numTokens == 1 then
-			c1:Point('BOTTOM', currencies, -c1.text:GetWidth() * 0.5, 3)
-		elseif numTokens == 2 then
-			c1:Point('BOTTOM', currencies, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
-			c2:Point('BOTTOMLEFT', currencies, 'BOTTOM', c2:GetWidth() * 3, 3)
-		else
-			c1:Point('BOTTOMLEFT', currencies, 3, 3)
-			c2:Point('BOTTOM', currencies, -c2.text:GetWidth() / 3, 3)
-			c3:Point('BOTTOMRIGHT', currencies, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
-		end
+	if numTokens ~= B.numTrackedTokens then
+		B.numTrackedTokens = numTokens
+		B:Layout()
 	end
 end
 
@@ -1878,9 +1900,9 @@ function B:ConstructContainerFrame(name, isBank)
 		if E.Retail or E.Wrath then
 			--Currency
 			f.currencyButton = CreateFrame('Frame', nil, f)
-			f.currencyButton:Point('BOTTOM', 0, 4)
-			f.currencyButton:Point('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18)
-			f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
+			f.currencyButton:Point('BOTTOM', 0, -6)
+			f.currencyButton:Point('BOTTOMLEFT', f.holderFrame, 'BOTTOMLEFT', 0, -6)
+			f.currencyButton:Point('BOTTOMRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, -6)
 			f.currencyButton:Height(22)
 
 			for i = 1, MAX_WATCHED_TOKENS do
