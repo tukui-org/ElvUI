@@ -27,13 +27,20 @@ function T:UpdateButton(button, totem, show)
 	button:SetShown(show)
 end
 
+function T:HideTotem()
+	local i = priority[self.layoutIndex]
+	T:UpdateButton(T.bar[i], self, false)
+end
+
 function T:Update()
 	if E.Retail then
 		for totem in next, _G.TotemFrame.totemPool.activeObjects do
-			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem, true)
-		end
-		for _, totem in next, _G.TotemFrame.totemPool.inactiveObjects do
-			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem, false)
+			local i = priority[totem.layoutIndex]
+			T:UpdateButton(T.bar[i], totem, true)
+
+			if totem:GetScript('OnHide') ~= T.HideTotem then
+				totem:SetScript('OnHide', T.HideTotem)
+			end
 		end
 	else
 		for i = 1, MAX_TOTEMS do
