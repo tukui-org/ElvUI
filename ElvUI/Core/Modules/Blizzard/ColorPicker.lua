@@ -180,6 +180,13 @@ function B:EnhanceColorPicker()
 	S:HandleButton(_G.ColorPickerOkayButton)
 	S:HandleButton(_G.ColorPickerCancelButton)
 
+	-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
+	-- We overwrite these two scripts and set a limit on how often we allow a call their update functions
+	_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
+
+	-- Keep the colors updated
+	Picker:SetScript('OnColorSelect', onColorSelect)
+
 	Picker:HookScript('OnShow', function(frame)
 		-- get color that will be replaced
 		local r, g, b = frame:GetColorRGB()
@@ -191,20 +198,16 @@ function B:EnhanceColorPicker()
 			_G.ColorPPBoxLabelA:Show()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
 			UpdateAlphaText()
-			UpdateColorTexts()
 			frame:Width(405)
 		else
 			_G.ColorPPBoxA:Hide()
 			_G.ColorPPBoxLabelA:Hide()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
-			UpdateColorTexts()
 			frame:Width(345)
 		end
 
-		-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
-		-- We overwrite these two scripts and set a limit on how often we allow a call their update functions
-		_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
-		frame:SetScript('OnColorSelect', onColorSelect)
+		-- update the color boxes
+		UpdateColorTexts(nil, nil, nil, _G.ColorPPBoxH)
 	end)
 
 	-- move the Color Swatch
@@ -321,12 +324,14 @@ function B:EnhanceColorPicker()
 		box:SetJustifyH('RIGHT')
 		box:Height(24)
 		box:SetID(i)
+
 		S:HandleEditBox(box)
+		box:SetFontObject('ElvUIFontNormal')
 
 		-- hex entry box
 		if i == 4 then
 			box:SetMaxLetters(6)
-			box:Width(56)
+			box:Width(65)
 			box:SetNumeric(false)
 		else
 			box:SetMaxLetters(3)
@@ -335,7 +340,7 @@ function B:EnhanceColorPicker()
 		end
 
 		-- label
-		local label = box:CreateFontString('ColorPPBoxLabel'..rgb, 'ARTWORK', 'GameFontNormalSmall')
+		local label = box:CreateFontString('ColorPPBoxLabel'..rgb, 'ARTWORK', 'ElvUIFontNormal')
 		label:Point('RIGHT', 'ColorPPBox'..rgb, 'LEFT', -5, 0)
 		label:SetText(i == 4 and '#' or rgb)
 		label:SetTextColor(1, 1, 1)

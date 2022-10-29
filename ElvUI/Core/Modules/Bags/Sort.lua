@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local Search = E.Libs.ItemSearch
 
-local _G = _G
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
 local strmatch, gmatch, strfind = strmatch, gmatch, strfind
 local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
@@ -30,36 +29,13 @@ local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetIn
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local GetContainerItemID = GetContainerItemID
-local GetContainerItemLink = GetContainerItemLink
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots
-local PickupContainerItem = PickupContainerItem
-local SplitContainerItem = SplitContainerItem
-
--- converted below
-local GetContainerItemInfo
-
-do
-	local container = E.wowtoc >= 100002 and C_Container -- WoW 10.0.2
-	if container then
-		ContainerIDToInventoryID = container.ContainerIDToInventoryID
-		GetContainerItemID = container.GetContainerItemID
-		GetContainerItemInfo = container.GetContainerItemInfo
-		GetContainerItemLink = container.GetContainerItemLink
-		GetContainerNumFreeSlots = container.GetContainerNumFreeSlots
-		GetContainerNumSlots = container.GetContainerNumSlots
-		PickupContainerItem = container.PickupContainerItem
-		SplitContainerItem = container.SplitContainerItem
-	else -- localised above
-		GetContainerItemInfo = function(containerIndex, slotIndex)
-			local info = {}
-			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = _G.GetContainerItemInfo(containerIndex, slotIndex)
-			return info
-		end
-	end
-end
+local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
+local GetContainerItemID = GetContainerItemID or (C_Container and C_Container.GetContainerItemID)
+local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+local PickupContainerItem = PickupContainerItem or (C_Container and C_Container.PickupContainerItem)
+local SplitContainerItem = SplitContainerItem or (C_Container and C_Container.SplitContainerItem)
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
@@ -445,7 +421,7 @@ function B:GetItemInfo(bag, slot)
 	if IsGuildBankBag(bag) then
 		return GetGuildBankItemInfo(bag - 50, slot)
 	else
-		local info = GetContainerItemInfo(bag, slot)
+		local info = B:GetContainerItemInfo(bag, slot)
 		if info then
 			return info.iconFileID, info.stackCount, info.isLocked
 		end

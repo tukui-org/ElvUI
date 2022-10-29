@@ -105,7 +105,7 @@ local function HandleGuildCards(cards)
 end
 
 local function HandleCommunityCards(frame)
-	if not frame.ListScrollFrame then return end -- ToDO: Wow10 Currently doing nothing
+	if not frame.ListScrollFrame then return end -- ToDO: DF Currently doing nothing
 
 	for _, button in next, frame.ListScrollFrame.buttons do
 		button.CircleMask:Hide()
@@ -673,7 +673,7 @@ function S:Blizzard_Communities()
 
 				button.IsSkinned = true
 			end
-		end]] -- WoW10
+		end]] -- DF
 	end)
 end
 

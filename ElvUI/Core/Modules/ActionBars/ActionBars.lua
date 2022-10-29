@@ -22,6 +22,7 @@ local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
+local GetVehicleBarIndex = GetVehicleBarIndex
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -343,8 +344,8 @@ function AB:CreateBar(id)
 			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
-		if i == 12 then
-			button:SetState(12, 'custom', AB.customExitButton)
+		if (E.Retail or E.Wrath) and i == 12 then
+			button:SetState(GetVehicleBarIndex(), 'custom', AB.customExitButton)
 		end
 
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
@@ -522,6 +523,12 @@ do
 	local function saveSetting(option, value)
 		for i = 1, 10 do
 			E.db.actionbar['bar'..i][option] = value
+		end
+
+		if E.Retail then
+			for i = 13, 15 do
+				E.db.actionbar['bar'..i][option] = value
+			end
 		end
 
 		for _, bar in pairs(bars) do
@@ -987,104 +994,132 @@ function AB:IconIntroTracker_Skin()
 	end
 end
 
-function AB:DisableBlizzard()
-	-- dont blindly add to this table, the first 5 get their events registered
-	local count, tbl = 6, {'MultiCastActionBarFrame', 'OverrideActionBar', E.Retail and 'StanceBar' or 'StanceBarFrame', E.Retail and 'PetActionBar' or 'PetActionBarFrame', E.Retail and 'PossessActionBar' or 'PossessBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}
-	if E.Wrath then -- TotemBar: this still might taint
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
-		tremove(tbl, 1)
-		count = 5
-	end
+do
+	local untaint = {
+		MainMenuBar = true,
+		MicroButtonAndBagsBar = true
+	}
 
-	for i, name in ipairs(tbl) do
-		if not E.Retail then
-			_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+	local removeEvents = {
+		OverrideActionBar = true,
+		MultiCastActionBarFrame = not E.Wrath or nil, -- skip
+		[E.Retail and 'StanceBar' or 'StanceBarFrame'] = true,
+		[E.Retail and 'PetActionBar' or 'PetActionBarFrame'] = true,
+		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
+	}
+
+	local skipNoopsi = {
+		MultiBarBottomLeft = true,
+		MultiBarBottomRight = true,
+		MultiBarLeft = true,
+		MultiBarRight = true
+	}
+
+	-- import to the main table
+	E:CopyTable(untaint, removeEvents)
+	E:CopyTable(untaint, skipNoopsi)
+
+	function AB:DisableBlizzard()
+		if E.Wrath then -- TotemBar: this still might taint
+			_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 		end
 
-		local frame = _G[name]
-		if frame then
-			if i < count then frame:UnregisterAllEvents() end
-			frame:SetParent(E.HiddenFrame)
-			AB:SetNoopsi(frame)
-		end
-	end
+		for name in next, untaint do
+			if not E.Retail then
+				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+			end
 
-	AB:FixSpellBookTaint()
+			local frame = _G[name]
+			if frame then
+				frame:SetParent(E.HiddenFrame)
 
-	-- MainMenuBar:ClearAllPoints taint during combat
-	_G.MainMenuBar.SetPositionForStatusBars = E.noop
+				if removeEvents[name] then
+					frame:UnregisterAllEvents()
+				end
 
-	-- Spellbook open in combat taint, only happens sometimes
-	_G.MultiActionBar_HideAllGrids = E.noop
-	_G.MultiActionBar_ShowAllGrids = E.noop
-
-	-- shut down some events for things we dont use
-	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
-	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
-	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
-	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
-	_G.ActionBarController:UnregisterAllEvents()
-
-	if E.Retail then
-		_G.StatusTrackingBarManager:UnregisterAllEvents()
-		_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
-
-		-- lets only keep ExtraActionButtons in here
-		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
-		AB.ButtonEventsRegisterFrame()
-
-		AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
-		_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
-	else
-		AB:SetNoopsi(_G.MainMenuBarArtFrame)
-		AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
-		_G.MainMenuBarArtFrame:UnregisterAllEvents()
-
-		-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
-		_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
-		AB:SetNoopsi(_G.VerticalMultiBarsContainer)
-
-		-- hide some interface options we dont use
-		_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
-		_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
-		_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
-		_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
-		_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
-		_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
-		_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
-		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
-		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
-		_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
-		_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
-		_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
-
-		_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
-		_G.InterfaceOptionsCombatPanelSelfCastKeyDropDown:Hide()
-
-		if not E.Classic then
-			_G.InterfaceOptionsCombatPanelFocusCastKeyDropDown:Hide()
+				if not E.Retail or not skipNoopsi[name] then
+					AB:SetNoopsi(frame)
+				end
+			end
 		end
 
-		AB:SecureHook('BlizzardOptionsPanel_OnEvent')
-	end
+		AB:FixSpellBookTaint()
 
-	if E.Wrath and E.myclass ~= 'SHAMAN' then
-		for i = 1, 12 do
-			local button = _G['MultiCastActionButton'..i]
-			button:Hide()
-			button:UnregisterAllEvents()
-			button:SetAttribute('statehidden', true)
-		end
-	end
+		-- MainMenuBar:ClearAllPoints taint during combat
+		_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
-	if E.Retail or E.Wrath then
-		if _G.PlayerTalentFrame then
-			_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+		-- Spellbook open in combat taint, only happens sometimes
+		_G.MultiActionBar_HideAllGrids = E.noop
+		_G.MultiActionBar_ShowAllGrids = E.noop
+
+		-- shut down some events for things we dont use
+		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
+		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
+		_G.ActionBarController:UnregisterAllEvents()
+
+		if E.Retail then
+			_G.StatusTrackingBarManager:UnregisterAllEvents()
+			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
+
+			-- lets only keep ExtraActionButtons in here
+			hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
+			AB.ButtonEventsRegisterFrame()
+
+			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
+			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 		else
-			hooksecurefunc('TalentFrame_LoadUI', function()
+			AB:SetNoopsi(_G.MainMenuBarArtFrame)
+			AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
+			_G.MainMenuBarArtFrame:UnregisterAllEvents()
+
+			-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
+			_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
+			AB:SetNoopsi(_G.VerticalMultiBarsContainer)
+
+			-- hide some interface options we dont use
+			_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
+			_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
+			_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
+			_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
+			_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
+			_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
+			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
+			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
+			_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
+
+			_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
+			_G.InterfaceOptionsCombatPanelSelfCastKeyDropDown:Hide()
+
+			if not E.Classic then
+				_G.InterfaceOptionsCombatPanelFocusCastKeyDropDown:Hide()
+			end
+
+			AB:SecureHook('BlizzardOptionsPanel_OnEvent')
+		end
+
+		if E.Wrath and E.myclass ~= 'SHAMAN' then
+			for i = 1, 12 do
+				local button = _G['MultiCastActionButton'..i]
+				button:Hide()
+				button:UnregisterAllEvents()
+				button:SetAttribute('statehidden', true)
+			end
+		end
+
+		if E.Retail or E.Wrath then
+			if _G.PlayerTalentFrame then
 				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-			end)
+			else
+				hooksecurefunc('TalentFrame_LoadUI', function()
+					_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+				end)
+			end
 		end
 	end
 end
@@ -1219,11 +1254,7 @@ function AB:FixKeybindText(button)
 	hotkey:SetTextColor(color.r, color.g, color.b)
 
 	if not button.__LAB_Version then
-		if db and not db.hotkeytext then
-			hotkey:Hide()
-		else
-			hotkey:Show()
-		end
+		hotkey:SetShown(not (db and not db.hotkeytext))
 	end
 
 	if not button.useMasque then
@@ -1474,7 +1505,7 @@ function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
 	if not initLogin and not isReload then
-		AB:PositionAndSizeBarPet() -- for some reason on WoW10 when you portal your pet bar placement is reset
+		AB:PositionAndSizeBarPet() -- for some reason on DF when you portal your pet bar placement is reset
 	elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()

@@ -26,7 +26,7 @@ function S:LookingForGuildFrame()
 		S:HandleCheckBox(_G[v])
 	end
 
-	-- have to skin these checkboxes seperate for some reason o_O
+	-- have to skin these checkboxes separate for some reason o_O
 	S:HandleCheckBox(_G.LookingForGuildTankButton.checkButton)
 	S:HandleCheckBox(_G.LookingForGuildHealerButton.checkButton)
 	S:HandleCheckBox(_G.LookingForGuildDamagerButton.checkButton)
