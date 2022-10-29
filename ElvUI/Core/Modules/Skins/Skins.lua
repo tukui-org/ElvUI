@@ -1166,7 +1166,7 @@ function S:HandleSliderFrame(frame, template, frameLevel)
 	end
 end
 
--- ToDO: WoW10 => UpdateME => Credits: NDUI
+-- ToDO: DF => UpdateME => Credits: NDUI
 local sparkTexture = [[Interface\CastingBar\UI-CastingBar-Spark]]
 function S:HandleStepSlider(frame, minimal)
 	assert(frame, 'doesnt exist!')
@@ -1344,7 +1344,7 @@ do
 
 				local quality = portrait.quality or (follower.info and follower.info.quality)
 				local color = portrait.backdrop and ITEM_QUALITY_COLORS[quality]
-				if color then -- sometimes it doesn't have this data since WoW10
+				if color then -- sometimes it doesn't have this data since DF
 					portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 			end
@@ -1392,7 +1392,7 @@ do
 		if _G.GarrisonFollowerList_InitButton then
 			hooksecurefunc(_G, 'GarrisonFollowerList_InitButton', UpdateFollower)
 		else
-			hooksecurefunc(_G[frame], 'UpdateData', UpdateListScroll) -- pre WoW10
+			hooksecurefunc(_G[frame], 'UpdateData', UpdateListScroll) -- pre DF
 		end
 	end
 end

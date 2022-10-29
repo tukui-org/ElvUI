@@ -1505,7 +1505,7 @@ function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
 	if not initLogin and not isReload then
-		AB:PositionAndSizeBarPet() -- for some reason on WoW10 when you portal your pet bar placement is reset
+		AB:PositionAndSizeBarPet() -- for some reason on DF when you portal your pet bar placement is reset
 	elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()

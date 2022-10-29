@@ -15,14 +15,14 @@ local function ReskinDropDownArrow(button, direction)
 	button:GetHighlightTexture():SetAlpha(0)
 
 	local dis = button:GetDisabledTexture()
-	--S:HandleNextPrevButton(dis, direction) -- ToDo: WoW10
+	--S:HandleNextPrevButton(dis, direction) -- ToDo: DF
 	dis:SetVertexColor(0, 0, 0, .7)
 	dis:SetDrawLayer('OVERLAY')
 	dis:SetInside(button, 4, 4)
 
 	local tex = button:CreateTexture(nil, 'ARTWORK')
 	tex:SetInside(button, 4, 4)
-	--S:HandleNextPrevButton(tex, direction) -- ToDo: WoW10
+	--S:HandleNextPrevButton(tex, direction) -- ToDo: DF
 end
 
 local function ReskinOptionDropDown(option)
@@ -83,7 +83,7 @@ function S:SettingsPanel()
 				end
 
 				local toggle = child.Toggle
-				if toggle then -- ToDo Handle the toggle. WoW10
+				if toggle then -- ToDo Handle the toggle. DF
 					toggle:GetPushedTexture():SetAlpha(0)
 				end
 

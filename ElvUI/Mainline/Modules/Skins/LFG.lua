@@ -366,7 +366,7 @@ function S:LookingForGroupFrames()
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
-	--[[ ToDO: Wow10
+	--[[ ToDO: DF
 	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
 	end]]
@@ -381,7 +381,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	--[[ ToDO: Wow10
+	--[[ ToDO: DF
 	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
 		S:HandleCheckBox(bu, nil, true)

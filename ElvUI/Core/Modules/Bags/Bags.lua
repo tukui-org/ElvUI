@@ -1926,7 +1926,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.bagFrame = f
 	slot.BagID = bagID
-	slot.SlotID = slotID -- dont use `slotID` it taints since WoW10 in ContainerFrameItemButtonMixin:GetBagID()
+	slot.SlotID = slotID -- dont use `slotID` it taints since DF prepatch in ContainerFrameItemButtonMixin:GetBagID()
 	slot.name = slotName
 
 	local newItemTexture = _G[slotName..'NewItemTexture']
