@@ -9,32 +9,6 @@ local function HandleTabs(tab)
 	if tab then tab:StripTextures(true) end
 end
 
-local function ReskinDropDownArrow(button, direction)
-	button.NormalTexture:SetAlpha(0)
-	button.PushedTexture:SetAlpha(0)
-	button:GetHighlightTexture():SetAlpha(0)
-
-	local dis = button:GetDisabledTexture()
-	--S:HandleNextPrevButton(dis, direction) -- ToDo: DF
-	dis:SetVertexColor(0, 0, 0, .7)
-	dis:SetDrawLayer('OVERLAY')
-	dis:SetInside(button, 4, 4)
-
-	local tex = button:CreateTexture(nil, 'ARTWORK')
-	tex:SetInside(button, 4, 4)
-	--S:HandleNextPrevButton(tex, direction) -- ToDo: DF
-end
-
-local function ReskinOptionDropDown(option)
-	local button = option.Button
-	S:HandleButton(button)
-	button.NormalTexture:SetAlpha(0)
-	button.HighlightTexture:SetAlpha(0)
-
-	ReskinDropDownArrow(option.DecrementButton, 'left')
-	ReskinDropDownArrow(option.IncrementButton, 'right')
-end
-
 local function UpdateKeybindButtons(self)
 	if not self.bindingsPool then return end
 	for panel in self.bindingsPool:EnumerateActive() do
@@ -51,6 +25,27 @@ local function UpdateHeaderExpand(self, expanded)
 	self.collapseTex:SetAtlas(expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand', true)
 
 	UpdateKeybindButtons(self)
+end
+
+local function HandleCheckbox(checkbox)
+	checkbox:CreateBackdrop()
+	checkbox.backdrop:SetInside(nil, 4, 4)
+
+	for _, region in next, { checkbox:GetRegions() } do
+		if region:IsObjectType('Texture') then
+			if region:GetAtlas() == 'checkmark-minimal' then
+				if E.private.skins.checkBoxSkin then
+					region:SetTexture(E.Media.Textures.Melli)
+
+					local checkedTexture = checkbox:GetCheckedTexture()
+					checkedTexture:SetVertexColor(1, .82, 0, 0.8)
+					checkedTexture:SetInside(checkbox.backdrop)
+				end
+			else
+				region:SetTexture('')
+			end
+		end
+	end
 end
 
 function S:SettingsPanel()
@@ -101,23 +96,7 @@ function S:SettingsPanel()
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				if child.CheckBox then
-					S:HandleCheckBox(child.CheckBox)
-				end
-
-				--[[if child.DropDown then
-					ReskinOptionDropDown(child.DropDown)
-				end
-				if child.ColorBlindFilterDropDown then
-					ReskinOptionDropDown(child.ColorBlindFilterDropDown)
-				end]]
-
-				for j = 1, 13 do
-					local control = child['Control'..j]
-					if control then
-						if control.DropDown then
-							ReskinOptionDropDown(control.DropDown)
-						end
-					end
+					HandleCheckbox(child.CheckBox) -- this is atlas shit, so S.HandleCheckBox wont work right now
 				end
 
 				if child.Button then
