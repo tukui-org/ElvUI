@@ -2,9 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local EM = E:GetModule('EditorMode')
 
 local _G = _G
-local pairs = pairs
 local tremove = tremove
-local strmatch = strmatch
 
 local CheckTargetFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
 local CheckCastFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
