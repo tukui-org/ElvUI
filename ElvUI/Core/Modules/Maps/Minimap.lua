@@ -137,7 +137,6 @@ function M:HandleQueueButton(actionbarMode)
 
 	if actionbarMode then
 		queueButton:Point('BOTTOMLEFT', Minimap, 50, -15)
-		queueButton:SetFrameStrata('MEDIUM')
 		M:SetScale(queueButton, 0.8)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
@@ -440,11 +439,10 @@ function M:UpdateSettings()
 				gameTime:Hide()
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
+				gameTime:Show()
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
-				gameTime:SetFrameLevel(holder:GetFrameLevel()+1)
 				M:SetScale(gameTime, scale)
-				gameTime:Show()
 			end
 		end
 
@@ -619,16 +617,15 @@ function M:Initialize()
 	M.holder = holder
 	E:CreateMover(holder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
-	Minimap:CreateBackdrop()
-
-	local minimapLevel = Minimap:GetFrameLevel() + 2
-	Minimap:SetFrameLevel(minimapLevel)
-
-	if E.Retail then
-		MinimapCluster:SetFrameLevel(minimapLevel)
-		MinimapCluster:SetFrameStrata('MEDIUM')
-		Minimap:SetFrameStrata('LOW')
+	if E.Retail then -- set before minimap itself
+		MinimapCluster:SetFrameLevel(20)
+	elseif _G.GameTimeFrame then
+		_G.GameTimeFrame:SetFrameLevel(12)
 	end
+
+	Minimap:SetFrameStrata('LOW')
+	Minimap:SetFrameLevel(10)
+	Minimap:CreateBackdrop()
 
 	if Minimap.backdrop then -- level to hybrid maps fixed values
 		Minimap.backdrop:SetFrameLevel(99)

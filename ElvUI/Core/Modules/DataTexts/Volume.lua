@@ -144,7 +144,11 @@ end
 local function OnClick(self, button)
 	if button == 'LeftButton' then
 		if IsShiftKeyDown() then
-			ShowOptionsPanel(_G.VideoOptionsFrame, _G.GameMenuFrame, SOUND)
+			if E.Retail then
+				_G.Settings.OpenToCategory(_G.Settings.AUDIO_CATEGORY_ID)
+			else
+				ShowOptionsPanel(_G.VideoOptionsFrame, _G.GameMenuFrame, SOUND)
+			end
 			return
 		end
 

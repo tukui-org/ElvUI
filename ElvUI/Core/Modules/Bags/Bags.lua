@@ -297,13 +297,14 @@ end
 
 do
 	local function DisableFrame(frame)
-		if frame then
-			frame:UnregisterAllEvents()
-			frame:SetScript('OnShow', nil)
-			frame:SetScript('OnHide', nil)
-			frame:SetScale(0.0001)
-			frame:SetAlpha(0)
-		end
+		if not frame then return end
+
+		frame:UnregisterAllEvents()
+		frame:SetScript('OnShow', nil)
+		frame:SetScript('OnHide', nil)
+		frame:SetParent(E.HiddenFrame)
+		frame:ClearAllPoints()
+		frame:Point('BOTTOM')
 	end
 
 	function B:DisableBlizzard()
@@ -1925,7 +1926,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.bagFrame = f
 	slot.BagID = bagID
-	slot.SlotID = slotID -- dont use `slotID` it taints since WoW10 in ContainerFrameItemButtonMixin:GetBagID()
+	slot.SlotID = slotID -- dont use `slotID` it taints since DF prepatch in ContainerFrameItemButtonMixin:GetBagID()
 	slot.name = slotName
 
 	local newItemTexture = _G[slotName..'NewItemTexture']

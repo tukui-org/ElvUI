@@ -1303,10 +1303,14 @@ function CH:SnappingChanged(chat)
 	end
 end
 
-function CH:ResnapDock(event, initLogin, isReload)
-	if event ~= 'PLAYER_ENTERING_WORLD' or (not initLogin and not isReload) then
-		CH:SnappingChanged(_G.GeneralDockManager.primary)
+function CH:ResnapDock(event, arg1, arg2)
+	if event == 'PLAYER_SPECIALIZATION_CHANGED' then
+		if arg1 ~= 'player' then return end -- only update on player
+	elseif event == 'PLAYER_ENTERING_WORLD' then
+		if arg1 or arg2 then return end -- initLogin or isReload
 	end
+
+	CH:SnappingChanged(_G.GeneralDockManager.primary)
 end
 
 function CH:ShowBackground(background, show)
@@ -3602,9 +3606,8 @@ function CH:Initialize()
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.Retail then
-		CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-
+		CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
 		CH:SecureHook(_G.GeneralDockManager.primary, 'OnEditModeExit', 'ResnapDock')
 
 		if E.private.general.voiceOverlay then

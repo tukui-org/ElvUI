@@ -61,16 +61,16 @@ local function OnEvent(self)
 		local id = tonumber(displayed)
 		if not id then return end
 
-		local name, num, _, icon = DT:CurrencyInfo(id)
+		local info, name, icon = DT:CurrencyInfo(id)
 		if not name then return end
 
 		local style = E.global.datatexts.settings.Currencies.displayStyle
 		if style == 'ICON' then
-			self.text:SetFormattedText('%s %s', icon, E:ShortValue(num))
+			self.text:SetFormattedText('%s %s', icon, E:ShortValue(info.quantity))
 		elseif style == 'ICON_TEXT' then
-			self.text:SetFormattedText('%s %s %s', icon, name, E:ShortValue(num))
+			self.text:SetFormattedText('%s %s %s', icon, name, E:ShortValue(info.quantity))
 		else --ICON_TEXT_ABBR
-			self.text:SetFormattedText('%s %s %s', icon, E:AbbreviateString(name), E:ShortValue(num))
+			self.text:SetFormattedText('%s %s %s', icon, E:AbbreviateString(name), E:ShortValue(info.quantity))
 		end
 	end
 end

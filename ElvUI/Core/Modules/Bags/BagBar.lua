@@ -231,9 +231,9 @@ function B:LoadBagBar()
 
 		if E.Retail then
 			hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
-		end
+		else
+			B.BagButton_UpdateTextures(b)
 
-		if not E.Retail then
 			b.commandName = commandNames[i]
 		end
 
