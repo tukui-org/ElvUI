@@ -2675,7 +2675,7 @@ P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 
 P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Wrath and ' [bonusbar:2] 8;' or '')
 P.actionbar.bar1.paging.WARLOCK = E.Wrath and '[form:1] 7;' or nil
-P.actionbar.bar1.paging.DRUID = format('[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] %d; [bonusbar:3] 9; [bonusbar:4] 10;', E.Retail and 10 or 8) -- No idea why tho
+P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'

@@ -6,7 +6,6 @@ local next = next
 local select = select
 
 local CreateColor = CreateColor
-local GetAchievementNumCriteria = GetAchievementNumCriteria
 local hooksecurefunc = hooksecurefunc
 
 local function SetupButtonHighlight(button, backdrop)
