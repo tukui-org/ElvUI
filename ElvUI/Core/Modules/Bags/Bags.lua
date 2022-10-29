@@ -297,13 +297,14 @@ end
 
 do
 	local function DisableFrame(frame)
-		if frame then
-			frame:UnregisterAllEvents()
-			frame:SetScript('OnShow', nil)
-			frame:SetScript('OnHide', nil)
-			frame:SetScale(0.0001)
-			frame:SetAlpha(0)
-		end
+		if not frame then return end
+
+		frame:UnregisterAllEvents()
+		frame:SetScript('OnShow', nil)
+		frame:SetScript('OnHide', nil)
+		frame:SetParent(E.HiddenFrame)
+		frame:ClearAllPoints()
+		frame:Point('BOTTOM')
 	end
 
 	function B:DisableBlizzard()
