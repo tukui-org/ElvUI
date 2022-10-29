@@ -1059,7 +1059,7 @@ function B:Layout(isBank)
 			end
 		end
 	end
-	
+
 	if not isBank then
 		local currencies = f.currencyButton
 		if B.numTrackedTokens == 0 then
@@ -1099,7 +1099,7 @@ function B:Layout(isBank)
 			end
 			local curHeight = 24 * currentRow
 			currencies:Height(curHeight)
-			
+
 			if f.bottomOffset ~= (curHeight + 8) then
 				f.bottomOffset = (curHeight + 8)
 			end
@@ -2801,7 +2801,7 @@ function B:Initialize()
 
 	if E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
-	else
+	elseif E.Retail then
 		B:SecureHook(_G.BackpackTokenFrame, 'Update', 'UpdateTokensIfVisible')
 		B:SecureHook(_G.BackpackTokenFrame, 'UpdateIfVisible', 'UpdateTokensIfVisible')
 		B:SecureHook(_G.TokenFramePopup.BackpackCheckBox, 'OnClick', 'UpdateTokensIfVisible')
