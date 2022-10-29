@@ -1247,6 +1247,12 @@ function B:OnEvent(event, ...)
 	end
 end
 
+function B:UpdateTokensIfVisible()
+	if B.BagFrame:IsVisible() then
+		B:UpdateTokens()
+	end
+end
+
 function B:UpdateTokens()
 	local bagFrame = B.BagFrame
 	local currencies = bagFrame.currencyButton
@@ -2138,6 +2144,7 @@ function B:OpenBags()
 	end
 
 	B.BagFrame:Show()
+	B:UpdateTokensIfVisible()
 
 	PlaySound(IG_BACKPACK_OPEN)
 
@@ -2759,7 +2766,9 @@ function B:Initialize()
 	if E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	else
-		B:SecureHook(_G.BackpackTokenFrame, 'Update', 'UpdateTokens')
+		B:SecureHook(_G.BackpackTokenFrame, 'Update', 'UpdateTokensIfVisible')
+		B:SecureHook(_G.BackpackTokenFrame, 'UpdateIfVisible', 'UpdateTokensIfVisible')
+		B:SecureHook(_G.TokenFramePopup.BackpackCheckBox, 'OnClick', 'UpdateTokensIfVisible')
 	end
 
 	if E.Retail then
