@@ -14,7 +14,7 @@ function UF:Construct_RestingIndicator(frame)
 end
 
 local function ShouldHide(frame)
-	return frame.db.RestIcon.hideAtMaxLevel and E:XPIsLevelMax()
+	return frame.db and frame.db.RestIcon.hideAtMaxLevel and E:XPIsLevelMax()
 end
 
 local TestingTimer, TestingFrame
