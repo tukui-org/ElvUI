@@ -1220,102 +1220,107 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if unit == 'player' then
-			if E.private.unitframe.disabledBlizzardFrames.player then
-				local PlayerFrame = _G.PlayerFrame
-				HandleFrame(PlayerFrame)
+		if E.private.unitframe.enable then
+			local disable = E.private.unitframe.disabledBlizzardFrames
+			if unit == 'player' then
+				if disable.player then
+					local PlayerFrame = _G.PlayerFrame
+					HandleFrame(PlayerFrame)
 
-				-- For the damn vehicle support:
-				PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-				PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-				PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-				PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
-				PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
+					-- For the damn vehicle support:
+					PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+					PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+					PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+					PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
+					PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
-				-- User placed frames don't animate
-				PlayerFrame:SetMovable(true)
-				PlayerFrame:SetUserPlaced(true)
-				PlayerFrame:SetDontSavePosition(true)
-			end
-
-			if E.Retail then
-				if E.private.unitframe.disabledBlizzardFrames.castbar then
-					HandleFrame(_G.PlayerCastingBarFrame)
-					HandleFrame(_G.PetCastingBarFrame)
+					-- User placed frames don't animate
+					PlayerFrame:SetMovable(true)
+					PlayerFrame:SetUserPlaced(true)
+					PlayerFrame:SetDontSavePosition(true)
 				end
-			elseif E.private.unitframe.disabledBlizzardFrames.castbar or (UF.db.units.player.enable and UF.db.units.player.castbar.enable) then
-				CastingBarFrame_SetUnit(_G.CastingBarFrame)
-				CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
-			else
-				CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-				PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
-			end
-		elseif unit == 'pet' and E.private.unitframe.disabledBlizzardFrames.player then
-			HandleFrame(_G.PetFrame)
-		elseif unit == 'target' and E.private.unitframe.disabledBlizzardFrames.target then
-			HandleFrame(_G.TargetFrame)
-			HandleFrame(_G.ComboFrame)
-		elseif unit == 'focus' and E.private.unitframe.disabledBlizzardFrames.focus then
-			HandleFrame(_G.FocusFrame)
-			HandleFrame(_G.TargetofFocusFrame)
-		elseif unit == 'targettarget' and E.private.unitframe.disabledBlizzardFrames.target then
-			HandleFrame(_G.TargetFrameToT)
-		elseif strmatch(unit, 'boss%d?$') and E.private.unitframe.disabledBlizzardFrames.boss then
-			local id = strmatch(unit, 'boss(%d)')
-			if id then
-				HandleFrame('Boss' .. id .. 'TargetFrame')
-			else
-				for i = 1, MAX_BOSS_FRAMES do
-					HandleFrame(format('Boss%dTargetFrame', i))
-				end
-			end
-		elseif strmatch(unit, 'party%d?$') and E.private.unitframe.disabledBlizzardFrames.party then
-			if E.Retail then
-				if isPartyHooked then return end
-				isPartyHooked = true
 
-				_G.PartyFrame:UnregisterAllEvents()
-
-				for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
-					HandleFrame(frame)
-				end
-			else
-				local id = strmatch(unit, 'party(%d)')
-				if id then
-					HandleFrame('PartyMemberFrame' .. id)
-					HandleFrame('CompactPartyMemberFrame' .. id)
+				if E.Retail then
+					if disable.castbar then
+						HandleFrame(_G.PlayerCastingBarFrame)
+						HandleFrame(_G.PetCastingBarFrame)
+					end
+				elseif disable.castbar or (UF.db.units.player.enable and UF.db.units.player.castbar.enable) then
+					CastingBarFrame_SetUnit(_G.CastingBarFrame)
+					CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
 				else
-					for i = 1, _G.MAX_PARTY_MEMBERS do
-						HandleFrame(format('PartyMemberFrame%d', i))
-						HandleFrame(format('CompactPartyMemberFrame%d', i))
+					CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
+					PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+				end
+			elseif disable.player and unit == 'pet' then
+				HandleFrame(_G.PetFrame)
+			elseif disable.target and unit == 'target' then
+				HandleFrame(_G.TargetFrame)
+				HandleFrame(_G.ComboFrame)
+			elseif disable.focus and unit == 'focus' then
+				HandleFrame(_G.FocusFrame)
+				HandleFrame(_G.TargetofFocusFrame)
+			elseif disable.target and unit == 'targettarget' then
+				HandleFrame(_G.TargetFrameToT)
+			elseif disable.boss and strmatch(unit, 'boss%d?$') then
+				local id = strmatch(unit, 'boss(%d)')
+				if id then
+					HandleFrame('Boss' .. id .. 'TargetFrame')
+				else
+					for i = 1, MAX_BOSS_FRAMES do
+						HandleFrame(format('Boss%dTargetFrame', i))
+					end
+				end
+			elseif disable.party and strmatch(unit, 'party%d?$') then
+				if E.Retail then
+					if isPartyHooked then return end
+					isPartyHooked = true
+
+					_G.PartyFrame:UnregisterAllEvents()
+
+					for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
+						HandleFrame(frame)
+					end
+				else
+					local id = strmatch(unit, 'party(%d)')
+					if id then
+						HandleFrame('PartyMemberFrame' .. id)
+						HandleFrame('CompactPartyMemberFrame' .. id)
+					else
+						for i = 1, _G.MAX_PARTY_MEMBERS do
+							HandleFrame(format('PartyMemberFrame%d', i))
+							HandleFrame(format('CompactPartyMemberFrame%d', i))
+						end
+					end
+
+					HandleFrame(_G.PartyMemberBackground)
+				end
+			elseif disable.arena and strmatch(unit, 'arena%d?$') then
+				local id = strmatch(unit, 'arena(%d)')
+				if id then
+					HandleFrame('ArenaEnemyFrame' .. id)
+				else
+					for i = 1, _G.MAX_ARENA_ENEMIES do
+						HandleFrame(format('ArenaEnemyFrame%d', i))
 					end
 				end
 
-				HandleFrame(_G.PartyMemberBackground)
-			end
-		elseif strmatch(unit, 'arena%d?$') and E.private.unitframe.disabledBlizzardFrames.arena then
-			local id = strmatch(unit, 'arena(%d)')
-			if id then
-				HandleFrame('ArenaEnemyFrame' .. id)
-			else
-				for i = 1, _G.MAX_ARENA_ENEMIES do
-					HandleFrame(format('ArenaEnemyFrame%d', i))
+				if _G.ArenaEnemyFrames then
+					_G.ArenaEnemyFrames:UnregisterAllEvents()
+					_G.ArenaPrepFrames:UnregisterAllEvents()
+					_G.ArenaEnemyFrames:Hide()
+					_G.ArenaPrepFrames:Hide()
+
+					-- reference on oUF and clear the global frame reference, to fix ClearAllPoints taint
+					ElvUF.ArenaEnemyFrames = _G.ArenaEnemyFrames
+					ElvUF.ArenaPrepFrames = _G.ArenaPrepFrames
+					_G.ArenaEnemyFrames = nil
+					_G.ArenaPrepFrames = nil
 				end
 			end
+		end
 
-			if _G.ArenaEnemyFrames then
-				_G.ArenaEnemyFrames:UnregisterAllEvents()
-				_G.ArenaPrepFrames:UnregisterAllEvents()
-				_G.ArenaEnemyFrames:Hide()
-				_G.ArenaPrepFrames:Hide()
-
-				-- reference on oUF and clear the global frame reference, to fix ClearAllPoints taint
-				ElvUF.ArenaEnemyFrames = _G.ArenaEnemyFrames
-				ElvUF.ArenaPrepFrames = _G.ArenaPrepFrames
-				_G.ArenaEnemyFrames = nil
-				_G.ArenaPrepFrames = nil
-			end
-		elseif strmatch(unit, 'nameplate%d+$') then
+		if strmatch(unit, 'nameplate%d+$') then
 			local frame = C_NamePlate_GetNamePlateForUnit(unit)
 			local plate = frame and frame.UnitFrame
 			if plate and not disabledPlates[plate] then
@@ -1615,20 +1620,17 @@ function UF:Initialize()
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
-	if E.private.unitframe.disabledBlizzardFrames.party and E.private.unitframe.disabledBlizzardFrames.raid then
+	local disable = E.private.unitframe.disabledBlizzardFrames
+	if disable.party and disable.raid then
 		UF:DisableBlizzard()
-	end
-
-	if (not E.private.unitframe.disabledBlizzardFrames.party) and (not E.private.unitframe.disabledBlizzardFrames.raid) then
+	elseif not disable.party and not disable.raid then
 		E.RaidUtility.Initialize = E.noop
 	end
 
-	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
-		hooksecurefunc(_G.Clique, 'BLACKLIST_CHANGED', UF.UpdateRegisteredClicks)
-	end
-
-	if E.private.unitframe.disabledBlizzardFrames.arena then
-		if E.Retail then UF:SecureHook('UnitFrameThreatIndicator_Initialize') end
+	if disable.arena then
+		if E.Retail then
+			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
+		end
 
 		Arena_LoadUI = E.noop
 		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
@@ -1639,6 +1641,10 @@ function UF:Initialize()
 		else
 			UF:RegisterEvent('ADDON_LOADED')
 		end
+	end
+
+	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
+		hooksecurefunc(_G.Clique, 'BLACKLIST_CHANGED', UF.UpdateRegisteredClicks)
 	end
 
 	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
