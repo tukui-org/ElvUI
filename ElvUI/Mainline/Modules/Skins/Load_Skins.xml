@@ -80,7 +80,6 @@
 	<Script file='Stable.lua'/>
 	<Script file='SubscriptionInterstitial.lua'/>
 	<Script file='Tabard.lua'/>
-	<Script file='Talent.lua'/>
 	<Script file='TalkingHead.lua'/>
 	<Script file='Taxi.lua'/>
 	<Script file='TimeManager.lua'/>
@@ -94,6 +93,7 @@
 	<Script file='WeeklyRewards.lua'/>
 	<Script file='WorldMap.lua'/>
 
+	<!-- DF new ones -->
 	<Script file='ClassTalents.lua'/>
 	<Script file='EditorManager.lua'/>
 	<Script file='ExpansionLandingPage.lua'/>

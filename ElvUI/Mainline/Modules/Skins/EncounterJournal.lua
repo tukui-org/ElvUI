@@ -426,7 +426,7 @@ function S:Blizzard_EncounterJournal()
 			end
 		end)
 
-		-- Comment back in WoW10 Beta, not on Pre Patch
+		-- Comment back in DF Beta, not on Pre Patch
 		--[[hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
