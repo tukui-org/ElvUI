@@ -51,6 +51,7 @@ end
 function S:EditorManagerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.editor) then return end
 
+	-- Main Window
 	local editMode = _G.EditModeManagerFrame
 	editMode:StripTextures()
 	editMode:CreateBackdrop('Transparent')
@@ -70,6 +71,46 @@ function S:EditorManagerFrame()
 		end
 	end
 
+	-- Layout Creator
+	local layout = _G.EditModeNewLayoutDialog
+	layout:StripTextures()
+	layout:CreateBackdrop('Transparent')
+	S:HandleButton(layout.AcceptButton)
+	S:HandleButton(layout.CancelButton)
+	S:HandleEditBox(layout.LayoutNameEditBox)
+	HandleCheckBox(layout.CharacterSpecificLayoutCheckButton.Button)
+
+	-- Layout Importer
+	local import = _G.EditModeImportLayoutDialog
+	import:StripTextures()
+	import:CreateBackdrop('Transparent')
+	S:HandleButton(import.AcceptButton)
+	S:HandleButton(import.CancelButton)
+	HandleCheckBox(import.CharacterSpecificLayoutCheckButton.Button)
+
+	local importBox = import.ImportBox
+	S:HandleEditBox(importBox)
+
+	local importBackdrop = importBox.backdrop
+	importBackdrop:ClearAllPoints()
+	importBackdrop:Point('TOPLEFT', importBox, -4, 4)
+	importBackdrop:Point('BOTTOMRIGHT', importBox, 0, -4)
+
+	local scrollbar = importBox.ScrollBar
+	S:HandleScrollBar(scrollbar)
+	scrollbar:ClearAllPoints()
+	scrollbar:Point('TOPLEFT', importBox, 'TOPRIGHT', 4, 4)
+	scrollbar:Point('BOTTOMLEFT', importBox, 'BOTTOMRIGHT', 0, -4)
+
+	local editbox = import.LayoutNameEditBox
+	S:HandleEditBox(editbox)
+
+	local editbackdrop = editbox.backdrop
+	editbackdrop:ClearAllPoints()
+	editbackdrop:Point('TOPLEFT', editbox, -2, -4)
+	editbackdrop:Point('BOTTOMRIGHT', editbox, 2, 4)
+
+	-- Dialog (Mover Settings)
 	local dialog = _G.EditModeSystemSettingsDialog
 	dialog:StripTextures()
 	dialog:CreateBackdrop('Transparent')
