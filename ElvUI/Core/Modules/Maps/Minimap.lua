@@ -27,8 +27,8 @@ local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
 
-local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local MainMenuMicroButton = MainMenuMicroButton
+local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
 local WorldMapFrame = _G.WorldMapFrame
