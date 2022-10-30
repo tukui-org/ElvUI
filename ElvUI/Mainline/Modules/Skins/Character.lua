@@ -331,9 +331,9 @@ function S:CharacterFrame()
 	end)
 
 	-- Reposition Tabs
-	_G.CharacterFrameTab1:SetPoint('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -3, 0)
-	_G.CharacterFrameTab2:SetPoint('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.CharacterFrameTab3:SetPoint('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -3, 0)
+	_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -5, 0)
 
 	do --Handle Tabs at bottom of character frame
 		local i = 1
@@ -363,7 +363,7 @@ function S:CharacterFrame()
 	if _G.TokenFramePopup.CloseButton then  -- Probably Blizzard Typo
 		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
 	end
-	_G.TokenFramePopup:SetPoint('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
+	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
 

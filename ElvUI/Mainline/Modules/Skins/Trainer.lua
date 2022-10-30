@@ -41,14 +41,14 @@ function S:Blizzard_TrainerUI()
 			if not button.IsSkinned then
 				S:HandleIcon(button.icon, true)
 				button:CreateBackdrop('Transparent')
-				button.backdrop:SetPoint('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
-				button.backdrop:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 253, 0)
+				button.backdrop:Point('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
+				button.backdrop:Point('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 253, 0)
 
 				button.name:SetParent(button.backdrop)
-				button.name:SetPoint('TOPLEFT', button.icon, 'TOPRIGHT', 6, -2)
+				button.name:Point('TOPLEFT', button.icon, 'TOPRIGHT', 6, -2)
 				button.subText:SetParent(button.backdrop)
 				button.money:SetParent(button.backdrop)
-				button.money:SetPoint('TOPRIGHT', button, 'TOPRIGHT', 5, -8)
+				button.money:Point('TOPRIGHT', button, 'TOPRIGHT', 5, -8)
 
 				button:SetNormalTexture(E.Media.Textures.Invisible)
 				button:SetHighlightTexture(E.Media.Textures.Invisible)

@@ -42,9 +42,9 @@ function S:Blizzard_InspectUI()
 	end
 
 	-- Reposition Tabs
-	_G.InspectFrameTab1:SetPoint('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -3, 0)
-	_G.InspectFrameTab2:SetPoint('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.InspectFrameTab3:SetPoint('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.InspectFrameTab1:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -3, 0)
+	_G.InspectFrameTab2:Point('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.InspectFrameTab3:Point('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -5, 0)
 
 	_G.InspectPaperDollItemsFrame.InspectTalents:ClearAllPoints()
 	_G.InspectPaperDollItemsFrame.InspectTalents:Point('TOPRIGHT', _G.InspectFrame, 'BOTTOMRIGHT', -5, -3)

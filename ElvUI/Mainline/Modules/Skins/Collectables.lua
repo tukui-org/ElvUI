@@ -494,8 +494,8 @@ local function SkinTransmogFrames()
 				local border = CreateFrame('Frame', nil, Model)
 				border:SetTemplate()
 				border:ClearAllPoints()
-				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
+				border:Point('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				border:Point('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
 				border.callbackBackdropColor = clearBackdrop
 
@@ -534,8 +534,8 @@ local function SkinTransmogFrames()
 			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
 
 			if Glowframe.backdrop then
-				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
+				Glowframe.backdrop:Point('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				Glowframe.backdrop:Point('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
 				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
 				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
 			end
@@ -574,8 +574,8 @@ local function SkinTransmogFrames()
 				child.SelectedTexture:SetDrawLayer('BACKGROUND')
 				child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
 				child.SelectedTexture:ClearAllPoints()
-				child.SelectedTexture:SetPoint('TOPLEFT', 4, -2)
-				child.SelectedTexture:SetPoint('BOTTOMRIGHT', -1, 2)
+				child.SelectedTexture:Point('TOPLEFT', 4, -2)
+				child.SelectedTexture:Point('BOTTOMRIGHT', -1, 2)
 				child.SelectedTexture:CreateBackdrop('Transparent')
 
 				child.IsSkinned = true
@@ -681,11 +681,11 @@ local function SkinCollectionsFrames()
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
 
-	_G.CollectionsJournalTab1:SetPoint('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
-	_G.CollectionsJournalTab2:SetPoint('TOPLEFT', _G.CollectionsJournalTab1, 'TOPRIGHT', -5, 0)
-	_G.CollectionsJournalTab3:SetPoint('TOPLEFT', _G.CollectionsJournalTab2, 'TOPRIGHT', -5, 0)
-	_G.CollectionsJournalTab4:SetPoint('TOPLEFT', _G.CollectionsJournalTab3, 'TOPRIGHT', -5, 0)
-	_G.CollectionsJournalTab5:SetPoint('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab1:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
+	_G.CollectionsJournalTab2:Point('TOPLEFT', _G.CollectionsJournalTab1, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab3:Point('TOPLEFT', _G.CollectionsJournalTab2, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab4:Point('TOPLEFT', _G.CollectionsJournalTab3, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab5:Point('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
 
 	SkinMountFrame()
 	SkinPetFrame()

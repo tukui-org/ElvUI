@@ -157,13 +157,13 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	S:HandleTab(_G.EncounterJournalSuggestTab)
-	_G.EncounterJournalSuggestTab:SetPoint('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
+	_G.EncounterJournalSuggestTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
 	S:HandleTab(_G.EncounterJournalDungeonTab)
-	_G.EncounterJournalDungeonTab:SetPoint('TOPLEFT', _G.EncounterJournalSuggestTab, 'TOPRIGHT', -5, 0)
+	_G.EncounterJournalDungeonTab:Point('TOPLEFT', _G.EncounterJournalSuggestTab, 'TOPRIGHT', -5, 0)
 	S:HandleTab(_G.EncounterJournalRaidTab)
-	_G.EncounterJournalRaidTab:SetPoint('TOPLEFT', _G.EncounterJournalDungeonTab, 'TOPRIGHT', -5, 0)
+	_G.EncounterJournalRaidTab:Point('TOPLEFT', _G.EncounterJournalDungeonTab, 'TOPRIGHT', -5, 0)
 	S:HandleTab(_G.EncounterJournalLootJournalTab)
-	_G.EncounterJournalLootJournalTab:SetPoint('TOPLEFT', _G.EncounterJournalRaidTab, 'TOPRIGHT', -5, 0)
+	_G.EncounterJournalLootJournalTab:Point('TOPLEFT', _G.EncounterJournalRaidTab, 'TOPRIGHT', -5, 0)
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -237,7 +237,7 @@ function S:Blizzard_EncounterJournal()
 			hl:SetInside(tab.backdrop)
 
 			if name == 'overviewTab' then
-				tab:SetPoint('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, -35)
+				tab:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, -35)
 			end
 		end
 	else
@@ -401,8 +401,8 @@ function S:Blizzard_EncounterJournal()
 				local bgImage = child.bgImage
 				if bgImage then
 					bgImage:CreateBackdrop()
-					bgImage.backdrop:SetPoint('TOPLEFT', 3, -3)
-					bgImage.backdrop:SetPoint('BOTTOMRIGHT', -4, 2)
+					bgImage.backdrop:Point('TOPLEFT', 3, -3)
+					bgImage.backdrop:Point('BOTTOMRIGHT', -4, 2)
 				end
 
 				child.isSkinned = true
@@ -422,7 +422,7 @@ function S:Blizzard_EncounterJournal()
 
 					child.text:SetTextColor(1, 1, 1)
 					child.text.SetTextColor = E.noop
-					child.creature:SetPoint('TOPLEFT', 0, -4)
+					child.creature:Point('TOPLEFT', 0, -4)
 
 					child.isSkinned = true
 				end
@@ -457,8 +457,8 @@ function S:Blizzard_EncounterJournal()
 					S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
 
 					child:CreateBackdrop('Transparent')
-					child.backdrop:SetPoint('TOPLEFT')
-					child.backdrop:SetPoint('BOTTOMRIGHT', 0, 1)
+					child.backdrop:Point('TOPLEFT')
+					child.backdrop:Point('BOTTOMRIGHT', 0, 1)
 
 					child.isSkinned = true
 				end

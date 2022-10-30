@@ -94,8 +94,8 @@ local function HandleSummaryBar(frame)
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
 	bar.Title:SetTextColor(1, 1, 1)
-	bar.Title:SetPoint('LEFT', bar, 'LEFT', 6, 0)
-	bar.Text:SetPoint('RIGHT', bar, 'RIGHT', -5, 0)
+	bar.Title:Point('LEFT', bar, 'LEFT', 6, 0)
+	bar.Text:Point('RIGHT', bar, 'RIGHT', -5, 0)
 	bar:CreateBackdrop('Transparent')
 end
 
@@ -123,21 +123,21 @@ function S:Blizzard_AchievementUI()
 
 	AchievementFrame.Header:StripTextures()
 	AchievementFrame.Header.Title:Hide()
-	AchievementFrame.Header.Points:SetPoint('TOP', AchievementFrame, 0, -3)
+	AchievementFrame.Header.Points:Point('TOP', AchievementFrame, 0, -3)
 
 	S:HandleEditBox(AchievementFrame.SearchBox)
 	AchievementFrame.SearchBox:ClearAllPoints()
-	AchievementFrame.SearchBox:SetPoint('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -25, -2)
-	AchievementFrame.SearchBox:SetPoint('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
+	AchievementFrame.SearchBox:Point('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -25, -2)
+	AchievementFrame.SearchBox:Point('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
 
 	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:SetPoint('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
+	_G.AchievementFrameFilterDropDown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
 
 	-- Reposition Tabs
-	_G.AchievementFrameTab1:SetPoint('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
-	_G.AchievementFrameTab2:SetPoint('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.AchievementFrameTab3:SetPoint('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
+	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
 
 	for i = 1, 3 do
 		local tab = _G['AchievementFrameTab'..i]
@@ -150,10 +150,10 @@ function S:Blizzard_AchievementUI()
 	local ShowAllSearchResults = PreviewContainer.ShowAllSearchResults
 	PreviewContainer:StripTextures()
 	PreviewContainer:ClearAllPoints()
-	PreviewContainer:SetPoint('TOPLEFT', AchievementFrame, 'TOPRIGHT', 7, -2)
+	PreviewContainer:Point('TOPLEFT', AchievementFrame, 'TOPRIGHT', 7, -2)
 	PreviewContainer:CreateBackdrop('Transparent')
-	PreviewContainer.backdrop:SetPoint('TOPLEFT', -3, 3)
-	PreviewContainer.backdrop:SetPoint('BOTTOMRIGHT', ShowAllSearchResults, 3, -3)
+	PreviewContainer.backdrop:Point('TOPLEFT', -3, 3)
+	PreviewContainer.backdrop:Point('BOTTOMRIGHT', ShowAllSearchResults, 3, -3)
 
 	for i = 1, 5 do
 		StyleSearchButton(PreviewContainer['SearchPreview'..i])
@@ -161,11 +161,11 @@ function S:Blizzard_AchievementUI()
 	StyleSearchButton(ShowAllSearchResults)
 
 	local Result = AchievementFrame.SearchResults
-	Result:SetPoint('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
+	Result:Point('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
 	Result:StripTextures()
 	Result:CreateBackdrop('Transparent')
-	Result.backdrop:SetPoint('TOPLEFT', -10, 0)
-	Result.backdrop:SetPoint('BOTTOMRIGHT')
+	Result.backdrop:Point('TOPLEFT', -10, 0)
+	Result.backdrop:Point('BOTTOMRIGHT')
 	S:HandleCloseButton(Result.CloseButton)
 	S:HandleTrimScrollBar(Result.ScrollBar)
 
@@ -206,8 +206,8 @@ function S:Blizzard_AchievementUI()
 					button:StripTextures()
 					button.Background:Hide()
 					button:CreateBackdrop('Transparent')
-					button.backdrop:SetPoint('TOPLEFT', 0, -1)
-					button.backdrop:SetPoint('BOTTOMRIGHT')
+					button.backdrop:Point('TOPLEFT', 0, -1)
+					button.backdrop:Point('BOTTOMRIGHT')
 					SetupButtonHighlight(button, button.backdrop)
 
 					button.styled = true
@@ -240,8 +240,8 @@ function S:Blizzard_AchievementUI()
 					S:HandleIcon(bu.Icon.texture)
 
 					bu:CreateBackdrop('Transparent')
-					bu.backdrop:SetPoint('TOPLEFT', 2, -2)
-					bu.backdrop:SetPoint('BOTTOMRIGHT', -2, 2)
+					bu.backdrop:Point('TOPLEFT', 2, -2)
+					bu.backdrop:Point('BOTTOMRIGHT', -2, 2)
 
 					bu.isSkinned = true
 				end
@@ -258,8 +258,8 @@ function S:Blizzard_AchievementUI()
 				if not child.IsSkinned then
 					child:StripTextures()
 					child:CreateBackdrop('Transparent')
-					child.backdrop:SetPoint('TOPLEFT', 2, -E.mult)
-					child.backdrop:SetPoint('BOTTOMRIGHT', 4, E.mult)
+					child.backdrop:Point('TOPLEFT', 2, -E.mult)
+					child.backdrop:Point('BOTTOMRIGHT', 4, E.mult)
 					SetupButtonHighlight(child, child.backdrop)
 
 					child.IsSkinned = true
@@ -289,8 +289,8 @@ function S:Blizzard_AchievementUI()
 				if not child.isSkinned then
 					child:StripTextures()
 					child:CreateBackdrop('Transparent')
-					child.backdrop:SetPoint('TOPLEFT', 2, -E.mult)
-					child.backdrop:SetPoint('BOTTOMRIGHT', 6, E.mult)
+					child.backdrop:Point('TOPLEFT', 2, -E.mult)
+					child.backdrop:Point('BOTTOMRIGHT', 6, E.mult)
 
 					child.isSkinned = true
 				end
@@ -308,8 +308,8 @@ function S:Blizzard_AchievementUI()
 		bu:CreateBackdrop('Transparent')
 
 		bu.Label:SetTextColor(1, 1, 1)
-		bu.Label:SetPoint('LEFT', bu, 'LEFT', 6, 0)
-		bu.Text:SetPoint('RIGHT', bu, 'RIGHT', -5, 0)
+		bu.Label:Point('LEFT', bu, 'LEFT', 6, 0)
+		bu.Text:Point('RIGHT', bu, 'RIGHT', -5, 0)
 
 		_G[name..'ButtonHighlight']:SetAlpha(0)
 	end
@@ -325,8 +325,8 @@ function S:Blizzard_AchievementUI()
 				child.Description.SetTextColor = E.noop
 
 				child:CreateBackdrop('Transparent')
-				child.backdrop:SetPoint('TOPLEFT', 1, -1)
-				child.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
+				child.backdrop:Point('TOPLEFT', 1, -1)
+				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
 				S:HandleIcon(child.Icon.texture)
 
 				S:HandleCheckBox(child.Tracked)
@@ -383,10 +383,10 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonHeaderBG:Hide()
 	_G.AchievementFrameComparisonHeaderPortrait:Hide()
 	_G.AchievementFrameComparisonHeaderPortraitBg:Hide()
-	_G.AchievementFrameComparisonHeader:SetPoint('BOTTOMRIGHT', Comparison, 'TOPRIGHT', 39, 26)
+	_G.AchievementFrameComparisonHeader:Point('BOTTOMRIGHT', Comparison, 'TOPRIGHT', 39, 26)
 	_G.AchievementFrameComparisonHeader:CreateBackdrop('Transparent')
-	_G.AchievementFrameComparisonHeader.backdrop:SetPoint('TOPLEFT', 20, -20)
-	_G.AchievementFrameComparisonHeader.backdrop:SetPoint('BOTTOMRIGHT', -28, -5)
+	_G.AchievementFrameComparisonHeader.backdrop:Point('TOPLEFT', 20, -20)
+	_G.AchievementFrameComparisonHeader.backdrop:Point('BOTTOMRIGHT', -28, -5)
 
 	S:HandleTrimScrollBar(Comparison.AchievementContainer.ScrollBar)
 

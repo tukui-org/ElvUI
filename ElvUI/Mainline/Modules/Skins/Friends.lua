@@ -67,14 +67,14 @@ local function ReskinFriendButton(button)
 
 		local travelPass = button.travelPassButton
 		travelPass:SetSize(22, 22)
-		travelPass:SetPoint('TOPRIGHT', -3, -6)
+		travelPass:Point('TOPRIGHT', -3, -6)
 		travelPass:CreateBackdrop()
 		travelPass.NormalTexture:SetAlpha(0)
 		travelPass.PushedTexture:SetAlpha(0)
 		travelPass.DisabledTexture:SetAlpha(0)
 		travelPass.HighlightTexture:SetColorTexture(1, 1, 1, .25)
 		travelPass.HighlightTexture:SetAllPoints()
-		gameIcon:SetPoint('TOPRIGHT', travelPass, 'TOPLEFT', -4, 0)
+		gameIcon:Point('TOPRIGHT', travelPass, 'TOPLEFT', -4, 0)
 
 		local icon = travelPass:CreateTexture(nil, 'ARTWORK')
 		icon:SetTexCoord(.1, .9, .1, .9)
@@ -244,8 +244,8 @@ function S:FriendsFrame()
 	_G.WhoFrameEditBoxInset.NineSlice:Hide()
 
 	_G.WhoFrameEditBox:CreateBackdrop('Transparent')
-	_G.WhoFrameEditBox.backdrop:SetPoint('TOPLEFT', _G.WhoFrameEditBoxInset)
-	_G.WhoFrameEditBox.backdrop:SetPoint('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
+	_G.WhoFrameEditBox.backdrop:Point('TOPLEFT', _G.WhoFrameEditBoxInset)
+	_G.WhoFrameEditBox.backdrop:Point('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
 
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
@@ -267,10 +267,10 @@ function S:FriendsFrame()
 	end
 
 	-- Reposition Tabs
-	_G.FriendsFrameTab1:SetPoint('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
-	_G.FriendsFrameTab2:SetPoint('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.FriendsFrameTab3:SetPoint('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -5, 0)
-	_G.FriendsFrameTab4:SetPoint('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -5, 0)
+	_G.FriendsFrameTab1:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
+	_G.FriendsFrameTab2:Point('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.FriendsFrameTab3:Point('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.FriendsFrameTab4:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -5, 0)
 
 	for i = 1, 3 do
 		local tab = _G['FriendsTabHeaderTab'..i]
