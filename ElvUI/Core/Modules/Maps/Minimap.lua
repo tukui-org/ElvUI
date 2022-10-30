@@ -98,10 +98,11 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 		else
 			PlaySound(854) --IG_MAINMENU_QUIT
 			HideUIPanel(_G.GameMenuFrame)
-			if not E.Retail then
-				MainMenuMicroButton_SetNormal()
+
+			if E.Retail then
+				MainMenuMicroButton:SetButtonState('NORMAL')
 			else
-				MainMenuMicroButton:SetButtonState("NORMAL")
+				MainMenuMicroButton_SetNormal()
 			end
 		end
 	end
