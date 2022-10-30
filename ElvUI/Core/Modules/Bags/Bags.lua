@@ -1297,11 +1297,8 @@ function B:OnEvent(event, ...)
 end
 
 function B:TokenFrameWidth()
-	local bagFrame = B.BagFrame
-	local tokenWidth = 70
-
-	-- You can always track at least one token
-	return math.max(math.floor((B.db.bagWidth - (B.db.bagButtonSpacing * 2)) / tokenWidth), 1);
+	local tokenWidth = 70 -- you can always track at least one token
+	return max(floor((B.db.bagWidth - (B.db.bagButtonSpacing * 2)) / tokenWidth), 1)
 end
 
 function B:UpdateTokensIfVisible()

@@ -25,16 +25,20 @@ end
 
 local function ReskinSlotButton(button)
 	if button and not button.isSkinned then
+		local texture = button.Icon:GetTexture()
 		button:StripTextures()
 		button:SetNormalTexture(E.ClearTexture)
 		button:SetPushedTexture(E.ClearTexture)
 
 		S:HandleIcon(button.Icon, true)
 		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		button.Icon:SetOutside(button)
+		button.Icon:SetTexture(texture)
 
 		local hl = button:GetHighlightTexture()
 		hl:SetColorTexture(1, 1, 1, .25)
-		hl:SetInside(button.bg)
+		hl:SetOutside(button)
+
 		if button.SlotBackground then
 			button.SlotBackground:Hide()
 		end
@@ -130,6 +134,14 @@ function S:Blizzard_Professions()
 		ReskinQualityContainer(QualityDialog.Container3)
 	end
 
+	local OutputIcon = SchematicForm.OutputIcon
+	if OutputIcon then
+		S:HandleIcon(OutputIcon.Icon, true)
+		S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
+		OutputIcon:GetHighlightTexture():Hide()
+		OutputIcon.CircleMask:Hide()
+	end
+
 	hooksecurefunc(SchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
 			ReskinSlotButton(slot.Button)
@@ -185,6 +197,7 @@ function S:Blizzard_Professions()
 					local icon = item:GetRegions()
 					S:HandleIcon(icon, true)
 					S:HandleIconBorder(item.IconBorder, icon.backdrop)
+
 					itemContainer.CritFrame:SetAlpha(0)
 					itemContainer.BorderFrame:Hide()
 					itemContainer.HighlightNameFrame:SetAlpha(0)

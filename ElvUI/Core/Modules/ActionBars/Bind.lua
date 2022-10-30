@@ -265,7 +265,7 @@ do
 		AB:Unhook(frame, 'Update')
 	end
 
-	function AB:ADDON_LOADED(event, addon)
+	function AB:ADDON_LOADED(_, addon)
 		if addon == 'Blizzard_MacroUI' then
 			if _G.MacroFrame.Update then
 				AB:SecureHook(_G.MacroFrame, 'Update', MacroFrame_FirstUpdate)
@@ -275,7 +275,7 @@ do
 				end
 			end
 
-			AB:UnregisterEvent(event)
+			AB:UnregisterEvent('ADDON_LOADED')
 		end
 	end
 end
