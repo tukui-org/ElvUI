@@ -45,9 +45,14 @@ function S:Blizzard_InspectUI()
 		SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
 	end
 
-	for i = 1, 4 do
+	for i = 1, 3 do -- DF: used to be 4, its only 3 now until InspectTalents are back
 		S:HandleTab(_G['InspectFrameTab'..i])
 	end
+
+	-- Reposition Tabs
+	_G.InspectFrameTab1:SetPoint('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -3, 0)
+	_G.InspectFrameTab2:SetPoint('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.InspectFrameTab3:SetPoint('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -5, 0)
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
@@ -96,9 +101,10 @@ function S:Blizzard_InspectUI()
 		end
 	end
 
-	InspectPVPFrame.BG:Kill()
-	_G.InspectGuildFrameBG:Kill()
+	-- Inspecting other players
 	_G.InspectTalentFrame:StripTextures()
+	hooksecurefunc('InspectPVPFrame_Update', _G.InspectPVPFrame.BG:Kill())
+	hooksecurefunc('InspectGuildFrame_Update', _G.InspectGuildFrameBG:Kill())
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
