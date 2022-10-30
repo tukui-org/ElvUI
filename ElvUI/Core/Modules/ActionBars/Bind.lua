@@ -275,7 +275,7 @@ do
 				end
 			end
 
-			AB:UnregisterEvent(event)
+			AB:UnregisterEvent("ADDON_LOADED")
 		end
 	end
 end
