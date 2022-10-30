@@ -584,12 +584,14 @@ function M:ClearQueueStatus()
 end
 
 function M:CreateQueueStatusText()
-	local display = CreateFrame('Frame', 'ElvUIQueueStatusDisplay', _G.QueueStatusMinimapButton)
+	local display = CreateFrame('Frame', 'ElvUIQueueStatusDisplay', _G.QueueStatusButton)
+	display:SetIgnoreParentScale(true)
+	display:SetScale(E.uiscale)
 	display.text = display:CreateFontString(nil, 'OVERLAY')
 
 	M.QueueStatusDisplay = display
 
-	_G.QueueStatusMinimapButton:HookScript('OnHide', M.ClearQueueStatus)
+	_G.QueueStatusButton:HookScript('OnHide', M.ClearQueueStatus)
 	hooksecurefunc('QueueStatusEntry_SetMinimalDisplay', M.SetMinimalQueueStatus)
 	hooksecurefunc('QueueStatusEntry_SetFullDisplay', M.SetFullQueueStatus)
 end
@@ -723,8 +725,7 @@ function M:Initialize()
 		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
 	end
 
-	if _G.QueueStatusMinimapButton then
-		_G.QueueStatusMinimapButtonBorder:Hide()
+	if _G.QueueStatusButton then
 		M:CreateQueueStatusText()
 	elseif _G.MiniMapLFGFrame then
 		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
