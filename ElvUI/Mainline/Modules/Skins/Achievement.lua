@@ -246,6 +246,7 @@ function S:Blizzard_AchievementUI()
 			end
 		end)
 
+		_G.AchievementFrameStatsBG:Hide()
 
 		select(4, _G.AchievementFrameStats:GetChildren()):Hide()
 		hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', function(frame)
@@ -262,6 +263,7 @@ function S:Blizzard_AchievementUI()
 			end
 		end)
 
+		local Comparison = _G.AchievementFrameComparison
 		hooksecurefunc(Comparison.AchievementContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
