@@ -7,7 +7,6 @@ local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pair
 local unpack, assert, type, strfind = unpack, assert, type, strfind
 
 local CreateFrame = CreateFrame
-local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
