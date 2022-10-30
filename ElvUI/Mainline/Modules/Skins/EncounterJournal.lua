@@ -157,9 +157,13 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	S:HandleTab(_G.EncounterJournalSuggestTab)
+	_G.EncounterJournalSuggestTab:SetPoint('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
 	S:HandleTab(_G.EncounterJournalDungeonTab)
+	_G.EncounterJournalDungeonTab:SetPoint('TOPLEFT', _G.EncounterJournalSuggestTab, 'TOPRIGHT', -5, 0)
 	S:HandleTab(_G.EncounterJournalRaidTab)
+	_G.EncounterJournalRaidTab:SetPoint('TOPLEFT', _G.EncounterJournalDungeonTab, 'TOPRIGHT', -5, 0)
 	S:HandleTab(_G.EncounterJournalLootJournalTab)
+	_G.EncounterJournalLootJournalTab:SetPoint('TOPLEFT', _G.EncounterJournalRaidTab, 'TOPRIGHT', -5, 0)
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
