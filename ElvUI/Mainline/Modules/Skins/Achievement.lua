@@ -134,6 +134,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
 	_G.AchievementFrameFilterDropDown:SetPoint('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
 
+	-- Reposition Tabs
 	_G.AchievementFrameTab1:SetPoint('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
 	_G.AchievementFrameTab2:SetPoint('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.AchievementFrameTab3:SetPoint('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
