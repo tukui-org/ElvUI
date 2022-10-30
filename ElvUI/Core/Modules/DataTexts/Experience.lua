@@ -3,26 +3,25 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
-local UnitXP = UnitXP
-local UnitXPMax = UnitXPMax
+local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GetXPExhaustion = GetXPExhaustion
-local displayString = ''
 
-local CurrentXP, XPToLevel, RestedXP, PercentRested
-local PercentXP, RemainXP, RemainTotal, RemainBars
+local CurrentXP, XPToLevel, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars
+local RestedXP, QuestLogXP = 0, 0
 
 local function OnEvent(self)
+	local displayString = ''
+
 	if E:XPIsLevelMax() then
-		displayString = L['Max Level']
+		displayString = E:XPIsUserDisabled() and L["Disabled"] or L["Max Level"]
 	else
-		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
+		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), (GetXPExhaustion() or 0)
+		if XPToLevel <= 0 then XPToLevel = 1 end
 
 		local remainXP = XPToLevel - CurrentXP
-		local remainPercent = E:Round(remainXP / XPToLevel)
-
-		-- values we also use in OnEnter
+		local remainPercent = remainXP / XPToLevel
 		RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
-		PercentXP, RemainXP = E:Round(CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
+		PercentXP, RemainXP = (CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
 
 		local textFormat = E.global.datatexts.settings.Experience.textFormat
 		if textFormat == 'PERCENT' then
@@ -41,15 +40,16 @@ local function OnEvent(self)
 			displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
 		end
 
-		if RestedXP and RestedXP > 0 then
-			PercentRested = E:Round(RestedXP / XPToLevel) * 100
+		local isRested = RestedXP > 0
+		if isRested then
+			PercentRested = (RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
-				displayString = displayString..format(' R:%d%%', PercentRested)
+				displayString = format('%s R:%d%%', displayString, PercentRested)
 			elseif textFormat == 'CURPERC' then
-				displayString = displayString..format(' R:%s [%d%%]', E:ShortValue(RestedXP), PercentRested)
+				displayString = format('%s R:%s [%d%%]', displayString, E:ShortValue(RestedXP), PercentRested)
 			elseif textFormat ~= 'NONE' then
-				displayString = displayString..format(' R:%s', E:ShortValue(RestedXP))
+				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
 		end
 	end
@@ -61,14 +61,20 @@ local function OnEnter()
 	if E:XPIsLevelMax() then return end
 
 	DT.tooltip:ClearLines()
-	DT.tooltip:AddLine(L["Experience"])
-	DT.tooltip:AddLine(' ')
+	DT.tooltip:AddDoubleLine(L["Experience"], format('%s %d', L["Level"], E.mylevel))
 
-	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
-
-	if RestedXP then
-		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
+	if CurrentXP then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
+	end
+	if RemainXP then
+		DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %d '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
+	end
+	if QuestLogXP > 0 then
+		DT.tooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
+	end
+	if RestedXP > 0 then
+		DT.tooltip:AddDoubleLine(L["Rested:"], format('%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
