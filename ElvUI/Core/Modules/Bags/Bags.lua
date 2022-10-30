@@ -1071,18 +1071,23 @@ function B:Layout(isBank)
 			local rowSize = B:TokenFrameWidth()
 
 			if E.Retail then
-				local tokenSpacing = floor(currencies:GetWidth() / rowSize)
+				local rowWidth = 0
 				for i = 1, B.numTrackedTokens do
 					local token = currencies[i]
 					if not token then return end
+					local tokenWidth = token.text:GetWidth() + 28
+					rowWidth = rowWidth + tokenWidth
+					if rowWidth > (B.db.bagWidth - (B.db.bagButtonSpacing * 4)) then
+						currentRow = currentRow + 1
+						rowWidth = tokenWidth
+					end
 
 					if i == 1 then
-						token:Point('TOPLEFT', currencies, 3, -3)
-					elseif i == ((rowSize * currentRow) + 1) then
-						currentRow = currentRow + 1
-						token:Point('TOPLEFT', currencies, 3 , -3 -(24 * (currentRow - 1)))
-					elseif i <= (rowSize * currentRow) then
-						token:Point('TOPLEFT', currencies, (tokenSpacing * ( i - 1 - (rowSize * (currentRow - 1)))) , -3 - (24 * (currentRow - 1)))
+						token:Point('TOPLEFT', currencies, 1, -3)
+					elseif rowWidth == tokenWidth then
+						token:Point('TOPLEFT', currencies, 1 , -3 -(24 * (currentRow - 1)))
+					else
+						token:Point('TOPLEFT', currencies, rowWidth - tokenWidth , -3 - (24 * (currentRow - 1)))
 					end
 				end
 			else

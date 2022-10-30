@@ -134,7 +134,10 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
 	_G.AchievementFrameFilterDropDown:SetPoint('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
 
-	_G.AchievementFrameTab1:SetPoint('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', 16, 2)
+	-- Reposition Tabs
+	_G.AchievementFrameTab1:SetPoint('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
+	_G.AchievementFrameTab2:SetPoint('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.AchievementFrameTab3:SetPoint('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
 
 	for i = 1, 3 do
 		local tab = _G['AchievementFrameTab'..i]
@@ -211,7 +214,6 @@ function S:Blizzard_AchievementUI()
 				end
 			end
 		end)
-
 
 		hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
 			for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
