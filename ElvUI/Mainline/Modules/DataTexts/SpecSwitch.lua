@@ -107,7 +107,7 @@ local function OnEvent(self, event)
 		return
 	end
 
-	if event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED' then
+	if E.mylevel >= 10 and ( event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED' ) then
 		local builds = GetConfigIDsBySpecID(ID)
 		if builds and not builds[STARTER_ID] and GetHasStarterBuild() then
 			tinsert(builds, STARTER_ID)
@@ -123,15 +123,32 @@ local function OnEvent(self, event)
 		end
 	end
 
+	local activeLoadout = 'N/A'
+	for index, loadout in next, loadoutList do
+		if index > 1 and loadout:checked(loadout.arg1, loadout.arg2) then
+			activeLoadout = loadout.text
+			break
+		end
+	end
+
 	active = specIndex
 
-	local spec = format(mainIcon, info.icon)
-	if specialization == 0 or ID == specialization then
-		self.text:SetFormattedText('%s %s', spec, info.name)
-	else
-		info = DT.SPECIALIZATION_CACHE[specialization]
-		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+	local style = E.global.datatexts.settings["Talent/Loot Specialization"].displayStyle
+	local spec, text = format(mainIcon, info.icon)
+	if style == 'BOTH' or style == 'SPEC' then
+		if specialization == 0 or ID == specialization then
+			text = format('%s %s', spec, info.name)
+		else
+			info = DT.SPECIALIZATION_CACHE[specialization]
+			text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+		end
 	end
+
+	if E.mylevel >= 10 and ( style == 'BOTH' or style == 'LOADOUT' ) then
+		text = strjoin('', text and (text..' / ') or '', activeLoadout)
+	end
+
+	self.text:SetText(text)
 end
 
 local function AddTexture(texture)
