@@ -143,6 +143,7 @@ function M:HandleQueueButton(actionbarMode)
 
 	if actionbarMode then
 		queueButton:Point('BOTTOMLEFT', Minimap, 50, -15)
+		queueButton:SetFrameLevel(Minimap:GetFrameLevel() + 1) -- move it above the minimap
 		M:SetScale(queueButton, 0.8)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
