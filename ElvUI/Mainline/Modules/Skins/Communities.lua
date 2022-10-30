@@ -214,7 +214,7 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
-	-- [[ GUILDFINDER FRAME ]]--
+	-- Guild finder Frame
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
@@ -289,7 +289,7 @@ function S:Blizzard_Communities()
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
-	-- [[ClubFinderCommunityAndGuildFinderFrame ]]--
+	-- Community and Guild finder Tab
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
@@ -328,7 +328,7 @@ function S:Blizzard_Communities()
 	DropDown:Point('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', -12, -3)
 	S:HandleDropDownBox(DropDown, 175)
 
-	-- [[ ROSTER TAB ]]
+	-- Roster Tab
 	local MemberList = CommunitiesFrame.MemberList
 	local ColumnDisplay = MemberList.ColumnDisplay
 	ColumnDisplay:StripTextures()
@@ -346,37 +346,16 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
-	S:HandleScrollBar(MemberList.ScrollBar)
+	S:HandleTrimScrollBar(MemberList.ScrollBar)
 
-	--[[hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
+	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
 		for _, child in next, { frame.ColumnDisplay:GetChildren() } do
 			child:StripTextures()
 			child:SetTemplate('Transparent')
 		end
+	end)
 
-		for _, button in ipairs(frame.ListScrollFrame.buttons or {}) do
-			if button and not button.hooked then
-				hooksecurefunc(button, 'RefreshExpandedColumns', UpdateNames)
-
-				if button.ProfessionHeader then
-					local header = button.ProfessionHeader
-					for i = 1, 3 do
-						select(i, header:GetRegions()):Hide()
-					end
-
-					header:SetTemplate('Transparent')
-				end
-
-				button.hooked = true
-			end
-
-			if button and button.bg then
-				button.bg:SetShown(button.Class:IsShown())
-			end
-		end
-	end)]]
-
-	-- [[ PERKS TAB ]]
+	-- Perks Tab
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
 	GuildBenefitsFrame.InsetBorderLeft:Hide()
 	GuildBenefitsFrame.InsetBorderRight:Hide()
@@ -415,7 +394,7 @@ function S:Blizzard_Communities()
 	bg:SetTemplate()
 	bg:SetOutside()
 
-	-- [[ INFO TAB ]]
+	-- Info Tab
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame
 	GuildDetails.InsetBorderLeft:Hide()
 	GuildDetails.InsetBorderRight:Hide()
@@ -434,6 +413,9 @@ function S:Blizzard_Communities()
 	}) do
 		frame:StripTextures()
 	end
+
+	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
+	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
