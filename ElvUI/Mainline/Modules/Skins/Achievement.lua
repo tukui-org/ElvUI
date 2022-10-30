@@ -134,6 +134,8 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
 	_G.AchievementFrameFilterDropDown:SetPoint('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
 
+	_G.AchievementFrameTab1:SetPoint('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', 16, 2)
+
 	for i = 1, 3 do
 		local tab = _G['AchievementFrameTab'..i]
 		if tab then
