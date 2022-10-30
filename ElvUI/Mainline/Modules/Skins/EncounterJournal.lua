@@ -171,12 +171,11 @@ function S:Blizzard_EncounterJournal()
 
 	EncounterInfo.encounterTitle:Kill()
 
-	S:HandleIcon(EncounterInfo.instanceButton.icon, true)
+	EncounterInfo.instanceButton.icon:Size(32)
 	EncounterInfo.instanceButton.icon:SetTexCoord(0, 1, 0, 1)
 	EncounterInfo.instanceButton:SetNormalTexture(E.ClearTexture)
 	EncounterInfo.instanceButton:SetHighlightTexture(E.ClearTexture)
 
-	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
 	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
 	EncounterInfo.leftShadow:Kill()
 	EncounterInfo.rightShadow:Kill()
@@ -184,7 +183,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
 
 	EncounterInfo.instanceButton:ClearAllPoints()
-	EncounterInfo.instanceButton:Point('TOPLEFT', EncounterInfo, 'TOPLEFT', 0, 15)
+	EncounterInfo.instanceButton:Point('TOPLEFT', EncounterInfo, 'TOPLEFT', 0, 10)
 
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
