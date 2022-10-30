@@ -24,6 +24,11 @@ function S:Blizzard_InspectUI()
 	S:HandleIcon(_G.SpecializationSpecIcon, true)
 	_G.SpecializationSpecIcon:Size(55, 55) -- 70, 70 default size
 
+	-- Background Artwork
+	_G.InspectGuildFrameBG:Kill()
+	_G.InspectPVPFrame.BG:Kill()
+	_G.InspectTalentFrame:StripTextures()
+
 	-- Create portrait element for the PvP Frame so we can see prestige
 	local InspectPVPFrame = _G.InspectPVPFrame
 	local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
@@ -92,11 +97,6 @@ function S:Blizzard_InspectUI()
 			S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
 		end
 	end
-
-	-- Inspecting other players
-	_G.InspectGuildFrameBG:Kill()
-	_G.InspectPVPFrame.BG:Kill()
-	_G.InspectTalentFrame:StripTextures()
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
