@@ -312,8 +312,13 @@ function S:Blizzard_GarrisonUI()
 	S:HandleTab(_G.GarrisonLandingPageTab1)
 	S:HandleTab(_G.GarrisonLandingPageTab2)
 	S:HandleTab(_G.GarrisonLandingPageTab3)
-	_G.GarrisonLandingPageTab1:ClearAllPoints()
-	_G.GarrisonLandingPageTab1:Point('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
+
+	-- Reposition Tabs
+	hooksecurefunc('PanelTemplates_UpdateTabs', function()
+		_G.GarrisonLandingPageTab1:SetPoint('TOPLEFT', _G.GarrisonLandingPage, 'BOTTOMLEFT', -3, 0)
+		_G.GarrisonLandingPageTab2:SetPoint('TOPLEFT', _G.GarrisonLandingPageTab1, 'TOPRIGHT', -5, 0)
+		_G.GarrisonLandingPageTab3:SetPoint('TOPLEFT', _G.GarrisonLandingPageTab2, 'TOPRIGHT', -5, 0)
+	end)
 
 	if E.private.skins.parchmentRemoverEnable then
 		GarrisonLandingPage:StripTextures()
