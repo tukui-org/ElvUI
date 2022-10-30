@@ -255,14 +255,19 @@ function S:SpellBookFrame()
 		end
 	end)
 
-	--Bottom Tabs
+	-- Bottom Tabs
 	for i = 1, 5 do
 		S:HandleTab(_G['SpellBookFrameTabButton'..i])
 	end
 
-	_G.SpellBookFrameTabButton1:ClearAllPoints()
-	_G.SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
-
+	-- Reposition Tabs
+	hooksecurefunc('SpellBookFrame_Update', function()
+		_G.SpellBookFrameTabButton1:SetPoint('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', -3, 0)
+		_G.SpellBookFrameTabButton2:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton1, 'TOPRIGHT', -5, 0)
+		_G.SpellBookFrameTabButton3:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton2, 'TOPRIGHT', -5, 0)
+		_G.SpellBookFrameTabButton4:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton3, 'TOPRIGHT', -5, 0)
+		_G.SpellBookFrameTabButton5:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton4, 'TOPRIGHT', -5, 0)
+	end)
 end
 
 S:AddCallback('SpellBookFrame')
