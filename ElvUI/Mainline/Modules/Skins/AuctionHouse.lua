@@ -78,10 +78,9 @@ local function SkinItemDisplay(frame)
 	local ItemButton = ItemDisplay.ItemButton
 	ItemButton.CircleMask:Hide()
 
-	-- We skin the new IconBorder from the AH, it looks really cool tbh.
-	ItemButton.Icon:SetTexCoord(.08, .92, .08, .92)
-	ItemButton.Icon:Size(44)
-	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
+	S:HandleIcon(ItemButton.Icon, true)
+	S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
+	ItemButton:GetHighlightTexture():Hide()
 end
 
 local function HandleHeaders(frame)
@@ -119,7 +118,6 @@ local function HandleSellFrame(frame)
 
 	local ItemButton = ItemDisplay.ItemButton
 	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture(E.ClearTexture)
@@ -131,6 +129,10 @@ local function HandleSellFrame(frame)
 	S:HandleButton(frame.QuantityInput.MaxButton)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.GoldBox)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.SilverBox)
+
+	if ItemButton.IconBorder then
+		S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
+	end
 
 	if frame.SecondaryPriceInput then
 		S:HandleEditBox(frame.SecondaryPriceInput.MoneyInputFrame.GoldBox)
@@ -155,7 +157,6 @@ local function HandleTokenSellFrame(frame)
 
 	local ItemButton = ItemDisplay.ItemButton
 	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture(E.ClearTexture)
@@ -163,6 +164,10 @@ local function HandleTokenSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
+
+	if ItemButton.IconBorder then
+		S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
+	end
 
 	S:HandleButton(frame.PostButton)
 	HandleAuctionButtons(frame.DummyRefreshButton)
@@ -377,6 +382,8 @@ local function LoadSkin()
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
 	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
+	ItemButton:GetHighlightTexture():Hide()
+	ItemButton.CircleMask:Hide()
 	ItemButton.IconBorder:Kill()
 
 	--WoW Token Tutorial Frame

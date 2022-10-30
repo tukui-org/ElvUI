@@ -18,8 +18,8 @@
 	<Include file='..\Libraries\Core\Taintless\Taintless.xml'/>
 	<Include file='..\Libraries\Core\UTF8\UTF8.xml'/>
 
-	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
-	<Script file='..\Libraries\TBC\LibClassicSpecs\LibClassicSpecs.lua'/>
+	<Script file='..\Libraries\Classic\LibHealComm-4.0\LibHealComm-4.0.lua'/>
+	<Script file='..\Libraries\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 
 	<Include file='..\Libraries\Core\LibItemSearch-1.2\LibItemSearch-1.2.xml'/>
 	<Include file='..\Libraries\Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>

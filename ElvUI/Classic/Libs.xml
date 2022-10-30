@@ -18,9 +18,9 @@
 	<Include file='..\Libraries\Core\Taintless\Taintless.xml'/>
 	<Include file='..\Libraries\Core\UTF8\UTF8.xml'/>
 
-	<Include file='..\Libraries\TBC\LibQuestXP\LibQuestXP.xml'/>
-	<Script file='..\Libraries\TBC\LibHealComm-4.0\LibHealComm-4.0.lua'/>
-	<Script file='..\Libraries\TBC\LibClassicSpecs\LibClassicSpecs.lua'/>
+	<Include file='..\Libraries\Classic\LibQuestXP\LibQuestXP.xml'/>
+	<Script file='..\Libraries\Classic\LibHealComm-4.0\LibHealComm-4.0.lua'/>
+	<Script file='..\Libraries\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 	<Include file='..\Libraries\Classic\LibClassicDurations\LibClassicDurations.xml'/>
 	<Script file='..\Libraries\Classic\LibClassicCasterino-1.0\LibClassicCasterino.lua'/>
 
