@@ -27,6 +27,7 @@ local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
 
+local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
@@ -97,7 +98,12 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 		else
 			PlaySound(854) --IG_MAINMENU_QUIT
 			HideUIPanel(_G.GameMenuFrame)
-			MainMenuMicroButton_SetNormal()
+
+			if E.Retail then
+				MainMenuMicroButton:SetButtonState('NORMAL')
+			else
+				MainMenuMicroButton_SetNormal()
+			end
 		end
 	end
 })
