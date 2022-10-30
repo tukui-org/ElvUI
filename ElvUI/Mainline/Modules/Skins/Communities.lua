@@ -367,16 +367,18 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.InsetBorderBottomLeft2:Hide()
 	GuildBenefitsFrame.InsetBorderTopLeft2:Hide()
 
-	GuildBenefitsFrame.Perks:StripTextures()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
-
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
-	GuildBenefitsFrame.Rewards.Bg:Hide()
 
 	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar)
 
-	hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBox, 'Update', HandleRewardButton)
-	hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBox, 'Update', HandleRewardButton)
+	if E.private.skins.parchmentRemoverEnable then
+		GuildBenefitsFrame.Perks:StripTextures()
+		GuildBenefitsFrame.Rewards.Bg:Hide()
+
+		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBox, 'Update', HandleRewardButton)
+		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBox, 'Update', HandleRewardButton)
+	end
 
 	-- Guild Reputation Bar TO DO: Adjust me!
 	local StatusBar = CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar
@@ -406,14 +408,6 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderBottomLeft2:Hide()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
-	for _, frame in pairs({
-		_G.CommunitiesFrameGuildDetailsFrameInfo,
-		_G.CommunitiesFrameGuildDetailsFrameNews,
-		_G.CommunitiesGuildNewsFiltersFrame,
-	}) do
-		frame:StripTextures()
-	end
-
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar)
 	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 
@@ -426,34 +420,44 @@ function S:Blizzard_Communities()
 		end
 	end)
 
-	-- Guild Challenges Background
-	local GuildDetailsFrameInfo = _G.CommunitiesFrameGuildDetailsFrameInfo
-	local backdrop1 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
-	backdrop1:SetTemplate('Transparent')
-	backdrop1:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop1:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -22)
-	backdrop1:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 200)
+	if E.private.skins.parchmentRemoverEnable then
+		for _, frame in pairs({
+			_G.CommunitiesFrameGuildDetailsFrameInfo,
+			_G.CommunitiesFrameGuildDetailsFrameNews,
+			_G.CommunitiesGuildNewsFiltersFrame,
+		}) do
+			frame:StripTextures()
+		end
 
-	-- Guild MOTD Background
-	local backdrop2 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
-	backdrop2:SetTemplate('Transparent')
-	backdrop2:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop2:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -158)
-	backdrop2:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 118)
+		-- Guild Challenges Background
+		local GuildDetailsFrameInfo = _G.CommunitiesFrameGuildDetailsFrameInfo
+		local backdrop1 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		backdrop1:SetTemplate('Transparent')
+		backdrop1:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop1:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -22)
+		backdrop1:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 200)
 
-	-- Guild Information Background
-	local backdrop3 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
-	backdrop3:SetTemplate('Transparent')
-	backdrop3:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop3:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -236)
-	backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
+		-- Guild MOTD Background
+		local backdrop2 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		backdrop2:SetTemplate('Transparent')
+		backdrop2:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop2:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -158)
+		backdrop2:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 118)
 
-	-- Guild News Background
-	local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
-	backdrop4:SetTemplate('Transparent')
-	backdrop4:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop4:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 591, -22)
-	backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 18, 1)
+		-- Guild Information Background
+		local backdrop3 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		backdrop3:SetTemplate('Transparent')
+		backdrop3:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop3:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -236)
+		backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
+
+		-- Guild News Background
+		local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		backdrop4:SetTemplate('Transparent')
+		backdrop4:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop4:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 591, -22)
+		backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 18, 1)
+	end
 
 	_G.CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
