@@ -315,6 +315,9 @@ function S:Blizzard_GarrisonUI()
 
 	-- Reposition Tabs
 	hooksecurefunc('PanelTemplates_UpdateTabs', function()
+		_G.GarrisonLandingPageTab1:ClearAllPoints()
+		_G.GarrisonLandingPageTab2:ClearAllPoints()
+		_G.GarrisonLandingPageTab3:ClearAllPoints()
 		_G.GarrisonLandingPageTab1:Point('TOPLEFT', _G.GarrisonLandingPage, 'BOTTOMLEFT', -3, 0)
 		_G.GarrisonLandingPageTab2:Point('TOPLEFT', _G.GarrisonLandingPageTab1, 'TOPRIGHT', -5, 0)
 		_G.GarrisonLandingPageTab3:Point('TOPLEFT', _G.GarrisonLandingPageTab2, 'TOPRIGHT', -5, 0)

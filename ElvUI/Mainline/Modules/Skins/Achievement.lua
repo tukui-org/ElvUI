@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local select = select
+local unpack = unpack
 
 local CreateColor = CreateColor
 local hooksecurefunc = hooksecurefunc
@@ -134,17 +135,21 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
 	_G.AchievementFrameFilterDropDown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
 
-	-- Reposition Tabs
-	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
-	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
-
+	-- Bottom Tabs
 	for i = 1, 3 do
 		local tab = _G['AchievementFrameTab'..i]
 		if tab then
 			S:HandleTab(tab)
 		end
 	end
+
+	-- Reposition Tabs
+	_G.AchievementFrameTab1:ClearAllPoints()
+	_G.AchievementFrameTab2:ClearAllPoints()
+	_G.AchievementFrameTab3:ClearAllPoints()
+	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
+	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
 
 	local PreviewContainer = AchievementFrame.SearchPreviewContainer
 	local ShowAllSearchResults = PreviewContainer.ShowAllSearchResults
@@ -379,7 +384,7 @@ function S:Blizzard_AchievementUI()
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')
-	_G.AchievementFrameStatsBG:SetInside(AchievementFrameStats.ScrollBox, 1, 1)
+	_G.AchievementFrameStatsBG:SetInside(_G.AchievementFrameStats.ScrollBox, 1, 1)
 	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar)
 
 	-- Comparison

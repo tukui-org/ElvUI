@@ -331,6 +331,9 @@ function S:CharacterFrame()
 	end)
 
 	-- Reposition Tabs
+	_G.CharacterFrameTab1:ClearAllPoints()
+	_G.CharacterFrameTab2:ClearAllPoints()
+	_G.CharacterFrameTab3:ClearAllPoints()
 	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -3, 0)
 	_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -5, 0)

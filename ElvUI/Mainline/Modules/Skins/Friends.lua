@@ -89,6 +89,26 @@ local function ReskinFriendButton(button)
 	button.bg:SetShown(button.gameIcon:IsShown())
 end
 
+local function HandleTabs()
+	local tab = _G.FriendsFrameTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['FriendsFrameTab'..index]
+	end
+end
+
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
@@ -259,18 +279,7 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.WhoFrameDropDown, 120)
 
 	-- Bottom Tabs
-	for i = 1, 4 do
-		local tab = _G['FriendsFrameTab'..i]
-		if tab then
-			S:HandleTab(tab)
-		end
-	end
-
-	-- Reposition Tabs
-	_G.FriendsFrameTab1:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
-	_G.FriendsFrameTab2:Point('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.FriendsFrameTab3:Point('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -5, 0)
-	_G.FriendsFrameTab4:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -5, 0)
+	HandleTabs()
 
 	for i = 1, 3 do
 		local tab = _G['FriendsTabHeaderTab'..i]

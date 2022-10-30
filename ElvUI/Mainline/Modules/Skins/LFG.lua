@@ -357,6 +357,9 @@ function S:LookingForGroupFrames()
 	end
 
 	-- Reposition Tabs
+	_G.PVEFrameTab1:ClearAllPoints()
+	_G.PVEFrameTab2:ClearAllPoints()
+	_G.PVEFrameTab3:ClearAllPoints()
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
