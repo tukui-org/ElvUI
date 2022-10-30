@@ -45,7 +45,7 @@ function S:Blizzard_InspectUI()
 		SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
 	end
 
-	for i = 1, 3 do -- DF: used to be 4, its only 3 now until InspectTalents are back
+	for i = 1, 3 do
 		S:HandleTab(_G['InspectFrameTab'..i])
 	end
 
