@@ -25,14 +25,16 @@ function B:DisableHelpTip() -- auto complete helptips
 end
 
 -- NOTE: ActionBars heavily conflicts with NPE
-local function ShutdownNPE()
+local function ShutdownNPE(event)
 	local NPE = _G.NewPlayerExperience
 	if NPE then
 		if NPE:GetIsActive() then
 			NPE:Shutdown()
 		end
 
-		B:UnregisterEvent('ADDON_LOADED')
+		if event then
+			B:UnregisterEvent(event)
+		end
 	end
 end
 
