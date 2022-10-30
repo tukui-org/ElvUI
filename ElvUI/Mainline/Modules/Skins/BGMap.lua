@@ -52,7 +52,7 @@ function S:Blizzard_BattlefieldMap()
 	frame:SetMovable(true)
 	frame:SetClampedToScreen(true)
 	frame:SetFrameStrata('LOW')
-	frame:SetScript('OnUpdate', nil) -- shut off the tab fading in
+	frame:SetScript('OnUpdate', _G.MapCanvasMixin.OnUpdate) -- shut off the tab fading in, but keep the canvas updater
 
 	local border = frame.BorderFrame
 	border:StripTextures()

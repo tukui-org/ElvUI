@@ -355,7 +355,11 @@ function S:LookingForGroupFrames()
 	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
-	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
+
+	-- Reposition Tabs
+	_G.PVEFrameTab1:SetPoint('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
+	_G.PVEFrameTab2:SetPoint('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.PVEFrameTab3:SetPoint('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)

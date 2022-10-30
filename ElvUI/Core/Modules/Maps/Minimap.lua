@@ -27,6 +27,7 @@ local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
 
+local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
@@ -50,7 +51,7 @@ local menuList = {
 
 if E.Retail then
 	tinsert(menuList, { text = _G.LFG_TITLE, func = _G.ToggleLFDParentFrame })
-elseif E.TBC or E.Wrath then
+elseif E.Wrath then
 	tinsert(menuList, { text = _G.LFG_TITLE, func = function() if not IsAddOnLoaded('Blizzard_LookingForGroupUI') then UIParentLoadAddOn('Blizzard_LookingForGroupUI') end _G.ToggleLFGParentFrame() end })
 end
 
@@ -97,7 +98,12 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 		else
 			PlaySound(854) --IG_MAINMENU_QUIT
 			HideUIPanel(_G.GameMenuFrame)
-			MainMenuMicroButton_SetNormal()
+
+			if E.Retail then
+				MainMenuMicroButton:SetButtonState('NORMAL')
+			else
+				MainMenuMicroButton_SetNormal()
+			end
 		end
 	end
 })
@@ -584,12 +590,14 @@ function M:ClearQueueStatus()
 end
 
 function M:CreateQueueStatusText()
-	local display = CreateFrame('Frame', 'ElvUIQueueStatusDisplay', _G.QueueStatusMinimapButton)
+	local display = CreateFrame('Frame', 'ElvUIQueueStatusDisplay', _G.QueueStatusButton)
+	display:SetIgnoreParentScale(true)
+	display:SetScale(E.uiscale)
 	display.text = display:CreateFontString(nil, 'OVERLAY')
 
 	M.QueueStatusDisplay = display
 
-	_G.QueueStatusMinimapButton:HookScript('OnHide', M.ClearQueueStatus)
+	_G.QueueStatusButton:HookScript('OnHide', M.ClearQueueStatus)
 	hooksecurefunc('QueueStatusEntry_SetMinimalDisplay', M.SetMinimalQueueStatus)
 	hooksecurefunc('QueueStatusEntry_SetFullDisplay', M.SetFullQueueStatus)
 end
@@ -723,8 +731,7 @@ function M:Initialize()
 		M.TrackingDropdown = M:CreateMinimapTrackingDropdown()
 	end
 
-	if _G.QueueStatusMinimapButton then
-		_G.QueueStatusMinimapButtonBorder:Hide()
+	if _G.QueueStatusButton then
 		M:CreateQueueStatusText()
 	elseif _G.MiniMapLFGFrame then
 		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()

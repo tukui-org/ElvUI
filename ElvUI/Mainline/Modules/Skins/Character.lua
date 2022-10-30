@@ -330,6 +330,11 @@ function S:CharacterFrame()
 		S:HandleIconSelectionFrame(frame)
 	end)
 
+	-- Reposition Tabs
+	_G.CharacterFrameTab1:SetPoint('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -3, 0)
+	_G.CharacterFrameTab2:SetPoint('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.CharacterFrameTab3:SetPoint('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -5, 0)
+
 	do --Handle Tabs at bottom of character frame
 		local i = 1
 		local tab = _G['CharacterFrameTab'..i]

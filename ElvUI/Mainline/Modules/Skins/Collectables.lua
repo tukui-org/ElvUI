@@ -681,6 +681,12 @@ local function SkinCollectionsFrames()
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
 
+	_G.CollectionsJournalTab1:SetPoint('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
+	_G.CollectionsJournalTab2:SetPoint('TOPLEFT', _G.CollectionsJournalTab1, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab3:SetPoint('TOPLEFT', _G.CollectionsJournalTab2, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab4:SetPoint('TOPLEFT', _G.CollectionsJournalTab3, 'TOPRIGHT', -5, 0)
+	_G.CollectionsJournalTab5:SetPoint('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+
 	SkinMountFrame()
 	SkinPetFrame()
 	SkinToyFrame()

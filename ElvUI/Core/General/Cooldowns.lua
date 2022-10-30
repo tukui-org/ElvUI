@@ -30,18 +30,19 @@ function E:Cooldown_BelowScale(cd)
 end
 
 function E:Cooldown_OnUpdate(elapsed)
-	if self.paused then return end
+	if self.paused then return 0 end
 
 	local forced = elapsed == -1
 	if forced then
 		self.nextUpdate = 0
 	elseif self.nextUpdate > 0 then
 		self.nextUpdate = self.nextUpdate - elapsed
-		return
+		return 1
 	end
 
 	if not E:Cooldown_TimerEnabled(self) then
 		E:Cooldown_TimerStop(self)
+		return 2
 	else
 		local now = GetTime()
 
@@ -115,8 +116,10 @@ function E:Cooldown_TimerEnabled(timer)
 end
 
 function E:Cooldown_TimerUpdate(timer)
-	E.Cooldown_OnUpdate(timer, -1)
-	timer:Show()
+	local status = E.Cooldown_OnUpdate(timer, -1)
+	if not status then
+		timer:Show()
+	end
 end
 
 function E:Cooldown_TimerStop(timer)

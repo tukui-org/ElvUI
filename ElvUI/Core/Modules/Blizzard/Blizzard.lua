@@ -86,7 +86,7 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-	elseif (E.TBC or E.Classic) and E.db.general.objectiveTracker then
+	elseif E.Classic and E.db.general.objectiveTracker then
 		B:QuestWatch_MoveFrames()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
