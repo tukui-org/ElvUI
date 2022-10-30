@@ -215,7 +215,6 @@ function S:Blizzard_AchievementUI()
 			end
 		end)
 
-
 		hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
 			for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 				local bu = _G['AchievementFrameSummaryAchievement'..i]
