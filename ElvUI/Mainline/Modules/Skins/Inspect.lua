@@ -46,6 +46,9 @@ function S:Blizzard_InspectUI()
 	_G.InspectFrameTab2:SetPoint('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.InspectFrameTab3:SetPoint('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -5, 0)
 
+	_G.InspectPaperDollItemsFrame.InspectTalents:ClearAllPoints()
+	_G.InspectPaperDollItemsFrame.InspectTalents:Point('TOPRIGHT', _G.InspectFrame, 'BOTTOMRIGHT', -5, -3)
+
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
 	InspectModelFrame:CreateBackdrop()
