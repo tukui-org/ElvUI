@@ -190,7 +190,46 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
 	_G.AchievementFrameWaterMark:SetAlpha(0)
 
-	if E.private.skins.parchmentRemoverEnable then
+	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
+		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
+			local bu = _G['AchievementFrameSummaryAchievement'..i]
+			if bu.accountWide then
+				bu.Label:SetTextColor(0, .6, 1)
+			else
+				bu.Label:SetTextColor(.9, .9, .9)
+			end
+
+			if not bu.isSkinned then
+				bu:StripTextures(true)
+				bu:DisableDrawLayer('BORDER')
+				HideBackdrop(bu)
+
+				local bd = bu.Background
+				bd:SetTexture(E.media.normTex)
+				bd:SetVertexColor(0, 0, 0, .25)
+
+				bu.TitleBar:Hide()
+				bu.Glow:Hide()
+				bu.Highlight:SetAlpha(0)
+				bu.Icon.frame:Hide()
+				S:HandleIcon(bu.Icon.texture, true)
+
+				bu:CreateBackdrop('Transparent')
+				bu.backdrop:Point('TOPLEFT', 2, -2)
+				bu.backdrop:Point('BOTTOMRIGHT', -2, 2)
+
+				bu.isSkinned = true
+			end
+
+			bu.Description:SetTextColor(.9, .9, .9)
+		end
+	end)
+
+	if not E.private.skins.parchmentRemoverEnable then
+		local r, g, b, a = unpack(E.media.backdropfadecolor)
+		_G.AchievementFrameCategories.NineSlice:SetCenterColor(r, g, b, a)
+		select(3, _G.AchievementFrameAchievements:GetRegions()):Hide()
+	else
 		_G.AchievementFrameAchievements:StripTextures()
 		select(3, _G.AchievementFrameAchievements:GetChildren()):Hide()
 
@@ -212,41 +251,6 @@ function S:Blizzard_AchievementUI()
 
 					button.styled = true
 				end
-			end
-		end)
-
-		hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
-			for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
-				local bu = _G['AchievementFrameSummaryAchievement'..i]
-				if bu.accountWide then
-					bu.Label:SetTextColor(0, .6, 1)
-				else
-					bu.Label:SetTextColor(.9, .9, .9)
-				end
-
-				if not bu.isSkinned then
-					bu:StripTextures(true)
-					bu:DisableDrawLayer('BORDER')
-					HideBackdrop(bu)
-
-					local bd = bu.Background
-					bd:SetTexture(E.media.normTex)
-					bd:SetVertexColor(0, 0, 0, .25)
-
-					bu.TitleBar:Hide()
-					bu.Glow:Hide()
-					bu.Highlight:SetAlpha(0)
-					bu.Icon.frame:Hide()
-					S:HandleIcon(bu.Icon.texture)
-
-					bu:CreateBackdrop('Transparent')
-					bu.backdrop:Point('TOPLEFT', 2, -2)
-					bu.backdrop:Point('BOTTOMRIGHT', -2, 2)
-
-					bu.isSkinned = true
-				end
-
-				bu.Description:SetTextColor(.9, .9, .9)
 			end
 		end)
 
@@ -327,7 +331,7 @@ function S:Blizzard_AchievementUI()
 				child:CreateBackdrop('Transparent')
 				child.backdrop:Point('TOPLEFT', 1, -1)
 				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
-				S:HandleIcon(child.Icon.texture)
+				S:HandleIcon(child.Icon.texture, true)
 
 				S:HandleCheckBox(child.Tracked)
 				child.Tracked:SetSize(20, 20)
