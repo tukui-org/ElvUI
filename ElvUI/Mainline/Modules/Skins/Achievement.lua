@@ -8,6 +8,9 @@ local select = select
 local CreateColor = CreateColor
 local hooksecurefunc = hooksecurefunc
 
+local GetAchievementNumCriteria = GetAchievementNumCriteria
+local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
+
 local function SetupButtonHighlight(button, backdrop)
 	if not button then return end
 
@@ -32,6 +35,18 @@ local function StyleSearchButton(button)
 	local hl = button:GetHighlightTexture()
 	hl:SetVertexColor(0.8, 0.8, 0.8, .25)
 	hl:SetInside()
+end
+
+local function UpdateDisplayObjectives(frame)
+	local objectives = frame:GetObjectiveFrame()
+	if objectives and objectives.progressBars then
+		for _, bar in next, objectives.progressBars do
+			if not bar.isSkinned then
+				S:HandleStatusBar(bar)
+				bar.isSkinned = true
+			end
+		end
+	end
 end
 
 local function UpdateAccountString(button)
@@ -263,6 +278,7 @@ function S:Blizzard_AchievementUI()
 				child.Check:SetAlpha(0)
 
 				hooksecurefunc(child, 'UpdatePlusMinusTexture', UpdateAccountString)
+				hooksecurefunc(child, 'DisplayObjectives', UpdateDisplayObjectives)
 
 				child.isSkinned = true
 			end
@@ -284,17 +300,17 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	--[[hooksecurefunc('AchievementObjectives_DisplayCriteria', function(objectivesFrame, id)
+	hooksecurefunc('AchievementObjectives_DisplayCriteria', function(objectivesFrame, id)
 		local numCriteria = GetAchievementNumCriteria(id)
 		local textStrings, metas, criteria, object = 0, 0
 		for i = 1, numCriteria do
 			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
 			if assetID and criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT then
 				metas = metas + 1
-				criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
+				criteria, object = objectivesFrame:GetMeta(metas), 'Label'
 			elseif criteriaType ~= 1 then
 				textStrings = textStrings + 1
-				criteria, object = _G.AchievementButton_GetCriteria(textStrings), 'name'
+				criteria, object = objectivesFrame:GetCriteria(textStrings), 'Name'
 			end
 
 			local text = criteria and criteria[object]
@@ -314,7 +330,7 @@ function S:Blizzard_AchievementUI()
 				text:SetShadowOffset(x, y)
 			end
 		end
-	end)]]
+	end)
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')
