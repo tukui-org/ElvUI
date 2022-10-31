@@ -106,7 +106,6 @@ function S:GossipFrame()
 	end
 
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-
 	S:HandleCloseButton(_G.ItemTextCloseButton, _G.ItemTextFrame.backdrop)
 
 	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar

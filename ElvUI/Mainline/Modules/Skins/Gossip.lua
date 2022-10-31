@@ -42,6 +42,14 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 
+	_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
+
+	hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
+		if r ~= 1 or g ~= 1 or b ~= 1 then
+			pageText:SetTextColor(headerType, 1, 1, 1)
+		end
+	end)
+
 	if E.private.skins.parchmentRemoverEnable then
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.GossipFrameInset:Hide()
@@ -63,6 +71,7 @@ function S:GossipFrame()
 		end)
 	end
 
+	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 
