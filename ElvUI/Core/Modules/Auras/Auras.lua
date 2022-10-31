@@ -151,7 +151,7 @@ function A:CreateIcon(button)
 	button.statusBar:SetValue(0)
 	button.statusBar:CreateBackdrop()
 
-	button:RegisterForClicks('RightButtonUp')
+	button:RegisterForClicks('RightButtonUp', 'RightButtonDown')
 	button:SetScript('OnAttributeChanged', A.Button_OnAttributeChanged)
 	button:SetScript('OnUpdate', A.Button_OnUpdate)
 	button:SetScript('OnEnter', A.Button_OnEnter)
