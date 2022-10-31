@@ -42,18 +42,38 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 
-	_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
+	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
+	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 
-	hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
-		if r ~= 1 or g ~= 1 or b ~= 1 then
-			pageText:SetTextColor(headerType, 1, 1, 1)
+	for i = 1, 4 do
+		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
+		if notch then
+			notch:SetColorTexture(0, 0, 0)
+			notch:SetSize(E.mult, 16)
 		end
-	end)
+	end
 
-	if E.private.skins.parchmentRemoverEnable then
+	if not E.private.skins.parchmentRemoverEnable then
+		local pageBG = _G.ItemTextFramePageBg:GetTexture()
+		_G.ItemTextFrame:StripTextures()
+		_G.ItemTextFramePageBg:SetTexture(pageBG)
+		_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
+	else
+		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
+		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
+			if r ~= 1 or g ~= 1 or b ~= 1 then
+				pageText:SetTextColor(headerType, 1, 1, 1)
+			end
+		end)
+
+		_G.ItemTextFrame:StripTextures(true)
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.GossipFrameInset:Hide()
-		if GossipFrame.Background then GossipFrame.Background:Hide() end
+
+		if GossipFrame.Background then
+			GossipFrame.Background:Hide()
+		end
 
 		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
 			for _, button in next, { frame.ScrollTarget:GetChildren() } do
@@ -71,21 +91,7 @@ function S:GossipFrame()
 		end)
 	end
 
-	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
-	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
-
-	for i = 1, 4 do
-		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
-		if notch then
-			notch:SetColorTexture(0, 0, 0)
-			notch:SetSize(E.mult, 16)
-		end
-	end
-
-	_G.ItemTextFrame:StripTextures(true)
 	_G.ItemTextFrame:SetTemplate('Transparent')
-
 	_G.ItemTextScrollFrame:StripTextures()
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 end
