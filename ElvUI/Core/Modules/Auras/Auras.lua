@@ -18,7 +18,6 @@ local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local UIParent = UIParent
 local UnitAura = UnitAura
-local SetCVar = SetCVar
 local GetTime = GetTime
 
 local Masque = E.Masque
@@ -152,7 +151,7 @@ function A:CreateIcon(button)
 	button.statusBar:SetValue(0)
 	button.statusBar:CreateBackdrop()
 
-	button:RegisterForClicks('RightButtonUp')
+	button:RegisterForClicks('RightButtonUp', 'RightButtonDown')
 	button:SetScript('OnAttributeChanged', A.Button_OnAttributeChanged)
 	button:SetScript('OnUpdate', A.Button_OnUpdate)
 	button:SetScript('OnEnter', A.Button_OnEnter)
@@ -539,10 +538,6 @@ function A:Initialize()
 
 	A.Initialized = true
 	A.db = E.db.auras
-
-	if E.Retail then -- set for now to get Auras right click to work
-		SetCVar('ActionButtonUseKeyDown', 0)
-	end
 
 	local xoffset = -(6 + E.Border)
 	if E.private.auras.buffsHeader then

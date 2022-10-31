@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, strmatch, next, unpack = ipairs, pairs, strmatch, next, unpack
-local format, gsub, strsplit, strfind, strupper, tremove = format, gsub, strsplit, strfind, strupper, tremove
+local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -442,6 +442,12 @@ function AB:CreateVehicleLeave()
 		Button:GetNormalTexture():SetTexCoord(0.140625 + .08, 0.859375 - .06, 0.140625 + .08, 0.859375 - .08)
 		Button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
 		Button:StyleButton(nil, true, true)
+
+		hooksecurefunc(Button, 'SetHighlightTexture', function(btn, tex)
+			if tex ~= btn.hover then
+				Button:SetHighlightTexture(btn.hover)
+			end
+		end)
 	end
 
 	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
@@ -449,12 +455,6 @@ function AB:CreateVehicleLeave()
 			Button:ClearAllPoints()
 			Button:SetParent(_G.UIParent)
 			Button:Point('CENTER', holder, 'CENTER')
-		end
-	end)
-
-	hooksecurefunc(Button, 'SetHighlightTexture', function(btn, tex)
-		if tex ~= btn.hover then
-			Button:SetHighlightTexture(btn.hover)
 		end
 	end)
 

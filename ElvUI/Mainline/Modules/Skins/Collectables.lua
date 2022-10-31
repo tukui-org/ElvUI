@@ -494,8 +494,8 @@ local function SkinTransmogFrames()
 				local border = CreateFrame('Frame', nil, Model)
 				border:SetTemplate()
 				border:ClearAllPoints()
-				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
+				border:Point('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				border:Point('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
 				border.callbackBackdropColor = clearBackdrop
 
@@ -534,8 +534,8 @@ local function SkinTransmogFrames()
 			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
 
 			if Glowframe.backdrop then
-				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
+				Glowframe.backdrop:Point('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				Glowframe.backdrop:Point('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
 				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
 				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
 			end
@@ -574,8 +574,8 @@ local function SkinTransmogFrames()
 				child.SelectedTexture:SetDrawLayer('BACKGROUND')
 				child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
 				child.SelectedTexture:ClearAllPoints()
-				child.SelectedTexture:SetPoint('TOPLEFT', 4, -2)
-				child.SelectedTexture:SetPoint('BOTTOMRIGHT', -1, 2)
+				child.SelectedTexture:Point('TOPLEFT', 4, -2)
+				child.SelectedTexture:Point('BOTTOMRIGHT', -1, 2)
 				child.SelectedTexture:CreateBackdrop('Transparent')
 
 				child.IsSkinned = true
@@ -674,12 +674,30 @@ local function SkinTransmogFrames()
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
+local function HandleTabs()
+	local tab = _G.CollectionsJournalTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['CollectionsJournalTab'..index]
+	end
+end
+
 local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal)
 
-	for i = 1, 5 do
-		S:HandleTab(_G['CollectionsJournalTab'..i])
-	end
+	HandleTabs()
 
 	SkinMountFrame()
 	SkinPetFrame()

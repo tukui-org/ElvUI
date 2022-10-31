@@ -17,8 +17,8 @@ local function HandleTalentFrameDialog(dialog)
 	if dialog.DeleteButton then S:HandleButton(dialog.DeleteButton) end
 
 	S:HandleEditBox(dialog.NameControl.EditBox)
-	dialog.NameControl.EditBox.backdrop:SetPoint('TOPLEFT', -5, -10)
-	dialog.NameControl.EditBox.backdrop:SetPoint('BOTTOMRIGHT', 5, 10)
+	dialog.NameControl.EditBox.backdrop:Point('TOPLEFT', -5, -10)
+	dialog.NameControl.EditBox.backdrop:Point('BOTTOMRIGHT', 5, 10)
 end
 
 function S:Blizzard_ClassTalentUI()
@@ -39,8 +39,8 @@ function S:Blizzard_ClassTalentUI()
 	ClassTalentFrame.TalentsTab.SpecCurrencyDisplay.CurrencyAmount:FontTemplate(nil, 26)
 
 	S:HandleEditBox(ClassTalentFrame.TalentsTab.SearchBox)
-	ClassTalentFrame.TalentsTab.SearchBox.backdrop:SetPoint('TOPLEFT', -4, -5)
-	ClassTalentFrame.TalentsTab.SearchBox.backdrop:SetPoint('BOTTOMRIGHT', 0, 5)
+	ClassTalentFrame.TalentsTab.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
+	ClassTalentFrame.TalentsTab.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 	ClassTalentFrame.TalentsTab.SearchPreviewContainer:StripTextures()
 	ClassTalentFrame.TalentsTab.SearchPreviewContainer:CreateBackdrop('Transparent')
 
@@ -94,8 +94,8 @@ function S:Blizzard_ClassTalentUI()
 		local editbox = EditDialog.LoadoutName
 		if editbox then
 			S:HandleEditBox(editbox)
-			editbox.backdrop:SetPoint('TOPLEFT', -5, -5)
-			editbox.backdrop:SetPoint('BOTTOMRIGHT', 5, 5)
+			editbox.backdrop:Point('TOPLEFT', -5, -5)
+			editbox.backdrop:Point('BOTTOMRIGHT', 5, 5)
 		end
 
 		local check = EditDialog.UsesSharedActionBars

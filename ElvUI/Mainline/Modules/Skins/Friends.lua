@@ -67,14 +67,14 @@ local function ReskinFriendButton(button)
 
 		local travelPass = button.travelPassButton
 		travelPass:SetSize(22, 22)
-		travelPass:SetPoint('TOPRIGHT', -3, -6)
+		travelPass:Point('TOPRIGHT', -3, -6)
 		travelPass:CreateBackdrop()
 		travelPass.NormalTexture:SetAlpha(0)
 		travelPass.PushedTexture:SetAlpha(0)
 		travelPass.DisabledTexture:SetAlpha(0)
 		travelPass.HighlightTexture:SetColorTexture(1, 1, 1, .25)
 		travelPass.HighlightTexture:SetAllPoints()
-		gameIcon:SetPoint('TOPRIGHT', travelPass, 'TOPLEFT', -4, 0)
+		gameIcon:Point('TOPRIGHT', travelPass, 'TOPLEFT', -4, 0)
 
 		local icon = travelPass:CreateTexture(nil, 'ARTWORK')
 		icon:SetTexCoord(.1, .9, .1, .9)
@@ -87,6 +87,26 @@ local function ReskinFriendButton(button)
 	end
 
 	button.bg:SetShown(button.gameIcon:IsShown())
+end
+
+local function HandleTabs()
+	local tab = _G.FriendsFrameTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['FriendsFrameTab'..index]
+	end
 end
 
 function S:FriendsFrame()
@@ -244,8 +264,8 @@ function S:FriendsFrame()
 	_G.WhoFrameEditBoxInset.NineSlice:Hide()
 
 	_G.WhoFrameEditBox:CreateBackdrop('Transparent')
-	_G.WhoFrameEditBox.backdrop:SetPoint('TOPLEFT', _G.WhoFrameEditBoxInset)
-	_G.WhoFrameEditBox.backdrop:SetPoint('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
+	_G.WhoFrameEditBox.backdrop:Point('TOPLEFT', _G.WhoFrameEditBoxInset)
+	_G.WhoFrameEditBox.backdrop:Point('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
 
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) --Default is 32
@@ -258,13 +278,8 @@ function S:FriendsFrame()
 
 	S:HandleDropDownBox(_G.WhoFrameDropDown, 120)
 
-	--Bottom Tabs
-	for i = 1, 4 do
-		local tab = _G['FriendsFrameTab'..i]
-		if tab then
-			S:HandleTab(tab)
-		end
-	end
+	-- Bottom Tabs
+	HandleTabs()
 
 	for i = 1, 3 do
 		local tab = _G['FriendsTabHeaderTab'..i]

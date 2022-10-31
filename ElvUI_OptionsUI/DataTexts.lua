@@ -252,6 +252,9 @@ local function CreateDTOptions(name, data)
 		optionTable.args.textFormat.values = { PERCENT = L["Percent"], CUR = L["Current"], REM = L["Remaining"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }
 	elseif name == 'Bags' then
 		optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], USED_TOTAL = L["Used/Total"] }
+	elseif name == 'Talent/Loot Specialization' then
+		optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] })
+		optionTable.args.iconOnly = ACH:Toggle(L["Icon Only"], L["Only show icons instead of specialization names"], 2)
 	end
 end
 

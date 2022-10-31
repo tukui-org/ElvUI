@@ -16,8 +16,8 @@ function S:HelpFrame()
 	browser.BrowserInset:StripTextures()
 	browser:CreateBackdrop()
 	browser.backdrop:ClearAllPoints()
-	browser.backdrop:SetPoint('TOPLEFT', browser, 'TOPLEFT', -1, 1)
-	browser.backdrop:SetPoint('BOTTOMRIGHT', browser, 'BOTTOMRIGHT', 1, -2)
+	browser.backdrop:Point('TOPLEFT', browser, 'TOPLEFT', -1, 1)
+	browser.backdrop:Point('BOTTOMRIGHT', browser, 'BOTTOMRIGHT', 1, -2)
 end
 
 S:AddCallback('HelpFrame')

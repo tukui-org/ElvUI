@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, select, unpack = next, select, unpack
-
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TrainerUI()
@@ -35,20 +34,19 @@ function S:Blizzard_TrainerUI()
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local button = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', function(frame)
+		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			if not button.IsSkinned then
 				S:HandleIcon(button.icon, true)
 				button:CreateBackdrop('Transparent')
-				button.backdrop:SetPoint('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
-				button.backdrop:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 253, 0)
+				button.backdrop:Point('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
+				button.backdrop:Point('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 253, 0)
 
 				button.name:SetParent(button.backdrop)
-				button.name:SetPoint('TOPLEFT', button.icon, 'TOPRIGHT', 6, -2)
+				button.name:Point('TOPLEFT', button.icon, 'TOPRIGHT', 6, -2)
 				button.subText:SetParent(button.backdrop)
 				button.money:SetParent(button.backdrop)
-				button.money:SetPoint('TOPRIGHT', button, 'TOPRIGHT', 5, -8)
+				button.money:Point('TOPRIGHT', button, 'TOPRIGHT', 5, -8)
 
 				button:SetNormalTexture(E.Media.Textures.Invisible)
 				button:SetHighlightTexture(E.Media.Textures.Invisible)

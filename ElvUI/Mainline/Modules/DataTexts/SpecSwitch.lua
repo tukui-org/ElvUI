@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
--- TODO: show active loadout in datatext
-
 local _G = _G
 local ipairs, tinsert = ipairs, tinsert
 local format, next, strjoin = format, next, strjoin
@@ -51,6 +49,7 @@ local menuList = {
 local specList = { { text = _G.SPECIALIZATION, isTitle = true, notCheckable = true } }
 local loadoutList = { { text = L["Loadouts"], isTitle = true, notCheckable = true } }
 
+local DEFAULT_TEXT = E:RGBToHex(0.9, 0.9, 0.9, nil, _G.TALENT_FRAME_DROP_DOWN_DEFAULT)
 local STARTER_TEXT = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, nil, _G.TALENT_FRAME_DROP_DOWN_STARTER_BUILD)
 
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -103,11 +102,11 @@ local function OnEvent(self, event)
 	local ID = info and info.id
 
 	if not ID then
-		self.text:SetText('N/A')
+		self.text:SetText(DEFAULT_TEXT)
 		return
 	end
 
-	if event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED' then
+	if E.mylevel >= 10 and ( event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_UPDATED' or event == 'TRAIT_CONFIG_DELETED' ) then
 		local builds = GetConfigIDsBySpecID(ID)
 		if builds and not builds[STARTER_ID] and GetHasStarterBuild() then
 			tinsert(builds, STARTER_ID)
@@ -123,15 +122,40 @@ local function OnEvent(self, event)
 		end
 	end
 
+	local activeLoadout = DEFAULT_TEXT
+	for index, loadout in next, loadoutList do
+		if index > 1 and loadout:checked(loadout.arg1, loadout.arg2) then
+			activeLoadout = loadout.text
+			break
+		end
+	end
+
 	active = specIndex
 
-	local spec = format(mainIcon, info.icon)
-	if specialization == 0 or ID == specialization then
-		self.text:SetFormattedText('%s %s', spec, info.name)
-	else
-		info = DT.SPECIALIZATION_CACHE[specialization]
-		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+	local db = E.global.datatexts.settings["Talent/Loot Specialization"]
+	local spec, text = format(mainIcon, info.icon)
+	if db.displayStyle == 'BOTH' or db.displayStyle == 'SPEC' then
+		if specialization == 0 or ID == specialization then
+			if db.iconOnly then
+				text = format('%s', spec)
+			else
+				text = format('%s %s', spec, info.name)
+			end
+		else
+			info = DT.SPECIALIZATION_CACHE[specialization]
+			if db.iconOnly then
+				text = format('%s %s', spec, format(mainIcon, info.icon))
+			else
+				text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+			end
+		end
 	end
+
+	if db.displayStyle == 'BOTH' or db.displayStyle == 'LOADOUT' then
+		text = strjoin('', text and text..(db.iconOnly and ' ' or ' / ') or '', activeLoadout)
+	end
+
+	self.text:SetText(text)
 end
 
 local function AddTexture(texture)

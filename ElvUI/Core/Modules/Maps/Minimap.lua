@@ -27,6 +27,7 @@ local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
 
+local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
@@ -97,7 +98,12 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 		else
 			PlaySound(854) --IG_MAINMENU_QUIT
 			HideUIPanel(_G.GameMenuFrame)
-			MainMenuMicroButton_SetNormal()
+
+			if E.Retail then
+				MainMenuMicroButton:SetButtonState('NORMAL')
+			else
+				MainMenuMicroButton_SetNormal()
+			end
 		end
 	end
 })
@@ -132,12 +138,12 @@ function M:HandleQueueButton(actionbarMode)
 	local queueButton = M:GetQueueStatusButton()
 	if not queueButton then return end
 
-	queueButton:SetParent(E.Retail and MinimapCluster or Minimap)
+	queueButton:SetParent(_G.MinimapBackdrop)
 	queueButton:ClearAllPoints()
 
 	if actionbarMode then
-		queueButton:Point('BOTTOMLEFT', Minimap, 50, -15)
-		M:SetScale(queueButton, 0.8)
+		queueButton:Point('BOTTOMLEFT', Minimap, E.Retail and 50 or 10, E.Retail and -15 or -10)
+		M:SetScale(queueButton, E.Retail and 0.8 or 1)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
 		queueButton:Point(position, Minimap, xOffset, yOffset)
@@ -621,8 +627,6 @@ function M:Initialize()
 
 	if E.Retail then -- set before minimap itself
 		MinimapCluster:SetFrameLevel(20)
-	elseif _G.GameTimeFrame then
-		_G.GameTimeFrame:SetFrameLevel(12)
 	end
 
 	Minimap:SetFrameStrata('LOW')

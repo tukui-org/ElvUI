@@ -73,8 +73,8 @@ function S:SettingsPanel()
 				if child.Background then
 					child.Background:SetAlpha(0)
 					child.Background:CreateBackdrop('Transparent')
-					child.Background.backdrop:SetPoint('TOPLEFT', 5, -5)
-					child.Background.backdrop:SetPoint('BOTTOMRIGHT', -5, 0)
+					child.Background.backdrop:Point('TOPLEFT', 5, -5)
+					child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
 				end
 
 				local toggle = child.Toggle
@@ -106,8 +106,8 @@ function S:SettingsPanel()
 						child.Button:StripTextures()
 						child.Button.Right:SetAlpha(0)
 						child.Button:CreateBackdrop('Transparent')
-						child.Button.backdrop:SetPoint('TOPLEFT', 2, -1)
-						child.Button.backdrop:SetPoint('BOTTOMRIGHT', -2, 3)
+						child.Button.backdrop:Point('TOPLEFT', 2, -1)
+						child.Button.backdrop:Point('BOTTOMRIGHT', -2, 3)
 
 						child.Button.hl = child.Button:CreateTexture(nil, 'HIGHLIGHT')
 						child.Button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
@@ -115,7 +115,7 @@ function S:SettingsPanel()
 						child.Button.hl:SetBlendMode('ADD')
 
 						child.collapseTex = child.Button.backdrop:CreateTexture(nil, 'OVERLAY')
-						child.collapseTex:SetPoint('RIGHT', -10, 0)
+						child.collapseTex:Point('RIGHT', -10, 0)
 
 						UpdateHeaderExpand(child, false)
 						hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
