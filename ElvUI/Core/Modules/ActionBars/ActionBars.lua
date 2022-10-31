@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, strmatch, next, unpack = ipairs, pairs, strmatch, next, unpack
-local format, gsub, strsplit, strfind, strupper, tremove = format, gsub, strsplit, strfind, strupper, tremove
+local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
