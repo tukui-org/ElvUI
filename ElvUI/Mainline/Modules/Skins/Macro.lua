@@ -44,6 +44,10 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameTab1:Point('TOPLEFT', MacroFrame, 'TOPLEFT', 12, -39)
 	_G.MacroFrameTab2:Point('LEFT', _G.MacroFrameTab1, 'RIGHT', 4, 0)
 
+	-- Reposition General / Character tab text to center
+	_G.MacroFrameTab1.Text:SetAllPoints(_G.MacroFrameTab1)
+	_G.MacroFrameTab2.Text:SetAllPoints(_G.MacroFrameTab2)
+
 	--Reposition edit button
 	_G.MacroEditButton:ClearAllPoints()
 	_G.MacroEditButton:Point('BOTTOMLEFT', _G.MacroFrameSelectedMacroButton, 'BOTTOMRIGHT', 10, 0)
