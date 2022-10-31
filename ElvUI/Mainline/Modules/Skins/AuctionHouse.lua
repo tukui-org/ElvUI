@@ -202,6 +202,31 @@ local function HandleSellList(frame, hasHeader, fitScrollBar)
 	end
 end
 
+local function HandleTabs(arg1)
+	local frame = _G.AuctionHouseFrame
+	if arg1 ~= frame then return end
+
+	local lastTab = _G.AuctionHouseFrameBuyTab
+	for index, tab in next, frame.Tabs do
+		-- we can move addon tabs but only skin the blizzard ones (AddonSkins handles the rest)
+		local blizzTab = tab == _G.AuctionHouseFrameBuyTab or tab == _G.AuctionHouseFrameSellTab or tab == _G.AuctionHouseFrameAuctionsTab
+		if blizzTab and not tab.backdrop then
+			S:HandleTab(tab)
+		end
+
+		-- tab positions
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', -3, -32)
+		else -- skinned ones can be closer together
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', (tab.backdrop or tab.Backdrop) and -5 or 0, 0)
+		end
+
+		lastTab = tab
+	end
+end
+
 local function LoadSkin()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
@@ -209,20 +234,8 @@ local function LoadSkin()
 	local Frame = _G.AuctionHouseFrame
 	S:HandlePortraitFrame(Frame)
 
-	local AuctionHouseTabs = {
-		_G.AuctionHouseFrameBuyTab,
-		_G.AuctionHouseFrameSellTab,
-		_G.AuctionHouseFrameAuctionsTab,
-	}
-
-	for _, tab in pairs(AuctionHouseTabs) do
-		if tab then
-			S:HandleTab(tab)
-		end
-	end
-
-	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
+	-- handle tab spacing
+	hooksecurefunc('PanelTemplates_SetNumTabs', HandleTabs)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
