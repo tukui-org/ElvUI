@@ -92,23 +92,26 @@ local function ColorMemberName(button, info)
 	end
 end
 
-local card = {'First', 'Second', 'Third'}
-local function HandleGuildCards(cards)
-	for _, name in pairs(card) do
-		local guildCard = cards[name..'Card']
-		guildCard:StripTextures()
-		guildCard:SetTemplate('Transparent')
-		S:HandleButton(guildCard.RequestJoin)
+local HandleGuildCards
+do
+	local card = { 'First', 'Second', 'Third' }
+	function HandleGuildCards(cards)
+		for _, name in pairs(card) do
+			local guildCard = cards[name..'Card']
+			guildCard:StripTextures()
+			guildCard:SetTemplate('Transparent')
+			S:HandleButton(guildCard.RequestJoin)
+		end
+
+		S:HandleNextPrevButton(cards.PreviousPage)
+		S:HandleNextPrevButton(cards.NextPage)
 	end
-	S:HandleNextPrevButton(cards.PreviousPage)
-	S:HandleNextPrevButton(cards.NextPage)
 end
 
-local function HandleCommunityCards(card)
-	if not card then return end
+local function HandleCommunityCards(frame)
+	if not frame then return end
 
-	for i = 1, card.ScrollTarget:GetNumChildren() do
-		local child = select(i, card.ScrollTarget:GetChildren())
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		if not child.IsSkinned then
 			child.CircleMask:Hide()
 			child.LogoBorder:Hide()
@@ -122,8 +125,7 @@ local function HandleCommunityCards(card)
 end
 
 local function HandleRewardButton(button)
-	for i = 1, button.ScrollTarget:GetNumChildren() do
-		local child = select(i, button.ScrollTarget:GetChildren())
+	for _, child in next, { button.ScrollTarget:GetChildren() } do
 		if not child.IsSkinned then
 			S:HandleIcon(child.Icon, true)
 			child:StripTextures()
