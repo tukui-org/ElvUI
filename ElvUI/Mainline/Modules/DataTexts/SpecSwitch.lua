@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
--- TODO: show active loadout in datatext
-
 local _G = _G
 local ipairs, tinsert = ipairs, tinsert
 local format, next, strjoin = format, next, strjoin
