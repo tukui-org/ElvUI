@@ -22,7 +22,7 @@ function B:ScaleTalkingHeadFrame()
 	-- frame:UnregisterEvent('LOADING_SCREEN_ENABLED')
 end
 
-function B:PositionTalkingHead()
+function B:HandleTalkingHead()
 	-- Prevent WoW from moving the frame around
 	if not E.Retail then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
