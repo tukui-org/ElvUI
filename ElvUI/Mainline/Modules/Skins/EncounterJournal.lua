@@ -392,11 +392,6 @@ function S:Blizzard_EncounterJournal()
 		HandleButton(button, true)
 	end
 
-	if E.private.skins.parchmentRemoverEnable then
-		LJ:StripTextures()
-		LJ:SetTemplate('Transparent')
-	end
-
 	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
@@ -417,6 +412,9 @@ function S:Blizzard_EncounterJournal()
 	end)
 
 	if E.private.skins.parchmentRemoverEnable then
+		LJ:StripTextures()
+		LJ:SetTemplate('Transparent')
+
 		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
@@ -494,8 +492,16 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 
+		for _, child in next, { _G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont.ScrollBox.ScrollTarget:GetChildren() } do
+			if child.FontString then
+				child.FontString:SetTextColor(1, 1, 1)
+			end
+		end
+
 		local parchment = LJ:GetRegions()
-		parchment:Kill()
+		if parchment then
+			parchment:Kill()
+		end
 	end
 
 	local LootDropdown = _G.EncounterJournalLootJournalViewDropDown
