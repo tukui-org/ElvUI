@@ -30,8 +30,8 @@ function S:Blizzard_CombatLog()
 	bar:SetTemplate('Transparent')
 
 	bar:ClearAllPoints()
-	bar:SetPoint('BOTTOMLEFT', _G.ChatFrame2, 'TOPLEFT', -3, 2)
-	bar:SetPoint('BOTTOMRIGHT', _G.ChatFrame2, 'TOPRIGHT', 3, 0)
+	bar:Point('BOTTOMLEFT', _G.ChatFrame2, 'TOPLEFT', -3, 2)
+	bar:Point('BOTTOMRIGHT', _G.ChatFrame2, 'TOPRIGHT', 3, 0)
 
 	local progress = _G.CombatLogQuickButtonFrame_CustomProgressBar
 	progress:SetStatusBarTexture(E.media.normTex)
@@ -39,7 +39,7 @@ function S:Blizzard_CombatLog()
 
 	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:ClearAllPoints()
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetPoint('TOPRIGHT', bar, 'TOPRIGHT', -2, -2)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point('TOPRIGHT', bar, 'TOPRIGHT', -2, -2)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetHitRectInsets(0,0,0,0)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetFrameLevel(bar:GetFrameLevel() + 3)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20)

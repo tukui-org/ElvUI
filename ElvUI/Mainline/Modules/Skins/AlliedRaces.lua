@@ -28,7 +28,6 @@ function S:Blizzard_AlliedRacesUI()
 		AlliedRacesFrame.NineSlice:SetAlpha(0)
 		_G.AlliedRacesFramePortrait:SetAlpha(0)
 		_G.AlliedRacesFrameBg:SetAlpha(0)
-		AlliedRacesFrame.TitleBg:SetAlpha(0)
 		AlliedRacesFrame.ModelFrame:StripTextures()
 		AlliedRacesFrame:SetTemplate('Transparent')
 

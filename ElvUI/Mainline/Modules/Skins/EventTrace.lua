@@ -18,7 +18,7 @@ local function reskinScrollChild(self)
 			S:HandleCloseButton(button)
 
 			button:ClearAllPoints()
-			button:SetPoint('LEFT', 3, 0)
+			button:Point('LEFT', 3, 0)
 
 			local checkButton = child.CheckButton
 			if checkButton then

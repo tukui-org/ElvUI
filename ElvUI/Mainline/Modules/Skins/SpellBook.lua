@@ -262,11 +262,21 @@ function S:SpellBookFrame()
 
 	-- Reposition Tabs
 	hooksecurefunc('SpellBookFrame_Update', function()
-		_G.SpellBookFrameTabButton1:SetPoint('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', -3, 0)
-		_G.SpellBookFrameTabButton2:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton1, 'TOPRIGHT', -5, 0)
-		_G.SpellBookFrameTabButton3:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton2, 'TOPRIGHT', -5, 0)
-		_G.SpellBookFrameTabButton4:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton3, 'TOPRIGHT', -5, 0)
-		_G.SpellBookFrameTabButton5:SetPoint('TOPLEFT', _G.SpellBookFrameTabButton4, 'TOPRIGHT', -5, 0)
+		local tab = _G.SpellBookFrameTabButton1
+		local index, lastTab = 1, tab
+		while tab do
+			tab:ClearAllPoints()
+
+			if index == 1 then
+				tab:Point('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', -3, 0)
+			else
+				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+				lastTab = tab
+			end
+
+			index = index + 1
+			tab = _G['SpellBookFrameTabButton'..index]
+		end
 	end)
 end
 

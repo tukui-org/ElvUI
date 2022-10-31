@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
--- TODO: show active loadout in datatext
-
 local _G = _G
 local ipairs, tinsert = ipairs, tinsert
 local format, next, strjoin = format, next, strjoin
@@ -133,19 +131,27 @@ local function OnEvent(self, event)
 
 	active = specIndex
 
-	local style = E.global.datatexts.settings["Talent/Loot Specialization"].displayStyle
+	local db = E.global.datatexts.settings["Talent/Loot Specialization"]
 	local spec, text = format(mainIcon, info.icon)
-	if style == 'BOTH' or style == 'SPEC' then
+	if db.displayStyle == 'BOTH' or db.displayStyle == 'SPEC' then
 		if specialization == 0 or ID == specialization then
-			text = format('%s %s', spec, info.name)
+			if db.iconOnly then
+				text = format('%s', spec)
+			else
+				text = format('%s %s', spec, info.name)
+			end
 		else
 			info = DT.SPECIALIZATION_CACHE[specialization]
-			text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+			if db.iconOnly then
+				text = format('%s %s', spec, format(mainIcon, info.icon))
+			else
+				text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+			end
 		end
 	end
 
-	if E.mylevel >= 10 and ( style == 'BOTH' or style == 'LOADOUT' ) then
-		text = strjoin('', text and (text..' / ') or '', activeLoadout)
+	if db.displayStyle == 'BOTH' or db.displayStyle == 'LOADOUT' then
+		text = strjoin('', text and text..(db.iconOnly and ' ' or ' / ') or '', activeLoadout)
 	end
 
 	self.text:SetText(text)

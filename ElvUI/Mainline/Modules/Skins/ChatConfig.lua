@@ -19,7 +19,7 @@ local function ReskinPickerOptions(self)
 				if check then
 					check:SetColorTexture(1, .82, 0, 0.8)
 					check:SetSize(10, 10)
-					check:SetPoint('LEFT', 2, 0)
+					check:Point('LEFT', 2, 0)
 					check:CreateBackdrop('Transparent')
 				end
 
@@ -188,10 +188,10 @@ function S:ChatConfig()
 
 	_G.ChatConfigMoveFilterUpButton:SetSize(22, 22)
 	_G.ChatConfigMoveFilterDownButton:SetSize(22, 22)
-	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint('RIGHT', _G.ChatConfigCombatSettingsFiltersDeleteButton, 'LEFT', -1, 0)
-	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint('RIGHT', _G.ChatConfigCombatSettingsFiltersAddFilterButton, 'LEFT', -1, 0)
-	_G.ChatConfigMoveFilterUpButton:SetPoint('TOPLEFT', _G.ChatConfigCombatSettingsFilters, 'BOTTOMLEFT', 3, 0)
-	_G.ChatConfigMoveFilterDownButton:SetPoint('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 1, 0)
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point('RIGHT', _G.ChatConfigCombatSettingsFiltersDeleteButton, 'LEFT', -1, 0)
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point('RIGHT', _G.ChatConfigCombatSettingsFiltersAddFilterButton, 'LEFT', -1, 0)
+	_G.ChatConfigMoveFilterUpButton:Point('TOPLEFT', _G.ChatConfigCombatSettingsFilters, 'BOTTOMLEFT', 3, 0)
+	_G.ChatConfigMoveFilterDownButton:Point('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 1, 0)
 
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineBySource)

@@ -12,6 +12,27 @@ local function SkinPvpTalents(slot)
 	slot.Border:Hide()
 end
 
+
+local function HandleTabs()
+	local tab = _G.InspectFrameTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -3, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['InspectFrameTab'..index]
+	end
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -37,14 +58,10 @@ function S:Blizzard_InspectUI()
 	end
 
 	-- Tabs
-	for i = 1, 3 do
-		S:HandleTab(_G['InspectFrameTab'..i])
-	end
+	HandleTabs()
 
-	-- Reposition Tabs
-	_G.InspectFrameTab1:SetPoint('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -3, 0)
-	_G.InspectFrameTab2:SetPoint('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.InspectFrameTab3:SetPoint('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.InspectPaperDollItemsFrame.InspectTalents:ClearAllPoints()
+	_G.InspectPaperDollItemsFrame.InspectTalents:Point('TOPRIGHT', _G.InspectFrame, 'BOTTOMRIGHT', 0, -1)
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
@@ -52,8 +69,8 @@ function S:Blizzard_InspectUI()
 	InspectModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	InspectModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
+	-- Background Artwork
 	if E.private.skins.parchmentRemoverEnable then
-		-- Background Artwork
 		_G.InspectGuildFrameBG:Kill()
 		_G.InspectPVPFrame.BG:Kill()
 		_G.InspectTalentFrame:StripTextures()

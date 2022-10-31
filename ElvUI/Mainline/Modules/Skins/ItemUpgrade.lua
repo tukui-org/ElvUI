@@ -25,7 +25,6 @@ function S:Blizzard_ItemUpgradeUI()
 	frame.UpgradeCostFrame.BGTex:StripTextures()
 
 	frame.NineSlice:Hide()
-	frame.TitleBg:Hide()
 	frame.TopTileStreaks:Hide()
 	frame.BottomBG:CreateBackdrop('Transparent')
 	frame.ItemInfo.UpgradeTo:SetFontObject('GameFontHighlightMedium')

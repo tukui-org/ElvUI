@@ -80,7 +80,7 @@ G.datatexts = {
 		MovementSpeed = { Label = '', NoLabel = false, decimalLength = 1 },
 		QuickJoin = { Label = '', NoLabel = false },
 		Reputation = { textFormat = 'CUR' },
-		["Talent/Loot Specialization"] = { displayStyle = 'BOTH' },
+		['Talent/Loot Specialization'] = { displayStyle = 'BOTH', iconOnly = false },
 		SpellPower = { school = 0 },
 		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Stamina = { Label = '', NoLabel = false },
