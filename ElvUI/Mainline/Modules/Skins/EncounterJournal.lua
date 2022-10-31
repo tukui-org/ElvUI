@@ -446,8 +446,7 @@ function S:Blizzard_EncounterJournal()
 			end
 		end)
 
-		-- Comment back in DF Beta, not on Pre Patch
-		--[[hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
+		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
 					child.bossTexture:SetAlpha(0)
@@ -480,7 +479,7 @@ function S:Blizzard_EncounterJournal()
 					child.isSkinned = true
 				end
 			end
-		end)]]
+		end)
 
 		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
 		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)
