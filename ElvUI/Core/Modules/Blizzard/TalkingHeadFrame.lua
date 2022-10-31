@@ -37,19 +37,8 @@ local function InitializeTalkingHead()
 	end
 end
 
-local function LoadTalkingHead()
-	if not _G.TalkingHeadFrame then
-		_G.TalkingHead_LoadUI()
-	end
-
+function B:PositionTalkingHead()
 	InitializeTalkingHead()
 
 	B:ScaleTalkingHeadFrame()
-end
-
-function B:PositionTalkingHead()
-	if not E:IsAddOnEnabled('Blizzard_TalkingHeadUI') then return end
-
-	-- wait until first frame, then load talking head (if it isnt yet) and spawn the mover
-	E:Delay(1, LoadTalkingHead)
 end
