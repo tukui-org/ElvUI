@@ -22,7 +22,7 @@ local function SkinRewardIcon(itemFrame)
 	if not itemFrame.IsSkinned then
 		itemFrame:CreateBackdrop('Transparent')
 		itemFrame:DisableDrawLayer('BORDER')
-		itemFrame.Icon:SetPoint('LEFT', 6, 0)
+		itemFrame.Icon:Point('LEFT', 6, 0)
 		S:HandleIcon(itemFrame.Icon, true)
 		itemFrame.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 		itemFrame.IsSkinned = true

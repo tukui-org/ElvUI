@@ -406,8 +406,11 @@ function UF:UpdateColors()
 	end
 	ElvUF.colors.selection[13] = E:SetColorTable(ElvUF.colors.selection[13], db.selection[13])
 
-	if not ElvUF.colors.ComboPoints then ElvUF.colors.ComboPoints = {} end
-	for i=1, 6 do
+	if not ElvUF.colors.ComboPoints then
+		ElvUF.colors.ComboPoints = {}
+	end
+
+	for i = 1, 7 do
 		ElvUF.colors.ComboPoints[i] = E:SetColorTable(ElvUF.colors.ComboPoints[i], db.classResources.comboPoints[i])
 	end
 

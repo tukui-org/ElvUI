@@ -144,6 +144,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventFrame:SetTemplate('Transparent')
 	_G.CalendarCreateEventFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarCreateEventFrame.Header:StripTextures()
+	S:HandleTrimScrollBar(_G.CalendarCreateEventInviteList.ScrollBar)
 
 	S:HandleButton(_G.CalendarCreateEventCreateButton, true)
 	S:HandleButton(_G.CalendarCreateEventMassInviteButton, true)
@@ -217,6 +218,7 @@ function S:Blizzard_Calendar()
 	S:HandleEditBox(_G.CalendarMassInviteMinLevelEdit)
 	S:HandleEditBox(_G.CalendarMassInviteMaxLevelEdit)
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
+	S:HandleButton(_G.CalendarMassInviteAcceptButton)
 
 	--Raid View
 	_G.CalendarViewRaidFrame:StripTextures()

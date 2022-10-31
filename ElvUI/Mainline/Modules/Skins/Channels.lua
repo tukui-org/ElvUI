@@ -14,8 +14,10 @@ function S:Blizzard_Channels()
 	CreateChannelPopup:StripTextures()
 	CreateChannelPopup:SetTemplate('Transparent')
 
+	S:HandleButton(ChannelFrame.SettingsButton) -- using -4, 4
 	S:HandleButton(ChannelFrame.NewButton)
-	S:HandleButton(ChannelFrame.SettingsButton)
+	ChannelFrame.NewButton:ClearAllPoints()
+	ChannelFrame.NewButton:Point('BOTTOMLEFT', ChannelFrame, 4, 4) -- make it match settings button
 
 	S:HandleTrimScrollBar(ChannelFrame.ChannelRoster.ScrollBar)
 

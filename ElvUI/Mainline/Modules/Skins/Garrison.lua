@@ -94,8 +94,8 @@ local function ReskinMissionComplete(frame)
 		end
 
 		missionComplete:CreateBackdrop('Transparent')
-		missionComplete.backdrop:SetPoint("TOPLEFT", 3, 2)
-		missionComplete.backdrop:SetPoint("BOTTOMRIGHT", -3, -10)
+		missionComplete.backdrop:Point("TOPLEFT", 3, 2)
+		missionComplete.backdrop:Point("BOTTOMRIGHT", -3, -10)
 
 		if E.private.skins.parchmentRemoverEnable then
 			missionComplete.CompleteFrame:StripTextures()
@@ -249,7 +249,7 @@ function S:Blizzard_GarrisonUI()
 				Reagent.NameFrame:SetTexture()
 				Reagent.Icon:SetDrawLayer('ARTWORK')
 				Reagent.Icon:ClearAllPoints()
-				Reagent.Icon:SetPoint('TOPLEFT', 1, -1)
+				Reagent.Icon:Point('TOPLEFT', 1, -1)
 				S:HandleIcon(Reagent.Icon)
 			end
 		end
@@ -315,9 +315,12 @@ function S:Blizzard_GarrisonUI()
 
 	-- Reposition Tabs
 	hooksecurefunc('PanelTemplates_UpdateTabs', function()
-		_G.GarrisonLandingPageTab1:SetPoint('TOPLEFT', _G.GarrisonLandingPage, 'BOTTOMLEFT', -3, 0)
-		_G.GarrisonLandingPageTab2:SetPoint('TOPLEFT', _G.GarrisonLandingPageTab1, 'TOPRIGHT', -5, 0)
-		_G.GarrisonLandingPageTab3:SetPoint('TOPLEFT', _G.GarrisonLandingPageTab2, 'TOPRIGHT', -5, 0)
+		_G.GarrisonLandingPageTab1:ClearAllPoints()
+		_G.GarrisonLandingPageTab2:ClearAllPoints()
+		_G.GarrisonLandingPageTab3:ClearAllPoints()
+		_G.GarrisonLandingPageTab1:Point('TOPLEFT', _G.GarrisonLandingPage, 'BOTTOMLEFT', -3, 0)
+		_G.GarrisonLandingPageTab2:Point('TOPLEFT', _G.GarrisonLandingPageTab1, 'TOPRIGHT', -5, 0)
+		_G.GarrisonLandingPageTab3:Point('TOPLEFT', _G.GarrisonLandingPageTab2, 'TOPRIGHT', -5, 0)
 	end)
 
 	if E.private.skins.parchmentRemoverEnable then
@@ -381,8 +384,8 @@ function S:Blizzard_GarrisonUI()
 			if not button.IsSkinned then
 				button.BG:Hide()
 				button:CreateBackdrop('Transparent')
-				button.backdrop:SetPoint('TOPLEFT')
-				button.backdrop:SetPoint('BOTTOMRIGHT', 0, 1)
+				button.backdrop:Point('TOPLEFT')
+				button.backdrop:Point('BOTTOMRIGHT', 0, 1)
 
 				for _, reward in pairs(button.Rewards) do
 					reward:GetRegions():Hide()

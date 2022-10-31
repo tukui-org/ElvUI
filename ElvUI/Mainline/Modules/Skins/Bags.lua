@@ -51,7 +51,7 @@ local function BackpackToken_Update(container)
 		if not token.Icon.backdrop then
 			S:HandleIcon(token.Icon, true)
 			token.Count:ClearAllPoints()
-			token.Count:SetPoint('RIGHT', token.Icon, 'LEFT', -3, 0)
+			token.Count:Point('RIGHT', token.Icon, 'LEFT', -3, 0)
 			token.Count:FontTemplate(nil, 12)
 			token.Icon:Size(14)
 		end

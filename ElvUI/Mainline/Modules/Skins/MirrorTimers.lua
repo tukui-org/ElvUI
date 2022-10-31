@@ -24,7 +24,7 @@ function S:HandleMirrorTimer()
 			frame.Text:FontTemplate()
 			frame.Text:ClearAllPoints()
 			frame.Text:SetParent(frame.StatusBar)
-			frame.Text:SetPoint('CENTER', frame.StatusBar, 0, 1)
+			frame.Text:Point('CENTER', frame.StatusBar, 0, 1)
 		end
 
 		frame:StripTextures()

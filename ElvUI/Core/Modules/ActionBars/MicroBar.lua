@@ -5,7 +5,6 @@ local _G = _G
 local next = next
 local wipe = wipe
 local gsub = gsub
-local pairs = pairs
 local assert = assert
 local unpack = unpack
 local tinsert = tinsert
@@ -15,7 +14,7 @@ local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
-local MICRO_BUTTONS = _G.MICRO_BUTTONS or {
+AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
 	'TalentMicroButton',
@@ -111,7 +110,7 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:UpdateMicroButtonsParent()
-	for _, x in pairs(_G.MICRO_BUTTONS) do
+	for _, x in next, AB.MICRO_BUTTONS do
 		_G[x]:SetParent(microBar)
 	end
 end
@@ -151,7 +150,7 @@ do
 	function AB:ShownMicroButtons()
 		wipe(buttons)
 
-		for _, name in next, MICRO_BUTTONS do
+		for _, name in next, AB.MICRO_BUTTONS do
 			local button = _G[name]
 			if button and button:IsShown() then
 				tinsert(buttons, name)
@@ -227,7 +226,7 @@ function AB:SetupMicroBar()
 	microBar.visibility:SetScript('OnShow', function() microBar:Show() end)
 	microBar.visibility:SetScript('OnHide', function() microBar:Hide() end)
 
-	for _, x in pairs(MICRO_BUTTONS) do
+	for _, x in next, AB.MICRO_BUTTONS do
 		AB:HandleMicroButton(_G[x])
 	end
 
