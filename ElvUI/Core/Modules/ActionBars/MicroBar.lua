@@ -110,8 +110,12 @@ function AB:HandleMicroButton(button)
 	end
 end
 
+function AB:ExportMicroButtons()
+	self.MicroButtons = self.MicroButtons or MICRO_BUTTONS
+end
+
 function AB:UpdateMicroButtonsParent()
-	for _, x in pairs(_G.MICRO_BUTTONS) do
+	for _, x in pairs(MICRO_BUTTONS) do
 		_G[x]:SetParent(microBar)
 	end
 end
@@ -245,6 +249,10 @@ function AB:SetupMicroBar()
 	AB:SecureHook('UpdateMicroButtons')
 	AB:SecureHook('UpdateMicroButtonsParent')
 	UpdateMicroButtonsParent(microBar)
+
+	if E.Retail then
+		 AB:ExportMicroButtons()
+	end
 
 	if not E.Retail then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
