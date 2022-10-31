@@ -182,10 +182,10 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.instanceButton:SetNormalTexture(E.ClearTexture)
 	EncounterInfo.instanceButton:SetHighlightTexture(E.ClearTexture)
 
-	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
 	EncounterInfo.leftShadow:Kill()
 	EncounterInfo.rightShadow:Kill()
 	EncounterInfo.model.dungeonBG:Kill()
+	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
 	_G.EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
 
 	EncounterInfo.instanceButton:ClearAllPoints()
@@ -229,7 +229,9 @@ function S:Blizzard_EncounterJournal()
 	--Tabs
 	if E.Retail then
 		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
-			local tab = _G.EncounterJournal.encounter.info[name]
+			local info = _G.EncounterJournal.encounter.info
+
+			local tab = info[name]
 			tab:CreateBackdrop('Transparent')
 			tab.backdrop:SetInside(2, 2)
 
@@ -242,8 +244,16 @@ function S:Blizzard_EncounterJournal()
 			hl:SetColorTexture(r, g, b, .2)
 			hl:SetInside(tab.backdrop)
 
+			tab:ClearAllPoints()
 			if name == 'overviewTab' then
-				tab:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, -35)
+				tab:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, 0)
+			elseif name == 'lootTab' then
+				tab:Point('TOPLEFT', info.overviewTab, 'BOTTOMLEFT', 0, -1)
+			elseif name == 'bossTab' then
+				tab:Point('TOPLEFT', info.lootTab, 'BOTTOMLEFT', 0, -1)
+			elseif name == 'modelTab' then
+				tab:Point('TOPLEFT', info.bossTab, 'BOTTOMLEFT', 0, -1)
+
 			end
 		end
 	else
@@ -256,6 +266,7 @@ function S:Blizzard_EncounterJournal()
 
 		for index, tab in next, tabs do
 			tab:ClearAllPoints()
+
 			if index == 4 then
 				tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 			else
