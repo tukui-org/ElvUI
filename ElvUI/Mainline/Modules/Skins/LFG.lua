@@ -671,6 +671,8 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Size(120, 22)
 
+	S:HandleTrimScrollBar(LFGListFrame.ApplicationViewer.ScrollBar)
+
 	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
 		frame.RemoveEntryButton:ClearAllPoints()
 

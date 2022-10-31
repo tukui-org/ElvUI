@@ -17,19 +17,9 @@ local function SkinContainer(frame, container)
 	end
 end
 
-local function StripClassTextures(button)
-	for _, region in next, { button:GetRegions() } do
-		if region:GetObjectType() == 'Texture' then
-			local texture = region:GetTexture()
-			if texture == [[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]] then
-				local c = CLASS_ICON_TCOORDS[button.class]
-				region:SetTexCoord(c[1] + 0.02, c[2] - 0.02, c[3] + 0.02, c[4] - 0.02)
-				region:SetInside()
-			else
-				region:SetTexture(nil)
-			end
-		end
-	end
+local function StripClassTextures(button, class)
+	local tcoords = CLASS_ICON_TCOORDS[class]
+	button:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 end
 
 local function HandleEventIcon(icon)
@@ -176,10 +166,11 @@ function S:Blizzard_Calendar()
 	_G.CalendarClassButton1:Point('TOPLEFT', _G.CalendarClassButtonContainer, 'TOPLEFT', E.PixelMode and 3 or 5, 0)
 
 	local lastClassButton
-	for index in next, CLASS_SORT_ORDER do
-		local button = _G['CalendarClassButton'..index]
-		local count = _G['CalendarClassButton'..index..'Count']
-		StripClassTextures(button)
+	for i, class in next, CLASS_SORT_ORDER do
+		local button = _G['CalendarClassButton'..i]
+		local count = _G['CalendarClassButton'..i..'Count']
+		StripClassTextures(button:GetNormalTexture(), class)
+		button:GetRegions():Hide()
 		button:SetTemplate()
 		button:Size(28)
 

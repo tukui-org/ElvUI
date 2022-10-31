@@ -204,7 +204,7 @@ end
 
 local function HandleTabs(arg1)
 	local frame = _G.AuctionHouseFrame
-	if arg1 ~= frame then return end
+	if not arg1 or arg1 ~= frame then return end
 
 	local lastTab = _G.AuctionHouseFrameBuyTab
 	for index, tab in next, frame.Tabs do
@@ -236,6 +236,7 @@ local function LoadSkin()
 
 	-- handle tab spacing
 	hooksecurefunc('PanelTemplates_SetNumTabs', HandleTabs)
+	HandleTabs(Frame) -- call it once to setup our tabs
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)

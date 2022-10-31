@@ -49,6 +49,7 @@ local menuList = {
 local specList = { { text = _G.SPECIALIZATION, isTitle = true, notCheckable = true } }
 local loadoutList = { { text = L["Loadouts"], isTitle = true, notCheckable = true } }
 
+local DEFAULT_TEXT = E:RGBToHex(0.9, 0.9, 0.9, nil, _G.TALENT_FRAME_DROP_DOWN_DEFAULT)
 local STARTER_TEXT = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, nil, _G.TALENT_FRAME_DROP_DOWN_STARTER_BUILD)
 
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -101,7 +102,7 @@ local function OnEvent(self, event)
 	local ID = info and info.id
 
 	if not ID then
-		self.text:SetText('N/A')
+		self.text:SetText(DEFAULT_TEXT)
 		return
 	end
 
@@ -121,7 +122,7 @@ local function OnEvent(self, event)
 		end
 	end
 
-	local activeLoadout = 'N/A'
+	local activeLoadout = DEFAULT_TEXT
 	for index, loadout in next, loadoutList do
 		if index > 1 and loadout:checked(loadout.arg1, loadout.arg2) then
 			activeLoadout = loadout.text
