@@ -92,35 +92,40 @@ local function ColorMemberName(button, info)
 	end
 end
 
-local card = {'First', 'Second', 'Third'}
-local function HandleGuildCards(cards)
-	for _, name in pairs(card) do
-		local guildCard = cards[name..'Card']
-		guildCard:StripTextures()
-		guildCard:SetTemplate('Transparent')
-		S:HandleButton(guildCard.RequestJoin)
+local HandleGuildCards
+do
+	local card = { 'First', 'Second', 'Third' }
+	function HandleGuildCards(cards)
+		for _, name in pairs(card) do
+			local guildCard = cards[name..'Card']
+			guildCard:StripTextures()
+			guildCard:SetTemplate('Transparent')
+			S:HandleButton(guildCard.RequestJoin)
+		end
+
+		S:HandleNextPrevButton(cards.PreviousPage)
+		S:HandleNextPrevButton(cards.NextPage)
 	end
-	S:HandleNextPrevButton(cards.PreviousPage)
-	S:HandleNextPrevButton(cards.NextPage)
 end
 
 local function HandleCommunityCards(frame)
-	if not frame.ListScrollFrame then return end -- ToDO: DF Currently doing nothing
+	if not frame then return end
 
-	for _, button in next, frame.ListScrollFrame.buttons do
-		button.CircleMask:Hide()
-		button.LogoBorder:Hide()
-		button.Background:Hide()
-		S:HandleIcon(button.CommunityLogo)
-		S:HandleButton(button)
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if not child.IsSkinned then
+			child.CircleMask:Hide()
+			child.LogoBorder:Hide()
+			child.Background:Hide()
+			S:HandleIcon(child.CommunityLogo)
+			S:HandleButton(child)
+
+			child.IsSkinned = true
+		end
 	end
-
-	S:HandleScrollBar(frame.ListScrollFrame.scrollBar)
 end
 
-local function HandleRewardButton(self)
-	for i = 1, self.ScrollTarget:GetNumChildren() do
-		local child = select(i, self.ScrollTarget:GetChildren())
+local function HandleRewardButton(button)
+	for _, child in next, { button.ScrollTarget:GetChildren() } do
 		if not child.IsSkinned then
 			S:HandleIcon(child.Icon, true)
 			child:StripTextures()

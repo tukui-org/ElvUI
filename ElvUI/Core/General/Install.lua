@@ -152,12 +152,12 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('threatWarning', 3)
 	SetCVar('alwaysShowActionBars', 1)
 	SetCVar('lockActionBars', 1)
+	SetCVar('ActionButtonUseKeyDown', 1)
 	SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
 	if E.Retail then
 		SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 	else
-		SetCVar('ActionButtonUseKeyDown', 1) -- dont set this for retail because of aura right click issue
 		SetCVar('chatClassColorOverride', 0)
 	end
 

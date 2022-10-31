@@ -44,7 +44,6 @@ local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-local WoW10 = select(4, GetBuildInfo()) >= 100000
 
 local CBH = LibStub("CallbackHandler-1.0")
 local LCG = LibStub("LibCustomGlow-1.0", true)
@@ -169,12 +168,7 @@ function lib:CreateButton(id, name, header, config)
 
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
-
-	if WoW10 then
-		button:RegisterForClicks("AnyDown", "AnyUp")
-	else
-		button:RegisterForClicks("AnyUp")
-	end
+	button:RegisterForClicks("AnyUp")
 
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -578,7 +572,7 @@ local function PickupAny(kind, target, detail, ...)
 end
 
 function Generic:OnEvent(event, key, down)
-	if WoW10 or not GetCVarBool('lockActionBars') then return end
+	if not GetCVarBool('lockActionBars') then return end
 
 	if event == 'OnLeave' then
 		self:RegisterForClicks('AnyDown')
@@ -722,9 +716,7 @@ function Generic:UpdateConfig(config)
 	UpdateGrid(self)
 	Update(self, true)
 
-	if not WoW10 then
-		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
-	end
+	self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 end
 
 -----------------------------------------------------------
@@ -1295,7 +1287,7 @@ function Update(self, fromUpdateConfig)
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 		self.rangeTimer = - 1
-		if not WoW10 then
+		if not WoWRetail then
 			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
 			if not self.LBFSkinned and not self.MasqueSkinned then
 				self.NormalTexture:SetTexCoord(0, 0, 0, 0)
@@ -1310,7 +1302,7 @@ function Update(self, fromUpdateConfig)
 		else
 			self.HotKey:SetVertexColor(0.75, 0.75, 0.75)
 		end
-		if not WoW10 then
+		if not WoWRetail then
 			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
 			if not self.LBFSkinned and not self.MasqueSkinned then
 				self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)
