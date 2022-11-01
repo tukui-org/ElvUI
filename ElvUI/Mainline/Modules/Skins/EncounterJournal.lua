@@ -156,10 +156,15 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	S:HandleTab(_G.EncounterJournalSuggestTab)
-	S:HandleTab(_G.EncounterJournalDungeonTab)
-	S:HandleTab(_G.EncounterJournalRaidTab)
-	S:HandleTab(_G.EncounterJournalLootJournalTab)
+	-- Bottom tabs
+	for _, tab in next, {
+		_G.EncounterJournalSuggestTab,
+		_G.EncounterJournalDungeonTab,
+		_G.EncounterJournalRaidTab,
+		_G.EncounterJournalLootJournalTab
+	} do
+		S:HandleTab(tab)
+	end
 
 	_G.EncounterJournalSuggestTab:ClearAllPoints()
 	_G.EncounterJournalDungeonTab:ClearAllPoints()
