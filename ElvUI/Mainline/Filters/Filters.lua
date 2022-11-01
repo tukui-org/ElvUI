@@ -1648,10 +1648,11 @@ G.unitframe.HastedChannelTicks = {
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
-	[32182]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
-	[80353]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
-	[90355]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
+	[2825]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
+	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
+	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
+	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
+	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Fury of the Aspects
 }
 
 G.unitframe.AuraHighlightColors = {}
