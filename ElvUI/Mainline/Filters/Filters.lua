@@ -667,6 +667,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[32182]		= List(), -- Heroism
 		[80353]		= List(), -- Time Warp
 		[90355]		= List(), -- Ancient Hysteria
+		[390386]	= List(), -- Fury of the Aspects
 		-- Paladin
 		[31821]		= List(), -- Aura Mastery
 		[1022]		= List(), -- Blessing of Protection
