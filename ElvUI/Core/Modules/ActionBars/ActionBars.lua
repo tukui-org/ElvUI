@@ -997,7 +997,11 @@ end
 do
 	local untaint = {
 		MainMenuBar = true,
-		MicroButtonAndBagsBar = true
+		MicroButtonAndBagsBar = true,
+		MultiBarBottomLeft = true,
+		MultiBarBottomRight = true,
+		MultiBarLeft = true,
+		MultiBarRight = true
 	}
 
 	local removeEvents = {
@@ -1008,16 +1012,8 @@ do
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
-	local skipNoopsi = {
-		MultiBarBottomLeft = true,
-		MultiBarBottomRight = true,
-		MultiBarLeft = true,
-		MultiBarRight = true
-	}
-
 	-- import to the main table
 	E:CopyTable(untaint, removeEvents)
-	E:CopyTable(untaint, skipNoopsi)
 
 	function AB:DisableBlizzard()
 		if E.Wrath then -- TotemBar: this still might taint
@@ -1037,7 +1033,7 @@ do
 					frame:UnregisterAllEvents()
 				end
 
-				if not E.Retail or not skipNoopsi[name] then
+				if not E.Retail then
 					AB:SetNoopsi(frame)
 				end
 			end
