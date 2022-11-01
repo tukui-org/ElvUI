@@ -1234,6 +1234,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[365219] = List(5), -- Chains of Anguish
 		[366285] = List(6), -- Rune of Compulsion
 		[363332] = List(5), -- Unbreaking Grasp
+	---------------------------------------------------------
+	---------------- Vault of the Incarnates ----------------
+	---------------------------------------------------------
+	-- Eranog
+	-- Terros
+	-- The Primal Council
+	-- Sennarth, the Cold Breath
+	-- Dathea, Ascended
+	-- Kurog Grimtotem
+	-- Broodkeeper Diurna
+	-- Raszageth the Storm-Eater
 	},
 }
 
@@ -1490,6 +1501,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[364248] = List(), -- Dark Zeal
 		[365030] = List(), -- Wicked Star
 		[362862] = List(), -- Army of the Dea
+	---------------------------------------------------------
+	---------------- Vault of the Incarnates ----------------
+	---------------------------------------------------------
+	-- Eranog
+	-- Terros
+	-- The Primal Council
+	-- Sennarth, the Cold Breath
+	-- Dathea, Ascended
+	-- Kurog Grimtotem
+	-- Broodkeeper Diurna
+	-- Raszageth the Storm-Eater
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
