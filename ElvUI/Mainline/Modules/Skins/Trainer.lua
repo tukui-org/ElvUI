@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, select, unpack = next, select, unpack
-
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TrainerUI()
@@ -35,9 +34,8 @@ function S:Blizzard_TrainerUI()
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', function(self)
-		for i = 1, self.ScrollTarget:GetNumChildren() do
-			local button = select(i, self.ScrollTarget:GetChildren())
+	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', function(frame)
+		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			if not button.IsSkinned then
 				S:HandleIcon(button.icon, true)
 				button:CreateBackdrop('Transparent')

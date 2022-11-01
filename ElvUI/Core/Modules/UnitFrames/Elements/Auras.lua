@@ -22,9 +22,15 @@ UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' 
 UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
 UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
 UF.ExcludeStacks = {
-	[113862] = 'Greater Invisibility', -- Mage
-	[295378] = 'Concentrated Flame', -- Heart of Azeroth
-	[324631] = 'Fleshcraft' -- Necrolord
+	[113862] = 'Greater Invisibility',	-- Mage
+	[295378] = 'Concentrated Flame',	-- Heart of Azeroth
+	[324631] = 'Fleshcraft',			-- Necrolord
+
+	-- Rogue Animacharges
+	[323560] = 'Echoing Reprimand',	-- 2 Stack
+	[354838] = 'Echoing Reprimand',	-- 3 Stack
+	[323558] = 'Echoing Reprimand',	-- 4 Stack
+	[323559] = 'Echoing Reprimand',	-- 5 Stack
 }
 
 UF.SmartPosition = {
@@ -443,7 +449,6 @@ function UF:PostUpdateAura(_, button)
 
 	button:SetBackdropBorderColor(r, g, b)
 	button.icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
-	button.matches = nil -- stackAuras
 
 	if button.needsIconTrim then
 		AB:TrimIcon(button)
@@ -575,15 +580,19 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 
 	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', source, name) or name
+		local amount = (count and count > 0 and count) or 1
 		local stack = self.stacks[matching]
 		if not stack then
 			self.stacks[matching] = button
+			button.matches = amount
 		elseif stack.texture == icon then
-			stack.matches = (stack.matches or 1) + ((count and count > 0 and count) or 1)
+			stack.matches = (stack.matches or 1) + amount
 			stack.count:SetText(stack.matches)
 
 			return false
 		end
+	elseif button.matches then
+		button.matches = nil -- stackAuras
 	end
 
 	if UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then

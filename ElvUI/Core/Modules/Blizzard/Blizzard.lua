@@ -75,7 +75,7 @@ function B:Initialize()
 		B:DisableHelpTip()
 		B:DisableNPE()
 		B:SkinBlizzTimers()
-		B:PositionTalkingHead()
+		B:HandleTalkingHead()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 

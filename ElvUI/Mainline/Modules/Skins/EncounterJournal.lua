@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local select = select
+local pairs = pairs
 local ipairs = ipairs
 local next = next
 local rad = rad
@@ -156,10 +157,17 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	S:HandleTab(_G.EncounterJournalSuggestTab)
-	S:HandleTab(_G.EncounterJournalDungeonTab)
-	S:HandleTab(_G.EncounterJournalRaidTab)
-	S:HandleTab(_G.EncounterJournalLootJournalTab)
+	-- Bottom tabs
+	local tabs = {
+		_G.EncounterJournalSuggestTab,
+		_G.EncounterJournalDungeonTab,
+		_G.EncounterJournalRaidTab,
+		_G.EncounterJournalLootJournalTab
+	}
+
+	for _, tab in pairs(tabs) do
+		S:HandleTab(tab)
+	end
 
 	_G.EncounterJournalSuggestTab:ClearAllPoints()
 	_G.EncounterJournalDungeonTab:ClearAllPoints()
