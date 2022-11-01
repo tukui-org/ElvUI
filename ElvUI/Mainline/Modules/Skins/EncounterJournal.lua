@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local select = select
-local pairs = pairs
 local ipairs = ipairs
 local next = next
 local rad = rad
@@ -158,14 +157,12 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
-	local tabs = {
+	for _, tab in next, {
 		_G.EncounterJournalSuggestTab,
 		_G.EncounterJournalDungeonTab,
 		_G.EncounterJournalRaidTab,
 		_G.EncounterJournalLootJournalTab
-	}
-
-	for _, tab in pairs(tabs) do
+	} do
 		S:HandleTab(tab)
 	end
 
