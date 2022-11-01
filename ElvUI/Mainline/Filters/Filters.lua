@@ -721,6 +721,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[396369] = List(), -- Mark of Lightning
 		[396364] = List(), -- Mark of Wind
 	----------------------------------------------------------
+	----------------- Dragonflight Dungeons ------------------
+	----------------------------------------------------------
+	-- Ruby Life Pools
+	-- Brackenhide Hollow
+	-- The Nokhud Offensive
+	-- Uldaman: Legacy of Tyr
+	-- Neltharus
+	-- The Azure Vault
+	-- Halls of Infusion
+	-- Algeth'ar Academy
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 1) -----------------
+	----------------------------------------------------------
+	-- Court of Stars
+	-- Halls of Valor
+	-- Shadowmoon Burial Grounds
+	-- Temple of the Jade Serpent
+	----------------------------------------------------------
+	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
 	-- Grimrail Depot
@@ -1243,6 +1262,24 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[373113] = List(2), -- Bounty: Haste (Stacking)
 		[373121] = List(2), -- Bounty: Versatility (Stacking)
 		[373116] = List(2), -- Bounty: Mastery (Stacking)
+	----------------------------------------------------------
+	----------------- Dragonflight Dungeons ------------------
+	----------------------------------------------------------
+	-- Ruby Life Pools
+	-- Brackenhide Hollow
+	-- The Nokhud Offensive
+	-- Uldaman: Legacy of Tyr
+	-- Neltharus
+	-- The Azure Vault
+	-- Halls of Infusion
+	-- Algeth'ar Academy
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 1) -----------------
+	----------------------------------------------------------
+	-- Court of Stars
+	-- Halls of Valor
+	-- Shadowmoon Burial Grounds
+	-- Temple of the Jade Serpent
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
