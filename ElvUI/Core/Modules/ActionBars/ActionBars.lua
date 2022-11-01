@@ -1001,11 +1001,14 @@ do
 		MultiBarBottomLeft = true,
 		MultiBarBottomRight = true,
 		MultiBarLeft = true,
-		MultiBarRight = true,
-		MultiBar5 = E.Retail or nil,
-		MultiBar6 = E.Retail or nil,
-		MultiBar7 = E.Retail or nil
+		MultiBarRight = true
 	}
+
+	if E.Retail then
+		untaint.MultiBar5 = true
+		untaint.MultiBar6 = true
+		untaint.MultiBar7 = true
+	end
 
 	local removeEvents = {
 		OverrideActionBar = true,
