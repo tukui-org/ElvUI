@@ -1023,6 +1023,8 @@ do
 		for name in next, untaint do
 			if not E.Retail then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+			elseif name == 'PetActionBar' then
+				_G.PetActionBar.UpdateGridLayout = E.noop
 			end
 
 			local frame = _G[name]
@@ -1500,9 +1502,7 @@ end
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
-	if not initLogin and not isReload then
-		AB:PositionAndSizeBarPet() -- for some reason on DF when you portal your pet bar placement is reset
-	elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
