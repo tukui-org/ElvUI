@@ -1528,6 +1528,16 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
+	-- TODO: Finish Evoker Auras @Lucky
+	--[[
+	EVOKER = {
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+	},
+	]]
 	ROGUE = {
 		[57934]		= Aura(57934, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Tricks of the Trade
 	},
