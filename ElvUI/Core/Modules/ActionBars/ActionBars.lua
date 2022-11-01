@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, strmatch, next, unpack = ipairs, pairs, strmatch, next, unpack
-local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
+local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -1001,7 +1001,10 @@ do
 		MultiBarBottomLeft = true,
 		MultiBarBottomRight = true,
 		MultiBarLeft = true,
-		MultiBarRight = true
+		MultiBarRight = true,
+		MultiBar5 = E.Retail or nil,
+		MultiBar6 = E.Retail or nil,
+		MultiBar7 = E.Retail or nil
 	}
 
 	local removeEvents = {
@@ -1059,6 +1062,7 @@ do
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:UnregisterAllEvents()
+			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED')
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 			-- lets only keep ExtraActionButtons in here
@@ -1067,6 +1071,26 @@ do
 
 			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
+
+			-- change the text of the remove paging
+			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
+				for _, child in next, { frame.ScrollTarget:GetChildren() } do
+					local option = child.data and child.data.setting
+					local variable = option and option.variable
+					if variable and strsub(variable, 0, -3) == 'PROXY_SHOW_ACTIONBAR' then
+						local num = tonumber(strsub(variable, 22))
+						if num and num <= 5 then -- NUM_ACTIONBAR_PAGES - 1
+							child.Text:SetFormattedText(L["Remove Bar %d Action Page"], num)
+						else
+							child.CheckBox:SetEnabled(false)
+							child:DisplayEnabled(false)
+						end
+
+						child.CheckBox:SetScript('OnEnter', nil)
+						child.Tooltip:SetScript('OnEnter', nil)
+					end
+				end
+			end)
 		else
 			AB:SetNoopsi(_G.MainMenuBarArtFrame)
 			AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
