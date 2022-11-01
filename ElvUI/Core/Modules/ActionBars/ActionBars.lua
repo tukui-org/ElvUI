@@ -1065,7 +1065,7 @@ do
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:UnregisterAllEvents()
-			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED')
+			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 			-- lets only keep ExtraActionButtons in here
