@@ -573,7 +573,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207]	= List(), -- Drums of Fury
 		[230935]	= List(), -- Drums of the Mountain (Legion)
 		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-		[321923]	= List(), -- Tome of the Still Mind
 	-- Shadowlands Consumables
 		[307159]	= List(), -- Potion of Spectral Agility
 		[307160]	= List(), -- Potion of Hardened Shadows
