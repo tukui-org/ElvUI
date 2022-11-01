@@ -1023,7 +1023,7 @@ do
 		for name in next, untaint do
 			if not E.Retail then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
-			elseif name == 'PetActionBar' then
+			elseif name == 'PetActionBar' then -- this fixes the pet bar getting replaced by EditMode
 				_G.PetActionBar.UpdateGridLayout = E.noop
 			end
 
