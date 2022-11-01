@@ -717,6 +717,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[373570] = List(), -- Hypnosis
 		[373607] = List(), -- Shadowy Barrier (Hypnosis)
 		[373509] = List(), -- Shadow Claws (Stacking)
+	-- Dragonflight Season 1
+		[396369] = List(), -- Mark of Lightning
+		[396364] = List(), -- Mark of Wind
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
