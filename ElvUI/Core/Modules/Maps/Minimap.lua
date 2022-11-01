@@ -445,9 +445,11 @@ function M:UpdateSettings()
 				gameTime:Hide()
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
-				gameTime:Show()
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
+				gameTime:SetParent(_G.MinimapBackdrop)
+				gameTime:Show()
+
 				M:SetScale(gameTime, scale)
 			end
 		end
