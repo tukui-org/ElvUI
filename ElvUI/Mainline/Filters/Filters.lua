@@ -1543,16 +1543,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
-	-- TODO: Finish Evoker Auras @Lucky
-	--[[
 	EVOKER = {
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[355941]	= Aura(355941, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Dream Breath
+		[363502]	= Aura(363502, nil, 'BOTTOMLEFT', {0.33, 0.33, 0.70}), -- Dream Flight
+		[366155]	= Aura(366155, nil, 'RIGHT', {0.14, 1.00, 0.88}), -- Reversion
+		[364343]	= Aura(364343, nil, 'TOP', {0.13, 0.87, 0.50}), -- Echo
+		[357170]	= Aura(357170, nil, 'BOTTOM', {0.11, 0.57, 0.71}), -- Time Dilation
 	},
-	]]
 	ROGUE = {
 		[57934]		= Aura(57934, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Tricks of the Trade
 	},
