@@ -80,6 +80,14 @@ function S:EditorManagerFrame()
 	S:HandleEditBox(layout.LayoutNameEditBox)
 	HandleCheckBox(layout.CharacterSpecificLayoutCheckButton.Button)
 
+	-- Layout Unsaved
+	local unsaved = _G.EditModeUnsavedChangesDialog
+	unsaved:StripTextures()
+	unsaved:CreateBackdrop('Transparent')
+	S:HandleButton(unsaved.CancelButton)
+	S:HandleButton(unsaved.ProceedButton)
+	S:HandleButton(unsaved.SaveAndProceedButton)
+
 	-- Layout Importer
 	local import = _G.EditModeImportLayoutDialog
 	import:StripTextures()

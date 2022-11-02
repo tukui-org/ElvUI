@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, strmatch, next, unpack = ipairs, pairs, strmatch, next, unpack
-local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
+local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -997,8 +997,18 @@ end
 do
 	local untaint = {
 		MainMenuBar = true,
-		MicroButtonAndBagsBar = true
+		MicroButtonAndBagsBar = true,
+		MultiBarBottomLeft = true,
+		MultiBarBottomRight = true,
+		MultiBarLeft = true,
+		MultiBarRight = true
 	}
+
+	if E.Retail then
+		untaint.MultiBar5 = true
+		untaint.MultiBar6 = true
+		untaint.MultiBar7 = true
+	end
 
 	local removeEvents = {
 		OverrideActionBar = true,
@@ -1008,16 +1018,8 @@ do
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
-	local skipNoopsi = {
-		MultiBarBottomLeft = true,
-		MultiBarBottomRight = true,
-		MultiBarLeft = true,
-		MultiBarRight = true
-	}
-
 	-- import to the main table
 	E:CopyTable(untaint, removeEvents)
-	E:CopyTable(untaint, skipNoopsi)
 
 	function AB:DisableBlizzard()
 		if E.Wrath then -- TotemBar: this still might taint
@@ -1027,6 +1029,8 @@ do
 		for name in next, untaint do
 			if not E.Retail then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+			elseif name == 'PetActionBar' then -- this fixes the pet bar getting replaced by EditMode
+				_G.PetActionBar.UpdateGridLayout = E.noop
 			end
 
 			local frame = _G[name]
@@ -1037,7 +1041,7 @@ do
 					frame:UnregisterAllEvents()
 				end
 
-				if not E.Retail or not skipNoopsi[name] then
+				if not E.Retail then
 					AB:SetNoopsi(frame)
 				end
 			end
@@ -1061,6 +1065,7 @@ do
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:UnregisterAllEvents()
+			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 			-- lets only keep ExtraActionButtons in here
@@ -1069,6 +1074,26 @@ do
 
 			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
+
+			-- change the text of the remove paging
+			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
+				for _, child in next, { frame.ScrollTarget:GetChildren() } do
+					local option = child.data and child.data.setting
+					local variable = option and option.variable
+					if variable and strsub(variable, 0, -3) == 'PROXY_SHOW_ACTIONBAR' then
+						local num = tonumber(strsub(variable, 22))
+						if num and num <= 5 then -- NUM_ACTIONBAR_PAGES - 1
+							child.Text:SetFormattedText(L["Remove Bar %d Action Page"], num)
+						else
+							child.CheckBox:SetEnabled(false)
+							child:DisplayEnabled(false)
+						end
+
+						child.CheckBox:SetScript('OnEnter', nil)
+						child.Tooltip:SetScript('OnEnter', nil)
+					end
+				end
+			end)
 		else
 			AB:SetNoopsi(_G.MainMenuBarArtFrame)
 			AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
@@ -1504,9 +1529,7 @@ end
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
-	if not initLogin and not isReload then
-		AB:PositionAndSizeBarPet() -- for some reason on DF when you portal your pet bar placement is reset
-	elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
