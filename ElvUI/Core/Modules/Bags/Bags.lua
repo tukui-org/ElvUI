@@ -1514,8 +1514,7 @@ end
 function B:UpdateContainerIcon(holder, bagID)
 	if not holder or not bagID or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER then return end
 
-	local containerID = bagID ~= 5 and ContainerIDToInventoryID(bagID)
-	holder.icon:SetTexture(containerID and GetInventoryItemTexture('player', containerID) or 136511)
+	holder.icon:SetTexture(GetInventoryItemTexture('player', ContainerIDToInventoryID(bagID)) or 136511)
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1643,7 +1642,7 @@ function B:ConstructContainerFrame(name, isBank)
 				holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 				holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			else
-				holder:SetID(bagID ~= 5 and GetInventorySlotInfo(format('Bag%dSlot', bagID-1)) or 5)
+				holder:SetID(bagID == 5 and 5 or GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
 
 				B:UpdateContainerIcon(holder, bagID)
 			end
