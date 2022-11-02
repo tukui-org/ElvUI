@@ -1129,6 +1129,23 @@ function UF:DisableBlizzard()
 	else -- we don't want to setup our raid utility when blizzard's is active
 		E.RaidUtility.Initialize = E.noop
 	end
+
+	-- handle arena ones as well
+	if disable.arena then
+		if E.Retail then
+			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
+		end
+
+		Arena_LoadUI = E.noop
+		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
+
+		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
+			ElvUF:DisableBlizzard('arena')
+		else
+			UF:RegisterEvent('ADDON_LOADED')
+		end
+	end
 end
 
 do
@@ -1647,22 +1664,6 @@ function UF:Initialize()
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:DisableBlizzard()
-
-	if E.private.unitframe.disabledBlizzardFrames.arena then
-		if E.Retail then
-			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
-		end
-
-		Arena_LoadUI = E.noop
-		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
-		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
-
-		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
-			ElvUF:DisableBlizzard('arena')
-		else
-			UF:RegisterEvent('ADDON_LOADED')
-		end
-	end
 
 	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
 		hooksecurefunc(_G.Clique, 'BLACKLIST_CHANGED', UF.UpdateRegisteredClicks)
