@@ -95,7 +95,11 @@ do
 			DispelList.Poison = not Retail and (cleanse or toxins)
 			DispelList.Disease = not Retail and (cleanse or toxins)
 		elseif myClass == 'EVOKER' then
-			-- TODO: Finish Evoker @Lucky
+			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
+			local expunge = CheckSpell(365585) -- Expunge (Devastation)
+
+			DispelList.Magic = naturalize
+			DispelList.Poison = naturalize or expunge
 		end
 
 		if undoRanks then
