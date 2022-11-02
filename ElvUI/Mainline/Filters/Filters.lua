@@ -7,6 +7,10 @@ local Aura = E.Filters.Aura
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Evoker
+		[355689]	= List(2), -- Landslide
+		[370898]	= List(1), -- Permeating Chill
+		[360806]	= List(3), -- Sleep Walk
 	-- Death Knight
 		[47476]		= List(2), -- Strangulate
 		[108194]	= List(4), -- Asphyxiate UH
@@ -166,6 +170,9 @@ G.unitframe.aurafilters.CCDebuffs = {
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Evoker
+		[363916]	= List(), -- Obsidian Scales
+		[374348]	= List(), -- Renewing Blaze
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -301,6 +308,14 @@ G.unitframe.aurafilters.TurtleBuffs = {
 G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Evoker
+		[363916]	= List(), -- Obsidian Scales
+		[374348]	= List(), -- Renewing Blaze
+		[375087]	= List(), -- Dragonrage
+		[370553]	= List(), -- Tip the Scales
+		[358267]	= List(), -- Hover
+		[357210]	= List(), -- Deep Breath
+		[371807]	= List(), -- Recall
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -661,30 +676,30 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-		-- Bloodlust effects
-		[2825]		= List(), -- Bloodlust
-		[32182]		= List(), -- Heroism
-		[80353]		= List(), -- Time Warp
-		[90355]		= List(), -- Ancient Hysteria
-		[390386]	= List(), -- Fury of the Aspects
-		-- Paladin
+	-- Haste effects
+		[2825]		= List(), -- [Shaman] Bloodlust
+		[32182]		= List(), -- [Shaman] Heroism
+		[80353]		= List(), -- [Mage] Time Warp
+		[90355]		= List(), -- [Hunter] Ancient Hysteria
+		[390386]	= List(), -- [Evoker] Fury of the Aspects
+	-- Paladin
 		[31821]		= List(), -- Aura Mastery
 		[1022]		= List(), -- Blessing of Protection
 		[204018]	= List(), -- Blessing of Spellwarding
 		[6940]		= List(), -- Blessing of Sacrifice
 		[1044]		= List(), -- Blessing of Freedom
-		-- Priest
+	-- Priest
 		[47788]		= List(), -- Guardian Spirit
 		[33206]		= List(), -- Pain Suppression
 		[62618]		= List(), -- Power Word: Barrier
-		-- Monk
+	-- Monk
 		[116849]	= List(), -- Life Cocoon
-		-- Druid
+	-- Druid
 		[102342]	= List(), -- Ironbark
-		-- Shaman
+	-- Shaman
 		[325174]	= List(), -- Spirit Link
 		[20608]		= List(), -- Reincarnation
-		-- Other
+	-- Other
 		[97462]		= List(), -- Rallying Cry
 		[196718]	= List(), -- Darkness
 	},
@@ -1238,12 +1253,44 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
 	-- Eranog
+		[370648] = List(5), -- Primal Flow
+		[390715] = List(6), -- Primal Rifts
+		[370597] = List(6), -- Kill Order
 	-- Terros
+		[382776] = List(5), -- Awakened Earth 1
+		[381253] = List(5), -- Awakened Earth 2
+		[386352] = List(3), -- Rock Blast
+		[382458] = List(6), -- Resonant Aftermath
 	-- The Primal Council
+		[371624] = List(5), -- Conductive Mark
+		[372027] = List(4), -- Slashing Blaze
+		[374039] = List(4), -- Meteor Axe
 	-- Sennarth, the Cold Breath
+		[371976] = List(4), -- Chilling Blast
+		[372082] = List(5), -- Enveloping Webs
+		[374659] = List(4), -- Rush
+		[374104] = List(5), -- Wrapped in Webs Slow
+		[374503] = List(6), -- Wrapped in Webs Stun
+		[373048] = List(3), -- Suffocating Webs
 	-- Dathea, Ascended
+		[391686] = List(5), -- Conductive Mark
+		[378277] = List(2), -- Elemental Equilbrium
+		[388290] = List(4), -- Cyclone
 	-- Kurog Grimtotem
+		[377780] = List(5), -- Skeletal Fractures
+		[372514] = List(5), -- Frost Bite
+		[374554] = List(4), -- Lava Pool
+		[374709] = List(4), -- Seismic Rupture
+		[374023] = List(6), -- Searing Carnage
+		[374427] = List(6), -- Ground Shatter
+		[390920] = List(5), -- Shocking Burst
+		[372458] = List(6), -- Below Zero
 	-- Broodkeeper Diurna
+		[388920] = List(6), -- Frozen Shroud
+		[378782] = List(5), -- Mortal Wounds
+		[378787] = List(5), -- Crushing Stoneclaws
+		[375620] = List(6), -- Ionizing Charge
+		[375578] = List(4), -- Flame Sentry
 	-- Raszageth the Storm-Eater
 	},
 }
@@ -1505,12 +1552,48 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
 	-- Eranog
+		[393298] = List(), -- Eruption
+		[394904] = List(), -- Burning Wound
+		[395433] = List(), -- Shape Tempest
+		[370307] = List(), -- Collapsing Army
 	-- Terros
+		[388393] = List(), -- Tectonic Barrage
 	-- The Primal Council
+		[374038] = List(), -- Meteor Axes
+		[373059] = List(), -- Primal Blizzard
+		[386375] = List(), -- Storming Convocation
+		[386370] = List(), -- Quaking Convocation
+		[386440] = List(), -- Glacial Convocation
+		[386289] = List(), -- Burning Convocation
 	-- Sennarth, the Cold Breath
+		[374327] = List(), -- Caustic Blood
+		[372238] = List(), -- Call Spiderlings
 	-- Dathea, Ascended
+		[388988] = List(), -- Crosswinds
+		[389221] = List(), -- Gale Expulsion
+		[381688] = List(), -- Unstable Gusts
+		[377206] = List(), -- Cyclone
+		[388029] = List(), -- Diverted Essence 1
+		[387982] = List(), -- Diverted Essence 2
 	-- Kurog Grimtotem
+		[374918] = List(), -- Thundering Dominance
+		[374881] = List(), -- Flaming Dominance
+		[374916] = List(), -- Chilling Dominance
+		[374917] = List(), -- Shattering Dominance
+		[374321] = List(), -- Breaking Gravel
+		[395893] = List(), -- Erupting Bedrock
+		[374485] = List(), -- Magma Flow
+		[374779] = List(6), -- Primal Barrier
+		[374707] = List(), -- Seismic Rupture
+		[374624] = List(), -- Freezing Tempest
 	-- Broodkeeper Diurna
+		[380176] = List(), -- Empowered Greatstaff of the Broodkeeper
+		[380174] = List(), -- Empowered Greatstaff of the Broodkeeper
+		[388949] = List(), -- Frozen Shroud
+		[375879] = List(), -- Broodkeeper's Fury
+		[375457] = List(), -- Chilling Tantrum
+		[375809] = List(), -- Broodkeeper's Bond
+		[390561] = List(), -- Diurna's Gaze
 	-- Raszageth the Storm-Eater
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
@@ -1528,16 +1611,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
-	-- TODO: Finish Evoker Auras @Lucky
-	--[[
 	EVOKER = {
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
-		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[355941]	= Aura(355941, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Dream Breath
+		[363502]	= Aura(363502, nil, 'BOTTOMLEFT', {0.33, 0.33, 0.70}), -- Dream Flight
+		[366155]	= Aura(366155, nil, 'RIGHT', {0.14, 1.00, 0.88}), -- Reversion
+		[364343]	= Aura(364343, nil, 'TOP', {0.13, 0.87, 0.50}), -- Echo
+		[357170]	= Aura(357170, nil, 'BOTTOM', {0.11, 0.57, 0.71}), -- Time Dilation
 	},
-	]]
 	ROGUE = {
 		[57934]		= Aura(57934, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Tricks of the Trade
 	},
@@ -1658,11 +1738,11 @@ G.unitframe.HastedChannelTicks = {
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
-	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
-	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
-	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
-	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Fury of the Aspects
+	[2825]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Bloodlust
+	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Heroism
+	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Mage] Time Warp
+	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Hunter] Ancient Hysteria
+	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Evoker] Fury of the Aspects
 }
 
 G.unitframe.AuraHighlightColors = {}
