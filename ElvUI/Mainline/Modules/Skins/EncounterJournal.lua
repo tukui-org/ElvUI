@@ -156,10 +156,15 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	S:HandleTab(_G.EncounterJournalSuggestTab)
-	S:HandleTab(_G.EncounterJournalDungeonTab)
-	S:HandleTab(_G.EncounterJournalRaidTab)
-	S:HandleTab(_G.EncounterJournalLootJournalTab)
+	-- Bottom tabs
+	for _, tab in next, {
+		_G.EncounterJournalSuggestTab,
+		_G.EncounterJournalDungeonTab,
+		_G.EncounterJournalRaidTab,
+		_G.EncounterJournalLootJournalTab
+	} do
+		S:HandleTab(tab)
+	end
 
 	_G.EncounterJournalSuggestTab:ClearAllPoints()
 	_G.EncounterJournalDungeonTab:ClearAllPoints()
@@ -197,7 +202,7 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 
-	--buttons
+	-- Buttons
 	EncounterInfo.difficulty:ClearAllPoints()
 	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
 	HandleButton(EncounterInfo.reset)
@@ -226,7 +231,7 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.LootContainer:Height(360)
 	EncounterInfo.overviewScroll:Height(360)
 
-	--Tabs
+	-- Tabs
 	if E.Retail then
 		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
 			local info = _G.EncounterJournal.encounter.info
@@ -293,7 +298,7 @@ function S:Blizzard_EncounterJournal()
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
 	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar)
 
-	--Suggestions
+	-- Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
 		local suggestion = EJ.suggestFrame['Suggestion'..i]
 		if i == 1 then
@@ -380,7 +385,7 @@ function S:Blizzard_EncounterJournal()
 		end)
 	end
 
-	--Suggestion Reward Tooltips
+	-- Suggestion Reward Tooltips
 	if E.private.skins.blizzard.tooltip then
 		local tooltip = _G.EncounterJournalTooltip
 		local item1 = tooltip.Item1
@@ -392,12 +397,14 @@ function S:Blizzard_EncounterJournal()
 		item2.IconBorder:Kill()
 	end
 
-	--Powers
+	-- Powers
 	local LJ = EJ.LootJournal
 	HandleButton(LJ.ClassDropDownButton, true)
 	LJ.ClassDropDownButton:SetFrameLevel(10)
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
+
+	S:HandleTrimScrollBar(_G.EncounterJournal.LootJournal.ScrollBar)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
 		HandleButton(button, true)

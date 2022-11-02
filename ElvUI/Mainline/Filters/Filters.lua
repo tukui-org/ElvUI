@@ -573,7 +573,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207]	= List(), -- Drums of Fury
 		[230935]	= List(), -- Drums of the Mountain (Legion)
 		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-		[321923]	= List(), -- Tome of the Still Mind
 	-- Shadowlands Consumables
 		[307159]	= List(), -- Potion of Spectral Agility
 		[307160]	= List(), -- Potion of Hardened Shadows
@@ -667,6 +666,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[32182]		= List(), -- Heroism
 		[80353]		= List(), -- Time Warp
 		[90355]		= List(), -- Ancient Hysteria
+		[390386]	= List(), -- Fury of the Aspects
 		-- Paladin
 		[31821]		= List(), -- Aura Mastery
 		[1022]		= List(), -- Blessing of Protection
@@ -717,6 +717,28 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[373570] = List(), -- Hypnosis
 		[373607] = List(), -- Shadowy Barrier (Hypnosis)
 		[373509] = List(), -- Shadow Claws (Stacking)
+	-- Dragonflight Season 1
+		[396369] = List(), -- Mark of Lightning
+		[396364] = List(), -- Mark of Wind
+	----------------------------------------------------------
+	----------------- Dragonflight Dungeons ------------------
+	----------------------------------------------------------
+	-- Ruby Life Pools
+	-- Brackenhide Hollow
+	-- The Nokhud Offensive
+	-- Uldaman: Legacy of Tyr
+	-- Neltharus
+	-- The Azure Vault
+	-- Halls of Infusion
+	-- Algeth'ar Academy
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 1) -----------------
+	----------------------------------------------------------
+	-- Court of Stars
+	-- Halls of Valor
+	-- Shadowmoon Burial Grounds
+	-- Temple of the Jade Serpent
+	----------------------------------------------------------
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
@@ -1212,6 +1234,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[365219] = List(5), -- Chains of Anguish
 		[366285] = List(6), -- Rune of Compulsion
 		[363332] = List(5), -- Unbreaking Grasp
+	---------------------------------------------------------
+	---------------- Vault of the Incarnates ----------------
+	---------------------------------------------------------
+	-- Eranog
+	-- Terros
+	-- The Primal Council
+	-- Sennarth, the Cold Breath
+	-- Dathea, Ascended
+	-- Kurog Grimtotem
+	-- Broodkeeper Diurna
+	-- Raszageth the Storm-Eater
 	},
 }
 
@@ -1240,6 +1273,24 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[373113] = List(2), -- Bounty: Haste (Stacking)
 		[373121] = List(2), -- Bounty: Versatility (Stacking)
 		[373116] = List(2), -- Bounty: Mastery (Stacking)
+	----------------------------------------------------------
+	----------------- Dragonflight Dungeons ------------------
+	----------------------------------------------------------
+	-- Ruby Life Pools
+	-- Brackenhide Hollow
+	-- The Nokhud Offensive
+	-- Uldaman: Legacy of Tyr
+	-- Neltharus
+	-- The Azure Vault
+	-- Halls of Infusion
+	-- Algeth'ar Academy
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 1) -----------------
+	----------------------------------------------------------
+	-- Court of Stars
+	-- Halls of Valor
+	-- Shadowmoon Burial Grounds
+	-- Temple of the Jade Serpent
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
@@ -1451,6 +1502,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[365030] = List(), -- Wicked Star
 		[362862] = List(), -- Army of the Dea
 	---------------------------------------------------------
+	---------------- Vault of the Incarnates ----------------
+	---------------------------------------------------------
+	-- Eranog
+	-- Terros
+	-- The Primal Council
+	-- Sennarth, the Cold Breath
+	-- Dathea, Ascended
+	-- Kurog Grimtotem
+	-- Broodkeeper Diurna
+	-- Raszageth the Storm-Eater
+	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
 	-- Korthia
@@ -1466,6 +1528,16 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
+	-- TODO: Finish Evoker Auras @Lucky
+	--[[
+	EVOKER = {
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+		[12345]		= Aura(12345, nil, 'TOPRIGHT', {0.00, 0.00, 0.00}), -- Spell
+	},
+	]]
 	ROGUE = {
 		[57934]		= Aura(57934, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Tricks of the Trade
 	},
@@ -1586,10 +1658,11 @@ G.unitframe.HastedChannelTicks = {
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
-	[32182]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
-	[80353]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
-	[90355]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
+	[2825]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
+	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
+	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
+	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
+	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Fury of the Aspects
 }
 
 G.unitframe.AuraHighlightColors = {}
