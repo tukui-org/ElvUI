@@ -1253,12 +1253,44 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
 	-- Eranog
+		[370648] = List(5), -- Primal Flow
+		[390715] = List(6), -- Primal Rifts
+		[370597] = List(6), -- Kill Order
 	-- Terros
+		[382776] = List(5), -- Awakened Earth 1
+		[381253] = List(5), -- Awakened Earth 2
+		[386352] = List(3), -- Rock Blast
+		[382458] = List(6), -- Resonant Aftermath
 	-- The Primal Council
+		[371624] = List(5), -- Conductive Mark
+		[372027] = List(4), -- Slashing Blaze
+		[374039] = List(4), -- Meteor Axe
 	-- Sennarth, the Cold Breath
+		[371976] = List(4), -- Chilling Blast
+		[372082] = List(5), -- Enveloping Webs
+		[374659] = List(4), -- Rush
+		[374104] = List(5), -- Wrapped in Webs Slow
+		[374503] = List(6), -- Wrapped in Webs Stun
+		[373048] = List(3), -- Suffocating Webs
 	-- Dathea, Ascended
+		[391686] = List(5), -- Conductive Mark
+		[378277] = List(2), -- Elemental Equilbrium
+		[388290] = List(4), -- Cyclone
 	-- Kurog Grimtotem
+		[377780] = List(5), -- Skeletal Fractures
+		[372514] = List(5), -- Frost Bite
+		[374554] = List(4), -- Lava Pool
+		[374709] = List(4), -- Seismic Rupture
+		[374023] = List(6), -- Searing Carnage
+		[374427] = List(6), -- Ground Shatter
+		[390920] = List(5), -- Shocking Burst
+		[372458] = List(6), -- Below Zero
 	-- Broodkeeper Diurna
+		[388920] = List(6), -- Frozen Shroud
+		[378782] = List(5), -- Mortal Wounds
+		[378787] = List(5), -- Crushing Stoneclaws
+		[375620] = List(6), -- Ionizing Charge
+		[375578] = List(4), -- Flame Sentry
 	-- Raszageth the Storm-Eater
 	},
 }
