@@ -7,6 +7,10 @@ local Aura = E.Filters.Aura
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Evoker
+		[355689]	= List(2), -- Landslide
+		[370898]	= List(1), -- Permeating Chill
+		[360806]	= List(3), -- Sleep Walk
 	-- Death Knight
 		[47476]		= List(2), -- Strangulate
 		[108194]	= List(4), -- Asphyxiate UH
