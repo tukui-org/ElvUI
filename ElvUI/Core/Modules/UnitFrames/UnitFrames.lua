@@ -1097,17 +1097,20 @@ function UF:UpdateAllHeaders(skip)
 end
 
 function UF:DisableBlizzard()
-	-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
-	-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
-	_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+	local disable = E.private.unitframe.disabledBlizzardFrames
+	if disable.party or disable.raid then
+		-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
+		-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
+		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+	end
 
 	-- shutdown some background updates on default unitframes
-	if E.private.unitframe.disabledBlizzardFrames.party and _G.CompactPartyFrame then
+	if disable.party and _G.CompactPartyFrame then
 		_G.CompactPartyFrame:UnregisterAllEvents()
 	end
 
 	-- also handle it for background raid frames and the raid utility
-	if E.private.unitframe.disabledBlizzardFrames.raid then
+	if disable.raid then
 		if _G.CompactRaidFrameContainer then
 			_G.CompactRaidFrameContainer:UnregisterAllEvents()
 		end
@@ -1643,13 +1646,9 @@ function UF:Initialize()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	UF:DisableBlizzard()
 
-	local disable = E.private.unitframe.disabledBlizzardFrames
-	if disable.party or disable.raid then
-		UF:DisableBlizzard()
-	end
-
-	if disable.arena then
+	if E.private.unitframe.disabledBlizzardFrames.arena then
 		if E.Retail then
 			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 		end
