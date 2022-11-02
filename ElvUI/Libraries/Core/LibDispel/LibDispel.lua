@@ -94,6 +94,8 @@ do
 			DispelList.Curse = cleanse
 			DispelList.Poison = not Retail and (cleanse or toxins)
 			DispelList.Disease = not Retail and (cleanse or toxins)
+		elseif myClass == 'EVOKER' then
+			-- TODO: Finish Evoker @Lucky
 		end
 
 		if undoRanks then
