@@ -170,6 +170,9 @@ G.unitframe.aurafilters.CCDebuffs = {
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Evoker
+		[363916]	= List(), -- Obsidian Scales
+		[374348]	= List(), -- Renewing Blaze
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
