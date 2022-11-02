@@ -1506,6 +1506,7 @@ end
 function B:UpdateContainerIcons()
 	if not B.BagFrame then return end
 
+	-- this only executes for the main bag, the bank bag doesn't use this
 	for bagID, holder in next, B.BagFrame.ContainerHolderByBagID do
 		B:UpdateContainerIcon(holder, bagID)
 	end
