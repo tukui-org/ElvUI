@@ -676,30 +676,30 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-		-- Bloodlust effects
-		[2825]		= List(), -- Bloodlust
-		[32182]		= List(), -- Heroism
-		[80353]		= List(), -- Time Warp
-		[90355]		= List(), -- Ancient Hysteria
-		[390386]	= List(), -- Fury of the Aspects
-		-- Paladin
+	-- Haste effects
+		[2825]		= List(), -- [Shaman] Bloodlust
+		[32182]		= List(), -- [Shaman] Heroism
+		[80353]		= List(), -- [Mage] Time Warp
+		[90355]		= List(), -- [Hunter] Ancient Hysteria
+		[390386]	= List(), -- [Evoker] Fury of the Aspects
+	-- Paladin
 		[31821]		= List(), -- Aura Mastery
 		[1022]		= List(), -- Blessing of Protection
 		[204018]	= List(), -- Blessing of Spellwarding
 		[6940]		= List(), -- Blessing of Sacrifice
 		[1044]		= List(), -- Blessing of Freedom
-		-- Priest
+	-- Priest
 		[47788]		= List(), -- Guardian Spirit
 		[33206]		= List(), -- Pain Suppression
 		[62618]		= List(), -- Power Word: Barrier
-		-- Monk
+	-- Monk
 		[116849]	= List(), -- Life Cocoon
-		-- Druid
+	-- Druid
 		[102342]	= List(), -- Ironbark
-		-- Shaman
+	-- Shaman
 		[325174]	= List(), -- Spirit Link
 		[20608]		= List(), -- Reincarnation
-		-- Other
+	-- Other
 		[97462]		= List(), -- Rallying Cry
 		[196718]	= List(), -- Darkness
 	},
@@ -1673,11 +1673,11 @@ G.unitframe.HastedChannelTicks = {
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
-	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
-	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Time Warp
-	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
-	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Fury of the Aspects
+	[2825]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Bloodlust
+	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Heroism
+	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Mage] Time Warp
+	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Hunter] Ancient Hysteria
+	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Evoker] Fury of the Aspects
 }
 
 G.unitframe.AuraHighlightColors = {}
