@@ -308,6 +308,14 @@ G.unitframe.aurafilters.TurtleBuffs = {
 G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
+	-- Evoker
+		[363916]	= List(), -- Obsidian Scales
+		[374348]	= List(), -- Renewing Blaze
+		[375087]	= List(), -- Dragonrage
+		[370553]	= List(), -- Tip the Scales
+		[358267]	= List(), -- Hover
+		[357210]	= List(), -- Deep Breath
+		[371807]	= List(), -- Recall
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
