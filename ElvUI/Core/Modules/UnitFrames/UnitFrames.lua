@@ -1104,7 +1104,7 @@ function UF:DisableBlizzard()
 		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 	end
 
-	-- shutdown some background updates on default unitframes
+	-- shutdown some background updates on party unitframes
 	if disable.party and _G.CompactPartyFrame then
 		_G.CompactPartyFrame:UnregisterAllEvents()
 	end
