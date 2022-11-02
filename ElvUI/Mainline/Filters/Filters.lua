@@ -1520,12 +1520,48 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
 	-- Eranog
+		[393298] = List(), -- Eruption
+		[394904] = List(), -- Burning Wound
+		[395433] = List(), -- Shape Tempest
+		[370307] = List(), -- Collapsing Army
 	-- Terros
+		[388393] = List(), -- Tectonic Barrage
 	-- The Primal Council
+		[374038] = List(), -- Meteor Axes
+		[373059] = List(), -- Primal Blizzard
+		[386375] = List(), -- Storming Convocation
+		[386370] = List(), -- Quaking Convocation
+		[386440] = List(), -- Glacial Convocation
+		[386289] = List(), -- Burning Convocation
 	-- Sennarth, the Cold Breath
+		[374327] = List(), -- Caustic Blood
+		[372238] = List(), -- Call Spiderlings
 	-- Dathea, Ascended
+		[388988] = List(), -- Crosswinds
+		[389221] = List(), -- Gale Expulsion
+		[381688] = List(), -- Unstable Gusts
+		[377206] = List(), -- Cyclone
+		[388029] = List(), -- Diverted Essence 1
+		[387982] = List(), -- Diverted Essence 2
 	-- Kurog Grimtotem
+		[374918] = List(), -- Thundering Dominance
+		[374881] = List(), -- Flaming Dominance
+		[374916] = List(), -- Chilling Dominance
+		[374917] = List(), -- Shattering Dominance
+		[374321] = List(), -- Breaking Gravel
+		[395893] = List(), -- Erupting Bedrock
+		[374485] = List(), -- Magma Flow
+		[374779] = List(6), -- Primal Barrier
+		[374707] = List(), -- Seismic Rupture
+		[374624] = List(), -- Freezing Tempest
 	-- Broodkeeper Diurna
+		[380176] = List(), -- Empowered Greatstaff of the Broodkeeper
+		[380174] = List(), -- Empowered Greatstaff of the Broodkeeper
+		[388949] = List(), -- Frozen Shroud
+		[375879] = List(), -- Broodkeeper's Fury
+		[375457] = List(), -- Chilling Tantrum
+		[375809] = List(), -- Broodkeeper's Bond
+		[390561] = List(), -- Diurna's Gaze
 	-- Raszageth the Storm-Eater
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
