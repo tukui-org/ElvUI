@@ -1097,14 +1097,34 @@ function UF:UpdateAllHeaders(skip)
 end
 
 function UF:DisableBlizzard()
-	if (not E.private.unitframe.disabledBlizzardFrames.raid) and (not E.private.unitframe.disabledBlizzardFrames.party) then return end
-	if not CompactRaidFrameManager_SetSetting then
-		E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
-	else
-		CompactRaidFrameManager_SetSetting('IsShown', '0')
-		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
-		_G.CompactRaidFrameManager:UnregisterAllEvents()
-		_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
+	-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
+	-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
+	_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+
+	-- shutdown some background updates on default unitframes
+	if E.private.unitframe.disabledBlizzardFrames.party and _G.CompactPartyFrame then
+		_G.CompactPartyFrame:UnregisterAllEvents()
+	end
+
+	-- also handle it for background raid frames and the raid utility
+	if E.private.unitframe.disabledBlizzardFrames.raid then
+		if _G.CompactRaidFrameContainer then
+			_G.CompactRaidFrameContainer:UnregisterAllEvents()
+		end
+
+		-- Raid Utility
+		if not CompactRaidFrameManager_SetSetting then
+			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
+		else
+			CompactRaidFrameManager_SetSetting('IsShown', '0')
+		end
+
+		if _G.CompactRaidFrameManager then
+			_G.CompactRaidFrameManager:UnregisterAllEvents()
+			_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
+		end
+	else -- we don't want to setup our raid utility when blizzard's is active
+		E.RaidUtility.Initialize = E.noop
 	end
 end
 
@@ -1280,6 +1300,7 @@ do
 					isPartyHooked = true
 
 					_G.PartyFrame:UnregisterAllEvents()
+					_G.PartyFrame:SetScript('OnShow', nil)
 
 					for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
 						HandleFrame(frame)
@@ -1624,10 +1645,8 @@ function UF:Initialize()
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
 	local disable = E.private.unitframe.disabledBlizzardFrames
-	if disable.party and disable.raid then
+	if disable.party or disable.raid then
 		UF:DisableBlizzard()
-	elseif not disable.party and not disable.raid then
-		E.RaidUtility.Initialize = E.noop
 	end
 
 	if disable.arena then
