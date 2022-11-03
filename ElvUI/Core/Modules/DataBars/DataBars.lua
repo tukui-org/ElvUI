@@ -124,7 +124,7 @@ function DB:UpdateAll()
 		local orientation = bar:GetOrientation()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
-		
+
 		for _, child in ipairs({bar.holder:GetChildren()}) do
 			if child:IsObjectType('StatusBar') then
 				layer, sublayer = child:GetStatusBarTexture():GetDrawLayer()
