@@ -5,8 +5,8 @@ local _G = _G
 local next = next
 
 --[[ method to show it for now
-	/run LoadAddOn('Blizzard_ProfessionsCustomerOrders');
-	/run ProfessionsCustomerOrdersFrame:Show();
+	/run LoadAddOn('Blizzard_ProfessionsCustomerOrders')
+	/run ProfessionsCustomerOrdersFrame:Show()
 ]]
 
 local function HandleContainer(container)
