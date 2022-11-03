@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -175,32 +176,15 @@ function NP:Update_ClassPower(nameplate)
 	end
 end
 
-do
-	local function GetRuneColor(rune, colors, classPower)
-		local value = rune:GetValue()
+function NP:Runes_UpdateCharged(runes, rune)
+	local colors = NP.db.colors.classResources.DEATHKNIGHT
+	local classColor = (runes and runes.classColor) or (rune and rune.__owner.classColor)
 
-		if E.Wrath then
-			local _, maxDuration = rune:GetMinMaxValues()
-			local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
-
-			local color = colors[rune.runeType or 0]
-			return color.r * duration, color.g * duration, color.b * duration
-		else
-			local color = (value == 1 and classPower) or colors[(value and value ~= 1 and -1) or rune.runeType or 0]
-			return color.r, color.g, color.b
-		end
-	end
-
-	function NP:Runes_UpdateCharged(runes, rune)
-		local colors = NP.db.colors.classResources.DEATHKNIGHT
-		local classColor = (runes and runes.classColor) or (rune and rune.__owner.classColor)
-
-		if rune then
-			NP:ClassPower_SetBarColor(rune, GetRuneColor(rune, colors, classColor))
-		elseif runes then
-			for _, bar in ipairs(runes) do
-				NP:ClassPower_SetBarColor(bar, GetRuneColor(bar, colors, classColor))
-			end
+	if rune then
+		NP:ClassPower_SetBarColor(rune, UF:GetRuneColor(rune, colors, classColor))
+	elseif runes then
+		for _, bar in ipairs(runes) do
+			NP:ClassPower_SetBarColor(bar, UF:GetRuneColor(bar, colors, classColor))
 		end
 	end
 end

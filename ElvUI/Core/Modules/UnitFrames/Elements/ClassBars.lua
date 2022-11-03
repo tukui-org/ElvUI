@@ -401,36 +401,35 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
-do
-	local function GetRuneColor(rune, colors)
-		local value = rune:GetValue()
 
-		if E.Wrath then
-			local _, maxDuration = rune:GetMinMaxValues()
-			local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
+function UF:GetRuneColor(rune, colors, classPower)
+	local value = rune:GetValue()
 
-			local color = colors[rune.runeType or 0]
-			return color.r * duration, color.g * duration, color.b * duration
-		else
-			local color = colors[(value and value ~= 1 and -1) or rune.runeType or 0]
-			return color.r, color.g, color.b
-		end
+	if E.Wrath then
+		local _, maxDuration = rune:GetMinMaxValues()
+		local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
+
+		local color = colors[rune.runeType or 0]
+		return color.r * duration, color.g * duration, color.b * duration
+	else -- classPower is for nameplates only
+		local color = (value == 1 and classPower) or colors[(value and value ~= 1 and -1) or rune.runeType or 0]
+		return color.r, color.g, color.b
+	end
+end
+
+function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
+	local colors = UF.db.colors.classResources.DEATHKNIGHT
+	if not custom_backdrop then
+		custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 	end
 
-	function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
-		local colors = UF.db.colors.classResources.DEATHKNIGHT
-		if not custom_backdrop then
-			custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-		end
-
-		if rune then
-			local r, g, b = GetRuneColor(rune, colors)
-			UF:ClassPower_SetBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
-		elseif runes then
-			for _, bar in ipairs(runes) do
-				local r, g, b = GetRuneColor(bar, colors)
-				UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
-			end
+	if rune then
+		local r, g, b = UF:GetRuneColor(rune, colors)
+		UF:ClassPower_SetBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+	elseif runes then
+		for _, bar in ipairs(runes) do
+			local r, g, b = UF:GetRuneColor(bar, colors)
+			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
 		end
 	end
 end
