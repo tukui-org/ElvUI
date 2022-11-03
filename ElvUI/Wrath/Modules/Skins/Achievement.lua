@@ -151,6 +151,46 @@ local function hookHybridScrollButtons()
 			end
 		end
 	end)
+
+	-- if AchievementUI was loaded by another addon before us, these buttons
+	-- won't exist when Blizzard_AchievementUI is called, however, it can also
+	-- be too late to hook HybridScrollFrame_CreateButtons, so we need to skin
+	-- them here, weird...
+
+	-- Categories
+	for i = 1, 20 do
+		local button = _G['AchievementFrameCategoriesContainerButton'..i]
+		if not button or button.isSkinned then break end -- stop if no button
+
+		button:StripTextures(true)
+		button:StyleButton()
+
+		button.isSkinned = true
+	end
+
+	-- Achievements
+	for i = 1, 10 do
+		local button = _G['AchievementFrameAchievementsContainerButton'..i]
+		if not button or button.isSkinned then break end
+
+		skinAch(button, true)
+	end
+
+	-- Comparison
+	for i = 1, 10 do
+		local button = _G['AchievementFrameComparisonContainerButton'..i]
+		if not button or button.isSkinned then break end
+
+		skinAchievementButton(button)
+	end
+
+	-- Stats
+	for i = 1, 20 do
+		local button = _G['AchievementFrameStatsContainerButton'..i]
+		if not button then break end
+
+		button:StyleButton()
+	end
 end
 
 function S:Blizzard_AchievementUI()
@@ -368,27 +408,6 @@ function S:Blizzard_AchievementUI()
 			end
 		end
 	end)
-
-	-- The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
-	-- Categories
-	for i = 1, 20 do
-		local button = _G['AchievementFrameCategoriesContainerButton'..i]
-		if not button then return end -- stop if no button
-
-		if not button.isSkinned then
-			button:StripTextures(true)
-			button:StyleButton()
-
-			button.isSkinned = true
-		end
-	end
-	--- Comparison
-	for i = 1, 10 do
-		local Achievement = _G['AchievementFrameComparisonContainerButton'..i]
-		if not Achievement or Achievement.isSkinned then return end
-
-		skinAchievementButton(Achievement)
-	end
 end
 
 E:Delay(0.1, hookHybridScrollButtons)
