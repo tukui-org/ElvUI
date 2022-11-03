@@ -1132,18 +1132,22 @@ function UF:DisableBlizzard()
 
 	-- handle arena ones as well
 	if disable.arena then
-		if E.Retail then
+		if _G.UnitFrameThreatIndicator_Initialize then
 			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 		end
 
-		Arena_LoadUI = E.noop
-		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
-		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
-
-		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
+		if E.Retail then
 			ElvUF:DisableBlizzard('arena')
 		else
-			UF:RegisterEvent('ADDON_LOADED')
+			Arena_LoadUI = E.noop
+			-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+			-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
+
+			if IsAddOnLoaded('Blizzard_ArenaUI') then
+				ElvUF:DisableBlizzard('arena')
+			else
+				UF:RegisterEvent('ADDON_LOADED')
+			end
 		end
 	end
 end
@@ -1369,7 +1373,7 @@ do
 			end
 		end
 
-		if strmatch(unit, 'nameplate%d+$') then
+		if E.private.nameplates.enable and strmatch(unit, 'nameplate%d+$') then
 			local frame = C_NamePlate_GetNamePlateForUnit(unit)
 			local plate = frame and frame.UnitFrame
 			if plate and not disabledPlates[plate] then
