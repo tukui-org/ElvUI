@@ -98,7 +98,9 @@ function DB:UpdateAll()
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 		bar.text:ClearAllPoints()
 		bar.text:Point(bar.db.anchorPoint, bar.db.xOffset, bar.db.yOffset)
+		local layer, sublayer = bar:GetStatusBarTexture():GetDrawLayer()
 		bar:SetStatusBarTexture(texture)
+		bar:GetStatusBarTexture():SetDrawLayer(layer, sublayer)
 		bar:SetReverseFill(bar.db.reverseFill)
 
 		if bar.db.enable then
@@ -122,10 +124,12 @@ function DB:UpdateAll()
 		local orientation = bar:GetOrientation()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
-
+		
 		for _, child in ipairs({bar.holder:GetChildren()}) do
 			if child:IsObjectType('StatusBar') then
+				layer, sublayer = child:GetStatusBarTexture():GetDrawLayer()
 				child:SetStatusBarTexture(texture)
+				child:GetStatusBarTexture():SetDrawLayer(layer, sublayer)
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)
