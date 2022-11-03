@@ -14,6 +14,8 @@ local hiddenParent = CreateFrame('Frame', nil, UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
+local isArenaHooked = false
+
 local function insecureOnShow(self)
 	self:Hide()
 end
@@ -106,18 +108,23 @@ function oUF:DisableBlizzard(unit)
 			end
 		end
 	elseif(unit:match('arena%d?$')) then
-		local id = unit:match('arena(%d)')
-		if(id) then
-			handleFrame('ArenaEnemyFrame' .. id)
-		else
+		if not isArenaHooked then
+			isArenaHooked = true
+
+			-- this disables ArenaEnemyFramesContainer
+			SetCVar("showArenaEnemyFrames", "0")
+			SetCVar("showArenaEnemyPets", "0")
+
+			-- but still UAE all containers
+			ArenaEnemyFramesContainer:UnregisterAllEvents()
+			ArenaEnemyPrepFramesContainer:UnregisterAllEvents()
+			ArenaEnemyMatchFramesContainer:UnregisterAllEvents()
+
 			for i = 1, MAX_ARENA_ENEMIES do
-				handleFrame(string.format('ArenaEnemyFrame%d', i))
+				handleFrame("ArenaEnemyMatchFrame" .. i)
+				handleFrame("ArenaEnemyPrepFrame" .. i)
 			end
 		end
-
-		-- Blizzard_ArenaUI should not be loaded
-		_G.Arena_LoadUI = function() end
-		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif(unit:match('nameplate%d+$')) then
 		local frame = C_NamePlate.GetNamePlateForUnit(unit)
 		if(frame and frame.UnitFrame) then
