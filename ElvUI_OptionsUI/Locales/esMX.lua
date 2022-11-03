@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = "Abreviar el Nombre"
 L["Max Allowed Groups"] = "Grupos Maximos Permitidos"
 L["Display Mana"] = "Mostrar mana"

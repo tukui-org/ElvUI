@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = true
 L["Max Allowed Groups"] = true
 L["Display Mana"] = true

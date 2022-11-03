@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = "Name abkürzen"
 L["Max Allowed Groups"] = "Max. zulässige Gruppen"
 L["Display Mana"] = "Mana Anzeige"
