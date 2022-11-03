@@ -133,6 +133,10 @@ function DB:UpdateAll()
 		end
 
 		DB:UpdateBarBubbles(bar)
+
+		if bar == ElvUI_ExperienceBar then
+			DB:RestedQuestLayering()
+		end
 	end
 
 	DB:HandleVisibility()

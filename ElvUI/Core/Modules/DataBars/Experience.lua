@@ -46,10 +46,11 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	end
 end
 
-local function RestedQuestLayering()
+function DB:RestedQuestLayering()
 	local bar = DB.StatusBars.Experience
 	bar.Quest.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP > RestedXP) and 2 or 3)
 	bar.Rested.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP <= RestedXP) and 2 or 3)
+	bar.barTexture:SetDrawLayer('ARTWORK', 4)
 end
 
 function DB:ExperienceBar_Update()
@@ -119,7 +120,7 @@ function DB:ExperienceBar_Update()
 			displayString = format('%s %s : %s', L["Level"], E.mylevel, displayString)
 		end
 
-		RestedQuestLayering()
+		DB:RestedQuestLayering()
 		bar.Rested:SetShown(isRested)
 	end
 
@@ -153,7 +154,7 @@ function DB:ExperienceBar_QuestXP()
 		bar.Quest:SetMinMaxValues(0, XPToLevel)
 		bar.Quest:SetValue(min(CurrentXP + QuestLogXP, XPToLevel))
 		bar.Quest:SetStatusBarColor(DB.db.colors.quest.r, DB.db.colors.quest.g, DB.db.colors.quest.b, DB.db.colors.quest.a)
-		RestedQuestLayering()
+		DB:RestedQuestLayering()
 		bar.Quest:Show()
 	else
 		bar.Quest:Hide()
