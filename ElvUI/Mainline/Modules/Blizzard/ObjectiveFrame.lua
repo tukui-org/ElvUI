@@ -91,6 +91,11 @@ function B:MoveObjectiveFrame()
 	local tracker = _G.ObjectiveTrackerFrame
 	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
 
+	-- force this never case, to fix a taint when actionbars in use
+	if E.private.actionbar.enable then
+		tracker.IsInDefaultPosition = E.noop
+	end
+
 	tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
 	tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	tracker.AutoHider:SetScript('OnHide', AutoHider_OnHide)
