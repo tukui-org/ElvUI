@@ -102,6 +102,8 @@ local function playerSaturate(self) -- self is Achievement.player
 end
 
 local function skinAchievementButton(button)
+	if button.isSkinned then return end
+
 	skinAch(button.player)
 	skinAch(button.friend)
 
@@ -127,69 +129,67 @@ local function hookHybridScrollButtons()
 
 	hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
 		if template == 'AchievementCategoryTemplate' then
-			for _, button in pairs(frame.buttons) do
-				if not button.isSkinned then
-					button:StripTextures(true)
-					button:StyleButton()
+			for _, category in pairs(frame.buttons) do
+				if not category.isSkinned then
+					category:StripTextures(true)
+					category:StyleButton()
 
-					button.isSkinned = true
-				end
-			end
-		elseif template == 'AchievementTemplate' then
-			for _, Achievement in pairs(frame.buttons) do
-				skinAch(Achievement, true)
-			end
-		elseif template == 'ComparisonTemplate' then
-			for _, Achievement in pairs(frame.buttons) do
-				if not Achievement.isSkinned then
-					skinAchievementButton(Achievement)
+					category.isSkinned = true
 				end
 			end
 		elseif template == 'StatTemplate' then
-			for _, Stats in pairs(frame.buttons) do
-				Stats:StyleButton()
+			for _, stats in pairs(frame.buttons) do
+				if not stats.isSkinned then
+					stats:StyleButton()
+
+					stats.isSkinned = true
+				end
+			end
+		elseif template == 'AchievementTemplate' then
+			for _, achievement in pairs(frame.buttons) do
+				if not achievement.isSkinned then
+					skinAch(achievement, true)
+				end
+			end
+		elseif template == 'ComparisonTemplate' then
+			for _, comparison in pairs(frame.buttons) do
+				if not comparison.isSkinned then
+					skinAchievementButton(comparison)
+				end
 			end
 		end
 	end)
 
-	-- if AchievementUI was loaded by another addon before us, these buttons
-	-- won't exist when Blizzard_AchievementUI is called, however, it can also
-	-- be too late to hook HybridScrollFrame_CreateButtons, so we need to skin
-	-- them here, weird...
-
-	-- Categories
+	-- if AchievementUI was loaded by another addon before us, these buttons won't exist when Blizzard_AchievementUI is called.
+	-- however, it can also be too late to hook HybridScrollFrame_CreateButtons, so we need to skin them here, weird...
 	for i = 1, 20 do
-		local button = _G['AchievementFrameCategoriesContainerButton'..i]
-		if not button or button.isSkinned then break end -- stop if no button
+		local category = _G['AchievementFrameCategoriesContainerButton'..i]
+		if category and not category.isSkinned then
+			category:StripTextures(true)
+			category:StyleButton()
 
-		button:StripTextures(true)
-		button:StyleButton()
+			category.isSkinned = true
+		end
 
-		button.isSkinned = true
-	end
+		local stats = _G['AchievementFrameStatsContainerButton'..i]
+		if stats and not stats.isSkinned then
+			stats:StyleButton()
 
-	-- Achievements
-	for i = 1, 10 do
-		local button = _G['AchievementFrameAchievementsContainerButton'..i]
-		if not button or button.isSkinned then break end
+			stats.isSkinned = true
+		end
 
-		skinAch(button, true)
-	end
+		if i <= 10 then
+			local achievement = _G['AchievementFrameAchievementsContainerButton'..i]
+			if achievement and not achievement.isSkinned then
+				skinAch(achievement, true)
 
-	-- Comparison
-	for i = 1, 10 do
-		local button = _G['AchievementFrameComparisonContainerButton'..i]
-		if not button or button.isSkinned then break end
+			end
 
-		skinAchievementButton(button)
-	end
-
-	-- Stats
-	for i = 1, 20 do
-		local button = _G['AchievementFrameStatsContainerButton'..i]
-		if not button then break end
-
-		button:StyleButton()
+			local comparison = _G['AchievementFrameComparisonContainerButton'..i]
+			if comparison and not comparison.isSkinned then
+				skinAchievementButton(comparison)
+			end
+		end
 	end
 end
 
@@ -316,7 +316,6 @@ function S:Blizzard_AchievementUI()
 			local frame = _G['AchievementFrameSummaryAchievement'..i]
 			if not frame.isSkinned then
 				skinAch(frame)
-				frame.isSkinned = true
 			end
 
 			--The backdrop borders tend to overlap so add a little more space between summary achievements
