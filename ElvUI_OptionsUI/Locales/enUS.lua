@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = true
 L["Max Allowed Groups"] = true
 L["Display Mana"] = true

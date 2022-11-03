@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = true
 L["Max Allowed Groups"] = true
 L["Display Mana"] = true

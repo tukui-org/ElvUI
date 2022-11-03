@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = "缩写名称"
 L["Max Allowed Groups"] = "最大允许团队"
 L["Display Mana"] = "显示法力"

@@ -1,6 +1,7 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "trTR")
 
+L["Faded Charging Rune"] = true
 L["Abbreviate Name"] = true
 L["Max Allowed Groups"] = true
 L["Display Mana"] = "Manayi Goster"

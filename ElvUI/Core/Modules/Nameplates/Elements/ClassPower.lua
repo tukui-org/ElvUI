@@ -34,8 +34,8 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 	local colors = NP.db.colors.classResources
 	local fallback = NP.db.colors.power[powerType]
 
-	if isRunes and E.Retail and NP.db.colors.chargingRunes then
-		NP:Runes_UpdateCharged(self)
+	if isRunes and (E.Retail or E.Wrath) and NP.db.colors.chargingRunes then
+		NP:Runes_UpdateCharged(self, rune)
 	elseif isRunes and rune and not classPower then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
@@ -175,20 +175,39 @@ function NP:Update_ClassPower(nameplate)
 	end
 end
 
-function NP:Runes_UpdateCharged(runes)
-	local classPower = runes.classColor
-	local colors = NP.db.colors.classResources.DEATHKNIGHT
-	for _, bar in ipairs(runes) do
-		local value = bar:GetValue()
-		local color = (value == 1 and classPower) or colors[(value and value ~= 1 and -1) or bar.runeType or 0]
-		NP:ClassPower_SetBarColor(bar, color.r, color.g, color.b)
+do
+	local function GetRuneColor(rune, colors)
+		local value = rune:GetValue()
+
+		if E.Wrath then
+			local _, maxDuration = rune:GetMinMaxValues()
+			local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
+
+			local color = colors[rune.runeType or 0]
+			return color.r * duration, color.g * duration, color.b * duration
+		else
+			local color = colors[(value and value ~= 1 and -1) or rune.runeType or 0]
+			return color.r, color.g, color.b
+		end
+	end
+
+	function NP:Runes_UpdateCharged(runes, rune)
+		local colors = NP.db.colors.classResources.DEATHKNIGHT
+
+		if rune then
+			NP:ClassPower_SetBarColor(rune, GetRuneColor(rune, colors))
+		else
+			for _, bar in ipairs(runes) do
+				NP:ClassPower_SetBarColor(bar, GetRuneColor(bar, colors))
+			end
+		end
 	end
 end
 
 function NP:Runes_PostUpdate()
 	self:SetShown(not UnitHasVehicleUI('player'))
 
-	if E.Retail and NP.db.colors.chargingRunes then
+	if NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
 	end
 end

@@ -410,7 +410,7 @@ function UF:Runes_UpdateCharged(runes, custom_backdrop)
 			local color = colors[(value and value ~= 1 and -1) or bar.runeType or 0]
 			UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
 		end
-	elseif E.Wrath then
+	elseif E.Wrath and UF.db.colors.chargingRunes then
 		local value = self:GetValue()
 		local _, maxDuration = self:GetMinMaxValues()
 		local color = colors[self.runeType or 0]
