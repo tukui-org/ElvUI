@@ -40,21 +40,17 @@ function S:LootFrame()
 
 	hooksecurefunc(LootFrame.ScrollBox, 'Update', function(frame)
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do
-			if not button.IsSkinned then
-				local item = button.Item
-				if item then
-					item:StripTextures()
-					S:HandleIcon(item.icon, true)
-					S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
-				end
-
-				button.IconQuestTexture:SetAlpha(0)
-				button.BorderFrame:SetAlpha(0)
-				--button.HighlightNameFrame:SetAlpha(0)
-				--button.PushedNameFrame:SetAlpha(0)
-
-				button.IsSkinned = true
+			local item = button.Item
+			if item and not item.backdrop then
+				item:StripTextures()
+				S:HandleIcon(item.icon, true)
+				S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 			end
+
+			button.IconQuestTexture:SetAlpha(0)
+			button.BorderFrame:SetAlpha(0)
+			--button.HighlightNameFrame:SetAlpha(0)
+			--button.PushedNameFrame:SetAlpha(0)
 		end
 	end)
 
