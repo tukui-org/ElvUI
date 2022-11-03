@@ -1075,6 +1075,9 @@ do
 			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
+			-- fix keybind error, this actually just prevents reopen of the GameMenu
+			_G.SettingsPanel.TransitionBackOpeningPanel = _G.HideUIPanel
+
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
 				for _, child in next, { frame.ScrollTarget:GetChildren() } do
