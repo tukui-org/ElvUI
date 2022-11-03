@@ -178,7 +178,7 @@ end
 
 function NP:Runes_UpdateCharged(runes, rune)
 	local colors = NP.db.colors.classResources.DEATHKNIGHT
-	local classColor = (runes and runes.classColor) or (rune and rune.__owner.classColor)
+	local classColor = (runes and runes.classColor) or (rune and rune.__owner and rune.__owner.classColor)
 
 	if rune then
 		NP:ClassPower_SetBarColor(rune, UF:Runes_GetColor(rune, colors, classColor))
