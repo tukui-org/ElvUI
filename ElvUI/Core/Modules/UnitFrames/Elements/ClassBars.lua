@@ -402,7 +402,7 @@ end
 -- DEATHKNIGHT
 -------------------------------------------------------------
 
-function UF:GetRuneColor(rune, colors, classPower)
+function UF:Runes_GetColor(rune, colors, classPower)
 	local value = rune:GetValue()
 
 	if E.Wrath then
@@ -424,11 +424,11 @@ function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
 	end
 
 	if rune then
-		local r, g, b = UF:GetRuneColor(rune, colors)
+		local r, g, b = UF:Runes_GetColor(rune, colors)
 		UF:ClassPower_SetBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
 	elseif runes then
 		for _, bar in ipairs(runes) do
-			local r, g, b = UF:GetRuneColor(bar, colors)
+			local r, g, b = UF:Runes_GetColor(bar, colors)
 			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
 		end
 	end

@@ -181,10 +181,10 @@ function NP:Runes_UpdateCharged(runes, rune)
 	local classColor = (runes and runes.classColor) or (rune and rune.__owner.classColor)
 
 	if rune then
-		NP:ClassPower_SetBarColor(rune, UF:GetRuneColor(rune, colors, classColor))
+		NP:ClassPower_SetBarColor(rune, UF:Runes_GetColor(rune, colors, classColor))
 	elseif runes then
 		for _, bar in ipairs(runes) do
-			NP:ClassPower_SetBarColor(bar, UF:GetRuneColor(bar, colors, classColor))
+			NP:ClassPower_SetBarColor(bar, UF:Runes_GetColor(bar, colors, classColor))
 		end
 	end
 end
