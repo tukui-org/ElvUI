@@ -2,105 +2,109 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 
---[[
-	-- To show it for now
+--[[ method to show it for now
 	/run LoadAddOn('Blizzard_ProfessionsCustomerOrders');
 	/run ProfessionsCustomerOrdersFrame:Show();
 ]]
 
+local function HandleContainer(container)
+	local editbox = container.EditBox
+	if editbox then
+		editbox:StripTextures()
+		S:HandleEditBox(editbox)
+		S:HandleNextPrevButton(editbox.DecrementButton, 'left')
+		S:HandleNextPrevButton(editbox.IncrementButton, 'right')
+	end
+
+	local button = container.Button
+	if button then
+		S:HandleIcon(button.Icon, true)
+		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+	end
+end
+
 function S:Blizzard_ProfessionsCustomerOrders()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
-	local ProfessionFrame = _G.ProfessionsCustomerOrdersFrame
-	S:HandleFrame(ProfessionFrame)
+	local frame = _G.ProfessionsCustomerOrdersFrame
+	S:HandleFrame(frame)
 
-	for i = 1, 2 do
-		S:HandleTab(ProfessionFrame.Tabs[i])
+	for _, tab in next, frame.Tabs do
+		S:HandleTab(tab)
 	end
 
-	ProfessionFrame.MoneyFrameBorder:StripTextures()
-	ProfessionFrame.MoneyFrameBorder:SetTemplate('Transparent')
-	ProfessionFrame.MoneyFrameInset:StripTextures()
+	frame.MoneyFrameBorder:StripTextures()
+	frame.MoneyFrameBorder:SetTemplate('Transparent')
+	frame.MoneyFrameInset:StripTextures()
 
-	local SearchBar = ProfessionFrame.BrowseOrders.SearchBar
-	S:HandleButton(SearchBar.FavoritesSearchButton)
-	SearchBar.FavoritesSearchButton:SetSize(22, 22)
-	S:HandleEditBox(SearchBar.SearchBox)
-	S:HandleButton(SearchBar.SearchButton)
+	local myOrders = frame.MyOrdersPage
+	myOrders.CategoryList:SetTemplate('Transparent')
+	S:HandleTrimScrollBar(myOrders.CategoryList.ScrollBar)
 
-	local FilterButton = SearchBar.FilterButton
-	S:HandleButton(FilterButton)
-	S:HandleCloseButton(FilterButton.ClearFiltersButton)
+	myOrders.OrderList:SetTemplate('Transparent')
+	S:HandleTrimScrollBar(myOrders.OrderList.ScrollBar)
 
-	ProfessionFrame.BrowseOrders.CategoryList:StripTextures()
-	ProfessionFrame.BrowseOrders.CategoryList:SetTemplate('Transparent') --probably adjust the backdrop
-	S:HandleTrimScrollBar(ProfessionFrame.BrowseOrders.CategoryList.ScrollBar)
+	local browseOrders = frame.BrowseOrders
+	browseOrders.CategoryList:StripTextures()
+	browseOrders.CategoryList:SetTemplate('Transparent') --probably adjust the backdrop
+	S:HandleTrimScrollBar(browseOrders.CategoryList.ScrollBar)
 
-	ProfessionFrame.BrowseOrders.RecipeList:StripTextures()
-	ProfessionFrame.BrowseOrders.RecipeList:SetTemplate('Transparent') --probably adjust the backdrop
-	S:HandleTrimScrollBar(ProfessionFrame.BrowseOrders.RecipeList.ScrollBar)
+	browseOrders.RecipeList:StripTextures()
+	browseOrders.RecipeList:SetTemplate('Transparent') --probably adjust the backdrop
+	S:HandleTrimScrollBar(browseOrders.RecipeList.ScrollBar)
 
-	ProfessionFrame.MyOrdersPage.CategoryList:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(ProfessionFrame.MyOrdersPage.CategoryList.ScrollBar)
+	local search = browseOrders.SearchBar
+	search.FavoritesSearchButton:Size(22)
+	S:HandleButton(search.FavoritesSearchButton)
+	S:HandleEditBox(search.SearchBox)
+	S:HandleButton(search.SearchButton)
 
-	ProfessionFrame.MyOrdersPage.OrderList:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(ProfessionFrame.MyOrdersPage.OrderList.ScrollBar)
+	local filter = search.FilterButton
+	S:HandleCloseButton(filter.ClearFiltersButton)
+	S:HandleButton(filter)
 
 	-- Form Page
-	ProfessionFrame.Form:StripTextures()
-	--ProfessionFrame.Form:SetTemplate('Transparent')
+	local form = frame.Form
+	form:StripTextures()
+	--form:SetTemplate('Transparent')
 
-	S:HandleButton(ProfessionFrame.Form.BackButton)
-	S:HandleDropDownBox(ProfessionFrame.Form.MinimumQualityDropDown)
-	S:HandleDropDownBox(ProfessionFrame.Form.OrderRecipientDropDown)
+	S:HandleButton(form.BackButton)
+	S:HandleDropDownBox(form.MinimumQualityDropDown)
+	S:HandleDropDownBox(form.OrderRecipientDropDown)
 
 	-- Reagent Container
-	ProfessionFrame.Form.ReagentContainer:StripTextures()
-	ProfessionFrame.Form.ReagentContainer:SetTemplate('Transparent')
+	form.ReagentContainer:StripTextures()
+	form.ReagentContainer:SetTemplate('Transparent')
 
 	--Payment Container
-	ProfessionFrame.Form.PaymentContainer:StripTextures()
-	ProfessionFrame.Form.PaymentContainer:SetTemplate('Transparent')
-	ProfessionFrame.Form.PaymentContainer.ScrollBoxContainer:StripTextures()
-	S:HandleEditBox(ProfessionFrame.Form.PaymentContainer.ScrollBoxContainer.ScrollingEditBox)
-	S:HandleTrimScrollBar(ProfessionFrame.Form.PaymentContainer.ScrollBoxContainer.ScrollBar)
+	local payment = form.PaymentContainer
+	payment:StripTextures()
+	payment:SetTemplate('Transparent')
 
-	S:HandleDropDownBox(ProfessionFrame.Form.PaymentContainer.DurationDropDown)
-	S:HandleButton(ProfessionFrame.Form.PaymentContainer.ListOrderButton)
+	S:HandleDropDownBox(payment.DurationDropDown)
+	S:HandleButton(payment.ListOrderButton)
 
+	local scrollBox = payment.ScrollBoxContainer
+	scrollBox:StripTextures()
+	S:HandleEditBox(scrollBox.ScrollingEditBox)
+	S:HandleTrimScrollBar(scrollBox.ScrollBar)
 
 	-- Quality Dialog
-	ProfessionFrame.Form.QualityDialog:StripTextures()
-	ProfessionFrame.Form.QualityDialog:SetTemplate()
-	S:HandleCloseButton(ProfessionFrame.Form.QualityDialog.ClosePanelButton)
+	local dialog = form.QualityDialog
+	dialog:StripTextures()
+	dialog:SetTemplate()
+	S:HandleCloseButton(dialog.ClosePanelButton)
 
-	-- Container1
-	S:HandleNextPrevButton(ProfessionFrame.Form.QualityDialog.Container1.EditBox.DecrementButton, 'left')
-	ProfessionFrame.Form.QualityDialog.Container1.EditBox:StripTextures()
-	S:HandleEditBox(ProfessionFrame.Form.QualityDialog.Container1.EditBox)
-	S:HandleNextPrevButton(ProfessionFrame.Form.QualityDialog.Container1.EditBox.IncrementButton, 'right')
-	S:HandleIcon(ProfessionFrame.Form.QualityDialog.Container1.Button.Icon, true) -- ToDo
-	S:HandleIconBorder(ProfessionFrame.Form.QualityDialog.Container1.Button.IconBorder, ProfessionFrame.Form.QualityDialog.Container1.Button.Icon.backdrop) -- ToDo
+	-- Containers
+	HandleContainer(dialog.Container1)
+	HandleContainer(dialog.Container2)
+	HandleContainer(dialog.Container3)
 
-	-- Container2
-	S:HandleNextPrevButton(ProfessionFrame.Form.QualityDialog.Container2.EditBox.DecrementButton, 'left')
-	ProfessionFrame.Form.QualityDialog.Container2.EditBox:StripTextures()
-	S:HandleEditBox(ProfessionFrame.Form.QualityDialog.Container2.EditBox)
-	S:HandleNextPrevButton(ProfessionFrame.Form.QualityDialog.Container2.EditBox.IncrementButton, 'right')
-	S:HandleIcon(ProfessionFrame.Form.QualityDialog.Container2.Button.Icon, true) -- ToDo
-	S:HandleIconBorder(ProfessionFrame.Form.QualityDialog.Container2.Button.IconBorder, ProfessionFrame.Form.QualityDialog.Container2.Button.Icon.backdrop) -- ToDo
-
-	-- Container3
-	S:HandleNextPrevButton(ProfessionFrame.Form.QualityDialog.Container3.EditBox.DecrementButton, 'left')
-	ProfessionFrame.Form.QualityDialog.Container3.EditBox:StripTextures()
-	S:HandleEditBox(ProfessionFrame.Form.QualityDialog.Container3.EditBox)
-	S:HandleNextPrevButton(ProfessionFrame.Form.QualityDialog.Container3.EditBox.IncrementButton, 'right')
-	S:HandleIcon(ProfessionFrame.Form.QualityDialog.Container3.Button.Icon, true) -- ToDo
-	S:HandleIconBorder(ProfessionFrame.Form.QualityDialog.Container3.Button.IconBorder, ProfessionFrame.Form.QualityDialog.Container3.Button.Icon.backdrop) -- ToDo
-
-	S:HandleButton(ProfessionFrame.Form.QualityDialog.AcceptButton)
-	S:HandleButton(ProfessionFrame.Form.QualityDialog.CancelButton)
+	-- Form buttons
+	S:HandleButton(dialog.AcceptButton)
+	S:HandleButton(dialog.CancelButton)
 end
 
 S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders')
