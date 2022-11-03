@@ -1339,11 +1339,9 @@ do
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
 				if _G.ArenaEnemyFramesContainer then -- Retail
-					if _G.ArenaEnemyFramesContainer:IsEventRegistered('ARENA_OPPONENT_UPDATE') then
-						_G.ArenaEnemyFramesContainer:UnregisterAllEvents()
-						_G.ArenaEnemyPrepFramesContainer:UnregisterAllEvents()
-						_G.ArenaEnemyMatchFramesContainer:UnregisterAllEvents()
-					end
+					_G.ArenaEnemyFramesContainer:UnregisterAllEvents()
+					_G.ArenaEnemyPrepFramesContainer:UnregisterAllEvents()
+					_G.ArenaEnemyMatchFramesContainer:UnregisterAllEvents()
 				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
 					_G.ArenaPrepFrames:UnregisterAllEvents()
