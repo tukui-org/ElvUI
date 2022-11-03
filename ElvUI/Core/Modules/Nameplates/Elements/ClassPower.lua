@@ -34,7 +34,7 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 	local colors = NP.db.colors.classResources
 	local fallback = NP.db.colors.power[powerType]
 
-	if isRunes and (E.Retail or E.Wrath) and NP.db.colors.chargingRunes then
+	if isRunes and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self, rune)
 	elseif isRunes and rune and not classPower then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
@@ -176,7 +176,7 @@ function NP:Update_ClassPower(nameplate)
 end
 
 do
-	local function GetRuneColor(rune, colors)
+	local function GetRuneColor(rune, colors, classPower)
 		local value = rune:GetValue()
 
 		if E.Wrath then
@@ -186,19 +186,20 @@ do
 			local color = colors[rune.runeType or 0]
 			return color.r * duration, color.g * duration, color.b * duration
 		else
-			local color = colors[(value and value ~= 1 and -1) or rune.runeType or 0]
+			local color = (value == 1 and classPower) or colors[(value and value ~= 1 and -1) or rune.runeType or 0]
 			return color.r, color.g, color.b
 		end
 	end
 
 	function NP:Runes_UpdateCharged(runes, rune)
 		local colors = NP.db.colors.classResources.DEATHKNIGHT
+		local classColor = (runes and runes.classColor) or (rune and rune.__owner.classColor)
 
 		if rune then
-			NP:ClassPower_SetBarColor(rune, GetRuneColor(rune, colors))
-		else
+			NP:ClassPower_SetBarColor(rune, GetRuneColor(rune, colors, classColor))
+		elseif runes then
 			for _, bar in ipairs(runes) do
-				NP:ClassPower_SetBarColor(bar, GetRuneColor(bar, colors))
+				NP:ClassPower_SetBarColor(bar, GetRuneColor(bar, colors, classColor))
 			end
 		end
 	end
@@ -209,6 +210,12 @@ function NP:Runes_PostUpdate()
 
 	if NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self)
+	end
+end
+
+function NP:Runes_UpdateChargedColor()
+	if NP.db.colors.chargingRunes then
+		NP:Runes_UpdateCharged(nil, self)
 	end
 end
 
@@ -234,6 +241,8 @@ function NP:Construct_Runes(nameplate)
 		local rune = CreateFrame('StatusBar', frameName..'Runes'..i, Runes)
 		rune:SetStatusBarTexture(texture)
 		rune:SetStatusBarColor(color.r, color.g, color.b)
+		rune.PostUpdateColor = NP.Runes_UpdateChargedColor
+		rune.__owner = Runes
 		NP.StatusBars[rune] = true
 
 		rune.bg = rune:CreateTexture(frameName..'Runes'..i..'bg', 'BORDER')

@@ -307,7 +307,7 @@ local function GetUnitSettings(unit, name)
 	if unit == 'PLAYER' then
 		group.args.classBarGroup = ACH:Group(L["Class Bar"], nil, 13, nil, function(info) return E.db.nameplates.units[unit].classpower[info[#info]] end, function(info, value) E.db.nameplates.units[unit].classpower[info[#info]] = value NP:ConfigureAll() end)
 		group.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-		group.args.classBarGroup.args.classColor = ACH:Toggle(L["Use Class Color"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail and E.myclass == 'DEATHKNIGHT')
+		group.args.classBarGroup.args.classColor = ACH:Toggle(L["Use Class Color"], nil, 2, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath) and E.myclass == 'DEATHKNIGHT')
 		group.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = minWidth, max = MaxWidth(unit), step = 1 })
 		group.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = minHeight, max = MaxHeight(unit), step = 1 })
 		group.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
