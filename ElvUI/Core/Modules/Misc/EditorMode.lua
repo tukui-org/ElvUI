@@ -85,6 +85,9 @@ function EM:Initialize()
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop
 		mixin.RefreshEncounterBar = E.noop
+
+		-- force this never case, to fix a taint
+		_G.ObjectiveTrackerFrame.IsInDefaultPosition = E.noop
 	end
 end
 
