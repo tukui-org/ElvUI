@@ -10,9 +10,8 @@ local UnregisterStateDriver = UnregisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.WatchFrame:GetTop() or 0
-	local screenHeight = E.screenHeight
-	local gapFromTop = screenHeight - top
-	local maxHeight = screenHeight - gapFromTop
+	local gapFromTop = E.screenHeight - top
+	local maxHeight = E.screenHeight - gapFromTop
 	local watchFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
 	_G.WatchFrame:Height(watchFrameHeight)
