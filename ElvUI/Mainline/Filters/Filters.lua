@@ -1901,11 +1901,7 @@ G.unitframe.ChannelTicks = {
 }
 
 -- Spells Effected By Talents
-G.unitframe.TalentChannelTicks = {
-	-- Priest
-	[47757]	= {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
-	[47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
-}
+G.unitframe.TalentChannelTicks = {}
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
