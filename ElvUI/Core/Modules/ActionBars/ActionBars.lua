@@ -425,36 +425,40 @@ function AB:CreateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	if not db.enable then return end
 
+	local button = _G.MainMenuBarVehicleLeaveButton
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
-	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
-	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
+	holder:Point('BOTTOM', E.UIParent, 0, 300)
+	holder:Size(button:GetSize())
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,vehicleExitButton')
 
-	local Button = _G.MainMenuBarVehicleLeaveButton
-	Button:ClearAllPoints()
-	Button:SetParent(_G.UIParent)
-	Button:Point('CENTER', holder, 'CENTER')
+	button:ClearAllPoints()
+	button:SetParent(_G.UIParent)
+	button:Point('CENTER', holder)
+
+	-- taints because of EditModeManager, in UpdateBottomActionBarPositions
+	button:SetScript('OnShow', nil)
+	button:SetScript('OnHide', nil)
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
-		Button:StyleButton(true, true, true)
+		button:StyleButton(true, true, true)
 	else
-		Button:CreateBackdrop(nil, true)
-		Button:GetNormalTexture():SetTexCoord(0.140625 + .08, 0.859375 - .06, 0.140625 + .08, 0.859375 - .08)
-		Button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
-		Button:StyleButton(nil, true, true)
+		button:CreateBackdrop(nil, true)
+		button:GetNormalTexture():SetTexCoord(0.140625 + .08, 0.859375 - .06, 0.140625 + .08, 0.859375 - .08)
+		button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
+		button:StyleButton(nil, true, true)
 
-		hooksecurefunc(Button, 'SetHighlightTexture', function(btn, tex)
+		hooksecurefunc(button, 'SetHighlightTexture', function(btn, tex)
 			if tex ~= btn.hover then
-				Button:SetHighlightTexture(btn.hover)
+				button:SetHighlightTexture(btn.hover)
 			end
 		end)
 	end
 
-	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
+	hooksecurefunc(button, 'SetPoint', function(_, _, parent)
 		if parent ~= holder then
-			Button:ClearAllPoints()
-			Button:SetParent(_G.UIParent)
-			Button:Point('CENTER', holder, 'CENTER')
+			button:ClearAllPoints()
+			button:SetParent(_G.UIParent)
+			button:Point('CENTER', holder)
 		end
 	end)
 
