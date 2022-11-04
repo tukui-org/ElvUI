@@ -393,6 +393,7 @@ function M:UpdateSettings()
 	end
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
+	_G.MiniMapMailIcon:Size(20)
 
 	if E.Retail then
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
