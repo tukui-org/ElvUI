@@ -795,11 +795,61 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[372047] = List(), -- Flurry
 		[372963] = List(), -- Chillstorm
 	-- The Nokhud Offensive
-		-- TODO: DF
+		[382628] = List(), -- Surge of Power
+		[386025] = List(), -- Tempest
+		[381692] = List(), -- Swift Stab
+		[387615] = List(), -- Grasp of the Dead
+		[387629] = List(), -- Rotting Wind
+		[386912] = List(), -- Stormsurge Cloud
+		[395669] = List(), -- Aftershock
+		[384134] = List(), -- Pierce
+		[388451] = List(), -- Stormcaller's Fury 1
+		[388446] = List(), -- Stormcaller's Fury 2
+		[395035] = List(), -- Shatter Soul
+		[376899] = List(), -- Crackling Cloud
+		[384492] = List(), -- Hunter's Mark
+		[376730] = List(), -- Stormwinds
+		[376894] = List(), -- Crackling Upheaval
+		[388801] = List(), -- Mortal Strike
+		[376827] = List(), -- Conductive Strike
+		[376864] = List(), -- Static Spear
+		[375937] = List(), -- Rending Strike
+		[376634] = List(), -- Iron Spear
 	-- The Azure Vault
-		-- TODO: DF
+		[388777] = List(), -- Oppressive Miasma
+		[386881] = List(), -- Frost Bomb
+		[387150] = List(), -- Frozen Ground
+		[387564] = List(), -- Mystic Vapors
+		[385267] = List(), -- Crackling Vortex
+		[386640] = List(), -- Tear Flesh
+		[374567] = List(), -- Explosive Brand
+		[374523] = List(), -- Arcane Roots
+		[375596] = List(), -- Erratic Growth Channel
+		[375602] = List(), -- Erratic Growth
+		[370764] = List(), -- Piercing Shards
+		[384978] = List(), -- Dragon Strike
+		[375649] = List(), -- Infused Ground
+		[387151] = List(), -- Icy Devastator
+		[377488] = List(), -- Icy Bindings
+		[374789] = List(), -- Infused Strike
+		[371007] = List(), -- Splintering Shards
+		[375591] = List(), -- Sappy Burst
+		[385409] = List(), -- Ouch, ouch, ouch!
 	-- Algeth'ar Academy
-		-- TODO: DF
+		[389033] = List(), -- Lasher Toxin
+		[391977] = List(), -- Oversurge
+		[386201] = List(), -- Corrupted Mana
+		[389011] = List(), -- Overwhelming Power
+		[387932] = List(), -- Astral Whirlwind
+		[396716] = List(), -- Splinterbark
+		[388866] = List(), -- Mana Void
+		[386181] = List(), -- Mana Bomb
+		[388912] = List(), -- Severing Slash
+		[377344] = List(), -- Peck
+		[376997] = List(), -- Savage Peck
+		[388984] = List(), -- Vicious Ambush
+		[388544] = List(), -- Barkbreaker
+		[377008] = List(), -- Deafening Screech
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
@@ -1423,11 +1473,46 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[372988] = List(), -- Ice Bulwark
 		[391050] = List(), -- Tempest Stormshield
 	-- The Nokhud Offensive
-		-- TODO: DF
+		[392198] = List(), -- Ancestral Bond
+		[386319] = List(), -- Swirling Gusts
+		[386223] = List(), -- Stormshield
+		[387614] = List(), -- Chant of the Dead
+		[384686] = List(), -- Energy Surge
+		[376705] = List(), -- Crackling Shield
+		[383823] = List(), -- Rally the Clan
+		[384510] = List(), -- Cleaving Strikes
+		[395045] = List(), -- Consumed Soul
+		[386024] = List(), -- Tempest
+		[386914] = List(), -- Primal Storm
+		[386915] = List(), -- Stormsurge Totems
+		[385339] = List(), -- Earthsplitter
+		[384808] = List(), -- Guardian Winds
+		[384620] = List(), -- Electrical Storm
+		[383067] = List(), -- Raging Kin
 	-- The Azure Vault
-		-- TODO: DF
+		[371042] = List(), -- Revealing Gaze
+		[378065] = List(), -- Mage Hunters Fervor
+		[395498] = List(), -- Scornful Haste
+		[379256] = List(), -- Seal Empowerment
+		[374778] = List(), -- Brilliant Scales
+		[371358] = List(), -- Forbidden Knowledge
+		[389686] = List(), -- Arcane Fury
+		[374720] = List(), -- Consuming Stomp
+		[395535] = List(), -- Sluggish Adoration
+		[388084] = List(), -- Glacial Shield
+		[391118] = List(), -- Spellfrost Breath
+		[387122] = List(), -- Conjured Barrier
+		[384132] = List(), -- Overwhelming Energy
+		[388773] = List(), -- Oppressive Miasma
 	-- Algeth'ar Academy
-		-- TODO: DF
+		[389032] = List(), -- Toxic
+		[387910] = List(), -- Toxic Whirlwind
+		[388958] = List(), -- Riftbreath
+		[388796] = List(), -- Germinate
+		[388886] = List(), -- Arcane Rain 1
+		[388899] = List(), -- Arcane Rain 2
+		[390938] = List(), -- Agitation
+		[390297] = List(), -- Dormant
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
