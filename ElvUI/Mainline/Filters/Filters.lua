@@ -816,7 +816,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[375937] = List(), -- Rending Strike
 		[376634] = List(), -- Iron Spear
 	-- The Azure Vault
-		-- TODO: DF
+		[388777] = List(), -- Oppressive Miasma
+		[386881] = List(), -- Frost Bomb
+		[387150] = List(), -- Frozen Ground
+		[387564] = List(), -- Mystic Vapors
+		[385267] = List(), -- Crackling Vortex
+		[386640] = List(), -- Tear Flesh
+		[374567] = List(), -- Explosive Brand
+		[374523] = List(), -- Arcane Roots
+		[375596] = List(), -- Erratic Growth Channel
+		[375602] = List(), -- Erratic Growth
+		[370764] = List(), -- Piercing Shards
+		[384978] = List(), -- Dragon Strike
+		[375649] = List(), -- Infused Ground
+		[387151] = List(), -- Icy Devastator
+		[377488] = List(), -- Icy Bindings
+		[374789] = List(), -- Infused Strike
+		[371007] = List(), -- Splintering Shards
+		[375591] = List(), -- Sappy Burst
+		[385409] = List(), -- Ouch, ouch, ouch!
 	-- Algeth'ar Academy
 		-- TODO: DF
 	----------------------------------------------------------
@@ -1459,7 +1477,20 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[384620] = List(), -- Electrical Storm
 		[383067] = List(), -- Raging Kin
 	-- The Azure Vault
-		-- TODO: DF
+		[371042] = List(), -- Revealing Gaze
+		[378065] = List(), -- Mage Hunters Fervor
+		[395498] = List(), -- Scornful Haste
+		[379256] = List(), -- Seal Empowerment
+		[374778] = List(), -- Brilliant Scales
+		[371358] = List(), -- Forbidden Knowledge
+		[389686] = List(), -- Arcane Fury
+		[374720] = List(), -- Consuming Stomp
+		[395535] = List(), -- Sluggish Adoration
+		[388084] = List(), -- Glacial Shield
+		[391118] = List(), -- Spellfrost Breath
+		[387122] = List(), -- Conjured Barrier
+		[384132] = List(), -- Overwhelming Energy
+		[388773] = List(), -- Oppressive Miasma
 	-- Algeth'ar Academy
 		-- TODO: DF
 	----------------------------------------------------------
