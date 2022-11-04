@@ -588,40 +588,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207]	= List(), -- Drums of Fury
 		[230935]	= List(), -- Drums of the Mountain (Legion)
 		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-	-- Shadowlands Consumables
-		[307159]	= List(), -- Potion of Spectral Agility
-		[307160]	= List(), -- Potion of Hardened Shadows
-		[307161]	= List(), -- Potion of Spiritual Clarity
-		[307162]	= List(), -- Potion of Spectral Intellect
-		[307163]	= List(), -- Potion of Spectral Stamina
-		[307164]	= List(), -- Potion of Spectral Strength
-		[307165]	= List(), -- Spiritual Anti-Venom
-		[307185]	= List(), -- Spectral Flask of Power
-		[307187]	= List(), -- Spectral Flask of Stamina
-		[307195]	= List(), -- Potion of Hidden Spirit
-		[307196]	= List(), -- Potion of Shaded Sight
-		[307199]	= List(), -- Potion of Soul Purity
-		[307494]	= List(), -- Potion of Empowered Exorcisms
-		[307495]	= List(), -- Potion of Phantom Fire
-		[307496]	= List(), -- Potion of Divine Awakening
-		[307497]	= List(), -- Potion of Deathly Fixation
-		[307501]	= List(), -- Potion of Specter Swiftness
-		[308397]	= List(), -- Butterscotch Marinated Ribs
-		[308402]	= List(), -- Surprisingly Palatable Feast
-		[308404]	= List(), -- Cinnamon Bonefish Stew
-		[308412]	= List(), -- Meaty Apple Dumplings
-		[308425]	= List(), -- Sweet Silvergrill Sausages
-		[308434]	= List(), -- Phantasmal Souffle and Fries
-		[308488]	= List(), -- Tenebrous Crown Roast Aspic
-		[308506]	= List(), -- Crawler Ravioli with Apple Sauce
-		[308514]	= List(), -- Steak a la Mode
-		[308525]	= List(), -- Banana Beef Pudding
-		[308637]	= List(), -- Smothered Shank
-		[322302]	= List(), -- Potion of Sacrificial Anima
-		[327708]	= List(), -- Feast of Gluttonous Hedonism
-		[327715]	= List(), -- Fried Bonefish
-		[327851]	= List(), -- Seraph Tenders
-		[354016]	= List(), -- Venthyr Tea
+	-- Dragonflight Consumables
+		-- TODO: DF
 	},
 }
 
@@ -857,7 +825,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Halls of Infusion
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
-	----------------------------------------------------------
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
