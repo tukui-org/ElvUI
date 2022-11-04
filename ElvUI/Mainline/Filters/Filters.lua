@@ -36,8 +36,8 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[211881]	= List(4), -- Fel Eruption
 		[205630]	= List(3), -- Illidan's Grasp
 		[208618]	= List(3), -- Illidan's Grasp (Afterward)
-		[213491]	= List(4), -- Demonic Trample (it's this one or the other)
-		[208645]	= List(4), -- Demonic Trample
+		[213491]	= List(4), -- Demonic Trample 1
+		[208645]	= List(4), -- Demonic Trample 2
 	-- Druid
 		[81261]		= List(2), -- Solar Beam
 		[5211]		= List(4), -- Mighty Bash
@@ -52,12 +52,12 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[2637]		= List(1), -- Hibernate
 		[102793]	= List(1), -- Ursol's Vortex
 	-- Hunter
-		[202933]	= List(2), -- Spider Sting (it's this one or the other)
-		[233022]	= List(2), -- Spider Sting
+		[202933]	= List(2), -- Spider Sting 1
+		[233022]	= List(2), -- Spider Sting 2
 		[213691]	= List(4), -- Scatter Shot
 		[19386]		= List(3), -- Wyvern Sting
 		[3355]		= List(3), -- Freezing Trap
-		[203337]	= List(5), -- Freezing Trap (Survival PvPT)
+		[203337]	= List(5), -- Freezing Trap (PvP Talent)
 		[209790]	= List(3), -- Freezing Arrow
 		[24394]		= List(4), -- Intimidation
 		[117526]	= List(4), -- Binding Shot
@@ -67,18 +67,18 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[212638]	= List(1), -- Tracker's Net
 		[200108]	= List(1), -- Ranger's Net
 	-- Mage
-		[61721]		= List(3), -- Rabbit (Poly)
-		[61305]		= List(3), -- Black Cat (Poly)
-		[28272]		= List(3), -- Pig (Poly)
-		[28271]		= List(3), -- Turtle (Poly)
-		[126819]	= List(3), -- Porcupine (Poly)
-		[161354]	= List(3), -- Monkey (Poly)
-		[161353]	= List(3), -- Polar bear (Poly)
-		[61780]		= List(3), -- Turkey (Poly)
-		[161355]	= List(3), -- Penguin (Poly)
-		[161372]	= List(3), -- Peacock (Poly)
-		[277787]	= List(3), -- Direhorn (Poly)
-		[277792]	= List(3), -- Bumblebee (Poly)
+		[61721]		= List(3), -- Rabbit
+		[61305]		= List(3), -- Black Cat
+		[28272]		= List(3), -- Pig
+		[28271]		= List(3), -- Turtle
+		[126819]	= List(3), -- Porcupine
+		[161354]	= List(3), -- Monkey
+		[161353]	= List(3), -- Polar Bear
+		[61780]		= List(3), -- Turkey
+		[161355]	= List(3), -- Penguin
+		[161372]	= List(3), -- Peacock
+		[277787]	= List(3), -- Direhorn
+		[277792]	= List(3), -- Bumblebee
 		[118]		= List(3), -- Polymorph
 		[82691]		= List(3), -- Ring of Frost
 		[31661]		= List(3), -- Dragon's Breath
@@ -96,7 +96,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[233759]	= List(2), -- Grapple Weapon
 		[123407]	= List(1), -- Spinning Fire Blossom
 		[116706]	= List(1), -- Disable
-		[232055]	= List(4), -- Fists of Fury (it's this one or the other)
+		[232055]	= List(4), -- Fists of Fury
 	-- Paladin
 		[853]		= List(3), -- Hammer of Justice
 		[20066]		= List(3), -- Repentance
@@ -201,9 +201,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[22812]		= List(), -- Barkskin
 		[200851]	= List(), -- Rage of the Sleeper
 		[234081]	= List(), -- Celestial Guardian
-		[202043]	= List(), -- Protector of the Pack (it's this one or the other)
-		[201940]	= List(), -- Protector of the Pack
-		[201939]	= List(), -- Protector of the Pack (Allies)
+		[202043]	= List(), -- Protector of the Pack 1
+		[201940]	= List(), -- Protector of the Pack 2
+		[201939]	= List(), -- Protector of the Pack 3
 		[192081]	= List(), -- Ironfur
 		[50334]		= List(), -- Berserk (Guardian)
 	-- Hunter
@@ -359,9 +359,9 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[22812]		= List(), -- Barkskin
 		[200851]	= List(), -- Rage of the Sleeper
 		[234081]	= List(), -- Celestial Guardian
-		[202043]	= List(), -- Protector of the Pack (it's this one or the other)
-		[201940]	= List(), -- Protector of the Pack
-		[201939]	= List(), -- Protector of the Pack (Allies)
+		[202043]	= List(), -- Protector of the Pack 1
+		[201940]	= List(), -- Protector of the Pack 2
+		[201939]	= List(), -- Protector of the Pack 3
 		[192081]	= List(), -- Ironfur
 		[29166]		= List(), -- Innervate
 		[208253]	= List(), -- Essence of G'Hanir
@@ -588,40 +588,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[178207]	= List(), -- Drums of Fury
 		[230935]	= List(), -- Drums of the Mountain (Legion)
 		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-	-- Shadowlands Consumables
-		[307159]	= List(), -- Potion of Spectral Agility
-		[307160]	= List(), -- Potion of Hardened Shadows
-		[307161]	= List(), -- Potion of Spiritual Clarity
-		[307162]	= List(), -- Potion of Spectral Intellect
-		[307163]	= List(), -- Potion of Spectral Stamina
-		[307164]	= List(), -- Potion of Spectral Strength
-		[307165]	= List(), -- Spiritual Anti-Venom
-		[307185]	= List(), -- Spectral Flask of Power
-		[307187]	= List(), -- Spectral Flask of Stamina
-		[307195]	= List(), -- Potion of Hidden Spirit
-		[307196]	= List(), -- Potion of Shaded Sight
-		[307199]	= List(), -- Potion of Soul Purity
-		[307494]	= List(), -- Potion of Empowered Exorcisms
-		[307495]	= List(), -- Potion of Phantom Fire
-		[307496]	= List(), -- Potion of Divine Awakening
-		[307497]	= List(), -- Potion of Deathly Fixation
-		[307501]	= List(), -- Potion of Specter Swiftness
-		[308397]	= List(), -- Butterscotch Marinated Ribs
-		[308402]	= List(), -- Surprisingly Palatable Feast
-		[308404]	= List(), -- Cinnamon Bonefish Stew
-		[308412]	= List(), -- Meaty Apple Dumplings
-		[308425]	= List(), -- Sweet Silvergrill Sausages
-		[308434]	= List(), -- Phantasmal Souffle and Fries
-		[308488]	= List(), -- Tenebrous Crown Roast Aspic
-		[308506]	= List(), -- Crawler Ravioli with Apple Sauce
-		[308514]	= List(), -- Steak a la Mode
-		[308525]	= List(), -- Banana Beef Pudding
-		[308637]	= List(), -- Smothered Shank
-		[322302]	= List(), -- Potion of Sacrificial Anima
-		[327708]	= List(), -- Feast of Gluttonous Hedonism
-		[327715]	= List(), -- Fried Bonefish
-		[327851]	= List(), -- Seraph Tenders
-		[354016]	= List(), -- Venthyr Tea
+	-- Dragonflight Consumables
+		-- TODO: DF
 	},
 }
 
@@ -635,7 +603,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[23445]		= List(), -- Evil Twin
 		[24755]		= List(), -- Tricked or Treated
 		[25163]		= List(), -- Oozeling's Disgusting Aura
-		[25771]		= List(), -- Forbearance (Pally: Divine Shield, Blessing of Protection, and Lay on Hands)
+		[25771]		= List(), -- Forbearance
 		[26013]		= List(), -- Deserter
 		[36032]		= List(), -- Arcane Charge
 		[36893]		= List(), -- Transporter Malfunction
@@ -858,8 +826,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
 	----------------------------------------------------------
-	----------------------------------------------------------
-	---------------- Old Dungeons (Season 4) -----------------
+	---------------- Shadowlands (Season 4) ------------------
 	----------------------------------------------------------
 	-- Grimrail Depot
 		[162057] = List(), -- Spinning Spear
@@ -1396,6 +1363,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[375620] = List(6), -- Ionizing Charge
 		[375578] = List(4), -- Flame Sentry
 	-- Raszageth the Storm-Eater
+		-- TODO: DF
 	},
 }
 
@@ -1521,7 +1489,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
 	----------------------------------------------------------
-	---------------- Old Dungeons (Season 4) -----------------
+	---------------- Shadowlands (Season 4) ------------------
 	----------------------------------------------------------
 	-- Grimrail Depot
 		[161091] = List(), -- New Plan!
@@ -1777,6 +1745,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[375809] = List(), -- Broodkeeper's Bond
 		[390561] = List(), -- Diurna's Gaze
 	-- Raszageth the Storm-Eater
+		-- TODO: DF
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
@@ -1901,11 +1870,7 @@ G.unitframe.ChannelTicks = {
 }
 
 -- Spells Effected By Talents
-G.unitframe.TalentChannelTicks = {
-	-- Priest
-	[47757]	= {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
-	[47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
-}
+G.unitframe.TalentChannelTicks = {}
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
