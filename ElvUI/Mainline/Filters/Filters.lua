@@ -836,7 +836,20 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[375591] = List(), -- Sappy Burst
 		[385409] = List(), -- Ouch, ouch, ouch!
 	-- Algeth'ar Academy
-		-- TODO: DF
+		[389033] = List(), -- Lasher Toxin
+		[391977] = List(), -- Oversurge
+		[386201] = List(), -- Corrupted Mana
+		[389011] = List(), -- Overwhelming Power
+		[387932] = List(), -- Astral Whirlwind
+		[396716] = List(), -- Splinterbark
+		[388866] = List(), -- Mana Void
+		[386181] = List(), -- Mana Bomb
+		[388912] = List(), -- Severing Slash
+		[377344] = List(), -- Peck
+		[376997] = List(), -- Savage Peck
+		[388984] = List(), -- Vicious Ambush
+		[388544] = List(), -- Barkbreaker
+		[377008] = List(), -- Deafening Screech
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
@@ -1492,7 +1505,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[384132] = List(), -- Overwhelming Energy
 		[388773] = List(), -- Oppressive Miasma
 	-- Algeth'ar Academy
-		-- TODO: DF
+		[389032] = List(), -- Toxic
+		[387910] = List(), -- Toxic Whirlwind
+		[388958] = List(), -- Riftbreath
+		[388796] = List(), -- Germinate
+		[388886] = List(), -- Arcane Rain 1
+		[388899] = List(), -- Arcane Rain 2
+		[390938] = List(), -- Agitation
+		[390297] = List(), -- Dormant
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
