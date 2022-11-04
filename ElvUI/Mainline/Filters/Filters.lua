@@ -717,13 +717,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
-	-- Shadowlands Season 3
-		[368241] = List(3), -- Decrypted Urh Cypher
-		[368244] = List(4), -- Urh Cloaking Field
-		[368240] = List(3), -- Decrypted Wo Cypher
-		[368239] = List(3), -- Decrypted Vy Cypher
-		[366297] = List(6), -- Deconstruct (Tank Debuff)
-		[366288] = List(6), -- Force Slam (Stun)
 	-- Shadowlands Season 4
 		[373364] = List(), -- Vampiric Claws
 		[373429] = List(), -- Carrion Swarm
@@ -1368,9 +1361,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
 		[343502] = List(), -- Inspiring
-	-- Shadowlands Season 3
-		[368104] = List(), -- Acceleration Field
-		[368079] = List(), -- Defense Matrix
 	-- Shadowlands Season 4
 		[373011] = List(6), -- Disguised
 		[373108] = List(2), -- Bounty: Critical Strike (Stacking)
