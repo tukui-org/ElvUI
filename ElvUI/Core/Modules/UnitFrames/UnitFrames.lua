@@ -582,6 +582,11 @@ function UF:Update_AllFrames()
 
 	for unit, group in pairs(UF.groupunits) do
 		local frame = UF[unit]
+
+		if group == 'arena' then
+			frame:SetAttribute('oUF-enableArenaPrep', UF.db.units[group].enable)
+		end
+
 		if UF.db.units[group].enable then
 			frame:Enable()
 			frame:Update()
