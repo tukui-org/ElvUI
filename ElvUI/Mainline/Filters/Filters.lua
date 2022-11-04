@@ -717,13 +717,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
-	-- Shadowlands Season 3
-		[368241] = List(3), -- Decrypted Urh Cypher
-		[368244] = List(4), -- Urh Cloaking Field
-		[368240] = List(3), -- Decrypted Wo Cypher
-		[368239] = List(3), -- Decrypted Vy Cypher
-		[366297] = List(6), -- Deconstruct (Tank Debuff)
-		[366288] = List(6), -- Force Slam (Stun)
 	-- Shadowlands Season 4
 		[373364] = List(), -- Vampiric Claws
 		[373429] = List(), -- Carrion Swarm
@@ -736,23 +729,84 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[396369] = List(), -- Mark of Lightning
 		[396364] = List(), -- Mark of Wind
 	----------------------------------------------------------
-	----------------- Dragonflight Dungeons ------------------
-	----------------------------------------------------------
-	-- Ruby Life Pools
-	-- Brackenhide Hollow
-	-- The Nokhud Offensive
-	-- Uldaman: Legacy of Tyr
-	-- Neltharus
-	-- The Azure Vault
-	-- Halls of Infusion
-	-- Algeth'ar Academy
-	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
 	-- Court of Stars
+		[207278] = List(), -- Arcane Lockdown
+		[209516] = List(), -- Mana Fang
+		[209512] = List(), -- Disrupting Energy
+		[211473] = List(), -- Shadow Slash
+		[207979] = List(), -- Shockwave
+		[207980] = List(), -- Disintegration Beam 1
+		[207981] = List(), -- Disintegration Beam 2
+		[211464] = List(), -- Fel Detonation
+		[208165] = List(), -- Withering Soul
+		[209413] = List(), -- Suppress
+		[209027] = List(), -- Quelling Strike
 	-- Halls of Valor
+		[197964] = List(), -- Runic Brand Orange
+		[197965] = List(), -- Runic Brand Yellow
+		[197963] = List(), -- Runic Brand Purple
+		[197967] = List(), -- Runic Brand Green
+		[197966] = List(), -- Runic Brand Blue
+		[193783] = List(), -- Aegis of Aggramar Up
+		[196838] = List(), -- Scent of Blood
+		[199674] = List(), -- Wicked Dagger
+		[193260] = List(), -- Static Field
+		[193743] = List(), -- Aegis of Aggramar Wielder
+		[199652] = List(), -- Sever
+		[198944] = List(), -- Breach Armor
+		[215430] = List(), -- Thunderstrike 1
+		[215429] = List(), -- Thunderstrike 2
+		[203963] = List(), -- Eye of the Storm
 	-- Shadowmoon Burial Grounds
+		[156776] = List(), -- Rending Voidlash
+		[153692] = List(), -- Necrotic Pitch
+		[153524] = List(), -- Plague Spit
+		[154469] = List(), -- Ritual of Bones
+		[162652] = List(), -- Lunar Purity
+		[164907] = List(), -- Void Cleave
+		[152979] = List(), -- Soul Shred
+		[158061] = List(), -- Blessed Waters of Purity
+		[154442] = List(), -- Malevolence
+		[153501] = List(), -- Void Blast
 	-- Temple of the Jade Serpent
+		-- TODO: DF
+	-- Ruby Life Pools
+		[392406] = List(), -- Thunderclap
+		[372820] = List(), -- Scorched Earth
+		[384823] = List(), -- Inferno 1
+		[373692] = List(), -- Inferno 2
+		[381862] = List(), -- Infernocore
+		[372860] = List(), -- Searing Wounds
+		[373869] = List(), -- Burning Touch
+		[385536] = List(), -- Flame Dance
+		[381518] = List(), -- Winds of Change
+		[372858] = List(), -- Searing Blows
+		[372682] = List(), -- Primal Chill 1
+		[373589] = List(), -- Primal Chill 2
+		[373693] = List(), -- Living Bomb
+		[392924] = List(), -- Shock Blast
+		[381515] = List(), -- Stormslam
+		[396411] = List(), -- Primal Overload
+		[384773] = List(), -- Flaming Embers
+		[392451] = List(), -- Flashfire
+		[372697] = List(), -- Jagged Earth
+		[372047] = List(), -- Flurry
+		[372963] = List(), -- Chillstorm
+	-- The Nokhud Offensive
+		-- TODO: DF
+	-- The Azure Vault
+		-- TODO: DF
+	-- Algeth'ar Academy
+		-- TODO: DF
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 2) -----------------
+	----------------------------------------------------------
+	-- Brackenhide Hollow
+	-- Halls of Infusion
+	-- Neltharus
+	-- Uldaman: Legacy of Tyr
 	----------------------------------------------------------
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
@@ -1311,9 +1365,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
 		[343502] = List(), -- Inspiring
-	-- Shadowlands Season 3
-		[368104] = List(), -- Acceleration Field
-		[368079] = List(), -- Defense Matrix
 	-- Shadowlands Season 4
 		[373011] = List(6), -- Disguised
 		[373108] = List(2), -- Bounty: Critical Strike (Stacking)
@@ -1321,23 +1372,69 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[373121] = List(2), -- Bounty: Versatility (Stacking)
 		[373116] = List(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
-	----------------- Dragonflight Dungeons ------------------
-	----------------------------------------------------------
-	-- Ruby Life Pools
-	-- Brackenhide Hollow
-	-- The Nokhud Offensive
-	-- Uldaman: Legacy of Tyr
-	-- Neltharus
-	-- The Azure Vault
-	-- Halls of Infusion
-	-- Algeth'ar Academy
-	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
 	-- Court of Stars
+		[209033] = List(), -- Fortification
+		[209741] = List(), -- Slicing Maelstrom 1
+		[209676] = List(), -- Slicing Maelstrom 2
+		[225101] = List(), -- Power Charge
+		[212784] = List(), -- Eye Storm
+		[225100] = List(), -- Charging Station
+		[207850] = List(), -- Bond of Strength
+		[209719] = List(), -- Bond of Cruelty
+		[209722] = List(), -- Bond of Flame
+		[209713] = List(), -- Bond of Cunning
+		[207906] = List(), -- Burning Intensity
+		[211477] = List(), -- Ferocity
+		[211401] = List(), -- Drifting Embers
+		[207815] = List(), -- Flask of the Solemn Night
 	-- Halls of Valor
+		[207707] = List(), -- Stealth 1
+		[196567] = List(), -- Stealth 2
+		[202494] = List(), -- Ragnarok 1
+		[193826] = List(), -- Ragnarok 2
+		[199248] = List(), -- Leap of Safety
+		[200901] = List(), -- Eye of the Storm
+		[190225] = List(), -- Enrage
+		[198745] = List(), -- Protective Light
+		[192158] = List(), -- Sanctify 1
+		[192307] = List(), -- Sanctify 2
 	-- Shadowmoon Burial Grounds
+		[162696] = List(), -- Deathspike
+		[165578] = List(), -- Corpse Breath
+		[153804] = List(), -- Inhale
+		[153094] = List(), -- Whispers of the Dark Star
+		[153153] = List(), -- Dark Communion
+		[164974] = List(), -- Dark Eclipse
+		[153067] = List(), -- Void Devastation
 	-- Temple of the Jade Serpent
+		-- TODO: DF
+	-- Ruby Life Pools
+		[372743] = List(), -- Ice Shield
+		[392569] = List(), -- Molten Blood
+		[392486] = List(), -- Lightning Storm
+		[385063] = List(), -- Burning Ambition
+		[373972] = List(), -- Blaze of Glory
+		[381525] = List(), -- Roaring Firebreath
+		[392454] = List(), -- Burning Veins
+		[381517] = List(), -- Winds of Change
+		[391723] = List(), -- Flame Breath
+		[372988] = List(), -- Ice Bulwark
+		[391050] = List(), -- Tempest Stormshield
+	-- The Nokhud Offensive
+		-- TODO: DF
+	-- The Azure Vault
+		-- TODO: DF
+	-- Algeth'ar Academy
+		-- TODO: DF
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 2) -----------------
+	----------------------------------------------------------
+	-- Brackenhide Hollow
+	-- Halls of Infusion
+	-- Neltharus
+	-- Uldaman: Legacy of Tyr
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
@@ -1690,7 +1787,7 @@ G.unitframe.ChannelTicks = {
 	-- Racials
 	[291944]	= 6, -- Regeneratin (Zandalari)
 	-- Evoker
-		-- TODO: DF add Channel Ticks (Disintegrate etc) @Lucky
+	[356995]	= 3, -- Disintegrate
 	-- Warlock
 	[198590]	= 5, -- Drain Soul
 	[755]		= 5, -- Health Funnel
