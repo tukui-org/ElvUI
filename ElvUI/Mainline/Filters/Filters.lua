@@ -729,38 +729,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[396369] = List(), -- Mark of Lightning
 		[396364] = List(), -- Mark of Wind
 	----------------------------------------------------------
-	----------------- Dragonflight Dungeons ------------------
-	----------------------------------------------------------
-	-- Ruby Life Pools
-		[392406] = List(), -- Thunderclap
-		[372820] = List(), -- Scorched Earth
-		[384823] = List(), -- Inferno 1
-		[373692] = List(), -- Inferno 2
-		[381862] = List(), -- Infernocore
-		[372860] = List(), -- Searing Wounds
-		[373869] = List(), -- Burning Touch
-		[385536] = List(), -- Flame Dance
-		[381518] = List(), -- Winds of Change
-		[372858] = List(), -- Searing Blows
-		[372682] = List(), -- Primal Chill 1
-		[373589] = List(), -- Primal Chill 2
-		[373693] = List(), -- Living Bomb
-		[392924] = List(), -- Shock Blast
-		[381515] = List(), -- Stormslam
-		[396411] = List(), -- Primal Overload
-		[384773] = List(), -- Flaming Embers
-		[392451] = List(), -- Flashfire
-		[372697] = List(), -- Jagged Earth
-		[372047] = List(), -- Flurry
-		[372963] = List(), -- Chillstorm
-	-- Brackenhide Hollow
-	-- The Nokhud Offensive
-	-- Uldaman: Legacy of Tyr
-	-- Neltharus
-	-- The Azure Vault
-	-- Halls of Infusion
-	-- Algeth'ar Academy
-	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
 	-- Court of Stars
@@ -803,6 +771,42 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[154442] = List(), -- Malevolence
 		[153501] = List(), -- Void Blast
 	-- Temple of the Jade Serpent
+		-- TODO: DF
+	-- Ruby Life Pools
+		[392406] = List(), -- Thunderclap
+		[372820] = List(), -- Scorched Earth
+		[384823] = List(), -- Inferno 1
+		[373692] = List(), -- Inferno 2
+		[381862] = List(), -- Infernocore
+		[372860] = List(), -- Searing Wounds
+		[373869] = List(), -- Burning Touch
+		[385536] = List(), -- Flame Dance
+		[381518] = List(), -- Winds of Change
+		[372858] = List(), -- Searing Blows
+		[372682] = List(), -- Primal Chill 1
+		[373589] = List(), -- Primal Chill 2
+		[373693] = List(), -- Living Bomb
+		[392924] = List(), -- Shock Blast
+		[381515] = List(), -- Stormslam
+		[396411] = List(), -- Primal Overload
+		[384773] = List(), -- Flaming Embers
+		[392451] = List(), -- Flashfire
+		[372697] = List(), -- Jagged Earth
+		[372047] = List(), -- Flurry
+		[372963] = List(), -- Chillstorm
+	-- The Nokhud Offensive
+		-- TODO: DF
+	-- The Azure Vault
+		-- TODO: DF
+	-- Algeth'ar Academy
+		-- TODO: DF
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 2) -----------------
+	----------------------------------------------------------
+	-- Brackenhide Hollow
+	-- Halls of Infusion
+	-- Neltharus
+	-- Uldaman: Legacy of Tyr
 	----------------------------------------------------------
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
@@ -1368,28 +1372,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[373121] = List(2), -- Bounty: Versatility (Stacking)
 		[373116] = List(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
-	----------------- Dragonflight Dungeons ------------------
-	----------------------------------------------------------
-	-- Ruby Life Pools
-		[372743] = List(), -- Ice Shield
-		[392569] = List(), -- Molten Blood
-		[392486] = List(), -- Lightning Storm
-		[385063] = List(), -- Burning Ambition
-		[373972] = List(), -- Blaze of Glory
-		[381525] = List(), -- Roaring Firebreath
-		[392454] = List(), -- Burning Veins
-		[381517] = List(), -- Winds of Change
-		[391723] = List(), -- Flame Breath
-		[372988] = List(), -- Ice Bulwark
-		[391050] = List(), -- Tempest Stormshield
-	-- Brackenhide Hollow
-	-- The Nokhud Offensive
-	-- Uldaman: Legacy of Tyr
-	-- Neltharus
-	-- The Azure Vault
-	-- Halls of Infusion
-	-- Algeth'ar Academy
-	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
 	-- Court of Stars
@@ -1427,6 +1409,32 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[164974] = List(), -- Dark Eclipse
 		[153067] = List(), -- Void Devastation
 	-- Temple of the Jade Serpent
+		-- TODO: DF
+	-- Ruby Life Pools
+		[372743] = List(), -- Ice Shield
+		[392569] = List(), -- Molten Blood
+		[392486] = List(), -- Lightning Storm
+		[385063] = List(), -- Burning Ambition
+		[373972] = List(), -- Blaze of Glory
+		[381525] = List(), -- Roaring Firebreath
+		[392454] = List(), -- Burning Veins
+		[381517] = List(), -- Winds of Change
+		[391723] = List(), -- Flame Breath
+		[372988] = List(), -- Ice Bulwark
+		[391050] = List(), -- Tempest Stormshield
+	-- The Nokhud Offensive
+		-- TODO: DF
+	-- The Azure Vault
+		-- TODO: DF
+	-- Algeth'ar Academy
+		-- TODO: DF
+	----------------------------------------------------------
+	---------------- Dragonflight (Season 2) -----------------
+	----------------------------------------------------------
+	-- Brackenhide Hollow
+	-- Halls of Infusion
+	-- Neltharus
+	-- Uldaman: Legacy of Tyr
 	----------------------------------------------------------
 	---------------- Old Dungeons (Season 4) -----------------
 	----------------------------------------------------------
