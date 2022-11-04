@@ -739,6 +739,27 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
 	-- Ruby Life Pools
+		[392406] = List(), -- Thunderclap
+		[372820] = List(), -- Scorched Earth
+		[384823] = List(), -- Inferno 1
+		[373692] = List(), -- Inferno 2
+		[381862] = List(), -- Infernocore
+		[372860] = List(), -- Searing Wounds
+		[373869] = List(), -- Burning Touch
+		[385536] = List(), -- Flame Dance
+		[381518] = List(), -- Winds of Change
+		[372858] = List(), -- Searing Blows
+		[372682] = List(), -- Primal Chill 1
+		[373589] = List(), -- Primal Chill 2
+		[373693] = List(), -- Living Bomb
+		[392924] = List(), -- Shock Blast
+		[381515] = List(), -- Stormslam
+		[396411] = List(), -- Primal Overload
+		[384773] = List(), -- Flaming Embers
+		[392451] = List(), -- Flashfire
+		[372697] = List(), -- Jagged Earth
+		[372047] = List(), -- Flurry
+		[372963] = List(), -- Chillstorm
 	-- Brackenhide Hollow
 	-- The Nokhud Offensive
 	-- Uldaman: Legacy of Tyr
@@ -1360,6 +1381,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
 	-- Ruby Life Pools
+		[372743] = List(), -- Ice Shield
+		[392569] = List(), -- Molten Blood
+		[392486] = List(), -- Lightning Storm
+		[385063] = List(), -- Burning Ambition
+		[373972] = List(), -- Blaze of Glory
+		[381525] = List(), -- Roaring Firebreath
+		[392454] = List(), -- Burning Veins
+		[381517] = List(), -- Winds of Change
+		[391723] = List(), -- Flame Breath
+		[372988] = List(), -- Ice Bulwark
+		[391050] = List(), -- Tempest Stormshield
 	-- Brackenhide Hollow
 	-- The Nokhud Offensive
 	-- Uldaman: Legacy of Tyr
