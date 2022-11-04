@@ -1690,7 +1690,7 @@ G.unitframe.ChannelTicks = {
 	-- Racials
 	[291944]	= 6, -- Regeneratin (Zandalari)
 	-- Evoker
-		-- TODO: DF add Channel Ticks (Disintegrate etc) @Lucky
+	[356995]	= 3, -- Disintegrate
 	-- Warlock
 	[198590]	= 5, -- Drain Soul
 	[755]		= 5, -- Health Funnel
