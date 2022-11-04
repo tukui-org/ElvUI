@@ -583,11 +583,12 @@ function UF:Update_AllFrames()
 	for unit, group in pairs(UF.groupunits) do
 		local frame = UF[unit]
 
+		local enabled = UF.db.units[group].enable
 		if group == 'arena' then
-			frame:SetAttribute('oUF-enableArenaPrep', UF.db.units[group].enable)
+			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
 
-		if UF.db.units[group].enable then
+		if enabled then
 			frame:Enable()
 			frame:Update()
 			E:EnableMover(frame.mover.name)
@@ -627,11 +628,12 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			end
 		end
 
+		local enabled = UF.db.units[group].enable
 		if group == 'arena' then
-			frame:SetAttribute('oUF-enableArenaPrep', UF.db.units[group].enable)
+			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
 
-		if UF.db.units[group].enable then
+		if enabled then
 			frame:Enable()
 			frame:Update()
 			E:EnableMover(frame.mover.name)
