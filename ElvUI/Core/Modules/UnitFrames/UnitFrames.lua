@@ -1227,6 +1227,18 @@ do
 			frame:SetParent(E.HiddenFrame)
 		end
 
+		local petFrame = frame.petFrame or frame.PetFrame
+		if petFrame then
+			petFrame:UnregisterAllEvents()
+			petFrame:SetParent(E.HiddenFrame)
+		end
+
+		local totFrame = frame.totFrame
+		if totFrame then
+			totFrame:UnregisterAllEvents()
+			totFrame:SetParent(E.HiddenFrame)
+		end
+
 		local health = frame.healthBar or frame.healthbar or frame.HealthBar
 		if health then
 			health:UnregisterAllEvents()
@@ -1250,16 +1262,6 @@ do
 		local buffFrame = frame.BuffFrame
 		if buffFrame then
 			buffFrame:UnregisterAllEvents()
-		end
-
-		local petFrame = frame.petFrame or frame.PetFrame
-		if petFrame then
-			petFrame:UnregisterAllEvents()
-		end
-
-		local totFrame = frame.totFrame
-		if totFrame then
-			totFrame:UnregisterAllEvents()
 		end
 	end
 
