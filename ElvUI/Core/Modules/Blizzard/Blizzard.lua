@@ -91,9 +91,7 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	if E.Retail and E.private.actionbar.enable then
-		_G.ObjectiveTrackerFrame.IsInDefaultPosition = E.noop -- force this never case, to fix a taint when actionbars in use
-	elseif E.Wrath and not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
+	if E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker') then
 		B:MoveObjectiveFrame()
 	end
 
