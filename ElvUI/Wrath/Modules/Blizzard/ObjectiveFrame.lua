@@ -10,16 +10,17 @@ local UnregisterStateDriver = UnregisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.WatchFrame:GetTop() or 0
-	local screenHeight = E.screenHeight
-	local gapFromTop = screenHeight - top
-	local maxHeight = screenHeight - gapFromTop
+	local gapFromTop = E.screenHeight - top
+	local maxHeight = E.screenHeight - gapFromTop
 	local watchFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
 	_G.WatchFrame:Height(watchFrameHeight)
 end
 
 function B:SetObjectiveFrameAutoHide()
-	if not _G.WatchFrame.AutoHider then return end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+	if not _G.WatchFrame.AutoHider then
+		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+	end
 
 	if E.db.general.objectiveFrameAutoHide then
 		RegisterStateDriver(_G.WatchFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')

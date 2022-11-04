@@ -11,31 +11,17 @@ local hooksecurefunc = hooksecurefunc
 
 local function IsFramePositionedLeft(frame)
 	local x = frame:GetCenter()
-	local screenWidth = E.screenWidth
-	local positionedLeft = false
-
-	if x and x < (screenWidth * 0.5) then
-		positionedLeft = true
-	end
-
-	return positionedLeft
-end
-
-local function MawBuffsList_OnShow(list)
-	list.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
-	list.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
-	list.button:SetButtonState('PUSHED', true)
-	list.button:SetButtonState('NORMAL')
+	return x and x < (E.screenWidth * 0.5) -- positioned on left side
 end
 
 local function RewardsFrame_SetPosition(block)
-	local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame
-	rewardsFrame:ClearAllPoints()
+	local rewards = _G.ObjectiveTrackerBonusRewardsFrame
+	rewards:ClearAllPoints()
 
 	if E.db.general.bonusObjectivePosition == 'RIGHT' or (E.db.general.bonusObjectivePosition == 'AUTO' and IsFramePositionedLeft(_G.ObjectiveTrackerFrame)) then
-		rewardsFrame:Point('TOPLEFT', block, 'TOPRIGHT', -10, -4)
+		rewards:Point('TOPLEFT', block, 'TOPRIGHT', -10, -4)
 	else
-		rewardsFrame:Point('TOPRIGHT', block, 'TOPLEFT', 10, -4)
+		rewards:Point('TOPRIGHT', block, 'TOPLEFT', 10, -4)
 	end
 end
 
@@ -58,14 +44,11 @@ local function AutoHider_OnShow()
 	end
 end
 
-function B:SetObjectiveFrameAutoHide()
-	if not _G.ObjectiveTrackerFrame.AutoHider then return end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
-
-	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
-	else
-		UnregisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, 'objectiveHider')
-	end
+local function MawBuffsList_OnShow(list)
+	list.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
+	list.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
+	list.button:SetButtonState('PUSHED', true)
+	list.button:SetButtonState('NORMAL')
 end
 
 function B:HandleMawBuffsFrame()
@@ -83,19 +66,34 @@ function B:HandleMawBuffsFrame()
 	end
 end
 
+function B:SetObjectiveFrameAutoHide()
+	if not _G.ObjectiveTrackerFrame.AutoHider then
+		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+	end
+
+	if E.db.general.objectiveFrameAutoHide then
+		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
+	else
+		UnregisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, 'objectiveHider')
+	end
+end
+
+-- keeping old name, not used to move just to handle the objective things
+-- wrath has it's own file, which actually has the mover on that client
 function B:MoveObjectiveFrame()
-	local holder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
-	holder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-	holder:Size(130, 22)
-
 	local tracker = _G.ObjectiveTrackerFrame
-	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
-
 	tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
 	tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	tracker.AutoHider:SetScript('OnHide', AutoHider_OnHide)
 	tracker.AutoHider:SetScript('OnShow', AutoHider_OnShow)
 	B:SetObjectiveFrameAutoHide()
+
+	-- force this never case, to fix a taint when actionbars in use
+	if E.private.actionbar.enable then
+		tracker.IsInDefaultPosition = E.noop
+	end
+
+	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
 
 	B:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'HandleMawBuffsFrame')
 	B:HandleMawBuffsFrame()

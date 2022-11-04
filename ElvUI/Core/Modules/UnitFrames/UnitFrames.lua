@@ -827,14 +827,14 @@ function UF.headerPrototype:Update(isForced)
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
 	local i = 1
-	local child = self:GetAttribute('child' .. i)
+	local child = self:GetAttribute('child'..i)
 	local func = UF[self.UpdateFrames]
 
 	while child do
 		self:UpdateChild(func, child, db)
 
 		i = i + 1
-		child = self:GetAttribute('child' .. i)
+		child = self:GetAttribute('child'..i)
 	end
 end
 
@@ -1132,18 +1132,22 @@ function UF:DisableBlizzard()
 
 	-- handle arena ones as well
 	if disable.arena then
-		if E.Retail then
+		if _G.UnitFrameThreatIndicator_Initialize then
 			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 		end
 
-		Arena_LoadUI = E.noop
-		-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
-		-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
-
-		if E.Retail or IsAddOnLoaded('Blizzard_ArenaUI') then
+		if E.Retail then
 			ElvUF:DisableBlizzard('arena')
 		else
-			UF:RegisterEvent('ADDON_LOADED')
+			Arena_LoadUI = E.noop
+			-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+			-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
+
+			if IsAddOnLoaded('Blizzard_ArenaUI') then
+				ElvUF:DisableBlizzard('arena')
+			else
+				UF:RegisterEvent('ADDON_LOADED')
+			end
 		end
 	end
 end
@@ -1205,7 +1209,6 @@ end
 
 do
 	local disabledPlates = {}
-	local isPartyHooked = false
 
 	local function HandleFrame(baseName, doNotReparent)
 		local frame
@@ -1215,48 +1218,48 @@ do
 			frame = baseName
 		end
 
-		if frame then
-			frame:UnregisterAllEvents()
-			frame:Hide()
+		if not frame then return end
 
-			if not doNotReparent then
-				frame:SetParent(E.HiddenFrame)
-			end
+		frame:UnregisterAllEvents()
+		frame:Hide()
 
-			local health = frame.healthBar or frame.healthbar or frame.HealthBar
-			if health then
-				health:UnregisterAllEvents()
-			end
+		if not doNotReparent then
+			frame:SetParent(E.HiddenFrame)
+		end
 
-			local power = frame.manabar or frame.ManaBar
-			if power then
-				power:UnregisterAllEvents()
-			end
+		local health = frame.healthBar or frame.healthbar or frame.HealthBar
+		if health then
+			health:UnregisterAllEvents()
+		end
 
-			local spell = frame.castBar or frame.spellbar
-			if spell then
-				spell:UnregisterAllEvents()
-			end
+		local power = frame.manabar or frame.ManaBar
+		if power then
+			power:UnregisterAllEvents()
+		end
 
-			local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
-			if altpowerbar then
-				altpowerbar:UnregisterAllEvents()
-			end
+		local spell = frame.castBar or frame.spellbar
+		if spell then
+			spell:UnregisterAllEvents()
+		end
 
-			local buffFrame = frame.BuffFrame
-			if buffFrame then
-				buffFrame:UnregisterAllEvents()
-			end
+		local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
+		if altpowerbar then
+			altpowerbar:UnregisterAllEvents()
+		end
 
-			local petFrame = frame.PetFrame
-			if petFrame then
-				petFrame:UnregisterAllEvents()
-			end
+		local buffFrame = frame.BuffFrame
+		if buffFrame then
+			buffFrame:UnregisterAllEvents()
+		end
 
-			local totFrame = frame.totFrame
-			if totFrame then
-				totFrame:UnregisterAllEvents()
-			end
+		local petFrame = frame.petFrame or frame.PetFrame
+		if petFrame then
+			petFrame:UnregisterAllEvents()
+		end
+
+		local totFrame = frame.totFrame
+		if totFrame then
+			totFrame:UnregisterAllEvents()
 		end
 	end
 
@@ -1308,48 +1311,42 @@ do
 			elseif disable.boss and strmatch(unit, 'boss%d?$') then
 				local id = strmatch(unit, 'boss(%d)')
 				if id then
-					HandleFrame('Boss' .. id .. 'TargetFrame')
+					HandleFrame('Boss'..id..'TargetFrame')
 				else
 					for i = 1, MAX_BOSS_FRAMES do
-						HandleFrame(format('Boss%dTargetFrame', i))
+						HandleFrame('Boss'..i..'TargetFrame')
 					end
 				end
 			elseif disable.party and strmatch(unit, 'party%d?$') then
-				if E.Retail then
-					if isPartyHooked then return end
-					isPartyHooked = true
-
+				if _G.PartyFrame then -- Retail
 					_G.PartyFrame:UnregisterAllEvents()
 					_G.PartyFrame:SetScript('OnShow', nil)
 
 					for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
 						HandleFrame(frame)
 					end
+
+					HandleFrame(_G.PartyFrame.Background)
 				else
 					local id = strmatch(unit, 'party(%d)')
 					if id then
-						HandleFrame('PartyMemberFrame' .. id)
-						HandleFrame('CompactPartyMemberFrame' .. id)
+						HandleFrame('PartyMemberFrame'..id)
+						HandleFrame('CompactPartyMemberFrame'..id)
 					else
 						for i = 1, _G.MAX_PARTY_MEMBERS do
-							HandleFrame(format('PartyMemberFrame%d', i))
-							HandleFrame(format('CompactPartyMemberFrame%d', i))
+							HandleFrame('PartyMemberFrame'..i)
+							HandleFrame('CompactPartyMemberFrame'..i)
 						end
 					end
 
 					HandleFrame(_G.PartyMemberBackground)
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
-				local id = strmatch(unit, 'arena(%d)')
-				if id then
-					HandleFrame('ArenaEnemyFrame' .. id)
-				else
-					for i = 1, _G.MAX_ARENA_ENEMIES do
-						HandleFrame(format('ArenaEnemyFrame%d', i))
-					end
-				end
-
-				if _G.ArenaEnemyFrames then
+				if _G.ArenaEnemyFramesContainer then -- Retail
+					_G.ArenaEnemyFramesContainer:UnregisterAllEvents()
+					_G.ArenaEnemyPrepFramesContainer:UnregisterAllEvents()
+					_G.ArenaEnemyMatchFramesContainer:UnregisterAllEvents()
+				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
 					_G.ArenaPrepFrames:UnregisterAllEvents()
 					_G.ArenaEnemyFrames:Hide()
@@ -1361,10 +1358,22 @@ do
 					_G.ArenaEnemyFrames = nil
 					_G.ArenaPrepFrames = nil
 				end
+
+				-- actually handle the sub frames now
+				local id = strmatch(unit, 'arena(%d)')
+				if id then
+					HandleFrame('ArenaEnemyMatchFrame'..id)
+					HandleFrame('ArenaEnemyPrepFrame'..id)
+				else
+					for i = 1, _G.MAX_ARENA_ENEMIES do
+						HandleFrame('ArenaEnemyMatchFrame'..i)
+						HandleFrame('ArenaEnemyPrepFrame'..i)
+					end
+				end
 			end
 		end
 
-		if strmatch(unit, 'nameplate%d+$') then
+		if E.private.nameplates.enable and strmatch(unit, 'nameplate%d+$') then
 			local frame = C_NamePlate_GetNamePlateForUnit(unit)
 			local plate = frame and frame.UnitFrame
 			if plate and not disabledPlates[plate] then

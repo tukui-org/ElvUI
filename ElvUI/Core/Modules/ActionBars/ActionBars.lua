@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ipairs, pairs, strmatch, next, unpack = ipairs, pairs, strmatch, next, unpack
+local ipairs, pairs, strmatch, next, unpack, tonumber = ipairs, pairs, strmatch, next, unpack, tonumber
 local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
@@ -996,36 +996,26 @@ end
 
 do
 	local untaint = {
-		MainMenuBar = true,
-		MicroButtonAndBagsBar = true,
+		MultiBar5 = true,
+		MultiBar6 = true,
+		MultiBar7 = true,
+		MultiBarLeft = true,
+		MultiBarRight = true,
 		MultiBarBottomLeft = true,
 		MultiBarBottomRight = true,
-		MultiBarLeft = true,
-		MultiBarRight = true
-	}
-
-	if E.Retail then
-		untaint.MultiBar5 = true
-		untaint.MultiBar6 = true
-		untaint.MultiBar7 = true
-	end
-
-	local removeEvents = {
+		MicroButtonAndBagsBar = true,
 		OverrideActionBar = true,
-		MultiCastActionBarFrame = not E.Wrath or nil, -- skip
+		MainMenuBar = true,
 		[E.Retail and 'StanceBar' or 'StanceBarFrame'] = true,
 		[E.Retail and 'PetActionBar' or 'PetActionBarFrame'] = true,
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
-	-- import to the main table
-	E:CopyTable(untaint, removeEvents)
+	if E.Wrath then -- TotemBar: this still might taint
+		untaint.MultiCastActionBarFrame = true
+	end
 
 	function AB:DisableBlizzard()
-		if E.Wrath then -- TotemBar: this still might taint
-			_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
-		end
-
 		for name in next, untaint do
 			if not E.Retail then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
@@ -1036,10 +1026,7 @@ do
 			local frame = _G[name]
 			if frame then
 				frame:SetParent(E.HiddenFrame)
-
-				if removeEvents[name] then
-					frame:UnregisterAllEvents()
-				end
+				frame:UnregisterAllEvents()
 
 				if not E.Retail then
 					AB:SetNoopsi(frame)
@@ -1074,6 +1061,9 @@ do
 
 			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
+
+			-- fix keybind error, this actually just prevents reopen of the GameMenu
+			_G.SettingsPanel.TransitionBackOpeningPanel = _G.HideUIPanel
 
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)

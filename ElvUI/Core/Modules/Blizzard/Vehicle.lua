@@ -7,6 +7,8 @@ local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 
+-- GLOBALS: VehicleSeatIndicator_UnloadTextures
+
 local function SetPosition(_, _, relativeTo)
 	local mover = _G.VehicleSeatIndicator.mover
 	if mover and relativeTo ~= mover then
@@ -53,12 +55,21 @@ function B:PositionVehicleFrame()
 
 		indicator:ClearAllPoints()
 		indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
+		indicator:Size(E.db.general.vehicleSeatIndicatorSize)
 
 		E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 		indicator.PositionVehicleFrameHooked = true
 	end
 
-	indicator:Size(E.db.general.vehicleSeatIndicatorSize)
-
 	B:UpdateVehicleFrame(true)
+
+	if E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
+		VehicleSeatIndicator_UnloadTextures = function()
+			_G.VehicleSeatIndicatorBackgroundTexture:SetTexture()
+			_G.VehicleSeatIndicator:Hide()
+			_G.VehicleSeatIndicator.currSkin = nil
+
+			_G.DurabilityFrame:SetAlerts()
+		end
+	end
 end
