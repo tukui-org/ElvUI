@@ -1399,6 +1399,7 @@ L["Shortcuts"] = true
 L["Shorten the channel names in chat."] = true
 L["Should tooltip be anchored to mouse cursor"] = true
 L["Show Absorb Amount"] = true
+L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = true
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = true
 L["Show Assigned Color"] = true

@@ -1399,6 +1399,7 @@ L["Shortcuts"] = "Ярлыки"
 L["Shorten the channel names in chat."] = "Сокращать названия каналов чата."
 L["Should tooltip be anchored to mouse cursor"] = "Привязывает подсказку к курсору мыши."
 L["Show Absorb Amount"] = "Показывать объем поглощения"
+L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = "Отображать предупреждение, если у Вас есть не распределенные очки талантов."
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Отображать объем входящего исцеления на рамках. Также отображает немного иначе окрашенную полосу для избыточного исцеления."
 L["Show Assigned Color"] = "Цвет назначенных"

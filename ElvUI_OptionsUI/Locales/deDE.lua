@@ -1400,6 +1400,7 @@ L["Shortcuts"] = "Verknüpfungen"
 L["Shorten the channel names in chat."] = "Kürze Kanalnamen im Chat."
 L["Should tooltip be anchored to mouse cursor"] = "Damit wird der Tooltip am Mauszeiger verankert werden"
 L["Show Absorb Amount"] = "Zeige Absorbierende Menge"
+L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = "Zeigt ein Alarmfenster wenn du unverteilte Talentpunkte hast."
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Zeige eingehende Heilung im Einheitenfenster. Zeigt eine etwas anders farbige Leiste für eingehende Überheilung."
 L["Show Assigned Color"] = "Zeige zugewiesenen Farbe"

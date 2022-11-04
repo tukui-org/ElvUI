@@ -1400,6 +1400,7 @@ L["Shortcuts"] = "Kisayollar"
 L["Shorten the channel names in chat."] = "Sohbette kanal adlarini kisaltin."
 L["Should tooltip be anchored to mouse cursor"] = "Ipucu penceresi fare imlecine sabitlenmeli mi"
 L["Show Absorb Amount"] = "Absorbe Miktarini Goster"
+L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = "Harcamadiginiz yetenek puanlariniz varsa bir uyari cercevesi gosterin."
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Alınacak tahmini iyilestirmeyi birim cercevesinde goster. Ayrica gelen iyilestirme tahmini icin farkli renk vurgusunda bir cubuk goster."
 L["Show Assigned Color"] = "Atanan Rengi Goster"

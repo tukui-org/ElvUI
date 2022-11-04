@@ -1400,6 +1400,7 @@ L["Shortcuts"] = "바로가기"
 L["Shorten the channel names in chat."] = "채팅창의 채널명을 간추려 표시합니다."
 L["Should tooltip be anchored to mouse cursor"] = "마우스에 툴팁을 표시합니다.\n\n체크 해제 시 프레임 이동 모드에서 툴팁 위치에 표시됩니다."
 L["Show Absorb Amount"] = true
+L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = "미사용 특성 포인트 알림창 표시"
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "생명력바에 예상 치유량을 표시합니다."
 L["Show Assigned Color"] = true

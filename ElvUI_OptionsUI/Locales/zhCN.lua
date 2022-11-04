@@ -1399,6 +1399,7 @@ L["Shortcuts"] = "快捷键"
 L["Shorten the channel names in chat."] = "在聊天窗口中隐藏频道名称"
 L["Should tooltip be anchored to mouse cursor"] = "提示显示在鼠标处"
 L["Show Absorb Amount"] = "显示吸收量"
+L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = "为你未使用的天赋显示一个警报框"
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "在单位框架中显示即将回复的的预估治疗量, 过量治疗则以不同颜色显示"
 L["Show Assigned Color"] = "显示设定的颜色"
