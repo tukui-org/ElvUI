@@ -795,7 +795,26 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[372047] = List(), -- Flurry
 		[372963] = List(), -- Chillstorm
 	-- The Nokhud Offensive
-		-- TODO: DF
+		[382628] = List(), -- Surge of Power
+		[386025] = List(), -- Tempest
+		[381692] = List(), -- Swift Stab
+		[387615] = List(), -- Grasp of the Dead
+		[387629] = List(), -- Rotting Wind
+		[386912] = List(), -- Stormsurge Cloud
+		[395669] = List(), -- Aftershock
+		[384134] = List(), -- Pierce
+		[388451] = List(), -- Stormcaller's Fury 1
+		[388446] = List(), -- Stormcaller's Fury 2
+		[395035] = List(), -- Shatter Soul
+		[376899] = List(), -- Crackling Cloud
+		[384492] = List(), -- Hunter's Mark
+		[376730] = List(), -- Stormwinds
+		[376894] = List(), -- Crackling Upheaval
+		[388801] = List(), -- Mortal Strike
+		[376827] = List(), -- Conductive Strike
+		[376864] = List(), -- Static Spear
+		[375937] = List(), -- Rending Strike
+		[376634] = List(), -- Iron Spear
 	-- The Azure Vault
 		-- TODO: DF
 	-- Algeth'ar Academy
@@ -1423,7 +1442,22 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[372988] = List(), -- Ice Bulwark
 		[391050] = List(), -- Tempest Stormshield
 	-- The Nokhud Offensive
-		-- TODO: DF
+		[392198] = List(), -- Ancestral Bond
+		[386319] = List(), -- Swirling Gusts
+		[386223] = List(), -- Stormshield
+		[387614] = List(), -- Chant of the Dead
+		[384686] = List(), -- Energy Surge
+		[376705] = List(), -- Crackling Shield
+		[383823] = List(), -- Rally the Clan
+		[384510] = List(), -- Cleaving Strikes
+		[395045] = List(), -- Consumed Soul
+		[386024] = List(), -- Tempest
+		[386914] = List(), -- Primal Storm
+		[386915] = List(), -- Stormsurge Totems
+		[385339] = List(), -- Earthsplitter
+		[384808] = List(), -- Guardian Winds
+		[384620] = List(), -- Electrical Storm
+		[383067] = List(), -- Raging Kin
 	-- The Azure Vault
 		-- TODO: DF
 	-- Algeth'ar Academy
