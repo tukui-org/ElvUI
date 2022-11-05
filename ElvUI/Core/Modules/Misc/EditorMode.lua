@@ -20,7 +20,7 @@ local ShutdownMode = {
 	'HasActiveChanges',
 	'HighlightSystem',
 	'SelectSystem',
-	-- these will taint the default bars on spec switch
+	-- these not running will taint the default bars on spec switch
 	--- 'IsInDefaultPosition',
 	--- 'UpdateSystem',
 }
