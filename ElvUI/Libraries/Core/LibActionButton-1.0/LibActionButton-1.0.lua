@@ -1905,11 +1905,6 @@ if WoWClassic then
 	end
 end
 
-if WoWClassic or WoWBCC or WoWWrath then
-	-- disable loss of control cooldown on classic
-	Action.GetLossOfControlCooldown = function(self) return 0,0 end
-end
-
 -----------------------------------------------------------
 --- Spell Button
 Spell.HasAction               = function(self) return true end
