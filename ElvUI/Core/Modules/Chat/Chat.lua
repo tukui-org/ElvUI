@@ -2737,7 +2737,7 @@ function CH:FCFDock_ScrollToSelectedTab(dock)
 	local logchat, logchattab = CH:GetCombatLog()
 	dock.scrollFrame:ClearAllPoints()
 	dock.scrollFrame:Point('RIGHT', dock.overflowButton, 'LEFT')
-	dock.scrollFrame:Point('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
+	dock.scrollFrame:Point('TOPLEFT', (logchat and logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
 end
 
 function CH:FCF_SetWindowAlpha(frame, alpha)
