@@ -5,7 +5,6 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
-local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 
 -- GLOBALS: VehicleSeatIndicator_UnloadTextures
 
