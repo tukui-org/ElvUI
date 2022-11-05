@@ -5,7 +5,6 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
-local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 
 -- GLOBALS: VehicleSeatIndicator_UnloadTextures
 
@@ -20,6 +19,8 @@ end
 local function VehicleSetUp(vehicleID)
 	local size = E.db.general.vehicleSeatIndicatorSize
 	_G.VehicleSeatIndicator:Size(size)
+
+	if not vehicleID then return end
 
 	local _, numIndicators = GetVehicleUIIndicator(vehicleID)
 	if numIndicators then
@@ -36,15 +37,8 @@ local function VehicleSetUp(vehicleID)
 	end
 end
 
-function B:UpdateVehicleFrame(direct)
-	local current = _G.VehicleSeatIndicator.currSkin
-	if not current then return end
-
-	if direct then
-		VehicleSetUp(current)
-	else
-		VehicleSeatIndicator_SetUpVehicle(current)
-	end
+function B:UpdateVehicleFrame()
+	VehicleSetUp(_G.VehicleSeatIndicator.currSkin)
 end
 
 function B:PositionVehicleFrame()
@@ -61,7 +55,7 @@ function B:PositionVehicleFrame()
 		indicator.PositionVehicleFrameHooked = true
 	end
 
-	B:UpdateVehicleFrame(true)
+	B:UpdateVehicleFrame()
 
 	if E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
 		VehicleSeatIndicator_UnloadTextures = function()

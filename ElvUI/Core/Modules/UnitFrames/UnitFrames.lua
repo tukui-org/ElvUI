@@ -582,7 +582,13 @@ function UF:Update_AllFrames()
 
 	for unit, group in pairs(UF.groupunits) do
 		local frame = UF[unit]
-		if UF.db.units[group].enable then
+
+		local enabled = UF.db.units[group].enable
+		if group == 'arena' then
+			frame:SetAttribute('oUF-enableArenaPrep', enabled)
+		end
+
+		if enabled then
 			frame:Enable()
 			frame:Update()
 			E:EnableMover(frame.mover.name)
@@ -622,11 +628,12 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			end
 		end
 
+		local enabled = UF.db.units[group].enable
 		if group == 'arena' then
-			frame:SetAttribute('oUF-enableArenaPrep', UF.db.units[group].enable)
+			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
 
-		if UF.db.units[group].enable then
+		if enabled then
 			frame:Enable()
 			frame:Update()
 			E:EnableMover(frame.mover.name)
@@ -1227,6 +1234,18 @@ do
 			frame:SetParent(E.HiddenFrame)
 		end
 
+		local petFrame = frame.petFrame or frame.PetFrame
+		if petFrame then
+			petFrame:UnregisterAllEvents()
+			petFrame:SetParent(E.HiddenFrame)
+		end
+
+		local totFrame = frame.totFrame
+		if totFrame then
+			totFrame:UnregisterAllEvents()
+			totFrame:SetParent(E.HiddenFrame)
+		end
+
 		local health = frame.healthBar or frame.healthbar or frame.HealthBar
 		if health then
 			health:UnregisterAllEvents()
@@ -1250,16 +1269,6 @@ do
 		local buffFrame = frame.BuffFrame
 		if buffFrame then
 			buffFrame:UnregisterAllEvents()
-		end
-
-		local petFrame = frame.petFrame or frame.PetFrame
-		if petFrame then
-			petFrame:UnregisterAllEvents()
-		end
-
-		local totFrame = frame.totFrame
-		if totFrame then
-			totFrame:UnregisterAllEvents()
 		end
 	end
 

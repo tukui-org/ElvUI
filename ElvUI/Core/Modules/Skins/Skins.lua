@@ -389,16 +389,11 @@ do
 		['auctionhouse-itemicon-border-account']	= E.QualityColors[quality.Heirloom]
 	}
 
-	local function hideBorder(border)
-		border:SetAlpha(0)
-		border:StripTextures()
-	end
-
 	local function colorAtlas(border, atlas)
 		local color = iconColors[atlas]
 		if not color then return end
 
-		hideBorder(border)
+		border:StripTextures()
 
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
@@ -409,7 +404,7 @@ do
 	end
 
 	local function colorVertex(border, r, g, b, a)
-		hideBorder(border)
+		border:StripTextures()
 
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
@@ -444,7 +439,7 @@ do
 		border.customBackdrop = backdrop
 
 		if not border.IconBorderHooked then
-			hideBorder(border)
+			border:StripTextures()
 
 			hooksecurefunc(border, 'SetAtlas', colorAtlas)
 			hooksecurefunc(border, 'SetVertexColor', colorVertex)
