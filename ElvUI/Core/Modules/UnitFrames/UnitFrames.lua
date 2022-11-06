@@ -1570,10 +1570,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	end
 end
 
-function UF:TargetSound()
-	local unit = UF.db.targetSound and self.unitframeType
-	if not unit then return end
-
+function UF:TargetSound(unit)
 	if UnitExists(unit) and not IsReplacingUnit() then
 		if UnitIsEnemy(unit, 'player') then
 			PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT)
@@ -1583,13 +1580,20 @@ function UF:TargetSound()
 			PlaySound(SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT)
 		end
 	else
-		PlaySound(SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT)
+		PlaySound(SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT, nil, true)
 	end
 end
 
-function UF:HandleTargetSound(frame)
-	frame:HookScript('OnShow', UF.TargetSound)
-	frame:HookScript('OnHide', UF.TargetSound)
+function UF:PLAYER_FOCUS_CHANGED()
+	if UF.db.targetSound then
+		UF:TargetSound('focus')
+	end
+end
+
+function UF:PLAYER_TARGET_CHANGED()
+	if UF.db.targetSound then
+		UF:TargetSound('target')
+	end
 end
 
 do -- Clique support for registering clicks
@@ -1649,8 +1653,6 @@ function UF:AfterStyleCallback()
 	elseif unit == 'assist' or unit == 'assisttarget' then
 		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
-	elseif unit == 'focus' or unit == 'target' then
-		UF:HandleTargetSound(self)
 	end
 end
 
@@ -1682,6 +1684,8 @@ function UF:Initialize()
 
 	UF:UpdateColors()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
+	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
+	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:DisableBlizzard()
 
 	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
