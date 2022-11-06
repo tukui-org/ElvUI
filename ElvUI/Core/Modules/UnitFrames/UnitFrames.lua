@@ -514,32 +514,34 @@ function UF:Construct_Fader()
 end
 
 function UF:Configure_Fader(frame)
-	if frame.db and frame.db.enable and (frame.db.fader and frame.db.fader.enable) then
+	local db = frame.db and frame.db.enable and frame.db.fader
+	if db and db.enable then
 		if not frame:IsElementEnabled('Fader') then
 			frame:EnableElement('Fader')
 		end
 
-		frame.Fader:SetOption('Hover', frame.db.fader.hover)
-		frame.Fader:SetOption('Combat', frame.db.fader.combat)
-		frame.Fader:SetOption('PlayerTarget', frame.db.fader.playertarget)
-		frame.Fader:SetOption('Focus', frame.db.fader.focus)
-		frame.Fader:SetOption('Health', frame.db.fader.health)
-		frame.Fader:SetOption('Power', frame.db.fader.power)
-		frame.Fader:SetOption('Vehicle', frame.db.fader.vehicle)
-		frame.Fader:SetOption('Casting', frame.db.fader.casting)
-		frame.Fader:SetOption('MinAlpha', frame.db.fader.minAlpha)
-		frame.Fader:SetOption('MaxAlpha', frame.db.fader.maxAlpha)
+		local fader = frame.Fader
+		fader:SetOption('Hover', db.hover)
+		fader:SetOption('Combat', db.combat)
+		fader:SetOption('PlayerTarget', db.playertarget)
+		fader:SetOption('Focus', db.focus)
+		fader:SetOption('Health', db.health)
+		fader:SetOption('Power', db.power)
+		fader:SetOption('Vehicle', db.vehicle)
+		fader:SetOption('Casting', db.casting)
+		fader:SetOption('MinAlpha', db.minAlpha)
+		fader:SetOption('MaxAlpha', db.maxAlpha)
 
 		if frame ~= _G.ElvUF_Player then
-			frame.Fader:SetOption('Range', frame.db.fader.range)
-			frame.Fader:SetOption('UnitTarget', frame.db.fader.unittarget)
+			fader:SetOption('Range', db.range)
+			fader:SetOption('UnitTarget', db.unittarget)
 		end
 
-		frame.Fader:SetOption('Smooth', (frame.db.fader.smooth > 0 and frame.db.fader.smooth) or nil)
-		frame.Fader:SetOption('Delay', (frame.db.fader.delay > 0 and frame.db.fader.delay) or nil)
+		fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
+		fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
 
-		frame.Fader:ClearTimers()
-		frame.Fader.configTimer = E:ScheduleTimer(frame.Fader.ForceUpdate, 0.25, frame.Fader, true)
+		fader:ClearTimers()
+		fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
 	elseif frame:IsElementEnabled('Fader') then
 		frame:DisableElement('Fader')
 		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
@@ -797,14 +799,12 @@ function UF.groupPrototype:AdjustVisibility(Header)
 		for i, group in ipairs(Header.groups) do
 			if i <= numGroups and ((Header.db.raidWideSorting and i <= 1) or not Header.db.raidWideSorting) then
 				group:Show()
+			elseif group.forceShow then
+				group:Hide()
+				group:SetAttribute('startingIndex', 1)
+				UF:UnshowChildUnits(group, group:GetChildren())
 			else
-				if group.forceShow then
-					group:Hide()
-					group:SetAttribute('startingIndex', 1)
-					UF:UnshowChildUnits(group, group:GetChildren())
-				else
-					group:Reset()
-				end
+				group:Reset()
 			end
 		end
 	end
