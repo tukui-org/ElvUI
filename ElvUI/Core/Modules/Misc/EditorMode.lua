@@ -14,17 +14,6 @@ local CheckBossFrame = function() return E.private.unitframe.enable and E.privat
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
-local ShutdownMode = {
-	'OnEditModeEnter',
-	'OnEditModeExit',
-	'HasActiveChanges',
-	'HighlightSystem',
-	'SelectSystem',
-	-- these not running will taint the default bars on spec switch
-	--- 'IsInDefaultPosition',
-	--- 'UpdateSystem',
-}
-
 local IgnoreFrames = {
 	MinimapCluster = function() return E.private.general.minimap.enable end, -- header underneath and rotate minimap (will need to add the setting)
 	GameTooltipDefaultContainer = function() return E.private.tooltip.enable end,
@@ -56,6 +45,17 @@ local IgnoreFrames = {
 	MultiBar5 = CheckActionBar,
 	MultiBar6 = CheckActionBar,
 	MultiBar7 = CheckActionBar
+}
+
+local ShutdownMode = {
+	'OnEditModeEnter',
+	'OnEditModeExit',
+	'HasActiveChanges',
+	'HighlightSystem',
+	'SelectSystem',
+	-- these not running will taint the default bars on spec switch
+	--- 'IsInDefaultPosition',
+	--- 'UpdateSystem',
 }
 
 function EM:Initialize()
