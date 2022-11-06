@@ -29,10 +29,10 @@ local PlaySound = PlaySound
 local UnitGUID = UnitGUID
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local SOUNDKIT_IG_CREATURE_AGGRO_SELECT = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
-local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
-local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
-local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
+local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
+local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
+local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
+local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 local MAX_BOSS_FRAMES = 8
 
@@ -1571,30 +1571,16 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 end
 
 do
-	local sound, _
-	function UF:SOUNDKIT_FINISHED(_, handle)
-		if handle == sound then
-			sound = nil
+	local playID
+	function UF:SOUNDKIT_FINISHED(_, soundID)
+		if playID == soundID then
+			playID = nil
 		end
 	end
 
 	function UF:TargetSound(unit)
-		if sound then return end
-		sound = true
-
-		if UnitExists(unit) then
-			if IsReplacingUnit() then return end
-
-			if UnitIsEnemy(unit, 'player') then
-				_, sound = PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT, nil, nil, true)
-			elseif UnitIsFriend(unit, 'player') then
-				_, sound = PlaySound(SOUNDKIT_IG_CHARACTER_NPC_SELECT, nil, nil, true)
-			else
-				_, sound = PlaySound(SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT, nil, nil, true)
-			end
-		else
-			_, sound = PlaySound(SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT, nil, nil, true)
-		end
+		local id, _ = not playID and ((not UnitExists(unit) and SELECT_LOST) or not IsReplacingUnit() and ((UnitIsEnemy(unit, 'player') and SELECT_AGGRO) or (UnitIsFriend(unit, 'player') and SELECT_NPC) or SELECT_NEUTRAL))
+		if id then _, playID = PlaySound(id, nil, nil, true) end
 	end
 end
 
