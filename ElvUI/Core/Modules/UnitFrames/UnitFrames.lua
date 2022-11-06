@@ -1408,14 +1408,17 @@ function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 end
 
 function UF:ResetUnitSettings(unit)
-	E:CopyTable(UF.db.units[unit], P.unitframe.units[unit])
+	local db = UF.db.units[unit]
+	local defaults = P.unitframe.units[unit]
 
-	if UF.db.units[unit].buffs and UF.db.units[unit].buffs.sizeOverride then
-		UF.db.units[unit].buffs.sizeOverride = P.unitframe.units[unit].buffs.sizeOverride or 0
+	E:CopyTable(db, defaults)
+
+	if db.buffs and db.buffs.sizeOverride then
+		db.buffs.sizeOverride = defaults.buffs.sizeOverride or 0
 	end
 
-	if UF.db.units[unit].debuffs and UF.db.units[unit].debuffs.sizeOverride then
-		UF.db.units[unit].debuffs.sizeOverride = P.unitframe.units[unit].debuffs.sizeOverride or 0
+	if db.debuffs and db.debuffs.sizeOverride then
+		db.debuffs.sizeOverride = defaults.debuffs.sizeOverride or 0
 	end
 
 	UF:Update_AllFrames()
