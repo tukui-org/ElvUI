@@ -97,6 +97,9 @@ function EM:Initialize()
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop
 		mixin.RefreshEncounterBar = E.noop
+
+		-- taint through EditModeActionBarTemplate -> EditModeActionBarMixin.UpdateVisibility
+		editMode.UpdateActionBarLayout = E.noop
 	end
 end
 
