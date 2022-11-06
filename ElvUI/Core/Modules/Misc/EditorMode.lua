@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local EM = E:GetModule('EditorMode')
 
 local _G = _G
-local tremove = tremove
+local next = next
 
 local CheckTargetFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
 local CheckCastFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
@@ -47,17 +47,29 @@ local IgnoreFrames = {
 	MultiBar7 = CheckActionBar
 }
 
+local ShutdownMode = {
+	'OnEditModeEnter',
+	'OnEditModeExit',
+	'HasActiveChanges',
+	'HighlightSystem',
+	'SelectSystem',
+	-- these not running will taint the default bars on spec switch
+	--- 'IsInDefaultPosition',
+	--- 'UpdateSystem',
+}
+
 function EM:Initialize()
 	local editMode = _G.EditModeManagerFrame
 
 	-- remove the initial registers
 	local registered = editMode.registeredSystemFrames
 	for i = #registered, 1, -1 do
-		local name = registered[i]:GetName()
-		local ignore = IgnoreFrames[name]
-
+		local frame = registered[i]
+		local ignore = IgnoreFrames[frame:GetName()]
 		if ignore and ignore() then
-			tremove(editMode.registeredSystemFrames, i)
+			for _, key in next, ShutdownMode do
+				frame[key] = E.noop
+			end
 		end
 	end
 
@@ -85,6 +97,9 @@ function EM:Initialize()
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop
 		mixin.RefreshEncounterBar = E.noop
+
+		-- taint through EditModeActionBarTemplate -> EditModeActionBarMixin.UpdateVisibility
+		editMode.UpdateActionBarLayout = E.noop
 	end
 end
 
