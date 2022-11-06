@@ -1567,7 +1567,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	end
 end
 
-function UF:TargetSound(unit)
+function UF:TargetSound()
+	local unit = UF.db.targetSound and self.unitframeType
+	if not unit then return end
+
 	if UnitExists(unit) and not IsReplacingUnit() then
 		if UnitIsEnemy(unit, 'player') then
 			PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT)
@@ -1581,23 +1584,9 @@ function UF:TargetSound(unit)
 	end
 end
 
-function UF:PLAYER_FOCUS_CHANGED()
-	if UF.db.targetSound then
-		UF:TargetSound('focus')
-	end
-end
-
-do
-	local waiting -- called rapidly sometimes
-	local function ClearWait() waiting = nil end
-	function UF:PLAYER_TARGET_CHANGED()
-		if UF.db.targetSound and not waiting then
-			UF:TargetSound('target')
-			waiting = true
-
-			E:Delay(0.1, ClearWait)
-		end
-	end
+function UF:HandleTargetSound(frame)
+	frame:HookScript('OnShow', UF.TargetSound)
+	frame:HookScript('OnHide', UF.TargetSound)
 end
 
 do -- Clique support for registering clicks
@@ -1649,12 +1638,16 @@ function UF:AfterStyleCallback()
 	-- calling an update onto assist or tank in the styleFunc is before the `EnableElement`
 	-- that would cause the auras to be shown when a new frame is spawned (tank2, assist2)
 	-- even when they are disabled. this makes sure the update happens after so its proper.
-	if self.unitframeType == 'tank' or self.unitframeType == 'tanktarget' then
+
+	local unit = self.unitframeType
+	if unit == 'tank' or unit == 'tanktarget' then
 		UF:Update_TankFrames(self, UF.db.units.tank)
 		UF:Update_FontStrings()
-	elseif self.unitframeType == 'assist' or self.unitframeType == 'assisttarget' then
+	elseif unit == 'assist' or unit == 'assisttarget' then
 		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
+	elseif unit == 'focus' or unit == 'target' then
+		UF:HandleTargetSound(self)
 	end
 end
 
@@ -1686,8 +1679,6 @@ function UF:Initialize()
 
 	UF:UpdateColors()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
-	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
-	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:DisableBlizzard()
 
 	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
