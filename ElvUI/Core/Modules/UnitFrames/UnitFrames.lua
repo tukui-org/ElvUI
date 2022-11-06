@@ -1578,9 +1578,20 @@ do
 		end
 	end
 
-	function UF:TargetSound(unit)
-		local id, _ = not playID and ((not UnitExists(unit) and SELECT_LOST) or not IsReplacingUnit() and ((UnitIsEnemy(unit, 'player') and SELECT_AGGRO) or (UnitIsFriend(unit, 'player') and SELECT_NPC) or SELECT_NEUTRAL))
-		if id then _, playID = PlaySound(id, nil, nil, true) end
+	function UF:TargetSound(unit, _)
+		if playID then
+			return -- dont play more
+		elseif not UnitExists(unit) then
+			_, playID = PlaySound(SELECT_LOST, nil, nil, true)
+		elseif not IsReplacingUnit() then
+			if UnitIsEnemy(unit, 'player') then
+				_, playID = PlaySound(SELECT_AGGRO, nil, nil, true)
+			elseif UnitIsFriend(unit, 'player') then
+				_, playID = PlaySound(SELECT_NPC, nil, nil, true)
+			else
+				_, playID = PlaySound(SELECT_NEUTRAL, nil, nil, true)
+			end
+		end
 	end
 end
 
