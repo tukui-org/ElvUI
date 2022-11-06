@@ -1570,17 +1570,31 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	end
 end
 
-function UF:TargetSound(unit)
-	if UnitExists(unit) and not IsReplacingUnit() then
-		if UnitIsEnemy(unit, 'player') then
-			PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT)
-		elseif UnitIsFriend(unit, 'player') then
-			PlaySound(SOUNDKIT_IG_CHARACTER_NPC_SELECT)
-		else
-			PlaySound(SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT)
+do
+	local sound, _
+	function UF:SOUNDKIT_FINISHED(_, handle)
+		if handle == sound then
+			sound = nil
 		end
-	else
-		PlaySound(SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT, nil, true)
+	end
+
+	function UF:TargetSound(unit)
+		if sound then return end
+		sound = true
+
+		if UnitExists(unit) then
+			if IsReplacingUnit() then return end
+
+			if UnitIsEnemy(unit, 'player') then
+				_, sound = PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT, nil, nil, true)
+			elseif UnitIsFriend(unit, 'player') then
+				_, sound = PlaySound(SOUNDKIT_IG_CHARACTER_NPC_SELECT, nil, nil, true)
+			else
+				_, sound = PlaySound(SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT, nil, nil, true)
+			end
+		else
+			_, sound = PlaySound(SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT, nil, nil, true)
+		end
 	end
 end
 
@@ -1686,6 +1700,7 @@ function UF:Initialize()
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	UF:RegisterEvent('SOUNDKIT_FINISHED')
 	UF:DisableBlizzard()
 
 	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
