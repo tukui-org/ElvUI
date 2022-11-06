@@ -1587,9 +1587,16 @@ function UF:PLAYER_FOCUS_CHANGED()
 	end
 end
 
-function UF:PLAYER_TARGET_CHANGED()
-	if UF.db.targetSound then
-		UF:TargetSound('target')
+do
+	local waiting -- called rapidly sometimes
+	local function ClearWait() waiting = nil end
+	function UF:PLAYER_TARGET_CHANGED()
+		if UF.db.targetSound and not waiting then
+			UF:TargetSound('target')
+			waiting = true
+
+			E:Delay(0.1, ClearWait)
+		end
 	end
 end
 
