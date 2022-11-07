@@ -682,7 +682,7 @@ function Generic:OnEnter()
 	end
 
 	if self.config.clickOnDown then
-		Generic.OnEvent(self, 'OnEnter')
+		Generic.OnButtonEvent(self, 'OnEnter')
 		self:RegisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
@@ -692,7 +692,7 @@ function Generic:OnLeave()
 	GameTooltip:Hide()
 
 	if self.config.clickOnDown then
-		Generic.OnEvent(self, 'OnLeave')
+		Generic.OnButtonEvent(self, 'OnLeave')
 		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
@@ -1364,8 +1364,7 @@ function Update(self, fromUpdateConfig)
 		end
 
 		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
-			local name = GetSpellInfo(ZoneAbilityFrame.baseName)
-			if name == abilityName then
+			if abilityName and abilityName == GetSpellInfo(ZoneAbilityFrame.baseName) then
 				texture = GetLastZoneAbilitySpellTexture()
 			end
 		end
