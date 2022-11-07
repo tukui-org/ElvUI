@@ -1154,7 +1154,7 @@ function AB:GetHotkeyConfig(db)
 	local justify = (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT') and 'LEFT' or (anchor == 'TOP' or anchor == 'BOTTOM') and 'CENTER' or 'RIGHT'
 	local show = not (db and not db.hotkeytext)
 
-	return font, size, flags, anchor, offsetX, offsetY, { color.r or 1, color.g or 1, color.b or 1}, justify, show
+	return font, size, flags, anchor, offsetX, offsetY, { color.r or 1, color.g or 1, color.b or 1 }, justify, show
 end
 
 function AB:UpdateButtonConfig(barName, buttonName)
