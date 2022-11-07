@@ -57,14 +57,14 @@ local C_LevelLink = C_LevelLink
 local C_ToyBox = C_ToyBox
 
 local ATTACK_BUTTON_FLASH_TIME = ATTACK_BUTTON_FLASH_TIME
-local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local COOLDOWN_TYPE_NORMAL = COOLDOWN_TYPE_NORMAL
+local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local RANGE_INDICATOR = RANGE_INDICATOR
 
+local GameFontHighlightSmallOutline = GameFontHighlightSmallOutline
 local NumberFontNormalSmallGray = NumberFontNormalSmallGray
 local NumberFontNormal = NumberFontNormal
-local GameFontHighlightSmallOutline = GameFontHighlightSmallOutline
 
 -- GLOBALS: _G, GameTooltip, UIParent
 
