@@ -819,7 +819,7 @@ local function UpdateTextElement(button, element, config, defaultFont, fromRange
 	if rangeIndicator then
 		element:SetShown(button.outOfRange)
 		element:SetFont(RangeFont.font.font, RangeFont.font.size, RangeFont.font.flags)
-	elseif fromRange then
+	else
 		element:SetFont(config.font.font or defaultFont, config.font.size or 11, config.font.flags or "")
 	end
 
