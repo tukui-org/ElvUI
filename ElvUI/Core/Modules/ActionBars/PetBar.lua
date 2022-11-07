@@ -201,6 +201,7 @@ function AB:UpdatePetBindings()
 		if button.HotKey then
 			button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
 			AB:FixKeybindText(button)
+			AB:FixKeybindColor(button)
 		end
 	end
 end
