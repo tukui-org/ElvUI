@@ -50,7 +50,7 @@ local function GetStreamString(stream, tooltip)
 	if not stream then stream = AudioStreams[1] end
 
 	local color = GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333'
-	local level = GetCVar(stream.Volume) * 100
+	local level = (GetCVar(stream.Volume) or 0) * 100
 
 	return (tooltip and format('|cFF%s%.f%%|r', color, level)) or format('%s: |cFF%s%.f%%|r', stream.Name, color, level)
 end
