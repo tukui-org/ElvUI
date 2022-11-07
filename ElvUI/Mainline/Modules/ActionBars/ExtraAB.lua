@@ -29,6 +29,7 @@ function AB:ExtraButtons_BossStyle(frame)
 
 		button.HotKey:SetText(GetBindingKey(button.commandName))
 		AB:FixKeybindText(button)
+		AB:FixKeybindColor(button)
 
 		AB:ExtraButtons_BossAlpha(button)
 
@@ -216,5 +217,6 @@ function AB:UpdateExtraBindings()
 	for _, button in pairs(ExtraButtons) do
 		button.HotKey:SetText(GetBindingKey(button.commandName))
 		AB:FixKeybindText(button)
+		AB:FixKeybindColor(button)
 	end
 end

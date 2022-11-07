@@ -37,7 +37,7 @@ if not lib then return end
 
 -- Lua functions
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
-local setmetatable, wipe, unpack, pairs, next = setmetatable, wipe, unpack, pairs, next
+local setmetatable, wipe, unpack, pairs, next, strsub = setmetatable, wipe, unpack, pairs, next, strsub
 local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
 
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
@@ -49,6 +49,24 @@ local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
 local LCG = LibStub("LibCustomGlow-1.0", true)
 local Masque = LibStub("Masque", true)
+
+local C_ActionBar = C_ActionBar
+local C_UnitAuras = C_UnitAuras
+local C_LevelLink = C_LevelLink
+local C_ToyBox = C_ToyBox
+local LibStub = LibStub
+
+local ATTACK_BUTTON_FLASH_TIME = ATTACK_BUTTON_FLASH_TIME
+local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
+local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
+local COOLDOWN_TYPE_NORMAL = COOLDOWN_TYPE_NORMAL
+local RANGE_INDICATOR = RANGE_INDICATOR
+
+local NumberFontNormalSmallGray = NumberFontNormalSmallGray
+local NumberFontNormal = NumberFontNormal
+local GameFontHighlightSmallOutline = GameFontHighlightSmallOutline
+
+-- GLOBALS: _G, GameTooltip, UIParent
 
 lib.eventFrame = lib.eventFrame or CreateFrame("Frame")
 lib.eventFrame:UnregisterAllEvents()
@@ -118,6 +136,30 @@ local AURA_COOLDOWNS_DURATION = 0
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
+local RangeFont
+do -- properly support range symbol when it's shown ~Simpy
+	local locale = GetLocale()
+	local stockFont, stockFontSize, stockFontOutline
+	if locale == 'koKR' then
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\2002.TTF]], 11, 'MONOCHROME, THICKOUTLINE'
+	elseif locale == 'zhTW' then
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, 'MONOCHROME, THICKOUTLINE'
+	elseif locale == 'zhCN' then
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME, OUTLINE'
+	else
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\ARIALN.TTF]], 12, 'MONOCHROME, THICKOUTLINE'
+	end
+
+	RangeFont = {
+		font = {
+			font = stockFont,
+			size = stockFontSize,
+			flags = stockFontOutline,
+		},
+		color = { 0.9, 0.9, 0.9 }
+	}
+end
+
 local function GameTooltip_GetOwnerForbidden()
 	if GameTooltip:IsForbidden() then
 		return nil
@@ -137,6 +179,7 @@ local DefaultConfig = {
 		notUsable = { 0.4, 0.4, 0.4 },
 	},
 	hideElements = {
+		count = false,
 		macro = false,
 		hotkey = false,
 		equipped = false,
@@ -155,7 +198,7 @@ local DefaultConfig = {
 		hotkey = {
 			font = {
 				font = false, -- "Fonts\\ARIALN.TTF",
-				size = WoWRetail and 14 or 13,
+				size = 14,
 				flags = "OUTLINE",
 			},
 			color = { 0.75, 0.75, 0.75 },
@@ -185,7 +228,7 @@ local DefaultConfig = {
 		macro = {
 			font = {
 				font = false, -- "Fonts\\FRIZQT__.TTF",
-				size = 10,
+				size = 12,
 				flags = "OUTLINE",
 			},
 			color = { 1, 1, 1 },
@@ -771,19 +814,32 @@ local function merge(target, source, default)
 	return target
 end
 
-local function UpdateTextElement(element, config, defaultFont)
-	element:SetFont(config.font.font or defaultFont, config.font.size, config.font.flags or "")
-	element:SetJustifyH(config.justifyH)
+local function UpdateTextElement(button, element, config, defaultFont, fromRange)
+	local rangeIndicator = fromRange and element:GetText() == RANGE_INDICATOR
+	if rangeIndicator then
+		element:SetShown(button.outOfRange)
+		element:SetFont(RangeFont.font.font, RangeFont.font.size, RangeFont.font.flags)
+	elseif fromRange then
+		element:SetFont(config.font.font or defaultFont, config.font.size or 11, config.font.flags or "")
+	end
+
+	if fromRange and button.outOfRange then
+		element:SetVertexColor(unpack(button.config.colors.range))
+	elseif rangeIndicator then
+		element:SetVertexColor(unpack(RangeFont.color))
+	else
+		element:SetVertexColor(unpack(config.color))
+	end
+
 	element:ClearAllPoints()
 	element:SetPoint(config.position.anchor, element:GetParent(), config.position.relAnchor or config.position.anchor, config.position.offsetX or 0, config.position.offsetY or 0)
-
-	element:SetVertexColor(unpack(config.color))
+	element:SetJustifyH(config.justifyH)
 end
 
 local function UpdateTextElements(button)
-	UpdateTextElement(button.HotKey, button.config.text.hotkey, NumberFontNormalSmallGray:GetFont())
-	UpdateTextElement(button.Count, button.config.text.count, NumberFontNormal:GetFont())
-	UpdateTextElement(button.Name, button.config.text.macro, GameFontHighlightSmallOutline:GetFont())
+	UpdateTextElement(button, button.HotKey, button.config.text.hotkey, (NumberFontNormalSmallGray:GetFont()))
+	UpdateTextElement(button, button.Count, button.config.text.count, (NumberFontNormal:GetFont()))
+	UpdateTextElement(button, button.Name, button.config.text.macro, (GameFontHighlightSmallOutline:GetFont()))
 end
 
 function Generic:UpdateConfig(config)
@@ -1122,27 +1178,14 @@ function UpdateGrid(self)
 end
 
 function UpdateRange(button, force) -- Sezz: moved from OnUpdate
-	local inRange = button:IsInRange()
 	local oldRange = button.outOfRange
-	button.outOfRange = (inRange == false)
+	button.outOfRange = button:IsInRange() == false
+
 	if force or (oldRange ~= button.outOfRange) then
 		if button.config.outOfRangeColoring == "button" then
 			UpdateUsable(button)
 		elseif button.config.outOfRangeColoring == "hotkey" then
-			local hotkey = button.HotKey
-			if hotkey:GetText() == RANGE_INDICATOR then
-				if inRange == false then
-					hotkey:Show()
-				else
-					hotkey:Hide()
-				end
-			end
-
-			if inRange == false then
-				hotkey:SetVertexColor(unpack(button.config.colors.range))
-			else
-				hotkey:SetVertexColor(unpack(button.config.text.hotkey.color))
-			end
+			UpdateTextElement(button, button.HotKey, button.config.text.hotkey, NumberFontNormalSmallGray:GetFont(), true)
 		end
 		lib.callbacks:Fire("OnUpdateRange", button)
 	end
@@ -1354,16 +1397,16 @@ function Update(self, fromUpdateConfig)
 		self.abilityName = abilityName
 
 		AuraButtons.buttons[self] = abilityName
+
 		if abilityName then
 			if not AuraButtons.auras[abilityName] then
 				AuraButtons.auras[abilityName] = {}
 			end
 
 			tinsert(AuraButtons.auras[abilityName], self)
-		end
 
-		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
-			if abilityName and abilityName == GetSpellInfo(ZoneAbilityFrame.baseName) then
+			local baseName = (action_type == "spell" or action_type == "companion") and _G.ZoneAbilityFrame and _G.ZoneAbilityFrame.baseName
+			if baseName and not HasZoneAbility() and (abilityName == GetSpellInfo(baseName)) then
 				texture = GetLastZoneAbilitySpellTexture()
 			end
 		end
@@ -1407,11 +1450,6 @@ function Update(self, fromUpdateConfig)
 		self.icon:Hide()
 		self.cooldown:Hide()
 		self.rangeTimer = nil
-		if self.HotKey:GetText() == RANGE_INDICATOR then
-			self.HotKey:Hide()
-		else
-			self.HotKey:SetVertexColor(unpack(self.config.text.hotkey.color))
-		end
 		if WoWRetail then
 			if not self.MasqueSkinned then
 				self.SlotBackground:Show()
@@ -1432,6 +1470,7 @@ function Update(self, fromUpdateConfig)
 	self:UpdateLocal()
 
 	UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
+
 	UpdateCount(self)
 
 	UpdateFlyout(self)
@@ -1504,7 +1543,7 @@ function UpdateUsable(self)
 end
 
 function UpdateCount(self)
-	if not self:HasAction() then
+	if self.config.hideElements.count or not self:HasAction() then
 		self.Count:SetText("")
 		return
 	end

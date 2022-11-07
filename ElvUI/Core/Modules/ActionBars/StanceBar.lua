@@ -227,6 +227,7 @@ function AB:UpdateStanceBindings()
 
 		button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
 		AB:FixKeybindText(button)
+		AB:FixKeybindColor(button)
 	end
 end
 

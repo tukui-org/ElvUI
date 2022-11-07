@@ -18,6 +18,8 @@ local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
+local GetOverrideBarIndex = GetOverrideBarIndex
+local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
@@ -49,7 +51,16 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
-local defaultFont, defaultFontSize, defaultFontOutline
+
+local buttonDefaults = {
+	hideElements = {},
+	colors = {},
+	text = {
+		hotkey = { font = {}, color = {}, position = {} },
+		count = { font = {}, color = {}, position = {} },
+		macro = { font = {}, color = {}, position = {} },
+	},
+}
 
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
@@ -348,6 +359,7 @@ function AB:CreateBar(id)
 			button:SetState(GetVehicleBarIndex(), 'custom', AB.customExitButton)
 		end
 
+		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
 			button:AddToMasque(MasqueGroup)
 		end
@@ -609,11 +621,9 @@ end
 
 function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local name = button:GetName()
-	local macro = button.Name or _G[name..'Name']
-	local hotkey = button.HotKey or _G[name..'HotKey']
 	local icon = button.icon or _G[name..'Icon']
+	local hotkey = button.HotKey or _G[name..'HotKey']
 	local shine = button.AutoCastShine or _G[name..'Shine']
-	local count = button.Count or _G[name..'Count']
 	local flash = button.Flash or _G[name..'Flash']
 	local border = button.Border or _G[name..'Border']
 	local normal = button.NormalTexture or _G[name..'NormalTexture']
@@ -621,10 +631,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local slotbg = button.SlotBackground
 	local action = button.NewActionTexture
 	local mask = button.IconMask
-
-	local db = button:GetParent().db
-	local color = AB.db.fontColor
-	local font, fontSize, fontOutline = AB.db.font, AB.db.fontSize, AB.db.fontOutline
 
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
@@ -639,32 +645,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if action then action:SetAlpha(0) end
 	if slotbg then slotbg:Hide() end
 	if mask and not button.useMasque then mask:Hide() end
-
-	if count then
-		local position, xOffset, yOffset = db and db.countTextPosition or 'BOTTOMRIGHT', db and db.countTextXOffset or 0, db and db.countTextYOffset or 2
-
-		count:ClearAllPoints()
-		count:Point(position, xOffset, yOffset)
-		count:FontTemplate(LSM:Fetch('font', db and db.countFont or font), db and db.countFontSize or fontSize, db and db.countFontOutline or fontOutline)
-
-		if db then
-			count:SetShown(db.counttext)
-		end
-
-		local c = db and db.useCountColor and db.countColor or color
-		count:SetTextColor(c.r, c.g, c.b)
-	end
-
-	if macro then
-		local position, xOffset, yOffset = db and db.macroTextPosition or 'BOTTOM', db and db.macroTextXOffset or 0, db and db.macroTextYOffset or 1
-
-		macro:ClearAllPoints()
-		macro:Point(position, xOffset, yOffset)
-		macro:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
-
-		local c = db and db.useMacroColor and db.macroColor or color
-		macro:SetTextColor(c.r, c.g, c.b)
-	end
 
 	if not button.noBackdrop and not button.useMasque then
 		button:SetTemplate(AB.db.transparent and 'Transparent', true)
@@ -704,10 +684,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		AB.handledbuttons[button] = true
 	end
 
-	if AB.db.useRangeColorText then
-		AB:UpdateHotkeyColor(button)
-	end
-
 	if button.style then -- Boss Button
 		button.style:SetDrawLayer('BACKGROUND', -7)
 	end
@@ -719,12 +695,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	else
 		button:StyleButton(true, true, true)
 	end
-end
-
-function AB:UpdateHotkeyColor(button)
-	local db = button.db
-	local c = AB.db.useRangeColorText and button.outOfRange and AB.db.noRangeColor or db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-	button.HotKey:SetTextColor(c.r, c.g, c.b)
 end
 
 function AB:ColorSwipeTexture(cooldown)
@@ -1171,6 +1141,22 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 	end
 end
 
+function AB:GetHotkeyConfig(db)
+	local font = LSM:Fetch('font', db and db.hotkeyFont or AB.db.font)
+	local size = db and db.hotkeyFontSize or AB.db.fontSize
+	local flags = db and db.hotkeyFontOutline or AB.db.font
+
+	local anchor = db and db.hotkeyTextPosition or 'TOPRIGHT'
+	local offsetX = db and db.hotkeyTextXOffset or 0
+	local offsetY = db and db.hotkeyTextYOffset or -3
+
+	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+	local justify = (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT') and 'LEFT' or (anchor == 'TOP' or anchor == 'BOTTOM') and 'CENTER' or 'RIGHT'
+	local show = not (db and not db.hotkeytext)
+
+	return font, size, flags, anchor, offsetX, offsetY, { color.r or 1, color.g or 1, color.b or 1}, justify, show
+end
+
 function AB:UpdateButtonConfig(barName, buttonName)
 	if InCombatLockdown() then
 		AB.NeedsUpdateButtonSettings = true
@@ -1178,16 +1164,56 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		return
 	end
 
-	local barDB = AB.db[barName]
+	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
 
-	buttonName = buttonName or bar.bindButtons
+	if not bar.buttonConfig then bar.buttonConfig = E:CopyTable({}, buttonDefaults) end
+	local text = bar.buttonConfig.text
 
-	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
+	do -- hotkey text
+		local font, size, flags, anchor, offsetX, offsetY, color, justify = AB:GetHotkeyConfig(db)
+		text.hotkey.color = color
+		text.hotkey.font.font = font
+		text.hotkey.font.size = size
+		text.hotkey.font.flags = flags
+		text.hotkey.position.anchor = anchor
+		text.hotkey.position.relAnchor = anchor
+		text.hotkey.position.offsetX = offsetX
+		text.hotkey.position.offsetY = offsetY
+		text.hotkey.position.justifyH = justify
+	end
 
-	bar.buttonConfig.hideElements.macro = not barDB.macrotext
-	bar.buttonConfig.hideElements.hotkey = not barDB.hotkeytext
-	bar.buttonConfig.showGrid = barDB.showGrid
+	do -- count text
+		text.count.font.font = LSM:Fetch('font', db and db.countFont or AB.db.font)
+		text.count.font.size = db and db.countFontSize or AB.db.fontSize
+		text.count.font.flags = db and db.countFontOutline or AB.db.font
+		text.count.position.anchor = db and db.countTextPosition or 'BOTTOMRIGHT'
+		text.count.position.relAnchor = text.count.position.anchor
+		text.count.position.offsetX = db and db.countTextXOffset or 0
+		text.count.position.offsetY = db and db.countTextYOffset or 2
+
+		local c = db and db.useCountColor and db.countColor or AB.db.fontColor
+		text.count.color = { c.r, c.g, c.b }
+	end
+
+	do -- macro text
+		text.macro.font.font = LSM:Fetch('font', db and db.macroFont or AB.db.font)
+		text.macro.font.size = db and db.macroFontSize or AB.db.fontSize
+		text.macro.font.flags = db and db.macroFontOutline or AB.db.font
+		text.macro.position.anchor = db and db.macroTextPosition or 'BOTTOM'
+		text.macro.position.relAnchor = text.macro.position.anchor
+		text.macro.position.offsetX = db and db.macroTextXOffset or 0
+		text.macro.position.offsetY = db and db.macroTextYOffset or 1
+
+		local c = db and db.useMacroColor and db.macroColor or AB.db.fontColor
+		text.macro.color = { c.r, c.g, c.b }
+	end
+
+	bar.buttonConfig.hideElements.count = not db.counttext
+	bar.buttonConfig.hideElements.macro = not db.macrotext
+	bar.buttonConfig.hideElements.hotkey = not db.hotkeytext
+
+	bar.buttonConfig.showGrid = db.showGrid
 	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
@@ -1198,6 +1224,10 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
 	bar.buttonConfig.handleOverlay = AB.db.handleOverlay
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
+
+	if not buttonName then
+		buttonName = bar.bindButtons
+	end
 
 	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
@@ -1216,69 +1246,68 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	end
 end
 
-function AB:FixKeybindText(button)
-	local hotkey = button.HotKey
-	local text = hotkey:GetText()
-
-	local db = button:GetParent().db
-	local hotkeyPosition = db and db.hotkeyTextPosition or 'TOPRIGHT'
-	local hotkeyXOffset = db and db.hotkeyTextXOffset or 0
-	local hotkeyYOffset = db and db.hotkeyTextYOffset or -3
-	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-
-	local justify = 'RIGHT'
-	if hotkeyPosition == 'TOPLEFT' or hotkeyPosition == 'BOTTOMLEFT' then
-		justify = 'LEFT'
-	elseif hotkeyPosition == 'TOP' or hotkeyPosition == 'BOTTOM' then
-		justify = 'CENTER'
+do
+	local stockFont, stockFontSize, stockFontOutline
+	if E.locale == 'koKR' then
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\2002.TTF]], 11, 'MONOCHROME, THICKOUTLINE'
+	elseif E.locale == 'zhTW' then
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, 'MONOCHROME, THICKOUTLINE'
+	elseif E.locale == 'zhCN' then
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME, OUTLINE'
+	else
+		stockFont, stockFontSize, stockFontOutline = [[Fonts\ARIALN.TTF]], 12, 'MONOCHROME, THICKOUTLINE'
 	end
 
-	if text then
-		if text == _G.RANGE_INDICATOR then
-			hotkey:SetFont(defaultFont, defaultFontSize, defaultFontOutline)
-			hotkey.SetVertexColor = nil
-		else
-			hotkey:FontTemplate(LSM:Fetch('font', db and db.hotkeyFont or AB.db.font), db and db.hotkeyFontSize or AB.db.fontSize, db and db.hotkeyFontOutline or AB.db.fontOutline)
+	-- handle for pet/stance/etc not main bars
+	function AB:FixKeybindColor(button)
+		local hotkey = button.HotKey
+		if not hotkey then return end
 
-			text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
-			text = gsub(text, 'ALT%-', L["KEY_ALT"])
-			text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
-			text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
-			text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
-			text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
-			text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
-			text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
-			text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
-			text = gsub(text, 'SPACE', L["KEY_SPACE"])
-			text = gsub(text, 'INSERT', L["KEY_INSERT"])
-			text = gsub(text, 'HOME', L["KEY_HOME"])
-			text = gsub(text, 'DELETE', L["KEY_DELETE"])
-			text = gsub(text, 'NMULTIPLY', L["KEY_NMULTIPLY"])
-			text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
-			text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
-			text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
+		local font, size, flags, anchor, offsetX, offsetY, color, justify, show = AB:GetHotkeyConfig(button:GetParent().db)
 
-			hotkey.SetVertexColor = E.noop
+		local text = hotkey:GetText()
+		if text then
+			if text == _G.RANGE_INDICATOR then
+				hotkey:SetFont(stockFont, stockFontSize, stockFontOutline)
+				hotkey.SetVertexColor = nil
+			else
+				hotkey:FontTemplate(font, size, flags)
+			end
 		end
 
-		hotkey:SetText(text)
-		hotkey:SetJustifyH(justify)
+		if not button.useMasque then
+			hotkey:SetJustifyH(justify)
+			hotkey:ClearAllPoints()
+			hotkey:Point(anchor, offsetX, offsetY)
+		end
+
+		hotkey:SetTextColor(unpack(color))
+		hotkey:SetShown(show)
 	end
+end
 
-	-- no clue, doing `color.r or 1` etc dont work
-	if not color.r then color.r = 1 end
-	if not color.g then color.g = 1 end
-	if not color.b then color.b = 1 end
+function AB:FixKeybindText(button)
+	local text = button.HotKey:GetText()
+	if text and text ~= _G.RANGE_INDICATOR then
+		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
+		text = gsub(text, 'ALT%-', L["KEY_ALT"])
+		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
+		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
+		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
+		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
+		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
+		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
+		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
+		text = gsub(text, 'SPACE', L["KEY_SPACE"])
+		text = gsub(text, 'INSERT', L["KEY_INSERT"])
+		text = gsub(text, 'HOME', L["KEY_HOME"])
+		text = gsub(text, 'DELETE', L["KEY_DELETE"])
+		text = gsub(text, 'NMULTIPLY', L["KEY_NMULTIPLY"])
+		text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
+		text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
+		text = gsub(text, 'NEQUALS', L["KEY_NEQUALS"])
 
-	hotkey:SetTextColor(color.r, color.g, color.b)
-
-	if not button.__LAB_Version then
-		hotkey:SetShown(not (db and not db.hotkeytext))
-	end
-
-	if not button.useMasque then
-		hotkey:ClearAllPoints()
-		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)
+		button.HotKey:SetText(text)
 	end
 end
 
@@ -1485,19 +1514,10 @@ function AB:LAB_ButtonCreated(button)
 end
 
 function AB:LAB_ButtonUpdate(button)
-	local db = button.db
-	local color = db and db.useCountColor and db.countColor or AB.db.fontColor
-
-	button.Count:SetTextColor(color.r, color.g, color.b)
-
 	if button.SetBackdropBorderColor then
 		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
-end
-
-function AB:LAB_UpdateRange(button)
-	AB:UpdateHotkeyColor(button)
 end
 
 function AB:LAB_CooldownDone(button)
@@ -1536,7 +1556,6 @@ function AB:Initialize()
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
-	LAB.RegisterCallback(AB, 'OnUpdateRange', AB.LAB_UpdateRange)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
@@ -1569,16 +1588,6 @@ function AB:Initialize()
 	end
 
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
-
-	if E.locale == 'koKR' then
-		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\2002.TTF]], 11, "MONOCHROME, THICKOUTLINE"
-	elseif E.locale == 'zhTW' then
-		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, "MONOCHROME, THICKOUTLINE"
-	elseif E.locale == 'zhCN' then
-		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME, OUTLINE'
-	else
-		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\ARIALN.TTF]], 12, "MONOCHROME, THICKOUTLINE"
-	end
 
 	AB:DisableBlizzard()
 	AB:SetupMicroBar()
