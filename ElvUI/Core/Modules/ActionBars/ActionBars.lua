@@ -1180,7 +1180,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.hotkey.font.size = size
 		text.hotkey.font.flags = flags
 		text.hotkey.position.anchor = anchor
-		text.hotkey.position.relAnchor = anchor
+		text.hotkey.position.relAnchor = false
 		text.hotkey.position.offsetX = offsetX
 		text.hotkey.position.offsetY = offsetY
 		text.hotkey.justifyH = justify
@@ -1191,7 +1191,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.count.font.size = db and db.countFontSize or AB.db.fontSize
 		text.count.font.flags = db and db.countFontOutline or AB.db.font
 		text.count.position.anchor = db and db.countTextPosition or 'BOTTOMRIGHT'
-		text.count.position.relAnchor = text.count.position.anchor
+		text.count.position.relAnchor = false
 		text.count.position.offsetX = db and db.countTextXOffset or 0
 		text.count.position.offsetY = db and db.countTextYOffset or 2
 		text.count.justifyH = AB:GetTextJustify(text.count.position.anchor)
@@ -1205,7 +1205,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.macro.font.size = db and db.macroFontSize or AB.db.fontSize
 		text.macro.font.flags = db and db.macroFontOutline or AB.db.font
 		text.macro.position.anchor = db and db.macroTextPosition or 'BOTTOM'
-		text.macro.position.relAnchor = text.macro.position.anchor
+		text.macro.position.relAnchor = false
 		text.macro.position.offsetX = db and db.macroTextXOffset or 0
 		text.macro.position.offsetY = db and db.macroTextYOffset or 1
 		text.macro.justifyH = AB:GetTextJustify(text.macro.position.anchor)
