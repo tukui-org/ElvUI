@@ -1265,14 +1265,15 @@ do
 
 		local font, size, flags, anchor, offsetX, offsetY, color, justify, show = AB:GetHotkeyConfig(button:GetParent().db)
 
+		hotkey:SetShown(show)
+
 		local text = hotkey:GetText()
-		if text then
-			if text == _G.RANGE_INDICATOR then
-				hotkey:SetFont(stockFont, stockFontSize, stockFontOutline)
-				hotkey.SetVertexColor = nil
-			else
-				hotkey:FontTemplate(font, size, flags)
-			end
+		if text == _G.RANGE_INDICATOR then
+			hotkey:SetFont(stockFont, stockFontSize, stockFontOutline)
+			hotkey:SetTextColor(0.9, 0.9, 0.9)
+		elseif text then
+			hotkey:FontTemplate(font, size, flags)
+			hotkey:SetTextColor(unpack(color))
 		end
 
 		if not button.useMasque then
@@ -1280,9 +1281,6 @@ do
 			hotkey:ClearAllPoints()
 			hotkey:Point(anchor, offsetX, offsetY)
 		end
-
-		hotkey:SetTextColor(unpack(color))
-		hotkey:SetShown(show)
 	end
 end
 
