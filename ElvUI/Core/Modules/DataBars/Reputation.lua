@@ -64,8 +64,6 @@ function DB:ReputationBar_Update()
 
 		if current and threshold then
 			label, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
-
-			bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 		end
 	end
 
@@ -82,6 +80,8 @@ function DB:ReputationBar_Update()
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
 
+	bar.Reward:ClearAllPoints()
+	bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
 	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
