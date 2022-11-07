@@ -29,8 +29,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 32 -- the real minor version is 100
+local MINOR_VERSION = 33 -- the real minor version is 100
 
+local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -54,7 +55,6 @@ local C_ActionBar = C_ActionBar
 local C_UnitAuras = C_UnitAuras
 local C_LevelLink = C_LevelLink
 local C_ToyBox = C_ToyBox
-local LibStub = LibStub
 
 local ATTACK_BUTTON_FLASH_TIME = ATTACK_BUTTON_FLASH_TIME
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
