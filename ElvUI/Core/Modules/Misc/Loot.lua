@@ -1,3 +1,21 @@
+--[[ Copyright (c) 2007-2012 Trond A Ekseth troeks@gmail.com
+
+	Permission is hereby granted, free of charge, to any person
+	obtaining a copy of this software and associated documentation
+	files (the "Software"), to deal in the Software without
+	restriction, including without limitation the rights to use,
+	copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the
+	Software is furnished to do so, subject to the following
+	conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+]]
+
+-- Code heavily modified by Elv, Simpy, and Blazeflack
+-- Original code by Haste from https://github.com/haste/Butsu
+
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local LCG = E.Libs.CustomGlow
@@ -36,6 +54,8 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 local LOOT = LOOT
 
+local iconSize, lootFrame, lootFrameHolder = 30
+
 local coinTextureIDs = {
 	[133784] = true,
 	[133785] = true,
@@ -44,23 +64,6 @@ local coinTextureIDs = {
 	[133788] = true,
 	[133789] = true,
 }
-
----- Code heavily modified by Elv, Simpy, and Blazeflack
----- Original code by Haste from https://github.com/haste/Butsu
--- Copyright (c) 2007-2012 Trond A Ekseth troeks@gmail.com
-
--- Permission is hereby granted, free of charge, to any person
--- obtaining a copy of this software and associated documentation
--- files (the "Software"), to deal in the Software without
--- restriction, including without limitation the rights to use,
--- copy, modify, merge, publish, distribute, sublicense, and/or sell
--- copies of the Software, and to permit persons to whom the
--- Software is furnished to do so, subject to the following
--- conditions:
-
--- The above copyright notice and this permission notice shall be
--- included in all copies or substantial portions of the Software.
-local iconSize, lootFrame, lootFrameHolder = 30
 
 local function SlotEnter(slot)
 	local id = slot:GetID()
