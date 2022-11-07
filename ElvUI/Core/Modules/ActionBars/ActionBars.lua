@@ -1141,6 +1141,10 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 	end
 end
 
+function AB:GetTextJustify(anchor)
+	return (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT') and 'LEFT' or (anchor == 'TOP' or anchor == 'BOTTOM') and 'CENTER' or 'RIGHT'
+end
+
 function AB:GetHotkeyConfig(db)
 	local font = LSM:Fetch('font', db and db.hotkeyFont or AB.db.font)
 	local size = db and db.hotkeyFontSize or AB.db.fontSize
@@ -1151,10 +1155,9 @@ function AB:GetHotkeyConfig(db)
 	local offsetY = db and db.hotkeyTextYOffset or -3
 
 	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-	local justify = (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT') and 'LEFT' or (anchor == 'TOP' or anchor == 'BOTTOM') and 'CENTER' or 'RIGHT'
 	local show = not (db and not db.hotkeytext)
 
-	return font, size, flags, anchor, offsetX, offsetY, { color.r or 1, color.g or 1, color.b or 1 }, justify, show
+	return font, size, flags, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1 }, show
 end
 
 function AB:UpdateButtonConfig(barName, buttonName)
@@ -1171,7 +1174,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	local text = bar.buttonConfig.text
 
 	do -- hotkey text
-		local font, size, flags, anchor, offsetX, offsetY, color, justify = AB:GetHotkeyConfig(db)
+		local font, size, flags, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
 		text.hotkey.color = color
 		text.hotkey.font.font = font
 		text.hotkey.font.size = size
@@ -1191,6 +1194,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.count.position.relAnchor = text.count.position.anchor
 		text.count.position.offsetX = db and db.countTextXOffset or 0
 		text.count.position.offsetY = db and db.countTextYOffset or 2
+		text.count.justifyH = AB:GetTextJustify(text.count.position.anchor)
 
 		local c = db and db.useCountColor and db.countColor or AB.db.fontColor
 		text.count.color = { c.r, c.g, c.b }
@@ -1204,6 +1208,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.macro.position.relAnchor = text.macro.position.anchor
 		text.macro.position.offsetX = db and db.macroTextXOffset or 0
 		text.macro.position.offsetY = db and db.macroTextYOffset or 1
+		text.macro.justifyH = AB:GetTextJustify(text.macro.position.anchor)
 
 		local c = db and db.useMacroColor and db.macroColor or AB.db.fontColor
 		text.macro.color = { c.r, c.g, c.b }
@@ -1263,7 +1268,7 @@ do
 		local hotkey = button.HotKey
 		if not hotkey then return end
 
-		local font, size, flags, anchor, offsetX, offsetY, color, justify, show = AB:GetHotkeyConfig(button:GetParent().db)
+		local font, size, flags, anchor, offsetX, offsetY, justify, color, show = AB:GetHotkeyConfig(button:GetParent().db)
 
 		hotkey:SetShown(show)
 
