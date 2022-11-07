@@ -237,7 +237,6 @@ function lib:CreateButton(id, name, header, config)
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
 	button:SetScript("OnLeave", Generic.OnLeave)
-	button:SetScript("OnEvent", Generic.OnEvent)
 	button:SetScript("PreClick", Generic.PreClick)
 	button:SetScript("PostClick", Generic.PostClick)
 	button:SetScript("OnEvent", Generic.OnButtonEvent)
@@ -474,10 +473,21 @@ function WrapOnClick(button)
 	]])
 end
 
-function Generic:OnButtonEvent(event, ...)
+function Generic:OnButtonEvent(event, key, down)
 	if event == "GLOBAL_MOUSE_UP" then
 		self:SetButtonState("NORMAL")
 		self:UnregisterEvent(event)
+	end
+
+	if not GetCVarBool('lockActionBars') then return end
+	if event == 'OnLeave' then
+		self:RegisterForClicks('AnyDown')
+	elseif event == 'OnEnter' then
+		local action = GetModifiedClick('PICKUPACTION')
+		local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
+	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
 	end
 end
 
@@ -655,20 +665,6 @@ local function PickupAny(kind, target, detail, ...)
 		PickupCompanion(target, detail)
 	elseif kind == 'equipmentset' then
 		PickupEquipmentSet(target)
-	end
-end
-
-function Generic:OnEvent(event, key, down)
-	if not GetCVarBool('lockActionBars') then return end
-
-	if event == 'OnLeave' then
-		self:RegisterForClicks('AnyDown')
-	elseif event == 'OnEnter' then
-		local action = GetModifiedClick('PICKUPACTION')
-		local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
 	end
 end
 
@@ -1334,15 +1330,7 @@ function Update(self, fromUpdateConfig)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 
-	-- Cooldown desaturate can control saturation, we don't want to override it here
-	local allowSaturation = not self.saturationLocked and (WoWRetail and not self.LevelLinkLockIcon:IsShown())
-
-	-- Zone ability button handling
-	self.zoneAbilityDisabled = false
-	if allowSaturation then
-		self.icon:SetDesaturated(false)
-	end
-
+	-- Target Aura ~Simpy
 	local previousAbility = AuraButtons.buttons[self]
 	if previousAbility then
 		AuraButtons.buttons[self] = nil
@@ -1379,11 +1367,6 @@ function Update(self, fromUpdateConfig)
 			local name = GetSpellInfo(ZoneAbilityFrame.baseName)
 			if name == abilityName then
 				texture = GetLastZoneAbilitySpellTexture()
-				self.zoneAbilityDisabled = true
-
-				if allowSaturation then
-					self.icon:SetDesaturated(true)
-				end
 			end
 		end
 	end
