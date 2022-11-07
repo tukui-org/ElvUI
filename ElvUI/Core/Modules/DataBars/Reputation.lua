@@ -56,15 +56,15 @@ function DB:ReputationBar_Update()
 			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
 			label = format('%s%s|r %s', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
 		end
-	elseif C_Reputation_IsFactionParagon(factionID) then
+	end
+
+	if not label and C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
 		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 
 		if current and threshold then
 			label, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
 		end
-
-		bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	end
 
 	if not label then
@@ -80,6 +80,8 @@ function DB:ReputationBar_Update()
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
 
+	bar.Reward:ClearAllPoints()
+	bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
 	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
