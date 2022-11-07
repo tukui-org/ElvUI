@@ -1180,7 +1180,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.hotkey.position.relAnchor = anchor
 		text.hotkey.position.offsetX = offsetX
 		text.hotkey.position.offsetY = offsetY
-		text.hotkey.position.justifyH = justify
+		text.hotkey.justifyH = justify
 	end
 
 	do -- count text

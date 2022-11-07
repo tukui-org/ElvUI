@@ -1184,7 +1184,7 @@ function UpdateRange(button, force) -- Sezz: moved from OnUpdate
 	if force or (oldRange ~= button.outOfRange) then
 		if button.config.outOfRangeColoring == "button" then
 			UpdateUsable(button)
-		elseif button.config.outOfRangeColoring == "hotkey" then
+		elseif button.config.outOfRangeColoring == "hotkey" and not button.config.hideElements.hotkey then
 			UpdateTextElement(button, button.HotKey, button.config.text.hotkey, NumberFontNormalSmallGray:GetFont(), true)
 		end
 		lib.callbacks:Fire("OnUpdateRange", button)
