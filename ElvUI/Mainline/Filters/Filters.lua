@@ -739,7 +739,18 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[154442] = List(), -- Malevolence
 		[153501] = List(), -- Void Blast
 	-- Temple of the Jade Serpent
-		-- TODO: DF
+		[396150] = List(), -- Feeling of Superiority
+		[397878] = List(), -- Tainted Ripple
+		[106113] = List(), -- Touch of Nothingness
+		[397914] = List(), -- Defiling Mist
+		[397904] = List(), -- Setting Sun Kick
+		[397911] = List(), -- Touch of Ruin
+		[395859] = List(), -- Haunting Scream
+		[374037] = List(), -- Overwhelming Rage
+		[396093] = List(), -- Savage Leap
+		[106823] = List(), -- Serpent Strike
+		[396152] = List(), -- Feeling of Inferiority
+		[110125] = List(), -- Shattered Resolve
 	-- Ruby Life Pools
 		[392406] = List(), -- Thunderclap
 		[372820] = List(), -- Scorched Earth
@@ -1427,7 +1438,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[164974] = List(), -- Dark Eclipse
 		[153067] = List(), -- Void Devastation
 	-- Temple of the Jade Serpent
-		-- TODO: DF
+		[113315] = List(), -- Intensity
+		[117570] = List(), -- Gathering Doubt
+		[114805] = List(), -- Aerialist's Kick
+		[117665] = List(), -- Bounds of Reality
+		[113379] = List(), -- Dissipation
+		[106797] = List(), -- Jade Essence
+		[113309] = List(), -- Ultimate Power
 	-- Ruby Life Pools
 		[372743] = List(), -- Ice Shield
 		[392569] = List(), -- Molten Blood
