@@ -1784,7 +1784,6 @@ L["You cannot copy settings from the same unit."] = "Ayni birimden ayarlari kopy
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = "Bu buyulerin tetiklenmesi icin Herhangi Bir sey Yayinliyor veya Herhangi Bir sey Yonlendiriyor kullanmaniza gerek yok."
 L["You must be targeting a player."] = "Bir oyuncuyu hedef aliyor olmalisin."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Bir aurayi kara listeye almak icin ikona sag tiklayarak bu degistiriciyi basili tutmaniz gerekir. Kara liste islevini devre disi birakmak icin Yok olarak ayarlayin."
-L["You still have ElvUI_Config installed. ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "Hala ElvUI_Config yuklu. ElvUI_Config, ElvUI_OptionsUI olarak yeniden adlandirildi, lutfen kaldirin."
 L["Your Auras First"] = "Once Sizin Auralariniz"
 L["Zone Button"] = "Bolge Dugmesi"
 L["Zone Name"] = "Bolge Ismi"

@@ -1784,7 +1784,6 @@ L["You cannot copy settings from the same unit."] = "你不能從相同的單位
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = "你不需要為這些法術使用觸發器正在施法或正在引導."
 L["You must be targeting a player."] = "你必須以一名玩家為目標."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "按住設置按鍵+右鍵單擊會把該玩家加入黑名單, 設為無以關閉該功能"
-L["You still have ElvUI_Config installed. ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "您仍然安裝有 ElvUI_Config. ElvUI_Config 已經被重命名為 ElvUI_OptionsUI, 請刪除原資料夾."
 L["Your Auras First"] = "自身光環優先"
 L["Zone Button"] = "區域按鍵"
 L["Zone Name"] = "地區名"

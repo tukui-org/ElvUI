@@ -1784,7 +1784,6 @@ L["You cannot copy settings from the same unit."] = "같은 유닛은 복사할 
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = true
 L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시도해야 합니다."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = true
-L["You still have ElvUI_Config installed. ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = true
 L["Your Auras First"] = "자기 주문 우선"
 L["Zone Button"] = true
 L["Zone Name"] = true
