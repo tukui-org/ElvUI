@@ -230,7 +230,7 @@ local function CastStart(self, real, unit, castGUID)
 	element.delay = 0
 	element.casting = event == 'UNIT_SPELLCAST_START'
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
-	channel.empowering = event == "UNIT_SPELLCAST_EMPOWER_START"
+	element.empowering = event == "UNIT_SPELLCAST_EMPOWER_START"
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
 	element.castID = castID
