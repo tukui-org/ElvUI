@@ -272,11 +272,11 @@ end
 function UF:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
-		local point = db.CountPosition or "CENTER"
+		local point = db.countPosition or "CENTER"
 		button.Count:ClearAllPoints()
 		button.Count:SetJustifyH(point:find("RIGHT") and "RIGHT" or "LEFT")
-		button.Count:Point(point, db.CountXOffset, db.CountYOffset)
-		button.Count:FontTemplate(LSM:Fetch("font", db.CountFont), db.CountFontSize, db.CountFontOutline)
+		button.Count:Point(point, db.countXOffset, db.countYOffset)
+		button.Count:FontTemplate(LSM:Fetch("font", db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
 	if button.auraInfo then
