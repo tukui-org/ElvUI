@@ -509,15 +509,17 @@ function Generic:OnButtonEvent(event, key, down)
 		self:UnregisterEvent(event)
 	end
 
-	if not GetCVarBool('lockActionBars') then return end
-	if event == 'OnLeave' then
-		self:RegisterForClicks('AnyDown')
-	elseif event == 'OnEnter' then
-		local action = GetModifiedClick('PICKUPACTION')
-		local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+	-- prevent pickup calling spells ~Simpy
+	if GetCVarBool('lockActionBars') then
+		if event == 'OnLeave' then
+			self:RegisterForClicks('AnyDown')
+		elseif event == 'OnEnter' then
+			local action = GetModifiedClick('PICKUPACTION')
+			local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+			self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
+		elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+			self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+		end
 	end
 end
 
