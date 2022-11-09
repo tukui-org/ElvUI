@@ -202,16 +202,18 @@ local function UpdatePips(element, numStages)
 	end
 end
 
-local function CastStart(self, event, unit, castGUID)
+local function CastStart(self, real, unit, castGUID)
 	if self.unit ~= unit then return end
-	if oUF.isRetail and event == 'UNIT_SPELLCAST_START' and not castGUID then return end
+	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
+	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
-	local numStages, _
-	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local numStages
+	local event = 'UNIT_SPELLCAST_START'
 	if not name then
-		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+
 		event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
 	end
 
@@ -267,7 +269,7 @@ local function CastStart(self, event, unit, castGUID)
 	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Shield) then element.Shield:SetShown(notInterruptible) end
 	if(element.Spark) then element.Spark:Show() end
-	if(element.Text) then element.Text:SetText(text) end
+	if(element.Text) then element.Text:SetText(name) end
 	if(element.Time) then element.Time:SetText() end
 
 	local safeZone = element.SafeZone
