@@ -1018,14 +1018,16 @@ do
 		_G.MultiActionBar_ShowAllGrids = E.noop
 
 		-- shut down some events for things we dont use
-		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
-		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 		_G.ActionBarController:UnregisterAllEvents()
+		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
+		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
+
+		-- used for ExtraActionButton and TotemBar (on wrath)
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show and Totems to swap
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:UnregisterAllEvents()
-			_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
-			_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
 			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
