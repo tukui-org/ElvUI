@@ -1784,7 +1784,6 @@ L["You cannot copy settings from the same unit."] = "Du kannst keine Einstellung
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = "Du brauchst nicht Ist irgendetwas am Zaubern oder Ist irgendetwas am Kanalisieren für die Zauber auswählen um Auszulösen."
 L["You must be targeting a player."] = "Du musst einen Spieler anvisiert haben."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Du musst den Modifikator gedrückt halten um mit rechtsklick auf ein Symbol es zur Schwarzen Liste hinzuzufügen. Setzte auf Kein um die Funktion zu deaktivieren."
-L["You still have ElvUI_Config installed. ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "Du hast immer noch ElvUI_Config installiert.  ElvUI_Config wurde zu ElvUI_OptionsUI umbenannt, bitte entferne es."
 L["Your Auras First"] = "Deine Auren zuerst"
 L["Zone Button"] = "Zonen Taste"
 L["Zone Name"] = "Zonename"

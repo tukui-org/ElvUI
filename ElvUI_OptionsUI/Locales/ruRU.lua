@@ -1784,7 +1784,6 @@ L["You cannot copy settings from the same unit."] = "Вы не можете ко
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = "Вам не нужно использовать \"Произносит заклинание\" или \"Поддерживает заклинание\" для срабатывания этих заклинаний."
 L["You must be targeting a player."] = "Целью должен быть игрок."
 L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = "Вам нужно будет удерживать этот модификатор для занесения ауры в черный список при нажатии ПКМ. Установите на \"Нет\" для отключения возможности заносить их туда."
-L["You still have ElvUI_Config installed. ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."] = "У Вас все еще стоит ElvUI_Config. Кое-кто переименовал его в ElvUI_OptionsUI, удалите папку со старым именем."
 L["Your Auras First"] = "Сначала свои"
 L["Zone Button"] = "Кнопка зоны"
 L["Zone Name"] = "Название зоны"
