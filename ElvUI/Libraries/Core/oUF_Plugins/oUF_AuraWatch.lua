@@ -108,9 +108,10 @@ local function handleElements(element, unit, button, setting, icon, count, durat
 
 	if button.overlay then
 		if element.showType or (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) then
-			local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
+			local colors = element.__owner.colors.debuff
+			local color = colors[debuffType] or colors.none
 
-			button.overlay:SetVertexColor(color[1], color[2], color[3])
+			button.overlay:SetVertexColor(color.r, color.g, color.b)
 			button.overlay:Show()
 		else
 			button.overlay:Hide()

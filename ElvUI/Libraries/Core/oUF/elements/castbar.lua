@@ -96,12 +96,16 @@ local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame.lua
 
 -- ElvUI block
+local next = next
 local select = select
+local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
+local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
+local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 
 -- GLOBALS: PetCastingBarFrame, PetCastingBarFrame_OnLoad
 -- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
@@ -126,12 +130,10 @@ local function resetAttributes(self)
 	self.spellID = nil
 	self.spellName = nil -- ElvUI
 
-
 	for _, pip in next, self.Pips do
 		pip:Hide()
 	end
 end
-
 
 local function CreatePip(element)
 	return CreateFrame('Frame', nil, element, 'CastingBarFrameStagePipTemplate')
@@ -205,12 +207,12 @@ local function CastStart(self, real, unit, castGUID)
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
-	local numStages, _
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
+	local numStages, _
 	local event = 'UNIT_SPELLCAST_START'
 	if not name then
-		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
 
 		event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
 	end
@@ -228,9 +230,11 @@ local function CastStart(self, real, unit, castGUID)
 	element.max = endTime - startTime
 	element.startTime = startTime
 	element.delay = 0
+
 	element.casting = event == 'UNIT_SPELLCAST_START'
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
-	channel.empowering = event == "UNIT_SPELLCAST_EMPOWER_START"
+	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
+
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
 	element.castID = castID
@@ -240,6 +244,7 @@ local function CastStart(self, real, unit, castGUID)
 	if element.empowering then
 		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
 	end
+
 	if element.channeling then
 		element.duration = endTime - GetTime()
 	else
@@ -552,18 +557,18 @@ local function Enable(self, unit)
 		else
 			self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:RegisterEvent('Unit_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 		end
 
 		if oUF.isRetail then
+			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
@@ -619,19 +624,18 @@ local function Disable(self)
 		else
 			self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
-			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 		end
 
-		if oUF.isRetail or oUF.isWrath then
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end

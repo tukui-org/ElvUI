@@ -52,14 +52,14 @@ function NP:Construct_Auras(nameplate)
 	Buffs.PreUpdate = UF.PreUpdateAura
 	Buffs.PreSetPosition = UF.SortAuras
 	Buffs.SetPosition = UF.SetPosition
-	Buffs.PostCreateButton = NP.Construct_AuraButton
+	Buffs.PostCreateButton = NP.Construct_AuraIcon
 	Buffs.PostUpdateButton = UF.PostUpdateAura
 	Buffs.CustomFilter = UF.AuraFilter
 
 	Debuffs.PreUpdate = UF.PreUpdateAura
 	Debuffs.PreSetPosition = UF.SortAuras
 	Debuffs.SetPosition = UF.SetPosition
-	Debuffs.PostCreateButton = NP.Construct_AuraButton
+	Debuffs.PostCreateButton = NP.Construct_AuraIcon
 	Debuffs.PostUpdateButton = UF.PostUpdateAura
 	Debuffs.CustomFilter = UF.AuraFilter
 
@@ -67,7 +67,7 @@ function NP:Construct_Auras(nameplate)
 	nameplate.Buffs, nameplate.Debuffs = Buffs, Debuffs
 end
 
-function NP:Construct_AuraButton(button)
+function NP:Construct_AuraIcon(button)
 	if not button then return end
 
 	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
@@ -171,11 +171,11 @@ end
 function NP:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
-		local point = db.CountPosition or 'CENTER'
+		local point = db.countPosition or 'CENTER'
 		button.Count:ClearAllPoints()
 		button.Count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
-		button.Count:Point(point, db.CountXOffset, db.CountYOffset)
-		button.Count:FontTemplate(LSM:Fetch('font', db.CountFont), db.CountFontSize, db.CountFontOutline)
+		button.Count:Point(point, db.countXOffset, db.countYOffset)
+		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
 	if button.auraInfo then
