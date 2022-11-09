@@ -489,12 +489,6 @@ function WrapOnClick(button)
 		if self:GetAttribute("type") == "action" then
 			local type, action = GetActionInfo(self:GetAttribute("action"))
 
-			-- if this is a pickup click, disable on-down casting
-			-- it should get re-enabled in the post handler, or the OnDragStart handler, whichever occurs
-			if button ~= "Keybind" and ((self:GetAttribute("unlockedpreventdrag") and not self:GetAttribute("buttonlock")) or IsModifiedClick("PICKUPACTION")) and not self:GetAttribute("LABdisableDragNDrop") then
-				self:CallMethod("ToggleOnDownForPickup", true)
-				self:SetAttribute("LABToggledOnDown", true)
-			end
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
 		end
 
@@ -506,12 +500,6 @@ function WrapOnClick(button)
 		if message ~= format("%s|%s", tostring(type), tostring(action)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
 		end
-
-		-- re-enable ondown casting if needed
-		if self:GetAttribute("LABToggledOnDown") then
-			self:SetAttribute("LABToggledOnDown", nil)
-			self:CallMethod("ToggleOnDownForPickup", false)
-		end
 	]])
 end
 
@@ -521,30 +509,17 @@ function Generic:OnButtonEvent(event, key, down)
 		self:UnregisterEvent(event)
 	end
 
-	if not GetCVarBool('lockActionBars') then return end
-	if event == 'OnLeave' then
-		self:RegisterForClicks('AnyDown')
-	elseif event == 'OnEnter' then
-		local action = GetModifiedClick('PICKUPACTION')
-		local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-		self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
-	end
-end
-
-local _LABActionButtonUseKeyDown
-function Generic:ToggleOnDownForPickup(pre)
-	if pre then
-		if GetCVarBool("ActionButtonUseKeyDown") or _LABActionButtonUseKeyDown then
-			SetCVar("ActionButtonUseKeyDown", false)
-			_LABActionButtonUseKeyDown = true
-		else
-			_LABActionButtonUseKeyDown = false
+	-- prevent pickup calling spells ~Simpy
+	if GetCVarBool('lockActionBars') then
+		if event == 'OnLeave' then
+			self:RegisterForClicks('AnyDown')
+		elseif event == 'OnEnter' then
+			local action = GetModifiedClick('PICKUPACTION')
+			local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+			self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
+		elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+			self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
 		end
-	elseif not pre and _LABActionButtonUseKeyDown then
-		SetCVar("ActionButtonUseKeyDown", true)
-		_LABActionButtonUseKeyDown = nil
 	end
 end
 

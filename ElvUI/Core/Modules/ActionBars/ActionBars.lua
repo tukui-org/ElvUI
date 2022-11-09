@@ -985,7 +985,7 @@ do
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
-	if E.Wrath then -- TotemBar: this still might taint
+	if E.Wrath then -- Wrath TotemBar needs to be handled by us
 		untaint.MultiCastActionBarFrame = true
 	end
 
@@ -1000,7 +1000,10 @@ do
 			local frame = _G[name]
 			if frame then
 				frame:SetParent(E.HiddenFrame)
-				frame:UnregisterAllEvents()
+
+				if name ~= 'MultiCastActionBarFrame' then
+					frame:UnregisterAllEvents() -- Wrath TotemBar needs the events
+				end
 
 				if not E.Retail then
 					AB:SetNoopsi(frame)
