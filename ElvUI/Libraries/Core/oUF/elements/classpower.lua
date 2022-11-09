@@ -68,7 +68,8 @@ local RequireSpec, RequirePower, RequireSpell
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
-	local r, g, b = color[1], color[2], color[3]
+	local r, g, b = color.r, color.g, color.b
+
 	for i = 1, #element do
 		local bar = element[i]
 		bar:SetStatusBarColor(r, g, b)

@@ -235,7 +235,10 @@ function E:SetColorTable(t, data)
 	end
 
 	if t and (type(t) == 'table') then
-		t[1], t[2], t[3], t[4] = E:UpdateColorTable(data)
+		local r, g, b, a = E:UpdateColorTable(data)
+
+		t.r, t.g, t.b, t.a = r, g, b, a
+		t[1], t[2], t[3], t[4] = r, g, b, a
 	else
 		t = E:GetColorTable(data)
 	end
