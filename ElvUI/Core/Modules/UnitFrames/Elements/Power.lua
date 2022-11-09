@@ -239,7 +239,7 @@ do
 	local tokens = {[0]='MANA','RAGE','FOCUS','ENERGY','RUNIC_POWER'}
 	local function GetRandomPowerColor()
 		local color = ElvUF.colors.power[tokens[random(0,4)]]
-		return color.r, color.g, color.b
+		return color[1], color[2], color[3]
 	end
 
 	function UF:PostUpdatePowerColor()

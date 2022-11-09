@@ -197,9 +197,13 @@ local function GetClassPower(Class)
 		max = UnitHealthMax('player')
 
 		local staggerRatio = min / max
-		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
-		local color = ElvUF.colors.power.STAGGER[staggerIndex]
-		r, g, b = color.r, color.g, color.b
+		if staggerRatio >= STAGGER_RED_TRANSITION then
+			r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_RED_INDEX])
+		elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
+			r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_YELLOW_INDEX])
+		else
+			r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_GREEN_INDEX])
+		end
 	end
 
 	-- try special powers or combo points
@@ -219,18 +223,24 @@ local function GetClassPower(Class)
 		end
 
 		if min > 0 then
-			local power = ElvUF.colors.ClassBars[Class]
-			local color = (monk and power[min]) or (dk and E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1]) or power
-			r, g, b = color.r, color.g, color.b
+			local powerColor = ElvUF.colors.ClassBars[Class]
+			if monk then -- chi is a table
+				r, g, b = unpack(powerColor[min])
+			elseif dk then
+				r, g, b = unpack(E.Wrath and ElvUF.colors.class.DEATHKNIGHT or powerColor[spec ~= 5 and spec or 1])
+			else
+				r, g, b = unpack(powerColor)
+			end
 		end
 	elseif not r then
 		min = UnitPower('player', POWERTYPE_COMBOPOINTS)
 		max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
 
 		if min > 0 then
-			local combo = ElvUF.colors.ComboPoints
-			local c1, c2, c3 = combo[1], combo[2], combo[3]
-			r, g, b = ElvUF:ColorGradient(min, max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
+			local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+			local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+			local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+			r, g, b = ElvUF:ColorGradient(min, max, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 		end
 	end
 
@@ -240,8 +250,7 @@ local function GetClassPower(Class)
 		min = UnitPower('player', POWERTYPE_MANA)
 		max = UnitPowerMax('player', POWERTYPE_MANA)
 
-		local mana = ElvUF.colors.power.MANA
-		r, g, b = mana.r, mana.g, mana.b
+		r, g, b = unpack(ElvUF.colors.power.MANA)
 	end
 
 	return min or 0, max or 0, r or 1, g or 1, b or 1
@@ -543,17 +552,17 @@ end)
 E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	local selection = NP:UnitSelectionType(unit)
 	local cs = ElvUF.colors.selection[selection]
-	return (cs and Hex(cs.r, cs.g, cs.b)) or '|cFFcccccc'
+	return (cs and Hex(cs[1], cs[2], cs[3])) or '|cFFcccccc'
 end)
 
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
 		local cs = ElvUF.colors.class[unitClass]
-		return (cs and Hex(cs.r, cs.g, cs.b)) or '|cFFcccccc'
+		return (cs and Hex(cs[1], cs[2], cs[3])) or '|cFFcccccc'
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
-		return (cr and Hex(cr.r, cr.g, cr.b)) or '|cFFcccccc'
+		return (cr and Hex(cr[1], cr[2], cr[3])) or '|cFFcccccc'
 	end
 end)
 
@@ -564,8 +573,8 @@ end)
 E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	if unitReaction then
-		local color = ElvUF.colors.reaction[unitReaction]
-		return Hex(color.r, color.g, color.b)
+		local reaction = ElvUF.colors.reaction[unitReaction]
+		return Hex(reaction[1], reaction[2], reaction[3])
 	else
 		return '|cFFc2c2c2'
 	end
@@ -658,8 +667,8 @@ E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail a
 end)
 
 E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
-	local color = ElvUF.colors.power.MANA
-	return Hex(color.r, color.g, color.b)
+	local r, g, b = unpack(ElvUF.colors.power.MANA)
+	return Hex(r, g, b)
 end)
 
 E:AddTag('incomingheals:personal', 'UNIT_HEAL_PREDICTION', function(unit)

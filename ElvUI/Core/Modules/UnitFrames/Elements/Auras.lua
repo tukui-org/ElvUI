@@ -64,8 +64,8 @@ UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 	buffs.PreSetPosition = self.SortAuras
-	buffs.PostCreateButton = self.Construct_AuraIcon
-	buffs.PostUpdateButton = self.PostUpdateAura
+	buffs.PostCreateIcon = self.Construct_AuraIcon
+	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.SetPosition = self.SetPosition
 	buffs.PreUpdate = self.PreUpdateAura
 	buffs.CustomFilter = self.AuraFilter
@@ -82,8 +82,8 @@ end
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
 	debuffs.PreSetPosition = self.SortAuras
-	debuffs.PostCreateButton = self.Construct_AuraIcon
-	debuffs.PostUpdateButton = self.PostUpdateAura
+	debuffs.PostCreateIcon = self.Construct_AuraIcon
+	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.SetPosition = self.SetPosition
 	debuffs.PreUpdate = self.PreUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
@@ -207,24 +207,24 @@ end
 function UF:Construct_AuraIcon(button)
 	button:SetTemplate(nil, nil, nil, nil, true)
 
-	button.Cooldown:SetReverse(true)
-	button.Cooldown:SetDrawEdge(false)
-	button.Cooldown:SetInside(button, UF.BORDER, UF.BORDER)
+	button.cd:SetReverse(true)
+	button.cd:SetDrawEdge(false)
+	button.cd:SetInside(button, UF.BORDER, UF.BORDER)
 
-	button.Icon:SetInside(button, UF.BORDER, UF.BORDER)
-	button.Icon:SetDrawLayer('ARTWORK')
+	button.icon:SetInside(button, UF.BORDER, UF.BORDER)
+	button.icon:SetDrawLayer('ARTWORK')
 
-	button.Count:ClearAllPoints()
-	button.Count:Point('BOTTOMRIGHT', 1, 1)
-	button.Count:SetJustifyH('RIGHT')
+	button.count:ClearAllPoints()
+	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:SetJustifyH('RIGHT')
 
-	button.Overlay:SetTexture()
-	button.Stealable:SetTexture()
+	button.overlay:SetTexture()
+	button.stealable:SetTexture()
 
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', UF.Aura_OnClick)
 
-	E:RegisterCooldown(button.Cooldown, 'unitframe')
+	E:RegisterCooldown(button.cd, 'unitframe')
 
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
@@ -237,10 +237,10 @@ function UF:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
 		local point = db.countPosition or 'CENTER'
-		button.Count:ClearAllPoints()
-		button.Count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
-		button.Count:Point(point, db.countXOffset, db.countYOffset)
-		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		button.count:ClearAllPoints()
+		button.count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
+		button.count:Point(point, db.countXOffset, db.countYOffset)
+		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
 	if button.auraInfo then
@@ -249,7 +249,7 @@ function UF:UpdateAuraSettings(button)
 		button.auraInfo = {}
 	end
 
-	button.needsButtonTrim = true
+	button.needsIconTrim = true
 	button.needsUpdateCooldownPosition = true
 end
 
@@ -266,13 +266,13 @@ function UF:EnableDisable_Auras(frame)
 end
 
 function UF:UpdateAuraCooldownPosition(button)
-	button.Cooldown.timer.text:ClearAllPoints()
+	button.cd.timer.text:ClearAllPoints()
 	local point = (button.db and button.db.durationPosition) or 'CENTER'
 	if point == 'CENTER' then
-		button.Cooldown.timer.text:Point(point, 1, 0)
+		button.cd.timer.text:Point(point, 1, 0)
 	else
 		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-		button.Cooldown.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
+		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
 
 	button.needsUpdateCooldownPosition = nil
@@ -448,14 +448,14 @@ function UF:PostUpdateAura(_, button)
 	end
 
 	button:SetBackdropBorderColor(r, g, b)
-	button.Icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
+	button.icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
 
-	if button.needsButtonTrim then
+	if button.needsIconTrim then
 		AB:TrimIcon(button)
-		button.needsButtonTrim = nil
+		button.needsIconTrim = nil
 	end
 
-	if button.needsUpdateCooldownPosition and (button.Cooldown and button.Cooldown.timer and button.Cooldown.timer.text) then
+	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
 	end
 end
@@ -587,7 +587,7 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 			button.matches = amount
 		elseif stack.texture == icon then
 			stack.matches = (stack.matches or 1) + amount
-			stack.Count:SetText(stack.matches)
+			stack.count:SetText(stack.matches)
 
 			return false
 		end

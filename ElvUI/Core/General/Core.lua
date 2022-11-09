@@ -235,10 +235,7 @@ function E:SetColorTable(t, data)
 	end
 
 	if t and (type(t) == 'table') then
-		local r, g, b, a = E:UpdateColorTable(data)
-
-		t.r, t.g, t.b, t.a = r, g, b, a
-		t[1], t[2], t[3], t[4] = r, g, b, a
+		t[1], t[2], t[3], t[4] = E:UpdateColorTable(data)
 	else
 		t = E:GetColorTable(data)
 	end
@@ -246,21 +243,21 @@ function E:SetColorTable(t, data)
 	return t
 end
 
-function E:VerifyColorTable(data)
-	if data.r > 1 or data.r < 0 then data.r = 1 end
-	if data.g > 1 or data.g < 0 then data.g = 1 end
-	if data.b > 1 or data.b < 0 then data.b = 1 end
-	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
-end
-
 function E:UpdateColorTable(data)
 	if not data.r or not data.g or not data.b then
 		error('UpdateColorTable: Could not unpack color values.')
 	end
 
-	E:VerifyColorTable(data)
+	if data.r > 1 or data.r < 0 then data.r = 1 end
+	if data.g > 1 or data.g < 0 then data.g = 1 end
+	if data.b > 1 or data.b < 0 then data.b = 1 end
+	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
 
-	return data.r, data.g, data.b, data.a
+	if data.a then
+		return data.r, data.g, data.b, data.a
+	else
+		return data.r, data.g, data.b
+	end
 end
 
 function E:GetColorTable(data)
@@ -268,10 +265,16 @@ function E:GetColorTable(data)
 		error('GetColorTable: Could not unpack color values.')
 	end
 
-	E:VerifyColorTable(data)
+	if data.r > 1 or data.r < 0 then data.r = 1 end
+	if data.g > 1 or data.g < 0 then data.g = 1 end
+	if data.b > 1 or data.b < 0 then data.b = 1 end
+	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
 
-	local r, g, b, a = data.r, data.g, data.b, data.a
-	return { r, g, b, a, r = r, g = g, b = b, a = a }
+	if data.a then
+		return {data.r, data.g, data.b, data.a}
+	else
+		return {data.r, data.g, data.b}
+	end
 end
 
 function E:UpdateMedia(mediaType)
