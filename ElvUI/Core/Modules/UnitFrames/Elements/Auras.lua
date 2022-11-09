@@ -204,7 +204,7 @@ function UF:Aura_OnClick()
 	end
 end
 
-function UF:Construct_AuraButton(button)
+function UF:Construct_AuraIcon(button)
 	button:SetTemplate(nil, nil, nil, nil, true)
 
 	button.Cooldown:SetReverse(true)

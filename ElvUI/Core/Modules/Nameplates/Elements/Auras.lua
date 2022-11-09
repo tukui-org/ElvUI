@@ -67,7 +67,7 @@ function NP:Construct_Auras(nameplate)
 	nameplate.Buffs, nameplate.Debuffs = Buffs, Debuffs
 end
 
-function NP:Construct_AuraButton(button)
+function NP:Construct_AuraIcon(button)
 	if not button then return end
 
 	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
