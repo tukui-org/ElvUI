@@ -380,8 +380,6 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 		element.SetFrequentUpdates = SetFrequentUpdates
 
-		oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
-
 		if(element.frequentUpdates) then
 			oUF:RegisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
 		else
@@ -405,6 +403,7 @@ local function Enable(self)
 		end
 
 		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
+		oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
 		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_HIDE', Path)
 		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_SHOW', Path)
 

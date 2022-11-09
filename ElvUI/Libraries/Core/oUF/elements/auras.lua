@@ -29,16 +29,16 @@ At least one of the above widgets must be present for the element to work.
 .['growth-y']       - Vertical growth direction. Defaults to 'UP' (string)
 .initialAnchor      - Anchor point for the aura buttons. Defaults to 'BOTTOMLEFT' (string)
 .filter             - Custom filter list for auras to display. Defaults to 'HELPFUL' for buffs and 'HARMFUL' for
-					  debuffs (string)
+                      debuffs (string)
 .tooltipAnchor      - Anchor point for the tooltip. Defaults to 'ANCHOR_BOTTOMRIGHT', however, if a frame has anchoring
-					  restrictions it will be set to 'ANCHOR_CURSOR' (string)
+                      restrictions it will be set to 'ANCHOR_CURSOR' (string)
 
 ## Options Auras
 
 .numBuffs     - The maximum number of buffs to display. Defaults to 32 (number)
 .numDebuffs   - The maximum number of debuffs to display. Defaults to 40 (number)
 .numTotal     - The maximum number of auras to display. Prioritizes buffs over debuffs. Defaults to the sum of
-				.numBuffs and .numDebuffs (number)
+                .numBuffs and .numDebuffs (number)
 .gap          - Controls the creation of an invisible button between buffs and debuffs. Defaults to false (boolean)
 .buffFilter   - Custom filter list for buffs to display. Takes priority over `filter` (string)
 .debuffFilter - Custom filter list for debuffs to display. Takes priority over `filter` (string)
@@ -53,10 +53,10 @@ At least one of the above widgets must be present for the element to work.
 
 ## Attributes
 
-button.caster         - the unit who cast the aura (string)
-button.filter         - the filter list used to determine the visibility of the aura (string)
-button.isHarmful      - indicates if the button holds a debuff (boolean)
-button.auraInstanceID - unique ID for the current aura being tracked by the button (number)
+button.caster		- the unit who cast the aura (string)
+button.filter		- the filter list used to determine the visibility of the aura (string)
+button.isDebuff		- indicates if the button holds a debuff (boolean)
+button.isPlayer		- indicates if the aura caster is the player or their vehicle (boolean)
 
 ## Examples
 
@@ -92,10 +92,10 @@ local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 
 -- ElvUI adds IsForbidden checks
 local function UpdateTooltip(self)
-	if(GameTooltip:IsForbidden()) then return end
+	if GameTooltip:IsForbidden() then return end
 
 	if oUF.isRetail then
-		if(self.isHarmful) then
+		if self.isHarmful then
 			GameTooltip:SetUnitDebuffByAuraInstanceID(self:GetParent().__owner.unit, self.auraInstanceID)
 		else
 			GameTooltip:SetUnitBuffByAuraInstanceID(self:GetParent().__owner.unit, self.auraInstanceID)
@@ -122,41 +122,41 @@ local function onLeave()
 end
 
 local function CreateButton(element, index)
-	local button = CreateFrame("Button", element:GetName() .. "Button" .. index, element, "BackdropTemplate")
-	button:RegisterForClicks("RightButtonUp")
+	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element, "BackdropTemplate")
+	button:RegisterForClicks('RightButtonUp')
 
-	local cd = CreateFrame("Cooldown", "$parentCooldown", button, "CooldownFrameTemplate")
+	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cd:SetAllPoints()
 	button.Cooldown = cd
 
-	local icon = button:CreateTexture(nil, "BORDER")
+	local icon = button:CreateTexture(nil, 'BORDER')
 	icon:SetAllPoints()
 	button.Icon = icon
 
-	local countFrame = CreateFrame("Frame", nil, button)
+	local countFrame = CreateFrame('Frame', nil, button)
 	countFrame:SetAllPoints(button)
 	countFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
 
-	local count = countFrame:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
-	count:SetPoint("BOTTOMRIGHT", countFrame, "BOTTOMRIGHT", -1, 0)
+	local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+	count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
 	button.Count = count
 
-	local overlay = button:CreateTexture(nil, "OVERLAY")
+	local overlay = button:CreateTexture(nil, 'OVERLAY')
 	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])
 	overlay:SetAllPoints()
 	overlay:SetTexCoord(0.296875, 0.5703125, 0, 0.515625)
 	button.Overlay = overlay
 
-	local stealable = button:CreateTexture(nil, "OVERLAY")
+	local stealable = button:CreateTexture(nil, 'OVERLAY')
 	stealable:SetTexture([[Interface\TargetingFrame\UI-TargetingFrame-Stealable]])
-	stealable:SetPoint("TOPLEFT", -3, 3)
-	stealable:SetPoint("BOTTOMRIGHT", 3, -3)
-	stealable:SetBlendMode("ADD")
+	stealable:SetPoint('TOPLEFT', -3, 3)
+	stealable:SetPoint('BOTTOMRIGHT', 3, -3)
+	stealable:SetBlendMode('ADD')
 	button.Stealable = stealable
 
 	button.UpdateTooltip = UpdateTooltip
-	button:SetScript("OnEnter", onEnter)
-	button:SetScript("OnLeave", onLeave)
+	button:SetScript('OnEnter', onEnter)
+	button:SetScript('OnLeave', onLeave)
 
 	--[[ Callback: Auras:PostCreateButton(button)
 	Called after a new aura button has been created.
@@ -164,9 +164,7 @@ local function CreateButton(element, index)
 	* self   - the widget holding the aura buttons
 	* button - the newly created aura button (Button)
 	--]]
-	if element.PostCreateButton then
-		element:PostCreateButton(button)
-	end
+	if(element.PostCreateButton) then element:PostCreateButton(button) end
 
 	return button
 end
@@ -180,10 +178,9 @@ end
 local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3
 
-	if LCD and not UnitIsUnit("player", unit) then
+	if LCD and not UnitIsUnit('player', unit) then
 		local durationNew, expirationTimeNew
-		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 =
-			LCD:UnitAura(unit, index, filter)
+		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
 
 		if spellID then
 			durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellID, source, name)
@@ -193,8 +190,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 			duration, expiration = durationNew, expirationTimeNew
 		end
 	else
-		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 =
-			UnitAura(unit, index, filter)
+		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 	end
 
 	if element.forceShow or element.forceCreate then
@@ -206,13 +202,11 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 		end
 	end
 
-	if not name then
-		return
-	end
+	if not name then return end
 
 	local position = visible + offset + 1
 	local button = element[position]
-	if not button then
+	if(not button) then
 		--[[ Override: Auras:CreateButton(position)
 		Used to create the aura button at a given position.
 
@@ -223,7 +217,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 
 		* button - the button used to represent the aura (Button)
 		--]]
-		button = (element.CreateButton or CreateButton)(element, position)
+		button = (element.CreateButton or CreateButton) (element, position)
 
 		tinsert(element, button)
 		element.createdButtons = element.createdButtons + 1
@@ -234,7 +228,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 	button.caster = source
 	button.filter = filter
 	button.isDebuff = isDebuff
-	button.isPlayer = source == "player" or source == "vehicle"
+	button.isPlayer = source == 'player' or source == 'vehicle'
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
 	Defines a custom filter that controls if the aura button should be shown.
@@ -252,38 +246,18 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 	-- ElvUI changed block
 	local show = not element.forceCreate
 	if not (element.forceShow or element.forceCreate) then
-		show = (element.CustomFilter or customFilter)(
-			element,
-			unit,
-			button,
-			name,
-			icon,
-			count,
-			debuffType,
-			duration,
-			expiration,
-			source,
-			isStealable,
-			nameplateShowPersonal,
-			spellID,
-			canApplyAura,
-			isBossDebuff,
-			castByPlayer,
-			nameplateShowAll,
-			modRate,
-			effect1,
-			effect2,
-			effect3
-		)
+		show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
+			count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
+			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 	end
 	-- end block
 
-	if show then
+	if(show) then
 		-- We might want to consider delaying the creation of an actual cooldown
 		-- object to this point, but I think that will just make things needlessly
 		-- complicated.
-		if button.Cooldown and not element.disableCooldown then
-			if duration and duration > 0 then
+		if(button.Cooldown and not element.disableCooldown) then
+			if(duration and duration > 0) then
 				button.Cooldown:SetCooldown(expiration - duration, duration, modRate)
 				button.Cooldown:Show()
 			else
@@ -291,8 +265,8 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 			end
 		end
 
-		if button.Overlay then
-			if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
+		if(button.Overlay) then
+			if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
 				local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
 
 				button.Overlay:SetVertexColor(color[1], color[2], color[3])
@@ -303,17 +277,11 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 		end
 
 		if button.Stealable then
-			button.Stealable:SetShown(
-				not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit("player", unit)
-			)
+			button.Stealable:SetShown(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit))
 		end
 
-		if button.Icon then
-			button.Icon:SetTexture(icon)
-		end
-		if button.Count then
-			button.Count:SetText(not count or count <= 1 and "" or count)
-		end
+		if button.Icon then button.Icon:SetTexture(icon) end
+		if button.Count then button.Count:SetText(not count or count <= 1 and '' or count) end
 
 		local width = element.width or element.size or 16
 		local height = element.height or element.size or 16
@@ -336,7 +304,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 		* debuffType  - the debuff type of the aura (string?)['Curse', 'Disease', 'Magic', 'Poison']
 		* isStealable - whether the aura can be stolen or purged (boolean)
 		--]]
-		if element.PostUpdateButton then
+		if(element.PostUpdateButton) then
 			element:PostUpdateButton(unit, button, index, position, duration, expiration, debuffType, isStealable)
 		end
 
@@ -361,20 +329,18 @@ end
 local function SetPosition(element, from, to)
 	local width = element.width or element.size or 16
 	local height = element.height or element.size or 16
-	local sizex = width + (element["spacing-x"] or element.spacing or 0)
-	local sizey = height + (element["spacing-y"] or element.spacing or 0)
-	local anchor = element.initialAnchor or "BOTTOMLEFT"
-	local growthx = (element["growth-x"] == "LEFT" and -1) or 1
-	local growthy = (element["growth-y"] == "DOWN" and -1) or 1
+	local sizex = width + (element['spacing-x'] or element.spacing or 0)
+	local sizey = height + (element['spacing-y'] or element.spacing or 0)
+	local anchor = element.initialAnchor or 'BOTTOMLEFT'
+	local growthx = (element['growth-x'] == 'LEFT' and -1) or 1
+	local growthy = (element['growth-y'] == 'DOWN' and -1) or 1
 	local cols = floor(element:GetWidth() / sizex + 0.5)
 
 	for i = from, to do
 		local button = element.active[i]
 
 		-- Bail out if the to range is out of scope.
-		if not button then
-			break
-		end
+		if(not button) then break end
 		local col = (i - 1) % cols
 		local row = floor((i - 1) / cols)
 
@@ -384,27 +350,25 @@ local function SetPosition(element, from, to)
 end
 
 local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
-	if not offset then
-		offset = 0
-	end
+	if(not offset) then offset = 0 end
 	local index = 1
 	local visible = 0
 	local hidden = 0
 	local created = 0 -- ElvUI
 
-	while visible < limit do
+	while(visible < limit) do
 		local result = updateAura(element, unit, index, offset, filter, isDebuff, visible)
-		if not result then
+		if(not result) then
 			break
-		elseif result == VISIBLE then
+		elseif(result == VISIBLE) then
 			visible = visible + 1
-		elseif result == HIDDEN then
+		elseif(result == HIDDEN) then
 			hidden = hidden + 1
 		-- ElvUI changed block
 		elseif result == CREATED then
 			visible = visible + 1
 			created = created + 1
-			-- end block
+		-- end block
 		end
 
 		index = index + 1
@@ -412,7 +376,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 
 	visible = visible - created -- ElvUI changed
 
-	if not dontHide then
+	if(not dontHide) then
 		for i = visible + offset + 1, #element do
 			element[i]:Hide()
 		end
@@ -422,21 +386,17 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 end
 
 local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
-	if not unit or self.unit ~= unit then
-		return
-	end
+	if not unit or self.unit ~= unit then return end
 
 	local auras = self.Auras
-	if auras then
+	if(auras) then
 		--[[ Callback: Auras:PreUpdate(unit)
 		Called before the element has been updated.
 
 		* self - the widget holding the aura buttons
 		* unit - the unit for which the update has been triggered (string)
 		--]]
-		if auras.PreUpdate then
-			auras:PreUpdate(unit)
-		end
+		if(auras.PreUpdate) then auras:PreUpdate(unit) end
 
 		wipe(auras.active)
 
@@ -444,37 +404,26 @@ local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 		local numDebuffs = auras.numDebuffs or 40
 		local max = auras.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs =
-			filterIcons(auras, unit, auras.buffFilter or auras.filter or "HELPFUL", min(numBuffs, max), nil, 0, true)
+		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, max), nil, 0, true)
 
 		local hasGap
-		if visibleBuffs ~= 0 and auras.gap then
+		if(visibleBuffs ~= 0 and auras.gap) then
 			hasGap = true
 			visibleBuffs = visibleBuffs + 1
 
 			local button = auras[visibleBuffs]
-			if not button then
-				button = (auras.CreateButton or CreateButton)(auras, visibleBuffs)
+			if(not button) then
+				button = (auras.CreateButton or CreateButton) (auras, visibleBuffs)
 				tinsert(auras, button)
 				auras.createdButtons = auras.createdButtons + 1
 			end
 
 			-- Prevent the button from displaying anything.
-			if button.Cooldown then
-				button.Cooldown:Hide()
-			end
-			if button.Icnn then
-				button.Icon:SetTexture()
-			end
-			if button.Overlay then
-				button.Overlay:Hide()
-			end
-			if button.Stealable then
-				button.Stealable:Hide()
-			end
-			if button.count then
-				button.count:SetText("")
-			end
+			if(button.Cooldown) then button.Cooldown:Hide() end
+			if(button.Icon) then button.Icon:SetTexture() end
+			if(button.Overlay) then button.Overlay:Hide() end
+			if(button.Stealable) then button.Stealable:Hide() end
+			if(button.Count) then button.Count:SetText('') end
 
 			button:EnableMouse(false)
 			button:Show()
@@ -487,22 +436,15 @@ local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 			* gapButton    - the invisible aura button (Button)
 			* visibleBuffs - the number of currently visible aura buttons (number)
 			--]]
-			if auras.PostUpdateGapIcon then
+			if(auras.PostUpdateGapIcon) then
 				auras:PostUpdateGapIcon(unit, button, visibleBuffs)
 			end
 		end
 
-		local visibleDebuffs = filterIcons(
-			auras,
-			unit,
-			auras.debuffFilter or auras.filter or "HARMFUL",
-			min(numDebuffs, max - visibleBuffs),
-			true,
-			visibleBuffs
-		)
+		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 		auras.visibleDebuffs = visibleDebuffs
 
-		if hasGap and visibleDebuffs == 0 then
+		if(hasGap and visibleDebuffs == 0) then
 			auras[visibleBuffs]:Hide()
 			visibleBuffs = visibleBuffs - 1
 		end
@@ -522,11 +464,11 @@ local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 		* from - the offset of the first aura button to be (re-)anchored (number)
 		* to   - the offset of the last aura button to be (re-)anchored (number)
 		--]]
-		if auras.PreSetPosition then
+		if(auras.PreSetPosition) then
 			fromRange, toRange = auras:PreSetPosition(max)
 		end
 
-		if fromRange or auras.createdButtons > auras.anchoredButtons then
+		if(fromRange or auras.createdButtons > auras.anchoredButtons) then
 			--[[ Override: Auras:SetPosition(from, to)
 			Used to (re-)anchor the aura buttons.
 			Called when new aura buttons have been created or if :PreSetPosition is defined.
@@ -535,11 +477,7 @@ local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 			* from - the offset of the first aura button to be (re-)anchored (number)
 			* to   - the offset of the last aura button to be (re-)anchored (number)
 			--]]
-			(auras.SetPosition or SetPosition)(
-				auras,
-				fromRange or auras.anchoredButtons + 1,
-				toRange or auras.createdButtons
-			)
+			(auras.SetPosition or SetPosition) (auras, fromRange or auras.anchoredButtons + 1, toRange or auras.createdButtons)
 			auras.anchoredButtons = auras.createdButtons
 		end
 
@@ -549,105 +487,79 @@ local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 		* self - the widget holding the aura buttons
 		* unit - the unit for which the update has been triggered (string)
 		--]]
-		if auras.PostUpdate then
-			auras:PostUpdate(unit)
-		end
+		if(auras.PostUpdate) then auras:PostUpdate(unit) end
 	end
 
 	local buffs = self.Buffs
-	if buffs then
-		if buffs.PreUpdate then
-			buffs:PreUpdate(unit)
-		end
+	if(buffs) then
+		if(buffs.PreUpdate) then buffs:PreUpdate(unit) end
 
 		wipe(buffs.active)
 
 		local numBuffs = buffs.num or 32
-		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or "HELPFUL", numBuffs)
+		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
 		buffs.visibleBuffs = visibleBuffs
 
 		local fromRange, toRange
-		if buffs.PreSetPosition then
+		if(buffs.PreSetPosition) then
 			fromRange, toRange = buffs:PreSetPosition(numBuffs)
 		end
 
-		if fromRange or buffs.createdButtons > buffs.anchoredButtons then
-			(buffs.SetPosition or SetPosition)(
-				buffs,
-				fromRange or buffs.anchoredButtons + 1,
-				toRange or buffs.createdButtons
-			)
+		if(fromRange or buffs.createdButtons > buffs.anchoredButtons) then
+			(buffs.SetPosition or SetPosition) (buffs, fromRange or buffs.anchoredButtons + 1, toRange or buffs.createdButtons)
 			buffs.anchoredButtons = buffs.createdButtons
 		end
 
-		if buffs.PostUpdate then
-			buffs:PostUpdate(unit)
-		end
+		if(buffs.PostUpdate) then buffs:PostUpdate(unit) end
 	end
 
 	local debuffs = self.Debuffs
-	if debuffs then
-		if debuffs.PreUpdate then
-			debuffs:PreUpdate(unit)
-		end
+	if(debuffs) then
+		if(debuffs.PreUpdate) then debuffs:PreUpdate(unit) end
 
 		wipe(debuffs.active)
 
 		local numDebuffs = debuffs.num or 40
-		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or "HARMFUL", numDebuffs, true)
+		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange
-		if debuffs.PreSetPosition then
+		if(debuffs.PreSetPosition) then
 			fromRange, toRange = debuffs:PreSetPosition(numDebuffs)
 		end
 
-		if fromRange or debuffs.createdButtons > debuffs.anchoredButtons then
-			(debuffs.SetPosition or SetPosition)(
-				debuffs,
-				fromRange or debuffs.anchoredButtons + 1,
-				toRange or debuffs.createdButtons
-			)
+		if(fromRange or debuffs.createdButtons > debuffs.anchoredButtons) then
+			(debuffs.SetPosition or SetPosition) (debuffs, fromRange or debuffs.anchoredButtons + 1, toRange or debuffs.createdButtons)
 			debuffs.anchoredButtons = debuffs.createdButtons
 		end
 
-		if debuffs.PostUpdate then
-			debuffs:PostUpdate(unit)
-		end
+		if(debuffs.PostUpdate) then debuffs:PostUpdate(unit) end
 	end
 end
 
 local function Update(self, event, unit)
-	if (self.isForced and event ~= "ElvUI_UpdateAllElements") or (self.unit ~= unit) then
-		return
-	end -- ElvUI changed
+	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end -- ElvUI changed
 
 	-- Assume no event means someone wants to re-anchor things. This is usually done by UpdateAllElements and :ForceUpdate.
-	if not event or event == "ForceUpdate" or event == "ElvUI_UpdateAllElements" then -- ElvUI changed
-		if self.Buffs then
-			self.Buffs.anchoredButtons = 0
-		end
-		if self.Debuffs then
-			self.Debuffs.anchoredButtons = 0
-		end
-		if self.Auras then
-			self.Auras.anchoredButtons = 0
-		end
+	if not event or event == 'ForceUpdate' or event == 'ElvUI_UpdateAllElements' then -- ElvUI changed
+		if self.Buffs then self.Buffs.anchoredButtons = 0 end
+		if self.Debuffs then self.Debuffs.anchoredButtons = 0 end
+		if self.Auras then self.Auras.anchoredButtons = 0 end
 	end
 
 	UpdateAuras(self, event, unit)
 end
 
 local function ForceUpdate(element)
-	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
+	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 local function Enable(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		oUF:RegisterEvent(self, "UNIT_AURA", UpdateAuras)
+		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
 
 		local buffs = self.Buffs
-		if buffs then
+		if(buffs) then
 			buffs.__owner = self
 			-- check if there's any anchoring restrictions
 			buffs.__restricted = not pcall(self.GetCenter, self)
@@ -656,13 +568,13 @@ local function Enable(self)
 
 			buffs.createdButtons = buffs.createdButtons or 0
 			buffs.anchoredButtons = 0
-			buffs.tooltipAnchor = buffs.tooltipAnchor or "ANCHOR_BOTTOMRIGHT"
+			buffs.tooltipAnchor = buffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 			buffs:Show()
 		end
 
 		local debuffs = self.Debuffs
-		if debuffs then
+		if(debuffs) then
 			debuffs.__owner = self
 			-- check if there's any anchoring restrictions
 			debuffs.__restricted = not pcall(self.GetCenter, self)
@@ -671,7 +583,7 @@ local function Enable(self)
 
 			debuffs.createdButtons = debuffs.createdButtons or 0
 			debuffs.anchoredButtons = 0
-			debuffs.tooltipAnchor = debuffs.tooltipAnchor or "ANCHOR_BOTTOMRIGHT"
+			debuffs.tooltipAnchor = debuffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 			debuffs:Show()
 		end

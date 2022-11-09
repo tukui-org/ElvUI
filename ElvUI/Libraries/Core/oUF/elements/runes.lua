@@ -257,7 +257,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		for _, rune in ipairs(element) do
-			if(rune:IsObjectType('StatusBar') and not rune:GetStatusBarTexture()) then
+			if rune:IsObjectType('StatusBar') and not rune:GetStatusBarTexture() then
 				rune:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
 		end

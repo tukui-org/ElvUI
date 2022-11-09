@@ -48,6 +48,7 @@ local function Update(self, event)
 	-- UnitLeadsAnyGroup(unit). Inside the group formed by the dungeon finder UnitIsGroupLeader(unit) will only return
 	-- true for the instance leader.
 	local isInLFGInstance = HasLFGRestrictions()
+
 	-- ElvUI changed block
 	local isLeader
 	if IsInInstance() then
@@ -65,6 +66,7 @@ local function Update(self, event)
 			element:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
 			element:SetTexCoord(0, 1, 0, 1)
 		end
+
 		element:Show()
 	else
 		element:Hide()

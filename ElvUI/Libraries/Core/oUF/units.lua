@@ -231,14 +231,12 @@ function oUF:HandleEventlessUnit(object)
 	-- time from the layout code after oUF:Spawn(unit) returns the frame.
 	local timer = object.onUpdateFrequency or 0.5
 
-	-- Remove it, in case it's registered with another timer previously
-	for t, objects in next, eventlessObjects do
-		if(t ~= timer) then
-			for i, obj in next, objects do
-				if(obj == object) then
-					table.remove(objects, i)
-					break
-				end
+	-- Remove it, in case it's already registered with any timer
+	for _, objects in next, eventlessObjects do
+		for i, obj in next, objects do
+			if obj == object then
+				table.remove(objects, i)
+				break
 			end
 		end
 	end
