@@ -493,7 +493,7 @@ function UF:ConvertFilters(auras, priority)
 
 	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
 
-	for _, name in next, {strsplit(',', priority)} do
+	for _, name in next, { strsplit(',', priority) } do
 		local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
 		local real = friend or enemy or name
 		local custom = filters[real]

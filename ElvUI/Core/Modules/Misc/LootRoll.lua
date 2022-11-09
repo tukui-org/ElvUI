@@ -198,6 +198,10 @@ function M:LootRoll_Create(index)
 	button.stack:SetPoint('BOTTOMRIGHT', -1, 1)
 	button.stack:FontTemplate(nil, nil, 'OUTLINE')
 
+	button.ilvl = button:CreateFontString(nil, 'OVERLAY')
+	button.ilvl:SetPoint('BOTTOM', button, 'BOTTOM', 0, 0)
+	button.ilvl:FontTemplate(nil, nil, 'OUTLINE')
+
 	button.questIcon = button:CreateTexture(nil, 'OVERLAY')
 	button.questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
 	button.questIcon:SetTexCoord(1, 0, 0, 1)
@@ -256,7 +260,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	if cancelled_rolls[rollID] then return end
 	local link = GetLootRollItemLink(rollID)
 	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
-	local _, _, _, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
+	local _, _, _, itemLevel, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
 	local color = ITEM_QUALITY_COLORS[quality]
 
 	local f = M:LootFrame_GetFrame()
@@ -271,6 +275,8 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
+	f.button.ilvl:SetText(itemLevel)
+	f.button.ilvl:SetTextColor(color.r, color.g, color.b)
 	f.button.questIcon:SetShown(B:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
