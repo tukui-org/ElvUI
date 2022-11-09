@@ -365,22 +365,22 @@ end
 function UF:GetInterruptColor(db, unit)
 	local colors = ElvUF.colors
 	local customColor = db and db.castbar and db.castbar.customColor
-	local custom, r, g, b = customColor and customColor.enable and customColor, colors.castColor[1], colors.castColor[2], colors.castColor[3]
+	local custom, r, g, b = customColor and customColor.enable and customColor, colors.castColor.r, colors.castColor.g, colors.castColor.b
 
 	if self.notInterruptible and (UnitIsPlayer(unit) or (unit ~= 'player' and UnitCanAttack('player', unit))) then
 		if custom and custom.colorNoInterrupt then
 			return custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
 		else
-			return colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
+			return colors.castNoInterrupt.r, colors.castNoInterrupt.g, colors.castNoInterrupt.b
 		end
 	elseif ((custom and custom.useClassColor) or (not custom and UF.db.colors.castClassColor)) and UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)
 		local t = Class and colors.class[Class]
-		if t then return t[1], t[2], t[3] end
+		if t then return t.r, t.g, t.b end
 	elseif (custom and custom.useReactionColor) or (not custom and UF.db.colors.castReactionColor) then
 		local Reaction = UnitReaction(unit, 'player')
 		local t = Reaction and colors.reaction[Reaction]
-		if t then return t[1], t[2], t[3] end
+		if t then return t.r, t.g, t.b end
 	elseif custom then
 		return customColor.color.r, customColor.color.g, customColor.color.b
 	end

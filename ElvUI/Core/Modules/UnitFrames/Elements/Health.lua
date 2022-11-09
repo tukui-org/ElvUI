@@ -226,7 +226,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	if unit and (strmatch(unit, "raid%d+") or strmatch(unit, "party%d+")) then
 		if not UnitIsDeadOrGhost(unit) and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy("player", unit) then
 			local color = parent.colors.reaction[HOSTILE_REACTION]
-			if color then self:SetStatusBarColor(color[1], color[2], color[3]) end
+			if color then self:SetStatusBarColor(color.r, color.g, color.b) end
 		end
 	end
 
@@ -248,7 +248,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			end
 
 			if color then
-				self.bg:SetVertexColor(color[1] * self.bg.multiplier, color[2] * self.bg.multiplier, color[3] * self.bg.multiplier)
+				self.bg:SetVertexColor(color.r * self.bg.multiplier, color.g * self.bg.multiplier, color.b * self.bg.multiplier)
 			end
 		elseif newb then
 			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)

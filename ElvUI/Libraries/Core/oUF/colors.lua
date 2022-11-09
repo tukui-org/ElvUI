@@ -55,7 +55,6 @@ function oUF:CreateColor(r, g, b, a)
 	return color
 end
 
-
 local colors = {
 	smooth = {
 		1, 0, 0,
@@ -183,6 +182,8 @@ colors.power[13] = colors.power.INSANITY
 colors.power[16] = colors.power.ARCANE_CHARGES
 colors.power[17] = colors.power.FURY
 colors.power[18] = colors.power.PAIN
+
+-- there's no official colour for evoker's essence
 -- use the average colour of the essence texture instead
 colors.power.ESSENCE = oUF:CreateColor(100, 173, 206)
 colors.power[19] = colors.power.ESSENCE
