@@ -276,6 +276,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
 	f.button.ilvl:SetText(itemLevel)
+	f.button.ilvl:SetTextColor(color.r, color.g, color.b)
 	f.button.questIcon:SetShown(B:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
