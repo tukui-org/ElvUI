@@ -105,9 +105,8 @@ function S:ContainerFrame()
 
 			questIcon:Hide()
 
-			local profession = B.ProfessionColors[bagType]
-			if profession then
-				item:SetBackdropBorderColor(profession.r, profession.g, profession.b, profession.a)
+			if B.ProfessionColors[bagType] then
+				item:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 				item.ignoreBorderColors = true
 			elseif link then
 				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(link)

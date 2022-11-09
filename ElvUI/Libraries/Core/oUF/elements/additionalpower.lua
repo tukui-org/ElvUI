@@ -88,7 +88,7 @@ local function UpdateColor(self, event, unit, powerType)
 	end
 
 	if(color) then
-		r, g, b = color.r, color.g, color.b
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then

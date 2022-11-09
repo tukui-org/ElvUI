@@ -576,7 +576,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		local bag = slot.bagFrame.Bags[slot.BagID]
 		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
-			r, g, b, a = colors.r, colors.g, colors.b, colors.a
+			r, g, b, a = unpack(colors)
 		end
 	end
 
@@ -937,8 +937,9 @@ function B:GetBagAssignedInfo(holder, isBank)
 	end
 
 	if active and color then
-		holder:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		holder.forcedBorderColors = {color.r, color.g, color.b, color.a}
+		local r, g, b, a = unpack(color)
+		holder:SetBackdropBorderColor(r, g, b, a)
+		holder.forcedBorderColors = {r, g, b, a}
 
 		return active
 	else
@@ -2713,7 +2714,7 @@ function B:Initialize()
 	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
 
 	B.AssignmentColors = {
-		[0] = { r = .99, g = .23, b = .21 }, -- fallback
+		[0] = { .99, .23, .21 }, -- fallback
 		[FILTER_FLAG_EQUIPMENT] = E:GetColorTable(B.db.colors.assignment.equipment),
 		[FILTER_FLAG_CONSUMABLES] = E:GetColorTable(B.db.colors.assignment.consumables),
 		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),
