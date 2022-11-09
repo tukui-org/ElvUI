@@ -189,7 +189,8 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 end
 
 function AB:TrimIcon(button, masque)
-	if not button.icon then return end
+	local icon = button.icon or button.Icon
+	if not icon then return end
 
 	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
 	local changeRatio = button.db and not button.db.keepSizeRatio
@@ -209,7 +210,7 @@ function AB:TrimIcon(button, masque)
 
 	-- always when masque is off, otherwise only when keepSizeRatio is off
 	if not masque or changeRatio then
-		button.icon:SetTexCoord(left, right, top, bottom)
+		icon:SetTexCoord(left, right, top, bottom)
 	end
 end
 

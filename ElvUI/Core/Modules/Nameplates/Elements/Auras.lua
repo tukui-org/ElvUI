@@ -52,14 +52,14 @@ function NP:Construct_Auras(nameplate)
 	Buffs.PreUpdate = UF.PreUpdateAura
 	Buffs.PreSetPosition = UF.SortAuras
 	Buffs.SetPosition = UF.SetPosition
-	Buffs.PostCreateButton = NP.Construct_AuraButton
+	Buffs.PostCreateButton = NP.Construct_AuraIcon
 	Buffs.PostUpdateButton = UF.PostUpdateAura
 	Buffs.CustomFilter = UF.AuraFilter
 
 	Debuffs.PreUpdate = UF.PreUpdateAura
 	Debuffs.PreSetPosition = UF.SortAuras
 	Debuffs.SetPosition = UF.SetPosition
-	Debuffs.PostCreateButton = NP.Construct_AuraButton
+	Debuffs.PostCreateButton = NP.Construct_AuraIcon
 	Debuffs.PostUpdateButton = UF.PostUpdateAura
 	Debuffs.CustomFilter = UF.AuraFilter
 

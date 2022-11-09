@@ -38,7 +38,7 @@ function NP:Health_UpdateColor(_, unit)
 	end
 
 	if t then
-		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
+		r, g, b = t.r, t.g, t.b
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 

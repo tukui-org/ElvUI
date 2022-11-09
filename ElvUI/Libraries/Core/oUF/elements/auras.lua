@@ -267,9 +267,10 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 
 		if(button.Overlay) then
 			if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
-				local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
+				local colors = element.__owner.colors.debuff
+				local color = colors[debuffType] or colors.none
 
-				button.Overlay:SetVertexColor(color[1], color[2], color[3])
+				button.Overlay:SetVertexColor(color.r, color.g, color.b)
 				button.Overlay:Show()
 			else
 				button.Overlay:Hide()
