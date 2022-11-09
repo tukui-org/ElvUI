@@ -360,17 +360,6 @@ P.bags = {
 		bankSpacing = 5,
 		player = false,
 		bank = false,
-		bag1 = false,
-		bag2 = false,
-		bag3 = false,
-		bag4 = false,
-		bag5 = false,
-		bag6 = false,
-		bag7 = false,
-		bag8 = false,
-		bag9 = false,
-		bag10 = false,
-		bag11 = false,
 	},
 	shownBags = {},
 	autoToggle = {
@@ -400,8 +389,11 @@ P.bags = {
 	},
 }
 
-for i = -3, 11 do
+for i = -3, 12 do
 	P.bags.shownBags['bag'..i] = true
+	if i >= 1 then
+		P.bags.split['bag'..i] = false
+	end
 end
 
 local NP_Auras = {
