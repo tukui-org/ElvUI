@@ -557,18 +557,18 @@ local function Enable(self, unit)
 		else
 			self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 		end
 
 		if oUF.isRetail then
+			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
@@ -624,18 +624,18 @@ local function Disable(self)
 		else
 			self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 		end
 
-		if oUF.isRetail or oUF.isWrath then
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
