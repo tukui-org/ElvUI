@@ -390,9 +390,11 @@ P.bags = {
 }
 
 for i = -3, 12 do
-	P.bags.shownBags['bag'..i] = true
+	local name = 'bag'..i
+	P.bags.shownBags[name] = true
+
 	if i >= 1 then
-		P.bags.split['bag'..i] = false
+		P.bags.split[name] = false
 	end
 end
 
