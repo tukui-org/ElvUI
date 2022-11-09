@@ -986,7 +986,7 @@ do
 	}
 
 	if E.Wrath then -- Wrath TotemBar needs to be handled by us
-		untaint.MultiCastActionBarFrame = true
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 	end
 
 	function AB:DisableBlizzard()
@@ -1000,10 +1000,7 @@ do
 			local frame = _G[name]
 			if frame then
 				frame:SetParent(E.HiddenFrame)
-
-				if name ~= 'MultiCastActionBarFrame' then
-					frame:UnregisterAllEvents() -- Wrath TotemBar needs the events
-				end
+				frame:UnregisterAllEvents()
 
 				if not E.Retail then
 					AB:SetNoopsi(frame)
