@@ -220,7 +220,7 @@ local function GetClassPower(Class)
 
 		if min > 0 then
 			local power = ElvUF.colors.ClassBars[Class]
-			local color = (monk and power[min]) or (dk and E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1]) or power
+			local color = (monk and power[min]) or (dk and (E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 			r, g, b = color.r, color.g, color.b
 		end
 	elseif not r then
