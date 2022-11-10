@@ -169,6 +169,8 @@ function C:Search_GetReturn(value, ...)
 	end
 end
 
+-- hidden (function) will just be shown by search
+-- access to its info table is not present
 function C:Search_IsHidden(info)
 	if type(info.hidden) == 'boolean' then
 		return info.hidden
