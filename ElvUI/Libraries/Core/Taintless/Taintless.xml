@@ -1,0 +1,60 @@
+<Ui><Script><![CDATA[--[[
+
+TaintLess [22-09-15]
+https://www.townlong-yak.com/addons/taintless
+
+All rights reserved.
+
+Permission is hereby granted to distribute unmodified copies of this file.
+]]
+
+local function purgeKey(t, k)
+	t[k] = nil
+	local c = 42
+	repeat
+		if t[c] == nil then
+			t[c] = nil
+		end
+		c = c + 1
+	until issecurevariable(t, k)
+end
+
+-- https://www.townlong-yak.com/addons/taintless/fixes/RefreshOverread
+if (tonumber(UIDD_REFRESH_OVERREAD_PATCH_VERSION) or 0) < 3 then
+	UIDD_REFRESH_OVERREAD_PATCH_VERSION = 3
+	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
+		for i=1, UIDD_REFRESH_OVERREAD_PATCH_VERSION == 3 and UIDROPDOWNMENU_MAXLEVELS or 0 do
+			for j=1+_G["DropDownList" .. i].numButtons, UIDROPDOWNMENU_MAXBUTTONS do
+				local b, _ = _G["DropDownList" .. i .. "Button" .. j]
+				_ = issecurevariable(b, "checked")      or purgeKey(b, "checked")
+				_ = issecurevariable(b, "notCheckable") or purgeKey(b, "notCheckable")
+			end
+		end
+	end)
+end
+
+-- https://www.townlong-yak.com/addons/taintless/fixes/DisplayModeTaint
+if (tonumber(UIDROPDOWNMENU_OPEN_PATCH_VERSION) or 0) < 1 then
+	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
+	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
+		if UIDROPDOWNMENU_OPEN_PATCH_VERSION == 1
+		   and UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
+		   and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
+			purgeKey(_G, "UIDROPDOWNMENU_OPEN_MENU")
+		end
+	end)
+end
+
+-- https://www.townlong-yak.com/addons/taintless/fixes/IOFrameSelection
+if (tonumber(IOFRAME_SELECTION_PATCH_VERSION) or 0) < 3 then
+	IOFRAME_SELECTION_PATCH_VERSION = 3
+	if InterfaceOptionsFrame then
+		InterfaceOptionsFrame:HookScript("OnHide", function()
+			if IOFRAME_SELECTION_PATCH_VERSION == 3 then
+				InterfaceOptionsFrameCategories.selection = nil
+			end
+		end)
+	end
+end
+
+]]></Script></Ui>
