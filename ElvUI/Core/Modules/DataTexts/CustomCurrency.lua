@@ -68,7 +68,6 @@ local function RegisterNewDT(currencyID)
 	--Get the currency index for this currency, so we can use it for a tooltip
 	AddCurrencyNameToIndex(name)
 
-	--Set the HyperDT
 	local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
 	local quickList = DT.QuickList[menuIndex]
 	if quickList then
