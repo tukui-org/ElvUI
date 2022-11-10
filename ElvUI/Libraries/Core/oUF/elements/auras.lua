@@ -94,7 +94,15 @@ local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
 
-	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	if oUF.isRetail then
+		if self.isHarmful then
+			GameTooltip:SetUnitDebuffByAuraInstanceID(self:GetParent().__owner.unit, self.auraInstanceID)
+		else
+			GameTooltip:SetUnitBuffByAuraInstanceID(self:GetParent().__owner.unit, self.auraInstanceID)
+		end
+	else
+		GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	end
 end
 
 local function onEnter(self)

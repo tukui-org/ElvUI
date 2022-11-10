@@ -5,8 +5,8 @@ local format = format
 local strjoin = strjoin
 local GetBagName = GetBagName
 local ToggleAllBags = ToggleAllBags
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots
+local C_Container_GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
+local C_Container_GetContainerNumSlots = C_Container.GetContainerNumSlots
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
@@ -27,9 +27,9 @@ local function OnEvent(self)
 
 	local free, total = 0, 0
 	for i = 0, NUM_BAG_SLOTS do
-		local freeSlots, bagType = GetContainerNumFreeSlots(i)
+		local freeSlots, bagType = C_Container_GetContainerNumFreeSlots(i)
 		if not bagType or bagType == 0 then
-			free, total = free + freeSlots, total + GetContainerNumSlots(i)
+			free, total = free + freeSlots, total + C_Container_GetContainerNumSlots(i)
 		end
 	end
 
