@@ -427,7 +427,6 @@ L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes 
  */emove|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
  */ereset|r  -  Restablecer todos los marcos a sus posiciones originales.
  */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
- */hdt|r  -  Edita tus Textos de Datos sin abrir la *OptionsUI|r.
  */estatus|r  -  Información importante para preguntas de soporte.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Mostrar/Ocultar una cuadrícula de líneas.
  */edebug|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.

@@ -427,7 +427,6 @@ L["EHELP_COMMANDS"] = ([=[Aqui está a lista de todos os comandos importantes do
  */emove|r  -  Alternar fixação para reposicionar vários elementos.
  */ereset|r  -  Reseta todas as frames para seus lugares originais.
  */bgstats|r  -  Alternar status de Campo de Batalha nos seus Textos Informativos.
- */hdt|r  -  Editar seus Textos Alternativos sem abrir o *OptionsUI|r.
  */estatus|r  -  Informações importantes para questões com o suporte.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Alternar o grid de pixels.
  */edebug|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.

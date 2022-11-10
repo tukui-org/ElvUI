@@ -427,7 +427,6 @@ L["EHELP_COMMANDS"] = ([=[这里列出了重要的 *ElvUI|r 命令:
  */emove|r  -  切换锚点以重新定位各种元素.
  */ereset|r  -  将所有框架重置为其原始位置.
  */bgstats|r  -  在您的数据文本上切换战场统计信息.
- */hdt|r  -  在不打开 *选项界面|r 的情况下编辑您的数据文本.
  */estatus|r  -  需要支持方面问题的重要信息.
  */egrid|r ^64|r or ^128|r or ^256|r  -  切换像素网格.
  */edebug|r ^on|r or ^off|r  -  禁用除 ElvUI 之外的所有插件.

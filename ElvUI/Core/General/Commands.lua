@@ -232,7 +232,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand('ec', 'ToggleOptionsUI')
 	self:RegisterChatCommand('elvui', 'ToggleOptionsUI')
 
-	self:RegisterChatCommand('hdt', DT.HyperDT)
 	self:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
 
 	self:RegisterChatCommand('moveui', 'ToggleMoveMode')

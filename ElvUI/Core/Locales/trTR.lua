@@ -430,7 +430,6 @@ L["EHELP_COMMANDS"] = ([=[Tum onemli *ElvUI|r komutlarinin listesi:
  */emove|r  -  cesitli ogeleri yeniden konumlandirmak icin capalari degistirin.
  */ereset|r  -  Tum cerceveleri orijinal konumlarina sifirlayin.
  */bgstats|r  -  VeriMetinleri'inizdeki Savas Alani istatistiklerini degistirin.
- */hdt|r  -  *OptionsUI|r'yi acmadan DataText'lerinizi duzenleyin.
  */estatus|r  -  Destek sorulari icin onemli bilgiler.
  */egrid|r ^64|r yada ^128|r yada ^256|r  -  Bir piksel izgarasini degistirin.
  */edebug|r ^on|r yada ^off|r  -  ElvUI disindaki tum Eklentileri devre disi birakin.

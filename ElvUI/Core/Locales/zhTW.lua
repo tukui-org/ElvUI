@@ -427,7 +427,6 @@ L["EHELP_COMMANDS"] = ([=[一些重要的 *ElvUI|r 命令:
  */emove|r  -  開關介面元素移動.
  */ereset|r  -  重置全部介面元素到預設位置.
  */bgstats|r  -  開關戰場信息在資訊文字上的顯示.
- */hdt|r  -  在不打開 *設定|r 的情況下修改資訊文字.
  */estatus|r  -  一些對於支援服務非常重要的訊息.
  */egrid|r ^64|r 或 ^128|r 或 ^256|r  -  開關像素網格.
  */edebug|r ^on|r 或 ^off|r  -  禁用 ElvUI 以外的全部插件.

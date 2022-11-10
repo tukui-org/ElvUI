@@ -427,7 +427,6 @@ L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos
  */emove|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
  */ereset|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
  */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
- */hdt|r  -  Informationsleisten bearbeiten ohne die *Optionen|r öffnen zu müssen.
  */estatus|r  -  Wichtige Informationen für Supportfragen.
  */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
  */edebug|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
