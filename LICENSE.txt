@@ -16,30 +16,56 @@ License clarification for github.com/tukui-org/ElvUI
 	
 	References for ElvUI_Libraries:
 		Core\
-			Ace: LINK TO LICENSE FILE
-			AceGUI-3.0-SharedMediaWidgets: LINK TO LICENSE FILE
-			LibAceConfigHelper: LINK TO LICENSE FILE
-			LibActionButton-1.0: LINK TO LICENSE FILE
-			LibAnim: LINK TO LICENSE FILE
-			LibBase64-1.0: LINK TO LICENSE FILE
-			LibCompress: LINK TO LICENSE FILE
-			LibCustomGlow-1.0: LINK TO LICENSE FILE
-			LibDataBroker: LINK TO LICENSE FILE
-			LibDispel: LINK TO LICENSE FILE
-			LibDualSpec-1.0: LINK TO LICENSE FILE
-			LibElvUIPlugin-1.0: LINK TO LICENSE FILE
-			LibItemSearch-1.2: LINK TO LICENSE FILE
-			LibRangeCheck-2.0: LINK TO LICENSE FILE
-			LibSharedMedia-3.0: LINK TO LICENSE FILE
-			LibSimpleSticky: LINK TO LICENSE FILE
-			LibTranslit-1.0: LINK TO LICENSE FILE
-			oUF: LINK TO LICENSE FILE
-			oUF_Plugins: LINK TO LICENSE FILE
-			Taintless: LINK TO LICENSE FILE
-			UTF8: LINK TO LICENSE FILE
+			Ace:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Ace/
+			AceGUI-3.0-SharedMediaWidgets:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets/
+			LibAceConfigHelper:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibAceConfigHelper/
+			LibActionButton-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibActionButton-1.0/
+			LibAnim:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibAnim/
+			LibBase64-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibBase64-1.0/
+			LibCompress:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibCompress/
+			LibCustomGlow-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibCustomGlow-1.0/
+			LibDataBroker:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDataBroker/
+			LibDispel:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDispel/
+			LibDualSpec-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDualSpec-1.0/
+			LibElvUIPlugin-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibElvUIPlugin-1.0/
+			LibItemSearch-1.2:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibItemSearch-1.2/
+			LibRangeCheck-2.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibRangeCheck-2.0/
+			LibSharedMedia-3.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSharedMedia-3.0/
+			LibSimpleSticky:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSimpleSticky/
+			LibTranslit-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibTranslit-1.0/
+			oUF:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/oUF/
+			oUF_Plugins:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/oUF_Plugins/
+			Taintless:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Taintless/
+			UTF8:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/UTF8/
 		Classic\
-			LibClassicCasterino-1.0: LINK TO LICENSE FILE
-			LibClassicDurations: LINK TO LICENSE FILE
-			LibClassicSpecs: LINK TO LICENSE FILE
-			LibHealComm-4.0: LINK TO LICENSE FILE
-			LibQuestXP: LINK TO LICENSE FILE
+			LibClassicCasterino-1.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibClassicCasterino-1.0/
+			LibClassicDurations:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibClassicDurations/
+			LibClassicSpecs:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibClassicSpecs/
+			LibHealComm-4.0:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibHealComm-4.0/
+			LibQuestXP:
+			github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibQuestXP/
