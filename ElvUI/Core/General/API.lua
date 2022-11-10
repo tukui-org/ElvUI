@@ -55,6 +55,9 @@ local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 -- GLOBALS: ElvDB, ElvUF
 
+E.MountIDs = {}
+E.MountText = {}
+
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
 
@@ -585,9 +588,6 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
-
-	E.MountIDs = {}
-	E.MountText = {}
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
