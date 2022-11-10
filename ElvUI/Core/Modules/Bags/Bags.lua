@@ -50,7 +50,6 @@ local SplitContainerItem = SplitContainerItem
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
-local C_Container_UseContainerItem = C_Container.UseContainerItem
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
@@ -79,6 +78,7 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_
 local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
 local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled or (C_Container and C_Container.SetBackpackAutosortDisabled)
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
+local UseContainerItem = UseContainerItem or (C_Container and C_Container.UseContainerItem)
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
