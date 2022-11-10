@@ -3,7 +3,8 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local gsub = gsub
-local format, ipairs = format, ipairs
+local ipairs = ipairs
+local format = format
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetNumShapeshiftForms = GetNumShapeshiftForms

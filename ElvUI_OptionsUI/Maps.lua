@@ -6,7 +6,8 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local pairs = pairs
--- GLOBALS: WORLD_MAP_MIN_ALPHA
+local SetCVar = SetCVar
+local GetCVarBool = GetCVarBool
 
 local buttonPositions = {
 	LEFT = L["Left"],
