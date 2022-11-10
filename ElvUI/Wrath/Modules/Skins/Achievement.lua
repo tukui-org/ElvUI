@@ -10,8 +10,8 @@ local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
-local function blueBackdrop(self)
-	self:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
+local function blueBackdrop(frame)
+	frame:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 end
 
 local function skinAch(Achievement, BiggerIcon)
@@ -33,8 +33,8 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
-		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
-		Achievement:HookScript('OnLeave', function(self) self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		Achievement:HookScript('OnEnter', function(frame) frame.backdrop:SetBackdropBorderColor(1, 1, 0) end)
+		Achievement:HookScript('OnLeave', function(frame) frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 	end
 
 	if Achievement.label then
@@ -84,8 +84,8 @@ local function SkinStatusBar(bar)
 	if text then text:Point('RIGHT', -4, 0) end
 end
 
-local function playerSaturate(self) -- self is Achievement.player
-	local Achievement = self:GetParent()
+local function playerSaturate(frame) -- frame is Achievement.player
+	local Achievement = frame:GetParent()
 
 	local r, g, b = unpack(E.media.backdropcolor)
 	Achievement.player.backdrop.callbackBackdropColor = nil

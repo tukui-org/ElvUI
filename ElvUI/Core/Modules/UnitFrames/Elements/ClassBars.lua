@@ -7,7 +7,6 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local ipairs = ipairs
-local unpack = unpack
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player

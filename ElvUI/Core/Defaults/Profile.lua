@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
-local format = format
 local next = next
 
 P.gridSize = 64

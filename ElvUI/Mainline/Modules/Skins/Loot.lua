@@ -49,8 +49,6 @@ function S:LootFrame()
 
 			button.IconQuestTexture:SetAlpha(0)
 			button.BorderFrame:SetAlpha(0)
-			--button.HighlightNameFrame:SetAlpha(0)
-			--button.PushedNameFrame:SetAlpha(0)
 		end
 	end)
 

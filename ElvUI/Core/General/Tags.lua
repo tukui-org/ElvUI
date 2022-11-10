@@ -10,7 +10,7 @@ local translitMark = '!'
 
 local _G = _G
 local next, type, gmatch, gsub, format = next, type, gmatch, gsub, format
-local unpack, ipairs, pairs, wipe, floor, ceil = unpack, ipairs, pairs, wipe, floor, ceil
+local ipairs, pairs, wipe, floor, ceil = ipairs, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
