@@ -5,11 +5,10 @@
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque
+## RequiredDeps: ElvUI_Libraries
 ## Interface: 30400
 ## X-Interface: 30400
 ## X-oUF: ElvUF
-
-Wrath\Libs.xml
 
 Core\Load.xml
 
