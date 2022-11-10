@@ -156,10 +156,15 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	S:HandleTab(_G.EncounterJournalSuggestTab)
-	S:HandleTab(_G.EncounterJournalDungeonTab)
-	S:HandleTab(_G.EncounterJournalRaidTab)
-	S:HandleTab(_G.EncounterJournalLootJournalTab)
+	-- Bottom tabs
+	for _, tab in next, {
+		_G.EncounterJournalSuggestTab,
+		_G.EncounterJournalDungeonTab,
+		_G.EncounterJournalRaidTab,
+		_G.EncounterJournalLootJournalTab
+	} do
+		S:HandleTab(tab)
+	end
 
 	_G.EncounterJournalSuggestTab:ClearAllPoints()
 	_G.EncounterJournalDungeonTab:ClearAllPoints()
@@ -446,41 +451,52 @@ function S:Blizzard_EncounterJournal()
 			end
 		end)
 
-		-- Comment back in DF Beta, not on Pre Patch
-		--[[hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
+		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
-					child.bossTexture:SetAlpha(0)
-					child.bosslessTexture:SetAlpha(0)
+					if child.bossTexture then child.bossTexture:SetAlpha(0) end
+					if child.bosslessTexture then child.bosslessTexture:SetAlpha(0) end
 
-					child.name:ClearAllPoints()
-					child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
+					if child.name then
+						child.name:ClearAllPoints()
+						child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
+					end
 
-					child.boss:ClearAllPoints()
-					child.boss:Point('BOTTOMLEFT', 4, 6)
-					child.boss:SetTextColor(1, 1, 1)
+					if child.boss then
+						child.boss:ClearAllPoints()
+						child.boss:Point('BOTTOMLEFT', 4, 6)
+						child.boss:SetTextColor(1, 1, 1)
+					end
 
-					child.slot:ClearAllPoints()
-					child.slot:Point('TOPLEFT', child.name, 'BOTTOMLEFT', 0, -3)
-					child.slot:SetTextColor(1, 1, 1)
+					if child.slot then
+						child.slot:ClearAllPoints()
+						child.slot:Point('TOPLEFT', child.name, 'BOTTOMLEFT', 0, -3)
+						child.slot:SetTextColor(1, 1, 1)
+					end
 
-					child.armorType:ClearAllPoints()
-					child.armorType:Point('RIGHT', child, 'RIGHT', -10, 0)
-					child.armorType:SetTextColor(1, 1, 1)
+					if child.armorType then
+						child.armorType:ClearAllPoints()
+						child.armorType:Point('RIGHT', child, 'RIGHT', -10, 0)
+						child.armorType:SetTextColor(1, 1, 1)
+					end
 
-					child.icon:SetSize(32, 32)
-					child.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
-					S:HandleIcon(child.icon, true)
-					S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
+					if child.icon then
+						child.icon:SetSize(32, 32)
+						child.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
+						S:HandleIcon(child.icon, true)
+						S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
+					end
 
-					child:CreateBackdrop('Transparent')
-					child.backdrop:Point('TOPLEFT')
-					child.backdrop:Point('BOTTOMRIGHT', 0, 1)
+					if not child.backdrop then
+						child:CreateBackdrop('Transparent')
+						child.backdrop:Point('TOPLEFT')
+						child.backdrop:Point('BOTTOMRIGHT', 0, 1)
+					end
 
 					child.isSkinned = true
 				end
 			end
-		end)]]
+		end)
 
 		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
 		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)

@@ -40,23 +40,15 @@ function S:LootFrame()
 
 	hooksecurefunc(LootFrame.ScrollBox, 'Update', function(frame)
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do
-			local questTexture = button.IconQuestTexture
-			if not button.IsSkinned then
-				--button:StripTextures()
-
-				local item = button.Item
+			local item = button.Item
+			if item and not item.backdrop then
 				item:StripTextures()
 				S:HandleIcon(item.icon, true)
 				S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
-
-				questTexture:SetAlpha(0)
-				button.BorderFrame:SetAlpha(0)
-				--button.HighlightNameFrame:SetAlpha(0)
-				--button.PushedNameFrame:SetAlpha(0)
-				item.__owner = button
-
-				button.IsSkinned = true
 			end
+
+			button.IconQuestTexture:SetAlpha(0)
+			button.BorderFrame:SetAlpha(0)
 		end
 	end)
 

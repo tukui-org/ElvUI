@@ -101,7 +101,8 @@ function S:Blizzard_ClassTalentUI()
 		local check = EditDialog.UsesSharedActionBars
 		if check then
 			S:HandleCheckBox(check.CheckButton)
-			check.CheckButton.backdrop:SetInside(6, 6)
+			check.CheckButton:Size(20)
+			check.CheckButton.backdrop:SetInside()
 		end
 	end
 

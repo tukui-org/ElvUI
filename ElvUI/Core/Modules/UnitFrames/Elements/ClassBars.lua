@@ -7,7 +7,6 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local ipairs = ipairs
-local unpack = unpack
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player
@@ -66,8 +65,8 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	local colors = UF.db.colors.classResources
 	local fallback = UF.db.colors.power[powerType]
 
-	if isRunes and E.Retail and UF.db.colors.chargingRunes then
-		UF:Runes_UpdateCharged(self, custom_backdrop)
+	if isRunes and UF.db.colors.chargingRunes then
+		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
@@ -386,12 +385,12 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 		UF.ClassPower_UpdateColor(self, powerType)
 
 		if chargedPoints then
-			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
+			local color = ElvUF.colors.chargedComboPoint
 			for _, cIndex in next, chargedPoints do
 				local cPoint = self[cIndex]
 				if cPoint then
-					cPoint:SetStatusBarColor(r, g, b)
-					cPoint.bg:SetVertexColor(r * .35, g * .35, b * .35)
+					cPoint:SetStatusBarColor(color.r, color.g, color.b)
+					cPoint.bg:SetVertexColor(color.r * .35, color.g * .35, color.b * .35)
 				end
 			end
 		end
@@ -401,23 +400,36 @@ end
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
-function UF:Runes_UpdateCharged(runes, custom_backdrop)
-	local colors = UF.db.colors.classResources.DEATHKNIGHT
 
-	if E.Retail then
-		for _, bar in ipairs(runes) do
-			local value = bar:GetValue()
-			local color = colors[(value and value ~= 1 and -1) or bar.runeType or 0]
-			UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
-		end
-	elseif E.Wrath then
-		local value = self:GetValue()
-		local _, maxDuration = self:GetMinMaxValues()
-		local color = colors[self.runeType or 0]
+function UF:Runes_GetColor(rune, colors, classPower)
+	local value = rune:GetValue()
+
+	if E.Wrath then
+		local _, maxDuration = rune:GetMinMaxValues()
 		local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
-		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 
-		UF:ClassPower_SetBarColor(self, color.r * duration, color.g * duration, color.b * duration, custom_backdrop)
+		local color = colors[rune.runeType or 0]
+		return color.r * duration, color.g * duration, color.b * duration
+	else -- classPower is for nameplates only
+		local color = (value == 1 and classPower) or colors[(value and value ~= 1 and -1) or rune.runeType or 0]
+		return color.r, color.g, color.b
+	end
+end
+
+function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
+	local colors = UF.db.colors.classResources.DEATHKNIGHT
+	if not custom_backdrop then
+		custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+	end
+
+	if rune then
+		local r, g, b = UF:Runes_GetColor(rune, colors)
+		UF:ClassPower_SetBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+	elseif runes then
+		for _, bar in ipairs(runes) do
+			local r, g, b = UF:Runes_GetColor(bar, colors)
+			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
+		end
 	end
 end
 
@@ -431,8 +443,14 @@ function UF:Runes_PostUpdate(_, hasVehicle, allReady)
 		self:SetShown(not db.classbar.autoHide or not allReady)
 	end
 
-	if E.Retail and UF.db.colors.chargingRunes then
-		UF:Runes_UpdateCharged(self, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+	if UF.db.colors.chargingRunes then
+		UF:Runes_UpdateCharged(self)
+	end
+end
+
+function UF:Runes_UpdateChargedColor()
+	if UF.db.colors.chargingRunes then
+		UF:Runes_UpdateCharged(nil, self)
 	end
 end
 
@@ -454,7 +472,8 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		UF.classbars[rune] = true
 
 		rune:CreateBackdrop(nil, nil, nil, nil, true)
-		rune.PostUpdateColor = E.Wrath and UF.Runes_UpdateCharged
+		rune.PostUpdateColor = UF.Runes_UpdateChargedColor
+		rune.__owner = runes
 		rune.backdrop:SetParent(runes)
 
 		rune.bg = rune:CreateTexture(nil, 'BORDER')

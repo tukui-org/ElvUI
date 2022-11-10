@@ -32,6 +32,7 @@ local IsCosmeticItem = IsCosmeticItem
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local PlaySound = PlaySound
+local PickupBagFromSlot = PickupBagFromSlot
 local PutItemInBackpack = PutItemInBackpack
 local PutItemInBag = PutItemInBag
 local PutKeyInKeyRing = PutKeyInKeyRing
@@ -241,6 +242,7 @@ local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_
 local presistentEvents = {
 	PLAYERREAGENTBANKSLOTS_CHANGED = true,
 	PLAYERBANKSLOTS_CHANGED = true,
+	BAG_CONTAINER_UPDATE = true,
 	BAG_UPDATE_DELAYED = true,
 	BAG_UPDATE = true,
 	BAG_CLOSED = true
@@ -253,6 +255,8 @@ for bankID = bankOffset + 1, maxBankSlots do
 end
 
 if E.Retail then
+	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
+	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
 	tinsert(bagIDs, 5)
 else
@@ -572,7 +576,7 @@ function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 		local bag = slot.bagFrame.Bags[slot.BagID]
 		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
-			r, g, b, a = unpack(colors)
+			r, g, b, a = colors.r, colors.g, colors.b, colors.a
 		end
 	end
 
@@ -638,7 +642,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
 	local info = B:GetContainerItemInfo(bagID, slotID) or {}
 
-	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink
+	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink, slot.isBound = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink, info.isBound
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (info.iconFileID and 1) or nil -- used for ShowInspectCursor
@@ -767,6 +771,14 @@ function B:Slot_OnEnter()
 end
 
 function B:Slot_OnLeave() end
+
+function B:Holder_OnReceiveDrag()
+	PutItemInBag(self.isBank and self:GetInventorySlot() or self:GetID())
+end
+
+function B:Holder_OnDragStart()
+	PickupBagFromSlot(self.isBank and self:GetInventorySlot() or self:GetID())
+end
 
 function B:Holder_OnClick(button)
 	if self.BagID == BACKPACK_CONTAINER then
@@ -925,9 +937,8 @@ function B:GetBagAssignedInfo(holder, isBank)
 	end
 
 	if active and color then
-		local r, g, b, a = unpack(color)
-		holder:SetBackdropBorderColor(r, g, b, a)
-		holder.forcedBorderColors = {r, g, b, a}
+		holder:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+		holder.forcedBorderColors = {color.r, color.g, color.b, color.a}
 
 		return active
 	else
@@ -1262,6 +1273,8 @@ function B:OnEvent(event, ...)
 				bag.staleSlots[slotID] = true
 			end
 		end
+	elseif event == 'BAG_CONTAINER_UPDATE' then
+		B:UpdateContainerIcons()
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
 			B:DelayedContainer(self, event, ...)
@@ -1489,6 +1502,21 @@ function B:ToggleBag(holder)
 	B:Layout(holder.isBank)
 end
 
+function B:UpdateContainerIcons()
+	if not B.BagFrame then return end
+
+	-- this only executes for the main bag, the bank bag doesn't use this
+	for bagID, holder in next, B.BagFrame.ContainerHolderByBagID do
+		B:UpdateContainerIcon(holder, bagID)
+	end
+end
+
+function B:UpdateContainerIcon(holder, bagID)
+	if not holder or not bagID or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER then return end
+
+	holder.icon:SetTexture(GetInventoryItemTexture('player', ContainerIDToInventoryID(bagID)) or 136511)
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1604,19 +1632,20 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 		elseif bagID == KEYRING_CONTAINER then
 			holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
-		elseif isBank then
-			holder:SetID(i == 1 and BANK_CONTAINER or (bagID - bankOffset))
-			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
-			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 		else
-			local id, icon = 5, 136511
-			if bagID ~= 5 then
-				id = GetInventorySlotInfo(format('Bag%dSlot', bagID-1))
-				icon = GetInventoryItemTexture('player', ContainerIDToInventoryID(bagID))
-			end
+			holder:RegisterForDrag('LeftButton')
+			holder:SetScript('OnDragStart', B.Holder_OnDragStart)
+			holder:SetScript('OnReceiveDrag', B.Holder_OnReceiveDrag)
 
-			holder:SetID(id)
-			holder.icon:SetTexture(icon)
+			if isBank then
+				holder:SetID(i == 1 and BANK_CONTAINER or (bagID - bankOffset))
+				holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
+				holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
+			else
+				holder:SetID(bagID == 5 and 5 or GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
+
+				B:UpdateContainerIcon(holder, bagID)
+			end
 		end
 
 		if i == 1 then
@@ -2192,10 +2221,13 @@ function B:OpenBags()
 end
 
 function B:CloseBags()
-	B.BagFrame:Hide()
-	B.BankFrame:Hide()
+	local bag, bank = B.BagFrame:IsShown(), B.BankFrame:IsShown()
+	if bag or bank then
+		if bag then B.BagFrame:Hide() end
+		if bank then B.BankFrame:Hide() end
 
-	PlaySound(IG_BACKPACK_CLOSE)
+		PlaySound(IG_BACKPACK_CLOSE)
+	end
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
@@ -2681,7 +2713,7 @@ function B:Initialize()
 	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
 
 	B.AssignmentColors = {
-		[0] = { .99, .23, .21 }, -- fallback
+		[0] = { r = .99, g = .23, b = .21 }, -- fallback
 		[FILTER_FLAG_EQUIPMENT] = E:GetColorTable(B.db.colors.assignment.equipment),
 		[FILTER_FLAG_CONSUMABLES] = E:GetColorTable(B.db.colors.assignment.consumables),
 		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),

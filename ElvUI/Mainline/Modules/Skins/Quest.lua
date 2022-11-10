@@ -50,13 +50,19 @@ end
 local function HandleReward(frame)
 	if not frame then return end
 
+	for _, Region in next, { frame:GetRegions() } do
+		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
+			Region:SetTexture('')
+		end
+	end
+
 	if frame.Icon then
 		frame.Icon:SetDrawLayer('ARTWORK')
 		S:HandleIcon(frame.Icon, true)
-	end
 
-	if frame.IconBorder then
-		frame.IconBorder:Kill()
+		if frame.IconBorder then
+			S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
+		end
 	end
 
 	if frame.Count then
@@ -81,12 +87,6 @@ local function HandleReward(frame)
 	if frame.CircleBackground then
 		frame.CircleBackground:SetAlpha(0)
 		frame.CircleBackgroundGlow:SetAlpha(0)
-	end
-
-	for _, Region in next, { frame:GetRegions() } do
-		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
-			Region:SetTexture('')
-		end
 	end
 end
 
@@ -218,8 +218,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		end
 
 		HandleReward(questItem)
-
-		S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
 
 		questItem.NameFrame:Hide()
 		questItem.Name:SetTextColor(1, 1, 1)

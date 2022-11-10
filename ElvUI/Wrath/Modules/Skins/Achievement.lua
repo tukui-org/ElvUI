@@ -10,8 +10,8 @@ local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
-local function blueBackdrop(self)
-	self:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
+local function blueBackdrop(frame)
+	frame:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 end
 
 local function skinAch(Achievement, BiggerIcon)
@@ -33,8 +33,8 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
-		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
-		Achievement:HookScript('OnLeave', function(self) self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		Achievement:HookScript('OnEnter', function(frame) frame.backdrop:SetBackdropBorderColor(1, 1, 0) end)
+		Achievement:HookScript('OnLeave', function(frame) frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 	end
 
 	if Achievement.label then
@@ -84,8 +84,8 @@ local function SkinStatusBar(bar)
 	if text then text:Point('RIGHT', -4, 0) end
 end
 
-local function playerSaturate(self) -- self is Achievement.player
-	local Achievement = self:GetParent()
+local function playerSaturate(frame) -- frame is Achievement.player
+	local Achievement = frame:GetParent()
 
 	local r, g, b = unpack(E.media.backdropcolor)
 	Achievement.player.backdrop.callbackBackdropColor = nil
@@ -102,6 +102,8 @@ local function playerSaturate(self) -- self is Achievement.player
 end
 
 local function skinAchievementButton(button)
+	if button.isSkinned then return end
+
 	skinAch(button.player)
 	skinAch(button.friend)
 
@@ -127,30 +129,68 @@ local function hookHybridScrollButtons()
 
 	hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
 		if template == 'AchievementCategoryTemplate' then
-			for _, button in pairs(frame.buttons) do
-				if not button.isSkinned then
-					button:StripTextures(true)
-					button:StyleButton()
+			for _, category in pairs(frame.buttons) do
+				if not category.isSkinned then
+					category:StripTextures(true)
+					category:StyleButton()
 
-					button.isSkinned = true
-				end
-			end
-		elseif template == 'AchievementTemplate' then
-			for _, Achievement in pairs(frame.buttons) do
-				skinAch(Achievement, true)
-			end
-		elseif template == 'ComparisonTemplate' then
-			for _, Achievement in pairs(frame.buttons) do
-				if not Achievement.isSkinned then
-					skinAchievementButton(Achievement)
+					category.isSkinned = true
 				end
 			end
 		elseif template == 'StatTemplate' then
-			for _, Stats in pairs(frame.buttons) do
-				Stats:StyleButton()
+			for _, stats in pairs(frame.buttons) do
+				if not stats.isSkinned then
+					stats:StyleButton()
+
+					stats.isSkinned = true
+				end
+			end
+		elseif template == 'AchievementTemplate' then
+			for _, achievement in pairs(frame.buttons) do
+				if not achievement.isSkinned then
+					skinAch(achievement, true)
+				end
+			end
+		elseif template == 'ComparisonTemplate' then
+			for _, comparison in pairs(frame.buttons) do
+				if not comparison.isSkinned then
+					skinAchievementButton(comparison)
+				end
 			end
 		end
 	end)
+
+	-- if AchievementUI was loaded by another addon before us, these buttons won't exist when Blizzard_AchievementUI is called.
+	-- however, it can also be too late to hook HybridScrollFrame_CreateButtons, so we need to skin them here, weird...
+	for i = 1, 20 do
+		local category = _G['AchievementFrameCategoriesContainerButton'..i]
+		if category and not category.isSkinned then
+			category:StripTextures(true)
+			category:StyleButton()
+
+			category.isSkinned = true
+		end
+
+		local stats = _G['AchievementFrameStatsContainerButton'..i]
+		if stats and not stats.isSkinned then
+			stats:StyleButton()
+
+			stats.isSkinned = true
+		end
+
+		if i <= 10 then
+			local achievement = _G['AchievementFrameAchievementsContainerButton'..i]
+			if achievement and not achievement.isSkinned then
+				skinAch(achievement, true)
+
+			end
+
+			local comparison = _G['AchievementFrameComparisonContainerButton'..i]
+			if comparison and not comparison.isSkinned then
+				skinAchievementButton(comparison)
+			end
+		end
+	end
 end
 
 function S:Blizzard_AchievementUI()
@@ -276,7 +316,6 @@ function S:Blizzard_AchievementUI()
 			local frame = _G['AchievementFrameSummaryAchievement'..i]
 			if not frame.isSkinned then
 				skinAch(frame)
-				frame.isSkinned = true
 			end
 
 			--The backdrop borders tend to overlap so add a little more space between summary achievements
@@ -368,27 +407,6 @@ function S:Blizzard_AchievementUI()
 			end
 		end
 	end)
-
-	-- The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
-	-- Categories
-	for i = 1, 20 do
-		local button = _G['AchievementFrameCategoriesContainerButton'..i]
-		if not button then return end -- stop if no button
-
-		if not button.isSkinned then
-			button:StripTextures(true)
-			button:StyleButton()
-
-			button.isSkinned = true
-		end
-	end
-	--- Comparison
-	for i = 1, 10 do
-		local Achievement = _G['AchievementFrameComparisonContainerButton'..i]
-		if not Achievement or Achievement.isSkinned then return end
-
-		skinAchievementButton(Achievement)
-	end
 end
 
 E:Delay(0.1, hookHybridScrollButtons)

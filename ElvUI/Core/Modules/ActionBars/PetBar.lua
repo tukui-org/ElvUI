@@ -17,6 +17,7 @@ local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
 local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
 local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
+local PetActionBar_ShowGrid = PetActionBar_ShowGrid
 
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
 
@@ -200,6 +201,7 @@ function AB:UpdatePetBindings()
 		if button.HotKey then
 			button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
 			AB:FixKeybindText(button)
+			AB:FixKeybindColor(button)
 		end
 	end
 end
@@ -276,6 +278,8 @@ function AB:CreateBarPet()
 
 	if E.Retail then
 		AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
+	else
+		PetActionBar_ShowGrid()
 	end
 
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')

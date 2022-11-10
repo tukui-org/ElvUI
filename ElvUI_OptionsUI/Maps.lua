@@ -6,7 +6,8 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local pairs = pairs
--- GLOBALS: WORLD_MAP_MIN_ALPHA
+local SetCVar = SetCVar
+local GetCVarBool = GetCVarBool
 
 local buttonPositions = {
 	LEFT = L["Left"],
@@ -104,6 +105,7 @@ Maps.args.minimap.args.icons.args.tracking.args.position = ACH:Select(L["Positio
 Maps.args.minimap.args.icons.args.tracking.args.scale = ACH:Range(L["Scale"], nil, 4, buttonScale, nil, nil, nil, function() return E.private.general.minimap.hideTracking end)
 Maps.args.minimap.args.icons.args.tracking.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideTracking end)
 Maps.args.minimap.args.icons.args.tracking.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideTracking end)
+Maps.args.minimap.args.icons.args.tracking.args.showAllTracking  = ACH:Toggle(L["Show All Tracking Options"], nil, 7, nil, nil, nil, function() return GetCVarBool('minimapTrackingShowAll') end, function(_, value) SetCVar('minimapTrackingShowAll', value and 1 or 0) end, nil, not E.Retail)
 
 Maps.args.minimap.args.icons.args.calendar = ACH:Group(L["Calendar"], nil, 5, nil, nil, nil, function() return E.Retail and not E.db.general.minimap.clusterDisable end)
 Maps.args.minimap.args.icons.args.calendar.args.hideCalendar = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end, function(_, value) E.private.general.minimap.hideCalendar = value; MM:UpdateSettings() end)

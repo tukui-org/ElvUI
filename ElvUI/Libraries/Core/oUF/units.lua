@@ -61,7 +61,7 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			end
 
 			if(color) then
-				r, g, b = color[1], color[2], color[3]
+				r, g, b = color.r, color.g, color.b
 			end
 
 			if(r or g or b) then
@@ -231,14 +231,12 @@ function oUF:HandleEventlessUnit(object)
 	-- time from the layout code after oUF:Spawn(unit) returns the frame.
 	local timer = object.onUpdateFrequency or 0.5
 
-	-- Remove it, in case it's registered with another timer previously
-	for t, objects in next, eventlessObjects do
-		if(t ~= timer) then
-			for i, obj in next, objects do
-				if(obj == object) then
-					table.remove(objects, i)
-					break
-				end
+	-- Remove it, in case it's already registered with any timer
+	for _, objects in next, eventlessObjects do
+		for i, obj in next, objects do
+			if obj == object then
+				table.remove(objects, i)
+				break
 			end
 		end
 	end

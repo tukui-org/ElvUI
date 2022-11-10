@@ -52,15 +52,15 @@ function NP:Construct_Auras(nameplate)
 	Buffs.PreUpdate = UF.PreUpdateAura
 	Buffs.PreSetPosition = UF.SortAuras
 	Buffs.SetPosition = UF.SetPosition
-	Buffs.PostCreateIcon = NP.Construct_AuraIcon
-	Buffs.PostUpdateIcon = UF.PostUpdateAura
+	Buffs.PostCreateButton = NP.Construct_AuraIcon
+	Buffs.PostUpdateButton = UF.PostUpdateAura
 	Buffs.CustomFilter = UF.AuraFilter
 
 	Debuffs.PreUpdate = UF.PreUpdateAura
 	Debuffs.PreSetPosition = UF.SortAuras
 	Debuffs.SetPosition = UF.SetPosition
-	Debuffs.PostCreateIcon = NP.Construct_AuraIcon
-	Debuffs.PostUpdateIcon = UF.PostUpdateAura
+	Debuffs.PostCreateButton = NP.Construct_AuraIcon
+	Debuffs.PostUpdateButton = UF.PostUpdateAura
 	Debuffs.CustomFilter = UF.AuraFilter
 
 	nameplate.Buffs_, nameplate.Debuffs_ = Buffs, Debuffs
@@ -72,20 +72,20 @@ function NP:Construct_AuraIcon(button)
 
 	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
-	button.cd:SetReverse(true)
-	button.cd:SetInside(button)
+	button.Cooldown:SetReverse(true)
+	button.Cooldown:SetInside(button)
 
-	button.icon:SetDrawLayer('ARTWORK')
-	button.icon:SetInside()
+	button.Icon:SetDrawLayer('ARTWORK')
+	button.Icon:SetInside()
 
-	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
-	button.count:SetJustifyH('RIGHT')
+	button.Count:ClearAllPoints()
+	button.Count:Point('BOTTOMRIGHT', 1, 1)
+	button.Count:SetJustifyH('RIGHT')
 
-	button.overlay:SetTexture()
-	button.stealable:SetTexture()
+	button.Overlay:SetTexture()
+	button.Stealable:SetTexture()
 
-	E:RegisterCooldown(button.cd, 'nameplates')
+	E:RegisterCooldown(button.Cooldown, 'nameplates')
 
 	local auras = button:GetParent()
 	if auras and auras.type then
@@ -172,10 +172,10 @@ function NP:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
 		local point = db.countPosition or 'CENTER'
-		button.count:ClearAllPoints()
-		button.count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
-		button.count:Point(point, db.countXOffset, db.countYOffset)
-		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		button.Count:ClearAllPoints()
+		button.Count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
+		button.Count:Point(point, db.countXOffset, db.countYOffset)
+		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
 	if button.auraInfo then
@@ -184,6 +184,6 @@ function NP:UpdateAuraSettings(button)
 		button.auraInfo = {}
 	end
 
-	button.needsIconTrim = true
+	button.needsButtonTrim = true
 	button.needsUpdateCooldownPosition = true
 end

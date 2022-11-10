@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
-local format = format
 local next = next
 
 P.gridSize = 64
@@ -360,17 +359,6 @@ P.bags = {
 		bankSpacing = 5,
 		player = false,
 		bank = false,
-		bag1 = false,
-		bag2 = false,
-		bag3 = false,
-		bag4 = false,
-		bag5 = false,
-		bag6 = false,
-		bag7 = false,
-		bag8 = false,
-		bag9 = false,
-		bag10 = false,
-		bag11 = false,
 	},
 	shownBags = {},
 	autoToggle = {
@@ -400,8 +388,13 @@ P.bags = {
 	},
 }
 
-for i = -3, 11 do
-	P.bags.shownBags['bag'..i] = true
+for i = -3, 12 do
+	local name = 'bag'..i
+	P.bags.shownBags[name] = true
+
+	if i >= 1 then
+		P.bags.split[name] = false
+	end
 end
 
 local NP_Auras = {
@@ -723,13 +716,13 @@ P.nameplates = {
 		classResources = {
 			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
 			comboPoints = {
-				{r = .69, g = .31, b = .31},
-				{r = .65, g = .42, b = .31},
-				{r = .65, g = .63, b = .35},
-				{r = .46, g = .63, b = .35},
-				{r = .33, g = .63, b = .33},
-				{r = .33, g = .63, b = .33},
-				{r = .33, g = .63, b = .33},
+				{r = 0.75, g = 0.31, b = 0.31},
+				{r = 0.78, g = 0.56, b = 0.31},
+				{r = 0.81, g = 0.81, b = 0.31},
+				{r = 0.56, g = 0.78, b = 0.31},
+				{r = 0.43, g = 0.76, b = 0.31},
+				{r = 0.31, g = 0.75, b = 0.31},
+				{r = 0.36, g = 0.81, b = 0.54},
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
@@ -742,12 +735,12 @@ P.nameplates = {
 			PALADIN = { r = 0.89, g = 0.88, b = 0.06},
 			MAGE = { r = 0, g = 0.62, b = 1},
 			MONK = {
-				{r = .57, g = .63, b = .35},
-				{r = .47, g = .63, b = .35},
-				{r = .37, g = .63, b = .35},
-				{r = .27, g = .63, b = .33},
-				{r = .17, g = .63, b = .33},
-				{r = 0.05, g = 0.57, b = 0.23}
+				{r = 0.71, g = 0.76, b = 0.32},
+				{r = 0.58, g = 0.73, b = 0.36},
+				{r = 0.49, g = 0.71, b = 0.39},
+				{r = 0.39, g = 0.69, b = 0.42},
+				{r = 0.27, g = 0.66, b = 0.46},
+				{r = 0.14, g = 0.63, b = 0.50}
 			},
 			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
@@ -1703,13 +1696,13 @@ P.unitframe = {
 		classResources = {
 			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
 			comboPoints = {
-				{r = .69, g = .31, b = .31},
-				{r = .65, g = .42, b = .31},
-				{r = .65, g = .63, b = .35},
-				{r = .46, g = .63, b = .35},
-				{r = .33, g = .63, b = .33},
-				{r = .33, g = .63, b = .33},
-				{r = .33, g = .63, b = .33},
+				{r = 0.75, g = 0.31, b = 0.31},
+				{r = 0.78, g = 0.56, b = 0.31},
+				{r = 0.81, g = 0.81, b = 0.31},
+				{r = 0.56, g = 0.78, b = 0.31},
+				{r = 0.43, g = 0.76, b = 0.31},
+				{r = 0.31, g = 0.75, b = 0.31},
+				{r = 0.36, g = 0.81, b = 0.54},
 			},
 			DEATHKNIGHT = {
 				[-1] = {r = 0.5, g = 0.5, b = 0.5},
@@ -1722,12 +1715,12 @@ P.unitframe = {
 			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
 			MAGE = {r = 0, g = 0.62, b = 1.00},
 			MONK = {
-				{r = .57, g = .63, b = .35},
-				{r = .47, g = .63, b = .35},
-				{r = .37, g = .63, b = .35},
-				{r = .27, g = .63, b = .33},
-				{r = .17, g = .63, b = .33},
-				{r = 0.05, g = 0.57, b = 0.23}
+				{r = 0.71, g = 0.76, b = 0.32},
+				{r = 0.58, g = 0.73, b = 0.36},
+				{r = 0.49, g = 0.71, b = 0.39},
+				{r = 0.39, g = 0.69, b = 0.42},
+				{r = 0.27, g = 0.66, b = 0.46},
+				{r = 0.14, g = 0.63, b = 0.50}
 			},
 			SHAMAN = {
 				{r = .23, g = .45, b = .13}, -- earth

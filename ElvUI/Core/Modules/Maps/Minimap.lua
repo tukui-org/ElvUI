@@ -393,6 +393,7 @@ function M:UpdateSettings()
 	end
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
+	_G.MiniMapMailIcon:Size(20)
 
 	if E.Retail then
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
@@ -445,9 +446,11 @@ function M:UpdateSettings()
 				gameTime:Hide()
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
-				gameTime:Show()
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
+				gameTime:SetParent(_G.MinimapBackdrop)
+				gameTime:Show()
+
 				M:SetScale(gameTime, scale)
 			end
 		end

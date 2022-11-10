@@ -101,7 +101,7 @@ end
 
 local function ColorRune(self, bar, runeType)
 	local color = runeType and self.colors.runes[runeType] or self.colors.power.RUNES
-	local r, g, b = color[1], color[2], color[3]
+	local r, g, b = color.r, color.g, color.b
 	bar:SetStatusBarColor(r, g, b)
 
 	local bg = bar.bg
@@ -257,7 +257,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		for _, rune in ipairs(element) do
-			if(rune:IsObjectType('StatusBar') and not rune:GetStatusBarTexture()) then
+			if rune:IsObjectType('StatusBar') and not rune:GetStatusBarTexture() then
 				rune:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
 		end

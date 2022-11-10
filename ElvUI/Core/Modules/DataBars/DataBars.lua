@@ -11,6 +11,13 @@ local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
+local function SetStatusBarTexture(bar, texture)
+	-- used to retain the draw layers reset by SetStatusBarTexture
+	local layer, sublayer = bar.barTexture:GetDrawLayer()
+	bar:SetStatusBarTexture(texture)
+	bar.barTexture:SetDrawLayer(layer, sublayer)
+end
+
 function DB:OnLeave()
 	if self.db.mouseover then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
@@ -98,7 +105,8 @@ function DB:UpdateAll()
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 		bar.text:ClearAllPoints()
 		bar.text:Point(bar.db.anchorPoint, bar.db.xOffset, bar.db.yOffset)
-		bar:SetStatusBarTexture(texture)
+
+		SetStatusBarTexture(bar, texture)
 		bar:SetReverseFill(bar.db.reverseFill)
 
 		if bar.db.enable then
@@ -125,7 +133,7 @@ function DB:UpdateAll()
 
 		for _, child in ipairs({bar.holder:GetChildren()}) do
 			if child:IsObjectType('StatusBar') then
-				child:SetStatusBarTexture(texture)
+				SetStatusBarTexture(child, texture)
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)
