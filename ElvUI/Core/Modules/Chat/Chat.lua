@@ -1235,6 +1235,12 @@ function CH:UpdateChatTab(chat)
 			CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs and CH:IsUndocked(chat, docker))
 		end
 	end
+
+	-- reparenting chat changes the strata of the resize button
+	if chat.EditModeResizeButton then
+		chat.EditModeResizeButton:SetFrameStrata('HIGH')
+		chat.EditModeResizeButton:SetFrameLevel(6)
+	end
 end
 
 function CH:UpdateChatTabs()
