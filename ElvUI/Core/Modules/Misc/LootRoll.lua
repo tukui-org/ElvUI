@@ -276,7 +276,6 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
 	f.button.ilvl:SetText(itemLevel)
-	f.button.ilvl:SetTextColor(color.r, color.g, color.b)
 	f.button.questIcon:SetShown(B:GetItemQuestInfo(link, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
@@ -297,6 +296,12 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.name:SetTextColor(color.r, color.g, color.b)
 	else
 		f.name:SetTextColor(1, 1, 1)
+	end
+
+	if E.db.general.lootRoll.qualityItemlevel then
+		f.button.ilvl:SetTextColor(color.r, color.g, color.b)
+	else
+		f.button.ilvl:SetTextColor(1, 1, 1)
 	end
 
 	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"])

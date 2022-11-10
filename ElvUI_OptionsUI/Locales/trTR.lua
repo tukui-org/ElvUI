@@ -1221,6 +1221,7 @@ L["PvP Indicator"] = "PvP Gostergesi"
 L["PvP Text"] = "PvP Metni"
 L["PVP Trinket"] = "PVP Biblosu"
 L["Quality Background"] = "Kalite Arka Plani"
+L["Quality Itemlevel"] = true
 L["Quality Name"] = "Kalite Ismi"
 L["Quality StatusBar"] = "Kalite Durum cubugu"
 L["Quest Boss"] = "Gorev Patronu"

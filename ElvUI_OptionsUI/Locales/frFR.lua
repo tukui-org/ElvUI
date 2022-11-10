@@ -1221,6 +1221,7 @@ L["PvP Indicator"] = "Indicateur PVP"
 L["PvP Text"] = "Texte PVP"
 L["PVP Trinket"] = "Bijou PVP"
 L["Quality Background"] = true
+L["Quality Itemlevel"] = true
 L["Quality Name"] = true
 L["Quality StatusBar"] = true
 L["Quest Boss"] = true

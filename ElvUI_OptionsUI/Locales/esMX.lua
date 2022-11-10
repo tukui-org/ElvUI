@@ -1221,6 +1221,7 @@ L["PvP Indicator"] = true
 L["PvP Text"] = true
 L["PVP Trinket"] = "Abalorio JcJ"
 L["Quality Background"] = true
+L["Quality Itemlevel"] = true
 L["Quality Name"] = true
 L["Quality StatusBar"] = true
 L["Quest Boss"] = true

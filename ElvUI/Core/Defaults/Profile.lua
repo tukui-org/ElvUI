@@ -176,6 +176,7 @@ P.general = {
 		statusBarTexture = 'ElvUI Norm',
 		leftButtons = false,
 		qualityName = false,
+		qualityItemLevel = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
 		statusBarColor = { r = 0, g = .4, b = 1 },

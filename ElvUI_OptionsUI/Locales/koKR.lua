@@ -1221,6 +1221,7 @@ L["PvP Indicator"] = true
 L["PvP Text"] = "PVP 문자"
 L["PVP Trinket"] = "PvP 장신구"
 L["Quality Background"] = true
+L["Quality Itemlevel"] = true
 L["Quality Name"] = true
 L["Quality StatusBar"] = true
 L["Quest Boss"] = true
