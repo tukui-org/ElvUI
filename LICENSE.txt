@@ -16,30 +16,33 @@ License clarification for github.com/tukui-org/ElvUI
 	
 	References for ElvUI_Libraries:
 		Core\
-			Ace: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Ace/
-			AceGUI-3.0-SharedMediaWidgets: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets/
-			LibAceConfigHelper: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibAceConfigHelper/
-			LibActionButton-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibActionButton-1.0/
-			LibAnim: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibAnim/
-			LibBase64-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibBase64-1.0/
-			LibCompress: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibCompress/
-			LibCustomGlow-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibCustomGlow-1.0/
-			LibDataBroker: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDataBroker/
-			LibDispel: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDispel/
-			LibDualSpec-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDualSpec-1.0/
-			LibElvUIPlugin-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibElvUIPlugin-1.0/
+			Ace: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Ace/LICENSE.txt
+				\LibStub: This work is dedicated to the public domain.
+			AceGUI-3.0-SharedMediaWidgets: All rights reserved to the owner
+			LibAceConfigHelper: All rights reserved to the owner
+			LibActionButton-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibActionButton-1.0/LICENSE.txt
+			LibAnim: All rights reserved to the owner
+			LibBase64-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibBase64-1.0/LICENSE.txt
+			LibCompress: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibCompress/LICENSE.txt
+			LibCustomGlow-1.0: All rights reserved to the owner
+			LibDataBroker: All rights reserved to the owner
+			LibDispel: All rights reserved to the owner
+			LibDualSpec-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDualSpec-1.0/LICENSE.txt
+			LibElvUIPlugin-1.0: All rights reserved to the owner
 			LibItemSearch-1.2: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibItemSearch-1.2/
-			LibRangeCheck-2.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibRangeCheck-2.0/
-			LibSharedMedia-3.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSharedMedia-3.0/
-			LibSimpleSticky: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSimpleSticky/
-			LibTranslit-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibTranslit-1.0/
-			oUF: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/oUF/
-			oUF_Plugins: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/oUF_Plugins/
-			Taintless: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Taintless/
-			UTF8: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/UTF8/
+				\CustomSearch-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibItemSearch-1.2/CustomSearch-1.0/LICENSE.txt
+				\Unfit-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibItemSearch-1.2/Unfit-1.0/LICENSE.txt
+			LibRangeCheck-2.0: This work is dedicated to the public domain.
+			LibSharedMedia-3.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSharedMedia-3.0/LICENSE.txt
+			LibSimpleSticky: All rights reserved to the owner
+			LibTranslit-1.0: All rights reserved to the owner
+			oUF: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/oUF/LICENSE.txt
+			oUF_Plugins: All rights reserved to the owner
+			Taintless: All rights reserved to the owner
+			UTF8: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/UTF8/LICENSE.txt
 		Classic\
-			LibClassicCasterino-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibClassicCasterino-1.0/
-			LibClassicDurations: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibClassicDurations/
-			LibClassicSpecs: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibClassicSpecs/
-			LibHealComm-4.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibHealComm-4.0/
-			LibQuestXP: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Classic/LibQuestXP/
+			LibClassicCasterino-1.0: All rights reserved to the owner
+			LibClassicDurations: All rights reserved to the owner
+			LibClassicSpecs: All rights reserved to the owner
+			LibHealComm-4.0: All rights reserved to the owner
+			LibQuestXP: All rights reserved to the owner
