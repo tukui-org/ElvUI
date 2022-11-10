@@ -1,0 +1,45 @@
+License clarification for github.com/tukui-org/ElvUI
+
+	ElvUI
+		Copyright © 2009-2022 The contents of this addon, excluding third-party resources, are
+		copyrighted to their authors with all rights reserved.
+		Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI/LICENSE.txt
+
+	ElvUI_OptionsUI
+		Copyright © 2009-2022 The contents of this addon, excluding third-party resources, are
+		copyrighted to their authors with all rights reserved.
+		Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI_OptionsUI/LICENSE.txt
+	
+	ElvUI_Libraries
+		The contents of this folder, excluding third-party resources, are licensed
+		under their own license, which can be found in each subfolder.
+	
+	References for ElvUI_Libraries:
+		Core\
+			Ace: LINK TO LICENSE FILE
+			AceGUI-3.0-SharedMediaWidgets: LINK TO LICENSE FILE
+			LibAceConfigHelper: LINK TO LICENSE FILE
+			LibActionButton-1.0: LINK TO LICENSE FILE
+			LibAnim: LINK TO LICENSE FILE
+			LibBase64-1.0: LINK TO LICENSE FILE
+			LibCompress: LINK TO LICENSE FILE
+			LibCustomGlow-1.0: LINK TO LICENSE FILE
+			LibDataBroker: LINK TO LICENSE FILE
+			LibDispel: LINK TO LICENSE FILE
+			LibDualSpec-1.0: LINK TO LICENSE FILE
+			LibElvUIPlugin-1.0: LINK TO LICENSE FILE
+			LibItemSearch-1.2: LINK TO LICENSE FILE
+			LibRangeCheck-2.0: LINK TO LICENSE FILE
+			LibSharedMedia-3.0: LINK TO LICENSE FILE
+			LibSimpleSticky: LINK TO LICENSE FILE
+			LibTranslit-1.0: LINK TO LICENSE FILE
+			oUF: LINK TO LICENSE FILE
+			oUF_Plugins: LINK TO LICENSE FILE
+			Taintless: LINK TO LICENSE FILE
+			UTF8: LINK TO LICENSE FILE
+		Classic\
+			LibClassicCasterino-1.0: LINK TO LICENSE FILE
+			LibClassicDurations: LINK TO LICENSE FILE
+			LibClassicSpecs: LINK TO LICENSE FILE
+			LibHealComm-4.0: LINK TO LICENSE FILE
+			LibQuestXP: LINK TO LICENSE FILE
