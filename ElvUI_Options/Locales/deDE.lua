@@ -1824,35 +1824,6 @@ L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster."
 L["VISIBILITY_DESC"] = "Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist."
-L["SEARCH_SYNTAX_DESC"] = [=[Mit der Ergänzung von LibItemSearch, kannst du jetzt erweitert nach Gegenständen suchen. Nachfolgend findest du eine Dokumentation des Suchsyntax. Die volle Erklärung findest du hier: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
-
-Spezifische Suche:
-    • q:[quality] oder quality:[quality]. Beispielsweise q:episch findet alle epischen Gegenstände.
-    • l:[level], lvl:[level] oder level:[level]. Zum Beispiel: l:30 findet alle Gegenstände mit Level 30.
-    • t:[suche], type:[suche] oder slot:[suche]. Beispielsweise t:waffe findet alle Waffen.
-    • n:[name] oder name:[name]. Beispielsweise wenn du n:muffins eintippst, findest du alle Gegenstände die "muffins" im Namen haben.
-    • s:[set] oder set:[set]. Zum Beispiel: s:feuer findet alle Gegenstände eines Ausrüstungssets mit Feuer im Namen.
-    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
-    • tt:[suche], tip:[suche] oder tooltip:[suche]. Beispielsweise tt:gebunden findet alle Gegenstände die am Account, beim Aufheben oder beim Ausrüsten gebunden sind.
-
-
-Suchoperatoren:
-    • ! : Negiert eine Suche. Zum Beispiel !q:episch findet alle Gegenstände die NICHT episch sind.
-    • | : Kombiniert zwei Suchen. q:episch | t:waffe findet alle Gegenstände die episch ODER Waffen sind.
-    • & : Teilt zwei Suchen. Beispielsweise q:episch & t:waffen findet alle Gegenstände die episch UND Waffen sind.
-    • >, <, <=, => : Führt eine numerische Suche durch. Zum Beispiel: lvl: >30 findet alle Gegenstände mit Level 30 oder HÖHER.
-
-
-Die folgenden Suchbegriffe können auch benutzt werden:
-    • soulbound, bound, bop : Beim Aufheben gebundene Gegenstände.
-    • bou : Beim Benutzen gebundene Gegenstände.
-    • boe : Beim Ausrüsten gebundene Gegenstände.
-    • boa : An den Account gebundene Gegenstände.
-    • quest : Gebundene Quest Gegenstände.
-    • reagent, crafting : Berufs Reagenzien.
-    • keystone : Mytischer Schlüsselstein.
-    • followers : Anhänger Gegenstände.
-    • champions : Champion Ausrüstung.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.

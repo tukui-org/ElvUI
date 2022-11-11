@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
-local Search = E.Libs.ItemSearch
 
 local ipairs, pairs, select, unpack, pcall = ipairs, pairs, select, unpack, pcall
 local strmatch, gmatch, strfind = strmatch, gmatch, strfind
@@ -653,6 +652,7 @@ function B.Sort(bags, sorter, invertDirection)
 				end
 
 				if not blackListedSlots[bagSlot] then
+					--[[ Fix by Search matching
 					local method
 					for _,itemsearchquery in pairs(blackListQueries) do
 						method = Search.Matches
@@ -665,7 +665,7 @@ function B.Sort(bags, sorter, invertDirection)
 							blackListedSlots[bagSlot] = result
 							break
 						end
-					end
+					end]]
 				end
 			end
 
@@ -816,10 +816,6 @@ function B:RegisterUpdateDelayed()
 			B:UpdateAllSlots(bagFrame)
 			B:SetListeners(bagFrame)
 		end
-	end
-
-	if shouldUpdateFade then
-		B:RefreshSearch() -- this will clear the bag lock look during a sort
 	end
 end
 

@@ -28,7 +28,6 @@
 	<Include file='Classic\LibClassicDurations\LibClassicDurations.xml'/>
 	<Script file='Classic\LibClassicCasterino-1.0\LibClassicCasterino.lua'/>
 
-	<Include file='Core\LibItemSearch-1.2\LibItemSearch-1.2.xml'/>
 	<Include file='Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
 	<Script file='Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='Core\LibButtonGlow-1.0\LibButtonGlow-1.0.lua'/>

@@ -1824,35 +1824,6 @@ L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
 L["VISIBILITY_DESC"] = "为了显示设定过的过滤器下面的宏必须启用."
-L["SEARCH_SYNTAX_DESC"] = [=[因为新增了LibItemSearch，你现在可以使用更高级的物品检索. 下面是一份检索语法的文档. 查看完整说明: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
-
-特性检索:
-    • q:[品质] 或 quality:[品质]. 例如, 输入 q:史诗 会检索所有史诗物品.
-    • l:[物品等级], lvl:[物品等级] 或 level:[物品等级]. 例如, 输入 l:30 会检索所有物品等级为30的物品.
-    • t:[类型], type:[类型] 或 slot:[类型]. 例如, 输入 t:武器 会检索所有武器类型的物品.
-    • n:[名称] 或 name:[名称]. 例如, 输入 n:muffins 会检索所有包含"muffins"字样的物品.
-    • s:[方案名称] 或 set:[方案名称]. 例如, 输入 set:fire 会检索所有以fire开头命名的装备配置方案中的物品.
-    • r:[等级], reg:[等级], rl:[等级], regl:[等级] 或 reqlvl:[等级]. 例如, 输入 reqlvl:30 会检索所有需要等级达到30才可以使用的物品.
-    • tt:[提示文字], tip:[提示文字] 或 tooltip:[提示文字]. 例如, 输入 tt:绑定 会检索所有鼠标提示文字中包含"绑定"字样的物品.
-
-
-检索运算符:
-    • ! : 反向检索. 例如, 输入 !q:史诗 会检索所有非史诗的物品.
-    • | : 并集检索. 例如, 输入 q:史诗 | t:武器 会检索所有品质为史诗或类型为武器的物品.
-    • & : 交集检索. 例如, 输入 q:史诗 & t:武器 会检索所有品质为史诗并且类型是武器的物品
-    • >, <, <=, => : 对数值进行比较的检索. 例如, 输入 lvl: >30 会检索所有物品等级大于30的物品.
-
-
-还可以使用下列检索关键字:
-    • soulbound, bound, bop : 拾取绑定物品.
-    • bou : 使用绑定物品.
-    • boe : 装备绑定物品.
-    • boa : 账号绑定物品.
-    • quest : 任务绑定物品.
-    • reagent, crafting : 专业技能物品.
-    • keystone : 史诗钥石.
-    • followers : 追随者物品.
-    • champions : 随从装备.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条.

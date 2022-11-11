@@ -1824,35 +1824,6 @@ L["TOGGLESKIN_DESC"] = "啟用/停用此外觀."
 L["TOOLTIP_DESC"] = "浮動提示資訊設定選項."
 L["UNITFRAME_DESC"] = "修改單位框架設定."
 L["VISIBILITY_DESC"] = "為了顯示設定過的過濾器下面的巨集必須啟用."
-L["SEARCH_SYNTAX_DESC"] = [=[由於新增了 LibItemSearch, 你現在可以使用更進階的物品搜尋. 下面是一份搜尋語法的文件. 想要看更完整的解釋請到: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
-
-條件搜尋:
-    • q:[品質] 或 quality:[品質]. 舉例, 輸入 q:史詩 會搜尋所有史詩物品.
-    • l:[裝等], lvl:[裝等] 或 level:[裝等]. 舉例, 輸入 l:30 會搜尋所有裝等30的物品.
-    • t:[類型], type:[類型] 或 slot:[類型]. 舉例, 輸入 t:武器 會搜尋所有武器.
-    • n:[名稱] 或 name:[名稱]. 舉例, 輸入 n:muffins 會搜尋所有物品名稱中含有 "muffins".
-    • s:[套裝] 或 set:[套裝]. 舉例, 輸入 s:火 會在你定義的套裝名稱起始為 火 的套裝中搜尋所有裝備.
-    • r:[等級], reg:[等級], rl:[等級], regl:[等級] or reqlvl:[等級]. 舉例, 輸入 reqlvl:30 將會搜尋全部裝等需求等級為 30 的物品.
-    • tt:[關鍵字], tip:[關鍵字] 或 tooltip:[關鍵字]. 舉例, tt:綁定 會搜尋所有物品提示中含有綁定兩字的物品 如 帳號綁定, 裝備綁定 或 拾取綁定.
-
-
-搜尋運算子:
-    • ! : 反向搜尋. 舉例, !q:史詩 會搜尋所有不是史詩的物品
-    • | : 聯集搜尋. 輸入 q:史詩 | t:武器 會搜尋所有史詩物品 或是 武器.
-    • & : 交集搜尋. 舉例, q:史詩 & t:武器 會搜尋所有既是史詩 也是 武器的物品
-    • >, <, <=, => : 在數值搜尋時進行比較. 舉例, 輸入 lvl: >30 會搜尋所有裝等大於30的物品.
-
-
-以下的關鍵字也可以被使用:
-    • soulbound, bound, bop : 拾取綁定.
-    • bou : 使用後綁定.
-    • boe : 裝備後綁定.
-    • boa : 帳號綁定.
-    • quest : 任務綁定
-    • reagent, crafting : 專業技能材料
-    • keystone : 傳奇地城鑰石.
-    • followers : 追隨者物品
-    • champions : 部隊裝備.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[此功能與巨集概念類似, 可根據不同情況切換至不同的快捷列設定.

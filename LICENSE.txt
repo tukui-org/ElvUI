@@ -28,9 +28,6 @@ License clarification for github.com/tukui-org/ElvUI
 			LibDispel: All rights reserved to the owner.
 			LibDualSpec-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDualSpec-1.0/LICENSE.txt
 			LibElvUIPlugin-1.0: All rights reserved to the owner.
-			LibItemSearch-1.2: All rights reserved to the owner.
-				/CustomSearch-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibItemSearch-1.2/CustomSearch-1.0/LICENSE.txt
-				/Unfit-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibItemSearch-1.2/Unfit-1.0/LICENSE.txt
 			LibRangeCheck-2.0: This work is dedicated to the public domain.
 			LibSharedMedia-3.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSharedMedia-3.0/LICENSE.txt
 			LibSimpleSticky: All rights reserved to the owner.

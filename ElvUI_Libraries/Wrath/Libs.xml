@@ -25,7 +25,6 @@
 	<Script file='Classic\LibHealComm-4.0\LibHealComm-4.0.lua'/>
 	<Script file='Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 
-	<Include file='Core\LibItemSearch-1.2\LibItemSearch-1.2.xml'/>
 	<Include file='Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
 	<Script file='Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='Core\LibButtonGlow-1.0\LibButtonGlow-1.0.lua'/>

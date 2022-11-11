@@ -124,7 +124,6 @@ do
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
 	E:AddLib('RangeCheck', 'LibRangeCheck-2.0')
 	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0')
-	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Deflate', 'LibDeflate')
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
