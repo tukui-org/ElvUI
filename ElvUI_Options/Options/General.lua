@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
-local C, L = unpack(E.OptionsUI)
+local C, L = unpack(E.Config)
 local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
 local TotemTracker = E:GetModule('TotemTracker')

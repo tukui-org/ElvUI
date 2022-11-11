@@ -5,9 +5,9 @@ local S = E:GetModule('Skins')
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = { Blank = function() return '' end }
 
-E.OptionsUI = select(2, ...)
-E.OptionsUI[1] = C
-E.OptionsUI[2] = L
+E.Config = select(2, ...)
+E.Config[1] = C
+E.Config[2] = L
 
 local _G = _G
 local sort, strmatch, strsplit = sort, strmatch, strsplit

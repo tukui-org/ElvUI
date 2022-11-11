@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
-local C, L = unpack(E.OptionsUI)
+local C, L = unpack(E.Config)
 local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
 local ACH = E.Libs.ACH

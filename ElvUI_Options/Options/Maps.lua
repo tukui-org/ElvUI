@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
-local C, L = unpack(E.OptionsUI)
+local C, L = unpack(E.Config)
 local WM = E:GetModule('WorldMap')
 local MM = E:GetModule('Minimap')
 local ACH = E.Libs.ACH

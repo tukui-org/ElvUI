@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
-local C, L = unpack(E.OptionsUI)
+local C, L = unpack(E.Config)
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local ACH = E.Libs.ACH

@@ -1,5 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
-local C, L = unpack(E.OptionsUI)
+local C, L = unpack(E.Config)
 local DT = E:GetModule('DataTexts')
 local Layout = E:GetModule('Layout')
 local Chat = E:GetModule('Chat')
