@@ -55,6 +55,9 @@ local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 -- GLOBALS: ElvDB, ElvUF
 
+E.MountIDs = {}
+E.MountText = {}
+
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
 
@@ -469,17 +472,17 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 end
 
 function E:PLAYER_REGEN_ENABLED()
-	if E.ShowOptionsUI then
-		E:ToggleOptionsUI()
+	if E.ShowOptions then
+		E:ToggleOptions()
 
-		E.ShowOptionsUI = nil
+		E.ShowOptions = nil
 	end
 end
 
 function E:PLAYER_REGEN_DISABLED()
 	local err
 
-	if IsAddOnLoaded('ElvUI_OptionsUI') then
+	if IsAddOnLoaded('ElvUI_Options') then
 		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			ACD:Close('ElvUI')
@@ -586,9 +589,6 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
-	E.MountIDs = {}
-	E.MountText = {}
-
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
@@ -644,7 +644,7 @@ function E:LoadAPI()
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	GameMenuButton:SetScript('OnClick', function()
-		E:ToggleOptionsUI() --We already prevent it from opening in combat
+		E:ToggleOptions() --We already prevent it from opening in combat
 		if not InCombatLockdown() then
 			HideUIPanel(GameMenuFrame)
 		end

@@ -159,7 +159,7 @@ E.HiddenFrame:SetPoint('BOTTOM')
 E.HiddenFrame:SetSize(1,1)
 E.HiddenFrame:Hide()
 
-do -- used in optionsUI
+do -- used in options
 	E.DEFAULT_FILTER = {}
 	for filter, tbl in pairs(G.unitframe.aurafilters) do
 		E.DEFAULT_FILTER[filter] = tbl.type

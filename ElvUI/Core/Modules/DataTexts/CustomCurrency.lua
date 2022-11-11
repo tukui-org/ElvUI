@@ -68,11 +68,10 @@ local function RegisterNewDT(currencyID)
 	--Get the currency index for this currency, so we can use it for a tooltip
 	AddCurrencyNameToIndex(name)
 
-	--Set the HyperDT
 	local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
-	local hyperList = DT.HyperList[menuIndex]
-	if hyperList then
-		local menuList = hyperList.menuList
+	local quickList = DT.QuickList[menuIndex]
+	if quickList then
+		local menuList = quickList.menuList
 
 		tinsert(menuList, {
 			text = name,
@@ -94,8 +93,8 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 	if currencyID then
 		--We added a new datatext through the config
 		if not next(CustomCurrencies) then -- add Currency category if one didn't already exist
-			tinsert(DT.HyperList, { text = _G.CURRENCY, notCheckable = true, hasArrow = true, menuList = {} } )
-			DT:SortMenuList(DT.HyperList)
+			tinsert(DT.QuickList, { text = _G.CURRENCY, notCheckable = true, hasArrow = true, menuList = {} } )
+			DT:SortMenuList(DT.QuickList)
 		end
 
 		RegisterNewDT(currencyID)
@@ -115,17 +114,17 @@ function DT:RemoveCustomCurrency(currencyName)
 	CustomCurrencies[currencyName] = nil
 
 	if not next(CustomCurrencies) then
-		for i, menu in ipairs(DT.HyperList) do
+		for i, menu in ipairs(DT.QuickList) do
 			if menu.text == _G.CURRENCY then
-				tremove(DT.HyperList, i)
+				tremove(DT.QuickList, i)
 				break
 			end
 		end
 	else
 		local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
-		local hyperList = DT.HyperList[menuIndex]
-		if hyperList then
-			local menuList = hyperList.menuList
+		local quickList = DT.QuickList[menuIndex]
+		if quickList then
+			local menuList = quickList.menuList
 
 			for i, info in ipairs(menuList) do
 				if info.text == currencyName then
@@ -135,5 +134,5 @@ function DT:RemoveCustomCurrency(currencyName)
 		end
 	end
 
-	DT:SortMenuList(DT.HyperList)
+	DT:SortMenuList(DT.QuickList)
 end

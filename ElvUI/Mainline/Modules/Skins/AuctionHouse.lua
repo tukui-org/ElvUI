@@ -246,7 +246,8 @@ local function LoadSkin()
 	--[[ Categorie List ]]--
 	local Categories = Frame.CategoriesList
 	Categories:StripTextures()
-	Categories:SetTemplate('Transparent')
+	Categories.NineSlice:SetTemplate('Transparent')
+	Categories.NineSlice:SetInside(Categories)
 	S:HandleTrimScrollBar(Categories.ScrollBar)
 
 	hooksecurefunc('AuctionHouseFilterButton_SetUp', function(button)

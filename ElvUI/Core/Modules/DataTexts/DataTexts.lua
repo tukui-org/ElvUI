@@ -37,15 +37,14 @@ local GetCurrencyListInfo = GetCurrencyListInfo
 
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
-local ActivateHyperMode
-local HyperList = {}
+local QuickList = {}
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
 DT.SelectedDatatext = nil
-DT.HyperList = HyperList
+DT.QuickList = QuickList
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
 DT.DataTextList = {}
@@ -70,46 +69,14 @@ DT.UnitEvents = {
 
 DT.SPECIALIZATION_CACHE = {}
 
---> [HyperDT Credits] <--
---> Original Work: Nihilistzsche
---> Modified by Azilroka! :)
-
-function DT:SingleHyperMode(_, key, active)
+function DT:QuickDTMode(_, key, active)
 	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
 			DT:OnLeave()
 			E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
-			EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
+			EasyMenu(QuickList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
-		end
-	end
-end
-
-function DT:HyperClick()
-	DT.SelectedDatatext = self
-	E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
-	EasyMenu(HyperList, E.EasyMenu, nil, nil, nil, 'MENU')
-end
-
-function DT:EnableHyperMode(Panel)
-	DT:OnLeave()
-
-	if Panel then
-		for _, dt in pairs(Panel.dataPanels) do
-			dt.overlay:Show()
-			dt:SetScript('OnEnter', nil)
-			dt:SetScript('OnLeave', nil)
-			dt:SetScript('OnClick', DT.HyperClick)
-		end
-	else
-		for _, panel in pairs(DT.RegisteredPanels) do
-			for _, dt in pairs(panel.dataPanels) do
-				dt.overlay:Show()
-				dt:SetScript('OnEnter', nil)
-				dt:SetScript('OnLeave', nil)
-				dt:SetScript('OnClick', DT.HyperClick)
-			end
 		end
 	end
 end
@@ -464,12 +431,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.text = text
 			DT.FontStrings[text] = true
 
-			local overlay = dt:CreateTexture(nil, 'OVERLAY')
-			overlay:SetTexture(E.media.blankTex)
-			overlay:SetVertexColor(0.3, 0.9, 0.3, .3)
-			overlay:SetAllPoints()
-			dt.overlay = overlay
-
 			panel.dataPanels[i] = dt
 		end
 	end
@@ -500,7 +461,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
 
-		dt.overlay:Hide()
 		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
@@ -604,7 +564,7 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 end
 
 function DT:GetMenuListCategory(category)
-	for i, info in ipairs(HyperList) do
+	for i, info in ipairs(QuickList) do
 		if info.text == category then
 			return i
 		end
@@ -631,39 +591,29 @@ do
 	end
 end
 
-function DT:HyperDT()
-	if ActivateHyperMode then
-		ActivateHyperMode = nil
-		DT:LoadDataTexts()
-	else
-		ActivateHyperMode = true
-		DT:EnableHyperMode()
-	end
-end
-
-function DT:RegisterHyperDT()
+function DT:RegisterQuickDT()
 	for name, info in pairs(DT.RegisteredDataTexts) do
 		local category = DT:GetMenuListCategory(info.category or MISCELLANEOUS)
 		if not category then
-			category = #HyperList + 1
-			tinsert(HyperList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
+			category = #QuickList + 1
+			tinsert(QuickList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
 		end
 
-		tinsert(HyperList[category].menuList, {
+		tinsert(QuickList[category].menuList, {
 			text = info.localizedName or name,
 			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
 			func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 		})
 	end
 
-	tinsert(HyperList, {
+	tinsert(QuickList, {
 		order = 100, text = L["None"],
 		checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
 		func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
 	})
 
-	DT:SortMenuList(HyperList)
-	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
+	DT:SortMenuList(QuickList)
+	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'QuickDTMode')
 end
 
 do
@@ -675,16 +625,16 @@ do
 		end
 	end
 
-	function DT:UpdateHyperDT()
+	function DT:UpdateQuickDT()
 		for name, info in pairs(DT.RegisteredDataTexts) do
 			local category = DT:GetMenuListCategory(info.category or MISCELLANEOUS)
 			if not category then
-				category = #HyperList + 1
-				tinsert(HyperList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} })
+				category = #QuickList + 1
+				tinsert(QuickList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} })
 			end
 
-			if not hasName(HyperList[category].menuList, info.localizedName or name) then
-				tinsert(HyperList[category].menuList, {
+			if not hasName(QuickList[category].menuList, info.localizedName or name) then
+				tinsert(QuickList[category].menuList, {
 					text = info.localizedName or name,
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
 					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
@@ -692,7 +642,7 @@ do
 			end
 		end
 
-		DT:SortMenuList(HyperList)
+		DT:SortMenuList(QuickList)
 	end
 end
 
@@ -809,10 +759,6 @@ function DT:Initialize()
 		DT.db.panels[dt.parentName][dt.pointIndex] = value
 		DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
-		if ActivateHyperMode then
-			DT:EnableHyperMode(dt.parent)
-		end
-
 		DT.SelectedDatatext = nil
 		CloseDropDownMenus()
 	end
@@ -855,7 +801,7 @@ function DT:Initialize()
 	DT.BattleStats.LEFT.panel = _G.LeftChatDataPanel.dataPanels
 	DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 
-	DT:RegisterHyperDT()
+	DT:RegisterQuickDT()
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 

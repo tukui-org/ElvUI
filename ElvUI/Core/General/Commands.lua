@@ -28,7 +28,8 @@ end
 
 local AddOns = {
 	ElvUI = true,
-	ElvUI_OptionsUI = true,
+	ElvUI_Options = true,
+	ElvUI_Libraries = true,
 	ElvUI_CPU = true -- debug tool located at https://github.com/Resike/ElvUI_CPU
 }
 
@@ -229,10 +230,9 @@ function E:LoadCommands()
 	end
 
 	self:RegisterChatCommand('in', 'DelayScriptCall')
-	self:RegisterChatCommand('ec', 'ToggleOptionsUI')
-	self:RegisterChatCommand('elvui', 'ToggleOptionsUI')
+	self:RegisterChatCommand('ec', 'ToggleOptions')
+	self:RegisterChatCommand('elvui', 'ToggleOptions')
 
-	self:RegisterChatCommand('hdt', DT.HyperDT)
 	self:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
 
 	self:RegisterChatCommand('moveui', 'ToggleMoveMode')

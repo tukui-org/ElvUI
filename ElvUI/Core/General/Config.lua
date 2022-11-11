@@ -91,7 +91,7 @@ function E:ToggleMoveMode(which)
 		ElvUIMoverPopupWindow:Show()
 		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
 
-		if IsAddOnLoaded('ElvUI_OptionsUI') then
+		if IsAddOnLoaded('ElvUI_Options') then
 			E:Config_CloseWindow()
 		end
 	else
@@ -302,7 +302,7 @@ function E:CreateMoverPopup()
 		if E.ConfigurationToggled then
 			E.ConfigurationToggled = nil
 
-			if IsAddOnLoaded('ElvUI_OptionsUI') then
+			if IsAddOnLoaded('ElvUI_Options') then
 				E:Config_OpenWindow()
 			end
 		end
@@ -986,7 +986,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			desc = L["Run the installation process."],
 			func = function()
 				E:Install()
-				E:ToggleOptionsUI()
+				E:ToggleOptions()
 			end
 		},
 		{
@@ -994,7 +994,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			name = L["Toggle Tutorials"],
 			func = function()
 				E:Tutorials(true)
-				E:ToggleOptionsUI()
+				E:ToggleOptions()
 			end
 		},
 		{
@@ -1003,7 +1003,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			desc = L["Shows a frame with needed info for support."],
 			func = function()
 				E:ShowStatusReport()
-				E:ToggleOptionsUI()
+				E:ToggleOptions()
 				E.StatusReportToggled = true
 			end
 		}
@@ -1074,23 +1074,23 @@ function E:Config_GetToggleMode(frame, msg)
 	end
 end
 
-function E:ToggleOptionsUI(msg)
+function E:ToggleOptions(msg)
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
-		self.ShowOptionsUI = true
+		self.ShowOptions = true
 		return
 	end
 
-	if not IsAddOnLoaded('ElvUI_OptionsUI') then
+	if not IsAddOnLoaded('ElvUI_Options') then
 		local noConfig
-		local _, _, _, _, reason = GetAddOnInfo('ElvUI_OptionsUI')
+		local _, _, _, _, reason = GetAddOnInfo('ElvUI_Options')
 
 		if reason ~= 'MISSING' then
-			EnableAddOn('ElvUI_OptionsUI')
-			LoadAddOn('ElvUI_OptionsUI')
+			EnableAddOn('ElvUI_Options')
+			LoadAddOn('ElvUI_Options')
 
 			-- version check elvui options if it's actually enabled
-			if GetAddOnMetadata('ElvUI_OptionsUI', 'Version') ~= '1.08' then
+			if GetAddOnMetadata('ElvUI_Options', 'Version') ~= '1.09' then
 				self:StaticPopup_Show('CLIENT_UPDATE_REQUEST')
 			end
 		else
@@ -1098,7 +1098,7 @@ function E:ToggleOptionsUI(msg)
 		end
 
 		if noConfig then
-			self:Print('|cffff0000Error -- Addon "ElvUI_OptionsUI" not found.|r')
+			self:Print('|cffff0000Error -- Addon "ElvUI_Options" not found.|r')
 			return
 		end
 	end

@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
-local LibCompress = E.Libs.Compress
-local LibBase64 = E.Libs.Base64
+local LibDeflate = E.Libs.Deflate
 
 local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
-local len, format, split, find = strlen, format, strsplit, strfind
+local len, format, split, strmatch = strlen, format, strsplit, strmatch
 
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -16,14 +15,115 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 -- GLOBALS: ElvDB, ElvPrivateDB
 
+local EXPORT_PREFIX = '!E1!' -- also in Options StyleFilters
 local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
 local TRANSFER_COMPLETE_PREFIX = 'ELVUI_COMPLETE'
 
+-- Set compression
+LibDeflate.compressLevel = { level = 5 }
+
 -- The active downloads
 local Downloads = {}
 local Uploads = {}
+
+--Keys that should not be exported
+D.blacklistedKeys = {
+	profile = {
+		gridSize = true,
+		general = {
+			cropIcon = true,
+			numberPrefixStyle = true
+		},
+		chat = {
+			hideVoiceButtons = true
+		},
+		bags = {
+			shownBags = true
+		}
+	},
+	private = {},
+	global = {
+		profileCopy = true,
+		general = {
+			AceGUI = true,
+			UIScale = true,
+			locale = true,
+			version = true,
+			eyefinity = true,
+			ultrawide = true,
+			disableTutorialButtons = true,
+			allowDistributor = true
+		},
+		chat = {
+			classColorMentionExcludedNames = true
+		},
+		datatexts = {
+			newPanelInfo = true,
+			settings = {
+				Currencies = {
+					tooltipData = true
+				}
+			}
+		},
+		nameplates = {
+			filters = true
+		},
+		unitframe = {
+			aurafilters = true,
+			aurawatch = true,
+			newCustomText = true,
+		}
+	},
+}
+
+--Keys that auto or user generated tables.
+D.GeneratedKeys = {
+	profile = {
+		convertPages = true,
+		movers = true,
+		actionbar = {},
+		nameplates = { -- this is supposed to have an 's' because yeah, oh well
+			filters = true
+		},
+		datatexts = {
+			panels = true,
+		},
+		unitframe = {
+			units = {} -- required for the scope below for customTexts
+		}
+	},
+	private = {
+		theme = true,
+		install_complete = true
+	},
+	global = {
+		datatexts = {
+			customPanels = true,
+			customCurrencies = true
+		},
+		unitframe = {
+			AuraBarColors = true,
+			aurafilters = true,
+			aurawatch = true
+		},
+		nameplates = {
+			filters = true
+		}
+	}
+}
+
+do
+	local units = D.GeneratedKeys.profile.unitframe.units
+	for unit in pairs(P.unitframe.units) do
+		units[unit] = {customTexts = true}
+	end
+
+	for i = 1, 10 do
+		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
+	end
+end
 
 function D:Initialize()
 	self.Initialized = true
@@ -239,103 +339,6 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
---Keys that should not be exported
-D.blacklistedKeys = {
-	profile = {
-		gridSize = true,
-		general = {
-			cropIcon = true,
-			numberPrefixStyle = true
-		},
-		chat = {
-			hideVoiceButtons = true
-		},
-		bags = {
-			shownBags = true
-		}
-	},
-	private = {},
-	global = {
-		profileCopy = true,
-		general = {
-			AceGUI = true,
-			UIScale = true,
-			locale = true,
-			version = true,
-			eyefinity = true,
-			ultrawide = true,
-			disableTutorialButtons = true,
-			allowDistributor = true
-		},
-		chat = {
-			classColorMentionExcludedNames = true
-		},
-		datatexts = {
-			newPanelInfo = true,
-			settings = {
-				Currencies = {
-					tooltipData = true
-				}
-			}
-		},
-		nameplates = {
-			filters = true
-		},
-		unitframe = {
-			aurafilters = true,
-			aurawatch = true,
-			newCustomText = true,
-		}
-	},
-}
-
---Keys that auto or user generated tables.
-D.GeneratedKeys = {
-	profile = {
-		convertPages = true,
-		movers = true,
-		actionbar = {},
-		nameplates = { -- this is supposed to have an 's' because yeah, oh well
-			filters = true
-		},
-		datatexts = {
-			panels = true,
-		},
-		unitframe = {
-			units = {} -- required for the scope below for customTexts
-		}
-	},
-	private = {
-		theme = true,
-		install_complete = true
-	},
-	global = {
-		datatexts = {
-			customPanels = true,
-			customCurrencies = true
-		},
-		unitframe = {
-			AuraBarColors = true,
-			aurafilters = true,
-			aurawatch = true
-		},
-		nameplates = {
-			filters = true
-		}
-	}
-}
-
-do
-	local units = D.GeneratedKeys.profile.unitframe.units
-	for unit in pairs(P.unitframe.units) do
-		units[unit] = {customTexts = true}
-	end
-
-	for i = 1, 10 do
-		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
-	end
-end
-
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
 		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
@@ -382,8 +385,8 @@ local function GetProfileData(profileType)
 end
 
 local function GetProfileExport(profileType, exportFormat)
-	local profileExport, exportString
 	local profileKey, profileData = GetProfileData(profileType)
+	local profileExport
 
 	if not profileKey or not profileData or (profileData and type(profileData) ~= 'table') then
 		E:Print('Error getting data from "GetProfileData"')
@@ -392,12 +395,12 @@ local function GetProfileExport(profileType, exportFormat)
 
 	if exportFormat == 'text' then
 		local serialData = D:Serialize(profileData)
-		exportString = D:CreateProfileExport(serialData, profileType, profileKey)
-		local compressedData = LibCompress:Compress(exportString)
-		local encodedData = LibBase64:Encode(compressedData)
-		profileExport = encodedData
+		local exportString = D:CreateProfileExport(serialData, profileType, profileKey)
+		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
+		local printableString = LibDeflate:EncodeForPrint(compressedData)
+		profileExport = printableString and format('%s%s', EXPORT_PREFIX, printableString) or nil
 	elseif exportFormat == 'luaTable' then
-		exportString = E:TableToLuaString(profileData)
+		local exportString = E:TableToLuaString(profileData)
 		profileExport = D:CreateProfileExport(exportString, profileType, profileKey)
 	elseif exportFormat == 'luaPlugin' then
 		profileExport = E:ProfileTableToPluginFormat(profileData, profileType)
@@ -407,44 +410,29 @@ local function GetProfileExport(profileType, exportFormat)
 end
 
 function D:CreateProfileExport(dataString, profileType, profileKey)
-	local returnString
-
-	if profileType == 'profile' then
-		returnString = format('%s::%s::%s', dataString, profileType, profileKey)
-	else
-		returnString = format('%s::%s', dataString, profileType)
-	end
-
-	return returnString
+	return (profileType == 'profile' and format('%s::%s::%s', dataString, profileType, profileKey)) or format('%s::%s', dataString, profileType)
 end
 
 function D:GetImportStringType(dataString)
-	local stringType = ''
-
-	if LibBase64:IsBase64(dataString) then
-		stringType = 'Base64'
-	elseif find(dataString, '{') then --Basic check to weed out obviously wrong strings
-		stringType = 'Table'
-	end
-
-	return stringType
+	return (strmatch(dataString, '^'..EXPORT_PREFIX) and 'Deflate') or (strmatch(dataString, '^{') and 'Table') or ''
 end
 
 function D:Decode(dataString)
 	local profileInfo, profileType, profileKey, profileData
 	local stringType = self:GetImportStringType(dataString)
 
-	if stringType == 'Base64' then
-		local decodedData = LibBase64:Decode(dataString)
-		local decompressedData, decompressedMessage = LibCompress:Decompress(decodedData)
+	if stringType == 'Deflate' then
+		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
+		local decodedData = LibDeflate:DecodeForPrint(data)
+		local decompressed = LibDeflate:DecompressDeflate(decodedData)
 
-		if not decompressedData then
-			E:Print('Error decompressing data:', decompressedMessage)
+		if not decompressed then
+			E:Print('Error decompressing data.')
 			return
 		end
 
 		local serializedData, success
-		serializedData, profileInfo = E:SplitString(decompressedData, '^^::') -- '^^' indicates the end of the AceSerializer string
+		serializedData, profileInfo = E:SplitString(decompressed, '^^::') -- '^^' indicates the end of the AceSerializer string
 
 		if not profileInfo then
 			E:Print('Error importing profile. String is invalid or corrupted!')

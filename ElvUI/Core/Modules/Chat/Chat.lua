@@ -284,7 +284,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsMis, itsSimpy, itsMel, itsThradex, itsNihilistzsche
+	local itsElv, itsMis, itsSimpy, itsMel, itsThradex
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
@@ -303,15 +303,12 @@ do --this can save some main file locals
 		local MelColors = function(t) return specialText(t, 0.98,0.31,0.43, 0.97,0.78,0.13, 0.31,0.76,0.43, 0.49,0.48,0.97, 0.07,0.69,0.92) end
 		--Thradex: summer without you
 		local ThradexColors = function(t) return specialText(t, 0.00,0.60,0.09, 0.22,0.65,0.90, 0.22,0.65,0.90, 1.00,0.74,0.27, 1.00,0.66,0.00, 1.00,0.50,0.20, 0.92,0.31,0.23) end
-		--Nihilistzsche: Class Normal to Negative (Orange->Blue, Red->Cyan, etc)
-		local NihiColors = function(class) local c = E:ClassColor(class, true); local n = E:InverseClassColor(class, true, true); local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, n.r,n.g,n.b; return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsThradex = function() return PalmTree, ThradexColors end
-		itsNihilistzsche = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos['Fox'..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
 	end
 
 	local z = {}
@@ -470,30 +467,6 @@ do --this can save some main file locals
 		z['Rollerblade-Spirestone']	= SuperBear
 		--Bozaum
 		z['Bozaum-Spirestone']	= Beer
-		-- Nihilistzsche
-		z['Dirishia-WyrmrestAccord']	= itsNihilistzsche('Warlock')
-		z['Xanikani-WyrmrestAccord']	= itsNihilistzsche('Mage')
-		z['Rikanza-WyrmrestAccord']		= itsNihilistzsche('Monk')
-		z['Onaguda-WyrmrestAccord']		= itsNihilistzsche('Druid')
-		z['Cerishia-WyrmrestAccord']	= itsNihilistzsche('Priest')
-		z['Vellilara-WyrmrestAccord']	= itsNihilistzsche('DemonHunter')
-		z['Sayalia-WyrmrestAccord']		= itsNihilistzsche('DeathKnight')
-		z['Alledarisa-WyrmrestAccord']	= itsNihilistzsche('Paladin')
-		z['Orlyrala-WyrmrestAccord']	= itsNihilistzsche('Shaman')
-		z['Scerila-WyrmrestAccord']		= itsNihilistzsche('Rogue')
-		z['Ralaniki-WyrmrestAccord']	= itsNihilistzsche('Hunter')
-		z['Moyanza-WyrmrestAccord']		= itsNihilistzsche('Warrior')
-		z['Erasaya-WyrmrestAccord']		= itsNihilistzsche('DeathKnight')
-		z['Linabla-WyrmrestAccord']		= itsNihilistzsche('Druid')
-		z['Dirikoa-WyrmrestAccord']		= itsNihilistzsche('Hunter')
-		z['Elaedarel-WyrmrestAccord']	= itsNihilistzsche('Warlock')
-		z['Alydrer-WyrmrestAccord']		= itsNihilistzsche('Warlock')
-		z['Issia-WyrmrestAccord']		= itsNihilistzsche('Priest')
-		z['Leitara-WyrmrestAccord']		= itsNihilistzsche('Warrior')
-		z['Cherlyth-WyrmrestAccord']	= itsNihilistzsche('Druid')
-		z['Tokashami-WyrmrestAccord']	= itsNihilistzsche('Shaman')
-		z['Millop-WyrmrestAccord']		= itsNihilistzsche('Hunter')
-		z['Aeondalew-WyrmrestAccord']	= itsNihilistzsche('DeathKnight')
 	end
 end
 
@@ -544,8 +517,8 @@ function CH:InsertEmotions(msg)
 		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
-			local base64 = E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
-			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (base64 and ('%1|Helvmoji:%%'..base64..'|h|cFFffffff|r|h') or '%1')..emoji..'%2')
+			local encode = E.Libs.Deflate:EncodeForPrint(word) -- btw keep `|h|cFFffffff|r|h` as it is
+			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (encode and ('%1|Helvmoji:%%'..encode..'|h|cFFffffff|r|h') or '%1')..emoji..'%2')
 		end
 	end
 
@@ -947,7 +920,7 @@ do
 	local stripTextureFunc = function(w, x, y) if x=='' then return (w~='' and w) or (y~='' and y) or '' end end
 	local hyperLinkFunc = function(w, x, y) if w~='' then return end
 		local emoji = (x~='' and x) and strmatch(x, 'elvmoji:%%(.+)')
-		return (emoji and E.Libs.Base64:Decode(emoji)) or y
+		return (emoji and E.Libs.Deflate:DecodeForPrint(emoji)) or y
 	end
 	local fourString = function(v, w, x, y)
 		return format('%s%s%s', v, w, (v and v == '1' and x) or y)
@@ -1234,6 +1207,12 @@ function CH:UpdateChatTab(chat)
 		else
 			CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs and CH:IsUndocked(chat, docker))
 		end
+	end
+
+	-- reparenting chat changes the strata of the resize button
+	if chat.EditModeResizeButton then
+		chat.EditModeResizeButton:SetFrameStrata('HIGH')
+		chat.EditModeResizeButton:SetFrameLevel(6)
 	end
 end
 
