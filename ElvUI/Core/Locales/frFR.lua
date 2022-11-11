@@ -114,7 +114,7 @@ L["Debuffs"] = "Affaiblissements"
 L["Deficit:"] = "Déficit :"
 L["Delete gray items?"] = "Supprimer les objets gris?"
 L["Deposit Reagents"] = "Déposer les composants"
-L["Detected that your ElvUI OptionsUI addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI OptionsUI addon up to date will result in missing options."] = "Nous avons détecté que votre installation d'ElvUI est périmée. Cela peut venir du client Tukui qui est également périmé. Merci de visiter notre page de téléchargement pour mettre à jour le client Tukui, puis réinstallez ElvUI. Ne pas avoir la version à jour ElvUI peut entrainer des erreurs."
+L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "Nous avons détecté que votre installation d'ElvUI est périmée. Cela peut venir du client Tukui qui est également périmé. Merci de visiter notre page de téléchargement pour mettre à jour le client Tukui, puis réinstallez ElvUI. Ne pas avoir la version à jour ElvUI peut entrainer des erreurs."
 L["Disable Warning"] = "Désactiver l'alerte"
 L["Disable"] = "Désactiver"
 L["Disabled"] = true
@@ -422,7 +422,7 @@ Options:
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
+ */ec|r or */elvui|r  -  Toggle the *Options|r.
  */kb|r  -  Toggle the keybind mode.
  */emove|r  -  Toggle anchors to reposition various elements.
  */ereset|r  -  Reset all frames to their original positions.

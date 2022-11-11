@@ -114,7 +114,7 @@ L["Debuffs"] = "Schwächungszauber"
 L["Deficit:"] = "Defizit:"
 L["Delete gray items?"] = "Graue Gegenstände löschen?"
 L["Deposit Reagents"] = "Reagenzien einlagern"
-L["Detected that your ElvUI OptionsUI addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI OptionsUI addon up to date will result in missing options."] = "Es wurde erkannt dass dein ElvUI Konfigurations-Addon veraltet ist. Dies kann das Ergebnis eines veralteten Tukui Clients sein. Bitte besuche unsere Downloadseite und update deinen Tukui Client, dann installiere ElvUI neu. Das nicht auf dem neuesten Stand haben des ElvUI Konfigurations-Addons wird in fehlenden Optionen resultieren."
+L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "Es wurde erkannt dass dein ElvUI Konfigurations-Addon veraltet ist. Dies kann das Ergebnis eines veralteten Tukui Clients sein. Bitte besuche unsere Downloadseite und update deinen Tukui Client, dann installiere ElvUI neu. Das nicht auf dem neuesten Stand haben des ElvUI Konfigurations-Addons wird in fehlenden Optionen resultieren."
 L["Disable Warning"] = "Deaktiviere Warnung"
 L["Disable"] = "Deaktivieren"
 L["Disabled"] = "Deaktiviert"
@@ -422,7 +422,7 @@ Options:
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
- */ec|r or */elvui|r  -  Öffnet die *ElvUI Optionen|r.
+ */ec|r or */elvui|r  -  Öffnet die *ElvUI Options|r.
  */kb|r  -  Aktiviert den Tastenbelegungsmodus.
  */emove|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
  */ereset|r  -  Setzt alle Fenster auf ihre Standardposition zurück.

@@ -111,12 +111,6 @@ do
 	end
 end
 
-E:AddLib('AceGUI', 'AceGUI-3.0')
-E:AddLib('AceConfig', 'AceConfig-3.0-ElvUI')
-E:AddLib('AceConfigDialog', 'AceConfigDialog-3.0-ElvUI')
-E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
-E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
-
 if E.private.skins.ace3Enable then
 	S:Ace3_ColorizeEnable(L)
 end
@@ -470,7 +464,7 @@ local function ExportImport_Open(mode)
 	Label1:SetText('')
 	Label2:SetText('')
 
-	--Close ElvUI OptionsUI
+	--Close ElvUI Options
 	E.Libs.AceConfigDialog:Close('ElvUI')
 
 	GameTooltip_Hide() --The tooltip from the Export/Import button stays on screen, so hide it

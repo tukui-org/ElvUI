@@ -177,7 +177,7 @@ local function OnMouseDown(self, button)
 		elseif IsShiftKeyDown() then
 			self:Hide() --Allow hiding a mover temporarily
 		elseif self.configString then
-			E:ToggleOptionsUI(self.configString) --OpenConfig
+			E:ToggleOptions(self.configString) --OpenConfig
 		end
 	end
 end

@@ -115,7 +115,7 @@ L["Debuffs"] = "Zayiflaticilar"
 L["Deficit:"] = "Acik:"
 L["Delete gray items?"] = "Gri ogeler silinsin mi?"
 L["Deposit Reagents"] = "Sarf Malzemelerini Koy"
-L["Detected that your ElvUI OptionsUI addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI OptionsUI addon up to date will result in missing options."] = "ElvUI OptionsUI eklentinizin guncel olmadigi tespit edildi. Bu, Tukui istemcinizin guncel olmamasinin bir sonucu olabilir. Lutfen indirme sayfamizi ziyaret edin ve Tukui istemcinizi guncelleyin, ardindan ElvUI'yi yeniden yukleyin. ElvUI OptionsUI eklentinizin guncel olmamasi seceneklerin kaybolmasina neden olacaktir."
+L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "ElvUI Options eklentinizin guncel olmadigi tespit edildi. Bu, Tukui istemcinizin guncel olmamasinin bir sonucu olabilir. Lutfen indirme sayfamizi ziyaret edin ve Tukui istemcinizi guncelleyin, ardindan ElvUI'yi yeniden yukleyin. ElvUI Options eklentinizin guncel olmamasi seceneklerin kaybolmasina neden olacaktir."
 L["Disable Warning"] = "Uyariyi Devre Disi Birak"
 L["Disable"] = "Devre Disi Birak"
 L["Disabled"] = "Devre Disi Birakildi"
@@ -425,7 +425,7 @@ Options:
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Tum onemli *ElvUI|r komutlarinin listesi:
- */ec|r yada */elvui|r  -  *OptionsUI|r'yi degistirin.
+ */ec|r yada */elvui|r  -  *Options|r'yi degistirin.
  */kb|r  -  Tus baglama modunu degistirin.
  */emove|r  -  cesitli ogeleri yeniden konumlandirmak icin capalari degistirin.
  */ereset|r  -  Tum cerceveleri orijinal konumlarina sifirlayin.

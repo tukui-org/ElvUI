@@ -5,10 +5,10 @@ License clarification for github.com/tukui-org/ElvUI
 		copyrighted to their authors with all rights reserved.
 		Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI/LICENSE.txt
 
-	ElvUI_OptionsUI
+	ElvUI_Options
 		Copyright © 2009-2022 The contents of this addon, excluding third-party resources, are
 		copyrighted to their authors with all rights reserved.
-		Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI_OptionsUI/LICENSE.txt
+		Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI_Options/LICENSE.txt
 
 	ElvUI_Libraries
 		The contents of this folder, excluding third-party resources, are licensed

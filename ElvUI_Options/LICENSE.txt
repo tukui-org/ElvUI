@@ -1,4 +1,4 @@
-Custom License for: ElvUI_OptionsUI
+Custom License for: ElvUI_Options
 	Copyright © 2009-2022 The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
 

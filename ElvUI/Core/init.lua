@@ -131,6 +131,13 @@ do
 	E:AddLib('Translit', 'LibTranslit-1.0')
 	E:AddLib('Dispel', 'LibDispel-1.0')
 
+	-- libraries used for options
+	E:AddLib('AceGUI', 'AceGUI-3.0')
+	E:AddLib('AceConfig', 'AceConfig-3.0-ElvUI')
+	E:AddLib('AceConfigDialog', 'AceConfigDialog-3.0-ElvUI')
+	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
+	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
+
 	if E.Retail or E.Wrath then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
@@ -148,7 +155,6 @@ do
 		end
 	end
 
-	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
 	E.UnitFrames.LSM = E.Libs.LSM
