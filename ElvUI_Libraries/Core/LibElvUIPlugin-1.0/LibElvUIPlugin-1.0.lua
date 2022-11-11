@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 39
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 40
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -7,7 +7,7 @@ if not lib then return end
 Plugin Table Format:  (for reference only).
 	{
 		name		- name of the plugin
-		callback	- callback to call when ElvUI_OptionsUI is loaded
+		callback	- callback to call when ElvUI_Options is loaded
 		isLib		- plugin is a library
 		version		- version of the plugin (pulls version info from metadata, libraries can define their own)
 
@@ -131,7 +131,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		lib.registeredPrefix = true
 	end
 
-	local loaded = IsAddOnLoaded('ElvUI_OptionsUI')
+	local loaded = IsAddOnLoaded('ElvUI_Options')
 	if not loaded then
 		lib.CFFrame:RegisterEvent('ADDON_LOADED')
 	elseif loaded then
@@ -165,8 +165,8 @@ local function errorhandler(err)
 	return geterrorhandler()(err)
 end
 
-function lib:OptionsUILoaded(_, addon)
-	if addon == 'ElvUI_OptionsUI' then
+function lib:OptionsLoaded(_, addon)
+	if addon == 'ElvUI_Options' then
 		lib:GetPluginOptions()
 
 		for _, plugin in pairs(lib.plugins) do
@@ -322,4 +322,4 @@ lib.VCFrame = CreateFrame('Frame')
 lib.VCFrame:SetScript('OnEvent', lib.VersionCheck)
 
 lib.CFFrame = CreateFrame('Frame')
-lib.CFFrame:SetScript('OnEvent', lib.OptionsUILoaded)
+lib.CFFrame:SetScript('OnEvent', lib.OptionsLoaded)
