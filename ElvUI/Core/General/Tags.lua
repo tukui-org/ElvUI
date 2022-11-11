@@ -5,6 +5,8 @@ local Tags = ElvUF.Tags
 
 local LCS = E.Libs.LCS
 local RangeCheck = E.Libs.RangeCheck
+local Translit = E.Libs.Translit
+local translitMark = '!'
 
 local _G = _G
 local next, type, gmatch, gsub, format = next, type, gmatch, gsub, format
@@ -412,8 +414,22 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		end
 	end)
 
+	E:AddTag(format('name:%s:translit', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+		local name = Translit:Transliterate(UnitName(unit), translitMark)
+		if name then
+			return E:ShortenString(name, length)
+		end
+	end)
+
 	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
+		if targetName then
+			return E:ShortenString(targetName, length)
+		end
+	end)
+
+	E:AddTag(format('target:%s:translit', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = Translit:Transliterate(UnitName(unit..'target'), translitMark)
 		if targetName then
 			return E:ShortenString(targetName, length)
 		end
@@ -432,6 +448,13 @@ E:AddTag('target', 'UNIT_TARGET', function(unit)
 	local targetName = UnitName(unit..'target')
 	if targetName then
 		return targetName
+	end
+end)
+
+E:AddTag('target:translit', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName then
+		return Translit:Transliterate(targetName, translitMark)
 	end
 end)
 
@@ -577,6 +600,23 @@ E:AddTag('realm:dash', 'UNIT_NAME_UPDATE', function(unit)
 	end
 end)
 
+E:AddTag('realm:translit', 'UNIT_NAME_UPDATE', function(unit)
+	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
+	if realm and realm ~= '' then
+		return realm
+	end
+end)
+
+E:AddTag('realm:dash:translit', 'UNIT_NAME_UPDATE', function(unit)
+	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
+
+	if realm and (realm ~= '' and realm ~= E.myrealm) then
+		return format('-%s', realm)
+	elseif realm ~= '' then
+		return realm
+	end
+end)
+
 E:AddTag('threat:percent', 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE', function(unit)
 	local _, _, percent = UnitDetailedThreatSituation('player', unit)
 	if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
@@ -689,6 +729,22 @@ E:AddTag('guild:brackets', 'PLAYER_GUILD_UPDATE', function(unit)
 	local guildName = GetGuildInfo(unit)
 	if guildName then
 		return format('<%s>', guildName)
+	end
+end)
+
+E:AddTag('guild:translit', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
+	if UnitIsPlayer(unit) then
+		local guildName = GetGuildInfo(unit)
+		if guildName then
+			return Translit:Transliterate(guildName, translitMark)
+		end
+	end
+end)
+
+E:AddTag('guild:brackets:translit', 'PLAYER_GUILD_UPDATE', function(unit)
+	local guildName = GetGuildInfo(unit)
+	if guildName then
+		return format('<%s>', Translit:Transliterate(guildName, translitMark))
 	end
 end)
 
@@ -1340,8 +1396,10 @@ E.TagInfo = {
 		['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
 		['happiness:color'] = { hidden = E.Retail, category = 'Colors', description = "Changes the text color, depending on the pet happiness" },
 	-- Guild
+		['guild:brackets:translit'] = { category = 'Guild', description = "Displays the guild name with < > and transliteration (e.g. <GUILD>)" },
 		['guild:brackets'] = { category = 'Guild', description = "Displays the guild name with < > brackets (e.g. <GUILD>)" },
 		['guild:rank'] = { category = 'Guild', description = "Displays the guild rank" },
+		['guild:translit'] = { category = 'Guild', description = "Displays the guild name with transliteration for cyrillic letters" },
 		['guild'] = { category = 'Guild', description = "Displays the guild name" },
 	-- Health
 		['absorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of absorbs' },
@@ -1429,13 +1487,17 @@ E.TagInfo = {
 		['name:abbrev'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" },
 		['name:last'] = { category = 'Names', description = "Displays the last word of the unit's name" },
 		['name:long:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)" },
+		['name:long:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 		['name:long'] = { category = 'Names', description = "Displays the name of the unit (limited to 20 letters)" },
 		['name:medium:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)" },
+		['name:medium:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
 		['name:medium'] = { category = 'Names', description = "Displays the name of the unit (limited to 15 letters)" },
 		['name:short:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 10 letters)" },
+		['name:short:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 10 letters)" },
 		['name:short'] = { category = 'Names', description = "Displays the name of the unit (limited to 10 letters)" },
 		['name:title'] = { category = 'Names', description = "Displays player name and title" },
 		['name:veryshort:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 5 letters)" },
+		['name:veryshort:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
 		['name:veryshort'] = { category = 'Names', description = "Displays the name of the unit (limited to 5 letters)" },
 		['name'] = { category = 'Names', description = "Displays the full name of the unit without any letter limitation" },
 		['name:health'] = { hidden = true, category = 'Names', description = "" },
@@ -1496,7 +1558,9 @@ E.TagInfo = {
 		['nearbyplayers:35'] = { category = 'Range', description = "Displays all players within 35 yards" },
 		['nearbyplayers:40'] = { category = 'Range', description = "Displays all players within 40 yards" },
 	-- Realm
+		['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
 		['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
+		['realm:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters" },
 		['realm'] = { category = 'Realm', description = "Displays the server name" },
 	-- Speed
 		['speed:percent-moving-raw'] = { category = 'Speed' },
@@ -1519,9 +1583,14 @@ E.TagInfo = {
 		['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
 	-- Target
 		['classcolor:target'] = { category = 'Target', description = "[classcolor] but for the current target of the unit" },
+		['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 		['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
+		['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
 		['target:medium'] = { category = 'Target', description = "Displays the current target of the unit (limited to 15 letters)" },
+		['target:short:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 10 letters)" },
 		['target:short'] = { category = 'Target', description = "Displays the current target of the unit (limited to 10 letters)" },
+		['target:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters" },
+		['target:veryshort:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
 		['target:veryshort'] = { category = 'Target', description = "Displays the current target of the unit (limited to 5 letters)" },
 		['target'] = { category = 'Target', description = "Displays the current target of the unit" },
 	-- Threat

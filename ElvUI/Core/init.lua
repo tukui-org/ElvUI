@@ -127,6 +127,7 @@ do
 	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Deflate', 'LibDeflate')
 	E:AddLib('Masque', 'Masque', true)
+	E:AddLib('Translit', 'LibTranslit-1.0')
 	E:AddLib('Dispel', 'LibDispel-1.0')
 
 	-- libraries used for options

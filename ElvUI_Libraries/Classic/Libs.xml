@@ -37,6 +37,7 @@
 	<Script file='Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/> <!-- keep under LibClassicSpecs -->
 	<Script file='Core\LibElvUIPlugin-1.0\LibElvUIPlugin-1.0.lua'/>
 	<Script file='Core\LibSimpleSticky\LibSimpleSticky.lua'/>
+	<Script file='Core\LibTranslit-1.0\LibTranslit-1.0.lua'/>
 	<Script file='Core\LibAnim\LibAnim.lua'/>
 
 	<Script file='Core\LibDispel\LibDispel.lua'/> <!-- keep over oUF -->
