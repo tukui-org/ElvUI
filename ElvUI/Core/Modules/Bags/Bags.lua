@@ -3,18 +3,18 @@ local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local AB = E:GetModule('ActionBars')
-local Search = E.Libs.ItemSearch
 local LSM = E.Libs.LSM
 
 local _G = _G
-local type, ipairs, unpack, select, pcall = type, ipairs, unpack, select, pcall
-local strmatch, tinsert, tremove, wipe = strmatch, tinsert, tremove, wipe
-local next, max, floor, format, sub = next, max, floor, format, strsub
+local tinsert, tremove, wipe = tinsert, tremove, wipe
+local type, ipairs, unpack, select = type, ipairs, unpack, select
+local next, max, floor, format, strsub = next, max, floor, format, strsub
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
 local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
+local SetItemSearch = SetItemSearch
 local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
@@ -167,8 +167,6 @@ local VISIBLE_CONTAINER_SPACING = 3
 local CONTAINER_SCALE = 0.75
 local BIND_START, BIND_END
 
-local SEARCH_STRING = ''
-B.SearchSlots = {}
 B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {}
@@ -322,105 +320,48 @@ do
 	end
 end
 
-function B:SearchReset(skip)
-	SEARCH_STRING = ''
-
-	if skip then
-		B:RefreshSearch()
-	end
-end
-
-function B:IsSearching()
-	return SEARCH_STRING ~= ''
-end
-
-function B:UpdateSearch()
-	if self.skipUpdate then
-		self.skipUpdate = nil
-		return
-	end
-
-	local search = self:GetText()
-	if self.Instructions then
-		self.Instructions:SetShown(search == '')
-	end
-
+do
 	local MIN_REPEAT_CHARACTERS = 3
-	if #search > MIN_REPEAT_CHARACTERS then
-		local repeatChar = true
-		for i = 1, MIN_REPEAT_CHARACTERS, 1 do
-			local x, y = 0-i, -1-i
-			if sub(search, x, x) ~= sub(search, y, y) then
-				repeatChar = false
-				break
+	function B:SearchUpdate()
+		local search = self:GetText()
+		if self.Instructions then
+			self.Instructions:SetShown(search == '')
+		end
+
+		if #search > MIN_REPEAT_CHARACTERS then
+			local repeating = true
+			for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+				local x, y = 0-i, -1-i
+				if strsub(search, x, x) ~= strsub(search, y, y) then
+					repeating = false
+					break
+				end
+			end
+
+			if repeating then
+				B:SearchClear()
+				return
 			end
 		end
 
-		if repeatChar then
-			B:ResetAndClear()
-			return
-		end
+		SetItemSearch(search)
 	end
-
-	SEARCH_STRING = search
-
-	B:RefreshSearch()
 end
 
-function B:ResetAndClear()
+function B:SearchRefresh()
+	local text = B.BagFrame.editBox:GetText()
+
+	B:SearchClear()
+
+	B.BagFrame.editBox:SetText(text)
+end
+
+function B:SearchClear()
 	B.BagFrame.editBox:SetText('')
 	B.BagFrame.editBox:ClearFocus()
 
 	B.BankFrame.editBox:SetText('')
 	B.BankFrame.editBox:ClearFocus()
-
-	-- pass bool to say whether it was from a script,
-	-- as this only needs to update from the scripts
-	B:SearchReset(self == B)
-end
-
-function B:SearchSlotUpdate(slot, link, locked)
-	B.SearchSlots[slot] = link
-
-	if slot.bagFrame.sortingSlots then return end -- dont update while sorting
-
-	if link and not locked and B:IsSearching() then
-		B:SearchSlot(slot)
-	else
-		slot.searchOverlay:SetShown(false)
-	end
-end
-
-function B:SearchSlot(slot)
-	local link = B.SearchSlots[slot]
-	if not link then return end
-
-	local keyword = Search.Filters.tipPhrases.keywords[SEARCH_STRING]
-	local method = (keyword and Search.TooltipPhrase) or Search.Matches
-	local query = keyword or SEARCH_STRING
-
-	if strmatch(query, '^%s+$') then
-		slot.searchOverlay:SetShown(false)
-	else
-		local success, result = pcall(method, Search, link, query)
-		slot.searchOverlay:SetShown(not (success and result))
-	end
-end
-
-function B:SetSearch(query)
-	local keyword = Search.Filters.tipPhrases.keywords[query]
-	local method = (keyword and Search.TooltipPhrase) or Search.Matches
-	if keyword then query = keyword end
-
-	local empty = strmatch(query, '^%s+$')
-	for slot, link in next, B.SearchSlots do
-		if empty then
-			slot.searchOverlay:SetShown(false)
-		else
-			local success, result = pcall(method, Search, link, query)
-			slot.searchOverlay:SetShown(not (success and result))
-		end
-	end
 end
 
 function B:UpdateItemDisplay()
@@ -662,8 +603,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	local isQuestItem, questId, isActiveQuest
-	B:SearchSlotUpdate(slot, slot.itemLink, slot.locked)
-
 	if slot.itemLink then
 		local _, spellID = GetItemSpell(slot.itemLink)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(slot.itemLink)
@@ -686,6 +625,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if mult then
 			slot.centerText:SetText(mult * info.stackCount)
 		end
+
+		slot:RegisterEvent('INVENTORY_SEARCH_UPDATE')
+		slot.searchOverlay:SetShown(info.isFiltered)
+	else
+		slot:UnregisterEvent('INVENTORY_SEARCH_UPDATE')
+		slot.searchOverlay:SetShown(false)
 	end
 
 	if slot.spellID then
@@ -739,10 +684,6 @@ function B:UpdateBagSlots(frame, bagID)
 	end
 end
 
-function B:RefreshSearch()
-	B:SetSearch(SEARCH_STRING)
-end
-
 function B:SortingFadeBags(bagFrame, sortingSlots)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 	bagFrame.sortingSlots = sortingSlots
@@ -758,6 +699,11 @@ end
 function B:Slot_OnEvent(event)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
+	elseif event == 'INVENTORY_SEARCH_UPDATE' then
+		if self.BagID and self.SlotID then
+			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
+			self.searchOverlay:SetShown(info and info.isFiltered)
+		end
 	end
 end
 
@@ -1716,19 +1662,18 @@ function B:ConstructContainerFrame(name, isBank)
 
 	--Search
 	f.editBox = CreateFrame('EditBox', name..'EditBox', f, 'SearchBoxTemplate')
+	f.editBox:CreateBackdrop()
 	f.editBox:FontTemplate()
-	f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2)
+	f.editBox:Height(16)
 	f.editBox.Left:SetTexture()
 	f.editBox.Middle:SetTexture()
 	f.editBox.Right:SetTexture()
-	f.editBox:CreateBackdrop()
-	f.editBox:Height(16)
 	f.editBox:SetAutoFocus(false)
-	f.editBox:HookScript('OnTextChanged', B.UpdateSearch)
-	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
+	f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2)
 	f.editBox:SetScript('OnEditFocusGained', EditBox_HighlightText)
-	f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
-	f.editBox.skipUpdate = true -- we need to skip the first set of '' from bank
+	f.editBox:HookScript('OnTextChanged', B.SearchUpdate)
+	f.editBox:SetScript('OnEscapePressed', B.SearchClear)
+	f.editBox.clearButton:HookScript('OnClick', B.SearchClear)
 
 	if isBank then
 		f.notPurchased = {}
@@ -2169,14 +2114,8 @@ function B:ContainerOnHide()
 	B:BagFrameHidden(self)
 	B:HideItemGlow(self)
 
-	local bankSearching = B.BankFrame.editBox:GetText() ~= ''
 	if self.isBank then
 		CloseBankFrame()
-
-		if bankSearching then
-			self.editBox.skipUpdate = true -- skip the update from SetText in ResetAndClear
-			B:ResetAndClear()
-		end
 	else
 		CloseBackpack()
 
@@ -2184,9 +2123,10 @@ function B:ContainerOnHide()
 			CloseBag(i)
 		end
 
-		if not bankSearching and B.db.clearSearchOnClose then
-			B:ResetAndClear()
-		end
+	end
+
+	if B.db.clearSearchOnClose and (B.BankFrame.editBox:GetText() ~= '' or B.BagFrame.editBox:GetText() ~= '') then
+		B:SearchClear()
 	end
 end
 
@@ -2264,8 +2204,6 @@ function B:ShowBankTab(f, showReagent)
 	else
 		B:UpdateLayout(f)
 	end
-
-	f.editBox.skipUpdate = true -- skip search update when switching tabs
 end
 
 function B:ItemGlowOnFinished()

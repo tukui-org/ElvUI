@@ -1,0 +1,9 @@
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bLibraries|r
+## Notes: Libraries that power ElvUI
+## Author: Elv, Simpy
+## Version: 1.00
+## Interface: 100000
+## X-Interface: 100000
+## X-oUF: ElvUF
+
+Mainline\Libs.xml

@@ -5,11 +5,9 @@
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque
+## RequiredDeps: ElvUI_Libraries
 ## Interface: 11403
 ## X-Interface: 11403
-## X-oUF: ElvUF
-
-Classic\Libs.xml
 
 Core\Load.xml
 

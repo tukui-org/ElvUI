@@ -18,7 +18,7 @@ function E:AreOtherAddOnsEnabled()
 
 	for i = 1, GetNumAddOns() do
 		local name = GetAddOnInfo(i)
-		if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and name ~= 'ElvUI_CPU' and E:IsAddOnEnabled(name) then
+		if name ~= 'ElvUI' and name ~= 'ElvUI_Options' and name ~= 'ElvUI_Libraries' and name ~= 'ElvUI_CPU' and E:IsAddOnEnabled(name) then
 			if EP[name] then plugins = true else addons = true end
 		end
 	end
@@ -125,7 +125,7 @@ end
 local function CloseClicked()
 	if E.StatusReportToggled then
 		E.StatusReportToggled = nil
-		E:ToggleOptionsUI()
+		E:ToggleOptions()
 	end
 end
 
