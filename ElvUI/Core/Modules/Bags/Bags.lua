@@ -2122,7 +2122,6 @@ function B:ContainerOnHide()
 		for i = 1, NUM_BAG_FRAMES do
 			CloseBag(i)
 		end
-
 	end
 
 	if B.db.clearSearchOnClose and (B.BankFrame.editBox:GetText() ~= '' or B.BagFrame.editBox:GetText() ~= '') then
