@@ -2,19 +2,19 @@
 	<Script file='Core\LibStub\LibStub.lua'/>
 	<Script file='Core\CallbackHandler-1.0\CallbackHandler-1.0.lua'/>
 
-	<Include file='Core\Ace\AceGUI-3.0\AceGUI-3.0.xml'/>
-	<Include file='Core\Ace\AceConfig-3.0\AceConfig-3.0.xml'/>
-	<Include file='Core\Ace\AceDBOptions-3.0\AceDBOptions-3.0.xml'/>
+	<Include file='Core\Ace3\AceGUI-3.0\AceGUI-3.0.xml'/>
+	<Include file='Core\Ace3\AceConfig-3.0\AceConfig-3.0.xml'/>
+	<Include file='Core\Ace3\AceDBOptions-3.0\AceDBOptions-3.0.xml'/>
 
-	<Include file='Core\Ace\AceAddon-3.0\AceAddon-3.0.xml'/>
-	<Include file='Core\Ace\AceEvent-3.0\AceEvent-3.0.xml'/>
-	<Include file='Core\Ace\AceConsole-3.0\AceConsole-3.0.xml'/>
-	<Include file='Core\Ace\AceDB-3.0\AceDB-3.0.xml'/>
-	<Include file='Core\Ace\AceLocale-3.0\AceLocale-3.0.xml'/>
-	<Include file='Core\Ace\AceComm-3.0\AceComm-3.0.xml'/>
-	<Include file='Core\Ace\AceSerializer-3.0\AceSerializer-3.0.xml'/>
-	<Include file='Core\Ace\AceTimer-3.0\AceTimer-3.0.xml'/>
-	<Include file='Core\Ace\AceHook-3.0\AceHook-3.0.xml'/>
+	<Include file='Core\Ace3\AceAddon-3.0\AceAddon-3.0.xml'/>
+	<Include file='Core\Ace3\AceEvent-3.0\AceEvent-3.0.xml'/>
+	<Include file='Core\Ace3\AceConsole-3.0\AceConsole-3.0.xml'/>
+	<Include file='Core\Ace3\AceDB-3.0\AceDB-3.0.xml'/>
+	<Include file='Core\Ace3\AceLocale-3.0\AceLocale-3.0.xml'/>
+	<Include file='Core\Ace3\AceComm-3.0\AceComm-3.0.xml'/>
+	<Include file='Core\Ace3\AceSerializer-3.0\AceSerializer-3.0.xml'/>
+	<Include file='Core\Ace3\AceTimer-3.0\AceTimer-3.0.xml'/>
+	<Include file='Core\Ace3\AceHook-3.0\AceHook-3.0.xml'/>
 
 	<Script file='Core\LibDeflate\LibDeflate.lua'/>
 	<Script file='Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>

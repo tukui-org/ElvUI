@@ -16,7 +16,7 @@ License clarification for github.com/tukui-org/ElvUI
 
 	References for ElvUI_Libraries:
 		Core/
-			Ace: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Ace/LICENSE.txt
+			Ace3: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Ace3/LICENSE.txt
 			AceGUI-3.0-SharedMediaWidgets: All rights reserved to the owner.
 			CallbackHandler-1.0: All rights reserved to the owner.
 			LibAceConfigHelper: All rights reserved to the owner.
