@@ -15,7 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 -- GLOBALS: ElvDB, ElvPrivateDB
 
-local EXPORT_PREFIX = '!E1!'
+local EXPORT_PREFIX = '!E1!' -- also in Options Stylefilter
 local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
@@ -27,6 +27,103 @@ LibDeflate.compressLevel = { level = 5 }
 -- The active downloads
 local Downloads = {}
 local Uploads = {}
+
+--Keys that should not be exported
+D.blacklistedKeys = {
+	profile = {
+		gridSize = true,
+		general = {
+			cropIcon = true,
+			numberPrefixStyle = true
+		},
+		chat = {
+			hideVoiceButtons = true
+		},
+		bags = {
+			shownBags = true
+		}
+	},
+	private = {},
+	global = {
+		profileCopy = true,
+		general = {
+			AceGUI = true,
+			UIScale = true,
+			locale = true,
+			version = true,
+			eyefinity = true,
+			ultrawide = true,
+			disableTutorialButtons = true,
+			allowDistributor = true
+		},
+		chat = {
+			classColorMentionExcludedNames = true
+		},
+		datatexts = {
+			newPanelInfo = true,
+			settings = {
+				Currencies = {
+					tooltipData = true
+				}
+			}
+		},
+		nameplates = {
+			filters = true
+		},
+		unitframe = {
+			aurafilters = true,
+			aurawatch = true,
+			newCustomText = true,
+		}
+	},
+}
+
+--Keys that auto or user generated tables.
+D.GeneratedKeys = {
+	profile = {
+		convertPages = true,
+		movers = true,
+		actionbar = {},
+		nameplates = { -- this is supposed to have an 's' because yeah, oh well
+			filters = true
+		},
+		datatexts = {
+			panels = true,
+		},
+		unitframe = {
+			units = {} -- required for the scope below for customTexts
+		}
+	},
+	private = {
+		theme = true,
+		install_complete = true
+	},
+	global = {
+		datatexts = {
+			customPanels = true,
+			customCurrencies = true
+		},
+		unitframe = {
+			AuraBarColors = true,
+			aurafilters = true,
+			aurawatch = true
+		},
+		nameplates = {
+			filters = true
+		}
+	}
+}
+
+do
+	local units = D.GeneratedKeys.profile.unitframe.units
+	for unit in pairs(P.unitframe.units) do
+		units[unit] = {customTexts = true}
+	end
+
+	for i = 1, 10 do
+		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
+	end
+end
 
 function D:Initialize()
 	self.Initialized = true
@@ -239,103 +336,6 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_FAILED')
 		end
-	end
-end
-
---Keys that should not be exported
-D.blacklistedKeys = {
-	profile = {
-		gridSize = true,
-		general = {
-			cropIcon = true,
-			numberPrefixStyle = true
-		},
-		chat = {
-			hideVoiceButtons = true
-		},
-		bags = {
-			shownBags = true
-		}
-	},
-	private = {},
-	global = {
-		profileCopy = true,
-		general = {
-			AceGUI = true,
-			UIScale = true,
-			locale = true,
-			version = true,
-			eyefinity = true,
-			ultrawide = true,
-			disableTutorialButtons = true,
-			allowDistributor = true
-		},
-		chat = {
-			classColorMentionExcludedNames = true
-		},
-		datatexts = {
-			newPanelInfo = true,
-			settings = {
-				Currencies = {
-					tooltipData = true
-				}
-			}
-		},
-		nameplates = {
-			filters = true
-		},
-		unitframe = {
-			aurafilters = true,
-			aurawatch = true,
-			newCustomText = true,
-		}
-	},
-}
-
---Keys that auto or user generated tables.
-D.GeneratedKeys = {
-	profile = {
-		convertPages = true,
-		movers = true,
-		actionbar = {},
-		nameplates = { -- this is supposed to have an 's' because yeah, oh well
-			filters = true
-		},
-		datatexts = {
-			panels = true,
-		},
-		unitframe = {
-			units = {} -- required for the scope below for customTexts
-		}
-	},
-	private = {
-		theme = true,
-		install_complete = true
-	},
-	global = {
-		datatexts = {
-			customPanels = true,
-			customCurrencies = true
-		},
-		unitframe = {
-			AuraBarColors = true,
-			aurafilters = true,
-			aurawatch = true
-		},
-		nameplates = {
-			filters = true
-		}
-	}
-}
-
-do
-	local units = D.GeneratedKeys.profile.unitframe.units
-	for unit in pairs(P.unitframe.units) do
-		units[unit] = {customTexts = true}
-	end
-
-	for i = 1, 10 do
-		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
 	end
 end
 
