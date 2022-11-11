@@ -2,8 +2,6 @@
 
 **Source**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI](https://github.com/tukui-org/ElvUI/tree/development/ElvUI)
 
-### License
-
 ```
 Copyright © 2009-2022 The contents of this addon, excluding third-party resources, are
 copyrighted to their authors with all rights reserved.
