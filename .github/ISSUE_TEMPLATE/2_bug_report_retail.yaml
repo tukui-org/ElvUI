@@ -1,7 +1,7 @@
-name: Bug Report - Classic
-description: Report a bug in ElvUI for Classic WoW
-title: "[Classic Bug Report] <Title here>"
-labels: [':bug::question: Bug (Needs Investigation)', ':video_game: Classic']
+name: Retail Bug Report
+description: Report a bug in ElvUI for Retail WoW
+title: "[Retail Bug Report] <Title here>"
+labels: [':bug::question: Bug (Needs Investigation)', ':video_game: Retail']
 body:
   - type: textarea
     id: what-happened
