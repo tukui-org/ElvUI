@@ -411,7 +411,6 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 			return E:ShortenString(name, length)
 		end
 	end)
-	end)
 
 	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
