@@ -1,5 +1,5 @@
-ElvUI License
-	Copyright ©2009-2022 The contents of this addon, excluding third-party resources, are
+Custom License for: ElvUI
+	Copyright © 2009-2022 The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
 
 	This addon is free to use and the authors hereby grants you the following rights:

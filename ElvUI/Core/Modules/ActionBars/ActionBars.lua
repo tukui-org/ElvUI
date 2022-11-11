@@ -189,7 +189,8 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 end
 
 function AB:TrimIcon(button, masque)
-	if not button.icon then return end
+	local icon = button.icon or button.Icon
+	if not icon then return end
 
 	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
 	local changeRatio = button.db and not button.db.keepSizeRatio
@@ -209,7 +210,7 @@ function AB:TrimIcon(button, masque)
 
 	-- always when masque is off, otherwise only when keepSizeRatio is off
 	if not masque or changeRatio then
-		button.icon:SetTexCoord(left, right, top, bottom)
+		icon:SetTexCoord(left, right, top, bottom)
 	end
 end
 
@@ -985,8 +986,8 @@ do
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
-	if E.Wrath then -- TotemBar: this still might taint
-		untaint.MultiCastActionBarFrame = true
+	if E.Wrath then -- Wrath TotemBar needs to be handled by us
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 	end
 
 	function AB:DisableBlizzard()
@@ -1018,14 +1019,16 @@ do
 		_G.MultiActionBar_ShowAllGrids = E.noop
 
 		-- shut down some events for things we dont use
-		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
-		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 		_G.ActionBarController:UnregisterAllEvents()
+		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
+		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
+
+		-- used for ExtraActionButton and TotemBar (on wrath)
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show and Totems to swap
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:UnregisterAllEvents()
-			_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
-			_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
 			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 

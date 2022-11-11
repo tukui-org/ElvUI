@@ -1,0 +1,45 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='..\Core\LibStub\LibStub.lua'/>
+	<Script file='..\Core\CallbackHandler-1.0\CallbackHandler-1.0.lua'/>
+
+	<Include file='..\Core\Ace3\AceGUI-3.0\AceGUI-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceConfig-3.0\AceConfig-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceDBOptions-3.0\AceDBOptions-3.0.xml'/>
+
+	<Include file='..\Core\Ace3\AceAddon-3.0\AceAddon-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceEvent-3.0\AceEvent-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceConsole-3.0\AceConsole-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceDB-3.0\AceDB-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceLocale-3.0\AceLocale-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceComm-3.0\AceComm-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceSerializer-3.0\AceSerializer-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceTimer-3.0\AceTimer-3.0.xml'/>
+	<Include file='..\Core\Ace3\AceHook-3.0\AceHook-3.0.xml'/>
+
+	<Script file='..\Core\LibDeflate\LibDeflate.lua'/>
+	<Script file='..\Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
+	<Include file='..\Core\AceGUI-3.0-SharedMediaWidgets\widget.xml'/>
+	<Include file='..\Core\Taintless\Taintless.xml'/>
+	<Include file='..\Core\UTF8\UTF8.xml'/>
+
+	<Include file='..\Classic\LibQuestXP\LibQuestXP.xml'/>
+	<Script file='..\Classic\LibHealComm-4.0\LibHealComm-4.0.lua'/>
+	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
+	<Include file='..\Classic\LibClassicDurations\LibClassicDurations.xml'/>
+	<Script file='..\Classic\LibClassicCasterino-1.0\LibClassicCasterino.lua'/>
+
+	<Include file='..\Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
+	<Script file='..\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
+	<Script file='..\Core\LibButtonGlow-1.0\LibButtonGlow-1.0.lua'/>
+	<Script file='..\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>
+	<Script file='..\Core\LibDataBroker\LibDataBroker-1.1.lua'/>
+	<Script file='..\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/> <!-- keep under LibClassicSpecs -->
+	<Script file='..\Core\LibElvUIPlugin-1.0\LibElvUIPlugin-1.0.lua'/>
+	<Script file='..\Core\LibSimpleSticky\LibSimpleSticky.lua'/>
+	<Script file='..\Core\LibTranslit-1.0\LibTranslit-1.0.lua'/>
+	<Script file='..\Core\LibAnim\LibAnim.lua'/>
+
+	<Script file='..\Core\LibDispel\LibDispel.lua'/> <!-- keep over oUF -->
+	<Include file='..\Core\oUF\oUF_Classic.xml'/>
+	<Include file='..\Core\oUF_Plugins\oUF_Plugins.xml'/>
+</Ui>

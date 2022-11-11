@@ -114,7 +114,7 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 }
 
 E.PopupDialogs.CLIENT_UPDATE_REQUEST = {
-	text = L["Detected that your ElvUI OptionsUI addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI OptionsUI addon up to date will result in missing options."],
+	text = L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."],
 	button1 = OKAY,
 	OnAccept = E.noop,
 	showAlert = 1,
@@ -217,7 +217,7 @@ E.PopupDialogs.RESET_UF_UNIT = {
 				UF:CreateAndUpdateHeaderGroup(data.unit, nil, nil, true)
 			end
 
-			if IsAddOnLoaded('ElvUI_OptionsUI') then
+			if IsAddOnLoaded('ElvUI_Options') then
 				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 					ACD:SelectGroup('ElvUI', 'unitframe', data.unit)
@@ -415,7 +415,7 @@ function E:StaticPopup_OnShow()
 	end
 
 	-- boost static popups over ace gui
-	if IsAddOnLoaded('ElvUI_OptionsUI') then
+	if IsAddOnLoaded('ElvUI_Options') then
 		local ACD = E.Libs.AceConfigDialog
 		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
 			self.frameStrataIncreased = true

@@ -326,15 +326,15 @@ do --this can save some main file locals
 		z['Kalline-Myzrael']		= itsSimpy -- Shaman
 		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvBlue -- [Horde] Hunter
-		z['Luckygrip-Gehennas']		= ElvBlue -- [Horde] DK
-		z['Luckyone-Everlook']		= ElvBlue -- [Alliance] Druid
-		z['Luckypriest-Everlook']	= ElvBlue -- [Alliance] Priest
-		z['Luckyrogue-Everlook']	= ElvBlue -- [Alliance] Rogue
-		z['Luckyhunter-Everlook']	= ElvBlue -- [Alliance] Hunter
-		z['Luckydk-Everlook']		= ElvBlue -- [Alliance] DK
-		z['Luckykek-Everlook']		= ElvBlue -- [Alliance] Shaman
-		z['Luckyone-Giantstalker']	= ElvBlue -- [Alliance] Paladin
+		z['Luckyone-Gehennas']		= ElvOrange -- [Horde] Hunter
+		z['Luckygrip-Gehennas']		= ElvOrange -- [Horde] DK
+		z['Luckyone-Everlook']		= ElvOrange -- [Alliance] Druid
+		z['Luckypriest-Everlook']	= ElvOrange -- [Alliance] Priest
+		z['Luckyrogue-Everlook']	= ElvOrange -- [Alliance] Rogue
+		z['Luckyhunter-Everlook']	= ElvOrange -- [Alliance] Hunter
+		z['Luckydk-Everlook']		= ElvOrange -- [Alliance] DK
+		z['Luckykek-Everlook']		= ElvOrange -- [Alliance] Shaman
+		z['Luckyone-Giantstalker']	= ElvOrange -- [Alliance] Paladin
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
 		z['Repooc-Mankrik']			= ElvBlue
@@ -366,20 +366,20 @@ do --this can save some main file locals
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvBlue -- [Horde] Druid
-		z['Luckypriest-LaughingSkull']	= ElvBlue -- [Horde] Priest
-		z['Luckymonkas-LaughingSkull']	= ElvBlue -- [Horde] Monk
-		z['Luckyhunter-LaughingSkull']	= ElvBlue -- [Horde] Hunter
-		z['Luckydh-LaughingSkull']		= ElvBlue -- [Horde] DH
-		z['Luckymage-LaughingSkull']	= ElvBlue -- [Horde] Mage
-		z['Luckypala-LaughingSkull']	= ElvBlue -- [Horde] Paladin
-		z['Luckyrogue-LaughingSkull']	= ElvBlue -- [Horde] Rogue
-		z['Luckywl-LaughingSkull']		= ElvBlue -- [Horde] Warlock
-		z['Luckydk-LaughingSkull']		= ElvBlue -- [Horde] DK
-		z['Luckyevoker-LaughingSkull']	= ElvBlue -- [Horde] Evoker
-		z['Notlucky-LaughingSkull']		= ElvBlue -- [Horde] Warrior
-		z['Unluckyone-LaughingSkull']	= ElvBlue -- [Horde] Shaman
-		z['Luckydruid-LaughingSkull']	= ElvBlue -- [Alliance] Druid
+		z['Luckyone-LaughingSkull']		= ElvOrange -- [Horde] Druid
+		z['Luckypriest-LaughingSkull']	= ElvOrange -- [Horde] Priest
+		z['Luckymonkas-LaughingSkull']	= ElvOrange -- [Horde] Monk
+		z['Luckyhunter-LaughingSkull']	= ElvOrange -- [Horde] Hunter
+		z['Luckydh-LaughingSkull']		= ElvOrange -- [Horde] DH
+		z['Luckymage-LaughingSkull']	= ElvOrange -- [Horde] Mage
+		z['Luckypala-LaughingSkull']	= ElvOrange -- [Horde] Paladin
+		z['Luckyrogue-LaughingSkull']	= ElvOrange -- [Horde] Rogue
+		z['Luckywl-LaughingSkull']		= ElvOrange -- [Horde] Warlock
+		z['Luckydk-LaughingSkull']		= ElvOrange -- [Horde] DK
+		z['Luckyevoker-LaughingSkull']	= ElvOrange -- [Horde] Evoker
+		z['Notlucky-LaughingSkull']		= ElvOrange -- [Horde] Warrior
+		z['Unluckyone-LaughingSkull']	= ElvOrange -- [Horde] Shaman
+		z['Luckydruid-LaughingSkull']	= ElvOrange -- [Alliance] Druid
 		-- Repooc
 		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
 		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
@@ -544,8 +544,8 @@ function CH:InsertEmotions(msg)
 		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
-			local base64 = E.Libs.Base64:Encode(word) -- btw keep `|h|cFFffffff|r|h` as it is
-			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (base64 and ('%1|Helvmoji:%%'..base64..'|h|cFFffffff|r|h') or '%1')..emoji..'%2')
+			local encode = E.Libs.Deflate:EncodeForPrint(word) -- btw keep `|h|cFFffffff|r|h` as it is
+			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (encode and ('%1|Helvmoji:%%'..encode..'|h|cFFffffff|r|h') or '%1')..emoji..'%2')
 		end
 	end
 
@@ -947,7 +947,7 @@ do
 	local stripTextureFunc = function(w, x, y) if x=='' then return (w~='' and w) or (y~='' and y) or '' end end
 	local hyperLinkFunc = function(w, x, y) if w~='' then return end
 		local emoji = (x~='' and x) and strmatch(x, 'elvmoji:%%(.+)')
-		return (emoji and E.Libs.Base64:Decode(emoji)) or y
+		return (emoji and E.Libs.Deflate:DecodeForPrint(emoji)) or y
 	end
 	local fourString = function(v, w, x, y)
 		return format('%s%s%s', v, w, (v and v == '1' and x) or y)
@@ -1234,6 +1234,12 @@ function CH:UpdateChatTab(chat)
 		else
 			CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs and CH:IsUndocked(chat, docker))
 		end
+	end
+
+	-- reparenting chat changes the strata of the resize button
+	if chat.EditModeResizeButton then
+		chat.EditModeResizeButton:SetFrameStrata('HIGH')
+		chat.EditModeResizeButton:SetFrameLevel(6)
 	end
 end
 

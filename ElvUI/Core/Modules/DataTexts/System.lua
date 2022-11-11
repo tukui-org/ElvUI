@@ -164,7 +164,7 @@ local function OnEnter(_, slow)
 			count = count + 1
 			infoDisplay[count] = data
 
-			if data.name == 'ElvUI' or data.name == 'ElvUI_OptionsUI' then
+			if data.name == 'ElvUI' or data.name == 'ElvUI_Options' or data.name == 'ElvUI_Libraries' then
 				infoTable[data.name] = data
 			end
 		end
@@ -178,7 +178,8 @@ local function OnEnter(_, slow)
 	DT.tooltip:AddLine(' ')
 	if not E.global.datatexts.settings.System.ShowOthers then
 		displayData(infoTable.ElvUI, totalMEM, totalCPU)
-		displayData(infoTable.ElvUI_OptionsUI, totalMEM, totalCPU)
+		displayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
+		displayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
 		DT.tooltip:AddLine(' ')
 	else
 		for addon, searchString in pairs(CombineAddOns) do

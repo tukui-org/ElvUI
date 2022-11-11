@@ -7,7 +7,6 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local ipairs = ipairs
-local unpack = unpack
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player
@@ -386,12 +385,12 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 		UF.ClassPower_UpdateColor(self, powerType)
 
 		if chargedPoints then
-			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
+			local color = ElvUF.colors.chargedComboPoint
 			for _, cIndex in next, chargedPoints do
 				local cPoint = self[cIndex]
 				if cPoint then
-					cPoint:SetStatusBarColor(r, g, b)
-					cPoint.bg:SetVertexColor(r * .35, g * .35, b * .35)
+					cPoint:SetStatusBarColor(color.r, color.g, color.b)
+					cPoint.bg:SetVertexColor(color.r * .35, color.g * .35, color.b * .35)
 				end
 			end
 		end

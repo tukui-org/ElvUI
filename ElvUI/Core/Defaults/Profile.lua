@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
-local format = format
 local next = next
 
 P.gridSize = 64
@@ -177,6 +176,7 @@ P.general = {
 		statusBarTexture = 'ElvUI Norm',
 		leftButtons = false,
 		qualityName = false,
+		qualityItemLevel = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
 		statusBarColor = { r = 0, g = .4, b = 1 },
@@ -360,17 +360,6 @@ P.bags = {
 		bankSpacing = 5,
 		player = false,
 		bank = false,
-		bag1 = false,
-		bag2 = false,
-		bag3 = false,
-		bag4 = false,
-		bag5 = false,
-		bag6 = false,
-		bag7 = false,
-		bag8 = false,
-		bag9 = false,
-		bag10 = false,
-		bag11 = false,
 	},
 	shownBags = {},
 	autoToggle = {
@@ -400,8 +389,13 @@ P.bags = {
 	},
 }
 
-for i = -3, 11 do
-	P.bags.shownBags['bag'..i] = true
+for i = -3, 12 do
+	local name = 'bag'..i
+	P.bags.shownBags[name] = true
+
+	if i >= 1 then
+		P.bags.split[name] = false
+	end
 end
 
 local NP_Auras = {

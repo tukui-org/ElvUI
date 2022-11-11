@@ -41,7 +41,7 @@ local function OnClick(_, button)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
 	if button == 'LeftButton' then
-		E:ToggleOptionsUI()
+		E:ToggleOptions()
 	elseif button == 'RightButton' and IsShiftKeyDown() then
 		ReloadUI()
 	end

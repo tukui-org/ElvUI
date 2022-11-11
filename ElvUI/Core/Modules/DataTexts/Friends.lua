@@ -146,11 +146,12 @@ local clientList = {
 	VIPR =	{ index = 13, tag = 'BO4',	name = 'COD: Black Ops 4'},
 	ODIN =	{ index = 14, tag = 'MW',	name = 'COD: Modern Warfare'},
 	LAZR =	{ index = 15, tag = 'MW2',	name = 'COD: Modern Warfare 2'},
-	ZEUS =	{ index = 16, tag = 'CW',	name = 'COD: Cold War'},
-	FORE =	{ index = 17, tag = 'VG',	name = 'COD: Vanguard'},
-	GRY = 	{ index = 18, tag = 'AR',	name = 'Warcraft Arclight Rumble'},
-	App =	{ index = 19, tag = 'App',	name = 'App'},
-	BSAp =	{ index = 20, tag = L["Mobile"], name = L["Mobile"]}
+	AUKS =	{ index = 16, tag = 'MWII',	name = 'COD: Modern Warfare II'},
+	ZEUS =	{ index = 17, tag = 'CW',	name = 'COD: Cold War'},
+	FORE =	{ index = 18, tag = 'VG',	name = 'COD: Vanguard'},
+	GRY = 	{ index = 19, tag = 'AR',	name = 'Warcraft Arclight Rumble'},
+	App =	{ index = 20, tag = 'App',	name = 'App'},
+	BSAp =	{ index = 21, tag = L["Mobile"], name = L["Mobile"]}
 }
 
 DT.clientFullName = {}
