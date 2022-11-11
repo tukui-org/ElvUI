@@ -6,14 +6,15 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local type, ipairs, unpack, select, pcall = type, ipairs, unpack, select, pcall
-local strmatch, tinsert, tremove, wipe = strmatch, tinsert, tremove, wipe
-local next, max, floor, format, sub = next, max, floor, format, strsub
+local tinsert, tremove, wipe = tinsert, tremove, wipe
+local type, ipairs, unpack, select = type, ipairs, unpack, select
+local next, max, floor, format, strsub = next, max, floor, format, strsub
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
 local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
+local SetItemSearch = SetItemSearch
 local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
@@ -166,7 +167,6 @@ local VISIBLE_CONTAINER_SPACING = 3
 local CONTAINER_SCALE = 0.75
 local BIND_START, BIND_END
 
-local SEARCH_STRING = ''
 B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {}
@@ -318,6 +318,50 @@ do
 			_G['ContainerFrame'..i]:Kill()
 		end
 	end
+end
+
+do
+	local MIN_REPEAT_CHARACTERS = 3
+	function B:SearchUpdate()
+		local search = self:GetText()
+		if self.Instructions then
+			self.Instructions:SetShown(search == '')
+		end
+
+		if #search > MIN_REPEAT_CHARACTERS then
+			local repeating = true
+			for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+				local x, y = 0-i, -1-i
+				if strsub(search, x, x) ~= strsub(search, y, y) then
+					repeating = false
+					break
+				end
+			end
+
+			if repeating then
+				B:SearchClear()
+				return
+			end
+		end
+
+		SetItemSearch(search)
+	end
+end
+
+function B:SearchRefresh()
+	local text = B.BagFrame.editBox:GetText()
+
+	B:SearchClear()
+
+	B.BagFrame.editBox:SetText(text)
+end
+
+function B:SearchClear()
+	B.BagFrame.editBox:SetText('')
+	B.BagFrame.editBox:ClearFocus()
+
+	B.BankFrame.editBox:SetText('')
+	B.BankFrame.editBox:ClearFocus()
 end
 
 function B:UpdateItemDisplay()
@@ -581,6 +625,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if mult then
 			slot.centerText:SetText(mult * info.stackCount)
 		end
+
+		slot:RegisterEvent('INVENTORY_SEARCH_UPDATE')
+		slot.searchOverlay:SetShown(info.isFiltered)
+	else
+		slot:UnregisterEvent('INVENTORY_SEARCH_UPDATE')
+		slot.searchOverlay:SetShown(false)
 	end
 
 	if slot.spellID then
@@ -649,6 +699,11 @@ end
 function B:Slot_OnEvent(event)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
+	elseif event == 'INVENTORY_SEARCH_UPDATE' then
+		if self.BagID and self.SlotID then
+			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
+			self.searchOverlay:SetShown(info and info.isFiltered)
+		end
 	end
 end
 
@@ -1616,9 +1671,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:SetAutoFocus(false)
 	f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2)
 	f.editBox:SetScript('OnEditFocusGained', EditBox_HighlightText)
-	--f.editBox:HookScript('OnTextChanged', B.UpdateSearch)
-	--f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
-	--f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
+	f.editBox:HookScript('OnTextChanged', B.SearchUpdate)
+	f.editBox:SetScript('OnEscapePressed', B.SearchClear)
+	f.editBox.clearButton:HookScript('OnClick', B.SearchClear)
 
 	if isBank then
 		f.notPurchased = {}
@@ -2067,6 +2122,11 @@ function B:ContainerOnHide()
 		for i = 1, NUM_BAG_FRAMES do
 			CloseBag(i)
 		end
+
+	end
+
+	if B.db.clearSearchOnClose and (B.BankFrame.editBox:GetText() ~= '' or B.BagFrame.editBox:GetText() ~= '') then
+		B:SearchClear()
 	end
 end
 
