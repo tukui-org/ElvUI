@@ -852,7 +852,7 @@ do
 		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
 		local printableString = LibDeflate:EncodeForPrint(compressedData)
 
-		exportText = format('%s%s', exportPrefix, printableString)
+		exportText = printableString and format('%s%s', exportPrefix, printableString) or nil
 		StyleFilters.export.args.text.hidden = not exportText
 	end
 
