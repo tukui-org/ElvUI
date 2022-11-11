@@ -8,7 +8,6 @@
 ## RequiredDeps: ElvUI_Libraries
 ## Interface: 30400
 ## X-Interface: 30400
-## X-oUF: ElvUF
 
 Core\Load.xml
 

@@ -8,7 +8,6 @@
 ## RequiredDeps: ElvUI_Libraries
 ## Interface: 11403
 ## X-Interface: 11403
-## X-oUF: ElvUF
 
 Core\Load.xml
 
