@@ -6,4 +6,4 @@
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
-Options\Load.xml
+Core\Load.xml
