@@ -11,8 +11,7 @@ License clarification for github.com/tukui-org/ElvUI
 		Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI_Options/LICENSE.txt
 
 	ElvUI_Libraries
-		The contents of this folder, excluding third-party resources, are licensed
-		under their own license, which can be found in each subfolder.
+		The third-party resources in this folder are licensed under their own license, which can be found below.
 
 	References for ElvUI_Libraries:
 		Core/
