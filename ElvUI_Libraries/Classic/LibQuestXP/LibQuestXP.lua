@@ -1,3 +1,11 @@
+--[[
+    Title: LibQuestXP
+    Author: MrFox
+    Email: gyussz@live.com
+    Version: 1.0.7
+    Notes: Library that re-implements GetQuestLogRewardXP for Classic WoW and provides XP reward information for all quests
+]]
+
 local MAJOR, MINOR = "LibQuestXP-1.0", 7
 local LibQuestXP = LibStub:NewLibrary(MAJOR, MINOR)
 
