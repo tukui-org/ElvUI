@@ -58,7 +58,7 @@ All rights reserved to the owner.
 ### License
 
 ```
-Copyright (c) 2008-2022, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
+Copyright (c) 2008, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
