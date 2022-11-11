@@ -22,7 +22,7 @@ License clarification for github.com/tukui-org/ElvUI
 			LibAceConfigHelper: All rights reserved to the owner.
 			LibActionButton-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibActionButton-1.0/LICENSE.txt
 			LibAnim: All rights reserved to the owner.
-			LibCustomGlow-1.0: All rights reserved to the owner.
+			LibButtonGlow-1.0: All rights reserved to the owner.
 			LibDataBroker: All rights reserved to the owner.
 			LibDeflate: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDeflate/LICENSE.txt
 			LibDispel: All rights reserved to the owner.
