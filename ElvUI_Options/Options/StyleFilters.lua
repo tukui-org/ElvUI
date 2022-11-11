@@ -2,8 +2,7 @@ local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
-local LibCompress = E.Libs.Compress
-local LibBase64 = E.Libs.Base64
+local LibDeflate = E.Libs.Deflate
 local ACH = E.Libs.ACH
 local LCS = E.Libs.LCS
 
@@ -781,8 +780,6 @@ StyleFilters.actions.args.text_format.args.power = ACH:Input(L["Power"], nil, 5,
 
 -- Import / Export
 local function DecodeString(text)
-	if not LibBase64:IsBase64(text) then return end
-
 	local profileType, profileKey, profileData = D:Decode(text)
 	if profileType == 'styleFilters' then
 		local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
@@ -851,8 +848,8 @@ do
 
 		local serialData = D:Serialize(data)
 		local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
-		local compressedData = LibCompress:Compress(exportString)
-		local encodedData = LibBase64:Encode(compressedData)
+		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
+		local encodedData = LibDeflate:EncodeForPrint(compressedData)
 
 		exportText = encodedData
 		StyleFilters.export.args.text.hidden = not exportText

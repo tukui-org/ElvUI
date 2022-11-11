@@ -411,11 +411,7 @@ local function ExportImport_Open(mode)
 				decodeButton:SetDisabled(true)
 			elseif oldText ~= text then
 				local stringType = D:GetImportStringType(text)
-				if stringType == 'Base64' then
-					decodeButton:SetDisabled(false)
-				else
-					decodeButton:SetDisabled(true)
-				end
+				decodeButton:SetDisabled(stringType == 'Table')
 
 				local profileType, profileKey = D:Decode(text)
 				if not profileType or (profileType and profileType == 'profile' and not profileKey) then

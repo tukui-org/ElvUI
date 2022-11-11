@@ -16,8 +16,7 @@
 	<Include file='Core\Ace\AceTimer-3.0\AceTimer-3.0.xml'/>
 	<Include file='Core\Ace\AceHook-3.0\AceHook-3.0.xml'/>
 
-	<Script file='Core\LibCompress\LibCompress.lua'/>
-	<Script file='Core\LibBase64-1.0\LibBase64-1.0.lua'/>
+	<Script file='Core\LibDeflate\LibDeflate.lua'/>
 	<Script file='Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Include file='Core\AceGUI-3.0-SharedMediaWidgets\widget.xml'/>
 	<Include file='Core\Taintless\Taintless.xml'/>
