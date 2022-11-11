@@ -827,6 +827,7 @@ end
 
 do
 	local exportText = ''
+	local exportPrefix = '!E1!'
 	local label = ACH:Description('', 5)
 	local function Filters_Empty() if not next(exportList) then StyleFilters.export.args.text.hidden = true return true end end
 	local function Filters_Get(_, key) Filters_Empty() return exportList[key] end
@@ -849,9 +850,9 @@ do
 		local serialData = D:Serialize(data)
 		local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
 		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
-		local encodedData = LibDeflate:EncodeForPrint(compressedData)
+		local printableString = LibDeflate:EncodeForPrint(compressedData)
 
-		exportText = encodedData
+		exportText = format('%s%s', exportPrefix, printableString)
 		StyleFilters.export.args.text.hidden = not exportText
 	end
 
