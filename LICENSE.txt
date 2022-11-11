@@ -17,20 +17,21 @@ License clarification for github.com/tukui-org/ElvUI
 	References for ElvUI_Libraries:
 		Core/
 			Ace: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/Ace/LICENSE.txt
-				/LibStub: This work is dedicated to the public domain.
 			AceGUI-3.0-SharedMediaWidgets: All rights reserved to the owner.
+			CallbackHandler-1.0: All rights reserved to the owner.
 			LibAceConfigHelper: All rights reserved to the owner.
 			LibActionButton-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibActionButton-1.0/LICENSE.txt
 			LibAnim: All rights reserved to the owner.
-			LibDeflate: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDeflate/LICENSE.txt
 			LibCustomGlow-1.0: All rights reserved to the owner.
 			LibDataBroker: All rights reserved to the owner.
+			LibDeflate: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDeflate/LICENSE.txt
 			LibDispel: All rights reserved to the owner.
 			LibDualSpec-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibDualSpec-1.0/LICENSE.txt
 			LibElvUIPlugin-1.0: All rights reserved to the owner.
 			LibRangeCheck-2.0: This work is dedicated to the public domain.
 			LibSharedMedia-3.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibSharedMedia-3.0/LICENSE.txt
 			LibSimpleSticky: All rights reserved to the owner.
+			LibStub: This work is dedicated to the public domain.
 			LibTranslit-1.0: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/LibTranslit-1.0/LICENSE.txt
 			oUF: github.com/tukui-org/ElvUI/blob/development/ElvUI_Libraries/Core/oUF/LICENSE.txt
 			oUF_Plugins: All rights reserved to the owner.

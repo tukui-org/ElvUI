@@ -1,4 +1,4 @@
---[[ $Id$ ]]
+--[[ $Id: CallbackHandler-1.0.lua 22 2018-07-21 14:17:22Z nevcairiel $ ]]
 local MAJOR, MINOR = "CallbackHandler-1.0", 7
 local CallbackHandler = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -7,9 +7,12 @@ if not CallbackHandler then return end -- No upgrade needed
 local meta = {__index = function(tbl, key) tbl[key] = {} return tbl[key] end}
 
 -- Lua APIs
-local error = error
-local setmetatable, rawget = setmetatable, rawget
+local setmetatable, rawget, error = setmetatable, rawget, error
 local next, select, pairs, type, tostring = next, select, pairs, type, tostring
+
+-- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
+-- List them here for Mikk's FindGlobals script
+-- GLOBALS: geterrorhandler
 
 local xpcall = xpcall
 
@@ -34,7 +37,7 @@ end
 --   UnregisterName    - name of the callback unregistration API, default "UnregisterCallback"
 --   UnregisterAllName - name of the API to unregister all callbacks, default "UnregisterAllCallbacks". false == don't publish this API.
 
-function CallbackHandler.New(_self, target, RegisterName, UnregisterName, UnregisterAllName)
+function CallbackHandler:New(target, RegisterName, UnregisterName, UnregisterAllName)
 
 	RegisterName = RegisterName or "RegisterCallback"
 	UnregisterName = UnregisterName or "UnregisterCallback"
