@@ -398,7 +398,7 @@ local function GetProfileExport(profileType, exportFormat)
 		local exportString = D:CreateProfileExport(serialData, profileType, profileKey)
 		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
 		local printableString = LibDeflate:EncodeForPrint(compressedData)
-		profileExport = format('%s%s', EXPORT_PREFIX, printableString)
+		profileExport = printableString and format('%s%s', EXPORT_PREFIX, printableString) or nil
 	elseif exportFormat == 'luaTable' then
 		local exportString = E:TableToLuaString(profileData)
 		profileExport = D:CreateProfileExport(exportString, profileType, profileKey)
