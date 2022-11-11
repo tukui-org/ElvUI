@@ -20,7 +20,7 @@ local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
-local LCG = LibStub("LibCustomGlow-1.0", true)
+local LCG = LibStub("LibButtonGlow-1.0", true)
 local Masque = LibStub("Masque", true)
 
 local C_ActionBar = C_ActionBar
