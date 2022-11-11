@@ -5,7 +5,7 @@ local LibDeflate = E.Libs.Deflate
 
 local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
-local len, format, split, strfind = strlen, format, strsplit, strfind
+local len, format, split, strmatch = strlen, format, strsplit, strmatch
 
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -15,6 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 -- GLOBALS: ElvDB, ElvPrivateDB
 
+local EXPORT_PREFIX = '!E1!'
 local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
@@ -384,8 +385,8 @@ local function GetProfileData(profileType)
 end
 
 local function GetProfileExport(profileType, exportFormat)
-	local profileExport, exportString
 	local profileKey, profileData = GetProfileData(profileType)
+	local profileExport
 
 	if not profileKey or not profileData or (profileData and type(profileData) ~= 'table') then
 		E:Print('Error getting data from "GetProfileData"')
@@ -394,11 +395,12 @@ local function GetProfileExport(profileType, exportFormat)
 
 	if exportFormat == 'text' then
 		local serialData = D:Serialize(profileData)
-		exportString = D:CreateProfileExport(serialData, profileType, profileKey)
+		local exportString = D:CreateProfileExport(serialData, profileType, profileKey)
 		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
-		profileExport = LibDeflate:EncodeForPrint(compressedData)
+		local printableString = LibDeflate:EncodeForPrint(compressedData)
+		profileExport = format('%s%s', EXPORT_PREFIX, printableString)
 	elseif exportFormat == 'luaTable' then
-		exportString = E:TableToLuaString(profileData)
+		local exportString = E:TableToLuaString(profileData)
 		profileExport = D:CreateProfileExport(exportString, profileType, profileKey)
 	elseif exportFormat == 'luaPlugin' then
 		profileExport = E:ProfileTableToPluginFormat(profileData, profileType)
@@ -408,26 +410,44 @@ local function GetProfileExport(profileType, exportFormat)
 end
 
 function D:CreateProfileExport(dataString, profileType, profileKey)
-	local returnString
-
-	if profileType == 'profile' then
-		returnString = format('%s::%s::%s', dataString, profileType, profileKey)
-	else
-		returnString = format('%s::%s', dataString, profileType)
-	end
-
-	return returnString
+	return (profileType == 'profile' and format('%s::%s::%s', dataString, profileType, profileKey)) or format('%s::%s', dataString, profileType)
 end
 
 function D:GetImportStringType(dataString)
-	return strfind(dataString, '{') and 'Table' or ''
+	return (strmatch(dataString, '^'..EXPORT_PREFIX) and 'Deflate') or (strmatch(dataString, '^{') and 'Table') or ''
 end
 
 function D:Decode(dataString)
 	local profileInfo, profileType, profileKey, profileData
 	local stringType = self:GetImportStringType(dataString)
 
-	if stringType == 'Table' then
+	if stringType == 'Deflate' then
+		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
+		local decodedData = LibDeflate:DecodeForPrint(data)
+		local decompressed = LibDeflate:DecompressDeflate(decodedData)
+
+		if not decompressed then
+			E:Print('Error decompressing data.')
+			return
+		end
+
+		local serializedData, success
+		serializedData, profileInfo = E:SplitString(decompressed, '^^::') -- '^^' indicates the end of the AceSerializer string
+
+		if not profileInfo then
+			E:Print('Error importing profile. String is invalid or corrupted!')
+			return
+		end
+
+		serializedData = format('%s%s', serializedData, '^^') --Add back the AceSerializer terminator
+		profileType, profileKey = E:SplitString(profileInfo, '::')
+		success, profileData = D:Deserialize(serializedData)
+
+		if not success then
+			E:Print('Error deserializing:', profileData)
+			return
+		end
+	elseif stringType == 'Table' then
 		local profileDataAsString
 		profileDataAsString, profileInfo = E:SplitString(dataString, '}::') -- '}::' indicates the end of the table
 
@@ -451,31 +471,6 @@ function D:Decode(dataString)
 
 		if profileMessage and (not profileData or type(profileData) ~= 'table') then
 			E:Print('Error converting lua string to table:', profileMessage)
-			return
-		end
-	else
-		local decodedData = LibDeflate:DecodeForPrint(dataString)
-		local decompressed = LibDeflate:DecompressDeflate(decodedData)
-
-		if not decompressed then
-			E:Print('Error decompressing data.')
-			return
-		end
-
-		local serializedData, success
-		serializedData, profileInfo = E:SplitString(decompressed, '^^::') -- '^^' indicates the end of the AceSerializer string
-
-		if not profileInfo then
-			E:Print('Error importing profile. String is invalid or corrupted!')
-			return
-		end
-
-		serializedData = format('%s%s', serializedData, '^^') --Add back the AceSerializer terminator
-		profileType, profileKey = E:SplitString(profileInfo, '::')
-		success, profileData = D:Deserialize(serializedData)
-
-		if not success then
-			E:Print('Error deserializing:', profileData)
 			return
 		end
 	end
