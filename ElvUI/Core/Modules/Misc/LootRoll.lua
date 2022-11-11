@@ -300,7 +300,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.name:SetTextColor(1, 1, 1)
 	end
 
-	if db.qualityItemlevel then
+	if db.qualityItemLevel then
 		f.button.ilvl:SetTextColor(color.r, color.g, color.b)
 	else
 		f.button.ilvl:SetTextColor(1, 1, 1)
