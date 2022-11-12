@@ -67,10 +67,6 @@ function B:Initialize()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
 
-	if not E.Classic then
-		B:PositionVehicleFrame()
-	end
-
 	if E.Retail then
 		B:DisableHelpTip()
 		B:DisableNPE()
@@ -86,13 +82,17 @@ function B:Initialize()
 			B:PositionAltPowerBar()
 			B:SkinAltPowerBar()
 		end
-	elseif E.Classic and E.db.general.objectiveTracker then
-		B:QuestWatch_MoveFrames()
-		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
-		B:MoveObjectiveFrame()
+	if not E.Classic then
+		B:PositionVehicleFrame()
+
+		if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
+			B:MoveObjectiveFrame()
+		end
+	elseif E.db.general.objectiveTracker then -- classic check
+		B:QuestWatch_MoveFrames()
+		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
 	-- Battle.Net Frame
