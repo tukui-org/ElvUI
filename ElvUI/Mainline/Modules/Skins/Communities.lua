@@ -540,6 +540,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
+	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar)
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
