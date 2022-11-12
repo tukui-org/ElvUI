@@ -534,12 +534,13 @@ function S:Blizzard_Communities()
 	--NotificationSettings:StripTextures()
 	--NotificationSettings:SetTemplate('Transparent')
 
-	--S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
-	--S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
-	--S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
-	--S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
-	--S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
-	--S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
+	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
+	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
+	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
+	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar)
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
