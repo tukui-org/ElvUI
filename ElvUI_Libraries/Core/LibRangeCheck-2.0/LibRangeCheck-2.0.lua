@@ -119,9 +119,17 @@ local InteractLists = {
 local MeleeRange = 2
 local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
 
-for _, n in ipairs({ 'DEATHKNIGHT', 'DEMONHUNTER', 'DRUID', 'HUNTER', 'SHAMAN', 'MAGE', 'PALADIN', 'PRIEST', 'WARLOCK', 'WARRIOR', 'MONK', 'ROGUE' }) do
+for _, n in ipairs({ 'EVOKER', 'DEATHKNIGHT', 'DEMONHUNTER', 'DRUID', 'HUNTER', 'SHAMAN', 'MAGE', 'PALADIN', 'PRIEST', 'WARLOCK', 'WARRIOR', 'MONK', 'ROGUE' }) do
 	FriendSpells[n], HarmSpells[n], ResSpells[n], PetSpells[n] = {}, {}, {}, {}
 end
+
+-- Evoker
+tinsert(HarmSpells.EVOKER, 369819) -- Disintegrate (25 yards)
+
+tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
+tinsert(FriendSpells.EVOKER, 360823) -- Naturalize (Preservation) (30 yards)
+
+tinsert(ResSpells.EVOKER, 361227) -- Return (40 yards)
 
 -- Death Knights
 tinsert(HarmSpells.DEATHKNIGHT, 49576)	-- Death Grip (30 yards)
