@@ -50,9 +50,7 @@ local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 -- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
-local _G = _G
 local next = next
-local sort = sort
 local type = type
 local wipe = wipe
 local print = print
