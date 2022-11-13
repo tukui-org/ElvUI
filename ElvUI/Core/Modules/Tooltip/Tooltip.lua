@@ -576,7 +576,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 	end
 
 	if unit and not isPlayerUnit and TT:IsModKeyDown() and not (E.Retail and C_PetBattles_IsInBattle()) then
-		local guid = data.guid or ''
+		local guid = (data and data.guid) or UnitGUID(unit) or ''
 		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 		if id then -- NPC ID's
 			self:AddLine(format(IDLine, _G.ID, id))
@@ -703,7 +703,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 		end
 
 		if modKey then
-			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, data.id)
+			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, (data and data.id) or strmatch(link, ':(%w+)'))
 		end
 
 		if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
@@ -719,7 +719,10 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			end
 		end
 	elseif modKey then
-		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, data.id)
+		local id = data and data.id
+		if id then
+			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, id)
+		end
 	end
 
 	if itemID or bagCount or bankCount then self:AddLine(' ') end
@@ -986,12 +989,18 @@ function TT:Initialize()
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 
-	if E.Retail then
+	if AddTooltipPostCall then
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+	else
+		TT:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
+		TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', TT.GameTooltip_OnTooltipSetItem)
+		TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', TT.GameTooltip_OnTooltipSetUnit)
+		TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
+
+		TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID') -- need for df?
 	end
-	-- TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
@@ -999,7 +1008,6 @@ function TT:Initialize()
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
-		--TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID') -- DF
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
