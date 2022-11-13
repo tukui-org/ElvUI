@@ -343,6 +343,7 @@ end
 function M:UpdateSettings()
 	if not M.Initialized then return end
 
+	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
 	local panel, holder = _G.MinimapPanel, M.holder
@@ -361,7 +362,7 @@ function M:UpdateSettings()
 		MinimapCluster:SetScale(mmScale)
 		MinimapCluster:ClearAllPoints()
 
-		if E.db.general.minimap.clusterDisable then
+		if noCluster then
 			MinimapCluster:Point('TOPRIGHT', _G.UIParent)
 		else
 			MinimapCluster:Point('TOPRIGHT', M.ClusterHolder, 0, offset)
@@ -374,7 +375,7 @@ function M:UpdateSettings()
 		M.ClusterBackdrop:SetSize(width, height)
 		M.ClusterHolder:SetSize(width, height)
 
-		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not E.db.general.minimap.clusterDisable)
+		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
 	else
 		Minimap:SetScale(mmScale)
 	end
@@ -389,7 +390,7 @@ function M:UpdateSettings()
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
 		Minimap.location:FontTemplate(locationFont, locaitonSize, locationOutline)
-		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW' and E.db.general.minimap.clusterDisable)
+		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW' and noCluster)
 	end
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
@@ -399,7 +400,7 @@ function M:UpdateSettings()
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
 		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
 
-		if E.db.general.minimap.clusterDisable then
+		if noCluster then
 			MinimapCluster.ZoneTextButton:Kill()
 			_G.TimeManagerClockButton:Kill()
 		else
@@ -420,7 +421,7 @@ function M:UpdateSettings()
 	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
 	local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
 	local challenge = difficulty and difficulty.ChallengeMode or _G.MiniMapChallengeMode
-	if not E.db.general.minimap.clusterDisable then
+	if not noCluster then
 		if M.ClusterHolder then
 			E:EnableMover(M.ClusterHolder.mover.name)
 		end
@@ -655,8 +656,8 @@ function M:Initialize()
 		M.ClusterBackdrop = clusterBackdrop
 	end
 
-	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and E.db.general.minimap.clusterDisable then mm.location:Show() end end)
-	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and E.db.general.minimap.clusterDisable then mm.location:Hide() end end)
+	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Show() end end)
+	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Hide() end end)
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
