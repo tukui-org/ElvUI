@@ -1333,11 +1333,11 @@ do
 				local id = strmatch(unit, 'party(%d)')
 				if id then
 					HandleFrame('PartyMemberFrame'..id)
-					HandleFrame('CompactPartyMemberFrame'..id)
+					HandleFrame('CompactPartyFrameMember'..id)
 				else
 					for i = 1, MAX_PARTY do
 						HandleFrame('PartyMemberFrame'..i)
-						HandleFrame('CompactPartyMemberFrame'..i)
+						HandleFrame('CompactPartyFrameMember'..i)
 					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
