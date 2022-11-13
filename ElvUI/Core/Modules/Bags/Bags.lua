@@ -143,7 +143,7 @@ do
 			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
 			return info
 		else
-			return GetContainerItemInfo(containerIndex, slotIndex)
+			return GetContainerItemInfo(containerIndex, slotIndex) or {}
 		end
 	end
 
@@ -581,7 +581,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if not slot then return end
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
-	local info = B:GetContainerItemInfo(bagID, slotID) or {}
+	local info = B:GetContainerItemInfo(bagID, slotID)
 
 	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink, slot.isBound = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink, info.isBound
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
@@ -702,7 +702,7 @@ function B:Slot_OnEvent(event)
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
 		if self.BagID and self.SlotID then
 			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
-			self.searchOverlay:SetShown(info and info.isFiltered)
+			self.searchOverlay:SetShown(info.isFiltered)
 		end
 	end
 end
@@ -1337,7 +1337,7 @@ function B:GetGrays(vendor)
 	for bagID = 0, 4 do
 		for slotID = 1, B:GetContainerNumSlots(bagID) do
 			local info = B:GetContainerItemInfo(bagID, slotID)
-			local itemLink = info and info.hyperlink
+			local itemLink = info.hyperlink
 			if itemLink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 
