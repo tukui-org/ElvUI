@@ -529,10 +529,10 @@ function S:Blizzard_Communities()
 	S:HandleButton(RecruitmentDialog.Cancel)
 	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
 
-	-- Notification Settings Dialog -- ToDo: Check this if it goes live O.o
+	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
-	--NotificationSettings:StripTextures()
-	--NotificationSettings:SetTemplate('Transparent')
+	NotificationSettings:StripTextures()
+	NotificationSettings:SetTemplate('Transparent')
 
 	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
 	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
@@ -574,12 +574,11 @@ function S:Blizzard_Communities()
 
 	-- Avatar Picker
 	local Avatar = _G.CommunitiesAvatarPickerDialog
-	Avatar.Selector:StripTextures()
+	Avatar:StripTextures()
 	Avatar:SetTemplate('Transparent')
 
-	S:HandleTrimScrollBar(Avatar.ScrollBar)
-	S:HandleButton(Avatar.Selector.OkayButton)
-	S:HandleButton(Avatar.Selector.CancelButton)
+	S:HandleButton(Avatar.OkayButton)
+	S:HandleButton(Avatar.CancelButton)
 
 	-- Invite Frame
 	local TicketManager = _G.CommunitiesTicketManagerDialog

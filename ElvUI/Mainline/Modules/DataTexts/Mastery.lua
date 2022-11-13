@@ -7,7 +7,6 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_MASTERY = STAT_MASTERY
-local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 
 local displayString, lastPanel = ''
 
@@ -18,15 +17,11 @@ local function OnEnter()
 	if primaryTalentTree then
 		local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
 		if masterySpell then
-			local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', masterySpell)
-			tooltipInfo.append = true
-			DT.tooltip:ProcessInfo(tooltipInfo)
+			DT.tooltip:AddSpellByID(masterySpell)
 		end
 		if masterySpell2 then
 			DT.tooltip:AddLine(' ')
-			local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', masterySpell2)
-			tooltipInfo.append = true
-			DT.tooltip:ProcessInfo(tooltipInfo)
+			DT.tooltip:AddSpellByID(masterySpell2)
 		end
 
 		DT.tooltip:Show()
