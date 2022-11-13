@@ -733,8 +733,16 @@ P.nameplates = {
 				{r = 0.25, g = 1, b = 0.25},
 				{r = 0.8, g = 0.4, b = 1}
 			},
-			PALADIN = { r = 0.89, g = 0.88, b = 0.06},
-			MAGE = { r = 0, g = 0.62, b = 1},
+			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
+			MAGE = {r = 0, g = 0.62, b = 1.00},
+			EVOKER = {
+				{r = 0.10, g = 0.92, b = 1.00},
+				{r = 0.17, g = 0.94, b = 0.84},
+				{r = 0.24, g = 0.96, b = 0.69},
+				{r = 0.31, g = 0.98, b = 0.53},
+				{r = 0.34, g = 0.99, b = 0.45},
+				{r = 0.38, g = 1.00, b = 0.38},
+			},
 			MONK = {
 				{r = 0.71, g = 0.76, b = 0.32},
 				{r = 0.58, g = 0.73, b = 0.36},
@@ -742,6 +750,12 @@ P.nameplates = {
 				{r = 0.39, g = 0.69, b = 0.42},
 				{r = 0.27, g = 0.66, b = 0.46},
 				{r = 0.14, g = 0.63, b = 0.50}
+			},
+			SHAMAN = {
+				{r = .23, g = .45, b = .13}, -- earth
+				{r = .58, g = .23, b = .10}, -- fire
+				{r = .19, g = .48, b = .60}, -- water
+				{r = .42, g = .18, b = .74}, -- air
 			},
 			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
 		},
@@ -1694,43 +1708,6 @@ P.unitframe = {
 			additional = {r = 1, g = 1, b = 1, a = 1},
 			color = {r = 1, g = 1, b = 1, a = 1},
 		},
-		classResources = {
-			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
-			comboPoints = {
-				{r = 0.75, g = 0.31, b = 0.31},
-				{r = 0.78, g = 0.56, b = 0.31},
-				{r = 0.81, g = 0.81, b = 0.31},
-				{r = 0.56, g = 0.78, b = 0.31},
-				{r = 0.43, g = 0.76, b = 0.31},
-				{r = 0.31, g = 0.75, b = 0.31},
-				{r = 0.36, g = 0.81, b = 0.54},
-			},
-			DEATHKNIGHT = {
-				[-1] = {r = 0.5, g = 0.5, b = 0.5},
-				[0] = {r = 0.8, g = 0.1, b = 0.28},
-				{r = 1, g = 0.25, b = 0.25},
-				{r = 0.25, g = 1, b = 1},
-				{r = 0.25, g = 1, b = 0.25},
-				{r = 0.8, g = 0.4, b = 1}
-			},
-			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
-			MAGE = {r = 0, g = 0.62, b = 1.00},
-			MONK = {
-				{r = 0.71, g = 0.76, b = 0.32},
-				{r = 0.58, g = 0.73, b = 0.36},
-				{r = 0.49, g = 0.71, b = 0.39},
-				{r = 0.39, g = 0.69, b = 0.42},
-				{r = 0.27, g = 0.66, b = 0.46},
-				{r = 0.14, g = 0.63, b = 0.50}
-			},
-			SHAMAN = {
-				{r = .23, g = .45, b = .13}, -- earth
-				{r = .58, g = .23, b = .10}, -- fire
-				{r = .19, g = .48, b = .60}, -- water
-				{r = .42, g = .18, b = .74}, -- air
-			},
-			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
-		},
 		frameGlow = {
 			mainGlow = {
 				enable = false,
@@ -2065,6 +2042,8 @@ P.unitframe = {
 		},
 	},
 }
+
+P.unitframe.colors.classResources = CopyTable(P.nameplates.colors.classResources)
 
 P.unitframe.units.player.aurabar.enemyAuraType = 'HARMFUL'
 P.unitframe.units.player.aurabar.friendlyAuraType = 'HELPFUL'
