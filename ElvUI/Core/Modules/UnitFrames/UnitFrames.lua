@@ -1321,7 +1321,6 @@ do
 				local frame = _G.PartyFrame
 				if frame then -- Retail
 					HandleFrame(frame, 1)
-					HandleFrame(frame.Background)
 
 					for child in frame.PartyMemberFramePool:EnumerateActive() do
 						HandleFrame(child, true)
