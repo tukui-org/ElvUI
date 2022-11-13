@@ -14,7 +14,6 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
 local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
-local SetItemSearch = SetItemSearch
 local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
@@ -66,6 +65,7 @@ local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
 
+local SetItemSearch = SetItemSearch or (C_Container and C_Container.SetItemSearch)
 local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
 local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
 local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
@@ -2489,7 +2489,7 @@ function B:ProgressQuickVendor()
 		E:Print(format('%s|cFF00DDDDx%d|r %s', itemLink, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
 	end
 
-	C_Container_UseContainerItem(bagID, slotID)
+	UseContainerItem(bagID, slotID)
 	tremove(B.SellFrame.Info.itemList, 1)
 
 	return stackPrice
