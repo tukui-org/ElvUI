@@ -829,7 +829,7 @@ end
 function TT:GameTooltip_OnTooltipSetSpell(data)
 	if self:IsForbidden() or not TT:IsModKeyDown() then return end
 
-	local id = data.id
+	local id = (data and data.id) or select(2, self:GetSpell())
 	if not id then return end
 
 	local ID = format(IDLine, _G.ID, id)
