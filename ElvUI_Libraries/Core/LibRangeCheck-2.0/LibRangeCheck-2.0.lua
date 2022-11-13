@@ -41,22 +41,16 @@ License: Public Domain
 -- @class file
 -- @name LibRangeCheck-2.0
 local MAJOR_VERSION = "LibRangeCheck-2.0"
-local MINOR_VERSION = tonumber(("$Revision: 214 $"):match("%d+")) + 100000
+local MINOR_VERSION = tonumber(("$Revision: 216 $"):match("%d+")) + 100000
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
-local _, _, _, toc = GetBuildInfo()
-
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local isTBC = toc >= 20500 and toc < 30000 -- TODO: Wrath
-local isWrath = toc >= 30400 and toc < 40000 -- TODO: Wrath
+local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 -- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
-local _G = _G
 local next = next
-local sort = sort
 local type = type
 local wipe = wipe
 local print = print
@@ -119,9 +113,17 @@ local InteractLists = {
 local MeleeRange = 2
 local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
 
-for _, n in ipairs({ 'DEATHKNIGHT', 'DEMONHUNTER', 'DRUID', 'HUNTER', 'SHAMAN', 'MAGE', 'PALADIN', 'PRIEST', 'WARLOCK', 'WARRIOR', 'MONK', 'ROGUE' }) do
+for _, n in ipairs({ 'EVOKER', 'DEATHKNIGHT', 'DEMONHUNTER', 'DRUID', 'HUNTER', 'SHAMAN', 'MAGE', 'PALADIN', 'PRIEST', 'WARLOCK', 'WARRIOR', 'MONK', 'ROGUE' }) do
 	FriendSpells[n], HarmSpells[n], ResSpells[n], PetSpells[n] = {}, {}, {}, {}
 end
+
+-- Evoker
+tinsert(HarmSpells.EVOKER, 369819) -- Disintegrate (25 yards)
+
+tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
+tinsert(FriendSpells.EVOKER, 360823) -- Naturalize (Preservation) (30 yards)
+
+tinsert(ResSpells.EVOKER, 361227) -- Return (40 yards)
 
 -- Death Knights
 tinsert(HarmSpells.DEATHKNIGHT, 49576)	-- Death Grip (30 yards)
@@ -292,6 +294,7 @@ if not isRetail then
 	tinsert(HarmSpells.WARLOCK, 172)	-- Corruption (30 yards, level 4, rank 1)
 	tinsert(HarmSpells.WARLOCK, 348)	-- Immolate (30 yards, level 1, rank 1)
 	tinsert(HarmSpells.WARLOCK, 17877)	-- Shadowburn (Destruction) (20 yards)
+	tinsert(HarmSpells.WARLOCK, 18223)	-- Curse of Exhaustion (Affliction) (30/33/36/35/38/42 yards)
 end
 
 tinsert(ResSpells.WARLOCK, 20707)	-- Soulstone (40 yards)

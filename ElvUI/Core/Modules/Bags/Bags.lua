@@ -14,7 +14,6 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
 local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
-local SetItemSearch = SetItemSearch
 local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
@@ -50,7 +49,6 @@ local SplitContainerItem = SplitContainerItem
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
-local UseContainerItem = UseContainerItem
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
@@ -67,6 +65,7 @@ local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
 
+local SetItemSearch = SetItemSearch or (C_Container and C_Container.SetItemSearch)
 local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
 local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
 local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
@@ -79,6 +78,7 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_
 local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
 local SetBackpackAutosortDisabled = SetBackpackAutosortDisabled or (C_Container and C_Container.SetBackpackAutosortDisabled)
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
+local UseContainerItem = UseContainerItem or (C_Container and C_Container.UseContainerItem)
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
@@ -143,7 +143,7 @@ do
 			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
 			return info
 		else
-			return GetContainerItemInfo(containerIndex, slotIndex)
+			return GetContainerItemInfo(containerIndex, slotIndex) or {}
 		end
 	end
 
@@ -581,7 +581,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if not slot then return end
 
 	local keyring = not E.Retail and (bagID == KEYRING_CONTAINER)
-	local info = B:GetContainerItemInfo(bagID, slotID) or {}
+	local info = B:GetContainerItemInfo(bagID, slotID)
 
 	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink, slot.isBound = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink, info.isBound
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
@@ -702,7 +702,7 @@ function B:Slot_OnEvent(event)
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
 		if self.BagID and self.SlotID then
 			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
-			self.searchOverlay:SetShown(info and info.isFiltered)
+			self.searchOverlay:SetShown(info.isFiltered)
 		end
 	end
 end
@@ -1337,7 +1337,7 @@ function B:GetGrays(vendor)
 	for bagID = 0, 4 do
 		for slotID = 1, B:GetContainerNumSlots(bagID) do
 			local info = B:GetContainerItemInfo(bagID, slotID)
-			local itemLink = info and info.hyperlink
+			local itemLink = info.hyperlink
 			if itemLink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 

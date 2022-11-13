@@ -421,9 +421,7 @@ function B:GetItemInfo(bag, slot)
 		return GetGuildBankItemInfo(bag - 50, slot)
 	else
 		local info = B:GetContainerItemInfo(bag, slot)
-		if info then
-			return info.iconFileID, info.stackCount, info.isLocked
-		end
+		return info.iconFileID, info.stackCount, info.isLocked
 	end
 end
 
