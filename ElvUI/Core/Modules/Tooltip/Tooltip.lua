@@ -72,7 +72,7 @@ local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
 local TooltipDataType = Enum.TooltipDataType
-local AddTooltipPostCall = TooltipDataProcessor.AddTooltipPostCall
+local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -986,9 +986,11 @@ function TT:Initialize()
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 
-	AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
-	AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
-	AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+	if E.Retail then
+		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
+		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
+		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+	end
 	-- TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')

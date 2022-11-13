@@ -3,10 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local strjoin = strjoin
-local GetBagName = GetBagName
+local GetBagName = GetBagName or (C_Container and C_Container.GetBagName)
 local ToggleAllBags = ToggleAllBags
-local C_Container_GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
-local C_Container_GetContainerNumSlots = C_Container.GetContainerNumSlots
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
@@ -27,9 +27,9 @@ local function OnEvent(self)
 
 	local free, total = 0, 0
 	for i = 0, NUM_BAG_SLOTS do
-		local freeSlots, bagType = C_Container_GetContainerNumFreeSlots(i)
+		local freeSlots, bagType = GetContainerNumFreeSlots(i)
 		if not bagType or bagType == 0 then
-			free, total = free + freeSlots, total + C_Container_GetContainerNumSlots(i)
+			free, total = free + freeSlots, total + GetContainerNumSlots(i)
 		end
 	end
 
