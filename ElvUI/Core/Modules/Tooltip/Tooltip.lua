@@ -126,14 +126,20 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			statusBar:ClearAllPoints()
 			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
 			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
-			statusBar.text:Point('CENTER', statusBar, 0, 0)
 			statusBar.anchoredToTop = nil
+
+			if statusBar.text then
+				statusBar.text:Point('CENTER', statusBar, 0, 0)
+			end
 		elseif position == 'TOP' and not statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
 			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
 			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
-			statusBar.text:Point('CENTER', statusBar, 0, 0)
 			statusBar.anchoredToTop = true
+
+			if statusBar.text then
+				statusBar.text:Point('CENTER', statusBar, 0, 0)
+			end
 		end
 	end
 
