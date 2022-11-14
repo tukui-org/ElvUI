@@ -126,14 +126,20 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			statusBar:ClearAllPoints()
 			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
 			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
-			statusBar.text:Point('CENTER', statusBar, 0, 0)
 			statusBar.anchoredToTop = nil
+
+			if statusBar.text then
+				statusBar.text:Point('CENTER', statusBar, 0, 0)
+			end
 		elseif position == 'TOP' and not statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
 			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
 			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
-			statusBar.text:Point('CENTER', statusBar, 0, 0)
 			statusBar.anchoredToTop = true
+
+			if statusBar.text then
+				statusBar.text:Point('CENTER', statusBar, 0, 0)
+			end
 		end
 	end
 
@@ -529,7 +535,7 @@ function TT:AddMythicInfo(tt, unit)
 end
 
 function TT:GameTooltip_OnTooltipSetUnit(data)
-	if self:IsForbidden() or not TT.db.visibility then return end
+	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
 
 	local _, unit = self:GetUnit()
 	local isPlayerUnit = UnitIsPlayer(unit)
@@ -668,7 +674,7 @@ function TT:EmbeddedItemTooltip_QuestReward(tt)
 end
 
 function TT:GameTooltip_OnTooltipSetItem(data)
-	if self:IsForbidden() or not TT.db.visibility then return end
+	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
 
 	local owner = self:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
@@ -829,7 +835,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)
-	if self:IsForbidden() or not TT:IsModKeyDown() then return end
+	if (self ~= GameTooltip and self ~= _G.ElvUISpellBookTooltip) or self:IsForbidden() or not TT:IsModKeyDown() then return end
 
 	local id = (data and data.id) or select(2, self:GetSpell())
 	if not id then return end
@@ -1001,7 +1007,9 @@ function TT:Initialize()
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', TT.GameTooltip_OnTooltipSetUnit)
 		TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
 
-		TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID') -- need for df?
+		if not E.Classic then -- what's the replacement in DF
+			TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
+		end
 	end
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
