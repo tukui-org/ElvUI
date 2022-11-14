@@ -535,7 +535,7 @@ function TT:AddMythicInfo(tt, unit)
 end
 
 function TT:GameTooltip_OnTooltipSetUnit(data)
-	if self:IsForbidden() or not TT.db.visibility then return end
+	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
 
 	local _, unit = self:GetUnit()
 	local isPlayerUnit = UnitIsPlayer(unit)
@@ -674,7 +674,7 @@ function TT:EmbeddedItemTooltip_QuestReward(tt)
 end
 
 function TT:GameTooltip_OnTooltipSetItem(data)
-	if self:IsForbidden() or not TT.db.visibility then return end
+	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
 
 	local owner = self:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
@@ -835,7 +835,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)
-	if self:IsForbidden() or not TT:IsModKeyDown() then return end
+	if (self ~= GameTooltip and self ~= _G.ElvUISpellBookTooltip) or self:IsForbidden() or not TT:IsModKeyDown() then return end
 
 	local id = (data and data.id) or select(2, self:GetSpell())
 	if not id then return end
