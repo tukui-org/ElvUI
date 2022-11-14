@@ -414,6 +414,14 @@ function UF:UpdateColors()
 		ElvUF.colors.ComboPoints[i] = E:SetColorTable(ElvUF.colors.ComboPoints[i], db.classResources.comboPoints[i])
 	end
 
+	if not ElvUF.colors.empoweredCast then
+		ElvUF.colors.empoweredCast = {}
+	end
+
+	for i = 1, 4 do
+		ElvUF.colors.empoweredCast[i] = E:SetColorTable(ElvUF.colors.empoweredCast[i], db.empoweredCast[i])
+	end
+
 	--Evoker, Monk, Mage, Paladin and Warlock, Death Knight
 	if not ElvUF.colors.ClassBars then ElvUF.colors.ClassBars = {} end
 	ElvUF.colors.ClassBars.PALADIN = E:SetColorTable(ElvUF.colors.ClassBars.PALADIN, db.classResources.PALADIN)

@@ -1070,6 +1070,13 @@ Colors.castBars.args.castColor = ACH:Color(function() return (E.Retail or E.Wrat
 Colors.castBars.args.castNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 10, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 
+Colors.castBars.args.ESSENCE = ACH:Group(L["ESSENCE"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.castBars.args.ESSENCE.inline = true
+
+for i = 1, 4 do
+	Colors.castBars.args.ESSENCE.args[''..i] = ACH:Color(L["ESSENCE"]..' #'..i)
+end
+
 Colors.auras = ACH:Group(L["Auras"], nil, nil)
 Colors.auras.args.auraByDispels = ACH:Toggle(L["Borders By Dispel"], nil, 1)
 Colors.auras.args.auraByType = ACH:Toggle(L["Borders By Type"], nil, 2)
