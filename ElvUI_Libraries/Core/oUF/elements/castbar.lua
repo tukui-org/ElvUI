@@ -474,7 +474,7 @@ local function CastInterruptible(self, event, unit)
 end
 
 local function OnUpdateStage(element)
-	if element.OnUpdatePip then
+	if element.UpdatePipStep then
 		local maxStage = 0
 		local stageValue = element.duration * 1000
 		for i = 1, element.numStages do
@@ -487,7 +487,7 @@ local function OnUpdateStage(element)
 		end
 
 		if maxStage ~= element.curStage then
-			element:OnUpdatePip(maxStage)
+			element:UpdatePipStep(maxStage)
 
 			element.curStage = maxStage
 		end

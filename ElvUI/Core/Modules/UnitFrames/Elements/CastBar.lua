@@ -26,7 +26,7 @@ do
 	end
 
 	local pipMapAlpha = {2, 3, 4, 1}
-	function UF:OnUpdatePip(stage)
+	function UF:UpdatePipStep(stage)
 		local pip = self.Pips[pipMapAlpha[stage]]
 		if not pip then return end
 
@@ -99,7 +99,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastStop = UF.PostCastStop
 	castbar.PostCastInterruptible = UF.PostCastInterruptible
 	castbar.PostCastFail = UF.PostCastFail
-	castbar.OnUpdatePip = UF.OnUpdatePip
+	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
 	castbar.CreatePip = UF.CreatePip
 
