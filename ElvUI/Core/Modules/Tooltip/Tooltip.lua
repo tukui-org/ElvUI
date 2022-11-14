@@ -1007,7 +1007,9 @@ function TT:Initialize()
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', TT.GameTooltip_OnTooltipSetUnit)
 		TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
 
-		TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID') -- need for df?
+		if not E.Classic then -- what's the replacement in DF
+			TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
+		end
 	end
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
