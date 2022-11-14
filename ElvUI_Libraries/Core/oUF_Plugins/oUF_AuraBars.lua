@@ -74,7 +74,7 @@ local function createAuraBar(element, index)
 	local spark = bar:CreateTexture(nil, "OVERLAY", nil);
 	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	spark:SetWidth(12)
-	spark:SetBlendMode("ADD")
+	spark:SetBlendMode('ADD')
 	spark:SetPoint('CENTER', bar:GetStatusBarTexture(), 'RIGHT')
 
 	local icon = bar:CreateTexture(nil, 'ARTWORK')

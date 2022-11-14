@@ -122,7 +122,8 @@ function UF:Construct_Castbar(frame, moverName)
 
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY', nil, 3)
 	castbar.Spark_:SetTexture(E.media.blankTex)
-	castbar.Spark_:SetVertexColor(1, 1, 1, 0.6)
+	castbar.Spark_:SetVertexColor(0.9, 0.9, 0.9, 0.6)
+	castbar.Spark_:SetBlendMode('ADD')
 	castbar.Spark_:Width(2)
 
 	--Set to castbar.SafeZone
