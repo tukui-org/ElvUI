@@ -20,39 +20,31 @@ do
 	local pipMapColor = {4, 1, 2, 3}
 	function UF:CastBar_UpdatePip(pip, stage, texture)
 		local color = UF.db.colors.empoweredCast[pipMapColor[stage]]
-		pip.texture.pipAlpha = 0.3
-		pip.texture:SetVertexColor(color.r, color.g, color.b, pip.texture.pipAlpha)
+		pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
 		pip.texture:SetTexture(texture)
 	end
 
 	local pipMapAlpha = {2, 3, 4, 1}
-	function UF:UpdatePipStep(stage)
+	function UF:UpdatePipStep(stage) -- self is element
 		local pip = self.Pips[pipMapAlpha[stage]]
 		if not pip then return end
 
-		local lastAlpha = pip.texture:GetAlpha()
-		E:UIFrameFadeIn(pip.texture, 0.1, lastAlpha, 1)
-
-		local info = pip.texture.FadeObject
-		info.finishedFunc = UF.PipFinishAlpha
-		info.finishedArg1 = pip.texture
-		info.finishedArg2 = lastAlpha + 0.4
+		pip.texture:SetAlpha(1)
+		E:UIFrameFadeOut(pip.texture, pip.pipTimer, pip.pipStart, pip.pipFaded)
 	end
 end
 
-function UF:PipFinishAlpha(arg2)
-	E:UIFrameFadeOut(self, 0.5, 1, arg2)
-end
-
 function UF:PostUpdatePip(pip, stage) -- self is element
-	pip.texture:SetAlpha(pip.texture.pipAlpha or 1)
+	pip.texture:SetAlpha(pip.pipAlpha or 1)
 
 	local pips = self.Pips
 	local numStages = self.numStages
+	local reverse = self:GetReverseFill()
+
 	if stage == numStages then
 		local firstPip = pips[1]
 		local anchor = pips[numStages]
-		if self:GetReverseFill() then
+		if reverse then
 			firstPip.texture:Point('RIGHT', self, 'LEFT', 0, 0)
 			firstPip.texture:Point('LEFT', anchor, 3, 0)
 		else
@@ -63,7 +55,7 @@ function UF:PostUpdatePip(pip, stage) -- self is element
 
 	if stage ~= 1 then
 		local anchor = pips[stage - 1]
-		if self:GetReverseFill() then
+		if reverse then
 			pip.texture:Point('RIGHT', -3, 0)
 			pip.texture:Point('LEFT', anchor, 3, 0)
 		else
@@ -81,6 +73,12 @@ function UF:CreatePip(stage)
 	pip.texture = pip:CreateTexture(nil, 'ARTWORK', nil, 2)
 	pip.texture:Point('BOTTOM')
 	pip.texture:Point('TOP')
+
+	pip.pipStart = 1.0 -- alpha on hit
+	pip.pipAlpha = 0.3 -- alpha on init
+	pip.pipFaded = 0.6 -- alpha when passed
+	pip.pipTimer = 0.4 -- fading time on passed
+
 	UF.statusbars[pip.texture] = true
 
 	UF:CastBar_UpdatePip(pip, stage, LSM:Fetch('statusbar', UF.db.statusbar))
