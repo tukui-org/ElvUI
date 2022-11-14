@@ -77,7 +77,7 @@ function UF:CreatePip(stage)
 	pip.pipStart = 1.0 -- alpha on hit
 	pip.pipAlpha = 0.3 -- alpha on init
 	pip.pipFaded = 0.6 -- alpha when passed
-	pip.pipTimer = 0.4 -- fading time on passed
+	pip.pipTimer = 0.4 -- fading time to passed
 
 	UF.statusbars[pip.texture] = true
 
