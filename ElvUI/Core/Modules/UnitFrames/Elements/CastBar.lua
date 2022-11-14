@@ -26,7 +26,7 @@ do
 	end
 
 	local pipMapAlpha = {2, 3, 4, 1}
-	function UF:UpdatePipStep(stage)
+	function UF:UpdatePipStep(stage) -- self is element
 		local pip = self.Pips[pipMapAlpha[stage]]
 		if not pip then return end
 
@@ -40,7 +40,7 @@ do
 	end
 end
 
-function UF:PipFinishAlpha(arg2)
+function UF:PipFinishAlpha(arg2) -- self is pip.texture
 	E:UIFrameFadeOut(self, 0.5, 1, arg2)
 end
 
