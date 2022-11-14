@@ -181,9 +181,11 @@ function TT:RemoveTrashLines(tt)
 
 	for i = 3, tt:NumLines() do
 		local tiptext = _G['GameTooltipTextLeft'..i]
-		local linetext = tiptext:GetText()
+		local linetext = tiptext and tiptext:GetText()
 
-		if linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
+		if not linetext then
+			break
+		elseif linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
 			tiptext:SetText('')
 			tiptext:Hide()
 		end
