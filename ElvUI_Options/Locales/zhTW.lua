@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["Empower Stages"] = true
 L["%s and then %s"] = "%s 與 %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333這個功能在副本或要塞中無法正常使用!|r"
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = "|cffFF3333注意: 這不會改變在介面上的標籤.|r"
