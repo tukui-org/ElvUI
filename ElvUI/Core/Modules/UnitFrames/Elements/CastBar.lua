@@ -20,7 +20,7 @@ do
 	local pipMapColor = {4, 1, 2, 3}
 	function UF:CastBar_UpdatePip(pip, stage, texture)
 		local color = UF.db.colors.empoweredCast[pipMapColor[stage]]
-		pip.texture:SetVertexColor(color.r, color.g, color.b, pip.texture.pipAlpha)
+		pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
 		pip.texture:SetTexture(texture)
 	end
 
@@ -29,16 +29,13 @@ do
 		local pip = self.Pips[pipMapAlpha[stage]]
 		if not pip then return end
 
-		local piptex = pip.texture
-		local lastAlpha = piptex:GetAlpha()
-
-		piptex:SetAlpha(1)
-		E:UIFrameFadeOut(piptex, 0.5, 1, lastAlpha + piptex.pipFaded)
+		pip.texture:SetAlpha(1)
+		E:UIFrameFadeOut(pip.texture, pip.pipTimer, pip.pipStart, pip.pipFaded)
 	end
 end
 
 function UF:PostUpdatePip(pip, stage) -- self is element
-	pip.texture:SetAlpha(pip.texture.pipAlpha or 1)
+	pip.texture:SetAlpha(pip.pipAlpha or 1)
 
 	local pips = self.Pips
 	local numStages = self.numStages
@@ -76,8 +73,11 @@ function UF:CreatePip(stage)
 	pip.texture = pip:CreateTexture(nil, 'ARTWORK', nil, 2)
 	pip.texture:Point('BOTTOM')
 	pip.texture:Point('TOP')
-	pip.texture.pipAlpha = 0.3 -- hardcoded alpha
-	pip.texture.pipFaded = 0.3 -- added ontop of pipAlpha when passed
+
+	pip.pipStart = 1.0 -- alpha on hit
+	pip.pipAlpha = 0.3 -- alpha on init
+	pip.pipFaded = 0.6 -- alpha when passed
+	pip.pipTimer = 0.4 -- fading time on passed
 
 	UF.statusbars[pip.texture] = true
 
