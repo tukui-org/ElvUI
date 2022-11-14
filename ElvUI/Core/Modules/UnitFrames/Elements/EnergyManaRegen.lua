@@ -15,7 +15,7 @@ function UF:Construct_EnergyManaRegen(frame)
 
 	element.Spark = element:CreateTexture(nil, 'OVERLAY')
 	element.Spark:SetTexture(E.media.blankTex)
-	element.Spark:SetVertexColor(1, 1, 1, .8)
+	element.Spark:SetVertexColor(1, 1, 1, 0.8)
 	element.Spark:Point('RIGHT', barTexture)
 	element.Spark:Point('BOTTOM')
 	element.Spark:Point('TOP')
