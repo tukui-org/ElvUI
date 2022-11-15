@@ -74,9 +74,9 @@ function DB:ReputationBar_Update()
 	local customColors = DB.db.colors.useCustomFactionColors
 	local customReaction = reaction == 9 or reaction == 10 -- 9 is paragon, 10 is renown
 	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
-	local alpha = not customColors and DB.db.colors.reputationAlpha
+	local alpha = (customColors and color.a) or DB.db.colors.reputationAlpha
 
-	bar:SetStatusBarColor(color.r, color.g, color.b, alpha or color.a or 1)
+	bar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, alpha or 1)
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
 

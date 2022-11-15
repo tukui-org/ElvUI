@@ -2,7 +2,7 @@
 ## Notes: Powers the configuration window.|n|cffff3333Does not store any profile data.|r
 ## Author: Elv, Simpy
 ## Version: 1.09
-## Interface: 100000
+## Interface: 100002
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 

@@ -16,7 +16,7 @@ function UF:Construct_AuraBars(bar)
 	bar:Point('RIGHT')
 
 	bar.spark:SetTexture(E.media.blankTex)
-	bar.spark:SetVertexColor(1, 1, 1, 0.4)
+	bar.spark:SetVertexColor(0.9, 0.9, 0.9, 0.6)
 	bar.spark:Width(2)
 
 	bar.icon:CreateBackdrop(nil, nil, nil, nil, true)

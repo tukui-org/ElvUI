@@ -96,6 +96,7 @@ local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame.lua
 
 -- ElvUI block
+local wipe = wipe
 local next = next
 local select = select
 local CreateFrame = CreateFrame
@@ -130,6 +131,8 @@ local function resetAttributes(self)
 	self.spellID = nil
 	self.spellName = nil -- ElvUI
 
+	wipe(self.stagePoints)
+
 	for _, pip in next, self.Pips do
 		pip:Hide()
 	end
@@ -144,6 +147,8 @@ local function UpdatePips(element, numStages)
 	local stageMaxValue = element.max * 1000
 	local isHoriz = element:GetOrientation() == 'HORIZONTAL'
 	local elementSize = isHoriz and element:GetWidth() or element:GetHeight()
+	element.numStages = numStages
+	element.curStage = -1 -- dummy
 
 	for stage = 1, numStages do
 		local duration
@@ -155,6 +160,7 @@ local function UpdatePips(element, numStages)
 
 		if(duration > CASTBAR_STAGE_DURATION_INVALID) then
 			stageTotalDuration = stageTotalDuration + duration
+			element.stagePoints[stage] = stageTotalDuration
 
 			local portion = stageTotalDuration / stageMaxValue
 			local offset = elementSize * portion
@@ -198,6 +204,10 @@ local function UpdatePips(element, numStages)
 					pip:SetPoint('RIGHT', element, 'BOTTOMRIGHT', 0, offset)
 				end
 			end
+
+			if element.PostUpdatePip then -- ElvUI
+				element:PostUpdatePip(pip, stage)
+			end
 		end
 	end
 end
@@ -224,6 +234,14 @@ local function CastStart(self, real, unit, castGUID)
 		return
 	end
 
+	element.casting = event == 'UNIT_SPELLCAST_START'
+	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
+	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
+
+	if element.empowering then
+		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
+	end
+
 	endTime = endTime / 1000
 	startTime = startTime / 1000
 
@@ -231,19 +249,11 @@ local function CastStart(self, real, unit, castGUID)
 	element.startTime = startTime
 	element.delay = 0
 
-	element.casting = event == 'UNIT_SPELLCAST_START'
-	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
-	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
-
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
 	element.spellName = name -- ElvUI
-
-	if element.empowering then
-		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
-	end
 
 	if element.channeling then
 		element.duration = endTime - GetTime()
@@ -463,6 +473,27 @@ local function CastInterruptible(self, event, unit)
 	end
 end
 
+local function OnUpdateStage(element)
+	if element.UpdatePipStep then
+		local maxStage = 0
+		local stageValue = element.duration * 1000
+		for i = 1, element.numStages do
+			local step = element.stagePoints[i]
+			if not step or stageValue < step then
+				break
+			else
+				maxStage = i
+			end
+		end
+
+		if maxStage ~= element.curStage then
+			element:UpdatePipStep(maxStage)
+
+			element.curStage = maxStage
+		end
+	end
+end
+
 local function onUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 
@@ -511,6 +542,10 @@ local function onUpdate(self, elapsed)
 				else
 					self.Time:SetFormattedText('%.1f', self.duration)
 				end
+			end
+
+			if(self.empowering) then
+				OnUpdateStage(self)
 			end
 
 			self.elapsed = 0
@@ -578,7 +613,13 @@ local function Enable(self, unit)
 		-- end block
 
 		element.holdTime = 0
-		element.Pips = {}
+
+		if not element.Pips then
+			element.Pips = {}
+		end
+		if not element.stagePoints then
+			element.stagePoints = {}
+		end
 
 		element:SetScript('OnUpdate', element.OnUpdate or onUpdate)
 

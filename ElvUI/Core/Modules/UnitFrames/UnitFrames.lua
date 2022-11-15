@@ -34,7 +34,6 @@ local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
-local MAX_BOSS_FRAMES = 8
 
 -- GLOBALS: Arena_LoadUI
 
@@ -63,6 +62,7 @@ UF.classMaxResourceBar = { -- match to NP ClassPower MAX_POINTS
 	DEATHKNIGHT = 6,
 	PALADIN = 5,
 	WARLOCK = 5,
+	EVOKER = 6,
 	MONK = 6,
 	MAGE = 4,
 	ROGUE = 7,
@@ -414,14 +414,24 @@ function UF:UpdateColors()
 		ElvUF.colors.ComboPoints[i] = E:SetColorTable(ElvUF.colors.ComboPoints[i], db.classResources.comboPoints[i])
 	end
 
-	--Monk, Mage, Paladin and Warlock, Death Knight
+	if not ElvUF.colors.empoweredCast then
+		ElvUF.colors.empoweredCast = {}
+	end
+
+	for i = 1, 4 do
+		ElvUF.colors.empoweredCast[i] = E:SetColorTable(ElvUF.colors.empoweredCast[i], db.empoweredCast[i])
+	end
+
+	--Evoker, Monk, Mage, Paladin and Warlock, Death Knight
 	if not ElvUF.colors.ClassBars then ElvUF.colors.ClassBars = {} end
 	ElvUF.colors.ClassBars.PALADIN = E:SetColorTable(ElvUF.colors.ClassBars.PALADIN, db.classResources.PALADIN)
 	ElvUF.colors.ClassBars.MAGE = E:SetColorTable(ElvUF.colors.ClassBars.MAGE, db.classResources.MAGE)
 	ElvUF.colors.ClassBars.WARLOCK = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK, db.classResources.WARLOCK)
 
+	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
 	for i=1, 6 do
+		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
 
@@ -1215,60 +1225,50 @@ do
 end
 
 do
-	local disabledPlates = {}
+	local MAX_PARTY = _G.MEMBERS_PER_RAID_GROUP or _G.MAX_PARTY_MEMBERS or 5
+	local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
+	local MAX_BOSS_FRAMES = 8
 
-	local function HandleFrame(baseName, doNotReparent)
-		local frame
-		if type(baseName) == 'string' then
-			frame = _G[baseName]
-		else
-			frame = baseName
+	local disabledPlates = {}
+	local lockedFrames = {}
+
+	-- lock Boss, Party, and Arena
+	local function LockParent(frame, parent)
+		if parent ~= E.HiddenFrame then
+			frame:SetParent(E.HiddenFrame)
+		end
+	end
+
+	local function HandleFrame(frame, doNotReparent)
+		if type(frame) == 'string' then
+			frame = _G[frame]
 		end
 
 		if not frame then return end
 
+		local lockParent = doNotReparent == 1
+		if lockParent or not doNotReparent then
+			frame:SetParent(E.HiddenFrame)
+
+			if lockParent and not lockedFrames[frame] then
+				hooksecurefunc(frame, 'SetParent', LockParent)
+				lockedFrames[frame] = true
+			end
+		end
+
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
-		if not doNotReparent then
-			frame:SetParent(E.HiddenFrame)
-		end
-
-		local petFrame = frame.petFrame or frame.PetFrame
-		if petFrame then
-			petFrame:UnregisterAllEvents()
-			petFrame:SetParent(E.HiddenFrame)
-		end
-
-		local totFrame = frame.totFrame
-		if totFrame then
-			totFrame:UnregisterAllEvents()
-			totFrame:SetParent(E.HiddenFrame)
-		end
-
-		local health = frame.healthBar or frame.healthbar or frame.HealthBar
-		if health then
-			health:UnregisterAllEvents()
-		end
-
-		local power = frame.manabar or frame.ManaBar
-		if power then
-			power:UnregisterAllEvents()
-		end
-
-		local spell = frame.castBar or frame.spellbar
-		if spell then
-			spell:UnregisterAllEvents()
-		end
-
-		local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
-		if altpowerbar then
-			altpowerbar:UnregisterAllEvents()
-		end
-
-		local buffFrame = frame.BuffFrame
-		if buffFrame then
-			buffFrame:UnregisterAllEvents()
+		for _, child in next, {
+			frame.petFrame or frame.PetFrame,
+			frame.healthBar or frame.healthbar or frame.HealthBar,
+			frame.manabar or frame.ManaBar,
+			frame.castBar or frame.spellbar,
+			frame.powerBarAlt or frame.PowerBarAlt,
+			frame.totFrame,
+			frame.BuffFrame
+		} do
+			child:UnregisterAllEvents()
 		end
 	end
 
@@ -1279,20 +1279,20 @@ do
 			local disable = E.private.unitframe.disabledBlizzardFrames
 			if unit == 'player' then
 				if disable.player then
-					local PlayerFrame = _G.PlayerFrame
-					HandleFrame(PlayerFrame)
+					local frame = _G.PlayerFrame
+					HandleFrame(frame)
 
 					-- For the damn vehicle support:
-					PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-					PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-					PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-					PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
-					PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
+					frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+					frame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+					frame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+					frame:RegisterEvent('UNIT_EXITING_VEHICLE')
+					frame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
 					-- User placed frames don't animate
-					PlayerFrame:SetMovable(true)
-					PlayerFrame:SetUserPlaced(true)
-					PlayerFrame:SetDontSavePosition(true)
+					frame:SetMovable(true)
+					frame:SetUserPlaced(true)
+					frame:SetDontSavePosition(true)
 				end
 
 				if E.Retail then
@@ -1318,43 +1318,43 @@ do
 			elseif disable.target and unit == 'targettarget' then
 				HandleFrame(_G.TargetFrameToT)
 			elseif disable.boss and strmatch(unit, 'boss%d?$') then
+				HandleFrame(_G.BossTargetFrameContainer, 1)
+
 				local id = strmatch(unit, 'boss(%d)')
 				if id then
-					HandleFrame('Boss'..id..'TargetFrame')
+					HandleFrame('Boss'..id..'TargetFrame', true)
 				else
 					for i = 1, MAX_BOSS_FRAMES do
-						HandleFrame('Boss'..i..'TargetFrame')
+						HandleFrame('Boss'..i..'TargetFrame', true)
 					end
 				end
 			elseif disable.party and strmatch(unit, 'party%d?$') then
-				if _G.PartyFrame then -- Retail
-					_G.PartyFrame:UnregisterAllEvents()
-					_G.PartyFrame:SetScript('OnShow', nil)
+				local frame = _G.PartyFrame
+				if frame then -- Retail
+					HandleFrame(frame, 1)
 
-					for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
-						HandleFrame(frame)
+					for child in frame.PartyMemberFramePool:EnumerateActive() do
+						HandleFrame(child, true)
 					end
-
-					HandleFrame(_G.PartyFrame.Background)
 				else
-					local id = strmatch(unit, 'party(%d)')
-					if id then
-						HandleFrame('PartyMemberFrame'..id)
-						HandleFrame('CompactPartyMemberFrame'..id)
-					else
-						for i = 1, _G.MAX_PARTY_MEMBERS do
-							HandleFrame('PartyMemberFrame'..i)
-							HandleFrame('CompactPartyMemberFrame'..i)
-						end
-					end
-
 					HandleFrame(_G.PartyMemberBackground)
+				end
+
+				local id = strmatch(unit, 'party(%d)')
+				if id then
+					HandleFrame('PartyMemberFrame'..id)
+					HandleFrame('CompactPartyFrameMember'..id)
+				else
+					for i = 1, MAX_PARTY do
+						HandleFrame('PartyMemberFrame'..i)
+						HandleFrame('CompactPartyFrameMember'..i)
+					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
 				if _G.ArenaEnemyFramesContainer then -- Retail
-					_G.ArenaEnemyFramesContainer:UnregisterAllEvents()
-					_G.ArenaEnemyPrepFramesContainer:UnregisterAllEvents()
-					_G.ArenaEnemyMatchFramesContainer:UnregisterAllEvents()
+					HandleFrame(_G.ArenaEnemyFramesContainer, 1)
+					HandleFrame(_G.ArenaEnemyPrepFramesContainer, 1)
+					HandleFrame(_G.ArenaEnemyMatchFramesContainer, 1)
 				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
 					_G.ArenaPrepFrames:UnregisterAllEvents()
@@ -1371,12 +1371,12 @@ do
 				-- actually handle the sub frames now
 				local id = strmatch(unit, 'arena(%d)')
 				if id then
-					HandleFrame('ArenaEnemyMatchFrame'..id)
-					HandleFrame('ArenaEnemyPrepFrame'..id)
+					HandleFrame('ArenaEnemyMatchFrame'..id, true)
+					HandleFrame('ArenaEnemyPrepFrame'..id, true)
 				else
-					for i = 1, _G.MAX_ARENA_ENEMIES do
-						HandleFrame('ArenaEnemyMatchFrame'..i)
-						HandleFrame('ArenaEnemyPrepFrame'..i)
+					for i = 1, MAX_ARENA_ENEMIES do
+						HandleFrame('ArenaEnemyMatchFrame'..i, true)
+						HandleFrame('ArenaEnemyPrepFrame'..i, true)
 					end
 				end
 			end

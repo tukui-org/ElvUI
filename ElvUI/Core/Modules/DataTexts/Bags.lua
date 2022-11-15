@@ -3,13 +3,15 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local strjoin = strjoin
-local GetBagName = GetBagName
 local ToggleAllBags = ToggleAllBags
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetContainerNumSlots = GetContainerNumSlots
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
+
+local GetBagName = GetBagName or (C_Container and C_Container.GetBagName)
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
+local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
+
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local CURRENCY = CURRENCY
