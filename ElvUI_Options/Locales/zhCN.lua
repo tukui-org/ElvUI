@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["Empower Stages"] = true
 L["%s and then %s"] = "%s 于 %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333这在副本或要塞中不起作用！|r"
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = "|cffFF3333这是为了提供信息。 这不会更改 UI 中的标签。|r"

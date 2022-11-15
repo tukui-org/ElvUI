@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["Empower Stages"] = true
 L["%s and then %s"] = "%s et alors %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = true
