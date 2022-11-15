@@ -42,13 +42,15 @@ function S:LootFrame()
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			local item = button.Item
 			if item and not item.backdrop then
-				item:StripTextures()
+				--item:StripTextures() -- this will also kill the icon
 				S:HandleIcon(item.icon, true)
 				S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 			end
 
 			button.IconQuestTexture:SetAlpha(0)
 			button.BorderFrame:SetAlpha(0)
+			button.HighlightNameFrame:SetAlpha(0)
+			button.PushedNameFrame:SetAlpha(0)
 		end
 	end)
 
