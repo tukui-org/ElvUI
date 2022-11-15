@@ -3,7 +3,6 @@
 ## Author: Elv, Simpy
 ## Version: 1.00
 ## Interface: 30400
-## X-Interface: 30400
 ## X-oUF: ElvUF
 
 Wrath\Libs.xml
