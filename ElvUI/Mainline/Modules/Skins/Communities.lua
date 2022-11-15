@@ -530,7 +530,7 @@ function S:Blizzard_Communities()
 	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
 
 	-- Notification Settings Dialog -- ToDo: Check this if it goes live O.o
-	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
+	--local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
 	--NotificationSettings:StripTextures()
 	--NotificationSettings:SetTemplate('Transparent')
 

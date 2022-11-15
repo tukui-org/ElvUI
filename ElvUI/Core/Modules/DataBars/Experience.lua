@@ -2,8 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
-local error = error
-local type, pairs = type, pairs
 local min, format = min, format
 local CreateFrame = CreateFrame
 local GetXPExhaustion = GetXPExhaustion
