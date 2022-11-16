@@ -141,6 +141,19 @@ function M:HandleQueueButton(actionbarMode)
 	queueButton:SetParent(_G.MinimapBackdrop)
 	queueButton:ClearAllPoints()
 
+	local queueDisplay = M.QueueStatusDisplay
+	if queueDisplay then
+		local db = E.db.general.minimap.icons.queueStatus
+		local _, position, xOffset, yOffset = M:GetIconSettings('queueStatus')
+		queueDisplay.text:ClearAllPoints()
+		queueDisplay.text:Point(position, Minimap, xOffset, yOffset)
+		queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+
+		if not db.enable and queueDisplay.title then
+			M:ClearQueueStatus()
+		end
+	end
+
 	if actionbarMode then
 		queueButton:Point('BOTTOMLEFT', Minimap, E.Retail and 50 or 10, E.Retail and -15 or -10)
 		M:SetScale(queueButton, E.Retail and 0.8 or 1)
@@ -472,19 +485,6 @@ function M:UpdateSettings()
 			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
 		end
 
-		local queueDisplay = M.QueueStatusDisplay
-		if queueDisplay then
-			local db = E.db.general.minimap.icons.queueStatus
-			local _, position, xOffset, yOffset = M:GetIconSettings('queueStatus')
-			queueDisplay.text:ClearAllPoints()
-			queueDisplay.text:Point(position, Minimap, xOffset, yOffset)
-			queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-
-			if not db.enable and queueDisplay.title then
-				M:ClearQueueStatus()
-			end
-		end
-
 		if instance then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 			instance:ClearAllPoints()
@@ -594,6 +594,7 @@ function M:CreateQueueStatusText()
 	display:SetIgnoreParentScale(true)
 	display:SetScale(E.uiscale)
 	display.text = display:CreateFontString(nil, 'OVERLAY')
+	display.text:FontTemplate()
 
 	M.QueueStatusDisplay = display
 
