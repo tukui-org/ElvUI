@@ -362,6 +362,7 @@ do --this can save some main file locals
 		z['Merathilis-Shattrath']	= ElvOrange	-- [Alliance] Druid
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
+		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
 		z['Luckyone-LaughingSkull']		= ElvOrange -- [Horde] Druid
 		z['Luckypriest-LaughingSkull']	= ElvOrange -- [Horde] Priest
