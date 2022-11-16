@@ -538,8 +538,8 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
 	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
-	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
-	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
+	--S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
+	--S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
 	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar)
 
 	-- Create Channel Dialog
