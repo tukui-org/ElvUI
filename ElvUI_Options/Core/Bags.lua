@@ -9,7 +9,8 @@ local strmatch = strmatch
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
 local GameTooltip = GameTooltip
-local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
+
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
 
 local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
