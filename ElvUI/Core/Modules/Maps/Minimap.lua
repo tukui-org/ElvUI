@@ -346,6 +346,14 @@ function M:UpdateSettings()
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
+	-- silly little hack to get the canvas to update
+	if E.MinimapSize ~= M.NeedsCanvasUpdate then
+		local zoom = Minimap:GetZoom()
+		Minimap:SetZoom(zoom > 0 and 0 or 1)
+		Minimap:SetZoom(zoom)
+		M.NeedsCanvasUpdate = E.MinimapSize
+	end
+
 	local panel, holder = _G.MinimapPanel, M.holder
 	panel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
 	M:SetScale(panel, 1)
