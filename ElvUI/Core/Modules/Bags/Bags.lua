@@ -1025,19 +1025,21 @@ function B:Layout(isBank)
 			end
 		else
 			local currentRow = 1
-			local rowSize = B:TokenFrameWidth()
 
 			if E.Retail then
 				local rowWidth = 0
 				for i = 1, B.numTrackedTokens do
 					local token = currencies[i]
 					if not token then return end
+
 					local tokenWidth = token.text:GetWidth() + 28
 					rowWidth = rowWidth + tokenWidth
 					if rowWidth > (B.db.bagWidth - (B.db.bagButtonSpacing * 4)) then
 						currentRow = currentRow + 1
 						rowWidth = tokenWidth
 					end
+
+					token:ClearAllPoints()
 
 					if i == 1 then
 						token:Point('TOPLEFT', currencies, 1, -3)
@@ -1260,11 +1262,6 @@ function B:OnEvent(event, ...)
 	end
 end
 
-function B:TokenFrameWidth()
-	local tokenWidth = 70 -- you can always track at least one token
-	return max(floor((B.db.bagWidth - (B.db.bagButtonSpacing * 2)) / tokenWidth), 1)
-end
-
 function B:UpdateTokensIfVisible()
 	if B.BagFrame:IsVisible() then
 		B:UpdateTokens()
@@ -1284,7 +1281,8 @@ function B:UpdateTokens()
 		if not (info and info.name) then break end
 
 		local button = currencies[i]
-		button:ClearAllPoints()
+		button.currencyID = info.currencyTypesID
+		button:Show()
 
 		local icon = button.icon or button.Icon
 		icon:SetTexture(info.iconFileID)
@@ -1296,9 +1294,6 @@ function B:UpdateTokens()
 		elseif B.db.currencyFormat == 'ICON' then
 			button.text:SetText(BreakUpLargeNumbers(info.quantity))
 		end
-
-		button.currencyID = info.currencyTypesID
-		button:Show()
 
 		numTokens = numTokens + 1
 	end
