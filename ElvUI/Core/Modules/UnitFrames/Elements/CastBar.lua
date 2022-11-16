@@ -3,7 +3,8 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
-local unpack, tonumber, abs = unpack, tonumber, abs
+local abs, next = abs, next
+local unpack, tonumber = unpack, tonumber
 
 local CreateFrame = CreateFrame
 local GetTalentInfo = GetTalentInfo

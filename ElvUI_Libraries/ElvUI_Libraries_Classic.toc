@@ -3,7 +3,6 @@
 ## Author: Elv, Simpy
 ## Version: 1.00
 ## Interface: 11403
-## X-Interface: 11403
 ## X-oUF: ElvUF
 
 Classic\Libs.xml
