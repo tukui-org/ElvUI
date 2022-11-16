@@ -437,6 +437,7 @@ do --this can save some main file locals
 		z['Livarax-BurningLegion']		= Gem
 		z['Filevandrel-BurningLegion']	= Gem
 		z['Akavaya-BurningLegion']		= Gem
+		z['Athyneos-BurningLegion']		= Gem
 		-- Affinity
 		z['Affinichi-Illidan']	= Bathrobe
 		z['Affinitii-Illidan']	= Bathrobe
