@@ -357,24 +357,12 @@ function M:UpdateSettings()
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
 
 	if E.Retail then
-		local offset = 1
-
 		MinimapCluster:SetScale(mmScale)
-		MinimapCluster:ClearAllPoints()
-
-		if noCluster then
-			MinimapCluster:Point('TOPRIGHT', _G.UIParent)
-		else
-			MinimapCluster:Point('TOPRIGHT', M.ClusterHolder, 0, offset)
-		end
 
 		local mcWidth = MinimapCluster:GetWidth()
 		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
-		M.ClusterBackdrop:ClearAllPoints()
-		M.ClusterBackdrop:Point('TOPRIGHT', 0, -offset)
-		M.ClusterBackdrop:SetSize(width, height)
 		M.ClusterHolder:SetSize(width, height)
-
+		M.ClusterBackdrop:SetSize(width, height)
 		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
 	else
 		Minimap:SetScale(mmScale)
@@ -606,6 +594,16 @@ function M:CreateQueueStatusText()
 	hooksecurefunc('QueueStatusEntry_SetFullDisplay', M.SetFullQueueStatus)
 end
 
+function M:ClusterPoint(_, anchor)
+	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
+	local holder = (noCluster and _G.UIParent) or M.ClusterHolder
+
+	if anchor ~= holder then
+		MinimapCluster:ClearAllPoints()
+		MinimapCluster:Point('TOPRIGHT', holder, 0, noCluster and 0 or 1)
+	end
+end
+
 function M:Initialize()
 	if E.private.general.minimap.enable then
 		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
@@ -646,15 +644,19 @@ function M:Initialize()
 	if E.Retail then
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
+		clusterHolder:Size(MinimapCluster:GetSize())
 
 		M.ClusterHolder = clusterHolder
 		E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
 
 		local clusterBackdrop = CreateFrame('Frame', 'ElvUI_MinimapClusterBackdrop', MinimapCluster)
+		clusterBackdrop:Point('TOPRIGHT', 0, -1)
 		clusterBackdrop:SetTemplate()
 		M:SetScale(clusterBackdrop, 1)
 		M.ClusterBackdrop = clusterBackdrop
 	end
+
+	hooksecurefunc(MinimapCluster, 'SetPoint', M.ClusterPoint)
 
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Hide() end end)
