@@ -1063,11 +1063,12 @@ function B:Layout(isBank)
 				end
 			end
 
-			local curHeight = 24 * currentRow
-			currencies:Height(curHeight)
+			local height = 24 * currentRow
+			currencies:Height(height)
 
-			if f.bottomOffset ~= (curHeight + 8) then
-				f.bottomOffset = (curHeight + 8)
+			local offset = height + 8
+			if f.bottomOffset ~= offset then
+				f.bottomOffset = offset
 			end
 		end
 	end
