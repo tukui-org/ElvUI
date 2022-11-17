@@ -2584,7 +2584,7 @@ B.BagIndice = {
 	tradegoods = FILTER_FLAG_TRADE_GOODS,
 	quest = FILTER_FLAG_QUEST,
 	junk = FILTER_FLAG_JUNK,
-	reagent = REAGENT_CONTAINER,
+	reagent = REAGENT_CONTAINER, -- 5 should be safe
 }
 
 B.QuestKeys = {
