@@ -477,22 +477,35 @@ function WrapOnClick(button)
 	]])
 end
 
-function Generic:OnButtonEvent(event, key, down)
-	if not GetCVarBool('lockActionBars') then return end
+-- Dynamically handle release casting ~Simpy
+local function UpdateReleaseCasting(self, down)
+	if down then -- being locked
+		self:RegisterForClicks('AnyUp')
+	elseif not self:GetAttribute('pressAndHoldAction') then
+		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
+	elseif GetCVar('empowerTapControls') == '0' then
+		self:RegisterForClicks('AnyDown', 'AnyUp')
+	else
+		self:RegisterForClicks('AnyDown')
+	end
+end
 
-	-- prevent pickup calling spells ~Simpy
+-- prevent pickup calling spells ~Simpy
+function Generic:OnButtonEvent(event, key, down)
+	if event == 'OnLeave' then return end -- unused
+	if not GetCVarBool('lockActionBars') then return end -- not locked
+
+	local clickDown = self.config.clickOnDown or self:GetAttribute('pressAndHoldAction')
+	if not clickDown then return end -- not key downing
+
 	if event == 'MODIFIER_STATE_CHANGED' then
 		if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-			self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+			UpdateReleaseCasting(self, down == 1)
 		end
-	elseif (event == 'OnLeave' or event == 'OnEnter') and (self:GetAttribute('pressAndHoldAction') or self.config.clickOnDown) then
-		if event == 'OnLeave' then
-			self:RegisterForClicks('AnyDown')
-		elseif event == 'OnEnter' then
-			local action = GetModifiedClick('PICKUPACTION')
-			local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-			self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-		end
+	elseif event == 'OnEnter' then
+		local action = GetModifiedClick('PICKUPACTION')
+		local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+		UpdateReleaseCasting(self, dragDown)
 	end
 end
 
@@ -676,8 +689,9 @@ function Generic:OnEnter()
 end
 
 function Generic:OnLeave()
-	if GameTooltip:IsForbidden() then return end
-	GameTooltip:Hide()
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
+	end
 
 	Generic.OnButtonEvent(self, 'OnLeave')
 	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
@@ -1419,6 +1433,8 @@ function Update(self, fromUpdateConfig)
 
 	UpdateSpellHighlight(self)
 
+	UpdateReleaseCasting(self)
+
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
 	end
@@ -1433,15 +1449,6 @@ function Update(self, fromUpdateConfig)
 				control:RunFor(frame, frame:GetAttribute("OnStateChanged"), %s, %s, %s)
 			]]):format(formatHelper(self:GetAttribute("state")), formatHelper(self._state_type), formatHelper(self._state_action)))
 		end
-	end
-
-	-- Dynamically Handle Release Casting ~Simpy
-	if not self:GetAttribute('pressAndHoldAction') then
-		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
-	elseif GetCVar('empowerTapControls') == '0' then
-		self:RegisterForClicks('AnyDown', 'AnyUp')
-	else
-		self:RegisterForClicks('AnyDown')
 	end
 
 	lib.callbacks:Fire("OnButtonUpdate", self)
