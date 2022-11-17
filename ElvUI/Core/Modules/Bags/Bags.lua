@@ -756,7 +756,7 @@ function B:Holder_OnEnter()
 		elseif self.BagID == KEYRING_CONTAINER then
 			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
 		elseif self.bag.numSlots == 0 then
-			GameTooltip:AddLine(_G.EQUIP_CONTAINER, 1, 1, 1)
+			GameTooltip:AddLine(self.BagID == REAGENT_CONTAINER and _G.EQUIP_CONTAINER_REAGENT or _G.EQUIP_CONTAINER, 1, 1, 1)
 		elseif self.isBank then
 			GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
 		else
@@ -766,7 +766,7 @@ function B:Holder_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
 
-		if E.Retail then
+		if E.Retail and (self.BagID ~= BACKPACK_CONTAINER and self.BagID ~= REAGENT_CONTAINER) then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
 		end
 
@@ -1159,9 +1159,8 @@ function B:SetBagAssignments(holder, skip)
 		bag.type = B.BagIndice.reagent
 	else
 		bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
+		bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
 	end
-
-	bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
 
 	if not skip and B:TotalSlotsChanged(frame) then
 		B:Layout(frame.isBank)
@@ -1234,7 +1233,7 @@ function B:OnEvent(event, ...)
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
-			if bagID ~= BACKPACK_CONTAINER and bagID ~= REAGENT_CONTAINER then
+			if bagID ~= BACKPACK_CONTAINER then
 				B:SetBagAssignments(container)
 			end
 
