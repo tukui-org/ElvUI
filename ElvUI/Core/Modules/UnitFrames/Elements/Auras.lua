@@ -21,6 +21,9 @@ UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
 UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' }
 UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
 UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
+UF.SourceStacks = { -- stack any source
+	[370898] = 'Permeating Chill'	-- Evoker
+}
 UF.ExcludeStacks = {
 	[113862] = 'Greater Invisibility',	-- Mage
 	[295378] = 'Concentrated Flame',	-- Heart of Azeroth
@@ -579,7 +582,7 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	if not db then return true end
 
 	if db.stackAuras and not UF.ExcludeStacks[spellID] then
-		local matching = source and castByPlayer and format('%s:%s', source, name) or name
+		local matching = source and castByPlayer and format('%s:%s', UF.SourceStacks[spellID] or source, name) or name
 		local amount = (count and count > 0 and count) or 1
 		local stack = self.stacks[matching]
 		if not stack then

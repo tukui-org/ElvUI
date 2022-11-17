@@ -19,7 +19,6 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCVarBool = GetCVarBool
 local GetInventoryItemTexture = GetInventoryItemTexture
-local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetItemSpell = GetItemSpell
@@ -90,13 +89,15 @@ local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
+local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
+local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
+
 local BANK_CONTAINER = BANK_CONTAINER
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local KEYRING_CONTAINER = KEYRING_CONTAINER
-local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
-local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
-local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
+local REAGENT_CONTAINER = 5
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -109,6 +110,7 @@ local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or BagSlotFlags.P
 local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or BagSlotFlags.PriorityEquipment
 local FILTER_FLAG_IGNORE = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP or BagSlotFlags.DisableAutoSort
 local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or BagSlotFlags.PriorityJunk
+local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
 
 B.GearFilters = {
 	FILTER_FLAG_IGNORE,
@@ -256,7 +258,7 @@ if E.Retail then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
-	tinsert(bagIDs, 5)
+	tinsert(bagIDs, REAGENT_CONTAINER)
 else
 	tinsert(bagIDs, KEYRING_CONTAINER)
 end
@@ -831,9 +833,9 @@ function B:AssignBagFlagMenu()
 	local bagID = holder and holder.BagID
 	if not bagID then return end
 
-	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
-	if canAssign and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(bagID)) then
-		E:SetEasyMenuAnchor(E.EasyMenu, B.AssignBagDropdown.holder)
+	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
+	if canAssign and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+		E:SetEasyMenuAnchor(E.EasyMenu, holder)
 		_G.EasyMenu(B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
@@ -853,7 +855,7 @@ end
 function B:GetFilterFlagInfo(bagID, isBank)
 	for _, flag in next, B.GearFilters do
 		if flag ~= FILTER_FLAG_IGNORE then
-			local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+			local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 			if canAssign and ((isBank and not E.Retail and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag)) or GetBagSlotFlag(bagID, flag)) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
@@ -865,7 +867,7 @@ function B:SetFilterFlag(bagID, flag, value)
 	B.AssignBagDropdown.holder = nil
 
 	local isBank = bagID > NUM_BAG_SLOTS
-	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 	return canAssign and ((isBank and not E.Retail and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value)) or SetBagSlotFlag(bagID, flag, value))
 end
 
@@ -1025,19 +1027,21 @@ function B:Layout(isBank)
 			end
 		else
 			local currentRow = 1
-			local rowSize = B:TokenFrameWidth()
 
 			if E.Retail then
 				local rowWidth = 0
 				for i = 1, B.numTrackedTokens do
 					local token = currencies[i]
 					if not token then return end
+
 					local tokenWidth = token.text:GetWidth() + 28
 					rowWidth = rowWidth + tokenWidth
 					if rowWidth > (B.db.bagWidth - (B.db.bagButtonSpacing * 4)) then
 						currentRow = currentRow + 1
 						rowWidth = tokenWidth
 					end
+
+					token:ClearAllPoints()
 
 					if i == 1 then
 						token:Point('TOPLEFT', currencies, 1, -3)
@@ -1061,11 +1065,12 @@ function B:Layout(isBank)
 				end
 			end
 
-			local curHeight = 24 * currentRow
-			currencies:Height(curHeight)
+			local height = 24 * currentRow
+			currencies:Height(height)
 
-			if f.bottomOffset ~= (curHeight + 8) then
-				f.bottomOffset = (curHeight + 8)
+			local offset = height + 8
+			if f.bottomOffset ~= offset then
+				f.bottomOffset = offset
 			end
 		end
 	end
@@ -1148,10 +1153,12 @@ function B:SetBagAssignments(holder, skip)
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
-	bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
-
 	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
+	elseif holder.BagID == REAGENT_CONTAINER then
+		bag.type = B.BagIndice.reagent
+	else
+		bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
 	end
 
 	bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
@@ -1227,7 +1234,7 @@ function B:OnEvent(event, ...)
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
-			if bagID ~= 0 then
+			if bagID ~= BACKPACK_CONTAINER and bagID ~= REAGENT_CONTAINER then
 				B:SetBagAssignments(container)
 			end
 
@@ -1260,11 +1267,6 @@ function B:OnEvent(event, ...)
 	end
 end
 
-function B:TokenFrameWidth()
-	local tokenWidth = 70 -- you can always track at least one token
-	return max(floor((B.db.bagWidth - (B.db.bagButtonSpacing * 2)) / tokenWidth), 1)
-end
-
 function B:UpdateTokensIfVisible()
 	if B.BagFrame:IsVisible() then
 		B:UpdateTokens()
@@ -1284,7 +1286,8 @@ function B:UpdateTokens()
 		if not (info and info.name) then break end
 
 		local button = currencies[i]
-		button:ClearAllPoints()
+		button.currencyID = info.currencyTypesID
+		button:Show()
 
 		local icon = button.icon or button.Icon
 		icon:SetTexture(info.iconFileID)
@@ -1296,9 +1299,6 @@ function B:UpdateTokens()
 		elseif B.db.currencyFormat == 'ICON' then
 			button.text:SetText(BreakUpLargeNumbers(info.quantity))
 		end
-
-		button.currencyID = info.currencyTypesID
-		button:Show()
 
 		numTokens = numTokens + 1
 	end
@@ -1460,7 +1460,7 @@ end
 function B:UpdateContainerIcon(holder, bagID)
 	if not holder or not bagID or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER then return end
 
-	holder.icon:SetTexture(GetInventoryItemTexture('player', ContainerIDToInventoryID(bagID)) or 136511)
+	holder.icon:SetTexture(GetInventoryItemTexture('player', holder:GetID()) or 136511)
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1588,7 +1588,7 @@ function B:ConstructContainerFrame(name, isBank)
 				holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 				holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			else
-				holder:SetID(bagID == 5 and 5 or GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
+				holder:SetID(ContainerIDToInventoryID(bagID))
 
 				B:UpdateContainerIcon(holder, bagID)
 			end
@@ -1990,7 +1990,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	if bagID == KEYRING_CONTAINER then
 		slot.keyringTexture = slot:CreateTexture(nil, 'BORDER')
-		slot.keyringTexture:SetAlpha(.5)
+		slot.keyringTexture:SetAlpha(0.5)
 		slot.keyringTexture:SetInside(slot)
 		slot.keyringTexture:SetTexture(130980) -- Interface\ContainerFrame\KeyRing-Bag-Icon
 		slot.keyringTexture:SetTexCoord(unpack(E.TexCoords))
@@ -2579,9 +2579,12 @@ B.BagIndice = {
 	mining = 0x400,
 	fishing = 0x8000,
 	cooking = 0x10000,
-	equipment = 2,
-	consumables = 3,
-	tradegoods = 4,
+	equipment = FILTER_FLAG_EQUIPMENT,
+	consumables = FILTER_FLAG_CONSUMABLES,
+	tradegoods = FILTER_FLAG_TRADE_GOODS,
+	quest = FILTER_FLAG_QUEST,
+	junk = FILTER_FLAG_JUNK,
+	reagent = REAGENT_CONTAINER, -- 5 should be safe
 }
 
 B.QuestKeys = {
@@ -2622,7 +2625,7 @@ function B:UpdateBagColors(table, indice, r, g, b)
 		colorTable = B[table][B.BagIndice[indice]]
 	end
 
-	colorTable[1], colorTable[2], colorTable[3] = r, g, b
+	colorTable.r, colorTable.g, colorTable.b = r, g, b
 end
 
 function B:GetBindLines()
@@ -2654,12 +2657,9 @@ function B:Initialize()
 		[FILTER_FLAG_EQUIPMENT] = E:GetColorTable(B.db.colors.assignment.equipment),
 		[FILTER_FLAG_CONSUMABLES] = E:GetColorTable(B.db.colors.assignment.consumables),
 		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),
+		[FILTER_FLAG_QUEST] = E:GetColorTable(B.db.colors.items.questItem),
 		[FILTER_FLAG_JUNK] = E:GetColorTable(B.db.colors.assignment.junk),
 	}
-
-	if E.Retail then
-		B.AssignmentColors[BagSlotFlags.PriorityQuestItems] = E:GetColorTable(B.db.colors.items.questItem)
-	end
 
 	if E.Retail then
 		B.AssignMenu = {
@@ -2717,6 +2717,10 @@ function B:Initialize()
 		[0x8000]	= E:GetColorTable(B.db.colors.profession.fishing),
 		[0x10000]	= E:GetColorTable(B.db.colors.profession.cooking),
 	}
+
+	if E.Retail then
+		B.ProfessionColors[B.BagIndice.reagent] = E:GetColorTable(B.db.colors.profession.reagent)
+	end
 
 	B.QuestColors = {
 		questStarter = E:GetColorTable(B.db.colors.items.questStarter),

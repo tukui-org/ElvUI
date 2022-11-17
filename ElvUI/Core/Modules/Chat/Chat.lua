@@ -382,6 +382,7 @@ do --this can save some main file locals
 		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
 		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
 		z['Dapooc-Stormrage']			= ElvOrange	-- Druid
+		z['Poocvoker-Stormrage']		= ElvGreen	-- Evoker
 		z['Sifupooc-Spirestone']		= ElvBlue	-- Monk
 		z['Repooc-Spirestone']			= ElvBlue	-- Paladin
 		-- Simpy
@@ -394,6 +395,7 @@ do --this can save some main file locals
 		z['Puttietat-Cenarius']			= itsSimpy -- Druid
 		z['Simpy-Cenarius']				= itsSimpy -- Warlock
 		z['Twigly-Cenarius']			= itsSimpy -- Monk
+		z['Duzae-Cenarius']				= itsSimpy -- Evoker
 		z['Imsobeefy-Cenarius']			= itsSimpy -- [Horde] Shaman
 		z['Imsocheesy-Cenarius']		= itsSimpy -- [Horde] Priest
 		z['Imsojelly-Cenarius']			= itsSimpy -- [Horde] DK
