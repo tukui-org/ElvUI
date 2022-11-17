@@ -22,21 +22,21 @@ local function UpdateCharacterInset(name)
 	_G.CharacterFrameInset.backdrop:SetShown(showInsetBackdrop[name])
 end
 
-local function UpdateAzeriteItem(self)
-	if not self.styled then
-		self.styled = true
+local function UpdateAzeriteItem(item)
+	if not item.IsSkinned then
+		item.IsSkinned = true
 
-		self.AzeriteTexture:SetAlpha(0)
-		self.RankFrame.Texture:SetTexture()
-		self.RankFrame.Label:FontTemplate(nil, nil, 'OUTLINE')
+		item.AzeriteTexture:SetAlpha(0)
+		item.RankFrame.Texture:SetTexture()
+		item.RankFrame.Label:FontTemplate(nil, nil, 'OUTLINE')
 	end
 end
 
-local function UpdateAzeriteEmpoweredItem(self)
-	self.AzeriteTexture:SetAtlas('AzeriteIconFrame')
-	self.AzeriteTexture:SetInside()
-	self.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
-	self.AzeriteTexture:SetDrawLayer('BORDER', 1)
+local function UpdateAzeriteEmpoweredItem(item)
+	item.AzeriteTexture:SetAtlas('AzeriteIconFrame')
+	item.AzeriteTexture:SetInside()
+	item.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
+	item.AzeriteTexture:SetDrawLayer('BORDER', 1)
 end
 
 local function ColorizeStatPane(frame)
@@ -126,9 +126,9 @@ local function FixSidebarTabCoords()
 				for _, region in next, { tab:GetRegions() } do
 					region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 
-					hooksecurefunc(region, 'SetTexCoord', function(self, x1)
+					hooksecurefunc(region, 'SetTexCoord', function(tex, x1)
 						if x1 ~= 0.16001 then
-							self:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
+							tex:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
 						end
 					end)
 				end
@@ -372,8 +372,8 @@ function S:CharacterFrame()
 
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if child.Highlight and not child.styled then
-				if not child.styled then
+			if child.Highlight and not child.IsSkinned then
+				if not child.IsSkinned then
 					child.CategoryLeft:SetAlpha(0)
 					child.CategoryRight:SetAlpha(0)
 					child.CategoryMiddle:SetAlpha(0)
@@ -390,10 +390,10 @@ function S:CharacterFrame()
 						child.ExpandIcon.backdrop:SetInside(3, 3)
 					end
 
-					child.styled = true
+					child.IsSkinned = true
 				end
 
-				child.styled = true
+				child.IsSkinned = true
 			end
 
 			if child.isHeader then

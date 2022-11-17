@@ -72,7 +72,7 @@ local function UpdateSpellAbilities(spell, followerInfo)
 end
 
 local function ReskinMissionButton(button)
-	if not button.styled then
+	if not button.IsSkinned then
 		local rareOverlay = button.RareOverlay
 		local rareText = button.RareText
 
@@ -100,7 +100,7 @@ local function ReskinMissionButton(button)
 			button.Overlay.Overlay:SetAllPoints()
 		end
 
-		button.styled = true
+		button.IsSkinned = true
 	end
 end
 
@@ -465,9 +465,9 @@ function S:Blizzard_GarrisonUI()
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
 		local ability = s.Abilities[index]
-		if not ability.styled then
+		if not ability.IsSkinned then
 			S:HandleIcon(ability.Icon, ability)
-			ability.styled = true
+			ability.IsSkinned = true
 		end
 	end)
 
