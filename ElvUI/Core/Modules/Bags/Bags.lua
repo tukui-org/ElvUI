@@ -108,6 +108,7 @@ local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or BagSlotFlags.P
 local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or BagSlotFlags.PriorityEquipment
 local FILTER_FLAG_IGNORE = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP or BagSlotFlags.DisableAutoSort
 local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or BagSlotFlags.PriorityJunk
+local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
 
 B.GearFilters = {
 	FILTER_FLAG_IGNORE,
@@ -1150,10 +1151,12 @@ function B:SetBagAssignments(holder, skip)
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
-	bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
-
 	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
+	elseif holder.BagID == 5 then
+		bag.type = B.BagIndice.reagent
+	else
+		bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
 	end
 
 	bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
@@ -2574,9 +2577,12 @@ B.BagIndice = {
 	mining = 0x400,
 	fishing = 0x8000,
 	cooking = 0x10000,
-	equipment = 2,
-	consumables = 3,
-	tradegoods = 4,
+	equipment = FILTER_FLAG_EQUIPMENT,
+	consumables = FILTER_FLAG_CONSUMABLES,
+	tradegoods = FILTER_FLAG_TRADE_GOODS,
+	quest = FILTER_FLAG_QUEST,
+	junk = FILTER_FLAG_JUNK,
+	reagent = 5,
 }
 
 B.QuestKeys = {
@@ -2617,7 +2623,7 @@ function B:UpdateBagColors(table, indice, r, g, b)
 		colorTable = B[table][B.BagIndice[indice]]
 	end
 
-	colorTable[1], colorTable[2], colorTable[3] = r, g, b
+	colorTable.r, colorTable.g, colorTable.b = r, g, b
 end
 
 function B:GetBindLines()
@@ -2649,12 +2655,9 @@ function B:Initialize()
 		[FILTER_FLAG_EQUIPMENT] = E:GetColorTable(B.db.colors.assignment.equipment),
 		[FILTER_FLAG_CONSUMABLES] = E:GetColorTable(B.db.colors.assignment.consumables),
 		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),
+		[FILTER_FLAG_QUEST] = E:GetColorTable(B.db.colors.items.questItem),
 		[FILTER_FLAG_JUNK] = E:GetColorTable(B.db.colors.assignment.junk),
 	}
-
-	if E.Retail then
-		B.AssignmentColors[BagSlotFlags.PriorityQuestItems] = E:GetColorTable(B.db.colors.items.questItem)
-	end
 
 	if E.Retail then
 		B.AssignMenu = {
@@ -2712,6 +2715,10 @@ function B:Initialize()
 		[0x8000]	= E:GetColorTable(B.db.colors.profession.fishing),
 		[0x10000]	= E:GetColorTable(B.db.colors.profession.cooking),
 	}
+
+	if E.Retail then
+		B.ProfessionColors[B.BagIndice.reagent] = E:GetColorTable(B.db.colors.profession.reagent)
+	end
 
 	B.QuestColors = {
 		questStarter = E:GetColorTable(B.db.colors.items.questStarter),

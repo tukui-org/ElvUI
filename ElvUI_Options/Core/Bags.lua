@@ -150,6 +150,8 @@ Bags.args.colorGroup.args.assignment.inline = true
 Bags.args.colorGroup.args.assignment.args.equipment = ACH:Color(L["BAG_FILTER_EQUIPMENT"])
 Bags.args.colorGroup.args.assignment.args.consumables = ACH:Color(L["BAG_FILTER_CONSUMABLES"])
 Bags.args.colorGroup.args.assignment.args.tradegoods = ACH:Color(L["BAG_FILTER_TRADE_GOODS"])
+Bags.args.colorGroup.args.assignment.args.quest = ACH:Color(L["BAG_FILTER_QUEST_ITEMS"])
+Bags.args.colorGroup.args.assignment.args.junk = ACH:Color(L["BAG_FILTER_JUNK"])
 
 Bags.args.colorGroup.args.profession = ACH:Group(L["Profession Bags"], nil, 2)
 Bags.args.colorGroup.args.profession.inline = true
@@ -163,6 +165,7 @@ Bags.args.colorGroup.args.profession.args.inscription = ACH:Color(L["Inscription
 Bags.args.colorGroup.args.profession.args.keyring = ACH:Color(L["Key Ring"])
 Bags.args.colorGroup.args.profession.args.leatherworking = ACH:Color(L["Leatherworking"])
 Bags.args.colorGroup.args.profession.args.mining = ACH:Color(L["Mining"])
+Bags.args.colorGroup.args.profession.args.reagent = ACH:Color(L["Reagent"])
 
 Bags.args.colorGroup.args.items = ACH:Group(L["Items"], nil, 3)
 Bags.args.colorGroup.args.items.inline = true

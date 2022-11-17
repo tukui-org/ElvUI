@@ -1,6 +1,8 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+L["BAG_FILTER_JUNK"] = "垃圾"
+L["BAG_FILTER_QUEST_ITEMS"] = "任務物品"
 L["Empower Stages"] = true
 L["%s and then %s"] = "%s 與 %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333這個功能在副本或要塞中無法正常使用!|r"

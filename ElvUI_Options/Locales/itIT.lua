@@ -1,6 +1,8 @@
 -- Italian localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "itIT")
 
+L["BAG_FILTER_JUNK"] = "Cianfrusaglie"
+L["BAG_FILTER_QUEST_ITEMS"] = "Oggetti di missione"
 L["Empower Stages"] = true
 L["%s and then %s"] = true
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = true
