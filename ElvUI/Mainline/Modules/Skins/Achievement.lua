@@ -246,7 +246,7 @@ function S:Blizzard_AchievementUI()
 		hooksecurefunc(_G.AchievementFrameCategories.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				local button = child.Button
-				if button and not button.styled then
+				if button and not button.IsSkinned then
 					button:StripTextures()
 					button.Background:Hide()
 					button:CreateBackdrop('Transparent')
@@ -254,7 +254,7 @@ function S:Blizzard_AchievementUI()
 					button.backdrop:Point('BOTTOMRIGHT')
 					SetupButtonHighlight(button, button.backdrop)
 
-					button.styled = true
+					button.IsSkinned = true
 				end
 			end
 		end)

@@ -29,9 +29,9 @@ function UF:Configure_PartyIndicator(frame)
 	PartyIndicator:Point(db.anchorPoint, frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 	PartyIndicator:Size(20 * (db.scale or 1))
 
-	if frame.db.partyIndicator.enable and not frame:IsElementEnabled('PartyIndicator') then
+	if db.enable and not frame:IsElementEnabled('PartyIndicator') then
 		frame:EnableElement('PartyIndicator')
-	elseif not frame.db.partyIndicator.enable and frame:IsElementEnabled('PartyIndicator') then
+	elseif not db.enable and frame:IsElementEnabled('PartyIndicator') then
 		frame:DisableElement('PartyIndicator')
 	end
 end

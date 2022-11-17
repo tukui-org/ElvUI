@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 33 -- the real minor version is 100
+local MINOR_VERSION = 34 -- the real minor version is 100
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -305,6 +305,7 @@ function SetupSecureSnippets(button)
 			self:SetAttribute(action_field, action)
 			self:SetAttribute("action_field", action_field)
 		end
+
 		if IsPressHoldReleaseSpell then
 			local pressAndHold = false
 			if type == "action" then
@@ -331,6 +332,7 @@ function SetupSecureSnippets(button)
 
 			self:SetAttribute("pressAndHoldAction", pressAndHold)
 		end
+
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self:Run(onStateChanged, state, type, action)
@@ -475,23 +477,35 @@ function WrapOnClick(button)
 	]])
 end
 
-function Generic:OnButtonEvent(event, key, down)
-	if event == "GLOBAL_MOUSE_UP" then
-		self:SetButtonState("NORMAL")
-		self:UnregisterEvent(event)
+-- Dynamically handle release casting ~Simpy
+local function UpdateReleaseCasting(self, down)
+	if down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
+		self:RegisterForClicks('AnyUp')
+	elseif not self:GetAttribute('pressAndHoldAction') then
+		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
+	elseif GetCVar('empowerTapControls') == '0' then
+		self:RegisterForClicks('AnyDown', 'AnyUp')
+	else
+		self:RegisterForClicks('AnyDown')
 	end
+end
 
-	-- prevent pickup calling spells ~Simpy
-	if GetCVarBool('lockActionBars') then
-		if event == 'OnLeave' then
-			self:RegisterForClicks('AnyDown')
-		elseif event == 'OnEnter' then
-			local action = GetModifiedClick('PICKUPACTION')
-			local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-			self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-		elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-			self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+-- prevent pickup calling spells ~Simpy
+function Generic:OnButtonEvent(event, key, down)
+	if event == 'OnLeave' then return end -- unused
+	if not GetCVarBool('lockActionBars') then return end -- not locked
+
+	local clickDown = self.config.clickOnDown or self:GetAttribute('pressAndHoldAction')
+	if not clickDown then return end -- not key downing
+
+	if event == 'MODIFIER_STATE_CHANGED' then
+		if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+			UpdateReleaseCasting(self, down == 1)
 		end
+	elseif event == 'OnEnter' then
+		local action = GetModifiedClick('PICKUPACTION')
+		local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+		UpdateReleaseCasting(self, dragDown)
 	end
 end
 
@@ -670,20 +684,17 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	if self.config.clickOnDown then
-		Generic.OnButtonEvent(self, 'OnEnter')
-		self:RegisterEvent('MODIFIER_STATE_CHANGED')
-	end
+	Generic.OnButtonEvent(self, 'OnEnter')
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 function Generic:OnLeave()
-	if GameTooltip:IsForbidden() then return end
-	GameTooltip:Hide()
-
-	if self.config.clickOnDown then
-		Generic.OnButtonEvent(self, 'OnLeave')
-		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	if not GameTooltip:IsForbidden() then
+		GameTooltip:Hide()
 	end
+
+	Generic.OnButtonEvent(self, 'OnLeave')
+	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -735,10 +746,6 @@ function Generic:PostClick(button, down)
 
 	if self._state_type == "action" and lib.ACTION_HIGHLIGHT_MARKS[self._state_action] then
 		ClearNewActionHighlight(self._state_action, false, false)
-	end
-
-	if down and button ~= "Keybind" then
-		self:RegisterEvent("GLOBAL_MOUSE_UP")
 	end
 end
 
@@ -818,8 +825,6 @@ function Generic:UpdateConfig(config)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
 	Update(self, true)
-
-	self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 end
 
 -----------------------------------------------------------
@@ -1428,6 +1433,8 @@ function Update(self, fromUpdateConfig)
 
 	UpdateSpellHighlight(self)
 
+	UpdateReleaseCasting(self)
+
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
 	end
@@ -1443,6 +1450,7 @@ function Update(self, fromUpdateConfig)
 			]]):format(formatHelper(self:GetAttribute("state")), formatHelper(self._state_type), formatHelper(self._state_action)))
 		end
 	end
+
 	lib.callbacks:Fire("OnButtonUpdate", self)
 end
 

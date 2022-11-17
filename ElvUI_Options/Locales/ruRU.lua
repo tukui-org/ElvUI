@@ -1,6 +1,9 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["POWER_TYPE_ESSENCE"] = "Сущность"
+L["BAG_FILTER_JUNK"] = "хлам"
+L["BAG_FILTER_QUEST_ITEMS"] = "предметы для заданий"
 L["Empower Stages"] = true
 L["%s and then %s"] = "%s, а затем %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333 Это не работает в подземельях и гарнизонах!"

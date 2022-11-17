@@ -203,8 +203,8 @@ P.databars = {
 		useCustomFactionColors = false,
 		petExperience = { r = 1, g = 1, b = .41, a = .8 },
 		experience = { r = 0, g = .4, b = 1, a = .8 },
-		rested = { r = 1, g = 0, b = 1, a = .4},
-		quest = { r = 0, g = 1, b = 0, a = .4},
+		rested = { r = 1, g = 0, b = 1, a = .4 },
+		quest = { r = 0, g = 1, b = 0, a = .4 },
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		factionColors = {
@@ -324,6 +324,7 @@ P.bags = {
 	showAssignedIcon = true,
 	colors = {
 		profession = {
+			reagent = { r = 0.53, g = 0.26, b = 1 },
 			ammoPouch = { r = 1, g = 0.69, b = 0.41 },
 			cooking = { r = .87, g = .05, b = .25 },
 			enchanting = { r = .76, g = .02, b = .8 },
@@ -342,11 +343,12 @@ P.bags = {
 			equipment = { r = 0, g = .50, b = .47 },
 			consumables = { r = .57, g = .95, b = .66 },
 			tradegoods = { r = 1, g = .32, b = .66 },
-			junk = { r = .99, g = .23, b = .21 },
+			quest = { r = 0.6, g = 0.2, b = 0.2 },
+			junk = { r = 0.26, g = 0.26, b = 0.26 },
 		},
 		items = {
 			questStarter = { r = 1, g = .96, b = .41 },
-			questItem = { r = 1, g = 0.30, b = 0.30 },
+			questItem = { r = 0.9, g = 0.3, b = 0.3 },
 		}
 	},
 	vendorGrays = {

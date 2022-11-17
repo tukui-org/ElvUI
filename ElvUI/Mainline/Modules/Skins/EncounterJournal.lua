@@ -31,8 +31,8 @@ local function HandleButton(btn, strip, ...)
 	end
 end
 
-local function SkinOverviewInfo(self, _, index)
-	local header = self.overviews[index]
+local function SkinOverviewInfo(frame, _, index)
+	local header = frame.overviews[index]
 	if not header.isSkinned then
 		for i = 4, 18 do
 			select(i, header.button:GetRegions()):SetTexture()
@@ -57,9 +57,9 @@ local function SkinOverviewInfoBullets(object)
 
 	if parent.Bullets then
 		for _, bullet in next, parent.Bullets do
-			if not bullet.styled then
+			if not bullet.IsSkinned then
 				bullet.Text:SetTextColor('P', 1, 1, 1)
-				bullet.styled = true
+				bullet.IsSkinned = true
 			end
 		end
 	end

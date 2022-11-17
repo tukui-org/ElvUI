@@ -1,6 +1,9 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["POWER_TYPE_ESSENCE"] = "精华"
+L["BAG_FILTER_JUNK"] = "垃圾"
+L["BAG_FILTER_QUEST_ITEMS"] = "任务物品"
 L["Empower Stages"] = true
 L["%s and then %s"] = "%s 于 %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333这在副本或要塞中不起作用！|r"

@@ -100,7 +100,7 @@
 	<Script file='GenericTrait.lua'/>
 	<Script file='MajorFaction.lua'/>
 	<Script file='Professions.lua'/>
-	<Script file='ProfessionsCustomerOrders.lua'/>
+	<Script file='ProfessionsOrders.lua'/>
 	<Script file='SettingsPanel.lua'/>
 	<Script file='ChatConfig.lua'/>
 </Ui>

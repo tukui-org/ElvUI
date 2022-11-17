@@ -529,18 +529,13 @@ function S:Blizzard_Communities()
 	S:HandleButton(RecruitmentDialog.Cancel)
 	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
 
-	-- Notification Settings Dialog -- ToDo: Check this if it goes live O.o
-	--local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
-	--NotificationSettings:StripTextures()
-	--NotificationSettings:SetTemplate('Transparent')
-
-	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
-	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
-	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.AllButton)
-	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.NoneButton)
-	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.OkayButton)
-	S:HandleButton(CommunitiesFrame.NotificationSettingsDialog.CancelButton)
-	S:HandleScrollBar(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.ScrollBar)
+	-- Notification Settings Dialog
+	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
+	S:HandleDropDownBox(NotificationSettings.CommunitiesListDropDownMenu)
+	S:HandleCheckBox(NotificationSettings.ScrollFrame.Child.QuickJoinButton)
+	S:HandleButton(NotificationSettings.ScrollFrame.Child.AllButton)
+	S:HandleButton(NotificationSettings.ScrollFrame.Child.NoneButton)
+	S:HandleScrollBar(NotificationSettings.ScrollFrame.ScrollBar)
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog

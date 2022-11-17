@@ -1,6 +1,9 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "trTR")
 
+L["POWER_TYPE_ESSENCE"] = true
+L["BAG_FILTER_JUNK"] = true
+L["BAG_FILTER_QUEST_ITEMS"] = true
 L["Empower Stages"] = true
 L["%s and then %s"] = "%s ve ardından %s"
 L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333Bu, orneklerde veya Garnizonlarda calismaz!|r"
