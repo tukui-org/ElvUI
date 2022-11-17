@@ -481,18 +481,19 @@ function Generic:OnButtonEvent(event, key, down)
 	if event == "GLOBAL_MOUSE_UP" then
 		self:SetButtonState("NORMAL")
 		self:UnregisterEvent(event)
-	end
-
-	-- prevent pickup calling spells ~Simpy
-	if GetCVarBool('lockActionBars') then
-		if event == 'OnLeave' then
-			self:RegisterForClicks('AnyDown')
-		elseif event == 'OnEnter' then
-			local action = GetModifiedClick('PICKUPACTION')
-			local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-			self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-		elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-			self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+	elseif GetCVarBool('lockActionBars') then -- prevent pickup calling spells ~Simpy
+		if event == 'MODIFIER_STATE_CHANGED' then
+			if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+				self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+			end
+		elseif (event == 'OnLeave' or event == 'OnEnter') and (self:GetAttribute('pressAndHoldAction') or self.config.clickOnDown) then
+			if event == 'OnLeave' then
+				self:RegisterForClicks('AnyDown')
+			elseif event == 'OnEnter' then
+				local action = GetModifiedClick('PICKUPACTION')
+				local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+				self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
+			end
 		end
 	end
 end
@@ -672,20 +673,16 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	if self.config.clickOnDown then
-		Generic.OnButtonEvent(self, 'OnEnter')
-		self:RegisterEvent('MODIFIER_STATE_CHANGED')
-	end
+	Generic.OnButtonEvent(self, 'OnEnter')
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 function Generic:OnLeave()
 	if GameTooltip:IsForbidden() then return end
 	GameTooltip:Hide()
 
-	if self.config.clickOnDown then
-		Generic.OnButtonEvent(self, 'OnLeave')
-		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
-	end
+	Generic.OnButtonEvent(self, 'OnLeave')
+	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -1444,7 +1441,7 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
-	-- Dynamically handle Release casting ~Simpy
+	-- Dynamically Handle Release Casting ~Simpy
 	if not self:GetAttribute('pressAndHoldAction') then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	elseif GetCVar('empowerTapControls') == '0' then
