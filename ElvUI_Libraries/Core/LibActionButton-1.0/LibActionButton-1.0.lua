@@ -479,7 +479,7 @@ end
 
 -- Dynamically handle release casting ~Simpy
 local function UpdateReleaseCasting(self, down)
-	if down then -- being locked
+	if down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
 		self:RegisterForClicks('AnyUp')
 	elseif not self:GetAttribute('pressAndHoldAction') then
 		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
