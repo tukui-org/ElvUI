@@ -1,6 +1,7 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 
+L["POWER_TYPE_ESSENCE"] = "Essência"
 L["BAG_FILTER_JUNK"] = "Sucata"
 L["BAG_FILTER_QUEST_ITEMS"] = "Itens de Missão"
 L["Empower Stages"] = true

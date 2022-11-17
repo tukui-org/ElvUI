@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["POWER_TYPE_ESSENCE"] = "Essence"
 L["BAG_FILTER_JUNK"] = "Junk"
 L["BAG_FILTER_QUEST_ITEMS"] = "Quest Items"
 L["Empower Stages"] = true

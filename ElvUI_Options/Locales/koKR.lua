@@ -1,6 +1,7 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 
+L["POWER_TYPE_ESSENCE"] = "정수"
 L["BAG_FILTER_JUNK"] = "잡동사니"
 L["BAG_FILTER_QUEST_ITEMS"] = "퀘스트 아이템"
 L["Empower Stages"] = true

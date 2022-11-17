@@ -70,7 +70,6 @@ for i = 1, GetNumClasses() do
 end
 
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
-local roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' } -- 1 to 20
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
@@ -1075,7 +1074,7 @@ Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil,
 Colors.castBars.args.empowerStage.inline = true
 
 for i = 1, 4 do
-	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(roman[i])
+	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
 Colors.auras = ACH:Group(L["Auras"], nil, nil)
@@ -1183,12 +1182,16 @@ Colors.classResourceGroup.args.COMBO_POINTS.inline = true
 Colors.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.MONK[i], P.unitframe.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.CHI_POWER.inline = true
 
+Colors.classResourceGroup.args.EVOKER = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER[i], P.unitframe.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.classResourceGroup.args.EVOKER.inline = true
+
 for i = 1, 7 do
 	if i ~= 7 then
-		Colors.classResourceGroup.args.CHI_POWER.args[''..i] = ACH:Color(roman[i])
+		Colors.classResourceGroup.args.CHI_POWER.args[''..i] = ACH:Color(C.Values.Roman[i])
+		Colors.classResourceGroup.args.EVOKER.args[''..i] = ACH:Color(C.Values.Roman[i])
 	end
 
-	Colors.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(roman[i])
+	Colors.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
 Colors.classResourceGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DEATHKNIGHT[i], P.unitframe.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Wrath))

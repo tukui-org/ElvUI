@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["POWER_TYPE_ESSENCE"] = "Esencia"
 L["BAG_FILTER_JUNK"] = "Chatarra"
 L["BAG_FILTER_QUEST_ITEMS"] = "Objetos de misión"
 L["Empower Stages"] = "Potenciar Etapas"
