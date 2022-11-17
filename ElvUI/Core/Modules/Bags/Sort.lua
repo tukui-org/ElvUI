@@ -23,6 +23,7 @@ local SplitGuildBankItem = SplitGuildBankItem
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
 local BANK_CONTAINER = BANK_CONTAINER
+local REAGENT_CONTAINER = 5
 
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
@@ -537,7 +538,7 @@ function B:ScanBags()
 end
 
 function B:IsSpecialtyBag(bagID)
-	if bagID == 5 then return 'Reagent' end
+	if bagID == REAGENT_CONTAINER then return 'Reagent' end
 
 	if safe[bagID] or IsGuildBankBag(bagID) then return 'Normal' end
 
@@ -558,7 +559,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local item = bagIDs[B:Encode_BagSlot(bag, slot)]
 	local _, _, _, _, _, _, _, _, equipSlot, _, _, _, _, _, _, _, isReagent = GetItemInfo(item)
-	if targetBag == 5 then return isReagent end
+	if targetBag == REAGENT_CONTAINER then return isReagent end
 
 	local itemFamily = (equipSlot == 'INVTYPE_BAG' and 1) or GetItemFamily(item)
 	if itemFamily then
@@ -881,13 +882,13 @@ function B:DoMove(move)
 		B:PickupItem(targetBag, targetSlot)
 	end
 
-	local sourceReagent = sourceBag == 5
-	local targetReagent = targetBag == 5
 	local sourceGuild = IsGuildBankBag(sourceBag)
 	local targetGuild = IsGuildBankBag(targetBag)
 	if sourceGuild then QueryGuildBankTab(sourceBag - 50) end
 	if targetGuild then QueryGuildBankTab(targetBag - 50) end
 
+	local sourceReagent = sourceBag == REAGENT_CONTAINER
+	local targetReagent = targetBag == REAGENT_CONTAINER
 	return true, sourceItemID, source, targetItemID, target, sourceGuild or targetGuild, sourceReagent or targetReagent
 end
 

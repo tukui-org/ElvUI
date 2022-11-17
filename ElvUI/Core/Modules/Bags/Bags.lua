@@ -89,13 +89,15 @@ local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
+local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
+local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
+
 local BANK_CONTAINER = BANK_CONTAINER
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local KEYRING_CONTAINER = KEYRING_CONTAINER
-local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
-local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
-local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
+local REAGENT_CONTAINER = 5
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -256,7 +258,7 @@ if E.Retail then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
-	tinsert(bagIDs, 5)
+	tinsert(bagIDs, REAGENT_CONTAINER)
 else
 	tinsert(bagIDs, KEYRING_CONTAINER)
 end
@@ -831,7 +833,7 @@ function B:AssignBagFlagMenu()
 	local bagID = holder and holder.BagID
 	if not bagID then return end
 
-	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 	if canAssign and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 		E:SetEasyMenuAnchor(E.EasyMenu, holder)
 		_G.EasyMenu(B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
@@ -853,7 +855,7 @@ end
 function B:GetFilterFlagInfo(bagID, isBank)
 	for _, flag in next, B.GearFilters do
 		if flag ~= FILTER_FLAG_IGNORE then
-			local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+			local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 			if canAssign and ((isBank and not E.Retail and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag)) or GetBagSlotFlag(bagID, flag)) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
@@ -865,7 +867,7 @@ function B:SetFilterFlag(bagID, flag, value)
 	B.AssignBagDropdown.holder = nil
 
 	local isBank = bagID > NUM_BAG_SLOTS
-	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
+	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 	return canAssign and ((isBank and not E.Retail and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value)) or SetBagSlotFlag(bagID, flag, value))
 end
 
@@ -1153,7 +1155,7 @@ function B:SetBagAssignments(holder, skip)
 
 	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
-	elseif holder.BagID == 5 then
+	elseif holder.BagID == REAGENT_CONTAINER then
 		bag.type = B.BagIndice.reagent
 	else
 		bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
@@ -1232,7 +1234,7 @@ function B:OnEvent(event, ...)
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
-			if bagID ~= 0 then
+			if bagID ~= BACKPACK_CONTAINER and bagID ~= REAGENT_CONTAINER then
 				B:SetBagAssignments(container)
 			end
 
@@ -1988,7 +1990,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	if bagID == KEYRING_CONTAINER then
 		slot.keyringTexture = slot:CreateTexture(nil, 'BORDER')
-		slot.keyringTexture:SetAlpha(.5)
+		slot.keyringTexture:SetAlpha(0.5)
 		slot.keyringTexture:SetInside(slot)
 		slot.keyringTexture:SetTexture(130980) -- Interface\ContainerFrame\KeyRing-Bag-Icon
 		slot.keyringTexture:SetTexCoord(unpack(E.TexCoords))
@@ -2582,7 +2584,7 @@ B.BagIndice = {
 	tradegoods = FILTER_FLAG_TRADE_GOODS,
 	quest = FILTER_FLAG_QUEST,
 	junk = FILTER_FLAG_JUNK,
-	reagent = 5,
+	reagent = REAGENT_CONTAINER,
 }
 
 B.QuestKeys = {
