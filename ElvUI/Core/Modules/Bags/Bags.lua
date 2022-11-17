@@ -1780,14 +1780,14 @@ function B:ConstructContainerFrame(name, isBank)
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
 				if E.Retail and B.db.useBlizzardCleanup then
-					C_Container.SortBankBags()
+					SortBankBags()
 				else
 					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
 					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
 				end
 			elseif E.Retail then
-				C_Container.SortReagentBankBags()
+				SortReagentBankBags()
 			end
 		end)
 
@@ -1843,7 +1843,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Sort Button
 		f.sortButton:SetScript('OnClick', function()
 			if E.Retail and B.db.useBlizzardCleanup then
-				C_Container.SortBags()
+				SortBags()
 			else
 				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
 				if not f.sortingSlots then B:SortingFadeBags(f, true) end
