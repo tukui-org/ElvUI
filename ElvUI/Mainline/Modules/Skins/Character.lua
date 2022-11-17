@@ -141,6 +141,8 @@ local function UpdateFactionSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		local container = child.Container
 		if container and not container.IsSkinned then
+			container.IsSkinned = true
+
 			container:StripTextures()
 
 			if container.ExpandOrCollapseButton then
@@ -155,8 +157,6 @@ local function UpdateFactionSkins(frame)
 					E:RegisterStatusBar(container.ReputationBar)
 				end
 			end
-
-			container.IsSkinned = true
 		end
 	end
 end
@@ -373,24 +373,20 @@ function S:CharacterFrame()
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if child.Highlight and not child.IsSkinned then
-				if not child.IsSkinned then
-					child.CategoryLeft:SetAlpha(0)
-					child.CategoryRight:SetAlpha(0)
-					child.CategoryMiddle:SetAlpha(0)
+				child.CategoryLeft:SetAlpha(0)
+				child.CategoryRight:SetAlpha(0)
+				child.CategoryMiddle:SetAlpha(0)
 
-					child.Highlight:SetInside()
-					child.Highlight.SetPoint = E.noop
-					child.Highlight:SetColorTexture(1, 1, 1, .25)
-					child.Highlight.SetTexture = E.noop
+				child.Highlight:SetInside()
+				child.Highlight.SetPoint = E.noop
+				child.Highlight:SetColorTexture(1, 1, 1, .25)
+				child.Highlight.SetTexture = E.noop
 
-					S:HandleIcon(child.Icon)
+				S:HandleIcon(child.Icon)
 
-					if child.ExpandIcon then
-						child.ExpandIcon:CreateBackdrop('Transparent')
-						child.ExpandIcon.backdrop:SetInside(3, 3)
-					end
-
-					child.IsSkinned = true
+				if child.ExpandIcon then
+					child.ExpandIcon:CreateBackdrop('Transparent')
+					child.ExpandIcon.backdrop:SetInside(3, 3)
 				end
 
 				child.IsSkinned = true
