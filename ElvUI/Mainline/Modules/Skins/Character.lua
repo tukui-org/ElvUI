@@ -102,6 +102,12 @@ local function EquipmentUpdateItems()
 	end
 end
 
+local function TabTextureCoords(tex, x1)
+	if x1 ~= 0.16001 then
+		tex:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
+	end
+end
+
 local function FixSidebarTabCoords()
 	for i=1, #_G.PAPERDOLL_SIDEBARS do
 		local tab = _G['PaperDollSidebarTab'..i]
@@ -126,11 +132,7 @@ local function FixSidebarTabCoords()
 				for _, region in next, { tab:GetRegions() } do
 					region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 
-					hooksecurefunc(region, 'SetTexCoord', function(tex, x1)
-						if x1 ~= 0.16001 then
-							tex:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
-						end
-					end)
+					hooksecurefunc(region, 'SetTexCoord', TabTextureCoords)
 				end
 			end
 		end
@@ -152,6 +154,7 @@ local function UpdateFactionSkins(frame)
 			if container.ReputationBar then
 				container.ReputationBar:StripTextures()
 				container.ReputationBar:SetStatusBarTexture(E.media.normTex)
+
 				if not container.ReputationBar.backdrop then
 					container.ReputationBar:CreateBackdrop()
 					E:RegisterStatusBar(container.ReputationBar)
@@ -173,6 +176,12 @@ local function PaperDollUpdateStats()
 		local shown = frame.Background:IsShown()
 		frame.leftGrad:SetShown(shown)
 		frame.rightGrad:SetShown(shown)
+	end
+end
+
+local function BackdropDesaturated(background, value)
+	if value and background.ignoreDesaturated then
+		background:SetDesaturated(false)
 	end
 end
 
@@ -222,11 +231,8 @@ function S:CharacterFrame()
 		if bg then
 			bg:SetDesaturated(false)
 			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
-			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
-				if value and bckgnd.ignoreDesaturated then
-					bckgnd:SetDesaturated(false)
-				end
-			end)
+
+			hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
 		end
 	end
 
