@@ -478,22 +478,20 @@ function WrapOnClick(button)
 end
 
 function Generic:OnButtonEvent(event, key, down)
-	if event == "GLOBAL_MOUSE_UP" then
-		self:SetButtonState("NORMAL")
-		self:UnregisterEvent(event)
-	elseif GetCVarBool('lockActionBars') then -- prevent pickup calling spells ~Simpy
-		if event == 'MODIFIER_STATE_CHANGED' then
-			if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-				self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
-			end
-		elseif (event == 'OnLeave' or event == 'OnEnter') and (self:GetAttribute('pressAndHoldAction') or self.config.clickOnDown) then
-			if event == 'OnLeave' then
-				self:RegisterForClicks('AnyDown')
-			elseif event == 'OnEnter' then
-				local action = GetModifiedClick('PICKUPACTION')
-				local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-				self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
-			end
+	if not GetCVarBool('lockActionBars') then return end
+
+	-- prevent pickup calling spells ~Simpy
+	if event == 'MODIFIER_STATE_CHANGED' then
+		if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+			self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+		end
+	elseif (event == 'OnLeave' or event == 'OnEnter') and (self:GetAttribute('pressAndHoldAction') or self.config.clickOnDown) then
+		if event == 'OnLeave' then
+			self:RegisterForClicks('AnyDown')
+		elseif event == 'OnEnter' then
+			local action = GetModifiedClick('PICKUPACTION')
+			local isDragKeyDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+			self:RegisterForClicks(isDragKeyDown and 'AnyUp' or 'AnyDown')
 		end
 	end
 end
@@ -734,10 +732,6 @@ function Generic:PostClick(button, down)
 
 	if self._state_type == "action" and lib.ACTION_HIGHLIGHT_MARKS[self._state_action] then
 		ClearNewActionHighlight(self._state_action, false, false)
-	end
-
-	if down and button ~= "Keybind" then
-		self:RegisterEvent("GLOBAL_MOUSE_UP")
 	end
 end
 
