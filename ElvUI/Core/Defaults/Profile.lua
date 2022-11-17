@@ -343,12 +343,12 @@ P.bags = {
 			equipment = { r = 0, g = .50, b = .47 },
 			consumables = { r = .57, g = .95, b = .66 },
 			tradegoods = { r = 1, g = .32, b = .66 },
-			quest = { r = 1, g = 0.30, b = 0.30 },
+			quest = { r = 0.6, g = 0.2, b = 0.2 },
 			junk = { r = 0.26, g = 0.26, b = 0.26 },
 		},
 		items = {
 			questStarter = { r = 1, g = .96, b = .41 },
-			questItem = { r = 1, g = 0.30, b = 0.30 },
+			questItem = { r = 0.9, g = 0.3, b = 0.3 },
 		}
 	},
 	vendorGrays = {
