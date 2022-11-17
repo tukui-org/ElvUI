@@ -19,7 +19,6 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCVarBool = GetCVarBool
 local GetInventoryItemTexture = GetInventoryItemTexture
-local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetItemSpell = GetItemSpell
@@ -832,8 +831,8 @@ function B:AssignBagFlagMenu()
 	if not bagID then return end
 
 	local canAssign = bagID ~= 0 and bagID ~= -1 and bagID ~= 5
-	if canAssign and not IsInventoryItemProfessionBag('player', ContainerIDToInventoryID(bagID)) then
-		E:SetEasyMenuAnchor(E.EasyMenu, B.AssignBagDropdown.holder)
+	if canAssign and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+		E:SetEasyMenuAnchor(E.EasyMenu, holder)
 		_G.EasyMenu(B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
@@ -1456,7 +1455,7 @@ end
 function B:UpdateContainerIcon(holder, bagID)
 	if not holder or not bagID or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER then return end
 
-	holder.icon:SetTexture(GetInventoryItemTexture('player', ContainerIDToInventoryID(bagID)) or 136511)
+	holder.icon:SetTexture(GetInventoryItemTexture('player', holder:GetID()) or 136511)
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1584,7 +1583,7 @@ function B:ConstructContainerFrame(name, isBank)
 				holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 				holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			else
-				holder:SetID(bagID == 5 and 5 or GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
+				holder:SetID(ContainerIDToInventoryID(bagID))
 
 				B:UpdateContainerIcon(holder, bagID)
 			end
