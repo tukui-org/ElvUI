@@ -97,7 +97,7 @@ for i = 1, (E.Retail and 12 or 11) do
 	local bag = 'bag'..i
 	local lastSlot = (E.Retail and 5 or 4)
 	if i >= 1 and i <= lastSlot then
-		Bags.args.general.args.playerGroup.args.split.args.splitbags.values[bag] = E.Retail and i == 5 and L["Reagent"] or format(L["Bag %d"], i)
+		Bags.args.general.args.playerGroup.args.split.args.splitbags.values[bag] = i == 5 and L["Reagent"] or format(L["Bag %d"], i)
 	else
 		Bags.args.general.args.bankGroup.args.split.args.splitbank.values[bag] = format(L["Bank %d"], i - lastSlot)
 	end
