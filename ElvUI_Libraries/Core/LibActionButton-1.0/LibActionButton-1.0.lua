@@ -305,6 +305,7 @@ function SetupSecureSnippets(button)
 			self:SetAttribute(action_field, action)
 			self:SetAttribute("action_field", action_field)
 		end
+
 		if IsPressHoldReleaseSpell then
 			local pressAndHold = false
 			if type == "action" then
@@ -331,6 +332,7 @@ function SetupSecureSnippets(button)
 
 			self:SetAttribute("pressAndHoldAction", pressAndHold)
 		end
+
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self:Run(onStateChanged, state, type, action)
@@ -818,8 +820,6 @@ function Generic:UpdateConfig(config)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
 	Update(self, true)
-
-	self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 end
 
 -----------------------------------------------------------
@@ -1443,6 +1443,16 @@ function Update(self, fromUpdateConfig)
 			]]):format(formatHelper(self:GetAttribute("state")), formatHelper(self._state_type), formatHelper(self._state_action)))
 		end
 	end
+
+	-- Dynamically handle Release casting ~Simpy
+	if not self:GetAttribute('pressAndHoldAction') then
+		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+	elseif GetCVar('empowerTapControls') == '0' then
+		self:RegisterForClicks('AnyDown', 'AnyUp')
+	else
+		self:RegisterForClicks('AnyDown')
+	end
+
 	lib.callbacks:Fire("OnButtonUpdate", self)
 end
 
