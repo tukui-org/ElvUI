@@ -492,7 +492,6 @@ end
 
 -- prevent pickup calling spells ~Simpy
 function Generic:OnButtonEvent(event, key, down)
-	if event == 'OnLeave' then return end -- unused
 	if not GetCVarBool('lockActionBars') then return end -- not locked
 
 	local clickDown = self.config.clickOnDown or self:GetAttribute('pressAndHoldAction')
@@ -506,6 +505,8 @@ function Generic:OnButtonEvent(event, key, down)
 		local action = GetModifiedClick('PICKUPACTION')
 		local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
 		UpdateReleaseCasting(self, dragDown)
+	elseif event == 'OnLeave' then
+		UpdateReleaseCasting(self, not self.config.clickOnDown)
 	end
 end
 
