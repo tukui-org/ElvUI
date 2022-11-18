@@ -306,10 +306,6 @@ function SetupSecureSnippets(button)
 			self:SetAttribute("action_field", action_field)
 		end
 
-		if IsPressHoldReleaseSpell then
-			self:SetAttribute("typerelease", type == "action" and "actionrelease" or nil)
-		end
-
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self:Run(onStateChanged, state, type, action)
@@ -1322,17 +1318,18 @@ function Update(self, fromUpdateConfig)
 	end
 
 	local notInCombat = not InCombatLockdown()
+	local updatePressRelease = IsPressHoldReleaseSpell and notInCombat
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
 
 		local abilityName = GetSpellInfo(id)
 		self.abilityName = abilityName
 
-		if IsPressHoldReleaseSpell and notInCombat then
+		if updatePressRelease then
 			local holdRelease
-			if action_type == "spell" then
+			if action_type == 'spell' then
 				holdRelease = IsPressHoldReleaseSpell(id)
-			elseif action_type == "macro" then
+			elseif action_type == 'macro' then
 				local spellID = GetMacroSpell(id)
 				if spellID then
 					holdRelease = IsPressHoldReleaseSpell(spellID)
@@ -1341,6 +1338,7 @@ function Update(self, fromUpdateConfig)
 
 			self.pressReleaseAction = holdRelease
 			self:SetAttribute('pressAndHoldAction', holdRelease)
+			self:SetAttribute('typerelease', 'actionrelease')
 		end
 
 		AuraButtons.buttons[self] = abilityName
@@ -1357,8 +1355,9 @@ function Update(self, fromUpdateConfig)
 				texture = GetLastZoneAbilitySpellTexture()
 			end
 		end
-	elseif IsPressHoldReleaseSpell then
+	elseif updatePressRelease then
 		self.pressReleaseAction = nil
+		self:SetAttribute('typerelease', nil)
 	end
 
 	if texture then
