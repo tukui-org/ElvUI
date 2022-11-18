@@ -216,7 +216,7 @@ ActionBar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() retur
 ActionBar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
 ActionBar.args.microbar.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value; AB:UpdateMicroButtons() end
 
-ActionBar.args.totemBar = ACH:Group(E.NewSign..L["Totem Bar"], nil, 16, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value; AB:PositionAndSizeTotemBar() end, function() return not E.ActionBars.Initialized end, not E.Wrath)
+ActionBar.args.totemBar = ACH:Group(L["Totem Bar"], nil, 16, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value; AB:PositionAndSizeTotemBar() end, function() return not E.ActionBars.Initialized end, not E.Wrath)
 ActionBar.args.totemBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.actionbar.totemBar[info[#info]] = value; E.ShowPopup = true end)
 ActionBar.args.totemBar.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2)
 ActionBar.args.totemBar.args.spacer1 = ACH:Spacer(3, 'full')
