@@ -665,6 +665,7 @@ function M:Initialize()
 		M.ClusterBackdrop = clusterBackdrop
 	end
 
+	M:ClusterPoint()
 	hooksecurefunc(MinimapCluster, 'SetPoint', M.ClusterPoint)
 
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Show() end end)

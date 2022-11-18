@@ -70,10 +70,12 @@ function S:Blizzard_BattlefieldMap()
 	frame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
 
 	local tab = _G.BattlefieldMapTab
+	local position = {}
+
 	scroll:HookScript('OnMouseUp', function(_, btn)
 		if btn == 'LeftButton' then
 			tab:StopMovingOrSizing()
-			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = tab:GetCenter()
+			position.x, position.y = tab:GetCenter()
 		elseif btn == 'RightButton' then
 			_G.UIDropDownMenu_Initialize(tab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
 			_G.ToggleDropDownMenu(1, nil, tab.OptionsDropDown, frame:GetName(), 0, -4)
@@ -86,7 +88,10 @@ function S:Blizzard_BattlefieldMap()
 
 	scroll:HookScript('OnMouseDown', function(_, btn)
 		if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
-			_G.BattlefieldMapOptions.position = {}
+			if _G.BattlefieldMapOptions.position ~= position then
+				_G.BattlefieldMapOptions.position = position
+			end
+
 			tab:StartMoving()
 		end
 	end)

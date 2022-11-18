@@ -1,6 +1,7 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
 
+L["POWER_TYPE_ESSENCE"] = "정수"
 L["BAG_FILTER_JUNK"] = "잡동사니"
 L["BAG_FILTER_QUEST_ITEMS"] = "퀘스트 아이템"
 L["Empower Stages"] = true
@@ -152,10 +153,7 @@ L["Bad Color"] = "나쁨 색상"
 L["Bad Scale"] = "나쁨 범위"
 L["Bad Transition Color"] = "나쁨 전환 색상"
 L["Bad"] = "나쁨"
-L["Bag 1"] = true
-L["Bag 2"] = true
-L["Bag 3"] = true
-L["Bag 4"] = true
+L["Bag %d"] = true
 L["Bag Assignment"] = true
 L["Bag Spacing"] = true
 L["BAG_FILTER_CONSUMABLES"] = "소비용품"
@@ -163,13 +161,7 @@ L["BAG_FILTER_EQUIPMENT"] = "장비"
 L["BAG_FILTER_TRADE_GOODS"] = "직업용품"
 L["Bags Only"] = "가방 안에만"
 L["Bags/Bank"] = "가방/은행"
-L["Bank 1"] = true
-L["Bank 2"] = true
-L["Bank 3"] = true
-L["Bank 4"] = true
-L["Bank 5"] = true
-L["Bank 6"] = true
-L["Bank 7"] = true
+L["Bank %d"] = true
 L["Bank Only"] = "은행 안에만"
 L["Bar %s is used for stance or forms.\nYou will have to adjust paging to use this bar.\nAre you sure?"] = true
 L["Bar Direction"] = "바 방향"

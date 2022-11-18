@@ -17,8 +17,8 @@ local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
 local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
 
-local function clearBackdrop(self)
-	self:SetBackdropColor(0, 0, 0, 0)
+local function clearBackdrop(backdrop)
+	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
 local function toyTextColor(text, r, g, b)
@@ -42,8 +42,8 @@ local function petNameColor(iconBorder, r, g, b)
 	end
 end
 
-local function mountNameColor(self)
-	local button = self:GetParent()
+local function mountNameColor(object)
+	local button = object:GetParent()
 	local name = button.name
 
 	if name:GetFontObject() == _G.GameFontDisable then
@@ -418,7 +418,7 @@ local function SkinHeirloomFrame()
 	E:RegisterStatusBar(HeirloomsJournal.progressBar)
 
 	hooksecurefunc(HeirloomsJournal, 'UpdateButton', function(_, button)
-		if not button.styled then
+		if not button.IsSkinned then
 			S:HandleItemButton(button, true)
 
 			button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
@@ -433,7 +433,7 @@ local function SkinHeirloomFrame()
 			button.cooldown:SetAllPoints(button.iconTexture)
 			E:RegisterCooldown(button.cooldown)
 
-			button.styled = true
+			button.IsSkinned = true
 		end
 
 		button.levelBackground:SetTexture()

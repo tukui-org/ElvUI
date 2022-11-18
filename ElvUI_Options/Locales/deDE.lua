@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
+L["POWER_TYPE_ESSENCE"] = "Essenz"
 L["BAG_FILTER_JUNK"] = "Plunder"
 L["BAG_FILTER_QUEST_ITEMS"] = "Questgegenstände"
 L["Empower Stages"] = true
@@ -155,10 +156,7 @@ L["Bad Color"] = "Schlechte Farbe"
 L["Bad Scale"] = "Schlechte Skalierung"
 L["Bad Transition Color"] = "Schlechte Übergangsfarbe"
 L["Bad"] = "Schlecht"
-L["Bag 1"] = "Tasche 1"
-L["Bag 2"] = "Tasche 2"
-L["Bag 3"] = "Tasche 3"
-L["Bag 4"] = "Tasche 4"
+L["Bag %d"] = "Tasche %d"
 L["Bag Assignment"] = "Taschen Zuweisung"
 L["Bag Spacing"] = "Taschen Abstand"
 L["BAG_FILTER_CONSUMABLES"] = "Verbrauchbare Gegenstände"
@@ -166,13 +164,7 @@ L["BAG_FILTER_EQUIPMENT"] = "Ausrüstung"
 L["BAG_FILTER_TRADE_GOODS"] = "Handwerkswaren"
 L["Bags Only"] = "Nur Taschen"
 L["Bags/Bank"] = "Taschen/Bank"
-L["Bank 1"] = true
-L["Bank 2"] = true
-L["Bank 3"] = true
-L["Bank 4"] = true
-L["Bank 5"] = true
-L["Bank 6"] = true
-L["Bank 7"] = true
+L["Bank %d"] = true
 L["Bank Only"] = "Nur Bank"
 L["Bar %s is used for stance or forms.\nYou will have to adjust paging to use this bar.\nAre you sure?"] = "Diese Leiste %s ist für Haltungen oder Formen.\nDu musst die Sichtbarkeit dieser Leiste anpassen um sie zu nutzen.\nBist du sicher?"
 L["Bar Direction"] = "Leistenrichtung"

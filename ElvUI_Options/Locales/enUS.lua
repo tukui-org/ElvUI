@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["POWER_TYPE_ESSENCE"] = "Essence"
 L["BAG_FILTER_JUNK"] = "Junk"
 L["BAG_FILTER_QUEST_ITEMS"] = "Quest Items"
 L["Empower Stages"] = true
@@ -152,10 +153,7 @@ L["Bad Color"] = true
 L["Bad Scale"] = true
 L["Bad Transition Color"] = true
 L["Bad"] = true
-L["Bag 1"] = true
-L["Bag 2"] = true
-L["Bag 3"] = true
-L["Bag 4"] = true
+L["Bag %d"] = true
 L["Bag Assignment"] = true
 L["Bag Spacing"] = true
 L["BAG_FILTER_CONSUMABLES"] = "Consumables"
@@ -163,13 +161,7 @@ L["BAG_FILTER_EQUIPMENT"] = "Equipment"
 L["BAG_FILTER_TRADE_GOODS"] = "Trade Goods"
 L["Bags Only"] = true
 L["Bags/Bank"] = true
-L["Bank 1"] = true --No need to translate
-L["Bank 2"] = true
-L["Bank 3"] = true
-L["Bank 4"] = true
-L["Bank 5"] = true
-L["Bank 6"] = true
-L["Bank 7"] = true
+L["Bank %d"] = true --No need to translate
 L["Bank Only"] = true
 L["Bar %s is used for stance or forms.\nYou will have to adjust paging to use this bar.\nAre you sure?"] = true
 L["Bar Direction"] = true

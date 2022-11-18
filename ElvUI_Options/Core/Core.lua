@@ -43,7 +43,8 @@ C.Values = {
 		DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
 		FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
 		FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
-	}
+	},
+	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' } -- 1 to 20
 }
 
 do

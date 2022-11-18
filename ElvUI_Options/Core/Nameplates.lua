@@ -549,19 +549,23 @@ E.Options.args.nameplates.args.colorsGroup.args.classResources.args.PALADIN = AC
 E.Options.args.nameplates.args.colorsGroup.args.classResources.args.MAGE = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, nil, nil, nil, not E.Retail)
 E.Options.args.nameplates.args.colorsGroup.args.classResources.args.WARLOCK = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, nil, nil, nil, not E.Retail)
 
-E.Options.args.nameplates.args.colorsGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.MONK[i], P.nameplates.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
-E.Options.args.nameplates.args.colorsGroup.args.CHI_POWER.inline = true
-
 E.Options.args.nameplates.args.colorsGroup.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 10, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.comboPoints[i], P.nameplates.colors.classResources.comboPoints[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 E.Options.args.nameplates.args.colorsGroup.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 E.Options.args.nameplates.args.colorsGroup.args.COMBO_POINTS.inline = true
 
+E.Options.args.nameplates.args.colorsGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.MONK[i], P.nameplates.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.CHI_POWER.inline = true
+
+E.Options.args.nameplates.args.colorsGroup.args.EVOKER = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER[i], P.nameplates.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.EVOKER.inline = true
+
 for i = 1, 7 do
 	if i ~= 7 then
-		E.Options.args.nameplates.args.colorsGroup.args.CHI_POWER.args[''..i] = ACH:Color(L["CHI_POWER"]..' #'..i)
+		E.Options.args.nameplates.args.colorsGroup.args.CHI_POWER.args[''..i] = ACH:Color(C.Values.Roman[i])
+		E.Options.args.nameplates.args.colorsGroup.args.EVOKER.args[''..i] = ACH:Color(C.Values.Roman[i])
 	end
 
-	E.Options.args.nameplates.args.colorsGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(L["COMBO_POINTS"]..' #'..i)
+	E.Options.args.nameplates.args.colorsGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
 E.Options.args.nameplates.args.colorsGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.DEATHKNIGHT[i], P.nameplates.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not (E.Retail or E.Wrath))

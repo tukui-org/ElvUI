@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local _G = _G
 local tinsert, strfind, strmatch = tinsert, strfind, strmatch
 local select, tonumber, format = select, tonumber, format
-local next, max, wipe = next, max, wipe
+local next, max, wipe, gsub = next, max, wipe, gsub
 local utf8sub = string.utf8sub
 
 local UnitIsUnit = UnitIsUnit
@@ -32,8 +32,10 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 function E:InspectGearSlot(line, lineText, slotInfo)
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
-		slotInfo.enchantText = enchant
-		slotInfo.enchantTextShort = utf8sub(enchant, 1, 18)
+		local text = gsub(enchant, '%s?|A.-|a', '')
+		slotInfo.enchantText = text
+		slotInfo.enchantTextShort = utf8sub(text, 1, 18)
+		slotInfo.enchantTextReal = enchant -- contains Atlas
 
 		local lr, lg, lb = line:GetTextColor()
 		slotInfo.enchantColors[1] = lr

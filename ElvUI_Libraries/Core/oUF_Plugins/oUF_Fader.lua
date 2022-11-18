@@ -243,6 +243,11 @@ local options = {
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', Update)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
+
+			if oUF.isRetail then
+				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', Update)
+				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', Update)
+			end
 		end,
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
@@ -262,6 +267,11 @@ local options = {
 	DelayAlpha = {countIgnored = true},
 	Delay = {countIgnored = true},
 }
+
+if oUF.isRetail then
+	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_START')
+	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
+end
 
 if not oUF.isClassic then
 	options.Focus = {

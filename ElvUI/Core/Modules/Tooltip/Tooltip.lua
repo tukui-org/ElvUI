@@ -969,6 +969,12 @@ function TT:SetTooltipFonts()
 	end
 end
 
+function TT:WorldCursorTooltipUpdate(_, state)
+	if not GameTooltip:IsForbidden() and state == 0 then
+		GameTooltip:Hide()
+	end
+end
+
 function TT:Initialize()
 	TT.db = E.db.tooltip
 
@@ -1027,6 +1033,7 @@ function TT:Initialize()
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	if E.Retail then
+		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
