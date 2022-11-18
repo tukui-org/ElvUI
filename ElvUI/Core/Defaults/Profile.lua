@@ -1185,6 +1185,7 @@ P.tooltip = {
 	headerFontSize = 13,
 	smallTextFontSize = 12,
 	colorAlpha = 0.8,
+	fadeOut = true,
 	visibility = {
 		bags = 'SHOW',
 		unitFrames = 'SHOW',

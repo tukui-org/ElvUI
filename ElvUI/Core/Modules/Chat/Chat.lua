@@ -323,15 +323,15 @@ do --this can save some main file locals
 		z['Kalline-Myzrael']		= itsSimpy -- Shaman
 		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvOrange -- [Horde] Hunter
-		z['Luckygrip-Gehennas']		= ElvOrange -- [Horde] DK
-		z['Luckyone-Everlook']		= ElvOrange -- [Alliance] Druid
-		z['Luckypriest-Everlook']	= ElvOrange -- [Alliance] Priest
-		z['Luckyrogue-Everlook']	= ElvOrange -- [Alliance] Rogue
-		z['Luckyhunter-Everlook']	= ElvOrange -- [Alliance] Hunter
-		z['Luckydk-Everlook']		= ElvOrange -- [Alliance] DK
-		z['Luckykek-Everlook']		= ElvOrange -- [Alliance] Shaman
-		z['Luckyone-Giantstalker']	= ElvOrange -- [Alliance] Paladin
+		z['Luckyone-Gehennas']		= ElvRed -- [Horde] Hunter
+		z['Luckygrip-Gehennas']		= ElvRed -- [Horde] DK
+		z['Luckyone-Everlook']		= ElvRed -- [Alliance] Druid
+		z['Luckypriest-Everlook']	= ElvRed -- [Alliance] Priest
+		z['Luckyrogue-Everlook']	= ElvRed -- [Alliance] Rogue
+		z['Luckyhunter-Everlook']	= ElvRed -- [Alliance] Hunter
+		z['Luckydk-Everlook']		= ElvRed -- [Alliance] DK
+		z['Luckykek-Everlook']		= ElvRed -- [Alliance] Shaman
+		z['Luckyone-Giantstalker']	= ElvRed -- [Alliance] Paladin
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
 		z['Repooc-Mankrik']			= ElvBlue
@@ -364,20 +364,20 @@ do --this can save some main file locals
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvOrange -- [Horde] Druid
-		z['Luckypriest-LaughingSkull']	= ElvOrange -- [Horde] Priest
-		z['Luckymonkas-LaughingSkull']	= ElvOrange -- [Horde] Monk
-		z['Luckyhunter-LaughingSkull']	= ElvOrange -- [Horde] Hunter
-		z['Luckydh-LaughingSkull']		= ElvOrange -- [Horde] DH
-		z['Luckymage-LaughingSkull']	= ElvOrange -- [Horde] Mage
-		z['Luckypala-LaughingSkull']	= ElvOrange -- [Horde] Paladin
-		z['Luckyrogue-LaughingSkull']	= ElvOrange -- [Horde] Rogue
-		z['Luckywl-LaughingSkull']		= ElvOrange -- [Horde] Warlock
-		z['Luckydk-LaughingSkull']		= ElvOrange -- [Horde] DK
-		z['Luckyevoker-LaughingSkull']	= ElvOrange -- [Horde] Evoker
-		z['Notlucky-LaughingSkull']		= ElvOrange -- [Horde] Warrior
-		z['Unluckyone-LaughingSkull']	= ElvOrange -- [Horde] Shaman
-		z['Luckydruid-LaughingSkull']	= ElvOrange -- [Alliance] Druid
+		z['Luckyone-LaughingSkull']		= ElvRed -- [Horde] Druid
+		z['Luckypriest-LaughingSkull']	= ElvRed -- [Horde] Priest
+		z['Luckymonkas-LaughingSkull']	= ElvRed -- [Horde] Monk
+		z['Luckyhunter-LaughingSkull']	= ElvRed -- [Horde] Hunter
+		z['Luckydh-LaughingSkull']		= ElvRed -- [Horde] DH
+		z['Luckymage-LaughingSkull']	= ElvRed -- [Horde] Mage
+		z['Luckypala-LaughingSkull']	= ElvRed -- [Horde] Paladin
+		z['Luckyrogue-LaughingSkull']	= ElvRed -- [Horde] Rogue
+		z['Luckywl-LaughingSkull']		= ElvRed -- [Horde] Warlock
+		z['Luckydk-LaughingSkull']		= ElvRed -- [Horde] DK
+		z['Luckyevoker-LaughingSkull']	= ElvRed -- [Horde] Evoker
+		z['Notlucky-LaughingSkull']		= ElvRed -- [Horde] Warrior
+		z['Unluckyone-LaughingSkull']	= ElvRed -- [Horde] Shaman
+		z['Luckydruid-LaughingSkull']	= ElvRed -- [Alliance] Druid
 		-- Repooc
 		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
 		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock

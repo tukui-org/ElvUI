@@ -969,6 +969,20 @@ function TT:SetTooltipFonts()
 	end
 end
 
+function TT:WorldCursorTooltipUpdate(_, state)
+	if GameTooltip:IsForbidden() then return end
+
+	-- recall this, something called Show and stopped it (now with refade option)
+	-- cursor anchor is always hidden right away regardless
+	if state == 0 and not TT.db.cursorAnchor then
+		if TT.db.fadeOut then
+			GameTooltip:FadeOut()
+		else
+			GameTooltip:Hide()
+		end
+	end
+end
+
 function TT:Initialize()
 	TT.db = E.db.tooltip
 
@@ -1027,6 +1041,7 @@ function TT:Initialize()
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	if E.Retail then
+		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
