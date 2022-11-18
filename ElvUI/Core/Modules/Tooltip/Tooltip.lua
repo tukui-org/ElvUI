@@ -1025,6 +1025,7 @@ function TT:Initialize()
 	end
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
+	TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', function(_, state) if not GameTooltip:IsForbidden() and state == 0 then GameTooltip:Hide() end end)
 
 	if E.Retail then
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
