@@ -1301,7 +1301,6 @@ function Update(self, fromUpdateConfig)
 		AuraButtons.buttons[self] = nil
 
 		local auras = AuraButtons.auras[previousAbility]
-
 		for i, button in next, auras do
 			if button == self then
 				tremove(auras, i)
