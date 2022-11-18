@@ -1340,9 +1340,13 @@ function Update(self, fromUpdateConfig)
 
 			tinsert(AuraButtons.auras[spellName], self)
 		end
-	elseif updatePressRelease then
-		self.pressReleaseAction = nil
-		self:SetAttribute('typerelease', nil)
+	else
+		self.abilityName = nil
+
+		if updatePressRelease then
+			self.pressReleaseAction = nil
+			self:SetAttribute('typerelease', nil)
+		end
 	end
 
 	-- Update icon and hotkey
