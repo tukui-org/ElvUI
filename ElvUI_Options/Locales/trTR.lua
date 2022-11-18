@@ -583,6 +583,7 @@ L["Fader"] = "Soldurma"
 L["Fades the buttons that toggle chat windows when that window has been toggled off."] = "Bu pencere kapatıldığında sohbet pencerelerini değiştiren düğmeleri soldurur."
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = "Arka planın devre dışı bırakıldığı bir panele yerleştirilmiş sohbet sekmelerindeki metni soldurur."
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = "Sol veya sağ sohbet paneline yerleştirilmemiş sohbet sekmelerindeki metni soldurur."
+L["Fade out the tooltip when it disappers, instant otherwise. (Cursor anchored tooltips are unaffected)"] = true
 L["Fill"] = "Doldurmak"
 L["Filled"] = "Doldurulmus"
 L["Filter already exists!"] = "Filtre zaten var!"

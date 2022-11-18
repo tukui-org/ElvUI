@@ -583,6 +583,7 @@ L["Fader"] = "Затухание"
 L["Fades the buttons that toggle chat windows when that window has been toggled off."] = "Исчезновение кнопок, которые переключают окна чата, когда это окно было выключено."
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = "Исчезновение текста на вкладках, закрепленных на какой-либо из панелей чата, при отключенном фоне."
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = "Заставляет текст на вкладках, не закрепленных на правой или левой панелях чата, исчезать до наведения курсора."
+L["Fade out the tooltip when it disappers, instant otherwise. (Cursor anchored tooltips are unaffected)"] = true
 L["Fill"] = "Заполнение"
 L["Filled"] = "По ширине рамки"
 L["Filter already exists!"] = "Фильтр уже существует!"

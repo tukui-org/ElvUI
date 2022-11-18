@@ -583,6 +583,7 @@ L["Fader"] = true
 L["Fades the buttons that toggle chat windows when that window has been toggled off."] = true
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = true
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = true
+L["Fade out the tooltip when it disappers, instant otherwise. (Cursor anchored tooltips are unaffected)"] = true
 L["Fill"] = true
 L["Filled"] = true
 L["Filter already exists!"] = true

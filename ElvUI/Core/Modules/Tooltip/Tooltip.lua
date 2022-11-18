@@ -971,7 +971,11 @@ end
 
 function TT:WorldCursorTooltipUpdate(_, state)
 	if not GameTooltip:IsForbidden() and state == 0 then
-		GameTooltip:FadeOut() -- recall this, something called Show and stopped it
+		if TT.db.fadeOut then
+			GameTooltip:FadeOut()
+		else
+			GameTooltip:Hide()
+		end
 	end
 end
 

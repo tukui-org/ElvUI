@@ -589,6 +589,7 @@ L["Fader"] = "Verblassen"
 L["Fades the buttons that toggle chat windows when that window has been toggled off."] = "Blendet die Schaltflächen zum Umschalten von Chatfenstern aus, wenn dieses Fenster ausgeschaltet wurde."
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = "Blendet den Text auf Chat Tabs aus, die in einem Bereich angedockt sind, in dem der Hintergrund deaktiviert ist."
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = "Blendet den Text auf Chat Tabs aus, die nicht am linken oder rechten Chatbereich angedockt sind."
+L["Fade out the tooltip when it disappers, instant otherwise. (Cursor anchored tooltips are unaffected)"] = true
 L["Fill"] = "Füllen"
 L["Filled"] = "Gefüllt"
 L["Filter already exists!"] = "Filter existiert bereits!"

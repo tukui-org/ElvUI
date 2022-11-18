@@ -583,6 +583,7 @@ L["Fader"] = true
 L["Fades the buttons that toggle chat windows when that window has been toggled off."] = true
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = true
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = "좌우 패널에 삽입되지 않은 다른 채팅창들의 채팅탭을 숨깁니다."
+L["Fade out the tooltip when it disappers, instant otherwise. (Cursor anchored tooltips are unaffected)"] = true
 L["Fill"] = "채우기"
 L["Filled"] = "하단에 깔기"
 L["Filter already exists!"] = "필터가 이미 존재합니다!"
