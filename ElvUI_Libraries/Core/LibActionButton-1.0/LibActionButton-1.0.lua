@@ -307,30 +307,7 @@ function SetupSecureSnippets(button)
 		end
 
 		if IsPressHoldReleaseSpell then
-			local pressAndHold = false
-			if type == "action" then
-				self:SetAttribute("typerelease", "actionrelease")
-				local actionType, id = GetActionInfo(action)
-				if actionType == "spell" then
-					pressAndHold = IsPressHoldReleaseSpell(id)
-				elseif actionType == "macro" then
-					-- GetMacroSpell is not in the restricted environment
-					--[=[
-						local spellID = GetMacroSpell(id)
-						if spellID then
-							pressAndHold = IsPressHoldReleaseSpell(spellID)
-						end
-					]=]
-				end
-			elseif type == "spell" then
-				self:SetAttribute("typerelease", nil)
-				-- XXX: while we can query this attribute, there is no corresponding action to release a spell button, only "actionrelease" exists
-				pressAndHold = IsPressHoldReleaseSpell(action)
-			else
-				self:SetAttribute("typerelease", nil)
-			end
-
-			self:SetAttribute("pressAndHoldAction", pressAndHold)
+			self:SetAttribute("typerelease", type == "action" and "actionrelease" or nil)
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
@@ -481,7 +458,7 @@ end
 local function UpdateReleaseCasting(self, down)
 	if down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
 		self:RegisterForClicks('AnyUp')
-	elseif not self:GetAttribute('pressAndHoldAction') then
+	elseif not self.pressReleaseAction then
 		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
 	elseif GetCVar('empowerTapControls') == '0' then
 		self:RegisterForClicks('AnyDown', 'AnyUp')
@@ -494,7 +471,7 @@ end
 function Generic:OnButtonEvent(event, key, down)
 	if not GetCVarBool('lockActionBars') then return end -- not locked
 
-	local clickDown = self.config.clickOnDown or self:GetAttribute('pressAndHoldAction')
+	local clickDown = self.config.clickOnDown or self.pressReleaseAction
 	if not clickDown then return end -- not key downing
 
 	if event == 'MODIFIER_STATE_CHANGED' then
@@ -1346,8 +1323,24 @@ function Update(self, fromUpdateConfig)
 
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
+
 		local abilityName = GetSpellInfo(id)
 		self.abilityName = abilityName
+
+		if IsPressHoldReleaseSpell and not InCombatLockdown() then
+			local holdRelease
+			if action_type == "spell" then
+				holdRelease = IsPressHoldReleaseSpell(id)
+			elseif action_type == "macro" then
+				local spellID = GetMacroSpell(id)
+				if spellID then
+					holdRelease = IsPressHoldReleaseSpell(spellID)
+				end
+			end
+
+			self.pressReleaseAction = holdRelease
+			self:SetAttribute('pressAndHoldAction', holdRelease)
+		end
 
 		AuraButtons.buttons[self] = abilityName
 
@@ -1363,6 +1356,8 @@ function Update(self, fromUpdateConfig)
 				texture = GetLastZoneAbilitySpellTexture()
 			end
 		end
+	elseif IsPressHoldReleaseSpell then
+		self.pressReleaseAction = nil
 	end
 
 	if texture then
