@@ -1321,13 +1321,14 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
+	local notInCombat = not InCombatLockdown()
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
 
 		local abilityName = GetSpellInfo(id)
 		self.abilityName = abilityName
 
-		if IsPressHoldReleaseSpell and not InCombatLockdown() then
+		if IsPressHoldReleaseSpell and notInCombat then
 			local holdRelease
 			if action_type == "spell" then
 				holdRelease = IsPressHoldReleaseSpell(id)
@@ -1436,7 +1437,7 @@ function Update(self, fromUpdateConfig)
 	end
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
-	if not InCombatLockdown() and self._state_type == "action" then
+	if notInCombat and self._state_type == "action" then
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
