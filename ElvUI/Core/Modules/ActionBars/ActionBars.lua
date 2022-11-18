@@ -1583,6 +1583,8 @@ function AB:Initialize()
 	end
 
 	if E.Retail then
+		AB.fadeParent:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START')
+		AB.fadeParent:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
 	end
