@@ -170,7 +170,10 @@ function DB:RegisterCustomQuestXPWatcher(name, func)
 		return
 	end
 
-	DB.CustomQuestXPWatchers = DB.CustomQuestXPWatchers or {}
+	if not DB.CustomQuestXPWatchers then
+		DB.CustomQuestXPWatchers = {}
+	end
+
 	DB.CustomQuestXPWatchers[name] = func
 end
 
