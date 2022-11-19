@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local ipairs, tinsert, tcontains = ipairs, tinsert, tContains
+local ipairs, tinsert, tremove = ipairs, tinsert, tremove
 local format, next, strjoin = format, next, strjoin
 
 local GetLootSpecialization = GetLootSpecialization
@@ -21,14 +21,11 @@ local ShowUIPanel = ShowUIPanel
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
 
-local LoadConfig = C_ClassTalents.LoadConfig
 local GetHasStarterBuild = C_ClassTalents.GetHasStarterBuild
 local GetStarterBuildActive = C_ClassTalents.GetStarterBuildActive
-local SetStarterBuildActive = C_ClassTalents.SetStarterBuildActive
 local GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
 local GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
-local UpdateLastSelectedSavedConfigID = C_ClassTalents.UpdateLastSelectedSavedConfigID
-local PlayerUtil_CanUseClassTalents = PlayerUtil.CanUseClassTalents
+local CanUseClassTalents = PlayerUtil.CanUseClassTalents
 
 local LOOT = LOOT
 local UNKNOWN = UNKNOWN
@@ -57,21 +54,30 @@ local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
-local savedConfigID
-
 local function starter_checked()
 	return GetStarterBuildActive()
 end
 
 local function loadout_checked(data)
-	return data and data.arg1 and data.arg2 == savedConfigID
+	return data and data.arg1 and data.arg2 == DT.ClassTalentsID
 end
-local function loadout_func(_, arg1, arg2)
-	if not _G.ClassTalentFrame then
-		_G.ClassTalentFrame_LoadUI()
+
+local loadout_func
+do
+	local loadoutID
+	local function loadout_callback(_, configID)
+		return configID == loadoutID
 	end
-	
-	ClassTalentFrame.TalentsTab:LoadConfigByPredicate(function(_, configID) return configID == arg2 end)
+
+	function loadout_func(_, _, arg2)
+		if not _G.ClassTalentFrame then
+			_G.ClassTalentFrame_LoadUI()
+		end
+
+		loadoutID = arg2
+
+		_G.ClassTalentFrame.TalentsTab:LoadConfigByPredicate(loadout_callback)
+	end
 end
 
 local function menu_checked(data) return data and data.arg1 == GetLootSpecialization() end
@@ -80,7 +86,7 @@ local function menu_func(_, arg1) SetLootSpecialization(arg1) end
 local function spec_checked(data) return data and data.arg1 == GetSpecialization() end
 local function spec_func(_, arg1) SetSpecialization(arg1) end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event, loadoutID)
 	lastPanel = self
 
 	if #menuList == 2 then
@@ -103,9 +109,9 @@ local function OnEvent(self, event, ...)
 		return
 	end
 
-	if PlayerUtil_CanUseClassTalents() and ( event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_DELETED' ) then
-		if not savedConfigID then
-			savedConfigID = (GetHasStarterBuild() and GetStarterBuildActive() and STARTER_ID) or GetLastSelectedSavedConfigID(ID)
+	if (event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_DELETED') and CanUseClassTalents() then
+		if not DT.ClassTalentsID then
+			DT.ClassTalentsID = (GetHasStarterBuild() and GetStarterBuildActive() and STARTER_ID) or GetLastSelectedSavedConfigID(ID)
 		end
 
 		local builds = GetConfigIDsBySpecID(ID)
@@ -116,7 +122,7 @@ local function OnEvent(self, event, ...)
 		if event == 'TRAIT_CONFIG_DELETED'  then
 			for index = #loadoutList, 2, -1 do -- reverse loop to remove the deleted config from the loadout list
 				local loadout = loadoutList[index]
-				if loadout and loadout.arg2 == ... then
+				if loadout and loadout.arg2 == loadoutID then
 					tremove(loadoutList, index)
 				end
 			end
@@ -134,7 +140,7 @@ local function OnEvent(self, event, ...)
 
 	local activeLoadout = DEFAULT_TEXT
 	for index, loadout in next, loadoutList do
-		if index > 1 and loadout.arg2 == savedConfigID then
+		if index > 1 and loadout.arg2 == DT.ClassTalentsID then
 			activeLoadout = loadout.text
 			break
 		end
@@ -263,13 +269,5 @@ local function ValueColorUpdate()
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
-
-local function UpdateSavedConfigID(_, newConfigID)
-	if not newConfigID then return end
-	savedConfigID = newConfigID 
-	DT:ForceUpdate_DataText('Talent/Loot Specialization')
-end
-
-hooksecurefunc(C_ClassTalents, 'UpdateLastSelectedSavedConfigID', UpdateSavedConfigID)
 
 DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
