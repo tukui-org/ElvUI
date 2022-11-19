@@ -970,12 +970,12 @@ function TT:SetTooltipFonts()
 end
 
 function TT:WorldCursorTooltipUpdate(_, state)
-	if GameTooltip:IsForbidden() then return end
+	if GameTooltip:IsForbidden() or TT.db.cursorAnchor then return end
 
 	-- recall this, something called Show and stopped it (now with refade option)
 	-- cursor anchor is always hidden right away regardless
 	if state == 0 then
-		if TT.db.fadeOut and not TT.db.cursorAnchor then
+		if TT.db.fadeOut then
 			GameTooltip:FadeOut()
 		else
 			GameTooltip:Hide()
