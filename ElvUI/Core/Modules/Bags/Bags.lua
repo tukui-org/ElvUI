@@ -1673,7 +1673,6 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:HookScript('OnTextChanged', B.SearchUpdate)
 	f.editBox:SetScript('OnEscapePressed', B.SearchClear)
 	f.editBox.clearButton:HookScript('OnClick', B.SearchClear)
-	f.editBox:SetShown(E.Retail)
 
 	if isBank then
 		f.notPurchased = {}
