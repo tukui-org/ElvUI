@@ -974,7 +974,7 @@ function TT:WorldCursorTooltipUpdate(_, state)
 
 	-- recall this, something called Show and stopped it (now with refade option)
 	-- cursor anchor is always hidden right away regardless
-	if state == 0 and not TT.db.cursorAnchor then
+	if state == 0 then
 		if TT.db.fadeOut then
 			GameTooltip:FadeOut()
 		else
