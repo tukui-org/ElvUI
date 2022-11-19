@@ -383,7 +383,7 @@ do
 		RGB(db.modRateColor),
 		RGB(ab.targetAuraColor),
 		RGB(ab.expiringAuraColor),
-		--> text colors (0 - 8) <--
+		--> text colors (0 - 9) <--
 		HEX(db.daysIndicator),
 		HEX(db.hoursIndicator),
 		HEX(db.minutesIndicator),
