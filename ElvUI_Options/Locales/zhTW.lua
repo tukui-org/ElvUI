@@ -583,6 +583,7 @@ L["Fader"] = "漸隱"
 L["Fades the buttons that toggle chat windows when that window has been toggled off."] = "在聊天視窗開關時淡出按鍵."
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = "當你把一個聊天框拖出聊天背景框的時候會自動隱藏掉, 注意這個聊天框並沒有被刪除, 關閉該選項你可以重新找到它"
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = "當你把一個聊天框設置為分離狀態時會自動隱藏掉, 注意這個聊天框並沒有被刪除, 關閉該選項你可以重新找到它"
+L["Fade out the tooltip when it disappers, instant otherwise. Cursor anchored tooltips are unaffected."] = true
 L["Fill"] = "填充"
 L["Filled"] = "全長"
 L["Filter already exists!"] = "過濾器已存在！"

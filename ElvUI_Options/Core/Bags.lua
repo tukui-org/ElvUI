@@ -3,10 +3,9 @@ local C, L = unpack(E.Config)
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
 
-local gsub = gsub
-local next = next
-local strmatch = strmatch
-local format = format
+local gsub, next = gsub, next
+local format, strmatch = format, strmatch
+
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
 local GameTooltip = GameTooltip

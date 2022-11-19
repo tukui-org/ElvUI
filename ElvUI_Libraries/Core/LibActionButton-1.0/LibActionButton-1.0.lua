@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 34 -- the real minor version is 100
+local MINOR_VERSION = 35 -- the real minor version is 100
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1233,13 +1233,13 @@ end
 --- button management
 
 function Generic:UpdateAction(force)
-	local action_type, action = self:GetAction()
-	if force or action_type ~= self._state_type or action ~= self._state_action then
+	local actionType, action = self:GetAction()
+	if force or actionType ~= self._state_type or action ~= self._state_action then
 		-- type changed, update the metatable
-		if force or self._state_type ~= action_type then
-			local meta = type_meta_map[action_type] or type_meta_map.empty
+		if force or self._state_type ~= actionType then
+			local meta = type_meta_map[actionType] or type_meta_map.empty
 			setmetatable(self, meta)
-			self._state_type = action_type
+			self._state_type = actionType
 		end
 		self._state_action = action
 		Update(self)
@@ -1295,16 +1295,12 @@ function Update(self, fromUpdateConfig)
 		self.Name:SetText("")
 	end
 
-	-- Update icon and hotkey
-	local texture = self:GetTexture()
-
 	-- Target Aura ~Simpy
 	local previousAbility = AuraButtons.buttons[self]
 	if previousAbility then
 		AuraButtons.buttons[self] = nil
 
 		local auras = AuraButtons.auras[previousAbility]
-
 		for i, button in next, auras do
 			if button == self then
 				tremove(auras, i)
@@ -1318,47 +1314,43 @@ function Update(self, fromUpdateConfig)
 	end
 
 	local notInCombat = not InCombatLockdown()
+	local isTypeAction = self._state_type == 'action'
 	local updatePressRelease = IsPressHoldReleaseSpell and notInCombat
-	if self._state_type == "action" then
-		local action_type, id = GetActionInfo(self._state_action)
-
-		local abilityName = GetSpellInfo(id)
-		self.abilityName = abilityName
+	if isTypeAction then
+		local actionType, actionID = GetActionInfo(self._state_action)
+		local actionSpell, actionMacro = actionType == 'spell', actionType == 'macro'
+		local macroSpell = actionMacro and GetMacroSpell(actionID) or nil
+		local spellID = (actionSpell and actionID) or macroSpell
+		local spellName = spellID and GetSpellInfo(spellID) or nil
 
 		if updatePressRelease then
-			local holdRelease
-			if action_type == 'spell' then
-				holdRelease = IsPressHoldReleaseSpell(id)
-			elseif action_type == 'macro' then
-				local spellID = GetMacroSpell(id)
-				if spellID then
-					holdRelease = IsPressHoldReleaseSpell(spellID)
-				end
-			end
-
-			self.pressReleaseAction = holdRelease
-			self:SetAttribute('pressAndHoldAction', holdRelease)
+			local pressRelease = IsPressHoldReleaseSpell(spellID)
+			self.pressReleaseAction = pressRelease
+			self:SetAttribute('pressAndHoldAction', pressRelease)
 			self:SetAttribute('typerelease', 'actionrelease')
 		end
 
-		AuraButtons.buttons[self] = abilityName
+		self.abilityName = spellName
+		AuraButtons.buttons[self] = spellName
 
-		if abilityName then
-			if not AuraButtons.auras[abilityName] then
-				AuraButtons.auras[abilityName] = {}
+		if spellName then
+			if not AuraButtons.auras[spellName] then
+				AuraButtons.auras[spellName] = {}
 			end
 
-			tinsert(AuraButtons.auras[abilityName], self)
-
-			local baseName = (action_type == "spell" or action_type == "companion") and _G.ZoneAbilityFrame and _G.ZoneAbilityFrame.baseName
-			if baseName and not HasZoneAbility() and (abilityName == GetSpellInfo(baseName)) then
-				texture = GetLastZoneAbilitySpellTexture()
-			end
+			tinsert(AuraButtons.auras[spellName], self)
 		end
-	elseif updatePressRelease then
-		self.pressReleaseAction = nil
-		self:SetAttribute('typerelease', nil)
+	else
+		self.abilityName = nil
+
+		if updatePressRelease then
+			self.pressReleaseAction = nil
+			self:SetAttribute('typerelease', nil)
+		end
 	end
+
+	-- Update icon and hotkey
+	local texture = self:GetTexture()
 
 	if texture then
 		self.icon:SetTexture(texture)
@@ -1436,7 +1428,7 @@ function Update(self, fromUpdateConfig)
 	end
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
-	if notInCombat and self._state_type == "action" then
+	if notInCombat and isTypeAction then
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)

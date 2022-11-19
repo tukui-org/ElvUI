@@ -801,7 +801,7 @@ function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
 		if owner == _G.UIParent and UnitExists('mouseover') then
-			GameTooltip:SetUnit('mouseover')
+			GameTooltip:RefreshData()
 		elseif owner and owner:GetParent() == _G.SpellBookSpellIconsFrame then
 			AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 		end
@@ -970,8 +970,16 @@ function TT:SetTooltipFonts()
 end
 
 function TT:WorldCursorTooltipUpdate(_, state)
-	if not GameTooltip:IsForbidden() and state == 0 then
-		GameTooltip:Hide()
+	if GameTooltip:IsForbidden() or TT.db.cursorAnchor then return end
+
+	-- recall this, something called Show and stopped it (now with refade option)
+	-- cursor anchor is always hidden right away regardless
+	if state == 0 then
+		if TT.db.fadeOut then
+			GameTooltip:FadeOut()
+		else
+			GameTooltip:Hide()
+		end
 	end
 end
 
