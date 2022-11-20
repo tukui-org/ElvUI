@@ -801,7 +801,11 @@ function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
 		if owner == _G.UIParent and UnitExists('mouseover') then
-			GameTooltip:RefreshData()
+			if E.Retail then
+				GameTooltip:RefreshData()
+			else
+				GameTooltip:SetUnit('mouseover')
+			end
 		elseif owner and owner:GetParent() == _G.SpellBookSpellIconsFrame then
 			AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 		end

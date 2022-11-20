@@ -450,7 +450,7 @@ function NP:GetClassAnchor()
 end
 
 function NP:SetupTarget(nameplate, removed)
-	if not NP.db.units then return end
+	if not (NP.db.units and NP.db.units.TARGET) then return end
 
 	local TCP = _G.ElvNP_TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
