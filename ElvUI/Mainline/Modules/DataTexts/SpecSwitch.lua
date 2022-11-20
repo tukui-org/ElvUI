@@ -69,7 +69,7 @@ do
 		return configID == loadoutID
 	end
 
-	function loadout_func(_, _, arg2)
+	loadout_func = function(_, _, arg2)
 		if not _G.ClassTalentFrame then
 			_G.ClassTalentFrame_LoadUI()
 		end
