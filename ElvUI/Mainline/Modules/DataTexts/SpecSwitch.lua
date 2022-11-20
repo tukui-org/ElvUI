@@ -199,7 +199,7 @@ local function OnEnter()
 
 	for index, loadout in next, loadoutList do
 		if index > 1 then
-			local text = loadout:checked(loadout.arg1) and activeString or inactiveString
+			local text = loadout:checked() and activeString or inactiveString
 			DT.tooltip:AddLine(strjoin(' - ', loadout.text, text), 1, 1, 1)
 		end
 	end
