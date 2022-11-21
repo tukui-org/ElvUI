@@ -1009,6 +1009,8 @@ if UseCustomFlyout then
 			end
 		end
 
+		lib.callbacks:Fire("OnFlyoutUpdated")
+
 		SyncFlyoutInfoToHandler()
 	end
 end

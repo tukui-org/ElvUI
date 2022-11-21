@@ -1499,6 +1499,14 @@ function AB:SetButtonDesaturation(button, duration)
 	end
 end
 
+function AB:LAB_FlyoutUpdated()
+	if LAB.FlyoutButtons then
+		for _, btn in next, LAB.FlyoutButtons do
+			AB:SetupFlyoutButton(btn)
+		end
+	end
+end
+
 function AB:LAB_FlyoutCreated(btn)
 	AB:SetupFlyoutButton(btn)
 
@@ -1573,6 +1581,7 @@ function AB:Initialize()
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnFlyoutCreated', AB.LAB_FlyoutCreated)
+	LAB.RegisterCallback(AB, 'OnFlyoutUpdated', AB.LAB_FlyoutUpdated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)

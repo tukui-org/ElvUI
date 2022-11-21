@@ -175,7 +175,7 @@ function AB:BindUpdate(button, spellmacro)
 	button.bindstring = nil -- keep this clean
 
 	if spellmacro == 'FLYOUT' then
-		bind.name = button.spellName or button:GetAttribute('spellName') -- attribute is from the custom flyout
+		bind.name = button.spellName or button:GetAttribute('spellName') -- attribute is from the LAB custom flyout
 		button.bindstring = 'SPELL '..bind.name
 	elseif spellmacro == 'SPELL' then
 		button.id = SpellBook_GetSpellBookSlot(button)
