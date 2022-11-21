@@ -38,9 +38,6 @@ function S:Blizzard_ItemUpgradeUI()
 	button.icon:SetInside(button)
 	S:HandleIcon(button.icon)
 
-	-- Flyout frame
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate()
-
 	if E.private.skins.parchmentRemoverEnable then
 		frame.BottomBGShadow:Hide()
 		frame.BottomBG:Hide()
