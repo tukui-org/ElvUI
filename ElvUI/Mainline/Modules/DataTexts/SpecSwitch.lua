@@ -59,7 +59,7 @@ local function starter_checked()
 end
 
 local function loadout_checked(data)
-	return data and data.arg1 and data.arg2 == DT.ClassTalentsID
+	return data and data.arg1 == DT.ClassTalentsID
 end
 
 local loadout_func
@@ -69,12 +69,12 @@ do
 		return configID == loadoutID
 	end
 
-	function loadout_func(_, _, arg2)
+	loadout_func = function(_, arg1)
 		if not _G.ClassTalentFrame then
 			_G.ClassTalentFrame_LoadUI()
 		end
 
-		loadoutID = arg2
+		loadoutID = arg1
 
 		_G.ClassTalentFrame.TalentsTab:LoadConfigByPredicate(loadout_callback)
 	end
@@ -122,7 +122,7 @@ local function OnEvent(self, event, loadoutID)
 		if event == 'TRAIT_CONFIG_DELETED'  then
 			for index = #loadoutList, 2, -1 do -- reverse loop to remove the deleted config from the loadout list
 				local loadout = loadoutList[index]
-				if loadout and loadout.arg2 == loadoutID then
+				if loadout and loadout.arg1 == loadoutID then
 					tremove(loadoutList, index)
 				end
 			end
@@ -130,17 +130,17 @@ local function OnEvent(self, event, loadoutID)
 
 		for index, configID in next, builds do
 			if configID == STARTER_ID then
-				loadoutList[index + 1] = { text = STARTER_TEXT, checked = starter_checked, func = loadout_func, arg1 = ID, arg2 = STARTER_ID }
+				loadoutList[index + 1] = { text = STARTER_TEXT, checked = starter_checked, func = loadout_func, arg1 = STARTER_ID }
 			else
 				local configInfo = C_Traits_GetConfigInfo(configID)
-				loadoutList[index + 1] = { text = configInfo and configInfo.name or UNKNOWN, checked = loadout_checked, func = loadout_func, arg1 = ID, arg2 = configID }
+				loadoutList[index + 1] = { text = configInfo and configInfo.name or UNKNOWN, checked = loadout_checked, func = loadout_func, arg1 = configID }
 			end
 		end
 	end
 
 	local activeLoadout = DEFAULT_TEXT
 	for index, loadout in next, loadoutList do
-		if index > 1 and loadout.arg2 == DT.ClassTalentsID then
+		if index > 1 and loadout.arg1 == DT.ClassTalentsID then
 			activeLoadout = loadout.text
 			break
 		end
@@ -199,7 +199,7 @@ local function OnEnter()
 
 	for index, loadout in next, loadoutList do
 		if index > 1 then
-			local text = loadout:checked(loadout.arg1, loadout.arg2) and activeString or inactiveString
+			local text = loadout:checked() and activeString or inactiveString
 			DT.tooltip:AddLine(strjoin(' - ', loadout.text, text), 1, 1, 1)
 		end
 	end
