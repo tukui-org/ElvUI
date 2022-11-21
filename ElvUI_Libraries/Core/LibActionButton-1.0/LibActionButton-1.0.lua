@@ -487,9 +487,10 @@ end
 
 -- Dynamically handle release casting ~Simpy
 local function UpdateReleaseCasting(self, down)
-	if self.isFlyout then
-		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
-	elseif down or self.isFlyoutButton then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
+	if self.isFlyout then -- the flyout spell
+		self:RegisterForClicks('AnyDown', 'AnyUp')
+	elseif self.isFlyoutButton -- the bar button
+	or down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
 		self:RegisterForClicks('AnyUp')
 	elseif not self.pressReleaseAction then
 		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')

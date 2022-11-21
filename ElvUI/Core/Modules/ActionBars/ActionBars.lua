@@ -1391,27 +1391,25 @@ function AB:SetupFlyoutButton(button)
 end
 
 function AB:StyleFlyout(button)
-	if not (button.FlyoutBorder and button.FlyoutArrow and button.FlyoutArrow:IsShown() and LAB.buttonRegistry[button]) then return end
+	local arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal)
+	if not (arrow and arrow:IsShown() and LAB.buttonRegistry[button]) then return end
 
-	button.FlyoutBorder:SetAlpha(0)
-	button.FlyoutBorderShadow:SetAlpha(0)
-
-	_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
-	_G.SpellFlyoutVerticalBackground:SetAlpha(0)
-	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
+	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
+	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
+	if _G.SpellFlyoutHorizontalBackground then
+		_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
+		_G.SpellFlyoutVerticalBackground:SetAlpha(0)
+		_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
+	end
 
 	local actionbar = button:GetParent()
 	local parent = actionbar and actionbar:GetParent()
 	local parentName = parent and parent:GetName()
 	if parentName == 'SpellBookSpellIconsFrame' then
 		return
-	elseif actionbar then
-		-- Change arrow direction depending on what bar the button is on
-
-		local arrowDistance = 2
-		if _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button then
-			arrowDistance = 5
-		end
+	elseif actionbar then -- Change arrow direction depending on what bar the button is on
+		local flyout = _G.LABFlyoutHandlerFrame and _G.SpellFlyout
+		local arrowDistance = (flyout:IsShown() and flyout:GetParent() == button and 5) or 2
 
 		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
@@ -1419,24 +1417,24 @@ function AB:StyleFlyout(button)
 
 		local noCombat = not InCombatLockdown()
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
-			SetClampedTextureRotation(button.FlyoutArrow, 180)
+			arrow:ClearAllPoints()
+			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
+			SetClampedTextureRotation(arrow, 180)
 			if noCombat then button:SetAttribute('flyoutDirection', 'DOWN') end
 		elseif direction == 'LEFT' or point == 'RIGHT' then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
-			SetClampedTextureRotation(button.FlyoutArrow, 270)
+			arrow:ClearAllPoints()
+			arrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
+			SetClampedTextureRotation(arrow, 270)
 			if noCombat then button:SetAttribute('flyoutDirection', 'LEFT') end
 		elseif direction == 'RIGHT' or point == 'LEFT' then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
-			SetClampedTextureRotation(button.FlyoutArrow, 90)
+			arrow:ClearAllPoints()
+			arrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
+			SetClampedTextureRotation(arrow, 90)
 			if noCombat then button:SetAttribute('flyoutDirection', 'RIGHT') end
 		elseif direction == 'UP' or point == 'CENTER' or (point and strfind(point, 'BOTTOM')) then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('TOP', button, 'TOP', 0, arrowDistance)
-			SetClampedTextureRotation(button.FlyoutArrow, 0)
+			arrow:ClearAllPoints()
+			arrow:Point('TOP', button, 'TOP', 0, arrowDistance)
+			SetClampedTextureRotation(arrow, 0)
 			if noCombat then button:SetAttribute('flyoutDirection', 'UP') end
 		end
 	end
