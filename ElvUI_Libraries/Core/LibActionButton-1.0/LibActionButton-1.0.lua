@@ -487,7 +487,9 @@ end
 
 -- Dynamically handle release casting ~Simpy
 local function UpdateReleaseCasting(self, down)
-	if down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
+	if self.isFlyout then
+		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
+	elseif down or self.isFlyoutButton then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
 		self:RegisterForClicks('AnyUp')
 	elseif not self.pressReleaseAction then
 		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
@@ -932,6 +934,8 @@ if UseCustomFlyout then
 				button:SetScale(0.8)
 				button:Hide()
 
+				button.isFlyout = true
+
 				-- wrap the onclick to hide the flyout after casting the spell
 				lib.flyoutHandler:WrapScript(button, "OnClick", [[ return nil, true ]], [[ if not down then owner:Hide() end ]])
 
@@ -941,6 +945,8 @@ if UseCustomFlyout then
 				-- link the button to the header
 				lib.flyoutHandler:SetFrameRef("flyoutButton" .. i, button)
 				table.insert(lib.FlyoutButtons, button)
+
+				lib.callbacks:Fire("OnFlyoutCreated", button)
 			end
 
 			lib.flyoutHandler:SetAttribute("numFlyoutButtons", #lib.FlyoutButtons)
@@ -1739,7 +1745,7 @@ function Update(self, fromUpdateConfig)
 	local updatePressRelease = IsPressHoldReleaseSpell and notInCombat
 	if isTypeAction then
 		local actionType, actionID = GetActionInfo(self._state_action)
-		local actionSpell, actionMacro = actionType == 'spell', actionType == 'macro'
+		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
 		local macroSpell = actionMacro and GetMacroSpell(actionID) or nil
 		local spellID = (actionSpell and actionID) or macroSpell
 		local spellName = spellID and GetSpellInfo(spellID) or nil
@@ -1751,6 +1757,7 @@ function Update(self, fromUpdateConfig)
 			self:SetAttribute('typerelease', 'actionrelease')
 		end
 
+		self.isFlyoutButton = actionFlyout
 		self.abilityName = spellName
 		AuraButtons.buttons[self] = spellName
 
@@ -1762,6 +1769,7 @@ function Update(self, fromUpdateConfig)
 			tinsert(AuraButtons.auras[spellName], self)
 		end
 	else
+		self.isFlyoutButton = nil
 		self.abilityName = nil
 
 		if updatePressRelease then
@@ -2242,7 +2250,6 @@ if ActionButton_UpdateFlyout then
 			-- based on ActionButton_UpdateFlyout in ActionButton.lua
 			local actionType = GetActionInfo(self._state_action)
 			if actionType == "flyout" then
-
 				local isFlyoutShown = SpellFlyout and SpellFlyout:IsShown() and SpellFlyout:GetParent() == self
 				local arrowDistance = isFlyoutShown and 1 or 4
 
@@ -2277,7 +2284,7 @@ else
 			-- based on ActionButton_UpdateFlyout in ActionButton.lua
 			local actionType = GetActionInfo(self._state_action)
 			if actionType == "flyout" then
-				local isMouseOverButton =  GetMouseFocus() == self;
+				local isMouseOverButton = GetMouseFocus() == self;
 
 				local isButtonDown
 				if (isButtonDownOverride ~= nil) then
@@ -2330,6 +2337,7 @@ else
 				return
 			end
 		end
+
 		self.FlyoutArrowContainer:Hide()
 	end
 end

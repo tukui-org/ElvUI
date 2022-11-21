@@ -1383,6 +1383,10 @@ function AB:SetupFlyoutButton(button)
 
 	if E.Retail then
 		_G.SpellFlyout.Background:Hide()
+
+		if _G.LABFlyoutHandlerFrame then
+			_G.LABFlyoutHandlerFrame.Background:Hide()
+		end
 	end
 end
 
@@ -1497,6 +1501,11 @@ function AB:SetButtonDesaturation(button, duration)
 	end
 end
 
+function AB:LAB_FlyoutCreated(btn)
+	AB:SetupFlyoutButton(btn)
+	btn:SetScale(1)
+end
+
 function AB:LAB_ChargeCreated(_, cd)
 	E:RegisterCooldown(cd, 'actionbar')
 end
@@ -1563,6 +1572,7 @@ function AB:Initialize()
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
+	LAB.RegisterCallback(AB, 'OnFlyoutCreated', AB.LAB_FlyoutCreated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)
