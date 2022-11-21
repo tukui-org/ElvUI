@@ -479,7 +479,7 @@ function Generic:OnButtonEvent(event, key, down)
 		local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
 		UpdateReleaseCasting(self, dragDown)
 	elseif event == 'OnLeave' then
-		UpdateReleaseCasting(self, not self.config.clickOnDown)
+		UpdateReleaseCasting(self, not clickDown)
 	end
 end
 
