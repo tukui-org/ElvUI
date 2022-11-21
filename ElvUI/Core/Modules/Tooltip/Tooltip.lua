@@ -124,10 +124,6 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		local position = TT.db.healthBar.statusPosition
 		statusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
 
-		if statusBar.text then
-			statusBar.text:Point('CENTER', statusBar, 0, 0)
-		end
-
 		if position == 'BOTTOM' and statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
 			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
@@ -1001,10 +997,12 @@ function TT:Initialize()
 	local statusBar = GameTooltipStatusBar
 	statusBar:Height(TT.db.healthBar.height)
 	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
-	statusBar.text = statusBar:CreateFontString(nil, 'OVERLAY')
-	statusBar.text:Point('CENTER', statusBar, 0, 0)
-	statusBar.text:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
 	GameTooltip.StatusBar = statusBar
+
+	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
+	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	statusText:Point('CENTER', statusBar, 0, 0)
+	statusBar.text = statusText
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then
