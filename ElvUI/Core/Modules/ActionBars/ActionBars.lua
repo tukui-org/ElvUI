@@ -1501,7 +1501,9 @@ end
 
 function AB:LAB_FlyoutCreated(btn)
 	AB:SetupFlyoutButton(btn)
+
 	btn:SetScale(1)
+	btn.MasqueSkinned = true -- skip LAB styling
 end
 
 function AB:LAB_ChargeCreated(_, cd)

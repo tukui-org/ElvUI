@@ -705,6 +705,7 @@ if UseCustomFlyout then
 				-- set secure action attributes
 				slotButton:SetAttribute("type", "spell")
 				slotButton:SetAttribute("spell", slotInfo.spellID)
+				slotButton:SetAttribute("spellName", slotInfo.spellName)
 
 				-- set LAB attributes
 				slotButton:SetAttribute("labtype-0", "spell")
@@ -914,9 +915,9 @@ if UseCustomFlyout then
 		for flyoutID, info in pairs(lib.FlyoutInfo) do
 			if info.isKnown then
 				local numSlots = 0
-				data = data .. ("LAB_FlyoutInfo[%d] = newtable();LAB_FlyoutInfo[%d].slots = newtable();\n"):format(flyoutID, flyoutID)
+				data = data .. ("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n"):format(flyoutID)
 				for slotID, slotInfo in ipairs(info.slots) do
-					data = data .. ("LAB_FlyoutInfo[%d].slots[%d] = newtable();LAB_FlyoutInfo[%d].slots[%d].spellID = %d;LAB_FlyoutInfo[%d].slots[%d].isKnown = %s;\n"):format(flyoutID, slotID, flyoutID, slotID, slotInfo.spellID, flyoutID, slotID, slotInfo.isKnown and "true" or "nil")
+					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
 					numSlots = numSlots + 1
 				end
 
@@ -964,7 +965,7 @@ if UseCustomFlyout then
 			if success then
 				lib.FlyoutInfo[flyoutID] = { numSlots = numSlots, isKnown = isKnown, slots = {} }
 				for slotID = 1, numSlots do
-					local spellID, overrideSpellID, isKnownSlot = GetFlyoutSlotInfo(flyoutID, slotID)
+					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
 					-- hide empty pet slots from the flyout
 					local petIndex, petName = GetCallPetSpellInfo(spellID)
@@ -972,7 +973,7 @@ if UseCustomFlyout then
 						isKnownSlot = false
 					end
 
-					lib.FlyoutInfo[flyoutID].slots[slotID] = { spellID = spellID, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
+					lib.FlyoutInfo[flyoutID].slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
 				end
 			end
 		end
@@ -992,7 +993,7 @@ if UseCustomFlyout then
 			if success then
 				data.isKnown = isKnown
 				for slotID = 1, numSlots do
-					local spellID, overrideSpellID, isKnownSlot = GetFlyoutSlotInfo(flyoutID, slotID)
+					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
 					-- hide empty pet slots from the flyout
 					local petIndex, petName = GetCallPetSpellInfo(spellID)
@@ -1001,6 +1002,7 @@ if UseCustomFlyout then
 					end
 
 					data.slots[slotID].spellID = spellID
+					data.slots[slotID].spellName = spellName
 					data.slots[slotID].overrideSpellID = overrideSpellID
 					data.slots[slotID].isKnown = isKnownSlot
 				end
