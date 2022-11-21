@@ -605,9 +605,13 @@ function AB:UpdateButtonSettings(specific)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
-		end
+			AB:UpdateFlyoutButtons()
 
-		AB:UpdateFlyoutButtons()
+			-- handle LAB custom flyout button sizes again
+			if LAB.FlyoutButtons then
+				AB:LAB_FlyoutUpdated()
+			end
+		end
 	end
 end
 
@@ -1381,12 +1385,12 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:AddButton(button)
 	end
 
-	if E.Retail then
+	if _G.SpellFlyout then
 		_G.SpellFlyout.Background:Hide()
+	end
 
-		if _G.LABFlyoutHandlerFrame then
-			_G.LABFlyoutHandlerFrame.Background:Hide()
-		end
+	if _G.LABFlyoutHandlerFrame then
+		_G.LABFlyoutHandlerFrame.Background:Hide()
 	end
 end
 
@@ -1408,7 +1412,7 @@ function AB:StyleFlyout(button)
 	if parentName == 'SpellBookSpellIconsFrame' then
 		return
 	elseif actionbar then -- Change arrow direction depending on what bar the button is on
-		local arrowDistance = (_G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button and 5) or 2
+		local arrowDistance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button and 5) or 2
 
 		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
