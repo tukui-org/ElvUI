@@ -176,11 +176,11 @@ function AB:BindUpdate(button, spellmacro)
 
 	if spellmacro == 'FLYOUT' then
 		bind.name = button.spellName or button:GetAttribute('spellName') -- attribute is from the LAB custom flyout
-		button.bindstring = 'SPELL '..bind.name
+		if bind.name then button.bindstring = 'SPELL '..bind.name end
 	elseif spellmacro == 'SPELL' then
 		button.id = SpellBook_GetSpellBookSlot(button)
-		bind.name = GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType)
-		button.bindstring = spellmacro..' '..bind.name
+		bind.name = button.id and GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType) or nil
+		if bind.name then button.bindstring = 'SPELL '..bind.name end
 	elseif spellmacro == 'MACRO' then
 		button.id = button.selectionIndex or button:GetID()
 
@@ -189,7 +189,7 @@ function AB:BindUpdate(button, spellmacro)
 		end
 
 		bind.name = GetMacroInfo(button.id)
-		button.bindstring = spellmacro..' '..bind.name
+		if bind.name then button.bindstring = 'MACRO '..bind.name end
 	elseif spellmacro == 'MICRO' then
 		bind.name = button.tooltipText
 		button.bindstring = button.commandName
