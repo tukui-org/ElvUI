@@ -217,7 +217,10 @@ local function Enable(self, unit)
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		MonkStaggerBar:UnregisterEvent('PLAYER_ENTERING_WORLD')
+		if MonkStaggerBar.pauseUpdates ~= nil then
+			MonkStaggerBar:UnregisterEvent('PLAYER_ENTERING_WORLD')
+		end
+
 		MonkStaggerBar:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 		MonkStaggerBar:UnregisterEvent('UNIT_DISPLAYPOWER')
 		MonkStaggerBar:UnregisterEvent('UNIT_EXITED_VEHICLE')
@@ -239,7 +242,10 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 
-		MonkStaggerBar:RegisterEvent('PLAYER_ENTERING_WORLD')
+		if MonkStaggerBar.pauseUpdates ~= nil then
+			MonkStaggerBar:RegisterEvent('PLAYER_ENTERING_WORLD')
+		end
+
 		MonkStaggerBar:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 		MonkStaggerBar:RegisterEvent('UNIT_DISPLAYPOWER')
 		MonkStaggerBar:RegisterEvent('UNIT_EXITED_VEHICLE')
