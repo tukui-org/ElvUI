@@ -84,7 +84,8 @@ function AB:BindListener(key)
 	end
 
 	--Check if this button can open a flyout menu
-	local isFlyout = (bind.button.FlyoutArrow and bind.button.FlyoutArrow:IsShown())
+	local hasArrow = bind.button.FlyoutArrow or (bind.button.FlyoutArrowContainer and bind.button.FlyoutArrowContainer.FlyoutArrowNormal)
+	local isFlyout = (hasArrow and hasArrow:IsShown())
 
 	if key == 'LSHIFT' or key == 'RSHIFT' or key == 'LCTRL' or key == 'RCTRL'
 	or key == 'LALT' or key == 'RALT' or key == 'UNKNOWN' then return end
@@ -174,12 +175,12 @@ function AB:BindUpdate(button, spellmacro)
 	button.bindstring = nil -- keep this clean
 
 	if spellmacro == 'FLYOUT' then
-		bind.name = button.spellName
-		button.bindstring = spellmacro..' '..bind.name
+		bind.name = button.spellName or button:GetAttribute('spellName') -- attribute is from the LAB custom flyout
+		if bind.name then button.bindstring = 'SPELL '..bind.name end
 	elseif spellmacro == 'SPELL' then
 		button.id = SpellBook_GetSpellBookSlot(button)
-		bind.name = GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType)
-		button.bindstring = spellmacro..' '..bind.name
+		bind.name = button.id and GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType) or nil
+		if bind.name then button.bindstring = 'SPELL '..bind.name end
 	elseif spellmacro == 'MACRO' then
 		button.id = button.selectionIndex or button:GetID()
 
@@ -188,7 +189,7 @@ function AB:BindUpdate(button, spellmacro)
 		end
 
 		bind.name = GetMacroInfo(button.id)
-		button.bindstring = spellmacro..' '..bind.name
+		if bind.name then button.bindstring = 'MACRO '..bind.name end
 	elseif spellmacro == 'MICRO' then
 		bind.name = button.tooltipText
 		button.bindstring = button.commandName

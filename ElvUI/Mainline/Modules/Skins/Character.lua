@@ -102,6 +102,18 @@ local function EquipmentUpdateItems()
 	end
 end
 
+local function EquipmentUpdateNavigation()
+	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
+	if not navi then return end
+
+	navi:ClearAllPoints()
+	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+
+	navi:StripTextures()
+	navi:SetTemplate('Transparent')
+end
+
 local function TabTextureCoords(tex, x1)
 	if x1 ~= 0.16001 then
 		tex:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
@@ -260,15 +272,12 @@ function S:CharacterFrame()
 	_G.EquipmentFlyoutFrameHighlight:StripTextures()
 	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
 	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
-	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate('Transparent')
-	_G.EquipmentFlyoutFrame.NavigationFrame:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
-	_G.EquipmentFlyoutFrame.NavigationFrame:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
-	-- Swap item flyout frame (shown when holding alt over a slot)
-	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
+	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
 
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()

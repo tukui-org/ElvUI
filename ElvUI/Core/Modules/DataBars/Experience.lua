@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
-local min, format = min, format
+local min, type, format = min, type, format
+local pairs, error = pairs, error
+
 local CreateFrame = CreateFrame
 local GetXPExhaustion = GetXPExhaustion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
@@ -12,10 +14,10 @@ local GetQuestLogTitle = GetQuestLogTitle
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GameTooltip = GameTooltip
 
+local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
-local C_QuestLog_GetQuestWatchType = C_QuestLog.GetQuestWatchType
 
 local CurrentXP, XPToLevel, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars
 local RestedXP, QuestLogXP = 0, 0
@@ -156,6 +158,25 @@ function DB:ExperienceBar_QuestXP()
 	else
 		bar.Quest:Hide()
 	end
+
+	if DB.CustomQuestXPWatchers then
+		for _, func in pairs(DB.CustomQuestXPWatchers) do
+			func(QuestLogXP)
+		end
+	end
+end
+
+function DB:RegisterCustomQuestXPWatcher(name, func)
+	if not name or not func or type(name) ~= 'string' or type(func) ~= 'function' then
+		error('Usage: DB:RegisterCustomQuestXPWatcher(name [string], func [function])')
+		return
+	end
+
+	if not DB.CustomQuestXPWatchers then
+		DB.CustomQuestXPWatchers = {}
+	end
+
+	DB.CustomQuestXPWatchers[name] = func
 end
 
 function DB:ExperienceBar_OnEnter()

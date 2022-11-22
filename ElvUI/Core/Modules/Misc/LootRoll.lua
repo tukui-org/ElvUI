@@ -260,9 +260,9 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	if cancelled_rolls[rollID] then return end
 	local db = E.db.general.lootRoll
 
-	local link = GetLootRollItemLink(rollID)
+	local itemLink = GetLootRollItemLink(rollID)
 	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
-	local _, _, _, itemLevel, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
+	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 	local color = ITEM_QUALITY_COLORS[quality]
 
 	local f = M:LootFrame_GetFrame()
@@ -271,14 +271,15 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	f.rollID = rollID
 	f.time = rollTime
 
-	f.button.link = link
+	f.button.link = itemLink
 	f.button.rollID = rollID
 	f.button:RegisterEvent('MODIFIER_STATE_CHANGED')
 	f.button.icon:SetTexture(texture)
 	f.button.stack:SetShown(count > 1)
 	f.button.stack:SetText(count)
+	f.button.ilvl:SetShown(B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, quality))
 	f.button.ilvl:SetText(itemLevel)
-	f.button.questIcon:SetShown(B:GetItemQuestInfo(link, bindType, itemClassID))
+	f.button.questIcon:SetShown(B:GetItemQuestInfo(itemLink, bindType, itemClassID))
 
 	f.need:SetEnabled(canNeed)
 	f.greed:SetEnabled(canGreed)

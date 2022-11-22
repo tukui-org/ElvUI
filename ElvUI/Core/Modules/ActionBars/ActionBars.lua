@@ -7,7 +7,6 @@ local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
-local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetCVarBool = GetCVarBool
@@ -46,6 +45,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -605,9 +605,13 @@ function AB:UpdateButtonSettings(specific)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
-		end
+			AB:UpdateFlyoutButtons()
 
-		AB:UpdateFlyoutButtons()
+			-- handle LAB custom flyout button sizes again
+			if LAB.FlyoutButtons then
+				AB:LAB_FlyoutUpdated()
+			end
+		end
 	end
 end
 
@@ -1381,33 +1385,34 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:AddButton(button)
 	end
 
-	if E.Retail then
+	if _G.SpellFlyout then
 		_G.SpellFlyout.Background:Hide()
+	end
+
+	if _G.LABFlyoutHandlerFrame then
+		_G.LABFlyoutHandlerFrame.Background:Hide()
 	end
 end
 
 function AB:StyleFlyout(button)
-	if not (button.FlyoutBorder and button.FlyoutArrow and button.FlyoutArrow:IsShown() and LAB.buttonRegistry[button]) then return end
+	local arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal)
+	if not (arrow and arrow:IsShown() and LAB.buttonRegistry[button]) then return end
 
-	button.FlyoutBorder:SetAlpha(0)
-	button.FlyoutBorderShadow:SetAlpha(0)
-
-	_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
-	_G.SpellFlyoutVerticalBackground:SetAlpha(0)
-	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
+	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
+	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
+	if _G.SpellFlyoutHorizontalBackground then
+		_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
+		_G.SpellFlyoutVerticalBackground:SetAlpha(0)
+		_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
+	end
 
 	local actionbar = button:GetParent()
 	local parent = actionbar and actionbar:GetParent()
 	local parentName = parent and parent:GetName()
 	if parentName == 'SpellBookSpellIconsFrame' then
 		return
-	elseif actionbar then
-		-- Change arrow direction depending on what bar the button is on
-
-		local arrowDistance = 2
-		if _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button then
-			arrowDistance = 5
-		end
+	elseif actionbar then -- Change arrow direction depending on what bar the button is on
+		local arrowDistance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button and 5) or 2
 
 		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
@@ -1415,24 +1420,24 @@ function AB:StyleFlyout(button)
 
 		local noCombat = not InCombatLockdown()
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
-			SetClampedTextureRotation(button.FlyoutArrow, 180)
+			arrow:ClearAllPoints()
+			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
+			SetClampedTextureRotation(arrow, 180)
 			if noCombat then button:SetAttribute('flyoutDirection', 'DOWN') end
 		elseif direction == 'LEFT' or point == 'RIGHT' then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
-			SetClampedTextureRotation(button.FlyoutArrow, 270)
+			arrow:ClearAllPoints()
+			arrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
+			SetClampedTextureRotation(arrow, 270)
 			if noCombat then button:SetAttribute('flyoutDirection', 'LEFT') end
 		elseif direction == 'RIGHT' or point == 'LEFT' then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
-			SetClampedTextureRotation(button.FlyoutArrow, 90)
+			arrow:ClearAllPoints()
+			arrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
+			SetClampedTextureRotation(arrow, 90)
 			if noCombat then button:SetAttribute('flyoutDirection', 'RIGHT') end
 		elseif direction == 'UP' or point == 'CENTER' or (point and strfind(point, 'BOTTOM')) then
-			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point('TOP', button, 'TOP', 0, arrowDistance)
-			SetClampedTextureRotation(button.FlyoutArrow, 0)
+			arrow:ClearAllPoints()
+			arrow:Point('TOP', button, 'TOP', 0, arrowDistance)
+			SetClampedTextureRotation(arrow, 0)
 			if noCombat then button:SetAttribute('flyoutDirection', 'UP') end
 		end
 	end
@@ -1495,6 +1500,21 @@ function AB:SetButtonDesaturation(button, duration)
 		button.icon:SetDesaturated(false)
 		button.saturationLocked = nil
 	end
+end
+
+function AB:LAB_FlyoutUpdated()
+	if LAB.FlyoutButtons then
+		for _, btn in next, LAB.FlyoutButtons do
+			AB:SetupFlyoutButton(btn)
+		end
+	end
+end
+
+function AB:LAB_FlyoutCreated(btn)
+	AB:SetupFlyoutButton(btn)
+
+	btn:SetScale(1)
+	btn.MasqueSkinned = true -- skip LAB styling
 end
 
 function AB:LAB_ChargeCreated(_, cd)
@@ -1563,6 +1583,8 @@ function AB:Initialize()
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
+	LAB.RegisterCallback(AB, 'OnFlyoutCreated', AB.LAB_FlyoutCreated)
+	LAB.RegisterCallback(AB, 'OnFlyoutUpdated', AB.LAB_FlyoutUpdated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)

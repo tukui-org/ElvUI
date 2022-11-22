@@ -785,6 +785,14 @@ function DT:Initialize()
 
 		if E.Retail then
 			hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+
+			hooksecurefunc(_G.C_ClassTalents, 'UpdateLastSelectedSavedConfigID', function(_, newConfigID)
+				if not newConfigID then return end
+
+				DT.ClassTalentsID = newConfigID
+
+				DT:ForceUpdate_DataText('Talent/Loot Specialization')
+			end)
 		else
 			hooksecurefunc('SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
 		end

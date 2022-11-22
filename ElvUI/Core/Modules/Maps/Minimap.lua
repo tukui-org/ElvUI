@@ -199,10 +199,10 @@ end
 
 function M:SetupHybridMinimap()
 	local MapCanvas = _G.HybridMinimap.MapCanvas
-	MapCanvas:SetMaskTexture(E.Media.Textures.White8x8)
 	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
 	MapCanvas:SetScript('OnMouseUp', E.noop)
+	MapCanvas:SetMaskTexture()
 
 	_G.HybridMinimap.CircleMask:StripTextures()
 end
