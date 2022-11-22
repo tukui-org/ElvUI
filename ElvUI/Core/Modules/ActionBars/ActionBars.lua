@@ -1412,31 +1412,30 @@ function AB:StyleFlyout(button)
 	if parentName == 'SpellBookSpellIconsFrame' then
 		return
 	elseif actionbar then -- Change arrow direction depending on what bar the button is on
-		local arrowDistance = (_G.SpellFlyout and _G.SpellFlyout:GetParent() == button and 5) or 2
-
 		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
 		if point == 'UNKNOWN' then return end
 
 		local noCombat = not InCombatLockdown()
+		local distance = (_G.SpellFlyout and _G.SpellFlyout:GetParent() == button and 5) or 2
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
 			arrow:ClearAllPoints()
-			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
+			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -distance)
 			SetClampedTextureRotation(arrow, 180)
 			if noCombat then button:SetAttribute('flyoutDirection', 'DOWN') end
 		elseif direction == 'LEFT' or point == 'RIGHT' then
 			arrow:ClearAllPoints()
-			arrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
+			arrow:Point('LEFT', button, 'LEFT', -distance, 0)
 			SetClampedTextureRotation(arrow, 270)
 			if noCombat then button:SetAttribute('flyoutDirection', 'LEFT') end
 		elseif direction == 'RIGHT' or point == 'LEFT' then
 			arrow:ClearAllPoints()
-			arrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
+			arrow:Point('RIGHT', button, 'RIGHT', distance, 0)
 			SetClampedTextureRotation(arrow, 90)
 			if noCombat then button:SetAttribute('flyoutDirection', 'RIGHT') end
 		elseif direction == 'UP' or point == 'CENTER' or (point and strfind(point, 'BOTTOM')) then
 			arrow:ClearAllPoints()
-			arrow:Point('TOP', button, 'TOP', 0, arrowDistance)
+			arrow:Point('TOP', button, 'TOP', 0, distance)
 			SetClampedTextureRotation(arrow, 0)
 			if noCombat then button:SetAttribute('flyoutDirection', 'UP') end
 		end
