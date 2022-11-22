@@ -609,7 +609,7 @@ function AB:UpdateButtonSettings(specific)
 
 			-- handle LAB custom flyout button sizes again
 			if LAB.FlyoutButtons then
-				AB:LAB_FlyoutUpdated()
+				AB:LAB_FlyoutSpells()
 			end
 		end
 	end
@@ -1362,6 +1362,8 @@ function AB:UpdateFlyoutButtons()
 	local btn, i = _G['SpellFlyoutButton1'], 1
 	while btn do
 		AB:SetupFlyoutButton(btn)
+		AB:StyleFlyout(btn)
+
 		btn.isFlyout = true
 
 		i = i + 1
@@ -1394,30 +1396,33 @@ function AB:SetupFlyoutButton(button)
 	end
 end
 
-function AB:StyleFlyout(button)
-	local arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal)
-	if not (arrow and LAB.buttonRegistry[button]) then return end
+function AB:StyleFlyout(button, arrow)
+	if not AB.handledbuttons[button] then return end
+
+	if not arrow then arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal) end
+	if not arrow then return end
 
 	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
 	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
-	if _G.SpellFlyoutHorizontalBackground then
-		_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
-		_G.SpellFlyoutVerticalBackground:SetAlpha(0)
-		_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
-	end
 
-	local actionbar = button:GetParent()
-	local parent = actionbar and actionbar:GetParent()
-	local parentName = parent and parent:GetName()
-	if parentName == 'SpellBookSpellIconsFrame' then
-		return
-	elseif actionbar then -- Change arrow direction depending on what bar the button is on
-		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
-		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
+	local bar = button:GetParent()
+	local parent = bar:GetParent()
+	local owner = parent and parent:GetParent()
+	local ownerName = owner and owner:GetName()
+
+	local blizz = _G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button
+	local lab = not blizz and (_G.LABFlyoutHandlerFrame and _G.LABFlyoutHandlerFrame:IsShown() and _G.LABFlyoutHandlerFrame:GetParent() == button)
+	local distance = (blizz or lab) and 5 or 2
+
+	if ownerName == 'SpellBookSpellIconsFrame' then
+		arrow:ClearAllPoints()
+		arrow:Point('RIGHT', button, 'RIGHT', distance, 0)
+	elseif bar then -- Change arrow direction depending on what bar the button is on
+		local direction = (bar.db and bar.db.flyoutDirection) or 'AUTOMATIC'
+		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(bar)
 		if point == 'UNKNOWN' then return end
 
 		local noCombat = not InCombatLockdown()
-		local distance = (_G.SpellFlyout and _G.SpellFlyout:GetParent() == button and 5) or 2
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
 			arrow:ClearAllPoints()
 			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -distance)
@@ -1501,7 +1506,11 @@ function AB:SetButtonDesaturation(button, duration)
 	end
 end
 
-function AB:LAB_FlyoutUpdated()
+function AB:LAB_FlyoutUpdate(btn, arrow)
+	AB:StyleFlyout(btn, arrow)
+end
+
+function AB:LAB_FlyoutSpells()
 	if LAB.FlyoutButtons then
 		for _, btn in next, LAB.FlyoutButtons do
 			AB:SetupFlyoutButton(btn)
@@ -1583,7 +1592,8 @@ function AB:Initialize()
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnFlyoutCreated', AB.LAB_FlyoutCreated)
-	LAB.RegisterCallback(AB, 'OnFlyoutUpdated', AB.LAB_FlyoutUpdated)
+	LAB.RegisterCallback(AB, 'OnFlyoutSpells', AB.LAB_FlyoutSpells)
+	LAB.RegisterCallback(AB, 'OnFlyoutUpdate', AB.LAB_FlyoutUpdate)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)

@@ -1011,7 +1011,7 @@ if UseCustomFlyout then
 			end
 		end
 
-		lib.callbacks:Fire("OnFlyoutUpdated")
+		lib.callbacks:Fire("OnFlyoutSpells")
 
 		SyncFlyoutInfoToHandler()
 	end
@@ -2339,6 +2339,8 @@ else
 					SetClampedTextureRotation(flyoutArrowTexture, isFlyoutShown and 180 or 0)
 					flyoutArrowTexture:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 				end
+
+				lib.callbacks:Fire("OnFlyoutUpdate", self, flyoutArrowTexture)
 
 				-- return here, otherwise flyout is hidden
 				return
