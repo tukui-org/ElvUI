@@ -840,7 +840,7 @@ do
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
 
-		AB:StyleFlyout(button)
+		AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
 
 		button.OnEnter = AB.SpellButtonOnEnter
 		button.OnLeave = AB.SpellButtonOnLeave
