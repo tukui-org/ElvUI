@@ -1396,7 +1396,7 @@ end
 
 function AB:StyleFlyout(button)
 	local arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal)
-	if not (arrow and arrow:IsShown() and LAB.buttonRegistry[button]) then return end
+	if not (arrow and LAB.buttonRegistry[button]) then return end
 
 	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
 	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
@@ -1412,7 +1412,7 @@ function AB:StyleFlyout(button)
 	if parentName == 'SpellBookSpellIconsFrame' then
 		return
 	elseif actionbar then -- Change arrow direction depending on what bar the button is on
-		local arrowDistance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button and 5) or 2
+		local arrowDistance = (_G.SpellFlyout and _G.SpellFlyout:GetParent() == button and 5) or 2
 
 		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
