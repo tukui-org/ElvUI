@@ -40,7 +40,6 @@ local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
 local UnitIsUnit = UnitIsUnit
 local UnitStagger = UnitStagger
--- GLOBALS: MonkStaggerBar
 -- end block
 
 -- sourced from FrameXML/Constants.lua
