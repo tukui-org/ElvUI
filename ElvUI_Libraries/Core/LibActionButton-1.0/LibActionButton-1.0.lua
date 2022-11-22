@@ -705,6 +705,8 @@ if UseCustomFlyout then
 				-- set secure action attributes
 				slotButton:SetAttribute("type", "spell")
 				slotButton:SetAttribute("spell", slotInfo.spellID)
+
+				-- custom ones for elvui
 				slotButton:SetAttribute("spellName", slotInfo.spellName)
 				slotButton:SetAttribute("overrideSpellID", slotInfo.overrideSpellID)
 
