@@ -64,6 +64,7 @@ function S:Blizzard_Professions()
 	RankBar.Border:Hide()
 	RankBar.Background:Hide()
 	RankBar.Fill:CreateBackdrop()
+	RankBar.Rank.Text:FontTemplate()
 
 	local LinkButton = CraftingPage.LinkButton
 	LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
