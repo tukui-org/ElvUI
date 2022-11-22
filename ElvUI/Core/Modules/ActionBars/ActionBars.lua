@@ -10,20 +10,20 @@ local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetCVarBool = GetCVarBool
+local GetOverrideBarIndex = GetOverrideBarIndex
 local GetSpellBookItemInfo = GetSpellBookItemInfo
+local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
+local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
-local GetOverrideBarIndex = GetOverrideBarIndex
-local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
-local GetVehicleBarIndex = GetVehicleBarIndex
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -44,6 +44,7 @@ local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
+
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 
@@ -580,6 +581,7 @@ function AB:UpdateButtonSettings(specific)
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
 			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
 			end
@@ -609,7 +611,7 @@ function AB:UpdateButtonSettings(specific)
 
 			-- handle LAB custom flyout button sizes again
 			if LAB.FlyoutButtons then
-				AB:LAB_FlyoutUpdated()
+				AB:LAB_FlyoutSpells()
 			end
 		end
 	end
@@ -838,6 +840,8 @@ do
 	local function FixButton(button)
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+		AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
 
 		button.OnEnter = AB.SpellButtonOnEnter
 		button.OnLeave = AB.SpellButtonOnLeave
@@ -1359,10 +1363,21 @@ function AB:SpellFlyout_OnLeave()
 end
 
 function AB:UpdateFlyoutButtons()
+	if _G.SpellFlyout then _G.SpellFlyout.Background:Hide() end
+	if _G.LABFlyoutHandlerFrame then _G.LABFlyoutHandlerFrame.Background:Hide() end
+
+	local isShown = _G.SpellFlyout:IsShown()
 	local btn, i = _G['SpellFlyoutButton1'], 1
 	while btn do
-		AB:SetupFlyoutButton(btn)
-		btn.isFlyout = true
+		if isShown then
+			AB:SetupFlyoutButton(btn)
+		end
+
+		AB:StyleFlyout(btn)
+
+		if not btn.isFlyout then
+			btn.isFlyout = true -- so we can ignore it on binding
+		end
 
 		i = i + 1
 		btn = _G['SpellFlyoutButton'..i]
@@ -1384,59 +1399,52 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:RemoveButton(button) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
 		MasqueGroup:AddButton(button)
 	end
-
-	if _G.SpellFlyout then
-		_G.SpellFlyout.Background:Hide()
-	end
-
-	if _G.LABFlyoutHandlerFrame then
-		_G.LABFlyoutHandlerFrame.Background:Hide()
-	end
 end
 
-function AB:StyleFlyout(button)
-	local arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal)
-	if not (arrow and arrow:IsShown() and LAB.buttonRegistry[button]) then return end
-
+function AB:StyleFlyout(button, arrow)
 	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
 	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
-	if _G.SpellFlyoutHorizontalBackground then
-		_G.SpellFlyoutHorizontalBackground:SetAlpha(0)
-		_G.SpellFlyoutVerticalBackground:SetAlpha(0)
-		_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
-	end
 
-	local actionbar = button:GetParent()
-	local parent = actionbar and actionbar:GetParent()
-	local parentName = parent and parent:GetName()
-	if parentName == 'SpellBookSpellIconsFrame' then
-		return
-	elseif actionbar then -- Change arrow direction depending on what bar the button is on
-		local arrowDistance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button and 5) or 2
+	local bar = button:GetParent()
+	local barName = bar:GetName()
 
-		local direction = (actionbar.db and actionbar.db.flyoutDirection) or 'AUTOMATIC'
-		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(actionbar)
+	local parent = bar:GetParent()
+	local owner = parent and parent:GetParent()
+	local ownerName = owner and owner:GetName()
+
+	local btn = (ownerName == 'SpellBookSpellIconsFrame' and parent) or button
+	if not arrow then arrow = btn.FlyoutArrow or (btn.FlyoutArrowContainer and btn.FlyoutArrowContainer.FlyoutArrowNormal) end
+	if not arrow then return end
+
+	if barName == 'SpellBookSpellIconsFrame' or ownerName == 'SpellBookSpellIconsFrame' then
+		local distance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == parent) and 7 or 4
+		arrow:ClearAllPoints()
+		arrow:Point('RIGHT', btn, 'RIGHT', distance, 0)
+	elseif bar and AB.handledbuttons[button] then -- Change arrow direction depending on what bar the button is on
+		local direction = (bar.db and bar.db.flyoutDirection) or 'AUTOMATIC'
+		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(bar)
 		if point == 'UNKNOWN' then return end
 
 		local noCombat = not InCombatLockdown()
+		local distance = (_G.LABFlyoutHandlerFrame and _G.LABFlyoutHandlerFrame:IsShown() and _G.LABFlyoutHandlerFrame:GetParent() == button) and 5 or 2
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
 			arrow:ClearAllPoints()
-			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
+			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -distance)
 			SetClampedTextureRotation(arrow, 180)
 			if noCombat then button:SetAttribute('flyoutDirection', 'DOWN') end
 		elseif direction == 'LEFT' or point == 'RIGHT' then
 			arrow:ClearAllPoints()
-			arrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
+			arrow:Point('LEFT', button, 'LEFT', -distance, 0)
 			SetClampedTextureRotation(arrow, 270)
 			if noCombat then button:SetAttribute('flyoutDirection', 'LEFT') end
 		elseif direction == 'RIGHT' or point == 'LEFT' then
 			arrow:ClearAllPoints()
-			arrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
+			arrow:Point('RIGHT', button, 'RIGHT', distance, 0)
 			SetClampedTextureRotation(arrow, 90)
 			if noCombat then button:SetAttribute('flyoutDirection', 'RIGHT') end
 		elseif direction == 'UP' or point == 'CENTER' or (point and strfind(point, 'BOTTOM')) then
 			arrow:ClearAllPoints()
-			arrow:Point('TOP', button, 'TOP', 0, arrowDistance)
+			arrow:Point('TOP', button, 'TOP', 0, distance)
 			SetClampedTextureRotation(arrow, 0)
 			if noCombat then button:SetAttribute('flyoutDirection', 'UP') end
 		end
@@ -1502,7 +1510,11 @@ function AB:SetButtonDesaturation(button, duration)
 	end
 end
 
-function AB:LAB_FlyoutUpdated()
+function AB:LAB_FlyoutUpdate(btn, arrow)
+	AB:StyleFlyout(btn, arrow)
+end
+
+function AB:LAB_FlyoutSpells()
 	if LAB.FlyoutButtons then
 		for _, btn in next, LAB.FlyoutButtons do
 			AB:SetupFlyoutButton(btn)
@@ -1584,7 +1596,8 @@ function AB:Initialize()
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnFlyoutCreated', AB.LAB_FlyoutCreated)
-	LAB.RegisterCallback(AB, 'OnFlyoutUpdated', AB.LAB_FlyoutUpdated)
+	LAB.RegisterCallback(AB, 'OnFlyoutSpells', AB.LAB_FlyoutSpells)
+	LAB.RegisterCallback(AB, 'OnFlyoutUpdate', AB.LAB_FlyoutUpdate)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)
@@ -1674,6 +1687,8 @@ function AB:Initialize()
 
 	if E.Retail then
 		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
+		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
+
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 	end

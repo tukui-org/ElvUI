@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 36 -- the real minor version is 102
+local MINOR_VERSION = 37 -- the real minor version is 102
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1011,7 +1011,7 @@ if UseCustomFlyout then
 			end
 		end
 
-		lib.callbacks:Fire("OnFlyoutUpdated")
+		lib.callbacks:Fire("OnFlyoutSpells")
 
 		SyncFlyoutInfoToHandler()
 	end
@@ -2339,6 +2339,8 @@ else
 					SetClampedTextureRotation(flyoutArrowTexture, isFlyoutShown and 180 or 0)
 					flyoutArrowTexture:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 				end
+
+				lib.callbacks:Fire("OnFlyoutUpdate", self, flyoutArrowTexture)
 
 				-- return here, otherwise flyout is hidden
 				return
