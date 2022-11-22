@@ -766,7 +766,7 @@ function B:Holder_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
 
-		if E.Retail and (self.BagID ~= BACKPACK_CONTAINER and self.BagID ~= REAGENT_CONTAINER) then
+		if E.Retail then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
 		end
 
@@ -831,12 +831,9 @@ end
 function B:AssignBagFlagMenu()
 	local holder = B.AssignBagDropdown.holder
 	local bagID = holder and holder.BagID
-	if not bagID then return end
-
-	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-	if canAssign and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+	if bagID and bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 		E:SetEasyMenuAnchor(E.EasyMenu, holder)
-		_G.EasyMenu(B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
+		_G.EasyMenu((bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.AssignMain or B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 
@@ -2661,29 +2658,30 @@ function B:Initialize()
 	}
 
 	if E.Retail then
-		B.AssignMenu = {
-			{ text = BAG_FILTER_ASSIGN_TO, isTitle = true, notCheckable = true },
-			{ text = BAG_FILTER_CLEANUP, isTitle = true, notCheckable = true },
-			{ text = BAG_FILTER_IGNORE,
-				checked = function()
-					return B:IsSortIgnored(B.AssignBagDropdown.holder.BagID)
-				end,
-				func = function(_, _, _, value)
-					local BagID = B.AssignBagDropdown.holder.BagID
-					if BagID == BANK_CONTAINER then
-						SetBankAutosortDisabled(not value)
-					elseif BagID == BACKPACK_CONTAINER then
-						SetBackpackAutosortDisabled(not value)
-					elseif BagID > NUM_BAG_SLOTS then
-						SetBankBagSlotFlag(BagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE, not value)
-					else
-						SetBagSlotFlag(BagID, FILTER_FLAG_IGNORE, not value)
-					end
-
-					B.AssignBagDropdown.holder = nil
+		local FILTER_ASSIGN = { text = BAG_FILTER_ASSIGN_TO, isTitle = true, notCheckable = true }
+		local FILTER_CLEANUP = { text = BAG_FILTER_CLEANUP, isTitle = true, notCheckable = true }
+		local FILTER_IGNORE = { text = BAG_FILTER_IGNORE,
+			checked = function()
+				return B:IsSortIgnored(B.AssignBagDropdown.holder.BagID)
+			end,
+			func = function(_, _, _, value)
+				local BagID = B.AssignBagDropdown.holder.BagID
+				if BagID == BANK_CONTAINER then
+					SetBankAutosortDisabled(not value)
+				elseif BagID == BACKPACK_CONTAINER then
+					SetBackpackAutosortDisabled(not value)
+				elseif BagID > NUM_BAG_SLOTS then
+					SetBankBagSlotFlag(BagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE, not value)
+				else
+					SetBagSlotFlag(BagID, FILTER_FLAG_IGNORE, not value)
 				end
-			}
+
+				B.AssignBagDropdown.holder = nil
+			end
 		}
+
+		B.AssignMain = { FILTER_CLEANUP, FILTER_IGNORE }
+		B.AssignMenu = { FILTER_ASSIGN, FILTER_CLEANUP, FILTER_IGNORE }
 
 		for i, flag in next, B.GearFilters do
 			if i ~= FILTER_FLAG_IGNORE then

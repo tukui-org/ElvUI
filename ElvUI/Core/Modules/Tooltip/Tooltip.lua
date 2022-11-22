@@ -129,19 +129,11 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
 			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
 			statusBar.anchoredToTop = nil
-
-			if statusBar.text then
-				statusBar.text:Point('CENTER', statusBar, 0, 0)
-			end
 		elseif position == 'TOP' and not statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
 			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
 			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
 			statusBar.anchoredToTop = true
-
-			if statusBar.text then
-				statusBar.text:Point('CENTER', statusBar, 0, 0)
-			end
 		end
 	end
 
@@ -973,6 +965,15 @@ function TT:SetTooltipFonts()
 	end
 end
 
+function TT:GameTooltip_Hide()
+	if GameTooltip:IsForbidden() then return end
+
+	local statusBar = GameTooltip.StatusBar
+	if statusBar and statusBar:IsShown() then
+		statusBar:Hide()
+	end
+end
+
 function TT:WorldCursorTooltipUpdate(_, state)
 	if GameTooltip:IsForbidden() or TT.db.cursorAnchor then return end
 
@@ -993,12 +994,15 @@ function TT:Initialize()
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
-	GameTooltip.StatusBar = GameTooltipStatusBar
-	GameTooltip.StatusBar:Height(TT.db.healthBar.height)
-	GameTooltip.StatusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
-	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, 'OVERLAY')
-	GameTooltip.StatusBar.text:Point('CENTER', GameTooltip.StatusBar, 0, 0)
-	GameTooltip.StatusBar.text:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	local statusBar = GameTooltipStatusBar
+	statusBar:Height(TT.db.healthBar.height)
+	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
+	GameTooltip.StatusBar = statusBar
+
+	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
+	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	statusText:Point('CENTER', statusBar, 0, 0)
+	statusBar.text = statusText
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then
@@ -1031,6 +1035,8 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+
+		TT:SecureHook(GameTooltip, 'Hide', 'GameTooltip_Hide') -- dont use OnHide use Hide directly
 	else
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', TT.GameTooltip_OnTooltipSetItem)
