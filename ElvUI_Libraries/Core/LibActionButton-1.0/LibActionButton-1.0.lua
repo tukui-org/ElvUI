@@ -708,14 +708,13 @@ if UseCustomFlyout then
 
 				-- custom ones for elvui
 				slotButton:SetAttribute("spellName", slotInfo.spellName)
-				slotButton:SetAttribute("overrideSpellID", slotInfo.overrideSpellID)
 
 				-- set LAB attributes
 				slotButton:SetAttribute("labtype-0", "spell")
 				slotButton:SetAttribute("labaction-0", slotInfo.spellID)
 
 				-- run LAB updates
-				slotButton:CallMethod("SetStateFromHandlerInsecure", 0, "spell", slotInfo.spellID)
+				slotButton:CallMethod("SetStateFromHandlerInsecure", 0, "spell", slotInfo.overrideSpellID or slotInfo.spellID)
 				slotButton:CallMethod("UpdateAction")
 
 				slotButton:ClearAllPoints()
@@ -2450,7 +2449,7 @@ Spell.GetActionText           = function(self) return "" end
 Spell.GetTexture              = function(self) return GetSpellTexture(self._state_action) end
 Spell.GetCharges              = function(self) return GetSpellCharges(self._state_action) end
 Spell.GetCount                = function(self) return GetSpellCount(self._state_action) end
-Spell.GetCooldown             = function(self) return GetSpellCooldown(self:GetAttribute('overrideSpellID') or self._state_action) end
+Spell.GetCooldown             = function(self) return GetSpellCooldown(self._state_action) end
 Spell.IsAttack                = function(self) return IsAttackSpell(FindSpellBookSlotBySpellID(self._state_action), "spell") end -- needs spell book id as of 4.0.1.13066
 Spell.IsEquipped              = function(self) return nil end
 Spell.IsCurrentlyActive       = function(self) return IsCurrentSpell(self._state_action) end
