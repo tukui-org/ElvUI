@@ -2660,7 +2660,7 @@ function B:Initialize()
 	if E.Retail then
 		local FILTER_ASSIGN = { text = BAG_FILTER_ASSIGN_TO, isTitle = true, notCheckable = true }
 		local FILTER_CLEANUP = { text = BAG_FILTER_CLEANUP, isTitle = true, notCheckable = true }
-		local FILTER_IGNORED = { text = BAG_FILTER_IGNORE,
+		local FILTER_IGNORE = { text = BAG_FILTER_IGNORE,
 			checked = function()
 				return B:IsSortIgnored(B.AssignBagDropdown.holder.BagID)
 			end,
@@ -2680,8 +2680,8 @@ function B:Initialize()
 			end
 		}
 
-		B.AssignMain = { FILTER_CLEANUP, FILTER_IGNORED }
-		B.AssignMenu = { FILTER_ASSIGN, FILTER_CLEANUP, FILTER_IGNORED }
+		B.AssignMain = { FILTER_CLEANUP, FILTER_IGNORE }
+		B.AssignMenu = { FILTER_ASSIGN, FILTER_CLEANUP, FILTER_IGNORE }
 
 		for i, flag in next, B.GearFilters do
 			if i ~= FILTER_FLAG_IGNORE then
