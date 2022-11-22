@@ -580,6 +580,7 @@ function AB:UpdateButtonSettings(specific)
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
 			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
 			end
@@ -838,6 +839,8 @@ do
 	local function FixButton(button)
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+		AB:StyleFlyout(button)
 
 		button.OnEnter = AB.SpellButtonOnEnter
 		button.OnLeave = AB.SpellButtonOnLeave
@@ -1359,12 +1362,21 @@ function AB:SpellFlyout_OnLeave()
 end
 
 function AB:UpdateFlyoutButtons()
+	if _G.SpellFlyout then _G.SpellFlyout.Background:Hide() end
+	if _G.LABFlyoutHandlerFrame then _G.LABFlyoutHandlerFrame.Background:Hide() end
+
+	local isShown = _G.SpellFlyout:IsShown()
 	local btn, i = _G['SpellFlyoutButton1'], 1
 	while btn do
-		AB:SetupFlyoutButton(btn)
+		if isShown then
+			AB:SetupFlyoutButton(btn)
+		end
+
 		AB:StyleFlyout(btn)
 
-		btn.isFlyout = true
+		if not btn.isFlyout then
+			btn.isFlyout = true -- so we can ignore it on binding
+		end
 
 		i = i + 1
 		btn = _G['SpellFlyoutButton'..i]
@@ -1386,43 +1398,34 @@ function AB:SetupFlyoutButton(button)
 		MasqueGroup:RemoveButton(button) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
 		MasqueGroup:AddButton(button)
 	end
-
-	if _G.SpellFlyout then
-		_G.SpellFlyout.Background:Hide()
-	end
-
-	if _G.LABFlyoutHandlerFrame then
-		_G.LABFlyoutHandlerFrame.Background:Hide()
-	end
 end
 
 function AB:StyleFlyout(button, arrow)
-	if not AB.handledbuttons[button] then return end
-
-	if not arrow then arrow = button.FlyoutArrow or (button.FlyoutArrowContainer and button.FlyoutArrowContainer.FlyoutArrowNormal) end
-	if not arrow then return end
-
 	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
 	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
 
 	local bar = button:GetParent()
+	local barName = bar:GetName()
+
 	local parent = bar:GetParent()
 	local owner = parent and parent:GetParent()
 	local ownerName = owner and owner:GetName()
 
-	local blizz = _G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button
-	local lab = not blizz and (_G.LABFlyoutHandlerFrame and _G.LABFlyoutHandlerFrame:IsShown() and _G.LABFlyoutHandlerFrame:GetParent() == button)
-	local distance = (blizz or lab) and 5 or 2
+	local btn = (ownerName == 'SpellBookSpellIconsFrame' and parent) or button
+	if not arrow then arrow = btn.FlyoutArrow or (btn.FlyoutArrowContainer and btn.FlyoutArrowContainer.FlyoutArrowNormal) end
+	if not arrow then return end
 
-	if ownerName == 'SpellBookSpellIconsFrame' then
+	if barName == 'SpellBookSpellIconsFrame' or ownerName == 'SpellBookSpellIconsFrame' then
+		local distance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == parent) and 7 or 4
 		arrow:ClearAllPoints()
-		arrow:Point('RIGHT', button, 'RIGHT', distance, 0)
-	elseif bar then -- Change arrow direction depending on what bar the button is on
+		arrow:Point('RIGHT', btn, 'RIGHT', distance, 0)
+	elseif bar and AB.handledbuttons[button] then -- Change arrow direction depending on what bar the button is on
 		local direction = (bar.db and bar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(bar)
 		if point == 'UNKNOWN' then return end
 
 		local noCombat = not InCombatLockdown()
+		local distance = (_G.LABFlyoutHandlerFrame and _G.LABFlyoutHandlerFrame:IsShown() and _G.LABFlyoutHandlerFrame:GetParent() == button) and 5 or 2
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
 			arrow:ClearAllPoints()
 			arrow:Point('BOTTOM', button, 'BOTTOM', 0, -distance)
@@ -1683,6 +1686,8 @@ function AB:Initialize()
 
 	if E.Retail then
 		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
+		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
+
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 	end
