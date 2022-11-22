@@ -706,6 +706,7 @@ if UseCustomFlyout then
 				slotButton:SetAttribute("type", "spell")
 				slotButton:SetAttribute("spell", slotInfo.spellID)
 				slotButton:SetAttribute("spellName", slotInfo.spellName)
+				slotButton:SetAttribute("overrideSpellID", slotInfo.overrideSpellID)
 
 				-- set LAB attributes
 				slotButton:SetAttribute("labtype-0", "spell")
@@ -917,7 +918,7 @@ if UseCustomFlyout then
 				local numSlots = 0
 				data = data .. ("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n"):format(flyoutID)
 				for slotID, slotInfo in ipairs(info.slots) do
-					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
+					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
 					numSlots = numSlots + 1
 				end
 
@@ -2447,7 +2448,7 @@ Spell.GetActionText           = function(self) return "" end
 Spell.GetTexture              = function(self) return GetSpellTexture(self._state_action) end
 Spell.GetCharges              = function(self) return GetSpellCharges(self._state_action) end
 Spell.GetCount                = function(self) return GetSpellCount(self._state_action) end
-Spell.GetCooldown             = function(self) return GetSpellCooldown(self._state_action) end
+Spell.GetCooldown             = function(self) return GetSpellCooldown(self:GetAttribute('overrideSpellID') or self._state_action) end
 Spell.IsAttack                = function(self) return IsAttackSpell(FindSpellBookSlotBySpellID(self._state_action), "spell") end -- needs spell book id as of 4.0.1.13066
 Spell.IsEquipped              = function(self) return nil end
 Spell.IsCurrentlyActive       = function(self) return IsCurrentSpell(self._state_action) end
