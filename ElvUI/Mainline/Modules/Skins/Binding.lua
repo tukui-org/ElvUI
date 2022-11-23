@@ -59,8 +59,6 @@ function S:Blizzard_ClickBindingUI()
 	if titleBG then
 		titleBG:Hide()
 	end
-
-	S:HandleCloseButton(tutorial.CloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_ClickBindingUI')
