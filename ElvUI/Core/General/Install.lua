@@ -319,7 +319,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.general.totems.size = 50
 			E.db.general.totems.spacing = 8
 			E.db.general.autoTrackReputation = true
-			E.db.general.bonusObjectivePosition = "AUTO"
 		--Movers
 			for mover, position in pairs(E.LayoutMoverPositions.ALL) do
 				E.db.movers[mover] = position
