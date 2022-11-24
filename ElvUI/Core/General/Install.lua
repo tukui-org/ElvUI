@@ -255,6 +255,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 
 		--Shared base layout, tweaks to individual layouts will be below
 		E:ResetMovers()
+
 		if not E.db.movers then
 			E.db.movers = {}
 		end
@@ -324,10 +325,10 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.movers[mover] = position
 				E:SaveMoverDefaultPosition(mover)
 			end
+
 		--Tooltip
-			E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
-			E.db.tooltip.healthBar.height = 12
 			E.db.movers.TooltipMover = nil --ensure that this mover gets completely reset.. yes E:ResetMover call above doesn't work.
+			E.db.tooltip.healthBar.height = 12
 			E.db.tooltip.healthBar.font = "PT Sans Narrow"
 			E.db.tooltip.healthBar.fontOutline = "NONE"
 			E.db.tooltip.healthBar.fontSize = 12
