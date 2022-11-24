@@ -255,6 +255,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 
 		--Shared base layout, tweaks to individual layouts will be below
 		E:ResetMovers()
+
 		if not E.db.movers then
 			E.db.movers = {}
 		end
@@ -319,18 +320,17 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.general.totems.size = 50
 			E.db.general.totems.spacing = 8
 			E.db.general.autoTrackReputation = true
-			E.db.general.bonusObjectivePosition = "AUTO"
 		--Movers
 			for mover, position in pairs(E.LayoutMoverPositions.ALL) do
 				E.db.movers[mover] = position
 				E:SaveMoverDefaultPosition(mover)
 			end
+
 		--Tooltip
-			E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
-			E.db.tooltip.healthBar.height = 12
 			E.db.movers.TooltipMover = nil --ensure that this mover gets completely reset.. yes E:ResetMover call above doesn't work.
-			E.db.tooltip.healthBar.font = "PT Sans Narrow"
-			E.db.tooltip.healthBar.fontOutline = "NONE"
+			E.db.tooltip.healthBar.height = 12
+			E.db.tooltip.healthBar.font = 'PT Sans Narrow'
+			E.db.tooltip.healthBar.fontOutline = 'NONE'
 			E.db.tooltip.healthBar.fontSize = 12
 		--Nameplates
 			E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}
@@ -342,11 +342,11 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.nameplates.colors.threat.badColor = {r = 0.78, g=0.25, b=0.25}
 			E.db.nameplates.colors.threat.goodColor = {r = 0.29, g=0.67, b=0.30}
 			E.db.nameplates.colors.threat.goodTransition = {r = 0.85, g=0.76, b=0.36}
-			E.db.nameplates.units.ENEMY_NPC.health.text.format = ""
-			E.db.nameplates.units.ENEMY_PLAYER.health.text.format = ""
+			E.db.nameplates.units.ENEMY_NPC.health.text.format = ''
+			E.db.nameplates.units.ENEMY_PLAYER.health.text.format = ''
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.classicon = false
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.enable = true
-			E.db.nameplates.units.ENEMY_PLAYER.portrait.position = "LEFT"
+			E.db.nameplates.units.ENEMY_PLAYER.portrait.position = 'LEFT'
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.xOffset = 0
 			E.db.nameplates.units.ENEMY_PLAYER.portrait.yOffset = 0
 		--UnitFrames
