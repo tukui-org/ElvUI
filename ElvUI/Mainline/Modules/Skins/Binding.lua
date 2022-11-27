@@ -48,7 +48,7 @@ local function HandlePortraitIcon(button, texture)
 	button.Portrait.backdrop:SetBackdropColor(0, 0, 0)
 	button.Highlight:SetColorTexture(1, 1, 1, .25)
 	button.Highlight:SetInside(button.Portrait.backdrop)
-	hooksecurefunc(button, "SetSelectedState", UpdateButtonColor)
+	hooksecurefunc(button, 'SetSelectedState', UpdateButtonColor)
 end
 
 function S:Blizzard_ClickBindingUI()
