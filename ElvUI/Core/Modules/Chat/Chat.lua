@@ -395,7 +395,7 @@ do --this can save some main file locals
 		z['Puttietat-Cenarius']			= itsSimpy -- Druid
 		z['Simpy-Cenarius']				= itsSimpy -- Warlock
 		z['Twigly-Cenarius']			= itsSimpy -- Monk
-		z['Duzae-Cenarius']				= itsSimpy -- Evoker
+		z['Imsofire-Cenarius']			= itsSimpy -- [Horde] Evoker
 		z['Imsobeefy-Cenarius']			= itsSimpy -- [Horde] Shaman
 		z['Imsocheesy-Cenarius']		= itsSimpy -- [Horde] Priest
 		z['Imsojelly-Cenarius']			= itsSimpy -- [Horde] DK
@@ -407,6 +407,7 @@ do --this can save some main file locals
 		z['Imsotasty-Cenarius']			= itsSimpy -- [Horde] Monk
 		z['Imsosaucy-Cenarius']			= itsSimpy -- [Horde] Warlock
 		z['Imsodrippy-Cenarius']		= itsSimpy -- [Horde] Rogue
+		z['Lumee-CenarionCircle']		= itsSimpy -- [RP] Evoker
 		z['Bunne-CenarionCircle']		= itsSimpy -- [RP] Warrior
 		z['Loppie-CenarionCircle']		= itsSimpy -- [RP] Monk
 		z['Loppybunny-CenarionCircle']	= itsSimpy -- [RP] Mage
