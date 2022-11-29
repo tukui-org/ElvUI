@@ -161,6 +161,7 @@ function S:Blizzard_Professions()
 	SpecPage.TreeView.Background:Hide()
 	SpecPage.TreeView:CreateBackdrop('Transparent')
 	SpecPage.TreeView.backdrop:SetInside()
+	SpecPage.PanelFooter:StripTextures()
 
 	hooksecurefunc(SpecPage, 'UpdateTabs', function(frame)
 		for tab in frame.tabsPool:EnumerateActive() do
