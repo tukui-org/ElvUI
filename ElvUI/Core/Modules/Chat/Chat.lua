@@ -389,6 +389,7 @@ do --this can save some main file locals
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
 		z['Cutepally-Cenarius']			= itsSimpy -- Paladin
+		z['Cuddle-Cenarius']			= itsSimpy -- Mage
 		z['Ezek-Cenarius']				= itsSimpy -- DK
 		z['Glice-Cenarius']				= itsSimpy -- Warrior
 		z['Kalline-Cenarius']			= itsSimpy -- Shaman
