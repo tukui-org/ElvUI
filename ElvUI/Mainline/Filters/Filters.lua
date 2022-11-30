@@ -487,6 +487,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[221660]	= List(), -- Holy Concentration
 		[15286]		= List(), -- Vampiric Embrace
 	-- Rogue
+		[315496]	= List(), -- Slice and Dice
 		[5277]		= List(), -- Evasion
 		[31224]		= List(), -- Cloak of Shadows
 		[1966]		= List(), -- Feint
@@ -573,6 +574,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[215572]	= List(), -- Frothing Berserker
 		[199203]	= List(), -- Thirst for Battle
 	-- Racials
+		[256948]	= List(), -- Spatial Rift
 		[65116]		= List(), -- Stoneform
 		[59547]		= List(), -- Gift of the Naaru
 		[20572]		= List(), -- Blood Fury
