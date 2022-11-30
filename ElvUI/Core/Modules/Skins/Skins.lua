@@ -426,7 +426,7 @@ do
 		end
 	end
 
-	local function setAlpha(border, alpha)
+	local function borderAlpha(border, alpha)
 		if alpha ~= 0 then
 			border:SetAlpha(0)
 		end
@@ -444,7 +444,7 @@ do
 			border.IconBorderHooked = true
 			border:SetAlpha(0)
 
-			hooksecurefunc(border, 'SetAlpha', setAlpha)
+			hooksecurefunc(border, 'SetAlpha', borderAlpha)
 			hooksecurefunc(border, 'SetAtlas', colorAtlas)
 			hooksecurefunc(border, 'SetVertexColor', colorVertex)
 			hooksecurefunc(border, 'SetShown', borderShown)
