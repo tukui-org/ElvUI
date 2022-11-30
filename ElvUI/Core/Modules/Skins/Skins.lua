@@ -393,8 +393,6 @@ do
 		local color = iconColors[atlas]
 		if not color then return end
 
-		border:StripTextures()
-
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, color.r, color.g, color.b, 1, br, bg, bb)
@@ -404,8 +402,6 @@ do
 	end
 
 	local function colorVertex(border, r, g, b, a)
-		border:StripTextures()
-
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, r, g, b, a, br, bg, bb)
@@ -430,6 +426,12 @@ do
 		end
 	end
 
+	local function setAlpha(border, alpha)
+		if alpha ~= 0 then
+			border:SetAlpha(0)
+		end
+	end
+
 	function S:HandleIconBorder(border, backdrop, customFunc)
 		if not backdrop then
 			local parent = border:GetParent()
@@ -439,14 +441,14 @@ do
 		border.customBackdrop = backdrop
 
 		if not border.IconBorderHooked then
-			border:StripTextures()
+			border.IconBorderHooked = true
+			border:SetAlpha(0)
 
+			hooksecurefunc(border, 'SetAlpha', setAlpha)
 			hooksecurefunc(border, 'SetAtlas', colorAtlas)
 			hooksecurefunc(border, 'SetVertexColor', colorVertex)
 			hooksecurefunc(border, 'SetShown', borderShown)
 			hooksecurefunc(border, 'Hide', borderHide)
-
-			border.IconBorderHooked = true
 		end
 
 		local r, g, b, a = border:GetVertexColor()
