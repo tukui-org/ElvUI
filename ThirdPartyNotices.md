@@ -1054,16 +1054,6 @@ All rights reserved to the owner.
 All rights reserved to the owner.
 ```
 
-## LibHealComm-4.0
-
-**Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibHealComm-4.0](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibHealComm-4.0)
-
-### License
-
-```
-All rights reserved to the owner.
-```
-
 ## LibQuestXP
 
 **Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibQuestXP](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibQuestXP)

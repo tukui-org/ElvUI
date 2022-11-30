@@ -4,5 +4,6 @@
 ## Version: 1.00
 ## Interface: 11403
 ## X-oUF: ElvUF
+## OptionalDeps: LibHealComm-4.0
 
 Classic\Libs.xml
