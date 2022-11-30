@@ -438,19 +438,6 @@ do
 			backdrop = parent.backdrop or parent
 		end
 
-		border.customBackdrop = backdrop
-
-		if not border.IconBorderHooked then
-			border.IconBorderHooked = true
-			border:SetAlpha(0)
-
-			hooksecurefunc(border, 'SetAlpha', borderAlpha)
-			hooksecurefunc(border, 'SetAtlas', colorAtlas)
-			hooksecurefunc(border, 'SetVertexColor', colorVertex)
-			hooksecurefunc(border, 'SetShown', borderShown)
-			hooksecurefunc(border, 'Hide', borderHide)
-		end
-
 		local r, g, b, a = border:GetVertexColor()
 		local atlas = iconColors[border.GetAtlas and border:GetAtlas()]
 		if customFunc then
@@ -464,6 +451,21 @@ do
 		else
 			local br, bg, bb = unpack(E.media.bordercolor)
 			backdrop:SetBackdropBorderColor(br, bg, bb)
+		end
+
+		if border.customBackdrop ~= backdrop then
+			border.customBackdrop = backdrop
+		end
+
+		if not border.IconBorderHooked then
+			border.IconBorderHooked = true
+			border:SetAlpha(0)
+
+			hooksecurefunc(border, 'SetAlpha', borderAlpha)
+			hooksecurefunc(border, 'SetAtlas', colorAtlas)
+			hooksecurefunc(border, 'SetVertexColor', colorVertex)
+			hooksecurefunc(border, 'SetShown', borderShown)
+			hooksecurefunc(border, 'Hide', borderHide)
 		end
 	end
 end
