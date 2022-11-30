@@ -410,7 +410,9 @@ do
 		end
 	end
 
-	local function borderHide(border)
+	local function borderHide(border, value)
+		if value == 0 then return end -- hiding blizz border
+
 		local br, bg, bb = unpack(E.media.bordercolor)
 		if border.customFunc then
 			local r, g, b, a = border:GetVertexColor()
@@ -420,15 +422,15 @@ do
 		end
 	end
 
-	local function borderShown(border, show)
-		if not show then
-			borderHide(border)
-		end
+	local function borderShow(border)
+		border:Hide(0)
 	end
 
-	local function borderAlpha(border, alpha)
-		if alpha ~= 0 then
-			border:SetAlpha(0)
+	local function borderShown(border, show)
+		if show then
+			border:Hide(0)
+		else
+			borderHide(border)
 		end
 	end
 
@@ -459,12 +461,12 @@ do
 
 		if not border.IconBorderHooked then
 			border.IconBorderHooked = true
-			border:SetAlpha(0)
+			border:Hide()
 
-			hooksecurefunc(border, 'SetAlpha', borderAlpha)
 			hooksecurefunc(border, 'SetAtlas', colorAtlas)
 			hooksecurefunc(border, 'SetVertexColor', colorVertex)
 			hooksecurefunc(border, 'SetShown', borderShown)
+			hooksecurefunc(border, 'Show', borderShow)
 			hooksecurefunc(border, 'Hide', borderHide)
 		end
 	end
