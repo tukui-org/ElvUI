@@ -23,7 +23,6 @@
 	<Include file='..\Core\UTF8\UTF8.xml'/>
 
 	<Include file='..\Classic\LibQuestXP\LibQuestXP.xml'/>
-	<Script file='..\Classic\LibHealComm-4.0\LibHealComm-4.0.lua'/>
 	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 	<Include file='..\Classic\LibClassicDurations\LibClassicDurations.xml'/>
 	<Script file='..\Classic\LibClassicCasterino-1.0\LibClassicCasterino.lua'/>
