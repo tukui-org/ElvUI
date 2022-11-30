@@ -4,7 +4,7 @@
 ## Version: 13.07
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: SharedMedia, Tukui, Masque, Blizzard_PetJournal
+## OptionalDeps: SharedMedia, Tukui, Masque
 ## RequiredDeps: ElvUI_Libraries
 ## Interface: 100002
 ## X-Interface: 100002
