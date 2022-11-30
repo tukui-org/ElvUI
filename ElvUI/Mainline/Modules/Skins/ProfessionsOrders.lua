@@ -107,6 +107,8 @@ local function FormInit(form)
 				button.SlotBackground:Hide()
 			end
 
+			S:HandleCheckBox(slot.Checkbox)
+
 			button.IsSkinned = true
 		end
 	end
@@ -150,6 +152,24 @@ local function BrowseOrdersUpdate(box)
 			child.IsSkinned = true
 		end
 	end
+end
+
+local function HandleInputBox(box)
+	box:DisableDrawLayer('BACKGROUND')
+	S:HandleEditBox(box)
+	S:HandleNextPrevButton(box.DecrementButton, 'left')
+	S:HandleNextPrevButton(box.IncrementButton, 'right')
+end
+
+local function ReskinQualityContainer(container)
+	local button = container.Button
+	button:StripTextures()
+	button:SetNormalTexture(E.ClearTexture)
+	button:SetPushedTexture(E.ClearTexture)
+	button:SetHighlightTexture(E.ClearTexture)
+	S:HandleIcon(button.Icon, true)
+	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+	HandleInputBox(container.EditBox)
 end
 
 function S:Blizzard_ProfessionsCustomerOrders()
@@ -218,10 +238,12 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	frame.Form.OrderRecipientTarget.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
 
 	local payment = frame.Form.PaymentContainer
-	payment.NoteEditBox:StripTextures()
-	payment.NoteEditBox:CreateBackdrop('Transparent')
-	payment.NoteEditBox.backdrop:SetPoint('TOPLEFT', 15, 5)
-	payment.NoteEditBox.backdrop:SetPoint('BOTTOMRIGHT', -18, 0)
+	if payment then
+		payment.NoteEditBox:StripTextures()
+		payment.NoteEditBox:CreateBackdrop('Transparent')
+		payment.NoteEditBox.backdrop:SetPoint('TOPLEFT', 15, 5)
+		payment.NoteEditBox.backdrop:SetPoint('BOTTOMRIGHT', -18, 0)
+	end
 
 	S:HandleDropDownBox(frame.Form.MinimumQuality.DropDown)
 	S:HandleDropDownBox(frame.Form.OrderRecipientDropDown)
@@ -239,14 +261,29 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	viewListingTexture:SetTexture([[Interface\CURSOR\Crosshair\Repair]])
 
 	local currentListings = frame.Form.CurrentListings
-	currentListings:StripTextures()
-	currentListings:SetTemplate('Transparent')
-	S:HandleButton(currentListings.CloseButton)
-	S:HandleTrimScrollBar(currentListings.OrderList.ScrollBar, true)
-	HandleListHeader(currentListings.OrderList.HeaderContainer)
-	currentListings.OrderList:StripTextures()
-	currentListings:ClearAllPoints()
-	currentListings:SetPoint('LEFT', frame, 'RIGHT', 10, 0)
+	if currentListings then
+		currentListings:StripTextures()
+		currentListings:SetTemplate('Transparent')
+		S:HandleButton(currentListings.CloseButton)
+		S:HandleTrimScrollBar(currentListings.OrderList.ScrollBar, true)
+		HandleListHeader(currentListings.OrderList.HeaderContainer)
+		currentListings.OrderList:StripTextures()
+		currentListings:ClearAllPoints()
+		currentListings:SetPoint('LEFT', frame, 'RIGHT', 10, 0)
+	end
+
+	local qualityDialog = frame.Form.QualityDialog
+	if qualityDialog then
+		qualityDialog:StripTextures()
+		qualityDialog:SetTemplate('Transparent')
+		S:HandleCloseButton(qualityDialog.ClosePanelButton)
+		S:HandleButton(qualityDialog.AcceptButton)
+		S:HandleButton(qualityDialog.CancelButton)
+
+		ReskinQualityContainer(qualityDialog.Container1)
+		ReskinQualityContainer(qualityDialog.Container2)
+		ReskinQualityContainer(qualityDialog.Container3)
+	end
 
 	hooksecurefunc(frame.Form, 'Init', FormInit)
 
