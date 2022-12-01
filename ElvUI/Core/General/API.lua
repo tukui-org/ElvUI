@@ -591,13 +591,20 @@ do	-- if only HideUIPanel wasn't blocked :(
 	local function onEvent(_, event)
 		_G.GameMenuButtonEditMode:SetEnabled(event == 'PLAYER_REGEN_ENABLED')
 
-		if event == 'PLAYER_REGEN_DISABLED' and next(eventFrames) then
-			for frame in next, eventFrames do
-				HideUIPanel(frame)
-				frame:SetScale(1)
+		local editMode = _G.EditModeManagerFrame
+		if event == 'PLAYER_REGEN_DISABLED' then
+			if next(eventFrames) then
+				for frame in next, eventFrames do
+					HideUIPanel(frame)
+					frame:SetScale(1)
 
-				eventFrames[frame] = nil
+					eventFrames[frame] = nil
+				end
 			end
+
+			editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+		else
+			editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
 		end
 	end
 
