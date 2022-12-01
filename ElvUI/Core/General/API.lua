@@ -37,6 +37,7 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 
+local GetLayouts = C_EditMode.GetLayouts
 local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
 local GetSpecializationRole = (E.Classic or E.Wrath and LCS.GetSpecializationRole) or GetSpecializationRole
 
@@ -590,22 +591,33 @@ do	-- if only HideUIPanel wasn't blocked :(
 
 	local function onEvent(_, event)
 		local editMode = _G.EditModeManagerFrame
-		local combatLeave = event == 'PLAYER_REGEN_ENABLED'
-		_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
-
-		if combatLeave then
-			if next(eventFrames) then
-				for frame in next, eventFrames do
-					HideUIPanel(frame)
-					frame:SetScale(1)
-
-					eventFrames[frame] = nil
-				end
+		if event == 'EDIT_MODE_LAYOUTS_UPDATED' then
+			if not editMode:IsEventRegistered(event) then
+				eventFrame.updateLayout = true
 			end
-
-			editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
 		else
-			editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+			local combatLeave = event == 'PLAYER_REGEN_ENABLED'
+			_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
+
+			if combatLeave then
+				if next(eventFrames) then
+					for frame in next, eventFrames do
+						HideUIPanel(frame)
+						frame:SetScale(1)
+
+						eventFrames[frame] = nil
+					end
+				end
+
+				if eventFrame.updateLayout then
+					editMode:UpdateLayoutInfo(GetLayouts())
+					eventFrame.updateLayout = nil
+				end
+
+				editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+			else
+				editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+			end
 		end
 	end
 
@@ -664,6 +676,7 @@ do	-- if only HideUIPanel wasn't blocked :(
 
 		eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
 		eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
+		eventFrame:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
 		eventFrame:SetScript('OnEvent', onEvent)
 
 		hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', setEnabled)
