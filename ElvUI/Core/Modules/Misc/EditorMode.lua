@@ -125,20 +125,11 @@ function EM:Initialize()
 	if CheckAuraFrame() then mixin.RefreshAuraFrame = E.noop end
 	if CheckBossFrame() then mixin.RefreshBossFrames = E.noop end
 	if CheckArenaFrame() then mixin.RefreshArenaFrames = E.noop end
-
-	if CheckRaidFrame() then
-		mixin.RefreshRaidFrames = E.noop
-		mixin.ResetRaidFrames = E.noop
-	end
-	if CheckPartyFrame() then
-		mixin.RefreshPartyFrames = E.noop
-		mixin.ResetPartyFrames = E.noop
-	end
+	if CheckRaidFrame() then mixin.RefreshRaidFrames = E.noop end
+	if CheckPartyFrame() then mixin.RefreshPartyFrames = E.noop end
 	if CheckTargetFrame() and CheckFocusFrame() then
 		mixin.RefreshTargetAndFocus = E.noop
-		mixin.ResetTargetAndFocus = E.noop
 	end
-
 	if CheckActionBar() then
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop
