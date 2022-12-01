@@ -8,15 +8,14 @@ local _G = _G
 local wipe, max, next = wipe, max, next
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
-local GetSpecializationRole = (E.Classic or E.Wrath and LCS.GetSpecializationRole) or GetSpecializationRole
-local hooksecurefunc = hooksecurefunc
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
@@ -38,11 +37,10 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 
-local HideUIPanel = HideUIPanel
-local GameMenuButtonAddons = GameMenuButtonAddons
-local GameMenuButtonLogout = GameMenuButtonLogout
-local GameMenuFrame = GameMenuFrame
+local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
+local GetSpecializationRole = (E.Classic or E.Wrath and LCS.GetSpecializationRole) or GetSpecializationRole
 
+local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
@@ -53,6 +51,10 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
+
+local GameMenuButtonAddons = GameMenuButtonAddons
+local GameMenuButtonLogout = GameMenuButtonLogout
+local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvDB, ElvUF
 
 E.MountIDs = {}
@@ -582,6 +584,106 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
+do	-- if only HideUIPanel wasn't blocked :(
+	local eventFrames = {}
+	local eventFrame = CreateFrame('Frame')
+
+	local function onEvent(_, event)
+		_G.GameMenuButtonEditMode:SetEnabled(event == 'PLAYER_REGEN_ENABLED')
+
+		if event == 'PLAYER_REGEN_DISABLED' and next(eventFrames) then
+			for frame in next, eventFrames do
+				HideUIPanel(frame)
+				frame:SetScale(1)
+
+				eventFrames[frame] = nil
+			end
+		end
+	end
+
+	local function handleHide(frame)
+		local combat = InCombatLockdown()
+		if combat then -- fake hide the editmode system
+			_G.INTERFACE_ACTION_BLOCKED_SHOWN = true -- gonna happen anyways
+
+			eventFrames[frame] = true
+
+			for _, child in ipairs(frame.registeredSystemFrames) do
+				child:ClearHighlight()
+			end
+		end
+
+		HideUIPanel(frame, not combat)
+		frame:SetScale(combat and 0.00001 or 1)
+	end
+
+	local function onProceed()
+		local editMode = _G.EditModeManagerFrame
+		local dialog = _G.EditModeUnsavedChangesDialog
+		if dialog.selectedLayoutIndex then
+			editMode:SelectLayout(dialog.selectedLayoutIndex)
+		else
+			handleHide(editMode, dialog)
+		end
+
+		StaticPopupSpecial_Hide(dialog)
+	end
+
+	local function onSaveProceed()
+		_G.EditModeManagerFrame:SaveLayoutChanges()
+		onProceed()
+	end
+
+	local function onClose()
+		local editMode = _G.EditModeManagerFrame
+		if editMode:HasActiveChanges() then
+			editMode:ShowRevertWarningDialog()
+		else
+			handleHide(editMode)
+		end
+	end
+
+	local function setEnabled(frame, enabled)
+		if InCombatLockdown() and enabled then
+			frame:Disable()
+		end
+	end
+
+	function E:SetupEditMode()
+		local dialog = _G.EditModeUnsavedChangesDialog
+		dialog.ProceedButton:SetScript('OnClick', onProceed)
+		dialog.SaveAndProceedButton:SetScript('OnClick', onSaveProceed)
+
+		_G.EditModeManagerFrame.onCloseCallback = onClose
+
+		eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
+		eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
+		eventFrame:SetScript('OnEvent', onEvent)
+
+		hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', setEnabled)
+	end
+end
+
+function E:ClickGameMenu()
+	E:ToggleOptions() -- we already prevent it from opening in combat
+
+	if not InCombatLockdown() then
+		HideUIPanel(GameMenuFrame)
+	end
+end
+
+function E:SetupGameMenu()
+	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	button:SetScript('OnClick', E.ClickGameMenu)
+	GameMenuFrame[E.name] = button
+
+	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
+		button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -589,7 +691,11 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
+	E:SetupGameMenu()
+
 	if E.Retail then
+		E:SetupEditMode()
+
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
 			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
@@ -640,20 +746,5 @@ function E:LoadAPI()
 				Frame:UnregisterEvent(event)
 			end
 		end)
-	end
-
-	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetScript('OnClick', function()
-		E:ToggleOptions() --We already prevent it from opening in combat
-		if not InCombatLockdown() then
-			HideUIPanel(GameMenuFrame)
-		end
-	end)
-	GameMenuFrame[E.name] = GameMenuButton
-
-	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 end
