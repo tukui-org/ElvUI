@@ -295,11 +295,8 @@ local StripTexturesBlizzFrames = {
 }
 
 local function KillEditMode(object)
-	if object.ApplySystemAnchor then
-		object.ApplySystemAnchor = E.noop
-		object.HighlightSystem = E.noop
-		object.ClearHighlight = E.noop
-	end
+	object.HighlightSystem = E.noop
+	object.ClearHighlight = E.noop
 end
 
 local function Kill(object)
