@@ -1284,10 +1284,8 @@ function CH:SnappingChanged(chat)
 end
 
 function CH:ResnapDock(event, arg1, arg2)
-	if event == 'PLAYER_SPECIALIZATION_CHANGED' then
-		if arg1 ~= 'player' then return end -- only update on player
-	elseif event == 'PLAYER_ENTERING_WORLD' then
-		if arg1 or arg2 then return end -- initLogin or isReload
+	if event == 'PLAYER_ENTERING_WORLD' and (arg1 or arg2) then
+		return -- initLogin or isReload
 	end
 
 	CH:SnappingChanged(_G.GeneralDockManager.primary)
@@ -3577,7 +3575,6 @@ function CH:Initialize()
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
 
-	CH:RegisterEvent('PLAYER_ENTERING_WORLD', 'ResnapDock')
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
@@ -3587,8 +3584,7 @@ function CH:Initialize()
 
 	if E.Retail then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-		CH:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'ResnapDock')
-		CH:SecureHook(_G.GeneralDockManager.primary, 'OnEditModeExit', 'ResnapDock')
+		CH:SecureHook(_G.EditModeManagerFrame, 'UpdateLayoutInfo', 'ResnapDock')
 
 		if E.private.general.voiceOverlay then
 			CH:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay')
@@ -3600,6 +3596,8 @@ function CH:Initialize()
 			CH:RegisterEvent('VOICE_CHAT_CHANNEL_DEACTIVATED', 'VoiceOverlay')
 			_G.VoiceActivityManager:UnregisterAllEvents()
 		end
+	else
+		CH:RegisterEvent('PLAYER_ENTERING_WORLD', 'ResnapDock')
 	end
 
 	if _G.WIM then
