@@ -90,15 +90,6 @@ local function HandleBrowseOrders(frame)
 	end
 end
 
-local function UpdateReagentSlots(form)
-	for slot in form.reagentSlotPool:EnumerateActive() do
-		local button = slot and slot.Button
-		if button and button.HighlightTexture then
-			button.HighlightTexture:Hide()
-		end
-	end
-end
-
 local function FormInit(form)
 	for slot in form.reagentSlotPool:EnumerateActive() do
 		local button = slot and slot.Button
@@ -110,6 +101,10 @@ local function FormInit(form)
 
 			if button.SlotBackground then
 				button.SlotBackground:Hide()
+			end
+
+			if button.HighlightTexture then
+				button.HighlightTexture:SetAlpha(0)
 			end
 
 			local highlight = button:GetHighlightTexture()
@@ -322,7 +317,6 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	end
 
 	hooksecurefunc(frame.Form, 'Init', FormInit)
-	hooksecurefunc(frame.Form, 'UpdateReagentSlots', UpdateReagentSlots)
 
 	-- Orders
 	S:HandleButton(frame.MyOrdersPage.RefreshButton)
