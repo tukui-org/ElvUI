@@ -604,8 +604,6 @@ do	-- if only HideUIPanel wasn't blocked :(
 	local function handleHide(frame)
 		local combat = InCombatLockdown()
 		if combat then -- fake hide the editmode system
-			_G.INTERFACE_ACTION_BLOCKED_SHOWN = true -- gonna happen anyways
-
 			eventFrames[frame] = true
 
 			for _, child in ipairs(frame.registeredSystemFrames) do
