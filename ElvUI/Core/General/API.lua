@@ -589,10 +589,11 @@ do	-- if only HideUIPanel wasn't blocked :(
 	local eventFrame = CreateFrame('Frame')
 
 	local function onEvent(_, event)
-		_G.GameMenuButtonEditMode:SetEnabled(event == 'PLAYER_REGEN_ENABLED')
-
 		local editMode = _G.EditModeManagerFrame
-		if event == 'PLAYER_REGEN_DISABLED' then
+		local combatLeave = event == 'PLAYER_REGEN_ENABLED'
+		_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
+
+		if combatLeave then
 			if next(eventFrames) then
 				for frame in next, eventFrames do
 					HideUIPanel(frame)
