@@ -394,6 +394,7 @@ function M:UpdateSettings()
 	local panelSize, joinPanel = (panel:IsShown() and panel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
 	local HEIGHT, WIDTH = (mHeight * mmScale) + (panelSize - joinPanel), mWidth * mmScale
 	holder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
+	holder:SetScale(1 / mmScale)
 
 	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline
 	if Minimap.location then
