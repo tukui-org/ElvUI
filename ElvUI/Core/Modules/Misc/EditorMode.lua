@@ -103,14 +103,18 @@ function EM:SetEnabled(enabled)
 end
 
 function EM:Initialize()
+	-- unsaved changes cant open or close the window in combat
 	local dialog = _G.EditModeUnsavedChangesDialog
 	dialog.ProceedButton:SetScript('OnClick', EM.OnProceed)
 	dialog.SaveAndProceedButton:SetScript('OnClick', EM.OnSaveProceed)
 
+	-- the panel itself cant either
 	_G.EditModeManagerFrame.onCloseCallback = EM.OnClose
 
+	-- keep the button off during combat
 	hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
 
+	-- wait for combat leave to do stuff
 	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
 	EM:RegisterEvent('PLAYER_REGEN_ENABLED', 'PLAYER_REGEN')
 	EM:RegisterEvent('PLAYER_REGEN_DISABLED', 'PLAYER_REGEN')
