@@ -294,6 +294,11 @@ local StripTexturesBlizzFrames = {
 	'ScrollFrameBorder',
 }
 
+local function KillEditMode(object)
+	object.HighlightSystem = E.noop
+	object.ClearHighlight = E.noop
+end
+
 local function Kill(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
@@ -459,6 +464,7 @@ local function addapi(object)
 	if not object.SetTemplate then mk.SetTemplate = SetTemplate end
 	if not object.CreateBackdrop then mk.CreateBackdrop = CreateBackdrop end
 	if not object.CreateShadow then mk.CreateShadow = CreateShadow end
+	if not object.KillEditMode then mk.KillEditMode = KillEditMode end
 	if not object.Kill then mk.Kill = Kill end
 	if not object.Width then mk.Width = Width end
 	if not object.Height then mk.Height = Height end

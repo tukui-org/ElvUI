@@ -8,15 +8,14 @@ local _G = _G
 local wipe, max, next = wipe, max, next
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
-local GetSpecializationRole = (E.Classic or E.Wrath and LCS.GetSpecializationRole) or GetSpecializationRole
-local hooksecurefunc = hooksecurefunc
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
@@ -38,10 +37,8 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 
-local HideUIPanel = HideUIPanel
-local GameMenuButtonAddons = GameMenuButtonAddons
-local GameMenuButtonLogout = GameMenuButtonLogout
-local GameMenuFrame = GameMenuFrame
+local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
+local GetSpecializationRole = (E.Classic or E.Wrath and LCS.GetSpecializationRole) or GetSpecializationRole
 
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
@@ -53,6 +50,10 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
+
+local GameMenuButtonAddons = GameMenuButtonAddons
+local GameMenuButtonLogout = GameMenuButtonLogout
+local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvDB, ElvUF
 
 E.MountIDs = {}
@@ -582,12 +583,34 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
+function E:ClickGameMenu()
+	E:ToggleOptions() -- we already prevent it from opening in combat
+
+	if not InCombatLockdown() then
+		HideUIPanel(GameMenuFrame)
+	end
+end
+
+function E:SetupGameMenu()
+	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	button:SetScript('OnClick', E.ClickGameMenu)
+	GameMenuFrame[E.name] = button
+
+	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
+		button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
+
+	E:SetupGameMenu()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
@@ -640,20 +663,5 @@ function E:LoadAPI()
 				Frame:UnregisterEvent(event)
 			end
 		end)
-	end
-
-	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetScript('OnClick', function()
-		E:ToggleOptions() --We already prevent it from opening in combat
-		if not InCombatLockdown() then
-			HideUIPanel(GameMenuFrame)
-		end
-	end)
-	GameMenuFrame[E.name] = GameMenuButton
-
-	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 end

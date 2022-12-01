@@ -22,13 +22,6 @@ local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
-for _, barNumber in pairs({2, 7, 8, 9, 10}) do
-	for slot = 1, 12 do
-		_G[format('BINDING_NAME_ELVUIBAR%dBUTTON%d', barNumber, slot)] = format('ActionBar %d Button %d', barNumber, slot)
-	end
-end
-
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 

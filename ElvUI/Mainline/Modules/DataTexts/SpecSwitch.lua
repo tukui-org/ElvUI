@@ -109,7 +109,7 @@ local function OnEvent(self, event, loadoutID)
 		return
 	end
 
-	if (event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_DELETED') and CanUseClassTalents() then
+	if (event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_DELETED' or event == 'TRAIT_CONFIG_UPDATED') and CanUseClassTalents() then
 		if not DT.ClassTalentsID then
 			DT.ClassTalentsID = (GetHasStarterBuild() and GetStarterBuildActive() and STARTER_ID) or GetLastSelectedSavedConfigID(ID)
 		end
@@ -270,4 +270,4 @@ local function ValueColorUpdate()
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])

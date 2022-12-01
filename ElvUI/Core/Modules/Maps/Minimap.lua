@@ -663,6 +663,8 @@ function M:Initialize()
 		clusterBackdrop:SetTemplate()
 		M:SetScale(clusterBackdrop, 1)
 		M.ClusterBackdrop = clusterBackdrop
+
+		MinimapCluster:KillEditMode()
 	end
 
 	M:ClusterPoint()
