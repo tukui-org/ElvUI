@@ -233,6 +233,25 @@ function S:Blizzard_Professions()
 			end
 		end
 	end)
+
+	local Orders = ProfessionsFrame.OrdersPage
+	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
+	S:HandleTab(Orders.BrowseFrame.GuildOrdersButton)
+	S:HandleTab(Orders.BrowseFrame.PersonalOrdersButton)
+
+	local BrowseFrame = Orders.BrowseFrame
+	BrowseFrame.OrdersRemainingDisplay:StripTextures()
+	BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
+
+	local RecipeList = Orders.BrowseFrame.RecipeList
+	RecipeList:StripTextures()
+	S:HandleTrimScrollBar(RecipeList.ScrollBar, true)
+	S:HandleEditBox(RecipeList.SearchBox)
+	S:HandleButton(RecipeList.FilterButton)
+
+	local OrderList = Orders.BrowseFrame.OrderList
+	OrderList:StripTextures()
+	S:HandleTrimScrollBar(OrderList.ScrollBar, true)
 end
 
 S:AddCallbackForAddon('Blizzard_Professions')
