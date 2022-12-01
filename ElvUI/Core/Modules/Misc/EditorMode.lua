@@ -20,12 +20,13 @@ local CheckBossFrame = function() return E.private.unitframe.enable and E.privat
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
-EM.Frames = {}
-EM.Layout = false
+local hideFrames = {}
+EM.needsUpdate = false
+EM.hideFrames = hideFrames
 
 function EM:EDIT_MODE_LAYOUTS_UPDATED(event)
 	if not _G.EditModeManagerFrame:IsEventRegistered(event) then
-		EM.Layout = true
+		EM.needsUpdate = true
 	end
 end
 
@@ -35,19 +36,19 @@ function EM:PLAYER_REGEN(event)
 	_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
 
 	if combatLeave then
-		if next(EM.Frames) then
-			for frame in next, EM.Frames do
+		if next(hideFrames) then
+			for frame in next, hideFrames do
 				HideUIPanel(frame)
 				frame:SetScale(1)
 
-				EM.Frames[frame] = nil
+				hideFrames[frame] = nil
 			end
 		end
 
-		if EM.Layout then
+		if EM.needsUpdate then
 			editMode:UpdateLayoutInfo(GetLayouts())
 
-			EM.Layout = false
+			EM.needsUpdate = false
 		end
 
 		editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
@@ -59,7 +60,7 @@ end
 function EM:HandleHide(frame)
 	local combat = InCombatLockdown()
 	if combat then -- fake hide the editmode system
-		EM.Frames[frame] = true
+		hideFrames[frame] = true
 
 		for _, child in next, frame.registeredSystemFrames do
 			child:ClearHighlight()
