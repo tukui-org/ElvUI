@@ -20,106 +20,100 @@ local CheckBossFrame = function() return E.private.unitframe.enable and E.privat
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
-do	-- if only HideUIPanel wasn't blocked :(
-	local eventFrames = {}
-	local eventFrame = CreateFrame('Frame')
+EM.Frames = {}
+EM.Layout = false
 
-	local function onEvent(_, event)
-		local editMode = _G.EditModeManagerFrame
-		if event == 'EDIT_MODE_LAYOUTS_UPDATED' then
-			if not editMode:IsEventRegistered(event) then
-				eventFrame.updateLayout = true
-			end
-		else
-			local combatLeave = event == 'PLAYER_REGEN_ENABLED'
-			_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
-
-			if combatLeave then
-				if next(eventFrames) then
-					for frame in next, eventFrames do
-						HideUIPanel(frame)
-						frame:SetScale(1)
-
-						eventFrames[frame] = nil
-					end
-				end
-
-				if eventFrame.updateLayout then
-					editMode:UpdateLayoutInfo(GetLayouts())
-					eventFrame.updateLayout = nil
-				end
-
-				editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
-			else
-				editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
-			end
-		end
+function EM:EDIT_MODE_LAYOUTS_UPDATED(event)
+	if not _G.EditModeManagerFrame:IsEventRegistered(event) then
+		EM.Layout = true
 	end
+end
 
-	local function handleHide(frame)
-		local combat = InCombatLockdown()
-		if combat then -- fake hide the editmode system
-			eventFrames[frame] = true
+function EM:PLAYER_REGEN(event)
+	local editMode = _G.EditModeManagerFrame
+	local combatLeave = event == 'PLAYER_REGEN_ENABLED'
+	_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
 
-			for _, child in next, frame.registeredSystemFrames do
-				child:ClearHighlight()
+	if combatLeave then
+		if next(EM.Frames) then
+			for frame in next, EM.Frames do
+				HideUIPanel(frame)
+				frame:SetScale(1)
+
+				EM.Frames[frame] = nil
 			end
 		end
 
-		HideUIPanel(frame, not combat)
-		frame:SetScale(combat and 0.00001 or 1)
-	end
+		if EM.Layout then
+			editMode:UpdateLayoutInfo(GetLayouts())
 
-	local function onProceed()
-		local editMode = _G.EditModeManagerFrame
-		local dialog = _G.EditModeUnsavedChangesDialog
-		if dialog.selectedLayoutIndex then
-			editMode:SelectLayout(dialog.selectedLayoutIndex)
-		else
-			handleHide(editMode, dialog)
+			EM.Layout = false
 		end
 
-		StaticPopupSpecial_Hide(dialog)
+		editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+	else
+		editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
 	end
+end
 
-	local function onSaveProceed()
-		_G.EditModeManagerFrame:SaveLayoutChanges()
-		onProceed()
-	end
+function EM:HandleHide(frame)
+	local combat = InCombatLockdown()
+	if combat then -- fake hide the editmode system
+		EM.Frames[frame] = true
 
-	local function onClose()
-		local editMode = _G.EditModeManagerFrame
-		if editMode:HasActiveChanges() then
-			editMode:ShowRevertWarningDialog()
-		else
-			handleHide(editMode)
+		for _, child in next, frame.registeredSystemFrames do
+			child:ClearHighlight()
 		end
 	end
 
-	local function setEnabled(frame, enabled)
-		if InCombatLockdown() and enabled then
-			frame:Disable()
-		end
+	HideUIPanel(frame, not combat)
+	frame:SetScale(combat and 0.00001 or 1)
+end
+
+function EM:OnProceed()
+	local editMode = _G.EditModeManagerFrame
+	local dialog = _G.EditModeUnsavedChangesDialog
+	if dialog.selectedLayoutIndex then
+		editMode:SelectLayout(dialog.selectedLayoutIndex)
+	else
+		EM:HandleHide(editMode, dialog)
 	end
 
-	function E:SetupEditMode()
-		local dialog = _G.EditModeUnsavedChangesDialog
-		dialog.ProceedButton:SetScript('OnClick', onProceed)
-		dialog.SaveAndProceedButton:SetScript('OnClick', onSaveProceed)
+	StaticPopupSpecial_Hide(dialog)
+end
 
-		_G.EditModeManagerFrame.onCloseCallback = onClose
+function EM:OnSaveProceed()
+	_G.EditModeManagerFrame:SaveLayoutChanges()
+	EM:OnProceed()
+end
 
-		eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
-		eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
-		eventFrame:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
-		eventFrame:SetScript('OnEvent', onEvent)
+function EM:OnClose()
+	local editMode = _G.EditModeManagerFrame
+	if editMode:HasActiveChanges() then
+		editMode:ShowRevertWarningDialog()
+	else
+		EM:HandleHide(editMode)
+	end
+end
 
-		hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', setEnabled)
+function EM:SetEnabled(enabled)
+	if InCombatLockdown() and enabled then
+		self:Disable()
 	end
 end
 
 function EM:Initialize()
-	E:SetupEditMode()
+	local dialog = _G.EditModeUnsavedChangesDialog
+	dialog.ProceedButton:SetScript('OnClick', EM.OnProceed)
+	dialog.SaveAndProceedButton:SetScript('OnClick', EM.OnSaveProceed)
+
+	_G.EditModeManagerFrame.onCloseCallback = EM.OnClose
+
+	hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
+
+	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+	EM:RegisterEvent('PLAYER_REGEN_ENABLED', 'PLAYER_REGEN')
+	EM:RegisterEvent('PLAYER_REGEN_DISABLED', 'PLAYER_REGEN')
 
 	-- account settings will be tainted
 	local mixin = _G.EditModeManagerFrame.AccountSettings
