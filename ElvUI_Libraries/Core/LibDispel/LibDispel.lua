@@ -121,6 +121,6 @@ do
 	end
 
 	if Retail then
-		frame:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+		frame:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
 	end
 end

@@ -24,8 +24,9 @@ local hideFrames = {}
 EM.needsUpdate = false
 EM.hideFrames = hideFrames
 
-function EM:LAYOUTS_UPDATED(event)
-	if not _G.EditModeManagerFrame:IsEventRegistered(event) then
+function EM:LAYOUTS_UPDATED(event, arg1)
+	local allow = event ~= 'PLAYER_SPECIALIZATION_CHANGED' or arg1 == 'player'
+	if allow and not _G.EditModeManagerFrame:IsEventRegistered(event) then
 		EM.needsUpdate = true
 	end
 end
@@ -52,7 +53,7 @@ function EM:PLAYER_REGEN(event)
 		end
 
 		editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
-		editMode:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+		editMode:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
 	else
 		editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
 		editMode:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED')
