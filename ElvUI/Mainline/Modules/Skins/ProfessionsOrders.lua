@@ -90,32 +90,35 @@ local function HandleBrowseOrders(frame)
 	end
 end
 
+local function UpdateReagentSlots(form)
+	for slot in form.reagentSlotPool:EnumerateActive() do
+		local button = slot and slot.Button
+		if button and button.HighlightTexture then
+			button.HighlightTexture:Hide()
+		end
+	end
+end
+
 local function FormInit(form)
 	for slot in form.reagentSlotPool:EnumerateActive() do
 		local button = slot and slot.Button
-		if button then
-			if not button.IsSkinned then
-				button:SetNormalTexture(0)
-				button:SetPushedTexture(0)
-				S:HandleIcon(button.Icon, true)
-				S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		if button and not button.IsSkinned then
+			button:SetNormalTexture(0)
+			button:SetPushedTexture(0)
+			S:HandleIcon(button.Icon, true)
+			S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
 
-				if button.SlotBackground then
-					button.SlotBackground:Hide()
-				end
-
-				if button.HighlightTexture then
-					button.HighlightTexture:Hide()
-				end
-
-				S:HandleCheckBox(slot.Checkbox)
-
-				button.IsSkinned = true
+			if button.SlotBackground then
+				button.SlotBackground:Hide()
 			end
 
 			local highlight = button:GetHighlightTexture()
 			highlight:SetColorTexture(1, 1, 1, .25)
 			highlight:SetAllPoints(button)
+
+			S:HandleCheckBox(slot.Checkbox)
+
+			button.IsSkinned = true
 		end
 	end
 end
@@ -319,6 +322,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	end
 
 	hooksecurefunc(frame.Form, 'Init', FormInit)
+	hooksecurefunc(frame.Form, 'UpdateReagentSlots', UpdateReagentSlots)
 
 	-- Orders
 	S:HandleButton(frame.MyOrdersPage.RefreshButton)
