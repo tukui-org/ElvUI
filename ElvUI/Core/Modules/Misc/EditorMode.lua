@@ -24,8 +24,9 @@ local hideFrames = {}
 EM.needsUpdate = false
 EM.hideFrames = hideFrames
 
-function EM:EDIT_MODE_LAYOUTS_UPDATED(event)
-	if not _G.EditModeManagerFrame:IsEventRegistered(event) then
+function EM:LAYOUTS_UPDATED(event, arg1)
+	local allow = event ~= 'PLAYER_SPECIALIZATION_CHANGED' or arg1 == 'player'
+	if allow and not _G.EditModeManagerFrame:IsEventRegistered(event) then
 		EM.needsUpdate = true
 	end
 end
@@ -52,8 +53,10 @@ function EM:PLAYER_REGEN(event)
 		end
 
 		editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+		editMode:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
 	else
 		editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+		editMode:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 	end
 end
 
@@ -116,7 +119,8 @@ function EM:Initialize()
 	hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
 
 	-- wait for combat leave to do stuff
-	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED', 'LAYOUTS_UPDATED')
+	EM:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'LAYOUTS_UPDATED')
 	EM:RegisterEvent('PLAYER_REGEN_ENABLED', 'PLAYER_REGEN')
 	EM:RegisterEvent('PLAYER_REGEN_DISABLED', 'PLAYER_REGEN')
 
