@@ -242,6 +242,9 @@ function S:Blizzard_Professions()
 	local BrowseFrame = Orders.BrowseFrame
 	BrowseFrame.OrdersRemainingDisplay:StripTextures()
 	BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
+	S:HandleButton(BrowseFrame.SearchButton)
+	S:HandleButton(BrowseFrame.FavoritesSearchButton)
+	BrowseFrame.FavoritesSearchButton:Size(22)
 
 	local BrowseList = Orders.BrowseFrame.RecipeList
 	BrowseList:StripTextures()
@@ -252,6 +255,81 @@ function S:Blizzard_Professions()
 	local OrderList = Orders.BrowseFrame.OrderList
 	OrderList:StripTextures()
 	S:HandleTrimScrollBar(OrderList.ScrollBar, true)
+
+	local OrderView = Orders.OrderView
+	local RankBar = OrderView.RankBar
+	RankBar.Border:Hide()
+	RankBar.Background:Hide()
+	RankBar.Fill:CreateBackdrop()
+	RankBar.Rank.Text:FontTemplate()
+
+	local CraftingOutputLog = OrderView.CraftingOutputLog
+	OutputLog:StripTextures()
+	OutputLog:CreateBackdrop()
+	S:HandleCloseButton(OutputLog.ClosePanelButton)
+	S:HandleTrimScrollBar(OutputLog.ScrollBar, true)
+
+	S:HandleButton(OrderView.CreateButton)
+	S:HandleButton(OrderView.StartRecraftButton)
+	S:HandleButton(OrderView.CompleteOrderButton)
+
+	local OrderInfo = OrderView.OrderInfo
+	OrderInfo:StripTextures()
+	OrderInfo:CreateBackdrop('Transparent')
+	S:HandleButton(OrderInfo.BackButton)
+	S:HandleButton(OrderInfo.IgnoreButton)
+	S:HandleButton(OrderInfo.StartOrderButton)
+	S:HandleButton(OrderInfo.DeclineOrderButton)
+	S:HandleButton(OrderInfo.ReleaseOrderButton)
+	S:HandleEditBox(OrderInfo.NoteBox)
+	if OrderInfo.NoteBox.backdrop then
+		OrderInfo.NoteBox.backdrop:SetTemplate('Transparent')
+	end
+
+	local OrderDetails = OrderView.OrderDetails
+	OrderDetails:StripTextures()
+	OrderDetails:CreateBackdrop('Transparent')
+	OrderDetails.Background:ClearAllPoints()
+	OrderDetails.Background:SetInside(OrderDetails.backdrop)
+	OrderDetails.Background:SetAlpha(.5)
+
+	SchematicForm = OrderDetails.SchematicForm -- Swap
+	S:HandleCheckBox(SchematicForm.AllocateBestQualityCheckBox)
+
+	local OutputIcon = OrderDetails.SchematicForm.OutputIcon
+	if OutputIcon then
+		S:HandleIcon(OutputIcon.Icon, true)
+		S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
+		OutputIcon:GetHighlightTexture():Hide()
+		OutputIcon.CircleMask:Hide()
+	end
+
+	hooksecurefunc(SchematicForm, 'Init', function(frame)
+		for slot in frame.reagentSlotPool:EnumerateActive() do
+			ReskinSlotButton(slot.Button)
+		end
+
+		local slot = SchematicForm.salvageSlot
+		if slot then
+			ReskinSlotButton(slot.Button)
+		end
+	end)
+
+	local FulfillmentForm = OrderDetails.FulfillmentForm
+	S:HandleEditBox(FulfillmentForm.NoteEditBox)
+	if FulfillmentForm.NoteEditBox.backdrop then
+		FulfillmentForm.NoteEditBox.backdrop:SetTemplate('Transparent')
+	end
+
+	local ItemIcon = OrderDetails.FulfillmentForm.ItemIcon
+	if ItemIcon then
+		S:HandleIcon(ItemIcon.Icon, true)
+		S:HandleIconBorder(ItemIcon.IconBorder, ItemIcon.Icon.backdrop)
+		ItemIcon:GetHighlightTexture():Hide()
+		ItemIcon.CircleMask:Hide()
+	end
+
+
 end
 
 S:AddCallbackForAddon('Blizzard_Professions')
