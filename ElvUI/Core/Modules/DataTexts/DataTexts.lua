@@ -252,6 +252,8 @@ function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
 		DT:SetupObjectLDB(name, obj)
 	end
+
+	DT:UpdateQuickDT()
 end
 
 function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
