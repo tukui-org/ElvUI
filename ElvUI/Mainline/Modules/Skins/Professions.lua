@@ -110,6 +110,17 @@ function S:Blizzard_Professions()
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
 
+	hooksecurefunc(SchematicForm, 'Init', function(frame)
+		for slot in frame.reagentSlotPool:EnumerateActive() do
+			ReskinSlotButton(slot.Button)
+		end
+
+		local slot = SchematicForm.salvageSlot
+		if slot then
+			ReskinSlotButton(slot.Button)
+		end
+	end)
+
 	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckBox
 	if TrackRecipeCheckBox then
 		S:HandleCheckBox(TrackRecipeCheckBox)
@@ -142,17 +153,6 @@ function S:Blizzard_Professions()
 		OutputIcon:GetHighlightTexture():Hide()
 		OutputIcon.CircleMask:Hide()
 	end
-
-	hooksecurefunc(SchematicForm, 'Init', function(frame)
-		for slot in frame.reagentSlotPool:EnumerateActive() do
-			ReskinSlotButton(slot.Button)
-		end
-
-		local slot = SchematicForm.salvageSlot
-		if slot then
-			ReskinSlotButton(slot.Button)
-		end
-	end)
 
 	local SpecPage = ProfessionsFrame.SpecPage
 	S:HandleButton(SpecPage.UnlockTabButton)
@@ -296,14 +296,6 @@ function S:Blizzard_Professions()
 	local OrderSchematicForm = OrderDetails.SchematicForm
 	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckBox)
 
-	local OrderOutputIcon = OrderSchematicForm.OutputIcon
-	if OrderOutputIcon then
-		S:HandleIcon(OrderOutputIcon.Icon, true)
-		S:HandleIconBorder(OrderOutputIcon.IconBorder, OrderOutputIcon.Icon.backdrop)
-		OrderOutputIcon:GetHighlightTexture():Hide()
-		OrderOutputIcon.CircleMask:Hide()
-	end
-
 	hooksecurefunc(OrderSchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
 			ReskinSlotButton(slot.Button)
@@ -314,6 +306,14 @@ function S:Blizzard_Professions()
 			ReskinSlotButton(slot.Button)
 		end
 	end)
+
+	local OrderOutputIcon = OrderSchematicForm.OutputIcon
+	if OrderOutputIcon then
+		S:HandleIcon(OrderOutputIcon.Icon, true)
+		S:HandleIconBorder(OrderOutputIcon.IconBorder, OrderOutputIcon.Icon.backdrop)
+		OrderOutputIcon:GetHighlightTexture():Hide()
+		OrderOutputIcon.CircleMask:Hide()
+	end
 
 	local FulfillmentForm = OrderDetails.FulfillmentForm
 	S:HandleEditBox(FulfillmentForm.NoteEditBox)
