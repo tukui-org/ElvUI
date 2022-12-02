@@ -246,14 +246,14 @@ function DT:SetupObjectLDB(name, obj)
 	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
+
+	DT:UpdateQuickDT()
 end
 
 function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
 		DT:SetupObjectLDB(name, obj)
 	end
-
-	DT:UpdateQuickDT()
 end
 
 function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
@@ -594,31 +594,6 @@ do
 	end
 end
 
-function DT:RegisterQuickDT()
-	for name, info in pairs(DT.RegisteredDataTexts) do
-		local category = DT:GetMenuListCategory(info.category or MISCELLANEOUS)
-		if not category then
-			category = #QuickList + 1
-			tinsert(QuickList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
-		end
-
-		tinsert(QuickList[category].menuList, {
-			text = info.localizedName or name,
-			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
-			func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
-		})
-	end
-
-	tinsert(QuickList, {
-		order = 100, text = L["None"],
-		checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
-		func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
-	})
-
-	DT:SortMenuList(QuickList)
-	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'QuickDTMode')
-end
-
 do
 	local function hasName(tbl, name)
 		for _, data in pairs(tbl) do
@@ -629,6 +604,8 @@ do
 	end
 
 	function DT:UpdateQuickDT()
+		wipe(QuickList)
+
 		for name, info in pairs(DT.RegisteredDataTexts) do
 			local category = DT:GetMenuListCategory(info.category or MISCELLANEOUS)
 			if not category then
@@ -780,9 +757,6 @@ function DT:Initialize()
 	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
 	_G.DataTextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
-	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
-	DT:RegisterLDB() -- LibDataBroker
-
 	if E.Retail or E.Wrath then
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 
@@ -812,7 +786,11 @@ function DT:Initialize()
 	DT.BattleStats.LEFT.panel = _G.LeftChatDataPanel.dataPanels
 	DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 
-	DT:RegisterQuickDT()
+	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
+	DT:RegisterLDB() -- LibDataBroker
+	DT:UpdateQuickDT()
+
+	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'QuickDTMode')
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
