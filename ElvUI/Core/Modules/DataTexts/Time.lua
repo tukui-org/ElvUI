@@ -22,7 +22,7 @@ local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
 local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
 local InCombatLockdown = InCombatLockdown
-local C_Map_GetAreaInfo = C_Map.GetAreaInfo
+
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
@@ -31,6 +31,8 @@ local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
 local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
 local WEEKLY = WEEKLY
 local RESET = RESET
+
+local C_Map_GetAreaInfo = C_Map.GetAreaInfo
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_DateAndTime_GetSecondsUntilDailyReset = C_DateAndTime.GetSecondsUntilDailyReset
 local C_DateAndTime_GetSecondsUntilWeeklyReset = C_DateAndTime.GetSecondsUntilWeeklyReset
