@@ -159,7 +159,11 @@ local function UpdateColor(self, event, runeID, alt)
 	end
 end
 
-local function ColorPath(self, event, ...)
+local function ColorPath(self, event, arg1, ...)
+	if event == 'PLAYER_SPECIALIZATION_CHANGED' and arg1 ~= 'player' then
+		return -- ignore others
+	end
+
 	--[[ Override: Runes.UpdateColor(self, event, ...)
 	Used to completely override the internal function for updating the widgets' colors.
 
@@ -167,7 +171,7 @@ local function ColorPath(self, event, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	(self.Runes.UpdateColor or UpdateColor) (self, event, ...)
+	(self.Runes.UpdateColor or UpdateColor) (self, event, arg1, ...)
 end
 
 local function Update(self, event)

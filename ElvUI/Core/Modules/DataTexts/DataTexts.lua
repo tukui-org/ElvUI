@@ -30,6 +30,7 @@ local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
 local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
+local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 
 --Wrath
 local GetCurrencyInfo = GetCurrencyInfo
@@ -251,6 +252,8 @@ function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
 		DT:SetupObjectLDB(name, obj)
 	end
+
+	DT:UpdateQuickDT()
 end
 
 function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
@@ -788,7 +791,7 @@ function DT:Initialize()
 
 			hooksecurefunc(_G.C_ClassTalents, 'UpdateLastSelectedSavedConfigID', function(_, newConfigID)
 				if not newConfigID then return end
-
+				if DT.ClassTalentsID and newConfigID == C_ClassTalents_GetActiveConfigID() then return end
 				DT.ClassTalentsID = newConfigID
 
 				DT:ForceUpdate_DataText('Talent/Loot Specialization')

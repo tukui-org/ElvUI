@@ -3,6 +3,12 @@ local EM = E:GetModule('EditorMode')
 
 local _G = _G
 local next = next
+local HideUIPanel = HideUIPanel
+local InCombatLockdown = InCombatLockdown
+local hooksecurefunc = hooksecurefunc
+
+local GetLayouts = C_EditMode.GetLayouts
+local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 
 local CheckTargetFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
 local CheckCastFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
@@ -14,85 +20,121 @@ local CheckBossFrame = function() return E.private.unitframe.enable and E.privat
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
-local IgnoreFrames = {
-	MinimapCluster = function() return E.private.general.minimap.enable end, -- header underneath and rotate minimap (will need to add the setting)
-	GameTooltipDefaultContainer = function() return E.private.tooltip.enable end,
+local hideFrames = {}
+EM.needsUpdate = false
+EM.hideFrames = hideFrames
 
-	-- UnitFrames
-	PartyFrame = CheckPartyFrame,
-	FocusFrame = CheckFocusFrame,
-	TargetFrame = CheckTargetFrame,
-	PlayerCastingBarFrame = CheckCastFrame,
-	ArenaEnemyFramesContainer = CheckArenaFrame,
-	CompactRaidFrameContainer = CheckRaidFrame,
-	BossTargetFrameContainer = CheckBossFrame,
-	PlayerFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.player end,
+function EM:LAYOUTS_UPDATED(event, arg1)
+	local allow = event ~= 'PLAYER_SPECIALIZATION_CHANGED' or arg1 == 'player'
+	if allow and not _G.EditModeManagerFrame:IsEventRegistered(event) then
+		EM.needsUpdate = true
+	end
+end
 
-	-- Auras
-	BuffFrame = function() return E.private.auras.disableBlizzard and E.private.auras.enable and E.private.auras.buffsHeader end,
-	DebuffFrame = function() return E.private.auras.disableBlizzard and E.private.auras.enable and E.private.auras.debuffsHeader end,
-
-	-- ActionBars
-	StanceBar = CheckActionBar,
-	EncounterBar = CheckActionBar,
-	PetActionBar = CheckActionBar,
-	PossessActionBar = CheckActionBar,
-	MainMenuBarVehicleLeaveButton = CheckActionBar,
-	MultiBarBottomLeft = CheckActionBar,
-	MultiBarBottomRight = CheckActionBar,
-	MultiBarLeft = CheckActionBar,
-	MultiBarRight = CheckActionBar,
-	MultiBar5 = CheckActionBar,
-	MultiBar6 = CheckActionBar,
-	MultiBar7 = CheckActionBar
-}
-
-local ShutdownMode = {
-	'OnEditModeEnter',
-	'OnEditModeExit',
-	'HasActiveChanges',
-	'HighlightSystem',
-	'SelectSystem',
-	-- these not running will taint the default bars on spec switch
-	--- 'IsInDefaultPosition',
-	--- 'UpdateSystem',
-}
-
-function EM:Initialize()
+function EM:PLAYER_REGEN(event)
 	local editMode = _G.EditModeManagerFrame
+	local combatLeave = event == 'PLAYER_REGEN_ENABLED'
+	_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
 
-	-- remove the initial registers
-	local registered = editMode.registeredSystemFrames
-	for i = #registered, 1, -1 do
-		local frame = registered[i]
-		local ignore = IgnoreFrames[frame:GetName()]
-		if ignore and ignore() then
-			for _, key in next, ShutdownMode do
-				frame[key] = E.noop
+	if combatLeave then
+		if next(hideFrames) then
+			for frame in next, hideFrames do
+				HideUIPanel(frame)
+				frame:SetScale(1)
+
+				hideFrames[frame] = nil
 			end
+		end
+
+		if EM.needsUpdate then
+			editMode:UpdateLayoutInfo(GetLayouts())
+
+			EM.needsUpdate = false
+		end
+
+		editMode:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+		editMode:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
+	else
+		editMode:UnregisterEvent('EDIT_MODE_LAYOUTS_UPDATED')
+		editMode:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+	end
+end
+
+function EM:HandleHide(frame)
+	local combat = InCombatLockdown()
+	if combat then -- fake hide the editmode system
+		hideFrames[frame] = true
+
+		for _, child in next, frame.registeredSystemFrames do
+			child:ClearHighlight()
 		end
 	end
 
+	HideUIPanel(frame, not combat)
+	frame:SetScale(combat and 0.00001 or 1)
+end
+
+function EM:OnProceed()
+	local editMode = _G.EditModeManagerFrame
+	local dialog = _G.EditModeUnsavedChangesDialog
+	if dialog.selectedLayoutIndex then
+		editMode:SelectLayout(dialog.selectedLayoutIndex)
+	else
+		EM:HandleHide(editMode, dialog)
+	end
+
+	StaticPopupSpecial_Hide(dialog)
+end
+
+function EM:OnSaveProceed()
+	_G.EditModeManagerFrame:SaveLayoutChanges()
+	EM:OnProceed()
+end
+
+function EM:OnClose()
+	local editMode = _G.EditModeManagerFrame
+	if editMode:HasActiveChanges() then
+		editMode:ShowRevertWarningDialog()
+	else
+		EM:HandleHide(editMode)
+	end
+end
+
+function EM:SetEnabled(enabled)
+	if InCombatLockdown() and enabled then
+		self:Disable()
+	end
+end
+
+function EM:Initialize()
+	-- unsaved changes cant open or close the window in combat
+	local dialog = _G.EditModeUnsavedChangesDialog
+	dialog.ProceedButton:SetScript('OnClick', EM.OnProceed)
+	dialog.SaveAndProceedButton:SetScript('OnClick', EM.OnSaveProceed)
+
+	-- the panel itself cant either
+	_G.EditModeManagerFrame.onCloseCallback = EM.OnClose
+
+	-- keep the button off during combat
+	hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
+
+	-- wait for combat leave to do stuff
+	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED', 'LAYOUTS_UPDATED')
+	EM:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'LAYOUTS_UPDATED')
+	EM:RegisterEvent('PLAYER_REGEN_ENABLED', 'PLAYER_REGEN')
+	EM:RegisterEvent('PLAYER_REGEN_DISABLED', 'PLAYER_REGEN')
+
 	-- account settings will be tainted
-	local mixin = editMode.AccountSettings
+	local mixin = _G.EditModeManagerFrame.AccountSettings
 	if CheckCastFrame() then mixin.RefreshCastBar = E.noop end
 	if CheckAuraFrame() then mixin.RefreshAuraFrame = E.noop end
 	if CheckBossFrame() then mixin.RefreshBossFrames = E.noop end
 	if CheckArenaFrame() then mixin.RefreshArenaFrames = E.noop end
-
-	if CheckRaidFrame() then
-		mixin.RefreshRaidFrames = E.noop
-		mixin.ResetRaidFrames = E.noop
-	end
-	if CheckPartyFrame() then
-		mixin.RefreshPartyFrames = E.noop
-		mixin.ResetPartyFrames = E.noop
-	end
+	if CheckRaidFrame() then mixin.RefreshRaidFrames = E.noop end
+	if CheckPartyFrame() then mixin.RefreshPartyFrames = E.noop end
 	if CheckTargetFrame() and CheckFocusFrame() then
 		mixin.RefreshTargetAndFocus = E.noop
-		mixin.ResetTargetAndFocus = E.noop
 	end
-
 	if CheckActionBar() then
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop

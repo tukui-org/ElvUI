@@ -393,8 +393,6 @@ do
 		local color = iconColors[atlas]
 		if not color then return end
 
-		border:StripTextures()
-
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, color.r, color.g, color.b, 1, br, bg, bb)
@@ -404,8 +402,6 @@ do
 	end
 
 	local function colorVertex(border, r, g, b, a)
-		border:StripTextures()
-
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, r, g, b, a, br, bg, bb)
@@ -414,7 +410,9 @@ do
 		end
 	end
 
-	local function borderHide(border)
+	local function borderHide(border, value)
+		if value == 0 then return end -- hiding blizz border
+
 		local br, bg, bb = unpack(E.media.bordercolor)
 		if border.customFunc then
 			local r, g, b, a = border:GetVertexColor()
@@ -424,8 +422,14 @@ do
 		end
 	end
 
+	local function borderShow(border)
+		border:Hide(0)
+	end
+
 	local function borderShown(border, show)
-		if not show then
+		if show then
+			border:Hide(0)
+		else
 			borderHide(border)
 		end
 	end
@@ -434,19 +438,6 @@ do
 		if not backdrop then
 			local parent = border:GetParent()
 			backdrop = parent.backdrop or parent
-		end
-
-		border.customBackdrop = backdrop
-
-		if not border.IconBorderHooked then
-			border:StripTextures()
-
-			hooksecurefunc(border, 'SetAtlas', colorAtlas)
-			hooksecurefunc(border, 'SetVertexColor', colorVertex)
-			hooksecurefunc(border, 'SetShown', borderShown)
-			hooksecurefunc(border, 'Hide', borderHide)
-
-			border.IconBorderHooked = true
 		end
 
 		local r, g, b, a = border:GetVertexColor()
@@ -462,6 +453,21 @@ do
 		else
 			local br, bg, bb = unpack(E.media.bordercolor)
 			backdrop:SetBackdropBorderColor(br, bg, bb)
+		end
+
+		if border.customBackdrop ~= backdrop then
+			border.customBackdrop = backdrop
+		end
+
+		if not border.IconBorderHooked then
+			border.IconBorderHooked = true
+			border:Hide()
+
+			hooksecurefunc(border, 'SetAtlas', colorAtlas)
+			hooksecurefunc(border, 'SetVertexColor', colorVertex)
+			hooksecurefunc(border, 'SetShown', borderShown)
+			hooksecurefunc(border, 'Show', borderShow)
+			hooksecurefunc(border, 'Hide', borderHide)
 		end
 	end
 end

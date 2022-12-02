@@ -94,15 +94,15 @@ function S:Blizzard_Professions()
 		end
 	end
 
-	local RecipeList = CraftingPage.RecipeList
-	RecipeList:StripTextures()
-	S:HandleTrimScrollBar(RecipeList.ScrollBar, true)
-	if RecipeList.BackgroundNineSlice then RecipeList.BackgroundNineSlice:Hide() end
-	RecipeList:CreateBackdrop('Transparent')
-	RecipeList.backdrop:SetInside()
-	S:HandleEditBox(RecipeList.SearchBox)
-	S:HandleButton(RecipeList.FilterButton)
-	S:HandleCloseButton(RecipeList.FilterButton.ResetButton)
+	local CraftList = CraftingPage.RecipeList
+	CraftList:StripTextures()
+	S:HandleTrimScrollBar(CraftList.ScrollBar, true)
+	if CraftList.BackgroundNineSlice then CraftList.BackgroundNineSlice:Hide() end
+	CraftList:CreateBackdrop('Transparent')
+	CraftList.backdrop:SetInside()
+	S:HandleEditBox(CraftList.SearchBox)
+	S:HandleButton(CraftList.FilterButton)
+	S:HandleCloseButton(CraftList.FilterButton.ResetButton)
 
 	local SchematicForm = CraftingPage.SchematicForm
 	SchematicForm:StripTextures()
@@ -161,6 +161,7 @@ function S:Blizzard_Professions()
 	SpecPage.TreeView.Background:Hide()
 	SpecPage.TreeView:CreateBackdrop('Transparent')
 	SpecPage.TreeView.backdrop:SetInside()
+	SpecPage.PanelFooter:StripTextures()
 
 	hooksecurefunc(SpecPage, 'UpdateTabs', function(frame)
 		for tab in frame.tabsPool:EnumerateActive() do
@@ -232,6 +233,25 @@ function S:Blizzard_Professions()
 			end
 		end
 	end)
+
+	local Orders = ProfessionsFrame.OrdersPage
+	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
+	S:HandleTab(Orders.BrowseFrame.GuildOrdersButton)
+	S:HandleTab(Orders.BrowseFrame.PersonalOrdersButton)
+
+	local BrowseFrame = Orders.BrowseFrame
+	BrowseFrame.OrdersRemainingDisplay:StripTextures()
+	BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
+
+	local BrowseList = Orders.BrowseFrame.RecipeList
+	BrowseList:StripTextures()
+	S:HandleTrimScrollBar(BrowseList.ScrollBar, true)
+	S:HandleEditBox(BrowseList.SearchBox)
+	S:HandleButton(BrowseList.FilterButton)
+
+	local OrderList = Orders.BrowseFrame.OrderList
+	OrderList:StripTextures()
+	S:HandleTrimScrollBar(OrderList.ScrollBar, true)
 end
 
 S:AddCallbackForAddon('Blizzard_Professions')

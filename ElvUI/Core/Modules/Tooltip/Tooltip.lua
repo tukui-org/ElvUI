@@ -1059,6 +1059,8 @@ function TT:Initialize()
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
+
+		_G.GameTooltipDefaultContainer:KillEditMode()
 	end
 end
 

@@ -452,6 +452,7 @@ function AB:CreateVehicleLeave()
 	-- taints because of EditModeManager, in UpdateBottomActionBarPositions
 	button:SetScript('OnShow', nil)
 	button:SetScript('OnHide', nil)
+	button:KillEditMode()
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		button:StyleButton(true, true, true)
@@ -946,7 +947,7 @@ function AB:ButtonEventsRegisterFrame(added)
 		local wasAdded = frame == added
 		if not added or wasAdded then
 			if not strmatch(frame:GetName(), 'ExtraActionButton%d') then
-				_G.ActionBarButtonEventsFrame.frames[index] = nil
+				frames[index] = nil
 			end
 
 			if wasAdded then
@@ -1039,6 +1040,9 @@ do
 			_G.StatusTrackingBarManager:UnregisterAllEvents()
 			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
+
+			-- take encounter bar out of edit mode
+			_G.EncounterBar:KillEditMode()
 
 			-- lets only keep ExtraActionButtons in here
 			hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
@@ -1589,6 +1593,14 @@ end
 
 function AB:Initialize()
 	AB.db = E.db.actionbar
+
+	_G.BINDING_HEADER_ELVUI = E.title
+
+	for _, barNumber in pairs({2, 7, 8, 9, 10}) do
+		for slot = 1, 12 do
+			_G[format('BINDING_NAME_ELVUIBAR%dBUTTON%d', barNumber, slot)] = format('ActionBar %d Button %d', barNumber, slot)
+		end
+	end
 
 	if not E.private.actionbar.enable then return end
 	AB.Initialized = true

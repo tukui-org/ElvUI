@@ -4,12 +4,10 @@
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
-local _G, format, next, strfind = _G, format, next, strfind
-local gsub, pairs, tinsert, type = gsub, pairs, tinsert, type
+local _G, next, strfind = _G, next, strfind
+local gsub, tinsert, type = gsub, tinsert, type
 
-local RegisterCVar = C_CVar.RegisterCVar
 local GetAddOnEnableState = GetAddOnEnableState
-local GetAddOnMetadata = GetAddOnMetadata
 local GetBuildInfo = GetBuildInfo
 local GetLocale = GetLocale
 local GetTime = GetTime
@@ -18,16 +16,10 @@ local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 
+local RegisterCVar = C_CVar.RegisterCVar
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
-
-_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
-for _, barNumber in pairs({2, 7, 8, 9, 10}) do
-	for slot = 1, 12 do
-		_G[format('BINDING_NAME_ELVUIBAR%dBUTTON%d', barNumber, slot)] = format('ActionBar %d Button %d', barNumber, slot)
-	end
-end
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')

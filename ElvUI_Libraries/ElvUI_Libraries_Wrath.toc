@@ -3,6 +3,7 @@
 ## Author: Elv, Simpy
 ## Version: 1.00
 ## Interface: 30400
+## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
 Wrath\Libs.xml
