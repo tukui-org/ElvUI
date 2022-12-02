@@ -94,15 +94,15 @@ function S:Blizzard_Professions()
 		end
 	end
 
-	local RecipeList = CraftingPage.RecipeList
-	RecipeList:StripTextures()
-	S:HandleTrimScrollBar(RecipeList.ScrollBar, true)
-	if RecipeList.BackgroundNineSlice then RecipeList.BackgroundNineSlice:Hide() end
-	RecipeList:CreateBackdrop('Transparent')
-	RecipeList.backdrop:SetInside()
-	S:HandleEditBox(RecipeList.SearchBox)
-	S:HandleButton(RecipeList.FilterButton)
-	S:HandleCloseButton(RecipeList.FilterButton.ResetButton)
+	local CraftList = CraftingPage.RecipeList
+	CraftList:StripTextures()
+	S:HandleTrimScrollBar(CraftList.ScrollBar, true)
+	if CraftList.BackgroundNineSlice then CraftList.BackgroundNineSlice:Hide() end
+	CraftList:CreateBackdrop('Transparent')
+	CraftList.backdrop:SetInside()
+	S:HandleEditBox(CraftList.SearchBox)
+	S:HandleButton(CraftList.FilterButton)
+	S:HandleCloseButton(CraftList.FilterButton.ResetButton)
 
 	local SchematicForm = CraftingPage.SchematicForm
 	SchematicForm:StripTextures()
@@ -243,11 +243,11 @@ function S:Blizzard_Professions()
 	BrowseFrame.OrdersRemainingDisplay:StripTextures()
 	BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
 
-	local RecipeList = Orders.BrowseFrame.RecipeList
-	RecipeList:StripTextures()
-	S:HandleTrimScrollBar(RecipeList.ScrollBar, true)
-	S:HandleEditBox(RecipeList.SearchBox)
-	S:HandleButton(RecipeList.FilterButton)
+	local BrowseList = Orders.BrowseFrame.RecipeList
+	BrowseList:StripTextures()
+	S:HandleTrimScrollBar(BrowseList.ScrollBar, true)
+	S:HandleEditBox(BrowseList.SearchBox)
+	S:HandleButton(BrowseList.FilterButton)
 
 	local OrderList = Orders.BrowseFrame.OrderList
 	OrderList:StripTextures()
