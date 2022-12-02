@@ -4,26 +4,9 @@ local NP = E:GetModule('NamePlates')
 
 local _G = _G
 local pairs = pairs
-local unpack = unpack
 local strmatch = strmatch
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-
-local atlasColors = {
-	['UI-Frame-Bar-Fill-Blue']				= {0.2, 0.6, 1.0},
-	['UI-Frame-Bar-Fill-Red']				= {0.9, 0.2, 0.2},
-	['UI-Frame-Bar-Fill-Yellow']			= {1.0, 0.6, 0.0},
-	['objectivewidget-bar-fill-left']		= {0.2, 0.6, 1.0},
-	['objectivewidget-bar-fill-right']		= {0.9, 0.2, 0.2},
-	['EmberCourtScenario-Tracker-barfill']	= {0.9, 0.2, 0.2},
-}
-
-local function UpdateBarTexture(bar, atlas)
-	if atlasColors[atlas] then
-		bar:SetStatusBarTexture(E.media.normTex)
-		bar:SetStatusBarColor(unpack(atlasColors[atlas]))
-	end
-end
 
 local ignoreWidgets = {
 	[283] = true -- Cosmic Energy
@@ -38,11 +21,6 @@ function B:UIWidgetTemplateStatusBar()
 		return
 	elseif forbidden or ignoreWidgets[self.widgetSetID] or not bar then
 		return -- we don't want to handle these widgets
-	end
-
-	if bar.GetStatusBarAtlas then
-		UpdateBarTexture(bar, bar:GetStatusBarAtlas())
-		hooksecurefunc(bar, 'SetStatusBarAtlas', UpdateBarTexture)
 	end
 
 	if not bar.backdrop then

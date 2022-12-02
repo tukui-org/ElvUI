@@ -171,7 +171,7 @@ local function UpdateColor(self, event, unit)
 	end
 
 	if(atlas) then
-		element:SetStatusBarAtlas(atlas)
+		element:SetStatusBarTexture(atlas)
 		element:SetStatusBarColor(1, 1, 1)
 	elseif(b) then
 		element:SetStatusBarColor(r, g, b)
