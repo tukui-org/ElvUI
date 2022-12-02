@@ -29,8 +29,11 @@ local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
 local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
+local WEEKLY = WEEKLY
+local RESET = RESET
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_DateAndTime_GetSecondsUntilDailyReset = C_DateAndTime.GetSecondsUntilDailyReset
+local C_DateAndTime_GetSecondsUntilWeeklyReset = C_DateAndTime.GetSecondsUntilWeeklyReset
 
 local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
@@ -292,6 +295,11 @@ local function OnEnter()
 	local dailyReset = C_DateAndTime_GetSecondsUntilDailyReset()
 	if dailyReset then
 		DT.tooltip:AddDoubleLine(L["Daily Reset"], ToTime(dailyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+	end
+
+	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
+	if weeklyReset then
+		DT.tooltip:AddDoubleLine(format('%s %s', WEEKLY, RESET), ToTime(weeklyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	if AmPm == -1 then
