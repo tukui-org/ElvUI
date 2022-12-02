@@ -1020,7 +1020,9 @@ do
 
 		AB:FixSpellBookTaint()
 
-		_G.EncounterBar:KillEditMode()
+		if E.Retail then
+			_G.EncounterBar:KillEditMode()
+		end
 
 		-- MainMenuBar:ClearAllPoints taint during combat
 		_G.MainMenuBar.SetPositionForStatusBars = E.noop
