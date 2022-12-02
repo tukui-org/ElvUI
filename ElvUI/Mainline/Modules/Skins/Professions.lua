@@ -60,11 +60,11 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
 
-	local RankBar = CraftingPage.RankBar
-	RankBar.Border:Hide()
-	RankBar.Background:Hide()
-	RankBar.Fill:CreateBackdrop()
-	RankBar.Rank.Text:FontTemplate()
+	local CraftingRankBar = CraftingPage.RankBar
+	CraftingRankBar.Border:Hide()
+	CraftingRankBar.Background:Hide()
+	CraftingRankBar.Fill:CreateBackdrop()
+	CraftingRankBar.Rank.Text:FontTemplate()
 
 	local LinkButton = CraftingPage.LinkButton
 	LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
@@ -110,10 +110,10 @@ function S:Blizzard_Professions()
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
 
-	local Track = SchematicForm.TrackRecipeCheckBox
-	if Track then
-		S:HandleCheckBox(Track)
-		Track:SetSize(24, 24)
+	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckBox
+	if TrackRecipeCheckBox then
+		S:HandleCheckBox(TrackRecipeCheckBox)
+		TrackRecipeCheckBox:SetSize(24, 24)
 	end
 
 	local QualityCheckBox = SchematicForm.AllocateBestQualityCheckBox
@@ -180,13 +180,13 @@ function S:Blizzard_Professions()
 	S:HandleButton(DetailedView.SpendPointsButton)
 	S:HandleIcon(DetailedView.UnspentPoints.Icon)
 
-	local OutputLog = CraftingPage.CraftingOutputLog
-	OutputLog:StripTextures()
-	OutputLog:CreateBackdrop()
-	S:HandleCloseButton(OutputLog.ClosePanelButton)
-	S:HandleTrimScrollBar(OutputLog.ScrollBar, true)
+	local CraftingLog = CraftingPage.CraftingOutputLog
+	CraftingLog:StripTextures()
+	CraftingLog:CreateBackdrop()
+	S:HandleCloseButton(CraftingLog.ClosePanelButton)
+	S:HandleTrimScrollBar(CraftingLog.ScrollBar, true)
 
-	hooksecurefunc(OutputLog.ScrollBox, 'Update', function(frame)
+	hooksecurefunc(CraftingLog.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
 				local itemContainer = child.ItemContainer
@@ -257,17 +257,17 @@ function S:Blizzard_Professions()
 	S:HandleTrimScrollBar(OrderList.ScrollBar, true)
 
 	local OrderView = Orders.OrderView
-	local RankBar = OrderView.RankBar
-	RankBar.Border:Hide()
-	RankBar.Background:Hide()
-	RankBar.Fill:CreateBackdrop()
-	RankBar.Rank.Text:FontTemplate()
+	local OrderRankBar = OrderView.RankBar
+	OrderRankBar.Border:Hide()
+	OrderRankBar.Background:Hide()
+	OrderRankBar.Fill:CreateBackdrop()
+	OrderRankBar.Rank.Text:FontTemplate()
 
-	local CraftingOutputLog = OrderView.CraftingOutputLog
-	OutputLog:StripTextures()
-	OutputLog:CreateBackdrop()
-	S:HandleCloseButton(OutputLog.ClosePanelButton)
-	S:HandleTrimScrollBar(OutputLog.ScrollBar, true)
+	local OrderLog = OrderView.CraftingOutputLog
+	OrderLog:StripTextures()
+	OrderLog:CreateBackdrop()
+	S:HandleCloseButton(OrderLog.ClosePanelButton)
+	S:HandleTrimScrollBar(OrderLog.ScrollBar, true)
 
 	S:HandleButton(OrderView.CreateButton)
 	S:HandleButton(OrderView.StartRecraftButton)
@@ -293,23 +293,23 @@ function S:Blizzard_Professions()
 	OrderDetails.Background:SetInside(OrderDetails.backdrop)
 	OrderDetails.Background:SetAlpha(.5)
 
-	SchematicForm = OrderDetails.SchematicForm -- Swap
-	S:HandleCheckBox(SchematicForm.AllocateBestQualityCheckBox)
+	local OrderSchematicForm = OrderDetails.SchematicForm
+	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckBox)
 
-	local OutputIcon = OrderDetails.SchematicForm.OutputIcon
-	if OutputIcon then
-		S:HandleIcon(OutputIcon.Icon, true)
-		S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
-		OutputIcon:GetHighlightTexture():Hide()
-		OutputIcon.CircleMask:Hide()
+	local OrderOutputIcon = OrderSchematicForm.OutputIcon
+	if OrderOutputIcon then
+		S:HandleIcon(OrderOutputIcon.Icon, true)
+		S:HandleIconBorder(OrderOutputIcon.IconBorder, OrderOutputIcon.Icon.backdrop)
+		OrderOutputIcon:GetHighlightTexture():Hide()
+		OrderOutputIcon.CircleMask:Hide()
 	end
 
-	hooksecurefunc(SchematicForm, 'Init', function(frame)
+	hooksecurefunc(OrderSchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
 			ReskinSlotButton(slot.Button)
 		end
 
-		local slot = SchematicForm.salvageSlot
+		local slot = OrderSchematicForm.salvageSlot
 		if slot then
 			ReskinSlotButton(slot.Button)
 		end
@@ -321,15 +321,13 @@ function S:Blizzard_Professions()
 		FulfillmentForm.NoteEditBox.backdrop:SetTemplate('Transparent')
 	end
 
-	local ItemIcon = OrderDetails.FulfillmentForm.ItemIcon
-	if ItemIcon then
-		S:HandleIcon(ItemIcon.Icon, true)
-		S:HandleIconBorder(ItemIcon.IconBorder, ItemIcon.Icon.backdrop)
-		ItemIcon:GetHighlightTexture():Hide()
-		ItemIcon.CircleMask:Hide()
+	local OrderItemIcon = OrderDetails.FulfillmentForm.ItemIcon
+	if OrderItemIcon then
+		S:HandleIcon(OrderItemIcon.Icon, true)
+		S:HandleIconBorder(OrderItemIcon.IconBorder, OrderItemIcon.Icon.backdrop)
+		OrderItemIcon:GetHighlightTexture():Hide()
+		OrderItemIcon.CircleMask:Hide()
 	end
-
-
 end
 
 S:AddCallbackForAddon('Blizzard_Professions')
