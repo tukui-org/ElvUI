@@ -242,12 +242,16 @@ function DT:BuildPanelFunctions(name, obj)
 end
 
 function DT:SetupObjectLDB(name, obj)
+	if DT.RegisteredDataTexts[name] then return end
+
 	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
 	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
 
-	DT:UpdateQuickDT()
+	if self ~= DT then -- This checks to see if we are calling it or the callback.
+		DT:UpdateQuickDT()
+	end
 end
 
 function DT:RegisterLDB()
