@@ -622,6 +622,12 @@ do
 			end
 		end
 
+		tinsert(QuickList, {
+			order = 100, text = L["None"],
+			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
+			func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
+		})
+
 		DT:SortMenuList(QuickList)
 	end
 end
