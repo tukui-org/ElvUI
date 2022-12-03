@@ -478,7 +478,12 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestModelScene:StripTextures()
 	_G.QuestModelScene:SetTemplate('Transparent')
-	_G.QuestModelScene:Point('TOPLEFT', _G.QuestLogDetailFrame, 'TOPRIGHT', 4, -34)
+
+	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
+		_G.QuestModelScene:ClearAllPoints()
+		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + 6, y or 0)
+	end)
+
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)

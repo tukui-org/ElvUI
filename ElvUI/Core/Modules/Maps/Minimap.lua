@@ -134,13 +134,7 @@ function M:HandleExpansionButton()
 	end
 end
 
-function M:HandleQueueButton(actionbarMode)
-	local queueButton = M:GetQueueStatusButton()
-	if not queueButton then return end
-
-	queueButton:SetParent(_G.MinimapBackdrop)
-	queueButton:ClearAllPoints()
-
+function M:HandleQueueButton()
 	local queueDisplay = M.QueueStatusDisplay
 	if queueDisplay then
 		local db = E.db.general.minimap.icons.queueStatus
@@ -154,12 +148,15 @@ function M:HandleQueueButton(actionbarMode)
 		end
 	end
 
-	if actionbarMode then
-		queueButton:Point('BOTTOMLEFT', Minimap, E.Retail and 50 or 10, E.Retail and -15 or -10)
-		M:SetScale(queueButton, E.Retail and 0.8 or 1)
-	else
+	local queueButton = M:GetQueueStatusButton()
+	if queueButton then
+		queueButton:SetParent(Minimap)
+		queueButton:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
+
 		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+		queueButton:ClearAllPoints()
 		queueButton:Point(position, Minimap, xOffset, yOffset)
+
 		M:SetScale(queueButton, scale)
 	end
 end
@@ -354,6 +351,10 @@ function M:GetQueueStatusButton()
 end
 
 function M:UpdateSettings()
+	if M.Initialized or E.private.actionbar.enable then
+		M:HandleQueueButton()
+	end
+
 	if not M.Initialized then return end
 
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
@@ -375,19 +376,7 @@ function M:UpdateSettings()
 	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', holder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
-	Minimap:Size(E.MinimapSize, E.MinimapSize)
-
-	if E.Retail then
-		MinimapCluster:SetScale(mmScale)
-
-		local mcWidth = MinimapCluster:GetWidth()
-		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
-		M.ClusterHolder:SetSize(width, height)
-		M.ClusterBackdrop:SetSize(width, height)
-		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
-	else
-		Minimap:SetScale(mmScale)
-	end
+	Minimap:Size(E.MinimapSize)
 
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
@@ -405,7 +394,18 @@ function M:UpdateSettings()
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 	_G.MiniMapMailIcon:Size(20)
 
-	if E.Retail then
+	if not E.Retail then
+		Minimap:SetScale(mmScale)
+	else
+		MinimapCluster:SetScale(mmScale)
+
+		local mcWidth = MinimapCluster:GetWidth()
+		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
+		M.ClusterHolder:SetSize(width, height)
+		M.ClusterBackdrop:SetSize(width, height)
+		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
+
+		-- elements
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
 		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
 
@@ -423,8 +423,6 @@ function M:UpdateSettings()
 			_G.TimeManagerClockButton:Show()
 		end
 	end
-
-	M:HandleQueueButton()
 
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
 	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
@@ -458,7 +456,8 @@ function M:UpdateSettings()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
-				gameTime:SetParent(_G.MinimapBackdrop)
+				gameTime:SetParent(Minimap)
+				gameTime:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
 				gameTime:Show()
 
 				M:SetScale(gameTime, scale)
@@ -605,11 +604,11 @@ end
 
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	local holder = (noCluster and _G.UIParent) or M.ClusterHolder
+	local holder = (noCluster and M.holder) or M.ClusterHolder
 
 	if anchor ~= holder then
 		MinimapCluster:ClearAllPoints()
-		MinimapCluster:Point('TOPRIGHT', holder, 0, noCluster and 0 or 1)
+		MinimapCluster:Point('TOPRIGHT', holder, noCluster and -E.Border or 0, noCluster and -E.Border or 1)
 	end
 end
 
@@ -620,7 +619,7 @@ function M:Initialize()
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
 
 		if E.private.actionbar.enable then
-			M:HandleQueueButton(true)
+			M:HandleQueueButton()
 		end
 
 		return
@@ -633,24 +632,14 @@ function M:Initialize()
 	local holder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
 	holder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 	holder:Size(Minimap:GetSize())
+	M:SetScale(holder, 1)
 	M.holder = holder
 	E:CreateMover(holder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
-	if E.Retail then -- set before minimap itself
-		MinimapCluster:SetFrameLevel(20)
-	end
-
-	Minimap:SetFrameStrata('LOW')
-	Minimap:SetFrameLevel(10)
-	Minimap:CreateBackdrop()
-
-	if Minimap.backdrop then -- level to hybrid maps fixed values
-		Minimap.backdrop:SetFrameLevel(99)
-		Minimap.backdrop:SetFrameStrata('BACKGROUND')
-		M:SetScale(Minimap.backdrop, 1)
-	end
-
 	if E.Retail then
+		MinimapCluster:SetFrameLevel(20) -- set before minimap itself
+		MinimapCluster:KillEditMode()
+
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 		clusterHolder:Size(MinimapCluster:GetSize())
@@ -663,8 +652,16 @@ function M:Initialize()
 		clusterBackdrop:SetTemplate()
 		M:SetScale(clusterBackdrop, 1)
 		M.ClusterBackdrop = clusterBackdrop
+	end
 
-		MinimapCluster:KillEditMode()
+	Minimap:SetFrameStrata('LOW')
+	Minimap:SetFrameLevel(10)
+	Minimap:CreateBackdrop()
+
+	if Minimap.backdrop then -- level to hybrid maps fixed values
+		Minimap.backdrop:SetFrameLevel(99)
+		Minimap.backdrop:SetFrameStrata('BACKGROUND')
+		M:SetScale(Minimap.backdrop, 1)
 	end
 
 	M:ClusterPoint()
