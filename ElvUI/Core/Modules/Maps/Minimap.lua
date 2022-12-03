@@ -376,19 +376,6 @@ function M:UpdateSettings()
 	Minimap:Point('TOPRIGHT', holder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
 	Minimap:Size(E.MinimapSize)
 
-	if E.Retail then
-	--	MinimapCluster:Size(E.MinimapSize)
-		MinimapCluster:SetScale(mmScale)
-
-		local mcWidth = MinimapCluster:GetWidth()
-		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
-		M.ClusterHolder:SetSize(width, height)
-		M.ClusterBackdrop:SetSize(width, height)
-		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
-	else
-		Minimap:SetScale(mmScale)
-	end
-
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
 	local panelSize, joinPanel = (panel:IsShown() and panel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
@@ -405,7 +392,18 @@ function M:UpdateSettings()
 	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
 	_G.MiniMapMailIcon:Size(20)
 
-	if E.Retail then
+	if not E.Retail then
+		Minimap:SetScale(mmScale)
+	else
+		MinimapCluster:SetScale(mmScale)
+
+		local mcWidth = MinimapCluster:GetWidth()
+		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
+		M.ClusterHolder:SetSize(width, height)
+		M.ClusterBackdrop:SetSize(width, height)
+		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
+
+		-- elements
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
 		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
 
