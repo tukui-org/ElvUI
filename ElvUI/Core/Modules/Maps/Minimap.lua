@@ -351,7 +351,9 @@ function M:GetQueueStatusButton()
 end
 
 function M:UpdateSettings()
-	M:HandleQueueButton()
+	if M.Initialized or E.private.actionbar.enable then
+		M:HandleQueueButton()
+	end
 
 	if not M.Initialized then return end
 
