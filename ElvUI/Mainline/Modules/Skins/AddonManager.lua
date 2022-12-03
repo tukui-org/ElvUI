@@ -27,11 +27,11 @@ function S:AddonList()
 	_G.AddonListForceLoad:Size(26, 26)
 
 	hooksecurefunc('AddonList_InitButton', function(entry, addonIndex)
-		if not entry.IsSkinned then
+		if not entry.isSkinned then
 			S:HandleCheckBox(entry.Enabled)
 			S:HandleButton(entry.LoadAddonButton)
 
-			entry.IsSkinned = true
+			entry.isSkinned = true
 		end
 
 		local checkall -- Get the character from the current list (nil is all characters)
