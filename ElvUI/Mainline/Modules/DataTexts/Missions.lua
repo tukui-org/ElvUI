@@ -61,7 +61,7 @@ local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
 local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
 local numMissions = 0
-local MAIN_CURRENCY = 1813
+local MAIN_CURRENCY = 2003
 local callingsData = {}
 local covenantTreeIDs = {
 	[1] = {308, 312, 316, 320, 327},
@@ -191,30 +191,33 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	DT.tooltip:AddLine(EXPANSION_NAME8, 1, .5, 0)
-	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
-	AddInProgressMissions(GARRISONFOLLOWERTYPE_9_0)
-
-	if C_CovenantCallings_AreCallingsUnlocked() then
-		local questNum = 0
-		for _, calling in ipairs(callingsData) do
-			local callingObj = CovenantCalling_Create(calling)
-			if callingObj:GetState() == 0 then
-				questNum = questNum + 1
-			end
-		end
-		if questNum > 0 then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(format('%s %s', questNum, L["Calling Quest(s) available."]))
-		end
-	end
-
-	local currentCovenant = C_Covenants_GetActiveCovenantID()
-	if currentCovenant and currentCovenant > 0 then
-		AddTalentInfo(GARRISONTYPE_9_0, currentCovenant)
-	end
+	DT.tooltip:AddLine(EXPANSION_NAME9, 1, .5, 0)
 
 	if IsShiftKeyDown() then
+		-- Shadowlands
+		DT.tooltip:AddLine(EXPANSION_NAME8, 1, .5, 0)
+		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
+		AddInProgressMissions(GARRISONFOLLOWERTYPE_9_0)
+
+		if C_CovenantCallings_AreCallingsUnlocked() then
+			local questNum = 0
+			for _, calling in ipairs(callingsData) do
+				local callingObj = CovenantCalling_Create(calling)
+				if callingObj:GetState() == 0 then
+					questNum = questNum + 1
+				end
+			end
+			if questNum > 0 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(format('%s %s', questNum, L["Calling Quest(s) available."]))
+			end
+		end
+
+		local currentCovenant = C_Covenants_GetActiveCovenantID()
+		if currentCovenant and currentCovenant > 0 then
+			AddTalentInfo(GARRISONTYPE_9_0, currentCovenant)
+		end
+
 		-- Battle for Azeroth
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
