@@ -238,7 +238,6 @@ function S:Blizzard_Professions()
 	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
 	S:HandleTab(Orders.BrowseFrame.GuildOrdersButton)
 	S:HandleTab(Orders.BrowseFrame.PersonalOrdersButton)
-	Orders.BrowseFrame.RecipeList.BackgroundNineSlice:SetTemplate('Transparent')
 
 	local BrowseFrame = Orders.BrowseFrame
 	BrowseFrame.OrdersRemainingDisplay:StripTextures()
@@ -252,6 +251,7 @@ function S:Blizzard_Professions()
 	S:HandleTrimScrollBar(BrowseList.ScrollBar, true)
 	S:HandleEditBox(BrowseList.SearchBox)
 	S:HandleButton(BrowseList.FilterButton)
+	BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
 
 	local OrderList = Orders.BrowseFrame.OrderList
 	OrderList:StripTextures()
