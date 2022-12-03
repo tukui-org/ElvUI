@@ -152,16 +152,12 @@ function M:HandleQueueButton(actionbarMode)
 	if queueButton then
 		queueButton:SetParent(Minimap)
 		queueButton:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
-		queueButton:ClearAllPoints()
 
-		if actionbarMode then
-			queueButton:Point('BOTTOMLEFT', Minimap, E.Retail and 50 or 10, E.Retail and -15 or -10)
-			M:SetScale(queueButton, E.Retail and 0.8 or 1)
-		else
-			local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-			queueButton:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(queueButton, scale)
-		end
+		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+		queueButton:ClearAllPoints()
+		queueButton:Point(position, Minimap, xOffset, yOffset)
+
+		M:SetScale(queueButton, actionbarMode and (E.Retail and 0.8 or 1) or scale)
 	end
 end
 
@@ -355,6 +351,8 @@ function M:GetQueueStatusButton()
 end
 
 function M:UpdateSettings()
+	M:HandleQueueButton()
+
 	if not M.Initialized then return end
 
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
@@ -424,8 +422,6 @@ function M:UpdateSettings()
 			_G.TimeManagerClockButton:Show()
 		end
 	end
-
-	M:HandleQueueButton()
 
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
 	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
