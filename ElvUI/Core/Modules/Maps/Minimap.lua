@@ -138,7 +138,7 @@ function M:HandleQueueButton(actionbarMode)
 	local queueButton = M:GetQueueStatusButton()
 	if not queueButton then return end
 
-	queueButton:SetParent(_G.MinimapBackdrop)
+	queueButton:SetParent(actionbarMode and Minimap or _G.MinimapBackdrop)
 	queueButton:ClearAllPoints()
 
 	local queueDisplay = M.QueueStatusDisplay
