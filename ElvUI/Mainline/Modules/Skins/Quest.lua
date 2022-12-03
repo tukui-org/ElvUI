@@ -480,9 +480,8 @@ function S:BlizzardQuestFrames()
 	_G.QuestModelScene:SetTemplate('Transparent')
 
 	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
-		x = x + 6
 		_G.QuestModelScene:ClearAllPoints()
-		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', x, y)
+		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + 6, y or 0)
 	end)
 
 	_G.QuestNPCModelTextFrame:StripTextures()
