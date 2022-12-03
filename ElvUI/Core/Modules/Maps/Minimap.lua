@@ -135,12 +135,6 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleQueueButton(actionbarMode)
-	local queueButton = M:GetQueueStatusButton()
-	if not queueButton then return end
-
-	queueButton:SetParent(actionbarMode and Minimap or _G.MinimapBackdrop)
-	queueButton:ClearAllPoints()
-
 	local queueDisplay = M.QueueStatusDisplay
 	if queueDisplay then
 		local db = E.db.general.minimap.icons.queueStatus
@@ -154,13 +148,22 @@ function M:HandleQueueButton(actionbarMode)
 		end
 	end
 
-	if actionbarMode then
-		queueButton:Point('BOTTOMLEFT', Minimap, E.Retail and 50 or 10, E.Retail and -15 or -10)
-		M:SetScale(queueButton, E.Retail and 0.8 or 1)
-	else
-		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-		queueButton:Point(position, Minimap, xOffset, yOffset)
-		M:SetScale(queueButton, scale)
+	local queueButton = M:GetQueueStatusButton()
+	if queueButton then
+		if queueButton:GetParent() ~= Minimap then
+			queueButton:SetParent(Minimap)
+		end
+
+		queueButton:ClearAllPoints()
+
+		if actionbarMode then
+			queueButton:Point('BOTTOMLEFT', Minimap, E.Retail and 50 or 10, E.Retail and -15 or -10)
+			M:SetScale(queueButton, E.Retail and 0.8 or 1)
+		else
+			local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
+			queueButton:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(queueButton, scale)
+		end
 	end
 end
 
