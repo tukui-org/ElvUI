@@ -134,7 +134,7 @@ function M:HandleExpansionButton()
 	end
 end
 
-function M:HandleQueueButton(actionbarMode)
+function M:HandleQueueButton()
 	local queueDisplay = M.QueueStatusDisplay
 	if queueDisplay then
 		local db = E.db.general.minimap.icons.queueStatus
@@ -157,7 +157,7 @@ function M:HandleQueueButton(actionbarMode)
 		queueButton:ClearAllPoints()
 		queueButton:Point(position, Minimap, xOffset, yOffset)
 
-		M:SetScale(queueButton, actionbarMode and (E.Retail and 0.8 or 1) or scale)
+		M:SetScale(queueButton, scale)
 	end
 end
 
@@ -617,7 +617,7 @@ function M:Initialize()
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
 
 		if E.private.actionbar.enable then
-			M:HandleQueueButton(true)
+			M:HandleQueueButton()
 		end
 
 		return
