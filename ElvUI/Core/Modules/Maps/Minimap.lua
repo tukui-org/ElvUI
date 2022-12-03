@@ -150,10 +150,8 @@ function M:HandleQueueButton(actionbarMode)
 
 	local queueButton = M:GetQueueStatusButton()
 	if queueButton then
-		if queueButton:GetParent() ~= Minimap then
-			queueButton:SetParent(Minimap)
-		end
-
+		queueButton:SetParent(Minimap)
+		queueButton:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
 		queueButton:ClearAllPoints()
 
 		if actionbarMode then
@@ -461,7 +459,8 @@ function M:UpdateSettings()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
-				gameTime:SetParent(_G.MinimapBackdrop)
+				gameTime:SetParent(Minimap)
+				gameTime:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
 				gameTime:Show()
 
 				M:SetScale(gameTime, scale)
