@@ -374,9 +374,10 @@ function M:UpdateSettings()
 	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', holder, 'TOPRIGHT', -mmOffset/mmScale, -mmOffset/mmScale)
-	Minimap:Size(E.MinimapSize, E.MinimapSize)
+	Minimap:Size(E.MinimapSize)
 
 	if E.Retail then
+	--	MinimapCluster:Size(E.MinimapSize)
 		MinimapCluster:SetScale(mmScale)
 
 		local mcWidth = MinimapCluster:GetWidth()
@@ -603,11 +604,11 @@ end
 
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	local holder = (noCluster and _G.UIParent) or M.ClusterHolder
+	local holder = (noCluster and M.holder) or M.ClusterHolder
 
 	if anchor ~= holder then
 		MinimapCluster:ClearAllPoints()
-		MinimapCluster:Point('TOPRIGHT', holder, 0, noCluster and 0 or 1)
+		MinimapCluster:Point('TOPRIGHT', holder, noCluster and -E.Border or 0, noCluster and -E.Border or 1)
 	end
 end
 
@@ -631,6 +632,7 @@ function M:Initialize()
 	local holder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
 	holder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 	holder:Size(Minimap:GetSize())
+	M:SetScale(holder, 1)
 	M.holder = holder
 	E:CreateMover(holder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
