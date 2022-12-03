@@ -557,14 +557,12 @@ do
 		},
 		Minimap = {
 			info = {
-				enabled = function()
-					local db = E.private.general.minimap.enable and _G.LeaPlusDB
-					return db and db.MinimapMod == 'On'
-				end,
+				enabled = function() return E.private.general.minimap.enable end,
 				accept = function() E.private.general.minimap.enable = false; ReloadUI() end,
 				name = 'ElvUI Minimap',
 			},
-			'Leatrix_Plus'
+			'Leatrix_Plus',
+			'SexyMap'
 		},
 	}
 
