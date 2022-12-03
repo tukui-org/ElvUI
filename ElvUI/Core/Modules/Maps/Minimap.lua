@@ -636,6 +636,7 @@ function M:Initialize()
 
 	if E.Retail then
 		MinimapCluster:SetFrameLevel(20) -- set before minimap itself
+		MinimapCluster:KillEditMode()
 
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
@@ -649,8 +650,6 @@ function M:Initialize()
 		clusterBackdrop:SetTemplate()
 		M:SetScale(clusterBackdrop, 1)
 		M.ClusterBackdrop = clusterBackdrop
-
-		MinimapCluster:KillEditMode()
 	end
 
 	Minimap:SetFrameStrata('LOW')
