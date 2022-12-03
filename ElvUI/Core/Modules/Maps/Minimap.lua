@@ -634,21 +634,9 @@ function M:Initialize()
 	M.holder = holder
 	E:CreateMover(holder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
-	if E.Retail then -- set before minimap itself
-		MinimapCluster:SetFrameLevel(20)
-	end
-
-	Minimap:SetFrameStrata('LOW')
-	Minimap:SetFrameLevel(10)
-	Minimap:CreateBackdrop()
-
-	if Minimap.backdrop then -- level to hybrid maps fixed values
-		Minimap.backdrop:SetFrameLevel(99)
-		Minimap.backdrop:SetFrameStrata('BACKGROUND')
-		M:SetScale(Minimap.backdrop, 1)
-	end
-
 	if E.Retail then
+		MinimapCluster:SetFrameLevel(20) -- set before minimap itself
+
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 		clusterHolder:Size(MinimapCluster:GetSize())
@@ -663,6 +651,16 @@ function M:Initialize()
 		M.ClusterBackdrop = clusterBackdrop
 
 		MinimapCluster:KillEditMode()
+	end
+
+	Minimap:SetFrameStrata('LOW')
+	Minimap:SetFrameLevel(10)
+	Minimap:CreateBackdrop()
+
+	if Minimap.backdrop then -- level to hybrid maps fixed values
+		Minimap.backdrop:SetFrameLevel(99)
+		Minimap.backdrop:SetFrameStrata('BACKGROUND')
+		M:SetScale(Minimap.backdrop, 1)
 	end
 
 	M:ClusterPoint()
