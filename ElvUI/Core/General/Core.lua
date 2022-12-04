@@ -569,7 +569,7 @@ do
 				accept = function() E.private.general.minimap.enable = false; ReloadUI() end,
 				name = 'ElvUI Minimap',
 			},
-			'Leatrix_Plus',
+			'Leatrix_Plus', -- has custom check in IsIncompatible
 			'SexyMap'
 		},
 	}
