@@ -604,11 +604,11 @@ end
 
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	local holder = (noCluster and M.holder) or M.ClusterHolder
+	local holder = (noCluster and _G.UIParent) or M.ClusterHolder
 
 	if anchor ~= holder then
 		MinimapCluster:ClearAllPoints()
-		MinimapCluster:Point('TOPRIGHT', holder, noCluster and -E.Border or 0, noCluster and -E.Border or 1)
+		MinimapCluster:Point('TOPRIGHT', holder, 0, noCluster and 0 or 1)
 	end
 end
 
