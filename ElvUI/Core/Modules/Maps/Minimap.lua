@@ -604,11 +604,11 @@ end
 
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	local holder = (noCluster and _G.UIParent) or M.ClusterHolder
+	local frame = (noCluster and _G.UIParent) or M.ClusterHolder
 
-	if anchor ~= holder then
+	if anchor ~= frame then
 		MinimapCluster:ClearAllPoints()
-		MinimapCluster:Point('TOPRIGHT', holder, 0, noCluster and 0 or 1)
+		MinimapCluster:Point('TOPRIGHT', frame, 0, noCluster and 0 or 1)
 	end
 end
 
@@ -629,12 +629,12 @@ function M:Initialize()
 
 	menuFrame:SetTemplate('Transparent')
 
-	local holder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
-	holder:Point('TOPRIGHT', E.UIParent, -3, -3)
-	holder:Size(Minimap:GetSize())
-	E:CreateMover(holder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
-	M.MapHolder = holder
-	M:SetScale(holder, 1)
+	local mapHolder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
+	mapHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
+	mapHolder:Size(Minimap:GetSize())
+	E:CreateMover(mapHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
+	M.MapHolder = mapHolder
+	M:SetScale(mapHolder, 1)
 
 	if E.Retail then
 		MinimapCluster:KillEditMode()
@@ -661,13 +661,13 @@ function M:Initialize()
 	end
 
 	M:ClusterPoint()
-	MinimapCluster:SetFrameLevel(20) -- set before minimap itself
 	MinimapCluster:EnableMouse(false)
+	MinimapCluster:SetFrameLevel(20) -- set before minimap itself
 	hooksecurefunc(MinimapCluster, 'SetPoint', M.ClusterPoint)
 
-	Minimap:SetFrameStrata('LOW')
-	Minimap:SetFrameLevel(10)
 	Minimap:EnableMouseWheel(true)
+	Minimap:SetFrameLevel(10)
+	Minimap:SetFrameStrata('LOW')
 	Minimap:CreateBackdrop()
 
 	if Minimap.backdrop then -- level to hybrid maps fixed values
@@ -684,7 +684,7 @@ function M:Initialize()
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Hide() end end)
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
-	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
+	Minimap.location:Point('TOP', Minimap, 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
