@@ -514,7 +514,13 @@ end
 
 function E:IsIncompatible(module, addons)
 	for _, addon in ipairs(addons) do
-		if E:IsAddOnEnabled(addon) then
+		if addon == 'Leatrix_Plus' then
+			local db = _G.LeaPlusDB
+			if db and db.MinimapMod == 'On' then
+				E:IncompatibleAddOn(addon, module, addons.info)
+				return true
+			end
+		elseif E:IsAddOnEnabled(addon) then
 			E:IncompatibleAddOn(addon, module, addons.info)
 			return true
 		end
