@@ -58,6 +58,9 @@ local function HandleButton(entry, addonIndex)
 	end
 
 	local checktex = entry.Enabled:GetCheckedTexture()
+	checktex.SetVertexColor = nil
+	checktex.SetDesaturated = nil
+
 	if not enabled and checkall == 1 then
 		checktex:SetVertexColor(0.3, 0.3, 0.3)
 		checktex:SetDesaturated(true)
@@ -73,6 +76,10 @@ local function HandleButton(entry, addonIndex)
 		checktex:SetDesaturated(false)
 		checktex:Show()
 	end
+
+	-- TriStateCheckbox_SetState interferes (checktex all share the same name)
+	checktex.SetVertexColor = E.noop
+	checktex.SetDesaturated = E.noop
 end
 
 function S:AddonList()
