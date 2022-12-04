@@ -251,6 +251,7 @@ function S:Blizzard_Professions()
 	S:HandleTrimScrollBar(BrowseList.ScrollBar, true)
 	S:HandleEditBox(BrowseList.SearchBox)
 	S:HandleButton(BrowseList.FilterButton)
+	BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
 
 	local OrderList = Orders.BrowseFrame.OrderList
 	OrderList:StripTextures()

@@ -97,9 +97,12 @@ do
 		elseif myClass == 'EVOKER' then
 			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
 			local expunge = CheckSpell(365585) -- Expunge (Devastation)
+			local cauterizing = CheckSpell(374251) -- Cauterizing Flame (Still need bleed support.)
 
 			DispelList.Magic = naturalize
-			DispelList.Poison = naturalize or expunge
+			DispelList.Poison = naturalize or expunge or cauterizing
+			DispelList.Disease = cauterizing
+			DispelList.Curse = cauterizing
 		end
 
 		if undoRanks then
