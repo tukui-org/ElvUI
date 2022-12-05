@@ -92,7 +92,7 @@ do
 
 			DispelList.Magic = purify
 			DispelList.Curse = cleanse
-			DispelList.Poison = Retail and toxins or not Retail and (cleanse or toxins)
+			DispelList.Poison = toxins or (not Retail and cleanse)
 			DispelList.Disease = not Retail and (cleanse or toxins)
 		elseif myClass == 'EVOKER' then
 			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
