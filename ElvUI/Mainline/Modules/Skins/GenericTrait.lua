@@ -18,7 +18,6 @@ function S:Blizzard_GenericTraitUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.genericTrait) then return end
 
 	local GenericTrait = _G.GenericTraitFrame
-
 	if E.private.skins.parchmentRemoverEnable then
 		GenericTrait:StripTextures()
 	end
@@ -27,7 +26,7 @@ function S:Blizzard_GenericTraitUI()
 	S:HandleCloseButton(GenericTrait.CloseButton)
 
 	ReplaceIconString(GenericTrait.Currency.UnspentPointsCount)
-	hooksecurefunc(GenericTrait.Currency.UnspentPointsCount, "SetText", ReplaceIconString)
+	hooksecurefunc(GenericTrait.Currency.UnspentPointsCount, 'SetText', ReplaceIconString)
 end
 
 S:AddCallbackForAddon('Blizzard_GenericTraitUI')
