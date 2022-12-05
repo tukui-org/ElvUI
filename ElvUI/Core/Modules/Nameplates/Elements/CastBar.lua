@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local CH = E:GetModule('Chat')
 local LSM = E.Libs.LSM
 
@@ -148,6 +149,9 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.PostCastFail = NP.Castbar_PostCastFail
 	Castbar.PostCastInterruptible = NP.Castbar_PostCastInterruptible
 	Castbar.PostCastStop = NP.Castbar_PostCastStop
+	Castbar.UpdatePipStep = UF.UpdatePipStep
+	Castbar.PostUpdatePip = UF.PostUpdatePip
+	Castbar.CreatePip = UF.CreatePip
 
 	if nameplate == _G.ElvNP_Test then
 		Castbar.Hide = Castbar.Show
@@ -203,6 +207,11 @@ function NP:Update_Castbar(nameplate)
 
 		nameplate.Castbar:Size(db.width, db.height)
 		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', db.xOffset, db.yOffset)
+
+		nameplate.Castbar.pipColor = NP.db.colors.empoweredCast
+		for stage, pip in next, nameplate.Castbar.Pips do
+			UF:CastBar_UpdatePip(pip, stage)
+		end
 
 		if db.showIcon then
 			nameplate.Castbar.Button:ClearAllPoints()

@@ -19,10 +19,13 @@ local ticks = {}
 
 do
 	local pipMapColor = {4, 1, 2, 3}
-	function UF:CastBar_UpdatePip(pip, stage, texture)
-		local color = UF.db.colors.empoweredCast[pipMapColor[stage]]
-		pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
-		pip.texture:SetTexture(texture)
+	function UF:CastBar_UpdatePip(pip, stage)
+		if pip.owner.pipColor then
+			local color = pip.owner.pipColor[pipMapColor[stage]]
+			pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
+		end
+
+		pip.texture:SetTexture(pip.owner:GetStatusBarTexture():GetTexture())
 	end
 
 	local pipMapAlpha = {2, 3, 4, 1}
@@ -76,14 +79,14 @@ function UF:CreatePip(stage)
 	pip.texture:Point('BOTTOM')
 	pip.texture:Point('TOP')
 
+	pip.owner = self
+
 	pip.pipStart = 1.0 -- alpha on hit
 	pip.pipAlpha = 0.3 -- alpha on init
 	pip.pipFaded = 0.6 -- alpha when passed
 	pip.pipTimer = 0.4 -- fading time to passed
 
-	UF.statusbars[pip.texture] = true
-
-	UF:CastBar_UpdatePip(pip, stage, LSM:Fetch('statusbar', UF.db.statusbar))
+	UF:CastBar_UpdatePip(pip, stage)
 
 	return pip
 end
@@ -186,9 +189,9 @@ function UF:Configure_Castbar(frame)
 	end
 
 	--Empowered
-	local pipTexture = LSM:Fetch('statusbar', UF.db.statusbar)
+	castbar.pipColor = UF.db.colors.empoweredCast
 	for stage, pip in next, castbar.Pips do
-		UF:CastBar_UpdatePip(pip, stage, pipTexture)
+		UF:CastBar_UpdatePip(pip, stage)
 	end
 
 	--Latency
