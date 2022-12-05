@@ -505,7 +505,12 @@ function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
 		local sf = NP:StyleFilterChanges(bar:GetParent())
 		if not sf.HealthTexture then
-			bar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
+			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
+			if bar.SetStatusBarTexture then
+				bar:SetStatusBarTexture(texture)
+			else
+				bar:SetTexture(texture)
+			end
 		end
 	end
 end
