@@ -152,6 +152,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.UpdatePipStep = UF.UpdatePipStep
 	Castbar.PostUpdatePip = UF.PostUpdatePip
 	Castbar.CreatePip = UF.CreatePip
+	Castbar.ModuleStatusBars = NP.StatusBars -- not oUF
 
 	if nameplate == _G.ElvNP_Test then
 		Castbar.Hide = Castbar.Show
@@ -210,7 +211,7 @@ function NP:Update_Castbar(nameplate)
 
 		nameplate.Castbar.pipColor = NP.db.colors.empoweredCast
 		for stage, pip in next, nameplate.Castbar.Pips do
-			UF:CastBar_UpdatePip(pip, stage)
+			UF:CastBar_UpdatePip(nameplate.Castbar, pip, stage)
 		end
 
 		if db.showIcon then

@@ -19,13 +19,15 @@ local ticks = {}
 
 do
 	local pipMapColor = {4, 1, 2, 3}
-	function UF:CastBar_UpdatePip(pip, stage)
-		if pip.owner.pipColor then
-			local color = pip.owner.pipColor[pipMapColor[stage]]
+	function UF:CastBar_UpdatePip(castbar, pip, stage, create)
+		if castbar.pipColor then
+			local color = castbar.pipColor[pipMapColor[stage]]
 			pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
 		end
 
-		pip.texture:SetTexture(pip.owner:GetStatusBarTexture():GetTexture())
+		if create then
+			pip.texture:SetTexture(castbar:GetStatusBarTexture():GetTexture())
+		end
 	end
 
 	local pipMapAlpha = {2, 3, 4, 1}
@@ -73,20 +75,27 @@ end
 function UF:CreatePip(stage)
 	local pip = CreateFrame('Frame', nil, self, 'CastingBarFrameStagePipTemplate')
 
+	-- clear the original art (the line)
 	pip.BasePip:SetAlpha(0)
 
+	-- create the texture
 	pip.texture = pip:CreateTexture(nil, 'ARTWORK', nil, 2)
 	pip.texture:Point('BOTTOM')
 	pip.texture:Point('TOP')
 
-	pip.owner = self
-
+	-- values for the animation
 	pip.pipStart = 1.0 -- alpha on hit
 	pip.pipAlpha = 0.3 -- alpha on init
 	pip.pipFaded = 0.6 -- alpha when passed
 	pip.pipTimer = 0.4 -- fading time to passed
 
-	UF:CastBar_UpdatePip(pip, stage)
+	-- self is the castbar
+	if self.ModuleStatusBars then
+		self.ModuleStatusBars[pip.texture] = true
+	end
+
+	-- update colors
+	UF:CastBar_UpdatePip(self, pip, stage, true)
 
 	return pip
 end
@@ -105,6 +114,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
 	castbar.CreatePip = UF.CreatePip
+	castbar.ModuleStatusBars = UF.statusbars -- not oUF
 
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, nil, true)
@@ -191,7 +201,7 @@ function UF:Configure_Castbar(frame)
 	--Empowered
 	castbar.pipColor = UF.db.colors.empoweredCast
 	for stage, pip in next, castbar.Pips do
-		UF:CastBar_UpdatePip(pip, stage)
+		UF:CastBar_UpdatePip(castbar, pip, stage)
 	end
 
 	--Latency
