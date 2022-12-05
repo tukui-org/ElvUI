@@ -24,6 +24,7 @@ local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
+local HideUIPanel = HideUIPanel
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -999,6 +1000,12 @@ do
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 	end
 
+	local settingsHider = CreateFrame('Frame')
+	settingsHider:SetScript('OnEvent', function(frame, event)
+		HideUIPanel(_G.SettingsPanel)
+		frame:UnregisterEvent(event)
+	end)
+
 	function AB:DisableBlizzard()
 		for name in next, untaint do
 			if not E.Retail then
@@ -1051,8 +1058,15 @@ do
 			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
-			-- fix keybind error, this actually just prevents reopen of the GameMenu
-			_G.SettingsPanel.TransitionBackOpeningPanel = _G.HideUIPanel
+			-- dont reopen game menu and fix settings panel not being able to close during combat
+			_G.SettingsPanel.TransitionBackOpeningPanel = function(frame)
+				if InCombatLockdown() then
+					settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
+					frame:SetScale(0.00001)
+				else
+					HideUIPanel(frame)
+				end
+			end
 
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
