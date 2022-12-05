@@ -46,6 +46,9 @@ function S:GossipFrame()
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 
+	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
+	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
+
 	for i = 1, 4 do
 		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
 		if notch then
