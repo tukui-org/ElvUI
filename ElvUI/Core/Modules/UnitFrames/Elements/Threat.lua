@@ -57,7 +57,7 @@ function UF:Configure_Threat(frame)
 		elseif threatStyle == 'HEALTHBORDER' and frame.InfoPanel then
 			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
 		elseif threatStyle == 'INFOPANELBORDER' and frame.InfoPanel then
-			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 3)
+			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 8)
 		end
 	elseif frame:IsElementEnabled('ThreatIndicator') then
 		frame:DisableElement('ThreatIndicator')
