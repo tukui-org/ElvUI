@@ -6,12 +6,12 @@ local gsub = gsub
 
 local hooksecurefunc = hooksecurefunc
 
-local function ReplaceIconString(self, text)
-	if not text then text = self:GetText() end
+local function ReplaceIconString(frame, text)
+	if not text then text = frame:GetText() end
 	if not text or text == '' then return end
 
 	local newText, count = gsub(text, '24:24:0:%-2', '14:14:0:0:64:64:5:59:5:59')
-	if count > 0 then self:SetFormattedText('%s', newText) end
+	if count > 0 then frame:SetFormattedText('%s', newText) end
 end
 
 function S:Blizzard_GenericTraitUI()
