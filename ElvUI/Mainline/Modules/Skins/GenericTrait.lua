@@ -12,7 +12,7 @@ function S:Blizzard_GenericTraitUI()
 		GenericTrait:StripTextures()
 	end
 
-	GenericTrait:SetTemplate('Transparent')
+	GenericTrait:CreateBackdrop('Transparent')
 	S:HandleCloseButton(GenericTrait.CloseButton)
 end
 
