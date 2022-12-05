@@ -88,11 +88,11 @@ do
 		elseif myClass == 'SHAMAN' then
 			local purify = Retail and CheckSpell(77130) -- Purify Spirit
 			local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
-			local toxins = CheckSpell(526)
+			local toxins = Retail and CheckSpell(383013) or CheckSpell(526) -- Poison Cleansing Totem (Retail), Cure Toxins (TBC/Classic)
 
 			DispelList.Magic = purify
 			DispelList.Curse = cleanse
-			DispelList.Poison = not Retail and (cleanse or toxins)
+			DispelList.Poison = Retail and toxins or not Retail and (cleanse or toxins)
 			DispelList.Disease = not Retail and (cleanse or toxins)
 		elseif myClass == 'EVOKER' then
 			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
