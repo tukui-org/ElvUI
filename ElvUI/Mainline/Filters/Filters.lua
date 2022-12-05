@@ -634,6 +634,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[328891]	= List(), -- A Gilded Perspective
 		[348443]	= List(), -- Experience Eliminated
 		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
+		[392960]	= List(), -- Waygate Travel
 	},
 }
 
