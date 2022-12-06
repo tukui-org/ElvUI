@@ -22,7 +22,7 @@ function S:Blizzard_GenericTraitUI()
 		GenericTrait:StripTextures()
 	end
 
-	GenericTrait:CreateBackdrop('Transparent')
+	GenericTrait:SetTemplate('Transparent')
 	S:HandleCloseButton(GenericTrait.CloseButton)
 
 	ReplaceIconString(GenericTrait.Currency.UnspentPointsCount)
