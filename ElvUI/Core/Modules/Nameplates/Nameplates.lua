@@ -830,7 +830,7 @@ function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates' .. x]
 		if o then
-			o:SetSize(0.0001, 0.0001)
+			o:SetSize(0.00001, 0.00001)
 			o:SetAlpha(0)
 			o:Hide()
 		end
