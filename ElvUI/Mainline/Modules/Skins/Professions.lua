@@ -98,12 +98,10 @@ function S:Blizzard_Professions()
 	CraftList:StripTextures()
 	S:HandleTrimScrollBar(CraftList.ScrollBar, true)
 
-	if E.private.skins.parchmentRemoverEnable then
-		if CraftList.BackgroundNineSlice then
+	if CraftList.BackgroundNineSlice then
+		if E.private.skins.parchmentRemoverEnable then
 			CraftList.BackgroundNineSlice:Hide()
-		end
-	else
-		if CraftList.BackgroundNineSlice then
+		else
 			CraftList.BackgroundNineSlice:SetAlpha(.25)
 		end
 	end
