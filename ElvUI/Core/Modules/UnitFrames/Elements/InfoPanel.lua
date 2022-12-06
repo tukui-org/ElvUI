@@ -5,7 +5,7 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame('Frame', '$parent_InfoPanel', frame)
-	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
+	infoPanel:SetFrameLevel(8) -- Health is 10, power is 5 or 15 by default; also changed by Threat.lua
 	infoPanel:Hide()
 	infoPanel:SetSize(100,10)
 	infoPanel:CreateBackdrop(nil, true, nil, nil, true)
