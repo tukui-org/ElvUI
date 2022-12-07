@@ -113,6 +113,8 @@ if E.locale == 'deDE' then -- O.O
 	InstanceNameByID[1041] = 'Königsruh'				-- 'Die Königsruh'
 	InstanceNameByID[1021] = 'Kronsteiganwesen'			-- 'Das Kronsteiganwesen'
 	InstanceNameByID[1186] = 'Spitzen des Aufstiegs'	-- 'Die Spitzen des Aufstiegs'
+	InstanceNameByID[1198] = 'Angriff der Nokhud'		-- 'Der Angriff der Nokhud'
+	InstanceNameByID[1203] = 'Azurblaues Gewölbe'		-- 'Das Azurblaue Gewölbe'
 end
 
 local instanceIconByName = {}
