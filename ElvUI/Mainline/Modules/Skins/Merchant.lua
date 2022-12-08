@@ -22,10 +22,16 @@ function S:MerchantFrame()
 	-- Center the columns on the frame
 	_G.MerchantItem1:Point('TOPLEFT', _G.MerchantFrame, 'TOPLEFT', 22, -65)
 
-	-- skin tabs
+	-- Skin tabs
 	for i = 1, 2 do
 		S:HandleTab(_G['MerchantFrameTab'..i])
 	end
+
+	-- Reposition tabs
+	_G.MerchantFrameTab1:ClearAllPoints()
+	_G.MerchantFrameTab2:ClearAllPoints()
+	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', -3, 0)
+	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', -5, 0)
 
 	-- Skin icons / merchant slots
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
