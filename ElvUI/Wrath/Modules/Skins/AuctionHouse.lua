@@ -194,7 +194,8 @@ function S:Blizzard_AuctionUI()
 
 			local _, _, _, quality = GetAuctionSellItemInfo()
 			if quality and quality > 1 then
-				button:SetBackdropBorderColor(GetItemQualityColor(quality))
+				local r, g, b = GetItemQualityColor(quality)
+				button:SetBackdropBorderColor(r, g, b)
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end

@@ -816,17 +816,6 @@ function AB:FadeParent_OnEvent()
 	end
 end
 
-function AB:IconIntroTracker_Toggle()
-	local IconIntroTracker = _G.IconIntroTracker
-	if AB.db.addNewSpells then
-		IconIntroTracker:RegisterEvent('SPELL_PUSHED_TO_ACTIONBAR')
-		UnregisterStateDriver(IconIntroTracker, 'visibility')
-	else
-		IconIntroTracker:UnregisterAllEvents()
-		RegisterStateDriver(IconIntroTracker, 'visibility', 'hide')
-	end
-end
-
 -- these calls are tainted when accessed by ValidateActionBarTransition
 local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
 function AB:SetNoopsi(frame)
@@ -1055,7 +1044,7 @@ do
 			hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
 			AB.ButtonEventsRegisterFrame()
 
-			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
+			-- crop the new spells being added to the actionbars
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
 			-- dont reopen game menu and fix settings panel not being able to close during combat

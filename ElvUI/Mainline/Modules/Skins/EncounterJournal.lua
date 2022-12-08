@@ -375,7 +375,7 @@ function S:Blizzard_EncounterJournal()
 
 				local r, g, b = unpack(E.media.bordercolor)
 				if rewardData.itemID then
-					local quality = select(3, GetItemInfo(rewardData.itemID))
+					local _, _, quality = GetItemInfo(rewardData.itemID)
 					if quality and quality > 1 then
 						r, g, b = GetItemQualityColor(quality)
 					end

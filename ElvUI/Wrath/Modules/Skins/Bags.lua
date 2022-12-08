@@ -120,7 +120,8 @@ function S:ContainerFrame()
 						questIcon:Show()
 					end
 				elseif quality and quality > 1 then
-					item:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					item:SetBackdropBorderColor(r, g, b)
 					item.ignoreBorderColors = true
 				else
 					item:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -194,7 +195,8 @@ function S:ContainerFrame()
 			if link then
 				local _, _, quality = GetItemInfo(link)
 				if quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
 					button.ignoreBorderColors = true
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -222,7 +224,8 @@ function S:ContainerFrame()
 						questIcon:Show()
 					end
 				elseif quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
 					button.ignoreBorderColors = true
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))

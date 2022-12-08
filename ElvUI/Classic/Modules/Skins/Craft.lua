@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, strfind, select = unpack, strfind, select
+local unpack, strfind = unpack, strfind
 
 local GetItemInfo = GetItemInfo
 local GetCraftNumReagents = GetCraftNumReagents
@@ -131,9 +131,10 @@ function S:SkinCraft()
 
 		local skillLink = GetCraftItemLink(id)
 		if skillLink then
-			local quality = select(3, GetItemInfo(skillLink))
+			local _, _, quality = GetItemInfo(skillLink)
 			if quality and quality > 1 then
-				CraftIcon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+				local r, g, b = GetItemQualityColor(quality)
+				CraftIcon.backdrop:SetBackdropBorderColor(r, g, b)
 				_G.CraftName:SetTextColor(GetItemQualityColor(quality))
 			else
 				CraftIcon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -149,21 +150,24 @@ function S:SkinCraft()
 			local name = _G['CraftReagent'..i..'Name']
 
 			if reagentLink then
-				local quality = select(3, GetItemInfo(reagentLink))
+				local _, _, quality = GetItemInfo(reagentLink)
 				if quality and quality > 1 then
-					icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
 					if playerReagentCount < reagentCount then
 						name:SetTextColor(0.5, 0.5, 0.5)
 					else
-						name:SetTextColor(GetItemQualityColor(quality))
+						local r, g, b = GetItemQualityColor(quality)
+						name:SetTextColor(r, g, b)
 					end
+
+					local r, g, b = GetItemQualityColor(quality)
+					icon.backdrop:SetBackdropBorderColor(r, g, b)
 				else
 					icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end
 		end
 
-		if (numReagents < 5) then
+		if numReagents < 5 then
 			_G.CraftDetailScrollFrameScrollBar:Hide()
 			_G.CraftDetailScrollFrameTop:Hide()
 			_G.CraftDetailScrollFrameBottom:Hide()

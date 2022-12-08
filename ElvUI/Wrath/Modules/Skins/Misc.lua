@@ -9,6 +9,12 @@ local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 local hooksecurefunc = hooksecurefunc
 
+local function ClearSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetTexture()
+	end
+end
+
 local function SkinNavBarButtons(self)
 	local parentName = self:GetParent():GetName()
 	if (parentName == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal)
@@ -188,19 +194,10 @@ function S:BlizzardMiscFrames()
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
-			hooksecurefunc(normTex, 'SetTexture', function(texture, tex)
-				if tex ~= nil then texture:SetTexture() end
-			end)
+			hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
 		end
 
-		-- Quality IconBorder
-		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'SetVertexColor', function(frame, r, g, b)
-			frame:GetParent():SetBackdropBorderColor(r, g, b)
-			frame:SetTexture()
-		end)
-		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'Hide', function(frame)
-			frame:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
 	end
 
 	_G.OpacityFrame:StripTextures()

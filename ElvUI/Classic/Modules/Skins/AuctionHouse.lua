@@ -9,6 +9,25 @@ local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
 
+
+local function NameColor(frame, r, g, b)
+	local button = frame.itemButton
+	if not button then return end
+
+	if not (r == g) then
+		button:SetBackdropBorderColor(r, g, b)
+	else
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function NameHide(frame)
+	local button = frame.itemButton
+	if not button then return end
+
+	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end
+
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
@@ -193,7 +212,8 @@ function S:Blizzard_AuctionUI()
 
 			local _, _, _, quality = GetAuctionSellItemInfo()
 			if quality and quality > 1 then
-				button:SetBackdropBorderColor(GetItemQualityColor(quality))
+				local r, g, b = GetItemQualityColor(quality)
+				button:SetBackdropBorderColor(r, g, b)
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
@@ -221,7 +241,11 @@ function S:Blizzard_AuctionUI()
 	AuctionProgressFrameCancelButton:Size(28)
 	AuctionProgressFrameCancelButton:Point('LEFT', _G.AuctionProgressBar, 'RIGHT', 8, 0)
 
-	for Frame, NumButtons in pairs({['Browse'] = _G.NUM_BROWSE_TO_DISPLAY, ['Auctions'] = _G.NUM_AUCTIONS_TO_DISPLAY, ['Bid'] = _G.NUM_BIDS_TO_DISPLAY}) do
+	for Frame, NumButtons in pairs({
+		Browse = _G.NUM_BROWSE_TO_DISPLAY,
+		Auctions = _G.NUM_AUCTIONS_TO_DISPLAY,
+		Bid = _G.NUM_BIDS_TO_DISPLAY
+	}) do
 		for i = 1, NumButtons do
 			local Button = _G[Frame..'Button'..i]
 			local ItemButton = _G[Frame..'Button'..i..'Item']
@@ -244,15 +268,9 @@ function S:Blizzard_AuctionUI()
 			Texture:SetInside()
 
 			if Name then
-				hooksecurefunc(Name, 'SetVertexColor', function(_, r, g, b)
-					if not (r == g) then
-						ItemButton:SetBackdropBorderColor(r, g, b)
-					else
-						ItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					end
-				end)
-
-				hooksecurefunc(Name, 'Hide', function() ItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+				Name.itemButton = ItemButton
+				hooksecurefunc(Name, 'SetVertexColor', NameColor)
+				hooksecurefunc(Name, 'Hide', NameHide)
 			end
 		end
 	end
