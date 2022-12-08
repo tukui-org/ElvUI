@@ -87,13 +87,14 @@ function S:CharacterFrame()
 		end
 	end
 
-	hooksecurefunc('PaperDollItemSlotButton_Update', function(self)
-		if self.SetBackdropBorderColor then
-			local rarity = GetInventoryItemQuality('player', self:GetID())
+	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
+		if frame.SetBackdropBorderColor then
+			local rarity = GetInventoryItemQuality('player', frame:GetID())
 			if rarity and rarity > 1 then
-				self:SetBackdropBorderColor(GetItemQualityColor(rarity))
+				local r, g, b = GetItemQualityColor(rarity)
+				frame:SetBackdropBorderColor(r, g, b)
 			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)

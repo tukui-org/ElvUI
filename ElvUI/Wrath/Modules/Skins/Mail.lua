@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
+local unpack = unpack
 
 local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxItemLink = GetInboxItemLink
@@ -59,7 +59,8 @@ function S:MailFrame()
 						local quality = select(3, GetItemInfo(itemlink))
 
 						if quality and quality > 1 then
-							mail.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+							local r, g, b = GetItemQualityColor(quality)
+							mail.backdrop:SetBackdropBorderColor(r, g, b)
 						else
 							mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
@@ -118,7 +119,8 @@ function S:MailFrame()
 			if name then
 				local quality = select(3, GetItemInfo(name))
 				if quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
@@ -200,7 +202,8 @@ function S:MailFrame()
 			if itemLink then
 				local quality = select(3, GetItemInfo(itemLink))
 				if quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end

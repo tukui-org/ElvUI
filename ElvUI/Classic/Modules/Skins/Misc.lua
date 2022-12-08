@@ -183,14 +183,7 @@ function S:BlizzardMiscFrames()
 			end)
 		end
 
-		-- Quality IconBorder
-		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'SetVertexColor', function(frame, r, g, b)
-			frame:GetParent():SetBackdropBorderColor(r, g, b)
-			frame:SetTexture()
-		end)
-		hooksecurefunc(_G['StaticPopup'..i..'ItemFrame'].IconBorder, 'Hide', function(frame)
-			frame:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
 	end
 
 	_G.OpacityFrame:StripTextures()
