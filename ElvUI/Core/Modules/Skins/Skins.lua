@@ -100,25 +100,26 @@ do
 end
 
 function S:HandleButtonHighlight(frame, r, g, b)
-	if frame.SetHighlightTexture then
-		frame:SetHighlightTexture(E.ClearTexture)
-	end
+	-- need way to disable the highlight
+	--frame:DisableDrawLayer('HIGHLIGHT')
 
 	if not r then r = 0.9 end
 	if not g then g = 0.9 end
 	if not b then b = 0.9 end
 
+	--[[
 	local leftGrad = frame:CreateTexture(nil, 'HIGHLIGHT')
 	leftGrad:Size(frame:GetWidth() * 0.5, frame:GetHeight() * 0.95)
 	leftGrad:Point('LEFT', frame, 'CENTER')
 	leftGrad:SetTexture(E.media.blankTex)
-	leftGrad:SetGradientAlpha('Horizontal', r, g, b, 0.35, r, g, b, 0)
+	leftGrad:SetGradient('Horizontal', {r=r, g=g, b=b, a=0.35}, {r=r, g=g, b=b, a=0})
 
 	local rightGrad = frame:CreateTexture(nil, 'HIGHLIGHT')
 	rightGrad:Size(frame:GetWidth() * 0.5, frame:GetHeight() * 0.95)
 	rightGrad:Point('RIGHT', frame, 'CENTER')
 	rightGrad:SetTexture(E.media.blankTex)
-	rightGrad:SetGradientAlpha('Horizontal', r, g, b, 0, r, g, b, 0.35)
+	rightGrad:SetGradient('Horizontal', {r=r, g=g, b=b, a=0}, {r=r, g=g, b=b, a=0.35})
+	]]
 end
 
 function S:HandlePointXY(frame, x, y)

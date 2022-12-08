@@ -225,9 +225,9 @@ function S:MailFrame()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
-	_G.OpenMailBodyText:SetTextColor(1, 1, 1)
-	_G.InvoiceTextFontNormal:SetFont(E.media.normFont, 13)
+	_G.InvoiceTextFontNormal:FontTemplate(E.media.normFont, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
+	_G.OpenMailBodyText:SetTextColor('P', 1, 1, 1)
 	_G.OpenMailInvoiceBuyMode:SetTextColor(1, 0.80, 0.10)
 
 	_G.OpenMailArithmeticLine:Kill()

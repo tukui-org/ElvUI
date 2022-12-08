@@ -376,9 +376,9 @@ local function FontTemplate(fs, font, size, style, skip)
 	end
 
 	-- convert because of bad values between versions
-	if style == 'NONE' and E.Retail then
+	if style == 'NONE' and not E.Classic then
 		style = ''
-	elseif style == '' and not E.Retail then
+	elseif style == '' and E.Classic then
 		style = 'NONE'
 	end
 
