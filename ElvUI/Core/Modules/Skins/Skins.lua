@@ -100,8 +100,9 @@ do
 end
 
 function S:HandleButtonHighlight(frame, r, g, b)
-	-- need way to disable the highlight
-	--frame:DisableDrawLayer('HIGHLIGHT')
+	if frame.SetHighlightTexture then
+		frame:SetHighlightTexture(E.ClearTexture)
+	end
 
 	if not r then r = 0.9 end
 	if not g then g = 0.9 end
