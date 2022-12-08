@@ -450,7 +450,7 @@ function NP:GetClassAnchor()
 end
 
 function NP:SetupTarget(nameplate, removed)
-	if not NP.db.units then return end
+	if not (NP.db.units and NP.db.units.TARGET) then return end
 
 	local TCP = _G.ElvNP_TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
@@ -505,7 +505,12 @@ function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
 		local sf = NP:StyleFilterChanges(bar:GetParent())
 		if not sf.HealthTexture then
-			bar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
+			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
+			if bar.SetStatusBarTexture then
+				bar:SetStatusBarTexture(texture)
+			else
+				bar:SetTexture(texture)
+			end
 		end
 	end
 end
@@ -825,7 +830,7 @@ function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates' .. x]
 		if o then
-			o:SetSize(0.0001, 0.0001)
+			o:SetSize(0.00001, 0.00001)
 			o:SetAlpha(0)
 			o:Hide()
 		end

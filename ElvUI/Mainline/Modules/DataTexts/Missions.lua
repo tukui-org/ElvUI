@@ -61,7 +61,7 @@ local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
 local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
 local numMissions = 0
-local MAIN_CURRENCY = 1813
+local MAIN_CURRENCY = 2003 -- Dragon Isles Supplies
 local callingsData = {}
 local covenantTreeIDs = {
 	[1] = {308, 312, 316, 320, 327},

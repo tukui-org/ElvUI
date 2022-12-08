@@ -111,7 +111,7 @@ function M:PositionCoords()
 	if strfind(position, 'TOP') then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.ScrollContainer, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end

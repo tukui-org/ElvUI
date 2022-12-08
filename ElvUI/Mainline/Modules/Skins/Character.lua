@@ -22,21 +22,21 @@ local function UpdateCharacterInset(name)
 	_G.CharacterFrameInset.backdrop:SetShown(showInsetBackdrop[name])
 end
 
-local function UpdateAzeriteItem(self)
-	if not self.styled then
-		self.styled = true
+local function UpdateAzeriteItem(item)
+	if not item.IsSkinned then
+		item.IsSkinned = true
 
-		self.AzeriteTexture:SetAlpha(0)
-		self.RankFrame.Texture:SetTexture()
-		self.RankFrame.Label:FontTemplate(nil, nil, 'OUTLINE')
+		item.AzeriteTexture:SetAlpha(0)
+		item.RankFrame.Texture:SetTexture()
+		item.RankFrame.Label:FontTemplate(nil, nil, 'OUTLINE')
 	end
 end
 
-local function UpdateAzeriteEmpoweredItem(self)
-	self.AzeriteTexture:SetAtlas('AzeriteIconFrame')
-	self.AzeriteTexture:SetInside()
-	self.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
-	self.AzeriteTexture:SetDrawLayer('BORDER', 1)
+local function UpdateAzeriteEmpoweredItem(item)
+	item.AzeriteTexture:SetAtlas('AzeriteIconFrame')
+	item.AzeriteTexture:SetInside()
+	item.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
+	item.AzeriteTexture:SetDrawLayer('BORDER', 1)
 end
 
 local function ColorizeStatPane(frame)
@@ -102,6 +102,24 @@ local function EquipmentUpdateItems()
 	end
 end
 
+local function EquipmentUpdateNavigation()
+	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
+	if not navi then return end
+
+	navi:ClearAllPoints()
+	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+
+	navi:StripTextures()
+	navi:SetTemplate('Transparent')
+end
+
+local function TabTextureCoords(tex, x1)
+	if x1 ~= 0.16001 then
+		tex:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
+	end
+end
+
 local function FixSidebarTabCoords()
 	for i=1, #_G.PAPERDOLL_SIDEBARS do
 		local tab = _G['PaperDollSidebarTab'..i]
@@ -126,11 +144,7 @@ local function FixSidebarTabCoords()
 				for _, region in next, { tab:GetRegions() } do
 					region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 
-					hooksecurefunc(region, 'SetTexCoord', function(self, x1)
-						if x1 ~= 0.16001 then
-							self:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
-						end
-					end)
+					hooksecurefunc(region, 'SetTexCoord', TabTextureCoords)
 				end
 			end
 		end
@@ -141,6 +155,8 @@ local function UpdateFactionSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		local container = child.Container
 		if container and not container.IsSkinned then
+			container.IsSkinned = true
+
 			container:StripTextures()
 
 			if container.ExpandOrCollapseButton then
@@ -150,13 +166,12 @@ local function UpdateFactionSkins(frame)
 			if container.ReputationBar then
 				container.ReputationBar:StripTextures()
 				container.ReputationBar:SetStatusBarTexture(E.media.normTex)
+
 				if not container.ReputationBar.backdrop then
 					container.ReputationBar:CreateBackdrop()
 					E:RegisterStatusBar(container.ReputationBar)
 				end
 			end
-
-			container.IsSkinned = true
 		end
 	end
 end
@@ -173,6 +188,12 @@ local function PaperDollUpdateStats()
 		local shown = frame.Background:IsShown()
 		frame.leftGrad:SetShown(shown)
 		frame.rightGrad:SetShown(shown)
+	end
+end
+
+local function BackdropDesaturated(background, value)
+	if value and background.ignoreDesaturated then
+		background:SetDesaturated(false)
 	end
 end
 
@@ -222,11 +243,8 @@ function S:CharacterFrame()
 		if bg then
 			bg:SetDesaturated(false)
 			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
-			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
-				if value and bckgnd.ignoreDesaturated then
-					bckgnd:SetDesaturated(false)
-				end
-			end)
+
+			hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
 		end
 	end
 
@@ -254,15 +272,12 @@ function S:CharacterFrame()
 	_G.EquipmentFlyoutFrameHighlight:StripTextures()
 	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
 	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
-	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate('Transparent')
-	_G.EquipmentFlyoutFrame.NavigationFrame:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
-	_G.EquipmentFlyoutFrame.NavigationFrame:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
-	-- Swap item flyout frame (shown when holding alt over a slot)
-	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
+	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
 
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
@@ -372,28 +387,24 @@ function S:CharacterFrame()
 
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if child.Highlight and not child.styled then
-				if not child.styled then
-					child.CategoryLeft:SetAlpha(0)
-					child.CategoryRight:SetAlpha(0)
-					child.CategoryMiddle:SetAlpha(0)
+			if child.Highlight and not child.IsSkinned then
+				child.CategoryLeft:SetAlpha(0)
+				child.CategoryRight:SetAlpha(0)
+				child.CategoryMiddle:SetAlpha(0)
 
-					child.Highlight:SetInside()
-					child.Highlight.SetPoint = E.noop
-					child.Highlight:SetColorTexture(1, 1, 1, .25)
-					child.Highlight.SetTexture = E.noop
+				child.Highlight:SetInside()
+				child.Highlight.SetPoint = E.noop
+				child.Highlight:SetColorTexture(1, 1, 1, .25)
+				child.Highlight.SetTexture = E.noop
 
-					S:HandleIcon(child.Icon)
+				S:HandleIcon(child.Icon)
 
-					if child.ExpandIcon then
-						child.ExpandIcon:CreateBackdrop('Transparent')
-						child.ExpandIcon.backdrop:SetInside(3, 3)
-					end
-
-					child.styled = true
+				if child.ExpandIcon then
+					child.ExpandIcon:CreateBackdrop('Transparent')
+					child.ExpandIcon.backdrop:SetInside(3, 3)
 				end
 
-				child.styled = true
+				child.IsSkinned = true
 			end
 
 			if child.isHeader then

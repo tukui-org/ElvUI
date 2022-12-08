@@ -3,13 +3,14 @@ local C, L = unpack(E.Config)
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
 
-local gsub = gsub
-local next = next
-local strmatch = strmatch
+local gsub, next = gsub, next
+local format, strmatch = format, strmatch
+
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
 local GameTooltip = GameTooltip
-local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
+
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
 
 local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
@@ -75,7 +76,7 @@ Bags.args.general.args.playerGroup.args.bagWidth = ACH:Range(L["Panel Width"], L
 Bags.args.general.args.playerGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout() end)
 Bags.args.general.args.playerGroup.args.split.args.player = ACH:Toggle(L["Enable"], nil, 1)
 Bags.args.general.args.playerGroup.args.split.args.bagSpacing = ACH:Range(L["Bag Spacing"], nil, 2, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.split.player end)
-Bags.args.general.args.playerGroup.args.split.args.splitbags = ACH:MultiSelect('', nil, 4, { bag1 = L["Bag 1"], bag2 = L["Bag 2"], bag3 = L["Bag 3"], bag4 = L["Bag 4"] }, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout() end, nil, function() return not E.db.bags.split.player end)
+Bags.args.general.args.playerGroup.args.split.args.splitbags = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout() end, nil, function() return not E.db.bags.split.player end)
 Bags.args.general.args.playerGroup.args.split.inline = true
 
 Bags.args.general.args.bankGroup = ACH:Group(L["Bank"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end)
@@ -87,9 +88,19 @@ Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L[
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
 Bags.args.general.args.bankGroup.args.split.args.bankSpacing = ACH:Range(L["Bag Spacing"], nil, 2, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.split.bank end)
-Bags.args.general.args.bankGroup.args.split.args.splitbank = ACH:MultiSelect('', nil, 4, { bag5 = L["Bank 1"], bag6 = L["Bank 2"], bag7 = L["Bank 3"], bag8 = L["Bank 4"], bag9 = L["Bank 5"], bag10 = L["Bank 6"], bag11 = L["Bank 7"] }, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.bank end)
+Bags.args.general.args.bankGroup.args.split.args.splitbank = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.bank end)
 Bags.args.general.args.bankGroup.args.split.args.splitbank.sortByValue = true
 Bags.args.general.args.bankGroup.args.split.inline = true
+
+for i = 1, (E.Retail and 12 or 11) do
+	local bag = 'bag'..i
+	local lastSlot = (E.Retail and 5 or 4)
+	if i >= 1 and i <= lastSlot then
+		Bags.args.general.args.playerGroup.args.split.args.splitbags.values[bag] = i == 5 and L["Reagent"] or format(L["Bag %d"], i)
+	else
+		Bags.args.general.args.bankGroup.args.split.args.splitbank.values[bag] = format(L["Bank %d"], i - lastSlot)
+	end
+end
 
 Bags.args.general.args.countGroup = ACH:Group(L["Item Count"], nil, 8, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemDisplay() end)
 Bags.args.general.args.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemDisplay() end)
@@ -144,11 +155,13 @@ Bags.args.colorGroup.args.general.args.qualityColors = ACH:Toggle(L["Show Qualit
 Bags.args.colorGroup.args.general.args.specialtyColors = ACH:Toggle(L["Show Special Bags Color"], nil, 3)
 Bags.args.colorGroup.args.general.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 4)
 
-Bags.args.colorGroup.args.assignment = ACH:Group(L["Bag Assignment"], nil, 1, nil, nil, nil, nil, not E.Retail)
+Bags.args.colorGroup.args.assignment = ACH:Group(L["Bag Assignment"], nil, 1)
 Bags.args.colorGroup.args.assignment.inline = true
 Bags.args.colorGroup.args.assignment.args.equipment = ACH:Color(L["BAG_FILTER_EQUIPMENT"])
 Bags.args.colorGroup.args.assignment.args.consumables = ACH:Color(L["BAG_FILTER_CONSUMABLES"])
 Bags.args.colorGroup.args.assignment.args.tradegoods = ACH:Color(L["BAG_FILTER_TRADE_GOODS"])
+Bags.args.colorGroup.args.assignment.args.quest = ACH:Color(L["BAG_FILTER_QUEST_ITEMS"], nil, nil, nil, nil, nil, nil, nil, not E.Retail)
+Bags.args.colorGroup.args.assignment.args.junk = ACH:Color(L["BAG_FILTER_JUNK"])
 
 Bags.args.colorGroup.args.profession = ACH:Group(L["Profession Bags"], nil, 2)
 Bags.args.colorGroup.args.profession.inline = true
@@ -162,6 +175,7 @@ Bags.args.colorGroup.args.profession.args.inscription = ACH:Color(L["Inscription
 Bags.args.colorGroup.args.profession.args.keyring = ACH:Color(L["Key Ring"])
 Bags.args.colorGroup.args.profession.args.leatherworking = ACH:Color(L["Leatherworking"])
 Bags.args.colorGroup.args.profession.args.mining = ACH:Color(L["Mining"])
+Bags.args.colorGroup.args.profession.args.reagent = ACH:Color(L["Reagent"])
 
 Bags.args.colorGroup.args.items = ACH:Group(L["Items"], nil, 3)
 Bags.args.colorGroup.args.items.inline = true

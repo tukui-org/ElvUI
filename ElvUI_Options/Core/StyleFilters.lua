@@ -25,6 +25,8 @@ local GetNumSpecializationsForClassID = (not E.Retail and LCS.GetNumSpecializati
 local GetSpecializationInfoForClassID = (not E.Retail and LCS.GetSpecializationInfoForClassID) or GetSpecializationInfoForClassID
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
+local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
+
 local filters = {}
 local exportList = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
@@ -477,9 +479,9 @@ StyleFilters.triggers.args.levels = ACH:Group(L["Level"], nil, 20, nil, function
 StyleFilters.triggers.args.levels.args.level = ACH:Toggle(L["Enable"], nil, 1)
 StyleFilters.triggers.args.levels.args.mylevel = ACH:Toggle(L["Match Player Level"], L["If enabled then the filter will only activate if the level of the unit matches your own."], 2, nil, nil, nil, nil, nil, function() local triggers = GetFilter(true) return not triggers.level end)
 StyleFilters.triggers.args.levels.args.spacer1 = ACH:Description(L["LEVEL_BOSS"], 3)
-StyleFilters.triggers.args.levels.args.minlevel = ACH:Range(L["Minimum Level"], L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."], 4, { min = -1, max = _G.MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
-StyleFilters.triggers.args.levels.args.maxlevel = ACH:Range(L["Maximum Level"], L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."], 5, { min = -1, max = _G.MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
-StyleFilters.triggers.args.levels.args.curlevel = ACH:Range(L["Current Level"], L["If enabled then the filter will only activate if the level of the unit matches this value."], 6, { min = -1, max = _G.MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
+StyleFilters.triggers.args.levels.args.minlevel = ACH:Range(L["Minimum Level"], L["If enabled then the filter will only activate if the level of the unit is equal to or higher than this value."], 4, { min = -1, max = MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
+StyleFilters.triggers.args.levels.args.maxlevel = ACH:Range(L["Maximum Level"], L["If enabled then the filter will only activate if the level of the unit is equal to or lower than this value."], 5, { min = -1, max = MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
+StyleFilters.triggers.args.levels.args.curlevel = ACH:Range(L["Current Level"], L["If enabled then the filter will only activate if the level of the unit matches this value."], 6, { min = -1, max = MAX_PLAYER_LEVEL + 3, step = 1 }, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] or 0 end, nil, function() local triggers = GetFilter(true) return not (triggers.level and not triggers.mylevel) end)
 
 StyleFilters.triggers.args.buffs = ACH:Group(L["Buffs"], nil, 21, nil, function(info) local triggers = GetFilter(true) return triggers.buffs and triggers.buffs[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.buffs[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFilters.triggers.args.debuffs = ACH:Group(L["Debuffs"], nil, 22, nil, function(info) local triggers = GetFilter(true) return triggers.debuffs and triggers.debuffs[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.debuffs[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)

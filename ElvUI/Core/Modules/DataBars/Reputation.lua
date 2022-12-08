@@ -129,7 +129,12 @@ function DB:ReputationBar_OnEnter()
 		GameTooltip:AddLine(' ')
 
 		local friendID, friendTextLevel, _
-		if E.Retail and factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
+		if E.Retail and factionID then
+			friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
+			if friendID and friendID.friendshipFactionID > 0 then
+				standing = friendID.reaction
+			end
+		end
 
 		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
 		if not isMajorFaction then

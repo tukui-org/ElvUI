@@ -203,8 +203,8 @@ P.databars = {
 		useCustomFactionColors = false,
 		petExperience = { r = 1, g = 1, b = .41, a = .8 },
 		experience = { r = 0, g = .4, b = 1, a = .8 },
-		rested = { r = 1, g = 0, b = 1, a = .4},
-		quest = { r = 0, g = 1, b = 0, a = .4},
+		rested = { r = 1, g = 0, b = 1, a = .4 },
+		quest = { r = 0, g = 1, b = 0, a = .4 },
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		factionColors = {
@@ -324,29 +324,31 @@ P.bags = {
 	showAssignedIcon = true,
 	colors = {
 		profession = {
-			ammoPouch = { r = 1, g = 0.69, b = 0.41 },
-			cooking = { r = .87, g = .05, b = .25 },
-			enchanting = { r = .76, g = .02, b = .8 },
-			engineering = { r = .91, g = .46, b = .18 },
-			fishing = { r = .42, g = .59, b = 1 },
-			gems = { r = .03, g = .71, b = .81 },
-			herbs = { r = .07, g = .71, b = .13 },
-			inscription = { r = .29, g = .30, b = .88 },
-			keyring = { r = 1, g = .96, b = .41 },
-			leatherworking = { r = .88, g = .73, b = .29 },
-			mining = { r = .54, g = .40, b = .04 },
-			quiver = { r = 1, g = 0.69, b = 0.41 },
-			soulBag = { r = 1, g = 0.69, b = 0.41 },
+			reagent			= { r = 0.18, g = 0.75, b = 0.50 },
+			ammoPouch		= { r = 1.00, g = 0.69, b = 0.41 },
+			cooking			= { r = 0.74, g = 0.05, b = 0.21 },
+			enchanting		= { r = 0.72, g = 0.22, b = 0.74 },
+			engineering		= { r = 0.91, g = 0.46, b = 0.18 },
+			fishing			= { r = 0.22, g = 0.46, b = 0.90 },
+			gems			= { r = 0.03, g = 0.65, b = 0.75 },
+			herbs			= { r = 0.28, g = 0.74, b = 0.07 },
+			inscription		= { r = 0.32, g = 0.34, b = 0.98 },
+			keyring			= { r = 0.67, g = 0.87, b = 0.37 },
+			leatherworking	= { r = 0.74, g = 0.55, b = 0.20 },
+			mining			= { r = 0.54, g = 0.40, b = 0.04 },
+			quiver			= { r = 1.00, g = 0.69, b = 0.41 },
+			soulBag			= { r = 1.00, g = 0.69, b = 0.41 },
 		},
 		assignment = {
-			equipment = { r = 0, g = .50, b = .47 },
-			consumables = { r = .57, g = .95, b = .66 },
-			tradegoods = { r = 1, g = .32, b = .66 },
-			junk = { r = .99, g = .23, b = .21 },
+			equipment		= { r = 0.00, g = 0.50, b = 0.47 },
+			consumables		= { r = 0.45, g = 0.74, b = 0.52 },
+			tradegoods		= { r = 0.74, g = 0.23, b = 0.49 },
+			quest			= { r = 0.60, g = 0.20, b = 0.20 },
+			junk			= { r = 0.26, g = 0.26, b = 0.26 },
 		},
 		items = {
-			questStarter = { r = 1, g = .96, b = .41 },
-			questItem = { r = 1, g = 0.30, b = 0.30 },
+			questStarter	= { r = 1.00, g = 0.96, b = 0.41 },
+			questItem		= { r = 0.90, g = 0.30, b = 0.30 },
 		}
 	},
 	vendorGrays = {
@@ -1183,6 +1185,7 @@ P.tooltip = {
 	headerFontSize = 13,
 	smallTextFontSize = 12,
 	colorAlpha = 0.8,
+	fadeOut = true,
 	visibility = {
 		bags = 'SHOW',
 		unitFrames = 'SHOW',
@@ -2417,7 +2420,6 @@ local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 
 P.actionbar = {
-	addNewSpells = false,
 	chargeCooldown = false,
 	colorSwipeLOC = { r = 0.25, g = 0, b = 0, a = 0.8 },
 	colorSwipeNormal = { r = 0, g = 0, b = 0, a = 0.8 },

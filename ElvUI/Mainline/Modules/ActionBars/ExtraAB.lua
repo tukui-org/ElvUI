@@ -170,6 +170,8 @@ function AB:SetupExtraButton()
 
 	-- try to shutdown the container movement and taints
 	ExtraAbilityContainer.SetSize = E.noop
+	ExtraAbilityContainer.SetPoint = E.noop
+	ExtraAbilityContainer:KillEditMode()
 
 	AB:ExtraButtons_Reparent()
 

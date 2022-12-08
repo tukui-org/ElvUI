@@ -127,7 +127,7 @@ function AB:PositionAndSizeBarPet()
 		bar:SetAlpha(db.alpha)
 		E:EnableMover(bar.mover.name)
 	else
-		bar:SetScale(0.0001)
+		bar:SetScale(0.00001)
 		bar:SetAlpha(0)
 		E:DisableMover(bar.mover.name)
 	end
@@ -158,7 +158,7 @@ function AB:PositionAndSizeBarPet()
 		end
 
 		if i > numButtons then
-			button:SetScale(0.0001)
+			button:SetScale(0.00001)
 			button:SetAlpha(0)
 			button.handleBackdrop = nil
 		else

@@ -3,15 +3,25 @@ local UF = E:GetModule('UnitFrames')
 
 local rad = rad
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
+
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
-function UF:Construct_Portrait(frame, type)
+function UF:ModelAlphaFix(alpha)
+	local portrait = self.Portrait3D
+	if portrait then
+		portrait:SetModelAlpha(alpha * portrait:GetAlpha())
+	end
+end
+
+function UF:Construct_Portrait(frame, which)
 	local portrait
 
-	if type == 'texture' then
+	if which == 'texture' then
 		local backdrop = CreateFrame('Frame', nil, frame)
 		portrait = frame:CreateTexture(nil, 'OVERLAY')
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
@@ -22,6 +32,11 @@ function UF:Construct_Portrait(frame, type)
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)
 		portrait:CreateBackdrop(nil, nil, nil, nil, true)
+
+		-- https://github.com/Stanzilla/WoWUIBugs/issues/295
+		-- since this seems to be forced on models because of a bug
+		portrait:SetIgnoreParentAlpha(true) -- lets handle it ourselves
+		hooksecurefunc(frame, 'SetAlpha', UF.ModelAlphaFix)
 	end
 
 	portrait.PostUpdate = self.PortraitUpdate

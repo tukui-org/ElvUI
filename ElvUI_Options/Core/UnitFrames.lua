@@ -70,7 +70,6 @@ for i = 1, GetNumClasses() do
 end
 
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
-local roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' } -- 1 to 20
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
@@ -96,7 +95,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	local config = ACH:Group(L["Aura Bars"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
-	config.args.abbrevName = ACH:Toggle(E.NewSign..L["Abbreviate Name"], nil, 2)
+	config.args.abbrevName = ACH:Toggle(L["Abbreviate Name"], nil, 2)
 	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 3)
 	config.args.configureButton1 = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 4, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 	config.args.configureButton2 = ACH:Execute(L["Coloring (Specific)"], L["This opens the AuraBar Colors filter. These settings affect specific spells."], 5, function() C:SetToFilterConfig('AuraBar Colors') end)
@@ -957,7 +956,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
-	local config = ACH:Group((groupName == 'party' and E.NewSign or '')..L["Combat Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
+	local config = ACH:Group(L["Combat Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
@@ -1005,7 +1004,7 @@ UnitFrame.generalOptionsGroup = ACH:Group(L["General"], nil, 5, 'tree')
 UnitFrame.generalOptionsGroup.args.targetOnMouseDown = ACH:Toggle(L["Target On Mouse-Down"], L["Target units on mouse down rather than mouse up.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 2)
 UnitFrame.generalOptionsGroup.args.targetSound = ACH:Toggle(L["Targeting Sound"], L["Enable a sound if you select a unit."], 3)
 UnitFrame.generalOptionsGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_AllFrames() end)
-UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(E.NewSign..L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 5, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end)
+UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 5, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end)
 
 UnitFrame.generalOptionsGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 10, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_FontStrings() end)
 UnitFrame.generalOptionsGroup.args.fontGroup.inline = true
@@ -1071,11 +1070,11 @@ Colors.castBars.args.castColor = ACH:Color(function() return (E.Retail or E.Wrat
 Colors.castBars.args.castNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 10, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 
-Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.castBars.args.empowerStage = ACH:Group(E.NewSign..L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.castBars.args.empowerStage.inline = true
 
 for i = 1, 4 do
-	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(roman[i])
+	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
 Colors.auras = ACH:Group(L["Auras"], nil, nil)
@@ -1183,12 +1182,16 @@ Colors.classResourceGroup.args.COMBO_POINTS.inline = true
 Colors.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.MONK[i], P.unitframe.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.CHI_POWER.inline = true
 
+Colors.classResourceGroup.args.EVOKER = ACH:Group(E.NewSign..L["POWER_TYPE_ESSENCE"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER[i], P.unitframe.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.classResourceGroup.args.EVOKER.inline = true
+
 for i = 1, 7 do
 	if i ~= 7 then
-		Colors.classResourceGroup.args.CHI_POWER.args[''..i] = ACH:Color(roman[i])
+		Colors.classResourceGroup.args.CHI_POWER.args[''..i] = ACH:Color(C.Values.Roman[i])
+		Colors.classResourceGroup.args.EVOKER.args[''..i] = ACH:Color(C.Values.Roman[i])
 	end
 
-	Colors.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(roman[i])
+	Colors.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
 Colors.classResourceGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DEATHKNIGHT[i], P.unitframe.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Wrath))
@@ -1631,7 +1634,7 @@ Party.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGrou
 Party.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'targetsGroup')
 
 for i = 1, 3 do
-	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L[format('Raid %s', i)], E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s%s - %s', E.NewSign, raid, name) or format('%s%s', E.NewSign, raid) end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
+	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L[format('Raid %s', i)], E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s - %s', raid, name) or raid end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
 
 	local Raid = GroupUnits['raid'..i].args
 	Raid.enable = ACH:Toggle(L["Enable"], nil, 1)

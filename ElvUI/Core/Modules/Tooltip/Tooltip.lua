@@ -70,6 +70,8 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
 
 local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
@@ -127,19 +129,11 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
 			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
 			statusBar.anchoredToTop = nil
-
-			if statusBar.text then
-				statusBar.text:Point('CENTER', statusBar, 0, 0)
-			end
 		elseif position == 'TOP' and not statusBar.anchoredToTop then
 			statusBar:ClearAllPoints()
 			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
 			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
 			statusBar.anchoredToTop = true
-
-			if statusBar.text then
-				statusBar.text:Point('CENTER', statusBar, 0, 0)
-			end
 		end
 	end
 
@@ -609,6 +603,7 @@ end
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	if tt:IsForbidden() or not value or not tt.text or not TT.db.healthBar.text then return end
 
+	-- try to get ahold of the unit token
 	local _, unit = tt:GetParent():GetUnit()
 	if not unit then
 		local frame = GetMouseFocus()
@@ -617,14 +612,23 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 		end
 	end
 
-	local _, max = tt:GetMinMaxValues()
-	if value > 0 and max == 1 then
-		tt.text:SetFormattedText('%d%%', floor(value * 100))
-		tt:SetStatusBarColor(TAPPED_COLOR.r, TAPPED_COLOR.g, TAPPED_COLOR.b) --most effeciant?
-	elseif value == 0 or (unit and UnitIsDeadOrGhost(unit)) then
+	-- check if dead
+	if value == 0 or (unit and UnitIsDeadOrGhost(unit)) then
 		tt.text:SetText(_G.DEAD)
 	else
-		tt.text:SetText(E:ShortValue(value)..' / '..E:ShortValue(max))
+		local MAX, _
+		if unit then -- try to get the real health values if possible
+			value, MAX = UnitHealth(unit), UnitHealthMax(unit)
+		else
+			_, MAX = tt:GetMinMaxValues()
+		end
+
+		-- return what we got
+		if value > 0 and MAX == 1 then
+			tt.text:SetFormattedText('%d%%', floor(value * 100))
+		else
+			tt.text:SetText(E:ShortValue(value)..' / '..E:ShortValue(MAX))
+		end
 	end
 end
 
@@ -789,7 +793,11 @@ function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
 		if owner == _G.UIParent and UnitExists('mouseover') then
-			GameTooltip:SetUnit('mouseover')
+			if E.Retail then
+				GameTooltip:RefreshData()
+			else
+				GameTooltip:SetUnit('mouseover')
+			end
 		elseif owner and owner:GetParent() == _G.SpellBookSpellIconsFrame then
 			AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 		end
@@ -957,18 +965,44 @@ function TT:SetTooltipFonts()
 	end
 end
 
+function TT:GameTooltip_Hide()
+	if GameTooltip:IsForbidden() then return end
+
+	local statusBar = GameTooltip.StatusBar
+	if statusBar and statusBar:IsShown() then
+		statusBar:Hide()
+	end
+end
+
+function TT:WorldCursorTooltipUpdate(_, state)
+	if GameTooltip:IsForbidden() or TT.db.cursorAnchor then return end
+
+	-- recall this, something called Show and stopped it (now with refade option)
+	-- cursor anchor is always hidden right away regardless
+	if state == 0 then
+		if TT.db.fadeOut then
+			GameTooltip:FadeOut()
+		else
+			GameTooltip:Hide()
+		end
+	end
+end
+
 function TT:Initialize()
 	TT.db = E.db.tooltip
 
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
-	GameTooltip.StatusBar = GameTooltipStatusBar
-	GameTooltip.StatusBar:Height(TT.db.healthBar.height)
-	GameTooltip.StatusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
-	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, 'OVERLAY')
-	GameTooltip.StatusBar.text:Point('CENTER', GameTooltip.StatusBar, 0, 0)
-	GameTooltip.StatusBar.text:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	local statusBar = GameTooltipStatusBar
+	statusBar:Height(TT.db.healthBar.height)
+	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
+	GameTooltip.StatusBar = statusBar
+
+	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
+	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	statusText:Point('CENTER', statusBar, 0, 0)
+	statusBar.text = statusText
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then
@@ -1001,6 +1035,8 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+
+		TT:SecureHook(GameTooltip, 'Hide', 'GameTooltip_Hide') -- dont use OnHide use Hide directly
 	else
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', TT.GameTooltip_OnTooltipSetItem)
@@ -1015,6 +1051,7 @@ function TT:Initialize()
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	if E.Retail then
+		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
@@ -1022,6 +1059,8 @@ function TT:Initialize()
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
+
+		_G.GameTooltipDefaultContainer:KillEditMode()
 	end
 end
 

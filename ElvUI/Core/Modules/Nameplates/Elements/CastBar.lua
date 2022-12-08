@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local CH = E:GetModule('Chat')
 local LSM = E.Libs.LSM
 
@@ -115,50 +116,54 @@ end
 function NP:Castbar_PostCastStop() end
 
 function NP:Construct_Castbar(nameplate)
-	local Castbar = CreateFrame('StatusBar', nameplate:GetName()..'Castbar', nameplate)
-	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
-	Castbar:SetFrameLevel(5)
-	Castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
-	Castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
+	local castbar = CreateFrame('StatusBar', nameplate:GetName()..'Castbar', nameplate)
+	castbar:SetFrameStrata(nameplate:GetFrameStrata())
+	castbar:SetFrameLevel(5)
+	castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
+	castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-	NP.StatusBars[Castbar] = true
+	NP.StatusBars[castbar] = true
 
-	Castbar.Button = CreateFrame('Frame', nil, Castbar)
-	Castbar.Button:SetTemplate(nil, nil, nil, nil, nil, true, true)
+	castbar.Button = CreateFrame('Frame', nil, castbar)
+	castbar.Button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
-	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
-	Castbar.Icon:SetTexCoord(unpack(E.TexCoords))
-	Castbar.Icon:SetInside()
+	castbar.Icon = castbar.Button:CreateTexture(nil, 'ARTWORK')
+	castbar.Icon:SetTexCoord(unpack(E.TexCoords))
+	castbar.Icon:SetInside()
 
-	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Time:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
-	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
-	Castbar.Time:SetJustifyH('RIGHT')
+	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
+	castbar.Time:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.Time:Point('RIGHT', castbar, 'RIGHT', -4, 0)
+	castbar.Time:SetJustifyH('RIGHT')
 
-	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Text:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
-	Castbar.Text:Point('LEFT', Castbar, 'LEFT', 4, 0)
-	Castbar.Text:SetJustifyH('LEFT')
-	Castbar.Text:SetWordWrap(false)
+	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
+	castbar.Text:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.Text:Point('LEFT', castbar, 'LEFT', 4, 0)
+	castbar.Text:SetJustifyH('LEFT')
+	castbar.Text:SetWordWrap(false)
 
-	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
-	Castbar.CustomDelayText = NP.Castbar_CustomDelayText
-	Castbar.CustomTimeText = NP.Castbar_CustomTimeText
-	Castbar.PostCastStart = NP.Castbar_PostCastStart
-	Castbar.PostCastFail = NP.Castbar_PostCastFail
-	Castbar.PostCastInterruptible = NP.Castbar_PostCastInterruptible
-	Castbar.PostCastStop = NP.Castbar_PostCastStop
+	castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
+	castbar.CustomDelayText = NP.Castbar_CustomDelayText
+	castbar.CustomTimeText = NP.Castbar_CustomTimeText
+	castbar.PostCastStart = NP.Castbar_PostCastStart
+	castbar.PostCastFail = NP.Castbar_PostCastFail
+	castbar.PostCastInterruptible = NP.Castbar_PostCastInterruptible
+	castbar.PostCastStop = NP.Castbar_PostCastStop
+	castbar.UpdatePipStep = UF.UpdatePipStep
+	castbar.PostUpdatePip = UF.PostUpdatePip
+	castbar.CreatePip = UF.CreatePip
+	castbar.ModuleStatusBars = NP.StatusBars -- not oUF
 
 	if nameplate == _G.ElvNP_Test then
-		Castbar.Hide = Castbar.Show
-		Castbar:Show()
-		Castbar.Text:SetText('Casting')
-		Castbar.Time:SetText('3.1')
-		Castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
-		Castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
+		castbar.Hide = castbar.Show
+		castbar:Show()
+		castbar.Text:SetText('Casting')
+		castbar.Time:SetText('3.1')
+		castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
+		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
 	end
 
-	return Castbar
+	return castbar
 end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
@@ -188,8 +193,9 @@ function NP:Update_Castbar(nameplate)
 	local frameDB = NP:PlateDB(nameplate)
 	local db = frameDB.castbar
 
+	local castbar = nameplate.Castbar
 	if nameplate == _G.ElvNP_Test then
-		nameplate.Castbar:SetAlpha((not frameDB.nameOnly and db.enable) and 1 or 0)
+		castbar:SetAlpha((not frameDB.nameOnly and db.enable) and 1 or 0)
 	end
 
 	if db.enable then
@@ -197,48 +203,53 @@ function NP:Update_Castbar(nameplate)
 			nameplate:EnableElement('Castbar')
 		end
 
-		nameplate.Castbar.timeToHold = db.timeToHold
-		nameplate.Castbar.castTimeFormat = db.castTimeFormat
-		nameplate.Castbar.channelTimeFormat = db.channelTimeFormat
+		castbar.timeToHold = db.timeToHold
+		castbar.castTimeFormat = db.castTimeFormat
+		castbar.channelTimeFormat = db.channelTimeFormat
 
-		nameplate.Castbar:Size(db.width, db.height)
-		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', db.xOffset, db.yOffset)
+		castbar:Size(db.width, db.height)
+		castbar:Point('CENTER', nameplate, 'CENTER', db.xOffset, db.yOffset)
 
-		if db.showIcon then
-			nameplate.Castbar.Button:ClearAllPoints()
-			nameplate.Castbar.Button:Point(db.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.iconOffsetX, db.iconOffsetY)
-			nameplate.Castbar.Button:Size(db.iconSize, db.iconSize)
-			nameplate.Castbar.Button:Show()
-		else
-			nameplate.Castbar.Button:Hide()
+		castbar.pipColor = NP.db.colors.empoweredCast
+		for stage, pip in next, castbar.Pips do
+			UF:CastBar_UpdatePip(castbar, pip, stage)
 		end
 
-		nameplate.Castbar.Time:ClearAllPoints()
-		nameplate.Castbar.Text:ClearAllPoints()
+		if db.showIcon then
+			castbar.Button:ClearAllPoints()
+			castbar.Button:Point(db.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', castbar, db.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.iconOffsetX, db.iconOffsetY)
+			castbar.Button:Size(db.iconSize, db.iconSize)
+			castbar.Button:Show()
+		else
+			castbar.Button:Hide()
+		end
+
+		castbar.Time:ClearAllPoints()
+		castbar.Text:ClearAllPoints()
 
 		if db.textPosition == 'BELOW' then
-			nameplate.Castbar.Time:Point('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT', db.timeXOffset, db.timeYOffset)
-			nameplate.Castbar.Text:Point('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT', db.textXOffset, db.textYOffset)
+			castbar.Time:Point('TOPRIGHT', castbar, 'BOTTOMRIGHT', db.timeXOffset, db.timeYOffset)
+			castbar.Text:Point('TOPLEFT', castbar, 'BOTTOMLEFT', db.textXOffset, db.textYOffset)
 		elseif db.textPosition == 'ABOVE' then
-			nameplate.Castbar.Time:Point('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT', db.timeXOffset, db.timeYOffset)
-			nameplate.Castbar.Text:Point('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT', db.textXOffset, db.textYOffset)
+			castbar.Time:Point('BOTTOMRIGHT', castbar, 'TOPRIGHT', db.timeXOffset, db.timeYOffset)
+			castbar.Text:Point('BOTTOMLEFT', castbar, 'TOPLEFT', db.textXOffset, db.textYOffset)
 		else
-			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', db.timeXOffset, db.timeYOffset)
-			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', db.textXOffset, db.textYOffset)
+			castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.timeXOffset, db.timeYOffset)
+			castbar.Text:Point('LEFT', castbar, 'LEFT', db.textXOffset, db.textYOffset)
 		end
 
 		if db.hideTime then
-			nameplate.Castbar.Time:Hide()
+			castbar.Time:Hide()
 		else
-			nameplate.Castbar.Time:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-			nameplate.Castbar.Time:Show()
+			castbar.Time:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			castbar.Time:Show()
 		end
 
 		if db.hideSpellName then
-			nameplate.Castbar.Text:Hide()
+			castbar.Text:Hide()
 		else
-			nameplate.Castbar.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-			nameplate.Castbar.Text:Show()
+			castbar.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			castbar.Text:Show()
 		end
 	elseif nameplate:IsElementEnabled('Castbar') then
 		nameplate:DisableElement('Castbar')

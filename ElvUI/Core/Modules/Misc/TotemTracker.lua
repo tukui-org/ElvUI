@@ -12,31 +12,33 @@ local MAX_TOTEMS = MAX_TOTEMS
 -- SHAMAN_TOTEM_PRIORITIES does not work here because we need to swap 3/4 instead of 1/2
 local priority = E.myclass == 'SHAMAN' and { [1]=1, [2]=2, [3]=4, [4]=3 } or STANDARD_TOTEM_PRIORITIES
 
-function T:UpdateButton(button, totem, show)
-	if show and totem then
-		local _, _, startTime, duration, icon = GetTotemInfo(totem.slot)
+function T:UpdateButton(button, totem)
+	if not (button and totem) then return end
 
+	local haveTotem, _, startTime, duration, icon = GetTotemInfo(totem.slot)
+
+	button:SetShown(haveTotem and duration > 0)
+
+	if haveTotem then
 		button.iconTexture:SetTexture(icon)
 		button.cooldown:SetCooldown(startTime, duration)
 
-		totem:ClearAllPoints()
-		totem:SetParent(button.holder)
-		totem:SetAllPoints(button.holder)
+		if totem:GetParent() ~= button.holder then
+			totem:ClearAllPoints()
+			totem:SetParent(button.holder)
+			totem:SetAllPoints(button.holder)
+		end
 	end
-
-	button:SetShown(show)
 end
 
 function T:HideTotem()
-	local i = priority[self.layoutIndex]
-	T:UpdateButton(T.bar[i], self, false)
+	T:UpdateButton(T.bar[priority[self.layoutIndex]], self)
 end
 
 function T:Update()
 	if E.Retail then
 		for totem in next, _G.TotemFrame.totemPool.activeObjects do
-			local i = priority[totem.layoutIndex]
-			T:UpdateButton(T.bar[i], totem, true)
+			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
 
 			if totem:GetScript('OnHide') ~= T.HideTotem then
 				totem:SetScript('OnHide', T.HideTotem)
@@ -44,8 +46,7 @@ function T:Update()
 		end
 	else
 		for i = 1, MAX_TOTEMS do
-			local totem = _G['TotemFrameTotem'..i]
-			T:UpdateButton(T.bar[priority[i]], totem, totem and totem:IsShown())
+			T:UpdateButton(T.bar[priority[i]], _G['TotemFrameTotem'..i])
 		end
 	end
 end

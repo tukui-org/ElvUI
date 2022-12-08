@@ -55,9 +55,9 @@ function UF:Configure_Threat(frame)
 			threat.TextureIcon:ClearAllPoints()
 			threat.TextureIcon:Point(point, frame.Health, point)
 		elseif threatStyle == 'HEALTHBORDER' and frame.InfoPanel then
-			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
+			frame.InfoPanel:SetFrameLevel(8) -- Back to default
 		elseif threatStyle == 'INFOPANELBORDER' and frame.InfoPanel then
-			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 3)
+			frame.InfoPanel:SetFrameLevel(20) -- Health is 10, power is 5 or 15 by default
 		end
 	elseif frame:IsElementEnabled('ThreatIndicator') then
 		frame:DisableElement('ThreatIndicator')

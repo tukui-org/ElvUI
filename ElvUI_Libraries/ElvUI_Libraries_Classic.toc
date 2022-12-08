@@ -3,6 +3,7 @@
 ## Author: Elv, Simpy
 ## Version: 1.00
 ## Interface: 11403
+## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
 Classic\Libs.xml

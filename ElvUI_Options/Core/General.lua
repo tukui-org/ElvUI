@@ -64,7 +64,7 @@ GenGen.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Aut
 GenGen.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
 
-GenGen.totems = ACH:Group(E.NewSign..L["Totem Tracker"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TotemTracker:PositionAndSize() end)
+GenGen.totems = ACH:Group(L["Totem Tracker"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TotemTracker:PositionAndSize() end)
 GenGen.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemTracker end, function(_, value) E.private.general.totemTracker = value; E.ShowPopup = true end)
 GenGen.totems.args.size = ACH:Range(L["Button Size"], nil, 2, { min = 24, max = 60, step = 1 })
 GenGen.totems.args.spacing = ACH:Range(L["Button Spacing"], nil, 3, { min = 1, max = 10, step = 1 })
@@ -135,6 +135,16 @@ Cosmetic.bordersGroup.args.uiThinBorders = ACH:Toggle(L["Thin Borders"], L["The 
 Cosmetic.bordersGroup.args.ufThinBorders = ACH:Toggle(L["Unitframe Thin Borders"], L["Use thin borders on certain unitframe elements."], 2, nil, nil, nil, function() return E.db.unitframe.thinBorders end, function(_, value) E.db.unitframe.thinBorders = value E.ShowPopup = true end)
 Cosmetic.bordersGroup.args.npThinBorders = ACH:Toggle(L["Nameplate Thin Borders"], L["Use thin borders on certain nameplate elements."], 3, nil, nil, nil, function() return E.db.nameplates.thinBorders end, function(_, value) E.db.nameplates.thinBorders = value E.ShowPopup = true end)
 Cosmetic.bordersGroup.args.cropIcon = ACH:Toggle(L["Crop Icons"], L["This is for Customized Icons in your Interface/Icons folder."], 4, true, nil, nil, function(info) local value = E.db.general[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end, function(info, value) E.db.general[info[#info]] = (value and 2) or (value == nil and 1) or 0 E.ShowPopup = true end)
+
+Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16, nil, function(info) return E.db.general.customGlow[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general.customGlow[info[#info]] = value end)
+Cosmetic.customGlowGroup.inline = true
+Cosmetic.customGlowGroup.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end)
+Cosmetic.customGlowGroup.args.speed = ACH:Range(L["SPEED"], nil, 2, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
+Cosmetic.customGlowGroup.args.size = ACH:Range(L["Size"], nil, 3, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Pixel Glow' end)
+Cosmetic.customGlowGroup.args.lines = ACH:Range(function() return E.db.general.customGlow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 4, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local style = E.db.general.customGlow.style return style ~= 'Pixel Glow' and style ~= 'Autocast Shine' end)
+Cosmetic.customGlowGroup.args.spacer1 = ACH:Spacer(10, 'full', function() return E.db.general.customGlow.style == 'Action Button Glow' end)
+Cosmetic.customGlowGroup.args.useColor = ACH:Toggle(L["Custom Color"], nil, 11)
+Cosmetic.customGlowGroup.args.color = ACH:Color(L["COLOR"], nil, 12, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a E:UpdateMedia() end, function() return not E.db.general.customGlow.useColor end)
 
 Cosmetic.cosmeticBottomPanel = ACH:Group(L["Bottom Panel"], nil, 20)
 Cosmetic.cosmeticBottomPanel.inline = true

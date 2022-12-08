@@ -23,14 +23,13 @@
 	<Include file='..\Core\UTF8\UTF8.xml'/>
 
 	<Include file='..\Classic\LibQuestXP\LibQuestXP.xml'/>
-	<Script file='..\Classic\LibHealComm-4.0\LibHealComm-4.0.lua'/>
 	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 	<Include file='..\Classic\LibClassicDurations\LibClassicDurations.xml'/>
 	<Script file='..\Classic\LibClassicCasterino-1.0\LibClassicCasterino.lua'/>
 
-	<Include file='..\Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
+	<Script file='..\Core\LibRangeCheck-2.0\LibRangeCheck-2.0.lua'/>
 	<Script file='..\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
-	<Script file='..\Core\LibButtonGlow-1.0\LibButtonGlow-1.0.lua'/>
+	<Script file='..\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
 	<Script file='..\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>
 	<Script file='..\Core\LibDataBroker\LibDataBroker-1.1.lua'/>
 	<Script file='..\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/> <!-- keep under LibClassicSpecs -->

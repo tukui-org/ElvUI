@@ -4,12 +4,10 @@
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
-local _G, format, next, strfind = _G, format, next, strfind
-local gsub, pairs, tinsert, type = gsub, pairs, tinsert, type
+local _G, next, strfind = _G, next, strfind
+local gsub, tinsert, type = gsub, tinsert, type
 
-local RegisterCVar = C_CVar.RegisterCVar
 local GetAddOnEnableState = GetAddOnEnableState
-local GetAddOnMetadata = GetAddOnMetadata
 local GetBuildInfo = GetBuildInfo
 local GetLocale = GetLocale
 local GetTime = GetTime
@@ -18,16 +16,10 @@ local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 
+local RegisterCVar = C_CVar.RegisterCVar
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
-
-_G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
-for _, barNumber in pairs({2, 7, 8, 9, 10}) do
-	for slot = 1, 12 do
-		_G[format('BINDING_NAME_ELVUIBAR%dBUTTON%d', barNumber, slot)] = format('ActionBar %d Button %d', barNumber, slot)
-	end
-end
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
@@ -123,7 +115,7 @@ do
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
 	E:AddLib('RangeCheck', 'LibRangeCheck-2.0')
-	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0')
+	E:AddLib('CustomGlow', 'LibCustomGlow-1.0')
 	E:AddLib('Deflate', 'LibDeflate')
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
@@ -157,6 +149,39 @@ do
 	E.LSM = E.Libs.LSM
 	E.UnitFrames.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
+end
+
+do -- expand LibCustomGlow for button handling
+	local LCG, frames = E.Libs.CustomGlow, {}
+	function LCG.ShowOverlayGlow(button)
+		local opt = E.db.general.customGlow
+		local glow = LCG.startList[opt.style]
+		if glow then
+			local arg3, arg4, arg6
+			local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
+			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
+			if pixel then arg6 = opt.size end
+
+			glow(button, opt.useColor and E.media.customGlowColor, arg3, arg4, nil, arg6)
+
+			frames[button] = true
+		end
+	end
+
+	function LCG.HideOverlayGlow(button)
+		local glow = LCG.stopList[E.db.general.customGlow.style]
+		if glow then
+			glow(button)
+
+			frames[button] = nil
+		end
+	end
+
+	function E:StopAllCustomGlows()
+		for button in next, frames do
+			LCG.HideOverlayGlow(button)
+		end
+	end
 end
 
 do

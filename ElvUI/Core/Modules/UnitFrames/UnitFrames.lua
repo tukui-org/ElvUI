@@ -1121,6 +1121,11 @@ function UF:DisableBlizzard()
 		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 	end
 
+	-- shutdown monk stagger bar background updates
+	if disable.player and _G.MonkStaggerBar then
+		_G.MonkStaggerBar:UnregisterAllEvents()
+	end
+
 	-- shutdown some background updates on party unitframes
 	if disable.party and _G.CompactPartyFrame then
 		_G.CompactPartyFrame:UnregisterAllEvents()

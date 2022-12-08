@@ -41,7 +41,7 @@ License: Public Domain
 -- @class file
 -- @name LibRangeCheck-2.0
 local MAJOR_VERSION = "LibRangeCheck-2.0"
-local MINOR_VERSION = tonumber(("$Revision: 216 $"):match("%d+")) + 100000
+local MINOR_VERSION = tonumber(("$Revision: 217 $"):match("%d+")) + 100000
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -304,25 +304,16 @@ tinsert(PetSpells.WARLOCK, 755)		-- Health Funnel (45 yards)
 -- Items [Special thanks to Maldivia for the nice list]
 
 local FriendItems  = {
-	[1] = {
-		90175, -- Gin-Ji Knife Set -- doesn't seem to work for pets (always returns nil)
-	},
 	[2] = {
 		37727, -- Ruby Acorn
 	},
 	[3] = {
 		42732, -- Everfrost Razor
 	},
-	[4] = {
-		129055, -- Shoe Shine Kit
-	},
 	[5] = {
 		8149, -- Voodoo Charm
 		136605, -- Solendra's Compassion
 		63427, -- Worgsaw
-	},
-	[7] = {
-		61323, -- Ruby Seeds
 	},
 	[8] = {
 		34368, -- Attuned Crystal Cores
@@ -369,20 +360,11 @@ local FriendItems  = {
 	[35] = {
 		18904, -- Zorbin's Ultra-Shrinker
 	},
-	[38] = {
-		140786, -- Ley Spider Eggs
-	},
 	[40] = {
 		34471, -- Vial of the Sunwell
 	},
 	[45] = {
 		32698, -- Wrangling Rope
-	},
-	[50] = {
-		116139, -- Haunting Memento
-	},
-	[55] = {
-		74637, -- Kiryn's Poison Vial
 	},
 	[60] = {
 		32825, -- Soul Cannon
@@ -394,19 +376,40 @@ local FriendItems  = {
 	[80] = {
 		35278, -- Reinforced Net
 	},
-	[90] = {
-		133925, -- Fel Lash
-	},
 	[100] = {
 		41058, -- Hyldnir Harpoon
 	},
 	[150] = {
 		46954, -- Flaming Spears
 	},
-	[200] = {
-		75208, -- Rancher's Lariat
-	},
 }
+
+if isRetail then
+	FriendItems[1] = {
+		90175, -- Gin-Ji Knife Set -- doesn't seem to work for pets (always returns nil)
+	}
+	FriendItems[4] = {
+		129055, -- Shoe Shine Kit
+	}
+	FriendItems[7] = {
+		61323, -- Ruby Seeds
+	}
+	FriendItems[38] = {
+		140786, -- Ley Spider Eggs
+	}
+	FriendItems[55] = {
+		74637, -- Kiryn's Poison Vial
+	}
+	FriendItems[50] = {
+		116139, -- Haunting Memento
+	}
+	FriendItems[90] = {
+		133925, -- Fel Lash
+	}
+	FriendItems[200] = {
+		75208, -- Rancher's Lariat
+	}
+end
 
 local HarmItems = {
 	[1] = {
@@ -417,16 +420,10 @@ local HarmItems = {
 	[3] = {
 		42732, -- Everfrost Razor
 	},
-	[4] = {
-		129055, -- Shoe Shine Kit
-	},
 	[5] = {
 		8149, -- Voodoo Charm
 		136605, -- Solendra's Compassion
 		63427, -- Worgsaw
-	},
-	[7] = {
-		61323, -- Ruby Seeds
 	},
 	[8] = {
 		34368, -- Attuned Crystal Cores
@@ -457,21 +454,12 @@ local HarmItems = {
 		24269, -- Heavy Netherweave Net
 		18904, -- Zorbin's Ultra-Shrinker
 	},
-	[38] = {
-		140786, -- Ley Spider Eggs
-	},
 	[40] = {
 		28767, -- The Decapitator
 	},
 	[45] = {
 		--32698, -- Wrangling Rope
 		23836, -- Goblin Rocket Launcher
-	},
-	[50] = {
-		116139, -- Haunting Memento
-	},
-	[55] = {
-		74637, -- Kiryn's Poison Vial
 	},
 	[60] = {
 		32825, -- Soul Cannon
@@ -483,19 +471,37 @@ local HarmItems = {
 	[80] = {
 		35278, -- Reinforced Net
 	},
-	[90] = {
-		133925, -- Fel Lash
-	},
 	[100] = {
 		33119, -- Malister's Frost Wand
 	},
 	[150] = {
 		46954, -- Flaming Spears
 	},
-	[200] = {
-		75208, -- Rancher's Lariat
-	},
 }
+
+if isRetail then
+	HarmItems[4] = {
+		129055, -- Shoe Shine Kit
+	}
+	HarmItems[7] = {
+		61323, -- Ruby Seeds
+	}
+	HarmItems[38] = {
+		140786, -- Ley Spider Eggs
+	}
+	HarmItems[50] = {
+		116139, -- Haunting Memento
+	}
+	HarmItems[55] = {
+		74637, -- Kiryn's Poison Vial
+	}
+	HarmItems[90] = {
+		133925, -- Fel Lash
+	}
+	HarmItems[200] = {
+		75208, -- Rancher's Lariat
+	}
+end
 
 -- This could've been done by checking player race as well and creating tables for those, but it's easier like this
 for _, v in pairs(FriendSpells) do
