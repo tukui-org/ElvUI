@@ -7,6 +7,24 @@ local next, unpack = next, unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local function SpellHighlightSetTexture(texture, tex)
+	if tex == [[Interface\Buttons\ButtonHilight-Square]] or tex == [[Interface\Buttons\UI-PassiveHighlight]] then
+		texture:SetColorTexture(1, 1, 1, 0.3)
+	end
+end
+
+local function TabHighlightSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetHighlightTexture(E.ClearTexture)
+	end
+end
+
+local function TabCheckedSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetCheckedTexture(E.ClearTexture)
+	end
+end
+
 function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
@@ -74,11 +92,7 @@ function S:SpellBookFrame()
 		icon:SetTexCoord(unpack(E.TexCoords))
 
 		highlight:SetAllPoints()
-		hooksecurefunc(highlight, 'SetTexture', function(texture, tex)
-			if tex == [[Interface\Buttons\ButtonHilight-Square]] or tex == [[Interface\Buttons\UI-PassiveHighlight]] then
-				texture:SetColorTexture(1, 1, 1, 0.3)
-			end
-		end)
+		hooksecurefunc(highlight, 'SetTexture', SpellHighlightSetTexture)
 
 		E:RegisterCooldown(cooldown)
 	end
@@ -120,17 +134,8 @@ function S:SpellBookFrame()
 			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -32, -70)
 		end
 
-		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(texture, tex)
-			if tex ~= nil then
-				texture:SetPushedTexture(E.ClearTexture)
-			end
-		end)
-
-		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(texture, tex)
-			if tex ~= nil then
-				texture:SetHighlightTexture(E.ClearTexture)
-			end
-		end)
+		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', TabHighlightSetTexture)
+		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', TabCheckedSetTexture)
 
 		flash:Kill()
 	end

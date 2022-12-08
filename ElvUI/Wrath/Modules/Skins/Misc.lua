@@ -9,6 +9,12 @@ local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 local hooksecurefunc = hooksecurefunc
 
+local function ClearSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetTexture()
+	end
+end
+
 local function SkinNavBarButtons(self)
 	local parentName = self:GetParent():GetName()
 	if (parentName == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal)
@@ -188,9 +194,7 @@ function S:BlizzardMiscFrames()
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
-			hooksecurefunc(normTex, 'SetTexture', function(texture, tex)
-				if tex ~= nil then texture:SetTexture() end
-			end)
+			hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
 		end
 
 		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
