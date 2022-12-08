@@ -122,7 +122,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local GameTooltip_Hide = GameTooltip_Hide
-local GameFontHighlightSmall = _G.GameFontHighlightSmall
 local ACH = E.Libs.ACH
 
 --Function we can call on profile change to update GUI
@@ -299,15 +298,13 @@ local function ExportImport_Open(mode)
 	Box.scrollFrame:UpdateScrollChildRect()
 
 	local Label1 = E.Libs.AceGUI:Create('Label')
-	local font = GameFontHighlightSmall:GetFont()
-	Label1:FontTemplate(font, 14, 'NONE')
+	Label1:FontTemplate(nil, 14, 'NONE')
 	Label1:SetText('.') --Set temporary text so height is set correctly
 	Label1:SetWidth(800)
 	Frame:AddChild(Label1)
 
 	local Label2 = E.Libs.AceGUI:Create('Label')
-	font = GameFontHighlightSmall:GetFont()
-	Label2:FontTemplate(font, 14, 'NONE')
+	Label2:FontTemplate(nil, 14, 'NONE')
 	Label2:SetText('.|n.')
 	Label2:SetWidth(800)
 	Frame:AddChild(Label2)
