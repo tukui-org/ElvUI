@@ -32,6 +32,12 @@ local function SkinNavBarButtons(self)
 	end
 end
 
+local function ClearSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetTexture()
+	end
+end
+
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
@@ -175,12 +181,11 @@ function S:BlizzardMiscFrames()
 		_G['StaticPopup'..i..'ItemFrame'].IconBorder:SetAlpha(0)
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
+
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
-			hooksecurefunc(normTex, 'SetTexture', function(texture, tex)
-				if tex ~= nil then texture:SetTexture() end
-			end)
+			hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
 		end
 
 		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)

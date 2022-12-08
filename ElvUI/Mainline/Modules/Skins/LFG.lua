@@ -25,8 +25,15 @@ local hooksecurefunc = hooksecurefunc
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LCG.ShowOverlayGlow(self:GetParent().checkButton)
 end
+
 local function LFDQueueFrameRoleButtonIconOnHide(self)
 	LCG.HideOverlayGlow(self:GetParent().checkButton)
+end
+
+local function ClearSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetTexture()
+	end
 end
 
 local function HandleGoldIcon(button)
@@ -456,17 +463,8 @@ function S:LookingForGroupFrames()
 				tab:SetTemplate()
 				tab:StyleButton(true)
 
-				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(highlight, texPath)
-					if texPath ~= nil then
-						highlight:SetTexture()
-					end
-				end)
-
-				hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(highlight, texPath)
-					if texPath ~= nil then
-						highlight:SetTexture()
-					end
-				end)
+				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', ClearSetTexture)
+				hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', ClearSetTexture)
 			end
 
 			for i=1, 7 do
