@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, select, unpack = ipairs, select, unpack
+local ipairs, unpack = ipairs, unpack
 
 local GetInventoryItemID = GetInventoryItemID
 local GetItemQualityColor = GetItemQualityColor
@@ -15,9 +15,10 @@ local function Update_InspectPaperDollItemSlotButton(button)
 
 	local itemID = GetInventoryItemID(unit, button:GetID())
 	if itemID then
-		local quality = select(3, GetItemInfo(itemID))
+		local _, _, quality = GetItemInfo(itemID)
 		if quality and quality > 1 then
-			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+			local r, g, b = GetItemQualityColor(quality)
+			button.backdrop:SetBackdropBorderColor(r, g, b)
 			return
 		end
 	end
