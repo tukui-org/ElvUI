@@ -56,8 +56,7 @@ function S:MailFrame()
 				if packageIcon and not isGM then
 					local itemlink = GetInboxItemLink(index, 1)
 					if itemlink then
-						local quality = select(3, GetItemInfo(itemlink))
-
+						local _, _, quality = GetItemInfo(itemlink)
 						if quality and quality > 1 then
 							local r, g, b = GetItemQualityColor(quality)
 							mail.backdrop:SetBackdropBorderColor(r, g, b)
@@ -117,7 +116,7 @@ function S:MailFrame()
 
 			local name = GetSendMailItem(i)
 			if name then
-				local quality = select(3, GetItemInfo(name))
+				local _, _, quality = GetItemInfo(name)
 				if quality and quality > 1 then
 					local r, g, b = GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)
@@ -200,7 +199,7 @@ function S:MailFrame()
 			local button = _G['OpenMailAttachmentButton'..i]
 
 			if itemLink then
-				local quality = select(3, GetItemInfo(itemLink))
+				local _, _, quality = GetItemInfo(itemLink)
 				if quality and quality > 1 then
 					local r, g, b = GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)

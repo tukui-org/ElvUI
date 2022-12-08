@@ -135,13 +135,10 @@ function S:Blizzard_TradeSkillUI()
 		end
 
 		local skillLink = GetTradeSkillItemLink(id)
-		local r, g, b
-
 		if skillLink then
-			local quality = select(3, GetItemInfo(skillLink))
-
+			local _, _, quality = GetItemInfo(skillLink)
 			if quality and quality > 1 then
-				r, g, b = GetItemQualityColor(quality)
+				local r, g, b = GetItemQualityColor(quality)
 
 				_G.TradeSkillSkillIcon.backdrop:SetBackdropBorderColor(r, g, b)
 				_G.TradeSkillSkillName:SetTextColor(r, g, b)
@@ -157,11 +154,10 @@ function S:Blizzard_TradeSkillUI()
 
 			if reagentLink then
 				local icon = _G['TradeSkillReagent'..i..'IconTexture']
-				local quality = select(3, GetItemInfo(reagentLink))
-
+				local _, _, quality = GetItemInfo(reagentLink)
 				if quality and quality > 1 then
 					local name = _G['TradeSkillReagent'..i..'Name']
-					r, g, b = GetItemQualityColor(quality)
+					local r, g, b = GetItemQualityColor(quality)
 
 					icon.backdrop:SetBackdropBorderColor(r, g, b)
 

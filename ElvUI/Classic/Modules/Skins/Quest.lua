@@ -80,10 +80,9 @@ local function questQualityColors(frame, text, link)
 		handleItemButton(frame)
 	end
 
-	local quality = link and select(3, GetItemInfo(link))
+	local _, _, quality = GetItemInfo(link or 0)
 	if quality and quality > 1 then
 		local r, g, b = GetItemQualityColor(quality)
-
 		text:SetTextColor(r, g, b)
 		frame:SetBackdropBorderColor(r, g, b)
 	else
