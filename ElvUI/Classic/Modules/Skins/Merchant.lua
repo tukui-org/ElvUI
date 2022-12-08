@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, unpack = select, unpack
+local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
@@ -139,18 +139,16 @@ function S:MerchantFrame()
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
 		local numMerchantItems = GetMerchantNumItems()
 		local index = (MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE
-		local button, name, quality
 
 		for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 			index = index + 1
 
 			if index <= numMerchantItems then
-				button = _G['MerchantItem'..i..'ItemButton']
-				name = _G['MerchantItem'..i..'Name']
+				local button = _G['MerchantItem'..i..'ItemButton']
+				local name = _G['MerchantItem'..i..'Name']
 
 				if button.link then
-					quality = select(3, GetItemInfo(button.link))
-
+					local _, _, quality = GetItemInfo(button.link)
 					if quality and quality > 1 then
 						local r, g, b = GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
@@ -167,8 +165,7 @@ function S:MerchantFrame()
 
 			local itemName = GetBuybackItemInfo(GetNumBuybackItems())
 			if itemName then
-				quality = select(3, GetItemInfo(itemName))
-
+				local _, _, quality = GetItemInfo(itemName)
 				if quality and quality > 1 then
 					local r, g, b = GetItemQualityColor(quality)
 					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
@@ -189,17 +186,15 @@ function S:MerchantFrame()
 
 	hooksecurefunc('MerchantFrame_UpdateBuybackInfo', function()
 		local numBuybackItems = GetNumBuybackItems()
-		local button, name, quality
 
 		for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 			if i <= numBuybackItems then
 				local itemName = GetBuybackItemInfo(i)
 
 				if itemName then
-					button = _G['MerchantItem'..i..'ItemButton']
-					name = _G['MerchantItem'..i..'Name']
-					quality = select(3, GetItemInfo(itemName))
-
+					local button = _G['MerchantItem'..i..'ItemButton']
+					local name = _G['MerchantItem'..i..'Name']
+					local _, _, quality = GetItemInfo(itemName)
 					if quality and quality > 1 then
 						local r, g, b = GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
