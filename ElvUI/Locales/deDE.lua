@@ -1,6 +1,6 @@
 -- German localization file for deDE.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "deDE")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'deDE')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

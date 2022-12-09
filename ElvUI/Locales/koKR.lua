@@ -1,6 +1,6 @@
 -- Korean localization file for koKR.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

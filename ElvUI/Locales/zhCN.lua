@@ -1,6 +1,6 @@
 -- Simplified Chinese localization file for zhCN.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

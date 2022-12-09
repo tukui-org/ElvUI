@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs = ipairs
-local pairs, unpack = pairs, unpack
+local next, unpack = next, unpack
 
-local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local function ClearSetTexture(texture, tex)
@@ -30,6 +29,7 @@ local function SkinNavBarButtons(self)
 
 		if navButton.MenuArrowButton then
 			navButton.MenuArrowButton:StripTextures()
+
 			if navButton.MenuArrowButton.Art then
 				navButton.MenuArrowButton.Art:SetTexture(E.Media.Textures.ArrowUp)
 				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
@@ -46,12 +46,7 @@ function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	-- Blizzard frame we want to reskin
-	local skins = {
-		_G.AutoCompleteBox,
-		_G.ReadyCheckFrame
-	}
-
-	for _, frame in ipairs(skins) do
+	for _, frame in next, { _G.AutoCompleteBox, _G.ReadyCheckFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
@@ -84,9 +79,9 @@ function S:BlizzardMiscFrames()
 
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
 		-- Reskin all esc/menu buttons
-		for _, Button in pairs({_G.GameMenuFrame:GetChildren()}) do
-			if Button.IsObjectType and Button:IsObjectType("Button") then
-				S:HandleButton(Button)
+		for _, button in next, { _G.GameMenuFrame:GetChildren() } do
+			if button.IsObjectType and button:IsObjectType('Button') then
+				S:HandleButton(button)
 			end
 		end
 
@@ -131,14 +126,7 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	local ChatMenus = {
-		_G.ChatMenu,
-		_G.EmoteMenu,
-		_G.LanguageMenu,
-		_G.VoiceMacroMenu,
-	}
-
-	for _, frame in ipairs(ChatMenus) do
+	for _, frame in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
 		if frame == _G.ChatMenu then
 			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else
@@ -308,10 +296,8 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StackSplitOkayButton)
 	S:HandleButton(_G.StackSplitCancelButton)
 
-	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
-	for _, btn in pairs(buttons) do
+	for _, btn in next, { StackSplitFrame.LeftButton, StackSplitFrame.RightButton } do
 		btn:Size(14, 18)
-
 		btn:ClearAllPoints()
 
 		if btn == StackSplitFrame.LeftButton then

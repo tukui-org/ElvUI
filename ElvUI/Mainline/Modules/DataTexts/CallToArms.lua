@@ -66,7 +66,7 @@ local function OnEvent(self)
 	if E.global.datatexts.settings.CallToArms.NoLabel then
 		self.text:SetFormattedText(displayString, unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..": ", unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	end
 	lastPanel = self
 end

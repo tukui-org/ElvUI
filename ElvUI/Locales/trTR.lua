@@ -1,6 +1,6 @@
 -- Turkish localization file for trTR.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "trTR")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

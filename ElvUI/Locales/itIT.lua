@@ -1,6 +1,6 @@
 -- Italian localization file for enUS and enGB.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "itIT")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'itIT')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

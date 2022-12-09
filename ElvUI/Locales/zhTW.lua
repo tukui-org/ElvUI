@@ -1,6 +1,6 @@
 -- Traditional Chinese localization file for zhTW.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

@@ -638,8 +638,8 @@ function S:Blizzard_GarrisonUI()
 	end
 
 	-- This is needed if we use StripTextures on the Covenant Frames
-	hooksecurefunc(CovenantMissionFrame, "SetupTabs", function(self)
-		self.MapTab:SetShown(not self.Tab2:IsShown())
+	hooksecurefunc(CovenantMissionFrame, 'SetupTabs', function(frame)
+		frame.MapTab:SetShown(not frame.Tab2:IsShown())
 	end)
 
 	-- Complete Missions
