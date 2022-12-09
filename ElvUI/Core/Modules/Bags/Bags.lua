@@ -2292,7 +2292,19 @@ end
 
 if C_Container then
 	local function GetInitialContainerFrameOffsetX()
-		return _G.EditModeUtil:GetRightActionBarWidth() + 10
+		if _G.EditModeUtil then
+			return _G.EditModeUtil:GetRightActionBarWidth() + 10
+		else
+			return CONTAINER_OFFSET_X
+		end
+	end
+
+	local function GetBags()
+		if _G.ContainerFrameSettingsManager then
+			return _G.ContainerFrameSettingsManager:GetBagsShown()
+		else
+			return _G.ContainerFrame1.bags
+		end
 	end
 
 	local function GetContainerScale()
@@ -2318,7 +2330,11 @@ if C_Container then
 			local frameHeight
 			local framesInColumn = 0
 			local forceScaleDecrease = false
-			for _, frame in ipairs(_G.ContainerFrameSettingsManager:GetBagsShown()) do
+			for _, frame in ipairs(GetBags()) do
+				if type(frame) == 'string' then
+					frame = _G[frame]
+				end
+
 				framesInColumn = framesInColumn + 1
 				frameHeight = frame:GetHeight(true)
 				if freeScreenHeight < frameHeight then
@@ -2357,7 +2373,11 @@ if C_Container then
 		local freeScreenHeight = screenHeight - yOffset
 		local previousBag, recentBagColumn
 
-		for index, frame in ipairs(_G.ContainerFrameSettingsManager:GetBagsShown()) do
+		for index, frame in ipairs(GetBags()) do
+			if type(frame) == 'string' then
+				frame = _G[frame]
+			end
+
 			frame:SetScale(containerScale)
 
 			if index == 1 then -- First bag
