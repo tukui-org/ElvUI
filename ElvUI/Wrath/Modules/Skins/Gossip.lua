@@ -61,7 +61,6 @@ function S:GossipFrame()
 
 		_G.ItemTextFrame:StripTextures(true)
 		_G.QuestFont:SetTextColor(1, 1, 1)
-		_G.GossipFrameInset:Hide()
 
 		if GossipFrame.Background then
 			GossipFrame.Background:Hide()
