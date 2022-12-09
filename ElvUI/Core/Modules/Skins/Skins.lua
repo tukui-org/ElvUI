@@ -108,19 +108,27 @@ function S:HandleButtonHighlight(frame, r, g, b)
 	if not g then g = 0.9 end
 	if not b then b = 0.9 end
 
-	--[[
-	local leftGrad = frame:CreateTexture(nil, 'HIGHLIGHT')
-	leftGrad:Size(frame:GetWidth() * 0.5, frame:GetHeight() * 0.95)
-	leftGrad:Point('LEFT', frame, 'CENTER')
-	leftGrad:SetTexture(E.media.blankTex)
-	leftGrad:SetGradient('Horizontal', {r=r, g=g, b=b, a=0.35}, {r=r, g=g, b=b, a=0})
+	local w, h = frame:GetSize()
+	local width, height = w * 0.5, h * 0.95
 
-	local rightGrad = frame:CreateTexture(nil, 'HIGHLIGHT')
-	rightGrad:Size(frame:GetWidth() * 0.5, frame:GetHeight() * 0.95)
-	rightGrad:Point('RIGHT', frame, 'CENTER')
-	rightGrad:SetTexture(E.media.blankTex)
-	rightGrad:SetGradient('Horizontal', {r=r, g=g, b=b, a=0}, {r=r, g=g, b=b, a=0.35})
-	]]
+	if not frame.leftGradient then
+		local left = frame:CreateTexture(nil, 'HIGHLIGHT')
+		left:SetTexture(E.media.blankTex)
+		left:Point('LEFT', frame, 'CENTER')
+		left:Size(width, height)
+		frame.leftGradient = left
+	end
+
+	if not frame.rightGradient then
+		local right = frame:CreateTexture(nil, 'HIGHLIGHT')
+		right:SetTexture(E.media.blankTex)
+		right:Point('RIGHT', frame, 'CENTER')
+		right:Size(width, height)
+		frame.rightGradient = right
+	end
+
+	frame.leftGradient:SetGradient('Horizontal', {r=r, g=g, b=b, a=0.35}, {r=r, g=g, b=b, a=0})
+	frame.rightGradient:SetGradient('Horizontal', {r=r, g=g, b=b, a=0}, {r=r, g=g, b=b, a=0.35})
 end
 
 function S:HandlePointXY(frame, x, y)
