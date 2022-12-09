@@ -1,5 +1,5 @@
 -- Russian localization file for ruRU.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
 L["POWER_TYPE_ESSENCE"] = "Сущность"
 L["BAG_FILTER_JUNK"] = "хлам"

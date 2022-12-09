@@ -1,5 +1,5 @@
 -- German localization file for deDE.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
 L["POWER_TYPE_ESSENCE"] = "Essenz"
 L["BAG_FILTER_JUNK"] = "Plunder"

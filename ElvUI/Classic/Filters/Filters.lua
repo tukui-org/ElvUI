@@ -407,7 +407,7 @@ G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
 	--Seasonal
-		[362859] = List(), -- Adventure Awaits "Quest experience increased by 100%."
+		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
 	--Druid
 	--Hunter
 	--Mage
