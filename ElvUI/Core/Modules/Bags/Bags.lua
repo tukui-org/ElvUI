@@ -1197,7 +1197,7 @@ do
 		if delayed.elapsed and delayed.elapsed > 0.02 then
 			for _, bagFrame in next, B.BagFrames do
 				if next(bagFrame.DelayedContainers) then
-					B:UpdateDelayedContainers(bagFrame)
+					B:UpdateDelayedContainer(bagFrame)
 				end
 			end
 
@@ -1210,7 +1210,7 @@ do
 
 	B.DelayedNoEvent = delayed
 
-	function B:UpdateDelayedContainers(frame)
+	function B:UpdateDelayedContainer(frame)
 		for bagID, container in next, frame.DelayedContainers do
 			if bagID ~= BACKPACK_CONTAINER then
 				B:SetBagAssignments(container)
@@ -1278,7 +1278,7 @@ function B:OnEvent(event, ...)
 			end
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
-		B:UpdateDelayedContainers(self)
+		B:UpdateDelayedContainer(self)
 	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
 		local id = ...+1 -- yes
 		B:SetBagAssignments(self.ContainerHolder[id], true)
