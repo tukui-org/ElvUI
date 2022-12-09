@@ -1190,15 +1190,52 @@ function B:SetBagAssignments(holder, skip)
 	end
 end
 
-function B:DelayedContainer(bagFrame, event, bagID)
-	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
-	if container then
-		bagFrame.DelayedContainers[bagID] = container
+do
+	local delayed = CreateFrame('Frame')
+	delayed:Hide()
+	delayed:SetScript('OnUpdate', function(_, elapsed)
+		if delayed.elapsed and delayed.elapsed > 0.02 then
+			for _, bagFrame in next, B.BagFrames do
+				if next(bagFrame.DelayedContainers) then
+					B:UpdateDelayedContainers(bagFrame)
+				end
+			end
 
-		if event == 'BAG_CLOSED' then -- let it call layout
-			bagFrame.totalSlots = 0
+			delayed:Hide()
+			delayed.elapsed = 0
 		else
-			bagFrame.Bags[bagID].needsUpdate = true
+			delayed.elapsed = (delayed.elapsed or 0) + elapsed
+		end
+	end)
+
+	B.DelayedNoEvent = delayed
+
+	function B:UpdateDelayedContainers(frame)
+		for bagID, container in next, frame.DelayedContainers do
+			if bagID ~= BACKPACK_CONTAINER then
+				B:SetBagAssignments(container)
+			end
+
+			local bag = frame.Bags[bagID]
+			if bag and bag.needsUpdate then
+				B:UpdateBagSlots(frame, bagID)
+				bag.needsUpdate = nil
+			end
+
+			frame.DelayedContainers[bagID] = nil
+		end
+	end
+
+	function B:DelayedContainer(bagFrame, event, bagID)
+		local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
+		if container then
+			bagFrame.DelayedContainers[bagID] = container
+
+			if event == 'BAG_CLOSED' then -- let it call layout
+				bagFrame.totalSlots = 0
+			else
+				bagFrame.Bags[bagID].needsUpdate = true
+			end
 		end
 	end
 end
@@ -1234,21 +1271,14 @@ function B:OnEvent(event, ...)
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
 			B:DelayedContainer(self, event, ...)
+
+			if E.Wrath then -- BAG_UPDATE_DELAYED doesn't fire on Wrath PTR rn?
+				B.DelayedNoEvent:Show()
+				B.DelayedNoEvent.elapsed = 0
+			end
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
-		for bagID, container in next, self.DelayedContainers do
-			if bagID ~= BACKPACK_CONTAINER then
-				B:SetBagAssignments(container)
-			end
-
-			local bag = self.Bags[bagID]
-			if bag and bag.needsUpdate then
-				B:UpdateBagSlots(self, bagID)
-				bag.needsUpdate = nil
-			end
-
-			self.DelayedContainers[bagID] = nil
-		end
+		B:UpdateDelayedContainers(self)
 	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
 		local id = ...+1 -- yes
 		B:SetBagAssignments(self.ContainerHolder[id], true)
