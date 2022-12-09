@@ -1270,9 +1270,11 @@ function B:OnEvent(event, ...)
 		B:UpdateContainerIcons()
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
-			B:DelayedContainer(self, event, ...)
+			local bagID = ...
+			B:DelayedContainer(self, event, bagID)
 
-			if E.Wrath then -- BAG_UPDATE_DELAYED doesn't fire on Wrath PTR rn?
+			-- BAG_UPDATE_DELAYED doesn't fire on all bags (it does for bag 0) Wrath PTR rn?
+			if E.Wrath and bagID ~= 0 then
 				B.DelayedNoEvent:Show()
 				B.DelayedNoEvent.elapsed = 0
 			end
