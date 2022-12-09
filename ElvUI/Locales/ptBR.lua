@@ -1,6 +1,6 @@
 -- Portuguese localization file for ptBR.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "ptBR")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

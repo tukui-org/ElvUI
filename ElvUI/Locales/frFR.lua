@@ -1,6 +1,6 @@
 -- French localization file for frFR.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "frFR")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'frFR')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

@@ -1,6 +1,6 @@
 -- English localization file for enUS and enGB.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
+local L = E.Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

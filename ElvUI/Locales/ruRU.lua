@@ -1,6 +1,6 @@
 -- Russian localization file for ruRU.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

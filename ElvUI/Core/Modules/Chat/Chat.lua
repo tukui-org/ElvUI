@@ -180,7 +180,7 @@ else -- cause it doesnt exist on tbc or classic
 	local getDeprecatedAccountInfo = function(accountInfo)
 		if accountInfo then
 			local wowProjectID = accountInfo.gameAccountInfo.wowProjectID or 0
-			local clientProgram = accountInfo.gameAccountInfo.clientProgram ~= "" and accountInfo.gameAccountInfo.clientProgram or nil
+			local clientProgram = accountInfo.gameAccountInfo.clientProgram ~= '' and accountInfo.gameAccountInfo.clientProgram or nil
 			return	accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, accountInfo.isBattleTagFriend,
 					accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.gameAccountID, clientProgram,
 					accountInfo.gameAccountInfo.isOnline, accountInfo.lastOnlineTime, accountInfo.isAFK, accountInfo.isDND, accountInfo.customMessage, accountInfo.note, accountInfo.isFriend,
@@ -191,19 +191,19 @@ else -- cause it doesnt exist on tbc or classic
 	local getDeprecatedGameAccountInfo = function(gameAccountInfo, accountInfo)
 		if gameAccountInfo and accountInfo then
 			local wowProjectID = gameAccountInfo.wowProjectID or 0
-			local characterName = gameAccountInfo.characterName or ""
-			local realmName = gameAccountInfo.realmName or ""
+			local characterName = gameAccountInfo.characterName or ''
+			local realmName = gameAccountInfo.realmName or ''
 			local realmID = gameAccountInfo.realmID or 0
-			local factionName = gameAccountInfo.factionName or ""
-			local raceName = gameAccountInfo.raceName or ""
-			local className = gameAccountInfo.className or ""
-			local areaName = gameAccountInfo.areaName or ""
-			local characterLevel = gameAccountInfo.characterLevel or ""
-			local richPresence = gameAccountInfo.richPresence or ""
+			local factionName = gameAccountInfo.factionName or ''
+			local raceName = gameAccountInfo.raceName or ''
+			local className = gameAccountInfo.className or ''
+			local areaName = gameAccountInfo.areaName or ''
+			local characterLevel = gameAccountInfo.characterLevel or ''
+			local richPresence = gameAccountInfo.richPresence or ''
 			local gameAccountID = gameAccountInfo.gameAccountID or 0
 			local playerGuid = gameAccountInfo.playerGuid or 0
 			return	gameAccountInfo.hasFocus, characterName, gameAccountInfo.clientProgram,
-					realmName, realmID, factionName, raceName, className, "", areaName, characterLevel,
+					realmName, realmID, factionName, raceName, className, '', areaName, characterLevel,
 					richPresence, accountInfo.customMessage, accountInfo.customMessageTime,
 					gameAccountInfo.isOnline, gameAccountID, accountInfo.bnetAccountID, gameAccountInfo.isGameAFK, gameAccountInfo.isGameBusy,
 					playerGuid, wowProjectID, gameAccountInfo.isWowMobile
@@ -1730,7 +1730,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 		end
 	end
 
-	return ""
+	return ''
 end
 
 -- copied from ChatFrame.lua
