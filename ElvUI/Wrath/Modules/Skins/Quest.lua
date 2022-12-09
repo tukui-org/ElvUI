@@ -463,7 +463,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestLogHighlightFrame.SetWidth = E.noop
 
 	_G.QuestLogSkillHighlight:SetTexture(E.Media.Textures.Highlight)
-	_G.QuestLogSkillHighlight:SetAlpha(0.35)
+	_G.QuestLogSkillHighlight:SetAlpha(0.3)
 
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
