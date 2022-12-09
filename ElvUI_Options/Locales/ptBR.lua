@@ -1,5 +1,5 @@
 -- Portuguese localization file for ptBR.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
 L["POWER_TYPE_ESSENCE"] = "Essência"
 L["BAG_FILTER_JUNK"] = "Sucata"
