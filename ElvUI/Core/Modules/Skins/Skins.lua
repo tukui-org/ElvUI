@@ -104,31 +104,23 @@ function S:HandleButtonHighlight(frame, r, g, b)
 		frame:SetHighlightTexture(E.ClearTexture)
 	end
 
+	if not frame.highlightGradient then
+		local width, h = frame:GetSize()
+		local height = h * 0.95
+
+		local gradient = frame:CreateTexture(nil, 'HIGHLIGHT')
+		gradient:SetTexture(E.Media.Textures.Highlight)
+		gradient:Point('LEFT', frame)
+		gradient:Size(width, height)
+
+		frame.highlightGradient = gradient
+	end
+
 	if not r then r = 0.9 end
 	if not g then g = 0.9 end
 	if not b then b = 0.9 end
 
-	local w, h = frame:GetSize()
-	local width, height = w * 0.5, h * 0.95
-
-	if not frame.leftGradient then
-		local left = frame:CreateTexture(nil, 'HIGHLIGHT')
-		left:SetTexture(E.media.blankTex)
-		left:Point('LEFT', frame, 'CENTER')
-		left:Size(width, height)
-		frame.leftGradient = left
-	end
-
-	if not frame.rightGradient then
-		local right = frame:CreateTexture(nil, 'HIGHLIGHT')
-		right:SetTexture(E.media.blankTex)
-		right:Point('RIGHT', frame, 'CENTER')
-		right:Size(width, height)
-		frame.rightGradient = right
-	end
-
-	frame.leftGradient:SetGradient('Horizontal', {r=r, g=g, b=b, a=0.35}, {r=r, g=g, b=b, a=0})
-	frame.rightGradient:SetGradient('Horizontal', {r=r, g=g, b=b, a=0}, {r=r, g=g, b=b, a=0.35})
+	frame.highlightGradient:SetVertexColor(r, g, b, 0.3)
 end
 
 function S:HandlePointXY(frame, x, y)
