@@ -298,11 +298,13 @@ local function ExportImport_Open(mode)
 	Box.scrollFrame:UpdateScrollChildRect()
 
 	local Label1 = E.Libs.AceGUI:Create('Label')
+	Label1:SetFontObject('GameFontHighlightMedium')
 	Label1:SetText('.') --Set temporary text so height is set correctly
 	Label1:SetWidth(800)
 	Frame:AddChild(Label1)
 
 	local Label2 = E.Libs.AceGUI:Create('Label')
+	Label2:SetFontObject('GameFontHighlightMedium')
 	Label2:SetText('.|n.')
 	Label2:SetWidth(800)
 	Frame:AddChild(Label2)
