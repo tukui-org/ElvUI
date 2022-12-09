@@ -111,7 +111,7 @@ function S:Blizzard_TradeSkillUI()
 	end
 
 	_G.TradeSkillHighlight:SetTexture(E.Media.Textures.Highlight)
-	_G.TradeSkillHighlight:SetAlpha(0.35)
+	_G.TradeSkillHighlight:SetAlpha(0.3)
 
 	S:HandleButton(_G.TradeSkillCancelButton)
 	S:HandleButton(_G.TradeSkillCreateButton)

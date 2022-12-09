@@ -74,7 +74,7 @@ function S:FriendsFrame()
 		_G[button..'SummonButtonNormalTexture']:SetAlpha(0)
 		_G[button..'SummonButton']:StyleButton()
 		_G[button].highlight:SetTexture(E.Media.Textures.Highlight)
-		_G[button].highlight:SetAlpha(0.35)
+		_G[button].highlight:SetAlpha(0.3)
 	end
 
 	for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
