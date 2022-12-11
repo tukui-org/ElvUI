@@ -319,6 +319,21 @@ function SetupSecureSnippets(button)
 		self:SetAttribute("state", state)
 		local type, action = (self:GetAttribute(format("labtype-%s", state)) or "empty"), self:GetAttribute(format("labaction-%s", state))
 
+		local spellID = self:GetAttribute('macroSpellID')
+		if not spellID then
+			local actionType, id = GetActionInfo(action)
+			if actionType == 'spell' then
+				spellID = id
+			end
+		end
+
+		if IsPressHoldReleaseSpell(spellID) then
+			self:SetAttribute('pressAndHoldAction', true)
+			self:SetAttribute('typerelease', 'actionrelease')
+		elseif self:GetAttribute('typerelease') then
+			self:SetAttribute('typerelease', nil)
+		end
+
 		self:SetAttribute("type", type)
 		if type ~= "empty" and type ~= "custom" then
 			local action_field = (type == "pet") and "action" or type
@@ -471,6 +486,19 @@ function WrapOnClick(button)
 				return false
 			end
 
+			if down and button ~= 'Keybind' and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
+				self:SetAttribute('faked_action', self:GetAttribute('action'))
+				self:SetAttribute('action_field', 'faked_action')
+				self:SetAttribute('action', -1)
+			elseif not down then
+				local which = self:GetAttribute('faked_action')
+				if which then
+					self:SetAttribute('action', which)
+					self:SetAttribute('action_field', 'action')
+					self:SetAttribute('faked_action', nil)
+				end
+			end
+
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
 		end
 
@@ -485,43 +513,12 @@ function WrapOnClick(button)
 	]])
 end
 
--- Dynamically handle release casting ~Simpy
-local function UpdateReleaseCasting(self, down)
-	if self.isFlyout then -- the flyout spell
-		self:RegisterForClicks('AnyDown', 'AnyUp')
-	elseif self.isFlyoutButton -- the bar button
-	or down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
-		self:RegisterForClicks('AnyUp')
-	elseif not self.pressReleaseAction then
-		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
-	elseif GetCVar('empowerTapControls') == '0' then
-		self:RegisterForClicks('AnyDown', 'AnyUp')
-	else
-		self:RegisterForClicks('AnyDown')
-	end
-end
-
--- prevent pickup calling spells ~Simpy
-function Generic:OnButtonEvent(event, key, down)
+function Generic:OnButtonEvent(event)
 	if event == "GLOBAL_MOUSE_UP" then
+		self:SetButtonState("NORMAL")
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
-	elseif GetCVarBool('lockActionBars') then
-		local clickDown = self.config.clickOnDown or self.pressReleaseAction
-		if not clickDown then return end -- not key downing
-
-		if event == 'MODIFIER_STATE_CHANGED' then
-			if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-				UpdateReleaseCasting(self, down == 1)
-			end
-		elseif event == 'OnEnter' then
-			local action = GetModifiedClick('PICKUPACTION')
-			local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-			UpdateReleaseCasting(self, dragDown)
-		elseif event == 'OnLeave' then
-			UpdateReleaseCasting(self, not clickDown)
-		end
 	end
 end
 
@@ -1056,9 +1053,6 @@ function Generic:OnEnter()
 		ClearNewActionHighlight(self._state_action, false, false)
 		UpdateNewAction(self)
 	end
-
-	Generic.OnButtonEvent(self, 'OnEnter')
-	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 function Generic:OnLeave()
@@ -1067,9 +1061,6 @@ function Generic:OnLeave()
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
 	end
-
-	Generic.OnButtonEvent(self, 'OnLeave')
-	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -1749,7 +1740,6 @@ function Update(self, fromUpdateConfig)
 
 	local notInCombat = not InCombatLockdown()
 	local isTypeAction = self._state_type == 'action'
-	local updatePressRelease = IsPressHoldReleaseSpell and notInCombat
 	if isTypeAction then
 		local actionType, actionID = GetActionInfo(self._state_action)
 		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
@@ -1757,11 +1747,8 @@ function Update(self, fromUpdateConfig)
 		local spellID = (actionSpell and actionID) or macroSpell
 		local spellName = spellID and GetSpellInfo(spellID) or nil
 
-		if updatePressRelease then
-			local pressRelease = IsPressHoldReleaseSpell(spellID)
-			self.pressReleaseAction = pressRelease
-			self:SetAttribute('pressAndHoldAction', pressRelease)
-			self:SetAttribute('typerelease', 'actionrelease')
+		if notInCombat then
+			self:SetAttribute('macroSpellID', macroSpell)
 		end
 
 		self.isFlyoutButton = actionFlyout
@@ -1776,13 +1763,12 @@ function Update(self, fromUpdateConfig)
 			tinsert(AuraButtons.auras[spellName], self)
 		end
 	else
+		if notInCombat then
+			self:SetAttribute('macroSpellID', nil)
+		end
+
 		self.isFlyoutButton = nil
 		self.abilityName = nil
-
-		if updatePressRelease then
-			self.pressReleaseAction = nil
-			self:SetAttribute('typerelease', nil)
-		end
 	end
 
 	-- Update icon and hotkey
@@ -1857,14 +1843,12 @@ function Update(self, fromUpdateConfig)
 
 	UpdateSpellHighlight(self)
 
-	UpdateReleaseCasting(self)
-
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
 	end
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
-	if notInCombat and isTypeAction then
+	if isTypeAction and notInCombat then
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
