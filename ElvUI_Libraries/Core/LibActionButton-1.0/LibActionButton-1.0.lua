@@ -961,9 +961,6 @@ if UseCustomFlyout then
 
 				button.isFlyout = true
 
-				-- wrap the onclick to hide the flyout after casting the spell
-				lib.flyoutHandler:WrapScript(button, "OnClick", [[ return nil, true ]], [[ if not down then owner:Hide() end ]])
-
 				-- disable drag and drop
 				button:SetAttribute("LABdisableDragNDrop", true)
 
