@@ -528,7 +528,7 @@ function Generic:OnButtonEvent(event, key, down)
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
-	elseif GetCVarBool('lockActionBars') then
+	elseif LOCK_ACTIONBAR then
 		local clickDown = self.config.clickOnDown or self:GetAttribute('typerelease')
 		if not clickDown then return end -- not key downing
 
