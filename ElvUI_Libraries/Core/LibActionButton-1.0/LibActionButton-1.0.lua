@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 37 -- the real minor version is 102
+local MINOR_VERSION = 38 -- the real minor version is 105
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -326,6 +326,16 @@ function SetupSecureSnippets(button)
 			self:SetAttribute("action_field", action_field)
 		end
 
+		if IsPressHoldReleaseSpell then
+			local actionType, spellID = GetActionInfo(action)
+			if actionType == 'spell' and IsPressHoldReleaseSpell(spellID) then
+				self:SetAttribute('pressAndHoldAction', true)
+				self:SetAttribute('typerelease', 'actionrelease')
+			elseif self:GetAttribute('typerelease') then
+				self:SetAttribute('typerelease', nil)
+			end
+		end
+
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self:Run(onStateChanged, state, type, action)
@@ -471,7 +481,19 @@ function WrapOnClick(button)
 				return false
 			end
 
+			-- hide the flyout
+			local flyoutHandler = owner:GetFrameRef("flyoutHandler")
+			if flyoutHandler then
+				flyoutHandler:Hide()
+			end
+
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
+		end
+
+		-- hide the flyout, the extra down/ownership check is needed to not hide the button we're currently pressing too early
+		local flyoutHandler = owner:GetFrameRef("flyoutHandler")
+		if flyoutHandler and (not down or self:GetParent() ~= flyoutHandler) then
+			flyoutHandler:Hide()
 		end
 
 		if button == "Keybind" then
@@ -489,10 +511,9 @@ end
 local function UpdateReleaseCasting(self, down)
 	if self.isFlyout then -- the flyout spell
 		self:RegisterForClicks('AnyDown', 'AnyUp')
-	elseif self.isFlyoutButton -- the bar button
-	or down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
+	elseif self.isFlyoutButton or down then -- the bar button /or/ being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
 		self:RegisterForClicks('AnyUp')
-	elseif not self.pressReleaseAction then
+	elseif not self:GetAttribute('typerelease') then
 		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
 	elseif GetCVar('empowerTapControls') == '0' then
 		self:RegisterForClicks('AnyDown', 'AnyUp')
@@ -508,7 +529,7 @@ function Generic:OnButtonEvent(event, key, down)
 
 		UpdateFlyout(self)
 	elseif GetCVarBool('lockActionBars') then
-		local clickDown = self.config.clickOnDown or self.pressReleaseAction
+		local clickDown = self.config.clickOnDown or self:GetAttribute('typerelease')
 		if not clickDown then return end -- not key downing
 
 		if event == 'MODIFIER_STATE_CHANGED' then
@@ -950,7 +971,7 @@ if UseCustomFlyout then
 				lib.flyoutHandler:SetFrameRef("flyoutButton" .. i, button)
 				table.insert(lib.FlyoutButtons, button)
 
-				lib.callbacks:Fire("OnFlyoutCreated", button)
+				lib.callbacks:Fire("OnFlyoutButtonCreated", button)
 			end
 
 			lib.flyoutHandler:SetAttribute("numFlyoutButtons", #lib.FlyoutButtons)
@@ -1125,7 +1146,7 @@ function Generic:PostClick(button, down)
 		ClearNewActionHighlight(self._state_action, false, false)
 	end
 
-	if down and button ~= "Keybind" then
+	if down and IsMouseButtonDown() then
 		self:RegisterEvent("GLOBAL_MOUSE_UP")
 	end
 end
@@ -1747,22 +1768,13 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
-	local notInCombat = not InCombatLockdown()
 	local isTypeAction = self._state_type == 'action'
-	local updatePressRelease = IsPressHoldReleaseSpell and notInCombat
 	if isTypeAction then
 		local actionType, actionID = GetActionInfo(self._state_action)
 		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
 		local macroSpell = actionMacro and GetMacroSpell(actionID) or nil
 		local spellID = (actionSpell and actionID) or macroSpell
 		local spellName = spellID and GetSpellInfo(spellID) or nil
-
-		if updatePressRelease then
-			local pressRelease = IsPressHoldReleaseSpell(spellID)
-			self.pressReleaseAction = pressRelease
-			self:SetAttribute('pressAndHoldAction', pressRelease)
-			self:SetAttribute('typerelease', 'actionrelease')
-		end
 
 		self.isFlyoutButton = actionFlyout
 		self.abilityName = spellName
@@ -1778,11 +1790,6 @@ function Update(self, fromUpdateConfig)
 	else
 		self.isFlyoutButton = nil
 		self.abilityName = nil
-
-		if updatePressRelease then
-			self.pressReleaseAction = nil
-			self:SetAttribute('typerelease', nil)
-		end
 	end
 
 	-- Update icon and hotkey
@@ -1864,7 +1871,7 @@ function Update(self, fromUpdateConfig)
 	end
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
-	if notInCombat and isTypeAction then
+	if isTypeAction and not InCombatLockdown() then
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
