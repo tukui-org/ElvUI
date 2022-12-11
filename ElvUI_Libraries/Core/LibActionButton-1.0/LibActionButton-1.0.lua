@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 37 -- the real minor version is 102
+local MINOR_VERSION = 38 -- the real minor version is 105
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -479,6 +479,12 @@ function WrapOnClick(button)
 				return false
 			end
 
+			-- hide the flyout
+			local flyoutHandler = owner:GetFrameRef("flyoutHandler")
+			if flyoutHandler then
+				flyoutHandler:Hide()
+			end
+
 			if down and button ~= 'Keybind' and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
 				self:SetAttribute('faked_action', self:GetAttribute('action'))
 				self:SetAttribute('action_field', 'faked_action')
@@ -493,6 +499,12 @@ function WrapOnClick(button)
 			end
 
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
+		end
+
+		-- hide the flyout, the extra down/ownership check is needed to not hide the button we're currently pressing too early
+		local flyoutHandler = owner:GetFrameRef("flyoutHandler")
+		if flyoutHandler and (not down or self:GetParent() ~= flyoutHandler) then
+			flyoutHandler:Hide()
 		end
 
 		if button == "Keybind" then
@@ -930,9 +942,6 @@ if UseCustomFlyout then
 
 				button.isFlyout = true
 
-				-- wrap the onclick to hide the flyout after casting the spell
-				lib.flyoutHandler:WrapScript(button, "OnClick", [[ return nil, true ]], [[ if not down then owner:Hide() end ]])
-
 				-- disable drag and drop
 				button:SetAttribute("LABdisableDragNDrop", true)
 
@@ -940,7 +949,7 @@ if UseCustomFlyout then
 				lib.flyoutHandler:SetFrameRef("flyoutButton" .. i, button)
 				table.insert(lib.FlyoutButtons, button)
 
-				lib.callbacks:Fire("OnFlyoutCreated", button)
+				lib.callbacks:Fire("OnFlyoutButtonCreated", button)
 			end
 
 			lib.flyoutHandler:SetAttribute("numFlyoutButtons", #lib.FlyoutButtons)
@@ -1109,7 +1118,7 @@ function Generic:PostClick(button, down)
 		ClearNewActionHighlight(self._state_action, false, false)
 	end
 
-	if down and button ~= "Keybind" then
+	if down and IsMouseButtonDown() then
 		self:RegisterEvent("GLOBAL_MOUSE_UP")
 	end
 end
