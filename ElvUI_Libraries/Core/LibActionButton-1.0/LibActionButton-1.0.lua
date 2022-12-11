@@ -485,6 +485,7 @@ function WrapOnClick(button)
 				flyoutHandler:Hide()
 			end
 
+			-- weird stuff to prevent casting on down without using CVar ~Simpy:  yes ik this is whack
 			if down and button ~= 'Keybind' and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
 				self:SetAttribute('faked_action', self:GetAttribute('action'))
 				self:SetAttribute('action_field', 'faked_action')
