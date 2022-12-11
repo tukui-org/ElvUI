@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 37 -- the real minor version is 102
+local MINOR_VERSION = 38 -- the real minor version is 105
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -326,6 +326,16 @@ function SetupSecureSnippets(button)
 			self:SetAttribute("action_field", action_field)
 		end
 
+		if IsPressHoldReleaseSpell then
+			local actionType, spellID = GetActionInfo(action)
+			if actionType == 'spell' and IsPressHoldReleaseSpell(spellID) then
+				self:SetAttribute('pressAndHoldAction', true)
+				self:SetAttribute('typerelease', 'actionrelease')
+			elseif self:GetAttribute('typerelease') then
+				self:SetAttribute('typerelease', nil)
+			end
+		end
+
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self:Run(onStateChanged, state, type, action)
@@ -458,70 +468,77 @@ function WrapOnClick(button)
 	-- Wrap OnClick, to catch changes to actions that are applied with a click on the button.
 	button.header:WrapScript(button, "OnClick", [[
 		if self:GetAttribute("type") == "action" then
-			local type, action = GetActionInfo(self:GetAttribute("action"))
+			local action = self:GetAttribute("action")
+			local type, actionID = GetActionInfo(action)
 
 			if type == "flyout" and self:GetAttribute("LABUseCustomFlyout") then
 				local flyoutHandler = owner:GetFrameRef("flyoutHandler")
 				if not down and flyoutHandler then
 					flyoutHandler:SetAttribute("flyoutParentHandle", self)
-					flyoutHandler:RunAttribute("HandleFlyout", action)
+					flyoutHandler:RunAttribute("HandleFlyout", actionID)
 				end
 
 				self:CallMethod("UpdateFlyout")
 				return false
 			end
 
-			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
+			-- hide the flyout
+			local flyoutHandler = owner:GetFrameRef("flyoutHandler")
+			if flyoutHandler then
+				flyoutHandler:Hide()
+			end
+
+			if WoWRetail then -- weird stuff to prevent casting on down without using CVar  ~Simpy: yes ik this is whack
+				if down and (button ~= 'Keybind') and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
+					self:SetAttribute('faked_action', action)
+					self:SetAttribute('action_field', 'faked_action')
+					self:SetAttribute('action', 0)
+				elseif not down then
+					local resetID = self:GetAttribute('faked_action')
+					if resetID then
+						self:SetAttribute('action', resetID)
+						self:SetAttribute('action_field', 'action')
+						self:SetAttribute('faked_action', nil)
+					end
+				end
+			end
+
+			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(actionID))
+		end
+
+		-- hide the flyout, the extra down/ownership check is needed to not hide the button we're currently pressing too early
+		local flyoutHandler = owner:GetFrameRef("flyoutHandler")
+		if flyoutHandler and (not down or self:GetParent() ~= flyoutHandler) then
+			flyoutHandler:Hide()
 		end
 
 		if button == "Keybind" then
 			return "LeftButton"
 		end
 	]], [[
-		local type, action = GetActionInfo(self:GetAttribute("action"))
-		if message ~= format("%s|%s", tostring(type), tostring(action)) then
+		local type, actionID = GetActionInfo(self:GetAttribute("action"))
+		if message ~= format("%s|%s", tostring(type), tostring(actionID)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
 		end
 	]])
 end
 
--- Dynamically handle release casting ~Simpy
-local function UpdateReleaseCasting(self, down)
-	if self.isFlyout then -- the flyout spell
-		self:RegisterForClicks('AnyDown', 'AnyUp')
-	elseif self.isFlyoutButton -- the bar button
-	or down then -- being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
-		self:RegisterForClicks('AnyUp')
-	elseif not self.pressReleaseAction then
-		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
-	elseif GetCVar('empowerTapControls') == '0' then
-		self:RegisterForClicks('AnyDown', 'AnyUp')
-	else
-		self:RegisterForClicks('AnyDown')
-	end
-end
-
--- prevent pickup calling spells ~Simpy
 function Generic:OnButtonEvent(event, key, down)
 	if event == "GLOBAL_MOUSE_UP" then
+		self:SetButtonState("NORMAL")
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
-	elseif GetCVarBool('lockActionBars') then
-		local clickDown = self.config.clickOnDown or self.pressReleaseAction
-		if not clickDown then return end -- not key downing
-
-		if event == 'MODIFIER_STATE_CHANGED' then
-			if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-				UpdateReleaseCasting(self, down == 1)
-			end
-		elseif event == 'OnEnter' then
-			local action = GetModifiedClick('PICKUPACTION')
-			local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-			UpdateReleaseCasting(self, dragDown)
-		elseif event == 'OnLeave' then
-			UpdateReleaseCasting(self, not clickDown)
-		end
+	elseif WoWRetail or not self.config.clickOnDown or not LOCK_ACTIONBAR then
+		return -- we dont need to mess with the click state when these are not met
+	elseif event == 'OnLeave' then
+		self:RegisterForClicks('AnyDown')
+	elseif event == 'OnEnter' then
+		local action = GetModifiedClick('PICKUPACTION')
+		local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+		self:RegisterForClicks(dragDown and 'AnyUp' or 'AnyDown')
+	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
 	end
 end
 
@@ -940,9 +957,6 @@ if UseCustomFlyout then
 
 				button.isFlyout = true
 
-				-- wrap the onclick to hide the flyout after casting the spell
-				lib.flyoutHandler:WrapScript(button, "OnClick", [[ return nil, true ]], [[ if not down then owner:Hide() end ]])
-
 				-- disable drag and drop
 				button:SetAttribute("LABdisableDragNDrop", true)
 
@@ -950,7 +964,7 @@ if UseCustomFlyout then
 				lib.flyoutHandler:SetFrameRef("flyoutButton" .. i, button)
 				table.insert(lib.FlyoutButtons, button)
 
-				lib.callbacks:Fire("OnFlyoutCreated", button)
+				lib.callbacks:Fire("OnFlyoutButtonCreated", button)
 			end
 
 			lib.flyoutHandler:SetAttribute("numFlyoutButtons", #lib.FlyoutButtons)
@@ -1057,8 +1071,10 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	Generic.OnButtonEvent(self, 'OnEnter')
-	self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	if not WoWRetail then
+		Generic.OnButtonEvent(self, 'OnEnter')
+		self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	end
 end
 
 function Generic:OnLeave()
@@ -1068,8 +1084,10 @@ function Generic:OnLeave()
 		GameTooltip:Hide()
 	end
 
-	Generic.OnButtonEvent(self, 'OnLeave')
-	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	if not WoWRetail then
+		Generic.OnButtonEvent(self, 'OnLeave')
+		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	end
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -1125,7 +1143,7 @@ function Generic:PostClick(button, down)
 		ClearNewActionHighlight(self._state_action, false, false)
 	end
 
-	if down and button ~= "Keybind" then
+	if down and IsMouseButtonDown() then
 		self:RegisterEvent("GLOBAL_MOUSE_UP")
 	end
 end
@@ -1206,6 +1224,10 @@ function Generic:UpdateConfig(config)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
 	Update(self, true)
+
+	if not WoWRetail then
+		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
+	end
 end
 
 -----------------------------------------------------------
@@ -1747,22 +1769,13 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
-	local notInCombat = not InCombatLockdown()
 	local isTypeAction = self._state_type == 'action'
-	local updatePressRelease = IsPressHoldReleaseSpell and notInCombat
 	if isTypeAction then
 		local actionType, actionID = GetActionInfo(self._state_action)
 		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
 		local macroSpell = actionMacro and GetMacroSpell(actionID) or nil
 		local spellID = (actionSpell and actionID) or macroSpell
 		local spellName = spellID and GetSpellInfo(spellID) or nil
-
-		if updatePressRelease then
-			local pressRelease = IsPressHoldReleaseSpell(spellID)
-			self.pressReleaseAction = pressRelease
-			self:SetAttribute('pressAndHoldAction', pressRelease)
-			self:SetAttribute('typerelease', 'actionrelease')
-		end
 
 		self.isFlyoutButton = actionFlyout
 		self.abilityName = spellName
@@ -1778,11 +1791,6 @@ function Update(self, fromUpdateConfig)
 	else
 		self.isFlyoutButton = nil
 		self.abilityName = nil
-
-		if updatePressRelease then
-			self.pressReleaseAction = nil
-			self:SetAttribute('typerelease', nil)
-		end
 	end
 
 	-- Update icon and hotkey
@@ -1857,14 +1865,12 @@ function Update(self, fromUpdateConfig)
 
 	UpdateSpellHighlight(self)
 
-	UpdateReleaseCasting(self)
-
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
 	end
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
-	if notInCombat and isTypeAction then
+	if isTypeAction and not InCombatLockdown() then
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
