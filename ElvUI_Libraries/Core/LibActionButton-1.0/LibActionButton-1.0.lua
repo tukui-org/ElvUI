@@ -327,8 +327,17 @@ function SetupSecureSnippets(button)
 		end
 
 		if IsPressHoldReleaseSpell then
-			local actionType, spellID = GetActionInfo(action)
-			if actionType == 'spell' and IsPressHoldReleaseSpell(spellID) then
+			local spellID
+			if type == 'action' then
+				local actionType, id = GetActionInfo(action)
+				if actionType == 'spell' then
+					spellID = id
+				end
+			elseif type == 'spell' then
+				spellID = action
+			end
+
+			if spellID and IsPressHoldReleaseSpell(spellID) then
 				self:SetAttribute('pressAndHoldAction', true)
 				self:SetAttribute('typerelease', 'actionrelease')
 			elseif self:GetAttribute('typerelease') then
