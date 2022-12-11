@@ -468,13 +468,14 @@ function WrapOnClick(button)
 	-- Wrap OnClick, to catch changes to actions that are applied with a click on the button.
 	button.header:WrapScript(button, "OnClick", [[
 		if self:GetAttribute("type") == "action" then
-			local type, action = GetActionInfo(self:GetAttribute("action"))
+			local action = self:GetAttribute("action")
+			local type, actionID = GetActionInfo(action)
 
 			if type == "flyout" and self:GetAttribute("LABUseCustomFlyout") then
 				local flyoutHandler = owner:GetFrameRef("flyoutHandler")
 				if not down and flyoutHandler then
 					flyoutHandler:SetAttribute("flyoutParentHandle", self)
-					flyoutHandler:RunAttribute("HandleFlyout", action)
+					flyoutHandler:RunAttribute("HandleFlyout", actionID)
 				end
 
 				self:CallMethod("UpdateFlyout")
@@ -489,19 +490,19 @@ function WrapOnClick(button)
 
 			-- weird stuff to prevent casting on down without using CVar  ~Simpy: yes ik this is whack
 			if down and (button ~= 'Keybind') and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
-				self:SetAttribute('faked_action', self:GetAttribute('action'))
+				self:SetAttribute('faked_action', action)
 				self:SetAttribute('action_field', 'faked_action')
 				self:SetAttribute('action', 0)
 			elseif not down then
-				local id = self:GetAttribute('faked_action')
-				if id then
-					self:SetAttribute('action', id)
+				local resetID = self:GetAttribute('faked_action')
+				if resetID then
+					self:SetAttribute('action', resetID)
 					self:SetAttribute('action_field', 'action')
 					self:SetAttribute('faked_action', nil)
 				end
 			end
 
-			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
+			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(actionID))
 		end
 
 		-- hide the flyout, the extra down/ownership check is needed to not hide the button we're currently pressing too early
@@ -514,8 +515,8 @@ function WrapOnClick(button)
 			return "LeftButton"
 		end
 	]], [[
-		local type, action = GetActionInfo(self:GetAttribute("action"))
-		if message ~= format("%s|%s", tostring(type), tostring(action)) then
+		local type, actionID = GetActionInfo(self:GetAttribute("action"))
+		if message ~= format("%s|%s", tostring(type), tostring(actionID)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
 		end
 	]])
