@@ -489,7 +489,7 @@ function WrapOnClick(button)
 			if down and (button ~= 'Keybind') and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
 				self:SetAttribute('faked_action', self:GetAttribute('action'))
 				self:SetAttribute('action_field', 'faked_action')
-				self:SetAttribute('action', -1)
+				self:SetAttribute('action', 0)
 			elseif not down then
 				local id = self:GetAttribute('faked_action')
 				if id then
