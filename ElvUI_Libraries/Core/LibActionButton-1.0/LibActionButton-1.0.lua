@@ -319,15 +319,8 @@ function SetupSecureSnippets(button)
 		self:SetAttribute("state", state)
 		local type, action = (self:GetAttribute(format("labtype-%s", state)) or "empty"), self:GetAttribute(format("labaction-%s", state))
 
-		local spellID = self:GetAttribute('macroSpellID')
-		if not spellID then
-			local actionType, id = GetActionInfo(action)
-			if actionType == 'spell' then
-				spellID = id
-			end
-		end
-
-		if IsPressHoldReleaseSpell(spellID) then
+		local actionType, spellID = GetActionInfo(action)
+		if actionType == 'spell' and IsPressHoldReleaseSpell(spellID) then
 			self:SetAttribute('pressAndHoldAction', true)
 			self:SetAttribute('typerelease', 'actionrelease')
 		elseif self:GetAttribute('typerelease') then
@@ -1738,7 +1731,6 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
-	local notInCombat = not InCombatLockdown()
 	local isTypeAction = self._state_type == 'action'
 	if isTypeAction then
 		local actionType, actionID = GetActionInfo(self._state_action)
@@ -1746,10 +1738,6 @@ function Update(self, fromUpdateConfig)
 		local macroSpell = actionMacro and GetMacroSpell(actionID) or nil
 		local spellID = (actionSpell and actionID) or macroSpell
 		local spellName = spellID and GetSpellInfo(spellID) or nil
-
-		if notInCombat then
-			self:SetAttribute('macroSpellID', macroSpell)
-		end
 
 		self.isFlyoutButton = actionFlyout
 		self.abilityName = spellName
@@ -1763,10 +1751,6 @@ function Update(self, fromUpdateConfig)
 			tinsert(AuraButtons.auras[spellName], self)
 		end
 	else
-		if notInCombat then
-			self:SetAttribute('macroSpellID', nil)
-		end
-
 		self.isFlyoutButton = nil
 		self.abilityName = nil
 	end
@@ -1848,7 +1832,7 @@ function Update(self, fromUpdateConfig)
 	end
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
-	if isTypeAction and notInCombat then
+	if isTypeAction and not InCombatLockdown() then
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
