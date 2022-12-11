@@ -468,14 +468,13 @@ function WrapOnClick(button)
 	-- Wrap OnClick, to catch changes to actions that are applied with a click on the button.
 	button.header:WrapScript(button, "OnClick", [[
 		if self:GetAttribute("type") == "action" then
-			local action = self:GetAttribute("action")
-			local type, actionID = GetActionInfo(action)
+			local type, action = GetActionInfo(self:GetAttribute("action"))
 
 			if type == "flyout" and self:GetAttribute("LABUseCustomFlyout") then
 				local flyoutHandler = owner:GetFrameRef("flyoutHandler")
 				if not down and flyoutHandler then
 					flyoutHandler:SetAttribute("flyoutParentHandle", self)
-					flyoutHandler:RunAttribute("HandleFlyout", actionID)
+					flyoutHandler:RunAttribute("HandleFlyout", action)
 				end
 
 				self:CallMethod("UpdateFlyout")
@@ -488,22 +487,7 @@ function WrapOnClick(button)
 				flyoutHandler:Hide()
 			end
 
-			if WoWRetail then -- weird stuff to prevent casting on down without using CVar  ~Simpy: yes ik this is whack
-				if down and (button ~= 'Keybind') and self:GetAttribute('buttonlock') and IsModifiedClick('PICKUPACTION') then
-					self:SetAttribute('faked_action', action)
-					self:SetAttribute('action_field', 'faked_action')
-					self:SetAttribute('action', 0)
-				elseif not down then
-					local resetID = self:GetAttribute('faked_action')
-					if resetID then
-						self:SetAttribute('action', resetID)
-						self:SetAttribute('action_field', 'action')
-						self:SetAttribute('faked_action', nil)
-					end
-				end
-			end
-
-			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(actionID))
+			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
 		end
 
 		-- hide the flyout, the extra down/ownership check is needed to not hide the button we're currently pressing too early
@@ -516,29 +500,49 @@ function WrapOnClick(button)
 			return "LeftButton"
 		end
 	]], [[
-		local type, actionID = GetActionInfo(self:GetAttribute("action"))
-		if message ~= format("%s|%s", tostring(type), tostring(actionID)) then
+		local type, action = GetActionInfo(self:GetAttribute("action"))
+		if message ~= format("%s|%s", tostring(type), tostring(action)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
 		end
 	]])
 end
 
+-- Dynamically handle release casting ~Simpy
+local function UpdateReleaseCasting(self, down)
+	if self.isFlyout then -- the flyout spell
+		self:RegisterForClicks('AnyDown', 'AnyUp')
+	elseif self.isFlyoutButton or down then -- the bar button /or/ being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
+		self:RegisterForClicks('AnyUp')
+	elseif not self:GetAttribute('typerelease') then
+		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
+	elseif GetCVar('empowerTapControls') == '0' then
+		self:RegisterForClicks('AnyDown', 'AnyUp')
+	else
+		self:RegisterForClicks('AnyDown')
+	end
+end
+
+-- prevent pickup calling spells ~Simpy
 function Generic:OnButtonEvent(event, key, down)
 	if event == "GLOBAL_MOUSE_UP" then
-		self:SetButtonState("NORMAL")
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
-	elseif WoWRetail or not self.config.clickOnDown or not LOCK_ACTIONBAR then
-		return -- we dont need to mess with the click state when these are not met
-	elseif event == 'OnLeave' then
-		self:RegisterForClicks('AnyDown')
-	elseif event == 'OnEnter' then
-		local action = GetModifiedClick('PICKUPACTION')
-		local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-		self:RegisterForClicks(dragDown and 'AnyUp' or 'AnyDown')
-	elseif event == 'MODIFIER_STATE_CHANGED' and GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-		self:RegisterForClicks(down == 1 and 'AnyUp' or 'AnyDown')
+	elseif GetCVarBool('lockActionBars') then
+		local clickDown = self.config.clickOnDown or self:GetAttribute('typerelease')
+		if not clickDown then return end -- not key downing
+
+		if event == 'MODIFIER_STATE_CHANGED' then
+			if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
+				UpdateReleaseCasting(self, down == 1)
+			end
+		elseif event == 'OnEnter' then
+			local action = GetModifiedClick('PICKUPACTION')
+			local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
+			UpdateReleaseCasting(self, dragDown)
+		elseif event == 'OnLeave' then
+			UpdateReleaseCasting(self, not clickDown)
+		end
 	end
 end
 
@@ -1071,10 +1075,8 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnEnter')
-		self:RegisterEvent('MODIFIER_STATE_CHANGED')
-	end
+	Generic.OnButtonEvent(self, 'OnEnter')
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 function Generic:OnLeave()
@@ -1084,10 +1086,8 @@ function Generic:OnLeave()
 		GameTooltip:Hide()
 	end
 
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnLeave')
-		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
-	end
+	Generic.OnButtonEvent(self, 'OnLeave')
+	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -1224,10 +1224,6 @@ function Generic:UpdateConfig(config)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
 	Update(self, true)
-
-	if not WoWRetail then
-		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
-	end
 end
 
 -----------------------------------------------------------
@@ -1864,6 +1860,8 @@ function Update(self, fromUpdateConfig)
 	UpdateNewAction(self)
 
 	UpdateSpellHighlight(self)
+
+	UpdateReleaseCasting(self)
 
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)
