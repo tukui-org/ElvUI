@@ -319,19 +319,21 @@ function SetupSecureSnippets(button)
 		self:SetAttribute("state", state)
 		local type, action = (self:GetAttribute(format("labtype-%s", state)) or "empty"), self:GetAttribute(format("labaction-%s", state))
 
-		local actionType, spellID = GetActionInfo(action)
-		if actionType == 'spell' and IsPressHoldReleaseSpell(spellID) then
-			self:SetAttribute('pressAndHoldAction', true)
-			self:SetAttribute('typerelease', 'actionrelease')
-		elseif self:GetAttribute('typerelease') then
-			self:SetAttribute('typerelease', nil)
-		end
-
 		self:SetAttribute("type", type)
 		if type ~= "empty" and type ~= "custom" then
 			local action_field = (type == "pet") and "action" or type
 			self:SetAttribute(action_field, action)
 			self:SetAttribute("action_field", action_field)
+		end
+
+		if IsPressHoldReleaseSpell then
+			local actionType, spellID = GetActionInfo(action)
+			if actionType == 'spell' and IsPressHoldReleaseSpell(spellID) then
+				self:SetAttribute('pressAndHoldAction', true)
+				self:SetAttribute('typerelease', 'actionrelease')
+			elseif self:GetAttribute('typerelease') then
+				self:SetAttribute('typerelease', nil)
+			end
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
