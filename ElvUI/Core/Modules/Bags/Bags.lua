@@ -261,12 +261,9 @@ for bankID = bankOffset + 1, maxBankSlots do
 	end
 end
 
-if not E.Classic then
+if E.Retail then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
-end
-
-if E.Retail then
 	tinsert(bankEvents, 'PLAYERREAGENTBANKSLOTS_CHANGED')
 	tinsert(bagIDs, REAGENT_CONTAINER)
 else
