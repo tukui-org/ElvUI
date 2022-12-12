@@ -186,7 +186,7 @@ if E.Retail then
 	B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 'bags-icon-consumables'
 	B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 'bags-icon-tradegoods'
 	B.BAG_FILTER_ICONS[FILTER_FLAG_JUNK] = 'bags-icon-junk'
-	B.BAG_FILTER_ICONS[BagSlotFlags.PriorityQuestItems] = 'bags-icon-questitem'
+	B.BAG_FILTER_ICONS[FILTER_FLAG_QUEST] = 'bags-icon-questitem'
 else
 	B.BAG_FILTER_ICONS[FILTER_FLAG_EQUIPMENT] = 132745		-- Interface/ICONS/INV_Chest_Plate10
 	B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 134873	-- Interface/ICONS/INV_Potion_93
