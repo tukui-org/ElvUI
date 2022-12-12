@@ -176,22 +176,16 @@ local VISIBLE_CONTAINER_SPACING = 3
 local CONTAINER_SCALE = 0.75
 local BIND_START, BIND_END
 
+B.numTrackedTokens = 0
 B.QuestSlots = {}
 B.ItemLevelSlots = {}
-B.BAG_FILTER_ICONS = {}
-B.numTrackedTokens = 0
-
-if E.Retail then
-	B.BAG_FILTER_ICONS[FILTER_FLAG_EQUIPMENT] = 'bags-icon-equipment'
-	B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 'bags-icon-consumables'
-	B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 'bags-icon-tradegoods'
-	B.BAG_FILTER_ICONS[FILTER_FLAG_JUNK] = 'bags-icon-junk'
-	B.BAG_FILTER_ICONS[FILTER_FLAG_QUEST] = 'bags-icon-questitem'
-else
-	B.BAG_FILTER_ICONS[FILTER_FLAG_EQUIPMENT] = 132745		-- Interface/ICONS/INV_Chest_Plate10
-	B.BAG_FILTER_ICONS[FILTER_FLAG_CONSUMABLES] = 134873	-- Interface/ICONS/INV_Potion_93
-	B.BAG_FILTER_ICONS[FILTER_FLAG_TRADE_GOODS] = 132906	-- Interface/ICONS/INV_Fabric_Silk_02
-end
+B.BAG_FILTER_ICONS = {
+	[FILTER_FLAG_EQUIPMENT] = E.Media.Textures.ChestPlate,
+	[FILTER_FLAG_CONSUMABLES] = E.Media.Textures.GreenPotion,
+	[FILTER_FLAG_TRADE_GOODS] = E.Media.Textures.FabricSilk,
+	[FILTER_FLAG_JUNK] = E.Media.Textures.GoldCoins,
+	[FILTER_FLAG_QUEST] = E.Media.Textures.Scroll
+}
 
 local itemSpellID = {
 	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
@@ -879,12 +873,7 @@ function B:GetBagAssignedInfo(holder, isBank)
 	local active, icon, color = B:GetFilterFlagInfo(holder.BagID, isBank)
 
 	if holder.filterIcon then
-		if E.Retail then
-			holder.filterIcon:SetAtlas(icon)
-		else
-			holder.filterIcon:SetTexture(icon)
-		end
-
+		holder.filterIcon:SetTexture(icon)
 		holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 	end
 
@@ -917,7 +906,7 @@ function B:CreateFilterIcon(parent)
 	FilterBackdrop:Size(20, 20)
 
 	parent.filterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
-	parent.filterIcon:SetTexture(134873) -- Interface\ICONS\INV_Potion_93
+	parent.filterIcon:SetTexture(E.Media.Textures.GreenPotion)
 	parent.filterIcon:SetTexCoord(unpack(E.TexCoords))
 	parent.filterIcon:SetInside()
 	parent.filterIcon.FilterBackdrop = FilterBackdrop
