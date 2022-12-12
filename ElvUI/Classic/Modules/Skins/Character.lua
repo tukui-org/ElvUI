@@ -71,12 +71,15 @@ function S:CharacterFrame()
 
 	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
 		if slot:IsObjectType('Button') then
-			local icon = _G[slot:GetName()..'IconTexture']
-			local cooldown = _G[slot:GetName()..'Cooldown']
+			local name = slot:GetName()
+			local icon = _G[name..'IconTexture']
+			local cooldown = _G[name..'Cooldown']
 
 			slot:StripTextures()
 			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
+
+			slot.characterSlot = true -- for color function
 
 			S:HandleIcon(icon)
 			icon:SetInside()
@@ -88,7 +91,7 @@ function S:CharacterFrame()
 	end
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
-		if frame.SetBackdropBorderColor then
+		if frame.characterSlot then
 			local rarity = GetInventoryItemQuality('player', frame:GetID())
 			if rarity and rarity > 1 then
 				local r, g, b = GetItemQualityColor(rarity)
