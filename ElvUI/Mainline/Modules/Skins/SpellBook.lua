@@ -231,7 +231,10 @@ function S:SpellBookFrame()
 	end)
 
 	hooksecurefunc('UpdateProfessionButton', function(button)
-		local spellIndex = button:GetID() + button:GetParent().spellOffset
+		local parent = button:GetParent()
+		if not parent or not parent.spellOffset then return end
+
+		local spellIndex = button:GetID() + parent.spellOffset
 		local isPassive = IsPassiveSpell(spellIndex, SpellBookFrame.bookType)
 		if isPassive then
 			button.highlightTexture:SetColorTexture(1, 1, 1, 0)
