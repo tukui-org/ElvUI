@@ -1488,13 +1488,7 @@ function B:UpdateContainerIcon(holder, bagID)
 end
 
 function B:UnregisterBagEvents(bagFrame)
-	bagFrame:UnregisterAllEvents()
-
-	-- this errors out on blizzard's side
-	if E.Wrath and _G.EquipmentManager:IsEventRegistered('ITEM_UNLOCKED') then
-		_G.EquipmentManager:UnregisterEvent('ITEM_UNLOCKED')
-		B.EquipmentUpdatesBlocked = true
-	end
+	bagFrame:UnregisterAllEvents() -- Unregister to prevent unnecessary updates during sorting
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -2169,11 +2163,6 @@ end
 function B:SetListeners(frame)
 	for _, event in next, frame.events do
 		frame:RegisterEvent(event)
-	end
-
-	if B.EquipmentUpdatesBlocked then
-		_G.EquipmentManager:RegisterEvent('ITEM_UNLOCKED')
-		B.EquipmentUpdatesBlocked = nil
 	end
 end
 
