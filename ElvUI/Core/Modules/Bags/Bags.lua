@@ -180,11 +180,11 @@ B.numTrackedTokens = 0
 B.QuestSlots = {}
 B.ItemLevelSlots = {}
 B.BAG_FILTER_ICONS = {
-	[FILTER_FLAG_EQUIPMENT] = E.Media.Textures.ChestPlate,
-	[FILTER_FLAG_CONSUMABLES] = E.Media.Textures.GreenPotion,
-	[FILTER_FLAG_TRADE_GOODS] = E.Media.Textures.FabricSilk,
-	[FILTER_FLAG_JUNK] = E.Media.Textures.GoldCoins,
-	[FILTER_FLAG_QUEST] = E.Media.Textures.Scroll
+	[FILTER_FLAG_EQUIPMENT] = E.Media.Textures.ChestPlate,		-- Interface/ICONS/INV_Chest_Plate10
+	[FILTER_FLAG_CONSUMABLES] = E.Media.Textures.GreenPotion,	-- Interface/ICONS/INV_Potion_93
+	[FILTER_FLAG_TRADE_GOODS] = E.Media.Textures.FabricSilk,	-- Interface/ICONS/INV_Fabric_Silk_02
+	[FILTER_FLAG_JUNK] = E.Media.Textures.GoldCoins,			-- Interface/ICONS/INV_Misc_Coin_01
+	[FILTER_FLAG_QUEST] = E.Media.Textures.Scroll				-- Interface/ICONS/INV_Scroll_03
 }
 
 local itemSpellID = {
