@@ -48,9 +48,8 @@ local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
 local MAX_MOVE_TIME = 1.25
 
-local NUM_BANKBAGSLOTS = E.Classic and 11 or 12 -- not updated on the client yet for wrath, force it
-
-for i = NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS do
+local maxBankSlots = E.Classic and 11 or 12 -- not updated on the client yet for wrath, force it
+for i = NUM_BAG_SLOTS + 1, maxBankSlots do
 	tinsert(bankBags, i)
 end
 
