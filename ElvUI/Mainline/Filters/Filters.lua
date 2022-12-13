@@ -749,6 +749,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[106823] = List(), -- Serpent Strike
 		[396152] = List(), -- Feeling of Inferiority
 		[110125] = List(), -- Shattered Resolve
+		[397797] = List(), -- Corrupted Vortex
 	-- Ruby Life Pools
 		[392406] = List(), -- Thunderclap
 		[372820] = List(), -- Scorched Earth
