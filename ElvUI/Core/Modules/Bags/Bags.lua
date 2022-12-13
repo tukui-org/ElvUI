@@ -251,7 +251,7 @@ local presistentEvents = {
 }
 
 for bankID = bankOffset + 1, maxBankSlots do
-	if bankID ~= 11 or bankID == 11 and not E.Classic then
+	if bankID ~= 11 or not E.Classic then
 		tinsert(bankIDs, bankID)
 	end
 end
