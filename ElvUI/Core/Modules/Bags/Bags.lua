@@ -1458,7 +1458,7 @@ function B:UpdateContainerIcon(holder, bagID)
 end
 
 function B:UnregisterBagEvents(bagFrame)
-	bagFrame:UnregisterAllEvents()
+	bagFrame:UnregisterAllEvents() -- Unregister to prevent unnecessary updates during sorting
 end
 
 function B:ConstructContainerFrame(name, isBank)
