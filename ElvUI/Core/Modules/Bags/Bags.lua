@@ -1456,6 +1456,16 @@ function B:UpdateContainerIcon(holder, bagID)
 	holder.icon:SetTexture(GetInventoryItemTexture('player', holder:GetID()) or 136511)
 end
 
+function B:UnregisterBagEvents(bagFrame)
+	bagFrame:UnregisterAllEvents()
+
+	-- this errors out on blizzard's side
+	if E.Wrath and _G.EquipmentManager:IsEventRegistered('ITEM_UNLOCKED') then
+		_G.EquipmentManager:UnregisterEvent('ITEM_UNLOCKED')
+		B.EquipmentUpdatesBlocked = true
+	end
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1779,7 +1789,8 @@ function B:ConstructContainerFrame(name, isBank)
 				if E.Retail and B.db.useBlizzardCleanup then
 					SortBankBags()
 				else
-					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+					B:UnregisterBagEvents(f)
+
 					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
 				end
@@ -1828,7 +1839,8 @@ function B:ConstructContainerFrame(name, isBank)
 		f.stackButton.ttText2desc = L["Stack Items To Bank"]
 		f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 		f.stackButton:SetScript('OnClick', function()
-			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+			B:UnregisterBagEvents(f)
+
 			if not f.sortingSlots then f.sortingSlots = true end
 			if IsShiftKeyDown() then
 				B:CommandDecorator(B.Stack, 'bags bank')()
@@ -1842,7 +1854,8 @@ function B:ConstructContainerFrame(name, isBank)
 			if E.Retail and B.db.useBlizzardCleanup then
 				SortBags()
 			else
-				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+				B:UnregisterBagEvents(f)
+
 				if not f.sortingSlots then B:SortingFadeBags(f, true) end
 				B:CommandDecorator(B.SortBags, 'bags')()
 			end
@@ -2125,6 +2138,11 @@ end
 function B:SetListeners(frame)
 	for _, event in next, frame.events do
 		frame:RegisterEvent(event)
+	end
+
+	if B.EquipmentUpdatesBlocked then
+		_G.EquipmentManager:RegisterEvent('ITEM_UNLOCKED')
+		B.EquipmentUpdatesBlocked = nil
 	end
 end
 
