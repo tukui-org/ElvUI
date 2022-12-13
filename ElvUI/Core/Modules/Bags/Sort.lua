@@ -22,7 +22,6 @@ local SplitGuildBankItem = SplitGuildBankItem
 
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
-local NUM_BANKBAGSLOTS = NUM_BANKBAGSLOTS
 local BANK_CONTAINER = BANK_CONTAINER
 local REAGENT_CONTAINER = E.Retail and 5 or math.huge -- impossible id to prevent code on classic
 
@@ -49,8 +48,11 @@ local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
 local MAX_MOVE_TIME = 1.25
 
-for i = NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS do
-	tinsert(bankBags, i)
+local bankOffset, maxBankSlots = E.Retail and 5 or 4, E.Retail and 12 or 11
+for i = bankOffset + 1, maxBankSlots do
+	if i ~= 11 or not E.Classic then
+		tinsert(bankBags, i)
+	end
 end
 
 local playerBags = {}
