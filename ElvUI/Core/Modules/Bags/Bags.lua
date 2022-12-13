@@ -237,7 +237,8 @@ if E.Wrath then
 	B.IsEquipmentSlot.INVTYPE_RELIC = true
 end
 
-local bagIDs, bankIDs, bankOffset, maxBankSlots = {0, 1, 2, 3, 4}, { -1 }, E.Classic and 4 or 5, E.Classic and 11 or 12
+local bagIDs, bankIDs = {0, 1, 2, 3, 4}, { -1 }
+local bankOffset, maxBankSlots = E.Classic and 4 or 5, E.Classic and 11 or 12
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
