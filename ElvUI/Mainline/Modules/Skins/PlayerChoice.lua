@@ -34,7 +34,8 @@ end
 
 S.PlayerChoice_TextureKits = {
 	jailerstower = true,
-	cypherchoice = true
+	cypherchoice = true,
+	genericplayerchoice = true,
 }
 
 function S:PlayerChoice_SetupOptions()
@@ -108,6 +109,10 @@ function S:Blizzard_PlayerChoice()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
 
 	SetupTorghastMover()
+
+	if _G.GenericPlayerChoiceToggleButton then
+		S:HandleButton(_G.GenericPlayerChoiceToggleButton)
+	end
 
 	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', S.PlayerChoice_SetupOptions)
 end

@@ -237,7 +237,8 @@ if E.Wrath then
 	B.IsEquipmentSlot.INVTYPE_RELIC = true
 end
 
-local bagIDs, bankIDs, bankOffset, maxBankSlots = {0, 1, 2, 3, 4}, { -1 }, E.Retail and 5 or 4, E.Retail and 12 or 11
+local bagIDs, bankIDs = {0, 1, 2, 3, 4}, { -1 }
+local bankOffset, maxBankSlots = E.Retail and 5 or 4, E.Retail and 12 or 11
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -250,7 +251,7 @@ local presistentEvents = {
 }
 
 for bankID = bankOffset + 1, maxBankSlots do
-	if bankID ~= 11 or bankID == 11 and not E.Classic then
+	if bankID ~= 11 or not E.Classic then
 		tinsert(bankIDs, bankID)
 	end
 end
@@ -1456,6 +1457,10 @@ function B:UpdateContainerIcon(holder, bagID)
 	holder.icon:SetTexture(GetInventoryItemTexture('player', holder:GetID()) or 136511)
 end
 
+function B:UnregisterBagEvents(bagFrame)
+	bagFrame:UnregisterAllEvents() -- Unregister to prevent unnecessary updates during sorting
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1779,7 +1784,8 @@ function B:ConstructContainerFrame(name, isBank)
 				if E.Retail and B.db.useBlizzardCleanup then
 					SortBankBags()
 				else
-					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+					B:UnregisterBagEvents(f)
+
 					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
 				end
@@ -1828,7 +1834,8 @@ function B:ConstructContainerFrame(name, isBank)
 		f.stackButton.ttText2desc = L["Stack Items To Bank"]
 		f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 		f.stackButton:SetScript('OnClick', function()
-			f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+			B:UnregisterBagEvents(f)
+
 			if not f.sortingSlots then f.sortingSlots = true end
 			if IsShiftKeyDown() then
 				B:CommandDecorator(B.Stack, 'bags bank')()
@@ -1842,7 +1849,8 @@ function B:ConstructContainerFrame(name, isBank)
 			if E.Retail and B.db.useBlizzardCleanup then
 				SortBags()
 			else
-				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
+				B:UnregisterBagEvents(f)
+
 				if not f.sortingSlots then B:SortingFadeBags(f, true) end
 				B:CommandDecorator(B.SortBags, 'bags')()
 			end
