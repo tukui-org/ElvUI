@@ -49,10 +49,6 @@ function S:PlayerChoice_SetupOptions()
 
 		S:HandleCloseButton(self.CloseButton)
 
-		if _G.GenericPlayerChoiceToggleButton then
-			S:HandleButton(_G.GenericPlayerChoiceToggleButton)
-		end
-
 		self.IsSkinned = true
 	end
 
@@ -113,6 +109,10 @@ function S:Blizzard_PlayerChoice()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
 
 	SetupTorghastMover()
+
+	if _G.GenericPlayerChoiceToggleButton then
+		S:HandleButton(_G.GenericPlayerChoiceToggleButton)
+	end
 
 	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', S.PlayerChoice_SetupOptions)
 end
