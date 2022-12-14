@@ -160,8 +160,16 @@ function AB:HandleMicroTextures(button, name)
 	end
 
 	if button.Flash then
-		button.Flash:SetInside()
 		button.Flash:SetTexture()
+	end
+
+	if button.FlashContent then
+		button.FlashContent:SetTexture()
+	end
+
+	if button.FlashBorder then
+		button.FlashBorder:SetInside(button.backdrop)
+		button.FlashBorder:SetColorTexture(1, 1, 0.3, 0.3)
 	end
 end
 
