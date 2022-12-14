@@ -2506,6 +2506,7 @@ P.actionbar = {
 	microbar = {
 		enabled = false,
 		mouseover = false,
+		useIcons = true,
 		buttonsPerRow = 11,
 		buttonSize = 20,
 		keepSizeRatio = false,
