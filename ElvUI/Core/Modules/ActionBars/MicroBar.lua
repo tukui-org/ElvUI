@@ -98,7 +98,7 @@ function AB:HandleMicroCoords(button, name)
 	local l, r, t, b = 0.17, 0.87, 0.5, 0.908
 	local icons = AB.db.microbar.useIcons
 
-	if name == 'PVPMicroButton' then
+	if name == 'PVPMicroButton' or (not E.Retail and name == 'CharacterMicroButton') then
 		l, r, t, b = 0, 1, 0, 1
 	elseif E.Retail or icons then
 		local offset = AB.MICRO_OFFSETS[name]
@@ -118,33 +118,43 @@ function AB:HandleMicroCoords(button, name)
 end
 
 function AB:HandleMicroTextures(button, name)
-	local pushed = button:GetPushedTexture()
 	local normal = button:GetNormalTexture()
-	local highlight = button:GetHighlightTexture()
-	local disabled = button:GetDisabledTexture()
+	local pushed = button:GetPushedTexture()
 
-	local color = E.media.rgbvaluecolor
-	pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
-	highlight:SetColorTexture(1, 1, 1, 0.2)
-	pushed:SetInside(button.backdrop)
-	normal:SetInside(button.backdrop)
-
+	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.White8x8
 	local faction = name == 'PVPMicroButton' and E.Media.Textures[E.myfaction == 'Horde' and 'PVPHorde' or 'PVPAlliance']
-	local texture = faction or ((E.Retail or name ~= 'CharacterMicroButton') and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
+	local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
 	local stock = not E.Retail and not AB.db.microbar.useIcons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
 	if stock then
 		normal:SetTexture(faction or stock.normal)
-		pushed:SetTexture(faction or stock.pushed)
+		pushed:SetTexture(character or faction or stock.pushed)
 	elseif texture then
 		normal:SetTexture(texture)
-		pushed:SetTexture(texture)
-
-		if disabled then
-			disabled:SetTexture(texture)
-		end
+		pushed:SetTexture(character or texture)
+	elseif character then
+		normal:SetTexture()
+		pushed:SetTexture(character)
 	end
 
+	if character then
+		pushed:SetBlendMode('MOD')
+		pushed:SetDrawLayer('OVERLAY', 1)
+	end
+
+	normal:SetInside(button.backdrop)
+	pushed:SetInside(button.backdrop)
+
+	local color = E.media.rgbvaluecolor
+	if color then
+		pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
+	end
+
+	local highlight = button:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.2)
+
+	local disabled = button:GetDisabledTexture()
 	if disabled then
+		disabled:SetTexture(texture)
 		disabled:SetDesaturated(true)
 		disabled:SetInside(button.backdrop)
 	end
@@ -305,23 +315,22 @@ function AB:SetupMicroBar()
 	microBar.visibility:SetScript('OnShow', function() microBar:Show() end)
 	microBar.visibility:SetScript('OnHide', function() microBar:Hide() end)
 
-	if not E.Retail then
-		_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
-	end
-
 	for _, name in next, AB.MICRO_BUTTONS do
-		AB:HandleMicroButton(_G[name], name)
+		local button = _G[name]
+		AB:HandleMicroButton(button, name)
+
+		if name == 'MainMenuMicroButton' then
+			hooksecurefunc(button, E.Retail and 'SetPushedAtlas' or 'SetPushedTexture', function()
+				AB:UpdateMicroButtonTexture(name)
+			end)
+		end
 	end
 
 	-- With this method we might don't taint anything. Instead of using :Kill()
-	local MenuPerformanceBar = _G.MainMenuBarPerformanceBar or _G.MainMenuMicroButton.MainMenuBarPerformanceBar
-	if MenuPerformanceBar then
-		MenuPerformanceBar:SetAlpha(0)
-		MenuPerformanceBar:SetScale(0.00001)
-
-		-- use this just to catch the ending update in the OnUpdate (to correct help button)
-		-- without having to hook that directly, this works for retail and wrath
-		hooksecurefunc(MenuPerformanceBar, 'SetVertexColor', function() AB:UpdateMicroButtonTexture('MainMenuMicroButton') end)
+	local PerformanceBar = _G.MainMenuBarPerformanceBar or _G.MainMenuMicroButton.MainMenuBarPerformanceBar
+	if PerformanceBar then
+		PerformanceBar:SetAlpha(0)
+		PerformanceBar:SetScale(0.00001)
 	end
 
 	AB:SecureHook('UpdateMicroButtons')
@@ -330,6 +339,10 @@ function AB:SetupMicroBar()
 
 	if not E.Retail then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
+	end
+
+	if _G.MicroButtonPortrait then
+		_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
 	end
 
 	if _G.PVPMicroButtonTexture then
