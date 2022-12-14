@@ -114,9 +114,9 @@ function AB:HandleMicroTextures(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	normal:SetTexture(E.Media.Textures.MainMenu)
-	pushed:SetTexture(E.Media.Textures.MainMenu)
-	disabled:SetTexture(E.Media.Textures.MainMenu)
+	normal:SetTexture(E.Media.Textures.MicroBar)
+	pushed:SetTexture(E.Media.Textures.MicroBar)
+	disabled:SetTexture(E.Media.Textures.MicroBar)
 	disabled:SetDesaturated(true)
 
 	local color = E.media.rgbvaluecolor
