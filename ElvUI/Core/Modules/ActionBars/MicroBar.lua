@@ -14,6 +14,7 @@ local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
+AB.MICRO_CLASSIC = {}
 AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
@@ -28,6 +29,26 @@ AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'HelpMicroButton',
 	'StoreMicroButton',
 }
+
+do
+	local meep = 12.125
+	AB.MICRO_OFFSETS = {
+		CharacterMicroButton	= 0.07 / meep,
+		SpellbookMicroButton	= 1.05 / meep,
+		TalentMicroButton		= 2.04 / meep,
+		AchievementMicroButton	= 3.03 / meep,
+		QuestLogMicroButton		= 4.02 / meep,
+		GuildMicroButton		= 5.01 / meep, -- Retail
+		SocialsMicroButton		= 5.01 / meep, -- Classic, use Guild button
+		LFDMicroButton			= 6.00 / meep, -- Retail
+		LFGMicroButton			= 6.00 / meep, -- Classic
+		EJMicroButton			= 7.00 / meep,
+		CollectionsMicroButton	= 8.00 / meep,
+		MainMenuMicroButton		= (E.Retail and 9 or 10) / meep, -- flip these
+		HelpMicroButton			= (E.Retail and 10 or 9) / meep, -- on classic
+		StoreMicroButton		= 10.0 / meep
+	}
+end
 
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)
@@ -73,40 +94,94 @@ local function onLeave(button)
 	end
 end
 
-function AB:HandleMicroButton(button)
-	assert(button, 'Invalid micro button name.')
+function AB:HandleMicroCoords(button, name)
+	local l, r, t, b = 0.17, 0.87, 0.5, 0.908
+	local icons = AB.db.microbar.useIcons
 
-	local pushed = button:GetPushedTexture()
-	local normal = button:GetNormalTexture()
+	if name == 'PVPMicroButton' or (not E.Retail and name == 'CharacterMicroButton') then
+		l, r, t, b = 0, 1, 0, 1
+	elseif E.Retail or icons then
+		local offset = AB.MICRO_OFFSETS[name]
+		if offset then
+			l, r = offset, offset + 0.065
+			t, b = icons and 0.41 or 0.038, icons and 0.72 or 0.35
+		end
+	end
+
+	button:GetNormalTexture():SetTexCoord(l, r, t, b)
+	button:GetPushedTexture():SetTexCoord(l, r, t, b)
+
 	local disabled = button:GetDisabledTexture()
+	if disabled then
+		disabled:SetTexCoord(l, r, t, b)
+	end
+end
 
-	button:SetTemplate()
-	button:SetParent(microBar)
-	button:GetHighlightTexture():Kill()
-	button:HookScript('OnEnter', onEnter)
-	button:HookScript('OnLeave', onLeave)
-	button:SetHitRectInsets(0, 0, 0, 0)
+function AB:HandleMicroTextures(button, name)
+	local normal = button:GetNormalTexture()
+	local pushed = button:GetPushedTexture()
+
+	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.White8x8
+	local faction = name == 'PVPMicroButton' and E.Media.Textures[E.myfaction == 'Horde' and 'PVPHorde' or 'PVPAlliance']
+	local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
+	local stock = not E.Retail and not AB.db.microbar.useIcons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
+	if stock then
+		normal:SetTexture(faction or stock.normal)
+		pushed:SetTexture(character or faction or stock.pushed)
+	elseif texture then
+		normal:SetTexture(texture)
+		pushed:SetTexture(character or texture)
+	elseif character then
+		normal:SetTexture()
+		pushed:SetTexture(character)
+	end
+
+	if character then
+		pushed:SetBlendMode('MOD')
+		pushed:SetDrawLayer('OVERLAY', 1)
+	end
+
+	normal:SetInside(button.backdrop)
+	pushed:SetInside(button.backdrop)
+
+	local color = E.media.rgbvaluecolor
+	if color then
+		pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
+	end
+
+	local highlight = button:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.2)
+
+	local disabled = button:GetDisabledTexture()
+	if disabled then
+		disabled:SetTexture(texture)
+		disabled:SetDesaturated(true)
+		disabled:SetInside(button.backdrop)
+	end
 
 	if button.Flash then
 		button.Flash:SetInside()
 		button.Flash:SetTexture()
 	end
+end
 
-	local l, r, t, b = 0.1, 0.85, 0.12, 0.78
+function AB:HandleMicroButton(button, name)
+	assert(button, 'Invalid micro button name.')
+
+	button:SetTemplate()
+	button:SetParent(microBar)
+	button:HookScript('OnEnter', onEnter)
+	button:HookScript('OnLeave', onLeave)
+	button:SetHitRectInsets(0, 0, 0, 0)
+
 	if not E.Retail then
-		l, r, t, b = 0.17, 0.87, 0.5, 0.908
+		AB.MICRO_CLASSIC[name] = {
+			pushed = button:GetPushedTexture():GetTexture(),
+			normal = button:GetNormalTexture():GetTexture()
+		}
 	end
 
-	pushed:SetTexCoord(l, r, t, b)
-	pushed:SetInside(button.backdrop)
-
-	normal:SetTexCoord(l, r, t, b)
-	normal:SetInside(button.backdrop)
-
-	if disabled then
-		disabled:SetTexCoord(l, r, t, b)
-		disabled:SetInside(button.backdrop)
-	end
+	AB:UpdateMicroButtonTexture(name)
 end
 
 function AB:UpdateMicroButtonsParent()
@@ -207,7 +282,7 @@ function AB:UpdateMicroButtons()
 	AB:HandleBackdropMover(microBar, backdropSpacing)
 
 	if microBar.mover then
-		if AB.db.microbar.enabled then
+		if db.enabled then
 			E:EnableMover(microBar.mover.name)
 		else
 			E:DisableMover(microBar.mover.name)
@@ -215,6 +290,20 @@ function AB:UpdateMicroButtons()
 	end
 
 	AB:UpdateMicroBarVisibility()
+end
+
+function AB:UpdateMicroButtonTexture(name)
+	local button = _G[name]
+	if not button then return end
+
+	AB:HandleMicroTextures(button, name)
+	AB:HandleMicroCoords(button, name)
+end
+
+function AB:UpdateMicroBarTextures()
+	for _, name in next, AB.MICRO_BUTTONS do
+		AB:UpdateMicroButtonTexture(name)
+	end
 end
 
 function AB:SetupMicroBar()
@@ -226,19 +315,22 @@ function AB:SetupMicroBar()
 	microBar.visibility:SetScript('OnShow', function() microBar:Show() end)
 	microBar.visibility:SetScript('OnHide', function() microBar:Hide() end)
 
-	for _, x in next, AB.MICRO_BUTTONS do
-		AB:HandleMicroButton(_G[x])
-	end
+	for _, name in next, AB.MICRO_BUTTONS do
+		local button = _G[name]
+		AB:HandleMicroButton(button, name)
 
-	if not E.Retail then
-		_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
+		if name == 'MainMenuMicroButton' then
+			hooksecurefunc(button, (E.Retail and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
+				AB:UpdateMicroButtonTexture(name)
+			end)
+		end
 	end
 
 	-- With this method we might don't taint anything. Instead of using :Kill()
-	local MenuPerformanceBar = _G.MainMenuBarPerformanceBar or _G.MainMenuMicroButton.MainMenuBarPerformanceBar
-	if MenuPerformanceBar then
-		MenuPerformanceBar:SetAlpha(0)
-		MenuPerformanceBar:SetScale(0.00001)
+	local PerformanceBar = _G.MainMenuBarPerformanceBar or _G.MainMenuMicroButton.MainMenuBarPerformanceBar
+	if PerformanceBar then
+		PerformanceBar:SetAlpha(0)
+		PerformanceBar:SetScale(0.00001)
 	end
 
 	AB:SecureHook('UpdateMicroButtons')
@@ -249,9 +341,12 @@ function AB:SetupMicroBar()
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
 
-	if E.Wrath then
-		_G.PVPMicroButtonTexture:ClearAllPoints()
-		_G.PVPMicroButtonTexture:Point('TOP', _G.PVPMicroButton, 'TOP', 6, -1)
+	if _G.MicroButtonPortrait then
+		_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
+	end
+
+	if _G.PVPMicroButtonTexture then
+		_G.PVPMicroButtonTexture:SetAlpha(0)
 	end
 
 	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
