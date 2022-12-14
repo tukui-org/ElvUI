@@ -34,7 +34,8 @@ end
 
 S.PlayerChoice_TextureKits = {
 	jailerstower = true,
-	cypherchoice = true
+	cypherchoice = true,
+	genericplayerchoice = true,
 }
 
 function S:PlayerChoice_SetupOptions()
@@ -47,6 +48,10 @@ function S:PlayerChoice_SetupOptions()
 		self.Title.Text:SetTextColor(1, .8, 0)
 
 		S:HandleCloseButton(self.CloseButton)
+
+		if _G.GenericPlayerChoiceToggleButton then
+			S:HandleButton(_G.GenericPlayerChoiceToggleButton)
+		end
 
 		self.IsSkinned = true
 	end
