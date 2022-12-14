@@ -29,20 +29,23 @@ AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'StoreMicroButton',
 }
 
-AB.MICRO_OFFSETS = {
-	CharacterMicroButton = 0.07,
-	SpellbookMicroButton = 1.05,
-	TalentMicroButton = 2.04,
-	AchievementMicroButton = 3.03,
-	QuestLogMicroButton = 4.02,
-	GuildMicroButton = 5.01,
-	LFDMicroButton = 6,
-	EJMicroButton = 7,
-	CollectionsMicroButton = 8,
-	MainMenuMicroButton = 9,
-	HelpMicroButton = 10,
-	StoreMicroButton = 10,
-}
+do
+	local meep = 12.125
+	AB.MICRO_OFFSETS = {
+		CharacterMicroButton	= 0.07 / meep,
+		SpellbookMicroButton	= 1.05 / meep,
+		TalentMicroButton		= 2.04 / meep,
+		AchievementMicroButton	= 3.03 / meep,
+		QuestLogMicroButton		= 4.02 / meep,
+		GuildMicroButton		= 5.01 / meep,
+		LFDMicroButton			= 6.00 / meep,
+		EJMicroButton			= 7.00 / meep,
+		CollectionsMicroButton	= 8.00 / meep,
+		MainMenuMicroButton		= 9.00 / meep,
+		HelpMicroButton			= 10.0 / meep,
+		StoreMicroButton		= 10.0 / meep
+	}
+end
 
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)
@@ -90,7 +93,7 @@ end
 
 function AB:HandleMicroCoords(button, name)
 	local old = AB.db.microbar.useIcons
-	local offset = AB.MICRO_OFFSETS[name] / 12.125
+	local offset = AB.MICRO_OFFSETS[name]
 	local t, b = old and 0.41 or 0.038, old and 0.72 or 0.35
 	local l, r = offset, offset + 0.065
 
