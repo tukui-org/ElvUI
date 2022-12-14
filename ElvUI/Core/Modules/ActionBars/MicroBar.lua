@@ -111,6 +111,10 @@ function AB:HandleMicroCoords(button, name)
 	button:GetNormalTexture():SetTexCoord(l, r, t, b)
 	button:GetPushedTexture():SetTexCoord(l, r, t, b)
 
+	if button.FlashBorder then
+		button.FlashBorder:SetTexCoord(l, r, t, b)
+	end
+
 	local disabled = button:GetDisabledTexture()
 	if disabled then
 		disabled:SetTexCoord(l, r, t, b)
@@ -121,10 +125,11 @@ function AB:HandleMicroTextures(button, name)
 	local normal = button:GetNormalTexture()
 	local pushed = button:GetPushedTexture()
 
+	local icons = AB.db.microbar.useIcons
 	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.White8x8
 	local faction = name == 'PVPMicroButton' and E.Media.Textures[E.myfaction == 'Horde' and 'PVPHorde' or 'PVPAlliance']
 	local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
-	local stock = not E.Retail and not AB.db.microbar.useIcons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
+	local stock = not E.Retail and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
 	if stock then
 		normal:SetTexture(faction or stock.normal)
 		pushed:SetTexture(character or faction or stock.pushed)
@@ -159,17 +164,23 @@ function AB:HandleMicroTextures(button, name)
 		disabled:SetInside(button.backdrop)
 	end
 
-	if button.Flash then
-		button.Flash:SetTexture()
+	if button.FlashBorder then
+		button.FlashBorder:SetInside(button.backdrop)
+		button.FlashBorder:SetBlendMode('ADD')
+
+		if icons then
+			button.FlashBorder:SetTexture(stock and (faction or stock.normal) or texture or character or nil)
+		else
+			button.FlashBorder:SetColorTexture(1, 1, 1, 0.2)
+		end
 	end
 
 	if button.FlashContent then
 		button.FlashContent:SetTexture()
 	end
 
-	if button.FlashBorder then
-		button.FlashBorder:SetInside(button.backdrop)
-		button.FlashBorder:SetColorTexture(1, 1, 0.3, 0.3)
+	if button.Flash then
+		button.Flash:SetTexture()
 	end
 end
 
