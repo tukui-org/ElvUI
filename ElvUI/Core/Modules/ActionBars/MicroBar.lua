@@ -320,7 +320,7 @@ function AB:SetupMicroBar()
 		AB:HandleMicroButton(button, name)
 
 		if name == 'MainMenuMicroButton' then
-			hooksecurefunc(button, E.Retail and 'SetPushedAtlas' or 'SetPushedTexture', function()
+			hooksecurefunc(button, E.Retail and 'SetHighlightAtlas' or 'SetPushedTexture', function()
 				AB:UpdateMicroButtonTexture(name)
 			end)
 		end
