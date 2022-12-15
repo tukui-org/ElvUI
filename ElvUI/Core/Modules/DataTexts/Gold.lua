@@ -162,6 +162,7 @@ local function OnEnter()
 
 	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
+	local gained = (Profit > Spent)
 
 	DT.tooltip:AddLine(L["Session:"])
 
@@ -169,7 +170,7 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	if Spent ~= 0 then
-		DT.tooltip:AddDoubleLine((Profit < Spent) and L["Deficit:"] or L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 1, 0, 0, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(gained and L["Profit:"] or L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), not gained and 1 or 0, gained and 1 or 0, 0, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
