@@ -34,6 +34,7 @@ local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, '
 ShowButton:SetMovable(true)
 ShowButton:SetClampedToScreen(true)
 ShowButton:SetClampRectInsets(0, 0, -1, 1)
+ShowButton:Hide()
 
 --Check if We are Raid Leader or Raid Officer
 function RU:CheckRaidStatus()
@@ -108,18 +109,9 @@ function RU:ToggleRaidUtil(event)
 	end
 
 	local panel = _G.RaidUtilityPanel
-	if RU:CheckRaidStatus() then
-		if panel.toggled == true then
-			ShowButton:Hide()
-			panel:Show()
-		else
-			ShowButton:Show()
-			panel:Hide()
-		end
-	else
-		ShowButton:Hide()
-		panel:Hide()
-	end
+	local status = RU:CheckRaidStatus()
+	ShowButton:SetShown(status and not panel.toggled)
+	panel:SetShown(status and panel.toggled)
 
 	if event == 'PLAYER_REGEN_ENABLED' then
 		RU:UnregisterEvent('PLAYER_REGEN_ENABLED', 'ToggleRaidUtil')
@@ -192,12 +184,13 @@ end
 
 local count = {}
 function RU:RoleIcons_OnEvent()
-	if not IsInRaid() then
-		self:Hide()
-		return
-	else
-		self:Show()
+	local isInRaid = IsInRaid()
+	self:SetShown(isInRaid)
+
+	if isInRaid then
 		RU:PositionRoleIcons()
+	else
+		return
 	end
 
 	wipe(count)
@@ -215,7 +208,8 @@ function RU:RoleIcons_OnEvent()
 end
 
 function RU:Initialize()
-	if E.private.general.raidUtility == false then return end
+	if not E.private.general.raidUtility then return end
+
 	RU.Initialized = true
 	RU.updateMedia = true -- update fonts and textures on entering world once, used to set the custom media from a plugin
 	RU.Buttons = {}
