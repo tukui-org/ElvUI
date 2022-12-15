@@ -582,12 +582,14 @@ function UF:Update_AllFrames()
 	UF:Update_StatusBars()
 
 	for unit, frame in pairs(UF.units) do
-		if UF.db.units[unit].enable then
-			frame:Enable()
+		local enabled = UF.db.units[unit].enable
+
+		frame:SetEnabled(enabled)
+
+		if enabled then
 			frame:Update()
 			E:EnableMover(frame.mover.name)
 		else
-			frame:Disable()
 			E:DisableMover(frame.mover.name)
 		end
 	end
@@ -600,12 +602,12 @@ function UF:Update_AllFrames()
 			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
 
+		frame:SetEnabled(enabled)
+
 		if enabled then
-			frame:Enable()
 			frame:Update()
 			E:EnableMover(frame.mover.name)
 		else
-			frame:Disable()
 			E:DisableMover(frame.mover.name)
 		end
 
@@ -645,12 +647,12 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
 
+		frame:SetEnabled(enabled)
+
 		if enabled then
-			frame:Enable()
 			frame:Update()
 			E:EnableMover(frame.mover.name)
 		else
-			frame:Disable()
 			E:DisableMover(frame.mover.name)
 		end
 
@@ -1049,12 +1051,14 @@ function UF:CreateAndUpdateUF(unit)
 		end
 	end
 
-	if UF.db.units[unit].enable then
-		frame:Enable()
+	local enabled = UF.db.units[unit].enable
+
+	frame:SetEnabled(enabled)
+
+	if enabled then
 		frame:Update()
 		E:EnableMover(frame.mover.name)
 	else
-		frame:Disable()
 		E:DisableMover(frame.mover.name)
 	end
 end

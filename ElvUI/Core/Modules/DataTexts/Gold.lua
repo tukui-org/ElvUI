@@ -31,10 +31,10 @@ local function sortFunction(a, b)
 	return a.amount > b.amount
 end
 
-local function deleteCharacter(self, realm, name)
-	ElvDB.gold[realm][name] = nil
-	ElvDB.class[realm][name] = nil
-	ElvDB.faction[realm][name] = nil
+local function deleteCharacter(_, realm, name)
+	_G.ElvDB.gold[realm][name] = nil
+	_G.ElvDB.class[realm][name] = nil
+	_G.ElvDB.faction[realm][name] = nil
 
 	DT:ForceUpdate_DataText('Gold')
 end
@@ -63,15 +63,15 @@ local function updateGold(self, updateAll, goldChange)
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		local realmN = 1
-		for realm in pairs(ElvDB.serverID[E.serverID]) do
-			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() ElvDB.gold[realm] = {} DT:ForceUpdate_DataText('Gold') end })
+		for realm in pairs(_G.ElvDB.serverID[E.serverID]) do
+			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() _G.ElvDB.gold[realm] = {} DT:ForceUpdate_DataText('Gold') end })
 			realmN = realmN + 1
-			for name in pairs(ElvDB.gold[realm]) do
-				local faction = ElvDB.faction[realm][name]
-				local gold = ElvDB.gold[realm][name]
+			for name in pairs(_G.ElvDB.gold[realm]) do
+				local faction = _G.ElvDB.faction[realm][name]
+				local gold = _G.ElvDB.gold[realm][name]
 
 				if gold then
-					local color = E:ClassColor(ElvDB.class[realm][name]) or PRIEST_COLOR
+					local color = E:ClassColor(_G.ElvDB.class[realm][name]) or PRIEST_COLOR
 
 					tinsert(myGold, {
 							name = name,
@@ -95,8 +95,8 @@ local function updateGold(self, updateAll, goldChange)
 	else
 		for _, info in ipairs(myGold) do
 			if info.name == E.myname and info.realm == E.myrealm then
-				info.amount = ElvDB.gold[E.myrealm][E.myname]
-				info.amountText = E:FormatMoney(ElvDB.gold[E.myrealm][E.myname], style, textOnly)
+				info.amount = _G.ElvDB.gold[E.myrealm][E.myname]
+				info.amountText = E:FormatMoney(_G.ElvDB.gold[E.myrealm][E.myname], style, textOnly)
 
 				break
 			end
@@ -120,34 +120,15 @@ local function OnEvent(self, event)
 		Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
 	end
 
-	if event == 'ELVUI_FORCE_UPDATE' then
-		ElvDB = ElvDB or {}
-
-		ElvDB.gold = ElvDB.gold or {}
-		ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
-
-		ElvDB.class = ElvDB.class or {}
-		ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
-		ElvDB.class[E.myrealm][E.myname] = E.myclass
-
-		ElvDB.faction = ElvDB.faction or {}
-		ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
-		ElvDB.faction[E.myrealm][E.myname] = E.myfaction
-
-		ElvDB.serverID = ElvDB.serverID or {}
-		ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
-		ElvDB.serverID[E.serverID][E.myrealm] = true
-	end
-
 	--prevent an error possibly from really old profiles
-	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
+	local oldMoney = _G.ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
-		ElvDB.gold[E.myrealm][E.myname] = nil
+		_G.ElvDB.gold[E.myrealm][E.myname] = nil
 		oldMoney = nil
 	end
 
 	local NewMoney = GetMoney()
-	ElvDB.gold[E.myrealm][E.myname] = NewMoney
+	_G.ElvDB.gold[E.myrealm][E.myname] = NewMoney
 
 	local OldMoney = oldMoney or NewMoney
 	local Change = NewMoney-OldMoney -- Positive if we gain money
@@ -186,10 +167,9 @@ local function OnEnter()
 
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
-	if Profit < Spent then
-		DT.tooltip:AddDoubleLine(L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), 1, 0, 0, 1, 1, 1)
-	elseif (Profit-Spent)>0 then
-		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
+
+	if Spent ~= 0 then
+		DT.tooltip:AddDoubleLine((Profit < Spent) and L["Deficit:"] or L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 1, 0, 0, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

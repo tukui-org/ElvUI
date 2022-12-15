@@ -736,9 +736,30 @@ function DT:PLAYER_ENTERING_WORLD()
 	DT:LoadDataTexts()
 end
 
+function DT:BuildTables()
+	_G.ElvDB = _G.ElvDB or {}
+
+	_G.ElvDB.gold = _G.ElvDB.gold or {}
+	_G.ElvDB.gold[E.myrealm] = _G.ElvDB.gold[E.myrealm] or {}
+
+	_G.ElvDB.class = _G.ElvDB.class or {}
+	_G.ElvDB.class[E.myrealm] = _G.ElvDB.class[E.myrealm] or {}
+	_G.ElvDB.class[E.myrealm][E.myname] = E.myclass
+
+	_G.ElvDB.faction = _G.ElvDB.faction or {}
+	_G.ElvDB.faction[E.myrealm] = _G.ElvDB.faction[E.myrealm] or {}
+	_G.ElvDB.faction[E.myrealm][E.myname] = E.myfaction
+
+	_G.ElvDB.serverID = _G.ElvDB.serverID or {}
+	_G.ElvDB.serverID[E.serverID] = _G.ElvDB.serverID[E.serverID] or {}
+	_G.ElvDB.serverID[E.serverID][E.myrealm] = true
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
+
+	DT:BuildTables()
 
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)

@@ -550,12 +550,12 @@ function NP:ToggleStaticPlate()
 	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
 	if playerEnabled and isStatic then
-		E:EnableMover('ElvNP_PlayerMover')
+		E:EnableMover(_G.ElvNP_Player.mover.name)
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
 	else
 		NP:DisablePlate(_G.ElvNP_Player)
-		E:DisableMover('ElvNP_PlayerMover')
+		E:DisableMover(_G.ElvNP_Player.mover.name)
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
 	end
