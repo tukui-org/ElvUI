@@ -1016,9 +1016,6 @@ do
 
 		AB:FixSpellBookTaint()
 
-		-- MainMenuBar:ClearAllPoints taint during combat
-		_G.MainMenuBar.SetPositionForStatusBars = E.noop
-
 		-- Spellbook open in combat taint, only happens sometimes
 		_G.MultiActionBar_HideAllGrids = E.noop
 		_G.MultiActionBar_ShowAllGrids = E.noop
