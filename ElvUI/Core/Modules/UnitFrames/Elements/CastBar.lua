@@ -19,14 +19,10 @@ local ticks = {}
 
 do
 	local pipMapColor = {4, 1, 2, 3}
-	function UF:CastBar_UpdatePip(castbar, pip, stage, create)
+	function UF:CastBar_UpdatePip(castbar, pip, stage)
 		if castbar.pipColor then
 			local color = castbar.pipColor[pipMapColor[stage]]
 			pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
-		end
-
-		if create then
-			pip.texture:SetTexture(castbar:GetStatusBarTexture():GetTexture())
 		end
 	end
 
@@ -95,8 +91,14 @@ function UF:CreatePip(stage)
 	end
 
 	-- update colors
-	UF:CastBar_UpdatePip(self, pip, stage, true)
+	UF:CastBar_UpdatePip(self, pip, stage)
 
+	return pip
+end
+
+function UF:BuildPip(stage)
+	local pip = UF.CreatePip(self, stage)
+	UF:Update_StatusBar(pip.texture)
 	return pip
 end
 
@@ -105,6 +107,8 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar:SetFrameLevel(frame.RaisedElementParent.CastBarLevel)
 
 	UF.statusbars[castbar] = true
+	castbar.ModuleStatusBars = UF.statusbars -- not oUF
+
 	castbar.CustomDelayText = UF.CustomCastDelayText
 	castbar.CustomTimeText = UF.CustomTimeText
 	castbar.PostCastStart = UF.PostCastStart
@@ -113,8 +117,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastFail = UF.PostCastFail
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
-	castbar.CreatePip = UF.CreatePip
-	castbar.ModuleStatusBars = UF.statusbars -- not oUF
+	castbar.CreatePip = UF.BuildPip
 
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, nil, true)
