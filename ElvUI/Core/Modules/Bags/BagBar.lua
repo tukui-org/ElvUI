@@ -128,7 +128,7 @@ function B:SizeAndPositionBagBar()
 
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
-		button:SetShown(i == 1 and justBackpack or not justBackpack)
+		button:SetShown(not justBackpack or i == 1)
 
 		if sortDirection == 'ASCENDING'then
 			if i == 1 then firstButton = button else lastButton = button end
@@ -231,6 +231,10 @@ function B:LoadBagBar()
 
 	if not E.Retail then
 		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
+	end
+
+	if _G.BagBarExpandToggle then
+		_G.BagBarExpandToggle:Kill()
 	end
 
 	tinsert(B.BagBar.buttons, _G.MainMenuBarBackpackButton)
