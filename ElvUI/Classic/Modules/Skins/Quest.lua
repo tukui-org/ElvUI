@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
 local unpack, gsub = unpack, gsub
-local select, pairs = select, pairs
+local pairs, next = pairs, next
 local strmatch = strmatch
 
 local GetItemInfo = GetItemInfo
@@ -80,10 +79,9 @@ local function questQualityColors(frame, text, link)
 		handleItemButton(frame)
 	end
 
-	local quality = link and select(3, GetItemInfo(link))
+	local _, _, quality = GetItemInfo(link or 0)
 	if quality and quality > 1 then
 		local r, g, b = GetItemQualityColor(quality)
-
 		text:SetTextColor(r, g, b)
 		frame:SetBackdropBorderColor(r, g, b)
 	else

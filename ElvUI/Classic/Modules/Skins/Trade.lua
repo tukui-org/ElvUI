@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, ipairs = pairs, ipairs
-local unpack, select = unpack, select
+local unpack, pairs, ipairs = unpack, pairs, ipairs
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
@@ -106,12 +105,13 @@ function S:TradeFrame()
 
 		if link then
 			local tradeItemName = _G['TradePlayerItem'..id..'Name']
-			local quality = select(3, GetItemInfo(link))
+			local _, _, quality = GetItemInfo(link)
 
-			tradeItemName:SetTextColor(GetItemQualityColor(quality))
+			local r, g, b = GetItemQualityColor(quality)
+			tradeItemName:SetTextColor(r, g, b)
 
 			if quality and quality > 1 then
-				tradeItemButton:SetBackdropBorderColor(GetItemQualityColor(quality))
+				tradeItemButton:SetBackdropBorderColor(r, g, b)
 			end
 		end
 	end)
@@ -125,12 +125,13 @@ function S:TradeFrame()
 
 		if link then
 			local tradeItemName = _G['TradeRecipientItem'..id..'Name']
-			local quality = select(3, GetItemInfo(link))
+			local _, _, quality = GetItemInfo(link)
 
-			tradeItemName:SetTextColor(GetItemQualityColor(quality))
+			local r, g, b = GetItemQualityColor(quality)
+			tradeItemName:SetTextColor(r, g, b)
 
 			if quality and quality > 1 then
-				tradeItemButton:SetBackdropBorderColor(GetItemQualityColor(quality))
+				tradeItemButton:SetBackdropBorderColor(r, g, b)
 			end
 		end
 	end)

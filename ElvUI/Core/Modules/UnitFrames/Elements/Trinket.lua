@@ -8,10 +8,10 @@ function UF:Construct_Trinket(frame)
 	local trinket = CreateFrame('Button', frame:GetName()..'Trinket', frame)
 	trinket:SetTemplate(nil, nil, nil, nil, true)
 
-	local cd = CreateFrame("Cooldown", '$parentCooldown', frame, "CooldownFrameTemplate")
+	local cd = CreateFrame('Cooldown', '$parentCooldown', frame, 'CooldownFrameTemplate')
 	cd:SetInside(trinket, UF.BORDER, UF.BORDER)
 
-	local icon = trinket:CreateTexture(nil, "ARTWORK")
+	local icon = trinket:CreateTexture(nil, 'ARTWORK')
 	icon:SetInside(trinket, UF.BORDER, UF.BORDER)
 
 	E:RegisterCooldown(cd)

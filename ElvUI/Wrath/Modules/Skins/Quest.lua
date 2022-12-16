@@ -120,7 +120,7 @@ local function questQualityColors(frame, text, link)
 		handleItemButton(frame)
 	end
 
-	local quality = link and select(3, GetItemInfo(link))
+	local _, _, quality = GetItemInfo(link or 0)
 	if quality and quality > 1 then
 		local r, g, b = GetItemQualityColor(quality)
 
@@ -463,7 +463,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestLogHighlightFrame.SetWidth = E.noop
 
 	_G.QuestLogSkillHighlight:SetTexture(E.Media.Textures.Highlight)
-	_G.QuestLogSkillHighlight:SetAlpha(0.35)
+	_G.QuestLogSkillHighlight:SetAlpha(0.3)
 
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)

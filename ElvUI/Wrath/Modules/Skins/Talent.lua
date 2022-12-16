@@ -20,7 +20,7 @@ function S:Blizzard_TalentUI()
 	_G.PlayerTalentFrameRoleButton:ClearAllPoints()
 	_G.PlayerTalentFrameRoleButton:Point('TOPRIGHT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 0, 0)
 
-	hooksecurefunc('PlayerTalentFrameRole_UpdateRole', function(button, role)
+	hooksecurefunc('PlayerTalentFrameRole_UpdateRole', function(button)
 		local highlightTexture = button:GetHighlightTexture()
 		highlightTexture:ClearAllPoints()
 		highlightTexture:Point('TOPLEFT', button, 'TOPLEFT', 5, -5)
@@ -72,7 +72,7 @@ function S:Blizzard_TalentUI()
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:SetDrawLayer('ARTWORK')
 
-			rank:SetFont(E.LSM:Fetch('font', E.db['general'].font), 12, 'OUTLINE')
+			rank:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end
 

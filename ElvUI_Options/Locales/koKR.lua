@@ -1,5 +1,5 @@
 -- Korean localization file for koKR.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "koKR")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'koKR')
 
 L["POWER_TYPE_ESSENCE"] = "정수"
 L["BAG_FILTER_JUNK"] = "잡동사니"

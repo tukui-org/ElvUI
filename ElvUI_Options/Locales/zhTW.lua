@@ -1,5 +1,5 @@
 -- Traditional Chinese localization file for zhTW.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
 L["POWER_TYPE_ESSENCE"] = "龍能"
 L["BAG_FILTER_JUNK"] = "垃圾"

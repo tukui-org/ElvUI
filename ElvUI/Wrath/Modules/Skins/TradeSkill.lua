@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strfind, unpack, select = strfind, unpack, select
+local strfind, unpack = strfind, unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
@@ -121,7 +121,7 @@ function S:Blizzard_TradeSkillUI()
 	end
 
 	_G.TradeSkillHighlight:SetTexture(E.Media.Textures.Highlight)
-	_G.TradeSkillHighlight:SetAlpha(0.35)
+	_G.TradeSkillHighlight:SetAlpha(0.3)
 
 	S:HandleButton(_G.TradeSkillCancelButton)
 	S:HandleButton(_G.TradeSkillCreateButton)
@@ -137,7 +137,7 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillSkillIcon:CreateBackdrop()
 
 	hooksecurefunc('TradeSkillFrame_SetSelection', function(id)
-		local skillType = select(2, GetTradeSkillInfo(id))
+		local _, skillType = GetTradeSkillInfo(id)
 		if skillType == 'header' then return end
 
 		if _G.TradeSkillSkillIcon:GetNormalTexture() then
@@ -148,8 +148,7 @@ function S:Blizzard_TradeSkillUI()
 		local r, g, b
 
 		if skillLink then
-			local quality = select(3, GetItemInfo(skillLink))
-
+			local _, _, quality = GetItemInfo(skillLink)
 			if quality and quality > 1 then
 				r, g, b = GetItemQualityColor(quality)
 
@@ -167,7 +166,7 @@ function S:Blizzard_TradeSkillUI()
 
 			if reagentLink then
 				local icon = _G['TradeSkillReagent'..i..'IconTexture']
-				local quality = select(3, GetItemInfo(reagentLink))
+				local _, _, quality = GetItemInfo(reagentLink)
 
 				if quality and quality > 1 then
 					local name = _G['TradeSkillReagent'..i..'Name']

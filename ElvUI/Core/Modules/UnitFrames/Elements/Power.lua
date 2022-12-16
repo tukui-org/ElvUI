@@ -245,7 +245,8 @@ do
 	function UF:PostUpdatePowerColor()
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced and not self.colorClass then
-			self:SetStatusBarColor(GetRandomPowerColor())
+			local r, g, b = GetRandomPowerColor()
+			self:SetStatusBarColor(r, g, b)
 		end
 	end
 end

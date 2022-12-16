@@ -505,7 +505,12 @@ function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
 		local sf = NP:StyleFilterChanges(bar:GetParent())
 		if not sf.HealthTexture then
-			bar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
+			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
+			if bar.SetStatusBarTexture then
+				bar:SetStatusBarTexture(texture)
+			else
+				bar:SetTexture(texture)
+			end
 		end
 	end
 end
@@ -545,12 +550,12 @@ function NP:ToggleStaticPlate()
 	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
 	if playerEnabled and isStatic then
-		E:EnableMover('ElvNP_PlayerMover')
+		E:EnableMover(_G.ElvNP_Player.mover.name)
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
 	else
 		NP:DisablePlate(_G.ElvNP_Player)
-		E:DisableMover('ElvNP_PlayerMover')
+		E:DisableMover(_G.ElvNP_Player.mover.name)
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
 	end
@@ -825,7 +830,7 @@ function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G['InterfaceOptionsNamesPanelUnitNameplates' .. x]
 		if o then
-			o:SetSize(0.0001, 0.0001)
+			o:SetSize(0.00001, 0.00001)
 			o:SetAlpha(0)
 			o:Hide()
 		end

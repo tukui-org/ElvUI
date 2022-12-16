@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
+local unpack = unpack
 
 local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxItemLink = GetInboxItemLink
@@ -56,10 +56,10 @@ function S:MailFrame()
 				if packageIcon and not isGM then
 					local itemlink = GetInboxItemLink(index, 1)
 					if itemlink then
-						local quality = select(3, GetItemInfo(itemlink))
-
+						local _, _, quality = GetItemInfo(itemlink)
 						if quality and quality > 1 then
-							mail.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+							local r, g, b = GetItemQualityColor(quality)
+							mail.backdrop:SetBackdropBorderColor(r, g, b)
 						else
 							mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
@@ -116,9 +116,10 @@ function S:MailFrame()
 
 			local name = GetSendMailItem(i)
 			if name then
-				local quality = select(3, GetItemInfo(name))
+				local _, _, quality = GetItemInfo(name)
 				if quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
@@ -198,9 +199,10 @@ function S:MailFrame()
 			local button = _G['OpenMailAttachmentButton'..i]
 
 			if itemLink then
-				local quality = select(3, GetItemInfo(itemLink))
+				local _, _, quality = GetItemInfo(itemLink)
 				if quality and quality > 1 then
-					button:SetBackdropBorderColor(GetItemQualityColor(quality))
+					local r, g, b = GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
 				else
 					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
@@ -226,7 +228,7 @@ function S:MailFrame()
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
 	_G.OpenMailBodyText:SetTextColor(1, 1, 1)
-	_G.InvoiceTextFontNormal:SetFont(E.media.normFont, 13)
+	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
 	_G.OpenMailInvoiceBuyMode:SetTextColor(1, 0.80, 0.10)
 

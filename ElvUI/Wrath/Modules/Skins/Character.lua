@@ -245,6 +245,8 @@ function S:CharacterFrame()
 			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
 
+			slot.characterSlot = true -- for color function
+
 			S:HandleIcon(icon)
 			icon:SetInside()
 
@@ -255,10 +257,11 @@ function S:CharacterFrame()
 	end
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
-		if frame.SetBackdropBorderColor then
+		if frame.characterSlot then
 			local rarity = GetInventoryItemQuality('player', frame:GetID())
 			if rarity and rarity > 1 then
-				frame:SetBackdropBorderColor(GetItemQualityColor(rarity))
+				local r, g, b = GetItemQualityColor(rarity)
+				frame:SetBackdropBorderColor(r, g, b)
 			else
 				frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end

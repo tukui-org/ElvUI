@@ -497,6 +497,13 @@ E.Options.args.nameplates.args.colorsGroup.args.castGroup.args.castNoInterruptCo
 E.Options.args.nameplates.args.colorsGroup.args.castGroup.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 3)
 E.Options.args.nameplates.args.colorsGroup.args.castGroup.args.castbarDesaturate = ACH:Toggle(L["Desaturated Icon"], L["Show the castbar icon desaturated if a spell is not interruptible."], 4, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end)
 
+E.Options.args.nameplates.args.colorsGroup.args.castGroup.args.empowerStage = ACH:Group(E.NewSign..L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.empoweredCast[i], P.nameplates.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.nameplates.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
+E.Options.args.nameplates.args.colorsGroup.args.castGroup.args.empowerStage.inline = true
+
+for i = 1, 4 do
+	E.Options.args.nameplates.args.colorsGroup.args.castGroup.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
+end
+
 E.Options.args.nameplates.args.colorsGroup.args.selectionGroup = ACH:Group(L["Selection"], nil, 4, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.nameplates.colors.selection[n], P.nameplates.colors.selection[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.selection[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 E.Options.args.nameplates.args.colorsGroup.args.selectionGroup.inline = true
 E.Options.args.nameplates.args.colorsGroup.args.selectionGroup.args['0'] = ACH:Color(L["Hostile"], nil, 0)

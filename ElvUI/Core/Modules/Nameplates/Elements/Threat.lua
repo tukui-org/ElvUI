@@ -7,10 +7,10 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
 NP.ThreatPets = {
-	["61146"] = true,	-- Monk's Black Ox Statue
-	["103822"] = true,	-- Druid's Force of Nature Treants
-	["95072"] = true,	-- Shaman's Earth Elemental
-	["61056"] = true,	-- Primal Earth Elemental
+	['61146'] = true,	-- Monk's Black Ox Statue
+	['103822'] = true,	-- Druid's Force of Nature Treants
+	['95072'] = true,	-- Shaman's Earth Elemental
+	['61056'] = true,	-- Primal Earth Elemental
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)

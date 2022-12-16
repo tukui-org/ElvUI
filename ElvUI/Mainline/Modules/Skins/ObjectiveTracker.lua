@@ -11,6 +11,7 @@ local headers = {
 	_G.ObjectiveTrackerBlocksFrame.AchievementHeader,
 	_G.ObjectiveTrackerBlocksFrame.ScenarioHeader,
 	_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader,
+	_G.ObjectiveTrackerBlocksFrame.ProfessionHeader,
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header,
 	_G.WORLD_QUEST_TRACKER_MODULE.Header,
 	_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader
@@ -224,7 +225,7 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc('ObjectiveTracker_Expand',TrackerStateChanged)
 	hooksecurefunc('ObjectiveTracker_Collapse',TrackerStateChanged)
 	hooksecurefunc('QuestObjectiveSetupBlockButton_Item', HandleItemButton)
-	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddObjective", HandleItemButton)
+	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE, 'AddObjective', HandleItemButton)
 	hooksecurefunc('BonusObjectiveTrackerProgressBar_SetValue',ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
 	hooksecurefunc('ObjectiveTrackerProgressBar_SetValue',ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc('ScenarioTrackerProgressBar_SetValue',ColorProgressBars)					--[Color]: Scenario Progress Bar
@@ -237,6 +238,7 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: Scenario Progress Bar
 	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)		--[Skin]: Campaign Progress Bar
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)				--[Skin]: Quest Progress Bar
+	hooksecurefunc(_G.UI_WIDGET_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: New DF Quest Progress Bar
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)						--[Skin]: Quest Timer Bar
 	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)					--[Skin]: Scenario Timer Bar
 	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)				--[Skin]: Achievement Timer Bar

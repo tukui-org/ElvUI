@@ -132,16 +132,9 @@ function S:LootFrame()
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		local button = _G['LootButton'..i]
 		_G['LootButton'..i..'NameFrame']:Hide()
-		S:HandleItemButton(button, true)
 
-		button.IconBorder:SetTexture()
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(button.IconBorder, 'Hide', function(s)
-			s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleItemButton(button, true)
+		S:HandleIconBorder(button.IconBorder, button.backdrop)
 
 		local point, attachTo, point2, x, y = button:GetPoint()
 		button:ClearAllPoints()

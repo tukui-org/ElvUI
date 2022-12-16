@@ -24,6 +24,7 @@ local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
+local HideUIPanel = HideUIPanel
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -815,17 +816,6 @@ function AB:FadeParent_OnEvent()
 	end
 end
 
-function AB:IconIntroTracker_Toggle()
-	local IconIntroTracker = _G.IconIntroTracker
-	if AB.db.addNewSpells then
-		IconIntroTracker:RegisterEvent('SPELL_PUSHED_TO_ACTIONBAR')
-		UnregisterStateDriver(IconIntroTracker, 'visibility')
-	else
-		IconIntroTracker:UnregisterAllEvents()
-		RegisterStateDriver(IconIntroTracker, 'visibility', 'hide')
-	end
-end
-
 -- these calls are tainted when accessed by ValidateActionBarTransition
 local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
 function AB:SetNoopsi(frame)
@@ -999,12 +989,16 @@ do
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 	end
 
+	local settingsHider = CreateFrame('Frame')
+	settingsHider:SetScript('OnEvent', function(frame, event)
+		HideUIPanel(_G.SettingsPanel)
+		frame:UnregisterEvent(event)
+	end)
+
 	function AB:DisableBlizzard()
 		for name in next, untaint do
 			if not E.Retail then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
-			elseif name == 'PetActionBar' then -- this fixes the pet bar getting replaced by EditMode
-				_G.PetActionBar.UpdateGridLayout = E.noop
 			end
 
 			local frame = _G[name]
@@ -1014,14 +1008,13 @@ do
 
 				if not E.Retail then
 					AB:SetNoopsi(frame)
+				elseif frame.UpdateVisibility then -- EditMode messes with at least PetActionBar
+					frame.UpdateVisibility = E.noop
 				end
 			end
 		end
 
 		AB:FixSpellBookTaint()
-
-		-- MainMenuBar:ClearAllPoints taint during combat
-		_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
 		-- Spellbook open in combat taint, only happens sometimes
 		_G.MultiActionBar_HideAllGrids = E.noop
@@ -1048,11 +1041,18 @@ do
 			hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
 			AB.ButtonEventsRegisterFrame()
 
-			AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
+			-- crop the new spells being added to the actionbars
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
-			-- fix keybind error, this actually just prevents reopen of the GameMenu
-			_G.SettingsPanel.TransitionBackOpeningPanel = _G.HideUIPanel
+			-- dont reopen game menu and fix settings panel not being able to close during combat
+			_G.SettingsPanel.TransitionBackOpeningPanel = function(frame)
+				if InCombatLockdown() then
+					settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
+					frame:SetScale(0.00001)
+				else
+					HideUIPanel(frame)
+				end
+			end
 
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
@@ -1088,13 +1088,13 @@ do
 			_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
 			_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
 			_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
-			_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.00001)
 			_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
-			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.00001)
 			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
 			_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
-			_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+			_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.00001)
 			_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 
 			_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
@@ -1607,7 +1607,7 @@ function AB:Initialize()
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
-	LAB.RegisterCallback(AB, 'OnFlyoutCreated', AB.LAB_FlyoutCreated)
+	LAB.RegisterCallback(AB, 'OnFlyoutButtonCreated', AB.LAB_FlyoutCreated)
 	LAB.RegisterCallback(AB, 'OnFlyoutSpells', AB.LAB_FlyoutSpells)
 	LAB.RegisterCallback(AB, 'OnFlyoutUpdate', AB.LAB_FlyoutUpdate)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
@@ -1694,8 +1694,8 @@ function AB:Initialize()
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
-	SetCVar('lockActionBars', (AB.db.lockActionBars == true and 1 or 0))
-	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars == true and '1' or '0') -- Keep an eye on this, in case it taints
+	SetCVar('lockActionBars', (AB.db.lockActionBars and 1 or 0))
+	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars and '1' or '0') -- Keep an eye on this, in case it taints
 
 	if E.Retail then
 		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)

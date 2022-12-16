@@ -41,7 +41,7 @@ function S:Blizzard_TalentUI()
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:SetDrawLayer('ARTWORK')
 
-			rank:SetFont(E.LSM:Fetch('font', E.db['general'].font), 12, 'OUTLINE')
+			rank:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end
 end

@@ -1,5 +1,5 @@
 -- French localization file for frFR.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
 
 L["POWER_TYPE_ESSENCE"] = "Essence"
 L["BAG_FILTER_JUNK"] = "Camelote"

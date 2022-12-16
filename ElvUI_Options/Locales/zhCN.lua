@@ -1,5 +1,5 @@
 -- Simplified Chinese localization file for zhCN.
-local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
 L["POWER_TYPE_ESSENCE"] = "精华"
 L["BAG_FILTER_JUNK"] = "垃圾"

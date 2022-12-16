@@ -99,12 +99,12 @@ function UF:Update_AssistFrames(frame, db)
 		frame:Size(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
-			if childDB.enable then
-				frame:Enable()
+			local enabled = childDB.enable
+			frame:SetEnabled(enabled)
+
+			if enabled then
 				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
-			else
-				frame:Disable()
 			end
 		end
 	else

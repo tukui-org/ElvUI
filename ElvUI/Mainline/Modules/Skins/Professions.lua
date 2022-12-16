@@ -97,7 +97,15 @@ function S:Blizzard_Professions()
 	local CraftList = CraftingPage.RecipeList
 	CraftList:StripTextures()
 	S:HandleTrimScrollBar(CraftList.ScrollBar, true)
-	if CraftList.BackgroundNineSlice then CraftList.BackgroundNineSlice:Hide() end
+
+	if CraftList.BackgroundNineSlice then
+		if E.private.skins.parchmentRemoverEnable then
+			CraftList.BackgroundNineSlice:Hide()
+		else
+			CraftList.BackgroundNineSlice:SetAlpha(.25)
+		end
+	end
+
 	CraftList:CreateBackdrop('Transparent')
 	CraftList.backdrop:SetInside()
 	S:HandleEditBox(CraftList.SearchBox)
@@ -106,7 +114,12 @@ function S:Blizzard_Professions()
 
 	local SchematicForm = CraftingPage.SchematicForm
 	SchematicForm:StripTextures()
-	SchematicForm.Background:SetAlpha(0)
+
+	if E.private.skins.parchmentRemoverEnable then
+		SchematicForm.Background:SetAlpha(0)
+	else
+		SchematicForm.Background:SetAlpha(.25)
+	end
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
 

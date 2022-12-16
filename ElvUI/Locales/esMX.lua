@@ -1,6 +1,6 @@
 -- Spanish localization file for esES and esMX.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
+local L = E.Libs.ACL:NewLocale('ElvUI', 'esMX')
 
 L["Loadouts"] = true
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = true

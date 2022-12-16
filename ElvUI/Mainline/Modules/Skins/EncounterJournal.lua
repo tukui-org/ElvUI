@@ -375,7 +375,7 @@ function S:Blizzard_EncounterJournal()
 
 				local r, g, b = unpack(E.media.bordercolor)
 				if rewardData.itemID then
-					local quality = select(3, GetItemInfo(rewardData.itemID))
+					local _, _, quality = GetItemInfo(rewardData.itemID)
 					if quality and quality > 1 then
 						r, g, b = GetItemQualityColor(quality)
 					end
@@ -508,7 +508,7 @@ function S:Blizzard_EncounterJournal()
 
 		_G.EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollChildDescription:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:Hide()
-		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetFontObject("GameFontNormalLarge")
+		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetFontObject('GameFontNormalLarge')
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildLoreDescription:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, .8, 0)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
