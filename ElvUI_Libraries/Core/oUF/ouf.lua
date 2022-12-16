@@ -170,6 +170,21 @@ for k, v in next, {
 		return active and active[name]
 	end,
 
+	--[[ frame:SetEnabled(enabled, asState)
+	* self    - unit frame
+	* enabled - on or off
+	* asState - if true, the frame's "state-unitexists" attribute will be set to a boolean value denoting whether the
+	            unit exists; if false, the frame will be shown if its unit exists, and hidden if it does not (boolean)
+	--]]
+	SetEnabled = function(self, enabled, asState)
+		if enabled then
+			RegisterUnitWatch(self, asState)
+		else
+			UnregisterUnitWatch(self)
+			self:Hide()
+		end
+	end,
+
 	--[[ frame:Enable(asState)
 	Used to toggle the visibility of a unit frame based on the existence of its unit. This is a reference to
 	`RegisterUnitWatch`.
