@@ -1,7 +1,7 @@
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface Replacement
 ## Author: Elv, Simpy
-## Version: 13.11
+## Version: 13.12
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque
