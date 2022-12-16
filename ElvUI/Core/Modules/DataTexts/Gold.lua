@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local B = E:GetModule('Bags')
+-- GLOBALS: ElvDB
 
 local _G = _G
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
@@ -14,7 +15,6 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
--- GLOBALS: ElvDB
 
 local Profit, Spent, Ticker = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
@@ -31,7 +31,7 @@ local function sortFunction(a, b)
 	return a.amount > b.amount
 end
 
-local function deleteCharacter(self, realm, name)
+local function deleteCharacter(_, realm, name)
 	ElvDB.gold[realm][name] = nil
 	ElvDB.class[realm][name] = nil
 	ElvDB.faction[realm][name] = nil
@@ -64,7 +64,7 @@ local function updateGold(self, updateAll, goldChange)
 
 		local realmN = 1
 		for realm in pairs(ElvDB.serverID[E.serverID]) do
-			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() ElvDB.gold[realm] = {} DT:ForceUpdate_DataText('Gold') end })
+			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() wipe(ElvDB.gold[realm]) DT:ForceUpdate_DataText('Gold') end })
 			realmN = realmN + 1
 			for name in pairs(ElvDB.gold[realm]) do
 				local faction = ElvDB.faction[realm][name]
@@ -120,25 +120,6 @@ local function OnEvent(self, event)
 		Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
 	end
 
-	if event == 'ELVUI_FORCE_UPDATE' then
-		ElvDB = ElvDB or {}
-
-		ElvDB.gold = ElvDB.gold or {}
-		ElvDB.gold[E.myrealm] = ElvDB.gold[E.myrealm] or {}
-
-		ElvDB.class = ElvDB.class or {}
-		ElvDB.class[E.myrealm] = ElvDB.class[E.myrealm] or {}
-		ElvDB.class[E.myrealm][E.myname] = E.myclass
-
-		ElvDB.faction = ElvDB.faction or {}
-		ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
-		ElvDB.faction[E.myrealm][E.myname] = E.myfaction
-
-		ElvDB.serverID = ElvDB.serverID or {}
-		ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
-		ElvDB.serverID[E.serverID][E.myrealm] = true
-	end
-
 	--prevent an error possibly from really old profiles
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
@@ -183,13 +164,12 @@ local function OnEnter()
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
-
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
-	if Profit < Spent then
-		DT.tooltip:AddDoubleLine(L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), 1, 0, 0, 1, 1, 1)
-	elseif (Profit-Spent)>0 then
-		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
+
+	if Spent ~= 0 then
+		local gained = Profit > Spent
+		DT.tooltip:AddDoubleLine(gained and L["Profit:"] or L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), gained and 0 or 1, gained and 1 or 0, 0, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

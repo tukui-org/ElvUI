@@ -585,8 +585,10 @@ function E:StaticPopup_OnUpdate(elapsed)
 
 	if self.acceptDelay then
 		self.acceptDelay = self.acceptDelay - elapsed
-		if self.acceptDelay <= 0 then
-			button1:Enable()
+		local enabled = self.acceptDelay <= 0
+		button1:SetEnabled(enabled)
+
+		if enabled then
 			button1:SetText(info.button1)
 
 			self.acceptDelay = nil
@@ -595,7 +597,6 @@ function E:StaticPopup_OnUpdate(elapsed)
 				info.OnAcceptDelayExpired(self, self.data)
 			end
 		else
-			button1:Disable()
 			button1:SetText(ceil(self.acceptDelay))
 		end
 	end

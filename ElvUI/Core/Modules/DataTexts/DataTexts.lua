@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
+-- GLOBALS: ElvDB
 
 local _G = _G
 local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
@@ -736,9 +737,31 @@ function DT:PLAYER_ENTERING_WORLD()
 	DT:LoadDataTexts()
 end
 
+function DT:BuildTables()
+	local db = ElvDB
+	if not db then db = {} ElvDB = db end
+
+	if not db.gold then db.gold = {} end
+	db.gold[E.myrealm] = db.gold[E.myrealm] or {}
+
+	if not db.class then db.class = {} end
+	db.class[E.myrealm] = db.class[E.myrealm] or {}
+	db.class[E.myrealm][E.myname] = E.myclass
+
+	if not db.faction then db.faction = {} end
+	db.faction[E.myrealm] = db.faction[E.myrealm] or {}
+	db.faction[E.myrealm][E.myname] = E.myfaction
+
+	if not db.serverID then db.serverID = {} end
+	db.serverID[E.serverID] = db.serverID[E.serverID] or {}
+	db.serverID[E.serverID][E.myrealm] = true
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
+
+	DT:BuildTables()
 
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)

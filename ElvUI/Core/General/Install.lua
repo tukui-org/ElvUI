@@ -549,11 +549,11 @@ function E:SetupReset()
 	_G.InstallSlider:SetScript('OnValueChanged', nil)
 	_G.InstallSlider:SetScript('OnMouseUp', nil)
 
-	ElvUIInstallFrame.SubTitle:SetText('')
-	ElvUIInstallFrame.Desc1:SetText('')
-	ElvUIInstallFrame.Desc2:SetText('')
-	ElvUIInstallFrame.Desc3:SetText('')
-	ElvUIInstallFrame:Size(550, 400)
+	E.InstallFrame.SubTitle:SetText('')
+	E.InstallFrame.Desc1:SetText('')
+	E.InstallFrame.Desc2:SetText('')
+	E.InstallFrame.Desc3:SetText('')
+	E.InstallFrame:Size(550, 400)
 end
 
 function E:SetPage(PageNum)
@@ -564,19 +564,10 @@ function E:SetPage(PageNum)
 	_G.InstallStatus.anim.progress:Play()
 	_G.InstallStatus.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
 
-	if PageNum == MAX_PAGE then
-		_G.InstallNextButton:Disable()
-	else
-		_G.InstallNextButton:Enable()
-	end
+	_G.InstallNextButton:SetEnabled(PageNum ~= MAX_PAGE)
+	_G.InstallPrevButton:SetEnabled(PageNum ~= 1)
 
-	if PageNum == 1 then
-		_G.InstallPrevButton:Disable()
-	else
-		_G.InstallPrevButton:Enable()
-	end
-
-	local f = ElvUIInstallFrame
+	local f = E.InstallFrame
 	local InstallOption1Button = _G.InstallOption1Button
 	local InstallOption2Button = _G.InstallOption2Button
 	local InstallOption3Button = _G.InstallOption3Button
@@ -750,7 +741,7 @@ function E:SetPage(PageNum)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E:SetupComplete(true) end)
 		InstallOption2Button:SetText(L["Finished"])
-		ElvUIInstallFrame:Size(550, 350)
+		E.InstallFrame:Size(550, 350)
 	end
 end
 
@@ -817,7 +808,7 @@ function E:Install()
 	end
 
 	--Create Frame
-	if not ElvUIInstallFrame then
+	if not E.InstallFrame then
 		local f = CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent)
 		f.SetPage = E.SetPage
 		f:Size(550, 400)
@@ -970,9 +961,11 @@ function E:Install()
 		logo2:SetTexture(E.Media.Textures.LogoBottom)
 		logo2:Point('BOTTOM', 0, 70)
 		f.tutorialImage2 = logo2
+
+		E.InstallFrame = f
 	end
 
-	ElvUIInstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
-	ElvUIInstallFrame:Show()
+	E.InstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
+	E.InstallFrame:Show()
 	E:NextPage()
 end

@@ -74,6 +74,9 @@ PI.Installs = {}
 local BUTTON_HEIGHT = 20
 local f
 
+local titleColor = {1, 1, 1}
+local titleSelectedColor = {.09, .52, .82}
+
 function PI:SetupReset()
 	f.Next:Disable()
 	f.Prev:Disable()
@@ -123,17 +126,8 @@ function PI:SetPage(PageNum, PrevPage)
 	local r, g, b = E:ColorGradient(f.CurrentPage / f.MaxPage, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	f.Status:SetStatusBarColor(r, g, b)
 
-	if PageNum == f.MaxPage then
-		f.Next:Disable()
-	else
-		f.Next:Enable()
-	end
-
-	if PageNum == 1 then
-		f.Prev:Disable()
-	else
-		f.Prev:Enable()
-	end
+	f.Next:SetEnabled(PageNum ~= f.MaxPage)
+	f.Prev:SetEnabled(PageNum ~= 1)
 
 	f.Pages[f.CurrentPage]()
 	f.Status.text:SetFormattedText('%d / %d', f.CurrentPage, f.MaxPage)
@@ -142,9 +136,9 @@ function PI:SetPage(PageNum, PrevPage)
 		for i = 1, #f.side.Lines do
 			local line, color = f.side.Lines[i]
 			if i == f.CurrentPage then
-				color = f.StepTitlesColorSelected or {.09,.52,.82}
+				color = f.StepTitlesColorSelected or titleSelectedColor
 			else
-				color = f.StepTitlesColor or {1,1,1}
+				color = f.StepTitlesColor or titleColor
 			end
 
 			line.text:SetText(f.StepTitles[i])
@@ -452,7 +446,7 @@ function PI:RunInstall()
 	if not E.private.install_complete then return end
 
 	local db = PI.Installs[1]
-	if db and not f:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
+	if db and not f:IsShown() and not (E.InstallFrame and E.InstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil
