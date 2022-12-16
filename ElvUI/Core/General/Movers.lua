@@ -362,68 +362,64 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 end
 
 function E:ToggleMovers(show, which)
-	self.configMode = show
+	E.configMode = show
 
 	local upperText = strupper(which)
 	for _, holder in pairs(E.CreatedMovers) do
 		local isName = (holder.mover.name == which) or strupper(holder.mover.textString) == upperText
-		if show and (isName or holder.types[upperText]) then
-			holder.mover:Show()
-		else
-			holder.mover:Hide()
-		end
+		holder.mover:SetShown(show and (isName or holder.types[upperText]))
 	end
 end
 
 function E:GetMoverHolder(name)
-	local created = self.CreatedMovers[name]
-	local disabled = self.DisabledMovers[name]
+	local created = E.CreatedMovers[name]
+	local disabled = E.DisabledMovers[name]
 	return created or disabled, not not disabled
 end
 
 function E:DisableMover(name)
-	if self.DisabledMovers[name] then return end
+	if E.DisabledMovers[name] then return end
 
-	local holder = self.CreatedMovers[name]
+	local holder = E.CreatedMovers[name]
 	if not holder then
 		error(format('mover %s doesnt exist', name or 'nil'))
 	end
 
-	self.DisabledMovers[name] = {}
+	E.DisabledMovers[name] = {}
 	for x, y in pairs(holder) do
-		self.DisabledMovers[name][x] = y
+		E.DisabledMovers[name][x] = y
 	end
 
-	if self.configMode then
+	if E.configMode then
 		holder.mover:Hide()
 	end
 
-	self.CreatedMovers[name] = nil
+	E.CreatedMovers[name] = nil
 end
 
 function E:EnableMover(name)
-	if self.CreatedMovers[name] then return end
+	if E.CreatedMovers[name] then return end
 
-	local holder = self.DisabledMovers[name]
+	local holder = E.DisabledMovers[name]
 	if not holder then
 		error(format('mover %s doesnt exist', name or 'nil'))
 	end
 
-	self.CreatedMovers[name] = {}
+	E.CreatedMovers[name] = {}
 	for x, y in pairs(holder) do
-		self.CreatedMovers[name][x] = y
+		E.CreatedMovers[name][x] = y
 	end
 
-	if self.configMode then
+	if E.configMode then
 		holder.mover:Show()
 	end
 
-	self.DisabledMovers[name] = nil
+	E.DisabledMovers[name] = nil
 end
 
 function E:ResetMovers(arg)
 	local all = not arg or arg == ''
-	if all then self.db.movers = nil end
+	if all then E.db.movers = nil end
 
 	for name, holder in pairs(E.CreatedMovers) do
 		if all or (holder.mover and holder.mover.textString == arg) then
@@ -442,8 +438,8 @@ function E:ResetMovers(arg)
 			else
 				if holder.layoutPoint then
 					E:SaveMoverPosition(name)
-				elseif self.db.movers then
-					self.db.movers[name] = nil
+				elseif E.db.movers then
+					E.db.movers[name] = nil
 				end
 				break
 			end

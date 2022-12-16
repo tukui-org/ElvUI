@@ -584,11 +584,7 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 		SetImportedProfile(data.profileType, self.editBox:GetText(), data.profileData, true)
 	end,
 	EditBoxOnTextChanged = function(self)
-		if self:GetText() == '' then
-			self:GetParent().button1:Disable()
-		else
-			self:GetParent().button1:Enable()
-		end
+		self:GetParent().button1:SetEnabled(self:GetText() ~= '')
 	end,
 	OnShow = function(self, data)
 		self.editBox:SetText(data.profileKey)

@@ -999,8 +999,6 @@ do
 		for name in next, untaint do
 			if not E.Retail then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
-			elseif name == 'PetActionBar' then -- this fixes the pet bar getting replaced by EditMode
-				_G.PetActionBar.UpdateGridLayout = E.noop
 			end
 
 			local frame = _G[name]
@@ -1010,14 +1008,13 @@ do
 
 				if not E.Retail then
 					AB:SetNoopsi(frame)
+				elseif frame.UpdateVisibility then -- EditMode messes with at least PetActionBar
+					frame.UpdateVisibility = E.noop
 				end
 			end
 		end
 
 		AB:FixSpellBookTaint()
-
-		-- MainMenuBar:ClearAllPoints taint during combat
-		_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
 		-- Spellbook open in combat taint, only happens sometimes
 		_G.MultiActionBar_HideAllGrids = E.noop
