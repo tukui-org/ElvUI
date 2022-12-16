@@ -13,6 +13,7 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetCVarBool = GetCVarBool
+local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
@@ -57,6 +58,11 @@ function B:KeyRing_OnEnter()
 	B:BagBar_OnEnter()
 end
 
+function B:BagBar_OnEvent(event)
+	B:BagBar_UpdateVisibility()
+	B.BagBar:UnregisterEvent(event)
+end
+
 function B:KeyRing_OnLeave()
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
@@ -87,6 +93,11 @@ function B:SkinBag(bag)
 	icon:SetTexCoord(unpack(E.TexCoords))
 end
 
+function B:BagBar_UpdateVisibility()
+	local visibility = gsub(E.db.bags.bagBar.visibility, '[\n\r]', '')
+	RegisterStateDriver(B.BagBar, 'visibility', visibility)
+end
+
 function B:SizeAndPositionBagBar()
 	if not B.BagBar then return end
 
@@ -99,8 +110,11 @@ function B:SizeAndPositionBagBar()
 	local justBackpack = db.justBackpack
 	local backdropSpacing = not showBackdrop and 0 or db.backdropSpacing
 
-	local visibility = gsub(db.visibility, '[\n\r]', '')
-	RegisterStateDriver(B.BagBar, 'visibility', visibility)
+	if InCombatLockdown() then
+		B.BagBar:RegisterEvent('PLAYER_REGEN_ENABLED')
+	else
+		B:BagBar_UpdateVisibility()
+	end
 
 	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
 
@@ -203,6 +217,7 @@ function B:LoadBagBar()
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, true)
 	B.BagBar:SetScript('OnEnter', B.BagBar_OnEnter)
 	B.BagBar:SetScript('OnLeave', B.BagBar_OnLeave)
+	B.BagBar:SetScript('OnEvent', B.BagBar_OnEvent)
 	B.BagBar:EnableMouse(true)
 	B.BagBar.buttons = {}
 
