@@ -166,7 +166,6 @@ function AB:HandleMicroTextures(button, name)
 
 	if button.FlashBorder then
 		button.FlashBorder:SetInside(button.backdrop)
-		button.FlashBorder:SetBlendMode('ADD')
 
 		if icons then
 			button.FlashBorder:SetTexture(stock and (faction or stock.normal) or texture or character or nil)
