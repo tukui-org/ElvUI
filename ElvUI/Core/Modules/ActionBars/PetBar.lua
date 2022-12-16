@@ -18,7 +18,6 @@ local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
 local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
 local PetActionBar_ShowGrid = PetActionBar_ShowGrid
-
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
 
 local Masque = E.Masque
