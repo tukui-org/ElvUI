@@ -6,6 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local abs = abs
+local next = next
 local unpack = unpack
 local strjoin = strjoin
 local strmatch = strmatch

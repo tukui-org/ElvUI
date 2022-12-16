@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local gsub = gsub
-
 local hooksecurefunc = hooksecurefunc
 
 local function ReplaceIconString(frame, text)
