@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local B = E:GetModule('Bags')
+-- GLOBALS: ElvDB
 
 local _G = _G
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
@@ -14,7 +15,6 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
--- GLOBALS: ElvDB
 
 local Profit, Spent, Ticker = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
@@ -32,9 +32,9 @@ local function sortFunction(a, b)
 end
 
 local function deleteCharacter(_, realm, name)
-	_G.ElvDB.gold[realm][name] = nil
-	_G.ElvDB.class[realm][name] = nil
-	_G.ElvDB.faction[realm][name] = nil
+	ElvDB.gold[realm][name] = nil
+	ElvDB.class[realm][name] = nil
+	ElvDB.faction[realm][name] = nil
 
 	DT:ForceUpdate_DataText('Gold')
 end
@@ -63,15 +63,15 @@ local function updateGold(self, updateAll, goldChange)
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		local realmN = 1
-		for realm in pairs(_G.ElvDB.serverID[E.serverID]) do
-			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() wipe(_G.ElvDB.gold[realm]) DT:ForceUpdate_DataText('Gold') end })
+		for realm in pairs(ElvDB.serverID[E.serverID]) do
+			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() wipe(ElvDB.gold[realm]) DT:ForceUpdate_DataText('Gold') end })
 			realmN = realmN + 1
-			for name in pairs(_G.ElvDB.gold[realm]) do
-				local faction = _G.ElvDB.faction[realm][name]
-				local gold = _G.ElvDB.gold[realm][name]
+			for name in pairs(ElvDB.gold[realm]) do
+				local faction = ElvDB.faction[realm][name]
+				local gold = ElvDB.gold[realm][name]
 
 				if gold then
-					local color = E:ClassColor(_G.ElvDB.class[realm][name]) or PRIEST_COLOR
+					local color = E:ClassColor(ElvDB.class[realm][name]) or PRIEST_COLOR
 
 					tinsert(myGold, {
 							name = name,
@@ -95,8 +95,8 @@ local function updateGold(self, updateAll, goldChange)
 	else
 		for _, info in ipairs(myGold) do
 			if info.name == E.myname and info.realm == E.myrealm then
-				info.amount = _G.ElvDB.gold[E.myrealm][E.myname]
-				info.amountText = E:FormatMoney(_G.ElvDB.gold[E.myrealm][E.myname], style, textOnly)
+				info.amount = ElvDB.gold[E.myrealm][E.myname]
+				info.amountText = E:FormatMoney(ElvDB.gold[E.myrealm][E.myname], style, textOnly)
 
 				break
 			end
@@ -121,14 +121,14 @@ local function OnEvent(self, event)
 	end
 
 	--prevent an error possibly from really old profiles
-	local oldMoney = _G.ElvDB.gold[E.myrealm][E.myname]
+	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
-		_G.ElvDB.gold[E.myrealm][E.myname] = nil
+		ElvDB.gold[E.myrealm][E.myname] = nil
 		oldMoney = nil
 	end
 
 	local NewMoney = GetMoney()
-	_G.ElvDB.gold[E.myrealm][E.myname] = NewMoney
+	ElvDB.gold[E.myrealm][E.myname] = NewMoney
 
 	local OldMoney = oldMoney or NewMoney
 	local Change = NewMoney-OldMoney -- Positive if we gain money
@@ -162,15 +162,14 @@ local function OnEnter()
 
 	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
 	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
-	local gained = (Profit > Spent)
 
 	DT.tooltip:AddLine(L["Session:"])
-
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	if Spent ~= 0 then
-		DT.tooltip:AddDoubleLine(gained and L["Profit:"] or L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), not gained and 1 or 0, gained and 1 or 0, 0, 1, 1, 1)
+		local gained = Profit > Spent
+		DT.tooltip:AddDoubleLine(gained and L["Profit:"] or L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), gained and 0 or 1, gained and 1 or 0, 0, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

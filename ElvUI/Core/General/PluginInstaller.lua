@@ -74,7 +74,7 @@ PI.Installs = {}
 local BUTTON_HEIGHT = 20
 local f
 
-local titleColor = { 1, 1, 1}
+local titleColor = {1, 1, 1}
 local titleSelectedColor = {.09, .52, .82}
 
 function PI:SetupReset()

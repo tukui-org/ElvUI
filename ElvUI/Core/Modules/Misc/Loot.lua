@@ -261,10 +261,10 @@ function M:LOOT_OPENED(_, autoloot)
 				item = item:gsub('\n', ', ')
 			end
 
-			slot.count:SetShown(count and (count > 1))
+			slot.count:SetShown(count and count > 1)
 			slot.count:SetText(count or '')
 
-			slot.drop:SetShown(quality and (quality > 1))
+			slot.drop:SetShown(quality and quality > 1)
 			slot.drop:SetVertexColor(color.r, color.g, color.b)
 
 			slot.quality = quality

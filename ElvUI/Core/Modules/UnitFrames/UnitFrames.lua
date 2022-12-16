@@ -583,7 +583,6 @@ function UF:Update_AllFrames()
 
 	for unit, frame in pairs(UF.units) do
 		local enabled = UF.db.units[unit].enable
-
 		frame:SetEnabled(enabled)
 
 		if enabled then
@@ -1052,7 +1051,6 @@ function UF:CreateAndUpdateUF(unit)
 	end
 
 	local enabled = UF.db.units[unit].enable
-
 	frame:SetEnabled(enabled)
 
 	if enabled then

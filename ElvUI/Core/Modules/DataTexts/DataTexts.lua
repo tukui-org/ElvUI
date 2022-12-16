@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
+-- GLOBALS: ElvDB
 
 local _G = _G
 local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
@@ -737,22 +738,23 @@ function DT:PLAYER_ENTERING_WORLD()
 end
 
 function DT:BuildTables()
-	_G.ElvDB = _G.ElvDB or {}
+	local db = ElvDB
+	if not db then db = {} ElvDB = db end
 
-	_G.ElvDB.gold = _G.ElvDB.gold or {}
-	_G.ElvDB.gold[E.myrealm] = _G.ElvDB.gold[E.myrealm] or {}
+	if not db.gold then db.gold = {} end
+	db.gold[E.myrealm] = db.gold[E.myrealm] or {}
 
-	_G.ElvDB.class = _G.ElvDB.class or {}
-	_G.ElvDB.class[E.myrealm] = _G.ElvDB.class[E.myrealm] or {}
-	_G.ElvDB.class[E.myrealm][E.myname] = E.myclass
+	if not db.class then db.class = {} end
+	db.class[E.myrealm] = db.class[E.myrealm] or {}
+	db.class[E.myrealm][E.myname] = E.myclass
 
-	_G.ElvDB.faction = _G.ElvDB.faction or {}
-	_G.ElvDB.faction[E.myrealm] = _G.ElvDB.faction[E.myrealm] or {}
-	_G.ElvDB.faction[E.myrealm][E.myname] = E.myfaction
+	if not db.faction then db.faction = {} end
+	db.faction[E.myrealm] = db.faction[E.myrealm] or {}
+	db.faction[E.myrealm][E.myname] = E.myfaction
 
-	_G.ElvDB.serverID = _G.ElvDB.serverID or {}
-	_G.ElvDB.serverID[E.serverID] = _G.ElvDB.serverID[E.serverID] or {}
-	_G.ElvDB.serverID[E.serverID][E.myrealm] = true
+	if not db.serverID then db.serverID = {} end
+	db.serverID[E.serverID] = db.serverID[E.serverID] or {}
+	db.serverID[E.serverID][E.myrealm] = true
 end
 
 function DT:Initialize()
