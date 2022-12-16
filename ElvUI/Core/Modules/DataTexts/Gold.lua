@@ -64,7 +64,7 @@ local function updateGold(self, updateAll, goldChange)
 
 		local realmN = 1
 		for realm in pairs(_G.ElvDB.serverID[E.serverID]) do
-			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() _G.ElvDB.gold[realm] = {} DT:ForceUpdate_DataText('Gold') end })
+			tinsert(menuList, realmN, { text = 'Delete All - '..realm, notCheckable = true, func = function() wipe(_G.ElvDB.gold[realm]) DT:ForceUpdate_DataText('Gold') end })
 			realmN = realmN + 1
 			for name in pairs(_G.ElvDB.gold[realm]) do
 				local faction = _G.ElvDB.faction[realm][name]
