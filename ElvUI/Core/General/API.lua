@@ -160,7 +160,7 @@ do
 			return ...
 		else
 			index = index + 1
-			FindAura(value, key, unit, index, filter, UnitAura(unit, index, filter))
+			return FindAura(key, value, unit, index, filter, UnitAura(unit, index, filter))
 		end
 	end
 
