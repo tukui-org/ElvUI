@@ -522,7 +522,7 @@ function UF:PostCastStart(unit)
 		end
 
 		-- Wait for chain to happen
-		local chainTicks = baseTicks and unitframe.ChainChannelTicks[spellID]
+		local chainTicks = baseTicks and unitframe.ChainChannelTicks and unitframe.ChainChannelTicks[spellID]
 		if chainTicks then -- requires a window: ChainChannelTime
 			local now = GetTime() -- this will clear old ones too
 			local seconds = chainTicks and unitframe.ChainChannelTime[spellID]
