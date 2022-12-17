@@ -1183,7 +1183,7 @@ G.unitframe.ChannelTicks = {
 -- Spells that chain, second step
 G.unitframe.ChainChannelTicks = {
 	-- Evoker
-	[356995]	= 5, -- Disintegrate
+	[356995]	= 4, -- Disintegrate
 }
 
 -- Window to chain time (in seconds); usually the channel duration
