@@ -1150,8 +1150,6 @@ function UF:DisableBlizzard()
 			_G.CompactRaidFrameManager:UnregisterAllEvents()
 			_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
 		end
-	else -- we don't want to setup our raid utility when blizzard's is active
-		E.RaidUtility.Initialize = E.noop
 	end
 
 	-- handle arena ones as well

@@ -6,6 +6,7 @@ local ElvUF = E.oUF
 local abs, next = abs, next
 local unpack, tonumber = unpack, tonumber
 
+local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetTalentInfo = GetTalentInfo
 local UnitCanAttack = UnitCanAttack
@@ -510,26 +511,42 @@ function UF:PostCastStart(unit)
 	end
 
 	if self.channeling and db.castbar.ticks and unit == 'player' then
-		local unitframe = E.global.unitframe
-		local baseTicks = unitframe.ChannelTicks[self.spellID]
-		local ticksSize = baseTicks and unitframe.ChannelTicksSize[self.spellID]
-		local hasteTicks = ticksSize and unitframe.HastedChannelTicks[self.spellID]
-		local talentTicks = baseTicks and unitframe.TalentChannelTicks[self.spellID]
+		local spellID, unitframe = self.spellID, E.global.unitframe
+		local baseTicks = unitframe.ChannelTicks[spellID]
 
 		-- Separate group, so they can be effected by haste or size if needed
-		if talentTicks then
-			local selectedTicks = UF:GetTalentTicks(talentTicks)
-			if selectedTicks then
-				baseTicks = selectedTicks
+		local talentTicks = baseTicks and unitframe.TalentChannelTicks[spellID]
+		local selectedTicks = talentTicks and UF:GetTalentTicks(talentTicks)
+		if selectedTicks then
+			baseTicks = selectedTicks
+		end
+
+		-- Wait for chain to happen
+		local chainTicks = baseTicks and unitframe.ChainChannelTicks[spellID]
+		if chainTicks then -- requires a window: ChainChannelTime
+			local now = GetTime() -- this will clear old ones too
+			local seconds = chainTicks and unitframe.ChainChannelTime[spellID]
+			local match = seconds and self.chainTime and self.chainTick == spellID
+
+			if match and (now - seconds) < self.chainTime then
+				baseTicks = chainTicks
+
+				self.chainTick = nil -- reset it cause this is the chain cast
+				self.chainTime = nil -- clear the time too
+			else
+				self.chainTick = chainTicks and spellID or nil
+				self.chainTime = now
 			end
 		end
 
-		-- hasteTicks require a tickSize
-		if hasteTicks then
+		local ticksSize = baseTicks and unitframe.ChannelTicksSize[spellID]
+		local hasteTicks = ticksSize and unitframe.HastedChannelTicks[spellID]
+		if hasteTicks then -- requires tickSize
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01
 			local firstTickInc = tickIncRate * 0.5
 			local bonusTicks = 0
+
 			if curHaste >= firstTickInc then
 				bonusTicks = bonusTicks + 1
 			end
@@ -546,6 +563,7 @@ function UF:PostCastStart(unit)
 			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
 			local extraTickRatio = extraTick / hastedTickSize
+
 			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
 			self.hadTicks = true
 		elseif ticksSize then

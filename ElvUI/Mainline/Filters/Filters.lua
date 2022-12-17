@@ -1180,6 +1180,18 @@ G.unitframe.ChannelTicks = {
 	[257044]	= 7, -- Rapid Fire
 }
 
+-- Spells that chain, second step
+G.unitframe.ChainChannelTicks = {
+	-- Evoker
+	[356995]	= 5, -- Disintegrate
+}
+
+-- Window to chain time (in seconds); usually the channel duration
+G.unitframe.ChainChannelTime = {
+	-- Evoker
+	[356995]	= 3, -- Disintegrate
+}
+
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	-- Priest
