@@ -9,7 +9,7 @@
 ## Interface: 100002
 ## X-Interface: 100002
 ## X-Tukui-ProjectID: -2
-## X-Tukui-ProjectFolders: ElvUI, ElvUI_Options, ElvUI_Libraries
+## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 
 Core\Load.xml
 
