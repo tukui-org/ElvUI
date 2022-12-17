@@ -550,9 +550,9 @@ end
 local function UpdateRegisterClicks(self, down)
 	if self.isFlyoutButton then -- the bar button
 		self:RegisterForClicks('AnyUp')
-	elseif self.isFlyout then -- the flyout spell
+	elseif self.isFlyout or WoWRetail then -- the flyout spell
 		self:RegisterForClicks('AnyDown', 'AnyUp')
-	elseif not WoWRetail then
+	else
 		self:RegisterForClicks(self.config.clickOnDown and not down and 'AnyDown' or 'AnyUp')
 	end
 end
