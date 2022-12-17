@@ -8,6 +8,8 @@
 ## RequiredDeps: ElvUI_Libraries
 ## Interface: 11403
 ## X-Interface: 11403
+## X-Tukui-ProjectID: -2
+## X-Tukui-ProjectFolders: ElvUI, ElvUI_Options, ElvUI_Libraries
 
 Core\Load.xml
 
