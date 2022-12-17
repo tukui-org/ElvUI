@@ -780,12 +780,20 @@ G.unitframe.ChannelTicks = {
 	[746]	= 6, -- Linen Bandage
 }
 
-G.unitframe.ChannelTicksSize = {}
+-- Spells that chain, second step
+G.unitframe.ChainChannelTicks = {}
 
--- Spells Effected By Haste
+-- Window to chain time (in seconds); usually the channel duration
+G.unitframe.ChainChannelTime = {}
+
+-- Spells Effected By Talents
+G.unitframe.TalentChannelTicks = {}
+
+-- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {}
 
-G.unitframe.TalentChannelTicks = {}
+-- The Base Tick Size
+G.unitframe.ChannelTicksSize = {}
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {}

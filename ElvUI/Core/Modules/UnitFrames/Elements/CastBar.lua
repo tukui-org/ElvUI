@@ -511,21 +511,21 @@ function UF:PostCastStart(unit)
 	end
 
 	if self.channeling and db.castbar.ticks and unit == 'player' then
-		local spellID, unitframe = self.spellID, E.global.unitframe
-		local baseTicks = unitframe.ChannelTicks[spellID]
+		local spellID, global = self.spellID, E.global.unitframe
+		local baseTicks = global.ChannelTicks[spellID]
 
 		-- Separate group, so they can be effected by haste or size if needed
-		local talentTicks = baseTicks and unitframe.TalentChannelTicks[spellID]
+		local talentTicks = baseTicks and global.TalentChannelTicks[spellID]
 		local selectedTicks = talentTicks and UF:GetTalentTicks(talentTicks)
 		if selectedTicks then
 			baseTicks = selectedTicks
 		end
 
 		-- Wait for chain to happen
-		local chainTicks = baseTicks and unitframe.ChainChannelTicks[spellID]
+		local chainTicks = baseTicks and global.ChainChannelTicks[spellID]
 		if chainTicks then -- requires a window: ChainChannelTime
 			local now = GetTime() -- this will clear old ones too
-			local seconds = chainTicks and unitframe.ChainChannelTime[spellID]
+			local seconds = chainTicks and global.ChainChannelTime[spellID]
 			local match = seconds and self.chainTime and self.chainTick == spellID
 
 			if match and (now - seconds) < self.chainTime then
@@ -539,8 +539,8 @@ function UF:PostCastStart(unit)
 			end
 		end
 
-		local ticksSize = baseTicks and unitframe.ChannelTicksSize[spellID]
-		local hasteTicks = ticksSize and unitframe.HastedChannelTicks[spellID]
+		local ticksSize = baseTicks and global.ChannelTicksSize[spellID]
+		local hasteTicks = ticksSize and global.HastedChannelTicks[spellID]
 		if hasteTicks then -- requires tickSize
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01

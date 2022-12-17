@@ -1183,7 +1183,7 @@ G.unitframe.ChannelTicks = {
 -- Spells that chain, second step
 G.unitframe.ChainChannelTicks = {
 	-- Evoker
-	[356995]	= 5, -- Disintegrate
+	[356995]	= 4, -- Disintegrate
 }
 
 -- Window to chain time (in seconds); usually the channel duration
@@ -1199,17 +1199,18 @@ G.unitframe.TalentChannelTicks = {
 	-- [47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
 }
 
+-- Spells Effected By Haste, these spells require a Tick Size (table above)
+G.unitframe.HastedChannelTicks = {
+	-- Mage
+	[205021]	= true, -- Ray of Frost
+}
+
+-- The Base Tick Size
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
 	[198590]	= 1, -- Drain Soul
 	-- Mage
 	[205021]	= 1, -- Ray of Frost
-}
-
--- Spells Effected By Haste, these spells require a Tick Size (table above)
-G.unitframe.HastedChannelTicks = {
-	-- Mage
-	[205021]	= true, -- Ray of Frost
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
