@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 38 -- the real minor version is 105
+local MINOR_VERSION = 40 -- the real minor version is 105
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -496,6 +496,13 @@ function WrapOnClick(button)
 				flyoutHandler:Hide()
 			end
 
+			-- if this is a pickup click, disable on-down casting
+			-- it should get re-enabled in the post handler, or the OnDragStart handler, whichever occurs
+			if button ~= "Keybind" and ((self:GetAttribute("unlockedpreventdrag") and not self:GetAttribute("buttonlock")) or IsModifiedClick("PICKUPACTION")) and not self:GetAttribute("LABdisableDragNDrop") then
+				self:CallMethod("ToggleOnDownForPickup", true)
+				self:SetAttribute("LABToggledOnDown", true)
+			end
+
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
 		end
 
@@ -513,21 +520,40 @@ function WrapOnClick(button)
 		if message ~= format("%s|%s", tostring(type), tostring(action)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
 		end
+
+		-- re-enable ondown casting if needed
+		if self:GetAttribute("LABToggledOnDown") then
+			self:SetAttribute("LABToggledOnDown", nil)
+			self:CallMethod("ToggleOnDownForPickup", false)
+		end
 	]])
 end
 
--- Dynamically handle release casting ~Simpy
-local function UpdateReleaseCasting(self, down)
-	if self.isFlyout then -- the flyout spell
-		self:RegisterForClicks('AnyDown', 'AnyUp')
-	elseif self.isFlyoutButton or down then -- the bar button /or/ being locked, prevents mod key clicks on up because of SecureActionButton_OnClick in retail
+do
+	local reset
+	function Generic:ToggleOnDownForPickup(pre)
+		if not WoWRetail then return end
+
+		-- this is bugged: some talent spells will always cast on down
+		-- even when this code does not execute and keydown is disabled.
+		if pre and GetCVarBool("ActionButtonUseKeyDown") then
+			SetCVar("ActionButtonUseKeyDown", false)
+			reset = true
+		elseif reset then
+			SetCVar("ActionButtonUseKeyDown", true)
+			reset = nil
+		end
+	end
+end
+
+-- update click handling ~Simpy
+local function UpdateRegisterClicks(self, down)
+	if self.isFlyoutButton then -- the bar button
 		self:RegisterForClicks('AnyUp')
-	elseif not self:GetAttribute('typerelease') then
-		self:RegisterForClicks(self.config.clickOnDown and 'AnyDown' or 'AnyUp')
-	elseif GetCVar('empowerTapControls') == '0' then
+	elseif self.isFlyout or WoWRetail then -- the flyout spell
 		self:RegisterForClicks('AnyDown', 'AnyUp')
 	else
-		self:RegisterForClicks('AnyDown')
+		self:RegisterForClicks(self.config.clickOnDown and not down and 'AnyDown' or 'AnyUp')
 	end
 end
 
@@ -537,20 +563,16 @@ function Generic:OnButtonEvent(event, key, down)
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
-	elseif GetCVarBool('lockActionBars') then
-		local clickDown = self.config.clickOnDown or self:GetAttribute('typerelease')
-		if not clickDown then return end -- not key downing
-
+	elseif self.config.clickOnDown and GetCVarBool('lockActionBars') then -- non-retail only, retail uses ToggleOnDownForPickup method
 		if event == 'MODIFIER_STATE_CHANGED' then
 			if GetModifiedClick('PICKUPACTION') == strsub(key, 2) then
-				UpdateReleaseCasting(self, down == 1)
+				UpdateRegisterClicks(self, down == 1)
 			end
 		elseif event == 'OnEnter' then
 			local action = GetModifiedClick('PICKUPACTION')
-			local dragDown = action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown()
-			UpdateReleaseCasting(self, dragDown)
+			UpdateRegisterClicks(self, action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown())
 		elseif event == 'OnLeave' then
-			UpdateReleaseCasting(self, not clickDown)
+			UpdateRegisterClicks(self)
 		end
 	end
 end
@@ -1084,8 +1106,10 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	Generic.OnButtonEvent(self, 'OnEnter')
-	self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	if not WoWRetail then
+		Generic.OnButtonEvent(self, 'OnEnter')
+		self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	end
 end
 
 function Generic:OnLeave()
@@ -1095,8 +1119,10 @@ function Generic:OnLeave()
 		GameTooltip:Hide()
 	end
 
-	Generic.OnButtonEvent(self, 'OnLeave')
-	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	if not WoWRetail then
+		Generic.OnButtonEvent(self, 'OnLeave')
+		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	end
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -1870,7 +1896,7 @@ function Update(self, fromUpdateConfig)
 
 	UpdateSpellHighlight(self)
 
-	UpdateReleaseCasting(self)
+	UpdateRegisterClicks(self)
 
 	if GameTooltip_GetOwnerForbidden() == self then
 		UpdateTooltip(self)

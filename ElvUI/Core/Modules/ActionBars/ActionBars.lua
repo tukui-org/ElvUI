@@ -1008,7 +1008,7 @@ do
 
 				if not E.Retail then
 					AB:SetNoopsi(frame)
-				elseif frame.UpdateVisibility then -- EditMode messes with at least PetActionBar
+				elseif name == 'PetActionBar' then -- EditMode messes with it, be specific otherwise bags taint
 					frame.UpdateVisibility = E.noop
 				end
 			end
