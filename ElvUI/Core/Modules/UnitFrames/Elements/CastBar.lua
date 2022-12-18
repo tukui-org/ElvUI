@@ -525,18 +525,18 @@ function UF:PostCastStart(unit)
 		local chainTicks = baseTicks and global.ChainChannelTicks[spellID]
 		if chainTicks then -- requires a window: ChainChannelTime
 			local now = GetTime() -- this will clear old ones too
-			local seconds = chainTicks and global.ChainChannelTime[spellID]
+			local seconds = global.ChainChannelTime[spellID]
 			local match = seconds and self.chainTime and self.chainTick == spellID
 
 			if match and (now - seconds) < self.chainTime then
 				baseTicks = chainTicks
-
-				self.chainTick = nil -- reset it cause this is the chain cast
-				self.chainTime = nil -- clear the time too
 			else
-				self.chainTick = chainTicks and spellID or nil
+				self.chainTick = spellID
 				self.chainTime = now
 			end
+		else
+			self.chainTick = nil -- not a chain spell
+			self.chainTime = nil -- clear the time too
 		end
 
 		local ticksSize = baseTicks and global.ChannelTicksSize[spellID]
