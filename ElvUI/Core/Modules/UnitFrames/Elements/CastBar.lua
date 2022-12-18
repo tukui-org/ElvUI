@@ -530,10 +530,10 @@ function UF:PostCastStart(unit)
 
 			if match and (now - seconds) < self.chainTime then
 				baseTicks = chainTicks
-			else
-				self.chainTick = spellID
-				self.chainTime = now
 			end
+
+			self.chainTime = now
+			self.chainTick = spellID
 		else
 			self.chainTick = nil -- not a chain spell
 			self.chainTime = nil -- clear the time too
