@@ -726,6 +726,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[215429] = List(), -- Thunderstrike 2
 		[203963] = List(), -- Eye of the Storm
 		[196497] = List(), -- Ravenous Leap
+		[193660] = List(), -- Felblaze Rush
 	-- Shadowmoon Burial Grounds
 		[156776] = List(), -- Rending Voidlash
 		[153692] = List(), -- Necrotic Pitch
