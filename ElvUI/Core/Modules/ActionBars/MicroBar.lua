@@ -352,8 +352,12 @@ function AB:SetupMicroBar()
 	end
 
 	AB:SecureHook('UpdateMicroButtons')
-	AB:SecureHook('UpdateMicroButtonsParent')
-	UpdateMicroButtonsParent(microBar)
+
+	--[[ Fix me 10.0.5 -- See below if its correct?
+		AB:SecureHook('UpdateMicroButtonsParent')
+		UpdateMicroButtonsParent(microBar)
+	]]
+	ResetMicroMenuPosition()
 
 	if not E.Retail then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
