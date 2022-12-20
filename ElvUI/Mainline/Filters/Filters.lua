@@ -1039,14 +1039,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[388029] = List(), -- Diverted Essence 1
 		[387982] = List(), -- Diverted Essence 2
 	-- Kurog Grimtotem
-		[374918] = List(), -- Thundering Dominance
-		[374881] = List(), -- Flaming Dominance
-		[374916] = List(), -- Chilling Dominance
-		[374917] = List(), -- Shattering Dominance
 		[374321] = List(), -- Breaking Gravel
 		[395893] = List(), -- Erupting Bedrock
 		[374485] = List(), -- Magma Flow
-		[374779] = List(6), -- Primal Barrier
+		[374779] = List(), -- Primal Barrier
 		[374707] = List(), -- Seismic Rupture
 		[374624] = List(), -- Freezing Tempest
 	-- Broodkeeper Diurna
