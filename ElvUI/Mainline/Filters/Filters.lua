@@ -725,6 +725,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[215430] = List(), -- Thunderstrike 1
 		[215429] = List(), -- Thunderstrike 2
 		[203963] = List(), -- Eye of the Storm
+		[196497] = List(), -- Ravenous Leap
 	-- Shadowmoon Burial Grounds
 		[156776] = List(), -- Rending Voidlash
 		[153692] = List(), -- Necrotic Pitch
@@ -813,6 +814,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[371007] = List(), -- Splintering Shards
 		[375591] = List(), -- Sappy Burst
 		[385409] = List(), -- Ouch, ouch, ouch!
+		[386549] = List(), -- Waking Bane
 	-- Algeth'ar Academy
 		[389033] = List(), -- Lasher Toxin
 		[391977] = List(), -- Oversurge
