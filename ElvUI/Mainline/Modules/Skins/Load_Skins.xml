@@ -19,8 +19,10 @@
 	<Script file='BlackMarket.lua'/>
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
+	<Script file='ChatConfig.lua'/>
 	<Script file='Character.lua'/>
 	<Script file='ChromieTime.lua'/>
+	<Script file='ClassTalents.lua'/>
 	<Script file='Collectables.lua'/>
 	<Script file='CombatLog.lua' />
 	<Script file='Communities.lua'/>
@@ -31,13 +33,16 @@
 	<Script file='DeathRecap.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>
+	<Script file='EditorManager.lua'/>
 	<Script file='EncounterJournal.lua'/>
 	<Script file='EventTrace.lua'/>
+	<Script file='ExpansionLandingPage.lua'/>
 	<Script file='FlightMap.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Garrison.lua'/>
 	<Script file='GarrisonTooltip.lua'/>
 	<Script file='GarrisonTemplate.lua'/>
+	<Script file='GenericTrait.lua'/>
 	<Script file='GMChat.lua'/>
 	<Script file='Gossip.lua'/>
 	<Script file='Guide.lua'/>
@@ -57,6 +62,7 @@
 	<Script file='LossControl.lua'/>
 	<Script file='Macro.lua'/>
 	<Script file='Mail.lua'/>
+	<Script file='MajorFaction.lua'/>
 	<Script file='Merchant.lua'/>
 	<Script file='MirrorTimers.lua'/>
 	<Script file='Misc.lua'/>
@@ -67,6 +73,8 @@
 	<Script file='PetBattle.lua'/>
 	<Script file='Petition.lua'/>
 	<Script file='PlayerChoice.lua'/>
+	<Script file='Professions.lua'/>
+	<Script file='ProfessionsOrders.lua'/>
 	<Script file='PVP.lua'/>
 	<Script file='PVPMatch.lua'/>
 	<Script file='Quest.lua'/>
@@ -74,6 +82,7 @@
 	<Script file='Raid.lua'/>
 	<Script file='Runeforge.lua'/>
 	<Script file='ScrappingMachine.lua'/>
+	<Script file='SettingsPanel.lua'/>
 	<Script file='Socket.lua'/>
 	<Script file='Soulbinds.lua'/>
 	<Script file='SpellBook.lua'/>
@@ -94,13 +103,5 @@
 	<Script file='WorldMap.lua'/>
 
 	<!-- DF new ones -->
-	<Script file='ClassTalents.lua'/>
-	<Script file='EditorManager.lua'/>
-	<Script file='ExpansionLandingPage.lua'/>
-	<Script file='GenericTrait.lua'/>
-	<Script file='MajorFaction.lua'/>
-	<Script file='Professions.lua'/>
-	<Script file='ProfessionsOrders.lua'/>
-	<Script file='SettingsPanel.lua'/>
-	<Script file='ChatConfig.lua'/>
+	<Script file='PerksProgram.lua'/>
 </Ui>

@@ -65,4 +65,5 @@ function S:Blizzard_CharacterCustomize()
 		end
 	end)
 end
+
 S:AddCallbackForAddon('Blizzard_CharacterCustomize')
