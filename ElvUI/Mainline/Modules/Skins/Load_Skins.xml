@@ -19,8 +19,8 @@
 	<Script file='BlackMarket.lua'/>
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
-	<Script file='ChatConfig.lua'/>
 	<Script file='Character.lua'/>
+	<Script file='ChatConfig.lua'/>
 	<Script file='ChromieTime.lua'/>
 	<Script file='ClassTalents.lua'/>
 	<Script file='Collectables.lua'/>
@@ -40,8 +40,8 @@
 	<Script file='FlightMap.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Garrison.lua'/>
-	<Script file='GarrisonTooltip.lua'/>
 	<Script file='GarrisonTemplate.lua'/>
+	<Script file='GarrisonTooltip.lua'/>
 	<Script file='GenericTrait.lua'/>
 	<Script file='GMChat.lua'/>
 	<Script file='Gossip.lua'/>
