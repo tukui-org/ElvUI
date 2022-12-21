@@ -265,6 +265,8 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 	local color = ITEM_QUALITY_COLORS[quality]
 
+	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
+
 	local f = M:LootFrame_GetFrame()
 	wipe(f.rolls)
 
@@ -307,7 +309,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.button.ilvl:SetTextColor(1, 1, 1)
 	end
 
-	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"])
+	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"] or '')
 	f.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
 	if db.qualityStatusBar then
