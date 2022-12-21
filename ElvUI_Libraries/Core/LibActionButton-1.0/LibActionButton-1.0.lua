@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 40 -- the real minor version is 105
+local MINOR_VERSION = 41 -- the real minor version is 106
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2233,28 +2233,24 @@ end
 hooksecurefunc("UpdateOnBarHighlightMarksBySpell", function(spellID)
 	lib.ON_BAR_HIGHLIGHT_MARK_TYPE = "spell"
 	lib.ON_BAR_HIGHLIGHT_MARK_ID = tonumber(spellID)
-
-	for button in next, ButtonRegistry do
-		UpdateSpellHighlight(button)
-	end
 end)
 
 hooksecurefunc("UpdateOnBarHighlightMarksByFlyout", function(flyoutID)
 	lib.ON_BAR_HIGHLIGHT_MARK_TYPE = "flyout"
 	lib.ON_BAR_HIGHLIGHT_MARK_ID = tonumber(flyoutID)
-
-	for button in next, ButtonRegistry do
-		UpdateSpellHighlight(button)
-	end
 end)
 
 hooksecurefunc("ClearOnBarHighlightMarks", function()
 	lib.ON_BAR_HIGHLIGHT_MARK_TYPE = nil
-
-	for button in next, ButtonRegistry do
-		UpdateSpellHighlight(button)
-	end
 end)
+
+if ActionBarController_UpdateAllSpellHighlights then
+	hooksecurefunc("ActionBarController_UpdateAllSpellHighlights", function()
+		for button in next, ButtonRegistry do
+			UpdateSpellHighlight(button)
+		end
+	end)
+end
 
 function UpdateSpellHighlight(self)
 	local shown = false
