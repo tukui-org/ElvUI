@@ -6,21 +6,20 @@ local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 function NP:RaidTargetIndicator_Override()
 	local element = self.RaidTargetIndicator
+	local index = self.unit and GetRaidTargetIndex(self.unit)
 
-	if self.unit then
-		local index = GetRaidTargetIndex(self.unit)
-		if index and not self.isMe then
-			SetRaidTargetIconTexture(element, index)
-			element:Show()
-		else
-			element:Hide()
-		end
+	if index then
+		SetRaidTargetIconTexture(element, index)
+		element:Show()
+	else
+		element:Hide()
 	end
 end
 
 function NP:Construct_RaidTargetIndicator(nameplate)
 	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', nil, 7)
 	RaidTargetIndicator.Override = NP.RaidTargetIndicator_Override
+	RaidTargetIndicator:Hide()
 
 	return RaidTargetIndicator
 end
