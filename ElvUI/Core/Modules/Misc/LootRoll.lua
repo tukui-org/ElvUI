@@ -30,7 +30,6 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
 local cachedRolls = {}
-local cancelled_rolls = {}
 local completedRolls = {}
 M.RollBars = {}
 
@@ -244,8 +243,6 @@ function M:LootFrame_GetFrame(i)
 end
 
 function M:CANCEL_LOOT_ROLL(_, rollID)
-	cancelled_rolls[rollID] = true
-
 	for _, bar in next, M.RollBars do
 		if bar.rollID == rollID then
 			bar.rollID = nil
@@ -257,7 +254,6 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 end
 
 function M:START_LOOT_ROLL(_, rollID, rollTime)
-	if cancelled_rolls[rollID] then return end
 	local db = E.db.general.lootRoll
 
 	local itemLink = GetLootRollItemLink(rollID)
