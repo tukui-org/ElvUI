@@ -14,7 +14,9 @@ local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 function UF:ModelAlphaFix(alpha)
 	local portrait = self.Portrait3D
 	if portrait then
-		portrait:SetModelAlpha(alpha * portrait:GetAlpha())
+		local new = alpha * portrait:GetAlpha()
+		portrait:SetModelAlpha(new)
+		portrait.backdrop:SetAlpha(new)
 	end
 end
 
@@ -36,6 +38,7 @@ function UF:Construct_Portrait(frame, which)
 		-- https://github.com/Stanzilla/WoWUIBugs/issues/295
 		-- since this seems to be forced on models because of a bug
 		portrait:SetIgnoreParentAlpha(true) -- lets handle it ourselves
+		portrait.backdrop:SetIgnoreParentAlpha(true)
 		hooksecurefunc(frame, 'SetAlpha', UF.ModelAlphaFix)
 	end
 
@@ -45,16 +48,22 @@ function UF:Construct_Portrait(frame, which)
 end
 
 function UF:Configure_Portrait(frame)
-	local last = frame.Portrait
-	if last then
-		last:Hide()
-		last.backdrop:Hide()
-	end
-
 	local db = frame.db
 	local portrait = (db.portrait.style == '3D' and frame.Portrait3D) or frame.Portrait2D
 	portrait.db = db.portrait
-	frame.Portrait = portrait
+
+	if frame.Portrait ~= portrait then
+		if frame.Portrait then -- previous style, so we hide it
+			frame.Portrait:Hide()
+			frame.Portrait.backdrop:Hide()
+		end
+
+		frame.Portrait = portrait -- then update the new one
+	end
+
+	portrait.backdrop:SetShown(frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY)
+	portrait:SetAlpha(frame.USE_PORTRAIT_OVERLAY and portrait.db.overlayAlpha or 1)
+	portrait:SetShown(frame.USE_PORTRAIT)
 
 	if portrait.db.style == 'Class' then
 		portrait:SetTexture(classIcon)
@@ -69,20 +78,16 @@ function UF:Configure_Portrait(frame)
 			frame:EnableElement('Portrait')
 		end
 
-		portrait:Show()
-		portrait:ClearAllPoints()
-		portrait.backdrop:ClearAllPoints()
-
 		if portrait.db.style == '3D' then
 			portrait:SetFrameLevel(frame.Health:GetFrameLevel())
 		else
 			portrait:SetParent(frame.USE_PORTRAIT_OVERLAY and frame.Health or frame)
 		end
 
-		if frame.USE_PORTRAIT_OVERLAY then
-			portrait:SetAlpha(portrait.db.overlayAlpha)
-			portrait.backdrop:Hide()
+		portrait:ClearAllPoints()
+		portrait.backdrop:ClearAllPoints()
 
+		if frame.USE_PORTRAIT_OVERLAY then
 			if portrait.db.fullOverlay then
 				portrait:SetInside(frame.Health, 0, 0)
 			else
@@ -101,8 +106,6 @@ function UF:Configure_Portrait(frame)
 				end
 			end
 		else
-			portrait:SetAlpha(1)
-			portrait.backdrop:Show()
 			portrait:SetInside(portrait.backdrop, UF.BORDER, UF.BORDER)
 
 			if frame.ORIENTATION == 'LEFT' then
@@ -123,13 +126,8 @@ function UF:Configure_Portrait(frame)
 				end
 			end
 		end
-	else
-		if frame:IsElementEnabled('Portrait') then
-			frame:DisableElement('Portrait')
-		end
-
-		portrait.backdrop:Hide()
-		portrait:Hide()
+	elseif frame:IsElementEnabled('Portrait') then
+		frame:DisableElement('Portrait')
 	end
 end
 

@@ -19,6 +19,10 @@ function S:Blizzard_MajorFactions()
 	RenownFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(RenownFrame.CloseButton)
 
+	if RenownFrame.LevelSkipButton then
+		S:HandleButton(RenownFrame.LevelSkipButton)
+	end
+
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc(RenownFrame, 'SetUpMajorFactionData', SetupMajorFaction)
 	end
