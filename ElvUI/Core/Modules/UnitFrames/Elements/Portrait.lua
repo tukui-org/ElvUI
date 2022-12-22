@@ -14,7 +14,9 @@ local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 function UF:ModelAlphaFix(alpha)
 	local portrait = self.Portrait3D
 	if portrait then
-		portrait:SetModelAlpha(alpha * portrait:GetAlpha())
+		local new = alpha * portrait:GetAlpha()
+		portrait:SetModelAlpha(new)
+		portrait.backdrop:SetAlpha(new)
 	end
 end
 
@@ -36,6 +38,7 @@ function UF:Construct_Portrait(frame, which)
 		-- https://github.com/Stanzilla/WoWUIBugs/issues/295
 		-- since this seems to be forced on models because of a bug
 		portrait:SetIgnoreParentAlpha(true) -- lets handle it ourselves
+		portrait.backdrop:SetIgnoreParentAlpha(true)
 		hooksecurefunc(frame, 'SetAlpha', UF.ModelAlphaFix)
 	end
 
