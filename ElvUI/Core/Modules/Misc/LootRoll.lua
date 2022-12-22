@@ -229,14 +229,14 @@ function M:LootRoll_Create(index)
 end
 
 function M:LootFrame_GetFrame(i)
-	if not i then
+	if i then
+		return M.RollBars[i] or M:LootRoll_Create(i)
+	else -- check for a bar to reuse
 		for _, f in next, M.RollBars do
 			if not f.rollID then
 				return f
 			end
 		end
-	else
-		return M.RollBars[i] or M:LootRoll_Create(i)
 	end
 end
 
