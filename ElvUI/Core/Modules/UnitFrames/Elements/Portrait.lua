@@ -11,12 +11,12 @@ local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
-function UF:ModelAlphaFix(alpha)
+function UF:ModelAlphaFix(value)
 	local portrait = self.Portrait3D
 	if portrait then
-		local new = alpha * portrait:GetAlpha()
-		portrait:SetModelAlpha(new)
-		portrait.backdrop:SetAlpha(new)
+		local alpha = value * portrait:GetAlpha()
+		portrait:SetModelAlpha(alpha)
+		portrait.backdrop:SetAlpha(alpha)
 	end
 end
 
@@ -142,6 +142,12 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 			self:SetRotation(rad(db.rotation))
 		end
 
+		-- mimic ModelAlphaFix, so when the module updates the correct alpha is set
+		local frame = self.__owner
+		local alpha = frame.USE_PORTRAIT_OVERLAY and db.overlayAlpha or 1
+		self:SetModelAlpha(alpha * frame:GetAlpha())
+
+		-- handle the other settings
 		self:SetDesaturation(db.desaturation)
 		self:SetPaused(db.paused)
 	elseif db.style == 'Class' then
