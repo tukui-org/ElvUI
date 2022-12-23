@@ -102,7 +102,7 @@ local function HandleAffixIcons(self)
 		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
 
 		if Name and PowerLevel then
-			self.DungeonName:SetText(Name.. '|cffffffff -|r (' .. PowerLevel .. ')')
+			self.DungeonName:SetText(Name.. ' |cffffffff-|r (' .. PowerLevel .. ')')
 		end
 
 		self.PowerLevel:SetText('')
