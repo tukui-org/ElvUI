@@ -872,7 +872,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[375620] = List(6), -- Ionizing Charge
 		[375578] = List(4), -- Flame Sentry
 	-- Raszageth the Storm-Eater
-		-- TODO: DF
+		[381615] = List(6), -- Static Charge
+		[399713] = List(6), -- Magnetic Charge
+		[385073] = List(5), -- Ball Lightning
+		[377467] = List(6), -- Fulminating Charge
 	},
 }
 
@@ -1039,7 +1042,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[375809] = List(), -- Broodkeeper's Bond
 		[390561] = List(), -- Diurna's Gaze
 	-- Raszageth the Storm-Eater
-		-- TODO: DF
+		[388691] = List(), -- Stormsurge
+		[385360] = List(), -- Overload
+		[382530] = List(), -- Surge
+		[385547] = List(), -- Ascension
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
