@@ -30,7 +30,6 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
 local cachedRolls = {}
-local cancelled_rolls = {}
 local completedRolls = {}
 M.RollBars = {}
 
@@ -230,22 +229,18 @@ function M:LootRoll_Create(index)
 end
 
 function M:LootFrame_GetFrame(i)
-	if M.RollBars[i] then
-		return M.RollBars[i]
-	else
+	if i then
+		return M.RollBars[i] or M:LootRoll_Create(i)
+	else -- check for a bar to reuse
 		for _, f in next, M.RollBars do
-			if not f.rollID and not i then
+			if not f.rollID then
 				return f
 			end
 		end
-
-		return M:LootRoll_Create(i)
 	end
 end
 
 function M:CANCEL_LOOT_ROLL(_, rollID)
-	cancelled_rolls[rollID] = true
-
 	for _, bar in next, M.RollBars do
 		if bar.rollID == rollID then
 			bar.rollID = nil
@@ -257,13 +252,14 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 end
 
 function M:START_LOOT_ROLL(_, rollID, rollTime)
-	if cancelled_rolls[rollID] then return end
 	local db = E.db.general.lootRoll
 
 	local itemLink = GetLootRollItemLink(rollID)
 	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 	local color = ITEM_QUALITY_COLORS[quality]
+
+	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
 
 	local f = M:LootFrame_GetFrame()
 	wipe(f.rolls)
@@ -307,7 +303,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 		f.button.ilvl:SetTextColor(1, 1, 1)
 	end
 
-	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"])
+	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"] or '')
 	f.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
 	if db.qualityStatusBar then
