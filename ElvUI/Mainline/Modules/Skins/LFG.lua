@@ -561,6 +561,8 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
 
+	S:HandleButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
+
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
