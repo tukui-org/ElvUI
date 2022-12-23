@@ -6,12 +6,14 @@ local _G = _G
 local next = next
 local unpack, ipairs, pairs = unpack, ipairs, pairs
 local min, strlower, select = min, strlower, select
+local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
 local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
 local GetLFGProposalMember = GetLFGProposalMember
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
+
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
@@ -19,8 +21,8 @@ local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
 local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
+
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
-local hooksecurefunc = hooksecurefunc
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LCG.ShowOverlayGlow(self:GetParent().checkButton)
@@ -102,7 +104,7 @@ local function HandleAffixIcons(self)
 		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
 
 		if Name and PowerLevel then
-			self.DungeonName:SetText(Name.. '|cffffffff - |r' .. '(' .. PowerLevel .. ')')
+			self.DungeonName:SetText(Name.. ' |cffffffff-|r (' .. PowerLevel .. ')')
 		end
 
 		self.PowerLevel:SetText('')
@@ -380,11 +382,6 @@ function S:LookingForGroupFrames()
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
-	--[[ ToDO: DF
-	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
-	end]]
-
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
 			if button.isCollapsed then
@@ -394,12 +391,6 @@ function S:LookingForGroupFrames()
 			end
 		end
 	end)
-
-	--[[ ToDO: DF
-	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
-		S:HandleCheckBox(bu, nil, true)
-	end]]
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
 
@@ -563,7 +554,6 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
-	S:HandleButton(_G.LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()

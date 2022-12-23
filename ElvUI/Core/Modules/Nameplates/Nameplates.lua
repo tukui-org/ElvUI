@@ -748,6 +748,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
 
+		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame
+		if nameplate.softTargetFrame then
+			nameplate.softTargetFrame:SetParent(nameplate)
+			nameplate.softTargetFrame:SetIgnoreParentAlpha(true)
+		end
+
 		if nameplate.widgetsOnly then
 			NP:DisablePlate(nameplate)
 
@@ -755,7 +761,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				nameplate.RaisedElement:Hide()
 			end
 
-			nameplate.widgetContainer = nameplate.blizzPlate.WidgetContainer
+			nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer
 			if nameplate.widgetContainer then
 				nameplate.widgetContainer:SetParent(nameplate)
 				nameplate.widgetContainer:ClearAllPoints()
@@ -792,6 +798,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate)
+		end
+
+		if nameplate.softTargetFrame then
+			nameplate.softTargetFrame:SetParent(nameplate.blizzPlate)
+			nameplate.softTargetFrame:SetIgnoreParentAlpha(false)
 		end
 
 		if not nameplate.widgetsOnly then
