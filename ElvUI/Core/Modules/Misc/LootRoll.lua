@@ -20,9 +20,9 @@ local RollOnLoot = RollOnLoot
 
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
-
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
