@@ -6,12 +6,14 @@ local _G = _G
 local next = next
 local unpack, ipairs, pairs = unpack, ipairs, pairs
 local min, strlower, select = min, strlower, select
+local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
 local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
 local GetLFGProposalMember = GetLFGProposalMember
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
+
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
@@ -19,8 +21,8 @@ local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
 local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
+
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
-local hooksecurefunc = hooksecurefunc
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LCG.ShowOverlayGlow(self:GetParent().checkButton)
