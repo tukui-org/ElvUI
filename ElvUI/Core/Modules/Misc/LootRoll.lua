@@ -20,9 +20,9 @@ local RollOnLoot = RollOnLoot
 
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
-
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
@@ -229,16 +229,14 @@ function M:LootRoll_Create(index)
 end
 
 function M:LootFrame_GetFrame(i)
-	if M.RollBars[i] then
-		return M.RollBars[i]
-	else
+	if i then
+		return M.RollBars[i] or M:LootRoll_Create(i)
+	else -- check for a bar to reuse
 		for _, f in next, M.RollBars do
-			if not f.rollID and not i then
+			if not f.rollID then
 				return f
 			end
 		end
-
-		return M:LootRoll_Create(i)
 	end
 end
 
