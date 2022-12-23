@@ -581,12 +581,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[26297]		= List(), -- Berserking
 		[68992]		= List(), -- Darkflight
 		[58984]		= List(), -- Shadowmeld
-	-- General Consumables
-		[178207]	= List(), -- Drums of Fury
-		[230935]	= List(), -- Drums of the Mountain (Legion)
-		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-	-- Dragonflight Consumables
-		-- TODO: DF
 	},
 }
 
