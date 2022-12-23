@@ -679,18 +679,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------- Mythic+ Specific --------------------
 	----------------------------------------------------------
 	-- General Affixes
-		[209858] = List(), -- Necrotic
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
-	-- Shadowlands Season 4
-		[373364] = List(), -- Vampiric Claws
-		[373429] = List(), -- Carrion Swarm
-		[373370] = List(), -- Nightmare Cloud
-		[373391] = List(), -- Nightmare
-		[373570] = List(), -- Hypnosis
-		[373607] = List(), -- Shadowy Barrier (Hypnosis)
-		[373509] = List(), -- Shadow Claws (Stacking)
 	-- Dragonflight Season 1
 		[396369] = List(), -- Mark of Lightning
 		[396364] = List(), -- Mark of Wind
@@ -900,13 +891,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = List(), -- Bolster
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
-		[343502] = List(), -- Inspiring
-	-- Shadowlands Season 4
-		[373011] = List(6), -- Disguised
-		[373108] = List(2), -- Bounty: Critical Strike (Stacking)
-		[373113] = List(2), -- Bounty: Haste (Stacking)
-		[373121] = List(2), -- Bounty: Versatility (Stacking)
-		[373116] = List(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
