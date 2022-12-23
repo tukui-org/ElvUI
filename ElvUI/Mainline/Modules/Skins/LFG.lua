@@ -102,7 +102,7 @@ local function HandleAffixIcons(self)
 		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
 
 		if Name and PowerLevel then
-			self.DungeonName:SetText(Name.. '|cffffffff - |r' .. '(' .. PowerLevel .. ')')
+			self.DungeonName:SetText(Name.. '|cffffffff -|r (' .. PowerLevel .. ')')
 		end
 
 		self.PowerLevel:SetText('')
@@ -380,11 +380,6 @@ function S:LookingForGroupFrames()
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
-	--[[ ToDO: DF
-	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
-		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
-	end]]
-
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
 			if button.isCollapsed then
@@ -394,12 +389,6 @@ function S:LookingForGroupFrames()
 			end
 		end
 	end)
-
-	--[[ ToDO: DF
-	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
-		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
-		S:HandleCheckBox(bu, nil, true)
-	end]]
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
 
