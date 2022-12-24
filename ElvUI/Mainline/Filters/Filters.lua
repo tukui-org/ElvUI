@@ -630,6 +630,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
 		[392960]	= List(), -- Waygate Travel
 		[390106]	= List(), -- Riding Along
+		[383600]	= List(), -- Surrounding Storm (Strunraan)
 		[392992]	= List(), -- Silent Lava
 		[393798]	= List(), -- Activated Defense Systems
 	},
