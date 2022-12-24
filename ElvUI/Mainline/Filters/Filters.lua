@@ -581,12 +581,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[26297]		= List(), -- Berserking
 		[68992]		= List(), -- Darkflight
 		[58984]		= List(), -- Shadowmeld
-	-- General Consumables
-		[178207]	= List(), -- Drums of Fury
-		[230935]	= List(), -- Drums of the Mountain (Legion)
-		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-	-- Dragonflight Consumables
-		-- TODO: DF
 	},
 }
 
@@ -635,6 +629,10 @@ G.unitframe.aurafilters.Blacklist = {
 		[348443]	= List(), -- Experience Eliminated
 		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
 		[392960]	= List(), -- Waygate Travel
+		[390106]	= List(), -- Riding Along
+		[383600]	= List(), -- Surrounding Storm (Strunraan)
+		[392992]	= List(), -- Silent Lava
+		[393798]	= List(), -- Activated Defense Systems
 	},
 }
 
@@ -679,18 +677,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------- Mythic+ Specific --------------------
 	----------------------------------------------------------
 	-- General Affixes
-		[209858] = List(), -- Necrotic
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
-	-- Shadowlands Season 4
-		[373364] = List(), -- Vampiric Claws
-		[373429] = List(), -- Carrion Swarm
-		[373370] = List(), -- Nightmare Cloud
-		[373391] = List(), -- Nightmare
-		[373570] = List(), -- Hypnosis
-		[373607] = List(), -- Shadowy Barrier (Hypnosis)
-		[373509] = List(), -- Shadow Claws (Stacking)
 	-- Dragonflight Season 1
 		[396369] = List(), -- Mark of Lightning
 		[396364] = List(), -- Mark of Wind
@@ -881,7 +870,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[375620] = List(6), -- Ionizing Charge
 		[375578] = List(4), -- Flame Sentry
 	-- Raszageth the Storm-Eater
-		-- TODO: DF
+		[381615] = List(6), -- Static Charge
+		[399713] = List(6), -- Magnetic Charge
+		[385073] = List(5), -- Ball Lightning
+		[377467] = List(6), -- Fulminating Charge
 	},
 }
 
@@ -900,13 +892,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = List(), -- Bolster
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
-		[343502] = List(), -- Inspiring
-	-- Shadowlands Season 4
-		[373011] = List(6), -- Disguised
-		[373108] = List(2), -- Bounty: Critical Strike (Stacking)
-		[373113] = List(2), -- Bounty: Haste (Stacking)
-		[373121] = List(2), -- Bounty: Versatility (Stacking)
-		[373116] = List(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
@@ -1055,7 +1040,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[375809] = List(), -- Broodkeeper's Bond
 		[390561] = List(), -- Diurna's Gaze
 	-- Raszageth the Storm-Eater
-		-- TODO: DF
+		[388691] = List(), -- Stormsurge
+		[385360] = List(), -- Overload
+		[382530] = List(), -- Surge
+		[385547] = List(), -- Ascension
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
