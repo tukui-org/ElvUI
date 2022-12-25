@@ -48,6 +48,7 @@ local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
+local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -867,9 +868,6 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 end
 
 function AB:SpellButtonOnEnter(_, tt)
-	-- copied from SpellBookFrame to remove:
-	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
-
 	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
 	if not tt then tt = SpellBookTooltip end
 
@@ -913,6 +911,10 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
+	if ActionBarController_UpdateAllSpellHighlights then
+		ActionBarController_UpdateAllSpellHighlights()
+	end
+
 	tt:Show()
 end
 
@@ -925,6 +927,10 @@ end
 function AB:SpellButtonOnLeave()
 	ClearOnBarHighlightMarks()
 	ClearPetActionHighlightMarks()
+
+	if ActionBarController_UpdateAllSpellHighlights then
+		ActionBarController_UpdateAllSpellHighlights()
+	end
 
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
