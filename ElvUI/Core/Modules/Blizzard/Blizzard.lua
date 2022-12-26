@@ -63,13 +63,14 @@ function B:Initialize()
 
 	B:EnhanceColorPicker()
 	B:AlertMovers()
-	B:KillBlizzard()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
 
-	if E.Retail then
+	if not E.Retail then
+		B:KillBlizzard()
+	else
 		B:DisableHelpTip()
-		B:DisableNPE()
+		B:DisableTutorials()
 		B:SkinBlizzTimers()
 		B:HandleTalkingHead()
 

@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
 
+L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essence"
 L["BAG_FILTER_JUNK"] = "Camelote"
 L["BAG_FILTER_QUEST_ITEMS"] = "Objets de quête"
