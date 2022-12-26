@@ -13,6 +13,7 @@ local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+---- current unused:
 local function UpdateNames(button)
 	if not button.expanded then return end
 
@@ -26,6 +27,18 @@ local function UpdateNames(button)
 	end
 end
 
+local function ColorMemberName(button, info)
+	if not info then return end
+
+	local class = button.Class
+	local _, classTag = GetClassInfo(info.classID)
+	if classTag then
+		local tcoords = CLASS_ICON_TCOORDS[classTag]
+		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+	end
+end
+---- TODO: need to reimplement this ^
+
 local function HandleRoleChecks(button, ...)
 	button:StripTextures()
 	button:DisableDrawLayer('ARTWORK')
@@ -37,59 +50,44 @@ local function HandleRoleChecks(button, ...)
 	button.bg:Point('CENTER')
 	button.bg:Size(40, 40)
 	button.bg:SetAlpha(0.6)
+
 	S:HandleCheckBox(button.CheckBox)
 end
 
-local function SideClubButton_CreateBackdrop(frame)
-	frame:CreateBackdrop('Transparent')
-	frame.backdrop:Point('TOPLEFT', 4, -13)
-	frame.backdrop:Point('BOTTOMRIGHT', -8, 8)
-end
-
-local function HandleCommunitiesButtons(button, color)
+local function HandleCommunitiesButtons(button)
 	button.Background:Hide()
 	button.CircleMask:Hide()
-	button:SetFrameLevel(button:GetFrameLevel() + 5)
-
-	S:HandleIcon(button.Icon)
-	button.Icon:ClearAllPoints()
-	button.Icon:Point('TOPLEFT', 15, -18)
 	button.IconRing:Hide()
-
-	if not button.backdrop then
-		SideClubButton_CreateBackdrop(button)
-	end
-
-	local highlight = button:GetHighlightTexture()
-	highlight:SetColorTexture(1, 1, 1, 0.3)
-	highlight:SetInside(button.backdrop)
 
 	if button.IconBorder then
 		button.IconBorder:Hide()
 	end
 
-	if color then
-		button.Selection:SetInside(button.backdrop)
-
-		if color == 1 then
-			button.Selection:SetAtlas(nil)
-			button.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
-		else
-			button.Selection:SetAtlas(nil)
-			button.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
-		end
+	if not button.backdrop then
+		button:CreateBackdrop('Transparent')
 	end
-end
 
-local function ColorMemberName(button, info)
-	if not info then return end
+	button:SetFrameLevel(button:GetFrameLevel() + 5)
 
-	local class = button.Class
-	local _, classTag = GetClassInfo(info.classID)
-	if classTag then
-		local tcoords = CLASS_ICON_TCOORDS[classTag]
-		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
-	end
+	S:HandleIcon(button.Icon)
+	button.Icon:ClearAllPoints()
+	button.Icon:Point('TOPLEFT', 15, -18)
+
+	button.backdrop:ClearAllPoints()
+	button.backdrop:Point('TOPLEFT', 4, -13)
+	button.backdrop:Point('BOTTOMRIGHT', -8, 8)
+
+	local highlight = button:GetHighlightTexture()
+	highlight:SetTexture(E.media.normTex)
+	highlight:SetVertexColor(1, 1, 1, 0.3)
+	highlight:SetInside(button.backdrop)
+
+	button.Selection:SetAtlas(nil)
+	button.Selection:SetTexture(E.media.normTex)
+	button.Selection:SetInside(button.backdrop)
+
+	local color = (button.Background:GetAtlas() == 'communities-nav-button-green-normal' and GREEN_FONT_COLOR) or BATTLENET_FONT_COLOR
+	button.Selection:SetVertexColor(color.r, color.g, color.b, 0.2)
 end
 
 local HandleGuildCards
@@ -148,11 +146,11 @@ function S:Blizzard_Communities()
 	CommunitiesFrame:StripTextures()
 	CommunitiesFrame.NineSlice:Hide()
 	_G.CommunitiesFrameInset.Bg:Hide()
-	CommunitiesFrame.CommunitiesList.InsetFrame:StripTextures()
 
 	S:HandlePortraitFrame(CommunitiesFrame)
 
 	local CommunitiesFrameCommunitiesList = _G.CommunitiesFrameCommunitiesList
+	CommunitiesFrameCommunitiesList.InsetFrame:StripTextures()
 	CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
@@ -164,27 +162,14 @@ function S:Blizzard_Communities()
 
 	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.backdrop then
-				child:CreateBackdrop('Transparent')
-				child.backdrop:Point('TOPLEFT', 5, -5)
-				child.backdrop:Point('BOTTOMRIGHT', -10, 5)
-
-				child:SetHighlightTexture(E.ClearTexture)
-				child.IconRing:SetAlpha(0)
-				child.Background:Hide()
-				child.Selection:Hide()
-
-				S:HandleIcon(child.Icon)
-			end
-
-			child.CircleMask:Hide()
+			HandleCommunitiesButtons(child)
 		end
 	end)
 
 	-- Add Community Button
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(s) HandleCommunitiesButtons(s, 1) end)
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', function(s) HandleCommunitiesButtons(s, 2) end)
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetGuildFinder', function(s) HandleCommunitiesButtons(s, 1) end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', HandleCommunitiesButtons)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', HandleCommunitiesButtons)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetGuildFinder', HandleCommunitiesButtons)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:Point('TOPLEFT', nil, 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
@@ -218,12 +203,6 @@ function S:Blizzard_Communities()
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
-
-	-- Guild finder Frame
-	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
-	ClubFinderGuildFinderFrame:StripTextures()
-
-	S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
 
 	for _, name in next, {'GuildFinderFrame', 'InvitationFrame', 'TicketFrame', 'CommunityFinderFrame', 'ClubFinderInvitationFrame'} do
 		local frame = CommunitiesFrame[name]
@@ -277,6 +256,11 @@ function S:Blizzard_Communities()
 		end
 	end
 
+	-- Guild finder Frame
+	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
+	ClubFinderGuildFinderFrame:StripTextures()
+
+	S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
@@ -355,8 +339,10 @@ function S:Blizzard_Communities()
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
 		for _, child in next, { frame.ColumnDisplay:GetChildren() } do
-			child:StripTextures()
-			child:SetTemplate('Transparent')
+			if not child.template then
+				child:StripTextures()
+				child:SetTemplate('Transparent')
+			end
 		end
 	end)
 
@@ -418,10 +404,8 @@ function S:Blizzard_Communities()
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
-		if newsInfo then
-			if button.header:IsShown() then
-				button.header:SetAlpha(0)
-			end
+		if newsInfo and button.header and button.header:IsShown() then
+			button.header:SetAlpha(0)
 		end
 	end)
 
