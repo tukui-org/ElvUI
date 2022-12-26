@@ -211,7 +211,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[202748]	= List(), -- Survival Tactics
 	-- Mage
 		[45438]		= List(), -- Ice Block
-		[113862]	= List(), -- Greater Invisibility
+		[110960]	= List(), -- Greater Invisibility
 		[198111]	= List(), -- Temporal Shield
 		[198065]	= List(), -- Prismatic Cloak
 		[11426]		= List(), -- Ice Barrier
@@ -397,7 +397,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[266779]	= List(), -- Coordinated Assault
 	-- Mage
 		[45438]		= List(), -- Ice Block
-		[113862]	= List(), -- Greater Invisibility
+		[110960]	= List(), -- Greater Invisibility
 		[198111]	= List(), -- Temporal Shield
 		[198065]	= List(), -- Prismatic Cloak
 		[11426]		= List(), -- Ice Barrier

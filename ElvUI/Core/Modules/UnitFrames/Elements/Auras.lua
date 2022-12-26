@@ -25,7 +25,7 @@ UF.SourceStacks = { -- stack any source
 	[370898] = 'Permeating Chill'	-- Evoker
 }
 UF.ExcludeStacks = {
-	[113862] = 'Greater Invisibility',	-- Mage
+	[110960] = 'Greater Invisibility',	-- Mage
 	[295378] = 'Concentrated Flame',	-- Heart of Azeroth
 	[324631] = 'Fleshcraft',			-- Necrolord
 
