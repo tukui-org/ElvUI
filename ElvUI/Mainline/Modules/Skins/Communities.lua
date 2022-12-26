@@ -67,8 +67,6 @@ local function HandleCommunitiesButtons(button)
 		button:CreateBackdrop('Transparent')
 	end
 
-	button:SetFrameLevel(button:GetFrameLevel() + 5)
-
 	S:HandleIcon(button.Icon)
 	button.Icon:ClearAllPoints()
 	button.Icon:Point('TOPLEFT', 15, -18)
