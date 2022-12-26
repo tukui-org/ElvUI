@@ -82,6 +82,8 @@ function S:SpellBookFrame()
 
 	if E.global.general.disableTutorialButtons then
 		_G.SpellBookFrameTutorialButton:Kill()
+	else
+		_G.SpellBookFrameTutorialButton.Ring:Hide()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
