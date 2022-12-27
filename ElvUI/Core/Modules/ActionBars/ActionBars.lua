@@ -722,7 +722,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 end
 
 function AB:UpdateProfessionQuality(button)
-	local action = button._state_type == 'item' and button._state_action
+	local action = button._state_type == 'action' and button._state_action
 	local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
 	local atlas = quality and format('Professions-Icon-Quality-Tier%d-Inv', quality)
 	if atlas then
