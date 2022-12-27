@@ -18,6 +18,7 @@ local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
+local IsItemAction = IsItemAction
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
@@ -46,6 +47,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
+local C_ActionBar_GetProfessionQuality = C_ActionBar and C_ActionBar.GetProfessionQuality
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
@@ -641,6 +643,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local slotbg = button.SlotBackground
 	local action = button.NewActionTexture
 	local mask = button.IconMask
+	local profQuality = button.ProfressionQualityOverlay
 
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
@@ -699,11 +702,38 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	AB:FixKeybindText(button)
+	if E.Retail then
+		AB:UpdateProfessionQuality(button)
+	end
 
 	if not button.useMasque then
 		button:StyleButton()
 	else
 		button:StyleButton(true, true, true)
+	end
+end
+
+function AB:UpdateProfessionQuality(button)
+	if button._state_action and IsItemAction(button._state_action) then
+		local quality = C_ActionBar_GetProfessionQuality(button._state_action)
+		if quality then
+			if not button.ProfessionQualityOverlayFrame then
+				button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
+				button.ProfessionQualityOverlayFrame:Point('TOPLEFT', 14, -14)
+			end
+
+			local atlas = format('Professions-Icon-Quality-Tier%d-Inv', quality)
+			button.ProfessionQualityOverlayFrame:Show()
+			button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, TextureKitConstants.UseAtlasSize)
+			return
+		end
+	end
+	AB:ClearProfessionQuality(button)
+end
+
+function AB:ClearProfessionQuality(button)
+	if button.ProfessionQualityOverlayFrame then
+		button.ProfessionQualityOverlayFrame:Hide()
 	end
 end
 
@@ -1565,6 +1595,9 @@ function AB:LAB_ButtonUpdate(button)
 	if button.SetBackdropBorderColor then
 		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(border.r, border.g, border.b)
+	end
+	if E.Retail then
+		AB:UpdateProfessionQuality(button)
 	end
 end
 
