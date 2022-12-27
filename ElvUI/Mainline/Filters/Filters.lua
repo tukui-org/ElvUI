@@ -1074,40 +1074,45 @@ G.unitframe.aurawatch = {
 		[3411]		= Aura(3411, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Intervene
 	},
 	PRIEST = {
-		[139]		= Aura(139, nil, 'BOTTOMLEFT', {0.4, 0.7, 0.2}), -- Renew
-		[17]		= Aura(17, nil, 'TOPLEFT', {0.7, 0.7, 0.7}, true), -- Power Word: Shield
-		[193065]	= Aura(193065, nil, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}), -- Masochism
 		[194384]	= Aura(194384, nil, 'TOPRIGHT', {1, 1, 0.66}), -- Atonement
 		[214206]	= Aura(214206, nil, 'TOPRIGHT', {1, 1, 0.66}), -- Atonement (PvP)
-		[33206]		= Aura(33206, nil, 'LEFT', {0.47, 0.35, 0.74}, true), -- Pain Suppression
+		[17]		= Aura(17, nil, 'TOPLEFT', {0.7, 0.7, 0.7}, true), -- Power Word: Shield
 		[41635]		= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
-		[47788]		= Aura(47788, nil, 'LEFT', {0.86, 0.45, 0}, true), -- Guardian Spirit
-		[6788]		= Aura(6788, nil, 'BOTTOMLEFT', {0.89, 0.1, 0.1}), -- Weakened Soul
+		[193065]	= Aura(193065, nil, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}, nil, nil, nil, nil, -20), -- Masochism
+		[139]		= Aura(139, nil, 'BOTTOMLEFT', {0.4, 0.7, 0.2}), -- Renew
+		[6788]		= Aura(6788, nil, 'BOTTOMLEFT', {0.89, 0.1, 0.1}, nil, nil, nil, nil, 20), -- Weakened Soul
+		[10060]		= Aura(10060, nil, 'RIGHT', {1, 0.81, 0.11}, true), -- Power Infusion
+		[33206]		= Aura(33206, nil, 'BOTTOM', {0.47, 0.35, 0.74}, true), -- Pain Suppression
+		[47788]		= Aura(47788, nil, 'BOTTOM', {0.86, 0.45, 0}, true, nil, nil, nil, -20), -- Guardian Spirit
 	},
 	DRUID = {
 		[774]		= Aura(774, nil, 'TOPRIGHT', {0.8, 0.4, 0.8}), -- Rejuvenation
-		[155777]	= Aura(155777, nil, 'RIGHT', {0.8, 0.4, 0.8}), -- Germination
-		[8936]		= Aura(8936, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Regrowth
 		[33763]		= Aura(33763, nil, 'TOPLEFT', {0.4, 0.8, 0.2}), -- Lifebloom
 		[188550]	= Aura(188550, nil, 'TOPLEFT', {0.4, 0.8, 0.2}), -- Lifebloom (Shadowlands Legendary)
 		[48438]		= Aura(48438, nil, 'BOTTOMRIGHT', {0.8, 0.4, 0}), -- Wild Growth
-		[207386]	= Aura(207386, nil, 'TOP', {0.4, 0.2, 0.8}), -- Spring Blossoms
+		[8936]		= Aura(8936, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Regrowth
+		[155777]	= Aura(155777, nil, 'RIGHT', {0.8, 0.4, 0.8}), -- Germination
 		[102351]	= Aura(102351, nil, 'LEFT', {0.2, 0.8, 0.8}), -- Cenarion Ward (Initial Buff)
 		[102352]	= Aura(102352, nil, 'LEFT', {0.2, 0.8, 0.8}), -- Cenarion Ward (HoT)
-		[200389]	= Aura(200389, nil, 'BOTTOM', {1, 1, 0.4}), -- Cultivation
-		[203554]	= Aura(203554, nil, 'TOP', {1, 1, 0.4}), -- Focused Growth (PvP)
+		[207386]	= Aura(207386, nil, 'TOP', {0.4, 0.2, 0.8}), -- Spring Blossoms
+		[203554]	= Aura(203554, nil, 'TOP', {1, 1, 0.4}, nil, nil, nil, nil, -20), -- Focused Growth (PvP)
+		[200389]	= Aura(200389, nil, 'BOTTOM', {1, 1, 0.4}, nil, nil, nil, nil, -20), -- Cultivation
+		[391891]	= Aura(391891, nil, 'BOTTOM', {0.01, 0.75, 0.60}, nil, nil, nil, nil, -20), -- Adaptive Swarm
+		[157982]	= Aura(157982, nil, 'BOTTOM', {0.75, 0.75, 0.75}), -- Tranquility
 	},
 	PALADIN = {
 		[53563]		= Aura(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Beacon of Light
 		[156910]	= Aura(156910, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Beacon of Faith
 		[200025]	= Aura(200025, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Beacon of Virtue
+		[287280]	= Aura(287280, nil, 'TOPLEFT', {0.2, 0.8, 0.2}), -- Glimmer of Light (T50 Talent)
 		[1022]		= Aura(1022, nil, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), -- Blessing of Protection
 		[1044]		= Aura(1044, nil, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true), -- Blessing of Freedom
 		[6940]		= Aura(6940, nil, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true), -- Blessing of Sacrifice
 		[204018]	= Aura(204018, nil, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), -- Blessing of Spellwarding
 		[223306]	= Aura(223306, nil, 'BOTTOMLEFT', {0.7, 0.7, 0.3}), -- Bestow Faith
-		[287280]	= Aura(287280, nil, 'TOPLEFT', {0.2, 0.8, 0.2}), -- Glimmer of Light (T50 Talent)
 		[157047]	= Aura(157047, nil, 'TOP', {0.15, 0.58, 0.84}), -- Saved by the Light (T25 Talent)
+		[148039]	= Aura(148039, nil, 'BOTTOM', {0.98, 0.50, 0.11}), -- Barrier of Faith (accumulation)
+		[395180]	= Aura(395180, nil, 'BOTTOM', {0.93, 0.80, 0.36}), -- Barrier of Faith (absorbtion)
 	},
 	SHAMAN = {
 		[61295]		= Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
@@ -1179,17 +1184,23 @@ G.unitframe.ChainChannelTime = {
 	[356995]	= 3, -- Disintegrate
 }
 
--- Spells Effected By Talents
+-- Spells Effected By Talents (unused; talents changed)
 G.unitframe.TalentChannelTicks = {
-	-- Priest
-	-- [47757]	= {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
-	-- [47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
+	-- TODO: going to change this to a method which allows for the following API checks
+	-- IsSpellKnownOrOverridesKnown and/or IsPlayerSpell (for some spells, ex: Improved Purify)
 }
 
 -- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {
 	-- Mage
 	[205021]	= true, -- Ray of Frost
+}
+
+-- Increase ticks from auras
+G.unitframe.AuraChannelTicks = {
+	-- Priest
+	[47757]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (heal)
+	[47758]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (dps)
 }
 
 -- The Base Tick Size
