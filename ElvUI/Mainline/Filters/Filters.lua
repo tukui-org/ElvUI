@@ -1184,17 +1184,23 @@ G.unitframe.ChainChannelTime = {
 	[356995]	= 3, -- Disintegrate
 }
 
--- Spells Effected By Talents
+-- Spells Effected By Talents (unused; talents changed)
 G.unitframe.TalentChannelTicks = {
-	-- Priest
-	-- [47757]	= {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
-	-- [47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
+	-- TODO: going to change this to a method which allows for the following API checks
+	-- IsSpellKnownOrOverridesKnown and IsPlayerSpell (for some spells, ex: Improved Purify)
 }
 
 -- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {
 	-- Mage
 	[205021]	= true, -- Ray of Frost
+}
+
+-- Increase ticks from auras
+G.unitframe.AuraChannelTicks = {
+	-- Priest
+	[47757]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (heal)
+	[47758]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (dps)
 }
 
 -- The Base Tick Size

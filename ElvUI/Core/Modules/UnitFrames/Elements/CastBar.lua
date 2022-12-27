@@ -521,6 +521,17 @@ function UF:PostCastStart(unit)
 			baseTicks = selectedTicks
 		end
 
+		-- Base ticks upgraded by another aura
+		local auraTicks = baseTicks and global.AuraChannelTicks[spellID]
+		if auraTicks then
+			for auraID, tickCount in next, auraTicks.spells do
+				if E:GetAuraByID(unit, auraID, auraTicks.filter) then
+					baseTicks = tickCount
+					break -- found one so stop
+				end
+			end
+		end
+
 		-- Wait for chain to happen
 		local chainTicks = baseTicks and global.ChainChannelTicks[spellID]
 		if chainTicks then -- requires a window: ChainChannelTime
