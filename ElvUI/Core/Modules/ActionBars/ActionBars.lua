@@ -365,6 +365,12 @@ function AB:CreateBar(id)
 			button:SetState(GetVehicleBarIndex(), 'custom', AB.customExitButton)
 		end
 
+		if E.Retail then
+			local quality = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
+			quality:Point('TOPLEFT', 14, -14)
+			button.ProfessionQualityOverlay = quality
+		end
+
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
 			button:AddToMasque(MasqueGroup)
@@ -643,7 +649,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local slotbg = button.SlotBackground
 	local action = button.NewActionTexture
 	local mask = button.IconMask
-	local profQuality = button.ProfressionQualityOverlay
 
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
@@ -702,6 +707,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	AB:FixKeybindText(button)
+
 	if E.Retail then
 		AB:UpdateProfessionQuality(button)
 	end
@@ -714,27 +720,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 end
 
 function AB:UpdateProfessionQuality(button)
-	if button._state_action and IsItemAction(button._state_action) then
-		local quality = C_ActionBar_GetProfessionQuality(button._state_action)
-		if quality then
-			if not button.ProfessionQualityOverlayFrame then
-				button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
-				button.ProfessionQualityOverlayFrame:Point('TOPLEFT', 14, -14)
-			end
-
-			local atlas = format('Professions-Icon-Quality-Tier%d-Inv', quality)
-			button.ProfessionQualityOverlayFrame:Show()
-			button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, TextureKitConstants.UseAtlasSize)
-			return
-		end
+	local action = button._state_action
+	local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
+	local atlas = quality and format('Professions-Icon-Quality-Tier%d-Inv', quality)
+	if atlas then
+		button.ProfessionQualityOverlay.Texture:SetAtlas(atlas, true)
 	end
-	AB:ClearProfessionQuality(button)
-end
 
-function AB:ClearProfessionQuality(button)
-	if button.ProfessionQualityOverlayFrame then
-		button.ProfessionQualityOverlayFrame:Hide()
-	end
+	button.ProfessionQualityOverlay:SetShown(not not quality)
 end
 
 function AB:ColorSwipeTexture(cooldown)
@@ -1596,6 +1589,7 @@ function AB:LAB_ButtonUpdate(button)
 		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
+
 	if E.Retail then
 		AB:UpdateProfessionQuality(button)
 	end
