@@ -1187,7 +1187,7 @@ G.unitframe.ChainChannelTime = {
 -- Spells Effected By Talents (unused; talents changed)
 G.unitframe.TalentChannelTicks = {
 	-- TODO: going to change this to a method which allows for the following API checks
-	-- IsSpellKnownOrOverridesKnown and IsPlayerSpell (for some spells, ex: Improved Purify)
+	-- IsSpellKnownOrOverridesKnown and/or IsPlayerSpell (for some spells, ex: Improved Purify)
 }
 
 -- Spells Effected By Haste, these spells require a Tick Size (table above)
