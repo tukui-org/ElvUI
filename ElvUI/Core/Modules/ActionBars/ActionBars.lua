@@ -351,7 +351,7 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i = 1, 12 do
-		local button = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
+		local button = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar)
 		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
@@ -708,7 +708,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	AB:FixKeybindText(button)
 
-	if E.Retail then
+	if button.ProfessionQualityOverlayFrame then
 		AB:UpdateProfessionQuality(button)
 	end
 
@@ -1590,7 +1590,7 @@ function AB:LAB_ButtonUpdate(button)
 		button:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
 
-	if E.Retail then
+	if button.ProfessionQualityOverlayFrame then
 		AB:UpdateProfessionQuality(button)
 	end
 end
