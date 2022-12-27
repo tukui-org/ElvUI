@@ -368,7 +368,7 @@ function AB:CreateBar(id)
 		if E.Retail then
 			local quality = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
 			quality:Point('TOPLEFT', 14, -14)
-			button.ProfessionQualityOverlay = quality
+			button.ProfessionQualityOverlayFrame = quality
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -724,10 +724,10 @@ function AB:UpdateProfessionQuality(button)
 	local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
 	local atlas = quality and format('Professions-Icon-Quality-Tier%d-Inv', quality)
 	if atlas then
-		button.ProfessionQualityOverlay.Texture:SetAtlas(atlas, true)
+		button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)
 	end
 
-	button.ProfessionQualityOverlay:SetShown(not not quality)
+	button.ProfessionQualityOverlayFrame:SetShown(not not quality)
 end
 
 function AB:ColorSwipeTexture(cooldown)
