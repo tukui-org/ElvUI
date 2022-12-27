@@ -739,7 +739,7 @@ function AB:UpdateProfessionQuality(button)
 	if enable then
 		local action = button._state_type == 'action' and button._state_action
 		local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
-		atlas = quality and format('Professions-Icon-Quality-Tier%d-Inv', quality)
+		atlas = quality and format('Professions-Icon-Quality-Tier%d', quality)
 
 		if atlas then
 			button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)
