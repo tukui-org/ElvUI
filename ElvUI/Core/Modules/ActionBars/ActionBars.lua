@@ -727,7 +727,7 @@ function AB:UpdateProfessionQuality(button)
 		button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)
 	end
 
-	button.ProfessionQualityOverlayFrame:SetShown(not not quality)
+	button.ProfessionQualityOverlayFrame:SetShown(not not atlas)
 end
 
 function AB:ColorSwipeTexture(cooldown)
