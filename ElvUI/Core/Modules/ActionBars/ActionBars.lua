@@ -368,9 +368,7 @@ function AB:CreateBar(id)
 		end
 
 		if E.Retail then
-			local quality = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
-			quality:Point('TOPLEFT', 14, -14)
-			button.ProfessionQualityOverlayFrame = quality
+			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -597,6 +595,10 @@ function AB:UpdateButtonSettings(specific)
 
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
+
+				if button.ProfessionQualityOverlayFrame then
+					AB:ConfigureProfessionQuality(button)
+				end
 			end
 		end
 	end
@@ -721,15 +723,30 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 end
 
+function AB:ConfigureProfessionQuality(button)
+	local db = button.db and button.db.professionQuality
+	if db then
+		button.ProfessionQualityOverlayFrame:ClearAllPoints()
+		button.ProfessionQualityOverlayFrame:Point(db.point, db.xOffset, db.yOffset)
+		button.ProfessionQualityOverlayFrame:SetAlpha(db.alpha)
+		button.ProfessionQualityOverlayFrame:SetScale(db.scale)
+	end
+end
+
 function AB:UpdateProfessionQuality(button)
-	local action = button._state_type == 'action' and button._state_action
-	local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
-	local atlas = quality and format('Professions-Icon-Quality-Tier%d-Inv', quality)
-	if atlas then
-		button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)
+	local db, atlas = button.db and button.db.professionQuality
+	local enable = db and db.enable
+	if enable then
+		local action = button._state_type == 'action' and button._state_action
+		local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
+		atlas = quality and format('Professions-Icon-Quality-Tier%d-Inv', quality)
+
+		if atlas then
+			button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)
+		end
 	end
 
-	button.ProfessionQualityOverlayFrame:SetShown(not not atlas)
+	button.ProfessionQualityOverlayFrame:SetShown(enable and not not atlas)
 end
 
 function AB:ColorSwipeTexture(cooldown)

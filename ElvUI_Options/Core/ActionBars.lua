@@ -98,6 +98,17 @@ macroTextGroup.args.macroFontSize = ACH:Range(L["Font Size"], nil, 9, C.Values.F
 macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 10)
 SharedBarOptions.barGroup.args.macroTextGroup = macroTextGroup
 
+local professionQuality = ACH:Group(L["Profession Quality"], nil, 70, nil, function(info) return E.db.actionbar[info[#info-3]].professionQuality[info[#info]] end, function(info, value) E.db.actionbar[info[#info-3]].professionQuality[info[#info]] = value AB:UpdateButtonSettings(info[#info-3]) end)
+professionQuality.inline = true
+professionQuality.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, false)
+professionQuality.args.spacer1 = ACH:Spacer(3, 'full')
+professionQuality.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true })
+professionQuality.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.1, max = 2, step = 0.01, isPercent = true })
+professionQuality.args.point = ACH:Select(L["Position"], nil, 3, textAnchors)
+professionQuality.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -24, max = 24, step = 1 })
+professionQuality.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.professionQuality = professionQuality
+
 SharedBarOptions.backdropGroup.inline = true
 SharedBarOptions.backdropGroup.args.backdropSpacing = ACH:Range(L["Backdrop Spacing"], L["The spacing between the backdrop and the buttons."], 1, { min = 0, max = 10, step = 1 })
 SharedBarOptions.backdropGroup.args.heightMult = ACH:Range(L["Height Multiplier"], L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."], 2, { min = 1, max = 5, step = 1 })
@@ -246,16 +257,19 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.countTextGroup = nil
 		options.hotkeyTextGroup = nil
 		options.macroTextGroup = nil
+		options.professionQuality = nil
 	elseif name == 'stanceBar' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdateStanceBindings() end
 		options.hotkeyTextGroup.args.hotkeyColor.set = function(info, r, g, b, a) local t = E.db.actionbar[info[#info-3]][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateStanceBindings() end
 		options.macroTextGroup = nil
+		options.professionQuality = nil
 	elseif name == 'barPet' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdatePetBindings() end
 		options.hotkeyTextGroup.args.hotkeyColor.set = function(info, r, g, b, a) local t = E.db.actionbar[info[#info-3]][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdatePetBindings() end
 		options.macroTextGroup = nil
+		options.professionQuality = nil
 	end
 end
 
@@ -276,7 +290,7 @@ ActionBar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButton
 
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup = ACH:Group(L["Keybind Text"], nil, 40, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateExtraBindings() end)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.inline = true
-ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0, nil, nil, nil, nil, nil, nil, false)
+ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.useHotkeyColor = ACH:Toggle(L["Custom Color"], nil, 1)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeyColor = ACH:Color('', nil, 2, nil, nil, function(info) local t = E.db.actionbar[info[#info-2]][info[#info]] local d = P.actionbar[info[#info-2]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info-2]][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateExtraBindings() end, nil, function(info) return not E.db.actionbar[info[#info-2]].useHotkeyColor or not E.db.actionbar[info[#info-2]].hotkeytext end)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.spacer1 = ACH:Spacer(3, 'full')
@@ -327,7 +341,12 @@ local function CreateBarOptions(barNumber)
 
 	bar.args.visibility.set = function(_, value) E.db.actionbar['bar'..barNumber].visibility = value AB:UpdateButtonSettings('bar'..barNumber) end
 
-	for group, func in pairs({ countTextGroup = function() return not E.db.actionbar['bar'..barNumber].counttext end, hotkeyTextGroup = function() return not E.db.actionbar['bar'..barNumber].hotkeytext end, macroTextGroup = function() return not E.db.actionbar['bar'..barNumber].macrotext end}) do
+	for group, func in pairs({
+		countTextGroup = function() return not E.db.actionbar['bar'..barNumber].counttext end,
+		hotkeyTextGroup = function() return not E.db.actionbar['bar'..barNumber].hotkeytext end,
+		macroTextGroup = function() return not E.db.actionbar['bar'..barNumber].macrotext end,
+		professionQuality = function() return not E.db.actionbar['bar'..barNumber].professionQuality.enable end
+	}) do
 		for _, optionTable in pairs(bar.args.barGroup.args[group].args) do
 			if optionTable.hidden == nil then -- This needs to be nil.
 				optionTable.hidden = func

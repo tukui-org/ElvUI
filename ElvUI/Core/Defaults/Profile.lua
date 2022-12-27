@@ -2604,6 +2604,14 @@ for i = 1, 10 do
 		useMacroColor = false,
 		frameStrata = 'LOW',
 		frameLevel = 1,
+		professionQuality = {
+			enable = true,
+			point = 'TOPLEFT',
+			xOffset = 13,
+			yOffset = -10,
+			alpha = 1,
+			scale = 1
+		},
 	}
 
 	if E.Retail then
