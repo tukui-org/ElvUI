@@ -33,21 +33,21 @@ local cachedRolls = {}
 local completedRolls = {}
 M.RollBars = {}
 
-local function ClickRoll(frame)
-	RollOnLoot(frame.parent.rollID, frame.rolltype)
+local function ClickRoll(button)
+	RollOnLoot(button.parent.rollID, button.rolltype)
 end
 
 local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [0] = 'pass' }
-local function SetTip(frame)
-	GameTooltip:SetOwner(frame, 'ANCHOR_RIGHT')
-	GameTooltip:AddLine(frame.tiptext)
+local function SetTip(button)
+	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
+	GameTooltip:AddLine(button.tiptext)
 
 	local lineAdded
-	if frame:IsEnabled() == 0 then
+	if button:IsEnabled() == 0 then
 		GameTooltip:AddLine('|cffff3333'..L["Can't Roll"])
 	end
 
-	local rolls = frame.parent.rolls[frame.rolltype]
+	local rolls = button.parent.rolls[button.rolltype]
 	if rolls then
 		for _, infoTable in next, rolls do
 			local playerName, className = unpack(infoTable)
@@ -64,29 +64,29 @@ local function SetTip(frame)
 	GameTooltip:Show()
 end
 
-local function SetItemTip(frame, event)
-	if not frame.rollID or (event == 'MODIFIER_STATE_CHANGED' and not frame:IsMouseOver()) then return end
+local function SetItemTip(button, event)
+	if not button.rollID or (event == 'MODIFIER_STATE_CHANGED' and not button:IsMouseOver()) then return end
 
-	GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT')
-	GameTooltip:SetLootRollItem(frame.rollID)
+	GameTooltip:SetOwner(button, 'ANCHOR_TOPLEFT')
+	GameTooltip:SetLootRollItem(button.rollID)
 
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
 end
 
-local function LootClick(frame)
+local function LootClick(button)
 	if IsModifiedClick() then
-		_G.HandleModifiedItemClick(frame.link)
+		_G.HandleModifiedItemClick(button.link)
 	end
 end
 
-local function StatusUpdate(frame, elapsed)
-	if not frame.parent.rollID then return end
+local function StatusUpdate(button, elapsed)
+	if not button.parent.rollID then return end
 
-	if frame.elapsed and frame.elapsed > 0.1 then
-		frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
-		frame.elapsed = 0
+	if button.elapsed and button.elapsed > 0.1 then
+		button:SetValue(GetLootRollTimeLeft(button.parent.rollID))
+		button.elapsed = 0
 	else
-		frame.elapsed = (frame.elapsed or 0) + elapsed
+		button.elapsed = (button.elapsed or 0) + elapsed
 	end
 end
 
@@ -161,17 +161,17 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 end
 
 function M:LootRoll_Create(index)
-	local frame = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
-	frame:Hide()
+	local bar = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
+	bar:Hide()
 
-	local status = CreateFrame('StatusBar', nil, frame)
-	status:SetFrameLevel(frame:GetFrameLevel())
-	status:SetFrameStrata(frame:GetFrameStrata())
+	local status = CreateFrame('StatusBar', nil, bar)
+	status:SetFrameLevel(bar:GetFrameLevel())
+	status:SetFrameStrata(bar:GetFrameStrata())
 	status:CreateBackdrop()
 	status:SetScript('OnUpdate', StatusUpdate)
 	status:SetStatusBarTexture(E.db.general.lootRoll.statusBarTexture)
-	status.parent = frame
-	frame.status = status
+	status.parent = bar
+	bar.status = status
 
 	local spark = status:CreateTexture(nil, 'ARTWORK', nil, 1)
 	spark:SetBlendMode('BLEND')
@@ -181,13 +181,13 @@ function M:LootRoll_Create(index)
 	spark:Width(2)
 	status.spark = spark
 
-	local button = CreateFrame('Button', nil, frame)
+	local button = CreateFrame('Button', nil, bar)
 	button:CreateBackdrop()
+	button:SetScript('OnEvent', SetItemTip)
 	button:SetScript('OnEnter', SetItemTip)
 	button:SetScript('OnLeave', GameTooltip_Hide)
 	button:SetScript('OnClick', LootClick)
-	button:SetScript('OnEvent', SetItemTip)
-	frame.button = button
+	bar.button = button
 
 	button.icon = button:CreateTexture(nil, 'OVERLAY')
 	button.icon:SetAllPoints()
@@ -206,26 +206,26 @@ function M:LootRoll_Create(index)
 	button.questIcon:SetTexCoord(1, 0, 0, 1)
 	button.questIcon:Hide()
 
-	frame.pass = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
-	frame.disenchant = E.Retail and CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT) or nil
-	frame.greed = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
-	frame.need = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
+	bar.pass = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
+	bar.disenchant = E.Retail and CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT) or nil
+	bar.greed = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
+	bar.need = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
 
-	local name = frame:CreateFontString(nil, 'OVERLAY')
+	local name = bar:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	name:SetJustifyH('LEFT')
 	name:SetWordWrap(false)
-	frame.name = name
+	bar.name = name
 
-	local bind = frame:CreateFontString(nil, 'OVERLAY')
+	local bind = bar:CreateFontString(nil, 'OVERLAY')
 	bind:FontTemplate(nil, nil, 'OUTLINE')
-	frame.bind = bind
+	bar.bind = bind
 
-	frame.rolls = {}
+	bar.rolls = {}
 
-	tinsert(M.RollBars, frame)
+	tinsert(M.RollBars, bar)
 
-	return frame
+	return bar
 end
 
 function M:LootFrame_GetFrame(i)
@@ -381,20 +381,20 @@ M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollAnchors(POSITION)
 	local spacing, lastFrame, lastShown = E.db.general.lootRoll.spacing + E.Spacing
-	for i, frame in next, M.RollBars do
-		frame:ClearAllPoints()
+	for i, bar in next, M.RollBars do
+		bar:ClearAllPoints()
 
 		local anchor = i ~= 1 and lastFrame or _G.AlertFrameHolder
 		if POSITION == 'TOP' then
-			frame:Point('TOP', anchor, 'BOTTOM', 0, -spacing)
+			bar:Point('TOP', anchor, 'BOTTOM', 0, -spacing)
 		else
-			frame:Point('BOTTOM', anchor, 'TOP', 0, spacing)
+			bar:Point('BOTTOM', anchor, 'TOP', 0, spacing)
 		end
 
-		lastFrame = frame
+		lastFrame = bar
 
-		if frame:IsShown() then
-			lastShown = frame
+		if bar:IsShown() then
+			lastShown = bar
 		end
 	end
 
@@ -409,63 +409,63 @@ function M:UpdateLootRollFrames()
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
-		local frame = M:LootFrame_GetFrame(i)
-		frame:Size(db.width, db.height)
+		local bar = M:LootFrame_GetFrame(i)
+		bar:Size(db.width, db.height)
 
-		frame.status:SetStatusBarTexture(texture)
-		frame.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
+		bar.status:SetStatusBarTexture(texture)
+		bar.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
-		frame.button:ClearAllPoints()
-		frame.button:Point('RIGHT', frame, 'LEFT', E.PixelMode and -1 or -2, 0)
-		frame.button:Size(db.height)
+		bar.button:ClearAllPoints()
+		bar.button:Point('RIGHT', bar, 'LEFT', E.PixelMode and -1 or -2, 0)
+		bar.button:Size(db.height)
 
-		frame.button.questIcon:ClearAllPoints()
-		frame.button.questIcon:Point('RIGHT', frame.button, 'LEFT', -3, 0)
-		frame.button.questIcon:Size(db.height)
+		bar.button.questIcon:ClearAllPoints()
+		bar.button.questIcon:Point('RIGHT', bar.button, 'LEFT', -3, 0)
+		bar.button.questIcon:Size(db.height)
 
-		frame.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
-		frame.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		bar.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		bar.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 
 		for _, button in next, rolltypes do
-			local icon = frame[button]
+			local icon = bar[button]
 			if icon then
 				icon:Size(db.buttonSize)
 				icon:ClearAllPoints()
 			end
 		end
 
-		frame.status:ClearAllPoints()
-		frame.name:ClearAllPoints()
-		frame.bind:ClearAllPoints()
+		bar.status:ClearAllPoints()
+		bar.name:ClearAllPoints()
+		bar.bind:ClearAllPoints()
 
 		local full = db.style == 'fullbar'
 		if full then
-			frame.status:SetAllPoints()
-			frame.status:Size(db.width, db.height)
+			bar.status:SetAllPoints()
+			bar.status:Size(db.width, db.height)
 		else
-			frame.status:Point('BOTTOM', 3, 0)
-			frame.status:Size(db.width, db.height / 3)
+			bar.status:Point('BOTTOM', 3, 0)
+			bar.status:Size(db.width, db.height / 3)
 		end
 
-		local anchor = full and frame or frame.status
+		local anchor = full and bar or bar.status
 		if db.leftButtons then
-			frame.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
-			if frame.disenchant then frame.disenchant:Point('LEFT', frame.need, 'RIGHT', 3, 0) end
-			frame.greed:Point('LEFT', frame.disenchant or frame.need, 'RIGHT', 3, 0)
-			frame.pass:Point('LEFT', frame.greed, 'RIGHT', 3, 0)
+			bar.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
+			if bar.disenchant then bar.disenchant:Point('LEFT', bar.need, 'RIGHT', 3, 0) end
+			bar.greed:Point('LEFT', bar.disenchant or bar.need, 'RIGHT', 3, 0)
+			bar.pass:Point('LEFT', bar.greed, 'RIGHT', 3, 0)
 
-			frame.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
-			frame.name:Point('LEFT', frame.bind, 'RIGHT', 1, 0)
-			frame.bind:Point('LEFT', frame.pass, 'RIGHT', 1, 0)
+			bar.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
+			bar.name:Point('LEFT', bar.bind, 'RIGHT', 1, 0)
+			bar.bind:Point('LEFT', bar.pass, 'RIGHT', 1, 0)
 		else
-			frame.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
-			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, 0) end
-			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, 0)
-			frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
+			bar.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
+			if bar.disenchant then bar.disenchant:Point('RIGHT', bar.pass, 'LEFT', -3, 0) end
+			bar.greed:Point('RIGHT', bar.disenchant or bar.pass, 'LEFT', -3, 0)
+			bar.need:Point('RIGHT', bar.greed, 'LEFT', -3, 0)
 
-			frame.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
-			frame.name:Point('RIGHT', frame.bind, 'LEFT', -1, 0)
-			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
+			bar.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
+			bar.name:Point('RIGHT', bar.bind, 'LEFT', -1, 0)
+			bar.bind:Point('RIGHT', bar.need, 'LEFT', -1, 0)
 		end
 	end
 end
