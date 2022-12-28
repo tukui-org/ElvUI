@@ -32,6 +32,7 @@ local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 local cachedRolls = {}
 local completedRolls = {}
 M.RollBars = {}
+M.RollBarsByRollID = {}
 
 local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
@@ -228,19 +229,26 @@ function M:LootRoll_Create(index)
 	return bar
 end
 
-function M:LootFrame_GetFrame(i)
+function M:LootFrame_GetFrame(i, rollID)
 	if i then
 		return M.RollBars[i] or M:LootRoll_Create(i)
 	else -- check for a bar to reuse
-		for _, bar in next, M.RollBars do
-			if not bar.rollID then
-				return bar
+		local exists = M.RollBarsByRollID[rollID]
+		if exists then
+			return exists
+		else
+			for _, bar in next, M.RollBars do
+				if not bar.rollID then
+					return bar
+				end
 			end
 		end
 	end
 end
 
 function M:CANCEL_LOOT_ROLL(_, rollID)
+	M.RollBarsByRollID[rollID] = nil
+
 	for _, bar in next, M.RollBars do
 		if bar.rollID == rollID then
 			bar.rollID = nil
@@ -261,11 +269,13 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 
 	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
 
-	local bar = M:LootFrame_GetFrame()
+	local bar = M:LootFrame_GetFrame(nil, rollID)
 	wipe(bar.rolls)
 
 	bar.rollID = rollID
 	bar.time = rollTime
+
+	M.RollBarsByRollID[rollID] = bar
 
 	bar.button.link = itemLink
 	bar.button.rollID = rollID
