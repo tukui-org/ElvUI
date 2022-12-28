@@ -252,17 +252,17 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 end
 
 function M:START_LOOT_ROLL(_, rollID, rollTime)
-	local db = E.db.general.lootRoll
+	local bar = M:LootFrame_GetFrame()
+	if bar then return end -- need more info on this, how does it happen?
+
+	wipe(bar.rolls)
 
 	local itemLink = GetLootRollItemLink(rollID)
 	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-	local color = ITEM_QUALITY_COLORS[quality]
+	local db, color = E.db.general.lootRoll, ITEM_QUALITY_COLORS[quality]
 
 	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
-
-	local bar = M:LootFrame_GetFrame()
-	wipe(bar.rolls)
 
 	bar.rollID = rollID
 	bar.time = rollTime
