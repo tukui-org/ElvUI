@@ -253,7 +253,7 @@ end
 
 function M:START_LOOT_ROLL(_, rollID, rollTime)
 	local bar = M:LootFrame_GetFrame()
-	if bar then return end -- need more info on this, how does it happen?
+	if not bar then return end -- need more info on this, how does it happen?
 
 	wipe(bar.rolls)
 
