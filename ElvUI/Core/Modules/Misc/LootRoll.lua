@@ -387,7 +387,6 @@ function M:LOOT_HISTORY_ROLL_COMPLETE()
 	wipe(cachedRolls)
 	wipe(completedRolls)
 end
-M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollAnchors(POSITION)
 	local spacing, lastFrame, lastShown = E.db.general.lootRoll.spacing + E.Spacing
@@ -485,11 +484,11 @@ function M:LoadLootRoll()
 
 	M:UpdateLootRollFrames()
 
-	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
-	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE')
 	M:RegisterEvent('START_LOOT_ROLL')
 	M:RegisterEvent('CANCEL_LOOT_ROLL')
-	M:RegisterEvent('LOOT_ROLLS_COMPLETE')
+	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
+	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE')
+	M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'LOOT_HISTORY_ROLL_COMPLETE')
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
 	_G.UIParent:UnregisterEvent('CANCEL_LOOT_ROLL')
