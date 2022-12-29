@@ -33,21 +33,21 @@ local cachedRolls = {}
 local completedRolls = {}
 M.RollBars = {}
 
-local function ClickRoll(frame)
-	RollOnLoot(frame.parent.rollID, frame.rolltype)
+local function ClickRoll(button)
+	RollOnLoot(button.parent.rollID, button.rolltype)
 end
 
 local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [0] = 'pass' }
-local function SetTip(frame)
-	GameTooltip:SetOwner(frame, 'ANCHOR_RIGHT')
-	GameTooltip:AddLine(frame.tiptext)
+local function SetTip(button)
+	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
+	GameTooltip:AddLine(button.tiptext)
 
 	local lineAdded
-	if frame:IsEnabled() == 0 then
+	if button:IsEnabled() == 0 then
 		GameTooltip:AddLine('|cffff3333'..L["Can't Roll"])
 	end
 
-	local rolls = frame.parent.rolls[frame.rolltype]
+	local rolls = button.parent.rolls[button.rolltype]
 	if rolls then
 		for _, infoTable in next, rolls do
 			local playerName, className = unpack(infoTable)
@@ -64,29 +64,29 @@ local function SetTip(frame)
 	GameTooltip:Show()
 end
 
-local function SetItemTip(frame, event)
-	if not frame.rollID or (event == 'MODIFIER_STATE_CHANGED' and not frame:IsMouseOver()) then return end
+local function SetItemTip(button, event)
+	if not button.rollID or (event == 'MODIFIER_STATE_CHANGED' and not button:IsMouseOver()) then return end
 
-	GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT')
-	GameTooltip:SetLootRollItem(frame.rollID)
+	GameTooltip:SetOwner(button, 'ANCHOR_TOPLEFT')
+	GameTooltip:SetLootRollItem(button.rollID)
 
 	if IsShiftKeyDown() then GameTooltip_ShowCompareItem() end
 end
 
-local function LootClick(frame)
+local function LootClick(button)
 	if IsModifiedClick() then
-		_G.HandleModifiedItemClick(frame.link)
+		_G.HandleModifiedItemClick(button.link)
 	end
 end
 
-local function StatusUpdate(frame, elapsed)
-	if not frame.parent.rollID then return end
+local function StatusUpdate(button, elapsed)
+	if not button.parent.rollID then return end
 
-	if frame.elapsed and frame.elapsed > 0.1 then
-		frame:SetValue(GetLootRollTimeLeft(frame.parent.rollID))
-		frame.elapsed = 0
+	if button.elapsed and button.elapsed > 0.1 then
+		button:SetValue(GetLootRollTimeLeft(button.parent.rollID))
+		button.elapsed = 0
 	else
-		frame.elapsed = (frame.elapsed or 0) + elapsed
+		button.elapsed = (button.elapsed or 0) + elapsed
 	end
 end
 
@@ -97,81 +97,81 @@ local iconCoords = {
 	[3] = {0.05, 1.05, -0.05, .95}, -- disenchant
 }
 
-local function RollTexCoords(f, icon, rolltype, minX, maxX, minY, maxY)
-	local offset = icon == f.pushedTex and (rolltype == 0 and -0.05 or 0.05) or 0
+local function RollTexCoords(button, icon, rolltype, minX, maxX, minY, maxY)
+	local offset = icon == button.pushedTex and (rolltype == 0 and -0.05 or 0.05) or 0
 	icon:SetTexCoord(minX - offset, maxX, minY - offset, maxY)
 
-	if icon == f.disabledTex then
+	if icon == button.disabledTex then
 		icon:SetDesaturated(true)
 		icon:SetAlpha(0.25)
 	end
 end
 
-local function RollButtonTextures(f, texture, rolltype)
-	f:SetNormalTexture(texture)
-	f:SetPushedTexture(texture)
-	f:SetDisabledTexture(texture)
-	f:SetHighlightTexture(texture)
+local function RollButtonTextures(button, texture, rolltype)
+	button:SetNormalTexture(texture)
+	button:SetPushedTexture(texture)
+	button:SetDisabledTexture(texture)
+	button:SetHighlightTexture(texture)
 
-	f.normalTex = f:GetNormalTexture()
-	f.disabledTex = f:GetDisabledTexture()
-	f.pushedTex = f:GetPushedTexture()
-	f.highlightTex = f:GetHighlightTexture()
+	button.normalTex = button:GetNormalTexture()
+	button.disabledTex = button:GetDisabledTexture()
+	button.pushedTex = button:GetPushedTexture()
+	button.highlightTex = button:GetHighlightTexture()
 
 	local minX, maxX, minY, maxY = unpack(iconCoords[rolltype])
-	RollTexCoords(f, f.normalTex, rolltype, minX, maxX, minY, maxY)
-	RollTexCoords(f, f.disabledTex, rolltype, minX, maxX, minY, maxY)
-	RollTexCoords(f, f.pushedTex, rolltype, minX, maxX, minY, maxY)
-	RollTexCoords(f, f.highlightTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(button, button.normalTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(button, button.disabledTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(button, button.pushedTex, rolltype, minX, maxX, minY, maxY)
+	RollTexCoords(button, button.highlightTex, rolltype, minX, maxX, minY, maxY)
 end
 
-local function RollMouseDown(f)
-	if f.highlightTex then
-		f.highlightTex:SetAlpha(0)
+local function RollMouseDown(button)
+	if button.highlightTex then
+		button.highlightTex:SetAlpha(0)
 	end
 end
 
-local function RollMouseUp(f)
-	if f.highlightTex then
-		f.highlightTex:SetAlpha(1)
+local function RollMouseUp(button)
+	if button.highlightTex then
+		button.highlightTex:SetAlpha(1)
 	end
 end
 
 local function CreateRollButton(parent, texture, rolltype, tiptext)
-	local f = CreateFrame('Button', format('$parent_%sButton', tiptext), parent)
-	f:SetScript('OnMouseDown', RollMouseDown)
-	f:SetScript('OnMouseUp', RollMouseUp)
-	f:SetScript('OnClick', ClickRoll)
-	f:SetScript('OnEnter', SetTip)
-	f:SetScript('OnLeave', GameTooltip_Hide)
-	f:SetMotionScriptsWhileDisabled(true)
-	f:SetHitRectInsets(3, 3, 3, 3)
+	local button = CreateFrame('Button', format('$parent_%sButton', tiptext), parent)
+	button:SetScript('OnMouseDown', RollMouseDown)
+	button:SetScript('OnMouseUp', RollMouseUp)
+	button:SetScript('OnClick', ClickRoll)
+	button:SetScript('OnEnter', SetTip)
+	button:SetScript('OnLeave', GameTooltip_Hide)
+	button:SetMotionScriptsWhileDisabled(true)
+	button:SetHitRectInsets(3, 3, 3, 3)
 
-	RollButtonTextures(f, texture..'-Up', rolltype)
+	RollButtonTextures(button, texture..'-Up', rolltype)
 
-	f.parent = parent
-	f.rolltype = rolltype
-	f.tiptext = tiptext
+	button.parent = parent
+	button.rolltype = rolltype
+	button.tiptext = tiptext
 
-	f.text = f:CreateFontString(nil, 'ARTWORK')
-	f.text:FontTemplate(nil, nil, 'OUTLINE')
-	f.text:SetPoint('BOTTOMRIGHT', 2, -2)
+	button.text = button:CreateFontString(nil, 'ARTWORK')
+	button.text:FontTemplate(nil, nil, 'OUTLINE')
+	button.text:SetPoint('BOTTOMRIGHT', 2, -2)
 
-	return f
+	return button
 end
 
 function M:LootRoll_Create(index)
-	local frame = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
-	frame:Hide()
+	local bar = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
+	bar:Hide()
 
-	local status = CreateFrame('StatusBar', nil, frame)
-	status:SetFrameLevel(frame:GetFrameLevel())
-	status:SetFrameStrata(frame:GetFrameStrata())
+	local status = CreateFrame('StatusBar', nil, bar)
+	status:SetFrameLevel(bar:GetFrameLevel())
+	status:SetFrameStrata(bar:GetFrameStrata())
 	status:CreateBackdrop()
 	status:SetScript('OnUpdate', StatusUpdate)
 	status:SetStatusBarTexture(E.db.general.lootRoll.statusBarTexture)
-	status.parent = frame
-	frame.status = status
+	status.parent = bar
+	bar.status = status
 
 	local spark = status:CreateTexture(nil, 'ARTWORK', nil, 1)
 	spark:SetBlendMode('BLEND')
@@ -181,13 +181,13 @@ function M:LootRoll_Create(index)
 	spark:Width(2)
 	status.spark = spark
 
-	local button = CreateFrame('Button', nil, frame)
+	local button = CreateFrame('Button', nil, bar)
 	button:CreateBackdrop()
+	button:SetScript('OnEvent', SetItemTip)
 	button:SetScript('OnEnter', SetItemTip)
 	button:SetScript('OnLeave', GameTooltip_Hide)
 	button:SetScript('OnClick', LootClick)
-	button:SetScript('OnEvent', SetItemTip)
-	frame.button = button
+	bar.button = button
 
 	button.icon = button:CreateTexture(nil, 'OVERLAY')
 	button.icon:SetAllPoints()
@@ -206,35 +206,35 @@ function M:LootRoll_Create(index)
 	button.questIcon:SetTexCoord(1, 0, 0, 1)
 	button.questIcon:Hide()
 
-	frame.pass = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
-	frame.disenchant = E.Retail and CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT) or nil
-	frame.greed = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
-	frame.need = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
+	bar.pass = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
+	bar.disenchant = E.Retail and CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT) or nil
+	bar.greed = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
+	bar.need = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
 
-	local name = frame:CreateFontString(nil, 'OVERLAY')
+	local name = bar:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	name:SetJustifyH('LEFT')
 	name:SetWordWrap(false)
-	frame.name = name
+	bar.name = name
 
-	local bind = frame:CreateFontString(nil, 'OVERLAY')
+	local bind = bar:CreateFontString(nil, 'OVERLAY')
 	bind:FontTemplate(nil, nil, 'OUTLINE')
-	frame.bind = bind
+	bar.bind = bind
 
-	frame.rolls = {}
+	bar.rolls = {}
 
-	tinsert(M.RollBars, frame)
+	tinsert(M.RollBars, bar)
 
-	return frame
+	return bar
 end
 
 function M:LootFrame_GetFrame(i)
 	if i then
 		return M.RollBars[i] or M:LootRoll_Create(i)
 	else -- check for a bar to reuse
-		for _, f in next, M.RollBars do
-			if not f.rollID then
-				return f
+		for _, bar in next, M.RollBars do
+			if not bar.rollID then
+				return bar
 			end
 		end
 	end
@@ -252,92 +252,92 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 end
 
 function M:START_LOOT_ROLL(_, rollID, rollTime)
-	local db = E.db.general.lootRoll
+	local bar = M:LootFrame_GetFrame()
+	if not bar then return end -- need more info on this, how does it happen?
+
+	wipe(bar.rolls)
 
 	local itemLink = GetLootRollItemLink(rollID)
 	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-	local color = ITEM_QUALITY_COLORS[quality]
+	local db, color = E.db.general.lootRoll, ITEM_QUALITY_COLORS[quality]
 
 	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
 
-	local f = M:LootFrame_GetFrame()
-	wipe(f.rolls)
+	bar.rollID = rollID
+	bar.time = rollTime
 
-	f.rollID = rollID
-	f.time = rollTime
+	bar.button.link = itemLink
+	bar.button.rollID = rollID
+	bar.button:RegisterEvent('MODIFIER_STATE_CHANGED')
+	bar.button.icon:SetTexture(texture)
+	bar.button.stack:SetShown(count > 1)
+	bar.button.stack:SetText(count)
+	bar.button.ilvl:SetShown(B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, quality))
+	bar.button.ilvl:SetText(itemLevel)
+	bar.button.questIcon:SetShown(B:GetItemQuestInfo(itemLink, bindType, itemClassID))
 
-	f.button.link = itemLink
-	f.button.rollID = rollID
-	f.button:RegisterEvent('MODIFIER_STATE_CHANGED')
-	f.button.icon:SetTexture(texture)
-	f.button.stack:SetShown(count > 1)
-	f.button.stack:SetText(count)
-	f.button.ilvl:SetShown(B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, quality))
-	f.button.ilvl:SetText(itemLevel)
-	f.button.questIcon:SetShown(B:GetItemQuestInfo(itemLink, bindType, itemClassID))
+	bar.need:SetEnabled(canNeed)
+	bar.greed:SetEnabled(canGreed)
 
-	f.need:SetEnabled(canNeed)
-	f.greed:SetEnabled(canGreed)
+	bar.need.text:SetText(0)
+	bar.greed.text:SetText(0)
+	bar.pass.text:SetText(0)
 
-	f.need.text:SetText(0)
-	f.greed.text:SetText(0)
-	f.pass.text:SetText(0)
-
-	if f.disenchant then
-		f.disenchant.text:SetText(0)
-		f.disenchant:SetEnabled(canDisenchant)
+	if bar.disenchant then
+		bar.disenchant.text:SetText(0)
+		bar.disenchant:SetEnabled(canDisenchant)
 	end
 
-	f.name:SetText(name)
+	bar.name:SetText(name)
 
 	if db.qualityName then
-		f.name:SetTextColor(color.r, color.g, color.b)
+		bar.name:SetTextColor(color.r, color.g, color.b)
 	else
-		f.name:SetTextColor(1, 1, 1)
+		bar.name:SetTextColor(1, 1, 1)
 	end
 
 	if db.qualityItemLevel then
-		f.button.ilvl:SetTextColor(color.r, color.g, color.b)
+		bar.button.ilvl:SetTextColor(color.r, color.g, color.b)
 	else
-		f.button.ilvl:SetTextColor(1, 1, 1)
+		bar.button.ilvl:SetTextColor(1, 1, 1)
 	end
 
-	f.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"] or '')
-	f.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
+	bar.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"] or '')
+	bar.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
 	if db.qualityStatusBar then
-		f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
-		f.status.spark:SetColorTexture(color.r, color.g, color.b, .9)
+		bar.status:SetStatusBarColor(color.r, color.g, color.b, .7)
+		bar.status.spark:SetColorTexture(color.r, color.g, color.b, .9)
 	else
 		local c = db.statusBarColor
-		f.status:SetStatusBarColor(c.r, c.g, c.b, .7)
-		f.status.spark:SetColorTexture(c.r, c.g, c.b, .9)
+		bar.status:SetStatusBarColor(c.r, c.g, c.b, .7)
+		bar.status.spark:SetColorTexture(c.r, c.g, c.b, .9)
 	end
 
 	if db.qualityStatusBarBackdrop then
-		f.status.backdrop:SetBackdropColor(color.r, color.g, color.b, .1)
+		bar.status.backdrop:SetBackdropColor(color.r, color.g, color.b, .1)
 	else
 		local r, g, b = unpack(E.media.backdropfadecolor)
-		f.status.backdrop:SetBackdropColor(r, g, b, .1)
+		bar.status.backdrop:SetBackdropColor(r, g, b, .1)
 	end
 
-	f.status.elapsed = 1
-	f.status:SetMinMaxValues(0, rollTime)
-	f.status:SetValue(rollTime)
+	bar.status.elapsed = 1
+	bar.status:SetMinMaxValues(0, rollTime)
+	bar.status:SetValue(rollTime)
 
-	f:Show()
+	bar:Show()
 
 	_G.AlertFrame:UpdateAnchors()
 
 	--Add cached roll info, if any
 	for rollid, rollTable in pairs(cachedRolls) do
-		if f.rollID == rollid then --rollid matches cached rollid
+		if bar.rollID == rollid then --rollid matches cached rollid
 			for rollType, rollerInfo in pairs(rollTable) do
 				local rollerName, class = rollerInfo[1], rollerInfo[2]
-				if not f.rolls[rollType] then f.rolls[rollType] = {} end
-				tinsert(f.rolls[rollType], { rollerName, class })
-				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
+				if not bar.rolls[rollType] then bar.rolls[rollType] = {} end
+				tinsert(bar.rolls[rollType], { rollerName, class })
+				bar[rolltypes[rollType]].text:SetText(#bar.rolls[rollType])
 			end
 
 			completedRolls[rollid] = true
@@ -352,11 +352,11 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 
 	local rollIsHidden = true
 	if name and rollType then
-		for _, f in next, M.RollBars do
-			if f.rollID == rollID then
-				if not f.rolls[rollType] then f.rolls[rollType] = {} end
-				tinsert(f.rolls[rollType], { name, class })
-				f[rolltypes[rollType]].text:SetText(#f.rolls[rollType])
+		for _, bar in next, M.RollBars do
+			if bar.rollID == rollID then
+				if not bar.rolls[rollType] then bar.rolls[rollType] = {} end
+				tinsert(bar.rolls[rollType], { name, class })
+				bar[rolltypes[rollType]].text:SetText(#bar.rolls[rollType])
 				rollIsHidden = false
 				break
 			end
@@ -373,28 +373,27 @@ function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
 	end
 end
 
-function M:LOOT_HISTORY_ROLL_COMPLETE()
+function M:ClearLootRollCache()
 	wipe(cachedRolls)
 	wipe(completedRolls)
 end
-M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:UpdateLootRollAnchors(POSITION)
 	local spacing, lastFrame, lastShown = E.db.general.lootRoll.spacing + E.Spacing
-	for i, frame in next, M.RollBars do
-		frame:ClearAllPoints()
+	for i, bar in next, M.RollBars do
+		bar:ClearAllPoints()
 
 		local anchor = i ~= 1 and lastFrame or _G.AlertFrameHolder
 		if POSITION == 'TOP' then
-			frame:Point('TOP', anchor, 'BOTTOM', 0, -spacing)
+			bar:Point('TOP', anchor, 'BOTTOM', 0, -spacing)
 		else
-			frame:Point('BOTTOM', anchor, 'TOP', 0, spacing)
+			bar:Point('BOTTOM', anchor, 'TOP', 0, spacing)
 		end
 
-		lastFrame = frame
+		lastFrame = bar
 
-		if frame:IsShown() then
-			lastShown = frame
+		if bar:IsShown() then
+			lastShown = bar
 		end
 	end
 
@@ -409,63 +408,63 @@ function M:UpdateLootRollFrames()
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 
 	for i = 1, NUM_GROUP_LOOT_FRAMES do
-		local frame = M:LootFrame_GetFrame(i)
-		frame:Size(db.width, db.height)
+		local bar = M:LootFrame_GetFrame(i)
+		bar:Size(db.width, db.height)
 
-		frame.status:SetStatusBarTexture(texture)
-		frame.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
+		bar.status:SetStatusBarTexture(texture)
+		bar.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
-		frame.button:ClearAllPoints()
-		frame.button:Point('RIGHT', frame, 'LEFT', E.PixelMode and -1 or -2, 0)
-		frame.button:Size(db.height)
+		bar.button:ClearAllPoints()
+		bar.button:Point('RIGHT', bar, 'LEFT', E.PixelMode and -1 or -2, 0)
+		bar.button:Size(db.height)
 
-		frame.button.questIcon:ClearAllPoints()
-		frame.button.questIcon:Point('RIGHT', frame.button, 'LEFT', -3, 0)
-		frame.button.questIcon:Size(db.height)
+		bar.button.questIcon:ClearAllPoints()
+		bar.button.questIcon:Point('RIGHT', bar.button, 'LEFT', -3, 0)
+		bar.button.questIcon:Size(db.height)
 
-		frame.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
-		frame.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		bar.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		bar.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 
 		for _, button in next, rolltypes do
-			local icon = frame[button]
+			local icon = bar[button]
 			if icon then
 				icon:Size(db.buttonSize)
 				icon:ClearAllPoints()
 			end
 		end
 
-		frame.status:ClearAllPoints()
-		frame.name:ClearAllPoints()
-		frame.bind:ClearAllPoints()
+		bar.status:ClearAllPoints()
+		bar.name:ClearAllPoints()
+		bar.bind:ClearAllPoints()
 
 		local full = db.style == 'fullbar'
 		if full then
-			frame.status:SetAllPoints()
-			frame.status:Size(db.width, db.height)
+			bar.status:SetAllPoints()
+			bar.status:Size(db.width, db.height)
 		else
-			frame.status:Point('BOTTOM', 3, 0)
-			frame.status:Size(db.width, db.height / 3)
+			bar.status:Point('BOTTOM', 3, 0)
+			bar.status:Size(db.width, db.height / 3)
 		end
 
-		local anchor = full and frame or frame.status
+		local anchor = full and bar or bar.status
 		if db.leftButtons then
-			frame.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
-			if frame.disenchant then frame.disenchant:Point('LEFT', frame.need, 'RIGHT', 3, 0) end
-			frame.greed:Point('LEFT', frame.disenchant or frame.need, 'RIGHT', 3, 0)
-			frame.pass:Point('LEFT', frame.greed, 'RIGHT', 3, 0)
+			bar.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
+			if bar.disenchant then bar.disenchant:Point('LEFT', bar.need, 'RIGHT', 3, 0) end
+			bar.greed:Point('LEFT', bar.disenchant or bar.need, 'RIGHT', 3, 0)
+			bar.pass:Point('LEFT', bar.greed, 'RIGHT', 3, 0)
 
-			frame.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
-			frame.name:Point('LEFT', frame.bind, 'RIGHT', 1, 0)
-			frame.bind:Point('LEFT', frame.pass, 'RIGHT', 1, 0)
+			bar.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
+			bar.name:Point('LEFT', bar.bind, 'RIGHT', 1, 0)
+			bar.bind:Point('LEFT', bar.pass, 'RIGHT', 1, 0)
 		else
-			frame.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
-			if frame.disenchant then frame.disenchant:Point('RIGHT', frame.pass, 'LEFT', -3, 0) end
-			frame.greed:Point('RIGHT', frame.disenchant or frame.pass, 'LEFT', -3, 0)
-			frame.need:Point('RIGHT', frame.greed, 'LEFT', -3, 0)
+			bar.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
+			if bar.disenchant then bar.disenchant:Point('RIGHT', bar.pass, 'LEFT', -3, 0) end
+			bar.greed:Point('RIGHT', bar.disenchant or bar.pass, 'LEFT', -3, 0)
+			bar.need:Point('RIGHT', bar.greed, 'LEFT', -3, 0)
 
-			frame.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
-			frame.name:Point('RIGHT', frame.bind, 'LEFT', -1, 0)
-			frame.bind:Point('RIGHT', frame.need, 'LEFT', -1, 0)
+			bar.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
+			bar.name:Point('RIGHT', bar.bind, 'LEFT', -1, 0)
+			bar.bind:Point('RIGHT', bar.need, 'LEFT', -1, 0)
 		end
 	end
 end
@@ -475,11 +474,11 @@ function M:LoadLootRoll()
 
 	M:UpdateLootRollFrames()
 
-	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
-	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE')
 	M:RegisterEvent('START_LOOT_ROLL')
 	M:RegisterEvent('CANCEL_LOOT_ROLL')
-	M:RegisterEvent('LOOT_ROLLS_COMPLETE')
+	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
+	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
+	M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
 	_G.UIParent:UnregisterEvent('CANCEL_LOOT_ROLL')
