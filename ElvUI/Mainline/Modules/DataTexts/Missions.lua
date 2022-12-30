@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
-local format, sort, pairs, select = format, sort, pairs, select
+local format, sort, select = format, sort, select
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -70,6 +70,12 @@ local covenantTreeIDs = {
 	[4] = {310, 313, 318, 321, 329}
 }
 
+local garrisonPages = {
+	'SoulbindPanel',
+	'CovenantCallings',
+	'ArdenwealdGardeningPanel'
+}
+
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
 end
@@ -82,7 +88,7 @@ local function LandingPage(_, ...)
 	if _G.GarrisonLandingPage then
 		HideUIPanel(_G.GarrisonLandingPage)
 
-		for _, frame in pairs({ 'SoulbindPanel', 'CovenantCallings', 'ArdenwealdGardeningPanel' }) do
+		for _, frame in next, garrisonPages do
 			if _G.GarrisonLandingPage[frame] then
 				_G.GarrisonLandingPage[frame]:Hide()
 			end
@@ -318,11 +324,7 @@ local function OnClick(self, btn)
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	else
-		if _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsShown() then
-			HideUIPanel(_G.GarrisonLandingPage)
-		else
-			LandingPage(nil, C_Garrison_GetLandingPageGarrisonType())
-		end
+		_G.ExpansionLandingPageMinimapButton:ToggleLandingPage()
 	end
 end
 

@@ -2693,7 +2693,7 @@ function B:Initialize()
 					SetBankAutosortDisabled(not value)
 				elseif holder.BagID == BACKPACK_CONTAINER then
 					SetBackpackAutosortDisabled(not value)
-				elseif holder.BagID > NUM_BAG_SLOTS then
+				elseif holder.BagID > NUM_BAG_SLOTS and not E.Retail then
 					SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE, not value)
 				else
 					SetBagSlotFlag(holder.BagID, FILTER_FLAG_IGNORE, not value)

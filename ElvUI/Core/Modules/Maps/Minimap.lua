@@ -29,7 +29,6 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local Garrison_OnClick = GarrisonLandingPageMinimapButton_OnClick
 
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
@@ -58,7 +57,7 @@ end
 if E.Retail then
 	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
-	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() if Garrison_OnClick then Garrison_OnClick(_G.GarrisonLandingPageMinimapButton) else _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end end})
+	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end})
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
