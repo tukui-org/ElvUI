@@ -162,6 +162,7 @@ end
 
 function M:LootRoll_Create(index)
 	local bar = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
+	bar:SetScript('OnEvent', M.CANCEL_LOOT_ROLL)
 	bar:Hide()
 
 	local status = CreateFrame('StatusBar', nil, bar)
@@ -240,14 +241,13 @@ function M:LootFrame_GetFrame(i)
 	end
 end
 
-function M:CANCEL_LOOT_ROLL(_, rollID)
-	for _, bar in next, M.RollBars do
-		if bar.rollID == rollID then
-			bar.rollID = nil
-			bar.time = nil
-			bar:Hide()
-			bar.button:UnregisterAllEvents()
-		end
+function M:CANCEL_LOOT_ROLL(event, rollID)
+	if self.rollID == rollID then
+		self.rollID = nil
+		self.time = nil
+		self:Hide()
+		self:UnregisterEvent(event)
+		self.button:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
@@ -327,6 +327,7 @@ function M:START_LOOT_ROLL(_, rollID, rollTime)
 	bar.status:SetValue(rollTime)
 
 	bar:Show()
+	bar:RegisterEvent('CANCEL_LOOT_ROLL')
 
 	_G.AlertFrame:UpdateAnchors()
 
@@ -475,7 +476,6 @@ function M:LoadLootRoll()
 	M:UpdateLootRollFrames()
 
 	M:RegisterEvent('START_LOOT_ROLL')
-	M:RegisterEvent('CANCEL_LOOT_ROLL')
 	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
 	M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
