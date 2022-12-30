@@ -11,7 +11,7 @@ local SharedOptions = {
 	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 3, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
 	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 4, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
 
-	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 5, { min = 16, max = 60, step = 1, bigStep = 2 }),
+	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 5, { min = 10, max = 60, step = 1 }),
 	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 6, { min = 1, max = 32, step = 1 }),
 	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 7, { min = 1, max = 32, step = 1 }),
 	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 8, { min = 0, max = 50, step = 1 }),
