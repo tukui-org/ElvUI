@@ -170,6 +170,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Evoker
+		[378464]	= List(), -- Nullifying Shroud
 		[363916]	= List(), -- Obsidian Scales
 		[374348]	= List(), -- Renewing Blaze
 	-- Death Knight
