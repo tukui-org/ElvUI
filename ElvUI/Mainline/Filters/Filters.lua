@@ -1122,7 +1122,7 @@ G.unitframe.aurawatch = {
 	SHAMAN = {
 		[61295]		= Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
 		[974]		= Aura(974, nil, 'BOTTOMRIGHT', {0.91, 0.80, 0.44}), -- Earth Shield
-		[383648]	= Aura(383648, nil, 'BOTTOMLEFT', {0.91, 0.80, 0.44}), -- Earth Shield (Elemental Orbit)
+		[383648]	= Aura(383648, nil, 'BOTTOMRIGHT', {0.91, 0.80, 0.44}), -- Earth Shield (Elemental Orbit)
 	},
 	HUNTER = {
 		[90361]		= Aura(90361, nil, 'TOP', {0.34, 0.47, 0.31}), -- Spirit Mend (HoT)
