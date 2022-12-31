@@ -170,6 +170,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Evoker
+		[378464]	= List(), -- Nullifying Shroud (PvP)
 		[363916]	= List(), -- Obsidian Scales
 		[374348]	= List(), -- Renewing Blaze
 	-- Death Knight
@@ -211,7 +212,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[202748]	= List(), -- Survival Tactics
 	-- Mage
 		[45438]		= List(), -- Ice Block
-		[113862]	= List(), -- Greater Invisibility
+		[110960]	= List(), -- Greater Invisibility
 		[198111]	= List(), -- Temporal Shield
 		[198065]	= List(), -- Prismatic Cloak
 		[11426]		= List(), -- Ice Barrier
@@ -397,7 +398,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[266779]	= List(), -- Coordinated Assault
 	-- Mage
 		[45438]		= List(), -- Ice Block
-		[113862]	= List(), -- Greater Invisibility
+		[110960]	= List(), -- Greater Invisibility
 		[198111]	= List(), -- Temporal Shield
 		[198065]	= List(), -- Prismatic Cloak
 		[11426]		= List(), -- Ice Barrier
@@ -581,12 +582,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[26297]		= List(), -- Berserking
 		[68992]		= List(), -- Darkflight
 		[58984]		= List(), -- Shadowmeld
-	-- General Consumables
-		[178207]	= List(), -- Drums of Fury
-		[230935]	= List(), -- Drums of the Mountain (Legion)
-		[256740]	= List(), -- Drums of the Maelstrom (BfA)
-	-- Dragonflight Consumables
-		-- TODO: DF
 	},
 }
 
@@ -635,6 +630,10 @@ G.unitframe.aurafilters.Blacklist = {
 		[348443]	= List(), -- Experience Eliminated
 		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
 		[392960]	= List(), -- Waygate Travel
+		[390106]	= List(), -- Riding Along
+		[383600]	= List(), -- Surrounding Storm (Strunraan)
+		[392992]	= List(), -- Silent Lava
+		[393798]	= List(), -- Activated Defense Systems
 	},
 }
 
@@ -679,18 +678,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------- Mythic+ Specific --------------------
 	----------------------------------------------------------
 	-- General Affixes
-		[209858] = List(), -- Necrotic
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
-	-- Shadowlands Season 4
-		[373364] = List(), -- Vampiric Claws
-		[373429] = List(), -- Carrion Swarm
-		[373370] = List(), -- Nightmare Cloud
-		[373391] = List(), -- Nightmare
-		[373570] = List(), -- Hypnosis
-		[373607] = List(), -- Shadowy Barrier (Hypnosis)
-		[373509] = List(), -- Shadow Claws (Stacking)
 	-- Dragonflight Season 1
 		[396369] = List(), -- Mark of Lightning
 		[396364] = List(), -- Mark of Wind
@@ -881,7 +871,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[375620] = List(6), -- Ionizing Charge
 		[375578] = List(4), -- Flame Sentry
 	-- Raszageth the Storm-Eater
-		-- TODO: DF
+		[381615] = List(6), -- Static Charge
+		[399713] = List(6), -- Magnetic Charge
+		[385073] = List(5), -- Ball Lightning
+		[377467] = List(6), -- Fulminating Charge
 	},
 }
 
@@ -900,13 +893,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = List(), -- Bolster
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
-		[343502] = List(), -- Inspiring
-	-- Shadowlands Season 4
-		[373011] = List(6), -- Disguised
-		[373108] = List(2), -- Bounty: Critical Strike (Stacking)
-		[373113] = List(2), -- Bounty: Haste (Stacking)
-		[373121] = List(2), -- Bounty: Versatility (Stacking)
-		[373116] = List(2), -- Bounty: Mastery (Stacking)
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 1) -----------------
 	----------------------------------------------------------
@@ -1055,7 +1041,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[375809] = List(), -- Broodkeeper's Bond
 		[390561] = List(), -- Diurna's Gaze
 	-- Raszageth the Storm-Eater
-		-- TODO: DF
+		[388691] = List(), -- Stormsurge
+		[385360] = List(), -- Overload
+		[382530] = List(), -- Surge
+		[385547] = List(), -- Ascension
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
@@ -1074,8 +1063,11 @@ G.unitframe.aurawatch = {
 	GLOBAL = {},
 	EVOKER = {
 		[355941]	= Aura(355941, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Dream Breath
+		[376788]	= Aura(376788, nil, 'TOPRIGHT', {0.25, 0.25, 0.58}, nil, nil, nil, nil, -20), -- Dream Breath (echo)
 		[363502]	= Aura(363502, nil, 'BOTTOMLEFT', {0.33, 0.33, 0.70}), -- Dream Flight
-		[366155]	= Aura(366155, nil, 'RIGHT', {0.14, 1.00, 0.88}), -- Reversion
+		[366155]	= Aura(366155, nil, 'BOTTOMRIGHT', {0.14, 1.00, 0.88}), -- Reversion
+		[367364]	= Aura(367364, nil, 'BOTTOMRIGHT', {0.09, 0.69, 0.61}, nil, nil, nil, nil, -20), -- Reversion (echo)
+		[373267]	= Aura(373267, nil, 'RIGHT', {0.82, 0.29, 0.24}), -- Life Bind (Verdant Embrace)
 		[364343]	= Aura(364343, nil, 'TOP', {0.13, 0.87, 0.50}), -- Echo
 		[357170]	= Aura(357170, nil, 'BOTTOM', {0.11, 0.57, 0.71}), -- Time Dilation
 	},
@@ -1086,44 +1078,53 @@ G.unitframe.aurawatch = {
 		[3411]		= Aura(3411, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Intervene
 	},
 	PRIEST = {
-		[139]		= Aura(139, nil, 'BOTTOMLEFT', {0.4, 0.7, 0.2}), -- Renew
-		[17]		= Aura(17, nil, 'TOPLEFT', {0.7, 0.7, 0.7}, true), -- Power Word: Shield
-		[193065]	= Aura(193065, nil, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}), -- Masochism
 		[194384]	= Aura(194384, nil, 'TOPRIGHT', {1, 1, 0.66}), -- Atonement
 		[214206]	= Aura(214206, nil, 'TOPRIGHT', {1, 1, 0.66}), -- Atonement (PvP)
-		[33206]		= Aura(33206, nil, 'LEFT', {0.47, 0.35, 0.74}, true), -- Pain Suppression
+		[17]		= Aura(17, nil, 'TOPLEFT', {0.7, 0.7, 0.7}, true), -- Power Word: Shield
 		[41635]		= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
-		[47788]		= Aura(47788, nil, 'LEFT', {0.86, 0.45, 0}, true), -- Guardian Spirit
-		[6788]		= Aura(6788, nil, 'BOTTOMLEFT', {0.89, 0.1, 0.1}), -- Weakened Soul
+		[193065]	= Aura(193065, nil, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}, nil, nil, nil, nil, -20), -- Masochism
+		[139]		= Aura(139, nil, 'BOTTOMLEFT', {0.4, 0.7, 0.2}), -- Renew
+		[6788]		= Aura(6788, nil, 'BOTTOMLEFT', {0.89, 0.1, 0.1}, nil, nil, nil, nil, 20), -- Weakened Soul
+		[10060]		= Aura(10060, nil, 'RIGHT', {1, 0.81, 0.11}, true), -- Power Infusion
+		[77489]		= Aura(77489, nil, 'TOP', {0.75, 1.00, 0.30}), -- Echo of Light
+		[33206]		= Aura(33206, nil, 'BOTTOM', {0.47, 0.35, 0.74}, true), -- Pain Suppression
+		[47788]		= Aura(47788, nil, 'BOTTOM', {0.86, 0.45, 0}, true, nil, nil, nil, -20), -- Guardian Spirit
 	},
 	DRUID = {
 		[774]		= Aura(774, nil, 'TOPRIGHT', {0.8, 0.4, 0.8}), -- Rejuvenation
-		[155777]	= Aura(155777, nil, 'RIGHT', {0.8, 0.4, 0.8}), -- Germination
-		[8936]		= Aura(8936, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Regrowth
 		[33763]		= Aura(33763, nil, 'TOPLEFT', {0.4, 0.8, 0.2}), -- Lifebloom
 		[188550]	= Aura(188550, nil, 'TOPLEFT', {0.4, 0.8, 0.2}), -- Lifebloom (Shadowlands Legendary)
 		[48438]		= Aura(48438, nil, 'BOTTOMRIGHT', {0.8, 0.4, 0}), -- Wild Growth
-		[207386]	= Aura(207386, nil, 'TOP', {0.4, 0.2, 0.8}), -- Spring Blossoms
+		[8936]		= Aura(8936, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Regrowth
+		[155777]	= Aura(155777, nil, 'RIGHT', {0.8, 0.4, 0.8}), -- Germination
 		[102351]	= Aura(102351, nil, 'LEFT', {0.2, 0.8, 0.8}), -- Cenarion Ward (Initial Buff)
 		[102352]	= Aura(102352, nil, 'LEFT', {0.2, 0.8, 0.8}), -- Cenarion Ward (HoT)
-		[200389]	= Aura(200389, nil, 'BOTTOM', {1, 1, 0.4}), -- Cultivation
-		[203554]	= Aura(203554, nil, 'TOP', {1, 1, 0.4}), -- Focused Growth (PvP)
+		[207386]	= Aura(207386, nil, 'TOP', {0.4, 0.2, 0.8}), -- Spring Blossoms
+		[203554]	= Aura(203554, nil, 'TOP', {1, 1, 0.4}, nil, nil, nil, nil, -20), -- Focused Growth (PvP)
+		[200389]	= Aura(200389, nil, 'BOTTOM', {1, 1, 0.4}, nil, nil, nil, nil, -20), -- Cultivation
+		[391891]	= Aura(391891, nil, 'BOTTOM', {0.01, 0.75, 0.60}, nil, nil, nil, nil, -20), -- Adaptive Swarm
+		[157982]	= Aura(157982, nil, 'BOTTOM', {0.75, 0.75, 0.75}), -- Tranquility
 	},
 	PALADIN = {
 		[53563]		= Aura(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Beacon of Light
 		[156910]	= Aura(156910, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Beacon of Faith
 		[200025]	= Aura(200025, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Beacon of Virtue
+		[287280]	= Aura(287280, nil, 'TOPLEFT', {0.2, 0.8, 0.2}), -- Glimmer of Light (T50 Talent)
 		[1022]		= Aura(1022, nil, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), -- Blessing of Protection
 		[1044]		= Aura(1044, nil, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true), -- Blessing of Freedom
 		[6940]		= Aura(6940, nil, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true), -- Blessing of Sacrifice
 		[204018]	= Aura(204018, nil, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), -- Blessing of Spellwarding
 		[223306]	= Aura(223306, nil, 'BOTTOMLEFT', {0.7, 0.7, 0.3}), -- Bestow Faith
-		[287280]	= Aura(287280, nil, 'TOPLEFT', {0.2, 0.8, 0.2}), -- Glimmer of Light (T50 Talent)
 		[157047]	= Aura(157047, nil, 'TOP', {0.15, 0.58, 0.84}), -- Saved by the Light (T25 Talent)
+		[148039]	= Aura(148039, nil, 'BOTTOM', {0.98, 0.50, 0.11}), -- Barrier of Faith (accumulation)
+		[395180]	= Aura(395180, nil, 'BOTTOM', {0.93, 0.80, 0.36}), -- Barrier of Faith (absorbtion)
 	},
 	SHAMAN = {
 		[61295]		= Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
-		[974]		= Aura(974, nil, 'BOTTOMRIGHT', {0.2, 0.2, 1}), -- Earth Shield
+		[73920]		= Aura(73920, nil, 'TOPLEFT', {0.14, 0.94, 0.81}), -- Healing Rain
+		[974]		= Aura(974, nil, 'BOTTOMRIGHT', {0.91, 0.80, 0.44}, true), -- Earth Shield
+		[383648]	= Aura(383648, nil, 'BOTTOMLEFT', {0.91, 0.80, 0.44}), -- Earth Shield (Elemental Orbit)
+		[382024]	= Aura(382024, nil, 'TOP', {0.98, 0.78, 0.19}), -- Earthliving Weapon
 	},
 	HUNTER = {
 		[90361]		= Aura(90361, nil, 'TOP', {0.34, 0.47, 0.31}), -- Spirit Mend (HoT)
@@ -1191,17 +1192,23 @@ G.unitframe.ChainChannelTime = {
 	[356995]	= 3, -- Disintegrate
 }
 
--- Spells Effected By Talents
+-- Spells Effected By Talents (unused; talents changed)
 G.unitframe.TalentChannelTicks = {
-	-- Priest
-	-- [47757]	= {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
-	-- [47758]	= {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
+	-- TODO: going to change this to a method which allows for the following API checks
+	-- IsSpellKnownOrOverridesKnown and/or IsPlayerSpell (for some spells, ex: Improved Purify)
 }
 
 -- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {
 	-- Mage
 	[205021]	= true, -- Ray of Frost
+}
+
+-- Increase ticks from auras
+G.unitframe.AuraChannelTicks = {
+	-- Priest
+	[47757]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (heal)
+	[47758]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (dps)
 }
 
 -- The Base Tick Size

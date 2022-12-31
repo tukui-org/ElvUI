@@ -120,11 +120,10 @@ do
 		frame:RegisterUnitEvent('UNIT_PET', 'player')
 	end
 
-	if Retail or Wrath then
+	if Wrath then
 		frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	end
-
-	if Retail then
+	elseif Retail then
+		frame:RegisterEvent('LEARNED_SPELL_IN_TAB')
 		frame:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
 	end
 end

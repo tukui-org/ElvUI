@@ -18,6 +18,7 @@ local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
+local IsItemAction = IsItemAction
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
@@ -46,8 +47,10 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
+local C_ActionBar_GetProfessionQuality = C_ActionBar and C_ActionBar.GetProfessionQuality
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
+local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -328,14 +331,16 @@ function AB:PositionAndSizeBar(barName)
 end
 
 function AB:CreateBar(id)
-	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
+	local barName = 'ElvUI_Bar'..id
+	local bar = CreateFrame('Frame', barName, E.UIParent, 'SecureHandlerStateTemplate')
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 	end
 
-	AB.handledBars['bar'..id] = bar
+	local barKey = 'bar'..id
+	AB.handledBars[barKey] = bar
 
-	local defaults = AB.barDefaults['bar'..id]
+	local defaults = AB.barDefaults[barKey]
 	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
@@ -348,7 +353,7 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i = 1, 12 do
-		local button = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
+		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
@@ -360,6 +365,10 @@ function AB:CreateBar(id)
 
 		if (E.Retail or E.Wrath) and i == 12 then
 			button:SetState(GetVehicleBarIndex(), 'custom', AB.customExitButton)
+		end
+
+		if E.Retail then
+			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -586,6 +595,10 @@ function AB:UpdateButtonSettings(specific)
 
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
+
+				if button.ProfessionQualityOverlayFrame then
+					AB:ConfigureProfessionQuality(button)
+				end
 			end
 		end
 	end
@@ -699,11 +712,41 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	AB:FixKeybindText(button)
 
+	if button.ProfessionQualityOverlayFrame then
+		AB:UpdateProfessionQuality(button)
+	end
+
 	if not button.useMasque then
 		button:StyleButton()
 	else
 		button:StyleButton(true, true, true)
 	end
+end
+
+function AB:ConfigureProfessionQuality(button)
+	local db = button.db and button.db.professionQuality
+	if db then
+		button.ProfessionQualityOverlayFrame:ClearAllPoints()
+		button.ProfessionQualityOverlayFrame:Point(db.point, db.xOffset, db.yOffset)
+		button.ProfessionQualityOverlayFrame:SetAlpha(db.alpha)
+		button.ProfessionQualityOverlayFrame:SetScale(db.scale)
+	end
+end
+
+function AB:UpdateProfessionQuality(button)
+	local db, atlas = button.db and button.db.professionQuality
+	local enable = db and db.enable
+	if enable then
+		local action = button._state_type == 'action' and button._state_action
+		local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
+		atlas = quality and format('Professions-Icon-Quality-Tier%d', quality)
+
+		if atlas then
+			button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)
+		end
+	end
+
+	button.ProfessionQualityOverlayFrame:SetShown(enable and not not atlas)
 end
 
 function AB:ColorSwipeTexture(cooldown)
@@ -867,9 +910,6 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 end
 
 function AB:SpellButtonOnEnter(_, tt)
-	-- copied from SpellBookFrame to remove:
-	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
-
 	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
 	if not tt then tt = SpellBookTooltip end
 
@@ -913,6 +953,10 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
+	if ActionBarController_UpdateAllSpellHighlights then
+		ActionBarController_UpdateAllSpellHighlights()
+	end
+
 	tt:Show()
 end
 
@@ -925,6 +969,10 @@ end
 function AB:SpellButtonOnLeave()
 	ClearOnBarHighlightMarks()
 	ClearPetActionHighlightMarks()
+
+	if ActionBarController_UpdateAllSpellHighlights then
+		ActionBarController_UpdateAllSpellHighlights()
+	end
 
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
@@ -1559,6 +1607,10 @@ function AB:LAB_ButtonUpdate(button)
 	if button.SetBackdropBorderColor then
 		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(border.r, border.g, border.b)
+	end
+
+	if button.ProfessionQualityOverlayFrame then
+		AB:UpdateProfessionQuality(button)
 	end
 end
 

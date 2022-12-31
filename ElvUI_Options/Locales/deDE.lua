@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
+L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essenz"
 L["BAG_FILTER_JUNK"] = "Plunder"
 L["BAG_FILTER_QUEST_ITEMS"] = "Questgegenstände"

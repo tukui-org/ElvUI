@@ -5,28 +5,56 @@
 	</Button> <!-- framelevel 4 for Masque support -->
 
 	<!-- Theres gotta be a better way to do this -->
+	<Button name='ElvUIAuraTemplate10' inherits='ElvUIAuraTemplate' virtual='true'><Size x='10' y='10'/></Button>
+	<Button name='ElvUIAuraTemplate11' inherits='ElvUIAuraTemplate' virtual='true'><Size x='11' y='11'/></Button>
+	<Button name='ElvUIAuraTemplate12' inherits='ElvUIAuraTemplate' virtual='true'><Size x='12' y='12'/></Button>
+	<Button name='ElvUIAuraTemplate13' inherits='ElvUIAuraTemplate' virtual='true'><Size x='13' y='13'/></Button>
+	<Button name='ElvUIAuraTemplate14' inherits='ElvUIAuraTemplate' virtual='true'><Size x='14' y='14'/></Button>
+	<Button name='ElvUIAuraTemplate15' inherits='ElvUIAuraTemplate' virtual='true'><Size x='15' y='15'/></Button>
 	<Button name='ElvUIAuraTemplate16' inherits='ElvUIAuraTemplate' virtual='true'><Size x='16' y='16'/></Button>
+	<Button name='ElvUIAuraTemplate17' inherits='ElvUIAuraTemplate' virtual='true'><Size x='17' y='17'/></Button>
 	<Button name='ElvUIAuraTemplate18' inherits='ElvUIAuraTemplate' virtual='true'><Size x='18' y='18'/></Button>
+	<Button name='ElvUIAuraTemplate19' inherits='ElvUIAuraTemplate' virtual='true'><Size x='19' y='19'/></Button>
 	<Button name='ElvUIAuraTemplate20' inherits='ElvUIAuraTemplate' virtual='true'><Size x='20' y='20'/></Button>
+	<Button name='ElvUIAuraTemplate21' inherits='ElvUIAuraTemplate' virtual='true'><Size x='21' y='21'/></Button>
 	<Button name='ElvUIAuraTemplate22' inherits='ElvUIAuraTemplate' virtual='true'><Size x='22' y='22'/></Button>
+	<Button name='ElvUIAuraTemplate23' inherits='ElvUIAuraTemplate' virtual='true'><Size x='23' y='23'/></Button>
 	<Button name='ElvUIAuraTemplate24' inherits='ElvUIAuraTemplate' virtual='true'><Size x='24' y='24'/></Button>
+	<Button name='ElvUIAuraTemplate25' inherits='ElvUIAuraTemplate' virtual='true'><Size x='25' y='25'/></Button>
 	<Button name='ElvUIAuraTemplate26' inherits='ElvUIAuraTemplate' virtual='true'><Size x='26' y='26'/></Button>
+	<Button name='ElvUIAuraTemplate27' inherits='ElvUIAuraTemplate' virtual='true'><Size x='27' y='27'/></Button>
 	<Button name='ElvUIAuraTemplate28' inherits='ElvUIAuraTemplate' virtual='true'><Size x='28' y='28'/></Button>
+	<Button name='ElvUIAuraTemplate29' inherits='ElvUIAuraTemplate' virtual='true'><Size x='29' y='59'/></Button>
 	<Button name='ElvUIAuraTemplate30' inherits='ElvUIAuraTemplate' virtual='true'><Size x='30' y='30'/></Button>
+	<Button name='ElvUIAuraTemplate31' inherits='ElvUIAuraTemplate' virtual='true'><Size x='31' y='31'/></Button>
 	<Button name='ElvUIAuraTemplate32' inherits='ElvUIAuraTemplate' virtual='true'><Size x='32' y='32'/></Button>
+	<Button name='ElvUIAuraTemplate33' inherits='ElvUIAuraTemplate' virtual='true'><Size x='33' y='33'/></Button>
 	<Button name='ElvUIAuraTemplate34' inherits='ElvUIAuraTemplate' virtual='true'><Size x='34' y='34'/></Button>
+	<Button name='ElvUIAuraTemplate35' inherits='ElvUIAuraTemplate' virtual='true'><Size x='35' y='35'/></Button>
 	<Button name='ElvUIAuraTemplate36' inherits='ElvUIAuraTemplate' virtual='true'><Size x='36' y='36'/></Button>
+	<Button name='ElvUIAuraTemplate37' inherits='ElvUIAuraTemplate' virtual='true'><Size x='37' y='37'/></Button>
 	<Button name='ElvUIAuraTemplate38' inherits='ElvUIAuraTemplate' virtual='true'><Size x='38' y='38'/></Button>
+	<Button name='ElvUIAuraTemplate39' inherits='ElvUIAuraTemplate' virtual='true'><Size x='39' y='39'/></Button>
 	<Button name='ElvUIAuraTemplate40' inherits='ElvUIAuraTemplate' virtual='true'><Size x='40' y='40'/></Button>
+	<Button name='ElvUIAuraTemplate41' inherits='ElvUIAuraTemplate' virtual='true'><Size x='41' y='41'/></Button>
 	<Button name='ElvUIAuraTemplate42' inherits='ElvUIAuraTemplate' virtual='true'><Size x='42' y='42'/></Button>
+	<Button name='ElvUIAuraTemplate43' inherits='ElvUIAuraTemplate' virtual='true'><Size x='43' y='43'/></Button>
 	<Button name='ElvUIAuraTemplate44' inherits='ElvUIAuraTemplate' virtual='true'><Size x='44' y='44'/></Button>
+	<Button name='ElvUIAuraTemplate45' inherits='ElvUIAuraTemplate' virtual='true'><Size x='45' y='45'/></Button>
 	<Button name='ElvUIAuraTemplate46' inherits='ElvUIAuraTemplate' virtual='true'><Size x='46' y='46'/></Button>
+	<Button name='ElvUIAuraTemplate47' inherits='ElvUIAuraTemplate' virtual='true'><Size x='47' y='47'/></Button>
 	<Button name='ElvUIAuraTemplate48' inherits='ElvUIAuraTemplate' virtual='true'><Size x='48' y='48'/></Button>
+	<Button name='ElvUIAuraTemplate49' inherits='ElvUIAuraTemplate' virtual='true'><Size x='49' y='49'/></Button>
 	<Button name='ElvUIAuraTemplate50' inherits='ElvUIAuraTemplate' virtual='true'><Size x='50' y='50'/></Button>
+	<Button name='ElvUIAuraTemplate51' inherits='ElvUIAuraTemplate' virtual='true'><Size x='51' y='51'/></Button>
 	<Button name='ElvUIAuraTemplate52' inherits='ElvUIAuraTemplate' virtual='true'><Size x='52' y='52'/></Button>
+	<Button name='ElvUIAuraTemplate53' inherits='ElvUIAuraTemplate' virtual='true'><Size x='53' y='53'/></Button>
 	<Button name='ElvUIAuraTemplate54' inherits='ElvUIAuraTemplate' virtual='true'><Size x='54' y='54'/></Button>
+	<Button name='ElvUIAuraTemplate55' inherits='ElvUIAuraTemplate' virtual='true'><Size x='55' y='55'/></Button>
 	<Button name='ElvUIAuraTemplate56' inherits='ElvUIAuraTemplate' virtual='true'><Size x='56' y='56'/></Button>
+	<Button name='ElvUIAuraTemplate57' inherits='ElvUIAuraTemplate' virtual='true'><Size x='57' y='57'/></Button>
 	<Button name='ElvUIAuraTemplate58' inherits='ElvUIAuraTemplate' virtual='true'><Size x='58' y='58'/></Button>
+	<Button name='ElvUIAuraTemplate59' inherits='ElvUIAuraTemplate' virtual='true'><Size x='59' y='59'/></Button>
 	<Button name='ElvUIAuraTemplate60' inherits='ElvUIAuraTemplate' virtual='true'><Size x='60' y='60'/></Button>
 
 	<!-- Oh, Look! A file we need to load -->

@@ -54,11 +54,16 @@ function S:Blizzard_Professions()
 	S:HandlePortraitFrame(ProfessionsFrame)
 
 	local CraftingPage = ProfessionsFrame.CraftingPage
-	CraftingPage.TutorialButton.Ring:Hide()
 	S:HandleButton(CraftingPage.CreateButton)
 	S:HandleButton(CraftingPage.CreateAllButton)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
+
+	if E.global.general.disableTutorialButtons then
+		CraftingPage.TutorialButton:Kill()
+	else
+		CraftingPage.TutorialButton.Ring:Hide()
+	end
 
 	local CraftingRankBar = CraftingPage.RankBar
 	CraftingRankBar.Border:Hide()

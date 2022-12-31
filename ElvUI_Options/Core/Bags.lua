@@ -9,7 +9,6 @@ local format, strmatch = format, strmatch
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
 local GameTooltip = GameTooltip
-
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
 
 local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
@@ -165,6 +164,7 @@ Bags.args.colorGroup.args.assignment.args.junk = ACH:Color(L["BAG_FILTER_JUNK"])
 
 Bags.args.colorGroup.args.profession = ACH:Group(L["Profession Bags"], nil, 2)
 Bags.args.colorGroup.args.profession.inline = true
+Bags.args.colorGroup.args.profession.args.quiver = ACH:Color(L["Quiver / Ammo"])
 Bags.args.colorGroup.args.profession.args.cooking = ACH:Color(L["PROFESSIONS_COOKING"])
 Bags.args.colorGroup.args.profession.args.enchanting = ACH:Color(L["Enchanting"])
 Bags.args.colorGroup.args.profession.args.engineering = ACH:Color(L["Engineering"])
