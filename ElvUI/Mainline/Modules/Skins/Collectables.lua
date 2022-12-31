@@ -65,18 +65,18 @@ local function selectedTextureSetShown(texture, shown) -- used sets list
 	local parent = texture:GetParent()
 	local icon = parent.icon or parent.Icon
 	if shown then
-		parent:SetBackdropBorderColor(1, .8, .1)
+		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
 		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
-		parent:SetBackdropBorderColor(r, g, b)
+		parent.backdrop:SetBackdropBorderColor(r, g, b)
 		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
 local function selectedTextureShow(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
-	parent:SetBackdropBorderColor(1, .8, .1)
+	parent.backdrop:SetBackdropBorderColor(1, .8, .1)
 	parent.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 end
 
@@ -84,7 +84,7 @@ local function selectedTextureHide(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	if not parent.hovered then
 		local r, g, b = unpack(E.media.bordercolor)
-		parent:SetBackdropBorderColor(r, g, b)
+		parent.backdrop:SetBackdropBorderColor(r, g, b)
 		parent.icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 
@@ -96,7 +96,7 @@ end
 local function buttonOnEnter(button)
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	local icon = button.icon or button.Icon
-	button:SetBackdropBorderColor(r, g, b)
+	button.backdrop:SetBackdropBorderColor(r, g, b)
 	icon.backdrop:SetBackdropBorderColor(r, g, b)
 	button.hovered = true
 end
@@ -104,11 +104,11 @@ end
 local function buttonOnLeave(button)
 	local icon = button.icon or button.Icon
 	if button.selected or (button.SelectedTexture and button.SelectedTexture:IsShown()) then
-		button:SetBackdropBorderColor(1, .8, .1)
+		button.backdrop:SetBackdropBorderColor(1, .8, .1)
 		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
-		button:SetBackdropBorderColor(r, g, b)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
 		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 	button.hovered = nil
@@ -117,26 +117,19 @@ end
 local function JournalScrollButtons(frame)
 	if not frame then return end
 
-	for i, bu in next, { frame.ScrollTarget:GetChildren() } do
+	for _, bu in next, { frame.ScrollTarget:GetChildren() } do
 		if not bu.IsSkinned then
 			bu:StripTextures()
-			bu:SetTemplate('Transparent', nil, nil, true)
-			bu:Size(210, 42)
-
-			local point, relativeTo, relativePoint, xOffset, yOffset = bu:GetPoint()
-			bu:ClearAllPoints()
-
-			if i == 1 then
-				bu:Point(point, relativeTo, relativePoint, 44, yOffset)
-			else
-				bu:Point(point, relativeTo, relativePoint, xOffset, -2)
-			end
+			bu:CreateBackdrop('Transparent', nil, nil, true)
+			bu.backdrop:ClearAllPoints()
+			bu.backdrop:Point('TOPLEFT', bu, 0, -2)
+			bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
 
 			local icon = bu.icon or bu.Icon
 			icon:Size(40)
 			icon:Point('LEFT', -43, 0)
 			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:CreateBackdrop(nil, nil, nil, true)
+			icon:CreateBackdrop('Transparent', nil, nil, true)
 
 			bu:HookScript('OnEnter', buttonOnEnter)
 			bu:HookScript('OnLeave', buttonOnLeave)
