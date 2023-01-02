@@ -33,8 +33,8 @@ local function ShutdownNPE()
 	return NPE
 end
 
--- Blizzard_TutorialManager: similar to NPE
-local Tutorial_Frames = {
+-- Blizzard_TutorialManager: sort of similar to NPE
+local tutorialFrames = {
 	'TutorialWalk_Frame',
 	'TutorialSingleKey_Frame',
 	'TutorialMainFrame_Frame',
@@ -47,7 +47,7 @@ local function ShutdownTM()
 		TM:Shutdown()
 
 		-- these aren't hidden by the shutdown
-		for _, name in next, Tutorial_Frames do
+		for _, name in next, tutorialFrames do
 			_G[name]:Kill()
 		end
 	end
@@ -55,8 +55,8 @@ local function ShutdownTM()
 	return TM
 end
 
--- Blizzard_Tutorials: implemented kinda weird
-local Blizzard_Tutorials = {
+-- Blizzard_Tutorials: implemented kinda weird, imo tbh
+local gameTutorials = {
 	-- Blizzard_Tutorials_Professions
 	'Class_ProfessionInventoryWatcher',
 	'Class_ProfessionGearCheckingService',
@@ -67,7 +67,7 @@ local Blizzard_Tutorials = {
 	-- Blizzard_Tutorials_Dracthyr
 	'Class_DracthyrEssenceWatcher',
 
-	-- Blizzard_Tutorials_Classes.lua
+	-- Blizzard_Tutorials_Classes
 	'Class_StarterTalentWatcher',
 	'Class_TalentPoints',
 	'Class_ChangeSpec'
@@ -80,7 +80,7 @@ local function ShutdownGT()
 		GT_Shutdown = true
 
 		-- shut some down, they are running but not used
-		for _, name in next, Blizzard_Tutorials do
+		for _, name in next, gameTutorials do
 			_G[name]:Complete()
 		end
 	end
