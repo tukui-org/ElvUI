@@ -65,7 +65,9 @@ local Blizzard_Tutorials = {
 	'Class_FirstProfessionTutorial',
 
 	-- Blizzard_Tutorials_Classes.lua
-	'Class_StarterTalentWatcher'
+	'Class_StarterTalentWatcher',
+	'Class_TalentPoints',
+	'Class_ChangeSpec'
 }
 
 local GT_Shutdown = false
@@ -76,32 +78,13 @@ local function ShutdownGT()
 
 		-- shut some down, they are running but not used
 		for _, name in next, Blizzard_Tutorials do
-			_G[name]:OnComplete()
-		end
+			local frame = _G[name]
+			if not frame.class then
+				frame.class = {} -- this might not be ready yet?
+				frame.class.name = frame.name
+			end
 
-		-- these are extra annoying because while they have OnComplete
-		-- they also call things that will break because TM is shutdown
-		local CS = _G.Class_ChangeSpec
-		if CS then -- Class_ChangeSpec:OnComplete()
-			_G.Dispatcher:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', CS)
-			_G.Dispatcher:UnregisterEvent('PLAYER_TALENT_UPDATE', CS)
-			_G.Dispatcher:UnregisterEvent('PLAYER_LEVEL_CHANGED', CS)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.OpenFrame', CS)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.CloseFrame', CS)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.SpecTab.ActivateSpec', CS)
-
-			-- CS:CleanUpCallbacks() -- for now this is empty so no reason to do it?
-		end
-
-		local TP = _G.Class_TalentPoints
-		if TP then -- Class_TalentPoints:OnComplete()
-			_G.Dispatcher:UnregisterEvent('PLAYER_TALENT_UPDATE', TP)
-			_G.Dispatcher:UnregisterEvent('PLAYER_LEVEL_CHANGED', TP)
-			_G.Dispatcher:UnregisterEvent('ACTIVE_COMBAT_CONFIG_CHANGED', TP)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.SpecTab.Show', TP)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.TalentTab.Show', TP)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.OpenFrame', TP)
-			_G.EventRegistry:UnregisterCallback('TalentFrame.CloseFrame', TP)
+			_G[name]:OnInterrupt()
 		end
 	end
 
