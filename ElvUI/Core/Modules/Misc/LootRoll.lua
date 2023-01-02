@@ -241,28 +241,38 @@ function M:LootFrame_GetFrame(i)
 	end
 end
 
-function M:CANCEL_LOOT_ROLL(event, rollID)
+function M:CANCEL_LOOT_ROLL(_, rollID)
 	if self.rollID == rollID then
 		self.rollID = nil
 		self.time = nil
 		self:Hide()
-		self:UnregisterEvent(event)
+		self:UnregisterEvent('CANCEL_LOOT_ROLL')
 		self.button:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
-function M:START_LOOT_ROLL(_, rollID, rollTime)
-	local bar = M:LootFrame_GetFrame()
-	if not bar then return end -- need more info on this, how does it happen?
+function M:START_LOOT_ROLL(event, rollID, rollTime)
+	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
+	if not name then -- also done in GroupLootFrame_OnShow
+		for _, rollBar in next, M.RollBars do
+			if rollBar.rollID == rollID then
+				M.CANCEL_LOOT_ROLL(rollBar, event, rollID)
+			end
+		end
 
-	wipe(bar.rolls)
+		return
+	end
+
+	local bar = M:LootFrame_GetFrame()
+	if not bar then return end -- well this shouldn't happen
 
 	local itemLink = GetLootRollItemLink(rollID)
-	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 	local db, color = E.db.general.lootRoll, ITEM_QUALITY_COLORS[quality]
 
 	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
+
+	wipe(bar.rolls)
 
 	bar.rollID = rollID
 	bar.time = rollTime
