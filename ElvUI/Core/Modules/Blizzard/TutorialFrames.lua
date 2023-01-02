@@ -55,56 +55,17 @@ local function ShutdownTM()
 	return TM
 end
 
--- Blizzard_Tutorials: implemented kinda weird
-local Blizzard_Tutorials = {
-	-- Blizzard_Tutorials_Professions
-	'Class_ProfessionInventoryWatcher',
-	'Class_ProfessionGearCheckingService',
-	'Class_EquipProfessionGear',
-	'Class_FirstProfessionWatcher',
-	'Class_FirstProfessionTutorial',
-
-	-- Blizzard_Tutorials_Dracthyr
-	'Class_DracthyrEssenceWatcher',
-
-	-- Blizzard_Tutorials_Classes.lua
-	'Class_StarterTalentWatcher',
-	'Class_TalentPoints',
-	'Class_ChangeSpec'
-}
-
-local GT_Shutdown = false
-local function ShutdownGT()
-	local GT = _G.GameTutorials
-	if GT and not GT_Shutdown then
-		GT_Shutdown = true
-
-		-- shut some down, they are running but not used
-		for _, name in next, Blizzard_Tutorials do
-			local frame = _G[name]
-			if not frame.class then
-				frame.class = {} -- this might not be ready yet?
-				frame.class.name = frame.name
-			end
-
-			frame:OnInterrupt()
-		end
-	end
-
-	return GT
-end
-
 local function ShutdownTutorials(event)
-	local TM, NPE, GT = ShutdownTM(), ShutdownNPE(), ShutdownGT()
-	if TM and NPE and GT then -- they exist unregister this
+	local TM, NPE = ShutdownTM(), ShutdownNPE()
+	if TM and NPE then -- they exist unregister this
 		B:UnregisterEvent(event)
 	end
 end
 
 -- disable new player experience stuff
 function B:DisableTutorials()
-	local TM, NPE, GT = ShutdownTM(), ShutdownNPE(), ShutdownGT()
-	if not TM or not NPE or not GT then -- wait for them to exist
+	local TM, NPE = ShutdownTM(), ShutdownNPE()
+	if not TM or not NPE then -- wait for them to exist
 		B:RegisterEvent('ADDON_LOADED', ShutdownTutorials)
 	end
 end
