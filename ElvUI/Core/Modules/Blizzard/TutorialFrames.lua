@@ -81,13 +81,7 @@ local function ShutdownGT()
 
 		-- shut some down, they are running but not used
 		for _, name in next, Blizzard_Tutorials do
-			local frame = _G[name]
-			if not frame.class then
-				frame.class = {} -- this might not be ready yet?
-				frame.class.name = frame.name
-			end
-
-			frame:OnInterrupt()
+			_G[name]:Complete()
 		end
 	end
 
@@ -95,16 +89,16 @@ local function ShutdownGT()
 end
 
 local function ShutdownTutorials(event)
-	local TM, NPE, GT = ShutdownTM(), ShutdownNPE(), ShutdownGT()
-	if TM and NPE and GT then -- they exist unregister this
+	local NPE, GT, TM = ShutdownNPE(), ShutdownGT(), ShutdownTM()
+	if NPE and GT and TM then -- they exist unregister this
 		B:UnregisterEvent(event)
 	end
 end
 
 -- disable new player experience stuff
 function B:DisableTutorials()
-	local TM, NPE, GT = ShutdownTM(), ShutdownNPE(), ShutdownGT()
-	if not TM or not NPE or not GT then -- wait for them to exist
+	local NPE, GT, TM = ShutdownNPE(), ShutdownGT(), ShutdownTM()
+	if not NPE or not GT or not TM then -- wait for them to exist
 		B:RegisterEvent('ADDON_LOADED', ShutdownTutorials)
 	end
 end
