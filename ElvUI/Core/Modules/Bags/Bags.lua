@@ -1372,7 +1372,7 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	local npcID = not delete and NP:UnitNPCID('npc')
+	local npcID = not delete and tonumber(NP:UnitNPCID('npc'))
 	if B.ExcludeVendors[npcID] then return end
 
 	B:GetGrays(true)
