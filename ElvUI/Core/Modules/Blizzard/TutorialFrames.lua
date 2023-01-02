@@ -68,9 +68,12 @@ local Blizzard_Tutorials = {
 	'Class_StarterTalentWatcher'
 }
 
+local GT_Shutdown = false
 local function ShutdownGT()
 	local GT = _G.GameTutorials
-	if GT then
+	if GT and not GT_Shutdown then
+		GT_Shutdown = true
+
 		-- shut some down, they are running but not used
 		for _, name in next, Blizzard_Tutorials do
 			_G[name]:OnComplete()
