@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 function B:KillBlizzard() -- current not E.Retail
@@ -22,7 +23,7 @@ function B:DisableHelpTip() -- auto complete helptips
 	E:Delay(1, AcknowledgeTips)
 end
 
--- ActionBars heavily conflicts with NPE
+-- Blizzard_NewPlayerExperience: ActionBars heavily conflicts with this
 local function ShutdownNPE()
 	local NPE = _G.NewPlayerExperience
 	if NPE and NPE:GetIsActive() then
@@ -32,17 +33,23 @@ local function ShutdownNPE()
 	return NPE
 end
 
--- similar to NPE but not NPE
+-- Blizzard_TutorialManager: similar to NPE
+local Tutorial_Frames = {
+	'TutorialWalk_Frame',
+	'TutorialSingleKey_Frame',
+	'TutorialMainFrame_Frame',
+	'TutorialKeyboardMouseFrame_Frame'
+}
+
 local function ShutdownTM()
 	local TM = _G.TutorialManager
 	if TM and TM:GetIsActive() then
 		TM:Shutdown()
 
 		-- these aren't hidden by the shutdown
-		_G.TutorialWalk_Frame:Kill()
-		_G.TutorialSingleKey_Frame:Kill()
-		_G.TutorialMainFrame_Frame:Kill()
-		_G.TutorialKeyboardMouseFrame_Frame:Kill()
+		for _, name in next, Tutorial_Frames do
+			_G[name]:Kill()
+		end
 	end
 
 	return TM
