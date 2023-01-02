@@ -57,12 +57,15 @@ end
 
 -- Blizzard_Tutorials: implemented kinda weird
 local Blizzard_Tutorials = {
-	-- Blizzard_Tutorials_Professions.lua
+	-- Blizzard_Tutorials_Professions
 	'Class_ProfessionInventoryWatcher',
 	'Class_ProfessionGearCheckingService',
 	'Class_EquipProfessionGear',
 	'Class_FirstProfessionWatcher',
 	'Class_FirstProfessionTutorial',
+
+	-- Blizzard_Tutorials_Dracthyr
+	'Class_DracthyrEssenceWatcher',
 
 	-- Blizzard_Tutorials_Classes.lua
 	'Class_StarterTalentWatcher',
@@ -84,7 +87,7 @@ local function ShutdownGT()
 				frame.class.name = frame.name
 			end
 
-			_G[name]:OnInterrupt()
+			frame:OnInterrupt()
 		end
 	end
 
