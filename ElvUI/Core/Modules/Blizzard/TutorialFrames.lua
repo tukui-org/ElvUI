@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
-local next = next
+local wipe, next = wipe, next
 local hooksecurefunc = hooksecurefunc
 
 function B:KillBlizzard() -- current not E.Retail
@@ -88,17 +88,29 @@ local function ShutdownGT()
 	return GT
 end
 
+-- this is the event handler for tutorials, maybe other stuff later?
+-- it seems shutdown is not unregistering events for stuff so..
+local function ShutdownTD() -- Blizzard_TutorialDispatcher
+	local TD = _G.Dispatcher
+	if TD then
+		wipe(TD.Events)
+		wipe(TD.Scripts)
+	end
+
+	return TD
+end
+
 local function ShutdownTutorials(event)
-	local NPE, GT, TM = ShutdownNPE(), ShutdownGT(), ShutdownTM()
-	if NPE and GT and TM then -- they exist unregister this
+	local NPE, GT, TM, TD = ShutdownNPE(), ShutdownGT(), ShutdownTM(), ShutdownTD()
+	if NPE and GT and TM and TD then -- they exist unregister this
 		B:UnregisterEvent(event)
 	end
 end
 
 -- disable new player experience stuff
 function B:DisableTutorials()
-	local NPE, GT, TM = ShutdownNPE(), ShutdownGT(), ShutdownTM()
-	if not NPE or not GT or not TM then -- wait for them to exist
+	local NPE, GT, TM, TD = ShutdownNPE(), ShutdownGT(), ShutdownTM(), ShutdownTD()
+	if not NPE or not GT or not TM or not TD then -- wait for them to exist
 		B:RegisterEvent('ADDON_LOADED', ShutdownTutorials)
 	end
 end
