@@ -444,7 +444,7 @@ function UF:SetCastTicks(frame, numTicks)
 		local tick = ticks[i]
 		if not tick then
 			tick = frame:CreateTexture(nil, 'OVERLAY')
-			tick:SetTexture(E.media.normTex)
+			tick:SetTexture(E.media.blankTex)
 			tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
 			tick:Width(frame.tickWidth)
 			ticks[i] = tick
