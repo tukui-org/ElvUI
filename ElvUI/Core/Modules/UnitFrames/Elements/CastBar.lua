@@ -333,9 +333,9 @@ function UF:Configure_Castbar(frame)
 		castbar.tickWidth = db.tickWidth
 		castbar.tickColor = db.tickColor
 
-		for i = 1, #ticks do
-			ticks[i]:SetVertexColor(castbar.tickColor.r, castbar.tickColor.g, castbar.tickColor.b, castbar.tickColor.a)
-			ticks[i]:Width(castbar.tickWidth)
+		for _, tick in next, ticks do
+			tick:SetVertexColor(castbar.tickColor.r, castbar.tickColor.g, castbar.tickColor.b, castbar.tickColor.a)
+			tick:Width(castbar.tickWidth)
 		end
 	end
 
@@ -428,8 +428,8 @@ function UF:CustomTimeText(duration)
 end
 
 function UF:HideTicks()
-	for i=1, #ticks do
-		ticks[i]:Hide()
+	for _, tick in next, ticks do
+		tick:Hide()
 	end
 end
 
