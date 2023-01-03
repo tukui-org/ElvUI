@@ -98,8 +98,10 @@ end
 local function ReskinOutputLog(outputlog)
 	outputlog:StripTextures()
 	outputlog:SetTemplate('Transparent')
+
 	S:HandleCloseButton(outputlog.ClosePanelButton)
 	S:HandleTrimScrollBar(outputlog.ScrollBar, true)
+
 	hooksecurefunc(outputlog.ScrollBox, 'Update', HandleOutputButtons)
 end
 
@@ -254,8 +256,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(DetailedView.SpendPointsButton)
 	S:HandleIcon(DetailedView.UnspentPoints.Icon)
 
-	local CraftingLog = CraftingPage.CraftingOutputLog
-	ReskinOutputLog(CraftingLog)
+	ReskinOutputLog(CraftingPage.CraftingOutputLog)
 
 	local Orders = ProfessionsFrame.OrdersPage
 	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
@@ -287,8 +288,7 @@ function S:Blizzard_Professions()
 	OrderRankBar.Fill:CreateBackdrop()
 	OrderRankBar.Rank.Text:FontTemplate()
 
-	local OrderLog = OrderView.CraftingOutputLog
-	ReskinOutputLog(OrderLog)
+	ReskinOutputLog(OrderView.CraftingOutputLog)
 
 	S:HandleButton(OrderView.CreateButton)
 	S:HandleButton(OrderView.StartRecraftButton)

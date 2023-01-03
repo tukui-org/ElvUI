@@ -639,7 +639,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	end
 end
 
-function NP:UnitNPCID(unit)
+function NP:UnitNPCID(unit) -- also used by Bags.lua
 	local guid = UnitGUID(unit)
 	return guid and select(6, strsplit('-', guid)), guid
 end
