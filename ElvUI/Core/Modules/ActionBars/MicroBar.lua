@@ -126,7 +126,7 @@ function AB:HandleMicroTextures(button, name)
 	local pushed = button:GetPushedTexture()
 
 	local icons = AB.db.microbar.useIcons
-	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.White8x8
+	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
 	local faction = name == 'PVPMicroButton' and E.Media.Textures[E.myfaction == 'Horde' and 'PVPHorde' or 'PVPAlliance']
 	local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
 	local stock = not E.Retail and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
@@ -142,8 +142,9 @@ function AB:HandleMicroTextures(button, name)
 	end
 
 	if character then
-		pushed:SetBlendMode('MOD')
 		pushed:SetDrawLayer('OVERLAY', 1)
+		pushed:SetBlendMode('ADD')
+		pushed:SetAlpha(0.25)
 	end
 
 	normal:SetInside(button.backdrop)

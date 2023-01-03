@@ -47,6 +47,64 @@ local function ReskinSlotButton(button)
 	end
 end
 
+local function HandleOutputButtons(frame)
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if not child.isSkinned then
+			local itemContainer = child.ItemContainer
+			if itemContainer then
+				local item = itemContainer.Item
+				item:SetNormalTexture(E.ClearTexture)
+				item:SetPushedTexture(E.ClearTexture)
+				item:SetHighlightTexture(E.ClearTexture)
+
+				local icon = item:GetRegions()
+				S:HandleIcon(icon, true)
+				S:HandleIconBorder(item.IconBorder, icon.backdrop)
+
+				itemContainer.CritFrame:SetAlpha(0)
+				itemContainer.BorderFrame:Hide()
+				itemContainer.HighlightNameFrame:SetAlpha(0)
+				itemContainer.PushedNameFrame:SetAlpha(0)
+				itemContainer.HighlightNameFrame:CreateBackdrop('Transparent')
+			end
+
+			local bonus = child.CreationBonus
+			if bonus then
+				local item = bonus.Item
+				item:StripTextures()
+				local icon = item:GetRegions()
+				S:HandleIcon(icon)
+			end
+
+			child.isSkinned = true
+		end
+
+		local itemContainer = child.ItemContainer
+		if itemContainer then
+			itemContainer.Item.IconBorder:SetAlpha(0)
+
+			local itemBG = itemContainer.backdrop
+			if itemBG then
+				if itemContainer.CritFrame:IsShown() then
+					itemBG:SetBackdropBorderColor(1, .8, 0)
+				else
+					itemBG:SetBackdropBorderColor(0, 0, 0)
+				end
+			end
+		end
+	end
+end
+
+local function ReskinOutputLog(outputlog)
+	outputlog:StripTextures()
+	outputlog:SetTemplate('Transparent')
+
+	S:HandleCloseButton(outputlog.ClosePanelButton)
+	S:HandleTrimScrollBar(outputlog.ScrollBar, true)
+
+	hooksecurefunc(outputlog.ScrollBox, 'Update', HandleOutputButtons)
+end
+
 function S:Blizzard_Professions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
@@ -198,59 +256,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(DetailedView.SpendPointsButton)
 	S:HandleIcon(DetailedView.UnspentPoints.Icon)
 
-	local CraftingLog = CraftingPage.CraftingOutputLog
-	CraftingLog:StripTextures()
-	CraftingLog:CreateBackdrop()
-	S:HandleCloseButton(CraftingLog.ClosePanelButton)
-	S:HandleTrimScrollBar(CraftingLog.ScrollBar, true)
-
-	hooksecurefunc(CraftingLog.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
-				local itemContainer = child.ItemContainer
-				if itemContainer then
-					local item = itemContainer.Item
-					item:SetNormalTexture(E.ClearTexture)
-					item:SetPushedTexture(E.ClearTexture)
-					item:SetHighlightTexture(E.ClearTexture)
-
-					local icon = item:GetRegions()
-					S:HandleIcon(icon, true)
-					S:HandleIconBorder(item.IconBorder, icon.backdrop)
-
-					itemContainer.CritFrame:SetAlpha(0)
-					itemContainer.BorderFrame:Hide()
-					itemContainer.HighlightNameFrame:SetAlpha(0)
-					itemContainer.PushedNameFrame:SetAlpha(0)
-					itemContainer.HighlightNameFrame:CreateBackdrop('Transparent')
-				end
-
-				local bonus = child.CreationBonus
-				if bonus then
-					local item = bonus.Item
-					item:StripTextures()
-					local icon = item:GetRegions()
-					S:HandleIcon(icon)
-				end
-
-				child.isSkinned = true
-			end
-
-			local itemContainer = child.ItemContainer
-			if itemContainer then
-				itemContainer.Item.IconBorder:SetAlpha(0)
-
-				local itemBG = itemContainer.backdrop
-				if itemBG then
-					if itemContainer.CritFrame:IsShown() then
-						itemBG:SetBackdropBorderColor(1, .8, 0)
-					else
-						itemBG:SetBackdropBorderColor(0, 0, 0)
-					end
-				end
-			end
-		end
-	end)
+	ReskinOutputLog(CraftingPage.CraftingOutputLog)
 
 	local Orders = ProfessionsFrame.OrdersPage
 	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
@@ -282,11 +288,7 @@ function S:Blizzard_Professions()
 	OrderRankBar.Fill:CreateBackdrop()
 	OrderRankBar.Rank.Text:FontTemplate()
 
-	local OrderLog = OrderView.CraftingOutputLog
-	OrderLog:StripTextures()
-	OrderLog:CreateBackdrop()
-	S:HandleCloseButton(OrderLog.ClosePanelButton)
-	S:HandleTrimScrollBar(OrderLog.ScrollBar, true)
+	ReskinOutputLog(OrderView.CraftingOutputLog)
 
 	S:HandleButton(OrderView.CreateButton)
 	S:HandleButton(OrderView.StartRecraftButton)

@@ -3,6 +3,7 @@ local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local AB = E:GetModule('ActionBars')
+local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -1324,6 +1325,12 @@ B.ExcludeGrays = E.Retail and {
 	[28664] = "Nitrin's Instructions",
 }
 
+-- Vendors to avoid selling to
+B.ExcludeVendors = {
+	['113831'] = "Auto-Hammer",
+	['100995'] = "Auto-Hammer"
+}
+
 function B:GetGrays(vendor)
 	local value = 0
 
@@ -1360,10 +1367,13 @@ end
 function B:VendorGrays(delete)
 	if B.SellFrame:IsShown() then return end
 
-	if (not _G.MerchantFrame or not _G.MerchantFrame:IsShown()) and not delete then
+	if not delete and (not _G.MerchantFrame or not _G.MerchantFrame:IsShown()) then
 		E:Print(L["You must be at a vendor."])
 		return
 	end
+
+	local npcID = not delete and NP:UnitNPCID('npc')
+	if B.ExcludeVendors[npcID] then return end
 
 	B:GetGrays(true)
 
