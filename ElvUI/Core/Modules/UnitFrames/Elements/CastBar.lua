@@ -433,27 +433,27 @@ function UF:HideTicks()
 	end
 end
 
-function UF:SetCastTicks(frame, numTicks, extraTickRatio)
-	extraTickRatio = extraTickRatio or 0
+function UF:SetCastTicks(frame, numTicks)
 	UF:HideTicks()
 
 	if numTicks and numTicks <= 0 then return end
 
-	local w = frame:GetWidth()
-	local d = w / (numTicks + extraTickRatio)
+	local offset = frame:GetWidth() / numTicks
 
 	for i = 1, numTicks - 1 do
-		if not ticks[i] then
-			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
-			ticks[i]:SetTexture(E.media.normTex)
-			ticks[i]:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
-			ticks[i]:Width(frame.tickWidth)
+		local tick = ticks[i]
+		if not tick then
+			tick = frame:CreateTexture(nil, 'OVERLAY')
+			tick:SetTexture(E.media.normTex)
+			tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
+			tick:Width(frame.tickWidth)
+			ticks[i] = tick
 		end
 
-		ticks[i]:ClearAllPoints()
-		ticks[i]:Point('RIGHT', frame, 'LEFT', d * i, 0)
-		ticks[i]:Height(frame.tickHeight)
-		ticks[i]:Show()
+		tick:ClearAllPoints()
+		tick:Point('RIGHT', frame, 'LEFT', offset * i, 0)
+		tick:Height(frame.tickHeight)
+		tick:Show()
 	end
 end
 
@@ -550,41 +550,27 @@ function UF:PostCastStart(unit)
 			self.chainTime = nil -- clear the time too
 		end
 
-		local ticksSize = baseTicks and global.ChannelTicksSize[spellID]
-		local hasteTicks = ticksSize and global.HastedChannelTicks[spellID]
+		local hasteTicks = baseTicks and global.HastedChannelTicks[spellID]
 		if hasteTicks then -- requires tickSize
-			local tickIncRate = 1 / baseTicks
-			local curHaste = UnitSpellHaste('player') * 0.01
-			local firstTickInc = tickIncRate * 0.5
-			local bonusTicks = 0
+			local haste = UnitSpellHaste('player') * 0.01
+			local rate = 1 / baseTicks
+			local first = rate * 0.5
 
-			if curHaste >= firstTickInc then
-				bonusTicks = bonusTicks + 1
+			local bonus = 0
+			if haste >= first then
+				bonus = bonus + 1
 			end
 
-			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
-			while curHaste >= x do
-				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
-				if curHaste >= x then
-					bonusTicks = bonusTicks + 1
+			local x = E:Round(first + rate, 2)
+			while haste >= x do
+				x = E:Round(first + (rate * bonus), 2)
+
+				if haste >= x then
+					bonus = bonus + 1
 				end
 			end
 
-			local baseTickSize = ticksSize
-			local hastedTickSize = baseTickSize / (1 + curHaste)
-			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
-			local extraTickRatio = extraTick / hastedTickSize
-
-			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
-			self.hadTicks = true
-		elseif ticksSize then
-			local curHaste = UnitSpellHaste('player') * 0.01
-			local baseTickSize = ticksSize
-			local hastedTickSize = baseTickSize / (1 + curHaste)
-			local extraTick = self.max - hastedTickSize * (baseTicks)
-			local extraTickRatio = extraTick / hastedTickSize
-
-			UF:SetCastTicks(self, baseTicks, extraTickRatio)
+			UF:SetCastTicks(self, baseTicks + bonus)
 			self.hadTicks = true
 		elseif baseTicks then
 			UF:SetCastTicks(self, baseTicks)
