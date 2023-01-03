@@ -1117,14 +1117,13 @@ G.unitframe.ChainChannelTime = {}
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {}
 
--- Spells Effected By Haste, these spells require a Tick Size (table above)
-G.unitframe.HastedChannelTicks = {}
-
 -- Increase ticks from auras
 G.unitframe.AuraChannelTicks = {}
 
--- The Base Tick Size
-G.unitframe.ChannelTicksSize = {}
+-- Spells Effected By Haste, value is Base Tick Size
+G.unitframe.HastedChannelTicks = {
+	-- [spellID] = 1, -- SpellName
+}
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {

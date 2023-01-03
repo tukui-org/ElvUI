@@ -1152,7 +1152,7 @@ G.unitframe.ChannelTicks = {
 	-- Evoker
 	[356995]	= 3, -- Disintegrate
 	-- Warlock
-	[198590]	= 5, -- Drain Soul
+	[198590]	= 4, -- Drain Soul
 	[755]		= 5, -- Health Funnel
 	[234153]	= 5, -- Drain Life
 	-- Priest
@@ -1196,12 +1196,6 @@ G.unitframe.TalentChannelTicks = {
 	-- IsSpellKnownOrOverridesKnown and/or IsPlayerSpell (for some spells, ex: Improved Purify)
 }
 
--- Spells Effected By Haste, these spells require a Tick Size (table above)
-G.unitframe.HastedChannelTicks = {
-	-- Mage
-	[205021]	= true, -- Ray of Frost
-}
-
 -- Increase ticks from auras
 G.unitframe.AuraChannelTicks = {
 	-- Priest
@@ -1209,12 +1203,9 @@ G.unitframe.AuraChannelTicks = {
 	[47758]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (dps)
 }
 
--- The Base Tick Size
-G.unitframe.ChannelTicksSize = {
-	-- Warlock
-	[198590]	= 1, -- Drain Soul
-	-- Mage
-	[205021]	= 1, -- Ray of Frost
+-- Spells Effected By Haste, value is Base Tick Size
+G.unitframe.HastedChannelTicks = {
+	-- [spellID] = 1, -- SpellName
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
