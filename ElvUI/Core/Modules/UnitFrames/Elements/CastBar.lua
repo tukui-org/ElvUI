@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local abs, next = abs, next
-local unpack, tonumber = unpack, tonumber
+local unpack = unpack
 
 local GetTime = GetTime
 local CreateFrame = CreateFrame
