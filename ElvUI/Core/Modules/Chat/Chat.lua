@@ -460,13 +460,13 @@ do --this can save some main file locals
 		z['Twunkie-Area52']			= itsMis
 		z['Misoracle-Area52']		= itsMis
 		z['Mismayhem-Area52']		= itsMis
-		z['Misdîrect-Spirestone']	= itsMis
+		z['Misdîrect-Area52']		= itsMis
+		z['Misdecay-Area52']		= itsMis
+		z['Mislust-Area52'] 		= itsMis
+		z['Misdivine-Area52']		= itsMis
+		z['Mislight-Area52']		= itsMis
 		z['Misillidan-Spirestone']	= itsMis
 		z['Mispel-Spirestone']		= itsMis
-		z['Misdecay-Spirestone']	= itsMis
-		z['Mislust-Spirestone'] 	= itsMis
-		z['Misdivine-Spirestone']	= itsMis
-		z['Mislight-Spirestone']	= itsMis
 		--Bladesdruid
 		z['Bladedemonz-Spirestone']	= SuperBear
 		z['Bladesdruid-Spirestone']	= SuperBear
