@@ -1262,7 +1262,7 @@ function B:OnEvent(event, ...)
 end
 
 function B:UpdateTokensIfVisible()
-	if B.BagFrame:IsVisible() then
+	if not B.BagFrame.firstOpen and B.BagFrame:IsVisible() then
 		B:UpdateTokens()
 	end
 end
