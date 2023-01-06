@@ -172,6 +172,7 @@ end
 function M:LootRoll_Create(index)
 	local bar = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
 	bar:SetScript('OnEvent', M.CANCEL_LOOT_ROLL)
+	bar:RegisterEvent('CANCEL_LOOT_ROLL')
 	bar:Hide()
 
 	local status = CreateFrame('StatusBar', nil, bar)
@@ -197,6 +198,7 @@ function M:LootRoll_Create(index)
 	button:SetScript('OnEnter', SetItemTip)
 	button:SetScript('OnLeave', GameTooltip_Hide)
 	button:SetScript('OnClick', LootClick)
+	button:RegisterEvent('MODIFIER_STATE_CHANGED')
 	bar.button = button
 
 	button.icon = button:CreateTexture(nil, 'OVERLAY')
@@ -254,9 +256,6 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 	if self.rollID == rollID then
 		self.rollID = nil
 		self.time = nil
-		self:Hide()
-		self:UnregisterEvent('CANCEL_LOOT_ROLL')
-		self.button:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
@@ -288,7 +287,6 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 
 	bar.button.link = itemLink
 	bar.button.rollID = rollID
-	bar.button:RegisterEvent('MODIFIER_STATE_CHANGED')
 	bar.button.icon:SetTexture(texture)
 	bar.button.stack:SetShown(count > 1)
 	bar.button.stack:SetText(count)
@@ -346,7 +344,6 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 	bar.status:SetValue(rollTime)
 
 	bar:Show()
-	bar:RegisterEvent('CANCEL_LOOT_ROLL')
 
 	_G.AlertFrame:UpdateAnchors()
 
