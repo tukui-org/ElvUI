@@ -438,6 +438,7 @@ do --this can save some main file locals
 		z['Alytotes-Cenarius']		= itsMel -- [Horde] Shaman
 		-- Thradex (Simpys Buddy)
 		z['Foam-Area52']			= itsThradex
+		z['Gur-Area52']				= itsThradex
 		-- AcidWeb
 		z['Livarax-BurningLegion']		= Gem
 		z['Filevandrel-BurningLegion']	= Gem
