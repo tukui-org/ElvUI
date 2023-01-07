@@ -457,11 +457,6 @@ function S:Blizzard_EncounterJournal()
 					if child.bossTexture then child.bossTexture:SetAlpha(0) end
 					if child.bosslessTexture then child.bosslessTexture:SetAlpha(0) end
 
-					if child.name then
-						child.name:ClearAllPoints()
-						child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
-					end
-
 					if child.boss then
 						child.boss:ClearAllPoints()
 						child.boss:Point('BOTTOMLEFT', 4, 6)
