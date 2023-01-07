@@ -457,16 +457,14 @@ function S:Blizzard_EncounterJournal()
 					if child.bossTexture then child.bossTexture:SetAlpha(0) end
 					if child.bosslessTexture then child.bosslessTexture:SetAlpha(0) end
 
-					if child.icon then
+					if child.name and child.icon then
 						child.icon:SetSize(32, 32)
 						child.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
 						S:HandleIcon(child.icon, true)
 						S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
 
-						if child.name then
-							child.name:ClearAllPoints()
-							child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
-						end
+						child.name:ClearAllPoints()
+						child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
 
 						if not child.backdrop then
 							child:CreateBackdrop('Transparent')
