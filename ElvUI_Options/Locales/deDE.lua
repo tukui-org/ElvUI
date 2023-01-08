@@ -1,13 +1,13 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
-L["Not Known"] = true
-L["Quiver / Ammo"] = true
+L["Not Known"] = "Nicht bekannt"
+L["Quiver / Ammo"] = "Köcher / Munition"
 L["POWER_TYPE_ESSENCE"] = "Essenz"
 L["BAG_FILTER_JUNK"] = "Plunder"
 L["BAG_FILTER_QUEST_ITEMS"] = "Questgegenstände"
-L["Empower Stages"] = true
-L["Faded Charging Rune"] = true
+L["Empower Stages"] = "Ermächtigungsstufen"
+L["Faded Charging Rune"] = "Verblaste Runenaufladung"
 L["Abbreviate Name"] = "Name abkürzen"
 L["Max Allowed Groups"] = "Max. zulässige Gruppen"
 L["Display Mana"] = "Mana Anzeige"
@@ -988,7 +988,7 @@ L["Masque Support"] = "Masque Unterstützung"
 L["Match if Item Name or ID is NOT in the list."] = "Übereinstimmung, wenn Gegenstandslname oder ID NICHT in der Liste enthalten ist."
 L["Match if Name or NPC ID is NOT in the list."] = "Löst aus, wenn Name oder NPC ID NICHT in der Liste ist."
 L["Match Player Level"] = "Entspreche Spielerlevel"
-L["Match this trigger if the spell is not known."] = true
+L["Match this trigger if the spell is not known."] = "Entspricht diesem Auslöser, wenn der Zauber nicht bekannt ist."
 L["Max Alpha"] = "Max Transparenz"
 L["Max amount of overflow allowed to extend past the end of the health bar."] = "Maximale Menge des erlaubten Überlaufs um das Ende der Gesundheitsleiste zu erweitern."
 L["Max Bars"] = "Leisten Anzahl"
