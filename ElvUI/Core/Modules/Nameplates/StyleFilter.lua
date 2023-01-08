@@ -15,7 +15,6 @@ local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
-local GetTalentInfo = GetTalentInfo
 local GetTime = GetTime
 local IsEquippedItem = IsEquippedItem
 local IsResting = IsResting
@@ -51,7 +50,6 @@ local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo and C_SpecializationInfo.GetPvpTalentSlotInfo
 
 local FallbackColor = {r=1, b=1, g=1}
 
@@ -1084,36 +1082,6 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
 			end
 		end
-	end
-
-	-- Talents
-	if E.Retail and trigger.talent.enabled then
-		local pvpTalent = trigger.talent.type == 'pvp'
-		local selected, complete
-
-		for i = 1, (pvpTalent and 4) or 7 do
-			local Tier = 'tier'..i
-			local Talent = trigger.talent[Tier]
-			if trigger.talent[Tier..'enabled'] and Talent.column > 0 then
-				if pvpTalent then
-					-- column is actually the talentID for pvpTalents
-					local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(i)
-					selected = (slotInfo and slotInfo.selectedTalentID) == Talent.column
-				else
-					selected = select(4, GetTalentInfo(i, Talent.column, 1))
-				end
-
-				if (selected and not Talent.missing) or (Talent.missing and not selected) then
-					complete = true
-					if not trigger.talent.requireAll then
-						break -- break when not using requireAll because we matched one
-					end
-				elseif trigger.talent.requireAll then
-					complete = false -- fail because requireAll
-					break
-		end end end
-
-		if complete then passed = true else return end
 	end
 
 	-- Casting

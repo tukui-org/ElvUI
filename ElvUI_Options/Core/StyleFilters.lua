@@ -16,14 +16,11 @@ local GetInstanceInfo = GetInstanceInfo
 local GetRealZoneText = GetRealZoneText
 local GetSpellInfo = GetSpellInfo
 local GetSpellTexture = GetSpellTexture
-local GetTalentInfo = GetTalentInfo
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
-local C_SpecializationInfo_GetPvpTalentSlotInfo = E.Retail and C_SpecializationInfo.GetPvpTalentSlotInfo
 local GetNumSpecializationsForClassID = (not E.Retail and LCS.GetNumSpecializationsForClassID) or GetNumSpecializationsForClassID
 local GetSpecializationInfoForClassID = (not E.Retail and LCS.GetSpecializationInfoForClassID) or GetSpecializationInfoForClassID
-local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
@@ -76,37 +73,6 @@ local function GetFilters(info)
 	end
 
 	return filters
-end
-
-local formatStr = [[|T%s:12:12:0:0:64:64:4:60:4:60|t %s]]
-local function GetTalentString(tier, column)
-	local _, name, texture = GetTalentInfo(tier, column, 1)
-	return formatStr:format(texture, name)
-end
-
-local function GetPvpTalentString(talentID)
-	local _, name, texture = GetPvpTalentInfoByID(talentID)
-	return formatStr:format(texture, name)
-end
-
-local function GenerateValues(tier, isPvP)
-	local values = {}
-
-	if isPvP then
-		local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(tier)
-		if slotInfo and slotInfo.availableTalentIDs then
-			for i = 1, #slotInfo.availableTalentIDs do
-				local talentID = slotInfo.availableTalentIDs[i]
-				values[talentID] = GetPvpTalentString(talentID)
-			end
-		end
-	else
-		for i = 1, 3 do
-			values[i] = GetTalentString(tier, i)
-		end
-	end
-
-	return values
 end
 
 local function GetSpellFilterInfo(name)
@@ -374,22 +340,6 @@ for index = 1, 12 do
 
 		StyleFilters.triggers.args.class.args[format('%s%s', classTag, 'spec')] = group
 	end
-end
-
-StyleFilters.triggers.args.talent = ACH:Group(L["TALENT"], nil, 12, nil, nil, nil, DisabledFilter, not E.Retail)
-StyleFilters.triggers.args.talent.args.enabled = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.enabled end, function(_, value) local triggers = GetFilter(true) triggers.talent.enabled = value NP:ConfigureAll() end)
-StyleFilters.triggers.args.talent.args.type = ACH:Toggle(L["Is PvP Talents"], nil, 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.type == 'pvp' end, function(_, value) local triggers = GetFilter(true) triggers.talent.type = value and 'pvp' or 'normal' NP:ConfigureAll() end, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
-StyleFilters.triggers.args.talent.args.requireAll = ACH:Toggle(L["Require All"], nil, 3, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent.requireAll end, function(_, value) local triggers = GetFilter(true) triggers.talent.requireAll = value NP:ConfigureAll() end, function() local triggers = GetFilter(true) return not triggers.talent.enabled end)
-
-for i = 1, 7 do
-	local tier, enable = 'tier'..i, 'tier'..i..'enabled'
-	local option = ACH:Group(L["Tier "..i], nil, i + 4)
-	option.args[enable] = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[enable] end, function(_, value) local triggers = GetFilter(true) triggers.talent[enable] = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (triggers.talent.type == 'pvp' and i > 3) end)
-	option.args.missing = ACH:Toggle(L["Missing"], L["Match this trigger if the talent is not selected"], 2, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].missing end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].missing = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
-	option.args.column = ACH:Select(L["TALENT"], L["Talent to match"], 3, function() local triggers = GetFilter(true) return GenerateValues(i, triggers.talent.type == 'pvp') end, nil, nil, function() local triggers = GetFilter(true) return triggers.talent[tier].column end, function(_, value) local triggers = GetFilter(true) triggers.talent[tier].column = value NP:ConfigureAll() end, nil, function() local triggers = GetFilter(true) return (not triggers.talent[enable]) or (triggers.talent.type == 'pvp' and i > 3) end)
-	option.inline = true
-
-	StyleFilters.triggers.args.talent.args[tier] = option
 end
 
 StyleFilters.triggers.args.slots = ACH:Group(L["Slots"], nil, 13, nil, nil, nil, DisabledFilter)
