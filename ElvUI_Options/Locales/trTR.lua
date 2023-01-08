@@ -1,6 +1,7 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = true
 L["BAG_FILTER_JUNK"] = true
@@ -979,7 +980,7 @@ L["Masque Support"] = "Masque Destegi"
 L["Match if Item Name or ID is NOT in the list."] = "Oge Ismi veya Kimligi listede YOKSA eslestirin."
 L["Match if Name or NPC ID is NOT in the list."] = "Isim veya NPC Kimligi listede YOKSA eslestirin."
 L["Match Player Level"] = "Oyuncu Seviyesini Eslestir"
-L["Match this trigger if the talent is not selected"] = "Yetenek secilmemisse bu tetikleyiciyi eslestir"
+L["Match this trigger if the spell is not known."] = true
 L["Maw Buffs Position"] = "Maw Guclendiricileri Pozisyonu"
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = "Maksimum Alfa"

@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
+L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essenz"
 L["BAG_FILTER_JUNK"] = "Plunder"
@@ -987,7 +988,7 @@ L["Masque Support"] = "Masque Unterstützung"
 L["Match if Item Name or ID is NOT in the list."] = "Übereinstimmung, wenn Gegenstandslname oder ID NICHT in der Liste enthalten ist."
 L["Match if Name or NPC ID is NOT in the list."] = "Löst aus, wenn Name oder NPC ID NICHT in der Liste ist."
 L["Match Player Level"] = "Entspreche Spielerlevel"
-L["Match this trigger if the talent is not selected"] = "Passe diesen Auslöser an, wenn das Talent nicht ausgewählt ist."
+L["Match this trigger if the spell is not known."] = true
 L["Max Alpha"] = "Max Transparenz"
 L["Max amount of overflow allowed to extend past the end of the health bar."] = "Maximale Menge des erlaubten Überlaufs um das Ende der Gesundheitsleiste zu erweitern."
 L["Max Bars"] = "Leisten Anzahl"

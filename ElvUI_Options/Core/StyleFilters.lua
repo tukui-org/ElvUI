@@ -99,9 +99,9 @@ local function GetSpellFilterInfo(name)
 	return spell, spellDescription
 end
 
-local spellTypes = { casting = true, debuffs = true, buffs = true, cooldowns = true }
+local spellTypes = { casting = true, known = true, debuffs = true, buffs = true, cooldowns = true }
 local cdOptions = { DISABLED = _G.DISABLE, ONCD = L["On Cooldown"], OFFCD = L["Off Cooldown"] }
-local subTypes = { casting = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
+local subTypes = { casting = 'spells', known = 'spells', debuffs = 'names', buffs = 'names', cooldowns = 'names', names = 'list', items = 'list' }
 local function GetFilterOption(which)
 	local option
 	if which == 'cooldowns' then
@@ -185,6 +185,7 @@ local function UpdateFilterGroup()
 	UpdateFilterList('buffs', true)
 	UpdateFilterList('debuffs', true)
 	UpdateFilterList('casting', true)
+	UpdateFilterList('known', true)
 end
 
 function C:StyleFilterSetConfig(filter)
@@ -247,7 +248,19 @@ StyleFilters.triggers.args.casting.args.description2 = ACH:Description(L["If thi
 StyleFilters.triggers.args.casting.args.spells = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.casting.spells and triggers.casting.spells[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.casting.spells then triggers.casting.spells = {} end triggers.casting.spells[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFilters.triggers.args.casting.args.spells.inline = true
 
-StyleFilters.triggers.args.combat = ACH:Group(L["Unit Conditions"], nil, 9, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFilters.triggers.args.known = ACH:Group(L["Known Spells"], nil, 9, nil, function(info) local triggers = GetFilter(true) return triggers.known[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.known[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFilters.triggers.args.known.args.types = ACH:Group('', nil, 1)
+StyleFilters.triggers.args.known.args.types.inline = true
+StyleFilters.triggers.args.known.args.types.args.notKnown = ACH:Toggle(L["Not Known"], L["Match this trigger if the spell is not known."], 1)
+StyleFilters.triggers.args.known.args.types.args.playerSpell = ACH:Toggle(L["Player Spell"], L["This uses the IsPlayerSpell API which is only required sometimes."], 2)
+
+StyleFilters.triggers.args.known.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.known.spells[value] = true UpdateFilterList('known', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
+StyleFilters.triggers.args.known.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.known.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.known.spells[value] = nil UpdateFilterList('known', nil, value) NP:ConfigureAll() end)
+
+StyleFilters.triggers.args.known.args.spells = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.known.spells and triggers.known.spells[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.known.spells then triggers.known.spells = {} end triggers.known.spells[info[#info]] = value NP:ConfigureAll() end, nil, true)
+StyleFilters.triggers.args.known.args.spells.inline = true
+
+StyleFilters.triggers.args.combat = ACH:Group(L["Unit Conditions"], nil, 10, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 
 StyleFilters.triggers.args.combat.args.playerGroup = ACH:Group(L["Player"], nil, 1)
 StyleFilters.triggers.args.combat.args.playerGroup.inline = true
@@ -312,14 +325,14 @@ StyleFilters.triggers.args.combat.args.questGroup.args.isQuest = ACH:Toggle(L["Q
 StyleFilters.triggers.args.combat.args.questGroup.args.notQuest = ACH:Toggle(L["Not Quest Unit"], nil, 2)
 StyleFilters.triggers.args.combat.args.questGroup.args.questBoss = ACH:Toggle(L["Quest Boss"], nil, 3)
 
-StyleFilters.triggers.args.faction = ACH:Group(L["Unit Faction"], nil, 10, nil, function(info) local triggers = GetFilter(true) return triggers.faction[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.faction[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
+StyleFilters.triggers.args.faction = ACH:Group(L["Unit Faction"], nil, 11, nil, function(info) local triggers = GetFilter(true) return triggers.faction[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.faction[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 StyleFilters.triggers.args.faction.args.types = ACH:Group('', nil, 2)
 StyleFilters.triggers.args.faction.args.types.inline = true
 StyleFilters.triggers.args.faction.args.types.args.Alliance = ACH:Toggle(L["Alliance"], nil, 1)
 StyleFilters.triggers.args.faction.args.types.args.Horde = ACH:Toggle(L["Horde"], nil, 2)
 StyleFilters.triggers.args.faction.args.types.args.Neutral = ACH:Toggle(L["Neutral"], nil, 3)
 
-StyleFilters.triggers.args.class = ACH:Group(L["CLASS"], nil, 11, nil, nil, nil, DisabledFilter)
+StyleFilters.triggers.args.class = ACH:Group(L["CLASS"], nil, 12, nil, nil, nil, DisabledFilter)
 
 for index = 1, 12 do
 	local className, classTag, classID = GetClassInfo(index)

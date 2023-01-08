@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
+L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "龍能"
 L["BAG_FILTER_JUNK"] = "垃圾"
@@ -979,7 +980,7 @@ L["Masque Support"] = "Masque 支援"
 L["Match if Item Name or ID is NOT in the list."] = true
 L["Match if Name or NPC ID is NOT in the list."] = "匹配不在列表中的名字或是 NPC ID."
 L["Match Player Level"] = "符合玩家等級"
-L["Match this trigger if the talent is not selected"] = "在未選擇改天賦時激活這個觸發器"
+L["Match this trigger if the spell is not known."] = true
 L["Maw Buffs Position"] = "托伽司增益位置"
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = "最大透明度"

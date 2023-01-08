@@ -17,7 +17,9 @@ local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local IsEquippedItem = IsEquippedItem
+local IsPlayerSpell = IsPlayerSpell
 local IsResting = IsResting
+local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
@@ -1080,6 +1082,22 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			if value then -- only run if at least one is selected
 				local hasItem = IsEquippedItem(item)
 				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
+			end
+		end
+	end
+
+	-- Known Spells (new talents)
+	if trigger.known and trigger.known.spells and next(trigger.known.spells) then
+		for spell, value in pairs(trigger.known.spells) do
+			if value then -- only run if at least one is selected
+				local known
+				if trigger.known.playerSpell then
+					known = IsPlayerSpell(spell)
+				else
+					known = IsSpellKnownOrOverridesKnown(spell)
+				end
+
+				if (not trigger.known.notKnown and known) or (trigger.known.notKnown and not known) then passed = true else return end
 			end
 		end
 	end
