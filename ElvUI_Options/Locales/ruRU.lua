@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["Not Known"] = "Не изучено"
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Сущность"
 L["BAG_FILTER_JUNK"] = "хлам"
@@ -979,7 +980,7 @@ L["Masque Support"] = "Поддержка Masque"
 L["Match if Item Name or ID is NOT in the list."] = "Проверять этот триггер, если Имя или ID предмета НЕ в списке."
 L["Match if Name or NPC ID is NOT in the list."] = "Проверять этот триггер, если Имя или ID НИПа НЕ в списке."
 L["Match Player Level"] = "Соответствие уровню игрока"
-L["Match this trigger if the talent is not selected"] = "Проверять этот триггер, если талант не выбран."
+L["Match this trigger if the spell is not known."] = "Проверять этот триггер, если заклинание не выучено."
 L["Maw Buffs Position"] = "Позиция баффов Торгаста"
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = "Максимальная видимость"

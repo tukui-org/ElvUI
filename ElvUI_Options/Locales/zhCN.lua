@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "精华"
 L["BAG_FILTER_JUNK"] = "垃圾"
@@ -979,7 +980,7 @@ L["Masque Support"] = "Masque支持"
 L["Match if Item Name or ID is NOT in the list."] = "当物品名或ID不在列表时匹配"
 L["Match if Name or NPC ID is NOT in the list."] = "当名字或NPC ID不符合列表时匹配"
 L["Match Player Level"] = "符合玩家等级"
-L["Match this trigger if the talent is not selected"] = "如果该天赋没有选择则激活这个触发器"
+L["Match this trigger if the spell is not known."] = true
 L["Maw Buffs Position"] = "托加斯特增益位置"
 L["Max Allowed Groups"] = "最大允许团队"
 L["Max Alpha"] = "最大透明度"

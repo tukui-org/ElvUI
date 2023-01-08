@@ -1,6 +1,7 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essência"
 L["BAG_FILTER_JUNK"] = "Sucata"
@@ -979,7 +980,7 @@ L["Masque Support"] = "Suporte ao Masque"
 L["Match if Item Name or ID is NOT in the list."] = true
 L["Match if Name or NPC ID is NOT in the list."] = "Igualar se Nome ou ID do NPC NÃO estiver nesta lista."
 L["Match Player Level"] = "Igualar nível do jogador"
-L["Match this trigger if the talent is not selected"] = "Iguala este gatilho caso o talento não estiver selecionado."
+L["Match this trigger if the spell is not known."] = true
 L["Maw Buffs Position"] = true
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = true
