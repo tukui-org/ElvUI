@@ -24,7 +24,7 @@
 	<Button name='ElvUIAuraTemplate26' inherits='ElvUIAuraTemplate' virtual='true'><Size x='26' y='26'/></Button>
 	<Button name='ElvUIAuraTemplate27' inherits='ElvUIAuraTemplate' virtual='true'><Size x='27' y='27'/></Button>
 	<Button name='ElvUIAuraTemplate28' inherits='ElvUIAuraTemplate' virtual='true'><Size x='28' y='28'/></Button>
-	<Button name='ElvUIAuraTemplate29' inherits='ElvUIAuraTemplate' virtual='true'><Size x='29' y='59'/></Button>
+	<Button name='ElvUIAuraTemplate29' inherits='ElvUIAuraTemplate' virtual='true'><Size x='29' y='29'/></Button>
 	<Button name='ElvUIAuraTemplate30' inherits='ElvUIAuraTemplate' virtual='true'><Size x='30' y='30'/></Button>
 	<Button name='ElvUIAuraTemplate31' inherits='ElvUIAuraTemplate' virtual='true'><Size x='31' y='31'/></Button>
 	<Button name='ElvUIAuraTemplate32' inherits='ElvUIAuraTemplate' virtual='true'><Size x='32' y='32'/></Button>
