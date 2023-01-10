@@ -240,10 +240,10 @@ function DT:BuildPanelFunctions(name, obj)
 end
 
 function DT:SetupObjectLDB(name, obj)
-	if DT.RegisteredDataTexts[name] then return end
+	if DT.RegisteredDataTexts['LDB_'..name] then return end
 
-	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
+	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions('LDB_'..name, obj)
+	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB '..name)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
 
