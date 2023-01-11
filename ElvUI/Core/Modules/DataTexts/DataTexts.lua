@@ -8,7 +8,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
-local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
+local next, strfind, strlen, strsplit, strlower, gsub = next, strfind, strlen, strsplit, strlower, gsub
 local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
@@ -193,7 +193,7 @@ function DT:BuildPanelFrame(name, fromInit)
 	end
 end
 
-local LDBhex, LDBna = '|cffFFFFFF', {['N/A'] = true, ['n/a'] = true, ['N/a'] = true}
+local LDBhex = '|cffFFFFFF'
 function DT:BuildPanelFunctions(name, obj)
 	local panel
 
@@ -215,8 +215,9 @@ function DT:BuildPanelFunctions(name, obj)
 	end
 
 	local function UpdateText(_, Name, _, Value)
-		if not Value or (strlen(Value) >= 3) or (Value == Name or LDBna[Value]) then
-			panel.text:SetText((not LDBna[Value] and Value) or Name)
+		local isNA = strlower(Value) == 'n/a'
+		if not Value or (strlen(Value) >= 3) or (Value == Name or isNA) then
+			panel.text:SetText(isNA and Name or Value)
 		else
 			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
 		end
@@ -617,7 +618,7 @@ do
 
 			if not hasName(QuickList[category].menuList, info.localizedName or name) then
 				tinsert(QuickList[category].menuList, {
-					text = info.localizedName or name,
+					text = gsub(info.localizedName, '^LDB ', '' or name),
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
 					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 				})
