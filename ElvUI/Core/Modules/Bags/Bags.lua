@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
-local AB = E:GetModule('Acti
-	onBars')
+local AB = E:GetModule('ActionBars')
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
