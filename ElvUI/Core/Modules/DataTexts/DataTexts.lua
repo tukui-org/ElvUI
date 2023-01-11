@@ -216,7 +216,7 @@ function DT:BuildPanelFunctions(name, obj)
 
 	local function UpdateText(_, Name, _, Value)
 		local isNA = Value and strlower(Value) == 'n/a'
-		if not Value or (strlen(Value) >= 3) or (Value == Name or isNA) then
+		if not Value or (Value == Name or isNA) or (strlen(Value) >= 3) then
 			panel.text:SetText(not isNA and Value or Name)
 		else
 			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
