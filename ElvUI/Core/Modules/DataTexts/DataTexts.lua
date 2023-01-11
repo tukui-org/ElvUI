@@ -6,9 +6,9 @@ local LSM = E.Libs.LSM
 -- GLOBALS: ElvDB
 
 local _G = _G
-local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
-local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
-local next, strfind, strlen, strsplit, strlower, gsub = next, strfind, strlen, strsplit, strlower, gsub
+local next, format, type, pcall, unpack = next, format, type, pcall, unpack
+local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, sort, gsub
+local tostring, strfind, strlen, strsplit, strlower = tostring, strfind, strlen, strsplit, strlower
 local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
