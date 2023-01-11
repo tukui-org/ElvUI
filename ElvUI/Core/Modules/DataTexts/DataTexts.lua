@@ -215,9 +215,9 @@ function DT:BuildPanelFunctions(name, obj)
 	end
 
 	local function UpdateText(_, Name, _, Value)
-		local isNA = strlower(Value) == 'n/a'
+		local isNA = Value and strlower(Value) == 'n/a'
 		if not Value or (strlen(Value) >= 3) or (Value == Name or isNA) then
-			panel.text:SetText(isNA and Name or Value)
+			panel.text:SetText(not isNA and Value or Name)
 		else
 			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
 		end
@@ -243,7 +243,7 @@ end
 function DT:SetupObjectLDB(name, obj)
 	if DT.RegisteredDataTexts['LDB_'..name] then return end
 
-	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions('LDB_'..name, obj)
+	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
 	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB '..name)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
