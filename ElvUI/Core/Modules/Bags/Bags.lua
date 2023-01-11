@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
-local AB = E:GetModule('ActionBars')
+local AB = E:GetModule('Acti
+	onBars')
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
@@ -1481,7 +1482,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.events = (isBank and bankEvents) or bagEvents
 	f.DelayedContainers = {}
-	f.firstOpen = true
 	f:Hide()
 
 	f.isBank = isBank
@@ -2152,10 +2152,7 @@ end
 function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
-	if B.BagFrame.firstOpen then
-		B:UpdateAllSlots(B.BagFrame)
-		B.BagFrame.firstOpen = nil
-	end
+	B:UpdateAllSlots(B.BagFrame)
 
 	B.BagFrame:Show()
 	if E.Retail then B:UpdateTokensIfVisible() end
@@ -2258,15 +2255,13 @@ function B:OpenBank()
 	-- keep this over update slots for bank slot assignments
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
-	if B.BankFrame.firstOpen then
-		B:UpdateAllSlots(B.BankFrame)
+	B:UpdateAllSlots(B.BankFrame)
 
-		if E.Retail then
-			B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
-		end
+	if E.Retail then
+		B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
+	end
 
-		B.BankFrame.firstOpen = nil
-	elseif next(B.BankFrame.staleBags) then
+	if next(B.BankFrame.staleBags) then
 		for bagID, bag in next, B.BankFrame.staleBags do
 			if bagID == REAGENTBANK_CONTAINER or bagID == BANK_CONTAINER then
 				for slotID in next, bag.staleSlots do
