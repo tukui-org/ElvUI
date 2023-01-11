@@ -618,7 +618,7 @@ do
 
 			if not hasName(QuickList[category].menuList, info.localizedName or name) then
 				tinsert(QuickList[category].menuList, {
-					text = gsub(info.localizedName, '^LDB ', '' or name),
+					text = gsub(info.localizedName or name, '^LDB ', ''),
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
 					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 				})
