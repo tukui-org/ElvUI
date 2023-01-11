@@ -193,9 +193,8 @@ function DT:BuildPanelFrame(name, fromInit)
 	end
 end
 
-local LDBhex = '|cffFFFFFF'
 function DT:BuildPanelFunctions(name, obj)
-	local panel
+	local hex, text = '|cffFFFFFF'
 
 	local function OnEnter(dt)
 		DT.tooltip:ClearLines()
@@ -216,26 +215,26 @@ function DT:BuildPanelFunctions(name, obj)
 
 	local function UpdateText(_, Name, _, Value)
 		if not Value or Value == Name or strlower(Value) == 'n/a' then
-			panel.text:SetText(Name)
+			text:SetText(Name)
 		elseif strlen(Value) >= 3 then
-			panel.text:SetText(Value)
+			text:SetText(Value)
 		else
-			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
+			text:SetFormattedText('%s: %s%s|r', Name, hex, Value)
 		end
 	end
 
 	local function OnCallback(Hex)
 		if name and obj then
-			LDBhex = Hex
+			hex = Hex
 			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
 		end
 	end
 
 	local function OnEvent(dt)
-		panel = dt
+		text = dt.text
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		OnCallback(LDBhex)
+		OnCallback(hex)
 	end
 
 	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
