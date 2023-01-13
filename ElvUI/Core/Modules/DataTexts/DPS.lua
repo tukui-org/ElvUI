@@ -75,10 +75,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin('', '%s: ', hex, '%s')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('DPS', nil, {'UNIT_PET', 'COMBAT_LOG_EVENT_UNFILTERED', 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT, nil, ValueColorUpdate)

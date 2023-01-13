@@ -23,6 +23,5 @@ local function ValueColorUpdate()
 	labelColor = E.global.datatexts.settings.CombatIndicator.OutOfCombatColor
 	outOfCombat = E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, outOfCombat..'|r')
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"], nil, ValueColorUpdate)

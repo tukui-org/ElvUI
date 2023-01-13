@@ -40,6 +40,5 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, nil, nil, _G.STAT_CRITICAL_STRIKE, nil, ValueColorUpdate)

@@ -108,6 +108,5 @@ local function ValueColorUpdate(hex)
 
 	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Bags', nil, {'BAG_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ValueColorUpdate)

@@ -244,8 +244,7 @@ function DT:SetupObjectLDB(name, obj)
 	if DT.RegisteredDataTexts['LDB_'..name] then return end
 
 	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB '..name)
-	E.valueColorUpdateFuncs[onCallback] = true
+	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, onCallback)
 	data.isLibDataBroker = true
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
@@ -388,6 +387,15 @@ function DT:ForceUpdate_DataText(name)
 		end
 	end
 end
+
+function DT:UpdateHexColors()
+	for _, dtInfo in pairs(DT.AssignedDatatexts) do
+		if dtInfo.colorUpdate then
+			dtInfo.colorUpdate(E.media.hexvaluecolor)
+		end
+	end
+end
+E.valueColorUpdateFuncs[DT.UpdateHexColors] = true
 
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()
@@ -618,7 +626,7 @@ do
 
 			if not hasName(QuickList[category].menuList, info.localizedName or name) then
 				tinsert(QuickList[category].menuList, {
-					text = gsub(info.localizedName or name, '^LDB ', ''),
+					text = gsub(info.localizedName or name, '^LDB: ', ''),
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
 					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 				})

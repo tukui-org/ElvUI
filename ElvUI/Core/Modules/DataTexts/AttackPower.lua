@@ -53,10 +53,7 @@ end
 local function ValueColorUpdate(hex)
 	displayNumberString = strjoin('', '%s: ', hex, '%d|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER' }, OnEvent, nil, nil, OnEnter, nil, _G.ATTACK_POWER_TOOLTIP)
+DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER' }, OnEvent, nil, nil, OnEnter, nil, _G.ATTACK_POWER_TOOLTIP, nil, ValueColorUpdate)

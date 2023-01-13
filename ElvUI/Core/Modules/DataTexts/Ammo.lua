@@ -153,6 +153,5 @@ local function ValueColorUpdate(hex)
 		OnEvent(lastPanel)
 	end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Ammo', nil, {'BAG_UPDATE', 'UNIT_INVENTORY_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, L["Ammo/Shard Counter"])
+DT:RegisterDatatext('Ammo', nil, {'BAG_UPDATE', 'UNIT_INVENTORY_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, L["Ammo/Shard Counter"], nil, ValueColorUpdate)
