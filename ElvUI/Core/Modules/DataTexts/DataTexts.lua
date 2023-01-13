@@ -366,6 +366,10 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		end)
 	end
 
+	if data.colorUpdate then
+		data.colorUpdate(E.media.hexvaluecolor)
+	end
+
 	if data.onEnter then
 		tinsert(dt.MouseEnters, data.onEnter)
 	end
