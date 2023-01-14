@@ -34,7 +34,7 @@ local function OnEvent(self)
 		local r, g, b = GetItemLevelColor()
 		local hex = E:RGBToHex(r, g, b)
 
-		self.text:SetFormattedText(avg == avgEquipped and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped, hex, avg or '')
+		self.text:SetFormattedText(avg == avgEquipped and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped or 0, hex, avg or 0)
 	else
 		self.text:SetText('N/A')
 	end
