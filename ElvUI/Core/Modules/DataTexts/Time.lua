@@ -56,11 +56,8 @@ local function ValueColorUpdate(hex)
 	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
 	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
-	if lastPanel ~= nil then
-		OnUpdate(lastPanel, 20000)
-	end
+	if lastPanel then OnUpdate(lastPanel, 20000) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function ConvertTime(h, m)
 	local AmPm

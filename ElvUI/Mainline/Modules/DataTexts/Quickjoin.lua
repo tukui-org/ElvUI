@@ -118,8 +118,8 @@ end
 
 local function ValueColorUpdate(hex)
 	displayString = strjoin('', E.global.datatexts.settings.QuickJoin.NoLabel and '' or '%s', hex, '%d|r')
+
 	if lastPanel then OnEvent(lastPanel) end
 end
 
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 DT:RegisterDatatext('QuickJoin', _G.SOCIAL_LABEL, { 'SOCIAL_QUEUE_UPDATE' }, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ValueColorUpdate)
