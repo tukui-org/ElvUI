@@ -600,6 +600,9 @@ function UF:PostCastFail()
 	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
 	self:SetStatusBarColor(color.r, color.g, color.b)
 
+	self.chainTick = nil -- reset the chain
+	self.chainTime = nil -- spell cast vars
+
 	if self.SafeZone then
 		self.SafeZone:Hide()
 	end
