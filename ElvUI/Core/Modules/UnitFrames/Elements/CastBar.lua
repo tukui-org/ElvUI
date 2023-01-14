@@ -591,6 +591,8 @@ function UF:PostCastStop(unit)
 	if self.hadTicks and unit == 'player' then
 		UF:HideTicks()
 		self.hadTicks = false
+		self.chainTick = nil -- reset the chain
+		self.chainTime = nil -- spell cast vars
 	end
 end
 
@@ -599,9 +601,6 @@ function UF:PostCastFail()
 	local customColor = db and db.castbar and db.castbar.customColor
 	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
 	self:SetStatusBarColor(color.r, color.g, color.b)
-
-	self.chainTick = nil -- reset the chain
-	self.chainTime = nil -- spell cast vars
 
 	if self.SafeZone then
 		self.SafeZone:Hide()
