@@ -17,10 +17,7 @@ end
 local function ValueColorUpdate(hex)
 	displayNumberString = strjoin('', '%s: ', hex, '%.f|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Spirit', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_SPIRIT_SHORT)
+DT:RegisterDatatext('Spirit', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_SPIRIT_SHORT, nil, ValueColorUpdate)

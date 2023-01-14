@@ -80,7 +80,6 @@ local function ValueColorUpdate(hex)
 
 	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function OnEnter()
 	DT.tooltip:ClearLines()

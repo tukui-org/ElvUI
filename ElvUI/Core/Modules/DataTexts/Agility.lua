@@ -26,6 +26,4 @@ local function ValueColorUpdate(hex)
 	if lastPanel then OnEvent(lastPanel) end
 end
 
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
-
 DT:RegisterDatatext('Agility', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_AGILITY_SHORT, nil, ValueColorUpdate)

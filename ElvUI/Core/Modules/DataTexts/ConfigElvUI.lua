@@ -50,10 +50,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin('', hex, '%s|r')
 
-	if lastPanel then
-		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('ElvUI', nil, nil, OnEvent, nil, OnClick, OnEnter, nil, L["ElvUI Config"], nil, ValueColorUpdate)

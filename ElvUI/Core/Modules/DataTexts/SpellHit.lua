@@ -18,10 +18,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin('', L["Spell Hit"], ': ', hex, '%.2f%%|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Spell Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Hit"])
+DT:RegisterDatatext('Spell Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Hit"], nil, ValueColorUpdate)

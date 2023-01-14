@@ -310,10 +310,7 @@ local function ValueColorUpdate(hex)
 	displayString = strjoin('', E.global.datatexts.settings.Guild.NoLabel and '' or '%s', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
-	if lastPanel then
-		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
-	end
+	if lastPanel then OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE') end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, {'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ValueColorUpdate)

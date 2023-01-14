@@ -66,6 +66,5 @@ local function ValueColorUpdate(hex)
 
 	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Item Level', 'Stats', {'PLAYER_AVG_ITEM_LEVEL_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, _G.LFG_LIST_ITEM_LEVEL_INSTR_SHORT, nil, ValueColorUpdate)

@@ -43,10 +43,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin('', E.global.datatexts.settings.Haste.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Haste.decimalLength..'f%%|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Haste', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_SPELL_HASTE', 'UNIT_AURA' }, OnEvent, nil, nil, not E.Classic and OnEnter, nil, STAT_HASTE, nil, ValueColorUpdate)
