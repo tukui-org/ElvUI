@@ -379,11 +379,11 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 end
 
 function DT:ForceUpdate_DataText(name)
-	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
+	local hex = E.media.hexvaluecolor
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
 			if dtInfo.colorUpdate then
-				dtInfo.colorUpdate(dtSlot, hex, r, g, b)
+				dtInfo.colorUpdate(dtSlot, hex)
 			end
 			if dtInfo.eventFunc then
 				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
