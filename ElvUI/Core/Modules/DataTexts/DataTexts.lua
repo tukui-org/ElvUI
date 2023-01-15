@@ -395,7 +395,7 @@ end
 function DT:UpdateHexColors(hex, r, g, b)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.colorUpdate then
-			dtInfo.colorUpdate(dtSlot, hex, r, g,b)
+			dtInfo.colorUpdate(dtSlot, hex, r, g, b)
 		end
 	end
 end
