@@ -17,7 +17,6 @@ local function OnEvent(self)
 	local dateTable = date('*t')
 
 	self.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('([/.])', displayString))
-	lastPanel = self
 end
 
 local function ValueColorUpdate(self, hex)
