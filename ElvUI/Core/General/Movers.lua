@@ -205,7 +205,7 @@ local function UpdateColors(_, _, r, g, b)
 		OnShow(holder.mover, r, g, b)
 	end
 end
-E.valueColorUpdateFuncs['Movers'] = UpdateColors
+E.valueColorUpdateFuncs.Movers = UpdateColors
 
 local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
 	if not (name and parent) then return end --If for some reason the parent isnt loaded yet, also require a name

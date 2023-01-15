@@ -1395,7 +1395,7 @@ function CH:UpdateChatTabColors()
 		CH:FCFTab_UpdateColors(tab, tab.selected)
 	end
 end
-E.valueColorUpdateFuncs['Chat'] = CH.UpdateChatTabColors
+E.valueColorUpdateFuncs.Chat = CH.UpdateChatTabColors
 
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()

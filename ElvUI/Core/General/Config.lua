@@ -879,7 +879,7 @@ function E:Config_GetWindow()
 end
 
 local ConfigLogoTop
-E.valueColorUpdateFuncs['ConfigLogo'] = function(_, _, r, g, b)
+E.valueColorUpdateFuncs.ConfigLogo = function(_, _, r, g, b)
 	if ConfigLogoTop then
 		ConfigLogoTop:SetVertexColor(r, g, b)
 	end

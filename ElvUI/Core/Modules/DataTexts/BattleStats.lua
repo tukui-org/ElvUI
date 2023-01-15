@@ -119,4 +119,4 @@ local function ValueColorUpdate(_, hex)
 		DT:UpdateBattlePanel('RIGHT')
 	end
 end
-E.valueColorUpdateFuncs['BattleStats'] = ValueColorUpdate
+E.valueColorUpdateFuncs.BattleStats = ValueColorUpdate

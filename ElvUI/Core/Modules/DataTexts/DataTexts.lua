@@ -399,7 +399,7 @@ function DT:UpdateHexColors()
 		end
 	end
 end
-E.valueColorUpdateFuncs['DataTexts'] = DT.UpdateHexColors
+E.valueColorUpdateFuncs.DataTexts = DT.UpdateHexColors
 
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()
