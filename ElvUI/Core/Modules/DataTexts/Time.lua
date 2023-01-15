@@ -46,17 +46,17 @@ local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local enteredFrame = false
 
-local OnUpdate, lastPanel
+local OnUpdate
 
 local function ToTime(start, seconds)
 	return SecondsToTime(start, not seconds, nil, 3)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
 	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
-	if lastPanel then OnUpdate(lastPanel, 20000) end
+	OnUpdate(self, 20000)
 end
 
 local function ConvertTime(h, m)
@@ -343,8 +343,6 @@ function OnUpdate(self, t)
 	else
 		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
-
-	lastPanel = self
 end
 
 DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

@@ -6,18 +6,16 @@ local UnitStat = UnitStat
 local ITEM_MOD_SPIRIT_SHORT = ITEM_MOD_SPIRIT_SHORT
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
-local displayNumberString, lastPanel = ''
+local displayString = ''
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayNumberString, ITEM_MOD_SPIRIT_SHORT, UnitStat('player', 5))
-
-	lastPanel = self
+	self.text:SetFormattedText(displayString, ITEM_MOD_SPIRIT_SHORT, UnitStat('player', 5))
 end
 
-local function ValueColorUpdate(hex)
-	displayNumberString = strjoin('', '%s: ', hex, '%.f|r')
+local function ValueColorUpdate(self, hex)
+	displayString = strjoin('', '%s: ', hex, '%.f|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Spirit', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_SPIRIT_SHORT, nil, ValueColorUpdate)

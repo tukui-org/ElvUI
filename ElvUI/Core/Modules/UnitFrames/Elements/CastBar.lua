@@ -591,6 +591,8 @@ function UF:PostCastStop(unit)
 	if self.hadTicks and unit == 'player' then
 		UF:HideTicks()
 		self.hadTicks = false
+		self.chainTick = nil -- reset the chain
+		self.chainTime = nil -- spell cast vars
 	end
 end
 

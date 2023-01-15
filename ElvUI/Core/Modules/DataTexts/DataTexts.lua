@@ -267,8 +267,8 @@ function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 			point, relativePoint, xOffset, yOffset = 'TOP', i == 1 and 'TOP' or 'BOTTOM', 0, -4
 		end
 
-		local lastPanel = (i == 1 and panel) or panel.dataPanels[i - 1]
-		return point, lastPanel, relativePoint, xOffset, yOffset
+		local previous = (i == 1 and panel) or panel.dataPanels[i - 1]
+		return point, previous, relativePoint, xOffset, yOffset
 	end
 end
 
@@ -367,7 +367,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 
 	if data.colorUpdate then
-		data.colorUpdate(E.media.hexvaluecolor)
+		data.colorUpdate(dt, E.media.hexvaluecolor)
 	end
 
 	if data.onEnter then
@@ -383,7 +383,7 @@ function DT:ForceUpdate_DataText(name)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
 			if dtInfo.colorUpdate then
-				dtInfo.colorUpdate(hex, r, g, b)
+				dtInfo.colorUpdate(dtSlot, hex, r, g, b)
 			end
 			if dtInfo.eventFunc then
 				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
@@ -392,14 +392,14 @@ function DT:ForceUpdate_DataText(name)
 	end
 end
 
-function DT:UpdateHexColors()
-	for _, dtInfo in pairs(DT.AssignedDatatexts) do
+function DT:UpdateHexColors(hex, r, g, b)
+	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.colorUpdate then
-			dtInfo.colorUpdate(E.media.hexvaluecolor)
+			dtInfo.colorUpdate(dtSlot, hex, r, g, b)
 		end
 	end
 end
-E.valueColorUpdateFuncs[DT.UpdateHexColors] = true
+E.valueColorUpdateFuncs.DataTexts = DT.UpdateHexColors
 
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()

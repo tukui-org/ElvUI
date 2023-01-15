@@ -122,7 +122,7 @@ local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,'|Hplayer:%%s|h%[%%s%]|h',''), gsub(_G.ERR_FRIEND_OFFLINE_S,'%%s','')
 local wowString = _G.BNET_CLIENT_WOW
 local retailID, classicID, tbcID = _G.WOW_PROJECT_MAINLINE, _G.WOW_PROJECT_CLASSIC, _G.WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5
-local dataValid, lastPanel = false
+local dataValid = false
 local statusTable = {
 	AFK = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r',
 	DND = ' |cffFFFFFF[|r|cffFF3333'..L["DND"]..'|r|cffFFFFFF]|r'
@@ -570,14 +570,12 @@ local function OnEvent(self, event, message)
 	else
 		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Friends.Label ~= '' and E.global.datatexts.settings.Friends.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
 	end
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Friends.NoLabel and '' or '%s', hex, '%d|r')
 
-	if lastPanel then OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE') end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {'BN_FRIEND_ACCOUNT_ONLINE', 'BN_FRIEND_ACCOUNT_OFFLINE', 'BN_FRIEND_INFO_CHANGED', 'FRIENDLIST_UPDATE', 'CHAT_MSG_SYSTEM', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS, nil, ValueColorUpdate)
