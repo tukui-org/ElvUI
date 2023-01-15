@@ -392,10 +392,10 @@ function DT:ForceUpdate_DataText(name)
 	end
 end
 
-function DT:UpdateHexColors()
+function DT:UpdateHexColors(hex, r, g, b)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.colorUpdate then
-			dtInfo.colorUpdate(dtSlot, E.media.hexvaluecolor)
+			dtInfo.colorUpdate(dtSlot, hex, r, g, b)
 		end
 	end
 end
