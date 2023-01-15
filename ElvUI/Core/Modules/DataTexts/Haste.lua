@@ -15,7 +15,7 @@ local STAT_HASTE_TOOLTIP = STAT_HASTE_TOOLTIP
 local STAT_HASTE_BASE_TOOLTIP = STAT_HASTE_BASE_TOOLTIP
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -36,14 +36,12 @@ local function OnEvent(self)
 	else
 		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Haste.Label ~= '' and E.global.datatexts.settings.Haste.Label or STAT_HASTE..': ', haste)
 	end
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Haste.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Haste.decimalLength..'f%%|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Haste', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_SPELL_HASTE', 'UNIT_AURA' }, OnEvent, nil, nil, not E.Classic and OnEnter, nil, STAT_HASTE, nil, ValueColorUpdate)

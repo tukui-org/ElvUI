@@ -47,7 +47,7 @@ local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)..'%s:|r |cFFFFFF
 local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '...')
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
-local guildTable, guildMotD, lastPanel = {}, ''
+local guildTable, guildMotD = {}, ''
 
 local function sortByRank(a, b)
 	if a and b then
@@ -286,8 +286,6 @@ local function OnEnter(_, _, noUpdate)
 end
 
 local function OnEvent(self, event, ...)
-	lastPanel = self
-
 	if IsInGuild() then
 		local func = eventHandlers[event]
 		if func then func(self, ...) end
@@ -306,11 +304,11 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Guild.NoLabel and '' or '%s', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
-	if lastPanel then OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE') end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, {'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ValueColorUpdate)

@@ -9,11 +9,9 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HIT_MELEE = CR_HIT_MELEE or 6
 local CR_HIT_RANGED = CR_HIT_RANGED or 7
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEvent(self)
-	lastPanel = self
-
 	local hitRating = (E.Classic and GetHitModifier()) or GetCombatRatingBonus(E.myclass == 'HUNTER' and CR_HIT_RANGED or CR_HIT_MELEE) or 0
 	if E.global.datatexts.settings.Hit.NoLabel then
 		self.text:SetFormattedText(displayString, hitRating)
@@ -22,10 +20,10 @@ local function OnEvent(self)
 	end
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Hit.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Hit.decimalLength..'f%%|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, STAT_HIT_CHANCE, nil, ValueColorUpdate)

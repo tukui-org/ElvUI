@@ -17,7 +17,7 @@ local RAID_FINDER = RAID_FINDER
 local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ':14:14')
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ':14:14')
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
-local enteredFrame, lastPanel = false
+local enteredFrame = false
 local displayString = ''
 
 local function MakeIconString(tank, healer, damage)
@@ -68,17 +68,16 @@ local function OnEvent(self)
 	else
 		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	end
-	lastPanel = self
 end
 
 local function OnClick()
 	PVEFrame_ToggleFrame('GroupFinderFrame', _G.LFDParentFrame)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.CallToArms.NoLabel and '' or '%s', hex, '%s|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 local function OnEnter()

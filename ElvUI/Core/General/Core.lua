@@ -375,7 +375,7 @@ end
 
 function E:ValueFuncCall()
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
-	for func in pairs(E.valueColorUpdateFuncs) do func(hex, r, g, b) end
+	for obj, func in pairs(E.valueColorUpdateFuncs) do func(obj, hex, r, g, b) end
 end
 
 function E:UpdateFrameTemplates()

@@ -200,13 +200,12 @@ local function OnShow(self, r, g, b)
 	self.forcedBorderColors = {r, g, b}
 end
 
-local function UpdateColors()
-	local r, g, b = unpack(E.media.rgbvaluecolor)
+local function UpdateColors(_, _, r, g, b)
 	for _, holder in pairs(E.CreatedMovers) do
 		OnShow(holder.mover, r, g, b)
 	end
 end
-E.valueColorUpdateFuncs[UpdateColors] = true
+E.valueColorUpdateFuncs['Movers'] = UpdateColors
 
 local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
 	if not (name and parent) then return end --If for some reason the parent isnt loaded yet, also require a name

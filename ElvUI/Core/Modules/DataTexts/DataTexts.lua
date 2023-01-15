@@ -367,7 +367,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 
 	if data.colorUpdate then
-		data.colorUpdate(E.media.hexvaluecolor)
+		data.colorUpdate(dt, E.media.hexvaluecolor)
 	end
 
 	if data.onEnter then
@@ -383,7 +383,7 @@ function DT:ForceUpdate_DataText(name)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
 			if dtInfo.colorUpdate then
-				dtInfo.colorUpdate(hex, r, g, b)
+				dtInfo.colorUpdate(dtSlot, hex, r, g, b)
 			end
 			if dtInfo.eventFunc then
 				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
@@ -393,13 +393,13 @@ function DT:ForceUpdate_DataText(name)
 end
 
 function DT:UpdateHexColors()
-	for _, dtInfo in pairs(DT.AssignedDatatexts) do
+	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.colorUpdate then
-			dtInfo.colorUpdate(E.media.hexvaluecolor)
+			dtInfo.colorUpdate(dtSlot, E.media.hexvaluecolor)
 		end
 	end
 end
-E.valueColorUpdateFuncs[DT.UpdateHexColors] = true
+E.valueColorUpdateFuncs['DataTexts'] = DT.UpdateHexColors
 
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()

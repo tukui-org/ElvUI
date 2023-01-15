@@ -14,7 +14,7 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
 local CR_EXPERTISE = CR_EXPERTISE
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local expertise, offhandExpertise, expertisePercent, offhandExpertisePercent, expertisePercentDisplay
 local expertiseRating, expertiseBonusRating
@@ -31,8 +31,6 @@ local function OnEvent(self)
 	end
 
 	self.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
-
-	lastPanel = self
 end
 
 local function OnEnter()
@@ -41,10 +39,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s', hex, '%s|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Expertise', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, STAT_EXPERTISE, nil, ValueColorUpdate)

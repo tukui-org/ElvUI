@@ -111,7 +111,7 @@ function DT:ToggleBattleStats()
 	end
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%s|r')
 
 	if DT.ShowingBattleStats then
@@ -119,4 +119,4 @@ local function ValueColorUpdate(hex)
 		DT:UpdateBattlePanel('RIGHT')
 	end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
+E.valueColorUpdateFuncs['BattleStats'] = ValueColorUpdate
