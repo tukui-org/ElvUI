@@ -7,7 +7,7 @@ local UnitGUID = UnitGUID
 
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
-local displayString, lastPanel = ''
+local displayString = ''
 local events = {
 	SWING_DAMAGE = true,
 	RANGE_DAMAGE = true,
@@ -33,8 +33,6 @@ local function GetDPS(self)
 end
 
 local function OnEvent(self, event)
-	lastPanel = self
-
 	if event == 'UNIT_PET' then
 		petGUID = UnitGUID('pet')
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_LEAVE_COMBAT' then
@@ -72,10 +70,10 @@ local function OnClick(self)
 	GetDPS(self)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s: ', hex, '%s')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('DPS', nil, {'UNIT_PET', 'COMBAT_LOG_EVENT_UNFILTERED', 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT, nil, ValueColorUpdate)

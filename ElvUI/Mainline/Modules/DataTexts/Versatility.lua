@@ -15,7 +15,7 @@ local STAT_VERSATILITY = STAT_VERSATILITY
 local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -39,14 +39,12 @@ local function OnEvent(self)
 	else
 		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Versatility.Label ~= '' and E.global.datatexts.settings.Versatility.Label or STAT_VERSATILITY, versatility)
 	end
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Versatility.NoLabel and '' or '%s: ', hex, '%.'..E.global.datatexts.settings.Versatility.decimalLength..'f%%|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Versatility', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE', 'PLAYER_DAMAGE_DONE_MODS' }, OnEvent, nil, nil, OnEnter, nil, STAT_VERSATILITY, nil, ValueColorUpdate)

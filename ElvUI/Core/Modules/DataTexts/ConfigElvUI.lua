@@ -10,10 +10,8 @@ local ReloadUI = ReloadUI
 local displayString = ''
 local configText = 'ElvUI'
 local reloadText = RELOADUI
-local lastPanel
 
 local function OnEvent(self)
-	lastPanel = self
 	self.text:SetFormattedText(displayString, E.global.datatexts.settings.ElvUI.Label ~= '' and E.global.datatexts.settings.ElvUI.Label or configText)
 end
 
@@ -47,10 +45,10 @@ local function OnClick(_, button)
 	end
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', hex, '%s|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('ElvUI', nil, nil, OnEvent, nil, OnClick, OnEnter, nil, L["ElvUI Config"], nil, ValueColorUpdate)

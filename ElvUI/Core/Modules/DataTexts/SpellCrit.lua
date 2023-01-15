@@ -7,7 +7,7 @@ local GetSpellCritChance = GetSpellCritChance
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CRIT_ABBR = CRIT_ABBR
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEvent(self)
 	local minCrit = GetSpellCritChance(2)
@@ -17,14 +17,12 @@ local function OnEvent(self)
 	end
 
 	self.text:SetFormattedText(displayString, CRIT_ABBR, minCrit)
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Spell Crit Chance', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS' }, OnEvent, nil, nil, nil, nil, 'Spell Crit Chance', nil, ValueColorUpdate)

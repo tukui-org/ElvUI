@@ -7,7 +7,7 @@ local UnitStat = UnitStat
 local GetSpecialization = GetSpecialization
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$','')
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEvent(self)
 	local Spec = E.Retail and GetSpecialization()
@@ -19,14 +19,12 @@ local function OnEvent(self)
 	else
 		self.text:SetText('N/A')
 	end
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s', hex, '%.f|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
 
 DT:RegisterDatatext('Primary Stat', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, PRIMARY_STAT, nil, ValueColorUpdate)

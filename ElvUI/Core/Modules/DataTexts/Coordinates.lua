@@ -35,7 +35,7 @@ local function Click()
 	_G.ToggleFrame(_G.WorldMapFrame)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(_, hex)
 	displayString = strjoin('', hex, '%.2f|r', ' | ', hex, '%.2f|r')
 end
 
