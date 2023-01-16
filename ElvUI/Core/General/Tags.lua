@@ -1232,6 +1232,7 @@ do
 		DEATHKNIGHT = '64:128:128:192',
 		MONK		= '128:192:128:192',
 		DEMONHUNTER = '192:256:128:192',
+		EVOKER		= '0:64:192:256',
 	}
 
 	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
