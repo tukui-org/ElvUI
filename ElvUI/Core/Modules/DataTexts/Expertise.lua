@@ -15,7 +15,8 @@ local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
 local CR_EXPERTISE = CR_EXPERTISE
 
 local displayString = ''
-local expertiseRating, expertiseBonusRating, expertisePercentDisplay
+local expertisePercentDisplay = ''
+local expertiseRating, expertiseBonusRating = 0, 0
 
 local function OnEvent(self)
 	local expertise, offhandExpertise = GetExpertise()
