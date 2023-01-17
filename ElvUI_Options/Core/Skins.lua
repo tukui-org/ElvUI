@@ -110,7 +110,6 @@ if E.Retail then
 	blizzard.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	blizzard.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	blizzard.orderhall = L["Orderhall"]
-	blizzard.perks = L["Perks"]
 	blizzard.petbattleui = L["Pet Battle"]
 	blizzard.playerChoice = L["Player Choice Frame"]
 	blizzard.runeforge = L["Runeforge"]
