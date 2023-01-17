@@ -223,7 +223,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function OnCallback(self, Hex)
+	local function UpdateColor(_, Hex)
 		if name and obj then
 			hex = Hex
 			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
@@ -234,10 +234,10 @@ function DT:BuildPanelFunctions(name, obj)
 		text = dt.text
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		OnCallback(dt, hex)
+		UpdateColor(dt, hex)
 	end
 
-	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
+	return OnEnter, OnLeave, OnClick, UpdateColor, OnEvent, UpdateText
 end
 
 function DT:SetupObjectLDB(name, obj)
