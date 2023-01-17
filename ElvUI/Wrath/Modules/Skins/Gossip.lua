@@ -46,7 +46,11 @@ function S:GossipFrame()
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
 	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
 	S:HandleButton(GreetingPanel.GoodbyeButton, true)
+
 	GreetingPanel:StripTextures()
+	GreetingPanel:CreateBackdrop()
+	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
+	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 80)
 
 	GossipFrame.backdrop:ClearAllPoints()
 	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
@@ -60,13 +64,12 @@ function S:GossipFrame()
 
 		local spellTex = GreetingPanel:CreateTexture(nil, 'ARTWORK')
 		spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		spellTex:Point('TOPLEFT', GreetingPanel.ScrollBox, 2, 2)
-		spellTex:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, -2, 80)
 		spellTex:SetTexCoord(0, 0.586, 0.02, 0.655)
-		spellTex:CreateBackdrop()
+		spellTex:SetInside(GreetingPanel.backdrop)
 
 		GreetingPanel.spellTex = spellTex
 	else
+
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
 			if r ~= 1 or g ~= 1 or b ~= 1 then
