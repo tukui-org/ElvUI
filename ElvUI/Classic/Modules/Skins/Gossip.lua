@@ -49,7 +49,19 @@ function S:GossipFrame()
 		_G[object]:StripTextures()
 	end
 
-	if E.private.skins.parchmentRemoverEnable then
+	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
+	GossipGreetingScrollFrame:CreateBackdrop()
+	GossipGreetingScrollFrame.backdrop:Point('TOPLEFT', 0, 0)
+	GossipGreetingScrollFrame.backdrop:Point('BOTTOMRIGHT', 0, 2)
+
+	if not E.private.skins.parchmentRemoverEnable then
+		local spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
+		spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+		spellTex:SetTexCoord(0, 0.586, 0.02, 0.655)
+		spellTex:SetInside(GossipGreetingScrollFrame.backdrop)
+
+		GossipGreetingScrollFrame.spellTex = spellTex
+	else
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 
 		hooksecurefunc('GossipFrameUpdate', function()
@@ -88,17 +100,6 @@ function S:GossipFrame()
 				end
 			end
 		end)
-	else
-		local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
-
-		local spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
-		spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		spellTex:Point('TOPLEFT', GossipGreetingScrollFrame, 2, 2)
-		spellTex:Point('BOTTOMRIGHT', GossipGreetingScrollFrame, -2, 2)
-		spellTex:SetTexCoord(0, 0.586, 0.02, 0.655)
-		spellTex:CreateBackdrop()
-
-		GossipGreetingScrollFrame.spellTex = spellTex
 	end
 
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
