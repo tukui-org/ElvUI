@@ -345,6 +345,10 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		end
 	end
 
+	if data.colorUpdate then -- has to be before event function
+		data.colorUpdate(dt, E.media.hexvaluecolor)
+	end
+
 	local ev = event or 'ELVUI_FORCE_UPDATE'
 	if data.eventFunc then
 		if not data.objectEvent then
@@ -364,10 +368,6 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 			data.onClick(p, button)
 			DT.tooltip:Hide()
 		end)
-	end
-
-	if data.colorUpdate then
-		data.colorUpdate(dt, E.media.hexvaluecolor)
 	end
 
 	if data.onEnter then

@@ -15,11 +15,7 @@ function S:GossipFrame()
 	-- GossipFrame
 	local GossipFrame = _G.GossipFrame
 	S:HandleFrame(GossipFrame, true, nil, 11, -12, -32, 66)
-
-	S:HandleFrame(_G.GossipGreetingScrollFrame, true, nil, -6, 2)
-
 	S:HandleScrollBar(_G.GossipGreetingScrollFrameScrollBar)
-
 	S:HandleCloseButton(_G.GossipFrameCloseButton, GossipFrame.backdrop)
 
 	_G.GossipFrameNpcNameText:ClearAllPoints()
@@ -37,7 +33,6 @@ function S:GossipFrame()
 	S:HandleFrame(_G.ItemTextFrame, true, nil, 11, -12, -32, 76)
 
 	_G.ItemTextScrollFrame:StripTextures()
-
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 
@@ -53,9 +48,6 @@ function S:GossipFrame()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-
-	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
-	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
@@ -97,11 +89,16 @@ function S:GossipFrame()
 			end
 		end)
 	else
-		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
-		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		GossipGreetingScrollFrame.spellTex:Point('TOPLEFT', 2, 2)
-		GossipGreetingScrollFrame.spellTex:Size(506, 515)
-		GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
+		local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
+
+		local spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
+		spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+		spellTex:Point('TOPLEFT', GossipGreetingScrollFrame, 2, 2)
+		spellTex:Point('BOTTOMRIGHT', GossipGreetingScrollFrame, -2, 2)
+		spellTex:SetTexCoord(0, 0.586, 0.02, 0.655)
+		spellTex:CreateBackdrop()
+
+		GossipGreetingScrollFrame.spellTex = spellTex
 	end
 
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)

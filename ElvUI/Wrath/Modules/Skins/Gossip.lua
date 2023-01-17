@@ -40,17 +40,32 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	local GossipFrame = _G.GossipFrame
+	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
 	S:HandlePortraitFrame(GossipFrame, true)
 
-	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
-	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
+	local GreetingPanel = _G.GossipFrame.GreetingPanel
+	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
+	S:HandleButton(GreetingPanel.GoodbyeButton, true)
+	GreetingPanel:StripTextures()
+
+	GossipFrame.backdrop:ClearAllPoints()
+	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
+	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 40, 40)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
 
 	if not E.private.skins.parchmentRemoverEnable then
 		_G.ItemTextFrame:StripTextures()
+
+		local spellTex = GreetingPanel:CreateTexture(nil, 'ARTWORK')
+		spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+		spellTex:Point('TOPLEFT', GreetingPanel.ScrollBox, 2, 2)
+		spellTex:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, -2, 80)
+		spellTex:SetTexCoord(0, 0.586, 0.02, 0.655)
+		spellTex:CreateBackdrop()
+
+		GreetingPanel.spellTex = spellTex
 	else
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
@@ -66,7 +81,7 @@ function S:GossipFrame()
 			GossipFrame.Background:Hide()
 		end
 
-		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(frame)
+		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', function(frame)
 			for _, button in next, { frame.ScrollTarget:GetChildren() } do
 				if not button.IsSkinned then
 					local buttonText = select(3, button:GetRegions())
