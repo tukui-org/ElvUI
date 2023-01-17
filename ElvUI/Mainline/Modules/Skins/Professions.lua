@@ -195,6 +195,12 @@ function S:Blizzard_Professions()
 		if slot then
 			ReskinSlotButton(slot.Button)
 		end
+
+		-- @Simpy, please check if its okay to be inside this hook
+		local enchantSlot = SchematicForm.enchantSlot
+		if enchantSlot then
+			ReskinSlotButton(SchematicForm.enchantSlot.Button)
+		end
 	end)
 
 	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckBox
