@@ -128,7 +128,7 @@ B.GearFilters = {
 	FILTER_FLAG_JUNK,
 }
 
-if E.Retail then
+if not E.Classic then
 	tinsert(B.GearFilters, FILTER_FLAG_QUEST)
 end
 
@@ -239,7 +239,7 @@ if E.Wrath then
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, { -1 }
-local bankOffset, maxBankSlots = E.Retail and 5 or 4, E.Retail and 12 or 11
+local bankOffset, maxBankSlots = E.Classic and 4 or 5, E.Classic and 10 or 12
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -252,9 +252,7 @@ local presistentEvents = {
 }
 
 for bankID = bankOffset + 1, maxBankSlots do
-	if bankID ~= 11 or not E.Classic then
-		tinsert(bankIDs, bankID)
-	end
+	tinsert(bankIDs, bankID)
 end
 
 if E.Retail then
@@ -845,7 +843,7 @@ function B:IsSortIgnored(bagID)
 		return GetBankAutosortDisabled()
 	elseif bagID == BACKPACK_CONTAINER then
 		return GetBackpackAutosortDisabled()
-	elseif bagID > NUM_BAG_SLOTS and not E.Retail then
+	elseif bagID > NUM_BAG_SLOTS and E.Classic then
 		return GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE)
 	else
 		return GetBagSlotFlag(bagID, FILTER_FLAG_IGNORE)
@@ -856,7 +854,7 @@ function B:GetFilterFlagInfo(bagID, isBank)
 	for _, flag in next, B.GearFilters do
 		if flag ~= FILTER_FLAG_IGNORE then
 			local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-			if canAssign and ((isBank and not E.Retail and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag)) or GetBagSlotFlag(bagID, flag)) then
+			if canAssign and ((isBank and E.Classic and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag)) or GetBagSlotFlag(bagID, flag)) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
 		end
@@ -868,7 +866,7 @@ function B:SetFilterFlag(bagID, flag, value)
 
 	local isBank = bagID > NUM_BAG_SLOTS
 	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-	return canAssign and ((isBank and not E.Retail and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value)) or SetBagSlotFlag(bagID, flag, value))
+	return canAssign and ((isBank and E.Classic and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value)) or SetBagSlotFlag(bagID, flag, value))
 end
 
 function B:GetBagAssignedInfo(holder, isBank)
@@ -1181,15 +1179,52 @@ function B:SetBagAssignments(holder, skip)
 	end
 end
 
-function B:DelayedContainer(bagFrame, event, bagID)
-	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
-	if container then
-		bagFrame.DelayedContainers[bagID] = container
+do
+	local delayed = CreateFrame('Frame')
+	delayed:Hide()
+	delayed:SetScript('OnUpdate', function(_, elapsed)
+		if delayed.elapsed and delayed.elapsed > 0.02 then
+			for _, bagFrame in next, B.BagFrames do
+				if next(bagFrame.DelayedContainers) then
+					B:UpdateDelayedContainer(bagFrame)
+				end
+			end
 
-		if event == 'BAG_CLOSED' then -- let it call layout
-			bagFrame.totalSlots = 0
+			delayed:Hide()
+			delayed.elapsed = 0
 		else
-			bagFrame.Bags[bagID].needsUpdate = true
+			delayed.elapsed = (delayed.elapsed or 0) + elapsed
+		end
+	end)
+
+	B.DelayedNoEvent = delayed
+
+	function B:UpdateDelayedContainer(frame)
+		for bagID, container in next, frame.DelayedContainers do
+			if bagID ~= BACKPACK_CONTAINER then
+				B:SetBagAssignments(container)
+			end
+
+			local bag = frame.Bags[bagID]
+			if bag and bag.needsUpdate then
+				B:UpdateBagSlots(frame, bagID)
+				bag.needsUpdate = nil
+			end
+
+			frame.DelayedContainers[bagID] = nil
+		end
+	end
+
+	function B:DelayedContainer(bagFrame, event, bagID)
+		local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
+		if container then
+			bagFrame.DelayedContainers[bagID] = container
+
+			if event == 'BAG_CLOSED' then -- let it call layout
+				bagFrame.totalSlots = 0
+			else
+				bagFrame.Bags[bagID].needsUpdate = true
+			end
 		end
 	end
 end
@@ -1224,22 +1259,17 @@ function B:OnEvent(event, ...)
 		B:UpdateContainerIcons()
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
-			B:DelayedContainer(self, event, ...)
+			local bagID = ...
+			B:DelayedContainer(self, event, bagID)
+
+			-- BAG_UPDATE_DELAYED doesn't fire on all bags (it does for bag 0) Wrath PTR rn?
+			if E.Wrath and bagID ~= 0 then
+				B.DelayedNoEvent:Show()
+				B.DelayedNoEvent.elapsed = 0
+			end
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
-		for bagID, container in next, self.DelayedContainers do
-			if bagID ~= BACKPACK_CONTAINER then
-				B:SetBagAssignments(container)
-			end
-
-			local bag = self.Bags[bagID]
-			if bag and bag.needsUpdate then
-				B:UpdateBagSlots(self, bagID)
-				bag.needsUpdate = nil
-			end
-
-			self.DelayedContainers[bagID] = nil
-		end
+		B:UpdateDelayedContainer(self)
 	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
 		local id = ...+1 -- yes
 		B:SetBagAssignments(self.ContainerHolder[id], true)
@@ -2385,7 +2415,7 @@ if C_Container then
 			if index == 1 then -- First bag
 				frame:SetPoint('BOTTOMRIGHT', _G.ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
 				recentBagColumn = frame
-			elseif (freeScreenHeight < frame:GetHeight()) or previousBag:IsCombinedBagContainer() then -- Start a new column
+			elseif (freeScreenHeight < frame:GetHeight()) or (E.Retail and previousBag:IsCombinedBagContainer()) then -- Start a new column
 				freeScreenHeight = screenHeight - yOffset
 				frame:SetPoint('BOTTOMRIGHT', recentBagColumn, 'BOTTOMLEFT', -11, 0)
 				recentBagColumn = frame
@@ -2703,7 +2733,7 @@ function B:Initialize()
 					SetBankAutosortDisabled(not value)
 				elseif holder.BagID == BACKPACK_CONTAINER then
 					SetBackpackAutosortDisabled(not value)
-				elseif holder.BagID > NUM_BAG_SLOTS and not E.Retail then
+				elseif holder.BagID > NUM_BAG_SLOTS and E.Classic then
 					SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE, not value)
 				else
 					SetBagSlotFlag(holder.BagID, FILTER_FLAG_IGNORE, not value)
