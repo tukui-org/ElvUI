@@ -223,7 +223,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function ValueColorUpdate(_, Hex)
+	local function UpdateColor(_, Hex)
 		if name and obj then
 			hex = Hex
 			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
@@ -234,17 +234,17 @@ function DT:BuildPanelFunctions(name, obj)
 		text = dt.text
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		ValueColorUpdate(dt, hex)
+		UpdateColor(dt, hex)
 	end
 
-	return OnEvent, OnClick, OnEnter, OnLeave, ValueColorUpdate
+	return OnEvent, OnClick, OnEnter, OnLeave, UpdateColor, UpdateText
 end
 
 function DT:SetupObjectLDB(name, obj)
 	if DT.RegisteredDataTexts['LDB_'..name] then return end
 
-	local onEvent, onClick, onEnter, onLeave, valueColor = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, valueColor)
+	local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
+	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
 	data.isLibDataBroker = true
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
