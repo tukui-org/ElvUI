@@ -150,6 +150,8 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
+	S:HandleTrimScrollBar(_G.EncounterJournalMonthlyActivitiesFrame.ScrollBar, true)
+
 	local InstanceSelect = EJ.instanceSelect
 	InstanceSelect.bg:Kill()
 
@@ -161,20 +163,25 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalSuggestTab,
 		_G.EncounterJournalDungeonTab,
 		_G.EncounterJournalRaidTab,
-		_G.EncounterJournalLootJournalTab
+		_G.EncounterJournalLootJournalTab,
+		_G.EncounterJournalMonthlyActivitiesTab
 	} do
 		S:HandleTab(tab)
 	end
 
-	_G.EncounterJournalSuggestTab:ClearAllPoints()
-	_G.EncounterJournalDungeonTab:ClearAllPoints()
-	_G.EncounterJournalRaidTab:ClearAllPoints()
-	_G.EncounterJournalLootJournalTab:ClearAllPoints()
+	--[[ Reposition the Tab 'EncounterJournalMonthlyActivitiesTab' currently crashes the client. test it later
+		_G.EncounterJournalMonthlyActivitiesTab:ClearAllPoints()
+		_G.EncounterJournalSuggestTab:ClearAllPoints()
+		_G.EncounterJournalDungeonTab:ClearAllPoints()
+		_G.EncounterJournalRaidTab:ClearAllPoints()
+		_G.EncounterJournalLootJournalTab:ClearAllPoints()
 
-	_G.EncounterJournalSuggestTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
-	_G.EncounterJournalDungeonTab:Point('TOPLEFT', _G.EncounterJournalSuggestTab, 'TOPRIGHT', -5, 0)
-	_G.EncounterJournalRaidTab:Point('TOPLEFT', _G.EncounterJournalDungeonTab, 'TOPRIGHT', -5, 0)
-	_G.EncounterJournalLootJournalTab:Point('TOPLEFT', _G.EncounterJournalRaidTab, 'TOPRIGHT', -5, 0)
+		_G.EncounterJournalMonthlyActivitiesTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0))
+		_G.EncounterJournalSuggestTab:Point('TOPLEFT', _G.EncounterJournalMonthlyActivitiesTab, 'BOTTOMLEFT', -3, 0)
+		_G.EncounterJournalDungeonTab:Point('TOPLEFT', _G.EncounterJournalSuggestTab, 'TOPRIGHT', -5, 0)
+		_G.EncounterJournalRaidTab:Point('TOPLEFT', _G.EncounterJournalDungeonTab, 'TOPRIGHT', -5, 0)
+		_G.EncounterJournalLootJournalTab:Point('TOPLEFT', _G.EncounterJournalRaidTab, 'TOPRIGHT', -5, 0)
+	]]
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -312,6 +319,10 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
+		_G.EncounterJournalMonthlyActivitiesFrame.Bg:SetAlpha(0)
+		_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
+		--_G.EncounterJournalInstanceSelect.Bg:Hide()
+
 		local suggestFrame = EJ.suggestFrame
 
 		-- Suggestion 1
