@@ -15,19 +15,18 @@ local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
 local CR_EXPERTISE = CR_EXPERTISE
 
 local displayString = ''
-
-local expertise, offhandExpertise, expertisePercent, offhandExpertisePercent, expertisePercentDisplay
-local expertiseRating, expertiseBonusRating
+local expertisePercentDisplay = ''
+local expertiseRating, expertiseBonusRating = 0, 0
 
 local function OnEvent(self)
-	expertise, offhandExpertise = GetExpertise()
-	expertisePercent, offhandExpertisePercent = format('%.2f%%', expertise), format('%.2f%%', offhandExpertise)
+	local expertise, offhandExpertise = GetExpertise()
+	local expertisePercent, offhandExpertisePercent = format('%.2f%%', expertise), format('%.2f%%', offhandExpertise)
 	expertiseRating, expertiseBonusRating = GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)
-
-	expertisePercentDisplay = expertisePercent
 
 	if IsDualWielding() then
 		expertisePercentDisplay = format('%s / %s', expertisePercent, offhandExpertisePercent)
+	else
+		expertisePercentDisplay = expertisePercent
 	end
 
 	self.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
