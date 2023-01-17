@@ -9,10 +9,9 @@ local GetLatestThreeSenders = GetLatestThreeSenders
 local HAVE_MAIL_FROM = HAVE_MAIL_FROM
 local MAIL_LABEL = MAIL_LABEL
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEvent(self)
-	lastPanel = self
 	self.text:SetFormattedText(displayString, HasNewMail() and 'New Mail' or 'No Mail')
 end
 
@@ -32,11 +31,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin(hex, '%s|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Mail', nil, {'MAIL_INBOX_UPDATE', 'UPDATE_PENDING_MAIL', 'MAIL_CLOSED', 'MAIL_SHOW'}, OnEvent, nil, nil, OnEnter, nil, MAIL_LABEL, nil, ValueColorUpdate)

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, Profil
 local DT = E:GetModule('DataTexts')
 
 local min = min
-local join = strjoin
+local strjoin = strjoin
 local format = format
 
 local GetCombatRating = GetCombatRating
@@ -16,17 +16,15 @@ local CR_RESILIENCE_CRIT_TAKEN = CR_RESILIENCE_CRIT_TAKEN
 local RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER
 local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER
 
-local displayNumberString, lastPanel = ''
-local resilience, bonus, maxBonus
+local displayString = ''
+local bonus, maxBonus = 0, 0
 
 local function OnEvent(self)
-	resilience = GetCombatRating(CR_RESILIENCE_CRIT_TAKEN)
+	local resilience = GetCombatRating(CR_RESILIENCE_CRIT_TAKEN)
 	bonus = GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)
 	maxBonus = GetMaxCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)
 
-	self.text:SetFormattedText(displayNumberString, resilience)
-
-	lastPanel = self
+	self.text:SetFormattedText(displayString, resilience)
 end
 
 local function OnEnter()
@@ -34,13 +32,10 @@ local function OnEnter()
 	DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))
 end
 
-local function ValueColorUpdate(hex)
-	displayNumberString = join('', STAT_RESILIENCE, ': ', hex, '%d|r')
+local function ValueColorUpdate(self, hex)
+	displayString = strjoin('', STAT_RESILIENCE, ': ', hex, '%d|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Resilience', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, STAT_RESILIENCE, nil, ValueColorUpdate)

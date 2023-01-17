@@ -9,7 +9,7 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_MASTERY = STAT_MASTERY
 local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -43,8 +43,6 @@ local function OnEnter()
 end
 
 local function OnEvent(self)
-	lastPanel = self
-
 	local masteryRating = GetMasteryEffect()
 	if E.global.datatexts.settings.Mastery.NoLabel then
 		self.text:SetFormattedText(displayString, masteryRating)
@@ -53,11 +51,10 @@ local function OnEvent(self)
 	end
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Mastery.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Mastery.decimalLength..'f%%|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ValueColorUpdate)

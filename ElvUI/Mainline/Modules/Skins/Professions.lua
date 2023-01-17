@@ -191,9 +191,14 @@ function S:Blizzard_Professions()
 			ReskinSlotButton(slot.Button)
 		end
 
-		local slot = SchematicForm.salvageSlot
-		if slot then
-			ReskinSlotButton(slot.Button)
+		local salvageSlot = SchematicForm.salvageSlot
+		if salvageSlot then
+			ReskinSlotButton(salvageSlot.Button)
+		end
+
+		local enchantSlot = SchematicForm.enchantSlot
+		if enchantSlot then
+			ReskinSlotButton(enchantSlot.Button)
 		end
 	end)
 

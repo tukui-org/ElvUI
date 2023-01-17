@@ -35,9 +35,8 @@ local function Click()
 	_G.ToggleFrame(_G.WorldMapFrame)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(_, hex)
 	displayString = strjoin('', hex, '%.2f|r', ' | ', hex, '%.2f|r')
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Coords', nil, {'LOADING_SCREEN_DISABLED', 'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA'}, OnEvent, Update, Click, nil, nil, L["Coords"], mapInfo, ValueColorUpdate)

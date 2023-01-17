@@ -8,7 +8,7 @@ local GetRangedCritChance = GetRangedCritChance
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CRIT_ABBR = CRIT_ABBR
 
-local displayString, lastPanel = ''
+local displayString = ''
 local spellCrit, rangedCrit, meleeCrit = 0, 0, 0
 local critChance = 0
 
@@ -29,17 +29,12 @@ local function OnEvent(self)
 	else
 		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Crit.Label ~= '' and E.global.datatexts.settings.Crit.Label or CRIT_ABBR..': ', critChance)
 	end
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.Crit.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Crit.decimalLength..'f%%|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, nil, nil, _G.STAT_CRITICAL_STRIKE, nil, ValueColorUpdate)

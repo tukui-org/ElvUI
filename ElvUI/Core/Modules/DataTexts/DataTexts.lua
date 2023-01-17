@@ -6,9 +6,9 @@ local LSM = E.Libs.LSM
 -- GLOBALS: ElvDB
 
 local _G = _G
-local tostring, format, type, pcall, unpack = tostring, format, type, pcall, unpack
-local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
-local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
+local next, format, type, pcall, unpack = next, format, type, pcall, unpack
+local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, sort, gsub
+local tostring, strfind, strlen, strsplit, strlower = tostring, strfind, strlen, strsplit, strlower
 local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
@@ -193,9 +193,8 @@ function DT:BuildPanelFrame(name, fromInit)
 	end
 end
 
-local LDBhex, LDBna = '|cffFFFFFF', {['N/A'] = true, ['n/a'] = true, ['N/a'] = true}
 function DT:BuildPanelFunctions(name, obj)
-	local panel
+	local hex, text = '|cffFFFFFF'
 
 	local function OnEnter(dt)
 		DT.tooltip:ClearLines()
@@ -215,36 +214,37 @@ function DT:BuildPanelFunctions(name, obj)
 	end
 
 	local function UpdateText(_, Name, _, Value)
-		if not Value or (strlen(Value) >= 3) or (Value == Name or LDBna[Value]) then
-			panel.text:SetText((not LDBna[Value] and Value) or Name)
+		if not Value or Value == Name or strlower(Value) == 'n/a' then
+			text:SetText(Name)
+		elseif strlen(Value) >= 3 then
+			text:SetText(Value)
 		else
-			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
+			text:SetFormattedText('%s: %s%s|r', Name, hex, Value)
 		end
 	end
 
 	local function OnCallback(Hex)
 		if name and obj then
-			LDBhex = Hex
+			hex = Hex
 			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
 		end
 	end
 
 	local function OnEvent(dt)
-		panel = dt
+		text = dt.text
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		OnCallback(LDBhex)
+		OnCallback(hex)
 	end
 
 	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
 end
 
 function DT:SetupObjectLDB(name, obj)
-	if DT.RegisteredDataTexts[name] then return end
+	if DT.RegisteredDataTexts['LDB_'..name] then return end
 
 	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
-	E.valueColorUpdateFuncs[onCallback] = true
+	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, onCallback)
 	data.isLibDataBroker = true
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
@@ -267,8 +267,8 @@ function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 			point, relativePoint, xOffset, yOffset = 'TOP', i == 1 and 'TOP' or 'BOTTOM', 0, -4
 		end
 
-		local lastPanel = (i == 1 and panel) or panel.dataPanels[i - 1]
-		return point, lastPanel, relativePoint, xOffset, yOffset
+		local previous = (i == 1 and panel) or panel.dataPanels[i - 1]
+		return point, previous, relativePoint, xOffset, yOffset
 	end
 end
 
@@ -366,6 +366,10 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		end)
 	end
 
+	if data.colorUpdate then
+		data.colorUpdate(dt, E.media.hexvaluecolor)
+	end
+
 	if data.onEnter then
 		tinsert(dt.MouseEnters, data.onEnter)
 	end
@@ -379,7 +383,7 @@ function DT:ForceUpdate_DataText(name)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
 			if dtInfo.colorUpdate then
-				dtInfo.colorUpdate(hex, r, g, b)
+				dtInfo.colorUpdate(dtSlot, hex, r, g, b)
 			end
 			if dtInfo.eventFunc then
 				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
@@ -387,6 +391,15 @@ function DT:ForceUpdate_DataText(name)
 		end
 	end
 end
+
+function DT:UpdateHexColors(hex, r, g, b)
+	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
+		if dtInfo.colorUpdate then
+			dtInfo.colorUpdate(dtSlot, hex, r, g, b)
+		end
+	end
+end
+E.valueColorUpdateFuncs.DataTexts = DT.UpdateHexColors
 
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()
@@ -617,7 +630,7 @@ do
 
 			if not hasName(QuickList[category].menuList, info.localizedName or name) then
 				tinsert(QuickList[category].menuList, {
-					text = info.localizedName or name,
+					text = gsub(info.localizedName or name, '^LDB: ', ''),
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
 					func = function() E.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
 				})

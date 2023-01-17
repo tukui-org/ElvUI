@@ -5,8 +5,7 @@ local floor, format, strjoin = floor, format, strjoin
 local GetInstanceInfo = GetInstanceInfo
 local GetTime = GetTime
 
-local displayString, lastPanel = ''
-local timerText, timer, startTime, inEncounter = L["Combat"], 0, 0
+local displayString, timerText, timer, startTime, inEncounter = '', L["Combat"], 0, 0
 
 local function UpdateText()
 	return format(E.global.datatexts.settings.Combat.TimeFull and '%02d:%02d:%02d' or '%02d:%02d', floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
@@ -45,16 +44,13 @@ local function OnEvent(self, event, _, timeSeconds)
 		timerText = noLabel or L["Combat"]
 		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
 	end
-
-	lastPanel = self
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	local noLabel = E.global.datatexts.settings.Combat.NoLabel and ''
 	displayString = strjoin('', '%s', noLabel or ': ', hex, '%s|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Combat', nil, {'START_TIMER', 'ENCOUNTER_START', 'ENCOUNTER_END', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ValueColorUpdate)

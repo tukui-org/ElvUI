@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Esencia"
 L["BAG_FILTER_JUNK"] = "Chatarra"
@@ -979,7 +980,7 @@ L["Masque Support"] = true
 L["Match if Item Name or ID is NOT in the list."] = true
 L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
-L["Match this trigger if the talent is not selected"] = true
+L["Match this trigger if the spell is not known."] = true
 L["Maw Buffs Position"] = true
 L["Max Allowed Groups"] = "Grupos Maximos Permitidos"
 L["Max Alpha"] = true

@@ -14,25 +14,22 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
 local CR_EXPERTISE = CR_EXPERTISE
 
-local displayString, lastPanel = ''
-
-local expertise, offhandExpertise, expertisePercent, offhandExpertisePercent, expertisePercentDisplay
-local expertiseRating, expertiseBonusRating
+local displayString = ''
+local expertisePercentDisplay = ''
+local expertiseRating, expertiseBonusRating = 0, 0
 
 local function OnEvent(self)
-	expertise, offhandExpertise = GetExpertise()
-	expertisePercent, offhandExpertisePercent = format('%.2f%%', expertise), format('%.2f%%', offhandExpertise)
+	local expertise, offhandExpertise = GetExpertise()
+	local expertisePercent, offhandExpertisePercent = format('%.2f%%', expertise), format('%.2f%%', offhandExpertise)
 	expertiseRating, expertiseBonusRating = GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)
-
-	expertisePercentDisplay = expertisePercent
 
 	if IsDualWielding() then
 		expertisePercentDisplay = format('%s / %s', expertisePercent, offhandExpertisePercent)
+	else
+		expertisePercentDisplay = expertisePercent
 	end
 
 	self.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
-
-	lastPanel = self
 end
 
 local function OnEnter()
@@ -41,13 +38,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s', hex, '%s|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel, 2000)
-	end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Expertise', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, STAT_EXPERTISE, nil, ValueColorUpdate)

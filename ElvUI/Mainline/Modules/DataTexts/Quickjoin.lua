@@ -102,24 +102,23 @@ local function Update(self)
 	end
 end
 
-local delayed, lastPanel
-local function throttle()
-	if lastPanel then Update(lastPanel) end
+local delayed
+local function throttle(self)
+	Update(self)
 	delayed = nil
 end
 
 local function OnEvent(self, event)
-	if lastPanel ~= self then lastPanel = self end
 	if delayed then return end
 
 	-- use a nonarg passing function, so that it goes through c_timer instead of the waitframe
-	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle)
+	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle, self)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', E.global.datatexts.settings.QuickJoin.NoLabel and '' or '%s', hex, '%d|r')
-	if lastPanel then OnEvent(lastPanel) end
+
+	OnEvent(self)
 end
 
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 DT:RegisterDatatext('QuickJoin', _G.SOCIAL_LABEL, { 'SOCIAL_QUEUE_UPDATE' }, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ValueColorUpdate)

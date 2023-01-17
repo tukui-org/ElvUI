@@ -7,7 +7,7 @@ local strjoin = strjoin
 local GetSpellBonusDamage = GetSpellBonusDamage
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
-local displayString, lastPanel = ''
+local displayString = ''
 
 local function OnEvent(self)
 	local minSpellPower
@@ -23,8 +23,6 @@ local function OnEvent(self)
 	end
 
 	self.text:SetFormattedText(displayString, L["SP"], minSpellPower)
-
-	lastPanel = self
 end
 
 local function OnEnter()
@@ -38,13 +36,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s: ', hex, '%d|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('SpellPower', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, OnEnter, nil, L["Spell Power"])
+DT:RegisterDatatext('SpellPower', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, OnEnter, nil, L["Spell Power"], nil, ValueColorUpdate)

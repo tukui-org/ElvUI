@@ -16,16 +16,13 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local PET_BONUS_TOOLTIP_SPELLDAMAGE = PET_BONUS_TOOLTIP_SPELLDAMAGE
 local PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER = PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER
 
-local displayNumberString = ''
-local lastPanel, totalAP
+local displayNumberString, totalAP = ''
 
 local function OnEvent(self)
 	local base, posBuff, negBuff = (E.myclass == 'HUNTER' and UnitRangedAttackPower or UnitAttackPower)('player')
 	totalAP = base + posBuff + negBuff
 
 	self.text:SetFormattedText(displayNumberString, ATTACK_POWER, totalAP)
-
-	lastPanel = self
 end
 
 local function OnEnter()
@@ -50,13 +47,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayNumberString = strjoin('', '%s: ', hex, '%d|r')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER' }, OnEvent, nil, nil, OnEnter, nil, _G.ATTACK_POWER_TOOLTIP)
+DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER' }, OnEvent, nil, nil, OnEnter, nil, _G.ATTACK_POWER_TOOLTIP, nil, ValueColorUpdate)

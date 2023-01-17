@@ -72,7 +72,7 @@ E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
-E.ClearTexture = E.Retail and 0 or '' -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
+E.ClearTexture = not E.Classic and 0 or '' -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
 E.UserList = {}
 
 -- oUF Defines
@@ -375,7 +375,9 @@ end
 
 function E:ValueFuncCall()
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
-	for func in pairs(E.valueColorUpdateFuncs) do func(hex, r, g, b) end
+	for obj, func in pairs(E.valueColorUpdateFuncs) do
+		func(obj, hex, r, g, b)
+	end
 end
 
 function E:UpdateFrameTemplates()

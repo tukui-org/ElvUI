@@ -7,7 +7,7 @@ local UnitGUID = UnitGUID
 
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, healTotal = 0, 0, 0
-local displayString, lastPanel = ''
+local displayString = ''
 local events = {
 	SPELL_HEAL = true,
 	SPELL_PERIODIC_HEAL = true
@@ -28,8 +28,6 @@ local function GetHPS(self)
 end
 
 local function OnEvent(self, event)
-	lastPanel = self
-
 	if event == 'UNIT_PET' then
 		petGUID = UnitGUID('pet')
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_LEAVE_COMBAT' then
@@ -58,13 +56,10 @@ local function OnClick(self)
 	GetHPS(self)
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	displayString = strjoin('', '%s: ', hex, '%s')
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('HPS', nil, {'UNIT_PET', 'COMBAT_LOG_EVENT_UNFILTERED', 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, L["HPS"], nil, ValueColorUpdate)

@@ -457,9 +457,21 @@ function S:Blizzard_EncounterJournal()
 					if child.bossTexture then child.bossTexture:SetAlpha(0) end
 					if child.bosslessTexture then child.bosslessTexture:SetAlpha(0) end
 
-					if child.name then
+					if child.name and child.icon then
+						child.icon:SetSize(32, 32)
+						child.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
+						S:HandleIcon(child.icon, true)
+						S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
+
 						child.name:ClearAllPoints()
 						child.name:Point('TOPLEFT', child.icon, 'TOPRIGHT', 6, -2)
+
+						-- we only want this when name and icon both exist
+						if not child.backdrop then
+							child:CreateBackdrop('Transparent')
+							child.backdrop:Point('TOPLEFT')
+							child.backdrop:Point('BOTTOMRIGHT', 0, 1)
+						end
 					end
 
 					if child.boss then
@@ -478,19 +490,6 @@ function S:Blizzard_EncounterJournal()
 						child.armorType:ClearAllPoints()
 						child.armorType:Point('RIGHT', child, 'RIGHT', -10, 0)
 						child.armorType:SetTextColor(1, 1, 1)
-					end
-
-					if child.icon then
-						child.icon:SetSize(32, 32)
-						child.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
-						S:HandleIcon(child.icon, true)
-						S:HandleIconBorder(child.IconBorder, child.icon.backdrop)
-					end
-
-					if not child.backdrop then
-						child:CreateBackdrop('Transparent')
-						child.backdrop:Point('TOPLEFT')
-						child.backdrop:Point('BOTTOMRIGHT', 0, 1)
 					end
 
 					child.isSkinned = true

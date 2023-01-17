@@ -17,7 +17,7 @@ local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local CURRENCY = CURRENCY
 
-local displayString, lastPanel = ''
+local displayString = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 local BAG_TYPES = {
 	[0x0001] = 'Quiver',
@@ -26,8 +26,6 @@ local BAG_TYPES = {
 }
 
 local function OnEvent(self)
-	lastPanel = self
-
 	local free, total = 0, 0
 	for i = 0, NUM_BAG_SLOTS do
 		local freeSlots, bagType = GetContainerNumFreeSlots(i)
@@ -99,15 +97,14 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex)
+local function ValueColorUpdate(self, hex)
 	local textFormat = E.global.datatexts.settings.Bags.textFormat
 	local noLabel = E.global.datatexts.settings.Bags.NoLabel and ''
 	local labelString = noLabel or (E.global.datatexts.settings.Bags.Label ~= '' and E.global.datatexts.settings.Bags.Label) or strjoin('', L["Bags"], ': ')
 
 	displayString = strjoin('', labelString, hex, (textFormat == 'FREE' or textFormat == 'USED') and '%d|r' or '%d/%d|r')
 
-	if lastPanel then OnEvent(lastPanel) end
+	OnEvent(self)
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Bags', nil, {'BAG_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ValueColorUpdate)
