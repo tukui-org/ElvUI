@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local ipairs, next, pairs, select = ipairs, next, pairs, select
+local ipairs, next, pairs = ipairs, next, pairs
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
