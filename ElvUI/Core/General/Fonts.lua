@@ -8,9 +8,9 @@ local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b
 	if not obj then return end
 
 	-- convert because of bad values between versions
-	if (style == 'NONE' or not style) and E.Retail then
+	if (style == 'NONE' or not style) and not E.Classic then
 		style = ''
-	elseif (style == '' or not style) and not E.Retail then
+	elseif (style == '' or not style) and E.Classic then
 		style = 'NONE'
 	end
 

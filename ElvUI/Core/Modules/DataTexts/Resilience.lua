@@ -17,10 +17,10 @@ local RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CH
 local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER
 
 local displayString = ''
-local resilience, bonus, maxBonus
+local bonus, maxBonus = 0, 0
 
 local function OnEvent(self)
-	resilience = GetCombatRating(CR_RESILIENCE_CRIT_TAKEN)
+	local resilience = GetCombatRating(CR_RESILIENCE_CRIT_TAKEN)
 	bonus = GetCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)
 	maxBonus = GetMaxCombatRatingBonus(CR_RESILIENCE_CRIT_TAKEN)
 

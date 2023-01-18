@@ -223,7 +223,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function OnCallback(Hex)
+	local function UpdateColor(_, Hex)
 		if name and obj then
 			hex = Hex
 			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
@@ -234,17 +234,17 @@ function DT:BuildPanelFunctions(name, obj)
 		text = dt.text
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		OnCallback(hex)
+		UpdateColor(dt, hex)
 	end
 
-	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
+	return OnEvent, OnClick, OnEnter, OnLeave, UpdateColor, UpdateText
 end
 
 function DT:SetupObjectLDB(name, obj)
 	if DT.RegisteredDataTexts['LDB_'..name] then return end
 
-	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, onCallback)
+	local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
+	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
 	data.isLibDataBroker = true
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
@@ -345,6 +345,10 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		end
 	end
 
+	if data.colorUpdate then -- has to be before event function
+		data.colorUpdate(dt, E.media.hexvaluecolor)
+	end
+
 	local ev = event or 'ELVUI_FORCE_UPDATE'
 	if data.eventFunc then
 		if not data.objectEvent then
@@ -364,10 +368,6 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 			data.onClick(p, button)
 			DT.tooltip:Hide()
 		end)
-	end
-
-	if data.colorUpdate then
-		data.colorUpdate(dt, E.media.hexvaluecolor)
 	end
 
 	if data.onEnter then

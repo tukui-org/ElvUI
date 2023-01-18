@@ -48,11 +48,9 @@ local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
 local MAX_MOVE_TIME = 1.25
 
-local bankOffset, maxBankSlots = E.Retail and 5 or 4, E.Retail and 12 or 11
+local bankOffset, maxBankSlots = E.Classic or E.Wrath and 4 or 5, E.Classic and 10 or E.Wrath and 11 or 12
 for i = bankOffset + 1, maxBankSlots do
-	if i ~= 11 or not E.Classic then
-		tinsert(bankBags, i)
-	end
+	tinsert(bankBags, i)
 end
 
 local playerBags = {}
