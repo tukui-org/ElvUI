@@ -707,19 +707,79 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-- Ulduar
 		-- Flame Leviathan
+		[62376] = List(3), -- Battering Ram
+		[62374] = List(4), -- Pursued
 		-- Ignis the Furnace Master
+		[62717] = List(4), -- Slag Pot
 		-- Razorscale
+		[64016] = List(4), -- Flame Buffet
+		[64771] = List(5), -- Fuse Armor
+		[64757] = List(3), -- Stormstrike
 		-- XT-002 Deconstructor
-		-- The Assembly of Iron
+		[63018] = List(4), -- Searing Light
+		[63024] = List(5), -- Gravity Bomb
+		-- Assembly of Iron
+		[61886] = List(3), -- Lightning Tendrils
+		[61878] = List(4), -- Overload
+		[62269] = List(3), -- Rune of Death
+		[61903] = List(5), -- Fusion Punch
+		[61888] = List(4), -- Overwhelming Power
+		[44008] = List(3), -- Static Disruption
 		-- Kologarn
+		[63355] = List(4), -- Crunch Armor
+		[64290] = List(5), -- Stone Grip
+		[63978] = List(3), -- Stone Nova
 		-- Auriaya
-		-- Hodir
-		-- Thorim
+		[64669] = List(5), -- Feral Pounce
+		[64496] = List(3), -- Feral Rush
+		[64396] = List(5), -- Guardian Swarm
+		[64667] = List(3), -- Rip Flesh
+		[64666] = List(4), -- Savage Pounce
+		[64389] = List(3), -- Sentinel Blast
 		-- Freya
+		[62243] = List(3), -- Unstable Sun Beam
+		[62310] = List(3), -- Impale
+		[62438] = List(4), -- Iron Roots
+		[62354] = List(4), -- Broken Bones
+		[62283] = List(4), -- Iron Roots
+		[63571] = List(3), -- Nature's Fury
+		-- Hodir
+		[62039] = List(3), -- Biting Cold
+		[61969] = List(5), -- Flash Freeze
+		[62469] = List(4), -- Freeze
 		-- Mimiron
+		[63666] = List(3), -- Napalm Shell
+		[64533] = List(3), -- Heat Wave
+		[64616] = List(3), -- Deafening Siren
+		[64668] = List(4), -- Magnetic Field
+		-- Thorim
+		[62415] = List(3), -- Acid Breath
+		[62318] = List(3), -- Barbed Shot
+		[62576] = List(3), -- Blizzard
+		[32323] = List(3), -- Charge
+		[64971] = List(3), -- Electro Shock
+		[62605] = List(3), -- Frost Nova
+		[64970] = List(3), -- Fuse Lightning
+		[62418] = List(5), -- Impale
+		[35054] = List(3), -- Mortal Strike
+		[62420] = List(4), -- Shield Smash
+		[62042] = List(4), -- Stormhammer
+		[57807] = List(3), -- Sunder Armor
+		[62417] = List(3), -- Sweep
+		[62130] = List(5), -- Unbalancing Strike
+		[64151] = List(4), -- Whirling Trip
+		[40652] = List(3), -- Wing Clip
 		-- General Vezax
+		[63276] = List(4), -- Mark of the Faceless
+		[63420] = List(3), -- Profound Darkness
 		-- Yogg-Saron
-		-- Algalon the Observer
+		[63802] = List(4), -- Brain Link
+		[64157] = List(4), -- Curse of Doom
+		[63830] = List(3), -- Malady of the Mind
+		[63138] = List(4), -- Sara's Fervor
+		[63134] = List(5), -- Sara's Blessing
+		[64125] = List(5), -- Squeeze
+		[64412] = List(3), -- Phase Punch
 	-------------------------------------------------
 	-------------------- Phase 3 --------------------
 	-------------------------------------------------

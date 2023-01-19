@@ -239,7 +239,7 @@ if E.Wrath then
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, { -1 }
-local bankOffset, maxBankSlots = E.Classic and 4 or 5, E.Classic and 10 or 12
+local bankOffset, maxBankSlots = E.Classic or E.Wrath and 4 or 5, E.Classic and 10 or E.Wrath and 11 or 12
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -1262,7 +1262,7 @@ function B:OnEvent(event, ...)
 			local bagID = ...
 			B:DelayedContainer(self, event, bagID)
 
-			-- BAG_UPDATE_DELAYED doesn't fire on all bags (it does for bag 0) Wrath PTR rn?
+			-- BAG_UPDATE_DELAYED doesn't fire on all bags on Wrath (it does for bag 0)?
 			if E.Wrath and bagID ~= 0 then
 				B.DelayedNoEvent:Show()
 				B.DelayedNoEvent.elapsed = 0
@@ -1432,7 +1432,7 @@ function B:VendorGrayCheck()
 
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not _G.MerchantFrame:IsShown() and not E.Retail then
+	elseif not _G.MerchantFrame:IsShown() and not E.Classic then
 		E.PopupDialogs.DELETE_GRAYS.Money = value
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else

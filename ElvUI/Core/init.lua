@@ -197,16 +197,17 @@ end
 
 do
 	local alwaysDisable = {
-		'ElvUI_VisualAuraTimers',
-		'ElvUI_ExtraActionBars',
-		'ElvUI_CastBarOverlay',
-		'ElvUI_EverySecondCounts',
 		'ElvUI_AuraBarsMovers',
+		'ElvUI_CastBarOverlay',
+		'ElvUI_CustomTags',
 		'ElvUI_CustomTweaks',
 		'ElvUI_DTBars2',
+		'ElvUI_EverySecondCounts',
+		'ElvUI_ExtraActionBars',
+		'ElvUI_ExtraDataTexts',
 		'ElvUI_QuestXP',
-		'ElvUI_CustomTags',
-		'ElvUI_UnitFramePlugin'
+		'ElvUI_UnitFramePlugin',
+		'ElvUI_VisualAuraTimers',
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
