@@ -284,7 +284,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsMis, itsSimpy, itsMel, itsThradex
+	local itsElv, itsMis, itsSimpy, itsMel, itsThradex, itsPooc
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
@@ -303,12 +303,15 @@ do --this can save some main file locals
 		local MelColors = function(t) return specialText(t, 0.98,0.31,0.43, 0.97,0.78,0.13, 0.31,0.76,0.43, 0.49,0.48,0.97, 0.07,0.69,0.92) end
 		--Thradex: summer without you
 		local ThradexColors = function(t) return specialText(t, 0.00,0.60,0.09, 0.22,0.65,0.90, 0.22,0.65,0.90, 1.00,0.74,0.27, 1.00,0.66,0.00, 1.00,0.50,0.20, 0.92,0.31,0.23) end
+		--Repooc: Monk, Demon Hunter, Paladin, Warlock colors
+		local PoocsColors = function(t) return specialText(t, 0,1,0.6, 0.64,0.19,0.79, 0.96,0.55,0.73, 0.53,0.53,0.93) end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsThradex = function() return PalmTree, ThradexColors end
+		itsPooc = function() return ElvBlue, PoocsColors end
 	end
 
 	local z = {}
@@ -379,12 +382,12 @@ do --this can save some main file locals
 		z['Unluckyone-LaughingSkull']	= ElvRed -- [Horde] Shaman
 		z['Luckydruid-LaughingSkull']	= ElvRed -- [Alliance] Druid
 		-- Repooc
-		z['Sifpooc-Stormrage']			= ElvBlue	-- DH
-		z['Fragmented-Stormrage']		= ElvBlue	-- Warlock
-		z['Dapooc-Stormrage']			= ElvOrange	-- Druid
-		z['Poocvoker-Stormrage']		= ElvGreen	-- Evoker
-		z['Sifupooc-Spirestone']		= ElvBlue	-- Monk
-		z['Repooc-Spirestone']			= ElvBlue	-- Paladin
+		z['Sifpooc-Stormrage']			= itsPooc	-- DH
+		z['Fragmented-Stormrage']		= itsPooc	-- Warlock
+		z['Dapooc-Stormrage']			= itsPooc	-- Druid
+		z['Poocvoker-Stormrage']		= itsPooc	-- Evoker
+		z['Sifupooc-Spirestone']		= itsPooc	-- Monk
+		z['Repooc-Spirestone']			= itsPooc	-- Paladin
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue

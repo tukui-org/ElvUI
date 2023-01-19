@@ -1262,7 +1262,7 @@ function B:OnEvent(event, ...)
 			local bagID = ...
 			B:DelayedContainer(self, event, bagID)
 
-			-- BAG_UPDATE_DELAYED doesn't fire on all bags (it does for bag 0) Wrath PTR rn?
+			-- BAG_UPDATE_DELAYED doesn't fire on all bags on Wrath (it does for bag 0)?
 			if E.Wrath and bagID ~= 0 then
 				B.DelayedNoEvent:Show()
 				B.DelayedNoEvent.elapsed = 0
@@ -1432,7 +1432,7 @@ function B:VendorGrayCheck()
 
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not _G.MerchantFrame:IsShown() and not E.Retail then
+	elseif not _G.MerchantFrame:IsShown() and not E.Classic then
 		E.PopupDialogs.DELETE_GRAYS.Money = value
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else

@@ -75,6 +75,7 @@ G.datatexts = {
 		Haste = { Label = '', NoLabel = false, decimalLength = 1 },
 		Hit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Intellect = { Label = '', NoLabel = false},
+		['Item Level'] = { rarityColor = true },
 		Location = { showZone = true, showSubZone = true, showContinent = false, color = 'REACTION', customColor = {r = 1, g = 1, b = 1} },
 		Mastery = { Label = '', NoLabel = false, decimalLength = 1 },
 		MovementSpeed = { Label = '', NoLabel = false, decimalLength = 1 },
