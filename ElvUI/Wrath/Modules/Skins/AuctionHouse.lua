@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next = next
+local pairs = pairs
+local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
@@ -123,14 +125,14 @@ function S:Blizzard_AuctionUI()
 
 	_G.BrowsePriceOptionsFrame:SetTemplate('Transparent')
 
-	for _, child in next, { BrowsePriceOptionsFrame:GetChildren() } do
+	for _, child in next, { _G.BrowsePriceOptionsFrame:GetChildren() } do
 		if child:IsObjectType('Button') then
 			S:HandleButton(child)
 		end
 	end
 
 	_G.BrowsePriceOptionsButtonFrame:ClearAllPoints()
-	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
+	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
 
 	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 
