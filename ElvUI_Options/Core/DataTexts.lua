@@ -230,7 +230,9 @@ local function CreateDTOptions(name, data)
 				optionTable.args.tooltipLines.args[tostring(info[3])].args[tostring(i)] = ACH:Toggle(info[1], nil, i, nil, nil, nil, function() return settings.idEnable[info[2]] end, function(_, value) settings.idEnable[info[2]] = value end)
 			end
 		end
-	elseif name == "Location" then
+	elseif name == 'Item Level' then
+		optionTable.args.rarityColor = ACH:Toggle(L["Rarity Color"], nil, 1)
+	elseif name == 'Location' then
 		optionTable.args.showContinent = ACH:Toggle(L["Show Continent"], nil, 1)
 		optionTable.args.showZone = ACH:Toggle(L["Show Zone"], nil, 2)
 		optionTable.args.showSubZone = ACH:Toggle(L["Show Subzone"], nil, 3)

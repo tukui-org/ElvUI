@@ -2,7 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next = next
+local pairs = pairs
+local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
@@ -34,7 +36,11 @@ function S:Blizzard_AuctionUI()
 
 	local CheckBoxes = {
 		_G.IsUsableCheckButton,
-		_G.ShowOnPlayerCheckButton
+		_G.ShowOnPlayerCheckButton,
+		_G.SortByBidPriceButton,
+		_G.SortByBuyoutPriceButton,
+		_G.SortByTotalPriceButton,
+		_G.SortByUnitPriceButton
 	}
 
 	local EditBoxes = {
@@ -117,6 +123,17 @@ function S:Blizzard_AuctionUI()
 		_G[Filter..'NormalTexture'].SetAlpha = E.noop
 	end
 
+	_G.BrowsePriceOptionsFrame:SetTemplate('Transparent')
+
+	for _, child in next, { _G.BrowsePriceOptionsFrame:GetChildren() } do
+		if child:IsObjectType('Button') then
+			S:HandleButton(child)
+		end
+	end
+
+	_G.BrowsePriceOptionsButtonFrame:ClearAllPoints()
+	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
+
 	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 
 	S:HandleCloseButton(_G.AuctionFrameCloseButton, AuctionFrame.backdrop)
@@ -130,9 +147,6 @@ function S:Blizzard_AuctionUI()
 	_G.BrowseScrollFrame:StripTextures()
 
 	_G.BrowseFilterScrollFrame:StripTextures()
-
-	_G.BrowseBidText:ClearAllPoints()
-	_G.BrowseBidText:Point('RIGHT', _G.BrowseBidButton, 'LEFT', -270, 2)
 
 	_G.BrowseCloseButton:Point('BOTTOMRIGHT', 66, 6)
 	_G.BrowseBuyoutButton:Point('RIGHT', _G.BrowseCloseButton, 'LEFT', -4, 0)
