@@ -20,7 +20,7 @@ local bothString = '%s: %s%0.2f|r / %s%0.2f|r'
 local iconString = '|T%s:13:15:0:0:50:50:4:46:4:46|t %s'
 local slotID = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }
 
-local r, g, b, avg, avgEquipped, avgPvp
+local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
 
 local function colorize(num)
 	if num >= 0 then
