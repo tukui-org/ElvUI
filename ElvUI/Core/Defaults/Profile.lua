@@ -2625,7 +2625,7 @@ for i = 1, 10 do
 	P.actionbar['bar'..i] = bar
 end
 
-if E.Retail then
+if not E.Classic then
 	P.actionbar.bar13 = CopyTable(P.actionbar.bar1)
 	P.actionbar.bar14 = CopyTable(P.actionbar.bar1)
 	P.actionbar.bar15 = CopyTable(P.actionbar.bar1)
