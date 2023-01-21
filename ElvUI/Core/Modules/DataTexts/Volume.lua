@@ -124,6 +124,7 @@ local function onMouseWheel(_, delta)
 	end
 
 	SetCVar(activeStream.Volume, vol, 'ELVUI_VOLUME')
+	panelText:SetText(GetStreamString(activeStream))
 end
 
 local function OnEvent(self, event, arg1)
