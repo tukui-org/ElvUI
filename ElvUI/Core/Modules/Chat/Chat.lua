@@ -1469,30 +1469,28 @@ function CH:SetChatEditBoxMessage(message)
 end
 
 local function HyperLinkedCPL(data)
-	if strsub(data, 1, 3) == 'cpl' then
-		local chatID = strsub(data, 5)
-		local chat = _G[format('ChatFrame%d', chatID)]
-		if not chat then return end
+	local chatID = strsub(data, 5)
+	local chat = _G[format('ChatFrame%d', chatID)]
+	if not chat then return end
 
-		local scale = chat:GetEffectiveScale() --blizzard does this with `scale = UIParent:GetScale()`
-		local cursorX, cursorY = GetCursorPosition()
-		cursorX, cursorY = (cursorX / scale), (cursorY / scale)
+	local cursorX, cursorY = GetCursorPosition()
+	local scale = chat:GetEffectiveScale() --blizzard does this with `scale = UIParent:GetScale()`
+	local posX, posY = (cursorX / scale), (cursorY / scale)
 
-		local _, lineIndex = chat:FindCharacterAndLineIndexAtCoordinate(cursorX, cursorY)
-		if lineIndex then
-			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
-			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
-			if message and not CH:MessageIsProtected(message) then
-				message = gsub(message,'|c(%x-)|H(.-)|h(.-)|h|r','\10c%1\10H%2\10h%3\10h\10r') -- strip colors and trim but not hyperlinks
-				message = gsub(message,'||','\11') -- for printing item lines from /dump, etc
-				message = E:StripString(removeIconFromLine(message))
-				message = gsub(message,'\11','||')
-				message = gsub(message,'\10c(%x-)\10H(.-)\10h(.-)\10h\10r','|c%1|H%2|h%3|h|r')
+	local _, index = chat:FindCharacterAndLineIndexAtCoordinate(posX, posY)
+	if not index then return end
 
-				if message ~= '' then
-					CH:SetChatEditBoxMessage(message)
-				end
-			end
+	local line = chat.visibleLines and chat.visibleLines[index]
+	local msg = line and line.messageInfo and line.messageInfo.message
+	if msg and not CH:MessageIsProtected(msg) then
+		msg = gsub(msg,'|c(%x-)|H(.-)|h(.-)|h|r','\10c%1\10H%2\10h%3\10h\10r') -- strip colors and trim but not hyperlinks
+		msg = gsub(msg,'||','\11') -- for printing item lines from /dump, etc
+		msg = E:StripString(removeIconFromLine(msg))
+		msg = gsub(msg,'\11','||')
+		msg = gsub(msg,'\10c(%x-)\10H(.-)\10h(.-)\10h\10r','|c%1|H%2|h%3|h|r')
+
+		if msg ~= '' then
+			CH:SetChatEditBoxmsg(msg)
 		end
 	end
 end
