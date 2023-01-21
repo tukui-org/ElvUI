@@ -1548,6 +1548,7 @@ do
 
 		if not dontOffset then -- place it off to the side of parent with correct offsets
 			frame:HookScript('OnShow', selectionOffset)
+			frame:Height(frame:GetHeight() + 10)
 		end
 
 		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
@@ -1559,7 +1560,6 @@ do
 
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
-		frame:Height(frame:GetHeight() + 10)
 
 		if borderBox then
 			borderBox:StripTextures()
