@@ -900,25 +900,28 @@ function CH:GetChatTime()
 end
 
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
-	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
-	if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
+	if not strmatch(msg, '^|Helvtime|h') and not strmatch(msg, '^|Hcpl:') then
+		local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
+		if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
-	if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
-		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or CH:GetChatTime())
-		timeStamp = gsub(timeStamp, ' ', '')
-		timeStamp = gsub(timeStamp, 'AM', ' AM')
-		timeStamp = gsub(timeStamp, 'PM', ' PM')
-		if CH.db.useCustomTimeColor then
-			local color = CH.db.customTimeColor
-			local hexColor = E:RGBToHex(color.r, color.g, color.b)
-			msg = format('%s[%s]|r %s', hexColor, timeStamp, msg)
-		else
-			msg = format('[%s] %s', timeStamp, msg)
+		if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
+			local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or CH:GetChatTime())
+			timeStamp = gsub(timeStamp, ' ', '')
+			timeStamp = gsub(timeStamp, 'AM', ' AM')
+			timeStamp = gsub(timeStamp, 'PM', ' PM')
+
+			if CH.db.useCustomTimeColor then
+				local color = CH.db.customTimeColor
+				local hexColor = E:RGBToHex(color.r, color.g, color.b)
+				msg = format('|Helvtime|h%s[%s]|r|h %s', hexColor, timeStamp, msg)
+			else
+				msg = format('|Helvtime|h[%s]|h %s', timeStamp, msg)
+			end
 		end
-	end
 
-	if CH.db.copyChatLines then
-		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ':14'), msg)
+		if CH.db.copyChatLines then
+			msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ':14'), msg)
+		end
 	end
 
 	self.OldAddMessage(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
@@ -1516,16 +1519,23 @@ local function HyperLinkedURL(data)
 	end
 end
 
-local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
-function _G.ItemRefTooltip:SetHyperlink(data, ...)
-	if strsub(data, 1, 3) == 'cpl' then
-		HyperLinkedCPL(data)
-	elseif strsub(data, 1, 3) == 'squ' then
-		HyperLinkedSQU(data)
-	elseif strsub(data, 1, 3) == 'url' then
-		HyperLinkedURL(data)
-	else
-		SetHyperlink(self, data, ...)
+do
+	local funcs = {
+		cpl = HyperLinkedCPL,
+		squ = HyperLinkedSQU,
+		url = HyperLinkedURL
+	}
+
+	local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
+	function ItemRefTooltip:SetHyperlink(data, ...)
+		if strsub(data, 1, 7) ~= 'elvtime' then
+			local func = funcs[strsub(data, 1, 3)]
+			if func then
+				func(data)
+			else
+				SetHyperlink(self, data, ...)
+			end
+		end
 	end
 end
 
