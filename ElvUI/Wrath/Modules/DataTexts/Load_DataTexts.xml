@@ -8,6 +8,7 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Dodge.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\EnergyRegen.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\EquipmentSets.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Expertise.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\HealPower.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Hit.lua'/>
