@@ -8,25 +8,25 @@ local GetExpertise = GetExpertise
 local IsDualWielding = IsDualWielding
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
+local GetExpertisePercent = GetExpertisePercent
 
 local STAT_EXPERTISE = STAT_EXPERTISE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
 local CR_EXPERTISE = CR_EXPERTISE
 
-local displayString = ''
-local expertisePercentDisplay = ''
-local expertiseRating, expertiseBonusRating = 0, 0
+local displayString, expertisePercentDisplay = '', ''
+local expertiseRating, expertiseBonusRating, expertise, offhandExpertise, expertisePercent, offhandExpertisePercent
 
 local function OnEvent(self)
-	local expertise, offhandExpertise = GetExpertise()
-	local expertisePercent, offhandExpertisePercent = format('%.2f%%', expertise), format('%.2f%%', offhandExpertise)
+	expertise, offhandExpertise = GetExpertise()
+	expertisePercent, offhandExpertisePercent = GetExpertisePercent()
 	expertiseRating, expertiseBonusRating = GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)
 
 	if IsDualWielding() then
-		expertisePercentDisplay = format('%s / %s', expertisePercent, offhandExpertisePercent)
+		expertisePercentDisplay = format('%.2f%% / %.2f%%', expertisePercent, offhandExpertisePercent)
 	else
-		expertisePercentDisplay = expertisePercent
+		expertisePercentDisplay = format('%.2f%%', expertisePercent)
 	end
 
 	self.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
@@ -34,7 +34,10 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-	DT.tooltip:AddLine(format(CR_EXPERTISE_TOOLTIP, expertisePercentDisplay, expertiseRating, expertiseBonusRating), nil, nil, nil, true)
+
+	DT.tooltip:AddDoubleLine(STAT_EXPERTISE, format(displayString..expertisePercentDisplay, expertise, offhandExpertise), 1, 1, 1)
+	DT.tooltip:AddLine(format(CR_EXPERTISE_TOOLTIP, expertisePercentDisplay, expertiseRating, expertiseBonusRating))
+
 	DT.tooltip:Show()
 end
 

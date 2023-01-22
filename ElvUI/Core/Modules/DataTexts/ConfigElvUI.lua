@@ -26,7 +26,7 @@ local function OnEnter()
 
 		for _, plugin in pairs(E.Libs.EP.plugins) do
 			if not plugin.isLib then
-				local r, g, b = E:HexToRGB(plugin.old and 'ff3333' or '33ff33')
+				local r, g, b = plugin.old and 1 or .2, plugin.old and .2 or 1, .2
 				DT.tooltip:AddDoubleLine(plugin.title, plugin.version, 1, 1, 1, r/255, g/255, b/255)
 			end
 		end

@@ -1,5 +1,6 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='..\..\..\Core\Modules\DataTexts\Ammo.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\ArmorPenetration.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Avoidance.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>

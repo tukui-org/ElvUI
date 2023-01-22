@@ -71,7 +71,7 @@ DT.SPECIALIZATION_CACHE = {}
 function DT:QuickDTMode(_, key, active)
 	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
-			DT:OnLeave()
+			DT.OnLeave(DT.SelectedDatatext)
 			E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
 			EasyMenu(QuickList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
@@ -94,6 +94,8 @@ function DT:OnEnter()
 		end
 	end
 
+	self:RegisterEvent('MODIFIER_STATE_CHANGED')
+
 	DT.MouseEnter(self)
 end
 
@@ -103,6 +105,8 @@ function DT:OnLeave()
 			func(self)
 		end
 	end
+
+	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 
 	DT.MouseLeave(self)
 	DT.tooltip:Hide()

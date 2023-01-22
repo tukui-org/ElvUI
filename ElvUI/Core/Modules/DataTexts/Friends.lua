@@ -8,7 +8,7 @@ local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
 
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
-local GetMouseFocus = GetMouseFocus
+local MouseIsOver = MouseIsOver
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
@@ -561,7 +561,7 @@ local function OnEvent(self, event, message)
 	-- force update when showing tooltip
 	dataValid = false
 
-	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and MouseIsOver(self) then
 		OnEnter(self)
 	end
 
@@ -578,4 +578,4 @@ local function ValueColorUpdate(self, hex)
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {'BN_FRIEND_ACCOUNT_ONLINE', 'BN_FRIEND_ACCOUNT_OFFLINE', 'BN_FRIEND_INFO_CHANGED', 'FRIENDLIST_UPDATE', 'CHAT_MSG_SYSTEM', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS, nil, ValueColorUpdate)
+DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, { 'BN_FRIEND_ACCOUNT_ONLINE', 'BN_FRIEND_ACCOUNT_OFFLINE', 'BN_FRIEND_INFO_CHANGED', 'FRIENDLIST_UPDATE', 'CHAT_MSG_SYSTEM' }, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS, nil, ValueColorUpdate)

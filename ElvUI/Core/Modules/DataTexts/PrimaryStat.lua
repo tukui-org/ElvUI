@@ -5,8 +5,11 @@ local _G = _G
 local strjoin = strjoin
 local UnitStat = UnitStat
 local GetSpecialization = GetSpecialization
+
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$','')
+local NOT_APPLICABLE = NOT_APPLICABLE
+
 local displayString = ''
 
 local function OnEvent(self)
@@ -17,7 +20,7 @@ local function OnEvent(self)
 	if name then
 		self.text:SetFormattedText(displayString, name..': ', UnitStat('player', StatID))
 	else
-		self.text:SetText('N/A')
+		self.text:SetText(NOT_APPLICABLE)
 	end
 end
 

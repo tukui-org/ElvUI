@@ -29,6 +29,7 @@
 	<Script file='MicroBar.lua'/>
 	<Script file='MovementSpeed.lua'/>
 	<Script file='PrimaryStat.lua'/>
+	<Script file='Quests.lua'/>
 	<Script file='Reputation.lua'/>
 	<Script file='Spirit.lua'/>
 	<Script file='Stamina.lua'/>

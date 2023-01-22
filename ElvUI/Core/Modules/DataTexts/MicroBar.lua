@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 local M = E:GetModule('Minimap')
 
 local strjoin = strjoin
-local displayString
+local displayString = ''
 
 local function OnEvent(self)
 	self.text:SetFormattedText(displayString, L["Micro Bar"])
