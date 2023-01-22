@@ -496,6 +496,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.parentName = panelName
 		dt.battleStats = battlePanel
 		dt.db = db
+		dt.watchModKey = nil
 
 		E:StopFlash(dt)
 
