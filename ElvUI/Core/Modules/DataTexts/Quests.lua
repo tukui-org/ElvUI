@@ -40,7 +40,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local totalMoney, totalXP = 0, 0
+	local totalMoney, totalXP, completedXP = 0, 0, 0
 	local isShiftDown = IsShiftKeyDown()
 
 	DT.tooltip:AddLine(TRACKER_HEADER_QUESTS)
@@ -55,14 +55,20 @@ local function OnEnter()
 
 			totalMoney = totalMoney + money
 			totalXP = totalXP + xp
+			completedXP = completedXP + (isComplete and xp or 0)
 
 			DT.tooltip:AddDoubleLine(info.title, isShiftDown and format('%s (%.2f%%)', BreakUpLargeNumbers(xp), (xp / xpToLevel) * 100) or (isComplete and COMPLETE or INCOMPLETE), 1, 1, 1, isComplete and .2 or 1, isComplete and 1 or .2, .2)
 		end
 	end
 
+	if completedXP > 0 then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine('Completed XP:', format('%s (%.2f%%)', BreakUpLargeNumbers(completedXP), (completedXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
+	end
+
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddDoubleLine('Total Gold:', E:FormatMoney(totalMoney, 'SMART'), nil, nil, nil, 1, 1, 1)
-	DT.tooltip:AddDoubleLine('Total Experience', format('%s (%.2f%%)', BreakUpLargeNumbers(totalXP), (totalXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
+	DT.tooltip:AddDoubleLine('Total XP:', format('%s (%.2f%%)', BreakUpLargeNumbers(totalXP), (totalXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
 	DT.tooltip:Show()
 end
 
