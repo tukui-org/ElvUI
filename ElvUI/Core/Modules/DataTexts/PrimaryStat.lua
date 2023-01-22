@@ -3,11 +3,12 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local strjoin = strjoin
+
 local UnitStat = UnitStat
 local GetSpecialization = GetSpecialization
 
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
-local PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$','')
+local PRIMARY_STAT = gsub(SPEC_FRAME_PRIMARY_STAT, '[:：%s]-%%s$', '')
 local NOT_APPLICABLE = NOT_APPLICABLE
 
 local displayString = ''

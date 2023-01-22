@@ -10,13 +10,15 @@ local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetExpertisePercent = GetExpertisePercent
 
-local STAT_EXPERTISE = STAT_EXPERTISE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
+local STAT_EXPERTISE = STAT_EXPERTISE
 local CR_EXPERTISE = CR_EXPERTISE
 
 local displayString, expertisePercentDisplay = '', ''
-local expertiseRating, expertiseBonusRating, expertise, offhandExpertise, expertisePercent, offhandExpertisePercent
+local expertisePercent, offhandExpertisePercent = 0, 0
+local expertiseRating, expertiseBonusRating = 0, 0
+local expertise, offhandExpertise = 0, 0
 
 local function OnEvent(self)
 	expertise, offhandExpertise = GetExpertise()

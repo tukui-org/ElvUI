@@ -11,6 +11,7 @@ local tinsert, tremove, wipe = tinsert, tremove, wipe
 local type, ipairs, unpack, select = type, ipairs, unpack, select
 local next, max, floor, format, strsub = next, max, floor, format, strsub
 
+local EasyMenu = EasyMenu
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
 local CursorHasItem = CursorHasItem
@@ -834,7 +835,7 @@ function B:AssignBagFlagMenu()
 	local bagID = holder and holder.BagID
 	if bagID and bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 		E:SetEasyMenuAnchor(E.EasyMenu, holder)
-		_G.EasyMenu((bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.AssignMain or B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
+		EasyMenu((bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.AssignMain or B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 

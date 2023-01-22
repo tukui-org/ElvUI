@@ -2,7 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local M = E:GetModule('Minimap')
 
+local _G = _G
 local strjoin = strjoin
+local EasyMenu = EasyMenu
+local ToggleFrame = ToggleFrame
 local displayString = ''
 
 local function OnEvent(self)
@@ -11,10 +14,10 @@ end
 
 local function OnClick(self, button)
 	if button == 'LeftButton' then
-		ToggleFrame(GameMenuFrame)
+		ToggleFrame(_G.GameMenuFrame)
 	else
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		_G.EasyMenu(M.RightClickMenuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		EasyMenu(M.RightClickMenuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 

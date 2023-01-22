@@ -9,6 +9,7 @@ local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin,
 
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local MouseIsOver = MouseIsOver
+local EasyMenu = EasyMenu
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
@@ -426,7 +427,7 @@ local function Click(self, btn)
 		end
 
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else

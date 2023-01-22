@@ -4,7 +4,10 @@ local DT = E:GetModule('DataTexts')
 local strjoin = strjoin
 local format = format
 
+local _G = _G
 local UnitXPMax = UnitXPMax
+local MouseIsOver = MouseIsOver
+local IsShiftKeyDown = IsShiftKeyDown
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local SelectQuestLogEntry = SelectQuestLogEntry
@@ -12,7 +15,7 @@ local GetQuestLogRewardMoney = GetQuestLogRewardMoney
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
-local C_QuestLog_GetNumQuestLogEntries = (E.Retail and _G.C_QuestLog or _G).GetNumQuestLogEntries()
+local GetNumQuestLogEntries = (C_QuestLog and C_QuestLog.GetNumQuestLogEntries) or GetNumQuestLogEntries
 
 local MAX_QUESTLOG_QUESTS = min(C_QuestLog.GetMaxNumQuestsCanAccept() + (E.Retail and 10 or 0), 35) -- 20 for ERA, 25 for WotLK, 35 for Retail
 local TRACKER_HEADER_QUESTS = TRACKER_HEADER_QUESTS
@@ -20,7 +23,7 @@ local COMPLETE = COMPLETE
 local INCOMPLETE = INCOMPLETE
 
 local displayString = ''
-local numEntries, numQuests, xpToLevel
+local numEntries, numQuests, xpToLevel = 0, 0, 0
 
 local function GetQuestInfo(questIndex)
 	if E.Retail then
@@ -64,11 +67,11 @@ local function OnEnter()
 end
 
 local function OnClick()
-	ToggleQuestLog()
+	_G.ToggleQuestLog()
 end
 
 local function OnEvent(self)
-	numEntries, numQuests = (E.Retail and _G.C_QuestLog or _G).GetNumQuestLogEntries()
+	numEntries, numQuests = GetNumQuestLogEntries()
 	xpToLevel = UnitXPMax('player')
 
 	self.text:SetFormattedText(displayString, numQuests, MAX_QUESTLOG_QUESTS)

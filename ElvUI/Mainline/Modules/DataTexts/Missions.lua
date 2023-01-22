@@ -4,6 +4,8 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
+
+local EasyMenu = EasyMenu
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -321,7 +323,7 @@ local function OnClick(self, btn)
 
 	if btn == 'RightButton' then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		_G.EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	else
 		_G.ExpansionLandingPageMinimapButton:ToggleLandingPage()
 	end
