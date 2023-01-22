@@ -847,7 +847,7 @@ function DT:Initialize()
 end
 
 --[[
-	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate, watchModKey)
 
 	name - name of the datatext (required) [string]
 	category - name of the category the datatext belongs to. [string]
