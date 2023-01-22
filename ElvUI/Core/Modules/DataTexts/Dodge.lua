@@ -11,8 +11,7 @@ local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 local displayString = ''
 
 local function OnEvent(self)
-	local stat  = GetDodgeChance()
-	self.text:SetFormattedText(displayString, DODGE, stat)
+	self.text:SetFormattedText(displayString, DODGE, GetDodgeChance())
 end
 
 local function ValueColorUpdate(self, hex)

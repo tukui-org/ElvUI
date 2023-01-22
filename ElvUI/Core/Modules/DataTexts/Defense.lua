@@ -11,9 +11,7 @@ local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 local displayString = ''
 
 local function OnEvent(self)
-	local stat  = UnitDefense('player')
-
-	self.text:SetFormattedText(displayString, DEFENSE, stat)
+	self.text:SetFormattedText(displayString, DEFENSE, UnitDefense('player'))
 end
 
 local function ValueColorUpdate(self, hex)

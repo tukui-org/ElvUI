@@ -11,12 +11,11 @@ local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 local displayString = ''
 
 local function OnEvent(self)
-	local stat  = GetBlockChance()
-	self.text:SetFormattedText(displayString, L['Block: '], stat)
+	self.text:SetFormattedText(displayString, BLOCK, GetBlockChance())
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', '%s', hex, '%.f|r')
+	displayString = strjoin('', '%s: ', hex, '%.f|r')
 
 	OnEvent(self)
 end

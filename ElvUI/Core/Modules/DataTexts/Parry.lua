@@ -11,8 +11,7 @@ local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 local displayString = ''
 
 local function OnEvent(self)
-	local stat  = GetParryChance()
-	self.text:SetFormattedText(displayString, PARRY, stat)
+	self.text:SetFormattedText(displayString, PARRY, GetParryChance())
 end
 
 local function ValueColorUpdate(self, hex)
