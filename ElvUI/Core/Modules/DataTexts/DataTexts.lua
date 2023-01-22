@@ -328,7 +328,6 @@ end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
 	dt.name = data.name or '' -- This is needed for Custom Currencies
-	dt.watchModKey = data.watchModKey
 
 	if data.events then
 		for _, ev in pairs(data.events) do
@@ -348,7 +347,11 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 				elseif DT.UnitEvents[ev] then
 					pcall(dt.RegisterUnitEvent, dt, ev, 'player')
 				else
-					pcall(dt.RegisterEvent, dt, ev)
+					if ev == 'MODIFIER_STATE_CHANGED' then
+						dt.watchModKey = true
+					else
+						pcall(dt.RegisterEvent, dt, ev)
+					end
 				end
 			end
 		end
@@ -493,6 +496,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.parentName = panelName
 		dt.battleStats = battlePanel
 		dt.db = db
+		dt.watchModKey = nil
 
 		E:StopFlash(dt)
 
@@ -847,7 +851,7 @@ function DT:Initialize()
 end
 
 --[[
-	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate, watchModKey)
+	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
 
 	name - name of the datatext (required) [string]
 	category - name of the category the datatext belongs to. [string]
@@ -860,14 +864,13 @@ end
 	localizedName - localized name of the datetext [string]
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent [function]
 	colorUpdate - function that fires when you change the dt or update the value color. [function]
-	watchModKey - register MODIFIER_STATE_CHANGED when mouse over until mouse leave. [boolean]
 ]]
 
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate, watchModKey)
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
 	if not name then return end
 	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
-	local data = { name = name, category = category, watchModKey = watchModKey }
+	local data = { name = name, category = category }
 
 	if type(events) == 'function' then
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
