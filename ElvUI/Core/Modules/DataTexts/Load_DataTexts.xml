@@ -26,6 +26,7 @@
 	<Script file='Location.lua'/>
 	<Script file='Mail.lua'/>
 	<Script file='ManaRegen.lua'/>
+	<Script file='MicroBar.lua'/>
 	<Script file='MovementSpeed.lua'/>
 	<Script file='PrimaryStat.lua'/>
 	<Script file='Reputation.lua'/>
