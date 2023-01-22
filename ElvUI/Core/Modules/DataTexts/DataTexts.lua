@@ -94,7 +94,9 @@ function DT:OnEnter()
 		end
 	end
 
-	self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	if self.watchModKey then
+		self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	end
 
 	DT.MouseEnter(self)
 end
@@ -106,7 +108,9 @@ function DT:OnLeave()
 		end
 	end
 
-	self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	if self.watchModKey then
+		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+	end
 
 	DT.MouseLeave(self)
 	DT.tooltip:Hide()
@@ -324,6 +328,7 @@ end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
 	dt.name = data.name or '' -- This is needed for Custom Currencies
+	dt.watchModKey = data.watchModKey
 
 	if data.events then
 		for _, ev in pairs(data.events) do
@@ -855,13 +860,14 @@ end
 	localizedName - localized name of the datetext [string]
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent [function]
 	colorUpdate - function that fires when you change the dt or update the value color. [function]
+	watchModKey - register MODIFIER_STATE_CHANGED when mouse over until mouse leave. [boolean]
 ]]
 
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate, watchModKey)
 	if not name then return end
 	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
-	local data = { name = name, category = category }
+	local data = { name = name, category = category, watchModKey = watchModKey }
 
 	if type(events) == 'function' then
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))

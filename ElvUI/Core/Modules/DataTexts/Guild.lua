@@ -312,4 +312,4 @@ local function ValueColorUpdate(self, hex)
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, { 'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD' }, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ValueColorUpdate)
+DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, { 'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD' }, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ValueColorUpdate, true)
