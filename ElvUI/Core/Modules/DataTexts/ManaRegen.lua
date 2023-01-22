@@ -10,11 +10,8 @@ local displayString = ''
 
 local function OnEvent(self)
 	local baseMR, castingMR = GetManaRegen()
-	if InCombatLockdown() then
-		self.text:SetFormattedText(displayString, MANA_REGEN, castingMR*5)
-	else
-		self.text:SetFormattedText(displayString, MANA_REGEN, baseMR*5)
-	end
+
+	self.text:SetFormattedText(displayString, MANA_REGEN, (InCombatLockdown() and castingMR or baseMR) * 5)
 end
 
 local function ValueColorUpdate(self, hex)

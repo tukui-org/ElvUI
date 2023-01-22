@@ -71,7 +71,7 @@ DT.SPECIALIZATION_CACHE = {}
 function DT:QuickDTMode(_, key, active)
 	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
-			DT:OnLeave()
+			DT.OnLeave(DT.SelectedDatatext)
 			E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
 			EasyMenu(QuickList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
@@ -94,6 +94,10 @@ function DT:OnEnter()
 		end
 	end
 
+	if self.watchModKey then
+		self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	end
+
 	DT.MouseEnter(self)
 end
 
@@ -102,6 +106,10 @@ function DT:OnLeave()
 		for _, func in ipairs(self.MouseLeaves) do
 			func(self)
 		end
+	end
+
+	if self.watchModKey then
+		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 
 	DT.MouseLeave(self)
@@ -320,6 +328,7 @@ end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
 	dt.name = data.name or '' -- This is needed for Custom Currencies
+	dt.watchModKey = data.watchModKey
 
 	if data.events then
 		for _, ev in pairs(data.events) do
@@ -838,7 +847,7 @@ function DT:Initialize()
 end
 
 --[[
-	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate, watchModKey)
 
 	name - name of the datatext (required) [string]
 	category - name of the category the datatext belongs to. [string]
@@ -851,13 +860,14 @@ end
 	localizedName - localized name of the datetext [string]
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent [function]
 	colorUpdate - function that fires when you change the dt or update the value color. [function]
+	watchModKey - register MODIFIER_STATE_CHANGED when mouse over until mouse leave. [boolean]
 ]]
 
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate, watchModKey)
 	if not name then return end
 	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
-	local data = { name = name, category = category }
+	local data = { name = name, category = category, watchModKey = watchModKey }
 
 	if type(events) == 'function' then
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))

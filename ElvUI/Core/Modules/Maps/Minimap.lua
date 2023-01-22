@@ -109,6 +109,10 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 
 tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = _G.ToggleHelpFrame })
 
+for _, menu in ipairs(menuList) do
+	menu.notCheckable = true
+end
+
 M.RightClickMenu = menuFrame
 M.RightClickMenuList = menuList
 
