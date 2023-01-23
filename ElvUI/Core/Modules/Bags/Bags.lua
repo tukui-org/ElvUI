@@ -1395,15 +1395,15 @@ function B:GetGraysValue()
 	return B:GetGrays()
 end
 
-function B:VendorGrays(delete)
+function B:VendorGrays()
 	if B.SellFrame:IsShown() then return end
 
-	if not delete and (not _G.MerchantFrame or not _G.MerchantFrame:IsShown()) then
+	if (not _G.MerchantFrame or not _G.MerchantFrame:IsShown()) then
 		E:Print(L["You must be at a vendor."])
 		return
 	end
 
-	local npcID = not delete and NP:UnitNPCID('npc')
+	local npcID = NP:UnitNPCID('npc')
 	if B.ExcludeVendors[npcID] then return end
 
 	B:GetGrays(true)
@@ -1412,7 +1412,6 @@ function B:VendorGrays(delete)
 	if numItems < 1 then return end
 
 	-- Resetting stuff
-	B.SellFrame.Info.delete = delete or false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = 0.2
 	B.SellFrame.Info.ProgressMax = numItems
@@ -1423,9 +1422,7 @@ function B:VendorGrays(delete)
 	B.SellFrame.statusbar:SetMinMaxValues(0, B.SellFrame.Info.ProgressMax)
 	B.SellFrame.statusbar.ValueText:SetText('0 / '..B.SellFrame.Info.ProgressMax)
 
-	if not delete then -- Time to sell
-		B.SellFrame:Show()
-	end
+	B.SellFrame:Show()
 end
 
 function B:VendorGrayCheck()
@@ -1433,9 +1430,6 @@ function B:VendorGrayCheck()
 
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not _G.MerchantFrame:IsShown() and not E.Classic then
-		E.PopupDialogs.DELETE_GRAYS.Money = value
-		E:StaticPopup_Show('DELETE_GRAYS')
 	else
 		B:VendorGrays()
 	end
@@ -1921,7 +1915,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.vendorGraysButton:Point('RIGHT', not E.Retail and f.keyButton or f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.vendorGraysButton:StyleButton(nil, true)
-		f.vendorGraysButton.ttText = not E.Retail and L["Vendor / Delete Grays"] or L["Vendor Grays"]
+		f.vendorGraysButton.ttText = L["Vendor Grays"]
 		f.vendorGraysButton.ttValue = B.GetGraysValue
 		f.vendorGraysButton:SetScript('OnEnter', B.Tooltip_Show)
 		f.vendorGraysButton:SetScript('OnLeave', GameTooltip_Hide)
@@ -2529,7 +2523,6 @@ function B:MERCHANT_CLOSED()
 
 	wipe(B.SellFrame.Info.itemList)
 
-	B.SellFrame.Info.delete = false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = B.db.vendorGrays.interval
 	B.SellFrame.Info.ProgressMax = 0
@@ -2602,7 +2595,6 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar.ValueText:SetText('0 / 0 ( 0s )')
 
 	B.SellFrame.Info = {
-		delete = false,
 		ProgressTimer = 0,
 		SellInterval = B.db.vendorGrays.interval,
 		ProgressMax = 0,
