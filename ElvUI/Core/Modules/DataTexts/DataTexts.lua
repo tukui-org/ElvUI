@@ -607,7 +607,7 @@ end
 
 do
 	local function menuSort(a, b)
-		if a.order and b.order then
+		if a.order and b.order and not (a.order == b.order) then
 			return a.order < b.order
 		end
 
