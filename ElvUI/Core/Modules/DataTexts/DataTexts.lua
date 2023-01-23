@@ -42,6 +42,9 @@ local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
+DT.greenColor = '|cFF33FF33'
+DT.redColor = '|cFFFF3333'
+
 DT.SelectedDatatext = nil
 DT.QuickList = QuickList
 DT.RegisteredPanels = {}

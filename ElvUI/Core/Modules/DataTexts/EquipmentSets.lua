@@ -21,7 +21,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 
 	for _, set in pairs(eqSets) do
-		DT.tooltip:AddLine(format('|T%s:14:14:0:0:64:64:4:60:4:60|t |cFF%s%s|r', set.iconFileID, set.isEquipped and '33ff33' or 'ff3333', set.name))
+		DT.tooltip:AddLine(format('|T%s:14:14:0:0:64:64:4:60:4:60|t %s%s|r', set.iconFileID, set.isEquipped and DT.greenColor or DT.redColor, set.name))
 	end
 
 	DT.tooltip:Show()
@@ -53,7 +53,7 @@ local function OnEvent(self, event)
 		end
 	end
 
-	local set = eqSetsMenu[activeSetIndex]
+	local set = eqSets[activeSetIndex]
 	if not activeSetIndex then
 		self.text:SetText('No Set Equipped')
 	elseif set then
