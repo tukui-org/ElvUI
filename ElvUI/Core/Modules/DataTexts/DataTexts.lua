@@ -653,6 +653,7 @@ do
 			end
 		end
 
+		tinsert(QuickList, { order = 99, text = ' ', notCheckable = true, isTitle = true })
 		tinsert(QuickList, {
 			order = 100, text = L["None"],
 			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
