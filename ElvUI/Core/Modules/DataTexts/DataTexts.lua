@@ -42,6 +42,9 @@ local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
+DT.greenColor = '|cFF33FF33'
+DT.redColor = '|cFFFF3333'
+
 DT.SelectedDatatext = nil
 DT.QuickList = QuickList
 DT.RegisteredPanels = {}
@@ -604,7 +607,7 @@ end
 
 do
 	local function menuSort(a, b)
-		if a.order and b.order then
+		if a.order and b.order and not (a.order == b.order) then
 			return a.order < b.order
 		end
 
@@ -650,6 +653,7 @@ do
 			end
 		end
 
+		tinsert(QuickList, { order = 99, text = ' ', notCheckable = true, isTitle = true })
 		tinsert(QuickList, {
 			order = 100, text = L["None"],
 			checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,

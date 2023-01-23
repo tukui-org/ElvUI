@@ -4,7 +4,9 @@ local DT = E:GetModule('DataTexts')
 local strjoin = strjoin
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
+
 local MANA_REGEN = MANA_REGEN
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString = ''
 
@@ -20,4 +22,4 @@ local function ValueColorUpdate(self, hex)
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Mana Regen', _G.STAT_CATEGORY_ATTRIBUTES, {'UNIT_STATS', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, MANA_REGEN, nil, ValueColorUpdate)
+DT:RegisterDatatext('Mana Regen', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, MANA_REGEN, nil, ValueColorUpdate)
