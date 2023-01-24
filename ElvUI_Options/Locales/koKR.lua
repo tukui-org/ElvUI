@@ -507,7 +507,6 @@ L["Down"] = "아래로"
 L["DRESSUP_FRAME"] = "미리보기"
 L["Dungeon & Raid Filter"] = "던전 & 레이드 필터"
 L["DUNGEON_DIFFICULTY"] = "던전 난이도"
-L["Durability Scale"] = true
 L["Duration Enable"] = true
 L["Duration Font Size"] = "지속시간 글씨 크기"
 L["Duration Reverse"] = "총 지속시간이 짧은 순"

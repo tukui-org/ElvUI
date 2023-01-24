@@ -507,7 +507,6 @@ L["Down"] = true
 L["DRESSUP_FRAME"] = "Dressing Room"
 L["Dungeon & Raid Filter"] = true
 L["DUNGEON_DIFFICULTY"] = "Dungeon Difficulty"
-L["Durability Scale"] = true
 L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = true

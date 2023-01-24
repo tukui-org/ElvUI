@@ -126,7 +126,6 @@ L["Do you swear not to post in technical support about something not working wit
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "WTF 폴더 백업을 잊지 마세요. 모든 프로필과 설정이 거기 있습니다."
 L["Download"] = "다운로드"
 L["DPS"] = "DPS"
-L["Durability Frame"] = true
 L["Earned:"] = "수입:"
 L["Elite"] = "정예"
 L["ElvUI Config"] = true

@@ -507,7 +507,6 @@ L["Down"] = "En bas"
 L["DRESSUP_FRAME"] = "Cabine d'essayage"
 L["Dungeon & Raid Filter"] = "Filtres de donjons et de raid"
 L["DUNGEON_DIFFICULTY"] = "Difficulté du donjon"
-L["Durability Scale"] = true
 L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = "Durée inversée"

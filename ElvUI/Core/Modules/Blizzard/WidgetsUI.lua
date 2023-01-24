@@ -109,10 +109,6 @@ function B:BuildWidgetHolder(holderName, moverName, moverPoint, localeName, cont
 	hooksecurefunc(container, 'SetPoint', UpdatePosition)
 end
 
-function B:UpdateDurabilityScale()
-	_G.DurabilityFrame:SetScale(E.db.general.durabilityScale or 1)
-end
-
 function B:HandleWidgets()
 	B:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', 'CENTER', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 125, 20, 'ALL,WIDGETS')
 	B:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
@@ -130,11 +126,6 @@ function B:HandleWidgets()
 			B.UIWidgetTemplateStatusBar(widget)
 		end
 	end
-
-	_G.DurabilityFrame:SetFrameStrata('HIGH')
-	local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
-	B:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', 'CENTER', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
-	B:UpdateDurabilityScale()
 
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)

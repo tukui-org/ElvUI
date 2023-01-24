@@ -126,7 +126,6 @@ L["Do you swear not to post in technical support about something not working wit
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "Не забудьте сделать резервную копию своей папки WTF, все Ваши профили и настройки находятся там."
 L["Download"] = "Загрузка"
 L["DPS"] = "УВС"
-L["Durability Frame"] = "Фрейм прочности"
 L["Earned:"] = "Заработано"
 L["Elite"] = "Элита"
 L["ElvUI Config"] = "Настройки ElvUI"

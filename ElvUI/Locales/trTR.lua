@@ -127,7 +127,6 @@ L["Do you swear not to post in technical support about something not working wit
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "WTF klasorunuzu yedeklemeyi unutmayin, tum profilleriniz ve ayarlariniz orada."
 L["Download"] = "Indir"
 L["DPS"] = true
-L["Durability Frame"] = "Dayaniklilik Cercevesi"
 L["Earned:"] = "Kazanilan:"
 L["Elite"] = true
 L["ElvUI Config"] = "ElvUI Yapilandirmasi"

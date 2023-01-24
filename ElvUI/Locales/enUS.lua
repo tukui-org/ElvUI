@@ -127,7 +127,6 @@ L["Do you swear not to post in technical support about something not working wit
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = true
 L["Download"] = true
 L["DPS"] = true
-L["Durability Frame"] = true
 L["Earned:"] = true
 L["Elite"] = true
 L["ElvUI Config"] = true
