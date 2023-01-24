@@ -187,8 +187,6 @@ local function CreateDTOptions(name, data)
 		optionTable.args.text = ACH:Toggle(L["Show Text"], nil, 4)
 		optionTable.args.icon = ACH:Toggle(L["Show Icon"], nil, 5)
 		optionTable.args.useValueColor = ACH:Toggle(L["Use Value Color"], nil, 6)
-		optionTable.args.spacer2 = ACH:Spacer(7, 'full')
-		optionTable.args.delete = ACH:Execute(L["Delete"], nil, 8, function() E.global.datatexts.settings[name] = nil E.Options.args.datatexts.args.settings.args[name] = nil 	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'settings') end)
 	else
 		for key in pairs(settings) do
 			if key == 'Label' then
