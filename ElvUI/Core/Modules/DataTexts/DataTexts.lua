@@ -42,9 +42,6 @@ local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
-DT.greenColor = '|cFF33FF33'
-DT.redColor = '|cFFFF3333'
-
 DT.SelectedDatatext = nil
 DT.QuickList = QuickList
 DT.RegisteredPanels = {}
@@ -239,23 +236,23 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function UpdateText(_, _, _, _, dataObj)
-		local displayString = ''
-		local settings = E.global.datatexts.settings['LDB_'..name]
+	local function UpdateText(_, _, _, _, data)
+		local db = E.global.datatexts.settings['LDB_'..name]
+		local str = ''
 
-		if settings.icon then
-			displayString = format(iconString, dataObj.icon)
+		if db.icon and data.icon then
+			str = format(iconString, data.icon)
 		end
 
-		if settings.label then
-			displayString = displayString..(settings.icon and ' ' or '')..(settings.customLabel ~= '' and settings.customLabel or dataObj.label)
+		if db.label and data.label then
+			str = str .. (db.icon and ' ' or '') .. (db.customLabel ~= '' and db.customLabel or data.label)
 		end
 
-		if settings.text then
-			displayString = displayString..(settings.label and ': ' or '')..hex..dataObj.text..'|r'
+		if db.text and data.text then
+			str = str .. (db.label and ': ' or '') .. (hex .. data.text .. '|r')
 		end
 
-		text:SetText(displayString)
+		text:SetText(str)
 	end
 
 	local function UpdateColor(_, Hex)

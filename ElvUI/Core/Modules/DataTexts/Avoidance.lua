@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local format, strjoin, abs = format, strjoin, abs
+
 local GetBlockChance = GetBlockChance
 local GetBonusBarOffset = GetBonusBarOffset
 local GetDodgeChance = GetDodgeChance
@@ -12,6 +13,7 @@ local GetParryChance = GetParryChance
 local UnitLevel = UnitLevel
 local UnitExists = UnitExists
 local UnitDefense = UnitDefense
+
 local BOSS = BOSS
 local BLOCK_CHANCE = BLOCK_CHANCE
 local DODGE_CHANCE = DODGE_CHANCE
