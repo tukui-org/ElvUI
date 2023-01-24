@@ -588,6 +588,8 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Fade out the tooltip when it disappers, instant otherwise. Cursor anchored tooltips are unaffected."] = true
 L["Fill"] = true
 L["Filled"] = true
+L["FilledHL"] = "Left-sided frame height"
+L["FilledHR"] = "Right-sided frame height"
 L["Filter already exists!"] = true
 L["Filter Modifiers"] = true
 L["Filter Priority"] = true
@@ -1678,6 +1680,7 @@ L["Unfriendly"] = true
 L["Unified Font Sizes"] = true
 L["Unit Conditions"] = true
 L["Unit Faction"] = true
+L["UnitFrames vertical filling"] = true
 L["Unit Prefix Style"] = true
 L["Unit Target"] = true
 L["Unit Type"] = true

@@ -121,6 +121,18 @@ function UF:Configure_HealthBar(frame)
 
 			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
 			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.SPACING + frame.POWERBAR_HEIGHT * 0.5)
+		elseif frame.USE_SIDEL_POWERBAR then
+			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING + frame.SIDE_OFFSET, frame.PORTRAIT_HEIGHT + UF.BORDER + UF.SPACING)
+
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.SIDE_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_HEIGHT)
+		elseif frame.USE_SIDER_POWERBAR then
+			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING - frame.SIDE_OFFSET, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, frame.PORTRAIT_HEIGHT + UF.BORDER + UF.SPACING)
+
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.SIDE_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_HEIGHT)
 		else
 			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
@@ -146,6 +158,18 @@ function UF:Configure_HealthBar(frame)
 
 			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
 			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.SPACING + frame.POWERBAR_HEIGHT * 0.5)
+		elseif frame.USE_SIDEL_POWERBAR then
+			health:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING + frame.SIDE_OFFSET, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -UF.BORDER - UF.SPACING, frame.PORTRAIT_HEIGHT + UF.BORDER + UF.SPACING)
+
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.SIDE_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_HEIGHT)
+		elseif frame.USE_SIDER_POWERBAR then
+			health:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -UF.BORDER - UF.SPACING - frame.SIDE_OFFSET, frame.PORTRAIT_HEIGHT + UF.BORDER + UF.SPACING)
+
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.SIDE_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_HEIGHT)
 		else
 			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - UF.BORDER - UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
@@ -171,6 +195,18 @@ function UF:Configure_HealthBar(frame)
 
 			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING)
 			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.SPACING + frame.POWERBAR_HEIGHT * 0.5)
+		elseif frame.USE_SIDEL_POWERBAR then
+			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING + frame.SIDE_OFFSET, frame.PORTRAIT_HEIGHT + UF.BORDER + UF.SPACING)
+
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.SIDE_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_HEIGHT)
+		elseif frame.USE_SIDER_POWERBAR then
+			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING - frame.SIDE_OFFSET, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, frame.PORTRAIT_HEIGHT + UF.BORDER + UF.SPACING)
+
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.SIDE_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_HEIGHT)
 		else
 			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
@@ -184,7 +220,10 @@ function UF:Configure_HealthBar(frame)
 		if db.health.orientation then
 			health:SetOrientation(db.health.orientation)
 		end
-
+		if E.private.unitframe.unitframesVericalFilling.health then
+			health:SetOrientation('VERTICAL')
+		else health:SetOrientation('HORIZONTAL')
+		end
 		health:SetReverseFill(db.health.reverseFill)
 	end
 
@@ -199,7 +238,7 @@ end
 
 function UF:GetHealthBottomOffset(frame)
 	local bottomOffset = 0
-	if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
+	if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR and not frame.USE_SIDER_POWERBAR and not frame.USE_SIDEL_POWERBAR then
 		bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (UF.BORDER-UF.SPACING)
 	end
 	if frame.USE_INFO_PANEL then
@@ -207,6 +246,18 @@ function UF:GetHealthBottomOffset(frame)
 	end
 
 	return bottomOffset
+end
+
+function UF:GetHealthSideOffset(frame)
+	local sideOffset = 0
+	if frame.USE_SIDER_POWERBAR or frame.USE_SIDEL_POWERBAR and not frame.POWERBAR_DETACHED then
+		sideOffset = sideOffset + frame.POWERBAR_WIDTH - (UF.BORDER-UF.SPACING)
+	end
+	--[[if frame.USE_INFO_PANEL then
+		bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (UF.BORDER-UF.SPACING)
+	end]]
+
+	return sideOffset
 end
 
 local HOSTILE_REACTION = 2

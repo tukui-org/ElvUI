@@ -175,6 +175,18 @@ function UF:Configure_Power(frame)
 			end
 
 			power:SetFrameLevel(50)
+		elseif frame.USE_SIDEL_POWERBAR then
+			power:Point('TOPRIGHT', frame.Health.backdrop, 'TOPLEFT', UF.SPACING*3, -UF.BORDER)
+			power:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', UF.SPACING*3, UF.BORDER)
+			power:Width(frame.POWERBAR_WIDTH - OFFSET)
+
+			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
+		elseif frame.USE_SIDER_POWERBAR then
+			power:Point('TOPLEFT', frame.Health.backdrop, 'TOPRIGHT', UF.SPACING*3, -UF.BORDER)
+			power:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', UF.SPACING*3, UF.BORDER)
+			power:Width(frame.POWERBAR_WIDTH - OFFSET)
+
+			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		else
 			power:Point('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -UF.BORDER, -UF.SPACING*3)
 			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER, -UF.SPACING*3)
@@ -210,6 +222,10 @@ function UF:Configure_Power(frame)
 		frame:DisableElement('Power')
 		power:Hide()
 		frame:Tag(power.value, '')
+	end
+	
+	if E.private.unitframe.unitframesVericalFilling.power then
+			power:SetOrientation('VERTICAL')
 	end
 
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop

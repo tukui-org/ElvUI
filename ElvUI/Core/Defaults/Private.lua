@@ -194,6 +194,10 @@ V.unitframe = {
 		arena = true,
 		party = true,
 		raid = true,
+	},
+	unitframesVericalFilling = {
+		health = false,
+		power = false,
 	}
 }
 

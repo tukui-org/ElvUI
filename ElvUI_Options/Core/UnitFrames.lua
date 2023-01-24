@@ -659,10 +659,11 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	local config = ACH:Group(L["Power"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].power[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 2, attachToValues)
-	config.args.width = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], spaced = L["Spaced"], inset = L["Inset"], offset = L["Offset"] })
-	config.args.height = ACH:Range(L["Height"], nil, 4, { min = UF.thinBorders and 3 or 7, max = 50, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width == 'offset' end)
-	config.args.offset = ACH:Range(L["Offset"], L["Offset of the powerbar to the healthbar, set to 0 to disable."], 5, { min = 0, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width ~= 'offset' end)
-	config.args.powerPrediction = ACH:Toggle(L["Power Prediction"], nil, 6)
+	config.args.style = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], fillHL = L["FilledHL"], fillHR = L["FilledHR"], spaced = L["Spaced"], inset = L["Inset"], offset = L["Offset"] })
+	config.args.height = ACH:Range(L["Height"], nil, 4, { min = UF.thinBorders and 3 or 7, max = E.db.unitframe.units[groupName].height, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.style == 'offset' or E.db.unitframe.units[groupName].power.style == 'fillHR' or E.db.unitframe.units[groupName].power.style == 'fillHL' end)
+	config.args.width = ACH:Range(L["Width"], nil, 5, { min = UF.thinBorders and 3 or 7, max = E.db.unitframe.units[groupName].width, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.style == 'offset' or (E.db.unitframe.units[groupName].power.style ~= 'fillHR' and E.db.unitframe.units[groupName].power.style ~= 'fillHL') end)
+	config.args.offset = ACH:Range(L["Offset"], L["Offset of the powerbar to the healthbar, set to 0 to disable."], 6, { min = 0, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.style ~= 'offset' end)
+	config.args.powerPrediction = ACH:Toggle(L["Power Prediction"], nil, 7)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 8)
 
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 10, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
@@ -1028,6 +1029,12 @@ UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { castbar = L["Cast Bar"], player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = (E.Retail or E.Wrath) and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
+
+UnitFrame.generalOptionsGroup.args.unitframesVericalFilling = ACH:MultiSelect(L["UnitFrames vertical filling"], nil, 50, nil, nil,  nil, function(_, key) return E.private.unitframe.unitframesVericalFilling[key] end, function(_, key, value) E.private.unitframe.unitframesVericalFilling[key] = value UF:Update_AllFrames() end)
+UnitFrame.generalOptionsGroup.args.unitframesVericalFilling.values = {
+	health = L["Health"],
+	power = L["Power"],
+}
 
 UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 10, 'tree', function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, function() return not E.UnitFrames.Initialized end)
 local Colors = UnitFrame.allColorsGroup.args

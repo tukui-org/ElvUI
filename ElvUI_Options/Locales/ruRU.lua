@@ -588,6 +588,8 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Fade out the tooltip when it disappers, instant otherwise. Cursor anchored tooltips are unaffected."] = true
 L["Fill"] = "Заполнение"
 L["Filled"] = "По ширине рамки"
+L["FilledHL"] = "По высоте рамки слева"
+L["FilledHR"] = "По высоте рамки справа"
 L["Filter already exists!"] = "Фильтр уже существует!"
 L["Filter Modifiers"] = "Модификаторы фильтров"
 L["Filter Priority"] = "Приоритет фильтров"
@@ -1678,6 +1680,7 @@ L["Unfriendly"] = "Неприязнь"
 L["Unified Font Sizes"] = "Единые размеры шрифтов"
 L["Unit Conditions"] = "Условия юнита"
 L["Unit Faction"] = true
+L["UnitFrames vertical filling"] = "Вертикальное заполнение рамок юнитов"
 L["Unit Prefix Style"] = "Стиль сокращений"
 L["Unit Target"] = "Цель юнита"
 L["Unit Type"] = "Тип юнита"
