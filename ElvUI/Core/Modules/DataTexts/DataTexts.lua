@@ -238,12 +238,11 @@ function DT:BuildPanelFunctions(name, obj)
 
 	local function UpdateText(_, _, _, _, data)
 		local db = E.global.datatexts.settings['LDB_'..name]
-		local str = ''
 		local icon = db.icon and data.icon
 		local label = db.label and data.label
 		local value = db.text and data.text
-		local hexColor = db.useValueColor and hex or '|cFFFFFFFF'
 
+		local str = ''
 		if icon then
 			str = format(iconString, icon)
 		end
@@ -253,7 +252,8 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 
 		if value then
-			str = str .. (label and ': ' or '') .. (hexColor .. value .. '|r')
+			local color = (db.useValueColor and hex) or '|cFFFFFFFF'
+			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
 		end
 
 		text:SetText(str)
