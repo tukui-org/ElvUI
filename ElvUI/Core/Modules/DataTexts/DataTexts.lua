@@ -8,7 +8,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local next, format, type, pcall, unpack = next, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, sort, gsub
-local tostring, strfind, strlen, strsplit, strlower = tostring, strfind, strlen, strsplit, strlower
+local tostring, strfind, strsplit = tostring, strfind, strsplit
 local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
@@ -39,6 +39,7 @@ local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local QuickList = {}
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+local iconStringLDB = '|T%s:16:16|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
@@ -224,12 +225,23 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function UpdateText(_, named, _, value)
-		if not value or value == '' or value == named or strlower(value) == 'n/a' then
-			text:SetText(named)
-		else
-			text:SetFormattedText('%s: %s%s|r', named, hex, value)
+	local function UpdateText(_, named, _, value, dataObj)
+		local displayString = ''
+		local settings = E.global.datatexts.settings['LDB_'..name]
+
+		if settings.icon then
+			displayString = format(iconStringLDB, dataObj.icon)
 		end
+
+		if settings.label then
+			displayString = displayString..(settings.icon and ' ' or '')..(settings.customLabel ~= '' and settings.customLabel or dataObj.label)
+		end
+
+		if settings.text then
+			displayString = displayString..(settings.label and ': ' or '')..hex..dataObj.text..'|r'
+		end
+
+		text:SetText(displayString)
 	end
 
 	local function UpdateColor(_, Hex)
@@ -250,11 +262,14 @@ function DT:BuildPanelFunctions(name, obj)
 end
 
 function DT:SetupObjectLDB(name, obj)
-	if DT.RegisteredDataTexts['LDB_'..name] then return end
+	local ldbName = 'LDB_'..name
+	if DT.RegisteredDataTexts[ldbName] then return end
 
 	local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
+	local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
 	data.isLibDataBroker = true
+
+	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or { customLabel = '', label = true, text = true, icon = true }
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
 		DT:UpdateQuickDT()
@@ -263,7 +278,14 @@ end
 
 function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
-		DT:SetupObjectLDB(name, obj)
+		if obj.type == "data source" or obj.type == "launcher" then
+			local label = obj.label
+			if not label then
+				obj.label = name
+			end
+
+			DT:SetupObjectLDB(name, obj)
+		end
 	end
 end
 
