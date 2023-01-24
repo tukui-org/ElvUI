@@ -282,8 +282,9 @@ function DT:SetupObjectLDB(name, obj)
 	local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
 	data.isLibDataBroker = true
 
-	G.datatexts.settings[ldbName] = { customLabel = '', label = false, text = true, icon = false, useValueColor = false }
-	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or E:CopyTable({}, G.datatexts.settings[ldbName])
+	local defaults = { customLabel = '', label = false, text = true, icon = false, useValueColor = false }
+	G.datatexts.settings[ldbName] = defaults
+	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or E:CopyTable({}, defaults)
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
 		DT:UpdateQuickDT()
