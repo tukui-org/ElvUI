@@ -209,13 +209,26 @@ function DT:BuildPanelFunctions(name, obj)
 
 	local function OnEnter(dt)
 		DT.tooltip:ClearLines()
-		if obj.OnTooltipShow then obj.OnTooltipShow(DT.tooltip) end
-		if obj.OnEnter then obj.OnEnter(dt) end
+
+		if obj.tooltip then
+			obj.tooltip:ClearAllPoints()
+			obj.tooltip:SetOwner(DT:SetupTooltip(self))
+			obj.tooltip:Show()
+		elseif obj.OnEnter then
+			obj.OnEnter(dt)
+		elseif obj.OnTooltipShow then
+			obj.OnTooltipShow(DT.tooltip)
+		end
+
 		DT.tooltip:Show()
 	end
 
 	local function OnLeave(dt)
-		if obj.OnLeave then obj.OnLeave(dt) end
+		if obj.tooltip then
+			obj.tooltip:Hide()
+		elseif obj.OnLeave then
+			obj.OnLeave(dt)
+		end
 	end
 
 	local function OnClick(dt, button)
@@ -224,7 +237,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function UpdateText(_, named, _, value, dataObj)
+	local function UpdateText(_, _, _, _, dataObj)
 		local displayString = ''
 		local settings = E.global.datatexts.settings['LDB_'..name]
 
@@ -309,6 +322,8 @@ function DT:SetupTooltip(panel)
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 	end
+
+	return panel, parent.anchor, parent.xOff, parent.yOff
 end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
