@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
+
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
 
