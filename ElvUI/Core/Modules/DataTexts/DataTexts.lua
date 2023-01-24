@@ -224,13 +224,11 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function UpdateText(_, Name, _, Value)
-		if not Value or Value == Name or strlower(Value) == 'n/a' then
-			text:SetText(Name)
-		elseif strlen(Value) >= 3 then
-			text:SetText(Value)
+	local function UpdateText(_, named, _, value)
+		if not value or value == '' or value == named or strlower(value) == 'n/a' then
+			text:SetText(named)
 		else
-			text:SetFormattedText('%s: %s%s|r', Name, hex, Value)
+			text:SetFormattedText('%s: %s%s|r', named, hex, value)
 		end
 	end
 
