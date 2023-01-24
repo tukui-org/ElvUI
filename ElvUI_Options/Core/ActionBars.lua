@@ -356,7 +356,7 @@ for i = 1, 10 do
 	CreateBarOptions(i)
 end
 
-if E.Retail then
+if not E.Classic then
 	for i = 13, 15 do
 		CreateBarOptions(i)
 	end

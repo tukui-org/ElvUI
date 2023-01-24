@@ -3,6 +3,7 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\Speed.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\EquipmentSets.lua'/>
 	<Script file='CallToArms.lua'/>
 	<Script file='Leech.lua'/>
 	<Script file='Mastery.lua'/>

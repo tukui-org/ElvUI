@@ -81,14 +81,13 @@ local function BuildAddonList()
 end
 
 local function OnClick()
-	if IsShiftKeyDown() then
-		if IsControlKeyDown() then
-			SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
-			ReloadUI()
-		else
-			collectgarbage('collect')
-			ResetCPUUsage()
-		end
+	local shiftDown, ctrlDown = IsShiftKeyDown(), IsControlKeyDown()
+	if shiftDown and ctrlDown then
+		SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
+		ReloadUI()
+	elseif shiftDown and not ctrlDown then
+		collectgarbage('collect')
+		ResetCPUUsage()
 	end
 end
 

@@ -377,7 +377,6 @@ L["UI Scale"] = true
 L["Unhittable:"] = true
 L["Vehicle Seat Frame"] = true
 L["VehicleLeaveButton"] = true
-L["Vendor / Delete Grays"] = true
 L["Vendor Grays"] = true
 L["Vendored gray items for: %s"] = true
 L["Vendoring Grays"] = true

@@ -29,7 +29,10 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
+
 	DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))
+
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(self, hex)
