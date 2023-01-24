@@ -208,19 +208,21 @@ function DT:BuildPanelFunctions(name, obj)
 	local hex, text = '|cffFFFFFF'
 
 	local function OnEnter(dt)
-		DT.tooltip:ClearLines()
-
 		if obj.tooltip then
 			obj.tooltip:ClearAllPoints()
 			obj.tooltip:SetOwner(DT:SetupTooltip(self))
 			obj.tooltip:Show()
-		elseif obj.OnEnter then
-			obj.OnEnter(dt)
-		elseif obj.OnTooltipShow then
-			obj.OnTooltipShow(DT.tooltip)
-		end
+		else
+			DT.tooltip:ClearLines()
 
-		DT.tooltip:Show()
+			if obj.OnEnter then
+				obj.OnEnter(dt)
+			elseif obj.OnTooltipShow then
+				obj.OnTooltipShow(DT.tooltip)
+			end
+
+			DT.tooltip:Show()
+		end
 	end
 
 	local function OnLeave(dt)
