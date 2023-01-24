@@ -39,7 +39,6 @@ local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local QuickList = {}
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
-local iconStringLDB = '|T%s:16:16|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
 
@@ -230,7 +229,7 @@ function DT:BuildPanelFunctions(name, obj)
 		local settings = E.global.datatexts.settings['LDB_'..name]
 
 		if settings.icon then
-			displayString = format(iconStringLDB, dataObj.icon)
+			displayString = format(iconString, dataObj.icon)
 		end
 
 		if settings.label then
