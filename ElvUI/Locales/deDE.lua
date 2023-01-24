@@ -126,6 +126,7 @@ L["Do you swear not to post in technical support about something not working wit
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "Vergess nicht ein Backup von deinem WTF Ordner zu machen, all deine Profile/Einstellungen für AddOns sind darin gespeichert."
 L["Download"] = "Download"
 L["DPS"] = "DPS"
+L["Durability Frame"] = "Haltbarkeitsfenster"
 L["Earned:"] = "Verdient:"
 L["Elite"] = true
 L["ElvUI Config"] = true

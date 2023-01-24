@@ -212,6 +212,7 @@ blizz.general.args.hideZoneText = ACH:Toggle(L["Hide Zone Text"], L["Enable/Disa
 blizz.general.args.spacer1 = ACH:Spacer(14, 'full')
 blizz.general.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 15, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
 blizz.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 16, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateVehicleFrame() end, nil, not E.Retail)
+blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:UpdateDurabilityScale() end)
 blizz.general.inline = true
 
 blizz.quest = ACH:Group(L["Quests"], nil, 2)

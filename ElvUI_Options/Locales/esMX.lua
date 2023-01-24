@@ -507,6 +507,7 @@ L["Down"] = "Abajo"
 L["DRESSUP_FRAME"] = "Probador"
 L["Dungeon & Raid Filter"] = true
 L["DUNGEON_DIFFICULTY"] = "Dificultad de mazmorra"
+L["Durability Scale"] = true
 L["Duration Enable"] = true
 L["Duration Font Size"] = true
 L["Duration Reverse"] = "Revertir Duración"
