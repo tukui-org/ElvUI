@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-
 function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
