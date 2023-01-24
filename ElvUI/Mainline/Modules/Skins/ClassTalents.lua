@@ -32,6 +32,8 @@ function S:Blizzard_ClassTalentUI()
 	S:HandleButton(ClassTalentFrame.TalentsTab.ApplyButton)
 	S:HandleDropDownBox(ClassTalentFrame.TalentsTab.LoadoutDropDown.DropDownControl.DropDownMenu)
 
+	S:HandleButton(ClassTalentFrame.TalentsTab.InspectCopyButton)
+
 	ClassTalentFrame.TalentsTab.ClassCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
 	ClassTalentFrame.TalentsTab.ClassCurrencyDisplay.CurrencyAmount:FontTemplate(nil, 26)
 
