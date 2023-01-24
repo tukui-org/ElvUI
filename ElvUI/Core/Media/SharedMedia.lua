@@ -223,6 +223,7 @@ AddMedia('logo','TyroneBiggums')
 AddMedia('logo','SuperBear')
 
 E.Media.CombatIcons.COMBAT = E.Media.Textures.Combat
+E.Media.Arrows.ArrowUp = E.Media.Textures.ArrowUp
 
 do -- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')

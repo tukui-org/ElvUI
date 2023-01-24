@@ -377,7 +377,6 @@ L["UI Scale"] = true
 L["Unhittable:"] = "100% 방어행동까지"
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
 L["VehicleLeaveButton"] = true
-L["Vendor / Delete Grays"] = "잡템 자동판매/삭제"
 L["Vendor Grays"] = "잡동사니 자동판매"
 L["Vendored gray items for: %s"] = "모든 잡동사니를 팔았습니다: %s"
 L["Vendoring Grays"] = "잡템 팔기"

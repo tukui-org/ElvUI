@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local format = string.format
-local pairs = pairs
+local format = format
 local tinsert = tinsert
+local pairs = pairs
 local wipe = wipe
 
 local EasyMenu = EasyMenu

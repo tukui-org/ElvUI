@@ -8,7 +8,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local next, format, type, pcall, unpack = next, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, sort, gsub
-local tostring, strfind, strlen, strsplit, strlower = tostring, strfind, strlen, strsplit, strlower
+local tostring, strfind, strsplit = tostring, strfind, strsplit
 local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
@@ -41,9 +41,6 @@ local QuickList = {}
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
-
-DT.greenColor = '|cFF33FF33'
-DT.redColor = '|cFFFF3333'
 
 DT.SelectedDatatext = nil
 DT.QuickList = QuickList
@@ -208,14 +205,29 @@ function DT:BuildPanelFunctions(name, obj)
 	local hex, text = '|cffFFFFFF'
 
 	local function OnEnter(dt)
-		DT.tooltip:ClearLines()
-		if obj.OnTooltipShow then obj.OnTooltipShow(DT.tooltip) end
-		if obj.OnEnter then obj.OnEnter(dt) end
-		DT.tooltip:Show()
+		if obj.tooltip then
+			obj.tooltip:ClearAllPoints()
+			obj.tooltip:SetOwner(DT:SetupTooltip(self))
+			obj.tooltip:Show()
+		else
+			DT.tooltip:ClearLines()
+
+			if obj.OnEnter then
+				obj.OnEnter(dt)
+			elseif obj.OnTooltipShow then
+				obj.OnTooltipShow(DT.tooltip)
+			end
+
+			DT.tooltip:Show()
+		end
 	end
 
 	local function OnLeave(dt)
-		if obj.OnLeave then obj.OnLeave(dt) end
+		if obj.tooltip then
+			obj.tooltip:Hide()
+		elseif obj.OnLeave then
+			obj.OnLeave(dt)
+		end
 	end
 
 	local function OnClick(dt, button)
@@ -224,14 +236,23 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 	end
 
-	local function UpdateText(_, Name, _, Value)
-		if not Value or Value == Name or strlower(Value) == 'n/a' then
-			text:SetText(Name)
-		elseif strlen(Value) >= 3 then
-			text:SetText(Value)
-		else
-			text:SetFormattedText('%s: %s%s|r', Name, hex, Value)
+	local function UpdateText(_, _, _, _, data)
+		local db = E.global.datatexts.settings['LDB_'..name]
+		local str = ''
+
+		if db.icon and data.icon then
+			str = format(iconString, data.icon)
 		end
+
+		if db.label and data.label then
+			str = str .. (db.icon and ' ' or '') .. (db.customLabel ~= '' and db.customLabel or data.label)
+		end
+
+		if db.text and data.text then
+			str = str .. (db.label and ': ' or '') .. (hex .. data.text .. '|r')
+		end
+
+		text:SetText(str)
 	end
 
 	local function UpdateColor(_, Hex)
@@ -252,11 +273,14 @@ function DT:BuildPanelFunctions(name, obj)
 end
 
 function DT:SetupObjectLDB(name, obj)
-	if DT.RegisteredDataTexts['LDB_'..name] then return end
+	local ldbName = 'LDB_'..name
+	if DT.RegisteredDataTexts[ldbName] then return end
 
 	local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext('LDB_'..name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
+	local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
 	data.isLibDataBroker = true
+
+	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or { customLabel = '', label = false, text = true, icon = false }
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
 		DT:UpdateQuickDT()
@@ -265,7 +289,14 @@ end
 
 function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
-		DT:SetupObjectLDB(name, obj)
+		if obj.type == "data source" or obj.type == "launcher" then
+			local label = obj.label
+			if not label then
+				obj.label = name
+			end
+
+			DT:SetupObjectLDB(name, obj)
+		end
 	end
 end
 
@@ -290,6 +321,8 @@ function DT:SetupTooltip(panel)
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 	end
+
+	return panel, parent.anchor, parent.xOff, parent.yOff
 end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)

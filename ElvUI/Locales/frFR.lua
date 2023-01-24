@@ -377,7 +377,6 @@ L["UI Scale"] = "Échelle de l'UI"
 L["Unhittable:"] = "Intouchable :"
 L["Vehicle Seat Frame"] = "Cadre de siège du véhicule"
 L["VehicleLeaveButton"] = true
-L["Vendor / Delete Grays"] = "Vendeur / Supprimer les gris"
 L["Vendor Grays"] = "Vendre les objets gris"
 L["Vendored gray items for: %s"] = "Objets gris vendus pour : %s"
 L["Vendoring Grays"] = "Vente des objets gris en cours"
