@@ -242,7 +242,7 @@ function DT:BuildPanelFunctions(name, obj)
 		local icon = db.icon and data.icon
 		local label = db.label and data.label
 		local value = db.text and data.text
-		local hexColor = db.useValueColor and hex or ''
+		local hexColor = db.useValueColor and hex or '|cFFFFFFFF'
 
 		if icon then
 			str = format(iconString, icon)
