@@ -366,6 +366,8 @@ function B:SearchClear()
 
 	B.BankFrame.editBox:SetText('')
 	B.BankFrame.editBox:ClearFocus()
+
+	SetItemSearch('')
 end
 
 function B:UpdateItemDisplay()
