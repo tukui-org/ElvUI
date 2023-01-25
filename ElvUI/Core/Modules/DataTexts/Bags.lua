@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local _G = _G
 local format = format
 local strjoin = strjoin
 
@@ -47,7 +48,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	ToggleAllBags()
+	_G.ToggleAllBags()
 end
 
 local function OnEnter()

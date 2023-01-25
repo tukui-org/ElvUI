@@ -6,6 +6,7 @@ local B = E:GetModule('Bags')
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
 local format, strjoin, tinsert = format, strjoin, tinsert
 
+local _G = _G
 local EasyMenu = EasyMenu
 local GetMoney = GetMoney
 local IsLoggedIn = IsLoggedIn
@@ -153,7 +154,7 @@ local function Click(self, btn)
 			Spent = 0
 		end
 	else
-		ToggleAllBags()
+		_G.ToggleAllBags()
 	end
 end
 

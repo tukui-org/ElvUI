@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local _G = _G
 local select, wipe = select, wipe
 local format, strjoin = format, strjoin
 
+local _G = _G
 local GetItemInfo = GetItemInfo
 local GetItemCount = GetItemCount
 local GetItemInfoInstant = GetItemInfoInstant
@@ -140,7 +140,7 @@ local function OnClick(_, btn)
 				end
 			end
 		else
-			ToggleAllBags()
+			_G.ToggleAllBags()
 		end
 	end
 end
