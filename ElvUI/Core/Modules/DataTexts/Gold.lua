@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 local B = E:GetModule('Bags')
 -- GLOBALS: ElvDB
 
-local _G = _G
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
 local format, strjoin, tinsert = format, strjoin, tinsert
 
@@ -154,7 +153,7 @@ local function Click(self, btn)
 			Spent = 0
 		end
 	else
-		_G.ToggleAllBags()
+		B:ToggleAllBags()
 	end
 end
 

@@ -11,6 +11,8 @@ local tinsert, tremove, wipe = tinsert, tremove, wipe
 local type, ipairs, unpack, select = type, ipairs, unpack, select
 local next, max, floor, format, strsub = next, max, floor, format, strsub
 
+local CloseAllBags = CloseAllBags
+local OpenAllBags = OpenAllBags
 local EasyMenu = EasyMenu
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
@@ -94,6 +96,7 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
+local NUM_TOTAL_BAG_FRAMES = NUM_TOTAL_BAG_FRAMES
 
 local BANK_CONTAINER = BANK_CONTAINER
 local BACKPACK_CONTAINER = BACKPACK_CONTAINER
@@ -2109,6 +2112,22 @@ function B:ToggleBags(bagID)
 		else
 			B:OpenBags()
 		end
+	end
+end
+
+function B:IsAnyBagOpen()
+	for i = 0, NUM_TOTAL_BAG_FRAMES do
+		if IsBagOpen(i) then
+			return true
+		end
+	end
+end
+
+function B:ToggleAllBags()
+	if B:IsAnyBagOpen() then
+		CloseAllBags()
+	else
+		OpenAllBags()
 	end
 end
 
