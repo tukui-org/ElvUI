@@ -128,8 +128,8 @@ P.general = {
 			crafting = {
 				scale = 1,
 				position = 'TOPRIGHT',
-				xOffset = -6,
-				yOffset = 4,
+				xOffset = -23,
+				yOffset = -3,
 			},
 			mail = {
 				scale = 1,
