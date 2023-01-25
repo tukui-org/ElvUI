@@ -169,7 +169,7 @@ local function SetupCustomCurrencies()
 end
 
 local function escapeString(str, get)
-	return get == gsub(str, '|', '||') or gsub(str, '||', '|')
+	return str and (get == gsub(str, '|', '||') or gsub(str, '||', '|')) or ''
 end
 
 local function CreateDTOptions(name, data)
