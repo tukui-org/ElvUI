@@ -213,6 +213,8 @@ function B:LoadBagBar()
 	if E.Retail then
 		_G.BagsBar:SetParent(E.HiddenFrame)
 		_G.BagsBar:UnregisterAllEvents()
+
+		hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
 	end
 
 	if not E.private.bags.bagBar then return end
@@ -228,11 +230,12 @@ function B:LoadBagBar()
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
-	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagButton_OnLeave)
+
+	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
+	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
 
 	if not E.Retail then
 		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
