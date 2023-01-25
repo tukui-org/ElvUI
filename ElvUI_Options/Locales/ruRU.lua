@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["PROFESSIONS_CRAFTING"] = "Ремесло"
 L["Not Known"] = "Не изучено"
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Сущность"

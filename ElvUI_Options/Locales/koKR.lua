@@ -1,6 +1,7 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'koKR')
 
+L["PROFESSIONS_CRAFTING"] = "제작 기술"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "정수"

@@ -467,7 +467,20 @@ function M:UpdateSettings()
 			end
 		end
 
-		local mailFrame = (MinimapCluster.IndicatorFrame and MinimapCluster.IndicatorFrame.MailFrame) or _G.MiniMapMailFrame
+		local indicator = MinimapCluster.IndicatorFrame
+		if indicator.Layout ~= E.noop then
+			indicator.Layout = E.noop -- stop letting them move
+		end
+
+		local craftingFrame = indicator and indicator.CraftingOrderFrame
+		if craftingFrame then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
+			craftingFrame:ClearAllPoints()
+			craftingFrame:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(craftingFrame, scale)
+		end
+
+		local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
 		if mailFrame then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 			mailFrame:ClearAllPoints()
@@ -641,6 +654,11 @@ function M:Initialize()
 
 	if E.Retail then
 		MinimapCluster:KillEditMode()
+
+		local indicator = MinimapCluster.IndicatorFrame
+		if indicator.Layout ~= E.noop then
+			indicator.Layout = E.noop -- stop letting crafting / mail icon get moved
+		end
 
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
