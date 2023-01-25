@@ -141,7 +141,9 @@ function EM:Initialize()
 		mixin.RefreshEncounterBar = E.noop
 		mixin.RefreshReputationBar = E.noop
 
-		_G.MainStatusTrackingBarContainer.OnEditModeEnter = E.noop
+		if _G.MainStatusTrackingBarContainer then -- Ignore Experience Bar in EditMode
+			_G.MainStatusTrackingBarContainer.OnEditModeEnter = E.noop
+		end
 	end
 end
 

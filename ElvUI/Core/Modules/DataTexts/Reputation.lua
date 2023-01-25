@@ -3,8 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
+
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
+
 local NOT_APPLICABLE = NOT_APPLICABLE
 local REPUTATION = REPUTATION
 local STANDING = STANDING
