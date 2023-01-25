@@ -140,6 +140,8 @@ function EM:Initialize()
 		mixin.RefreshActionBarShown = E.noop
 		mixin.RefreshEncounterBar = E.noop
 		mixin.RefreshReputationBar = E.noop
+
+		_G.MainStatusTrackingBarContainer.OnEditModeEnter = E.noop
 	end
 end
 
