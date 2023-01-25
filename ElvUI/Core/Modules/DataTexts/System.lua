@@ -4,28 +4,30 @@ local DT = E:GetModule('DataTexts')
 local collectgarbage = collectgarbage
 local tremove, tinsert, sort, wipe, type = tremove, tinsert, sort, wipe, type
 local ipairs, pairs, floor, format, strmatch = ipairs, pairs, floor, format, strmatch
+
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAvailableBandwidth = GetAvailableBandwidth
-local GetFileStreamingStatus = GetFileStreamingStatus
 local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
-local GetDownloadedPercentage = GetDownloadedPercentage
-local SetCVar = SetCVar
 local GetCVar = GetCVar
-local ReloadUI = ReloadUI
 local GetCVarBool = GetCVarBool
+local GetDownloadedPercentage = GetDownloadedPercentage
+local GetFileStreamingStatus = GetFileStreamingStatus
 local GetFramerate = GetFramerate
 local GetNetIpTypes = GetNetIpTypes
 local GetNetStats = GetNetStats
 local GetNumAddOns = GetNumAddOns
+local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
+local IsShiftKeyDown = IsShiftKeyDown
+local ReloadUI = ReloadUI
 local ResetCPUUsage = ResetCPUUsage
+local SetCVar = SetCVar
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
-local InCombatLockdown = InCombatLockdown
+
 local UNKNOWN = UNKNOWN
 
 local statusColors = {
@@ -81,14 +83,13 @@ local function BuildAddonList()
 end
 
 local function OnClick()
-	if IsShiftKeyDown() then
-		if IsControlKeyDown() then
-			SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
-			ReloadUI()
-		else
-			collectgarbage('collect')
-			ResetCPUUsage()
-		end
+	local shiftDown, ctrlDown = IsShiftKeyDown(), IsControlKeyDown()
+	if shiftDown and ctrlDown then
+		SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
+		ReloadUI()
+	elseif shiftDown and not ctrlDown then
+		collectgarbage('collect')
+		ResetCPUUsage()
 	end
 end
 

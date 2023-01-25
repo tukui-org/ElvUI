@@ -141,6 +141,7 @@ V.skins = {
 		objectiveTracker = true,
 		obliterum = true,
 		orderhall = true,
+		perks = true,
 		petbattleui = true,
 		petition = true,
 		playerChoice = true,

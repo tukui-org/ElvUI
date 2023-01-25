@@ -14,6 +14,7 @@ local ITEM_LEVEL_ABBR = ITEM_LEVEL_ABBR
 local GMSURVEYRATING3 = GMSURVEYRATING3
 local STAT_AVERAGE_ITEM_LEVEL = STAT_AVERAGE_ITEM_LEVEL
 local LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT = LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT
+local NOT_APPLICABLE = NOT_APPLICABLE
 
 local sameString = '%s: %s%0.2f|r'
 local bothString = '%s: %s%0.2f|r / %s%0.2f|r'
@@ -38,7 +39,7 @@ local function OnEvent(self)
 
 		self.text:SetFormattedText(avg == avgEquipped and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped or 0, hex, avg or 0)
 	else
-		self.text:SetText('N/A')
+		self.text:SetText(NOT_APPLICABLE)
 	end
 end
 

@@ -554,7 +554,7 @@ do
 			E.db.actionbar['bar'..i][option] = value
 		end
 
-		if E.Retail then
+		if not E.Classic then
 			for i = 13, 15 do
 				E.db.actionbar['bar'..i][option] = value
 			end
@@ -1703,7 +1703,7 @@ function AB:Initialize()
 		AB:CreateBar(i)
 	end
 
-	if E.Retail then
+	if not E.Classic then
 		for i = 13, 15 do
 			AB:CreateBar(i)
 		end

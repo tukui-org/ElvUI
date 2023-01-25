@@ -6,8 +6,8 @@ local select, wipe = select, wipe
 local format, strjoin = format, strjoin
 
 local GetItemInfo = GetItemInfo
-local GetItemInfoInstant = GetItemInfoInstant
 local GetItemCount = GetItemCount
+local GetItemInfoInstant = GetItemInfoInstant
 local GetContainerItemID = GetContainerItemID
 local GetInventoryItemCount = GetInventoryItemCount
 local GetInventoryItemID = GetInventoryItemID
@@ -15,6 +15,8 @@ local ContainerIDToInventoryID = ContainerIDToInventoryID
 local GetContainerNumSlots = GetContainerNumSlots
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetItemQualityColor = GetItemQualityColor
+local ToggleAllBags = ToggleAllBags
+
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local INVTYPE_AMMO = INVTYPE_AMMO
@@ -139,7 +141,7 @@ local function OnClick(_, btn)
 				end
 			end
 		else
-			_G.ToggleAllBags()
+			ToggleAllBags()
 		end
 	end
 end

@@ -109,6 +109,10 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 
 tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = _G.ToggleHelpFrame })
 
+for _, menu in ipairs(menuList) do
+	menu.notCheckable = true
+end
+
 M.RightClickMenu = menuFrame
 M.RightClickMenuList = menuList
 
@@ -463,7 +467,7 @@ function M:UpdateSettings()
 			end
 		end
 
-		local mailFrame = MinimapCluster.MailFrame or _G.MiniMapMailFrame
+		local mailFrame = (MinimapCluster.IndicatorFrame and MinimapCluster.IndicatorFrame.MailFrame) or _G.MiniMapMailFrame
 		if mailFrame then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 			mailFrame:ClearAllPoints()

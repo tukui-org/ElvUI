@@ -5,6 +5,8 @@ local _G = _G
 local strjoin = strjoin
 local InCombatLockdown = InCombatLockdown
 
+local NOT_APPLICABLE = NOT_APPLICABLE
+
 local displayString = ''
 local inRestrictedArea = false
 local mapInfo = E.MapInfo
@@ -26,7 +28,7 @@ local function OnEvent(self)
 		self.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
 	else
 		inRestrictedArea = true
-		self.text:SetText('N/A')
+		self.text:SetText(NOT_APPLICABLE)
 	end
 end
 

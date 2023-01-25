@@ -208,6 +208,7 @@ do
 		'ElvUI_QuestXP',
 		'ElvUI_UnitFramePlugin',
 		'ElvUI_VisualAuraTimers',
+		'ElvUI_SecondsToBuff',
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then

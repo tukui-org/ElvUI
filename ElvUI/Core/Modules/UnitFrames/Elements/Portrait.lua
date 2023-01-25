@@ -29,7 +29,7 @@ function UF:Construct_Portrait(frame, which)
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		backdrop:SetOutside(portrait)
 		backdrop:SetFrameLevel(frame:GetFrameLevel())
-		backdrop:SetTemplate()
+		backdrop:SetTemplate(nil, nil, nil, nil, true)
 		portrait.backdrop = backdrop
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)

@@ -210,6 +210,11 @@ function B:BagButton_UpdateTextures()
 end
 
 function B:LoadBagBar()
+	if E.Retail then
+		_G.BagsBar:SetParent(E.HiddenFrame)
+		_G.BagsBar:UnregisterAllEvents()
+	end
+
 	if not E.private.bags.bagBar then return end
 
 	B.BagBar = CreateFrame('Frame', 'ElvUIBagBar', E.UIParent)
@@ -223,13 +228,17 @@ function B:LoadBagBar()
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
-	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagButton_OnLeave)
 
-	if not E.Retail then
+	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
+	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
+
+	if E.Retail then
+		hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
+		hooksecurefunc(_G.MainMenuBarBagManager, 'OnExpandBarChanged', B.SizeAndPositionBagBar)
+	else
 		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
 	end
 

@@ -131,10 +131,12 @@ function B:HandleWidgets()
 		end
 	end
 
-	_G.DurabilityFrame:SetFrameStrata('HIGH')
-	local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
-	B:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', 'CENTER', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
-	B:UpdateDurabilityScale()
+	if not E.Retail then
+		_G.DurabilityFrame:SetFrameStrata('HIGH')
+		local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
+		B:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', 'CENTER', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
+		B:UpdateDurabilityScale()
+	end
 
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)
