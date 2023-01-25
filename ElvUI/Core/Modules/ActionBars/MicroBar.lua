@@ -354,14 +354,8 @@ function AB:SetupMicroBar()
 
 	AB:SecureHook('UpdateMicroButtons')
 
-	--[[ Fix me 10.0.5 -- See below if its correct?
-		AB:SecureHook('UpdateMicroButtonsParent')
-		UpdateMicroButtonsParent(microBar)
-
-		also, dont do it for classic
-	]]
-	if ResetMicroMenuPosition then
-		ResetMicroMenuPosition()
+	if _G.ResetMicroMenuPosition then
+		_G.ResetMicroMenuPosition()
 	else
 		AB:SecureHook('UpdateMicroButtonsParent')
 		UpdateMicroButtonsParent(microBar)
