@@ -215,6 +215,7 @@ function B:LoadBagBar()
 		_G.BagsBar:UnregisterAllEvents()
 
 		hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
+		hooksecurefunc(_G.MainMenuBarBagManager, 'OnExpandBarChanged', B.SizeAndPositionBagBar)
 	end
 
 	if not E.private.bags.bagBar then return end
