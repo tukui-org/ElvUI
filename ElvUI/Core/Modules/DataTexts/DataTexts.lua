@@ -275,7 +275,7 @@ function DT:BuildPanelFunctions(name, obj)
 end
 
 function DT:SetupObjectLDB(name, obj)
-	if obj.type == "data source" or obj.type == "launcher" then
+	if obj.type == 'data source' or obj.type == 'launcher' then
 		local ldbName = 'LDB_'..name
 		if DT.RegisteredDataTexts[ldbName] then return end
 
