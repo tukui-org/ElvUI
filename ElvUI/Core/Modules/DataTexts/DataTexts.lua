@@ -202,7 +202,7 @@ function DT:BuildPanelFrame(name, fromInit)
 end
 
 function DT:BuildPanelFunctions(name, obj)
-	local hex, text = '|cffFFFFFF'
+	local text, hex
 
 	local function OnEnter(dt)
 		if obj.tooltip then
@@ -238,28 +238,30 @@ function DT:BuildPanelFunctions(name, obj)
 
 	local function UpdateText(_, _, _, _, data)
 		local db = E.global.datatexts.settings['LDB_'..name]
+		local icon = db.icon and data.icon
+		local label = db.label and data.label
+		local value = db.text and data.text
+
 		local str = ''
-
-		if db.icon and data.icon then
-			str = format(iconString, data.icon)
+		if icon then
+			str = format(iconString, icon)
 		end
 
-		if db.label and data.label then
-			str = str .. (db.icon and ' ' or '') .. (db.customLabel ~= '' and db.customLabel or data.label)
+		if label then
+			str = str .. (icon and ' ' or '') .. (db.customLabel ~= '' and db.customLabel or label)
 		end
 
-		if db.text and data.text then
-			str = str .. (db.label and ': ' or '') .. (hex .. data.text .. '|r')
+		if value then
+			local color = (db.useValueColor and hex) or '|cFFFFFFFF'
+			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
 		end
 
 		text:SetText(str)
 	end
 
 	local function UpdateColor(_, Hex)
-		if name and obj then
-			hex = Hex
-			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
-		end
+		hex = Hex
+		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
 	end
 
 	local function OnEvent(dt)
@@ -280,7 +282,9 @@ function DT:SetupObjectLDB(name, obj)
 	local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
 	data.isLibDataBroker = true
 
-	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or { customLabel = '', label = false, text = true, icon = false }
+	local defaults = { customLabel = '', label = false, text = true, icon = false, useValueColor = false }
+	G.datatexts.settings[ldbName] = defaults
+	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or E:CopyTable({}, defaults)
 
 	if self ~= DT then -- This checks to see if we are calling it or the callback.
 		DT:UpdateQuickDT()

@@ -467,7 +467,7 @@ function M:UpdateSettings()
 			end
 		end
 
-		local mailFrame = MinimapCluster.MailFrame or _G.MiniMapMailFrame
+		local mailFrame = (MinimapCluster.IndicatorFrame and MinimapCluster.IndicatorFrame.MailFrame) or _G.MiniMapMailFrame
 		if mailFrame then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 			mailFrame:ClearAllPoints()

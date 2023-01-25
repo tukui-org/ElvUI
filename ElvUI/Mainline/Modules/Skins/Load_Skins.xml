@@ -103,4 +103,5 @@
 	<Script file='WorldMap.lua'/>
 
 	<!-- DF new ones -->
+	<Script file='PerksProgram.lua'/>
 </Ui>
