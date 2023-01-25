@@ -9,7 +9,6 @@ local format, strjoin, tinsert = format, strjoin, tinsert
 local EasyMenu = EasyMenu
 local GetMoney = GetMoney
 local IsLoggedIn = IsLoggedIn
-local ToggleAllBags = ToggleAllBags
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -154,7 +153,7 @@ local function Click(self, btn)
 			Spent = 0
 		end
 	else
-		ToggleAllBags()
+		E:DelayScriptCall('0 /run ToggleAllBags()')
 	end
 end
 

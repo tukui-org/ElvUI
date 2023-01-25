@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local strjoin = strjoin
-local ToggleAllBags = ToggleAllBags
+
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
@@ -47,7 +47,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	ToggleAllBags()
+	E:DelayScriptCall('0 /run ToggleAllBags()')
 end
 
 local function OnEnter()
