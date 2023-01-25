@@ -210,6 +210,11 @@ function B:BagButton_UpdateTextures()
 end
 
 function B:LoadBagBar()
+	if E.Retail then
+		_G.BagsBar:SetParent(E.HiddenFrame)
+		_G.BagsBar:UnregisterAllEvents()
+	end
+
 	if not E.private.bags.bagBar then return end
 
 	B.BagBar = CreateFrame('Frame', 'ElvUIBagBar', E.UIParent)
