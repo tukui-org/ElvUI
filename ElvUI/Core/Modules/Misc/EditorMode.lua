@@ -139,6 +139,7 @@ function EM:Initialize()
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop
 		mixin.RefreshEncounterBar = E.noop
+		mixin.RefreshReputationBar = E.noop
 	end
 end
 
