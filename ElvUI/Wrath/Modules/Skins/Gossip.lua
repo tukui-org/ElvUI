@@ -36,6 +36,13 @@ local function ReplaceGossipText(button, text)
 	end
 end
 
+local function createParchment(frame)
+    local tex = frame:CreateTexture(nil, "ARTWORK")
+    tex:SetTexture([[Interface\QuestFrame\QuestBG]])
+    tex:SetTexCoord(0, 0.586, 0.02, 0.655)
+    return tex
+end
+
 function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
@@ -52,6 +59,17 @@ function S:GossipFrame()
 	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
 	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 80)
 
+	S:HandleCloseButton(ItemTextCloseButton)
+
+	ItemTextFrame:StripTextures()
+	ItemTextFrame:CreateBackdrop()
+	ItemTextFrame.backdrop:ClearAllPoints()
+	ItemTextFrame.backdrop:Point('TOPLEFT', ItemTextFrame, 5, -10)
+	ItemTextFrame.backdrop:Point('BOTTOMRIGHT', ItemTextFrame, -25, 45)
+
+	ItemTextScrollFrame:DisableDrawLayer("ARTWORK")
+	ItemTextScrollFrame:DisableDrawLayer("BACKGROUND")
+
 	GossipFrame.backdrop:ClearAllPoints()
 	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
 	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 40, 40)
@@ -60,17 +78,17 @@ function S:GossipFrame()
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
 
 	if not E.private.skins.parchmentRemoverEnable then
-		_G.ItemTextFrame:StripTextures()
 
-		local spellTex = GreetingPanel:CreateTexture(nil, 'ARTWORK')
-		spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		spellTex:SetTexCoord(0, 0.586, 0.02, 0.655)
+		local spellTex = createParchment(GreetingPanel)
 		spellTex:SetInside(GreetingPanel.backdrop)
-
 		GreetingPanel.spellTex = spellTex
+	
+		local itemTex = createParchment(ItemTextFrame)
+		itemTex:SetInside(ItemTextScrollFrame, -5)
+		ItemTextFrame.itemTex = itemTex
+	
 	else
 		_G.QuestFont:SetTextColor(1, 1, 1)
-		_G.ItemTextFrame:StripTextures(true)
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
@@ -98,9 +116,6 @@ function S:GossipFrame()
 			GossipFrame.Background:Hide()
 		end
 	end
-
-	_G.ItemTextFrame:SetTemplate('Transparent')
-	_G.ItemTextScrollFrame:StripTextures()
 end
 
 S:AddCallback('GossipFrame')
