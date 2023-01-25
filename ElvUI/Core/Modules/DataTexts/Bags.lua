@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
-local B = E:GetModule('Bags')
 
+local _G = _G
 local format = format
 local strjoin = strjoin
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -47,7 +47,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	B:ToggleAllBags()
+	_G.ToggleAllBags()
 end
 
 local function OnEnter()
