@@ -153,7 +153,7 @@ local function Click(self, btn)
 			Spent = 0
 		end
 	else
-		E:DelayScriptCall('0 /run ToggleAllBags()')
+		ToggleAllBags()
 	end
 end
 

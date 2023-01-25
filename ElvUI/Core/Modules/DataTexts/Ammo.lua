@@ -140,7 +140,7 @@ local function OnClick(_, btn)
 				end
 			end
 		else
-			E:DelayScriptCall('0 /run ToggleAllBags()')
+			ToggleAllBags()
 		end
 	end
 end

@@ -47,7 +47,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	E:DelayScriptCall('0 /run ToggleAllBags()')
+	ToggleAllBags()
 end
 
 local function OnEnter()
