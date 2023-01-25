@@ -468,10 +468,6 @@ function M:UpdateSettings()
 		end
 
 		local indicator = MinimapCluster.IndicatorFrame
-		if indicator.Layout ~= E.noop then
-			indicator.Layout = E.noop -- stop letting them move
-		end
-
 		local craftingFrame = indicator and indicator.CraftingOrderFrame
 		if craftingFrame then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
