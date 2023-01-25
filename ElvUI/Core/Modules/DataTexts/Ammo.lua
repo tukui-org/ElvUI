@@ -15,6 +15,7 @@ local ContainerIDToInventoryID = ContainerIDToInventoryID
 local GetContainerNumSlots = GetContainerNumSlots
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetItemQualityColor = GetItemQualityColor
+local ToggleAllBags = ToggleAllBags
 
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
@@ -140,7 +141,7 @@ local function OnClick(_, btn)
 				end
 			end
 		else
-			_G.ToggleAllBags()
+			ToggleAllBags()
 		end
 	end
 end
