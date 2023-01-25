@@ -1266,7 +1266,7 @@ function B:OnEvent(event, ...)
 			B:DelayedContainer(self, event, bagID)
 
 			-- BAG_UPDATE_DELAYED doesn't fire on all bags on Wrath (it does for bag 0)?
-			if E.Wrath and bagID ~= 0 then
+			if not E.Classic and bagID ~= 0 then
 				B.DelayedNoEvent:Show()
 				B.DelayedNoEvent.elapsed = 0
 			end
