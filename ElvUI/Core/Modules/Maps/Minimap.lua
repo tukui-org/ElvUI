@@ -34,6 +34,8 @@ local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
 local Minimap = _G.Minimap
 
+local IndicatorLayout
+
 -- GLOBALS: GetMinimapShape
 
 --Create the minimap micro menu
@@ -363,6 +365,25 @@ function M:UpdateSettings()
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
+	local indicator = MinimapCluster.IndicatorFrame
+	if indicator then
+		-- save original indicator layout function
+		if not IndicatorLayout then
+			IndicatorLayout = indicator.Layout
+		end
+
+		-- use this to prevent no cluster mode moving mail icon
+		local layoutCall = (noCluster and E.noop) or IndicatorLayout
+		if indicator.Layout ~= layoutCall then
+			indicator.Layout = layoutCall
+
+			-- let it update once because we changed the setting back to cluster
+			if layoutCall == IndicatorLayout then
+				layoutCall()
+			end
+		end
+	end
+
 	-- silly little hack to get the canvas to update
 	if E.MinimapSize ~= M.NeedsCanvasUpdate then
 		local zoom = Minimap:GetZoom()
@@ -467,7 +488,6 @@ function M:UpdateSettings()
 			end
 		end
 
-		local indicator = MinimapCluster.IndicatorFrame
 		local craftingFrame = indicator and indicator.CraftingOrderFrame
 		if craftingFrame then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
@@ -650,11 +670,6 @@ function M:Initialize()
 
 	if E.Retail then
 		MinimapCluster:KillEditMode()
-
-		local indicator = MinimapCluster.IndicatorFrame
-		if indicator.Layout ~= E.noop then
-			indicator.Layout = E.noop -- stop letting crafting / mail icon get moved
-		end
 
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
