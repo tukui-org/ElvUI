@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
+L["PROFESSIONS_CRAFTING"] = "Handwerk"
 L["Not Known"] = "Nicht bekannt"
 L["Quiver / Ammo"] = "Köcher / Munition"
 L["POWER_TYPE_ESSENCE"] = "Essenz"

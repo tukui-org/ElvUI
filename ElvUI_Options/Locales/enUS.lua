@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
+L["PROFESSIONS_CRAFTING"] = "Crafting"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essence"

@@ -1,6 +1,7 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["PROFESSIONS_CRAFTING"] = "Crafting"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = true

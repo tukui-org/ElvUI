@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["PROFESSIONS_CRAFTING"] = "Fabricación"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Esencia"
