@@ -286,8 +286,7 @@ function DT:SetupObjectLDB(name, obj)
 		if not obj.label then obj.label = name end
 
 		local defaults = { customLabel = '', label = obj.type == 'launcher', text = obj.type == 'data source', icon = false, useValueColor = false }
-		G.datatexts.settings[ldbName] = defaults
-		E.global.datatexts.settings[ldbName] = E:CopyTable(E.global.datatexts.settings[ldbName], defaults)
+		E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or E:CopyTable({}, defaults)
 
 		if self ~= DT then -- This checks to see if we are calling it or the callback.
 			DT:UpdateQuickDT()
