@@ -596,14 +596,16 @@ do
 	end
 end
 
-function E:CopyTable(current, default)
+function E:CopyTable(current, default, merge)
 	if type(current) ~= 'table' then
 		current = {}
 	end
 
 	if type(default) == 'table' then
 		for option, value in pairs(default) do
-			current[option] = (type(value) == 'table' and E:CopyTable(current[option], value)) or value
+			if not merge or current[option] == nil then
+				current[option] = (type(value) == 'table' and E:CopyTable(current[option], value, merge)) or value
+			end
 		end
 	end
 

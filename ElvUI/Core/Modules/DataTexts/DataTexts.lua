@@ -284,9 +284,11 @@ function DT:SetupObjectLDB(name, obj)
 		data.isLibDataBroker = true
 
 		if not obj.label then obj.label = name end
-		if not E.global.datatexts.settings[ldbName] then
-			E.global.datatexts.settings[ldbName] = { customLabel = '', label = obj.type == 'launcher', text = obj.type == 'data source', icon = false, useValueColor = false }
-		end
+
+		local defaults = { customLabel = '', label = obj.type == 'launcher', text = obj.type == 'data source', icon = false, useValueColor = false }
+
+		G.datatexts.settings[ldbName] = defaults
+		E.global.datatexts.settings[ldbName] = E:CopyTable(E.global.datatexts.settings[ldbName], defaults, true)
 
 		if self ~= DT then -- This checks to see if we are calling it or the callback.
 			DT:UpdateQuickDT()
