@@ -169,7 +169,7 @@ local function SetupCustomCurrencies()
 end
 
 local function escapeString(str, get)
-	return get == gsub(str, '|', '||') or gsub(str, '||', '|')
+	return str and (get == gsub(str, '|', '||') or gsub(str, '||', '|')) or ''
 end
 
 local function CreateDTOptions(name, data)
@@ -186,6 +186,7 @@ local function CreateDTOptions(name, data)
 		optionTable.args.label = ACH:Toggle(L["Show Label"], nil, 3)
 		optionTable.args.text = ACH:Toggle(L["Show Text"], nil, 4)
 		optionTable.args.icon = ACH:Toggle(L["Show Icon"], nil, 5)
+		optionTable.args.useValueColor = ACH:Toggle(L["Use Value Color"], nil, 6)
 	else
 		for key in pairs(settings) do
 			if key == 'Label' then

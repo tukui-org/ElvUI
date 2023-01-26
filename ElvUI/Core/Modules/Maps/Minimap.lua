@@ -34,6 +34,8 @@ local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
 local Minimap = _G.Minimap
 
+local IndicatorLayout
+
 -- GLOBALS: GetMinimapShape
 
 --Create the minimap micro menu
@@ -363,6 +365,25 @@ function M:UpdateSettings()
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
+	local indicator = MinimapCluster.IndicatorFrame
+	if indicator then
+		-- save original indicator layout function
+		if not IndicatorLayout then
+			IndicatorLayout = indicator.Layout
+		end
+
+		-- use this to prevent no cluster mode moving mail icon
+		local layoutCall = (noCluster and E.noop) or IndicatorLayout
+		if indicator.Layout ~= layoutCall then
+			indicator.Layout = layoutCall
+
+			-- let it update once because we changed the setting back to cluster
+			if layoutCall == IndicatorLayout then
+				layoutCall()
+			end
+		end
+	end
+
 	-- silly little hack to get the canvas to update
 	if E.MinimapSize ~= M.NeedsCanvasUpdate then
 		local zoom = Minimap:GetZoom()
@@ -467,7 +488,15 @@ function M:UpdateSettings()
 			end
 		end
 
-		local mailFrame = (MinimapCluster.IndicatorFrame and MinimapCluster.IndicatorFrame.MailFrame) or _G.MiniMapMailFrame
+		local craftingFrame = indicator and indicator.CraftingOrderFrame
+		if craftingFrame then
+			local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
+			craftingFrame:ClearAllPoints()
+			craftingFrame:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(craftingFrame, scale)
+		end
+
+		local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
 		if mailFrame then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 			mailFrame:ClearAllPoints()

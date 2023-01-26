@@ -366,6 +366,8 @@ function B:SearchClear()
 
 	B.BankFrame.editBox:SetText('')
 	B.BankFrame.editBox:ClearFocus()
+
+	SetItemSearch('')
 end
 
 function B:UpdateItemDisplay()
@@ -1263,8 +1265,8 @@ function B:OnEvent(event, ...)
 			local bagID = ...
 			B:DelayedContainer(self, event, bagID)
 
-			-- BAG_UPDATE_DELAYED doesn't fire on all bags on Wrath (it does for bag 0)?
-			if E.Wrath and bagID ~= 0 then
+			-- BAG_UPDATE_DELAYED doesn't fire on all bags on Wrath or Retail 10.0.5 (it does for bag 0)?
+			if not E.Classic and bagID ~= 0 then
 				B.DelayedNoEvent:Show()
 				B.DelayedNoEvent.elapsed = 0
 			end

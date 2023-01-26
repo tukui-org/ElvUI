@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
+L["PROFESSIONS_CRAFTING"] = "製作"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "龍能"

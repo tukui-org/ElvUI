@@ -1,6 +1,7 @@
 -- Italian localization file for itIT.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'itIT')
 
+L["PROFESSIONS_CRAFTING"] = "Artigianato"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essenza"

@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
 
+L["PROFESSIONS_CRAFTING"] = "Artisanat"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essence"

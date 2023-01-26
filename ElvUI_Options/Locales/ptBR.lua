@@ -1,6 +1,7 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["PROFESSIONS_CRAFTING"] = "Criação"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essência"

@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["PROFESSIONS_CRAFTING"] = "制造"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "精华"
