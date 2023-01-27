@@ -623,7 +623,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 
 		local BoE, BoU = bindType == 2, bindType == 3
-		if B.db.showBindType and not slot.isBound and (BoE or BoU) and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+		if B.db.showBindType and not slot.isBound and (BoE or BoU) then
 			slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 		end
 
@@ -1374,8 +1374,8 @@ function B:GetGrays(vendor)
 			if itemLink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 
-				if rarity and rarity == 0 -- grays :o
-				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
+				if rarity and rarity == 0 and bindType == 0 -- non binding type grays
+				and not (classID == 12 or bindType == 4) -- Quest can be classID:12 or bindType:4
 				and (not E.Retail or not IsCosmeticItem(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
