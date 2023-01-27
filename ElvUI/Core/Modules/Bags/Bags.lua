@@ -28,7 +28,6 @@ local GetKeyRingSize = GetKeyRingSize
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
 local hooksecurefunc = hooksecurefunc
-local IsCosmeticItem = IsCosmeticItem
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local PlaySound = PlaySound
@@ -55,6 +54,7 @@ local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
+local C_TransmogCollection_GetItemInfo = C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
@@ -1376,7 +1376,7 @@ function B:GetGrays(vendor)
 
 				if rarity and rarity == 0 -- grays :o
 				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
-				and (not E.Retail or (IsCosmeticItem(itemLink) and C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink))) then -- skip transmogable items
+				and (not E.Retail or not C_TransmogCollection_GetItemInfo(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
 
