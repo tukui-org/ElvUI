@@ -623,7 +623,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 
 		local BoE, BoU = bindType == 2, bindType == 3
-		if B.db.showBindType and not slot.isBound and (BoE or BoU) and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+		if B.db.showBindType and not slot.isBound and (BoE or BoU) then
 			slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
 		end
 
