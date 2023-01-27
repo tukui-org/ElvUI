@@ -776,7 +776,6 @@ P.nameplates = {
 	},
 	visibility = {
 		showAll = true,
-		showOnlyNames = false,
 		enemy = {
 			guardians = false,
 			minions = false,
