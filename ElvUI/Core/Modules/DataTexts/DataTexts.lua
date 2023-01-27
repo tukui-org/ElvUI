@@ -202,7 +202,7 @@ function DT:BuildPanelFrame(name, fromInit)
 end
 
 function DT:BuildPanelFunctions(name, obj)
-	local text, hex
+	local panel, hex
 
 	local function OnEnter(dt)
 		if obj.tooltip then
@@ -243,12 +243,9 @@ function DT:BuildPanelFunctions(name, obj)
 		local value = db.text and data.text
 
 		local str = ''
-		if icon then
-			str = format(iconString, icon)
-		end
 
 		if label then
-			str = str .. (icon and ' ' or '') .. (db.customLabel ~= '' and db.customLabel or label)
+			str = (db.customLabel ~= '' and db.customLabel or label)
 		end
 
 		if value then
@@ -256,18 +253,20 @@ function DT:BuildPanelFunctions(name, obj)
 			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
 		end
 
-		text:SetText(str)
+		panel.text:SetText(str)
+		panel.icon:SetTexture(icon)
+		panel.icon:SetTexCoord(unpack(data.iconCoords or E.TexCoords))
 	end
 
 	local function UpdateColor(_, Hex)
 		hex = Hex
-		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
+		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
 	end
 
 	local function OnEvent(dt)
-		text = dt.text
-		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
-		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
+		panel = dt
+
+		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name, UpdateText)
 		UpdateColor(dt, hex)
 	end
 
@@ -494,9 +493,17 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt:RegisterForClicks('AnyUp')
 
 			local text = dt:CreateFontString(nil, 'ARTWORK')
-			text:SetAllPoints()
+			text:SetPoint('CENTER')
 			text:SetJustifyV('MIDDLE')
 			dt.text = text
+
+			local icon = dt:CreateTexture(nil, 'ARTWORK')
+			icon:Point('RIGHT', text, 'LEFT', -2, 0)
+			icon:Size(height - 2)
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			dt.icon = icon
+
 			DT.FontStrings[text] = true
 
 			panel.dataPanels[i] = dt
@@ -547,6 +554,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
+
+		dt.icon:SetTexture(0)
 
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
