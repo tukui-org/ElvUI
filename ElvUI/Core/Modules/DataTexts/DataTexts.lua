@@ -263,11 +263,14 @@ function DT:BuildPanelFunctions(name, obj)
 		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
 	end
 
-	local function OnEvent(dt)
-		panel = dt
-
-		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name, UpdateText)
-		UpdateColor(dt, hex)
+	local function OnEvent(dt, event)
+		if event == 'ELVUI_REMOVE' then
+			LDB:UnregisterCallback('LibDataBroker_AttributeChanged_'..name)
+		else
+			panel = dt
+			LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name, UpdateText)
+			UpdateColor(dt, hex)
+		end
 	end
 
 	return OnEvent, OnClick, OnEnter, OnLeave, UpdateColor, UpdateText
@@ -364,7 +367,7 @@ function DT:GetPanelSettings(name)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
-	dt.name = data.name or '' -- This is needed for Custom Currencies
+	dt.name = data.name -- This is used by Custom Currencies
 
 	if data.events then
 		for _, ev in pairs(data.events) do
@@ -498,7 +501,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.text = text
 
 			local icon = dt:CreateTexture(nil, 'ARTWORK')
-			icon:Point('RIGHT', text, 'LEFT', -2, 0)
+			icon:Point('RIGHT', text, 'LEFT', -4, 0)
 			icon:Size(height - 2)
 			icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -522,6 +525,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
+		local assigned = DT.AssignedDatatexts[dt]
+
 		dt:SetShown(i <= numPoints)
 		dt:SetSize(width, height)
 		dt:ClearAllPoints()
@@ -542,13 +547,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.battleStats = battlePanel
 		dt.db = db
 		dt.watchModKey = nil
+		dt.name = nil
 
 		E:StopFlash(dt)
-
-		if dt.objectEvent and dt.objectEventFunc then
-			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
-			dt.objectEvent, dt.objectEventFunc = nil, nil
-		end
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
@@ -557,13 +558,23 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		dt.icon:SetTexture(E.ClearTexture)
 
+		if dt.objectEvent and dt.objectEventFunc then
+			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
+			dt.objectEvent, dt.objectEventFunc = nil, nil
+		end
+
+		if assigned and assigned.eventFunc then
+			assigned.eventFunc(dt, 'ELVUI_REMOVE')
+		end
+
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
 			if E.Retail then tinsert(dt.MouseEnters, DT.HoverBattleStats) end
 		else
-			local assigned = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
-			DT.AssignedDatatexts[dt] = assigned
-			if assigned then DT:AssignPanelToDataText(dt, assigned, ...) end
+			local data = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
+
+			DT.AssignedDatatexts[dt] = data
+			if data then DT:AssignPanelToDataText(dt, data, ...) end
 		end
 	end
 end
