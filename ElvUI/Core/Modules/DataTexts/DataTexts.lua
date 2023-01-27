@@ -563,7 +563,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.objectEvent, dt.objectEventFunc = nil, nil
 		end
 
-		if assigned and assigned.eventFunc then
+		if assigned and assigned.isLibDataBroker and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
 		end
 
