@@ -869,7 +869,8 @@ function NP:SetNamePlateSizes()
 end
 
 function NP:ShowOnlyNames()
-	if not NP.db.visiblity.showOnlyNames then return end
+	local db = E.db.nameplates
+	if db and db.visibility and not db.visibility.showOnlyNames then return end
 
 	-- 10.0.5 replacement for CVar showOnlyNames
 
