@@ -245,7 +245,7 @@ function DT:BuildPanelFunctions(name, obj)
 		local str = ''
 
 		if label then
-			str = (db.customLabel ~= '' and db.customLabel or label)
+			str = (db.customLabel ~= '' and db.customLabel) or label
 		end
 
 		if value then
