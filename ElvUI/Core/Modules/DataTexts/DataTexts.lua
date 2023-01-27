@@ -555,7 +555,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
 
-		dt.icon:SetTexture(0)
+		dt.icon:SetTexture(E.ClearTexture)
 
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
