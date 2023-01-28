@@ -1383,11 +1383,7 @@ function E:DBConvertDF()
 	local currency = E.global.datatexts.customCurrencies
 	if currency then
 		for id, data in next, E.global.datatexts.customCurrencies do
-			local info = {}
-			if data.NAME then info.name = data.NAME end
-			if data.SHOW_MAX then info.showMax = data.SHOW_MAX end
-			if data.DISPLAY_IN_MAIN_TOOLTIP then info.currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP end
-			if data.DISPLAY_STYLE then info.nameStyle = find(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or find(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none' end
+			local info = { name = data.NAME, showMax = data.SHOW_MAX, currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP, nameStyle = data.DISPLAY_STYLE and (find(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or find(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none') or nil }
 			if next(info) then
 				E.global.datatexts.customCurrencies[id] = info
 			end
