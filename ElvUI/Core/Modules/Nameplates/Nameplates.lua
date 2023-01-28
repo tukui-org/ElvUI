@@ -8,7 +8,9 @@ local select, strsplit, tostring = select, strsplit, tostring
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
+local C_CVar = C_CVar
 local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
 local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
@@ -44,6 +46,9 @@ local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySiz
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local hooksecurefunc = hooksecurefunc
+
+local TableUtil_TrySet = TableUtil.TrySet
+
 
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}
@@ -863,6 +868,25 @@ function NP:SetNamePlateSizes()
 	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
 end
 
+function NP:ShowOnlyNames()
+	local db = E.db.nameplates
+	if db and db.visibility and not db.visibility.showOnlyNames then return end
+
+	-- 10.0.5 replacement for CVar showOnlyNames
+
+	C_CVar.RegisterCVar('nameplateShowOnlyNames')
+	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
+		if GetCVarBool("nameplateShowOnlyNames") then
+			TableUtil_TrySet(_G.DefaultCompactNamePlateFrameSetUpOptions, 'hideHealthbar')
+			TableUtil_TrySet(_G.DefaultCompactNamePlateFrameSetUpOptions, 'hideCastbar')
+			TableUtil_TrySet(_G.DefaultCompactNamePlateFriendlyFrameOptions, 'hideHealthbar')
+			TableUtil_TrySet(_G.DefaultCompactNamePlateFriendlyFrameOptions, 'hideCastbar')
+			TableUtil_TrySet(_G.DefaultCompactNamePlateEnemyFrameOptions, 'hideHealthbar')
+			TableUtil_TrySet(_G.DefaultCompactNamePlateEnemyFrameOptions, 'hideCastbar')
+		end
+	end)
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -902,6 +926,8 @@ function NP:Initialize()
 				frame.classNamePlatePowerBar:UnregisterAllEvents()
 			end
 		end)
+
+		NP:ShowOnlyNames()
 	end
 
 	ElvUF:Spawn('player', 'ElvNP_Player', '')
