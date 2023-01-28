@@ -861,7 +861,13 @@ function NP:SetNamePlateSizes()
 	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiscale, NP.db.plateSize.enemyHeight * E.uiscale)
 	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
+end
 
+function NP:ShowOnlyNames()
+	local db = E.db.nameplates
+	if db and db.visibility and not db.visibility.nameplateShowOnlyNames then return end
+
+	-- 10.0.5 replacement for CVar showOnlyNames
 	SetCVar("nameplateShowOnlyNames", NP.db.visibility.nameplateShowOnlyNames and '1' or '0')
 end
 
@@ -877,6 +883,8 @@ function NP:Initialize()
 
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
+
+	NP:ShowOnlyNames()
 
 	NP.Plates = {}
 	NP.PlateGUID = {}
