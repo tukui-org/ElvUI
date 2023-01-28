@@ -265,10 +265,10 @@ function DT:BuildPanelFunctions(name, obj)
 
 	local function OnEvent(dt, event)
 		if event == 'ELVUI_REMOVE' then
-			LDB:UnregisterCallback('LibDataBroker_AttributeChanged_'..name)
+			LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
 		else
 			panel = dt
-			LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name, UpdateText)
+			LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
 			UpdateColor(dt, hex)
 		end
 	end
