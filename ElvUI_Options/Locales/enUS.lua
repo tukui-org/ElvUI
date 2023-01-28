@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
+L["PROFESSIONS_CRAFTING"] = "Crafting"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essence"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = true
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = true
-L["Icon Only"] = true
 L["Icon Position"] = true
 L["Icon Size"] = true
 L["Icon Width"] = true

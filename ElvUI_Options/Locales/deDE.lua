@@ -1,6 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
+L["PROFESSIONS_CRAFTING"] = "Handwerk"
 L["Not Known"] = "Nicht bekannt"
 L["Quiver / Ammo"] = "Köcher / Munition"
 L["POWER_TYPE_ESSENCE"] = "Essenz"
@@ -767,7 +768,6 @@ L["Icon: TOP"] = "Symbol: OBEN"
 L["Icon: TOPLEFT"] = "Symbol: OBENLINKS"
 L["Icon: TOPRIGHT"] = "Symbol: OBENRECHTS"
 L["Icon"] = "Symbol"
-L["Icon Only"] = "Nur Symbole"
 L["Icons and Text (Short)"] = "Symbole und Text (Kurz)"
 L["Icons and Text"] = "Symbole und Text"
 L["If enabled then it checks if auras are missing instead of being present on the unit."] = "Wenn aktiviert, wird überprüft ob Auren fehlen anstatt vorhanden zu sein auf der Einheit."

@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["PROFESSIONS_CRAFTING"] = "Fabricación"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Esencia"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "Cursor Sobre Hipervínculo"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = true
-L["Icon Only"] = true
 L["Icon Position"] = true
 L["Icon Size"] = true
 L["Icon Width"] = true

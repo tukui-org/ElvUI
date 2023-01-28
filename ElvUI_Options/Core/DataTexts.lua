@@ -151,14 +151,14 @@ end
 local function CreateCustomCurrencyOptions(currencyID)
 	local currency = E.global.datatexts.customCurrencies[currencyID]
 	if currency then
-		local options = ACH:Group(currency.NAME, nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[currencyID][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[currencyID][info[#info]] = value DT:UpdateCustomCurrencySettings(currency.NAME, info[#info], value) DT:LoadDataTexts() end)
+		local options = ACH:Group(currency.name, nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[currencyID][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[currencyID][info[#info]] = value DT:ForceUpdate_DataText(currencyID) end)
 
-		options.args.DISPLAY_STYLE = ACH:Select(L["Display Style"], nil, 1, { ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] })
-		options.args.SHOW_MAX = ACH:Toggle(L["Current / Max"], nil, 2)
-		options.args.USE_TOOLTIP = ACH:Toggle(L["Tooltip"], nil, 3)
-		options.args.DISPLAY_IN_MAIN_TOOLTIP = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4, nil, nil, nil, nil, nil, nil, DT.CurrencyList[tostring(currencyID)] and true)
+		options.args.nameStyle = ACH:Select(L["Name Style"], nil, 1, { full = L["Name"], abbr = L["Abbreviate Name"], none = L["None"] })
+		options.args.showIcon = ACH:Toggle(L["Show Icon"], nil, 2)
+		options.args.showMax = ACH:Toggle(L["Current / Max"], nil, 3)
+		options.args.currencyTooltip = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4, nil, nil, nil, nil, nil, nil, DT.CurrencyList[tostring(currencyID)] and true)
 
-		E.Options.args.datatexts.args.customCurrency.args[currency.NAME] = options
+		E.Options.args.datatexts.args.customCurrency.args[currency.name] = options
 	end
 end
 
@@ -186,6 +186,7 @@ local function CreateDTOptions(name, data)
 		optionTable.args.label = ACH:Toggle(L["Show Label"], nil, 3)
 		optionTable.args.text = ACH:Toggle(L["Show Text"], nil, 4)
 		optionTable.args.icon = ACH:Toggle(L["Show Icon"], nil, 5)
+		optionTable.args.useValueColor = ACH:Toggle(L["Use Value Color"], nil, 6)
 	else
 		for key in pairs(settings) do
 			if key == 'Label' then
@@ -263,7 +264,7 @@ local function CreateDTOptions(name, data)
 			optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], USED_TOTAL = L["Used/Total"] }
 		elseif name == 'Talent/Loot Specialization' then
 			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] })
-			optionTable.args.iconOnly = ACH:Toggle(L["Icon Only"], L["Only show icons instead of specialization names"], 2)
+			optionTable.args.iconOnly = ACH:Toggle(L["Icons Only"], L["Only show icons instead of specialization names"], 2)
 		end
 	end
 end
@@ -338,7 +339,7 @@ DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
 DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, function() local list = E:CopyTable({}, DT.CurrencyList) list.GOLD = nil list.BACKPACK = nil return list end, nil, 'double', nil, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end DT:RegisterCustomCurrencyDT(currencyID) CreateCustomCurrencyOptions(currencyID) DT:LoadDataTexts() end)
 DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end DT:RegisterCustomCurrencyDT(currencyID) CreateCustomCurrencyOptions(currencyID) DT:LoadDataTexts() end)
-DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, table in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = table.NAME end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].NAME DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
+DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, info in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = info.name end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].name DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 
 DataTexts.args.settings = ACH:Group(L["Customization"], nil, 7)

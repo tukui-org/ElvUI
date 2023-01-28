@@ -125,6 +125,12 @@ P.general = {
 				yOffset = 0,
 				hide = true,
 			},
+			crafting = {
+				scale = 1,
+				position = 'TOPRIGHT',
+				xOffset = -23,
+				yOffset = -3,
+			},
 			mail = {
 				scale = 1,
 				texture = 'Mail3',

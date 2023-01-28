@@ -1,6 +1,7 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["PROFESSIONS_CRAFTING"] = "Criação"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essência"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "Pairar no hyperlink"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = "Ícone dentro da Barra de Cast"
-L["Icon Only"] = true
 L["Icon Position"] = "Posição do Ícone"
 L["Icon Size"] = "Tamanho do Ícone"
 L["Icon Width"] = true
