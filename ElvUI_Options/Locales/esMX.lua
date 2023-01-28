@@ -750,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "Cursor Sobre Hipervínculo"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = true
-L["Icon Only"] = true
 L["Icon Position"] = true
 L["Icon Size"] = true
 L["Icon Width"] = true

@@ -1379,6 +1379,22 @@ function E:DBConvertSL()
 	end
 end
 
+function E:DBConvertDF()
+	local currency = E.global.datatexts.customCurrencies
+	if currency then
+		for id, data in next, E.global.datatexts.customCurrencies do
+			local info = {}
+			if data.NAME then info.name = data.NAME end
+			if data.SHOW_MAX then info.showMax = data.SHOW_MAX end
+			if data.DISPLAY_IN_MAIN_TOOLTIP then info.currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP end
+			if data.DISPLAY_STYLE then info.nameStyle = find(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or find(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none' end
+			if next(info) then
+				E.global.datatexts.customCurrencies[id] = info
+			end
+		end
+	end
+end
+
 function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.global = E.data.global
@@ -1850,6 +1866,7 @@ function E:DBConversions()
 	end
 
 	-- development converts
+	E:DBConvertDF()
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then
