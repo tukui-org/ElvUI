@@ -49,7 +49,6 @@ local hooksecurefunc = hooksecurefunc
 
 local TableUtil_TrySet = TableUtil.TrySet
 
-
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars
@@ -874,17 +873,14 @@ function NP:ShowOnlyNames()
 
 	-- 10.0.5 replacement for CVar showOnlyNames
 
-	C_CVar.RegisterCVar('nameplateShowOnlyNames')
-	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
-		if GetCVarBool("nameplateShowOnlyNames") then
-			TableUtil_TrySet(_G.DefaultCompactNamePlateFrameSetUpOptions, 'hideHealthbar')
-			TableUtil_TrySet(_G.DefaultCompactNamePlateFrameSetUpOptions, 'hideCastbar')
-			TableUtil_TrySet(_G.DefaultCompactNamePlateFriendlyFrameOptions, 'hideHealthbar')
-			TableUtil_TrySet(_G.DefaultCompactNamePlateFriendlyFrameOptions, 'hideCastbar')
-			TableUtil_TrySet(_G.DefaultCompactNamePlateEnemyFrameOptions, 'hideHealthbar')
-			TableUtil_TrySet(_G.DefaultCompactNamePlateEnemyFrameOptions, 'hideCastbar')
-		end
-	end)
+	if GetCVarBool("nameplateShowOnlyNames") then
+		TableUtil_TrySet(_G.DefaultCompactNamePlateFrameSetUpOptions, 'hideHealthbar')
+		TableUtil_TrySet(_G.DefaultCompactNamePlateFrameSetUpOptions, 'hideCastbar')
+		TableUtil_TrySet(_G.DefaultCompactNamePlateFriendlyFrameOptions, 'hideHealthbar')
+		TableUtil_TrySet(_G.DefaultCompactNamePlateFriendlyFrameOptions, 'hideCastbar')
+		TableUtil_TrySet(_G.DefaultCompactNamePlateEnemyFrameOptions, 'hideHealthbar')
+		TableUtil_TrySet(_G.DefaultCompactNamePlateEnemyFrameOptions, 'hideCastbar')
+	end
 end
 
 function NP:Initialize()
