@@ -750,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "Время до �
 L["Hyperlink Hover"] = "Подсказка над ссылками"
 L["Icon Height"] = "Высота иконки"
 L["Icon Inside Castbar"] = "Иконка на полосе"
-L["Icon Only"] = "Только иконки"
 L["Icon Position"] = "Позиция иконки"
 L["Icon Size"] = "Размер иконки"
 L["Icon Width"] = "Ширина иконки"

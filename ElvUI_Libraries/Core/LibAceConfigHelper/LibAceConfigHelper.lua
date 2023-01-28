@@ -156,9 +156,9 @@ local FontFlagValues = {
 	NONE = 'None',
 	OUTLINE = 'Outline',
 	THICKOUTLINE = 'Thick',
-	MONOCHROME = '|cffaaaaaaMono|r',
-	MONOCHROMEOUTLINE = '|cffaaaaaaMono|r Outline',
-	MONOCHROMETHICKOUTLINE = '|cffaaaaaaMono|r Thick',
+	MONOCHROME = '|cFFAAAAAAMono|r',
+	MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
+	MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick',
 }
 
 function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)

@@ -1490,7 +1490,7 @@ local function HyperLinkedCPL(data)
 		msg = gsub(msg,'\10c(%x-)\10H(.-)\10h(.-)\10h\10r','|c%1|H%2|h%3|h|r')
 
 		if msg ~= '' then
-			CH:SetChatEditBoxmsg(msg)
+			CH:SetChatEditBoxMessage(msg)
 		end
 	end
 end

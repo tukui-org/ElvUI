@@ -750,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "能量变化高�
 L["Hyperlink Hover"] = "链接悬停"
 L["Icon Height"] = "图标高度"
 L["Icon Inside Castbar"] = "施法条内的图标"
-L["Icon Only"] = true
 L["Icon Position"] = "图标位置"
 L["Icon Size"] = "图标尺寸"
 L["Icon Width"] = "图标宽度"

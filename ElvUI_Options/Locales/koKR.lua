@@ -750,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "링크 툴팁 표시"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = "시전바 내부 아이콘"
-L["Icon Only"] = true
 L["Icon Position"] = "아이콘 위치"
 L["Icon Size"] = "아이콘 크기"
 L["Icon Width"] = true

@@ -273,6 +273,7 @@ function S:Blizzard_Professions()
 	BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
 	S:HandleButton(BrowseFrame.SearchButton)
 	S:HandleButton(BrowseFrame.FavoritesSearchButton)
+	S:HandleButton(BrowseFrame.BackButton)
 	BrowseFrame.FavoritesSearchButton:Size(22)
 
 	local BrowseList = Orders.BrowseFrame.RecipeList

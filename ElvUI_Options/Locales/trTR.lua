@@ -750,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "Kaybolacak gucun 
 L["Hyperlink Hover"] = "Baglantinin Ustunde Tutma"
 L["Icon Height"] = "Ikon Yuksekligi"
 L["Icon Inside Castbar"] = "Yetenek cubugu icinde ikon"
-L["Icon Only"] = true
 L["Icon Position"] = "Ikon pozisyonu"
 L["Icon Size"] = "Ikon boyutu"
 L["Icon Width"] = "Ikon Genisligi"
