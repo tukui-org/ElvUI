@@ -339,7 +339,6 @@ L["Steps"] = "Etapes"
 L["Sticky Frames"] = "Cadres aimantés"
 L["System"] = "Système"
 L["Talent/Loot Specialization"] = "Spécialisation des talents / du butin"
-L["Talking Head Frame"] = "Cadre de dialogue flottant"
 L["Target Castbar"] = "Barre d'incantation de la cible"
 L["Target Frame"] = "Cadre de la cible"
 L["Target Mitigation"] = true

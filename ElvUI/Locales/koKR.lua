@@ -339,7 +339,6 @@ L["Steps"] = "단계"
 L["Sticky Frames"] = "자석"
 L["System"] = "시스템"
 L["Talent/Loot Specialization"] = "전문화/전리품 획득 전문화 변경"
-L["Talking Head Frame"] = "토킹 헤드 프레임"
 L["Target Castbar"] = "대상 시전바"
 L["Target Frame"] = "대상 프레임"
 L["Target Mitigation"] = true
