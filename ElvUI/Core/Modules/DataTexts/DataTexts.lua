@@ -353,17 +353,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 end
 
 function DT:GetPanelSettings(name)
-	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
-
-	local customPanels = E.global.datatexts.customPanels
-	local customPanel = customPanels[name]
-	if customPanel then
-		db = E:CopyTable(db, customPanel)
-	end
-
-	customPanels[name] = db
-
-	return db
+	return E:CopyTable(E.global.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
