@@ -20,7 +20,11 @@ local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ':14:14')
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ':14:14')
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
 local enteredFrame = false
-local displayString = ''
+local displayString, data = ''
+
+local function GetSettingsData(self)
+	data = E.global.datatexts.settings[self.name]
+end
 
 local function MakeIconString(tank, healer, damage)
 	local str = ''
@@ -37,7 +41,11 @@ local function MakeIconString(tank, healer, damage)
 	return str
 end
 
-local function OnEvent(self)
+local function OnEvent(self, event)
+	if event == 'ELVUI_FORCE_UPDATE' then
+		GetSettingsData(self)
+	end
+
 	local tankReward = false
 	local healerReward = false
 	local dpsReward = false
@@ -65,10 +73,10 @@ local function OnEvent(self)
 		end
 	end
 
-	if E.global.datatexts.settings.CallToArms.NoLabel then
+	if data.NoLabel then
 		self.text:SetFormattedText(displayString, unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
 	end
 end
 
@@ -77,7 +85,9 @@ local function OnClick()
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.CallToArms.NoLabel and '' or '%s', hex, '%s|r')
+	GetSettingsData(self)
+
+	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%s|r')
 
 	OnEvent(self)
 end

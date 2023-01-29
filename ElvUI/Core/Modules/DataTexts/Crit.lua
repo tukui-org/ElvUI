@@ -15,24 +15,26 @@ local CR_CRIT_MELEE_TOOLTIP = CR_CRIT_MELEE_TOOLTIP
 local CR_CRIT_MELEE = CR_CRIT_MELEE
 local CR_CRIT_RANGED = CR_CRIT_RANGED
 
-local displayString = ''
-local meleeCrit, rangedCrit = 0, 0
-local ratingIndex
-local data
+local displayString, data = ''
+local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
 local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
+	data = E:CopyTable(E.global.datatexts.settings[self.name])
 end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-	DT.tooltip:AddLine(MELEE_CRIT_CHANCE.." "..meleeCrit)
+	DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(format(CR_CRIT_MELEE_TOOLTIP, GetCombatRating(ratingIndex), GetCombatRatingBonus(ratingIndex)))
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self)
+local function OnEvent(self, event)
+	if event == 'ELVUI_FORCE_UPDATE' then
+		GetSettingsData(self)
+	end
+
 	meleeCrit = GetCritChance()
 	rangedCrit = GetRangedCritChance()
 
@@ -45,7 +47,6 @@ local function OnEvent(self)
 		ratingIndex = CR_CRIT_MELEE
 	end
 
-	if not data then GetSettingsData(self) end
 
 	if data.NoLabel then
 		self.text:SetFormattedText(displayString, critChance)
@@ -55,7 +56,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then GetSettingsData(self) end
+	GetSettingsData(self)
 
 	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
 
