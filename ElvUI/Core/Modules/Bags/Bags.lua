@@ -1435,7 +1435,7 @@ function B:VendorGrayCheck()
 
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not _G.MerchantFrame:IsShown() and not E.Classic then
+	elseif not _G.MerchantFrame:IsShown() and not E.Retail then
 		E.PopupDialogs.DELETE_GRAYS.Money = value
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else

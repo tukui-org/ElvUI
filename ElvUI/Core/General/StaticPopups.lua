@@ -12,7 +12,7 @@ local format, error, ipairs, ceil = format, error, ipairs, ceil
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
-local PickupContainerItem = PickupContainerItem
+local PickupContainerItem = (C_Container or _G).PickupContainerItem
 local DeleteCursorItem = DeleteCursorItem
 local MoneyFrame_Update = MoneyFrame_Update
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
