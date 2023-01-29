@@ -339,7 +339,6 @@ L["Steps"] = "Pasos"
 L["Sticky Frames"] = "Marcos Adhesivos"
 L["System"] = "Sistema"
 L["Talent/Loot Specialization"] = "Especialización en Talento / Botín"
-L["Talking Head Frame"] = "Marco de Cabeza Hablante"
 L["Target Castbar"] = "Barra de Lanzamiento del Objetivo"
 L["Target Frame"] = "Marco de Objetivo"
 L["Target Mitigation"] = true

@@ -342,7 +342,6 @@ L["Steps"] = true
 L["Sticky Frames"] = true
 L["System"] = true
 L["Talent/Loot Specialization"] = true
-L["Talking Head Frame"] = true
 L["Target Castbar"] = true
 L["Target Frame"] = true
 L["Target Mitigation"] = true

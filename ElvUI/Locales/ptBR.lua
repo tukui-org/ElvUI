@@ -339,7 +339,6 @@ L["Steps"] = "Passos"
 L["Sticky Frames"] = "Quadros Pegadiços"
 L["System"] = "Sistema"
 L["Talent/Loot Specialization"] = "Especialização em Talentos/Saque"
-L["Talking Head Frame"] = "Quadro de fala flutuante"
 L["Target Castbar"] = "Barra de lançamento do Alvo"
 L["Target Frame"] = "Quadro do Alvo"
 L["Target Mitigation"] = true

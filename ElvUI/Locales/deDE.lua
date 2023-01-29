@@ -339,7 +339,6 @@ L["Steps"] = "Schritte"
 L["Sticky Frames"] = "Anheftende Fenster"
 L["System"] = true --No need to translate
 L["Talent/Loot Specialization"] = "Talent-/Lootspezialisierung"
-L["Talking Head Frame"] = "Sprechender Kopf Fenster"
 L["Target Castbar"] = "Ziel Zauberbalken"
 L["Target Frame"] = "Ziel Fenster"
 L["Target Mitigation"] = "Zielminderung"
