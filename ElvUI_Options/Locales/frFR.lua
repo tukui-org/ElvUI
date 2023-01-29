@@ -1,6 +1,7 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
 
+L["PROFESSIONS_CRAFTING"] = "Artisanat"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Essence"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "Survol des liens"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = "Icône à l'intérieur de la barre d'incantation"
-L["Icon Only"] = true
 L["Icon Position"] = "Position de l'icône"
 L["Icon Size"] = "Taille de l'icône"
 L["Icon Width"] = true
@@ -1522,7 +1522,7 @@ L["TALENT"] = "Talent"
 L["TALENTS"] = "Talents"
 L["Talking Head Backdrop"] = "Fond du cadre du PNJ qui parle"
 L["Talking Head Scale"] = "Zoom du cadre de dialogue flottant"
-L["TalkingHead"] = "Dialogue flottant"
+L["Talking Head"] = "Dialogue flottant"
 L["Tank Colors"] = true
 L["Tank Frames"] = "Cadre des Tanks"
 L["Tank"] = true

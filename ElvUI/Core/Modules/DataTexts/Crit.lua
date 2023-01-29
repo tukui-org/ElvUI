@@ -1,40 +1,66 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local format = format
 local strjoin = strjoin
-
 local GetCritChance = GetCritChance
 local GetRangedCritChance = GetRangedCritChance
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CRIT_ABBR = CRIT_ABBR
 
-local displayString = ''
-local spellCrit, rangedCrit, meleeCrit = 0, 0, 0
-local critChance = 0
+local MELEE_CRIT_CHANCE = MELEE_CRIT_CHANCE
+local CR_CRIT_MELEE_TOOLTIP = CR_CRIT_MELEE_TOOLTIP
+local CR_CRIT_MELEE = CR_CRIT_MELEE
+local CR_CRIT_RANGED = CR_CRIT_RANGED
 
-local function OnEvent(self)
-	rangedCrit = GetRangedCritChance()
-	meleeCrit = GetCritChance()
+local displayString, data = ''
+local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
-	if (spellCrit >= rangedCrit and spellCrit >= meleeCrit) then
-		critChance = spellCrit
-	elseif (rangedCrit >= meleeCrit) then
-		critChance = rangedCrit
-	else
-		critChance = meleeCrit
+local function GetSettingsData(self)
+	data = E.global.datatexts.settings[self.name]
+end
+
+local function OnEnter()
+	DT.tooltip:ClearLines()
+	DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
+	DT.tooltip:AddLine(' ')
+	DT.tooltip:AddLine(format(CR_CRIT_MELEE_TOOLTIP, GetCombatRating(ratingIndex), GetCombatRatingBonus(ratingIndex)))
+	DT.tooltip:Show()
+end
+
+local function OnEvent(self, event)
+	if event == 'ELVUI_FORCE_UPDATE' then
+		GetSettingsData(self)
 	end
 
-	if E.global.datatexts.settings.Crit.NoLabel then
+	meleeCrit = GetCritChance()
+	rangedCrit = GetRangedCritChance()
+
+	local critChance
+	if (rangedCrit > meleeCrit) then
+		critChance = rangedCrit
+		ratingIndex = CR_CRIT_RANGED
+	else
+		critChance = meleeCrit
+		ratingIndex = CR_CRIT_MELEE
+	end
+
+
+	if data.NoLabel then
 		self.text:SetFormattedText(displayString, critChance)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Crit.Label ~= '' and E.global.datatexts.settings.Crit.Label or CRIT_ABBR..': ', critChance)
+		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or CRIT_ABBR..': ', critChance)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Crit.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Crit.decimalLength..'f%%|r')
+	GetSettingsData(self)
+
+	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, nil, nil, _G.STAT_CRITICAL_STRIKE, nil, ValueColorUpdate)
+DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, MELEE_CRIT_CHANCE, nil, ValueColorUpdate)

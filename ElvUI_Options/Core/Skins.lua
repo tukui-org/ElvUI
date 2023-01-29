@@ -13,7 +13,7 @@ Skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil, functi
 Skins.args.general.sortByValue = true
 Skins.args.general.values = { ace3Enable = 'Ace3', blizzardEnable = L["Blizzard"], checkBoxSkin = L["CheckBox Skin"], parchmentRemoverEnable = L["Parchment Remover"] }
 
-Skins.args.talkingHead = ACH:Group(L["TalkingHead"], nil, 2, nil, function(info) return E.db.general[info[#info]] end, nil, nil, not E.Retail)
+Skins.args.talkingHead = ACH:Group(L["Talking Head"], nil, 2, nil, function(info) return E.db.general[info[#info]] end, nil, nil, not E.Retail)
 Skins.args.talkingHead.inline = true
 Skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end)
 Skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E.ShowPopup = true end)
@@ -116,7 +116,7 @@ if E.Retail then
 	blizzard.runeforge = L["Runeforge"]
 	blizzard.scrapping = L["SCRAP_BUTTON"]
 	blizzard.soulbinds = L["Soulbinds"]
-	blizzard.talkinghead = L["TalkingHead"]
+	blizzard.talkinghead = L["Talking Head"]
 	blizzard.torghastLevelPicker = L["Torghast Level Picker"]
 	blizzard.transmogrify = L["TRANSMOGRIFY"]
 	blizzard.voidstorage = L["VOID_STORAGE"]

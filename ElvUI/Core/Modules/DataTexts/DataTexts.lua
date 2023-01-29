@@ -202,7 +202,7 @@ function DT:BuildPanelFrame(name, fromInit)
 end
 
 function DT:BuildPanelFunctions(name, obj)
-	local text, hex
+	local panel, hex
 
 	local function OnEnter(dt)
 		if obj.tooltip then
@@ -243,12 +243,9 @@ function DT:BuildPanelFunctions(name, obj)
 		local value = db.text and data.text
 
 		local str = ''
-		if icon then
-			str = format(iconString, icon)
-		end
 
 		if label then
-			str = str .. (icon and ' ' or '') .. (db.customLabel ~= '' and db.customLabel or label)
+			str = (db.customLabel ~= '' and db.customLabel) or label
 		end
 
 		if value then
@@ -256,51 +253,54 @@ function DT:BuildPanelFunctions(name, obj)
 			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
 		end
 
-		text:SetText(str)
+		panel.text:SetText(str)
+		panel.icon:SetTexture(icon)
+		panel.icon:SetTexCoord(unpack(data.iconCoords or E.TexCoords))
 	end
 
 	local function UpdateColor(_, Hex)
 		hex = Hex
-		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
+		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
 	end
 
-	local function OnEvent(dt)
-		text = dt.text
-		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
-		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		UpdateColor(dt, hex)
+	local function OnEvent(dt, event)
+		if event == 'ELVUI_REMOVE' then
+			LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
+		else
+			panel = dt
+			LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
+			UpdateColor(dt, hex)
+		end
 	end
 
 	return OnEvent, OnClick, OnEnter, OnLeave, UpdateColor, UpdateText
 end
 
 function DT:SetupObjectLDB(name, obj)
-	local ldbName = 'LDB_'..name
-	if DT.RegisteredDataTexts[ldbName] then return end
+	if obj.type == 'data source' or obj.type == 'launcher' then
+		local ldbName = 'LDB_'..name
+		if DT.RegisteredDataTexts[ldbName] then return end
 
-	local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
-	data.isLibDataBroker = true
+		local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
+		local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
+		data.isLibDataBroker = true
 
-	local defaults = { customLabel = '', label = false, text = true, icon = false, useValueColor = false }
-	G.datatexts.settings[ldbName] = defaults
-	E.global.datatexts.settings[ldbName] = E.global.datatexts.settings[ldbName] or E:CopyTable({}, defaults)
+		if not obj.label then obj.label = name end
 
-	if self ~= DT then -- This checks to see if we are calling it or the callback.
-		DT:UpdateQuickDT()
+		local defaults = { customLabel = '', label = obj.type == 'launcher', text = obj.type == 'data source', icon = false, useValueColor = false }
+
+		G.datatexts.settings[ldbName] = defaults
+		E.global.datatexts.settings[ldbName] = E:CopyTable(E.global.datatexts.settings[ldbName], defaults, true)
+
+		if self ~= DT then -- This checks to see if we are calling it or the callback.
+			DT:UpdateQuickDT()
+		end
 	end
 end
 
 function DT:RegisterLDB()
 	for name, obj in LDB:DataObjectIterator() do
-		if obj.type == "data source" or obj.type == "launcher" then
-			local label = obj.label
-			if not label then
-				obj.label = name
-			end
-
-			DT:SetupObjectLDB(name, obj)
-		end
+		DT:SetupObjectLDB(name, obj)
 	end
 end
 
@@ -353,21 +353,11 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 end
 
 function DT:GetPanelSettings(name)
-	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
-
-	local customPanels = E.global.datatexts.customPanels
-	local customPanel = customPanels[name]
-	if customPanel then
-		db = E:CopyTable(db, customPanel)
-	end
-
-	customPanels[name] = db
-
-	return db
+	return E:CopyTable(E.global.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
-	dt.name = data.name or '' -- This is needed for Custom Currencies
+	dt.name = data.name
 
 	if data.events then
 		for _, ev in pairs(data.events) do
@@ -496,9 +486,17 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt:RegisterForClicks('AnyUp')
 
 			local text = dt:CreateFontString(nil, 'ARTWORK')
-			text:SetAllPoints()
+			text:SetPoint('CENTER')
 			text:SetJustifyV('MIDDLE')
 			dt.text = text
+
+			local icon = dt:CreateTexture(nil, 'ARTWORK')
+			icon:Point('RIGHT', text, 'LEFT', -4, 0)
+			icon:Size(height - 2)
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			dt.icon = icon
+
 			DT.FontStrings[text] = true
 
 			panel.dataPanels[i] = dt
@@ -517,6 +515,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
+		local assigned = DT.AssignedDatatexts[dt]
+
 		dt:SetShown(i <= numPoints)
 		dt:SetSize(width, height)
 		dt:ClearAllPoints()
@@ -537,26 +537,34 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.battleStats = battlePanel
 		dt.db = db
 		dt.watchModKey = nil
+		dt.name = nil
 
 		E:StopFlash(dt)
-
-		if dt.objectEvent and dt.objectEventFunc then
-			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
-			dt.objectEvent, dt.objectEventFunc = nil, nil
-		end
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
 
+		dt.icon:SetTexture(E.ClearTexture)
+
+		if dt.objectEvent and dt.objectEventFunc then
+			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
+			dt.objectEvent, dt.objectEventFunc = nil, nil
+		end
+
+		if assigned and assigned.isLibDataBroker and assigned.eventFunc then
+			assigned.eventFunc(dt, 'ELVUI_REMOVE')
+		end
+
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
 			if E.Retail then tinsert(dt.MouseEnters, DT.HoverBattleStats) end
 		else
-			local assigned = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
-			DT.AssignedDatatexts[dt] = assigned
-			if assigned then DT:AssignPanelToDataText(dt, assigned, ...) end
+			local data = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
+
+			DT.AssignedDatatexts[dt] = data
+			if data then DT:AssignPanelToDataText(dt, data, ...) end
 		end
 	end
 end
@@ -947,6 +955,10 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 
 	DT.RegisteredDataTexts[name] = data
 	DT.DataTextList[name] = localizedName or name
+
+	if not G.datatexts.settings[name] then
+		G.datatexts.settings[name] = {}
+	end
 
 	return data
 end

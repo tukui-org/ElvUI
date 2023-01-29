@@ -7,6 +7,7 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_MASTERY = STAT_MASTERY
+local STAT_MASTERY_BASE_TOOLTIP = STAT_MASTERY_BASE_TOOLTIP
 local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 
 local displayString = ''
@@ -37,6 +38,11 @@ local function OnEnter()
 				DT.tooltip:AddSpellByID(masterySpell2)
 			end
 		end
+		local mastery, bonusCoeff = GetMasteryEffect();
+		local masteryBonus = GetCombatRatingBonus(CR_MASTERY) * bonusCoeff;
+
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(format('%s: %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY)), masteryBonus))
 
 		DT.tooltip:Show()
 	end

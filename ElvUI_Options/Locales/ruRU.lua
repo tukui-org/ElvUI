@@ -1,6 +1,7 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["PROFESSIONS_CRAFTING"] = "Ремесло"
 L["Not Known"] = "Не изучено"
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "Сущность"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "Время до �
 L["Hyperlink Hover"] = "Подсказка над ссылками"
 L["Icon Height"] = "Высота иконки"
 L["Icon Inside Castbar"] = "Иконка на полосе"
-L["Icon Only"] = "Только иконки"
 L["Icon Position"] = "Позиция иконки"
 L["Icon Size"] = "Размер иконки"
 L["Icon Width"] = "Ширина иконки"
@@ -1522,7 +1522,7 @@ L["TALENT"] = "Талант"
 L["TALENTS"] = "Таланты"
 L["Talking Head Backdrop"] = "Фон говорящей головы"
 L["Talking Head Scale"] = "Масштаб говорящей головы"
-L["TalkingHead"] = "Говорящая голова"
+L["Talking Head"] = "Говорящая голова"
 L["Tank Colors"] = true
 L["Tank Frames"] = "Танки"
 L["Tank"] = "Танк"

@@ -1,6 +1,7 @@
 -- Korean localization file for koKR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'koKR')
 
+L["PROFESSIONS_CRAFTING"] = "제작 기술"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "정수"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "링크 툴팁 표시"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = "시전바 내부 아이콘"
-L["Icon Only"] = true
 L["Icon Position"] = "아이콘 위치"
 L["Icon Size"] = "아이콘 크기"
 L["Icon Width"] = true
@@ -1522,7 +1522,7 @@ L["TALENT"] = "특성"
 L["TALENTS"] = "특성"
 L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
-L["TalkingHead"] = true
+L["Talking Head"] = true
 L["Tank Colors"] = true
 L["Tank Frames"] = "방어전담 프레임"
 L["Tank"] = "방어 전담"

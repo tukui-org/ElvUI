@@ -1,6 +1,7 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["PROFESSIONS_CRAFTING"] = "Crafting"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = true
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "Kaybolacak gucun 
 L["Hyperlink Hover"] = "Baglantinin Ustunde Tutma"
 L["Icon Height"] = "Ikon Yuksekligi"
 L["Icon Inside Castbar"] = "Yetenek cubugu icinde ikon"
-L["Icon Only"] = true
 L["Icon Position"] = "Ikon pozisyonu"
 L["Icon Size"] = "Ikon boyutu"
 L["Icon Width"] = "Ikon Genisligi"
@@ -1522,7 +1522,7 @@ L["TALENT"] = "Yetenek"
 L["TALENTS"] = "Yetenekler"
 L["Talking Head Backdrop"] = "Konusan Kafa Arka Plani"
 L["Talking Head Scale"] = "Konusan Kafa Olcegi"
-L["TalkingHead"] = "Konusan kafa"
+L["Talking Head"] = "Konusan kafa"
 L["Tank Colors"] = "Tank Renkleri"
 L["Tank Frames"] = "Tank Cerceveleri"
 L["Tank"] = "Tank"

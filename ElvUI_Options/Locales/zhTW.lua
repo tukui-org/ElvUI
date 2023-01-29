@@ -1,6 +1,7 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
+L["PROFESSIONS_CRAFTING"] = "製作"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "龍能"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "開始能量值�
 L["Hyperlink Hover"] = "超連結提示資訊"
 L["Icon Height"] = "圖示高度"
 L["Icon Inside Castbar"] = "施法條內的圖示"
-L["Icon Only"] = true
 L["Icon Position"] = "圖示位置"
 L["Icon Size"] = "圖示尺寸"
 L["Icon Width"] = "圖示寬度"
@@ -1522,7 +1522,7 @@ L["TALENT"] = "天賦"
 L["TALENTS"] = "天賦"
 L["Talking Head Backdrop"] = "特寫框架背景"
 L["Talking Head Scale"] = "特寫框架縮放"
-L["TalkingHead"] = "特寫框架"
+L["Talking Head"] = "特寫框架"
 L["Tank Colors"] = "坦克顏色"
 L["Tank Frames"] = "坦克框架"
 L["Tank"] = "坦克"

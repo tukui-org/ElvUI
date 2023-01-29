@@ -596,14 +596,16 @@ do
 	end
 end
 
-function E:CopyTable(current, default)
+function E:CopyTable(current, default, merge)
 	if type(current) ~= 'table' then
 		current = {}
 	end
 
 	if type(default) == 'table' then
 		for option, value in pairs(default) do
-			current[option] = (type(value) == 'table' and E:CopyTable(current[option], value)) or value
+			if not merge or current[option] == nil then
+				current[option] = (type(value) == 'table' and E:CopyTable(current[option], value, merge)) or value
+			end
 		end
 	end
 
@@ -1377,6 +1379,18 @@ function E:DBConvertSL()
 	end
 end
 
+function E:DBConvertDF()
+	local currency = E.global.datatexts.customCurrencies
+	if currency then
+		for id, data in next, E.global.datatexts.customCurrencies do
+			local info = { name = data.NAME, showMax = data.SHOW_MAX, currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP, nameStyle = data.DISPLAY_STYLE and (find(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or find(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none') or nil }
+			if next(info) then
+				E.global.datatexts.customCurrencies[id] = info
+			end
+		end
+	end
+end
+
 function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.global = E.data.global
@@ -1848,6 +1862,7 @@ function E:DBConversions()
 	end
 
 	-- development converts
+	E:DBConvertDF()
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then

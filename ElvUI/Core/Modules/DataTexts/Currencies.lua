@@ -93,9 +93,9 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 
-	for _, info in pairs(E.global.datatexts.customCurrencies) do
-		if info and not DT.CurrencyList[tostring(info.ID)] and info.DISPLAY_IN_MAIN_TOOLTIP then
-			AddInfo(info.ID)
+	for id, info in pairs(E.global.datatexts.customCurrencies) do
+		if info and not DT.CurrencyList[tostring(id)] and info.currencyTooltip then
+			AddInfo(id)
 			addLine2 = true
 		end
 	end
@@ -108,4 +108,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Currencies', nil, {'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)
+DT:RegisterDatatext('Currencies', nil, { 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)

@@ -1,6 +1,7 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["PROFESSIONS_CRAFTING"] = "制造"
 L["Not Known"] = true
 L["Quiver / Ammo"] = true
 L["POWER_TYPE_ESSENCE"] = "精华"
@@ -749,7 +750,6 @@ L["How much time before the cutaway power starts to fade."] = "能量变化高�
 L["Hyperlink Hover"] = "链接悬停"
 L["Icon Height"] = "图标高度"
 L["Icon Inside Castbar"] = "施法条内的图标"
-L["Icon Only"] = true
 L["Icon Position"] = "图标位置"
 L["Icon Size"] = "图标尺寸"
 L["Icon Width"] = "图标宽度"
@@ -1522,7 +1522,7 @@ L["TALENT"] = "天赋"
 L["TALENTS"] = "天赋"
 L["Talking Head Backdrop"] = "剧情对话框背景"
 L["Talking Head Scale"] = "剧情对话框缩放"
-L["TalkingHead"] = "剧情对话框"
+L["Talking Head"] = "剧情对话框"
 L["Tank Colors"] = "坦克颜色"
 L["Tank Frames"] = "坦克框架"
 L["Tank"] = "坦克"
