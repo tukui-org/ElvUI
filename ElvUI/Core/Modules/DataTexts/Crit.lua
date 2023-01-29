@@ -19,7 +19,7 @@ local displayString, data = ''
 local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
 local function GetSettingsData(self)
-	data = E:CopyTable(E.global.datatexts.settings[self.name])
+	data = E.global.datatexts.settings[self.name]
 end
 
 local function OnEnter()

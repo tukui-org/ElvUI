@@ -956,6 +956,10 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	DT.RegisteredDataTexts[name] = data
 	DT.DataTextList[name] = localizedName or name
 
+	if not G.datatexts.settings[name] then
+		G.datatexts.settings[name] = {}
+	end
+
 	return data
 end
 
