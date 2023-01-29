@@ -17,7 +17,7 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
-local displayString = ''
+local displayString, data = ''
 local primaryStr, secondaryStr, activeGroup, hasDualSpec
 
 local function BuildTalentString(talentGroup)
@@ -39,7 +39,15 @@ local function ColorText(str, hex)
 	return format('|cff%s%s|r',hex,str)
 end
 
-local function OnEvent(self)
+local function GetSettingsData(self)
+	data = E.global.datatexts.settings[self.name]
+end
+
+local function OnEvent(self, event)
+	if event == 'ELVUI_FORCE_UPDATE' then
+		GetSettingsData(self)
+	end
+
 	primaryStr, secondaryStr = BuildTalentString(1), BuildTalentString(2)
 
 	activeGroup = GetActiveTalentGroup()
@@ -49,7 +57,7 @@ local function OnEvent(self)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	self.text:SetFormattedText(displayString, E.global.datatexts.settings.DualSpecialization.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
+	self.text:SetFormattedText(displayString, data.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -91,7 +99,9 @@ local function OnClick(_, button)
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.DualSpecialization.NoLabel and '' or '%s: ', hex, '%s|r')
+	GetSettingsData(self)
+
+	displayString = strjoin('', data.NoLabel and '' or '%s: ', hex, '%s|r')
 
 	OnEvent(self)
 end
