@@ -10,6 +10,7 @@
 	<Script file='CombatIndicator.lua'/>
 	<Script file='ConfigElvUI.lua'/>
 	<Script file='Coordinates.lua'/>
+	<Script file='Crit.lua'/>
 	<Script file='CustomCurrency.lua'/>
 	<Script file='Date.lua'/>
 	<Script file='DPS.lua'/>
@@ -25,12 +26,10 @@
 	<Script file='Location.lua'/>
 	<Script file='Mail.lua'/>
 	<Script file='ManaRegen.lua'/>
-	<Script file='MeleeCrit.lua'/>
 	<Script file='MicroBar.lua'/>
 	<Script file='MovementSpeed.lua'/>
 	<Script file='PrimaryStat.lua'/>
 	<Script file='Quests.lua'/>
-	<Script file='RangedCrit.lua'/>
 	<Script file='Reputation.lua'/>
 	<Script file='Spirit.lua'/>
 	<Script file='Stamina.lua'/>
