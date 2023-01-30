@@ -76,14 +76,12 @@ local function OnClick()
 	PVEFrame_ToggleFrame('GroupFinderFrame', _G.LFDParentFrame)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s|r')
-
-	OnEvent(self)
 end
 
 local function OnEnter()
@@ -172,4 +170,4 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)
+DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ApplySettings)

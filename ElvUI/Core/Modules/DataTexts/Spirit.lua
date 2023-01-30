@@ -12,10 +12,8 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, ITEM_MOD_SPIRIT_SHORT, UnitStat('player', 5))
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%.f|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Spirit', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_SPIRIT_SHORT, nil, ValueColorUpdate)
+DT:RegisterDatatext('Spirit', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, ITEM_MOD_SPIRIT_SHORT, nil, ApplySettings)

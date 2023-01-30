@@ -115,14 +115,12 @@ local function OnEvent(self, event)
 	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle, self)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('QuickJoin', _G.SOCIAL_LABEL, { 'SOCIAL_QUEUE_UPDATE' }, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ValueColorUpdate)
+DT:RegisterDatatext('QuickJoin', _G.SOCIAL_LABEL, { 'SOCIAL_QUEUE_UPDATE' }, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ApplySettings)

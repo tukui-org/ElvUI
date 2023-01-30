@@ -387,8 +387,8 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		end
 	end
 
-	if data.colorUpdate then -- has to be before event function
-		data.colorUpdate(dt, E.media.hexvaluecolor)
+	if data.applySettings then -- has to be before event function
+		data.applySettings(dt, E.media.hexvaluecolor)
 	end
 
 	local ev = event or 'ELVUI_FORCE_UPDATE'
@@ -424,8 +424,8 @@ function DT:ForceUpdate_DataText(name)
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
-			if dtInfo.colorUpdate then
-				dtInfo.colorUpdate(dtSlot, hex, r, g, b)
+			if dtInfo.applySettings then
+				dtInfo.applySettings(dtSlot, hex, r, g, b)
 			end
 			if dtInfo.eventFunc then
 				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
@@ -436,8 +436,9 @@ end
 
 function DT:UpdateHexColors(hex, r, g, b)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
-		if dtInfo.colorUpdate then
-			dtInfo.colorUpdate(dtSlot, hex, r, g, b)
+		if dtInfo.applySettings then
+			dtInfo.applySettings(dtSlot, hex, r, g, b)
+			dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
 		end
 	end
 end
@@ -900,22 +901,22 @@ function DT:Initialize()
 end
 
 --[[
-	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+	DT:RegisterDatatext(name, category, events, onEvent, onUpdate, onClick, onEnter, onLeave, localizedName, objectEvent, applySettings)
 
 	name - name of the datatext (required) [string]
 	category - name of the category the datatext belongs to. [string]
 	events - must be a table with string values of event names to register [string or table]
-	eventFunc - function that gets fired when an event gets triggered [function]
-	updateFunc - onUpdate script target function [function]
-	click - function to fire when clicking the datatext [function]
-	onEnterFunc - function to fire OnEnter [function]
-	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip. [function]
+	onEvent - function that gets fired when an event gets triggered [function]
+	onUpdate - onUpdate script target function [function]
+	onClick - function to fire when clicking the datatext [function]
+	onEnter - function to fire OnEnter [function]
+	onLeave - function to fire OnLeave, if not provided one will be set for you that hides the tooltip. [function]
 	localizedName - localized name of the datetext [string]
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent [function]
-	colorUpdate - function that fires when you change the dt or update the value color. [function]
+	applySettings - function that fires when you change the dt settings or update the value color. [function]
 ]]
 
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+function DT:RegisterDatatext(name, category, events, onEvent, onUpdate, onClick, onEnter, onLeave, localizedName, objectEvent, applySettings)
 	if not name then return end
 	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
@@ -925,32 +926,32 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
 	else
 		data.events = type(events) == 'string' and { strsplit('[, ]', events) } or events
-		data.eventFunc = eventFunc
+		data.eventFunc = onEvent
 		data.objectEvent = objectEvent
 	end
 
-	if updateFunc and type(updateFunc) == 'function' then
-		data.onUpdate = updateFunc
+	if onUpdate and type(onUpdate) == 'function' then
+		data.onUpdate = onUpdate
 	end
 
-	if clickFunc and type(clickFunc) == 'function' then
-		data.onClick = clickFunc
+	if onClick and type(onClick) == 'function' then
+		data.onClick = onClick
 	end
 
-	if onEnterFunc and type(onEnterFunc) == 'function' then
-		data.onEnter = onEnterFunc
+	if onEnter and type(onEnter) == 'function' then
+		data.onEnter = onEnter
 	end
 
-	if onLeaveFunc and type(onLeaveFunc) == 'function' then
-		data.onLeave = onLeaveFunc
+	if onLeave and type(onLeave) == 'function' then
+		data.onLeave = onLeave
 	end
 
 	if localizedName and type(localizedName) == 'string' then
 		data.localizedName = localizedName
 	end
 
-	if colorUpdate and type(colorUpdate) == 'function' then
-		data.colorUpdate = colorUpdate
+	if applySettings and type(applySettings) == 'function' then
+		data.applySettings = applySettings
 	end
 
 	DT.RegisteredDataTexts[name] = data

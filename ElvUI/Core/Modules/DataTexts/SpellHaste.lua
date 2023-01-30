@@ -12,10 +12,8 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', L["Spell Haste"], ': ', hex, '%.2f%%|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Spell Haste', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Haste"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Spell Haste', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Haste"], nil, ApplySettings)

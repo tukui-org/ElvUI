@@ -283,10 +283,10 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-local function ValueColorUpdate(self)
+local function ApplySettings(self)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, BuildAddonList, OnUpdate, OnClick, OnEnter, OnLeave, L["System"], nil, ValueColorUpdate)
+DT:RegisterDatatext('System', nil, nil, BuildAddonList, OnUpdate, OnClick, OnEnter, OnLeave, L["System"], nil, ApplySettings)

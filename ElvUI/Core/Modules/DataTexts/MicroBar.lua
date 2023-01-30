@@ -21,10 +21,8 @@ local function OnClick(self, button)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', hex, '%s|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext("Micro Bar", nil, nil, OnEvent, nil, OnClick, nil, nil, L["Micro Bar"], nil, ValueColorUpdate)
+DT:RegisterDatatext("Micro Bar", nil, nil, OnEvent, nil, OnClick, nil, nil, L["Micro Bar"], nil, ApplySettings)
