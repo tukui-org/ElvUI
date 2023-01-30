@@ -37,10 +37,10 @@ local function ReplaceGossipText(button, text)
 end
 
 local function createParchment(frame)
-    local tex = frame:CreateTexture(nil, "ARTWORK")
-    tex:SetTexture([[Interface\QuestFrame\QuestBG]])
-    tex:SetTexCoord(0, 0.586, 0.02, 0.655)
-    return tex
+	local tex = frame:CreateTexture(nil, "ARTWORK")
+	tex:SetTexture([[Interface\QuestFrame\QuestBG]])
+	tex:SetTexCoord(0, 0.586, 0.02, 0.655)
+	return tex
 end
 
 function S:GossipFrame()
