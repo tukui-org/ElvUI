@@ -36,7 +36,7 @@ local GUILD = GUILD
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local displayString, data = ''
+local displayString, db = ''
 local noGuildString = ''
 local guildInfoString = '%s'
 local guildInfoString2 = GUILD..': %d/%d'
@@ -295,10 +295,10 @@ local function OnEvent(self, event, ...)
 			OnEnter(self)
 		end
 
-		if data.NoLabel then
+		if db.NoLabel then
 			self.text:SetFormattedText(displayString, #guildTable)
 		else
-			self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or GUILD..': ', #guildTable)
+			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or GUILD..': ', #guildTable)
 		end
 	else
 		self.text:SetText(noGuildString)
@@ -306,11 +306,11 @@ local function OnEvent(self, event, ...)
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%d|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
 	OnEvent(self)

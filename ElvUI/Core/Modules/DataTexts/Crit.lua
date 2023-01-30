@@ -15,7 +15,7 @@ local CR_CRIT_MELEE_TOOLTIP = CR_CRIT_MELEE_TOOLTIP
 local CR_CRIT_MELEE = CR_CRIT_MELEE
 local CR_CRIT_RANGED = CR_CRIT_RANGED
 
-local displayString, data = ''
+local displayString, db = ''
 local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
 local function OnEnter()
@@ -40,19 +40,19 @@ local function OnEvent(self)
 	end
 
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, critChance)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or CRIT_ABBR..': ', critChance)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or CRIT_ABBR..': ', critChance)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

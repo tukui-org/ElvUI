@@ -9,7 +9,7 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
 
 local chanceString = '%.2f%%'
-local displayString, data, effectiveArmor, _ = ''
+local displayString, db, effectiveArmor, _ = ''
 
 local function GetArmorReduction(armor, attackerLevel)
 	local levelModifier = attackerLevel
@@ -28,10 +28,10 @@ end
 local function OnEvent(self)
 	_, effectiveArmor = UnitArmor('player')
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, effectiveArmor)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or ARMOR..': ', effectiveArmor)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ARMOR..': ', effectiveArmor)
 	end
 end
 
@@ -58,11 +58,11 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%d|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 
 	OnEvent(self)
 end

@@ -20,7 +20,7 @@ local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ':14:14')
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ':14:14')
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
 local enteredFrame = false
-local displayString, data = ''
+local displayString, db = ''
 
 local function MakeIconString(tank, healer, damage)
 	local str = ''
@@ -65,10 +65,10 @@ local function OnEvent(self)
 		end
 	end
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
 	end
 end
 
@@ -77,11 +77,11 @@ local function OnClick()
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%s|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s|r')
 
 	OnEvent(self)
 end

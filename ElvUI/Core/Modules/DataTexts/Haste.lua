@@ -15,7 +15,7 @@ local STAT_HASTE_TOOLTIP = STAT_HASTE_TOOLTIP
 local STAT_HASTE_BASE_TOOLTIP = STAT_HASTE_BASE_TOOLTIP
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
-local displayString, data = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -31,19 +31,19 @@ end
 
 local function OnEvent(self)
 	local haste = GetHaste()
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, haste)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or STAT_HASTE..': ', haste)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_HASTE..': ', haste)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

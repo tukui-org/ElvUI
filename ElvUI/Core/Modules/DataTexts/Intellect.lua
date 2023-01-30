@@ -7,23 +7,23 @@ local ITEM_MOD_INTELLECT_SHORT = ITEM_MOD_INTELLECT_SHORT
 local LE_UNIT_STAT_INTELLECT = LE_UNIT_STAT_INTELLECT
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
-local displayString, data = ''
+local displayString, db = ''
 
 local function OnEvent(self)
 	local intellect = UnitStat('player', LE_UNIT_STAT_INTELLECT)
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, intellect)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or ITEM_MOD_INTELLECT_SHORT..': ', intellect)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_INTELLECT_SHORT..': ', intellect)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.f|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.f|r')
 
 	OnEvent(self)
 end

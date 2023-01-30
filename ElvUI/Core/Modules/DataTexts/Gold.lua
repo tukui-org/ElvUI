@@ -27,7 +27,7 @@ local CURRENCY = CURRENCY
 local menuList, myGold = {}, {}
 local totalGold, totalHorde, totalAlliance = 0, 0, 0
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
-local data
+local db
 
 local function sortFunction(a, b)
 	return a.amount > b.amount
@@ -52,8 +52,8 @@ local function updateTotal(faction, change)
 end
 
 local function updateGold(self, updateAll, goldChange)
-	local textOnly = not data.goldCoins and true or false
-	local style = data.goldFormat or 'BLIZZARD'
+	local textOnly = not db.goldCoins and true or false
+	local style = db.goldFormat or 'BLIZZARD'
 
 	if updateAll then
 		wipe(myGold)
@@ -117,8 +117,8 @@ end
 local function OnEvent(self, event)
 	if not IsLoggedIn() then return end
 
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
 	if E.Retail and not Ticker then
@@ -146,7 +146,7 @@ local function OnEvent(self, event)
 
 	updateGold(self, event == 'ELVUI_FORCE_UPDATE', Change)
 
-	self.text:SetText(E:FormatMoney(NewMoney, data.goldFormat or 'BLIZZARD', not data.goldCoins))
+	self.text:SetText(E:FormatMoney(NewMoney, db.goldFormat or 'BLIZZARD', not db.goldCoins))
 end
 
 local function Click(self, btn)
@@ -166,8 +166,8 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local textOnly = not data.goldCoins and true or false
-	local style = data.goldFormat or 'BLIZZARD'
+	local textOnly = not db.goldCoins and true or false
+	local style = db.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)

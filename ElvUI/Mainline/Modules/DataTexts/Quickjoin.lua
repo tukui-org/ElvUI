@@ -13,7 +13,7 @@ local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local UNKNOWN, QUICK_JOIN = UNKNOWN, QUICK_JOIN
 
-local displayString, data = ''
+local displayString, db = ''
 local quickJoin = {}
 
 local function OnEnter()
@@ -95,10 +95,10 @@ local function Update(self)
 		end
 	end
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, #quickJoinGroups)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or QUICK_JOIN..': ', #quickJoinGroups)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or QUICK_JOIN..': ', #quickJoinGroups)
 	end
 end
 
@@ -116,11 +116,11 @@ local function OnEvent(self, event)
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%d|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 
 	OnEvent(self)
 end

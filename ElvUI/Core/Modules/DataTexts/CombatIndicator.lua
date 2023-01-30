@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local inCombat, outOfCombat, data = '', ''
+local inCombat, outOfCombat, db = '', ''
 
 local function OnEvent(self, event)
 	if event == 'PLAYER_REGEN_ENABLED' or event == 'ELVUI_FORCE_UPDATE' then
@@ -12,19 +12,19 @@ local function OnEvent(self, event)
 end
 
 local function ValueColorUpdate(self)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
 	-- Setup string
-	inCombat = data.InCombat ~= '' and data.InCombat or L["In Combat"]
-	outOfCombat = data.OutOfCombat ~= '' and data.OutOfCombat or L["Out of Combat"]
+	inCombat = db.InCombat ~= '' and db.InCombat or L["In Combat"]
+	outOfCombat = db.OutOfCombat ~= '' and db.OutOfCombat or L["Out of Combat"]
 
 	-- Color it
-	local labelColor = data.InCombatColor
+	local labelColor = db.InCombatColor
 	inCombat = E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, inCombat..'|r')
 
-	labelColor = data.OutOfCombatColor
+	labelColor = db.OutOfCombatColor
 	outOfCombat = E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, outOfCombat..'|r')
 end
 

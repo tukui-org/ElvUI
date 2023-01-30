@@ -37,7 +37,7 @@ local statusColors = {
 	'|cffD80909'
 }
 
-local enteredFrame, data = false
+local enteredFrame, db = false
 local bandwidthString = '%.2f Mbps'
 local percentageString = '%.2f%%'
 local homeLatencyString = '%d ms'
@@ -177,7 +177,7 @@ local function OnEnter(_, slow)
 	end
 
 	DT.tooltip:AddLine(' ')
-	if not data.ShowOthers then
+	if not db.ShowOthers then
 		displayData(infoTable.ElvUI, totalMEM, totalCPU)
 		displayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
 		displayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
@@ -261,11 +261,11 @@ local function OnUpdate(self, elapsed)
 
 		local framerate = floor(GetFramerate())
 		local _, _, homePing, worldPing = GetNetStats()
-		local latency = data.latency == 'HOME' and homePing or worldPing
+		local latency = db.latency == 'HOME' and homePing or worldPing
 
 		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
 		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
-		self.text:SetFormattedText(data.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], framerate, statusColors[ping], latency)
+		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], framerate, statusColors[ping], latency)
 
 		if not enteredFrame then return end
 
@@ -284,8 +284,8 @@ local function OnUpdate(self, elapsed)
 end
 
 local function ValueColorUpdate(self)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 end
 

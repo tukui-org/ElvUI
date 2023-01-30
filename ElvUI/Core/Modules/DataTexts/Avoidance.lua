@@ -21,7 +21,7 @@ local MISS_CHANCE = MISS_CHANCE
 local PARRY_CHANCE = PARRY_CHANCE
 local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 
-local displayString, targetlv, playerlv, data
+local displayString, targetlv, playerlv, db
 local basemisschance, misschance, baseDef, armorDef, leveldifference, dodge, parry, block, unhittable
 local AVD_DECAY_RATE, chanceString = .2, '%.2f%%'	--According to Light's Club discord, avoidance decay should be 0.2% per level per avoidance (thus 102.4 for +3 crush cap)
 
@@ -99,10 +99,10 @@ local function OnEvent(self)
 	local avoidance = (avoided+blocked)
 	unhittable = avoidance - unhittableMax
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, avoidance)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or L["AVD: "], avoidance)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["AVD: "], avoidance)
 	end
 
 	--print(unhittableMax) -- should report 102.4 for a level differance of +3 for shield classes, 101.2 for druids, 101.8 for monks and dks
@@ -133,11 +133,11 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

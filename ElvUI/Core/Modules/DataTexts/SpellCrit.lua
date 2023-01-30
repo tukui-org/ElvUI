@@ -8,19 +8,19 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
 local CRIT_ABBR = CRIT_ABBR
 
-local displayString, data = ''
+local displayString, db = ''
 
 local function OnEvent(self)
 	local minCrit
 
-	if data.school == 0 then
+	if db.school == 0 then
 		minCrit = GetSpellCritChance(2)
 
 		for i = 3, MAX_SPELL_SCHOOLS do
 			minCrit = min(minCrit, GetSpellCritChance(i))
 		end
 	else
-		minCrit = GetSpellCritChance(data.school)
+		minCrit = GetSpellCritChance(db.school)
 	end
 
 	self.text:SetFormattedText(displayString, CRIT_ABBR, minCrit)
@@ -38,8 +38,8 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')

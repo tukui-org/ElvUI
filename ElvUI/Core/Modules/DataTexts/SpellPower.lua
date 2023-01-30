@@ -7,19 +7,19 @@ local strjoin = strjoin
 local GetSpellBonusDamage = GetSpellBonusDamage
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
-local displayString, data = ''
+local displayString, db = ''
 
 local function OnEvent(self)
 	local minSpellPower
 
-	if data.school == 0 then
+	if db.school == 0 then
 		minSpellPower = GetSpellBonusDamage(2)
 
 		for i = 3, MAX_SPELL_SCHOOLS do
 			minSpellPower = min(minSpellPower, GetSpellBonusDamage(i))
 		end
 	else
-		minSpellPower = GetSpellBonusDamage(data.school)
+		minSpellPower = GetSpellBonusDamage(db.school)
 	end
 
 	self.text:SetFormattedText(displayString, L["SP"], minSpellPower)
@@ -37,8 +37,8 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', '%s: ', hex, '%d|r')

@@ -9,7 +9,7 @@ local GetUnitSpeed = GetUnitSpeed
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
 
-local displayString, data = ''
+local displayString, db = ''
 local beforeFalling, wasFlying
 
 local delayed
@@ -35,10 +35,10 @@ local function DelayUpdate(self)
 	end
 
 	local percent = speed / BASE_MOVEMENT_SPEED * 100
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, percent)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or L["Mov. Speed"], percent)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Mov. Speed"], percent)
 	end
 
 	delayed = nil
@@ -51,11 +51,11 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s: ', hex, '%.'..data.decimalLength..'f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s: ', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

@@ -16,7 +16,7 @@ local STAT_MASTERY = STAT_MASTERY
 local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 local CR_MASTERY = CR_MASTERY
 
-local displayString, data = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -56,19 +56,19 @@ end
 
 local function OnEvent(self)
 	local masteryRating = GetMasteryEffect()
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, masteryRating)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or STAT_MASTERY..': ', masteryRating)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_MASTERY..': ', masteryRating)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	if not data then
-		data = E.global.datatexts.settings[self.name]
+	if not db then
+		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

@@ -5,10 +5,11 @@ local floor, format, strjoin = floor, format, strjoin
 local GetInstanceInfo = GetInstanceInfo
 local GetTime = GetTime
 
-local displayString, timerText, timer, startTime, inEncounter = '', L["Combat"], 0, 0
+local displayString, db = ''
+local timerText, timer, startTime, inEncounter = L["Combat"], 0, 0
 
 local function UpdateText()
-	return format(E.global.datatexts.settings.Combat.TimeFull and '%02d:%02d:%02d' or '%02d:%02d', floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
+	return format(db.TimeFull and '%02d:%02d:%02d' or '%02d:%02d', floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
 end
 
 local function OnUpdate(self)
@@ -27,11 +28,11 @@ end
 local function OnEvent(self, event, _, timeSeconds)
 	local _, instanceType = GetInstanceInfo()
 	local inArena, started, ended = instanceType == 'arena', event == 'ENCOUNTER_START', event == 'ENCOUNTER_END'
-	local noLabel = E.global.datatexts.settings.Combat.NoLabel and ''
+	local noLabel = db.NoLabel and ''
 
 	if inArena and event == 'START_TIMER' then
 		timerText, timer, startTime = noLabel or L["Arena"], 0, timeSeconds
-		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
+		self.text:SetFormattedText(displayString, timerText, db.TimeFull and '00:00:00' or '00:00')
 		self:SetScript('OnUpdate', DelayOnUpdate)
 	elseif not inArena and ((not inEncounter and event == 'PLAYER_REGEN_ENABLED') or ended) then
 		self:SetScript('OnUpdate', nil)
@@ -42,13 +43,16 @@ local function OnEvent(self, event, _, timeSeconds)
 		if started then inEncounter = true end
 	elseif not self.text:GetText() or event == 'ELVUI_FORCE_UPDATE' then
 		timerText = noLabel or L["Combat"]
-		self.text:SetFormattedText(displayString, timerText, E.global.datatexts.settings.Combat.TimeFull and '00:00:00' or '00:00')
+		self.text:SetFormattedText(displayString, timerText, db.TimeFull and '00:00:00' or '00:00')
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	local noLabel = E.global.datatexts.settings.Combat.NoLabel and ''
-	displayString = strjoin('', '%s', noLabel or ': ', hex, '%s|r')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', '%s', db.noLabel and '' or ': ', hex, '%s|r')
 
 	OnEvent(self)
 end
