@@ -141,10 +141,10 @@ function DB:ReputationBar_OnEnter()
 			GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 		end
 
-		if isMajorFaction and not C_MajorFactions_HasMaximumRenown(factionID) then
+		if isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 			GameTooltip:AddLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
-		elseif not isMajorFaction and (reaction ~= _G.MAX_REPUTATION_REACTION or isParagon) then
+		elseif isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION) then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
 		end
