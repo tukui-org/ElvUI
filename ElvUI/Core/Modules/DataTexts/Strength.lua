@@ -7,18 +7,22 @@ local ITEM_MOD_STRENGTH_SHORT = ITEM_MOD_STRENGTH_SHORT
 local LE_UNIT_STAT_STRENGTH = LE_UNIT_STAT_STRENGTH
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEvent(self)
-	if E.global.datatexts.settings.Strength.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, UnitStat('player', LE_UNIT_STAT_STRENGTH))
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Strength.Label ~= '' and E.global.datatexts.settings.Strength.Label or ITEM_MOD_STRENGTH_SHORT..': ', UnitStat('player', LE_UNIT_STAT_STRENGTH))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT..': ', UnitStat('player', LE_UNIT_STAT_STRENGTH))
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Strength.NoLabel and '' or '%s', hex, '%d|r')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 
 	OnEvent(self)
 end

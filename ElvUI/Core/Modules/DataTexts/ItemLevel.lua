@@ -21,6 +21,7 @@ local bothString = '%s: %s%0.2f|r / %s%0.2f|r'
 local iconString = '|T%s:13:15:0:0:50:50:4:46:4:46|t %s'
 local slotID = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }
 local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
+local db
 
 local function colorize(num)
 	if num >= 0 then
@@ -35,7 +36,7 @@ local function OnEvent(self)
 		avg, avgEquipped, avgPvp = GetAverageItemLevel()
 		r, g, b = GetItemLevelColor()
 
-		local hex = E.global.datatexts.settings['Item Level'].rarityColor and E:RGBToHex(r, g, b) or '|cFFFFFFFF'
+		local hex = db.rarityColor and E:RGBToHex(r, g, b) or '|cFFFFFFFF'
 
 		self.text:SetFormattedText(avg == avgEquipped and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped or 0, hex, avg or 0)
 	else
@@ -66,4 +67,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Item Level', 'Stats', {'PLAYER_AVG_ITEM_LEVEL_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, _G.LFG_LIST_ITEM_LEVEL_INSTR_SHORT)
+local function ValueColorUpdate(self)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+end
+
+DT:RegisterDatatext('Item Level', 'Stats', {'PLAYER_AVG_ITEM_LEVEL_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, _G.LFG_LIST_ITEM_LEVEL_INSTR_SHORT, nil, ValueColorUpdate)

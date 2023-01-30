@@ -37,7 +37,7 @@ local statusColors = {
 	'|cffD80909'
 }
 
-local enteredFrame = false
+local enteredFrame, db = false
 local bandwidthString = '%.2f Mbps'
 local percentageString = '%.2f%%'
 local homeLatencyString = '%d ms'
@@ -177,7 +177,7 @@ local function OnEnter(_, slow)
 	end
 
 	DT.tooltip:AddLine(' ')
-	if not E.global.datatexts.settings.System.ShowOthers then
+	if not db.ShowOthers then
 		displayData(infoTable.ElvUI, totalMEM, totalCPU)
 		displayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
 		displayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
@@ -261,11 +261,11 @@ local function OnUpdate(self, elapsed)
 
 		local framerate = floor(GetFramerate())
 		local _, _, homePing, worldPing = GetNetStats()
-		local latency = E.global.datatexts.settings.System.latency == 'HOME' and homePing or worldPing
+		local latency = db.latency == 'HOME' and homePing or worldPing
 
 		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
 		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
-		self.text:SetFormattedText(E.global.datatexts.settings.System.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], framerate, statusColors[ping], latency)
+		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], framerate, statusColors[ping], latency)
 
 		if not enteredFrame then return end
 
@@ -283,4 +283,10 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, BuildAddonList, OnUpdate, OnClick, OnEnter, OnLeave, L["System"])
+local function ValueColorUpdate(self)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+end
+
+DT:RegisterDatatext('System', nil, nil, BuildAddonList, OnUpdate, OnClick, OnEnter, OnLeave, L["System"], nil, ValueColorUpdate)

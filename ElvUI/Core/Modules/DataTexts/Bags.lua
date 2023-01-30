@@ -18,7 +18,7 @@ local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local CURRENCY = CURRENCY
 
-local displayString = ''
+local displayString, db = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 local BAG_TYPES = {
 	[0x0001] = 'Quiver',
@@ -35,7 +35,7 @@ local function OnEvent(self)
 		end
 	end
 
-	local textFormat = E.global.datatexts.settings.Bags.textFormat
+	local textFormat = db.textFormat
 	if textFormat == 'FREE' then
 		self.text:SetFormattedText(displayString, free)
 	elseif textFormat == 'USED' then
@@ -99,13 +99,13 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	local textFormat = E.global.datatexts.settings.Bags.textFormat
-	local noLabel = E.global.datatexts.settings.Bags.NoLabel and ''
-	local labelString = noLabel or (E.global.datatexts.settings.Bags.Label ~= '' and E.global.datatexts.settings.Bags.Label) or strjoin('', L["Bags"], ': ')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	displayString = strjoin('', labelString, hex, (textFormat == 'FREE' or textFormat == 'USED') and '%d|r' or '%d/%d|r')
+	displayString = strjoin('', db.NoLabel and '' or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': '), hex, (db.textFormat == 'FREE' or db.textFormat == 'USED') and '%d|r' or '%d/%d|r')
 
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Bags', nil, {'BAG_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ValueColorUpdate)

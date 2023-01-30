@@ -119,7 +119,7 @@ local battleNetString = _G.BATTLENET_OPTIONS_LABEL
 local totalOnlineString = strjoin('', _G.FRIENDS_LIST_ONLINE, ': %s/%s')
 local tthead = {r=0.4, g=0.78, b=1}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local displayString = ''
+local displayString, db = ''
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,'|Hplayer:%%s|h%[%%s%]|h',''), gsub(_G.ERR_FRIEND_OFFLINE_S,'%%s','')
 local wowString = _G.BNET_CLIENT_WOW
@@ -363,13 +363,13 @@ local function Click(self, btn)
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		if not E.global.datatexts.settings.Friends.hideWoW then
+		if not db.hideWoW then
 			for _, info in ipairs(friendTable) do
 				if info.online then
 					local shouldSkip = false
-					if (info.status == statusTable.AFK) and E.global.datatexts.settings.Friends.hideAFK then
+					if (info.status == statusTable.AFK) and db.hideAFK then
 						shouldSkip = true
-					elseif (info.status == statusTable.DND) and E.global.datatexts.settings.Friends.hideDND then
+					elseif (info.status == statusTable.DND) and db.hideDND then
 						shouldSkip = true
 					end
 					if not shouldSkip then
@@ -391,12 +391,12 @@ local function Click(self, btn)
 		for _, info in ipairs(BNTable) do
 			if info.isOnline then
 				local shouldSkip = false
-				if (info.isBnetAFK == true) and E.global.datatexts.settings.Friends.hideAFK then
+				if (info.isBnetAFK == true) and db.hideAFK then
 					shouldSkip = true
-				elseif (info.isBnetDND == true) and E.global.datatexts.settings.Friends.hideDND then
+				elseif (info.isBnetDND == true) and db.hideDND then
 					shouldSkip = true
 				end
-				if info.client and E.global.datatexts.settings.Friends['hide'..info.client] then
+				if info.client and db['hide'..info.client] then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -471,13 +471,13 @@ local function OnEnter()
 	local shiftDown = IsShiftKeyDown()
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-	if (onlineFriends > 0) and not E.global.datatexts.settings.Friends.hideWoW then
+	if (onlineFriends > 0) and not db.hideWoW then
 		for _, info in ipairs(friendTable) do
 			if info.online then
 				local shouldSkip = false
-				if (info.status == statusTable.AFK) and E.global.datatexts.settings.Friends.hideAFK then
+				if (info.status == statusTable.AFK) and db.hideAFK then
 					shouldSkip = true
-				elseif (info.status == statusTable.DND) and E.global.datatexts.settings.Friends.hideDND then
+				elseif (info.status == statusTable.DND) and db.hideDND then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -495,18 +495,18 @@ local function OnEnter()
 		local status
 		for _, client in ipairs(clientSorted) do
 			local Table = tableList[client]
-			local shouldSkip = E.global.datatexts.settings.Friends['hide'..client]
+			local shouldSkip = db['hide'..client]
 			if not shouldSkip then
 				for _, info in ipairs(Table) do
 					if info.isOnline then
 						shouldSkip = false
 						if info.isBnetAFK == true then
-							if E.global.datatexts.settings.Friends.hideAFK then
+							if db.hideAFK then
 								shouldSkip = true
 							end
 							status = statusTable.AFK
 						elseif info.isBnetDND == true then
-							if E.global.datatexts.settings.Friends.hideDND then
+							if db.hideDND then
 								shouldSkip = true
 							end
 							status = statusTable.DND
@@ -567,15 +567,19 @@ local function OnEvent(self, event, message)
 		OnEnter(self)
 	end
 
-	if E.global.datatexts.settings.Friends.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, onlineFriends + numBNetOnline)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Friends.Label ~= '' and E.global.datatexts.settings.Friends.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Friends.NoLabel and '' or '%s', hex, '%d|r')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 
 	OnEvent(self)
 end

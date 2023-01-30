@@ -7,18 +7,22 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ITEM_MOD_STAMINA_SHORT = ITEM_MOD_STAMINA_SHORT
 local LE_UNIT_STAT_STAMINA = LE_UNIT_STAT_STAMINA
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEvent(self)
-	if E.global.datatexts.settings.Stamina.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, UnitStat('player', LE_UNIT_STAT_STAMINA))
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Stamina.Label ~= '' and E.global.datatexts.settings.Stamina.Label or ITEM_MOD_STAMINA_SHORT..': ', UnitStat('player', LE_UNIT_STAT_STAMINA))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STAMINA_SHORT..': ', UnitStat('player', LE_UNIT_STAT_STAMINA))
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Stamina.NoLabel and '' or '%s', hex, '%d|r')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 
 	OnEvent(self)
 end

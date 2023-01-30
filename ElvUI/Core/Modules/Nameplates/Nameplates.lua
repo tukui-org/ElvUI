@@ -876,6 +876,8 @@ function NP:Initialize()
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
 
+	SetCVar("nameplateShowOnlyNames", NP.db.visibility.nameplateShowOnlyNames and '1' or '0')
+
 	NP.Plates = {}
 	NP.PlateGUID = {}
 	NP.StatusBars = {}

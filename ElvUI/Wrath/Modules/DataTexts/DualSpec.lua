@@ -17,7 +17,7 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
-local displayString = ''
+local displayString, db = ''
 local primaryStr, secondaryStr, activeGroup, hasDualSpec
 
 local function BuildTalentString(talentGroup)
@@ -49,7 +49,7 @@ local function OnEvent(self)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	self.text:SetFormattedText(displayString, E.global.datatexts.settings.DualSpecialization.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
+	self.text:SetFormattedText(displayString, db.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -91,7 +91,11 @@ local function OnClick(_, button)
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.DualSpecialization.NoLabel and '' or '%s: ', hex, '%s|r')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s: ', hex, '%s|r')
 
 	OnEvent(self)
 end

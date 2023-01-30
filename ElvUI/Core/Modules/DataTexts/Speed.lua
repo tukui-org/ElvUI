@@ -15,7 +15,7 @@ local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_SPEED = STAT_SPEED
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -26,15 +26,19 @@ end
 
 local function OnEvent(self)
 	local speed = GetSpeed()
-	if E.global.datatexts.settings.Speed.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, speed)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Speed.Label ~= '' and E.global.datatexts.settings.Speed.Label or STAT_SPEED, speed)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_SPEED, speed)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Speed.NoLabel and '' or '%s:', hex, '%.'..E.global.datatexts.settings.Speed.decimalLength..'f%%|r')
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s:', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end
