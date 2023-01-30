@@ -18,10 +18,6 @@ local CR_CRIT_RANGED = CR_CRIT_RANGED
 local displayString, data = ''
 local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
-local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
-end
-
 local function OnEnter()
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
@@ -30,11 +26,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	meleeCrit = GetCritChance()
 	rangedCrit = GetRangedCritChance()
 
@@ -56,7 +48,9 @@ local function OnEvent(self, event)
 end
 
 local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
 
 	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
 

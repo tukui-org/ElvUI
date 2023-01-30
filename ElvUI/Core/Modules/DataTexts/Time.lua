@@ -46,13 +46,17 @@ local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local enteredFrame = false
 
-local OnUpdate
+local OnUpdate, data
 
 local function ToTime(start, seconds)
 	return SecondsToTime(start, not seconds, nil, 3)
 end
 
 local function ValueColorUpdate(self, hex)
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
+
 	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
 	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
@@ -61,7 +65,7 @@ end
 
 local function ConvertTime(h, m)
 	local AmPm
-	if E.global.datatexts.settings.Time.time24 == true then
+	if data.time24 == true then
 		return h, m, -1
 	else
 		if h >= 12 then
@@ -76,7 +80,7 @@ local function ConvertTime(h, m)
 end
 
 local function CalculateTimeValues(tooltip)
-	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
+	if (tooltip and data.localTime) or (not tooltip and not data.localTime) then
 		local dateTable = C_DateAndTime_GetCurrentCalendarTime()
 		return ConvertTime(dateTable.hour, dateTable.minute)
 	else
@@ -303,9 +307,9 @@ local function OnEnter()
 	end
 
 	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(data.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(data.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	DT.tooltip:Show()
@@ -325,7 +329,7 @@ function OnUpdate(self, t)
 	self.timeElapsed = 5
 
 	if E.Retail then
-		if E.global.datatexts.settings.Time.flashInvite and _G.GameTimeFrame.flashInvite then
+		if data.flashInvite and _G.GameTimeFrame.flashInvite then
 			E:Flash(self, 0.53, true)
 		else
 			E:StopFlash(self)

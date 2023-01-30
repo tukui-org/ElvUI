@@ -39,15 +39,7 @@ local function ColorText(str, hex)
 	return format('|cff%s%s|r',hex,str)
 end
 
-local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
-end
-
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	primaryStr, secondaryStr = BuildTalentString(1), BuildTalentString(2)
 
 	activeGroup = GetActiveTalentGroup()
@@ -99,7 +91,9 @@ local function OnClick(_, button)
 end
 
 local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
 
 	displayString = strjoin('', data.NoLabel and '' or '%s: ', hex, '%s|r')
 

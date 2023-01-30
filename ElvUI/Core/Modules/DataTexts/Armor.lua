@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local select = select
 local format = format
 local strjoin = strjoin
 local UnitArmor = UnitArmor
@@ -10,7 +9,7 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
 
 local chanceString = '%.2f%%'
-local displayString, effectiveArmor = ''
+local displayString, data, effectiveArmor, _ = ''
 
 local function GetArmorReduction(armor, attackerLevel)
 	local levelModifier = attackerLevel
@@ -27,12 +26,12 @@ local function GetArmorReduction(armor, attackerLevel)
 end
 
 local function OnEvent(self)
-	effectiveArmor = select(2, UnitArmor('player'))
+	_, effectiveArmor = UnitArmor('player')
 
-	if E.global.datatexts.settings.Armor.NoLabel then
+	if data.NoLabel then
 		self.text:SetFormattedText(displayString, effectiveArmor)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Armor.Label ~= '' and E.global.datatexts.settings.Armor.Label or ARMOR..': ', effectiveArmor)
+		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or ARMOR..': ', effectiveArmor)
 	end
 end
 
@@ -59,7 +58,11 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Armor.NoLabel and '' or '%s', hex, '%d|r')
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%d|r')
 
 	OnEvent(self)
 end

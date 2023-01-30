@@ -10,15 +10,7 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
 local displayString, data = ''
 
-local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
-end
-
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	if data.NoLabel then
 		self.text:SetFormattedText(displayString, UnitStat('player', LE_UNIT_STAT_AGILITY))
 	else
@@ -27,7 +19,9 @@ local function OnEvent(self, event)
 end
 
 local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
 
 	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%d|r')
 

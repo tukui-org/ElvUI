@@ -15,7 +15,7 @@ local STAT_VERSATILITY = STAT_VERSATILITY
 local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
-local displayString = ''
+local displayString, data = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -34,15 +34,19 @@ end
 
 local function OnEvent(self)
 	local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
-	if E.global.datatexts.settings.Versatility.NoLabel then
+	if data.NoLabel then
 		self.text:SetFormattedText(displayString, versatility)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Versatility.Label ~= '' and E.global.datatexts.settings.Versatility.Label or STAT_VERSATILITY, versatility)
+		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or STAT_VERSATILITY, versatility)
 	end
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Versatility.NoLabel and '' or '%s: ', hex, '%.'..E.global.datatexts.settings.Versatility.decimalLength..'f%%|r')
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', data.NoLabel and '' or '%s: ', hex, '%.'..data.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

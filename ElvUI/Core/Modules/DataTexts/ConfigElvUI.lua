@@ -7,12 +7,12 @@ local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local ReloadUI = ReloadUI
 
-local displayString = ''
+local displayString, data = ''
 local configText = 'ElvUI'
 local reloadText = RELOADUI
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayString, E.global.datatexts.settings.ElvUI.Label ~= '' and E.global.datatexts.settings.ElvUI.Label or configText)
+	self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or configText)
 end
 
 local function OnEnter()
@@ -46,6 +46,10 @@ local function OnClick(_, button)
 end
 
 local function ValueColorUpdate(self, hex)
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
+
 	displayString = strjoin('', hex, '%s|r')
 
 	OnEvent(self)

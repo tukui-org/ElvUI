@@ -21,7 +21,7 @@ local CR_ARMOR_PENETRATION = CR_ARMOR_PENETRATION
 
 local ratingIndex = E.myclass == 'HUNTER' and CR_HIT_RANGED or CR_HIT_MELEE
 
-local displayString = ''
+local displayString, data = ''
 local hitValue, hitPercent, hitPercentFromTalents
 
 local function OnEvent(self)
@@ -29,10 +29,10 @@ local function OnEvent(self)
 	hitPercent = GetCombatRatingBonus(ratingIndex)
 	hitPercentFromTalents = ratingIndex == CR_HIT_MELEE and GetHitModifier() or 0
 
-	if E.global.datatexts.settings.Hit.NoLabel then
+	if data.NoLabel then
 		self.text:SetFormattedText(displayString, hitPercent + hitPercentFromTalents)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Hit.Label ~= '' and E.global.datatexts.settings.Hit.Label or STAT_HIT_CHANCE..': ', hitPercent + hitPercentFromTalents)
+		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or STAT_HIT_CHANCE..': ', hitPercent + hitPercentFromTalents)
 	end
 end
 
@@ -46,7 +46,11 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Hit.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Hit.decimalLength..'f%%|r')
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end

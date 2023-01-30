@@ -22,10 +22,6 @@ local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
 local enteredFrame = false
 local displayString, data = ''
 
-local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
-end
-
 local function MakeIconString(tank, healer, damage)
 	local str = ''
 	if tank then
@@ -41,11 +37,7 @@ local function MakeIconString(tank, healer, damage)
 	return str
 end
 
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	local tankReward = false
 	local healerReward = false
 	local dpsReward = false
@@ -85,7 +77,9 @@ local function OnClick()
 end
 
 local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+	if not data then
+		data = E.global.datatexts.settings[self.name]
+	end
 
 	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%s|r')
 
