@@ -37,7 +37,7 @@ local function ReplaceGossipText(button, text)
 end
 
 local function createParchment(frame)
-	local tex = frame:CreateTexture(nil, "ARTWORK")
+	local tex = frame:CreateTexture(nil, 'ARTWORK')
 	tex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	tex:SetTexCoord(0, 0.586, 0.02, 0.655)
 	return tex
@@ -47,28 +47,30 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	local GossipFrame = _G.GossipFrame
-	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
 	S:HandlePortraitFrame(GossipFrame, true)
+	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
+	S:HandleCloseButton(_G.ItemTextCloseButton)
 
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
 	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
 	S:HandleButton(GreetingPanel.GoodbyeButton, true)
 
 	GreetingPanel:StripTextures()
-	GreetingPanel:CreateBackdrop()
+	GreetingPanel:CreateBackdrop('Transparent')
 	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
 	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 80)
 
-	S:HandleCloseButton(ItemTextCloseButton)
-
+	local ItemTextFrame = _G.ItemTextFrame
 	ItemTextFrame:StripTextures()
-	ItemTextFrame:CreateBackdrop()
+	ItemTextFrame:CreateBackdrop('Transparent')
 	ItemTextFrame.backdrop:ClearAllPoints()
 	ItemTextFrame.backdrop:Point('TOPLEFT', ItemTextFrame, 5, -10)
 	ItemTextFrame.backdrop:Point('BOTTOMRIGHT', ItemTextFrame, -25, 45)
 
-	ItemTextScrollFrame:DisableDrawLayer("ARTWORK")
-	ItemTextScrollFrame:DisableDrawLayer("BACKGROUND")
+	local ItemTextScrollFrame = _G.ItemTextScrollFrame
+	ItemTextScrollFrame:DisableDrawLayer('ARTWORK')
+	ItemTextScrollFrame:DisableDrawLayer('BACKGROUND')
+
 	GossipFrame.backdrop:ClearAllPoints()
 	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
 	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 40, 40)
@@ -77,7 +79,6 @@ function S:GossipFrame()
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
 
 	if not E.private.skins.parchmentRemoverEnable then
-
 		local spellTex = createParchment(GreetingPanel)
 		spellTex:SetInside(GreetingPanel.backdrop)
 		GreetingPanel.spellTex = spellTex
@@ -85,7 +86,6 @@ function S:GossipFrame()
 		local itemTex = createParchment(ItemTextFrame)
 		itemTex:SetInside(ItemTextScrollFrame, -5)
 		ItemTextFrame.itemTex = itemTex
-
 	else
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
