@@ -2,15 +2,21 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
+local format = format
+
 local GetMasteryEffect = GetMasteryEffect
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_MASTERY = STAT_MASTERY
-local STAT_MASTERY_BASE_TOOLTIP = STAT_MASTERY_BASE_TOOLTIP
 local CreateBaseTooltipInfo = CreateBaseTooltipInfo
+local CR_MASTERY = CR_MASTERY
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -38,8 +44,8 @@ local function OnEnter()
 				DT.tooltip:AddSpellByID(masterySpell2)
 			end
 		end
-		local mastery, bonusCoeff = GetMasteryEffect();
-		local masteryBonus = GetCombatRatingBonus(CR_MASTERY) * bonusCoeff;
+		local mastery, bonusCoeff = GetMasteryEffect()
+		local masteryBonus = GetCombatRatingBonus(CR_MASTERY) * bonusCoeff
 
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(format('%s: %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY)), masteryBonus))
@@ -50,17 +56,19 @@ end
 
 local function OnEvent(self)
 	local masteryRating = GetMasteryEffect()
-	if E.global.datatexts.settings.Mastery.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, masteryRating)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Mastery.Label ~= '' and E.global.datatexts.settings.Mastery.Label or STAT_MASTERY..': ', masteryRating)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_MASTERY..': ', masteryRating)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Mastery.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Mastery.decimalLength..'f%%|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ValueColorUpdate)
+DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ApplySettings)

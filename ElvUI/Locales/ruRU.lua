@@ -376,6 +376,7 @@ L["UI Scale"] = "Скалирование UI"
 L["Unhittable:"] = "Полная защита от ударов:"
 L["Vehicle Seat Frame"] = "Техника"
 L["VehicleLeaveButton"] = "Кнопка покинуть технику" -- it need for translate?
+L["Vendor / Delete Grays"] = "Продать/удалить серые предметы"
 L["Vendor Grays"] = "Продавать серые предметы"
 L["Vendored gray items for: %s"] = "Проданы серые предметы на сумму: %s"
 L["Vendoring Grays"] = "Продаю хлам"

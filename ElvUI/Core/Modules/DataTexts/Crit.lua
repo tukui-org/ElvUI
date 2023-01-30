@@ -15,12 +15,8 @@ local CR_CRIT_MELEE_TOOLTIP = CR_CRIT_MELEE_TOOLTIP
 local CR_CRIT_MELEE = CR_CRIT_MELEE
 local CR_CRIT_RANGED = CR_CRIT_RANGED
 
-local displayString, data = ''
+local displayString, db = ''
 local meleeCrit, rangedCrit, ratingIndex = 0, 0
-
-local function GetSettingsData(self)
-	data = E:CopyTable(E.global.datatexts.settings[self.name])
-end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -30,11 +26,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	meleeCrit = GetCritChance()
 	rangedCrit = GetRangedCritChance()
 
@@ -48,19 +40,21 @@ local function OnEvent(self, event)
 	end
 
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, critChance)
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or CRIT_ABBR..': ', critChance)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or CRIT_ABBR..': ', critChance)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%.'..data.decimalLength..'f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, MELEE_CRIT_CHANCE, nil, ValueColorUpdate)
+DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, MELEE_CRIT_CHANCE, nil, ApplySettings)

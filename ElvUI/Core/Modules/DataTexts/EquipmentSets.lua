@@ -58,10 +58,8 @@ local function OnEvent(self, event)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	hexColor = hex
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Equipment Sets', nil, { 'EQUIPMENT_SETS_CHANGED', 'PLAYER_EQUIPMENT_CHANGED', 'EQUIPMENT_SWAP_FINISHED' }, OnEvent, nil, OnClick, OnEnter, nil, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('Equipment Sets', nil, { 'EQUIPMENT_SETS_CHANGED', 'PLAYER_EQUIPMENT_CHANGED', 'EQUIPMENT_SWAP_FINISHED' }, OnEvent, nil, OnClick, OnEnter, nil, nil, nil, ApplySettings)

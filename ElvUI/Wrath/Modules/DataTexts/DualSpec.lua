@@ -17,7 +17,7 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
-local displayString, data = ''
+local displayString, db = ''
 local primaryStr, secondaryStr, activeGroup, hasDualSpec
 
 local function BuildTalentString(talentGroup)
@@ -39,15 +39,7 @@ local function ColorText(str, hex)
 	return format('|cff%s%s|r',hex,str)
 end
 
-local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
-end
-
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	primaryStr, secondaryStr = BuildTalentString(1), BuildTalentString(2)
 
 	activeGroup = GetActiveTalentGroup()
@@ -57,7 +49,7 @@ local function OnEvent(self, event)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	self.text:SetFormattedText(displayString, data.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
+	self.text:SetFormattedText(displayString, db.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -98,12 +90,12 @@ local function OnClick(_, button)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s: ', hex, '%s|r')
-
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s: ', hex, '%s|r')
 end
 
-DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC, nil, ValueColorUpdate)
+DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC, nil, ApplySettings)

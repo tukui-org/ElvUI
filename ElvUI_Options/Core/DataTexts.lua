@@ -148,39 +148,34 @@ function DT:PanelLayoutOptions()
 	end
 end
 
-local function CreateCustomCurrencyOptions(currencyID)
-	local currency = E.global.datatexts.customCurrencies[currencyID]
-	if currency then
-		local options = ACH:Group(currency.name, nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[currencyID][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[currencyID][info[#info]] = value DT:ForceUpdate_DataText(currencyID) end)
-
-		options.args.nameStyle = ACH:Select(L["Name Style"], nil, 1, { full = L["Name"], abbr = L["Abbreviate Name"], none = L["None"] })
-		options.args.showIcon = ACH:Toggle(L["Show Icon"], nil, 2)
-		options.args.showMax = ACH:Toggle(L["Current / Max"], nil, 3)
-		options.args.currencyTooltip = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4, nil, nil, nil, nil, nil, nil, function() return DT.CurrencyList[tostring(currencyID)] end)
-
-		E.Options.args.datatexts.args.customCurrency.args[currency.name] = options
-	end
-end
-
-local function SetupCustomCurrencies()
-	for currencyID in pairs(E.global.datatexts.customCurrencies) do
-		CreateCustomCurrencyOptions(currencyID)
-	end
-end
-
 local function escapeString(str, get)
 	return get == gsub(str, '|', '||') or gsub(str, '||', '|')
 end
 
 local function CreateDTOptions(name, data)
-	local settings = E.global.datatexts.settings[name]
-	if not settings then return end
+	local optionTable, settings
 
-	local optionTable = ACH:Group(data.localizedName or name, nil, nil, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value DT:ForceUpdate_DataText(name) end)
+	if data.isCurrency then
+		local currency = E.global.datatexts.customCurrencies[name] -- name is actually the currencyID
+		optionTable = ACH:Group(currency.name, nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[name][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[name][info[#info]] = value DT:ForceUpdate_DataText(name) end)
 
-	E.Options.args.datatexts.args.settings.args[name] = optionTable
+		optionTable.args.nameStyle = ACH:Select(L["Name Style"], nil, 1, { full = L["Name"], abbr = L["Abbreviate Name"], none = L["None"] })
+		optionTable.args.showIcon = ACH:Toggle(L["Show Icon"], nil, 2)
+		optionTable.args.showMax = ACH:Toggle(L["Current / Max"], nil, 3)
+		optionTable.args.currencyTooltip = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4, nil, nil, nil, nil, nil, nil, function() return DT.CurrencyList[tostring(name)] end)
 
-	if data.isLibDataBroker then
+		E.Options.args.datatexts.args.customCurrency.args[currency.name] = optionTable
+
+		return
+	else
+		settings = E.global.datatexts.settings[name]
+		if not settings or (settings and not next(settings)) then return end
+
+		optionTable = ACH:Group(data.localizedName or name, nil, nil, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value DT:ForceUpdate_DataText(name) end)
+		E.Options.args.datatexts.args.settings.args[name] = optionTable
+	end
+
+	if data.isLDB then
 		optionTable.args.customLabel = ACH:Input(L["Custom Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
 		optionTable.args.spacer = ACH:Spacer(2, 'full')
 		optionTable.args.label = ACH:Toggle(L["Show Label"], nil, 3)
@@ -349,7 +344,4 @@ E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.get = func
 E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.set = function(_, key, value) E.global.datatexts.newPanelInfo[key] = value end
 
 DT:PanelLayoutOptions()
-if E.Retail or E.Wrath then
-	SetupCustomCurrencies()
-end
 SetupDTCustomization()

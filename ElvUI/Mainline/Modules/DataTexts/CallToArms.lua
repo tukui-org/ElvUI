@@ -20,11 +20,7 @@ local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ':14:14')
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ':14:14')
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
 local enteredFrame = false
-local displayString, data = ''
-
-local function GetSettingsData(self)
-	data = E.global.datatexts.settings[self.name]
-end
+local displayString, db = ''
 
 local function MakeIconString(tank, healer, damage)
 	local str = ''
@@ -41,11 +37,7 @@ local function MakeIconString(tank, healer, damage)
 	return str
 end
 
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' then
-		GetSettingsData(self)
-	end
-
+local function OnEvent(self)
 	local tankReward = false
 	local healerReward = false
 	local dpsReward = false
@@ -73,10 +65,10 @@ local function OnEvent(self, event)
 		end
 	end
 
-	if data.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
 	else
-		self.text:SetFormattedText(displayString, data.Label ~= '' and data.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
 	end
 end
 
@@ -84,12 +76,12 @@ local function OnClick()
 	PVEFrame_ToggleFrame('GroupFinderFrame', _G.LFDParentFrame)
 end
 
-local function ValueColorUpdate(self, hex)
-	GetSettingsData(self)
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	displayString = strjoin('', data.NoLabel and '' or '%s', hex, '%s|r')
-
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s|r')
 end
 
 local function OnEnter()
@@ -178,4 +170,4 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)
+DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ApplySettings)
