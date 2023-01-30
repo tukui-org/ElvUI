@@ -420,7 +420,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 end
 
-function DT:ForceUpdate_DataText(name)
+function DT:ForceUpdate_DataText(name) -- This is suppose to fire separately.
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
@@ -434,11 +434,13 @@ function DT:ForceUpdate_DataText(name)
 	end
 end
 
-function DT:UpdateHexColors(hex, r, g, b)
+function DT:UpdateHexColors(hex, r, g, b) -- This will fire both together.
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.applySettings then
 			dtInfo.applySettings(dtSlot, hex, r, g, b)
-			dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
+			if dtInfo.eventFunc then
+				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
+			end
 		end
 	end
 end
