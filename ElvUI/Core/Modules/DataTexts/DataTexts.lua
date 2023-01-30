@@ -283,7 +283,7 @@ function DT:SetupObjectLDB(name, obj)
 
 		local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
 		local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
-		data.isLibDataBroker = true
+		data.isLDB = true
 
 		if not obj.label then obj.label = name end
 
@@ -553,7 +553,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.objectEvent, dt.objectEventFunc = nil, nil
 		end
 
-		if assigned and assigned.isLibDataBroker and assigned.eventFunc then
+		if assigned and assigned.isLDB and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
 		end
 

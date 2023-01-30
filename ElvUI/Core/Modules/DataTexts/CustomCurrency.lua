@@ -43,7 +43,8 @@ local function RegisterNewDT(currencyID)
 	E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
 
 	--Register datatext
-	DT:RegisterDatatext(currencyID, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+	local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+	data.isCurrency = true
 
 	DT:UpdateQuickDT()
 end
@@ -57,7 +58,8 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 			G.datatexts.customCurrencies[id] = defaults
 			info = E:CopyTable(info, defaults, true)
 
-			DT:RegisterDatatext(id, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+			local data = DT:RegisterDatatext(id, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+			data.isCurrency = true
 		end
 	end
 end
