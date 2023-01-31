@@ -10,6 +10,7 @@ local tinsert, tonumber, gsub, pairs, wipe, ceil = tinsert, tonumber, gsub, pair
 
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
+local CopyTable = CopyTable
 
 local NUM_CLASSES = #CLASS_SORT_ORDER
 local MAX_BOSS_FRAMES = 8
@@ -510,7 +511,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 			return
 		end
 
-		E.db.unitframe.units[groupName].customTexts[textName] = E:CopyTable(G.unitframe.newCustomText)
+		E.db.unitframe.units[groupName].customTexts[textName] = CopyTable(G.unitframe.newCustomText)
 		E.db.unitframe.units[groupName].customTexts[textName].text_format = strmatch(textName, '^%[') and textName or ''
 		E.db.unitframe.units[groupName].customTexts[textName].size = E.db.unitframe.fontSize
 		E.db.unitframe.units[groupName].customTexts[textName].font = E.db.unitframe.font
