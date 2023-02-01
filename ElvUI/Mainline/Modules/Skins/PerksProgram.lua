@@ -13,38 +13,43 @@ local function ReplaceIconString(frame, text)
 	if count > 0 then frame:SetFormattedText('%s', newText) end
 end
 
+local function HandleRewardButton(button)
+	if button.IsSkinned then return end
+
+	local container = button.ContentsContainer
+	if container then
+		S:HandleIcon(container.Icon)
+		ReplaceIconString(container.Price)
+		hooksecurefunc(container.Price, 'SetText', ReplaceIconString)
+	end
+	button.IsSkinned = true
+end
+
 function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
 	local frame = _G.PerksProgramFrame
 
-	local products = frame.ProductsFrame
-	if products then
-		S:HandleButton(products.PerksProgramFilter.FilterDropDownButton)
-		products.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
-		S:HandleIcon(products.PerksProgramCurrencyFrame.Icon)
-		products.PerksProgramCurrencyFrame.Icon:Size(30)
+	local productsFrame = frame.ProductsFrame
+	if productsFrame then
+		S:HandleButton(productsFrame.PerksProgramFilter.FilterDropDownButton)
+		productsFrame.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
+		S:HandleIcon(productsFrame.PerksProgramCurrencyFrame.Icon)
+		productsFrame.PerksProgramCurrencyFrame.Icon:Size(30)
 
-		products.ProductsScrollBoxContainer.Border:Hide()
-		products.ProductsScrollBoxContainer:SetTemplate('Transparent')
-		products.ProductsScrollBoxContainer.PerksProgramHoldFrame:StripTextures()
-		S:HandleTrimScrollBar(products.ProductsScrollBoxContainer.ScrollBar, true)
+		productsFrame.PerksProgramProductDetailsContainerFrame.Border:Hide()
+		productsFrame.PerksProgramProductDetailsContainerFrame:SetTemplate('Transparent')
 
-		products.PerksProgramProductDetailsContainerFrame.Border:Hide()
-		products.PerksProgramProductDetailsContainerFrame:SetTemplate('Transparent')
+		local productsContainer = productsFrame.ProductsScrollBoxContainer
+		productsContainer:StripTextures()
+		productsContainer:SetTemplate('Transparent')
+		S:HandleTrimScrollBar(productsFrame.ProductsScrollBoxContainer.ScrollBar, true)
+		productsContainer.PerksProgramHoldFrame:StripTextures()
+		productsContainer.PerksProgramHoldFrame:CreateBackdrop('Transparent')
+		productsContainer.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
 
-		hooksecurefunc(products.ProductsScrollBoxContainer.ScrollBox, 'Update', function(self)
-			self:ForEachFrame(function(button)
-				if button.IsSkinned then return end
-
-				local container = button.ContentsContainer
-				if container then
-					S:HandleIcon(container.Icon)
-					ReplaceIconString(container.Price)
-					hooksecurefunc(container.Price, 'SetText', ReplaceIconString)
-				end
-				button.IsSkinned = true
-			end)
+		hooksecurefunc(productsContainer.ScrollBox, "Update", function(self)
+			self:ForEachFrame(HandleRewardButton)
 		end)
 	end
 

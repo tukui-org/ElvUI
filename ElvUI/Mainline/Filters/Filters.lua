@@ -634,6 +634,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[383600]	= List(), -- Surrounding Storm (Strunraan)
 		[392992]	= List(), -- Silent Lava
 		[393798]	= List(), -- Activated Defense Systems
+		[196342]	= List(), -- Zanzil's Embrace
 	},
 }
 
