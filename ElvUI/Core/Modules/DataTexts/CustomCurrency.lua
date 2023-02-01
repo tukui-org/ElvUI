@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local tremove, next = tremove, next
-local ipairs, pairs, strjoin = ipairs, pairs, strjoin
+local pairs, strjoin = pairs, strjoin
 
 local defaults = { showIcon = true, nameStyle = 'full', showMax = true, currencyTooltip = true }
 
@@ -39,11 +38,9 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 		local info = DT:CurrencyInfo(currencyID)
 		if not info then return end
 
-		--Save info to persistent storage, stored with ID as key
 		G.datatexts.customCurrencies[currencyID] = defaults
 		E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
 
-		--Register datatext
 		local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
 		data.isCurrency = true
 
