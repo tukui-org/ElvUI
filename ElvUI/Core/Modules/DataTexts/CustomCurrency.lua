@@ -34,24 +34,21 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function RegisterNewDT(currencyID)
-	local info = DT:CurrencyInfo(currencyID)
-	if not info then return end
-
-	--Save info to persistent storage, stored with ID as key
-	G.datatexts.customCurrencies[currencyID] = defaults
-	E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
-
-	--Register datatext
-	local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
-	data.isCurrency = true
-
-	DT:UpdateQuickDT()
-end
-
 function DT:RegisterCustomCurrencyDT(currencyID)
 	if currencyID then
-		RegisterNewDT(currencyID)
+		local info = DT:CurrencyInfo(currencyID)
+		if not info then return end
+
+		--Save info to persistent storage, stored with ID as key
+		G.datatexts.customCurrencies[currencyID] = defaults
+		E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
+
+		--Register datatext
+		local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+		data.isCurrency = true
+
+		DT:UpdateQuickDT()
+		return data
 	else
 		--We called this in DT:Initialize, so load all the stored currency datatexts
 		for id, info in pairs(E.global.datatexts.customCurrencies) do
@@ -64,23 +61,10 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 	end
 end
 
-function DT:RemoveCustomCurrency(currencyName)
-	local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
-	local quickList = DT.QuickList[menuIndex]
-	if quickList then
-		if not next(E.global.datatexts.customCurrencies) then
-			DT.QuickList[menuIndex] = nil
-		else
-			local menuList = quickList.menuList
+function DT:RemoveCustomCurrency(currencyID)
+	DT.RegisteredDataTexts[currencyID] = nil
+	DT.DataTextList[currencyID] = nil
 
-			for i, info in ipairs(menuList) do
-				if info.text == currencyName then
-					tremove(menuList, i)
-					break
-				end
-			end
-		end
-	end
-
-	DT:SortMenuList(DT.QuickList)
+	DT:UpdateQuickDT()
+	DT:LoadDataTexts()
 end

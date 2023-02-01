@@ -1000,7 +1000,6 @@ L["Merchant Frame"] = "Marchand"
 L["Method to sort by."] = "Méthode de tri d'affichage"
 L["Middle Click - Set Focus"] = "Clic milieu - Réglage de la focalisation"
 L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."] = true
-L["middle"] = "Milieu"
 L["Middle"] = "Milieu"
 L["Min Alpha"] = true
 L["Minimap Buttons"] = "Bouton de la minicarte"

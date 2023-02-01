@@ -1000,7 +1000,6 @@ L["Merchant Frame"] = true
 L["Method to sort by."] = true
 L["Middle Click - Set Focus"] = true
 L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."] = true
-L["middle"] = "Middle"
 L["Middle"] = true
 L["Min Alpha"] = true
 L["Minimap Buttons"] = true
