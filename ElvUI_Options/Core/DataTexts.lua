@@ -10,6 +10,7 @@ local _G = _G
 local type, pairs, ipairs = type, pairs, ipairs
 local gsub, next, wipe, ceil = gsub, next, wipe, ceil
 local format, tostring, tonumber = format, tostring, tonumber
+local CopyTable = CopyTable
 
 local currencyList, DTPanelOptions = {}, {}
 
