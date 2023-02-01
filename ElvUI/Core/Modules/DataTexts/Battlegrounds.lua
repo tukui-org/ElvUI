@@ -5,66 +5,68 @@ local _G = _G
 local sort = sort
 local ipairs = ipairs
 local strjoin = strjoin
-local C_PvP_GetMatchPVPStatColumns = C_PvP.GetMatchPVPStatColumns
+
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatData = GetBattlefieldStatData
 local GetBattlefieldScore = GetBattlefieldScore
 
+local C_PvP_GetMatchPVPStatColumns = C_PvP.GetMatchPVPStatColumns
+
 local displayString = ''
-local PvPData = { killingBlows = 0, honorableKills = 0, healingDone = 0, deaths = 0, damageDone = 0, honorGained = 0 }
+local data = { killingBlows = 0, honorableKills = 0, healingDone = 0, deaths = 0, damageDone = 0, honorGained = 0 }
 
 local function GetBattleStats(name)
 	if name == 'PvP: Kills' then
-		return _G.KILLS, PvPData.killingBlows
+		return _G.KILLS, data.killingBlows
 	elseif name == 'PvP: Honorable Kills' then
-		return _G.KILLING_BLOWS, PvPData.honorableKills
+		return _G.KILLING_BLOWS, data.honorableKills
 	elseif name == 'PvP: Heals' then
-		return E.Retail and _G.SHOW_COMBAT_HEALING or _G.HEALS, PvPData.healingDone
+		return (E.Retail and _G.SHOW_COMBAT_HEALING) or _G.HEALS, data.healingDone
 	elseif name == 'PvP: Deaths' then
-		return _G.DEATHS, PvPData.deaths
+		return _G.DEATHS, data.deaths
 	elseif name == 'PvP: Damage Done' then
-		return _G.DAMAGE, PvPData.damageDone
+		return _G.DAMAGE, data.damageDone
 	elseif name == 'PvP: Honor Gained' then
-		return _G.HONOR, PvPData.honorGained
+		return _G.HONOR, data.honorGained
 	elseif name == 'PvP: Objectives' then
 		return _G.OBJECTIVES_LABEL
 	end
 end
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
-	PvPData.myIndex = nil
+	data.myIndex = nil
 
 	for i = 1, GetNumBattlefieldScores() do
 		local name, _
 		if E.Classic then
-			name, PvPData.killingBlows, PvPData.honorableKills, PvPData.deaths, PvPData.honorGained, _, _, _, _, _, PvPData.damageDone, PvPData.healingDone = GetBattlefieldScore(i)
+			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)
 		else
-			name, PvPData.killingBlows, PvPData.honorableKills, PvPData.deaths, PvPData.honorGained, _, _, _, _, PvPData.damageDone, PvPData.healingDone = GetBattlefieldScore(i)
+			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)
 		end
 
 		if name == E.myname then
-			PvPData.myIndex = i
+			data.myIndex = i
 			break
 		end
 	end
 end
 
-local function columnSort(lhs,rhs)
+local function columnSort(lhs, rhs)
 	return lhs.orderIndex < rhs.orderIndex
 end
 
 function DT:HoverBattleStats() -- Objectives OnEnter -- Idea is to store this in a table and probably rotate it on the text field.
 	DT.tooltip:ClearLines()
 
-	if PvPData.myIndex and DT.ShowingBattleStats == 'pvp' then
+	if data.myIndex and DT.ShowingBattleStats == 'pvp' then
 		local columns = C_PvP_GetMatchPVPStatColumns()
 		if columns then
 			sort(columns, columnSort)
+
 			-- Add extra statistics to watch based on what BG you are in.
 			for i, stat in ipairs(columns) do
-				local name = stat.name
-				if name then
-					DT.tooltip:AddDoubleLine(name, GetBattlefieldStatData(PvPData.myIndex, i), 1,1,1)
+				if stat.name then
+					DT.tooltip:AddDoubleLine(stat.name, GetBattlefieldStatData(data.myIndex, i), 1,1,1)
 				end
 			end
 
@@ -91,10 +93,10 @@ local function OnUpdate(self, elapsed)
 
 	if self.needsUpdate and self.timeSinceUpdate > 0.3 then -- this will allow the main event to update the dt
 		local locale, value = GetBattleStats(self.name)
-		if not value then
-			self.text:SetFormattedText('%s', locale)
-		else
+		if value then
 			self.text:SetFormattedText(displayString, locale, E:ShortValue(value or 0))
+		else
+			self.text:SetFormattedText('%s', locale)
 		end
 
 		self.needsUpdate = false
