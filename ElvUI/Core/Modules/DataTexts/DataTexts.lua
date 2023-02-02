@@ -365,7 +365,7 @@ function DT:GetPanelSettings(name)
 	local gp = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
 	G.datatexts.customPanels[name] = gp
 
-	for i = 1, (gp.numPoints or 1) do
+	for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
 		if not db[i] then db[i] = '' end
 	end
 
