@@ -32,6 +32,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
+local currencyEvents = { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }
 function DT:RegisterCustomCurrencyDT(currencyID)
 	if currencyID then
 		local info = DT:CurrencyInfo(currencyID)
@@ -40,7 +41,7 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 		G.datatexts.customCurrencies[currencyID] = defaults
 		E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
 
-		local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, info.name)
+		local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, currencyEvents, OnEvent, nil, nil, OnEnter, nil, info.name)
 		data.isCurrency = true
 
 		DT:UpdateQuickDT()
@@ -50,7 +51,7 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 			G.datatexts.customCurrencies[id] = defaults
 			info = E:CopyTable(info, defaults, true)
 
-			local data = DT:RegisterDatatext(id, _G.CURRENCY, { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, info.name)
+			local data = DT:RegisterDatatext(id, _G.CURRENCY, currencyEvents, OnEvent, nil, nil, OnEnter, nil, info.name)
 			data.isCurrency = true
 		end
 	end
