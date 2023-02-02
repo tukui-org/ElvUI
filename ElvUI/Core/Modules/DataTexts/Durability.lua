@@ -99,10 +99,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(self)
+local function ApplySettings(self)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 end
 
-DT:RegisterDatatext('Durability', nil, {'UPDATE_INVENTORY_DURABILITY', 'MERCHANT_SHOW'}, OnEvent, nil, Click, OnEnter, nil, DURABILITY, nil, ValueColorUpdate)
+DT:RegisterDatatext('Durability', nil, {'UPDATE_INVENTORY_DURABILITY', 'MERCHANT_SHOW'}, OnEvent, nil, Click, OnEnter, nil, DURABILITY, nil, ApplySettings)

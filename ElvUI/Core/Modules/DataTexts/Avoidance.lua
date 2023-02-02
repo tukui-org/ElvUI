@@ -132,14 +132,12 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Avoidance', STAT_CATEGORY_DEFENSE, { 'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_EQUIPMENT_CHANGED' }, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Avoidance', STAT_CATEGORY_DEFENSE, { 'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_EQUIPMENT_CHANGED' }, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"], nil, ApplySettings)

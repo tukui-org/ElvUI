@@ -1001,7 +1001,6 @@ L["Method to sort by."] = "정렬 방법"
 L["Middle Click - Set Focus"] = "휠클릭으로 주시 설정"
 L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."] = true
 L["Middle"] = "중간"
-L["middle"] = "중앙"
 L["Min Alpha"] = true
 L["Minimap Buttons"] = "미니맵 버튼"
 L["Minimap Mouseover"] = "마우스오버 때만 표시"

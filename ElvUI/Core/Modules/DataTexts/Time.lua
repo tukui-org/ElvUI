@@ -52,7 +52,7 @@ local function ToTime(start, seconds)
 	return SecondsToTime(start, not seconds, nil, 3)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
@@ -349,4 +349,4 @@ function OnUpdate(self, t)
 	end
 end
 
-DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)

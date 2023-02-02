@@ -5,8 +5,6 @@ local ACH = E.Libs.ACH
 
 local IsAddOnLoaded = IsAddOnLoaded
 
--- GLOBALS: AceGUIWidgetLSMlists
-
 local function profile(db)
 	return (db == 'global' and E.db.cooldown) or E.db[db].cooldown
 end

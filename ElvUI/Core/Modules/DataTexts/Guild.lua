@@ -305,15 +305,13 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, { 'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD', 'MODIFIER_STATE_CHANGED' }, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ValueColorUpdate)
+DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, { 'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD', 'MODIFIER_STATE_CHANGED' }, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ApplySettings)

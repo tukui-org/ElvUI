@@ -98,14 +98,12 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': '), hex, (db.textFormat == 'FREE' or db.textFormat == 'USED') and '%d|r' or '%d/%d|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ApplySettings)

@@ -1000,7 +1000,6 @@ L["Merchant Frame"] = "Торговец"
 L["Method to sort by."] = "Метод сортировки."
 L["Middle Click - Set Focus"] = "Средний клик - фокус"
 L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."] = true
-L["middle"] = "В центре"
 L["Middle"] = "Центр"
 L["Min Alpha"] = "Минимальная видимость"
 L["Minimap Buttons"] = "Кнопки миникарты"

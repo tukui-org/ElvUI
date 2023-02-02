@@ -283,7 +283,7 @@ function DT:SetupObjectLDB(name, obj)
 
 		local onEvent, onClick, onEnter, onLeave, updateColor = DT:BuildPanelFunctions(name, obj)
 		local data = DT:RegisterDatatext(ldbName, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave, 'LDB: '..name, nil, updateColor)
-		data.isLibDataBroker = true
+		data.isLDB = true
 
 		if not obj.label then obj.label = name end
 
@@ -353,7 +353,24 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 end
 
 function DT:GetPanelSettings(name)
-	return E:CopyTable(E.global.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
+	-- handle profile stuff
+	if not P.datatexts.battlePanel[name] then
+		P.datatexts.battlePanel[name] = {}
+	end
+
+	local db = P.datatexts.battlePanel[name]
+	E.db.datatexts.battlePanel[name] = E:CopyTable(E.db.datatexts.battlePanel[name], db, true)
+
+	-- handle global stuff
+	local gp = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
+	G.datatexts.customPanels[name] = gp
+
+	for i = 1, (gp.numPoints or 1) do
+		if not db[i] then db[i] = '' end
+	end
+
+	-- pass the table back
+	return E:CopyTable(E.global.datatexts.customPanels[name], gp, true)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
@@ -387,8 +404,8 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		end
 	end
 
-	if data.colorUpdate then -- has to be before event function
-		data.colorUpdate(dt, E.media.hexvaluecolor)
+	if data.applySettings then -- has to be before event function
+		data.applySettings(dt, E.media.hexvaluecolor)
 	end
 
 	local ev = event or 'ELVUI_FORCE_UPDATE'
@@ -420,12 +437,12 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 end
 
-function DT:ForceUpdate_DataText(name)
+function DT:ForceUpdate_DataText(name) -- This is suppose to fire separately.
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.name == name then
-			if dtInfo.colorUpdate then
-				dtInfo.colorUpdate(dtSlot, hex, r, g, b)
+			if dtInfo.applySettings then
+				dtInfo.applySettings(dtSlot, hex, r, g, b)
 			end
 			if dtInfo.eventFunc then
 				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
@@ -434,10 +451,13 @@ function DT:ForceUpdate_DataText(name)
 	end
 end
 
-function DT:UpdateHexColors(hex, r, g, b)
+function DT:UpdateHexColors(hex, r, g, b) -- This will fire both together.
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
-		if dtInfo.colorUpdate then
-			dtInfo.colorUpdate(dtSlot, hex, r, g, b)
+		if dtInfo.applySettings then
+			dtInfo.applySettings(dtSlot, hex, r, g, b)
+			if dtInfo.eventFunc then
+				dtInfo.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
+			end
 		end
 	end
 end
@@ -465,13 +485,10 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		font, fontSize, fontOutline = LSM:Fetch('font', db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
 	end
 
-	local chatPanel = panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel'
-	local battlePanel = info.isInBattle and chatPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
+	local battlePanel = info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
 	if battlePanel then
-		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
 		DT.ShowingBattleStats = info.instanceType
-	elseif chatPanel and DT.ShowingBattleStats then
-		DT:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE')
+	elseif DT.ShowingBattleStats then
 		DT.ShowingBattleStats = nil
 	end
 
@@ -534,7 +551,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
-		dt.battleStats = battlePanel
+		dt.battlePanel = battlePanel
 		dt.db = db
 		dt.watchModKey = nil
 		dt.name = nil
@@ -553,19 +570,13 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.objectEvent, dt.objectEventFunc = nil, nil
 		end
 
-		if assigned and assigned.isLibDataBroker and assigned.eventFunc then
+		if assigned and assigned.isLDB and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
 		end
 
-		if battlePanel then
-			dt:SetScript('OnClick', DT.ToggleBattleStats)
-			if E.Retail then tinsert(dt.MouseEnters, DT.HoverBattleStats) end
-		else
-			local data = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
-
-			DT.AssignedDatatexts[dt] = data
-			if data then DT:AssignPanelToDataText(dt, data, ...) end
-		end
+		local data = DT.RegisteredDataTexts[ (battlePanel and DT.db.battlePanel or DT.db.panels)[panelName][i] ]
+		DT.AssignedDatatexts[dt] = data
+		if data then DT:AssignPanelToDataText(dt, data, ...) end
 	end
 end
 
@@ -841,14 +852,17 @@ function DT:Initialize()
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
 	E.EasyMenu.MenuSetItem = function(dt, value)
-		DT.db.panels[dt.parentName][dt.pointIndex] = value
+		local panel = (dt.battlePanel and DT.db.battlePanel or DT.db.panels)
+
+		panel[dt.parentName][dt.pointIndex] = value
 		DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
 		DT.SelectedDatatext = nil
 		CloseDropDownMenus()
 	end
 	E.EasyMenu.MenuGetItem = function(dt, value)
-		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
+		local panel = (dt.battlePanel and DT.db.battlePanel or DT.db.panels)
+		return dt and (panel[dt.parentName] and panel[dt.parentName][dt.pointIndex] == value)
 	end
 
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
@@ -887,35 +901,33 @@ function DT:Initialize()
 		DT:BuildPanelFrame(name, true)
 	end
 
-	-- we need to register the panels to access them for the text
-	DT.BattleStats.LEFT.panel = _G.LeftChatDataPanel.dataPanels
-	DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
-
 	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
+
 	DT:RegisterLDB() -- LibDataBroker
 	DT:UpdateQuickDT()
 
+	DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'QuickDTMode')
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 --[[
-	DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+	DT:RegisterDatatext(name, category, events, onEvent, onUpdate, onClick, onEnter, onLeave, localizedName, objectEvent, applySettings)
 
 	name - name of the datatext (required) [string]
 	category - name of the category the datatext belongs to. [string]
 	events - must be a table with string values of event names to register [string or table]
-	eventFunc - function that gets fired when an event gets triggered [function]
-	updateFunc - onUpdate script target function [function]
-	click - function to fire when clicking the datatext [function]
-	onEnterFunc - function to fire OnEnter [function]
-	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip. [function]
+	onEvent - function that gets fired when an event gets triggered [function]
+	onUpdate - onUpdate script target function [function]
+	onClick - function to fire when clicking the datatext [function]
+	onEnter - function to fire OnEnter [function]
+	onLeave - function to fire OnLeave, if not provided one will be set for you that hides the tooltip. [function]
 	localizedName - localized name of the datetext [string]
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent [function]
-	colorUpdate - function that fires when you change the dt or update the value color. [function]
+	applySettings - function that fires when you change the dt settings or update the value color. [function]
 ]]
 
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+function DT:RegisterDatatext(name, category, events, onEvent, onUpdate, onClick, onEnter, onLeave, localizedName, objectEvent, applySettings)
 	if not name then return end
 	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
@@ -925,32 +937,32 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
 	else
 		data.events = type(events) == 'string' and { strsplit('[, ]', events) } or events
-		data.eventFunc = eventFunc
+		data.eventFunc = onEvent
 		data.objectEvent = objectEvent
 	end
 
-	if updateFunc and type(updateFunc) == 'function' then
-		data.onUpdate = updateFunc
+	if onUpdate and type(onUpdate) == 'function' then
+		data.onUpdate = onUpdate
 	end
 
-	if clickFunc and type(clickFunc) == 'function' then
-		data.onClick = clickFunc
+	if onClick and type(onClick) == 'function' then
+		data.onClick = onClick
 	end
 
-	if onEnterFunc and type(onEnterFunc) == 'function' then
-		data.onEnter = onEnterFunc
+	if onEnter and type(onEnter) == 'function' then
+		data.onEnter = onEnter
 	end
 
-	if onLeaveFunc and type(onLeaveFunc) == 'function' then
-		data.onLeave = onLeaveFunc
+	if onLeave and type(onLeave) == 'function' then
+		data.onLeave = onLeave
 	end
 
 	if localizedName and type(localizedName) == 'string' then
 		data.localizedName = localizedName
 	end
 
-	if colorUpdate and type(colorUpdate) == 'function' then
-		data.colorUpdate = colorUpdate
+	if applySettings and type(applySettings) == 'function' then
+		data.applySettings = applySettings
 	end
 
 	DT.RegisteredDataTexts[name] = data

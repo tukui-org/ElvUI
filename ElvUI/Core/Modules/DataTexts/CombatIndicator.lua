@@ -11,7 +11,7 @@ local function OnEvent(self, event)
 	end
 end
 
-local function ValueColorUpdate(self)
+local function ApplySettings(self)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
@@ -28,4 +28,4 @@ local function ValueColorUpdate(self)
 	outOfCombat = E:RGBToHex(labelColor.r, labelColor.g, labelColor.b, nil, outOfCombat..'|r')
 end
 
-DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"], nil, ValueColorUpdate)
+DT:RegisterDatatext('CombatIndicator', nil, {'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat Indicator"], nil, ApplySettings)

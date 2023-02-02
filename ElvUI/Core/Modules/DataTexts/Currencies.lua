@@ -108,10 +108,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(self)
+local function ApplySettings(self)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
 end
 
-DT:RegisterDatatext('Currencies', nil, { 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY, nil, ValueColorUpdate)
+DT:RegisterDatatext('Currencies', nil, { 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY, nil, ApplySettings)

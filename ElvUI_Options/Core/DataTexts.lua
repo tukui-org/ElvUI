@@ -10,8 +10,8 @@ local _G = _G
 local type, pairs, ipairs = type, pairs, ipairs
 local gsub, next, wipe, ceil = gsub, next, wipe, ceil
 local format, tostring, tonumber = format, tostring, tonumber
+local CopyTable = CopyTable
 
--- GLOBALS: AceGUIWidgetLSMlists
 local currencyList, DTPanelOptions = {}, {}
 
 DTPanelOptions.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, softMax = 20, step = 1})
@@ -51,63 +51,45 @@ local function PanelGroup_Delete(panel)
 	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', 'newPanel')
 end
 
-local function PanelGroup_Create(panel)
-	local opts = E.Options.args.datatexts.args.panels.args[panel]
-	if not opts then
-		opts = ACH:Group(ColorizeName(panel), nil, nil, nil, function(info) return E.db.datatexts.panels[panel][info[#info]] end, function(info, value) E.db.datatexts.panels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end)
-		opts.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-
-		opts.args.panelOptions = ACH:Group(L["Panel Options"], nil, 2, nil, function(info) return E.global.datatexts.customPanels[panel][info[#info]] end, function(info, value) E.global.datatexts.customPanels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end)
-		opts.args.panelOptions.inline = true
-
-		opts.args.panelOptions.args.delete = ACH:Execute(L["Delete"], nil, -1, function() PanelGroup_Delete(panel) end, nil, true, 'full')
-
-		opts.args.panelOptions.args.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) local settings = E.global.datatexts.customPanels[panel] return settings.fonts[info[#info]] end, function(info, value) E.global.datatexts.customPanels[panel].fonts[info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end, function() return not (E.global.datatexts.customPanels[panel] and E.global.datatexts.customPanels[panel].fonts and E.global.datatexts.customPanels[panel].fonts.enable) end)
-		opts.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, false)
-		opts.args.panelOptions.args.fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-		opts.args.panelOptions.args.fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
-		opts.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
-
-		local panelOpts = E:CopyTable(opts.args.panelOptions.args, DTPanelOptions)
-		panelOpts.numPoints.set = function(info, value) E.global.datatexts.customPanels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) DT:SetupPanelOptions(panel) end
-		panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-		panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-		panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[panel][key] end
-		panelOpts.templateGroup.set = function(_, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
-
-		E.Options.args.datatexts.args.panels.args[panel] = opts
-	end
-
-	opts.args.dts = ACH:Group(L["DataTexts"], nil, 1)
-	opts.args.dts.inline = true
-
-	return opts
-end
-
 local dts = { [''] = L["None"] }
 
 function DT:SetupPanelOptions(name)
-	local options = PanelGroup_Create(name)
+	local options = E.Options.args.datatexts.args.panels.args[name]
 
-	if P.datatexts.panels[name] and P.datatexts.panels[name].numPoints then
-		for i in ipairs(E.db.datatexts.panels[name]) do
-			if i > E.db.datatexts.panels[name].numPoints then
-				DT.db.panels[name][i] = nil
-			end
-		end
+	if not options then
+		options = ACH:Group(ColorizeName(name), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end)
+		options.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
-		for i = 1, E.db.datatexts.panels[name].numPoints do
-			if not DT.db.panels[name][i] then
-				DT.db.panels[name][i] = P.datatexts.panels[name][i] or ''
-			end
-		end
+		options.args.panelOptions = ACH:Group(L["Panel Options"], nil, 5, nil, function(info) return E.global.datatexts.customPanels[name][info[#info]] end, function(info, value) E.global.datatexts.customPanels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end)
+		options.args.panelOptions.inline = true
+
+		options.args.panelOptions.args.delete = ACH:Execute(L["Delete"], nil, -1, function() PanelGroup_Delete(name) end, nil, true, 'full')
+
+		options.args.panelOptions.args.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) return E.global.datatexts.customPanels[name].fonts[info[#info]] end, function(info, value) E.global.datatexts.customPanels[name].fonts[info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end, function() return not E.global.datatexts.customPanels[name].fonts.enable end)
+		options.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, false)
+		options.args.panelOptions.args.fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+		options.args.panelOptions.args.fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
+		options.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+
+		local panelOpts = E:CopyTable(options.args.panelOptions.args, DTPanelOptions)
+		panelOpts.numPoints.set = function(info, value) E.global.datatexts.customPanels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) DT:SetupPanelOptions(name) end
+		panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[name].tooltipAnchor == 'ANCHOR_CURSOR' end
+		panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[name].tooltipAnchor == 'ANCHOR_CURSOR' end
+		panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[name][key] end
+		panelOpts.templateGroup.set = function(_, key, value) E.global.datatexts.customPanels[name][key] = value; DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end
+
+		E.Options.args.datatexts.args.panels.args[name] = options
 	end
 
-	for dtSlot in ipairs(DT.db.panels[name]) do
-		if E.global.datatexts.customPanels[name] and dtSlot > E.global.datatexts.customPanels[name].numPoints then
-			DT.db.panels[name][dtSlot] = nil
-		else
-			options.args.dts.args[tostring(dtSlot)] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end, nil, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
+	if options.args.dts then
+		for dtSlot in ipairs(DT.db.panels[name]) do
+			if E.global.datatexts.customPanels[name] and dtSlot > E.global.datatexts.customPanels[name].numPoints then
+				options.args.dts.args[tostring(dtSlot)] = nil
+				options.args.battledts.args[tostring(dtSlot)] = nil
+			else
+				options.args.dts.args[tostring(dtSlot)] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
+				options.args.battledts.args[tostring(dtSlot)] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
+			end
 		end
 	end
 end
@@ -129,18 +111,22 @@ function DT:PanelLayoutOptions()
 
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
 				options[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
-				options[name].args.rebuild = ACH:Execute(L["Rebuild"], nil, 1, function() E.global.datatexts.customPanels[name] = E:CopyTable({}, G.datatexts.newPanelInfo) local infoType = type(E.db.datatexts.panels[name]) if infoType == 'string' then E.db.datatexts.panels[name] = { enable = true } for i = 1, G.datatexts.newPanelInfo.numPoints do E.db.datatexts.panels[name][i] = '' end elseif infoType == 'table' then E.db.datatexts.panels[name].enable = true E.global.datatexts.customPanels[name].numPoints = #E.db.datatexts.panels[name] end DT:SetupPanelOptions(name) DT:BuildPanelFrame(name) E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name) end)
 			else
 				for option in ipairs(tab) do
 					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
 						tab[option] = nil
 					else
 						if not options[name].args.dts then
-							options[name].args.dts = ACH:Group(L["DataTexts"], nil, 1)
+							options[name].args.dts = ACH:Group(' ', nil, 3, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 							options[name].args.dts.inline = true
 						end
+						if not options[name].args.battledts then
+							options[name].args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
+							options[name].args.battledts.inline = true
+						end
 
-						options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end, nil, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
+						options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end)
+						options[name].args.battledts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end)
 					end
 				end
 			end
@@ -153,14 +139,11 @@ local function escapeString(str, get)
 end
 
 local function CreateDTOptions(name, data)
-	local settings = E.global.datatexts.settings[name]
-	local currency = (E.Retail or E.Wrath) and E.global.datatexts.customCurrencies[name]
-	if not (settings or currency) or (settings and not next(settings)) then return end
+	local optionTable, settings
 
-	local optionTable
-
-	if currency then
-		optionTable = ACH:Group(currency.name, nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[name][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[name][info[#info]] = value DT:ForceUpdate_DataText(name) end)
+	if data.isCurrency then
+		local currency = E.global.datatexts.customCurrencies[name] -- name is actually the currencyID
+		optionTable = ACH:Group(format('%s |cFF888888[%s]|r', currency.name, name), nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[name][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[name][info[#info]] = value DT:ForceUpdate_DataText(name) end)
 
 		optionTable.args.nameStyle = ACH:Select(L["Name Style"], nil, 1, { full = L["Name"], abbr = L["Abbreviate Name"], none = L["None"] })
 		optionTable.args.showIcon = ACH:Toggle(L["Show Icon"], nil, 2)
@@ -171,11 +154,14 @@ local function CreateDTOptions(name, data)
 
 		return
 	else
+		settings = E.global.datatexts.settings[name]
+		if not settings or (settings and not next(settings)) then return end
+
 		optionTable = ACH:Group(data.localizedName or name, nil, nil, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value DT:ForceUpdate_DataText(name) end)
 		E.Options.args.datatexts.args.settings.args[name] = optionTable
 	end
 
-	if data.isLibDataBroker then
+	if data.isLDB then
 		optionTable.args.customLabel = ACH:Input(L["Custom Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
 		optionTable.args.spacer = ACH:Spacer(2, 'full')
 		optionTable.args.label = ACH:Toggle(L["Show Label"], nil, 3)
@@ -284,7 +270,7 @@ local function SetupDTCustomization()
 	end
 end
 
-local defaultTemplateGroup = ACH:Group(' ', nil, 2)
+local defaultTemplateGroup = ACH:Group(' ', nil, 5)
 defaultTemplateGroup.inline = true
 defaultTemplateGroup.args.backdrop = ACH:Toggle(L["Backdrop"], nil, 1)
 defaultTemplateGroup.args.border = ACH:Toggle(L["Border"], nil, 2, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
@@ -299,7 +285,6 @@ DataTexts.args.general = ACH:Group(L["General"], nil, 3)
 
 DataTexts.args.general.args.generalGroup = ACH:Group(L["General"], nil, 2)
 DataTexts.args.general.args.generalGroup.inline = true
-DataTexts.args.general.args.generalGroup.args.battleground = ACH:Toggle(L["Battleground Texts"], L["When inside a battleground display personal scoreboard information on the main datatext bars."], 1)
 DataTexts.args.general.args.generalGroup.args.noCombatClick = ACH:Toggle(L["Block Combat Click"], L["Blocks all click events while in combat."], 2)
 DataTexts.args.general.args.generalGroup.args.noCombatHover = ACH:Toggle(L["Block Combat Hover"], L["Blocks datatext tooltip from showing in combat."], 3)
 
@@ -319,21 +304,24 @@ DataTexts.args.panels.args.newPanel.args.add = ACH:Execute(L["Add"], nil, 1, fun
 
 DataTexts.args.panels.args.LeftChatDataPanel = ACH:Group(ColorizeName(L["Datatext Panel (Left)"], 'cccccc'), L["Display data panels below the chat, used for datatexts."], 1, nil, function(info) return E.db.datatexts.panels.LeftChatDataPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.LeftChatDataPanel[info[#info]] = value DT:UpdatePanelInfo('LeftChatDataPanel') Layout:SetDataPanelStyle() end)
 DataTexts.args.panels.args.LeftChatDataPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value if E.db.LeftChatPanelFaded then E.db.LeftChatPanelFaded = true; _G.HideLeftChat() end if E.private.chat.enable then Chat:UpdateEditboxAnchors() end Layout:ToggleChatPanels() Layout:SetDataPanelStyle() DT:UpdatePanelInfo(info[#info - 1]) end)
+DataTexts.args.panels.args.LeftChatDataPanel.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
 DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.panels.args.RightChatDataPanel = ACH:Group(ColorizeName(L["Datatext Panel (Right)"], 'cccccc'), L["Display data panels below the chat, used for datatexts."], 1, nil, function(info) return E.db.datatexts.panels.RightChatDataPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.RightChatDataPanel[info[#info]] = value DT:UpdatePanelInfo('RightChatDataPanel') Layout:SetDataPanelStyle() end)
 DataTexts.args.panels.args.RightChatDataPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value if E.db.RightChatPanelFaded then E.db.RightChatPanelFaded = true; _G.HideRightChat() end if E.private.chat.enable then Chat:UpdateEditboxAnchors() end Layout:ToggleChatPanels() Layout:SetDataPanelStyle() DT:UpdatePanelInfo(info[#info - 1]) end)
+DataTexts.args.panels.args.RightChatDataPanel.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
 DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.panels.args.MinimapPanel = ACH:Group(ColorizeName(L["Minimap Panels"], 'cccccc'), L["Display minimap panels below the minimap, used for datatexts."], 3, nil, function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end, function() return not E.private.general.minimap.enable end)
 DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value DT:UpdatePanelInfo(info[#info - 1]) if E.private.general.minimap.enable then Minimap:UpdateSettings() end end)
-DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 1, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
+DataTexts.args.panels.args.MinimapPanel.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
+DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
 DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
-DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, function() local list = E:CopyTable({}, DT.CurrencyList) list.GOLD = nil list.BACKPACK = nil return list end, nil, 'double', nil, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end DT:RegisterCustomCurrencyDT(currencyID) CreateCustomCurrencyOptions(currencyID) DT:LoadDataTexts() end)
-DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end DT:RegisterCustomCurrencyDT(currencyID) CreateCustomCurrencyOptions(currencyID) DT:LoadDataTexts() end)
+DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, function() local list = E:CopyTable({}, DT.CurrencyList) list.GOLD = nil list.BACKPACK = nil return list end, nil, 'double', nil, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end local data = DT:RegisterCustomCurrencyDT(currencyID) CreateDTOptions(currencyID, data) DT:LoadDataTexts() end)
+DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end local data = DT:RegisterCustomCurrencyDT(currencyID) CreateDTOptions(currencyID, data) DT:LoadDataTexts() end)
 DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, info in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = info.name end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].name DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 

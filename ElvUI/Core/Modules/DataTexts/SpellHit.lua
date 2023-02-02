@@ -13,10 +13,8 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', L["Spell Hit"], ': ', hex, '%.2f%%|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Spell Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Hit"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Spell Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Hit"], nil, ApplySettings)
