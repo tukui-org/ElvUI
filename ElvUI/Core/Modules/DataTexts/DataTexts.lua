@@ -355,19 +355,18 @@ end
 do
 	local defaults = { enable = false, battleground = false }
 	function DT:GetPanelSettings(name)
-		-- handle profile stuff
+		-- battleground dt
 		if not P.datatexts.battlePanel[name] then
 			P.datatexts.battlePanel[name] = {}
 		end
 
 		DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
 
-		-- enable / battleground / profile dt
+		-- enable / battleground - enable / profile dt
 		DT.db.panels[name] = E:CopyTable(DT.db.panels[name], defaults, true)
 
-		-- handle global stuff
+		-- global frame settings and to keep profile tidy
 		G.datatexts.customPanels[name] = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
-
 		E.global.datatexts.customPanels[name] = E:CopyTable(E.global.datatexts.customPanels[name], G.datatexts.customPanels[name], true)
 
 		-- global number of datatext slots for the profile
