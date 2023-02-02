@@ -56,6 +56,7 @@ function S:Blizzard_PerksProgram()
 	if footer then
 		S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
 
 		S:HandleCheckBox(footer.TogglePlayerPreview)
 		S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
