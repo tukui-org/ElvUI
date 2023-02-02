@@ -143,7 +143,7 @@ local function GetSpellNameRank(id)
 
 	local rank = not E.Retail and GetSpellSubtext(id)
 	if not rank or not strfind(rank, '%d') then
-		return format('%s |cFF888888(%s)|r', name, id)
+		return format('%s |cFF888888[%s]|r', name, id)
 	end
 
 	local selectedTable = GetSelectedFilters()
@@ -153,7 +153,7 @@ local function GetSpellNameRank(id)
 		return format('%s %s[%s]|r', name, E.media.hexvaluecolor, info and info.includeIDs and L["Multiple Ranks"] or rank)
 	end
 
-	return format('%s %s[%s]|r |cFF888888(%s)|r', name, E.media.hexvaluecolor, rank, id)
+	return format('%s %s(%s)|r |cFF888888[%s]|r', name, E.media.hexvaluecolor, rank, id)
 end
 
 local function SetSpellList()

@@ -145,6 +145,7 @@ function B:AlertMovers()
 		/run LootUpgradeAlertSystem:AddAlert('|cffa335ee|Hitem:18832::::::::::|h[Brutality Blade]|h|r', 1, 1, 1, nil, nil, false)
 		/run MoneyWonAlertSystem:AddAlert(81500)
 		/run NewRecipeLearnedAlertSystem:AddAlert(204)
+		/run NewCosmeticAlertFrameSystem:AddAlert(204)
 
 		--Simple Alerts
 		/run GuildChallengeAlertSystem:AddAlert(3, 2, 5)

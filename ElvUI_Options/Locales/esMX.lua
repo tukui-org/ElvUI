@@ -1000,7 +1000,6 @@ L["Merchant Frame"] = "Mercader"
 L["Method to sort by."] = true
 L["Middle Click - Set Focus"] = "Clic Intermedio - Establecer Foco"
 L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."] = "Hacer clic intermedio en el marco de unidad causará que tu foco sea la unidad.\n|cffff3333Nota:|r Si Clique está activado, esta opción sólo afecta a los marcos ElvUI si no están en la lista negra de Clique."
-L["middle"] = "Medio"
 L["Middle"] = true
 L["Min Alpha"] = true
 L["Minimap Buttons"] = true

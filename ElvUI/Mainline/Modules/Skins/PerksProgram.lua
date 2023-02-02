@@ -14,15 +14,14 @@ local function ReplaceIconString(frame, text)
 end
 
 local function HandleRewardButton(button)
-	if button.IsSkinned then return end
-
 	local container = button.ContentsContainer
-	if container then
+	if container and not container.isSkinned then
+		container.isSkinned = true
+
 		S:HandleIcon(container.Icon)
 		ReplaceIconString(container.Price)
 		hooksecurefunc(container.Price, 'SetText', ReplaceIconString)
 	end
-	button.IsSkinned = true
 end
 
 function S:Blizzard_PerksProgram()
@@ -48,8 +47,8 @@ function S:Blizzard_PerksProgram()
 		productsContainer.PerksProgramHoldFrame:CreateBackdrop('Transparent')
 		productsContainer.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
 
-		hooksecurefunc(productsContainer.ScrollBox, "Update", function(self)
-			self:ForEachFrame(HandleRewardButton)
+		hooksecurefunc(productsContainer.ScrollBox, 'Update', function(container)
+			container:ForEachFrame(HandleRewardButton)
 		end)
 	end
 
@@ -57,8 +56,10 @@ function S:Blizzard_PerksProgram()
 	if footer then
 		S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
 
 		S:HandleCheckBox(footer.TogglePlayerPreview)
+		S:HandleCheckBox(footer.ToggleHideArmor)
 		S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(footer.RotateButtonContainer.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
 	end
