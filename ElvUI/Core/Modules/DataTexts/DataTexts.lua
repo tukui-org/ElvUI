@@ -353,9 +353,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 end
 
 function DT:GetPanelSettings(name)
-	local gp = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
-	G.datatexts.customPanels[name] = gp
-
+	-- handle profile stuff
 	if not P.datatexts.battlePanel[name] then
 		P.datatexts.battlePanel[name] = {}
 	end
@@ -363,10 +361,15 @@ function DT:GetPanelSettings(name)
 	local db = P.datatexts.battlePanel[name]
 	E.db.datatexts.battlePanel[name] = E:CopyTable(E.db.datatexts.battlePanel[name], db, true)
 
+	-- handle global stuff
+	local gp = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
+	G.datatexts.customPanels[name] = gp
+
 	for i = 1, (gp.numPoints or 1) do
 		if not db[i] then db[i] = '' end
 	end
 
+	-- pass the table back
 	return E:CopyTable(E.global.datatexts.customPanels[name], gp, true)
 end
 
