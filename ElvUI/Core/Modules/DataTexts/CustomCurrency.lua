@@ -10,14 +10,13 @@ local function OnEvent(self)
 	local info = DT:CurrencyInfo(self.name)
 	local currency = E.global.datatexts.customCurrencies[self.name]
 	if info and currency then
-		local style = currency.nameStyle
 		local displayString
 
-		if style ~= 'none' then
-			displayString = strjoin(': ', style == 'full' and currency.name or E:AbbreviateString(currency.name), '%d')
+		if currency.nameStyle ~= 'none' then
+			displayString = strjoin(': ', (currency.nameStyle == 'full' and currency.name) or E:AbbreviateString(currency.name), '%d')
 		end
 
-		if currency.showMax and info.maxQuantity and info.maxQuantity > 0 then
+		if currency.showMax and (info.maxQuantity and info.maxQuantity > 0) then
 			displayString = strjoin(' ', displayString, '/', info.maxQuantity)
 		end
 
@@ -41,18 +40,17 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 		G.datatexts.customCurrencies[currencyID] = defaults
 		E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
 
-		local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+		local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, info.name)
 		data.isCurrency = true
 
 		DT:UpdateQuickDT()
 		return data
-	else
-		--We called this in DT:Initialize, so load all the stored currency datatexts
+	else --We called this in DT:Initialize, so load all the stored currency datatexts
 		for id, info in pairs(E.global.datatexts.customCurrencies) do
 			G.datatexts.customCurrencies[id] = defaults
 			info = E:CopyTable(info, defaults, true)
 
-			local data = DT:RegisterDatatext(id, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.name)
+			local data = DT:RegisterDatatext(id, _G.CURRENCY, { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, info.name)
 			data.isCurrency = true
 		end
 	end
