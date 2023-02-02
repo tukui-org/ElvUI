@@ -790,6 +790,7 @@ function S:AlertSystem()
 	-- Achievements
 	hooksecurefunc(_G.AchievementAlertSystem, 'setUpFunction', SkinAchievementAlert)
 	hooksecurefunc(_G.CriteriaAlertSystem, 'setUpFunction', SkinCriteriaAlert)
+	hooksecurefunc(_G.MonthlyActivityAlertSystem, 'setUpFunction', SkinCriteriaAlert) -- untested needs testing
 
 	-- Encounters
 	hooksecurefunc(_G.DungeonCompletionAlertSystem, 'setUpFunction', SkinDungeonCompletionAlert)
