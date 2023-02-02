@@ -353,18 +353,21 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 end
 
 function DT:GetPanelSettings(name)
-	G.datatexts.customPanels[name] = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
-	P.datatexts.battlePanel[name] = P.datatexts.battlePanel[name] or {}
+	local gp = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
+	G.datatexts.customPanels[name] = gp
 
-	E.db.datatexts.battlePanel[name] = E:CopyTable(E.db.datatexts.battlePanel[name], P.datatexts.battlePanel[name], true)
-
-	for i = 1, G.datatexts.customPanels[name].numPoints do
-		if not P.datatexts.battlePanel[name][i] then
-			P.datatexts.battlePanel[name][i] = P.datatexts.battlePanel[name][i] or ''
-		end
+	if not P.datatexts.battlePanel[name] then
+		P.datatexts.battlePanel[name] = {}
 	end
 
-	return E:CopyTable(E.global.datatexts.customPanels[name], G.datatexts.customPanels[name], true)
+	local db = P.datatexts.battlePanel[name]
+	E.db.datatexts.battlePanel[name] = E:CopyTable(E.db.datatexts.battlePanel[name], db, true)
+
+	for i = 1, (gp.numPoints or 1) do
+		if not db[i] then db[i] = '' end
+	end
+
+	return E:CopyTable(E.global.datatexts.customPanels[name], gp, true)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
