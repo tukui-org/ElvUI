@@ -143,7 +143,10 @@ function DB:ReputationBar_OnEnter()
 
 		if isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-			GameTooltip:AddLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
+			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+			maxValue = majorFactionData.renownLevelThreshold
+			local current, maximum, percent = GetValues(curValue, 0, maxValue)
+			GameTooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', current, maximum, percent), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
 		elseif isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION) then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
