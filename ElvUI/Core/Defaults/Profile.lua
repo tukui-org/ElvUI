@@ -541,6 +541,14 @@ local NP_RaidTargetIndicator = {
 	yOffset = 0,
 }
 
+local NP_SoftTarget = {
+	enable = true,
+	size = 24,
+	position = 'TOP',
+	xOffset = 0,
+	yOffset = 10,
+}
+
 local NP_Castbar = {
 	enable = true,
 	width = 150,
@@ -877,6 +885,7 @@ P.nameplates = {
 			pvpclassificationindicator = CopyTable(NP_PvPClassificationIndicator),
 			pvpindicator = CopyTable(NP_PvPIcon),
 			raidTargetIndicator = CopyTable(NP_RaidTargetIndicator),
+			softTarget = CopyTable(NP_SoftTarget),
 			title = CopyTable(NP_Title),
 		},
 		ENEMY_PLAYER = {
@@ -897,6 +906,7 @@ P.nameplates = {
 			pvpclassificationindicator = CopyTable(NP_PvPClassificationIndicator),
 			pvpindicator = CopyTable(NP_PvPIcon),
 			raidTargetIndicator = CopyTable(NP_RaidTargetIndicator),
+			softTarget = CopyTable(NP_SoftTarget),
 			title = CopyTable(NP_Title),
 		},
 		FRIENDLY_NPC = {
@@ -916,6 +926,7 @@ P.nameplates = {
 			pvpindicator = CopyTable(NP_PvPIcon),
 			questIcon = CopyTable(NP_QuestIcon),
 			raidTargetIndicator = CopyTable(NP_RaidTargetIndicator),
+			softTarget = CopyTable(NP_SoftTarget),
 			title = CopyTable(NP_Title),
 		},
 		ENEMY_NPC = {
@@ -935,6 +946,7 @@ P.nameplates = {
 			pvpindicator = CopyTable(NP_PvPIcon),
 			questIcon = CopyTable(NP_QuestIcon),
 			raidTargetIndicator = CopyTable(NP_RaidTargetIndicator),
+			softTarget = CopyTable(NP_SoftTarget),
 			title = CopyTable(NP_Title),
 		},
 	},

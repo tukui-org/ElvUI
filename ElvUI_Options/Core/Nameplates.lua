@@ -304,6 +304,13 @@ local function GetUnitSettings(unit, name)
 	group.args.raidTargetIndicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.raidTargetIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 
+	group.args.softTarget = ACH:Group(L["Soft Target"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].softTarget[info[#info]] end, function(info, value) E.db.nameplates.units[unit].softTarget[info[#info]] = value NP:ConfigureAll() end, nil, unit == 'player')
+	group.args.softTarget.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.softTarget.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
+	group.args.softTarget.args.position = ACH:Select(L["Position"], nil, 4, { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
+	group.args.softTarget.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	group.args.softTarget.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+
 	if unit == 'PLAYER' then
 		group.args.classBarGroup = ACH:Group(L["Class Bar"], nil, 13, nil, function(info) return E.db.nameplates.units[unit].classpower[info[#info]] end, function(info, value) E.db.nameplates.units[unit].classpower[info[#info]] = value NP:ConfigureAll() end)
 		group.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)

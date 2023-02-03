@@ -311,6 +311,7 @@ function NP:StylePlate(nameplate)
 	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate.RaisedElement)
 	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate.RaisedElement)
 	nameplate.TargetIndicator = NP:Construct_TargetIndicator(nameplate)
+	nameplate.SoftTarget = NP:Construct_SoftTarget(nameplate)
 	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate.RaisedElement)
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
@@ -336,6 +337,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
 	NP:Update_BossMods(nameplate)
+	NP:Update_SoftTarget(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
@@ -747,12 +749,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
-
-		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame
-		if nameplate.softTargetFrame then
-			nameplate.softTargetFrame:SetParent(nameplate)
-			nameplate.softTargetFrame:SetIgnoreParentAlpha(true)
-		end
 
 		if nameplate.widgetsOnly then
 			NP:DisablePlate(nameplate)

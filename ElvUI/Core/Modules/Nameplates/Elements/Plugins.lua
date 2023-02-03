@@ -162,6 +162,35 @@ function NP:Update_TargetIndicator(nameplate)
 	end
 end
 
+
+function NP:Construct_SoftTarget(nameplate)
+	local SoftTarget = CreateFrame('Frame', nameplate:GetName()..'SoftTarget', nameplate)
+	SoftTarget:SetFrameLevel(0)
+	SoftTarget:Hide()
+
+	SoftTarget.icon = SoftTarget:CreateTexture(nil, 'BACKGROUND', nil, -5)
+	SoftTarget.icon:SetAllPoints()
+
+	return SoftTarget
+end
+
+function NP:Update_SoftTarget(nameplate)
+	local plateDB = NP:PlateDB(nameplate)
+	local db = plateDB.softTarget
+
+	if db and db.enable then
+		if not nameplate:IsElementEnabled('SoftTarget') then
+			nameplate:EnableElement('SoftTarget')
+		end
+
+		nameplate.SoftTarget:ClearAllPoints()
+		nameplate.SoftTarget:Size(db.size, db.size)
+		nameplate.SoftTarget:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
+	elseif nameplate:IsElementEnabled('SoftTarget') then
+		nameplate:DisableElement('SoftTarget')
+	end
+end
+
 function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', nameplate:GetName() .. 'Highlight', nameplate)
 	Highlight:Hide()
