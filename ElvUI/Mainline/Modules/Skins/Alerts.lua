@@ -828,7 +828,7 @@ function S:AlertSystem()
 	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinNewPetAlert)
 
 	-- Cosmetics
-	hooksecurefunc(_G.NewCosmeticAlertFrameSystem, "setUpFunction", SkinNewPetAlert)
+	hooksecurefunc(_G.NewCosmeticAlertFrameSystem, 'setUpFunction', SkinNewPetAlert)
 
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame
