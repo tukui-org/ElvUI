@@ -352,25 +352,32 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	panel.vertical = vertical
 end
 
-function DT:GetPanelSettings(name)
-	-- handle profile stuff
-	if not P.datatexts.battlePanel[name] then
-		P.datatexts.battlePanel[name] = {}
+do
+	local defaults = { enable = false, battleground = false }
+	function DT:GetPanelSettings(name)
+		-- battleground dt
+		if not P.datatexts.battlePanel[name] then
+			P.datatexts.battlePanel[name] = {}
+		end
+
+		DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
+
+		-- enable / battleground - enable / profile dt
+		DT.db.panels[name] = E:CopyTable(DT.db.panels[name], defaults, true)
+
+		-- global frame settings and to keep profile tidy
+		G.datatexts.customPanels[name] = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
+		E.global.datatexts.customPanels[name] = E:CopyTable(E.global.datatexts.customPanels[name], G.datatexts.customPanels[name], true)
+
+		-- global number of datatext slots for the profile
+		for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
+			if not DT.db.panels[name][i] then DT.db.panels[name][i] = '' end
+			if not DT.db.battlePanel[name][i] then DT.db.battlePanel[name][i] = '' end
+		end
+
+		-- pass the table back
+		return E.global.datatexts.customPanels[name]
 	end
-
-	local db = P.datatexts.battlePanel[name]
-	E.db.datatexts.battlePanel[name] = E:CopyTable(E.db.datatexts.battlePanel[name], db, true)
-
-	-- handle global stuff
-	local gp = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
-	G.datatexts.customPanels[name] = gp
-
-	for i = 1, (gp.numPoints or 1) do
-		if not db[i] then db[i] = '' end
-	end
-
-	-- pass the table back
-	return E:CopyTable(E.global.datatexts.customPanels[name], gp, true)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
@@ -630,16 +637,6 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 	Panel:SetFrameLevel(db.frameLevel)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
-
-	if not DT.db.panels[name] or type(DT.db.panels[name]) ~= 'table' then
-		DT.db.panels[name] = { enable = false }
-	end
-
-	for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
-		if not DT.db.panels[name][i] then
-			DT.db.panels[name][i] = ''
-		end
-	end
 
 	if DT.db.panels[name].enable then
 		E:EnableMover(Panel.moverName)
