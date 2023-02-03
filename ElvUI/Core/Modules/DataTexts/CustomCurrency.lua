@@ -32,7 +32,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local currencyEvents = { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE' }
+local currencyEvents = { 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE', 'PERKS_PROGRAM_CURRENCY_REFRESH' }
 function DT:RegisterCustomCurrencyDT(currencyID)
 	if currencyID then
 		local info = DT:CurrencyInfo(currencyID)
