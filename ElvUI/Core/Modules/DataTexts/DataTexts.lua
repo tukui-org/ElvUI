@@ -638,7 +638,7 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
-	if DT.db.panels[name].enable then
+	if DT.db.panels[name] and DT.db.panels[name].enable then
 		E:EnableMover(Panel.moverName)
 		RegisterStateDriver(Panel, 'visibility', db.visibility)
 
