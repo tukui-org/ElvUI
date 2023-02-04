@@ -1784,6 +1784,46 @@ L["Your Auras First"] = "Suas auras primeiro"
 L["Zone Button"] = true
 L["Zone Name"] = "Nome da Zona"
 
+-- done by using labelN
+L["FACTION_STANDING_LABEL1"] = "Odiado"
+L["FACTION_STANDING_LABEL2"] = "Hostil"
+L["FACTION_STANDING_LABEL3"] = "Ignorado"
+L["FACTION_STANDING_LABEL4"] = "Tolerado"
+L["FACTION_STANDING_LABEL5"] = "Respeitado"
+L["FACTION_STANDING_LABEL6"] = "Honrado"
+L["FACTION_STANDING_LABEL7"] = "Reverenciado"
+L["FACTION_STANDING_LABEL8"] = "Exaltado"
+
+L["RAID_TARGET_1"] = "Estrela"
+L["RAID_TARGET_2"] = "Círculo"
+L["RAID_TARGET_3"] = "Diamante"
+L["RAID_TARGET_4"] = "Triângulo"
+L["RAID_TARGET_5"] = "Lua"
+L["RAID_TARGET_6"] = "Quadrado"
+L["RAID_TARGET_7"] = "Xis"
+L["RAID_TARGET_8"] = "Caveira"
+
+----------------------------------
+L["BlizzardNameplate"] = "Placas de identificação Blizzard"
+L["blockCastByPlayers"] = "[Bloquear] Castado por Jogadores"
+L["blockDispellable"] = "[Bloquear] Dissipável"
+L["blockNoDuration"] = "[Bloquear] Sem Duração"
+L["blockNonPersonal"] = "[Bloquear] Não Pessoal"
+L["blockNotDispellable"] = "[Bloquear] Não Dissipável"
+L["blockMount"] = "[Bloquear] Mount"
+L["Mount"] = true
+L["CastByNPC"] = "Castado por NPC"
+L["CastByPlayers"] = "Castado por Jogador"
+L["CastByUnit"] = "Castado por Unidade"
+L["Dispellable"] = "Dissipável"
+L["MyPet"] = "MeuPet"
+L["nonPersonal"] = "Não Pessoal"
+L["notCastByUnit"] = "Não Castado pela Unidade"
+L["notDispellable"] = "Não Dissipável"
+L["OtherPet"] = "OutroPet"
+L["Personal"] = "Pessoal"
+----------------------------------
+
 L["ACTIONBARS_DESC"] = "Modificar as configurações da barra de ações."
 L["AURAS_DESC"] = "Configurar os ícones das auras que aparecem perto do minimapa."
 L["BAGS_DESC"] = "Ajustar definições das bolsas para a ElvUI."
