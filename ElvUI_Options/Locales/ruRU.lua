@@ -666,7 +666,7 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = "Граница ЧЧ:ММ"
 L["HH:MM"] = "ЧЧ:ММ"
 L["Hide At Max Level"] = "Прятать на максимальном уровне"
-L["Hide At Max Power"] = "Прятать на максимуме"
+
 L["Hide Below Max Level"] = "Скрывать до максимального уровня"
 L["Hide Both"] = "Скрыть оба"
 L["Hide by Application"] = true
@@ -865,7 +865,6 @@ L["Key Modifiers"] = "Модификаторы"
 L["Key Ring"] = "Брелок"
 L["KEY_BINDINGS"] = "Назначение клавиш"
 L["Keybind Mode"] = "Назначить клавиши"
-L["Keybind Text Position"] = "Позиция текста клавиш"
 L["Keybind Text"] = "Текст клавиш"
 L["Keyword Alert"] = "Звук оповещения"
 L["Keyword Alerts"] = "Оповещения о ключевых словах"
@@ -1047,7 +1046,7 @@ L["Off Tank Good Transition"] = "Второй танк: хороший пере�
 L["Off Tank"] = "На втором танке"
 L["Officer"] = "Офицер"
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "Смещение полосы ресурсов относительно полосы здоровья. Установите на 0 для отключения."
-L["Offset position for text."] = "Отступ для текста."
+
 L["Offset"] = "Смещение"
 L["On Cooldown"] = "Восстанавливается"
 L["On screen positions for different elements."] = "Положение различных элементов на экране"
@@ -1255,7 +1254,7 @@ L["Right Position"] = true
 L["Right Shift"] = "Правый Shift"
 L["Right to Left"] = "Справа налево"
 L["Right"] = "Правый"
-L["RightChatDataPanel"] = "Правая панель чата"
+
 L["Role Icon"] = "Иконка роли"
 L["ROLE"] = "Роль"
 L["RUNE_BLOOD"] = "Blood Rune"
@@ -1348,7 +1347,7 @@ L["Show Only Names"] = "Только имена"
 L["Show PvP Badge Indicator if available"] = "Показывать значок ранга PvP, если доступен"
 L["Show Quality Color"] = "Показывать цвет качества"
 L["Show QuestXP"] = "Показать опыт за квесты"
-L["Show Scrap Icon"] = "Иконка утилизации"
+
 L["Show Special Bags Color"] = "Показывать цвета специальных сумок"
 L["Show Subzone"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Показывать иконку полосы заклинания обесцвеченной, если заклинание нельзя прервать."
@@ -1486,7 +1485,7 @@ L["The name you have selected is already in use by another element."] = "Выб�
 L["The object you want to attach to."] = "Объект, к которому Вы хотите прикрепить полосы"
 L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = "Портрет будет находиться на полосе здоровья. Автоматически активируется, если направление выставлено на Центр."
 L["The size of the action buttons."] = "Размер кнопок панели команд."
-L["The size of the individual buttons on the bank frame."] = "Размер каждого слота в банке"
+
 L["The spacing between buttons."] = "Расстояние между кнопками"
 L["The spacing between the backdrop and the buttons."] = "Расстояние между фоном панели и кнопками."
 L["The texture that will be used mainly for statusbars."] = "Эта текстура будет использоваться в основном для полос состояния."
@@ -1495,7 +1494,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["The width of the action buttons."] = true
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "Эти фильтры не используют список заклинаний, в отличие от обычных фильтров. Вместо этого они используют WoW API и логические операции для определения отображения аур."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."] = "Эти фильтры используют списки заклинаний для определения стоит ли блокировать ауру. Их можно изменить в разделе Фильтры окна настроек."
-L["Thin Border Theme"] = "Тонкие границы"
+
 L["Thin Borders"] = "Тонкие границы"
 L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = "Позволяет создать свой инфотекст для отслеживания валюты по ID. После создания инфотекст будет немедленно добавлен в список."
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Определяет размер иконки, когда она не привязана к инфопанели."
@@ -1520,8 +1519,8 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Это сбросит фильтр на умолчания. Любые заклинания, добавленные в этот фильтр, будут удалены."
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "Режим отображения угрозы"
-L["Threat Health"] = "Здоровье по угрозе"
-L["Threat Power"] = "Ресурс по угрозе"
+
+
 L["Threat"] = "Угроза"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Значение (в минутах), после которого текст восстановления перейдет в формат ЧЧ:ММ. Установите на -1, чтобы никогда не использовать данный формат."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Значение (в секундах), после которого текст восстановления перейдет в формат ММ:СС. Установите на -1, чтобы никогда не использовать данный формат."
@@ -1530,13 +1529,13 @@ L["Threshold before the icon will fade out and back in. Set to -1 to disable."] 
 L["Threshold Colors"] = "Цвета областей"
 L["Ticket Tracker"] = true
 L["Ticks"] = "Тики"
-L["Tiers"] = "Ряды"
+
 L["Time Indicator Colors"] = "Цвета индикаторов времени"
 L["Time Options"] = "Опции времени"
 L["Time Remaining"] = "Оставшееся время"
 L["Time To Hold"] = "Время задержки"
-L["Time xOffset"] = "Отступ времени по X"
-L["Time yOffset"] = "Отступ времени по Y"
+
+
 L["Time"] = "Время"
 L["TIMEMANAGER_TITLE"] = "Часы"
 L["TIMESTAMPS_LABEL"] = "Время в чате"
@@ -1599,11 +1598,11 @@ L["URL Links"] = "Интернет-ссылки"
 L["Usable"] = "Можно использовать"
 L["Use a more visible flash animation for Auto Attacks."] = "Использовать более заметную анимацию сияния для автоатак."
 L["Use Alt Key"] = "Использовать Alt"
-L["Use Atlas Textures if there is one available."] = "Использовать текстуры атласа, если таковые доступны."
+
 L["Use Atlas Textures"] = "Использовать текстуры атласа"
 L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."] = "Отображать BattleTag вместо Real ID в чате. В истории чата будет всегда использоваться BattleTag."
 L["Use Blizzard Cleanup"] = "Сортировка Blizzard"
-L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = "Использовать стандартный метод сортировки от Blizzard."
+
 L["Use class color for the names of players when they are mentioned."] = "Окрашивать имена игроков цветом их класса."
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use coin icons instead of colored text."] = "Использовать иконки монет вместо окрашенного текста."
@@ -1623,12 +1622,11 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "Фиксированная позиция"
 L["Use Subzone Names"] = "Использовать имена сублокаций"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "Использовать свой цвет фона вместо вариации основного цвета."
-L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."] = "Использовать фильтр \"Buff Indicator (Profile)\", привязанный к профилю вместо глобального."
 L["Use thin borders on certain nameplate elements."] = "Использовать тонкие границы на некоторых элементах индикаторов здоровья."
 L["Use thin borders on certain unitframe elements."] = "Использовать тонкие границы на некоторых элементах рамок юнитов."
 L["Use this backdrop color for units that are dead or ghosts."] = "Использовать этот цвет фона для юнитов, которые мертвы или бегут с кладбища."
 L["Use Threat Color"] = "Использовать цвет угрозы"
-L["Use Tooltip"] = "Использовать подсказку"
+
 L["Use Zone Names"] = "Использовать названия зон"
 L["Used as Raid Debuff Indicator"] = "Использовать как индикатор рейдовых дебаффов"
 L["Used/Total"] = "Использовано/всего"
@@ -1646,7 +1644,7 @@ L["Vertical"] = "Вертикально"
 L["Visibility State"] = "Статус отображения"
 L["Visibility"] = "Видимость"
 L["VOID_STORAGE"] = "Хранилище Бездны"
-L["Warboard"] = "Доска объявлений для героев"
+
 L["What point to anchor to the frame you set to attach to."] = "К какой точке выбранного фиксатора прикрепить ауры."
 L["Whats New"] = "Что нового"
 L["When disabled, the Chat Background color has to be set via Blizzards Chat Tabs Background setting."] = true

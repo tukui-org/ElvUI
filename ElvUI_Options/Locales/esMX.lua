@@ -666,7 +666,7 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = true
 L["HH:MM"] = true
 L["Hide At Max Level"] = true
-L["Hide At Max Power"] = true
+
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "Ocultar Ambos"
 L["Hide by Application"] = true
@@ -865,7 +865,6 @@ L["Key Modifiers"] = true
 L["Key Ring"] = true
 L["KEY_BINDINGS"] = "Teclado"
 L["Keybind Mode"] = "Asignar Teclas"
-L["Keybind Text Position"] = true
 L["Keybind Text"] = "Mostrar Teclas"
 L["Keyword Alert"] = "Alerta por Palabra Clave"
 L["Keyword Alerts"] = true
@@ -1048,7 +1047,7 @@ L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Officer"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "Desplazamiento de la barra de poder sobre la barra de salud, 0 para desactivar."
-L["Offset position for text."] = "Posición de desplazamiento para el texto."
+
 L["Offset"] = "Desplazamiento"
 L["On Cooldown"] = true
 L["On screen positions for different elements."] = true
@@ -1256,7 +1255,7 @@ L["Right Position"] = true
 L["Right Shift"] = true
 L["Right to Left"] = true
 L["Right"] = "Derecha"
-L["RightChatDataPanel"] = "Panel de Chat Derecho"
+
 L["Role Icon"] = "Icono de Rol"
 L["ROLE"] = "Función"
 L["RUNE_BLOOD"] = "Blood Rune"
@@ -1349,7 +1348,7 @@ L["Show Only Names"] = true
 L["Show PvP Badge Indicator if available"] = true
 L["Show Quality Color"] = true
 L["Show QuestXP"] = true
-L["Show Scrap Icon"] = true
+
 L["Show Special Bags Color"] = true
 L["Show Subzone"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = true
@@ -1487,7 +1486,7 @@ L["The name you have selected is already in use by another element."] = "El nomb
 L["The object you want to attach to."] = "El objeto que quieres adjuntar a."
 L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["The size of the action buttons."] = "El tamaño de los botones de acción."
-L["The size of the individual buttons on the bank frame."] = "El tamaño de los botones individuales en el marco del banco"
+
 L["The spacing between buttons."] = "Separación entre los botones."
 L["The spacing between the backdrop and the buttons."] = "El espacio entre el fondo y los botones."
 L["The texture that will be used mainly for statusbars."] = "La textura que se usará principalmente para las barras de estado."
@@ -1496,7 +1495,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["The width of the action buttons."] = true
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = true
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."] = true
-L["Thin Border Theme"] = "Tema de Borde Delgado"
+
 L["Thin Borders"] = "Bordes Delgados"
 L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = true
 L["This dictates the size of the icon when it is not attached to the castbar."] = true
@@ -1521,8 +1520,8 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "Modo de Despliegue de Amenaza"
-L["Threat Health"] = true
-L["Threat Power"] = true
+
+
 L["Threat"] = "Amenaza"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
@@ -1531,13 +1530,13 @@ L["Threshold before the icon will fade out and back in. Set to -1 to disable."] 
 L["Threshold Colors"] = true
 L["Ticket Tracker"] = true
 L["Ticks"] = "Ticks"
-L["Tiers"] = true
+
 L["Time Indicator Colors"] = true
 L["Time Options"] = true
 L["Time Remaining"] = "Tiempo Restante"
 L["Time To Hold"] = true
-L["Time xOffset"] = true
-L["Time yOffset"] = true
+
+
 L["Time"] = "Tiempo"
 L["TIMEMANAGER_TITLE"] = "Reloj"
 L["TIMESTAMPS_LABEL"] = "Hora de chat"
@@ -1600,11 +1599,11 @@ L["URL Links"] = "Enlaces URL"
 L["Usable"] = true
 L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = true
-L["Use Atlas Textures if there is one available."] = true
+
 L["Use Atlas Textures"] = true
 L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."] = true
 L["Use Blizzard Cleanup"] = true
-L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
+
 L["Use class color for the names of players when they are mentioned."] = true
 L["Use Class Color"] = true
 L["Use coin icons instead of colored text."] = true
@@ -1624,12 +1623,11 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = true
 L["Use Subzone Names"] = true
 L["Use the custom backdrop color instead of a multiple of the main color."] = true
-L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."] = true
 L["Use thin borders on certain nameplate elements."] = true
 L["Use thin borders on certain unitframe elements."] = true
 L["Use this backdrop color for units that are dead or ghosts."] = true
 L["Use Threat Color"] = true
-L["Use Tooltip"] = true
+
 L["Use Zone Names"] = true
 L["Used as Raid Debuff Indicator"] = true
 L["Used/Total"] = true
@@ -1647,7 +1645,7 @@ L["Vertical"] = "Vertical"
 L["Visibility State"] = "Estado de Visibilidad"
 L["Visibility"] = "Visibilidad"
 L["VOID_STORAGE"] = "Depósito del Vacío"
-L["Warboard"] = "Tablero de ¡Se busca héroe!"
+
 L["What point to anchor to the frame you set to attach to."] = "Punto de fijación a utilizar del marco que se va a sujetar."
 L["Whats New"] = true
 L["When disabled, the Chat Background color has to be set via Blizzards Chat Tabs Background setting."] = true

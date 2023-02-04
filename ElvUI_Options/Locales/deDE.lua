@@ -672,7 +672,7 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = "HH:MM Schwellenwert"
 L["HH:MM"] = true
 L["Hide At Max Level"] = "Auf max. Level vestecken"
-L["Hide At Max Power"] = "Auf max. Kraft verstecken"
+
 L["Hide Below Max Level"] = "Verstecke unter Max. Level"
 L["Hide Both"] = "Verstecke Beide"
 L["Hide by Application"] = "Verstecken Nach Anwendung"
@@ -871,7 +871,6 @@ L["Key Modifiers"] = "Tastenkombination"
 L["Key Ring"] = "Schlüsselring"
 L["KEY_BINDINGS"] = "Tastaturbelegung"
 L["Keybind Mode"] = "Tastaturbelegung"
-L["Keybind Text Position"] = "Tastaturbelegungstext Position"
 L["Keybind Text"] = "Tastaturbelegungstext"
 L["Keyword Alert"] = "Stichwort Alarm"
 L["Keyword Alerts"] = "Stichwort Alarme"
@@ -1054,7 +1053,7 @@ L["Off Tank Good Transition"] = "Off Tank guter Übergang"
 L["Off Tank"] = true --No need to translate
 L["Officer"] = "Offizier"
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "Versatz der Kraftleiste zu der Lebensleiste. Setze es auf 0 um den Versatz zu deaktivieren."
-L["Offset position for text."] = "Versatz Positionen für Texte."
+
 L["Offset"] = "Versatz"
 L["On Cooldown"] = "Auf Abklingzeit"
 L["On screen positions for different elements."] = "Position der verschiedenen Elemente."
@@ -1260,7 +1259,7 @@ L["Right Position"] = "Rechte Position"
 L["Right Shift"] = "Rechtsklick + UMSCHALT"
 L["Right to Left"] = "Rechts nach Links"
 L["Right"] = "Rechts"
-L["RightChatDataPanel"] = "Rechter Chat"
+
 L["Right Click Self Cast"] = "Rechtsklick Selbstzauber"
 L["Role Icon"] = "Rollensymbol"
 L["ROLE"] = "Rolle"
@@ -1349,7 +1348,7 @@ L["Show Only Names"] = "Zeige nur Namen"
 L["Show PvP Badge Indicator if available"] = "Zeige PvP Abzeichen Indikator wenn verfügbar"
 L["Show Quality Color"] = "Zeige Qualitätsfarbe"
 L["Show QuestXP"] = "Zeige Questerfahrung"
-L["Show Scrap Icon"] = "Zeige Schrottsymbol"
+
 L["Show Special Bags Color"] = "Zeige Spezielle Taschenfarbe"
 L["Show Subzone"] = "Zeige Unterzone"
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Zeigt das Zauberleistensymbol entsättigt an, wenn ein Zauber nicht unterbrechbar ist."
@@ -1488,7 +1487,7 @@ L["The name you have selected is already in use by another element."] = "Den Nam
 L["The object you want to attach to."] = "Das Objekt, das du anhängen willst"
 L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = "Das Portrait wird die Lebensleiste überdecken. Dieses wird automatisch passieren wenn die Fensterausrichtung auf Mittel gesetzt ist."
 L["The size of the action buttons."] = "Die Größe der Aktionstasten."
-L["The size of the individual buttons on the bank frame."] = "Die Größe der einzelnen Tasten auf dem Bankfenster."
+
 L["The spacing between buttons."] = "Der Abstand zwischen den Tasten."
 L["The spacing between the backdrop and the buttons."] = "Der Abstand zwischen dem Hintergrund und den Tasten."
 L["The texture that will be used mainly for statusbars."] = "Diese Textur wird vorallem für Statusleisten verwendet."
@@ -1497,7 +1496,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["The width of the action buttons."] = "Die Breite der Aktionstasten."
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "Diese Filter benutzen keine Liste von Zaubern wie die regulären Filter. Sie benutzen anstatt die WoW API um festzustellen ob eine Aura erlaubt oder geblockt wird."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."] = "Diese Filter nutzen eine Liste von Zaubern um festzustellen ob eine Aura erlaubt oder geblockt wird. Der Inhalt dieses Filter kann in der Filter Sektion der Konfiguration bearbeitet werden."
-L["Thin Border Theme"] = "Dünner Rahmen Theme"
+
 L["Thin Borders"] = "Dünne Rahmen"
 L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = "Dieses erlaubt dir einen neuen Infotext zu erstellen, der die Währung verfolgt mit der bereitgestellten Währungs-ID. Der Infotext kann sofort nach der Erstellung einer Leiste hinzugefügt werden."
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Dieses zwingt die Größe des Symbols wenn es nicht an der Zauberleiste angehängt ist."
@@ -1522,8 +1521,8 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Dieses wird den Inhalt des Filters auf Standard zurücksetzen. Jeder Zauber den du zum Filter hinzugefügt hast wird gelöscht."
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen verwenden um die Aktionsleiste zu zeigen/verstecken.\n Beispiel: '[combat] show;hide'"
 L["Threat Display Mode"] = "Bedrohungs Anzeigemodus"
-L["Threat Health"] = "Bedrohungs Gesundheit"
-L["Threat Power"] = "Bedrohungs Kraft"
+
+
 L["Threat"] = "Bedrohung"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Schwellenwert (in Minuten) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Schwellenwert (in Sekunden) bevor der Text in MM:SS Format angezeigt wird. Setze auf -1 um niemals das Format zu ändern."
@@ -1532,13 +1531,13 @@ L["Threshold before the icon will fade out and back in. Set to -1 to disable."] 
 L["Threshold Colors"] = "Schwellenwert Farben"
 L["Ticket Tracker"] = true
 L["Ticks"] = "Ticks"
-L["Tiers"] = true --No need to translate
+
 L["Time Indicator Colors"] = "Zeit Indikatorfarben"
 L["Time Options"] = "Zeit Optionen"
 L["Time Remaining"] = "Zeit verbleibend"
 L["Time To Hold"] = "Anzeigezeit"
-L["Time xOffset"] = "Zeit X-Versatz"
-L["Time yOffset"] = "Zeit Y-Versatz"
+
+
 L["Time"] = "Zeit"
 L["TIMEMANAGER_TITLE"] = "Uhr"
 L["TIMESTAMPS_LABEL"] = "Chatzeitstempel"
@@ -1602,11 +1601,11 @@ L["URL Links"] = "URL Links"
 L["Usable"] = "Nutzbar"
 L["Use a more visible flash animation for Auto Attacks."] = "Benutzt eine mehr sichtbare blinkende animation für Auto Attacken."
 L["Use Alt Key"] = "Benutze Alt-Taste"
-L["Use Atlas Textures if there is one available."] = "Benutze Atlas Textur wenn eine verfügbar ist."
+
 L["Use Atlas Textures"] = "Benutze Atlas Textur"
 L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."] = "Benutze BattleTag anstatt von den Real ID Namen im Chat. Der Chatverlauf wird immer das BattleTag benutzen."
 L["Use Blizzard Cleanup"] = "Benutze Blizzard Sortierung"
-L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = "Benutzt Blizzards Methode zum Sortieren der Taschen anstelle von ElvUI Sortierung."
+
 L["Use class color for the names of players when they are mentioned."] = "Benutze Klassenfarben von Spielernamen, wenn sie erwähnt werden."
 L["Use Class Color"] = "Benutze Klassenfarbe"
 L["Use coin icons instead of colored text."] = "Benutze Währungssymbole anstatt von farbigem Text."
@@ -1626,12 +1625,11 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "Benutze statische Position"
 L["Use Subzone Names"] = "Benutze Unterzonen Namen"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "Benutze eine eigene Hintergrundfarbe, anstelle der Hauptfarbe."
-L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."] = "Benutze den Profilspezifischen Buff Indikator (Profil) anstatt des globalen filter Buff Indikator."
 L["Use thin borders on certain nameplate elements."] = "Verwende dünne Ränder an bestimmten Namensschildelementen."
 L["Use thin borders on certain unitframe elements."] = "Benutze dünne Rahmen auf bestimmten Einheitenfenster Elementen."
 L["Use this backdrop color for units that are dead or ghosts."] = "Benutze diese Hintergrundfarbe für Einheiten die Tod oder als Geist sind."
 L["Use Threat Color"] = "Benutze Bedrohungsfarbe"
-L["Use Tooltip"] = "Benutze Tooltip"
+
 L["Use Zone Names"] = "Benutze Zonennamen"
 L["Used as Raid Debuff Indicator"] = "Verwendet als Schlachtzugsschwächungszauber Indikator"
 L["Used/Total"] = "Verwendet/Gesamt"
@@ -1649,7 +1647,7 @@ L["Vertical"] = "Vertikal"
 L["Visibility State"] = "Sichbarkeitszustand"
 L["Visibility"] = "Sichtbarkeit"
 L["VOID_STORAGE"] = "Leerenlager"
-L["Warboard"] = "Heldenaufruf"
+
 L["What point to anchor to the frame you set to attach to."] = "Welchen Punkt für das verankern der Fenster möchtest du wählen."
 L["Whats New"] = "Was ist neu"
 L["When disabled, the Chat Background color has to be set via Blizzards Chat Tabs Background setting."] = "Wenn deaktiviert, muss die Chat Hintergrundfarbe über die Blizzards Chat Tabs Hintergrundeinstellung festgelegt werden."

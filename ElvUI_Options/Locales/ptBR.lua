@@ -179,7 +179,6 @@ L["Below Chat (Inside)"] = true
 L["Below Chat"] = "Abaixo do Bate-papo"
 L["Below"] = "Abaixo"
 L["BG Map"] = "Mapa do CB"
-
 L["Bind on Equip/Use Text"] = true
 L["BINDING_HEADER_RAID_TARGET"] = "Marcadores de Alvo"
 L["BINDING_HEADER_VOICE_CHAT"] = "Voz"
@@ -218,7 +217,6 @@ L["Bottom"] = "Inferior"
 L["BUFFOPTIONS_LABEL"] = "Bônus e Debuffs"
 L["Button Flash"] = true
 L["Button Height"] = true
-
 L["Button Settings"] = true
 L["Button Size"] = "Tamanho do botão"
 L["Button Spacing"] = "Espaçamento do botão"
@@ -335,8 +333,6 @@ L["Combat Font"] = true
 L["Combat Icon"] = "Ícone de Combate"
 L["Combat Override Key"] = "Botão de Sobrescrever Combate"
 L["Combat Repeat"] = true
-
-
 L["COMBO_POINTS"] = "|4Ponto:Pontos; de Combo"
 L["COMMUNITIES"] = "Comunidades"
 L["Comparison Font Size"] = "Comparação de Tamanho de Fonte"
@@ -420,7 +416,6 @@ L["Default Color"] = "Cor Padrão"
 L["Default Font"] = "Fonte Padrão"
 L["Default Settings"] = "Configurações Padrões"
 L["DEFAULT"] = "Padrão"
-
 L["Defines how the group is sorted."] = "Define como o grupo é organizado"
 L["Defines the sort order of the selected sort method."] = "Define a ordem de organização do método escolhido"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "Excluir um filtro criado, você não pode excluir filtros pré-existentes, apenas aqueles personalizados."
@@ -438,8 +433,6 @@ L["Development Version"] = true
 L["Direction the bag sorting will use to allocate the items."] = "Direção que o organizador de bolsas irá usar para distribuir os itens."
 L["Direction the bar moves on gains/losses"] = "Direção que a barra move em ganhas/perdas"
 L["Direction the health bar moves when gaining/losing health."] = "Direção em que a barra da vida se move quando se ganha/perde vida."
-
-
 L["Disable Blizzard Skins"] = true
 L["Disable Sort"] = true
 L["Disable Tutorial Buttons"] = "Desabilitar Botões de Tutorial"
@@ -447,7 +440,6 @@ L["Disabled Blizzard Frames"] = "Quadros da Blizzard desabilitados"
 L["Disabled Blizzard"] = "Blizzard desabilitados"
 L["Disables the focus and target of focus unitframes."] = "Desabilita os Quadro de Foco e Quadro de Foco do Alvo."
 L["Disables the player and pet unitframes."] = "Desabilita O Quadro do Jogador e do Pet."
-
 L["Disables the tutorial button found on some frames."] = "Desabilita o botão de tutorial achados em alguns quadros."
 L["Disconnected"] = "Desconectado"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Mostra um ícone de Curandeiro sobre curandeiros conhecidosem campos de batalha ou arenas."
@@ -486,11 +478,6 @@ L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Exibir a 
 L["Display the item level and current specialization of the unit on modifier press."] = true
 L["Display the junk icon on all grey items that can be vendored."] = "Mostrar o Ícone de lixo em todos os itens cinzentos que podem ser vendidos."
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "Mostrar o nome da unidade na bolha do chat. Isso não irá funcionar se o fundo estiver desabilitado ou você estiver em uma instância."
-
-
-
-
-
 L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."] = "Mostrar o nome da unidade que interrompeu um feitiço na barra de feitiços. Você deve aumentar o Tempo de Mostra para aparecer apropriadamente."
 L["Display the unit role in the tooltip."] = "Mostrar o papel/função da unidade no tooltip."
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = "Mostrar o Ícone de Upgrade em itens que o WoW consideram upgrades para seu personagem."
@@ -510,8 +497,6 @@ L["Dungeon & Raid Filter"] = "Filtros de Masmorra(s) e Raid(s)"
 L["DUNGEON_DIFFICULTY"] = "Dificuldade da masmorra"
 L["Durability Scale"] = "Escala de Durabilidade"
 L["Duration Enable"] = "Habilitar Duração"
-
-
 L["Duration Text"] = "Texto de Duração"
 L["Duration"] = "Duração"
 L["Editbox History"] = true
@@ -523,12 +508,10 @@ L["Emotion Icons"] = "Ícones Emotivos"
 L["Enable + Adjust Movers"] = "Habilitar + Ajustar Movedores"
 L["Enable a sound if you select a unit."] = "Habilitar um som se você selecionar uma unidade."
 L["Enable Blizzard Skins"] = true
-
 L["Enable the use of separate size options for the right chat panel."] = "Habilitar o uso de opções de tamanho separadas para o painel direito de bate-papo."
 L["Enable to hear sound if you receive a resurrect."] = "Habilitar para escutar um som quando receber um reviver."
 L["Enable"] = "Ativar"
 L["Enable/Disable the all-in-one bag."] = "Ativar/Desativar a Bolsa tudo-em-um."
-
 L["Enable/Disable the loot frame."] = "Ativar/Desativar painel de saques."
 L["Enable/Disable the loot roll frame."] = "Ativar/Desativar painel de disputa de saques"
 L["Enable/Disable the minimap. |cffFF3333Warning: This will prevent you from seeing the minimap datatexts.|r"] = "Habilitar/Desabilitar o minimapa. |cffFF3333Perigo: Isso irá prevení-lo de ver os Textos Informativos do minimapa.|r"
@@ -565,14 +548,6 @@ L["Export Now"] = "Exportar Agora"
 L["Export Profile"] = "Exportar Perfis"
 L["Exported"] = "Exportado"
 L["Extra Buttons"] = true
-
-
-
-
-
-
-
-
 L["Fade Chat Toggles"] = true
 L["Fade Duration"] = "Duração de Desvanecimento"
 L["Fade Out Delay"] = "Delay de Desvanecimento"
@@ -589,20 +564,16 @@ L["Fades the text on chat tabs that are not docked at the left or right chat pan
 L["Fade out the tooltip when it disappers, instant otherwise. Cursor anchored tooltips are unaffected."] = true
 L["Fill"] = "Preencher"
 L["Filled"] = "Preenchido"
-
 L["Filter Modifiers"] = true
 L["Filter Priority"] = "Prioridade do Filtro"
 L["Filter Search"] = "Buscar Filtro"
 L["Filter Type"] = "Tipo de filtro"
-
 L["Filters Page"] = "Página de Filtros"
 L["FILTERS"] = "Filtros"
 L["Flash Invites"] = true
 L["Flash Threshold"] = true
 L["Flash"] = true
 L["FLIGHT_MAP"] = "Mapa de voo"
-
-
 L["Flyout Button Size"] = true
 L["Flyout Direction"] = true
 L["FOCUS"] = "Concentração"
@@ -683,7 +654,6 @@ L["Health Bar"] = "Barra de Vida"
 L["Health Border"] = "Borda da Vida"
 L["Health By Value"] = "Vida por Valor"
 L["Health Color"] = "Cor da Vida"
-
 L["Health Threshold"] = "Limiar da Vida"
 L["Health"] = "Vida"
 L["Height Multiplier"] = "Multiplicador de Altura"
@@ -696,7 +666,7 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = "Limiar da HH:MM"
 L["HH:MM"] = true
 L["Hide At Max Level"] = "Esconder quando level máximo"
-L["Hide At Max Power"] = "Esconder quando poder máximo"
+
 L["Hide Below Max Level"] = "Esconder abaixo do level máximo"
 L["Hide Both"] = "Esconder Ambos"
 L["Hide by Application"] = true
@@ -712,8 +682,6 @@ L["Hide Frame"] = "Esconder Quadro"
 L["Hide In Combat"] = "Esconder em Combate"
 L["Hide In Keystone"] = true
 L["Hide In Vehicle"] = "Esconder quado em veículo"
-
-
 L["Hide Out of Combat"] = true
 L["Hide Outside PvP"] = "Esconder fora do PvP"
 L["Hide specific sections in the datatext tooltip."] = "Esconder seção específica nos tooltip dos textos informativos"
@@ -736,7 +704,6 @@ L["Honor"] = "Honra"
 L["Horde / Alliance / Honor Info"] = "Horda / Aliança / Informação de Honra"
 L["Horizontal Spacing"] = "Espaçamento Horizontal"
 L["Horizontal"] = "Horizontal"
-
 L["Hostile"] = "Hostil"
 L["Hours"] = "Horas"
 L["Hover Highlight"] = "Destaque ao pairar"
@@ -750,7 +717,6 @@ L["How much time before the cutaway power starts to fade."] = true
 L["Hyperlink Hover"] = "Pairar no hyperlink"
 L["Icon Height"] = true
 L["Icon Inside Castbar"] = "Ícone dentro da Barra de Cast"
-
 L["Icon Size"] = "Tamanho do Ícone"
 L["Icon Width"] = true
 L["Icon: BOTTOM"] = "Ícone: ABAIXO"
@@ -836,13 +802,11 @@ L["InfoPanel Border"] = "Borda do Painel de Informações"
 L["Information Panel"] = "Painel de Informações"
 L["Information"] = "Informação"
 L["Inherit Global Fade"] = "Herdar Desvanecimento Global"
-
 L["INSANITY"] = "Insanidade"
 L["Inscription"] = "Escrivania"
 L["Inset"] = "Margem"
 L["Inspect Data"] = true
 L["Inspect"] = "Inspecionar"
-
 L["Instance Difficulty"] = "Dificuldade da Instância"
 L["Instance ID"] = "ID da Instância"
 L["Instance Type"] = "Tipo da Instância"
@@ -877,14 +841,12 @@ L["Is Casting Anything"] = "Está castando qualquer coisa"
 L["Is Channeling Anything"] = "Está canalizando qualquer coisa"
 L["Is Focused"] = "Está como Foco"
 L["Is Pet"] = true
-
 L["Is PvP"] = true
 L["Is Resting"] = true
 L["Is Targeted"] = "Está como Alvo"
 L["Is Targeting Player"] = "Está com um Jogador como Alvo"
 L["Island Party Pose"] = true
 L["ISLANDS_HEADER"] = "Expedições Insulares"
-
 L["Item Count"] = "Contador de Item"
 L["Item Info"] = true
 L["Item Level Threshold"] = "Limiar do Item Level"
@@ -903,9 +865,6 @@ L["Key Modifiers"] = "Modificador de Tecla"
 L["Key Ring"] = true
 L["KEY_BINDINGS"] = "Teclas de atalho"
 L["Keybind Mode"] = "Modo de Teclas de Atalho"
-L["Keybind Text Position"] = "Posição do Texto da Tecla de Atalho"
-
-
 L["Keybind Text"] = "Texto das Teclas de Atalho"
 L["Keyword Alert"] = "Alerta de palavra-chave"
 L["Keyword Alerts"] = true
@@ -927,10 +886,6 @@ L["Left Panel Width"] = true
 L["Left Position"] = true
 L["Left Shift"] = "Shift (esquerdo)"
 L["Left to Right"] = "Esquerda para Direita"
-
-
-
-
 L["LEVEL_BOSS"] = "Coloque level -1 para unidades Boss ou coloque 0 para disabilitar."
 L["LF Guild Frame"] = "Localizador de Guildas"
 L["LFG Queue"] = "Fila de LFG"
@@ -1015,7 +970,6 @@ L["Minus"] = "Menos"
 L["Minutes"] = "Minutos"
 L["Mirror Timers"] = true
 L["Misc Frames"] = "Quadro de Diversos"
-
 L["Missing Talent Alert"] = "Alerta de Talento Faltando"
 L["Missing"] = "Faltando"
 L["MM:SS Threshold"] = "Limiar MM:SS"
@@ -1026,7 +980,6 @@ L["Modifier for IDs"] = true
 L["Module Control"] = "Controle de Módulo"
 L["Module Copy"] = "Copiar Módulo"
 L["Module Reset"] = "Resetar Módulo"
-
 L["Monitor"] = true
 L["Mouseover Glow"] = "Brilhar ao Pairar o Mouse"
 L["Mouseover Highlight"] = "Realçar ao Pairar o Mouse"
@@ -1035,11 +988,9 @@ L["Movers"] = "Movedores"
 L["Multi-Monitor Support"] = "Suporte a Multiplos Monitores"
 L["Multiple Ranks"] = true
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multiplicar a altura ou comprimento do fundo por este valor. Muito útil se desejar ter mais que uma barra por trás de um fundo."
-
 L["Mythic+ Best Run"] = true
 L["Mythic+ Data"] = true
 L["Mythic+ Score"] = true
-
 L["Name Font"] = "Fonte de Nomes"
 L["Name Only"] = "Apenas Nome"
 L["Name: Current / Max - Percent"] = "Nome: Atual / Máximo - Porcentagem"
@@ -1068,8 +1019,6 @@ L["Normal Size"] = true
 L["Not Casting Anything"] = "Não castando nada"
 L["Not Channeling Anything"] = "Não canalizando nada"
 L["Not Focused"] = "Não é o foco"
-
-
 L["Not Owned By Player"] = true
 L["Not Pet"] = true
 L["Not Player Controlled"] = true
@@ -1079,7 +1028,6 @@ L["Not Tap Denied"] = true
 L["Not Targeted"] = "Não é o alvo"
 L["Not Targeting Player"] = "Não tem jogador como alvo"
 L["Not Usable"] = "Não usável"
-
 L["NPC"] = true
 L["Num Rows"] = "Número de linhas"
 L["Number Allowed"] = true
@@ -1098,7 +1046,7 @@ L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Officer"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "A distância entre barra de poder e a barra de vida, definir 0 para desactivar."
-L["Offset position for text."] = "Deslocamento da posição do texto"
+
 L["Offset"] = "Distância"
 L["On Cooldown"] = "Durante Tempo de Recarga"
 L["On screen positions for different elements."] = true
@@ -1108,7 +1056,6 @@ L["Only Match SpellID"] = "Apenas Corresponde ao ID do Feitiço"
 L["Only show icons instead of specialization names"] = true
 L["Only Used Slots"] = true
 L["OPACITY"] = "Opacidade"
-
 L["OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN"] = "As ações dos botões serão executadas quando a tecla for pressionada, em vez de quando for solta."
 L["OPTION_TOOLTIP_TIMESTAMPS"] = "Selecione o formato dos carimbos de hora para mensagens de bate-papo."
 L["Order Hall Command Bar"] = "Barra de Comandos do Salão da Ordem"
@@ -1129,10 +1076,8 @@ L["Overlap Horizontal"] = true
 L["Overlap Vertical"] = true
 L["Overlay Alpha"] = true
 L["Overlay"] = "Sobrepor"
-
 L["Override the default class color setting."] = "Sobrescreve a configuração de cor de classe padrão."
 L["Owned By Player"] = true
-
 L["PAIN"] = "Dor"
 L["Panel Backdrop"] = "Fundo do Painel"
 L["Panel Height"] = "Altura do Painel"
@@ -1157,7 +1102,6 @@ L["Percentage amount for vertical overlap of Nameplates."] = "Quantidade (porcen
 L["Personal"] = "Pessoal"
 L["Pet Battle"] = "Batalha de Mascote"
 L["Pet Group"] = true
-
 L["Pet"] = true
 L["Petition Frame"] = "Petição"
 L["Pets"] = true
@@ -1176,19 +1120,15 @@ L["PLAYER_DIFFICULTY1"] = "Normal"
 L["Player"] = "Player"
 L["Plugin"] = true
 L["Portrait"] = "Retrato"
-
-
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Posição da recompensa bonus de quest relativo ao rastreador de objetivos"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "A posição da caixa de edição do bate-papo, será forçada para cima do bate-papo se os textos informativos estiverem desativados."
 L["Position of the Maw Buffs list relative to the objective tracker."] = true
-
 L["Position the Model horizontally."] = "Posicionar o Modelo horizontalmente"
 L["Position the Model vertically."] = "Posicionar o Modelo verticalmente"
 L["Position"] = "Posição"
 L["Power Color"] = "Cor do Poder"
 L["Power Prediction Color"] = "Cor da Predição do Poder"
 L["Power Prediction"] = "Predição do Poder"
-
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "Em PNJs o texto de poder não será mostrado, em adição o texto de nome será reposicionado para o ponto de fixação do texto de poder."
 L["Power Threshold"] = "Limiar do Poder"
 L["POWER_TYPE_ARCANE_CHARGES"] = "Cargas Arcanas"
@@ -1233,24 +1173,14 @@ L["RAGE"] = "Raiva"
 L["Raid Debuff Indicator"] = "Indicador das Debuffs da Raide"
 L["Raid Difficulty"] = "Dificuldade da Raid"
 L["Raid Frame"] = "Quadro de Raid"
-
 L["Raid Only"] = "Apenas Raid"
 L["Raid Pet"] = "Pet da Raid"
 L["Raid Role Indicator"] = true
 L["RAID_CONTROL"] = "Controle de raides"
 L["RAID_INFO_WORLD_BOSS"] = "Chefe de mundo:"
-
-
-
-
-
-
-
-
 L["Raid-Wide Sorting"] = "Ordenação Raid-Largura"
 L["Raid"] = true
 L["Range"] = "Alcance"
-
 L["Reaction Castbars"] = true
 L["Reaction Colors"] = true
 L["Reaction Type"] = true
@@ -1261,7 +1191,6 @@ L["Remaining / Max"] = "Restante / Máximo"
 L["Remaining"] = "Restante"
 L["Remove a Item Name or ID from the list."] = true
 L["Remove a Name or NPC ID from the list."] = "Remove um Nome ou ID de NPC da lista."
-
 L["Remove Backdrop"] = "Remover Fundo"
 L["Remove Instance ID"] = "Remover ID da Instância"
 L["Remove Item Name or ID"] = true
@@ -1288,8 +1217,6 @@ L["Reputation"] = "Reputação"
 L["Require All"] = "Requerer Tudo"
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = "Requere segurar a tecla ALT para mover or cursor ou percorrer pelas mensagens no box de edição."
 L["Reset Action Paging"] = true
-
-
 L["Reset Aura Filters"] = "Restaurar Filtros de Auras"
 L["Reset Chat Position"] = true
 L["Reset CVars"] = "Resetar CVars"
@@ -1299,7 +1226,6 @@ L["Reset Filter"] = "Resetar Filtro"
 L["Reset History"] = true
 L["Reset Nameplate CVars to the ElvUI recommended defaults."] = "Resetar CVars das Placas de identificação para o recomendado pelo ElvUI."
 L["Reset Priority"] = "Resetar Prioridade"
-
 L["Reset Zoom"] = "Resetar Zoom"
 L["Rest Icon"] = "ìcone de descansar"
 L["Rested Experience"] = true
@@ -1328,11 +1254,9 @@ L["Right Position"] = true
 L["Right Shift"] = "Shift (esquerdo)"
 L["Right to Left"] = "Esquerda para Direita"
 L["Right"] = "Direita"
-L["RightChatDataPanel"] = "Bate-papo direito"
 
 L["Role Icon"] = "Ícone do papel"
 L["ROLE"] = "Função"
-
 L["RUNE_BLOOD"] = "Blood Rune"
 L["RUNE_CHARGE"] = "Charging Rune"
 L["RUNE_DEATH"] = "Death Rune"
@@ -1348,7 +1272,6 @@ L["SCRAP_BUTTON"] = "Sucatear"
 L["Scroll Interval"] = "Intervalo de Rolar"
 L["Scroll Messages"] = true
 L["Search for a spell name inside of a filter."] = "Procurar por nome de feitiço dentro de um filtro."
-
 L["Search"] = true
 L["Secondary Texture"] = "Textura secundária"
 L["Seconds"] = "Segundos"
@@ -1376,7 +1299,6 @@ L["Set the alpha level of portrait when frame is overlayed."] = true
 L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = "Define o tipo de filtro. Lista-negra irá esconder qualquer aura nesta lista e mostrar todas as outras. Lista-branca irá apenas mostrar as auras neste filtro e esconder as outras."
 L["Set the font outline."] = "Definir o contorno de fonte."
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own separate options (UnitFrame Font, Datatext Font, ect..)"] = "Define o tamanho da fonte para toda a Interface. Nota: Isto nao afeta coisas que tenham suas prórpias opções de fonte (Quadros de Unidade, Textos Informativos, etc..)"
-
 L["Set the order that the group will sort."] = "Define a ordem em que o grupo vai se organizar."
 L["Set the orientation of the UnitFrame."] = "Define a orientação da Placa de identificação."
 L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."] = "Define a ordem prioritária dos feitiços, por favor note que prioridades só são usadas o modo de Debuffs de Raide, não para o modo normal de bônus/Debuffs."
@@ -1395,10 +1317,8 @@ L["Short (Whole Numbers)"] = "Curto (números inteiros"
 L["Short Channels"] = "Abreviar os Canáis"
 L["SHORT"] = "Pequeno"
 L["Shortcut to global filters."] = "Atalho para filtros globais"
-
 L["Shorten the channel names in chat."] = "Abreviar o nome dos canáis no bate-papo."
 L["Should tooltip be anchored to mouse cursor"] = "O tooltip deve ser ancorado ao cursor do mouse"
-
 L["Show All Tracking Options"] = true
 L["Show an alert frame if you have unspend talent points."] = "Mostrar um quadro de alerta se você tiver pontos de talento não gastos"
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Mostra a barra de predicção de cura no quadro de unidade. Também exibe uma barra com uma cor ligeiramente diferente para a predicção de sobrecura."
@@ -1406,7 +1326,6 @@ L["Show Assigned Color"] = "Mostrar Cores Atribuídas"
 L["Show Aura From Other Players"] = "Mostrar Auras de outros Jogadores"
 L["Show Auras"] = "Mostrar Auras"
 L["Show Badge"] = "Mostrar Distintivo"
-
 L["Show Border"] = true
 L["Show Both"] = "Mostrar Ambos"
 L["Show Bubbles"] = true
@@ -1423,20 +1342,16 @@ L["Show For Healers"] = "Mostrar para Healers"
 L["Show For Tanks"] = "Mostrar para Tanks"
 L["Show Icon"] = "Mostrar Ícone"
 L["Show In Combat"] = "Mostrar em Combate"
-
 L["Show Max Currency"] = true
-
 L["Show Only Names"] = true
-
 L["Show PvP Badge Indicator if available"] = "Mostrar Indicador de Distintivo de PvP se disponível"
 L["Show Quality Color"] = "Mostrar Cor da Qualidade"
 L["Show QuestXP"] = true
-L["Show Scrap Icon"] = "Mostrar Ícone de Sucateável"
+
 L["Show Special Bags Color"] = "Mostrar Cores de Bolsas Especiais"
 L["Show Subzone"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Mostrar o ícone da barra de cast desaturado se um feitiço não for interrompível."
 L["Show Title"] = "Mostrar Título"
-
 L["Show When Not Active"] = "Mostrar Quando Não Ativo"
 L["Show With Target"] = "Mostrar com Alvo"
 L["Show Zone"] = true
@@ -1453,7 +1368,6 @@ L["Skin Backdrop (No Borders)"] = "Redesenhar o Fundo (sem bordas)"
 L["Skin Backdrop"] = "Redesenhar o Fundo"
 L["Skin the blizzard chat bubbles."] = "Redesenhar os balões de conversação da Blizzard"
 L["Skins"] = "Aparências"
-
 L["Small"] = true
 L["Smaller World Map Scale"] = "Escala de Mapa Mundial Menor"
 L["Smaller World Map"] = "Mapa Mundial Menor"
@@ -1485,9 +1399,6 @@ L["Split"] = "Dividir"
 L["Stable"] = "Estábulo"
 L["Stack Auras"] = true
 L["Stack Counter"] = "Contador de Stacks"
-
-
-
 L["Stack Threshold"] = "Limiar de Stack"
 L["Start Near Center"] = "Começar perto do Centro"
 L["Status Bar"] = "Barra de Status"
@@ -1500,7 +1411,6 @@ L["Style Filter"] = "Filtro de Estilo"
 L["Style"] = "Estilo"
 L["Subzone Name"] = "Nome da Subzona"
 L["Summon Icon"] = "Ícone de Sumonar"
-
 L["Support"] = "Suporte & Download"
 L["Supported"] = true
 L["Swap to Alt Power"] = "Mudar para Poder Alternativo"
@@ -1516,8 +1426,6 @@ L["Tab Selector"] = true
 L["Tabard Frame"] = "Tabardo"
 L["Table"] = true
 L["Tagged NPC"] = true
-
-
 L["TALENTS"] = "Talentos"
 L["Talking Head Backdrop"] = true
 L["Talking Head Scale"] = true
@@ -1543,7 +1451,6 @@ L["TargetTargetTarget"] = "AlvoDoAlvoDoAlvo"
 L["Testing:"] = "Testar:"
 L["Text Color"] = "Cor do Texto"
 L["Text Fade"] = "Desvanecer Texto"
-
 L["Text Format"] = "Formato de texto"
 L["Text Justify"] = true
 L["Text Options"] = "Opções de Texto"
@@ -1579,7 +1486,6 @@ L["The object you want to attach to."] = "O objeto ao qual você quer anexar."
 L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = "O retrato irá sobrepor a Barra de Vida. Isso irá acontecer automaticante se a Orientação de Quadro estiver definida como Meio"
 L["The size of the action buttons."] = "Tamanho dos botões de ação."
 
-L["The size of the individual buttons on the bank frame."] = "O tamanho individual de botões dentro do quadro do banco."
 L["The spacing between buttons."] = "Espaçamento entre botões."
 L["The spacing between the backdrop and the buttons."] = "O espaçamento entre o backdrop e os botões."
 L["The texture that will be used mainly for statusbars."] = "Textura que será usada principalmente para a barras de estado."
@@ -1588,7 +1494,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["The width of the action buttons."] = true
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = "Estes filtros não usam uma lista de feitiços como filtros normais. Ao invés disso, eles usam o API do WoW e alguma lógica de codificação para determina se uma aura deve ou não ser bloqueada."
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."] = "Estes filtros usam uma lista de feitiços para determinar se uma Aura deve ou não ser bloqueada. O conteúdo desses filtros pode ser modificada nas configurações de Filtros."
-L["Thin Border Theme"] = "Tema de Bordas Finas"
+
 L["Thin Borders"] = "Bordas Finas"
 L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = "Isto permite que você crie Textos de Informaçãso que irão rastrear a moeda com o ID que foi inserido. O Texto de Informação pode ser adicionado ao painel logo após sua criação."
 L["This dictates the size of the icon when it is not attached to the castbar."] = "Isso dita o tamanho do ícone quando não está anexado a barra de cast."
@@ -1613,8 +1519,8 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Isto irá resetar todo o conteúdo de um filtro de volta para seu padrão. Qualquer feitiço que você adicionou a este filtro será removido."
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "Modo de Exibição de Ameaça"
-L["Threat Health"] = "Vida da Ameaça"
-L["Threat Power"] = "Poder da Ameaça"
+
+
 L["Threat"] = "Aggro"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Limiar (em minutos) antes do texto ser mostrado no formato HH:MM. Definir -1 para nunca mudar este formato."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Limiar (em segundos) antes do texto ser mostrado no formato MM:SS. Definir -1 para nunca mudar este formato."
@@ -1623,17 +1529,15 @@ L["Threshold before the icon will fade out and back in. Set to -1 to disable."] 
 L["Threshold Colors"] = "Cor dos Limiares"
 L["Ticket Tracker"] = true
 L["Ticks"] = "Ticks"
-L["Tiers"] = true
+
 L["Time Indicator Colors"] = "Cor de Indicadores de Tempo"
 L["Time Options"] = "Opções de Tempo"
-
 L["Time Remaining"] = "Tempo Remanescente"
 L["Time To Hold"] = "Tempo para Segurar"
-L["Time xOffset"] = "Tempo (Eixo-X)"
-L["Time yOffset"] = "Tempo (Eixo-Y)"
+
+
 L["Time"] = "Tempo"
 L["TIMEMANAGER_TITLE"] = "Relógio"
-
 L["TIMESTAMPS_LABEL"] = "Registro de hora no bate-papo"
 L["Title will only appear if Name Only is enabled or triggered in a Style Filter."] = "O Título irá apenas aparecer se Apenas Nome estiver habilitado ou ter sido ativado em Estilos de Filtro."
 L["Toggle 24-hour mode for the time datatext."] = "Ativar formato 24 horas para o texto informativo de hora"
@@ -1645,7 +1549,6 @@ L["Toggle the chat tab panel backdrop."] = "Mostrar/ocultar o fundo da guia do b
 L["Toggle Tutorials"] = "Ativar Tutoriais"
 L["Toggles the display of the actionbars backdrop."] = "Mostra/Oculta o fundo das barras de acção"
 L["Tooltip Body"] = true
-
 L["Tooltip Header"] = true
 L["Tooltip Lines"] = true
 L["Top Arrow"] = "Seta Superior"
@@ -1695,11 +1598,11 @@ L["URL Links"] = "Links URL"
 L["Usable"] = "Usável"
 L["Use a more visible flash animation for Auto Attacks."] = "Usar uma animação com flash mais visível para Auto-Ataques."
 L["Use Alt Key"] = "Usar Tecla Alt"
-L["Use Atlas Textures if there is one available."] = "Usar Texturas Atlas se tiver uma disponível."
+
 L["Use Atlas Textures"] = "Usar Texturas Atlas."
 L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."] = "Usar BattleTag em vez do nome de ID Real no chat. A histórico do chat sempre usará a BattleTag."
 L["Use Blizzard Cleanup"] = "Usar Limpeza da Blizzard"
-L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = "Usar método da Blizzard para limpeza de bolsas ao inves da ordenação do ElvUI."
+
 L["Use class color for the names of players when they are mentioned."] = "Usar cor da classe para nome de jogadores quando eles são mencionados."
 L["Use Class Color"] = "Usar Cor de Classes"
 L["Use coin icons instead of colored text."] = "Usar ícones de moedas em vez de textos coloridos."
@@ -1719,12 +1622,11 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "Usar Posição Estática"
 L["Use Subzone Names"] = "Usar Nomes de Subzonas"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "Usar a cor de fundo da vida personalizada em vez de um multiplo da cor de vida principal."
-L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."] = "Usar o filtro perfil-específico Indicador de Buff (Perfil) em vez de indicador de buff global."
 L["Use thin borders on certain nameplate elements."] = true
 L["Use thin borders on certain unitframe elements."] = "Usar Bordas Finas em certos elementos de Quadros de Unidades."
 L["Use this backdrop color for units that are dead or ghosts."] = "Usar essa cor de backdrop para unidades que estão mortas ou fantasmas."
 L["Use Threat Color"] = "Usar cor de ameaça"
-L["Use Tooltip"] = "Usar Tooltip"
+
 L["Use Zone Names"] = "Usar Nome de Zonas"
 L["Used as Raid Debuff Indicator"] = true
 L["Used/Total"] = true
@@ -1742,9 +1644,8 @@ L["Vertical"] = "Vertical"
 L["Visibility State"] = "Estado de Visibilidade"
 L["Visibility"] = "Visibilidade"
 L["VOID_STORAGE"] = "Cofre Etéreo"
-L["Warboard"] = "Mural do Chamado ao Heroísmo"
-L["What point to anchor to the frame you set to attach to."] = "Qual é o ponto a fixar ao quadro que você definiu para ser anexado."
 
+L["What point to anchor to the frame you set to attach to."] = "Qual é o ponto a fixar ao quadro que você definiu para ser anexado."
 L["Whats New"] = true
 L["When disabled, the Chat Background color has to be set via Blizzards Chat Tabs Background setting."] = true
 L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = "Quando habilitado irá apenas mostrar feitiços que foram adicionados ao filtro usando o ID do Feitiço e não o nome."

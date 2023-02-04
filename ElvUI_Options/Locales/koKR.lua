@@ -666,7 +666,7 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = true
 L["HH:MM"] = true
 L["Hide At Max Level"] = "만렙시 숨김"
-L["Hide At Max Power"] = true
+
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "둘 다 숨기기"
 L["Hide by Application"] = true
@@ -865,7 +865,7 @@ L["Key Modifiers"] = true
 L["Key Ring"] = true
 L["KEY_BINDINGS"] = "단축키 설정"
 L["Keybind Mode"] = "단축키 설정 모드"
-L["Keybind Text Position"] = true
+
 L["Keybind Text"] = "단축키 표시"
 L["Keyword Alert"] = "키워드 발견 시 소리로 알림"
 L["Keyword Alerts"] = true
@@ -1047,7 +1047,7 @@ L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Officer"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "디자인 설정을 무시하고 자원바를 생명력바 뒤로 겹친 후, 드러남 정도를 결정합니다.\n\n0으로 설정하면 겹치지 않고 디자인 설정대로 배치합니다."
-L["Offset position for text."] = "위치 기준점에서부터 얼마나 떨어진 곳에 문자를 배치할지 결정합니다."
+
 L["Offset"] = "생명력바와 겹쳐 표시"
 L["On Cooldown"] = true
 L["On screen positions for different elements."] = true
@@ -1255,7 +1255,7 @@ L["Right Position"] = true
 L["Right Shift"] = true
 L["Right to Left"] = "오른쪽에서 왼쪽으로"
 L["Right"] = "오른쪽"
-L["RightChatDataPanel"] = "우측 패널 정보문자 탭"
+
 L["Role Icon"] = "역할 아이콘"
 L["ROLE"] = "역할"
 L["RUNE_BLOOD"] = "Blood Rune"
@@ -1348,7 +1348,7 @@ L["Show Only Names"] = true
 L["Show PvP Badge Indicator if available"] = true
 L["Show Quality Color"] = true
 L["Show QuestXP"] = true
-L["Show Scrap Icon"] = true
+
 L["Show Special Bags Color"] = true
 L["Show Subzone"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = true
@@ -1486,7 +1486,7 @@ L["The name you have selected is already in use by another element."] = "입력�
 L["The object you want to attach to."] = "이 요소가 어느 프레임을 기준으로 배치될지를 결정합니다."
 L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["The size of the action buttons."] = "각각의 행동단축바 버튼의 크기를 결정합니다."
-L["The size of the individual buttons on the bank frame."] = "통합은행 프레임의 슬롯크기를 결정합니다."
+
 L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다."
 L["The spacing between the backdrop and the buttons."] = "버튼과 배경 사이에 공간을 둡니다."
 L["The texture that will be used mainly for statusbars."] = "기본적으로 상태바 같은 곳에서 입혀지는 텍스쳐입니다."
@@ -1495,7 +1495,7 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["The width of the action buttons."] = true
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = true
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."] = true
-L["Thin Border Theme"] = "얇은 경계 테마"
+
 L["Thin Borders"] = "얇은 테두리"
 L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = "제공된 화폐 ID로 화폐를 추적할 새로운 정보문자를 만들 수 있도록 허용합니다. 정보문자는 만든 직후부터 패널에 추가가 가능합니다."
 L["This dictates the size of the icon when it is not attached to the castbar."] = "시전바에 부착하지 않을 때의 아이콘 크기를 결정합니다."
@@ -1520,8 +1520,8 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "어그로획득 표시방법"
-L["Threat Health"] = true
-L["Threat Power"] = true
+
+
 L["Threat"] = "위협"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
@@ -1530,13 +1530,13 @@ L["Threshold before the icon will fade out and back in. Set to -1 to disable."] 
 L["Threshold Colors"] = true
 L["Ticket Tracker"] = true
 L["Ticks"] = "주문 틱 표시"
-L["Tiers"] = true
+
 L["Time Indicator Colors"] = true
 L["Time Options"] = true
 L["Time Remaining"] = "남은시간이 긴 순으로"
 L["Time To Hold"] = "유지하는 시간"
-L["Time xOffset"] = "시간 x 좌표"
-L["Time yOffset"] = "시간 y 좌표"
+
+
 L["Time"] = "시간"
 L["TIMEMANAGER_TITLE"] = "시계"
 L["TIMESTAMPS_LABEL"] = "대화 시각"
@@ -1599,11 +1599,11 @@ L["URL Links"] = "URL 주소 강조"
 L["Usable"] = "사용 가능"
 L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = "Alt 키 사용"
-L["Use Atlas Textures if there is one available."] = true
+
 L["Use Atlas Textures"] = true
 L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."] = "대화에 실명ID 대신 배틀태그를 사용합니다. 대화 기록에 항상 배틀태그만 사용됩니다."
 L["Use Blizzard Cleanup"] = true
-L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."] = true
+
 L["Use class color for the names of players when they are mentioned."] = "사용자의 이름이 언급될 경우 직업 색상으로 표시합니다."
 L["Use Class Color"] = "직업 색상 사용"
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
@@ -1623,12 +1623,11 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = "정적인 위치 사용"
 L["Use Subzone Names"] = true
 L["Use the custom backdrop color instead of a multiple of the main color."] = true
-L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."] = true
 L["Use thin borders on certain nameplate elements."] = true
 L["Use thin borders on certain unitframe elements."] = "특정 유닛프레임 요소들에 얇은 테두리를 사용합니다."
 L["Use this backdrop color for units that are dead or ghosts."] = "죽거나 유령상태인 유닛에 대해 이 배경색을 사용합니다."
 L["Use Threat Color"] = "위협 색상 사용"
-L["Use Tooltip"] = "툴팁 사용"
+
 L["Use Zone Names"] = true
 L["Used as Raid Debuff Indicator"] = true
 L["Used/Total"] = true
@@ -1646,7 +1645,7 @@ L["Vertical"] = "세로"
 L["Visibility State"] = "표시 자동전환 조건"
 L["Visibility"] = "표시"
 L["VOID_STORAGE"] = "공허 보관소"
-L["Warboard"] = "영웅의 부름 게시판"
+
 L["What point to anchor to the frame you set to attach to."] = "지정된 프레임에서 어디를 기준으로 나열할지 결정합니다."
 L["Whats New"] = true
 L["When disabled, the Chat Background color has to be set via Blizzards Chat Tabs Background setting."] = true
