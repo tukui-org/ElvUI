@@ -3,7 +3,10 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local format = format
+local wipe = wipe
+
 local GameTooltip = GameTooltip
+
 local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
@@ -18,6 +21,8 @@ local RENOWN_LEVEL_LABEL = RENOWN_LEVEL_LABEL
 local REPUTATION = REPUTATION
 local STANDING = STANDING
 local UNKNOWN = UNKNOWN
+
+local QuestRep = 0
 
 local function GetValues(curValue, minValue, maxValue)
 	local maximum = maxValue - minValue
@@ -55,6 +60,8 @@ function DB:ReputationBar_Update()
 			reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
 			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
 			label = format('%s%s|r %s', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
+
+			DB:ReputationBar_QuestRep(factionID)
 		end
 	end
 
@@ -106,6 +113,24 @@ function DB:ReputationBar_Update()
 	bar.text:SetText(displayString)
 end
 
+function DB:ReputationBar_QuestRep(factionID)
+	QuestRep = 0
+
+	for i = 1, C_QuestLog.GetNumQuestLogEntries() do
+		local info = C_QuestLog.GetInfo(i)
+		if info then
+			local qxp = C_QuestLog.GetQuestLogMajorFactionReputationRewards(info.questID)
+			if qxp then
+				for _, data in ipairs(qxp) do
+					if factionID == data.factionID then
+						QuestRep = QuestRep + data.rewardAmount
+					end
+				end
+			end
+		end
+	end
+end
+
 function DB:ReputationBar_OnEnter()
 	if self.db.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
@@ -145,8 +170,10 @@ function DB:ReputationBar_OnEnter()
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
 			maxValue = majorFactionData.renownLevelThreshold
-			local current, maximum, percent = GetValues(curValue, 0, maxValue)
-			GameTooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', current, maximum, percent), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b)
+			GameTooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', GetValues(curValue, 0, maxValue)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
+
+			local current, _, percent = GetValues(QuestRep, 0, maxValue)
+			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)
 		elseif isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION) then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
