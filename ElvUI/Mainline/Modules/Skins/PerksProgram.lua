@@ -58,10 +58,13 @@ function S:Blizzard_PerksProgram()
 		S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
 
+		if footer.RotateButtonContainer then
+			S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.RotateButtonContainer.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
+		end
+
 		S:HandleCheckBox(footer.TogglePlayerPreview)
 		S:HandleCheckBox(footer.ToggleHideArmor)
-		S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
-		S:HandleButton(footer.RotateButtonContainer.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
 	end
 end
 
