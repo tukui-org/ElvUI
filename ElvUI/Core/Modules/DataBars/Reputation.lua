@@ -3,9 +3,11 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local format = format
-local wipe = wipe
+local ipairs = ipairs
 
 local GameTooltip = GameTooltip
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local ToggleCharacter = ToggleCharacter
 
 local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
@@ -13,8 +15,10 @@ local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
 local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
 local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
-local GetWatchedFactionInfo = GetWatchedFactionInfo
-local ToggleCharacter = ToggleCharacter
+
+local C_QuestLog_GetInfo = C_QuestLog.GetInfo
+local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
+local C_QuestLog_GetQuestLogMajorFactionReputationRewards = C_QuestLog.GetQuestLogMajorFactionReputationRewards
 
 local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local RENOWN_LEVEL_LABEL = RENOWN_LEVEL_LABEL
@@ -116,10 +120,10 @@ end
 function DB:ReputationBar_QuestRep(factionID)
 	QuestRep = 0
 
-	for i = 1, C_QuestLog.GetNumQuestLogEntries() do
-		local info = C_QuestLog.GetInfo(i)
+	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+		local info = C_QuestLog_GetInfo(i)
 		if info then
-			local qxp = C_QuestLog.GetQuestLogMajorFactionReputationRewards(info.questID)
+			local qxp = C_QuestLog_GetQuestLogMajorFactionReputationRewards(info.questID)
 			if qxp then
 				for _, data in ipairs(qxp) do
 					if factionID == data.factionID then
