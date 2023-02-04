@@ -363,7 +363,7 @@ do
 		DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
 
 		-- enable / battleground - enable / profile dt
-		DT.db.panels[name] = E:CopyTable(DT.db.panels[name], defaults, true)
+		local panelDB = E:CopyTable(DT.db.panels[name], defaults, true)
 
 		-- global frame settings and to keep profile tidy
 		G.datatexts.customPanels[name] = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
@@ -371,7 +371,7 @@ do
 
 		-- global number of datatext slots for the profile
 		for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
-			if not DT.db.panels[name][i] then DT.db.panels[name][i] = '' end
+			if not panelDB[i] then panelDB[i] = '' end
 			if not DT.db.battlePanel[name][i] then DT.db.battlePanel[name][i] = '' end
 		end
 
@@ -638,7 +638,8 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
-	if DT.db.panels[name].enable then
+	local panelDB = DT.db.panels[name]
+	if panelDB and panelDB.enable then
 		E:EnableMover(Panel.moverName)
 		RegisterStateDriver(Panel, 'visibility', db.visibility)
 

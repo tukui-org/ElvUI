@@ -348,7 +348,7 @@ local function CreateBarOptions(barNumber)
 	end
 
 	if E.myclass == 'DRUID' and barNumber >= 7 or E.myclass == 'ROGUE' and barNumber == 7 then
-		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], barNumber) end
+		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.\nYou will have to adjust paging to use this bar.\nAre you sure?"], barNumber) end
 	end
 end
 
