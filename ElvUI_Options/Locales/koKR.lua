@@ -114,7 +114,6 @@ L["Ascending or Descending order."] = true
 L["Ascending"] = "오름차순"
 L["Assigned Icon"] = true
 L["Assist Frames"] = "지원공격 전담 프레임"
-L["Assist Target"] = true
 L["Assist"] = true
 L["At what point should the text be displayed. Set to -1 to disable."] = "이 값보다 시간이 낮아지면 글자가 표시됩니다.\n\n-1로 설정하면 이 기능을 사용하지 않습니다."
 L["Attach Text To"] = true
@@ -438,8 +437,6 @@ L["Disable Sort"] = true
 L["Disable Tutorial Buttons"] = "튜토리얼 버튼 비활성"
 L["Disabled Blizzard Frames"] = "비활성화된 블리자드 프레임"
 L["Disabled Blizzard"] = "기본 오라창 미사용"
-L["Disables the focus and target of focus unitframes."] = "주시대상, 주시대상의 대상 프레임 비활성화"
-L["Disables the player and pet unitframes."] = "플레이어, 소환수 프레임 비활성화"
 L["Disables the tutorial button found on some frames."] = "몇몇 프레임에서 등장하는 튜토리얼 버튼을 비활성화합니다."
 L["Disconnected"] = "오프라인"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "전장이나 투기장에서 유닛이 힐러인 경우 이름표에 힐러 아이콘을 표시합니다."
@@ -476,11 +473,9 @@ L["Display the castbar icon inside the castbar."] = "시전바 내부에 시전�
 L["Display the current Mythic+ Dungeon Score."] = true
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "각종 링크에 커서를 갖다 댄(마우스오버) 동안에 링크에 대한 툴팁을 표시합니다."
 L["Display the item level and current specialization of the unit on modifier press."] = true
-L["Display the junk icon on all grey items that can be vendored."] = "판매 가능한 모든 회색 템에 아이콘을 표시합니다."
 L["Display the name of the unit on the chat bubble. This will not work if backdrop is disabled or when you are in an instance."] = "말풍선에 화자의 이름을 표시합니다. 배경이 비활성화 돼 있거나 인스턴스 내부에 있을 때는 작동하지 않을 것입니다."
 L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."] = true
 L["Display the unit role in the tooltip."] = true
-L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = "게임내에서 캐릭터를 강화할 수 있는 것으로 판단되는 아이템에 강화 아이콘을 표시합니다."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "시전바에 시전되는 주문의 틱을 표시합니다. 영혼 흡수나 가속이 추가되는 주문에 따라 틱이 자동 조절됩니다."
 L["Display Types"] = true
 L["Displayed Currency"] = "표시된 화폐"
@@ -500,7 +495,6 @@ L["Duration Enable"] = true
 L["Duration Text"] = "지속시간 글자"
 L["Duration"] = "총 지속시간이 긴 순"
 L["Editbox History"] = true
-L["Effective Updates"] = true
 L["Elite Icon"] = "정예 아이콘"
 L["ELVUI_CREDITS"] = "저는 이 애드온의 유지와 개발 코딩에 도움을 주거나 기부를 한 분들께 특별히 감사하고 싶습니다. 포럼에서 저에게 개인적으로 메일을 준 분들에힌해 이름만 표기했으며만약 당신의 이름이 누락되어 있고 명단에 당신의 이름을 표기하고 하는 분들은 Elv에게 개인적인 메일을 보내주시기 바랍니다. "
 L["Emote"] = true
@@ -666,7 +660,6 @@ L["Here you can add items or search terms that you want to be excluded from sort
 L["HH:MM Threshold"] = true
 L["HH:MM"] = true
 L["Hide At Max Level"] = "만렙시 숨김"
-
 L["Hide Below Max Level"] = true
 L["Hide Both"] = "둘 다 숨기기"
 L["Hide by Application"] = true
@@ -689,7 +682,6 @@ L["Hide Spell Name"] = "주문 이름 숨김"
 L["Hide Text"] = true
 L["Hide the channel names in chat."] = true
 L["Hide Time"] = "시간 숨김"
-L["Hide tooltip while in combat."] = "전투 중에는 툴팁을 표시하지 않게 합니다."
 L["Hide Voice Buttons"] = true
 L["Hide When Empty"] = "비었을때 숨김"
 L["Hide Zone Text"] = true
@@ -865,7 +857,6 @@ L["Key Modifiers"] = true
 L["Key Ring"] = true
 L["KEY_BINDINGS"] = "단축키 설정"
 L["Keybind Mode"] = "단축키 설정 모드"
-
 L["Keybind Text"] = "단축키 표시"
 L["Keyword Alert"] = "키워드 발견 시 소리로 알림"
 L["Keyword Alerts"] = true
@@ -921,7 +912,6 @@ L["Main backdrop color of the UI."] = "ElvUI에서 생성하는 모든 불투명
 L["Main border color of the UI."] = "UI의 주테두리 색입니다."
 L["Main Options"] = true
 L["Main statusbar texture."] = "시전바, 클래스타이머 등의 텍스쳐를 결정합니다."
-L["Main Tanks / Main Assist"] = "방어/지원 담당자"
 L["Make textures transparent."] = "색상을 반투명하게 합니다."
 L["Make the unitframe glow when it is below this percent of health."] = true
 L["Make the world map smaller."] = "월드맵을 작게 표시합니다."
@@ -956,7 +946,6 @@ L["Merchant Frame"] = "상인 창"
 L["Method to sort by."] = "정렬 방법"
 L["Middle Click - Set Focus"] = "휠클릭으로 주시 설정"
 L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."] = true
-L["Middle"] = "중간"
 L["Min Alpha"] = true
 L["Minimap Buttons"] = "미니맵 버튼"
 L["Minimap Mouseover"] = "마우스오버 때만 표시"
@@ -971,7 +960,6 @@ L["Minus"] = true
 L["Minutes"] = "분 단위 색상"
 L["Mirror Timers"] = "미러 타이머"
 L["Misc Frames"] = "기타 프레임"
-L["Missing Talent Alert"] = "안찍은 특성 알림"
 L["Missing"] = true
 L["MM:SS Threshold"] = true
 L["MM:SS"] = true
@@ -1047,7 +1035,6 @@ L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Officer"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "디자인 설정을 무시하고 자원바를 생명력바 뒤로 겹친 후, 드러남 정도를 결정합니다.\n\n0으로 설정하면 겹치지 않고 디자인 설정대로 배치합니다."
-
 L["Offset"] = "생명력바와 겹쳐 표시"
 L["On Cooldown"] = true
 L["On screen positions for different elements."] = true
@@ -1255,7 +1242,6 @@ L["Right Position"] = true
 L["Right Shift"] = true
 L["Right to Left"] = "오른쪽에서 왼쪽으로"
 L["Right"] = "오른쪽"
-
 L["Role Icon"] = "역할 아이콘"
 L["ROLE"] = "역할"
 L["RUNE_BLOOD"] = "Blood Rune"
@@ -1321,7 +1307,6 @@ L["Shortcut to global filters."] = "전역 필터로 바로가기"
 L["Shorten the channel names in chat."] = "채팅창의 채널명을 간추려 표시합니다."
 L["Should tooltip be anchored to mouse cursor"] = "마우스에 툴팁을 표시합니다.\n\n체크 해제 시 프레임 이동 모드에서 툴팁 위치에 표시됩니다."
 L["Show All Tracking Options"] = true
-L["Show an alert frame if you have unspend talent points."] = "미사용 특성 포인트 알림창 표시"
 L["Show an incoming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "생명력바에 예상 치유량을 표시합니다."
 L["Show Assigned Color"] = true
 L["Show Aura From Other Players"] = "다른 유저가 건 주문효과도 표시"
@@ -1348,7 +1333,6 @@ L["Show Only Names"] = true
 L["Show PvP Badge Indicator if available"] = true
 L["Show Quality Color"] = true
 L["Show QuestXP"] = true
-
 L["Show Special Bags Color"] = true
 L["Show Subzone"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = true
@@ -1486,7 +1470,6 @@ L["The name you have selected is already in use by another element."] = "입력�
 L["The object you want to attach to."] = "이 요소가 어느 프레임을 기준으로 배치될지를 결정합니다."
 L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."] = true
 L["The size of the action buttons."] = "각각의 행동단축바 버튼의 크기를 결정합니다."
-
 L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다."
 L["The spacing between the backdrop and the buttons."] = "버튼과 배경 사이에 공간을 둡니다."
 L["The texture that will be used mainly for statusbars."] = "기본적으로 상태바 같은 곳에서 입혀지는 텍스쳐입니다."
@@ -1495,7 +1478,6 @@ L["The unit prefixes you want to use when values are shortened in ElvUI. This is
 L["The width of the action buttons."] = true
 L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."] = true
 L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."] = true
-
 L["Thin Borders"] = "얇은 테두리"
 L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = "제공된 화폐 ID로 화폐를 추적할 새로운 정보문자를 만들 수 있도록 허용합니다. 정보문자는 만든 직후부터 패널에 추가가 가능합니다."
 L["This dictates the size of the icon when it is not attached to the castbar."] = "시전바에 부착하지 않을 때의 아이콘 크기를 결정합니다."
@@ -1520,8 +1502,6 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = true
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = true
 L["Threat Display Mode"] = "어그로획득 표시방법"
-
-
 L["Threat"] = "위협"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = true
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = true
@@ -1530,13 +1510,10 @@ L["Threshold before the icon will fade out and back in. Set to -1 to disable."] 
 L["Threshold Colors"] = true
 L["Ticket Tracker"] = true
 L["Ticks"] = "주문 틱 표시"
-
 L["Time Indicator Colors"] = true
 L["Time Options"] = true
 L["Time Remaining"] = "남은시간이 긴 순으로"
 L["Time To Hold"] = "유지하는 시간"
-
-
 L["Time"] = "시간"
 L["TIMEMANAGER_TITLE"] = "시계"
 L["TIMESTAMPS_LABEL"] = "대화 시각"
@@ -1548,7 +1525,6 @@ L["Toggle On While In Combat"] = "전투 중 활성화"
 L["Toggle showing of the left and right chat panels."] = "패널의 배경 표시 여부를 결정합니다."
 L["Toggle the chat tab panel backdrop."] = "패널 상단에 위치한 탭 부분의 표시 여부를 결정합니다."
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
-L["Toggles the display of the actionbars backdrop."] = "행동단축바의 배경을 표시할지 여부를 결정합니다."
 L["Tooltip Body"] = true
 L["Tooltip Header"] = true
 L["Tooltip Lines"] = true
@@ -1599,11 +1575,9 @@ L["URL Links"] = "URL 주소 강조"
 L["Usable"] = "사용 가능"
 L["Use a more visible flash animation for Auto Attacks."] = true
 L["Use Alt Key"] = "Alt 키 사용"
-
 L["Use Atlas Textures"] = true
 L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."] = "대화에 실명ID 대신 배틀태그를 사용합니다. 대화 기록에 항상 배틀태그만 사용됩니다."
 L["Use Blizzard Cleanup"] = true
-
 L["Use class color for the names of players when they are mentioned."] = "사용자의 이름이 언급될 경우 직업 색상으로 표시합니다."
 L["Use Class Color"] = "직업 색상 사용"
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
@@ -1627,11 +1601,9 @@ L["Use thin borders on certain nameplate elements."] = true
 L["Use thin borders on certain unitframe elements."] = "특정 유닛프레임 요소들에 얇은 테두리를 사용합니다."
 L["Use this backdrop color for units that are dead or ghosts."] = "죽거나 유령상태인 유닛에 대해 이 배경색을 사용합니다."
 L["Use Threat Color"] = "위협 색상 사용"
-
 L["Use Zone Names"] = true
 L["Used as Raid Debuff Indicator"] = true
 L["Used/Total"] = true
-L["Value Color"] = "강조 색상"
 L["Value"] = true
 L["Vehicle Exit"] = true
 L["Vehicle Seat Indicator Size"] = true
@@ -1645,20 +1617,17 @@ L["Vertical"] = "세로"
 L["Visibility State"] = "표시 자동전환 조건"
 L["Visibility"] = "표시"
 L["VOID_STORAGE"] = "공허 보관소"
-
 L["What point to anchor to the frame you set to attach to."] = "지정된 프레임에서 어디를 기준으로 나열할지 결정합니다."
 L["Whats New"] = true
 L["When disabled, the Chat Background color has to be set via Blizzards Chat Tabs Background setting."] = true
 L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."] = "활성화하면 이름이 아니라 주문ID를 이용해 필터에 추가된 주문들만 표시합니다."
 L["When enabled the nameplate will stay visible in a locked position."] = "활성화하면 이름표가 고정된 위치에 표시된 채 머무릅니다."
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "누구를 대상으로 잡고 있는지, 누가 이 유닛을 대상으로 잡았는지에 대한 정보를 툴팁에 추가합니다."
-L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "전장 안에 있는 경우 주 정보문자에 자신의 각종 점수들을 표시하게 합니다."
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "이전에 말한 채널을 계속 유지할지 여부를 결정합니다.\n\n체크 해제 시 대화입력창을 열 때마다 일반 채널로 설정됩니다."
 L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."] = true
 L["When true, the header includes the player when not in a raid."] = "활성화시, 공격대에 속해있지 않아도 플레이어를 표시합니다."
 L["When using Static Position, this option also requires the target to be attackable."] = true
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
-L["Whisper Alert"] = "귓말이 오면 소리로 알림"
 L["Whisper"] = true
 L["Whitelist"] = "화이트리스트"
 L["Width Multiplier"] = "배경 가로길이 배율"
@@ -1681,7 +1650,7 @@ L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4
 L["You cannot copy settings from the same unit."] = "같은 유닛은 복사할 수 없습니다."
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = true
 L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시도해야 합니다."
-L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."] = true
+
 L["Your Auras First"] = "자기 주문 우선"
 L["Zone Button"] = true
 L["Zone Name"] = true
@@ -1734,71 +1703,11 @@ L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["DATATEXT_DESC"] = "정보문자에 관련된 옵션들입니다."
 L["ELVUI_DESC"] = "|cffff8000ElvUI|r는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다."
 L["NAMEPLATE_DESC"] = "이름표에 관련된 옵션들입니다."
-L["PANEL_DESC"] = "좌우 패널의 크기를 조절합니다. 이 값에 따라 고정되어 있는 채팅창과 통합가방/은행 프레임의 크기도 변경됩니다."
 L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 시 스킨을 적용합니다."
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
 L["VISIBILITY_DESC"] = "체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다."
-L["SEARCH_SYNTAX_DESC"] = [=[
-
-  각종 가방에서 검색기능을 사용할 때, 다음의 명령어들을 활용하면
-  자신이 원하는 조건에 맞는 아이템들만 검색하도록 할 수 있습니다.
-
-  |cff2eb7e4<< 특정형 >>|r
-    |cffceff00■|r q:등급 / quality:등급
-     - 영어로 쓴 등급을 가지는 아이템들만 검색합니다.
-     - 예) |cffceff00q:영웅|r 으로 검색하면 보라템들만 하이라이트 됩니다.
-     - 등급 키 : |cffA8A8A8일반|r, |cff15B300고급|r, |cff0091F2희귀|r, |cffC891FA영웅,|r |cffFF8000전설|r, |cffE6CC80계승|r
-
-    |cffceff00■|r l:템렙 / lvl:템렙 / level:템렙
-     - 입력한 숫자에 딱 맞는 템렙의 아이템들만 검색됩니다.
-
-    |cffceff00■|r t:아이템종류 / type:아이템종류 / slot:아이템종류
-     - 입력한 글자를 포함하는 종류인 아이템들만 표시합니다.
-     - 예) |cffceff00t:양손|r 으로 검색하면 양손 둔기, 양손 도검 등이 검색될 수 있습니다.
-
-    |cffceff00■|r n:이름 / name:이름
-     - 입력한 글자가 아이템 이름에 포함된 것들만 표시합니다.
-
-    |cffceff00■|r s:세트이름 / set:세트이름
-     - 입력한 글자가 포함됀 장비세트에 소속된 아이템들만 표시합니다.
-
-    |cffceff00■|r r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]
-     - For example, reqlvl:30 will find all items that require level 30.
-
-    |cffceff00■|r tt:[search], tip:[search] or tooltip:[search]
-     - For example, tt:binds will find all items that can be bound to account, on equip, or on pickup.
-
-
-  |cff2eb7e4<< 조건부여 >>|r
-    |cffceff00■|r ! (느낌표)
-     - 적은 조건을 제외하도록 합니다.
-     - 예) |cffceff00!q:영웅|r 을 사용하면 영웅등급이 아닌 모든 아이템들이 표시됩니다.
-
-    |cffceff00■|r | (백스페이스 옆 \키를 쉬프트)
-     - 여러 조건을 이어 붙였을 때, 각 조건 중 하나라도 만족하면 표시합니다.
-     - 예) |cffceff00q:영웅|t:무기|r 를 입력하면 영웅 등급인 아이템과 무기 종류인 아이템이 표시됩니다.
-
-    |cffceff00■|r & (쉬프트 7)
-     - 여러 조건을 이어 붙였을 때, 모든 조건을 만족하면 표시합니다.
-     - 예) |cffceff00q:영웅&t:무기|r 를 입력하면 영웅 등급이면서 무기 종류의 아이템만 표시됩니다.
-
-    |cffceff00■|r >, <, >=, <=
-     - 숫자 조건을 제어합니다.
-     - 예) |cffceff00lvl:>30|r 을 입력하면 템렙이 30을 초과하는 아이템들만 표시합니다.
-
-
-   |cff2eb7e4<< 예약어 >>|r
-     - soulbound, bound, bop : 획득시 귀속 아이템을 표시합니다.
-     - bou : 사용시 귀속 아이템을 표시합니다.
-     - boe : 착용 시 귀속 아이템을 표시합니다.
-     - boa : 계정 귀속 아이템을 표시합니다.
-     - quest : 퀘스트 아이템을 표시합니다.
-     - reagent, crafting : Profession reagents.
-     - keystone : Mythic Keystone.
-     - followers : Follower items.
-     - champions : Champion equipment.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바의 페이지를 자동으로 전환시킬 수 있습니다.
