@@ -107,7 +107,7 @@ function TT:SetCompareItems(tt, value)
 	if tt == GameTooltip then
 		if E.Retail then -- This stops the OnUpdate script from triggering
 			tt.supportsItemComparison = value
-		elseif value then -- This is for Classics
+		elseif not value then -- This is for Classics
 			_G.GameTooltip_HideShoppingTooltips(tt)
 		end
 	end
