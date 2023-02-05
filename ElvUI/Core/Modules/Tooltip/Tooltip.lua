@@ -107,8 +107,15 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
+		if tt == GameTooltip then
+			GameTooltip.supportsItemComparison = false
+		end
 		tt:Hide()
 		return
+	end
+
+	if tt == GameTooltip then
+		GameTooltip.supportsItemComparison = true
 	end
 
 	local statusBar = tt.StatusBar
