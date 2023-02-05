@@ -103,20 +103,25 @@ function TT:IsModKeyDown(db)
 	return k == 'SHOW' or ((k == 'SHIFT' and IsShiftKeyDown()) or (k == 'CTRL' and IsControlKeyDown()) or (k == 'ALT' and IsAltKeyDown()))
 end
 
+function TT:SetCompareItems(tt, value)
+	if tt == GameTooltip then
+		if E.Retail then -- This stops the OnUpdate script from triggering
+			tt.supportsItemComparison = value
+		elseif value then -- This is for Classics
+			_G.GameTooltip_HideShoppingTooltips(tt)
+		end
+	end
+end
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
-		if tt == GameTooltip then
-			GameTooltip.supportsItemComparison = false
-		end
+		TT:SetCompareItems(tt, false)
 		tt:Hide()
 		return
 	end
 
-	if tt == GameTooltip then
-		GameTooltip.supportsItemComparison = true
-	end
+	TT:SetCompareItems(tt, true)
 
 	local statusBar = tt.StatusBar
 	if statusBar then
