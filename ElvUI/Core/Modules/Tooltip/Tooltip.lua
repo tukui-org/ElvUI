@@ -108,7 +108,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		tt:Hide()
-		return _G.GameTooltip_HideShoppingTooltips(GameTooltip)
+		return
 	end
 
 	local statusBar = tt.StatusBar
