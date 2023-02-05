@@ -106,16 +106,9 @@ end
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
-	elseif InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
+	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		tt:Hide()
 		return _G.GameTooltip_HideShoppingTooltips(GameTooltip)
-	elseif not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
-		local owner = tt:GetOwner()
-		local ownerName = owner and owner.GetName and owner:GetName()
-		if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) then
-			tt:Hide()
-			return _G.GameTooltip_HideShoppingTooltips(GameTooltip)
-		end
 	end
 
 	local statusBar = tt.StatusBar
