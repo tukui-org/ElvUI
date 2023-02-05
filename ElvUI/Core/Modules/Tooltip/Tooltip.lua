@@ -104,14 +104,11 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if tt == GameTooltip then
-		if E.Retail then -- This stops the OnUpdate script from triggering
-			tt.supportsItemComparison = value
-		elseif not value then -- This is for Classics
-			_G.GameTooltip_HideShoppingTooltips(tt)
-		end
+	if E.Retail and tt == GameTooltip then
+		tt.supportsItemComparison = value
 	end
 end
+
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
