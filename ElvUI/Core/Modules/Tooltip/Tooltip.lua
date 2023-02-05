@@ -108,13 +108,13 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		return
 	elseif InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
 		tt:Hide()
-		return
+		return _G.GameTooltip_HideShoppingTooltips()
 	elseif not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
 		local owner = tt:GetOwner()
 		local ownerName = owner and owner.GetName and owner:GetName()
 		if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) then
 			tt:Hide()
-			return
+			return _G.GameTooltip_HideShoppingTooltips()
 		end
 	end
 
