@@ -55,4 +55,4 @@ local function OnClick()
 	ToggleFrame(_G.WorldMapFrame)
 end
 
-DT:RegisterDatatext('Location', nil, { 'LOADING_SCREEN_DISABLED', 'ZONE_CHANGED_NEW_AREA', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED' }, OnEvent, nil, OnClick, nil, nil, L['Location'])
+DT:RegisterDatatext('Location', nil, { 'LOADING_SCREEN_DISABLED', 'ZONE_CHANGED_NEW_AREA', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED' }, OnEvent, nil, OnClick, nil, nil, L["Location"])

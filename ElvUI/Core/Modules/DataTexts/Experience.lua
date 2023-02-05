@@ -13,7 +13,7 @@ local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
 	if E:XPIsLevelMax() then
-		displayString = L['Max Level']
+		displayString = L["Max Level"]
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 
