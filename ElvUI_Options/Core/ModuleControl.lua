@@ -31,6 +31,14 @@ local function CreateActionbarsConfig()
 		order = order + 1
 	end
 
+	if not E.Classic then
+		for i = 13, 15 do
+			config.args['bar'..i].name = L["Bar "]..i
+			config.args['bar'..i].order = order
+			order = order + 1
+		end
+	end
+
 	config.args.barPet.name = L["Pet Bar"]
 	config.args.stanceBar.name = L["Stance Bar"]
 	config.args.microbar.name = L["Micro Bar"]
