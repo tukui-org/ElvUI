@@ -218,10 +218,14 @@ Bags.args.bagSortingGroup.args.addEntryGroup.args.addEntryGlobal = ACH:Input(L["
 
 local function getIgnoreList(list)
 	local data = {}
+	local name
 
 	for key, value in pairs(list) do
 		local itemID = tonumber(value)
-		local name = GetItemInfo(itemID)
+
+		if itemID then
+			name = GetItemInfo(itemID)
+		end
 
 		data[key] = itemID and format('%s [%s]', name or '', itemID) or value
 	end
