@@ -6,6 +6,8 @@ local pairs, strjoin = pairs, strjoin
 
 local defaults = { showIcon = true, nameStyle = 'full', showMax = true, currencyTooltip = true }
 
+local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
+
 local function OnEvent(self)
 	local info = DT:CurrencyInfo(self.name)
 	local currency = E.global.datatexts.customCurrencies[self.name]
@@ -21,6 +23,10 @@ local function OnEvent(self)
 		end
 
 		self.icon:SetTexture(info.iconFileID)
+
+		if E.Wrath and info.itemID == HONOR_CURRENCY then
+			self.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+		end
 		self.icon:SetShown(currency.showIcon)
 		self.text:SetFormattedText(displayString or '%d', info.quantity)
 	end
@@ -28,7 +34,12 @@ end
 
 local function OnEnter(self)
 	DT.tooltip:ClearLines()
-	DT.tooltip:SetCurrencyByID(self.name)
+	if E.Retail then
+		DT.tooltip:SetCurrencyByID(self.name)
+	else
+		DT.tooltip:SetCurrencyTokenByID(self.name)
+	end
+
 	DT.tooltip:Show()
 end
 

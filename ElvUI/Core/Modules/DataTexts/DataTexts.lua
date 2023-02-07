@@ -791,7 +791,7 @@ function DT:CurrencyListInfo(index)
 	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
 
 	if E.Wrath then
-		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(index)
+		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.iconFileID, info.maxQuantity, info.weeklyMax, info.earnedThisWeek, info.isTradeable, info.itemID = GetCurrencyListInfo(index)
 	end
 
 	return info
