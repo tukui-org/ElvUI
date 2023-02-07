@@ -94,7 +94,7 @@ local function OnUpdate(self, elapsed)
 	if self.needsUpdate and self.timeSinceUpdate > 0.3 then -- this will allow the main event to update the dt
 		local locale, value = GetBattleStats(self.name)
 		if value then
-			self.text:SetFormattedText(displayString, locale, E:ShortValue(value or 0))
+			self.text:SetFormattedText(displayString, locale, E:ShortValue(tonumber(value) or 0))
 		else
 			self.text:SetFormattedText('%s', locale)
 		end
