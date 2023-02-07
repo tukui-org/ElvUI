@@ -21,9 +21,9 @@ local MISS_CHANCE = MISS_CHANCE
 local PARRY_CHANCE = PARRY_CHANCE
 local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 
-local displayString, targetlv, playerlv
+local displayString, targetlv, playerlv, db
 local basemisschance, misschance, baseDef, armorDef, leveldifference, dodge, parry, block, unhittable
-local AVD_DECAY_RATE, chanceString = 0.2, '%.2f%%'	--According to Light's Club discord, avoidance decay should be 0.2% per level per avoidance (thus 102.4 for +3 crush cap)
+local AVD_DECAY_RATE, chanceString = .2, '%.2f%%'	--According to Light's Club discord, avoidance decay should be 0.2% per level per avoidance (thus 102.4 for +3 crush cap)
 
 local function IsWearingShield()
 	local slotID = GetInventorySlotInfo('SecondaryHandSlot')
@@ -92,17 +92,17 @@ local function OnEvent(self)
 
 	unhittableMax = unhittableMax + ((AVD_DECAY_RATE * leveldifference) * numAvoidances);
 	baseDef, armorDef = UnitDefense('player');
-	misschance = (basemisschance + (armorDef + baseDef - (5*playerlv))*0.04);
+	misschance = (basemisschance + (armorDef + baseDef - (5*playerlv))*.04);
 
 	local avoided = (dodge+parry+misschance) --First roll on hit table determining if the hit missed
 	local blocked = block
 	local avoidance = (avoided+blocked)
 	unhittable = avoidance - unhittableMax
 
-	if E.global.datatexts.settings.Avoidance.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, avoidance)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Avoidance.Label ~= '' and E.global.datatexts.settings.Avoidance.Label or L["AVD: "], avoidance)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["AVD: "], avoidance)
 	end
 
 	--print(unhittableMax) -- should report 102.4 for a level differance of +3 for shield classes, 101.2 for druids, 101.8 for monks and dks
@@ -132,10 +132,12 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Avoidance.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Avoidance.decimalLength..'f%%|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Avoidance', STAT_CATEGORY_DEFENSE, { 'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_EQUIPMENT_CHANGED' }, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Avoidance', STAT_CATEGORY_DEFENSE, { 'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_EQUIPMENT_CHANGED' }, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"], nil, ApplySettings)

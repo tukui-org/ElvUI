@@ -122,6 +122,12 @@ Maps.args.minimap.args.icons.args.mail.args.xOffset = ACH:Range(L["X-Offset"], n
 Maps.args.minimap.args.icons.args.mail.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
 Maps.args.minimap.args.icons.args.mail.args.texture = ACH:Select(L["Texture"], nil, 5)
 
+Maps.args.minimap.args.icons.args.crafting = ACH:Group(L["PROFESSIONS_CRAFTING"], nil, 7, nil, nil, nil, function() return E.Retail and not E.db.general.minimap.clusterDisable end)
+Maps.args.minimap.args.icons.args.crafting.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+Maps.args.minimap.args.icons.args.crafting.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+Maps.args.minimap.args.icons.args.crafting.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+Maps.args.minimap.args.icons.args.crafting.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
 do -- mail icons
 	local mail = {}
 	Maps.args.minimap.args.icons.args.mail.args.texture.values = mail

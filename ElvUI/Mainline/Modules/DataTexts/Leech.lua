@@ -7,6 +7,7 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetLifesteal = GetLifesteal
+
 local CR_LIFESTEAL = CR_LIFESTEAL
 local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
@@ -33,10 +34,8 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, STAT_LIFESTEAL, lifesteal)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Leech', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, STAT_LIFESTEAL, nil, ValueColorUpdate)
+DT:RegisterDatatext('Leech', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, STAT_LIFESTEAL, nil, ApplySettings)

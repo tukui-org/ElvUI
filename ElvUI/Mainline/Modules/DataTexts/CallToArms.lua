@@ -20,7 +20,7 @@ local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ':14:14')
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ':14:14')
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
 local enteredFrame = false
-local displayString = ''
+local displayString, db = ''
 
 local function MakeIconString(tank, healer, damage)
 	local str = ''
@@ -65,10 +65,11 @@ local function OnEvent(self)
 		end
 	end
 
-	if E.global.datatexts.settings.CallToArms.NoLabel then
-		self.text:SetFormattedText(displayString, unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+	local stat = unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward)
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, stat)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or BATTLEGROUND_HOLIDAY..': ', stat)
 	end
 end
 
@@ -76,10 +77,12 @@ local function OnClick()
 	PVEFrame_ToggleFrame('GroupFinderFrame', _G.LFDParentFrame)
 end
 
-local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.CallToArms.NoLabel and '' or '%s', hex, '%s|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s|r')
 end
 
 local function OnEnter()
@@ -168,4 +171,4 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)
+DT:RegisterDatatext('CallToArms', nil, { 'LFG_UPDATE_RANDOM_INFO' }, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ApplySettings)

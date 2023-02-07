@@ -17,7 +17,7 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
-local displayString = ''
+local displayString, db = ''
 local primaryStr, secondaryStr, activeGroup, hasDualSpec
 
 local function BuildTalentString(talentGroup)
@@ -49,7 +49,7 @@ local function OnEvent(self)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	self.text:SetFormattedText(displayString, E.global.datatexts.settings.DualSpecialization.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
+	self.text:SetFormattedText(displayString, db.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -90,10 +90,12 @@ local function OnClick(_, button)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.DualSpecialization.NoLabel and '' or '%s: ', hex, '%s|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s: ', hex, '%s|r')
 end
 
-DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC, nil, ValueColorUpdate)
+DT:RegisterDatatext('DualSpecialization', nil, { 'CHARACTER_POINTS_CHANGED', 'ACTIVE_TALENT_GROUP_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, LEVEL_UP_DUALSPEC, nil, ApplySettings)

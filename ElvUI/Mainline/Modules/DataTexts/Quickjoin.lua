@@ -4,6 +4,7 @@ local CH = E:GetModule('Chat')
 
 local next, pairs, select, type = next, pairs, select, type
 local format, strjoin, wipe, gsub = format, strjoin, wipe, gsub
+
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
@@ -13,7 +14,7 @@ local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local UNKNOWN, QUICK_JOIN = UNKNOWN, QUICK_JOIN
 
-local displayString = ''
+local displayString, db = ''
 local quickJoin = {}
 
 local function OnEnter()
@@ -30,6 +31,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
+local icon = [[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]]
 local function Update(self)
 	wipe(quickJoin)
 
@@ -60,7 +62,7 @@ local function Update(self)
 				end
 
 				if isLeader then
-					coloredName = format([[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]], coloredName)
+					coloredName = format(icon, coloredName)
 				end
 
 				activity = activityName or UNKNOWN
@@ -95,10 +97,10 @@ local function Update(self)
 		end
 	end
 
-	if E.global.datatexts.settings.QuickJoin.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, #quickJoinGroups)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.QuickJoin.Label ~= '' and E.global.datatexts.settings.QuickJoin.Label or QUICK_JOIN..': ', #quickJoinGroups)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or QUICK_JOIN..': ', #quickJoinGroups)
 	end
 end
 
@@ -115,10 +117,12 @@ local function OnEvent(self, event)
 	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle, self)
 end
 
-local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.QuickJoin.NoLabel and '' or '%s', hex, '%d|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 end
 
-DT:RegisterDatatext('QuickJoin', _G.SOCIAL_LABEL, { 'SOCIAL_QUEUE_UPDATE' }, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ValueColorUpdate)
+DT:RegisterDatatext('QuickJoin', _G.SOCIAL_LABEL, { 'SOCIAL_QUEUE_UPDATE' }, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ApplySettings)

@@ -218,7 +218,7 @@ local function SkinInvasionAlert(frame)
 
 			-- Icon border
 			if icon and icon:IsObjectType('Texture') then
-				if icon:GetTexture() == [[Interface\Icons\Ability_Warlock_DemonicPower]] then
+				if icon:GetTexture() == 236293 then -- interface/icons/ability_warlock_demonicpower
 					icon.b = CreateFrame('Frame', nil, frame)
 					icon.b:SetTemplate()
 					icon.b:SetOutside(icon)
@@ -790,6 +790,7 @@ function S:AlertSystem()
 	-- Achievements
 	hooksecurefunc(_G.AchievementAlertSystem, 'setUpFunction', SkinAchievementAlert)
 	hooksecurefunc(_G.CriteriaAlertSystem, 'setUpFunction', SkinCriteriaAlert)
+	hooksecurefunc(_G.MonthlyActivityAlertSystem, 'setUpFunction', SkinCriteriaAlert) -- untested needs testing
 
 	-- Encounters
 	hooksecurefunc(_G.DungeonCompletionAlertSystem, 'setUpFunction', SkinDungeonCompletionAlert)
@@ -825,6 +826,9 @@ function S:AlertSystem()
 	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinNewPetAlert)
 	hooksecurefunc(_G.NewMountAlertSystem, 'setUpFunction', SkinNewPetAlert)
 	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinNewPetAlert)
+
+	-- Cosmetics
+	hooksecurefunc(_G.NewCosmeticAlertFrameSystem, 'setUpFunction', SkinNewPetAlert)
 
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame

@@ -1,21 +1,20 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
+local B = E:GetModule('Bags')
 
-local _G = _G
 local select, wipe = select, wipe
 local format, strjoin = format, strjoin
 
+local _G = _G
 local GetItemInfo = GetItemInfo
 local GetItemCount = GetItemCount
 local GetItemInfoInstant = GetItemInfoInstant
-local GetContainerItemID = GetContainerItemID
 local GetInventoryItemCount = GetInventoryItemCount
 local GetInventoryItemID = GetInventoryItemID
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local GetContainerNumSlots = GetContainerNumSlots
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local ContainerIDToInventoryID = (C_Container and C_Container.ContainerIDToInventoryID) or ContainerIDToInventoryID
+local GetContainerNumSlots = (C_Container and C_Container.GetContainerNumSlots) or GetContainerNumSlots
+local GetContainerNumFreeSlots = (C_Container and C_Container.GetContainerNumFreeSlots) or GetContainerNumFreeSlots
 local GetItemQualityColor = GetItemQualityColor
-local ToggleAllBags = ToggleAllBags
 
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
@@ -73,7 +72,6 @@ local function OnEvent(self, event, ...)
 			if name and not itemName[itemID] then
 				itemName[itemID] = name
 			end
-
 			self.text:SetFormattedText(displayString, name or INVTYPE_AMMO, count or 0) -- Does not need localized. It gets updated.
 		else
 			self.text:SetFormattedText(displayString, INVTYPE_AMMO, 0)
@@ -94,15 +92,15 @@ local function OnEnter()
 		wipe(itemCount)
 		DT.tooltip:AddLine(INVTYPE_AMMO)
 
-		for i = 0, NUM_BAG_FRAMES do
-			for j = 1, GetContainerNumSlots(i) do
-				local itemID = GetContainerItemID(i, j)
-				if itemID and not itemCount[itemID] then
-					local name, _, quality, _, _, _, _, _, equipLoc, texture = GetItemInfo(itemID)
-					local count = GetItemCount(itemID)
+		for containerIndex = 0, NUM_BAG_FRAMES do
+			for slotIndex = 1, GetContainerNumSlots(containerIndex) do
+				local info = B:GetContainerItemInfo(containerIndex, slotIndex)
+				if info.itemID and not itemCount[info.itemID] then
+					local name, _, quality, _, _, _, _, _, equipLoc, texture = GetItemInfo(info.hyperlink)
+					local count = GetItemCount(info.itemID)
 					if equipLoc == 'INVTYPE_AMMO' or equipLoc == 'INVTYPE_THROWN' then
 						DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), ' ', name), count, GetItemQualityColor(quality))
-						itemCount[itemID] = count
+						itemCount[info.itemID] = count
 					end
 				end
 			end
@@ -141,15 +139,13 @@ local function OnClick(_, btn)
 				end
 			end
 		else
-			ToggleAllBags()
+			_G.ToggleAllBags()
 		end
 	end
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%d|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Ammo', nil, {'BAG_UPDATE', 'UNIT_INVENTORY_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, L["Ammo/Shard Counter"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Ammo', nil, { 'BAG_UPDATE', 'UNIT_INVENTORY_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Ammo/Shard Counter"], nil, ApplySettings)

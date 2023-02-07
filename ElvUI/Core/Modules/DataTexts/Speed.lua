@@ -7,6 +7,7 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpeed = GetSpeed
+
 local CR_SPEED = CR_SPEED
 local CR_SPEED_TOOLTIP = CR_SPEED_TOOLTIP
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
@@ -15,7 +16,7 @@ local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_SPEED = STAT_SPEED
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -26,17 +27,19 @@ end
 
 local function OnEvent(self)
 	local speed = GetSpeed()
-	if E.global.datatexts.settings.Speed.NoLabel then
+	if db.NoLabel then
 		self.text:SetFormattedText(displayString, speed)
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Speed.Label ~= '' and E.global.datatexts.settings.Speed.Label or STAT_SPEED, speed)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_SPEED, speed)
 	end
 end
 
-local function ValueColorUpdate(self, hex)
-	displayString = strjoin('', E.global.datatexts.settings.Speed.NoLabel and '' or '%s:', hex, '%.'..E.global.datatexts.settings.Speed.decimalLength..'f%%|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
 
-	OnEvent(self)
+	displayString = strjoin('', db.NoLabel and '' or '%s:', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Speed', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS' }, OnEvent, nil, nil, OnEnter, nil, STAT_SPEED, nil, ValueColorUpdate)
+DT:RegisterDatatext('Speed', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS' }, OnEvent, nil, nil, OnEnter, nil, STAT_SPEED, nil, ApplySettings)

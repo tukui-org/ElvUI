@@ -14,10 +14,8 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, STAT_ENERGY_REGEN, GetPowerRegen())
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%.f|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('EnergyRegen', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, STAT_ENERGY_REGEN, nil, ValueColorUpdate)
+DT:RegisterDatatext('EnergyRegen', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, STAT_ENERGY_REGEN, nil, ApplySettings)

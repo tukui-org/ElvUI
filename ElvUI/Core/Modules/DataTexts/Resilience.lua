@@ -35,10 +35,8 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', STAT_RESILIENCE, ': ', hex, '%d|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Resilience', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, STAT_RESILIENCE, nil, ValueColorUpdate)
+DT:RegisterDatatext('Resilience', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, STAT_RESILIENCE, nil, ApplySettings)

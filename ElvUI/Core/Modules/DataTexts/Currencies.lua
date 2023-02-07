@@ -9,7 +9,7 @@ local GetMoney = GetMoney
 
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 
-local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+local iconString, db = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
 local function OnClick()
@@ -20,7 +20,7 @@ local function AddInfo(id)
 	local info, name, icon = DT:CurrencyInfo(id)
 	if name then
 		local textRight = '%s'
-		if E.global.datatexts.settings.Currencies.maxCurrency and info.maxQuantity and info.maxQuantity > 0 then
+		if db.maxCurrency and info.maxQuantity and info.maxQuantity > 0 then
 			textRight = '%s / '..BreakUpLargeNumbers(info.maxQuantity)
 		end
 
@@ -30,21 +30,21 @@ end
 
 local shownHeaders = {}
 local function AddHeader(id, addLine)
-	if (not E.global.datatexts.settings.Currencies.headers) or shownHeaders[id] then return end
+	if (not db.headers) or shownHeaders[id] then return end
 
 	if addLine then
 		DT.tooltip:AddLine(' ')
 	end
 
-	DT.tooltip:AddLine(E.global.datatexts.settings.Currencies.tooltipData[id][1])
+	DT.tooltip:AddLine(db.tooltipData[id][1])
 	shownHeaders[id] = true
 end
 
 local goldText
 local function OnEvent(self)
-	goldText = E:FormatMoney(GetMoney(), E.global.datatexts.settings.Currencies.goldFormat or 'BLIZZARD', not E.global.datatexts.settings.Currencies.goldCoins)
+	goldText = E:FormatMoney(GetMoney(), db.goldFormat or 'BLIZZARD', not db.goldCoins)
 
-	local displayed = E.global.datatexts.settings.Currencies.displayedCurrency
+	local displayed = db.displayedCurrency
 	if displayed == 'BACKPACK' then
 		local displayString
 		for i = 1, 3 do
@@ -64,7 +64,7 @@ local function OnEvent(self)
 		local info, name, icon = DT:CurrencyInfo(id)
 		if not name then return end
 
-		local style = E.global.datatexts.settings.Currencies.displayStyle
+		local style = db.displayStyle
 		if style == 'ICON' then
 			self.text:SetFormattedText('%s %s', icon, E:ShortValue(info.quantity))
 		elseif style == 'ICON_TEXT' then
@@ -80,9 +80,9 @@ local function OnEnter()
 
 	wipe(shownHeaders)
 	local addLine, addLine2
-	for _, info in ipairs(E.global.datatexts.settings.Currencies.tooltipData) do
+	for _, info in ipairs(db.tooltipData) do
 		local _, id, header = unpack(info)
-		if id and E.global.datatexts.settings.Currencies.idEnable[id] then
+		if id and db.idEnable[id] then
 			AddHeader(header, addLine)
 			AddInfo(id)
 			addLine = true
@@ -93,9 +93,9 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 
-	for _, info in pairs(E.global.datatexts.customCurrencies) do
-		if info and not DT.CurrencyList[tostring(info.ID)] and info.DISPLAY_IN_MAIN_TOOLTIP then
-			AddInfo(info.ID)
+	for id, info in pairs(E.global.datatexts.customCurrencies) do
+		if info and not DT.CurrencyList[tostring(id)] and info.currencyTooltip then
+			AddInfo(id)
 			addLine2 = true
 		end
 	end
@@ -108,4 +108,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Currencies', nil, {'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)
+local function ApplySettings(self)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+end
+
+DT:RegisterDatatext('Currencies', nil, { 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE', 'PERKS_PROGRAM_CURRENCY_REFRESH' }, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY, nil, ApplySettings)

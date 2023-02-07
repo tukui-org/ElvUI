@@ -12,7 +12,6 @@ local format, error, ipairs, ceil = format, error, ipairs, ceil
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
-local PickupContainerItem = PickupContainerItem
 local DeleteCursorItem = DeleteCursorItem
 local MoneyFrame_Update = MoneyFrame_Update
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
@@ -21,9 +20,12 @@ local SetCVar, EnableAddOn, DisableAddOn = SetCVar, EnableAddOn, DisableAddOn
 local ReloadUI, PlaySound, StopMusic = ReloadUI, PlaySound, StopMusic
 local StaticPopup_Resize = StaticPopup_Resize
 local GetBindingFromClick = GetBindingFromClick
+
 local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
 local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
+local PickupContainerItem = (C_Container and C_Container.PickupContainerItem) or PickupContainerItem
+
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
@@ -268,6 +270,29 @@ E.PopupDialogs.RESET_NP_AF = {
 	end,
 	whileDead = 1,
 	hideOnEscape = false,
+}
+
+E.PopupDialogs.DELETE_GRAYS = {
+	text = format('|cffff0000%s|r', L["Delete gray items?"]),
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function()
+		Bags:VendorGrays(true)
+
+		for _, info in ipairs(Bags.SellFrame.Info.itemList) do
+			PickupContainerItem(info[1], info[2])
+			DeleteCursorItem()
+		end
+
+		wipe(Bags.SellFrame.Info.itemList)
+	end,
+	OnShow = function(self)
+		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs.DELETE_GRAYS.Money)
+	end,
+	timeout = 4,
+	whileDead = 1,
+	hideOnEscape = false,
+	hasMoneyFrame = 1,
 }
 
 E.PopupDialogs.BUY_BANK_SLOT = {

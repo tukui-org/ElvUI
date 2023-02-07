@@ -476,8 +476,8 @@ end
 
 StyleFilters.triggers.args.buffs.args.minTimeLeft.desc = L["Apply this filter if a buff has remaining time greater than this. Set to zero to disable."]
 StyleFilters.triggers.args.buffs.args.maxTimeLeft.desc = L["Apply this filter if a buff has remaining time less than this. Set to zero to disable."]
-StyleFilters.triggers.args.debuffs.args.minTimeLeft.desc = L["Apply this filter if a debbuff has remaining time greater than this. Set to zero to disable."]
-StyleFilters.triggers.args.debuffs.args.maxTimeLeft.desc = L["Apply this filter if a debbuff has remaining time less than this. Set to zero to disable."]
+StyleFilters.triggers.args.debuffs.args.minTimeLeft.desc = L["Apply this filter if a debuff has remaining time greater than this. Set to zero to disable."]
+StyleFilters.triggers.args.debuffs.args.maxTimeLeft.desc = L["Apply this filter if a debuff has remaining time less than this. Set to zero to disable."]
 
 StyleFilters.triggers.args.cooldowns = ACH:Group(L["Cooldowns"], nil, 23, nil, nil, nil, DisabledFilter)
 StyleFilters.triggers.args.cooldowns.args.addCooldown = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = 'ONCD' UpdateFilterList('cooldowns', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)

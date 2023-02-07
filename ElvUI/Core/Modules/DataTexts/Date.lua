@@ -19,10 +19,8 @@ local function OnEvent(self)
 	self.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('([/.])', displayString))
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = hex..'%1|r'
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, OnClick, nil, nil, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, OnClick, nil, nil, nil, nil, ApplySettings)

@@ -17,10 +17,8 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, MANA_REGEN, (InCombatLockdown() and castingMR or baseMR) * 5)
 end
 
-local function ValueColorUpdate(self, hex)
+local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%.2f|r')
-
-	OnEvent(self)
 end
 
-DT:RegisterDatatext('Mana Regen', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, MANA_REGEN, nil, ValueColorUpdate)
+DT:RegisterDatatext('Mana Regen', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, MANA_REGEN, nil, ApplySettings)
