@@ -4,6 +4,7 @@ local CH = E:GetModule('Chat')
 
 local next, pairs, select, type = next, pairs, select, type
 local format, strjoin, wipe, gsub = format, strjoin, wipe, gsub
+
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
@@ -30,6 +31,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
+local icon = [[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]]
 local function Update(self)
 	wipe(quickJoin)
 
@@ -60,7 +62,7 @@ local function Update(self)
 				end
 
 				if isLeader then
-					coloredName = format([[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]], coloredName)
+					coloredName = format(icon, coloredName)
 				end
 
 				activity = activityName or UNKNOWN

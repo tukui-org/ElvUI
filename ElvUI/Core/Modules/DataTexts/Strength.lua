@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 local UnitStat = UnitStat
+
 local ITEM_MOD_STRENGTH_SHORT = ITEM_MOD_STRENGTH_SHORT
 local LE_UNIT_STAT_STRENGTH = LE_UNIT_STAT_STRENGTH
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
@@ -10,10 +11,12 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local displayString, db = ''
 
 local function OnEvent(self)
+	local stat = UnitStat('player', LE_UNIT_STAT_STRENGTH)
+
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, UnitStat('player', LE_UNIT_STAT_STRENGTH))
+		self.text:SetFormattedText(displayString, stat)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT..': ', UnitStat('player', LE_UNIT_STAT_STRENGTH))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT..': ', stat)
 	end
 end
 

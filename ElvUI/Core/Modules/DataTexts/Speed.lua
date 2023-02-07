@@ -7,6 +7,7 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpeed = GetSpeed
+
 local CR_SPEED = CR_SPEED
 local CR_SPEED_TOOLTIP = CR_SPEED_TOOLTIP
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE

@@ -76,6 +76,7 @@ local function ConvertTime(h, m)
 			AmPm = 2
 		end
 	end
+
 	return h, m, AmPm
 end
 

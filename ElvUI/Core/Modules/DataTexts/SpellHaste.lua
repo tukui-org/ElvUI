@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
+
 local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HASTE_SPELL = CR_HASTE_SPELL

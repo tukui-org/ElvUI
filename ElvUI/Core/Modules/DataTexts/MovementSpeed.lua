@@ -6,6 +6,7 @@ local IsFalling = IsFalling
 local IsFlying = IsFlying
 local IsSwimming = IsSwimming
 local GetUnitSpeed = GetUnitSpeed
+
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
 
