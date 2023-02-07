@@ -6,6 +6,7 @@ local LSM = E.Libs.LSM
 -- GLOBALS: ElvDB
 
 local _G = _G
+local min, max = min, max
 local next, format, type, pcall, unpack = next, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, sort, gsub
 local tostring, strfind, strsplit = tostring, strfind, strsplit
@@ -511,13 +512,12 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt:RegisterForClicks('AnyUp')
 
 			local text = dt:CreateFontString(nil, 'ARTWORK')
-			text:SetPoint('CENTER')
+			text:SetAllPoints()
 			text:SetJustifyV('MIDDLE')
 			dt.text = text
 
 			local icon = dt:CreateTexture(nil, 'ARTWORK')
 			icon:Point('RIGHT', text, 'LEFT', -4, 0)
-			icon:Size(height - 2)
 			icon:SetTexCoord(unpack(E.TexCoords))
 
 			dt.icon = icon
@@ -566,11 +566,19 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		E:StopFlash(dt)
 
+		local iconSize = min(max(height - 2, fontSize), fontSize)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
+		dt.text:ClearAllPoints()
+		if db.textJustify == 'LEFT' then
+			dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
+		else
+			dt.text:Point(db.textJustify or 'CENTER')
+		end
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
 
+		dt.icon:Size(iconSize)
 		dt.icon:SetTexture(E.ClearTexture)
 
 		if dt.objectEvent and dt.objectEventFunc then
