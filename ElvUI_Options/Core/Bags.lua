@@ -221,11 +221,7 @@ local function getIgnoreList(list)
 
 	for key, value in pairs(list) do
 		local itemID = tonumber(value)
-		local name
-
-		if itemID then
-			name = GetItemInfo(itemID)
-		end
+		local name = itemID and GetItemInfo(itemID)
 
 		data[key] = itemID and format('%s [%s]', name or '', itemID) or value
 	end

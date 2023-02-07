@@ -705,7 +705,7 @@ function B.Sort(bags, sorter, invertDirection)
 			local link = B:GetItemLink(bag, slot)
 			local itemID = B:GetItemID(bag, slot)
 			local bagSlot = B:Encode_BagSlot(bag, slot)
-			if link and blackList[GetItemInfo(link)] or itemID and blackList[itemID] then
+			if (itemID and blackList[itemID]) or (link and blackList[GetItemInfo(link)]) then
 				blackListedSlots[bagSlot] = true
 			end
 
@@ -792,7 +792,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 		local link = B:GetItemLink(bag, slot)
 		local itemID = B:GetItemID(bag, slot)
 		local bagSlot = B:Encode_BagSlot(bag, slot)
-		if link and blackList[GetItemInfo(link)] or itemID and blackList[itemID] then
+		if (itemID and blackList[itemID]) or (link and blackList[GetItemInfo(link)]) then
 			blackListedSlots[bagSlot] = true
 		end
 

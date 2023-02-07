@@ -26,15 +26,17 @@ local function CreateActionbarsConfig()
 	config.args.cooldown.order = 2
 
 	for i = 1, 10 do
-		config.args['bar'..i].name = L["Bar "]..i
-		config.args['bar'..i].order = order
+		local bar = config.args['bar'..i]
+		bar.name = L["Bar "]..i
+		bar.order = order
 		order = order + 1
 	end
 
 	if not E.Classic then
 		for i = 13, 15 do
-			config.args['bar'..i].name = L["Bar "]..i
-			config.args['bar'..i].order = order
+			local bar = config.args['bar'..i]
+			bar.name = L["Bar "]..i
+			bar.order = order
 			order = order + 1
 		end
 	end
