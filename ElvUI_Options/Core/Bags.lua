@@ -3,8 +3,9 @@ local C, L = unpack(E.Config)
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
 
-local gsub, next = gsub, next
+local gsub, next, pairs = gsub, next, pairs
 local format, strmatch = format, strmatch
+local tonumber = tonumber
 
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool

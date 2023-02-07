@@ -33,6 +33,7 @@ local function OnEnter()
 				DT.tooltip:AddSpellByID(masterySpell)
 			end
 		end
+
 		if masterySpell2 then
 			DT.tooltip:AddLine(' ')
 
@@ -44,11 +45,12 @@ local function OnEnter()
 				DT.tooltip:AddSpellByID(masterySpell2)
 			end
 		end
-		local mastery, bonusCoeff = GetMasteryEffect()
-		local masteryBonus = GetCombatRatingBonus(CR_MASTERY) * bonusCoeff
+
+		local _, bonusCoeff = GetMasteryEffect()
+		local masteryBonus = (GetCombatRatingBonus(CR_MASTERY) or 0) * (bonusCoeff or 0)
 
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(format('%s: %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY)), masteryBonus))
+		DT.tooltip:AddLine(format('%s: %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY) or 0), masteryBonus))
 
 		DT.tooltip:Show()
 	end

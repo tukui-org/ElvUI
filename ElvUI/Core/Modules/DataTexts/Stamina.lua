@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 local UnitStat = UnitStat
+
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ITEM_MOD_STAMINA_SHORT = ITEM_MOD_STAMINA_SHORT
 local LE_UNIT_STAT_STAMINA = LE_UNIT_STAT_STAMINA

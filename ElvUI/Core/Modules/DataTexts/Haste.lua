@@ -9,6 +9,7 @@ local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetPVPGearStatRules = GetPVPGearStatRules
 local BreakUpLargeNumbers = BreakUpLargeNumbers
+
 local STAT_HASTE = STAT_HASTE
 local CR_HASTE_MELEE = CR_HASTE_MELEE
 local STAT_HASTE_TOOLTIP = STAT_HASTE_TOOLTIP

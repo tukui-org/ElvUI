@@ -19,7 +19,7 @@ local function OnEvent(self)
 	self.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('([/.])', displayString))
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(_, hex)
 	displayString = hex..'%1|r'
 end
 

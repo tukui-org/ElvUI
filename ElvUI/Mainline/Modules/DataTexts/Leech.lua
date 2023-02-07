@@ -7,6 +7,7 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetLifesteal = GetLifesteal
+
 local CR_LIFESTEAL = CR_LIFESTEAL
 local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE

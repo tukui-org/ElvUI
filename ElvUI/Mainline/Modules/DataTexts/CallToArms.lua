@@ -65,10 +65,11 @@ local function OnEvent(self)
 		end
 	end
 
+	local stat = unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward)
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, stat)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or BATTLEGROUND_HOLIDAY..': ', unavailable and NOT_APPLICABLE or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or BATTLEGROUND_HOLIDAY..': ', stat)
 	end
 end
 
