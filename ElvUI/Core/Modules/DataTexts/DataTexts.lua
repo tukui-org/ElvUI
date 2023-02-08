@@ -502,6 +502,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	end
 
 	local width, height, vertical, numPoints = DT:GetTextAttributes(panel, db)
+	local iconSize = min(max(height - 2, fontSize), fontSize)
 
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
@@ -566,7 +567,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		E:StopFlash(dt)
 
-		local iconSize = min(max(height - 2, fontSize), fontSize)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:ClearAllPoints()
 		if db.textJustify == 'LEFT' then
@@ -574,7 +574,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		else
 			dt.text:Point(db.textJustify or 'CENTER')
 		end
-		dt.text:SetWidth(width)
+		dt.text:SetPoint('RIGHT')
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
