@@ -491,7 +491,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local info = DT.LoadedInfo
 	local font, fontSize, fontOutline = info.font, info.fontSize, info.fontOutline
 	if db and db.fonts and db.fonts.enable then
-		font, fontSize, fontOutline = LSM:Fetch('font', db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
+		font, fontSize, fontOutline = LSM:Fetch('font', db.fonts.font or info.font), db.fonts.fontSize or info.fontSize, db.fonts.fontOutline or info.fontOutline
 	end
 
 	local battlePanel = info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
@@ -502,7 +502,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	end
 
 	local width, height, vertical, numPoints = DT:GetTextAttributes(panel, db)
-	local iconSize = min(max((height or 12) - 2, (fontSize or 12)), (fontSize or 12))
+	local iconSize = min(max(height - 2, fontSize), fontSize)
 
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
