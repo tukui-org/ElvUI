@@ -568,17 +568,13 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		local iconSize = min(max(height - 2, fontSize), fontSize)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
-
-		-- reset the points
 		dt.text:ClearAllPoints()
-		-- reset the all points
-		dt.text:SetAllPoints()
-
-		-- left justify needs to adjust on the left side for icon
 		if db.textJustify == 'LEFT' then
 			dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
+		else
+			dt.text:Point(db.textJustify or 'CENTER')
 		end
-
+		dt.text:SetWidth(width)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
