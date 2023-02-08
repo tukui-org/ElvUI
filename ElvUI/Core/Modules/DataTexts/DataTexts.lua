@@ -364,8 +364,8 @@ do
 		DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
 
 		-- enable / battleground - enable / profile dt
+		if not DT.db.panels[name] then DT.db.panels[name] = {} end
 		local panelDB = E:CopyTable(DT.db.panels[name], defaults, true)
-		DT.db.panels[name] = panelDB
 
 		-- global frame settings and to keep profile tidy
 		G.datatexts.customPanels[name] = E:CopyTable(G.datatexts.customPanels[name], G.datatexts.newPanelInfo, true)
