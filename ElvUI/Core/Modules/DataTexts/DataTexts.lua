@@ -502,7 +502,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	end
 
 	local width, height, vertical, numPoints = DT:GetTextAttributes(panel, db)
-	local iconSize = min(max(height - 2, fontSize), fontSize)
+	local iconSize = min(max((height or 12) - 2, (fontSize or 12)), (fontSize or 12))
 
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
