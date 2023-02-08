@@ -57,11 +57,10 @@ local CombineAddOns = {
 }
 
 local function formatMem(memory)
-	local mult = 10^1
 	if memory >= 1024 then
-		return format(megaByteString, ((memory/1024) * mult) / mult)
+		return format(megaByteString, memory / 1024)
 	else
-		return format(kiloByteString, (memory * mult) / mult)
+		return format(kiloByteString, memory)
 	end
 end
 

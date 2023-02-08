@@ -5,6 +5,7 @@ local _G = _G
 local sort = sort
 local ipairs = ipairs
 local strjoin = strjoin
+local tonumber = tonumber
 
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatData = GetBattlefieldStatData
@@ -38,7 +39,7 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 
 	for i = 1, GetNumBattlefieldScores() do
 		local name, _
-		if E.Classic then
+		if E.Classic or E.Wrath then
 			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)
 		else
 			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)
@@ -94,7 +95,7 @@ local function OnUpdate(self, elapsed)
 	if self.needsUpdate and self.timeSinceUpdate > 0.3 then -- this will allow the main event to update the dt
 		local locale, value = GetBattleStats(self.name)
 		if value then
-			self.text:SetFormattedText(displayString, locale, E:ShortValue(value or 0))
+			self.text:SetFormattedText(displayString, locale, E:ShortValue(tonumber(value) or 0))
 		else
 			self.text:SetFormattedText('%s', locale)
 		end

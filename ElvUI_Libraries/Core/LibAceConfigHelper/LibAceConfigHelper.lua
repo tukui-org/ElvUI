@@ -1,7 +1,9 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 7
+local MAJOR, MINOR = 'LibAceConfigHelper', 8
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
+
+local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 if not ACH then return end
 local type, pairs = type, pairs
@@ -153,7 +155,7 @@ function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hid
 end
 
 local FontFlagValues = {
-	NONE = 'None',
+	[Classic and 'NONE' or ''] = 'None',
 	OUTLINE = 'Outline',
 	THICKOUTLINE = 'Thick',
 	MONOCHROME = '|cFFAAAAAAMono|r',
