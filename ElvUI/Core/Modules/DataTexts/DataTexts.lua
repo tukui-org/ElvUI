@@ -569,7 +569,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		E:StopFlash(dt)
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
-		dt.text:ClearAllPoints()
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
@@ -591,6 +590,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
 
 		if dt.icon:IsShown() then
+			dt.text:ClearAllPoints()
+
 			if db.textJustify == 'LEFT' then
 				dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
 				dt.text:Point('RIGHT')

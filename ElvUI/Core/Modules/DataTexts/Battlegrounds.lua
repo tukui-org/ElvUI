@@ -5,6 +5,7 @@ local _G = _G
 local sort = sort
 local ipairs = ipairs
 local strjoin = strjoin
+local tonumber = tonumber
 
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldStatData = GetBattlefieldStatData
