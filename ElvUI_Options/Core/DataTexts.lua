@@ -143,7 +143,7 @@ local function CreateDTOptions(name, data)
 
 	if data.isCurrency then
 		local currency = E.global.datatexts.customCurrencies[name] -- name is actually the currencyID
-		optionTable = ACH:Group(format('%s |cFF888888[%s]|r', currency.name, name), nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[name][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[name][info[#info]] = value DT:ForceUpdate_DataText(name) end)
+		optionTable = ACH:Group(format('%s |cFF888888[%s]|r', currency.name, name), nil, 1, nil, function(info) return E.global.datatexts.customCurrencies[name][info[#info]] end, function(info, value) E.global.datatexts.customCurrencies[name][info[#info]] = value DT:LoadDataTexts() end)
 
 		optionTable.args.nameStyle = ACH:Select(L["Name Style"], nil, 1, { full = L["Name"], abbr = L["Abbreviate Name"], none = L["None"] })
 		optionTable.args.showIcon = ACH:Toggle(L["Show Icon"], nil, 2)
@@ -162,7 +162,7 @@ local function CreateDTOptions(name, data)
 	end
 
 	if data.isLDB then
-		optionTable.args.customLabel = ACH:Input(L["Custom Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+		optionTable.args.customLabel = ACH:Input(L["Custom Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:LoadDataTexts() end)
 		optionTable.args.spacer = ACH:Spacer(2, 'full')
 		optionTable.args.label = ACH:Toggle(L["Show Label"], nil, 3)
 		optionTable.args.text = ACH:Toggle(L["Show Text"], nil, 4)

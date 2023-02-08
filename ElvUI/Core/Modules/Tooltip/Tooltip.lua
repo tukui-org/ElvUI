@@ -873,6 +873,7 @@ end
 function TT:SetToyByItemID(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
+		tt:AddLine(' ')
 		tt:AddLine(format(IDLine, _G.ID, id))
 		tt:Show()
 	end
@@ -884,6 +885,7 @@ function TT:SetCurrencyToken(tt, index)
 	local id = TT:IsModKeyDown() and tonumber(strmatch(C_CurrencyInfo_GetCurrencyListLink(index),'currency:(%d+)'))
 	if not id then return end
 
+	tt:AddLine(' ')
 	tt:AddLine(format(IDLine, _G.ID, id))
 	tt:Show()
 end
@@ -891,6 +893,7 @@ end
 function TT:SetCurrencyTokenByID(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
+		tt:AddLine(' ')
 		tt:AddLine(format(IDLine, _G.ID, id))
 		tt:Show()
 	end
