@@ -103,8 +103,8 @@ function DT:PanelLayoutOptions()
 	end
 
 	-- This will mixin the options for the Custom Panels.
-	for name, tab in pairs(DT.db.panels) do
-		if type(tab) == 'table' then
+	for name, info in pairs(DT.db.panels) do
+		if type(info) == 'table' then
 			if not options[name] then
 				options[name] = ACH:Group(ColorizeName(name, 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
 			end
@@ -112,21 +112,23 @@ function DT:PanelLayoutOptions()
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
 				options[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
 			else
-				for option in ipairs(tab) do
+				for option in ipairs(info) do
 					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
-						tab[option] = nil
+						info[option] = nil
 					else
 						if not options[name].args.dts then
 							options[name].args.dts = ACH:Group(' ', nil, 3, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 							options[name].args.dts.inline = true
 						end
-						if not options[name].args.battledts then
-							options[name].args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
-							options[name].args.battledts.inline = true
-						end
-
 						options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end)
-						options[name].args.battledts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end)
+
+						if info.battleground then
+							if not options[name].args.battledts then
+								options[name].args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
+								options[name].args.battledts.inline = true
+							end
+							options[name].args.battledts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end)
+						end
 					end
 				end
 			end
