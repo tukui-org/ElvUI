@@ -590,9 +590,13 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		DT.AssignedDatatexts[dt] = data
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
 
-		if db.textJustify == 'LEFT' and dt.icon:IsShown() then
-			dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
-			dt.text:SetPoint('RIGHT')
+		if dt.icon:IsShown() then
+			if db.textJustify == 'LEFT' then
+				dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
+				dt.text:Point('RIGHT')
+			else
+				dt.text:Point(db.textJustify or 'CENTER')
+			end
 		else
 			dt.text:SetAllPoints()
 		end
