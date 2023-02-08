@@ -518,6 +518,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.text = text
 
 			local icon = dt:CreateTexture(nil, 'ARTWORK')
+			icon:Hide()
 			icon:Point('RIGHT', text, 'LEFT', -4, 0)
 			icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -569,12 +570,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:ClearAllPoints()
-		if db.textJustify == 'LEFT' then
-			dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
-		else
-			dt.text:Point(db.textJustify or 'CENTER')
-		end
-		dt.text:SetPoint('RIGHT')
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
@@ -594,6 +589,13 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		local data = DT.RegisteredDataTexts[ (battlePanel and DT.db.battlePanel or DT.db.panels)[panelName][i] ]
 		DT.AssignedDatatexts[dt] = data
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
+
+		if db.textJustify == 'LEFT' and dt.icon:IsShown() then
+			dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
+			dt.text:SetPoint('RIGHT')
+		else
+			dt.text:SetAllPoints()
+		end
 	end
 end
 
