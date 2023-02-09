@@ -603,8 +603,9 @@ function E:CopyTable(current, default, merge)
 
 	if type(default) == 'table' then
 		for option, value in pairs(default) do
-			if not merge or current[option] == nil then
-				current[option] = (type(value) == 'table' and E:CopyTable(current[option], value, merge)) or value
+			local isTable = type(value) == 'table'
+			if not merge or (isTable or current[option] == nil) then
+				current[option] = (isTable and E:CopyTable(current[option], value, merge)) or value
 			end
 		end
 	end
