@@ -103,8 +103,8 @@ function DT:PanelLayoutOptions()
 	end
 
 	-- This will mixin the options for the Custom Panels.
-	for name, info in pairs(DT.db.panels) do
-		if type(info) == 'table' then
+	for name, data in pairs(DT.db.panels) do
+		if type(data) == 'table' then
 			if not options[name] then
 				options[name] = ACH:Group(ColorizeName(name, 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
 			end
@@ -112,9 +112,9 @@ function DT:PanelLayoutOptions()
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
 				options[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
 			else
-				for option in ipairs(info) do
+				for option in ipairs(data) do
 					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
-						info[option] = nil
+						data[option] = nil
 					else
 						if not options[name].args.dts then
 							options[name].args.dts = ACH:Group(' ', nil, 3, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
@@ -122,7 +122,7 @@ function DT:PanelLayoutOptions()
 						end
 						options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, function() return E:CopyTable(dts, DT.DataTextList) end)
 
-						if info.battleground ~= nil then
+						if data.battleground ~= nil then
 							options[name].args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
 
 							if not options[name].args.battledts then
