@@ -172,7 +172,10 @@ function DT:ReleasePanel(givenName)
 		DT.PanelPool.Free[givenName] = panel
 		DT.PanelPool.InUse[givenName] = nil
 		DT.RegisteredPanels[givenName] = nil
-		E.db.movers[panel.moverName] = nil
+
+		if E.db.movers then
+			E.db.movers[panel.moverName] = nil
+		end
 	end
 end
 
