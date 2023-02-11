@@ -292,8 +292,8 @@ end
 for name, data in pairs(DT.db.panels) do
 	if type(data) == 'table' then
 		if not (P.datatexts.panels[name] or E.global.datatexts.customPanels[name]) then
-			DataTexts.args.panels[name] = ACH:Group(ColorizeName(name, 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
-			DataTexts.args.panels[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
+			DataTexts.args.panels.args[name] = ACH:Group(ColorizeName(name, 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
+			DataTexts.args.panels.args[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
 		else
 			SetupPanelOptions(name, data)
 		end
