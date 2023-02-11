@@ -232,7 +232,7 @@ function UF:Configure_Castbar(frame)
 		UF:Update_FontString(castbar.Time)
 	end
 
-	local textColor = db.textColor
+	local textColor = E:UpdateClassColor(db.textColor)
 	castbar.Text:SetTextColor(textColor.r, textColor.g, textColor.b)
 	castbar.Time:SetTextColor(textColor.r, textColor.g, textColor.b)
 
