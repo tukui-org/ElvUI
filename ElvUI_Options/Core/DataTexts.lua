@@ -289,12 +289,17 @@ for name, data in pairs(DT.RegisteredDataTexts) do
 	CreateDTOptions(name, data)
 end
 
+local panels = DataTexts.args.panels.args
 for name, data in pairs(DT.db.panels) do
 	if type(data) == 'table' then
 		if not (P.datatexts.panels[name] or E.global.datatexts.customPanels[name]) then
-			DataTexts.args.panels.args[name] = ACH:Group(ColorizeName(name, 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
-			DataTexts.args.panels.args[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
+			panels[name] = ACH:Group(ColorizeName(name, 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
+			panels[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
 		else
+			if P.datatexts.panels[name] and not panels[name] then
+				panels[name] = ACH:Group(ColorizeName(name), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
+			end
+
 			SetupPanelOptions(name, data)
 		end
 	end
