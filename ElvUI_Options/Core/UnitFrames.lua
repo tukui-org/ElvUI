@@ -260,21 +260,18 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		local frameName = gsub('ElvUF_'..E:StringTitle(groupName), 't(arget)', 'T%1')
 		if groupName == 'party' then
 			local header = UF.headers[groupName]
-			for _, group in next, { header:GetChildren() } do
-				for _, unitbutton in pairs(group) do
-					if type(unitbutton) == 'table' then
-						local castbar = unitbutton.Castbar
-						if castbar then
-							if castbar.oldHide then
-								castbar.Hide = castbar.oldHide
-								castbar.oldHide = nil
-								castbar:Hide()
-							else
-								castbar.oldHide = castbar.Hide
-								castbar.Hide = castbar.Show
-								castbar:Show()
-							end
-						end
+			local party = header.groups[1]
+			for _, unitbutton in ipairs(party) do
+				local castbar = unitbutton.Castbar
+				if castbar then
+					if castbar.oldHide then
+						castbar.Hide = castbar.oldHide
+						castbar.oldHide = nil
+						castbar:Hide()
+					else
+						castbar.oldHide = castbar.Hide
+						castbar.Hide = castbar.Show
+						castbar:Show()
 					end
 				end
 			end
