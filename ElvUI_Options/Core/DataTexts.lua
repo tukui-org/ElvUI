@@ -89,14 +89,15 @@ local function SetupPanelOptions(name, data)
 	end
 
 	for dtSlot in ipairs(DT.db.panels[name]) do
+		local dtStr = tostring(dtSlot)
 		if not options.args.dts then
 			options.args.dts = ACH:Group(' ', nil, 3, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 			options.args.dts.inline = true
 		end
 		if customPanel and dtSlot > customPanel.numPoints then
-			options.args.dts.args[tostring(dtSlot)] = nil
+			options.args.dts.args[dtStr] = nil
 		else
-			options.args.dts.args[tostring(dtSlot)] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
+			options.args.dts.args[dtStr] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
 		end
 
 		if data.battleground ~= nil then
@@ -108,9 +109,9 @@ local function SetupPanelOptions(name, data)
 			end
 
 			if customPanel and dtSlot > customPanel.numPoints then
-				options.args.battledts.args[tostring(dtSlot)] = nil
+				options.args.battledts.args[dtStr] = nil
 			else
-				options.args.battledts.args[tostring(dtSlot)] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
+				options.args.battledts.args[dtStr] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
 			end
 		end
 	end
