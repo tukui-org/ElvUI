@@ -53,7 +53,7 @@ end
 
 local dts = { [''] = L["None"] }
 
-local function SetupPanelOptions(name, data)
+function DT:SetupPanelOptions(name, data)
 	local options = E.Options.args.datatexts.args.panels.args[name]
 	local customPanel = E.global.datatexts.customPanels[name]
 
@@ -77,7 +77,7 @@ local function SetupPanelOptions(name, data)
 			options.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 
 			local panelOpts = E:CopyTable(options.args.panelOptions.args, DTPanelOptions)
-			panelOpts.numPoints.set = function(info, value) E.global.datatexts.customPanels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) SetupPanelOptions(name) end
+			panelOpts.numPoints.set = function(info, value) E.global.datatexts.customPanels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) DT:SetupPanelOptions(name) end
 			panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[name].tooltipAnchor == 'ANCHOR_CURSOR' end
 			panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[name].tooltipAnchor == 'ANCHOR_CURSOR' end
 			panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[name][key] end
@@ -262,7 +262,7 @@ DataTexts.args.panels = ACH:Group(L["Panels"], nil, 4)
 
 DataTexts.args.panels.args.newPanel = ACH:Group(ColorizeName(L["New Panel"], '33ff33'), nil, 0, nil, function(info) return E.global.datatexts.newPanelInfo[info[#info]] end, function(info, value) E.global.datatexts.newPanelInfo[info[#info]] = value end)
 DataTexts.args.panels.args.newPanel.args.name = ACH:Input(L["Name"], nil, 0, nil, 'full', nil, nil, nil, nil, function(_, value) return E.global.datatexts.customPanels[value] and L["Name Taken"] or true end)
-DataTexts.args.panels.args.newPanel.args.add = ACH:Execute(L["Add"], nil, 1, function() local name = E.global.datatexts.newPanelInfo.name E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo) E.db.datatexts.panels[name] = { enable = true, battleground = false } for i = 1, E.global.datatexts.newPanelInfo.numPoints do E.db.datatexts.panels[name][i] = '' end SetupPanelOptions(name, E.db.datatexts.panels[name]) DT:BuildPanelFrame(name) E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name) E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo) end, nil, nil, 'full', nil, nil, function() local name = E.global.datatexts.newPanelInfo.name return not name or name == '' end)
+DataTexts.args.panels.args.newPanel.args.add = ACH:Execute(L["Add"], nil, 1, function() local name = E.global.datatexts.newPanelInfo.name E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo) E.db.datatexts.panels[name] = { enable = true, battleground = false } for i = 1, E.global.datatexts.newPanelInfo.numPoints do E.db.datatexts.panels[name][i] = '' end DT:SetupPanelOptions(name, E.db.datatexts.panels[name]) DT:BuildPanelFrame(name) E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name) E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo) end, nil, nil, 'full', nil, nil, function() local name = E.global.datatexts.newPanelInfo.name return not name or name == '' end)
 
 E:CopyTable(DataTexts.args.panels.args.newPanel.args, DTPanelOptions)
 DataTexts.args.panels.args.newPanel.args.templateGroup.get = function(_, key) return E.global.datatexts.newPanelInfo[key] end
@@ -278,7 +278,7 @@ DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup = CopyTable(def
 
 DataTexts.args.panels.args.MinimapPanel = ACH:Group(ColorizeName(L["Minimap Panels"], 'cccccc'), L["Display minimap panels below the minimap, used for datatexts."], 3, nil, function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end, function() return not E.private.general.minimap.enable end)
 DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value DT:UpdatePanelInfo(info[#info - 1]) if E.private.general.minimap.enable then Minimap:UpdateSettings() end end)
-DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') SetupPanelOptions('MinimapPanel') end)
+DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
 DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
@@ -296,5 +296,5 @@ for name, data in pairs(DT.RegisteredDataTexts) do
 end
 
 for name, data in pairs(DT.db.panels) do
-	SetupPanelOptions(name, data)
+	DT:SetupPanelOptions(name, data)
 end
