@@ -112,10 +112,14 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.textGroup.args.textPosition = ACH:Select(L["Position"], nil, 3, { ONBAR = L["Cast Bar"], ABOVE = L["Above"], BELOW = L["Below"] })
 	group.args.castGroup.args.textGroup.args.castTimeFormat = ACH:Select(L["Cast Time Format"], nil, 4, { CURRENT = L["Current"], CURRENTMAX = L["Current / Max"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
 	group.args.castGroup.args.textGroup.args.channelTimeFormat = ACH:Select(L["Channel Time Format"], nil, 5, { CURRENT = L["Current"], CURRENTMAX = L["Current / Max"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
-	group.args.castGroup.args.textGroup.args.timeXOffset = ACH:Range(L["Time X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-	group.args.castGroup.args.textGroup.args.timeYOffset = ACH:Range(L["Time Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
-	group.args.castGroup.args.textGroup.args.textXOffset = ACH:Range(L["Text X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
-	group.args.castGroup.args.textGroup.args.textYOffset = ACH:Range(L["Text Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
+
+	group.args.castGroup.args.textGroup.args.time = ACH:Group(L["Time Options"], nil, 10)
+	group.args.castGroup.args.textGroup.args.time.args.timeXOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	group.args.castGroup.args.textGroup.args.time.args.timeYOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
+
+	group.args.castGroup.args.textGroup.args.text = ACH:Group(L["Text Options"], nil, 11)
+	group.args.castGroup.args.textGroup.args.text.args.textXOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
+	group.args.castGroup.args.textGroup.args.text.args.textYOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
 
 	group.args.castGroup.args.iconGroup = ACH:Group(L["Icon"], nil, 21)
 	group.args.castGroup.args.iconGroup.inline = true
