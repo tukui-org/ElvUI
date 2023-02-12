@@ -134,7 +134,6 @@ local function CreateDTOptions(name, data)
 		optionTable.args.currencyTooltip = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4, nil, nil, nil, nil, nil, nil, function() return DT.CurrencyList[tostring(name)] end)
 
 		E.Options.args.datatexts.args.customCurrency.args[currency.name] = optionTable
-
 		return
 	else
 		settings = E.global.datatexts.settings[name]
@@ -297,7 +296,5 @@ for name, data in pairs(DT.RegisteredDataTexts) do
 end
 
 for name, data in pairs(DT.db.panels) do
-	if type(data) == 'table' then
-		SetupPanelOptions(name, data)
-	end
+	SetupPanelOptions(name, data)
 end
