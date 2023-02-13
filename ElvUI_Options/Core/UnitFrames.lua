@@ -1320,18 +1320,16 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 			config[element] = GetOptionsTable_RaidIcon(updateFunc, unitType, numUnits)
 		elseif element == 'raidRoleIcons' then
 			config[element] = GetOptionsTable_RaidRoleIcons(updateFunc, unitType, numUnits)
-		elseif element == 'resurrectIcon' then
-			config[element] = GetOptionsTable_ResurrectIcon(updateFunc, unitType, numUnits)
-		elseif element == 'roleIcon' then
-			config[element] = GetOptionsTable_RoleIcons(updateFunc, unitType, numUnits)
-		elseif element == 'strataAndLevel' then
-			config[element] = GetOptionsTable_StrataAndFrameLevel(updateFunc, unitType, numUnits)
 		elseif element == 'rdebuffs' then
 			config[element] = GetOptionsTable_RaidDebuff(updateFunc, unitType, numUnits)
 		elseif element == 'readycheckIcon' then
 			config[element] = GetOptionsTable_ReadyCheckIcon(updateFunc, unitType, numUnits)
 		elseif element == 'resurrectIcon' then
 			config[element] = GetOptionsTable_ResurrectIcon(updateFunc, unitType, numUnits)
+		elseif element == 'roleIcon' then
+			config[element] = GetOptionsTable_RoleIcons(updateFunc, unitType, numUnits)
+		elseif element == 'strataAndLevel' then
+			config[element] = GetOptionsTable_StrataAndFrameLevel(updateFunc, unitType, numUnits)
 		elseif element == 'summonIcon' then
 			config[element] = GetOptionsTable_SummonIcon(updateFunc, unitType, numUnits)
 		end
