@@ -5,8 +5,9 @@ local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
-local next, format, strmatch, strsplit = next, format, strmatch, strsplit
-local tinsert, tonumber, gsub, pairs, wipe, ceil = tinsert, tonumber, gsub, pairs, wipe, ceil
+local wipe, next, pairs, ipairs = wipe, next, pairs, ipairs
+local format, strmatch, strsplit = format, strmatch, strsplit
+local tinsert, tonumber, gsub, ceil = tinsert, tonumber, gsub, ceil
 
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
@@ -1278,60 +1279,46 @@ local function CopyFromFunc(info)
 	return tbl
 end
 
+local unitSettingsFunc = {
+	castbar = GetOptionsTable_Castbar,
+	classbar = GetOptionsTable_ClassBar,
+	CombatIcon = GetOptionsTable_CombatIconGroup,
+	cutaway = GetOptionsTable_Cutaway,
+	customText = GetOptionsTable_CustomText,
+	fader = GetOptionsTable_Fader,
+	healPrediction = GetOptionsTable_HealPrediction,
+	infoPanel = GetOptionsTable_InformationPanel,
+	name = GetOptionsTable_Name,
+	phaseIndicator = GetOptionsTable_PhaseIndicator,
+	portrait = GetOptionsTable_Portrait,
+	pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator,
+	pvpIcon = GetOptionsTable_PVPIcon,
+	raidicon = GetOptionsTable_RaidIcon,
+	raidRoleIcons = GetOptionsTable_RaidRoleIcons,
+	rdebuffs = GetOptionsTable_RaidDebuff,
+	readycheckIcon = GetOptionsTable_ReadyCheckIcon,
+	resurrectIcon = GetOptionsTable_ResurrectIcon,
+	roleIcon = GetOptionsTable_RoleIcons,
+	strataAndLevel = GetOptionsTable_StrataAndFrameLevel,
+	summonIcon = GetOptionsTable_SummonIcon
+}
+
 local function GetUnitSettings(unitType, updateFunc, numUnits)
 	local config = { enable = ACH:Toggle(L["Enable"], nil, 1) }
 
 	for element in pairs(P.unitframe.units[unitType]) do
-		if element == 'aurabar' then
-			config[element] = GetOptionsTable_AuraBars(updateFunc, unitType, numUnits)
+		local isIndividual = individual[unitType]
+		if element == 'health' then
+			config[element] = GetOptionsTable_Health(not isIndividual, updateFunc, unitType, numUnits)
+		elseif element == 'power' then
+			config[element] = GetOptionsTable_Power(isIndividual, updateFunc, unitType, numUnits, isIndividual)
 		elseif element == 'buffs' or element == 'debuffs' then
 			config[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
-		elseif element == 'castbar' then
-			config[element] = GetOptionsTable_Castbar(updateFunc, unitType, numUnits)
-		elseif element == 'classbar' then
-			config[element] = GetOptionsTable_ClassBar(updateFunc, unitType, numUnits)
-		elseif element == 'CombatIcon' then
-			config[element] = GetOptionsTable_CombatIconGroup(updateFunc, unitType, numUnits)
-		elseif element == 'cutaway' then
-			config[element] = GetOptionsTable_Cutaway(updateFunc, unitType, numUnits)
-		elseif element == 'customText' then
-			config[element] = GetOptionsTable_CustomText(updateFunc, unitType, numUnits)
-		elseif element == 'fader' then
-			config[element] = GetOptionsTable_Fader(updateFunc, unitType, numUnits)
-		elseif element == 'healPrediction' then
-			config[element] = GetOptionsTable_HealPrediction(updateFunc, unitType, numUnits)
-		elseif element == 'health' then
-			config[element] = GetOptionsTable_Health(not individual[unitType], updateFunc, unitType, numUnits)
-		elseif element == 'infoPanel' then
-			config[element] = GetOptionsTable_InformationPanel(updateFunc, unitType, numUnits)
-		elseif element == 'name' then
-			config[element] = GetOptionsTable_Name(updateFunc, unitType, numUnits)
-		elseif element == 'phaseIndicator' then
-			config[element] = GetOptionsTable_PhaseIndicator(updateFunc, unitType, numUnits)
-		elseif element == 'portrait' then
-			config[element] = GetOptionsTable_Portrait(updateFunc, unitType, numUnits)
-		elseif element == 'power' then
-			config[element] = GetOptionsTable_Power(individual[unitType], updateFunc, unitType, numUnits, individual[unitType])
-		elseif element == 'pvpclassificationindicator' then
-			config[element] = GetOptionsTable_PVPClassificationIndicator(updateFunc, unitType, numUnits)
-		elseif element == 'pvpIcon' then
-			config[element] = GetOptionsTable_PVPIcon(updateFunc, unitType, numUnits)
-		elseif element == 'raidicon' then
-			config[element] = GetOptionsTable_RaidIcon(updateFunc, unitType, numUnits)
-		elseif element == 'raidRoleIcons' then
-			config[element] = GetOptionsTable_RaidRoleIcons(updateFunc, unitType, numUnits)
-		elseif element == 'rdebuffs' then
-			config[element] = GetOptionsTable_RaidDebuff(updateFunc, unitType, numUnits)
-		elseif element == 'readycheckIcon' then
-			config[element] = GetOptionsTable_ReadyCheckIcon(updateFunc, unitType, numUnits)
-		elseif element == 'resurrectIcon' then
-			config[element] = GetOptionsTable_ResurrectIcon(updateFunc, unitType, numUnits)
-		elseif element == 'roleIcon' then
-			config[element] = GetOptionsTable_RoleIcons(updateFunc, unitType, numUnits)
-		elseif element == 'strataAndLevel' then
-			config[element] = GetOptionsTable_StrataAndFrameLevel(updateFunc, unitType, numUnits)
-		elseif element == 'summonIcon' then
-			config[element] = GetOptionsTable_SummonIcon(updateFunc, unitType, numUnits)
+		else
+			local func = unitSettingsFunc[element]
+			if func then
+				config[element] = func(updateFunc, unitType, numUnits)
+			end
 		end
 	end
 
