@@ -447,9 +447,9 @@ local function CreateCustomTextGroup(unit, objectName)
 	local group = individual[unit] and 'individualUnits' or 'groupUnits'
 	if not E.Options.args.unitframe.args[group].args[unit] then
 		return
-	elseif E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] then
-		E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
-		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden again on profile change
+	elseif E.Options.args.unitframe.args[group].args[unit].args.customTexts.args[objectName] then
+		E.Options.args.unitframe.args[group].args[unit].args.customTexts.args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
+		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customTexts.args[objectName]) --Register this custom text config to be hidden again on profile change
 		return
 	end
 
@@ -469,7 +469,7 @@ local function CreateCustomTextGroup(unit, objectName)
 		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
 	end
 
-	E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = config
+	E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = config
 
 	tinsert(CUSTOMTEXT_CONFIGS, config) --Register this custom text config to be hidden on profile change
 end
@@ -1284,7 +1284,7 @@ local unitSettingsFunc = {
 	classbar = GetOptionsTable_ClassBar,
 	CombatIcon = GetOptionsTable_CombatIconGroup,
 	cutaway = GetOptionsTable_Cutaway,
-	customText = GetOptionsTable_CustomText,
+	customTexts = GetOptionsTable_CustomText,
 	fader = GetOptionsTable_Fader,
 	healPrediction = GetOptionsTable_HealPrediction,
 	infoPanel = GetOptionsTable_InformationPanel,
@@ -1456,7 +1456,7 @@ Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, m
 
 --Party Frames
 GroupUnits.party = ACH:Group(L["Party"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
-GroupUnits.party.args = GetUnitSettings('party', UF.CreateAndUpdateUFGroup)
+GroupUnits.party.args = GetUnitSettings('party', UF.CreateAndUpdateHeaderGroup)
 local Party = GroupUnits.party.args
 
 Party.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.party, UF.party.forceShow ~= true or nil) end)
@@ -1490,7 +1490,7 @@ Party.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHe
 
 for i = 1, 3 do
 	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L[format('Raid %s', i)], E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s - %s', raid, name) or raid end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
-	GroupUnits['raid'..i].args = GetUnitSettings('raid'..i, UF.CreateAndUpdateUFGroup)
+	GroupUnits['raid'..i].args = GetUnitSettings('raid'..i, UF.CreateAndUpdateHeaderGroup)
 	local Raid = GroupUnits['raid'..i].args
 
 	Raid.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF['raid'..i], UF['raid'..i].forceShow ~= true or nil) end)
@@ -1502,7 +1502,7 @@ for i = 1, 3 do
 end
 
 GroupUnits.raidpet = ACH:Group(L["Raid Pet"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
-GroupUnits.raidpet.args = GetUnitSettings('raidpet', UF.CreateAndUpdateUFGroup)
+GroupUnits.raidpet.args = GetUnitSettings('raidpet', UF.CreateAndUpdateHeaderGroup)
 local RaidPet = GroupUnits.raidpet.args
 
 RaidPet.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.raidpet, UF.raidpet.forceShow ~= true or nil) end)
