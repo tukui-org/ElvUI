@@ -447,9 +447,9 @@ local function CreateCustomTextGroup(unit, objectName)
 	local group = individual[unit] and 'individualUnits' or 'groupUnits'
 	if not E.Options.args.unitframe.args[group].args[unit] then
 		return
-	elseif E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName] then
-		E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
-		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden again on profile change
+	elseif E.Options.args.unitframe.args[group].args[unit].args.customTexts.args[objectName] then
+		E.Options.args.unitframe.args[group].args[unit].args.customTexts.args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
+		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customTexts.args[objectName]) --Register this custom text config to be hidden again on profile change
 		return
 	end
 
@@ -469,7 +469,7 @@ local function CreateCustomTextGroup(unit, objectName)
 		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
 	end
 
-	E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = config
+	E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = config
 
 	tinsert(CUSTOMTEXT_CONFIGS, config) --Register this custom text config to be hidden on profile change
 end
@@ -1284,7 +1284,7 @@ local unitSettingsFunc = {
 	classbar = GetOptionsTable_ClassBar,
 	CombatIcon = GetOptionsTable_CombatIconGroup,
 	cutaway = GetOptionsTable_Cutaway,
-	customText = GetOptionsTable_CustomText,
+	customTexts = GetOptionsTable_CustomText,
 	fader = GetOptionsTable_Fader,
 	healPrediction = GetOptionsTable_HealPrediction,
 	infoPanel = GetOptionsTable_InformationPanel,
