@@ -1456,7 +1456,7 @@ Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, m
 
 --Party Frames
 GroupUnits.party = ACH:Group(L["Party"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
-GroupUnits.party.args = GetUnitSettings('party', UF.CreateAndUpdateUFGroup)
+GroupUnits.party.args = GetUnitSettings('party', UF.CreateAndUpdateHeaderGroup)
 local Party = GroupUnits.party.args
 
 Party.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.party, UF.party.forceShow ~= true or nil) end)
@@ -1502,7 +1502,7 @@ for i = 1, 3 do
 end
 
 GroupUnits.raidpet = ACH:Group(L["Raid Pet"], nil, nil, nil, function(info) return E.db.unitframe.units.raidpet[info[#info]] end, function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value UF:CreateAndUpdateHeaderGroup('raidpet') end)
-GroupUnits.raidpet.args = GetUnitSettings('raidpet', UF.CreateAndUpdateUFGroup)
+GroupUnits.raidpet.args = GetUnitSettings('raidpet', UF.CreateAndUpdateHeaderGroup)
 local RaidPet = GroupUnits.raidpet.args
 
 RaidPet.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.raidpet, UF.raidpet.forceShow ~= true or nil) end)
