@@ -191,7 +191,7 @@ function NP:BossMods_UpdateIcon(plate, removed)
 
 	if not active then
 		local element = plate.BossMods
-		if next(element.activeIcons) then
+		if element and next(element.activeIcons) then
 			for texture in pairs(element.activeIcons) do
 				NP:BossMods_ClearIcon(plate, texture)
 			end
