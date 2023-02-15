@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local floor, gsub, strjoin = floor, gsub, strjoin
+local floor, strjoin = floor, strjoin
 local GetInstanceInfo = GetInstanceInfo
 local GetTime = GetTime
 
@@ -51,7 +51,7 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', '%s', db.NoLabel and '' or ': ', hex, gsub((db.TimeFull and '%02d:%02d:%02d' or '%02d:%02d'), ':', '|cFFFFFFFF:|r')..'|r')
+	displayString = strjoin('', '%s', db.NoLabel and '' or ': ', hex, (db.TimeFull and '%02d|cFFFFFFFF:|r%02d|cFFFFFFFF:|r%02d' or '%02d|cFFFFFFFF:|r%02d')..'|r')
 end
 
 DT:RegisterDatatext('Combat', nil, {'START_TIMER', 'ENCOUNTER_START', 'ENCOUNTER_END', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ApplySettings)
