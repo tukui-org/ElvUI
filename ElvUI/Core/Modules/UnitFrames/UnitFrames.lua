@@ -1235,6 +1235,7 @@ do
 	local MAX_BOSS_FRAMES = 8
 
 	local disabledPlates = {}
+	local disabledFrames = {}
 	local lockedFrames = {}
 
 	-- lock Boss, Party, and Arena
@@ -1282,7 +1283,7 @@ do
 
 		if E.private.unitframe.enable then
 			local disable = E.private.unitframe.disabledBlizzardFrames
-			if unit == 'player' then
+			if unit == 'player' and not disabledFrames[unit] then
 				if disable.player then
 					local frame = _G.PlayerFrame
 					HandleFrame(frame)
@@ -1312,28 +1313,35 @@ do
 					CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
 					PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
 				end
-			elseif disable.player and unit == 'pet' then
+				disabledFrames[unit] = true
+			elseif disable.player and unit == 'pet' and not disabledFrames[unit] then
 				HandleFrame(_G.PetFrame)
-			elseif disable.target and unit == 'target' then
+				disabledFrames[unit] = true
+			elseif disable.target and unit == 'target' and not disabledFrames[unit] then
 				HandleFrame(_G.TargetFrame)
 				HandleFrame(_G.ComboFrame)
-			elseif disable.focus and unit == 'focus' then
+				disabledFrames[unit] = true
+			elseif disable.focus and unit == 'focus' and not disabledFrames[unit] then
 				HandleFrame(_G.FocusFrame)
 				HandleFrame(_G.TargetofFocusFrame)
-			elseif disable.target and unit == 'targettarget' then
+				disabledFrames[unit] = true
+			elseif disable.target and unit == 'targettarget' and not disabledFrames[unit] then
 				HandleFrame(_G.TargetFrameToT)
-			elseif disable.boss and strmatch(unit, 'boss%d?$') then
+				disabledFrames[unit] = true
+			elseif disable.boss and strmatch(unit, 'boss%d?$') and not disabledFrames[unit] then
 				HandleFrame(_G.BossTargetFrameContainer, 1)
 
 				local id = strmatch(unit, 'boss(%d)')
 				if id then
 					HandleFrame('Boss'..id..'TargetFrame', true)
+					disabledFrames[unit] = true
 				else
 					for i = 1, MAX_BOSS_FRAMES do
 						HandleFrame('Boss'..i..'TargetFrame', true)
+						disabledFrames[unit] = true
 					end
 				end
-			elseif disable.party and strmatch(unit, 'party%d?$') then
+			elseif disable.party and strmatch(unit, 'party%d?$') and not disabledFrames[unit] then
 				local frame = _G.PartyFrame
 				if frame then -- Retail
 					HandleFrame(frame, 1)
@@ -1349,13 +1357,15 @@ do
 				if id then
 					HandleFrame('PartyMemberFrame'..id)
 					HandleFrame('CompactPartyFrameMember'..id)
+					disabledFrames[unit] = true
 				else
 					for i = 1, MAX_PARTY do
 						HandleFrame('PartyMemberFrame'..i)
 						HandleFrame('CompactPartyFrameMember'..i)
+						disabledFrames[unit] = true
 					end
 				end
-			elseif disable.arena and strmatch(unit, 'arena%d?$') then
+			elseif disable.arena and strmatch(unit, 'arena%d?$') and not disabledFrames[unit] then
 				if _G.ArenaEnemyFramesContainer then -- Retail
 					HandleFrame(_G.ArenaEnemyFramesContainer, 1)
 					HandleFrame(_G.ArenaEnemyPrepFramesContainer, 1)
@@ -1378,10 +1388,12 @@ do
 				if id then
 					HandleFrame('ArenaEnemyMatchFrame'..id, true)
 					HandleFrame('ArenaEnemyPrepFrame'..id, true)
+					disabledFrames[unit] = true
 				else
 					for i = 1, MAX_ARENA_ENEMIES do
 						HandleFrame('ArenaEnemyMatchFrame'..i, true)
 						HandleFrame('ArenaEnemyPrepFrame'..i, true)
+						disabledFrames[unit] = true
 					end
 				end
 			end
