@@ -1235,7 +1235,7 @@ do
 	local MAX_BOSS_FRAMES = 8
 
 	local disabledPlates = {}
-	local disabledFrames = {}
+	local handledUnits = {}
 	local lockedFrames = {}
 
 	-- lock Boss, Party, and Arena
@@ -1281,8 +1281,8 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if E.private.unitframe.enable and not disabledFrames[unit] then
-			disabledFrames[unit] = true
+		if E.private.unitframe.enable and not handledUnits[unit] then
+			handledUnits[unit] = true
 
 			local disable = E.private.unitframe.disabledBlizzardFrames
 			if unit == 'player' then
