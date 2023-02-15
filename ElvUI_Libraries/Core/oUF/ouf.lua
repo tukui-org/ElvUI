@@ -341,8 +341,6 @@ local function initObject(unit, style, styleFunc, header, ...)
 			if(isEventlessUnit(objectUnit)) then
 				oUF:HandleEventlessUnit(object)
 			else
-				-- No need to enable this for eventless units.
-				object:SetAttribute('toggleForVehicle', true)
 				oUF:HandleUnit(object)
 			end
 		else
