@@ -379,7 +379,7 @@ function AB:CreateBar(id)
 		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
 		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
 
-		button.__parent = barName
+		button.parentName = barName
 		bar.buttons[i] = button
 	end
 

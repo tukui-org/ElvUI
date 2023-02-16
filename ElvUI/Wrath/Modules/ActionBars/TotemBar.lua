@@ -11,6 +11,9 @@ local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local hooksecurefunc = hooksecurefunc
 
+local Masque = E.Masque
+local MasqueGroup = Masque and Masque:Group('ElvUI', 'Totem Bar')
+
 local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerStateTemplate')
 bar:SetFrameStrata('LOW')
 
@@ -59,23 +62,43 @@ function AB:StyleTotemSlotButton(button, slot)
 	end
 end
 
-function AB:SkinMultiCastButton(button)
+function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
+	if button.isSkinned then return end
+
 	local name = button:GetName()
 	local highlight = _G[name..'Highlight']
-	if highlight then
-		highlight:SetTexture(nil)
+	local icon = button.icon or button.background
+	local normal = button.NormalTexture or _G[name..'NormalTexture']
+
+	button.noBackdrop = noBackdrop
+	button.useMasque = useMasque
+
+	if normal then normal:SetTexture(nil) end
+	if button.overlayTex then button.overlayTex:Hide() end
+	if highlight then highlight:SetTexture(nil) end
+
+	if not button.noBackdrop and not button.useMasque then
+		button:SetTemplate()
 	end
 
-	button:SetTemplate()
-	button:StyleButton()
+	if not useMasque then
+		button:StyleButton()
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetDrawLayer('ARTWORK')
+		icon:SetInside(button)
+	else
+		button:StyleButton(true, true, true)
+	end
 
-	AB:ColorSwipeTexture(button.cooldown)
+	if button.cooldown then
+		AB:ColorSwipeTexture(button.cooldown)
+		E:RegisterCooldown(button.cooldown, 'actionbar')
+	end
 
-	button.icon:SetTexCoord(unpack(E.TexCoords))
-	button.icon:SetDrawLayer('ARTWORK')
-	button.icon:SetInside(button)
-
-	button.NormalTexture:SetTexture(nil)
+	button.parentName = 'ElvUI_TotemBar'
+	AB.handledbuttons[button] = true
+	bar.buttons[button] = true
+	button.isSkinned = true
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
@@ -88,19 +111,11 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 	for i, button in ipairs(frame.buttons) do
 		if not button.isSkinned then
-			button:SetTemplate()
-			button:StyleButton()
-
-			button.icon:SetDrawLayer('ARTWORK')
-			button.icon:SetInside(button)
+			AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 
 			-- these only need mouseover script, dont need the bind key script
 			AB:HookScript(button, 'OnEnter', 'TotemBar_OnEnter')
 			AB:HookScript(button, 'OnLeave', 'TotemBar_OnLeave')
-
-			bar.buttons[button] = true
-
-			button.isSkinned = true
 		end
 
 		if button:IsShown() then
@@ -109,6 +124,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button:Size(AB.db.totemBar.flyoutSize)
 			button:ClearAllPoints()
+			button.icon:SetTexCoord(unpack(E.TexCoords))
 
 			local anchor = i == 1 and parent or frame.buttons[i - 1]
 			if AB.db.totemBar.flyoutDirection == 'UP' then
@@ -116,8 +132,6 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			else
 				button:Point('TOP', anchor, 'BOTTOM', 0, -AB.db.totemBar.flyoutSpacing)
 			end
-
-			button.icon:SetTexCoord(unpack(E.TexCoords))
 
 			totalHeight = totalHeight + button:GetHeight() + AB.db.totemBar.flyoutSpacing
 		end
@@ -259,6 +273,23 @@ function AB:MultiCastRecallSpellButton_Update(button)
 	end
 end
 
+function AB:MultiCastFlyoutFrameStyle(button, rotate)
+	button:SetTemplate()
+	button:StyleButton()
+	button.normalTexture:ClearAllPoints()
+	button.normalTexture:SetPoint('CENTER')
+	button.normalTexture:SetSize(16, 16)
+	button.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
+	button.normalTexture:SetTexCoord(0, 1, 0, 1)
+	button.normalTexture.SetTexCoord = E.noop
+
+	if rotate then
+		button.normalTexture:SetRotation(3.14)
+	end
+
+	bar.buttons[button] = true
+end
+
 function AB:CreateTotemBar()
 	AB.TotemBar = bar -- Initialized
 
@@ -272,42 +303,13 @@ function AB:CreateTotemBar()
 	barFrame:SetScript('OnHide', nil)
 	barFrame:SetParent(bar)
 
-	local closeButton = _G.MultiCastFlyoutFrameCloseButton
-	closeButton:SetTemplate()
-	closeButton:StyleButton()
-	closeButton.normalTexture:ClearAllPoints()
-	closeButton.normalTexture:SetPoint('CENTER')
-	closeButton.normalTexture:SetSize(16, 16)
-	closeButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
-	closeButton.normalTexture:SetTexCoord(0, 1, 0, 1)
-	closeButton.normalTexture:SetRotation(3.14)
-	closeButton.normalTexture.SetTexCoord = E.noop
-	bar.buttons[closeButton] = true
-
-	local openButton = _G.MultiCastFlyoutFrameOpenButton
-	openButton:SetTemplate()
-	openButton:StyleButton()
-	openButton.normalTexture:ClearAllPoints()
-	openButton.normalTexture:SetPoint('CENTER')
-	openButton.normalTexture:SetSize(16, 16)
-	openButton.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
-	openButton.normalTexture:SetTexCoord(0, 1, 0, 1)
-	openButton.normalTexture.SetTexCoord = E.noop
-	bar.buttons[openButton] = true
+	AB:MultiCastFlyoutFrameStyle(_G.MultiCastFlyoutFrameCloseButton, true)
+	AB:MultiCastFlyoutFrameStyle(_G.MultiCastFlyoutFrameOpenButton)
 
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
-
-		button:SetTemplate()
-		button:StyleButton()
-
-		button.background:SetTexCoord(unpack(E.TexCoords))
-		button.background:SetDrawLayer('ARTWORK')
-		button.background:SetInside(button)
-
-		button.overlayTex:Hide()
-
-		bar.buttons[button] = true
+		button.icon = button.background
+		AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
 	local isShaman = E.myclass == 'SHAMAN'
@@ -319,32 +321,19 @@ function AB:CreateTotemBar()
 			button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
 		end
 
-		button:StyleButton()
-		button.NormalTexture:SetTexture(nil)
-		button.overlayTex:Hide()
-
-		button.icon:SetTexCoord(unpack(E.TexCoords))
-		button.icon:SetDrawLayer('ARTWORK')
-		button.icon:SetInside()
+		AB:SkinMultiCastButton(button, true, MasqueGroup and E.private.actionbar.masque.actionbars)
 
 		button.HotKey.SetVertexColor = E.noop
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
-
-		AB:ColorSwipeTexture(button.cooldown)
-		E:RegisterCooldown(button.cooldown)
-
-		bar.buttons[button] = true
 	end
 
 	local summonButton = _G.MultiCastSummonSpellButton
 	AB:SkinMultiCastButton(summonButton)
 	summonButton.commandName = summonButton.buttonType..'1' -- hotkey support
-	bar.buttons[summonButton] = true
 
 	local spellButton = _G.MultiCastRecallSpellButton
 	AB:SkinMultiCastButton(spellButton)
 	spellButton.commandName = spellButton.buttonType..'1' -- hotkey support
-	bar.buttons[spellButton] = true
 
 	for button in pairs(bar.buttons) do
 		button:HookScript('OnEnter', AB.TotemButton_OnEnter)
