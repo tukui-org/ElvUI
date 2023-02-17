@@ -204,7 +204,7 @@ do	-- this will handle `8.1.5.0015` into `8.150015` etc
 end
 
 function lib:VersionCheck(event, prefix, message, _, senderOne, senderTwo)
-	local sender = strfind(senderOne, '-') and senderOne or senderTwo
+	local sender = strfind(senderOne or '', '-') and senderOne or senderTwo
 	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
 		if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
 		if sender == lib.myName then return end
