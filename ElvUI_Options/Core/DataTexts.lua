@@ -33,8 +33,8 @@ DTPanelOptions.tooltip = ACH:Group(L["Tooltip"], nil, 20)
 DTPanelOptions.tooltip.inline = true
 
 DTPanelOptions.tooltip.args.tooltipAnchor = ACH:Select(L["Anchor"], nil, 0, { ANCHOR_TOP = L["TOP"], ANCHOR_RIGHT = L["RIGHT"], ANCHOR_BOTTOM = L["BOTTOM"], ANCHOR_LEFT = L["LEFT"], ANCHOR_TOPRIGHT = L["TOPRIGHT"], ANCHOR_BOTTOMRIGHT = L["BOTTOMRIGHT"], ANCHOR_TOPLEFT = L["TOPLEFT"], ANCHOR_BOTTOMLEFT = L["BOTTOMLEFT"], ANCHOR_CURSOR = L["CURSOR"], ANCHOR_CURSOR_LEFT = L["CURSOR_LEFT"], ANCHOR_CURSOR_RIGHT = L["CURSOR_RIGHT"] })
-DTPanelOptions.tooltip.args.tooltipXOffset = ACH:Range(L["X-Offset"], nil, 1, { min = -30, max = 30, step = 1 })
-DTPanelOptions.tooltip.args.tooltipYOffset = ACH:Range(L["Y-Offset"], nil, 2, { min = -30, max = 30, step = 1 })
+DTPanelOptions.tooltip.args.tooltipXOffset = ACH:Range(L["X-Offset"], nil, 1, { softMin = -30, softMax = 30, min = -60, max = 60, step = 1 })
+DTPanelOptions.tooltip.args.tooltipYOffset = ACH:Range(L["Y-Offset"], nil, 2, { softMin = -30, softMax = 30, min = -60, max = 60, step = 1 })
 
 DTPanelOptions.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 25, nil, 'full')
 
