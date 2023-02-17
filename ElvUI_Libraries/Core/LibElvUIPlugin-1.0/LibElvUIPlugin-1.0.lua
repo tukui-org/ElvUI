@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 40
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 41
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -203,7 +203,7 @@ do	-- this will handle `8.1.5.0015` into `8.150015` etc
 	end
 end
 
-function lib:VersionCheck(event, prefix, message, _, sender)
+function lib:VersionCheck(event, prefix, message, _, _, sender)
 	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
 		if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
 		if sender == lib.myName then return end

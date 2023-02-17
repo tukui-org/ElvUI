@@ -188,7 +188,7 @@ function D:Distribute(target, otherServer, isGlobal)
 	E:StaticPopup_Show('DISTRIBUTOR_WAITING')
 end
 
-function D:CHAT_MSG_ADDON(_, prefix, message, _, sender)
+function D:CHAT_MSG_ADDON(_, prefix, message, _, _, sender)
 	if prefix ~= TRANSFER_PREFIX or not Downloads[sender] then return end
 	local cur = len(message)
 	local max = Downloads[sender].length
