@@ -1280,6 +1280,7 @@ local function CopyFromFunc(info)
 end
 
 local unitSettingsFunc = {
+	aurabar = GetOptionsTable_AuraBars,
 	buffIndicator = GetOptionsTable_AuraWatch,
 	castbar = GetOptionsTable_Castbar,
 	classbar = GetOptionsTable_ClassBar,
