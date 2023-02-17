@@ -862,7 +862,7 @@ for unit, data in next, P.nameplates.units do
 	if unit ~= 'TARGET' then
 		data.showTitle = true
 		data.smartAuraPosition = 'DISABLED'
-		data.nameOnly = false
+		data.nameOnly = unit == 'FRIENDLY_NPC'
 
 		data.buffs = CopyTable(NP_Auras)
 		data.castbar = CopyTable(NP_Castbar)
