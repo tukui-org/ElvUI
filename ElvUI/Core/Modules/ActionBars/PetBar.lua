@@ -33,7 +33,11 @@ function AB:UpdatePet(event, unit)
 	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = button.AutoCastable or _G[buttonName..'AutoCastable']
+		local autoCast = button.AutoCastable
+
+		if _G[buttonName..'AutoCastable'] then
+			_G[buttonName..'AutoCastable']:SetAlpha(0)
+		end
 
 		button:SetAlpha(1)
 		button.isToken = isToken
