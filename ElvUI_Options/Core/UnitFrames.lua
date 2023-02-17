@@ -236,7 +236,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 5, function() local configString = format('Aura Indicator (%s)', groupName == 'pet' and 'Pet' or E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile' or 'Class') C:SetToFilterConfig(configString) end)
 
 	if subGroup then
-		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end
 	else
@@ -566,7 +565,6 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 	end, 50, 'medium', nil, nil, nil, nil, 'full')
 
 	if subGroup then
-		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] = value updateFunc(UF, groupName, numGroup) end
 	end
@@ -621,7 +619,6 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 5, nil, 'full')
 
 	if subGroup then
-		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].name[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].name[info[#info]] = value updateFunc(UF, groupName, numUnits) end
 	end
@@ -766,7 +763,6 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGrou
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	if subGroup then
-		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].raidicon[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].raidicon[info[#info]] = value updateFunc(UF, groupName, numUnits) end
 	end
@@ -1316,6 +1312,26 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 			config[element] = GetOptionsTable_Power(isIndividual, updateFunc, unitType, numUnits, isIndividual)
 		elseif element == 'buffs' or element == 'debuffs' then
 			config[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
+		elseif element == 'petsGroup' or element == 'targetsGroup' then
+			config[element] = ACH:Group(element == 'targetsGroup' and L["Target Group"] or L["Pet Group"], nil, -1, 'tab', function(info) return E.db.unitframe.units[unitType][element][info[#info]] end, function(info, value) E.db.unitframe.units[unitType][element][info[#info]] = value UF:CreateAndUpdateHeaderGroup(unitType) end)
+			config[element].args.enable = ACH:Toggle(L["Enable"], nil, 1)
+			config[element].args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = 1000, step = 1 })
+			config[element].args.height = ACH:Range(L["Height"], nil, 4, { min = 5, max = 500, step = 1 })
+			config[element].args.anchorPoint = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints)
+			config[element].args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
+			config[element].args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
+			config[element].args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
+
+			for subElement in pairs(P.unitframe.units[unitType][element]) do
+				if subElement == 'colorPetByUnitClass' then
+					config[element].args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
+				else
+					local func = unitSettingsFunc[subElement]
+					if func then
+						config[element].args[subElement] = func(updateFunc, unitType, numUnits, element)
+					end
+				end
+			end
 		else
 			local func = unitSettingsFunc[element]
 			if func then
@@ -1466,30 +1482,6 @@ Party.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:St
 Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'party') E:RefreshGUI() end)
 Party.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'party')
 
-Party.petsGroup = ACH:Group(L["Pet Group"], nil, -2, nil, function(info) return E.db.unitframe.units.party.petsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.party.petsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
-Party.petsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Party.petsGroup.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
-Party.petsGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = 1000, step = 1 })
-Party.petsGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = 5, max = 500, step = 1 })
-Party.petsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints)
-Party.petsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
-Party.petsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
-Party.petsGroup.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
-Party.petsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup')
-Party.petsGroup.args.buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup')
-Party.petsGroup.args.healPrediction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup')
-
-Party.targetsGroup = ACH:Group(L["Target Group"], nil, -1, nil, function(info) return E.db.unitframe.units.party.targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units.party.targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
-Party.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Party.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
-Party.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
-Party.targetsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
-Party.targetsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 })
-Party.targetsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
-Party.targetsGroup.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
-Party.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'targetsGroup')
-Party.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'targetsGroup')
-
 for i = 1, 3 do
 	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L[format('Raid %s', i)], E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s - %s', raid, name) or raid end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
 	GroupUnits['raid'..i].args = GetUnitSettings('raid'..i, UF.CreateAndUpdateHeaderGroup)
@@ -1516,17 +1508,6 @@ for unit, locale in pairs({ tank = 'Tank', assist = 'Assist' }) do
 	GroupUnits[unit] = ACH:Group(L[locale], nil, nil, nil, function(info) return E.db.unitframe.units[unit][info[#info]] end, function(info, value) E.db.unitframe.units[unit][info[#info]] = value UF:CreateAndUpdateHeaderGroup(unit) end)
 	GroupUnits[unit].args = GetUnitSettings(unit, UF.CreateAndUpdateHeaderGroup)
 	GroupUnits[unit].args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, unit)
-
-	GroupUnits[unit].args.targetsGroup = ACH:Group(L["Target Group"], nil, -1, nil, function(info) return E.db.unitframe.units[unit].targetsGroup[info[#info]] end, function(info, value) E.db.unitframe.units[unit].targetsGroup[info[#info]] = value UF:CreateAndUpdateHeaderGroup(unit) end)
-	GroupUnits[unit].args.targetsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	GroupUnits[unit].args.targetsGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
-	GroupUnits[unit].args.targetsGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 500, step = 1 })
-	GroupUnits[unit].args.targetsGroup.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
-	GroupUnits[unit].args.targetsGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 })
-	GroupUnits[unit].args.targetsGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
-	GroupUnits[unit].args.targetsGroup.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
-	GroupUnits[unit].args.targetsGroup.args.name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, unit, nil, 'targetsGroup')
-	GroupUnits[unit].args.targetsGroup.args.raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, unit, nil, 'targetsGroup')
 
 	GroupUnits[unit].args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 	GroupUnits[unit].args.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
