@@ -203,21 +203,23 @@ do	-- this will handle `8.1.5.0015` into `8.150015` etc
 	end
 end
 
-function lib:VersionCheck(event, prefix, message, _, senderOne, senderTwo)
-	local sender = strfind(senderOne or '', '-') and senderOne or senderTwo
-	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
-		if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
-		if sender == lib.myName then return end
+function lib:VersionCheck(event, prefix, msg, _, senderOne, senderTwo)
+	if event == 'CHAT_MSG_ADDON' and prefix == lib.prefix then
+		local sender = strfind(senderOne, '-') and senderOne or senderTwo
+		if sender and msg and not strmatch(msg, '^%s-$') then
+			if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
+			if sender == lib.myName then return end
 
-		if not E.pluginRecievedOutOfDateMessage then
-			for name, version in gmatch(message, '([^=]+)=([%d%p]+);') do
-				local plugin = (version and name) and lib.plugins[name]
-				if plugin and plugin.version then
-					local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
-					if (ver and Pver) and (ver > Pver) then
-						plugin.old, plugin.newversion = true, version
-						E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
-						E.pluginRecievedOutOfDateMessage = true
+			if not E.pluginRecievedOutOfDateMessage then
+				for name, version in gmatch(msg, '([^=]+)=([%d%p]+);') do
+					local plugin = (version and name) and lib.plugins[name]
+					if plugin and plugin.version then
+						local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
+						if (ver and Pver) and (ver > Pver) then
+							plugin.old, plugin.newversion = true, version
+							E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
+							E.pluginRecievedOutOfDateMessage = true
+						end
 					end
 				end
 			end
