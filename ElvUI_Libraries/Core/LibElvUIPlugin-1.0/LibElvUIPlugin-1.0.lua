@@ -32,7 +32,7 @@ LibElvUIPlugin API:
 
 local tonumber, strmatch, strsub, tinsert, strtrim = tonumber, strmatch, strsub, tinsert, strtrim
 local unpack, assert, pairs, ipairs, strlen, pcall, xpcall = unpack, assert, pairs, ipairs, strlen, pcall, xpcall
-local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
+local format, wipe, type, gmatch, gsub, ceil, strfind = format, wipe, type, gmatch, gsub, ceil, strfind
 
 local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
@@ -203,7 +203,8 @@ do	-- this will handle `8.1.5.0015` into `8.150015` etc
 	end
 end
 
-function lib:VersionCheck(event, prefix, message, _, _, sender)
+function lib:VersionCheck(event, prefix, message, _, senderOne, senderTwo)
+	local sender = strfind(senderOne, '-') and senderOne or senderTwo
 	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
 		if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
 		if sender == lib.myName then return end
