@@ -1313,7 +1313,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 		elseif element == 'buffs' or element == 'debuffs' then
 			config[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
 		elseif element == 'petsGroup' or element == 'targetsGroup' then
-			config[element] = ACH:Group(element == 'targetsGroup' and L["Target Group"] or L["Pet Group"], nil, -1, 'tab', function(info) return E.db.unitframe.units[unitType][element][info[#info]] end, function(info, value) E.db.unitframe.units[unitType][element][info[#info]] = value UF:CreateAndUpdateHeaderGroup(unitType) end)
+			config[element] = ACH:Group(element == 'targetsGroup' and L["Target Group"] or L["Pet Group"], nil, -1, 'tab', function(info) return E.db.unitframe.units[unitType][element][info[#info]] end, function(info, value) E.db.unitframe.units[unitType][element][info[#info]] = value updateFunc(UF, unitType, numUnits) end)
 			config[element].args.enable = ACH:Toggle(L["Enable"], nil, 1)
 			config[element].args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = 1000, step = 1 })
 			config[element].args.height = ACH:Range(L["Height"], nil, 4, { min = 5, max = 500, step = 1 })
