@@ -281,9 +281,6 @@ DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], ni
 DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
 DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
-DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
-DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
-
 local function addCurrency(_, value)
 	local currencyID = tonumber(value)
 	if not currencyID then return end
@@ -306,9 +303,10 @@ local function getCurrencyList()
 	return list
 end
 
+DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
+DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
 DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, getCurrencyList, nil, 'double', nil, addCurrency)
 DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, addCurrency)
-
 DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, info in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = info.name end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].name DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 
