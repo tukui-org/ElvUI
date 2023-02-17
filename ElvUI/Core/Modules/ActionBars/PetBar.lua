@@ -35,8 +35,10 @@ function AB:UpdatePet(event, unit)
 		local buttonName = 'PetActionButton'..i
 		local autoCast = button.AutoCastable
 
-		if _G[buttonName..'AutoCastable'] then
-			_G[buttonName..'AutoCastable']:SetAlpha(0)
+		-- this one is different
+		local castable = _G[buttonName..'AutoCastable']
+		if castable then
+			castable:SetAlpha(0)
 		end
 
 		button:SetAlpha(1)
