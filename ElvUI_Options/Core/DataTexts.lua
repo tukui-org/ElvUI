@@ -283,8 +283,32 @@ DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTe
 
 DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
-DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, function() local list = E:CopyTable({}, DT.CurrencyList) list.GOLD = nil list.BACKPACK = nil return list end, nil, 'double', nil, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end local data = DT:RegisterCustomCurrencyDT(currencyID) if data then CreateDTOptions(currencyID, data) DT:LoadDataTexts() end end)
-DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, function(_, value) local currencyID = tonumber(value) if not currencyID then return; end local data = DT:RegisterCustomCurrencyDT(currencyID) if data then CreateDTOptions(currencyID, data) DT:LoadDataTexts() end end)
+
+local function addCurrency(_, value)
+	local currencyID = tonumber(value)
+	if not currencyID then return end
+	local data = DT:RegisterCustomCurrencyDT(currencyID)
+	if data then
+		CreateDTOptions(currencyID, data)
+		DT:LoadDataTexts()
+	end
+end
+
+local function getCurrencyList()
+	local list = E:CopyTable({}, DT.CurrencyList)
+	list.GOLD = nil
+	list.BACKPACK = nil
+
+	for id in next, E.global.datatexts.customCurrencies do
+		list[tostring(id)] = nil
+	end
+
+	return list
+end
+
+DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, getCurrencyList, nil, 'double', nil, addCurrency)
+DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, addCurrency)
+
 DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, info in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = info.name end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].name DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 
