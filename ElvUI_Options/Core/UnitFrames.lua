@@ -1313,25 +1313,27 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 		elseif element == 'buffs' or element == 'debuffs' then
 			config[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
 		elseif element == 'petsGroup' or element == 'targetsGroup' then
-			config[element] = ACH:Group(element == 'targetsGroup' and L["Target Group"] or L["Pet Group"], nil, -1, 'tab', function(info) return E.db.unitframe.units[unitType][element][info[#info]] end, function(info, value) E.db.unitframe.units[unitType][element][info[#info]] = value updateFunc(UF, unitType, numUnits) end)
-			config[element].args.enable = ACH:Toggle(L["Enable"], nil, 1)
-			config[element].args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = 1000, step = 1 })
-			config[element].args.height = ACH:Range(L["Height"], nil, 4, { min = 5, max = 500, step = 1 })
-			config[element].args.anchorPoint = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints)
-			config[element].args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
-			config[element].args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
-			config[element].args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
+			local group = ACH:Group(element == 'targetsGroup' and L["Target Group"] or L["Pet Group"], nil, -1, 'tab', function(info) return E.db.unitframe.units[unitType][element][info[#info]] end, function(info, value) E.db.unitframe.units[unitType][element][info[#info]] = value updateFunc(UF, unitType, numUnits) end)
+			group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+			group.args.width = ACH:Range(L["Width"], nil, 3, { min = 50, max = 1000, step = 1 })
+			group.args.height = ACH:Range(L["Height"], nil, 4, { min = 5, max = 500, step = 1 })
+			group.args.anchorPoint = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints)
+			group.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
+			group.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
+			group.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
 
 			for subElement in pairs(P.unitframe.units[unitType][element]) do
 				if subElement == 'colorPetByUnitClass' then
-					config[element].args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
+					group.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 				else
 					local func = unitSettingsFunc[subElement]
 					if func then
-						config[element].args[subElement] = func(updateFunc, unitType, numUnits, element)
+						group.args[subElement] = func(updateFunc, unitType, numUnits, element)
 					end
 				end
 			end
+
+			config[element] = group
 		else
 			local func = unitSettingsFunc[element]
 			if func then
