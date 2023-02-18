@@ -55,6 +55,7 @@ function AB:MultiCastActionButton_Update(button)
 end
 
 function AB:StyleTotemSlotButton(button, slot)
+	if button.useMasque then return end
 	local color = SLOT_BORDER_COLORS[slot]
 	if color then
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
