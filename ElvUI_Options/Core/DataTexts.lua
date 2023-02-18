@@ -101,7 +101,7 @@ function DT:SetupPanelOptions(name, data)
 			options.args.dts.args[dtStr] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
 		end
 
-		if data.battleground ~= nil then
+		if data and data.battleground ~= nil then
 			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
 
 			if not options.args.battledts then
