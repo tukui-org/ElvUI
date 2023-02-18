@@ -55,8 +55,10 @@ end
 
 function DT:RegisterCustomCurrencyDT(currencyID)
 	if currencyID then
+		if E.global.datatexts.customCurrencies[currencyID] then return end
+
 		local info = DT:CurrencyInfo(currencyID)
-		if (E.global.datatexts.customCurrencies[currencyID] or not info) then return end
+		if not info then return end
 
 		G.datatexts.customCurrencies[currencyID] = defaults
 		E.global.datatexts.customCurrencies[currencyID] = E:CopyTable({ name = info.name }, defaults)
