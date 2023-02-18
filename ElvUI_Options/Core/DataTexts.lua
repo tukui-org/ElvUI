@@ -105,7 +105,7 @@ function DT:SetupPanelOptions(name, data)
 			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
 
 			if not options.args.battledts then
-				options.args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
+				options.args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end, nil, function() return not data.battleground end)
 				options.args.battledts.inline = true
 			end
 
