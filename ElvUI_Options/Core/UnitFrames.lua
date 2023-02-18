@@ -140,6 +140,23 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	return config
 end
 
+local function addFilters(info)
+	wipe(filters)
+
+	local isFilter = info[#info] == 'filter'
+
+	local list = E.global.unitframe[isFilter and 'aurafilters' or 'specialFilters']
+	if not (list and next(list)) then
+		return filters
+	end
+
+	for filter in pairs(list) do
+		filters[filter] = L[filter]
+	end
+
+	return filters
+end
+
 local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	local config = ACH:Group(auraType == 'buffs' and L["Buffs"] or L["Debuffs"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 
@@ -181,9 +198,9 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)
-	config.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, value) updateFunc(UF, groupName, numUnits) end)
+	config.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, addFilters, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, value) updateFunc(UF, groupName, numUnits) end)
 	config.args.filtersGroup.args.specialFilters.sortByValue = true
-	config.args.filtersGroup.args.filter = ACH:Select(L["Add Regular Filter"], L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, value) updateFunc(UF, groupName, numUnits) end)
+	config.args.filtersGroup.args.filter = ACH:Select(L["Add Regular Filter"], L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."], 5, addFilters, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.unitframe.units, groupName, auraType, value) updateFunc(UF, groupName, numUnits) end)
 	config.args.filtersGroup.args.resetPriority = ACH:Execute(L["Reset Priority"], L["Reset filter priority to the default state."], 7, function() E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority updateFunc(UF, groupName, numUnits) end)
 
 	config.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.unitframe.units[groupName][auraType].priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.unitframe.units[groupName][auraType].priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() updateFunc(UF, groupName, numUnits) end)

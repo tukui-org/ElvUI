@@ -56,6 +56,7 @@ local dts = { [''] = L["None"] }
 function DT:SetupPanelOptions(name, data)
 	local options = E.Options.args.datatexts.args.panels.args[name]
 	local customPanel = E.global.datatexts.customPanels[name]
+	if not data then data = DT.db.panels[name] end
 
 	if not options then
 		options = ACH:Group(ColorizeName(name, not customPanel and 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
@@ -262,7 +263,7 @@ DataTexts.args.panels = ACH:Group(L["Panels"], nil, 4)
 
 DataTexts.args.panels.args.newPanel = ACH:Group(ColorizeName(L["New Panel"], '33ff33'), nil, 0, nil, function(info) return E.global.datatexts.newPanelInfo[info[#info]] end, function(info, value) E.global.datatexts.newPanelInfo[info[#info]] = value end)
 DataTexts.args.panels.args.newPanel.args.name = ACH:Input(L["Name"], nil, 0, nil, 'full', nil, nil, nil, nil, function(_, value) return E.global.datatexts.customPanels[value] and L["Name Taken"] or true end)
-DataTexts.args.panels.args.newPanel.args.add = ACH:Execute(L["Add"], nil, 1, function() local name = E.global.datatexts.newPanelInfo.name E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo) E.db.datatexts.panels[name] = { enable = true, battleground = false } for i = 1, E.global.datatexts.newPanelInfo.numPoints do E.db.datatexts.panels[name][i] = '' end DT:SetupPanelOptions(name, E.db.datatexts.panels[name]) DT:BuildPanelFrame(name) E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name) E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo) end, nil, nil, 'full', nil, nil, function() local name = E.global.datatexts.newPanelInfo.name return not name or name == '' end)
+DataTexts.args.panels.args.newPanel.args.add = ACH:Execute(L["Add"], nil, 1, function() local name = E.global.datatexts.newPanelInfo.name E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo) E.db.datatexts.panels[name] = { enable = true, battleground = false } for i = 1, E.global.datatexts.newPanelInfo.numPoints do E.db.datatexts.panels[name][i] = '' end DT:SetupPanelOptions(name) DT:BuildPanelFrame(name) E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name) E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo) end, nil, nil, 'full', nil, nil, function() local name = E.global.datatexts.newPanelInfo.name return not name or name == '' end)
 
 E:CopyTable(DataTexts.args.panels.args.newPanel.args, DTPanelOptions)
 DataTexts.args.panels.args.newPanel.args.templateGroup.get = function(_, key) return E.global.datatexts.newPanelInfo[key] end
