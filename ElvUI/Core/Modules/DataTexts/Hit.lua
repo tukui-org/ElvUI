@@ -40,7 +40,12 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(format('%s: %s', _G['COMBAT_RATING_NAME'..ratingIndex], hitValue))
-	DT.tooltip:AddLine(format(ratingIndex == CR_HIT_MELEE and CR_HIT_MELEE_TOOLTIP or CR_HIT_RANGED_TOOLTIP, E.mylevel, hitPercent, GetCombatRating(CR_ARMOR_PENETRATION), GetArmorPenetration()))
+
+	if E.Classic then
+		DT.tooltip:AddLine(format(ratingIndex == CR_HIT_MELEE and CR_HIT_MELEE_TOOLTIP or CR_HIT_RANGED_TOOLTIP, E.mylevel, hitPercent))
+	else
+		DT.tooltip:AddLine(format(ratingIndex == CR_HIT_MELEE and CR_HIT_MELEE_TOOLTIP or CR_HIT_RANGED_TOOLTIP, E.mylevel, hitPercent, GetCombatRating(CR_ARMOR_PENETRATION), GetArmorPenetration()))
+	end
 
 	DT.tooltip:Show()
 end
