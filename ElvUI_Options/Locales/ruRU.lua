@@ -191,7 +191,7 @@ L["What to attach the anchor frame to."] = "К чему прикрепить ф�
 L["Wiki:"] = true --Translation not really required
 L["You are about to reset paging. Are you sure?"] = "Вы собираетесь сбросить переключение. Вы уверены?"
 
-L["Reset all frames to their original positions."] = "вернуть все фреймы на изначальные позиции"
+L["Reset all frames to their original positions."] = "Вернуть все фреймы на изначальные позиции"
 L["You cannot copy settings from the same unit."] = "Вы не можете копировать настройки из того же юнита"
 L["Install"] = "Установка"
 L["Run the installation process."] = "Запустить процесс установки"
