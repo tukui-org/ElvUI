@@ -215,16 +215,34 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
 
+	local isTapped = UnitIsTapDenied(unit)
+	local isDeadOrGhost = UnitIsDeadOrGhost(unit)
+
 	if not b then r, g, b = colors.health.r, colors.health.g, colors.health.b end
 	local newr, newg, newb -- fallback for bg if custom settings arent used
-	if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit) then
+	if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 		newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
+	elseif colors.healthBreak.enabled and not isTapped then
+		local breakPoint = self.cur/self.max
+		local onlyLow, color = colors.healthBreak.onlyLow
+
+		if breakPoint <= colors.healthBreak.low then
+			color = colors.healthBreak.bad
+		elseif breakPoint >= colors.healthBreak.high and breakPoint ~= 1 and not onlyLow then
+			color = colors.healthBreak.good
+		elseif breakPoint >= colors.healthBreak.low and breakPoint < colors.healthBreak.high and not onlyLow then
+			color = colors.healthBreak.neutral
+		end
+
+		if color then
+			self:SetStatusBarColor(color.r, color.g, color.b)
+		end
 	end
 
 	-- Charmed player should have hostile color
 	if unit and (strmatch(unit, "raid%d+") or strmatch(unit, "party%d+")) then
-		if not UnitIsDeadOrGhost(unit) and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy("player", unit) then
+		if not isDeadOrGhost and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy("player", unit) then
 			local color = parent.colors.reaction[HOSTILE_REACTION]
 			if color then self:SetStatusBarColor(color.r, color.g, color.b) end
 		end
@@ -233,7 +251,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	if self.bg then
 		self.bg.multiplier = (colors.healthMultiplier > 0 and colors.healthMultiplier) or 0.35
 
-		if colors.useDeadBackdrop and UnitIsDeadOrGhost(unit) then
+		if colors.useDeadBackdrop and isDeadOrGhost then
 			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
 		elseif colors.customhealthbackdrop then
 			self.bg:SetVertexColor(colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)

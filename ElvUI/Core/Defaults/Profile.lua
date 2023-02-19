@@ -1582,6 +1582,15 @@ P.unitframe = {
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0}, -- updated in E.Initialize
 		healthclass = false,
+		healthBreak = {
+			enabled = false,
+			high = 0.75,
+			low = 0.3,
+			onlyLow = false,
+			good = { r = 0, g = 1, b = 0 },
+			neutral = { r = 1, g = 1, b = 0 },
+			bad = { r = 1, g = 0, b = 0 },
+		},
 		--healththreat = false,
 		healthselection = false,
 		forcehealthreaction = false,
