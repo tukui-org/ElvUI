@@ -684,13 +684,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	AB:TrimIcon(button, useMasque)
-
-	if useMasque then
+	if useMasque then -- note: trim handled after masque messes with it
 		button:StyleButton(true, true, true)
 	else
-		icon:SetInside()
 		button:StyleButton()
+		AB:TrimIcon(button)
+		icon:SetInside()
 	end
 
 	if shine then
