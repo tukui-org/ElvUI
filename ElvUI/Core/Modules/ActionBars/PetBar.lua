@@ -33,7 +33,13 @@ function AB:UpdatePet(event, unit)
 	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = button.AutoCastable or _G[buttonName..'AutoCastable']
+		local autoCast = button.AutoCastable
+
+		-- this one is different
+		local castable = _G[buttonName..'AutoCastable']
+		if castable then
+			castable:SetAlpha(0)
+		end
 
 		button:SetAlpha(1)
 		button.isToken = isToken
@@ -244,7 +250,7 @@ function AB:CreateBarPet()
 	for i = 1, _G.NUM_PET_ACTION_SLOTS do
 		local button = _G['PetActionButton'..i]
 		button:Show() -- for some reason they start hidden on DF ?
-		button.__parent = 'ElvUI_BarPet'
+		button.parentName = 'ElvUI_BarPet'
 		bar.buttons[i] = button
 
 		if not E.Retail then

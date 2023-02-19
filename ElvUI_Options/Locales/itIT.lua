@@ -715,10 +715,10 @@ L["Enabling this inverts the grouping order when the raid is not full, this will
 L["Enabling this will check your health amount."] = true
 L["Enabling this will check your power amount."] = true
 L["Enchanting"] = true
-L["ENCOUNTER_JOURNAL_SECTION_FLAG10"] = "Disease Effect"
-L["ENCOUNTER_JOURNAL_SECTION_FLAG7"] = "Magic Effect"
-L["ENCOUNTER_JOURNAL_SECTION_FLAG8"] = "Curse Effect"
-L["ENCOUNTER_JOURNAL_SECTION_FLAG9"] = "Poison Effect"
+L["Disease Effect"] = "Disease Effect"
+L["Magic Effect"] = "Magic Effect"
+L["Curse Effect"] = "Curse Effect"
+L["Poison Effect"] = "Poison Effect"
 L["ENCOUNTER_JOURNAL"] = "Dungeon Journal"
 L["Enemy Aura Type"] = true
 L["Enemy Combat Toggle"] = true

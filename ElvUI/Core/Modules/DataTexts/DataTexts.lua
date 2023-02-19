@@ -258,6 +258,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 
 		panel.text:SetText(str)
+		panel.icon:SetShown(icon)
 		panel.icon:SetTexture(icon)
 		panel.icon:SetTexCoord(unpack(data.iconCoords or E.TexCoords))
 	end

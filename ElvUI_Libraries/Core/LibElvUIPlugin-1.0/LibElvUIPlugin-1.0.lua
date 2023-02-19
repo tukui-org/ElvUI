@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 40
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 41
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -32,7 +32,7 @@ LibElvUIPlugin API:
 
 local tonumber, strmatch, strsub, tinsert, strtrim = tonumber, strmatch, strsub, tinsert, strtrim
 local unpack, assert, pairs, ipairs, strlen, pcall, xpcall = unpack, assert, pairs, ipairs, strlen, pcall, xpcall
-local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
+local format, wipe, type, gmatch, gsub, ceil, strfind = format, wipe, type, gmatch, gsub, ceil, strfind
 
 local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
@@ -203,20 +203,23 @@ do	-- this will handle `8.1.5.0015` into `8.150015` etc
 	end
 end
 
-function lib:VersionCheck(event, prefix, message, _, sender)
-	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and (sender and message and not strmatch(message, '^%s-$')) then
-		if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
-		if sender == lib.myName then return end
+function lib:VersionCheck(event, prefix, msg, _, senderOne, senderTwo)
+	if event == 'CHAT_MSG_ADDON' and prefix == lib.prefix then
+		local sender = strfind(senderOne, '-') and senderOne or senderTwo
+		if sender and msg and not strmatch(msg, '^%s-$') then
+			if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
+			if sender == lib.myName then return end
 
-		if not E.pluginRecievedOutOfDateMessage then
-			for name, version in gmatch(message, '([^=]+)=([%d%p]+);') do
-				local plugin = (version and name) and lib.plugins[name]
-				if plugin and plugin.version then
-					local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
-					if (ver and Pver) and (ver > Pver) then
-						plugin.old, plugin.newversion = true, version
-						E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
-						E.pluginRecievedOutOfDateMessage = true
+			if not E.pluginRecievedOutOfDateMessage then
+				for name, version in gmatch(msg, '([^=]+)=([%d%p]+);') do
+					local plugin = (version and name) and lib.plugins[name]
+					if plugin and plugin.version then
+						local Pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
+						if (ver and Pver) and (ver > Pver) then
+							plugin.old, plugin.newversion = true, version
+							E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
+							E.pluginRecievedOutOfDateMessage = true
+						end
 					end
 				end
 			end

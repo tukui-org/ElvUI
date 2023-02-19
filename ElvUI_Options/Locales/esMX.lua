@@ -715,10 +715,10 @@ L["Enabling this inverts the grouping order when the raid is not full, this will
 L["Enabling this will check your health amount."] = true
 L["Enabling this will check your power amount."] = true
 L["Enchanting"] = true
-L["ENCOUNTER_JOURNAL_SECTION_FLAG10"] = "Efecto de enfermedad"
-L["ENCOUNTER_JOURNAL_SECTION_FLAG7"] = "Efecto de magia"
-L["ENCOUNTER_JOURNAL_SECTION_FLAG8"] = "Efecto de maldición"
-L["ENCOUNTER_JOURNAL_SECTION_FLAG9"] = "Efecto de veneno"
+L["Disease Effect"] = "Efecto de enfermedad"
+L["Magic Effect"] = "Efecto de magia"
+L["Curse Effect"] = "Efecto de maldición"
+L["Poison Effect"] = "Efecto de veneno"
 L["ENCOUNTER_JOURNAL"] = "Guía de mazmorras"
 L["Enemy Aura Type"] = "Tipo de Aura Enemiga"
 L["Enemy Combat Toggle"] = true

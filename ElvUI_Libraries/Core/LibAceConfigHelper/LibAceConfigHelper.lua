@@ -1,5 +1,5 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 8
+local MAJOR, MINOR = 'LibAceConfigHelper', 9
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -155,7 +155,7 @@ function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hid
 end
 
 local FontFlagValues = {
-	[Classic and 'NONE' or ''] = 'None',
+	NONE = 'None',
 	OUTLINE = 'Outline',
 	THICKOUTLINE = 'Thick',
 	MONOCHROME = '|cFFAAAAAAMono|r',

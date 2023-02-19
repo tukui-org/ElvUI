@@ -379,7 +379,7 @@ function AB:CreateBar(id)
 		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
 		AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
 
-		button.__parent = barName
+		button.parentName = barName
 		bar.buttons[i] = button
 	end
 
@@ -667,9 +667,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if border and not button.useMasque then border:Kill() end
 	if action then action:SetAlpha(0) end
 	if slotbg then slotbg:Hide() end
-	if mask and not button.useMasque then mask:Hide() end
+	if mask and not useMasque then mask:Hide() end
 
-	if not button.noBackdrop and not button.useMasque then
+	if not noBackdrop and not useMasque then
 		button:SetTemplate(AB.db.transparent and 'Transparent', true)
 	end
 
@@ -684,7 +684,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	if not useMasque then
+	if useMasque then -- note: trim handled after masque messes with it
+		button:StyleButton(true, true, true)
+	else
+		button:StyleButton()
 		AB:TrimIcon(button)
 		icon:SetInside()
 	end
@@ -715,12 +718,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if button.ProfessionQualityOverlayFrame then
 		AB:UpdateProfessionQuality(button)
-	end
-
-	if not button.useMasque then
-		button:StyleButton()
-	else
-		button:StyleButton(true, true, true)
 	end
 end
 
