@@ -55,7 +55,8 @@ local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateA
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
-local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
+local FlyoutMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Flyouts')
+local VehicleMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Leave Vehicle')
 
 local buttonDefaults = {
 	hideElements = {},
@@ -293,11 +294,19 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
+		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
+
+	if bar.MasqueGroup and E.private.actionbar.masque.actionbars then
+		bar.MasqueGroup:ReSkin()
+
+		for _, btn in next, bar.buttons do -- masque retrims them all so we have to too
+			AB:TrimIcon(btn, true)
+		end
+	end
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -319,15 +328,6 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
-
-	if MasqueGroup and E.private.actionbar.masque.actionbars then
-		MasqueGroup:ReSkin()
-
-		-- masque retrims them all so we have to too
-		for btn in pairs(AB.handledbuttons) do
-			AB:TrimIcon(btn, true)
-		end
-	end
 end
 
 function AB:CreateBar(id)
@@ -336,6 +336,8 @@ function AB:CreateBar(id)
 	if not E.Retail then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 	end
+
+	bar.MasqueGroup = Masque and Masque:Group('ElvUI', format('ActionBar %d', id))
 
 	local barKey = 'bar'..id
 	AB.handledBars[barKey] = bar
@@ -372,8 +374,9 @@ function AB:CreateBar(id)
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
-		if MasqueGroup and E.private.actionbar.masque.actionbars then
-			button:AddToMasque(MasqueGroup)
+
+		if bar.MasqueGroup and E.private.actionbar.masque.actionbars then
+			button:AddToMasque(bar.MasqueGroup)
 		end
 
 		AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
@@ -465,8 +468,9 @@ function AB:CreateVehicleLeave()
 	button:SetScript('OnHide', nil)
 	button:KillEditMode()
 
-	if MasqueGroup and E.private.actionbar.masque.actionbars then
+	if VehicleMasqueGroup and E.private.actionbar.masque.actionbars then
 		button:StyleButton(true, true, true)
+		VehicleMasqueGroup:AddButton(button)
 	else
 		button:CreateBackdrop(nil, true)
 		button:GetNormalTexture():SetTexCoord(0.140625 + .08, 0.859375 - .06, 0.140625 + .08, 0.859375 - .08)
@@ -1436,7 +1440,7 @@ end
 
 function AB:SetupFlyoutButton(button)
 	if not AB.handledbuttons[button] then
-		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
+		AB:StyleButton(button, nil, FlyoutMasqueGroup and E.private.actionbar.masque.actionbars)
 		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
 	end
@@ -1445,9 +1449,9 @@ function AB:SetupFlyoutButton(button)
 		button:Size(AB.db.flyoutSize)
 	end
 
-	if MasqueGroup and E.private.actionbar.masque.actionbars then
-		MasqueGroup:RemoveButton(button) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
-		MasqueGroup:AddButton(button)
+	if FlyoutMasqueGroup and E.private.actionbar.masque.actionbars then
+		FlyoutMasqueGroup:RemoveButton(button) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
+		FlyoutMasqueGroup:AddButton(button)
 	end
 end
 
