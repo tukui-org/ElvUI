@@ -300,12 +300,8 @@ function AB:PositionAndSizeBar(barName)
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	if bar.MasqueGroup and E.private.actionbar.masque.actionbars then
-		bar.MasqueGroup:ReSkin()
-
-		for _, btn in next, bar.buttons do -- masque retrims them all so we have to too
-			AB:TrimIcon(btn, true)
-		end
+	if Masque and E.private.actionbar.masque.actionbars then
+		AB:UpdateMasque(bar)
 	end
 
 	-- paging needs to be updated even if the bar is disabled
@@ -375,7 +371,7 @@ function AB:CreateBar(id)
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
 
-		if bar.MasqueGroup and E.private.actionbar.masque.actionbars then
+		if Masque and E.private.actionbar.masque.actionbars then
 			button:AddToMasque(bar.MasqueGroup)
 		end
 
@@ -468,7 +464,7 @@ function AB:CreateVehicleLeave()
 	button:SetScript('OnHide', nil)
 	button:KillEditMode()
 
-	if VehicleMasqueGroup and E.private.actionbar.masque.actionbars then
+	if Masque and E.private.actionbar.masque.actionbars then
 		button:StyleButton(true, true, true)
 		VehicleMasqueGroup:AddButton(button)
 	else
@@ -501,6 +497,10 @@ function AB:UpdateVehicleLeave()
 	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
 	_G.VehicleLeaveButtonHolder:Size(db.size)
+
+	if Masque and E.private.actionbar.masque.actionbars then
+		AB:UpdateMasque(nil, VehicleMasqueGroup)
+	end
 end
 
 function AB:ReassignBindings(event)
@@ -722,6 +722,16 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if button.ProfessionQualityOverlayFrame then
 		AB:UpdateProfessionQuality(button)
+	end
+end
+
+function AB:UpdateMasque(bar, masqueGroup)
+	(bar and bar.MasqueGroup or masqueGroup):ReSkin()
+
+	if bar and bar.buttons then
+		for _, btn in next, bar.buttons do -- masque retrims them all so we have to too
+			AB:TrimIcon(btn, true)
+		end
 	end
 end
 

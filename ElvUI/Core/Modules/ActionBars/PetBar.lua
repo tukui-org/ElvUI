@@ -185,11 +185,7 @@ function AB:PositionAndSizeBarPet()
 	RegisterStateDriver(bar, 'show', visibility)
 
 	if useMasque then
-		MasqueGroup:ReSkin()
-
-		for _, button in ipairs(bar.buttons) do
-			AB:TrimIcon(button, true)
-		end
+		AB:UpdateMasque(bar)
 	end
 end
 
@@ -246,6 +242,7 @@ function AB:CreateBarPet()
 	bar.backdrop = CreateFrame('Frame', nil, bar)
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
+	bar.MasqueGroup = MasqueGroup
 
 	for i = 1, _G.NUM_PET_ACTION_SLOTS do
 		local button = _G['PetActionButton'..i]
